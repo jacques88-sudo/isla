@@ -1,16 +1,14 @@
-const CACHE_NAME = "isla-v2";
+const CACHE_NAME = "isla-v3";
 const ASSETS = [
   "./",
   "./index.html",
-  "./styles.css",
-  "./app.js",
   "./manifest.json",
   "./offline.html",
-  "./assets/logo-isla.png",
-  "./assets/icon-192.png",
-  "./assets/icon-512.png"
+  "./logo-isla.png",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./icon-maskable-512.png"
 ];
-
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))

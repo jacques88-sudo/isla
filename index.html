@@ -1,29 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f4efe7" />
-  <meta name="description" content="Isla is a premium mobile-first PWA for Tenerife excursions, bookings, and island experiences." />
-  <title>Isla — Tenerife Excursions</title>
+  <meta name="theme-color" content="#f3ede4" />
+  <meta name="description" content="Isla — esperienze premium, escursioni e prenotazioni a Tenerife." />
+  <title>Isla — Tenerife Experiences</title>
+
   <link rel="manifest" href="./manifest.json" />
-  <link rel="apple-touch-icon" href="./icon-192.png" />
-  <link rel="icon" href="./icon-192.png" />
+  <link rel="icon" href="./logo-isla.jpg" />
+  <link rel="apple-touch-icon" href="./logo-isla.jpg" />
+
   <style>
     :root{
-      --bg:#f4efe7;
-      --surface:#fbf8f2;
-      --surface-2:#f7f1e8;
-      --text:#221b18;
-      --muted:#6f625c;
-      --line:rgba(34,27,24,.10);
-      --primary:#8b4d2e;
-      --primary-dark:#6f3d23;
-      --accent:#c58b4b;
-      --accent-2:#2f5d73;
-      --success:#58734d;
-      --shadow:0 18px 50px rgba(34,27,24,.10);
-      --radius-xl:32px;
+      --bg:#f3ede4;
+      --bg-soft:#fbf7f1;
+      --surface:rgba(255,255,255,.58);
+      --surface-strong:#fffaf4;
+      --text:#1f1b18;
+      --muted:#6f655d;
+      --line:rgba(31,27,24,.10);
+      --primary:#6f4a33;
+      --primary-2:#8a6346;
+      --accent:#b58a62;
+      --navy:#243c4d;
+      --gold:#c8a06b;
+      --shadow:0 18px 50px rgba(31,27,24,.10);
+      --radius-xl:34px;
       --radius-lg:24px;
       --radius-md:18px;
       --radius-sm:12px;
@@ -31,6 +34,7 @@
       --font-body: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --font-display: "Georgia", "Times New Roman", serif;
     }
+
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
@@ -38,181 +42,234 @@
       font-family:var(--font-body);
       color:var(--text);
       background:
-        radial-gradient(circle at top left, rgba(197,139,75,.12), transparent 28%),
-        radial-gradient(circle at top right, rgba(47,93,115,.10), transparent 24%),
-        var(--bg);
+        radial-gradient(circle at top left, rgba(184,154,112,.14), transparent 28%),
+        radial-gradient(circle at top right, rgba(36,60,77,.12), transparent 24%),
+        linear-gradient(180deg, var(--bg), #efe7dc 100%);
       line-height:1.6;
     }
     img{max-width:100%;display:block}
     a{color:inherit;text-decoration:none}
+    button,input{font:inherit}
     .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+
     header{
-      position:sticky;top:0;z-index:20;
+      position:sticky;top:0;z-index:30;
       backdrop-filter:blur(18px);
-      background:rgba(244,239,231,.82);
+      background:rgba(243,237,228,.84);
       border-bottom:1px solid var(--line);
     }
     .nav{
-      min-height:76px;
+      min-height:78px;
       display:flex;align-items:center;justify-content:space-between;gap:16px;
     }
-    .brand{display:flex;align-items:center;gap:12px;font-weight:700}
+    .brand{
+      display:flex;align-items:center;gap:12px;
+      font-weight:800;letter-spacing:.2px;
+    }
     .brand img{
       width:42px;height:42px;border-radius:14px;object-fit:cover;
-      box-shadow:0 8px 24px rgba(34,27,24,.12);
+      box-shadow:0 10px 24px rgba(31,27,24,.12);
     }
-    .brand span{font-size:1.05rem;letter-spacing:.2px}
+    .brand span{font-size:1.05rem}
     .nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
     .nav-link{
-      padding:10px 14px;border-radius:999px;border:1px solid var(--line);
-      background:rgba(255,255,255,.34);font-size:.95rem
+      padding:10px 14px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.34);
+      font-size:.95rem
     }
+
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      min-height:48px;padding:0 18px;border-radius:999px;border:1px solid transparent;
+      min-height:48px;padding:0 18px;
+      border-radius:999px;border:1px solid transparent;
       font-weight:700;cursor:pointer;transition:.2s ease;
+      white-space:nowrap;
     }
-    .btn-primary{background:var(--primary);color:#fff;box-shadow:var(--shadow)}
-    .btn-primary:hover{background:var(--primary-dark)}
-    .btn-secondary{background:transparent;border-color:var(--line);color:var(--text)}
-    .btn-secondary:hover{background:rgba(255,255,255,.5)}
-    .hero{
-      padding:40px 0 24px;
+    .btn-primary{
+      background:linear-gradient(135deg, var(--primary), var(--primary-2));
+      color:#fff;box-shadow:var(--shadow)
     }
+    .btn-primary:hover{transform:translateY(-1px);filter:brightness(1.03)}
+    .btn-secondary{
+      background:rgba(255,255,255,.35);
+      border-color:var(--line)
+    }
+    .btn-secondary:hover{background:rgba(255,255,255,.55)}
+
+    .hero{padding:34px 0 24px}
     .hero-grid{
-      display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;
-      padding:34px 0 12px;
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:26px;
+      align-items:center;
+      padding:24px 0 10px;
     }
     .eyebrow{
       display:inline-flex;align-items:center;gap:10px;
       padding:10px 16px;border-radius:999px;
-      background:rgba(139,77,46,.08);color:var(--primary);
-      font-weight:700;font-size:.9rem;margin-bottom:18px
+      background:rgba(111,74,51,.08);
+      color:var(--primary);
+      font-weight:800;font-size:.9rem;margin-bottom:16px
     }
     h1{
       font-family:var(--font-display);
-      font-size:clamp(3rem,7vw,5.8rem);
+      font-size:clamp(3rem,7vw,5.9rem);
       line-height:.95;
-      letter-spacing:-.03em;
+      letter-spacing:-.04em;
       margin:0 0 18px;
       max-width:10ch;
     }
     .lead{
-      max-width:58ch;font-size:1.08rem;color:var(--muted);margin:0 0 28px
+      max-width:58ch;
+      font-size:1.08rem;
+      color:var(--muted);
+      margin:0 0 26px
     }
-    .hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+    .hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+
     .search-panel{
       display:flex;align-items:center;gap:12px;
-      padding:10px;background:rgba(255,255,255,.5);
-      border:1px solid var(--line);border-radius:999px;
-      box-shadow:0 10px 30px rgba(34,27,24,.06);
-      max-width:680px;
+      padding:10px 10px 10px 14px;
+      background:rgba(255,255,255,.56);
+      border:1px solid var(--line);
+      border-radius:999px;
+      box-shadow:0 12px 32px rgba(31,27,24,.06);
+      max-width:700px;
     }
     .search-panel input{
       flex:1;border:0;background:transparent;outline:none;
-      min-width:0;padding:12px 14px;font-size:1rem;color:var(--text)
+      min-width:0;padding:12px 10px;font-size:1rem;color:var(--text)
     }
-    .search-panel input::placeholder{color:#857971}
-    .pills{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .search-panel input::placeholder{color:#8a8077}
+
+    .pills{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
     .pill{
       padding:11px 16px;border-radius:999px;border:1px solid var(--line);
-      background:rgba(255,255,255,.45);font-weight:600;font-size:.95rem;
-      cursor:pointer;
+      background:rgba(255,255,255,.42);font-weight:700;font-size:.95rem;
+      cursor:pointer;color:var(--text)
     }
-    .pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .pill.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
     .hero-card{
-      background:linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,.38));
-      border:1px solid var(--line);
+      position:relative;
       border-radius:var(--radius-xl);
-      box-shadow:var(--shadow);
       overflow:hidden;
+      box-shadow:var(--shadow);
+      border:1px solid var(--line);
+      background:var(--surface-strong);
+      min-height:720px;
     }
-    .hero-photo{
-      aspect-ratio: 4 / 5;
+    .hero-media{
+      position:absolute;inset:0;
       background:
-        linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.36)),
-        url("./Isla.jpg") center/cover no-repeat;
-      display:flex;align-items:flex-end;
-      padding:22px;color:#fff;
+        linear-gradient(180deg, rgba(14,18,25,.12), rgba(14,18,25,.42)),
+        url("./isla/1264675861-1.jpg") center/cover no-repeat;
     }
-    .hero-photo h2{
-      margin:0;font-size:1.8rem;line-height:1.05;max-width:12ch;
+    .hero-copy{
+      position:relative;
+      z-index:1;
+      height:100%;
+      display:flex;
+      align-items:flex-end;
+      padding:28px;
+      color:#fff;
+    }
+    .hero-copy-inner{
+      max-width:34ch;
+      padding:22px 22px 18px;
+      border-radius:24px;
+      background:linear-gradient(180deg, rgba(15,18,22,.18), rgba(15,18,22,.38));
+      backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,.16);
+    }
+    .hero-copy h2{
+      margin:0 0 10px;
       font-family:var(--font-display);
+      font-size:2rem;
+      line-height:1.02
     }
-    .hero-photo p{margin:8px 0 0;opacity:.9;max-width:26ch}
+    .hero-copy p{margin:0;color:rgba(255,255,255,.88)}
+
     .stats{
-      margin-top:22px;
-      display:grid;grid-template-columns:repeat(4,1fr);gap:14px
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px
     }
     .stat{
-      background:rgba(255,255,255,.54);
+      background:rgba(255,255,255,.5);
       border:1px solid var(--line);
       border-radius:22px;
       padding:18px 16px;
       min-height:108px;
+      box-shadow:0 10px 28px rgba(31,27,24,.05);
     }
     .stat strong{
-      display:block;font-size:1.6rem;line-height:1;color:var(--text);margin-bottom:8px
+      display:block;font-size:1.55rem;line-height:1;margin-bottom:8px
     }
     .stat span{color:var(--muted);font-size:.96rem}
+
     section{padding:28px 0}
     .section-head{
-      display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:16px
+      display:flex;justify-content:space-between;align-items:end;gap:16px;
+      margin-bottom:16px
     }
     h3{
-      margin:0;font-size:clamp(1.5rem,2.4vw,2.2rem);
-      letter-spacing:-.02em;
+      margin:0;
+      font-size:clamp(1.5rem,2.4vw,2.2rem);
+      letter-spacing:-.02em
     }
-    .section-head p{margin:0;color:var(--muted);max-width:52ch}
-    .grid{
-      display:grid;gap:16px
-    }
+    .section-head p{margin:0;color:var(--muted);max-width:54ch}
+
+    .grid{display:grid;gap:16px}
     .featured-grid{grid-template-columns:repeat(3,1fr)}
     .card{
-      background:rgba(255,255,255,.58);
+      background:var(--surface);
       border:1px solid var(--line);
       border-radius:var(--radius-lg);
       overflow:hidden;
-      box-shadow:0 12px 28px rgba(34,27,24,.06);
+      box-shadow:0 12px 28px rgba(31,27,24,.06);
     }
     .card-media{
       aspect-ratio:16/10;
       background:#ddd center/cover no-repeat;
     }
     .card-body{padding:18px}
-    .card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .card-top{
+      display:flex;justify-content:space-between;gap:12px;align-items:flex-start
+    }
     .card h4{margin:0 0 8px;font-size:1.2rem}
     .meta{color:var(--muted);font-size:.95rem;margin:0 0 14px}
     .badge{
       display:inline-flex;align-items:center;
       padding:7px 12px;border-radius:999px;
-      background:rgba(47,93,115,.10);
-      color:var(--accent-2);
-      font-size:.82rem;font-weight:700;
-      white-space:nowrap;
+      background:rgba(36,60,77,.10);
+      color:var(--navy);
+      font-size:.82rem;font-weight:800;
+      white-space:nowrap
     }
     .card-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
     .card .btn{min-height:42px;padding:0 14px;font-size:.92rem}
-    .catalog-grid{
-      grid-template-columns:repeat(4,1fr)
-    }
+
+    .catalog-grid{grid-template-columns:repeat(4,1fr)}
     .simple-chip{
-      background:rgba(255,255,255,.5);
+      background:rgba(255,255,255,.45);
       border:1px solid var(--line);
       border-radius:22px;
-      padding:18px;
+      padding:18px
     }
     .simple-chip strong{display:block;margin-bottom:4px}
-    .split{
-      display:grid;grid-template-columns:1fr 1fr;gap:16px
-    }
+
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .info-box{
       padding:24px;border-radius:var(--radius-lg);
-      background:linear-gradient(180deg, rgba(139,77,46,.08), rgba(47,93,115,.06));
-      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(111,74,51,.08), rgba(36,60,77,.06));
+      border:1px solid var(--line)
     }
     .info-box h4{margin:0 0 10px;font-size:1.4rem}
     .info-box p{margin:0 0 18px;color:var(--muted)}
+
     .footer{
       padding:30px 0 44px;color:var(--muted);font-size:.95rem
     }
@@ -221,22 +278,24 @@
       padding-top:18px;
       display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap
     }
+
     @media (max-width: 980px){
       .hero-grid,.featured-grid,.catalog-grid,.split{grid-template-columns:1fr}
       h1{max-width:12ch}
       .stats{grid-template-columns:repeat(2,1fr)}
+      .hero-card{min-height:520px}
     }
     @media (max-width: 640px){
       .nav{min-height:68px}
-      .brand span{font-size:.98rem}
       .nav-link{display:none}
-      .hero{padding-top:22px}
-      .hero-grid{padding-top:16px}
-      .hero-photo{aspect-ratio: 16 / 11}
+      .hero{padding-top:20px}
+      .hero-grid{padding-top:10px}
+      .hero-card{min-height:460px}
+      .hero-copy{padding:16px}
+      .hero-copy-inner{padding:18px}
       .stats{grid-template-columns:1fr 1fr;gap:10px}
       .stat{min-height:92px;padding:14px}
       .search-panel{border-radius:26px;padding:8px 8px 8px 12px}
-      .search-panel .btn{min-height:44px}
       .hero-ctas .btn{width:100%}
     }
   </style>
@@ -244,15 +303,14 @@
 <body>
   <header>
     <div class="wrap nav">
-      <a class="brand" href="#top" aria-label="Isla home">
-        <img src="./logo-isla.jpg" alt="Isla logo" />
+      <a class="brand" href="#top">
+        <img src="./logo-isla.jpg" alt="Logo Isla" />
         <span>Isla</span>
       </a>
       <div class="nav-actions">
         <a class="nav-link" href="#experiences">Experiences</a>
         <a class="nav-link" href="#book">Book</a>
         <a class="nav-link" href="#contact">Contact</a>
-        <button class="btn btn-secondary" id="themeBtn" type="button">☾</button>
       </div>
     </div>
   </header>
@@ -261,11 +319,11 @@
     <section class="hero">
       <div class="wrap hero-grid">
         <div>
-          <div class="eyebrow">Tenerife excursions · premium island experiences</div>
-          <h1>Discover the island at a slower, better pace.</h1>
+          <div class="eyebrow">Tenerife experiences · premium island travel</div>
+          <h1>Discover the island in a more elegant way.</h1>
           <p class="lead">
-            Isla is a premium PWA for Tenerife excursions, bookings, and island planning.
-            Clean, mobile-first, and built to make every trip feel simple from the first tap.
+            Isla brings excursions, bookings and inspiration together in one premium,
+            mobile-first experience. Clean, warm, and built to feel effortless.
           </p>
 
           <div class="hero-ctas">
@@ -290,15 +348,16 @@
             <div class="stat"><strong>14</strong><span>Excursions</span></div>
             <div class="stat"><strong>5</strong><span>Categories</span></div>
             <div class="stat"><strong>3</strong><span>Languages</span></div>
-            <div class="stat"><strong>Offline</strong><span>PWA ready</span></div>
+            <div class="stat"><strong>PWA</strong><span>Offline ready</span></div>
           </div>
         </div>
 
         <div class="hero-card">
-          <div class="hero-photo">
-            <div>
-              <h2>Warm luxury, clear booking.</h2>
-              <p>Designed for travelers who want the best island day without the clutter.</p>
+          <div class="hero-media"></div>
+          <div class="hero-copy">
+            <div class="hero-copy-inner">
+              <h2>Luxury atmosphere, clear booking.</h2>
+              <p>A calm, polished first screen that lets the photo do the talking.</p>
             </div>
           </div>
         </div>
@@ -309,19 +368,19 @@
       <div class="wrap">
         <div class="section-head">
           <div>
-            <h3>Featured excursions</h3>
-            <p>Three highlighted experiences for a premium first impression.</p>
+            <h3>Featured experiences</h3>
+            <p>Three highlighted excursions to create a premium first impression.</p>
           </div>
         </div>
 
         <div class="grid featured-grid">
           <article class="card">
-            <div class="card-media" style="background-image:url('./Isla.jpg')"></div>
+            <div class="card-media" style="background-image:url('./isla/1264675861-1.jpg')"></div>
             <div class="card-body">
               <div class="card-top">
                 <div>
                   <h4>Sunset Boat Cruise</h4>
-                  <p class="meta">Calm water, golden hour, drinks included.</p>
+                  <p class="meta">Calm water, golden light, and a refined evening mood.</p>
                 </div>
                 <span class="badge">Popular</span>
               </div>
@@ -333,12 +392,12 @@
           </article>
 
           <article class="card">
-            <div class="card-media" style="background-image:url('./Isla.jpg')"></div>
+            <div class="card-media" style="background-image:url('./isla/1264675861-1.jpg')"></div>
             <div class="card-body">
               <div class="card-top">
                 <div>
                   <h4>Volcano & Viewpoints</h4>
-                  <p class="meta">A scenic island day for small groups.</p>
+                  <p class="meta">A scenic island day designed for small groups.</p>
                 </div>
                 <span class="badge">New</span>
               </div>
@@ -350,12 +409,12 @@
           </article>
 
           <article class="card">
-            <div class="card-media" style="background-image:url('./Isla.jpg')"></div>
+            <div class="card-media" style="background-image:url('./isla/1264675861-1.jpg')"></div>
             <div class="card-body">
               <div class="card-top">
                 <div>
                   <h4>Buggy Adventure</h4>
-                  <p class="meta">Fun, fast, and made for adventure lovers.</p>
+                  <p class="meta">For guests who want movement, scenery and fun.</p>
                 </div>
                 <span class="badge">Top rated</span>
               </div>
@@ -373,31 +432,13 @@
       <div class="wrap split">
         <div class="info-box">
           <h4>Quick booking flow</h4>
-          <p>Make the next step obvious: choose the excursion, check dates, and ask for help if needed.</p>
+          <p>Keep the path simple: choose an excursion, check dates, and contact you directly when needed.</p>
           <a class="btn btn-primary" href="#contact">Start booking</a>
         </div>
         <div class="info-box">
-          <h4>Why book with Isla</h4>
-          <p>Simple, premium, mobile-first, and built for tourists who want clarity before they commit.</p>
+          <h4>Why Isla feels premium</h4>
+          <p>Elegant typography, richer neutrals, and a calmer visual rhythm make the whole page feel more high-end.</p>
           <a class="btn btn-secondary" href="#experiences">Browse excursions</a>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <h3>Easy to scan</h3>
-            <p>Everything is laid out so a visitor can understand the page in seconds.</p>
-          </div>
-        </div>
-
-        <div class="grid catalog-grid">
-          <div class="simple-chip"><strong>3 languages</strong><span class="meta">IT / EN / ES</span></div>
-          <div class="simple-chip"><strong>Offline ready</strong><span class="meta">Works as a PWA</span></div>
-          <div class="simple-chip"><strong>Mobile first</strong><span class="meta">Built for phones</span></div>
-          <div class="simple-chip"><strong>Premium style</strong><span class="meta">Calm, clean, warm</span></div>
         </div>
       </div>
     </section>
@@ -406,7 +447,7 @@
       <div class="wrap">
         <div class="info-box">
           <h4>Need help choosing an excursion?</h4>
-          <p>Use this space for WhatsApp, email, or a simple contact button once your booking flow is ready.</p>
+          <p>Use this space for WhatsApp, email, or a booking form once you are ready to connect it.</p>
           <div class="hero-ctas">
             <a class="btn btn-primary" href="https://wa.me/0000000000" target="_blank" rel="noopener noreferrer">WhatsApp</a>
             <a class="btn btn-secondary" href="mailto:hello@isla.com">Email</a>
@@ -419,23 +460,8 @@
   <footer class="footer">
     <div class="wrap footer-inner">
       <span>© 2026 Isla</span>
-      <span>Tenerife excursions · premium tropical experience</span>
+      <span>Tenerife experiences · elegant luxury travel</span>
     </div>
   </footer>
-
-  <script>
-    const btn = document.getElementById('themeBtn');
-    let dark = false;
-    btn.addEventListener('click', () => {
-      dark = !dark;
-      document.documentElement.style.setProperty('--bg', dark ? '#191512' : '#f4efe7');
-      document.documentElement.style.setProperty('--surface', dark ? '#211c18' : '#fbf8f2');
-      document.documentElement.style.setProperty('--surface-2', dark ? '#261f1b' : '#f7f1e8');
-      document.documentElement.style.setProperty('--text', dark ? '#f2e8df' : '#221b18');
-      document.documentElement.style.setProperty('--muted', dark ? '#b6a69b' : '#6f625c');
-      document.documentElement.style.setProperty('--line', dark ? 'rgba(242,232,223,.10)' : 'rgba(34,27,24,.10)');
-      btn.textContent = dark ? '☀' : '☾';
-    });
-  </script>
 </body>
 </html>

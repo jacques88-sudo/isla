@@ -1,61 +1,60 @@
-const CACHE_NAME = "isla-v4";
-const OFFLINE_URL = "./offline.html";
+const CACHE_VERSION = 'isla-v3';
+const STATIC_CACHE = `static-${CACHE_VERSION}`;
 
 const ASSETS_TO_CACHE = [
-  "./",
-  "./index.html",
-  "./manifest.json",
-  "./offline.html",
-  "./logo-isla.png",
-  "./icon-192.png",
-  "./icon-512.png",
-  "./icon-maskable-512.png"
+  './',
+  './index.html',
+  './app.js',
+  './manifest.json',
+  './offline.html',
+  './logo-isla.png',
+  './icon-192.png',
+  './icon-512.png',
+  './icon-maskable-512.png',
+  './1264675861%20(1).webp'
 ];
 
-self.addEventListener("install", event => {
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS_TO_CACHE))
+    caches.open(STATIC_CACHE).then((cache) => cache.addAll(ASSETS_TO_CACHE))
   );
   self.skipWaiting();
 });
 
-self.addEventListener("activate", event => {
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(keys =>
+    caches.keys().then((keys) =>
       Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
+        keys
+          .filter((key) => key !== STATIC_CACHE)
+          .map((key) => caches.delete(key))
       )
-    )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-self.addEventListener("fetch", event => {
-  const request = event.request;
-
-  if (request.method !== "GET") return;
-  if (request.headers.has("range")) return;
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    caches.match(request).then(cachedResponse => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-
-      return fetch(request).catch(() => {
-        if (request.mode === "navigate") {
-          return caches.match(OFFLINE_URL);
-        }
-
-        return new Response("", {
-          status: 504,
-          statusText: "Offline"
+    fetch(event.request)
+      .then((networkResponse) => {
+        const responseClone = networkResponse.clone();
+        caches.open(STATIC_CACHE).then((cache) => {
+          cache.put(event.request, responseClone);
         });
-      });
-    })
+        return networkResponse;
+      })
+      .catch(() =>
+        caches.match(event.request).then((cachedResponse) => {
+          return cachedResponse || caches.match('./offline.html');
+        })
+      )
   );
 });

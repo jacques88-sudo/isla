@@ -1,980 +1,992 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Isla | Tenerife Experiences</title>
-  <meta name="description" content="Scopri e prenota escursioni, tour in barca ed esperienze a Tenerife con Isla." />
-  <meta name="theme-color" content="#0f1720" />
+  <title>Isla | so easy so tenerife</title>
+  <meta name="description" content="Premium Tenerife excursions and curated island experiences with Isla." />
+  <meta name="theme-color" content="#111111" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icon-192.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      --bg: #f6f1e8;
-      --surface: #fbf8f3;
-      --surface-2: #f2ebe1;
-      --text: #1d252c;
-      --muted: #6d7479;
-      --line: rgba(29, 37, 44, 0.10);
-      --primary: #18354a;
-      --primary-2: #28506d;
-      --accent: #b78a5c;
-      --white: #ffffff;
-      --shadow: 0 16px 40px rgba(16, 24, 32, 0.12);
-      --radius-lg: 22px;
-      --radius-md: 16px;
-      --radius-sm: 12px;
-      --max: 1200px;
+    :root{
+      --bg:#f4efe7;
+      --sand:#d8c2a4;
+      --sand-soft:#e9dece;
+      --charcoal:#161616;
+      --charcoal-soft:#242424;
+      --white:#ffffff;
+      --text:#1b1b1b;
+      --muted:#6d675f;
+      --line:rgba(255,255,255,.18);
+      --line-dark:rgba(20,20,20,.10);
+      --accent:#b8956f;
+      --max:1320px;
+      --radius:22px;
+      --shadow:0 14px 40px rgba(0,0,0,.18);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
     }
 
-    html {
-      scroll-behavior: smooth;
+    img,video{display:block;max-width:100%}
+    a{text-decoration:none;color:inherit}
+    button{font:inherit;border:none;background:none;cursor:pointer}
+
+    .container{
+      width:min(calc(100% - 32px), var(--max));
+      margin:0 auto;
     }
 
-    body {
-      font-family: "Manrope", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+    .site-header{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      z-index:1000;
+      padding:20px 0;
+      transition:.3s ease;
     }
 
-    img {
-      max-width: 100%;
-      display: block;
+    .site-header.scrolled{
+      background:rgba(15,15,15,.72);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
+    .header-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
     }
 
-    button {
-      font: inherit;
-      border: none;
-      background: none;
-      cursor: pointer;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:#fff;
     }
 
-    .container {
-      width: min(100% - 32px, var(--max));
-      margin: 0 auto;
+    .brand img{
+      width:42px;
+      height:42px;
+      object-fit:contain;
+      background:rgba(255,255,255,.1);
+      border-radius:50%;
+      padding:4px;
     }
 
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(246, 241, 232, 0.82);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
+    .brand span{
+      font-size:.9rem;
+      letter-spacing:.22em;
+      text-transform:uppercase;
     }
 
-    .header-inner {
-      min-height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:28px;
+      color:#fff;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .nav a{
+      font-size:.88rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      opacity:.95;
     }
 
-    .brand img {
-      width: 42px;
-      height: 42px;
-      object-fit: contain;
-      border-radius: 50%;
-      background: var(--white);
-      padding: 4px;
+    .nav a:hover{
+      color:var(--sand);
     }
 
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
     }
 
-    .brand-text strong {
-      font-size: 1rem;
-      letter-spacing: 0.02em;
+    .btn-outline,
+    .btn-solid{
+      min-height:46px;
+      padding:0 18px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:600;
+      letter-spacing:.04em;
+      transition:.25s ease;
     }
 
-    .brand-text span {
-      font-size: 0.78rem;
-      color: var(--muted);
+    .btn-outline{
+      color:#fff;
+      border:1px solid rgba(255,255,255,.35);
+      background:rgba(255,255,255,.04);
     }
 
-    .nav {
-      display: flex;
-      align-items: center;
-      gap: 18px;
+    .btn-outline:hover{
+      background:rgba(255,255,255,.1);
     }
 
-    .nav a {
-      font-size: 0.95rem;
-      color: var(--text);
+    .btn-solid{
+      color:#171717;
+      background:var(--sand);
     }
 
-    .nav a:hover {
-      color: var(--primary-2);
+    .btn-solid:hover{
+      background:#e7d5be;
     }
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .hero{
+      position:relative;
+      min-height:100vh;
+      color:#fff;
+      overflow:hidden;
+      display:flex;
+      align-items:flex-end;
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 46px;
-      padding: 0 18px;
-      border-radius: 999px;
-      font-weight: 700;
-      transition: 0.25s ease;
+    .hero video{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
     }
 
-    .btn-primary {
-      background: var(--primary);
-      color: var(--white);
-      box-shadow: var(--shadow);
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-2);
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary {
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.65);
-      color: var(--text);
-    }
-
-    .hero {
-      padding: 36px 0 28px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 28px;
-      align-items: stretch;
-    }
-
-    .hero-copy {
-      background: linear-gradient(180deg, rgba(255,255,255,0.60), rgba(255,255,255,0.25));
-      border: 1px solid rgba(29, 37, 44, 0.08);
-      border-radius: 32px;
-      padding: 44px;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 560px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      width: fit-content;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 18px;
-    }
-
-    .hero-copy h1 {
-      font-family: "Cormorant Garamond", serif;
-      font-size: clamp(2.7rem, 5vw, 5.2rem);
-      line-height: 0.95;
-      letter-spacing: -0.02em;
-      margin-bottom: 18px;
-      color: #16202a;
-    }
-
-    .hero-copy p {
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 58ch;
-      margin-bottom: 28px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-
-    .hero-points {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .hero-point {
-      background: rgba(255,255,255,0.72);
-      border: 1px solid rgba(29, 37, 44, 0.08);
-      border-radius: 18px;
-      padding: 16px;
-    }
-
-    .hero-point strong {
-      display: block;
-      font-size: 1rem;
-      margin-bottom: 4px;
-    }
-
-    .hero-point span {
-      font-size: 0.88rem;
-      color: var(--muted);
-    }
-
-    .hero-media {
-      position: relative;
-      min-height: 560px;
-      border-radius: 32px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-
-    .hero-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
       background:
-        linear-gradient(to top, rgba(10, 16, 22, 0.50), rgba(10, 16, 22, 0.10) 42%, rgba(10, 16, 22, 0.04));
+        linear-gradient(to bottom, rgba(8,8,8,.22), rgba(8,8,8,.36) 34%, rgba(8,8,8,.72)),
+        linear-gradient(to right, rgba(0,0,0,.35), rgba(0,0,0,.06));
     }
 
-    .hero-card {
-      position: absolute;
-      left: 20px;
-      right: 20px;
-      bottom: 20px;
-      background: rgba(255,255,255,0.90);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(29, 37, 44, 0.08);
-      border-radius: 22px;
-      padding: 18px;
+    .hero-content{
+      position:relative;
+      z-index:2;
+      width:100%;
+      padding:180px 0 72px;
     }
 
-    .hero-card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:32px;
+      align-items:end;
     }
 
-    .hero-card-top strong {
-      font-size: 1rem;
+    .hero-copy .mini{
+      display:inline-block;
+      margin-bottom:12px;
+      font-size:.78rem;
+      letter-spacing:.3em;
+      text-transform:uppercase;
+      color:#efe3d0;
     }
 
-    .hero-card-top span {
-      color: var(--muted);
-      font-size: 0.86rem;
+    .hero-copy h1{
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(4.2rem, 9vw, 8.8rem);
+      line-height:.88;
+      font-weight:600;
+      letter-spacing:-.03em;
+      margin-bottom:10px;
     }
 
-    .mini-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    .hero-copy .tagline{
+      font-size:clamp(.92rem, 1.7vw, 1.08rem);
+      letter-spacing:.34em;
+      text-transform:uppercase;
+      color:#ead9c4;
+      margin-bottom:28px;
     }
 
-    .mini-tags span {
-      font-size: 0.82rem;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: var(--surface-2);
-      color: var(--text);
+    .hero-copy p{
+      max-width:58ch;
+      font-size:1.02rem;
+      color:rgba(255,255,255,.86);
+      margin-bottom:28px;
     }
 
-    .booking-bar {
-      margin-top: -8px;
-      margin-bottom: 36px;
-      position: relative;
-      z-index: 4;
+    .hero-actions-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
     }
 
-    .booking-box {
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(29, 37, 44, 0.08);
-      border-radius: 24px;
-      padding: 16px;
-      box-shadow: var(--shadow);
-      display: grid;
-      grid-template-columns: 1.2fr 1fr 1fr auto;
-      gap: 12px;
+    .hero-card{
+      position:relative;
+      z-index:2;
+      justify-self:end;
+      width:min(100%, 420px);
+      background:rgba(255,255,255,.09);
+      border:1px solid rgba(255,255,255,.16);
+      backdrop-filter:blur(10px);
+      padding:22px;
+      border-radius:24px;
+      box-shadow:var(--shadow);
     }
 
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    .hero-card small{
+      display:block;
+      margin-bottom:8px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:#ead9c4;
     }
 
-    .field label {
-      font-size: 0.82rem;
-      color: var(--muted);
-      font-weight: 700;
+    .hero-card h2{
+      font-family:'Cormorant Garamond',serif;
+      font-size:2.2rem;
+      line-height:1;
+      margin-bottom:10px;
     }
 
-    .field input,
-    .field select {
-      min-height: 52px;
-      padding: 0 14px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: var(--surface);
-      color: var(--text);
-      outline: none;
+    .hero-card p{
+      color:rgba(255,255,255,.84);
+      margin-bottom:16px;
+      font-size:.95rem;
     }
 
-    .field input:focus,
-    .field select:focus {
-      border-color: rgba(24, 53, 74, 0.35);
-      box-shadow: 0 0 0 4px rgba(24, 53, 74, 0.08);
+    .hero-meta{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
     }
 
-    .section {
-      padding: 28px 0 12px;
+    .hero-meta div{
+      border-top:1px solid rgba(255,255,255,.16);
+      padding-top:12px;
     }
 
-    .section-head {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 18px;
+    .hero-meta span{
+      display:block;
+      font-size:.74rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:#ead9c4;
+      margin-bottom:4px;
     }
 
-    .section-head h2 {
-      font-size: clamp(1.45rem, 2vw, 2rem);
-      line-height: 1.1;
+    .hero-meta strong{
+      font-size:.98rem;
+      font-weight:600;
     }
 
-    .section-head p {
-      color: var(--muted);
-      max-width: 60ch;
+    .section{
+      padding:88px 0;
     }
 
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    .section-cream{
+      background:#f8f3eb;
     }
 
-    .chip {
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.70);
-      font-weight: 600;
-      font-size: 0.92rem;
+    .section-white{
+      background:#fff;
     }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+    .section-dark{
+      background:#181818;
+      color:#fff;
     }
 
-    .card {
-      background: var(--surface);
-      border: 1px solid rgba(29, 37, 44, 0.08);
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 12px 28px rgba(16, 24, 32, 0.06);
+    .eyebrow{
+      font-size:.78rem;
+      letter-spacing:.28em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:14px;
+      display:inline-block;
     }
 
-    .card-media {
-      height: 220px;
-      overflow: hidden;
+    .section-head{
+      max-width:860px;
+      margin-bottom:34px;
     }
 
-    .card-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
+    .section-head h2{
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(2.4rem, 4vw, 4rem);
+      line-height:.95;
+      margin-bottom:12px;
+      font-weight:600;
     }
 
-    .card:hover .card-media img {
-      transform: scale(1.04);
+    .section-head p{
+      color:var(--muted);
+      font-size:1rem;
     }
 
-    .card-body {
-      padding: 18px;
+    .journey-layout{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:26px;
+      align-items:stretch;
     }
 
-    .card-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 12px;
+    .journey-main{
+      min-height:560px;
+      border-radius:28px;
+      overflow:hidden;
+      position:relative;
+      background:#000;
     }
 
-    .card-meta span {
-      font-size: 0.78rem;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: var(--surface-2);
-      color: var(--muted);
+    .journey-main img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:brightness(.86);
     }
 
-    .card h3 {
-      font-size: 1.14rem;
-      margin-bottom: 8px;
+    .journey-main .overlay{
+      position:absolute;
+      inset:auto 0 0 0;
+      padding:30px;
+      background:linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,0));
+      color:#fff;
     }
 
-    .card p {
-      color: var(--muted);
-      font-size: 0.94rem;
-      margin-bottom: 16px;
+    .journey-main .overlay h3{
+      font-family:'Cormorant Garamond',serif;
+      font-size:2.2rem;
+      margin-bottom:8px;
     }
 
-    .card-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+    .journey-side{
+      display:grid;
+      gap:18px;
     }
 
-    .price {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
+    .journey-card{
+      background:#fff;
+      border:1px solid var(--line-dark);
+      border-radius:24px;
+      padding:22px;
+      min-height:174px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      box-shadow:0 10px 24px rgba(0,0,0,.04);
     }
 
-    .price small {
-      color: var(--muted);
-      font-size: 0.78rem;
+    .journey-card span{
+      font-size:.76rem;
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      color:var(--accent);
     }
 
-    .price strong {
-      font-size: 1.18rem;
-      color: var(--primary);
+    .journey-card h4{
+      font-family:'Cormorant Garamond',serif;
+      font-size:2rem;
+      line-height:.95;
+      margin:10px 0 8px;
     }
 
-    .features {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-top: 8px;
+    .journey-card p{
+      color:var(--muted);
+      font-size:.95rem;
     }
 
-    .feature {
-      background: rgba(255,255,255,0.70);
-      border: 1px solid rgba(29, 37, 44, 0.08);
-      border-radius: 22px;
-      padding: 22px 18px;
+    .excursion-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
     }
 
-    .feature strong {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 1rem;
+    .excursion-card{
+      position:relative;
+      min-height:420px;
+      border-radius:26px;
+      overflow:hidden;
+      background:#000;
     }
 
-    .feature p {
-      color: var(--muted);
-      font-size: 0.92rem;
+    .excursion-card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .6s ease;
+      filter:brightness(.86);
     }
 
-    .split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-top: 20px;
+    .excursion-card:hover img{
+      transform:scale(1.05);
     }
 
-    .panel {
-      background: var(--surface);
-      border: 1px solid rgba(29, 37, 44, 0.08);
-      border-radius: 26px;
-      padding: 24px;
-      box-shadow: 0 10px 26px rgba(16, 24, 32, 0.05);
+    .excursion-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to top, rgba(0,0,0,.68), rgba(0,0,0,.06));
     }
 
-    .panel h3 {
-      font-size: 1.15rem;
-      margin-bottom: 10px;
+    .excursion-info{
+      position:absolute;
+      left:22px;
+      right:22px;
+      bottom:22px;
+      z-index:2;
+      color:#fff;
     }
 
-    .panel p {
-      color: var(--muted);
-      margin-bottom: 16px;
+    .excursion-info span{
+      display:block;
+      font-size:.72rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:#ead9c4;
+      margin-bottom:6px;
     }
 
-    .check-list {
-      display: grid;
-      gap: 10px;
+    .excursion-info h3{
+      font-family:'Cormorant Garamond',serif;
+      font-size:2rem;
+      line-height:.96;
+      margin-bottom:8px;
     }
 
-    .check-list div {
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: var(--surface-2);
-      font-size: 0.94rem;
+    .excursion-info p{
+      font-size:.92rem;
+      color:rgba(255,255,255,.82);
+      margin-bottom:14px;
     }
 
-    .cta {
-      padding: 40px 0 56px;
+    .link-arrow{
+      font-size:.82rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:#f0dfc9;
     }
 
-    .cta-box {
-      background: linear-gradient(135deg, #18354a, #244d69);
-      color: var(--white);
-      border-radius: 30px;
-      padding: 34px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      box-shadow: var(--shadow);
+    .offers-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
     }
 
-    .cta-box h2 {
-      font-size: clamp(1.6rem, 2.2vw, 2.3rem);
-      margin-bottom: 8px;
+    .offer{
+      background:#fff;
+      border-radius:24px;
+      padding:28px;
+      border:1px solid var(--line-dark);
+      box-shadow:0 10px 24px rgba(0,0,0,.04);
     }
 
-    .cta-box p {
-      color: rgba(255,255,255,0.82);
-      max-width: 58ch;
+    .offer span{
+      display:block;
+      font-size:.72rem;
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:10px;
     }
 
-    .site-footer {
-      border-top: 1px solid var(--line);
-      padding: 24px 0 36px;
-      color: var(--muted);
-      font-size: 0.92rem;
+    .offer h3{
+      font-family:'Cormorant Garamond',serif;
+      font-size:2rem;
+      line-height:1;
+      margin-bottom:10px;
     }
 
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
+    .offer p{
+      color:var(--muted);
+      margin-bottom:16px;
     }
 
-    @media (max-width: 1100px) {
+    .offer strong{
+      display:block;
+      margin-bottom:16px;
+      font-size:1.08rem;
+      color:#1b1b1b;
+    }
+
+    .about-layout{
+      display:grid;
+      grid-template-columns:.95fr 1.05fr;
+      gap:28px;
+      align-items:center;
+    }
+
+    .about-box{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:28px;
+      padding:30px;
+    }
+
+    .about-box h3{
+      font-family:'Cormorant Garamond',serif;
+      font-size:2.3rem;
+      line-height:1;
+      margin-bottom:12px;
+    }
+
+    .about-box p{
+      color:rgba(255,255,255,.82);
+      margin-bottom:14px;
+    }
+
+    .about-list{
+      display:grid;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .about-list div{
+      padding:12px 14px;
+      border-radius:14px;
+      background:rgba(255,255,255,.06);
+      color:rgba(255,255,255,.86);
+    }
+
+    .cta{
+      min-height:420px;
+      border-radius:30px;
+      overflow:hidden;
+      position:relative;
+      background:#000;
+    }
+
+    .cta img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:brightness(.72);
+    }
+
+    .cta::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to right, rgba(0,0,0,.72), rgba(0,0,0,.18));
+    }
+
+    .cta-content{
+      position:absolute;
+      inset:0;
+      z-index:2;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-start;
+      padding:40px;
+      color:#fff;
+      max-width:700px;
+    }
+
+    .cta-content h2{
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(2.6rem,4vw,4.2rem);
+      line-height:.94;
+      margin-bottom:12px;
+    }
+
+    .cta-content p{
+      color:rgba(255,255,255,.84);
+      margin-bottom:20px;
+    }
+
+    footer{
+      padding:28px 0 36px;
+      background:#121212;
+      color:rgba(255,255,255,.72);
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+
+    .footer-inner{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width:1100px){
       .hero-grid,
-      .split,
-      .booking-box,
-      .features,
-      .cards {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .booking-box .btn {
-        width: 100%;
-      }
-
-      .booking-box > *:last-child {
-        grid-column: 1 / -1;
-      }
-
-      .hero-copy,
-      .hero-media {
-        min-height: auto;
+      .journey-layout,
+      .about-layout,
+      .excursion-grid,
+      .offers-grid{
+        grid-template-columns:1fr 1fr;
       }
     }
 
-    @media (max-width: 820px) {
-      .nav {
-        display: none;
+    @media (max-width:820px){
+      .nav{
+        display:none;
+      }
+
+      .hero{
+        min-height:92vh;
+      }
+
+      .hero-content{
+        padding-top:150px;
       }
 
       .hero-grid,
-      .split,
-      .features,
-      .cards,
-      .booking-box,
-      .hero-points {
-        grid-template-columns: 1fr;
+      .journey-layout,
+      .about-layout,
+      .excursion-grid,
+      .offers-grid{
+        grid-template-columns:1fr;
       }
 
-      .hero-copy {
-        padding: 28px 22px;
-        min-height: auto;
+      .hero-card{
+        justify-self:start;
+        width:100%;
       }
 
-      .hero-media {
-        min-height: 420px;
+      .section{
+        padding:70px 0;
       }
 
-      .section-head,
-      .cta-box,
-      .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .header-actions .btn-secondary {
-        display: none;
+      .cta-content{
+        padding:28px 22px;
       }
     }
 
-    @media (max-width: 560px) {
-      .container {
-        width: min(100% - 20px, var(--max));
+    @media (max-width:560px){
+      .container{
+        width:min(calc(100% - 20px), var(--max));
       }
 
-      .header-inner {
-        min-height: 70px;
+      .brand span{
+        font-size:.78rem;
+        letter-spacing:.18em;
       }
 
-      .brand img {
-        width: 38px;
-        height: 38px;
+      .header-actions .btn-outline{
+        display:none;
       }
 
-      .hero {
-        padding-top: 18px;
+      .hero-copy h1{
+        font-size:4rem;
       }
 
-      .hero-copy h1 {
-        font-size: 2.8rem;
+      .hero-copy .tagline{
+        letter-spacing:.22em;
       }
 
-      .hero-card {
-        left: 14px;
-        right: 14px;
-        bottom: 14px;
-        padding: 14px;
+      .journey-main{
+        min-height:420px;
       }
 
-      .booking-box {
-        padding: 12px;
-      }
-
-      .cta-box {
-        padding: 24px 18px;
-        border-radius: 24px;
-      }
-
-      .btn,
-      .field input,
-      .field select {
-        min-height: 48px;
+      .excursion-card{
+        min-height:360px;
       }
     }
   </style>
 </head>
 <body>
-  <header class="site-header">
+
+  <header class="site-header" id="siteHeader">
     <div class="container header-inner">
       <a href="#" class="brand">
-        <img src="./logo-isla.png" alt="Logo Isla" />
-        <div class="brand-text">
-          <strong>Isla</strong>
-          <span>Tenerife experiences</span>
-        </div>
+        <img src="./logo-isla.png" alt="Isla logo">
+        <span>Isla</span>
       </a>
 
       <nav class="nav">
-        <a href="#experiences">Esperienze</a>
-        <a href="#services">Servizi</a>
-        <a href="#why-isla">Perché Isla</a>
-        <a href="#contact">Contatti</a>
+        <a href="#excursion">Excursion</a>
+        <a href="#pacchetti">Pacchetti</a>
+        <a href="#con-chi-siamo">Con chi siamo</a>
+        <a href="#journey">Begin your journey</a>
       </nav>
 
       <div class="header-actions">
-        <button id="install-button" class="btn btn-secondary" hidden>Installa app</button>
-        <a href="#experiences" class="btn btn-secondary">Esplora</a>
-        <a href="#booking" class="btn btn-primary">Prenota ora</a>
+        <button id="install-button" class="btn-outline" hidden>Installa app</button>
+        <a href="#excursion" class="btn-outline">Explore</a>
+        <a href="#pacchetti" class="btn-solid">Book now</a>
       </div>
     </div>
   </header>
 
   <main>
     <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <div class="eyebrow">Luxury island booking</div>
-          <h1>Discover Tenerife with a more elegant way to book</h1>
-          <p>
-            Escursioni selezionate, tour in barca, giornate al Teide e attività pensate per chi vuole
-            vivere Tenerife con stile, semplicità e conferma rapida.
-          </p>
+      <video autoplay muted loop playsinline>
+        <source src="./video%20prova%20tenerife.mp4" type="video/mp4">
+      </video>
 
-          <div class="hero-actions">
-            <a href="#booking" class="btn btn-primary">Inizia la ricerca</a>
-            <a href="#experiences" class="btn btn-secondary">Vedi esperienze</a>
-          </div>
+      <div class="hero-content">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <span class="mini">Tenerife luxury excursions</span>
+            <h1>Isla</h1>
+            <div class="tagline">so easy so tenerife</div>
+            <p>
+              Curated island experiences, ocean moments and unforgettable excursions designed
+              for travellers who want Tenerife in a more elegant, simple and memorable way.
+            </p>
 
-          <div class="hero-points">
-            <div class="hero-point">
-              <strong>Tour selezionati</strong>
-              <span>Solo esperienze chiare e facili da prenotare.</span>
-            </div>
-            <div class="hero-point">
-              <strong>Mobile first</strong>
-              <span>Perfetta da usare direttamente dal telefono.</span>
-            </div>
-            <div class="hero-point">
-              <strong>Assistenza rapida</strong>
-              <span>Informazioni utili prima e dopo la prenotazione.</span>
+            <div class="hero-actions-row">
+              <a href="#journey" class="btn-solid">Begin your journey</a>
+              <a href="#con-chi-siamo" class="btn-outline">Discover Isla</a>
             </div>
           </div>
-        </div>
 
-        <div class="hero-media">
-          <img src="./1264675861%20(1).webp" alt="Panorama di Tenerife per la home di Isla" />
-          <div class="hero-overlay"></div>
+          <aside class="hero-card">
+            <small>Signature selection</small>
+            <h2>Premium experiences across Tenerife</h2>
+            <p>
+              From Teide sunsets to whale watching and private coastlines,
+              Isla brings together the island’s most desirable moments.
+            </p>
 
-          <div class="hero-card">
-            <div class="hero-card-top">
+            <div class="hero-meta">
               <div>
-                <strong>Featured destination</strong><br>
-                <span>Tenerife coast & island escapes</span>
+                <span>Focus</span>
+                <strong>Excursions</strong>
               </div>
-              <span>2026 selection</span>
+              <div>
+                <span>Style</span>
+                <strong>Easy & premium</strong>
+              </div>
+              <div>
+                <span>Island</span>
+                <strong>Tenerife</strong>
+              </div>
+              <div>
+                <span>Experience</span>
+                <strong>Curated</strong>
+              </div>
             </div>
-
-            <div class="mini-tags">
-              <span>Boat trips</span>
-              <span>Teide</span>
-              <span>Adventure</span>
-              <span>Family tours</span>
-            </div>
-          </div>
+          </aside>
         </div>
       </div>
     </section>
 
-    <section class="booking-bar" id="booking">
-      <div class="container">
-        <form class="booking-box">
-          <div class="field">
-            <label for="activity">Esperienza</label>
-            <select id="activity">
-              <option>Seleziona attività</option>
-              <option>Boat trip</option>
-              <option>Teide tour</option>
-              <option>Jetski</option>
-              <option>Family excursion</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="date">Data</label>
-            <input type="date" id="date" />
-          </div>
-
-          <div class="field">
-            <label for="people">Persone</label>
-            <select id="people">
-              <option>2 persone</option>
-              <option>1 persona</option>
-              <option>3 persone</option>
-              <option>4+ persone</option>
-            </select>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Cerca</button>
-        </form>
-      </div>
-    </section>
-
-    <section class="section" id="experiences">
+    <section class="section section-cream" id="journey">
       <div class="container">
         <div class="section-head">
-          <div>
-            <h2>Esperienze in evidenza</h2>
-            <p>Una home più chiara funziona meglio per una PWA di booking: immagine forte, ricerca visibile e card leggibili con CTA diretta. [cite:2][cite:6]</p>
+          <span class="eyebrow">Begin your journey with</span>
+          <h2>A new way to discover the island</h2>
+          <p>
+            Questa sezione riprende l’idea narrativa “Begin your journey with” che compare nella comunicazione Anantara,
+            ma qui viene adattata alle escursioni e all’esperienza Isla. [web:90][web:93]
+          </p>
+        </div>
+
+        <div class="journey-layout">
+          <div class="journey-main">
+            <img src="./1264675861%20(1).webp" alt="Tenerife coast by Isla">
+            <div class="overlay">
+              <h3>Island moments with style</h3>
+              <p>Sea, landscapes and experiences selected for a more refined Tenerife.</p>
+            </div>
           </div>
-        </div>
 
-        <div class="chips">
-          <span class="chip">Whale watching</span>
-          <span class="chip">Teide</span>
-          <span class="chip">Catamaran</span>
-          <span class="chip">Private tours</span>
-          <span class="chip">Family friendly</span>
-        </div>
+          <div class="journey-side">
+            <article class="journey-card">
+              <div>
+                <span>Excursion</span>
+                <h4>Teide</h4>
+                <p>Volcanic landscapes, iconic views and memorable island energy.</p>
+              </div>
+              <a href="#excursion" class="link-arrow">Discover more</a>
+            </article>
 
-        <div class="cards" style="margin-top:18px;">
-          <article class="card">
-            <div class="card-media">
-              <img src="./1264675861%20(1).webp" alt="Escursione in barca a Tenerife" loading="lazy" />
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span>Top choice</span>
-                <span>3-4 ore</span>
+            <article class="journey-card">
+              <div>
+                <span>Excursion</span>
+                <h4>Whale Watching</h4>
+                <p>Elegant sea departures with one of Tenerife’s most loved experiences.</p>
               </div>
-              <h3>Boat trip on the south coast</h3>
-              <p>Una proposta ideale per chi cerca sole, mare e un’esperienza semplice da prenotare.</p>
-              <div class="card-bottom">
-                <div class="price">
-                  <small>A partire da</small>
-                  <strong>€49</strong>
-                </div>
-                <a href="#" class="btn btn-secondary">Dettagli</a>
-              </div>
-            </div>
-          </article>
+              <a href="#excursion" class="link-arrow">Discover more</a>
+            </article>
 
-          <article class="card">
-            <div class="card-media">
-              <img src="./1264675861%20(1).webp" alt="Tour del Teide per visitatori" loading="lazy" />
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span>Best seller</span>
-                <span>Mezza giornata</span>
+            <article class="journey-card">
+              <div>
+                <span>Excursion</span>
+                <h4>Private Tours</h4>
+                <p>More personal moments for couples, families and premium travellers.</p>
               </div>
-              <h3>Teide scenic experience</h3>
-              <p>Percorso pensato per chi vuole vedere il lato più iconico dell’isola con comfort e ritmo chiaro.</p>
-              <div class="card-bottom">
-                <div class="price">
-                  <small>A partire da</small>
-                  <strong>€39</strong>
-                </div>
-                <a href="#" class="btn btn-secondary">Dettagli</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-media">
-              <img src="./1264675861%20(1).webp" alt="Esperienza premium a Tenerife" loading="lazy" />
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span>Premium</span>
-                <span>Small group</span>
-              </div>
-              <h3>Private island moments</h3>
-              <p>Per clienti che preferiscono un tono più esclusivo, ordinato e premium nella scelta dell’attività.</p>
-              <div class="card-bottom">
-                <div class="price">
-                  <small>A partire da</small>
-                  <strong>€95</strong>
-                </div>
-                <a href="#" class="btn btn-secondary">Dettagli</a>
-              </div>
-            </div>
-          </article>
+              <a href="#excursion" class="link-arrow">Discover more</a>
+            </article>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="services">
+    <section class="section section-white" id="excursion">
       <div class="container">
         <div class="section-head">
-          <div>
-            <h2>Struttura pensata per prenotare meglio</h2>
-            <p>Per il tuo progetto Isla avevi già indicato che la home deve essere coerente con escursioni e prenotazioni, quindi questa versione punta su fiducia, ordine visivo e velocità d’uso. [cite:2][cite:5]</p>
-          </div>
+          <span class="eyebrow">Excursion</span>
+          <h2>Choose your Tenerife experience</h2>
+          <p>
+            Nella home originale Anantara il focus è sulle destinazioni e sulle esperienze di lusso;
+            qui al loro posto inseriamo le tue escursioni principali. [web:89][web:93]
+          </p>
         </div>
 
-        <div class="features">
-          <div class="feature">
-            <strong>Ricerca immediata</strong>
-            <p>La barra booking è visibile subito sotto la hero per ridurre i passaggi.</p>
-          </div>
-          <div class="feature">
-            <strong>Look premium</strong>
-            <p>Palette più elegante con avorio, blu notte e accento sabbia, coerente con la direzione più raffinata che avevi chiesto. [cite:8]</p>
-          </div>
-          <div class="feature">
-            <strong>Mobile first</strong>
-            <p>Layout semplificato e leggibile da telefono, che è centrale per una PWA turistica. [cite:2]</p>
-          </div>
-          <div class="feature">
-            <strong>Pronta per GitHub</strong>
-            <p>File unico, semplice da sostituire nel repository e pubblicare su GitHub Pages. [file:1]</p>
-          </div>
-        </div>
-
-        <div class="split">
-          <div class="panel" id="why-isla">
-            <h3>Perché questa home funziona meglio</h3>
-            <p>
-              Le conversazioni recenti mostrano che volevi una home meno generica, più professionale,
-              più accogliente e con un tono 2026 vicino al travel premium. [cite:3][cite:6][cite:8]
-            </p>
-
-            <div class="check-list">
-              <div>Hero con immagine forte e overlay elegante.</div>
-              <div>Ricerca attività visibile sopra la piega.</div>
-              <div>CTA chiare senza confondere troppo l’utente.</div>
-              <div>Card semplici e facili da adattare ai tour reali.</div>
+        <div class="excursion-grid">
+          <article class="excursion-card">
+            <img src="./1264675861%20(1).webp" alt="Boat trips in Tenerife" loading="lazy">
+            <div class="excursion-info">
+              <span>Ocean escape</span>
+              <h3>Boat Trips</h3>
+              <p>Sail the coast with relaxed departures and unforgettable sea views.</p>
+              <a href="#" class="link-arrow">View experience</a>
             </div>
+          </article>
+
+          <article class="excursion-card">
+            <img src="./1264675861%20(1).webp" alt="Whale watching experience" loading="lazy">
+            <div class="excursion-info">
+              <span>Signature sea</span>
+              <h3>Whale Watching</h3>
+              <p>One of the island’s most requested experiences, reimagined with Isla style.</p>
+              <a href="#" class="link-arrow">View experience</a>
+            </div>
+          </article>
+
+          <article class="excursion-card">
+            <img src="./1264675861%20(1).webp" alt="Teide excursion" loading="lazy">
+            <div class="excursion-info">
+              <span>Volcanic icon</span>
+              <h3>Teide</h3>
+              <p>Discover Tenerife’s most iconic landscape through scenic and atmospheric tours.</p>
+              <a href="#" class="link-arrow">View experience</a>
+            </div>
+          </article>
+
+          <article class="excursion-card">
+            <img src="./1264675861%20(1).webp" alt="Private Tenerife tours" loading="lazy">
+            <div class="excursion-info">
+              <span>Tailored island</span>
+              <h3>Private Tours</h3>
+              <p>For travellers who prefer a more personal, quiet and exclusive rhythm.</p>
+              <a href="#" class="link-arrow">View experience</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-cream" id="pacchetti">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Pacchetti</span>
+          <h2>Curated packages for every kind of stay</h2>
+          <p>
+            La voce “Offers” esiste davvero nel sito Anantara e qui la trasformiamo in “Pacchetti”,
+            mantenendo lo stesso ruolo commerciale ma adattato alle esperienze turistiche. [web:92]
+          </p>
+        </div>
+
+        <div class="offers-grid">
+          <article class="offer">
+            <span>Pacchetto 01</span>
+            <h3>Sea & Sunset</h3>
+            <p>Boat trip, ocean views and a golden-hour Tenerife moment.</p>
+            <strong>From €89</strong>
+            <a href="#" class="link-arrow" style="color:#8f6a48;">Explore package</a>
+          </article>
+
+          <article class="offer">
+            <span>Pacchetto 02</span>
+            <h3>Teide & Island</h3>
+            <p>A balanced day between Tenerife’s emblematic volcanic side and scenic stops.</p>
+            <strong>From €79</strong>
+            <a href="#" class="link-arrow" style="color:#8f6a48;">Explore package</a>
+          </article>
+
+          <article class="offer">
+            <span>Pacchetto 03</span>
+            <h3>Private Escape</h3>
+            <p>A more exclusive format for couples, families or premium guests.</p>
+            <strong>From €149</strong>
+            <a href="#" class="link-arrow" style="color:#8f6a48;">Explore package</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="con-chi-siamo">
+      <div class="container">
+        <div class="about-layout">
+          <div class="section-head" style="margin-bottom:0;">
+            <span class="eyebrow" style="color:#d8c2a4;">Con chi siamo</span>
+            <h2>Island knowledge, easy booking, premium feeling</h2>
+            <p style="color:rgba(255,255,255,.74);">
+              Hai chiesto di sostituire il blocco anniversary con “Con chi siamo”, mantenendo però
+              un tono elegante e istituzionale simile a un brand travel premium. [web:90][web:96]
+            </p>
           </div>
 
-          <div class="panel" id="contact">
-            <h3>Prossimi contenuti da collegare</h3>
+          <div class="about-box">
+            <h3>Who we are</h3>
             <p>
-              In memoria risultano già importanti elementi futuri come calendario, booking,
-              tracking e assistenza clienti, quindi questa home è una base visiva pulita da cui partire. [cite:2]
+              Isla is a curated Tenerife booking concept created to make excursions easier,
+              more refined and more enjoyable from the very first click.
+            </p>
+            <p>
+              We focus on trusted island experiences, simple booking flows and a visual style
+              that feels welcoming, elevated and travel-driven.
             </p>
 
-            <div class="check-list">
-              <div>Collegare i bottoni ai dettagli tour.</div>
-              <div>Sostituire i prezzi demo con quelli reali.</div>
-              <div>Aggiungere lingue IT / ES / EN.</div>
-              <div>Integrare dati reali da Turitop o FareHarbor quando sei pronto. [cite:2]</div>
+            <div class="about-list">
+              <div>Curated excursions across Tenerife.</div>
+              <div>Easy experience selection from mobile.</div>
+              <div>Designed for travellers, couples and families.</div>
+              <div>Premium inspiration with a local island touch.</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="cta">
+    <section class="section section-white">
       <div class="container">
-        <div class="cta-box">
-          <div>
-            <h2>Start your Tenerife story with Isla</h2>
-            <p>Una home chiara, visiva e più elegante aiuta subito a far percepire meglio il valore del progetto e rende il booking più naturale. [cite:6][cite:8]</p>
+        <div class="cta">
+          <img src="./1264675861%20(1).webp" alt="Isla Tenerife premium experience" loading="lazy">
+          <div class="cta-content">
+            <span class="eyebrow" style="color:#ead9c4;">Isla signature</span>
+            <h2>Begin your Tenerife story with Isla</h2>
+            <p>
+              Una home di questo tipo mette insieme hero immersiva, branding forte e sezioni
+              ispirate al travel luxury, come nei pattern editoriali e di experience-led hospitality. [web:93][web:96]
+            </p>
+            <a href="#excursion" class="btn-solid">View excursions</a>
           </div>
-          <a href="#booking" class="btn btn-secondary" style="background:#fff;color:#18354a;border:none;">Prenota adesso</a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
+  <footer>
     <div class="container footer-inner">
-      <p>© 2026 Isla. Tenerife experiences.</p>
-      <p>Built for mobile-first booking.</p>
+      <div>© 2026 Isla — so easy so tenerife</div>
+      <div>Premium Tenerife excursions</div>
     </div>
   </footer>
 
+  <script src="./app.js"></script>
   <script>
-    document.querySelector('.booking-box')?.addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Qui poi collegheremo la ricerca reale delle escursioni.');
+    const header = document.getElementById('siteHeader');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 24) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
     });
-<script src="./app.js"></script>
+  </script>
 </body>
 </html>

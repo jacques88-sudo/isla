@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Isla | so easy so tenerife</title>
-  <meta name="description" content="Premium Tenerife excursions by Isla." />
+  <meta name="description" content="Escursioni premium a Tenerife, pacchetti, ticket e posti segreti con Isla." />
   <meta name="theme-color" content="#171412" />
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./icon-192.png" />
@@ -15,21 +15,29 @@
 
   <style>
     :root{
-      --bg:#f8f3ee;
+      --bg:#f7f2ec;
       --bg-soft:#fbf7f2;
+      --surface:#ffffff;
+      --surface-2:#f4ede6;
       --text:#181615;
-      --muted:#7b736b;
-      --white:#ffffff;
+      --muted:#716960;
       --line:rgba(24,22,21,.10);
-      --hero-top:rgba(12,11,10,.12);
-      --hero-mid:rgba(12,11,10,.16);
-      --hero-bottom:rgba(12,11,10,.58);
+      --line-strong:rgba(24,22,21,.16);
+      --white:#ffffff;
       --sand:#bea891;
-      --sand-dark:#af957a;
-      --title-soft:#b8a291;
-      --shadow:0 16px 40px rgba(0,0,0,.12);
+      --sand-dark:#a98f74;
+      --sand-soft:#e7d8ca;
+      --accent:#8f6d4f;
+      --hero-top:rgba(12,11,10,.10);
+      --hero-mid:rgba(12,11,10,.18);
+      --hero-bottom:rgba(12,11,10,.58);
+      --title-soft:#b9a493;
+      --shadow-sm:0 10px 24px rgba(0,0,0,.05);
+      --shadow-md:0 18px 48px rgba(0,0,0,.10);
+      --radius-sm:14px;
+      --radius-md:20px;
+      --radius-lg:28px;
       --max:1560px;
-      --radius:24px;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -39,21 +47,12 @@
       background:var(--bg);
       color:var(--text);
       line-height:1.6;
+      overflow-x:hidden;
     }
 
-    img, video{
-      display:block;
-      max-width:100%;
-      height:auto;
-    }
-
+    img, video{display:block;max-width:100%;height:auto}
     a{text-decoration:none;color:inherit}
-    button{
-      border:none;
-      background:none;
-      font:inherit;
-      cursor:pointer;
-    }
+    button{border:none;background:none;font:inherit;cursor:pointer}
 
     .container{
       width:min(calc(100% - 32px), var(--max));
@@ -65,7 +64,12 @@
       inset:0 0 auto 0;
       z-index:30;
       padding-top:8px;
+      transition:transform .18s linear, opacity .18s linear;
+      will-change:transform;
+      pointer-events:none;
     }
+
+    .site-header .container{pointer-events:auto}
 
     .header-book-wrap{
       display:flex;
@@ -79,6 +83,7 @@
       justify-content:center;
       min-width:168px;
       height:56px;
+      padding:0 20px;
       background:rgba(190,168,145,.96);
       color:#fff;
       font-weight:700;
@@ -88,9 +93,7 @@
       transition:.25s ease;
     }
 
-    .book-btn:hover{
-      background:var(--sand-dark);
-    }
+    .book-btn:hover{background:var(--sand-dark)}
 
     .header-center{
       display:flex;
@@ -107,6 +110,8 @@
       text-align:center;
       color:#fff;
       margin-top:2px;
+      transition:transform .18s linear, opacity .18s linear;
+      will-change:transform;
     }
 
     .brand-block h1{
@@ -146,13 +151,12 @@
       white-space:nowrap;
     }
 
-    .main-nav a:hover{
-      color:#ecdacc;
-    }
+    .main-nav a:hover{color:#ecdacc}
 
     .hero{
       position:relative;
-      min-height:100vh;
+      min-height:56vh;
+      max-height:700px;
       background:#000;
       overflow:hidden;
     }
@@ -163,6 +167,8 @@
       width:100%;
       height:100%;
       object-fit:cover;
+      transform:translate3d(0,0,0) scale(1.02);
+      will-change:transform;
     }
 
     .hero::after{
@@ -172,16 +178,19 @@
       background:
         linear-gradient(to bottom, var(--hero-top), var(--hero-mid) 30%, rgba(12,11,10,.22) 48%, var(--hero-bottom)),
         linear-gradient(to right, rgba(0,0,0,.10), rgba(0,0,0,.04));
+      pointer-events:none;
     }
 
     .hero-inner{
       position:relative;
       z-index:2;
-      min-height:100vh;
+      min-height:56vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:190px 16px 88px;
+      padding:150px 16px 70px;
+      transition:transform .18s linear;
+      will-change:transform;
     }
 
     .hero-center{
@@ -189,27 +198,46 @@
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap:28px;
-      margin-top:12px;
+      gap:24px;
+      margin-top:8px;
     }
 
     .play-icon{
-      width:120px;
-      height:120px;
+      width:108px;
+      height:108px;
       border-radius:50%;
       display:grid;
       place-items:center;
       background:rgba(255,255,255,.05);
       border:1px solid rgba(255,255,255,.14);
       backdrop-filter:blur(5px);
+      transition:transform .25s ease, background .25s ease, opacity .25s ease;
     }
 
     .play-icon::before{
       content:"";
       margin-left:8px;
-      border-left:31px solid #fff;
-      border-top:19px solid transparent;
-      border-bottom:19px solid transparent;
+      border-left:28px solid #fff;
+      border-top:17px solid transparent;
+      border-bottom:17px solid transparent;
+    }
+
+    .play-icon.is-playing::before{
+      content:"";
+      width:22px;
+      height:26px;
+      margin-left:0;
+      border:none;
+      background:
+        linear-gradient(to right,
+          #fff 0 7px,
+          transparent 7px 15px,
+          #fff 15px 22px);
+    }
+
+    .play-icon:hover{
+      transform:scale(1.04);
+      background:rgba(255,255,255,.10);
     }
 
     .discover-btn{
@@ -228,14 +256,12 @@
       transition:.24s ease;
     }
 
-    .discover-btn:hover{
-      background:#ab8d72;
-    }
+    .discover-btn:hover{background:#ab8d72}
 
     .hero-chevron{
       position:absolute;
       left:50%;
-      bottom:18px;
+      bottom:16px;
       transform:translateX(-50%);
       display:flex;
       flex-direction:column;
@@ -245,8 +271,8 @@
     }
 
     .hero-chevron span{
-      width:18px;
-      height:18px;
+      width:16px;
+      height:16px;
       border-right:2px solid #fff;
       border-bottom:2px solid #fff;
       transform:rotate(45deg);
@@ -257,6 +283,7 @@
     .intro-band{
       background:var(--bg-soft);
       padding:24px 0 28px;
+      border-bottom:1px solid var(--line);
     }
 
     .intro-title{
@@ -269,14 +296,18 @@
       color:var(--title-soft);
     }
 
-    .section{
-      padding:82px 0;
-    }
+    .section{padding:82px 0}
+    .section-tight{padding:64px 0}
+    .section-light{background:#fff}
+    .section-cream{background:var(--bg-soft)}
+    .section-dark{background:#141414;color:#fff}
 
     .section-head{
       max-width:920px;
       margin-bottom:28px;
     }
+
+    .section-head.narrow{max-width:760px}
 
     .eyebrow{
       display:inline-block;
@@ -301,9 +332,39 @@
       max-width:68ch;
     }
 
+    .section-dark .section-head p{color:rgba(255,255,255,.76)}
+    .section-dark .eyebrow{color:#d7c0aa}
+
+    .trust-strip{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+    }
+
+    .trust-card{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:var(--radius-md);
+      padding:22px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .trust-card strong{
+      display:block;
+      font-size:1.8rem;
+      font-family:'Cormorant Garamond',serif;
+      line-height:1;
+      margin-bottom:6px;
+    }
+
+    .trust-card p{
+      color:var(--muted);
+      font-size:.94rem;
+    }
+
     .journey-grid{
       display:grid;
-      grid-template-columns:1.08fr .92fr;
+      grid-template-columns:1.1fr .9fr;
       gap:22px;
       align-items:stretch;
     }
@@ -312,9 +373,9 @@
       position:relative;
       min-height:600px;
       overflow:hidden;
-      border-radius:28px;
+      border-radius:var(--radius-lg);
       background:#000;
-      box-shadow:var(--shadow);
+      box-shadow:var(--shadow-md);
     }
 
     .journey-main img{
@@ -357,19 +418,26 @@
       gap:18px;
     }
 
-    .info-card{
+    .info-card,
+    .package-card,
+    .faq-item,
+    .review-card{
       background:#fff;
       border:1px solid var(--line);
       border-radius:24px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .info-card{
       padding:24px;
       min-height:185px;
-      box-shadow:0 10px 24px rgba(0,0,0,.05);
       display:flex;
       flex-direction:column;
       justify-content:space-between;
     }
 
-    .info-card span{
+    .info-card span,
+    .package-card span{
       display:block;
       font-size:.74rem;
       letter-spacing:.20em;
@@ -377,7 +445,8 @@
       color:#9e7954;
     }
 
-    .info-card h3{
+    .info-card h3,
+    .package-card h3{
       font-family:'Cormorant Garamond',serif;
       font-size:2rem;
       line-height:.96;
@@ -385,7 +454,10 @@
       font-weight:600;
     }
 
-    .info-card p{
+    .info-card p,
+    .package-card p,
+    .faq-item p,
+    .review-card p{
       color:var(--muted);
       font-size:.95rem;
     }
@@ -396,10 +468,6 @@
       letter-spacing:.16em;
       text-transform:uppercase;
       color:#8e6d4e;
-    }
-
-    .excursions{
-      background:#fff;
     }
 
     .excursion-grid{
@@ -425,9 +493,7 @@
       transition:transform .6s ease;
     }
 
-    .excursion-card:hover img{
-      transform:scale(1.05);
-    }
+    .excursion-card:hover img{transform:scale(1.05)}
 
     .excursion-card::after{
       content:"";
@@ -473,45 +539,44 @@
       gap:18px;
     }
 
-    .package-card{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:28px;
-      box-shadow:0 10px 22px rgba(0,0,0,.04);
-    }
-
-    .package-card span{
-      display:block;
-      margin-bottom:10px;
-      font-size:.72rem;
-      letter-spacing:.20em;
-      text-transform:uppercase;
-      color:#9f7b57;
-    }
-
-    .package-card h3{
-      font-family:'Cormorant Garamond',serif;
-      font-size:2rem;
-      line-height:.96;
-      margin-bottom:10px;
-    }
-
-    .package-card p{
-      color:var(--muted);
-      margin-bottom:14px;
-    }
+    .package-card{padding:28px}
 
     .package-card strong{
       display:block;
-      margin-bottom:14px;
+      margin:14px 0;
       font-size:1.06rem;
     }
 
-    .about{
-      background:#141414;
-      color:#fff;
+    .secret-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
     }
+
+    .secret-card{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .secret-card img{
+      width:100%;
+      height:260px;
+      object-fit:cover;
+    }
+
+    .secret-body{padding:22px}
+
+    .secret-body h3{
+      font-family:'Cormorant Garamond',serif;
+      font-size:2rem;
+      line-height:.95;
+      margin-bottom:8px;
+    }
+
+    .secret-body p{color:var(--muted)}
 
     .about-grid{
       display:grid;
@@ -552,6 +617,87 @@
       color:rgba(255,255,255,.86);
     }
 
+    .reviews-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .review-card{padding:24px}
+
+    .review-card strong{
+      display:block;
+      margin-bottom:8px;
+      font-size:1rem;
+    }
+
+    .faq-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:18px;
+    }
+
+    .faq-item{padding:24px}
+
+    .faq-item h3{
+      font-size:1.05rem;
+      margin-bottom:8px;
+    }
+
+    .cta-banner{
+      background:linear-gradient(135deg, #e8dacc, #d7c0aa);
+      border-radius:28px;
+      padding:34px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      box-shadow:var(--shadow-md);
+    }
+
+    .cta-banner h2{
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(2rem, 4vw, 3.2rem);
+      line-height:.95;
+      margin-bottom:8px;
+    }
+
+    .cta-banner p{
+      max-width:56ch;
+      color:#4f4338;
+    }
+
+    .cta-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .btn-dark,
+    .btn-light{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:50px;
+      padding:0 22px;
+      border-radius:999px;
+      font-weight:700;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      font-size:.84rem;
+    }
+
+    .btn-dark{
+      background:#161412;
+      color:#fff;
+    }
+
+    .btn-light{
+      background:rgba(255,255,255,.65);
+      color:#161412;
+      border:1px solid rgba(22,20,18,.10);
+    }
+
     .footer{
       background:#101010;
       color:rgba(255,255,255,.72);
@@ -566,15 +712,30 @@
       flex-wrap:wrap;
     }
 
+    .footer-links{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
     @media (max-width:1180px){
+      .trust-strip,
       .journey-grid,
       .packages-grid,
-      .about-grid{
+      .secret-grid,
+      .about-grid,
+      .reviews-grid,
+      .faq-grid{
         grid-template-columns:1fr;
       }
 
       .excursion-grid{
         grid-template-columns:repeat(3,1fr);
+      }
+
+      .cta-banner{
+        flex-direction:column;
+        align-items:flex-start;
       }
     }
 
@@ -590,10 +751,7 @@
         font-size:.84rem;
       }
 
-      .brand-block h1{
-        font-size:2.2rem;
-      }
-
+      .brand-block h1{font-size:2.2rem}
       .brand-block p{
         font-size:.60rem;
         letter-spacing:.18em;
@@ -604,12 +762,12 @@
         margin-top:10px;
       }
 
-      .main-nav a{
-        font-size:.70rem;
-      }
+      .main-nav a{font-size:.70rem}
 
+      .hero{min-height:50vh}
       .hero-inner{
-        padding-top:210px;
+        min-height:50vh;
+        padding:190px 16px 60px;
       }
 
       .play-icon{
@@ -623,9 +781,7 @@
         border-bottom:15px solid transparent;
       }
 
-      .excursion-grid{
-        grid-template-columns:1fr;
-      }
+      .excursion-grid{grid-template-columns:1fr}
     }
 
     @media (max-width:560px){
@@ -633,34 +789,36 @@
         width:min(calc(100% - 20px), var(--max));
       }
 
-      .brand-block h1{
-        font-size:1.95rem;
-      }
+      .brand-block h1{font-size:1.95rem}
+      .intro-title{font-size:2.35rem}
+      .journey-main{min-height:420px}
+      .excursion-card{min-height:340px}
+      .secret-card img{height:220px}
+    }
 
-      .intro-title{
-        font-size:2.35rem;
-      }
-
-      .journey-main{
-        min-height:420px;
-      }
-
-      .excursion-card{
-        min-height:340px;
+    @media (prefers-reduced-motion: reduce){
+      .site-header,
+      .brand-block,
+      .hero-inner,
+      .hero-video,
+      .play-icon,
+      .excursion-card img{
+        transition:none !important;
+        animation:none !important;
       }
     }
   </style>
 </head>
 <body>
 
-  <header class="site-header">
+  <header class="site-header" id="siteHeader">
     <div class="container">
       <div class="header-book-wrap">
         <a href="#pacchetti" class="book-btn">Book now</a>
       </div>
 
       <div class="header-center">
-        <div class="brand-block">
+        <div class="brand-block" id="brandBlock">
           <h1>Isla</h1>
           <p>so easy so tenerife</p>
 
@@ -677,14 +835,22 @@
   </header>
 
   <main>
-    <section class="hero">
-      <video class="hero-video" autoplay muted loop playsinline>
+    <section class="hero" id="heroSection">
+      <video
+        class="hero-video"
+        id="heroVideo"
+        autoplay
+        muted
+        loop
+        playsinline
+        poster="./1264675861%20(1).webp"
+      >
         <source src="./video%20prova%20tenerife.mp4" type="video/mp4">
       </video>
 
-      <div class="hero-inner">
+      <div class="hero-inner" id="heroInner">
         <div class="hero-center">
-          <div class="play-icon" aria-hidden="true"></div>
+          <button class="play-icon is-playing" id="playToggle" aria-label="Pause video"></button>
           <a href="#begin-adventure" class="discover-btn">Discover more</a>
         </div>
       </div>
@@ -701,13 +867,36 @@
       </div>
     </section>
 
+    <section class="section-tight">
+      <div class="container">
+        <div class="trust-strip">
+          <article class="trust-card">
+            <strong>Curated</strong>
+            <p>Escursioni selezionate con un tono più premium e semplice da capire. [web:187]</p>
+          </article>
+          <article class="trust-card">
+            <strong>Mobile first</strong>
+            <p>Hero chiara, CTA subito visibile e struttura comoda anche da telefono. [web:186][web:196]</p>
+          </article>
+          <article class="trust-card">
+            <strong>Direct flow</strong>
+            <p>Book now separato in alto e sezioni che portano l’utente verso la prenotazione. [web:194][web:196]</p>
+          </article>
+          <article class="trust-card">
+            <strong>Tenerife</strong>
+            <p>Storytelling visivo e percorsi rapidi per scegliere l’esperienza giusta. [web:187][web:188]</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="scan-ticket">
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">Journey</span>
           <h2>A curated island flow designed for mobile</h2>
           <p>
-            Questa versione mette il menu piccolo sotto Isla, senza fascia opaca, come indicato dai tuoi ultimi riferimenti visivi e dalla freccia nello screenshot WhatsApp. [file:149][file:150]
+            Una homepage travel efficace deve spiegare in pochi blocchi cosa vendi, a chi serve e qual è la prossima azione utile, mantenendo il booking ben visibile. [web:187][web:196]
           </p>
         </div>
 
@@ -717,7 +906,7 @@
             <div class="journey-main-text">
               <h3>Scan, explore and keep the experience simple</h3>
               <p>
-                Questa sezione può diventare l’ingresso al ticket, ai dettagli prenotazione e al flusso cliente della tua PWA Isla. [cite:2]
+                Questo blocco può diventare il punto di ingresso rapido per ticket, dettagli prenotazione e assistenza cliente, così la PWA resta chiara anche da mobile. [web:186][web:195]
               </p>
             </div>
           </article>
@@ -727,7 +916,7 @@
               <div>
                 <span>Quick access</span>
                 <h3>Scan ticket</h3>
-                <p>Blocco pensato per l’accesso immediato a codici, conferme e dettagli attività.</p>
+                <p>Accesso rapido a conferme, codici e dettagli dell’escursione per chi ha già prenotato.</p>
               </div>
               <a href="#" class="mini-link">Open access</a>
             </article>
@@ -736,7 +925,7 @@
               <div>
                 <span>Island secrets</span>
                 <h3>Posti segreti</h3>
-                <p>Area dedicata a consigli locali, spot panoramici e luoghi speciali di Tenerife.</p>
+                <p>Spot panoramici, suggerimenti locali e piccoli angoli di Tenerife da scoprire meglio.</p>
               </div>
               <a href="#" class="mini-link">See places</a>
             </article>
@@ -745,7 +934,7 @@
               <div>
                 <span>Booking style</span>
                 <h3>Premium simplicity</h3>
-                <p>Brand centrale, menu piccolo e hero pulita seguono i pattern di header stacked con navigazione sotto il logo. [web:151][web:154]</p>
+                <p>Una navigazione ridotta e orientata all’intento aiuta l’utente a trovare più velocemente il percorso giusto. [web:187][web:191]</p>
               </div>
               <a href="#pacchetti" class="mini-link">Go booking</a>
             </article>
@@ -754,13 +943,13 @@
       </div>
     </section>
 
-    <section class="section excursions" id="excursion">
+    <section class="section section-light" id="excursion">
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">Excursion</span>
           <h2>Signature experiences across Tenerife</h2>
           <p>
-            Le homepage travel premium tengono la hero visiva e spostano il contenuto operativo nelle sezioni successive, così il primo impatto resta pulito. [web:153][web:157]
+            Le sezioni in card sono una pratica comune nelle home travel perché aiutano a riassumere offerte e percorsi principali in modo visivo e scansionabile. [web:186][web:128]
           </p>
         </div>
 
@@ -770,7 +959,7 @@
             <div class="excursion-content">
               <span>Adventure</span>
               <h3>Quad</h3>
-              <p>Open landscapes and stronger island energy.</p>
+              <p>Paesaggi aperti, ritmo più forte e una giornata più dinamica.</p>
               <a href="#" class="mini-link" style="color:#ecdacc;">View experience</a>
             </div>
           </article>
@@ -780,7 +969,7 @@
             <div class="excursion-content">
               <span>Ocean</span>
               <h3>Boat</h3>
-              <p>Elegant coastal departures and sea views.</p>
+              <p>Partenze sul mare e viste costiere con un tono più rilassato.</p>
               <a href="#" class="mini-link" style="color:#ecdacc;">View experience</a>
             </div>
           </article>
@@ -790,7 +979,7 @@
             <div class="excursion-content">
               <span>Family</span>
               <h3>Park</h3>
-              <p>Relaxed formats for fun and easy planning.</p>
+              <p>Formato facile e leggibile per famiglie e gruppi misti.</p>
               <a href="#" class="mini-link" style="color:#ecdacc;">View experience</a>
             </div>
           </article>
@@ -800,7 +989,7 @@
             <div class="excursion-content">
               <span>Road</span>
               <h3>Buggy</h3>
-              <p>Dynamic routes with movement and scenery.</p>
+              <p>Percorsi dinamici con movimento, scorci e adrenalina.</p>
               <a href="#" class="mini-link" style="color:#ecdacc;">View experience</a>
             </div>
           </article>
@@ -810,7 +999,7 @@
             <div class="excursion-content">
               <span>Water</span>
               <h3>Kayak</h3>
-              <p>A slower ocean mood with natural views.</p>
+              <p>Esperienza più lenta, naturale e vicina al mare.</p>
               <a href="#" class="mini-link" style="color:#ecdacc;">View experience</a>
             </div>
           </article>
@@ -818,13 +1007,13 @@
       </div>
     </section>
 
-    <section class="section" id="pacchetti">
+    <section class="section section-cream" id="pacchetti">
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">Pacchetti</span>
           <h2>Booking combinations ready to choose</h2>
           <p>
-            La CTA booking resta separata in alto a destra, mentre i pacchetti sotto aiutano a trasformare l’interesse iniziale in scelta concreta. [web:153]
+            Prezzi visibili, CTA chiare e percorsi già pronti aiutano a ridurre attrito e incertezza prima della prenotazione. [web:187][web:195]
           </p>
         </div>
 
@@ -832,7 +1021,7 @@
           <article class="package-card">
             <span>Package 01</span>
             <h3>Sea Escape</h3>
-            <p>Boat trip, sea atmosphere and scenic moments around Tenerife.</p>
+            <p>Boat trip, atmosfera sul mare e una giornata più rilassata a Tenerife.</p>
             <strong>From €89</strong>
             <a href="#" class="mini-link">Book package</a>
           </article>
@@ -840,7 +1029,7 @@
           <article class="package-card">
             <span>Package 02</span>
             <h3>Adventure Day</h3>
-            <p>Buggy or quad experiences for travellers wanting a bolder day.</p>
+            <p>Quad o buggy per chi vuole una giornata più forte e più attiva.</p>
             <strong>From €109</strong>
             <a href="#" class="mini-link">Book package</a>
           </article>
@@ -848,7 +1037,7 @@
           <article class="package-card">
             <span>Package 03</span>
             <h3>Easy Family</h3>
-            <p>Balanced activities for families and relaxed island discovery.</p>
+            <p>Attività più bilanciate per famiglie e gruppi che vogliono semplicità.</p>
             <strong>From €79</strong>
             <a href="#" class="mini-link">Book package</a>
           </article>
@@ -856,32 +1045,146 @@
       </div>
     </section>
 
-    <section class="section about" id="chi-siamo">
+    <section class="section" id="secrets-gallery">
+      <div class="container">
+        <div class="section-head narrow">
+          <span class="eyebrow">Hidden places</span>
+          <h2>Posti segreti con un tono più editoriale</h2>
+          <p>
+            Blocchi visivi con immagini reali e descrizioni brevi aiutano a creare desiderio senza appesantire la home con troppo testo sopra la piega. [web:188][web:196]
+          </p>
+        </div>
+
+        <div class="secret-grid">
+          <article class="secret-card">
+            <img src="./1264675861%20(1).webp" alt="Secret coastal spot in Tenerife" loading="lazy" width="900" height="700">
+            <div class="secret-body">
+              <h3>Sunset coast</h3>
+              <p>Una costa più tranquilla per chi cerca luce calda, poca folla e viste aperte.</p>
+            </div>
+          </article>
+
+          <article class="secret-card">
+            <img src="./1264675861%20(1).webp" alt="Mountain road in Tenerife" loading="lazy" width="900" height="700">
+            <div class="secret-body">
+              <h3>Road escapes</h3>
+              <p>Strade panoramiche e tappe leggere per trasformare il transfer in esperienza.</p>
+            </div>
+          </article>
+
+          <article class="secret-card">
+            <img src="./1264675861%20(1).webp" alt="Hidden beach in Tenerife" loading="lazy" width="900" height="700">
+            <div class="secret-body">
+              <h3>Quiet beaches</h3>
+              <p>Un’alternativa più calma per chi vuole mare, respiro e un ritmo meno turistico.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="chi-siamo">
       <div class="container">
         <div class="about-grid">
           <div class="section-head" style="margin-bottom:0;">
-            <span class="eyebrow" style="color:#d9c3ae;">Chi siamo</span>
+            <span class="eyebrow">Chi siamo</span>
             <h2 style="color:#fff;">A premium concept for Tenerife excursions</h2>
-            <p style="color:rgba(255,255,255,.74);">
-              Isla è un progetto PWA per escursioni, prenotazioni e supporto cliente, quindi questa sezione aiuta a dare identità e credibilità al brand. [cite:2]
+            <p>
+              Una home travel forte deve anche costruire fiducia, spiegando rapidamente chi sei, come lavori e cosa rende il servizio più semplice o più curato. [web:187][web:192]
             </p>
           </div>
 
           <div class="about-panel">
             <h3>Who is Isla</h3>
             <p>
-              Isla brings together curated experiences, mobile-first usability and a softer luxury travel tone.
+              Isla unisce esperienze curate, mobile usability e un tono travel più elegante ma facile da usare.
             </p>
             <p>
-              The project is designed to evolve toward bookings, ticket access and guided discovery in one visual flow. [cite:2]
+              L’obiettivo è portare l’utente da ispirazione a scelta, fino al booking o al ticket access, dentro un unico flusso coerente. [web:188][web:196]
             </p>
 
             <div class="about-list">
-              <div>Curated excursions and travel experiences.</div>
-              <div>Designed for mobile and installed PWA use.</div>
-              <div>Premium inspiration from refined travel layout patterns. [cite:123]</div>
-              <div>Ready for booking, scan ticket and future automation. [cite:2]</div>
+              <div>Escursioni curate e stile più premium.</div>
+              <div>Pensato per uso mobile e flusso PWA.</div>
+              <div>Booking, scan ticket e scoperta in un solo ecosistema. [web:195][web:196]</div>
+              <div>Brand semplice, centrale e leggibile anche su schermi piccoli.</div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light">
+      <div class="container">
+        <div class="section-head narrow">
+          <span class="eyebrow">Reviews</span>
+          <h2>Trust signals before the booking step</h2>
+          <p>
+            Le recensioni e i segnali di credibilità aiutano a ridurre il rischio percepito, che è uno dei compiti principali della homepage travel. [web:187][web:192]
+          </p>
+        </div>
+
+        <div class="reviews-grid">
+          <article class="review-card">
+            <strong>Giulia — Milano</strong>
+            <p>Esperienza semplice da capire e molto più ordinata di altri siti di escursioni.</p>
+          </article>
+          <article class="review-card">
+            <strong>Marco — Roma</strong>
+            <p>Mi è piaciuto il fatto che il booking fosse chiaro e che il sito fosse comodo anche da telefono.</p>
+          </article>
+          <article class="review-card">
+            <strong>Sophie — Paris</strong>
+            <p>The visual style feels premium, but the booking path still feels easy and direct.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight section-cream">
+      <div class="container">
+        <div class="section-head narrow">
+          <span class="eyebrow">FAQ</span>
+          <h2>Useful answers before booking</h2>
+          <p>
+            Policy, inclusioni e informazioni pratiche dovrebbero essere facili da trovare per abbassare l’incertezza e migliorare la conversione. [web:187][web:196]
+          </p>
+        </div>
+
+        <div class="faq-grid">
+          <article class="faq-item">
+            <h3>Come funziona la prenotazione?</h3>
+            <p>Scegli l’esperienza, controlla il pacchetto e poi prosegui verso il booking o la richiesta rapida.</p>
+          </article>
+          <article class="faq-item">
+            <h3>Ricevo un ticket?</h3>
+            <p>Sì, il flusso può collegarsi a una conferma con accesso rapido da “Scan ticket”.</p>
+          </article>
+          <article class="faq-item">
+            <h3>Le attività sono adatte anche a famiglie?</h3>
+            <p>Dipende dall’esperienza, ma puoi usare i pacchetti e le categorie per capire subito il livello più adatto.</p>
+          </article>
+          <article class="faq-item">
+            <h3>Posso vedere i dettagli prima di prenotare?</h3>
+            <p>Sì, è importante mostrare prezzo, inclusioni e note essenziali prima della CTA finale. [web:187][web:195]</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-banner">
+          <div>
+            <h2>Ready to turn inspiration into booking?</h2>
+            <p>
+              Una homepage efficace dovrebbe finire con un’azione chiara, ripetendo la CTA dopo i blocchi decisionali più importanti. [web:187][web:128]
+            </p>
+          </div>
+
+          <div class="cta-actions">
+            <a href="#pacchetti" class="btn-dark">View packages</a>
+            <a href="#chi-siamo" class="btn-light">About Isla</a>
           </div>
         </div>
       </div>
@@ -891,10 +1194,122 @@
   <footer class="footer">
     <div class="container footer-inner">
       <div>© 2026 Isla — so easy so tenerife</div>
-      <div>Premium Tenerife excursions</div>
+      <div class="footer-links">
+        <a href="#excursion">Excursion</a>
+        <a href="#pacchetti">Pacchetti</a>
+        <a href="#scan-ticket">Scan ticket</a>
+        <a href="#chi-siamo">Chi siamo</a>
+      </div>
     </div>
   </footer>
 
   <script src="./app.js"></script>
+  <script>
+    const heroVideo = document.getElementById('heroVideo');
+    const playToggle = document.getElementById('playToggle');
+    const siteHeader = document.getElementById('siteHeader');
+    const brandBlock = document.getElementById('brandBlock');
+    const heroInner = document.getElementById('heroInner');
+    const heroSection = document.getElementById('heroSection');
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouchDevice = window.matchMedia('(hover: none)').matches;
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let scrollYValue = 0;
+    let currentHeaderX = 0;
+    let currentHeaderY = 0;
+    let currentBrandX = 0;
+    let currentBrandY = 0;
+    let currentHeroY = 0;
+    let currentVideoY = 0;
+    let currentVideoScale = 1.02;
+
+    function updatePlayState() {
+      if (heroVideo.paused) {
+        playToggle.classList.remove('is-playing');
+        playToggle.setAttribute('aria-label', 'Play video');
+      } else {
+        playToggle.classList.add('is-playing');
+        playToggle.setAttribute('aria-label', 'Pause video');
+      }
+    }
+
+    async function toggleVideo() {
+      if (heroVideo.paused) {
+        try {
+          await heroVideo.play();
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        heroVideo.pause();
+      }
+      updatePlayState();
+    }
+
+    function animateScene() {
+      const heroHeight = heroSection ? heroSection.offsetHeight : window.innerHeight;
+      const scrollProgress = Math.max(0, Math.min(scrollYValue / heroHeight, 1.15));
+
+      const targetHeaderX = isTouchDevice ? 0 : mouseX * 4;
+      const targetHeaderY = (isTouchDevice ? 0 : mouseY * 2) - scrollProgress * 8;
+
+      const targetBrandX = isTouchDevice ? 0 : mouseX * 8;
+      const targetBrandY = (isTouchDevice ? 0 : mouseY * 4) - scrollProgress * 14;
+
+      const targetHeroY = scrollProgress * 24;
+      const targetVideoY = scrollProgress * -18;
+      const targetScale = 1.02 + (scrollProgress * 0.03);
+
+      currentHeaderX += (targetHeaderX - currentHeaderX) * 0.10;
+      currentHeaderY += (targetHeaderY - currentHeaderY) * 0.10;
+      currentBrandX += (targetBrandX - currentBrandX) * 0.10;
+      currentBrandY += (targetBrandY - currentBrandY) * 0.10;
+      currentHeroY += (targetHeroY - currentHeroY) * 0.10;
+      currentVideoY += (targetVideoY - currentVideoY) * 0.10;
+      currentVideoScale += (targetScale - currentVideoScale) * 0.10;
+
+      if (siteHeader) {
+        siteHeader.style.transform = `translate3d(${currentHeaderX}px, ${currentHeaderY}px, 0)`;
+        siteHeader.style.opacity = `${1 - Math.min(scrollProgress * 0.10, 0.10)}`;
+      }
+
+      if (brandBlock) {
+        brandBlock.style.transform = `translate3d(${currentBrandX}px, ${currentBrandY}px, 0)`;
+        brandBlock.style.opacity = `${1 - Math.min(scrollProgress * 0.16, 0.16)}`;
+      }
+
+      if (heroInner) {
+        heroInner.style.transform = `translate3d(0, ${currentHeroY}px, 0)`;
+      }
+
+      if (heroVideo) {
+        heroVideo.style.transform = `translate3d(0, ${currentVideoY}px, 0) scale(${currentVideoScale})`;
+      }
+
+      window.requestAnimationFrame(animateScene);
+    }
+
+    playToggle.addEventListener('click', toggleVideo);
+    heroVideo.addEventListener('play', updatePlayState);
+    heroVideo.addEventListener('pause', updatePlayState);
+
+    if (!reduceMotion) {
+      window.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5);
+        mouseY = (e.clientY / window.innerHeight - 0.5);
+      });
+
+      window.addEventListener('scroll', () => {
+        scrollYValue = window.scrollY;
+      }, { passive: true });
+
+      window.requestAnimationFrame(animateScene);
+    }
+
+    updatePlayState();
+  </script>
 </body>
 </html>

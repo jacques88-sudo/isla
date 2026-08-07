@@ -203,40 +203,6 @@
       margin-top:8px;
     }
 
-    .play-icon{
-      width:108px;
-      height:108px;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.14);
-      backdrop-filter:blur(5px);
-      transition:transform .25s ease, background .25s ease, opacity .25s ease;
-    }
-
-    .play-icon::before{
-      content:"";
-      margin-left:8px;
-      border-left:28px solid #fff;
-      border-top:17px solid transparent;
-      border-bottom:17px solid transparent;
-    }
-
-    .play-icon.is-playing::before{
-      content:"";
-      width:22px;
-      height:26px;
-      margin-left:0;
-      border:none;
-      background:linear-gradient(to right,#fff 0 7px,transparent 7px 15px,#fff 15px 22px);
-    }
-
-    .play-icon:hover{
-      transform:scale(1.04);
-      background:rgba(255,255,255,.10);
-    }
-
     .discover-btn{
       min-width:214px;
       height:54px;
@@ -678,12 +644,6 @@
       .main-nav a{font-size:.70rem}
       .hero{min-height:50vh}
       .hero-inner{min-height:50vh;padding:190px 16px 60px}
-      .play-icon{width:92px;height:92px}
-      .play-icon::before{
-        border-left:24px solid #fff;
-        border-top:15px solid transparent;
-        border-bottom:15px solid transparent;
-      }
       .excursion-grid{grid-template-columns:1fr}
     }
 
@@ -744,11 +704,10 @@
       </video>
 
       <div class="hero-inner" id="heroInner">
-        <div class="hero-center">
-          <button class="play-icon is-playing" id="playToggle" aria-label="Pause video"></button>
-          <a href="#begin-adventure" class="discover-btn">Discover more</a>
-        </div>
-      </div>
+  <div class="hero-center">
+    <a href="#begin-adventure" class="discover-btn">Discover more</a>
+  </div>
+</div>
 
       <div class="hero-chevron" aria-hidden="true">
         <span></span>

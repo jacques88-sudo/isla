@@ -2,58 +2,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const header = document.getElementById('siteHeader');
   const brandBlock = document.getElementById('brandBlock');
   const heroInner = document.getElementById('heroInner');
-  const heroVideo = document.getElementById('heroVideo');
-  const playToggle = document.getElementById('playToggle');
   const navLinks = Array.from(document.querySelectorAll('.main-nav a, .footer-links a'));
   const revealItems = document.querySelectorAll('.reveal');
   const sections = Array.from(document.querySelectorAll('main section[id]'));
-
-  function updatePlayButton() {
-    if (!heroVideo || !playToggle) return;
-
-    const isPaused = heroVideo.paused;
-    playToggle.classList.toggle('is-playing', !isPaused);
-    playToggle.setAttribute('aria-label', isPaused ? 'Play video' : 'Pause video');
-  }
-
-  if (heroVideo && playToggle) {
-    updatePlayButton();
-
-    playToggle.addEventListener('click', async () => {
-      try {
-        if (heroVideo.paused) {
-          await heroVideo.play();
-        } else {
-          heroVideo.pause();
-        }
-        updatePlayButton();
-      } catch (error) {
-        console.error('Video control error:', error);
-      }
-    });
-
-    heroVideo.addEventListener('play', updatePlayButton);
-    heroVideo.addEventListener('pause', updatePlayButton);
-  }
 
   let ticking = false;
 
   function handleScrollEffects() {
     const scrollY = window.scrollY || window.pageYOffset;
-    const heroLimit = Math.min(scrollY, 220);
+    const heroLimit = Math.min(scrollY, 260);
 
     if (header) {
-      header.style.transform = `translateY(${heroLimit * -0.12}px)`;
-      header.style.opacity = String(Math.max(0.25, 1 - scrollY / 520));
+      header.style.transform = `translateY(${heroLimit * 0.22}px)`;
+      header.style.opacity = String(Math.max(0.55, 1 - scrollY / 1400));
     }
 
     if (brandBlock) {
-      brandBlock.style.transform = `translateY(${heroLimit * 0.10}px)`;
-      brandBlock.style.opacity = String(Math.max(0.4, 1 - scrollY / 650));
+      brandBlock.style.transform = `translateY(${heroLimit * 0.32}px)`;
+      brandBlock.style.opacity = String(Math.max(0.65, 1 - scrollY / 1500));
     }
 
     if (heroInner) {
-      heroInner.style.transform = `translateY(${heroLimit * 0.12}px)`;
+      heroInner.style.transform = `translateY(${heroLimit * 0.10}px)`;
     }
 
     ticking = false;

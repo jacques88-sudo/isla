@@ -18,11 +18,9 @@
       --bg:#f7f2ec;
       --bg-soft:#fbf7f2;
       --surface:#ffffff;
-      --surface-2:#f4ede6;
       --text:#181615;
       --muted:#716960;
       --line:rgba(24,22,21,.10);
-      --white:#ffffff;
       --sand:#bea891;
       --sand-dark:#a98f74;
       --title-soft:#b9a493;
@@ -159,6 +157,10 @@
 
     .book-btn:hover{background:var(--sand-dark)}
 
+    .mobile-actions{ display:none; }
+    .mobile-more-panel{ display:none; }
+    .mobile-more-overlay{ display:none; }
+
     .hero{
       position:relative;
       min-height:58vh;
@@ -260,8 +262,7 @@
       letter-spacing:-.03em;
       color:var(--title-soft);
     }
-
-    .section{padding:82px 0}
+        .section{padding:82px 0}
     .section-tight{padding:64px 0}
     .section-light{background:#fff}
     .section-cream{background:var(--bg-soft)}
@@ -637,90 +638,148 @@
       }
     }
 
-    @media (max-width:900px){
-      :root{
-        --header-height:152px;
-      }
-
-      .brand-block h1{
-        font-size:2.2rem;
-      }
-
-      .brand-block p{
-        font-size:.60rem;
-        letter-spacing:.20em;
-      }
-
-      .main-nav{
-        gap:10px 14px;
-        margin-top:10px;
-      }
-
-      .main-nav a{
-        font-size:.70rem;
-      }
-
-      .header-book-wrap{
-        top:12px;
-        right:0;
-      }
-
-      .book-btn{
-        min-width:144px;
-        height:44px;
-        font-size:.82rem;
-      }
-
-      .hero{
-        min-height:52vh;
-      }
-
-      .hero-inner{
-        min-height:52vh;
-      }
-    }
-
     @media (max-width:760px){
       :root{
-        --header-height:176px;
+        --header-height:104px;
       }
 
       .header-shell{
+        min-height:var(--header-height);
         padding-top:10px;
+        align-items:center;
       }
 
-      .header-book-wrap{
-        position:static;
-        width:100%;
-        display:flex;
-        justify-content:center;
-        margin-bottom:8px;
-      }
+      .header-book-wrap{ display:none; }
+      .main-nav{ display:none; }
 
       .brand-block{
-        position:relative;
-        top:auto;
-        left:auto;
-        transform:none;
-        width:100%;
+        top:10px;
       }
 
       .brand-block h1{
-        font-size:2rem;
+        font-size:1.9rem;
       }
 
       .brand-block p{
-        font-size:.58rem;
+        font-size:.56rem;
         letter-spacing:.16em;
       }
 
-      .main-nav{
-        gap:8px 12px;
+      .mobile-actions{
+        display:flex;
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        align-items:center;
+        justify-content:space-between;
+        padding:0 6px;
+        z-index:3;
       }
 
-      .main-nav a{
-        font-size:.68rem;
+      .mobile-action-btn{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        min-height:44px;
+        padding:0 14px;
+        font-size:.72rem;
+        font-weight:700;
+        letter-spacing:.04em;
+        text-transform:uppercase;
+        color:#fff;
       }
+
+      .mobile-action-btn.book{
+        background:rgba(190,168,145,.96);
+        border-radius:2px;
+      }
+
+      .mobile-action-btn.more{
+        background:transparent;
+        border:1px solid rgba(255,255,255,.30);
+        border-radius:2px;
+        gap:6px;
+      }
+
+      .mobile-action-btn.more svg{ width:16px; height:16px; }
+
+      .mobile-more-overlay{
+        position:fixed;
+        inset:0;
+        background:rgba(10,9,8,.55);
+        z-index:1100;
+        opacity:0;
+        pointer-events:none;
+        transition:opacity .25s ease;
+      }
+
+      .mobile-more-overlay.is-open{
+        opacity:1;
+        pointer-events:auto;
+      }
+
+      .mobile-more-panel{
+        position:fixed;
+        top:0;
+        right:0;
+        width:min(84%, 340px);
+        height:100%;
+        background:#171412;
+        color:#fff;
+        z-index:1101;
+        padding:26px 24px;
+        transform:translateX(100%);
+        transition:transform .3s cubic-bezier(.16,1,.3,1);
+        display:flex;
+        flex-direction:column;
+      }
+
+      .mobile-more-panel.is-open{
+        transform:translateX(0);
+      }
+
+      .mobile-more-head{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:24px;
+      }
+
+      .mobile-more-head span{
+        font-family:'Cormorant Garamond',serif;
+        font-size:1.4rem;
+        letter-spacing:.06em;
+        text-transform:uppercase;
+      }
+
+      .mobile-more-close{
+        width:36px;
+        height:36px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        border:1px solid rgba(255,255,255,.25);
+        border-radius:999px;
+        color:#fff;
+      }
+
+      .mobile-more-links{
+        display:flex;
+        flex-direction:column;
+        gap:6px;
+      }
+
+      .mobile-more-links a{
+        padding:14px 4px;
+        font-size:.95rem;
+        letter-spacing:.03em;
+        border-bottom:1px solid rgba(255,255,255,.08);
+        color:rgba(255,255,255,.88);
+      }
+
+      .mobile-more-links a.is-active{ color:#ecdacc; }
 
       .hero{
         min-height:50vh;
@@ -743,7 +802,9 @@
     }
 
     @media (prefers-reduced-motion: reduce){
-      .reveal{
+      .reveal,
+      .mobile-more-panel,
+      .mobile-more-overlay{
         transition:none !important;
         animation:none !important;
         transform:none !important;
@@ -757,6 +818,7 @@
   <header class="site-header" id="siteHeader">
     <div class="container">
       <div class="header-shell">
+
         <div class="header-book-wrap">
           <a href="#pacchetti" class="book-btn">Book now</a>
         </div>
@@ -773,9 +835,35 @@
             <a href="#chi-siamo">Chi siamo</a>
           </nav>
         </div>
+
+        <div class="mobile-actions">
+          <a href="#excursion" class="mobile-action-btn">Experiences</a>
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="mobile-action-btn more" id="mobileMoreBtn" aria-haspopup="true" aria-expanded="false" aria-controls="mobileMorePanel">
+              More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+            </button>
+            <a href="#pacchetti" class="mobile-action-btn book">Book now</a>
+          </div>
+        </div>
       </div>
     </div>
   </header>
+
+  <div class="mobile-more-overlay" id="mobileMoreOverlay"></div>
+  <aside class="mobile-more-panel" id="mobileMorePanel" aria-label="Menu completo">
+    <div class="mobile-more-head">
+      <span>Isla</span>
+      <button type="button" class="mobile-more-close" id="mobileMoreClose" aria-label="Chiudi menu">✕</button>
+    </div>
+    <nav class="mobile-more-links">
+      <a href="#excursion">Excursion</a>
+      <a href="#pacchetti">Pacchetti</a>
+      <a href="#scan-ticket">Scan ticket</a>
+      <a href="#secrets-gallery">Posti segreti</a>
+      <a href="#chi-siamo">Chi siamo</a>
+    </nav>
+  </aside>
 
   <main>
     <section class="hero" id="heroSection">
@@ -810,11 +898,11 @@
           </article>
           <article class="trust-card reveal">
             <strong>Mobile first</strong>
-            <p>Hero chiara, CTA subito visibile e struttura comoda anche da telefono.</p>
+            <p>Solo due azioni principali sopra, tutto il resto in un menu secondario ordinato.</p>
           </article>
           <article class="trust-card reveal">
             <strong>Direct flow</strong>
-            <p>Book now separato in alto e sezioni che portano l’utente verso la prenotazione.</p>
+            <p>Book now sempre visibile e percorso rapido verso Experiences.</p>
           </article>
           <article class="trust-card reveal">
             <strong>Tenerife</strong>

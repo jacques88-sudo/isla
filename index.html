@@ -31,9 +31,9 @@
       --hero-bottom:rgba(12,11,10,.58);
       --shadow-sm:0 10px 24px rgba(0,0,0,.05);
       --shadow-md:0 18px 48px rgba(0,0,0,.10);
-      --radius-md:20px;
       --radius-lg:28px;
       --max:1560px;
+      --header-height:120px;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -61,58 +61,23 @@
       left:0;
       width:100%;
       z-index:1000;
-      padding-top:10px;
-      transition:transform .25s ease, opacity .25s ease;
-      will-change:transform;
-      pointer-events:none;
+      background:rgba(23,20,18,.84);
+      backdrop-filter:blur(4px);
+      -webkit-backdrop-filter:blur(4px);
+      border-bottom:1px solid rgba(255,255,255,.06);
     }
 
-    .site-header .container{
+    .header-shell{
       position:relative;
-      pointer-events:none;
-      min-height:110px;
-    }
-
-    .header-book-wrap{
-      position:absolute;
-      top:0;
-      right:0;
+      min-height:var(--header-height);
       display:flex;
-      justify-content:flex-end;
-      pointer-events:auto;
-      z-index:3;
-    }
-
-    .book-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-width:168px;
-      height:56px;
-      padding:0 20px;
-      background:rgba(190,168,145,.96);
-      color:#fff;
-      font-weight:700;
-      font-size:.98rem;
-      letter-spacing:.04em;
-      text-transform:uppercase;
-      transition:.25s ease;
-    }
-
-    .book-btn:hover{
-      background:var(--sand-dark);
-    }
-
-    .header-center{
-      display:flex;
-      justify-content:center;
       align-items:flex-start;
-      width:100%;
-      pointer-events:none;
+      justify-content:center;
+      padding-top:14px;
     }
 
     .brand-block{
-      position:fixed;
+      position:absolute;
       top:12px;
       left:50%;
       transform:translateX(-50%);
@@ -122,15 +87,13 @@
       justify-content:center;
       text-align:center;
       color:#fff;
-      transition:transform .25s ease, opacity .25s ease;
-      will-change:transform;
-      z-index:1001;
-      pointer-events:auto;
+      z-index:2;
+      width:max-content;
     }
 
     .brand-block h1{
       font-family:'Cormorant Garamond',serif;
-      font-size:3rem;
+      font-size:2.7rem;
       line-height:.88;
       font-weight:500;
       letter-spacing:.08em;
@@ -139,7 +102,7 @@
 
     .brand-block p{
       margin-top:3px;
-      font-size:.68rem;
+      font-size:.66rem;
       line-height:1;
       letter-spacing:.30em;
       text-transform:uppercase;
@@ -150,20 +113,19 @@
       display:flex;
       justify-content:center;
       align-items:center;
-      gap:22px;
+      gap:20px;
       flex-wrap:wrap;
       margin-top:12px;
     }
 
     .main-nav a{
       color:#fff;
-      font-size:.78rem;
+      font-size:.76rem;
       font-weight:600;
       letter-spacing:.03em;
       text-transform:uppercase;
       transition:.22s ease;
       white-space:nowrap;
-      position:relative;
     }
 
     .main-nav a:hover,
@@ -172,12 +134,38 @@
       color:#ecdacc;
     }
 
+    .header-book-wrap{
+      position:absolute;
+      top:16px;
+      right:0;
+      z-index:3;
+    }
+
+    .book-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:168px;
+      height:50px;
+      padding:0 20px;
+      background:rgba(190,168,145,.96);
+      color:#fff;
+      font-weight:700;
+      font-size:.92rem;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      transition:.25s ease;
+    }
+
+    .book-btn:hover{background:var(--sand-dark)}
+
     .hero{
       position:relative;
-      min-height:56vh;
-      max-height:700px;
+      min-height:58vh;
+      max-height:720px;
       background:#000;
       overflow:hidden;
+      margin-top:var(--header-height);
     }
 
     .hero-video{
@@ -186,8 +174,7 @@
       width:100%;
       height:100%;
       object-fit:cover;
-      transform:translate3d(0,0,0) scale(1.02);
-      will-change:transform;
+      transform:scale(1.02);
     }
 
     .hero::after{
@@ -203,13 +190,11 @@
     .hero-inner{
       position:relative;
       z-index:2;
-      min-height:56vh;
+      min-height:58vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:190px 16px 70px;
-      transition:transform .18s linear;
-      will-change:transform;
+      padding:48px 16px 70px;
     }
 
     .hero-center{
@@ -218,7 +203,6 @@
       align-items:center;
       justify-content:center;
       gap:24px;
-      margin-top:8px;
     }
 
     .discover-btn{
@@ -653,25 +637,9 @@
       }
     }
 
-    @media (max-width:760px){
-      .site-header .container{
-        min-height:130px;
-      }
-
-      .header-book-wrap{
-        position:static;
-        justify-content:center;
-        margin-bottom:8px;
-      }
-
-      .book-btn{
-        min-width:150px;
-        height:44px;
-        font-size:.84rem;
-      }
-
-      .brand-block{
-        top:56px;
+    @media (max-width:900px){
+      :root{
+        --header-height:152px;
       }
 
       .brand-block h1{
@@ -680,7 +648,7 @@
 
       .brand-block p{
         font-size:.60rem;
-        letter-spacing:.18em;
+        letter-spacing:.20em;
       }
 
       .main-nav{
@@ -692,13 +660,75 @@
         font-size:.70rem;
       }
 
+      .header-book-wrap{
+        top:12px;
+        right:0;
+      }
+
+      .book-btn{
+        min-width:144px;
+        height:44px;
+        font-size:.82rem;
+      }
+
+      .hero{
+        min-height:52vh;
+      }
+
+      .hero-inner{
+        min-height:52vh;
+      }
+    }
+
+    @media (max-width:760px){
+      :root{
+        --header-height:176px;
+      }
+
+      .header-shell{
+        padding-top:10px;
+      }
+
+      .header-book-wrap{
+        position:static;
+        width:100%;
+        display:flex;
+        justify-content:center;
+        margin-bottom:8px;
+      }
+
+      .brand-block{
+        position:relative;
+        top:auto;
+        left:auto;
+        transform:none;
+        width:100%;
+      }
+
+      .brand-block h1{
+        font-size:2rem;
+      }
+
+      .brand-block p{
+        font-size:.58rem;
+        letter-spacing:.16em;
+      }
+
+      .main-nav{
+        gap:8px 12px;
+      }
+
+      .main-nav a{
+        font-size:.68rem;
+      }
+
       .hero{
         min-height:50vh;
       }
 
       .hero-inner{
         min-height:50vh;
-        padding:220px 16px 60px;
+        padding:32px 16px 60px;
       }
 
       .excursion-grid{grid-template-columns:1fr}
@@ -706,15 +736,6 @@
 
     @media (max-width:560px){
       .container{width:min(calc(100% - 20px), var(--max))}
-
-      .brand-block{
-        top:58px;
-      }
-
-      .brand-block h1{
-        font-size:1.95rem;
-      }
-
       .intro-title{font-size:2.35rem}
       .journey-main{min-height:420px}
       .excursion-card{min-height:340px}
@@ -722,10 +743,6 @@
     }
 
     @media (prefers-reduced-motion: reduce){
-      .site-header,
-      .brand-block,
-      .hero-inner,
-      .hero-video,
       .reveal{
         transition:none !important;
         animation:none !important;
@@ -739,11 +756,11 @@
 <body>
   <header class="site-header" id="siteHeader">
     <div class="container">
-      <div class="header-book-wrap">
-        <a href="#pacchetti" class="book-btn">Book now</a>
-      </div>
+      <div class="header-shell">
+        <div class="header-book-wrap">
+          <a href="#pacchetti" class="book-btn">Book now</a>
+        </div>
 
-      <div class="header-center">
         <div class="brand-block" id="brandBlock">
           <h1>Isla</h1>
           <p>so easy so tenerife</p>

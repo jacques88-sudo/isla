@@ -1,42 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const header = document.getElementById('siteHeader');
-  const brandBlock = document.getElementById('brandBlock');
-  const heroInner = document.getElementById('heroInner');
   const navLinks = Array.from(document.querySelectorAll('.main-nav a, .footer-links a'));
   const revealItems = document.querySelectorAll('.reveal');
   const sections = Array.from(document.querySelectorAll('main section[id]'));
-
-  let ticking = false;
-
-  function handleScrollEffects() {
-    const scrollY = window.scrollY || window.pageYOffset;
-    const heroLimit = Math.min(scrollY, 180);
-
-    if (header) {
-      header.style.transform = `translateY(${Math.min(scrollY * 0.06, 10)}px)`;
-      header.style.opacity = '1';
-    }
-
-    if (brandBlock) {
-      brandBlock.style.transform = `translateX(-50%) translateY(${Math.min(scrollY * 0.10, 18)}px)`;
-      brandBlock.style.opacity = '1';
-    }
-
-    if (heroInner) {
-      heroInner.style.transform = `translateY(${heroLimit * 0.08}px)`;
-    }
-
-    ticking = false;
-  }
-
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      window.requestAnimationFrame(handleScrollEffects);
-      ticking = true;
-    }
-  }, { passive: true });
-
-  handleScrollEffects();
 
   navLinks.forEach((link) => {
     link.addEventListener('click', (event) => {

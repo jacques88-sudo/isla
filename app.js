@@ -10,20 +10,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function handleScrollEffects() {
     const scrollY = window.scrollY || window.pageYOffset;
-    const heroLimit = Math.min(scrollY, 260);
+    const heroLimit = Math.min(scrollY, 180);
 
     if (header) {
-      header.style.transform = `translateY(${heroLimit * 0.22}px)`;
-      header.style.opacity = String(Math.max(0.55, 1 - scrollY / 1400));
+      header.style.transform = `translateY(${Math.min(scrollY * 0.06, 10)}px)`;
+      header.style.opacity = '1';
     }
 
     if (brandBlock) {
-      brandBlock.style.transform = `translateY(${heroLimit * 0.32}px)`;
-      brandBlock.style.opacity = String(Math.max(0.65, 1 - scrollY / 1500));
+      brandBlock.style.transform = `translateX(-50%) translateY(${Math.min(scrollY * 0.10, 18)}px)`;
+      brandBlock.style.opacity = '1';
     }
 
     if (heroInner) {
-      heroInner.style.transform = `translateY(${heroLimit * 0.10}px)`;
+      heroInner.style.transform = `translateY(${heroLimit * 0.08}px)`;
     }
 
     ticking = false;
@@ -47,7 +47,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!target) return;
 
       event.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      const headerOffset = 140;
+      const targetTop = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: targetTop,
+        behavior: 'smooth'
+      });
+
       history.replaceState(null, '', href);
     });
   });
@@ -70,8 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, {
       root: null,
-      threshold: [0.25, 0.5, 0.75],
-      rootMargin: '-20% 0px -45% 0px'
+      threshold: [0.2, 0.4, 0.6],
+      rootMargin: '-25% 0px -45% 0px'
     });
 
     sections.forEach((section) => sectionObserver.observe(section));

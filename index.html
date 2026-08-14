@@ -1,1209 +1,757 @@
-<!DOCTYPE html>
-<html lang="it">
+<!doctype html>
+<html lang="it" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Isla | so easy so tenerife</title>
-  <meta name="description" content="Escursioni premium a Tenerife, pacchetti, ticket e posti segreti con Isla." />
-  <meta name="theme-color" content="#171412" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#7d126d" />
+  <meta name="description" content="Isla - Tenerife excursions, boats, quads, buggies and unforgettable island experiences." />
+  <title>Isla</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./icon-192.png" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
   <style>
-    :root{
-      --bg:#f7f2ec;
-      --bg-soft:#fbf7f2;
-      --surface:#ffffff;
-      --text:#181615;
-      --muted:#716960;
-      --line:rgba(24,22,21,.10);
-      --sand:#bea891;
-      --sand-dark:#a98f74;
-      --title-soft:#b9a493;
-      --hero-top:rgba(12,11,10,.10);
-      --hero-mid:rgba(12,11,10,.18);
-      --hero-bottom:rgba(12,11,10,.58);
-      --shadow-sm:0 10px 24px rgba(0,0,0,.05);
-      --shadow-md:0 18px 48px rgba(0,0,0,.10);
-      --radius-lg:28px;
-      --max:1560px;
-      --header-height:120px;
+    :root,
+    html[data-theme="light"] {
+      --bg: #fff8f4;
+      --surface: rgba(255,255,255,.82);
+      --surface-strong: #ffffff;
+      --border: rgba(125, 18, 109, .12);
+      --text: #4b1144;
+      --muted: #8f6789;
+      --primary: #7d126d;
+      --primary-2: #a11783;
+      --accent: #ff6b6b;
+      --accent-2: #ffb347;
+      --success: #167c62;
+      --shadow: 0 18px 50px rgba(98, 18, 85, .12);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max: 1180px;
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{
-      font-family:'Inter',sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      line-height:1.6;
-      overflow-x:hidden;
+    html[data-theme="dark"] {
+      --bg: #161217;
+      --surface: rgba(35, 26, 36, .84);
+      --surface-strong: #241b25;
+      --border: rgba(255,255,255,.08);
+      --text: #f8edf7;
+      --muted: #cfb2ca;
+      --primary: #f05ac7;
+      --primary-2: #ff90dc;
+      --accent: #ff8c72;
+      --accent-2: #ffc86c;
+      --success: #57c6aa;
+      --shadow: 0 18px 50px rgba(0, 0, 0, .35);
     }
 
-    img,video{display:block;max-width:100%;height:auto}
-    a{text-decoration:none;color:inherit}
-    button{border:none;background:none;font:inherit;cursor:pointer}
-
-    .container{
-      width:min(calc(100% - 32px), var(--max));
-      margin:0 auto;
-    }
-
-    .site-header{
-      position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      z-index:1000;
-      background:rgba(23,20,18,.84);
-      backdrop-filter:blur(4px);
-      -webkit-backdrop-filter:blur(4px);
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
-
-    .header-shell{
-      position:relative;
-      min-height:var(--header-height);
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
-      padding-top:14px;
-    }
-
-    .brand-block{
-      position:absolute;
-      top:12px;
-      left:50%;
-      transform:translateX(-50%);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      color:#fff;
-      z-index:2;
-      width:max-content;
-    }
-
-    .brand-block h1{
-      font-family:'Cormorant Garamond',serif;
-      font-size:2.7rem;
-      line-height:.88;
-      font-weight:500;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .brand-block p{
-      margin-top:3px;
-      font-size:.66rem;
-      line-height:1;
-      letter-spacing:.30em;
-      text-transform:uppercase;
-      opacity:.96;
-    }
-
-    .main-nav{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      gap:20px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-
-    .main-nav a{
-      color:#fff;
-      font-size:.76rem;
-      font-weight:600;
-      letter-spacing:.03em;
-      text-transform:uppercase;
-      transition:.22s ease;
-      white-space:nowrap;
-    }
-
-    .main-nav a:hover,
-    .main-nav a.is-active,
-    .footer-links a.is-active{
-      color:#ecdacc;
-    }
-
-    .header-book-wrap{
-      position:absolute;
-      top:16px;
-      right:0;
-      z-index:3;
-    }
-
-    .book-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-width:168px;
-      height:50px;
-      padding:0 20px;
-      background:rgba(190,168,145,.96);
-      color:#fff;
-      font-weight:700;
-      font-size:.92rem;
-      letter-spacing:.05em;
-      text-transform:uppercase;
-      transition:.25s ease;
-    }
-
-    .book-btn:hover{background:var(--sand-dark)}
-
-    .mobile-actions{ display:none; }
-    .mobile-more-panel{ display:none; }
-    .mobile-more-overlay{ display:none; }
-
-    .hero{
-      position:relative;
-      min-height:58vh;
-      max-height:720px;
-      background:#000;
-      overflow:hidden;
-      margin-top:var(--header-height);
-    }
-
-    .hero-video{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      transform:scale(1.02);
-    }
-
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
       background:
-        linear-gradient(to bottom, var(--hero-top), var(--hero-mid) 30%, rgba(12,11,10,.22) 48%, var(--hero-bottom)),
-        linear-gradient(to right, rgba(0,0,0,.10), rgba(0,0,0,.04));
-      pointer-events:none;
+        radial-gradient(circle at top left, rgba(255, 182, 193, .24), transparent 28%),
+        radial-gradient(circle at top right, rgba(255, 179, 71, .20), transparent 24%),
+        linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 84%, #ffffff 16%));
+      color: var(--text);
+      min-height: 100vh;
     }
 
-    .hero-inner{
-      position:relative;
-      z-index:2;
-      min-height:58vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:48px 16px 70px;
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .wrap {
+      width: min(100% - 32px, var(--max));
+      margin: 0 auto;
     }
 
-    .hero-center{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:24px;
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
     }
 
-    .discover-btn{
-      min-width:214px;
-      height:54px;
-      padding:0 26px;
-      background:rgba(190,168,145,.97);
-      color:#fff;
-      font-size:.94rem;
-      font-weight:700;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      transition:.24s ease;
+    .skip-link:focus {
+      left: 12px;
+      top: 12px;
+      background: white;
+      color: #111;
+      padding: 10px 14px;
+      border-radius: 999px;
+      z-index: 999;
     }
 
-    .discover-btn:hover{background:#ab8d72}
-
-    .hero-chevron{
-      position:absolute;
-      left:50%;
-      bottom:16px;
-      transform:translateX(-50%);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:1px;
-      z-index:2;
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: color-mix(in srgb, var(--bg) 76%, transparent);
+      border-bottom: 1px solid var(--border);
     }
 
-    .hero-chevron span{
-      width:16px;
-      height:16px;
-      border-right:2px solid #fff;
-      border-bottom:2px solid #fff;
-      transform:rotate(45deg);
-      display:block;
-      opacity:.96;
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
     }
 
-    .intro-band{
-      background:var(--bg-soft);
-      padding:24px 0 28px;
-      border-bottom:1px solid var(--line);
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
     }
 
-    .intro-title{
-      text-align:center;
-      font-family:'Cormorant Garamond',serif;
-      font-size:clamp(3rem,5.6vw,5.6rem);
-      line-height:1;
-      font-weight:300;
-      letter-spacing:-.03em;
-      color:var(--title-soft);
+    .brand img {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: var(--shadow);
     }
 
-    .section{padding:82px 0}
-    .section-tight{padding:64px 0}
-    .section-light{background:#fff}
-    .section-cream{background:var(--bg-soft)}
-    .section-dark{background:#141414;color:#fff}
-
-    .section-head{max-width:920px;margin-bottom:28px}
-    .section-head.narrow{max-width:760px}
-
-    .eyebrow{
-      display:inline-block;
-      margin-bottom:12px;
-      font-size:.75rem;
-      letter-spacing:.30em;
-      text-transform:uppercase;
-      color:#a07c58;
+    .brand-copy {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
     }
 
-    .section-head h2{
-      font-family:'Cormorant Garamond',serif;
-      font-size:clamp(2.3rem,4vw,4rem);
-      line-height:.95;
-      font-weight:600;
-      margin-bottom:12px;
+    .brand-copy strong {
+      font-size: 1.05rem;
+      letter-spacing: .02em;
     }
 
-    .section-head p{
-      font-size:1rem;
-      color:var(--muted);
-      max-width:68ch;
+    .brand-copy span {
+      color: var(--muted);
+      font-size: .84rem;
     }
 
-    .section-dark .section-head p{color:rgba(255,255,255,.76)}
-    .section-dark .eyebrow{color:#d7c0aa}
-
-    .trust-strip,
-    .packages-grid,
-    .secret-grid,
-    .reviews-grid{
-      display:grid;
-      gap:18px;
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .trust-strip{grid-template-columns:repeat(4,1fr);gap:16px}
-    .packages-grid,
-    .secret-grid,
-    .reviews-grid{grid-template-columns:repeat(3,1fr)}
+    .icon-btn,
+    .cta-btn,
+    .chip,
+    .filter-btn,
+    .search-btn,
+    .card-link {
+      border: 0;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+    }
 
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 34px 0 20px;
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .hero-copy,
+    .hero-media,
+    .panel,
+    .stat,
     .trust-card,
-    .info-card,
-    .package-card,
-    .faq-item,
-    .review-card,
-    .secret-card{
-      background:#fff;
-      border:1px solid var(--line);
-      box-shadow:var(--shadow-sm);
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
     }
 
-    .trust-card,
-    .info-card,
-    .package-card,
-    .faq-item,
-    .review-card{border-radius:24px}
-
-    .trust-card{padding:22px}
-
-    .trust-card strong{
-      display:block;
-      font-size:1.8rem;
-      font-family:'Cormorant Garamond',serif;
-      line-height:1;
-      margin-bottom:6px;
+    .hero-copy {
+      border-radius: var(--radius-xl);
+      padding: 28px;
     }
 
-    .trust-card p,
-    .info-card p,
-    .package-card p,
-    .faq-item p,
-    .review-card p,
-    .secret-body p{
-      color:var(--muted);
-      font-size:.95rem;
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--primary) 10%, white);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: .9rem;
+      margin-bottom: 18px;
     }
 
-    .journey-grid{
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:22px;
-      align-items:stretch;
+    .title {
+      margin: 0 0 14px;
+      font-size: clamp(2.4rem, 7vw, 5.2rem);
+      line-height: .95;
+      letter-spacing: -.04em;
     }
 
-    .journey-main{
-      position:relative;
-      min-height:600px;
-      overflow:hidden;
-      border-radius:var(--radius-lg);
-      background:#000;
-      box-shadow:var(--shadow-md);
+    .title span {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    .journey-main img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      filter:brightness(.86);
+    .lead {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 1.02rem;
+      max-width: 58ch;
     }
 
-    .journey-main::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,.08));
+    .search-shell {
+      display: grid;
+      gap: 12px;
     }
 
-    .journey-main-text{
-      position:absolute;
-      left:28px;
-      right:28px;
-      bottom:28px;
-      z-index:2;
-      color:#fff;
+    .searchbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      padding: 10px;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      border-radius: 999px;
     }
 
-    .journey-main-text h3,
-    .info-card h3,
-    .package-card h3,
-    .secret-body h3{
-      font-family:'Cormorant Garamond',serif;
-      line-height:.96;
-      font-weight:600;
+    .searchbar input {
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      outline: none;
+      min-width: 0;
+      padding: 0 14px;
     }
 
-    .journey-main-text h3{
-      font-size:2.5rem;
-      margin-bottom:10px;
+    .search-btn {
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      font-weight: 700;
     }
 
-    .journey-main-text p{color:rgba(255,255,255,.84);max-width:54ch}
-
-    .journey-side{display:grid;gap:18px}
-
-    .info-card{
-      padding:24px;
-      min-height:185px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
+    .chips {
+      display: flex;
+      gap: 10px;
+      overflow: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
     }
 
-    .info-card span,
-    .package-card span,
-    .excursion-content span{
-      display:block;
-      text-transform:uppercase;
+    .chips::-webkit-scrollbar { display: none; }
+
+    .chip,
+    .filter-btn {
+      white-space: nowrap;
+      padding: 11px 14px;
+      border-radius: 999px;
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      color: var(--text);
     }
 
-    .info-card span,
-    .package-card span{
-      font-size:.74rem;
-      letter-spacing:.20em;
-      color:#9e7954;
+    .filter-btn.active,
+    .chip.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      border-color: transparent;
     }
 
-    .info-card h3,
-    .package-card h3,
-    .secret-body h3{
-      font-size:2rem;
-      margin:10px 0 8px;
+    .hero-note {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: .92rem;
     }
 
-    .mini-link{
-      margin-top:16px;
-      font-size:.8rem;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      color:#8e6d4e;
+    .hero-media {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      position: relative;
+      min-height: 360px;
     }
 
-    .excursion-grid{
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:16px;
+    .hero-media video,
+    .hero-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .excursion-card{
-      position:relative;
-      min-height:406px;
-      overflow:hidden;
-      border-radius:24px;
-      background:#000;
-      box-shadow:0 10px 24px rgba(0,0,0,.07);
+    .video-overlay {
+      position: absolute;
+      inset: auto 18px 18px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      background: rgba(21, 15, 22, .34);
+      color: white;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      padding: 14px 16px;
+      backdrop-filter: blur(10px);
     }
 
-    .excursion-card img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      filter:brightness(.84);
-      transition:transform .6s ease;
+    .video-overlay strong {
+      display: block;
+      font-size: 1rem;
     }
 
-    .excursion-card:hover img{transform:scale(1.05)}
-
-    .excursion-card::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,.08));
+    .video-overlay span {
+      font-size: .9rem;
+      color: rgba(255,255,255,.82);
     }
 
-    .excursion-content{
-      position:absolute;
-      left:18px;
-      right:18px;
-      bottom:18px;
-      z-index:2;
-      color:#fff;
+    .play-btn {
+      min-width: 54px;
+      height: 54px;
+      border-radius: 999px;
+      background: white;
+      color: var(--primary);
+      font-size: 1.2rem;
+      font-weight: 900;
     }
 
-    .excursion-content span{
-      margin-bottom:6px;
-      font-size:.72rem;
-      letter-spacing:.18em;
-      color:#ecdacc;
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 12px 0 6px;
     }
 
-    .excursion-content h3{
-      font-family:'Cormorant Garamond',serif;
-      font-size:1.8rem;
-      line-height:.96;
-      margin-bottom:8px;
+    .stat {
+      border-radius: 20px;
+      padding: 18px;
     }
 
-    .excursion-content p{
-      color:rgba(255,255,255,.82);
-      font-size:.9rem;
-      margin-bottom:10px;
+    .stat strong {
+      display: block;
+      font-size: 1.45rem;
+      margin-bottom: 4px;
     }
 
-    .package-card{padding:28px}
-    .package-card strong{display:block;margin:14px 0;font-size:1.06rem}
-
-    .secret-card{border-radius:24px;overflow:hidden}
-    .secret-card img{width:100%;height:260px;object-fit:cover}
-    .secret-body{padding:22px}
-
-    .about-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:24px;
-      align-items:center;
+    .stat span {
+      color: var(--muted);
+      font-size: .92rem;
     }
 
-    .about-panel{
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:28px;
-      padding:30px;
+    .section {
+      padding: 26px 0;
     }
 
-    .about-panel h3{
-      font-family:'Cormorant Garamond',serif;
-      font-size:2.3rem;
-      line-height:.96;
-      margin-bottom:12px;
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px 18px;
+      align-items: end;
+      margin-bottom: 18px;
     }
 
-    .about-panel p{color:rgba(255,255,255,.82);margin-bottom:12px}
-    .about-list{display:grid;gap:10px;margin-top:12px}
-
-    .about-list div{
-      background:rgba(255,255,255,.05);
-      border-radius:14px;
-      padding:12px 14px;
-      color:rgba(255,255,255,.86);
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(1.55rem, 4vw, 2.4rem);
+      letter-spacing: -.03em;
     }
 
-    .review-card,
-    .faq-item{padding:24px}
-
-    .review-card strong,
-    .faq-item h3{
-      display:block;
-      margin-bottom:8px;
-      font-size:1rem;
+    .section-head p {
+      margin: 0;
+      max-width: 56ch;
+      color: var(--muted);
     }
 
-    .faq-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:18px;
+    .panel {
+      border-radius: var(--radius-xl);
+      padding: 18px;
     }
 
-    .cta-banner{
-      background:linear-gradient(135deg, #e8dacc, #d7c0aa);
-      border-radius:28px;
-      padding:34px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:20px;
-      box-shadow:var(--shadow-md);
+    .grid {
+      display: grid;
+      gap: 16px;
     }
 
-    .cta-banner h2{
-      font-family:'Cormorant Garamond',serif;
-      font-size:clamp(2rem,4vw,3.2rem);
-      line-height:.95;
-      margin-bottom:8px;
+    .card {
+      border-radius: 24px;
+      overflow: hidden;
     }
 
-    .cta-banner p{max-width:56ch;color:#4f4338}
-    .cta-actions{display:flex;gap:12px;flex-wrap:wrap}
-
-    .btn-dark,
-    .btn-light{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:50px;
-      padding:0 22px;
-      border-radius:999px;
-      font-weight:700;
-      letter-spacing:.04em;
-      text-transform:uppercase;
-      font-size:.84rem;
+    .card img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
     }
 
-    .btn-dark{background:#161412;color:#fff}
-    .btn-light{background:rgba(255,255,255,.65);color:#161412;border:1px solid rgba(22,20,18,.10)}
-
-    .footer{
-      background:#101010;
-      color:rgba(255,255,255,.72);
-      border-top:1px solid rgba(255,255,255,.08);
-      padding:28px 0 34px;
+    .card-body {
+      padding: 16px;
     }
 
-    .footer-inner{
-      display:flex;
-      justify-content:space-between;
-      gap:16px;
-      flex-wrap:wrap;
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      font-size: .92rem;
     }
 
-    .footer-links{display:flex;gap:18px;flex-wrap:wrap}
-
-    .reveal{
-      opacity:0;
-      transform:translateY(24px);
-      transition:opacity .6s ease, transform .6s ease;
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--primary) 10%, white);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: .82rem;
     }
 
-    .reveal.is-visible{
-      opacity:1;
-      transform:translateY(0);
+    .card h3 {
+      margin: 14px 0 8px;
+      font-size: 1.2rem;
+      line-height: 1.18;
     }
 
-    @media (max-width:1180px){
-      .trust-strip,
-      .journey-grid,
-      .packages-grid,
-      .secret-grid,
-      .about-grid,
-      .reviews-grid,
-      .faq-grid{grid-template-columns:1fr}
+    .card p {
+      margin: 0 0 14px;
+      color: var(--muted);
+    }
 
-      .excursion-grid{grid-template-columns:repeat(3,1fr)}
+    .price {
+      font-weight: 800;
+      color: var(--primary);
+    }
 
-      .cta-banner{
-        flex-direction:column;
-        align-items:flex-start;
+    .card-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .card-link {
+      flex: 1;
+      min-height: 46px;
+      padding: 0 16px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      border: 1px solid var(--border);
+    }
+
+    .card-link.primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      border-color: transparent;
+    }
+
+    .trust-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .trust-card {
+      border-radius: 24px;
+      padding: 20px;
+    }
+
+    .trust-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .trust-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .footer {
+      padding: 28px 0 44px;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
+    .empty-state {
+      padding: 22px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (min-width: 820px) {
+      .hero-grid {
+        grid-template-columns: 1.08fr .92fr;
+      }
+
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .trust-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .stats {
+        grid-template-columns: repeat(4, 1fr);
       }
     }
 
-    @media (max-width:760px){
-      :root{
-        --header-height:104px;
+    @media (max-width: 699px) {
+      .brand-copy span {
+        display: none;
       }
 
-      .header-shell{
-        min-height:var(--header-height);
-        padding-top:10px;
-        align-items:center;
+      .searchbar {
+        grid-template-columns: 1fr;
+        border-radius: 24px;
       }
 
-      .header-book-wrap{ display:none; }
-      .main-nav{ display:none; }
-
-      .brand-block{
-        top:10px;
+      .search-btn {
+        width: 100%;
       }
 
-      .brand-block h1{
-        font-size:1.9rem;
+      .video-overlay {
+        flex-direction: column;
+        align-items: flex-start;
       }
 
-      .brand-block p{
-        font-size:.56rem;
-        letter-spacing:.16em;
+      .play-btn {
+        align-self: flex-end;
       }
 
-      .mobile-actions{
-        display:flex;
-        position:absolute;
-        top:0;
-        left:0;
-        width:100%;
-        height:100%;
-        align-items:center;
-        justify-content:space-between;
-        padding:0 6px;
-        z-index:3;
+      .card-actions {
+        flex-direction: column;
       }
 
-      .mobile-action-btn{
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        min-height:44px;
-        padding:0 14px;
-        font-size:.72rem;
-        font-weight:700;
-        letter-spacing:.04em;
-        text-transform:uppercase;
-        color:#fff;
+      .card-link {
+        width: 100%;
       }
 
-      .mobile-action-btn.book{
-        background:rgba(190,168,145,.96);
-        border-radius:2px;
+      .nav-actions .cta-btn span {
+        display: none;
       }
-
-      .mobile-action-btn.more{
-        background:transparent;
-        border:1px solid rgba(255,255,255,.30);
-        border-radius:2px;
-        gap:6px;
-      }
-
-      .mobile-action-btn.more svg{ width:16px; height:16px; }
-
-      .mobile-more-overlay{
-        position:fixed;
-        inset:0;
-        background:rgba(10,9,8,.55);
-        z-index:1100;
-        opacity:0;
-        pointer-events:none;
-        transition:opacity .25s ease;
-      }
-
-      .mobile-more-overlay.is-open{
-        opacity:1;
-        pointer-events:auto;
-      }
-
-      .mobile-more-panel{
-        position:fixed;
-        top:0;
-        right:0;
-        width:min(84%, 340px);
-        height:100%;
-        background:#171412;
-        color:#fff;
-        z-index:1101;
-        padding:26px 24px;
-        transform:translateX(100%);
-        transition:transform .3s cubic-bezier(.16,1,.3,1);
-        display:flex;
-        flex-direction:column;
-      }
-
-      .mobile-more-panel.is-open{
-        transform:translateX(0);
-      }
-
-      .mobile-more-head{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        margin-bottom:24px;
-      }
-
-      .mobile-more-head span{
-        font-family:'Cormorant Garamond',serif;
-        font-size:1.4rem;
-        letter-spacing:.06em;
-        text-transform:uppercase;
-      }
-
-      .mobile-more-close{
-        width:36px;
-        height:36px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        border:1px solid rgba(255,255,255,.25);
-        border-radius:999px;
-        color:#fff;
-      }
-
-      .mobile-more-links{
-        display:flex;
-        flex-direction:column;
-        gap:6px;
-      }
-
-      .mobile-more-links a{
-        padding:14px 4px;
-        font-size:.95rem;
-        letter-spacing:.03em;
-        border-bottom:1px solid rgba(255,255,255,.08);
-        color:rgba(255,255,255,.88);
-      }
-
-      .mobile-more-links a.is-active{ color:#ecdacc; }
-
-      .hero{
-        min-height:50vh;
-      }
-
-      .hero-inner{
-        min-height:50vh;
-        padding:32px 16px 60px;
-      }
-
-      .excursion-grid{grid-template-columns:1fr}
     }
 
-    @media (max-width:560px){
-      .container{width:min(calc(100% - 20px), var(--max))}
-      .intro-title{font-size:2.35rem}
-      .journey-main{min-height:420px}
-      .excursion-card{min-height:340px}
-      .secret-card img{height:220px}
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      .reveal,
-      .mobile-more-panel,
-      .mobile-more-overlay{
-        transition:none !important;
-        animation:none !important;
-        transform:none !important;
+    @media (prefers-reduced-motion: no-preference) {
+      .icon-btn:hover,
+      .cta-btn:hover,
+      .chip:hover,
+      .filter-btn:hover,
+      .search-btn:hover,
+      .card-link:hover,
+      .card:hover {
+        transform: translateY(-2px);
       }
-
-      .reveal{opacity:1}
     }
   </style>
 </head>
 <body>
-  <header class="site-header" id="siteHeader">
-    <div class="container">
-      <div class="header-shell">
+  <a class="skip-link" href="#main">Vai al contenuto</a>
 
-        <div class="header-book-wrap">
-          <a href="#pacchetti" class="book-btn">Book now</a>
-        </div>
-
-        <div class="brand-block" id="brandBlock">
-          <h1>Isla</h1>
-          <p>so easy so tenerife</p>
-
-          <nav class="main-nav">
-            <a href="#excursion">Excursion</a>
-            <a href="#pacchetti">Pacchetti</a>
-            <a href="#scan-ticket">Scan ticket</a>
-            <a href="#secrets-gallery">Posti segreti</a>
-            <a href="#chi-siamo">Chi siamo</a>
-          </nav>
-        </div>
-
-        <div class="mobile-actions">
-          <a href="#excursion" class="mobile-action-btn">Experiences</a>
-          <div style="display:flex; gap:8px;">
-            <button type="button" class="mobile-action-btn more" id="mobileMoreBtn" aria-haspopup="true" aria-expanded="false" aria-controls="mobileMorePanel">
-              More
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-            </button>
-            <a href="#pacchetti" class="mobile-action-btn book">Book now</a>
+  <header class="topbar">
+    <div class="wrap">
+      <nav class="nav" aria-label="Navigazione principale">
+        <a class="brand" href="#main" aria-label="Isla home">
+          <img src="./logo-isla.png" alt="Logo Isla" />
+          <div class="brand-copy">
+            <strong>Isla</strong>
+            <span>So easy, so Tenerife</span>
           </div>
+        </a>
+
+        <div class="nav-actions">
+          <button class="icon-btn" id="themeToggle" aria-label="Cambia tema">☼</button>
+          <a class="cta-btn" href="https://wa.me/" target="_blank" rel="noopener noreferrer">
+            <span>Book now</span>
+          </a>
         </div>
-      </div>
+      </nav>
     </div>
   </header>
 
-  <div class="mobile-more-overlay" id="mobileMoreOverlay"></div>
-  <aside class="mobile-more-panel" id="mobileMorePanel" aria-label="Menu completo">
-    <div class="mobile-more-head">
-      <span>Isla</span>
-      <button type="button" class="mobile-more-close" id="mobileMoreClose" aria-label="Chiudi menu">✕</button>
-    </div>
-    <nav class="mobile-more-links">
-      <a href="#excursion">Excursion</a>
-      <a href="#pacchetti">Pacchetti</a>
-      <a href="#scan-ticket">Scan ticket</a>
-      <a href="#secrets-gallery">Posti segreti</a>
-      <a href="#chi-siamo">Chi siamo</a>
-    </nav>
-  </aside>
+  <main id="main">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Premium Tenerife experiences</span>
+          <h1 class="title">Explore Tenerife with <span>Isla</span></h1>
+          <p class="lead">
+            Boat trips, buggy tours, quad adventures, island routes and sunset moments,
+            all inside a cleaner booking flow designed for mobile first.
+          </p>
 
-  <main>
-    <section class="hero" id="heroSection">
-      <video class="hero-video" id="heroVideo" autoplay muted loop playsinline poster="./1264675861%20(1).webp">
-        <source src="./video%20prova%20tenerife.mp4" type="video/mp4">
-      </video>
+          <div class="search-shell">
+            <form class="searchbar" id="searchForm">
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="Search excursion, zone or category"
+                aria-label="Cerca escursione"
+              />
+              <button class="search-btn" type="submit">Search</button>
+            </form>
 
-      <div class="hero-inner" id="heroInner">
-        <div class="hero-center">
-          <a href="#begin-adventure" class="discover-btn">Discover more</a>
-        </div>
-      </div>
-
-      <div class="hero-chevron" aria-hidden="true">
-        <span></span>
-        <span></span>
-      </div>
-    </section>
-
-    <section class="intro-band" id="begin-adventure">
-      <div class="container">
-        <h2 class="intro-title">Begin your adventure with...</h2>
-      </div>
-    </section>
-
-    <section class="section-tight">
-      <div class="container">
-        <div class="trust-strip">
-          <article class="trust-card reveal">
-            <strong>Curated</strong>
-            <p>Escursioni selezionate con un tono più premium e semplice da capire.</p>
-          </article>
-          <article class="trust-card reveal">
-            <strong>Mobile first</strong>
-            <p>Solo due azioni principali sopra, tutto il resto in un menu secondario ordinato.</p>
-          </article>
-          <article class="trust-card reveal">
-            <strong>Direct flow</strong>
-            <p>Book now sempre visibile e percorso rapido verso Experiences.</p>
-          </article>
-          <article class="trust-card reveal">
-            <strong>Tenerife</strong>
-            <p>Storytelling visivo e percorsi rapidi per scegliere l’esperienza giusta.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="scan-ticket">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">Journey</span>
-          <h2>A curated island flow designed for mobile</h2>
-          <p>Una homepage travel efficace deve spiegare in pochi blocchi cosa vendi, a chi serve e qual è la prossima azione utile, mantenendo il booking ben visibile.</p>
-        </div>
-
-        <div class="journey-grid">
-          <article class="journey-main reveal">
-            <img src="./1264675861%20(1).webp" alt="Tenerife coastline by Isla" loading="lazy" width="1400" height="900">
-            <div class="journey-main-text">
-              <h3>Scan, explore and keep the experience simple</h3>
-              <p>Questo blocco può diventare il punto di ingresso rapido per ticket, dettagli prenotazione e assistenza cliente, così la PWA resta chiara anche da mobile.</p>
-            </div>
-          </article>
-
-          <div class="journey-side">
-            <article class="info-card reveal">
-              <div>
-                <span>Quick access</span>
-                <h3>Scan ticket</h3>
-                <p>Accesso rapido a conferme, codici e dettagli dell’escursione per chi ha già prenotato.</p>
-              </div>
-              <a href="#" class="mini-link">Open access</a>
-            </article>
-
-            <article class="info-card reveal">
-              <div>
-                <span>Island secrets</span>
-                <h3>Posti segreti</h3>
-                <p>Spot panoramici, suggerimenti locali e piccoli angoli di Tenerife da scoprire meglio.</p>
-              </div>
-              <a href="#secrets-gallery" class="mini-link">See places</a>
-            </article>
-
-            <article class="info-card reveal">
-              <div>
-                <span>Booking style</span>
-                <h3>Premium simplicity</h3>
-                <p>Una navigazione ridotta e orientata all’intento aiuta l’utente a trovare più velocemente il percorso giusto.</p>
-              </div>
-              <a href="#pacchetti" class="mini-link">Go booking</a>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-light" id="excursion">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">Excursion</span>
-          <h2>Signature experiences across Tenerife</h2>
-          <p>Le sezioni in card aiutano a riassumere offerte e percorsi principali in modo visivo e scansionabile.</p>
-        </div>
-
-        <div class="excursion-grid">
-          <article class="excursion-card reveal">
-            <img src="./1264675861%20(1).webp" alt="Quad excursion Tenerife" width="800" height="1000">
-            <div class="excursion-content">
-              <span>Adventure</span>
-              <h3>Quad</h3>
-              <p>Paesaggi aperti, ritmo più forte e una giornata più dinamica.</p>
-              <a href="#" class="mini-link" style="color:#ecdacc;">View experience</a>
-            </div>
-          </article>
-
-          <article class="excursion-card reveal">
-            <img src="./1264675861%20(1).webp" alt="Boat excursion Tenerife" width="800" height="1000">
-            <div class="excursion-content">
-              <span>Ocean</span>
-              <h3>Boat</h3>
-              <p>Partenze sul mare e viste costiere con un tono più rilassato.</p>
-              <a href="#" class="mini-link" style="color:#ecdacc;">View experience</a>
-            </div>
-          </article>
-
-          <article class="excursion-card reveal">
-            <img src="./1264675861%20(1).webp" alt="Park day Tenerife" width="800" height="1000">
-            <div class="excursion-content">
-              <span>Family</span>
-              <h3>Park</h3>
-              <p>Formato facile e leggibile per famiglie e gruppi misti.</p>
-              <a href="#" class="mini-link" style="color:#ecdacc;">View experience</a>
-            </div>
-          </article>
-
-          <article class="excursion-card reveal">
-            <img src="./1264675861%20(1).webp" alt="Buggy route Tenerife" width="800" height="1000">
-            <div class="excursion-content">
-              <span>Road</span>
-              <h3>Buggy</h3>
-              <p>Percorsi dinamici con movimento, scorci e adrenalina.</p>
-              <a href="#" class="mini-link" style="color:#ecdacc;">View experience</a>
-            </div>
-          </article>
-
-          <article class="excursion-card reveal">
-            <img src="./1264675861%20(1).webp" alt="Kayak activity Tenerife" width="800" height="1000">
-            <div class="excursion-content">
-              <span>Water</span>
-              <h3>Kayak</h3>
-              <p>Esperienza più lenta, naturale e vicina al mare.</p>
-              <a href="#" class="mini-link" style="color:#ecdacc;">View experience</a>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-cream" id="pacchetti">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">Pacchetti</span>
-          <h2>Booking combinations ready to choose</h2>
-          <p>Prezzi visibili, CTA chiare e percorsi già pronti aiutano a ridurre attrito e incertezza prima della prenotazione.</p>
-        </div>
-
-        <div class="packages-grid">
-          <article class="package-card reveal">
-            <span>Package 01</span>
-            <h3>Sea Escape</h3>
-            <p>Boat trip, atmosfera sul mare e una giornata più rilassata a Tenerife.</p>
-            <strong>From €89</strong>
-            <a href="#" class="mini-link">Book package</a>
-          </article>
-
-          <article class="package-card reveal">
-            <span>Package 02</span>
-            <h3>Adventure Day</h3>
-            <p>Quad o buggy per chi vuole una giornata più forte e più attiva.</p>
-            <strong>From €109</strong>
-            <a href="#" class="mini-link">Book package</a>
-          </article>
-
-          <article class="package-card reveal">
-            <span>Package 03</span>
-            <h3>Easy Family</h3>
-            <p>Attività più bilanciate per famiglie e gruppi che vogliono semplicità.</p>
-            <strong>From €79</strong>
-            <a href="#" class="mini-link">Book package</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="secrets-gallery">
-      <div class="container">
-        <div class="section-head narrow reveal">
-          <span class="eyebrow">Hidden places</span>
-          <h2>Posti segreti con un tono più editoriale</h2>
-          <p>Blocchi visivi con immagini reali e descrizioni brevi aiutano a creare desiderio senza appesantire la home.</p>
-        </div>
-
-        <div class="secret-grid">
-          <article class="secret-card reveal">
-            <img src="./1264675861%20(1).webp" alt="Secret coastal spot in Tenerife" loading="lazy" width="900" height="700">
-            <div class="secret-body">
-              <h3>Sunset coast</h3>
-              <p>Una costa più tranquilla per chi cerca luce calda, poca folla e viste aperte.</p>
-            </div>
-          </article>
-
-          <article class="secret-card reveal">
-            <img src="./1264675861%20(1).webp" alt="Mountain road in Tenerife" loading="lazy" width="900" height="700">
-            <div class="secret-body">
-              <h3>Road escapes</h3>
-              <p>Strade panoramiche e tappe leggere per trasformare il transfer in esperienza.</p>
-            </div>
-          </article>
-
-          <article class="secret-card reveal">
-            <img src="./1264675861%20(1).webp" alt="Hidden beach in Tenerife" loading="lazy" width="900" height="700">
-            <div class="secret-body">
-              <h3>Quiet beaches</h3>
-              <p>Un’alternativa più calma per chi vuole mare, respiro e un ritmo meno turistico.</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-dark" id="chi-siamo">
-      <div class="container">
-        <div class="about-grid">
-          <div class="section-head reveal" style="margin-bottom:0;">
-            <span class="eyebrow">Chi siamo</span>
-            <h2 style="color:#fff;">A premium concept for Tenerife excursions</h2>
-            <p>Una home travel forte deve anche costruire fiducia, spiegando rapidamente chi sei, come lavori e cosa rende il servizio più semplice o più curato.</p>
+            <div class="chips" id="filters" aria-label="Filtri categorie"></div>
           </div>
 
-          <div class="about-panel reveal">
-            <h3>Who is Isla</h3>
-            <p>Isla unisce esperienze curate, mobile usability e un tono travel più elegante ma facile da usare.</p>
-            <p>L’obiettivo è portare l’utente da ispirazione a scelta, fino al booking o al ticket access, dentro un unico flusso coerente.</p>
+          <div class="hero-note">
+            <span>✔ Fast browsing</span>
+            <span>✔ WhatsApp booking</span>
+            <span>✔ Mobile-first PWA</span>
+          </div>
 
-            <div class="about-list">
-              <div>Escursioni curate e stile più premium.</div>
-              <div>Pensato per uso mobile e flusso PWA.</div>
-              <div>Booking, scan ticket e scoperta in un solo ecosistema.</div>
-              <div>Brand semplice, centrale e leggibile anche su schermi piccoli.</div>
+          <div class="stats">
+            <div class="stat">
+              <strong>14</strong>
+              <span>Excursions</span>
+            </div>
+            <div class="stat">
+              <strong>5</strong>
+              <span>Main categories</span>
+            </div>
+            <div class="stat">
+              <strong>IT · EN · ES</strong>
+              <span>Easy support</span>
+            </div>
+            <div class="stat">
+              <strong>Offline</strong>
+              <span>PWA ready</span>
             </div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <section class="section section-light">
-      <div class="container">
-        <div class="section-head narrow reveal">
-          <span class="eyebrow">Reviews</span>
-          <h2>Trust signals before the booking step</h2>
-          <p>Recensioni e segnali di credibilità aiutano a ridurre il rischio percepito prima del booking.</p>
-        </div>
+        <div class="hero-media">
+          <video
+            id="heroVideo"
+            autoplay
+            muted
+            loop
+            playsinline
+            poster="./1264675861 (1).webp"
+          >
+            <source src="./video prova tenerife.mp4" type="video/mp4" />
+          </video>
 
-        <div class="reviews-grid">
-          <article class="review-card reveal">
-            <strong>Giulia — Milano</strong>
-            <p>Esperienza semplice da capire e molto più ordinata di altri siti di escursioni.</p>
-          </article>
-          <article class="review-card reveal">
-            <strong>Marco — Roma</strong>
-            <p>Mi è piaciuto il fatto che il booking fosse chiaro e che il sito fosse comodo anche da telefono.</p>
-          </article>
-          <article class="review-card reveal">
-            <strong>Sophie — Paris</strong>
-            <p>The visual style feels premium, but the booking path still feels easy and direct.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-tight section-cream">
-      <div class="container">
-        <div class="section-head narrow reveal">
-          <span class="eyebrow">FAQ</span>
-          <h2>Useful answers before booking</h2>
-          <p>Policy, inclusioni e informazioni pratiche dovrebbero essere facili da trovare per abbassare l’incertezza.</p>
-        </div>
-
-        <div class="faq-grid">
-          <article class="faq-item reveal">
-            <h3>Come funziona la prenotazione?</h3>
-            <p>Scegli l’esperienza, controlla il pacchetto e poi prosegui verso il booking o la richiesta rapida.</p>
-          </article>
-          <article class="faq-item reveal">
-            <h3>Ricevo un ticket?</h3>
-            <p>Sì, il flusso può collegarsi a una conferma con accesso rapido da “Scan ticket”.</p>
-          </article>
-          <article class="faq-item reveal">
-            <h3>Le attività sono adatte anche a famiglie?</h3>
-            <p>Dipende dall’esperienza, ma puoi usare pacchetti e categorie per capire subito il livello più adatto.</p>
-          </article>
-          <article class="faq-item reveal">
-            <h3>Posso vedere i dettagli prima di prenotare?</h3>
-            <p>Sì, è importante mostrare prezzo, inclusioni e note essenziali prima della CTA finale.</p>
-          </article>
+          <div class="video-overlay">
+            <div>
+              <strong>Discover your next Tenerife plan</strong>
+              <span>Warm design, fast flow, direct contact.</span>
+            </div>
+            <button class="play-btn" id="playToggle" aria-label="Play o pausa video">❚❚</button>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <div class="container">
-        <div class="cta-banner reveal">
+      <div class="wrap">
+        <div class="section-head">
           <div>
-            <h2>Ready to turn inspiration into booking?</h2>
-            <p>Una homepage efficace dovrebbe finire con un’azione chiara, ripetendo la CTA dopo i blocchi decisionali più importanti.</p>
+            <h2>Featured excursions</h2>
+            <p>
+              A cleaner card layout inspired by your Isla Adventures direction, but kept simple for GitHub Pages.
+            </p>
           </div>
+        </div>
 
-          <div class="cta-actions">
-            <a href="#pacchetti" class="btn-dark">View packages</a>
-            <a href="#chi-siamo" class="btn-light">About Isla</a>
+        <div class="grid" id="excursions"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap panel">
+        <div class="section-head">
+          <div>
+            <h2>Why book with Isla</h2>
+            <p>
+              The goal is to make the site feel calmer, clearer and more premium, while keeping the code easy to manage.
+            </p>
           </div>
+        </div>
+
+        <div class="trust-grid">
+          <article class="trust-card">
+            <strong>Clear cards</strong>
+            <p>Zone, duration, category and price stay visible immediately, without confusing steps.</p>
+          </article>
+          <article class="trust-card">
+            <strong>Direct contact</strong>
+            <p>Booking can stay simple through WhatsApp, ideal for an early-stage tourism PWA.</p>
+          </article>
+          <article class="trust-card">
+            <strong>GitHub Pages friendly</strong>
+            <p>Static files, direct paths and simple caching make the project easier to publish and maintain.</p>
+          </article>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="container footer-inner">
-      <div>© 2026 Isla — so easy so tenerife</div>
-      <div class="footer-links">
-        <a href="#excursion">Excursion</a>
-        <a href="#pacchetti">Pacchetti</a>
-        <a href="#scan-ticket">Scan ticket</a>
-        <a href="#secrets-gallery">Posti segreti</a>
-        <a href="#chi-siamo">Chi siamo</a>
-      </div>
+    <div class="wrap">
+      Isla · Tenerife excursions · PWA booking flow
     </div>
   </footer>
+
+  <template id="cardTemplate">
+    <article class="card">
+      <img class="card-img" src="" alt="" loading="lazy" width="900" height="675" />
+      <div class="card-body">
+        <div class="meta-row">
+          <span class="pill"></span>
+          <span class="price"></span>
+        </div>
+        <h3 class="card-title"></h3>
+        <p class="card-desc"></p>
+        <div class="meta-row" style="margin-bottom: 14px;">
+          <span class="card-meta"></span>
+        </div>
+        <div class="card-actions">
+          <a class="card-link primary" href="https://wa.me/" target="_blank" rel="noopener noreferrer">Book</a>
+          <button class="card-link card-btn" type="button">Details</button>
+        </div>
+      </div>
+    </article>
+  </template>
 
   <script src="./app.js"></script>
 </body>

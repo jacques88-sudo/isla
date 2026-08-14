@@ -1,12 +1,12 @@
 {
-  "name": "Isla",
-  "short_name": "Isla",
-  "description": "Premium Tenerife excursions PWA",
+  "name": "ISLA",
+  "short_name": "ISLA",
+  "description": "ISLA, so easy so tenerife. Escursioni curate a Tenerife: quad, barca, buggy, kayak, parchi e posti segreti.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f4efe8",
-  "theme_color": "#f4efe8",
+  "background_color": "#f8f4ee",
+  "theme_color": "#f8f4ee",
   "icons": [
     {
       "src": "./icon-192.png",

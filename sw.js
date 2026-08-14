@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v4";
+const CACHE_NAME = "isla-adventure-style-v1";
 const OFFLINE_URL = "./offline.html";
 
 const STATIC_ASSETS = [
@@ -43,8 +43,8 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        const cloned = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned));
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         return response;
       })
       .catch(async () => {

@@ -1,753 +1,472 @@
 <!doctype html>
-<html lang="it" data-theme="light">
+<html lang="it">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#7d126d" />
-  <meta name="description" content="Isla - Tenerife excursions, boats, quads, buggies and unforgettable island experiences." />
+  <meta name="theme-color" content="#f4efe8" />
+  <meta name="description" content="Isla - premium Tenerife experiences" />
   <title>Isla</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./icon-192.png" />
   <style>
-    :root,
-    html[data-theme="light"] {
-      --bg: #fff8f4;
-      --surface: rgba(255,255,255,.82);
-      --surface-strong: #ffffff;
-      --border: rgba(125, 18, 109, .12);
-      --text: #4b1144;
-      --muted: #8f6789;
-      --primary: #7d126d;
-      --primary-2: #a11783;
-      --accent: #ff6b6b;
-      --accent-2: #ffb347;
-      --success: #167c62;
-      --shadow: 0 18px 50px rgba(98, 18, 85, .12);
-      --radius-xl: 28px;
-      --radius-lg: 22px;
-      --radius-md: 16px;
-      --max: 1180px;
-    }
-
-    html[data-theme="dark"] {
-      --bg: #161217;
-      --surface: rgba(35, 26, 36, .84);
-      --surface-strong: #241b25;
-      --border: rgba(255,255,255,.08);
-      --text: #f8edf7;
-      --muted: #cfb2ca;
-      --primary: #f05ac7;
-      --primary-2: #ff90dc;
-      --accent: #ff8c72;
-      --accent-2: #ffc86c;
-      --success: #57c6aa;
-      --shadow: 0 18px 50px rgba(0, 0, 0, .35);
+    :root {
+      --bg: #f4efe8;
+      --bg-soft: #f8f4ee;
+      --text: #2f2520;
+      --muted: #7d6f66;
+      --line: rgba(52, 39, 28, .12);
+      --pill: rgba(255,255,255,.44);
+      --pill-dark: #241914;
+      --pill-dark-text: #fffaf5;
+      --white: #fffdf9;
+      --shadow: 0 10px 28px rgba(60, 35, 20, .06);
+      --max: 430px;
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(255, 182, 193, .24), transparent 28%),
-        radial-gradient(circle at top right, rgba(255, 179, 71, .20), transparent 24%),
-        linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 84%, #ffffff 16%));
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: linear-gradient(180deg, #f8f4ee 0%, #f2ece4 100%);
       color: var(--text);
-      min-height: 100vh;
     }
 
-    img { max-width: 100%; display: block; }
-    a { color: inherit; text-decoration: none; }
-    button, input { font: inherit; }
-    button { cursor: pointer; }
+    img, video {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+    }
 
-    .wrap {
-      width: min(100% - 32px, var(--max));
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      border: 0;
+      background: none;
+      cursor: pointer;
+    }
+
+    .app {
+      width: min(100%, var(--max));
       margin: 0 auto;
+      min-height: 100vh;
+      background: transparent;
     }
 
-    .skip-link {
-      position: absolute;
-      left: -9999px;
-      top: auto;
-    }
-
-    .skip-link:focus {
-      left: 12px;
-      top: 12px;
-      background: white;
-      color: #111;
-      padding: 10px 14px;
-      border-radius: 999px;
-      z-index: 999;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(18px);
-      background: color-mix(in srgb, var(--bg) 76%, transparent);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 14px 0;
+    .top {
+      padding: 18px 16px 10px;
+      text-align: center;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
+      margin: 6px 0 18px;
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      letter-spacing: .42rem;
+      color: #2f2620;
     }
 
-    .brand img {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      object-fit: cover;
-      box-shadow: var(--shadow);
-    }
-
-    .brand-copy {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.05;
-    }
-
-    .brand-copy strong {
-      font-size: 1.05rem;
-      letter-spacing: .02em;
-    }
-
-    .brand-copy span {
-      color: var(--muted);
-      font-size: .84rem;
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
+    .nav-pills {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
       gap: 10px;
-    }
-
-    .icon-btn,
-    .cta-btn,
-    .chip,
-    .filter-btn,
-    .search-btn,
-    .card-link {
-      border: 0;
-      transition: transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
-    }
-
-    .icon-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 999px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      box-shadow: var(--shadow);
-    }
-
-    .cta-btn {
-      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 0 18px;
+    }
+
+    .pill-btn {
+      min-height: 42px;
+      padding: 0 16px;
       border-radius: 999px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      color: white;
-      font-weight: 700;
+      border: 1px solid var(--line);
+      background: var(--pill);
+      color: #5e5047;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-size: .66rem;
       box-shadow: var(--shadow);
+      backdrop-filter: blur(4px);
+    }
+
+    .pill-btn.dark {
+      background: var(--pill-dark);
+      color: var(--pill-dark-text);
+      border-color: var(--pill-dark);
+    }
+
+    .pill-btn.icon {
+      width: 44px;
+      min-width: 44px;
+      padding: 0;
+      font-size: 1rem;
+      letter-spacing: 0;
     }
 
     .hero {
-      padding: 34px 0 20px;
-    }
-
-    .hero-grid {
-      display: grid;
-      gap: 24px;
-      align-items: center;
-    }
-
-    .hero-copy,
-    .hero-media,
-    .panel,
-    .stat,
-    .trust-card,
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
-    }
-
-    .hero-copy {
-      border-radius: var(--radius-xl);
-      padding: 28px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--primary) 10%, white);
-      color: var(--primary);
-      font-weight: 700;
-      font-size: .9rem;
-      margin-bottom: 18px;
-    }
-
-    .title {
-      margin: 0 0 14px;
-      font-size: clamp(2.4rem, 7vw, 5.2rem);
-      line-height: .95;
-      letter-spacing: -.04em;
-    }
-
-    .title span {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .lead {
-      margin: 0 0 22px;
-      color: var(--muted);
-      font-size: 1.02rem;
-      max-width: 58ch;
-    }
-
-    .search-shell {
-      display: grid;
-      gap: 12px;
-    }
-
-    .searchbar {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      padding: 10px;
-      background: var(--surface-strong);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-    }
-
-    .searchbar input {
-      border: 0;
-      background: transparent;
-      color: var(--text);
-      outline: none;
-      min-width: 0;
-      padding: 0 14px;
-    }
-
-    .search-btn {
-      min-height: 48px;
-      padding: 0 18px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      color: white;
-      font-weight: 700;
-    }
-
-    .chips {
-      display: flex;
-      gap: 10px;
-      overflow: auto;
-      padding-bottom: 4px;
-      scrollbar-width: none;
-    }
-
-    .chips::-webkit-scrollbar { display: none; }
-
-    .chip,
-    .filter-btn {
-      white-space: nowrap;
-      padding: 11px 14px;
-      border-radius: 999px;
-      background: var(--surface-strong);
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-
-    .filter-btn.active,
-    .chip.active {
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      color: white;
-      border-color: transparent;
-    }
-
-    .hero-note {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: .92rem;
-    }
-
-    .hero-media {
-      border-radius: var(--radius-xl);
-      overflow: hidden;
       position: relative;
-      min-height: 360px;
+      margin-top: 14px;
+      min-height: 318px;
+      overflow: hidden;
+      background: #d7cabe;
     }
 
-    .hero-media video,
-    .hero-media img {
-      width: 100%;
-      height: 100%;
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,.04) 0%, rgba(0,0,0,.18) 100%);
+      pointer-events: none;
+    }
+
+    .hero video,
+    .hero img {
+      height: 318px;
       object-fit: cover;
     }
 
-    .video-overlay {
+    .hero-overlay {
       position: absolute;
-      inset: auto 18px 18px 18px;
+      inset: 0;
+      z-index: 2;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      gap: 14px;
-      background: rgba(21, 15, 22, .34);
-      color: white;
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 18px;
-      padding: 14px 16px;
-      backdrop-filter: blur(10px);
-    }
-
-    .video-overlay strong {
-      display: block;
-      font-size: 1rem;
-    }
-
-    .video-overlay span {
-      font-size: .9rem;
-      color: rgba(255,255,255,.82);
+      justify-content: center;
+      gap: 28px;
+      padding: 20px;
     }
 
     .play-btn {
-      min-width: 54px;
-      height: 54px;
-      border-radius: 999px;
-      background: white;
-      color: var(--primary);
-      font-size: 1.2rem;
-      font-weight: 900;
-    }
-
-    .stats {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.58);
+      color: white;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      padding: 12px 0 6px;
+      place-items: center;
+      font-size: 1.15rem;
+      background: rgba(255,255,255,.06);
+      backdrop-filter: blur(4px);
     }
 
-    .stat {
-      border-radius: 20px;
-      padding: 18px;
+    .discover-btn {
+      min-height: 46px;
+      padding: 0 28px;
+      border-radius: 999px;
+      background: rgba(255, 248, 241, .94);
+      color: #4f433b;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      font-size: .67rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,.08);
     }
 
-    .stat strong {
-      display: block;
-      font-size: 1.45rem;
-      margin-bottom: 4px;
+    .intro {
+      background: #f8f4ef;
+      text-align: center;
+      padding: 56px 24px 44px;
     }
 
-    .stat span {
-      color: var(--muted);
-      font-size: .92rem;
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 24px;
+      font-size: .68rem;
+      letter-spacing: .30em;
+      text-transform: uppercase;
+      color: #9a8d82;
+    }
+
+    .intro-title {
+      margin: 0 0 22px;
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: clamp(2rem, 8vw, 3rem);
+      line-height: 1.15;
+      font-weight: 400;
+      letter-spacing: -.02em;
+      color: #2f2620;
+    }
+
+    .intro-text {
+      margin: 0 auto;
+      max-width: 32ch;
+      color: #7a6e66;
+      font-size: .98rem;
+      line-height: 1.9;
     }
 
     .section {
-      padding: 26px 0;
+      background: #f8f4ef;
+      padding: 0 16px 48px;
+    }
+
+    .section-card {
+      background: rgba(255,255,255,.54);
+      border: 1px solid rgba(74, 56, 41, .08);
+      border-radius: 28px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
     }
 
     .section-head {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
-      gap: 10px 18px;
       align-items: end;
-      margin-bottom: 18px;
+      gap: 12px;
+      margin-bottom: 16px;
     }
 
     .section-head h2 {
       margin: 0;
-      font-size: clamp(1.55rem, 4vw, 2.4rem);
-      letter-spacing: -.03em;
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 1.65rem;
+      font-weight: 400;
+      color: #302720;
     }
 
-    .section-head p {
-      margin: 0;
-      max-width: 56ch;
-      color: var(--muted);
+    .section-head a {
+      font-size: .78rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #9a8b80;
     }
 
-    .panel {
-      border-radius: var(--radius-xl);
-      padding: 18px;
-    }
-
-    .grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .card {
-      border-radius: 24px;
-      overflow: hidden;
-    }
-
-    .card img {
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-    }
-
-    .card-body {
-      padding: 16px;
-    }
-
-    .meta-row {
+    .chips {
       display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      color: var(--muted);
-      font-size: .92rem;
+      gap: 8px;
+      overflow: auto;
+      padding-bottom: 4px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
     }
 
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      padding: 8px 12px;
+    .chips::-webkit-scrollbar {
+      display: none;
+    }
+
+    .chip {
+      white-space: nowrap;
+      min-height: 38px;
+      padding: 0 14px;
       border-radius: 999px;
-      background: color-mix(in srgb, var(--primary) 10%, white);
-      color: var(--primary);
-      font-weight: 700;
-      font-size: .82rem;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.72);
+      color: #62544a;
+      font-size: .8rem;
     }
 
-    .card h3 {
-      margin: 14px 0 8px;
-      font-size: 1.2rem;
-      line-height: 1.18;
+    .chip.active {
+      background: #241914;
+      color: #fffaf5;
+      border-color: #241914;
     }
 
-    .card p {
-      margin: 0 0 14px;
-      color: var(--muted);
-    }
-
-    .price {
-      font-weight: 800;
-      color: var(--primary);
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .card-link {
-      flex: 1;
-      min-height: 46px;
-      padding: 0 16px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      border: 1px solid var(--border);
-    }
-
-    .card-link.primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      color: white;
-      border-color: transparent;
-    }
-
-    .trust-grid {
+    .cards {
       display: grid;
       gap: 14px;
     }
 
-    .trust-card {
-      border-radius: 24px;
-      padding: 20px;
+    .tour-card {
+      overflow: hidden;
+      border-radius: 22px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(70, 52, 39, .08);
     }
 
-    .trust-card strong {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 1rem;
+    .tour-card img {
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
     }
 
-    .trust-card p {
-      margin: 0;
-      color: var(--muted);
+    .tour-body {
+      padding: 14px;
+    }
+
+    .tour-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .tour-zone {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(70, 52, 39, .08);
+      color: #6e5e53;
+      font-size: .74rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .tour-price {
+      color: #2f2620;
+      font-weight: 700;
+      font-size: .92rem;
+    }
+
+    .tour-title {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+      line-height: 1.28;
+      color: #322821;
+    }
+
+    .tour-meta {
+      margin: 0 0 8px;
+      color: #a08f83;
+      font-size: .8rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .tour-desc {
+      margin: 0 0 14px;
+      color: #756960;
+      line-height: 1.65;
+      font-size: .92rem;
+    }
+
+    .tour-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .tour-btn {
+      min-height: 42px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .76rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,.78);
+      color: #51453d;
+    }
+
+    .tour-btn.primary {
+      background: #241914;
+      color: #fffaf5;
+      border-color: #241914;
     }
 
     .footer {
-      padding: 28px 0 44px;
-      color: var(--muted);
-      font-size: .94rem;
-    }
-
-    .empty-state {
-      padding: 22px;
-      border-radius: 20px;
-      background: var(--surface);
-      border: 1px dashed var(--border);
-      color: var(--muted);
+      padding: 0 20px 42px;
       text-align: center;
-    }
-
-    @media (min-width: 820px) {
-      .hero-grid {
-        grid-template-columns: 1.08fr .92fr;
-      }
-
-      .grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .trust-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .stats {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    @media (max-width: 699px) {
-      .brand-copy span {
-        display: none;
-      }
-
-      .searchbar {
-        grid-template-columns: 1fr;
-        border-radius: 24px;
-      }
-
-      .search-btn {
-        width: 100%;
-      }
-
-      .video-overlay {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .play-btn {
-        align-self: flex-end;
-      }
-
-      .card-actions {
-        flex-direction: column;
-      }
-
-      .card-link {
-        width: 100%;
-      }
-
-      .nav-actions .cta-btn span {
-        display: none;
-      }
+      background: #f8f4ef;
+      color: #a09186;
+      font-size: .78rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
     }
 
     @media (prefers-reduced-motion: no-preference) {
-      .icon-btn:hover,
-      .cta-btn:hover,
+      .pill-btn,
+      .play-btn,
+      .discover-btn,
+      .chip,
+      .tour-btn,
+      .tour-card {
+        transition: transform .18s ease, background .18s ease, color .18s ease;
+      }
+
+      .pill-btn:hover,
+      .play-btn:hover,
+      .discover-btn:hover,
       .chip:hover,
-      .filter-btn:hover,
-      .search-btn:hover,
-      .card-link:hover,
-      .card:hover {
-        transform: translateY(-2px);
+      .tour-btn:hover,
+      .tour-card:hover {
+        transform: translateY(-1px);
       }
     }
   </style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Vai al contenuto</a>
+  <div class="app">
+    <header class="top">
+      <div class="brand">ISLA</div>
 
-  <header class="topbar">
-    <div class="wrap">
-      <nav class="nav" aria-label="Navigazione principale">
-        <a class="brand" href="#main" aria-label="Isla home">
-          <img src="./logo-isla.png" alt="Logo Isla" />
-          <div class="brand-copy">
-            <strong>Isla</strong>
-            <span>So easy, so Tenerife</span>
-          </div>
-        </a>
-
-        <div class="nav-actions">
-          <button class="icon-btn" id="themeToggle" aria-label="Cambia tema">☼</button>
-          <a class="cta-btn" href="https://wa.me/" target="_blank" rel="noopener noreferrer">
-            <span>Book now</span>
-          </a>
-        </div>
+      <nav class="nav-pills" aria-label="Main navigation">
+        <a class="pill-btn" href="#experiences">Experiences</a>
+        <a class="pill-btn dark" href="https://wa.me/" target="_blank" rel="noopener noreferrer">Book Now</a>
+        <button class="pill-btn icon" id="menuToggle" aria-label="Open menu">☰</button>
       </nav>
-    </div>
-  </header>
+    </header>
 
-  <main id="main">
     <section class="hero">
-      <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <span class="eyebrow">Premium Tenerife experiences</span>
-          <h1 class="title">Explore Tenerife with <span>Isla</span></h1>
-          <p class="lead">
-            Boat trips, buggy tours, quad adventures, island routes and sunset moments,
-            all inside a cleaner booking flow designed for mobile first.
-          </p>
+      <video
+        id="heroVideo"
+        autoplay
+        muted
+        loop
+        playsinline
+        poster="./1264675861 (1).webp"
+      >
+        <source src="./video prova tenerife.mp4" type="video/mp4" />
+      </video>
 
-          <div class="search-shell">
-            <form class="searchbar" id="searchForm">
-              <input
-                id="searchInput"
-                type="search"
-                placeholder="Search excursion, zone or category"
-                aria-label="Cerca escursione"
-              />
-              <button class="search-btn" type="submit">Search</button>
-            </form>
-
-            <div class="chips" id="filters" aria-label="Filtri categorie"></div>
-          </div>
-
-          <div class="hero-note">
-            <span>✔ Fast browsing</span>
-            <span>✔ WhatsApp booking</span>
-            <span>✔ Mobile-first PWA</span>
-          </div>
-
-          <div class="stats">
-            <div class="stat">
-              <strong>14</strong>
-              <span>Excursions</span>
-            </div>
-            <div class="stat">
-              <strong>5</strong>
-              <span>Main categories</span>
-            </div>
-            <div class="stat">
-              <strong>IT · EN · ES</strong>
-              <span>Easy support</span>
-            </div>
-            <div class="stat">
-              <strong>Offline</strong>
-              <span>PWA ready</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero-media">
-          <video
-            id="heroVideo"
-            autoplay
-            muted
-            loop
-            playsinline
-            poster="./1264675861 (1).webp"
-          >
-            <source src="./video prova tenerife.mp4" type="video/mp4" />
-          </video>
-
-          <div class="video-overlay">
-            <div>
-              <strong>Discover your next Tenerife plan</strong>
-              <span>Warm design, fast flow, direct contact.</span>
-            </div>
-            <button class="play-btn" id="playToggle" aria-label="Play o pausa video">❚❚</button>
-          </div>
-        </div>
+      <div class="hero-overlay">
+        <button class="play-btn" id="playToggle" aria-label="Play or pause video">❚❚</button>
+        <a class="discover-btn" href="#intro">Discover More</a>
       </div>
     </section>
 
-    <section class="section">
-      <div class="wrap">
+    <section class="intro" id="intro">
+      <span class="eyebrow">Tenerife</span>
+      <h1 class="intro-title">Begin your<br />adventure with...</h1>
+      <p class="intro-text">
+        Un’isola di vulcani, oceano e luce calda. ISLA seleziona esperienze curate nei dettagli,
+        per farti vivere Tenerife con un ritmo più pulito, visivo e diretto.
+      </p>
+    </section>
+
+    <section class="section" id="experiences">
+      <div class="section-card">
         <div class="section-head">
-          <div>
-            <h2>Featured excursions</h2>
-            <p>
-              A cleaner card layout inspired by your Isla Adventures direction, but kept simple for GitHub Pages.
-            </p>
-          </div>
+          <h2>Featured experiences</h2>
+          <a href="https://wa.me/" target="_blank" rel="noopener noreferrer">All tours</a>
         </div>
 
-        <div class="grid" id="excursions"></div>
+        <div class="chips" id="filters"></div>
+        <div class="cards" id="excursions"></div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="wrap panel">
-        <div class="section-head">
-          <div>
-            <h2>Why book with Isla</h2>
-            <p>
-              The goal is to make the site feel calmer, clearer and more premium, while keeping the code easy to manage.
-            </p>
-          </div>
-        </div>
-
-        <div class="trust-grid">
-          <article class="trust-card">
-            <strong>Clear cards</strong>
-            <p>Zone, duration, category and price stay visible immediately, without confusing steps.</p>
-          </article>
-          <article class="trust-card">
-            <strong>Direct contact</strong>
-            <p>Booking can stay simple through WhatsApp, ideal for an early-stage tourism PWA.</p>
-          </article>
-          <article class="trust-card">
-            <strong>GitHub Pages friendly</strong>
-            <p>Static files, direct paths and simple caching make the project easier to publish and maintain.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="wrap">
-      Isla · Tenerife excursions · PWA booking flow
-    </div>
-  </footer>
+    <footer class="footer">
+      Isla · Tenerife premium experiences
+    </footer>
+  </div>
 
   <template id="cardTemplate">
-    <article class="card">
-      <img class="card-img" src="" alt="" loading="lazy" width="900" height="675" />
-      <div class="card-body">
-        <div class="meta-row">
-          <span class="pill"></span>
-          <span class="price"></span>
+    <article class="tour-card">
+      <img class="tour-image" src="" alt="" loading="lazy" width="900" height="675" />
+      <div class="tour-body">
+        <div class="tour-top">
+          <span class="tour-zone"></span>
+          <span class="tour-price"></span>
         </div>
-        <h3 class="card-title"></h3>
-        <p class="card-desc"></p>
-        <div class="meta-row" style="margin-bottom: 14px;">
-          <span class="card-meta"></span>
-        </div>
-        <div class="card-actions">
-          <a class="card-link primary" href="https://wa.me/" target="_blank" rel="noopener noreferrer">Book</a>
-          <button class="card-link card-btn" type="button">Details</button>
+        <h3 class="tour-title"></h3>
+        <p class="tour-meta"></p>
+        <p class="tour-desc"></p>
+        <div class="tour-actions">
+          <a class="tour-btn primary" href="https://wa.me/" target="_blank" rel="noopener noreferrer">Book</a>
+          <button class="tour-btn detail-btn" type="button">Details</button>
         </div>
       </div>
     </article>

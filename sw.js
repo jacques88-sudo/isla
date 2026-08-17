@@ -1,18 +1,17 @@
-const CACHE_NAME = "isla-adventure-style-v1";
+const CACHE_NAME = "isla-static-v2";
 const OFFLINE_URL = "./offline.html";
 
 const STATIC_ASSETS = [
   "./",
   "./index.html",
-  "./app.js",
   "./manifest.json",
   "./offline.html",
-  "./logo-isla.png",
-  "./icon-192.png",
-  "./icon-512.png",
-  "./icon-maskable-512.png",
-  "./1264675861 (1).webp",
-  "./video prova tenerife.mp4"
+  "./assets/logo-isla.png",
+  "./assets/icon-192.png",
+  "./assets/icon-512.png",
+  "./assets/icon-maskable-512.png",
+  "./assets/1264675861 (1).webp",
+  "./assets/video prova tenerife.mp4"
 ];
 
 self.addEventListener("install", (event) => {
@@ -40,22 +39,32 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
+  const request = event.request;
+  const isNavigation = request.mode === "navigate";
+
   event.respondWith(
-    fetch(event.request)
+    fetch(request)
       .then((response) => {
+        if (!response || response.status !== 200 || response.type === "opaque") {
+          return response;
+        }
         const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
         return response;
       })
       .catch(async () => {
-        const cached = await caches.match(event.request);
+        const cached = await caches.match(request);
         if (cached) return cached;
 
-        if (event.request.mode === "navigate") {
-          return caches.match(OFFLINE_URL);
+        if (isNavigation) {
+          const offline = await caches.match(OFFLINE_URL);
+          if (offline) return offline;
         }
 
-        return new Response("", { status: 404, statusText: "Not found" });
+        return new Response("Resource unavailable offline", {
+          status: 503,
+          headers: { "Content-Type": "text/plain; charset=utf-8" }
+        });
       })
   );
 });

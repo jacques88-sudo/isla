@@ -5,8 +5,10 @@
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f8f4ee",
-  "theme_color": "#f8f4ee",
+  "orientation": "portrait",
+  "lang": "it-IT",
+  "background_color": "#f7f6f2",
+  "theme_color": "#01696f",
   "icons": [
     {
       "src": "./assets/icon-192.png",

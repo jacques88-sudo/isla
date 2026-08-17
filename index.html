@@ -1,1343 +1,849 @@
-<!doctype html>
-<html lang="it">
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#f8f4ee" />
-  <meta name="description" content="ISLA — Escursioni e attività premium a Tenerife" />
-  <title>ISLA — so easy so tenerife</title>
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" href="./icon-192.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ISLA — Escursioni e attività premium a Tenerife</title>
+  <meta name="description" content="ISLA, so easy so tenerife. Escursioni curate a Tenerife: quad, barca, buggy, kayak, parchi e posti segreti. Piccoli gruppi e guide locali." />
+  <meta property="og:title" content="ISLA — so easy so tenerife" />
+  <meta property="og:description" content="Escursioni e pacchetti premium a Tenerife, prenotabili in due minuti." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#01696f" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300..600&display=swap" rel="stylesheet">
+
   <style>
-    :root {
-      --background: #f8f4ee;
-      --foreground: #2e2621;
-      --card: #fffdf9;
-      --card-foreground: #2e2621;
-      --primary: #28201b;
-      --primary-foreground: #fbf7f1;
-      --secondary: #eee5d8;
-      --secondary-foreground: #41362f;
-      --muted: #f2ece3;
-      --muted-foreground: #7d7066;
-      --accent: #c8a56a;
-      --accent-foreground: #2c241f;
-      --sand: #eadbc4;
-      --sand-foreground: #41342c;
-      --cream: #f4eee6;
-      --cream-foreground: #2f2620;
-      --border: rgba(73, 58, 45, 0.12);
-      --ring: rgba(200, 165, 106, 0.35);
-      --gradient-hero: linear-gradient(
-        180deg,
-        rgba(40, 32, 27, 0.28) 0%,
-        rgba(40, 32, 27, 0.12) 45%,
-        rgba(40, 32, 27, 0.55) 100%
-      );
-      --shadow-card: 0 1px 2px rgba(46, 38, 33, 0.05), 0 18px 40px -28px rgba(46, 38, 33, 0.35);
-      --shadow-float: 0 26px 60px -30px rgba(46, 38, 33, 0.45);
-      --transition-smooth: 420ms cubic-bezier(0.22, 0.68, 0.24, 1);
-      --max: 1280px;
+    /* ── TOKENS ── */
+    :root, [data-theme="light"] {
+      --color-bg:             #f7f6f2;
+      --color-surface:        #f9f8f5;
+      --color-cream:          #faf9f6;
+      --color-cream-fg:       #28251d;
+      --color-sand:           #e8e3db;
+      --color-sand-fg:        #28251d;
+      --color-card:           #ffffff;
+      --color-border:         rgba(40,37,29,0.12);
+      --color-text:           #28251d;
+      --color-muted:          #7a7974;
+      --color-primary:        #01696f;
+      --color-primary-hover:  #0c4e54;
+      --color-primary-fg:     #f9f8f5;
+      --color-accent:         #da7101;
+      --font-display:         'Cormorant Garamond', Georgia, serif;
+      --font-body:            'DM Sans', 'Helvetica Neue', sans-serif;
+      --shadow-card:          0 2px 8px rgba(40,37,29,0.08), 0 1px 2px rgba(40,37,29,0.05);
+      --shadow-float:         0 8px 28px rgba(40,37,29,0.14);
+      --radius-sm:            0.375rem;
+      --radius-lg:            0.75rem;
+      --radius-xl:            1rem;
+      --radius-3xl:           1.5rem;
+      --transition:           180ms cubic-bezier(0.16,1,0.3,1);
+    }
+    [data-theme="dark"] {
+      --color-bg:          #171614;
+      --color-surface:     #1c1b19;
+      --color-cream:       #1f1e1b;
+      --color-cream-fg:    #cdccca;
+      --color-sand:        #2a2926;
+      --color-sand-fg:     #cdccca;
+      --color-card:        #201f1d;
+      --color-border:      rgba(205,204,202,0.1);
+      --color-text:        #cdccca;
+      --color-muted:       #797876;
+      --color-primary:     #4f98a3;
+      --color-primary-hover:#227f8b;
+      --color-primary-fg:  #171614;
+      --color-accent:      #fdab43;
+      --shadow-card:       0 2px 8px rgba(0,0,0,0.28);
+      --shadow-float:      0 8px 28px rgba(0,0,0,0.4);
     }
 
-    * { box-sizing: border-box; }
-
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 8rem;
-    }
-
+    /* ── BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; scroll-padding-top: 80px; }
     body {
-      margin: 0;
-      background: var(--background);
-      color: var(--foreground);
-      font-family: "Jost", system-ui, sans-serif;
-      font-weight: 300;
-      -webkit-font-smoothing: antialiased;
+      min-height: 100dvh;
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      color: var(--color-text);
+      background: var(--color-bg);
+      line-height: 1.6;
     }
-
-    img, video { display: block; width: 100%; max-width: 100%; }
+    img, video { display: block; max-width: 100%; }
+    button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
     a { color: inherit; text-decoration: none; }
-    button { font: inherit; border: 0; background: none; cursor: pointer; }
-
-    h1, h2, h3, h4 {
-      font-family: "Cormorant Garamond", Georgia, serif;
-      font-weight: 300;
-      letter-spacing: 0.01em;
-      margin: 0;
+    ul, ol { list-style: none; }
+    h1,h2,h3,h4,h5,h6 { text-wrap: balance; line-height: 1.15; }
+    p { text-wrap: pretty; }
+    :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
 
-    .container {
-      width: min(calc(100% - 32px), var(--max));
-      margin: 0 auto;
+    /* ── UTILITIES ── */
+    .font-display { font-family: var(--font-display); }
+    .text-muted    { color: var(--color-muted); }
+    .label {
+      font-size: 11px; text-transform: uppercase;
+      letter-spacing: 0.28em; color: var(--color-muted);
     }
-
-    .transition-smooth { transition: all var(--transition-smooth); }
-    .shadow-card { box-shadow: var(--shadow-card); }
-    .shadow-float { box-shadow: var(--shadow-float); }
-    .gradient-hero { background-image: var(--gradient-hero); }
-    .tracking-brand { letter-spacing: 0.32em; }
-
-    @keyframes rise-in {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: none; }
+    .transition-smooth { transition: all var(--transition); }
+    .gradient-hero {
+      background: linear-gradient(to top, rgba(10,10,8,0.72) 0%, rgba(10,10,8,0.22) 55%, transparent 100%);
     }
+    .container { max-width: 72rem; margin-inline: auto; padding-inline: 1.5rem; }
+    .container-sm { max-width: 48rem; margin-inline: auto; padding-inline: 1.5rem; }
 
-    .animate-rise {
-      animation: rise-in 760ms cubic-bezier(0.22, 0.68, 0.24, 1) both;
-    }
-
+    /* ── HEADER ── */
     .site-header {
-      position: fixed;
-      inset: 0 0 auto 0;
-      z-index: 50;
-      padding: 16px 0;
-      border-bottom: 1px solid transparent;
-      background: transparent;
-      transition: all var(--transition-smooth);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      transition: background var(--transition), backdrop-filter var(--transition);
     }
-
     .site-header.scrolled {
-      padding: 10px 0;
-      background: rgba(248, 244, 238, 0.82);
-      backdrop-filter: blur(14px);
-      border-bottom-color: rgba(73, 58, 45, 0.12);
+      background: color-mix(in oklab, var(--color-bg) 85%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .site-header .logo img { height: 36px; width: auto; }
+    .site-header nav { display: flex; align-items: center; gap: 2rem; }
+    .site-header nav a {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em;
+      opacity: 0.75; transition: opacity var(--transition);
+    }
+    .site-header nav a:hover { opacity: 1; }
+    .nav-book {
+      border: 1px solid var(--color-border);
+      border-radius: 9999px;
+      padding: 0.5rem 1.25rem;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em;
+      transition: all var(--transition);
+    }
+    .nav-book:hover { background: var(--color-primary); color: var(--color-primary-fg); border-color: transparent; }
+    .theme-toggle {
+      width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; border: 1px solid var(--color-border);
+      transition: all var(--transition);
+    }
+    .theme-toggle:hover { background: var(--color-surface); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      width: 36px; height: 36px; align-items: center; justify-content: center;
+    }
+    .hamburger span { display: block; width: 22px; height: 1.5px; background: currentColor; transition: all var(--transition); }
+    @media (max-width: 767px) {
+      .site-header nav.desktop-nav { display: none; }
+      .hamburger { display: flex; }
+      .mobile-menu {
+        display: none; position: fixed; inset: 0; top: 64px;
+        background: var(--color-bg); z-index: 99;
+        flex-direction: column; align-items: center; justify-content: center;
+        gap: 2rem;
+      }
+      .mobile-menu.open { display: flex; }
+      .mobile-menu a { font-size: 1.5rem; font-family: var(--font-display); }
     }
 
-    .header-desktop { display: none; }
-    .header-mobile { display: block; }
-
-    .wordmark {
-      display: block;
-      text-align: center;
-      line-height: 1;
-    }
-
-    .wordmark-main {
-      display: block;
-      font-family: "Cormorant Garamond", Georgia, serif;
-      transition: all var(--transition-smooth);
-    }
-
-    .site-header:not(.scrolled) .wordmark-main {
-      font-size: clamp(2rem, 5vw, 2.6rem);
-    }
-
-    .site-header.scrolled .wordmark-main {
-      font-size: clamp(1.6rem, 4vw, 2rem);
-    }
-
-    .wordmark-sub {
-      display: block;
-      margin-top: 4px;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.28em;
-      color: var(--muted-foreground);
-      transition: all var(--transition-smooth);
-    }
-
-    .header-mobile .top-mobile-actions {
-      margin-top: 12px;
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .pill-btn {
-      min-height: 42px;
-      padding: 0 14px;
-      border-radius: 999px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      text-align: center;
-      border: 1px solid rgba(46, 38, 33, 0.25);
-      transition: all   var(--transition-smooth);display: flex;
-  align-items: center;
-  justify-content: center;
-    }
-
-    .pill-btn.primary {
-      background: var(--primary);
-      color: var(--primary-foreground);
-      border-color: var(--primary);
-    }
-
-    .pill-btn.soft {
-      background: rgba(255,255,255,.35);
-      color: var(--foreground);
-    }
-
-    .install-btn {
-      margin-top: 8px;
-      width: 100%;
-      justify-content: center;
-      display: none;
-      align-items: center;
-      gap: 8px;
-    }
-
+    /* ── HERO ── */
     .hero {
-      position: relative;
-      isolation: isolate;
-      min-height: 420px;
-      height: 58vh;
-      overflow: hidden;
-      padding-top: 150px;
+      position: relative; isolation: isolate;
+      height: 58vh; min-height: 380px;
+      width: 100%; overflow: hidden;
+      padding-top: 10rem;
+      display: flex; align-items: flex-end; justify-content: center;
     }
-
-    .hero video, .hero img {
-      position: absolute;
-      inset: 0;
-      z-index: -2;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    @media (min-width: 768px) { .hero { height: 52vh; min-height: 420px; } }
+    .hero video {
+      position: absolute; inset: 0; z-index: -1;
+      width: 100%; height: 100%; object-fit: cover;
     }
-
-    .hero .gradient-hero {
-      position: absolute;
-      inset: 0;
-      z-index: -1;
+    .hero-overlay { position: absolute; inset: 0; z-index: -1; }
+    .hero-controls {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 1.25rem; padding-bottom: 2.5rem; text-align: center; color: var(--color-primary-fg);
     }
-
-    .hero-content {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 20px;
-      padding: 24px 24px 42px;
-      text-align: center;
+    .btn-play {
+      width: 56px; height: 56px; border-radius: 50%;
+      border: 1px solid rgba(249,248,245,0.6);
+      background: rgba(249,248,245,0.1);
+      color: var(--color-primary-fg);
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(4px);
+      transition: background var(--transition);
     }
-
-    .play-btn {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(255,255,255,.6);
-      background: rgba(255,255,255,.08);
-      color: white;
-      backdrop-filter: blur(8px);
-      transition: all var(--transition-smooth);
+    .btn-play:hover { background: rgba(249,248,245,0.25); }
+    .btn-discover {
+      border-radius: 9999px; background: var(--color-primary-fg);
+      padding: 0.75rem 2rem;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.22em;
+      color: var(--color-text);
+      transition: opacity var(--transition);
     }
+    .btn-discover:hover { opacity: 0.85; }
 
-    .cta-light {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 46px;
-      padding: 0 28px;
-      border-radius: 999px;
-      background: var(--primary-foreground);
-      color: var(--foreground);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.22em;
-      transition: all var(--transition-smooth);
-    }
+    /* ── SECTIONS SHARED ── */
+    section { scroll-margin-top: 80px; }
 
-    .section { padding: 84px 0; }
-    .section-cream { background: var(--cream); color: var(--cream-foreground); }
-    .section-center { text-align: center; }
-
-    .eyebrow {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.28em;
-      color: var(--muted-foreground);
-    }
-
+    /* ── INTRO ── */
     .intro {
-      max-width: 760px;
-      margin: 0 auto;
-      text-align: center;
+      text-align: center; padding-block: clamp(5rem,8vw,7rem) clamp(3rem,5vw,4rem);
     }
-
     .intro h1 {
-      margin-top: 20px;
-      font-size: clamp(3rem, 7vw, 5.2rem);
-      line-height: 1.04;
-      text-wrap: balance;
+      font-family: var(--font-display);
+      font-size: clamp(2.25rem, 1.5rem + 2.5vw, 3.75rem);
+      margin-top: 1.25rem;
     }
+    .intro p { max-width: 38rem; margin: 1.5rem auto 0; color: var(--color-muted); line-height: 1.75; }
 
-    .intro p {
-      max-width: 560px;
-      margin: 24px auto 0;
-      font-size: 18px;
-      line-height: 1.8;
-      color: var(--muted-foreground);
+    /* ── JOURNEY ── */
+    .journey { padding-block: 3rem 5rem; }
+    @media (min-width: 768px) { .journey { padding-block: 4rem 7rem; } }
+    .journey-grid { display: grid; gap: 3rem; }
+    @media (min-width: 1024px) { .journey-grid { grid-template-columns: 0.9fr 1.1fr; align-items: center; } }
+    .journey h2 { font-family: var(--font-display); font-size: clamp(2rem,1.2rem+2.5vw,3.25rem); margin-top: 1rem; }
+    .journey-steps li {
+      display: grid; grid-template-columns: auto 1fr; gap: 1.5rem;
+      border-bottom: 1px solid var(--color-border); padding-bottom: 2rem; margin-bottom: 2rem;
     }
+    .step-num { font-family: var(--font-display); font-size: 1.875rem; color: var(--color-accent); }
+    .step-title { font-family: var(--font-display); font-size: 1.5rem; }
+    .step-desc { margin-top: 0.25rem; font-size: 0.875rem; color: var(--color-muted); }
 
-    .trust-grid {
-      display: grid;
-      gap: 28px;
-    }
-
-    .trust-item h3 {
-      margin-top: 16px;
-      font-size: 34px;
-    }
-
-    .trust-item p {
-      margin: 8px 0 0;
-      font-size: 14px;
-      color: var(--muted-foreground);
-    }
-
-    .icon-badge {
-      width: 20px;
-      height: 20px;
-      opacity: .9;
-    }
-
-    .journey-grid {
-      display: grid;
-      gap: 44px;
-      align-items: center;
-    }
-
-    .journey-copy h2 {
-      margin-top: 16px;
-      font-size: clamp(3rem, 6vw, 4.4rem);
-    }
-
-    .journey-copy p {
-      margin-top: 20px;
-      max-width: 420px;
-      color: var(--muted-foreground);
-      line-height: 1.8;
-      font-size: 17px;
-    }
-
-    .journey-steps {
-      display: grid;
-      gap: 26px;
-    }
-
-    .step {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 22px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 22px;
-    }
-
-    .step-num {
-      font-family: "Cormorant Garamond", Georgia, serif;
-      font-size: 42px;
-      color: var(--accent);
-    }
-
-    .step h3 {
-      font-size: 34px;
-    }
-
-    .step p {
-      margin: 6px 0 0;
-      font-size: 14px;
-      color: var(--muted-foreground);
-    }
-
+    /* ── SCAN TICKET ── */
     .scan-ticket {
-      margin-top: 56px;
-      display: grid;
-      gap: 18px;
-      align-items: center;
-      border: 1px solid var(--border);
-      background: var(--sand);
-      color: var(--sand-foreground);
-      padding: 34px 28px;
+      margin-top: 4rem; border: 1px solid var(--color-border);
+      background: var(--color-sand); color: var(--color-sand-fg);
+      border-radius: var(--radius-sm); padding: 2.5rem 2rem;
+      display: grid; gap: 1.5rem;
     }
-
-    .scan-ticket h3 {
-      font-size: 42px;
+    @media (min-width: 640px) { .scan-ticket { grid-template-columns: auto 1fr auto; align-items: center; } }
+    .scan-ticket h3 { font-family: var(--font-display); font-size: 1.875rem; }
+    .scan-ticket p { font-size: 0.875rem; opacity: 0.8; margin-top: 0.25rem; }
+    .btn-scanner {
+      border-radius: 9999px; background: var(--color-primary);
+      padding: 0.75rem 1.75rem; text-align: center;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em;
+      color: var(--color-primary-fg); transition: opacity var(--transition); white-space: nowrap;
     }
+    .btn-scanner:hover { opacity: 0.85; }
 
-    .scan-ticket p {
-      margin: 6px 0 0;
-      font-size: 14px;
-      opacity: .8;
-    }
-
-    .section-head {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: end;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .section-head h2 {
-      margin-top: 12px;
-      font-size: clamp(3rem, 6vw, 4.4rem);
-    }
-
-    .section-link {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .2em;
-    }
-
-    .cards-grid {
-      margin-top: 40px;
-      display: grid;
-      gap: 20px;
-    }
-
-    .experience-card {
-      position: relative;
-      display: block;
-      overflow: hidden;
-      border-radius: 28px;
+    /* ── CATEGORIE ── */
+    .categorie { background: var(--color-cream); color: var(--color-cream-fg); }
+    .categorie-inner { padding-block: clamp(5rem,7vw,7rem); }
+    .categorie-header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1rem; }
+    .categorie-header h2 { font-family: var(--font-display); font-size: clamp(2rem,1.2rem+2.5vw,3.25rem); margin-top: 0.75rem; }
+    .cat-grid { margin-top: 2.5rem; display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
+    @media (min-width: 640px)  { .cat-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .cat-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .cat-card {
+      display: block; overflow: hidden; border-radius: var(--radius-3xl);
       box-shadow: var(--shadow-card);
-      transition: all var(--transition-smooth);
-    }
-
-    .experience-card:hover { box-shadow: var(--shadow-float); }
-
-    .experience-card-media {
+      transition: box-shadow var(--transition), transform var(--transition);
       position: relative;
-      aspect-ratio: 16 / 9;
-      overflow: hidden;
+    }
+    .cat-card:hover { box-shadow: var(--shadow-float); transform: translateY(-2px); }
+    .cat-img-wrap { position: relative; aspect-ratio: 16/9; overflow: hidden; }
+    .cat-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 400ms ease; }
+    .cat-card:hover .cat-img-wrap img { transform: scale(1.05); }
+    .cat-overlay { position: absolute; inset: 0; }
+    .cat-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.25rem 1.5rem; display: flex; align-items: flex-end; }
+    .cat-label h3 { font-family: var(--font-display); font-size: clamp(1.5rem,1rem+1.5vw,2.25rem); color: var(--color-primary-fg); }
+
+    /* ── PACCHETTI ── */
+    .pacchetti { padding-block: clamp(5rem,7vw,7rem); }
+    .pacchetti h2 { font-family: var(--font-display); font-size: clamp(2rem,1.2rem+2.5vw,3.25rem); margin-top: 0.75rem; }
+    .pacchetti-grid { margin-top: 2.5rem; display: grid; gap: 1.5rem; }
+    @media (min-width: 768px) { .pacchetti-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .package-card {
+      display: flex; flex-direction: column; border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm); padding: 2rem; transition: background var(--transition);
+    }
+    .package-card:hover { background: var(--color-cream); }
+    .pkg-days { font-size: 10px; text-transform: uppercase; letter-spacing: 0.24em; color: var(--color-muted); }
+    .pkg-name { font-family: var(--font-display); font-size: 1.875rem; margin-top: 0.75rem; }
+    .pkg-desc { font-size: 0.875rem; line-height: 1.6; color: var(--color-muted); margin-top: 0.75rem; flex: 1; }
+    .pkg-price { font-family: var(--font-display); font-size: 1.5rem; margin-top: 1.5rem; }
+    .btn-pkg {
+      margin-top: 1.25rem; border-radius: 9999px;
+      border: 1px solid rgba(40,37,29,0.25); padding: 0.75rem;
+      text-align: center; font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em;
+      transition: all var(--transition);
+    }
+    .btn-pkg:hover { background: var(--color-primary); color: var(--color-primary-fg); border-color: transparent; }
+
+    /* ── POSTI SEGRETI ── */
+    .posti-segreti { position: relative; isolation: isolate; }
+    .posti-segreti img.bg { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; }
+    .posti-overlay { position: absolute; inset: 0; z-index: -1; }
+    .posti-inner {
+      max-width: 48rem; margin-inline: auto;
+      padding: clamp(6rem,10vw,8rem) 1.5rem;
+      text-align: center; color: var(--color-primary-fg);
+    }
+    .posti-inner h2 { font-family: var(--font-display); font-size: clamp(2rem,1.2rem+2.5vw,3.25rem); margin-top: 1rem; }
+    .posti-inner p { max-width: 38rem; margin: 1.25rem auto 0; opacity: 0.9; }
+    .btn-scopri {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      margin-top: 2rem; border-radius: 9999px;
+      background: var(--color-primary-fg); padding: 0.75rem 2rem;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em;
+      color: var(--color-text); transition: opacity var(--transition);
+    }
+    .btn-scopri:hover { opacity: 0.85; }
+
+    /* ── CHI SIAMO ── */
+    .chi-siamo { padding-block: clamp(5rem,7vw,7rem); }
+    .chi-grid { display: grid; gap: 3rem; }
+    @media (min-width: 1024px) { .chi-grid { grid-template-columns: 1fr 1fr; align-items: center; } }
+    .chi-siamo img { aspect-ratio: 4/3; width: 100%; object-fit: cover; border-radius: var(--radius-sm); box-shadow: var(--shadow-card); }
+    .chi-siamo h2 { font-family: var(--font-display); font-size: clamp(2rem,1.2rem+2.5vw,3.25rem); margin-top: 0.75rem; }
+    .chi-siamo p { color: var(--color-muted); margin-top: 1.25rem; }
+    .chi-siamo em { font-style: italic; color: var(--color-text); }
+
+    /* ── RECENSIONI ── */
+    .recensioni { background: var(--color-cream); color: var(--color-cream-fg); }
+    .recensioni-inner { padding-block: clamp(5rem,7vw,7rem); }
+    .recensioni h2 { font-family: var(--font-display); font-size: clamp(2rem,1.2rem+2.5vw,3.25rem); margin-top: 0.75rem; }
+    .recensioni-grid { margin-top: 2.5rem; display: grid; gap: 1.5rem; }
+    @media (min-width: 768px) { .recensioni-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .review-card { background: var(--color-card); border-radius: var(--radius-sm); padding: 2rem; box-shadow: var(--shadow-card); }
+    .stars { display: flex; gap: 0.25rem; }
+    .stars svg { width: 14px; height: 14px; fill: var(--color-accent); color: var(--color-accent); }
+    .review-card blockquote { font-family: var(--font-display); font-size: 1.25rem; line-height: 1.4; margin-top: 1.25rem; }
+    .review-card figcaption { margin-top: 1.25rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--color-muted); }
+
+    /* ── FAQ ── */
+    .faq { padding-block: clamp(5rem,7vw,7rem); }
+    .faq h2 { font-family: var(--font-display); font-size: clamp(2rem,1.2rem+2.5vw,3.25rem); margin-top: 0.75rem; }
+    .faq-list { margin-top: 2.5rem; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+    .faq-item { border-bottom: 1px solid var(--color-border); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-btn {
+      width: 100%; display: flex; align-items: center; justify-content: space-between;
+      gap: 1.5rem; padding: 1.25rem 0; text-align: left;
+      font-family: var(--font-display); font-size: 1.25rem;
+    }
+    .faq-icon { font-size: 1.5rem; line-height: 1; color: var(--color-muted); flex-shrink: 0; }
+    .faq-answer { font-size: 0.875rem; line-height: 1.7; color: var(--color-muted); padding-bottom: 1.5rem; display: none; }
+    .faq-answer.open { display: block; }
+
+    /* ── CTA BOOK ── */
+    .cta-book {
+      background: var(--color-primary); color: var(--color-primary-fg);
+      padding-block: clamp(6rem,10vw,8rem); text-align: center;
+    }
+    .cta-book h2 { font-family: var(--font-display); font-size: clamp(2.25rem,1rem+4vw,3.75rem); margin-top: 1rem; }
+    .cta-book p { max-width: 36rem; margin: 1.25rem auto 0; opacity: 0.8; }
+    .cta-btns { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; margin-top: 2.25rem; }
+    @media (min-width: 640px) { .cta-btns { flex-direction: row; justify-content: center; } }
+    .btn-cta-primary {
+      border-radius: 9999px; background: var(--color-primary-fg);
+      padding: 0.875rem 2.25rem; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-text);
+      transition: opacity var(--transition);
+    }
+    .btn-cta-primary:hover { opacity: 0.85; }
+    .btn-cta-secondary {
+      border-radius: 9999px; border: 1px solid rgba(249,248,245,0.4);
+      padding: 0.875rem 2.25rem; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.2em; transition: background var(--transition);
+    }
+    .btn-cta-secondary:hover { background: rgba(249,248,245,0.1); }
+
+    /* ── FOOTER ── */
+    .site-footer { background: var(--color-text); color: var(--color-bg); padding: 3rem 1.5rem 2rem; }
+    .footer-grid { display: grid; gap: 2rem; max-width: 72rem; margin-inline: auto; }
+    @media (min-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .footer-brand img { height: 28px; filter: brightness(0) invert(1); }
+    .footer-brand p { margin-top: 0.75rem; font-size: 0.875rem; opacity: 0.6; }
+    .footer-col h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0.5; margin-bottom: 1rem; }
+    .footer-col a { display: block; font-size: 0.875rem; opacity: 0.7; margin-bottom: 0.5rem; transition: opacity var(--transition); }
+    .footer-col a:hover { opacity: 1; }
+    .footer-bottom {
+      max-width: 72rem; margin: 2rem auto 0;
+      padding-top: 1.5rem; border-top: 1px solid rgba(249,248,245,0.12);
+      display: flex; flex-wrap: wrap; justify-content: space-between;
+      gap: 0.5rem; font-size: 0.75rem; opacity: 0.45;
     }
 
-    .experience-card-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform var(--transition-smooth);
-    }
-
-    .experience-card:hover .experience-card-media img {
-      transform: scale(1.05);
-    }
-
-    .experience-card-overlay {
-      position: absolute;
-      inset: 0;
-      background-image: var(--gradient-hero);
-    }
-
-    .experience-card-content {
-      position: absolute;
-      inset-inline: 0;
-      bottom: 0;
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 22px;
-      color: var(--primary-foreground);
-    }
-
-    .experience-card h3 {
-      font-size: clamp(3rem, 6vw, 4rem);
-    }
-
-    .price-pill {
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 500;
-      background: rgba(255,255,255,.15);
-      backdrop-filter: blur(8px);
-    }
-
-    .packages-grid, .reviews-grid {
-      margin-top: 40px;
-      display: grid;
-      gap: 24px;
-    }
-
-    .package-card, .review-card {
-      border: 1px solid var(--border);
-      padding: 32px;
-      background: transparent;
-      transition: all var(--transition-smooth);
-    }
-
-    .package-card:hover { background: var(--cream); }
-
-    .package-card .meta {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .24em;
-      color: var(--muted-foreground);
-    }
-
-    .package-card h3 {
-      margin-top: 12px;
-      font-size: 40px;
-    }
-
-    .package-card p {
-      margin: 12px 0 0;
-      min-height: 84px;
-      color: var(--muted-foreground);
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .package-price {
-      margin-top: 22px;
-      font-family: "Cormorant Garamond", Georgia, serif;
-      font-size: 34px;
-    }
-
-    .btn-outline {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      min-height: 46px;
-      margin-top: 18px;
-      border-radius: 999px;
-      border: 1px solid rgba(46, 38, 33, .25);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: .2em;
-      transition: all var(--transition-smooth);
-    }
-
-    .btn-outline:hover {
-      background: var(--primary);
-      color: var(--primary-foreground);
-      border-color: var(--primary);
-    }
-
-    .secret-section {
-      position: relative;
-      isolation: isolate;
-      color: var(--primary-foreground);
-      text-align: center;
-    }
-
-    .secret-section img {
-      position: absolute;
-      inset: 0;
-      z-index: -2;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .secret-section .gradient-hero {
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-    }
-
-    .secret-inner {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 110px 0;
-    }
-
-    .secret-inner h2 {
-      margin-top: 16px;
-      font-size: clamp(3rem, 6vw, 4.6rem);
-    }
-
-    .secret-inner p {
-      max-width: 620px;
-      margin: 20px auto 0;
-      line-height: 1.8;
-      opacity: .9;
-      font-size: 17px;
-    }
-
-    .about-grid {
-      display: grid;
-      gap: 48px;
-      align-items: center;
-    }
-
-    .about-grid img {
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
+    /* ── BACK TO TOP ── */
+    .back-top {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 50;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--color-primary); color: var(--color-primary-fg);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity var(--transition), transform var(--transition);
       box-shadow: var(--shadow-card);
     }
+    .back-top.visible { opacity: 1; pointer-events: auto; }
+    .back-top:hover { transform: translateY(-3px); }
 
-    .about-copy h2 {
-      margin-top: 12px;
-      font-size: clamp(3rem, 6vw, 4.4rem);
-    }
-
-    .about-copy p {
-      margin: 18px 0 0;
-      color: var(--muted-foreground);
-      line-height: 1.8;
-      font-size: 17px;
-    }
-
-    .review-card {
-      background: var(--card);
-      box-shadow: var(--shadow-card);
-    }
-
-    .stars {
-      display: flex;
-      gap: 4px;
-      color: var(--accent);
-      font-size: 14px;
-    }
-
-    .review-card blockquote {
-      margin: 18px 0 0;
-      font-family: "Cormorant Garamond", Georgia, serif;
-      font-size: 30px;
-      line-height: 1.22;
-    }
-
-    .review-card figcaption {
-      margin-top: 18px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .18em;
-      color: var(--muted-foreground);
-    }
-
-    .faq-wrap {
-      max-width: 760px;
-      margin: 0 auto;
-    }
-
-    .faq-wrap h2 {
-      margin-top: 12px;
-      font-size: clamp(3rem, 6vw, 4.4rem);
-    }
-
-    .faq-list {
-      margin-top: 40px;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .faq-item {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .faq-item:last-child {
-      border-bottom: 0;
-    }
-
-    .faq-q {
-      width: 100%;
-      padding: 22px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      text-align: left;
-      font-family: "Cormorant Garamond", Georgia, serif;
-      font-size: 30px;
-    }
-
-    .faq-a {
-      display: none;
-      padding: 0 0 24px;
-      color: var(--muted-foreground);
-      font-size: 14px;
-      line-height: 1.8;
-    }
-
-    .faq-item.open .faq-a {
-      display: block;
-    }
-
-    .final-cta {
-      background: var(--primary);
-      color: var(--primary-foreground);
-      text-align: center;
-    }
-
-    .final-cta h2 {
-      margin-top: 16px;
-      font-size: clamp(3rem, 7vw, 5rem);
-    }
-
-    .final-cta p {
-      max-width: 620px;
-      margin: 20px auto 0;
-      font-size: 17px;
-      line-height: 1.8;
-      opacity: .82;
-    }
-
-    .cta-actions {
-      margin-top: 34px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      justify-content: center;
-    }
-
-    .cta-dark-outline {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 50px;
-      padding: 0 30px;
-      border-radius: 999px;
-      border: 1px solid rgba(251,247,241,.4);
-      color: var(--primary-foreground);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: .2em;
-    }
-
-    .site-footer {
-      border-top: 1px solid var(--border);
-      background: var(--cream);
-      color: var(--cream-foreground);
-    }
-
-    .footer-grid {
-      display: grid;
-      gap: 28px;
-      padding: 56px 0;
-    }
-
-    .footer-brand {
-      font-family: "Cormorant Garamond", Georgia, serif;
-      font-size: 38px;
-      letter-spacing: .32em;
-    }
-
-    .footer-sub {
-      margin-top: 8px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .24em;
-      color: var(--muted-foreground);
-    }
-
-    .footer-desc {
-      margin-top: 20px;
-      max-width: 360px;
-      font-size: 14px;
-      line-height: 1.8;
-      color: var(--muted-foreground);
-    }
-
-    .footer-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      font-size: 14px;
-    }
-
-    .footer-copy {
-      border-top: 1px solid rgba(73, 58, 45, 0.12);
-      padding: 18px 16px;
-      text-align: center;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: .2em;
-      color: var(--muted-foreground);
-    }
-
-    .menu-panel {
-      position: fixed;
-      inset: 0;
-      z-index: 60;
-      display: none;
-    }
-
-    .menu-panel.open {
-      display: block;
-    }
-
-    .menu-backdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(46,38,33,.4);
-      backdrop-filter: blur(6px);
-    }
-
-    .menu-drawer {
-      position: absolute;
-      inset: 0 0 0 auto;
-      width: min(82%, 360px);
-      background: var(--background);
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      box-shadow: var(--shadow-float);
-    }
-
-    .drawer-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .drawer-brand {
-      font-family: "Cormorant Garamond", Georgia, serif;
-      font-size: 24px;
-      letter-spacing: .32em;
-    }
-
-    .drawer-close {
-      width: 40px;
-      height: 40px;
-      display: grid;
-      place-items: center;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-    }
-
-    .drawer-nav {
-      margin-top: 40px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .drawer-nav a {
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(73, 58, 45, 0.12);
-      font-family: "Cormorant Garamond", Georgia, serif;
-      font-size: 32px;
-    }
-
-    .drawer-cta {
-      margin-top: auto;
-    }
-
-    @media (min-width: 768px) {
-      .header-mobile { display: none; }
-      .header-desktop { display: block; }
-
-      .desktop-top {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        align-items: start;
-        gap: 16px;
-      }
-
-      .desktop-actions {
-        display: flex;
-        align-items: center;
-        justify-content: end;
-        gap: 12px;
-      }
-
-      .desktop-nav {
-        display: flex;
-        justify-content: center;
-        gap: 36px;
-        overflow: hidden;
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: .16em;
-        margin-top: 18px;
-        opacity: 1;
-        transition: all var(--transition-smooth);
-      }
-
-      .site-header.scrolled .desktop-nav {
-        margin-top: 10px;
-        opacity: .9;
-      }
-
-      .desktop-nav a {
-        padding-bottom: 4px;
-        border-bottom: 1px solid transparent;
-      }
-
-      .desktop-nav a:hover {
-        border-bottom-color: rgba(46, 38, 33, .5);
-      }
-
-      .hero {
-        height: 52vh;
-        min-height: 420px;
-        padding-top: 160px;
-      }
-
-      .trust-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .journey-grid {
-        grid-template-columns: 0.9fr 1.1fr;
-      }
-
-      .scan-ticket {
-        grid-template-columns: auto 1fr auto;
-      }
-
-      .cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .packages-grid, .reviews-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .about-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr auto;
-      }
-
-      .footer-nav {
-        text-align: right;
-      }
-
-      .cta-actions {
-        flex-direction: row;
-      }
-    }
-
-    @media (min-width: 1100px) {
-      .trust-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-
-      .cards-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
+    /* ── ANIMATE RISE ── */
+    @keyframes rise { from { opacity:0; transform:translateY(18px) } to { opacity:1; transform:none } }
+    .animate-rise { animation: rise 0.7s ease both; }
   </style>
 </head>
+
 <body>
-  <header class="site-header" id="siteHeader">
-    <div class="container header-desktop">
-      <div class="desktop-top">
-        <span aria-hidden="true"></span>
 
-        <a href="./index.html" class="wordmark">
-          <span class="wordmark-main tracking-brand">ISLA</span>
-          <span class="wordmark-sub">so easy so tenerife</span>
-        </a>
+<!-- MOBILE MENU -->
+<nav class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Menu mobile">
+  <a href="#intro" onclick="closeMobileMenu()">Scopri</a>
+  <a href="#journey" onclick="closeMobileMenu()">Come funziona</a>
+  <a href="#excursion" onclick="closeMobileMenu()">Escursioni</a>
+  <a href="#pacchetti" onclick="closeMobileMenu()">Pacchetti</a>
+  <a href="#chi-siamo" onclick="closeMobileMenu()">Chi siamo</a>
+  <a href="#book" class="btn-scanner" onclick="closeMobileMenu()">Prenota</a>
+</nav>
 
-        <div class="desktop-actions">
-          <button type="button" id="installBtnDesktop" class="pill-btn soft transition-smooth" style="display:none;">↓ Installa</button>
-          <a href="#book" class="pill-btn primary transition-smooth">Book now</a>
-        </div>
-      </div>
-
-      <nav class="desktop-nav" aria-label="Main">
-        <a href="#excursion">Excursion</a>
-        <a href="#pacchetti">Pacchetti</a>
-        <a href="#scan-ticket">Scan ticket</a>
-        <a href="#posti-segreti">Posti segreti</a>
-        <a href="#chi-siamo">Chi siamo</a>
-      </nav>
-    </div>
-
-    <div class="container header-mobile">
-      <a href="./index.html" class="wordmark">
-        <span class="wordmark-main tracking-brand">ISLA</span>
-        <span class="wordmark-sub">so easy so tenerife</span>
-      </a>
-
-      <div class="top-mobile-actions">
-        <a href="#excursion" class="pill-btn soft">Experiences</a>
-        <a href="#book" class="pill-btn primary">Book now</a>
-        <button type="button" id="menuOpen" class="pill-btn soft">☰ More</button>
-      </div>
-
-      <button type="button" id="installBtnMobile" class="pill-btn soft install-btn transition-smooth">↓ Installa</button>
-    </div>
-  </header>
-
-  <div class="menu-panel" id="menuPanel">
-    <button type="button" class="menu-backdrop" id="menuBackdrop" aria-label="Close menu"></button>
-    <aside class="menu-drawer">
-      <div class="drawer-top">
-        <span class="drawer-brand">ISLA</span>
-        <button type="button" class="drawer-close" id="menuClose" aria-label="Close menu">✕</button>
-      </div>
-
-      <nav class="drawer-nav" aria-label="More">
-        <a href="#excursion">Excursion</a>
-        <a href="#pacchetti">Pacchetti</a>
-        <a href="#scan-ticket">Scan ticket</a>
-        <a href="#posti-segreti">Posti segreti</a>
-        <a href="#chi-siamo">Chi siamo</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-
-      <a href="#book" class="pill-btn primary drawer-cta">Book now</a>
-    </aside>
+<!-- HEADER -->
+<header class="site-header" id="siteHeader" role="banner">
+  <a href="#" class="logo" aria-label="ISLA — Home">
+    <img src="assets/logo-isla.png" alt="ISLA logo" height="36" width="auto" />
+  </a>
+  <nav class="desktop-nav" aria-label="Navigazione principale">
+    <a href="#journey">Come funziona</a>
+    <a href="#excursion">Escursioni</a>
+    <a href="#pacchetti">Pacchetti</a>
+    <a href="#chi-siamo">Chi siamo</a>
+    <a href="#book" class="nav-book">Prenota</a>
+  </nav>
+  <div style="display:flex;align-items:center;gap:0.75rem;">
+    <button class="theme-toggle" data-theme-toggle aria-label="Cambia tema" type="button">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Apri menu" aria-expanded="false" type="button">
+      <span></span><span></span><span></span>
+    </button>
   </div>
+</header>
 
-  <main>
-    <section class="hero">
-      <video
-        id="heroVideo"
-        poster="./1264675861 (1).webp"
-        src="./video prova tenerife.mp4"
-        playsinline
-        loop
-        muted
-        preload="metadata"
-        aria-label="Costa vulcanica di Tenerife dall'alto"
-      ></video>
-      <div class="gradient-hero"></div>
+<!-- MAIN -->
+<main id="main">
 
-      <div class="hero-content">
-        <button
-          type="button"
-          id="playToggle"
-          class="play-btn transition-smooth"
-          aria-label="Riproduci il video"
-        >▶</button>
-
-        <a href="#intro" class="cta-light transition-smooth">Discover more</a>
-      </div>
-    </section>
-
-    <section id="intro" class="section">
-      <div class="container intro">
-        <p class="eyebrow">Tenerife</p>
-        <h1 class="animate-rise">Begin your adventure with...</h1>
-        <p>
-          Un'isola di vulcani, oceano e luce calda. ISLA seleziona poche esperienze,
-          curate nei dettagli, per farti vivere Tenerife con la calma di chi ci abita.
-        </p>
-      </div>
-    </section>
-
-    <section class="section section-cream">
-      <div class="container trust-grid">
-        <div class="trust-item">
-          <div class="icon-badge">👥</div>
-          <h3>Piccoli gruppi</h3>
-          <p>Massimo 12 ospiti per esperienza.</p>
-        </div>
-        <div class="trust-item">
-          <div class="icon-badge">🛡️</div>
-          <h3>Cancellazione libera</h3>
-          <p>Gratuita fino a 24 ore prima.</p>
-        </div>
-        <div class="trust-item">
-          <div class="icon-badge">🌿</div>
-          <h3>Guide locali</h3>
-          <p>Nate e cresciute sull'isola.</p>
-        </div>
-        <div class="trust-item">
-          <div class="icon-badge">★</div>
-          <h3>4.9 / 5</h3>
-          <p>Oltre 1.200 recensioni verificate.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="journey" class="section">
-      <div class="container">
-        <div class="journey-grid">
-          <div class="journey-copy">
-            <p class="eyebrow">The journey</p>
-            <h2>Tre passi, nessun pensiero</h2>
-            <p>
-              Dalla scelta dell'esperienza al momento in cui sali a bordo: tutto avviene in pochi
-              minuti, dal telefono, anche offline.
-            </p>
-          </div>
-
-          <div class="journey-steps">
-            <div class="step">
-              <span class="step-num">01</span>
-              <div>
-                <h3>Scegli</h3>
-                <p>Sfoglia escursioni e pacchetti selezionati.</p>
-              </div>
-            </div>
-            <div class="step">
-              <span class="step-num">02</span>
-              <div>
-                <h3>Prenota</h3>
-                <p>Data, partecipanti e pagamento sicuro.</p>
-              </div>
-            </div>
-            <div class="step">
-              <span class="step-num">03</span>
-              <div>
-                <h3>Vivi</h3>
-                <p>Mostri il QR code e parti. Nient'altro.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="scan-ticket" class="scan-ticket">
-          <div class="icon-badge">🎫</div>
-          <div>
-            <h3>Scan ticket</h3>
-            <p>Hai già prenotato? Scansiona il QR del tuo voucher per il check-in immediato.</p>
-          </div>
-          <a href="#book" class="pill-btn primary">Apri scanner</a>
-        </div>
-      </div>
-    </section>
-
-    <section id="excursion" class="section section-cream">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Excursion</p>
-            <h2>Le nostre esperienze</h2>
-          </div>
-          <a href="#book" class="section-link">Prenota ora</a>
-        </div>
-
-        <div class="cards-grid">
-          <a href="#book" class="experience-card">
-            <div class="experience-card-media">
-              <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/0661c6882bb761d317402c44558055716ebeb09f.jpg" alt="Escursione Quad a Tenerife" />
-              <div class="experience-card-overlay"></div>
-              <div class="experience-card-content">
-                <h3>Quad</h3>
-                <span class="price-pill">da €69</span>
-              </div>
-            </div>
-          </a>
-
-          <a href="#book" class="experience-card">
-            <div class="experience-card-media">
-              <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/c032dda7a9c2819a217342e54ab69c9fea250f53.jpg" alt="Escursione Boat a Tenerife" />
-              <div class="experience-card-overlay"></div>
-              <div class="experience-card-content">
-                <h3>Boat</h3>
-                <span class="price-pill">da €55</span>
-              </div>
-            </div>
-          </a>
-
-          <a href="#book" class="experience-card">
-            <div class="experience-card-media">
-              <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/0ec34f3bc271f3d7a755c26923a6489344fa0a00.jpg" alt="Escursione Buggy a Tenerife" />
-              <div class="experience-card-overlay"></div>
-              <div class="experience-card-content">
-                <h3>Buggy</h3>
-                <span class="price-pill">da €89</span>
-              </div>
-            </div>
-          </a>
-
-          <a href="#book" class="experience-card">
-            <div class="experience-card-media">
-              <img src="https://via.placeholder.com/1400x900?text=Park" alt="Escursione Park a Tenerife" />
-              <div class="experience-card-overlay"></div>
-              <div class="experience-card-content">
-                <h3>Park</h3>
-                <span class="price-pill">da €39</span>
-              </div>
-            </div>
-          </a>
-
-          <a href="#book" class="experience-card">
-            <div class="experience-card-media">
-              <img src="https://via.placeholder.com/1400x900?text=Kayak" alt="Escursione Kayak a Tenerife" />
-              <div class="experience-card-overlay"></div>
-              <div class="experience-card-content">
-                <h3>Kayak</h3>
-                <span class="price-pill">da €45</span>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section id="pacchetti" class="section">
-      <div class="container">
-        <p class="eyebrow">Pacchetti</p>
-        <h2 style="margin-top:12px;font-size:clamp(3rem,6vw,4.4rem);">Itinerari già pensati</h2>
-
-        <div class="packages-grid">
-          <article class="package-card">
-            <p class="meta">2 esperienze</p>
-            <h3>Sea Escape</h3>
-            <p>Catamarano al tramonto e kayak tra le grotte di Los Gigantes.</p>
-            <div class="package-price">€129</div>
-            <a href="#book" class="btn-outline">Scopri il pacchetto</a>
-          </article>
-
-          <article class="package-card">
-            <p class="meta">1 giornata intera</p>
-            <h3>Adventure Day</h3>
-            <p>Quad al mattino, buggy nel pomeriggio, pranzo canario incluso.</p>
-            <div class="package-price">€179</div>
-            <a href="#book" class="btn-outline">Scopri il pacchetto</a>
-          </article>
-
-          <article class="package-card">
-            <p class="meta">3 esperienze</p>
-            <h3>Easy Family</h3>
-            <p>Parco naturale, mini crociera e giornata in spiaggia protetta.</p>
-            <div class="package-price">€149</div>
-            <a href="#book" class="btn-outline">Scopri il pacchetto</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="posti-segreti" class="secret-section">
-      <img src="https://via.placeholder.com/1600x1000?text=Posti+Segreti" alt="Cala segreta con sabbia nera a Tenerife" />
-      <div class="gradient-hero"></div>
-
-      <div class="container secret-inner">
-        <p class="eyebrow" style="color:rgba(255,255,255,.78);">Posti segreti</p>
-        <h2>Dove non arrivano i pullman</h2>
-        <p>
-          Cale di sabbia nera, piscine naturali e miradores conosciuti solo dai locali.
-          Condividiamo le nostre coordinate preferite con chi viaggia con noi.
-        </p>
-        <a href="#book" class="cta-light transition-smooth" style="margin-top:32px;">Scopri i luoghi</a>
-      </div>
-    </section>
-
-    <section id="chi-siamo" class="section">
-      <div class="container about-grid">
-        <img src="https://via.placeholder.com/1200x900?text=Chi+siamo" alt="Il team locale di ISLA su una terrazza con vista oceano" />
-        <div class="about-copy">
-          <p class="eyebrow">Chi siamo</p>
-          <h2>Isolani, per scelta</h2>
-          <p>
-            ISLA nasce a Tenerife da un piccolo gruppo di guide, skipper e appassionati di montagna.
-            Lavoriamo con partner che conosciamo di persona e teniamo i gruppi piccoli, perché
-            un'esperienza vale per come ti fa sentire, non per quanti posti riempie.
-          </p>
-          <p>
-            Il nostro payoff è una promessa: <em>so easy so tenerife</em>. Tu pensa a goderti
-            l'isola, al resto pensiamo noi.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-cream">
-      <div class="container">
-        <p class="eyebrow">Recensioni</p>
-        <h2 style="margin-top:12px;font-size:clamp(3rem,6vw,4.4rem);">Le parole dei nostri ospiti</h2>
-
-        <div class="reviews-grid">
-          <figure class="review-card">
-            <div class="stars">★★★★★</div>
-            <blockquote>“Organizzazione impeccabile e guide che conoscono ogni angolo dell'isola.”</blockquote>
-            <figcaption>Giulia & Marco — Milano</figcaption>
-          </figure>
-
-          <figure class="review-card">
-            <div class="stars">★★★★★</div>
-            <blockquote>“Il buggy al tramonto è stata l'esperienza più bella della vacanza.”</blockquote>
-            <figcaption>Andrea — Torino</figcaption>
-          </figure>
-
-          <figure class="review-card">
-            <div class="stars">★★★★★</div>
-            <blockquote>“Con due bambini piccoli temevamo il caos: invece ritmi perfetti e tanta attenzione.”</blockquote>
-            <figcaption>Famiglia Ferri — Bologna</figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <section id="faq" class="section">
-      <div class="container faq-wrap">
-        <p class="eyebrow">FAQ</p>
-        <h2>Domande frequenti</h2>
-
-        <div class="faq-list">
-          <div class="faq-item open">
-            <button type="button" class="faq-q">
-              <span>Come prenoto un'escursione?</span>
-              <span>−</span>
-            </button>
-            <div class="faq-a">
-              Scegli l'esperienza, la data e il numero di partecipanti. Ricevi subito il voucher via email con il QR code da mostrare in loco.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-q">
-              <span>Posso cancellare?</span>
-              <span>+</span>
-            </button>
-            <div class="faq-a">
-              Sì, la cancellazione è gratuita fino a 24 ore prima della partenza. Il rimborso è automatico sullo stesso metodo di pagamento.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-q">
-              <span>È previsto il transfer dall'hotel?</span>
-              <span>+</span>
-            </button>
-            <div class="faq-a">
-              La maggior parte delle escursioni include pick-up nelle principali zone turistiche del sud e del nord di Tenerife.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-q">
-              <span>Le attività sono adatte ai bambini?</span>
-              <span>+</span>
-            </button>
-            <div class="faq-a">
-              Molte sì. Ogni scheda indica l'età minima e il livello di difficoltà.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="book" class="section final-cta">
-      <div class="container" style="max-width:760px;">
-        <p class="eyebrow" style="color:rgba(255,255,255,.72);">Book now</p>
-        <h2>La tua Tenerife inizia qui</h2>
-        <p>
-          Scegli l'esperienza, blocca la data e ricevi subito il tuo voucher.
-          Cancellazione gratuita fino a 24 ore prima.
-        </p>
-
-        <div class="cta-actions">
-          <a href="#excursion" class="cta-light transition-smooth">Vedi le escursioni</a>
-          <a href="#pacchetti" class="cta-dark-outline transition-smooth">Scopri i pacchetti</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <p class="footer-brand">ISLA</p>
-        <p class="footer-sub">so easy so tenerife</p>
-        <p class="footer-desc">
-          Escursioni e attività curate a Tenerife. Piccoli gruppi, guide locali,
-          cancellazione gratuita fino a 24 ore prima.
-        </p>
-      </div>
-
-      <nav class="footer-nav" aria-label="Footer">
-        <a href="#excursion">Excursion</a>
-        <a href="#pacchetti">Pacchetti</a>
-        <a href="#scan-ticket">Scan ticket</a>
-        <a href="#posti-segreti">Posti segreti</a>
-        <a href="#chi-siamo">Chi siamo</a>
-        <a href="#faq">FAQ</a>
-      </nav>
+  <!-- HERO -->
+  <section class="hero" aria-label="Video hero Tenerife">
+    <video id="heroVideo"
+      poster="assets/1264675861 (1).webp"
+      src="assets/video prova tenerife.mp4"
+      playsinline loop muted preload="metadata"
+      aria-label="Costa vulcanica di Tenerife dall'alto">
+    </video>
+    <div class="hero-overlay gradient-hero" aria-hidden="true"></div>
+    <div class="hero-controls">
+      <button id="playBtn" class="btn-play" type="button" aria-label="Riproduci il video">
+        <svg id="playIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="5,3 19,12 5,21"/></svg>
+        <svg id="pauseIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </button>
+      <a href="#intro" class="btn-discover">Discover more</a>
     </div>
+  </section>
 
-    <div class="footer-copy">© 2026 Isla Tenerife</div>
-  </footer>
+  <!-- 1 — INTRO -->
+  <section id="intro" class="intro container-sm">
+    <p class="label">Tenerife</p>
+    <h1 class="animate-rise font-display">Begin your adventure with...</h1>
+    <p>Un'isola di vulcani, oceano e luce calda. ISLA seleziona poche esperienze, curate nei dettagli, per farti vivere Tenerife con la calma di chi ci abita.</p>
+  </section>
 
-  <script src="./app.js"></script>
+  <!-- 2 — JOURNEY -->
+  <section id="journey" class="journey">
+    <div class="container">
+      <div class="journey-grid">
+        <div>
+          <p class="label">The journey</p>
+          <h2>Tre passi,<br>nessun pensiero</h2>
+          <p style="margin-top:1.25rem;max-width:28rem;color:var(--color-muted)">
+            Dalla scelta dell'esperienza al momento in cui sali a bordo: tutto avviene in pochi minuti, dal telefono, anche offline.
+          </p>
+        </div>
+        <ol class="journey-steps">
+          <li>
+            <span class="step-num">01</span>
+            <div><p class="step-title">Scegli</p><p class="step-desc">Sfoglia escursioni e pacchetti selezionati.</p></div>
+          </li>
+          <li>
+            <span class="step-num">02</span>
+            <div><p class="step-title">Prenota</p><p class="step-desc">Data, partecipanti e pagamento sicuro.</p></div>
+          </li>
+          <li>
+            <span class="step-num">03</span>
+            <div><p class="step-title">Vivi</p><p class="step-desc">Mostri il QR code e parti. Nient'altro.</p></div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- SCAN TICKET -->
+      <div id="scan-ticket" class="scan-ticket">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h2v2h-2zM18 14h3v2h-3zM14 18h1v3h-1zM16 18h3v1h-3zM19 19h2v3h-2z"/></svg>
+        <div>
+          <h3 class="font-display">Scan ticket</h3>
+          <p>Hai già prenotato? Scansiona il QR del tuo voucher per il check-in immediato.</p>
+        </div>
+        <a href="#book" class="btn-scanner">Apri scanner</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 — CATEGORIE -->
+  <section id="excursion" class="categorie">
+    <div class="container categorie-inner">
+      <div class="categorie-header">
+        <div>
+          <p class="label">Esplora</p>
+          <h2>Categorie</h2>
+        </div>
+        <a href="#book" style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.2em;opacity:0.7">Prenota ora</a>
+      </div>
+      <ul class="cat-grid">
+        <li>
+          <a href="#book" class="cat-card" aria-label="Categoria Mare e barche">
+            <div class="cat-img-wrap">
+              <img src="assets/1264675861 (1).webp" alt="Mare e barche a Tenerife" loading="eager" width="1400" height="800">
+              <span class="cat-overlay gradient-hero" aria-hidden="true"></span>
+              <div class="cat-label"><h3>Mare e barche</h3></div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#book" class="cat-card" aria-label="Categoria Teide e natura">
+            <div class="cat-img-wrap">
+              <img src="assets/1264675861 (1).webp" alt="Teide e natura a Tenerife" loading="eager" width="1400" height="800">
+              <span class="cat-overlay gradient-hero" aria-hidden="true"></span>
+              <div class="cat-label"><h3>Teide e natura</h3></div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#book" class="cat-card" aria-label="Categoria Stelle e astronomia">
+            <div class="cat-img-wrap">
+              <img src="assets/1264675861 (1).webp" alt="Stelle e astronomia a Tenerife" loading="lazy" width="1400" height="800">
+              <span class="cat-overlay gradient-hero" aria-hidden="true"></span>
+              <div class="cat-label"><h3>Stelle e astronomia</h3></div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#book" class="cat-card" aria-label="Categoria Avventura e motori">
+            <div class="cat-img-wrap">
+              <img src="assets/1264675861 (1).webp" alt="Avventura e motori a Tenerife" loading="lazy" width="1400" height="800">
+              <span class="cat-overlay gradient-hero" aria-hidden="true"></span>
+              <div class="cat-label"><h3>Avventura e motori</h3></div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#book" class="cat-card" aria-label="Categoria Sport acquatici">
+            <div class="cat-img-wrap">
+              <img src="assets/1264675861 (1).webp" alt="Sport acquatici a Tenerife" loading="lazy" width="1400" height="800">
+              <span class="cat-overlay gradient-hero" aria-hidden="true"></span>
+              <div class="cat-label"><h3>Sport acquatici</h3></div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#book" class="cat-card" aria-label="Categoria Parchi e spettacoli">
+            <div class="cat-img-wrap">
+              <img src="assets/1264675861 (1).webp" alt="Parchi e spettacoli a Tenerife" loading="lazy" width="1400" height="800">
+              <span class="cat-overlay gradient-hero" aria-hidden="true"></span>
+              <div class="cat-label"><h3>Parchi e spettacoli</h3></div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#book" class="cat-card" aria-label="Categoria Tour privati">
+            <div class="cat-img-wrap">
+              <img src="assets/1264675861 (1).webp" alt="Tour privati a Tenerife" loading="lazy" width="1400" height="800">
+              <span class="cat-overlay gradient-hero" aria-hidden="true"></span>
+              <div class="cat-label"><h3>Tour privati</h3></div>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5 — PACCHETTI -->
+  <section id="pacchetti" class="pacchetti">
+    <div class="container">
+      <p class="label">Pacchetti</p>
+      <h2>Itinerari già pensati</h2>
+      <div class="pacchetti-grid">
+        <article class="package-card">
+          <p class="pkg-days">2 esperienze</p>
+          <h3 class="pkg-name">Sea Escape</h3>
+          <p class="pkg-desc">Catamarano al tramonto e kayak tra le grotte di Los Gigantes.</p>
+          <p class="pkg-price">€129</p>
+          <a href="#book" class="btn-pkg">Scopri il pacchetto</a>
+        </article>
+        <article class="package-card">
+          <p class="pkg-days">1 giornata intera</p>
+          <h3 class="pkg-name">Adventure Day</h3>
+          <p class="pkg-desc">Quad al mattino, buggy nel pomeriggio, pranzo canario incluso.</p>
+          <p class="pkg-price">€179</p>
+          <a href="#book" class="btn-pkg">Scopri il pacchetto</a>
+        </article>
+        <article class="package-card">
+          <p class="pkg-days">3 esperienze</p>
+          <h3 class="pkg-name">Easy Family</h3>
+          <p class="pkg-desc">Parco naturale, mini crociera e giornata in spiaggia protetta.</p>
+          <p class="pkg-price">€149</p>
+          <a href="#book" class="btn-pkg">Scopri il pacchetto</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 — POSTI SEGRETI -->
+  <section id="posti-segreti" class="posti-segreti">
+    <img class="bg" src="assets/1264675861 (1).webp" alt="Cala segreta con sabbia nera a Tenerife" loading="lazy" width="1400" height="900">
+    <div class="posti-overlay gradient-hero" aria-hidden="true"></div>
+    <div class="posti-inner">
+      <p class="label" style="opacity:0.8;color:rgba(249,248,245,0.8)">Posti segreti</p>
+      <h2>Dove non arrivano i pullman</h2>
+      <p>Cale di sabbia nera, piscine naturali e miradores conosciuti solo dai locali. Condividiamo le nostre coordinate preferite con chi viaggia con noi.</p>
+      <a href="#book" class="btn-scopri">
+        Scopri i luoghi
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9,18 15,12 9,6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- 7 — CHI SIAMO -->
+  <section id="chi-siamo" class="chi-siamo">
+    <div class="container">
+      <div class="chi-grid">
+        <img src="assets/1264675861 (1).webp" alt="Il team locale di ISLA su una terrazza con vista oceano" loading="lazy" width="1200" height="900">
+        <div>
+          <p class="label">Chi siamo</p>
+          <h2>Isolani, per scelta</h2>
+          <p>ISLA nasce a Tenerife da un piccolo gruppo di guide, skipper e appassionati di montagna. Lavoriamo con partner che conosciamo di persona e teniamo i gruppi piccoli, perché un'esperienza vale per come ti fa sentire, non per quanti posti riempie.</p>
+          <p>Il nostro payoff è una promessa: <em>so easy so tenerife</em>. Tu pensa a goderti l'isola, al resto pensiamo noi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 — RECENSIONI -->
+  <section class="recensioni">
+    <div class="container recensioni-inner">
+      <p class="label">Recensioni</p>
+      <h2>Le parole dei nostri ospiti</h2>
+      <div class="recensioni-grid">
+        <figure class="review-card">
+          <div class="stars" aria-label="5 stelle su 5">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <blockquote>"Organizzazione impeccabile e guide che conoscono ogni angolo dell'isola. Ci siamo sentiti ospiti, non turisti."</blockquote>
+          <figcaption>Giulia &amp; Marco — Milano</figcaption>
+        </figure>
+        <figure class="review-card">
+          <div class="stars" aria-label="5 stelle su 5">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <blockquote>"Il buggy al tramonto è stata l'esperienza più bella della vacanza. Tutto prenotato in due minuti dal telefono."</blockquote>
+          <figcaption>Andrea — Torino</figcaption>
+        </figure>
+        <figure class="review-card">
+          <div class="stars" aria-label="5 stelle su 5">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <blockquote>"Con due bambini piccoli temevamo il caos: invece ritmi perfetti e tanta attenzione. Torneremo."</blockquote>
+          <figcaption>Famiglia Ferri — Bologna</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 — FAQ -->
+  <section id="faq" class="faq">
+    <div class="container-sm">
+      <p class="label">FAQ</p>
+      <h2>Domande frequenti</h2>
+      <div class="faq-list" role="list">
+        <div class="faq-item" role="listitem">
+          <h3><button class="faq-btn" type="button" aria-expanded="true" data-faq="0">Come prenoto un'escursione?<span class="faq-icon" aria-hidden="true">−</span></button></h3>
+          <p class="faq-answer open" id="faq-answer-0">Scegli l'esperienza, la data e il numero di partecipanti. Ricevi subito il voucher via email con il QR code da mostrare in loco.</p>
+        </div>
+        <div class="faq-item" role="listitem">
+          <h3><button class="faq-btn" type="button" aria-expanded="false" data-faq="1">Posso cancellare?<span class="faq-icon" aria-hidden="true">+</span></button></h3>
+          <p class="faq-answer" id="faq-answer-1">Sì, la cancellazione è gratuita fino a 24 ore prima della partenza. Il rimborso è automatico sullo stesso metodo di pagamento.</p>
+        </div>
+        <div class="faq-item" role="listitem">
+          <h3><button class="faq-btn" type="button" aria-expanded="false" data-faq="2">È previsto il transfer dall'hotel?<span class="faq-icon" aria-hidden="true">+</span></button></h3>
+          <p class="faq-answer" id="faq-answer-2">La maggior parte delle escursioni include pick-up nelle principali zone turistiche del sud e del nord di Tenerife.</p>
+        </div>
+        <div class="faq-item" role="listitem">
+          <h3><button class="faq-btn" type="button" aria-expanded="false" data-faq="3">Le attività sono adatte ai bambini?<span class="faq-icon" aria-hidden="true">+</span></button></h3>
+          <p class="faq-answer" id="faq-answer-3">Molte sì. Ogni scheda indica l'età minima e il livello di difficoltà, e il pacchetto Easy Family è pensato per loro.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 — CTA FINALE -->
+  <section id="book" class="cta-book">
+    <div class="container-sm">
+      <p class="label" style="opacity:0.7;color:var(--color-primary-fg)">Book now</p>
+      <h2>La tua Tenerife inizia qui</h2>
+      <p>Scegli l'esperienza, blocca la data e ricevi subito il tuo voucher. Cancellazione gratuita fino a 24 ore prima.</p>
+      <div class="cta-btns">
+        <a href="#excursion" class="btn-cta-primary">Vedi le escursioni</a>
+        <a href="#pacchetti" class="btn-cta-secondary">Scopri i pacchetti</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="assets/logo-isla.png" alt="ISLA logo" height="28" width="auto">
+      <p>so easy so tenerife</p>
+    </div>
+    <nav class="footer-col" aria-label="Link escursioni">
+      <h4>Scopri</h4>
+      <a href="#excursion">Escursioni</a>
+      <a href="#pacchetti">Pacchetti</a>
+      <a href="#posti-segreti">Posti segreti</a>
+      <a href="#chi-siamo">Chi siamo</a>
+    </nav>
+    <nav class="footer-col" aria-label="Link supporto">
+      <h4>Supporto</h4>
+      <a href="#faq">FAQ</a>
+      <a href="#book">Prenota</a>
+      <a href="mailto:info@isla-tenerife.com">info@isla-tenerife.com</a>
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 ISLA Tenerife. Tutti i diritti riservati.</span>
+    <span>Playa de las Américas, Tenerife, ES</span>
+  </div>
+</footer>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" aria-label="Torna in cima" type="button">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="18,15 12,9 6,15"/></svg>
+</button>
+
+<script>
+  // Theme toggle
+  (function(){
+    const t = document.querySelector('[data-theme-toggle]');
+    const r = document.documentElement;
+    let d = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+    r.setAttribute('data-theme', d);
+    const sunSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+    const moonSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    if (t) {
+      t.innerHTML = d === 'dark' ? sunSvg : moonSvg;
+      t.addEventListener('click', () => {
+        d = d === 'dark' ? 'light' : 'dark';
+        r.setAttribute('data-theme', d);
+        t.innerHTML = d === 'dark' ? sunSvg : moonSvg;
+        t.setAttribute('aria-label', 'Passa a tema ' + (d === 'dark' ? 'chiaro' : 'scuro'));
+      });
+    }
+  })();
+
+  // Header scroll effect
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Video play/pause
+  const video = document.getElementById('heroVideo');
+  const playBtn = document.getElementById('playBtn');
+  const playIcon = document.getElementById('playIcon');
+  const pauseIcon = document.getElementById('pauseIcon');
+  playBtn.addEventListener('click', () => {
+    if (video.paused) {
+      video.play();
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = 'block';
+      playBtn.setAttribute('aria-label', 'Metti in pausa il video');
+    } else {
+      video.pause();
+      playIcon.style.display = 'block';
+      pauseIcon.style.display = 'none';
+      playBtn.setAttribute('aria-label', 'Riproduci il video');
+    }
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = btn.dataset.faq;
+      const answer = document.getElementById('faq-answer-' + idx);
+      const icon = btn.querySelector('.faq-icon');
+      const isOpen = answer.classList.contains('open');
+      document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+      document.querySelectorAll('.faq-btn').forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+        b.querySelector('.faq-icon').textContent = '+';
+      });
+      if (!isOpen) {
+        answer.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        icon.textContent = '−';
+      }
+    });
+  });
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', isOpen);
+    hamburger.setAttribute('aria-label', isOpen ? 'Chiudi menu' : 'Apri menu');
+  });
+  function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Apri menu');
+  }
+
+  // Back to top
+  const backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', () => {
+    backTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(r => console.log('[SW] Registered:', r.scope))
+        .catch(e => console.warn('[SW] Error:', e));
+    });
+  }
+</script>
 </body>
 </html>

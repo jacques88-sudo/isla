@@ -530,10 +530,86 @@ a { text-decoration: none; color: inherit; }
   line-height: 1.6;
 }
 
+/* Final CTA */
+.cta-final {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  text-align: center;
+  padding: 4.5rem 0;
+}
+.cta-final .eyebrow { justify-content: center; }
+.cta-final h2 {
+  font-weight: 400;
+  font-size: clamp(1.8rem, 1.4rem + 1.8vw, 2.5rem);
+  margin: .8rem 0 1rem;
+}
+.cta-final p {
+  max-width: 40ch;
+  margin: 0 auto 1.8rem;
+  font-weight: 300;
+  opacity: .85;
+}
+.btn-invert {
+  background: var(--primary-foreground);
+  color: var(--primary);
+}
+
+/* Footer */
 .footer {
-  padding: 1.5rem 0 2.5rem;
+  padding: 3rem 0 2rem;
+}
+.footer-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  text-align: center;
+  padding-bottom: 2rem;
+}
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.footer-brand img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.footer-brand div {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.1;
+}
+.footer-brand strong {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+.footer-brand span {
+  font-size: .58rem;
+  text-transform: uppercase;
+  letter-spacing: .2em;
   color: var(--muted);
-  font-size: .72rem;
+}
+.footer-link {
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--text);
+  border-bottom: 1px solid var(--text);
+  padding-bottom: .2rem;
+}
+.footer-copy {
+  margin: 0;
+  padding: 1.4rem 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: .68rem;
   text-transform: uppercase;
   letter-spacing: .18em;
   text-align: center;

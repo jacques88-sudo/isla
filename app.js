@@ -43,3 +43,29 @@ function initLookupForms() {
 }
 
 document.addEventListener("DOMContentLoaded", initLookupForms);
+
+// Hero video play/pause toggle (home page only)
+function initHeroVideo() {
+  const video = document.getElementById("heroVideo");
+  const toggle = document.getElementById("videoToggle");
+  if (!video || !toggle) return;
+
+  const iconPause = document.getElementById("iconPause");
+  const iconPlay = document.getElementById("iconPlay");
+
+  toggle.addEventListener("click", () => {
+    if (video.paused) {
+      video.play();
+      iconPause.hidden = false;
+      iconPlay.hidden = true;
+      toggle.setAttribute("aria-label", "Metti in pausa il video");
+    } else {
+      video.pause();
+      iconPause.hidden = true;
+      iconPlay.hidden = false;
+      toggle.setAttribute("aria-label", "Riproduci il video");
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initHeroVideo);

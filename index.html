@@ -28,16 +28,30 @@
 
   <main id="main">
     <section class="hero">
-      <div class="hero-bg" aria-hidden="true"></div>
-      <video class="hero-video" aria-hidden="true" autoplay muted loop playsinline
+      <video class="hero-video" id="heroVideo" aria-hidden="true" autoplay muted loop playsinline
              poster="./assets/hero-tenerife.webp">
         <source src="./assets/Hero-poster.mp4" type="video/mp4" />
       </video>
-      <div class="wrap">
-        <span class="eyebrow">Tenerife · le tue escursioni</span>
-        <h1>Tutte le info del tuo tour, in un posto solo</h1>
-        <p>Inserisci il codice della tua prenotazione e vedi subito orario, punto d'incontro e cosa portare.</p>
+      <div class="hero-fade" aria-hidden="true"></div>
+      <div class="hero-controls">
+        <button class="playbtn" id="videoToggle" type="button" aria-label="Metti in pausa il video">
+          <svg id="iconPause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg id="iconPlay" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <a class="discover" href="#intro">Scopri di più</a>
+      </div>
+    </section>
 
+    <section class="intro" id="intro">
+      <div class="wrap">
+        <span class="eyebrow">Tenerife</span>
+        <h1>Tutte le info del tuo tour,<br>in un posto solo</h1>
+        <p>Isla raccoglie in un unico posto tutte le informazioni della tua escursione: orario, punto d'incontro, cosa portare. Niente più email o screenshot da cercare.</p>
+      </div>
+    </section>
+
+    <section class="lookup-section">
+      <div class="wrap">
         <form class="lookup-card" data-lookup-form>
           <label for="codeInput">Codice prenotazione o ticket</label>
           <div class="lookup-row">
@@ -52,21 +66,31 @@
 
     <section class="steps">
       <div class="wrap">
-        <h2>Come funziona</h2>
-        <div class="step-list">
-          <div class="step">
-            <span class="step-num">1</span>
-            <p><strong>Inserisci il codice</strong>Quello ricevuto al momento della prenotazione.</p>
-          </div>
-          <div class="step">
-            <span class="step-num">2</span>
-            <p><strong>Vedi subito i dettagli</strong>Orario, punto d'incontro, durata e cosa portare.</p>
-          </div>
-          <div class="step">
-            <span class="step-num">3</span>
-            <p><strong>Parti tranquillo</strong>Tutto quello che ti serve, anche offline.</p>
-          </div>
-        </div>
+        <span class="eyebrow">Come funziona</span>
+        <h2>Tre passi, nessun pensiero</h2>
+        <ol class="step-list">
+          <li class="step">
+            <span class="step-num">01</span>
+            <div>
+              <strong>Inserisci il codice</strong>
+              <p>Quello ricevuto al momento della prenotazione.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step-num">02</span>
+            <div>
+              <strong>Vedi subito i dettagli</strong>
+              <p>Orario, punto d'incontro, durata e cosa portare.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step-num">03</span>
+            <div>
+              <strong>Parti tranquillo</strong>
+              <p>Tutto quello che ti serve, anche offline.</p>
+            </div>
+          </li>
+        </ol>
       </div>
     </section>
   </main>

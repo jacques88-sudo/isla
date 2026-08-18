@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-static-v2";
+const CACHE_NAME = "isla-static-v3";
 const OFFLINE_URL = "./offline.html";
 
 const STATIC_ASSETS = [
@@ -6,12 +6,24 @@ const STATIC_ASSETS = [
   "./index.html",
   "./manifest.json",
   "./offline.html",
+
   "./assets/logo-isla.png",
   "./assets/icon-192.png",
   "./assets/icon-512.png",
   "./assets/icon-maskable-512.png",
+
   "./assets/1264675861 (1).webp",
-  "./assets/video prova tenerife.mp4"
+  "./assets/Hero-poster.mp4",
+
+  "./assets/Cat-mare.jpg",
+  "./assets/Cat-teide.jpg",
+  "./assets/Cat-stelle.jpg",
+  "./assets/Cat-avventura.jpg",
+  "./assets/Cat-sport.jpg",
+  "./assets/Cat-parchi.jpg",
+  "./assets/Cat-privati.jpg",
+  "./assets/Secret-cove.jpg",
+  "./assets/About-team.jpg"
 ];
 
 self.addEventListener("install", (event) => {
@@ -48,6 +60,7 @@ self.addEventListener("fetch", (event) => {
         if (!response || response.status !== 200 || response.type === "opaque") {
           return response;
         }
+
         const clone = response.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
         return response;

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="it" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#7d126d" />
+  <title>La tua prenotazione · Isla</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./assets/icon-192.png" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Vai al contenuto</a>
+
+  <header class="top">
+    <div class="wrap nav">
+      <a class="brand" href="./index.html" aria-label="Isla home">
+        <img src="./assets/logo-isla.png" alt="Logo Isla" />
+        <span>Isla</span>
+      </a>
+      <button class="iconbtn" data-theme-toggle aria-label="Cambia tema">☾</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap page-header">
+      <a class="iconbtn" href="./index.html" aria-label="Torna alla home">←</a>
+      <h1>La tua escursione</h1>
+    </div>
+
+    <div class="wrap detail" id="bookingView">
+      <!-- riempito da booking.js -->
+    </div>
+  </main>
+
+  <script src="./app.js"></script>
+  <script src="./booking.js"></script>
+</body>
+</html>

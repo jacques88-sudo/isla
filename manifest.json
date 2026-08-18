@@ -1,30 +1,21 @@
 {
-  "name": "ISLA — so easy so tenerife",
-  "short_name": "ISLA",
-  "description": "Escursioni e attività premium a Tenerife: quad, barca, buggy, kayak, parchi e posti segreti.",
-  "start_url": "./",
+  "name": "Isla",
+  "short_name": "Isla",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#faf7f1",
-  "theme_color": "#01696f",
+  "background_color": "#fffaf5",
+  "theme_color": "#7d126d",
   "icons": [
     {
-      "src": "assets/icon-192.png",
+      "src": "./assets/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     },
     {
-      "src": "assets/icon-512.png",
+      "src": "./assets/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "assets/icon-maskable-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "type": "image/png"
     }
   ]
 }

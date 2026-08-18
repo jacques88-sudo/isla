@@ -1,0 +1,382 @@
+:root {
+  --primary: #87066e;
+  --primary-dark: #68005e;
+  --pink: #ff2f7d;
+  --coral: #ff5b69;
+  --gold: #fdb515;
+
+  --bg: #fffaf5;
+  --surface: #fffdfb;
+  --surface-soft: #f6efef;
+  --border: #eddbe6;
+
+  --text: #4e0a4b;
+  --muted: #8e6a86;
+
+  --radius: 20px;
+  --radius-sm: 14px;
+  --shadow: 0 16px 40px rgba(78, 10, 75, .1);
+
+  --max: 640px;
+}
+
+[data-theme="dark"] {
+  --bg: #171614;
+  --surface: #1c1b19;
+  --surface-soft: #23211f;
+  --border: #393836;
+  --text: #f0e8ee;
+  --muted: #b79db2;
+  --shadow: 0 16px 40px rgba(0, 0, 0, .3);
+}
+
+* { box-sizing: border-box; }
+
+html { color-scheme: light dark; }
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font: 400 1rem/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+img, video { max-width: 100%; display: block; }
+a, button, input { font: inherit; }
+button { border: 0; background: 0; cursor: pointer; }
+a { text-decoration: none; color: inherit; }
+
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+  top: auto;
+}
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  background: var(--surface);
+  padding: .75rem 1rem;
+  border-radius: 999px;
+  z-index: 50;
+}
+
+/* Header */
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(16px);
+  background: color-mix(in oklab, var(--bg) 85%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .9rem 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.brand img {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.iconbtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  color: var(--text);
+}
+
+/* Hero / lookup */
+.hero {
+  position: relative;
+  padding: 2.25rem 0 2rem;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(180deg, rgba(78, 10, 75, .82), rgba(78, 10, 75, .55) 60%, var(--bg) 100%), url("./assets/hero-tenerife.webp");
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+.hero .wrap { padding-top: 1.5rem; padding-bottom: .5rem; }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .4rem .8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .16);
+  color: #fff;
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+.hero h1 {
+  color: #fff;
+  font-size: clamp(1.7rem, 1.3rem + 2vw, 2.4rem);
+  line-height: 1.15;
+  margin: .75rem 0 .5rem;
+}
+
+.hero p {
+  color: rgba(255, 255, 255, .88);
+  margin: 0 0 1.5rem;
+  max-width: 40ch;
+}
+
+.lookup-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+
+.lookup-card label {
+  display: block;
+  font-weight: 700;
+  font-size: .92rem;
+  margin-bottom: .5rem;
+}
+
+.lookup-row {
+  display: flex;
+  gap: .5rem;
+}
+
+.lookup-row input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  border-radius: var(--radius-sm);
+  padding: .85rem 1rem;
+  outline: none;
+  color: var(--text);
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+.lookup-row input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent);
+}
+
+.btn {
+  min-height: 48px;
+  padding: 0 1.3rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-block { width: 100%; }
+.btn-soft {
+  background: var(--surface-soft);
+  color: var(--primary);
+  border: 1px solid var(--border);
+}
+
+.hint {
+  margin: .6rem 0 0;
+  font-size: .82rem;
+  color: var(--muted);
+}
+.error-text {
+  margin: .6rem 0 0;
+  font-size: .88rem;
+  color: var(--coral);
+  font-weight: 600;
+}
+
+/* How it works */
+.steps {
+  padding: 1.5rem 0 2.5rem;
+}
+.steps h2 {
+  font-size: 1.1rem;
+  margin: 0 0 1rem;
+}
+.step-list {
+  display: grid;
+  gap: .75rem;
+}
+.step {
+  display: flex;
+  gap: .8rem;
+  align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: .9rem 1rem;
+}
+.step-num {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--primary) 12%, var(--surface));
+  color: var(--primary);
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  font-size: .85rem;
+}
+.step p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .92rem;
+}
+.step strong {
+  display: block;
+  color: var(--text);
+  margin-bottom: .15rem;
+}
+
+.footer {
+  padding: 1.5rem 0 2.5rem;
+  color: var(--muted);
+  font-size: .82rem;
+  text-align: center;
+}
+
+/* Booking detail page */
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: 1rem 0;
+}
+.page-header h1 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.detail {
+  padding: .5rem 0 2.5rem;
+}
+
+.detail-title {
+  font-size: 1.4rem;
+  margin: 0 0 .25rem;
+}
+.detail-code {
+  color: var(--muted);
+  font-size: .88rem;
+  margin: 0 0 1.25rem;
+}
+
+.info-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.2rem;
+  margin-bottom: .9rem;
+  display: flex;
+  gap: .9rem;
+  align-items: flex-start;
+}
+.info-icon {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--primary) 10%, var(--surface));
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+}
+.info-card h3 {
+  margin: 0 0 .3rem;
+  font-size: .95rem;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  font-size: .78rem;
+}
+.info-card p {
+  margin: 0;
+  font-size: 1rem;
+}
+.info-card ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.info-card li { margin-bottom: .2rem; }
+
+.map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-top: .5rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.note-card {
+  background: color-mix(in oklab, var(--gold) 12%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--gold) 35%, var(--border));
+}
+
+/* Empty / error state */
+.state {
+  text-align: center;
+  padding: 3rem 1rem 2rem;
+}
+.state-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+}
+.state h2 {
+  margin: 0 0 .4rem;
+  font-size: 1.2rem;
+}
+.state p {
+  margin: 0 0 1.5rem;
+  color: var(--muted);
+  max-width: 36ch;
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .lookup-row { flex-wrap: nowrap; }
+}

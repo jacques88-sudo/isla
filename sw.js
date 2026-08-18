@@ -1,83 +1,39 @@
-const CACHE_NAME = "isla-static-v3";
-const OFFLINE_URL = "./offline.html";
-
-const STATIC_ASSETS = [
+const CACHE_NAME = "isla-v3";
+const ASSETS = [
   "./",
   "./index.html",
-  "./manifest.json",
+  "./booking.html",
   "./offline.html",
-
+  "./styles.css",
+  "./app.js",
+  "./booking.js",
+  "./manifest.json",
   "./assets/logo-isla.png",
   "./assets/icon-192.png",
-  "./assets/icon-512.png",
-  "./assets/icon-maskable-512.png",
-
-  "./assets/1264675861 (1).webp",
-  "./assets/Hero-poster.mp4",
-
-  "./assets/Cat-mare.jpg",
-  "./assets/Cat-teide.jpg",
-  "./assets/Cat-stelle.jpg",
-  "./assets/Cat-avventura.jpg",
-  "./assets/Cat-sport.jpg",
-  "./assets/Cat-parchi.jpg",
-  "./assets/Cat-privati.jpg",
-  "./assets/Secret-cove.jpg",
-  "./assets/About-team.jpg"
+  "./assets/icon-512.png"
 ];
 
-self.addEventListener("install", (event) => {
+self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
   );
   self.skipWaiting();
 });
 
-self.addEventListener("activate", (event) => {
+self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      )
+    caches.keys().then(keys =>
+      Promise.all(keys.map(key => key !== CACHE_NAME ? caches.delete(key) : null))
     )
   );
   self.clients.claim();
 });
 
-self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") return;
-
-  const request = event.request;
-  const isNavigation = request.mode === "navigate";
-
+self.addEventListener("fetch", event => {
   event.respondWith(
-    fetch(request)
-      .then((response) => {
-        if (!response || response.status !== 200 || response.type === "opaque") {
-          return response;
-        }
-
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
-        return response;
-      })
-      .catch(async () => {
-        const cached = await caches.match(request);
-        if (cached) return cached;
-
-        if (isNavigation) {
-          const offline = await caches.match(OFFLINE_URL);
-          if (offline) return offline;
-        }
-
-        return new Response("Resource unavailable offline", {
-          status: 503,
-          headers: { "Content-Type": "text/plain; charset=utf-8" }
-        });
-      })
+    caches.match(event.request).then(cached => {
+      if (cached) return cached;
+      return fetch(event.request).catch(() => caches.match("./offline.html"));
+    })
   );
 });

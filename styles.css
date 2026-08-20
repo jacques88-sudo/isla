@@ -28,7 +28,6 @@
   --shadow: 0 1px 2px oklch(0.24 0.012 60 / 0.05), 0 18px 40px -28px oklch(0.24 0.012 60 / 0.35);
 
   --max: 640px;
-  --banner-h: 3rem;
 }
 
 [data-theme="dark"] {
@@ -50,7 +49,7 @@
 
 * { box-sizing: border-box; }
 
-html { color-scheme: light dark; scroll-behavior: smooth; }
+html { color-scheme: light dark; scroll-behavior: smooth; scroll-padding-top: 15.5rem; }
 
 body {
   margin: 0;
@@ -151,29 +150,24 @@ a { text-decoration: none; color: inherit; }
   color: var(--text);
 }
 
-/* Site banner — "Isla" wordmark, fixed at the top for the whole home page */
+/* Site banner — logo, wordmark and pill nav, fixed at the top for the whole home page */
 .site-banner {
   position: fixed;
   inset-inline: 0;
   top: 0;
   z-index: 20;
-  height: var(--banner-h);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: color-mix(in oklab, var(--text) 78%, transparent);
-  backdrop-filter: blur(10px);
-}
-.site-banner-link {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: .34em;
+  gap: 1.1rem;
+  padding: 1.1rem 1.25rem;
   color: #fff;
+  background: color-mix(in oklab, var(--text) 78%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 14px 30px -22px oklch(0.24 0.012 60 / .55);
 }
 
-/* Hero — video with the brand header and pill nav overlaid on top */
+/* Hero — video overlaid by the fixed site banner */
 .hero {
   position: relative;
   height: 92vh;
@@ -192,18 +186,6 @@ a { text-decoration: none; color: inherit; }
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, oklch(0.24 0.012 60 / .45) 0%, oklch(0.24 0.012 60 / .08) 30%, oklch(0.24 0.012 60 / .1) 55%, var(--bg) 100%);
-}
-
-/* Hero header — logo, wordmark and pill nav overlaid on the video */
-.hero-header {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.1rem;
-  padding: calc(var(--banner-h) + 1.1rem) 1.25rem 0;
-  color: #fff;
 }
 .hero-top {
   width: 100%;

@@ -16,9 +16,25 @@
 <body>
   <a class="skip" href="#main">Vai al contenuto</a>
 
-  <div class="site-banner">
-    <a class="site-banner-link" href="./index.html" aria-label="Isla home">Isla</a>
-  </div>
+  <header class="site-banner">
+    <div class="hero-top">
+      <a class="hero-logo" href="./index.html" aria-label="Isla home">
+        <img src="./assets/logo-isla.png" alt="Logo Isla" />
+      </a>
+      <button class="iconbtn iconbtn-ghost" data-theme-toggle aria-label="Cambia tema">☾</button>
+    </div>
+    <div class="hero-brand">
+      <span class="hero-brand-title">Isla</span>
+      <span class="hero-brand-sub">so easy so tenerife</span>
+    </div>
+    <nav class="hero-pills" aria-label="Menu principale">
+      <a class="pill pill-ghost" href="#categories">Esperienze</a>
+      <a class="pill pill-solid" href="#codeInput">Prenota ora</a>
+      <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
+        <span class="pill-icon" aria-hidden="true">☰</span> Menu
+      </button>
+    </nav>
+  </header>
 
   <main id="main">
     <section class="hero">
@@ -27,26 +43,6 @@
         <source src="./assets/Hero-poster.mp4" type="video/mp4" />
       </video>
       <div class="hero-fade" aria-hidden="true"></div>
-
-      <header class="hero-header">
-        <div class="hero-top">
-          <a class="hero-logo" href="./index.html" aria-label="Isla home">
-            <img src="./assets/logo-isla.png" alt="Logo Isla" />
-          </a>
-          <button class="iconbtn iconbtn-ghost" data-theme-toggle aria-label="Cambia tema">☾</button>
-        </div>
-        <div class="hero-brand">
-          <span class="hero-brand-title">Isla</span>
-          <span class="hero-brand-sub">so easy so tenerife</span>
-        </div>
-        <nav class="hero-pills" aria-label="Menu principale">
-          <a class="pill pill-ghost" href="#categories">Esperienze</a>
-          <a class="pill pill-solid" href="#codeInput">Prenota ora</a>
-          <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
-            <span class="pill-icon" aria-hidden="true">☰</span> Menu
-          </button>
-        </nav>
-      </header>
 
       <div class="hero-controls">
         <button class="playbtn" id="videoToggle" type="button" aria-label="Metti in pausa il video">

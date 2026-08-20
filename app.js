@@ -1,27 +1,4 @@
-// Shared across all pages: theme toggle, service worker, ticket lookup form.
-
-(function initTheme() {
-  const root = document.documentElement;
-  const btn = document.querySelector("[data-theme-toggle]");
-  let theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  root.setAttribute("data-theme", theme);
-
-  function paint() {
-    if (!btn) return;
-    btn.textContent = theme === "dark" ? "☀" : "☾";
-    btn.setAttribute("aria-label", theme === "dark" ? "Passa al tema chiaro" : "Passa al tema scuro");
-  }
-
-  paint();
-
-  if (btn) {
-    btn.addEventListener("click", () => {
-      theme = theme === "dark" ? "light" : "dark";
-      root.setAttribute("data-theme", theme);
-      paint();
-    });
-  }
-})();
+// Shared across all pages: service worker, ticket lookup form, sticky banner, hero video.
 
 // Site banner shrinks to a compact bar once the page scrolls
 function initStickyBanner() {

@@ -90,7 +90,7 @@
     </div>
     <nav class="hero-pills" aria-label="Menu principale">
       <a class="pill pill-ghost" href="#categories">Esperienze</a>
-      <a class="pill pill-solid" href="#codeInput">Prenota ora</a>
+      <button class="pill pill-solid" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">Prenota ora</button>
       <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
         <span class="pill-icon" aria-hidden="true">☰</span> Menu
       </button>
@@ -127,10 +127,10 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
           <span>Pacchetti</span>
         </a>
-        <a class="bento-tile" href="#codeInput">
+        <button class="bento-tile" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h5v5H4zM4 15h5v5H4zM15 4h5v5h-5z"/><path d="M15 15h2v2h-2zM19 15h1v1h-1zM15 19h1v1h-1zM19 19h1v1h-1zM17 17h1v1h-1z"/></svg>
           <span>Scan ticket</span>
-        </a>
+        </button>
         <a class="bento-tile" href="#categories">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M4 20c0-3 2.2-5 5-5s5 2 5 5"/><circle cx="18" cy="9" r="2.2"/><path d="M15.2 20c.2-2.3 1.7-3.8 3.8-3.8s3.5 1.5 3.7 3.8"/></svg>
           <span>Con bambini</span>
@@ -142,19 +142,6 @@
       </div>
     </section>
 
-    <section class="lookup-section">
-      <div class="wrap">
-        <form class="lookup-card" data-lookup-form>
-          <label for="codeInput">Codice prenotazione o ticket</label>
-          <div class="lookup-row">
-            <input id="codeInput" name="code" type="text" inputmode="text" autocomplete="off"
-                   placeholder="Es. ISLA-4521" required />
-            <button class="btn btn-primary" type="submit">Cerca</button>
-          </div>
-          <p class="hint">Lo trovi nella email o nel messaggio di conferma della prenotazione.</p>
-        </form>
-      </div>
-    </section>
 
     <section class="steps">
       <div class="wrap">
@@ -273,9 +260,9 @@
     <section class="cta-final">
       <div class="wrap">
         <span class="eyebrow">Hai già prenotato?</span>
-        <h2>Il tuo codice ti aspetta qui sopra</h2>
-        <p>Torna alla ricerca e inserisci il codice della tua prenotazione per vedere subito i dettagli del tour.</p>
-        <a class="btn btn-invert" href="#codeInput">Cerca il mio codice</a>
+        <h2>Il tuo codice ti aspetta</h2>
+        <p>Inserisci il codice della tua prenotazione per vedere subito i dettagli del tour.</p>
+        <button class="btn btn-invert" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">Cerca il mio codice</button>
       </div>
     </section>
   </main>
@@ -286,15 +273,33 @@
       <span class="more-menu-brand">Isla</span>
       <button class="iconbtn" type="button" data-menu-close aria-label="Chiudi menu">✕</button>
     </div>
+    <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn hidden>Installa l'app</button>
     <nav class="more-menu-nav" aria-label="Sezioni">
       <a href="#categories" data-menu-link>Excursion</a>
       <a href="#categories" data-menu-link>Pacchetti</a>
-      <a href="#codeInput" data-menu-link>Scan ticket</a>
+      <button type="button" data-menu-link data-ticket-open>Scan ticket</button>
       <a href="#secret" data-menu-link>Posti segreti</a>
       <a href="#about" data-menu-link>Chi siamo</a>
     </nav>
-    <a class="btn btn-primary btn-block more-menu-cta" href="#codeInput" data-menu-link>Book now</a>
+    <a class="btn btn-primary btn-block more-menu-cta" href="#categories" data-menu-link>Book now</a>
   </aside>
+
+  <div class="ticket-scrim" data-ticket-scrim hidden></div>
+  <div class="ticket-dialog" id="ticketDialog" role="dialog" aria-modal="true" aria-labelledby="ticketDialogTitle" hidden>
+    <div class="ticket-dialog-head">
+      <h2 id="ticketDialogTitle">Scan ticket</h2>
+      <button class="iconbtn" type="button" data-ticket-close aria-label="Chiudi">✕</button>
+    </div>
+    <form data-lookup-form>
+      <label for="codeInput">Codice prenotazione o ticket</label>
+      <div class="lookup-row">
+        <input id="codeInput" name="code" type="text" inputmode="text" autocomplete="off"
+               placeholder="Es. ISLA-4521" required />
+        <button class="btn btn-primary" type="submit">Cerca</button>
+      </div>
+      <p class="hint">Lo trovi nella email o nel messaggio di conferma della prenotazione.</p>
+    </form>
+  </div>
 
   <footer class="footer">
     <div class="wrap footer-grid">
@@ -305,7 +310,7 @@
           <span>so easy so tenerife</span>
         </div>
       </div>
-      <a class="footer-link" href="#codeInput">Cerca il tuo codice</a>
+      <button class="footer-link" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">Cerca il tuo codice</button>
     </div>
     <p class="footer-copy">© Isla · Tenerife excursions</p>
   </footer>

@@ -70,6 +70,82 @@ function initLookupForms() {
 
 document.addEventListener("DOMContentLoaded", initLookupForms);
 
+// Ticket lookup dialog: opened from the "Scan ticket" tile and the other
+// booking-code entry points, instead of living inline in the home page.
+function initTicketDialog() {
+  const dialog = document.getElementById("ticketDialog");
+  const scrim = document.querySelector("[data-ticket-scrim]");
+  const openBtns = document.querySelectorAll("[data-ticket-open]");
+  const closeBtns = document.querySelectorAll("[data-ticket-close]");
+  if (!dialog || !scrim || !openBtns.length) return;
+
+  const input = dialog.querySelector("input");
+
+  function open() {
+    dialog.hidden = false;
+    scrim.hidden = false;
+    requestAnimationFrame(() => {
+      dialog.classList.add("is-open");
+      scrim.classList.add("is-visible");
+      if (input) input.focus();
+    });
+    document.body.classList.add("menu-open");
+  }
+
+  function close() {
+    dialog.classList.remove("is-open");
+    scrim.classList.remove("is-visible");
+    document.body.classList.remove("menu-open");
+    setTimeout(() => {
+      dialog.hidden = true;
+      scrim.hidden = true;
+    }, 300);
+  }
+
+  openBtns.forEach(btn => btn.addEventListener("click", open));
+  closeBtns.forEach(btn => btn.addEventListener("click", close));
+  scrim.addEventListener("click", close);
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && dialog.classList.contains("is-open")) close();
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initTicketDialog);
+
+// In-app install button: shown only when the browser offers installation
+// and the app isn't already running installed.
+function initInstallButton() {
+  const btn = document.querySelector("[data-install-btn]");
+  if (!btn) return;
+
+  const standalone = matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+  if (standalone) return;
+
+  let deferred = null;
+
+  window.addEventListener("beforeinstallprompt", e => {
+    e.preventDefault();
+    deferred = e;
+    btn.hidden = false;
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferred = null;
+    btn.hidden = true;
+  });
+
+  btn.addEventListener("click", async () => {
+    if (!deferred) return;
+    deferred.prompt();
+    await deferred.userChoice;
+    deferred = null;
+    btn.hidden = true;
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initInstallButton);
+
 // Hero video play/pause toggle (home page only)
 function initHeroVideo() {
   const video = document.getElementById("heroVideo");

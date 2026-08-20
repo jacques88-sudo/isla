@@ -435,8 +435,6 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: .28em;
 }
 
-.lookup-section { padding: 0 0 3rem; }
-
 .lookup-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -445,7 +443,8 @@ a { text-decoration: none; color: inherit; }
   padding: 1.4rem;
 }
 
-.lookup-card label {
+.lookup-card label,
+.ticket-dialog label {
   display: block;
   font-size: .68rem;
   text-transform: uppercase;
@@ -453,6 +452,62 @@ a { text-decoration: none; color: inherit; }
   color: var(--muted);
   margin-bottom: .7rem;
 }
+
+/* Ticket lookup dialog — opened from the "Scan ticket" tile */
+.ticket-scrim {
+  position: fixed;
+  inset: 0;
+  background: oklch(0.24 0.012 60 / .45);
+  backdrop-filter: blur(2px);
+  z-index: 40;
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.ticket-scrim[hidden] { display: none; }
+.ticket-scrim.is-visible { opacity: 1; }
+
+.ticket-dialog {
+  position: fixed;
+  z-index: 41;
+  left: 50%;
+  bottom: 0;
+  width: min(100%, 520px);
+  transform: translate(-50%, 100%);
+  background: var(--bg);
+  border-radius: 20px 20px 0 0;
+  padding: 1.5rem 1.4rem 2rem;
+  box-shadow: 0 -20px 50px -30px oklch(0.24 0.012 60 / .5);
+  transition: transform .3s ease;
+}
+.ticket-dialog[hidden] { display: none; }
+.ticket-dialog.is-open { transform: translate(-50%, 0); }
+
+.ticket-dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+.ticket-dialog-head h2 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .ticket-dialog {
+    top: 50%;
+    bottom: auto;
+    transform: translate(-50%, -45%);
+    opacity: 0;
+    border-radius: 20px;
+    transition: transform .3s ease, opacity .3s ease;
+  }
+  .ticket-dialog.is-open { transform: translate(-50%, -50%); opacity: 1; }
+}
+
+.install-btn { margin-bottom: 1.6rem; }
 
 .lookup-row {
   position: relative;
@@ -1084,12 +1139,15 @@ a { text-decoration: none; color: inherit; }
   flex-direction: column;
   flex: 1;
 }
-.more-menu-nav a {
+.more-menu-nav a,
+.more-menu-nav button {
   padding: 1.05rem 0;
   border-bottom: 1px solid var(--border);
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 1.35rem;
+  text-align: left;
+  color: var(--text);
 }
 
 .more-menu-cta { margin-top: 1.4rem; }

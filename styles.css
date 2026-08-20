@@ -385,6 +385,52 @@ a { text-decoration: none; color: inherit; }
   .intro { padding: 6rem 0 3.5rem; }
 }
 
+/* Bento — quick links below the intro */
+.bento { padding: 0 0 2.5rem; }
+.bento-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: .8rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 640px) {
+  .bento-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.bento-tile {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+  padding: 1rem;
+  text-align: center;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text);
+}
+.bento-tile svg {
+  width: 28px;
+  height: 28px;
+  color: var(--gold);
+}
+.bento-tile span {
+  font-size: .74rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  line-height: 1.25;
+}
+@media (min-width: 960px) {
+  .bento { padding: 0 0 3.5rem; }
+  .bento .wrap { max-width: var(--max-wide); }
+  .bento-tile { transition: transform .4s ease, box-shadow .4s ease; }
+  .bento-tile:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+}
+
 .eyebrow {
   display: inline-flex;
   align-items: center;

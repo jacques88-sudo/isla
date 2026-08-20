@@ -484,7 +484,7 @@ a { text-decoration: none; color: inherit; }
 .cat-card {
   position: relative;
   aspect-ratio: 16 / 9;
-  border-radius: var(--radius-card);
+  border-radius: 20px;
   overflow: hidden;
   box-shadow: var(--shadow);
 }

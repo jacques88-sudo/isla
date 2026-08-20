@@ -16,16 +16,6 @@
 <body>
   <a class="skip" href="#main">Vai al contenuto</a>
 
-  <header class="top">
-    <div class="wrap nav">
-      <a class="brand" href="./index.html" aria-label="Isla home">
-        <img src="./assets/logo-isla.png" alt="Logo Isla" />
-        <span class="brand-text"><strong>Isla</strong><span>so easy so tenerife</span></span>
-      </a>
-      <button class="iconbtn" data-theme-toggle aria-label="Cambia tema">☾</button>
-    </div>
-  </header>
-
   <main id="main">
     <section class="hero">
       <video class="hero-video" id="heroVideo" aria-hidden="true" autoplay muted loop playsinline
@@ -33,6 +23,27 @@
         <source src="./assets/Hero-poster.mp4" type="video/mp4" />
       </video>
       <div class="hero-fade" aria-hidden="true"></div>
+
+      <header class="hero-header">
+        <div class="hero-top">
+          <a class="hero-logo" href="./index.html" aria-label="Isla home">
+            <img src="./assets/logo-isla.png" alt="Logo Isla" />
+          </a>
+          <button class="iconbtn iconbtn-ghost" data-theme-toggle aria-label="Cambia tema">☾</button>
+        </div>
+        <div class="hero-brand">
+          <span class="hero-brand-title">Isla</span>
+          <span class="hero-brand-sub">so easy so tenerife</span>
+        </div>
+        <nav class="hero-pills" aria-label="Menu principale">
+          <a class="pill pill-ghost" href="#categories">Esperienze</a>
+          <a class="pill pill-solid" href="#codeInput">Prenota ora</a>
+          <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
+            <span class="pill-icon" aria-hidden="true">☰</span> Menu
+          </button>
+        </nav>
+      </header>
+
       <div class="hero-controls">
         <button class="playbtn" id="videoToggle" type="button" aria-label="Metti in pausa il video">
           <svg id="iconPause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
@@ -94,7 +105,7 @@
       </div>
     </section>
 
-    <section class="categories">
+    <section class="categories" id="categories">
       <div class="wrap">
         <span class="eyebrow">Esplora</span>
         <h2>Categorie</h2>
@@ -131,7 +142,7 @@
       </div>
     </section>
 
-    <section class="secret">
+    <section class="secret" id="secret">
       <img class="secret-bg" src="./assets/Secret-cove.jpg" alt="Cala segreta a Tenerife" loading="lazy" width="1400" height="900" />
       <div class="secret-fade" aria-hidden="true"></div>
       <div class="wrap secret-content">
@@ -141,7 +152,7 @@
       </div>
     </section>
 
-    <section class="about">
+    <section class="about" id="about">
       <div class="wrap about-grid">
         <img src="./assets/About-team.jpg" alt="Il team di Isla a Tenerife" loading="lazy" width="1200" height="1100" />
         <div>
@@ -187,6 +198,22 @@
       </div>
     </section>
   </main>
+
+  <div class="menu-scrim" data-menu-scrim hidden></div>
+  <aside class="more-menu" id="moreMenu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+    <div class="more-menu-head">
+      <span class="more-menu-brand">Isla</span>
+      <button class="iconbtn" type="button" data-menu-close aria-label="Chiudi menu">✕</button>
+    </div>
+    <nav class="more-menu-nav" aria-label="Sezioni">
+      <a href="#categories" data-menu-link>Excursion</a>
+      <a href="#categories" data-menu-link>Pacchetti</a>
+      <a href="#codeInput" data-menu-link>Scan ticket</a>
+      <a href="#secret" data-menu-link>Posti segreti</a>
+      <a href="#about" data-menu-link>Chi siamo</a>
+    </nav>
+    <a class="btn btn-primary btn-block more-menu-cta" href="#codeInput" data-menu-link>Book now</a>
+  </aside>
 
   <footer class="footer">
     <div class="wrap footer-grid">

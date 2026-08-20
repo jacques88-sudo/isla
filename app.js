@@ -69,3 +69,45 @@ function initHeroVideo() {
 }
 
 document.addEventListener("DOMContentLoaded", initHeroVideo);
+
+// "More" off-canvas menu (home page only)
+function initMoreMenu() {
+  const panel = document.getElementById("moreMenu");
+  const scrim = document.querySelector("[data-menu-scrim]");
+  const openBtns = document.querySelectorAll("[data-menu-open]");
+  const closeBtns = document.querySelectorAll("[data-menu-close]");
+  const links = document.querySelectorAll("[data-menu-link]");
+  if (!panel || !scrim || !openBtns.length) return;
+
+  function open() {
+    panel.hidden = false;
+    scrim.hidden = false;
+    requestAnimationFrame(() => {
+      panel.classList.add("is-open");
+      scrim.classList.add("is-visible");
+    });
+    document.body.classList.add("menu-open");
+    openBtns.forEach(btn => btn.setAttribute("aria-expanded", "true"));
+  }
+
+  function close() {
+    panel.classList.remove("is-open");
+    scrim.classList.remove("is-visible");
+    document.body.classList.remove("menu-open");
+    openBtns.forEach(btn => btn.setAttribute("aria-expanded", "false"));
+    setTimeout(() => {
+      panel.hidden = true;
+      scrim.hidden = true;
+    }, 300);
+  }
+
+  openBtns.forEach(btn => btn.addEventListener("click", open));
+  closeBtns.forEach(btn => btn.addEventListener("click", close));
+  links.forEach(link => link.addEventListener("click", close));
+  scrim.addEventListener("click", close);
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && panel.classList.contains("is-open")) close();
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initMoreMenu);

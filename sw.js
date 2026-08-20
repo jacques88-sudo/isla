@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v20";
+const CACHE_NAME = "isla-v21";
 const ASSETS = [
   "./",
   "./index.html",
@@ -10,7 +10,8 @@ const ASSETS = [
   "./manifest.json",
   "./assets/logo-isla.png",
   "./assets/icon-192.png",
-  "./assets/icon-512.png"
+  "./assets/icon-512.png",
+  "./assets/icon-maskable-512.png"
 ];
 
 self.addEventListener("install", event => {

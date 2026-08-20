@@ -12,6 +12,59 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
   <link rel="stylesheet" href="./styles.css" />
+  <!-- Critical splash styles, inlined so the loading screen never flashes
+       unstyled while styles.css is still being fetched. -->
+  <style>
+    .splash {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.4rem;
+      background: oklch(0.985 0.006 85);
+    }
+    .splash-mark {
+      position: relative;
+      width: 108px;
+      height: 108px;
+      display: grid;
+      place-items: center;
+    }
+    .splash-logo {
+      width: 58%;
+      height: 58%;
+      object-fit: contain;
+      border: 0;
+    }
+    .splash-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg,
+        transparent 0%,
+        oklch(0.74 0.1 210) 20%,
+        oklch(0.6 0.11 235) 45%,
+        transparent 55%,
+        transparent 100%);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
+              mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
+      animation: splash-spin 1.6s linear infinite;
+    }
+    .splash-brand {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 500;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: .3em;
+      color: oklch(0.24 0.012 60);
+    }
+    @keyframes splash-spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
   <div class="splash" id="splash" aria-hidden="true">

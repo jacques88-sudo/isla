@@ -31,6 +31,8 @@
   --shadow: 0 1px 2px oklch(0.24 0.012 60 / 0.05), 0 18px 40px -28px oklch(0.24 0.012 60 / 0.35);
 
   --max: 640px;
+  /* wider container used only by content-rich sections from tablet/desktop up */
+  --max-wide: 1120px;
 }
 
 * { box-sizing: border-box; }
@@ -378,6 +380,9 @@ a { text-decoration: none; color: inherit; }
   max-width: 44ch;
   margin: 0 auto;
 }
+@media (min-width: 960px) {
+  .intro { padding: 6rem 0 3.5rem; }
+}
 
 .eyebrow {
   display: inline-flex;
@@ -520,6 +525,17 @@ a { text-decoration: none; color: inherit; }
   font-weight: 300;
   font-size: .92rem;
 }
+@media (min-width: 960px) {
+  .steps { padding: 2rem 0 5rem; }
+  .steps .wrap { max-width: var(--max-wide); }
+  .step-list { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+  .step {
+    grid-template-columns: 1fr;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .step-num { display: block; margin-bottom: .4rem; }
+}
 
 /* Categories */
 .categories {
@@ -575,6 +591,12 @@ a { text-decoration: none; color: inherit; }
   font-size: 1.4rem;
   line-height: 1.15;
 }
+@media (min-width: 960px) {
+  .categories { padding: 5rem 0 6rem; }
+  .categories .wrap { max-width: var(--max-wide); }
+  .cat-card { transition: transform .4s ease, box-shadow .4s ease; }
+  .cat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+}
 
 /* Secret places — full-bleed editorial section */
 .secret {
@@ -611,6 +633,9 @@ a { text-decoration: none; color: inherit; }
   font-weight: 300;
   color: oklch(1 0 0 / .9);
 }
+@media (min-width: 960px) {
+  .secret-content { padding: 8rem 1.25rem; }
+}
 
 /* About */
 .about {
@@ -643,6 +668,11 @@ a { text-decoration: none; color: inherit; }
     align-items: center;
     gap: 3rem;
   }
+}
+@media (min-width: 960px) {
+  .about { padding: 6rem 0; }
+  .about .wrap { max-width: var(--max-wide); }
+  .about-grid { gap: 5rem; }
 }
 
 /* FAQ */
@@ -687,6 +717,9 @@ a { text-decoration: none; color: inherit; }
   font-size: .92rem;
   line-height: 1.6;
 }
+@media (min-width: 960px) {
+  .faq { padding: 5rem 0; }
+}
 
 /* Final CTA */
 .cta-final {
@@ -710,6 +743,9 @@ a { text-decoration: none; color: inherit; }
 .btn-invert {
   background: var(--primary-foreground);
   color: var(--primary);
+}
+@media (min-width: 960px) {
+  .cta-final { padding: 6rem 0; }
 }
 
 /* Footer */
@@ -771,6 +807,15 @@ a { text-decoration: none; color: inherit; }
   text-transform: uppercase;
   letter-spacing: .18em;
   text-align: center;
+}
+@media (min-width: 768px) {
+  .footer .wrap { max-width: var(--max-wide); }
+  .footer-grid {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+  }
 }
 
 /* Booking detail page */

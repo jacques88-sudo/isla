@@ -23,6 +23,21 @@
   }
 })();
 
+// Site banner shrinks to a compact bar once the page scrolls
+function initStickyBanner() {
+  const banner = document.querySelector(".site-banner");
+  if (!banner) return;
+
+  function paint() {
+    banner.classList.toggle("is-scrolled", window.scrollY > 24);
+  }
+
+  paint();
+  window.addEventListener("scroll", paint, { passive: true });
+}
+
+document.addEventListener("DOMContentLoaded", initStickyBanner);
+
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./sw.js").catch(() => {});

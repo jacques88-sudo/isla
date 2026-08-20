@@ -150,7 +150,8 @@ a { text-decoration: none; color: inherit; }
   color: var(--text);
 }
 
-/* Site banner — logo, wordmark and pill nav, fixed at the top for the whole home page */
+/* Site banner — logo, wordmark and pill nav, fixed at the top for the whole home page.
+   Transparent and roomy over the hero video; shrinks to a compact blurred bar on scroll. */
 .site-banner {
   position: fixed;
   inset-inline: 0;
@@ -160,20 +161,41 @@ a { text-decoration: none; color: inherit; }
   flex-direction: column;
   align-items: center;
   gap: 1.1rem;
-  padding: 1.1rem 1.25rem;
+  padding: 1rem 1.25rem;
   color: #fff;
-  background: color-mix(in oklab, var(--text) 78%, transparent);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 14px 30px -22px oklch(0.24 0.012 60 / .55);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: padding .3s ease, background .3s ease, border-color .3s ease, color .3s ease, box-shadow .3s ease;
+}
+.site-banner.is-scrolled {
+  padding: .5rem 1.25rem;
+  color: var(--text);
+  background: color-mix(in oklab, var(--bg) 85%, transparent);
+  backdrop-filter: blur(16px);
+  border-bottom-color: color-mix(in oklab, var(--border) 80%, transparent);
+  box-shadow: 0 14px 30px -22px oklch(0.24 0.012 60 / .25);
+}
+.site-banner.is-scrolled .hero-brand-sub { color: var(--muted); }
+.site-banner.is-scrolled .pill-ghost {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+}
+.site-banner.is-scrolled .iconbtn-ghost {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
 }
 
 /* Hero — video overlaid by the fixed site banner */
 .hero {
   position: relative;
-  height: 92vh;
-  min-height: 620px;
-  max-height: 900px;
+  height: 58vh;
+  min-height: 380px;
   overflow: hidden;
+}
+@media (min-width: 768px) {
+  .hero { height: 52vh; min-height: 420px; }
 }
 .hero-video {
   position: absolute;
@@ -273,8 +295,8 @@ a { text-decoration: none; color: inherit; }
   gap: 1.1rem;
 }
 .playbtn {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   border-radius: var(--radius-pill);
   border: 1px solid oklch(1 0 0 / .6);
   background: oklch(1 0 0 / .12);
@@ -283,7 +305,7 @@ a { text-decoration: none; color: inherit; }
   display: grid;
   place-items: center;
 }
-.playbtn svg { width: 18px; height: 18px; }
+.playbtn svg { width: 20px; height: 20px; }
 .discover {
   background: #fff;
   color: var(--text);

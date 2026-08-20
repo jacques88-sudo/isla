@@ -472,18 +472,18 @@ a { text-decoration: none; color: inherit; }
   margin: 0;
   padding: 0;
   display: grid;
-  gap: .8rem;
-  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  grid-template-columns: 1fr;
 }
 @media (min-width: 640px) {
-  .cat-grid { grid-template-columns: repeat(3, 1fr); }
+  .cat-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (min-width: 960px) {
-  .cat-grid { grid-template-columns: repeat(4, 1fr); }
+  .cat-grid { grid-template-columns: repeat(3, 1fr); }
 }
 .cat-card {
   position: relative;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 16 / 9;
   border-radius: var(--radius-card);
   overflow: hidden;
   box-shadow: var(--shadow);
@@ -501,15 +501,15 @@ a { text-decoration: none; color: inherit; }
 }
 .cat-label {
   position: absolute;
-  left: .7rem;
-  right: .7rem;
-  bottom: .7rem;
+  left: 1.1rem;
+  right: 1.1rem;
+  bottom: 1rem;
   z-index: 1;
   font-family: var(--font-display);
   font-weight: 500;
   color: #fff;
-  font-size: 1.05rem;
-  line-height: 1.2;
+  font-size: 1.4rem;
+  line-height: 1.15;
 }
 
 /* Secret places — full-bleed editorial section */

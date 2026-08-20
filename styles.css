@@ -30,26 +30,9 @@
   --max: 640px;
 }
 
-[data-theme="dark"] {
-  --bg: oklch(0.2 0.012 60);
-  --surface: oklch(0.25 0.014 60);
-  --cream: oklch(0.28 0.016 65);
-  --sand: oklch(0.34 0.03 70);
-  --border: oklch(1 0 0 / 14%);
-
-  --text: oklch(0.96 0.01 85);
-  --muted: oklch(0.75 0.015 75);
-
-  --primary: oklch(0.94 0.015 85);
-  --primary-foreground: oklch(0.22 0.012 60);
-  --gold: oklch(0.72 0.06 68);
-  --danger: oklch(0.6 0.16 30);
-  --shadow: 0 26px 60px -30px oklch(0 0 0 / 0.5);
-}
-
 * { box-sizing: border-box; }
 
-html { color-scheme: light dark; scroll-behavior: smooth; scroll-padding-top: 9rem; }
+html { color-scheme: light; scroll-behavior: smooth; scroll-padding-top: 9rem; }
 
 body {
   margin: 0;
@@ -181,18 +164,14 @@ a { text-decoration: none; color: inherit; }
   border-color: var(--border);
   color: var(--text);
 }
-.site-banner.is-scrolled .iconbtn-ghost {
-  background: var(--surface);
-  border-color: var(--border);
-  color: var(--text);
-}
 
-/* Hero — video overlaid by the fixed site banner */
+/* Hero — video overlaid by the fixed site banner, separated from the page below by a thin line */
 .hero {
   position: relative;
   height: 58vh;
   min-height: 380px;
   overflow: hidden;
+  border-bottom: 1px solid var(--border);
 }
 @media (min-width: 768px) {
   .hero { height: 52vh; min-height: 420px; }
@@ -222,15 +201,11 @@ a { text-decoration: none; color: inherit; }
 .hero-logo img {
   width: 38px;
   height: 38px;
-  border-radius: 8px;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
-.iconbtn-ghost {
-  background: oklch(1 0 0 / .12);
-  border-color: oklch(1 0 0 / .5);
-  color: #fff;
-  backdrop-filter: blur(6px);
+.hero-top-spacer {
+  flex: 0 0 38px;
 }
 .hero-brand {
   flex: 1;

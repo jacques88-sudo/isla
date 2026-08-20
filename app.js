@@ -1,5 +1,39 @@
 // Shared across all pages: service worker, ticket lookup form, sticky banner, hero video.
 
+// Splash loading screen: stays up at least a moment (so it doesn't just
+// flash), then fades out once the page has finished loading. A safety
+// timeout hides it anyway if loading takes too long.
+function initSplash() {
+  const splash = document.getElementById("splash");
+  if (!splash) return;
+
+  const MIN_VISIBLE_MS = 500;
+  const MAX_WAIT_MS = 4000;
+  const shownAt = Date.now();
+  let hidden = false;
+
+  function hide() {
+    if (hidden) return;
+    hidden = true;
+    splash.classList.add("is-hidden");
+    splash.addEventListener("transitionend", () => { splash.hidden = true; }, { once: true });
+  }
+
+  function ready() {
+    const elapsed = Date.now() - shownAt;
+    setTimeout(hide, Math.max(0, MIN_VISIBLE_MS - elapsed));
+  }
+
+  if (document.readyState === "complete") {
+    ready();
+  } else {
+    window.addEventListener("load", ready);
+  }
+  setTimeout(hide, MAX_WAIT_MS);
+}
+
+initSplash();
+
 // Site banner shrinks to a compact bar once the page scrolls
 function initStickyBanner() {
   const banner = document.querySelector(".site-banner");

@@ -108,6 +108,7 @@ a { text-decoration: none; color: inherit; }
   width: 58%;
   height: 58%;
   object-fit: contain;
+  border: 0;
 }
 .splash-ring {
   position: absolute;

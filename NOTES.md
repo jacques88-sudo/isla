@@ -8,14 +8,37 @@ PWA mobile-first per turisti a Tenerife. Funzione centrale: l'utente inserisce i
 della prenotazione (ticket number / booking code) e vede subito orario, punto d'incontro,
 durata, cosa portare e note del proprio tour — senza cercare tra email, PDF e screenshot.
 
+## Obiettivo del progetto
+
+PWA per **escursioni, tour e show a Tenerife**, dove il cliente può vedere le attività,
+**prenotare** e **comprare** online, poi usare il biglietto tramite **scan ticket** al punto
+d'incontro. In un secondo momento anche la scelta del **pickup** per alcune escursioni.
+
+## Roadmap
+
+La lista completa e aggiornata di cosa manca è su Notion:
+**Isla — Roadmap PWA escursioni Tenerife**
+<https://app.notion.com/p/3c30f3d8ea1881e4820afc5e5893cade>
+
+Organizzata in 10 fasi in ordine di dipendenza (0 rifiniture → 9 apertura al pubblico).
+
 ## Scelta tecnica
 
-HTML, CSS e JavaScript puri. Niente framework, niente build tool, niente backend: un sito
-statico pubblicabile direttamente su GitHub Pages.
+**Oggi:** HTML, CSS e JavaScript puri. Niente framework, niente build tool, niente backend:
+sito statico pubblicato su GitHub Pages.
 
-Scelta esplicita e discussa: **non** replicare lo stack di isla-adventures (React + TypeScript
-+ Vite + Tailwind + Supabase). Troppa complessità da mantenere in autonomia per un principiante.
-Di quel progetto abbiamo preso solo lo stile visivo e la struttura dei contenuti, non il codice.
+**Limite noto:** questo stack basta per *mostrare* informazioni, ma non può gestire
+prenotazioni e pagamenti veri, perché servono un database, il calcolo dei posti disponibili
+e chiavi segrete che non possono stare nel browser.
+
+**Direzione presa (fase 2 della roadmap):** restare su HTML/CSS/JS — niente riscrittura in
+React — e aggiungere Supabase (database, login, codice lato server) più Stripe Checkout per i
+pagamenti. La libreria JS di Supabase funziona anche da HTML normale, quindi il salto di
+complessità resta gestibile.
+
+Resta valida la scelta di **non** replicare l'intero stack di isla-adventures (React +
+TypeScript + Vite + Tailwind). Di quel progetto prendiamo lo stile visivo e la struttura dei
+contenuti, non il codice.
 
 ## Stile
 
@@ -26,41 +49,54 @@ Ispirato a due riferimenti:
 - **Anantara** (sito di hotel di lusso): fotografia a piena pagina, etichette maiuscole molto
   spaziate, molto spazio bianco, colore d'accento unico e sobrio.
 
-Tutti i colori sono definiti come variabili CSS in `styles.css` (`:root` e `[data-theme="dark"]`).
+Tutti i colori sono definiti come variabili CSS in `styles.css`, sotto `:root`. Il tema
+scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
 
 ## Struttura dei file
 
 - `index.html` — home
 - `booking.html` + `booking.js` — schermata dettagli prenotazione (cerca per codice)
 - `styles.css` — tutto lo stile, un solo file
-- `app.js` — logica condivisa (tema chiaro/scuro, service worker, form di ricerca, video hero)
+- `app.js` — logica condivisa (splash, banner fisso, service worker, finestra ricerca
+  ticket, video hero, pulsante installa app)
 - `esplora-catalog.js` — dati delle 14 escursioni vere, non ancora collegato a nessuna pagina
 - `manifest.json`, `sw.js`, `offline.html` — parte PWA (installabilità, cache offline)
 - `assets/` — foto e video veri (logo, hero video, foto categorie, cala segreta, team)
 
 ## Fatto finora
 
-Home completa in 5 passi: video hero con play/pausa → intro → ricerca ticket (azione
-principale) → "come funziona" → categorie (7 foto vere) → posti segreti → chi siamo →
-FAQ → richiamo finale alla ricerca → footer.
+Home: splash con anello blu di caricamento → banner fisso in cima (logo, wordmark, pillole
+Esperienze / Prenota ora / Menu, si restringe scorrendo) → video hero con play/pausa →
+"Inizia la tua avventura con…" → griglia bento (Pacchetti, Scan ticket, Con bambini,
+3/5/7 Days) → "come funziona" → categorie (7 foto vere) → posti segreti → chi siamo →
+FAQ → richiamo finale → footer. Layout ottimizzato anche per desktop.
+
+Il menu "More" si apre da destra. La ricerca del ticket vive in una finestra che si apre
+dai vari punti d'accesso, non più fissa in home.
 
 `booking.html` mostra i dettagli di una prenotazione cercata per codice, con dati di
 esempio (`MOCK_BOOKINGS` in `booking.js`) e stato di errore per codici non trovati.
 
-Tutto è su GitHub, branch `main`, repository `jacques88-sudo/isla`.
+Online su GitHub Pages: <https://jacques88-sudo.github.io/isla/>
 
 ## Da fare
 
-- Pagina "Tutte le escursioni" — dati veri già pronti in `esplora-catalog.js`, mancano
-  markup, stile e pagina
-- Pagina dettaglio di una singola escursione
-- Testo "Chi siamo" in home è un **placeholder onesto** (nessuna affermazione inventata) —
-  da sostituire con la storia vera quando disponibile
+La lista completa è su Notion (link in cima a questo file). In sintesi, i punti che
+toccano il codice già scritto:
+
+- `MOCK_BOOKINGS` in `booking.js` sono 2 prenotazioni finte scritte a mano → da sostituire
+  con dati veri dal database
+- `esplora-catalog.js` ha le 14 escursioni ma non è collegato a nessuna pagina, e le
+  immagini sono stock/placeholder
+- I riquadri bento (Pacchetti, Con bambini, 3/5/7 Days) puntano tutti a `#categories`:
+  servono pagine vere
+- Le card delle categorie in home non sono cliccabili
+- Testo "Chi siamo" è un **placeholder onesto** (nessuna affermazione inventata) — da
+  sostituire con la storia vera
+- Video hero `assets/Hero-poster.mp4` pesa 3.7MB — da comprimere a ~1-1.5MB (720p, 6-10s,
+  senza audio) con uno strumento tipo HandBrake
 - Sezione recensioni volutamente omessa: quelle di isla-adventures sono inventate, non le
   abbiamo copiate
-- Video hero `assets/Hero-poster.mp4` pesa 3.8MB — da comprimere a ~1-1.5MB (720p, 6-10s,
-  senza audio) prima della pubblicazione finale, con uno strumento tipo HandBrake
-- GitHub Pages non ancora attivato (nessun link pubblico condivisibile per ora)
 
 ## Note pratiche
 

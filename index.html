@@ -89,7 +89,7 @@
       <span class="hero-top-spacer" aria-hidden="true"></span>
     </div>
     <nav class="hero-pills" aria-label="Menu principale">
-      <a class="pill pill-ghost" href="#categories">Esperienze</a>
+      <a class="pill pill-ghost" href="./escursioni.html">Esperienze</a>
       <button class="pill pill-solid" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">Prenota ora</button>
       <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
         <span class="pill-icon" aria-hidden="true">☰</span> Menu
@@ -131,7 +131,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h5v5H4zM4 15h5v5H4zM15 4h5v5h-5z"/><path d="M15 15h2v2h-2zM19 15h1v1h-1zM15 19h1v1h-1zM19 19h1v1h-1zM17 17h1v1h-1z"/></svg>
           <span>Scan ticket</span>
         </button>
-        <a class="bento-tile" href="#categories">
+        <a class="bento-tile" href="./escursioni.html?family=1">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M4 20c0-3 2.2-5 5-5s5 2 5 5"/><circle cx="18" cy="9" r="2.2"/><path d="M15.2 20c.2-2.3 1.7-3.8 3.8-3.8s3.5 1.5 3.7 3.8"/></svg>
           <span>Con bambini</span>
         </a>
@@ -179,32 +179,32 @@
         <h2>Categorie</h2>
         <ul class="cat-grid">
           <li class="cat-card">
-            <img src="./assets/Cat-mare.jpg" alt="Mare e barche a Tenerife" loading="eager" width="1400" height="1250" />
-            <span class="cat-label">Mare e barche</span>
+            <a href="./escursioni.html?cat=mare-barche" class="cat-link"><img src="./assets/Cat-mare.jpg" alt="Mare e barche a Tenerife" loading="eager" width="1400" height="1250" />
+            <span class="cat-label">Mare e barche</span></a>
           </li>
           <li class="cat-card">
-            <img src="./assets/Cat-teide.jpg" alt="Teide e natura a Tenerife" loading="eager" width="1400" height="1250" />
-            <span class="cat-label">Teide e natura</span>
+            <a href="./escursioni.html?cat=teide-natura" class="cat-link"><img src="./assets/Cat-teide.jpg" alt="Teide e natura a Tenerife" loading="eager" width="1400" height="1250" />
+            <span class="cat-label">Teide e natura</span></a>
           </li>
           <li class="cat-card">
-            <img src="./assets/Cat-stelle.jpg" alt="Stelle e astronomia a Tenerife" loading="lazy" width="1400" height="1250" />
-            <span class="cat-label">Stelle e astronomia</span>
+            <a href="./escursioni.html?cat=stelle" class="cat-link"><img src="./assets/Cat-stelle.jpg" alt="Stelle e astronomia a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label">Stelle e astronomia</span></a>
           </li>
           <li class="cat-card">
-            <img src="./assets/Cat-avventura.jpg" alt="Avventura e motori a Tenerife" loading="lazy" width="1400" height="1250" />
-            <span class="cat-label">Avventura e motori</span>
+            <a href="./escursioni.html?cat=avventura-motori" class="cat-link"><img src="./assets/Cat-avventura.jpg" alt="Avventura e motori a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label">Avventura e motori</span></a>
           </li>
           <li class="cat-card">
-            <img src="./assets/Cat-sport.jpg" alt="Sport acquatici a Tenerife" loading="lazy" width="1400" height="1250" />
-            <span class="cat-label">Sport acquatici</span>
+            <a href="./escursioni.html?cat=sport-acquatici" class="cat-link"><img src="./assets/Cat-sport.jpg" alt="Sport acquatici a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label">Sport acquatici</span></a>
           </li>
           <li class="cat-card">
-            <img src="./assets/Cat-parchi.jpg" alt="Parchi e spettacoli a Tenerife" loading="lazy" width="1400" height="1250" />
-            <span class="cat-label">Parchi e spettacoli</span>
+            <a href="./escursioni.html?cat=parchi-spettacoli" class="cat-link"><img src="./assets/Cat-parchi.jpg" alt="Parchi e spettacoli a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label">Parchi e spettacoli</span></a>
           </li>
           <li class="cat-card">
-            <img src="./assets/Cat-privati.jpg" alt="Tour privati a Tenerife" loading="lazy" width="1400" height="1250" />
-            <span class="cat-label">Tour privati</span>
+            <a href="./escursioni.html?cat=tour-privati" class="cat-link"><img src="./assets/Cat-privati.jpg" alt="Tour privati a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label">Tour privati</span></a>
           </li>
         </ul>
       </div>
@@ -275,13 +275,13 @@
     </div>
     <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn hidden>Installa l'app</button>
     <nav class="more-menu-nav" aria-label="Sezioni">
-      <a href="#categories" data-menu-link>Excursion</a>
+      <a href="./escursioni.html" data-menu-link>Excursion</a>
       <a href="#categories" data-menu-link>Pacchetti</a>
       <button type="button" data-menu-link data-ticket-open>Scan ticket</button>
       <a href="#secret" data-menu-link>Posti segreti</a>
       <a href="#about" data-menu-link>Chi siamo</a>
     </nav>
-    <a class="btn btn-primary btn-block more-menu-cta" href="#categories" data-menu-link>Book now</a>
+    <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link>Book now</a>
   </aside>
 
   <div class="ticket-scrim" data-ticket-scrim hidden></div>

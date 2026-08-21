@@ -664,6 +664,11 @@ a { text-decoration: none; color: inherit; }
   overflow: hidden;
   box-shadow: var(--shadow);
 }
+.cat-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 .cat-card img {
   width: 100%;
   height: 100%;
@@ -674,6 +679,8 @@ a { text-decoration: none; color: inherit; }
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, transparent 45%, oklch(0.24 0.012 60 / .8) 100%);
+  /* la sfumatura è decorativa: senza questo copre il link e i clic non passano */
+  pointer-events: none;
 }
 .cat-label {
   position: absolute;
@@ -1157,3 +1164,240 @@ a { text-decoration: none; color: inherit; }
 }
 
 body.menu-open { overflow: hidden; }
+
+/* ── Pagina catalogo "Tutte le escursioni" ────────────────────────────── */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.catalog-page {
+  /* lascia spazio al banner fisso, che qui non ha l'hero sotto */
+  padding-top: 11rem;
+  padding-bottom: 4rem;
+}
+.catalog-head {
+  text-align: center;
+  padding-bottom: 1.8rem;
+}
+.catalog-head .eyebrow { justify-content: center; }
+.catalog-head h1 {
+  font-weight: 400;
+  font-size: clamp(2rem, 1.6rem + 2vw, 3rem);
+  line-height: 1.1;
+  margin: .8rem 0 .6rem;
+}
+.catalog-count {
+  margin: 0;
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+.catalog-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 1.8rem;
+}
+.catalog-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.catalog-search svg {
+  position: absolute;
+  left: 1.1rem;
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  pointer-events: none;
+}
+.catalog-search input {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-pill);
+  padding: .9rem 1.2rem .9rem 2.9rem;
+  outline: none;
+  color: var(--text);
+  font-size: .95rem;
+}
+.catalog-search input:focus { border-color: var(--text); }
+
+.chip-row {
+  display: flex;
+  gap: .5rem;
+  overflow-x: auto;
+  padding-bottom: .3rem;
+  scrollbar-width: none;
+}
+.chip-row::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none;
+  padding: .55rem 1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  white-space: nowrap;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.chip.is-active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.tour-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.1rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .tour-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 960px) {
+  .tour-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.tour-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.tour-media {
+  aspect-ratio: 16 / 10;
+  background: var(--cream);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.tour-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Segnaposto sobrio finché la foto non c'è */
+.tour-media-empty {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: .3em;
+  color: color-mix(in oklab, var(--muted) 45%, transparent);
+}
+
+.tour-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: .5rem;
+  padding: 1.1rem 1.2rem 1.2rem;
+}
+.tour-cat {
+  font-size: .62rem;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--gold);
+}
+.tour-title {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+.tour-desc {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .88rem;
+  line-height: 1.55;
+}
+.tour-meta {
+  list-style: none;
+  margin: .2rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+.tour-meta li {
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  background: var(--cream);
+  border-radius: var(--radius-pill);
+  padding: .3rem .7rem;
+}
+.tour-foot {
+  margin-top: auto;
+  padding-top: .9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .8rem;
+}
+.tour-price {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.tour-ask {
+  min-height: 40px;
+  padding: 0 1rem;
+  font-size: .66rem;
+}
+
+.catalog-empty {
+  text-align: center;
+  padding: 3.5rem 1rem;
+  color: var(--muted);
+}
+.catalog-empty h2 {
+  font-weight: 400;
+  font-size: 1.5rem;
+  color: var(--text);
+  margin: 0 0 .6rem;
+}
+.catalog-empty p {
+  margin: 0 auto;
+  max-width: 46ch;
+  font-weight: 300;
+  font-size: .9rem;
+  line-height: 1.6;
+}
+.catalog-empty code {
+  background: var(--cream);
+  border-radius: 4px;
+  padding: .1rem .35rem;
+  font-size: .85em;
+}
+
+@media (min-width: 960px) {
+  .catalog-page { padding-top: 12rem; }
+  .catalog-head .wrap,
+  .catalog-tools,
+  .catalog-page .wrap { max-width: var(--max-wide); }
+  .catalog-tools {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .catalog-search { flex: 0 0 320px; }
+  .tour-card { transition: transform .4s ease; }
+  .tour-card:hover { transform: translateY(-4px); }
+}

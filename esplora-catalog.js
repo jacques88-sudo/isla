@@ -33,7 +33,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Uscita in yacht alla ricerca di balene pilota e delfini, con snack e bevande a bordo.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "whale-catamaran",
@@ -45,7 +45,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Catamarano lungo la costa sud, con avvistamento di balene e delfini e sosta bagno.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "shogun",
@@ -57,7 +57,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Navigazione verso Los Gigantes e Masca a bordo di un veliero orientale interamente in teak. Pranzo e bevande inclusi.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "catamaran-los-gigantes",
@@ -69,7 +69,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Catamarano fino alle scogliere di Los Gigantes, con avvistamento cetacei lungo il percorso.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "motor-yacht-condiviso",
@@ -81,7 +81,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Piccolo gruppo a bordo di un motor yacht, con snorkeling e tempo libero in mare.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "party-boat",
@@ -217,7 +217,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Cena, tramonto sopra le nuvole e osservazione delle stelle con telescopi e guida astronomica.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "teide-tramonto-stelle",
@@ -243,7 +243,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Quad al tramonto verso il Teide. Età minima 18 anni per guidare.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "quad-100-offroad",
@@ -279,7 +279,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Buggy con tratto off-road verso il Teide, tra paesaggi vulcanici.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "buggy-costa-adeje-2h",
@@ -291,7 +291,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Due ore di buggy con circa 40 minuti di fuoristrada.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "buggy-sunset-volcano",
@@ -303,7 +303,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Buggy al tramonto con vista sui coni vulcanici, in gruppo con guida.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "elicottero",

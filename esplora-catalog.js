@@ -4,8 +4,10 @@
 //   image      → nome del file dentro assets/. Vuoto = foto ancora da caricare.
 //   priceFrom  → numero in euro, oppure null se il prezzo non è ancora definito.
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
-//   published  → false finché la voce non è pronta: prezzo, foto e descrizione
-//                verificati. La pagina catalogo mostrerà solo quelle a true.
+//   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
+//                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
+//                come "Su richiesta" e quelle senza foto con un segnaposto.
+//                Metti false per nascondere una voce ai clienti.
 //
 // Le descrizioni sono scritte da zero per Isla: non copiare quelle di altri siti.
 
@@ -93,7 +95,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Tre ore di musica, ballo e open bar in mare aperto.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "fiat-500-on-water",
@@ -105,7 +107,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Una Fiat 500 galleggiante da guidare al largo della costa: la foto che tutti si portano a casa.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "baia-masca-barca",
@@ -117,7 +119,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Uscita fino alla baia di Masca, raggiungibile comodamente solo dal mare.",
     image: "",
-    published: false
+    published: true
   },
 
   // ─── TEIDE E NATURA ───────────────────────────────────────────────────────
@@ -131,7 +133,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Salita in funivia fino a quota 3.555 m, tra colate laviche e vista sulle isole vicine.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "teide-dal-sud",
@@ -143,7 +145,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Tour del Parco Nazionale con partenza dalle zone turistiche del sud.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "teide-dal-nord",
@@ -155,7 +157,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Stesso parco, salita dal versante nord tra pinete e mare di nuvole.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "masca",
@@ -167,7 +169,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Il borgo sospeso tra le montagne e la sua gola, uno dei luoghi più fotografati dell'isola.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "anaga",
@@ -179,7 +181,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Foresta di alloro primordiale, riserva della biosfera UNESCO, sentieri tra le nuvole.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "paisaje-lunar",
@@ -191,7 +193,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Camminata tra le formazioni di tufo bianco scolpite dall'erosione, dal paesaggio quasi lunare.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "canyoning",
@@ -203,7 +205,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Discesa di un canyon vulcanico tra calate in corda e pozze d'acqua.",
     image: "",
-    published: false
+    published: true
   },
 
   // ─── STELLE E ASTRONOMIA ──────────────────────────────────────────────────
@@ -229,7 +231,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Salita nel tardo pomeriggio, cena in quota e cielo notturno tra i più limpidi d'Europa.",
     image: "",
-    published: false
+    published: true
   },
 
   // ─── AVVENTURA E MOTORI ───────────────────────────────────────────────────
@@ -255,7 +257,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Percorso interamente fuoristrada, per chi cerca solo sterrato.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "quad-garachico-masca",
@@ -267,7 +269,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Quad tra tornanti e punti panoramici del versante nord-ovest.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "buggy-teide-4h",
@@ -315,7 +317,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Sorvolo di spiagge, gole e delle scogliere di Los Gigantes.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "parapendio",
@@ -327,7 +329,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Volo in tandem con istruttore, decollo dalla montagna e atterraggio vicino al mare.",
     image: "",
-    published: false
+    published: true
   },
 
   // ─── SPORT ACQUATICI ──────────────────────────────────────────────────────
@@ -341,7 +343,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Moto d'acqua lungo la costa, in sicurezza con istruttore.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "parascending",
@@ -353,7 +355,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Paracadute trainato da motoscafo, con vista dall'alto sulla costa.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "kayak",
@@ -365,7 +367,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Pagaiata guidata lungo la costa, spesso in compagnia di tartarughe e delfini.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "immersioni",
@@ -377,7 +379,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Prima immersione per principianti, oppure percorso per il brevetto.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "flyboard",
@@ -389,7 +391,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Sollevarsi sull'acqua con la tavola a getto, con istruttore.",
     image: "",
-    published: false
+    published: true
   },
 
   // ─── PARCHI E SPETTACOLI ──────────────────────────────────────────────────
@@ -403,7 +405,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Parco acquatico a tema thailandese, tra i più premiati al mondo.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "loro-parque",
@@ -415,7 +417,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Zoo e giardino tropicale con la più grande collezione di pappagalli al mondo.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "twin-ticket",
@@ -427,7 +429,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Biglietto combinato per i due parchi, con bus incluso.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "aqualand",
@@ -439,7 +441,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Parco acquatico con scivoli e aree per i più piccoli.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "jungle-park",
@@ -451,7 +453,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Parco naturale con rapaci in volo libero, a pochi minuti da Los Cristianos.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "fun-trip",
@@ -463,7 +465,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Biglietto combinato per i due parchi del sud.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "cena-medievale",
@@ -475,7 +477,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Cavalieri, cavalli e tornei dal vivo, con cena servita durante lo spettacolo.",
     image: "",
-    published: false
+    published: true
   },
 
   // ─── TOUR DELL'ISOLA ──────────────────────────────────────────────────────
@@ -489,7 +491,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "I punti simbolo di Tenerife in un giorno solo, in pullman con guida.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "icod-garachico-orotava",
@@ -501,7 +503,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Il Drago Millenario di Icod, le piscine naturali di Garachico e i balconi di La Orotava.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "puerto-de-la-cruz",
@@ -513,7 +515,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Una delle città più antiche dell'isola: Lago Martiánez, giardino botanico e Plaza del Charco.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "la-gomera",
@@ -525,7 +527,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Traghetto e giro dell'isola vicina, con il Parco Nazionale di Garajonay.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "gran-canaria",
@@ -537,7 +539,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Escursione di un giorno sull'isola vicina.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "cantine-vinicole",
@@ -549,7 +551,7 @@ const ESPLORA_CATALOG = [
     family: false,
     desc: "Degustazione di vini vulcanici e prodotti tipici, guidati da un sommelier.",
     image: "",
-    published: false
+    published: true
   },
 
   // ─── TOUR PRIVATI ─────────────────────────────────────────────────────────
@@ -563,7 +565,7 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Barca riservata al tuo gruppo, con percorso e orari concordati.",
     image: "",
-    published: false
+    published: true
   },
   {
     id: "tour-privato-su-misura",
@@ -575,6 +577,6 @@ const ESPLORA_CATALOG = [
     family: true,
     desc: "Itinerario costruito su richiesta, con guida e mezzo dedicati.",
     image: "",
-    published: false
+    published: true
   }
 ];

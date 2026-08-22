@@ -98,8 +98,11 @@ function initCatalog() {
   const published = ESPLORA_CATALOG.filter(t => t.published);
   const params = new URLSearchParams(location.search);
 
+  // "cat" accetta anche più categorie separate da virgola: l'assistente
+  // manda qui combinazioni come "avventura-motori,sport-acquatici".
+  // Lista vuota = nessun filtro di categoria.
   const state = {
-    category: params.get("cat") || "tutte",
+    categories: (params.get("cat") || "").split(",").filter(Boolean),
     family: params.get("family") === "1",
     query: ""
   };
@@ -119,7 +122,7 @@ function initCatalog() {
       btn.textContent = cat.name;
       btn.dataset.cat = cat.id;
       btn.addEventListener("click", () => {
-        state.category = cat.id;
+        state.categories = cat.id === "tutte" ? [] : [cat.id];
         render();
       });
       chipRow.appendChild(btn);
@@ -127,7 +130,7 @@ function initCatalog() {
   }
 
   function matches(tour) {
-    if (state.category !== "tutte" && tour.category !== state.category) return false;
+    if (state.categories.length && !state.categories.includes(tour.category)) return false;
     if (state.family && !tour.family) return false;
     if (state.query) {
       const haystack = (
@@ -145,7 +148,10 @@ function initCatalog() {
     results.forEach(t => grid.appendChild(tourCard(t)));
 
     chipRow.querySelectorAll(".chip").forEach(btn => {
-      btn.classList.toggle("is-active", btn.dataset.cat === state.category);
+      const attivo = state.categories.length
+        ? state.categories.includes(btn.dataset.cat)
+        : btn.dataset.cat === "tutte";
+      btn.classList.toggle("is-active", attivo);
     });
 
     // Riepilogo in alto

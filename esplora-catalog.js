@@ -58,7 +58,7 @@ const ESPLORA_CATALOG = [
     priceFrom: 65,
     family: true,
     desc: "Navigazione verso Los Gigantes e Masca a bordo di un veliero orientale interamente in teak. Pranzo e bevande inclusi.",
-    image: "",
+    image: "shogun.jpg",
     published: true
   },
   {
@@ -94,7 +94,7 @@ const ESPLORA_CATALOG = [
     priceFrom: null,
     family: false,
     desc: "Tre ore di musica, ballo e open bar in mare aperto.",
-    image: "",
+    image: "party-boat.jpg",
     published: true
   },
   {
@@ -106,7 +106,7 @@ const ESPLORA_CATALOG = [
     priceFrom: null,
     family: true,
     desc: "Una Fiat 500 galleggiante da guidare al largo della costa: la foto che tutti si portano a casa.",
-    image: "",
+    image: "fiat-500-on-water.jpg",
     published: true
   },
   {

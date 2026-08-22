@@ -44,7 +44,7 @@ function peopleText(adults, kids) {
 
 // Messaggio WhatsApp completo, con data e persone già compilate
 function whatsappUrl(tour, req) {
-  let testo = "Ciao Isla! Vorrei richiedere disponibilità per:\n" +
+  let testo = "Ciao Isla! Sono " + req.name + ", vorrei richiedere disponibilità per:\n" +
     "• " + tour.title + "\n" +
     "• Data: " + formatDate(req.date) + "\n" +
     "• Persone: " + peopleText(req.adults, req.kids);
@@ -250,12 +250,13 @@ function initRequestDialog() {
     if (!current) return;
 
     const req = {
+      name: document.getElementById("reqName").value.trim(),
       date: dateInput.value,
       adults: parseInt(document.getElementById("reqAdults").value, 10) || 1,
       kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
       note: document.getElementById("reqNote").value.trim()
     };
-    if (!req.date) return;
+    if (!req.name || !req.date) return;
 
     close();
     window.location.href = whatsappUrl(current, req);

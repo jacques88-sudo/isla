@@ -585,7 +585,13 @@ a { text-decoration: none; color: inherit; }
 .steps h2 {
   font-weight: 400;
   font-size: clamp(1.7rem, 1.4rem + 1.2vw, 2.2rem);
-  margin: .6rem 0 1.6rem;
+  margin: .6rem 0 1rem;
+}
+.steps-intro {
+  margin: 0 0 2rem;
+  max-width: 46ch;
+  color: var(--muted);
+  font-weight: 300;
 }
 .step-list {
   list-style: none;
@@ -822,33 +828,6 @@ a { text-decoration: none; color: inherit; }
 }
 @media (min-width: 960px) {
   .faq { padding: 5rem 0; }
-}
-
-/* Final CTA */
-.cta-final {
-  background: var(--primary);
-  color: var(--primary-foreground);
-  text-align: center;
-  padding: 4.5rem 0;
-}
-.cta-final .eyebrow { justify-content: center; }
-.cta-final h2 {
-  font-weight: 400;
-  font-size: clamp(1.8rem, 1.4rem + 1.8vw, 2.5rem);
-  margin: .8rem 0 1rem;
-}
-.cta-final p {
-  max-width: 40ch;
-  margin: 0 auto 1.8rem;
-  font-weight: 300;
-  opacity: .85;
-}
-.btn-invert {
-  background: var(--primary-foreground);
-  color: var(--primary);
-}
-@media (min-width: 960px) {
-  .cta-final { padding: 6rem 0; }
 }
 
 /* Footer */

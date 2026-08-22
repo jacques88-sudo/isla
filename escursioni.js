@@ -15,11 +15,40 @@ function categoryName(id) {
   return cat ? cat.name : id;
 }
 
-// Messaggio già scritto per WhatsApp, con l'attività di cui si chiede la data
-function whatsappUrl(tour) {
-  const testo =
-    "Ciao Isla! Vorrei sapere la disponibilità per: " + tour.title +
-    ".\nQuante persone: \nData desiderata: ";
+// Data minima richiedibile: domani, cioè almeno 24 ore di preavviso.
+// Restituisce il formato AAAA-MM-GG che <input type="date"> si aspetta.
+function minRequestDate() {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+// Oltre un anno avanti è quasi sempre un errore di digitazione
+function maxRequestDate() {
+  const d = new Date();
+  d.setFullYear(d.getFullYear() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+// "2026-08-23" → "23/08/2026", più leggibile nel messaggio
+function formatDate(iso) {
+  const [y, m, g] = iso.split("-");
+  return g + "/" + m + "/" + y;
+}
+
+function peopleText(adults, kids) {
+  const parti = [adults + (adults === 1 ? " adulto" : " adulti")];
+  if (kids > 0) parti.push(kids + (kids === 1 ? " bambino" : " bambini"));
+  return parti.join(" e ");
+}
+
+// Messaggio WhatsApp completo, con data e persone già compilate
+function whatsappUrl(tour, req) {
+  let testo = "Ciao Isla! Vorrei richiedere disponibilità per:\n" +
+    "• " + tour.title + "\n" +
+    "• Data: " + formatDate(req.date) + "\n" +
+    "• Persone: " + peopleText(req.adults, req.kids);
+  if (req.note) testo += "\n• Note: " + req.note;
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
 }
 
@@ -34,7 +63,8 @@ function tourCard(tour) {
     : `<span class="tour-media-empty" aria-hidden="true">Isla</span>`;
 
   const askBtn = WHATSAPP_NUMBER
-    ? `<a class="btn btn-primary tour-ask" href="${whatsappUrl(tour)}" target="_blank" rel="noopener">Richiedi disponibilità</a>`
+    ? `<button class="btn btn-primary tour-ask" type="button" data-request-open="${tour.id}"
+               aria-haspopup="dialog" aria-controls="requestDialog">Richiedi disponibilità</button>`
     : "";
 
   li.innerHTML = `
@@ -160,3 +190,76 @@ function initCatalog() {
 }
 
 document.addEventListener("DOMContentLoaded", initCatalog);
+
+// Finestra "Richiedi disponibilità": raccoglie data e persone, poi apre
+// WhatsApp col messaggio già compilato.
+function initRequestDialog() {
+  const dialog = document.getElementById("requestDialog");
+  const scrim = document.querySelector("[data-request-scrim]");
+  const form = document.querySelector("[data-request-form]");
+  const activityEl = document.querySelector("[data-request-activity]");
+  const dateInput = document.getElementById("reqDate");
+  if (!dialog || !scrim || !form || !dateInput) return;
+
+  // Blocca le date che non rispettano il preavviso di 24 ore
+  dateInput.min = minRequestDate();
+  dateInput.max = maxRequestDate();
+
+  let current = null;
+
+  function open(tour) {
+    current = tour;
+    activityEl.textContent = tour.title;
+    dialog.hidden = false;
+    scrim.hidden = false;
+    requestAnimationFrame(() => {
+      dialog.classList.add("is-open");
+      scrim.classList.add("is-visible");
+    });
+    document.body.classList.add("menu-open");
+  }
+
+  function close() {
+    dialog.classList.remove("is-open");
+    scrim.classList.remove("is-visible");
+    document.body.classList.remove("menu-open");
+    setTimeout(() => {
+      dialog.hidden = true;
+      scrim.hidden = true;
+    }, 300);
+  }
+
+  // Le schede sono ricreate a ogni filtro, quindi si ascolta sul contenitore
+  document.addEventListener("click", e => {
+    const btn = e.target.closest("[data-request-open]");
+    if (!btn) return;
+    const tour = ESPLORA_CATALOG.find(t => t.id === btn.dataset.requestOpen);
+    if (tour) open(tour);
+  });
+
+  document.querySelectorAll("[data-request-close]").forEach(b =>
+    b.addEventListener("click", close)
+  );
+  scrim.addEventListener("click", close);
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && dialog.classList.contains("is-open")) close();
+  });
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    if (!current) return;
+
+    const req = {
+      date: dateInput.value,
+      adults: parseInt(document.getElementById("reqAdults").value, 10) || 1,
+      kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
+      note: document.getElementById("reqNote").value.trim()
+    };
+    if (!req.date) return;
+
+    close();
+    window.location.href = whatsappUrl(current, req);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initRequestDialog);

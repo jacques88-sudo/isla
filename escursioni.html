@@ -136,6 +136,38 @@
     <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link>Book now</a>
   </aside>
 
+  <div class="ticket-scrim" data-request-scrim hidden></div>
+  <div class="ticket-dialog request-dialog" id="requestDialog" role="dialog" aria-modal="true" aria-labelledby="requestTitle" hidden>
+    <div class="ticket-dialog-head">
+      <h2 id="requestTitle">Richiedi disponibilità</h2>
+      <button class="iconbtn" type="button" data-request-close aria-label="Chiudi">✕</button>
+    </div>
+    <p class="request-activity" data-request-activity></p>
+    <form data-request-form>
+      <label for="reqDate">Quando vorresti andare</label>
+      <input id="reqDate" name="date" type="date" required />
+
+      <span class="request-people-label">Quante persone</span>
+      <div class="request-people">
+        <label for="reqAdults">Adulti
+          <input id="reqAdults" name="adults" type="number" inputmode="numeric" min="1" max="30" value="2" required />
+        </label>
+        <label for="reqKids">Bambini
+          <input id="reqKids" name="kids" type="number" inputmode="numeric" min="0" max="30" value="0" />
+        </label>
+      </div>
+
+      <label for="reqNote">Note <span class="request-optional">(facoltativo)</span></label>
+      <input id="reqNote" name="note" type="text" autocomplete="off"
+             placeholder="Hotel, zona, richieste particolari…" />
+
+      <button class="btn btn-primary btn-block request-submit" type="submit">Continua su WhatsApp</button>
+
+      <p class="hint">Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.</p>
+      <p class="hint request-privacy">Quello che scrivi qui serve solo a risponderti su WhatsApp: non viene salvato dal sito.</p>
+    </form>
+  </div>
+
   <div class="ticket-scrim" data-ticket-scrim hidden></div>
   <div class="ticket-dialog" id="ticketDialog" role="dialog" aria-modal="true" aria-labelledby="ticketDialogTitle" hidden>
     <div class="ticket-dialog-head">

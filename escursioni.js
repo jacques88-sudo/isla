@@ -27,8 +27,10 @@ function tourCard(tour) {
   const li = document.createElement("li");
   li.className = "tour-card";
 
+  // encodeURIComponent: se un nome file contiene spazi o accenti,
+  // l'indirizzo resta valido invece di rompersi a metà
   const media = tour.image
-    ? `<img src="./assets/${tour.image}" alt="${tour.title}" loading="lazy" />`
+    ? `<img src="./assets/${encodeURIComponent(tour.image)}" alt="${tour.title}" loading="lazy" />`
     : `<span class="tour-media-empty" aria-hidden="true">Isla</span>`;
 
   const askBtn = WHATSAPP_NUMBER

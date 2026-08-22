@@ -1,12 +1,10 @@
 // Pagina "Tutte le escursioni": legge ESPLORA_CATALOG e CATEGORIES da
 // esplora-catalog.js, filtra per categoria/testo e disegna le schede.
 //
-// ────────────────────────────────────────────────────────────────────────
-// DA COMPILARE: numero WhatsApp su cui ricevere le richieste.
-// Formato internazionale senza + e senza spazi. Esempio Spagna: "34600123456".
-// Finché resta vuoto, il pulsante "Richiedi disponibilità" non viene mostrato.
-const WHATSAPP_NUMBER = "";
-// ────────────────────────────────────────────────────────────────────────
+// Numero WhatsApp su cui arrivano le richieste di disponibilità.
+// Formato internazionale senza + e senza spazi. Svuotalo per nascondere
+// il pulsante "Richiedi disponibilità" su tutte le schede.
+const WHATSAPP_NUMBER = "34662908073";
 
 function tourPrice(tour) {
   return tour.priceFrom === null ? "Su richiesta" : "da €" + tour.priceFrom;

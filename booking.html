@@ -12,13 +12,13 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
-<body>
-  <a class="skip" href="#main">Vai al contenuto</a>
+<body data-i18n-doctitle="meta.booking.title">
+  <a class="skip" href="#main" data-i18n="common.skip">Vai al contenuto</a>
 
   <header class="top">
     <div class="wrap nav">
-      <a class="brand" href="./index.html" aria-label="Isla home">
-        <img src="./assets/logo-isla.png" alt="Logo Isla" />
+      <a class="brand" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
+        <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
         <span class="brand-text"><strong>Isla</strong><span>so easy so tenerife</span></span>
       </a>
     </div>
@@ -26,8 +26,8 @@
 
   <main id="main">
     <div class="wrap page-header">
-      <a class="iconbtn" href="./index.html" aria-label="Torna alla home">←</a>
-      <h1>La tua escursione</h1>
+      <a class="iconbtn" href="./index.html" data-i18n-aria-label="booking.back" aria-label="Torna alla home">←</a>
+      <h1 data-i18n="booking.h1">La tua escursione</h1>
     </div>
 
     <div class="wrap detail" id="bookingView">
@@ -35,6 +35,7 @@
     </div>
   </main>
 
+  <script src="./i18n.js"></script>
   <script src="./app.js"></script>
   <script src="./booking.js"></script>
 </body>

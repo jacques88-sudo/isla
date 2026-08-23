@@ -162,19 +162,26 @@ function initHeroVideo() {
   const iconPause = document.getElementById("iconPause");
   const iconPlay = document.getElementById("iconPlay");
 
+  function paintLabel() {
+    toggle.setAttribute("aria-label", t(video.paused ? "hero.play" : "hero.pause"));
+  }
+
   toggle.addEventListener("click", () => {
     if (video.paused) {
       video.play();
       iconPause.hidden = false;
       iconPlay.hidden = true;
-      toggle.setAttribute("aria-label", "Metti in pausa il video");
     } else {
       video.pause();
       iconPause.hidden = true;
       iconPlay.hidden = false;
-      toggle.setAttribute("aria-label", "Riproduci il video");
     }
+    paintLabel();
   });
+
+  // applyI18n rimette sempre "metti in pausa": qui si corregge se il video
+  // in quel momento è fermo.
+  document.addEventListener("islalang", paintLabel);
 }
 
 document.addEventListener("DOMContentLoaded", initHeroVideo);

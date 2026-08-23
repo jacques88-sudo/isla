@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f7f2ec" />
-  <meta name="description" content="Isla — trova subito orario, punto d'incontro e informazioni della tua escursione a Tenerife." />
+  <meta name="description" data-i18n-content="meta.home.desc" content="Isla — trova subito orario, punto d'incontro e informazioni della tua escursione a Tenerife." />
   <title>Isla · La tua escursione a Tenerife</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./assets/icon-192.png" />
@@ -66,7 +66,7 @@
     }
   </style>
 </head>
-<body>
+<body data-i18n-doctitle="meta.home.title">
   <div class="splash" id="splash" aria-hidden="true">
     <div class="splash-mark">
       <span class="splash-ring"></span>
@@ -75,24 +75,35 @@
     <span class="splash-brand">Isla</span>
   </div>
 
-  <a class="skip" href="#main">Vai al contenuto</a>
+  <a class="skip" href="#main" data-i18n="common.skip">Vai al contenuto</a>
 
   <header class="site-banner">
     <div class="hero-top">
-      <a class="hero-logo" href="./index.html" aria-label="Isla home">
-        <img src="./assets/logo-isla.png" alt="Logo Isla" />
+      <a class="hero-logo" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
+        <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
       </a>
       <div class="hero-brand">
         <span class="hero-brand-title">Isla</span>
         <span class="hero-brand-sub">so easy so tenerife</span>
       </div>
-      <span class="hero-top-spacer" aria-hidden="true"></span>
+      <div class="lang-switch">
+        <button class="lang-toggle" type="button" data-lang-toggle
+                data-i18n-aria-label="lang.change" aria-label="Cambia lingua"
+                aria-haspopup="true" aria-expanded="false">
+          <span data-lang-current>IT</span>
+        </button>
+        <ul class="lang-menu" data-lang-menu hidden>
+          <li><button type="button" data-lang-set="it">Italiano</button></li>
+          <li><button type="button" data-lang-set="en">English</button></li>
+          <li><button type="button" data-lang-set="es">Español</button></li>
+        </ul>
+      </div>
     </div>
-    <nav class="hero-pills" aria-label="Menu principale">
-      <a class="pill pill-ghost" href="./escursioni.html">Esperienze</a>
-      <button class="pill pill-solid" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">Prenota ora</button>
+    <nav class="hero-pills" data-i18n-aria-label="nav.aria" aria-label="Menu principale">
+      <a class="pill pill-ghost" href="./escursioni.html" data-i18n="nav.experiences">Esperienze</a>
+      <button class="pill pill-solid" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.bookNow">Prenota ora</button>
       <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
-        <span class="pill-icon" aria-hidden="true">☰</span> Menu
+        <span class="pill-icon" aria-hidden="true">☰</span> <span data-i18n="nav.menu">Menu</span>
       </button>
     </nav>
   </header>
@@ -106,18 +117,18 @@
       <div class="hero-fade" aria-hidden="true"></div>
 
       <div class="hero-controls">
-        <button class="playbtn" id="videoToggle" type="button" aria-label="Metti in pausa il video">
+        <button class="playbtn" id="videoToggle" type="button" data-i18n-aria-label="hero.pause" aria-label="Metti in pausa il video">
           <svg id="iconPause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
           <svg id="iconPlay" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M8 5v14l11-7z"/></svg>
         </button>
-        <a class="discover" href="#intro">Scopri di più</a>
+        <a class="discover" href="#intro" data-i18n="hero.discover">Scopri di più</a>
       </div>
     </section>
 
     <section class="intro" id="intro">
       <div class="wrap">
-        <span class="eyebrow">Tenerife</span>
-        <h1>Inizia la tua avventura con&hellip;</h1>
+        <span class="eyebrow" data-i18n="intro.eyebrow">Tenerife</span>
+        <h1 data-i18n="intro.title">Inizia la tua avventura con&hellip;</h1>
       </div>
     </section>
 
@@ -125,19 +136,19 @@
       <div class="wrap bento-grid">
         <a class="bento-tile" href="#categories">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
-          <span>Pacchetti</span>
+          <span data-i18n="bento.packages">Pacchetti</span>
         </a>
         <button class="bento-tile" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h5v5H4zM4 15h5v5H4zM15 4h5v5h-5z"/><path d="M15 15h2v2h-2zM19 15h1v1h-1zM15 19h1v1h-1zM19 19h1v1h-1zM17 17h1v1h-1z"/></svg>
-          <span>Scan ticket</span>
+          <span data-i18n="bento.scan">Scan ticket</span>
         </button>
         <a class="bento-tile" href="./escursioni.html?family=1">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M4 20c0-3 2.2-5 5-5s5 2 5 5"/><circle cx="18" cy="9" r="2.2"/><path d="M15.2 20c.2-2.3 1.7-3.8 3.8-3.8s3.5 1.5 3.7 3.8"/></svg>
-          <span>Con bambini</span>
+          <span data-i18n="bento.kids">Con bambini</span>
         </a>
         <a class="bento-tile" href="#categories">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
-          <span>3/5/7 Days Experience</span>
+          <span data-i18n="bento.days">3/5/7 Days Experience</span>
         </a>
       </div>
     </section>
@@ -145,29 +156,29 @@
 
     <section class="steps">
       <div class="wrap">
-        <span class="eyebrow">The journey</span>
-        <h2>Tre passi, nessun pensiero</h2>
-        <p class="steps-intro">Dalla scelta dell'esperienza al momento in cui sali a bordo: tutto avviene in pochi minuti, dal telefono, anche offline.</p>
+        <span class="eyebrow" data-i18n="steps.eyebrow">The journey</span>
+        <h2 data-i18n="steps.title">Tre passi, nessun pensiero</h2>
+        <p class="steps-intro" data-i18n="steps.intro">Dalla scelta dell'esperienza al momento in cui sali a bordo: tutto avviene in pochi minuti, dal telefono, anche offline.</p>
         <ol class="step-list">
           <li class="step">
             <span class="step-num">01</span>
             <div>
-              <strong>Scegli</strong>
-              <p>Sfoglia escursioni e pacchetti selezionati.</p>
+              <strong data-i18n="steps.1.title">Scegli</strong>
+              <p data-i18n="steps.1.desc">Sfoglia escursioni e pacchetti selezionati.</p>
             </div>
           </li>
           <li class="step">
             <span class="step-num">02</span>
             <div>
-              <strong>Prenota</strong>
-              <p>Data, partecipanti e pagamento sicuro.</p>
+              <strong data-i18n="steps.2.title">Prenota</strong>
+              <p data-i18n="steps.2.desc">Data, partecipanti e pagamento sicuro.</p>
             </div>
           </li>
           <li class="step">
             <span class="step-num">03</span>
             <div>
-              <strong>Vivi</strong>
-              <p>Mostri il QR code e parti. Nient'altro.</p>
+              <strong data-i18n="steps.3.title">Vivi</strong>
+              <p data-i18n="steps.3.desc">Mostri il QR code e parti. Nient'altro.</p>
             </div>
           </li>
         </ol>
@@ -176,91 +187,91 @@
 
     <section class="categories" id="categories">
       <div class="wrap">
-        <span class="eyebrow">Esplora</span>
-        <h2>Categorie</h2>
+        <span class="eyebrow" data-i18n="categories.eyebrow">Esplora</span>
+        <h2 data-i18n="categories.title">Categorie</h2>
         <ul class="cat-grid">
           <li class="cat-card">
-            <a href="./escursioni.html?cat=mare-barche" class="cat-link"><img src="./assets/Cat-mare.jpg" alt="Mare e barche a Tenerife" loading="eager" width="1400" height="1250" />
-            <span class="cat-label">Mare e barche</span></a>
+            <a href="./escursioni.html?cat=mare-barche" class="cat-link"><img src="./assets/Cat-mare.jpg" data-i18n-cat="mare-barche" alt="Mare e barche a Tenerife" loading="eager" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="mare-barche">Mare e barche</span></a>
           </li>
           <li class="cat-card">
-            <a href="./escursioni.html?cat=teide-natura" class="cat-link"><img src="./assets/Cat-teide.jpg" alt="Teide e natura a Tenerife" loading="eager" width="1400" height="1250" />
-            <span class="cat-label">Teide e natura</span></a>
+            <a href="./escursioni.html?cat=teide-natura" class="cat-link"><img src="./assets/Cat-teide.jpg" data-i18n-cat="teide-natura" alt="Teide e natura a Tenerife" loading="eager" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="teide-natura">Teide e natura</span></a>
           </li>
           <li class="cat-card">
-            <a href="./escursioni.html?cat=stelle" class="cat-link"><img src="./assets/Cat-stelle.jpg" alt="Stelle e astronomia a Tenerife" loading="lazy" width="1400" height="1250" />
-            <span class="cat-label">Stelle e astronomia</span></a>
+            <a href="./escursioni.html?cat=stelle" class="cat-link"><img src="./assets/Cat-stelle.jpg" data-i18n-cat="stelle" alt="Stelle e astronomia a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="stelle">Stelle e astronomia</span></a>
           </li>
           <li class="cat-card">
-            <a href="./escursioni.html?cat=avventura-motori" class="cat-link"><img src="./assets/Cat-avventura.jpg" alt="Avventura e motori a Tenerife" loading="lazy" width="1400" height="1250" />
-            <span class="cat-label">Avventura e motori</span></a>
+            <a href="./escursioni.html?cat=avventura-motori" class="cat-link"><img src="./assets/Cat-avventura.jpg" data-i18n-cat="avventura-motori" alt="Avventura e motori a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="avventura-motori">Avventura e motori</span></a>
           </li>
           <li class="cat-card">
-            <a href="./escursioni.html?cat=sport-acquatici" class="cat-link"><img src="./assets/Cat-sport.jpg" alt="Sport acquatici a Tenerife" loading="lazy" width="1400" height="1250" />
-            <span class="cat-label">Sport acquatici</span></a>
+            <a href="./escursioni.html?cat=sport-acquatici" class="cat-link"><img src="./assets/Cat-sport.jpg" data-i18n-cat="sport-acquatici" alt="Sport acquatici a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="sport-acquatici">Sport acquatici</span></a>
           </li>
           <li class="cat-card">
-            <a href="./escursioni.html?cat=parchi-spettacoli" class="cat-link"><img src="./assets/Cat-parchi.jpg" alt="Parchi e spettacoli a Tenerife" loading="lazy" width="1400" height="1250" />
-            <span class="cat-label">Parchi e spettacoli</span></a>
+            <a href="./escursioni.html?cat=parchi-spettacoli" class="cat-link"><img src="./assets/Cat-parchi.jpg" data-i18n-cat="parchi-spettacoli" alt="Parchi e spettacoli a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="parchi-spettacoli">Parchi e spettacoli</span></a>
           </li>
           <li class="cat-card">
-            <a href="./escursioni.html?cat=tour-privati" class="cat-link"><img src="./assets/Cat-privati.jpg" alt="Tour privati a Tenerife" loading="lazy" width="1400" height="1250" />
-            <span class="cat-label">Tour privati</span></a>
+            <a href="./escursioni.html?cat=tour-privati" class="cat-link"><img src="./assets/Cat-privati.jpg" data-i18n-cat="tour-privati" alt="Tour privati a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="tour-privati">Tour privati</span></a>
           </li>
         </ul>
       </div>
     </section>
 
     <section class="secret" id="secret">
-      <img class="secret-bg" src="./assets/Secret-cove.jpg" alt="Cala segreta a Tenerife" loading="lazy" width="1400" height="900" />
+      <img class="secret-bg" src="./assets/Secret-cove.jpg" data-i18n-alt="secret.alt" alt="Cala segreta a Tenerife" loading="lazy" width="1400" height="900" />
       <div class="secret-fade" aria-hidden="true"></div>
       <div class="wrap secret-content">
-        <span class="eyebrow">Posti segreti</span>
-        <h2>Dove non arrivano i pullman</h2>
-        <p>Cale di sabbia nera, piscine naturali e punti panoramici che i pullman turistici non raggiungono. Fanno parte di Tenerife tanto quanto le grandi attrazioni.</p>
+        <span class="eyebrow" data-i18n="secret.eyebrow">Posti segreti</span>
+        <h2 data-i18n="secret.title">Dove non arrivano i pullman</h2>
+        <p data-i18n="secret.text">Cale di sabbia nera, piscine naturali e punti panoramici che i pullman turistici non raggiungono. Fanno parte di Tenerife tanto quanto le grandi attrazioni.</p>
       </div>
     </section>
 
     <section class="about" id="about">
       <div class="wrap about-grid">
-        <img src="./assets/About-team.jpg" alt="Il team di Isla a Tenerife" loading="lazy" width="1200" height="1100" />
+        <img src="./assets/About-team.jpg" data-i18n-alt="about.alt" alt="Il team di Isla a Tenerife" loading="lazy" width="1200" height="1100" />
         <div>
-          <span class="eyebrow">Chi siamo</span>
-          <h2>Isolani, per scelta</h2>
-          <p>Isla nasce dalla voglia di rendere più semplice la vacanza a Tenerife: un unico posto dove trovare subito le informazioni della propria escursione, senza perdersi tra email, PDF e messaggi.</p>
-          <p>Il nostro obiettivo è uno solo: farti godere l'isola, senza pensieri organizzativi.</p>
+          <span class="eyebrow" data-i18n="about.eyebrow">Chi siamo</span>
+          <h2 data-i18n="about.title">Isolani, per scelta</h2>
+          <p data-i18n="about.p1">Isla nasce dalla voglia di rendere più semplice la vacanza a Tenerife: un unico posto dove trovare subito le informazioni della propria escursione, senza perdersi tra email, PDF e messaggi.</p>
+          <p data-i18n="about.p2">Il nostro obiettivo è uno solo: farti godere l'isola, senza pensieri organizzativi.</p>
         </div>
       </div>
     </section>
 
     <section class="faq">
       <div class="wrap">
-        <span class="eyebrow">FAQ</span>
-        <h2>Domande frequenti</h2>
+        <span class="eyebrow" data-i18n="faq.eyebrow">FAQ</span>
+        <h2 data-i18n="faq.title">Domande frequenti</h2>
         <div class="faq-list">
           <details class="faq-item">
-            <summary>Come prenoto un'escursione?</summary>
-            <p>Scegli l'esperienza dal catalogo e premi "Richiedi disponibilità": indichi data e numero di persone, e la richiesta ci arriva su WhatsApp. Verifichiamo i posti e ti confermiamo.</p>
+            <summary data-i18n="faq.q1">Come prenoto un'escursione?</summary>
+            <p data-i18n="faq.a1">Scegli l'esperienza dal catalogo e premi "Richiedi disponibilità": indichi data e numero di persone, e la richiesta ci arriva su WhatsApp. Verifichiamo i posti e ti confermiamo.</p>
           </details>
           <details class="faq-item">
-            <summary>Quanto tempo prima devo richiedere?</summary>
-            <p>Almeno 24 ore prima della data dell'escursione. Ti rispondiamo entro 24 ore con la conferma e i dettagli.</p>
+            <summary data-i18n="faq.q2">Quanto tempo prima devo richiedere?</summary>
+            <p data-i18n="faq.a2">Almeno 24 ore prima della data dell'escursione. Ti rispondiamo entro 24 ore con la conferma e i dettagli.</p>
           </details>
           <details class="faq-item">
-            <summary>La richiesta è già una prenotazione?</summary>
-            <p>No. La richiesta serve a verificare che ci sia posto: la prenotazione è confermata solo quando ricevi la nostra conferma.</p>
+            <summary data-i18n="faq.q3">La richiesta è già una prenotazione?</summary>
+            <p data-i18n="faq.a3">No. La richiesta serve a verificare che ci sia posto: la prenotazione è confermata solo quando ricevi la nostra conferma.</p>
           </details>
           <details class="faq-item">
-            <summary>Come si paga?</summary>
-            <p>Al momento della conferma ti indichiamo come saldare. Non ti viene chiesto nulla al momento della richiesta.</p>
+            <summary data-i18n="faq.q4">Come si paga?</summary>
+            <p data-i18n="faq.a4">Al momento della conferma ti indichiamo come saldare. Non ti viene chiesto nulla al momento della richiesta.</p>
           </details>
           <details class="faq-item">
-            <summary>Posso annullare?</summary>
-            <p>Scrivici su WhatsApp il prima possibile: ti diciamo subito cosa è previsto per quell'escursione.</p>
+            <summary data-i18n="faq.q5">Posso annullare?</summary>
+            <p data-i18n="faq.a5">Scrivici su WhatsApp il prima possibile: ti diciamo subito cosa è previsto per quell'escursione.</p>
           </details>
           <details class="faq-item">
-            <summary>Funziona anche senza connessione?</summary>
-            <p>Sì. Isla è un'app installabile: una volta aperta la prima volta, le informazioni restano disponibili anche offline, utile quando sei in giro per l'isola.</p>
+            <summary data-i18n="faq.q6">Funziona anche senza connessione?</summary>
+            <p data-i18n="faq.a6">Sì. Isla è un'app installabile: una volta aperta la prima volta, le informazioni restano disponibili anche offline, utile quando sei in giro per l'isola.</p>
           </details>
         </div>
       </div>
@@ -269,53 +280,62 @@
   </main>
 
   <div class="menu-scrim" data-menu-scrim hidden></div>
-  <aside class="more-menu" id="moreMenu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <aside class="more-menu" id="moreMenu" role="dialog" aria-modal="true" data-i18n-aria-label="menu.aria" aria-label="Menu" hidden>
     <div class="more-menu-head">
       <span class="more-menu-brand">Isla</span>
-      <button class="iconbtn" type="button" data-menu-close aria-label="Chiudi menu">✕</button>
+      <button class="iconbtn" type="button" data-menu-close data-i18n-aria-label="menu.close" aria-label="Chiudi menu">✕</button>
     </div>
-    <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn hidden>Installa l'app</button>
-    <nav class="more-menu-nav" aria-label="Sezioni">
-      <a href="./escursioni.html" data-menu-link>Excursion</a>
-      <a href="#categories" data-menu-link>Pacchetti</a>
-      <button type="button" data-menu-link data-ticket-open>Scan ticket</button>
-      <a href="#secret" data-menu-link>Posti segreti</a>
-      <a href="#about" data-menu-link>Chi siamo</a>
+    <div class="more-menu-lang">
+      <span class="more-menu-lang-label" data-i18n="lang.label">Lingua</span>
+      <div class="lang-seg">
+        <button type="button" data-lang-set="it">IT</button>
+        <button type="button" data-lang-set="en">EN</button>
+        <button type="button" data-lang-set="es">ES</button>
+      </div>
+    </div>
+    <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn data-i18n="menu.install" hidden>Installa l'app</button>
+    <nav class="more-menu-nav" data-i18n-aria-label="menu.sections" aria-label="Sezioni">
+      <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
+      <a href="#categories" data-menu-link data-i18n="menu.packages">Pacchetti</a>
+      <button type="button" data-menu-link data-ticket-open data-i18n="menu.scan">Scan ticket</button>
+      <a href="#secret" data-menu-link data-i18n="menu.secret">Posti segreti</a>
+      <a href="#about" data-menu-link data-i18n="menu.about">Chi siamo</a>
     </nav>
-    <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link>Book now</a>
+    <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link data-i18n="menu.cta">Prenota ora</a>
   </aside>
 
   <div class="ticket-scrim" data-ticket-scrim hidden></div>
   <div class="ticket-dialog" id="ticketDialog" role="dialog" aria-modal="true" aria-labelledby="ticketDialogTitle" hidden>
     <div class="ticket-dialog-head">
-      <h2 id="ticketDialogTitle">Scan ticket</h2>
-      <button class="iconbtn" type="button" data-ticket-close aria-label="Chiudi">✕</button>
+      <h2 id="ticketDialogTitle" data-i18n="ticket.title">Scan ticket</h2>
+      <button class="iconbtn" type="button" data-ticket-close data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
     </div>
     <form data-lookup-form>
-      <label for="codeInput">Codice prenotazione o ticket</label>
+      <label for="codeInput" data-i18n="ticket.codeLabel">Codice prenotazione o ticket</label>
       <div class="lookup-row">
         <input id="codeInput" name="code" type="text" inputmode="text" autocomplete="off"
-               placeholder="Es. ISLA-4521" required />
-        <button class="btn btn-primary" type="submit">Cerca</button>
+               data-i18n-placeholder="ticket.placeholder" placeholder="Es. ISLA-4521" required />
+        <button class="btn btn-primary" type="submit" data-i18n="common.search">Cerca</button>
       </div>
-      <p class="hint">Lo trovi nella email o nel messaggio di conferma della prenotazione.</p>
+      <p class="hint" data-i18n="ticket.hint">Lo trovi nella email o nel messaggio di conferma della prenotazione.</p>
     </form>
   </div>
 
   <footer class="footer">
     <div class="wrap footer-grid">
       <div class="footer-brand">
-        <img src="./assets/logo-isla.png" alt="Logo Isla" />
+        <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
         <div>
           <strong>Isla</strong>
           <span>so easy so tenerife</span>
         </div>
       </div>
-      <button class="footer-link" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">Cerca il tuo codice</button>
+      <button class="footer-link" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="footer.findCode">Cerca il tuo codice</button>
     </div>
-    <p class="footer-copy">© Isla · Tenerife excursions</p>
+    <p class="footer-copy" data-i18n="footer.copy">© Isla · Escursioni a Tenerife</p>
   </footer>
 
+  <script src="./i18n.js"></script>
   <script src="./esplora-catalog.js"></script>
   <script src="./assistente.js"></script>
   <script src="./app.js"></script>

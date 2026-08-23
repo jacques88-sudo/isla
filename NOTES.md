@@ -59,7 +59,11 @@ scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
 - `styles.css` — tutto lo stile, un solo file
 - `app.js` — logica condivisa (splash, banner fisso, service worker, finestra ricerca
   ticket, video hero, pulsante installa app)
-- `esplora-catalog.js` — dati delle 14 escursioni vere, non ancora collegato a nessuna pagina
+- `escursioni.html` + `escursioni.js` — catalogo "Tutte le escursioni" con filtri,
+  ricerca e finestra "Richiedi disponibilità" che apre WhatsApp
+- `esplora-catalog.js` — dati delle 45 attività, divise nelle 8 categorie
+- `assistente.js` — assistente guidato (due domande, poi consigli dal catalogo)
+- `i18n.js` — tutte le traduzioni it/en/es e il selettore della lingua
 - `manifest.json`, `sw.js`, `offline.html` — parte PWA (installabilità, cache offline)
 - `assets/` — foto e video veri (logo, hero video, foto categorie, cala segreta, team)
 
@@ -86,11 +90,11 @@ toccano il codice già scritto:
 
 - `MOCK_BOOKINGS` in `booking.js` sono 2 prenotazioni finte scritte a mano → da sostituire
   con dati veri dal database
-- `esplora-catalog.js` ha le 14 escursioni ma non è collegato a nessuna pagina, e le
-  immagini sono stock/placeholder
-- I riquadri bento (Pacchetti, Con bambini, 3/5/7 Days) puntano tutti a `#categories`:
-  servono pagine vere
-- Le card delle categorie in home non sono cliccabili
+- `esplora-catalog.js` ha 45 attività: 35 senza prezzo (appaiono "Su richiesta") e 41
+  senza foto (appaiono con il segnaposto "Isla")
+- La categoria "Tour dell'isola" non ha ancora la foto per la card in home
+- I riquadri bento (Pacchetti, Con bambini, 3/5/7 Days) puntano a `#categories` e al
+  filtro famiglia: servono pagine vere per i pacchetti
 - Testo "Chi siamo" è un **placeholder onesto** (nessuna affermazione inventata) — da
   sostituire con la storia vera
 - Video hero `assets/Hero-poster.mp4` pesa 3.7MB — da comprimere a ~1-1.5MB (720p, 6-10s,
@@ -98,10 +102,29 @@ toccano il codice già scritto:
 - Sezione recensioni volutamente omessa: quelle di isla-adventures sono inventate, non le
   abbiamo copiate
 
+## Le tre lingue
+
+Il sito è in **italiano, inglese e spagnolo**. Il selettore è il pulsante tondo in alto a
+destra nella barra (mostra la sigla della lingua attiva) e c'è anche dentro il menu
+laterale, sotto "Lingua".
+
+Come funziona:
+
+- tutti i testi fissi stanno in `i18n.js`, uno sotto l'altro, con le tre versioni;
+- nell'HTML si scrive `data-i18n="chiave"` sull'elemento e il testo viene sostituito;
+- nel JavaScript si usa `t("chiave")`;
+- i testi del catalogo (`esplora-catalog.js`) si scrivono come `{ it: "…", en: "…",
+  es: "…" }`; se un testo è uguale in tutte le lingue (i nomi propri, tipo "Siam Park")
+  basta la stringa da sola. `tf()` sceglie la versione giusta.
+
+La lingua di partenza è quella del browser; se non è una delle tre parte in inglese.
+La scelta viene ricordata nel telefono (`localStorage`) e vale su tutte le pagine.
+Anche il messaggio WhatsApp della richiesta parte nella lingua scelta dal cliente.
+
 ## Note pratiche
 
 - Il service worker (`sw.js`) ha una cache con nome tipo `isla-vN`: quando si cambia
-  `styles.css`, `index.html`, `booking.html`, `booking.js` o `app.js`, bisogna aumentare
+  `styles.css`, `i18n.js` o uno qualsiasi dei file `.html` e `.js`, bisogna aumentare
   il numero (es. `isla-v10` → `isla-v11`) altrimenti i browser che hanno già visitato il
   sito continuano a vedere la versione vecchia.
 - Le foto in `assets/Cat-*.jpg` sono già rinominate e pronte per la pagina categorie/escursioni.

@@ -1,22 +1,47 @@
-// Booking detail page: looks up a code in mock data and renders the tour info.
-// TODO: replace MOCK_BOOKINGS with a real data source (sheet/API) when available.
+// Pagina di dettaglio della prenotazione: cerca un codice nei dati di prova
+// e mostra le informazioni del tour.
+// TODO: sostituire MOCK_BOOKINGS con una fonte dati vera (foglio/API).
+//
+// Anche qui i testi sono nelle tre lingue: stringa sola = uguale ovunque,
+// oggetto { it, en, es } = tradotto. tf() sceglie la lingua giusta.
 
 const MOCK_BOOKINGS = {
   "ISLA-4521": {
-    title: "Whale & Dolphin Watching Yacht Trip",
-    date: "Domani, 09:30",
+    title: {
+      it: "Whale & Dolphin Watching in barca a vela",
+      en: "Whale & Dolphin Watching by sailing boat",
+      es: "Whale & Dolphin Watching en velero"
+    },
+    date: { it: "Domani, 09:30", en: "Tomorrow, 09:30", es: "Mañana, 09:30" },
     meetingPoint: "Puerto Colón, Muelle 3 — Costa Adeje",
-    duration: "3 ore",
-    bring: ["Costume da bagno", "Asciugamano", "Crema solare", "Documento d'identità"],
-    notes: "Presentati 15 minuti prima dell'orario. Cancellazione gratuita fino a 24 ore prima della partenza."
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    bring: [
+      { it: "Costume da bagno", en: "Swimsuit", es: "Bañador" },
+      { it: "Asciugamano", en: "Towel", es: "Toalla" },
+      { it: "Crema solare", en: "Sun cream", es: "Crema solar" },
+      { it: "Documento d'identità", en: "ID document", es: "Documento de identidad" }
+    ],
+    notes: {
+      it: "Presentati 15 minuti prima dell'orario. Cancellazione gratuita fino a 24 ore prima della partenza.",
+      en: "Arrive 15 minutes before the departure time. Free cancellation up to 24 hours before departure.",
+      es: "Preséntate 15 minutos antes de la hora. Cancelación gratuita hasta 24 horas antes de la salida."
+    }
   },
   "TEN-7788": {
     title: "Teide Sunset Quad Trip",
-    date: "Oggi, 16:00",
+    date: { it: "Oggi, 16:00", en: "Today, 16:00", es: "Hoy, 16:00" },
     meetingPoint: "Quad Center, Vilaflor",
-    duration: "3 ore",
-    bring: ["Scarpe chiuse", "Giacca leggera (di sera fa fresco)", "Patente di guida"],
-    notes: "Il tour è vietato alle donne in gravidanza. Età minima 18 anni per guidare il quad."
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    bring: [
+      { it: "Scarpe chiuse", en: "Closed shoes", es: "Zapato cerrado" },
+      { it: "Giacca leggera (di sera fa fresco)", en: "Light jacket (it gets cool in the evening)", es: "Chaqueta ligera (por la noche refresca)" },
+      { it: "Patente di guida", en: "Driving licence", es: "Carné de conducir" }
+    ],
+    notes: {
+      it: "Il tour è vietato alle donne in gravidanza. Età minima 18 anni per guidare il quad.",
+      en: "The tour is not suitable for pregnant women. Minimum age to drive the quad is 18.",
+      es: "El tour no está permitido a mujeres embarazadas. Edad mínima para conducir el quad: 18 años."
+    }
   }
 };
 
@@ -44,53 +69,53 @@ function renderBooking(booking, code) {
   document.getElementById("bookingView").innerHTML = `
     <div class="detail-card">
       <div class="detail-status">
-        <span>${ICONS.check} Prenotazione trovata</span>
-        <span class="pill">Confermata</span>
+        <span>${ICONS.check} ${t("booking.found")}</span>
+        <span class="pill">${t("booking.confirmed")}</span>
       </div>
       <div class="detail-body">
-        <p class="detail-code">Codice<strong>${code}</strong></p>
-        <h1 class="detail-title">${booking.title}</h1>
+        <p class="detail-code">${t("booking.code")}<strong>${code}</strong></p>
+        <h1 class="detail-title">${tf(booking.title)}</h1>
 
         <div class="info-grid">
           <div class="info-field">
             ${ICONS.clock}
             <div>
-              <h3>Orario</h3>
-              <p>${booking.date}</p>
+              <h3>${t("booking.time")}</h3>
+              <p>${tf(booking.date)}</p>
             </div>
           </div>
           <div class="info-field">
             ${ICONS.timer}
             <div>
-              <h3>Durata</h3>
-              <p>${booking.duration}</p>
+              <h3>${t("booking.duration")}</h3>
+              <p>${tf(booking.duration)}</p>
             </div>
           </div>
           <div class="info-field" style="grid-column:1/-1">
             ${ICONS.pin}
             <div>
-              <h3>Punto d'incontro</h3>
+              <h3>${t("booking.meeting")}</h3>
               <p>${booking.meetingPoint}</p>
-              <a class="map-link" href="${mapsUrl(booking.meetingPoint)}" target="_blank" rel="noopener noreferrer">Apri in mappa →</a>
+              <a class="map-link" href="${mapsUrl(booking.meetingPoint)}" target="_blank" rel="noopener noreferrer">${t("booking.openMap")}</a>
             </div>
           </div>
           <div class="info-field" style="grid-column:1/-1">
             ${ICONS.bag}
             <div>
-              <h3>Cosa portare</h3>
-              <ul>${booking.bring.map(item => `<li>${item}</li>`).join("")}</ul>
+              <h3>${t("booking.bring")}</h3>
+              <ul>${booking.bring.map(item => `<li>${tf(item)}</li>`).join("")}</ul>
             </div>
           </div>
         </div>
 
         <div class="note-box">
-          <h3>Note importanti</h3>
-          <p>${booking.notes}</p>
+          <h3>${t("booking.notes")}</h3>
+          <p>${tf(booking.notes)}</p>
         </div>
 
         <div class="detail-actions">
-          <a class="btn btn-soft" href="./index.html">Cerca un'altra prenotazione</a>
-          <a class="btn btn-primary" href="mailto:info@islatenerife.com?subject=Assistenza prenotazione ${code}">Richiedi assistenza</a>
+          <a class="btn btn-soft" href="./index.html">${t("booking.another")}</a>
+          <a class="btn btn-primary" href="mailto:info@islatenerife.com?subject=${encodeURIComponent(t("booking.helpSubject") + " " + code)}">${t("booking.help")}</a>
         </div>
       </div>
     </div>
@@ -101,13 +126,13 @@ function renderNotFound(code) {
   document.getElementById("bookingView").innerHTML = `
     <div class="state">
       <div class="state-icon">${ICONS.search}</div>
-      <h2>Codice non trovato</h2>
-      <p>Non troviamo una prenotazione con il codice "${code}". Controlla di averlo copiato correttamente dalla email di conferma.</p>
+      <h2>${t("booking.notFound")}</h2>
+      <p>${t("booking.notFoundText", { code })}</p>
       <form class="lookup-card" data-lookup-form style="text-align:left">
-        <label for="retryInput">Riprova con un altro codice</label>
+        <label for="retryInput">${t("booking.retry")}</label>
         <div class="lookup-row">
-          <input id="retryInput" type="text" autocomplete="off" placeholder="Es. ISLA-4521" required />
-          <button class="btn btn-primary" type="submit">Cerca</button>
+          <input id="retryInput" type="text" autocomplete="off" placeholder="${t("ticket.placeholder")}" required />
+          <button class="btn btn-primary" type="submit">${t("common.search")}</button>
         </div>
       </form>
     </div>
@@ -119,18 +144,23 @@ function renderEmpty() {
   document.getElementById("bookingView").innerHTML = `
     <div class="state">
       <div class="state-icon">${ICONS.ticket}</div>
-      <h2>Nessun codice inserito</h2>
-      <p>Torna alla home e inserisci il codice della tua prenotazione per vedere i dettagli del tour.</p>
-      <a class="btn btn-primary" href="./index.html">Vai alla home</a>
+      <h2>${t("booking.noCode")}</h2>
+      <p>${t("booking.noCodeText")}</p>
+      <a class="btn btn-primary" href="./index.html">${t("booking.goHome")}</a>
     </div>
   `;
 }
 
-const code = getCodeFromUrl();
-if (!code) {
-  renderEmpty();
-} else if (MOCK_BOOKINGS[code]) {
-  renderBooking(MOCK_BOOKINGS[code], code);
-} else {
-  renderNotFound(code);
+function renderBookingPage() {
+  const code = getCodeFromUrl();
+  if (!code) {
+    renderEmpty();
+  } else if (MOCK_BOOKINGS[code]) {
+    renderBooking(MOCK_BOOKINGS[code], code);
+  } else {
+    renderNotFound(code);
+  }
 }
+
+document.addEventListener("DOMContentLoaded", renderBookingPage);
+document.addEventListener("islalang", renderBookingPage);

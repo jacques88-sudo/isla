@@ -6,27 +6,31 @@
 // sotto. Serve una chiave segreta per usare un vero modello, e quella non può
 // stare nel browser — servirebbe un backend.
 //
-// Richiede che esplora-catalog.js sia caricato prima di questo file.
+// Richiede che i18n.js e esplora-catalog.js siano caricati prima di questo file.
 
+// key = la chiave della traduzione in i18n.js, così le risposte compaiono
+// nella lingua scelta dal cliente.
 const ASSIST_INTERESSI = [
-  { label: "Mare e barche",     cats: ["mare-barche"] },
-  { label: "Teide e natura",    cats: ["teide-natura"] },
-  { label: "Adrenalina",        cats: ["avventura-motori", "sport-acquatici"] },
-  { label: "Parchi e spettacoli", cats: ["parchi-spettacoli"] },
-  { label: "Stelle di notte",   cats: ["stelle"] },
-  { label: "Girare l'isola",    cats: ["tour-isola"] },
-  { label: "Non lo so ancora",  cats: null }   // null = nessun filtro
+  { key: "assist.int.sea",        cats: ["mare-barche"] },
+  { key: "assist.int.nature",     cats: ["teide-natura"] },
+  { key: "assist.int.adrenaline", cats: ["avventura-motori", "sport-acquatici"] },
+  { key: "assist.int.parks",      cats: ["parchi-spettacoli"] },
+  { key: "assist.int.stars",      cats: ["stelle"] },
+  { key: "assist.int.island",     cats: ["tour-isola"] },
+  { key: "assist.int.unsure",     cats: null }   // null = nessun filtro
 ];
 
 const ASSIST_MAX_RISULTATI = 5;
 
 function assistPrezzo(tour) {
-  return tour.priceFrom === null ? "Su richiesta" : "da €" + tour.priceFrom;
+  return tour.priceFrom === null
+    ? t("tour.onRequest")
+    : t("tour.from", { p: tour.priceFrom });
 }
 
 function assistNomeCategoria(id) {
   const c = CATEGORIES.find(x => x.id === id);
-  return c ? c.name : id;
+  return c ? tf(c.name) : id;
 }
 
 // Indirizzo del catalogo già filtrato come l'utente ha chiesto.
@@ -48,7 +52,8 @@ function initAssistente() {
   fab.className = "assist-fab";
   fab.setAttribute("aria-haspopup", "dialog");
   fab.setAttribute("aria-expanded", "false");
-  fab.setAttribute("aria-label", "Apri l'assistente per trovare un'escursione");
+  fab.setAttribute("data-i18n-aria-label", "assist.open");
+  fab.setAttribute("aria-label", t("assist.open"));
   fab.innerHTML = `
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -65,15 +70,17 @@ function initAssistente() {
   panel.id = "assistPanel";
   panel.setAttribute("role", "dialog");
   panel.setAttribute("aria-modal", "true");
-  panel.setAttribute("aria-label", "Assistente Isla");
+  panel.setAttribute("data-i18n-aria-label", "assist.title");
+  panel.setAttribute("aria-label", t("assist.title"));
   panel.hidden = true;
   panel.innerHTML = `
     <div class="assist-head">
       <div>
-        <strong>Assistente Isla</strong>
-        <span>Ti aiuto a scegliere</span>
+        <strong data-i18n="assist.title">${t("assist.title")}</strong>
+        <span data-i18n="assist.sub">${t("assist.sub")}</span>
       </div>
-      <button class="iconbtn" type="button" data-assist-close aria-label="Chiudi">✕</button>
+      <button class="iconbtn" type="button" data-assist-close
+              data-i18n-aria-label="common.close" aria-label="${t("common.close")}">✕</button>
     </div>
     <div class="assist-body" data-assist-body></div>
   `;
@@ -97,13 +104,13 @@ function initAssistente() {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "assist-option";
-      b.textContent = v.label;
+      b.textContent = t(v.key);
       b.addEventListener("click", () => {
         // la scelta fatta resta a schermo come risposta dell'utente
         wrap.remove();
         const eco = document.createElement("p");
         eco.className = "assist-msg assist-msg-me";
-        eco.textContent = v.label;
+        eco.textContent = t(v.key);
         body.appendChild(eco);
         onScelta(v);
         body.scrollTop = body.scrollHeight;
@@ -117,62 +124,62 @@ function initAssistente() {
   // ── conversazione ─────────────────────────────────────────────────────
   function avvia() {
     body.innerHTML = "";
-    bolla("Ciao! Ti faccio due domande e ti propongo qualcosa.");
-    bolla("Cosa ti piacerebbe fare?");
+    bolla(t("assist.hello"));
+    bolla(t("assist.q1"));
     opzioni(ASSIST_INTERESSI, scelta => chiediBambini(scelta.cats));
   }
 
   function chiediBambini(cats) {
-    bolla("Ci sono bambini con te?");
+    bolla(t("assist.q2"));
     opzioni(
-      [{ label: "Sì", family: true }, { label: "No", family: false }],
+      [{ key: "assist.yes", family: true }, { key: "assist.no", family: false }],
       scelta => mostraRisultati(cats, scelta.family)
     );
   }
 
   function mostraRisultati(cats, soloFamiglia) {
-    let trovate = ESPLORA_CATALOG.filter(t => t.published);
-    if (cats) trovate = trovate.filter(t => cats.includes(t.category));
-    if (soloFamiglia) trovate = trovate.filter(t => t.family);
+    let trovate = ESPLORA_CATALOG.filter(x => x.published);
+    if (cats) trovate = trovate.filter(x => cats.includes(x.category));
+    if (soloFamiglia) trovate = trovate.filter(x => x.family);
 
     // prima quelle con un prezzo: sono le schede più complete
     trovate.sort((a, b) => {
       const pa = a.priceFrom === null ? 1 : 0;
       const pb = b.priceFrom === null ? 1 : 0;
-      return pa - pb || a.title.localeCompare(b.title);
+      return pa - pb || tf(a.title).localeCompare(tf(b.title));
     });
 
     if (trovate.length === 0) {
-      bolla("Su questa combinazione non ho trovato nulla. Prova a cambiare risposta, oppure guarda tutto il catalogo.");
+      bolla(t("assist.none"));
     } else if (soloFamiglia) {
-      bolla("Ecco cosa ti consiglio, tutto adatto ai bambini:");
+      bolla(t("assist.resultsFamily"));
     } else {
-      bolla("Ecco cosa ti consiglio:");
+      bolla(t("assist.results"));
     }
 
     const lista = document.createElement("ul");
     lista.className = "assist-results";
-    trovate.slice(0, ASSIST_MAX_RISULTATI).forEach(t => {
+    trovate.slice(0, ASSIST_MAX_RISULTATI).forEach(tour => {
       const li = document.createElement("li");
       li.innerHTML = `
-        <a href="${assistLinkCatalogo([t.category], soloFamiglia)}">
-          <span class="assist-res-cat">${assistNomeCategoria(t.category)}</span>
-          <span class="assist-res-title">${t.title}</span>
-          <span class="assist-res-price">${assistPrezzo(t)}</span>
+        <a href="${assistLinkCatalogo([tour.category], soloFamiglia)}">
+          <span class="assist-res-cat">${assistNomeCategoria(tour.category)}</span>
+          <span class="assist-res-title">${tf(tour.title)}</span>
+          <span class="assist-res-price">${assistPrezzo(tour)}</span>
         </a>`;
       lista.appendChild(li);
     });
     body.appendChild(lista);
 
     if (trovate.length > ASSIST_MAX_RISULTATI) {
-      bolla("Ce ne sono altre " + (trovate.length - ASSIST_MAX_RISULTATI) + ".");
+      bolla(t("assist.more", { n: trovate.length - ASSIST_MAX_RISULTATI }));
     }
 
     const azioni = document.createElement("div");
     azioni.className = "assist-actions";
     azioni.innerHTML = `
-      <a class="btn btn-primary btn-block" href="${assistLinkCatalogo(cats, soloFamiglia)}">Vedi il catalogo</a>
-      <button class="btn btn-soft btn-block" type="button" data-assist-restart>Ricomincia</button>`;
+      <a class="btn btn-primary btn-block" href="${assistLinkCatalogo(cats, soloFamiglia)}">${t("assist.catalog")}</a>
+      <button class="btn btn-soft btn-block" type="button" data-assist-restart>${t("assist.restart")}</button>`;
     body.appendChild(azioni);
     azioni.querySelector("[data-assist-restart]").addEventListener("click", avvia);
     body.scrollTop = body.scrollHeight;
@@ -201,6 +208,14 @@ function initAssistente() {
       scrim.hidden = true;
     }, 300);
   }
+
+  // Cambio lingua: il pannello è costruito da JavaScript, quindi la
+  // conversazione riparte da capo nella lingua nuova.
+  document.addEventListener("islalang", () => {
+    applyI18n(panel);
+    fab.setAttribute("aria-label", t("assist.open"));
+    if (body.childElementCount) avvia();
+  });
 
   fab.addEventListener("click", apri);
   panel.querySelector("[data-assist-close]").addEventListener("click", chiudi);

@@ -1,18 +1,23 @@
 // Pagina "Tutte le escursioni": legge ESPLORA_CATALOG e CATEGORIES da
 // esplora-catalog.js, filtra per categoria/testo e disegna le schede.
 //
+// I testi passano da i18n.js: t() per quelli fissi, tf() per i campi del
+// catalogo che possono essere scritti nelle tre lingue.
+//
 // Numero WhatsApp su cui arrivano le richieste di disponibilità.
 // Formato internazionale senza + e senza spazi. Svuotalo per nascondere
 // il pulsante "Richiedi disponibilità" su tutte le schede.
 const WHATSAPP_NUMBER = "34662908073";
 
 function tourPrice(tour) {
-  return tour.priceFrom === null ? "Su richiesta" : "da €" + tour.priceFrom;
+  return tour.priceFrom === null
+    ? t("tour.onRequest")
+    : t("tour.from", { p: tour.priceFrom });
 }
 
 function categoryName(id) {
   const cat = CATEGORIES.find(c => c.id === id);
-  return cat ? cat.name : id;
+  return cat ? tf(cat.name) : id;
 }
 
 // Data minima richiedibile: domani, cioè almeno 24 ore di preavviso.
@@ -37,18 +42,19 @@ function formatDate(iso) {
 }
 
 function peopleText(adults, kids) {
-  const parti = [adults + (adults === 1 ? " adulto" : " adulti")];
-  if (kids > 0) parti.push(kids + (kids === 1 ? " bambino" : " bambini"));
-  return parti.join(" e ");
+  const parti = [adults + " " + t(adults === 1 ? "wa.adult" : "wa.adults")];
+  if (kids > 0) parti.push(kids + " " + t(kids === 1 ? "wa.child" : "wa.children"));
+  return parti.join(" " + t("wa.and") + " ");
 }
 
-// Messaggio WhatsApp completo, con data e persone già compilate
+// Messaggio WhatsApp completo, con data e persone già compilate.
+// È scritto nella lingua che il cliente sta usando sul sito.
 function whatsappUrl(tour, req) {
-  let testo = "Ciao Isla! Sono " + req.name + ", vorrei richiedere disponibilità per:\n" +
-    "• " + tour.title + "\n" +
-    "• Data: " + formatDate(req.date) + "\n" +
-    "• Persone: " + peopleText(req.adults, req.kids);
-  if (req.note) testo += "\n• Note: " + req.note;
+  let testo = t("wa.intro", { name: req.name }) + "\n" +
+    "• " + tf(tour.title) + "\n" +
+    "• " + t("wa.date") + ": " + formatDate(req.date) + "\n" +
+    "• " + t("wa.people") + ": " + peopleText(req.adults, req.kids);
+  if (req.note) testo += "\n• " + t("wa.notes") + ": " + req.note;
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
 }
 
@@ -59,24 +65,24 @@ function tourCard(tour) {
   // encodeURIComponent: se un nome file contiene spazi o accenti,
   // l'indirizzo resta valido invece di rompersi a metà
   const media = tour.image
-    ? `<img src="./assets/${encodeURIComponent(tour.image)}" alt="${tour.title}" loading="lazy" />`
+    ? `<img src="./assets/${encodeURIComponent(tour.image)}" alt="${tf(tour.title)}" loading="lazy" />`
     : `<span class="tour-media-empty" aria-hidden="true">Isla</span>`;
 
   const askBtn = WHATSAPP_NUMBER
     ? `<button class="btn btn-primary tour-ask" type="button" data-request-open="${tour.id}"
-               aria-haspopup="dialog" aria-controls="requestDialog">Richiedi disponibilità</button>`
+               aria-haspopup="dialog" aria-controls="requestDialog">${t("tour.ask")}</button>`
     : "";
 
   li.innerHTML = `
     <div class="tour-media">${media}</div>
     <div class="tour-body">
       <span class="tour-cat">${categoryName(tour.category)}</span>
-      <h2 class="tour-title">${tour.title}</h2>
-      <p class="tour-desc">${tour.desc}</p>
+      <h2 class="tour-title">${tf(tour.title)}</h2>
+      <p class="tour-desc">${tf(tour.desc)}</p>
       <ul class="tour-meta">
-        <li>${tour.zone}</li>
-        <li>${tour.duration}</li>
-        ${tour.family ? "<li>Adatta ai bambini</li>" : ""}
+        <li>${tf(tour.zone)}</li>
+        <li>${tf(tour.duration)}</li>
+        ${tour.family ? "<li>" + t("tour.family") + "</li>" : ""}
       </ul>
       <div class="tour-foot">
         <span class="tour-price">${tourPrice(tour)}</span>
@@ -95,7 +101,7 @@ function initCatalog() {
   const emptyEl = document.querySelector("[data-empty]");
   if (!grid) return;
 
-  const published = ESPLORA_CATALOG.filter(t => t.published);
+  const published = ESPLORA_CATALOG.filter(x => x.published);
   const params = new URLSearchParams(location.search);
 
   // "cat" accetta anche più categorie separate da virgola: l'assistente
@@ -109,17 +115,17 @@ function initCatalog() {
 
   // Solo le categorie che hanno almeno un'attività pubblicata
   const usedCategories = CATEGORIES.filter(c =>
-    published.some(t => t.category === c.id)
+    published.some(x => x.category === c.id)
   );
 
   function buildChips() {
-    const all = [{ id: "tutte", name: "Tutte" }].concat(usedCategories);
+    const all = [{ id: "tutte", name: t("catalog.all") }].concat(usedCategories);
     chipRow.innerHTML = "";
     all.forEach(cat => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "chip";
-      btn.textContent = cat.name;
+      btn.textContent = tf(cat.name);
       btn.dataset.cat = cat.id;
       btn.addEventListener("click", () => {
         state.categories = cat.id === "tutte" ? [] : [cat.id];
@@ -133,9 +139,13 @@ function initCatalog() {
     if (state.categories.length && !state.categories.includes(tour.category)) return false;
     if (state.family && !tour.family) return false;
     if (state.query) {
-      const haystack = (
-        tour.title + " " + tour.desc + " " + tour.zone + " " + categoryName(tour.category)
-      ).toLowerCase();
+      // Si cerca in tutte e tre le lingue: chi scrive "boat" trova la
+      // stessa attività di chi scrive "barca".
+      const haystack = [tour.title, tour.desc, tour.zone]
+        .map(campo => typeof campo === "string" ? campo : Object.values(campo).join(" "))
+        .concat(categoryName(tour.category))
+        .join(" ")
+        .toLowerCase();
       if (!haystack.includes(state.query)) return false;
     }
     return true;
@@ -145,7 +155,7 @@ function initCatalog() {
     const results = published.filter(matches);
 
     grid.innerHTML = "";
-    results.forEach(t => grid.appendChild(tourCard(t)));
+    results.forEach(tour => grid.appendChild(tourCard(tour)));
 
     chipRow.querySelectorAll(".chip").forEach(btn => {
       const attivo = state.categories.length
@@ -158,25 +168,23 @@ function initCatalog() {
     if (published.length === 0) {
       countEl.textContent = "";
     } else if (results.length === published.length) {
-      countEl.textContent = published.length + " attività disponibili";
+      countEl.textContent = t("catalog.countAll", { n: published.length });
     } else {
-      countEl.textContent = results.length + " di " + published.length + " attività";
+      countEl.textContent = t("catalog.countSome", { n: results.length, total: published.length });
     }
 
     // Stato vuoto: distingue "niente pubblicato" da "filtri troppo stretti"
     if (published.length === 0) {
       emptyEl.hidden = false;
       emptyEl.innerHTML = `
-        <h2>Catalogo in preparazione</h2>
-        <p>Nessuna attività è ancora pubblicata. Per pubblicarne una, apri
-        <code>esplora-catalog.js</code> e imposta <code>published: true</code>
-        sulla voce, dopo aver verificato prezzo, foto e descrizione.</p>
+        <h2>${t("catalog.prepTitle")}</h2>
+        <p>${t("catalog.prepText")}</p>
       `;
     } else if (results.length === 0) {
       emptyEl.hidden = false;
       emptyEl.innerHTML = `
-        <h2>Nessun risultato</h2>
-        <p>Prova a cambiare categoria o a cercare un'altra parola.</p>
+        <h2>${t("catalog.emptyTitle")}</h2>
+        <p>${t("catalog.emptyText")}</p>
       `;
     } else {
       emptyEl.hidden = true;
@@ -193,6 +201,13 @@ function initCatalog() {
 
   buildChips();
   render();
+
+  // Cambio lingua: le schede e i filtri sono disegnati da JavaScript,
+  // quindi vanno ricostruiti a mano (applyI18n tocca solo l'HTML fisso).
+  document.addEventListener("islalang", () => {
+    buildChips();
+    render();
+  });
 }
 
 document.addEventListener("DOMContentLoaded", initCatalog);
@@ -215,7 +230,7 @@ function initRequestDialog() {
 
   function open(tour) {
     current = tour;
-    activityEl.textContent = tour.title;
+    activityEl.textContent = tf(tour.title);
     dialog.hidden = false;
     scrim.hidden = false;
     requestAnimationFrame(() => {
@@ -249,6 +264,12 @@ function initRequestDialog() {
   scrim.addEventListener("click", close);
   document.addEventListener("keydown", e => {
     if (e.key === "Escape" && dialog.classList.contains("is-open")) close();
+  });
+
+  // Se la lingua cambia mentre la finestra è aperta, cambia anche il nome
+  // dell'attività in cima.
+  document.addEventListener("islalang", () => {
+    if (current) activityEl.textContent = tf(current.title);
   });
 
   form.addEventListener("submit", e => {

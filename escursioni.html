@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f7f2ec" />
-  <meta name="description" content="Tutte le escursioni, i tour e gli show di Isla a Tenerife: mare, Teide, parchi, avventura e molto altro." />
+  <meta name="description" data-i18n-content="meta.catalog.desc" content="Tutte le escursioni, i tour e gli show di Isla a Tenerife: mare, Teide, parchi, avventura e molto altro." />
   <title>Tutte le escursioni · Isla</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./assets/icon-192.png" />
@@ -66,7 +66,7 @@
     }
   </style>
 </head>
-<body>
+<body data-i18n-doctitle="meta.catalog.title">
   <div class="splash" id="splash" aria-hidden="true">
     <div class="splash-mark">
       <span class="splash-ring"></span>
@@ -75,42 +75,53 @@
     <span class="splash-brand">Isla</span>
   </div>
 
-  <a class="skip" href="#main">Vai al contenuto</a>
+  <a class="skip" href="#main" data-i18n="common.skip">Vai al contenuto</a>
 
   <header class="site-banner">
     <div class="hero-top">
-      <a class="hero-logo" href="./index.html" aria-label="Isla home">
-        <img src="./assets/logo-isla.png" alt="Logo Isla" />
+      <a class="hero-logo" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
+        <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
       </a>
       <div class="hero-brand">
         <span class="hero-brand-title">Isla</span>
         <span class="hero-brand-sub">so easy so tenerife</span>
       </div>
-      <span class="hero-top-spacer" aria-hidden="true"></span>
+      <div class="lang-switch">
+        <button class="lang-toggle" type="button" data-lang-toggle
+                data-i18n-aria-label="lang.change" aria-label="Cambia lingua"
+                aria-haspopup="true" aria-expanded="false">
+          <span data-lang-current>IT</span>
+        </button>
+        <ul class="lang-menu" data-lang-menu hidden>
+          <li><button type="button" data-lang-set="it">Italiano</button></li>
+          <li><button type="button" data-lang-set="en">English</button></li>
+          <li><button type="button" data-lang-set="es">Español</button></li>
+        </ul>
+      </div>
     </div>
-    <nav class="hero-pills" aria-label="Menu principale">
-      <a class="pill pill-ghost" href="./escursioni.html">Esperienze</a>
-      <button class="pill pill-solid" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">Prenota ora</button>
+    <nav class="hero-pills" data-i18n-aria-label="nav.aria" aria-label="Menu principale">
+      <a class="pill pill-ghost" href="./escursioni.html" data-i18n="nav.experiences">Esperienze</a>
+      <button class="pill pill-solid" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.bookNow">Prenota ora</button>
       <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
-        <span class="pill-icon" aria-hidden="true">☰</span> Menu
+        <span class="pill-icon" aria-hidden="true">☰</span> <span data-i18n="nav.menu">Menu</span>
       </button>
     </nav>
   </header>
 
   <main id="main" class="catalog-page">
     <div class="wrap catalog-head">
-      <span class="eyebrow">Esplora</span>
-      <h1>Tutte le escursioni</h1>
+      <span class="eyebrow" data-i18n="catalog.eyebrow">Esplora</span>
+      <h1 data-i18n="catalog.title">Tutte le escursioni</h1>
       <p class="catalog-count" data-count></p>
     </div>
 
     <div class="wrap catalog-tools">
       <label class="catalog-search">
-        <span class="visually-hidden">Cerca un'escursione</span>
+        <span class="visually-hidden" data-i18n="catalog.searchLabel">Cerca un'escursione</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input type="search" data-search placeholder="Cerca: barca, Teide, quad…" autocomplete="off" />
+        <input type="search" data-search data-i18n-placeholder="catalog.searchPlaceholder" placeholder="Cerca: barca, Teide, quad…" autocomplete="off" />
       </label>
-      <nav class="chip-row" data-chips aria-label="Filtra per categoria"></nav>
+      <nav class="chip-row" data-chips data-i18n-aria-label="catalog.filterAria" aria-label="Filtra per categoria"></nav>
     </div>
 
     <div class="wrap">
@@ -120,89 +131,98 @@
   </main>
 
   <div class="menu-scrim" data-menu-scrim hidden></div>
-  <aside class="more-menu" id="moreMenu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <aside class="more-menu" id="moreMenu" role="dialog" aria-modal="true" data-i18n-aria-label="menu.aria" aria-label="Menu" hidden>
     <div class="more-menu-head">
       <span class="more-menu-brand">Isla</span>
-      <button class="iconbtn" type="button" data-menu-close aria-label="Chiudi menu">✕</button>
+      <button class="iconbtn" type="button" data-menu-close data-i18n-aria-label="menu.close" aria-label="Chiudi menu">✕</button>
     </div>
-    <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn hidden>Installa l'app</button>
-    <nav class="more-menu-nav" aria-label="Sezioni">
-      <a href="./escursioni.html" data-menu-link>Excursion</a>
-      <a href="./index.html#categories" data-menu-link>Pacchetti</a>
-      <button type="button" data-menu-link data-ticket-open>Scan ticket</button>
-      <a href="./index.html#secret" data-menu-link>Posti segreti</a>
-      <a href="./index.html#about" data-menu-link>Chi siamo</a>
+    <div class="more-menu-lang">
+      <span class="more-menu-lang-label" data-i18n="lang.label">Lingua</span>
+      <div class="lang-seg">
+        <button type="button" data-lang-set="it">IT</button>
+        <button type="button" data-lang-set="en">EN</button>
+        <button type="button" data-lang-set="es">ES</button>
+      </div>
+    </div>
+    <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn data-i18n="menu.install" hidden>Installa l'app</button>
+    <nav class="more-menu-nav" data-i18n-aria-label="menu.sections" aria-label="Sezioni">
+      <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
+      <a href="./index.html#categories" data-menu-link data-i18n="menu.packages">Pacchetti</a>
+      <button type="button" data-menu-link data-ticket-open data-i18n="menu.scan">Scan ticket</button>
+      <a href="./index.html#secret" data-menu-link data-i18n="menu.secret">Posti segreti</a>
+      <a href="./index.html#about" data-menu-link data-i18n="menu.about">Chi siamo</a>
     </nav>
-    <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link>Book now</a>
+    <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link data-i18n="menu.cta">Prenota ora</a>
   </aside>
 
   <div class="ticket-scrim" data-request-scrim hidden></div>
   <div class="ticket-dialog request-dialog" id="requestDialog" role="dialog" aria-modal="true" aria-labelledby="requestTitle" hidden>
     <div class="ticket-dialog-head">
-      <h2 id="requestTitle">Richiedi disponibilità</h2>
-      <button class="iconbtn" type="button" data-request-close aria-label="Chiudi">✕</button>
+      <h2 id="requestTitle" data-i18n="req.title">Richiedi disponibilità</h2>
+      <button class="iconbtn" type="button" data-request-close data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
     </div>
     <p class="request-activity" data-request-activity></p>
     <form data-request-form>
-      <label for="reqName">Il tuo nome</label>
+      <label for="reqName" data-i18n="req.name">Il tuo nome</label>
       <input id="reqName" name="name" type="text" autocomplete="name"
-             placeholder="Nome e cognome" required />
+             data-i18n-placeholder="req.namePlaceholder" placeholder="Nome e cognome" required />
 
-      <label for="reqDate">Quando vorresti andare</label>
+      <label for="reqDate" data-i18n="req.date">Quando vorresti andare</label>
       <input id="reqDate" name="date" type="date" required />
 
-      <span class="request-people-label">Quante persone</span>
+      <span class="request-people-label" data-i18n="req.people">Quante persone</span>
       <div class="request-people">
-        <label for="reqAdults">Adulti
+        <label for="reqAdults"><span data-i18n="req.adults">Adulti</span>
           <input id="reqAdults" name="adults" type="number" inputmode="numeric" min="1" max="30" value="2" required />
         </label>
-        <label for="reqKids">Bambini
+        <label for="reqKids"><span data-i18n="req.kids">Bambini</span>
           <input id="reqKids" name="kids" type="number" inputmode="numeric" min="0" max="30" value="0" />
         </label>
       </div>
 
-      <label for="reqNote">Note <span class="request-optional">(facoltativo)</span></label>
+      <label for="reqNote"><span data-i18n="req.note">Note</span> <span class="request-optional" data-i18n="req.optional">(facoltativo)</span></label>
       <input id="reqNote" name="note" type="text" autocomplete="off"
-             placeholder="Hotel, zona, richieste particolari…" />
+             data-i18n-placeholder="req.notePlaceholder" placeholder="Hotel, zona, richieste particolari…" />
 
-      <button class="btn btn-primary btn-block request-submit" type="submit">Continua su WhatsApp</button>
+      <button class="btn btn-primary btn-block request-submit" type="submit" data-i18n="req.submit">Continua su WhatsApp</button>
 
-      <p class="hint">Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.</p>
-      <p class="hint request-privacy">Quello che scrivi qui serve solo a risponderti su WhatsApp: non viene salvato dal sito.</p>
+      <p class="hint" data-i18n-html="req.hint">Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.</p>
+      <p class="hint request-privacy" data-i18n="req.privacy">Quello che scrivi qui serve solo a risponderti su WhatsApp: non viene salvato dal sito.</p>
     </form>
   </div>
 
   <div class="ticket-scrim" data-ticket-scrim hidden></div>
   <div class="ticket-dialog" id="ticketDialog" role="dialog" aria-modal="true" aria-labelledby="ticketDialogTitle" hidden>
     <div class="ticket-dialog-head">
-      <h2 id="ticketDialogTitle">Scan ticket</h2>
-      <button class="iconbtn" type="button" data-ticket-close aria-label="Chiudi">✕</button>
+      <h2 id="ticketDialogTitle" data-i18n="ticket.title">Scan ticket</h2>
+      <button class="iconbtn" type="button" data-ticket-close data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
     </div>
     <form data-lookup-form>
-      <label for="codeInput">Codice prenotazione o ticket</label>
+      <label for="codeInput" data-i18n="ticket.codeLabel">Codice prenotazione o ticket</label>
       <div class="lookup-row">
         <input id="codeInput" name="code" type="text" inputmode="text" autocomplete="off"
-               placeholder="Es. ISLA-4521" required />
-        <button class="btn btn-primary" type="submit">Cerca</button>
+               data-i18n-placeholder="ticket.placeholder" placeholder="Es. ISLA-4521" required />
+        <button class="btn btn-primary" type="submit" data-i18n="common.search">Cerca</button>
       </div>
-      <p class="hint">Lo trovi nella email o nel messaggio di conferma della prenotazione.</p>
+      <p class="hint" data-i18n="ticket.hint">Lo trovi nella email o nel messaggio di conferma della prenotazione.</p>
     </form>
   </div>
 
   <footer class="footer">
     <div class="wrap footer-grid">
       <div class="footer-brand">
-        <img src="./assets/logo-isla.png" alt="Logo Isla" />
+        <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
         <div>
           <strong>Isla</strong>
           <span>so easy so tenerife</span>
         </div>
       </div>
-      <button class="footer-link" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">Cerca il tuo codice</button>
+      <button class="footer-link" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="footer.findCode">Cerca il tuo codice</button>
     </div>
-    <p class="footer-copy">© Isla · Tenerife excursions</p>
+    <p class="footer-copy" data-i18n="footer.copy">© Isla · Escursioni a Tenerife</p>
   </footer>
 
+  <script src="./i18n.js"></script>
   <script src="./esplora-catalog.js"></script>
   <script src="./escursioni.js"></script>
   <script src="./assistente.js"></script>

@@ -102,7 +102,7 @@ const ESPLORA_CATALOG = [
       en: "Three hours of catamaran along the coast, with nothing complicated planned.",
       es: "Tres horas de catamaran por la costa, sin planes complicados."
     },
-    image: "",
+    image: "catamaran-3h.jpg",
     published: true
   },
   {
@@ -166,7 +166,7 @@ const ESPLORA_CATALOG = [
       en: "Three hours on a glass-bottomed boat: you watch below the surface without leaving the deck.",
       es: "Tres horas en un barco con fondo de cristal: se mira bajo el agua sin salir de cubierta."
     },
-    image: "",
+    image: "glass-bottom-boat.jpg",
     published: true
   },
   {
@@ -214,7 +214,7 @@ const ESPLORA_CATALOG = [
       en: "Dolphin and whale watching aboard the Opera 60, in its premium version.",
       es: "Avistamiento de delfines y ballenas a bordo del Opera 60, en version premium."
     },
-    image: "",
+    image: "opera-60.jpg",
     published: true
   },
   {

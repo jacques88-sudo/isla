@@ -4,10 +4,8 @@
 // I testi passano da i18n.js: t() per quelli fissi, tf() per i campi del
 // catalogo che possono essere scritti nelle tre lingue.
 //
-// Numero WhatsApp su cui arrivano le richieste di disponibilità.
-// Formato internazionale senza + e senza spazi. Svuotalo per nascondere
-// il pulsante "Richiedi disponibilità" su tutte le schede.
-const WHATSAPP_NUMBER = "34662908073";
+// WHATSAPP_NUMBER sta in esplora-catalog.js: serve anche all'assistente, che
+// gira sulla home dove questo file non e' caricato.
 
 function tourPrice(tour) {
   if (tour.priceFrom === null) return t("tour.onRequest");

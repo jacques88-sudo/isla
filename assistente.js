@@ -20,7 +20,24 @@ const ASSIST_INTERESSI = [
   { key: "assist.int.unsure",     cats: null }   // null = nessun filtro
 ];
 
+// Fasce di prezzo della terza domanda. min e max si riferiscono a priceFrom,
+// gli estremi sono compresi. any = nessun filtro.
+const ASSIST_BUDGET = [
+  { key: "assist.budget.low",  max: 50 },
+  { key: "assist.budget.mid",  min: 50, max: 100 },
+  { key: "assist.budget.high", min: 100 },
+  { key: "assist.budget.any",  any: true }
+];
+
 const ASSIST_MAX_RISULTATI = 5;
+
+// Messaggio WhatsApp per chi non trova quello che cerca. Admiral rivende
+// attivita' gia' presenti sull'isola: quello che non c'e' in catalogo si puo'
+// comunque procurare, quindi conviene farselo chiedere invece di perdere il
+// cliente.
+function assistWhatsappUrl() {
+  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(t("assist.customWa"));
+}
 
 function assistPrezzo(tour) {
   if (tour.priceFrom === null) return t("tour.onRequest");
@@ -132,14 +149,45 @@ function initAssistente() {
     bolla(t("assist.q2"));
     opzioni(
       [{ key: "assist.yes", family: true }, { key: "assist.no", family: false }],
-      scelta => mostraRisultati(cats, scelta.family)
+      scelta => chiediBudget(cats, scelta.family)
     );
   }
 
-  function mostraRisultati(cats, soloFamiglia) {
+  function chiediBudget(cats, soloFamiglia) {
+    bolla(t("assist.q3"));
+    opzioni(ASSIST_BUDGET, scelta => mostraRisultati(cats, soloFamiglia, scelta));
+  }
+
+  // Riquadro finale: sempre presente, ma e' soprattutto la via d'uscita
+  // quando la ricerca non ha dato niente.
+  function riquadroRichiesta() {
+    if (!WHATSAPP_NUMBER) return;
+    const box = document.createElement("div");
+    box.className = "assist-custom";
+    box.innerHTML = `
+      <strong>${t("assist.customTitle")}</strong>
+      <span>${t("assist.customText")}</span>
+      <a class="btn btn-soft btn-block" href="${assistWhatsappUrl()}"
+         target="_blank" rel="noopener noreferrer">${t("assist.customBtn")}</a>`;
+    body.appendChild(box);
+  }
+
+  function mostraRisultati(cats, soloFamiglia, budget) {
     let trovate = ESPLORA_CATALOG.filter(x => x.published);
     if (cats) trovate = trovate.filter(x => cats.includes(x.category));
     if (soloFamiglia) trovate = trovate.filter(x => x.family);
+
+    // Le voci "Su richiesta" restano fuori quando c'e' un budget: senza un
+    // prezzo non si puo' dire se ci stanno dentro. Le recupera il riquadro
+    // in fondo, che invita a chiedere.
+    if (budget && !budget.any) {
+      trovate = trovate.filter(x => {
+        if (x.priceFrom === null) return false;
+        if (budget.min !== undefined && x.priceFrom < budget.min) return false;
+        if (budget.max !== undefined && x.priceFrom > budget.max) return false;
+        return true;
+      });
+    }
 
     // prima quelle con un prezzo: sono le schede più complete
     trovate.sort((a, b) => {
@@ -149,7 +197,7 @@ function initAssistente() {
     });
 
     if (trovate.length === 0) {
-      bolla(t("assist.none"));
+      bolla(t(budget && !budget.any ? "assist.noBudget" : "assist.none"));
     } else if (soloFamiglia) {
       bolla(t("assist.resultsFamily"));
     } else {
@@ -173,6 +221,8 @@ function initAssistente() {
     if (trovate.length > ASSIST_MAX_RISULTATI) {
       bolla(t("assist.more", { n: trovate.length - ASSIST_MAX_RISULTATI }));
     }
+
+    riquadroRichiesta();
 
     const azioni = document.createElement("div");
     azioni.className = "assist-actions";

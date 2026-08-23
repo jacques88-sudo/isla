@@ -65,7 +65,8 @@ scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
   indirizzo `tour.html?id=<id della voce nel catalogo>`. Riusa da `escursioni.js`
   il prezzo, il nome della categoria e la finestra della richiesta
 - `esplora-catalog.js` — dati delle 45 attività, divise nelle 8 categorie
-- `assistente.js` — assistente guidato (due domande, poi consigli dal catalogo)
+- `assistente.js` — assistente guidato: tre domande (interesse, bambini, budget), poi
+  consigli dal catalogo e un riquadro per chiedere su WhatsApp quello che non c'è
 - `i18n.js` — tutte le traduzioni it/en/es e il selettore della lingua
 - `manifest.json`, `sw.js`, `offline.html` — parte PWA (installabilità, cache offline)
 - `assets/` — foto e video veri (logo, hero video, foto categorie, cala segreta, team)

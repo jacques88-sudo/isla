@@ -1887,6 +1887,25 @@ body.menu-open { overflow: hidden; }
   color: var(--muted);
 }
 
+/* Riquadro "non trovi quello che cerchi": Admiral rivende, quindi cio' che
+   non e' in catalogo si puo' comunque chiedere. */
+.assist-custom {
+  margin-top: .9rem;
+  padding: .95rem 1rem 1rem;
+  background: var(--cream);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+.assist-custom strong { font-weight: 500; }
+.assist-custom span {
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.assist-custom .btn { margin-top: .5rem; }
+
 .assist-actions {
   display: grid;
   gap: .5rem;

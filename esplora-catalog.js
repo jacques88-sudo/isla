@@ -35,6 +35,12 @@
 //
 // Le descrizioni sono scritte da zero per Isla: non copiare quelle di altri siti.
 
+// Numero WhatsApp su cui arrivano le richieste. Formato internazionale, senza
+// + e senza spazi. Sta qui perche' questo file e' caricato da tutte le pagine:
+// lo usano sia le schede del catalogo sia l'assistente. Svuotalo per nascondere
+// ovunque i pulsanti che aprono WhatsApp.
+const WHATSAPP_NUMBER = "34662908073";
+
 const CATEGORIES = [
   {
     id: "mare-barche",

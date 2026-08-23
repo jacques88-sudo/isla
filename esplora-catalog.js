@@ -2,6 +2,9 @@
 //
 // COME COMPILARE UNA VOCE
 //   image      → nome del file dentro assets/. Vuoto = foto ancora da caricare.
+//                Piu voci possono indicare lo stesso file: la foto sta in
+//                assets/ una volta sola e il telefono la scarica una volta
+//                sola, anche se compare in dieci schede diverse.
 //   priceFrom  → numero in euro, oppure null se il prezzo non è ancora definito.
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
 //   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
@@ -81,7 +84,7 @@ const ESPLORA_CATALOG = [
       en: "A sailing trip in search of pilot whales and dolphins, with snacks and drinks on board.",
       es: "Salida en velero en busca de calderones y delfines, con aperitivos y bebidas a bordo."
     },
-    image: "whale-dolphin-sailing.jpg",
+    image: "Cat-mare.jpg",   // stessa foto della categoria "Mare e barche"
     published: true
   },
   {

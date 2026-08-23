@@ -469,105 +469,129 @@ const ESPLORA_CATALOG = [
 
   // ─── AVVENTURA E MOTORI ───────────────────────────────────────────────────
   {
+    id: "quad-provisional-license",
+    title: "1.5 Hour Provisional License Quad Trip",
+    category: "avventura-motori",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "1 ora e mezza", en: "1.5 hours", es: "1,5 horas" },
+    priceFrom: 160,
+    family: false,
+    desc: {
+      it: "Uscita in quad di un'ora e mezza, nella formula con licenza provvisoria.",
+      en: "An hour and a half out on a quad, in the provisional licence format.",
+      es: "Salida en quad de hora y media, en la modalidad con licencia provisional."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "mustang-experience",
+    title: "Mustang Experience",
+    category: "avventura-motori",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 250,
+    family: false,
+    desc: {
+      it: "L'esperienza Mustang. Programma e dettagli su richiesta.",
+      en: "The Mustang experience. Programme and details on request.",
+      es: "La experiencia Mustang. Programa y detalles bajo petición."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "buggy-volcano-4h",
+    title: "4-Hour Volcano Buggy Tour",
+    category: "avventura-motori",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
+    priceFrom: 210,
+    family: false,
+    desc: {
+      it: "Quattro ore in buggy tra i vulcani, di cui un'ora di fuoristrada. Disponibile a 2, 4 o 6 posti.",
+      en: "Four hours of buggy among the volcanoes, one of them off-road. Available as a 2, 4 or 6 seater.",
+      es: "Cuatro horas en buggy entre volcanes, una de ellas fuera de pista. Disponible de 2, 4 o 6 plazas."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "buggy-volcano-sunset",
+    title: "Volcano Sunset Buggy Tour",
+    category: "avventura-motori",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    priceFrom: 190,
+    family: false,
+    desc: {
+      it: "Buggy al tramonto tra i coni vulcanici, tre ore. Disponibile a 2, 4 o 6 posti.",
+      en: "Buggy at sunset among the volcanic cones, three hours. Available as a 2, 4 or 6 seater.",
+      es: "Buggy al atardecer entre los conos volcánicos, tres horas. Disponible de 2, 4 o 6 plazas."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "buggy-3h",
+    title: "3-Hour Buggy Tour",
+    category: "avventura-motori",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    priceFrom: 190,
+    family: false,
+    desc: {
+      it: "Tre ore in buggy, di cui 40 minuti di fuoristrada.",
+      en: "Three hours of buggy, including 40 minutes off-road.",
+      es: "Tres horas en buggy, con 40 minutos fuera de pista."
+    },
+    image: "",
+    published: true
+  },
+  {
     id: "quad-teide-sunset",
-    title: "Teide Sunset Quad Trip",
+    title: "Sunset on Teide Quad Tour",
     category: "avventura-motori",
-    zone: { it: "Teide", en: "Mount Teide", es: "Teide" },
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 150,
     family: false,
     desc: {
-      it: "Quad al tramonto verso il Teide. Età minima 18 anni per guidare.",
-      en: "Quad biking at sunset towards Teide. Minimum age to drive is 18.",
-      es: "Quad al atardecer hacia el Teide. Edad mínima para conducir: 18 años."
+      it: "Tre ore in quad verso il Teide, al tramonto.",
+      en: "Three hours on a quad towards Teide, at sunset.",
+      es: "Tres horas en quad hacia el Teide, al atardecer."
     },
     image: "",
     published: true
   },
   {
-    id: "quad-100-offroad",
-    title: "100% Off-Road Quad Tour",
+    id: "buggy-2h",
+    title: "2-Hour Buggy Tour",
     category: "avventura-motori",
-    zone: { it: "Tenerife sud", en: "South Tenerife", es: "Tenerife sur" },
-    duration: { it: "Variabile", en: "Variable", es: "Variable" },
-    priceFrom: null,
-    family: false,
-    desc: {
-      it: "Percorso interamente fuoristrada, per chi cerca solo sterrato.",
-      en: "An entirely off-road route, for those who only want dirt tracks.",
-      es: "Recorrido completamente fuera de pista, para quien solo busca tierra."
-    },
-    image: "",
-    published: true
-  },
-  {
-    id: "quad-garachico-masca",
-    title: "Garachico & Masca Quad Trip",
-    category: "avventura-motori",
-    zone: "Masca",
-    duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
-    priceFrom: null,
-    family: false,
-    desc: {
-      it: "Quad tra tornanti e punti panoramici del versante nord-ovest.",
-      en: "Quad biking through hairpin bends and viewpoints on the north-west side.",
-      es: "Quad entre curvas de montaña y miradores de la vertiente noroeste."
-    },
-    image: "",
-    published: true
-  },
-  {
-    id: "buggy-teide-4h",
-    title: {
-      it: "Teide Buggy Tour 4 ore",
-      en: "Teide Buggy Tour 4 hours",
-      es: "Teide Buggy Tour 4 horas"
-    },
-    category: "avventura-motori",
-    zone: "Las Chafiras",
-    duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
-    priceFrom: 150,
-    family: false,
-    desc: {
-      it: "Buggy con tratto off-road verso il Teide, tra paesaggi vulcanici.",
-      en: "Buggy with an off-road stretch towards Teide, through volcanic landscapes.",
-      es: "Buggy con tramo off-road hacia el Teide, entre paisajes volcánicos."
-    },
-    image: "",
-    published: true
-  },
-  {
-    id: "buggy-costa-adeje-2h",
-    title: {
-      it: "Buggy Tour Costa Adeje 2 ore",
-      en: "Buggy Tour Costa Adeje 2 hours",
-      es: "Buggy Tour Costa Adeje 2 horas"
-    },
-    category: "avventura-motori",
-    zone: "Costa Adeje",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
-    priceFrom: 120,
+    priceFrom: 160,
     family: false,
     desc: {
-      it: "Due ore di buggy con circa 40 minuti di fuoristrada.",
-      en: "Two hours of buggy driving with around 40 minutes off-road.",
-      es: "Dos horas de buggy con unos 40 minutos fuera de pista."
+      it: "Due ore in buggy, di cui 40 minuti di fuoristrada.",
+      en: "Two hours of buggy, including 40 minutes off-road.",
+      es: "Dos horas en buggy, con 40 minutos fuera de pista."
     },
     image: "",
     published: true
   },
   {
-    id: "buggy-sunset-volcano",
-    title: "Sunset Volcano Buggy Tour",
+    id: "quad-teide-adventure",
+    title: "Teide Quad Adventure",
     category: "avventura-motori",
-    zone: { it: "Tenerife sud", en: "South Tenerife", es: "Tenerife sur" },
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: 230,
+    priceFrom: 150,
     family: false,
     desc: {
-      it: "Buggy al tramonto con vista sui coni vulcanici, in gruppo con guida.",
-      en: "Buggy at sunset with views over the volcanic cones, in a guided group.",
-      es: "Buggy al atardecer con vistas a los conos volcánicos, en grupo con guía."
+      it: "Tre ore in quad sul Teide.",
+      en: "Three hours on a quad on Teide.",
+      es: "Tres horas en quad en el Teide."
     },
     image: "",
     published: true

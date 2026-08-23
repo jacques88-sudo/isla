@@ -93,8 +93,11 @@ toccano il codice già scritto:
 - **Il catalogo è a metà strada.** La categoria "Mare e barche" (13 voci) viene dal
   catalogo vero di Admiral, con i prezzi del sito. Le altre 37 attività vengono ancora
   dai tre siti concorrenti guardati all'inizio: vanno sostituite categoria per categoria
-  man mano che arrivano gli elenchi veri (`watersports`, `quad-buggy`, `island-tours`,
-  `parks-shows`, `teide-stargazing`)
+  man mano che arrivano gli elenchi veri (`watersports`, `island-tours`, `parks-shows`,
+  `teide-stargazing`)
+- Categoria "Avventura e motori": gli 8 prodotti quad e buggy vengono da Admiral. Restano
+  invece elicottero e parapendio, presi dai concorrenti: non sono quad/buggy, quindi la
+  categoria Admiral non li sostituisce. Da capire se Admiral li vende sotto altro nome
 - **Deciso:** nel frattempo le 37 voci dei concorrenti restano visibili (`published: true`),
   non si nascondono. Ognuna sparisce quando arriva la categoria vera che la sostituisce
 - Delle 13 barche Admiral: tutte hanno la foto, 5 hanno la zona di partenza (Puerto Colón,

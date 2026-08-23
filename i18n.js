@@ -161,6 +161,8 @@ const I18N = {
   "detail.price":       { it: "Prezzo", en: "Price", es: "Precio" },
   "detail.suitable":    { it: "Adatta a", en: "Suitable for", es: "Apta para" },
   "detail.people":      { it: "Da {from} a {to} persone", en: "{from} to {to} people", es: "De {from} a {to} personas" },
+  "detail.privateTitle":{ it: "Vuoi la barca solo per il tuo gruppo?", en: "Want the boat just for your group?", es: "¿Quieres el barco solo para tu grupo?" },
+  "detail.privateLink": { it: "Vedi il charter privato", en: "See the private charter", es: "Ver el chárter privado" },
   "detail.kidsYes":     { it: "Famiglie con bambini", en: "Families with children", es: "Familias con niños" },
   "detail.kidsNo":      { it: "Adulti", en: "Adults", es: "Adultos" },
   "detail.related":     { it: "Altre esperienze di questa categoria", en: "More in this category", es: "Más en esta categoría" },

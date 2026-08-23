@@ -12,6 +12,14 @@
 //                scheda del catalogo mostra comunque priceFrom, la pagina di
 //                dettaglio elenca tutti gli scaglioni:
 //                    priceTiers: [ { from: 7, to: 10, price: 350 } ]
+//   priceAdult → prezzo per adulto, in euro. 0 = non ancora deciso.
+//   priceChild → prezzo per bambino, in euro. 0 = non ancora deciso.
+//                A 0 le righe NON compaiono sulla pagina: un "€0" davanti a un
+//                cliente sembra gratis o rotto. Appena metti un numero vero,
+//                la riga si accende da sola.
+//   privateOption → facoltativo: id dell'escursione in versione privata. Sulla
+//                pagina di dettaglio compare un rimando "vuoi la barca solo per
+//                il tuo gruppo?".
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
 //   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
@@ -89,6 +97,8 @@ const ESPLORA_CATALOG = [
       { from: 7,  to: 10, price: 350 },
       { from: 11, to: 15, price: 450 }
     ],
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Barca riservata solo al tuo gruppo, con percorso e orari concordati. Il prezzo è per l'intera barca, non a persona.",
@@ -105,6 +115,8 @@ const ESPLORA_CATALOG = [
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 45,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Tre ore di catamarano lungo la costa, senza programmi complicati.",
@@ -121,6 +133,9 @@ const ESPLORA_CATALOG = [
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 55,
+    privateOption: "private-charter",
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Tre ore in barca alla ricerca di balene e delfini, con partenza da Puerto Colón.",
@@ -137,6 +152,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 75,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Catamarano di categoria superiore, per chi vuole navigare con un occhio all'eleganza.",
@@ -153,6 +170,9 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 60,
+    privateOption: "private-charter",
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Catamarano in piccolo gruppo: navigazione tranquilla e avvistamento dei delfini.",
@@ -169,6 +189,8 @@ const ESPLORA_CATALOG = [
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 58,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Tre ore su una barca con il fondo trasparente: si guarda sott'acqua restando a bordo.",
@@ -185,6 +207,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 70,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "La festa in barca piu' scatenata dell'isola, quella originale.",
@@ -201,6 +225,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "5 ore", en: "5 hours", es: "5 horas" },
     priceFrom: 58,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Cinque ore a bordo dello Shogun, veliero dalle linee orientali.",
@@ -217,6 +243,8 @@ const ESPLORA_CATALOG = [
     zone: "Puerto Colón",
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 80,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Avvistamento di delfini e balene a bordo dell'Opera 60, in versione premium.",
@@ -233,6 +261,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 190,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Al timone ci sei tu: barca senza skipper, si guida da soli.",
@@ -250,6 +280,8 @@ const ESPLORA_CATALOG = [
     duration: { it: "Noleggio a ore", en: "Hourly rental", es: "Alquiler por horas" },
     priceFrom: 100,
     priceUnit: { it: "/ora", en: "/hr", es: "/h" },
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Noleggio di un piccolo catamarano a ore. Non serve la patente nautica.",
@@ -266,6 +298,9 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 65,
+    privateOption: "private-charter",
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Tre ore a bordo di un cruiser di lusso, senza fretta.",
@@ -282,6 +317,8 @@ const ESPLORA_CATALOG = [
     zone: "Puerto Colón",
     duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
     priceFrom: 58,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Quattro ore in catamarano fino alle scogliere di Los Gigantes e alla baia di Masca.",
@@ -308,6 +345,8 @@ const ESPLORA_CATALOG = [
     },
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Salita in funivia fino a quota 3.555 m, tra colate laviche e vista sulle isole vicine.",
@@ -328,6 +367,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Tenerife sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Tour del Parco Nazionale con partenza dalle zone turistiche del sud.",
@@ -348,6 +389,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Tenerife nord", en: "North Tenerife", es: "Tenerife norte" },
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Stesso parco, salita dal versante nord tra pinete e mare di nuvole.",
@@ -364,6 +407,8 @@ const ESPLORA_CATALOG = [
     zone: "Masca",
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Il borgo sospeso tra le montagne e la sua gola, uno dei luoghi più fotografati dell'isola.",
@@ -384,6 +429,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Tenerife nord-est", en: "North-east Tenerife", es: "Tenerife noreste" },
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Foresta di alloro primordiale, riserva della biosfera UNESCO, sentieri tra le nuvole.",
@@ -400,6 +447,8 @@ const ESPLORA_CATALOG = [
     zone: "Vilaflor",
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Camminata tra le formazioni di tufo bianco scolpite dall'erosione, dal paesaggio quasi lunare.",
@@ -416,6 +465,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Discesa di un canyon vulcanico tra calate in corda e pozze d'acqua.",
@@ -442,6 +493,8 @@ const ESPLORA_CATALOG = [
     },
     duration: { it: "5 ore", en: "5 hours", es: "5 horas" },
     priceFrom: 89,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Cena, tramonto sopra le nuvole e osservazione delle stelle con telescopi e guida astronomica.",
@@ -466,6 +519,8 @@ const ESPLORA_CATALOG = [
     },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Salita nel tardo pomeriggio, cena in quota e cielo notturno tra i più limpidi d'Europa.",
@@ -484,6 +539,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "1 ora e mezza", en: "1.5 hours", es: "1,5 horas" },
     priceFrom: 160,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Uscita in quad di un'ora e mezza, nella formula con licenza provvisoria.",
@@ -500,6 +557,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 250,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Al volante di una Ford Mustang decappottabile, su fino ai punti panoramici del Teide.",
@@ -516,6 +575,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
     priceFrom: 210,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Quattro ore in buggy tra i vulcani, di cui un'ora di fuoristrada. Disponibile a 2, 4 o 6 posti.",
@@ -532,6 +593,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 190,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Buggy al tramonto tra i coni vulcanici, tre ore. Disponibile a 2, 4 o 6 posti.",
@@ -548,6 +611,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
     priceFrom: 160,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Due o tre ore in buggy, di cui 40 minuti di fuoristrada. Due ore da €160, tre ore da €190.",
@@ -564,6 +629,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 150,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Tre ore in quad verso il Teide, al tramonto.",
@@ -580,6 +647,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 150,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Tre ore in quad sul Teide.",
@@ -600,6 +669,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Tenerife sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Sorvolo di spiagge, gole e delle scogliere di Los Gigantes.",
@@ -616,6 +687,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Volo in tandem con istruttore, decollo dalla montagna e atterraggio vicino al mare.",
@@ -634,6 +707,8 @@ const ESPLORA_CATALOG = [
     zone: "Costa Adeje",
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Moto d'acqua lungo la costa, in sicurezza con istruttore.",
@@ -650,6 +725,8 @@ const ESPLORA_CATALOG = [
     zone: "Costa Adeje",
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Paracadute trainato da motoscafo, con vista dall'alto sulla costa.",
@@ -670,6 +747,8 @@ const ESPLORA_CATALOG = [
     zone: "Costa Adeje",
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Pagaiata guidata lungo la costa, spesso in compagnia di tartarughe e delfini.",
@@ -690,6 +769,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Prima immersione per principianti, oppure percorso per il brevetto.",
@@ -706,6 +787,8 @@ const ESPLORA_CATALOG = [
     zone: "Costa Adeje",
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Sollevarsi sull'acqua con la tavola a getto, con istruttore.",
@@ -724,6 +807,8 @@ const ESPLORA_CATALOG = [
     zone: "Costa Adeje",
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Parco acquatico a tema thailandese, tra i più premiati al mondo.",
@@ -740,6 +825,8 @@ const ESPLORA_CATALOG = [
     zone: "Puerto de la Cruz",
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Zoo e giardino tropicale con la più grande collezione di pappagalli al mondo.",
@@ -756,6 +843,8 @@ const ESPLORA_CATALOG = [
     zone: "Costa Adeje / Puerto de la Cruz",
     duration: { it: "2 giornate", en: "2 days", es: "2 días" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Biglietto combinato per i due parchi, con bus incluso.",
@@ -772,6 +861,8 @@ const ESPLORA_CATALOG = [
     zone: "Costa Adeje",
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Parco acquatico con scivoli e aree per i più piccoli.",
@@ -788,6 +879,8 @@ const ESPLORA_CATALOG = [
     zone: "Las Águilas, Arona",
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Parco naturale con rapaci in volo libero, a pochi minuti da Los Cristianos.",
@@ -804,6 +897,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Tenerife sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "2 giornate", en: "2 days", es: "2 días" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Biglietto combinato per i due parchi del sud.",
@@ -824,6 +919,8 @@ const ESPLORA_CATALOG = [
     zone: "Castillo San Miguel",
     duration: { it: "Serata", en: "Evening", es: "Noche" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Cavalieri, cavalli e tornei dal vivo, con cena servita durante lo spettacolo.",
@@ -846,6 +943,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Tutta l'isola", en: "All over the island", es: "Toda la isla" },
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "I punti simbolo di Tenerife in un giorno solo, in pullman con guida.",
@@ -862,6 +961,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Tenerife nord", en: "North Tenerife", es: "Tenerife norte" },
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Il Drago Millenario di Icod, le piscine naturali di Garachico e i balconi di La Orotava.",
@@ -878,6 +979,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Tenerife nord", en: "North Tenerife", es: "Tenerife norte" },
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Una delle città più antiche dell'isola: Lago Martiánez, giardino botanico e Plaza del Charco.",
@@ -894,6 +997,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Isola di La Gomera", en: "Island of La Gomera", es: "Isla de La Gomera" },
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Traghetto e giro dell'isola vicina, con il Parco Nazionale di Garajonay.",
@@ -910,6 +1015,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Isola di Gran Canaria", en: "Island of Gran Canaria", es: "Isla de Gran Canaria" },
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Escursione di un giorno sull'isola vicina.",
@@ -930,6 +1037,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: false,
     desc: {
       it: "Degustazione di vini vulcanici e prodotti tipici, guidati da un sommelier.",
@@ -952,6 +1061,8 @@ const ESPLORA_CATALOG = [
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Barca riservata al tuo gruppo, con percorso e orari concordati.",
@@ -972,6 +1083,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Tutta l'isola", en: "All over the island", es: "Toda la isla" },
     duration: { it: "Da concordare", en: "By arrangement", es: "A convenir" },
     priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
     family: true,
     desc: {
       it: "Itinerario costruito su richiesta, con guida e mezzo dedicati.",

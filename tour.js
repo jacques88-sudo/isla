@@ -55,6 +55,11 @@ function detailRows(tour) {
   } else {
     righe.push([t("detail.price"), tourPrice(tour)]);
   }
+
+  // Prezzi per adulto e per bambino: a 0 vuol dire "non ancora deciso" e la
+  // riga resta nascosta. Mostrare "€0" farebbe pensare a gratis o a un errore.
+  if (tour.priceAdult > 0) righe.push([t("req.adults"), "€" + tour.priceAdult]);
+  if (tour.priceChild > 0) righe.push([t("req.kids"), "€" + tour.priceChild]);
   righe.push([t("detail.suitable"), t(tour.family ? "detail.kidsYes" : "detail.kidsNo")]);
 
   return righe.map(([etichetta, valore]) => `
@@ -92,6 +97,21 @@ function detailRelated(tour) {
     </section>`;
 }
 
+// Rimando alla versione privata della stessa uscita, per chi vuole la barca
+// riservata al proprio gruppo.
+function detailPrivate(tour) {
+  if (!tour.privateOption) return "";
+  const privata = ESPLORA_CATALOG.find(x => x.id === tour.privateOption && x.published);
+  if (!privata) return "";
+
+  return `
+    <a class="detail-alt" href="./tour.html?id=${encodeURIComponent(privata.id)}">
+      <span class="detail-alt-title">${esc(t("detail.privateTitle"))}</span>
+      <span class="detail-alt-name">${esc(tf(privata.title))} · ${esc(tourPrice(privata))}</span>
+      <span class="detail-alt-go">${esc(t("detail.privateLink"))} →</span>
+    </a>`;
+}
+
 function renderTour(tour) {
   const contenitore = document.querySelector("[data-tour]");
   if (!contenitore) return;
@@ -127,6 +147,7 @@ function renderTour(tour) {
 
         ${askBtn}
         <p class="hint" data-i18n-html="req.hint"></p>
+        ${detailPrivate(tour)}
       </div>
     </article>
     ${detailRelated(tour)}`;

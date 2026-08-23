@@ -533,19 +533,19 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    id: "buggy-3h",
-    title: "3-Hour Buggy Tour",
+    id: "buggy-2-3h",
+    title: "2 or 3-Hour Buggy Tour",
     category: "avventura-motori",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: 190,
+    duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
+    priceFrom: 160,
     family: false,
     desc: {
-      it: "Tre ore in buggy, di cui 40 minuti di fuoristrada.",
-      en: "Three hours of buggy, including 40 minutes off-road.",
-      es: "Tres horas en buggy, con 40 minutos fuera de pista."
+      it: "Due o tre ore in buggy, di cui 40 minuti di fuoristrada. Due ore da €160, tre ore da €190.",
+      en: "Two or three hours of buggy, including 40 minutes off-road. Two hours from €160, three hours from €190.",
+      es: "Dos o tres horas en buggy, con 40 minutos fuera de pista. Dos horas desde €160, tres horas desde €190."
     },
-    image: "buggy-3h.jpg",
+    image: "buggy-2-3h.jpg",
     published: true
   },
   {
@@ -562,22 +562,6 @@ const ESPLORA_CATALOG = [
       es: "Tres horas en quad hacia el Teide, al atardecer."
     },
     image: "quad-teide-sunset.jpg",
-    published: true
-  },
-  {
-    id: "buggy-2h",
-    title: "2-Hour Buggy Tour",
-    category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
-    priceFrom: 160,
-    family: false,
-    desc: {
-      it: "Due ore in buggy, di cui 40 minuti di fuoristrada.",
-      en: "Two hours of buggy, including 40 minutes off-road.",
-      es: "Dos horas en buggy, con 40 minutos fuera de pista."
-    },
-    image: "",
     published: true
   },
   {

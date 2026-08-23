@@ -61,6 +61,9 @@ scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
   ticket, video hero, pulsante installa app)
 - `escursioni.html` + `escursioni.js` — catalogo "Tutte le escursioni" con filtri,
   ricerca e finestra "Richiedi disponibilità" che apre WhatsApp
+- `tour.html` + `tour.js` — pagina di dettaglio di una singola escursione,
+  indirizzo `tour.html?id=<id della voce nel catalogo>`. Riusa da `escursioni.js`
+  il prezzo, il nome della categoria e la finestra della richiesta
 - `esplora-catalog.js` — dati delle 45 attività, divise nelle 8 categorie
 - `assistente.js` — assistente guidato (due domande, poi consigli dal catalogo)
 - `i18n.js` — tutte le traduzioni it/en/es e il selettore della lingua

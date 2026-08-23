@@ -73,11 +73,15 @@ function tourCard(tour) {
                aria-haspopup="dialog" aria-controls="requestDialog">${t("tour.ask")}</button>`
     : "";
 
+  // foto e titolo portano alla pagina di dettaglio; il pulsante resta la
+  // scorciatoia per chi ha gia' deciso
+  const href = `./tour.html?id=${encodeURIComponent(tour.id)}`;
+
   li.innerHTML = `
-    <div class="tour-media">${media}</div>
+    <a class="tour-media" href="${href}" tabindex="-1" aria-hidden="true">${media}</a>
     <div class="tour-body">
       <span class="tour-cat">${categoryName(tour.category)}</span>
-      <h2 class="tour-title">${tf(tour.title)}</h2>
+      <h2 class="tour-title"><a href="${href}">${tf(tour.title)}</a></h2>
       <p class="tour-desc">${tf(tour.desc)}</p>
       <ul class="tour-meta">
         <li>${tf(tour.zone)}</li>

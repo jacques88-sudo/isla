@@ -153,6 +153,20 @@ const I18N = {
   "tour.family":        { it: "Adatta ai bambini", en: "Kid-friendly", es: "Apta para niños" },
   "tour.ask":           { it: "Richiedi disponibilità", en: "Check availability", es: "Consultar disponibilidad" },
 
+  // ── pagina di dettaglio di una singola escursione ───────────────────────
+  "detail.back":        { it: "Tutte le escursioni", en: "All excursions", es: "Todas las excursiones" },
+  "detail.summary":     { it: "In breve", en: "At a glance", es: "En resumen" },
+  "detail.departure":   { it: "Punto di partenza", en: "Departure point", es: "Punto de salida" },
+  "detail.duration":    { it: "Durata", en: "Duration", es: "Duración" },
+  "detail.price":       { it: "Prezzo", en: "Price", es: "Precio" },
+  "detail.suitable":    { it: "Adatta a", en: "Suitable for", es: "Apta para" },
+  "detail.kidsYes":     { it: "Famiglie con bambini", en: "Families with children", es: "Familias con niños" },
+  "detail.kidsNo":      { it: "Adulti", en: "Adults", es: "Adultos" },
+  "detail.related":     { it: "Altre esperienze di questa categoria", en: "More in this category", es: "Más en esta categoría" },
+  "detail.notFound":    { it: "Escursione non trovata", en: "Excursion not found", es: "Excursión no encontrada" },
+  "detail.notFoundText":{ it: "Questo indirizzo non corrisponde a nessuna escursione. Forse è stato tolto dal catalogo.", en: "This address doesn't match any excursion. It may have been removed from the catalogue.", es: "Esta dirección no corresponde a ninguna excursión. Puede que se haya retirado del catálogo." },
+  "detail.seeAll":      { it: "Vedi tutte le escursioni", en: "See all excursions", es: "Ver todas las excursiones" },
+
   // ── finestra Richiedi disponibilità ─────────────────────────────────────
   "req.title":          { it: "Richiedi disponibilità", en: "Check availability", es: "Consultar disponibilidad" },
   "req.name":           { it: "Il tuo nome", en: "Your name", es: "Tu nombre" },

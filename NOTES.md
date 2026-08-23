@@ -96,8 +96,12 @@ toccano il codice già scritto:
 - **Il catalogo è a metà strada.** La categoria "Mare e barche" (13 voci) viene dal
   catalogo vero di Admiral, con i prezzi del sito. Le altre 37 attività vengono ancora
   dai tre siti concorrenti guardati all'inizio: vanno sostituite categoria per categoria
-  man mano che arrivano gli elenchi veri (`watersports`, `island-tours`, `parks-shows`,
+  man mano che arrivano gli elenchi veri (`island-tours`, `parks-shows`,
   `teide-stargazing`)
+- Categoria "Sport acquatici": i 7 prodotti Admiral hanno tutti il prezzo, solo la Fiat
+  500 ha la foto. Restano immersioni e flyboard dai concorrenti: **non compaiono
+  nell'elenco watersports di Admiral**, quindi o non li vendono o stanno altrove.
+  Da chiedere in ufficio, come si e' fatto per elicottero e parapendio
 - Categoria "Avventura e motori": 9 voci, tutte confermate da Admiral. I 7 prodotti quad e
   buggy hanno tutti la foto. Il 2-Hour e il 3-Hour Buggy Tour sono stati uniti in una
   scheda sola ("2 or 3-Hour Buggy Tour") su richiesta dell'ufficio: erano identici a parte
@@ -115,9 +119,9 @@ toccano il codice già scritto:
   da confermare in ufficio
 - `Cat-mare.jpg` è usata sia dalla card categoria "Mare e barche" in home sia dalla scheda
   del 3-Hour Whale & Dolphin Boat Trip: scelta voluta, non è una svista
-- `assets/fiat-500-on-water.jpg` non è più usato: quell'attività veniva dai concorrenti
-  e non è nel catalogo Admiral. La foto resta in `assets/` in attesa di sapere se
-  Admiral la vende sotto un'altra categoria
+- `assets/fiat-500-on-water.jpg` è tornata in uso: la Fiat 500 Water Car non era una voce
+  dei concorrenti da buttare, Admiral la vende davvero — sotto `watersports`, non fra le
+  barche dove l'avevamo messa all'inizio
 - La categoria "Tour dell'isola" non ha ancora la foto per la card in home
 - I riquadri bento (Pacchetti, Con bambini, 3/5/7 Days) puntano a `#categories` e al
   filtro famiglia: servono pagine vere per i pacchetti

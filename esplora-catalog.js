@@ -701,19 +701,73 @@ const ESPLORA_CATALOG = [
 
   // ─── SPORT ACQUATICI ──────────────────────────────────────────────────────
   {
-    id: "jet-ski",
-    title: { it: "Jet Ski", en: "Jet Ski", es: "Moto de agua" },
+    id: "fiat-500-water-car",
+    title: "Fiat 500 Water Car",
     category: "sport-acquatici",
-    zone: "Costa Adeje",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
+    priceFrom: 130,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Una Fiat 500 galleggiante da guidare al largo della costa: la foto che tutti si portano a casa.",
+      en: "A floating Fiat 500 you drive off the coast: the photo everyone takes home.",
+      es: "Un Fiat 500 flotante para conducir frente a la costa: la foto que todos se llevan a casa."
+    },
+    image: "fiat-500-on-water.jpg",
+    published: true
+  },
+  {
+    id: "jet-car-rental",
+    title: "Jet Car Rental",
+    category: "sport-acquatici",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 100,
     priceAdult: 0,
     priceChild: 0,
     family: false,
     desc: {
-      it: "Moto d'acqua lungo la costa, in sicurezza con istruttore.",
-      en: "Jet skiing along the coast, safely, with an instructor.",
-      es: "Moto de agua por la costa, con seguridad y con instructor."
+      it: "Noleggio di una jet car: al timone ci sei tu, in mezzo al mare.",
+      en: "Jet car rental: you take the wheel, out on the open water.",
+      es: "Alquiler de jet car: llevas tú el timón, en mar abierto."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "banana-boat",
+    title: "Banana Boat or Fly Fish Ride",
+    category: "sport-acquatici",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 18,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Il gonfiabile trainato dal motoscafo, in versione banana o fly fish. Si sceglie sul posto.",
+      en: "The inflatable towed by a speedboat, banana or fly fish. You choose on the spot.",
+      es: "El hinchable remolcado por la lancha, en versión banana o fly fish. Se elige allí mismo."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "kayak-snorkelling",
+    title: "Kayaking & Snorkelling Combo",
+    category: "sport-acquatici",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 45,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Kayak lungo la costa e sosta con maschera e boccaglio, nella stessa uscita.",
+      en: "Kayaking along the coast plus a mask-and-snorkel stop, in the same outing.",
+      es: "Kayak por la costa y parada con máscara y tubo, en la misma salida."
     },
     image: "",
     published: true
@@ -722,9 +776,9 @@ const ESPLORA_CATALOG = [
     id: "parascending",
     title: "Parascending",
     category: "sport-acquatici",
-    zone: "Costa Adeje",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
+    priceFrom: 60,
     priceAdult: 0,
     priceChild: 0,
     family: true,
@@ -737,23 +791,37 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    id: "kayak",
-    title: {
-      it: "Kayak con delfini e tartarughe",
-      en: "Kayaking with dolphins and turtles",
-      es: "Kayak con delfines y tortugas"
-    },
+    id: "jet-ski-safari-2h",
+    title: "Jet Ski Safari – 2 Hour Ultimate Ride",
     category: "sport-acquatici",
-    zone: "Costa Adeje",
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+    priceFrom: 180,
     priceAdult: 0,
     priceChild: 0,
-    family: true,
+    family: false,
     desc: {
-      it: "Pagaiata guidata lungo la costa, spesso in compagnia di tartarughe e delfini.",
-      en: "A guided paddle along the coast, often in the company of turtles and dolphins.",
-      es: "Paseo guiado en kayak por la costa, a menudo en compañía de tortugas y delfines."
+      it: "Due ore di safari in moto d'acqua lungo la costa, con istruttore.",
+      en: "Two hours of jet ski safari along the coast, with an instructor.",
+      es: "Dos horas de safari en moto de agua por la costa, con instructor."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "jet-ski-safari-1h",
+    title: "Jet Ski Safari – 1 Hour Adventure",
+    category: "sport-acquatici",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+    priceFrom: 150,
+    priceAdult: 0,
+    priceChild: 0,
+    family: false,
+    desc: {
+      it: "Un'ora di safari in moto d'acqua lungo la costa, con istruttore.",
+      en: "One hour of jet ski safari along the coast, with an instructor.",
+      es: "Una hora de safari en moto de agua por la costa, con instructor."
     },
     image: "",
     published: true

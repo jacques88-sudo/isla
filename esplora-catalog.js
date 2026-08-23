@@ -481,7 +481,7 @@ const ESPLORA_CATALOG = [
       en: "An hour and a half out on a quad, in the provisional licence format.",
       es: "Salida en quad de hora y media, en la modalidad con licencia provisional."
     },
-    image: "",
+    image: "quad-provisional-license.jpg",
     published: true
   },
   {
@@ -493,11 +493,11 @@ const ESPLORA_CATALOG = [
     priceFrom: 250,
     family: false,
     desc: {
-      it: "L'esperienza Mustang. Programma e dettagli su richiesta.",
-      en: "The Mustang experience. Programme and details on request.",
-      es: "La experiencia Mustang. Programa y detalles bajo petición."
+      it: "Al volante di una Ford Mustang decappottabile, su fino ai punti panoramici del Teide.",
+      en: "At the wheel of a Ford Mustang convertible, up to the viewpoints on Teide.",
+      es: "Al volante de un Ford Mustang descapotable, hasta los miradores del Teide."
     },
-    image: "",
+    image: "mustang-experience.jpg",
     published: true
   },
   {
@@ -513,7 +513,7 @@ const ESPLORA_CATALOG = [
       en: "Four hours of buggy among the volcanoes, one of them off-road. Available as a 2, 4 or 6 seater.",
       es: "Cuatro horas en buggy entre volcanes, una de ellas fuera de pista. Disponible de 2, 4 o 6 plazas."
     },
-    image: "",
+    image: "buggy-volcano-4h.jpg",
     published: true
   },
   {
@@ -529,7 +529,7 @@ const ESPLORA_CATALOG = [
       en: "Buggy at sunset among the volcanic cones, three hours. Available as a 2, 4 or 6 seater.",
       es: "Buggy al atardecer entre los conos volcánicos, tres horas. Disponible de 2, 4 o 6 plazas."
     },
-    image: "",
+    image: "buggy-volcano-sunset.jpg",
     published: true
   },
   {
@@ -545,7 +545,7 @@ const ESPLORA_CATALOG = [
       en: "Three hours of buggy, including 40 minutes off-road.",
       es: "Tres horas en buggy, con 40 minutos fuera de pista."
     },
-    image: "",
+    image: "buggy-3h.jpg",
     published: true
   },
   {
@@ -561,7 +561,7 @@ const ESPLORA_CATALOG = [
       en: "Three hours on a quad towards Teide, at sunset.",
       es: "Tres horas en quad hacia el Teide, al atardecer."
     },
-    image: "",
+    image: "quad-teide-sunset.jpg",
     published: true
   },
   {
@@ -593,7 +593,7 @@ const ESPLORA_CATALOG = [
       en: "Three hours on a quad on Teide.",
       es: "Tres horas en quad en el Teide."
     },
-    image: "",
+    image: "quad-teide-adventure.jpg",
     published: true
   },
   {

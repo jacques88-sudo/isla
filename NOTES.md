@@ -95,6 +95,8 @@ toccano il codice già scritto:
   dai tre siti concorrenti guardati all'inizio: vanno sostituite categoria per categoria
   man mano che arrivano gli elenchi veri (`watersports`, `quad-buggy`, `island-tours`,
   `parks-shows`, `teide-stargazing`)
+- **Deciso:** nel frattempo le 37 voci dei concorrenti restano visibili (`published: true`),
+  non si nascondono. Ognuna sparisce quando arriva la categoria vera che la sostituisce
 - Delle 13 barche Admiral: manca la zona di partenza per 12 su 13 e la durata per 6;
   il campo `family` (adatta ai bambini) è una valutazione da confermare in ufficio
 - `assets/fiat-500-on-water.jpg` non è più usato: quell'attività veniva dai concorrenti

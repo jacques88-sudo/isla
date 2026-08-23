@@ -331,111 +331,37 @@ const ESPLORA_CATALOG = [
 
   // ─── TEIDE E NATURA ───────────────────────────────────────────────────────
   {
-    id: "teide-teleferico",
-    title: {
-      it: "Teide e Teleférico",
-      en: "Teide and cable car",
-      es: "Teide y Teleférico"
-    },
+    id: "teide-national-park",
+    title: "Teide National Park",
     category: "teide-natura",
-    zone: {
-      it: "Parco Nazionale del Teide",
-      en: "Teide National Park",
-      es: "Parque Nacional del Teide"
-    },
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Salita in funivia fino a quota 3.555 m, tra colate laviche e vista sulle isole vicine.",
-      en: "Cable car up to 3,555 m, among lava flows and views over the neighbouring islands.",
-      es: "Subida en teleférico hasta los 3.555 m, entre coladas de lava y vistas a las islas vecinas."
-    },
-    image: "",
-    published: true
-  },
-  {
-    id: "teide-dal-sud",
-    title: {
-      it: "Teide — partenza dal sud",
-      en: "Teide — departure from the south",
-      es: "Teide — salida desde el sur"
-    },
-    category: "teide-natura",
-    zone: { it: "Tenerife sud", en: "South Tenerife", es: "Tenerife sur" },
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Tour del Parco Nazionale con partenza dalle zone turistiche del sud.",
-      en: "National Park tour departing from the tourist areas in the south.",
-      es: "Tour del Parque Nacional con salida desde las zonas turísticas del sur."
-    },
-    image: "",
-    published: true
-  },
-  {
-    id: "teide-dal-nord",
-    title: {
-      it: "Teide — partenza dal nord",
-      en: "Teide — departure from the north",
-      es: "Teide — salida desde el norte"
-    },
-    category: "teide-natura",
-    zone: { it: "Tenerife nord", en: "North Tenerife", es: "Tenerife norte" },
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Stesso parco, salita dal versante nord tra pinete e mare di nuvole.",
-      en: "The same park, climbing from the northern side through pine forests and a sea of clouds.",
-      es: "El mismo parque, subiendo por la vertiente norte entre pinares y mar de nubes."
-    },
-    image: "",
-    published: true
-  },
-  {
-    id: "masca",
-    title: "Masca",
-    category: "teide-natura",
-    zone: "Masca",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
+    priceFrom: 48,
     priceAdult: 0,
     priceChild: 0,
-    family: false,
+    family: true,
     desc: {
-      it: "Il borgo sospeso tra le montagne e la sua gola, uno dei luoghi più fotografati dell'isola.",
-      en: "The hamlet suspended between the mountains and its gorge, one of the most photographed places on the island.",
-      es: "El pueblo suspendido entre las montañas y su barranco, uno de los lugares más fotografiados de la isla."
+      it: "Giornata nel Parco Nazionale del Teide, fra colate laviche e paesaggi vulcanici.",
+      en: "A day in Teide National Park, among lava flows and volcanic landscapes.",
+      es: "Un día en el Parque Nacional del Teide, entre coladas de lava y paisajes volcánicos."
     },
     image: "",
     published: true
   },
   {
-    id: "anaga",
-    title: {
-      it: "Parco Rurale di Anaga",
-      en: "Anaga Rural Park",
-      es: "Parque Rural de Anaga"
-    },
+    id: "teide-masca",
+    title: "Teide + Masca Tour",
     category: "teide-natura",
-    zone: { it: "Tenerife nord-est", en: "North-east Tenerife", es: "Tenerife noreste" },
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 60,
     priceAdult: 0,
     priceChild: 0,
-    family: false,
+    family: true,
     desc: {
-      it: "Foresta di alloro primordiale, riserva della biosfera UNESCO, sentieri tra le nuvole.",
-      en: "Primeval laurel forest, a UNESCO biosphere reserve, with trails among the clouds.",
-      es: "Bosque de laurisilva primigenio, reserva de la biosfera UNESCO, senderos entre las nubes."
+      it: "Il Parco Nazionale del Teide e il borgo di Masca nella stessa giornata.",
+      en: "Teide National Park and the hamlet of Masca in the same day.",
+      es: "El Parque Nacional del Teide y el pueblo de Masca en la misma jornada."
     },
     image: "",
     published: true
@@ -1001,6 +927,42 @@ const ESPLORA_CATALOG = [
 
   // ─── TOUR DELL'ISOLA ──────────────────────────────────────────────────────
   {
+    id: "la-gomera",
+    title: "La Gomera Island Tour",
+    category: "tour-isola",
+    zone: { it: "Isola di La Gomera", en: "Island of La Gomera", es: "Isla de La Gomera" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 99,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Escursione di una giornata sull'isola vicina di La Gomera.",
+      en: "A day trip to the neighbouring island of La Gomera.",
+      es: "Excursión de un día a la isla vecina de La Gomera."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "santa-cruz-taganana",
+    title: "Santa Cruz + Taganana Tour",
+    category: "tour-isola",
+    zone: { it: "Tenerife nord-est", en: "North-east Tenerife", es: "Tenerife noreste" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 48,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "La capitale Santa Cruz e il borgo di Taganana, nel massiccio di Anaga.",
+      en: "The capital Santa Cruz and the village of Taganana, in the Anaga massif.",
+      es: "La capital, Santa Cruz, y el pueblo de Taganana, en el macizo de Anaga."
+    },
+    image: "",
+    published: true
+  },
+  {
     id: "island-tour-completo",
     title: {
       it: "Tour completo dell'isola",
@@ -1054,24 +1016,6 @@ const ESPLORA_CATALOG = [
       it: "Una delle città più antiche dell'isola: Lago Martiánez, giardino botanico e Plaza del Charco.",
       en: "One of the oldest towns on the island: Lago Martiánez, the botanical garden and Plaza del Charco.",
       es: "Una de las ciudades más antiguas de la isla: Lago Martiánez, jardín botánico y Plaza del Charco."
-    },
-    image: "",
-    published: true
-  },
-  {
-    id: "la-gomera",
-    title: "La Gomera",
-    category: "tour-isola",
-    zone: { it: "Isola di La Gomera", en: "Island of La Gomera", es: "Isla de La Gomera" },
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Traghetto e giro dell'isola vicina, con il Parco Nazionale di Garajonay.",
-      en: "Ferry and a tour of the neighbouring island, including Garajonay National Park.",
-      es: "Ferry y recorrido por la isla vecina, con el Parque Nacional de Garajonay."
     },
     image: "",
     published: true

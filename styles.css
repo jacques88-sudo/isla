@@ -1530,6 +1530,30 @@ body.menu-open { overflow: hidden; }
 }
 .detail-main .btn-block { margin-top: .8rem; }
 
+/* Rimando al charter privato, in coda alla scheda */
+.detail-alt {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+  margin-top: .4rem;
+  padding: .95rem 1.1rem;
+  background: var(--cream);
+  border-radius: 14px;
+}
+.detail-alt:hover { background: var(--sand); }
+.detail-alt-title {
+  font-size: .85rem;
+  color: var(--muted);
+}
+.detail-alt-name { font-weight: 400; }
+.detail-alt-go {
+  margin-top: .15rem;
+  font-size: .62rem;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--gold);
+}
+
 .detail-related h2 {
   font-family: var(--font-body);
   font-size: .66rem;

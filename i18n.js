@@ -160,6 +160,7 @@ const I18N = {
   "detail.duration":    { it: "Durata", en: "Duration", es: "Duración" },
   "detail.price":       { it: "Prezzo", en: "Price", es: "Precio" },
   "detail.suitable":    { it: "Adatta a", en: "Suitable for", es: "Apta para" },
+  "detail.people":      { it: "Da {from} a {to} persone", en: "{from} to {to} people", es: "De {from} a {to} personas" },
   "detail.kidsYes":     { it: "Famiglie con bambini", en: "Families with children", es: "Familias con niños" },
   "detail.kidsNo":      { it: "Adulti", en: "Adults", es: "Adultos" },
   "detail.related":     { it: "Altre esperienze di questa categoria", en: "More in this category", es: "Más en esta categoría" },

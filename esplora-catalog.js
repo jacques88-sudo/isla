@@ -7,7 +7,11 @@
 //                sola, anche se compare in dieci schede diverse.
 //   priceFrom  → numero in euro, oppure null se il prezzo non è ancora definito.
 //   priceUnit  → facoltativo: si aggiunge dopo il prezzo quando non è "a persona"
-//                ma a ore, es. { it: "/ora", en: "/hr", es: "/h" }.
+//                ma a ore o a gruppo, es. { it: "/ora", en: "/hr", es: "/h" }.
+//   priceTiers → facoltativo: prezzi a scaglioni per numero di persone. La
+//                scheda del catalogo mostra comunque priceFrom, la pagina di
+//                dettaglio elenca tutti gli scaglioni:
+//                    priceTiers: [ { from: 7, to: 10, price: 350 } ]
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
 //   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
@@ -79,12 +83,17 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
+    priceFrom: 350,
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceTiers: [
+      { from: 7,  to: 10, price: 350 },
+      { from: 11, to: 15, price: 450 }
+    ],
     family: true,
     desc: {
-      it: "Barca riservata solo al tuo gruppo. Percorso, orari e prezzo si concordano insieme.",
-      en: "A boat reserved for your group alone. Route, times and price agreed with you.",
-      es: "Barco reservado solo para tu grupo. Ruta, horarios y precio se acuerdan contigo."
+      it: "Barca riservata solo al tuo gruppo, con percorso e orari concordati. Il prezzo è per l'intera barca, non a persona.",
+      en: "A boat reserved for your group alone, with the route and times agreed with you. The price is for the whole boat, not per person.",
+      es: "Barco reservado solo para tu grupo, con ruta y horarios acordados. El precio es por el barco entero, no por persona."
     },
     image: "private-charter.jpg",
     published: true

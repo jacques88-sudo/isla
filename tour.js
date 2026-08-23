@@ -44,7 +44,17 @@ function detailRows(tour) {
   if (!daDefinire(tour.duration)) {
     righe.push([t("detail.duration"), tf(tour.duration)]);
   }
-  righe.push([t("detail.price"), tourPrice(tour)]);
+  // prezzi a scaglioni: una riga per fascia al posto della riga "Prezzo"
+  if (Array.isArray(tour.priceTiers) && tour.priceTiers.length) {
+    tour.priceTiers.forEach(fascia => {
+      righe.push([
+        t("detail.people", { from: fascia.from, to: fascia.to }),
+        "€" + fascia.price
+      ]);
+    });
+  } else {
+    righe.push([t("detail.price"), tourPrice(tour)]);
+  }
   righe.push([t("detail.suitable"), t(tour.family ? "detail.kidsYes" : "detail.kidsNo")]);
 
   return righe.map(([etichetta, valore]) => `

@@ -10,9 +10,9 @@
 const WHATSAPP_NUMBER = "34662908073";
 
 function tourPrice(tour) {
-  return tour.priceFrom === null
-    ? t("tour.onRequest")
-    : t("tour.from", { p: tour.priceFrom });
+  if (tour.priceFrom === null) return t("tour.onRequest");
+  // priceUnit c'è solo sui noleggi a ore: "da €100" diventa "da €100/ora"
+  return t("tour.from", { p: tour.priceFrom }) + (tour.priceUnit ? tf(tour.priceUnit) : "");
 }
 
 function categoryName(id) {

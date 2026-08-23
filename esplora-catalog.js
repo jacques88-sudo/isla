@@ -6,6 +6,8 @@
 //                assets/ una volta sola e il telefono la scarica una volta
 //                sola, anche se compare in dieci schede diverse.
 //   priceFrom  → numero in euro, oppure null se il prezzo non è ancora definito.
+//   priceUnit  → facoltativo: si aggiunge dopo il prezzo quando non è "a persona"
+//                ma a ore, es. { it: "/ora", en: "/hr", es: "/h" }.
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
 //   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
@@ -67,148 +69,217 @@ const CATEGORIES = [
 const ESPLORA_CATALOG = [
 
   // ─── MARE E BARCHE ────────────────────────────────────────────────────────
+  // Prodotti presi dal catalogo Admiral (categoria "Boats").
+  // I titoli restano scritti come li scrive Admiral, uguali in tutte le lingue:
+  // cosi' il cliente vede lo stesso nome del sito e, quando la richiesta
+  // arriva su WhatsApp, in ufficio si ritrova il nome esatto da cercare.
   {
-    id: "whale-dolphin-sailing",
-    title: {
-      it: "Whale & Dolphin Watching in barca a vela",
-      en: "Whale & Dolphin Watching by sailing boat",
-      es: "Whale & Dolphin Watching en velero"
+    id: "private-charter",
+    title: "Private Charter",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: null,
+    family: true,
+    desc: {
+      it: "Barca riservata solo al tuo gruppo. Percorso, orari e prezzo si concordano insieme.",
+      en: "A boat reserved for your group alone. Route, times and price agreed with you.",
+      es: "Barco reservado solo para tu grupo. Ruta, horarios y precio se acuerdan contigo."
     },
+    image: "",
+    published: true
+  },
+  {
+    id: "luxury-catamaran",
+    title: "Luxury Catamaran Experience",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 75,
+    family: true,
+    desc: {
+      it: "Catamarano di categoria superiore, per chi vuole navigare con un occhio all'eleganza.",
+      en: "A premium catamaran, for sailing with an eye on elegance.",
+      es: "Catamarán de categoría superior, para navegar cuidando la elegancia."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "small-group-catamaran",
+    title: "Small Group Catamaran",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 60,
+    family: true,
+    desc: {
+      it: "Catamarano in piccolo gruppo: navigazione tranquilla e avvistamento dei delfini.",
+      en: "Catamaran in a small group: relaxed cruising and dolphin spotting.",
+      es: "Catamarán en grupo reducido: navegación tranquila y avistamiento de delfines."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "glass-bottom-boat",
+    title: "Glass Bottom Boat Adventure",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    priceFrom: 58,
+    family: true,
+    desc: {
+      it: "Tre ore su una barca con il fondo trasparente: si guarda sott'acqua restando a bordo.",
+      en: "Three hours on a glass-bottomed boat: you watch below the surface without leaving the deck.",
+      es: "Tres horas en un barco con fondo de cristal: se mira bajo el agua sin salir de cubierta."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "utopia-boat-party",
+    title: "Utopia Boat Party",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 70,
+    family: false,
+    desc: {
+      it: "La festa in barca piu' scatenata dell'isola, quella originale.",
+      en: "The wildest boat party on the island, and the original one.",
+      es: "La fiesta en barco mas animada de la isla, la original."
+    },
+    image: "party-boat.jpg",
+    published: true
+  },
+  {
+    id: "shogun",
+    title: "Shogun",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "5 ore", en: "5 hours", es: "5 horas" },
+    priceFrom: 58,
+    family: true,
+    desc: {
+      it: "Cinque ore a bordo dello Shogun, veliero dalle linee orientali.",
+      en: "Five hours aboard the Shogun, a sailing ship with oriental lines.",
+      es: "Cinco horas a bordo del Shogun, velero de lineas orientales."
+    },
+    image: "shogun.jpg",
+    published: true
+  },
+  {
+    id: "opera-60",
+    title: "Opera 60",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 80,
+    family: true,
+    desc: {
+      it: "Avvistamento di delfini e balene a bordo dell'Opera 60, in versione premium.",
+      en: "Dolphin and whale watching aboard the Opera 60, in its premium version.",
+      es: "Avistamiento de delfines y ballenas a bordo del Opera 60, en version premium."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "self-drive-boats",
+    title: "Self-Drive Boats",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 190,
+    family: false,
+    desc: {
+      it: "Al timone ci sei tu: barca senza skipper, si guida da soli.",
+      en: "You take the helm: a boat without a skipper, you drive it yourself.",
+      es: "Al timon vas tu: barco sin patron, lo conduces tu mismo."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "small-catamaran-rental",
+    title: "Small Catamaran Rental",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Noleggio a ore", en: "Hourly rental", es: "Alquiler por horas" },
+    priceFrom: 100,
+    priceUnit: { it: "/ora", en: "/hr", es: "/h" },
+    family: false,
+    desc: {
+      it: "Noleggio di un piccolo catamarano a ore. Non serve la patente nautica.",
+      en: "Hourly rental of a small catamaran. No boat licence needed.",
+      es: "Alquiler por horas de un catamaran pequeno. No hace falta titulacion."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "luxury-cruiser",
+    title: "Luxury Cruiser Experience",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    priceFrom: 65,
+    family: true,
+    desc: {
+      it: "Tre ore a bordo di un cruiser di lusso, senza fretta.",
+      en: "Three hours aboard a luxury cruiser, with no rush.",
+      es: "Tres horas a bordo de un crucero de lujo, sin prisa."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "catamaran-gigantes-masca",
+    title: "4-Hour Catamaran to Los Gigantes & Masca",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
+    priceFrom: 58,
+    family: true,
+    desc: {
+      it: "Quattro ore in catamarano fino alle scogliere di Los Gigantes e alla baia di Masca.",
+      en: "Four hours by catamaran out to the cliffs of Los Gigantes and Masca bay.",
+      es: "Cuatro horas en catamaran hasta los acantilados de Los Gigantes y la bahia de Masca."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "catamaran-3h",
+    title: "3-Hour Catamaran Excursion",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    priceFrom: 45,
+    family: true,
+    desc: {
+      it: "Tre ore di catamarano lungo la costa, senza programmi complicati.",
+      en: "Three hours of catamaran along the coast, with nothing complicated planned.",
+      es: "Tres horas de catamaran por la costa, sin planes complicados."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "whale-dolphin-3h",
+    title: "3-Hour Whale & Dolphin Boat Trip",
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 55,
     family: true,
     desc: {
-      it: "Uscita in barca a vela alla ricerca di balene pilota e delfini, con snack e bevande a bordo.",
-      en: "A sailing trip in search of pilot whales and dolphins, with snacks and drinks on board.",
-      es: "Salida en velero en busca de calderones y delfines, con aperitivos y bebidas a bordo."
+      it: "Tre ore in barca alla ricerca di balene e delfini, con partenza da Puerto Colón.",
+      en: "Three hours at sea looking for whales and dolphins, departing from Puerto Colón.",
+      es: "Tres horas en barco buscando ballenas y delfines, saliendo de Puerto Colón."
     },
-    image: "Cat-mare.jpg",   // stessa foto della categoria "Mare e barche"
-    published: true
-  },
-  {
-    id: "whale-catamaran",
-    title: "Whale Watching Catamaran",
-    category: "mare-barche",
-    zone: "Costa Adeje",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: 47,
-    family: true,
-    desc: {
-      it: "Catamarano lungo la costa sud, con avvistamento di balene e delfini e sosta bagno.",
-      en: "Catamaran along the south coast, with whale and dolphin watching and a swim stop.",
-      es: "Catamarán por la costa sur, con avistamiento de ballenas y delfines y parada de baño."
-    },
-    image: "",
-    published: true
-  },
-  {
-    id: "shogun",
-    title: {
-      it: "Shogun — veliero in teak",
-      en: "Shogun — teak sailing ship",
-      es: "Shogun — velero de teca"
-    },
-    category: "mare-barche",
-    zone: "Puerto Colón",
-    duration: { it: "5 ore", en: "5 hours", es: "5 horas" },
-    priceFrom: 65,
-    family: true,
-    desc: {
-      it: "Navigazione verso Los Gigantes e Masca a bordo di un veliero orientale interamente in teak. Pranzo e bevande inclusi.",
-      en: "Sailing towards Los Gigantes and Masca aboard an oriental ship built entirely in teak. Lunch and drinks included.",
-      es: "Navegación hacia Los Gigantes y Masca a bordo de un velero oriental íntegramente de teca. Comida y bebidas incluidas."
-    },
-    image: "shogun.jpg",
-    published: true
-  },
-  {
-    id: "catamaran-los-gigantes",
-    title: "Catamaran Los Gigantes",
-    category: "mare-barche",
-    zone: "Costa Adeje",
-    duration: { it: "4,5 ore", en: "4.5 hours", es: "4,5 horas" },
-    priceFrom: 60,
-    family: true,
-    desc: {
-      it: "Catamarano fino alle scogliere di Los Gigantes, con avvistamento cetacei lungo il percorso.",
-      en: "Catamaran out to the cliffs of Los Gigantes, spotting whales and dolphins along the way.",
-      es: "Catamarán hasta los acantilados de Los Gigantes, con avistamiento de cetáceos por el camino."
-    },
-    image: "",
-    published: true
-  },
-  {
-    id: "motor-yacht-condiviso",
-    title: {
-      it: "Motor Yacht condiviso",
-      en: "Shared Motor Yacht",
-      es: "Motor Yacht compartido"
-    },
-    category: "mare-barche",
-    zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: 50,
-    family: true,
-    desc: {
-      it: "Piccolo gruppo a bordo di un motor yacht, con snorkeling e tempo libero in mare.",
-      en: "A small group aboard a motor yacht, with snorkelling and free time in the water.",
-      es: "Grupo reducido a bordo de un motor yacht, con snorkel y tiempo libre en el mar."
-    },
-    image: "",
-    published: true
-  },
-  {
-    id: "party-boat",
-    title: "Party Boat",
-    category: "mare-barche",
-    zone: "Costa Adeje",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: null,
-    family: false,
-    desc: {
-      it: "Tre ore di musica, ballo e open bar in mare aperto.",
-      en: "Three hours of music, dancing and open bar out at sea.",
-      es: "Tres horas de música, baile y barra libre en mar abierto."
-    },
-    image: "party-boat.jpg",
-    published: true
-  },
-  {
-    id: "fiat-500-on-water",
-    title: "Fiat 500 on Water",
-    category: "mare-barche",
-    zone: "Costa Adeje",
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    family: true,
-    desc: {
-      it: "Una Fiat 500 galleggiante da guidare al largo della costa: la foto che tutti si portano a casa.",
-      en: "A floating Fiat 500 you drive off the coast: the photo everyone takes home.",
-      es: "Un Fiat 500 flotante para conducir frente a la costa: la foto que todos se llevan a casa."
-    },
-    image: "fiat-500-on-water.jpg",
-    published: true
-  },
-  {
-    id: "baia-masca-barca",
-    title: {
-      it: "Baia di Masca in barca",
-      en: "Masca Bay by boat",
-      es: "Bahía de Masca en barco"
-    },
-    category: "mare-barche",
-    zone: "Los Gigantes",
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    family: true,
-    desc: {
-      it: "Uscita fino alla baia di Masca, raggiungibile comodamente solo dal mare.",
-      en: "A trip out to Masca bay, which is only comfortably reached from the sea.",
-      es: "Salida hasta la bahía de Masca, a la que solo se llega cómodamente desde el mar."
-    },
-    image: "",
+    image: "Cat-mare.jpg",
     published: true
   },
 

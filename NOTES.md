@@ -90,8 +90,18 @@ toccano il codice già scritto:
 
 - `MOCK_BOOKINGS` in `booking.js` sono 2 prenotazioni finte scritte a mano → da sostituire
   con dati veri dal database
-- `esplora-catalog.js` ha 45 attività: 35 senza prezzo (appaiono "Su richiesta") e 41
-  senza foto (appaiono con il segnaposto "Isla")
+- **Il catalogo è a metà strada.** La categoria "Mare e barche" (13 voci) viene dal
+  catalogo vero di Admiral, con i prezzi del sito. Le altre 37 attività vengono ancora
+  dai tre siti concorrenti guardati all'inizio: vanno sostituite categoria per categoria
+  man mano che arrivano gli elenchi veri (`watersports`, `quad-buggy`, `island-tours`,
+  `parks-shows`, `teide-stargazing`)
+- **Deciso:** nel frattempo le 37 voci dei concorrenti restano visibili (`published: true`),
+  non si nascondono. Ognuna sparisce quando arriva la categoria vera che la sostituisce
+- Delle 13 barche Admiral: manca la zona di partenza per 12 su 13 e la durata per 6;
+  il campo `family` (adatta ai bambini) è una valutazione da confermare in ufficio
+- `assets/fiat-500-on-water.jpg` non è più usato: quell'attività veniva dai concorrenti
+  e non è nel catalogo Admiral. La foto resta in `assets/` in attesa di sapere se
+  Admiral la vende sotto un'altra categoria
 - La categoria "Tour dell'isola" non ha ancora la foto per la card in home
 - I riquadri bento (Pacchetti, Con bambini, 3/5/7 Days) puntano a `#categories` e al
   filtro famiglia: servono pagine vere per i pacchetti
@@ -101,6 +111,20 @@ toccano il codice già scritto:
   senza audio) con uno strumento tipo HandBrake
 - Sezione recensioni volutamente omessa: quelle di isla-adventures sono inventate, non le
   abbiamo copiate
+
+## Da dove vengono i dati del catalogo
+
+Il sito di Admiral **non è raggiungibile** da queste sessioni: la rete blocca
+`admiral-excursions.com`. Gli elenchi vanno quindi incollati a mano nella chat, una
+categoria alla volta, prendendoli da `admiral-excursions.com/product-category/<nome>/`.
+
+Regola sui nomi: i **titoli restano scritti come li scrive Admiral**, uguali in tutte
+e tre le lingue. Così il cliente vede lo stesso nome del sito Admiral e, quando la
+richiesta arriva su WhatsApp, in ufficio si trova davanti il nome esatto da cercare.
+Tradotte sono solo le descrizioni, la zona e la durata.
+
+Quando un prodotto è in offerta (prezzo barrato + prezzo scontato) si mette il
+**prezzo scontato**, cioè quello che il cliente paga davvero.
 
 ## Le tre lingue
 

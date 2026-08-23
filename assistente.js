@@ -23,9 +23,8 @@ const ASSIST_INTERESSI = [
 const ASSIST_MAX_RISULTATI = 5;
 
 function assistPrezzo(tour) {
-  return tour.priceFrom === null
-    ? t("tour.onRequest")
-    : t("tour.from", { p: tour.priceFrom });
+  if (tour.priceFrom === null) return t("tour.onRequest");
+  return t("tour.from", { p: tour.priceFrom }) + (tour.priceUnit ? tf(tour.priceUnit) : "");
 }
 
 function assistNomeCategoria(id) {

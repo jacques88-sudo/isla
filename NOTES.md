@@ -65,7 +65,8 @@ scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
   indirizzo `tour.html?id=<id della voce nel catalogo>`. Riusa da `escursioni.js`
   il prezzo, il nome della categoria e la finestra della richiesta
 - `esplora-catalog.js` — dati delle 45 attività, divise nelle 8 categorie
-- `assistente.js` — assistente guidato (due domande, poi consigli dal catalogo)
+- `assistente.js` — assistente guidato: tre domande (interesse, bambini, budget), poi
+  consigli dal catalogo e un riquadro per chiedere su WhatsApp quello che non c'è
 - `i18n.js` — tutte le traduzioni it/en/es e il selettore della lingua
 - `manifest.json`, `sw.js`, `offline.html` — parte PWA (installabilità, cache offline)
 - `assets/` — foto e video veri (logo, hero video, foto categorie, cala segreta, team)
@@ -99,13 +100,12 @@ toccano il codice già scritto:
   man mano che arrivano gli elenchi veri (`parks-shows`, `teide-stargazing`)
 - La categoria `island-tours` di Admiral copre **due** categorie di Isla: i due tour del
   Teide sono finiti in "Teide e natura", La Gomera e Santa Cruz in "Tour dell'isola".
-  Admiral vende 4 tour dove i concorrenti ne avevano 13: restano 7 voci senza sostituto
-  (tour completo dell'isola, Icod/Garachico/Orotava, Puerto de la Cruz, Gran Canaria,
-  cantine vinicole, Paisaje Lunar, canyoning). Da chiedere in ufficio se li vendono
+  Admiral ne ha in vetrina 4 dove i concorrenti ne avevano 13: restano 7 voci senza
+  corrispondenza (tour completo dell'isola, Icod/Garachico/Orotava, Puerto de la Cruz,
+  Gran Canaria, cantine vinicole, Paisaje Lunar, canyoning), tenute come "Su richiesta"
 - Categoria "Sport acquatici": i 7 prodotti Admiral hanno tutti il prezzo, solo la Fiat
-  500 ha la foto. Restano immersioni e flyboard dai concorrenti: **non compaiono
-  nell'elenco watersports di Admiral**, quindi o non li vendono o stanno altrove.
-  Da chiedere in ufficio, come si e' fatto per elicottero e parapendio
+  500 ha la foto. Restano immersioni e flyboard, che sul sito Admiral non ci sono: si
+  tengono lo stesso, come "Su richiesta" (vedi "Come funziona il lavoro di Admiral")
 - Categoria "Avventura e motori": 9 voci, tutte confermate da Admiral. I 7 prodotti quad e
   buggy hanno tutti la foto. Il 2-Hour e il 3-Hour Buggy Tour sono stati uniti in una
   scheda sola ("2 or 3-Hour Buggy Tour") su richiesta dell'ufficio: erano identici a parte
@@ -135,6 +135,25 @@ toccano il codice già scritto:
   senza audio) con uno strumento tipo HandBrake
 - Sezione recensioni volutamente omessa: quelle di isla-adventures sono inventate, non le
   abbiamo copiate
+
+## Come funziona il lavoro di Admiral
+
+**Admiral è un rivenditore.** Non gestisce le escursioni: vende attività già presenti
+sull'isola, gestite da altri operatori. Per questo i prodotti portano il nome della barca
+o del mezzo di chi le opera davvero — Freebird, Diamant, Opera 60, Monte Cristo, Shogun.
+
+Due conseguenze pratiche, da tenere a mente prima di togliere qualcosa dal catalogo:
+
+- **Il sito di Admiral non è l'elenco di tutto quello che possono vendere.** È quello che
+  hanno messo in vetrina. Se un'attività esiste a Tenerife, in linea di massima possono
+  procurarla. Su ogni pagina categoria c'è scritto *"Tell us what you want and we will
+  organise it"*.
+- Quindi **un'attività assente dal sito non va cancellata da Isla**: va lasciata con
+  `priceFrom: null`, che il catalogo mostra come "Su richiesta". È la verità: il prezzo
+  dipende dall'operatore e si concorda al momento.
+
+Vale anche per la Fase 9 della roadmap: rivendere tour di altri operatori richiede
+**accordi scritti** con loro prima di incassare soldi dai clienti.
 
 ## Da dove vengono i dati del catalogo
 

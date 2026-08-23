@@ -96,8 +96,12 @@ toccano il codice già scritto:
 - **Il catalogo è a metà strada.** La categoria "Mare e barche" (13 voci) viene dal
   catalogo vero di Admiral, con i prezzi del sito. Le altre 37 attività vengono ancora
   dai tre siti concorrenti guardati all'inizio: vanno sostituite categoria per categoria
-  man mano che arrivano gli elenchi veri (`island-tours`, `parks-shows`,
-  `teide-stargazing`)
+  man mano che arrivano gli elenchi veri (`parks-shows`, `teide-stargazing`)
+- La categoria `island-tours` di Admiral copre **due** categorie di Isla: i due tour del
+  Teide sono finiti in "Teide e natura", La Gomera e Santa Cruz in "Tour dell'isola".
+  Admiral vende 4 tour dove i concorrenti ne avevano 13: restano 7 voci senza sostituto
+  (tour completo dell'isola, Icod/Garachico/Orotava, Puerto de la Cruz, Gran Canaria,
+  cantine vinicole, Paisaje Lunar, canyoning). Da chiedere in ufficio se li vendono
 - Categoria "Sport acquatici": i 7 prodotti Admiral hanno tutti il prezzo, solo la Fiat
   500 ha la foto. Restano immersioni e flyboard dai concorrenti: **non compaiono
   nell'elenco watersports di Admiral**, quindi o non li vendono o stanno altrove.

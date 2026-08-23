@@ -26,15 +26,15 @@ const ESPLORA_CATALOG = [
 
   // ─── MARE E BARCHE ────────────────────────────────────────────────────────
   {
-    id: "whale-dolphin-yacht",
-    title: "Whale & Dolphin Watching Yacht Trip",
+    id: "whale-dolphin-sailing",
+    title: "Whale & Dolphin Watching in barca a vela",
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: "3 ore",
     priceFrom: 55,
     family: true,
-    desc: "Uscita in yacht alla ricerca di balene pilota e delfini, con snack e bevande a bordo.",
-    image: "",
+    desc: "Uscita in barca a vela alla ricerca di balene pilota e delfini, con snack e bevande a bordo.",
+    image: "whale-dolphin-sailing.jpg",
     published: true
   },
   {

@@ -118,7 +118,7 @@ const ESPLORA_CATALOG = [
       en: "Three hours at sea looking for whales and dolphins, departing from Puerto Colón.",
       es: "Tres horas en barco buscando ballenas y delfines, saliendo de Puerto Colón."
     },
-    image: "Cat-mare.jpg",
+    image: "whale-dolphin-3h.jpg",
     published: true
   },
   {
@@ -230,7 +230,7 @@ const ESPLORA_CATALOG = [
       en: "You take the helm: a boat without a skipper, you drive it yourself.",
       es: "Al timon vas tu: barco sin patron, lo conduces tu mismo."
     },
-    image: "",
+    image: "self-drive-boats.jpg",
     published: true
   },
   {
@@ -279,7 +279,7 @@ const ESPLORA_CATALOG = [
       en: "Four hours by catamaran out to the cliffs of Los Gigantes and Masca bay.",
       es: "Cuatro horas en catamaran hasta los acantilados de Los Gigantes y la bahia de Masca."
     },
-    image: "",
+    image: "catamaran-gigantes-masca.jpg",
     published: true
   },
 

@@ -86,7 +86,7 @@ const ESPLORA_CATALOG = [
       en: "A boat reserved for your group alone. Route, times and price agreed with you.",
       es: "Barco reservado solo para tu grupo. Ruta, horarios y precio se acuerdan contigo."
     },
-    image: "",
+    image: "private-charter.jpg",
     published: true
   },
   {
@@ -118,7 +118,7 @@ const ESPLORA_CATALOG = [
       en: "Three hours at sea looking for whales and dolphins, departing from Puerto Colón.",
       es: "Tres horas en barco buscando ballenas y delfines, saliendo de Puerto Colón."
     },
-    image: "whale-dolphin-3h.jpg",
+    image: "Cat-mare.jpg",
     published: true
   },
   {
@@ -134,7 +134,7 @@ const ESPLORA_CATALOG = [
       en: "A premium catamaran, for sailing with an eye on elegance.",
       es: "Catamarán de categoría superior, para navegar cuidando la elegancia."
     },
-    image: "",
+    image: "luxury-catamaran.jpg",
     published: true
   },
   {
@@ -150,7 +150,7 @@ const ESPLORA_CATALOG = [
       en: "Catamaran in a small group: relaxed cruising and dolphin spotting.",
       es: "Catamarán en grupo reducido: navegación tranquila y avistamiento de delfines."
     },
-    image: "",
+    image: "small-group-catamaran.jpg",
     published: true
   },
   {

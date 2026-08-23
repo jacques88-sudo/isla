@@ -1,15 +1,17 @@
-const CACHE_NAME = "isla-v47";
+const CACHE_NAME = "isla-v48";
 const ASSETS = [
   "./",
   "./index.html",
   "./booking.html",
   "./escursioni.html",
+  "./tour.html",
   "./offline.html",
   "./styles.css",
   "./i18n.js",
   "./app.js",
   "./booking.js",
   "./escursioni.js",
+  "./tour.js",
   "./assistente.js",
   "./esplora-catalog.js",
   "./manifest.json",

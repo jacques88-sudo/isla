@@ -95,11 +95,18 @@ toccano il codice già scritto:
   dai tre siti concorrenti guardati all'inizio: vanno sostituite categoria per categoria
   man mano che arrivano gli elenchi veri (`watersports`, `island-tours`, `parks-shows`,
   `teide-stargazing`)
-- Categoria "Avventura e motori": gli 8 prodotti quad e buggy vengono da Admiral. Restano
-  invece elicottero e parapendio, presi dai concorrenti: non sono quad/buggy, quindi la
-  categoria Admiral non li sostituisce. Da capire se Admiral li vende sotto altro nome
-- **Deciso:** nel frattempo le 37 voci dei concorrenti restano visibili (`published: true`),
+- Categoria "Avventura e motori": 9 voci, tutte confermate da Admiral. I 7 prodotti quad e
+  buggy hanno tutti la foto. Il 2-Hour e il 3-Hour Buggy Tour sono stati uniti in una
+  scheda sola ("2 or 3-Hour Buggy Tour") su richiesta dell'ufficio: erano identici a parte
+  durata e prezzo
+- Elicottero e parapendio: **confermato che Admiral li vende**, quindi non sono piu' voci
+  dei concorrenti in attesa di sostituzione. Restano da completare con prezzo e foto
+- La "Mustang Experience" è un giro in Ford Mustang decappottabile, non un buggy: si è
+  capito dalla foto mandata dall'ufficio
+- **Deciso:** nel frattempo le voci dei concorrenti restano visibili (`published: true`),
   non si nascondono. Ognuna sparisce quando arriva la categoria vera che la sostituisce
+- Il campo `family` (adatta ai bambini) va rivisto su tutto il catalogo: rimandato a piu'
+  avanti su decisione dell'ufficio
 - Delle 13 barche Admiral: tutte hanno la foto, 5 hanno la zona di partenza (Puerto Colón,
   confermato), 7 hanno la durata. Il campo `family` (adatta ai bambini) è una valutazione
   da confermare in ufficio

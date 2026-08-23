@@ -90,6 +90,38 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    id: "catamaran-3h",
+    title: "3-Hour Catamaran Excursion",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    priceFrom: 45,
+    family: true,
+    desc: {
+      it: "Tre ore di catamarano lungo la costa, senza programmi complicati.",
+      en: "Three hours of catamaran along the coast, with nothing complicated planned.",
+      es: "Tres horas de catamaran por la costa, sin planes complicados."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "whale-dolphin-3h",
+    title: "3-Hour Whale & Dolphin Boat Trip",
+    category: "mare-barche",
+    zone: "Puerto Colón",
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    priceFrom: 55,
+    family: true,
+    desc: {
+      it: "Tre ore in barca alla ricerca di balene e delfini, con partenza da Puerto Colón.",
+      en: "Three hours at sea looking for whales and dolphins, departing from Puerto Colón.",
+      es: "Tres horas en barco buscando ballenas y delfines, saliendo de Puerto Colón."
+    },
+    image: "Cat-mare.jpg",
+    published: true
+  },
+  {
     id: "luxury-catamaran",
     title: "Luxury Catamaran Experience",
     category: "mare-barche",
@@ -248,38 +280,6 @@ const ESPLORA_CATALOG = [
       es: "Cuatro horas en catamaran hasta los acantilados de Los Gigantes y la bahia de Masca."
     },
     image: "",
-    published: true
-  },
-  {
-    id: "catamaran-3h",
-    title: "3-Hour Catamaran Excursion",
-    category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: 45,
-    family: true,
-    desc: {
-      it: "Tre ore di catamarano lungo la costa, senza programmi complicati.",
-      en: "Three hours of catamaran along the coast, with nothing complicated planned.",
-      es: "Tres horas de catamaran por la costa, sin planes complicados."
-    },
-    image: "",
-    published: true
-  },
-  {
-    id: "whale-dolphin-3h",
-    title: "3-Hour Whale & Dolphin Boat Trip",
-    category: "mare-barche",
-    zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: 55,
-    family: true,
-    desc: {
-      it: "Tre ore in barca alla ricerca di balene e delfini, con partenza da Puerto Colón.",
-      en: "Three hours at sea looking for whales and dolphins, departing from Puerto Colón.",
-      es: "Tres horas en barco buscando ballenas y delfines, saliendo de Puerto Colón."
-    },
-    image: "Cat-mare.jpg",
     published: true
   },
 

@@ -247,7 +247,7 @@ const ESPLORA_CATALOG = [
       en: "Hourly rental of a small catamaran. No boat licence needed.",
       es: "Alquiler por horas de un catamaran pequeno. No hace falta titulacion."
     },
-    image: "",
+    image: "small-catamaran-rental.jpg",
     published: true
   },
   {
@@ -263,7 +263,7 @@ const ESPLORA_CATALOG = [
       en: "Three hours aboard a luxury cruiser, with no rush.",
       es: "Tres horas a bordo de un crucero de lujo, sin prisa."
     },
-    image: "",
+    image: "luxury-cruiser.jpg",
     published: true
   },
   {

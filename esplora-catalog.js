@@ -93,7 +93,7 @@ const ESPLORA_CATALOG = [
     id: "catamaran-3h",
     title: "3-Hour Catamaran Excursion",
     category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 45,
     family: true,
@@ -102,7 +102,7 @@ const ESPLORA_CATALOG = [
       en: "Three hours of catamaran along the coast, with nothing complicated planned.",
       es: "Tres horas de catamaran por la costa, sin planes complicados."
     },
-    image: "",
+    image: "catamaran-3h.jpg",
     published: true
   },
   {
@@ -118,7 +118,7 @@ const ESPLORA_CATALOG = [
       en: "Three hours at sea looking for whales and dolphins, departing from Puerto Colón.",
       es: "Tres horas en barco buscando ballenas y delfines, saliendo de Puerto Colón."
     },
-    image: "Cat-mare.jpg",
+    image: "whale-dolphin-3h.jpg",
     published: true
   },
   {
@@ -157,7 +157,7 @@ const ESPLORA_CATALOG = [
     id: "glass-bottom-boat",
     title: "Glass Bottom Boat Adventure",
     category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 58,
     family: true,
@@ -166,7 +166,7 @@ const ESPLORA_CATALOG = [
       en: "Three hours on a glass-bottomed boat: you watch below the surface without leaving the deck.",
       es: "Tres horas en un barco con fondo de cristal: se mira bajo el agua sin salir de cubierta."
     },
-    image: "",
+    image: "glass-bottom-boat.jpg",
     published: true
   },
   {
@@ -205,7 +205,7 @@ const ESPLORA_CATALOG = [
     id: "opera-60",
     title: "Opera 60",
     category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto Colón",
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 80,
     family: true,
@@ -214,7 +214,7 @@ const ESPLORA_CATALOG = [
       en: "Dolphin and whale watching aboard the Opera 60, in its premium version.",
       es: "Avistamiento de delfines y ballenas a bordo del Opera 60, en version premium."
     },
-    image: "",
+    image: "opera-60.jpg",
     published: true
   },
   {
@@ -230,7 +230,7 @@ const ESPLORA_CATALOG = [
       en: "You take the helm: a boat without a skipper, you drive it yourself.",
       es: "Al timon vas tu: barco sin patron, lo conduces tu mismo."
     },
-    image: "",
+    image: "self-drive-boats.jpg",
     published: true
   },
   {
@@ -247,7 +247,7 @@ const ESPLORA_CATALOG = [
       en: "Hourly rental of a small catamaran. No boat licence needed.",
       es: "Alquiler por horas de un catamaran pequeno. No hace falta titulacion."
     },
-    image: "",
+    image: "small-catamaran-rental.jpg",
     published: true
   },
   {
@@ -263,14 +263,14 @@ const ESPLORA_CATALOG = [
       en: "Three hours aboard a luxury cruiser, with no rush.",
       es: "Tres horas a bordo de un crucero de lujo, sin prisa."
     },
-    image: "",
+    image: "luxury-cruiser.jpg",
     published: true
   },
   {
     id: "catamaran-gigantes-masca",
     title: "4-Hour Catamaran to Los Gigantes & Masca",
     category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto Colón",
     duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
     priceFrom: 58,
     family: true,
@@ -279,7 +279,7 @@ const ESPLORA_CATALOG = [
       en: "Four hours by catamaran out to the cliffs of Los Gigantes and Masca bay.",
       es: "Cuatro horas en catamaran hasta los acantilados de Los Gigantes y la bahia de Masca."
     },
-    image: "",
+    image: "catamaran-gigantes-masca.jpg",
     published: true
   },
 

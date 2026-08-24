@@ -164,6 +164,19 @@ Due conseguenze pratiche, da tenere a mente prima di togliere qualcosa dal catal
 Vale anche per la Fase 9 della roadmap: rivendere tour di altri operatori richiede
 **accordi scritti** con loro prima di incassare soldi dai clienti.
 
+## Attivita' aggiunte guardando la concorrenza
+
+Quattro voci non vengono dal sito di Admiral ma da un confronto con il catalogo di
+Tenerife First Excursions, un'altra agenzia dell'isola: **Submarine Safari**,
+**¡Olé! Flamenco Show**, **Scandal Dinner Show** e **History – The Evolution of Music**.
+Sono attivita' di operatori locali che qualunque agenzia puo' rivendere, e l'ufficio ha
+confermato che Admiral le procura. Stanno a "Su richiesta" finche' non arriva un prezzo.
+
+Le descrizioni sono scritte da zero, non copiate. Idem per le foto: nessuna presa da loro.
+
+Scartato dallo stesso confronto: i beach club (Monkey Beach Club, Kaluna), che Admiral
+non vende.
+
 ## Da dove vengono i dati del catalogo
 
 Il sito di Admiral **non è raggiungibile** da queste sessioni: la rete blocca

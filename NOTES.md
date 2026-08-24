@@ -94,10 +94,12 @@ toccano il codice già scritto:
 
 - `MOCK_BOOKINGS` in `booking.js` sono 2 prenotazioni finte scritte a mano → da sostituire
   con dati veri dal database
-- **Il catalogo è a metà strada.** La categoria "Mare e barche" (13 voci) viene dal
-  catalogo vero di Admiral, con i prezzi del sito. Le altre 37 attività vengono ancora
-  dai tre siti concorrenti guardati all'inizio: vanno sostituite categoria per categoria
-  man mano che arrivano gli elenchi veri (`teide-stargazing`)
+- **Tutte e sei le categorie di Admiral sono state riversate nel catalogo.** Su 56
+  attività, **45 sono prodotti Admiral e hanno tutte un prezzo**. Le 11 rimaste vengono
+  ancora dai tre siti concorrenti guardati all'inizio e restano come "Su richiesta":
+  Paisaje Lunar, canyoning, immersioni, flyboard, tour completo dell'isola,
+  Icod/Garachico/Orotava, Puerto de la Cruz, Gran Canaria, cantine vinicole, e le due
+  voci di "Tour privati"
 - Categoria "Parchi e spettacoli": sostituita per intero, 10 prodotti tutti con prezzo.
   E l'unica finora dove ogni voce dei concorrenti aveva un corrispondente Admiral,
   quindi non restano orfani
@@ -109,12 +111,16 @@ toccano il codice già scritto:
 - Categoria "Sport acquatici": i 7 prodotti Admiral hanno tutti il prezzo, solo la Fiat
   500 ha la foto. Restano immersioni e flyboard, che sul sito Admiral non ci sono: si
   tengono lo stesso, come "Su richiesta" (vedi "Come funziona il lavoro di Admiral")
-- Categoria "Avventura e motori": 9 voci, tutte confermate da Admiral. I 7 prodotti quad e
-  buggy hanno tutti la foto. Il 2-Hour e il 3-Hour Buggy Tour sono stati uniti in una
-  scheda sola ("2 or 3-Hour Buggy Tour") su richiesta dell'ufficio: erano identici a parte
-  durata e prezzo
-- Elicottero e parapendio: **confermato che Admiral li vende**, quindi non sono piu' voci
-  dei concorrenti in attesa di sostituzione. Restano da completare con prezzo e foto
+- Categoria "Avventura e motori": 9 voci, tutte Admiral. I 7 prodotti quad e buggy hanno
+  la foto. Il 2-Hour e il 3-Hour Buggy Tour sono stati uniti in una scheda sola
+  ("2 or 3-Hour Buggy Tour") su richiesta dell'ufficio: erano identici a parte durata e
+  prezzo
+- La categoria Admiral `Sky & Stars` e' stata divisa: elicottero e parapendio restano in
+  "Avventura e motori" perche' e' li' che un cliente li cerca, le due serate di
+  osservazione stanno in "Stelle e astronomia"
+- **"Tour privati" non ha nessun prodotto Admiral**: le sue 2 voci vengono dai concorrenti,
+  e `charter-privato` e' di fatto un doppione del `Private Charter` che sta fra le barche.
+  Da decidere se svuotare la categoria o spostarci dentro il Private Charter
 - La "Mustang Experience" è un giro in Ford Mustang decappottabile, non un buggy: si è
   capito dalla foto mandata dall'ufficio
 - **Deciso:** nel frattempo le voci dei concorrenti restano visibili (`published: true`),

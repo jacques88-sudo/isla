@@ -411,53 +411,37 @@ const ESPLORA_CATALOG = [
 
   // ─── STELLE E ASTRONOMIA ──────────────────────────────────────────────────
   {
-    id: "stargazing-teide",
-    title: {
-      it: "Star Gazing sul Teide",
-      en: "Star Gazing on Teide",
-      es: "Star Gazing en el Teide"
-    },
+    id: "stargazing-group",
+    title: "Stargazing – Large Group Experience",
     category: "stelle",
-    zone: {
-      it: "Parco Nazionale del Teide",
-      en: "Teide National Park",
-      es: "Parque Nacional del Teide"
-    },
-    duration: { it: "5 ore", en: "5 hours", es: "5 horas" },
-    priceFrom: 89,
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 75,
     priceAdult: 0,
     priceChild: 0,
     family: true,
     desc: {
-      it: "Cena, tramonto sopra le nuvole e osservazione delle stelle con telescopi e guida astronomica.",
-      en: "Dinner, sunset above the clouds and stargazing with telescopes and an astronomy guide.",
-      es: "Cena, atardecer por encima de las nubes y observación de estrellas con telescopios y guía astronómico."
+      it: "Serata di osservazione delle stelle in gruppo, con guida.",
+      en: "An evening of stargazing in a group, with a guide.",
+      es: "Velada de observación de estrellas en grupo, con guía."
     },
     image: "",
     published: true
   },
   {
-    id: "teide-tramonto-stelle",
-    title: {
-      it: "Tramonto e stelle con cena",
-      en: "Sunset and stars with dinner",
-      es: "Atardecer y estrellas con cena"
-    },
+    id: "stargazing-vip",
+    title: "VIP Stargazing Experience",
     category: "stelle",
-    zone: {
-      it: "Parco Nazionale del Teide",
-      en: "Teide National Park",
-      es: "Parque Nacional del Teide"
-    },
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
+    priceFrom: 85,
     priceAdult: 0,
     priceChild: 0,
     family: true,
     desc: {
-      it: "Salita nel tardo pomeriggio, cena in quota e cielo notturno tra i più limpidi d'Europa.",
-      en: "A late-afternoon climb, dinner at altitude and one of the clearest night skies in Europe.",
-      es: "Subida a última hora de la tarde, cena en altura y uno de los cielos nocturnos más limpios de Europa."
+      it: "Osservazione delle stelle in versione VIP, in gruppo ristretto.",
+      en: "Stargazing in its VIP version, in a small group.",
+      es: "Observación de estrellas en versión VIP, en grupo reducido."
     },
     image: "",
     published: true
@@ -591,41 +575,37 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    id: "elicottero",
-    title: {
-      it: "Giro in elicottero",
-      en: "Helicopter flight",
-      es: "Vuelo en helicóptero"
-    },
+    id: "helicopter-tours",
+    title: "Helicopter Tours",
     category: "avventura-motori",
-    zone: { it: "Tenerife sud", en: "South Tenerife", es: "Tenerife sur" },
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
+    priceFrom: 98,
     priceAdult: 0,
     priceChild: 0,
     family: true,
     desc: {
-      it: "Sorvolo di spiagge, gole e delle scogliere di Los Gigantes.",
-      en: "Flying over beaches, gorges and the cliffs of Los Gigantes.",
-      es: "Sobrevuelo de playas, barrancos y los acantilados de Los Gigantes."
+      it: "Tenerife vista dall'alto: sorvolo dell'isola in elicottero.",
+      en: "Tenerife seen from above: a helicopter flight over the island.",
+      es: "Tenerife vista desde el aire: sobrevuelo de la isla en helicóptero."
     },
     image: "",
     published: true
   },
   {
-    id: "parapendio",
-    title: { it: "Parapendio", en: "Paragliding", es: "Parapente" },
+    id: "paragliding",
+    title: "Paragliding",
     category: "avventura-motori",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
+    priceFrom: 110,
     priceAdult: 0,
     priceChild: 0,
     family: false,
     desc: {
-      it: "Volo in tandem con istruttore, decollo dalla montagna e atterraggio vicino al mare.",
-      en: "A tandem flight with an instructor: take off from the mountain, land near the sea.",
-      es: "Vuelo en tándem con instructor, despegue desde la montaña y aterrizaje cerca del mar."
+      it: "Volo in parapendio in tandem con istruttore.",
+      en: "A tandem paragliding flight with an instructor.",
+      es: "Vuelo en parapente en tándem con instructor."
     },
     image: "",
     published: true

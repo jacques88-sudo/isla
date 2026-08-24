@@ -204,3 +204,10 @@ Anche il messaggio WhatsApp della richiesta parte nella lingua scelta dal client
   il numero (es. `isla-v10` → `isla-v11`) altrimenti i browser che hanno già visitato il
   sito continuano a vedere la versione vecchia.
 - Le foto in `assets/Cat-*.jpg` sono già rinominate e pronte per la pagina categorie/escursioni.
+- **Un solo colore di sfondo: `#FCFAF6`.** È il valore che rende `--bg` in `styles.css`, ed
+  è ripetuto in tre posti che devono restare allineati: `background_color` e `theme_color`
+  in `manifest.json`, il `<meta name="theme-color">` di ogni pagina, e lo sfondo dipinto
+  dentro `icon-192.png`, `icon-512.png` e `icon-maskable-512.png`. Le icone non sono
+  trasparenti apposta (da trasparenti Android disegna un bordo suo), quindi il loro sfondo
+  è cotto dentro il file: se un giorno cambia `--bg`, **vanno rigenerate**, altrimenti
+  all'apertura della PWA ricompare un quadrato più scuro intorno al logo.

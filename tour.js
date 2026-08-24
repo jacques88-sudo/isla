@@ -35,7 +35,7 @@ function detailMedia(tour) {
 // Le righe "In breve": si saltano i campi ancora da definire, cosi' la
 // scheda non si riempie di "Da definire".
 function detailRows(tour) {
-  const daDefinire = v => typeof v !== "string" && /Da definire/.test(v.it || "");
+  // daDefinire() arriva da escursioni.js, caricato prima di questo file
   const righe = [];
 
   if (!daDefinire(tour.zone)) {

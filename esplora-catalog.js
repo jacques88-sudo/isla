@@ -804,16 +804,34 @@ const ESPLORA_CATALOG = [
     id: "siam-park",
     title: "Siam Park",
     category: "parchi-spettacoli",
-    zone: "Costa Adeje",
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 48,
     priceAdult: 0,
     priceChild: 0,
     family: true,
     desc: {
-      it: "Parco acquatico a tema thailandese, tra i più premiati al mondo.",
+      it: "Parco acquatico a tema thailandese, fra i più premiati al mondo.",
       en: "Thai-themed water park, one of the most awarded in the world.",
       es: "Parque acuático de temática tailandesa, uno de los más premiados del mundo."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "siam-night",
+    title: "Siam Night",
+    category: "parchi-spettacoli",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 48,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Il Siam Park dopo il tramonto, nella sua versione serale.",
+      en: "Siam Park after dark, in its evening version.",
+      es: "El Siam Park después del atardecer, en su versión nocturna."
     },
     image: "",
     published: true
@@ -822,34 +840,34 @@ const ESPLORA_CATALOG = [
     id: "loro-parque",
     title: "Loro Parque",
     category: "parchi-spettacoli",
-    zone: "Puerto de la Cruz",
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 44,
     priceAdult: 0,
     priceChild: 0,
     family: true,
     desc: {
-      it: "Zoo e giardino tropicale con la più grande collezione di pappagalli al mondo.",
-      en: "Zoo and tropical garden with the largest parrot collection in the world.",
-      es: "Zoo y jardín tropical con la mayor colección de loros del mundo."
+      it: "Zoo e giardino tropicale, conosciuto in tutto il mondo per i suoi animali.",
+      en: "Zoo and tropical garden, known worldwide for its animals.",
+      es: "Zoo y jardín tropical, conocido en todo el mundo por sus animales."
     },
     image: "",
     published: true
   },
   {
     id: "twin-ticket",
-    title: "Twin Ticket — Siam + Loro Parque",
+    title: "Twin Ticket – Siam Park + Loro Parque",
     category: "parchi-spettacoli",
-    zone: "Costa Adeje / Puerto de la Cruz",
-    duration: { it: "2 giornate", en: "2 days", es: "2 días" },
-    priceFrom: null,
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 78,
     priceAdult: 0,
     priceChild: 0,
     family: true,
     desc: {
-      it: "Biglietto combinato per i due parchi, con bus incluso.",
-      en: "Combined ticket for both parks, bus included.",
-      es: "Entrada combinada para los dos parques, con autobús incluido."
+      it: "Biglietto combinato per i due parchi più conosciuti dell'isola.",
+      en: "Combined ticket for the two best-known parks on the island.",
+      es: "Entrada combinada para los dos parques más conocidos de la isla."
     },
     image: "",
     published: true
@@ -858,16 +876,16 @@ const ESPLORA_CATALOG = [
     id: "aqualand",
     title: "Aqualand",
     category: "parchi-spettacoli",
-    zone: "Costa Adeje",
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 37,
     priceAdult: 0,
     priceChild: 0,
     family: true,
     desc: {
-      it: "Parco acquatico con scivoli e aree per i più piccoli.",
-      en: "Water park with slides and areas for younger children.",
-      es: "Parque acuático con toboganes y zonas para los más pequeños."
+      it: "Parco acquatico con scivoli e aree per tutte le età.",
+      en: "Water park with slides and areas for every age.",
+      es: "Parque acuático con toboganes y zonas para todas las edades."
     },
     image: "",
     published: true
@@ -876,27 +894,27 @@ const ESPLORA_CATALOG = [
     id: "jungle-park",
     title: "Jungle Park",
     category: "parchi-spettacoli",
-    zone: "Las Águilas, Arona",
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 36,
     priceAdult: 0,
     priceChild: 0,
     family: true,
     desc: {
-      it: "Parco naturale con rapaci in volo libero, a pochi minuti da Los Cristianos.",
-      en: "Nature park with free-flying birds of prey, minutes from Los Cristianos.",
-      es: "Parque natural con aves rapaces en vuelo libre, a pocos minutos de Los Cristianos."
+      it: "Parco naturale con animali e rapaci in volo libero.",
+      en: "Nature park with animals and free-flying birds of prey.",
+      es: "Parque natural con animales y aves rapaces en vuelo libre."
     },
     image: "",
     published: true
   },
   {
-    id: "fun-trip",
-    title: "Fun Trip — Aqualand + Jungle Park",
+    id: "combo-jungle-aqualand",
+    title: "Combo Ticket – Jungle Park + Aqualand",
     category: "parchi-spettacoli",
-    zone: { it: "Tenerife sud", en: "South Tenerife", es: "Tenerife sur" },
-    duration: { it: "2 giornate", en: "2 days", es: "2 días" },
-    priceFrom: null,
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 53,
     priceAdult: 0,
     priceChild: 0,
     family: true,
@@ -909,23 +927,55 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    id: "cena-medievale",
-    title: {
-      it: "Cena spettacolo medievale",
-      en: "Medieval dinner show",
-      es: "Cena espectáculo medieval"
-    },
+    id: "monkey-park",
+    title: "Monkey Park",
     category: "parchi-spettacoli",
-    zone: "Castillo San Miguel",
-    duration: { it: "Serata", en: "Evening", es: "Noche" },
-    priceFrom: null,
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 10,
     priceAdult: 0,
     priceChild: 0,
     family: true,
     desc: {
-      it: "Cavalieri, cavalli e tornei dal vivo, con cena servita durante lo spettacolo.",
-      en: "Knights, horses and live tournaments, with dinner served during the show.",
-      es: "Caballeros, caballos y torneos en directo, con cena servida durante el espectáculo."
+      it: "Piccolo parco dedicato alle scimmie e ad altri animali.",
+      en: "A small park dedicated to monkeys and other animals.",
+      es: "Pequeño parque dedicado a los monos y a otros animales."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "mht-drag-show",
+    title: "MHT – Music Hall Tavern Drag Show & Dinner",
+    category: "parchi-spettacoli",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Serata", en: "Evening", es: "Noche" },
+    priceFrom: 49,
+    priceAdult: 0,
+    priceChild: 0,
+    family: false,
+    desc: {
+      it: "Cena e spettacolo drag al Music Hall Tavern.",
+      en: "Dinner and drag show at the Music Hall Tavern.",
+      es: "Cena y espectáculo drag en el Music Hall Tavern."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "castillo-san-miguel",
+    title: "Castillo San Miguel – Medieval Night",
+    category: "parchi-spettacoli",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Serata", en: "Evening", es: "Noche" },
+    priceFrom: 44,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Serata medievale al castello: cavalieri, cavalli e torneo, con cena servita durante lo spettacolo.",
+      en: "A medieval night at the castle: knights, horses and a tournament, with dinner served during the show.",
+      es: "Noche medieval en el castillo: caballeros, caballos y torneo, con cena servida durante el espectáculo."
     },
     image: "",
     published: true

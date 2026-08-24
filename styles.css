@@ -1788,6 +1788,53 @@ body.menu-open { overflow: hidden; }
   opacity: .7;
 }
 
+/* Varianti sulla pagina di dettaglio: bottoni da premere, non un elenco da
+   leggere. La scelta si fa qui, cosi' la richiesta parte gia' completa. */
+.detail-options { margin: 0 0 1.4rem; }
+.detail-options-label {
+  display: block;
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--muted);
+  margin-bottom: .7rem;
+}
+.detail-options-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+.detail-option {
+  flex: 1 1 auto;
+  /* due varianti stanno affiancate, tre vanno a capo invece di stringersi
+     fino a tagliare il testo */
+  min-width: 8.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .15rem;
+  padding: .8rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease;
+}
+.detail-option:hover { border-color: var(--text); }
+.detail-option[aria-pressed="true"] {
+  border-color: var(--text);
+  background: var(--sand);
+}
+.detail-option-name { font-size: .92rem; }
+.detail-option-price {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
 /* Menu delle varianti (1 o 2 ore, quale percorso). Prende l'aspetto degli
    altri campi della finestra: .ticket-dialog input e select non condividono
    una regola, quindi va vestito a mano. */

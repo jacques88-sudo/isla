@@ -31,6 +31,11 @@
 //                di dettaglio questo testo per esteso, che e' il posto dove spiegare
 //                i limiti (per il Twin Ticket il transfer vale solo per Loro Parque).
 //                    transfer: { it: "Disponibile su richiesta", en: "...", es: "..." }
+//   transferPrice → facoltativo: quanto costa la stessa attivita' col transfer
+//                incluso, in euro. { adult, child, baby }. `baby` e' il solo posto
+//                sul pullman per i neonati, che senza transfer non esiste. Compare
+//                come riga in fondo alla pagina di dettaglio.
+//                    transferPrice: { adult: 99, child: 74, baby: 17 }
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
 //   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
@@ -977,6 +982,7 @@ const ESPLORA_CATALOG = [
       en: "Available on request, for the Loro Parque day only",
       es: "Disponible bajo petición, solo para el día en Loro Parque"
     },
+    transferPrice: { adult: 99, child: 74, baby: 17 },
     family: true,
     desc: {
       it: "Biglietto combinato per i due parchi più conosciuti dell'isola.",

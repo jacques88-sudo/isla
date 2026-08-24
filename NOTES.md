@@ -156,6 +156,13 @@ quattro, quelli con un operatore unico e un listino esposto:
 2. **I siti ufficiali degli operatori sono bloccati** dal proxy di rete, come
    admiral-excursions.com: si vedono solo i riassunti delle ricerche, non il listino
 
+**Perche' i prezzi trovati in rete ballano cosi' tanto** (spiegato dall'ufficio, e va
+ricordato la prossima volta): molti rivenditori espongono il **prezzo bambino** e ci
+scrivono davanti "a partire da". Il Twin Ticket a 58 euro che avevo trovato non era un
+altro prezzo: era il prezzo bambino (57) presentato come prezzo di partenza. Quindi un
+numero molto piu' basso degli altri, di solito, e' un prezzo bambino o un acconto — non
+un'offerta
+
 **Attenzione:** una ricerca dava il Siam Park a 44 euro adulti mentre in catalogo c'e' 48
 (preso dal sito Admiral). **I prezzi gia' presenti non sono stati toccati.** Se i 44 sono
 quelli giusti lo dice l'ufficio
@@ -163,6 +170,20 @@ quelli giusti lo dice l'ufficio
 Per le attivita' generiche (lezione di surf, immersioni, canyoning, cavallo, trekking,
 tour dell'isola, tour privati) **un prezzo pubblico unico non esiste**: cambia da
 operatore a operatore, e siamo noi a scegliere da chi comprare
+
+### Il transfer cambia il prezzo (24 agosto)
+
+Il Twin Ticket col transfer costa **99 euro adulti, 74 bambini e 17 per i neonati**, dove
+i 17 sono **solo il posto sul pullman**: senza transfer il neonato non paga niente e la
+voce non esiste. Dati dell'ufficio.
+
+Il campo si chiama `transferPrice: { adult, child, baby }` e compare come **una riga sola**
+in fondo alla pagina di dettaglio, non tre: la tabella diventerebbe un listino. Ce l'ha
+solo il Twin Ticket.
+
+**Da chiedere ancora all'ufficio:** il prezzo bambino del Twin Ticket **senza** transfer
+(in catalogo c'e' solo l'adulto, 78) e se anche Loro Parque da solo ha un prezzo col
+transfer.
 
 ### Tuk tuk e trenino (24 agosto)
 

@@ -165,6 +165,8 @@ const I18N = {
   "detail.suitable":    { it: "Adatta a", en: "Suitable for", es: "Apta para" },
   "detail.season":      { it: "Periodo", en: "Season", es: "Temporada" },
   "detail.transfer":    { it: "Transfer", en: "Transfer", es: "Traslado" },
+  "detail.withTransfer": { it: "Con il transfer", en: "With the transfer", es: "Con el traslado" },
+  "detail.babySeat":    { it: "posto sul pullman", en: "coach seat", es: "plaza en el autobús" },
   "req.transfer":       { it: "Vuoi il transfer?", en: "Would you like the transfer?", es: "¿Quieres el traslado?" },
   "detail.people":      { it: "Da {from} a {to} persone", en: "{from} to {to} people", es: "De {from} a {to} personas" },
   "detail.privateTitle":{ it: "Vuoi la barca solo per il tuo gruppo?", en: "Want the boat just for your group?", es: "¿Quieres el barco solo para tu grupo?" },
@@ -203,6 +205,7 @@ const I18N = {
   "wa.adults":          { it: "adulti", en: "adults", es: "adultos" },
   "wa.child":           { it: "bambino", en: "child", es: "niño" },
   "wa.children":        { it: "bambini", en: "children", es: "niños" },
+  "wa.babies":          { it: "neonati", en: "babies", es: "bebés" },
   "wa.and":             { it: "e", en: "and", es: "y" },
 
   // ── assistente ──────────────────────────────────────────────────────────

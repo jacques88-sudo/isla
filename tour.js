@@ -62,6 +62,17 @@ function detailRows(tour) {
   if (tour.priceChild > 0) righe.push([t("req.kids"), "€" + tour.priceChild]);
   righe.push([t("detail.suitable"), t(tour.family ? "detail.kidsYes" : "detail.kidsNo")]);
   if (tour.transfer) righe.push([t("detail.transfer"), tf(tour.transfer)]);
+  // Col transfer il prezzo cambia: si mostra su una riga sola invece che su
+  // tre, altrimenti la tabella diventa un listino. Il posto per i neonati
+  // esiste solo qui: e' il sedile sul pullman, senza transfer non si paga.
+  if (tour.transferPrice) {
+    const tp = tour.transferPrice;
+    const parti = [];
+    if (tp.adult) parti.push("€" + tp.adult + " " + t("wa.adults"));
+    if (tp.child) parti.push("€" + tp.child + " " + t("wa.children"));
+    if (tp.baby) parti.push("€" + tp.baby + " " + t("wa.babies") + " (" + t("detail.babySeat") + ")");
+    if (parti.length) righe.push([t("detail.withTransfer"), parti.join(" · ")]);
+  }
   if (tour.season) righe.push([t("detail.season"), tf(tour.season)]);
 
   return righe.map(([etichetta, valore]) => `

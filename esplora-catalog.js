@@ -853,7 +853,7 @@ const ESPLORA_CATALOG = [
       en: "A first dive for beginners, or the full path to certification.",
       es: "Primera inmersión para principiantes o curso completo para obtener el título."
     },
-    image: "",
+    image: "immersioni.jpg",
     published: true
   },
   {
@@ -871,7 +871,7 @@ const ESPLORA_CATALOG = [
       en: "Rising above the water on a jet-powered board, with an instructor.",
       es: "Elevarse sobre el agua con la tabla a chorro, con instructor."
     },
-    image: "",
+    image: "flyboard.jpg",
     published: true
   },
   {

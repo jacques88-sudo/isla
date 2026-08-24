@@ -501,6 +501,16 @@ a { text-decoration: none; color: inherit; }
   border-radius: 20px;
   color: var(--text);
 }
+/* Il quinto riquadro: da solo su una riga da 2 o 4 colonne resterebbe
+   spaiato, quindi occupa tutta la larghezza e mette icona e testo in fila. */
+.bento-tile-wide {
+  grid-column: 1 / -1;
+  aspect-ratio: auto;
+  flex-direction: row;
+  gap: .9rem;
+  padding: 1.15rem 1rem;
+}
+
 .bento-tile svg {
   width: 28px;
   height: 28px;

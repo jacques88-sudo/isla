@@ -1104,16 +1104,16 @@ const ESPLORA_CATALOG = [
     id: "flamenco-show",
     title: "¡Olé! Flamenco Show",
     category: "parchi-spettacoli",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Serata", en: "Evening", es: "Noche" },
-    priceFrom: null,
+    zone: "Costa Adeje",
+    duration: { it: "1 ora e 30", en: "1.5 hours", es: "1 hora y media" },
+    priceFrom: 35,
     priceAdult: 0,
     priceChild: 0,
     family: true,
     desc: {
-      it: "Spettacolo di flamenco dal vivo, con musicisti e ballerini.",
-      en: "A live flamenco show, with musicians and dancers.",
-      es: "Espectáculo de flamenco en directo, con músicos y bailaores."
+      it: "Spettacolo di flamenco dal vivo, con musicisti e ballerini. I bambini dai 3 ai 12 anni pagano meno; sotto i 3 anni non si entra.",
+      en: "A live flamenco show, with musicians and dancers. Children aged 3 to 12 pay less; under 3s are not admitted.",
+      es: "Espectáculo de flamenco en directo, con músicos y bailaores. Los niños de 3 a 12 años pagan menos; menores de 3 años no entran."
     },
     image: "",
     published: true
@@ -1122,16 +1122,16 @@ const ESPLORA_CATALOG = [
     id: "scandal-dinner-show",
     title: "Scandal Dinner Show",
     category: "parchi-spettacoli",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Costa Adeje",
     duration: { it: "Serata", en: "Evening", es: "Noche" },
     priceFrom: null,
     priceAdult: 0,
     priceChild: 0,
     family: false,
     desc: {
-      it: "Cena e cabaret in una serata pensata per adulti.",
-      en: "Dinner and cabaret in an evening made for adults.",
-      es: "Cena y cabaret en una velada pensada para adultos."
+      it: "Cena e cabaret in una serata pensata per adulti: vietata ai minori di 16 anni.",
+      en: "Dinner and cabaret in an evening made for adults: no under-16s.",
+      es: "Cena y cabaret en una velada pensada para adultos: prohibida a menores de 16 años."
     },
     image: "",
     published: true
@@ -1140,9 +1140,9 @@ const ESPLORA_CATALOG = [
     id: "history-music-show",
     title: "History – The Evolution of Music",
     category: "parchi-spettacoli",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Serata", en: "Evening", es: "Noche" },
-    priceFrom: null,
+    zone: "Pirámide de Arona",
+    duration: { it: "2 ore e 30", en: "2.5 hours", es: "2 horas y media" },
+    priceFrom: 49,
     priceAdult: 0,
     priceChild: 0,
     family: true,

@@ -31,6 +31,11 @@
 //                di dettaglio questo testo per esteso, che e' il posto dove spiegare
 //                i limiti (per il Twin Ticket il transfer vale solo per Loro Parque).
 //                    transfer: { it: "Disponibile su richiesta", en: "...", es: "..." }
+//   transferPrice → facoltativo: quanto costa la stessa attivita' col transfer
+//                incluso, in euro. { adult, child, baby }. `baby` e' il solo posto
+//                sul pullman per i neonati, che senza transfer non esiste. Compare
+//                come riga in fondo alla pagina di dettaglio.
+//                    transferPrice: { adult: 99, child: 74, baby: 17 }
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
 //   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
@@ -168,9 +173,9 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
+    priceFrom: 61,
+    priceAdult: 61,
+    priceChild: 37,
     family: true,
     desc: {
       it: "Discesa sott'acqua a bordo di un sottomarino turistico, per vedere il fondale senza bagnarsi.",
@@ -698,10 +703,10 @@ const ESPLORA_CATALOG = [
     title: "Karting",
     category: "avventura-motori",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
+    duration: { it: "10 minuti a tanda", en: "10-minute session", es: "10 minutos por tanda" },
+    priceFrom: 20,
+    priceAdult: 20,
+    priceChild: 15,
     family: false,
     desc: {
       it: "Giri in pista su kart, cronometrati.",
@@ -970,13 +975,14 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 78,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 78,
+    priceChild: 57,
     transfer: {
       it: "Disponibile su richiesta, solo per la giornata a Loro Parque",
       en: "Available on request, for the Loro Parque day only",
       es: "Disponible bajo petición, solo para el día en Loro Parque"
     },
+    transferPrice: { adult: 99, child: 74, baby: 17 },
     family: true,
     desc: {
       it: "Biglietto combinato per i due parchi più conosciuti dell'isola.",
@@ -1307,15 +1313,15 @@ const ESPLORA_CATALOG = [
     title: { it: "Tour in tuk tuk", en: "Tuk Tuk Tour", es: "Tour en tuk tuk" },
     category: "tour-isola",
     zone: "Costa Adeje",
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
+    duration: { it: "Da 1 ora", en: "From 1 hour", es: "Desde 1 hora" },
+    priceFrom: 24,
     priceAdult: 0,
     priceChild: 0,
     family: true,
     desc: {
-      it: "Giro guidato in tuk tuk elettrico lungo la costa di Adeje: Plaza del Duque, La Caleta e le spiagge, con soste per scendere a guardare.",
-      en: "A guided ride in an electric tuk tuk along the Adeje coast: Plaza del Duque, La Caleta and the beaches, with stops to get off and look around.",
-      es: "Recorrido guiado en tuk tuk eléctrico por la costa de Adeje: Plaza del Duque, La Caleta y las playas, con paradas para bajar a mirar."
+      it: "Giro guidato in tuk tuk elettrico sulla costa di Adeje. Ci sono più percorsi: quello panoramico con sosta per un drink, quello dei punti principali di Costa Adeje e quello lungo che arriva fino ai vulcani.",
+      en: "A guided ride in an electric tuk tuk along the Adeje coast. There are several routes: the scenic one with a drinks stop, the one around the main sights of Costa Adeje, and the long one that reaches the volcanoes.",
+      es: "Recorrido guiado en tuk tuk eléctrico por la costa de Adeje. Hay varias rutas: la panorámica con parada para tomar algo, la de los puntos principales de Costa Adeje y la larga que llega hasta los volcanes."
     },
     image: "",
     published: true
@@ -1326,9 +1332,9 @@ const ESPLORA_CATALOG = [
     category: "tour-isola",
     zone: "Costa Adeje – Los Cristianos",
     duration: { it: "Tutto il giorno", en: "All day", es: "Todo el día" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
+    priceFrom: 9,
+    priceAdult: 9,
+    priceChild: 5,
     family: true,
     desc: {
       it: "Trenino su gomma fra Costa Adeje e Los Cristianos: si sale e si scende alle fermate quando si vuole, il biglietto vale tutta la giornata.",

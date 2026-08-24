@@ -155,6 +155,13 @@ Coperte 34 schede su 69 (prima 21). I file si chiamano come l'`id` della scheda.
   Parque**, non per quella al Siam Park. Ha senso: il Siam Park e' a Costa Adeje, dove
   alloggiano i clienti, mentre Loro Parque e' a Puerto de la Cruz, dall'altra parte
   dell'isola. Il campo si chiama `transfer` e lo hanno solo queste due voci
+- Nella finestra della richiesta compare la casella "Vuoi il transfer?", solo sulle
+  attivita' col campo `transfer`. La risposta finisce nel messaggio WhatsApp **sempre**,
+  anche quando e' no: cosi' l'ufficio sa che la domanda e' stata fatta invece di doverla
+  rifare in chat. La finestra e' una sola per tutte le attivita', quindi la spunta si
+  azzera a ogni apertura
+- La finestra della richiesta e' **duplicata in `escursioni.html` e `tour.html`**: quando
+  si tocca una, va toccata anche l'altra. Un `diff` fra i due blocchi lo verifica
 - `immersioni` (tartaruga verde e sub) e `flyboard` (Costa Adeje) aggiunte il 24 agosto:
   gli sport acquatici sono coperti tutti tranne `surf-lesson`
 - **La foto del flyboard ha il marchio "Water Sports Tenerife" in basso a destra.** Sulla

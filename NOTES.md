@@ -150,6 +150,11 @@ Coperte 34 schede su 69 (prima 21). I file si chiamano come l'`id` della scheda.
   (24 agosto). Non c'è più niente da verificare qui
 - `jet-car-rental` — la jet car verde. Da non confondere con `fiat-500-water-car`, che è
   un'altra attività e ha già la sua foto
+- `immersioni` (tartaruga verde e sub) e `flyboard` (Costa Adeje) aggiunte il 24 agosto:
+  gli sport acquatici sono coperti tutti tranne `surf-lesson`
+- **La foto del flyboard ha il marchio "Water Sports Tenerife" in basso a destra.** Sulla
+  scheda si vede poco perché il taglio lo mangia quasi tutto, ma c'è. Da sostituire con
+  una versione senza marchio: ritagliarlo via non si fa, è la firma di chi l'ha scattata
 - Le due moto d'acqua da 1 e 2 ore sono state **unite in una scheda sola**
   (`jet-ski-safari-1-2h`), come si era fatto per il 2 e 3 ore del buggy: stessa
   attività, cambia solo la durata. `priceFrom` è il taglio più corto (€150) e i due

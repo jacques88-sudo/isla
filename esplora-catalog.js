@@ -172,7 +172,7 @@ const ESPLORA_CATALOG = [
       en: "A dive below the surface aboard a tourist submarine, to see the seabed without getting wet.",
       es: "Inmersión bajo el agua a bordo de un submarino turístico, para ver el fondo sin mojarse."
     },
-    image: "",
+    image: "submarine-safari.jpg",
     published: true
   },
   {
@@ -190,7 +190,7 @@ const ESPLORA_CATALOG = [
       en: "A sport fishing trip offshore, with tackle and crew on board.",
       es: "Salida de pesca deportiva mar adentro, con equipo y tripulación a bordo."
     },
-    image: "",
+    image: "pesca-altura.jpg",
     published: true
   },
   {
@@ -503,7 +503,7 @@ const ESPLORA_CATALOG = [
       en: "An evening of stargazing in a group, with a guide.",
       es: "Velada de observación de estrellas en grupo, con guía."
     },
-    image: "",
+    image: "stargazing-group.jpg",
     published: true
   },
   {
@@ -521,7 +521,7 @@ const ESPLORA_CATALOG = [
       en: "Stargazing in its VIP version, in a small group.",
       es: "Observación de estrellas en versión VIP, en grupo reducido."
     },
-    image: "",
+    image: "stargazing-vip.jpg",
     published: true
   },
 
@@ -667,7 +667,7 @@ const ESPLORA_CATALOG = [
       en: "Tenerife seen from above: a helicopter flight over the island.",
       es: "Tenerife vista desde el aire: sobrevuelo de la isla en helicóptero."
     },
-    image: "",
+    image: "helicopter-tours.jpg",
     published: true
   },
   {
@@ -685,7 +685,7 @@ const ESPLORA_CATALOG = [
       en: "A tandem paragliding flight with an instructor.",
       es: "Vuelo en parapente en tándem con instructor."
     },
-    image: "",
+    image: "paragliding.jpg",
     published: true
   },
   {
@@ -703,7 +703,7 @@ const ESPLORA_CATALOG = [
       en: "Timed laps on a go-kart track.",
       es: "Vueltas cronometradas en pista de karts."
     },
-    image: "",
+    image: "karting.jpg",
     published: true
   },
   {
@@ -721,7 +721,7 @@ const ESPLORA_CATALOG = [
       en: "A guided horseback ride along trails with ocean views.",
       es: "Paseo a caballo con guía por senderos con vistas al océano."
     },
-    image: "",
+    image: "cavallo.jpg",
     published: true
   },
 
@@ -759,7 +759,7 @@ const ESPLORA_CATALOG = [
       en: "Jet car rental: you take the wheel, out on the open water.",
       es: "Alquiler de jet car: llevas tú el timón, en mar abierto."
     },
-    image: "",
+    image: "jet-car-rental.jpg",
     published: true
   },
   {
@@ -777,7 +777,7 @@ const ESPLORA_CATALOG = [
       en: "The inflatable towed by a speedboat, banana or fly fish. You choose on the spot.",
       es: "El hinchable remolcado por la lancha, en versión banana o fly fish. Se elige allí mismo."
     },
-    image: "",
+    image: "banana-boat.jpg",
     published: true
   },
   {
@@ -795,7 +795,7 @@ const ESPLORA_CATALOG = [
       en: "Kayaking along the coast plus a mask-and-snorkel stop, in the same outing.",
       es: "Kayak por la costa y parada con máscara y tubo, en la misma salida."
     },
-    image: "",
+    image: "kayak-snorkelling.jpg",
     published: true
   },
   {
@@ -813,7 +813,7 @@ const ESPLORA_CATALOG = [
       en: "A parachute towed by a speedboat, with the coast seen from above.",
       es: "Paracaídas remolcado por una lancha, con vistas de la costa desde el aire."
     },
-    image: "",
+    image: "parascending.jpg",
     published: true
   },
   {
@@ -831,7 +831,7 @@ const ESPLORA_CATALOG = [
       en: "Two hours of jet ski safari along the coast, with an instructor.",
       es: "Dos horas de safari en moto de agua por la costa, con instructor."
     },
-    image: "",
+    image: "jet-ski-safari-2h.jpg",
     published: true
   },
   {

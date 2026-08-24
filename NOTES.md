@@ -133,6 +133,28 @@ toccano il codice già scritto:
   da confermare in ufficio
 - `Cat-mare.jpg` è usata sia dalla card categoria "Mare e barche" in home sia dalla scheda
   del 3-Hour Whale & Dolphin Boat Trip: scelta voluta, non è una svista
+
+### Le 13 foto del 24 agosto
+
+Coperte 34 schede su 69 (prima 21). I file si chiamano come l'`id` della scheda.
+
+- I **nomi dei file caricati non arrivano** nella chat: si vede solo il contenuto
+  dell'immagine. Ogni assegnazione qui sotto viene da quello che si vede nella foto
+- `submarine-safari` — sottomarino giallo con la scritta "Sub Fun", che è il **Sub Fun
+  Cinco**: parte da Marina Amarilla, a Tenerife. Verificato, perché un sottomarino
+  giallo uguale gira anche a Lanzarote e sarebbe stata una foto sbagliata
+- `pesca-altura` — un Rodman 1250 sotto le falesie di Los Gigantes. Che sia pesca e non
+  whale watching si vede dalle **canne nei portacanne** a dritta, ingrandendo lo scafo
+- `stargazing-group` (due telescopi, Via Lattea) e `stargazing-vip` (un telescopio solo,
+  al tramonto): **assegnazione a intuito**, non c'è niente nelle foto che dica quale
+  serata sia quale. Da confermare in ufficio, si scambiano in un minuto
+- `jet-car-rental` — la jet car verde. Da non confondere con `fiat-500-water-car`, che è
+  un'altra attività e ha già la sua foto
+- `jet-ski-safari-2h` ha la foto, `jet-ski-safari-1h` no: sono la stessa attività di
+  durata diversa e stanno **una accanto all'altra** nella griglia, quindi la stessa foto
+  ripetuta si noterebbe. Meglio una seconda foto
+- Le più deboli come qualità: `cavallo` (640x480) e `karting` (784x523). Vanno bene per
+  ora, ma su schermo grande si vede che sono piccole
 - `assets/fiat-500-on-water.jpg` è tornata in uso: la Fiat 500 Water Car non era una voce
   dei concorrenti da buttare, Admiral la vende davvero — sotto `watersports`, non fra le
   barche dove l'avevamo messa all'inizio

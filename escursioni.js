@@ -85,6 +85,7 @@ function tourCard(tour) {
         <li>${tf(tour.zone)}</li>
         <li>${tf(tour.duration)}</li>
         ${tour.family ? "<li>" + t("tour.family") + "</li>" : ""}
+        ${tour.season ? `<li class="tour-meta-season">${tf(tour.season)}</li>` : ""}
       </ul>
       <div class="tour-foot">
         <span class="tour-price">${tourPrice(tour)}</span>
@@ -221,6 +222,7 @@ function initRequestDialog() {
   const scrim = document.querySelector("[data-request-scrim]");
   const form = document.querySelector("[data-request-form]");
   const activityEl = document.querySelector("[data-request-activity]");
+  const seasonEl = document.querySelector("[data-request-season]");
   const dateInput = document.getElementById("reqDate");
   if (!dialog || !scrim || !form || !dateInput) return;
 
@@ -233,6 +235,12 @@ function initRequestDialog() {
   function open(tour) {
     current = tour;
     activityEl.textContent = tf(tour.title);
+    // se l'attivita' si fa solo in certi mesi lo si dice qui, prima che il
+    // cliente scelga una data in cui non si puo' fare
+    if (seasonEl) {
+      seasonEl.textContent = tour.season ? tf(tour.season) : "";
+      seasonEl.hidden = !tour.season;
+    }
     dialog.hidden = false;
     scrim.hidden = false;
     requestAnimationFrame(() => {

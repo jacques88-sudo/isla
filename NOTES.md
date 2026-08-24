@@ -177,6 +177,15 @@ Le descrizioni sono scritte da zero, non copiate. Idem per le foto: nessuna pres
 Scartato dallo stesso confronto: i beach club (Monkey Beach Club, Kaluna), che Admiral
 non vende.
 
+## Attivita' stagionali
+
+Il campo `season` in `esplora-catalog.js` segna le attivita' che si fanno solo in certi
+mesi. Oggi ce l'ha solo **Siam Night** (solo luglio e agosto, confermato dall'ufficio).
+
+Quando c'e', compare in tre punti: etichetta color sabbia sulla scheda del catalogo, riga
+"Periodo" sulla pagina di dettaglio, e **avviso dentro la finestra della richiesta, sopra
+il calendario** — cioe' prima che il cliente scelga una data in cui l'attivita' non si fa.
+
 ## Da dove vengono i dati del catalogo
 
 Il sito di Admiral **non è raggiungibile** da queste sessioni: la rete blocca

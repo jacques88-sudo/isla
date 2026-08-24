@@ -20,6 +20,12 @@
 //   privateOption → facoltativo: id dell'escursione in versione privata. Sulla
 //                pagina di dettaglio compare un rimando "vuoi la barca solo per
 //                il tuo gruppo?".
+//   season     → facoltativo: quando l'attivita' si fa solo in certi mesi. Compare
+//                come etichetta sulla scheda, come riga sulla pagina di dettaglio e
+//                come avviso nella finestra della richiesta, cioe' prima che il
+//                cliente scelga una data impossibile. Esempio:
+//                    season: { it: "Solo luglio e agosto", en: "July and August only",
+//                              es: "Solo julio y agosto" }
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
 //   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
@@ -822,6 +828,11 @@ const ESPLORA_CATALOG = [
     category: "parchi-spettacoli",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    season: {
+      it: "Solo luglio e agosto",
+      en: "July and August only",
+      es: "Solo julio y agosto"
+    },
     priceFrom: 48,
     priceAdult: 0,
     priceChild: 0,

@@ -160,6 +160,7 @@ const I18N = {
   "detail.duration":    { it: "Durata", en: "Duration", es: "Duración" },
   "detail.price":       { it: "Prezzo", en: "Price", es: "Precio" },
   "detail.suitable":    { it: "Adatta a", en: "Suitable for", es: "Apta para" },
+  "detail.season":      { it: "Periodo", en: "Season", es: "Temporada" },
   "detail.people":      { it: "Da {from} a {to} persone", en: "{from} to {to} people", es: "De {from} a {to} personas" },
   "detail.privateTitle":{ it: "Vuoi la barca solo per il tuo gruppo?", en: "Want the boat just for your group?", es: "¿Quieres el barco solo para tu grupo?" },
   "detail.privateLink": { it: "Vedi il charter privato", en: "See the private charter", es: "Ver el chárter privado" },

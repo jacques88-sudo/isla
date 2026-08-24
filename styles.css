@@ -1417,6 +1417,22 @@ body.menu-open { overflow: hidden; }
   border-radius: var(--radius-pill);
   padding: .3rem .7rem;
 }
+/* Vincolo stagionale: e' un avviso, non un dato neutro come zona e durata,
+   quindi si stacca dalle altre etichette. */
+.tour-meta-season {
+  background: var(--sand) !important;
+  color: var(--text) !important;
+}
+
+.request-season {
+  margin: -.4rem 0 .8rem;
+  padding: .6rem .8rem;
+  background: var(--sand);
+  border-radius: 10px;
+  font-size: .82rem;
+}
+.request-season[hidden] { display: none; }
+
 .tour-foot {
   margin-top: auto;
   padding-top: .9rem;

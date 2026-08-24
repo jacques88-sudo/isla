@@ -176,6 +176,24 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    id: "pesca-altura",
+    title: { it: "Pesca d'altura", en: "Deep sea fishing", es: "Pesca de altura" },
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: false,
+    desc: {
+      it: "Uscita di pesca sportiva al largo, con attrezzatura e equipaggio a bordo.",
+      en: "A sport fishing trip offshore, with tackle and crew on board.",
+      es: "Salida de pesca deportiva mar adentro, con equipo y tripulación a bordo."
+    },
+    image: "",
+    published: true
+  },
+  {
     id: "luxury-catamaran",
     title: "Luxury Catamaran Experience",
     category: "mare-barche",
@@ -432,6 +450,42 @@ const ESPLORA_CATALOG = [
     image: "",
     published: true
   },
+  {
+    id: "trekking-bici",
+    title: { it: "Trekking e bici", en: "Hiking & biking", es: "Senderismo y bici" },
+    category: "teide-natura",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: false,
+    desc: {
+      it: "Giornata fra sentieri e bicicletta, con guida.",
+      en: "A day between trails and bike, with a guide.",
+      es: "Jornada entre senderos y bicicleta, con guía."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "pico-teide",
+    title: { it: "Salita al Pico del Teide", en: "Teide summit climb", es: "Subida al Pico del Teide" },
+    category: "teide-natura",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: false,
+    desc: {
+      it: "Salita a piedi fino alla cima del Teide. Serve il permesso, che va chiesto in anticipo.",
+      en: "The climb on foot to the summit of Teide. A permit is required and must be requested in advance.",
+      es: "La subida a pie hasta la cima del Teide. Hace falta permiso, que se solicita con antelación."
+    },
+    image: "",
+    published: true
+  },
 
   // ─── STELLE E ASTRONOMIA ──────────────────────────────────────────────────
   {
@@ -634,6 +688,42 @@ const ESPLORA_CATALOG = [
     image: "",
     published: true
   },
+  {
+    id: "karting",
+    title: "Karting",
+    category: "avventura-motori",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: false,
+    desc: {
+      it: "Giri in pista su kart, cronometrati.",
+      en: "Timed laps on a go-kart track.",
+      es: "Vueltas cronometradas en pista de karts."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "cavallo",
+    title: { it: "Passeggiata a cavallo", en: "Horseback riding", es: "Paseo a caballo" },
+    category: "avventura-motori",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Passeggiata a cavallo con guida, lungo sentieri con vista sull'oceano.",
+      en: "A guided horseback ride along trails with ocean views.",
+      es: "Paseo a caballo con guía por senderos con vistas al océano."
+    },
+    image: "",
+    published: true
+  },
 
   // ─── SPORT ACQUATICI ──────────────────────────────────────────────────────
   {
@@ -798,6 +888,24 @@ const ESPLORA_CATALOG = [
       it: "Sollevarsi sull'acqua con la tavola a getto, con istruttore.",
       en: "Rising above the water on a jet-powered board, with an instructor.",
       es: "Elevarse sobre el agua con la tabla a chorro, con instructor."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "surf-lesson",
+    title: { it: "Lezione di surf", en: "Surf lesson", es: "Clase de surf" },
+    category: "sport-acquatici",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Prima lezione di surf con istruttore, tavola e muta compresi.",
+      en: "A first surf lesson with an instructor, board and wetsuit included.",
+      es: "Primera clase de surf con instructor, tabla y neopreno incluidos."
     },
     image: "",
     published: true
@@ -1158,6 +1266,24 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    id: "la-palma",
+    title: "La Palma",
+    category: "tour-isola",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Escursione di una giornata sull'isola di La Palma.",
+      en: "A day trip to the island of La Palma.",
+      es: "Excursión de un día a la isla de La Palma."
+    },
+    image: "",
+    published: true
+  },
+  {
     id: "cantine-vinicole",
     title: {
       it: "Cantine vinicole con sommelier",
@@ -1224,5 +1350,41 @@ const ESPLORA_CATALOG = [
     },
     image: "",
     published: true
-  }
+  },
+  {
+    id: "teide-privato-giorno",
+    title: { it: "Tour privato del Teide", en: "Private Teide Tour", es: "Tour privado del Teide" },
+    category: "tour-privati",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Il Parco Nazionale del Teide con guida e mezzo riservati al tuo gruppo.",
+      en: "Teide National Park with a guide and vehicle reserved for your group.",
+      es: "El Parque Nacional del Teide con guía y vehículo reservados para tu grupo."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "teide-privato-notte",
+    title: { it: "Tour privato del Teide di notte", en: "Private Teide Tour by Night", es: "Tour privado del Teide de noche" },
+    category: "tour-privati",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Salita al Teide dopo il tramonto, con guida e mezzo solo per il tuo gruppo.",
+      en: "Up to Teide after sunset, with a guide and vehicle for your group alone.",
+      es: "Subida al Teide tras el atardecer, con guía y vehículo solo para tu grupo."
+    },
+    image: "",
+    published: true
+  },
 ];

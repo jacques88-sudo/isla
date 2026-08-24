@@ -118,9 +118,9 @@ toccano il codice già scritto:
 - La categoria Admiral `Sky & Stars` e' stata divisa: elicottero e parapendio restano in
   "Avventura e motori" perche' e' li' che un cliente li cerca, le due serate di
   osservazione stanno in "Stelle e astronomia"
-- **"Tour privati" non ha nessun prodotto Admiral**: le sue 2 voci vengono dai concorrenti,
-  e `charter-privato` e' di fatto un doppione del `Private Charter` che sta fra le barche.
-  Da decidere se svuotare la categoria o spostarci dentro il Private Charter
+- "Tour privati" ha ora 4 voci: i due tour privati del Teide (confermati dall'ufficio) piu'
+  le 2 vecchie dei concorrenti. `charter-privato` resta di fatto un doppione del
+  `Private Charter` che sta fra le barche: da decidere se toglierlo
 - La "Mustang Experience" è un giro in Ford Mustang decappottabile, non un buggy: si è
   capito dalla foto mandata dall'ufficio
 - **Deciso:** nel frattempo le voci dei concorrenti restano visibili (`published: true`),
@@ -176,6 +176,20 @@ Le descrizioni sono scritte da zero, non copiate. Idem per le foto: nessuna pres
 
 Scartato dallo stesso confronto: i beach club (Monkey Beach Club, Kaluna), che Admiral
 non vende.
+
+Un secondo confronto, col catalogo di **Canary2Go**, ha aggiunto altre nove voci
+confermate dall'ufficio: i due **tour privati del Teide** (giorno e notte), **lezione di
+surf**, **pesca d'altura**, **karting**, **passeggiata a cavallo**, **trekking e bici**,
+**salita al Pico del Teide** e **La Palma**. Scartati kitesurf, wing foil, Forestal Park,
+Piramidi di Güímar e Palmetum.
+
+**Attenzione ai prezzi di Canary2Go: non sono comparabili.** Elencano Siam Park a 20 euro
+e Loro Parque a 20 dove Admiral sta a 48 e 44, l'elicottero a 11 dove Admiral sta a 98:
+sono acconti, non prezzi pieni. Non ne e' stato copiato nessuno.
+
+I titoli di queste nove sono scritti nelle tre lingue, non lasciati in inglese come i
+prodotti Admiral: qui un nome ufficiale Admiral ancora non c'e'. Quando arrivera', vanno
+allineati alla regola degli altri.
 
 ## Attivita' stagionali
 

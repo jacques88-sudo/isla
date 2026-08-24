@@ -26,6 +26,11 @@
 //                cliente scelga una data impossibile. Esempio:
 //                    season: { it: "Solo luglio e agosto", en: "July and August only",
 //                              es: "Solo julio y agosto" }
+//   transfer   → facoltativo: quando l'attivita' si puo' avere col trasporto incluso.
+//                Sulla scheda compare la pillola "Transfer disponibile", sulla pagina
+//                di dettaglio questo testo per esteso, che e' il posto dove spiegare
+//                i limiti (per il Twin Ticket il transfer vale solo per Loro Parque).
+//                    transfer: { it: "Disponibile su richiesta", en: "...", es: "..." }
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
 //   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
@@ -944,6 +949,11 @@ const ESPLORA_CATALOG = [
     priceFrom: 44,
     priceAdult: 0,
     priceChild: 0,
+    transfer: {
+      it: "Disponibile su richiesta",
+      en: "Available on request",
+      es: "Disponible bajo petición"
+    },
     family: true,
     desc: {
       it: "Zoo e giardino tropicale, conosciuto in tutto il mondo per i suoi animali.",
@@ -962,6 +972,11 @@ const ESPLORA_CATALOG = [
     priceFrom: 78,
     priceAdult: 0,
     priceChild: 0,
+    transfer: {
+      it: "Disponibile su richiesta, solo per la giornata a Loro Parque",
+      en: "Available on request, for the Loro Parque day only",
+      es: "Disponible bajo petición, solo para el día en Loro Parque"
+    },
     family: true,
     desc: {
       it: "Biglietto combinato per i due parchi più conosciuti dell'isola.",

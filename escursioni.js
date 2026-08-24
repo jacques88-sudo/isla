@@ -62,6 +62,11 @@ function whatsappUrl(tour, req) {
     "• " + tf(tour.title) + "\n" +
     "• " + t("wa.date") + ": " + formatDate(req.date) + "\n" +
     "• " + t("wa.people") + ": " + peopleText(req.adults, req.kids);
+  // La risposta si scrive sempre, anche quando e' "no": cosi' l'ufficio sa che
+  // la domanda e' stata fatta, invece di doverla rifare in chat.
+  if (tour.transfer) {
+    testo += "\n• " + t("wa.transfer") + ": " + t(req.transfer ? "wa.yes" : "wa.no");
+  }
   if (req.note) testo += "\n• " + t("wa.notes") + ": " + req.note;
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
 }
@@ -95,6 +100,7 @@ function tourCard(tour) {
         ${daDefinire(tour.zone) ? "" : "<li>" + tf(tour.zone) + "</li>"}
         ${daDefinire(tour.duration) ? "" : "<li>" + tf(tour.duration) + "</li>"}
         ${tour.family ? "<li>" + t("tour.family") + "</li>" : ""}
+        ${tour.transfer ? "<li>" + t("tour.transfer") + "</li>" : ""}
         ${tour.season ? `<li class="tour-meta-season">${tf(tour.season)}</li>` : ""}
       </ul>
       <div class="tour-foot">
@@ -233,6 +239,9 @@ function initRequestDialog() {
   const form = document.querySelector("[data-request-form]");
   const activityEl = document.querySelector("[data-request-activity]");
   const seasonEl = document.querySelector("[data-request-season]");
+  const transferEl = document.querySelector("[data-request-transfer]");
+  const transferNoteEl = document.querySelector("[data-request-transfer-note]");
+  const transferInput = document.getElementById("reqTransfer");
   const dateInput = document.getElementById("reqDate");
   if (!dialog || !scrim || !form || !dateInput) return;
 
@@ -250,6 +259,16 @@ function initRequestDialog() {
     if (seasonEl) {
       seasonEl.textContent = tour.season ? tf(tour.season) : "";
       seasonEl.hidden = !tour.season;
+    }
+    // la domanda sul transfer compare solo dove il transfer esiste davvero, e
+    // riparte sempre da non spuntata: la finestra e' la stessa per tutte le
+    // attivita' e si riapre com'era rimasta
+    if (transferEl) {
+      transferEl.hidden = !tour.transfer;
+      if (transferInput) transferInput.checked = false;
+      // il testo per esteso dice i limiti (per il Twin Ticket vale solo per
+      // la giornata a Loro Parque) prima che il cliente spunti
+      if (transferNoteEl) transferNoteEl.textContent = tour.transfer ? tf(tour.transfer) : "";
     }
     dialog.hidden = false;
     scrim.hidden = false;
@@ -289,7 +308,10 @@ function initRequestDialog() {
   // Se la lingua cambia mentre la finestra è aperta, cambia anche il nome
   // dell'attività in cima.
   document.addEventListener("islalang", () => {
-    if (current) activityEl.textContent = tf(current.title);
+    if (!current) return;
+    activityEl.textContent = tf(current.title);
+    if (seasonEl && current.season) seasonEl.textContent = tf(current.season);
+    if (transferNoteEl && current.transfer) transferNoteEl.textContent = tf(current.transfer);
   });
 
   form.addEventListener("submit", e => {
@@ -301,7 +323,8 @@ function initRequestDialog() {
       date: dateInput.value,
       adults: parseInt(document.getElementById("reqAdults").value, 10) || 1,
       kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
-      note: document.getElementById("reqNote").value.trim()
+      note: document.getElementById("reqNote").value.trim(),
+      transfer: !!(transferInput && transferInput.checked)
     };
     if (!req.name || !req.date) return;
 

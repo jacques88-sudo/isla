@@ -61,6 +61,7 @@ function detailRows(tour) {
   if (tour.priceAdult > 0) righe.push([t("req.adults"), "€" + tour.priceAdult]);
   if (tour.priceChild > 0) righe.push([t("req.kids"), "€" + tour.priceChild]);
   righe.push([t("detail.suitable"), t(tour.family ? "detail.kidsYes" : "detail.kidsNo")]);
+  if (tour.transfer) righe.push([t("detail.transfer"), tf(tour.transfer)]);
   if (tour.season) righe.push([t("detail.season"), tf(tour.season)]);
 
   return righe.map(([etichetta, valore]) => `

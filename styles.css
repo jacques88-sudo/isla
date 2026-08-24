@@ -1788,6 +1788,39 @@ body.menu-open { overflow: hidden; }
   opacity: .7;
 }
 
+/* Domanda sul transfer: compare solo sulle attivita' che ce l'hanno.
+   .ticket-dialog label rende le etichette maiuscole e spaziate: qui e' una
+   domanda da leggere, non un'etichetta, quindi si torna al testo normale. */
+.ticket-dialog .request-check {
+  display: flex;
+  align-items: flex-start;
+  gap: .7rem;
+  margin: 0 0 1rem;
+  padding: .8rem .9rem;
+  background: var(--sand);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: .9rem;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text);
+}
+.ticket-dialog .request-check[hidden] { display: none; }
+.ticket-dialog .request-check input {
+  /* il campo non deve ereditare la larghezza piena degli altri della finestra */
+  width: auto;
+  min-width: 0;
+  margin: .15rem 0 0;
+  flex: none;
+  accent-color: var(--text);
+}
+.ticket-dialog .request-check small {
+  display: block;
+  margin-top: .15rem;
+  color: var(--muted);
+  font-size: .78rem;
+}
+
 .request-submit { margin-bottom: 1rem; }
 
 .request-privacy {

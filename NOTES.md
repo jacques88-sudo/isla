@@ -150,9 +150,10 @@ Coperte 34 schede su 69 (prima 21). I file si chiamano come l'`id` della scheda.
   serata sia quale. Da confermare in ufficio, si scambiano in un minuto
 - `jet-car-rental` — la jet car verde. Da non confondere con `fiat-500-water-car`, che è
   un'altra attività e ha già la sua foto
-- `jet-ski-safari-2h` ha la foto, `jet-ski-safari-1h` no: sono la stessa attività di
-  durata diversa e stanno **una accanto all'altra** nella griglia, quindi la stessa foto
-  ripetuta si noterebbe. Meglio una seconda foto
+- Le due moto d'acqua da 1 e 2 ore sono state **unite in una scheda sola**
+  (`jet-ski-safari-1-2h`), come si era fatto per il 2 e 3 ore del buggy: stessa
+  attività, cambia solo la durata. `priceFrom` è il taglio più corto (€150) e i due
+  prezzi stanno nella descrizione
 - Le più deboli come qualità: `cavallo` (640x480) e `karting` (784x523). Vanno bene per
   ora, ma su schermo grande si vede che sono piccole
 - `assets/fiat-500-on-water.jpg` è tornata in uso: la Fiat 500 Water Car non era una voce

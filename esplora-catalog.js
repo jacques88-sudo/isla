@@ -817,39 +817,21 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    id: "jet-ski-safari-2h",
-    title: "Jet Ski Safari – 2 Hour Ultimate Ride",
+    id: "jet-ski-safari-1-2h",
+    title: "Jet Ski Safari – 1 or 2 Hours",
     category: "sport-acquatici",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
-    priceFrom: 180,
-    priceAdult: 0,
-    priceChild: 0,
-    family: false,
-    desc: {
-      it: "Due ore di safari in moto d'acqua lungo la costa, con istruttore.",
-      en: "Two hours of jet ski safari along the coast, with an instructor.",
-      es: "Dos horas de safari en moto de agua por la costa, con instructor."
-    },
-    image: "jet-ski-safari-2h.jpg",
-    published: true
-  },
-  {
-    id: "jet-ski-safari-1h",
-    title: "Jet Ski Safari – 1 Hour Adventure",
-    category: "sport-acquatici",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
     priceFrom: 150,
     priceAdult: 0,
     priceChild: 0,
     family: false,
     desc: {
-      it: "Un'ora di safari in moto d'acqua lungo la costa, con istruttore.",
-      en: "One hour of jet ski safari along the coast, with an instructor.",
-      es: "Una hora de safari en moto de agua por la costa, con instructor."
+      it: "Safari in moto d'acqua lungo la costa, con istruttore. Un'ora da €150, due ore da €180.",
+      en: "Jet ski safari along the coast, with an instructor. One hour from €150, two hours from €180.",
+      es: "Safari en moto de agua por la costa, con instructor. Una hora desde €150, dos horas desde €180."
     },
-    image: "",
+    image: "jet-ski-safari-1-2h.jpg",
     published: true
   },
   {

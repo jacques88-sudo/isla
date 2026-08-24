@@ -134,6 +134,36 @@ toccano il codice già scritto:
 - `Cat-mare.jpg` è usata sia dalla card categoria "Mare e barche" in home sia dalla scheda
   del 3-Hour Whale & Dolphin Boat Trip: scelta voluta, non è una svista
 
+### Prezzi cercati in rete (24 agosto) — leggere prima di aggiungerne altri
+
+L'ufficio ha detto che **i prezzi pubblici sono anche i nostri**. Ne sono stati messi
+quattro, quelli con un operatore unico e un listino esposto:
+
+| Scheda | Adulto | Bambino | Fonte |
+| --- | --- | --- | --- |
+| Trenino turistico | 9 | 5 | prezzo esposto a bordo |
+| Submarine Safari | 61 | 37 | sito di prenotazione dell'operatore |
+| Karting | 20 | 15 | listino del circuito, tanda da 10 minuti |
+| Tuk tuk | 24 | — | prezzo a persona di un tour |
+
+**Gli altri 22 non sono stati messi, e non e' pigrizia.** Due motivi:
+
+1. **Gli aggregatori non concordano fra loro.** Nella stessa sessione due ricerche hanno
+   dato Twin Ticket a 78 euro e a 58, Aqualand a 37 e a 25, Loro Parque a 44 e a 40.
+   Alcuni siti espongono un **acconto** e non il prezzo pieno: era gia' successo con
+   Canary2Go (Siam Park a 20 contro i 48 di Admiral). Un prezzo sbagliato davanti a un
+   cliente e' peggio di "Su richiesta"
+2. **I siti ufficiali degli operatori sono bloccati** dal proxy di rete, come
+   admiral-excursions.com: si vedono solo i riassunti delle ricerche, non il listino
+
+**Attenzione:** una ricerca dava il Siam Park a 44 euro adulti mentre in catalogo c'e' 48
+(preso dal sito Admiral). **I prezzi gia' presenti non sono stati toccati.** Se i 44 sono
+quelli giusti lo dice l'ufficio
+
+Per le attivita' generiche (lezione di surf, immersioni, canyoning, cavallo, trekking,
+tour dell'isola, tour privati) **un prezzo pubblico unico non esiste**: cambia da
+operatore a operatore, e siamo noi a scegliere da chi comprare
+
 ### Tuk tuk e trenino (24 agosto)
 
 Aggiunte su richiesta dell'ufficio, in "Tour dell'isola" e non in "Avventura e motori":

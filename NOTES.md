@@ -171,6 +171,28 @@ Per le attivita' generiche (lezione di surf, immersioni, canyoning, cavallo, tre
 tour dell'isola, tour privati) **un prezzo pubblico unico non esiste**: cambia da
 operatore a operatore, e siamo noi a scegliere da chi comprare
 
+### Le varianti da scegliere (24 agosto)
+
+Campo `options`: le varianti della stessa attivita' fra cui il cliente sceglie — 1 o 2 ore
+per la moto d'acqua, quale percorso per il tuk tuk. Prima erano scritte solo dentro la
+descrizione, quindi il cliente le leggeva ma non poteva dire quale voleva.
+
+- Sulla **pagina di dettaglio** diventano una riga ciascuna, col prezzo dove lo sappiamo
+  ("2 ore — €180"), come le fasce di persone del Private Charter. L'etichetta del gruppo
+  ("Durata", "Percorso") sta solo sulla prima riga, altrimenti si ripete
+- Nella **finestra della richiesta** diventano un menu a tendina, e la scelta finisce nel
+  messaggio WhatsApp subito sotto il nome dell'attivita': e' la prima cosa che serve per
+  rispondere col prezzo giusto
+- Il menu **si ricostruisce a ogni apertura**, come la spunta del transfer: la finestra e'
+  una sola per tutte le attivita' e le voci di quella aperta prima resterebbero li'
+- `price` nella singola variante si puo' omettere: il tuk tuk ha i tre percorsi ma il
+  prezzo per percorso non lo sappiamo ancora, quindi le voci mostrano solo il nome
+
+**Un dettaglio che sembra un dettaglio e non lo e':** quando le varianti *sono* le durate,
+il campo `duration` ripete la stessa cosa in forma riassunta ("1 o 2 ore") e la pagina
+diceva "Durata" due volte di fila. Sulla pagina di dettaglio la riassunta ora si salta;
+sulla scheda del catalogo resta, perche' li' la pillola serve ancora.
+
 ### I tre spettacoli (24 agosto)
 
 Ricerca mirata dopo che l'ufficio ha spiegato come leggere i "a partire da".

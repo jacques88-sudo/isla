@@ -36,6 +36,20 @@
 //                sul pullman per i neonati, che senza transfer non esiste. Compare
 //                come riga in fondo alla pagina di dettaglio.
 //                    transferPrice: { adult: 99, child: 74, baby: 17 }
+//   options    → facoltativo: le varianti della stessa attivita' fra cui il cliente
+//                sceglie (1 o 2 ore, quale percorso, quale spettacolo). Sulla pagina
+//                di dettaglio diventano una riga ciascuna, con il prezzo se c'e';
+//                nella finestra della richiesta diventano un menu a tendina, e la
+//                scelta finisce nel messaggio WhatsApp.
+//                    options: {
+//                      label: { it: "Durata", en: "Duration", es: "Duración" },
+//                      choices: [
+//                        { label: { it: "1 ora", ... }, price: 150 },
+//                        { label: { it: "2 ore", ... }, price: 180 }
+//                      ]
+//                    }
+//                `price` si puo' omettere quando il prezzo della variante non lo
+//                sappiamo ancora: la riga mostra solo il nome.
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
 //   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
@@ -835,6 +849,13 @@ const ESPLORA_CATALOG = [
     priceFrom: 150,
     priceAdult: 0,
     priceChild: 0,
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        { label: { it: "1 ora",  en: "1 hour",  es: "1 hora" },  price: 150 },
+        { label: { it: "2 ore",  en: "2 hours", es: "2 horas" }, price: 180 }
+      ]
+    },
     family: false,
     desc: {
       it: "Safari in moto d'acqua lungo la costa, con istruttore. Un'ora da €150, due ore da €180.",
@@ -1317,6 +1338,23 @@ const ESPLORA_CATALOG = [
     priceFrom: 24,
     priceAdult: 0,
     priceChild: 0,
+    options: {
+      label: { it: "Percorso", en: "Route", es: "Ruta" },
+      choices: [
+        { label: {
+            it: "Panoramico, con sosta per un drink",
+            en: "Scenic, with a drinks stop",
+            es: "Panorámica, con parada para tomar algo" } },
+        { label: {
+            it: "I punti principali di Costa Adeje",
+            en: "The main sights of Costa Adeje",
+            es: "Los puntos principales de Costa Adeje" } },
+        { label: {
+            it: "Completo, fino ai vulcani",
+            en: "The complete one, out to the volcanoes",
+            es: "La completa, hasta los volcanes" } }
+      ]
+    },
     family: true,
     desc: {
       it: "Giro guidato in tuk tuk elettrico sulla costa di Adeje. Ci sono più percorsi: quello panoramico con sosta per un drink, quello dei punti principali di Costa Adeje e quello lungo che arriva fino ai vulcani.",

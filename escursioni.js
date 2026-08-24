@@ -62,6 +62,11 @@ function whatsappUrl(tour, req) {
     "• " + tf(tour.title) + "\n" +
     "• " + t("wa.date") + ": " + formatDate(req.date) + "\n" +
     "• " + t("wa.people") + ": " + peopleText(req.adults, req.kids);
+  // La variante scelta va subito sotto il nome dell'attivita': e' la prima
+  // cosa che l'ufficio deve sapere per rispondere col prezzo giusto.
+  if (tour.options && req.option) {
+    testo += "\n• " + tf(tour.options.label) + ": " + req.option;
+  }
   // La risposta si scrive sempre, anche quando e' "no": cosi' l'ufficio sa che
   // la domanda e' stata fatta, invece di doverla rifare in chat.
   if (tour.transfer) {
@@ -242,6 +247,8 @@ function initRequestDialog() {
   const transferEl = document.querySelector("[data-request-transfer]");
   const transferNoteEl = document.querySelector("[data-request-transfer-note]");
   const transferInput = document.getElementById("reqTransfer");
+  const optionEl = document.querySelector("[data-request-option]");
+  const optionLabelEl = document.querySelector("[data-request-option-label]");
   const dateInput = document.getElementById("reqDate");
   if (!dialog || !scrim || !form || !dateInput) return;
 
@@ -260,6 +267,11 @@ function initRequestDialog() {
       seasonEl.textContent = tour.season ? tf(tour.season) : "";
       seasonEl.hidden = !tour.season;
     }
+    // Il menu delle varianti compare solo dove ci sono. Si ricostruisce a ogni
+    // apertura: la finestra e' una sola per tutte le attivita', quindi le voci
+    // di quella aperta prima resterebbero li'.
+    riempiOpzioni(tour);
+
     // la domanda sul transfer compare solo dove il transfer esiste davvero, e
     // riparte sempre da non spuntata: la finestra e' la stessa per tutte le
     // attivita' e si riapre com'era rimasta
@@ -277,6 +289,29 @@ function initRequestDialog() {
       scrim.classList.add("is-visible");
     });
     document.body.classList.add("menu-open");
+  }
+
+  // Le voci portano il prezzo quando lo sappiamo ("2 ore — €180"), cosi' il
+  // cliente sceglie sapendo quanto costa invece di doverlo chiedere.
+  function riempiOpzioni(tour) {
+    if (!optionEl || !optionLabelEl) return;
+    const opz = tour.options;
+    const ci_sono = !!(opz && Array.isArray(opz.choices) && opz.choices.length);
+    optionEl.hidden = !ci_sono;
+    optionLabelEl.hidden = !ci_sono;
+    optionEl.innerHTML = "";
+    if (!ci_sono) return;
+
+    optionLabelEl.textContent = tf(opz.label);
+    opz.choices.forEach(scelta => {
+      const voce = document.createElement("option");
+      // il valore e' il testo stesso: e' quello che finisce su WhatsApp
+      voce.value = tf(scelta.label);
+      voce.textContent = scelta.price
+        ? tf(scelta.label) + " — €" + scelta.price
+        : tf(scelta.label);
+      optionEl.appendChild(voce);
+    });
   }
 
   function close() {
@@ -312,6 +347,12 @@ function initRequestDialog() {
     activityEl.textContent = tf(current.title);
     if (seasonEl && current.season) seasonEl.textContent = tf(current.season);
     if (transferNoteEl && current.transfer) transferNoteEl.textContent = tf(current.transfer);
+    // il menu si ricostruisce tradotto, tenendo la posizione scelta
+    if (optionEl && current.options) {
+      const scelto = optionEl.selectedIndex;
+      riempiOpzioni(current);
+      if (scelto >= 0) optionEl.selectedIndex = scelto;
+    }
   });
 
   form.addEventListener("submit", e => {
@@ -324,7 +365,8 @@ function initRequestDialog() {
       adults: parseInt(document.getElementById("reqAdults").value, 10) || 1,
       kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
       note: document.getElementById("reqNote").value.trim(),
-      transfer: !!(transferInput && transferInput.checked)
+      transfer: !!(transferInput && transferInput.checked),
+      option: optionEl && !optionEl.hidden ? optionEl.value : ""
     };
     if (!req.name || !req.date) return;
 

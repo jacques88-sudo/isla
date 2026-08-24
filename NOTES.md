@@ -150,6 +150,11 @@ Coperte 34 schede su 69 (prima 21). I file si chiamano come l'`id` della scheda.
   (24 agosto). Non c'è più niente da verificare qui
 - `jet-car-rental` — la jet car verde. Da non confondere con `fiat-500-water-car`, che è
   un'altra attività e ha già la sua foto
+- **Transfer** (deciso il 24 agosto): Loro Parque si puo' avere col trasporto incluso, e
+  quindi anche il Twin Ticket — ma li' il transfer vale **solo per la giornata a Loro
+  Parque**, non per quella al Siam Park. Ha senso: il Siam Park e' a Costa Adeje, dove
+  alloggiano i clienti, mentre Loro Parque e' a Puerto de la Cruz, dall'altra parte
+  dell'isola. Il campo si chiama `transfer` e lo hanno solo queste due voci
 - `immersioni` (tartaruga verde e sub) e `flyboard` (Costa Adeje) aggiunte il 24 agosto:
   gli sport acquatici sono coperti tutti tranne `surf-lesson`
 - **La foto del flyboard ha il marchio "Water Sports Tenerife" in basso a destra.** Sulla

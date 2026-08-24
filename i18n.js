@@ -153,6 +153,7 @@ const I18N = {
   "tour.onRequest":     { it: "Su richiesta", en: "On request", es: "Bajo petición" },
   "tour.from":          { it: "da €{p}", en: "from €{p}", es: "desde €{p}" },
   "tour.family":        { it: "Adatta ai bambini", en: "Kid-friendly", es: "Apta para niños" },
+  "tour.transfer":      { it: "Transfer disponibile", en: "Transfer available", es: "Traslado disponible" },
   "tour.ask":           { it: "Richiedi disponibilità", en: "Check availability", es: "Consultar disponibilidad" },
 
   // ── pagina di dettaglio di una singola escursione ───────────────────────
@@ -163,6 +164,7 @@ const I18N = {
   "detail.price":       { it: "Prezzo", en: "Price", es: "Precio" },
   "detail.suitable":    { it: "Adatta a", en: "Suitable for", es: "Apta para" },
   "detail.season":      { it: "Periodo", en: "Season", es: "Temporada" },
+  "detail.transfer":    { it: "Transfer", en: "Transfer", es: "Traslado" },
   "detail.people":      { it: "Da {from} a {to} persone", en: "{from} to {to} people", es: "De {from} a {to} personas" },
   "detail.privateTitle":{ it: "Vuoi la barca solo per il tuo gruppo?", en: "Want the boat just for your group?", es: "¿Quieres el barco solo para tu grupo?" },
   "detail.privateLink": { it: "Vedi il charter privato", en: "See the private charter", es: "Ver el chárter privado" },

@@ -95,6 +95,7 @@ function tourCard(tour) {
         ${daDefinire(tour.zone) ? "" : "<li>" + tf(tour.zone) + "</li>"}
         ${daDefinire(tour.duration) ? "" : "<li>" + tf(tour.duration) + "</li>"}
         ${tour.family ? "<li>" + t("tour.family") + "</li>" : ""}
+        ${tour.transfer ? "<li>" + t("tour.transfer") + "</li>" : ""}
         ${tour.season ? `<li class="tour-meta-season">${tf(tour.season)}</li>` : ""}
       </ul>
       <div class="tour-foot">

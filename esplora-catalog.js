@@ -152,6 +152,24 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    id: "submarine-safari",
+    title: "Submarine Safari",
+    category: "mare-barche",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Discesa sott'acqua a bordo di un sottomarino turistico, per vedere il fondale senza bagnarsi.",
+      en: "A dive below the surface aboard a tourist submarine, to see the seabed without getting wet.",
+      es: "Inmersión bajo el agua a bordo de un submarino turístico, para ver el fondo sin mojarse."
+    },
+    image: "",
+    published: true
+  },
+  {
     id: "luxury-catamaran",
     title: "Luxury Catamaran Experience",
     category: "mare-barche",
@@ -956,6 +974,60 @@ const ESPLORA_CATALOG = [
       it: "Serata medievale al castello: cavalieri, cavalli e torneo, con cena servita durante lo spettacolo.",
       en: "A medieval night at the castle: knights, horses and a tournament, with dinner served during the show.",
       es: "Noche medieval en el castillo: caballeros, caballos y torneo, con cena servida durante el espectáculo."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "flamenco-show",
+    title: "¡Olé! Flamenco Show",
+    category: "parchi-spettacoli",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Serata", en: "Evening", es: "Noche" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Spettacolo di flamenco dal vivo, con musicisti e ballerini.",
+      en: "A live flamenco show, with musicians and dancers.",
+      es: "Espectáculo de flamenco en directo, con músicos y bailaores."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "scandal-dinner-show",
+    title: "Scandal Dinner Show",
+    category: "parchi-spettacoli",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Serata", en: "Evening", es: "Noche" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: false,
+    desc: {
+      it: "Cena e cabaret in una serata pensata per adulti.",
+      en: "Dinner and cabaret in an evening made for adults.",
+      es: "Cena y cabaret en una velada pensada para adultos."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "history-music-show",
+    title: "History – The Evolution of Music",
+    category: "parchi-spettacoli",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Serata", en: "Evening", es: "Noche" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Spettacolo musicale dal vivo che ripercorre la storia della musica.",
+      en: "A live music show travelling through the history of music.",
+      es: "Espectáculo musical en directo que recorre la historia de la música."
     },
     image: "",
     published: true

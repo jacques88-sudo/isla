@@ -134,6 +134,23 @@ toccano il codice già scritto:
 - `Cat-mare.jpg` è usata sia dalla card categoria "Mare e barche" in home sia dalla scheda
   del 3-Hour Whale & Dolphin Boat Trip: scelta voluta, non è una svista
 
+### Tuk tuk e trenino (24 agosto)
+
+Aggiunte su richiesta dell'ufficio, in "Tour dell'isola" e non in "Avventura e motori":
+sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `family: true`.
+
+- **Tuk tuk** — tuk tuk elettrici guidati sulla costa di Adeje (Plaza del Duque, Fañabé,
+  La Enramada, La Caleta, Torviscas). Esistono versioni di durata diversa, per questo la
+  durata resta da definire
+- **Trenino turistico** — trenino su gomma fra Costa Adeje e Los Cristianos, hop-on
+  hop-off con 6 fermate, biglietto valido tutta la giornata, partenze ogni 30 minuti
+  dalle 10:20 alle 20:50
+- **Prezzo lasciato "Su richiesta" apposta.** Il prezzo pubblico del trenino, pagato a
+  bordo, e' 9 euro adulti e 5 bambini, ma **non e' detto che sia il prezzo di Admiral**:
+  noi siamo rivenditori. Lo mette l'ufficio
+- Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
+  di Puerto de la Cruz: e' un altro servizio, non si vende
+
 ### Le 13 foto del 24 agosto
 
 Coperte 34 schede su 69 (prima 21). I file si chiamano come l'`id` della scheda.

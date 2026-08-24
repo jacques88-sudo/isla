@@ -291,12 +291,23 @@ function initRequestDialog() {
     document.body.classList.add("menu-open");
   }
 
+  // Sulla pagina di dettaglio la variante si sceglie con i bottoni, sopra il
+  // pulsante: la scelta e' gia' fatta e ripeterla qui sarebbe un passaggio in
+  // piu'. Restituisce il testo scelto, oppure "" se quei bottoni non ci sono
+  // (dalla pagina catalogo, dove si chiede col menu qui sotto).
+  function sceltaDallaPagina() {
+    const premuto = document.querySelector(
+      '[data-detail-options] .detail-option[aria-pressed="true"]');
+    return premuto ? premuto.getAttribute("data-option-value") || "" : "";
+  }
+
   // Le voci portano il prezzo quando lo sappiamo ("2 ore — €180"), cosi' il
   // cliente sceglie sapendo quanto costa invece di doverlo chiedere.
   function riempiOpzioni(tour) {
     if (!optionEl || !optionLabelEl) return;
     const opz = tour.options;
-    const ci_sono = !!(opz && Array.isArray(opz.choices) && opz.choices.length);
+    const ci_sono = !!(opz && Array.isArray(opz.choices) && opz.choices.length)
+      && !sceltaDallaPagina();
     optionEl.hidden = !ci_sono;
     optionLabelEl.hidden = !ci_sono;
     optionEl.innerHTML = "";
@@ -366,7 +377,8 @@ function initRequestDialog() {
       kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
       note: document.getElementById("reqNote").value.trim(),
       transfer: !!(transferInput && transferInput.checked),
-      option: optionEl && !optionEl.hidden ? optionEl.value : ""
+      option: sceltaDallaPagina() ||
+        (optionEl && !optionEl.hidden ? optionEl.value : "")
     };
     if (!req.name || !req.date) return;
 

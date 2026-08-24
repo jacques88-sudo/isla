@@ -177,12 +177,18 @@ Campo `options`: le varianti della stessa attivita' fra cui il cliente sceglie �
 per la moto d'acqua, quale percorso per il tuk tuk. Prima erano scritte solo dentro la
 descrizione, quindi il cliente le leggeva ma non poteva dire quale voleva.
 
-- Sulla **pagina di dettaglio** diventano una riga ciascuna, col prezzo dove lo sappiamo
-  ("2 ore — €180"), come le fasce di persone del Private Charter. L'etichetta del gruppo
-  ("Durata", "Percorso") sta solo sulla prima riga, altrimenti si ripete
-- Nella **finestra della richiesta** diventano un menu a tendina, e la scelta finisce nel
-  messaggio WhatsApp subito sotto il nome dell'attivita': e' la prima cosa che serve per
-  rispondere col prezzo giusto
+- Sulla **pagina di dettaglio** diventano **bottoni da premere**, sopra il pulsante della
+  richiesta. Erano nate come righe della tabella, ma l'ufficio ha chiesto meno passaggi:
+  cosi' la scelta si fa qui e la richiesta parte gia' completa. La prima e' selezionata di
+  partenza, quindi non si puo' mandare una richiesta senza variante
+- **La riga "Prezzo" segue la variante scelta.** Senza, uno sceglieva le 2 ore e continuava
+  a leggere "da €150" appena sopra
+- Nella **finestra della richiesta** il menu a tendina resta, ma **solo quando la scelta non
+  e' gia' stata fatta sulla pagina** — cioe' quando la richiesta parte da una scheda del
+  catalogo, dove quei bottoni non ci sono. Il collegamento fra le due pagine e'
+  `sceltaDallaPagina()` in escursioni.js, che cerca il bottone premuto
+- La scelta finisce nel messaggio WhatsApp subito sotto il nome dell'attivita': e' la prima
+  cosa che serve per rispondere col prezzo giusto
 - Il menu **si ricostruisce a ogni apertura**, come la spunta del transfer: la finestra e'
   una sola per tutte le attivita' e le voci di quella aperta prima resterebbero li'
 - `price` nella singola variante si puo' omettere: il tuk tuk ha i tre percorsi ma il

@@ -59,19 +59,7 @@ function detailRows(tour) {
       ]);
     });
   } else {
-    righe.push([t("detail.price"), tourPrice(tour)]);
-  }
-
-  // Le varianti fra cui si sceglie: una riga ciascuna, come le fasce di
-  // persone del Private Charter. L'etichetta della prima riga e' il nome del
-  // gruppo ("Durata", "Percorso"), le altre restano vuote per non ripeterlo.
-  if (tour.options && Array.isArray(tour.options.choices)) {
-    tour.options.choices.forEach((scelta, i) => {
-      righe.push([
-        i === 0 ? tf(tour.options.label) : "",
-        scelta.price ? tf(scelta.label) + " — €" + scelta.price : tf(scelta.label)
-      ]);
-    });
+    righe.push([t("detail.price"), tourPrice(tour), "prezzo"]);
   }
 
   // Prezzi per adulto e per bambino: a 0 vuol dire "non ancora deciso" e la
@@ -93,11 +81,36 @@ function detailRows(tour) {
   }
   if (tour.season) righe.push([t("detail.season"), tf(tour.season)]);
 
-  return righe.map(([etichetta, valore]) => `
+  return righe.map(([etichetta, valore, aggancio]) => `
     <div class="detail-row">
       <dt>${esc(etichetta)}</dt>
-      <dd>${esc(valore)}</dd>
+      <dd${aggancio ? ` data-detail-${aggancio}` : ""}>${esc(valore)}</dd>
     </div>`).join("");
+}
+
+// Le varianti come bottoni, sulla pagina stessa: il cliente sceglie qui e la
+// richiesta parte gia' con la scelta dentro, senza chiedergliela di nuovo.
+// La prima e' selezionata di partenza, cosi' non si puo' mandare una richiesta
+// senza variante.
+function detailOptions(tour) {
+  const opz = tour.options;
+  if (!opz || !Array.isArray(opz.choices) || !opz.choices.length) return "";
+
+  return `
+    <div class="detail-options" data-detail-options
+         role="group" aria-label="${esc(tf(opz.label))}">
+      <span class="detail-options-label">${esc(tf(opz.label))}</span>
+      <div class="detail-options-list">
+        ${opz.choices.map((scelta, i) => `
+          <button type="button" class="detail-option"
+                  data-option-value="${esc(tf(scelta.label))}"
+                  ${scelta.price ? `data-option-price="${scelta.price}"` : ""}
+                  aria-pressed="${i === 0 ? "true" : "false"}">
+            <span class="detail-option-name">${esc(tf(scelta.label))}</span>
+            ${scelta.price ? `<span class="detail-option-price">€${scelta.price}</span>` : ""}
+          </button>`).join("")}
+      </div>
+    </div>`;
 }
 
 function detailRelated(tour) {
@@ -176,6 +189,7 @@ function renderTour(tour) {
         <h2 class="detail-sub">${esc(t("detail.summary"))}</h2>
         <dl class="detail-rows">${detailRows(tour)}</dl>
 
+        ${detailOptions(tour)}
         ${askBtn}
         <p class="hint" data-i18n-html="req.hint"></p>
         ${detailPrivate(tour)}
@@ -185,6 +199,33 @@ function renderTour(tour) {
 
   // il paragrafo del preavviso contiene <strong>, quindi passa da applyI18n
   applyI18n(contenitore);
+  collegaOpzioni(contenitore, tour);
+}
+
+// Un bottone solo alla volta resta premuto, e la riga "Prezzo" segue la
+// variante scelta: senza, il cliente sceglie le 2 ore e continua a leggere
+// "da €150".
+function collegaOpzioni(contenitore, tour) {
+  const gruppo = contenitore.querySelector("[data-detail-options]");
+  if (!gruppo) return;
+  const prezzoEl = contenitore.querySelector("[data-detail-prezzo]");
+
+  function aggiornaPrezzo(bottone) {
+    if (!prezzoEl) return;
+    const p = bottone.getAttribute("data-option-price");
+    prezzoEl.textContent = p ? "€" + p : tourPrice(tour);
+  }
+
+  gruppo.addEventListener("click", e => {
+    const bottone = e.target.closest(".detail-option");
+    if (!bottone) return;
+    gruppo.querySelectorAll(".detail-option")
+      .forEach(b => b.setAttribute("aria-pressed", String(b === bottone)));
+    aggiornaPrezzo(bottone);
+  });
+
+  const iniziale = gruppo.querySelector('.detail-option[aria-pressed="true"]');
+  if (iniziale) aggiornaPrezzo(iniziale);
 }
 
 function initTourPage() {

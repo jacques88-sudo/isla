@@ -7,6 +7,16 @@
 // WHATSAPP_NUMBER sta in esplora-catalog.js: serve anche all'assistente, che
 // gira sulla home dove questo file non e' caricato.
 
+// Zona e durata non ancora decise valgono "Da definire": e' un segnaposto per
+// noi, non un'informazione per il cliente. Due pillole "Da definire" affiancate
+// sulla stessa scheda sembrano un errore del sito, quindi non si mostrano.
+// La usa anche tour.js.
+function daDefinire(valore) {
+  if (!valore) return true;
+  if (typeof valore === "string") return false;
+  return /Da definire/.test(valore.it || "");
+}
+
 function tourPrice(tour) {
   if (tour.priceFrom === null) return t("tour.onRequest");
   // priceUnit c'è solo sui noleggi a ore: "da €100" diventa "da €100/ora"
@@ -82,8 +92,8 @@ function tourCard(tour) {
       <h2 class="tour-title"><a href="${href}">${tf(tour.title)}</a></h2>
       <p class="tour-desc">${tf(tour.desc)}</p>
       <ul class="tour-meta">
-        <li>${tf(tour.zone)}</li>
-        <li>${tf(tour.duration)}</li>
+        ${daDefinire(tour.zone) ? "" : "<li>" + tf(tour.zone) + "</li>"}
+        ${daDefinire(tour.duration) ? "" : "<li>" + tf(tour.duration) + "</li>"}
         ${tour.family ? "<li>" + t("tour.family") + "</li>" : ""}
         ${tour.season ? `<li class="tour-meta-season">${tf(tour.season)}</li>` : ""}
       </ul>

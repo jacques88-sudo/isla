@@ -137,6 +137,26 @@ toccano il codice già scritto:
   dei concorrenti da buttare, Admiral la vende davvero — sotto `watersports`, non fra le
   barche dove l'avevamo messa all'inizio
 - La categoria "Tour dell'isola" non ha ancora la foto per la card in home
+### Layout su PC
+
+Un solo file che si adatta (layout responsive), non due siti separati: con 69
+attivita' e 3 lingue, due pagine da tenere allineate raddoppierebbero ogni
+modifica. Le soglie sono 480, 640, 768, 900, 960, 1200 e 1280 pixel.
+
+Cose da ricordare, imparate sistemando la versione PC:
+- Una regola che arriva dopo `.wrap` e ridichiara `margin` ne annulla la
+  centratura. E' successo a `.bento-grid`
+- In una griglia a colonne di pari altezza, lo spazio in piu' viene diviso fra
+  le righe: senza `align-content: start` la colonna col testo piu' corto scende
+  rispetto alle altre. E' successo ai tre passi
+- Gli attributi `width`/`height` nell'HTML di un `<img>` battono `aspect-ratio`
+  se il CSS non dice `height: auto`. La foto di "Chi siamo" restava alta 1100px
+  su tutti gli schermi
+- Le strisce che si scorrono col dito (`overflow-x: auto` con la barra
+  nascosta) sul PC diventano irraggiungibili: col mouse non si scorre e la
+  barra non si vede. Su schermo largo devono andare a capo. E' successo ai
+  filtri per categoria
+
 - I riquadri bento (Pacchetti, Con bambini, 3/5/7 Days) puntano a `#categories` e al
   filtro famiglia: servono pagine vere per i pacchetti
 - Il riquadro "Noleggio auto, moto e bici" non è un'attività del catalogo: non ha una
@@ -146,6 +166,8 @@ toccano il codice già scritto:
   Se un giorno avremo dei noleggi da listare, diventerà una categoria vera
 - Testo "Chi siamo" è un **placeholder onesto** (nessuna affermazione inventata) — da
   sostituire con la storia vera
+- La foto `assets/About-team.jpg` pesa 5.1MB: va ridotta, il sito la mostra al
+  massimo a 500x520
 - Video hero `assets/Hero-poster.mp4` pesa 3.7MB — da comprimere a ~1-1.5MB (720p, 6-10s,
   senza audio) con uno strumento tipo HandBrake
 - Sezione recensioni volutamente omessa: quelle di isla-adventures sono inventate, non le

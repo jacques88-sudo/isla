@@ -71,13 +71,13 @@ const I18N = {
   // ── i tre passi ─────────────────────────────────────────────────────────
   "steps.eyebrow":      { it: "The journey", en: "The journey", es: "The journey" },
   "steps.title":        { it: "Tre passi, nessun pensiero", en: "Three steps, no worries", es: "Tres pasos, sin preocupaciones" },
-  "steps.intro":        { it: "Dalla scelta dell'esperienza al momento in cui sali a bordo: tutto avviene in pochi minuti, dal telefono, anche offline.", en: "From choosing the experience to stepping on board: it all happens in a few minutes, from your phone, even offline.", es: "Desde elegir la experiencia hasta subir a bordo: todo ocurre en pocos minutos, desde el móvil, incluso sin conexión." },
+  "steps.intro":        { it: "Dalla scelta dell'esperienza alla conferma: pochi minuti, dal telefono. Il catalogo lo sfogli anche senza connessione.", en: "From choosing the experience to the confirmation: a few minutes, from your phone. You can browse the catalogue even offline.", es: "Desde elegir la experiencia hasta la confirmación: pocos minutos, desde el móvil. El catálogo lo consultas incluso sin conexión." },
   "steps.1.title":      { it: "Scegli", en: "Choose", es: "Elige" },
   "steps.1.desc":       { it: "Sfoglia escursioni e pacchetti selezionati.", en: "Browse hand-picked excursions and packages.", es: "Explora excursiones y paquetes seleccionados." },
-  "steps.2.title":      { it: "Prenota", en: "Book", es: "Reserva" },
-  "steps.2.desc":       { it: "Data, partecipanti e pagamento sicuro.", en: "Date, participants and secure payment.", es: "Fecha, participantes y pago seguro." },
+  "steps.2.title":      { it: "Richiedi", en: "Ask", es: "Solicita" },
+  "steps.2.desc":       { it: "Ci scrivi su WhatsApp con data e partecipanti.", en: "Message us on WhatsApp with your date and group.", es: "Nos escribes por WhatsApp con fecha y participantes." },
   "steps.3.title":      { it: "Vivi", en: "Live it", es: "Vívelo" },
-  "steps.3.desc":       { it: "Mostri il QR code e parti. Nient'altro.", en: "Show the QR code and off you go. Nothing else.", es: "Enseñas el código QR y listo. Nada más." },
+  "steps.3.desc":       { it: "Confermiamo entro 24 ore e pensi solo a goderti la giornata.", en: "We confirm within 24 hours and you just enjoy the day.", es: "Confirmamos en 24 horas y tú solo disfrutas del día." },
 
   // ── categorie ───────────────────────────────────────────────────────────
   "categories.eyebrow": { it: "Esplora", en: "Explore", es: "Explora" },

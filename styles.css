@@ -478,7 +478,9 @@ a { text-decoration: none; color: inherit; }
 .bento { padding: 0 0 2.5rem; }
 .bento-grid {
   list-style: none;
-  margin: 0;
+  /* .wrap centra con "margin: 0 auto": qui va ripetuto, altrimenti questa
+     regola (che viene dopo) lo annulla e la griglia resta a sinistra */
+  margin: 0 auto;
   padding: 0;
   display: grid;
   gap: .8rem;
@@ -738,6 +740,10 @@ a { text-decoration: none; color: inherit; }
   .step-list { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
   .step {
     grid-template-columns: 1fr;
+    /* le tre colonne hanno la stessa altezza: senza questo lo spazio in piu'
+       viene diviso fra numero e testo, e il passo con la descrizione piu'
+       corta scende rispetto agli altri due */
+    align-content: start;
     border-bottom: none;
     padding-bottom: 0;
   }
@@ -767,6 +773,9 @@ a { text-decoration: none; color: inherit; }
 }
 @media (min-width: 960px) {
   .cat-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1200px) {
+  .cat-grid { grid-template-columns: repeat(4, 1fr); }
 }
 .cat-card {
   position: relative;
@@ -861,8 +870,14 @@ a { text-decoration: none; color: inherit; }
 }
 .about-grid img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  /* Senza "height: auto" vince l'attributo height dell'HTML e la foto resta
+     alta 1100px: mezza pagina sul telefono, uno schermo e mezzo sul PC.
+     E' uno scatto verticale, quindi il taglio e' 4/5 e non 4/3, alzato un
+     po' per non tagliare i visi. */
+  height: auto;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
+  object-position: center 30%;
   border-radius: var(--radius-card);
   box-shadow: var(--shadow);
 }
@@ -887,6 +902,7 @@ a { text-decoration: none; color: inherit; }
   .about { padding: 6rem 0; }
   .about .wrap { max-width: var(--max-wide); }
   .about-grid { gap: 5rem; }
+  .about-grid img { max-height: 520px; }
 }
 
 /* FAQ */
@@ -1320,6 +1336,15 @@ body.menu-open { overflow: hidden; }
   scrollbar-width: none;
 }
 .chip-row::-webkit-scrollbar { display: none; }
+/* Sul telefono la riga si scorre col dito. Sul mouse no, e la barra di
+   scorrimento e' nascosta: su schermo largo le pillole vanno a capo, cosi'
+   le categorie in fondo restano raggiungibili. */
+@media (min-width: 960px) {
+  .chip-row {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}
 .chip {
   flex: none;
   padding: .55rem 1rem;
@@ -1352,6 +1377,9 @@ body.menu-open { overflow: hidden; }
 }
 @media (min-width: 960px) {
   .tour-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1280px) {
+  .tour-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
 .tour-card {
@@ -1447,9 +1475,12 @@ body.menu-open { overflow: hidden; }
   margin-top: auto;
   padding-top: .9rem;
   display: flex;
-  align-items: center;
+  /* un prezzo lungo ("da 350 euro a gruppo") va a capo: senza wrap finiva
+     addosso al bottone */
+  flex-wrap: wrap;
+  align-items: flex-end;
   justify-content: space-between;
-  gap: .8rem;
+  gap: .6rem .8rem;
 }
 .tour-price {
   font-family: var(--font-display);
@@ -1679,7 +1710,9 @@ body.menu-open { overflow: hidden; }
   .catalog-page .wrap { max-width: var(--max-wide); }
   .catalog-tools {
     flex-direction: row;
-    align-items: center;
+    /* le pillole ora vanno a capo su piu' righe: la ricerca si allinea alla
+       prima riga invece di restare sospesa a meta' */
+    align-items: flex-start;
     justify-content: space-between;
   }
   .catalog-search { flex: 0 0 320px; }

@@ -1788,6 +1788,23 @@ body.menu-open { overflow: hidden; }
   opacity: .7;
 }
 
+/* Menu delle varianti (1 o 2 ore, quale percorso). Prende l'aspetto degli
+   altri campi della finestra: .ticket-dialog input e select non condividono
+   una regola, quindi va vestito a mano. */
+.ticket-dialog select[data-request-option] {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: .85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: .95rem;
+}
+.ticket-dialog select[data-request-option][hidden],
+.ticket-dialog [data-request-option-label][hidden] { display: none; }
+
 /* Domanda sul transfer: compare solo sulle attivita' che ce l'hanno.
    .ticket-dialog label rende le etichette maiuscole e spaziate: qui e' una
    domanda da leggere, non un'etichetta, quindi si torna al testo normale. */

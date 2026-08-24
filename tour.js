@@ -41,7 +41,13 @@ function detailRows(tour) {
   if (!daDefinire(tour.zone)) {
     righe.push([t("detail.departure"), tf(tour.zone)]);
   }
-  if (!daDefinire(tour.duration)) {
+  // Quando le varianti SONO le durate ("1 ora" / "2 ore"), il campo duration
+  // ripete la stessa cosa in forma riassunta ("1 o 2 ore") e la pagina direbbe
+  // "Durata" due volte di fila. Sulla scheda del catalogo la riassunta serve
+  // ancora, qui no.
+  const opzioniSonoLaDurata = !!(tour.options &&
+    tf(tour.options.label) === t("detail.duration"));
+  if (!daDefinire(tour.duration) && !opzioniSonoLaDurata) {
     righe.push([t("detail.duration"), tf(tour.duration)]);
   }
   // prezzi a scaglioni: una riga per fascia al posto della riga "Prezzo"
@@ -54,6 +60,18 @@ function detailRows(tour) {
     });
   } else {
     righe.push([t("detail.price"), tourPrice(tour)]);
+  }
+
+  // Le varianti fra cui si sceglie: una riga ciascuna, come le fasce di
+  // persone del Private Charter. L'etichetta della prima riga e' il nome del
+  // gruppo ("Durata", "Percorso"), le altre restano vuote per non ripeterlo.
+  if (tour.options && Array.isArray(tour.options.choices)) {
+    tour.options.choices.forEach((scelta, i) => {
+      righe.push([
+        i === 0 ? tf(tour.options.label) : "",
+        scelta.price ? tf(scelta.label) + " — €" + scelta.price : tf(scelta.label)
+      ]);
+    });
   }
 
   // Prezzi per adulto e per bambino: a 0 vuol dire "non ancora deciso" e la

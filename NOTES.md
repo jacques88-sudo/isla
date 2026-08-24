@@ -97,7 +97,10 @@ toccano il codice già scritto:
 - **Il catalogo è a metà strada.** La categoria "Mare e barche" (13 voci) viene dal
   catalogo vero di Admiral, con i prezzi del sito. Le altre 37 attività vengono ancora
   dai tre siti concorrenti guardati all'inizio: vanno sostituite categoria per categoria
-  man mano che arrivano gli elenchi veri (`parks-shows`, `teide-stargazing`)
+  man mano che arrivano gli elenchi veri (`teide-stargazing`)
+- Categoria "Parchi e spettacoli": sostituita per intero, 10 prodotti tutti con prezzo.
+  E l'unica finora dove ogni voce dei concorrenti aveva un corrispondente Admiral,
+  quindi non restano orfani
 - La categoria `island-tours` di Admiral copre **due** categorie di Isla: i due tour del
   Teide sono finiti in "Teide e natura", La Gomera e Santa Cruz in "Tour dell'isola".
   Admiral ne ha in vetrina 4 dove i concorrenti ne avevano 13: restano 7 voci senza

@@ -975,8 +975,8 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 78,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 78,
+    priceChild: 57,
     transfer: {
       it: "Disponibile su richiesta, solo per la giornata a Loro Parque",
       en: "Available on request, for the Loro Parque day only",

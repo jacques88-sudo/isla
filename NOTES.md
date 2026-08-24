@@ -181,9 +181,11 @@ Il campo si chiama `transferPrice: { adult, child, baby }` e compare come **una 
 in fondo alla pagina di dettaglio, non tre: la tabella diventerebbe un listino. Ce l'ha
 solo il Twin Ticket.
 
-**Da chiedere ancora all'ufficio:** il prezzo bambino del Twin Ticket **senza** transfer
-(in catalogo c'e' solo l'adulto, 78) e se anche Loro Parque da solo ha un prezzo col
-transfer.
+Senza transfer il Twin Ticket e' **78 adulti e 57 bambini** (confermato dall'ufficio).
+
+**Da chiedere ancora:** se anche Loro Parque da solo ha un prezzo col transfer, e i prezzi
+bambino degli altri parchi (Siam Park, Aqualand, Jungle Park, Monkey Park), che in
+catalogo hanno solo l'adulto.
 
 ### Tuk tuk e trenino (24 agosto)
 

@@ -146,8 +146,8 @@ Coperte 34 schede su 69 (prima 21). I file si chiamano come l'`id` della scheda.
 - `pesca-altura` — un Rodman 1250 sotto le falesie di Los Gigantes. Che sia pesca e non
   whale watching si vede dalle **canne nei portacanne** a dritta, ingrandendo lo scafo
 - `stargazing-group` (due telescopi, Via Lattea) e `stargazing-vip` (un telescopio solo,
-  al tramonto): **assegnazione a intuito**, non c'è niente nelle foto che dica quale
-  serata sia quale. Da confermare in ufficio, si scambiano in un minuto
+  al tramonto): erano un'intuizione, **l'ufficio ha confermato che sono giuste**
+  (24 agosto). Non c'è più niente da verificare qui
 - `jet-car-rental` — la jet car verde. Da non confondere con `fiat-500-water-car`, che è
   un'altra attività e ha già la sua foto
 - Le due moto d'acqua da 1 e 2 ore sono state **unite in una scheda sola**
@@ -189,8 +189,13 @@ Cose da ricordare, imparate sistemando la versione PC:
   Se un giorno avremo dei noleggi da listare, diventerà una categoria vera
 - Testo "Chi siamo" è un **placeholder onesto** (nessuna affermazione inventata) — da
   sostituire con la storia vera
-- La foto `assets/About-team.jpg` pesa 5.1MB: va ridotta, il sito la mostra al
-  massimo a 500x520
+- La foto `assets/About-team.jpg` **va sostituita**, non compressa: l'ufficio ne manderà
+  un'altra (deciso il 24 agosto). Non ha senso perderci tempo adesso. Quando arriva la
+  nuova: ridurla a ~1200px di lato lungo e qualità 82, come le foto delle escursioni.
+  L'attuale pesa 5.1MB e il sito la mostra al massimo a 500x520
+- Per chi sceglie la foto nuova del team: il taglio sulla pagina è **4/5**, con un tetto
+  di 520px di altezza sul PC. Uno scatto orizzontale o poco verticale rende meglio; uno
+  verticale da telefono viene tagliato sopra e sotto
 - Video hero `assets/Hero-poster.mp4` pesa 3.7MB — da comprimere a ~1-1.5MB (720p, 6-10s,
   senza audio) con uno strumento tipo HandBrake
 - Sezione recensioni volutamente omessa: quelle di isla-adventures sono inventate, non le

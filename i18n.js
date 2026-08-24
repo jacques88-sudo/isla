@@ -65,6 +65,8 @@ const I18N = {
   "bento.scan":         { it: "Scan ticket", en: "Scan ticket", es: "Scan ticket" },
   "bento.kids":         { it: "Con bambini", en: "With kids", es: "Con niños" },
   "bento.days":         { it: "3/5/7 Days Experience", en: "3/5/7 Days Experience", es: "3/5/7 Days Experience" },
+  "bento.rental":       { it: "Noleggio auto, moto e bici", en: "Car, moto & bike rental", es: "Alquiler de coche, moto y bici" },
+  "wa.rental":          { it: "Ciao Isla! Vorrei noleggiare un mezzo a Tenerife. Mi interessa: ", en: "Hi Isla! I'd like to rent a vehicle in Tenerife. I'm interested in: ", es: "¡Hola Isla! Quisiera alquilar un vehículo en Tenerife. Me interesa: " },
 
   // ── i tre passi ─────────────────────────────────────────────────────────
   "steps.eyebrow":      { it: "The journey", en: "The journey", es: "The journey" },

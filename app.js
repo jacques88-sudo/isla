@@ -186,6 +186,30 @@ function initHeroVideo() {
 
 document.addEventListener("DOMContentLoaded", initHeroVideo);
 
+// Riquadro "noleggio auto, moto e bici": non e' un'escursione del catalogo,
+// quindi apre WhatsApp col messaggio gia' avviato. Admiral rivende, il mezzo
+// si procura su richiesta.
+function initRentalLink() {
+  const link = document.querySelector("[data-rental-link]");
+  if (!link) return;
+
+  // WHATSAPP_NUMBER sta in esplora-catalog.js, che non e' caricato ovunque
+  if (typeof WHATSAPP_NUMBER === "undefined" || !WHATSAPP_NUMBER) {
+    link.hidden = true;
+    return;
+  }
+
+  function paint() {
+    link.href = "https://wa.me/" + WHATSAPP_NUMBER +
+      "?text=" + encodeURIComponent(t("wa.rental"));
+  }
+
+  paint();
+  document.addEventListener("islalang", paint);
+}
+
+document.addEventListener("DOMContentLoaded", initRentalLink);
+
 // "More" off-canvas menu (home page only)
 function initMoreMenu() {
   const panel = document.getElementById("moreMenu");

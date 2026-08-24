@@ -76,7 +76,8 @@ scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
 Home: splash con anello blu di caricamento → banner fisso in cima (logo, wordmark, pillole
 Esperienze / Prenota ora / Menu, si restringe scorrendo) → video hero con play/pausa →
 "Inizia la tua avventura con…" → griglia bento (Pacchetti, Scan ticket, Con bambini,
-3/5/7 Days) → "come funziona" → categorie (7 foto vere) → posti segreti → chi siamo →
+3/5/7 Days, più un riquadro largo "Noleggio auto, moto e bici" che apre WhatsApp) →
+"come funziona" → categorie (7 foto vere) → posti segreti → chi siamo →
 FAQ → richiamo finale → footer. Layout ottimizzato anche per desktop.
 
 Il menu "More" si apre da destra. La ricerca del ticket vive in una finestra che si apre
@@ -138,6 +139,11 @@ toccano il codice già scritto:
 - La categoria "Tour dell'isola" non ha ancora la foto per la card in home
 - I riquadri bento (Pacchetti, Con bambini, 3/5/7 Days) puntano a `#categories` e al
   filtro famiglia: servono pagine vere per i pacchetti
+- Il riquadro "Noleggio auto, moto e bici" non è un'attività del catalogo: non ha una
+  scheda, apre WhatsApp con un messaggio già scritto (`wa.rental` in `i18n.js`). Il link
+  lo costruisce `initRentalLink()` in `app.js`, che si nasconde da solo se
+  `WHATSAPP_NUMBER` non c'è (booking.html carica `app.js` ma non `esplora-catalog.js`).
+  Se un giorno avremo dei noleggi da listare, diventerà una categoria vera
 - Testo "Chi siamo" è un **placeholder onesto** (nessuna affermazione inventata) — da
   sostituire con la storia vera
 - Video hero `assets/Hero-poster.mp4` pesa 3.7MB — da comprimere a ~1-1.5MB (720p, 6-10s,

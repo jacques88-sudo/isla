@@ -1302,6 +1302,42 @@ const ESPLORA_CATALOG = [
     image: "",
     published: true
   },
+  {
+    id: "tuk-tuk",
+    title: { it: "Tour in tuk tuk", en: "Tuk Tuk Tour", es: "Tour en tuk tuk" },
+    category: "tour-isola",
+    zone: "Costa Adeje",
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Giro guidato in tuk tuk elettrico lungo la costa di Adeje: Plaza del Duque, La Caleta e le spiagge, con soste per scendere a guardare.",
+      en: "A guided ride in an electric tuk tuk along the Adeje coast: Plaza del Duque, La Caleta and the beaches, with stops to get off and look around.",
+      es: "Recorrido guiado en tuk tuk eléctrico por la costa de Adeje: Plaza del Duque, La Caleta y las playas, con paradas para bajar a mirar."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "trenino-turistico",
+    title: { it: "Trenino turistico", en: "Tourist Train", es: "Tren turístico" },
+    category: "tour-isola",
+    zone: "Costa Adeje – Los Cristianos",
+    duration: { it: "Tutto il giorno", en: "All day", es: "Todo el día" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Trenino su gomma fra Costa Adeje e Los Cristianos: si sale e si scende alle fermate quando si vuole, il biglietto vale tutta la giornata.",
+      en: "A road train between Costa Adeje and Los Cristianos: hop on and off at the stops as you like, the ticket lasts all day.",
+      es: "Tren sobre ruedas entre Costa Adeje y Los Cristianos: subes y bajas en las paradas cuando quieras, el billete vale todo el día."
+    },
+    image: "",
+    published: true
+  },
 
   // ─── TOUR PRIVATI ─────────────────────────────────────────────────────────
   {

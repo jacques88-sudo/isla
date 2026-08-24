@@ -171,6 +171,23 @@ Per le attivita' generiche (lezione di surf, immersioni, canyoning, cavallo, tre
 tour dell'isola, tour privati) **un prezzo pubblico unico non esiste**: cambia da
 operatore a operatore, e siamo noi a scegliere da chi comprare
 
+### I tre spettacoli (24 agosto)
+
+Ricerca mirata dopo che l'ufficio ha spiegato come leggere i "a partire da".
+
+- **History – The Evolution of Music**: da 49 euro a persona, piu' venditori d'accordo.
+  2 ore e 30, alla Piramide de Arona. **La sede e' da confermare**: una fonte dava
+  l'indirizzo dell'azienda a Costa Adeje, ma lo spettacolo si fa alla Piramide
+- **¡Olé! Flamenco Show**: da 35 euro, 1 ora e 30, il giovedi' al GF Victoria di Costa
+  Adeje. I bambini dai 3 ai 12 pagano meno ma **la cifra non si trova**; sotto i 3 anni
+  non si entra
+- **Scandal Dinner Show**: **prezzo non messo**, le fonti dicono 89, 109, 220 e 280 euro
+  e non e' chiaro se siano a persona o a tavolo. Il sito ufficiale e' bloccato dal proxy.
+  Confermato invece il **limite di 16 anni**, scritto nella descrizione
+
+Tutti e tre i prezzi sono "da": sono spettacoli con posti di categorie diverse, quindi il
+numero e' la categoria piu' economica, non l'unica.
+
 ### Il transfer cambia il prezzo (24 agosto)
 
 Il Twin Ticket col transfer costa **99 euro adulti, 74 bambini e 17 per i neonati**, dove

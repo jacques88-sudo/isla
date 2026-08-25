@@ -249,6 +249,33 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Via la categoria "Tour privati" (24 agosto)
+
+Decisione dell'ufficio: **la categoria e i tre tour privati spariscono**, e il charter in
+barca **resta solo come opzione** sulle escursioni dove e' gia' collegato.
+
+Nascoste (`published: false`, non cancellate): `tour-privato-su-misura`,
+`teide-privato-giorno`, `teide-privato-notte` e `charter-privato`, che era il doppione
+segnalato da tempo.
+
+**Il Private Charter resta**, dove e' sempre stato: in "Mare e barche", con i suoi
+prezzi a scaglioni. E' lui il bersaglio del campo `privateOption` su tre uscite in barca —
+verificato che il rimando "vuoi la barca solo per il tuo gruppo?" funzioni ancora.
+
+**Due cose sparite da sole, senza toccarle:**
+
+- La **pillola del filtro** "Tour privati": `escursioni.js` costruisce le pillole solo
+  dalle categorie che hanno almeno un'attivita' pubblicata
+- Il **riquadro in home** invece **e' stato tolto a mano**: le card categoria sono scritte
+  in `index.html`, non generate dal catalogo. Da ricordare, e' la stessa trappola di quando
+  mancava "Tour e visite"
+
+La voce `tour-privati` resta dentro `CATEGORIES`: non da' fastidio a nessuno e serve se un
+giorno quelle attivita' tornano.
+
+**Il catalogo ora e' 62 attivita' visibili, 61 con la foto.** Sei categorie su sette
+complete. **L'unica scheda senza foto e' Poema del Mar.**
+
 ### Poema del Mar passa ai parchi (24 agosto)
 
 Spostata da "Tour e visite" a "Parchi e spettacoli", **quinta in lista, subito sotto il

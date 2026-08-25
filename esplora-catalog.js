@@ -1408,7 +1408,7 @@ const ESPLORA_CATALOG = [
       es: "Barco reservado para tu grupo, con ruta y horarios acordados."
     },
     image: "",
-    published: true
+    published: false
   },
   {
     id: "tour-privato-su-misura",
@@ -1430,7 +1430,7 @@ const ESPLORA_CATALOG = [
       es: "Itinerario diseñado a petición, con guía y vehículo dedicados."
     },
     image: "",
-    published: true
+    published: false
   },
   {
     id: "teide-privato-giorno",
@@ -1448,7 +1448,7 @@ const ESPLORA_CATALOG = [
       es: "El Parque Nacional del Teide con guía y vehículo reservados para tu grupo."
     },
     image: "",
-    published: true
+    published: false
   },
   {
     id: "teide-privato-notte",
@@ -1466,6 +1466,6 @@ const ESPLORA_CATALOG = [
       es: "Subida al Teide tras el atardecer, con guía y vehículo solo para tu grupo."
     },
     image: "",
-    published: true
+    published: false
   },
 ];

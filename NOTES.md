@@ -249,6 +249,73 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Come dividersi il lavoro fra descrizione e riquadro
+
+Regola emersa mettendo `included` su Poema del Mar: **la descrizione dice cosa si fa, il
+riquadro dice cosa si riceve.** La descrizione finiva con "Transfer dal sud, traghetto e
+ingressi inclusi", cioe' esattamente quello che dicono le icone: tagliata. Ora dice solo
+il giro (acquario, Vegueta, Arehucas) e il resto lo dice il riquadro.
+
+Da tenere presente quando arrivano le altre descrizioni dall'ufficio: la parte "include:"
+non va copiata nel testo, va tradotta in parole chiave.
+
+### Fasce d'eta' e "Cosa e' incluso" (24 agosto)
+
+Due campi nuovi, chiesti dall'ufficio guardando il sito di una scuola di surf.
+
+**`ages: { adult, child, infant }`** — le fasce si scrivono **come le scrive il fornitore**
+(`"12+"`, `"3-11"`), non si calcolano. Finiscono fra parentesi accanto al prezzo:
+"Adulti (12+)". Senza il campo resta solo "Adulti".
+
+**`included: ["snorkel", "snack", "drinks"]`** — parole chiave, non testo libero. L'icona e
+la traduzione nelle tre lingue le mette il sito, cosi' due schede che includono la stessa
+cosa la scrivono uguale. Diventa un riquadro sotto "In breve", icona sopra e parola sotto,
+due colonne sul telefono e tre da 480px.
+
+Le tredici parole disponibili: `snorkel wetsuit board equipment drinks snack lunch tasting
+guide transfer ferry ticket photos`. Per aggiungerne una servono **due righe**: l'icona in
+`INCLUDED_ICONS` dentro `tour.js` e il testo `inc.<parola>` in `i18n.js`. Una parola
+sconosciuta viene **saltata**, non disegna un buco.
+
+**Le icone hanno richiesto tre giri.** Disegnate a mano su griglia 24x24, prendono il
+colore del testo. Quelle rifatte e perche':
+
+- **snorkel** — la prima sembrava il simbolo di Marte, la seconda una borsa. Ora lente,
+  cinghia e tubo. Resta la piu' difficile da leggere a 30px, ma ha l'etichetta sotto
+- **snack** — prima una tazza fumante (sembrava caffe'), poi un biscotto coi puntini
+  (sembrava una faccina). Ora un panino
+- **drinks** — era un bicchiere da cocktail: su una barca per famiglie meglio un bicchiere
+  normale
+- **equipment** — era una chiave inglese e sembrava "riparazioni". Ora uno zaino
+
+**Come si controllano:** in `tour.js` c'e' `INCLUDED_ICONS`; per vederle tutte insieme
+basta riempire il riquadro con `Object.keys(INCLUDED_ICONS)` da console e fare uno
+screenshot. Guardarle una alla volta non basta: e' guardandole in fila che si vede quale
+non si capisce.
+
+### Prima descrizione e prezzi veri: il giro in barca a vela (24 agosto)
+
+L'ufficio ha mandato testo e prezzi di un'uscita in barca a vela. **Assegnata a
+`whale-dolphin-3h`** perche' tre dati coincidono esattamente: Puerto Colon, 3 ore e 55
+euro. Le altre candidate no — `small-group-catamaran` e' 60 euro e non ha ne' zona ne'
+durata, `catamaran-3h` e' 45.
+
+Messi `priceAdult: 55` e `priceChild: 30`. Descrizione riscritta nelle tre lingue coi
+dati veri: massimo 11 persone a bordo, snorkeling con attrezzatura inclusa, snack e
+bevande.
+
+**Due cose emerse, sistemate subito, che valgono per tutte le schede da qui in avanti:**
+
+1. **Campo nuovo `priceInfant`.** Qui **0 vuol dire davvero gratis**, al contrario di
+   `priceAdult` e `priceChild` dove 0 vuol dire "non ancora deciso" e nasconde la riga.
+   Per dire "non lo sappiamo" si **omette il campo**. La riga esce come "Fino a 2 anni:
+   Gratis". Prima quell'informazione era finita dentro la descrizione, che era un ripiego
+2. **Via il prezzo ripetuto.** "Prezzo: da €55" e "Adulti: €55" dicevano la stessa cosa.
+   Ora la riga generica **si salta quando `priceAdult` coincide con `priceFrom`**, cioe'
+   quando non aggiunge niente. Torna da sola se i due numeri non coincidono, o se il
+   prezzo adulto non c'e' ancora: verificato su tutte e sette le forme di prezzo del
+   catalogo (adulto+bambino+neonato, con transfer, a scaglioni, solo "da", "su richiesta")
+
 ### Le foto sono finite (24 agosto)
 
 **62 attivita' visibili, 62 con la foto. Tutte e sette le categorie complete.**

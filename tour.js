@@ -58,14 +58,28 @@ function detailRows(tour) {
         "€" + fascia.price
       ]);
     });
+  } else if (tour.priceAdult > 0 && tour.priceAdult === tour.priceFrom) {
+    // "Prezzo: da €55" e "Adulti: €55" dicono la stessa cosa: si tiene solo
+    // la seconda, che e' piu' precisa. La riga generica torna appena i due
+    // numeri non coincidono, o quando il prezzo adulto non c'e' ancora.
   } else {
     righe.push([t("detail.price"), tourPrice(tour), "prezzo"]);
   }
 
   // Prezzi per adulto e per bambino: a 0 vuol dire "non ancora deciso" e la
   // riga resta nascosta. Mostrare "€0" farebbe pensare a gratis o a un errore.
-  if (tour.priceAdult > 0) righe.push([t("req.adults"), "€" + tour.priceAdult]);
-  if (tour.priceChild > 0) righe.push([t("req.kids"), "€" + tour.priceChild]);
+  // "Adulti (12+)": la fascia d'eta' fra parentesi, quando il fornitore l'ha
+  // detta. Senza, resta solo "Adulti".
+  const eta = tour.ages || {};
+  const conEta = (etichetta, fascia) => fascia ? etichetta + " (" + fascia + ")" : etichetta;
+  if (tour.priceAdult > 0) righe.push([conEta(t("req.adults"), eta.adult), "€" + tour.priceAdult]);
+  if (tour.priceChild > 0) righe.push([conEta(t("req.kids"), eta.child), "€" + tour.priceChild]);
+  // Per i neonati lo zero vuol dire davvero gratis, non "da decidere": la
+  // riga si mostra solo se il campo c'e', e sparisce se manca.
+  if (tour.priceInfant !== undefined) {
+    righe.push([conEta(t("detail.infants"), eta.infant),
+      tour.priceInfant > 0 ? "€" + tour.priceInfant : t("detail.free")]);
+  }
   righe.push([t("detail.suitable"), t(tour.family ? "detail.kidsYes" : "detail.kidsNo")]);
   if (tour.transfer) righe.push([t("detail.transfer"), tf(tour.transfer)]);
   // Col transfer il prezzo cambia: si mostra su una riga sola invece che su
@@ -86,6 +100,46 @@ function detailRows(tour) {
       <dt>${esc(etichetta)}</dt>
       <dd${aggancio ? ` data-detail-${aggancio}` : ""}>${esc(valore)}</dd>
     </div>`).join("");
+}
+
+// Icone di "Cosa e' incluso". Ognuna e' un disegno a linee su una griglia
+// 24x24 che prende il colore del testo intorno. Per aggiungerne una servono
+// una voce qui e una riga "inc.<parola>" in i18n.js.
+const INCLUDED_ICONS = {
+  snorkel:   '<rect x="3.5" y="8" width="13" height="8" rx="3.5"/><path d="M16.5 12H20"/><path d="M20 12V6"/>',
+  wetsuit:   '<path d="M8 3h8l2 5-2 1v12H6V9L4 8z"/><path d="M10 3v4h4V3"/>',
+  board:     '<path d="M12 2c5 4 7 10 7 14 0 3-3 6-7 6s-7-3-7-6c0-4 2-10 7-14z"/><path d="M12 6v14"/>',
+  equipment: '<path d="M8 8V6a4 4 0 0 1 8 0v2"/><rect x="4" y="8" width="16" height="13" rx="3"/><path d="M9 13h6"/>',
+  drinks:    '<path d="M6 5h12l-1.2 14a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8z"/><path d="M6.6 11h10.8"/>',
+  snack:     '<path d="M4 11a8 5 0 0 1 16 0v4a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z"/><path d="M4.4 14.5h15.2"/>',
+  lunch:     '<path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/><path d="M17 3c-2 0-3 3-3 6s1 3 3 3v9"/>',
+  tasting:   '<path d="M7 3h10l-1 6a4 4 0 0 1-8 0z"/><path d="M12 13v6M9 21h6"/>',
+  guide:     '<circle cx="12" cy="7" r="3"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/>',
+  transfer:  '<path d="M3 16V8a2 2 0 0 1 2-2h9l4 4h1a2 2 0 0 1 2 2v4"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>',
+  ferry:     '<path d="M3 17l2-6h14l2 6"/><path d="M12 11V5h5"/><path d="M2 20c2 0 2 1 4 1s2-1 4-1 2 1 4 1 2-1 4-1 2 1 4 1"/>',
+  ticket:    '<path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 2 2 0 0 0 0 4 2 2 0 0 1 0 4 2 2 0 0 1-2 2H5a2 2 0 0 1-2-2 2 2 0 0 0 0-4 2 2 0 0 1 0-4z"/><path d="M14 6v12"/>',
+  photos:    '<path d="M3 8a2 2 0 0 1 2-2h3l1.5-2h5L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="12" r="3.5"/>'
+};
+
+// Il riquadro "Cosa e' incluso": una parola chiave sconosciuta viene saltata
+// invece di disegnare un buco.
+function detailIncluded(tour) {
+  if (!Array.isArray(tour.included) || !tour.included.length) return "";
+  const voci = tour.included.filter(k => INCLUDED_ICONS[k]);
+  if (!voci.length) return "";
+
+  return `
+    <section class="detail-included">
+      <h2 class="detail-sub">${esc(t("detail.included"))}</h2>
+      <ul>
+        ${voci.map(k => `
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${INCLUDED_ICONS[k]}</svg>
+            <span>${esc(t("inc." + k))}</span>
+          </li>`).join("")}
+      </ul>
+    </section>`;
 }
 
 // Le varianti come bottoni, sulla pagina stessa: il cliente sceglie qui e la
@@ -189,6 +243,7 @@ function renderTour(tour) {
         <h2 class="detail-sub">${esc(t("detail.summary"))}</h2>
         <dl class="detail-rows">${detailRows(tour)}</dl>
 
+        ${detailIncluded(tour)}
         ${detailOptions(tour)}
         ${askBtn}
         <p class="hint" data-i18n-html="req.hint"></p>

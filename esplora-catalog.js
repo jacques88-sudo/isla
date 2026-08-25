@@ -17,6 +17,23 @@
 //                A 0 le righe NON compaiono sulla pagina: un "€0" davanti a un
 //                cliente sembra gratis o rotto. Appena metti un numero vero,
 //                la riga si accende da sola.
+//   priceInfant → facoltativo: prezzo per i piu' piccoli, in euro. Qui **0 vuol
+//                dire davvero gratis**, al contrario di priceAdult e priceChild
+//                dove 0 vuol dire "non ancora deciso". Se il campo manca del tutto
+//                la riga non compare: e' cosi' che si dice "non lo sappiamo".
+//   ages       → facoltativo: le fasce d'eta', scritte come le scrive il fornitore.
+//                Finiscono fra parentesi accanto alle righe del prezzo:
+//                "Adulti (12+)", "Bambini (3-11)", "Neonati (0-2)".
+//                    ages: { adult: "12+", child: "3-11", infant: "0-2" }
+//   included   → facoltativo: cosa comprende il prezzo. Si scrivono delle parole
+//                chiave, non del testo: l'icona e la traduzione nelle tre lingue
+//                le mette il sito. Sulla pagina di dettaglio diventano un
+//                riquadro "Cosa e' incluso".
+//                    included: ["snorkel", "snack", "drinks"]
+//                Parole disponibili: snorkel, wetsuit, board, equipment, drinks,
+//                snack, lunch, tasting, guide, transfer, ferry, ticket, photos.
+//                Per aggiungerne una servono l'icona in tour.js e il testo in
+//                i18n.js: una riga per parte.
 //   privateOption → facoltativo: id dell'escursione in versione privata. Sulla
 //                pagina di dettaglio compare un rimando "vuoi la barca solo per
 //                il tuo gruppo?".
@@ -170,13 +187,16 @@ const ESPLORA_CATALOG = [
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 55,
     privateOption: "private-charter",
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 55,
+    priceChild: 30,
+    priceInfant: 0,
+    ages: { adult: "12+", child: "3-11", infant: "0-2" },
+    included: ["snorkel", "snack", "drinks"],
     family: true,
     desc: {
-      it: "Tre ore in barca alla ricerca di balene e delfini, con partenza da Puerto Colón.",
-      en: "Three hours at sea looking for whales and dolphins, departing from Puerto Colón.",
-      es: "Tres horas en barco buscando ballenas y delfines, saliendo de Puerto Colón."
+      it: "Tre ore in barca a vela da Puerto Colón, con un massimo di 11 persone a bordo. Avvistamento di balene e delfini, sosta per lo snorkeling con attrezzatura inclusa, snack e bevande a bordo.",
+      en: "Three hours under sail from Puerto Colón, with a maximum of 11 guests on board. Whale and dolphin watching, a snorkelling stop with gear included, snacks and drinks on board.",
+      es: "Tres horas en velero desde Puerto Colón, con un máximo de 11 personas a bordo. Avistamiento de ballenas y delfines, parada para hacer snorkel con equipo incluido, snacks y bebidas a bordo."
     },
     image: "Cat-mare.jpg",
     published: true
@@ -1022,11 +1042,12 @@ const ESPLORA_CATALOG = [
     priceFrom: null,
     priceAdult: 0,
     priceChild: 0,
+    included: ["transfer", "ferry", "ticket", "guide", "tasting"],
     family: true,
     desc: {
-      it: "Giornata a Gran Canaria in nave: l'acquario Poema del Mar, il quartiere antico di Vegueta e le distillerie Arehucas con degustazione. Transfer dal sud, traghetto e ingressi inclusi.",
-      en: "A day on Gran Canaria by ferry: the Poema del Mar aquarium, the old quarter of Vegueta and the Arehucas distillery with a tasting. Transfer from the south, ferry and entrance tickets included.",
-      es: "Un día en Gran Canaria en barco: el acuario Poema del Mar, el barrio antiguo de Vegueta y las destilerías Arehucas con degustación. Traslado desde el sur, barco y entradas incluidos."
+      it: "Giornata a Gran Canaria in nave: l'acquario Poema del Mar, il quartiere antico di Vegueta e le distillerie Arehucas.",
+      en: "A day on Gran Canaria by ferry: the Poema del Mar aquarium, the old quarter of Vegueta and the Arehucas distillery.",
+      es: "Un día en Gran Canaria en barco: el acuario Poema del Mar, el barrio antiguo de Vegueta y las destilerías Arehucas."
     },
     image: "gran-canaria.jpg",
     published: true

@@ -112,6 +112,8 @@ const INCLUDED_ICONS = {
   equipment: '<path d="M8 8V6a4 4 0 0 1 8 0v2"/><rect x="4" y="8" width="16" height="13" rx="3"/><path d="M9 13h6"/>',
   drinks:    '<path d="M6 5h12l-1.2 14a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8z"/><path d="M6.6 11h10.8"/>',
   snack:     '<path d="M4 11a8 5 0 0 1 16 0v4a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z"/><path d="M4.4 14.5h15.2"/>',
+  fingerfood: '<path d="M3 15h18a9 9 0 0 1-18 0z"/><circle cx="8" cy="11" r="1.5"/><circle cx="12" cy="9.4" r="1.5"/><circle cx="16" cy="11" r="1.5"/>',
+  swimstop:  '<circle cx="16.5" cy="7.5" r="1.8"/><path d="M5 13l4.5-2.5 3 2 3-1.5"/><path d="M2 18c2 0 2 1.2 4 1.2s2-1.2 4-1.2 2 1.2 4 1.2 2-1.2 4-1.2 2 1.2 4 1.2"/>',
   lunch:     '<path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/><path d="M17 3c-2 0-3 3-3 6s1 3 3 3v9"/>',
   tasting:   '<path d="M7 3h10l-1 6a4 4 0 0 1-8 0z"/><path d="M12 13v6M9 21h6"/>',
   guide:     '<circle cx="12" cy="7" r="3"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/>',

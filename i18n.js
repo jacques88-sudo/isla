@@ -174,6 +174,8 @@ const I18N = {
   "inc.equipment":      { it: "Attrezzatura", en: "Equipment", es: "Equipo" },
   "inc.drinks":         { it: "Bevande a bordo", en: "Drinks on board", es: "Bebidas a bordo" },
   "inc.snack":          { it: "Snack", en: "Snacks", es: "Snacks" },
+  "inc.fingerfood":     { it: "Finger food", en: "Finger food", es: "Finger food" },
+  "inc.swimstop":       { it: "Sosta bagno", en: "Swim stop", es: "Parada de baño" },
   "inc.lunch":          { it: "Pranzo", en: "Lunch", es: "Almuerzo" },
   "inc.tasting":        { it: "Degustazione", en: "Tasting", es: "Degustación" },
   "inc.guide":          { it: "Guida", en: "Guide", es: "Guía" },

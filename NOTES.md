@@ -249,6 +249,28 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Luxury Catamaran, e cosa non entra nei campi (24 agosto)
+
+Prezzi, fasce d'eta', descrizione e riquadro. Due parole nuove nel vocabolario:
+**`fingerfood`** (perche' "Snack" sminuiva un prodotto di fascia alta) e **`swimstop`**,
+la sosta bagno, che tornera' su parecchie uscite in barca.
+
+**Tre cose mandate dall'ufficio non hanno un campo dove stare:**
+
+1. **"Arrivare 15 minuti prima della partenza"** — non messa da nessuna parte
+2. **"Portare asciugamano, costume e protezione solare"** — infilata in fondo alla
+   descrizione, che regge ma non e' il posto suo
+3. **"Ideale per coppie e piccoli gruppi"** — lasciata fuori: e' pubblicita', non
+   informazione
+
+Le prime due sono **informazioni pratiche**, e non sono un caso isolato: le stesse cose
+torneranno su surf, immersioni, kayak, quad. Servirebbe un campo tipo `notes`, reso come
+un elenco breve sotto il riquadro. Da decidere con l'ufficio.
+
+**A questo punto sono due i campi in attesa**, tutti e due nati da contenuti veri che non
+entravano: `itinerary` (dall'itinerario di Poema del Mar) e `notes`. Conviene farli
+entrambi **prima** che arrivino le altre 60 descrizioni, non dopo.
+
 ### Come dividersi il lavoro fra descrizione e riquadro
 
 Regola emersa mettendo `included` su Poema del Mar: **la descrizione dice cosa si fa, il

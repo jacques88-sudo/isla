@@ -31,7 +31,8 @@
 //                riquadro "Cosa e' incluso".
 //                    included: ["snorkel", "snack", "drinks"]
 //                Parole disponibili: snorkel, wetsuit, board, equipment, drinks,
-//                snack, lunch, tasting, guide, transfer, ferry, ticket, photos.
+//                snack, fingerfood, lunch, tasting, swimstop, guide, transfer,
+//                ferry, ticket, photos.
 //                Per aggiungerne una servono l'icona in tour.js e il testo in
 //                i18n.js: una riga per parte.
 //   privateOption → facoltativo: id dell'escursione in versione privata. Sulla
@@ -244,13 +245,16 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 75,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 75,
+    priceChild: 50,
+    priceInfant: 0,
+    ages: { adult: "12+", child: "3-11", infant: "0-2" },
+    included: ["fingerfood", "drinks", "swimstop"],
     family: true,
     desc: {
-      it: "Catamarano di categoria superiore, per chi vuole navigare con un occhio all'eleganza.",
-      en: "A premium catamaran, for sailing with an eye on elegance.",
-      es: "Catamarán de categoría superior, para navegar cuidando la elegancia."
+      it: "Catamarano di categoria superiore, con un massimo di 22 persone a bordo: atmosfera rilassata, avvistamento di delfini e balene e aree lounge per stare comodi. Porta asciugamano, costume e protezione solare.",
+      en: "An upscale catamaran with a maximum of 22 guests on board: a relaxed atmosphere, dolphin and whale watching, and plush lounging areas. Bring a towel, swimwear and sun protection.",
+      es: "Catamarán de categoría superior, con un máximo de 22 personas a bordo: ambiente relajado, avistamiento de delfines y ballenas y zonas lounge para estar cómodos. Trae toalla, bañador y protección solar."
     },
     image: "luxury-catamaran.jpg",
     published: true

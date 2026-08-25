@@ -1273,7 +1273,7 @@ const ESPLORA_CATALOG = [
       es: "Una de las ciudades más antiguas de la isla: Lago Martiánez, jardín botánico y Plaza del Charco."
     },
     image: "",
-    published: true
+    published: false
   },
   {
     id: "gran-canaria",

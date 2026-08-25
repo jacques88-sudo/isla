@@ -255,9 +255,11 @@ Catalogo a **61 foto su 67**, "Tour e visite" a 8 su 10.
 
 - La foto del **tour completo** e' in realta' **Puerto de la Cruz vista dall'alto**, col
   Lago Martianez in primo piano e il Teide dietro. Assegnata li' dall'ufficio, e funziona:
-  citta' e Teide nella stessa inquadratura sono esattamente "tutta l'isola in un giorno".
-  Ma la scheda `puerto-de-la-cruz` e' ancora senza foto e questa sarebbe letteralmente
-  quella: se un giorno serve, si sposta
+  citta' e Teide nella stessa inquadratura sono esattamente "tutta l'isola in un giorno"
+- **`puerto-de-la-cruz` e' stata nascosta** (`published: false`) subito dopo, su decisione
+  dell'ufficio. Non serviva piu' una scheda a se': il posto si vede nella foto del tour
+  completo. Nascosta e non cancellata, come le altre tre — le descrizioni nelle tre lingue
+  restano nel file. Il catalogo scende a **66 attivita' visibili**, "Tour e visite" a 9
 - Le quadrate si ritagliano bene al centro: verificato prima di agganciare, la fascia 16:10
   tiene Teide, costa e citta'
 - `cantine-vinicole` e' 500x375 e `island-tour-completo` 800x800: piccole. Sulla scheda

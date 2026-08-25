@@ -35,6 +35,15 @@
 //                ferry, ticket, photos.
 //                Per aggiungerne una servono l'icona in tour.js e il testo in
 //                i18n.js: una riga per parte.
+//   itinerary  → facoltativo: le tappe della giornata, in ordine. `time` si puo'
+//                omettere quando l'orario non e' fisso. Diventa un elenco con la
+//                linea del tempo sulla pagina di dettaglio.
+//                    itinerary: [ { time: "10:00", text: { it: "...", ... } } ]
+//   notes      → facoltativo: i consigli pratici, uno per riga. Qui e' **testo
+//                libero** e non parole chiave come `included`: "arriva 15 minuti
+//                prima", "porta il costume" cambiano troppo da attivita' a
+//                attivita' per stare in un vocabolario.
+//                    notes: [ { it: "...", en: "...", es: "..." } ]
 //   privateOption → facoltativo: id dell'escursione in versione privata. Sulla
 //                pagina di dettaglio compare un rimando "vuoi la barca solo per
 //                il tuo gruppo?".
@@ -250,11 +259,19 @@ const ESPLORA_CATALOG = [
     priceInfant: 0,
     ages: { adult: "12+", child: "3-11", infant: "0-2" },
     included: ["fingerfood", "drinks", "swimstop"],
+    notes: [
+      { it: "Presentati 15 minuti prima della partenza.",
+        en: "Please arrive 15 minutes before departure.",
+        es: "Preséntate 15 minutos antes de la salida." },
+      { it: "Porta asciugamano, costume e protezione solare.",
+        en: "Bring a towel, swimwear and sun protection.",
+        es: "Trae toalla, bañador y protección solar." }
+    ],
     family: true,
     desc: {
-      it: "Catamarano di categoria superiore, con un massimo di 22 persone a bordo: atmosfera rilassata, avvistamento di delfini e balene e aree lounge per stare comodi. Porta asciugamano, costume e protezione solare.",
-      en: "An upscale catamaran with a maximum of 22 guests on board: a relaxed atmosphere, dolphin and whale watching, and plush lounging areas. Bring a towel, swimwear and sun protection.",
-      es: "Catamarán de categoría superior, con un máximo de 22 personas a bordo: ambiente relajado, avistamiento de delfines y ballenas y zonas lounge para estar cómodos. Trae toalla, bañador y protección solar."
+      it: "Catamarano di categoria superiore, con un massimo di 22 persone a bordo: atmosfera rilassata, avvistamento di delfini e balene e aree lounge per stare comodi.",
+      en: "An upscale catamaran with a maximum of 22 guests on board: a relaxed atmosphere, dolphin and whale watching, and plush lounging areas.",
+      es: "Catamarán de categoría superior, con un máximo de 22 personas a bordo: ambiente relajado, avistamiento de delfines y ballenas y zonas lounge para estar cómodos."
     },
     image: "luxury-catamaran.jpg",
     published: true
@@ -1047,6 +1064,37 @@ const ESPLORA_CATALOG = [
     priceAdult: 0,
     priceChild: 0,
     included: ["transfer", "ferry", "ticket", "guide", "tasting"],
+    itinerary: [
+      { time: "10:00", text: { it: "Nave da Santa Cruz verso Agaete",
+                               en: "Ferry from Santa Cruz to Agaete",
+                               es: "Barco desde Santa Cruz hacia Agaete" } },
+      { time: "11:30", text: { it: "Arrivo ad Agaete, a Gran Canaria",
+                               en: "Arrival at Agaete, on Gran Canaria",
+                               es: "Llegada a Agaete, en Gran Canaria" } },
+      { text: { it: "Ingresso all'acquario Poema del Mar",
+                en: "Entry to the Poema del Mar aquarium",
+                es: "Entrada al acuario Poema del Mar" } },
+      { text: { it: "Visita al quartiere antico di Vegueta",
+                en: "A walk through the old quarter of Vegueta",
+                es: "Visita al barrio antiguo de Vegueta" } },
+      { text: { it: "Visita guidata alle distillerie Arehucas, con degustazione",
+                en: "Guided visit to the Arehucas distillery, with a tasting",
+                es: "Visita guiada a las destilerías Arehucas, con degustación" } },
+      { time: "17:00", text: { it: "Partenza da Arucas verso Agaete",
+                               en: "Departure from Arucas towards Agaete",
+                               es: "Salida desde Arucas hacia Agaete" } },
+      { time: "18:00", text: { it: "Nave da Agaete verso Santa Cruz",
+                               en: "Ferry from Agaete back to Santa Cruz",
+                               es: "Barco desde Agaete hacia Santa Cruz" } }
+    ],
+    notes: [
+      { it: "Il pranzo non è incluso.",
+        en: "Lunch is not included.",
+        es: "El almuerzo no está incluido." },
+      { it: "Il transfer dal sud fino al porto di Santa Cruz è compreso, andata e ritorno.",
+        en: "The transfer from the south to Santa Cruz harbour is included, both ways.",
+        es: "El traslado desde el sur hasta el puerto de Santa Cruz está incluido, ida y vuelta." }
+    ],
     family: true,
     desc: {
       it: "Giornata a Gran Canaria in nave: l'acquario Poema del Mar, il quartiere antico di Vegueta e le distillerie Arehucas.",

@@ -123,6 +123,40 @@ const INCLUDED_ICONS = {
   photos:    '<path d="M3 8a2 2 0 0 1 2-2h3l1.5-2h5L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="12" r="3.5"/>'
 };
 
+// L'itinerario: una riga per tappa, con l'orario a sinistra dove c'e'. E'
+// quello che vende una gita di una giornata — il cliente vuole sapere a che
+// ora parte e dove lo portano, non solo che "e' bello".
+function detailItinerary(tour) {
+  if (!Array.isArray(tour.itinerary) || !tour.itinerary.length) return "";
+
+  return `
+    <section class="detail-itinerary">
+      <h2 class="detail-sub">${esc(t("detail.itinerary"))}</h2>
+      <ol>
+        ${tour.itinerary.map(tappa => `
+          <li>
+            ${tappa.time ? `<span class="detail-itinerary-time">${esc(tappa.time)}</span>` : ""}
+            <span>${esc(tf(tappa.text))}</span>
+          </li>`).join("")}
+      </ol>
+    </section>`;
+}
+
+// I consigli: le cose pratiche da sapere prima di partire. Testo libero e non
+// parole chiave come `included`, perche' cambiano troppo da attivita' a
+// attivita' per stare in un vocabolario.
+function detailNotes(tour) {
+  if (!Array.isArray(tour.notes) || !tour.notes.length) return "";
+
+  return `
+    <section class="detail-notes">
+      <h2 class="detail-sub">${esc(t("detail.notes"))}</h2>
+      <ul>
+        ${tour.notes.map(nota => `<li>${esc(tf(nota))}</li>`).join("")}
+      </ul>
+    </section>`;
+}
+
 // Il riquadro "Cosa e' incluso": una parola chiave sconosciuta viene saltata
 // invece di disegnare un buco.
 function detailIncluded(tour) {
@@ -245,7 +279,9 @@ function renderTour(tour) {
         <h2 class="detail-sub">${esc(t("detail.summary"))}</h2>
         <dl class="detail-rows">${detailRows(tour)}</dl>
 
+        ${detailItinerary(tour)}
         ${detailIncluded(tour)}
+        ${detailNotes(tour)}
         ${detailOptions(tour)}
         ${askBtn}
         <p class="hint" data-i18n-html="req.hint"></p>

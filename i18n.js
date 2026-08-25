@@ -166,6 +166,8 @@ const I18N = {
   "detail.season":      { it: "Periodo", en: "Season", es: "Temporada" },
   "detail.infants":     { it: "Neonati", en: "Infants", es: "Bebés" },
   "detail.included":    { it: "Cosa è incluso", en: "What's included", es: "Qué incluye" },
+  "detail.itinerary":   { it: "Come si svolge", en: "How the day goes", es: "Cómo se desarrolla" },
+  "detail.notes":       { it: "Consigli", en: "Tips", es: "Consejos" },
 
   // ── cosa e' incluso: le parole chiave del campo `included` ──────────────
   "inc.snorkel":        { it: "Attrezzatura da snorkeling", en: "Snorkelling gear", es: "Equipo de snorkel" },

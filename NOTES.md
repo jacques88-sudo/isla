@@ -249,6 +249,30 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### I due campi mancanti, fatti (24 agosto)
+
+L'ufficio ha detto di costruirli subito invece di continuare a riempire schede. Giusto:
+erano nati tutti e due da contenuti veri che non entravano da nessuna parte.
+
+**`itinerary`** — le tappe in ordine, con l'orario dove c'e'. Sulla pagina diventa un
+elenco con la linea del tempo e un pallino per tappa. `time` si puo' omettere: le tappe
+senza orario fisso (l'ingresso all'acquario, la visita a Vegueta) restano allineate col
+resto senza inventare orari.
+
+**`notes`** — i consigli pratici, uno per riga. Qui e' **testo libero** e non parole
+chiave come `included`: "arriva 15 minuti prima" e "porta il costume" cambiano troppo per
+stare in un vocabolario chiuso. L'ufficio le ha volute "sotto forma di consiglio", quindi
+il titolo e' "Consigli" e non "Informazioni".
+
+**L'ordine sulla pagina** e' pensato come le domande di un cliente: quanto costa (In
+breve), cosa si fa (Come si svolge), cosa ricevo (Cosa e' incluso), cosa devo sapere
+(Consigli).
+
+Riempite subito le due schede che avevano i dati: Poema del Mar prende l'itinerario
+completo delle sette tappe piu' i consigli, il Luxury Catamaran prende i consigli — e
+"porta asciugamano e costume", che stava infilata in fondo alla descrizione, **e' uscita
+dal testo** e ora sta al posto suo.
+
 ### Luxury Catamaran, e cosa non entra nei campi (24 agosto)
 
 Prezzi, fasce d'eta', descrizione e riquadro. Due parole nuove nel vocabolario:

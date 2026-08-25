@@ -1788,6 +1788,64 @@ body.menu-open { overflow: hidden; }
   opacity: .7;
 }
 
+/* Itinerario: una tappa per riga, con l'orario allineato a sinistra. La
+   linea verticale lega le tappe fra loro senza fare un elenco puntato. */
+.detail-itinerary { margin: 0 0 1.6rem; }
+.detail-itinerary ol {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 .2rem;
+  border-left: 1px solid var(--border);
+}
+.detail-itinerary li {
+  position: relative;
+  display: flex;
+  gap: .8rem;
+  padding: .55rem 0 .55rem 1rem;
+  font-size: .9rem;
+  color: var(--text);
+}
+.detail-itinerary li::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 1.05rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+.detail-itinerary-time {
+  flex: none;
+  min-width: 3.1rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+/* Consigli: cose pratiche da sapere prima di partire */
+.detail-notes { margin: 0 0 1.6rem; }
+.detail-notes ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.detail-notes li {
+  position: relative;
+  padding: .3rem 0 .3rem 1.2rem;
+  font-size: .88rem;
+  color: var(--muted);
+}
+.detail-notes li::before {
+  content: "";
+  position: absolute;
+  left: .2rem;
+  top: .85rem;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
 /* "Cosa e' incluso": icona e parola, su due o tre colonne. Non e' un elenco
    puntato ma un riquadro, cosi' si legge a colpo d'occhio come sui siti dei
    fornitori. */

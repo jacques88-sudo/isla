@@ -112,6 +112,8 @@ const INCLUDED_ICONS = {
   equipment: '<path d="M8 8V6a4 4 0 0 1 8 0v2"/><rect x="4" y="8" width="16" height="13" rx="3"/><path d="M9 13h6"/>',
   drinks:    '<path d="M6 5h12l-1.2 14a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8z"/><path d="M6.6 11h10.8"/>',
   snack:     '<path d="M4 11a8 5 0 0 1 16 0v4a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z"/><path d="M4.4 14.5h15.2"/>',
+  fingerfood: '<path d="M3 15h18a9 9 0 0 1-18 0z"/><circle cx="8" cy="11" r="1.5"/><circle cx="12" cy="9.4" r="1.5"/><circle cx="16" cy="11" r="1.5"/>',
+  swimstop:  '<circle cx="16.5" cy="7.5" r="1.8"/><path d="M5 13l4.5-2.5 3 2 3-1.5"/><path d="M2 18c2 0 2 1.2 4 1.2s2-1.2 4-1.2 2 1.2 4 1.2 2-1.2 4-1.2 2 1.2 4 1.2"/>',
   lunch:     '<path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/><path d="M17 3c-2 0-3 3-3 6s1 3 3 3v9"/>',
   tasting:   '<path d="M7 3h10l-1 6a4 4 0 0 1-8 0z"/><path d="M12 13v6M9 21h6"/>',
   guide:     '<circle cx="12" cy="7" r="3"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/>',
@@ -120,6 +122,40 @@ const INCLUDED_ICONS = {
   ticket:    '<path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 2 2 0 0 0 0 4 2 2 0 0 1 0 4 2 2 0 0 1-2 2H5a2 2 0 0 1-2-2 2 2 0 0 0 0-4 2 2 0 0 1 0-4z"/><path d="M14 6v12"/>',
   photos:    '<path d="M3 8a2 2 0 0 1 2-2h3l1.5-2h5L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="12" r="3.5"/>'
 };
+
+// L'itinerario: una riga per tappa, con l'orario a sinistra dove c'e'. E'
+// quello che vende una gita di una giornata — il cliente vuole sapere a che
+// ora parte e dove lo portano, non solo che "e' bello".
+function detailItinerary(tour) {
+  if (!Array.isArray(tour.itinerary) || !tour.itinerary.length) return "";
+
+  return `
+    <section class="detail-itinerary">
+      <h2 class="detail-sub">${esc(t("detail.itinerary"))}</h2>
+      <ol>
+        ${tour.itinerary.map(tappa => `
+          <li>
+            ${tappa.time ? `<span class="detail-itinerary-time">${esc(tappa.time)}</span>` : ""}
+            <span>${esc(tf(tappa.text))}</span>
+          </li>`).join("")}
+      </ol>
+    </section>`;
+}
+
+// I consigli: le cose pratiche da sapere prima di partire. Testo libero e non
+// parole chiave come `included`, perche' cambiano troppo da attivita' a
+// attivita' per stare in un vocabolario.
+function detailNotes(tour) {
+  if (!Array.isArray(tour.notes) || !tour.notes.length) return "";
+
+  return `
+    <section class="detail-notes">
+      <h2 class="detail-sub">${esc(t("detail.notes"))}</h2>
+      <ul>
+        ${tour.notes.map(nota => `<li>${esc(tf(nota))}</li>`).join("")}
+      </ul>
+    </section>`;
+}
 
 // Il riquadro "Cosa e' incluso": una parola chiave sconosciuta viene saltata
 // invece di disegnare un buco.
@@ -243,7 +279,9 @@ function renderTour(tour) {
         <h2 class="detail-sub">${esc(t("detail.summary"))}</h2>
         <dl class="detail-rows">${detailRows(tour)}</dl>
 
+        ${detailItinerary(tour)}
         ${detailIncluded(tour)}
+        ${detailNotes(tour)}
         ${detailOptions(tour)}
         ${askBtn}
         <p class="hint" data-i18n-html="req.hint"></p>

@@ -166,6 +166,8 @@ const I18N = {
   "detail.season":      { it: "Periodo", en: "Season", es: "Temporada" },
   "detail.infants":     { it: "Neonati", en: "Infants", es: "Bebés" },
   "detail.included":    { it: "Cosa è incluso", en: "What's included", es: "Qué incluye" },
+  "detail.itinerary":   { it: "Come si svolge", en: "How the day goes", es: "Cómo se desarrolla" },
+  "detail.notes":       { it: "Consigli", en: "Tips", es: "Consejos" },
 
   // ── cosa e' incluso: le parole chiave del campo `included` ──────────────
   "inc.snorkel":        { it: "Attrezzatura da snorkeling", en: "Snorkelling gear", es: "Equipo de snorkel" },
@@ -174,6 +176,8 @@ const I18N = {
   "inc.equipment":      { it: "Attrezzatura", en: "Equipment", es: "Equipo" },
   "inc.drinks":         { it: "Bevande a bordo", en: "Drinks on board", es: "Bebidas a bordo" },
   "inc.snack":          { it: "Snack", en: "Snacks", es: "Snacks" },
+  "inc.fingerfood":     { it: "Finger food", en: "Finger food", es: "Finger food" },
+  "inc.swimstop":       { it: "Sosta bagno", en: "Swim stop", es: "Parada de baño" },
   "inc.lunch":          { it: "Pranzo", en: "Lunch", es: "Almuerzo" },
   "inc.tasting":        { it: "Degustazione", en: "Tasting", es: "Degustación" },
   "inc.guide":          { it: "Guida", en: "Guide", es: "Guía" },

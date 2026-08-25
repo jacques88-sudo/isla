@@ -249,6 +249,52 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### I due campi mancanti, fatti (24 agosto)
+
+L'ufficio ha detto di costruirli subito invece di continuare a riempire schede. Giusto:
+erano nati tutti e due da contenuti veri che non entravano da nessuna parte.
+
+**`itinerary`** — le tappe in ordine, con l'orario dove c'e'. Sulla pagina diventa un
+elenco con la linea del tempo e un pallino per tappa. `time` si puo' omettere: le tappe
+senza orario fisso (l'ingresso all'acquario, la visita a Vegueta) restano allineate col
+resto senza inventare orari.
+
+**`notes`** — i consigli pratici, uno per riga. Qui e' **testo libero** e non parole
+chiave come `included`: "arriva 15 minuti prima" e "porta il costume" cambiano troppo per
+stare in un vocabolario chiuso. L'ufficio le ha volute "sotto forma di consiglio", quindi
+il titolo e' "Consigli" e non "Informazioni".
+
+**L'ordine sulla pagina** e' pensato come le domande di un cliente: quanto costa (In
+breve), cosa si fa (Come si svolge), cosa ricevo (Cosa e' incluso), cosa devo sapere
+(Consigli).
+
+Riempite subito le due schede che avevano i dati: Poema del Mar prende l'itinerario
+completo delle sette tappe piu' i consigli, il Luxury Catamaran prende i consigli — e
+"porta asciugamano e costume", che stava infilata in fondo alla descrizione, **e' uscita
+dal testo** e ora sta al posto suo.
+
+### Luxury Catamaran, e cosa non entra nei campi (24 agosto)
+
+Prezzi, fasce d'eta', descrizione e riquadro. Due parole nuove nel vocabolario:
+**`fingerfood`** (perche' "Snack" sminuiva un prodotto di fascia alta) e **`swimstop`**,
+la sosta bagno, che tornera' su parecchie uscite in barca.
+
+**Tre cose mandate dall'ufficio non hanno un campo dove stare:**
+
+1. **"Arrivare 15 minuti prima della partenza"** — non messa da nessuna parte
+2. **"Portare asciugamano, costume e protezione solare"** — infilata in fondo alla
+   descrizione, che regge ma non e' il posto suo
+3. **"Ideale per coppie e piccoli gruppi"** — lasciata fuori: e' pubblicita', non
+   informazione
+
+Le prime due sono **informazioni pratiche**, e non sono un caso isolato: le stesse cose
+torneranno su surf, immersioni, kayak, quad. Servirebbe un campo tipo `notes`, reso come
+un elenco breve sotto il riquadro. Da decidere con l'ufficio.
+
+**A questo punto sono due i campi in attesa**, tutti e due nati da contenuti veri che non
+entravano: `itinerary` (dall'itinerario di Poema del Mar) e `notes`. Conviene farli
+entrambi **prima** che arrivino le altre 60 descrizioni, non dopo.
+
 ### Come dividersi il lavoro fra descrizione e riquadro
 
 Regola emersa mettendo `included` su Poema del Mar: **la descrizione dice cosa si fa, il

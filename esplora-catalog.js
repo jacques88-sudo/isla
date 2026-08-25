@@ -381,7 +381,7 @@ const ESPLORA_CATALOG = [
     id: "self-drive-boats",
     title: "Self-Drive Boats",
     category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto Colón",
     duration: { it: "Da 2 a 5 ore", en: "2 to 5 hours", es: "De 2 a 5 horas" },
     priceFrom: 190,
     priceUnit: { it: "a barca", en: "per boat", es: "por barco" },
@@ -404,9 +404,9 @@ const ESPLORA_CATALOG = [
         es: "El precio es por barco, no por persona: se reparte entre quienes suben a bordo."
       },
       {
-        it: "Per guidare la barca bisogna avere almeno 18 anni.",
-        en: "You must be at least 18 to drive the boat.",
-        es: "Para conducir el barco hay que tener al menos 18 años."
+        it: "Chi guida la barca deve avere almeno 18 anni. I bambini possono salire come passeggeri.",
+        en: "Whoever drives the boat must be at least 18. Children are welcome on board as passengers.",
+        es: "Quien conduzca el barco debe tener al menos 18 años. Los niños pueden subir como pasajeros."
       },
       {
         it: "Il giorno stesso si lascia una cauzione di €100 in contanti.",
@@ -424,7 +424,7 @@ const ESPLORA_CATALOG = [
         es: "Más de 5 horas es posible: escríbenos y te decimos el precio."
       }
     ],
-    family: false,
+    family: true,
     desc: {
       it: "Al timone ci sei tu: barca senza skipper, si guida da soli e non serve la patente nautica. Fino a 4 persone a bordo, si sceglie il tratto di costa e ci si ferma dove si vuole per un bagno.",
       en: "You take the helm: no skipper, and no boat licence needed. Up to 4 people on board, you pick the stretch of coast and stop wherever you like for a swim.",

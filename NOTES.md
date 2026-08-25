@@ -298,13 +298,11 @@ c'e' eccome — ed e' proprio quello che l'ufficio aveva detto ("la sosta bagno 
 tutte le barche, anche se non c'e' scritto nelle descrizioni che ti invio"). Aggiunta.
 **Resta fuori `small-catamaran-rental`**, per cui non e' ancora arrivato niente.
 
-**Cosa non e' stato deciso da me:**
-
-- `family` resta `false`. L'ufficio ha detto l'eta' minima per *guidare* (18), non se i
-  bambini possono salire come passeggeri. Metterla in "Con bambini" senza conferma
-  sarebbe inventare
-- la zona di partenza (il porto) non e' stata mandata: resta "Da definire" e la pillola
-  non compare
+**Le due cose che mancavano, arrivate subito dopo:** i bambini **possono** salire come
+passeggeri (`family: true`, quindi la scheda entra nel filtro "Con bambini") e si parte da
+**Puerto Colón**. La nota sull'eta' e' stata riscritta di conseguenza: dice che chi *guida*
+deve avere 18 anni e che i bambini salgono come passeggeri. Serve proprio a chi arriva dal
+filtro "Con bambini" e vede scritto "18 anni" senza spiegazione.
 
 ### La scheda porta alla pagina, non alla richiesta (24 agosto)
 

@@ -158,6 +158,9 @@
       <label for="reqDate" data-i18n="req.date">Quando vorresti andare</label>
       <input id="reqDate" name="date" type="date" required />
 
+      <label for="reqTime" data-i18n="req.time">A che ora</label>
+      <select id="reqTime" name="time" data-request-time></select>
+
       <span class="request-people-label" data-i18n="req.people">Quante persone</span>
       <div class="request-people">
         <label for="reqAdults"><span data-i18n="req.adults">Adulti</span>
@@ -167,6 +170,8 @@
           <input id="reqKids" name="kids" type="number" inputmode="numeric" min="0" max="30" value="0" />
         </label>
       </div>
+
+      <p class="request-total" data-request-total hidden></p>
 
       <label for="reqOption" data-request-option-label hidden>Opzione</label>
       <select id="reqOption" name="option" data-request-option hidden></select>

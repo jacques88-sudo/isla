@@ -71,6 +71,12 @@
 //                sul pullman per i neonati, che senza transfer non esiste. Compare
 //                come riga in fondo alla pagina di dettaglio.
 //                    transferPrice: { adult: 99, child: 74, baby: 17 }
+//   times      → facoltativo: gli orari di partenza fra cui scegliere, scritti
+//                come li scrive il fornitore. Dove manca, la finestra della
+//                richiesta usa le fasce segnaposto di ORARI_PREDEFINITI qui
+//                sopra: sostituirle attivita' per attivita' appena l'ufficio
+//                manda gli orari veri.
+//                    times: ["09:30 - 12:30", "14:00 - 17:00"]
 //   options    → facoltativo: le varianti della stessa attivita' fra cui il cliente
 //                sceglie (1 o 2 ore, quale percorso, quale spettacolo). Sulla pagina
 //                di dettaglio diventano una riga ciascuna, con il prezzo se c'e';
@@ -105,6 +111,29 @@
 // lo usano sia le schede del catalogo sia l'assistente. Svuotalo per nascondere
 // ovunque i pulsanti che aprono WhatsApp.
 const WHATSAPP_NUMBER = "34662908073";
+
+// GLI ORARI DI PARTENZA
+//
+// ⚠ QUESTI SONO SEGNAPOSTO: sono fasce generiche, non gli orari veri delle
+// attività. Servono per far funzionare il campo "A che ora" finché l'ufficio
+// non manda quelli giusti.
+//
+// Ogni attività può avere i suoi: si scrive `times: ["09:30 - 12:30", ...]`
+// nella sua scheda e quella lista prende il posto di questa. Sono orari, quindi
+// si scrivono uguali in tutte e tre le lingue: niente { it, en, es }.
+//
+// In ogni caso il cliente parte sempre da "Da concordare": il sito non sceglie
+// mai un orario al posto suo, e se lui non ne sceglie uno la riga dell'orario
+// nel messaggio WhatsApp non compare proprio.
+const ORARI_PREDEFINITI = [
+  "09:00 - 10:00",
+  "10:00 - 11:00",
+  "11:00 - 12:00",
+  "12:00 - 13:00",
+  "14:00 - 15:00",
+  "15:00 - 16:00",
+  "16:00 - 17:00"
+];
 
 const CATEGORIES = [
   {

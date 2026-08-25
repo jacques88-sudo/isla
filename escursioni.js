@@ -64,13 +64,50 @@ function peopleText(adults, kids) {
   return parti.join(" " + t("wa.and") + " ");
 }
 
+// I prezzi a testa da usare per il totale, oppure null quando il totale non si
+// puo' fare. Moltiplicare per le persone un prezzo che **non e' a persona**
+// (a barca, all'ora, a scaglioni di gruppo) darebbe un numero sbagliato, e un
+// numero sbagliato scritto nero su bianco e' peggio di nessun numero.
+function prezziAPersona(tour, conTransfer) {
+  if (tour.priceUnit) return null;
+  if (Array.isArray(tour.priceTiers) && tour.priceTiers.length) return null;
+  // Col transfer il listino e' un altro: per il Twin Ticket €78 diventano €99.
+  if (conTransfer && tour.transferPrice && tour.transferPrice.adult > 0) {
+    return { adulto: tour.transferPrice.adult, bambino: tour.transferPrice.child || 0 };
+  }
+  if (!(tour.priceAdult > 0)) return null;
+  return { adulto: tour.priceAdult, bambino: tour.priceChild || 0 };
+}
+
+// Il totale e il conto da cui viene, oppure null quando non si puo' fare.
+// Lo usano sia la finestra (che lo mostra) sia il messaggio (che lo scrive):
+// un conto solo, cosi' i due numeri non possono diventare diversi.
+function calcolaTotale(tour, req) {
+  const p = prezziAPersona(tour, req.transfer);
+  // Bambini senza il loro prezzo: il totale verrebbe fuori come se non
+  // pagassero. Meglio niente che un numero falso.
+  if (!p || req.adults < 1 || (req.kids > 0 && !p.bambino)) return null;
+  const pezzi = [req.adults + " " + t(req.adults === 1 ? "wa.adult" : "wa.adults") + " × €" + p.adulto];
+  if (req.kids > 0) {
+    pezzi.push(req.kids + " " + t(req.kids === 1 ? "wa.child" : "wa.children") + " × €" + p.bambino);
+  }
+  return {
+    totale: req.adults * p.adulto + req.kids * p.bambino,
+    dettaglio: pezzi.join(" + ")
+  };
+}
+
 // Messaggio WhatsApp completo, con data e persone già compilate.
 // È scritto nella lingua che il cliente sta usando sul sito.
 function whatsappUrl(tour, req) {
   let testo = t("wa.intro", { name: req.name }) + "\n" +
     "• " + tf(tour.title) + "\n" +
-    "• " + t("wa.date") + ": " + formatDate(req.date) + "\n" +
-    "• " + t("wa.people") + ": " + peopleText(req.adults, req.kids);
+    "• " + t("wa.date") + ": " + formatDate(req.date);
+  // L'orario si scrive solo se il cliente ne ha scelto uno. "Da concordare" e'
+  // l'assenza della riga, non una riga che dice "da concordare": all'ufficio
+  // non serve leggere che il cliente non ha deciso.
+  if (req.time) testo += "\n• " + t("wa.time") + ": " + req.time;
+  testo += "\n• " + t("wa.people") + ": " + peopleText(req.adults, req.kids);
   // La variante scelta va subito sotto il nome dell'attivita': e' la prima
   // cosa che l'ufficio deve sapere per rispondere col prezzo giusto.
   if (tour.options && req.option) {
@@ -80,6 +117,13 @@ function whatsappUrl(tour, req) {
   // la domanda e' stata fatta, invece di doverla rifare in chat.
   if (tour.transfer) {
     testo += "\n• " + t("wa.transfer") + ": " + t(req.transfer ? "wa.yes" : "wa.no");
+  }
+  // Il totale va anche in chat: l'ufficio vede subito che conto ha fatto il
+  // cliente e puo' correggerlo prima di confermare. "Indicativo" ci resta
+  // attaccato: il prezzo buono e' quello della conferma, non questo.
+  const conto = calcolaTotale(tour, req);
+  if (conto) {
+    testo += "\n• " + t("wa.total") + ": €" + conto.totale + " (" + conto.dettaglio + ")";
   }
   if (req.note) testo += "\n• " + t("wa.notes") + ": " + req.note;
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
@@ -259,6 +303,10 @@ function initRequestDialog() {
   const optionEl = document.querySelector("[data-request-option]");
   const optionLabelEl = document.querySelector("[data-request-option-label]");
   const dateInput = document.getElementById("reqDate");
+  const timeEl = document.querySelector("[data-request-time]");
+  const totalEl = document.querySelector("[data-request-total]");
+  const adultsInput = document.getElementById("reqAdults");
+  const kidsInput = document.getElementById("reqKids");
   if (!dialog || !scrim || !form || !dateInput) return;
 
   // Blocca le date che non rispettano il preavviso di 24 ore
@@ -291,6 +339,12 @@ function initRequestDialog() {
       // la giornata a Loro Parque) prima che il cliente spunti
       if (transferNoteEl) transferNoteEl.textContent = tour.transfer ? tf(tour.transfer) : "";
     }
+    // Gli orari: la finestra e' una sola per tutte le attivita', quindi si
+    // riparte sempre da "Da concordare" invece di tenere la scelta di prima.
+    if (timeEl) timeEl.value = "";
+    riempiOrari(tour);
+    aggiornaTotale();
+
     dialog.hidden = false;
     scrim.hidden = false;
     requestAnimationFrame(() => {
@@ -334,6 +388,50 @@ function initRequestDialog() {
     });
   }
 
+  // Gli orari fra cui scegliere: quelli dell'attivita' se ci sono, altrimenti
+  // le fasce segnaposto. La prima voce e' sempre "Da concordare" e vale stringa
+  // vuota, cosi' chi non sa a che ora vuole partire non e' costretto a
+  // inventare un orario per poter mandare la richiesta.
+  function riempiOrari(tour) {
+    if (!timeEl) return;
+    const scelto = timeEl.value;
+    timeEl.innerHTML = "";
+    const qualunque = document.createElement("option");
+    qualunque.value = "";
+    qualunque.textContent = t("req.timeAny");
+    timeEl.appendChild(qualunque);
+    (tour.times || ORARI_PREDEFINITI).forEach(ora => {
+      const voce = document.createElement("option");
+      voce.value = ora;
+      voce.textContent = ora;
+      timeEl.appendChild(voce);
+    });
+    // al cambio lingua si ricostruisce: la scelta del cliente non si perde
+    timeEl.value = scelto;
+  }
+
+  // "2 adulti × €55 + 1 bambino × €30" e sopra, grosso, "Totale €140". Si
+  // aggiorna mentre il cliente cambia i numeri, cosi' vede quanto spende prima
+  // di aprire WhatsApp invece di doverlo chiedere. Il conto vero e proprio lo
+  // fa calcolaTotale() piu' in alto, che serve anche al messaggio.
+  function aggiornaTotale() {
+    if (!totalEl || !current || !adultsInput || !kidsInput) return;
+    const conto = calcolaTotale(current, {
+      adults: parseInt(adultsInput.value, 10) || 0,
+      kids: parseInt(kidsInput.value, 10) || 0,
+      transfer: !!(transferInput && transferInput.checked)
+    });
+    if (!conto) {
+      totalEl.hidden = true;
+      return;
+    }
+    totalEl.innerHTML =
+      '<strong>' + t("req.total") + ' €' + conto.totale + '</strong>' +
+      '<span>' + conto.dettaglio + '</span>' +
+      '<small>' + t("req.totalNote") + '</small>';
+    totalEl.hidden = false;
+  }
+
   function close() {
     dialog.classList.remove("is-open");
     scrim.classList.remove("is-visible");
@@ -350,6 +448,14 @@ function initRequestDialog() {
     if (!btn) return;
     const tour = ESPLORA_CATALOG.find(t => t.id === btn.dataset.requestOpen);
     if (tour) open(tour);
+  });
+
+  // Il totale segue i numeri mentre il cliente li cambia, e la spunta del
+  // transfer perche' col transfer il prezzo e' un altro.
+  [adultsInput, kidsInput, transferInput].forEach(campo => {
+    if (!campo) return;
+    campo.addEventListener("input", aggiornaTotale);
+    campo.addEventListener("change", aggiornaTotale);
   });
 
   document.querySelectorAll("[data-request-close]").forEach(b =>
@@ -373,6 +479,9 @@ function initRequestDialog() {
       riempiOpzioni(current);
       if (scelto >= 0) optionEl.selectedIndex = scelto;
     }
+    // "Da concordare" e "2 adulti × €55" sono tradotti: si rifanno tutti e due
+    riempiOrari(current);
+    aggiornaTotale();
   });
 
   form.addEventListener("submit", e => {
@@ -382,6 +491,7 @@ function initRequestDialog() {
     const req = {
       name: document.getElementById("reqName").value.trim(),
       date: dateInput.value,
+      time: timeEl ? timeEl.value : "",
       adults: parseInt(document.getElementById("reqAdults").value, 10) || 1,
       kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
       note: document.getElementById("reqNote").value.trim(),

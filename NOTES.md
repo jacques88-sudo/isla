@@ -249,6 +249,16 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Come dividersi il lavoro fra descrizione e riquadro
+
+Regola emersa mettendo `included` su Poema del Mar: **la descrizione dice cosa si fa, il
+riquadro dice cosa si riceve.** La descrizione finiva con "Transfer dal sud, traghetto e
+ingressi inclusi", cioe' esattamente quello che dicono le icone: tagliata. Ora dice solo
+il giro (acquario, Vegueta, Arehucas) e il resto lo dice il riquadro.
+
+Da tenere presente quando arrivano le altre descrizioni dall'ufficio: la parte "include:"
+non va copiata nel testo, va tradotta in parole chiave.
+
 ### Fasce d'eta' e "Cosa e' incluso" (24 agosto)
 
 Due campi nuovi, chiesti dall'ufficio guardando il sito di una scuola di surf.

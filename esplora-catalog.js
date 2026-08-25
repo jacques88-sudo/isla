@@ -1042,11 +1042,12 @@ const ESPLORA_CATALOG = [
     priceFrom: null,
     priceAdult: 0,
     priceChild: 0,
+    included: ["transfer", "ferry", "ticket", "guide", "tasting"],
     family: true,
     desc: {
-      it: "Giornata a Gran Canaria in nave: l'acquario Poema del Mar, il quartiere antico di Vegueta e le distillerie Arehucas con degustazione. Transfer dal sud, traghetto e ingressi inclusi.",
-      en: "A day on Gran Canaria by ferry: the Poema del Mar aquarium, the old quarter of Vegueta and the Arehucas distillery with a tasting. Transfer from the south, ferry and entrance tickets included.",
-      es: "Un día en Gran Canaria en barco: el acuario Poema del Mar, el barrio antiguo de Vegueta y las destilerías Arehucas con degustación. Traslado desde el sur, barco y entradas incluidos."
+      it: "Giornata a Gran Canaria in nave: l'acquario Poema del Mar, il quartiere antico di Vegueta e le distillerie Arehucas.",
+      en: "A day on Gran Canaria by ferry: the Poema del Mar aquarium, the old quarter of Vegueta and the Arehucas distillery.",
+      es: "Un día en Gran Canaria en barco: el acuario Poema del Mar, el barrio antiguo de Vegueta y las destilerías Arehucas."
     },
     image: "gran-canaria.jpg",
     published: true

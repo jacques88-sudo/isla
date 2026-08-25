@@ -249,6 +249,20 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Trenino e tuk tuk (24 agosto)
+
+Le due foto mancanti dei giri corti a Costa Adeje. Catalogo a **58 foto su 67**,
+"Tour e visite" a 5 su 10.
+
+- Il tuk tuk porta stampati sulla carrozzeria il **sito e il telefono dell'operatore**
+  (SweetTourTenerife.com). Non e' un marchio aggiunto alla foto, e' la livrea del mezzo.
+  Controllato dove finisce: sulla **scheda** e' illeggibile a 255px, e sulla **pagina di
+  dettaglio** il ritaglio taglia via tutto il fianco destro dove sta la scritta. Resta
+  visibile solo "COSTA ADEJE" e "100% ELECTRIC", che anzi aiutano
+- Il **trenino e' 426x357**, piccolo: sulla scheda va bene, sul dettaglio a schermo largo
+  viene ingrandito del 35%. Meno grave dei 300x300 di Teide/Masca/La Gomera, ma nella
+  stessa lista di quelle da rifare se arriva l'originale
+
 ### Ordine di lavoro deciso dall'ufficio (24 agosto)
 
 **Prima si finiscono le foto, poi tutto il resto.** Le domande aperte sui tour e le

@@ -21,6 +21,19 @@
 //                dire davvero gratis**, al contrario di priceAdult e priceChild
 //                dove 0 vuol dire "non ancora deciso". Se il campo manca del tutto
 //                la riga non compare: e' cosi' che si dice "non lo sappiamo".
+//   ages       → facoltativo: le fasce d'eta', scritte come le scrive il fornitore.
+//                Finiscono fra parentesi accanto alle righe del prezzo:
+//                "Adulti (12+)", "Bambini (3-11)", "Neonati (0-2)".
+//                    ages: { adult: "12+", child: "3-11", infant: "0-2" }
+//   included   → facoltativo: cosa comprende il prezzo. Si scrivono delle parole
+//                chiave, non del testo: l'icona e la traduzione nelle tre lingue
+//                le mette il sito. Sulla pagina di dettaglio diventano un
+//                riquadro "Cosa e' incluso".
+//                    included: ["snorkel", "snack", "drinks"]
+//                Parole disponibili: snorkel, wetsuit, board, equipment, drinks,
+//                snack, lunch, tasting, guide, transfer, ferry, ticket, photos.
+//                Per aggiungerne una servono l'icona in tour.js e il testo in
+//                i18n.js: una riga per parte.
 //   privateOption → facoltativo: id dell'escursione in versione privata. Sulla
 //                pagina di dettaglio compare un rimando "vuoi la barca solo per
 //                il tuo gruppo?".
@@ -177,6 +190,8 @@ const ESPLORA_CATALOG = [
     priceAdult: 55,
     priceChild: 30,
     priceInfant: 0,
+    ages: { adult: "12+", child: "3-11", infant: "0-2" },
+    included: ["snorkel", "snack", "drinks"],
     family: true,
     desc: {
       it: "Tre ore in barca a vela da Puerto Colón, con un massimo di 11 persone a bordo. Avvistamento di balene e delfini, sosta per lo snorkeling con attrezzatura inclusa, snack e bevande a bordo.",

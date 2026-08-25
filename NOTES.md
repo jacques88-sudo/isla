@@ -249,6 +249,40 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Fasce d'eta' e "Cosa e' incluso" (24 agosto)
+
+Due campi nuovi, chiesti dall'ufficio guardando il sito di una scuola di surf.
+
+**`ages: { adult, child, infant }`** — le fasce si scrivono **come le scrive il fornitore**
+(`"12+"`, `"3-11"`), non si calcolano. Finiscono fra parentesi accanto al prezzo:
+"Adulti (12+)". Senza il campo resta solo "Adulti".
+
+**`included: ["snorkel", "snack", "drinks"]`** — parole chiave, non testo libero. L'icona e
+la traduzione nelle tre lingue le mette il sito, cosi' due schede che includono la stessa
+cosa la scrivono uguale. Diventa un riquadro sotto "In breve", icona sopra e parola sotto,
+due colonne sul telefono e tre da 480px.
+
+Le tredici parole disponibili: `snorkel wetsuit board equipment drinks snack lunch tasting
+guide transfer ferry ticket photos`. Per aggiungerne una servono **due righe**: l'icona in
+`INCLUDED_ICONS` dentro `tour.js` e il testo `inc.<parola>` in `i18n.js`. Una parola
+sconosciuta viene **saltata**, non disegna un buco.
+
+**Le icone hanno richiesto tre giri.** Disegnate a mano su griglia 24x24, prendono il
+colore del testo. Quelle rifatte e perche':
+
+- **snorkel** — la prima sembrava il simbolo di Marte, la seconda una borsa. Ora lente,
+  cinghia e tubo. Resta la piu' difficile da leggere a 30px, ma ha l'etichetta sotto
+- **snack** — prima una tazza fumante (sembrava caffe'), poi un biscotto coi puntini
+  (sembrava una faccina). Ora un panino
+- **drinks** — era un bicchiere da cocktail: su una barca per famiglie meglio un bicchiere
+  normale
+- **equipment** — era una chiave inglese e sembrava "riparazioni". Ora uno zaino
+
+**Come si controllano:** in `tour.js` c'e' `INCLUDED_ICONS`; per vederle tutte insieme
+basta riempire il riquadro con `Object.keys(INCLUDED_ICONS)` da console e fare uno
+screenshot. Guardarle una alla volta non basta: e' guardandole in fila che si vede quale
+non si capisce.
+
 ### Prima descrizione e prezzi veri: il giro in barca a vela (24 agosto)
 
 L'ufficio ha mandato testo e prezzi di un'uscita in barca a vela. **Assegnata a

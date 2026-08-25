@@ -1788,6 +1788,42 @@ body.menu-open { overflow: hidden; }
   opacity: .7;
 }
 
+/* "Cosa e' incluso": icona e parola, su due o tre colonne. Non e' un elenco
+   puntato ma un riquadro, cosi' si legge a colpo d'occhio come sui siti dei
+   fornitori. */
+.detail-included { margin: 0 0 1.6rem; }
+.detail-included ul {
+  list-style: none;
+  margin: 0;
+  padding: 1rem .8rem;
+  background: var(--sand);
+  border-radius: 14px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem .6rem;
+}
+@media (min-width: 480px) {
+  .detail-included ul { grid-template-columns: repeat(3, 1fr); }
+}
+.detail-included li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .45rem;
+  text-align: center;
+}
+.detail-included svg {
+  width: 30px;
+  height: 30px;
+  color: var(--gold);
+  flex: none;
+}
+.detail-included span {
+  font-size: .78rem;
+  line-height: 1.25;
+  color: var(--muted);
+}
+
 /* Varianti sulla pagina di dettaglio: bottoni da premere, non un elenco da
    leggere. La scelta si fa qui, cosi' la richiesta parte gia' completa. */
 .detail-options { margin: 0 0 1.4rem; }

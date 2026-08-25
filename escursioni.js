@@ -27,6 +27,17 @@ function priceUnitSuffix(tour) {
   return (unita.startsWith("/") ? "" : " ") + unita;
 }
 
+// Il testo che l'utente scrive non arriva mai qui, ma le descrizioni le
+// scriviamo noi a mano: se una contiene < o & la pagina non deve rompersi.
+// La usano anche tour.js e lista.js.
+function esc(testo) {
+  return String(testo)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function tourPrice(tour) {
   if (tour.priceFrom === null) return t("tour.onRequest");
   return t("tour.from", { p: tour.priceFrom }) + priceUnitSuffix(tour);
@@ -97,35 +108,48 @@ function calcolaTotale(tour, req) {
   };
 }
 
-// Messaggio WhatsApp completo, con data e persone già compilate.
-// È scritto nella lingua che il cliente sta usando sul sito.
-function whatsappUrl(tour, req) {
-  let testo = t("wa.intro", { name: req.name }) + "\n" +
-    "• " + tf(tour.title) + "\n" +
-    "• " + t("wa.date") + ": " + formatDate(req.date);
+// Le righe che descrivono una richiesta: data, orario, persone, variante,
+// transfer, totale, note. Il nome dell'attivita' non c'e': lo scrive chi
+// chiama, perche' nel messaggio singolo e' una riga puntata e nella lista e'
+// un titolo numerato.
+//
+// Le usano tutti e due i messaggi, quello per una sola escursione e quello per
+// la lista intera: cosi' l'ufficio legge sempre le stesse cose nello stesso
+// ordine, invece di due formati da imparare.
+function righeRichiesta(tour, req) {
+  const righe = ["• " + t("wa.date") + ": " + formatDate(req.date)];
   // L'orario si scrive solo se il cliente ne ha scelto uno. "Da concordare" e'
   // l'assenza della riga, non una riga che dice "da concordare": all'ufficio
   // non serve leggere che il cliente non ha deciso.
-  if (req.time) testo += "\n• " + t("wa.time") + ": " + req.time;
-  testo += "\n• " + t("wa.people") + ": " + peopleText(req.adults, req.kids);
-  // La variante scelta va subito sotto il nome dell'attivita': e' la prima
-  // cosa che l'ufficio deve sapere per rispondere col prezzo giusto.
+  if (req.time) righe.push("• " + t("wa.time") + ": " + req.time);
+  righe.push("• " + t("wa.people") + ": " + peopleText(req.adults, req.kids));
+  // La variante scelta sta in alto: e' la prima cosa che l'ufficio deve sapere
+  // per rispondere col prezzo giusto.
   if (tour.options && req.option) {
-    testo += "\n• " + tf(tour.options.label) + ": " + req.option;
+    righe.push("• " + tf(tour.options.label) + ": " + req.option);
   }
   // La risposta si scrive sempre, anche quando e' "no": cosi' l'ufficio sa che
   // la domanda e' stata fatta, invece di doverla rifare in chat.
   if (tour.transfer) {
-    testo += "\n• " + t("wa.transfer") + ": " + t(req.transfer ? "wa.yes" : "wa.no");
+    righe.push("• " + t("wa.transfer") + ": " + t(req.transfer ? "wa.yes" : "wa.no"));
   }
   // Il totale va anche in chat: l'ufficio vede subito che conto ha fatto il
   // cliente e puo' correggerlo prima di confermare. "Indicativo" ci resta
   // attaccato: il prezzo buono e' quello della conferma, non questo.
   const conto = calcolaTotale(tour, req);
   if (conto) {
-    testo += "\n• " + t("wa.total") + ": €" + conto.totale + " (" + conto.dettaglio + ")";
+    righe.push("• " + t("wa.total") + ": €" + conto.totale + " (" + conto.dettaglio + ")");
   }
-  if (req.note) testo += "\n• " + t("wa.notes") + ": " + req.note;
+  if (req.note) righe.push("• " + t("wa.notes") + ": " + req.note);
+  return righe;
+}
+
+// Messaggio WhatsApp per una sola escursione, con data e persone già compilate.
+// È scritto nella lingua che il cliente sta usando sul sito.
+function whatsappUrl(tour, req) {
+  const testo = t("wa.intro", { name: req.name }) + "\n" +
+    "• " + tf(tour.title) + "\n" +
+    righeRichiesta(tour, req).join("\n");
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
 }
 
@@ -307,16 +331,38 @@ function initRequestDialog() {
   const totalEl = document.querySelector("[data-request-total]");
   const adultsInput = document.getElementById("reqAdults");
   const kidsInput = document.getElementById("reqKids");
+  const nameBox = document.querySelector("[data-request-name]");
+  const nameInput = document.getElementById("reqName");
   if (!dialog || !scrim || !form || !dateInput) return;
+  // dopo la guardia: in home la finestra non c'e' e `form` e' null
+  const submitBtn = form.querySelector(".request-submit");
 
   // Blocca le date che non rispettano il preavviso di 24 ore
   dateInput.min = minRequestDate();
   dateInput.max = maxRequestDate();
 
   let current = null;
+  // La stessa finestra serve a due cose: mandare subito la richiesta di questa
+  // escursione ("invia"), oppure metterla nella lista per mandarne tante
+  // insieme ("aggiungi"). Cambiano due dettagli soltanto: il nome non si chiede
+  // (lo si chiede una volta sola quando si manda la lista) e il pulsante in
+  // fondo dice un'altra cosa.
+  let modo = "invia";
 
-  function open(tour) {
+  function open(tour, comeAggiunta) {
     current = tour;
+    modo = comeAggiunta ? "aggiungi" : "invia";
+    if (nameBox) nameBox.hidden = comeAggiunta;
+    // required su un campo nascosto blocca l'invio senza dire perche': il
+    // browser prova a segnalare un campo che nessuno vede.
+    if (nameInput) nameInput.required = !comeAggiunta;
+    if (submitBtn) {
+      const chiave = comeAggiunta ? "req.addToList" : "req.submit";
+      // anche data-i18n, non solo il testo: al cambio lingua applyI18n
+      // riscrive il pulsante e senza questo tornerebbe "Continua su WhatsApp"
+      submitBtn.setAttribute("data-i18n", chiave);
+      submitBtn.textContent = t(chiave);
+    }
     activityEl.textContent = tf(tour.title);
     // se l'attivita' si fa solo in certi mesi lo si dice qui, prima che il
     // cliente scelga una data in cui non si puo' fare
@@ -444,10 +490,18 @@ function initRequestDialog() {
 
   // Le schede sono ricreate a ogni filtro, quindi si ascolta sul contenitore
   document.addEventListener("click", e => {
-    const btn = e.target.closest("[data-request-open]");
+    const btn = e.target.closest("[data-request-open], [data-request-add]");
     if (!btn) return;
-    const tour = ESPLORA_CATALOG.find(t => t.id === btn.dataset.requestOpen);
-    if (tour) open(tour);
+    const comeAggiunta = btn.hasAttribute("data-request-add");
+    const id = comeAggiunta ? btn.dataset.requestAdd : btn.dataset.requestOpen;
+    // La lista ha un tetto: oltre non si aggiunge, e si dice perche' invece di
+    // far finta di aver aggiunto.
+    if (comeAggiunta && typeof listaEPiena === "function" && listaEPiena()) {
+      listaToast(t("lista.full", { n: LISTA_MAX }));
+      return;
+    }
+    const tour = ESPLORA_CATALOG.find(t => t.id === id);
+    if (tour) open(tour, comeAggiunta);
   });
 
   // Il totale segue i numeri mentre il cliente li cambia, e la spunta del
@@ -499,7 +553,29 @@ function initRequestDialog() {
       option: sceltaDallaPagina() ||
         (optionEl && !optionEl.hidden ? optionEl.value : "")
     };
-    if (!req.name || !req.date) return;
+    if (!req.date) return;
+
+    // In modalita' "aggiungi" non si va su WhatsApp: la richiesta si mette da
+    // parte e il cliente continua a guardare le altre escursioni.
+    if (modo === "aggiungi") {
+      if (typeof listaAggiungi !== "function") return;
+      // Si salva la scelta, non il prezzo: i prezzi cambiano, e un prezzo
+      // salvato ieri nel browser del cliente domani sarebbe sbagliato. Il
+      // conto si rifa' ogni volta leggendo il catalogo.
+      listaAggiungi({
+        id: current.id,
+        date: req.date,
+        time: req.time,
+        adults: req.adults,
+        kids: req.kids,
+        option: req.option,
+        transfer: req.transfer,
+        note: req.note
+      });
+      close();
+      return;
+    }
+    if (!req.name) return;
 
     close();
     window.location.href = whatsappUrl(current, req);

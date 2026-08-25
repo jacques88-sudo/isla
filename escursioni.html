@@ -164,9 +164,11 @@
     <p class="request-activity" data-request-activity></p>
     <p class="request-season" data-request-season hidden></p>
     <form data-request-form>
-      <label for="reqName" data-i18n="req.name">Il tuo nome</label>
-      <input id="reqName" name="name" type="text" autocomplete="name"
-             data-i18n-placeholder="req.namePlaceholder" placeholder="Nome e cognome" required />
+      <div data-request-name>
+        <label for="reqName" data-i18n="req.name">Il tuo nome</label>
+        <input id="reqName" name="name" type="text" autocomplete="name"
+               data-i18n-placeholder="req.namePlaceholder" placeholder="Nome e cognome" required />
+      </div>
 
       <label for="reqDate" data-i18n="req.date">Quando vorresti andare</label>
       <input id="reqDate" name="date" type="date" required />
@@ -242,6 +244,7 @@
   <script src="./i18n.js"></script>
   <script src="./esplora-catalog.js"></script>
   <script src="./escursioni.js"></script>
+  <script src="./lista.js"></script>
   <script src="./assistente.js"></script>
   <script src="./app.js"></script>
 </body>

@@ -1237,7 +1237,11 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "icod-garachico-orotava",
-    title: "Icod, Garachico & La Orotava",
+    title: {
+      it: "Teide, Icod, Garachico e Masca",
+      en: "Teide, Icod, Garachico & Masca",
+      es: "Teide, Icod, Garachico y Masca"
+    },
     category: "tour-isola",
     zone: { it: "Tenerife nord", en: "North Tenerife", es: "Tenerife norte" },
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
@@ -1246,11 +1250,11 @@ const ESPLORA_CATALOG = [
     priceChild: 0,
     family: true,
     desc: {
-      it: "Il Drago Millenario di Icod, le piscine naturali di Garachico e i balconi di La Orotava.",
-      en: "The thousand-year-old dragon tree of Icod, the natural pools of Garachico and the balconies of La Orotava.",
-      es: "El Drago Milenario de Icod, las piscinas naturales de Garachico y los balcones de La Orotava."
+      it: "Il Teide, il Drago Millenario di Icod, le piscine naturali di Garachico e il borgo di Masca, in una giornata sola.",
+      en: "The Teide, the thousand-year-old dragon tree of Icod, the natural pools of Garachico and the hamlet of Masca, in a single day.",
+      es: "El Teide, el Drago Milenario de Icod, las piscinas naturales de Garachico y el pueblo de Masca, en un solo día."
     },
-    image: "",
+    image: "icod-garachico-orotava.jpg",
     published: true
   },
   {

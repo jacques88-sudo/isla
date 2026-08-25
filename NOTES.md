@@ -249,6 +249,22 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Icod/Garachico rinominato (24 agosto)
+
+"Icod, Garachico & La Orotava" e' diventato **"Teide, Icod, Garachico e Masca"**: cambia
+il giro, non solo il nome — La Orotava esce, Teide e Masca entrano. Riscritta anche la
+descrizione nelle tre lingue, che parlava dei balconi de La Orotava.
+
+**L'id resta `icod-garachico-orotava`**, come si e' fatto per le categorie: i nomi che si
+vedono e i codici interni sono cose separate, e cosi' nessun link si rompe. Il nome del
+file della foto segue l'id, non il titolo. Da tenere a mente leggendo il catalogo: quell'id
+adesso nomina un posto dove il tour non passa piu'.
+
+**Sovrapposizione da chiarire con l'ufficio:** ora ci sono **due schede che fanno Teide e
+Masca** — questa (giornata intera, prezzo da definire) e `teide-masca` da 60 euro, che sta
+in "Teide e natura". Se sono due prodotti diversi va bene, ma andrebbe scritto nelle
+descrizioni cosa cambia; se sono lo stesso, una delle due va tolta.
+
 ### La foto della bici, e una scartata (24 agosto)
 
 `trekking-bici` ha la foto: **"Teide e natura" e' completa**, 3 schede su 3. Quinta

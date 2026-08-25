@@ -249,6 +249,28 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### L'ottava card in home (24 agosto)
+
+"Tour e visite" non compariva fra le categorie in home. **Non era per la foto mancante:**
+le card sono scritte a mano in `index.html` e per quella categoria il `<li>` non c'era
+proprio. Aggiunto, piu' l'immagine nel campo `image` di CATEGORIES, che serve all'i18n e
+all'assistente.
+
+**La foto e' provvisoria: `Cat-teide.jpg`, la stessa di "Teide e natura".** Scelta
+dell'ufficio per far apparire subito la card. Il risultato e' che la **stessa foto compare
+due volte nella stessa griglia**, e si vede. Il file inoltre non e' un paesaggio del
+Teide: e' un buggy al tramonto con due sagome.
+
+Quando arriva quella vera: **1200x800**, orizzontale. La card la ritaglia a **16:9**,
+quindi mangia circa il 12% sopra e sotto — soggetto centrato. E in basso c'e' una
+sfumatura scura con la scritta bianca allineata a sinistra: la meta' inferiore sinistra
+va tenuta libera.
+
+Alternativa gia' in `assets/` senza doppioni nella griglia: **`santa-cruz-taganana.jpg`**,
+1200x800, l'Auditorio col Parque Maritimo. E' usata come foto della scheda Santa Cruz, ma
+quella sta nel catalogo e non nella griglia delle categorie: non si scontrerebbero, come
+gia' succede con `Cat-mare.jpg` e `Cat-parchi.jpg`.
+
 ### Tre categorie rinominate (24 agosto)
 
 Cambiati **solo i nomi che si vedono**, non gli id: `stelle`, `avventura-motori` e

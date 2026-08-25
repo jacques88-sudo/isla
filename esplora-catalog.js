@@ -105,7 +105,7 @@ const CATEGORIES = [
   {
     id: "tour-isola",
     name: { it: "Tour e visite", en: "Tours & sightseeing", es: "Tours y visitas" },
-    image: ""
+    image: "Cat-teide.jpg"
   },
   {
     id: "tour-privati",

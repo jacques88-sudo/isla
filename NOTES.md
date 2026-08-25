@@ -249,6 +249,22 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Tre schede nascoste (24 agosto)
+
+`paisaje-lunar`, `canyoning` e `pico-teide` messe a `published: false` su richiesta
+dell'ufficio: "eliminarle **per il momento**".
+
+**Nascoste, non cancellate.** Il campo `published` esiste apposta, e le descrizioni nelle
+tre lingue restano nel file: quando quelle attivita' tornano si riaccendono cambiando una
+parola, senza riscrivere niente. Cancellarle avrebbe buttato via lavoro da rifare.
+
+Il catalogo scende da 70 a **67 attivita' visibili**, e "Teide e natura" da 6 a 3 (restano
+Teide National Park, Teide + Masca e Trekking e bici).
+
+Verificato che spariscano da tutte le parti: catalogo, conteggio in cima, filtro di
+categoria, ricerca, e la pagina di dettaglio risponde "escursione non trovata" invece di
+mostrarle lo stesso.
+
 ### L'ottava card in home (24 agosto)
 
 "Tour e visite" non compariva fra le categorie in home. **Non era per la foto mancante:**

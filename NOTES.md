@@ -249,6 +249,21 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Le 10 foto dei parchi (24 agosto)
+
+Assegnate una per una dall'ufficio, nell'ordine in cui le ha mandate: Siam Park (aerea),
+Siam Night (Tower of Power coi laser), Loro Parque (orche), Aqualand (fiume lento),
+Jungle Park (leone marino), Combo Ticket, Monkey Park (ingresso col moai), MHT (le artiste
+in scena), Castillo San Miguel (giostra).
+
+- Il **Twin Ticket riusa `Cat-parchi.jpg`**, la foto della card categoria in home, che e'
+  gia' un'immagine del biglietto combinato. Il file sta in `assets/` una volta sola:
+  scelta dell'ufficio, non una svista. Come `Cat-mare.jpg` col whale watching
+- La foto del **Combo Ticket e' una grafica pubblicitaria dell'operatore**, non una foto,
+  e porta una fascia verde **"PROMO"**. Se un giorno vendiamo quel biglietto a prezzo
+  pieno, quella scritta promette uno sconto che non c'e': da tenere d'occhio
+- Restano senza foto i tre spettacoli: Flamenco, Scandal e History
+
 ### Le 13 foto del 24 agosto
 
 Coperte 34 schede su 69 (prima 21). I file si chiamano come l'`id` della scheda.
@@ -277,8 +292,12 @@ Coperte 34 schede su 69 (prima 21). I file si chiamano come l'`id` della scheda.
   azzera a ogni apertura
 - La finestra della richiesta e' **duplicata in `escursioni.html` e `tour.html`**: quando
   si tocca una, va toccata anche l'altra. Un `diff` fra i due blocchi lo verifica
-- `immersioni` (tartaruga verde e sub) e `flyboard` (Costa Adeje) aggiunte il 24 agosto:
-  gli sport acquatici sono coperti tutti tranne `surf-lesson`
+- `immersioni` (tartaruga verde e sub), `flyboard` (Costa Adeje) e `surf-lesson`
+  (surfista sull'onda) aggiunte il 24 agosto: **gli sport acquatici hanno la foto tutti e
+  nove**, prima categoria completa dopo le barche
+- La foto del surf e' un ritaglio molto largo (784x298, quasi 3:1). Sta bene lo stesso:
+  la scheda la mostra a 255x159 e il dettaglio a 348x218, quindi il taglio prende il
+  centro dove c'e' il surfista. Se un giorno serve piu' grande, va rifatta
 - **La foto del flyboard ha il marchio "Water Sports Tenerife" in basso a destra.** Sulla
   scheda si vede poco perché il taglio lo mangia quasi tutto, ma c'è. Da sostituire con
   una versione senza marchio: ritagliarlo via non si fa, è la firma di chi l'ha scattata

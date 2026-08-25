@@ -164,6 +164,8 @@ const I18N = {
   "detail.price":       { it: "Prezzo", en: "Price", es: "Precio" },
   "detail.suitable":    { it: "Adatta a", en: "Suitable for", es: "Apta para" },
   "detail.season":      { it: "Periodo", en: "Season", es: "Temporada" },
+  "detail.infants":     { it: "Fino a 2 anni", en: "Up to age 2", es: "Hasta los 2 años" },
+  "detail.free":        { it: "Gratis", en: "Free", es: "Gratis" },
   "detail.transfer":    { it: "Transfer", en: "Transfer", es: "Traslado" },
   "detail.withTransfer": { it: "Con il transfer", en: "With the transfer", es: "Con el traslado" },
   "detail.babySeat":    { it: "posto sul pullman", en: "coach seat", es: "plaza en el autobús" },

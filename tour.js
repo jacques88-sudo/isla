@@ -58,6 +58,10 @@ function detailRows(tour) {
         "€" + fascia.price
       ]);
     });
+  } else if (tour.priceAdult > 0 && tour.priceAdult === tour.priceFrom) {
+    // "Prezzo: da €55" e "Adulti: €55" dicono la stessa cosa: si tiene solo
+    // la seconda, che e' piu' precisa. La riga generica torna appena i due
+    // numeri non coincidono, o quando il prezzo adulto non c'e' ancora.
   } else {
     righe.push([t("detail.price"), tourPrice(tour), "prezzo"]);
   }
@@ -66,6 +70,12 @@ function detailRows(tour) {
   // riga resta nascosta. Mostrare "€0" farebbe pensare a gratis o a un errore.
   if (tour.priceAdult > 0) righe.push([t("req.adults"), "€" + tour.priceAdult]);
   if (tour.priceChild > 0) righe.push([t("req.kids"), "€" + tour.priceChild]);
+  // Per i neonati lo zero vuol dire davvero gratis, non "da decidere": la
+  // riga si mostra solo se il campo c'e', e sparisce se manca.
+  if (tour.priceInfant !== undefined) {
+    righe.push([t("detail.infants"),
+      tour.priceInfant > 0 ? "€" + tour.priceInfant : t("detail.free")]);
+  }
   righe.push([t("detail.suitable"), t(tour.family ? "detail.kidsYes" : "detail.kidsNo")]);
   if (tour.transfer) righe.push([t("detail.transfer"), tf(tour.transfer)]);
   // Col transfer il prezzo cambia: si mostra su una riga sola invece che su

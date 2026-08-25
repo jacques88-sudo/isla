@@ -17,6 +17,10 @@
 //                A 0 le righe NON compaiono sulla pagina: un "€0" davanti a un
 //                cliente sembra gratis o rotto. Appena metti un numero vero,
 //                la riga si accende da sola.
+//   priceInfant → facoltativo: prezzo per i piu' piccoli, in euro. Qui **0 vuol
+//                dire davvero gratis**, al contrario di priceAdult e priceChild
+//                dove 0 vuol dire "non ancora deciso". Se il campo manca del tutto
+//                la riga non compare: e' cosi' che si dice "non lo sappiamo".
 //   privateOption → facoltativo: id dell'escursione in versione privata. Sulla
 //                pagina di dettaglio compare un rimando "vuoi la barca solo per
 //                il tuo gruppo?".
@@ -172,11 +176,12 @@ const ESPLORA_CATALOG = [
     privateOption: "private-charter",
     priceAdult: 55,
     priceChild: 30,
+    priceInfant: 0,
     family: true,
     desc: {
-      it: "Tre ore in barca a vela da Puerto Colón, con un massimo di 11 persone a bordo. Avvistamento di balene e delfini, sosta per lo snorkeling con attrezzatura inclusa, snack e bevande a bordo. Sotto i 3 anni non si paga.",
-      en: "Three hours under sail from Puerto Colón, with a maximum of 11 guests on board. Whale and dolphin watching, a snorkelling stop with gear included, snacks and drinks on board. Under-3s go free.",
-      es: "Tres horas en velero desde Puerto Colón, con un máximo de 11 personas a bordo. Avistamiento de ballenas y delfines, parada para hacer snorkel con equipo incluido, snacks y bebidas a bordo. Los menores de 3 años no pagan."
+      it: "Tre ore in barca a vela da Puerto Colón, con un massimo di 11 persone a bordo. Avvistamento di balene e delfini, sosta per lo snorkeling con attrezzatura inclusa, snack e bevande a bordo.",
+      en: "Three hours under sail from Puerto Colón, with a maximum of 11 guests on board. Whale and dolphin watching, a snorkelling stop with gear included, snacks and drinks on board.",
+      es: "Tres horas en velero desde Puerto Colón, con un máximo de 11 personas a bordo. Avistamiento de ballenas y delfines, parada para hacer snorkel con equipo incluido, snacks y bebidas a bordo."
     },
     image: "Cat-mare.jpg",
     published: true

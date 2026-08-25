@@ -260,17 +260,17 @@ Messi `priceAdult: 55` e `priceChild: 30`. Descrizione riscritta nelle tre lingu
 dati veri: massimo 11 persone a bordo, snorkeling con attrezzatura inclusa, snack e
 bevande.
 
-**Due cose emerse, che valgono per tutte le schede da qui in avanti:**
+**Due cose emerse, sistemate subito, che valgono per tutte le schede da qui in avanti:**
 
-1. **"Infants (0-2): FREE" non ha un campo dove stare.** Nel catalogo `0` vuol dire "non
-   ancora deciso" e nasconde la riga: mettere `priceInfant: 0` avrebbe fatto sparire
-   l'informazione invece di mostrarla. Per ora "sotto i 3 anni non si paga" sta **dentro
-   la descrizione**. Se i prezzi per fascia d'eta' arrivano su altre schede, conviene un
-   campo vero
-2. **La riga "Prezzo: da €55" e "Adulti: €55" dicono la stessa cosa.** Finche' i prezzi
-   erano vuoti non si notava; adesso che si riempiono, ogni scheda ripetera' il prezzo
-   adulto due volte. Da sistemare: quando `priceAdult` e' uguale a `priceFrom`, una delle
-   due righe va tolta
+1. **Campo nuovo `priceInfant`.** Qui **0 vuol dire davvero gratis**, al contrario di
+   `priceAdult` e `priceChild` dove 0 vuol dire "non ancora deciso" e nasconde la riga.
+   Per dire "non lo sappiamo" si **omette il campo**. La riga esce come "Fino a 2 anni:
+   Gratis". Prima quell'informazione era finita dentro la descrizione, che era un ripiego
+2. **Via il prezzo ripetuto.** "Prezzo: da €55" e "Adulti: €55" dicevano la stessa cosa.
+   Ora la riga generica **si salta quando `priceAdult` coincide con `priceFrom`**, cioe'
+   quando non aggiunge niente. Torna da sola se i due numeri non coincidono, o se il
+   prezzo adulto non c'e' ancora: verificato su tutte e sette le forme di prezzo del
+   catalogo (adulto+bambino+neonato, con transfer, a scaglioni, solo "da", "su richiesta")
 
 ### Le foto sono finite (24 agosto)
 

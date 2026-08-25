@@ -16,16 +16,6 @@ function tourFromUrl() {
   return ESPLORA_CATALOG.find(t => t.id === id && t.published) || null;
 }
 
-// Il testo che l'utente scrive non arriva mai qui, ma le descrizioni le
-// scriviamo noi a mano: se una contiene < o & la pagina non deve rompersi.
-function esc(testo) {
-  return String(testo)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
 function detailMedia(tour) {
   return tour.image
     ? `<img src="./assets/${encodeURIComponent(tour.image)}" alt="${esc(tf(tour.title))}" />`
@@ -275,9 +265,14 @@ function renderTour(tour) {
 
   document.title = tf(tour.title) + " · Isla";
 
+  // Due strade dallo stesso punto: chiedere solo questa, oppure metterla da
+  // parte e continuare a guardare. La prima resta il pulsante pieno, perche'
+  // e' quella che fa la maggior parte dei clienti.
   const askBtn = WHATSAPP_NUMBER
     ? `<button class="btn btn-primary btn-block" type="button" data-request-open="${esc(tour.id)}"
-               aria-haspopup="dialog" aria-controls="requestDialog">${esc(t("tour.ask"))}</button>`
+               aria-haspopup="dialog" aria-controls="requestDialog">${esc(t("tour.ask"))}</button>
+       <button class="btn btn-soft btn-block detail-add" type="button" data-request-add="${esc(tour.id)}"
+               aria-haspopup="dialog" aria-controls="requestDialog">${esc(t("req.addToList"))}</button>`
     : "";
 
   contenitore.innerHTML = `

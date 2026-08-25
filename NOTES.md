@@ -249,6 +249,77 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### La lista: piu' escursioni in un messaggio solo (25 agosto)
+
+Il cliente che ne vuole tre non deve aprire WhatsApp tre volte. Le mette in una lista
+mentre gira il sito e alla fine parte **un solo messaggio**, con tutte dentro e il
+totale sommato. File nuovo: **`lista.js`**.
+
+**Le due decisioni dell'ufficio.**
+
+1. **Tutto per ogni escursione** (data, orario, persone, variante, transfer, note).
+   Il nome no: quello si chiede una volta sola quando si manda la lista.
+2. **"Richiedi disponibilita'" resta.** Chi ne vuole una sola fa come prima, senza
+   passaggi in piu'. Sotto c'e' il secondo pulsante, "Aggiungi alla lista".
+
+**Come funziona.** Il pulsante "Aggiungi alla lista" apre **la stessa finestra** della
+richiesta singola, in "modalita' aggiungi": sparisce il campo del nome e il pulsante in
+fondo cambia scritta. Un modulo solo per due strade: se domani si aggiunge un campo,
+lo si aggiunge una volta.
+
+**Dove sta la lista.** Nel browser del cliente (`localStorage`, chiave `isla-lista`),
+come la lingua. Non arriva a nessun server: finche' il cliente non manda il messaggio,
+quella lista non la vede nessuno. Sopravvive al cambio pagina e alla chiusura del sito.
+
+**Si salvano le scelte, mai i prezzi.** I prezzi cambiano: uno salvato ieri nel browser
+di qualcuno domani sarebbe sbagliato. Il conto si rifa' ogni volta leggendo il catalogo,
+con le stesse regole del totale singolo — quindi Self Drive Boat (a barca) e Private
+Charter (a scaglioni) nella lista mostrano il prezzo della scheda, non un totale.
+
+**Il totale parziale si dichiara.** Se due escursioni su tre hanno il prezzo, la riga
+non dice "Totale €140": dice **"Totale indicativo (solo le escursioni con il prezzo)"**.
+Un numero secco, con delle voci non contate, il cliente lo legge come il prezzo di tutto.
+
+**Cosa fa "Su richiesta" nella lista.** Niente: le voci senza totale mostrano il prezzo
+della scheda ("da €48"). Alla prima prova scrivevano "Su richiesta" anche per Siam Park,
+che sul catalogo dice "da €48": due schermate dello stesso sito che si contraddicono.
+
+**Con una voce sola parte il messaggio singolo**, non un elenco numerato di un elemento.
+All'ufficio arriva un formato solo per la stessa cosa.
+
+**Tetto di 10 escursioni.** Oltre, il messaggio diventa illeggibile e la richiesta non e'
+piu' una richiesta, e' un preventivo. Quando e' piena lo dice, invece di far finta di
+aggiungere.
+
+**Dopo l'invio la lista si svuota**, se no alla visita dopo il cliente rimanderebbe due
+volte le stesse escursioni.
+
+**Il pulsante che galleggia sta a SINISTRA.** In basso a destra c'e' gia' il pallino
+dell'assistente e i due si coprivano a vicenda — visto solo guardando la schermata, non
+leggendo il codice. C'e' solo quando la lista ha qualcosa dentro: a lista vuota sarebbe
+un bottone che non fa niente piantato sopra il contenuto.
+
+**Costruito da JavaScript, non in HTML.** Pulsante e finestra servono su tre pagine, e
+tre copie dello stesso HTML e' il modo sicuro per ritrovarsele diverse dopo la prossima
+modifica (la finestra della richiesta, che le copie ce le ha, insegna). `index.html` ora
+carica anche `escursioni.js`: gli servono i conti e il formato del messaggio.
+
+**Due cose spostate perche' servivano a piu' file:**
+
+- `esc()` da `tour.js` a `escursioni.js` — `lista.js` gira anche dove `tour.js` non c'e'
+- le righe del messaggio ora sono `righeRichiesta()`, usata sia dal messaggio singolo sia
+  da quello della lista: l'ufficio legge sempre le stesse cose nello stesso ordine
+
+**Un errore preso in prova:** `form.querySelector(...)` era scritto **prima** della
+guardia `if (!form) return`. In home la finestra della richiesta non c'e', quindi `form`
+e' `null` e la pagina si rompeva. `node --check` non lo vede: e' un errore di esecuzione.
+L'ha trovato la prova col browser, che segnala gli errori di pagina.
+
+**Provato:** tre escursioni aggiunte da pagine diverse, la lista che sopravvive al cambio
+pagina, togliere una voce (il nome gia' scritto resta), svuotare, il messaggio con tre
+voci e quello con una sola, la richiesta singola che funziona come prima, il cambio
+lingua a lista aperta, e tutte e quattro le pagine senza errori.
+
 ### L'orario e il totale nella finestra della richiesta (25 agosto)
 
 Due richieste dell'ufficio, tutte e due dentro "Richiedi disponibilita'".

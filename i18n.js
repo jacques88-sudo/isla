@@ -190,6 +190,15 @@ const I18N = {
   "inc.speaker":        { it: "Cassa Bluetooth", en: "Bluetooth speaker", es: "Altavoz Bluetooth" },
   "inc.towels":         { it: "Asciugamani", en: "Towels", es: "Toallas" },
   "inc.fuel":           { it: "Carburante", en: "Fuel", es: "Combustible" },
+  // ── la lista delle richieste ────────────────────────────────────────────
+  "lista.title":        { it: "La tua lista", en: "Your list", es: "Tu lista" },
+  "lista.added":        { it: "Aggiunta alla tua lista", en: "Added to your list", es: "Añadida a tu lista" },
+  "lista.empty":        { it: "Non c'è più niente nella lista.", en: "There is nothing left in the list.", es: "Ya no queda nada en la lista." },
+  "lista.remove":       { it: "Togli dalla lista", en: "Remove from the list", es: "Quitar de la lista" },
+  "lista.clear":        { it: "Svuota la lista", en: "Empty the list", es: "Vaciar la lista" },
+  "lista.full":         { it: "Nella lista ci stanno al massimo {n} escursioni. Mandaci questa richiesta e poi ne inizi un'altra.", en: "The list holds at most {n} excursions. Send this request and then start another one.", es: "En la lista caben como máximo {n} excursiones. Envíanos esta solicitud y luego empiezas otra." },
+  "lista.hint":         { it: "Parte un solo messaggio con tutte le escursioni della lista.", en: "One single message goes out with every excursion in the list.", es: "Se envía un solo mensaje con todas las excursiones de la lista." },
+
   "detail.free":        { it: "Gratis", en: "Free", es: "Gratis" },
   "detail.transfer":    { it: "Transfer", en: "Transfer", es: "Traslado" },
   "detail.withTransfer": { it: "Con il transfer", en: "With the transfer", es: "Con el traslado" },
@@ -221,6 +230,7 @@ const I18N = {
   "req.optional":       { it: "(facoltativo)", en: "(optional)", es: "(opcional)" },
   "req.notePlaceholder":{ it: "Hotel, zona, richieste particolari…", en: "Hotel, area, special requests…", es: "Hotel, zona, peticiones especiales…" },
   "req.submit":         { it: "Continua su WhatsApp", en: "Continue on WhatsApp", es: "Continuar en WhatsApp" },
+  "req.addToList":      { it: "Aggiungi alla lista", en: "Add to list", es: "Añadir a la lista" },
   "req.hint":           { it: "Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.", en: "Requests must be sent at least <strong>24 hours in advance</strong>. We reply within 24 hours with the confirmation.", es: "Las solicitudes deben enviarse con al menos <strong>24 horas de antelación</strong>. Respondemos en 24 horas con la confirmación." },
   "req.privacy":        { it: "Quello che scrivi qui serve solo a risponderti su WhatsApp: non viene salvato dal sito.", en: "What you type here is only used to reply to you on WhatsApp: the site does not store it.", es: "Lo que escribes aquí solo sirve para responderte por WhatsApp: el sitio no lo guarda." },
 
@@ -232,6 +242,8 @@ const I18N = {
   "wa.notes":           { it: "Note", en: "Notes", es: "Notas" },
   "wa.transfer":        { it: "Transfer", en: "Transfer", es: "Traslado" },
   "wa.total":           { it: "Totale indicativo", en: "Estimated total", es: "Total orientativo" },
+  "wa.introList":       { it: "Ciao Isla! Sono {name}, vorrei richiedere disponibilità per {n} escursioni:", en: "Hi Isla! I'm {name}, I'd like to check availability for {n} excursions:", es: "¡Hola Isla! Soy {name}, quisiera consultar disponibilidad para {n} excursiones:" },
+  "wa.totalPartial":    { it: "Totale indicativo (solo le escursioni con il prezzo)", en: "Estimated total (priced excursions only)", es: "Total orientativo (solo las excursiones con precio)" },
   "wa.yes":             { it: "sì", en: "yes", es: "sí" },
   "wa.no":              { it: "no", en: "no", es: "no" },
   "wa.adult":           { it: "adulto", en: "adult", es: "adulto" },

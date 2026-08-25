@@ -249,6 +249,57 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### L'orario e il totale nella finestra della richiesta (25 agosto)
+
+Due richieste dell'ufficio, tutte e due dentro "Richiedi disponibilita'".
+
+**1. Si sceglie l'orario.** Nuovo campo "A che ora", subito sotto la data.
+
+Gli orari veri l'ufficio li mandera' dopo. Nel frattempo c'e' `ORARI_PREDEFINITI`
+in cima a `esplora-catalog.js`: sette fasce generiche, marcate come **segnaposto**.
+Ogni attivita' puo' avere i suoi col campo `times`, che prende il posto della lista
+generica; oggi non ce l'ha nessuna.
+
+Il punto che tiene tutto in piedi: **la prima voce e' sempre "Da concordare" e vale
+stringa vuota.** Il sito non sceglie mai un orario al posto del cliente, e se il
+cliente non ne sceglie uno la riga dell'orario **non compare** nel messaggio WhatsApp
+— non compare una riga che dice "da concordare", proprio non c'e'. Cosi' finche' gli
+orari sono finti nessuno rischia di chiedere le 10:00 per una barca che parte alle
+09:30, a meno che non lo scelga apposta.
+
+Gli orari si scrivono uguali in tutte e tre le lingue: niente `{ it, en, es }`.
+
+**2. Il totale mentre si scelgono le persone.** "2 adulti × €55 + 1 bambino × €30" e
+sopra, grosso, "Totale €140". Si aggiorna mentre il cliente cambia i numeri.
+
+Il totale **non finisce su WhatsApp**: sta solo nella finestra, con la nota "totale
+indicativo, te lo confermiamo noi". Un numero scritto in chat diventa un impegno, e
+il prezzo lo conferma l'ufficio.
+
+**Dove il totale NON si mostra, e perche'.** Moltiplicare per le persone un prezzo che
+non e' a persona darebbe un numero sbagliato, e un numero sbagliato scritto nero su
+bianco e' peggio di nessun numero:
+
+- `priceUnit` — il prezzo e' a barca o all'ora (Self Drive Boat: €190 sono la barca
+  intera, non €190 a testa)
+- `priceTiers` — a scaglioni di gruppo (Private Charter)
+- bambini > 0 ma `priceChild: 0`, cioe' "non ancora deciso": il totale verrebbe fuori
+  come se i bambini non pagassero. Oggi non c'e' nessuna attivita' cosi', ma appena
+  l'ufficio manda un prezzo adulto senza quello bambino succede
+
+**Col transfer il listino e' un altro.** Se il cliente spunta il transfer e l'attivita'
+ha `transferPrice`, il totale usa quei prezzi: sul Twin Ticket 2 adulti + 1 bambino
+passano da €213 a €272. Il posto sul pullman per i neonati non entra nel conto, perche'
+la finestra non chiede quanti neonati ci sono.
+
+**Provato:** i cinque casi qui sopra, le tre lingue, e il cambio lingua a finestra
+aperta (l'orario scelto resta, "Da concordare" e "2 adulti × €55" si ritraducono).
+
+**Le due finestre restano gemelle.** I campi nuovi sono stati messi sia in `tour.html`
+sia in `escursioni.html`, anche se quella del catalogo non si apre piu' da nessuna parte
+(vedi qui sotto). Tenerle uguali costa due copia-incolla; lasciarle divergere costa un
+bug il giorno che si tocca quella sbagliata.
+
 ### Self Drive Boat: prezzi a scaglioni di ore (25 agosto)
 
 Primi dati veri per `self-drive-boats`. **2 ore €190, 3 ore €265, 4 ore €335, 5 ore €395**,

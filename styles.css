@@ -1932,7 +1932,8 @@ body.menu-open { overflow: hidden; }
 /* Menu delle varianti (1 o 2 ore, quale percorso). Prende l'aspetto degli
    altri campi della finestra: .ticket-dialog input e select non condividono
    una regola, quindi va vestito a mano. */
-.ticket-dialog select[data-request-option] {
+.ticket-dialog select[data-request-option],
+.ticket-dialog select[data-request-time] {
   width: 100%;
   margin-bottom: 1rem;
   padding: .85rem 1rem;
@@ -1977,6 +1978,35 @@ body.menu-open { overflow: hidden; }
   margin-top: .15rem;
   color: var(--muted);
   font-size: .78rem;
+}
+
+/* Il totale: si aggiorna mentre il cliente cambia i numeri delle persone.
+   Il numero grosso per primo perche' e' quello che si cerca, il conto sotto
+   per far vedere da dove viene, e la nota che e' indicativo. */
+.request-total {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+  margin: -.2rem 0 1.1rem;
+  padding: .85rem 1rem;
+  background: var(--sand);
+  border-radius: 12px;
+}
+.request-total[hidden] { display: none; }
+.request-total strong {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--text);
+}
+.request-total span {
+  font-size: .85rem;
+  color: var(--text);
+}
+.request-total small {
+  font-size: .75rem;
+  color: var(--muted);
 }
 
 .request-submit { margin-bottom: 1rem; }

@@ -1232,7 +1232,7 @@ const ESPLORA_CATALOG = [
       en: "Tenerife's landmark sights in a single day, by coach with a guide.",
       es: "Los lugares emblemáticos de Tenerife en un solo día, en autobús con guía."
     },
-    image: "",
+    image: "island-tour-completo.jpg",
     published: true
   },
   {
@@ -1273,7 +1273,7 @@ const ESPLORA_CATALOG = [
       es: "Una de las ciudades más antiguas de la isla: Lago Martiánez, jardín botánico y Plaza del Charco."
     },
     image: "",
-    published: true
+    published: false
   },
   {
     id: "gran-canaria",
@@ -1308,7 +1308,7 @@ const ESPLORA_CATALOG = [
       en: "A day trip to the island of La Palma.",
       es: "Excursión de un día a la isla de La Palma."
     },
-    image: "",
+    image: "la-palma.jpg",
     published: true
   },
   {
@@ -1330,7 +1330,7 @@ const ESPLORA_CATALOG = [
       en: "Tasting of volcanic wines and local produce, led by a sommelier.",
       es: "Cata de vinos volcánicos y productos típicos, guiada por un sumiller."
     },
-    image: "",
+    image: "cantine-vinicole.jpg",
     published: true
   },
   {

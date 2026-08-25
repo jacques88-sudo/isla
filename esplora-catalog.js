@@ -417,7 +417,7 @@ const ESPLORA_CATALOG = [
       en: "A day in Teide National Park, among lava flows and volcanic landscapes.",
       es: "Un día en el Parque Nacional del Teide, entre coladas de lava y paisajes volcánicos."
     },
-    image: "",
+    image: "teide-national-park.jpg",
     published: true
   },
   {
@@ -435,7 +435,7 @@ const ESPLORA_CATALOG = [
       en: "Teide National Park and the hamlet of Masca in the same day.",
       es: "El Parque Nacional del Teide y el pueblo de Masca en la misma jornada."
     },
-    image: "",
+    image: "teide-masca.jpg",
     published: true
   },
   {
@@ -1192,7 +1192,7 @@ const ESPLORA_CATALOG = [
       en: "A day trip to the neighbouring island of La Gomera.",
       es: "Excursión de un día a la isla vecina de La Gomera."
     },
-    image: "",
+    image: "la-gomera.jpg",
     published: true
   },
   {
@@ -1210,7 +1210,7 @@ const ESPLORA_CATALOG = [
       en: "The capital Santa Cruz and the village of Taganana, in the Anaga massif.",
       es: "La capital, Santa Cruz, y el pueblo de Taganana, en el macizo de Anaga."
     },
-    image: "",
+    image: "santa-cruz-taganana.jpg",
     published: true
   },
   {

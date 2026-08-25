@@ -249,6 +249,20 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Teide, Masca, La Gomera e Santa Cruz (24 agosto)
+
+Quattro foto, il catalogo arriva a 54 con foto su 70.
+
+- I ritagli automatici al centro funzionano tutti e tre sui quadrati: il Teide tiene il
+  cono intero col pennacchio, Masca il paese sul crinale, La Gomera i Roques dietro la
+  palma. Non e' stato necessario ritagliare a mano, al contrario delle locandine
+- **Le tre foto quadrate sono pero' piccole: 300x300.** Sulla scheda vanno bene (mostrate
+  a 255), ma sulla **pagina di dettaglio a schermo largo vengono ingrandite del 92%**
+  (300px mostrati a 577) e si vede che sono sgranate. Sul telefono l'ingrandimento e' del
+  16% e non si nota. **Da rimpiazzare quando l'ufficio ha gli originali**
+- Non sono state ingrandite in fase di preparazione: aggiungere pixel inventati non
+  aggiunge dettaglio, fa solo pesare di piu' il file
+
 ### Le 10 foto dei parchi (24 agosto)
 
 Assegnate una per una dall'ufficio, nell'ordine in cui le ha mandate: Siam Park (aerea),

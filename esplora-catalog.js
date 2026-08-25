@@ -36,6 +36,11 @@
 //                Parole disponibili: snorkel, wetsuit, board, equipment, drinks,
 //                snack, fingerfood, lunch, tasting, swimstop, guide, transfer,
 //                ferry, ticket, photos, lifejacket, speaker, towels, fuel.
+//                Attenzione a due parole che sembrano la stessa cosa e non lo
+//                sono: `swimstop` e' la sosta per il bagno e va su tutte le
+//                barche, `snorkel` e' maschera e boccaglio dati dal fornitore
+//                e va solo dove lo dice lui. Certe barche si fermano ma
+//                l'attrezzatura te la porti tu.
 //                Per aggiungerne una servono l'icona in tour.js e il testo in
 //                i18n.js: una riga per parte.
 //   itinerary  → facoltativo: le tappe della giornata, in ordine. `time` si puo'

@@ -345,9 +345,18 @@ Da confermare se qualcuna di queste quattro invece ce l'ha.
 **Una descrizione andava corretta:** il glass bottom boat diceva "si guarda sott'acqua
 restando a bordo", che con la sosta bagno si contraddiceva. Riscritta nelle tre lingue.
 
-**Sul 3-Hour Whale & Dolphin** ora compaiono sia "Attrezzatura da snorkeling" sia "Bagno e
-snorkeling": sono due cose diverse (l'attrezzatura fornita e la sosta), ma se all'ufficio
-sembra ripetitivo si toglie la prima.
+**Sul 3-Hour Whale & Dolphin** compaiono sia "Attrezzatura da snorkeling" sia "Bagno e
+snorkeling". Avevo chiesto se fosse ripetitivo: **l'ufficio ha detto di tenerle tutte e
+due** (25 agosto), perche' sono due cose diverse e **alcune barche fanno la sosta ma
+l'attrezzatura non la danno**. Quindi, da qui in avanti:
+
+- `swimstop` va su **tutte** le barche: la sosta c'e' sempre, anche quando la descrizione
+  non la nomina
+- `snorkel` va **solo** dove il fornitore dice davvero che maschera e boccaglio li da' lui.
+  Non si deduce dalla sosta bagno: se non c'e' scritto, non si mette
+
+Al 25 agosto ce l'hanno in due, `whale-dolphin-3h` e `self-drive-boats`, e in tutti e due
+i casi perche' era scritto nel testo mandato dall'ufficio. Nessuna e' stata indovinata.
 
 ### I due campi mancanti, fatti (24 agosto)
 

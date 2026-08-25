@@ -940,7 +940,7 @@ const ESPLORA_CATALOG = [
       en: "Thai-themed water park, one of the most awarded in the world.",
       es: "Parque acuático de temática tailandesa, uno de los más premiados del mundo."
     },
-    image: "",
+    image: "siam-park.jpg",
     published: true
   },
   {
@@ -963,7 +963,7 @@ const ESPLORA_CATALOG = [
       en: "Siam Park after dark, in its evening version.",
       es: "El Siam Park después del atardecer, en su versión nocturna."
     },
-    image: "",
+    image: "siam-night.jpg",
     published: true
   },
   {
@@ -986,7 +986,7 @@ const ESPLORA_CATALOG = [
       en: "Zoo and tropical garden, known worldwide for its animals.",
       es: "Zoo y jardín tropical, conocido en todo el mundo por sus animales."
     },
-    image: "",
+    image: "loro-parque.jpg",
     published: true
   },
   {
@@ -1010,7 +1010,7 @@ const ESPLORA_CATALOG = [
       en: "Combined ticket for the two best-known parks on the island.",
       es: "Entrada combinada para los dos parques más conocidos de la isla."
     },
-    image: "",
+    image: "Cat-parchi.jpg",
     published: true
   },
   {
@@ -1028,7 +1028,7 @@ const ESPLORA_CATALOG = [
       en: "Water park with slides and areas for every age.",
       es: "Parque acuático con toboganes y zonas para todas las edades."
     },
-    image: "",
+    image: "aqualand.jpg",
     published: true
   },
   {
@@ -1046,7 +1046,7 @@ const ESPLORA_CATALOG = [
       en: "Nature park with animals and free-flying birds of prey.",
       es: "Parque natural con animales y aves rapaces en vuelo libre."
     },
-    image: "",
+    image: "jungle-park.jpg",
     published: true
   },
   {
@@ -1064,7 +1064,7 @@ const ESPLORA_CATALOG = [
       en: "Combined ticket for the two parks in the south.",
       es: "Entrada combinada para los dos parques del sur."
     },
-    image: "",
+    image: "combo-jungle-aqualand.jpg",
     published: true
   },
   {
@@ -1082,7 +1082,7 @@ const ESPLORA_CATALOG = [
       en: "A small park dedicated to monkeys and other animals.",
       es: "Pequeño parque dedicado a los monos y a otros animales."
     },
-    image: "",
+    image: "monkey-park.jpg",
     published: true
   },
   {
@@ -1100,7 +1100,7 @@ const ESPLORA_CATALOG = [
       en: "Dinner and drag show at the Music Hall Tavern.",
       es: "Cena y espectáculo drag en el Music Hall Tavern."
     },
-    image: "",
+    image: "mht-drag-show.jpg",
     published: true
   },
   {
@@ -1118,7 +1118,7 @@ const ESPLORA_CATALOG = [
       en: "A medieval night at the castle: knights, horses and a tournament, with dinner served during the show.",
       es: "Noche medieval en el castillo: caballeros, caballos y torneo, con cena servida durante el espectáculo."
     },
-    image: "",
+    image: "castillo-san-miguel.jpg",
     published: true
   },
   {

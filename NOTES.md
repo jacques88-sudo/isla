@@ -272,9 +272,20 @@ Gli orari si scrivono uguali in tutte e tre le lingue: niente `{ it, en, es }`.
 **2. Il totale mentre si scelgono le persone.** "2 adulti × €55 + 1 bambino × €30" e
 sopra, grosso, "Totale €140". Si aggiorna mentre il cliente cambia i numeri.
 
-Il totale **non finisce su WhatsApp**: sta solo nella finestra, con la nota "totale
-indicativo, te lo confermiamo noi". Un numero scritto in chat diventa un impegno, e
-il prezzo lo conferma l'ufficio.
+Il totale **va anche nel messaggio WhatsApp**, per decisione dell'ufficio ("per piu'
+chiarezza"): cosi' vedono subito che conto ha fatto il cliente e lo correggono prima di
+confermare.
+
+    • Totale indicativo: €140 (2 adulti × €55 + 1 bambino × €30)
+
+Avevo proposto di tenerlo fuori dalla chat, perche' un numero scritto diventa un
+impegno. L'ufficio ha deciso di metterlo: la parola **"indicativo"** ci resta attaccata
+in tutte e tre le lingue, in chat come nella finestra, e il prezzo buono resta quello
+della conferma.
+
+Il conto lo fa **una funzione sola**, `calcolaTotale()` in `escursioni.js`, usata sia
+dalla finestra sia dal messaggio. Erano due posti che dovevano dire lo stesso numero:
+scriverlo due volte era il modo sicuro per farli diventare diversi al primo cambio.
 
 **Dove il totale NON si mostra, e perche'.** Moltiplicare per le persone un prezzo che
 non e' a persona darebbe un numero sbagliato, e un numero sbagliato scritto nero su
@@ -292,8 +303,9 @@ ha `transferPrice`, il totale usa quei prezzi: sul Twin Ticket 2 adulti + 1 bamb
 passano da €213 a €272. Il posto sul pullman per i neonati non entra nel conto, perche'
 la finestra non chiede quanti neonati ci sono.
 
-**Provato:** i cinque casi qui sopra, le tre lingue, e il cambio lingua a finestra
-aperta (l'orario scelto resta, "Da concordare" e "2 adulti × €55" si ritraducono).
+**Provato:** i cinque casi qui sopra, le tre lingue, il cambio lingua a finestra aperta
+(l'orario scelto resta, "Da concordare" e "2 adulti × €55" si ritraducono), e che il
+numero della finestra e quello del messaggio siano sempre lo stesso.
 
 **Le due finestre restano gemelle.** I campi nuovi sono stati messi sia in `tour.html`
 sia in `escursioni.html`, anche se quella del catalogo non si apre piu' da nessuna parte

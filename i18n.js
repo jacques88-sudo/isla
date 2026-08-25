@@ -231,6 +231,7 @@ const I18N = {
   "wa.people":          { it: "Persone", en: "People", es: "Personas" },
   "wa.notes":           { it: "Note", en: "Notes", es: "Notas" },
   "wa.transfer":        { it: "Transfer", en: "Transfer", es: "Traslado" },
+  "wa.total":           { it: "Totale indicativo", en: "Estimated total", es: "Total orientativo" },
   "wa.yes":             { it: "sì", en: "yes", es: "sí" },
   "wa.no":              { it: "no", en: "no", es: "no" },
   "wa.adult":           { it: "adulto", en: "adult", es: "adulto" },

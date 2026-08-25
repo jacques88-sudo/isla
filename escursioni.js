@@ -64,6 +64,39 @@ function peopleText(adults, kids) {
   return parti.join(" " + t("wa.and") + " ");
 }
 
+// I prezzi a testa da usare per il totale, oppure null quando il totale non si
+// puo' fare. Moltiplicare per le persone un prezzo che **non e' a persona**
+// (a barca, all'ora, a scaglioni di gruppo) darebbe un numero sbagliato, e un
+// numero sbagliato scritto nero su bianco e' peggio di nessun numero.
+function prezziAPersona(tour, conTransfer) {
+  if (tour.priceUnit) return null;
+  if (Array.isArray(tour.priceTiers) && tour.priceTiers.length) return null;
+  // Col transfer il listino e' un altro: per il Twin Ticket €78 diventano €99.
+  if (conTransfer && tour.transferPrice && tour.transferPrice.adult > 0) {
+    return { adulto: tour.transferPrice.adult, bambino: tour.transferPrice.child || 0 };
+  }
+  if (!(tour.priceAdult > 0)) return null;
+  return { adulto: tour.priceAdult, bambino: tour.priceChild || 0 };
+}
+
+// Il totale e il conto da cui viene, oppure null quando non si puo' fare.
+// Lo usano sia la finestra (che lo mostra) sia il messaggio (che lo scrive):
+// un conto solo, cosi' i due numeri non possono diventare diversi.
+function calcolaTotale(tour, req) {
+  const p = prezziAPersona(tour, req.transfer);
+  // Bambini senza il loro prezzo: il totale verrebbe fuori come se non
+  // pagassero. Meglio niente che un numero falso.
+  if (!p || req.adults < 1 || (req.kids > 0 && !p.bambino)) return null;
+  const pezzi = [req.adults + " " + t(req.adults === 1 ? "wa.adult" : "wa.adults") + " × €" + p.adulto];
+  if (req.kids > 0) {
+    pezzi.push(req.kids + " " + t(req.kids === 1 ? "wa.child" : "wa.children") + " × €" + p.bambino);
+  }
+  return {
+    totale: req.adults * p.adulto + req.kids * p.bambino,
+    dettaglio: pezzi.join(" + ")
+  };
+}
+
 // Messaggio WhatsApp completo, con data e persone già compilate.
 // È scritto nella lingua che il cliente sta usando sul sito.
 function whatsappUrl(tour, req) {
@@ -84,6 +117,13 @@ function whatsappUrl(tour, req) {
   // la domanda e' stata fatta, invece di doverla rifare in chat.
   if (tour.transfer) {
     testo += "\n• " + t("wa.transfer") + ": " + t(req.transfer ? "wa.yes" : "wa.no");
+  }
+  // Il totale va anche in chat: l'ufficio vede subito che conto ha fatto il
+  // cliente e puo' correggerlo prima di confermare. "Indicativo" ci resta
+  // attaccato: il prezzo buono e' quello della conferma, non questo.
+  const conto = calcolaTotale(tour, req);
+  if (conto) {
+    testo += "\n• " + t("wa.total") + ": €" + conto.totale + " (" + conto.dettaglio + ")";
   }
   if (req.note) testo += "\n• " + t("wa.notes") + ": " + req.note;
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
@@ -370,43 +410,24 @@ function initRequestDialog() {
     timeEl.value = scelto;
   }
 
-  // I prezzi a testa da usare per il totale, oppure null quando il totale non
-  // si puo' fare. Moltiplicare per le persone un prezzo che **non e' a persona**
-  // (a barca, all'ora, a scaglioni di gruppo) darebbe un numero sbagliato, e un
-  // numero sbagliato scritto nero su bianco e' peggio di nessun numero.
-  function prezziAPersona(tour, conTransfer) {
-    if (tour.priceUnit) return null;
-    if (Array.isArray(tour.priceTiers) && tour.priceTiers.length) return null;
-    // Col transfer il listino e' un altro: per il Twin Ticket €78 diventano €99.
-    if (conTransfer && tour.transferPrice && tour.transferPrice.adult > 0) {
-      return { adulto: tour.transferPrice.adult, bambino: tour.transferPrice.child || 0 };
-    }
-    if (!(tour.priceAdult > 0)) return null;
-    return { adulto: tour.priceAdult, bambino: tour.priceChild || 0 };
-  }
-
-  // "2 adulti × €55 + 1 bambino × €30" e sotto "Totale €140". Si aggiorna
-  // mentre il cliente cambia i numeri, cosi' vede quanto spende prima di
-  // aprire WhatsApp invece di doverlo chiedere.
+  // "2 adulti × €55 + 1 bambino × €30" e sopra, grosso, "Totale €140". Si
+  // aggiorna mentre il cliente cambia i numeri, cosi' vede quanto spende prima
+  // di aprire WhatsApp invece di doverlo chiedere. Il conto vero e proprio lo
+  // fa calcolaTotale() piu' in alto, che serve anche al messaggio.
   function aggiornaTotale() {
     if (!totalEl || !current || !adultsInput || !kidsInput) return;
-    const adulti = parseInt(adultsInput.value, 10) || 0;
-    const bambini = parseInt(kidsInput.value, 10) || 0;
-    const p = prezziAPersona(current, !!(transferInput && transferInput.checked));
-    // Bambini senza il loro prezzo: il totale verrebbe fuori come se non
-    // pagassero. Meglio non mostrarlo.
-    if (!p || adulti < 1 || (bambini > 0 && !p.bambino)) {
+    const conto = calcolaTotale(current, {
+      adults: parseInt(adultsInput.value, 10) || 0,
+      kids: parseInt(kidsInput.value, 10) || 0,
+      transfer: !!(transferInput && transferInput.checked)
+    });
+    if (!conto) {
       totalEl.hidden = true;
       return;
     }
-    const pezzi = [adulti + " " + t(adulti === 1 ? "wa.adult" : "wa.adults") + " × €" + p.adulto];
-    if (bambini > 0) {
-      pezzi.push(bambini + " " + t(bambini === 1 ? "wa.child" : "wa.children") + " × €" + p.bambino);
-    }
-    const totale = adulti * p.adulto + bambini * p.bambino;
     totalEl.innerHTML =
-      '<strong>' + t("req.total") + ' €' + totale + '</strong>' +
-      '<span>' + pezzi.join(" + ") + '</span>' +
+      '<strong>' + t("req.total") + ' €' + conto.totale + '</strong>' +
+      '<span>' + conto.dettaglio + '</span>' +
       '<small>' + t("req.totalNote") + '</small>';
     totalEl.hidden = false;
   }

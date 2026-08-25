@@ -163,6 +163,7 @@ const ESPLORA_CATALOG = [
     priceAdult: 0,
     priceChild: 0,
     family: true,
+    included: ["swimstop"],
     desc: {
       it: "Barca riservata solo al tuo gruppo, con percorso e orari concordati. Il prezzo è per l'intera barca, non a persona.",
       en: "A boat reserved for your group alone, with the route and times agreed with you. The price is for the whole boat, not per person.",
@@ -181,6 +182,7 @@ const ESPLORA_CATALOG = [
     priceAdult: 0,
     priceChild: 0,
     family: true,
+    included: ["swimstop"],
     desc: {
       it: "Tre ore di catamarano lungo la costa, senza programmi complicati.",
       en: "Three hours of catamaran along the coast, with nothing complicated planned.",
@@ -201,7 +203,7 @@ const ESPLORA_CATALOG = [
     priceChild: 30,
     priceInfant: 0,
     ages: { adult: "12+", child: "3-11", infant: "0-2" },
-    included: ["snorkel", "snack", "drinks"],
+    included: ["snorkel", "snack", "drinks", "swimstop"],
     family: true,
     desc: {
       it: "Tre ore in barca a vela da Puerto Colón, con un massimo di 11 persone a bordo. Avvistamento di balene e delfini, sosta per lo snorkeling con attrezzatura inclusa, snack e bevande a bordo.",
@@ -287,6 +289,7 @@ const ESPLORA_CATALOG = [
     priceAdult: 0,
     priceChild: 0,
     family: true,
+    included: ["swimstop"],
     desc: {
       it: "Catamarano in piccolo gruppo: navigazione tranquilla e avvistamento dei delfini.",
       en: "Catamaran in a small group: relaxed cruising and dolphin spotting.",
@@ -305,10 +308,11 @@ const ESPLORA_CATALOG = [
     priceAdult: 0,
     priceChild: 0,
     family: true,
+    included: ["swimstop"],
     desc: {
-      it: "Tre ore su una barca con il fondo trasparente: si guarda sott'acqua restando a bordo.",
-      en: "Three hours on a glass-bottomed boat: you watch below the surface without leaving the deck.",
-      es: "Tres horas en un barco con fondo de cristal: se mira bajo el agua sin salir de cubierta."
+      it: "Tre ore su una barca con il fondo trasparente: si guarda il fondale da bordo, poi ci si ferma per il bagno.",
+      en: "Three hours on a glass-bottomed boat: you watch the seabed from the deck, then stop for a swim.",
+      es: "Tres horas en un barco con fondo de cristal: se mira el fondo desde cubierta y luego hay parada de baño."
     },
     image: "glass-bottom-boat.jpg",
     published: true
@@ -323,6 +327,7 @@ const ESPLORA_CATALOG = [
     priceAdult: 0,
     priceChild: 0,
     family: false,
+    included: ["swimstop"],
     desc: {
       it: "La festa in barca piu' scatenata dell'isola, quella originale.",
       en: "The wildest boat party on the island, and the original one.",
@@ -341,6 +346,7 @@ const ESPLORA_CATALOG = [
     priceAdult: 0,
     priceChild: 0,
     family: true,
+    included: ["swimstop"],
     desc: {
       it: "Cinque ore a bordo dello Shogun, veliero dalle linee orientali.",
       en: "Five hours aboard the Shogun, a sailing ship with oriental lines.",
@@ -359,6 +365,7 @@ const ESPLORA_CATALOG = [
     priceAdult: 0,
     priceChild: 0,
     family: true,
+    included: ["swimstop"],
     desc: {
       it: "Avvistamento di delfini e balene a bordo dell'Opera 60, in versione premium.",
       en: "Dolphin and whale watching aboard the Opera 60, in its premium version.",
@@ -415,6 +422,7 @@ const ESPLORA_CATALOG = [
     priceAdult: 0,
     priceChild: 0,
     family: true,
+    included: ["swimstop"],
     desc: {
       it: "Tre ore a bordo di un cruiser di lusso, senza fretta.",
       en: "Three hours aboard a luxury cruiser, with no rush.",
@@ -433,6 +441,7 @@ const ESPLORA_CATALOG = [
     priceAdult: 0,
     priceChild: 0,
     family: true,
+    included: ["swimstop"],
     desc: {
       it: "Quattro ore in catamarano fino alle scogliere di Los Gigantes e alla baia di Masca.",
       en: "Four hours by catamaran out to the cliffs of Los Gigantes and Masca bay.",

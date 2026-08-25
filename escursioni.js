@@ -86,14 +86,14 @@ function tourCard(tour) {
     ? `<img src="./assets/${encodeURIComponent(tour.image)}" alt="${tf(tour.title)}" loading="lazy" />`
     : `<span class="tour-media-empty" aria-hidden="true">Isla</span>`;
 
-  const askBtn = WHATSAPP_NUMBER
-    ? `<button class="btn btn-primary tour-ask" type="button" data-request-open="${tour.id}"
-               aria-haspopup="dialog" aria-controls="requestDialog">${t("tour.ask")}</button>`
-    : "";
-
-  // foto e titolo portano alla pagina di dettaglio; il pulsante resta la
-  // scorciatoia per chi ha gia' deciso
+  // Foto, titolo e pulsante portano tutti alla pagina di dettaglio.
   const href = `./tour.html?id=${encodeURIComponent(tour.id)}`;
+
+  // Il pulsante non apre piu' la richiesta: da qui il cliente ha visto solo
+  // tre righe di descrizione, e mandarlo dritto su WhatsApp gli fa chiedere
+  // qualcosa che non conosce. "Richiedi disponibilita'" sta sulla pagina di
+  // dettaglio, dopo itinerario, cosa e' incluso e consigli.
+  const askBtn = `<a class="btn btn-primary tour-ask" href="${href}">${t("tour.details")}</a>`;
 
   li.innerHTML = `
     <a class="tour-media" href="${href}" tabindex="-1" aria-hidden="true">${media}</a>

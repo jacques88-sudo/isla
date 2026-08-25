@@ -489,7 +489,7 @@ const ESPLORA_CATALOG = [
       en: "A day between trails and bike, with a guide.",
       es: "Jornada entre senderos y bicicleta, con guía."
     },
-    image: "",
+    image: "trekking-bici.jpg",
     published: true
   },
   {

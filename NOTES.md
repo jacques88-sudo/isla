@@ -249,6 +249,49 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### La scheda porta alla pagina, non alla richiesta (24 agosto)
+
+Il pulsante sulla scheda del catalogo apriva **direttamente** la finestra della richiesta,
+saltando la pagina di dettaglio. Adesso che quella pagina ha itinerario, cosa e' incluso e
+consigli, era uno spreco: il cliente chiedeva disponibilita' avendo letto tre righe.
+
+Ora il pulsante dice **"Scopri di piu'"** e porta alla pagina. "Richiedi disponibilita'"
+sta solo li', in fondo, dopo che c'e' tutto da leggere.
+
+**Conseguenze da tenere a mente:**
+
+- Nessun pulsante apre piu' la richiesta dal catalogo. La finestra in `escursioni.html`
+  resta nel file ma **non si apre piu' da li'**: e' un div nascosto, non da' fastidio, ma
+  prima o poi si puo' togliere
+- Il **menu a tendina delle varianti** dentro la finestra serviva proprio alle richieste
+  che partivano dalla scheda. Ora quel percorso non esiste, quindi il menu non compare
+  mai: le varianti si scelgono coi bottoni sulla pagina. Anche questo e' codice che si
+  puo' togliere, ma non fa danni
+- **Attenzione a `href`:** era definito *dopo* il pulsante che lo usa. `node --check`
+  passa lo stesso perche' e' un errore di esecuzione, non di sintassi. Riordinato
+
+### La sosta bagno su tutte le barche (24 agosto)
+
+L'ufficio: la sosta bagno c'e' su tutte le barche anche quando non e' scritta nella
+descrizione, ed e' **bagno e snorkeling**, non solo bagno. Etichetta cambiata di
+conseguenza.
+
+Aggiunta a **11 barche su 15**. Le quattro fuori, e perche':
+
+- `submarine-safari` — e' un sottomarino, non si nuota
+- `pesca-altura` — uscita di pesca, non e' quel tipo di giornata
+- `self-drive-boats` e `small-catamaran-rental` — sono **noleggi senza skipper**: ti fermi
+  dove vuoi, ma non e' una sosta inclusa nel programma
+
+Da confermare se qualcuna di queste quattro invece ce l'ha.
+
+**Una descrizione andava corretta:** il glass bottom boat diceva "si guarda sott'acqua
+restando a bordo", che con la sosta bagno si contraddiceva. Riscritta nelle tre lingue.
+
+**Sul 3-Hour Whale & Dolphin** ora compaiono sia "Attrezzatura da snorkeling" sia "Bagno e
+snorkeling": sono due cose diverse (l'attrezzatura fornita e la sosta), ma se all'ufficio
+sembra ripetitivo si toglie la prima.
+
 ### I due campi mancanti, fatti (24 agosto)
 
 L'ufficio ha detto di costruirli subito invece di continuare a riempire schede. Giusto:

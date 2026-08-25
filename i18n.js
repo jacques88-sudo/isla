@@ -155,6 +155,7 @@ const I18N = {
   "tour.family":        { it: "Adatta ai bambini", en: "Kid-friendly", es: "Apta para niños" },
   "tour.transfer":      { it: "Transfer disponibile", en: "Transfer available", es: "Traslado disponible" },
   "tour.ask":           { it: "Richiedi disponibilità", en: "Check availability", es: "Consultar disponibilidad" },
+  "tour.details":       { it: "Scopri di più", en: "See details", es: "Ver detalles" },
 
   // ── pagina di dettaglio di una singola escursione ───────────────────────
   "detail.back":        { it: "Tutte le escursioni", en: "All excursions", es: "Todas las excursiones" },
@@ -177,7 +178,7 @@ const I18N = {
   "inc.drinks":         { it: "Bevande a bordo", en: "Drinks on board", es: "Bebidas a bordo" },
   "inc.snack":          { it: "Snack", en: "Snacks", es: "Snacks" },
   "inc.fingerfood":     { it: "Finger food", en: "Finger food", es: "Finger food" },
-  "inc.swimstop":       { it: "Sosta bagno", en: "Swim stop", es: "Parada de baño" },
+  "inc.swimstop":       { it: "Bagno e snorkeling", en: "Swim & snorkel", es: "Baño y snorkel" },
   "inc.lunch":          { it: "Pranzo", en: "Lunch", es: "Almuerzo" },
   "inc.tasting":        { it: "Degustazione", en: "Tasting", es: "Degustación" },
   "inc.guide":          { it: "Guida", en: "Guide", es: "Guía" },

@@ -249,6 +249,22 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Poema del Mar passa ai parchi (24 agosto)
+
+Spostata da "Tour e visite" a "Parchi e spettacoli", **quinta in lista, subito sotto il
+Twin Ticket**, su decisione dell'ufficio. Ha senso: la scheda ora si chiama come
+l'acquario, e chi guarda i parchi la trova.
+
+**Effetto collaterale buono: "Tour e visite" e' diventata completa**, 8 schede su 8 con la
+foto. Sesta categoria chiusa.
+
+**Nota tecnica sullo spostamento.** Muovere una scheda vuol dire tagliarla e reincollarla
+altrove: la funzione che trova i confini del blocco deve partire **dall'inizio della riga**,
+non dalla graffa, altrimenti gli spazi di indentazione restano indietro e il file esce
+storto (il primo tentativo l'ha fatto: `node --check` passava lo stesso, ma
+l'indentazione era rotta in tre punti). Il controllo che serve e' ordinare le righe del
+file prima e dopo e confrontarle: devono essere le stesse, solo in ordine diverso.
+
 ### Gran Canaria diventa "Poema del Mar" (24 agosto)
 
 L'ufficio ha mandato l'itinerario vero e il nome nuovo. Titolo, descrizione nelle tre

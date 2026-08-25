@@ -249,6 +249,61 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Self Drive Boat: prezzi a scaglioni di ore (25 agosto)
+
+Primi dati veri per `self-drive-boats`. **2 ore €190, 3 ore €265, 4 ore €335, 5 ore €395**,
+oltre le 5 ore si chiede. Barca senza patente, massimo 4 persone, eta' minima per guidare
+18 anni, cauzione di €100 in contanti il giorno stesso, e da 3 ore in su una prova di jet
+blade in omaggio.
+
+**Dove e' finito ognuno di questi pezzi:**
+
+- le quattro durate → `options`, gli stessi bottoni del jet ski. Il cliente sceglie qui e
+  la scelta arriva su WhatsApp gia' scritta ("Durata: 3 ore")
+- **non** `priceTiers`: quello e' a scaglioni di *persone* (lo usa il Private Charter),
+  qui gli scaglioni sono di *ore*
+- eta' minima, cauzione, jet blade, "oltre le 5 ore si chiede" → `notes`
+- "massimo 4 persone" e "non serve la patente" → dentro la descrizione, dove vendono
+- attrezzatura, casse, giubbotti, asciugamani, carburante → `included`
+
+**Il prezzo e' per la barca, non a persona.** E' la cosa piu' facile da fraintendere di
+tutta la scheda: €190 letto come "a testa" su una barca da 4 fa scappare il cliente, letto
+come "a barca" fa €47 a testa. Tre cose lo dicono: `priceUnit: "a barca"` sulla scheda del
+catalogo e nella riga "Prezzo", la prima riga dei consigli, e la descrizione.
+
+Per farlo funzionare ho dovuto sistemare due punti:
+
+- `priceUnit` veniva **attaccato** al prezzo senza spazio, perche' finora conteneva solo
+  "/ora". "da €190a barca" non si legge. Ora l'unita' che inizia con "/" resta attaccata e
+  le altre prendono lo spazio: e' `priceUnitSuffix()` in `escursioni.js`, e la stessa
+  regola e' ripetuta in `assistente.js` (la home non carica `escursioni.js`)
+- premendo un bottone della durata la riga "Prezzo" mostrava solo "€335", perdendo
+  "a barca". Adesso l'unita' segue anche la variante
+
+**Quattro parole nuove per `included`:** `lifejacket`, `speaker`, `towels`, `fuel`. Le
+prime due sono venute bene subito, le altre due no:
+
+- `towels` — l'asciugamano appeso alla sbarra: la sbarra e il bordo di sopra del telo si
+  toccavano e veniva fuori un **bicchiere**. Rifatto come pila di teli piegati
+- `fuel` — la pompa di benzina senza basamento e senza il vetro del display sembrava una
+  **caraffa col manico**. Aggiunti tutti e due
+
+Come sempre: si guardano tutte le icone in fila, non una alla volta. Da sole sembrano
+sempre giuste.
+
+**Cambio di idea sulla sosta bagno.** Ieri avevo tenuto `self-drive-boats` fuori da
+`swimstop` ragionando che in un noleggio senza skipper la sosta non e' "nel programma".
+La descrizione mandata dall'ufficio include l'attrezzatura da snorkeling, quindi il bagno
+c'e' eccome — ed e' proprio quello che l'ufficio aveva detto ("la sosta bagno e' inclusa in
+tutte le barche, anche se non c'e' scritto nelle descrizioni che ti invio"). Aggiunta.
+**Resta fuori `small-catamaran-rental`**, per cui non e' ancora arrivato niente.
+
+**Le due cose che mancavano, arrivate subito dopo:** i bambini **possono** salire come
+passeggeri (`family: true`, quindi la scheda entra nel filtro "Con bambini") e si parte da
+**Puerto Colón**. La nota sull'eta' e' stata riscritta di conseguenza: dice che chi *guida*
+deve avere 18 anni e che i bambini salgono come passeggeri. Serve proprio a chi arriva dal
+filtro "Con bambini" e vede scritto "18 anni" senza spiegazione.
+
 ### La scheda porta alla pagina, non alla richiesta (24 agosto)
 
 Il pulsante sulla scheda del catalogo apriva **direttamente** la finestra della richiesta,
@@ -285,12 +340,23 @@ Aggiunta a **11 barche su 15**. Le quattro fuori, e perche':
 
 Da confermare se qualcuna di queste quattro invece ce l'ha.
 
+*(25 agosto: `self-drive-boats` ce l'ha. Vedi "Self Drive Boat" qui sopra.)*
+
 **Una descrizione andava corretta:** il glass bottom boat diceva "si guarda sott'acqua
 restando a bordo", che con la sosta bagno si contraddiceva. Riscritta nelle tre lingue.
 
-**Sul 3-Hour Whale & Dolphin** ora compaiono sia "Attrezzatura da snorkeling" sia "Bagno e
-snorkeling": sono due cose diverse (l'attrezzatura fornita e la sosta), ma se all'ufficio
-sembra ripetitivo si toglie la prima.
+**Sul 3-Hour Whale & Dolphin** compaiono sia "Attrezzatura da snorkeling" sia "Bagno e
+snorkeling". Avevo chiesto se fosse ripetitivo: **l'ufficio ha detto di tenerle tutte e
+due** (25 agosto), perche' sono due cose diverse e **alcune barche fanno la sosta ma
+l'attrezzatura non la danno**. Quindi, da qui in avanti:
+
+- `swimstop` va su **tutte** le barche: la sosta c'e' sempre, anche quando la descrizione
+  non la nomina
+- `snorkel` va **solo** dove il fornitore dice davvero che maschera e boccaglio li da' lui.
+  Non si deduce dalla sosta bagno: se non c'e' scritto, non si mette
+
+Al 25 agosto ce l'hanno in due, `whale-dolphin-3h` e `self-drive-boats`, e in tutti e due
+i casi perche' era scritto nel testo mandato dall'ufficio. Nessuna e' stata indovinata.
 
 ### I due campi mancanti, fatti (24 agosto)
 

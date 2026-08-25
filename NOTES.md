@@ -249,6 +249,34 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Gran Canaria diventa "Poema del Mar" (24 agosto)
+
+L'ufficio ha mandato l'itinerario vero e il nome nuovo. Titolo, descrizione nelle tre
+lingue e zona aggiornati. **L'id resta `gran-canaria`**, come sempre.
+
+**Itinerario completo, da mettere sulla pagina quando ci sara' il campo apposta:**
+
+- Partenza nave Fred Olsen Santa Cruz – Agaete, 10:00
+- Arrivo ad Agaete, 11:30
+- Ingresso a Poema del Mar (pranzo non incluso)
+- Visita al quartiere di Vegueta
+- Visita guidata alle Destilerias Arehucas, degustazione inclusa
+- Partenza da Arucas verso Agaete, 17:00
+- Nave Agaete – Santa Cruz, 18:00
+
+**Incluso:** transfer andata e ritorno al Muelle de Santa Cruz dal sud, biglietti della
+nave, ingressi a Poema del Mar, visita guidata alle Arehucas con degustazione di rum e
+liquori, guida ufficiale.
+
+**Serve un campo `itinerary`.** Oggi tutto questo sta compresso in due righe di
+descrizione, e per una gita di una giornata l'itinerario e' quello che vende. Quando
+arrivano le descrizioni delle altre escursioni conviene costruirlo: una lista di tappe
+sulla pagina di dettaglio, piu' un elenco "cosa e' incluso".
+
+**Attenzione a `zone`:** la riga sul dettaglio si chiama gia' "Punto di partenza", quindi
+scrivere "Partenza da Santa Cruz" nel valore faceva "Punto di partenza: Partenza da Santa
+Cruz". Il valore va scritto secco: "Santa Cruz".
+
 ### Tour completo, La Palma e cantine (24 agosto)
 
 Catalogo a **61 foto su 67**, "Tour e visite" a 8 su 10.

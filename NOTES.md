@@ -249,6 +249,30 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Ordine di lavoro deciso dall'ufficio (24 agosto)
+
+**Prima si finiscono le foto, poi tutto il resto.** Le domande aperte sui tour e le
+divisioni di categoria restano in sospeso apposta, non sono state dimenticate:
+
+1. I **due Teide + Masca** (`teide-masca` da 60 euro e `icod-garachico-orotava` a giornata
+   intera): stesso giro o prodotti diversi? Se diversi, le descrizioni devono dire cosa
+   cambia
+2. **`charter-privato`** in "Tour privati" e' un doppione del Private Charter fra le
+   barche. Togliendolo, "Mare e barche" si chiude senza bisogno di foto
+3. **Dividere "Parchi e spettacoli"** in "Parchi" (8) e "Serate e spettacoli" (5): due
+   momenti d'acquisto diversi, e oggi lo Scandal vietato ai 16 sta accanto al Monkey Park
+4. **Quad e buggy**: dove va ognuno dei sette, costa o Teide. Restano tutti in "Avventura",
+   la differenza andra' nel campo `zone` o nei bottoni di scelta
+5. Le **descrizioni** delle escursioni, che l'ufficio manda piu' avanti
+6. Il **listino prezzi**: 20 schede ancora "Su richiesta"
+
+**Foto che mancano: 11.** Sette in "Tour e visite" (tour completo, Puerto de la Cruz, Gran
+Canaria, La Palma, cantine, tuk tuk, trenino) e quattro in "Tour privati" (charter, su
+misura, Teide di giorno, Teide di notte).
+
+Piu' tre da **sostituire**: Teide/Masca/La Gomera (300x300, sgranate sul PC), il flyboard
+(marchio "Water Sports Tenerife") e `About-team.jpg`.
+
 ### Icod/Garachico rinominato (24 agosto)
 
 "Icod, Garachico & La Orotava" e' diventato **"Teide, Icod, Garachico e Masca"**: cambia

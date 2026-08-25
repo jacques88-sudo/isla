@@ -249,6 +249,22 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Pulizia (24 agosto)
+
+- Tolto `assets/tenerife-video.mp4` (3.9 MB): **non era citato da nessuna parte**. Il video
+  della home e' `Hero-poster.mp4`, che resta. Verificato riga per riga prima di toglierlo
+- `assets/` scende da 24 a 20 MB
+- **Attenzione:** togliere un file dal progetto non lo toglie dalla storia di git, quindi
+  chi scarica il repository per intero se lo porta comunque dietro. Sul sito pubblicato
+  invece non c'e' piu'. Ripulire anche la storia si puo' fare, ma riscrive tutti i commit:
+  non ne vale la pena per 4 MB
+- Cancellate anche le foto caricate in chat (22 MB) e i file di lavoro dei test (86 MB):
+  stavano fuori dal progetto, gli originali sono sul telefono dell'ufficio e le versioni
+  ridotte in `assets/`
+
+**Restano i due file pesanti veri:** `About-team.jpg` (5.0 MB, da sostituire) e
+`Hero-poster.mp4` (3.7 MB, da comprimere a 1-1.5 MB). Insieme fanno il 44% di `assets/`.
+
 ### Trenino e tuk tuk (24 agosto)
 
 Le due foto mancanti dei giri corti a Costa Adeje. Catalogo a **58 foto su 67**,

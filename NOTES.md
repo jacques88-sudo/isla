@@ -249,6 +249,22 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### La foto della bici, e una scartata (24 agosto)
+
+`trekking-bici` ha la foto: **"Teide e natura" e' completa**, 3 schede su 3. Quinta
+categoria chiusa.
+
+**La prima foto mandata e' stata scartata.** Portava scritto in basso a sinistra
+"photo: cyclingholidaystenerife.com - all right reserved": non un logo di fornitore come
+quello sul flyboard, ma una **rivendicazione esplicita di diritti di un'altra azienda che
+vende tour in bici a Tenerife**, cioe' un concorrente su quel prodotto. Isla e' un sito
+commerciale: pubblicarla senza accordo puo' tornare indietro come richiesta di rimozione.
+Ritagliare via la scritta sarebbe stato peggio, non meglio. L'ufficio ne ha mandata
+un'altra, pulita.
+
+**Regola per le prossime:** guardare gli angoli prima di agganciare. Un logo di fornitore
+si puo' discutere, un "all rights reserved" di un concorrente no.
+
 ### Tre schede nascoste (24 agosto)
 
 `paisaje-lunar`, `canyoning` e `pico-teide` messe a `published: false` su richiesta

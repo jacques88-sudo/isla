@@ -277,8 +277,12 @@ Coperte 34 schede su 69 (prima 21). I file si chiamano come l'`id` della scheda.
   azzera a ogni apertura
 - La finestra della richiesta e' **duplicata in `escursioni.html` e `tour.html`**: quando
   si tocca una, va toccata anche l'altra. Un `diff` fra i due blocchi lo verifica
-- `immersioni` (tartaruga verde e sub) e `flyboard` (Costa Adeje) aggiunte il 24 agosto:
-  gli sport acquatici sono coperti tutti tranne `surf-lesson`
+- `immersioni` (tartaruga verde e sub), `flyboard` (Costa Adeje) e `surf-lesson`
+  (surfista sull'onda) aggiunte il 24 agosto: **gli sport acquatici hanno la foto tutti e
+  nove**, prima categoria completa dopo le barche
+- La foto del surf e' un ritaglio molto largo (784x298, quasi 3:1). Sta bene lo stesso:
+  la scheda la mostra a 255x159 e il dettaglio a 348x218, quindi il taglio prende il
+  centro dove c'e' il surfista. Se un giorno serve piu' grande, va rifatta
 - **La foto del flyboard ha il marchio "Water Sports Tenerife" in basso a destra.** Sulla
   scheda si vede poco perché il taglio lo mangia quasi tutto, ma c'è. Da sostituire con
   una versione senza marchio: ritagliarlo via non si fa, è la firma di chi l'ha scattata

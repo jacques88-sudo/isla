@@ -454,7 +454,7 @@ const ESPLORA_CATALOG = [
       es: "Caminata entre formaciones de toba blanca esculpidas por la erosión, en un paisaje casi lunar."
     },
     image: "",
-    published: true
+    published: false
   },
   {
     id: "canyoning",
@@ -472,7 +472,7 @@ const ESPLORA_CATALOG = [
       es: "Descenso de un barranco volcánico entre rápeles y pozas de agua."
     },
     image: "",
-    published: true
+    published: false
   },
   {
     id: "trekking-bici",
@@ -508,7 +508,7 @@ const ESPLORA_CATALOG = [
       es: "La subida a pie hasta la cima del Teide. Hace falta permiso, que se solicita con antelación."
     },
     image: "",
-    published: true
+    published: false
   },
 
   // ─── STELLE E ASTRONOMIA ──────────────────────────────────────────────────

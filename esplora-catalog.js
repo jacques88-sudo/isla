@@ -170,13 +170,13 @@ const ESPLORA_CATALOG = [
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 55,
     privateOption: "private-charter",
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 55,
+    priceChild: 30,
     family: true,
     desc: {
-      it: "Tre ore in barca alla ricerca di balene e delfini, con partenza da Puerto Colón.",
-      en: "Three hours at sea looking for whales and dolphins, departing from Puerto Colón.",
-      es: "Tres horas en barco buscando ballenas y delfines, saliendo de Puerto Colón."
+      it: "Tre ore in barca a vela da Puerto Colón, con un massimo di 11 persone a bordo. Avvistamento di balene e delfini, sosta per lo snorkeling con attrezzatura inclusa, snack e bevande a bordo. Sotto i 3 anni non si paga.",
+      en: "Three hours under sail from Puerto Colón, with a maximum of 11 guests on board. Whale and dolphin watching, a snorkelling stop with gear included, snacks and drinks on board. Under-3s go free.",
+      es: "Tres horas en velero desde Puerto Colón, con un máximo de 11 personas a bordo. Avistamiento de ballenas y delfines, parada para hacer snorkel con equipo incluido, snacks y bebidas a bordo. Los menores de 3 años no pagan."
     },
     image: "Cat-mare.jpg",
     published: true

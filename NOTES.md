@@ -249,6 +249,29 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Prima descrizione e prezzi veri: il giro in barca a vela (24 agosto)
+
+L'ufficio ha mandato testo e prezzi di un'uscita in barca a vela. **Assegnata a
+`whale-dolphin-3h`** perche' tre dati coincidono esattamente: Puerto Colon, 3 ore e 55
+euro. Le altre candidate no — `small-group-catamaran` e' 60 euro e non ha ne' zona ne'
+durata, `catamaran-3h` e' 45.
+
+Messi `priceAdult: 55` e `priceChild: 30`. Descrizione riscritta nelle tre lingue coi
+dati veri: massimo 11 persone a bordo, snorkeling con attrezzatura inclusa, snack e
+bevande.
+
+**Due cose emerse, che valgono per tutte le schede da qui in avanti:**
+
+1. **"Infants (0-2): FREE" non ha un campo dove stare.** Nel catalogo `0` vuol dire "non
+   ancora deciso" e nasconde la riga: mettere `priceInfant: 0` avrebbe fatto sparire
+   l'informazione invece di mostrarla. Per ora "sotto i 3 anni non si paga" sta **dentro
+   la descrizione**. Se i prezzi per fascia d'eta' arrivano su altre schede, conviene un
+   campo vero
+2. **La riga "Prezzo: da €55" e "Adulti: €55" dicono la stessa cosa.** Finche' i prezzi
+   erano vuoti non si notava; adesso che si riempiono, ogni scheda ripetera' il prezzo
+   adulto due volte. Da sistemare: quando `priceAdult` e' uguale a `priceFrom`, una delle
+   due righe va tolta
+
 ### Le foto sono finite (24 agosto)
 
 **62 attivita' visibili, 62 con la foto. Tutte e sette le categorie complete.**

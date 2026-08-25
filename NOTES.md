@@ -262,7 +262,20 @@ in scena), Castillo San Miguel (giostra).
 - La foto del **Combo Ticket e' una grafica pubblicitaria dell'operatore**, non una foto,
   e porta una fascia verde **"PROMO"**. Se un giorno vendiamo quel biglietto a prezzo
   pieno, quella scritta promette uno sconto che non c'e': da tenere d'occhio
-- Restano senza foto i tre spettacoli: Flamenco, Scandal e History
+- I tre spettacoli hanno la foto dal 24 agosto: **parchi e spettacoli e' completa**,
+  13 schede su 13
+- Due delle tre erano **quadrate** (locandine dell'operatore) e una **verticale**. La
+  cornice della scheda e' 16:10 e ritaglia al centro, quindi:
+  - la locandina di **Scandal** e' stata ritagliata a mano sulla fascia in basso: il
+    centro del quadrato tagliava la S rossa a meta' e sembrava un graffio. Cosi' si legge
+    tutto il marchio
+  - **History** va bene al centro: sono i due mezzi volti (Mozart e Michael Jackson), che
+    e' l'idea stessa dello spettacolo
+  - il **flamenco** era 3863x5794, verticale: ritagliato a mano intorno ai ballerini e non
+    al centro geometrico, dove c'e' solo palco vuoto
+- Le cornici delle schede restano **tutte uguali** (255x159 a schermo largo) qualunque sia
+  la forma della foto: `.tour-media` ha `aspect-ratio: 16 / 10` e `overflow: hidden`. Una
+  foto di forma strana non sfonda la griglia, viene solo ritagliata piu' o meno male
 
 ### Le 13 foto del 24 agosto
 

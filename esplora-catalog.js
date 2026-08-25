@@ -1136,7 +1136,7 @@ const ESPLORA_CATALOG = [
       en: "A live flamenco show, with musicians and dancers. Children aged 3 to 12 pay less; under 3s are not admitted.",
       es: "Espectáculo de flamenco en directo, con músicos y bailaores. Los niños de 3 a 12 años pagan menos; menores de 3 años no entran."
     },
-    image: "",
+    image: "flamenco-show.jpg",
     published: true
   },
   {
@@ -1154,7 +1154,7 @@ const ESPLORA_CATALOG = [
       en: "Dinner and cabaret in an evening made for adults: no under-16s.",
       es: "Cena y cabaret en una velada pensada para adultos: prohibida a menores de 16 años."
     },
-    image: "",
+    image: "scandal-dinner-show.jpg",
     published: true
   },
   {
@@ -1172,7 +1172,7 @@ const ESPLORA_CATALOG = [
       en: "A live music show travelling through the history of music.",
       es: "Espectáculo musical en directo que recorre la historia de la música."
     },
-    image: "",
+    image: "history-music-show.jpg",
     published: true
   },
 

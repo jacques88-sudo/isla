@@ -1365,7 +1365,7 @@ const ESPLORA_CATALOG = [
       en: "A guided ride in an electric tuk tuk along the Adeje coast. There are several routes: the scenic one with a drinks stop, the one around the main sights of Costa Adeje, and the long one that reaches the volcanoes.",
       es: "Recorrido guiado en tuk tuk eléctrico por la costa de Adeje. Hay varias rutas: la panorámica con parada para tomar algo, la de los puntos principales de Costa Adeje y la larga que llega hasta los volcanes."
     },
-    image: "",
+    image: "tuk-tuk.jpg",
     published: true
   },
   {
@@ -1383,7 +1383,7 @@ const ESPLORA_CATALOG = [
       en: "A road train between Costa Adeje and Los Cristianos: hop on and off at the stops as you like, the ticket lasts all day.",
       es: "Tren sobre ruedas entre Costa Adeje y Los Cristianos: subes y bajas en las paradas cuando quieras, el billete vale todo el día."
     },
-    image: "",
+    image: "trenino-turistico.jpg",
     published: true
   },
 

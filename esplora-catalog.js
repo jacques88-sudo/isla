@@ -84,12 +84,12 @@ const CATEGORIES = [
   },
   {
     id: "stelle",
-    name: { it: "Stelle e astronomia", en: "Stars and astronomy", es: "Estrellas y astronomía" },
+    name: { it: "Sotto le stelle", en: "Under the stars", es: "Bajo las estrellas" },
     image: "Cat-stelle.jpg"
   },
   {
     id: "avventura-motori",
-    name: { it: "Avventura e motori", en: "Adventure and engines", es: "Aventura y motor" },
+    name: { it: "Avventura", en: "Adventure", es: "Aventura" },
     image: "Cat-avventura.jpg"
   },
   {
@@ -104,7 +104,7 @@ const CATEGORIES = [
   },
   {
     id: "tour-isola",
-    name: { it: "Tour dell'isola", en: "Island tours", es: "Tours de la isla" },
+    name: { it: "Tour e visite", en: "Tours & sightseeing", es: "Tours y visitas" },
     image: ""
   },
   {

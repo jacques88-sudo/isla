@@ -249,6 +249,28 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Tre categorie rinominate (24 agosto)
+
+Cambiati **solo i nomi che si vedono**, non gli id: `stelle`, `avventura-motori` e
+`tour-isola` restano quelli, quindi indirizzi tipo `escursioni.html?cat=tour-isola` e i
+filtri continuano a funzionare. Verificato.
+
+| Prima | Adesso | Perche' |
+| --- | --- | --- |
+| Stelle e astronomia | **Sotto le stelle** | Diceva la stessa cosa due volte, e "astronomia" suonava da museo |
+| Avventura e motori | **Avventura** | Dentro c'e' una passeggiata a cavallo, che non e' un motore |
+| Tour dell'isola | **Tour e visite** | Dentro ci sono La Gomera, Gran Canaria e La Palma, che non sono quest'isola |
+
+**Restano da sistemare** (proposte fatte all'ufficio, non ancora decise):
+
+- **"Parchi e spettacoli" sono due cose diverse:** 8 parchi (giornata coi bambini) e 5
+  spettacoli (serata, spesso da adulti — lo Scandal e' vietato ai minori di 16). Oggi la
+  scheda dello Scandal sta nella stessa griglia del Monkey Park. Andrebbero divise in
+  "Parchi" e "Serate e spettacoli": nove categorie invece di otto, e la griglia in home
+  tornerebbe piena (3 colonne x 3 righe invece dei 7 attuali che lasciano due buchi)
+- `Teide + Masca` sta in "Teide e natura" ma e' un giro in pullman come Icod o Garachico:
+  potrebbe stare in "Tour e visite"
+
 ### Teide, Masca, La Gomera e Santa Cruz (24 agosto)
 
 Quattro foto, il catalogo arriva a 54 con foto su 70.

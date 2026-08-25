@@ -249,6 +249,21 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Tour completo, La Palma e cantine (24 agosto)
+
+Catalogo a **61 foto su 67**, "Tour e visite" a 8 su 10.
+
+- La foto del **tour completo** e' in realta' **Puerto de la Cruz vista dall'alto**, col
+  Lago Martianez in primo piano e il Teide dietro. Assegnata li' dall'ufficio, e funziona:
+  citta' e Teide nella stessa inquadratura sono esattamente "tutta l'isola in un giorno".
+  Ma la scheda `puerto-de-la-cruz` e' ancora senza foto e questa sarebbe letteralmente
+  quella: se un giorno serve, si sposta
+- Le quadrate si ritagliano bene al centro: verificato prima di agganciare, la fascia 16:10
+  tiene Teide, costa e citta'
+- `cantine-vinicole` e' 500x375 e `island-tour-completo` 800x800: piccole. Sulla scheda
+  vanno bene, sul dettaglio a schermo largo si ingrandiscono. Stessa lista di quelle da
+  rifare se arrivano gli originali
+
 ### Pulizia (24 agosto)
 
 - Tolto `assets/tenerife-video.mp4` (3.9 MB): **non era citato da nessuna parte**. Il video

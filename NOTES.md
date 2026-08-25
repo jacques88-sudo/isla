@@ -249,6 +249,32 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Le foto sono finite (24 agosto)
+
+**62 attivita' visibili, 62 con la foto. Tutte e sette le categorie complete.**
+
+Con l'acquario di Poema del Mar si chiude il lavoro sulle immagini, cominciato quando le
+schede con foto erano 21 su 69.
+
+**Quello che l'ufficio aveva messo in coda dietro le foto, e che adesso torna in cima:**
+
+1. Le **descrizioni** delle escursioni
+2. Un campo **`itinerary`** — da costruire *prima* di riempire le descrizioni, altrimenti
+   itinerari come quello di Poema del Mar (orari, tappe, cosa e' incluso) finiscono
+   compressi in due righe e poi c'e' da rifare
+3. Il **listino prezzi**: restano schede a "Su richiesta"
+4. **Quad e buggy**: dove va ognuno dei sette, costa o Teide
+5. I **due Teide + Masca**: stesso giro o prodotti diversi?
+6. **Dividere "Parchi e spettacoli"** in "Parchi" e "Serate e spettacoli"
+
+**Tre foto restano da sostituire**, non da aggiungere:
+
+- `teide-national-park`, `teide-masca`, `la-gomera` — 300x300, sgranate sul PC
+- `flyboard` — marchio "Water Sports Tenerife" in basso a destra
+- `About-team.jpg` — 5 MB, e l'ufficio la vuole cambiare
+
+E `Hero-poster.mp4` da comprimere: 3.7 MB, e' la prima cosa che il telefono scarica.
+
 ### Via la categoria "Tour privati" (24 agosto)
 
 Decisione dell'ufficio: **la categoria e i tre tour privati spariscono**, e il charter in

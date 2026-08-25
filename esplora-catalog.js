@@ -1028,7 +1028,7 @@ const ESPLORA_CATALOG = [
       en: "A day on Gran Canaria by ferry: the Poema del Mar aquarium, the old quarter of Vegueta and the Arehucas distillery with a tasting. Transfer from the south, ferry and entrance tickets included.",
       es: "Un día en Gran Canaria en barco: el acuario Poema del Mar, el barrio antiguo de Vegueta y las destilerías Arehucas con degustación. Traslado desde el sur, barco y entradas incluidos."
     },
-    image: "",
+    image: "gran-canaria.jpg",
     published: true
   },
   {

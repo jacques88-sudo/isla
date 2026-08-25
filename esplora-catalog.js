@@ -1014,6 +1014,24 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    id: "gran-canaria",
+    title: "Poema del Mar",
+    category: "parchi-spettacoli",
+    zone: "Santa Cruz",
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    priceFrom: null,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    desc: {
+      it: "Giornata a Gran Canaria in nave: l'acquario Poema del Mar, il quartiere antico di Vegueta e le distillerie Arehucas con degustazione. Transfer dal sud, traghetto e ingressi inclusi.",
+      en: "A day on Gran Canaria by ferry: the Poema del Mar aquarium, the old quarter of Vegueta and the Arehucas distillery with a tasting. Transfer from the south, ferry and entrance tickets included.",
+      es: "Un día en Gran Canaria en barco: el acuario Poema del Mar, el barrio antiguo de Vegueta y las destilerías Arehucas con degustación. Traslado desde el sur, barco y entradas incluidos."
+    },
+    image: "gran-canaria.jpg",
+    published: true
+  },
+  {
     id: "aqualand",
     title: "Aqualand",
     category: "parchi-spettacoli",
@@ -1276,24 +1294,6 @@ const ESPLORA_CATALOG = [
     published: false
   },
   {
-    id: "gran-canaria",
-    title: "Poema del Mar",
-    category: "tour-isola",
-    zone: "Santa Cruz",
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Giornata a Gran Canaria in nave: l'acquario Poema del Mar, il quartiere antico di Vegueta e le distillerie Arehucas con degustazione. Transfer dal sud, traghetto e ingressi inclusi.",
-      en: "A day on Gran Canaria by ferry: the Poema del Mar aquarium, the old quarter of Vegueta and the Arehucas distillery with a tasting. Transfer from the south, ferry and entrance tickets included.",
-      es: "Un día en Gran Canaria en barco: el acuario Poema del Mar, el barrio antiguo de Vegueta y las destilerías Arehucas con degustación. Traslado desde el sur, barco y entradas incluidos."
-    },
-    image: "",
-    published: true
-  },
-  {
     id: "la-palma",
     title: "La Palma",
     category: "tour-isola",
@@ -1408,7 +1408,7 @@ const ESPLORA_CATALOG = [
       es: "Barco reservado para tu grupo, con ruta y horarios acordados."
     },
     image: "",
-    published: true
+    published: false
   },
   {
     id: "tour-privato-su-misura",
@@ -1430,7 +1430,7 @@ const ESPLORA_CATALOG = [
       es: "Itinerario diseñado a petición, con guía y vehículo dedicados."
     },
     image: "",
-    published: true
+    published: false
   },
   {
     id: "teide-privato-giorno",
@@ -1448,7 +1448,7 @@ const ESPLORA_CATALOG = [
       es: "El Parque Nacional del Teide con guía y vehículo reservados para tu grupo."
     },
     image: "",
-    published: true
+    published: false
   },
   {
     id: "teide-privato-notte",
@@ -1466,6 +1466,6 @@ const ESPLORA_CATALOG = [
       es: "Subida al Teide tras el atardecer, con guía y vehículo solo para tu grupo."
     },
     image: "",
-    published: true
+    published: false
   },
 ];

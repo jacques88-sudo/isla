@@ -249,6 +249,75 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Le foto sono finite (24 agosto)
+
+**62 attivita' visibili, 62 con la foto. Tutte e sette le categorie complete.**
+
+Con l'acquario di Poema del Mar si chiude il lavoro sulle immagini, cominciato quando le
+schede con foto erano 21 su 69.
+
+**Quello che l'ufficio aveva messo in coda dietro le foto, e che adesso torna in cima:**
+
+1. Le **descrizioni** delle escursioni
+2. Un campo **`itinerary`** — da costruire *prima* di riempire le descrizioni, altrimenti
+   itinerari come quello di Poema del Mar (orari, tappe, cosa e' incluso) finiscono
+   compressi in due righe e poi c'e' da rifare
+3. Il **listino prezzi**: restano schede a "Su richiesta"
+4. **Quad e buggy**: dove va ognuno dei sette, costa o Teide
+5. I **due Teide + Masca**: stesso giro o prodotti diversi?
+6. **Dividere "Parchi e spettacoli"** in "Parchi" e "Serate e spettacoli"
+
+**Tre foto restano da sostituire**, non da aggiungere:
+
+- `teide-national-park`, `teide-masca`, `la-gomera` — 300x300, sgranate sul PC
+- `flyboard` — marchio "Water Sports Tenerife" in basso a destra
+- `About-team.jpg` — 5 MB, e l'ufficio la vuole cambiare
+
+E `Hero-poster.mp4` da comprimere: 3.7 MB, e' la prima cosa che il telefono scarica.
+
+### Via la categoria "Tour privati" (24 agosto)
+
+Decisione dell'ufficio: **la categoria e i tre tour privati spariscono**, e il charter in
+barca **resta solo come opzione** sulle escursioni dove e' gia' collegato.
+
+Nascoste (`published: false`, non cancellate): `tour-privato-su-misura`,
+`teide-privato-giorno`, `teide-privato-notte` e `charter-privato`, che era il doppione
+segnalato da tempo.
+
+**Il Private Charter resta**, dove e' sempre stato: in "Mare e barche", con i suoi
+prezzi a scaglioni. E' lui il bersaglio del campo `privateOption` su tre uscite in barca —
+verificato che il rimando "vuoi la barca solo per il tuo gruppo?" funzioni ancora.
+
+**Due cose sparite da sole, senza toccarle:**
+
+- La **pillola del filtro** "Tour privati": `escursioni.js` costruisce le pillole solo
+  dalle categorie che hanno almeno un'attivita' pubblicata
+- Il **riquadro in home** invece **e' stato tolto a mano**: le card categoria sono scritte
+  in `index.html`, non generate dal catalogo. Da ricordare, e' la stessa trappola di quando
+  mancava "Tour e visite"
+
+La voce `tour-privati` resta dentro `CATEGORIES`: non da' fastidio a nessuno e serve se un
+giorno quelle attivita' tornano.
+
+**Il catalogo ora e' 62 attivita' visibili, 61 con la foto.** Sei categorie su sette
+complete. **L'unica scheda senza foto e' Poema del Mar.**
+
+### Poema del Mar passa ai parchi (24 agosto)
+
+Spostata da "Tour e visite" a "Parchi e spettacoli", **quinta in lista, subito sotto il
+Twin Ticket**, su decisione dell'ufficio. Ha senso: la scheda ora si chiama come
+l'acquario, e chi guarda i parchi la trova.
+
+**Effetto collaterale buono: "Tour e visite" e' diventata completa**, 8 schede su 8 con la
+foto. Sesta categoria chiusa.
+
+**Nota tecnica sullo spostamento.** Muovere una scheda vuol dire tagliarla e reincollarla
+altrove: la funzione che trova i confini del blocco deve partire **dall'inizio della riga**,
+non dalla graffa, altrimenti gli spazi di indentazione restano indietro e il file esce
+storto (il primo tentativo l'ha fatto: `node --check` passava lo stesso, ma
+l'indentazione era rotta in tre punti). Il controllo che serve e' ordinare le righe del
+file prima e dopo e confrontarle: devono essere le stesse, solo in ordine diverso.
+
 ### Gran Canaria diventa "Poema del Mar" (24 agosto)
 
 L'ufficio ha mandato l'itinerario vero e il nome nuovo. Titolo, descrizione nelle tre

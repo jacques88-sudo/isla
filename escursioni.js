@@ -17,10 +17,19 @@ function daDefinire(valore) {
   return /Da definire/.test(valore.it || "");
 }
 
+// L'unità di misura del prezzo, già staccata come va staccata: quella che
+// inizia con "/" si attacca al numero ("da €100/ora"), le altre vogliono uno
+// spazio davanti ("da €190 a barca"). Vuota quando il prezzo è a persona,
+// che è il caso normale. La usa anche tour.js.
+function priceUnitSuffix(tour) {
+  if (!tour.priceUnit) return "";
+  const unita = tf(tour.priceUnit);
+  return (unita.startsWith("/") ? "" : " ") + unita;
+}
+
 function tourPrice(tour) {
   if (tour.priceFrom === null) return t("tour.onRequest");
-  // priceUnit c'è solo sui noleggi a ore: "da €100" diventa "da €100/ora"
-  return t("tour.from", { p: tour.priceFrom }) + (tour.priceUnit ? tf(tour.priceUnit) : "");
+  return t("tour.from", { p: tour.priceFrom }) + priceUnitSuffix(tour);
 }
 
 function categoryName(id) {

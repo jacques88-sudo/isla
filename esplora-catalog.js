@@ -7,7 +7,10 @@
 //                sola, anche se compare in dieci schede diverse.
 //   priceFrom  → numero in euro, oppure null se il prezzo non è ancora definito.
 //   priceUnit  → facoltativo: si aggiunge dopo il prezzo quando non è "a persona"
-//                ma a ore o a gruppo, es. { it: "/ora", en: "/hr", es: "/h" }.
+//                ma a ore o a gruppo, es. { it: "/ora", en: "/hr", es: "/h" }
+//                oppure { it: "a barca", en: "per boat", es: "por barco" }.
+//                Quello che inizia con "/" si attacca al prezzo, il resto va
+//                staccato: ci pensa il sito.
 //   priceTiers → facoltativo: prezzi a scaglioni per numero di persone. La
 //                scheda del catalogo mostra comunque priceFrom, la pagina di
 //                dettaglio elenca tutti gli scaglioni:
@@ -32,7 +35,7 @@
 //                    included: ["snorkel", "snack", "drinks"]
 //                Parole disponibili: snorkel, wetsuit, board, equipment, drinks,
 //                snack, fingerfood, lunch, tasting, swimstop, guide, transfer,
-//                ferry, ticket, photos.
+//                ferry, ticket, photos, lifejacket, speaker, towels, fuel.
 //                Per aggiungerne una servono l'icona in tour.js e il testo in
 //                i18n.js: una riga per parte.
 //   itinerary  → facoltativo: le tappe della giornata, in ordine. `time` si puo'
@@ -379,15 +382,53 @@ const ESPLORA_CATALOG = [
     title: "Self-Drive Boats",
     category: "mare-barche",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da 2 a 5 ore", en: "2 to 5 hours", es: "De 2 a 5 horas" },
     priceFrom: 190,
+    priceUnit: { it: "a barca", en: "per boat", es: "por barco" },
     priceAdult: 0,
     priceChild: 0,
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        { label: { it: "2 ore", en: "2 hours", es: "2 horas" }, price: 190 },
+        { label: { it: "3 ore", en: "3 hours", es: "3 horas" }, price: 265 },
+        { label: { it: "4 ore", en: "4 hours", es: "4 horas" }, price: 335 },
+        { label: { it: "5 ore", en: "5 hours", es: "5 horas" }, price: 395 }
+      ]
+    },
+    included: ["swimstop", "lifejacket", "snorkel", "snack", "speaker", "towels", "fuel"],
+    notes: [
+      {
+        it: "Il prezzo è per la barca, non a persona: si divide fra chi sale a bordo.",
+        en: "The price is for the boat, not per person: you split it between whoever comes on board.",
+        es: "El precio es por barco, no por persona: se reparte entre quienes suben a bordo."
+      },
+      {
+        it: "Per guidare la barca bisogna avere almeno 18 anni.",
+        en: "You must be at least 18 to drive the boat.",
+        es: "Para conducir el barco hay que tener al menos 18 años."
+      },
+      {
+        it: "Il giorno stesso si lascia una cauzione di €100 in contanti.",
+        en: "A €100 cash deposit is left on the day.",
+        es: "El mismo día se deja una fianza de 100 € en efectivo."
+      },
+      {
+        it: "Da 3 ore in su è compresa anche una prova di jet blade.",
+        en: "Bookings of 3 hours or more also include a jet blade experience.",
+        es: "A partir de 3 horas se incluye también una prueba de jet blade."
+      },
+      {
+        it: "Per più di 5 ore si può fare: scrivici e ti diciamo il prezzo.",
+        en: "More than 5 hours is possible: message us and we'll quote you.",
+        es: "Más de 5 horas es posible: escríbenos y te decimos el precio."
+      }
+    ],
     family: false,
     desc: {
-      it: "Al timone ci sei tu: barca senza skipper, si guida da soli.",
-      en: "You take the helm: a boat without a skipper, you drive it yourself.",
-      es: "Al timon vas tu: barco sin patron, lo conduces tu mismo."
+      it: "Al timone ci sei tu: barca senza skipper, si guida da soli e non serve la patente nautica. Fino a 4 persone a bordo, si sceglie il tratto di costa e ci si ferma dove si vuole per un bagno.",
+      en: "You take the helm: no skipper, and no boat licence needed. Up to 4 people on board, you pick the stretch of coast and stop wherever you like for a swim.",
+      es: "Al timón vas tú: barco sin patrón y sin necesidad de titulación. Hasta 4 personas a bordo, eliges el tramo de costa y paras donde quieras para bañarte."
     },
     image: "self-drive-boats.jpg",
     published: true

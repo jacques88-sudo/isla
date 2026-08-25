@@ -120,7 +120,19 @@ const INCLUDED_ICONS = {
   transfer:  '<path d="M3 16V8a2 2 0 0 1 2-2h9l4 4h1a2 2 0 0 1 2 2v4"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>',
   ferry:     '<path d="M3 17l2-6h14l2 6"/><path d="M12 11V5h5"/><path d="M2 20c2 0 2 1 4 1s2-1 4-1 2 1 4 1 2-1 4-1 2 1 4 1"/>',
   ticket:    '<path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 2 2 0 0 0 0 4 2 2 0 0 1 0 4 2 2 0 0 1-2 2H5a2 2 0 0 1-2-2 2 2 0 0 0 0-4 2 2 0 0 1 0-4z"/><path d="M14 6v12"/>',
-  photos:    '<path d="M3 8a2 2 0 0 1 2-2h3l1.5-2h5L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="12" r="3.5"/>'
+  photos:    '<path d="M3 8a2 2 0 0 1 2-2h3l1.5-2h5L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="12" r="3.5"/>',
+  // Il salvagente e non il giubbotto: un gilet disegnato a due tratti finisce
+  // per somigliare alla muta qui sopra, l'anello no.
+  lifejacket: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3.5v5M12 15.5v5M3.5 12h5M15.5 12h5"/>',
+  // La cassa portatile: woofer grande, tweeter piccolo. Una nota musicale
+  // direbbe "musica", non "te la prestiamo noi".
+  speaker:   '<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><circle cx="12" cy="15" r="3.4"/><circle cx="12" cy="7" r="1.1"/>',
+  // La pila di asciugamani piegati. L'asciugamano appeso alla sbarra, provato
+  // prima, diventava un bicchiere: la sbarra si confondeva col bordo di sopra.
+  towels:    '<rect x="4.5" y="15" width="15" height="5" rx="2"/><rect x="6" y="9.5" width="12" height="5" rx="2"/><rect x="7.5" y="4" width="9" height="5" rx="2"/>',
+  // La pompa di benzina. Senza il basamento sotto e il vetro del display
+  // sembrava una caraffa col manico.
+  fuel:      '<path d="M3.5 20.5V5a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v15.5"/><path d="M2.5 20.5h11"/><rect x="5.5" y="5.5" width="5" height="4" rx="1"/><path d="M12.5 10.5h3a2 2 0 0 1 2 2v4.75a1.75 1.75 0 0 0 3.5 0V10.5l-2.2-2.2"/>'
 };
 
 // L'itinerario: una riga per tappa, con l'orario a sinistra dove c'e'. E'
@@ -306,7 +318,9 @@ function collegaOpzioni(contenitore, tour) {
   function aggiornaPrezzo(bottone) {
     if (!prezzoEl) return;
     const p = bottone.getAttribute("data-option-price");
-    prezzoEl.textContent = p ? "€" + p : tourPrice(tour);
+    // "a barca" segue anche il prezzo della variante: "€190" da solo, su una
+    // barca che si paga a barca e non a testa, si legge come "€190 a persona".
+    prezzoEl.textContent = p ? "€" + p + priceUnitSuffix(tour) : tourPrice(tour);
   }
 
   gruppo.addEventListener("click", e => {

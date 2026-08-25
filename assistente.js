@@ -39,9 +39,15 @@ function assistWhatsappUrl() {
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(t("assist.customWa"));
 }
 
+// Come tourPrice() in escursioni.js, che qui non e' caricato: l'unita' che
+// inizia con "/" si attacca al prezzo ("da €100/ora"), le altre vogliono uno
+// spazio davanti ("da €190 a barca").
 function assistPrezzo(tour) {
   if (tour.priceFrom === null) return t("tour.onRequest");
-  return t("tour.from", { p: tour.priceFrom }) + (tour.priceUnit ? tf(tour.priceUnit) : "");
+  const prezzo = t("tour.from", { p: tour.priceFrom });
+  if (!tour.priceUnit) return prezzo;
+  const unita = tf(tour.priceUnit);
+  return prezzo + (unita.startsWith("/") ? "" : " ") + unita;
 }
 
 function assistNomeCategoria(id) {

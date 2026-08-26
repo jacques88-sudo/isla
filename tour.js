@@ -193,15 +193,21 @@ function detailOptions(tour) {
          role="group" aria-label="${esc(tf(opz.label))}">
       <span class="detail-options-label">${esc(tf(opz.label))}</span>
       <div class="detail-options-list">
-        ${opz.choices.map((scelta, i) => `
+        ${opz.choices.map((scelta, i) => {
+          // `price` e' il numero da scrivere sul bottone; `priceAdult` c'e'
+          // dove il prezzo della variante e' a persona e sappiamo anche
+          // quello dei bambini. Sul bottone vale lo stesso.
+          const prezzo = scelta.price || scelta.priceAdult;
+          return `
           <button type="button" class="detail-option"
                   data-option-value="${esc(tf(scelta.label))}"
-                  ${scelta.price ? `data-option-price="${scelta.price}"` : ""}
+                  ${prezzo ? `data-option-price="${prezzo}"` : ""}
+                  ${scelta.priceChild ? `data-option-price-child="${scelta.priceChild}"` : ""}
                   ${scelta.desc ? `data-option-desc="${esc(tf(scelta.desc))}"` : ""}
                   aria-pressed="${i === 0 ? "true" : "false"}">
             <span class="detail-option-name">${esc(tf(scelta.label))}</span>
-            ${scelta.price ? `<span class="detail-option-price">€${scelta.price}</span>` : ""}
-          </button>`).join("")}
+            ${prezzo ? `<span class="detail-option-price">€${prezzo}</span>` : ""}
+          </button>`; }).join("")}
       </div>
       ${opz.choices.some(s => s.desc)
         ? '<p class="detail-option-desc" data-detail-option-desc></p>' : ""}
@@ -326,9 +332,15 @@ function collegaOpzioni(contenitore, tour) {
     }
     if (!prezzoEl) return;
     const p = bottone.getAttribute("data-option-price");
+    if (!p) { prezzoEl.textContent = tourPrice(tour); return; }
     // "a barca" segue anche il prezzo della variante: "€190" da solo, su una
     // barca che si paga a barca e non a testa, si legge come "€190 a persona".
-    prezzoEl.textContent = p ? "€" + p + priceUnitSuffix(tour) : tourPrice(tour);
+    let testo = "€" + p + priceUnitSuffix(tour);
+    // Dove il prezzo dei bambini cambia con la durata non puo' stare nella
+    // tabella qui sopra, che e' fissa: si attacca al prezzo della variante.
+    const pb = bottone.getAttribute("data-option-price-child");
+    if (pb) testo += " (" + t("req.kids").toLowerCase() + " €" + pb + ")";
+    prezzoEl.textContent = testo;
   }
 
   gruppo.addEventListener("click", e => {

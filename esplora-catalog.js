@@ -92,6 +92,14 @@
 //                `price` si puo' omettere quando il prezzo della variante non lo
 //                sappiamo ancora: la riga mostra solo il nome.
 //                Ogni variante puo' avere anche:
+//                  priceAdult e priceChild → i due prezzi **a persona** di
+//                          quella variante, quando il prezzo cambia con la
+//                          durata. Solo questi entrano nel totale: `price` da
+//                          solo no, perche' puo' essere il prezzo del mezzo e
+//                          non della persona (il jet ski si paga a moto
+//                          d'acqua, non a testa) e moltiplicarlo per le
+//                          persone darebbe il doppio. Sul bottone si scrive
+//                          `price` se c'e', altrimenti `priceAdult`.
 //                  desc  → due righe che spiegano quella variante (giorni,
 //                          orario, cosa si mangia, dove si fa il bagno).
 //                          Compaiono sotto i bottoni, una alla volta: quella
@@ -233,7 +241,8 @@ const ESPLORA_CATALOG = [
       choices: [
         {
           label: { it: "2 ore", en: "2 hours", es: "2 horas" },
-          price: 30,
+          priceAdult: 30,
+          priceChild: 15,
           times: ["11:00"],
           desc: {
             it: "Balene e delfini, con sosta bagno davanti a Bahía del Duque. A bordo analcoliche, birra e acqua. Lunedì, mercoledì, venerdì e domenica, partenza alle 11:00.",
@@ -243,7 +252,8 @@ const ESPLORA_CATALOG = [
         },
         {
           label: { it: "3 ore", en: "3 hours", es: "3 horas" },
-          price: 47,
+          priceAdult: 47,
+          priceChild: 23,
           times: ["10:00"],
           desc: {
             it: "Balene e delfini, con sosta bagno a Diego Hernández. A bordo un panino, analcoliche, birra, vino e acqua. Tutti i giorni, partenza alle 10:00.",
@@ -253,7 +263,8 @@ const ESPLORA_CATALOG = [
         },
         {
           label: { it: "4 ore e mezza", en: "4.5 hours", es: "4,5 horas" },
-          price: 62,
+          priceAdult: 62,
+          priceChild: 31,
           times: ["13:00"],
           desc: {
             it: "Il giro lungo: balene e delfini e bagno nella baia di Masca. A bordo riso con pollo e verdure, acqua, vino, birra e analcoliche. Tutti i giorni, partenza alle 13:00.",
@@ -267,7 +278,8 @@ const ESPLORA_CATALOG = [
             en: "4.5 hours, pickup in the north",
             es: "4,5 horas, salida desde el norte"
           },
-          price: 69,
+          priceAdult: 69,
+          priceChild: 34,
           times: ["13:00"],
           desc: {
             it: "Lo stesso giro lungo, per chi alloggia nel nord dell'isola: la navetta ti prende e ti riporta a casa. La barca parte alle 13:00, la navetta passa prima. Martedì, giovedì, venerdì e domenica.",

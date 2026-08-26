@@ -293,9 +293,25 @@ generiche, che qui sarebbero state informazione sbagliata: gli orari veri li abb
 - le descrizioni sono riscritte da zero, come sempre: i fatti (durate, prezzi, orari,
   cosa e' incluso) si possono usare, il testo con cui li raccontano no
 
-**"Discounts Activated" non e' un prezzo.** Non ci sono i numeri per i bambini, quindi
-`priceAdult` resta 0 e **questa scheda non mostra il totale**. Appena arrivano adulto e
-bambino, il totale si accende da solo.
+**I prezzi dei bambini sono arrivati** (15 / 23 / 31 / 34), e hanno tirato fuori un
+problema: **cambiano con la variante**, mentre `priceAdult` e `priceChild` sono uno solo
+per scheda. Il totale sarebbe stato sbagliato su tre varianti su quattro.
+
+Ora `priceAdult` e `priceChild` si possono scrivere **dentro la variante**, e quando ci
+sono valgono quelli. Il posto dove si sceglie la variante e' uno solo (`opzioneScelta()`),
+cosi' i bottoni della pagina e il menu della finestra non possono rispondere in modo
+diverso.
+
+**Il campo `price` da solo NON entra nel totale, e non e' una dimenticanza.** `price` e'
+il numero da scrivere sul bottone e puo' essere il prezzo del **mezzo**, non della
+persona: il jet ski costa €150 l'ora *a moto d'acqua*, e moltiplicarlo per due persone
+darebbe €300 a chi ne noleggia una sola. La coppia `priceAdult`/`priceChild` invece dice
+a chiare lettere "questa variante si paga a testa, ed ecco i due prezzi". Verificato che
+il jet ski continui a non mostrare nessun totale.
+
+**Il prezzo dei bambini si attacca alla riga del prezzo** ("€47 (bambini €23)") invece di
+avere la sua riga in "In breve": quella tabella e' fissa, e qui i due numeri cambiano
+tutte le volte che si preme un bottone.
 
 **La foto e' un "Freebird Gold", il listino e' del "Freebird One".** Stessa compagnia,
 barche diverse — il nome si legge sulle vele in tutte e due le foto che abbiamo. Per non

@@ -249,6 +249,68 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Due schede diventano una: Freebird Catamaran Trip (25 agosto)
+
+L'ufficio ha mandato il listino del catamarano Freebird e ha chiesto di **unire in una
+scheda sola** il "4-Hour Catamaran to Los Gigantes & Masca" e il "3-Hour Catamaran
+Excursion": sono giri diversi della stessa barca, dallo stesso porto.
+
+Le due schede sono state **tolte** e sostituite da `freebird-catamaran`, con quattro
+varianti:
+
+| variante | prezzo | giorni | orario |
+|---|---|---|---|
+| 2 ore | €30 | lun, mer, ven, dom | 11:00 |
+| 3 ore | €47 | tutti i giorni | 10:00 |
+| 4 ore e mezza | €62 | tutti i giorni | 13:00 |
+| 4 ore e mezza dal nord | €69 | mar, gio, ven, dom | 13:00 |
+
+**I prezzi sono cambiati:** le vecchie schede dicevano €45 e €58, presi all'inizio dai
+siti dei concorrenti. Ora sono €47 e €62, che vengono dal listino mandato dall'ufficio.
+
+**Due campi nuovi, dentro le varianti.** Servivano tutti e due a questa scheda e non
+c'era modo di dirlo con quello che c'era:
+
+- `desc` su ogni variante — giorni, orario, cosa si mangia, dove si fa il bagno. Compare
+  **una alla volta**, in un riquadro sotto i bottoni: quattro varianti con due righe di
+  testo dentro ogni bottone diventano un muro e non si sceglie piu' niente
+- `times` su ogni variante — perche' qui **l'orario dipende dalla durata**: il giro di 2
+  ore parte alle 11:00 e quello di 3 alle 10:00. Il campo `times` dell'attivita' resta
+  per le barche con un orario solo; quello della variante, dove c'e', batte l'altro
+
+Senza `times` sulla variante questa scheda avrebbe mostrato le **fasce segnaposto**
+generiche, che qui sarebbero state informazione sbagliata: gli orari veri li abbiamo.
+
+**Cosa NON ho preso dalla pagina mandata.** Il listino arriva da un rivenditore
+(CanaryVIP), non dall'operatore, quindi:
+
+- "Up to 48h Cancelation" → **non l'ho scritto**. Quella e' la politica di *quel*
+  rivenditore. La nostra prenotazione si fa a mano su WhatsApp e la politica di
+  cancellazione e' quella di Admiral: metterla senza conferma sarebbe un impegno preso
+  al posto dell'ufficio
+- "Secure Payment", "Best Price Guaranteed", "Official Tickets", "26 customer reviews",
+  "Book Now and Save" → e' la loro pubblicita' e sono le loro recensioni, non le nostre
+- le descrizioni sono riscritte da zero, come sempre: i fatti (durate, prezzi, orari,
+  cosa e' incluso) si possono usare, il testo con cui li raccontano no
+
+**"Discounts Activated" non e' un prezzo.** Non ci sono i numeri per i bambini, quindi
+`priceAdult` resta 0 e **questa scheda non mostra il totale**. Appena arrivano adulto e
+bambino, il totale si accende da solo.
+
+**La foto e' un "Freebird Gold", il listino e' del "Freebird One".** Stessa compagnia,
+barche diverse — il nome si legge sulle vele in tutte e due le foto che abbiamo. Per non
+mettere un titolo che la foto smentisce, la scheda si chiama **"Freebird Catamaran
+Trip"**, col nome della compagnia e non della singola barca.
+
+**I giorni non sono controllati.** Il cliente puo' chiedere il giro di 2 ore di martedi',
+che non si fa. I giorni stanno scritti sotto il bottone della variante, e la conferma
+passa comunque dall'ufficio entro 24 ore. Un controllo sul giorno della settimana si puo'
+aggiungere, ma `<input type="date">` da solo non lo sa fare.
+
+**Restano due foto non usate da nessuno:** `catamaran-3h.jpg` (l'altra foto della stessa
+barca) e `Cat-privati.jpg` (della categoria tolta). Non le ho cancellate: la prima puo'
+servire a un'altra scheda.
+
 ### Small Group Catamaran (25 agosto)
 
 Dati veri dall'ufficio. **€60 adulto, €30 bambino 3-11, gratis 0-2**, tre ore, massimo 23

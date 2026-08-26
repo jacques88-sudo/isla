@@ -197,11 +197,14 @@ function detailOptions(tour) {
           <button type="button" class="detail-option"
                   data-option-value="${esc(tf(scelta.label))}"
                   ${scelta.price ? `data-option-price="${scelta.price}"` : ""}
+                  ${scelta.desc ? `data-option-desc="${esc(tf(scelta.desc))}"` : ""}
                   aria-pressed="${i === 0 ? "true" : "false"}">
             <span class="detail-option-name">${esc(tf(scelta.label))}</span>
             ${scelta.price ? `<span class="detail-option-price">€${scelta.price}</span>` : ""}
           </button>`).join("")}
       </div>
+      ${opz.choices.some(s => s.desc)
+        ? '<p class="detail-option-desc" data-detail-option-desc></p>' : ""}
     </div>`;
 }
 
@@ -310,7 +313,17 @@ function collegaOpzioni(contenitore, tour) {
   if (!gruppo) return;
   const prezzoEl = contenitore.querySelector("[data-detail-prezzo]");
 
+  // La descrizione della variante scelta sta in un riquadro sotto i bottoni,
+  // non dentro ognuno: con quattro varianti che hanno due righe di testo a
+  // testa la fila di bottoni diventa un muro e non si scelgono piu'.
+  const descEl = contenitore.querySelector("[data-detail-option-desc]");
+
   function aggiornaPrezzo(bottone) {
+    if (descEl) {
+      const d = bottone.getAttribute("data-option-desc") || "";
+      descEl.textContent = d;
+      descEl.hidden = !d;
+    }
     if (!prezzoEl) return;
     const p = bottone.getAttribute("data-option-price");
     // "a barca" segue anche il prezzo della variante: "€190" da solo, su una

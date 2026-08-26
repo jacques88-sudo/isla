@@ -284,10 +284,11 @@ generiche, che qui sarebbero state informazione sbagliata: gli orari veri li abb
 **Cosa NON ho preso dalla pagina mandata.** Il listino arriva da un rivenditore
 (CanaryVIP), non dall'operatore, quindi:
 
-- "Up to 48h Cancelation" → **non l'ho scritto**. Quella e' la politica di *quel*
-  rivenditore. La nostra prenotazione si fa a mano su WhatsApp e la politica di
-  cancellazione e' quella di Admiral: metterla senza conferma sarebbe un impegno preso
-  al posto dell'ufficio
+- "Up to 48h Cancelation" → **non l'ho scritto**, e l'ufficio ha poi confermato che era
+  giusto cosi': **quella e' la politica di CanaryVIP, non la nostra**. La nostra
+  prenotazione si fa a mano su WhatsApp e la cancellazione la decide Admiral. Domanda
+  chiusa: sul sito non c'e' nessuna promessa di cancellazione, e non ce ne va nessuna
+  finche' l'ufficio non ne detta una sua
 - "Secure Payment", "Best Price Guaranteed", "Official Tickets", "26 customer reviews",
   "Book Now and Save" → e' la loro pubblicita' e sono le loro recensioni, non le nostre
 - le descrizioni sono riscritte da zero, come sempre: i fatti (durate, prezzi, orari,

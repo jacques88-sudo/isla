@@ -79,12 +79,29 @@ function peopleText(adults, kids) {
 // puo' fare. Moltiplicare per le persone un prezzo che **non e' a persona**
 // (a barca, all'ora, a scaglioni di gruppo) darebbe un numero sbagliato, e un
 // numero sbagliato scritto nero su bianco e' peggio di nessun numero.
-function prezziAPersona(tour, conTransfer) {
+// La variante scelta, come oggetto del catalogo invece che come testo.
+function varianteDi(tour, etichetta) {
+  if (!etichetta || !tour.options || !Array.isArray(tour.options.choices)) return null;
+  return tour.options.choices.find(s => tf(s.label) === etichetta) || null;
+}
+
+function prezziAPersona(tour, req) {
   if (tour.priceUnit) return null;
   if (Array.isArray(tour.priceTiers) && tour.priceTiers.length) return null;
   // Col transfer il listino e' un altro: per il Twin Ticket €78 diventano €99.
-  if (conTransfer && tour.transferPrice && tour.transferPrice.adult > 0) {
+  if (req.transfer && tour.transferPrice && tour.transferPrice.adult > 0) {
     return { adulto: tour.transferPrice.adult, bambino: tour.transferPrice.child || 0 };
+  }
+  // Su certe attivita' il prezzo dipende dalla variante: il giro di 2 ore costa
+  // €30 e quello di 4 ore e mezza €62. Conta solo `priceAdult` sulla variante,
+  // **non** il suo `price`: `price` e' il numero da scrivere sul bottone e puo'
+  // essere il prezzo del mezzo invece che della persona (il jet ski si paga a
+  // moto d'acqua, non a testa), e moltiplicarlo per le persone darebbe il
+  // doppio. La coppia priceAdult/priceChild invece dice a chiare lettere che
+  // quella variante si paga a persona.
+  const variante = varianteDi(tour, req.option);
+  if (variante && variante.priceAdult > 0) {
+    return { adulto: variante.priceAdult, bambino: variante.priceChild || 0 };
   }
   if (!(tour.priceAdult > 0)) return null;
   return { adulto: tour.priceAdult, bambino: tour.priceChild || 0 };
@@ -94,7 +111,7 @@ function prezziAPersona(tour, conTransfer) {
 // Lo usano sia la finestra (che lo mostra) sia il messaggio (che lo scrive):
 // un conto solo, cosi' i due numeri non possono diventare diversi.
 function calcolaTotale(tour, req) {
-  const p = prezziAPersona(tour, req.transfer);
+  const p = prezziAPersona(tour, req);
   // Bambini senza il loro prezzo: il totale verrebbe fuori come se non
   // pagassero. Meglio niente che un numero falso.
   if (!p || req.adults < 1 || (req.kids > 0 && !p.bambino)) return null;
@@ -410,13 +427,16 @@ function initRequestDialog() {
     return premuto ? premuto.getAttribute("data-option-value") || "" : "";
   }
 
-  // La variante scelta sulla pagina, come oggetto del catalogo e non come
-  // testo: serve per leggerne gli orari.
+  // La variante scelta, da qualunque parte l'abbia scelta il cliente: coi
+  // bottoni sulla pagina di dettaglio o col menu qui dentro.
+  function opzioneScelta() {
+    return sceltaDallaPagina() ||
+      (optionEl && !optionEl.hidden ? optionEl.value : "");
+  }
+
+  // Come sopra, ma come oggetto del catalogo: serve per leggerne gli orari.
   function sceltaCorrente(tour) {
-    if (!tour.options || !Array.isArray(tour.options.choices)) return null;
-    const testo = sceltaDallaPagina();
-    if (!testo) return null;
-    return tour.options.choices.find(s => tf(s.label) === testo) || null;
+    return varianteDi(tour, opzioneScelta());
   }
 
   // Le voci portano il prezzo quando lo sappiamo ("2 ore — €180"), cosi' il
@@ -436,8 +456,9 @@ function initRequestDialog() {
       const voce = document.createElement("option");
       // il valore e' il testo stesso: e' quello che finisce su WhatsApp
       voce.value = tf(scelta.label);
-      voce.textContent = scelta.price
-        ? tf(scelta.label) + " — €" + scelta.price
+      const prezzo = scelta.price || scelta.priceAdult;
+      voce.textContent = prezzo
+        ? tf(scelta.label) + " — €" + prezzo
         : tf(scelta.label);
       optionEl.appendChild(voce);
     });
@@ -479,7 +500,10 @@ function initRequestDialog() {
     const conto = calcolaTotale(current, {
       adults: parseInt(adultsInput.value, 10) || 0,
       kids: parseInt(kidsInput.value, 10) || 0,
-      transfer: !!(transferInput && transferInput.checked)
+      transfer: !!(transferInput && transferInput.checked),
+      // senza la variante il totale userebbe il prezzo sbagliato su tutte le
+      // schede dove il prezzo dipende dalla durata
+      option: opzioneScelta()
     });
     if (!conto) {
       totalEl.hidden = true;
@@ -564,8 +588,7 @@ function initRequestDialog() {
       kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
       note: document.getElementById("reqNote").value.trim(),
       transfer: !!(transferInput && transferInput.checked),
-      option: sceltaDallaPagina() ||
-        (optionEl && !optionEl.hidden ? optionEl.value : "")
+      option: opzioneScelta()
     };
     if (!req.date) return;
 

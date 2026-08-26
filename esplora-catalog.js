@@ -319,7 +319,7 @@ const ESPLORA_CATALOG = [
     id: "small-group-catamaran",
     title: "Small Group Catamaran",
     category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 60,
     privateOption: "private-charter",

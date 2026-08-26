@@ -249,6 +249,44 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Small Group Catamaran (25 agosto)
+
+Dati veri dall'ufficio. **€60 adulto, €30 bambino 3-11, gratis 0-2**, tre ore, massimo 23
+persone, pranzo con paella di pollo, bevande, sosta bagno.
+
+**Come ho capito quale scheda era.** "small catamarano" poteva essere tre schede diverse:
+`small-group-catamaran`, `small-catamaran-rental` e `catamaran-3h`. Decisivo il prezzo:
+`small-group-catamaran` aveva gia' `priceFrom: 60`, esattamente l'adulto del listino
+nuovo. Il rental e' senza skipper (niente pranzo, niente equipaggio) e `catamaran-3h`
+sta a €45.
+
+**Dove e' finito ognuno dei pezzi:**
+
+- €60 / €30 / gratis → `priceAdult`, `priceChild`, `priceInfant`, con `ages` 12+ / 3-11 /
+  0-2. La riga "Prezzo: da €60" sparisce da sola perche' ripeterebbe "Adulti: €60"
+- pranzo, bevande, sosta bagno, attrezzatura → `included`
+- "massimo 23 persone" e "paella di pollo" → nella descrizione, dove vendono
+- 15 minuti prima, cosa portare, e **quali** bevande → `notes`
+
+**"Snorkel equipment is available onboard" vale `snorkel`.** E' il fornitore che dice che
+la maschera la mette lui, che e' esattamente la condizione fissata ieri. Nel riquadro
+compaiono sia "Bagno e snorkeling" sia "Attrezzatura da snorkeling": e' voluto, l'ufficio
+ha confermato che sono due cose diverse.
+
+**La birra sta nei consigli, non fra le icone.** `inc.drinks` dice "Bevande a bordo" e un
+cliente puo' chiedersi se la birra si paga: la riga "Le bevande comprese sono analcoliche,
+birra e acqua" toglie il dubbio. Meglio di una parola nuova `beer` nel vocabolario delle
+icone, che si userebbe su una scheda sola.
+
+**Non e' arrivato il porto di partenza:** resta "Da definire" e la pillola non compare.
+Gli altri catamarani partono da Puerto Colón, ma questo l'ufficio non l'ha detto e
+indovinarlo vorrebbe dire mandare un cliente al molo sbagliato.
+
+**Le due note "15 minuti prima" e "cosa portare" sono identiche a quelle del Luxury
+Catamaran.** Copiate apposta: `notes` e' testo libero per ogni scheda, e due schede che
+dicono la stessa cosa con parole diverse confondono piu' di quanto la ripetizione
+infastidisca.
+
 ### La lista: piu' escursioni in un messaggio solo (25 agosto)
 
 Il cliente che ne vuole tre non deve aprire WhatsApp tre volte. Le mette in una lista

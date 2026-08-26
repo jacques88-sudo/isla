@@ -320,17 +320,36 @@ const ESPLORA_CATALOG = [
     title: "Small Group Catamaran",
     category: "mare-barche",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 60,
     privateOption: "private-charter",
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 60,
+    priceChild: 30,
+    priceInfant: 0,
+    ages: { adult: "12+", child: "3-11", infant: "0-2" },
+    included: ["lunch", "drinks", "swimstop", "snorkel"],
+    notes: [
+      {
+        it: "Le bevande comprese sono analcoliche, birra e acqua.",
+        en: "The drinks included are soft drinks, beer and water.",
+        es: "Las bebidas incluidas son refrescos, cerveza y agua."
+      },
+      {
+        it: "Presentati 15 minuti prima della partenza.",
+        en: "Please arrive 15 minutes before departure.",
+        es: "Preséntate 15 minutos antes de la salida."
+      },
+      {
+        it: "Porta asciugamano, costume e protezione solare.",
+        en: "Bring a towel, swimwear and sun protection.",
+        es: "Trae toalla, bañador y protección solar."
+      }
+    ],
     family: true,
-    included: ["swimstop"],
     desc: {
-      it: "Catamarano in piccolo gruppo: navigazione tranquilla e avvistamento dei delfini.",
-      en: "Catamaran in a small group: relaxed cruising and dolphin spotting.",
-      es: "Catamarán en grupo reducido: navegación tranquila y avistamiento de delfines."
+      it: "Tre ore di catamarano con un massimo di 23 persone a bordo: c'è spazio per stare comodi, lontano dalla folla. Si naviga lungo la costa con buone possibilità di vedere delfini e balene, e a bordo si pranza con la paella di pollo.",
+      en: "Three hours by catamaran with a maximum of 23 people on board: room to spread out, away from the crowds. You cruise along the coast with a good chance of spotting dolphins and whales, and lunch on board is chicken paella.",
+      es: "Tres horas en catamarán con un máximo de 23 personas a bordo: hay sitio para estar cómodos, lejos de las multitudes. Se navega por la costa con buenas posibilidades de ver delfines y ballenas, y a bordo se come paella de pollo."
     },
     image: "small-group-catamaran.jpg",
     published: true

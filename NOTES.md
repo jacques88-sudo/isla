@@ -278,9 +278,10 @@ cliente puo' chiedersi se la birra si paga: la riga "Le bevande comprese sono an
 birra e acqua" toglie il dubbio. Meglio di una parola nuova `beer` nel vocabolario delle
 icone, che si userebbe su una scheda sola.
 
-**Non e' arrivato il porto di partenza:** resta "Da definire" e la pillola non compare.
-Gli altri catamarani partono da Puerto Colón, ma questo l'ufficio non l'ha detto e
-indovinarlo vorrebbe dire mandare un cliente al molo sbagliato.
+**Il porto di partenza e' Puerto Colón**, confermato dall'ufficio subito dopo. Non
+l'avevo scritto prima pur essendo quello di quasi tutte le altre barche: indovinarlo
+vorrebbe dire mandare un cliente al molo sbagliato, e su una cosa cosi' un'informazione
+inventata e' peggio di una mancante.
 
 **Le due note "15 minuti prima" e "cosa portare" sono identiche a quelle del Luxury
 Catamaran.** Copiate apposta: `notes` e' testo libero per ogni scheda, e due schede che

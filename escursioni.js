@@ -410,6 +410,15 @@ function initRequestDialog() {
     return premuto ? premuto.getAttribute("data-option-value") || "" : "";
   }
 
+  // La variante scelta sulla pagina, come oggetto del catalogo e non come
+  // testo: serve per leggerne gli orari.
+  function sceltaCorrente(tour) {
+    if (!tour.options || !Array.isArray(tour.options.choices)) return null;
+    const testo = sceltaDallaPagina();
+    if (!testo) return null;
+    return tour.options.choices.find(s => tf(s.label) === testo) || null;
+  }
+
   // Le voci portano il prezzo quando lo sappiamo ("2 ore — €180"), cosi' il
   // cliente sceglie sapendo quanto costa invece di doverlo chiedere.
   function riempiOpzioni(tour) {
@@ -446,7 +455,12 @@ function initRequestDialog() {
     qualunque.value = "";
     qualunque.textContent = t("req.timeAny");
     timeEl.appendChild(qualunque);
-    (tour.times || ORARI_PREDEFINITI).forEach(ora => {
+    // Su certe barche l'orario dipende dalla durata scelta: il giro di 2 ore
+    // parte alle 11:00 e quello di 3 alle 10:00. Se la variante ha i suoi
+    // orari valgono quelli, se no quelli dell'attivita', se no i segnaposto.
+    const scelta = sceltaCorrente(tour);
+    const orari = (scelta && scelta.times) || tour.times || ORARI_PREDEFINITI;
+    orari.forEach(ora => {
       const voce = document.createElement("option");
       voce.value = ora;
       voce.textContent = ora;

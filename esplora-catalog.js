@@ -91,6 +91,15 @@
 //                    }
 //                `price` si puo' omettere quando il prezzo della variante non lo
 //                sappiamo ancora: la riga mostra solo il nome.
+//                Ogni variante puo' avere anche:
+//                  desc  → due righe che spiegano quella variante (giorni,
+//                          orario, cosa si mangia, dove si fa il bagno).
+//                          Compaiono sotto i bottoni, una alla volta: quella
+//                          della variante scelta.
+//                  times → gli orari di partenza **di quella variante**, quando
+//                          dipendono dalla durata (il giro di 2 ore parte alle
+//                          11:00 e quello di 3 alle 10:00). Battono il campo
+//                          `times` dell'attivita'.
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
 //   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
@@ -210,22 +219,89 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    id: "catamaran-3h",
-    title: "3-Hour Catamaran Excursion",
+    id: "freebird-catamaran",
+    title: "Freebird Catamaran Trip",
     category: "mare-barche",
     zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: 45,
+    duration: { it: "Da 2 a 4 ore e mezza", en: "2 to 4.5 hours", es: "De 2 a 4,5 horas" },
+    priceFrom: 30,
+    privateOption: "private-charter",
     priceAdult: 0,
     priceChild: 0,
-    family: true,
-    included: ["swimstop"],
-    desc: {
-      it: "Tre ore di catamarano lungo la costa, senza programmi complicati.",
-      en: "Three hours of catamaran along the coast, with nothing complicated planned.",
-      es: "Tres horas de catamaran por la costa, sin planes complicados."
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        {
+          label: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          price: 30,
+          times: ["11:00"],
+          desc: {
+            it: "Balene e delfini, con sosta bagno davanti a Bahía del Duque. A bordo analcoliche, birra e acqua. Lunedì, mercoledì, venerdì e domenica, partenza alle 11:00.",
+            en: "Whales and dolphins, with a swim stop off Bahía del Duque. Soft drinks, beer and water on board. Mondays, Wednesdays, Fridays and Sundays, leaving at 11:00.",
+            es: "Ballenas y delfines, con parada de baño frente a Bahía del Duque. A bordo refrescos, cerveza y agua. Lunes, miércoles, viernes y domingos, salida a las 11:00."
+          }
+        },
+        {
+          label: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          price: 47,
+          times: ["10:00"],
+          desc: {
+            it: "Balene e delfini, con sosta bagno a Diego Hernández. A bordo un panino, analcoliche, birra, vino e acqua. Tutti i giorni, partenza alle 10:00.",
+            en: "Whales and dolphins, with a swim stop at Diego Hernández. A sandwich on board, plus soft drinks, beer, wine and water. Every day, leaving at 10:00.",
+            es: "Ballenas y delfines, con parada de baño en Diego Hernández. A bordo un bocadillo, refrescos, cerveza, vino y agua. Todos los días, salida a las 10:00."
+          }
+        },
+        {
+          label: { it: "4 ore e mezza", en: "4.5 hours", es: "4,5 horas" },
+          price: 62,
+          times: ["13:00"],
+          desc: {
+            it: "Il giro lungo: balene e delfini e bagno nella baia di Masca. A bordo riso con pollo e verdure, acqua, vino, birra e analcoliche. Tutti i giorni, partenza alle 13:00.",
+            en: "The long trip: whales and dolphins, and a swim in Masca bay. Rice with chicken and vegetables on board, plus water, wine, beer and soft drinks. Every day, leaving at 13:00.",
+            es: "La salida larga: ballenas y delfines y baño en la bahía de Masca. A bordo arroz con pollo y verduras, agua, vino, cerveza y refrescos. Todos los días, salida a las 13:00."
+          }
+        },
+        {
+          label: {
+            it: "4 ore e mezza, partenza dal nord",
+            en: "4.5 hours, pickup in the north",
+            es: "4,5 horas, salida desde el norte"
+          },
+          price: 69,
+          times: ["13:00"],
+          desc: {
+            it: "Lo stesso giro lungo, per chi alloggia nel nord dell'isola: la navetta ti prende e ti riporta a casa. La barca parte alle 13:00, la navetta passa prima. Martedì, giovedì, venerdì e domenica.",
+            en: "The same long trip, for anyone staying in the north of the island: the shuttle picks you up and brings you back. The boat leaves at 13:00, the shuttle comes earlier. Tuesdays, Thursdays, Fridays and Sundays.",
+            es: "La misma salida larga, para quien se aloja en el norte de la isla: la lanzadera te recoge y te devuelve. El barco sale a las 13:00, la lanzadera pasa antes. Martes, jueves, viernes y domingos."
+          }
+        }
+      ]
     },
-    image: "catamaran-3h.jpg",
+    included: ["swimstop", "drinks", "guide", "transfer"],
+    notes: [
+      {
+        it: "Il servizio navetta è compreso: dicci in che hotel o zona sei e ti confermiamo il punto di ritrovo.",
+        en: "The shuttle service is included: tell us your hotel or area and we'll confirm the pick-up point.",
+        es: "El servicio de lanzadera está incluido: dinos tu hotel o zona y te confirmamos el punto de recogida."
+      },
+      {
+        it: "Da 3 ore in su si mangia a bordo: un panino sul giro di 3 ore, riso con pollo e verdure su quello di 4 ore e mezza.",
+        en: "From 3 hours up you eat on board: a sandwich on the 3-hour trip, rice with chicken and vegetables on the 4.5-hour one.",
+        es: "A partir de 3 horas se come a bordo: un bocadillo en la salida de 3 horas, arroz con pollo y verduras en la de 4,5 horas."
+      },
+      {
+        it: "Le guide parlano più lingue.",
+        en: "The guides speak several languages.",
+        es: "Los guías hablan varios idiomas."
+      }
+    ],
+    family: true,
+    desc: {
+      it: "Un catamarano grande che parte da Puerto Colón, con tre giri fra cui scegliere: due ore, tre ore o la giornata lunga fino alla baia di Masca. Balene e delfini, sosta bagno e da mangiare a bordo, con la navetta compresa.",
+      en: "A big catamaran out of Puerto Colón, with three trips to choose from: two hours, three hours, or the long one all the way to Masca bay. Whales and dolphins, a swim stop and food on board, with the shuttle included.",
+      es: "Un catamarán grande que sale de Puerto Colón, con tres salidas a elegir: dos horas, tres horas o la larga hasta la bahía de Masca. Ballenas y delfines, parada de baño y comida a bordo, con la lanzadera incluida."
+    },
+    image: "catamaran-gigantes-masca.jpg",
     published: true
   },
   {
@@ -523,25 +599,6 @@ const ESPLORA_CATALOG = [
       es: "Tres horas a bordo de un crucero de lujo, sin prisa."
     },
     image: "luxury-cruiser.jpg",
-    published: true
-  },
-  {
-    id: "catamaran-gigantes-masca",
-    title: "4-Hour Catamaran to Los Gigantes & Masca",
-    category: "mare-barche",
-    zone: "Puerto Colón",
-    duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
-    priceFrom: 58,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    included: ["swimstop"],
-    desc: {
-      it: "Quattro ore in catamarano fino alle scogliere di Los Gigantes e alla baia di Masca.",
-      en: "Four hours by catamaran out to the cliffs of Los Gigantes and Masca bay.",
-      es: "Cuatro horas en catamaran hasta los acantilados de Los Gigantes y la bahia de Masca."
-    },
-    image: "catamaran-gigantes-masca.jpg",
     published: true
   },
 

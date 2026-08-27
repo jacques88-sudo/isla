@@ -236,6 +236,7 @@ function initLista() {
       if (!riga) return "";
       const dettagli = [formatDate(voce.date)];
       if (voce.time) dettagli.push(voce.time);
+      if (voce.lang) dettagli.push(voce.lang);
       dettagli.push(peopleText(voce.adults, voce.kids));
       if (voce.option) dettagli.push(voce.option);
       if (riga.tour.transfer && voce.transfer) dettagli.push(t("wa.transfer"));

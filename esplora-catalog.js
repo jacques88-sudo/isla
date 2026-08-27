@@ -71,6 +71,12 @@
 //                sul pullman per i neonati, che senza transfer non esiste. Compare
 //                come riga in fondo alla pagina di dettaglio.
 //                    transferPrice: { adult: 99, child: 74, baby: 17 }
+//   languages  → facoltativo: le lingue fra cui il cliente puo' scegliere. Solo
+//                dove c'e' questo campo la finestra della richiesta mostra la
+//                domanda "In che lingua". Le solite si scrivono cosi':
+//                    languages: LINGUE_TOUR
+//                e chi ne ha altre scrive la sua lista, nella lingua stessa:
+//                    languages: ["English", "Deutsch"]
 //   times      → facoltativo: gli orari di partenza fra cui scegliere, scritti
 //                come li scrive il fornitore. Dove manca, la finestra della
 //                richiesta usa le fasce segnaposto di ORARI_PREDEFINITI qui
@@ -147,6 +153,20 @@ const WHATSAPP_NUMBER = "34662908073";
 // In ogni caso il cliente parte sempre da "Da concordare": il sito non sceglie
 // mai un orario al posto suo, e se lui non ne sceglie uno la riga dell'orario
 // nel messaggio WhatsApp non compare proprio.
+// LE LINGUE DEL TOUR
+//
+// Si scrivono nella lingua stessa ("Deutsch", non "Tedesco"): un tedesco
+// riconosce la sua riga anche se sta guardando il sito in spagnolo, ed e' come
+// fanno tutti i siti di prenotazione.
+//
+// ⚠ QUESTA LISTA E' DA CONFERMARE: sono le cinque lingue che si sentono di piu'
+// a Tenerife, non l'elenco vero di una attivita' precisa.
+//
+// L'opzione compare **solo dove si scrive il campo `languages`**, che l'ufficio
+// segnala attivita' per attivita'. Chi ha le lingue solite scrive
+// `languages: LINGUE_TOUR`; chi ne ha altre scrive la sua lista.
+const LINGUE_TOUR = ["English", "Español", "Deutsch", "Italiano", "Français"];
+
 const ORARI_PREDEFINITI = [
   "09:00 - 10:00",
   "10:00 - 11:00",
@@ -492,6 +512,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Marina Amarilla",
     duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+    times: ["10:00", "13:00"],
+    languages: LINGUE_TOUR,
     priceFrom: 61,
     priceAdult: 61,
     priceChild: 37,

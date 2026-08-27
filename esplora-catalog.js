@@ -245,10 +245,9 @@ const ESPLORA_CATALOG = [
     // durata. Qui resta solo quello dei neonati, che e' zero su tutte: e' un
     // prezzo, non un "non lo sappiamo", e la riga "Gratis" si vede sempre.
     priceInfant: 0,
-    // Solo la fascia dei neonati: l'ufficio ha detto 0-2 e basta. Quella dei
-    // bambini e degli adulti non e' arrivata, e senza le righe escono senza
-    // parentesi invece che con un numero inventato.
-    ages: { infant: "0-2" },
+    // La fascia degli adulti non c'e' perche' non serve dirla: "bambini 4-11"
+    // basta a far capire che a 12 anni si paga come un grande.
+    ages: { child: "4-11", infant: "0-2" },
     options: {
       label: { it: "Durata", en: "Duration", es: "Duración" },
       choices: [

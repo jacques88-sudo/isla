@@ -258,10 +258,19 @@ La riga "Neonati (0-2): Gratis" ora si vede in tutte e tre le lingue.
 **Sta sulla scheda e non sulle varianti** perche' vale su tutte e quattro. I prezzi di
 adulti e bambini invece restano dentro le varianti, che e' dove cambiano.
 
-**Delle fasce d'eta' ho scritto solo quella dei neonati.** L'ufficio ha detto "0-2" e
-basta. Quella dei bambini finisce dove comincia quella degli adulti, e quel numero nessuno
-l'ha detto: sulle altre barche e' 3-11 e 12+, ma copiarlo qui sarebbe inventarlo. Senza,
-le righe escono semplicemente senza parentesi. **Da chiedere in ufficio.**
+**Le fasce d'eta': neonati 0-2, bambini 4-11.** Arrivate dall'ufficio. Quella degli
+adulti non e' scritta da nessuna parte e non serve: "bambini 4-11" basta a far capire che
+a dodici anni si paga come un grande.
+
+La fascia dei bambini non aveva un posto dove comparire, perche' la riga "Bambini" della
+tabella si vede solo quando `priceChild` sta sulla scheda, e qui sta dentro le varianti.
+Ora si attacca al prezzo della variante: **"€62 (bambini 4-11: €31)"**. E' li' che serve —
+chi ha un ragazzino di dodici anni capisce quale dei due numeri lo riguarda.
+
+**⚠ C'e' un buco a 3 anni.** I neonati sono 0-2 e i bambini 4-11: un bambino di tre anni
+non sta in nessuna delle due. O i neonati arrivano a 3, o i bambini partono da 3.
+**Da chiarire in ufficio** — non l'ho aggiustato da solo perche' le due risposte danno due
+prezzi diversi (gratis oppure meta').
 
 ### Il riquadro delle icone cambia con la variante (25 agosto)
 

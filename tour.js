@@ -378,8 +378,13 @@ function collegaOpzioni(contenitore, tour) {
     let testo = "€" + p + priceUnitSuffix(tour);
     // Dove il prezzo dei bambini cambia con la durata non puo' stare nella
     // tabella qui sopra, che e' fissa: si attacca al prezzo della variante.
+    // Con la fascia d'eta' diventa "(bambini 4-11: €31)", che dice anche a chi
+    // ha un ragazzino di dodici anni quale dei due numeri lo riguarda.
     const pb = bottone.getAttribute("data-option-price-child");
-    if (pb) testo += " (" + t("req.kids").toLowerCase() + " €" + pb + ")";
+    if (pb) {
+      const eta = (tour.ages && tour.ages.child) ? " " + tour.ages.child : "";
+      testo += " (" + t("req.kids").toLowerCase() + eta + ": €" + pb + ")";
+    }
     prezzoEl.textContent = testo;
   }
 

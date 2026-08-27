@@ -914,17 +914,79 @@ const ESPLORA_CATALOG = [
     id: "shogun",
     title: "Shogun",
     category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto Colón",
     duration: { it: "5 ore", en: "5 hours", es: "5 horas" },
-    priceFrom: 58,
+    times: ["11:00"],
+    priceFrom: 61,
     priceAdult: 0,
     priceChild: 0,
+    // Gratis su tutte e due le partenze. Le fasce d'eta' non le ha mandate
+    // nessuno: le righe escono senza parentesi finche' non arrivano.
+    priceInfant: 0,
+    options: {
+      label: { it: "Partenza", en: "Departure", es: "Salida" },
+      choices: [
+        {
+          label: { it: "Dal sud", en: "From the south", es: "Desde el sur" },
+          priceAdult: 61,
+          priceChild: 30,
+          desc: {
+            it: "La navetta ti prende in hotel nel sud dell'isola e ti riporta indietro, compresa nel prezzo. La barca parte alle 11:00 da Puerto Colón.",
+            en: "The shuttle picks you up at your hotel in the south of the island and brings you back, included in the price. The boat leaves at 11:00 from Puerto Colón.",
+            es: "La lanzadera te recoge en el hotel en el sur de la isla y te devuelve, incluida en el precio. El barco sale a las 11:00 desde Puerto Colón."
+          }
+        },
+        {
+          label: { it: "Dal nord", en: "From the north", es: "Desde el norte" },
+          priceAdult: 65,
+          priceChild: 32,
+          zone: "Puerto de la Cruz",
+          desc: {
+            it: "Per chi alloggia nel nord: la navetta parte da Puerto de la Cruz e ti riporta indietro. Stessa gita, la barca parte alle 11:00 da Puerto Colón.",
+            en: "For anyone staying in the north: the shuttle leaves from Puerto de la Cruz and brings you back. Same trip, the boat leaves at 11:00 from Puerto Colón.",
+            es: "Para quien se aloja en el norte: la lanzadera sale de Puerto de la Cruz y te devuelve. La misma salida, el barco parte a las 11:00 desde Puerto Colón."
+          }
+        }
+      ]
+    },
+    included: ["swimstop", "lunch", "drinks", "transfer", "guide"],
+    notes: [
+      {
+        it: "Si fa il lunedì, il mercoledì, il giovedì, il venerdì e la domenica.",
+        en: "It runs on Mondays, Wednesdays, Thursdays, Fridays and Sundays.",
+        es: "Se hace los lunes, miércoles, jueves, viernes y domingos."
+      },
+      {
+        it: "La barca parte da Puerto Colón, pontile 14: arriva almeno 30 minuti prima.",
+        en: "The boat leaves from Puerto Colón, pontoon 14: get there at least 30 minutes early.",
+        es: "El barco sale de Puerto Colón, pantalán 14: llega al menos 30 minutos antes."
+      },
+      {
+        it: "A pranzo: riso con verdure, coscia di pollo arrosto, insalata, pane e frutta fresca. Fra le bevande comprese ci sono acqua, analcoliche, birra e vino, e le analcoliche sono a volontà.",
+        en: "For lunch: rice with vegetables, a roast chicken drumstick, salad, bread and fresh fruit. The drinks included are water, soft drinks, beer and wine, and the soft drinks are unlimited.",
+        es: "Para comer: arroz con verduras, muslo de pollo asado, ensalada, pan y fruta fresca. Entre las bebidas incluidas hay agua, refrescos, cerveza y vino, y los refrescos son ilimitados."
+      },
+      {
+        it: "A bordo ci sono tre bagni, uno attrezzato per chi ha difficoltà motorie: la barca è accessibile.",
+        en: "There are three toilets on board, one fitted for guests with reduced mobility: the boat is accessible.",
+        es: "A bordo hay tres aseos, uno equipado para personas con movilidad reducida: el barco es accesible."
+      },
+      {
+        it: "Si fuma solo nelle zone apposite.",
+        en: "Smoking is allowed only in the designated areas.",
+        es: "Solo se puede fumar en las zonas habilitadas."
+      },
+      {
+        it: "Porta costume, asciugamano, crema solare e la macchina fotografica. E vacci piano con l'alcol prima di salire: aiuta col mal di mare.",
+        en: "Bring swimwear, a towel, sunscreen and a camera. And go easy on the alcohol before boarding: it helps with seasickness.",
+        es: "Trae bañador, toalla, crema solar y la cámara. Y ve con calma con el alcohol antes de subir: ayuda con el mareo."
+      }
+    ],
     family: true,
-    included: ["swimstop"],
     desc: {
-      it: "Cinque ore a bordo dello Shogun, veliero dalle linee orientali.",
-      en: "Five hours aboard the Shogun, a sailing ship with oriental lines.",
-      es: "Cinco horas a bordo del Shogun, velero de lineas orientales."
+      it: "Una goletta orientale di 26 metri, tutta in teak, costruita per uno sceicco: è la barca più particolare che parte da Puerto Colón. Cinque ore, con mezz'ora passata accanto a delfini e balene, poi le scogliere di Los Gigantes e il bagno nella baia di Masca, con il pranzo servito a bordo. Su due ponti c'è posto per 135 persone e tanta ombra dove ripararsi. Ha la bandiera blu che si dà alle barche che si avvicinano ai cetacei rispettando le regole.",
+      en: "A 26-metre oriental schooner, all teak, built for a sheikh: it is the most unusual boat leaving Puerto Colón. Five hours, with half an hour spent alongside dolphins and whales, then the cliffs of Los Gigantes and a swim in Masca bay, with lunch served on board. Across two decks there is room for 135 people and plenty of shade. It flies the blue flag given to boats that approach cetaceans by the rules.",
+      es: "Una goleta oriental de 26 metros, toda de teca, construida para un jeque: es el barco más singular que sale de Puerto Colón. Cinco horas, con media hora junto a delfines y ballenas, luego los acantilados de Los Gigantes y el baño en la bahía de Masca, con la comida servida a bordo. En dos cubiertas hay sitio para 135 personas y mucha sombra donde resguardarse. Lleva la bandera azul que se da a los barcos que se acercan a los cetáceos respetando las normas."
     },
     image: "shogun.jpg",
     published: true

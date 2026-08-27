@@ -298,6 +298,36 @@ modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet
 (prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
 identiche.
 
+### Kalima Kat, scheda nuova (25 agosto)
+
+Catamarano da **22 persone**, che a Tenerife e' raro: quasi tutte le barche private ne
+portano 12. Stessa struttura dell'Opera 60, due formule con due modi di pagare:
+
+| formula | prezzo | come si paga | orari |
+|---|---|---|---|
+| 3 ore, in condivisione | €59 adulto, €39 bambino | a persona | 9:30 e 12:30 |
+| Charter privato | da €800, 3 o 6 ore | a barca, fino a 22 | si concorda |
+
+Bambini 2-12, bebe' 0-1 gratis, adulti 13+. Le due fasce si toccano.
+
+**`times: []` non e' come non scrivere il campo.** Alla prima prova il charter privato
+mostrava le **fasce segnaposto** (09:00-10:00, 10:00-11:00...), perche' non aveva orari suoi
+e nemmeno la scheda ne aveva. Ma un charter privato non ha orari fissi: l'ora si concorda.
+La lista vuota lascia solo "Da concordare", il campo mancante fa comparire i segnaposto.
+Scritto nella documentazione del campo, perche' la differenza fra `[]` e niente non si
+indovina.
+
+**Non preso:** il prezzo barrato (€75 → €59, stessa domanda dell'Opera 60), la politica di
+cancellazione (5 giorni / 7 / 3 — la nostra resta 24 ore), il pagamento con caparra, che e'
+il carrello del rivenditore e non il nostro, il "best price guarantee" e le loro recensioni.
+
+**Non preso nemmeno l'orario delle 15:30**, che l'intestazione della pagina elenca fra le
+partenze mentre il testo della formula condivisa dice solo 9:30 e 12:30 — e l'ufficio ha
+confermato quei due. Probabilmente e' l'uscita al tramonto, che infatti resta nominata nella
+descrizione del charter privato senza pretendere un orario.
+
+**Manca la foto:** la scheda esce col segnaposto "ISLA".
+
 ### Opera 60, riempita: due formule molto diverse (25 agosto)
 
 Aveva `priceFrom: 80` e una riga di descrizione. Adesso ha due formule, e sono **due modi

@@ -161,22 +161,43 @@ function detailNotes(tour) {
 
 // Il riquadro "Cosa e' incluso": una parola chiave sconosciuta viene saltata
 // invece di disegnare un buco.
-function detailIncluded(tour) {
-  if (!Array.isArray(tour.included) || !tour.included.length) return "";
-  const voci = tour.included.filter(k => INCLUDED_ICONS[k]);
-  if (!voci.length) return "";
+// Le parole di "Cosa e' incluso" per la variante scelta: quelle della scheda,
+// piu' quelle della variante. Si sommano, non si sostituiscono: sulla scheda si
+// scrive quello che vale per tutte (bagno, bevande, guida) e sulla variante solo
+// quello che ha in piu' (il pranzo, il transfer). Cosi' le cose comuni si
+// scrivono una volta sola invece di ripeterle in ogni variante.
+function paroleIncluse(tour, variante) {
+  const parole = (tour.included || []).concat((variante && variante.included) || []);
+  // niente doppioni se una parola sta sia sulla scheda sia sulla variante,
+  // e via le parole senza icona invece di lasciare un buco nella griglia
+  return parole.filter((k, i) => parole.indexOf(k) === i && INCLUDED_ICONS[k]);
+}
 
+function iconeIncluse(parole) {
+  return parole.map(k => `
+    <li>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${INCLUDED_ICONS[k]}</svg>
+      <span>${esc(t("inc." + k))}</span>
+    </li>`).join("");
+}
+
+function detailIncluded(tour) {
+  // Il riquadro si disegna con la prima variante, che e' quella premuta di
+  // partenza; poi lo ridisegna collegaOpzioni() a ogni cambio. Deve esistere
+  // anche se la scheda non ha `included` ma una variante si', se no al primo
+  // clic non ci sarebbe niente da riempire.
+  const scelte = (tour.options && tour.options.choices) || [];
+  const primaVariante = scelte[0] || null;
+  const serve = (tour.included && tour.included.length) ||
+    scelte.some(s => s.included && s.included.length);
+  if (!serve) return "";
+
+  const voci = paroleIncluse(tour, primaVariante);
   return `
-    <section class="detail-included">
+    <section class="detail-included" data-detail-included${voci.length ? "" : " hidden"}>
       <h2 class="detail-sub">${esc(t("detail.included"))}</h2>
-      <ul>
-        ${voci.map(k => `
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${INCLUDED_ICONS[k]}</svg>
-            <span>${esc(t("inc." + k))}</span>
-          </li>`).join("")}
-      </ul>
+      <ul data-detail-included-list>${iconeIncluse(voci)}</ul>
     </section>`;
 }
 
@@ -330,6 +351,18 @@ function collegaOpzioni(contenitore, tour) {
   // non dentro ognuno: con quattro varianti che hanno due righe di testo a
   // testa la fila di bottoni diventa un muro e non si scelgono piu'.
   const descEl = contenitore.querySelector("[data-detail-option-desc]");
+  const inclusoEl = contenitore.querySelector("[data-detail-included]");
+  const inclusoListaEl = contenitore.querySelector("[data-detail-included-list]");
+
+  // "Cosa e' incluso" cambia con la variante: sul giro di 2 ore non c'e' ne'
+  // il pranzo ne' il transfer, e mostrarli lo stesso sarebbe una promessa che
+  // la barca non mantiene.
+  function aggiornaIncluso(bottone) {
+    if (!inclusoEl || !inclusoListaEl) return;
+    const voci = paroleIncluse(tour, varianteDi(tour, bottone.getAttribute("data-option-value")));
+    inclusoListaEl.innerHTML = iconeIncluse(voci);
+    inclusoEl.hidden = !voci.length;
+  }
 
   function aggiornaPrezzo(bottone) {
     if (descEl) {
@@ -356,10 +389,11 @@ function collegaOpzioni(contenitore, tour) {
     gruppo.querySelectorAll(".detail-option")
       .forEach(b => b.setAttribute("aria-pressed", String(b === bottone)));
     aggiornaPrezzo(bottone);
+    aggiornaIncluso(bottone);
   });
 
   const iniziale = gruppo.querySelector('.detail-option[aria-pressed="true"]');
-  if (iniziale) aggiornaPrezzo(iniziale);
+  if (iniziale) { aggiornaPrezzo(iniziale); aggiornaIncluso(iniziale); }
 }
 
 function initTourPage() {

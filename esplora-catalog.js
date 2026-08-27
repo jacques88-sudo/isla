@@ -100,6 +100,11 @@
 //                          d'acqua, non a testa) e moltiplicarlo per le
 //                          persone darebbe il doppio. Sul bottone si scrive
 //                          `price` se c'e', altrimenti `priceAdult`.
+//                  included → le parole di "Cosa e' incluso" che ha **in piu'**
+//                          rispetto alla scheda. Si sommano, non sostituiscono:
+//                          sulla scheda si scrive quello che vale per tutte le
+//                          varianti, sulla variante solo il resto. Il riquadro
+//                          si ridisegna a ogni bottone premuto.
 //                  desc  → due righe che spiegano quella variante (giorni,
 //                          orario, cosa si mangia, dove si fa il bagno).
 //                          Compaiono sotto i bottoni, una alla volta: quella
@@ -254,6 +259,7 @@ const ESPLORA_CATALOG = [
           label: { it: "3 ore", en: "3 hours", es: "3 horas" },
           priceAdult: 47,
           priceChild: 23,
+          included: ["snack", "transfer"],
           times: ["10:00"],
           desc: {
             it: "Balene e delfini, con sosta bagno a Diego Hernández e tempo per stare al sole. A bordo un panino e bevande illimitate. Transfer dall'hotel compreso. Tutti i giorni, partenza alle 10:00.",
@@ -265,6 +271,7 @@ const ESPLORA_CATALOG = [
           label: { it: "4 ore e mezza", en: "4.5 hours", es: "4,5 horas" },
           priceAdult: 62,
           priceChild: 31,
+          included: ["lunch", "transfer"],
           times: ["13:00"],
           desc: {
             it: "Il giro lungo: balene e delfini, le scogliere di Los Gigantes e bagno nella baia di Masca. A bordo si pranza, con bevande illimitate. Transfer dall'hotel compreso. Tutti i giorni, partenza alle 13:00.",
@@ -280,6 +287,7 @@ const ESPLORA_CATALOG = [
           },
           priceAdult: 69,
           priceChild: 34,
+          included: ["lunch", "transfer"],
           times: ["13:00"],
           desc: {
             it: "Lo stesso giro lungo, Los Gigantes e Masca comprese, per chi alloggia nel nord dell'isola: la navetta ti prende e ti riporta a casa. La barca parte alle 13:00, la navetta passa prima. Martedì, giovedì, venerdì e domenica.",

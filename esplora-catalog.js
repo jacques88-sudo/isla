@@ -742,17 +742,95 @@ const ESPLORA_CATALOG = [
     id: "utopia-boat-party",
     title: "Utopia Boat Party",
     category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto Colón",
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    times: ["12:30"],
     priceFrom: 70,
     priceAdult: 0,
     priceChild: 0,
+    // Solo la fascia degli adulti: sotto i 18 non si sale, quindi non esistono
+    // ne' bambini ne' neonati. Niente priceChild e niente priceInfant: qui non
+    // vogliono dire "non lo sappiamo", vogliono dire "non puo' venire".
+    ages: { adult: "18+" },
+    options: {
+      label: { it: "Biglietto", en: "Ticket", es: "Entrada" },
+      choices: [
+        {
+          label: { it: "Basic", en: "Basic", es: "Basic" },
+          priceAdult: 70,
+          desc: {
+            it: "Quattro consumazioni a scelta: superalcolici locali, birra Victoria Málaga o analcoliche.",
+            en: "Four drinks of your choice: local spirits, Victoria Málaga beer or soft drinks.",
+            es: "Cuatro consumiciones a elegir: licores locales, cerveza Victoria Málaga o refrescos."
+          }
+        },
+        {
+          label: { it: "Standard", en: "Standard", es: "Standard" },
+          priceAdult: 90,
+          desc: {
+            it: "Open bar per tutte e tre le ore: birra locale, superalcolici locali e mixer, senza limite.",
+            en: "Open bar for the whole three hours: local beer, local spirits and mixers, no limit.",
+            es: "Barra libre durante las tres horas: cerveza local, licores locales y refrescos, sin límite."
+          }
+        },
+        {
+          label: { it: "Premium", en: "Premium", es: "Premium" },
+          priceAdult: 110,
+          desc: {
+            it: "Open bar con le marche: Absolut, Bacardi, Havana, Beefeater, Disaronno, Malibu, Jim Beam e Ballantine's, più Red Bull e mixer premium.",
+            en: "Open bar with the brands: Absolut, Bacardi, Havana, Beefeater, Disaronno, Malibu, Jim Beam and Ballantine's, plus Red Bull and premium mixers.",
+            es: "Barra libre con las marcas: Absolut, Bacardi, Havana, Beefeater, Disaronno, Malibu, Jim Beam y Ballantine's, además de Red Bull y refrescos premium."
+          }
+        },
+        {
+          label: { it: "VIP", en: "VIP", es: "VIP" },
+          priceAdult: 130,
+          desc: {
+            it: "Tutto quello del Premium, più l'imbarco prioritario e l'accesso all'area VIP, che ha il suo bar.",
+            en: "Everything in Premium, plus priority boarding and access to the VIP area, which has its own bar.",
+            es: "Todo lo del Premium, más embarque prioritario y acceso a la zona VIP, que tiene su propia barra."
+          }
+        }
+      ]
+    },
+    included: ["drinks", "swimstop", "photos"],
+    notes: [
+      {
+        it: "Si fa il sabato.",
+        en: "It runs on Saturdays.",
+        es: "Se hace los sábados."
+      },
+      {
+        it: "Solo maggiorenni: sotto i 18 anni non si sale.",
+        en: "Over-18s only: under 18 you cannot board.",
+        es: "Solo mayores de edad: por debajo de los 18 años no se sube."
+      },
+      {
+        it: "Il ritrovo è al Black Pearl Bar di Puerto Colón, dove si beve qualcosa insieme prima di salire e dove si torna dopo per l'after. Arriva almeno 15 minuti prima. Al porto c'è parcheggio.",
+        en: "You meet at the Black Pearl Bar in Puerto Colón, where everyone has a drink together before boarding and where the after-party is afterwards. Get there at least 15 minutes early. There is parking at the marina.",
+        es: "El punto de encuentro es el Black Pearl Bar de Puerto Colón, donde se toma algo juntos antes de subir y donde se vuelve después para el after. Llega al menos 15 minutos antes. En el puerto hay aparcamiento."
+      },
+      {
+        it: "Le foto fatte a bordo dai fotografi si scaricano dopo, gratis.",
+        en: "The photos taken on board by the photographers can be downloaded afterwards, free.",
+        es: "Las fotos hechas a bordo por los fotógrafos se descargan después, gratis."
+      },
+      {
+        it: "Mangia qualcosa prima di salire e vacci piano con l'alcol prima della partenza: aiuta parecchio col mal di mare.",
+        en: "Eat something before boarding and go easy on the alcohol beforehand: it helps a lot with seasickness.",
+        es: "Come algo antes de subir y ve con calma con el alcohol antes de salir: ayuda bastante con el mareo."
+      },
+      {
+        it: "Porta costume e crema solare.",
+        en: "Bring swimwear and sunscreen.",
+        es: "Trae bañador y crema solar."
+      }
+    ],
     family: false,
-    included: ["swimstop"],
     desc: {
-      it: "La festa in barca piu' scatenata dell'isola, quella originale.",
-      en: "The wildest boat party on the island, and the original one.",
-      es: "La fiesta en barco mas animada de la isla, la original."
+      it: "Tre ore di festa in barca da Puerto Colón, con DJ dal vivo, un impianto da 15.000 watt e musica house, reggaeton, hip hop e drum and bass. Si comincia con un bicchiere al Black Pearl e si finisce lì con l'after. Solo maggiorenni. Il biglietto si sceglie in base a quanto si beve: quattro consumazioni, oppure open bar per tutte e tre le ore.",
+      en: "Three hours of boat party out of Puerto Colón, with live DJs, a 15,000-watt sound system and house, reggaeton, hip hop and drum and bass. It starts with a drink at the Black Pearl and ends there with the after-party. Over-18s only. You pick your ticket by how much you plan to drink: four drinks, or an open bar for the whole three hours.",
+      es: "Tres horas de fiesta en barco desde Puerto Colón, con DJ en directo, un equipo de 15.000 vatios y música house, reggaetón, hip hop y drum and bass. Se empieza con una copa en el Black Pearl y se termina allí con el after. Solo mayores de 18 años. La entrada se elige según cuánto se va a beber: cuatro consumiciones, o barra libre durante las tres horas."
     },
     image: "party-boat.jpg",
     published: true

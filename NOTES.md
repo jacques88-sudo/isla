@@ -298,6 +298,30 @@ modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet
 (prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
 identiche.
 
+### I prezzi barrati sono offerte del rivenditore: sul sito va il pieno (25 agosto)
+
+Su tre pagine di fila (Opera 60, Kalima/Small Group, Utopia) c'era un prezzo barrato con un
+"Sale!". L'ufficio ha chiarito: **quelli sono i prezzi delle offerte, che ogni venditore
+mette come vuole.** Non sono nostri.
+
+**Regola, da qui in avanti: sul sito va il prezzo pieno, mai lo sconto di un altro.** Se poi
+Admiral vuole fare la sua offerta, si abbassa quando lo decide l'ufficio — mentre **alzare**
+un prezzo che il cliente ha gia' letto e' la cosa che fa arrabbiare.
+
+Applicato:
+
+- **Opera 60**, giro condiviso: €70 → **€80**. Il prezzo dei bambini resta €50, che l'aveva
+  mandato l'ufficio e non era barrato.
+- **Utopia**, biglietto Basic: €70 → **€75**. Solo il Basic era barrato; Standard, Premium e
+  VIP non avevano nessun cartello e restano €90, €110 e €130. **Da controllare** che lo
+  sconto non riguardasse anche loro.
+- **Small Group Catamaran: lasciato €60**, e non e' una dimenticanza. Li' il prezzo pieno
+  della pagina era €75, ma **€60 l'aveva mandato l'ufficio come listino nostro**, mesi di
+  differenza a parte. €60 non e' lo sconto di un altro: e' il nostro numero, e sovrascriverlo
+  con quello di un rivenditore sarebbe stato il contrario di quello che l'ufficio ha chiesto.
+  **Resta da sciogliere** il nodo gia' segnalato: €60/€30 (ufficio) contro €75-€59/€39
+  (pagina Kalima).
+
 ### Utopia Boat Party, riempita (25 agosto)
 
 Aveva una riga di descrizione e un prezzo. Adesso ha i **quattro biglietti**, che non sono

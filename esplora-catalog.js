@@ -745,7 +745,7 @@ const ESPLORA_CATALOG = [
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     times: ["12:30"],
-    priceFrom: 70,
+    priceFrom: 75,
     priceAdult: 0,
     priceChild: 0,
     // Solo la fascia degli adulti: sotto i 18 non si sale, quindi non esistono
@@ -757,7 +757,7 @@ const ESPLORA_CATALOG = [
       choices: [
         {
           label: { it: "Basic", en: "Basic", es: "Basic" },
-          priceAdult: 70,
+          priceAdult: 75,
           desc: {
             it: "Quattro consumazioni a scelta: superalcolici locali, birra Victoria Málaga o analcoliche.",
             en: "Four drinks of your choice: local spirits, Victoria Málaga beer or soft drinks.",
@@ -861,7 +861,7 @@ const ESPLORA_CATALOG = [
     zone: "Puerto Colón",
     duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas" },
     times: ["10:00", "13:30"],
-    priceFrom: 70,
+    priceFrom: 80,
     priceAdult: 0,
     priceChild: 0,
     // 12+ discende dai bambini 1-11. La fascia dei bebe' e' in mesi, quindi va
@@ -877,7 +877,7 @@ const ESPLORA_CATALOG = [
       choices: [
         {
           label: { it: "3 ore, in condivisione", en: "3 hours, shared", es: "3 horas, compartido" },
-          priceAdult: 70,
+          priceAdult: 80,
           priceChild: 50,
           duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
           included: ["snack"],

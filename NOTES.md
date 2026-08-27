@@ -249,6 +249,20 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Freebird: neonati 0-2 gratis (25 agosto)
+
+`priceInfant: 0`, che sul campo dei neonati vuol dire **davvero gratis** e non "non lo
+sappiamo" (li' lo zero e' un prezzo; il campo che manca del tutto e' il "non lo sappiamo").
+La riga "Neonati (0-2): Gratis" ora si vede in tutte e tre le lingue.
+
+**Sta sulla scheda e non sulle varianti** perche' vale su tutte e quattro. I prezzi di
+adulti e bambini invece restano dentro le varianti, che e' dove cambiano.
+
+**Delle fasce d'eta' ho scritto solo quella dei neonati.** L'ufficio ha detto "0-2" e
+basta. Quella dei bambini finisce dove comincia quella degli adulti, e quel numero nessuno
+l'ha detto: sulle altre barche e' 3-11 e 12+, ma copiarlo qui sarebbe inventarlo. Senza,
+le righe escono semplicemente senza parentesi. **Da chiedere in ufficio.**
+
 ### Il riquadro delle icone cambia con la variante (25 agosto)
 
 Domanda dell'ufficio: *"il riquadro con le icone puo' cambiare a seconda del tour

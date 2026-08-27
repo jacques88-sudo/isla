@@ -245,9 +245,9 @@ const ESPLORA_CATALOG = [
           priceChild: 15,
           times: ["11:00"],
           desc: {
-            it: "Balene e delfini, con sosta bagno davanti a Bahía del Duque. A bordo analcoliche, birra e acqua. Lunedì, mercoledì, venerdì e domenica, partenza alle 11:00.",
-            en: "Whales and dolphins, with a swim stop off Bahía del Duque. Soft drinks, beer and water on board. Mondays, Wednesdays, Fridays and Sundays, leaving at 11:00.",
-            es: "Ballenas y delfines, con parada de baño frente a Bahía del Duque. A bordo refrescos, cerveza y agua. Lunes, miércoles, viernes y domingos, salida a las 11:00."
+            it: "Balene e delfini, con sosta bagno davanti a Bahía del Duque. A bordo bevande illimitate, ma niente da mangiare e niente transfer: al porto ci si arriva da soli. Lunedì, mercoledì e venerdì, partenza alle 11:00.",
+            en: "Whales and dolphins, with a swim stop off Bahía del Duque. Unlimited drinks on board, but no food and no transfer: you make your own way to the harbour. Mondays, Wednesdays and Fridays, leaving at 11:00.",
+            es: "Ballenas y delfines, con parada de baño frente a Bahía del Duque. A bordo bebidas ilimitadas, pero sin comida y sin traslado: al puerto se llega por cuenta propia. Lunes, miércoles y viernes, salida a las 11:00."
           }
         },
         {
@@ -256,9 +256,9 @@ const ESPLORA_CATALOG = [
           priceChild: 23,
           times: ["10:00"],
           desc: {
-            it: "Balene e delfini, con sosta bagno a Diego Hernández. A bordo un panino, analcoliche, birra, vino e acqua. Tutti i giorni, partenza alle 10:00.",
-            en: "Whales and dolphins, with a swim stop at Diego Hernández. A sandwich on board, plus soft drinks, beer, wine and water. Every day, leaving at 10:00.",
-            es: "Ballenas y delfines, con parada de baño en Diego Hernández. A bordo un bocadillo, refrescos, cerveza, vino y agua. Todos los días, salida a las 10:00."
+            it: "Balene e delfini, con sosta bagno a Diego Hernández e tempo per stare al sole. A bordo un panino e bevande illimitate. Transfer dall'hotel compreso. Tutti i giorni, partenza alle 10:00.",
+            en: "Whales and dolphins, with a swim stop at Diego Hernández and time to sit in the sun. A sandwich and unlimited drinks on board. Hotel transfer included. Every day, leaving at 10:00.",
+            es: "Ballenas y delfines, con parada de baño en Diego Hernández y tiempo para tomar el sol. A bordo un bocadillo y bebidas ilimitadas. Traslado desde el hotel incluido. Todos los días, salida a las 10:00."
           }
         },
         {
@@ -267,9 +267,9 @@ const ESPLORA_CATALOG = [
           priceChild: 31,
           times: ["13:00"],
           desc: {
-            it: "Il giro lungo: balene e delfini e bagno nella baia di Masca. A bordo riso con pollo e verdure, acqua, vino, birra e analcoliche. Tutti i giorni, partenza alle 13:00.",
-            en: "The long trip: whales and dolphins, and a swim in Masca bay. Rice with chicken and vegetables on board, plus water, wine, beer and soft drinks. Every day, leaving at 13:00.",
-            es: "La salida larga: ballenas y delfines y baño en la bahía de Masca. A bordo arroz con pollo y verduras, agua, vino, cerveza y refrescos. Todos los días, salida a las 13:00."
+            it: "Il giro lungo: balene e delfini, le scogliere di Los Gigantes e bagno nella baia di Masca. A bordo si pranza, con bevande illimitate. Transfer dall'hotel compreso. Tutti i giorni, partenza alle 13:00.",
+            en: "The long trip: whales and dolphins, the cliffs of Los Gigantes and a swim in Masca bay. Lunch on board, with unlimited drinks. Hotel transfer included. Every day, leaving at 13:00.",
+            es: "La salida larga: ballenas y delfines, los acantilados de Los Gigantes y baño en la bahía de Masca. Se come a bordo, con bebidas ilimitadas. Traslado desde el hotel incluido. Todos los días, salida a las 13:00."
           }
         },
         {
@@ -282,36 +282,51 @@ const ESPLORA_CATALOG = [
           priceChild: 34,
           times: ["13:00"],
           desc: {
-            it: "Lo stesso giro lungo, per chi alloggia nel nord dell'isola: la navetta ti prende e ti riporta a casa. La barca parte alle 13:00, la navetta passa prima. Martedì, giovedì, venerdì e domenica.",
+            it: "Lo stesso giro lungo, Los Gigantes e Masca comprese, per chi alloggia nel nord dell'isola: la navetta ti prende e ti riporta a casa. La barca parte alle 13:00, la navetta passa prima. Martedì, giovedì, venerdì e domenica.",
             en: "The same long trip, for anyone staying in the north of the island: the shuttle picks you up and brings you back. The boat leaves at 13:00, the shuttle comes earlier. Tuesdays, Thursdays, Fridays and Sundays.",
             es: "La misma salida larga, para quien se aloja en el norte de la isla: la lanzadera te recoge y te devuelve. El barco sale a las 13:00, la lanzadera pasa antes. Martes, jueves, viernes y domingos."
           }
         }
       ]
     },
-    included: ["swimstop", "drinks", "guide", "transfer"],
+    included: ["swimstop", "drinks", "guide"],
     notes: [
       {
-        it: "Il servizio navetta è compreso: dicci in che hotel o zona sei e ti confermiamo il punto di ritrovo.",
-        en: "The shuttle service is included: tell us your hotel or area and we'll confirm the pick-up point.",
-        es: "El servicio de lanzadera está incluido: dinos tu hotel o zona y te confirmamos el punto de recogida."
+        it: "Il transfer dall'hotel è compreso sul giro di 3 ore e su quello di 4 ore e mezza, dalle zone del sud. Sul giro di 2 ore non c'è: al porto ci si arriva da soli.",
+        en: "The hotel transfer is included on the 3-hour and 4.5-hour trips, from the southern areas. It is not included on the 2-hour trip: you make your own way to the harbour.",
+        es: "El traslado desde el hotel está incluido en la salida de 3 horas y en la de 4,5 horas, desde las zonas del sur. En la de 2 horas no: al puerto se llega por cuenta propia."
       },
       {
-        it: "Da 3 ore in su si mangia a bordo: un panino sul giro di 3 ore, riso con pollo e verdure su quello di 4 ore e mezza.",
-        en: "From 3 hours up you eat on board: a sandwich on the 3-hour trip, rice with chicken and vegetables on the 4.5-hour one.",
-        es: "A partir de 3 horas se come a bordo: un bocadillo en la salida de 3 horas, arroz con pollo y verduras en la de 4,5 horas."
+        it: "Puoi anche andare direttamente al porto: Puerto Colón, molo 10. Arriva almeno 10 minuti prima della partenza.",
+        en: "You can also go straight to the harbour: Puerto Colón, dock 10. Get there at least 10 minutes before departure.",
+        es: "También puedes ir directamente al puerto: Puerto Colón, muelle 10. Llega al menos 10 minutos antes de la salida."
       },
       {
-        it: "Le guide parlano più lingue.",
-        en: "The guides speak several languages.",
-        es: "Los guías hablan varios idiomas."
+        it: "Le bevande sono illimitate per tutto il giro: acqua, analcoliche, birra e sangria.",
+        en: "Drinks are unlimited for the whole trip: water, soft drinks, beer and sangria.",
+        es: "Las bebidas son ilimitadas durante toda la salida: agua, refrescos, cerveza y sangría."
+      },
+      {
+        it: "Da mangiare ci sono dei panini, anche vegetariani se lo chiedi quando prenoti. Sul giro di 2 ore ci sono solo le bevande.",
+        en: "There are sandwiches to eat, vegetarian ones too if you ask when you book. On the 2-hour trip there are drinks only.",
+        es: "Para comer hay bocadillos, también vegetarianos si lo pides al reservar. En la salida de 2 horas solo hay bebidas."
+      },
+      {
+        it: "Si possono aggiungere i lettini balinesi a €25 l'uno, fino a esaurimento.",
+        en: "Balinese day beds can be added for €25 each, while they last.",
+        es: "Se pueden añadir camas balinesas por 25 € cada una, hasta agotar existencias."
+      },
+      {
+        it: "Se soffri il mal di mare, prendi le tue precauzioni prima di salire a bordo.",
+        en: "If you get seasick, take your precautions before boarding.",
+        es: "Si te mareas en el mar, toma tus precauciones antes de embarcar."
       }
     ],
     family: true,
     desc: {
-      it: "Un catamarano grande che parte da Puerto Colón, con tre giri fra cui scegliere: due ore, tre ore o la giornata lunga fino alla baia di Masca. Balene e delfini, sosta bagno e da mangiare a bordo, con la navetta compresa.",
-      en: "A big catamaran out of Puerto Colón, with three trips to choose from: two hours, three hours, or the long one all the way to Masca bay. Whales and dolphins, a swim stop and food on board, with the shuttle included.",
-      es: "Un catamarán grande que sale de Puerto Colón, con tres salidas a elegir: dos horas, tres horas o la larga hasta la bahía de Masca. Ballenas y delfines, parada de baño y comida a bordo, con la lanzadera incluida."
+      it: "Un catamarano grande che parte da Puerto Colón, con tre giri fra cui scegliere: due ore, tre ore o quello lungo fino alle scogliere di Los Gigantes e alla baia di Masca. Balene e delfini, sosta bagno e bevande illimitate a bordo. L'equipaggio parla più lingue e racconta quello che si vede, e la barca segue le regole per avvicinare gli animali senza disturbarli.",
+      en: "A big catamaran out of Puerto Colón, with three trips to choose from: two hours, three hours, or the long one out to the cliffs of Los Gigantes and Masca bay. Whales and dolphins, a swim stop and unlimited drinks on board. The crew speaks several languages and tells you what you are looking at, and the boat follows the rules for approaching the animals without disturbing them.",
+      es: "Un catamarán grande que sale de Puerto Colón, con tres salidas a elegir: dos horas, tres horas o la larga hasta los acantilados de Los Gigantes y la bahía de Masca. Ballenas y delfines, parada de baño y bebidas ilimitadas a bordo. La tripulación habla varios idiomas y te cuenta lo que estás viendo, y el barco sigue las normas para acercarse a los animales sin molestarlos."
     },
     image: "catamaran-gigantes-masca.jpg",
     published: true

@@ -249,6 +249,46 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Freebird, secondo giro di dati: una contraddizione da correggere (25 agosto)
+
+L'ufficio ha mandato la descrizione dell'operatore (Freebird One), non piu' quella del
+rivenditore. Molto di quello che c'era e' stato confermato, ma **due cose erano
+sbagliate** sulla scheda gia' pubblicata.
+
+**1. Il transfer non e' su tutte le varianti.** Il giro di 2 ore e' *senza* navetta: al
+porto ci si arriva da soli. La scheda aveva `transfer` in "Cosa e' incluso", cioe' lo
+prometteva anche a chi sceglieva le 2 ore.
+
+Tolto dal riquadro. **Nel riquadro restano solo le cose vere per tutte le varianti**
+(bagno, bevande, guida); quello che cambia da variante a variante sta scritto sotto il
+bottone della variante e nei consigli. La stessa ragione per cui `snack` non ci e' finito:
+sul giro di 2 ore da mangiare non c'e'.
+
+Questa e' la regola generale da tenere: `included` e' **una lista sola per tutta la
+scheda**, quindi ci va solo cio' che vale per tutte le varianti. Il resto vive nelle
+varianti.
+
+**2. I giorni del giro di 2 ore.** Il rivenditore diceva lun/mer/ven/**dom**, l'operatore
+dice lun/mer/ven. Ho tenuto quelli dell'operatore, che e' la fonte piu' vicina alla barca.
+**Da confermare in ufficio**, perche' e' l'unico punto in cui le due fonti si smentiscono.
+
+**Cose nuove aggiunte:** le bevande sono **illimitate** e c'e' anche la sangria; da
+mangiare sono panini, **anche vegetariani se lo si chiede prenotando**; si sale al **molo
+10** di Puerto Colón arrivando **10 minuti prima**; si possono aggiungere i **lettini
+balinesi a €25 l'uno** fino a esaurimento; il giro lungo passa dalle **scogliere di Los
+Gigantes** e non solo da Masca; l'equipaggio parla piu' lingue e racconta quello che si
+vede; la barca segue le regole per avvicinare gli animali senza disturbarli.
+
+**Cosa ho lasciato fuori, e perche'.** La descrizione dell'operatore dice "cancellazione
+gratuita fino a 48 ore prima" e la politica in caso di maltempo (data alternativa o
+rimborso). Sono **politiche di prenotazione**, e l'ufficio aveva appena deciso che quelle
+delle pagine altrui non sono le nostre — noi prenotiamo a mano su WhatsApp. Non le ho
+messe di mia iniziativa: decide l'ufficio, ora che sa che stavolta arrivano
+dall'operatore e non dal rivenditore.
+
+Del pezzo sul maltempo ho preso solo la parte che non promette niente: **"se soffri il mal
+di mare, prendi le tue precauzioni"**, che e' un consiglio pratico e non un impegno.
+
 ### Le varianti salgono sopra "In breve" (25 agosto)
 
 Detto dall'ufficio, e ha ragione. Sulla pagina di dettaglio le varianti stavano in fondo,

@@ -597,16 +597,91 @@ const ESPLORA_CATALOG = [
     id: "pesca-altura",
     title: { it: "Pesca d'altura", en: "Deep sea fishing", es: "Pesca de altura" },
     category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
+    zone: "Puerto Colón",
+    duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
+    times: ["09:00", "14:00"],
+    priceFrom: 85,
     priceAdult: 0,
     priceChild: 0,
-    family: false,
+    // Solo la fascia dei bambini. Quella degli adulti non si scrive perche'
+    // non si ricava: il fornitore dice che dagli 8 ai 10 anni si paga €69, ma
+    // sotto gli 8 non dice niente e non si sa se si sale (magari solo a
+    // guardare). Vedi i consigli.
+    ages: { child: "8-10" },
+    options: {
+      label: { it: "Formula", en: "Option", es: "Fórmula" },
+      choices: [
+        {
+          label: { it: "4 ore, in condivisione", en: "4 hours, shared", es: "4 horas, compartido" },
+          priceAdult: 85,
+          priceChild: 69,
+          duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
+          desc: {
+            it: "Si esce insieme ad altri, fino a 10 persone in tutto, e ognuno che vuole pescare ha la sua canna. Quattro ore al largo, partenza alle 9:00 o alle 14:00.",
+            en: "You go out with others, up to 10 people in all, and everyone who wants to fish gets their own rod. Four hours offshore, leaving at 9:00 or 14:00.",
+            es: "Se sale junto a otras personas, hasta 10 en total, y cada uno que quiera pescar tiene su caña. Cuatro horas mar adentro, salida a las 9:00 o a las 14:00."
+          }
+        },
+        {
+          label: { it: "Charter privato, fino a 7", en: "Private charter, up to 7", es: "Chárter privado, hasta 7" },
+          price: 525,
+          duration: { it: "Da 4 ore", en: "From 4 hours", es: "Desde 4 horas" },
+          desc: {
+            it: "La barca solo per il tuo gruppo, fino a 7 persone: da €525. Da sei ore in su sono compresi anche panini e stuzzichini. Il prezzo è della barca intera, non a persona.",
+            en: "The boat just for your group, up to 7 people: from €525. From six hours upwards sandwiches and snacks are included too. The price is for the whole boat, not per person.",
+            es: "El barco solo para tu grupo, hasta 7 personas: desde 525 €. A partir de seis horas se incluyen también bocadillos y aperitivos. El precio es del barco entero, no por persona."
+          }
+        },
+        {
+          label: { it: "Charter privato, fino a 10", en: "Private charter, up to 10", es: "Chárter privado, hasta 10" },
+          price: 700,
+          duration: { it: "Da 4 ore", en: "From 4 hours", es: "Desde 4 horas" },
+          desc: {
+            it: "Come sopra ma con più posto: fino a 10 persone, da €700. Da sei ore in su sono compresi anche panini e stuzzichini. Il prezzo è della barca intera, non a persona.",
+            en: "As above but with more room: up to 10 people, from €700. From six hours upwards sandwiches and snacks are included too. The price is for the whole boat, not per person.",
+            es: "Como arriba pero con más sitio: hasta 10 personas, desde 700 €. A partir de seis horas se incluyen también bocadillos y aperitivos. El precio es del barco entero, no por persona."
+          }
+        }
+      ]
+    },
+    included: ["equipment", "drinks", "guide"],
+    notes: [
+      {
+        it: "Il pesce preso non si può portare a casa: si pesca e si rimette in mare, oppure resta alla barca.",
+        en: "You cannot take your catch home: you fish and release, or the catch stays with the boat.",
+        es: "El pescado que se captura no se puede llevar a casa: se pesca y se devuelve al mar, o se queda en el barco."
+      },
+      {
+        it: "Chi viene solo a guardare paga €69, anche da adulto: a bordo ci sono i lettini e una zona d'ombra per chi non pesca. Dillo nelle note della richiesta.",
+        en: "Anyone coming just to watch pays €69, adults included: there are sunbeds and a shaded area on board for those not fishing. Say so in the notes of your request.",
+        es: "Quien viene solo a mirar paga 69 €, también los adultos: a bordo hay tumbonas y una zona de sombra para quien no pesca. Dilo en las notas de la solicitud."
+      },
+      {
+        it: "I bambini dagli 8 ai 10 anni che pescano pagano €69. Per i più piccoli chiedici: dipende dall'uscita.",
+        en: "Children aged 8 to 10 who fish pay €69. For younger ones ask us: it depends on the trip.",
+        es: "Los niños de 8 a 10 años que pescan pagan 69 €. Para los más pequeños pregúntanos: depende de la salida."
+      },
+      {
+        it: "Le canne ci sono per tutti quelli che pescano, e l'attrezzatura la mette la barca: esche e terminali compresi. Si va di traina e di jigging, secondo la stagione.",
+        en: "There are rods for everyone who fishes, and the boat provides the tackle: bait and rigs included. You troll and jig, depending on the season.",
+        es: "Hay cañas para todos los que pescan, y el barco pone el equipo: cebos y aparejos incluidos. Se va al curricán y al jigging, según la temporada."
+      },
+      {
+        it: "A bordo c'è la toilette e un frigo con le bevande fredde, che si prendono da soli.",
+        en: "There is a toilet on board and a fridge with cold drinks, which you help yourself to.",
+        es: "A bordo hay aseo y una nevera con bebidas frías, que se cogen uno mismo."
+      },
+      {
+        it: "Si parte da Puerto Colón: arriva almeno 10 minuti prima. Al porto c'è parcheggio.",
+        en: "You leave from Puerto Colón: get there at least 10 minutes early. There is parking at the marina.",
+        es: "Se sale de Puerto Colón: llega al menos 10 minutos antes. En el puerto hay aparcamiento."
+      }
+    ],
+    family: true,
     desc: {
-      it: "Uscita di pesca sportiva al largo, con attrezzatura e equipaggio a bordo.",
-      en: "A sport fishing trip offshore, with tackle and crew on board.",
-      es: "Salida de pesca deportiva mar adentro, con equipo y tripulación a bordo."
+      it: "Quattro ore a pesca al largo di Puerto Colón, a bordo della No Limits. Si cercano tonni, marlin e lampughe, e la canna ce l'ha chiunque voglia provare, anche chi non ha mai pescato: l'equipaggio lavora in queste acque da più di vent'anni. Chi non pesca ha i lettini e la zona d'ombra. Si sceglie fra l'uscita in condivisione e la barca tutta per sé.",
+      en: "Four hours fishing offshore from Puerto Colón, aboard the No Limits. You go after tuna, marlin and dorado, and anyone who wants to try gets a rod, first-timers included: the crew has been working these waters for over twenty years. Those not fishing have sunbeds and a shaded area. Choose between the shared trip and having the boat to yourselves.",
+      es: "Cuatro horas de pesca mar adentro desde Puerto Colón, a bordo del No Limits. Se buscan atunes, marlines y dorados, y tiene caña cualquiera que quiera probar, también quien no ha pescado nunca: la tripulación lleva más de veinte años en estas aguas. Quien no pesca tiene tumbonas y zona de sombra. Se elige entre la salida compartida y el barco entero para ti."
     },
     image: "pesca-altura.jpg",
     published: true

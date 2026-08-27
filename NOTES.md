@@ -298,6 +298,38 @@ modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet
 (prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
 identiche.
 
+### Pesca d'altura, riempita (25 agosto)
+
+Era la scheda piu' vuota che restava: "Su richiesta", zona e durata da definire, due righe
+di descrizione. Adesso ha tre formule:
+
+| formula | prezzo | come si paga |
+|---|---|---|
+| 4 ore, in condivisione | €85 adulto, €69 bambino | a persona |
+| Charter privato fino a 7 | da €525 | a barca |
+| Charter privato fino a 10 | da €700 | a barca |
+
+Quattro ore da Puerto Colón sulla **No Limits**, partenze alle 9:00 e alle 14:00, tonni,
+marlin e lampughe, traina e jigging, canne e attrezzatura a bordo.
+
+**Lo spettatore paga €69, come i bambini**, ma non e' una fascia d'eta': e' un adulto che
+non pesca. Il sito conta adulti e bambini, e non ha un terzo tipo di persona. **Sta nei
+consigli**, con l'invito a scriverlo nelle note della richiesta — invece di inventare un
+terzo campo per una scheda sola.
+
+**La fascia degli adulti non e' scritta, e stavolta non si ricava.** Sulle altre schede
+"bambini 4-11" implicava "adulti 12+", perche' sopra non c'era altro. Qui il fornitore dice
+solo che **dagli 8 ai 10 anni** si paga €69: **sotto gli 8 non dice niente**, e non si sa se
+si sale (magari solo a guardare, a €69). Scritto nei consigli: *"Per i piu' piccoli
+chiedici: dipende dall'uscita."* **Da confermare in ufficio.**
+
+**Il pesce non si porta a casa**, ed e' la prima cosa nei consigli: e' la sorpresa che
+rovina la giornata a chi non lo sa.
+
+**Panini e stuzzichini solo dai sei ore in su**, quindi non sono un'icona di "Cosa e'
+incluso" — che vale per tutta la scheda — ma stanno scritti dentro la descrizione delle due
+formule private, dove la condizione si puo' dire per esteso.
+
 ### I prezzi barrati sono offerte del rivenditore: sul sito va il pieno (25 agosto)
 
 Su tre pagine di fila (Opera 60, Kalima/Small Group, Utopia) c'era un prezzo barrato con un

@@ -645,19 +645,59 @@ const ESPLORA_CATALOG = [
     title: "Small Group Catamaran",
     category: "mare-barche",
     zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas" },
     priceFrom: 60,
-    privateOption: "private-charter",
-    priceAdult: 60,
-    priceChild: 30,
+    priceAdult: 0,
+    priceChild: 0,
     priceInfant: 0,
     ages: { adult: "12+", child: "3-11", infant: "0-2" },
-    included: ["lunch", "drinks", "swimstop", "snorkel"],
+    options: {
+      label: { it: "Formula", en: "Option", es: "Fórmula" },
+      choices: [
+        {
+          label: { it: "3 ore, in condivisione", en: "3 hours, shared", es: "3 horas, compartido" },
+          priceAdult: 60,
+          priceChild: 30,
+          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          times: ["09:30", "12:30"],
+          desc: {
+            it: "Si sale insieme ad altri e si fa lo stesso giro del charter privato, spendendo meno. Tre ore lungo la costa, con sosta bagno, snorkeling e paella di pollo a bordo. Tutti i giorni alle 9:30 e alle 12:30.",
+            en: "You share the boat with others and do the same route as the private charter, for less. Three hours along the coast, with a swim stop, snorkelling and chicken paella on board. Every day at 9:30 and 12:30.",
+            es: "Se sube junto a otras personas y se hace la misma ruta que el chárter privado, gastando menos. Tres horas por la costa, con parada de baño, snorkel y paella de pollo a bordo. Todos los días a las 9:30 y a las 12:30."
+          }
+        },
+        {
+          label: { it: "Charter privato", en: "Private charter", es: "Chárter privado" },
+          price: 800,
+          duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas" },
+          // Lista vuota, non campo mancante: il charter privato non ha orari
+          // fissi, l'ora si concorda. Senza questa riga sarebbero comparse le
+          // fasce segnaposto, cioe' degli orari inventati.
+          times: [],
+          desc: {
+            it: "La barca solo per il tuo gruppo: da €800, tre ore oppure sei. Con sei ore si gira più in largo, si vedono più cale e si sta più tempo in acqua. Si può fare anche al tramonto. Il prezzo è della barca intera, non a persona: scrivici quante siete e quante ore vuoi.",
+            en: "The boat just for your group: from €800, three hours or six. With six hours you range further, see more coves and stay longer in the water. It can also be done at sunset. The price is for the whole boat, not per person: tell us how many you are and how many hours you want.",
+            es: "El barco solo para tu grupo: desde 800 €, tres horas o seis. Con seis horas se va más lejos, se ven más calas y se está más tiempo en el agua. También se puede hacer al atardecer. El precio es del barco entero, no por persona: escríbenos cuántos sois y cuántas horas quieres."
+          }
+        }
+      ]
+    },
+    included: ["lunch", "drinks", "swimstop", "snorkel", "guide"],
     notes: [
       {
         it: "Le bevande comprese sono analcoliche, birra e acqua.",
         en: "The drinks included are soft drinks, beer and water.",
         es: "Las bebidas incluidas son refrescos, cerveza y agua."
+      },
+      {
+        it: "A bordo c'è la toilette, che su una barca di questo tipo non è scontato.",
+        en: "There is a toilet on board, which is not a given on a boat like this.",
+        es: "A bordo hay aseo, que en un barco de este tipo no se da por hecho."
+      },
+      {
+        it: "Nel prezzo ci sono anche l'equipaggio e l'assicurazione.",
+        en: "The crew and the insurance are included in the price as well.",
+        es: "En el precio están también la tripulación y el seguro."
       },
       {
         it: "Presentati 15 minuti prima della partenza.",
@@ -672,9 +712,9 @@ const ESPLORA_CATALOG = [
     ],
     family: true,
     desc: {
-      it: "Tre ore di catamarano con un massimo di 23 persone a bordo: c'è spazio per stare comodi, lontano dalla folla. Si naviga lungo la costa con buone possibilità di vedere delfini e balene, e a bordo si pranza con la paella di pollo.",
-      en: "Three hours by catamaran with a maximum of 23 people on board: room to spread out, away from the crowds. You cruise along the coast with a good chance of spotting dolphins and whales, and lunch on board is chicken paella.",
-      es: "Tres horas en catamarán con un máximo de 23 personas a bordo: hay sitio para estar cómodos, lejos de las multitudes. Se navega por la costa con buenas posibilidades de ver delfines y ballenas, y a bordo se come paella de pollo."
+      it: "Un catamarano che porta fino a 23 persone: quasi nessuna barca privata a Tenerife ne porta più di 12. Si parte da Puerto Colón, si cercano delfini e balene e ci si ferma nelle cale per il bagno e lo snorkeling, con la paella di pollo a bordo. Si sceglie fra il giro di tre ore in condivisione e la barca tutta per sé, per tre o sei ore.",
+      en: "A catamaran that takes up to 23 people: hardly any private boat in Tenerife takes more than 12. You leave Puerto Colón, look for dolphins and whales and stop in the coves to swim and snorkel, with chicken paella on board. Choose between the shared three-hour trip and having the boat to yourselves, for three hours or six.",
+      es: "Un catamarán que lleva hasta 23 personas: casi ningún barco privado en Tenerife lleva más de 12. Se sale de Puerto Colón, se buscan delfines y ballenas y se para en las calas para bañarse y hacer snorkel, con paella de pollo a bordo. Se elige entre la salida de tres horas compartida y el barco entero para ti, tres horas o seis."
     },
     image: "small-group-catamaran.jpg",
     published: true
@@ -817,85 +857,6 @@ const ESPLORA_CATALOG = [
       es: "Una neumática rígida de dieciocho metros que recorre la costa suroeste: zonas para tomar el sol, sombra donde resguardarse y una plataforma para bajar al agua. Equipo de snorkel a bordo, comida y bebida incluidas, y una tripulación que habla varios idiomas y te cuenta lo que estás viendo. Se elige entre la salida de tres horas compartida y el barco entero para ti."
     },
     image: "opera-60.jpg",
-    published: true
-  },
-  {
-    id: "kalima-kat",
-    title: "Kalima Kat",
-    category: "mare-barche",
-    zone: "Puerto Colón",
-    duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas" },
-    priceFrom: 59,
-    priceAdult: 0,
-    priceChild: 0,
-    // 13+ discende dai bambini 2-12, e "0-1" tocca il 2 senza buchi.
-    ages: { adult: "13+", child: "2-12", infant: "0-1" },
-    priceInfant: 0,
-    options: {
-      label: { it: "Formula", en: "Option", es: "Fórmula" },
-      choices: [
-        {
-          label: { it: "3 ore, in condivisione", en: "3 hours, shared", es: "3 horas, compartido" },
-          priceAdult: 59,
-          priceChild: 39,
-          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-          times: ["09:30", "12:30"],
-          desc: {
-            it: "Si sale insieme ad altri e si fa lo stesso giro del charter privato, spendendo meno. Tre ore lungo la costa sud, con sosta bagno, snorkeling e paella di pollo a bordo. Tutti i giorni alle 9:30 e alle 12:30.",
-            en: "You share the boat with others and do the same route as the private charter, for less. Three hours along the south coast, with a swim stop, snorkelling and chicken paella on board. Every day at 9:30 and 12:30.",
-            es: "Se sube junto a otras personas y se hace la misma ruta que el chárter privado, gastando menos. Tres horas por la costa sur, con parada de baño, snorkel y paella de pollo a bordo. Todos los días a las 9:30 y a las 12:30."
-          }
-        },
-        {
-          label: { it: "Charter privato", en: "Private charter", es: "Chárter privado" },
-          price: 800,
-          duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas" },
-          // Lista vuota, non campo mancante: il charter privato non ha orari
-          // fissi, l'ora si concorda. Senza questa riga sarebbero comparse le
-          // fasce segnaposto, cioe' degli orari inventati.
-          times: [],
-          desc: {
-            it: "La barca solo per il tuo gruppo, fino a 22 persone: da €800, tre ore oppure sei. Con sei ore si gira più in largo, si vedono più cale e si sta più tempo in acqua. Si può fare anche al tramonto. Il prezzo è della barca intera, non a persona: scrivici quante siete e quante ore vuoi.",
-            en: "The boat just for your group, up to 22 people: from €800, three hours or six. With six hours you range further, see more coves and stay longer in the water. It can also be done at sunset. The price is for the whole boat, not per person: tell us how many you are and how many hours you want.",
-            es: "El barco solo para tu grupo, hasta 22 personas: desde 800 €, tres horas o seis. Con seis horas se va más lejos, se ven más calas y se está más tiempo en el agua. También se puede hacer al atardecer. El precio es del barco entero, no por persona: escríbenos cuántos sois y cuántas horas quieres."
-          }
-        }
-      ]
-    },
-    included: ["swimstop", "snorkel", "lunch", "drinks", "guide"],
-    notes: [
-      {
-        it: "Arriva 30 minuti prima della partenza: il porto è grande e l'imbarco vuole il suo tempo.",
-        en: "Get there 30 minutes before departure: the marina is big and boarding takes its time.",
-        es: "Llega 30 minutos antes de la salida: el puerto es grande y el embarque lleva su tiempo."
-      },
-      {
-        it: "A bordo c'è la toilette, che su una barca di questo tipo non è scontato.",
-        en: "There is a toilet on board, which is not a given on a boat like this.",
-        es: "A bordo hay aseo, que en un barco de este tipo no se da por hecho."
-      },
-      {
-        it: "Le bevande comprese sono acqua, analcoliche e birra.",
-        en: "The drinks included are water, soft drinks and beer.",
-        es: "Las bebidas incluidas son agua, refrescos y cerveza."
-      },
-      {
-        it: "Porta costume, asciugamano, occhiali da sole, crema solare e un cappello. Nei mesi più freschi serve anche una felpa leggera.",
-        en: "Bring swimwear, a towel, sunglasses, sunscreen and a hat. In the cooler months a light jacket comes in handy too.",
-        es: "Trae bañador, toalla, gafas de sol, crema solar y un sombrero. En los meses más frescos viene bien también una sudadera ligera."
-      },
-      {
-        it: "Nel prezzo ci sono anche l'equipaggio e l'assicurazione.",
-        en: "The crew and the insurance are included in the price as well.",
-        es: "En el precio están también la tripulación y el seguro."
-      }
-    ],
-    family: true,
-    desc: {
-      it: "Un catamarano che porta fino a 22 persone: quasi nessuna barca privata a Tenerife ne porta più di 12. Si parte da Puerto Colón verso la costa sud, si cercano delfini e balene e ci si ferma nelle cale per il bagno e lo snorkeling. A bordo si mangia la paella di pollo. Si sceglie fra il giro di tre ore in condivisione e la barca tutta per sé, per tre o sei ore.",
-      en: "A catamaran that takes up to 22 people: hardly any private boat in Tenerife takes more than 12. You leave Puerto Colón for the south coast, look for dolphins and whales and stop in the coves to swim and snorkel. Chicken paella is served on board. Choose between the shared three-hour trip and having the boat to yourselves, for three hours or six.",
-      es: "Un catamarán que lleva hasta 22 personas: casi ningún barco privado en Tenerife lleva más de 12. Se sale de Puerto Colón hacia la costa sur, se buscan delfines y ballenas y se para en las calas para bañarse y hacer snorkel. A bordo se come paella de pollo. Se elige entre la salida de tres horas compartida y el barco entero para ti, tres horas o seis."
-    },
     published: true
   },
   {

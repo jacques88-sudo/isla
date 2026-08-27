@@ -298,6 +298,36 @@ modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet
 (prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
 identiche.
 
+### Submarine Safari, riempita (25 agosto)
+
+Aveva solo i due prezzi (€61 / €37) e due righe di descrizione. Adesso ha tutto: si parte
+da **Marina Amarilla** (San Miguel de Abona, zona Amarilla Golf), dura **un'ora**, si
+scende **tutti i giorni tranne il sabato**, si arriva 15 minuti prima.
+
+**Fasce d'eta': bambini 2-14, adulti 15+.** Il 15+ discende dal 2-14, come al solito.
+
+**Sotto i 2 anni non c'e' nessuna fascia, e non e' una dimenticanza:** a bordo non si sale
+proprio. Non e' "gratis", quindi **niente `priceInfant`** — quel campo vuol dire "paga
+zero", non "non puo' venire". Sarebbe stato l'errore facile da fare, visto che tutte le
+barche di questi giorni hanno i neonati gratis.
+
+**La navetta dal nord usa `transfer` + `transferPrice`,** gli stessi campi del Twin Ticket.
+Attenzione a cosa ci va dentro: `transferPrice` sono i prezzi **completi** con la navetta,
+non il supplemento. Il fornitore dice "+€13 adulto, +€8 bambino", quindi si scrive 74 e 45,
+non 13 e 8. Verificato col totale: 2 adulti + 1 bambino fanno €159 senza e €193 con.
+
+Il testo della domanda pero' e' rovesciato rispetto al Twin Ticket: qui la navetta dal
+**sud e' gia' compresa**, e la spunta serve solo a chi sta nel nord. Sta scritto sotto la
+domanda: *"Solo se stai nel nord dell'isola: dal sud la navetta e' gia' compresa nel
+prezzo."*
+
+**Cosa resta vago:** gli orari. La pagina dice solo "multiple timeframes" senza elencarli,
+quindi la scheda usa ancora le fasce segnaposto. **Da chiedere in ufficio.**
+
+**Non preso, come sempre:** "best price guarantee", "official tickets", le 8 recensioni
+loro, e la politica di cancellazione (la nostra resta 24 ore). Preso solo il consiglio sul
+mal di mare.
+
 ### Royal Delfin, scheda nuova (25 agosto)
 
 Catamarano da 200 persone con le finestre panoramiche sotto la linea di galleggiamento.

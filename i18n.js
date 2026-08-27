@@ -231,6 +231,10 @@ const I18N = {
   "req.notePlaceholder":{ it: "Hotel, zona, richieste particolari…", en: "Hotel, area, special requests…", es: "Hotel, zona, peticiones especiales…" },
   "req.submit":         { it: "Continua su WhatsApp", en: "Continue on WhatsApp", es: "Continuar en WhatsApp" },
   "req.addToList":      { it: "Aggiungi alla lista", en: "Add to list", es: "Añadir a la lista" },
+  // ⚠ LE 24 ORE SONO LA REGOLA DI ISLA, non quella dei fornitori. Le pagine
+  // degli operatori e dei rivenditori scrivono le loro (48 ore, 72 ore...):
+  // **non si copiano qui**. Isla prenota a mano su WhatsApp e questa riga
+  // resta a 24 ore finche' non e' l'ufficio a dire un altro numero.
   "req.hint":           { it: "Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.", en: "Requests must be sent at least <strong>24 hours in advance</strong>. We reply within 24 hours with the confirmation.", es: "Las solicitudes deben enviarse con al menos <strong>24 horas de antelación</strong>. Respondemos en 24 horas con la confirmación." },
   "req.privacy":        { it: "Quello che scrivi qui serve solo a risponderti su WhatsApp: non viene salvato dal sito.", en: "What you type here is only used to reply to you on WhatsApp: the site does not store it.", es: "Lo que escribes aquí solo sirve para responderte por WhatsApp: el sitio no lo guarda." },
 

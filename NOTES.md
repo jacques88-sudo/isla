@@ -249,6 +249,51 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Il riquadro delle icone cambia con la variante (25 agosto)
+
+Domanda dell'ufficio: *"il riquadro con le icone puo' cambiare a seconda del tour
+scelto?"*. Si', e serviva: e' esattamente il limite in cui ero andato a sbattere il giorno
+prima col transfer del Freebird, quando l'unica risposta era stata togliere dal riquadro
+tutto quello che non valeva per tutte le varianti.
+
+**Come funziona.** Ogni variante puo' avere il suo `included`, che si **somma** a quello
+della scheda invece di sostituirlo. Sulla scheda si scrive quello che vale per tutte, sulla
+variante solo quello che ha in piu':
+
+    scheda:            swimstop, drinks, guide
+    2 ore:             (niente)
+    3 ore:             snack, transfer
+    4 ore e mezza:     lunch, transfer
+
+Cosi' le cose comuni si scrivono una volta sola invece di ripeterle in ogni variante, e
+aggiungerne una nuova non vuol dire ricopiare tutta la lista.
+
+**Il riquadro si ridisegna a ogni bottone premuto**, come gia' facevano il prezzo e la
+descrizione della variante. Chi sceglie le 2 ore vede tre icone, chi sceglie le 4 ore e
+mezza ne vede cinque, e nessuno legge una promessa che la sua barca non mantiene.
+
+**Un dettaglio da non sbagliare:** il riquadro si disegna anche quando la scheda non ha
+`included` ma una variante si'. Se no al primo clic non ci sarebbe niente da riempire.
+Quando la lista risultante e' vuota il riquadro si nasconde invece di restare li' vuoto.
+
+Le schede senza varianti non cambiano di una virgola: controllate.
+
+### Le 24 ore sono nostre, e non si toccano (25 agosto)
+
+Deciso dall'ufficio, e vale **per sempre, anche per le informazioni che arriveranno**:
+la riga "le richieste vanno fatte con almeno 24 ore di anticipo" resta a **24 ore**.
+
+Le pagine degli operatori e dei rivenditori scrivono le loro politiche (48 ore, 72 ore,
+rimborsi per maltempo): **non si copiano sul sito**. Isla prenota a mano su WhatsApp, e
+questo numero lo decide l'ufficio, non il fornitore di turno.
+
+L'avvertenza e' scritta in `i18n.js`, attaccata alla riga `req.hint`: e' li' che
+qualcuno andrebbe a cambiarla dopo aver letto "free cancellation up to 48 hours" da
+qualche parte.
+
+**Confermato anche:** i giorni del giro di 2 ore del Freebird sono lun/mer/ven, come sulla
+scheda. Le due fonti coincidono, il dubbio era mio.
+
 ### Freebird, secondo giro di dati: una contraddizione da correggere (25 agosto)
 
 L'ufficio ha mandato la descrizione dell'operatore (Freebird One), non piu' quella del

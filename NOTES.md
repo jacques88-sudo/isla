@@ -249,6 +249,16 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Il pallino della chat resta dov'e' (25 agosto)
+
+Avevo segnalato che il pallino dell'assistente, in basso a destra, **copre i prezzi**
+quando la tabella "In breve" capita a quell'altezza: i valori sono allineati a destra ed
+e' li' che galleggia il pallino.
+
+**L'ufficio ha deciso di lasciarlo com'e': il pallino e' importante.** Quindi non e' un
+bug da sistemare e non va "aggiustato" la prossima volta che salta all'occhio. Scorrendo
+la pagina il numero riappare, e l'assistente vale il fastidio.
+
 ### "In breve" con una riga per fascia d'eta', anche sulle schede a varianti (25 agosto)
 
 Chiesto dall'ufficio: sul Royal Delfin (e sul Freebird) la tabella deve leggersi come sul

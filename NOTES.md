@@ -298,6 +298,38 @@ modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet
 (prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
 identiche.
 
+### Shogun, riempita (25 agosto)
+
+Una goletta orientale di 26 metri, tutta in teak, costruita per uno sceicco: 135 posti su
+due ponti. Cinque ore, partenza alle 11:00 da Puerto Colón, pontile 14. Lunedi', mercoledi',
+giovedi', venerdi' e domenica.
+
+| partenza | adulto | bambino | neonato | ritrovo |
+|---|---|---|---|---|
+| Dal sud | €61 | €30 | gratis | Puerto Colón |
+| Dal nord | €65 | €32 | gratis | Puerto de la Cruz |
+
+**Qui le varianti non sono durate ne' formule ne' biglietti: sono due punti di partenza.**
+Il giro e' identico, cambia solo da dove ti prende la navetta e quanto costa. Sono il quarto
+tipo di variante che incontriamo (durata, formula, biglietto, partenza), e il campo `label`
+lo dice ogni volta con la parola giusta: qui "Partenza".
+
+Il `zone` dentro la variante — quello aggiunto per il Royal Delfin — serve esattamente a
+questo: chi sceglie "Dal nord" legge **Puerto de la Cruz** come punto di partenza, non
+Puerto Colón.
+
+**Le fasce d'eta' non ci sono**, perche' non le ha mandate nessuno: le righe escono
+"Adulti", "Bambini", "Neonati" senza parentesi. Non e' un problema — e' come si comportano
+gia' il Twin Ticket e la pesca — ma **si possono aggiungere appena arrivano.**
+
+**Cosa c'e' di notevole e finisce nei consigli:** i tre bagni, di cui **uno accessibile**, e
+la barca attrezzata per chi ha difficolta' motorie. E' l'unica del catalogo che lo dice, ed
+e' un'informazione che chi ne ha bisogno cerca prima di tutto il resto. Poi il menu del
+pranzo per esteso, le zone fumatori, e il solito consiglio sull'alcol prima di salire.
+
+**Non preso:** la politica di cancellazione (48 ore, 90% di rimborso — la nostra resta 24
+ore), il "best price guaranteed" e le loro recensioni.
+
 ### Pesca d'altura, riempita (25 agosto)
 
 Era la scheda piu' vuota che restava: "Su richiesta", zona e durata da definire, due righe

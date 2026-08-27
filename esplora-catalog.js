@@ -241,6 +241,14 @@ const ESPLORA_CATALOG = [
     privateOption: "private-charter",
     priceAdult: 0,
     priceChild: 0,
+    // I due prezzi veri stanno dentro le varianti, perche' cambiano con la
+    // durata. Qui resta solo quello dei neonati, che e' zero su tutte: e' un
+    // prezzo, non un "non lo sappiamo", e la riga "Gratis" si vede sempre.
+    priceInfant: 0,
+    // Solo la fascia dei neonati: l'ufficio ha detto 0-2 e basta. Quella dei
+    // bambini e degli adulti non e' arrivata, e senza le righe escono senza
+    // parentesi invece che con un numero inventato.
+    ages: { infant: "0-2" },
     options: {
       label: { it: "Durata", en: "Duration", es: "Duración" },
       choices: [

@@ -332,19 +332,23 @@ tickets", niente politica di cancellazione (la nostra resta 24 ore, decisa dall'
 niente politica per il maltempo o per chi non si presenta. Preso solo il consiglio sul
 mal di mare, che non promette niente.
 
-**Tre cose da chiedere all'ufficio:**
+**Le tre cose che mancavano, arrivate subito dopo:**
 
-1. **Manca la foto.** La scheda esce col segnaposto "ISLA" al posto dell'immagine. Le due
-   foto di catamarano che abbiamo sono Freebird, non Royal Delfin: usarle sarebbe far
-   vedere un'altra barca.
-2. **I neonati.** Sul Freebird 0-3 non pagano. Qui l'ufficio ha detto che i **bambini**
-   hanno le stesse eta', che e' la fascia, non il prezzo: se anche qui i piccoli non
-   pagano lo aggiungo, ma non l'ho dato per scontato.
-3. **La partenza delle 9:30** sul giro di 4 ore e mezza. La pagina la da' prima come
-   "lunedi' e venerdi'" e poi come "venerdi', dall'11 luglio al 5 settembre": due cose
-   diverse, e le date sono di un'altra stagione. Per ora la scheda dice che c'e' "in certi
-   periodi dell'anno" e invita a chiedere, invece di stampare giorni che potrebbero non
-   valere piu'.
+1. **La foto c'e'** (`royal-delfin.jpg`). E' proprio il Royal Delfin: sulla fiancata si
+   legge il logo coi due delfini e la scritta "Visión Submarina / Submarine Vision", che
+   e' la sua caratteristica. Nessuna filigrana, e nel taglio della scheda ci sta la barca
+   intera coi bagnanti e il getto d'acqua.
+2. **I neonati non pagano**, fascia 0-3 come sul Freebird. `priceInfant: 0`.
+3. **La partenza delle 9:30** c'e' **dall'11 luglio al 5 settembre**. Ora e' scritta cosi'
+   nella descrizione della variante, invece del vago "in certi periodi dell'anno".
+   Resta un dubbio piccolo che non vale la pena inseguire: la pagina diceva "lunedi' e
+   venerdi'" in un punto e "venerdi'" in un altro. La scheda non nomina i giorni, quindi
+   non promette niente di sbagliato, e la conferma passa comunque dall'ufficio.
+
+**L'orario delle 9:30 resta nel menu tutto l'anno.** Fuori stagione un cliente puo'
+sceglierlo, ma la finestra di date sta scritta due dita sopra e la richiesta la conferma
+l'ufficio. Per farlo sparire da solo servirebbe legare gli orari alla data scelta:
+si puo' fare, ma per una riga sola non vale la complicazione.
 
 ### Freebird: neonati 0-2 gratis (25 agosto)
 

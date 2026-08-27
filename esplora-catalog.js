@@ -356,8 +356,11 @@ const ESPLORA_CATALOG = [
     privateOption: "private-charter",
     priceAdult: 0,
     priceChild: 0,
+    // I due prezzi veri stanno dentro le varianti. Qui resta quello dei
+    // neonati, zero su tutte: e' un prezzo, non un "non lo sappiamo".
+    priceInfant: 0,
     // 12+ discende dai bambini 4-11: sopra gli 11 non c'e' altra fascia.
-    ages: { adult: "12+", child: "4-11" },
+    ages: { adult: "12+", child: "4-11", infant: "0-3" },
     options: {
       label: { it: "Durata", en: "Duration", es: "Duración" },
       choices: [
@@ -391,9 +394,9 @@ const ESPLORA_CATALOG = [
           times: ["14:00", "09:30"],
           included: ["swimstop", "lunch", "drinks"],
           desc: {
-            it: "Il giro lungo: balene e delfini e bagno nella baia di Masca. Si comincia con la frutta di stagione e si pranza con riso e pollo, bevande comprese. Tutti i giorni alle 14:00; in certi periodi dell'anno c'è anche la partenza delle 9:30, con un menù diverso — chiedici se c'è nella tua data.",
-            en: "The long trip: whales and dolphins, and a swim in Masca bay. It starts with seasonal fruit and lunch is rice and chicken, drinks included. Every day at 14:00; at certain times of year there is also a 9:30 departure with a different menu — ask us whether it runs on your date.",
-            es: "La salida larga: ballenas y delfines y baño en la bahía de Masca. Se empieza con fruta de temporada y se come arroz con pollo, bebidas incluidas. Todos los días a las 14:00; en ciertas épocas del año hay también la salida de las 9:30, con un menú distinto — pregúntanos si la hay en tu fecha."
+            it: "Il giro lungo: balene e delfini e bagno nella baia di Masca. Si comincia con la frutta di stagione e si pranza con riso e pollo, bevande comprese. Tutti i giorni alle 14:00; dall'11 luglio al 5 settembre c'è anche la partenza delle 9:30, con un menù diverso.",
+            en: "The long trip: whales and dolphins, and a swim in Masca bay. It starts with seasonal fruit and lunch is rice and chicken, drinks included. Every day at 14:00; from 11 July to 5 September there is also a 9:30 departure, with a different menu.",
+            es: "La salida larga: ballenas y delfines y baño en la bahía de Masca. Se empieza con fruta de temporada y se come arroz con pollo, bebidas incluidas. Todos los días a las 14:00; del 11 de julio al 5 de septiembre hay también la salida de las 9:30, con un menú distinto."
           }
         },
         {
@@ -453,6 +456,7 @@ const ESPLORA_CATALOG = [
       }
     ],
     family: true,
+    image: "royal-delfin.jpg",
     desc: {
       it: "Un catamarano grande, fino a 200 persone, con finestre panoramiche sotto la linea di galleggiamento: balene e delfini si guardano anche da sotto, non solo dal ponte. Si sceglie fra due ore, tre ore o il giro lungo fino alla baia di Masca. La barca segue la carta per la tutela dei cetacei e le guide parlano più lingue.",
       en: "A big catamaran, up to 200 people, with panoramic windows below the waterline: you watch whales and dolphins from underneath as well as from the deck. Choose between two hours, three hours or the long trip out to Masca bay. The boat follows the whale conservation charter and the guides speak several languages.",

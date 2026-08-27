@@ -298,6 +298,51 @@ modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet
 (prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
 identiche.
 
+### Opera 60, riempita: due formule molto diverse (25 agosto)
+
+Aveva `priceFrom: 80` e una riga di descrizione. Adesso ha due formule, e sono **due modi
+di pagare diversi**, non due durate:
+
+| formula | prezzo | come si paga |
+|---|---|---|
+| 3 ore, in condivisione | €70 adulto, €50 bambino | **a persona** |
+| Charter privato | da €545 | **a barca**, fino a 12 persone |
+
+E' il caso per cui la distinzione fra `price` e `priceAdult`/`priceChild` era stata
+inventata, e qui si vede in una scheda sola: sulla formula condivisa il totale si calcola
+(2 adulti + 1 bambino = €190), sul charter privato **non compare**, perche' moltiplicare
+€545 per le persone darebbe €1635.
+
+**Orari: 10:00 e 13:30. Bambini 1-11 anni €50. Bebe' 0-11 mesi gratis.**
+
+**La fascia dei bebe' e' in mesi, e ha rotto una cosa.** `ages` finora conteneva solo
+numeri ("12+", "4-11"), uguali in tutte le lingue, e il codice li scriveva cosi' com'erano.
+"0-11 mesi" invece ha una parola dentro. Adesso le fasce passano da `tf()` come tutto il
+resto del catalogo, quindi si possono scrivere nelle tre lingue quando serve:
+
+    infant: { it: "0-11 mesi", en: "0-11 months", es: "0-11 meses" }
+
+Da notare che **"0-11 mesi" e "1-11 anni" si toccano** senza buchi, che e' la regola che
+ci eravamo dati col Freebird.
+
+**Due cose viste solo guardando la pagina, non leggendo il codice:**
+
+1. Sul charter privato compariva **"Neonati (0-11 mesi): Gratis"**. Su una barca che si
+   paga intera non vuol dire niente — non paga nessuno a testa. Ora la riga dei neonati
+   compare solo insieme alle altre righe a persona.
+2. La durata diceva **"Da 3 a 9 ore"** anche sulla formula condivisa, che dura tre ore e
+   basta. Aggiunto `duration` dentro la variante, come gia' `zone`, `times`, `included`,
+   `desc` e i prezzi.
+
+**Cosa non ho preso:** il prezzo barrato ("Sale! €80 → €70"). Il sito non ha il concetto di
+sconto, e €70 e' quello che l'ufficio ha mandato. **Se €70 e' un prezzo di stagione,
+segnalatelo.** Fuori anche la politica di cancellazione (48/96 ore — la nostra resta 24),
+il "best price guarantee", le loro 6 recensioni.
+
+**Una cosa che ho scritto e che nessun rivenditore scriverebbe:** *"con il mare mosso si
+sente piu' che su un catamarano"*. E' un gommone veloce, ed e' vero. Un cliente che sta
+male in mare deve poterlo sapere prima, non dopo.
+
 ### La finestra della richiesta non scorreva (25 agosto)
 
 Segnalato dall'ufficio: *"in piu' schede questa pagina rimane fissa, non scorre ne' su ne'

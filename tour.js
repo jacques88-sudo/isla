@@ -45,8 +45,11 @@ function detailRows(tour, variante) {
   // ancora, qui no.
   const opzioniSonoLaDurata = !!(tour.options &&
     tf(tour.options.label) === t("detail.duration"));
-  if (!daDefinire(tour.duration) && !opzioniSonoLaDurata) {
-    righe.push([t("detail.duration"), tf(tour.duration)]);
+  // Come la zona: la durata puo' cambiare con la variante (il giro condiviso
+  // dura tre ore, il charter privato da tre a nove).
+  const durata = (variante && variante.duration) || tour.duration;
+  if (!daDefinire(durata) && !opzioniSonoLaDurata) {
+    righe.push([t("detail.duration"), tf(durata)]);
   }
 
   // Orari e lingue stavano solo dentro la finestra della richiesta, dove si
@@ -90,12 +93,16 @@ function detailRows(tour, variante) {
   // "Adulti (12+)": la fascia d'eta' fra parentesi, quando il fornitore l'ha
   // detta. Senza, resta solo "Adulti".
   const eta = tour.ages || {};
-  const conEta = (etichetta, fascia) => fascia ? etichetta + " (" + fascia + ")" : etichetta;
+  // tf() perche' una fascia puo' avere bisogno delle tre lingue: "0-3" si
+  // scrive uguale dappertutto, "0-11 mesi" no.
+  const conEta = (etichetta, fascia) => fascia ? etichetta + " (" + tf(fascia) + ")" : etichetta;
   if (adulto > 0) righe.push([conEta(t("req.adults"), eta.adult), "€" + adulto]);
   if (bambino > 0) righe.push([conEta(t("req.kids"), eta.child), "€" + bambino]);
   // Per i neonati lo zero vuol dire davvero gratis, non "da decidere": la
   // riga si mostra solo se il campo c'e', e sparisce se manca.
-  if (tour.priceInfant !== undefined) {
+  // Solo insieme alle altre righe a persona: sulla variante che si paga a
+  // barca, "Neonati: Gratis" non vuol dire niente — non paga nessuno a testa.
+  if (tour.priceInfant !== undefined && adulto > 0) {
     righe.push([conEta(t("detail.infants"), eta.infant),
       tour.priceInfant > 0 ? "€" + tour.priceInfant : t("detail.free")]);
   }

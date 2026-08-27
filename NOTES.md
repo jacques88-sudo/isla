@@ -267,10 +267,13 @@ tabella si vede solo quando `priceChild` sta sulla scheda, e qui sta dentro le v
 Ora si attacca al prezzo della variante: **"€62 (bambini 4-11: €31)"**. E' li' che serve —
 chi ha un ragazzino di dodici anni capisce quale dei due numeri lo riguarda.
 
-**⚠ C'e' un buco a 3 anni.** I neonati sono 0-2 e i bambini 4-11: un bambino di tre anni
-non sta in nessuna delle due. O i neonati arrivano a 3, o i bambini partono da 3.
-**Da chiarire in ufficio** — non l'ho aggiustato da solo perche' le due risposte danno due
-prezzi diversi (gratis oppure meta').
+**Il buco a 3 anni e' chiuso: 0-3 gratis, 4-11 meta'.** Le prime due fasce che erano
+arrivate (0-2 e 4-11) lasciavano fuori i bambini di tre anni. L'ufficio ha confermato che
+i tre anni non pagano, quindi la fascia dei neonati arriva a 3.
+
+Vale la pena tenerlo a mente per le prossime schede: **quando arrivano due fasce d'eta',
+si controlla che si tocchino.** Un anno scoperto in mezzo non e' un dettaglio grafico —
+e' un cliente che scopre al molo di dover pagare, o noi che regaliamo un posto.
 
 ### Il riquadro delle icone cambia con la variante (25 agosto)
 

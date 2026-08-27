@@ -247,7 +247,7 @@ const ESPLORA_CATALOG = [
     priceInfant: 0,
     // La fascia degli adulti non c'e' perche' non serve dirla: "bambini 4-11"
     // basta a far capire che a 12 anni si paga come un grande.
-    ages: { child: "4-11", infant: "0-2" },
+    ages: { child: "4-11", infant: "0-3" },
     options: {
       label: { it: "Durata", en: "Duration", es: "Duración" },
       choices: [

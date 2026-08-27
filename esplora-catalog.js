@@ -25,6 +25,10 @@
 //                dove 0 vuol dire "non ancora deciso". Se il campo manca del tutto
 //                la riga non compare: e' cosi' che si dice "non lo sappiamo".
 //   ages       → facoltativo: le fasce d'eta', scritte come le scrive il fornitore.
+//                Di solito bastano dei numeri ("12+", "4-11"), uguali in tutte
+//                le lingue. Quando invece c'e' una parola dentro si scrivono
+//                nelle tre lingue come tutto il resto:
+//                    infant: { it: "0-11 mesi", en: "0-11 months", es: "0-11 meses" }
 //                Finiscono fra parentesi accanto alle righe del prezzo:
 //                "Adulti (12+)", "Bambini (3-11)", "Neonati (0-2)".
 //                    ages: { adult: "12+", child: "3-11", infant: "0-2" }
@@ -103,6 +107,8 @@
 //                `price` si puo' omettere quando il prezzo della variante non lo
 //                sappiamo ancora: la riga mostra solo il nome.
 //                Ogni variante puo' avere anche:
+//                  duration → la durata **di quella variante**, quando e'
+//                          diversa da quella della scheda.
 //                  zone  → il punto di partenza **di quella variante**, quando
 //                          e' diverso da quello della scheda (la gita col
 //                          ritrovo nel nord dell'isola, per esempio).
@@ -731,16 +737,80 @@ const ESPLORA_CATALOG = [
     title: "Opera 60",
     category: "mare-barche",
     zone: "Puerto Colón",
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 80,
+    duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas" },
+    times: ["10:00", "13:30"],
+    priceFrom: 70,
     priceAdult: 0,
     priceChild: 0,
+    // 12+ discende dai bambini 1-11. La fascia dei bebe' e' in mesi, quindi va
+    // scritta nelle tre lingue: "0-11" da solo si leggerebbe come anni.
+    ages: {
+      adult: "12+",
+      child: "1-11",
+      infant: { it: "0-11 mesi", en: "0-11 months", es: "0-11 meses" }
+    },
+    priceInfant: 0,
+    options: {
+      label: { it: "Formula", en: "Option", es: "Fórmula" },
+      choices: [
+        {
+          label: { it: "3 ore, in condivisione", en: "3 hours, shared", es: "3 horas, compartido" },
+          priceAdult: 70,
+          priceChild: 50,
+          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          included: ["snack"],
+          desc: {
+            it: "Si sale insieme ad altri, fino a 12 persone in tutto. Tre ore lungo la costa sud-ovest, con sosta bagno, qualcosa da mangiare e da bere a bordo, e buone possibilità di vedere delfini e globicefali.",
+            en: "You share the boat with others, up to 12 people in all. Three hours along the south-west coast, with a swim stop, something to eat and drink on board, and a good chance of spotting dolphins and pilot whales.",
+            es: "Se sube junto a otras personas, hasta 12 en total. Tres horas por la costa suroeste, con parada de baño, algo de comer y beber a bordo, y buenas posibilidades de ver delfines y calderones."
+          }
+        },
+        {
+          label: { it: "Charter privato", en: "Private charter", es: "Chárter privado" },
+          price: 545,
+          duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas" },
+          included: ["lunch"],
+          desc: {
+            it: "La barca solo per il tuo gruppo, fino a 12 persone: da €545 per tre ore, e si può allungare fino a nove. Pranzo a bordo e bar aperto compresi. Il prezzo è della barca intera, non a persona: scrivici quante siete e quante ore vuoi e ti facciamo il conto.",
+            en: "The boat just for your group, up to 12 people: from €545 for three hours, and you can stretch it to nine. Lunch on board and open bar included. The price is for the whole boat, not per person: tell us how many you are and how many hours you want and we'll work it out.",
+            es: "El barco solo para tu grupo, hasta 12 personas: desde 545 € por tres horas, y se puede alargar hasta nueve. Comida a bordo y barra libre incluidas. El precio es del barco entero, no por persona: escríbenos cuántos sois y cuántas horas quieres y te hacemos las cuentas."
+          }
+        }
+      ]
+    },
+    included: ["swimstop", "snorkel", "drinks", "guide"],
+    notes: [
+      {
+        it: "È un gommone rigido di grandi dimensioni, con motori potenti: si va veloci e si arriva lontano, ma con il mare mosso si sente più che su un catamarano.",
+        en: "It is a large rigid inflatable with powerful engines: you go fast and get far, but in rough seas you feel it more than on a catamaran.",
+        es: "Es una neumática rígida de gran tamaño, con motores potentes: se va rápido y se llega lejos, pero con mar movido se nota más que en un catamarán."
+      },
+      {
+        it: "A bordo ci sono zone al sole e zone all'ombra, e una piattaforma da cui si scende in acqua.",
+        en: "On board there are areas in the sun and areas in the shade, and a platform to get into the water from.",
+        es: "A bordo hay zonas al sol y zonas a la sombra, y una plataforma para bajar al agua."
+      },
+      {
+        it: "Fra le bevande comprese ci sono birra, vino e analcoliche, e non manca lo spumante.",
+        en: "The drinks included are beer, wine and soft drinks, and there is sparkling wine too.",
+        es: "Entre las bebidas incluidas hay cerveza, vino y refrescos, y no falta el espumoso."
+      },
+      {
+        it: "La barca ha la certificazione \"Blue Boat\", che si dà a chi rispetta le regole per avvicinare i cetacei senza disturbarli.",
+        en: "The boat holds the \"Blue Boat\" certification, given to those who follow the rules for approaching cetaceans without disturbing them.",
+        es: "El barco tiene la certificación \"Blue Boat\", que se da a quien respeta las normas para acercarse a los cetáceos sin molestarlos."
+      },
+      {
+        it: "Vicino a Puerto Colón c'è un parcheggio a pagamento, se vieni con la tua macchina.",
+        en: "There is a paid car park near Puerto Colón, if you come by car.",
+        es: "Cerca de Puerto Colón hay un aparcamiento de pago, si vienes en coche."
+      }
+    ],
     family: true,
-    included: ["swimstop"],
     desc: {
-      it: "Avvistamento di delfini e balene a bordo dell'Opera 60, in versione premium.",
-      en: "Dolphin and whale watching aboard the Opera 60, in its premium version.",
-      es: "Avistamiento de delfines y ballenas a bordo del Opera 60, en version premium."
+      it: "Un gommone rigido da diciotto metri che corre lungo la costa sud-ovest: zone per prendere il sole, ombra dove ripararsi e una piattaforma per scendere in acqua. Attrezzatura da snorkeling a bordo, da mangiare e da bere compresi, e un equipaggio che parla più lingue e racconta quello che si vede. Si sceglie fra il giro di tre ore in condivisione e la barca tutta per sé.",
+      en: "An eighteen-metre rigid inflatable that runs along the south-west coast: areas to sunbathe, shade to retreat to and a platform to get into the water from. Snorkelling gear on board, food and drinks included, and a crew that speaks several languages and tells you what you are looking at. Choose between the shared three-hour trip and having the boat to yourselves.",
+      es: "Una neumática rígida de dieciocho metros que recorre la costa suroeste: zonas para tomar el sol, sombra donde resguardarse y una plataforma para bajar al agua. Equipo de snorkel a bordo, comida y bebida incluidas, y una tripulación que habla varios idiomas y te cuenta lo que estás viendo. Se elige entre la salida de tres horas compartida y el barco entero para ti."
     },
     image: "opera-60.jpg",
     published: true

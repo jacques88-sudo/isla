@@ -920,9 +920,10 @@ const ESPLORA_CATALOG = [
     priceFrom: 61,
     priceAdult: 0,
     priceChild: 0,
-    // Gratis su tutte e due le partenze. Le fasce d'eta' non le ha mandate
-    // nessuno: le righe escono senza parentesi finche' non arrivano.
+    // Gratis su tutte e due le partenze.
     priceInfant: 0,
+    // 12+ discende dai bambini 3-11, e 0-2 tocca il 3 senza buchi.
+    ages: { adult: "12+", child: "3-11", infant: "0-2" },
     options: {
       label: { it: "Partenza", en: "Departure", es: "Salida" },
       choices: [

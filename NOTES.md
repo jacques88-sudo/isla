@@ -318,9 +318,10 @@ Il `zone` dentro la variante — quello aggiunto per il Royal Delfin — serve e
 questo: chi sceglie "Dal nord" legge **Puerto de la Cruz** come punto di partenza, non
 Puerto Colón.
 
-**Le fasce d'eta' non ci sono**, perche' non le ha mandate nessuno: le righe escono
-"Adulti", "Bambini", "Neonati" senza parentesi. Non e' un problema — e' come si comportano
-gia' il Twin Ticket e la pesca — ma **si possono aggiungere appena arrivano.**
+**Le fasce d'eta' sono arrivate subito dopo: bambini 3-11, neonati 0-2**, quindi adulti
+12+. Le stesse del Whale & Dolphin, del Luxury Catamaran e del Small Group, che e' un
+segnale che a Tenerife sono lo standard delle barche. Le due fasce si toccano, come sempre
+si controlla.
 
 **Cosa c'e' di notevole e finisce nei consigli:** i tre bagni, di cui **uno accessibile**, e
 la barca attrezzata per chi ha difficolta' motorie. E' l'unica del catalogo che lo dice, ed

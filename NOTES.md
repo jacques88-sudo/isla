@@ -298,35 +298,40 @@ modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet
 (prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
 identiche.
 
-### Kalima Kat, scheda nuova (25 agosto)
+### Kalima Kat era il Small Group Catamaran (25 agosto)
 
-Catamarano da **22 persone**, che a Tenerife e' raro: quasi tutte le barche private ne
-portano 12. Stessa struttura dell'Opera 60, due formule con due modi di pagare:
+Avevo aperto una scheda nuova, `kalima-kat`. **L'ufficio: e' la stessa barca del Small
+Group Catamaran, usa quella.** Aveva ragione, e i segnali c'erano tutti: massimo 22 o 23
+persone, tre ore, paella di pollo, Puerto Colón. Non li ho messi insieme.
 
-| formula | prezzo | come si paga | orari |
-|---|---|---|---|
-| 3 ore, in condivisione | €59 adulto, €39 bambino | a persona | 9:30 e 12:30 |
-| Charter privato | da €800, 3 o 6 ore | a barca, fino a 22 | si concorda |
+**Lezione:** quando arriva una barca "nuova", prima si guarda se qualcuna di quelle che
+abbiamo le somiglia troppo. Capienza, porto, durata e cosa si mangia bastano a
+riconoscerla — nessun rivenditore usa lo stesso nome dell'altro.
 
-Bambini 2-12, bebe' 0-1 gratis, adulti 13+. Le due fasce si toccano.
+`kalima-kat` e' stata tolta e `small-group-catamaran` ha preso quello che le mancava:
 
-**`times: []` non e' come non scrivere il campo.** Alla prima prova il charter privato
-mostrava le **fasce segnaposto** (09:00-10:00, 10:00-11:00...), perche' non aveva orari suoi
-e nemmeno la scheda ne aveva. Ma un charter privato non ha orari fissi: l'ora si concorda.
-La lista vuota lascia solo "Da concordare", il campo mancante fa comparire i segnaposto.
-Scritto nella documentazione del campo, perche' la differenza fra `[]` e niente non si
-indovina.
+- la **seconda formula**, il charter privato da €800 per tre o sei ore, con l'uscita al
+  tramonto
+- gli **orari** del giro condiviso: 9:30 e 12:30
+- la **toilette a bordo**, l'**equipaggio e l'assicurazione** compresi, e la guida fra le
+  icone
+- una descrizione che dice le due formule e il fatto che 22-23 persone su una barca privata
+  a Tenerife sono un'eccezione
 
-**Non preso:** il prezzo barrato (€75 → €59, stessa domanda dell'Opera 60), la politica di
-cancellazione (5 giorni / 7 / 3 — la nostra resta 24 ore), il pagamento con caparra, che e'
-il carrello del rivenditore e non il nostro, il "best price guarantee" e le loro recensioni.
+**⚠ Le due fonti non dicono gli stessi numeri, e ho tenuto i nostri:**
 
-**Non preso nemmeno l'orario delle 15:30**, che l'intestazione della pagina elenca fra le
-partenze mentre il testo della formula condivisa dice solo 9:30 e 12:30 — e l'ufficio ha
-confermato quei due. Probabilmente e' l'uscita al tramonto, che infatti resta nominata nella
-descrizione del charter privato senza pretendere un orario.
+| | l'ufficio (prima) | la pagina Kalima |
+|---|---|---|
+| adulto | **€60** | €59 (in saldo da €75) |
+| bambino | **€30** | €39 |
+| fascia bambini | **3-11** | 2-12 |
+| neonati gratis | **0-2** | 0-1 |
+| capienza | **23** | 22 |
+| anticipo | **15 minuti** | 30 minuti |
 
-**Manca la foto:** la scheda esce col segnaposto "ISLA".
+In grassetto quello che c'e' sulla scheda: sono i numeri che l'ufficio aveva mandato come
+listino nostro, mentre gli altri vengono dalla pagina di un rivenditore con sopra un
+cartello "Sale!". **Da confermare quali valgono** — bastano due righe e sistemo.
 
 ### Opera 60, riempita: due formule molto diverse (25 agosto)
 

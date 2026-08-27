@@ -298,6 +298,43 @@ modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet
 (prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
 identiche.
 
+### Utopia Boat Party, riempita (25 agosto)
+
+Aveva una riga di descrizione e un prezzo. Adesso ha i **quattro biglietti**, che non sono
+durate ne' formule ma **quanto si beve**:
+
+| biglietto | prezzo | cosa dà |
+|---|---|---|
+| Basic | €70 | quattro consumazioni |
+| Standard | €90 | open bar per tre ore, roba locale |
+| Premium | €110 | open bar con le marche, piu' Red Bull |
+| VIP | €130 | tutto il Premium, piu' imbarco prioritario e area VIP |
+
+Tre ore, il sabato alle 12:30, da Puerto Colón. Ritrovo al Black Pearl Bar, dove si beve
+qualcosa prima e si torna dopo per l'after.
+
+**`ages: { adult: "18+" }` e basta, ed e' voluto.** Sotto i 18 non si sale, quindi bambini
+e neonati **non esistono**: niente `priceChild`, niente `priceInfant`. Su questa scheda quei
+campi non vorrebbero dire "non lo sappiamo", vorrebbero dire "non puo' venire" — la stessa
+distinzione del Submarine Safari, dove sotto i 2 anni non si imbarca.
+
+Effetto collaterale visto in prova: se un cliente scrive comunque dei bambini nella
+richiesta, **il totale sparisce** invece di dare un numero sbagliato. Va bene cosi', ma la
+finestra continua a chiedere "Bambini" anche su un'attivita' per soli maggiorenni. Si
+potrebbe nascondere il campo dove `family` e' false — **da valutare, non fatto**: vale per
+tutte le attivita' da adulti, non solo per questa.
+
+**Non preso:** il "5% di sconto automatico al checkout", che e' il carrello del rivenditore
+e non il nostro; il prezzo barrato (€75 → €70, stessa domanda dell'Opera 60 e del Kalima);
+la politica di cancellazione (7, 12 o 16 giorni a seconda del gruppo — la nostra resta 24
+ore); le loro recensioni e il "best price guaranteed". Preso il consiglio sul mal di mare,
+che qui e' anche piu' utile del solito visto quanto si beve.
+
+**Una cosa da guardare:** in "Cosa e' incluso" c'e' "Bagno e snorkeling", che c'era gia'
+prima. Su una festa in barca lo snorkeling suona strano, ma l'etichetta e' quella scelta
+dall'ufficio per la sosta bagno e la regola era "su tutte le barche". Lasciata, da
+confermare.
+
 ### Kalima Kat era il Small Group Catamaran (25 agosto)
 
 Avevo aperto una scheda nuova, `kalima-kat`. **L'ufficio: e' la stessa barca del Small

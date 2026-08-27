@@ -249,6 +249,54 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Royal Delfin, scheda nuova (25 agosto)
+
+Catamarano da 200 persone con le finestre panoramiche sotto la linea di galleggiamento.
+Quattro varianti, come il Freebird ma con giorni, orari e prezzi suoi:
+
+| variante | adulto | bambino | giorni | orario |
+|---|---|---|---|---|
+| 2 ore | €33 | €20 | mar, gio, dom | 10:30 |
+| 3 ore | €50 | €30 | mer, sab | 10:30 |
+| 4 ore e mezza | €63 | €40 | tutti i giorni | 14:00 (e 9:30 in certi periodi) |
+| 4 ore e mezza dal nord | €68 | €45 | tutti i giorni | 14:00 |
+
+Bambini 4-11, come sul Freebird (detto dall'ufficio).
+
+**E' la prima scheda che usa tutto insieme quello che abbiamo costruito in due giorni:**
+prezzi dentro le varianti, orari dentro le varianti, descrizione della variante, e il
+riquadro delle icone che cambia. Senza, questa scheda non si poteva scrivere: **il giro
+di 2 ore non ha ne' la sosta bagno ne' il pranzo**, gli altri tre ce li hanno tutti e due,
+e una lista sola per tutta la scheda avrebbe mentito a qualcuno.
+
+Nel riquadro fisso restano `guide` e `transfer`, le uniche due vere per tutte e quattro.
+
+**La sosta bagno non c'e' sul giro di 2 ore.** Contro la regola generale dell'ufficio
+("la sosta bagno e' inclusa in tutte le barche"), ma qui il fornitore la nomina
+esplicitamente per il giro di 3 ore (Diego Hernández) e per quelli di 4 ore e mezza
+(Masca) e **non** per quello di 2, che descrive come "quick sightings tour". Due ore
+andata e ritorno sono poche per fermarsi. **Da confermare.**
+
+**Cosa NON ho preso dalla pagina.** Vale la regola gia' scritta: politiche e pubblicita'
+del rivenditore restano fuori. Quindi niente "best price guarantee", niente "official
+tickets", niente politica di cancellazione (la nostra resta 24 ore, decisa dall'ufficio),
+niente politica per il maltempo o per chi non si presenta. Preso solo il consiglio sul
+mal di mare, che non promette niente.
+
+**Tre cose da chiedere all'ufficio:**
+
+1. **Manca la foto.** La scheda esce col segnaposto "ISLA" al posto dell'immagine. Le due
+   foto di catamarano che abbiamo sono Freebird, non Royal Delfin: usarle sarebbe far
+   vedere un'altra barca.
+2. **I neonati.** Sul Freebird 0-3 non pagano. Qui l'ufficio ha detto che i **bambini**
+   hanno le stesse eta', che e' la fascia, non il prezzo: se anche qui i piccoli non
+   pagano lo aggiungo, ma non l'ho dato per scontato.
+3. **La partenza delle 9:30** sul giro di 4 ore e mezza. La pagina la da' prima come
+   "lunedi' e venerdi'" e poi come "venerdi', dall'11 luglio al 5 settembre": due cose
+   diverse, e le date sono di un'altra stagione. Per ora la scheda dice che c'e' "in certi
+   periodi dell'anno" e invita a chiedere, invece di stampare giorni che potrebbero non
+   valere piu'.
+
 ### Freebird: neonati 0-2 gratis (25 agosto)
 
 `priceInfant: 0`, che sul campo dei neonati vuol dire **davvero gratis** e non "non lo

@@ -347,6 +347,119 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    id: "royal-delfin",
+    title: "Royal Delfin Boat Tour",
+    category: "mare-barche",
+    zone: "Puerto Colón",
+    duration: { it: "Da 2 a 4 ore e mezza", en: "2 to 4.5 hours", es: "De 2 a 4,5 horas" },
+    priceFrom: 33,
+    privateOption: "private-charter",
+    priceAdult: 0,
+    priceChild: 0,
+    ages: { child: "4-11" },
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        {
+          label: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          priceAdult: 33,
+          priceChild: 20,
+          times: ["10:30"],
+          desc: {
+            it: "Il giro corto, per vedere balene e delfini senza starci mezza giornata. Non c'è la sosta bagno e il pranzo non è compreso: a bordo c'è il bar, dove si paga. Martedì, giovedì e domenica, partenza alle 10:30.",
+            en: "The short trip, to see whales and dolphins without giving up half a day. There is no swim stop and lunch is not included: there is a bar on board, where you pay. Tuesdays, Thursdays and Sundays, leaving at 10:30.",
+            es: "La salida corta, para ver ballenas y delfines sin dedicarle media jornada. No hay parada de baño y la comida no está incluida: a bordo hay bar, donde se paga. Martes, jueves y domingos, salida a las 10:30."
+          }
+        },
+        {
+          label: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          priceAdult: 50,
+          priceChild: 30,
+          times: ["10:30"],
+          included: ["swimstop", "lunch", "drinks"],
+          desc: {
+            it: "Balene e delfini, con sosta bagno e pranzo nella baia di Diego Hernández. Bevande illimitate a bordo. Mercoledì e sabato, partenza alle 10:30.",
+            en: "Whales and dolphins, with a swim stop and lunch in Diego Hernández bay. Unlimited drinks on board. Wednesdays and Saturdays, leaving at 10:30.",
+            es: "Ballenas y delfines, con parada de baño y comida en la bahía de Diego Hernández. Bebidas ilimitadas a bordo. Miércoles y sábados, salida a las 10:30."
+          }
+        },
+        {
+          label: { it: "4 ore e mezza", en: "4.5 hours", es: "4,5 horas" },
+          priceAdult: 63,
+          priceChild: 40,
+          times: ["14:00", "09:30"],
+          included: ["swimstop", "lunch", "drinks"],
+          desc: {
+            it: "Il giro lungo: balene e delfini e bagno nella baia di Masca. Si comincia con la frutta di stagione e si pranza con riso e pollo, bevande comprese. Tutti i giorni alle 14:00; in certi periodi dell'anno c'è anche la partenza delle 9:30, con un menù diverso — chiedici se c'è nella tua data.",
+            en: "The long trip: whales and dolphins, and a swim in Masca bay. It starts with seasonal fruit and lunch is rice and chicken, drinks included. Every day at 14:00; at certain times of year there is also a 9:30 departure with a different menu — ask us whether it runs on your date.",
+            es: "La salida larga: ballenas y delfines y baño en la bahía de Masca. Se empieza con fruta de temporada y se come arroz con pollo, bebidas incluidas. Todos los días a las 14:00; en ciertas épocas del año hay también la salida de las 9:30, con un menú distinto — pregúntanos si la hay en tu fecha."
+          }
+        },
+        {
+          label: {
+            it: "4 ore e mezza, partenza dal nord",
+            en: "4.5 hours, pickup in the north",
+            es: "4,5 horas, salida desde el norte"
+          },
+          priceAdult: 68,
+          priceChild: 45,
+          times: ["14:00"],
+          included: ["swimstop", "lunch", "drinks"],
+          desc: {
+            it: "Lo stesso giro lungo, con bagno a Masca e pranzo a bordo, per chi alloggia nel nord: la navetta parte da Puerto de la Cruz. Tutti i giorni, la barca parte alle 14:00.",
+            en: "The same long trip, with the Masca swim and lunch on board, for anyone staying in the north: the shuttle leaves from Puerto de la Cruz. Every day, the boat leaves at 14:00.",
+            es: "La misma salida larga, con baño en Masca y comida a bordo, para quien se aloja en el norte: la lanzadera sale desde Puerto de la Cruz. Todos los días, el barco sale a las 14:00."
+          }
+        }
+      ]
+    },
+    included: ["guide", "transfer"],
+    notes: [
+      {
+        it: "La presa e la riconsegna in hotel sono gratis dai principali alberghi del sud: Los Cristianos, Playa de las Américas, Costa Adeje e La Caleta. Dicci dove stai e ti confermiamo l'orario del passaggio.",
+        en: "Hotel pick-up and drop-off are free from the main hotels in the south: Los Cristianos, Playa de las Américas, Costa Adeje and La Caleta. Tell us where you are staying and we'll confirm the pick-up time.",
+        es: "La recogida y la vuelta al hotel son gratis desde los principales hoteles del sur: Los Cristianos, Playa de las Américas, Costa Adeje y La Caleta. Dinos dónde te alojas y te confirmamos la hora de recogida."
+      },
+      {
+        it: "Se vieni con la tua macchina: Puerto Colón, pantalán 12. Arriva 20 minuti prima, la guida ti aspetta al cancello 12. Vicino al porto c'è un parcheggio pubblico a pagamento.",
+        en: "If you come by car: Puerto Colón, pantalán 12. Get there 20 minutes early — the guide will meet you at gate 12. There is paid public parking near the harbour.",
+        es: "Si vienes en coche: Puerto Colón, pantalán 12. Llega 20 minutos antes, el guía te espera en la puerta 12. Cerca del puerto hay aparcamiento público de pago."
+      },
+      {
+        it: "Sul giro di 3 ore e su quelli di 4 ore e mezza il pranzo è compreso, con opzioni senza glutine e vegetariane: chiedile quando prenoti e l'equipaggio le prepara.",
+        en: "Lunch is included on the 3-hour and the 4.5-hour trips, with gluten-free and vegetarian options: ask for them when you book and the crew will prepare them.",
+        es: "En la salida de 3 horas y en las de 4,5 horas la comida está incluida, con opciones sin gluten y vegetarianas: pídelas al reservar y la tripulación las prepara."
+      },
+      {
+        it: "A bordo c'è il Wi-Fi gratuito, ma in mare la copertura può mancare.",
+        en: "There is free Wi-Fi on board, but out at sea the signal can drop.",
+        es: "A bordo hay Wi-Fi gratuito, pero en el mar la cobertura puede fallar."
+      },
+      {
+        it: "Il catamarano è per non fumatori ed è attrezzato per chi ha difficoltà motorie.",
+        en: "The catamaran is non-smoking and equipped for guests with reduced mobility.",
+        es: "El catamarán es para no fumadores y está equipado para personas con movilidad reducida."
+      },
+      {
+        it: "Porta costume e crema solare.",
+        en: "Bring swimwear and sunscreen.",
+        es: "Trae bañador y crema solar."
+      },
+      {
+        it: "Se soffri il mal di mare, prendi le tue precauzioni prima di salire a bordo.",
+        en: "If you get seasick, take your precautions before boarding.",
+        es: "Si te mareas en el mar, toma tus precauciones antes de embarcar."
+      }
+    ],
+    family: true,
+    desc: {
+      it: "Un catamarano grande, fino a 200 persone, con finestre panoramiche sotto la linea di galleggiamento: balene e delfini si guardano anche da sotto, non solo dal ponte. Si sceglie fra due ore, tre ore o il giro lungo fino alla baia di Masca. La barca segue la carta per la tutela dei cetacei e le guide parlano più lingue.",
+      en: "A big catamaran, up to 200 people, with panoramic windows below the waterline: you watch whales and dolphins from underneath as well as from the deck. Choose between two hours, three hours or the long trip out to Masca bay. The boat follows the whale conservation charter and the guides speak several languages.",
+      es: "Un catamarán grande, hasta 200 personas, con ventanas panorámicas bajo la línea de flotación: las ballenas y los delfines se ven también desde abajo, no solo desde cubierta. Se elige entre dos horas, tres horas o la salida larga hasta la bahía de Masca. El barco sigue la carta para la protección de los cetáceos y los guías hablan varios idiomas."
+    },
+    published: true
+  },
+  {
     id: "whale-dolphin-3h",
     title: "3-Hour Whale & Dolphin Boat Trip",
     category: "mare-barche",

@@ -490,16 +490,62 @@ const ESPLORA_CATALOG = [
     id: "submarine-safari",
     title: "Submarine Safari",
     category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Marina Amarilla",
+    duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
     priceFrom: 61,
     priceAdult: 61,
     priceChild: 37,
+    // 15+ discende dai bambini 2-14: sopra i 14 non c'e' altra fascia. Sotto i
+    // 2 anni invece non c'e' nessuna fascia perche' non si sale proprio: non e'
+    // "gratis", quindi niente priceInfant.
+    ages: { adult: "15+", child: "2-14" },
+    // La navetta dal sud e' compresa; dal nord costa in piu'. `transferPrice`
+    // sono i prezzi **completi** con la navetta dal nord, non il supplemento:
+    // 61 + 13 e 37 + 8.
+    transfer: {
+      it: "Solo se stai nel nord dell'isola: dal sud la navetta è già compresa nel prezzo.",
+      en: "Only if you are staying in the north of the island: from the south the shuttle is already included.",
+      es: "Solo si te alojas en el norte de la isla: desde el sur la lanzadera ya está incluida."
+    },
+    transferPrice: { adult: 74, child: 45 },
+    included: ["transfer", "guide"],
+    notes: [
+      {
+        it: "Si scende tutti i giorni tranne il sabato.",
+        en: "It runs every day except Saturday.",
+        es: "Se hace todos los días excepto el sábado."
+      },
+      {
+        it: "Si parte dal porto di Marina Amarilla, a San Miguel de Abona, zona Amarilla Golf. Arriva almeno 15 minuti prima.",
+        en: "You leave from Marina Amarilla harbour, in San Miguel de Abona, the Amarilla Golf area. Get there at least 15 minutes early.",
+        es: "Se sale del puerto de Marina Amarilla, en San Miguel de Abona, zona Amarilla Golf. Llega al menos 15 minutos antes."
+      },
+      {
+        it: "La navetta dagli hotel del sud è compresa nel prezzo. Dal nord costa €13 in più a adulto e €8 a bambino.",
+        en: "The shuttle from hotels in the south is included in the price. From the north it costs €13 more per adult and €8 per child.",
+        es: "La lanzadera desde los hoteles del sur está incluida en el precio. Desde el norte cuesta 13 € más por adulto y 8 € por niño."
+      },
+      {
+        it: "Si sale dai 2 anni in su, e sotto i 16 bisogna essere accompagnati da un adulto.",
+        en: "Children can board from age 2, and under-16s must be with an adult.",
+        es: "Se puede subir a partir de los 2 años, y los menores de 16 deben ir acompañados por un adulto."
+      },
+      {
+        it: "Prima di salire si fa una spiegazione sulla sicurezza, poi si prende posto.",
+        en: "Before boarding there is a safety briefing, then you take your seat.",
+        es: "Antes de embarcar se hace una explicación de seguridad y luego se toma asiento."
+      },
+      {
+        it: "Se soffri il mal di mare, prendi le tue precauzioni prima di salire a bordo.",
+        en: "If you get seasick, take your precautions before boarding.",
+        es: "Si te mareas en el mar, toma tus precauciones antes de embarcar."
+      }
+    ],
     family: true,
     desc: {
-      it: "Discesa sott'acqua a bordo di un sottomarino turistico, per vedere il fondale senza bagnarsi.",
-      en: "A dive below the surface aboard a tourist submarine, to see the seabed without getting wet.",
-      es: "Inmersión bajo el agua a bordo de un submarino turístico, para ver el fondo sin mojarse."
+      it: "Il sottomarino giallo scende fra i 30 e i 60 metri, e si guarda il fondale restando all'asciutto. Ogni posto ha il suo oblò e uno schermo che dice a che profondità si è e che temperatura fa fuori. Sotto passano pesci e razze, e ogni tanto anche i delfini. Dura circa un'ora.",
+      en: "The yellow submarine goes down between 30 and 60 metres, and you watch the seabed while staying dry. Every seat has its own porthole and a screen telling you how deep you are and the temperature outside. Fish and stingrays go past, and now and then dolphins too. It lasts about an hour.",
+      es: "El submarino amarillo baja entre 30 y 60 metros, y se mira el fondo sin mojarse. Cada asiento tiene su ojo de buey y una pantalla que dice a qué profundidad estás y qué temperatura hace fuera. Abajo pasan peces y rayas, y de vez en cuando también delfines. Dura alrededor de una hora."
     },
     image: "submarine-safari.jpg",
     published: true

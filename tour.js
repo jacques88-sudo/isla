@@ -24,7 +24,12 @@ function detailMedia(tour) {
 
 // Le righe "In breve": si saltano i campi ancora da definire, cosi' la
 // scheda non si riempie di "Da definire".
-function detailRows(tour) {
+//
+// `variante` e' la durata scelta coi bottoni, quando la scheda ne ha. I prezzi
+// possono stare sulla scheda oppure dentro la variante, dove cambiano con la
+// durata: da qui in poi non fa differenza, le righe che ne escono sono le
+// stesse. Il riquadro si ridisegna a ogni bottone premuto.
+function detailRows(tour, variante) {
   // daDefinire() arriva da escursioni.js, caricato prima di questo file
   const righe = [];
 
@@ -40,6 +45,13 @@ function detailRows(tour) {
   if (!daDefinire(tour.duration) && !opzioniSonoLaDurata) {
     righe.push([t("detail.duration"), tf(tour.duration)]);
   }
+  // I due prezzi a persona: quelli della variante scelta se ce li ha, se no
+  // quelli della scheda. Il `price` liscio della variante non entra qui: puo'
+  // essere il prezzo del mezzo e non della persona (vedi prezziAPersona()).
+  const perPersona = !!(variante && variante.priceAdult > 0);
+  const adulto = perPersona ? variante.priceAdult : tour.priceAdult;
+  const bambino = perPersona ? (variante.priceChild || 0) : tour.priceChild;
+
   // prezzi a scaglioni: una riga per fascia al posto della riga "Prezzo"
   if (Array.isArray(tour.priceTiers) && tour.priceTiers.length) {
     tour.priceTiers.forEach(fascia => {
@@ -48,22 +60,25 @@ function detailRows(tour) {
         "€" + fascia.price
       ]);
     });
-  } else if (tour.priceAdult > 0 && tour.priceAdult === tour.priceFrom) {
-    // "Prezzo: da €55" e "Adulti: €55" dicono la stessa cosa: si tiene solo
-    // la seconda, che e' piu' precisa. La riga generica torna appena i due
-    // numeri non coincidono, o quando il prezzo adulto non c'e' ancora.
+  } else if (adulto > 0) {
+    // "Prezzo: €55" sopra "Adulti: €55" e' la stessa cosa scritta due volte:
+    // si tengono solo le righe per fascia d'eta', che sono piu' precise.
+  } else if (variante && variante.price) {
+    // variante col prezzo ma senza le fasce: il numero e' quello del mezzo o
+    // del gruppo, e resta sulla riga generica
+    righe.push([t("detail.price"), "€" + variante.price + priceUnitSuffix(tour)]);
   } else {
-    righe.push([t("detail.price"), tourPrice(tour), "prezzo"]);
+    righe.push([t("detail.price"), tourPrice(tour)]);
   }
 
-  // Prezzi per adulto e per bambino: a 0 vuol dire "non ancora deciso" e la
-  // riga resta nascosta. Mostrare "€0" farebbe pensare a gratis o a un errore.
+  // A 0 vuol dire "non ancora deciso" e la riga resta nascosta: mostrare "€0"
+  // farebbe pensare a gratis o a un errore.
   // "Adulti (12+)": la fascia d'eta' fra parentesi, quando il fornitore l'ha
   // detta. Senza, resta solo "Adulti".
   const eta = tour.ages || {};
   const conEta = (etichetta, fascia) => fascia ? etichetta + " (" + fascia + ")" : etichetta;
-  if (tour.priceAdult > 0) righe.push([conEta(t("req.adults"), eta.adult), "€" + tour.priceAdult]);
-  if (tour.priceChild > 0) righe.push([conEta(t("req.kids"), eta.child), "€" + tour.priceChild]);
+  if (adulto > 0) righe.push([conEta(t("req.adults"), eta.adult), "€" + adulto]);
+  if (bambino > 0) righe.push([conEta(t("req.kids"), eta.child), "€" + bambino]);
   // Per i neonati lo zero vuol dire davvero gratis, non "da decidere": la
   // riga si mostra solo se il campo c'e', e sparisce se manca.
   if (tour.priceInfant !== undefined) {
@@ -85,10 +100,10 @@ function detailRows(tour) {
   }
   if (tour.season) righe.push([t("detail.season"), tf(tour.season)]);
 
-  return righe.map(([etichetta, valore, aggancio]) => `
+  return righe.map(([etichetta, valore]) => `
     <div class="detail-row">
       <dt>${esc(etichetta)}</dt>
-      <dd${aggancio ? ` data-detail-${aggancio}` : ""}>${esc(valore)}</dd>
+      <dd>${esc(valore)}</dd>
     </div>`).join("");
 }
 
@@ -188,12 +203,11 @@ function detailIncluded(tour) {
   // anche se la scheda non ha `included` ma una variante si', se no al primo
   // clic non ci sarebbe niente da riempire.
   const scelte = (tour.options && tour.options.choices) || [];
-  const primaVariante = scelte[0] || null;
   const serve = (tour.included && tour.included.length) ||
     scelte.some(s => s.included && s.included.length);
   if (!serve) return "";
 
-  const voci = paroleIncluse(tour, primaVariante);
+  const voci = paroleIncluse(tour, primaVariante(tour));
   return `
     <section class="detail-included" data-detail-included${voci.length ? "" : " hidden"}>
       <h2 class="detail-sub">${esc(t("detail.included"))}</h2>
@@ -229,7 +243,6 @@ function detailOptions(tour) {
           <button type="button" class="detail-option"
                   data-option-value="${esc(tf(scelta.label))}"
                   ${prezzo ? `data-option-price="${prezzo}"` : ""}
-                  ${scelta.priceChild ? `data-option-price-child="${scelta.priceChild}"` : ""}
                   ${scelta.desc ? `data-option-desc="${esc(tf(scelta.desc))}"` : ""}
                   aria-pressed="${i === 0 ? "true" : "false"}">
             <span class="detail-option-name">${esc(tf(scelta.label))}</span>
@@ -239,6 +252,14 @@ function detailOptions(tour) {
       ${opz.choices.some(s => s.desc)
         ? '<p class="detail-option-desc" data-detail-option-desc></p>' : ""}
     </div>`;
+}
+
+// La variante premuta all'apertura e' sempre la prima: la tabella e il riquadro
+// devono nascere gia' d'accordo coi bottoni, se no al primo sguardo dicono i
+// numeri di una variante che nessuno ha scelto.
+function primaVariante(tour) {
+  const scelte = (tour.options && tour.options.choices) || [];
+  return scelte[0] || null;
 }
 
 function detailRelated(tour) {
@@ -322,7 +343,7 @@ function renderTour(tour) {
         ${detailOptions(tour)}
 
         <h2 class="detail-sub">${esc(t("detail.summary"))}</h2>
-        <dl class="detail-rows">${detailRows(tour)}</dl>
+        <dl class="detail-rows" data-detail-rows>${detailRows(tour, primaVariante(tour))}</dl>
 
         ${detailItinerary(tour)}
         ${detailIncluded(tour)}
@@ -339,53 +360,42 @@ function renderTour(tour) {
   collegaOpzioni(contenitore, tour);
 }
 
-// Un bottone solo alla volta resta premuto, e la riga "Prezzo" segue la
-// variante scelta: senza, il cliente sceglie le 2 ore e continua a leggere
-// "da €150".
+// Un bottone solo alla volta resta premuto, e la pagina sotto segue la variante
+// scelta: senza, il cliente sceglie le 2 ore e continua a leggere i prezzi e le
+// cose incluse di un'altra.
 function collegaOpzioni(contenitore, tour) {
   const gruppo = contenitore.querySelector("[data-detail-options]");
   if (!gruppo) return;
-  const prezzoEl = contenitore.querySelector("[data-detail-prezzo]");
 
   // La descrizione della variante scelta sta in un riquadro sotto i bottoni,
   // non dentro ognuno: con quattro varianti che hanno due righe di testo a
   // testa la fila di bottoni diventa un muro e non si scelgono piu'.
   const descEl = contenitore.querySelector("[data-detail-option-desc]");
+  const righeEl = contenitore.querySelector("[data-detail-rows]");
   const inclusoEl = contenitore.querySelector("[data-detail-included]");
   const inclusoListaEl = contenitore.querySelector("[data-detail-included-list]");
 
-  // "Cosa e' incluso" cambia con la variante: sul giro di 2 ore non c'e' ne'
-  // il pranzo ne' il transfer, e mostrarli lo stesso sarebbe una promessa che
-  // la barca non mantiene.
-  function aggiornaIncluso(bottone) {
-    if (!inclusoEl || !inclusoListaEl) return;
-    const voci = paroleIncluse(tour, varianteDi(tour, bottone.getAttribute("data-option-value")));
-    inclusoListaEl.innerHTML = iconeIncluse(voci);
-    inclusoEl.hidden = !voci.length;
-  }
+  // Tre pezzi di pagina seguono la variante scelta, e si aggiornano insieme:
+  //   - "In breve", dove i prezzi per fascia d'eta' sono quelli della variante
+  //   - le due righe che spiegano la variante, sotto i bottoni
+  //   - "Cosa e' incluso": sul giro di 2 ore non c'e' ne' il pranzo ne' il
+  //     transfer, e mostrarli lo stesso sarebbe una promessa non mantenuta
+  function aggiornaScheda(bottone) {
+    const variante = varianteDi(tour, bottone.getAttribute("data-option-value"));
 
-  function aggiornaPrezzo(bottone) {
+    if (righeEl) righeEl.innerHTML = detailRows(tour, variante);
+
     if (descEl) {
       const d = bottone.getAttribute("data-option-desc") || "";
       descEl.textContent = d;
       descEl.hidden = !d;
     }
-    if (!prezzoEl) return;
-    const p = bottone.getAttribute("data-option-price");
-    if (!p) { prezzoEl.textContent = tourPrice(tour); return; }
-    // "a barca" segue anche il prezzo della variante: "€190" da solo, su una
-    // barca che si paga a barca e non a testa, si legge come "€190 a persona".
-    let testo = "€" + p + priceUnitSuffix(tour);
-    // Dove il prezzo dei bambini cambia con la durata non puo' stare nella
-    // tabella qui sopra, che e' fissa: si attacca al prezzo della variante.
-    // Con la fascia d'eta' diventa "(bambini 4-11: €31)", che dice anche a chi
-    // ha un ragazzino di dodici anni quale dei due numeri lo riguarda.
-    const pb = bottone.getAttribute("data-option-price-child");
-    if (pb) {
-      const eta = (tour.ages && tour.ages.child) ? " " + tour.ages.child : "";
-      testo += " (" + t("req.kids").toLowerCase() + eta + ": €" + pb + ")";
+
+    if (inclusoEl && inclusoListaEl) {
+      const voci = paroleIncluse(tour, variante);
+      inclusoListaEl.innerHTML = iconeIncluse(voci);
+      inclusoEl.hidden = !voci.length;
     }
-    prezzoEl.textContent = testo;
   }
 
   gruppo.addEventListener("click", e => {
@@ -393,12 +403,11 @@ function collegaOpzioni(contenitore, tour) {
     if (!bottone) return;
     gruppo.querySelectorAll(".detail-option")
       .forEach(b => b.setAttribute("aria-pressed", String(b === bottone)));
-    aggiornaPrezzo(bottone);
-    aggiornaIncluso(bottone);
+    aggiornaScheda(bottone);
   });
 
   const iniziale = gruppo.querySelector('.detail-option[aria-pressed="true"]');
-  if (iniziale) { aggiornaPrezzo(iniziale); aggiornaIncluso(iniziale); }
+  if (iniziale) aggiornaScheda(iniziale);
 }
 
 function initTourPage() {

@@ -249,6 +249,45 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### "In breve" con una riga per fascia d'eta', anche sulle schede a varianti (25 agosto)
+
+Chiesto dall'ufficio: sul Royal Delfin (e sul Freebird) la tabella deve leggersi come sul
+3-Hour Whale & Dolphin, cioe' **una riga per fascia**, invece della riga sola
+"Prezzo: €33 (bambini 4-11: €20)".
+
+    Adulti (12+)      €63
+    Bambini (4-11)    €40
+    Neonati (0-3)     Gratis
+
+**Il pezzo che mancava.** `detailRows()` leggeva i prezzi solo dalla scheda, e su queste
+due schede i prezzi stanno **dentro le varianti**. Ora la funzione riceve la variante
+scelta e prende i prezzi da li' quando ci sono. Da quel punto in poi non fa differenza da
+dove vengano: le righe che escono sono le stesse.
+
+**La tabella si ridisegna a ogni bottone premuto**, come gia' facevano la descrizione della
+variante e il riquadro delle icone. I tre aggiornamenti erano tre funzioni separate, ora
+sono uno solo (`aggiornaScheda`): fanno sempre la stessa cosa nello stesso momento, e
+tenerli separati era solo un modo per dimenticarne uno.
+
+**Roba tolta perche' non serve piu':** l'aggancio `data-detail-prezzo`, l'attributo
+`data-option-price-child` sui bottoni e il pezzo che scriveva "(bambini 4-11: €31)"
+attaccato al prezzo. Quella scritta era un ripiego di quando la tabella non sapeva
+mostrare le fasce; adesso le mostra, e ripeterle sarebbe dirle due volte.
+
+**`price` liscio sulla variante resta fuori dalle righe per fascia.** Vale la stessa
+regola del totale: puo' essere il prezzo del **mezzo** e non della persona. Il jet ski
+infatti continua a mostrare "Prezzo → €150" sulla riga generica, non "Adulti → €150".
+
+**Aggiunta la fascia adulti "12+"** su tutte e due le schede. Non l'ha detta nessuno, ma
+discende dalle altre: se i bambini finiscono a 11 e sopra non c'e' altra fascia, a dodici
+anni si paga come un grande. Senza, la riga usciva "Adulti" liscia mentre le altre due
+avevano la parentesi.
+
+**Controllate una per una le schede che NON dovevano cambiare:** whale-dolphin-3h (il
+modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet ski
+(prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
+identiche.
+
 ### Royal Delfin, scheda nuova (25 agosto)
 
 Catamarano da 200 persone con le finestre panoramiche sotto la linea di galleggiamento.

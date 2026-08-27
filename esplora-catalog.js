@@ -245,9 +245,9 @@ const ESPLORA_CATALOG = [
     // durata. Qui resta solo quello dei neonati, che e' zero su tutte: e' un
     // prezzo, non un "non lo sappiamo", e la riga "Gratis" si vede sempre.
     priceInfant: 0,
-    // La fascia degli adulti non c'e' perche' non serve dirla: "bambini 4-11"
-    // basta a far capire che a 12 anni si paga come un grande.
-    ages: { child: "4-11", infant: "0-3" },
+    // 12+ non l'ha detto nessuno, ma discende dalle altre due: se i bambini
+    // finiscono a 11 e sopra non c'e' nient'altro, a 12 si paga come un grande.
+    ages: { adult: "12+", child: "4-11", infant: "0-3" },
     options: {
       label: { it: "Durata", en: "Duration", es: "Duración" },
       choices: [
@@ -356,7 +356,8 @@ const ESPLORA_CATALOG = [
     privateOption: "private-charter",
     priceAdult: 0,
     priceChild: 0,
-    ages: { child: "4-11" },
+    // 12+ discende dai bambini 4-11: sopra gli 11 non c'e' altra fascia.
+    ages: { adult: "12+", child: "4-11" },
     options: {
       label: { it: "Durata", en: "Duration", es: "Duración" },
       choices: [

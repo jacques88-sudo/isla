@@ -139,6 +139,9 @@ function righeRichiesta(tour, req) {
   // l'assenza della riga, non una riga che dice "da concordare": all'ufficio
   // non serve leggere che il cliente non ha deciso.
   if (req.time) righe.push("• " + t("wa.time") + ": " + req.time);
+  // Come l'orario: si scrive solo se il cliente ha scelto. "Indifferente" e'
+  // l'assenza della riga, non una riga che dice "indifferente".
+  if (req.lang) righe.push("• " + t("wa.lang") + ": " + req.lang);
   righe.push("• " + t("wa.people") + ": " + peopleText(req.adults, req.kids));
   // La variante scelta sta in alto: e' la prima cosa che l'ufficio deve sapere
   // per rispondere col prezzo giusto.
@@ -345,6 +348,8 @@ function initRequestDialog() {
   const optionLabelEl = document.querySelector("[data-request-option-label]");
   const dateInput = document.getElementById("reqDate");
   const timeEl = document.querySelector("[data-request-time]");
+  const langEl = document.querySelector("[data-request-lang]");
+  const langLabelEl = document.querySelector("[data-request-lang-label]");
   const totalEl = document.querySelector("[data-request-total]");
   const adultsInput = document.getElementById("reqAdults");
   const kidsInput = document.getElementById("reqKids");
@@ -405,7 +410,9 @@ function initRequestDialog() {
     // Gli orari: la finestra e' una sola per tutte le attivita', quindi si
     // riparte sempre da "Da concordare" invece di tenere la scelta di prima.
     if (timeEl) timeEl.value = "";
+    if (langEl) langEl.value = "";
     riempiOrari(tour);
+    riempiLingue(tour);
     aggiornaTotale();
 
     dialog.hidden = false;
@@ -468,6 +475,32 @@ function initRequestDialog() {
   // le fasce segnaposto. La prima voce e' sempre "Da concordare" e vale stringa
   // vuota, cosi' chi non sa a che ora vuole partire non e' costretto a
   // inventare un orario per poter mandare la richiesta.
+  // Le lingue fra cui scegliere. Compare **solo** dove l'attivita' ha il campo
+  // `languages`: sulle altre la domanda non ha senso e non si fa. Come per gli
+  // orari, la prima voce non impegna a niente.
+  function riempiLingue(tour) {
+    if (!langEl || !langLabelEl) return;
+    const lingue = Array.isArray(tour.languages) ? tour.languages : [];
+    langEl.hidden = !lingue.length;
+    langLabelEl.hidden = !lingue.length;
+    if (!lingue.length) return;
+
+    const scelta = langEl.value;
+    langEl.innerHTML = "";
+    const qualunque = document.createElement("option");
+    qualunque.value = "";
+    qualunque.textContent = t("req.langAny");
+    langEl.appendChild(qualunque);
+    lingue.forEach(lingua => {
+      const voce = document.createElement("option");
+      voce.value = lingua;
+      // le lingue sono gia' scritte nella lingua stessa: non si traducono
+      voce.textContent = lingua;
+      langEl.appendChild(voce);
+    });
+    langEl.value = scelta;
+  }
+
   function riempiOrari(tour) {
     if (!timeEl) return;
     const scelto = timeEl.value;
@@ -573,6 +606,7 @@ function initRequestDialog() {
     }
     // "Da concordare" e "2 adulti × €55" sono tradotti: si rifanno tutti e due
     riempiOrari(current);
+    riempiLingue(current);
     aggiornaTotale();
   });
 
@@ -584,6 +618,7 @@ function initRequestDialog() {
       name: document.getElementById("reqName").value.trim(),
       date: dateInput.value,
       time: timeEl ? timeEl.value : "",
+      lang: (langEl && !langEl.hidden) ? langEl.value : "",
       adults: parseInt(document.getElementById("reqAdults").value, 10) || 1,
       kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
       note: document.getElementById("reqNote").value.trim(),
@@ -603,6 +638,7 @@ function initRequestDialog() {
         id: current.id,
         date: req.date,
         time: req.time,
+        lang: req.lang,
         adults: req.adults,
         kids: req.kids,
         option: req.option,

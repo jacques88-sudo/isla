@@ -298,6 +298,35 @@ modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet
 (prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
 identiche.
 
+### La scelta della lingua, ma solo dove serve (25 agosto)
+
+Chiesto dall'ufficio, con una condizione precisa: **"questa opzione non sara' in tutte le
+attivita' ma solo in quelle in cui te lo segnalero'"**. Quindi non e' una domanda che
+compare sempre — compare solo dove c'e' il campo `languages`.
+
+**Come si accende una scheda.** Con le lingue solite basta:
+
+    languages: LINGUE_TOUR,
+
+e chi ne ha altre scrive la sua lista. `LINGUE_TOUR` sta in cima al catalogo, accanto a
+ORARI_PREDEFINITI: English, Español, Deutsch, Italiano, Français. **⚠ Anche questa e' da
+confermare:** sono le cinque che si sentono di piu' a Tenerife, non l'elenco vero di
+un'attivita' precisa. La prima accesa e' il Submarine Safari, che sulla pagina del
+fornitore ha proprio il menu della lingua.
+
+**Le lingue si scrivono nella lingua stessa** — "Deutsch", non "Tedesco". Un tedesco
+riconosce la sua riga anche mentre guarda il sito in spagnolo, ed e' come fanno tutti i
+siti di prenotazione. Di conseguenza **non si traducono**: al cambio lingua del sito
+cambia l'etichetta ("In che lingua" → "En qué idioma") e cambia "Indifferente", ma i nomi
+delle lingue restano quelli. Verificato.
+
+**"Indifferente" e' la voce di partenza**, come "Da concordare" per gli orari: se il
+cliente non sceglie, **la riga non compare proprio** nel messaggio WhatsApp. Non compare
+una riga che dice "indifferente".
+
+La scelta viaggia dappertutto: messaggio singolo, messaggio della lista, e riga della
+lista (`10/09/2026 · 10:00 · Italiano · 2 adulti e 1 bambino`).
+
 ### Submarine Safari, riempita (25 agosto)
 
 Aveva solo i due prezzi (€61 / €37) e due righe di descrizione. Adesso ha tutto: si parte
@@ -321,8 +350,8 @@ Il testo della domanda pero' e' rovesciato rispetto al Twin Ticket: qui la navet
 domanda: *"Solo se stai nel nord dell'isola: dal sud la navetta e' gia' compresa nel
 prezzo."*
 
-**Cosa resta vago:** gli orari. La pagina dice solo "multiple timeframes" senza elencarli,
-quindi la scheda usa ancora le fasce segnaposto. **Da chiedere in ufficio.**
+**Gli orari sono arrivati subito dopo: 10:00 e 13:00.** Prima erano le fasce segnaposto,
+perche' la pagina diceva solo "multiple timeframes" senza elencarle.
 
 **Non preso, come sempre:** "best price guarantee", "official tickets", le 8 recensioni
 loro, e la politica di cancellazione (la nostra resta 24 ore). Preso solo il consiglio sul

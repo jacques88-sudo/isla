@@ -585,6 +585,14 @@ a { text-decoration: none; color: inherit; }
   padding: 1.5rem 1.4rem 2rem;
   box-shadow: 0 -20px 50px -30px oklch(0.24 0.012 60 / .5);
   transition: transform .3s ease;
+  /* Con tutti i campi dentro (data, ora, lingua, persone, totale, varianti,
+     transfer, note) la finestra e' piu' alta di un telefono. Senza queste due
+     righe restava piantata: la pagina sotto e' bloccata da body.menu-open e la
+     finestra non scorreva per conto suo. */
+  max-height: 88dvh;
+  overflow-y: auto;
+  /* arrivati in fondo, il dito non deve trascinare la pagina dietro */
+  overscroll-behavior: contain;
 }
 .ticket-dialog[hidden] { display: none; }
 .ticket-dialog.is-open { transform: translate(-50%, 0); }
@@ -2076,11 +2084,6 @@ body.menu-open { overflow: hidden; }
 
 /* Con dieci escursioni la finestra sarebbe piu' alta dello schermo: scorre
    dentro invece di uscire dal telefono. */
-.lista-dialog {
-  max-height: 88dvh;
-  overflow-y: auto;
-}
-
 .lista-voci {
   list-style: none;
   margin: 0 0 1.1rem;

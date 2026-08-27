@@ -33,8 +33,11 @@ function detailRows(tour, variante) {
   // daDefinire() arriva da escursioni.js, caricato prima di questo file
   const righe = [];
 
-  if (!daDefinire(tour.zone)) {
-    righe.push([t("detail.departure"), tf(tour.zone)]);
+  // Il punto di partenza puo' cambiare con la variante: la stessa gita col
+  // ritrovo nel nord parte da un altro porto.
+  const zona = (variante && variante.zone) || tour.zone;
+  if (!daDefinire(zona)) {
+    righe.push([t("detail.departure"), tf(zona)]);
   }
   // Quando le varianti SONO le durate ("1 ora" / "2 ore"), il campo duration
   // ripete la stessa cosa in forma riassunta ("1 o 2 ore") e la pagina direbbe

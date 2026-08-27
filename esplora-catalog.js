@@ -103,6 +103,9 @@
 //                `price` si puo' omettere quando il prezzo della variante non lo
 //                sappiamo ancora: la riga mostra solo il nome.
 //                Ogni variante puo' avere anche:
+//                  zone  → il punto di partenza **di quella variante**, quando
+//                          e' diverso da quello della scheda (la gita col
+//                          ritrovo nel nord dell'isola, per esempio).
 //                  priceAdult e priceChild → i due prezzi **a persona** di
 //                          quella variante, quando il prezzo cambia con la
 //                          durata. Solo questi entrano nel totale: `price` da
@@ -432,6 +435,9 @@ const ESPLORA_CATALOG = [
           },
           priceAdult: 68,
           priceChild: 45,
+          // Chi sta nel nord non passa da Puerto Colón: sale sulla navetta a
+          // Puerto de la Cruz, e per lui il punto di partenza e' quello.
+          zone: "Puerto de la Cruz",
           times: ["14:00"],
           included: ["swimstop", "lunch", "drinks"],
           desc: {

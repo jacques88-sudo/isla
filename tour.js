@@ -45,6 +45,17 @@ function detailRows(tour, variante) {
   if (!daDefinire(tour.duration) && !opzioniSonoLaDurata) {
     righe.push([t("detail.duration"), tf(tour.duration)]);
   }
+
+  // Orari e lingue stavano solo dentro la finestra della richiesta, dove si
+  // arriva col pulsante: chi guardava la pagina non li trovava. Qui ci vanno
+  // solo gli orari **veri** dell'attivita', mai le fasce segnaposto che la
+  // finestra usa come ripiego.
+  if (Array.isArray(tour.times) && tour.times.length) {
+    righe.push([t("detail.times"), tour.times.join(" · ")]);
+  }
+  if (Array.isArray(tour.languages) && tour.languages.length) {
+    righe.push([t("detail.languages"), tour.languages.join(" · ")]);
+  }
   // I due prezzi a persona: quelli della variante scelta se ce li ha, se no
   // quelli della scheda. Il `price` liscio della variante non entra qui: puo'
   // essere il prezzo del mezzo e non della persona (vedi prezziAPersona()).
@@ -90,7 +101,7 @@ function detailRows(tour, variante) {
   // Col transfer il prezzo cambia: si mostra su una riga sola invece che su
   // tre, altrimenti la tabella diventa un listino. Il posto per i neonati
   // esiste solo qui: e' il sedile sul pullman, senza transfer non si paga.
-  if (tour.transferPrice) {
+  if (tour.transferPrice && !tour.transferPriceHidden) {
     const tp = tour.transferPrice;
     const parti = [];
     if (tp.adult) parti.push("€" + tp.adult + " " + t("wa.adults"));

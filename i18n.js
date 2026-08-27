@@ -199,6 +199,8 @@ const I18N = {
   "lista.full":         { it: "Nella lista ci stanno al massimo {n} escursioni. Mandaci questa richiesta e poi ne inizi un'altra.", en: "The list holds at most {n} excursions. Send this request and then start another one.", es: "En la lista caben como máximo {n} excursiones. Envíanos esta solicitud y luego empiezas otra." },
   "lista.hint":         { it: "Parte un solo messaggio con tutte le escursioni della lista.", en: "One single message goes out with every excursion in the list.", es: "Se envía un solo mensaje con todas las excursiones de la lista." },
 
+  "detail.times":       { it: "Orari", en: "Departure times", es: "Horarios" },
+  "detail.languages":   { it: "Lingue", en: "Languages", es: "Idiomas" },
   "detail.free":        { it: "Gratis", en: "Free", es: "Gratis" },
   "detail.transfer":    { it: "Transfer", en: "Transfer", es: "Traslado" },
   "detail.withTransfer": { it: "Con il transfer", en: "With the transfer", es: "Con el traslado" },

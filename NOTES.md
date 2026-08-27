@@ -298,6 +298,43 @@ modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet
 (prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
 identiche.
 
+### Il transfer in una riga sola, e orari e lingue si vedono (25 agosto)
+
+Due segnalazioni dell'ufficio sulla stessa scheda.
+
+**1. La riga del transfer confondeva.** Diceva *"Solo se stai nel nord dell'isola: dal sud
+la navetta e' gia' compresa nel prezzo"*, e sotto una seconda riga *"Con il transfer: €74
+adulti · €45 bambini"*. Due righe che parlavano della stessa cosa con parole diverse, e
+nessuna delle due diceva la cosa semplice.
+
+Adesso e' **una riga sola**, con le parole dell'ufficio:
+
+    Transfer   Dal sud incluso nel prezzo, dal nord €13 a adulto e €8 a bambino.
+
+I €74 e €45 restano nel catalogo, perche' **servono al totale**: quando il cliente spunta
+il transfer il conto passa da €159 a €193, che e' 159 + 13 + 13 + 8. Ma non si stampano
+piu': campo nuovo `transferPriceHidden: true`, che vuol dire "quanto costa e' gia' scritto
+nella riga qui sopra". Il Twin Ticket non lo usa e continua a mostrare la sua riga
+"Con il transfer".
+
+Tolto anche il consiglio che ripeteva la stessa cosa piu' in basso.
+
+**2. "Non riesco a vedere l'opzione delle lingue ne' quello degli orari."** Non era un
+guasto: **stavano solo dentro la finestra della richiesta**, che si apre col pulsante.
+Chi guardava la pagina non li trovava, ed e' un'informazione che si vuole sapere *prima*
+di chiedere disponibilita'.
+
+Ora "In breve" ha due righe in piu', subito sotto la durata — dove, quando e in che lingua
+stanno insieme, i prezzi vengono dopo:
+
+    Orari    10:00 · 13:00
+    Lingue   English · Español · Deutsch · Italiano · Français
+
+**Ci vanno solo gli orari veri.** Le fasce segnaposto che la finestra usa come ripiego non
+compaiono in tabella: sarebbero un orario inventato scritto sulla pagina, che e' esattamente
+quello che ORARI_PREDEFINITI evita. Le due righe compaiono solo dove `times` e `languages`
+ci sono davvero.
+
 ### La scelta della lingua, ma solo dove serve (25 agosto)
 
 Chiesto dall'ufficio, con una condizione precisa: **"questa opzione non sara' in tutte le

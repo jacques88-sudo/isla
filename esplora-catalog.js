@@ -71,6 +71,11 @@
 //                sul pullman per i neonati, che senza transfer non esiste. Compare
 //                come riga in fondo alla pagina di dettaglio.
 //                    transferPrice: { adult: 99, child: 74, baby: 17 }
+//   transferPriceHidden → facoltativo: metti true quando quanto costa la navetta
+//                e' gia' scritto per esteso nella riga `transfer`. I prezzi qui
+//                sopra continuano a servire al **totale**, ma non si stampano
+//                una seconda volta: due righe che dicono la stessa cosa con
+//                parole diverse confondono.
 //   languages  → facoltativo: le lingue fra cui il cliente puo' scegliere. Solo
 //                dove c'e' questo campo la finestra della richiesta mostra la
 //                domanda "In che lingua". Le solite si scrivono cosi':
@@ -525,11 +530,16 @@ const ESPLORA_CATALOG = [
     // sono i prezzi **completi** con la navetta dal nord, non il supplemento:
     // 61 + 13 e 37 + 8.
     transfer: {
-      it: "Solo se stai nel nord dell'isola: dal sud la navetta è già compresa nel prezzo.",
-      en: "Only if you are staying in the north of the island: from the south the shuttle is already included.",
-      es: "Solo si te alojas en el norte de la isla: desde el sur la lanzadera ya está incluida."
+      it: "Dal sud incluso nel prezzo, dal nord €13 a adulto e €8 a bambino.",
+      en: "Included in the price from the south; from the north €13 per adult and €8 per child.",
+      es: "Desde el sur incluido en el precio; desde el norte 13 € por adulto y 8 € por niño."
     },
     transferPrice: { adult: 74, child: 45 },
+    // I due prezzi qui sopra servono al **totale**, non da leggere: quanto costa
+    // la navetta e' gia' scritto per esteso nella riga `transfer`, e stamparlo
+    // una seconda volta come "Con il transfer" era proprio la confusione che
+    // l'ufficio ha segnalato.
+    transferPriceHidden: true,
     included: ["transfer", "guide"],
     notes: [
       {
@@ -541,11 +551,6 @@ const ESPLORA_CATALOG = [
         it: "Si parte dal porto di Marina Amarilla, a San Miguel de Abona, zona Amarilla Golf. Arriva almeno 15 minuti prima.",
         en: "You leave from Marina Amarilla harbour, in San Miguel de Abona, the Amarilla Golf area. Get there at least 15 minutes early.",
         es: "Se sale del puerto de Marina Amarilla, en San Miguel de Abona, zona Amarilla Golf. Llega al menos 15 minutos antes."
-      },
-      {
-        it: "La navetta dagli hotel del sud è compresa nel prezzo. Dal nord costa €13 in più a adulto e €8 a bambino.",
-        en: "The shuttle from hotels in the south is included in the price. From the north it costs €13 more per adult and €8 per child.",
-        es: "La lanzadera desde los hoteles del sur está incluida en el precio. Desde el norte cuesta 13 € más por adulto y 8 € por niño."
       },
       {
         it: "Si sale dai 2 anni in su, e sotto i 16 bisogna essere accompagnati da un adulto.",

@@ -199,6 +199,7 @@ const I18N = {
   "lista.full":         { it: "Nella lista ci stanno al massimo {n} escursioni. Mandaci questa richiesta e poi ne inizi un'altra.", en: "The list holds at most {n} excursions. Send this request and then start another one.", es: "En la lista caben como máximo {n} excursiones. Envíanos esta solicitud y luego empiezas otra." },
   "lista.hint":         { it: "Parte un solo messaggio con tutte le escursioni della lista.", en: "One single message goes out with every excursion in the list.", es: "Se envía un solo mensaje con todas las excursiones de la lista." },
 
+  "detail.days":        { it: "Giorni", en: "Days", es: "Días" },
   "detail.times":       { it: "Orari", en: "Departure times", es: "Horarios" },
   "detail.languages":   { it: "Lingue", en: "Languages", es: "Idiomas" },
   "detail.free":        { it: "Gratis", en: "Free", es: "Gratis" },
@@ -225,6 +226,18 @@ const I18N = {
   "req.timeAny":        { it: "Da concordare", en: "To be agreed", es: "Por concretar" },
   "req.lang":           { it: "In che lingua", en: "Which language", es: "En qué idioma" },
   "req.langAny":        { it: "Indifferente", en: "No preference", es: "Indiferente" },
+  "req.dayError":       { it: "Questa escursione si fa solo: {giorni}.", en: "This excursion only runs on: {giorni}.", es: "Esta excursión solo se hace: {giorni}." },
+
+  // I giorni della settimana, in forma corta: servono alla riga "Giorni" e al
+  // messaggio che compare quando il cliente sceglie una data in cui
+  // l'escursione non si fa.
+  "day.sun":            { it: "Dom", en: "Sun", es: "Dom" },
+  "day.mon":            { it: "Lun", en: "Mon", es: "Lun" },
+  "day.tue":            { it: "Mar", en: "Tue", es: "Mar" },
+  "day.wed":            { it: "Mer", en: "Wed", es: "Mié" },
+  "day.thu":            { it: "Gio", en: "Thu", es: "Jue" },
+  "day.fri":            { it: "Ven", en: "Fri", es: "Vie" },
+  "day.sat":            { it: "Sab", en: "Sat", es: "Sáb" },
   "req.people":         { it: "Quante persone", en: "How many people", es: "Cuántas personas" },
   "req.total":          { it: "Totale", en: "Total", es: "Total" },
   "req.totalNote":      { it: "Totale indicativo: te lo confermiamo noi su WhatsApp.", en: "Estimated total: we confirm it on WhatsApp.", es: "Total orientativo: te lo confirmamos por WhatsApp." },

@@ -298,6 +298,51 @@ modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet
 (prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
 identiche.
 
+### Il giorno sbagliato non passa piu' (25 agosto)
+
+L'ufficio: *"dovremo far selezionare solo i giorni in cui e' disponibile l'attivita'"*.
+Era il buco che avevo segnalato quattro volte senza chiuderlo — Freebird, Royal Delfin,
+sottomarino, Utopia — e ogni volta avevo scritto i giorni solo a parole, sperando che il
+cliente li leggesse.
+
+**Campo nuovo `days`**, con sette sigle: `dom lun mar mer gio ven sab`.
+
+    days: ["lun", "mer", "ven"]
+
+Vale sulla scheda e **dentro la variante**, perche' su queste barche i giorni cambiano da
+una formula all'altra: sul Freebird il giro di 2 ore si fa lun/mer/ven e quello dal nord
+mar/gio/ven/dom.
+
+**Se l'attivita' si fa tutti i giorni, il campo non si scrive.** Sette su sette non e'
+un'informazione, e' rumore: la riga "Giorni" non compare e non c'e' niente da controllare.
+
+**Due cose, non una.** Il campo serve a tutte e due, e da solo nessuna delle due basterebbe:
+
+1. **Prima**: la riga "Giorni" in "In breve", accanto a orari e lingue. Chi guarda la scheda
+   sa in che giorni si fa senza aprire niente.
+2. **Durante**: appena il cliente sceglie una data che non va, sotto il campo compare
+   *"Questa escursione si fa solo: Lun · Mer · Ven."* E la richiesta **non parte**.
+
+Il messaggio compare **al cambio della data**, non all'invio. Scoprirlo alla fine, con nome,
+persone e note gia' compilati, e' la cosa che fa chiudere la pagina.
+
+**Una trappola evitata:** `new Date("2026-09-12")` viene letto come UTC, e in certi fusi
+orari torna indietro di un giorno — il sabato diventerebbe venerdi'. La data si legge pezzo
+per pezzo e si costruisce con `new Date(anno, mese - 1, giorno)`, che e' ora locale.
+
+**Sigle giuste, controllate a macchina.** `mar` e `mer` si somigliano abbastanza da
+sbagliarsi, e una sigla sbagliata pubblicherebbe dei giorni falsi in silenzio. Passate tutte
+le liste del catalogo attraverso la tabella delle sigle: nessuna ignota.
+
+**Giorni scritti finora:** Freebird (2 ore e dal nord), Royal Delfin (2 ore e 3 ore),
+sottomarino (tutti tranne sabato), Utopia (solo sabato), Shogun (lun mer gio ven dom).
+**Le altre schede non hanno limitazioni conosciute** e restano senza campo: se ne salta
+fuori una, si aggiunge una riga.
+
+**Sistemata anche una cosa vicina:** la riga "Orari" leggeva solo gli orari della scheda,
+quindi su Freebird e Royal Delfin — dove stanno dentro le varianti — non compariva mai.
+Adesso legge prima quelli della variante, come i giorni.
+
 ### Shogun, riempita (25 agosto)
 
 Una goletta orientale di 26 metri, tutta in teak, costruita per uno sceicco: 135 posti su

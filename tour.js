@@ -56,8 +56,16 @@ function detailRows(tour, variante) {
   // arriva col pulsante: chi guardava la pagina non li trovava. Qui ci vanno
   // solo gli orari **veri** dell'attivita', mai le fasce segnaposto che la
   // finestra usa come ripiego.
-  if (Array.isArray(tour.times) && tour.times.length) {
-    righe.push([t("detail.times"), tour.times.join(" · ")]);
+  // I giorni si mostrano solo quando sono una limitazione vera: sette su sette
+  // non e' un'informazione, e' rumore.
+  const giorni = giorniDi(tour, variante);
+  if (giorni.length && giorni.length < 7) {
+    righe.push([t("detail.days"), giorniTesto(giorni)]);
+  }
+  // Come i giorni: prima gli orari della variante, se ne ha di suoi.
+  const orari = (variante && variante.times) || tour.times;
+  if (Array.isArray(orari) && orari.length) {
+    righe.push([t("detail.times"), orari.join(" · ")]);
   }
   if (Array.isArray(tour.languages) && tour.languages.length) {
     righe.push([t("detail.languages"), tour.languages.join(" · ")]);

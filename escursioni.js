@@ -17,6 +17,21 @@ function daDefinire(valore) {
   return /Da definire/.test(valore.it || "");
 }
 
+// I giorni in cui l'attivita' si fa, come numeri di getDay() (0 = domenica).
+// Prima quelli della variante scelta, se ne ha di suoi, poi quelli della
+// scheda. Lista vuota vuol dire "nessuna limitazione": si fa tutti i giorni.
+// La usa anche tour.js.
+function giorniDi(tour, variante) {
+  const sigle = (variante && variante.days) || tour.days || [];
+  return sigle.map(sigla => GIORNI_SIGLE[sigla])
+              .filter(n => n !== undefined);
+}
+
+// "Lun · Mer · Ven", nella lingua del sito.
+function giorniTesto(numeri) {
+  return numeri.map(n => t(GIORNI_CHIAVI[n])).join(" · ");
+}
+
 // L'unità di misura del prezzo, già staccata come va staccata: quella che
 // inizia con "/" si attacca al numero ("da €100/ora"), le altre vogliono uno
 // spazio davanti ("da €190 a barca"). Vuota quando il prezzo è a persona,
@@ -348,6 +363,7 @@ function initRequestDialog() {
   const optionLabelEl = document.querySelector("[data-request-option-label]");
   const dateInput = document.getElementById("reqDate");
   const timeEl = document.querySelector("[data-request-time]");
+  const dayErrorEl = document.querySelector("[data-request-day-error]");
   const langEl = document.querySelector("[data-request-lang]");
   const langLabelEl = document.querySelector("[data-request-lang-label]");
   const totalEl = document.querySelector("[data-request-total]");
@@ -413,6 +429,7 @@ function initRequestDialog() {
     if (langEl) langEl.value = "";
     riempiOrari(tour);
     riempiLingue(tour);
+    aggiornaGiorno();
     aggiornaTotale();
 
     dialog.hidden = false;
@@ -475,6 +492,30 @@ function initRequestDialog() {
   // le fasce segnaposto. La prima voce e' sempre "Da concordare" e vale stringa
   // vuota, cosi' chi non sa a che ora vuole partire non e' costretto a
   // inventare un orario per poter mandare la richiesta.
+  // Il giorno scelto va bene? Dove l'attivita' non si fa tutti i giorni, il
+  // cliente lo deve sapere **appena sceglie la data**, non dopo aver riempito
+  // tutto il resto e premuto invia.
+  function giornoValido() {
+    if (!current || !dateInput.value) return true;
+    const giorni = giorniDi(current, sceltaCorrente(current));
+    if (!giorni.length) return true;
+    // "2026-09-12" letto pezzo per pezzo: new Date("2026-09-12") lo tratta
+    // come UTC e in certi fusi orari torna indietro di un giorno.
+    const [a, m, g] = dateInput.value.split("-").map(Number);
+    return giorni.includes(new Date(a, m - 1, g).getDay());
+  }
+
+  function aggiornaGiorno() {
+    if (!dayErrorEl) return;
+    const ok = giornoValido();
+    if (!ok && current) {
+      dayErrorEl.textContent = t("req.dayError", {
+        giorni: giorniTesto(giorniDi(current, sceltaCorrente(current)))
+      });
+    }
+    dayErrorEl.hidden = ok;
+  }
+
   // Le lingue fra cui scegliere. Compare **solo** dove l'attivita' ha il campo
   // `languages`: sulle altre la domanda non ha senso e non si fa. Come per gli
   // orari, la prima voce non impegna a niente.
@@ -575,6 +616,9 @@ function initRequestDialog() {
     if (tour) open(tour, comeAggiunta);
   });
 
+  dateInput.addEventListener("input", aggiornaGiorno);
+  dateInput.addEventListener("change", aggiornaGiorno);
+
   // Il totale segue i numeri mentre il cliente li cambia, e la spunta del
   // transfer perche' col transfer il prezzo e' un altro.
   [adultsInput, kidsInput, transferInput].forEach(campo => {
@@ -608,6 +652,7 @@ function initRequestDialog() {
     riempiOrari(current);
     riempiLingue(current);
     aggiornaTotale();
+    aggiornaGiorno();
   });
 
   form.addEventListener("submit", e => {
@@ -626,6 +671,9 @@ function initRequestDialog() {
       option: opzioneScelta()
     };
     if (!req.date) return;
+    // Il giorno sbagliato ferma la richiesta: il messaggio e' gia' li' sotto
+    // la data da quando l'ha scelta.
+    if (!giornoValido()) { aggiornaGiorno(); dateInput.focus(); return; }
 
     // In modalita' "aggiungi" non si va su WhatsApp: la richiesta si mette da
     // parte e il cliente continua a guardare le altre escursioni.

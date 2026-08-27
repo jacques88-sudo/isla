@@ -1794,6 +1794,22 @@ body.menu-open { overflow: hidden; }
 }
 .request-people input:focus { border-color: var(--text); }
 
+/* "Questa escursione si fa solo: Lun · Mer · Ven." Compare sotto la data
+   appena il cliente ne sceglie una che non va, non dopo aver premuto invia:
+   scoprirlo alla fine, con tutto gia' compilato, e' la cosa che fa chiudere
+   la pagina. Il margine negativo lo attacca al campo qui sopra, che ha gia'
+   il suo margine sotto. */
+.request-day-error {
+  margin: -.8rem 0 1.1rem;
+  padding: .6rem .9rem;
+  background: color-mix(in oklab, var(--danger) 10%, transparent);
+  border-radius: 10px;
+  font-size: .85rem;
+  line-height: 1.45;
+  color: var(--danger);
+}
+.request-day-error[hidden] { display: none; }
+
 .request-optional {
   text-transform: none;
   letter-spacing: normal;

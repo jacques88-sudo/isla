@@ -298,6 +298,43 @@ modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet
 (prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
 identiche.
 
+### La finestra della richiesta non scorreva (25 agosto)
+
+Segnalato dall'ufficio: *"in piu' schede questa pagina rimane fissa, non scorre ne' su ne'
+giu'"*. Bug vero, e la causa e' una combinazione:
+
+- `body.menu-open { overflow: hidden }` blocca la pagina sotto mentre la finestra e' aperta
+  — giusto, se no si scorre il contenuto dietro
+- ma `.ticket-dialog` non aveva **ne' `max-height` ne' `overflow-y`**, quindi non scorreva
+  nemmeno per conto suo
+
+Finche' la finestra era corta non si notava. Con tutti i campi aggiunti in questi giorni
+(data, ora, lingua, persone, totale, varianti, transfer, note) su un telefono arriva a
+**1177 px in una finestra da 528**: piu' della meta' non si raggiungeva, pulsante "Continua
+su WhatsApp" compreso.
+
+`max-height: 88dvh; overflow-y: auto` messo su **`.ticket-dialog`**, cioe' su tutte e tre
+le finestre. Piu' `overscroll-behavior: contain`, cosi' arrivati in fondo il dito non
+trascina la pagina dietro.
+
+**La regola c'era gia', ma su una finestra sola.** L'avevo scritta per `.lista-dialog`
+pensando "questa puo' diventare lunga", senza chiedermi se valesse anche per le altre.
+Quella riga duplicata adesso e' tolta: la generale la copre.
+
+Verificato su schermo 420x600 (telefono basso) su tre schede diverse, sulla finestra della
+lista e su desktop 1280x720, dove la finestra e' centrata e resta dentro lo schermo.
+
+### Royal Delfin: la gita dal nord parte da un altro porto (25 agosto)
+
+Il punto di partenza era `Puerto Colón` per tutte e quattro le varianti. Chi sta nel nord
+pero' a Puerto Colón non ci passa: sale sulla navetta a **Puerto de la Cruz**, e per lui il
+punto di partenza e' quello.
+
+`zone` si puo' scrivere anche **dentro la variante**, e quando c'e' vince su quello della
+scheda. E' l'ultimo pezzo che mancava: adesso una variante puo' avere prezzi, orari,
+lingua... no, la lingua e' della scheda; ma zona, orari, prezzi, cose incluse e descrizione
+sono tutti suoi.
+
 ### Il transfer in una riga sola, e orari e lingue si vedono (25 agosto)
 
 Due segnalazioni dell'ufficio sulla stessa scheda.

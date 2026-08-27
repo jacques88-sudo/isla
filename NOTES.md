@@ -249,6 +249,20 @@ sono giri turistici tranquilli, non adrenalina come quad e buggy. Entrambe `fami
 - Da non confondere col **trenino gratuito del Loro Parque**, che fa la spola col centro
   di Puerto de la Cruz: e' un altro servizio, non si vende
 
+### Le varianti salgono sopra "In breve" (25 agosto)
+
+Detto dall'ufficio, e ha ragione. Sulla pagina di dettaglio le varianti stavano in fondo,
+appena sopra il pulsante: il cliente leggeva "Prezzo €30" in "In breve", scendeva, sceglieva
+le 4 ore e mezza, e **quel prezzo cambiava alle sue spalle** in un pezzo di pagina che
+aveva gia' superato.
+
+Adesso le varianti stanno subito sotto la descrizione, prima di "In breve": si sceglie
+prima e si legge il riassunto dopo, che e' l'ordine in cui quei due pezzi si parlano.
+
+Non ci sono `if`: `detailOptions()` non scrive niente dove le varianti non ci sono, quindi
+le schede senza varianti restano identiche a prima. Controllate tutte e quattro quelle che
+ce le hanno (Freebird, Self Drive Boat, jet ski, tuk tuk) piu' una senza.
+
 ### Due schede diventano una: Freebird Catamaran Trip (25 agosto)
 
 L'ufficio ha mandato il listino del catamarano Freebird e ha chiesto di **unire in una

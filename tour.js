@@ -184,6 +184,12 @@ function detailIncluded(tour) {
 // richiesta parte gia' con la scelta dentro, senza chiedergliela di nuovo.
 // La prima e' selezionata di partenza, cosi' non si puo' mandare una richiesta
 // senza variante.
+// Le varianti stanno **prima** di "In breve", non sopra il pulsante come
+// all'inizio: la riga "Prezzo" della tabella segue la variante scelta, quindi
+// prima si sceglie e poi si legge il riassunto. Al contrario il cliente leggeva
+// un prezzo, scendeva, cambiava variante e quel prezzo cambiava alle sue spalle.
+// Dove non ci sono varianti questa funzione non scrive niente e la pagina resta
+// com'era.
 function detailOptions(tour) {
   const opz = tour.options;
   if (!opz || !Array.isArray(opz.choices) || !opz.choices.length) return "";
@@ -292,13 +298,14 @@ function renderTour(tour) {
         <h1 class="detail-h1">${esc(tf(tour.title))}</h1>
         <p class="detail-lead">${esc(tf(tour.desc))}</p>
 
+        ${detailOptions(tour)}
+
         <h2 class="detail-sub">${esc(t("detail.summary"))}</h2>
         <dl class="detail-rows">${detailRows(tour)}</dl>
 
         ${detailItinerary(tour)}
         ${detailIncluded(tour)}
         ${detailNotes(tour)}
-        ${detailOptions(tour)}
         ${askBtn}
         <p class="hint" data-i18n-html="req.hint"></p>
         ${detailPrivate(tour)}

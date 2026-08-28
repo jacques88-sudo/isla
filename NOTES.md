@@ -298,6 +298,51 @@ modello), Twin Ticket (col transfer), Private Charter (scaglioni di gruppo), jet
 (prezzo del mezzo), Self Drive Boat (prezzo a barca) e Siam Park (solo "da €48"). Tutte
 identiche.
 
+### Il giorno sbagliato non passa piu' (25 agosto)
+
+L'ufficio: *"dovremo far selezionare solo i giorni in cui e' disponibile l'attivita'"*.
+Era il buco che avevo segnalato quattro volte senza chiuderlo — Freebird, Royal Delfin,
+sottomarino, Utopia — e ogni volta avevo scritto i giorni solo a parole, sperando che il
+cliente li leggesse.
+
+**Campo nuovo `days`**, con sette sigle: `dom lun mar mer gio ven sab`.
+
+    days: ["lun", "mer", "ven"]
+
+Vale sulla scheda e **dentro la variante**, perche' su queste barche i giorni cambiano da
+una formula all'altra: sul Freebird il giro di 2 ore si fa lun/mer/ven e quello dal nord
+mar/gio/ven/dom.
+
+**Se l'attivita' si fa tutti i giorni, il campo non si scrive.** Sette su sette non e'
+un'informazione, e' rumore: la riga "Giorni" non compare e non c'e' niente da controllare.
+
+**Due cose, non una.** Il campo serve a tutte e due, e da solo nessuna delle due basterebbe:
+
+1. **Prima**: la riga "Giorni" in "In breve", accanto a orari e lingue. Chi guarda la scheda
+   sa in che giorni si fa senza aprire niente.
+2. **Durante**: appena il cliente sceglie una data che non va, sotto il campo compare
+   *"Questa escursione si fa solo: Lun · Mer · Ven."* E la richiesta **non parte**.
+
+Il messaggio compare **al cambio della data**, non all'invio. Scoprirlo alla fine, con nome,
+persone e note gia' compilati, e' la cosa che fa chiudere la pagina.
+
+**Una trappola evitata:** `new Date("2026-09-12")` viene letto come UTC, e in certi fusi
+orari torna indietro di un giorno — il sabato diventerebbe venerdi'. La data si legge pezzo
+per pezzo e si costruisce con `new Date(anno, mese - 1, giorno)`, che e' ora locale.
+
+**Sigle giuste, controllate a macchina.** `mar` e `mer` si somigliano abbastanza da
+sbagliarsi, e una sigla sbagliata pubblicherebbe dei giorni falsi in silenzio. Passate tutte
+le liste del catalogo attraverso la tabella delle sigle: nessuna ignota.
+
+**Giorni scritti finora:** Freebird (2 ore e dal nord), Royal Delfin (2 ore e 3 ore),
+sottomarino (tutti tranne sabato), Utopia (solo sabato), Shogun (lun mer gio ven dom).
+**Le altre schede non hanno limitazioni conosciute** e restano senza campo: se ne salta
+fuori una, si aggiunge una riga.
+
+**Sistemata anche una cosa vicina:** la riga "Orari" leggeva solo gli orari della scheda,
+quindi su Freebird e Royal Delfin — dove stanno dentro le varianti — non compariva mai.
+Adesso legge prima quelli della variante, come i giorni.
+
 ### Shogun, riempita (25 agosto)
 
 Una goletta orientale di 26 metri, tutta in teak, costruita per uno sceicco: 135 posti su
@@ -884,14 +929,14 @@ barche diverse — il nome si legge sulle vele in tutte e due le foto che abbiam
 mettere un titolo che la foto smentisce, la scheda si chiama **"Freebird Catamaran
 Trip"**, col nome della compagnia e non della singola barca.
 
-**I giorni non sono controllati.** Il cliente puo' chiedere il giro di 2 ore di martedi',
-che non si fa. I giorni stanno scritti sotto il bottone della variante, e la conferma
-passa comunque dall'ufficio entro 24 ore. Un controllo sul giorno della settimana si puo'
-aggiungere, ma `<input type="date">` da solo non lo sa fare.
+**I giorni sono controllati** (fatto dopo, vedi "Il giorno sbagliato non passa piu'"):
+il campo `days` sulla scheda o sulla variante blocca la richiesta e spiega quali giorni si
+fa. Prima non lo era: il cliente poteva chiedere il giro di 2 ore di martedi', che non si
+fa.
 
-**Restano due foto non usate da nessuno:** `catamaran-3h.jpg` (l'altra foto della stessa
-barca) e `Cat-privati.jpg` (della categoria tolta). Non le ho cancellate: la prima puo'
-servire a un'altra scheda.
+**`catamaran-3h.jpg` l'ho poi cancellata** (pulizia del 28 agosto): era la seconda foto
+della stessa barca, che la sua scheda ce l'ha gia', e non esiste una galleria che possa
+usarne due. Se dovesse riservire sta nella storia di git.
 
 ### Small Group Catamaran (25 agosto)
 
@@ -1244,8 +1289,8 @@ la traduzione nelle tre lingue le mette il sito, cosi' due schede che includono 
 cosa la scrivono uguale. Diventa un riquadro sotto "In breve", icona sopra e parola sotto,
 due colonne sul telefono e tre da 480px.
 
-Le tredici parole disponibili: `snorkel wetsuit board equipment drinks snack lunch tasting
-guide transfer ferry ticket photos`. Per aggiungerne una servono **due righe**: l'icona in
+Le diciannove parole disponibili: `snorkel wetsuit board equipment drinks snack fingerfood
+swimstop lunch tasting guide transfer ferry ticket photos lifejacket speaker towels fuel`. Per aggiungerne una servono **due righe**: l'icona in
 `INCLUDED_ICONS` dentro `tour.js` e il testo `inc.<parola>` in `i18n.js`. Una parola
 sconosciuta viene **saltata**, non disegna un buco.
 
@@ -1778,3 +1823,35 @@ Anche il messaggio WhatsApp della richiesta parte nella lingua scelta dal client
   trasparenti apposta (da trasparenti Android disegna un bordo suo), quindi il loro sfondo
   è cotto dentro il file: se un giorno cambia `--bg`, **vanno rigenerate**, altrimenti
   all'apertura della PWA ricompare un quadrato più scuro intorno al logo.
+
+## La pulizia del 28 agosto
+
+Cercata la ridondanza misurandola, non a occhio. Il risultato utile e' che il progetto
+era gia' quasi pulito: **nessuna funzione dichiarata e mai chiamata**, **nessuna chiave
+i18n morta** su 249, **una sola classe CSS inutilizzata** su 196, **una sola foto**
+orfana su 76.
+
+**Il grep ingenuo mente due volte.** Cercando le chiavi i18n dentro il codice ne
+risultavano 20 morte: erano tutte le `inc.*`, che non compaiono mai scritte per intero
+perche' si costruiscono a runtime (`t("inc." + parola)` in `tour.js`), piu'
+`categories.altSuffix`, usata dentro `i18n.js` stesso, che avevo escluso dalla ricerca.
+Le chiavi morte vere erano zero. Prima di cancellare qualcosa perche' "non risulta usato",
+va guardato **come** viene usato.
+
+**`wetsuit` e `board` sembravano icone di troppo: erano l'opposto.** Nessuna scheda le
+citava, ma `surf-lesson` e' pubblicata e la sua descrizione promette gia' "tavola e muta
+compresi". Non erano avanzi da buttare, era una riga `included` che mancava. Aggiunta.
+
+### Il flusso "Prenota ora" resta finto, e si e' deciso cosi'
+
+`booking.html` + `booking.js` cercano il codice del cliente dentro `MOCK_BOOKINGS`: due
+prenotazioni inventate (`ISLA-4521`, `TEN-7788`), un'email che non esiste
+(`info@islatenerife.com`), un bollino "Confermata". Ci arrivano **quattro** punti
+d'ingresso su tre pagine: "Prenota ora" nell'header, la casella "Scan ticket" nel menu e
+nella home, "Cerca il tuo codice" nel footer.
+
+Con le richieste via WhatsApp **un codice il cliente non ce l'ha mai**, quindi chi clicca
+"Prenota ora" finisce su "non trovato". Ho proposto di togliere tutto e far puntare
+"Prenota ora" alle escursioni; **il proprietario ha scelto di lasciare tutto com'e'**,
+come segnaposto di un sistema di prenotazioni vero. Registrato qui per non riproporlo a
+ogni pulizia: e' una scelta, non una svista.

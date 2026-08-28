@@ -90,6 +90,19 @@
 //                scrivere il campo. Vuoto vuol dire "non ci sono orari fissi,
 //                si concorda" e lascia solo "Da concordare"; il campo che manca
 //                fa comparire le fasce segnaposto.
+//   days       → facoltativo: i giorni in cui l'attivita' si fa. Dove c'e', il
+//                cliente che sceglie un altro giorno se lo sente dire subito,
+//                sotto la data, e la richiesta non parte.
+//                Si scrivono con queste sette sigle, e basta sbagliarne una
+//                per pubblicare dei giorni sbagliati: **mar e' martedi', mer e'
+//                mercoledi'**.
+//                    dom  lun  mar  mer  gio  ven  sab
+//                Esempio, un'attivita' che si fa lunedi', mercoledi' e venerdi':
+//                    days: ["lun", "mer", "ven"]
+//                Se l'attivita' si fa tutti i giorni **non si scrive il campo**:
+//                sette giorni su sette non sono una limitazione da mostrare.
+//                Vale anche dentro una variante, quando i giorni cambiano da
+//                una all'altra.
 //   times      → facoltativo: gli orari di partenza fra cui scegliere, scritti
 //                come li scrive il fornitore. Dove manca, la finestra della
 //                richiesta usa le fasce segnaposto di ORARI_PREDEFINITI qui
@@ -184,6 +197,15 @@ const WHATSAPP_NUMBER = "34662908073";
 // segnala attivita' per attivita'. Chi ha le lingue solite scrive
 // `languages: LINGUE_TOUR`; chi ne ha altre scrive la sua lista.
 const LINGUE_TOUR = ["English", "Español", "Deutsch", "Italiano", "Français"];
+
+// Le sette sigle dei giorni e il numero che JavaScript usa per la domenica, il
+// lunedi' e cosi' via (Date.getDay(): 0 e' domenica). Serve a tradurre quello
+// che si scrive nel catalogo in qualcosa con cui confrontare una data.
+const GIORNI_SIGLE = { dom: 0, lun: 1, mar: 2, mer: 3, gio: 4, ven: 5, sab: 6 };
+
+// Le chiavi i18n dei sette giorni, nell'ordine di getDay().
+const GIORNI_CHIAVI = ["day.sun", "day.mon", "day.tue", "day.wed",
+                       "day.thu", "day.fri", "day.sat"];
 
 const ORARI_PREDEFINITI = [
   "09:00 - 10:00",
@@ -293,6 +315,7 @@ const ESPLORA_CATALOG = [
           label: { it: "2 ore", en: "2 hours", es: "2 horas" },
           priceAdult: 30,
           priceChild: 15,
+          days: ["lun", "mer", "ven"],
           times: ["11:00"],
           desc: {
             it: "Balene e delfini, con sosta bagno davanti a Bahía del Duque. A bordo bevande illimitate, ma niente da mangiare e niente transfer: al porto ci si arriva da soli. Lunedì, mercoledì e venerdì, partenza alle 11:00.",
@@ -332,6 +355,7 @@ const ESPLORA_CATALOG = [
           },
           priceAdult: 69,
           priceChild: 34,
+          days: ["mar", "gio", "ven", "dom"],
           included: ["lunch", "transfer"],
           times: ["13:00"],
           desc: {
@@ -406,6 +430,7 @@ const ESPLORA_CATALOG = [
           label: { it: "2 ore", en: "2 hours", es: "2 horas" },
           priceAdult: 33,
           priceChild: 20,
+          days: ["mar", "gio", "dom"],
           times: ["10:30"],
           desc: {
             it: "Il giro corto, per vedere balene e delfini senza starci mezza giornata. Non c'è la sosta bagno e il pranzo non è compreso: a bordo c'è il bar, dove si paga. Martedì, giovedì e domenica, partenza alle 10:30.",
@@ -417,6 +442,7 @@ const ESPLORA_CATALOG = [
           label: { it: "3 ore", en: "3 hours", es: "3 horas" },
           priceAdult: 50,
           priceChild: 30,
+          days: ["mer", "sab"],
           times: ["10:30"],
           included: ["swimstop", "lunch", "drinks"],
           desc: {
@@ -534,6 +560,8 @@ const ESPLORA_CATALOG = [
     zone: "Marina Amarilla",
     duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
     times: ["10:00", "13:00"],
+    // tutti i giorni tranne il sabato
+    days: ["lun", "mar", "mer", "gio", "ven", "dom"],
     languages: LINGUE_TOUR,
     priceFrom: 61,
     priceAdult: 61,
@@ -820,6 +848,7 @@ const ESPLORA_CATALOG = [
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     times: ["12:30"],
+    days: ["sab"],
     priceFrom: 75,
     priceAdult: 0,
     priceChild: 0,
@@ -917,6 +946,7 @@ const ESPLORA_CATALOG = [
     zone: "Puerto Colón",
     duration: { it: "5 ore", en: "5 hours", es: "5 horas" },
     times: ["11:00"],
+    days: ["lun", "mer", "gio", "ven", "dom"],
     priceFrom: 61,
     priceAdult: 0,
     priceChild: 0,
@@ -1690,6 +1720,7 @@ const ESPLORA_CATALOG = [
       en: "A first surf lesson with an instructor, board and wetsuit included.",
       es: "Primera clase de surf con instructor, tabla y neopreno incluidos."
     },
+    included: ["board", "wetsuit"],
     image: "surf-lesson.jpg",
     published: true
   },

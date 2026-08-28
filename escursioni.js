@@ -488,10 +488,9 @@ function initRequestDialog() {
     });
   }
 
-  // Gli orari fra cui scegliere: quelli dell'attivita' se ci sono, altrimenti
-  // le fasce segnaposto. La prima voce e' sempre "Da concordare" e vale stringa
-  // vuota, cosi' chi non sa a che ora vuole partire non e' costretto a
-  // inventare un orario per poter mandare la richiesta.
+  // Gli orari fra cui scegliere. "Da concordare" vale stringa vuota e non c'e'
+  // sempre: compare solo dove un orario fisso non esiste, cioe' sui charter e
+  // sulle attivita' di cui non conosciamo ancora le partenze.
   // Il giorno scelto va bene? Dove l'attivita' non si fa tutti i giorni, il
   // cliente lo deve sapere **appena sceglie la data**, non dopo aver riempito
   // tutto il resto e premuto invia.
@@ -546,15 +545,27 @@ function initRequestDialog() {
     if (!timeEl) return;
     const scelto = timeEl.value;
     timeEl.innerHTML = "";
-    const qualunque = document.createElement("option");
-    qualunque.value = "";
-    qualunque.textContent = t("req.timeAny");
-    timeEl.appendChild(qualunque);
     // Su certe barche l'orario dipende dalla durata scelta: il giro di 2 ore
     // parte alle 11:00 e quello di 3 alle 10:00. Se la variante ha i suoi
-    // orari valgono quelli, se no quelli dell'attivita', se no i segnaposto.
+    // orari valgono quelli, se no quelli dell'attivita'.
     const scelta = sceltaCorrente(tour);
-    const orari = (scelta && scelta.times) || tour.times || ORARI_PREDEFINITI;
+    const veri = (scelta && scelta.times) || tour.times;
+    // Tre casi diversi, e "Da concordare" ne riguarda solo due.
+    //   orari veri     → si sceglie fra quelli e basta. Offrire "Da concordare"
+    //                    dove la barca parte alle 10:00 e alle 13:00 fa credere
+    //                    che l'ora si tratti, e non e' vero.
+    //   times: []      → il charter: la barca e' tua e l'ora la concordi davvero.
+    //                    Li' "Da concordare" e' l'unica voce onesta.
+    //   campo assente  → gli orari veri non li sappiamo ancora. Restano le fasce
+    //                    segnaposto, che il cliente legge come preferenza, piu'
+    //                    "Da concordare" per chi non ne ha una.
+    const orari = veri || ORARI_PREDEFINITI;
+    if (!veri || !orari.length) {
+      const qualunque = document.createElement("option");
+      qualunque.value = "";
+      qualunque.textContent = t("req.timeAny");
+      timeEl.appendChild(qualunque);
+    }
     orari.forEach(ora => {
       const voce = document.createElement("option");
       voce.value = ora;
@@ -563,6 +574,10 @@ function initRequestDialog() {
     });
     // al cambio lingua si ricostruisce: la scelta del cliente non si perde
     timeEl.value = scelto;
+    // Cambiando variante l'orario di prima puo' non esistere piu' (dal charter
+    // al giro condiviso): se il ripristino non attacca, il menu resterebbe
+    // vuoto. Si riparte dalla prima voce.
+    if (timeEl.selectedIndex < 0) timeEl.selectedIndex = 0;
   }
 
   // "2 adulti × €55 + 1 bambino × €30" e sopra, grosso, "Totale €140". Si

@@ -1855,3 +1855,42 @@ Con le richieste via WhatsApp **un codice il cliente non ce l'ha mai**, quindi c
 "Prenota ora" alle escursioni; **il proprietario ha scelto di lasciare tutto com'e'**,
 come segnaposto di un sistema di prenotazioni vero. Registrato qui per non riproporlo a
 ogni pulizia: e' una scelta, non una svista.
+
+## "Da concordare" solo dove l'ora si concorda davvero (28 agosto)
+
+Il proprietario ha notato che il menu degli orari offriva **"Da concordare" anche sulle
+schede di cui aveva appena dato le partenze vere**. Offrirlo dove la barca parte alle
+10:00 e alle 13:00 fa credere che l'ora si tratti, e non e' vero: quel giro parte a
+quell'ora e basta.
+
+**Il campo `times` ha tre stati e vogliono dire tre cose diverse.** Prima ne aveva due e
+mezzo, ora sono espliciti (documentati in testa a `esplora-catalog.js`):
+
+| `times` | significato | cosa vede il cliente |
+|---|---|---|
+| pieno | le partenze vere del fornitore | solo quelle, niente "Da concordare" |
+| `[]` | charter o noleggio, l'ora si concorda | solo "Da concordare" |
+| assente | non le sappiamo ancora | fasce segnaposto + "Da concordare" |
+
+**Come si riconosce un charter senza doverlo chiedere: dal prezzo.** `private-charter` sta
+a "€350 a gruppo", `self-drive-boats` a "€190 a barca", `small-catamaran-rental` a
+"€100/ora" — la barca e' tutta del cliente, quindi l'ora la concorda. `luxury-cruiser`,
+`glass-bottom-boat` e `luxury-catamaran` costano €65, €58 e €75 **a persona**, senza
+`priceUnit`: sono giri condivisi con una partenza fissa, che pero' non conosciamo ancora.
+E' lo stesso segnale che distingue `price` da `priceAdult` nel conto del totale.
+
+A quelle tre schede ho messo `times: []`. Le altre tre restano coi segnaposto finche'
+l'ufficio non manda gli orari: **non ho inventato una partenza per farle sembrare
+complete.**
+
+**Le fasce segnaposto restano dove non sappiamo, e c'e' un motivo.** Sono intervalli
+("09:00 - 10:00"), non orari esatti: il cliente le legge come una preferenza, non come una
+promessa di partenza. Toglierle costringerebbe chi ha una preferenza a non poterla dire.
+
+**Il menu delle varianti dentro la finestra e' codice morto**, scoperto testando questa
+modifica. `riempiOpzioni()` lo nasconde appena la pagina ha i bottoni delle varianti
+(`sceltaDallaPagina()`), e dalla lista la finestra non si apre piu': il pulsante della
+scheda porta al dettaglio. Quindi la variante arriva **sempre** dai bottoni della pagina.
+Non l'ho tolto — funziona e non da' fastidio — ma va saputo prima di andare a caccia di un
+bug li' dentro: **il `<select>` non ha nessun `addEventListener`, e non serve che ce
+l'abbia.**

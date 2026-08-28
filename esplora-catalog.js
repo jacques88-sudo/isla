@@ -103,12 +103,18 @@
 //                sette giorni su sette non sono una limitazione da mostrare.
 //                Vale anche dentro una variante, quando i giorni cambiano da
 //                una all'altra.
-//   times      → facoltativo: gli orari di partenza fra cui scegliere, scritti
-//                come li scrive il fornitore. Dove manca, la finestra della
-//                richiesta usa le fasce segnaposto di ORARI_PREDEFINITI qui
-//                sopra: sostituirle attivita' per attivita' appena l'ufficio
-//                manda gli orari veri.
-//                    times: ["09:30 - 12:30", "14:00 - 17:00"]
+//   times      → facoltativo, e i suoi tre stati vogliono dire tre cose diverse.
+//                Scritto e pieno: sono le partenze vere del fornitore, il cliente
+//                sceglie fra quelle e "Da concordare" non compare.
+//                    times: ["09:30", "12:30"]
+//                Scritto e vuoto: e' un charter o un noleggio, la barca e' tutta
+//                sua e l'ora si concorda. "Da concordare" resta l'unica voce.
+//                    times: []
+//                Non scritto: le partenze vere non le sappiamo ancora. Restano le
+//                fasce segnaposto di ORARI_PREDEFINITI piu' "Da concordare", da
+//                sostituire attivita' per attivita' appena l'ufficio le manda.
+//                Vale anche dentro una variante, quando le partenze cambiano da
+//                una all'altra.
 //   options    → facoltativo: le varianti della stessa attivita' fra cui il cliente
 //                sceglie (1 o 2 ore, quale percorso, quale spettacolo). Sulla pagina
 //                di dettaglio diventano una riga ciascuna, con il prezzo se c'e';
@@ -275,6 +281,10 @@ const ESPLORA_CATALOG = [
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 350,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    // La barca e' tutta tua: l'ora di partenza si concorda, non si sceglie da un
+    // elenco. `times: []` lascia "Da concordare" come unica voce, invece delle
+    // fasce segnaposto che qui sarebbero inventate.
+    times: [],
     priceTiers: [
       { from: 7,  to: 10, price: 350 },
       { from: 11, to: 15, price: 450 }
@@ -1113,6 +1123,10 @@ const ESPLORA_CATALOG = [
     duration: { it: "Da 2 a 5 ore", en: "2 to 5 hours", es: "De 2 a 5 horas" },
     priceFrom: 190,
     priceUnit: { it: "a barca", en: "per boat", es: "por barco" },
+    // La barca e' tutta tua: l'ora di partenza si concorda, non si sceglie da un
+    // elenco. `times: []` lascia "Da concordare" come unica voce, invece delle
+    // fasce segnaposto che qui sarebbero inventate.
+    times: [],
     priceAdult: 0,
     priceChild: 0,
     options: {
@@ -1169,6 +1183,10 @@ const ESPLORA_CATALOG = [
     duration: { it: "Noleggio a ore", en: "Hourly rental", es: "Alquiler por horas" },
     priceFrom: 100,
     priceUnit: { it: "/ora", en: "/hr", es: "/h" },
+    // La barca e' tutta tua: l'ora di partenza si concorda, non si sceglie da un
+    // elenco. `times: []` lascia "Da concordare" come unica voce, invece delle
+    // fasce segnaposto che qui sarebbero inventate.
+    times: [],
     priceAdult: 0,
     priceChild: 0,
     family: false,

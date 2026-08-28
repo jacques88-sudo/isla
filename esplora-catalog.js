@@ -1253,21 +1253,68 @@ const ESPLORA_CATALOG = [
     title: "Small Catamaran Rental",
     category: "mare-barche",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Noleggio a ore", en: "Hourly rental", es: "Alquiler por horas" },
-    priceFrom: 100,
-    priceUnit: { it: "/ora", en: "/hr", es: "/h" },
+    duration: { it: "Da 2 a 6 ore", en: "2 to 6 hours", es: "De 2 a 6 horas" },
+    // "a barca" e non "/ora", come sul Self Drive Boat. Con le varianti di durata
+    // la pagina scrive il prezzo della variante seguito da questa unita': con
+    // "/ora" usciva **"€200/ora"**, che e' il totale di due ore spacciato per
+    // tariffa oraria. €200 e' anche il minimo vero che il cliente puo' spendere,
+    // perche' sotto le due ore non si noleggia. La tariffa di €100 l'ora resta
+    // scritta per esteso nella prima nota.
+    priceFrom: 200,
+    priceUnit: { it: " a barca", en: " per boat", es: " por barco" },
     // La barca e' tutta tua: l'ora di partenza si concorda, non si sceglie da un
     // elenco. `times: []` lascia "Da concordare" come unica voce, invece delle
     // fasce segnaposto che qui sarebbero inventate.
     times: [],
     priceAdult: 0,
     priceChild: 0,
-    family: false,
-    desc: {
-      it: "Noleggio di un piccolo catamarano a ore. Non serve la patente nautica.",
-      en: "Hourly rental of a small catamaran. No boat licence needed.",
-      es: "Alquiler por horas de un catamaran pequeno. No hace falta titulacion."
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        { label: { it: "2 ore", en: "2 hours", es: "2 horas" }, price: 200 },
+        { label: { it: "3 ore", en: "3 hours", es: "3 horas" }, price: 300 },
+        { label: { it: "4 ore", en: "4 hours", es: "4 horas" }, price: 400 },
+        { label: { it: "5 ore", en: "5 hours", es: "5 horas" }, price: 500 },
+        { label: { it: "6 ore", en: "6 hours", es: "6 horas" }, price: 600 }
+      ]
     },
+    // `towels` no: gli asciugamani qui il cliente se li porta, non glieli danno.
+    included: ["snorkel", "lifejacket", "cooler", "speaker", "fuel"],
+    // Il fornitore scrive "ideal for families" e chiede i 18 anni **a chi
+    // guida**: i bambini salgono come passeggeri, come sul Self Drive Boat.
+    family: true,
+    desc: {
+      it: "Un piccolo catamarano tutto vostro, da guidare da soli: non serve la patente nautica. Fino a sei persone a bordo, da due a sei ore, con attrezzatura da snorkeling, borsa frigo e cassa Bluetooth.",
+      en: "A small catamaran all to yourselves, to drive on your own: no boat licence needed. Up to six people on board, from two to six hours, with snorkelling gear, a cooler box and a Bluetooth speaker.",
+      es: "Un catamarán pequeño solo para vosotros, para conducirlo vosotros mismos: no hace falta titulación. Hasta seis personas a bordo, de dos a seis horas, con equipo de snorkel, nevera portátil y altavoz Bluetooth."
+    },
+    notes: [
+      {
+        it: "Si paga €100 l'ora, per la barca e non a persona: il conto si divide fra chi sale a bordo. Il noleggio minimo è di due ore, il massimo di sei.",
+        en: "It costs €100 an hour, for the boat and not per person: you split it between whoever comes on board. The minimum rental is two hours, the maximum six.",
+        es: "Cuesta 100 € la hora, por barco y no por persona: se reparte entre quienes suben a bordo. El alquiler mínimo es de dos horas y el máximo de seis."
+      },
+      {
+        it: "Non serve la patente nautica. Chi guida deve avere almeno 18 anni e portare un documento con la foto; i bambini possono salire come passeggeri.",
+        en: "No boat licence is needed. Whoever drives must be at least 18 and bring photo ID; children are welcome on board as passengers.",
+        es: "No hace falta titulación náutica. Quien conduzca debe tener al menos 18 años y llevar un documento con foto; los niños pueden subir como pasajeros."
+      },
+      {
+        it: "A bordo si sta fino a sei persone.",
+        en: "The boat takes up to six people.",
+        es: "A bordo caben hasta seis personas."
+      },
+      {
+        it: "Il giorno stesso si lascia una cauzione di €100 in contanti.",
+        en: "A €100 cash deposit is left on the day.",
+        es: "El mismo día se deja una fianza de 100 € en efectivo."
+      },
+      {
+        it: "Portati costume, asciugamano e crema solare: quelli non sono compresi.",
+        en: "Bring swimwear, a towel and sun cream: those are not included.",
+        es: "Lleva bañador, toalla y crema solar: eso no está incluido."
+      }
+    ],
     image: "small-catamaran-rental.jpg",
     published: true
   },

@@ -1994,3 +1994,57 @@ dato vero per far contento un controllo.
 catalogo" diceva ancora di pubblicare il **prezzo scontato**, mentre la regola del 25
 agosto dice il **prezzo pieno**. Corretta. E' il rischio di appunti che crescono: due
 paragrafi scritti in giorni diversi che si contraddicono, e nessuno dei due sa dell'altro.
+
+## Small Catamaran Rental, riempita (28 agosto)
+
+Prima scheda passata dalla skill `nuova-scheda`, e il primo passo della procedura ha fatto
+il suo lavoro: **non era una scheda nuova.** Il proprietario ha confermato subito che i
+dati erano per `small-catamaran-rental`, che stava gia' in catalogo a €100/ora, senza
+patente, con zona e durata da definire.
+
+**€100 l'ora, da 2 a 6 ore, massimo 6 persone, senza patente nautica.** Cinque varianti di
+durata (€200, €300, €400, €500, €600), come sul Self Drive Boat: cosi' il cliente legge il
+totale invece di doverselo moltiplicare.
+
+### L'errore che ho fatto, e come si e' visto
+
+Avevo lasciato `priceUnit: "/ora"` e aggiunto le varianti. La pagina scrive il prezzo della
+variante seguito dall'unita' della scheda, e usciva **"€200/ora"**: il totale di due ore
+spacciato per tariffa oraria. Falso, e sul prezzo.
+
+Il codice non e' sbagliato — su Self Drive Boat scrive "€190 a barca", che e' giusto,
+perche' li' l'unita' e' "a barca". Era il mio dato a non stare in piedi: con le varianti di
+durata, `priceUnit` **deve** essere un'unita' di barca, non di tempo. Corretto in
+"a barca", con `priceFrom: 200`.
+
+**Il "da €" e' passato da €100 a €200, e non e' un aumento.** Sotto le due ore non si
+noleggia: €200 e' il minimo che il cliente puo' davvero spendere, mentre "da €100/ora"
+prometteva un conto che non poteva fare. La tariffa di €100 l'ora e' rimasta, scritta per
+esteso nella prima nota.
+
+**Si e' visto solo guardando la pagina resa**, non il codice. E' il terzo caso dopo
+"Neonati: Gratis" su una variante a barca intera e la durata che non seguiva la variante.
+
+### La ventesima icona: la borsa frigo
+
+La borsa frigo non aveva un'icona, e delle quattro cose comprese era l'unica che sarebbe
+finita solo in una nota. Aggiunta — due righe, come da regola: il disegno in
+`INCLUDED_ICONS` e `inc.cooler` in `i18n.js`.
+
+**Ci sono voluti due giri, e il secondo l'ha deciso il foglio con tutte e venti in fila.**
+Il primo disegno era una scatola con la maniglia in cima, la riga del coperchio e un
+fiocco di neve piccolo: da sola sembrava giusta, in fila leggeva "cassetta degli attrezzi"
+ed era troppo vicina a `equipment`, che e' gia' una borsa con manico e riga in mezzo. Il
+secondo ha il **coperchio largo che sporge** sopra un corpo piu' stretto: quella sagoma
+non ce l'ha nessun'altra icona.
+
+**`towels` invece non c'e'**, ed e' voluto: qui il fornitore scrive "bring swimwear,
+towels and sunscreen". Gli asciugamani il cliente se li porta, non glieli danno. Sul Self
+Drive Boat `towels` c'e' perche' li' li prestano davvero.
+
+**`family` da `false` a `true`.** Il fornitore scrive "ideal for families" e chiede i 18
+anni **a chi guida**: i bambini salgono come passeggeri, come sul Self Drive Boat.
+
+**Resta senza porto.** `zone` e' ancora "Da definire": il testo del fornitore non lo dice.
+Il Self Drive Boat parte da Puerto Colon, ma e' un'altra barca e non si copia un porto per
+somiglianza. Da chiedere.

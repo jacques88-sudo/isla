@@ -2093,3 +2093,21 @@ il menu delle lingue si mette solo dove lo segnala il proprietario.
 raggiungibile: la scheda è pubblicata senza, e `controlla.js` lo segnala come avviso
 ("pubblicata senza foto: in elenco esce il riquadro grigio"). È il primo avviso vero che il
 controllo ha prodotto da solo su un lavoro in corso.
+
+## Twin Ticket — neonati gratis (28 agosto 2026)
+
+È arrivata incollata la pagina di CanaryVIP (un rivenditore concorrente, non un fornitore)
+per lo stesso biglietto combinato. **Non era una scheda nuova**: `twin-ticket` esiste già,
+con `priceAdult: 78` e `priceChild: 57` identici — prezzi già confermati dall'ufficio (vedi
+sopra). Dalla pagina del concorrente non ho copiato niente: "Best Price Guaranteed",
+"Official Tickets", punteggio e recensioni, la loro cancellazione, sono tutte cose che le
+regole del progetto dicono di non riprendere.
+
+L'unico dato mancante era `priceInfant`: la pagina di CanaryVIP mostrava "Toddler (Free)"
+ma senza fascia d'età, e non è una fonte da fidarsi. **Confermato dal proprietario**: i
+neonati non pagano fino a 0-2 anni. Aggiunto `priceInfant: 0` e `ages: { infant: "0-2" }`.
+
+**Deciso da solo**: non ho messo `ages.adult` né `ages.child`, perché non sono confermati —
+`controlla.js` segnala l'avviso "ha il prezzo adulti ma nessuna fascia ages.adult", non
+bloccante. **Resta da chiedere**, se serve: la fascia esatta degli adulti (di solito "12+")
+e quella dei bambini (probabilmente "3-11", ma non confermata per questo biglietto).

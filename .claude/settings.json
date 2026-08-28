@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f controlla.js ] && node controlla.js 2>&1 || true",
+            "statusMessage": "Controllo il catalogo…",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

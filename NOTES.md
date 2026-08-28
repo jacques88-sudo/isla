@@ -2144,3 +2144,34 @@ checkbox, il totale con ciascuno dei due transfer, e il messaggio WhatsApp final
 (es. resta qualche giorno al nord e qualche giorno al sud), il calcolo attuale non lo
 gestisce — mostrerebbe solo il prezzo dell'ultimo spuntato. Non è successo in pratica
 finora con nessun'altra scheda, quindi non l'ho aggiunto da solo.
+
+### Twin Ticket — quattro righe transfer erano troppe (28 agosto 2026)
+
+Segnalato con uno screenshot dal telefono: "Transfer / Con il transfer / Transfer Siam
+Park / Con il transfer per il Siam Park" sono quattro righe che dicono la stessa cosa due
+volte a testa, e la tabella "In breve" diventava un elenco confuso.
+
+**Accorpate in una riga sola per transfer**, col nome che dice subito la direzione:
+"Transfer Loro Parque (da sud) — €99 adulti · €74 bambini" e "Transfer Siam Park (da
+nord) — €103 adulti · €78 bambini". Aggiunti due campi nuovi, `transferPriceLabel` e
+`transferSiamPriceLabel`: se ci sono, sostituiscono le due righe normali con una sola.
+
+**Deciso da solo**: ho reso il cambiamento opzionale invece di riscrivere il rendering per
+tutti. Il Submarine Safari usa lo stesso `transfer`/`transferPrice` ma ha un solo transfer,
+non due che si confondono a vicenda — per lui le due righe separate (descrizione, poi
+prezzo) restano com'erano, e senza `transferPriceLabel` continuano a comparire così su
+qualunque scheda futura con un solo transfer.
+
+**Non toccato**: il testo dentro la finestra della richiesta (sotto ai due checkbox) resta
+quello per esteso di prima ("Disponibile su richiesta, solo per la giornata a ..."). Lì
+serve la spiegazione completa, non l'etichetta corta — è un posto diverso dalla tabella
+"In breve".
+
+**Corretto subito dopo**: la riga accorpata mostrava €99/€74 ed €103/€78, cioè il prezzo
+**completo** (biglietto+transfer) che serve al calcolo del totale — ma accanto ad "Adulti
+(12+) €78" un secondo "€99 adulti" si legge come un secondo prezzo del biglietto, non come
+il costo del bus. **Ora la riga mostra solo il supplemento**: €21/€17 per Loro Parque,
+€25/€21 per il Siam Park — cioè `transferPrice - priceAdult/priceChild`, calcolato al volo
+in `tour.js` solo per la riga accorpata. Il totale nella finestra della richiesta continua
+a usare il prezzo completo come prima (verificato: €272 per 2 adulti + 1 bambino col
+transfer Loro Parque) — cambia solo cosa si stampa, non cosa si calcola.

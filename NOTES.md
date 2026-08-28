@@ -1915,3 +1915,40 @@ reso esplicito — ma va confermato.
 **Sotto i 2 anni non c'e' nessun campo**, come da regola: i bambini partono da 2 anni e
 non sappiamo se sotto si sale gratis o non si sale affatto. Niente `priceInfant`, che
 vorrebbe dire "gratis". Da chiedere.
+
+## Peter Pan Pirate Ship (28 agosto)
+
+Goletta portoghese in legno, due alberi, **l'unica barca che parte da Los Cristianos** e
+l'unica di due ore: €27 adulto, €13 bambino, neonati gratis, partenze 10:00, 12:00 e 14:00
+tutti i giorni. Prima di crearla ho controllato che non fosse un doppione — la lezione del
+Kalima Kat: nessuna delle quindici schede "mare e barche" sta a €27, nessun'altra dura due
+ore e nessun'altra parte da Los Cristianos. Lo Shogun e' anche lui una goletta, ma di 26
+metri, cinque ore, da Puerto Colon.
+
+**Il bagno non e' compreso, e non e' una dimenticanza.** Il fornitore scrive "3-Hour Tour:
+includes swimming and a full lunch" e per il giro di due ore "food and drinks are not
+included, but you can buy them onboard". Il contrasto e' esplicito: sul giro corto non si
+nuota e non si mangia. Nelle icone c'e' solo `guide`. Mettere `swimstop` perche' la
+descrizione generale della pagina parla di una sosta bagno avrebbe promesso una cosa che
+su **questo** giro non c'e'.
+
+**Il transfer e' gratis ma non a tutte le partenze** ("free pick-up available only at
+12:00"). E' una condizione, non un prezzo: sta scritto nella riga `transfer`, senza
+`transferPrice` e **senza** "transfer" fra le icone, che direbbe che vale sempre.
+
+**Niente `languages`, anche se la pagina dice "multilingual guides".** Vale la regola data
+dal proprietario: il menu delle lingue si mette solo dove me lo segnala lui.
+
+**Non copiato**, come sempre da CanaryVIP: le 48 ore di cancellazione (le nostre sono 24,
+sempre), "best price guarantee", "discounts activated", "official tickets", il punteggio e
+il numero di recensioni.
+
+**Due cose lasciate in sospeso e non indovinate:**
+
+- **L'eta' dei tre anni.** Il proprietario ha scritto "bambini 3-11" e "bebe' 0-3": i tre
+  anni stavano in tutte e due le fasce. Ho messo neonati **0-2**, che e' l'unica lettura
+  che fa combaciare le fasce senza sovrapporle, ed e' anche quella delle altre barche. Se
+  un bambino di tre anni non paga davvero, diventa 0-3 e i bambini 4-11, come su Freebird.
+- **Il giro di tre ore con bagno e pranzo non e' pubblicato.** Esiste, parte alle 10:00,
+  ma il fornitore non ne da' il prezzo e dice solo "available only for a limited time,
+  check the calendar". Senza prezzo e senza date non e' una scheda: e' una domanda.

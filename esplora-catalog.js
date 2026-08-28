@@ -575,6 +575,57 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    id: "peter-pan",
+    title: "Peter Pan Pirate Ship",
+    category: "mare-barche",
+    zone: "Los Cristianos",
+    duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+    // Tre partenze tutti i giorni: nessun campo `days`, non c'e' limite da dire.
+    times: ["10:00", "12:00", "14:00"],
+    priceFrom: 27,
+    priceAdult: 27,
+    priceChild: 13,
+    priceInfant: 0,
+    ages: { adult: "12+", child: "3-11", infant: "0-2" },
+    family: true,
+    // Solo la guida. Sul giro di due ore da mangiare e da bere **non** sono
+    // compresi (si comprano a bordo) e il bagno non c'e': la sosta per nuotare
+    // il fornitore la mette sul giro di tre ore, non su questo.
+    included: ["guide"],
+    // Gratis, ma non a tutte le partenze: e' una condizione, non un prezzo,
+    // quindi niente `transferPrice` e niente "transfer" fra le icone, che
+    // direbbero che vale sempre.
+    transfer: {
+      it: "Il passaggio dagli hotel del sud è gratis, ma solo per la partenza delle 12:00.",
+      en: "Pick-up from the southern hotels is free, but only for the 12:00 departure.",
+      es: "La recogida en los hoteles del sur es gratis, pero solo para la salida de las 12:00."
+    },
+    desc: {
+      it: "Una goletta portoghese in legno, a due alberi, che parte da Los Cristianos: due ore al largo per vedere delfini e globicefali. A bordo ci sono l'ombra, un ponte superiore per stare al sole e i bagni.",
+      en: "A wooden two-masted Portuguese schooner leaving from Los Cristianos: two hours offshore to see dolphins and pilot whales. On board there is shade, an upper deck for sunbathing and toilets.",
+      es: "Una goleta portuguesa de madera, de dos palos, que sale de Los Cristianos: dos horas mar adentro para ver delfines y calderones. A bordo hay sombra, una cubierta superior para tomar el sol y aseos."
+    },
+    notes: [
+      {
+        it: "Si parte dal porto di Los Cristianos. Arriva almeno 30 minuti prima dell'orario, così l'imbarco si fa con calma.",
+        en: "You leave from Los Cristianos harbour. Get there at least 30 minutes before your departure time so boarding is unhurried.",
+        es: "Se sale del puerto de Los Cristianos. Llega al menos 30 minutos antes de la hora para embarcar con calma."
+      },
+      {
+        it: "Da mangiare e da bere non sono compresi, ma si comprano a bordo.",
+        en: "Food and drinks are not included, but you can buy them on board.",
+        es: "La comida y las bebidas no están incluidas, pero se compran a bordo."
+      },
+      {
+        it: "A bordo si sta fino a 60 persone: c'è una zona all'ombra con un tavolone, il ponte superiore per il sole e due bagni.",
+        en: "The ship takes up to 60 people: there is a shaded area with a big table, the upper deck for the sun and two toilets.",
+        es: "A bordo caben hasta 60 personas: hay una zona a la sombra con una mesa grande, la cubierta superior para el sol y dos aseos."
+      }
+    ],
+    image: "peter-pan.jpg",
+    published: true
+  },
+  {
     id: "submarine-safari",
     title: "Submarine Safari",
     category: "mare-barche",

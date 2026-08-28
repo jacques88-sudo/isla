@@ -115,28 +115,40 @@ function detailRows(tour, variante) {
       tour.priceInfant > 0 ? "€" + tour.priceInfant : t("detail.free")]);
   }
   righe.push([t("detail.suitable"), t(tour.family ? "detail.kidsYes" : "detail.kidsNo")]);
-  if (tour.transfer) righe.push([t("detail.transfer"), tf(tour.transfer)]);
-  // Col transfer il prezzo cambia: si mostra su una riga sola invece che su
-  // tre, altrimenti la tabella diventa un listino. Il posto per i neonati
-  // esiste solo qui: e' il sedile sul pullman, senza transfer non si paga.
-  if (tour.transferPrice && !tour.transferPriceHidden) {
-    const tp = tour.transferPrice;
+  // "€99 adulti · €74 bambini": il posto per i neonati esiste solo qui, e'
+  // il sedile sul pullman, senza transfer non si paga.
+  const prezzoTransfer = tp => {
+    if (!tp) return "";
     const parti = [];
     if (tp.adult) parti.push("€" + tp.adult + " " + t("wa.adults"));
     if (tp.child) parti.push("€" + tp.child + " " + t("wa.children"));
     if (tp.baby) parti.push("€" + tp.baby + " " + t("wa.babies") + " (" + t("detail.babySeat") + ")");
-    if (parti.length) righe.push([t("detail.withTransfer"), parti.join(" · ")]);
+    return parti.join(" · ");
+  };
+  // `transferPriceLabel` accorpa descrizione e prezzo in una riga sola: serve
+  // sul Twin Ticket, che ha due transfer diversi e altrimenti diventerebbero
+  // quattro righe che si confondono a vicenda. Le altre schede, con un solo
+  // transfer, restano su due righe (descrizione, poi prezzo).
+  if (tour.transferPriceLabel && tour.transferPrice && !tour.transferPriceHidden) {
+    const prezzo = prezzoTransfer(tour.transferPrice);
+    if (prezzo) righe.push([tf(tour.transferPriceLabel), prezzo]);
+  } else {
+    if (tour.transfer) righe.push([t("detail.transfer"), tf(tour.transfer)]);
+    if (tour.transferPrice && !tour.transferPriceHidden) {
+      const prezzo = prezzoTransfer(tour.transferPrice);
+      if (prezzo) righe.push([t("detail.withTransfer"), prezzo]);
+    }
   }
-  // Il Twin Ticket ha un secondo transfer, indipendente: quello sopra e' per
-  // chi va a Loro Parque, questo per chi va al Siam Park. Stessa logica.
-  if (tour.transferSiam) righe.push([t("detail.transferSiam"), tf(tour.transferSiam)]);
-  if (tour.transferSiamPrice && !tour.transferSiamPriceHidden) {
-    const tp = tour.transferSiamPrice;
-    const parti = [];
-    if (tp.adult) parti.push("€" + tp.adult + " " + t("wa.adults"));
-    if (tp.child) parti.push("€" + tp.child + " " + t("wa.children"));
-    if (tp.baby) parti.push("€" + tp.baby + " " + t("wa.babies") + " (" + t("detail.babySeat") + ")");
-    if (parti.length) righe.push([t("detail.withTransferSiam"), parti.join(" · ")]);
+  // Il secondo transfer del Twin Ticket, verso il Siam Park: stessa logica.
+  if (tour.transferSiamPriceLabel && tour.transferSiamPrice && !tour.transferSiamPriceHidden) {
+    const prezzo = prezzoTransfer(tour.transferSiamPrice);
+    if (prezzo) righe.push([tf(tour.transferSiamPriceLabel), prezzo]);
+  } else {
+    if (tour.transferSiam) righe.push([t("detail.transferSiam"), tf(tour.transferSiam)]);
+    if (tour.transferSiamPrice && !tour.transferSiamPriceHidden) {
+      const prezzo = prezzoTransfer(tour.transferSiamPrice);
+      if (prezzo) righe.push([t("detail.withTransferSiam"), prezzo]);
+    }
   }
   if (tour.season) righe.push([t("detail.season"), tf(tour.season)]);
 

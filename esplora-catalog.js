@@ -88,6 +88,12 @@
 //                richiesta i due checkbox si escludono a vicenda: un cliente sta
 //                o al nord o al sud, non in tutti e due i posti. Ha anche il suo
 //                `transferSiamPriceHidden`, come `transferPriceHidden`.
+//   transferPriceLabel, transferSiamPriceLabel → facoltativi, solo dove ci sono
+//                due transfer sulla stessa scheda (di nuovo, solo il Twin Ticket).
+//                Accorpano la descrizione e il prezzo in una riga sola, con la
+//                direzione nel nome, invece delle due righe normali che con due
+//                transfer diventerebbero quattro e si confonderebbero a vicenda:
+//                    transferPriceLabel: { it: "Transfer Loro Parque (da sud)", ... }
 //   languages  → facoltativo: le lingue fra cui il cliente puo' scegliere. Solo
 //                dove c'e' questo campo la finestra della richiesta mostra la
 //                domanda "In che lingua". Le solite si scrivono cosi':
@@ -2043,12 +2049,22 @@ const ESPLORA_CATALOG = [
       es: "Disponible bajo petición, solo para el día en Loro Parque"
     },
     transferPrice: { adult: 99, child: 74 },
+    transferPriceLabel: {
+      it: "Transfer Loro Parque (da sud)",
+      en: "Loro Parque transfer (from the south)",
+      es: "Traslado a Loro Parque (desde el sur)"
+    },
     transferSiam: {
       it: "Disponibile su richiesta, solo per la giornata al Siam Park",
       en: "Available on request, for the Siam Park day only",
       es: "Disponible bajo petición, solo para el día en Siam Park"
     },
     transferSiamPrice: { adult: 103, child: 78 },
+    transferSiamPriceLabel: {
+      it: "Transfer Siam Park (da nord)",
+      en: "Siam Park transfer (from the north)",
+      es: "Traslado a Siam Park (desde el norte)"
+    },
     family: true,
     desc: {
       it: "Biglietto combinato per i due parchi più conosciuti dell'isola.",

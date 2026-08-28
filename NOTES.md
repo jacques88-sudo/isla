@@ -2144,3 +2144,25 @@ checkbox, il totale con ciascuno dei due transfer, e il messaggio WhatsApp final
 (es. resta qualche giorno al nord e qualche giorno al sud), il calcolo attuale non lo
 gestisce — mostrerebbe solo il prezzo dell'ultimo spuntato. Non è successo in pratica
 finora con nessun'altra scheda, quindi non l'ho aggiunto da solo.
+
+### Twin Ticket — quattro righe transfer erano troppe (28 agosto 2026)
+
+Segnalato con uno screenshot dal telefono: "Transfer / Con il transfer / Transfer Siam
+Park / Con il transfer per il Siam Park" sono quattro righe che dicono la stessa cosa due
+volte a testa, e la tabella "In breve" diventava un elenco confuso.
+
+**Accorpate in una riga sola per transfer**, col nome che dice subito la direzione:
+"Transfer Loro Parque (da sud) — €99 adulti · €74 bambini" e "Transfer Siam Park (da
+nord) — €103 adulti · €78 bambini". Aggiunti due campi nuovi, `transferPriceLabel` e
+`transferSiamPriceLabel`: se ci sono, sostituiscono le due righe normali con una sola.
+
+**Deciso da solo**: ho reso il cambiamento opzionale invece di riscrivere il rendering per
+tutti. Il Submarine Safari usa lo stesso `transfer`/`transferPrice` ma ha un solo transfer,
+non due che si confondono a vicenda — per lui le due righe separate (descrizione, poi
+prezzo) restano com'erano, e senza `transferPriceLabel` continuano a comparire così su
+qualunque scheda futura con un solo transfer.
+
+**Non toccato**: il testo dentro la finestra della richiesta (sotto ai due checkbox) resta
+quello per esteso di prima ("Disponibile su richiesta, solo per la giornata a ..."). Lì
+serve la spiegazione completa, non l'etichetta corta — è un posto diverso dalla tabella
+"In breve".

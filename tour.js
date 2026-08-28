@@ -125,12 +125,22 @@ function detailRows(tour, variante) {
     if (tp.baby) parti.push("€" + tp.baby + " " + t("wa.babies") + " (" + t("detail.babySeat") + ")");
     return parti.join(" · ");
   };
+  // `tp` in catalogo e' sempre il prezzo **completo** (biglietto+transfer),
+  // quello che serve al totale. Sulla riga accorpata pero' si mostra solo il
+  // supplemento del transfer: vicino ad "Adulti (12+) €78" un "€99 adulti" si
+  // legge come un secondo prezzo del biglietto, non come il costo del bus.
+  const supplemento = tp => {
+    if (!tp) return null;
+    const s = { adult: tp.adult - (tour.priceAdult || 0) };
+    if (tp.child) s.child = tp.child - (tour.priceChild || 0);
+    return s;
+  };
   // `transferPriceLabel` accorpa descrizione e prezzo in una riga sola: serve
   // sul Twin Ticket, che ha due transfer diversi e altrimenti diventerebbero
   // quattro righe che si confondono a vicenda. Le altre schede, con un solo
-  // transfer, restano su due righe (descrizione, poi prezzo).
+  // transfer, restano su due righe (descrizione, poi prezzo completo).
   if (tour.transferPriceLabel && tour.transferPrice && !tour.transferPriceHidden) {
-    const prezzo = prezzoTransfer(tour.transferPrice);
+    const prezzo = prezzoTransfer(supplemento(tour.transferPrice));
     if (prezzo) righe.push([tf(tour.transferPriceLabel), prezzo]);
   } else {
     if (tour.transfer) righe.push([t("detail.transfer"), tf(tour.transfer)]);
@@ -141,7 +151,7 @@ function detailRows(tour, variante) {
   }
   // Il secondo transfer del Twin Ticket, verso il Siam Park: stessa logica.
   if (tour.transferSiamPriceLabel && tour.transferSiamPrice && !tour.transferSiamPriceHidden) {
-    const prezzo = prezzoTransfer(tour.transferSiamPrice);
+    const prezzo = prezzoTransfer(supplemento(tour.transferSiamPrice));
     if (prezzo) righe.push([tf(tour.transferSiamPriceLabel), prezzo]);
   } else {
     if (tour.transferSiam) righe.push([t("detail.transferSiam"), tf(tour.transferSiam)]);

@@ -2166,3 +2166,12 @@ qualunque scheda futura con un solo transfer.
 quello per esteso di prima ("Disponibile su richiesta, solo per la giornata a ..."). Lì
 serve la spiegazione completa, non l'etichetta corta — è un posto diverso dalla tabella
 "In breve".
+
+**Corretto subito dopo**: la riga accorpata mostrava €99/€74 ed €103/€78, cioè il prezzo
+**completo** (biglietto+transfer) che serve al calcolo del totale — ma accanto ad "Adulti
+(12+) €78" un secondo "€99 adulti" si legge come un secondo prezzo del biglietto, non come
+il costo del bus. **Ora la riga mostra solo il supplemento**: €21/€17 per Loro Parque,
+€25/€21 per il Siam Park — cioè `transferPrice - priceAdult/priceChild`, calcolato al volo
+in `tour.js` solo per la riga accorpata. Il totale nella finestra della richiesta continua
+a usare il prezzo completo come prima (verificato: €272 per 2 adulti + 1 bambino col
+transfer Loro Parque) — cambia solo cosa si stampa, non cosa si calcola.

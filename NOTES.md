@@ -2048,3 +2048,48 @@ anni **a chi guida**: i bambini salgono come passeggeri, come sul Self Drive Boa
 **Resta senza porto.** `zone` e' ancora "Da definire": il testo del fornitore non lo dice.
 Il Self Drive Boat parte da Puerto Colon, ma e' un'altra barca e non si copia un porto per
 somiglianza. Da chiedere.
+
+## Flipper One, scheda nuova — e il porto del noleggio (28 agosto)
+
+**Il porto del Small Catamaran Rental è Puerto Colón**, detto dall'ufficio. Era l'unica
+cosa che mancava a quella scheda.
+
+### Flipper One Boat Tour
+
+Goletta di legno costruita a mano a Tenerife — diciotto mesi, quattro fratelli falegnami di
+Alcalá, polena a forma di delfino. **L'unica scheda che parte da Los Gigantes**: tutte le
+altre barche sono a Puerto Colón, Los Cristianos o Marina Amarilla. Massimo 91 persone.
+
+Tre varianti, coi prezzi dentro ciascuna: **2 ore €33/€23**, **3 ore €40/€25**, **3 ore con
+navetta €44/€29**. Neonati gratis su tutti e tre. Fasce `12+` / `2-11` / `0-1`.
+
+**Il pranzo e la sosta bagno non stanno nel riquadro della scheda** ma dentro le due
+varianti da tre ore, e la navetta solo dentro la terza. Nel riquadro di primo livello
+restano `drinks` e `guide`, le uniche due cose vere su tutti e tre i giri: le bevande sono
+comprese anche sul giro corto, il fornitore lo scrive esplicitamente.
+
+**Una contraddizione dentro la pagina del fornitore, e come l'ho sciolta.** L'elenco in
+cima dice "partenze alle 11:30 e alle 14:30". Le descrizioni delle varianti dicono 17:30
+per il giro di due ore e 11:30 per quelli di tre. Il modulo di prenotazione, con il giro di
+due ore selezionato, mostra 17:30. **Due pezzi indipendenti della pagina dicono la stessa
+cosa e l'elenco in cima ne dice una terza**: ho preso i due che concordano e le 14:30 non
+compaiono da nessuna parte. Da confermare con l'ufficio.
+
+**Niente `days`, e non perché si faccia tutti i giorni.** Il fornitore scrive "quasi ogni
+giorno" senza dire quali: non si può scrivere un elenco che non abbiamo. Il campo resta
+fuori e una nota dice che non si parte proprio tutti i giorni e che la conferma arriva con
+la richiesta. È l'unico caso finora in cui l'assenza di `days` non vuol dire "sette su
+sette".
+
+**Non copiato**: le 48 ore di cancellazione (le nostre sono 24), "miglior prezzo garantito",
+"sconti attivati", "biglietti ufficiali", "pagamento sicuro", il punteggio e le sette
+recensioni. **E nemmeno l'"avvistamento garantito"**: garantire di vedere un animale
+selvatico non è una cosa che possiamo promettere noi.
+
+**Niente `languages`** anche se la pagina dice "equipaggio multilingue": vale la regola che
+il menu delle lingue si mette solo dove lo segnala il proprietario.
+
+**Manca la foto.** L'immagine della barca è arrivata nella chat ma non come file
+raggiungibile: la scheda è pubblicata senza, e `controlla.js` lo segnala come avviso
+("pubblicata senza foto: in elenco esce il riquadro grigio"). È il primo avviso vero che il
+controllo ha prodotto da solo su un lavoro in corso.

@@ -547,6 +547,10 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    // Quattro partenze a tre ore l'una dall'altra. Le 18:00 ci sono solo
+    // d'estate: sta in elenco come le altre e la nota qui sotto lo dice, come
+    // gia' fatto per la partenza delle 9:30 di Royal Delfin.
+    times: ["09:00", "12:00", "15:00", "18:00"],
     priceFrom: 55,
     privateOption: "private-charter",
     priceAdult: 55,
@@ -554,6 +558,13 @@ const ESPLORA_CATALOG = [
     priceInfant: 0,
     ages: { adult: "12+", child: "3-11", infant: "0-2" },
     included: ["snorkel", "snack", "drinks", "swimstop"],
+    notes: [
+      {
+        it: "Le partenze sono ogni tre ore. Quella delle 18:00 si fa solo d'estate.",
+        en: "Departures are every three hours. The 18:00 one runs in summer only.",
+        es: "Las salidas son cada tres horas. La de las 18:00 solo se hace en verano."
+      }
+    ],
     family: true,
     desc: {
       it: "Tre ore in barca a vela da Puerto Colón, con un massimo di 11 persone a bordo. Avvistamento di balene e delfini, sosta per lo snorkeling con attrezzatura inclusa, snack e bevande a bordo.",
@@ -838,11 +849,22 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    // Stesse partenze del giro di tre ore in barca a vela, e anche qui le 18:00
+    // valgono solo d'estate.
+    times: ["09:00", "12:00", "15:00", "18:00"],
     priceFrom: 58,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 58,
+    priceChild: 45,
+    ages: { adult: "12+", child: "2-11" },
     family: true,
     included: ["swimstop"],
+    notes: [
+      {
+        it: "Le partenze sono ogni tre ore. Quella delle 18:00 si fa solo d'estate.",
+        en: "Departures are every three hours. The 18:00 one runs in summer only.",
+        es: "Las salidas son cada tres horas. La de las 18:00 solo se hace en verano."
+      }
+    ],
     desc: {
       it: "Tre ore su una barca con il fondo trasparente: si guarda il fondale da bordo, poi ci si ferma per il bagno.",
       en: "Three hours on a glass-bottomed boat: you watch the seabed from the deck, then stop for a swim.",

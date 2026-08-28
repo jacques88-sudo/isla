@@ -80,6 +80,14 @@
 //                sopra continuano a servire al **totale**, ma non si stampano
 //                una seconda volta: due righe che dicono la stessa cosa con
 //                parole diverse confondono.
+//   transferSiam, transferSiamPrice → facoltativi, esistono solo sul Twin Ticket.
+//                Sono un **secondo** transfer, indipendente dal primo: quello sopra
+//                e' per chi sta al sud e va a Loro Parque, questo e' per chi sta al
+//                nord e va al Siam Park. Stessa forma di `transfer`/`transferPrice`
+//                (prezzi **completi**, non il supplemento). Nella finestra della
+//                richiesta i due checkbox si escludono a vicenda: un cliente sta
+//                o al nord o al sud, non in tutti e due i posti. Ha anche il suo
+//                `transferSiamPriceHidden`, come `transferPriceHidden`.
 //   languages  → facoltativo: le lingue fra cui il cliente puo' scegliere. Solo
 //                dove c'e' questo campo la finestra della richiesta mostra la
 //                domanda "In che lingua". Le solite si scrivono cosi':
@@ -2034,7 +2042,13 @@ const ESPLORA_CATALOG = [
       en: "Available on request, for the Loro Parque day only",
       es: "Disponible bajo petición, solo para el día en Loro Parque"
     },
-    transferPrice: { adult: 99, child: 74, baby: 17 },
+    transferPrice: { adult: 99, child: 74 },
+    transferSiam: {
+      it: "Disponibile su richiesta, solo per la giornata al Siam Park",
+      en: "Available on request, for the Siam Park day only",
+      es: "Disponible bajo petición, solo para el día en Siam Park"
+    },
+    transferSiamPrice: { adult: 103, child: 78 },
     family: true,
     desc: {
       it: "Biglietto combinato per i due parchi più conosciuti dell'isola.",

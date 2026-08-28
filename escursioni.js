@@ -107,6 +107,12 @@ function prezziAPersona(tour, req) {
   if (req.transfer && tour.transferPrice && tour.transferPrice.adult > 0) {
     return { adulto: tour.transferPrice.adult, bambino: tour.transferPrice.child || 0 };
   }
+  // Il secondo transfer del Twin Ticket (verso il Siam Park): stessa logica,
+  // listino diverso. I due checkbox si escludono a vicenda nella finestra,
+  // quindi qui non serve gestire il caso in cui sono spuntati tutti e due.
+  if (req.transferSiam && tour.transferSiamPrice && tour.transferSiamPrice.adult > 0) {
+    return { adulto: tour.transferSiamPrice.adult, bambino: tour.transferSiamPrice.child || 0 };
+  }
   // Su certe attivita' il prezzo dipende dalla variante: il giro di 2 ore costa
   // €30 e quello di 4 ore e mezza €62. Conta solo `priceAdult` sulla variante,
   // **non** il suo `price`: `price` e' il numero da scrivere sul bottone e puo'
@@ -168,6 +174,9 @@ function righeRichiesta(tour, req) {
   if (tour.transfer) {
     righe.push("• " + t("wa.transfer") + ": " + t(req.transfer ? "wa.yes" : "wa.no"));
   }
+  if (tour.transferSiam) {
+    righe.push("• " + t("wa.transferSiam") + ": " + t(req.transferSiam ? "wa.yes" : "wa.no"));
+  }
   // Il totale va anche in chat: l'ufficio vede subito che conto ha fatto il
   // cliente e puo' correggerlo prima di confermare. "Indicativo" ci resta
   // attaccato: il prezzo buono e' quello della conferma, non questo.
@@ -217,7 +226,7 @@ function tourCard(tour) {
         ${daDefinire(tour.zone) ? "" : "<li>" + tf(tour.zone) + "</li>"}
         ${daDefinire(tour.duration) ? "" : "<li>" + tf(tour.duration) + "</li>"}
         ${tour.family ? "<li>" + t("tour.family") + "</li>" : ""}
-        ${tour.transfer ? "<li>" + t("tour.transfer") + "</li>" : ""}
+        ${(tour.transfer || tour.transferSiam) ? "<li>" + t("tour.transfer") + "</li>" : ""}
         ${tour.season ? `<li class="tour-meta-season">${tf(tour.season)}</li>` : ""}
       </ul>
       <div class="tour-foot">
@@ -359,6 +368,9 @@ function initRequestDialog() {
   const transferEl = document.querySelector("[data-request-transfer]");
   const transferNoteEl = document.querySelector("[data-request-transfer-note]");
   const transferInput = document.getElementById("reqTransfer");
+  const transferSiamEl = document.querySelector("[data-request-transfer-siam]");
+  const transferSiamNoteEl = document.querySelector("[data-request-transfer-siam-note]");
+  const transferSiamInput = document.getElementById("reqTransferSiam");
   const optionEl = document.querySelector("[data-request-option]");
   const optionLabelEl = document.querySelector("[data-request-option-label]");
   const dateInput = document.getElementById("reqDate");
@@ -422,6 +434,13 @@ function initRequestDialog() {
       // il testo per esteso dice i limiti (per il Twin Ticket vale solo per
       // la giornata a Loro Parque) prima che il cliente spunti
       if (transferNoteEl) transferNoteEl.textContent = tour.transfer ? tf(tour.transfer) : "";
+    }
+    // Il secondo transfer del Twin Ticket, verso il Siam Park: stessa logica,
+    // riparte anche lui da non spuntato.
+    if (transferSiamEl) {
+      transferSiamEl.hidden = !tour.transferSiam;
+      if (transferSiamInput) transferSiamInput.checked = false;
+      if (transferSiamNoteEl) transferSiamNoteEl.textContent = tour.transferSiam ? tf(tour.transferSiam) : "";
     }
     // Gli orari: la finestra e' una sola per tutte le attivita', quindi si
     // riparte sempre da "Da concordare" invece di tenere la scelta di prima.
@@ -590,6 +609,7 @@ function initRequestDialog() {
       adults: parseInt(adultsInput.value, 10) || 0,
       kids: parseInt(kidsInput.value, 10) || 0,
       transfer: !!(transferInput && transferInput.checked),
+      transferSiam: !!(transferSiamInput && transferSiamInput.checked),
       // senza la variante il totale userebbe il prezzo sbagliato su tutte le
       // schede dove il prezzo dipende dalla durata
       option: opzioneScelta()
@@ -634,9 +654,20 @@ function initRequestDialog() {
   dateInput.addEventListener("input", aggiornaGiorno);
   dateInput.addEventListener("change", aggiornaGiorno);
 
-  // Il totale segue i numeri mentre il cliente li cambia, e la spunta del
+  // I due transfer si escludono a vicenda: un cliente sta o al nord o al sud,
+  // non in tutti e due i posti. Spuntarne uno toglie la spunta all'altro.
+  if (transferInput && transferSiamInput) {
+    transferInput.addEventListener("change", () => {
+      if (transferInput.checked) transferSiamInput.checked = false;
+    });
+    transferSiamInput.addEventListener("change", () => {
+      if (transferSiamInput.checked) transferInput.checked = false;
+    });
+  }
+
+  // Il totale segue i numeri mentre il cliente li cambia, e la spunta dei
   // transfer perche' col transfer il prezzo e' un altro.
-  [adultsInput, kidsInput, transferInput].forEach(campo => {
+  [adultsInput, kidsInput, transferInput, transferSiamInput].forEach(campo => {
     if (!campo) return;
     campo.addEventListener("input", aggiornaTotale);
     campo.addEventListener("change", aggiornaTotale);
@@ -657,6 +688,7 @@ function initRequestDialog() {
     activityEl.textContent = tf(current.title);
     if (seasonEl && current.season) seasonEl.textContent = tf(current.season);
     if (transferNoteEl && current.transfer) transferNoteEl.textContent = tf(current.transfer);
+    if (transferSiamNoteEl && current.transferSiam) transferSiamNoteEl.textContent = tf(current.transferSiam);
     // il menu si ricostruisce tradotto, tenendo la posizione scelta
     if (optionEl && current.options) {
       const scelto = optionEl.selectedIndex;
@@ -683,6 +715,7 @@ function initRequestDialog() {
       kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
       note: document.getElementById("reqNote").value.trim(),
       transfer: !!(transferInput && transferInput.checked),
+      transferSiam: !!(transferSiamInput && transferSiamInput.checked),
       option: opzioneScelta()
     };
     if (!req.date) return;
@@ -706,6 +739,7 @@ function initRequestDialog() {
         kids: req.kids,
         option: req.option,
         transfer: req.transfer,
+        transferSiam: req.transferSiam,
         note: req.note
       });
       close();

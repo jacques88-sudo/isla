@@ -2107,7 +2107,6 @@ L'unico dato mancante era `priceInfant`: la pagina di CanaryVIP mostrava "Toddle
 ma senza fascia d'età, e non è una fonte da fidarsi. **Confermato dal proprietario**: i
 neonati non pagano fino a 0-2 anni. Aggiunto `priceInfant: 0` e `ages: { infant: "0-2" }`.
 
-**Deciso da solo**: non ho messo `ages.adult` né `ages.child`, perché non sono confermati —
-`controlla.js` segnala l'avviso "ha il prezzo adulti ma nessuna fascia ages.adult", non
-bloccante. **Resta da chiedere**, se serve: la fascia esatta degli adulti (di solito "12+")
-e quella dei bambini (probabilmente "3-11", ma non confermata per questo biglietto).
+Confermate poi anche `ages.adult: "12+"` e `ages.child: "3-11"`: l'avviso su
+`ages.adult` è sparito, `controlla.js` torna a 0 errori e 2 avvisi (quelli di sempre, non
+legati a questa scheda).

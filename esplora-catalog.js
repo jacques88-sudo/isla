@@ -2028,7 +2028,7 @@ const ESPLORA_CATALOG = [
     priceAdult: 78,
     priceChild: 57,
     priceInfant: 0,
-    ages: { infant: "0-2" },
+    ages: { adult: "12+", child: "3-11", infant: "0-2" },
     transfer: {
       it: "Disponibile su richiesta, solo per la giornata a Loro Parque",
       en: "Available on request, for the Loro Parque day only",

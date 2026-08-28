@@ -189,6 +189,7 @@ const I18N = {
   "inc.lifejacket":     { it: "Giubbotti di salvataggio", en: "Life jackets", es: "Chalecos salvavidas" },
   "inc.speaker":        { it: "Cassa Bluetooth", en: "Bluetooth speaker", es: "Altavoz Bluetooth" },
   "inc.towels":         { it: "Asciugamani", en: "Towels", es: "Toallas" },
+  "inc.cooler":         { it: "Borsa frigo", en: "Cooler box", es: "Nevera portátil" },
   "inc.fuel":           { it: "Carburante", en: "Fuel", es: "Combustible" },
   // ── la lista delle richieste ────────────────────────────────────────────
   "lista.title":        { it: "La tua lista", en: "Your list", es: "Tu lista" },

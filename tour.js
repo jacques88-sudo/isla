@@ -164,6 +164,12 @@ const INCLUDED_ICONS = {
   // La pila di asciugamani piegati. L'asciugamano appeso alla sbarra, provato
   // prima, diventava un bicchiere: la sbarra si confondeva col bordo di sopra.
   towels:    '<rect x="4.5" y="15" width="15" height="5" rx="2"/><rect x="6" y="9.5" width="12" height="5" rx="2"/><rect x="7.5" y="4" width="9" height="5" rx="2"/>',
+  // La borsa frigo: coperchio largo che sporge, corpo piu' stretto sotto, e il
+  // fiocco di neve dentro. Il primo disegno era una scatola con la maniglia in
+  // cima e una riga in mezzo, e in fila con le altre leggeva "cassetta degli
+  // attrezzi": troppo vicina a `equipment`, che e' gia' una borsa con manico e
+  // riga. Il coperchio sporgente da' la sagoma giusta, il fiocco dice il freddo.
+  cooler:    '<rect x="2" y="7.5" width="20" height="4.5" rx="1.5"/><path d="M4 12v6.5a1.5 1.5 0 0 0 1.5 1.5h13a1.5 1.5 0 0 0 1.5-1.5V12"/><path d="M12 14v4M10.3 15 13.7 17M13.7 15 10.3 17"/>',
   // La pompa di benzina. Senza il basamento sotto e il vetro del display
   // sembrava una caraffa col manico.
   fuel:      '<path d="M3.5 20.5V5a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v15.5"/><path d="M2.5 20.5h11"/><rect x="5.5" y="5.5" width="5" height="4" rx="1"/><path d="M12.5 10.5h3a2 2 0 0 1 2 2v4.75a1.75 1.75 0 0 0 3.5 0V10.5l-2.2-2.2"/>'

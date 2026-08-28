@@ -2110,3 +2110,37 @@ neonati non pagano fino a 0-2 anni. Aggiunto `priceInfant: 0` e `ages: { infant:
 Confermate poi anche `ages.adult: "12+"` e `ages.child: "3-11"`: l'avviso su
 `ages.adult` è sparito, `controlla.js` torna a 0 errori e 2 avvisi (quelli di sempre, non
 legati a questa scheda).
+
+## Twin Ticket — secondo transfer, per il Siam Park (28 agosto 2026)
+
+Il proprietario ha chiesto di aggiungere anche il transfer per chi arriva dal nord e va al
+Siam Park, usando i prezzi di CanaryVIP: **21€/17€ adulto/bambino per Loro Parque**
+(combaciano esattamente col supplemento già in `transferPrice`, 99-78 e 74-57 — buon
+segno) e **25€/21€ per il Siam Park**, entrambi con neonati gratis.
+
+**Non era solo un dato da cambiare.** Il codice aveva un solo checkbox/prezzo per scheda
+(`transfer` + `transferPrice`, usato anche dal Submarine Safari), quindi ho chiesto prima
+di scrivere: il proprietario ha confermato **due checkbox indipendenti**, e per i neonati
+di **passare a gratis per entrambi** (l'ufficio aveva confermato 17€ per Loro Parque, ma
+qui ha deciso di allinearsi al dato nuovo).
+
+**Aggiunto** `transferSiam` + `transferSiamPrice: { adult: 103, child: 78 }` (78+25,
+57+21) sul Twin Ticket, gemello di `transfer`/`transferPrice` ma per il Siam Park. Nessun
+campo `baby` in nessuno dei due: **gratis vuol dire niente riga in più**, non un valore a
+zero — il cliente lo sa già dalla riga "Neonati: Gratis" del prezzo base.
+
+**I due checkbox si escludono a vicenda** nella finestra della richiesta: spuntarne uno
+toglie la spunta all'altro. Un cliente sta al nord o al sud, non in tutti e due i posti, e
+il calcolo del totale non saprebbe cosa fare con entrambi spuntati.
+
+Toccati 7 file: `esplora-catalog.js` (dati + vocabolario), `escursioni.js` (calcolo prezzo,
+riga WhatsApp, badge, finestra della richiesta), `tour.js` (due righe nuove sulla pagina di
+dettaglio), `escursioni.html` e `tour.html` (secondo checkbox, va tenuto allineato se si
+tocca il primo), `i18n.js` (le tre lingue), `lista.js` (riga di dettaglio nella lista
+salvata). Provato nel browser vero: le due righe extra sul dettaglio, l'esclusione dei
+checkbox, il totale con ciascuno dei due transfer, e il messaggio WhatsApp finale.
+
+**Da confermare, se serve**: se un cliente potesse davvero volere *entrambi* i transfer
+(es. resta qualche giorno al nord e qualche giorno al sud), il calcolo attuale non lo
+gestisce — mostrerebbe solo il prezzo dell'ultimo spuntato. Non è successo in pratica
+finora con nessun'altra scheda, quindi non l'ho aggiunto da solo.

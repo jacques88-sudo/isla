@@ -240,6 +240,7 @@ function initLista() {
       dettagli.push(peopleText(voce.adults, voce.kids));
       if (voce.option) dettagli.push(voce.option);
       if (riga.tour.transfer && voce.transfer) dettagli.push(t("wa.transfer"));
+      if (riga.tour.transferSiam && voce.transferSiam) dettagli.push(t("wa.transferSiam"));
       return `
         <li class="lista-voce">
           <div class="lista-voce-testo">

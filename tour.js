@@ -127,6 +127,17 @@ function detailRows(tour, variante) {
     if (tp.baby) parti.push("€" + tp.baby + " " + t("wa.babies") + " (" + t("detail.babySeat") + ")");
     if (parti.length) righe.push([t("detail.withTransfer"), parti.join(" · ")]);
   }
+  // Il Twin Ticket ha un secondo transfer, indipendente: quello sopra e' per
+  // chi va a Loro Parque, questo per chi va al Siam Park. Stessa logica.
+  if (tour.transferSiam) righe.push([t("detail.transferSiam"), tf(tour.transferSiam)]);
+  if (tour.transferSiamPrice && !tour.transferSiamPriceHidden) {
+    const tp = tour.transferSiamPrice;
+    const parti = [];
+    if (tp.adult) parti.push("€" + tp.adult + " " + t("wa.adults"));
+    if (tp.child) parti.push("€" + tp.child + " " + t("wa.children"));
+    if (tp.baby) parti.push("€" + tp.baby + " " + t("wa.babies") + " (" + t("detail.babySeat") + ")");
+    if (parti.length) righe.push([t("detail.withTransferSiam"), parti.join(" · ")]);
+  }
   if (tour.season) righe.push([t("detail.season"), tf(tour.season)]);
 
   return righe.map(([etichetta, valore]) => `

@@ -1823,3 +1823,35 @@ Anche il messaggio WhatsApp della richiesta parte nella lingua scelta dal client
   trasparenti apposta (da trasparenti Android disegna un bordo suo), quindi il loro sfondo
   è cotto dentro il file: se un giorno cambia `--bg`, **vanno rigenerate**, altrimenti
   all'apertura della PWA ricompare un quadrato più scuro intorno al logo.
+
+## La pulizia del 28 agosto
+
+Cercata la ridondanza misurandola, non a occhio. Il risultato utile e' che il progetto
+era gia' quasi pulito: **nessuna funzione dichiarata e mai chiamata**, **nessuna chiave
+i18n morta** su 249, **una sola classe CSS inutilizzata** su 196, **una sola foto**
+orfana su 76.
+
+**Il grep ingenuo mente due volte.** Cercando le chiavi i18n dentro il codice ne
+risultavano 20 morte: erano tutte le `inc.*`, che non compaiono mai scritte per intero
+perche' si costruiscono a runtime (`t("inc." + parola)` in `tour.js`), piu'
+`categories.altSuffix`, usata dentro `i18n.js` stesso, che avevo escluso dalla ricerca.
+Le chiavi morte vere erano zero. Prima di cancellare qualcosa perche' "non risulta usato",
+va guardato **come** viene usato.
+
+**`wetsuit` e `board` sembravano icone di troppo: erano l'opposto.** Nessuna scheda le
+citava, ma `surf-lesson` e' pubblicata e la sua descrizione promette gia' "tavola e muta
+compresi". Non erano avanzi da buttare, era una riga `included` che mancava. Aggiunta.
+
+### Il flusso "Prenota ora" resta finto, e si e' deciso cosi'
+
+`booking.html` + `booking.js` cercano il codice del cliente dentro `MOCK_BOOKINGS`: due
+prenotazioni inventate (`ISLA-4521`, `TEN-7788`), un'email che non esiste
+(`info@islatenerife.com`), un bollino "Confermata". Ci arrivano **quattro** punti
+d'ingresso su tre pagine: "Prenota ora" nell'header, la casella "Scan ticket" nel menu e
+nella home, "Cerca il tuo codice" nel footer.
+
+Con le richieste via WhatsApp **un codice il cliente non ce l'ha mai**, quindi chi clicca
+"Prenota ora" finisce su "non trovato". Ho proposto di togliere tutto e far puntare
+"Prenota ora" alle escursioni; **il proprietario ha scelto di lasciare tutto com'e'**,
+come segnaposto di un sistema di prenotazioni vero. Registrato qui per non riproporlo a
+ogni pulizia: e' una scelta, non una svista.

@@ -1720,6 +1720,7 @@ const ESPLORA_CATALOG = [
       en: "A first surf lesson with an instructor, board and wetsuit included.",
       es: "Primera clase de surf con instructor, tabla y neopreno incluidos."
     },
+    included: ["board", "wetsuit"],
     image: "surf-lesson.jpg",
     published: true
   },

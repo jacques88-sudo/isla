@@ -929,14 +929,14 @@ barche diverse — il nome si legge sulle vele in tutte e due le foto che abbiam
 mettere un titolo che la foto smentisce, la scheda si chiama **"Freebird Catamaran
 Trip"**, col nome della compagnia e non della singola barca.
 
-**I giorni non sono controllati.** Il cliente puo' chiedere il giro di 2 ore di martedi',
-che non si fa. I giorni stanno scritti sotto il bottone della variante, e la conferma
-passa comunque dall'ufficio entro 24 ore. Un controllo sul giorno della settimana si puo'
-aggiungere, ma `<input type="date">` da solo non lo sa fare.
+**I giorni sono controllati** (fatto dopo, vedi "Il giorno sbagliato non passa piu'"):
+il campo `days` sulla scheda o sulla variante blocca la richiesta e spiega quali giorni si
+fa. Prima non lo era: il cliente poteva chiedere il giro di 2 ore di martedi', che non si
+fa.
 
-**Restano due foto non usate da nessuno:** `catamaran-3h.jpg` (l'altra foto della stessa
-barca) e `Cat-privati.jpg` (della categoria tolta). Non le ho cancellate: la prima puo'
-servire a un'altra scheda.
+**`catamaran-3h.jpg` l'ho poi cancellata** (pulizia del 28 agosto): era la seconda foto
+della stessa barca, che la sua scheda ce l'ha gia', e non esiste una galleria che possa
+usarne due. Se dovesse riservire sta nella storia di git.
 
 ### Small Group Catamaran (25 agosto)
 
@@ -1289,8 +1289,8 @@ la traduzione nelle tre lingue le mette il sito, cosi' due schede che includono 
 cosa la scrivono uguale. Diventa un riquadro sotto "In breve", icona sopra e parola sotto,
 due colonne sul telefono e tre da 480px.
 
-Le tredici parole disponibili: `snorkel wetsuit board equipment drinks snack lunch tasting
-guide transfer ferry ticket photos`. Per aggiungerne una servono **due righe**: l'icona in
+Le diciannove parole disponibili: `snorkel wetsuit board equipment drinks snack fingerfood
+swimstop lunch tasting guide transfer ferry ticket photos lifejacket speaker towels fuel`. Per aggiungerne una servono **due righe**: l'icona in
 `INCLUDED_ICONS` dentro `tour.js` e il testo `inc.<parola>` in `i18n.js`. Una parola
 sconosciuta viene **saltata**, non disegna un buco.
 

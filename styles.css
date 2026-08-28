@@ -687,12 +687,6 @@ a { text-decoration: none; color: inherit; }
   font-weight: 300;
   color: var(--muted);
 }
-.error-text {
-  margin: .6rem 0 0;
-  font-size: .88rem;
-  color: var(--danger);
-}
-
 /* How it works */
 .steps {
   padding: 1rem 0 3rem;

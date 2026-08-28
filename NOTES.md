@@ -1894,3 +1894,24 @@ scheda porta al dettaglio. Quindi la variante arriva **sempre** dai bottoni dell
 Non l'ho tolto — funziona e non da' fastidio — ma va saputo prima di andare a caccia di un
 bug li' dentro: **il `<select>` non ha nessun `addEventListener`, e non serve che ce
 l'abbia.**
+
+## Whale & Dolphin e Glass Bottom Boat: le partenze vere (28 agosto)
+
+Le prime due schede a uscire dai segnaposto. Le partenze sono **09:00, 12:00, 15:00 e
+18:00** su tutte e due: tre ore l'una, una dietro l'altra, dallo stesso porto (Puerto
+Colón). Le 18:00 si fanno **solo d'estate**.
+
+**La partenza stagionale sta in elenco, non fuori.** Stesso trattamento gia' dato alla
+9:30 di Royal Delfin: l'orario e' selezionabile come gli altri e il limite lo spiega una
+nota sotto. Nasconderlo d'inverno vorrebbe dire sapere quando comincia l'estate, e non lo
+sappiamo: **l'ufficio non ha dato le date**, per questo la nota dice "solo d'estate" e non
+un periodo preciso. Se arrivano le date esatte, si scrivono li'.
+
+**Glass Bottom Boat: bambini €45 dai 2 agli 11.** L'adulto l'ufficio non l'ha detto: ho
+messo €58, che e' il valore che la scheda **gia' pubblicava** come `priceFrom`, cosi' il
+totale funziona e il prezzo mostrato non cambia. Non e' un dato nuovo, e' quello vecchio
+reso esplicito — ma va confermato.
+
+**Sotto i 2 anni non c'e' nessun campo**, come da regola: i bambini partono da 2 anni e
+non sappiamo se sotto si sale gratis o non si sale affatto. Niente `priceInfant`, che
+vorrebbe dire "gratis". Da chiedere.

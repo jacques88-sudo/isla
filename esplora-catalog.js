@@ -626,6 +626,96 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    id: "flipper-one",
+    title: "Flipper One Boat Tour",
+    category: "mare-barche",
+    // L'unica scheda che parte da Los Gigantes: tutte le altre barche sono a
+    // Puerto Colon, Los Cristianos o Marina Amarilla.
+    zone: "Los Gigantes",
+    duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
+    priceFrom: 33,
+    // I prezzi veri stanno dentro le varianti, che costano tutte diverso. Qui
+    // resta quello dei neonati, zero su tutti e tre i giri: e' un prezzo, non
+    // un "non lo sappiamo".
+    priceAdult: 0,
+    priceChild: 0,
+    priceInfant: 0,
+    // 12+ discende dai bambini 2-11: sopra gli 11 non c'e' altra fascia.
+    ages: { adult: "12+", child: "2-11", infant: "0-1" },
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        {
+          label: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          priceAdult: 33,
+          priceChild: 23,
+          times: ["17:30"],
+          desc: {
+            it: "Il giro corto, per vedere balene e delfini senza starci mezza giornata. Non c'è la sosta bagno e non si mangia, ma le bevande sono comprese. Partenza alle 17:30.",
+            en: "The short trip, to see whales and dolphins without giving up half a day. There is no swim stop and no meal, but drinks are included. Leaving at 17:30.",
+            es: "La salida corta, para ver ballenas y delfines sin dedicarle media jornada. No hay parada de baño ni comida, pero las bebidas están incluidas. Salida a las 17:30."
+          }
+        },
+        {
+          label: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          priceAdult: 40,
+          priceChild: 25,
+          times: ["11:30"],
+          included: ["swimstop", "lunch"],
+          desc: {
+            it: "Balene e delfini, poi le scogliere di Masca e Los Gigantes e la sosta bagno nella baia di Diego Hernández, dove c'è anche una teleferica per tuffarsi. Pranzo con paella di pollo e frutta, bevande comprese. Partenza alle 11:30.",
+            en: "Whales and dolphins, then the cliffs of Masca and Los Gigantes and a swim stop in Diego Hernández bay, where there is also a zip line to dive from. Lunch of chicken paella and fruit, drinks included. Leaving at 11:30.",
+            es: "Ballenas y delfines, luego los acantilados de Masca y Los Gigantes y la parada de baño en la bahía de Diego Hernández, donde hay también una tirolina para tirarse al agua. Comida de paella de pollo y fruta, bebidas incluidas. Salida a las 11:30."
+          }
+        },
+        {
+          label: { it: "3 ore con navetta", en: "3 hours with shuttle", es: "3 horas con lanzadera" },
+          priceAdult: 44,
+          priceChild: 29,
+          times: ["11:30"],
+          included: ["swimstop", "lunch", "transfer"],
+          desc: {
+            it: "Lo stesso giro di tre ore, con il passaggio per andare e tornare dal porto: utile perché Los Gigantes è lontano dagli alberghi del sud. Partenza alle 11:30.",
+            en: "The same three-hour trip, with a ride to and from the harbour: useful because Los Gigantes is a long way from the southern hotels. Leaving at 11:30.",
+            es: "La misma salida de tres horas, con el traslado de ida y vuelta al puerto: útil porque Los Gigantes queda lejos de los hoteles del sur. Salida a las 11:30."
+          }
+        }
+      ]
+    },
+    // Solo quello che vale per tutti e tre i giri. Il pranzo e la sosta bagno
+    // stanno dentro le varianti, e la navetta solo dentro la terza.
+    included: ["drinks", "guide"],
+    family: true,
+    desc: {
+      it: "Una goletta di legno costruita a mano a Tenerife, la prima di questa misura: ci sono voluti diciotto mesi a quattro fratelli falegnami di Alcalá, polena a forma di delfino compresa. Parte da Los Gigantes per andare a cercare balene e delfini sotto le scogliere.",
+      en: "A wooden schooner built by hand in Tenerife, the first of this size: it took four carpenter brothers from Alcalá eighteen months, dolphin figurehead included. It leaves from Los Gigantes to look for whales and dolphins below the cliffs.",
+      es: "Una goleta de madera construida a mano en Tenerife, la primera de este tamaño: cuatro hermanos carpinteros de Alcalá tardaron dieciocho meses, mascarón de delfín incluido. Sale de Los Gigantes a buscar ballenas y delfines bajo los acantilados."
+    },
+    notes: [
+      {
+        it: "Si parte dal porto di Los Gigantes, dove c'è il parcheggio. Arriva 10 minuti prima della partenza.",
+        en: "You leave from Los Gigantes harbour, where there is parking. Get there 10 minutes before departure.",
+        es: "Se sale del puerto de Los Gigantes, donde hay aparcamiento. Llega 10 minutos antes de la salida."
+      },
+      {
+        it: "Si va quasi tutti i giorni, ma non proprio tutti: quando mandi la richiesta ti confermiamo se quel giorno si parte.",
+        en: "It runs almost every day, but not quite every day: when you send your request we will confirm whether it sails that day.",
+        es: "Se hace casi todos los días, pero no todos: cuando mandes la solicitud te confirmamos si ese día sale."
+      },
+      {
+        it: "A bordo si sta fino a 91 persone, e c'è una guida che racconta cosa si sta vedendo.",
+        en: "The boat takes up to 91 people, and there is a guide who explains what you are looking at.",
+        es: "A bordo caben hasta 91 personas, y hay un guía que cuenta lo que se está viendo."
+      },
+      {
+        it: "Sul giro di tre ore portati costume e crema solare: la sosta bagno è la parte migliore.",
+        en: "On the three-hour trip bring swimwear and sun cream: the swim stop is the best part.",
+        es: "En la salida de tres horas lleva bañador y crema solar: la parada de baño es lo mejor."
+      }
+    ],
+    published: true
+  },
+  {
     id: "submarine-safari",
     title: "Submarine Safari",
     category: "mare-barche",
@@ -1252,7 +1342,7 @@ const ESPLORA_CATALOG = [
     id: "small-catamaran-rental",
     title: "Small Catamaran Rental",
     category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto Colón",
     duration: { it: "Da 2 a 6 ore", en: "2 to 6 hours", es: "De 2 a 6 horas" },
     // "a barca" e non "/ora", come sul Self Drive Boat. Con le varianti di durata
     // la pagina scrive il prezzo della variante seguito da questa unita': con

@@ -1787,8 +1787,10 @@ e tre le lingue. Così il cliente vede lo stesso nome del sito Admiral e, quando
 richiesta arriva su WhatsApp, in ufficio si trova davanti il nome esatto da cercare.
 Tradotte sono solo le descrizioni, la zona e la durata.
 
-Quando un prodotto è in offerta (prezzo barrato + prezzo scontato) si mette il
-**prezzo scontato**, cioè quello che il cliente paga davvero.
+~~Quando un prodotto è in offerta si mette il prezzo scontato.~~ **Superato il 25
+agosto**: l'ufficio ha chiarito che i prezzi barrati sono le offerte dei rivenditori, non
+nostre, e sul sito va il **prezzo pieno**. Vedi "I prezzi barrati sono offerte del
+rivenditore" più sopra.
 
 ## Le tre lingue
 
@@ -1952,3 +1954,43 @@ il numero di recensioni.
 - **Il giro di tre ore con bagno e pranzo non e' pubblicato.** Esiste, parte alle 10:00,
   ma il fornitore non ne da' il prezzo e dice solo "available only for a limited time,
   check the calendar". Senza prezzo e senza date non e' una scheda: e' una domanda.
+
+
+## Tre strumenti per lavorare meglio (28 agosto)
+
+Il proprietario ha chiesto quali "competenze" aggiungere per farmi lavorare meglio. La
+risposta e' venuta guardando cosa si e' rotto davvero in questa sessione, e sono tre cose
+di natura diversa.
+
+**1. `CLAUDE.md`.** Questi appunti hanno superato le 1900 righe e **non vengono letti da
+soli**: li apro solo quando mi viene in mente di cercarci dentro. Le regole che dimentico
+sono sempre le stesse — le 24 ore, non copiare le policy dei rivenditori, `swimstop` non
+e' `snorkel`, le fasce d'eta' devono combaciare, alzare `sw.js`. `CLAUDE.md` viene
+caricato **all'inizio di ogni sessione**: sta li' il minimo indispensabile, qui il perche'.
+
+**2. `.claude/skills/nuova-scheda/`.** Aggiungere una scheda da una pagina fornitore e' il
+lavoro che si ripete di piu' e quello con piu' regole taciute. La skill mette in ordine i
+passi, e il primo e' **controllare che la scheda non esista gia'** — che e' esattamente il
+passo che era saltato col Kalima Kat.
+
+**3. `controlla.js`.** Questo non e' un'istruzione ma un programma, e va meglio proprio
+per questo: e' **deterministico**, non dipende da cosa mi ricordo. Controlla fasce d'eta',
+sigle dei giorni, orari, parole di `included` senza icona, foto mancanti, traduzioni
+incomplete, id doppi. Finora questi controlli li scrivevo come scriptini usa e getta, uno
+per volta, e li buttavo.
+
+**L'ho messo alla prova rompendo il catalogo di proposito** — un buco d'eta', una sigla
+inventata, una parola senza icona, una foto inesistente: li ha trovati tutti e quattro. Un
+controllore che dice "tutto a posto" senza essere mai stato provato non vale niente.
+
+**Due difetti erano nel controllore, non nel catalogo.** Al primo giro segnalava 20 chiavi
+i18n senza traduzione: era la sua regex che si fermava alla prima graffa chiusa, e le
+chiavi con segnaposto (`da €{p}`, `{giorni}`) ne chiudono una a meta' valore. E dava per
+illeggibile la fascia neonati di Opera 60, che e' scritta in **mesi** ("0-11 mesi") perche'
+cosi' l'ha mandata l'ufficio: ora avvisa e tira dritto, invece di chiedere di storpiare un
+dato vero per far contento un controllo.
+
+**Trovata una contraddizione dentro questi stessi appunti.** "Da dove vengono i dati del
+catalogo" diceva ancora di pubblicare il **prezzo scontato**, mentre la regola del 25
+agosto dice il **prezzo pieno**. Corretta. E' il rischio di appunti che crescono: due
+paragrafi scritti in giorni diversi che si contraddicono, e nessuno dei due sa dell'altro.

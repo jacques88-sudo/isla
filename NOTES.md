@@ -2175,3 +2175,36 @@ il costo del bus. **Ora la riga mostra solo il supplemento**: €21/€17 per Lo
 in `tour.js` solo per la riga accorpata. Il totale nella finestra della richiesta continua
 a usare il prezzo completo come prima (verificato: €272 per 2 adulti + 1 bambino col
 transfer Loro Parque) — cambia solo cosa si stampa, non cosa si calcola.
+
+### Nuova scheda: Ragnarok (30 agosto 2026)
+
+Barca a tema vichingo da Los Cristianos, avvistamento balene pilota e tursiopi, dati da
+`canaryvip.com` (id fornitore 10467). Prima controllato che non fosse un doppione: nessuna
+scheda a Los Cristianos con questo prezzo/durata/porto (la più vicina è Peter Pan, ma è
+un'altra barca, altro prezzo, niente varianti).
+
+**Non copiato dal fornitore**: il prezzo scontato (25€, pieno 30€ — sul sito va il pieno),
+la cancellazione (48/72h del fornitore non c'entrano, restano le 24h di Isla), punteggio e
+numero di recensioni, "best price"/testi promozionali. `languages` non messo: il
+fornitore scrive solo "equipaggio multilingue", non un elenco, e la regola dice di
+mettere il campo solo dove le lingue sono elencate davvero.
+
+**Deciso col proprietario**: gli orari 11:00 e 13:30 non erano abbinati a una durata —
+confermato che 11:00 è il giro di 2 ore e 13:30 quello di 3. Il prezzo bambini non era nel
+documento: pubblicata senza (`priceChild: 0`), la riga resta nascosta finché non arriva.
+
+**Deciso da solo**: il prezzo del giro di 3 ore non è mai stato dato (solo un "da" generico
+per l'intera scheda) — lasciato senza `priceAdult` nella variante, la pagina mostra "Da
+€30" come per un dato ancora da confermare, invece di indovinare un numero. Le info di
+bordo del fornitore (bar-ristorante, servizi igienici, posti a sedere, aree accessibili)
+non sono nel vocabolario di `included` (non sono "compresi nel prezzo", sono dotazioni
+della barca) e sono finite nelle note. Gli spettacoli a tema, i giochi e la prova
+dell'equipaggiamento vichingo sono finiti nella descrizione, riscritta da zero nelle tre
+lingue: sono quello che rende diversa questa barca da tutte le altre.
+
+**Resta in sospeso, scheda non pubblicata (`published: false`)**: manca la foto (nessuna
+in `assets/`), manca il prezzo bambini/neonati, manca il prezzo del giro di 3 ore. Provata
+nel browser vero con `published: true` temporaneo (poi rimesso a `false`): entrambe le
+varianti, il cambio di orario e il fallback di prezzo sul giro di 3 ore funzionano.
+Quando arrivano i dati mancanti, aggiornare la scheda, aggiungere la foto e mettere
+`published: true`.

@@ -1442,6 +1442,72 @@ const ESPLORA_CATALOG = [
     image: "luxury-cruiser.jpg",
     published: true
   },
+  {
+    id: "ragnarok",
+    title: "Ragnarok Viking Boat Tour",
+    category: "mare-barche",
+    zone: "Los Cristianos",
+    duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
+    days: ["mar", "gio", "ven", "sab", "dom"],
+    priceFrom: 30,
+    // Il fornitore segna 25 come prezzo scontato (pieno 30): sul sito va il
+    // pieno. Il prezzo vero per persona sta nelle varianti qui sotto.
+    priceAdult: 0,
+    priceChild: 0,
+    // Confermato con l'ufficio: 11:00 e' il giro di 2 ore, 13:30 quello di 3.
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        {
+          label: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          priceAdult: 30,
+          times: ["11:00"],
+          desc: {
+            it: "Il giro corto, in cerca di balene pilota e tursiopi al largo di Los Cristianos. Partenza alle 11:00.",
+            en: "The short trip, looking for pilot whales and bottlenose dolphins off Los Cristianos. Leaving at 11:00.",
+            es: "La salida corta, en busca de calderones y delfines mulares frente a Los Cristianos. Salida a las 11:00."
+          }
+        },
+        {
+          // Prezzo bambini e prezzo di questa variante non ancora confermati
+          // dall'ufficio: niente priceAdult/priceChild finche' non arrivano,
+          // la pagina mostra il prezzo "Da €30" della scheda nel frattempo.
+          label: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          times: ["13:30"],
+          desc: {
+            it: "Lo stesso giro con più tempo al largo, in cerca di balene pilota e tursiopi. Partenza alle 13:30.",
+            en: "The same trip with more time offshore, looking for pilot whales and bottlenose dolphins. Leaving at 13:30.",
+            es: "La misma salida con más tiempo mar adentro, en busca de calderones y delfines mulares. Salida a las 13:30."
+          }
+        }
+      ]
+    },
+    family: true,
+    desc: {
+      it: "Una barca a tema vichingo che parte da Los Cristianos per andare a cercare balene pilota e tursiopi al largo. L'equipaggio veste i panni dei vichinghi, fra spettacoli a tema, giochi a bordo e la possibilità di provare l'armatura vichinga: un giro pensato anche per chi viaggia con bambini.",
+      en: "A Viking-themed boat leaving from Los Cristianos to look for pilot whales and bottlenose dolphins offshore. The crew dresses up as Vikings, with themed shows, games on board and the chance to try on Viking gear: a trip built with families in mind too.",
+      es: "Un barco de temática vikinga que sale de Los Cristianos para buscar calderones y delfines mulares mar adentro. La tripulación se viste de vikingos, con espectáculos temáticos, juegos a bordo y la posibilidad de probarse el equipo vikingo: una salida pensada también para quien viaja con niños."
+    },
+    notes: [
+      {
+        it: "Ritrovo nella Zona Excursiones A del porto di Los Cristianos, dove c'è anche un parcheggio pubblico a pagamento. Arriva tra i 10 e i 20 minuti prima della partenza.",
+        en: "Meeting point in the Zona Excursiones A at Los Cristianos harbour, where there is also paid public parking. Get there 10 to 20 minutes before departure.",
+        es: "Punto de encuentro en la Zona Excursiones A del puerto de Los Cristianos, donde también hay aparcamiento público de pago. Llega entre 10 y 20 minutos antes de la salida."
+      },
+      {
+        it: "A bordo ci sono un bar-ristorante, i servizi igienici, posti a sedere in diverse zone e aree accessibili.",
+        en: "On board there is a bar-restaurant, toilets, seating spread across different areas and accessible spaces.",
+        es: "A bordo hay un bar-restaurante, aseos, asientos repartidos en distintas zonas y espacios accesibles."
+      },
+      {
+        it: "Con mare mosso o maltempo l'operatore organizza un piano alternativo.",
+        en: "In rough seas or bad weather the operator arranges an alternative plan.",
+        es: "Con mar agitado o mal tiempo el operador organiza un plan alternativo."
+      }
+    ],
+    image: "",
+    published: false
+  },
 
   // ─── TEIDE E NATURA ───────────────────────────────────────────────────────
   {

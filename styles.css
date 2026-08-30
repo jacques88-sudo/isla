@@ -1547,6 +1547,9 @@ body.menu-open { overflow: hidden; }
   gap: .5rem;
   padding: .7rem 1.3rem;
   overflow-x: auto;
+  width: 0;
+  min-width: 100%;
+  box-sizing: border-box;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
 }

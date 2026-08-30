@@ -1448,36 +1448,44 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Los Cristianos",
     duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
-    days: ["mar", "gio", "ven", "sab", "dom"],
-    priceFrom: 30,
-    // Il fornitore segna 25 come prezzo scontato (pieno 30): sul sito va il
-    // pieno. Il prezzo vero per persona sta nelle varianti qui sotto.
+    priceFrom: 25,
+    // I due prezzi veri stanno dentro le varianti, perche' cambiano con la
+    // durata. Il neonato invece e' lo stesso su entrambe (e paga, non e'
+    // gratis: priceInfant qui non e' zero).
     priceAdult: 0,
     priceChild: 0,
-    // Confermato con l'ufficio: 11:00 e' il giro di 2 ore, 13:30 quello di 3.
+    priceInfant: 5,
+    // 12+ discende dai bambini 4-11: sopra gli 11 non c'e' altra fascia.
+    // Confermato dall'ufficio che vale su entrambe le durate.
+    ages: { adult: "12+", child: "4-11", infant: "0-3" },
+    // I giorni cambiano con la durata: il giro corto e' solo il lunedi', il
+    // lungo solo martedi'/giovedi'/sabato. Niente `days` sulla scheda,
+    // ciascuna variante ha il suo.
     options: {
       label: { it: "Durata", en: "Duration", es: "Duración" },
       choices: [
         {
           label: { it: "2 ore", en: "2 hours", es: "2 horas" },
-          priceAdult: 30,
-          times: ["11:00"],
+          priceAdult: 25,
+          priceChild: 20,
+          days: ["lun"],
+          times: ["10:30", "12:30", "14:30"],
           desc: {
-            it: "Il giro corto, in cerca di balene pilota e tursiopi al largo di Los Cristianos. Partenza alle 11:00.",
-            en: "The short trip, looking for pilot whales and bottlenose dolphins off Los Cristianos. Leaving at 11:00.",
-            es: "La salida corta, en busca de calderones y delfines mulares frente a Los Cristianos. Salida a las 11:00."
+            it: "Il giro corto, in cerca di balene pilota e tursiopi al largo di Los Cristianos. Lunedì, partenze alle 10:30, 12:30 e 14:30.",
+            en: "The short trip, looking for pilot whales and bottlenose dolphins off Los Cristianos. Mondays, leaving at 10:30, 12:30 and 14:30.",
+            es: "La salida corta, en busca de calderones y delfines mulares frente a Los Cristianos. Lunes, salidas a las 10:30, 12:30 y 14:30."
           }
         },
         {
-          // Prezzo bambini e prezzo di questa variante non ancora confermati
-          // dall'ufficio: niente priceAdult/priceChild finche' non arrivano,
-          // la pagina mostra il prezzo "Da €30" della scheda nel frattempo.
           label: { it: "3 ore", en: "3 hours", es: "3 horas" },
-          times: ["13:30"],
+          priceAdult: 38,
+          priceChild: 25,
+          days: ["mar", "gio", "sab"],
+          times: ["13:00"],
           desc: {
-            it: "Lo stesso giro con più tempo al largo, in cerca di balene pilota e tursiopi. Partenza alle 13:30.",
-            en: "The same trip with more time offshore, looking for pilot whales and bottlenose dolphins. Leaving at 13:30.",
-            es: "La misma salida con más tiempo mar adentro, en busca de calderones y delfines mulares. Salida a las 13:30."
+            it: "Lo stesso giro con più tempo al largo, in cerca di balene pilota e tursiopi. Martedì, giovedì e sabato, partenza alle 13:00.",
+            en: "The same trip with more time offshore, looking for pilot whales and bottlenose dolphins. Tuesdays, Thursdays and Saturdays, leaving at 13:00.",
+            es: "La misma salida con más tiempo mar adentro, en busca de calderones y delfines mulares. Martes, jueves y sábado, salida a las 13:00."
           }
         }
       ]
@@ -1505,8 +1513,10 @@ const ESPLORA_CATALOG = [
         es: "Con mar agitado o mal tiempo el operador organiza un plan alternativo."
       }
     ],
+    // Manca ancora la foto (nessuna in assets/): come flipper-one, in
+    // elenco esce il riquadro grigio finche' non arriva.
     image: "",
-    published: false
+    published: true
   },
 
   // ─── TEIDE E NATURA ───────────────────────────────────────────────────────

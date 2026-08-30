@@ -2208,3 +2208,32 @@ nel browser vero con `published: true` temporaneo (poi rimesso a `false`): entra
 varianti, il cambio di orario e il fallback di prezzo sul giro di 3 ore funzionano.
 Quando arrivano i dati mancanti, aggiornare la scheda, aggiungere la foto e mettere
 `published: true`.
+
+### Ragnarok, prezzi e orari veri (30 agosto 2026)
+
+Arrivati dall'ufficio i dati mancanti, e sono molto diversi dal segnaposto messo prima:
+i due giri non condividono ne' gli orari ne' i giorni.
+
+- **2 ore**: adulti €25, bambini €20, neonati €5 (non gratis: prima non c'era nessun
+  `priceInfant` diverso da zero in tutto il catalogo). Si fa solo **il lunedì**, tre
+  partenze: 10:30, 12:30, 14:30.
+- **3 ore**: adulti €38, bambini €25, neonati €5. Si fa **martedì, giovedì e sabato**,
+  una partenza alle 13:00.
+
+**Deciso col proprietario**: l'orario del giro di 3 ore era arrivato tagliato ("13:"),
+confermato 13:00. Le fasce d'età (bambino 4-11, neonato 0-3) valgono su entrambe le
+durate, non solo sul giro di 3 ore dove erano scritte.
+
+**Cambiato rispetto alla prima versione**: tolto il `days` in cima alla scheda — i due
+giri si fanno in giorni diversi, quindi ora `days` sta solo dentro ciascuna variante,
+come previsto dal vocabolario quando "la variante vince". `priceFrom` era 30 (il prezzo
+pieno segnato dal fornitore): ora è 25, il prezzo vero più basso fra i due, confermato
+dall'ufficio — qui non è più un caso di "non copiare lo sconto del rivenditore", è il
+prezzo reale che va sul sito.
+
+**Pubblicata (`published: true`)** anche senza foto, come già successo per flipper-one:
+in elenco esce il riquadro grigio, `controlla.js` lo segnala come avviso e basta. Restava
+solo la foto da aggiungere, e con prezzi ed età confermati non c'era più motivo di tenerla
+nascosta. Provata di nuovo nel browser vero: prezzi, età, giorni e orario di entrambe le
+varianti sono corretti, e la scheda compare nell'elenco con il segnaposto "ISLA" al posto
+della foto.

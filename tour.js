@@ -19,7 +19,7 @@ function tourFromUrl() {
 function detailMedia(tour) {
   return tour.image
     ? `<img src="./assets/${encodeURIComponent(tour.image)}" alt="${esc(tf(tour.title))}" data-hero-img />`
-    : `<span class="tour-media-empty" aria-hidden="true">Isla</span>`;
+    : `<span class="tour-media-empty" aria-hidden="true">${t("tour.photoSoon")}</span>`;
 }
 
 // La mini galleria sotto la foto grande: solo dove c'e' sia `image` che
@@ -361,7 +361,7 @@ function detailRelated(tour) {
               <span class="detail-related-media">
                 ${x.image
                   ? `<img src="./assets/${encodeURIComponent(x.image)}" alt="" loading="lazy" />`
-                  : `<span class="tour-media-empty" aria-hidden="true">Isla</span>`}
+                  : `<span class="tour-media-empty" aria-hidden="true">${t("tour.photoSoon")}</span>`}
               </span>
               <span class="detail-related-body">
                 <span class="detail-related-title">${esc(tf(x.title))}</span>

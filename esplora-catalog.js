@@ -645,6 +645,7 @@ const ESPLORA_CATALOG = [
       }
     ],
     image: "peter-pan.jpg",
+    gallery: ["peter-pan-2.jpg", "peter-pan-3.jpg"],
     published: true
   },
   {

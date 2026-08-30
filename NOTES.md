@@ -2175,3 +2175,100 @@ il costo del bus. **Ora la riga mostra solo il supplemento**: €21/€17 per Lo
 in `tour.js` solo per la riga accorpata. Il totale nella finestra della richiesta continua
 a usare il prezzo completo come prima (verificato: €272 per 2 adulti + 1 bambino col
 transfer Loro Parque) — cambia solo cosa si stampa, non cosa si calcola.
+
+### Nuova scheda: Ragnarok (30 agosto 2026)
+
+Barca a tema vichingo da Los Cristianos, avvistamento balene pilota e tursiopi, dati da
+`canaryvip.com` (id fornitore 10467). Prima controllato che non fosse un doppione: nessuna
+scheda a Los Cristianos con questo prezzo/durata/porto (la più vicina è Peter Pan, ma è
+un'altra barca, altro prezzo, niente varianti).
+
+**Non copiato dal fornitore**: il prezzo scontato (25€, pieno 30€ — sul sito va il pieno),
+la cancellazione (48/72h del fornitore non c'entrano, restano le 24h di Isla), punteggio e
+numero di recensioni, "best price"/testi promozionali. `languages` non messo: il
+fornitore scrive solo "equipaggio multilingue", non un elenco, e la regola dice di
+mettere il campo solo dove le lingue sono elencate davvero.
+
+**Deciso col proprietario**: gli orari 11:00 e 13:30 non erano abbinati a una durata —
+confermato che 11:00 è il giro di 2 ore e 13:30 quello di 3. Il prezzo bambini non era nel
+documento: pubblicata senza (`priceChild: 0`), la riga resta nascosta finché non arriva.
+
+**Deciso da solo**: il prezzo del giro di 3 ore non è mai stato dato (solo un "da" generico
+per l'intera scheda) — lasciato senza `priceAdult` nella variante, la pagina mostra "Da
+€30" come per un dato ancora da confermare, invece di indovinare un numero. Le info di
+bordo del fornitore (bar-ristorante, servizi igienici, posti a sedere, aree accessibili)
+non sono nel vocabolario di `included` (non sono "compresi nel prezzo", sono dotazioni
+della barca) e sono finite nelle note. Gli spettacoli a tema, i giochi e la prova
+dell'equipaggiamento vichingo sono finiti nella descrizione, riscritta da zero nelle tre
+lingue: sono quello che rende diversa questa barca da tutte le altre.
+
+**Resta in sospeso, scheda non pubblicata (`published: false`)**: manca la foto (nessuna
+in `assets/`), manca il prezzo bambini/neonati, manca il prezzo del giro di 3 ore. Provata
+nel browser vero con `published: true` temporaneo (poi rimesso a `false`): entrambe le
+varianti, il cambio di orario e il fallback di prezzo sul giro di 3 ore funzionano.
+Quando arrivano i dati mancanti, aggiornare la scheda, aggiungere la foto e mettere
+`published: true`.
+
+### Ragnarok, prezzi e orari veri (30 agosto 2026)
+
+Arrivati dall'ufficio i dati mancanti, e sono molto diversi dal segnaposto messo prima:
+i due giri non condividono ne' gli orari ne' i giorni.
+
+- **2 ore**: adulti €25, bambini €20, neonati €5 (non gratis: prima non c'era nessun
+  `priceInfant` diverso da zero in tutto il catalogo). Si fa solo **il lunedì**, tre
+  partenze: 10:30, 12:30, 14:30.
+- **3 ore**: adulti €38, bambini €25, neonati €5. Si fa **martedì, giovedì e sabato**,
+  una partenza alle 13:00.
+
+**Deciso col proprietario**: l'orario del giro di 3 ore era arrivato tagliato ("13:"),
+confermato 13:00. Le fasce d'età (bambino 4-11, neonato 0-3) valgono su entrambe le
+durate, non solo sul giro di 3 ore dove erano scritte.
+
+**Cambiato rispetto alla prima versione**: tolto il `days` in cima alla scheda — i due
+giri si fanno in giorni diversi, quindi ora `days` sta solo dentro ciascuna variante,
+come previsto dal vocabolario quando "la variante vince". `priceFrom` era 30 (il prezzo
+pieno segnato dal fornitore): ora è 25, il prezzo vero più basso fra i due, confermato
+dall'ufficio — qui non è più un caso di "non copiare lo sconto del rivenditore", è il
+prezzo reale che va sul sito.
+
+**Pubblicata (`published: true`)** anche senza foto, come già successo per flipper-one:
+in elenco esce il riquadro grigio, `controlla.js` lo segnala come avviso e basta. Restava
+solo la foto da aggiungere, e con prezzi ed età confermati non c'era più motivo di tenerla
+nascosta. Provata di nuovo nel browser vero: prezzi, età, giorni e orario di entrambe le
+varianti sono corretti, e la scheda compare nell'elenco con il segnaposto "ISLA" al posto
+della foto.
+
+### Ragnarok, foto vere e prima mini-galleria del sito (30 agosto 2026)
+
+Arrivate cinque foto vere della barca. Guardate una per una prima di usarle (una barca era
+gia' stata scartata in passato perche' portava il marchio di un'altra azienda): nessun logo
+di rivenditori o piattaforme di prenotazione, solo il nome "Ragnarok" scritto sulla barca
+stessa, che e' il soggetto della foto e non un marchio da evitare. Ridimensionate tutte a
+1200×800 come le altre foto barche (`assets/ragnarok.jpg` e `ragnarok-2.jpg` … `-5.jpg`,
+100-180 KB l'una).
+
+**La prima foto (il manifesto "Ragnarok — Viking adventure on the Atlantic Ocean") come
+foto della card**, per scelta del proprietario. Le altre quattro non stavano da nessuna
+parte: fino a oggi ogni scheda aveva **una** foto sola, e in NOTES.md c'e' scritto (28
+agosto, Freebird) che una seconda foto della stessa barca era stata cancellata perche'
+"non esiste una galleria che possa usarne due".
+
+**Aggiunta la prima mini-galleria del sito**, non solo per Ragnarok: e' un campo nuovo del
+vocabolario, `gallery` (facoltativo, un elenco di foto oltre a `image`), quindi qualunque
+scheda futura con piu' foto puo' usarla allo stesso modo. Sulla pagina di dettaglio esce
+una striscia di miniature sotto la foto grande (`tour.js`, funzioni `detailGallery()` e
+`collegaGalleria()`): un tocco su una miniatura cambia la foto grande, senza aprire
+un'altra pagina o caricare una libreria di lightbox — resta "niente framework, niente
+build".
+
+**Un dettaglio di layout da tablet in su**: la pagina di dettaglio diventa a due colonne
+(foto a sinistra, testo a destra) con CSS Grid. Mettere la galleria come terzo elemento
+diretto dentro `.detail-tour` l'avrebbe mandata nella colonna sbagliata (la griglia
+riempie le celle in ordine, non per tipo). Risolto avvolgendo foto grande e galleria in un
+contenitore solo, `.detail-media`, cosi' la griglia li vede come un blocco unico nella
+prima colonna.
+
+Provata nel browser vero, a due larghezze: le cinque miniature ci sono, il click cambia la
+foto grande e sposta il bordo dorato su quella scelta, e da tablet in su la galleria resta
+sotto la foto invece di finire a fianco del testo. La scheda in elenco mostra la foto vera
+al posto del riquadro grigio.

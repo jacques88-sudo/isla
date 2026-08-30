@@ -5,6 +5,12 @@
 //                Piu voci possono indicare lo stesso file: la foto sta in
 //                assets/ una volta sola e il telefono la scarica una volta
 //                sola, anche se compare in dieci schede diverse.
+//   gallery    → facoltativo: altre foto oltre a `image`, stessa cartella
+//                assets/. Sulla pagina di dettaglio diventano una striscia di
+//                miniature sotto la foto grande; toccandone una cambia la foto
+//                grande, senza aprire un'altra pagina. Niente senza `image`:
+//                la prima miniatura è sempre la foto principale.
+//                    gallery: ["nome-2.jpg", "nome-3.jpg"]
 //   priceFrom  → numero in euro, oppure null se il prezzo non è ancora definito.
 //   priceUnit  → facoltativo: si aggiunge dopo il prezzo quando non è "a persona"
 //                ma a ore o a gruppo, es. { it: "/ora", en: "/hr", es: "/h" }
@@ -1440,6 +1446,81 @@ const ESPLORA_CATALOG = [
       es: "Tres horas a bordo de un crucero de lujo, sin prisa."
     },
     image: "luxury-cruiser.jpg",
+    published: true
+  },
+  {
+    id: "ragnarok",
+    title: "Ragnarok Viking Boat Tour",
+    category: "mare-barche",
+    zone: "Los Cristianos",
+    duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
+    priceFrom: 25,
+    // I due prezzi veri stanno dentro le varianti, perche' cambiano con la
+    // durata. Il neonato invece e' lo stesso su entrambe (e paga, non e'
+    // gratis: priceInfant qui non e' zero).
+    priceAdult: 0,
+    priceChild: 0,
+    priceInfant: 5,
+    // 12+ discende dai bambini 4-11: sopra gli 11 non c'e' altra fascia.
+    // Confermato dall'ufficio che vale su entrambe le durate.
+    ages: { adult: "12+", child: "4-11", infant: "0-3" },
+    // I giorni cambiano con la durata: il giro corto e' solo il lunedi', il
+    // lungo solo martedi'/giovedi'/sabato. Niente `days` sulla scheda,
+    // ciascuna variante ha il suo.
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        {
+          label: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          priceAdult: 25,
+          priceChild: 20,
+          days: ["lun"],
+          times: ["10:30", "12:30", "14:30"],
+          desc: {
+            it: "Il giro corto, in cerca di balene pilota e tursiopi al largo di Los Cristianos. Lunedì, partenze alle 10:30, 12:30 e 14:30.",
+            en: "The short trip, looking for pilot whales and bottlenose dolphins off Los Cristianos. Mondays, leaving at 10:30, 12:30 and 14:30.",
+            es: "La salida corta, en busca de calderones y delfines mulares frente a Los Cristianos. Lunes, salidas a las 10:30, 12:30 y 14:30."
+          }
+        },
+        {
+          label: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          priceAdult: 38,
+          priceChild: 25,
+          days: ["mar", "gio", "sab"],
+          times: ["13:00"],
+          desc: {
+            it: "Lo stesso giro con più tempo al largo, in cerca di balene pilota e tursiopi. Martedì, giovedì e sabato, partenza alle 13:00.",
+            en: "The same trip with more time offshore, looking for pilot whales and bottlenose dolphins. Tuesdays, Thursdays and Saturdays, leaving at 13:00.",
+            es: "La misma salida con más tiempo mar adentro, en busca de calderones y delfines mulares. Martes, jueves y sábado, salida a las 13:00."
+          }
+        }
+      ]
+    },
+    family: true,
+    desc: {
+      it: "Una barca a tema vichingo che parte da Los Cristianos per andare a cercare balene pilota e tursiopi al largo. L'equipaggio veste i panni dei vichinghi, fra spettacoli a tema, giochi a bordo e la possibilità di provare l'armatura vichinga: un giro pensato anche per chi viaggia con bambini.",
+      en: "A Viking-themed boat leaving from Los Cristianos to look for pilot whales and bottlenose dolphins offshore. The crew dresses up as Vikings, with themed shows, games on board and the chance to try on Viking gear: a trip built with families in mind too.",
+      es: "Un barco de temática vikinga que sale de Los Cristianos para buscar calderones y delfines mulares mar adentro. La tripulación se viste de vikingos, con espectáculos temáticos, juegos a bordo y la posibilidad de probarse el equipo vikingo: una salida pensada también para quien viaja con niños."
+    },
+    notes: [
+      {
+        it: "Ritrovo nella Zona Excursiones A del porto di Los Cristianos, dove c'è anche un parcheggio pubblico a pagamento. Arriva tra i 10 e i 20 minuti prima della partenza.",
+        en: "Meeting point in the Zona Excursiones A at Los Cristianos harbour, where there is also paid public parking. Get there 10 to 20 minutes before departure.",
+        es: "Punto de encuentro en la Zona Excursiones A del puerto de Los Cristianos, donde también hay aparcamiento público de pago. Llega entre 10 y 20 minutos antes de la salida."
+      },
+      {
+        it: "A bordo ci sono un bar-ristorante, i servizi igienici, posti a sedere in diverse zone e aree accessibili.",
+        en: "On board there is a bar-restaurant, toilets, seating spread across different areas and accessible spaces.",
+        es: "A bordo hay un bar-restaurante, aseos, asientos repartidos en distintas zonas y espacios accesibles."
+      },
+      {
+        it: "Con mare mosso o maltempo l'operatore organizza un piano alternativo.",
+        en: "In rough seas or bad weather the operator arranges an alternative plan.",
+        es: "Con mar agitado o mal tiempo el operador organiza un plan alternativo."
+      }
+    ],
+    image: "ragnarok.jpg",
+    gallery: ["ragnarok-2.jpg", "ragnarok-3.jpg", "ragnarok-4.jpg", "ragnarok-5.jpg"],
     published: true
   },
 

@@ -2366,3 +2366,22 @@ altra categoria. Provato aprendo una scheda `mare-barche` (Royal Delfin, Ragnaro
 
 Il titolo della sezione (`detail.related` in `i18n.js`) diceva "Altre esperienze di questa
 categoria": non ha più senso, cambiato in "Altre esperienze da scoprire" nelle tre lingue.
+
+### Peter Pan: mini-galleria (30 agosto 2026)
+
+Arrivate quattro foto di Peter Pan. Guardate una per una:
+
+- prua/porto e quella con i globicefali in primo piano mostrano chiaramente il nome
+  "Peter Pan" sullo scafo — **tenute**;
+- una era quasi identica alla foto già pubblicata (stessa inquadratura, qualità peggiore)
+  — **scartata**, inutile duplicarla;
+- una mostrava un gruppo che nuota sotto una falesia (Los Gigantes), ma lo scafo è di
+  legno naturale, non rosso bordeaux come Peter Pan, e non si legge nessun nome —
+  probabilmente **un'altra barca**. Scartata anche per questo: la scheda dice già che sul
+  giro di 2 ore il bagno non c'è, quindi pubblicarla avrebbe comunque promesso qualcosa
+  che non c'è, a prescindere da quale barca sia davvero.
+
+Le due buone sono salvate come `assets/peter-pan-2.jpg` e `-3.jpg` (1200×800, 175-180 KB,
+stesso ritaglio al centro delle altre foto barche). La foto della card resta quella di
+prima (`peter-pan.jpg`), le due nuove vanno nel campo `gallery`. Provato in `tour.html`:
+foto grande più due miniature cliccabili, caricate correttamente.

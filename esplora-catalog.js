@@ -1442,6 +1442,73 @@ const ESPLORA_CATALOG = [
     image: "luxury-cruiser.jpg",
     published: true
   },
+  {
+    id: "skyline-cruiser",
+    title: "Skyline Cruiser",
+    category: "mare-barche",
+    zone: "Puerto Colón",
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    times: ["09:45", "13:15", "16:20"],
+    priceFrom: 65,
+    privateOption: "private-charter",
+    priceAdult: 65,
+    // Il fornitore non ha mandato un prezzo bambini: resta a 0 finche'
+    // l'ufficio non lo conferma, invece di indovinarlo.
+    priceChild: 0,
+    included: ["swimstop", "snorkel", "fingerfood", "drinks", "towels"],
+    family: true,
+    itinerary: [
+      {
+        text: {
+          it: "Navigazione al largo, fino a tre miglia dalla costa, in cerca di delfini e balene.",
+          en: "Sailing offshore, up to three miles from the coast, looking for dolphins and whales.",
+          es: "Navegación mar adentro, hasta tres millas de la costa, buscando delfines y ballenas."
+        }
+      },
+      {
+        text: {
+          it: "Sosta bagno in una baia riparata, con l'attrezzatura da snorkeling a bordo.",
+          en: "A swim stop in a sheltered bay, with snorkelling gear on board.",
+          es: "Parada de baño en una bahía resguardada, con equipo de snorkel a bordo."
+        }
+      },
+      {
+        text: {
+          it: "Rientro costiero, con vista sulle grotte hippie e le scogliere vulcaniche.",
+          en: "A coastal return, passing the hippie caves and volcanic cliffs.",
+          es: "Vuelta bordeando la costa, con vistas a las cuevas hippies y los acantilados volcánicos."
+        }
+      }
+    ],
+    notes: [
+      {
+        it: "Presentati al porto almeno 30 minuti prima della partenza.",
+        en: "Get to the harbour at least 30 minutes before departure.",
+        es: "Llega al puerto al menos 30 minutos antes de la salida."
+      },
+      {
+        it: "A bordo: tortilla, pizza, salsicce, formaggio, pomodorini conditi, frutta secca e frutta fresca; da bere acqua, bibite, birra, vino e cava.",
+        en: "On board: tortilla, pizza, sausages, cheese, dressed cherry tomatoes, dried fruit and fresh fruit; to drink, water, soft drinks, beer, wine and cava.",
+        es: "A bordo: tortilla, pizza, salchichas, queso, tomates cherry aliñados, frutos secos y fruta fresca; para beber, agua, refrescos, cerveza, vino y cava."
+      },
+      {
+        it: "Su richiesta, con un po' di preavviso, ci sono menu alternativi.",
+        en: "Alternative menus are available on request, with a little notice.",
+        es: "Bajo petición, con un poco de antelación, hay menús alternativos."
+      },
+      {
+        it: "Porta costume, asciugamano, crema solare, occhiali da sole e una giacca leggera.",
+        en: "Bring swimwear, a towel, sunscreen, sunglasses and a light jacket.",
+        es: "Trae bañador, toalla, crema solar, gafas de sol y una chaqueta ligera."
+      }
+    ],
+    desc: {
+      it: "Tre ore a bordo dello Skyline Cruiser, un motoryacht Fairline di quasi 13 metri, fino a 12 persone. Si esce al largo in cerca di delfini e balene, poi la sosta bagno con lo snorkeling in una baia riparata, e il rientro costeggiando le grotte hippie e le scogliere vulcaniche. A bordo capitano ed equipaggio, snack e bevande comprese.",
+      en: "Three hours aboard the Skyline Cruiser, a Fairline motor yacht just under 13 metres long, up to 12 people. You head offshore looking for dolphins and whales, then a swim stop with snorkelling in a sheltered bay, and a coastal return past the hippie caves and volcanic cliffs. On board: captain and crew, with snacks and drinks included.",
+      es: "Tres horas a bordo del Skyline Cruiser, un yate a motor Fairline de casi 13 metros, hasta 12 personas. Se navega mar adentro buscando delfines y ballenas, luego la parada de baño con snorkel en una bahía resguardada, y la vuelta bordeando la costa junto a las cuevas hippies y los acantilados volcánicos. A bordo: capitán y tripulación, con aperitivos y bebidas incluidas."
+    },
+    published: true
+  },
 
   // ─── TEIDE E NATURA ───────────────────────────────────────────────────────
   {

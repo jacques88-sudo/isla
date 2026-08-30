@@ -2334,3 +2334,19 @@ flipper-one (l'unica scheda pubblicata senza foto) in elenco e nel dettaglio.
 
 Non toccato il riquadro grigio in se': resta lo stesso spazio, cambia solo la scritta
 dentro.
+
+### Royal Delfin: terza mini-galleria del sito (30 agosto 2026)
+
+Arrivate quattro foto del Royal Delfin. Guardate una per una: tre mostrano chiaramente il
+nome "Royal Delfin" sullo scafo e il logo del fornitore (nessun marchio di un altro
+operatore), la quarta era la grafica delle finestre subacquee con tartaruga e delfini —
+**scartata**, sia perche' troppo piccola (720×719, da ingrandire 1,67× per arrivare a
+1200×800) sia perche' sembra un'illustrazione/grafica da marketing generica piu' che una
+foto vera della barca: meglio non rischiare di pubblicare qualcosa che non e' certamente
+il Royal Delfin.
+
+Le tre buone sono salvate come `assets/royal-delfin-2.jpg` … `-4.jpg` (133-203 KB, stesso
+ritaglio al centro e ridimensionamento a 1200×800 delle altre foto barche). La foto della
+card resta quella di prima (`royal-delfin.jpg`), le tre nuove vanno nel campo `gallery` —
+nessuna modifica al codice, come per Ragnarok e Freebird. Provato in `tour.html`: foto
+grande più quattro miniature cliccabili, tutte caricate correttamente.

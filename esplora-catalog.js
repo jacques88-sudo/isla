@@ -555,6 +555,7 @@ const ESPLORA_CATALOG = [
     ],
     family: true,
     image: "royal-delfin.jpg",
+    gallery: ["royal-delfin-2.jpg", "royal-delfin-3.jpg", "royal-delfin-4.jpg"],
     desc: {
       it: "Un catamarano grande, fino a 200 persone, con finestre panoramiche sotto la linea di galleggiamento: balene e delfini si guardano anche da sotto, non solo dal ponte. Si sceglie fra due ore, tre ore o il giro lungo fino alla baia di Masca. La barca segue la carta per la tutela dei cetacei e le guide parlano più lingue.",
       en: "A big catamaran, up to 200 people, with panoramic windows below the waterline: you watch whales and dolphins from underneath as well as from the deck. Choose between two hours, three hours or the long trip out to Masca bay. The boat follows the whale conservation charter and the guides speak several languages.",

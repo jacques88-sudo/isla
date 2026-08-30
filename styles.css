@@ -1408,9 +1408,12 @@ body.menu-open { overflow: hidden; }
 /* Segnaposto sobrio finché la foto non c'è */
 .tour-media-empty {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: .3em;
+  letter-spacing: .15em;
+  text-align: center;
+  line-height: 1.4;
+  padding: 0 .5rem;
   color: color-mix(in oklab, var(--muted) 45%, transparent);
 }
 

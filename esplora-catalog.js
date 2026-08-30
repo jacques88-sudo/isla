@@ -436,6 +436,7 @@ const ESPLORA_CATALOG = [
       es: "Un catamarán grande que sale de Puerto Colón, con tres salidas a elegir: dos horas, tres horas o la larga hasta los acantilados de Los Gigantes y la bahía de Masca. Ballenas y delfines, parada de baño y bebidas ilimitadas a bordo. La tripulación habla varios idiomas y te cuenta lo que estás viendo, y el barco sigue las normas para acercarse a los animales sin molestarlos."
     },
     image: "catamaran-gigantes-masca.jpg",
+    gallery: ["freebird-2.jpg", "freebird-3.jpg", "freebird-4.jpg"],
     published: true
   },
   {

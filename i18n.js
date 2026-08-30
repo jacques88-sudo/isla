@@ -156,6 +156,7 @@ const I18N = {
   "tour.transfer":      { it: "Transfer disponibile", en: "Transfer available", es: "Traslado disponible" },
   "tour.ask":           { it: "Richiedi disponibilità", en: "Check availability", es: "Consultar disponibilidad" },
   "tour.details":       { it: "Scopri di più", en: "See details", es: "Ver detalles" },
+  "tour.photoSoon":     { it: "Foto in arrivo", en: "Photo coming soon", es: "Foto próximamente" },
 
   // ── pagina di dettaglio di una singola escursione ───────────────────────
   "detail.back":        { it: "Tutte le escursioni", en: "All excursions", es: "Todas las excursiones" },

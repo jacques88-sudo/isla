@@ -2305,3 +2305,32 @@ Vale la pena ricordarlo se si aggiunge un'altra striscia di elementi a scorrimen
 orizzontale (tipo di questa galleria) in futuro: `overflow-x: auto` senza `width: 0` +
 `min-width: 100%` (o un equivalente che dia una larghezza definita invece di lasciarla
 "auto") puo' rifare lo stesso scherzo sul telefono, anche se sul desktop sembra perfetto.
+
+### Freebird: la seconda mini-galleria del sito, e un segnaposto per chi non ha foto (30 agosto 2026)
+
+Arrivate quattro foto vere del Freebird dal proprietario. Guardate una per una (vale la
+stessa regola di Ragnarok): tutte e quattro mostrano barche della flotta Freebird — quella
+gialla "Freebird Gold" del manifesto e delle vele "España", e quella rossa/bianca "F13"
+con la scritta FREEBIRD grande sullo scafo — nessun marchio di un altro operatore. **Una
+delle quattro e' stata scartata**: 424×280, troppo piccola per arrivare a 1200×800 senza
+sgranarsi. Restano tre, salvate come `assets/freebird-2.jpg` … `-4.jpg` (150-210 KB,
+stesso ritaglio al centro e ridimensionamento delle foto barche).
+
+**La foto della card resta quella di prima** (`catamaran-gigantes-masca.jpg`, il giro
+lungo verso Los Gigantes), le tre nuove vanno nel campo `gallery` — lo stesso campo
+aggiunto ieri per Ragnarok, qui usato per la seconda volta. Nessuna modifica al codice
+della galleria: `detailGallery()` e il CSS di `.detail-gallery` in `tour.js`/`styles.css`
+sono generici, bastava valorizzare il campo nel catalogo.
+
+**Aggiunto anche un segnaposto vero per le schede senza foto**, al posto della scritta
+"Isla" che c'era finora (in `escursioni.js`, `tour.js` — sia la foto grande che la
+miniatura nelle "altre esperienze" — tutti e tre i posti che disegnano
+`.tour-media-empty`). Ora dice "Foto in arrivo" (nuova chiave i18n `tour.photoSoon`,
+tradotta anche in inglese e spagnolo), cosi' chi vede la scheda capisce che manca la foto
+e non pensa a un errore. Il CSS di `.tour-media-empty` e' stato addolcito (meno spaziatura
+fra le lettere, testo centrato, puo' andare a capo) perche' il testo nuovo e' piu' lungo
+di "Isla" e prima sarebbe uscito dal riquadro sulle card piu' strette. Provato su
+flipper-one (l'unica scheda pubblicata senza foto) in elenco e nel dettaglio.
+
+Non toccato il riquadro grigio in se': resta lo stesso spazio, cambia solo la scritta
+dentro.

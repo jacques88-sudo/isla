@@ -205,7 +205,7 @@ function tourCard(tour) {
   // l'indirizzo resta valido invece di rompersi a metà
   const media = tour.image
     ? `<img src="./assets/${encodeURIComponent(tour.image)}" alt="${tf(tour.title)}" loading="lazy" />`
-    : `<span class="tour-media-empty" aria-hidden="true">Isla</span>`;
+    : `<span class="tour-media-empty" aria-hidden="true">${t("tour.photoSoon")}</span>`;
 
   // Foto, titolo e pulsante portano tutti alla pagina di dettaglio.
   const href = `./tour.html?id=${encodeURIComponent(tour.id)}`;

@@ -5,6 +5,12 @@
 //                Piu voci possono indicare lo stesso file: la foto sta in
 //                assets/ una volta sola e il telefono la scarica una volta
 //                sola, anche se compare in dieci schede diverse.
+//   gallery    → facoltativo: altre foto oltre a `image`, stessa cartella
+//                assets/. Sulla pagina di dettaglio diventano una striscia di
+//                miniature sotto la foto grande; toccandone una cambia la foto
+//                grande, senza aprire un'altra pagina. Niente senza `image`:
+//                la prima miniatura è sempre la foto principale.
+//                    gallery: ["nome-2.jpg", "nome-3.jpg"]
 //   priceFrom  → numero in euro, oppure null se il prezzo non è ancora definito.
 //   priceUnit  → facoltativo: si aggiunge dopo il prezzo quando non è "a persona"
 //                ma a ore o a gruppo, es. { it: "/ora", en: "/hr", es: "/h" }
@@ -1513,9 +1519,8 @@ const ESPLORA_CATALOG = [
         es: "Con mar agitado o mal tiempo el operador organiza un plan alternativo."
       }
     ],
-    // Manca ancora la foto (nessuna in assets/): come flipper-one, in
-    // elenco esce il riquadro grigio finche' non arriva.
-    image: "",
+    image: "ragnarok.jpg",
+    gallery: ["ragnarok-2.jpg", "ragnarok-3.jpg", "ragnarok-4.jpg", "ragnarok-5.jpg"],
     published: true
   },
 

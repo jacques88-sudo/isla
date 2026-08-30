@@ -159,6 +159,7 @@ const I18N = {
 
   // ── pagina di dettaglio di una singola escursione ───────────────────────
   "detail.back":        { it: "Tutte le escursioni", en: "All excursions", es: "Todas las excursiones" },
+  "detail.photo":       { it: "Foto {n}", en: "Photo {n}", es: "Foto {n}" },
   "detail.summary":     { it: "In breve", en: "At a glance", es: "En resumen" },
   "detail.departure":   { it: "Punto di partenza", en: "Departure point", es: "Punto de salida" },
   "detail.duration":    { it: "Durata", en: "Duration", es: "Duración" },

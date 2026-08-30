@@ -2237,3 +2237,38 @@ solo la foto da aggiungere, e con prezzi ed età confermati non c'era più motiv
 nascosta. Provata di nuovo nel browser vero: prezzi, età, giorni e orario di entrambe le
 varianti sono corretti, e la scheda compare nell'elenco con il segnaposto "ISLA" al posto
 della foto.
+
+### Ragnarok, foto vere e prima mini-galleria del sito (30 agosto 2026)
+
+Arrivate cinque foto vere della barca. Guardate una per una prima di usarle (una barca era
+gia' stata scartata in passato perche' portava il marchio di un'altra azienda): nessun logo
+di rivenditori o piattaforme di prenotazione, solo il nome "Ragnarok" scritto sulla barca
+stessa, che e' il soggetto della foto e non un marchio da evitare. Ridimensionate tutte a
+1200×800 come le altre foto barche (`assets/ragnarok.jpg` e `ragnarok-2.jpg` … `-5.jpg`,
+100-180 KB l'una).
+
+**La prima foto (il manifesto "Ragnarok — Viking adventure on the Atlantic Ocean") come
+foto della card**, per scelta del proprietario. Le altre quattro non stavano da nessuna
+parte: fino a oggi ogni scheda aveva **una** foto sola, e in NOTES.md c'e' scritto (28
+agosto, Freebird) che una seconda foto della stessa barca era stata cancellata perche'
+"non esiste una galleria che possa usarne due".
+
+**Aggiunta la prima mini-galleria del sito**, non solo per Ragnarok: e' un campo nuovo del
+vocabolario, `gallery` (facoltativo, un elenco di foto oltre a `image`), quindi qualunque
+scheda futura con piu' foto puo' usarla allo stesso modo. Sulla pagina di dettaglio esce
+una striscia di miniature sotto la foto grande (`tour.js`, funzioni `detailGallery()` e
+`collegaGalleria()`): un tocco su una miniatura cambia la foto grande, senza aprire
+un'altra pagina o caricare una libreria di lightbox — resta "niente framework, niente
+build".
+
+**Un dettaglio di layout da tablet in su**: la pagina di dettaglio diventa a due colonne
+(foto a sinistra, testo a destra) con CSS Grid. Mettere la galleria come terzo elemento
+diretto dentro `.detail-tour` l'avrebbe mandata nella colonna sbagliata (la griglia
+riempie le celle in ordine, non per tipo). Risolto avvolgendo foto grande e galleria in un
+contenitore solo, `.detail-media`, cosi' la griglia li vede come un blocco unico nella
+prima colonna.
+
+Provata nel browser vero, a due larghezze: le cinque miniature ci sono, il click cambia la
+foto grande e sposta il bordo dorato su quella scelta, e da tablet in su la galleria resta
+sotto la foto invece di finire a fianco del testo. La scheda in elenco mostra la foto vera
+al posto del riquadro grigio.

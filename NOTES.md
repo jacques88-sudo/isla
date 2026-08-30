@@ -2350,3 +2350,19 @@ ritaglio al centro e ridimensionamento a 1200×800 delle altre foto barche). La 
 card resta quella di prima (`royal-delfin.jpg`), le tre nuove vanno nel campo `gallery` —
 nessuna modifica al codice, come per Ragnarok e Freebird. Provato in `tour.html`: foto
 grande più quattro miniature cliccabili, tutte caricate correttamente.
+
+### "Altre esperienze" in fondo alla scheda: ora da categorie diverse (30 agosto 2026)
+
+Chiesto dal proprietario: la sezione in fondo a `tour.html` mostrava tre schede della
+**stessa** categoria di quella aperta. Cambiata per mostrare il resto del catalogo invece
+di ripetere la stessa famiglia di gite — chi guarda una barca ha già visto le altre barche
+nell'elenco della categoria, qui serve fargli scoprire cos'altro c'è.
+
+`detailRelated()` in `tour.js` ora scarta la categoria della scheda aperta **e** si ferma
+alla prima scheda trovata per ogni altra categoria, cosi' le tre proposte sono sempre di
+tre categorie diverse fra loro invece di poter essere, per caso, tre barche di un'unica
+altra categoria. Provato aprendo una scheda `mare-barche` (Royal Delfin, Ragnarok) e una
+`teide-natura`: risultati sempre di categorie diverse dalla propria e diverse tra loro.
+
+Il titolo della sezione (`detail.related` in `i18n.js`) diceva "Altre esperienze di questa
+categoria": non ha più senso, cambiato in "Altre esperienze da scoprire" nelle tre lingue.

@@ -7,7 +7,7 @@
 // "Richiedi disponibilità" con il messaggio WhatsApp già compilato.
 // Richiede i18n.js e esplora-catalog.js caricati prima.
 
-// Quante altre esperienze della stessa categoria mostrare in fondo
+// Quante altre esperienze mostrare in fondo, ognuna di una categoria diversa
 const DETAIL_MAX_CORRELATE = 3;
 
 function tourFromUrl() {
@@ -345,10 +345,17 @@ function primaVariante(tour) {
   return scelte[0] || null;
 }
 
+// Una scheda per categoria diversa da quella aperta, cosi' si vede un
+// assaggio del resto del catalogo invece che altre tre barche uguali.
 function detailRelated(tour) {
-  const altre = ESPLORA_CATALOG.filter(x =>
-    x.published && x.category === tour.category && x.id !== tour.id
-  ).slice(0, DETAIL_MAX_CORRELATE);
+  const viste = new Set();
+  const altre = [];
+  for (const x of ESPLORA_CATALOG) {
+    if (!x.published || x.category === tour.category || viste.has(x.category)) continue;
+    viste.add(x.category);
+    altre.push(x);
+    if (altre.length >= DETAIL_MAX_CORRELATE) break;
+  }
   if (!altre.length) return "";
 
   return `

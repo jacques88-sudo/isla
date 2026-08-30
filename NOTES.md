@@ -2272,3 +2272,36 @@ Provata nel browser vero, a due larghezze: le cinque miniature ci sono, il click
 foto grande e sposta il bordo dorato su quella scelta, e da tablet in su la galleria resta
 sotto la foto invece di finire a fianco del testo. La scheda in elenco mostra la foto vera
 al posto del riquadro grigio.
+
+### Ragnarok, la galleria allargava tutta la pagina sul telefono (30 agosto 2026)
+
+Segnalato dal proprietario: aprendo la scheda Ragnarok da telefono, la pagina si apriva un
+po' più larga dello schermo e bisognava allargare le dita per stringerla di nuovo (lo zoom
+iniziale non era a 1:1). Non successo su nessun'altra scheda, solo su questa: e' la prima
+con la galleria.
+
+**La causa non si vedeva scorrendo la pagina** (le miniature scorrevano bene, sembrava
+tutto a posto): il telefono allarga **tutta** la finestra, non solo la striscia delle foto.
+Riprodotto con Playwright su una larghezza vera da telefono (320px, iPhone SE): la pagina
+si apriva a 452px anche con `<meta name="viewport" content="width=device-width">`. La
+causa era `.detail-gallery`: cinque miniature a larghezza fissa che non si restringono
+(giusto, altrimenti la foto si schiaccia) dentro un contenitore con `overflow-x: auto` —
+ma **`overflow-x: auto` da solo non basta**: il browser dei telefoni calcola comunque
+quanto spazio servirebbe alle miniature *senza* scorrimento, e se serve piu' spazio del
+telefono allarga tutta la pagina per non "spezzare" niente. Riprodotto anche il contrario:
+rimpicciolendo le miniature a 1rem il problema spariva, a conferma che era proprio la loro
+larghezza a spingere fuori la pagina.
+
+**La correzione** e' su `.detail-gallery` in `styles.css`: `width: 0` insieme a
+`min-width: 100%` (con `box-sizing: border-box`) invece di lasciare la larghezza `auto`.
+Cosi' il contenitore prende sempre esattamente lo spazio disponibile, mai di piu', e le
+miniature che non ci stanno scorrono **dentro** la striscia invece di allargare la pagina
+intorno a lei. Verificato con lo stesso test automatico (la finestra ora si apre a 320px,
+non piu' a 452) e a occhio, su telefono e su desktop: le miniature scorrono ancora, il
+click cambia la foto grande come prima, il layout a due colonne da tablet in su non e'
+cambiato.
+
+Vale la pena ricordarlo se si aggiunge un'altra striscia di elementi a scorrimento
+orizzontale (tipo di questa galleria) in futuro: `overflow-x: auto` senza `width: 0` +
+`min-width: 100%` (o un equivalente che dia una larghezza definita invece di lasciarla
+"auto") puo' rifare lo stesso scherzo sul telefono, anche se sul desktop sembra perfetto.

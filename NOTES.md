@@ -2217,6 +2217,41 @@ per 2 adulti, nessuna riga fantasma per i bambini con `priceChild: 0`). `node co
 dà 0 errori; l'unico avviso nuovo è la foto mancante, come previsto. Alzato `sw.js` a
 `isla-v143`.
 
+### Skyline Cruiser: foto, prezzo bambini, e spostato Small Catamaran Rental (31 agosto 2026)
+
+Arrivate 4 foto della barca e il prezzo bambini (2-12 anni, €45).
+
+**Foto**: una delle quattro aveva il logo "Skyline Cruiser" incollato sopra (angolo in
+alto a sinistra, sul cielo) — non fa parte della livrea della barca, è una grafica
+promozionale aggiunta dopo, quindi l'ho **ritagliata via** invece di pubblicarla così
+com'è (il resto della foto, barca compresa, restava intatto). Una delle quattro era anche
+piuttosto piccola (506×338, contro i 1200×800 delle altre): ingrandita 2,37×, più del
+precedente di Opera 60 (1,6×), ma guardata a schermo intero regge ancora, non è sfocata
+in modo evidente — usata comunque, come ultima della galleria. Scelta come foto
+principale quella con la barca affiancata alle scogliere vulcaniche in controluce: è la
+stessa scena descritta nel testo ("rientro costeggiando... le scogliere vulcaniche"), e
+regge meglio delle altre da grande. Le altre tre in `gallery`. File circa 110-235 KB,
+1200×800, dentro il range richiesto.
+
+**Prezzo bambini**: `priceChild: 45`, fascia **2-12**. Ho aggiunto `ages: { adult: "13+",
+child: "2-12" }` — il 13+ non è stato mandato, l'ho dedotto io perché è l'unico modo per
+far combaciare le fasce senza buchi né sovrapposizioni (se l'adulto restasse "12+" ci
+sarebbero due prezzi per i dodicenni). **Da confermare con l'ufficio**: sotto i 2 anni non
+c'è ancora un prezzo, quindi non ho messo `priceInfant` — non so se sotto i 2 anni si
+sale gratis o non si sale proprio.
+
+**Small Catamaran Rental spostato da "Mare e barche" a "Sport acquatici"**: è un noleggio
+che si guida da soli (nessun capitano), più vicino a Jet Ski Safari e Flyboard che alle
+altre barche con equipaggio. Cambiato solo `category`, nessun altro campo. `self-drive-boats`
+(stesso tipo di noleggio, capienza diversa) **non l'ho toccato**: non era nella richiesta,
+e se va spostato anche quello è meglio deciderlo apposta.
+
+Provato nel browser vero: le quattro foto compaiono nella galleria di Skyline Cruiser,
+"Adulti (13+) €65" e "Bambini (2-12) €45" sulla pagina, totale €175 per 2 adulti + 1
+bambino nella finestra della richiesta. Small Catamaran Rental ora esce con l'etichetta
+"Sport acquatici" sulla sua pagina. `node controlla.js` → 0 errori, nessun avviso.
+Alzato `sw.js` a `isla-v161`.
+
 ### Nuova scheda: Ragnarok (30 agosto 2026)
 
 Barca a tema vichingo da Los Cristianos, avvistamento balene pilota e tursiopi, dati da

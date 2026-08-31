@@ -1223,6 +1223,7 @@ const ESPLORA_CATALOG = [
       es: "Una goleta oriental de 26 metros, toda de teca, construida para un jeque: es el barco más singular que sale de Puerto Colón. Cinco horas, con media hora junto a delfines y ballenas, luego los acantilados de Los Gigantes y el baño en la bahía de Masca, con la comida servida a bordo. En dos cubiertas hay sitio para 135 personas y mucha sombra donde resguardarse. Lleva la bandera azul que se da a los barcos que se acercan a los cetáceos respetando las normas."
     },
     image: "shogun.jpg",
+    gallery: ["shogun-2.jpg", "shogun-3.jpg"],
     published: true
   },
   {

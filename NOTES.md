@@ -2502,3 +2502,17 @@ qualità regge nonostante l'ingrandimento da 640×427. La foto della card resta
 `party-boat.jpg`, la nuova va nel campo `gallery`. Provato in `tour.html`: foto grande più
 due miniature cliccabili, caricate correttamente. Alzato `CACHE_NAME` in `sw.js` a
 `isla-v157`.
+
+### Shogun: due foto in più (31 agosto 2026)
+
+Arrivate tre foto della Shogun. Una (870×580, vele bianche viste da poppavia, scogliere di
+Los Gigantes sullo sfondo) è la stessa inquadratura già usata per la card pubblicata —
+niente di nuovo lì, tenuta com'era. Le altre due sono nuove: una con le vele rosse issate e
+alcuni bagnanti in acqua accanto allo scafo (1280×720), l'altra con le vele bianche issate
+e "SHOGUN" leggibile sullo scafo (900×600) — stessa barca, nessun dubbio di doppione, solo
+la sua livrea.
+
+Ritagliate al centro e salvate come `assets/shogun-2.jpg` e `-3.jpg` (1200×800, 123-163
+KB). La foto della card resta `shogun.jpg`, le due nuove vanno nel campo `gallery`.
+Provato in `tour.html`: foto grande più tre miniature cliccabili, tutte caricate
+correttamente. Alzato `CACHE_NAME` in `sw.js` a `isla-v158`.

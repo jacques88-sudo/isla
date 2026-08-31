@@ -226,7 +226,9 @@ function controllaTraduzioni(t) {
       }
     });
   };
-  ["title", "zone", "duration", "desc", "season", "transfer"].forEach(c => guarda(t[c], c));
+  ["title", "zone", "duration", "desc", "season", "transfer", "transferLabel",
+   "transferPriceLabel", "transferSiam", "transferSiamLabel", "transferSiamPriceLabel"]
+    .forEach(c => guarda(t[c], c));
   guarda(t.notes, "notes");
   guarda(t.itinerary, "itinerary");
   varianti(t).forEach((v, i) => {

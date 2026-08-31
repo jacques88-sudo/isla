@@ -2668,3 +2668,54 @@ ingrandita 1,78×: guardata a piena pagina regge lo stesso).
 
 Provato nel browser vero: 5 foto in galleria (principale + 4), tutte cariche. `node
 controlla.js` → 0 errori. Alzato `sw.js` a `isla-v164`.
+
+### Siam Park: due tipi di biglietto e due transfer a pagamento (31 agosto 2026)
+
+Il proprietario ha incollato i dati del modulo di prenotazione vero (non più solo
+canaryvip.com): due tipi di biglietto (normale €44, tutto compreso €165) e due transfer a
+pagamento con prezzi propri per persona, da due zone diverse (Tenerife Nord; Los Gigantes /
+Callao Salvaje / Playa Paraíso).
+
+**Prezzo base**: `priceAdult: 44`, `priceChild: 32`, `priceInfant: 0` (neonati gratis in
+tutte le sezioni del modulo). Fasce d'età non date dai nuovi dati: usate quelle del Twin
+Ticket e di Loro Parque, `12+` / `3-11` / `0-2`, per coerenza col resto del catalogo —
+**deciso col proprietario**.
+
+**I due tipi di biglietto**, come le varianti di un tour (`options`, sullo stesso modello di
+Freebird): "Biglietti normali" (uguale al prezzo base) e "Biglietti tutto compreso" (€165,
+Fast Pass illimitato, armadietto, asciugamano — icona `towels` — e All Inclusive con alcolici).
+**Manca il prezzo bambini del tutto compreso**: il modulo non lo dava, solo quello
+dell'adulto. Niente `priceChild` per quella variante finché non arriva: la riga bambini e il
+totale restano nascosti se il cliente ne mette uno, invece di inventare un numero — **da
+chiedere all'ufficio**.
+
+**Il prezzo estivo (luglio/agosto)** non ha un campo suo nel catalogo: 44€→48€ e 165€→169€
+restano scritti in `notes`, non nel prezzo mostrato — **deciso col proprietario**, che ha
+scelto di non costruire una logica di prezzo stagionale per questa volta.
+
+**I due transfer**: il campo `transfer`/`transferPrice` esistente (già "da Puerto de la
+Cruz", cioè Tenerife Nord) è diventato quello con prezzo vero (+25€ adulto, +21€ bambino →
+€69/€53 col biglietto normale). Il secondo transfer (Los Gigantes, Callao Salvaje, Playa
+Paraíso, +15€/+10€) riusa `transferSiam`/`transferSiamPrice`, finora esistenti solo sul Twin
+Ticket. **Generalizzato il meccanismo**, come chiesto dal proprietario invece di riadattare
+qualcosa di specifico al Twin Ticket: aggiunti i campi opzionali `transferLabel` e
+`transferSiamLabel` (in `esplora-catalog.js`, `escursioni.js`, `escursioni.html`, `tour.html`,
+`tour.js`, `lista.js`, `controlla.js`) che sostituiscono il testo fisso della domanda nella
+finestra di richiesta quando due transfer sulla stessa scheda non sono "per il Siam Park" ma
+per due zone di partenza qualsiasi. Il Twin Ticket continua a funzionare come prima, senza
+modifiche ai suoi dati.
+
+**Trovato e corretto un bug mentre si provava**: `prezziAPersona()` in `escursioni.js`
+sommava il prezzo del transfer come importo fisso a livello di scheda (`tour.transferPrice`),
+ignorando la variante scelta. Con "Biglietti tutto compreso" selezionato e un transfer
+spuntato il totale sarebbe uscito sul prezzo del biglietto normale (es. €69) invece che su
+quello vero (€165+25=€190). Riscritta la funzione per calcolare il supplemento del transfer
+rispetto al prezzo base della scheda e sommarlo al prezzo della variante scelta: stesso
+risultato di prima ovunque il prezzo di variante coincide col prezzo scheda (compreso il Twin
+Ticket, verificato a mano), corretto anche quando non coincide.
+
+Provato nel browser vero (`tour.html?id=siam-park`): le due varianti nei bottoni, le due
+domande di transfer col testo giusto (zona, non "Siam Park"), i totali di entrambe le
+combinazioni transfer × variante corretti a mano (69/53, 59/42, 190/—, 180/—), e il totale
+che sparisce invece di mostrare un numero falso quando si mettono bambini sul biglietto tutto
+compreso. `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v165`.

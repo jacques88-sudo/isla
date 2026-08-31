@@ -86,19 +86,29 @@
 //                sopra continuano a servire al **totale**, ma non si stampano
 //                una seconda volta: due righe che dicono la stessa cosa con
 //                parole diverse confondono.
-//   transferSiam, transferSiamPrice → facoltativi, esistono solo sul Twin Ticket.
-//                Sono un **secondo** transfer, indipendente dal primo: quello sopra
-//                e' per chi sta al sud e va a Loro Parque, questo e' per chi sta al
-//                nord e va al Siam Park. Stessa forma di `transfer`/`transferPrice`
-//                (prezzi **completi**, non il supplemento). Nella finestra della
-//                richiesta i due checkbox si escludono a vicenda: un cliente sta
-//                o al nord o al sud, non in tutti e due i posti. Ha anche il suo
-//                `transferSiamPriceHidden`, come `transferPriceHidden`.
+//   transferSiam, transferSiamPrice → facoltativi: un **secondo** transfer,
+//                indipendente dal primo. Nasce sul Twin Ticket (quello sopra e'
+//                per chi sta al sud e va a Loro Parque, questo per chi sta al
+//                nord e va al Siam Park) ma il meccanismo e' generico: qualsiasi
+//                scheda con due zone di partenza puo' usarlo, per esempio due
+//                aree di ritiro diverse per lo stesso Siam Park. Stessa forma di
+//                `transfer`/`transferPrice` (prezzi **completi**, non il
+//                supplemento). Nella finestra della richiesta i due checkbox si
+//                escludono a vicenda: un cliente sta in una zona sola, non in
+//                tutte e due. Ha anche il suo `transferSiamPriceHidden`, come
+//                `transferPriceHidden`.
+//   transferLabel, transferSiamLabel → facoltativi: sostituiscono il testo
+//                fisso della domanda nella finestra della richiesta ("Vuoi il
+//                transfer?", "Vuoi il transfer per il Siam Park?") quando una
+//                scheda ha due transfer che non sono "per il Siam Park" ma per
+//                due zone qualsiasi. Senza questo campo resta il testo di
+//                sempre: serve solo dove il testo fisso confonderebbe.
+//                    transferLabel: { it: "Vuoi il transfer da Tenerife Nord?", ... }
 //   transferPriceLabel, transferSiamPriceLabel → facoltativi, solo dove ci sono
-//                due transfer sulla stessa scheda (di nuovo, solo il Twin Ticket).
-//                Accorpano la descrizione e il prezzo in una riga sola, con la
-//                direzione nel nome, invece delle due righe normali che con due
-//                transfer diventerebbero quattro e si confonderebbero a vicenda:
+//                due transfer sulla stessa scheda. Accorpano la descrizione e il
+//                prezzo in una riga sola, con la direzione nel nome, invece
+//                delle due righe normali che con due transfer diventerebbero
+//                quattro e si confonderebbero a vicenda:
 //                    transferPriceLabel: { it: "Transfer Loro Parque (da sud)", ... }
 //   languages  → facoltativo: le lingue fra cui il cliente puo' scegliere. Solo
 //                dove c'e' questo campo la finestra della richiesta mostra la
@@ -2140,18 +2150,84 @@ const ESPLORA_CATALOG = [
     zone: "Costa Adeje",
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: 44,
-    priceAdult: 0,
-    priceChild: 0,
-    included: ["transfer"],
+    priceAdult: 44,
+    priceChild: 32,
+    priceInfant: 0,
+    ages: { adult: "12+", child: "3-11", infant: "0-2" },
+    // Due varianti di biglietto, come un tour con le sue durate: il normale e
+    // il tutto compreso hanno prezzo diverso e includono cose diverse. Il
+    // prezzo estivo (luglio/agosto) non ha un campo suo nel catalogo, quindi
+    // resta scritto nella descrizione di ciascuna variante e in `notes`.
+    options: {
+      label: { it: "Tipo di biglietto", en: "Ticket type", es: "Tipo de entrada" },
+      choices: [
+        {
+          label: { it: "Biglietti normali", en: "Regular tickets", es: "Entradas normales" },
+          priceAdult: 44,
+          priceChild: 32,
+          desc: {
+            it: "Biglietti d'ingresso regolari.",
+            en: "Regular admission tickets.",
+            es: "Entradas regulares."
+          }
+        },
+        {
+          // Bambini e neonati: il fornitore non ha ancora dato i due prezzi
+          // per questa variante, solo quello dell'adulto. Niente priceChild
+          // finche' non arriva: un numero inventato sarebbe peggio di niente.
+          label: { it: "Biglietti tutto compreso", en: "All-inclusive tickets", es: "Entradas todo incluido" },
+          priceAdult: 165,
+          included: ["towels"],
+          desc: {
+            it: "Ingresso, Fast Pass illimitato per tutte le attrazioni (tranne Power of Tower e Lazy River), armadietto, asciugamano e servizio All Inclusive illimitato ai bar e ristoranti, bevande alcoliche comprese.",
+            en: "Admission, unlimited Fast Pass for all attractions (except Power of Tower and Lazy River), locker, towel and unlimited All Inclusive service at bars and restaurants, alcoholic drinks included.",
+            es: "Entrada, Fast Pass ilimitado para todas las atracciones (excepto Power of Tower y Lazy River), taquilla, toalla y servicio All Inclusive ilimitado en bares y restaurantes, con bebidas alcohólicas incluidas."
+          }
+        }
+      ]
+    },
     transfer: {
-      it: "Disponibile su richiesta, da Puerto de la Cruz",
-      en: "Available on request, from Puerto de la Cruz",
-      es: "Disponible bajo petición, desde Puerto de la Cruz"
+      it: "Disponibile su richiesta, da Tenerife Nord (Puerto de la Cruz e dintorni). Basta indicare l'hotel o l'indirizzo di ritiro.",
+      en: "Available on request, from Tenerife North (Puerto de la Cruz and the surrounding area). Just give the hotel or pickup address.",
+      es: "Disponible bajo petición, desde Tenerife Norte (Puerto de la Cruz y alrededores). Basta con indicar el hotel o la dirección de recogida."
+    },
+    transferPrice: { adult: 69, child: 53 },
+    transferPriceLabel: {
+      it: "Transfer da Tenerife Nord",
+      en: "Transfer from Tenerife North",
+      es: "Traslado desde Tenerife Norte"
+    },
+    transferLabel: {
+      it: "Vuoi il transfer da Tenerife Nord?",
+      en: "Would you like the transfer from Tenerife North?",
+      es: "¿Quieres el traslado desde Tenerife Norte?"
+    },
+    transferSiam: {
+      it: "Disponibile su richiesta, da Los Gigantes, Callao Salvaje o Playa Paraíso. Basta indicare l'hotel o l'indirizzo di ritiro.",
+      en: "Available on request, from Los Gigantes, Callao Salvaje or Playa Paraíso. Just give the hotel or pickup address.",
+      es: "Disponible bajo petición, desde Los Gigantes, Callao Salvaje o Playa Paraíso. Basta con indicar el hotel o la dirección de recogida."
+    },
+    transferSiamPrice: { adult: 59, child: 42 },
+    transferSiamPriceLabel: {
+      it: "Transfer da Los Gigantes / Callao Salvaje / Playa Paraíso",
+      en: "Transfer from Los Gigantes / Callao Salvaje / Playa Paraíso",
+      es: "Traslado desde Los Gigantes / Callao Salvaje / Playa Paraíso"
+    },
+    transferSiamLabel: {
+      it: "Vuoi il transfer da Los Gigantes, Callao Salvaje o Playa Paraíso?",
+      en: "Would you like the transfer from Los Gigantes, Callao Salvaje or Playa Paraíso?",
+      es: "¿Quieres el traslado desde Los Gigantes, Callao Salvaje o Playa Paraíso?"
     },
     notes: [
       { it: "Aperto tutti i giorni: 10:00-18:00 in estate (30 marzo - 21 ottobre), 10:00-17:00 in inverno (22 ottobre - 29 marzo).",
         en: "Open every day: 10am-6pm in summer (30 March - 21 October), 10am-5pm in winter (22 October - 29 March).",
-        es: "Abierto todos los días: 10:00-18:00 en verano (30 de marzo - 21 de octubre), 10:00-17:00 en invierno (22 de octubre - 29 de marzo)." }
+        es: "Abierto todos los días: 10:00-18:00 en verano (30 de marzo - 21 de octubre), 10:00-17:00 en invierno (22 de octubre - 29 de marzo)." },
+      { it: "In luglio e agosto il biglietto normale costa 48€ per adulto invece di 44€.",
+        en: "In July and August the regular ticket costs €48 per adult instead of €44.",
+        es: "En julio y agosto la entrada normal cuesta 48 € por adulto en lugar de 44 €." },
+      { it: "In luglio e agosto il biglietto tutto compreso costa 169€ per adulto invece di 165€.",
+        en: "In July and August the all-inclusive ticket costs €169 per adult instead of €165.",
+        es: "En julio y agosto la entrada todo incluido cuesta 169 € por adulto en lugar de 165 €." }
     ],
     family: true,
     desc: {

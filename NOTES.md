@@ -2243,14 +2243,15 @@ sale gratis o non si sale proprio.
 **Small Catamaran Rental spostato da "Mare e barche" a "Sport acquatici"**: è un noleggio
 che si guida da soli (nessun capitano), più vicino a Jet Ski Safari e Flyboard che alle
 altre barche con equipaggio. Cambiato solo `category`, nessun altro campo. `self-drive-boats`
-(stesso tipo di noleggio, capienza diversa) **non l'ho toccato**: non era nella richiesta,
-e se va spostato anche quello è meglio deciderlo apposta.
+(stesso tipo di noleggio, capienza diversa) non l'avevo toccato in un primo momento perché
+non era nella richiesta iniziale — **spostato anche lui** subito dopo, su richiesta
+esplicita: stesso ragionamento, stesso singolo campo cambiato.
 
 Provato nel browser vero: le quattro foto compaiono nella galleria di Skyline Cruiser,
 "Adulti (13+) €65" e "Bambini (2-12) €45" sulla pagina, totale €175 per 2 adulti + 1
-bambino nella finestra della richiesta. Small Catamaran Rental ora esce con l'etichetta
-"Sport acquatici" sulla sua pagina. `node controlla.js` → 0 errori, nessun avviso.
-Alzato `sw.js` a `isla-v161`.
+bambino nella finestra della richiesta. Small Catamaran Rental e Self-Drive Boats ora
+escono entrambi con l'etichetta "Sport acquatici" sulla loro pagina. `node controlla.js`
+→ 0 errori, nessun avviso. Alzato `sw.js` a `isla-v162`.
 
 ### Nuova scheda: Ragnarok (30 agosto 2026)
 

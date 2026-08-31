@@ -1313,7 +1313,7 @@ const ESPLORA_CATALOG = [
   {
     id: "self-drive-boats",
     title: "Self-Drive Boats",
-    category: "mare-barche",
+    category: "sport-acquatici",
     zone: "Puerto Colón",
     duration: { it: "Da 2 a 5 ore", en: "2 to 5 hours", es: "De 2 a 5 horas" },
     priceFrom: 190,

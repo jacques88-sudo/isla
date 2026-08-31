@@ -2176,6 +2176,47 @@ in `tour.js` solo per la riga accorpata. Il totale nella finestra della richiest
 a usare il prezzo completo come prima (verificato: €272 per 2 adulti + 1 bambino col
 transfer Loro Parque) — cambia solo cosa si stampa, non cosa si calcola.
 
+### Nuova scheda: Skyline Cruiser (30 agosto 2026)
+
+Dati arrivati da CanaryVIP (id fornitore 14642): motoryacht Fairline di 42 piedi (quasi 13
+metri), fino a 12 persone, da Puerto Colón. Prima di scrivere ho confrontato prezzo,
+durata e porto con le altre schede `mare-barche`, come dice la procedura — ed è saltato
+fuori un segnale forte: la scheda segnaposto `luxury-cruiser` ha **esattamente** gli stessi
+€65 e 3 ore, zona "Da definire". Ho chiesto al proprietario se fosse la stessa barca: **ha
+confermato che sono due barche diverse**, quindi ho lasciato `luxury-cruiser` intatta e ho
+creato `skyline-cruiser` come scheda separata.
+
+**Cosa ho messo**: `times: ["09:45", "13:15", "16:20"]` (le tre partenze vere date
+dall'ufficio), `priceAdult: 65`, `privateOption: "private-charter"` (il fornitore elenca
+anche un'opzione "privato", e in catalogo esiste già quel rimando generico usato da
+Freebird, Royal Delfin e Whale & Dolphin). `included`: `swimstop`, `snorkel` (attrezzatura
+a bordo, lo dice il fornitore), `fingerfood` (tortilla, pizza, salsicce, formaggio,
+pomodorini, frutta — è uno spuntino, non un pranzo vero, come sul Luxury Catamaran) e
+`drinks`, `towels`.
+
+**Cosa ho lasciato fuori, di proposito**:
+- **`priceChild`**: il fornitore non manda un prezzo bambini, solo "da €65". Resta a `0`
+  ("non ancora deciso"), niente `ages`: **da chiedere all'ufficio**.
+- **cancellazione, "best price guarantee", punteggio 5.0/8 recensioni, "sconti famiglia
+  attivi", `languages: "guide multilingue"`**: tutte cose che la procedura dice di non
+  copiare (le nostre cancellazioni sono sempre 24 ore, non quelle del fornitore; le altre
+  sono marketing o troppo generiche per il campo `languages`).
+- **pagamento intero alla prenotazione**: è la policy del fornitore, non la nostra — da
+  noi il pagamento si concorda dopo la conferma via WhatsApp.
+- **il tour "al tramonto"** che il fornitore elenca fra i tipi di gita: non ho un prezzo
+  o un orario diverso per quella versione, quindi non l'ho inventata. **Da chiedere
+  all'ufficio** se è un giro a parte o solo il nome dato alla partenza delle 16:20.
+
+**Foto**: non ne ho ricevuta una, quindi la scheda è pubblicata senza (`published: true`,
+niente campo `image`) — stesso caso già presente di `flipper-one`. In elenco esce il
+riquadro grigio finché non arriva una foto vera.
+
+Provato nel browser vero: pagina di dettaglio (prezzo, orari, icone, itinerario, note,
+rimando al charter privato) e finestra della richiesta (i tre orari nel menu, totale €130
+per 2 adulti, nessuna riga fantasma per i bambini con `priceChild: 0`). `node controlla.js`
+dà 0 errori; l'unico avviso nuovo è la foto mancante, come previsto. Alzato `sw.js` a
+`isla-v143`.
+
 ### Nuova scheda: Ragnarok (30 agosto 2026)
 
 Barca a tema vichingo da Los Cristianos, avvistamento balene pilota e tursiopi, dati da

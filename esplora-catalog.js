@@ -1040,6 +1040,7 @@ const ESPLORA_CATALOG = [
       es: "Tres horas en un barco con fondo de cristal: se mira el fondo desde cubierta y luego hay parada de baño."
     },
     image: "glass-bottom-boat.jpg",
+    gallery: ["glass-bottom-boat-2.jpg", "glass-bottom-boat-3.jpg"],
     published: true
   },
   {

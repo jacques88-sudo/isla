@@ -2472,3 +2472,21 @@ ritaglio al centro delle altre foto barche). La foto della card resta quella di 
 (`small-group-catamaran.jpg`), le tre nuove vanno nel campo `gallery`. Provato in
 `tour.html`: foto grande più quattro miniature cliccabili, tutte caricate correttamente.
 Alzato `CACHE_NAME` in `sw.js` a `isla-v155`.
+
+### Glass Bottom Boat Adventure: galleria della Diamant (31 agosto 2026)
+
+Confermato dal proprietario che la Diamant (nome che compariva solo in `NOTES.md` fra le
+barche vere degli operatori, riga ~1728) è la barca dietro `glass-bottom-boat`. Non era un
+dubbio da controllare: la foto della card già pubblicata mostra chiaramente "DIAMANT"
+sullo scafo, quindi non c'era nessun doppione da correggere — solo altre foto della stessa
+barca da aggiungere.
+
+Arrivate tre foto: una vista dall'oblò subacqueo (corallo e pesci) e due foto esterne
+della Diamant, con "DIAMANT" e i numeri di telefono dell'armatore (Omega Group S.L.)
+leggibili sullo scafo. Una delle tre, 300×300, era troppo piccola per arrivare a 1200×800
+senza sgranarsi (sotto la soglia già scartata una volta, 424×280) — **scartata**. Le altre
+due (600×600 e 1200×806) sono state ritagliate al centro e salvate come
+`assets/glass-bottom-boat-2.jpg` e `-3.jpg` (1200×800, 90-125 KB). La foto della card
+resta quella di prima (`glass-bottom-boat.jpg`), le due nuove vanno nel campo `gallery`.
+Provato in `tour.html`: foto grande più tre miniature cliccabili, tutte caricate
+correttamente. Alzato `CACHE_NAME` in `sw.js` a `isla-v156`.

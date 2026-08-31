@@ -151,9 +151,10 @@ function detailRows(tour, variante) {
     return s;
   };
   // `transferPriceLabel` accorpa descrizione e prezzo in una riga sola: serve
-  // sul Twin Ticket, che ha due transfer diversi e altrimenti diventerebbero
-  // quattro righe che si confondono a vicenda. Le altre schede, con un solo
-  // transfer, restano su due righe (descrizione, poi prezzo completo).
+  // sulle schede con due transfer diversi (Twin Ticket, Siam Park), che
+  // altrimenti diventerebbero quattro righe che si confondono a vicenda. Le
+  // altre schede, con un solo transfer, restano su due righe (descrizione,
+  // poi prezzo completo).
   if (tour.transferPriceLabel && tour.transferPrice && !tour.transferPriceHidden) {
     const prezzo = prezzoTransfer(supplemento(tour.transferPrice));
     if (prezzo) righe.push([tf(tour.transferPriceLabel), prezzo]);
@@ -164,7 +165,7 @@ function detailRows(tour, variante) {
       if (prezzo) righe.push([t("detail.withTransfer"), prezzo]);
     }
   }
-  // Il secondo transfer del Twin Ticket, verso il Siam Park: stessa logica.
+  // Il secondo transfer, una seconda zona di partenza: stessa logica.
   if (tour.transferSiamPriceLabel && tour.transferSiamPrice && !tour.transferSiamPriceHidden) {
     const prezzo = prezzoTransfer(supplemento(tour.transferSiamPrice));
     if (prezzo) righe.push([tf(tour.transferSiamPriceLabel), prezzo]);

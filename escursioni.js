@@ -103,29 +103,48 @@ function varianteDi(tour, etichetta) {
 function prezziAPersona(tour, req) {
   if (tour.priceUnit) return null;
   if (Array.isArray(tour.priceTiers) && tour.priceTiers.length) return null;
-  // Col transfer il listino e' un altro: per il Twin Ticket €78 diventano €99.
-  if (req.transfer && tour.transferPrice && tour.transferPrice.adult > 0) {
-    return { adulto: tour.transferPrice.adult, bambino: tour.transferPrice.child || 0 };
-  }
-  // Il secondo transfer del Twin Ticket (verso il Siam Park): stessa logica,
-  // listino diverso. I due checkbox si escludono a vicenda nella finestra,
-  // quindi qui non serve gestire il caso in cui sono spuntati tutti e due.
-  if (req.transferSiam && tour.transferSiamPrice && tour.transferSiamPrice.adult > 0) {
-    return { adulto: tour.transferSiamPrice.adult, bambino: tour.transferSiamPrice.child || 0 };
-  }
-  // Su certe attivita' il prezzo dipende dalla variante: il giro di 2 ore costa
-  // €30 e quello di 4 ore e mezza €62. Conta solo `priceAdult` sulla variante,
-  // **non** il suo `price`: `price` e' il numero da scrivere sul bottone e puo'
-  // essere il prezzo del mezzo invece che della persona (il jet ski si paga a
-  // moto d'acqua, non a testa), e moltiplicarlo per le persone darebbe il
-  // doppio. La coppia priceAdult/priceChild invece dice a chiare lettere che
-  // quella variante si paga a persona.
+
+  // Il prezzo di partenza: quello della variante scelta se ce l'ha (il giro di
+  // 2 ore costa €30 e quello di 4 ore e mezza €62), altrimenti quello della
+  // scheda. Conta solo `priceAdult` sulla variante, **non** il suo `price`:
+  // `price` e' il numero da scrivere sul bottone e puo' essere il prezzo del
+  // mezzo invece che della persona (il jet ski si paga a moto d'acqua, non a
+  // testa), e moltiplicarlo per le persone darebbe il doppio. La coppia
+  // priceAdult/priceChild invece dice a chiare lettere che quella variante si
+  // paga a persona. Bambino a 0 vuol dire "non lo sappiamo ancora" per quella
+  // variante (il tutto compreso di Siam Park non ha ancora un prezzo bambini):
+  // resta 0 e piu' sotto non gli si somma niente, se no un "non lo sappiamo"
+  // diventerebbe un numero verosimile ma falso.
   const variante = varianteDi(tour, req.option);
-  if (variante && variante.priceAdult > 0) {
-    return { adulto: variante.priceAdult, bambino: variante.priceChild || 0 };
-  }
-  if (!(tour.priceAdult > 0)) return null;
-  return { adulto: tour.priceAdult, bambino: tour.priceChild || 0 };
+  const base = (variante && variante.priceAdult > 0)
+    ? { adulto: variante.priceAdult, bambino: variante.priceChild || 0 }
+    : (tour.priceAdult > 0 ? { adulto: tour.priceAdult, bambino: tour.priceChild || 0 } : null);
+  if (!base) return null;
+
+  // Col transfer il listino e' un altro: per il Twin Ticket €78 diventano €99.
+  // Il listino in catalogo e' quello **completo** (biglietto+transfer) ma
+  // riferito al biglietto base della scheda; qui si ricava il supplemento e lo
+  // si somma al prezzo di partenza, cosi' il conto resta giusto anche quando
+  // la variante scelta costa piu' (o meno) del biglietto base, come il tutto
+  // compreso di Siam Park.
+  const supplemento = tp => {
+    if (!tp || !(tp.adult > 0)) return null;
+    return {
+      adulto: tp.adult - (tour.priceAdult || 0),
+      bambino: tp.child ? tp.child - (tour.priceChild || 0) : 0
+    };
+  };
+  // Il secondo transfer, una seconda zona di partenza: stessa logica, listino
+  // diverso. I due checkbox si escludono a vicenda nella finestra, quindi qui
+  // non serve gestire il caso in cui sono spuntati tutti e due.
+  const s = req.transfer ? supplemento(tour.transferPrice)
+    : req.transferSiam ? supplemento(tour.transferSiamPrice)
+    : null;
+  if (!s) return base;
+  return {
+    adulto: base.adulto + s.adulto,
+    bambino: base.bambino > 0 ? base.bambino + s.bambino : 0
+  };
 }
 
 // Il totale e il conto da cui viene, oppure null quando non si puo' fare.
@@ -172,10 +191,12 @@ function righeRichiesta(tour, req) {
   // La risposta si scrive sempre, anche quando e' "no": cosi' l'ufficio sa che
   // la domanda e' stata fatta, invece di doverla rifare in chat.
   if (tour.transfer) {
-    righe.push("• " + t("wa.transfer") + ": " + t(req.transfer ? "wa.yes" : "wa.no"));
+    const etichetta = tour.transferLabel ? tf(tour.transferLabel) : t("wa.transfer");
+    righe.push("• " + etichetta + ": " + t(req.transfer ? "wa.yes" : "wa.no"));
   }
   if (tour.transferSiam) {
-    righe.push("• " + t("wa.transferSiam") + ": " + t(req.transferSiam ? "wa.yes" : "wa.no"));
+    const etichetta = tour.transferSiamLabel ? tf(tour.transferSiamLabel) : t("wa.transferSiam");
+    righe.push("• " + etichetta + ": " + t(req.transferSiam ? "wa.yes" : "wa.no"));
   }
   // Il totale va anche in chat: l'ufficio vede subito che conto ha fatto il
   // cliente e puo' correggerlo prima di confermare. "Indicativo" ci resta
@@ -366,9 +387,11 @@ function initRequestDialog() {
   const activityEl = document.querySelector("[data-request-activity]");
   const seasonEl = document.querySelector("[data-request-season]");
   const transferEl = document.querySelector("[data-request-transfer]");
+  const transferLabelEl = document.querySelector("[data-request-transfer-label]");
   const transferNoteEl = document.querySelector("[data-request-transfer-note]");
   const transferInput = document.getElementById("reqTransfer");
   const transferSiamEl = document.querySelector("[data-request-transfer-siam]");
+  const transferSiamLabelEl = document.querySelector("[data-request-transfer-siam-label]");
   const transferSiamNoteEl = document.querySelector("[data-request-transfer-siam-note]");
   const transferSiamInput = document.getElementById("reqTransferSiam");
   const optionEl = document.querySelector("[data-request-option]");
@@ -434,13 +457,18 @@ function initRequestDialog() {
       // il testo per esteso dice i limiti (per il Twin Ticket vale solo per
       // la giornata a Loro Parque) prima che il cliente spunti
       if (transferNoteEl) transferNoteEl.textContent = tour.transfer ? tf(tour.transfer) : "";
+      // La domanda e' quella di sempre, a meno che la scheda non ne dia una
+      // sua: serve dove "Vuoi il transfer?" da solo non basta a distinguerlo
+      // dal secondo transfer (due zone di partenza diverse sulla stessa scheda).
+      if (transferLabelEl) transferLabelEl.textContent = tour.transferLabel ? tf(tour.transferLabel) : t("req.transfer");
     }
-    // Il secondo transfer del Twin Ticket, verso il Siam Park: stessa logica,
-    // riparte anche lui da non spuntato.
+    // Il secondo transfer, una seconda zona di partenza indipendente dalla
+    // prima: riparte anche lui da non spuntato.
     if (transferSiamEl) {
       transferSiamEl.hidden = !tour.transferSiam;
       if (transferSiamInput) transferSiamInput.checked = false;
       if (transferSiamNoteEl) transferSiamNoteEl.textContent = tour.transferSiam ? tf(tour.transferSiam) : "";
+      if (transferSiamLabelEl) transferSiamLabelEl.textContent = tour.transferSiamLabel ? tf(tour.transferSiamLabel) : t("req.transferSiam");
     }
     // Gli orari: la finestra e' una sola per tutte le attivita', quindi si
     // riparte sempre da "Da concordare" invece di tenere la scelta di prima.
@@ -688,7 +716,9 @@ function initRequestDialog() {
     activityEl.textContent = tf(current.title);
     if (seasonEl && current.season) seasonEl.textContent = tf(current.season);
     if (transferNoteEl && current.transfer) transferNoteEl.textContent = tf(current.transfer);
+    if (transferLabelEl) transferLabelEl.textContent = current.transferLabel ? tf(current.transferLabel) : t("req.transfer");
     if (transferSiamNoteEl && current.transferSiam) transferSiamNoteEl.textContent = tf(current.transferSiam);
+    if (transferSiamLabelEl) transferSiamLabelEl.textContent = current.transferSiamLabel ? tf(current.transferSiamLabel) : t("req.transferSiam");
     // il menu si ricostruisce tradotto, tenendo la posizione scelta
     if (optionEl && current.options) {
       const scelto = optionEl.selectedIndex;

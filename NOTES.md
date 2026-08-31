@@ -2407,3 +2407,29 @@ altrove (2,84× su una foto di 424×280), e a schermo resta nitida.
 `controlla.js` non segnala più l'avviso su flipper-one. Provato in `tour.html` (foto
 grande più tre miniature cliccabili) e nell'elenco (niente più riquadro grigio, la card
 mostra la prima foto). Alzato `CACHE_NAME` in `sw.js` a `isla-v151`.
+
+### Submarine Safari: galleria, e due foto scartate perché di un'altra barca (31 agosto 2026)
+
+Arrivate quattro foto per `submarine-safari` (Marina Amarilla). Guardate una per una, **non
+sono tutte lo stesso sottomarino**:
+
+- due mostrano il sottomarino giallo con lo scafo rosso e la scritta "Sub Fun Cinco" sulla
+  torretta — stessa livrea, stesso logo rotondo blu e stesso stile della foto già
+  pubblicata (`submarine-safari.jpg`, che ha anche la sigla "6 AT-3-02-91" sullo scafo).
+  Una delle due ha il Teide bene in vista sullo sfondo, che conferma Tenerife. — **tenute**;
+- una mostra un sottomarino con lo scafo **arancione** (non rosso) e il logo "Atlantida
+  Submarine" sulla torretta, ormeggiato in un porto con case bianche a terrazza su una
+  parete di roccia — quello è Puerto de Mogán, a **Gran Canaria**, non Tenerife: un'altra
+  azienda, su un'altra isola. **Scartata**, altrimenti la scheda avrebbe mostrato il
+  sottomarino sbagliato;
+- una è una foto subacquea generica (pesci, un sommozzatore, oblò) senza nessun elemento
+  che dica di quale sottomarino si tratta — poteva essere di uno dei due. **Scartata**
+  anche questa, per lo stesso motivo: meglio una galleria di due foto sicure che di tre
+  con una incerta in mezzo.
+
+Le due buone sono salvate come `assets/submarine-safari-2.jpg` e `-3.jpg` (1200×800,
+144-206 KB). La seconda partiva da una foto piccola (589×392, quasi già nel rapporto
+giusto) e ha richiesto un ingrandimento di 2×: guardata a schermo dopo il ridimensionamento
+resta nitida, tenuta. La foto della card resta quella di prima (`submarine-safari.jpg`), le
+due nuove vanno nel campo `gallery`. Provato in `tour.html`: foto grande più tre miniature
+cliccabili, tutte caricate correttamente. Alzato `CACHE_NAME` in `sw.js` a `isla-v152`.

@@ -99,6 +99,40 @@ im.save('assets/<nome>.jpg', 'JPEG', quality=82, optimize=True, progressive=True
 di un'altra azienda; un'altra è stata confermata solo ingrandendo la scritta sullo scafo.
 La livrea della barca stessa va bene: è il soggetto.
 
+### Più foto per la stessa scheda
+
+Quando arrivano più foto della stessa barca (fatto per Ragnarok e per Freebird): una sola
+resta `image` (la foto della card e della foto grande in apertura — su una scheda già
+pubblicata, quella che c'è già va bene, non cambiarla senza un motivo), le altre vanno nel
+campo `gallery`, un elenco di nomi file. Sotto la foto grande esce da sola una striscia di
+miniature cliccabili: non serve toccare `tour.js` o `styles.css`, il meccanismo è già
+generico da quando è stato costruito.
+
+Stessa regola dello scafo, moltiplicata: **guarda ogni foto una per una**, non l'insieme.
+Stesso formato, **1200×800 e 100-250 KB ciascuna**, con lo stesso nome della scheda più un
+numero (`ragnarok.jpg`, `ragnarok-2.jpg` … oppure, se `image` tiene già un nome suo come
+`catamaran-gigantes-masca.jpg`, la galleria può comunque chiamarsi `freebird-2.jpg` e via
+così — l'importante è che i nomi non si scontrino con altri file in `assets/`).
+
+Se una foto arrivata è troppo piccola per arrivare a 1200×800 senza sgranarsi (è successo
+con una da 424×280), **scartala** invece di pubblicarla sfocata: meglio una galleria di
+tre foto buone che di quattro con una brutta in mezzo. Il ritaglio, quando le proporzioni
+non sono già 3:2, si fa dal centro:
+
+```python
+from PIL import Image
+im = Image.open('<origine>').convert('RGB')
+w, h = im.size
+target = 1200 / 800
+if w / h > target:
+    new_w = int(h * target); left = (w - new_w) // 2
+    im = im.crop((left, 0, left + new_w, h))
+else:
+    new_h = int(w / target); top = (h - new_h) // 2
+    im = im.crop((0, top, w, top + new_h))
+im.resize((1200, 800), Image.LANCZOS).save('assets/<nome>.jpg', 'JPEG', quality=82, optimize=True, progressive=True)
+```
+
 ## 6. Controlla
 
 ```bash

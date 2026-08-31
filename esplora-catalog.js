@@ -5,6 +5,12 @@
 //                Piu voci possono indicare lo stesso file: la foto sta in
 //                assets/ una volta sola e il telefono la scarica una volta
 //                sola, anche se compare in dieci schede diverse.
+//   gallery    → facoltativo: altre foto oltre a `image`, stessa cartella
+//                assets/. Sulla pagina di dettaglio diventano una striscia di
+//                miniature sotto la foto grande; toccandone una cambia la foto
+//                grande, senza aprire un'altra pagina. Niente senza `image`:
+//                la prima miniatura è sempre la foto principale.
+//                    gallery: ["nome-2.jpg", "nome-3.jpg"]
 //   priceFrom  → numero in euro, oppure null se il prezzo non è ancora definito.
 //   priceUnit  → facoltativo: si aggiunge dopo il prezzo quando non è "a persona"
 //                ma a ore o a gruppo, es. { it: "/ora", en: "/hr", es: "/h" }
@@ -430,6 +436,7 @@ const ESPLORA_CATALOG = [
       es: "Un catamarán grande que sale de Puerto Colón, con tres salidas a elegir: dos horas, tres horas o la larga hasta los acantilados de Los Gigantes y la bahía de Masca. Ballenas y delfines, parada de baño y bebidas ilimitadas a bordo. La tripulación habla varios idiomas y te cuenta lo que estás viendo, y el barco sigue las normas para acercarse a los animales sin molestarlos."
     },
     image: "catamaran-gigantes-masca.jpg",
+    gallery: ["freebird-2.jpg", "freebird-3.jpg", "freebird-4.jpg"],
     published: true
   },
   {
@@ -548,6 +555,7 @@ const ESPLORA_CATALOG = [
     ],
     family: true,
     image: "royal-delfin.jpg",
+    gallery: ["royal-delfin-2.jpg", "royal-delfin-3.jpg", "royal-delfin-4.jpg"],
     desc: {
       it: "Un catamarano grande, fino a 200 persone, con finestre panoramiche sotto la linea di galleggiamento: balene e delfini si guardano anche da sotto, non solo dal ponte. Si sceglie fra due ore, tre ore o il giro lungo fino alla baia di Masca. La barca segue la carta per la tutela dei cetacei e le guide parlano più lingue.",
       en: "A big catamaran, up to 200 people, with panoramic windows below the waterline: you watch whales and dolphins from underneath as well as from the deck. Choose between two hours, three hours or the long trip out to Masca bay. The boat follows the whale conservation charter and the guides speak several languages.",
@@ -637,6 +645,7 @@ const ESPLORA_CATALOG = [
       }
     ],
     image: "peter-pan.jpg",
+    gallery: ["peter-pan-2.jpg", "peter-pan-3.jpg"],
     published: true
   },
   {
@@ -727,6 +736,8 @@ const ESPLORA_CATALOG = [
         es: "En la salida de tres horas lleva bañador y crema solar: la parada de baño es lo mejor."
       }
     ],
+    image: "flipper-one.jpg",
+    gallery: ["flipper-one-2.jpg", "flipper-one-3.jpg", "flipper-one-4.jpg"],
     published: true
   },
   {
@@ -795,6 +806,7 @@ const ESPLORA_CATALOG = [
       es: "El submarino amarillo baja entre 30 y 60 metros, y se mira el fondo sin mojarse. Cada asiento tiene su ojo de buey y una pantalla que dice a qué profundidad estás y qué temperatura hace fuera. Abajo pasan peces y rayas, y de vez en cuando también delfines. Dura alrededor de una hora."
     },
     image: "submarine-safari.jpg",
+    gallery: ["submarine-safari-2.jpg", "submarine-safari-3.jpg"],
     published: true
   },
   {
@@ -894,8 +906,8 @@ const ESPLORA_CATALOG = [
     id: "luxury-catamaran",
     title: "Luxury Catamaran Experience",
     category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto Colón",
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 75,
     priceAdult: 75,
     priceChild: 50,
@@ -917,6 +929,7 @@ const ESPLORA_CATALOG = [
       es: "Catamarán de categoría superior, con un máximo de 22 personas a bordo: ambiente relajado, avistamiento de delfines y ballenas y zonas lounge para estar cómodos."
     },
     image: "luxury-catamaran.jpg",
+    gallery: ["luxury-catamaran-2.jpg", "luxury-catamaran-3.jpg", "luxury-catamaran-4.jpg", "luxury-catamaran-5.jpg"],
     published: true
   },
   {
@@ -996,6 +1009,7 @@ const ESPLORA_CATALOG = [
       es: "Un catamarán que lleva hasta 23 personas: casi ningún barco privado en Tenerife lleva más de 12. Se sale de Puerto Colón, se buscan delfines y ballenas y se para en las calas para bañarse y hacer snorkel, con paella de pollo a bordo. Se elige entre la salida de tres horas compartida y el barco entero para ti, tres horas o seis."
     },
     image: "small-group-catamaran.jpg",
+    gallery: ["small-group-catamaran-2.jpg", "small-group-catamaran-3.jpg", "small-group-catamaran-4.jpg"],
     published: true
   },
   {
@@ -1026,6 +1040,7 @@ const ESPLORA_CATALOG = [
       es: "Tres horas en un barco con fondo de cristal: se mira el fondo desde cubierta y luego hay parada de baño."
     },
     image: "glass-bottom-boat.jpg",
+    gallery: ["glass-bottom-boat-2.jpg", "glass-bottom-boat-3.jpg"],
     published: true
   },
   {
@@ -1124,6 +1139,7 @@ const ESPLORA_CATALOG = [
       es: "Tres horas de fiesta en barco desde Puerto Colón, con DJ en directo, un equipo de 15.000 vatios y música house, reggaetón, hip hop y drum and bass. Se empieza con una copa en el Black Pearl y se termina allí con el after. Solo mayores de 18 años. La entrada se elige según cuánto se va a beber: cuatro consumiciones, o barra libre durante las tres horas."
     },
     image: "party-boat.jpg",
+    gallery: ["party-boat-2.jpg"],
     published: true
   },
   {
@@ -1207,6 +1223,7 @@ const ESPLORA_CATALOG = [
       es: "Una goleta oriental de 26 metros, toda de teca, construida para un jeque: es el barco más singular que sale de Puerto Colón. Cinco horas, con media hora junto a delfines y ballenas, luego los acantilados de Los Gigantes y el baño en la bahía de Masca, con la comida servida a bordo. En dos cubiertas hay sitio para 135 personas y mucha sombra donde resguardarse. Lleva la bandera azul que se da a los barcos que se acercan a los cetáceos respetando las normas."
     },
     image: "shogun.jpg",
+    gallery: ["shogun-2.jpg", "shogun-3.jpg"],
     published: true
   },
   {
@@ -1290,6 +1307,7 @@ const ESPLORA_CATALOG = [
       es: "Una neumática rígida de dieciocho metros que recorre la costa suroeste: zonas para tomar el sol, sombra donde resguardarse y una plataforma para bajar al agua. Equipo de snorkel a bordo, comida y bebida incluidas, y una tripulación que habla varios idiomas y te cuenta lo que estás viendo. Se elige entre la salida de tres horas compartida y el barco entero para ti."
     },
     image: "opera-60.jpg",
+    gallery: ["opera-60-2.jpg", "opera-60-3.jpg"],
     published: true
   },
   {
@@ -1507,6 +1525,81 @@ const ESPLORA_CATALOG = [
       en: "Three hours aboard the Skyline Cruiser, a Fairline motor yacht just under 13 metres long, up to 12 people. You head offshore looking for dolphins and whales, then a swim stop with snorkelling in a sheltered bay, and a coastal return past the hippie caves and volcanic cliffs. On board: captain and crew, with snacks and drinks included.",
       es: "Tres horas a bordo del Skyline Cruiser, un yate a motor Fairline de casi 13 metros, hasta 12 personas. Se navega mar adentro buscando delfines y ballenas, luego la parada de baño con snorkel en una bahía resguardada, y la vuelta bordeando la costa junto a las cuevas hippies y los acantilados volcánicos. A bordo: capitán y tripulación, con aperitivos y bebidas incluidas."
     },
+    published: true
+  },
+  {
+    id: "ragnarok",
+    title: "Ragnarok Viking Boat Tour",
+    category: "mare-barche",
+    zone: "Los Cristianos",
+    duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
+    priceFrom: 25,
+    // I due prezzi veri stanno dentro le varianti, perche' cambiano con la
+    // durata. Il neonato invece e' lo stesso su entrambe (e paga, non e'
+    // gratis: priceInfant qui non e' zero).
+    priceAdult: 0,
+    priceChild: 0,
+    priceInfant: 5,
+    // 12+ discende dai bambini 4-11: sopra gli 11 non c'e' altra fascia.
+    // Confermato dall'ufficio che vale su entrambe le durate.
+    ages: { adult: "12+", child: "4-11", infant: "0-3" },
+    // I giorni cambiano con la durata: il giro corto e' solo il lunedi', il
+    // lungo solo martedi'/giovedi'/sabato. Niente `days` sulla scheda,
+    // ciascuna variante ha il suo.
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        {
+          label: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          priceAdult: 25,
+          priceChild: 20,
+          days: ["lun"],
+          times: ["10:30", "12:30", "14:30"],
+          desc: {
+            it: "Il giro corto, in cerca di balene pilota e tursiopi al largo di Los Cristianos. Lunedì, partenze alle 10:30, 12:30 e 14:30.",
+            en: "The short trip, looking for pilot whales and bottlenose dolphins off Los Cristianos. Mondays, leaving at 10:30, 12:30 and 14:30.",
+            es: "La salida corta, en busca de calderones y delfines mulares frente a Los Cristianos. Lunes, salidas a las 10:30, 12:30 y 14:30."
+          }
+        },
+        {
+          label: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          priceAdult: 38,
+          priceChild: 25,
+          days: ["mar", "gio", "sab"],
+          times: ["13:00"],
+          desc: {
+            it: "Lo stesso giro con più tempo al largo, in cerca di balene pilota e tursiopi. Martedì, giovedì e sabato, partenza alle 13:00.",
+            en: "The same trip with more time offshore, looking for pilot whales and bottlenose dolphins. Tuesdays, Thursdays and Saturdays, leaving at 13:00.",
+            es: "La misma salida con más tiempo mar adentro, en busca de calderones y delfines mulares. Martes, jueves y sábado, salida a las 13:00."
+          }
+        }
+      ]
+    },
+    family: true,
+    desc: {
+      it: "Una barca a tema vichingo che parte da Los Cristianos per andare a cercare balene pilota e tursiopi al largo. L'equipaggio veste i panni dei vichinghi, fra spettacoli a tema, giochi a bordo e la possibilità di provare l'armatura vichinga: un giro pensato anche per chi viaggia con bambini.",
+      en: "A Viking-themed boat leaving from Los Cristianos to look for pilot whales and bottlenose dolphins offshore. The crew dresses up as Vikings, with themed shows, games on board and the chance to try on Viking gear: a trip built with families in mind too.",
+      es: "Un barco de temática vikinga que sale de Los Cristianos para buscar calderones y delfines mulares mar adentro. La tripulación se viste de vikingos, con espectáculos temáticos, juegos a bordo y la posibilidad de probarse el equipo vikingo: una salida pensada también para quien viaja con niños."
+    },
+    notes: [
+      {
+        it: "Ritrovo nella Zona Excursiones A del porto di Los Cristianos, dove c'è anche un parcheggio pubblico a pagamento. Arriva tra i 10 e i 20 minuti prima della partenza.",
+        en: "Meeting point in the Zona Excursiones A at Los Cristianos harbour, where there is also paid public parking. Get there 10 to 20 minutes before departure.",
+        es: "Punto de encuentro en la Zona Excursiones A del puerto de Los Cristianos, donde también hay aparcamiento público de pago. Llega entre 10 y 20 minutos antes de la salida."
+      },
+      {
+        it: "A bordo ci sono un bar-ristorante, i servizi igienici, posti a sedere in diverse zone e aree accessibili.",
+        en: "On board there is a bar-restaurant, toilets, seating spread across different areas and accessible spaces.",
+        es: "A bordo hay un bar-restaurante, aseos, asientos repartidos en distintas zonas y espacios accesibles."
+      },
+      {
+        it: "Con mare mosso o maltempo l'operatore organizza un piano alternativo.",
+        en: "In rough seas or bad weather the operator arranges an alternative plan.",
+        es: "Con mar agitado o mal tiempo el operador organiza un plan alternativo."
+      }
+    ],
+    image: "ragnarok.jpg",
+    gallery: ["ragnarok-2.jpg", "ragnarok-3.jpg", "ragnarok-4.jpg", "ragnarok-5.jpg"],
     published: true
   },
 

@@ -2216,3 +2216,359 @@ rimando al charter privato) e finestra della richiesta (i tre orari nel menu, to
 per 2 adulti, nessuna riga fantasma per i bambini con `priceChild: 0`). `node controlla.js`
 dà 0 errori; l'unico avviso nuovo è la foto mancante, come previsto. Alzato `sw.js` a
 `isla-v143`.
+
+### Nuova scheda: Ragnarok (30 agosto 2026)
+
+Barca a tema vichingo da Los Cristianos, avvistamento balene pilota e tursiopi, dati da
+`canaryvip.com` (id fornitore 10467). Prima controllato che non fosse un doppione: nessuna
+scheda a Los Cristianos con questo prezzo/durata/porto (la più vicina è Peter Pan, ma è
+un'altra barca, altro prezzo, niente varianti).
+
+**Non copiato dal fornitore**: il prezzo scontato (25€, pieno 30€ — sul sito va il pieno),
+la cancellazione (48/72h del fornitore non c'entrano, restano le 24h di Isla), punteggio e
+numero di recensioni, "best price"/testi promozionali. `languages` non messo: il
+fornitore scrive solo "equipaggio multilingue", non un elenco, e la regola dice di
+mettere il campo solo dove le lingue sono elencate davvero.
+
+**Deciso col proprietario**: gli orari 11:00 e 13:30 non erano abbinati a una durata —
+confermato che 11:00 è il giro di 2 ore e 13:30 quello di 3. Il prezzo bambini non era nel
+documento: pubblicata senza (`priceChild: 0`), la riga resta nascosta finché non arriva.
+
+**Deciso da solo**: il prezzo del giro di 3 ore non è mai stato dato (solo un "da" generico
+per l'intera scheda) — lasciato senza `priceAdult` nella variante, la pagina mostra "Da
+€30" come per un dato ancora da confermare, invece di indovinare un numero. Le info di
+bordo del fornitore (bar-ristorante, servizi igienici, posti a sedere, aree accessibili)
+non sono nel vocabolario di `included` (non sono "compresi nel prezzo", sono dotazioni
+della barca) e sono finite nelle note. Gli spettacoli a tema, i giochi e la prova
+dell'equipaggiamento vichingo sono finiti nella descrizione, riscritta da zero nelle tre
+lingue: sono quello che rende diversa questa barca da tutte le altre.
+
+**Resta in sospeso, scheda non pubblicata (`published: false`)**: manca la foto (nessuna
+in `assets/`), manca il prezzo bambini/neonati, manca il prezzo del giro di 3 ore. Provata
+nel browser vero con `published: true` temporaneo (poi rimesso a `false`): entrambe le
+varianti, il cambio di orario e il fallback di prezzo sul giro di 3 ore funzionano.
+Quando arrivano i dati mancanti, aggiornare la scheda, aggiungere la foto e mettere
+`published: true`.
+
+### Ragnarok, prezzi e orari veri (30 agosto 2026)
+
+Arrivati dall'ufficio i dati mancanti, e sono molto diversi dal segnaposto messo prima:
+i due giri non condividono ne' gli orari ne' i giorni.
+
+- **2 ore**: adulti €25, bambini €20, neonati €5 (non gratis: prima non c'era nessun
+  `priceInfant` diverso da zero in tutto il catalogo). Si fa solo **il lunedì**, tre
+  partenze: 10:30, 12:30, 14:30.
+- **3 ore**: adulti €38, bambini €25, neonati €5. Si fa **martedì, giovedì e sabato**,
+  una partenza alle 13:00.
+
+**Deciso col proprietario**: l'orario del giro di 3 ore era arrivato tagliato ("13:"),
+confermato 13:00. Le fasce d'età (bambino 4-11, neonato 0-3) valgono su entrambe le
+durate, non solo sul giro di 3 ore dove erano scritte.
+
+**Cambiato rispetto alla prima versione**: tolto il `days` in cima alla scheda — i due
+giri si fanno in giorni diversi, quindi ora `days` sta solo dentro ciascuna variante,
+come previsto dal vocabolario quando "la variante vince". `priceFrom` era 30 (il prezzo
+pieno segnato dal fornitore): ora è 25, il prezzo vero più basso fra i due, confermato
+dall'ufficio — qui non è più un caso di "non copiare lo sconto del rivenditore", è il
+prezzo reale che va sul sito.
+
+**Pubblicata (`published: true`)** anche senza foto, come già successo per flipper-one:
+in elenco esce il riquadro grigio, `controlla.js` lo segnala come avviso e basta. Restava
+solo la foto da aggiungere, e con prezzi ed età confermati non c'era più motivo di tenerla
+nascosta. Provata di nuovo nel browser vero: prezzi, età, giorni e orario di entrambe le
+varianti sono corretti, e la scheda compare nell'elenco con il segnaposto "ISLA" al posto
+della foto.
+
+### Ragnarok, foto vere e prima mini-galleria del sito (30 agosto 2026)
+
+Arrivate cinque foto vere della barca. Guardate una per una prima di usarle (una barca era
+gia' stata scartata in passato perche' portava il marchio di un'altra azienda): nessun logo
+di rivenditori o piattaforme di prenotazione, solo il nome "Ragnarok" scritto sulla barca
+stessa, che e' il soggetto della foto e non un marchio da evitare. Ridimensionate tutte a
+1200×800 come le altre foto barche (`assets/ragnarok.jpg` e `ragnarok-2.jpg` … `-5.jpg`,
+100-180 KB l'una).
+
+**La prima foto (il manifesto "Ragnarok — Viking adventure on the Atlantic Ocean") come
+foto della card**, per scelta del proprietario. Le altre quattro non stavano da nessuna
+parte: fino a oggi ogni scheda aveva **una** foto sola, e in NOTES.md c'e' scritto (28
+agosto, Freebird) che una seconda foto della stessa barca era stata cancellata perche'
+"non esiste una galleria che possa usarne due".
+
+**Aggiunta la prima mini-galleria del sito**, non solo per Ragnarok: e' un campo nuovo del
+vocabolario, `gallery` (facoltativo, un elenco di foto oltre a `image`), quindi qualunque
+scheda futura con piu' foto puo' usarla allo stesso modo. Sulla pagina di dettaglio esce
+una striscia di miniature sotto la foto grande (`tour.js`, funzioni `detailGallery()` e
+`collegaGalleria()`): un tocco su una miniatura cambia la foto grande, senza aprire
+un'altra pagina o caricare una libreria di lightbox — resta "niente framework, niente
+build".
+
+**Un dettaglio di layout da tablet in su**: la pagina di dettaglio diventa a due colonne
+(foto a sinistra, testo a destra) con CSS Grid. Mettere la galleria come terzo elemento
+diretto dentro `.detail-tour` l'avrebbe mandata nella colonna sbagliata (la griglia
+riempie le celle in ordine, non per tipo). Risolto avvolgendo foto grande e galleria in un
+contenitore solo, `.detail-media`, cosi' la griglia li vede come un blocco unico nella
+prima colonna.
+
+Provata nel browser vero, a due larghezze: le cinque miniature ci sono, il click cambia la
+foto grande e sposta il bordo dorato su quella scelta, e da tablet in su la galleria resta
+sotto la foto invece di finire a fianco del testo. La scheda in elenco mostra la foto vera
+al posto del riquadro grigio.
+
+### Ragnarok, la galleria allargava tutta la pagina sul telefono (30 agosto 2026)
+
+Segnalato dal proprietario: aprendo la scheda Ragnarok da telefono, la pagina si apriva un
+po' più larga dello schermo e bisognava allargare le dita per stringerla di nuovo (lo zoom
+iniziale non era a 1:1). Non successo su nessun'altra scheda, solo su questa: e' la prima
+con la galleria.
+
+**La causa non si vedeva scorrendo la pagina** (le miniature scorrevano bene, sembrava
+tutto a posto): il telefono allarga **tutta** la finestra, non solo la striscia delle foto.
+Riprodotto con Playwright su una larghezza vera da telefono (320px, iPhone SE): la pagina
+si apriva a 452px anche con `<meta name="viewport" content="width=device-width">`. La
+causa era `.detail-gallery`: cinque miniature a larghezza fissa che non si restringono
+(giusto, altrimenti la foto si schiaccia) dentro un contenitore con `overflow-x: auto` —
+ma **`overflow-x: auto` da solo non basta**: il browser dei telefoni calcola comunque
+quanto spazio servirebbe alle miniature *senza* scorrimento, e se serve piu' spazio del
+telefono allarga tutta la pagina per non "spezzare" niente. Riprodotto anche il contrario:
+rimpicciolendo le miniature a 1rem il problema spariva, a conferma che era proprio la loro
+larghezza a spingere fuori la pagina.
+
+**La correzione** e' su `.detail-gallery` in `styles.css`: `width: 0` insieme a
+`min-width: 100%` (con `box-sizing: border-box`) invece di lasciare la larghezza `auto`.
+Cosi' il contenitore prende sempre esattamente lo spazio disponibile, mai di piu', e le
+miniature che non ci stanno scorrono **dentro** la striscia invece di allargare la pagina
+intorno a lei. Verificato con lo stesso test automatico (la finestra ora si apre a 320px,
+non piu' a 452) e a occhio, su telefono e su desktop: le miniature scorrono ancora, il
+click cambia la foto grande come prima, il layout a due colonne da tablet in su non e'
+cambiato.
+
+Vale la pena ricordarlo se si aggiunge un'altra striscia di elementi a scorrimento
+orizzontale (tipo di questa galleria) in futuro: `overflow-x: auto` senza `width: 0` +
+`min-width: 100%` (o un equivalente che dia una larghezza definita invece di lasciarla
+"auto") puo' rifare lo stesso scherzo sul telefono, anche se sul desktop sembra perfetto.
+
+### Freebird: la seconda mini-galleria del sito, e un segnaposto per chi non ha foto (30 agosto 2026)
+
+Arrivate quattro foto vere del Freebird dal proprietario. Guardate una per una (vale la
+stessa regola di Ragnarok): tutte e quattro mostrano barche della flotta Freebird — quella
+gialla "Freebird Gold" del manifesto e delle vele "España", e quella rossa/bianca "F13"
+con la scritta FREEBIRD grande sullo scafo — nessun marchio di un altro operatore. **Una
+delle quattro e' stata scartata**: 424×280, troppo piccola per arrivare a 1200×800 senza
+sgranarsi. Restano tre, salvate come `assets/freebird-2.jpg` … `-4.jpg` (150-210 KB,
+stesso ritaglio al centro e ridimensionamento delle foto barche).
+
+**La foto della card resta quella di prima** (`catamaran-gigantes-masca.jpg`, il giro
+lungo verso Los Gigantes), le tre nuove vanno nel campo `gallery` — lo stesso campo
+aggiunto ieri per Ragnarok, qui usato per la seconda volta. Nessuna modifica al codice
+della galleria: `detailGallery()` e il CSS di `.detail-gallery` in `tour.js`/`styles.css`
+sono generici, bastava valorizzare il campo nel catalogo.
+
+**Aggiunto anche un segnaposto vero per le schede senza foto**, al posto della scritta
+"Isla" che c'era finora (in `escursioni.js`, `tour.js` — sia la foto grande che la
+miniatura nelle "altre esperienze" — tutti e tre i posti che disegnano
+`.tour-media-empty`). Ora dice "Foto in arrivo" (nuova chiave i18n `tour.photoSoon`,
+tradotta anche in inglese e spagnolo), cosi' chi vede la scheda capisce che manca la foto
+e non pensa a un errore. Il CSS di `.tour-media-empty` e' stato addolcito (meno spaziatura
+fra le lettere, testo centrato, puo' andare a capo) perche' il testo nuovo e' piu' lungo
+di "Isla" e prima sarebbe uscito dal riquadro sulle card piu' strette. Provato su
+flipper-one (l'unica scheda pubblicata senza foto) in elenco e nel dettaglio.
+
+Non toccato il riquadro grigio in se': resta lo stesso spazio, cambia solo la scritta
+dentro.
+
+### Royal Delfin: terza mini-galleria del sito (30 agosto 2026)
+
+Arrivate quattro foto del Royal Delfin. Guardate una per una: tre mostrano chiaramente il
+nome "Royal Delfin" sullo scafo e il logo del fornitore (nessun marchio di un altro
+operatore), la quarta era la grafica delle finestre subacquee con tartaruga e delfini —
+**scartata**, sia perche' troppo piccola (720×719, da ingrandire 1,67× per arrivare a
+1200×800) sia perche' sembra un'illustrazione/grafica da marketing generica piu' che una
+foto vera della barca: meglio non rischiare di pubblicare qualcosa che non e' certamente
+il Royal Delfin.
+
+Le tre buone sono salvate come `assets/royal-delfin-2.jpg` … `-4.jpg` (133-203 KB, stesso
+ritaglio al centro e ridimensionamento a 1200×800 delle altre foto barche). La foto della
+card resta quella di prima (`royal-delfin.jpg`), le tre nuove vanno nel campo `gallery` —
+nessuna modifica al codice, come per Ragnarok e Freebird. Provato in `tour.html`: foto
+grande più quattro miniature cliccabili, tutte caricate correttamente.
+
+### "Altre esperienze" in fondo alla scheda: ora da categorie diverse (30 agosto 2026)
+
+Chiesto dal proprietario: la sezione in fondo a `tour.html` mostrava tre schede della
+**stessa** categoria di quella aperta. Cambiata per mostrare il resto del catalogo invece
+di ripetere la stessa famiglia di gite — chi guarda una barca ha già visto le altre barche
+nell'elenco della categoria, qui serve fargli scoprire cos'altro c'è.
+
+`detailRelated()` in `tour.js` ora scarta la categoria della scheda aperta **e** si ferma
+alla prima scheda trovata per ogni altra categoria, cosi' le tre proposte sono sempre di
+tre categorie diverse fra loro invece di poter essere, per caso, tre barche di un'unica
+altra categoria. Provato aprendo una scheda `mare-barche` (Royal Delfin, Ragnarok) e una
+`teide-natura`: risultati sempre di categorie diverse dalla propria e diverse tra loro.
+
+Il titolo della sezione (`detail.related` in `i18n.js`) diceva "Altre esperienze di questa
+categoria": non ha più senso, cambiato in "Altre esperienze da scoprire" nelle tre lingue.
+
+### Peter Pan: mini-galleria (30 agosto 2026)
+
+Arrivate quattro foto di Peter Pan. Guardate una per una:
+
+- prua/porto e quella con i globicefali in primo piano mostrano chiaramente il nome
+  "Peter Pan" sullo scafo — **tenute**;
+- una era quasi identica alla foto già pubblicata (stessa inquadratura, qualità peggiore)
+  — **scartata**, inutile duplicarla;
+- una mostrava un gruppo che nuota sotto una falesia (Los Gigantes), ma lo scafo è di
+  legno naturale, non rosso bordeaux come Peter Pan, e non si legge nessun nome —
+  probabilmente **un'altra barca**. Scartata anche per questo: la scheda dice già che sul
+  giro di 2 ore il bagno non c'è, quindi pubblicarla avrebbe comunque promesso qualcosa
+  che non c'è, a prescindere da quale barca sia davvero.
+
+Le due buone sono salvate come `assets/peter-pan-2.jpg` e `-3.jpg` (1200×800, 175-180 KB,
+stesso ritaglio al centro delle altre foto barche). La foto della card resta quella di
+prima (`peter-pan.jpg`), le due nuove vanno nel campo `gallery`. Provato in `tour.html`:
+foto grande più due miniature cliccabili, caricate correttamente.
+
+### Flipper One: arrivate le foto, sparito il riquadro grigio (31 agosto 2026)
+
+Era l'unica scheda pubblicata senza foto (vedi la sezione più sopra sul segnaposto "Foto
+in arrivo"). Arrivate cinque foto della barca. Guardate una per una:
+
+- quattro sono foto vere della barca (vela spiegata con i delfini e il Teide sullo
+  sfondo, il tuffo con la teleferica visto dal ponte, il profilo mentre naviga, il tuffo
+  visto dal basso con le scogliere di Los Gigantes) — **tenute**;
+- una era una grafica promozionale con il logo "Flipper Uno Los Gigantes" sovrapposto in
+  un angolo e la scritta "Free Trial" (di uno strumento di editing) in altri due angoli —
+  **scartata**: non è la foto in sé ma un'immagine con marchio/filigrana sopra.
+
+Le quattro buone sono salvate come `assets/flipper-one.jpg` (foto della card e apertura
+scheda) e `assets/flipper-one-2.jpg` … `-4.jpg` (galleria), 1200×800, 118-229 KB, stesso
+ritaglio al centro delle altre foto barche. La più piccola in origine (quella del tuffo
+dal basso, 718×603) ha richiesto un ingrandimento di 1,67×: meno del limite già scartato
+altrove (2,84× su una foto di 424×280), e a schermo resta nitida.
+
+`controlla.js` non segnala più l'avviso su flipper-one. Provato in `tour.html` (foto
+grande più tre miniature cliccabili) e nell'elenco (niente più riquadro grigio, la card
+mostra la prima foto). Alzato `CACHE_NAME` in `sw.js` a `isla-v151`.
+
+### Submarine Safari: galleria, e due foto scartate perché di un'altra barca (31 agosto 2026)
+
+Arrivate quattro foto per `submarine-safari` (Marina Amarilla). Guardate una per una, **non
+sono tutte lo stesso sottomarino**:
+
+- due mostrano il sottomarino giallo con lo scafo rosso e la scritta "Sub Fun Cinco" sulla
+  torretta — stessa livrea, stesso logo rotondo blu e stesso stile della foto già
+  pubblicata (`submarine-safari.jpg`, che ha anche la sigla "6 AT-3-02-91" sullo scafo).
+  Una delle due ha il Teide bene in vista sullo sfondo, che conferma Tenerife. — **tenute**;
+- una mostra un sottomarino con lo scafo **arancione** (non rosso) e il logo "Atlantida
+  Submarine" sulla torretta, ormeggiato in un porto con case bianche a terrazza su una
+  parete di roccia — quello è Puerto de Mogán, a **Gran Canaria**, non Tenerife: un'altra
+  azienda, su un'altra isola. **Scartata**, altrimenti la scheda avrebbe mostrato il
+  sottomarino sbagliato;
+- una è una foto subacquea generica (pesci, un sommozzatore, oblò) senza nessun elemento
+  che dica di quale sottomarino si tratta — poteva essere di uno dei due. **Scartata**
+  anche questa, per lo stesso motivo: meglio una galleria di due foto sicure che di tre
+  con una incerta in mezzo.
+
+Le due buone sono salvate come `assets/submarine-safari-2.jpg` e `-3.jpg` (1200×800,
+144-206 KB). La seconda partiva da una foto piccola (589×392, quasi già nel rapporto
+giusto) e ha richiesto un ingrandimento di 2×: guardata a schermo dopo il ridimensionamento
+resta nitida, tenuta. La foto della card resta quella di prima (`submarine-safari.jpg`), le
+due nuove vanno nel campo `gallery`. Provato in `tour.html`: foto grande più tre miniature
+cliccabili, tutte caricate correttamente. Alzato `CACHE_NAME` in `sw.js` a `isla-v152`.
+
+### Luxury Catamaran Experience: galleria del Monte Cristo (31 agosto 2026)
+
+Il proprietario ha confermato che "Monte Cristo" è il nome della barca dietro la scheda
+`luxury-catamaran` (che in catalogo ha ancora `zone` e `duration` "Da definire": quello
+resta da fare, qui sono arrivate solo le foto). Arrivate quattro foto: tutte mostrano
+chiaramente lo scritto "Monte Cristo" sullo scafo e tre delle quattro anche la sigla di
+immatricolazione "6ª TE-1-13-17", identica su tutte — stessa barca della foto già
+pubblicata (che ha lo stesso scritto). **Tenute tutte e quattro**.
+
+Salvate come `assets/luxury-catamaran-2.jpg` … `-5.jpg` (1200×800, 138-236 KB, stesso
+ritaglio al centro delle altre foto barche). La foto della card resta quella di prima
+(`luxury-catamaran.jpg`), le quattro nuove vanno nel campo `gallery`. Provato in
+`tour.html`: foto grande più cinque miniature cliccabili, tutte caricate correttamente.
+Alzato `CACHE_NAME` in `sw.js` a `isla-v153`.
+
+### Luxury Catamaran Experience: confermati porto e durata (31 agosto 2026)
+
+Il proprietario ha confermato i due dati che restavano "Da definire": si parte da **Puerto
+Colón**, dura **3 ore**. Aggiornati `zone` e `duration` nello stesso formato delle altre
+schede di categoria `mare-barche`. Provato in `tour.html`: "Departure point" e "Duration"
+ora mostrano i valori veri invece del segnaposto. Alzato `CACHE_NAME` in `sw.js` a
+`isla-v154`.
+
+### Small Group Catamaran: galleria del Kalima Kat (31 agosto 2026)
+
+Confermato dal proprietario quello che diceva già `NOTES.md`: Kalima Kat è la barca dietro
+`small-group-catamaran`, non una barca diversa (era già successo di quasi duplicarla in
+passato). Arrivate tre foto: una mostra chiaramente il nome "KALIMAKAT" sullo scafo e la
+sigla "6ª TE-1-03-94", identica a quella della foto già pubblicata; le altre due sono
+aeree, senza scritte leggibili ma con la stessa forma di barca (catamarano a vela con un
+solo albero, cuscini color tortora in coperta) e una delle due nella stessa cala rocciosa
+della foto già pubblicata. **Tenute tutte e tre**.
+
+Salvate come `assets/small-group-catamaran-2.jpg` … `-4.jpg` (1200×800, 137-209 KB, stesso
+ritaglio al centro delle altre foto barche). La foto della card resta quella di prima
+(`small-group-catamaran.jpg`), le tre nuove vanno nel campo `gallery`. Provato in
+`tour.html`: foto grande più quattro miniature cliccabili, tutte caricate correttamente.
+Alzato `CACHE_NAME` in `sw.js` a `isla-v155`.
+
+### Glass Bottom Boat Adventure: galleria della Diamant (31 agosto 2026)
+
+Confermato dal proprietario che la Diamant (nome che compariva solo in `NOTES.md` fra le
+barche vere degli operatori, riga ~1728) è la barca dietro `glass-bottom-boat`. Non era un
+dubbio da controllare: la foto della card già pubblicata mostra chiaramente "DIAMANT"
+sullo scafo, quindi non c'era nessun doppione da correggere — solo altre foto della stessa
+barca da aggiungere.
+
+Arrivate tre foto: una vista dall'oblò subacqueo (corallo e pesci) e due foto esterne
+della Diamant, con "DIAMANT" e i numeri di telefono dell'armatore (Omega Group S.L.)
+leggibili sullo scafo. Una delle tre, 300×300, era troppo piccola per arrivare a 1200×800
+senza sgranarsi (sotto la soglia già scartata una volta, 424×280) — **scartata**. Le altre
+due (600×600 e 1200×806) sono state ritagliate al centro e salvate come
+`assets/glass-bottom-boat-2.jpg` e `-3.jpg` (1200×800, 90-125 KB). La foto della card
+resta quella di prima (`glass-bottom-boat.jpg`), le due nuove vanno nel campo `gallery`.
+Provato in `tour.html`: foto grande più tre miniature cliccabili, tutte caricate
+correttamente. Alzato `CACHE_NAME` in `sw.js` a `isla-v156`.
+
+### Utopia Boat Party: una foto in più (31 agosto 2026)
+
+Arrivata una foto della festa a bordo (640×427, coerente col rapporto 3:2): stessa
+goletta in legno a due alberi della foto già pubblicata, dove si legge "UTOPIA" sullo
+striscione a poppa — nessun dubbio di doppione, solo un'altra foto della stessa barca.
+
+Ritagliata al centro e salvata come `assets/party-boat-2.jpg` (1200×800, 219 KB); la
+qualità regge nonostante l'ingrandimento da 640×427. La foto della card resta
+`party-boat.jpg`, la nuova va nel campo `gallery`. Provato in `tour.html`: foto grande più
+due miniature cliccabili, caricate correttamente. Alzato `CACHE_NAME` in `sw.js` a
+`isla-v157`.
+
+### Shogun: due foto in più (31 agosto 2026)
+
+Arrivate tre foto della Shogun. Una (870×580, vele bianche viste da poppavia, scogliere di
+Los Gigantes sullo sfondo) è la stessa inquadratura già usata per la card pubblicata —
+niente di nuovo lì, tenuta com'era. Le altre due sono nuove: una con le vele rosse issate e
+alcuni bagnanti in acqua accanto allo scafo (1280×720), l'altra con le vele bianche issate
+e "SHOGUN" leggibile sullo scafo (900×600) — stessa barca, nessun dubbio di doppione, solo
+la sua livrea.
+
+Ritagliate al centro e salvate come `assets/shogun-2.jpg` e `-3.jpg` (1200×800, 123-163
+KB). La foto della card resta `shogun.jpg`, le due nuove vanno nel campo `gallery`.
+Provato in `tour.html`: foto grande più tre miniature cliccabili, tutte caricate
+correttamente. Alzato `CACHE_NAME` in `sw.js` a `isla-v158`.
+
+### Opera 60: sostituita la foto della card (31 agosto 2026)
+
+La foto pubblicata finora (bandiera greca sul T-top, sfondo che sembra Santorini) non era
+il nostro gommone: era una foto stock, non la barca vera che parte da Puerto Colón.
+Arrivate tre foto vere, tutte con la stessa sigla sullo scafo ("SA 3814D"): una aerea con
+bagnanti in acqua (750×750), una di profilo con il gruppo a bordo e bandiera italiana
+(1885×1257, già 3:2) e una vicino a una scogliera vulcanica (1333×750). Il proprietario ha
+scelto l'aerea come foto della card.
+
+Ritagliate al centro e salvate come `assets/opera-60.jpg` (sostituita), `-2.jpg` e `-3.jpg`
+(1200×800, 96-160 KB — l'aerea era 750×750, quindi ingrandita di 1,6× nel ritaglio, ma
+regge). Le foto di profilo e alla scogliera vanno nel campo `gallery`. Provato in
+`tour.html`: foto grande più tre miniature cliccabili, tutte caricate correttamente.
+Alzato `CACHE_NAME` in `sw.js` a `isla-v159`.

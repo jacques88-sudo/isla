@@ -7,7 +7,7 @@
 // "Richiedi disponibilità" con il messaggio WhatsApp già compilato.
 // Richiede i18n.js e esplora-catalog.js caricati prima.
 
-// Quante altre esperienze della stessa categoria mostrare in fondo
+// Quante altre esperienze mostrare in fondo, ognuna di una categoria diversa
 const DETAIL_MAX_CORRELATE = 3;
 
 function tourFromUrl() {
@@ -18,8 +18,23 @@ function tourFromUrl() {
 
 function detailMedia(tour) {
   return tour.image
-    ? `<img src="./assets/${encodeURIComponent(tour.image)}" alt="${esc(tf(tour.title))}" />`
-    : `<span class="tour-media-empty" aria-hidden="true">Isla</span>`;
+    ? `<img src="./assets/${encodeURIComponent(tour.image)}" alt="${esc(tf(tour.title))}" data-hero-img />`
+    : `<span class="tour-media-empty" aria-hidden="true">${t("tour.photoSoon")}</span>`;
+}
+
+// La mini galleria sotto la foto grande: solo dove c'e' sia `image` che
+// `gallery`, altrimenti niente striscia di miniature da mostrare. Cliccando
+// una miniatura cambia la foto grande, non apre un'altra pagina: e' un tocco
+// solo, niente frecce avanti/indietro da gestire.
+function detailGallery(tour) {
+  if (!tour.image || !Array.isArray(tour.gallery) || !tour.gallery.length) return "";
+  const foto = [tour.image, ...tour.gallery];
+  const miniature = foto.map((nome, i) => `
+    <button type="button" class="gallery-thumb${i === 0 ? " is-active" : ""}"
+            data-gallery-src="${esc(nome)}" aria-label="${esc(t("detail.photo", { n: i + 1 }))}">
+      <img src="./assets/${encodeURIComponent(nome)}" alt="" loading="lazy" />
+    </button>`).join("");
+  return `<div class="detail-gallery" data-detail-gallery>${miniature}</div>`;
 }
 
 // Le righe "In breve": si saltano i campi ancora da definire, cosi' la
@@ -330,10 +345,17 @@ function primaVariante(tour) {
   return scelte[0] || null;
 }
 
+// Una scheda per categoria diversa da quella aperta, cosi' si vede un
+// assaggio del resto del catalogo invece che altre tre barche uguali.
 function detailRelated(tour) {
-  const altre = ESPLORA_CATALOG.filter(x =>
-    x.published && x.category === tour.category && x.id !== tour.id
-  ).slice(0, DETAIL_MAX_CORRELATE);
+  const viste = new Set();
+  const altre = [];
+  for (const x of ESPLORA_CATALOG) {
+    if (!x.published || x.category === tour.category || viste.has(x.category)) continue;
+    viste.add(x.category);
+    altre.push(x);
+    if (altre.length >= DETAIL_MAX_CORRELATE) break;
+  }
   if (!altre.length) return "";
 
   return `
@@ -346,7 +368,7 @@ function detailRelated(tour) {
               <span class="detail-related-media">
                 ${x.image
                   ? `<img src="./assets/${encodeURIComponent(x.image)}" alt="" loading="lazy" />`
-                  : `<span class="tour-media-empty" aria-hidden="true">Isla</span>`}
+                  : `<span class="tour-media-empty" aria-hidden="true">${t("tour.photoSoon")}</span>`}
               </span>
               <span class="detail-related-body">
                 <span class="detail-related-title">${esc(tf(x.title))}</span>
@@ -402,7 +424,10 @@ function renderTour(tour) {
 
   contenitore.innerHTML = `
     <article class="detail-tour">
-      <div class="detail-hero">${detailMedia(tour)}</div>
+      <div class="detail-media">
+        <div class="detail-hero">${detailMedia(tour)}</div>
+        ${detailGallery(tour)}
+      </div>
       <div class="detail-main">
         <span class="tour-cat">${esc(categoryName(tour.category))}</span>
         <h1 class="detail-h1">${esc(tf(tour.title))}</h1>
@@ -426,6 +451,22 @@ function renderTour(tour) {
   // il paragrafo del preavviso contiene <strong>, quindi passa da applyI18n
   applyI18n(contenitore);
   collegaOpzioni(contenitore, tour);
+  collegaGalleria(contenitore);
+}
+
+// Le miniature sotto la foto grande cambiano solo `src` dell'immagine
+// principale: niente pagina nuova, niente libreria di lightbox.
+function collegaGalleria(contenitore) {
+  const galleria = contenitore.querySelector("[data-detail-gallery]");
+  const heroImg = contenitore.querySelector("[data-hero-img]");
+  if (!galleria || !heroImg) return;
+
+  galleria.addEventListener("click", e => {
+    const bottone = e.target.closest("[data-gallery-src]");
+    if (!bottone) return;
+    heroImg.src = "./assets/" + encodeURIComponent(bottone.dataset.gallerySrc);
+    galleria.querySelectorAll(".gallery-thumb").forEach(b => b.classList.toggle("is-active", b === bottone));
+  });
 }
 
 // Un bottone solo alla volta resta premuto, e la pagina sotto segue la variante

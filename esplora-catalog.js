@@ -1313,7 +1313,7 @@ const ESPLORA_CATALOG = [
   {
     id: "self-drive-boats",
     title: "Self-Drive Boats",
-    category: "mare-barche",
+    category: "sport-acquatici",
     zone: "Puerto Colón",
     duration: { it: "Da 2 a 5 ore", en: "2 to 5 hours", es: "De 2 a 5 horas" },
     priceFrom: 190,
@@ -1373,7 +1373,7 @@ const ESPLORA_CATALOG = [
   {
     id: "small-catamaran-rental",
     title: "Small Catamaran Rental",
-    category: "mare-barche",
+    category: "sport-acquatici",
     zone: "Puerto Colón",
     duration: { it: "Da 2 a 6 ore", en: "2 to 6 hours", es: "De 2 a 6 horas" },
     // "a barca" e non "/ora", come sul Self Drive Boat. Con le varianti di durata
@@ -1470,9 +1470,11 @@ const ESPLORA_CATALOG = [
     priceFrom: 65,
     privateOption: "private-charter",
     priceAdult: 65,
-    // Il fornitore non ha mandato un prezzo bambini: resta a 0 finche'
-    // l'ufficio non lo conferma, invece di indovinarlo.
-    priceChild: 0,
+    priceChild: 45,
+    // 13+ discende dai bambini 2-12: sopra i 12 non c'e' altra fascia.
+    // Sotto i 2 anni non abbiamo un prezzo: da chiedere all'ufficio se
+    // viaggiano gratis o non salgono proprio.
+    ages: { adult: "13+", child: "2-12" },
     included: ["swimstop", "snorkel", "fingerfood", "drinks", "towels"],
     family: true,
     itinerary: [
@@ -1525,6 +1527,8 @@ const ESPLORA_CATALOG = [
       en: "Three hours aboard the Skyline Cruiser, a Fairline motor yacht just under 13 metres long, up to 12 people. You head offshore looking for dolphins and whales, then a swim stop with snorkelling in a sheltered bay, and a coastal return past the hippie caves and volcanic cliffs. On board: captain and crew, with snacks and drinks included.",
       es: "Tres horas a bordo del Skyline Cruiser, un yate a motor Fairline de casi 13 metros, hasta 12 personas. Se navega mar adentro buscando delfines y ballenas, luego la parada de baño con snorkel en una bahía resguardada, y la vuelta bordeando la costa junto a las cuevas hippies y los acantilados volcánicos. A bordo: capitán y tripulación, con aperitivos y bebidas incluidas."
     },
+    image: "skyline-cruiser.jpg",
+    gallery: ["skyline-cruiser-2.jpg", "skyline-cruiser-3.jpg", "skyline-cruiser-4.jpg"],
     published: true
   },
   {

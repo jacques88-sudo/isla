@@ -2448,3 +2448,11 @@ ritaglio al centro delle altre foto barche). La foto della card resta quella di 
 (`luxury-catamaran.jpg`), le quattro nuove vanno nel campo `gallery`. Provato in
 `tour.html`: foto grande più cinque miniature cliccabili, tutte caricate correttamente.
 Alzato `CACHE_NAME` in `sw.js` a `isla-v153`.
+
+### Luxury Catamaran Experience: confermati porto e durata (31 agosto 2026)
+
+Il proprietario ha confermato i due dati che restavano "Da definire": si parte da **Puerto
+Colón**, dura **3 ore**. Aggiornati `zone` e `duration` nello stesso formato delle altre
+schede di categoria `mare-barche`. Provato in `tour.html`: "Departure point" e "Duration"
+ora mostrano i valori veri invece del segnaposto. Alzato `CACHE_NAME` in `sw.js` a
+`isla-v154`.

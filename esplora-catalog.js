@@ -2132,11 +2132,22 @@ const ESPLORA_CATALOG = [
     id: "siam-park",
     title: "Siam Park",
     category: "parchi-spettacoli",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 48,
+    zone: "Costa Adeje",
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    priceFrom: 44,
     priceAdult: 0,
     priceChild: 0,
+    included: ["transfer"],
+    transfer: {
+      it: "Disponibile su richiesta, da Puerto de la Cruz",
+      en: "Available on request, from Puerto de la Cruz",
+      es: "Disponible bajo petición, desde Puerto de la Cruz"
+    },
+    notes: [
+      { it: "Aperto tutti i giorni: 10:00-18:00 in estate (30 marzo - 21 ottobre), 10:00-17:00 in inverno (22 ottobre - 29 marzo).",
+        en: "Open every day: 10am-6pm in summer (30 March - 21 October), 10am-5pm in winter (22 October - 29 March).",
+        es: "Abierto todos los días: 10:00-18:00 en verano (30 de marzo - 21 de octubre), 10:00-17:00 en invierno (22 de octubre - 29 de marzo)." }
+    ],
     family: true,
     desc: {
       it: "Parco acquatico a tema thailandese, fra i più premiati al mondo.",
@@ -2173,16 +2184,22 @@ const ESPLORA_CATALOG = [
     id: "loro-parque",
     title: "Loro Parque",
     category: "parchi-spettacoli",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto de la Cruz",
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: 44,
     priceAdult: 0,
     priceChild: 0,
+    included: ["transfer"],
     transfer: {
       it: "Disponibile su richiesta",
       en: "Available on request",
       es: "Disponible bajo petición"
     },
+    notes: [
+      { it: "Aperto tutti i giorni, 09:30-17:30.",
+        en: "Open every day, 9:30am-5:30pm.",
+        es: "Abierto todos los días, 09:30-17:30." }
+    ],
     family: true,
     desc: {
       it: "Zoo e giardino tropicale, conosciuto in tutto il mondo per i suoi animali.",
@@ -2288,11 +2305,17 @@ const ESPLORA_CATALOG = [
     id: "aqualand",
     title: "Aqualand",
     category: "parchi-spettacoli",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 37,
+    zone: "Costa Adeje",
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    priceFrom: 36,
     priceAdult: 0,
     priceChild: 0,
+    included: ["transfer"],
+    notes: [
+      { it: "Aperto tutti i giorni, 10:00-17:00.",
+        en: "Open every day, 10am-5pm.",
+        es: "Abierto todos los días, 10:00-17:00." }
+    ],
     family: true,
     desc: {
       it: "Parco acquatico con scivoli e aree per tutte le età.",
@@ -2306,11 +2329,17 @@ const ESPLORA_CATALOG = [
     id: "jungle-park",
     title: "Jungle Park",
     category: "parchi-spettacoli",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 36,
+    zone: "Chayofa (Arona)",
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    priceFrom: 35,
     priceAdult: 0,
     priceChild: 0,
+    included: ["transfer"],
+    notes: [
+      { it: "Aperto tutti i giorni, 10:00-17:30.",
+        en: "Open every day, 10am-5:30pm.",
+        es: "Abierto todos los días, 10:00-17:30." }
+    ],
     family: true,
     desc: {
       it: "Parco naturale con animali e rapaci in volo libero.",
@@ -2324,11 +2353,21 @@ const ESPLORA_CATALOG = [
     id: "combo-jungle-aqualand",
     title: "Combo Ticket – Jungle Park + Aqualand",
     category: "parchi-spettacoli",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 53,
+    zone: "Costa Adeje / Chayofa",
+    duration: {
+      it: "2 giorni, 1 per parco (non necessariamente consecutivi)",
+      en: "2 days, 1 per park (not necessarily consecutive)",
+      es: "2 días, 1 por parque (no necesariamente consecutivos)"
+    },
+    priceFrom: 51,
     priceAdult: 0,
     priceChild: 0,
+    included: ["transfer"],
+    notes: [
+      { it: "Aqualand 10:00-17:00, Jungle Park 10:00-17:30.",
+        en: "Aqualand 10am-5pm, Jungle Park 10am-5:30pm.",
+        es: "Aqualand 10:00-17:00, Jungle Park 10:00-17:30." }
+    ],
     family: true,
     desc: {
       it: "Biglietto combinato per i due parchi del sud.",

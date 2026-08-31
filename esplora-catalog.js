@@ -1223,6 +1223,7 @@ const ESPLORA_CATALOG = [
       es: "Una goleta oriental de 26 metros, toda de teca, construida para un jeque: es el barco más singular que sale de Puerto Colón. Cinco horas, con media hora junto a delfines y ballenas, luego los acantilados de Los Gigantes y el baño en la bahía de Masca, con la comida servida a bordo. En dos cubiertas hay sitio para 135 personas y mucha sombra donde resguardarse. Lleva la bandera azul que se da a los barcos que se acercan a los cetáceos respetando las normas."
     },
     image: "shogun.jpg",
+    gallery: ["shogun-2.jpg", "shogun-3.jpg"],
     published: true
   },
   {
@@ -1306,6 +1307,7 @@ const ESPLORA_CATALOG = [
       es: "Una neumática rígida de dieciocho metros que recorre la costa suroeste: zonas para tomar el sol, sombra donde resguardarse y una plataforma para bajar al agua. Equipo de snorkel a bordo, comida y bebida incluidas, y una tripulación que habla varios idiomas y te cuenta lo que estás viendo. Se elige entre la salida de tres horas compartida y el barco entero para ti."
     },
     image: "opera-60.jpg",
+    gallery: ["opera-60-2.jpg", "opera-60-3.jpg"],
     published: true
   },
   {

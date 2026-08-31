@@ -2502,3 +2502,32 @@ qualità regge nonostante l'ingrandimento da 640×427. La foto della card resta
 `party-boat.jpg`, la nuova va nel campo `gallery`. Provato in `tour.html`: foto grande più
 due miniature cliccabili, caricate correttamente. Alzato `CACHE_NAME` in `sw.js` a
 `isla-v157`.
+
+### Shogun: due foto in più (31 agosto 2026)
+
+Arrivate tre foto della Shogun. Una (870×580, vele bianche viste da poppavia, scogliere di
+Los Gigantes sullo sfondo) è la stessa inquadratura già usata per la card pubblicata —
+niente di nuovo lì, tenuta com'era. Le altre due sono nuove: una con le vele rosse issate e
+alcuni bagnanti in acqua accanto allo scafo (1280×720), l'altra con le vele bianche issate
+e "SHOGUN" leggibile sullo scafo (900×600) — stessa barca, nessun dubbio di doppione, solo
+la sua livrea.
+
+Ritagliate al centro e salvate come `assets/shogun-2.jpg` e `-3.jpg` (1200×800, 123-163
+KB). La foto della card resta `shogun.jpg`, le due nuove vanno nel campo `gallery`.
+Provato in `tour.html`: foto grande più tre miniature cliccabili, tutte caricate
+correttamente. Alzato `CACHE_NAME` in `sw.js` a `isla-v158`.
+
+### Opera 60: sostituita la foto della card (31 agosto 2026)
+
+La foto pubblicata finora (bandiera greca sul T-top, sfondo che sembra Santorini) non era
+il nostro gommone: era una foto stock, non la barca vera che parte da Puerto Colón.
+Arrivate tre foto vere, tutte con la stessa sigla sullo scafo ("SA 3814D"): una aerea con
+bagnanti in acqua (750×750), una di profilo con il gruppo a bordo e bandiera italiana
+(1885×1257, già 3:2) e una vicino a una scogliera vulcanica (1333×750). Il proprietario ha
+scelto l'aerea come foto della card.
+
+Ritagliate al centro e salvate come `assets/opera-60.jpg` (sostituita), `-2.jpg` e `-3.jpg`
+(1200×800, 96-160 KB — l'aerea era 750×750, quindi ingrandita di 1,6× nel ritaglio, ma
+regge). Le foto di profilo e alla scogliera vanno nel campo `gallery`. Provato in
+`tour.html`: foto grande più tre miniature cliccabili, tutte caricate correttamente.
+Alzato `CACHE_NAME` in `sw.js` a `isla-v159`.

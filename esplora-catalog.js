@@ -1139,6 +1139,7 @@ const ESPLORA_CATALOG = [
       es: "Tres horas de fiesta en barco desde Puerto Colón, con DJ en directo, un equipo de 15.000 vatios y música house, reggaetón, hip hop y drum and bass. Se empieza con una copa en el Black Pearl y se termina allí con el after. Solo mayores de 18 años. La entrada se elige según cuánto se va a beber: cuatro consumiciones, o barra libre durante las tres horas."
     },
     image: "party-boat.jpg",
+    gallery: ["party-boat-2.jpg"],
     published: true
   },
   {

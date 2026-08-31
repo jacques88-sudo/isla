@@ -2490,3 +2490,15 @@ due (600×600 e 1200×806) sono state ritagliate al centro e salvate come
 resta quella di prima (`glass-bottom-boat.jpg`), le due nuove vanno nel campo `gallery`.
 Provato in `tour.html`: foto grande più tre miniature cliccabili, tutte caricate
 correttamente. Alzato `CACHE_NAME` in `sw.js` a `isla-v156`.
+
+### Utopia Boat Party: una foto in più (31 agosto 2026)
+
+Arrivata una foto della festa a bordo (640×427, coerente col rapporto 3:2): stessa
+goletta in legno a due alberi della foto già pubblicata, dove si legge "UTOPIA" sullo
+striscione a poppa — nessun dubbio di doppione, solo un'altra foto della stessa barca.
+
+Ritagliata al centro e salvata come `assets/party-boat-2.jpg` (1200×800, 219 KB); la
+qualità regge nonostante l'ingrandimento da 640×427. La foto della card resta
+`party-boat.jpg`, la nuova va nel campo `gallery`. Provato in `tour.html`: foto grande più
+due miniature cliccabili, caricate correttamente. Alzato `CACHE_NAME` in `sw.js` a
+`isla-v157`.

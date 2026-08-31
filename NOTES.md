@@ -2608,3 +2608,44 @@ Ritagliate al centro e salvate come `assets/opera-60.jpg` (sostituita), `-2.jpg`
 regge). Le foto di profilo e alla scogliera vanno nel campo `gallery`. Provato in
 `tour.html`: foto grande più tre miniature cliccabili, tutte caricate correttamente.
 Alzato `CACHE_NAME` in `sw.js` a `isla-v159`.
+
+### Parchi e spettacoli: zona, durata e orari da canaryvip.com (31 agosto 2026)
+
+Il proprietario ha incollato i dati di 5 biglietti presi da canaryvip.com (Siam Park, Loro
+Parque, Aqualand, Jungle Park, Combo Jungle Park + Aqualand): prezzi, orari di apertura,
+cosa è incluso, zone di pickup. Aggiornate le schede corrispondenti già in catalogo
+(`siam-park`, `loro-parque`, `aqualand`, `jungle-park`, `combo-jungle-aqualand`), che erano
+ferme a "Da definire" su zona e durata.
+
+**Cosa è stato preso**: zona (Costa Adeje, Puerto de la Cruz, Chayofa), durata ("Giornata
+intera" o "2 giorni, 1 per parco" per il combo), orari di apertura (in `notes`, sono un
+fatto pratico per il cliente), e `included: ["transfer"]` per la navetta gratuita già
+compresa nel biglietto standard. Per Siam Park aggiunto anche un `transfer` testuale per il
+servizio opzionale da Puerto de la Cruz (a pagamento, non incluso), senza prezzo perché la
+pagina del fornitore non lo scriveva.
+
+**Cosa NON è stato copiato**, per le regole di `CLAUDE.md`: politica di cancellazione (resta
+quella di Isla, 24 ore, non le 72 ore del fornitore), punteggi e numero di recensioni,
+"ingresso rapido per i titolari di pass" e altro testo promozionale, i prezzi barrati.
+
+**Prezzi — deciso col proprietario, da tenere d'occhio**: la pagina del fornitore mostrava
+il banner "prezzi scontati natalizi ora applicati", quindi i valori raccolti (Siam Park e
+Loro Parque €44, Aqualand €36, Jungle Park €35, Combo €51) potrebbero essere uno sconto
+temporaneo e non il prezzo pieno. Il proprietario ha scelto comunque di usarli come
+`priceFrom`: **da riconfermare più avanti** quando lo sconto natalizio finisce, per capire
+se il prezzo pieno è diverso.
+
+**Non toccato**: `priceAdult`/`priceChild` restano a 0 (il fornitore non dava un prezzo
+bambini separato, `child_price` era `null` per tutti e cinque) — sulla pagina restano le
+righe del totale nascoste finché non arriva quel dato. Le fasce d'età (`ages`) restano
+assenti per lo stesso motivo. `siam-night` e `twin-ticket` non sono nei dati ricevuti e
+restano invariate.
+
+Provato in `tour.html` (Siam Park e Combo Jungle Park + Aqualand): zona, durata, prezzo,
+pillola "Transfer disponibile", riquadro "Cosa è incluso" e note sugli orari mostrano tutti
+i valori nuovi. Alzato `CACHE_NAME` in `sw.js` a `isla-v161`.
+
+Prima di arrivare a questo punto il repository locale era rimasto indietro di 177 commit
+rispetto a GitHub (l'ultimo sviluppo era stato fatto da un altro dispositivo/sessione): un
+primo tentativo di aggiornare le schede era stato fatto sulla versione vecchia del file,
+poi scartato non appena il `git pull` ha mostrato lo schema vero.

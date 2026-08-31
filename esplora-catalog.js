@@ -929,6 +929,7 @@ const ESPLORA_CATALOG = [
       es: "Catamarán de categoría superior, con un máximo de 22 personas a bordo: ambiente relajado, avistamiento de delfines y ballenas y zonas lounge para estar cómodos."
     },
     image: "luxury-catamaran.jpg",
+    gallery: ["luxury-catamaran-2.jpg", "luxury-catamaran-3.jpg", "luxury-catamaran-4.jpg", "luxury-catamaran-5.jpg"],
     published: true
   },
   {

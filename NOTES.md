@@ -2433,3 +2433,18 @@ giusto) e ha richiesto un ingrandimento di 2×: guardata a schermo dopo il ridim
 resta nitida, tenuta. La foto della card resta quella di prima (`submarine-safari.jpg`), le
 due nuove vanno nel campo `gallery`. Provato in `tour.html`: foto grande più tre miniature
 cliccabili, tutte caricate correttamente. Alzato `CACHE_NAME` in `sw.js` a `isla-v152`.
+
+### Luxury Catamaran Experience: galleria del Monte Cristo (31 agosto 2026)
+
+Il proprietario ha confermato che "Monte Cristo" è il nome della barca dietro la scheda
+`luxury-catamaran` (che in catalogo ha ancora `zone` e `duration` "Da definire": quello
+resta da fare, qui sono arrivate solo le foto). Arrivate quattro foto: tutte mostrano
+chiaramente lo scritto "Monte Cristo" sullo scafo e tre delle quattro anche la sigla di
+immatricolazione "6ª TE-1-13-17", identica su tutte — stessa barca della foto già
+pubblicata (che ha lo stesso scritto). **Tenute tutte e quattro**.
+
+Salvate come `assets/luxury-catamaran-2.jpg` … `-5.jpg` (1200×800, 138-236 KB, stesso
+ritaglio al centro delle altre foto barche). La foto della card resta quella di prima
+(`luxury-catamaran.jpg`), le quattro nuove vanno nel campo `gallery`. Provato in
+`tour.html`: foto grande più cinque miniature cliccabili, tutte caricate correttamente.
+Alzato `CACHE_NAME` in `sw.js` a `isla-v153`.

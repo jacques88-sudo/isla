@@ -2456,3 +2456,19 @@ Colón**, dura **3 ore**. Aggiornati `zone` e `duration` nello stesso formato de
 schede di categoria `mare-barche`. Provato in `tour.html`: "Departure point" e "Duration"
 ora mostrano i valori veri invece del segnaposto. Alzato `CACHE_NAME` in `sw.js` a
 `isla-v154`.
+
+### Small Group Catamaran: galleria del Kalima Kat (31 agosto 2026)
+
+Confermato dal proprietario quello che diceva già `NOTES.md`: Kalima Kat è la barca dietro
+`small-group-catamaran`, non una barca diversa (era già successo di quasi duplicarla in
+passato). Arrivate tre foto: una mostra chiaramente il nome "KALIMAKAT" sullo scafo e la
+sigla "6ª TE-1-03-94", identica a quella della foto già pubblicata; le altre due sono
+aeree, senza scritte leggibili ma con la stessa forma di barca (catamarano a vela con un
+solo albero, cuscini color tortora in coperta) e una delle due nella stessa cala rocciosa
+della foto già pubblicata. **Tenute tutte e tre**.
+
+Salvate come `assets/small-group-catamaran-2.jpg` … `-4.jpg` (1200×800, 137-209 KB, stesso
+ritaglio al centro delle altre foto barche). La foto della card resta quella di prima
+(`small-group-catamaran.jpg`), le tre nuove vanno nel campo `gallery`. Provato in
+`tour.html`: foto grande più quattro miniature cliccabili, tutte caricate correttamente.
+Alzato `CACHE_NAME` in `sw.js` a `isla-v155`.

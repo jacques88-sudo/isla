@@ -1009,6 +1009,7 @@ const ESPLORA_CATALOG = [
       es: "Un catamarán que lleva hasta 23 personas: casi ningún barco privado en Tenerife lleva más de 12. Se sale de Puerto Colón, se buscan delfines y ballenas y se para en las calas para bañarse y hacer snorkel, con paella de pollo a bordo. Se elige entre la salida de tres horas compartida y el barco entero para ti, tres horas o seis."
     },
     image: "small-group-catamaran.jpg",
+    gallery: ["small-group-catamaran-2.jpg", "small-group-catamaran-3.jpg", "small-group-catamaran-4.jpg"],
     published: true
   },
   {

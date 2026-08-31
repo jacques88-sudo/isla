@@ -2649,3 +2649,22 @@ Prima di arrivare a questo punto il repository locale era rimasto indietro di 17
 rispetto a GitHub (l'ultimo sviluppo era stato fatto da un altro dispositivo/sessione): un
 primo tentativo di aggiornare le schede era stato fatto sulla versione vecchia del file,
 poi scartato non appena il `git pull` ha mostrato lo schema vero.
+
+### Foto vere per il 3-Hour Whale & Dolphin Boat Trip (31 agosto 2026)
+
+La scheda usava `Cat-mare.jpg`, la stessa foto generica della copertina categoria "Mare e
+barche" — non una foto sua. Arrivate 6 foto della barca vera (uno sloop Beneteau, targa
+6ª-TE-21-07, coerente con la descrizione "barca a vela, massimo 11 persone").
+
+**Scartata una delle sei**: aveva il logo "dentsu AEGIS network" stampato sulla vela — il
+marchio di un'altra azienda (sponsor di qualche regata/evento), non nostro. Stesso motivo
+per cui in passato si era scartata una foto con lo scafo di un'altra azienda: non si
+pubblica.
+
+**Foto principale**: quella in porto con la randa alzata e le montagne di Costa Adeje
+dietro — è già 1280×853, quasi esattamente 1200×800, nessun ingrandimento vero. Le altre
+quattro in `gallery`, compresa quella con il Teide innevato sullo sfondo (bella, anche se
+ingrandita 1,78×: guardata a piena pagina regge lo stesso).
+
+Provato nel browser vero: 5 foto in galleria (principale + 4), tutte cariche. `node
+controlla.js` → 0 errori. Alzato `sw.js` a `isla-v164`.

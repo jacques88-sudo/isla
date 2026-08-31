@@ -593,7 +593,8 @@ const ESPLORA_CATALOG = [
       en: "Three hours under sail from Puerto Colón, with a maximum of 11 guests on board. Whale and dolphin watching, a snorkelling stop with gear included, snacks and drinks on board.",
       es: "Tres horas en velero desde Puerto Colón, con un máximo de 11 personas a bordo. Avistamiento de ballenas y delfines, parada para hacer snorkel con equipo incluido, snacks y bebidas a bordo."
     },
-    image: "Cat-mare.jpg",
+    image: "whale-dolphin-3h.jpg",
+    gallery: ["whale-dolphin-3h-2.jpg", "whale-dolphin-3h-3.jpg", "whale-dolphin-3h-4.jpg", "whale-dolphin-3h-5.jpg"],
     published: true
   },
   {

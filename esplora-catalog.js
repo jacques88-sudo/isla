@@ -806,6 +806,7 @@ const ESPLORA_CATALOG = [
       es: "El submarino amarillo baja entre 30 y 60 metros, y se mira el fondo sin mojarse. Cada asiento tiene su ojo de buey y una pantalla que dice a qué profundidad estás y qué temperatura hace fuera. Abajo pasan peces y rayas, y de vez en cuando también delfines. Dura alrededor de una hora."
     },
     image: "submarine-safari.jpg",
+    gallery: ["submarine-safari-2.jpg", "submarine-safari-3.jpg"],
     published: true
   },
   {

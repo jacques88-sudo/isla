@@ -1307,6 +1307,7 @@ const ESPLORA_CATALOG = [
       es: "Una neumática rígida de dieciocho metros que recorre la costa suroeste: zonas para tomar el sol, sombra donde resguardarse y una plataforma para bajar al agua. Equipo de snorkel a bordo, comida y bebida incluidas, y una tripulación que habla varios idiomas y te cuenta lo que estás viendo. Se elige entre la salida de tres horas compartida y el barco entero para ti."
     },
     image: "opera-60.jpg",
+    gallery: ["opera-60-2.jpg", "opera-60-3.jpg"],
     published: true
   },
   {

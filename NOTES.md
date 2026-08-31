@@ -2385,3 +2385,25 @@ Le due buone sono salvate come `assets/peter-pan-2.jpg` e `-3.jpg` (1200×800, 1
 stesso ritaglio al centro delle altre foto barche). La foto della card resta quella di
 prima (`peter-pan.jpg`), le due nuove vanno nel campo `gallery`. Provato in `tour.html`:
 foto grande più due miniature cliccabili, caricate correttamente.
+
+### Flipper One: arrivate le foto, sparito il riquadro grigio (31 agosto 2026)
+
+Era l'unica scheda pubblicata senza foto (vedi la sezione più sopra sul segnaposto "Foto
+in arrivo"). Arrivate cinque foto della barca. Guardate una per una:
+
+- quattro sono foto vere della barca (vela spiegata con i delfini e il Teide sullo
+  sfondo, il tuffo con la teleferica visto dal ponte, il profilo mentre naviga, il tuffo
+  visto dal basso con le scogliere di Los Gigantes) — **tenute**;
+- una era una grafica promozionale con il logo "Flipper Uno Los Gigantes" sovrapposto in
+  un angolo e la scritta "Free Trial" (di uno strumento di editing) in altri due angoli —
+  **scartata**: non è la foto in sé ma un'immagine con marchio/filigrana sopra.
+
+Le quattro buone sono salvate come `assets/flipper-one.jpg` (foto della card e apertura
+scheda) e `assets/flipper-one-2.jpg` … `-4.jpg` (galleria), 1200×800, 118-229 KB, stesso
+ritaglio al centro delle altre foto barche. La più piccola in origine (quella del tuffo
+dal basso, 718×603) ha richiesto un ingrandimento di 1,67×: meno del limite già scartato
+altrove (2,84× su una foto di 424×280), e a schermo resta nitida.
+
+`controlla.js` non segnala più l'avviso su flipper-one. Provato in `tour.html` (foto
+grande più tre miniature cliccabili) e nell'elenco (niente più riquadro grigio, la card
+mostra la prima foto). Alzato `CACHE_NAME` in `sw.js` a `isla-v151`.

@@ -736,6 +736,8 @@ const ESPLORA_CATALOG = [
         es: "En la salida de tres horas lleva bañador y crema solar: la parada de baño es lo mejor."
       }
     ],
+    image: "flipper-one.jpg",
+    gallery: ["flipper-one-2.jpg", "flipper-one-3.jpg", "flipper-one-4.jpg"],
     published: true
   },
   {

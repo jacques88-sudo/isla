@@ -2611,17 +2611,36 @@ const ESPLORA_CATALOG = [
     id: "castillo-san-miguel",
     title: "Castillo San Miguel – Medieval Night",
     category: "parchi-spettacoli",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Serata", en: "Evening", es: "Noche" },
-    priceFrom: 44,
+    zone: "San Miguel de Abona",
+    duration: { it: "2 ore e 30", en: "2.5 hours", es: "2 horas y media" },
+    priceFrom: 50,
     priceAdult: 0,
     priceChild: 0,
     family: true,
+    days: ["mar", "gio", "sab"],
+    times: ["19:00"],
+    included: ["lunch", "drinks"],
+    transfer: {
+      it: "Navetta opzionale, dettagli e prezzo comunicati al momento della prenotazione.",
+      en: "Optional shuttle, details and price given when booking.",
+      es: "Lanzadera opcional, detalles y precio se indican al reservar."
+    },
     desc: {
       it: "Serata medievale al castello: cavalieri, cavalli e torneo, con cena servita durante lo spettacolo.",
       en: "A medieval night at the castle: knights, horses and a tournament, with dinner served during the show.",
       es: "Noche medieval en el castillo: caballeros, caballos y torneo, con cena servida durante el espectáculo."
     },
+    notes: [
+      { it: "A circa 20 minuti da Costa Adeje. Apertura porte alle 18:30. Parcheggio gratuito in loco.",
+        en: "About 20 minutes from Costa Adeje. Doors open at 18:30. Free on-site parking.",
+        es: "A unos 20 minutos de Costa Adeje. Apertura de puertas a las 18:30. Aparcamiento gratuito en el recinto." },
+      { it: "Menu vegetariano e menu bambini disponibili su richiesta.",
+        en: "Vegetarian menu and children's menu available on request.",
+        es: "Menú vegetariano y menú infantil disponibles bajo petición." },
+      { it: "Disponibile anche un pacchetto VIP (ingresso prioritario, cava di benvenuto, posti premium): prezzo su richiesta.",
+        en: "A VIP package is also available (priority entry, welcome cava, premium seats): price on request.",
+        es: "También hay disponible un paquete VIP (entrada prioritaria, cava de bienvenida, asientos premium): precio a consultar." }
+    ],
     image: "castillo-san-miguel.jpg",
     published: true
   },
@@ -2630,16 +2649,54 @@ const ESPLORA_CATALOG = [
     title: "¡Olé! Flamenco Show",
     category: "parchi-spettacoli",
     zone: "Costa Adeje",
-    duration: { it: "1 ora e 30", en: "1.5 hours", es: "1 hora y media" },
-    priceFrom: 35,
+    duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+    priceFrom: 49,
     priceAdult: 0,
     priceChild: 0,
     family: true,
+    days: ["gio"],
+    times: ["20:15"],
+    // Il fornitore dava un prezzo "da" (51€) che pero' cadeva fra i due
+    // prezzi veri delle categorie (Gold 49€, Platinum 59€), segnalato dal
+    // fornitore stesso come da riconciliare: usati i due prezzi di categoria
+    // come varianti, priceFrom preso dal piu' basso (Gold).
+    options: {
+      label: { it: "Categoria posto", en: "Seating category", es: "Categoría de asiento" },
+      choices: [
+        {
+          label: { it: "Gold", en: "Gold", es: "Gold" },
+          price: 49,
+          desc: {
+            it: "140 posti, buona vista sul palco.",
+            en: "140 seats, good view of the stage.",
+            es: "140 asientos, buena vista del escenario."
+          }
+        },
+        {
+          label: { it: "Platinum", en: "Platinum", es: "Platinum" },
+          price: 59,
+          included: ["drinks", "snack"],
+          desc: {
+            it: "80 posti vicino al palco; include un bicchiere di vino e snack leggeri.",
+            en: "80 seats near the stage; includes a glass of wine and light snacks.",
+            es: "80 asientos cerca del escenario; incluye una copa de vino y snacks ligeros."
+          }
+        }
+      ]
+    },
     desc: {
       it: "Spettacolo di flamenco dal vivo, con musicisti e ballerini. I bambini dai 3 ai 12 anni pagano meno; sotto i 3 anni non si entra.",
       en: "A live flamenco show, with musicians and dancers. Children aged 3 to 12 pay less; under 3s are not admitted.",
       es: "Espectáculo de flamenco en directo, con músicos y bailaores. Los niños de 3 a 12 años pagan menos; menores de 3 años no entran."
     },
+    notes: [
+      { it: "Dress code smart casual (jeans ok): niente abbigliamento sportivo o pantaloncini.",
+        en: "Smart casual dress code (jeans OK): no sportswear or shorts.",
+        es: "Código de vestimenta smart casual (vaqueros permitidos): nada de ropa deportiva ni pantalones cortos." },
+      { it: "Parcheggio al CC Plaza del Duque, a pochi passi dall'ingresso.",
+        en: "Parking at CC Plaza del Duque, a short walk from the entrance.",
+        es: "Aparcamiento en el CC Plaza del Duque, a pocos pasos de la entrada." }
+    ],
     image: "flamenco-show.jpg",
     published: true
   },
@@ -2648,16 +2705,34 @@ const ESPLORA_CATALOG = [
     title: "Scandal Dinner Show",
     category: "parchi-spettacoli",
     zone: "Costa Adeje",
-    duration: { it: "Serata", en: "Evening", es: "Noche" },
-    priceFrom: null,
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    priceFrom: 94,
     priceAdult: 0,
     priceChild: 0,
     family: false,
+    days: ["sab"],
+    times: ["20:30"],
+    transfer: {
+      it: "Trasferimento opzionale da Los Gigantes, Playa Paraíso, Puerto de la Cruz e Caletillas, da richiedere in fase di prenotazione; prezzo su richiesta.",
+      en: "Optional transfer from Los Gigantes, Playa Paraíso, Puerto de la Cruz and Caletillas, to request when booking; price on request.",
+      es: "Traslado opcional desde Los Gigantes, Playa Paraíso, Puerto de la Cruz y Caletillas, a solicitar al reservar; precio a consultar."
+    },
     desc: {
       it: "Cena e cabaret in una serata pensata per adulti: vietata ai minori di 16 anni.",
       en: "Dinner and cabaret in an evening made for adults: no under-16s.",
       es: "Cena y cabaret en una velada pensada para adultos: prohibida a menores de 16 años."
     },
+    notes: [
+      { it: "Le porte aprono alle 20:00 e chiudono alle 20:30: non si entra dopo quell'orario.",
+        en: "Doors open at 20:00 and close at 20:30: no entry after that time.",
+        es: "Las puertas abren a las 20:00 y cierran a las 20:30: no se permite la entrada después de esa hora." },
+      { it: "Dress code smart/elegant casual: pantaloni lunghi per uomo, vietati costume da bagno, sandali, infradito e abbigliamento sportivo, controllato all'ingresso.",
+        en: "Smart/elegant casual dress code: long trousers for men, no swimwear, sandals, flip-flops or sportswear, checked at the door.",
+        es: "Código de vestimenta smart/elegante: pantalón largo para hombres, prohibido bañador, sandalias, chanclas y ropa deportiva, se comprueba en la entrada." },
+      { it: "Menu vegetariano, vegano e senza glutine su richiesta; per allergie avvisare almeno 24 ore prima.",
+        en: "Vegetarian, vegan and gluten-free menus on request; notify allergies at least 24 hours in advance.",
+        es: "Menú vegetariano, vegano y sin gluten bajo petición; para alergias avisar con al menos 24 horas de antelación." }
+    ],
     image: "scandal-dinner-show.jpg",
     published: true
   },
@@ -2665,19 +2740,67 @@ const ESPLORA_CATALOG = [
     id: "history-music-show",
     title: "History – The Evolution of Music",
     category: "parchi-spettacoli",
-    zone: "Pirámide de Arona",
-    duration: { it: "2 ore e 30", en: "2.5 hours", es: "2 horas y media" },
+    zone: "Playa de las Américas",
+    duration: { it: "2 ore e 15", en: "2 hours 15 minutes", es: "2 horas y 15 minutos" },
     priceFrom: 49,
     priceAdult: 0,
     priceChild: 0,
     family: true,
+    days: ["sab"],
+    times: ["21:00"],
     desc: {
       it: "Spettacolo musicale dal vivo che ripercorre la storia della musica.",
       en: "A live music show travelling through the history of music.",
       es: "Espectáculo musical en directo que recorre la historia de la música."
     },
+    notes: [
+      { it: "Si tiene all'Auditorio Pirámide de Arona. Apertura porte alle 20:00, posti non assegnati (ordine di arrivo). Parcheggio sotterraneo al CC Oasis, di fronte alla sede.",
+        en: "Held at the Auditorio Pirámide de Arona. Doors open at 20:00, unassigned seating (first come, first served). Underground parking at CC Oasis, opposite the venue.",
+        es: "Se celebra en el Auditorio Pirámide de Arona. Apertura de puertas a las 20:00, asientos no numerados (por orden de llegada). Aparcamiento subterráneo en el CC Oasis, enfrente del recinto." },
+      { it: "Dress code smart casual: niente abbigliamento sportivo o pantaloncini.",
+        en: "Smart casual dress code: no sportswear or shorts.",
+        es: "Código de vestimenta smart casual: nada de ropa deportiva ni pantalones cortos." }
+    ],
     image: "history-music-show.jpg",
     published: true
+  },
+  {
+    id: "gladiux-show",
+    title: "Gladiux Show Tenerife",
+    category: "parchi-spettacoli",
+    zone: {
+      it: "A circa 20 minuti da Costa Adeje",
+      en: "About 20 minutes from Costa Adeje",
+      es: "A unos 20 minutos de Costa Adeje"
+    },
+    // Durata dedotta dagli orari 19:30-21:00: il fornitore non la dichiara
+    // esplicitamente, quindi non e' certa al 100%.
+    duration: { it: "≈ 1 ora e 30", en: "≈ 1.5 hours", es: "≈ 1 hora y media" },
+    priceFrom: 35,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    days: ["mer", "sab"],
+    times: ["19:30"],
+    transfer: {
+      it: "Navetta opzionale a pagamento dal sud di Tenerife, dettagli e prezzo su richiesta.",
+      en: "Optional paid shuttle from the south of Tenerife, details and price on request.",
+      es: "Lanzadera opcional de pago desde el sur de Tenerife, detalles y precio a consultar."
+    },
+    desc: {
+      it: "Spettacolo con combattimenti tra gladiatori a cavallo. Il sabato è compresa anche una cena alla griglia con bevande; il mercoledì è solo lo spettacolo, con un menu à la carte a parte.",
+      en: "A show with mounted gladiator battles. On Saturdays a grilled dinner with drinks is also included; on Wednesdays it's the show only, with a separate à la carte menu.",
+      es: "Espectáculo con combates de gladiadores a caballo. Los sábados incluye también una cena a la parrilla con bebidas; los miércoles es solo el espectáculo, con un menú a la carta aparte."
+    },
+    notes: [
+      { it: "Spettacolo in inglese.", en: "The show is in English.", es: "El espectáculo es en inglés." },
+      { it: "Il sabato: menu vegetariano e senza glutine disponibili su richiesta per la cena.",
+        en: "On Saturdays: vegetarian and gluten-free menus available on request for dinner.",
+        es: "Los sábados: menú vegetariano y sin gluten disponibles bajo petición para la cena." },
+      { it: "Parcheggio gratuito in loco.", en: "Free on-site parking.", es: "Aparcamiento gratuito en el recinto." }
+    ],
+    image: "",
+    published: false
   },
 
   // ─── TOUR DELL'ISOLA ──────────────────────────────────────────────────────

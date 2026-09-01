@@ -2936,3 +2936,110 @@ l'orario vero della navetta, conviene sostituire tutte e tre le versioni con que
 Provato nel browser vero (`tour.html?id=jungle-park`): le tre righe prezzo, note leggibili,
 "24 ore" nella richiesta. Totale verificato: 2 adulti + 1 bambino → €99 (2×35 + 1×29).
 `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v173`.
+
+### Spettacoli serali: le quattro schede ferme a "Da definire" da canaryvip.com, più Gladiux nuovo (1 settembre 2026)
+
+Arrivati da canaryvip.com i dati di 5 spettacoli serali. Quattro corrispondevano a schede
+già in catalogo, ancora sui campi segnaposto messi mesi fa (`castillo-san-miguel`,
+`flamenco-show`, `scandal-dinner-show`, `history-music-show`); il quinto (Gladiux) non
+esisteva — controllato prima nella categoria `parchi-spettacoli` che non fosse un doppione
+di uno degli altri quattro (prezzo, zona, giorni tutti diversi), poi creato come
+`gladiux-show`. **Il proprietario aveva scritto "gladiuxkl" come nome della scheda nuova**:
+tenuto come titolo/testo, ma per l'id ho usato `gladiux-show` per restare sullo stesso
+schema `nome-show` delle altre quattro (gli id finiscono negli URL `tour.html?id=...`) —
+**da confermare, va rinominato se "gladiuxkl" doveva essere l'id vero**.
+
+**Anche stavolta la pagina del fornitore aveva il banner "prezzi scontati natalizi ora
+applicati"** (la stessa frase già vista per Siam Park/Aqualand/Loro Parque ad agosto):
+usati comunque i prezzi come `priceFrom`, **da riconfermare quando lo sconto finisce**,
+stessa scelta già fatta col proprietario per quel caso.
+
+**Castillo San Miguel**: `priceFrom` 44€ → 50€ (il fornitore dava 49,50€; nessun'altra
+scheda del catalogo usa prezzi coi decimali, arrotondato per eccesso per non rischiare di
+far pagare meno del dovuto — **da riconfermare**). Aggiunti `days: ["mar","gio","sab"]`
+(prima mancava, quindi la pagina mostrava "tutti i giorni", sbagliato), `times: ["19:00"]`,
+`zone: "San Miguel de Abona"` (prima "Da definire"), `included: ["lunch","drinks"]` per il
+banchetto e le bevande, e un `transfer` testuale senza prezzo (il fornitore parla di navetta
+opzionale ma non dice quanto costa). Nelle note: distanza da Costa Adeje, apertura porte,
+parcheggio, menu vegetariano/bambini su richiesta, e l'esistenza di un pacchetto VIP senza
+prezzo pubblicato (ingresso prioritario, cava, posti premium) — segnalato ma non prezzato.
+
+**¡Olé! Flamenco Show**: qui il prezzo "da" del fornitore (51€) **non tornava** con i due
+prezzi di categoria che stavano nel corpo della pagina (Gold 49€, Platinum 59€ — 51 sta in
+mezzo, ma è più basso del Gold): il fornitore stesso segnalava la cosa come da riconciliare.
+Invece di scegliere alla cieca uno dei tre numeri, ho usato Gold e Platinum come due
+`options` (stesso meccanismo del biglietto normale/tutto compreso di Siam Park): prezzo
+sulla scheda preso dal più basso (Gold, 49€). Platinum include un bicchiere di vino e
+snack (`included: ["drinks","snack"]` sulla variante). **Deciso da solo, senza conferma
+dell'ufficio: da rivedere se i tre numeri del fornitore vanno intesi diversamente.**
+Corretta anche la durata, che era sbagliata: la scheda diceva "1 ora e 30" ma il fornitore
+dà "≈ 2h" → aggiornata a "2 ore". Aggiunti `days: ["gio"]` (era senza, quindi "tutti i
+giorni", sbagliato — lo spettacolo è solo il giovedì) e `times: ["20:15"]`. Note aggiunte:
+dress code, parcheggio al CC Plaza del Duque.
+
+**Scandal Dinner Show**: `priceFrom` era `null` ("Su richiesta"), ora 94€ (il "da" del
+fornitore) — **la pagina del fornitore dice esplicitamente che i prezzi variano per
+stagione e categoria e vanno letti da un modulo di prenotazione in tempo reale**, quindi
+94€ è solo indicativo: **da riconfermare con l'ufficio più di ogni altro prezzo preso
+oggi**. `days: ["sab"]` e `times: ["20:30"]` aggiunti (era senza giorni, "tutti i giorni"
+sbagliato: è solo il sabato). Durata corretta da "Serata" a "3 ore" (doors 20:00, inizio
+20:30, fine 23:30). Aggiunto `transfer` testuale (navette dai punti indicati dal fornitore,
+prezzo su richiesta) e tre note: chiusura porte alle 20:30 (fatto pratico, non la nostra
+cancellazione — quella resta a 24 ore), dress code, menu vegetariano/vegano/senza glutine e
+preavviso allergie. **Non presi**: nomi dei presentatori (testo da locandina, non un fatto
+utile alla prenotazione), pacchetti per gruppi privati 30-150 persone con add-on (fuori
+scopo per questo aggiornamento).
+
+**History – The Evolution of Music**: prezzo già a 49€, invariato. Corretta la durata, che
+era sbagliata: la scheda diceva "2 ore e 30" ma il fornitore dà 2h15m → aggiornata. `zone`
+da "Pirámide de Arona" (nome della sede, non della zona) a "Playa de las Américas" (l'area
+vera secondo il fornitore); il nome della sede è finito in una nota. Aggiunti
+`days: ["sab"]` (era senza — è solo il sabato) e `times: ["21:00"]`. Note su apertura
+porte, posti non assegnati, parcheggio, dress code.
+
+**Nessuna delle quattro usa il campo `languages`**, anche se il fornitore segnala la lingua
+dello spettacolo (inglese, per tre su quattro): quel campo fa comparire "In che lingua?"
+nella finestra della richiesta, cioè una scelta per il cliente, e qui non è una scelta — lo
+spettacolo è in inglese e basta. Scritto invece come nota ("Spettacolo in inglese.") dove il
+fornitore lo segnalava.
+
+**Gladiux Show (nuova, `gladiux-show`)**: gladiatori a cavallo, mercoledì e sabato
+(`days: ["mer","sab"]`), 19:30 (`times: ["19:30"]`). `priceFrom: 35`, stesso avviso sconto
+natalizio delle altre. **Durata "≈ 1 ora e 30" dedotta** dagli orari 19:30-21:00: il
+fornitore stesso dice di non averla dichiarata esplicitamente, quindi è scritta col "≈" e
+segnalata qui come da confermare. **La cena è inclusa solo il sabato** (grigliata + vino,
+sangria, birra, bibite e acqua); il mercoledì è solo lo spettacolo, con un menu à la carte
+pagato a parte — spiegato in `desc`, non messo nel riquadro "Cosa è incluso" perché quel
+riquadro vale per tutte le partenze e qui non sarebbe stato vero il mercoledì. `family: true`
+deciso per somiglianza con Castillo San Miguel (stesso tipo di spettacolo per famiglie, niente
+segnali di contenuto per adulti come Scandal) — **il fornitore non lo dice, da confermare**.
+
+**Niente foto**: la pagina del fornitore ha una sua immagine, ma è di un rivenditore
+concorrente (CanaryVIP), non del fornitore originale né di Admiral — stessa scelta già fatta
+per le VIP di Siam Park, non scaricata. `image: ""` e **`published: false`**, come le altre
+schede senza foto in catalogo (`paisaje-lunar`, `canyoning`, ecc.): la scheda esiste già
+pronta ma resta invisibile ai clienti finché non arriva una foto vera, dall'ufficio o dal
+fornitore diretto.
+
+**Non copiato da nessuna delle cinque pagine**, per le regole di `CLAUDE.md`: le politiche di
+cancellazione dei fornitori (24/48/72 ore secondo lo spettacolo — Isla resta sempre a 24
+ore), punteggi e numero di recensioni, "best price guarantee" e testo promozionale. Le
+descrizioni esistenti non sono state toccate (erano già scritte da zero, non dal
+fornitore); quella di Gladiux è nuova, scritta da zero.
+
+Provato nel browser vero le quattro schede aggiornate (`tour.html?id=castillo-san-miguel`,
+`flamenco-show`, `scandal-dinner-show`, `history-music-show`): zona, durata, giorni, orari,
+prezzo, transfer/incluso e note tutti a posto, "24 ore" nella finestra della richiesta su
+tutte. La scheda Gladiux provata pubblicandola temporaneamente (`published: true`) solo per
+il test, poi rimessa a `false`: mostra "Photo coming soon" al posto della foto e il resto dei
+dati corretto. Controllata anche `escursioni.html?cat=parchi-spettacoli`: le card aggiornate
+compaiono con i dati nuovi, nessun errore console. `node controlla.js` → 0 errori, lo stesso
+avviso di sempre su `opera-60` (non legato a questo aggiornamento). Alzato `sw.js` a
+`isla-v174`.
+
+**Da confermare con l'ufficio, in ordine di urgenza**: il prezzo di Scandal Dinner Show
+(94€, il fornitore stesso dice che varia); il prezzo di Castillo San Miguel (50€, arrotondato
+da 49,50€); i due prezzi di categoria di ¡Olé! Flamenco Show (49€/59€, scelti al posto del
+"da" 51€ che non tornava); tutti i cinque prezzi per lo sconto natalizio del fornitore; se
+"gladiuxkl" doveva essere l'id della scheda nuova invece di `gladiux-show`; `family: true` su
+Gladiux; la durata dedotta di Gladiux.

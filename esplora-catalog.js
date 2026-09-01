@@ -2799,8 +2799,10 @@ const ESPLORA_CATALOG = [
         es: "Los sábados: menú vegetariano y sin gluten disponibles bajo petición para la cena." },
       { it: "Parcheggio gratuito in loco.", en: "Free on-site parking.", es: "Aparcamiento gratuito en el recinto." }
     ],
+    // Pubblicata senza foto, su richiesta del proprietario: nell'elenco e sulla
+    // pagina esce il segnaposto "Foto in arrivo" finche' non ne arriva una vera.
     image: "",
-    published: false
+    published: true
   },
 
   // ─── TOUR DELL'ISOLA ──────────────────────────────────────────────────────

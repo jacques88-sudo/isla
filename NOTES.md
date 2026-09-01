@@ -3043,3 +3043,30 @@ da 49,50€); i due prezzi di categoria di ¡Olé! Flamenco Show (49€/59€, s
 "da" 51€ che non tornava); tutti i cinque prezzi per lo sconto natalizio del fornitore; se
 "gladiuxkl" doveva essere l'id della scheda nuova invece di `gladiux-show`; `family: true` su
 Gladiux; la durata dedotta di Gladiux.
+
+**Gladiux pubblicata senza foto, su richiesta del proprietario (1 settembre 2026).** Il
+proprietario ha chiesto di "mettere Gladiux in Parchi e spettacoli": la scheda ci era gia'
+(`category: "parchi-spettacoli"` dal primo momento), ma con `published: false` non compariva
+da nessuna parte — ecco perche' sembrava mancante. Messo `published: true` lasciando
+`image: ""`.
+
+**Quindi la regola "senza foto non si pubblica" non e' assoluta**: le altre otto schede senza
+foto (`paisaje-lunar`, `canyoning`, `pico-teide`, `puerto-de-la-cruz`, i quattro tour privati)
+restano `false`, ma il segnaposto esiste apposta ed e' il comportamento descritto in testa a
+`esplora-catalog.js` ("quelle senza foto con un segnaposto"). Guardata l'elenco nel browser
+prima di dire di si': il riquadro "Foto in arrivo" / "Photo coming soon" e' beige come il
+resto della pagina, non un rettangolo grigio rotto, e sta in fila con le card che la foto ce
+l'hanno senza sembrare un errore. `controlla.js` ha il suo avviso apposta ("pubblicata senza
+foto: in elenco esce il riquadro grigio"): resta acceso ed e' giusto cosi', e' un promemoria,
+non un errore.
+
+Provato nel browser vero (`escursioni.html?cat=parchi-spettacoli`, in italiano e in inglese):
+la categoria passa da 14 a 15 attivita' su 67 pubblicate, la card esce completa — segnaposto,
+"Parchi e spettacoli", titolo, descrizione, "A circa 20 minuti da Costa Adeje", "≈ 1 ora e
+30", "Adatta ai bambini", "Transfer disponibile", "da €35" e "Scopri di piu'". `node
+controlla.js` → 0 errori, 2 avvisi (quello di `opera-60` di sempre piu' quello nuovo sulla
+foto). Alzato `sw.js` a `isla-v175`.
+
+**Resta da fare**: la foto vera. Finche' non arriva, la scheda e' online col segnaposto —
+**da chiedere all'ufficio o al fornitore diretto** (quella sulla pagina di CanaryVIP e' di un
+rivenditore concorrente e resta non scaricata).

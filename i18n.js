@@ -177,7 +177,7 @@ const I18N = {
   "inc.wetsuit":        { it: "Muta", en: "Wetsuit", es: "Neopreno" },
   "inc.board":          { it: "Tavola", en: "Board", es: "Tabla" },
   "inc.equipment":      { it: "Attrezzatura", en: "Equipment", es: "Equipo" },
-  "inc.drinks":         { it: "Bevande a bordo", en: "Drinks on board", es: "Bebidas a bordo" },
+  "inc.drinks":         { it: "Bevande incluse", en: "Drinks included", es: "Bebidas incluidas" },
   "inc.snack":          { it: "Snack", en: "Snacks", es: "Snacks" },
   "inc.fingerfood":     { it: "Finger food", en: "Finger food", es: "Finger food" },
   "inc.swimstop":       { it: "Bagno e snorkeling", en: "Swim & snorkel", es: "Baño y snorkel" },

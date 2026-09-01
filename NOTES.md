@@ -2795,3 +2795,38 @@ varianti di biglietto normale restano invariate. `node controlla.js` → 0 error
 citati nel corpo del testo del fornitore). Il transfer a pagamento resta visibile anche sulle
 varianti VIP, cosi' com'e' — nessuna modifica da fare. Niente foto per le tre varianti.
 Nessun codice toccato in questo aggiornamento, solo la conferma.
+
+### Loro Parque: due tipi di biglietto e transfer a pagamento (31 agosto 2026)
+
+Stessi dati, stessa forma di Siam Park: biglietti normali (44€/32€, invariati) e biglietti
+tutto compreso (132€), come due varianti di `options`. **Il proprietario ha detto
+esplicitamente che nel tutto compreso adulti e bambini pagano uguale**: `priceAdult: 132` e
+`priceChild: 132` sulla stessa variante, non un errore di battitura. Il tutto compreso
+include cappellino, esperienza Loro Explore, posti VIP agli spettacoli e cibo/bevande
+illimitati (escluso il Mercato del Gambia, negozi e bazar) — nessuna icona precisa per
+cappellino/Loro Explore/posti VIP, restano descritti a testo; usate le icone `drinks` e
+`lunch` per il cibo e le bevande illimitate.
+
+**Un solo transfer** (da Tenerife Sud, non due zone come Siam Park): `transfer`/
+`transferPrice`, senza `transferPriceLabel` perche' con un solo transfer non serve accorpare
+righe. Prezzo pieno col transfer 65€/49€ (44+21, 32+17). Tolto `included: ["transfer"]` dalla
+scheda: prima il transfer era "su richiesta" senza prezzo (quindi ambiguo se incluso), ora ha
+un prezzo vero ed e' chiaramente un extra a pagamento. La nota del transfer riporta i giorni
+diversi per zona di ritiro (tutti i giorni da Costa Adeje/Los Cristianos, lun/mer/gio/sab da
+Alcalá/Abama/Los Gigantes, mar/ven da Golf del Sur) — fatto pratico, non testo promozionale,
+si puo' scrivere.
+
+**Trovata un'icona sbagliata per il contesto mentre si controllava**: `inc.drinks` diceva
+"Bevande a bordo" ("Drinks on board") in `i18n.js` — giusto per una barca, sbagliato per un
+parco. Cambiato il testo fisso in "Bevande incluse" ("Drinks included"), generico: controllate
+le altre 11 schede che usano la stessa icona (tutte barche), il testo nuovo resta corretto
+anche li'. Un'icona vera e propria per "cibo e bevande illimitati in un parco" non serve
+crearla apposta: `drinks`+`lunch` gia' esistenti bastano col testo generalizzato.
+
+Fasce d'eta' non date dai nuovi dati: riusate 12+/3-11/0-2, come su Siam Park e Twin Ticket.
+
+Provato nel browser vero (`tour.html?id=loro-parque`): le due varianti nei bottoni, il tutto
+compreso con lo stesso prezzo per adulti e bambini, il transfer con supplemento corretto su
+entrambe le varianti (65/49 sul normale, 153/149 sul tutto compreso), l'icona "Bevande
+incluse" al posto di "Bevande a bordo". `node controlla.js` → 0 errori. Alzato `sw.js` a
+`isla-v168`.

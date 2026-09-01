@@ -2507,19 +2507,27 @@ const ESPLORA_CATALOG = [
     zone: "Chayofa (Arona)",
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: 35,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 35,
+    priceChild: 29,
+    priceInfant: 16,
+    ages: { adult: "12+", child: "4-11", infant: "0-3" },
     included: ["transfer"],
     notes: [
-      { it: "Aperto tutti i giorni, 10:00-17:30.",
-        en: "Open every day, 10am-5:30pm.",
-        es: "Abierto todos los días, 10:00-17:30." }
+      { it: "Aperto tutti i giorni, 10:00-17:30. Spettacolo dei leoni marini alle 13:30, spettacolo dei rapaci alle 12:30: entrambi inclusi nel biglietto.",
+        en: "Open every day, 10am-5:30pm. Sea lion show at 1:30pm, birds of prey show at 12:30pm: both included in the ticket.",
+        es: "Abierto todos los días, 10:00-17:30. Espectáculo de leones marinos a las 13:30, espectáculo de aves rapaces a las 12:30: ambos incluidos en la entrada." },
+      { it: "Navetta gratuita Jungle Park: Aqualand Costa Adeje alle 9:30 e 10:45; H. Suite Labranda Costa Adeje alle 9:35 e 10:50; C.C. Duke Shops alle 9:35 e 10:55; Hotel Sunwing Fañabé alle 9:40 e 11:00; Hotel Allsun Hibiscos alle 9:45 e 11:05; Calle Llanos de Troya alle 9:50 e 11:35; Bar Leonardo alle 9:55 e 11:40; Hotel Best Tenerife alle 10:00 e 11:45; C.C. Pasarela \"La Pepa\" (Los Cristianos) alle 10:10 e 11:50; Hotel Sol Arona alle 10:15 e 11:55. Ritorno da Jungle Park alle 16:30 e alle 17:30.",
+        en: "Free Jungle Park shuttle: Aqualand Costa Adeje at 9:30 and 10:45; H. Suite Labranda Costa Adeje at 9:35 and 10:50; Duke Shops mall at 9:35 and 10:55; Hotel Sunwing Fañabé at 9:40 and 11:00; Hotel Allsun Hibiscos at 9:45 and 11:05; Calle Llanos de Troya at 9:50 and 11:35; Bar Leonardo at 9:55 and 11:40; Hotel Best Tenerife at 10:00 and 11:45; Pasarela \"La Pepa\" shopping centre (Los Cristianos) at 10:10 and 11:50; Hotel Sol Arona at 10:15 and 11:55. Return from Jungle Park at 16:30 and 17:30.",
+        es: "Lanzadera gratuita a Jungle Park: Aqualand Costa Adeje a las 9:30 y 10:45; H. Suite Labranda Costa Adeje a las 9:35 y 10:50; C.C. Duke Shops a las 9:35 y 10:55; Hotel Sunwing Fañabé a las 9:40 y 11:00; Hotel Allsun Hibiscos a las 9:45 y 11:05; Calle Llanos de Troya a las 9:50 y 11:35; Bar Leonardo a las 9:55 y 11:40; Hotel Best Tenerife a las 10:00 y 11:45; C.C. Pasarela \"La Pepa\" (Los Cristianos) a las 10:10 y 11:50; Hotel Sol Arona a las 10:15 y 11:55. Regreso desde Jungle Park a las 16:30 y a las 17:30." },
+      { it: "I posti in navetta si assegnano in ordine di arrivo, senza prenotazione: presentarsi al punto di ritiro con un po' di anticipo.",
+        en: "Shuttle seats are given on a first-come, first-served basis, no booking: arrive at the pickup point a little early.",
+        es: "Las plazas en la lanzadera se asignan por orden de llegada, sin reserva: preséntese en el punto de recogida con algo de antelación." }
     ],
     family: true,
     desc: {
-      it: "Parco naturale con animali e rapaci in volo libero.",
-      en: "Nature park with animals and free-flying birds of prey.",
-      es: "Parque natural con animales y aves rapaces en vuelo libre."
+      it: "Parco naturale a Chayofa fra zoo e giardino botanico, con animali esotici e rapaci in volo libero, spettacoli inclusi nel biglietto e navetta gratuita da diverse zone del sud dell'isola.",
+      en: "Nature park in Chayofa, part zoo and part botanical garden, with exotic animals and free-flying birds of prey, shows included in the ticket and a free shuttle from several areas in the south of the island.",
+      es: "Parque natural en Chayofa a medio camino entre zoo y jardín botánico, con animales exóticos y aves rapaces en vuelo libre, espectáculos incluidos en la entrada y lanzadera gratuita desde varias zonas del sur de la isla."
     },
     image: "jungle-park.jpg",
     published: true

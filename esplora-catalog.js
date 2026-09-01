@@ -2539,17 +2539,48 @@ const ESPLORA_CATALOG = [
     id: "mht-drag-show",
     title: "MHT – Music Hall Tavern Drag Show & Dinner",
     category: "parchi-spettacoli",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Serata", en: "Evening", es: "Noche" },
+    zone: "Playa de las Américas",
+    // 19:30 (prima alzata di sipario) - 23:00 (sipario finale).
+    duration: { it: "3 ore e 30", en: "3.5 hours", es: "3 horas y media" },
     priceFrom: 49,
-    priceAdult: 0,
-    priceChild: 0,
-    family: false,
+    priceAdult: 49,
+    priceChild: 39,
+    // Qui `0` vuol dire gratis davvero: il sito dell'operatore scrive che sotto
+    // i 4 anni non serve il biglietto. Vanno pero' dichiarati lo stesso, per i
+    // posti a sedere: sta scritto nelle note.
+    priceInfant: 0,
+    // Fasce scritte per esteso dall'operatore: "Adult tickets are for guests
+    // aged 13 and over, child tickets are for ages 4 to 12, and infants up to
+    // 3 years old do not need a ticket."
+    ages: { adult: "13+", child: "4-12", infant: "0-3" },
+    // L'operatore vende un biglietto bambini dai 4 anni e fa posto ai neonati:
+    // i bambini ci vanno. Nessun limite d'eta' scritto da nessuna parte, al
+    // contrario di Scandal che dice "16+" a chiare lettere.
+    family: true,
+    // Dal calendario dell'operatore, che elenca le date una per una: lunedi',
+    // martedi', giovedi' e venerdi' (**mar** e' martedi'), tutte le settimane.
+    // Torna con le "four shows a week" scritte nella pagina.
+    days: ["lun", "mar", "gio", "ven"],
+    times: ["19:30"],
+    // Cena di tre portate e foto ricordo, tutte e due comprese. Le bevande
+    // **no**: la pagina parla di un "drinks menu", cioe' un bar dove si paga.
+    included: ["lunch", "photos"],
     desc: {
-      it: "Cena e spettacolo drag al Music Hall Tavern.",
-      en: "Dinner and drag show at the Music Hall Tavern.",
-      es: "Cena y espectáculo drag en el Music Hall Tavern."
+      it: "Cena e spettacolo drag al Music Hall Tavern: commedia, musica dal vivo e una cena di tre portate servita mentre lo spettacolo va avanti.",
+      en: "Dinner and drag show at the Music Hall Tavern: comedy, live music and a three-course dinner served while the show goes on.",
+      es: "Cena y espectáculo drag en el Music Hall Tavern: comedia, música en directo y una cena de tres platos servida mientras el espectáculo continúa."
     },
+    notes: [
+      { it: "Le porte aprono alle 19:00, si comincia alle 19:30 e si finisce alle 23:00. La cena arriva alle 19:45, lo spettacolo vero comincia alle 20:45 e c'è un intervallo verso le 22:00.",
+        en: "Doors open at 19:00, it starts at 19:30 and ends at 23:00. Dinner is served at 19:45, the main show starts at 20:45 and there is an interval at around 22:00.",
+        es: "Las puertas abren a las 19:00, empieza a las 19:30 y termina a las 23:00. La cena se sirve a las 19:45, el espectáculo principal empieza a las 20:45 y hay un intervalo sobre las 22:00." },
+      { it: "I bambini sotto i 4 anni non pagano, ma vanno segnalati lo stesso nella richiesta: servono a chi prepara i posti a sedere.",
+        en: "Children under 4 don't pay, but still need to be mentioned in the request: whoever arranges the seating needs to know.",
+        es: "Los menores de 4 años no pagan, pero hay que indicarlos igualmente en la solicitud: quien prepara los asientos necesita saberlo." },
+      { it: "Si tiene al Vivo Show Bar, in Avenida Rafael Puig Lluvina 7, a due passi dal centro di Playa de las Américas. L'operatore non offre nessun servizio di trasporto: ci si arriva a piedi o in taxi.",
+        en: "Held at the Vivo Show Bar, Avenida Rafael Puig Lluvina 7, a short walk from the centre of Playa de las Américas. The operator offers no transport service: you get there on foot or by taxi.",
+        es: "Se celebra en el Vivo Show Bar, Avenida Rafael Puig Lluvina 7, a dos pasos del centro de Playa de las Américas. El operador no ofrece ningún servicio de transporte: se llega a pie o en taxi." }
+    ],
     image: "mht-drag-show.jpg",
     published: true
   },

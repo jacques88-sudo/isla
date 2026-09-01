@@ -3334,3 +3334,68 @@ totale, come vuole la regola. Zero errori console. `node controlla.js` → 0 err
 **Con questa, quattro delle sei schede spettacolo sono complete** (Castillo, Flamenco,
 Scandal, History). Restano: **Gladiux**, che ha i dati ma non la foto, e **MHT – Music Hall
 Tavern**, che non e' mai arrivata e resta com'era, "Da definire" su zona e orari.
+
+### MHT – Music Hall Tavern: la prima pagina di un operatore vero (1 settembre 2026)
+
+L'ultima delle sei, e la piu' facile: i dati stavolta **non vengono da CanaryVIP ma dal sito
+dell'operatore stesso**. Si vede: niente contraddizioni interne, niente testo riciclato da
+un'altra pagina, e le informazioni difficili (fasce d'eta', giorni) scritte per esteso invece
+che da dedurre. La scheda era ferma al primo abbozzo: "Da definire" su zona e durata,
+`priceAdult`/`priceChild` a `0`, nessun giorno, nessun orario.
+
+**Le fasce le scrive l'operatore, tutte e tre**: "Adult tickets are for guests aged 13 and
+over, child tickets are for ages 4 to 12, and infants up to 3 years old do not need a
+ticket". Quindi `ages: { adult: "13+", child: "4-12", infant: "0-3" }` senza dedurre niente —
+la prima volta in tutto il lotto. Prezzi 49 € adulto e 39 € bambino; `priceInfant: 0` di
+nuovo giusto davvero ("do not need a ticket"). L'operatore chiede pero' che i neonati siano
+**dichiarati lo stesso**, per i posti a sedere: scritto in una nota, perche' e' il tipo di
+cosa che fa arrivare una famiglia a un tavolo senza sedia.
+
+**I giorni vengono dal calendario**, che elenca le date una per una: lunedi', martedi',
+giovedi' e venerdi' di ogni settimana, e la pagina conferma da sola con "four shows a week".
+`days: ["lun", "mar", "gio", "ven"]` — e **`mar` e' martedi'**, la trappola di sempre.
+Provata apposta nel browser contro il calendario dell'operatore: martedi' 8 settembre passa,
+mercoledi' 9 viene rifiutato. Se avessi sbagliato sigla sarebbe successo il contrario.
+
+**Orario e durata dalla scaletta della serata**, che l'operatore pubblica minuto per minuto:
+porte 19:00, prima alzata di sipario 19:30, cena 19:45, spettacolo vero 20:45, intervallo
+22:00, sipario finale 23:00. Messo `times: ["19:30"]` (l'inizio, non l'apertura porte — la
+lezione del flamenco) e durata 3h30. La scaletta intera sta in una nota: e' utile, una cena
+che arriva alle 19:45 cambia i piani della giornata.
+
+**Zona**: da "Da definire" a "Playa de las Américas". L'operatore si e' spostato nel 2025 al
+Vivo Show Bar, in Avenida Rafael Puig Lluvina 7, e la pagina dice due volte che **non offre
+nessun trasporto**: quindi niente campo `transfer` (una pillola "Transfer disponibile"
+sarebbe una bugia) e una nota che dice di arrivarci a piedi o in taxi.
+
+**`family` da `false` a `true`**: l'operatore vende un biglietto bambini dai 4 anni e fa posto
+ai neonati, e non c'e' nessun limite d'eta' scritto da nessuna parte — al contrario di Scandal
+che dice "16+" a chiare lettere. **Deciso da solo leggendo i dati: se il proprietario sa che
+lo spettacolo non e' per bambini, si rimette `false` in una parola.**
+
+**`included: ["lunch", "photos"]`**: cena di tre portate e foto ricordo gratis. **Niente
+`drinks`**, e qui e' importante: la pagina vanta un "Amazing Drinks Menu", che e' un bar dove
+si paga, non delle bevande comprese. Sulle altre due cene-spettacolo (Castillo e Scandal) le
+bevande sono incluse davvero ed e' scritto; qui no.
+
+**Trovata un'icona col testo sbagliato per il contesto, la seconda volta che succede.**
+`inc.lunch` diceva "Pranzo" / "Lunch" / "Almuerzo", e su una cena che comincia alle 19:45 e'
+proprio sbagliato. E' lo stesso caso di `inc.drinks`, che ad agosto diceva "Bevande a bordo"
+ed e' diventato "Bevande incluse" quando l'icona e' finita su un parco: **si generalizza il
+testo, non si disegna un'icona nuova** — una posata per la cena e una per il pranzo sarebbero
+due icone quasi identiche, e il progetto le guarda tutte in fila proprio per evitarlo.
+Adesso dice **"Pasto incluso" / "Meal included" / "Comida incluida"**. Controllate tutte e
+dieci le schede che la usano: sei gite in barca (dove il pasto e' davvero un pranzo, e il
+testo nuovo resta corretto), Loro Parque e le tre cene-spettacolo. Verificate nel browser
+nelle tre lingue.
+
+Provato nel browser vero. Totale verificato a mano, 2 adulti + 1 bambino: **€137**
+(2×49 + 39). Le tre righe escono complete, "Adatta a: Famiglie con bambini", il riquadro dice
+"Pasto incluso · Foto". Le sei date provate contro il calendario dell'operatore danno tutte
+il risultato giusto. Zero errori console. `node controlla.js` → 0 errori. Alzato `sw.js` a
+`isla-v181`.
+
+**Con questa le schede spettacolo sono cinque su sei complete.** Resta solo **Gladiux**: ha i
+dati ma non la foto, quindi e' online col segnaposto, e non ha i prezzi per persona (il
+riassunto di CanaryVIP dava solo il "da 35 €"). Se arriva la sua pagina intera, si chiude
+anche quella.

@@ -2535,7 +2535,16 @@ const ESPLORA_CATALOG = [
     notes: [
       { it: "Aqualand 10:00-17:00, Jungle Park 10:00-17:30.",
         en: "Aqualand 10am-5pm, Jungle Park 10am-5:30pm.",
-        es: "Aqualand 10:00-17:00, Jungle Park 10:00-17:30." }
+        es: "Aqualand 10:00-17:00, Jungle Park 10:00-17:30." },
+      { it: "Navetta per Aqualand: da Los Cristianos (C.C. Pasarela) alle 9:30, 10:30 e 11:30; da Playa de las Américas (Hotel Sol Arona) alle 9:35, 10:35 e 11:35 e (Hotel Best Tenerife / Bar Leonardo's) alle 9:40, 10:40 e 11:40; da Costa Adeje (H. Labranda Suites / The Duke Shops) alle 10:05, 11:05 e 12:05 e (Hotel Sunwing Fañabé) alle 10:10, 11:10 e 12:10. Ritorno da Aqualand alle 16:30 e alle 17:15.",
+        en: "Shuttle to Aqualand: from Los Cristianos (Pasarela shopping centre) at 9:30, 10:30 and 11:30; from Playa de las Américas (Hotel Sol Arona) at 9:35, 10:35 and 11:35 and (Hotel Best Tenerife / Bar Leonardo's) at 9:40, 10:40 and 11:40; from Costa Adeje (H. Labranda Suites / The Duke Shops) at 10:05, 11:05 and 12:05 and (Hotel Sunwing Fañabé) at 10:10, 11:10 and 12:10. Return from Aqualand at 16:30 and 17:15.",
+        es: "Lanzadera a Aqualand: desde Los Cristianos (C.C. Pasarela) a las 9:30, 10:30 y 11:30; desde Playa de las Américas (Hotel Sol Arona) a las 9:35, 10:35 y 11:35 y (Hotel Best Tenerife / Bar Leonardo's) a las 9:40, 10:40 y 11:40; desde Costa Adeje (H. Labranda Suites / The Duke Shops) a las 10:05, 11:05 y 12:05 y (Hotel Sunwing Fañabé) a las 10:10, 11:10 y 12:10. Regreso desde Aqualand a las 16:30 y a las 17:15." },
+      { it: "Navetta per Jungle Park: collegamento diretto da Aqualand Costa Adeje alle 9:30 e alle 10:45, oppure dagli stessi punti di ritiro di Aqualand con orario leggermente anticipato. Ritorno da Jungle Park alle 16:30 e alle 17:30.",
+        en: "Shuttle to Jungle Park: direct connection from Aqualand Costa Adeje at 9:30 and 10:45, or from the same Aqualand pickup points a little earlier. Return from Jungle Park at 16:30 and 17:30.",
+        es: "Lanzadera a Jungle Park: conexión directa desde Aqualand Costa Adeje a las 9:30 y a las 10:45, o desde los mismos puntos de recogida de Aqualand con horario ligeramente anticipado. Regreso desde Jungle Park a las 16:30 y a las 17:30." },
+      { it: "I posti in navetta si assegnano in ordine di arrivo: presentarsi al punto di ritiro almeno 15 minuti prima dell'orario.",
+        en: "Shuttle seats are given on a first-come, first-served basis: arrive at the pickup point at least 15 minutes before the scheduled time.",
+        es: "Las plazas en la lanzadera se asignan por orden de llegada: preséntese en el punto de recogida al menos 15 minutos antes de la hora prevista." }
     ],
     family: true,
     desc: {

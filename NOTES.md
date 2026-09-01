@@ -2910,3 +2910,29 @@ Provato nel browser vero (`tour.html?id=aqualand`): le tre righe prezzo, "Transf
 le tre note leggibili senza rompere il layout, "24 ore" nella finestra della richiesta.
 Totale verificato: 2 adulti + 1 bambino → €101 (2×36 + 1×29). `node controlla.js` → 0 errori.
 Alzato `sw.js` a `isla-v172`.
+
+### Jungle Park (scheda singola): stesso trattamento (1 settembre 2026)
+
+Terza pagina dello stesso rivenditore (CanaryVIP), stavolta Jungle Park da solo. Stesso
+schema delle due precedenti: `priceAdult`/`priceChild` erano a `0`. Prezzi veri: adulto 35€,
+bambino 29€, toddler 16€.
+
+**Fasce d'eta' di nuovo riusate** (12+/4-11/0-3), non scritte su questa pagina — stesso
+avviso delle altre due: **da riconfermare**.
+
+**Aggiunti i due spettacoli** (leoni marini 13:30, rapaci 12:30, entrambi inclusi) e i punti
+di ritiro della navetta.
+
+**Terza versione della stessa navetta, e stavolta e' ancora diversa dalle altre due.** Non
+solo tempi: cambiano anche le fermate. Questa pagina ha "Hotel Allsun Hibiscos" che non
+compare ne' sul combo ne' su Aqualand, e i minuti di Bar Leonardo/Hotel Best/Pasarela non
+coincidono con la pagina Aqualand (che a sua volta non coincideva col combo). **Non e' un
+errore di trascrizione: sono tre pagine del rivenditore che descrivono lo stesso servizio in
+tre modi leggermente diversi.** Presa la versione della pagina Jungle Park per questa scheda,
+quella della pagina Aqualand per la scheda Aqualand, quella del combo per il combo — ognuna
+riporta la sua fonte, senza mescolarle. **Segnalato per la terza volta: se l'ufficio ha
+l'orario vero della navetta, conviene sostituire tutte e tre le versioni con quello.**
+
+Provato nel browser vero (`tour.html?id=jungle-park`): le tre righe prezzo, note leggibili,
+"24 ore" nella richiesta. Totale verificato: 2 adulti + 1 bambino → €99 (2×35 + 1×29).
+`node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v173`.

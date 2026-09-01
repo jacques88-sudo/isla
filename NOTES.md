@@ -2790,3 +2790,8 @@ prezzo giusto, "In breve" mostra solo "Prezzo: €660/990/1320" (niente righe ad
 inventate), la finestra di richiesta nasconde il totale invece di mostrarne uno falso, le due
 varianti di biglietto normale restano invariate. `node controlla.js` → 0 errori. Alzato
 `sw.js` a `isla-v167`.
+
+**Confermato dal proprietario**: i prezzi 660/990/1320 sono quelli giusti (non i 610/910/1215
+citati nel corpo del testo del fornitore). Il transfer a pagamento resta visibile anche sulle
+varianti VIP, cosi' com'e' — nessuna modifica da fare. Niente foto per le tre varianti.
+Nessun codice toccato in questo aggiornamento, solo la conferma.

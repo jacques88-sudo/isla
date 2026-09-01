@@ -2620,9 +2620,8 @@ const ESPLORA_CATALOG = [
     days: ["mar", "gio", "sab"],
     times: ["19:00"],
     included: ["lunch", "drinks"],
-    // Il piatto del menu bambini qui non e' scritto da nessuna parte: su MHT
-    // l'ufficio ha detto che e' pizza, per il castello no, quindi resta
-    // "Menu bambini" senza specificare.
+    // Il menu bambini qui resta senza piatto: su MHT e' la pizza, al castello
+    // no — chiesto e confermato dal proprietario, non e' un dato mancante.
     menus: [
       { it: "Vegetariano", en: "Vegetarian", es: "Vegetariano" },
       { it: "Vegano", en: "Vegan", es: "Vegano" },

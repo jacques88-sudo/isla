@@ -2183,6 +2183,47 @@ const ESPLORA_CATALOG = [
             en: "Admission, unlimited Fast Pass for all attractions (except Power of Tower and Lazy River), locker, towel and unlimited All Inclusive service at bars and restaurants, alcoholic drinks included.",
             es: "Entrada, Fast Pass ilimitado para todas las atracciones (excepto Power of Tower y Lazy River), taquilla, toalla y servicio All Inclusive ilimitado en bares y restaurantes, con bebidas alcohólicas incluidas."
           }
+        },
+        // Le tre VIP sono un prezzo forfettario per lo spazio (cabina, casa,
+        // villa), non a persona: `price` sul bottone, niente priceAdult/
+        // priceChild, cosi' il totale automatico non si fa (darebbe un numero
+        // falso, vedi prezziAPersona() in escursioni.js). Il fornitore dava
+        // due prezzi diversi per ciascuna (intestazione e corpo del testo,
+        // marcati "da verificare" sulla sua stessa pagina): tenuto quello piu'
+        // alto, perche' abbassarlo dopo si puo' ma alzarlo dopo che il
+        // cliente l'ha letto no. Il costo per persona in piu' oltre gli
+        // ospiti inclusi resta scritto in `desc`: non c'e' un modo di
+        // collegare uno scaglione a scaglioni (`priceTiers`) a una singola
+        // variante, solo alla scheda intera.
+        {
+          label: { it: "Cabina VIP (fino a 4 persone)", en: "VIP Cabin (up to 4 people)", es: "Cabaña VIP (hasta 4 personas)" },
+          price: 660,
+          included: ["towels"],
+          desc: {
+            it: "Prezzo forfettario per l'uso esclusivo della cabina, fino a 4 persone incluse (fino a 6, con 151€ a persona per ciascuna oltre le 4). Doccia privata e lettini in terrazza, minibar, cassetta di sicurezza, TV, cibo e bevande illimitati nei ristoranti del parco, bus navetta gratuito. Stesso prezzo anche a luglio e agosto.",
+            en: "Flat price for exclusive use of the cabin, up to 4 people included (up to 6, with €151 per extra person beyond 4). Private shower and sun loungers on the terrace, minibar, safe, TV, unlimited food and drinks at the park's restaurants, free shuttle bus. Same price in July and August too.",
+            es: "Precio fijo por el uso exclusivo de la cabaña, hasta 4 personas incluidas (hasta 6, con 151€ por persona extra a partir de la 4ª). Ducha privada y tumbonas en la terraza, minibar, caja fuerte, TV, comida y bebida ilimitadas en los restaurantes del parque, autobús lanzadera gratuito. Mismo precio también en julio y agosto."
+          }
+        },
+        {
+          label: { it: "Casa VIP (fino a 6 persone)", en: "VIP House (up to 6 people)", es: "Casa VIP (hasta 6 personas)" },
+          price: 990,
+          included: ["towels"],
+          desc: {
+            it: "Prezzo forfettario per l'uso esclusivo della casa, fino a 6 persone incluse (fino a 10, con 151€ a persona per ciascuna oltre le 6). Jacuzzi privata e doccia privata in terrazza, lettini, minibar, cassetta di sicurezza, TV, cibo e bevande illimitati nei ristoranti del parco, bus navetta gratuito.",
+            en: "Flat price for exclusive use of the house, up to 6 people included (up to 10, with €151 per extra person beyond 6). Private jacuzzi and private shower on the terrace, sun loungers, minibar, safe, TV, unlimited food and drinks at the park's restaurants, free shuttle bus.",
+            es: "Precio fijo por el uso exclusivo de la casa, hasta 6 personas incluidas (hasta 10, con 151€ por persona extra a partir de la 6ª). Jacuzzi privada y ducha privada en la terraza, tumbonas, minibar, caja fuerte, TV, comida y bebida ilimitadas en los restaurantes del parque, autobús lanzadera gratuito."
+          }
+        },
+        {
+          label: { it: "Villa VIP (fino a 8 persone)", en: "VIP Villa (up to 8 people)", es: "Villa VIP (hasta 8 personas)" },
+          price: 1320,
+          included: ["towels"],
+          desc: {
+            it: "Prezzo forfettario per l'uso esclusivo della villa, fino a 8 persone incluse (fino a 12, con 151€ a persona per ciascuna oltre le 8). Jacuzzi privata e doccia privata in terrazza, lettini, minibar, cassetta di sicurezza, TV, area lounge, cibo e bevande illimitati nei ristoranti premium del parco, bus navetta gratuito.",
+            en: "Flat price for exclusive use of the villa, up to 8 people included (up to 12, with €151 per extra person beyond 8). Private jacuzzi and private shower on the terrace, sun loungers, minibar, safe, TV, lounge area, unlimited food and drinks at the park's premium restaurants, free shuttle bus.",
+            es: "Precio fijo por el uso exclusivo de la villa, hasta 8 personas incluidas (hasta 12, con 151€ por persona extra a partir de la 8ª). Jacuzzi privada y ducha privada en la terraza, tumbonas, minibar, caja fuerte, TV, zona lounge, comida y bebida ilimitadas en los restaurantes premium del parque, autobús lanzadera gratuito."
+          }
         }
       ]
     },

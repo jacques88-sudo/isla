@@ -2735,3 +2735,58 @@ modifica al codice: il campo esisteva gia'.
 Provato nel browser vero (`tour.html?id=twin-ticket`): le due domande si leggono ora chiare,
 i totali restano quelli di sempre (€78 base, €99 con transfer sud, €103 con transfer nord).
 `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v166`.
+
+### Siam Park: Cabina, Casa e Villa VIP da canaryvip.com (31 agosto 2026)
+
+Il proprietario ha incollato i dati di tre prodotti VIP di Siam Park presi da
+canaryvip.com (Cabina, Casa, Villa), chiedendo di aggiungerli "come se fossero tour" — cioe'
+come altre varianti dentro lo stesso `options` di Siam Park, sullo stesso modello del
+biglietto tutto compreso fatto in precedenza.
+
+**Prezzo**: sono forfettari per lo spazio (non a persona), con un numero di ospiti incluso e
+un sovrapprezzo per ospite oltre quel numero (151€, fino a un tetto). Il fornitore stesso
+segnalava un dato incerto — due prezzi diversi per ogni prodotto, quello dell'intestazione e
+quello citato nel corpo del testo (Cabina 660/610, Casa 990/910, Villa 1320/1215), marcati
+"da verificare" sulla sua stessa pagina. **Tenuto il prezzo piu' alto** (660/990/1320): si puo'
+sempre abbassare dopo, alzarlo dopo che il cliente l'ha letto e' la cosa che fa arrabbiare —
+regola di CLAUDE.md, **da riconfermare con l'ufficio**.
+
+**Cosa NON e' stato copiato**: la politica di cancellazione del fornitore (a scaglioni,
+30/7 giorni) — resta quella di Isla, 24 ore; punteggi e numero di recensioni.
+
+**Il costo per ospite extra resta scritto in `desc`**, non in un campo di prezzo: le tre
+varianti hanno `price` (forfettario, sul bottone) ma niente `priceAdult`/`priceChild` apposta,
+cosi' il totale automatico della finestra di richiesta non si fa (darebbe un numero a
+persona che non ha senso su un prezzo a spazio). Il catalogo ha gia' un campo per i prezzi a
+scaglioni di persone (`priceTiers`, usato su Private Charter) ma **solo a livello di scheda,
+non di singola variante** — servirebbe toccare il codice per collegarlo a una variante, non
+fatto qui per restare dentro la richiesta.
+
+**Bug trovato mentre si provava, stesso tipo del precedente**: sia `prezziAPersona()` in
+`escursioni.js` sia `detailRows()` in `tour.js` ricadevano sul prezzo a persona **della
+scheda** (44€/32€) quando la variante scelta non aveva il suo `priceAdult` — corretto per il
+tutto compreso di Siam Park (che ce l'ha sull'adulto), sbagliato per una variante che il
+prezzo a persona apposta non ce l'ha mai, come le tre VIP: selezionando "Cabina VIP" la
+pagina avrebbe mostrato "Adulti (12+): €44" e la finestra un totale a persona, invece del
+prezzo forfettario vero. Sistemato in entrambi i file: il ripiego sul prezzo della scheda
+vale solo quando **non c'e' nessuna variante scelta**, mai quando la variante c'e' ma non ha
+il suo prezzo a persona. Controllato che non cambi niente per le altre 13 schede del
+catalogo che usano `options`: nessun'altra ha il prezzo a persona sulla scheda insieme a
+`options` (Siam Park era l'unica), quindi il comportamento vecchio non serviva a nessun'altra
+scheda.
+
+**Non aggiunto**: foto per le tre varianti — il catalogo non ha un campo foto per singola
+variante (solo `image`/`gallery` a livello di scheda), e le foto del fornitore sono sue,
+da valutare se scaricarle e usarle o farsele mandare dall'ufficio. **Anche il transfer a
+pagamento (Tenerife Nord / Los Gigantes ecc.) resta visibile nella finestra di richiesta con
+tutte e cinque le varianti**, comprese le tre VIP che hanno gia' il bus navetta incluso nel
+prezzo: la finestra non sa ancora nascondere il transfer in base alla variante scelta, quindi
+un cliente potrebbe spuntarlo per sbaglio su una VIP. Non e' un dato sbagliato (il testo della
+variante dice chiaramente che il bus e' incluso), ma **e' un limite da segnalare**, da
+sistemare se capita davvero in una richiesta.
+
+Provato nel browser vero (`tour.html?id=siam-park`): le tre nuove varianti nei bottoni con
+prezzo giusto, "In breve" mostra solo "Prezzo: €660/990/1320" (niente righe adulti/bambini
+inventate), la finestra di richiesta nasconde il totale invece di mostrarne uno falso, le due
+varianti di biglietto normale restano invariate. `node controlla.js` → 0 errori. Alzato
+`sw.js` a `isla-v167`.

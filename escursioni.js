@@ -115,9 +115,14 @@ function prezziAPersona(tour, req) {
   // variante (il tutto compreso di Siam Park non ha ancora un prezzo bambini):
   // resta 0 e piu' sotto non gli si somma niente, se no un "non lo sappiamo"
   // diventerebbe un numero verosimile ma falso.
+  // Se una variante e' scelta, conta solo il suo prezzo: una variante col
+  // `price` ma senza `priceAdult` (una cabina VIP, il jet ski a moto d'acqua)
+  // e' apposta non a persona, e cadere sul prezzo della scheda darebbe un
+  // totale falso (la cabina VIP di Siam Park mostrerebbe il prezzo del
+  // biglietto normale). Il ripiego sulla scheda vale solo senza variante.
   const variante = varianteDi(tour, req.option);
-  const base = (variante && variante.priceAdult > 0)
-    ? { adulto: variante.priceAdult, bambino: variante.priceChild || 0 }
+  const base = variante
+    ? (variante.priceAdult > 0 ? { adulto: variante.priceAdult, bambino: variante.priceChild || 0 } : null)
     : (tour.priceAdult > 0 ? { adulto: tour.priceAdult, bambino: tour.priceChild || 0 } : null);
   if (!base) return null;
 

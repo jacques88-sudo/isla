@@ -2830,3 +2830,24 @@ compreso con lo stesso prezzo per adulti e bambini, il transfer con supplemento 
 entrambe le varianti (65/49 sul normale, 153/149 sul tutto compreso), l'icona "Bevande
 incluse" al posto di "Bevande a bordo". `node controlla.js` → 0 errori. Alzato `sw.js` a
 `isla-v168`.
+
+### Siam Park e Loro Parque: l'orario al posto di "Giornata intera" (31 agosto 2026)
+
+Il proprietario ha chiesto di togliere "Giornata intera" da `duration` (non dice niente di
+utile) mettendo al suo posto l'orario vero, e di togliere l'orario dai `notes` visto che
+adesso sta gia' scritto sopra, in "In breve" — due volte la stessa informazione confondeva.
+
+**Siam Park**: `duration` diventa "10:00-18:00 in estate, 10:00-17:00 in inverno" (prima
+"Giornata intera"). Tolte le date esatte del cambio stagione (30 marzo, 21 ottobre, ecc.) che
+stavano nella nota: per stare corto in "In breve" resta solo l'orario, **da riguardare se
+servono anche le date**. Il resto della nota (i due prezzi estivi 48€/169€) resta in
+`notes`.
+
+**Loro Parque**: `duration` diventa "09:30-17:30". La nota sugli orari era l'unica che aveva:
+tolta, e con lei tolto anche tutto il campo `notes` (vuoto non si scrive).
+
+Provato nel browser vero (`tour.html?id=siam-park` e `loro-parque`): "In breve" mostra
+l'orario al posto di "Giornata intera", "Consigli" non ripete piu' l'orario (su Loro Parque
+la sezione "Consigli" sparisce del tutto, non essendoci altro). Controllata anche la card
+nell'elenco (`escursioni.html`): l'orario ci sta su una riga sola, senza rompere il layout.
+`node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v169`.

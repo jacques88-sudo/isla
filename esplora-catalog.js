@@ -2148,7 +2148,13 @@ const ESPLORA_CATALOG = [
     title: "Siam Park",
     category: "parchi-spettacoli",
     zone: "Costa Adeje",
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    // Al posto di "Giornata intera" (che non dice niente) l'orario vero,
+    // spostato qui da `notes`: due volte la stessa informazione confondeva.
+    duration: {
+      it: "10:00-18:00 in estate, 10:00-17:00 in inverno",
+      en: "10am-6pm in summer, 10am-5pm in winter",
+      es: "10:00-18:00 en verano, 10:00-17:00 en invierno"
+    },
     priceFrom: 44,
     priceAdult: 44,
     priceChild: 32,
@@ -2260,9 +2266,6 @@ const ESPLORA_CATALOG = [
       es: "¿Quieres el traslado desde Los Gigantes, Callao Salvaje o Playa Paraíso?"
     },
     notes: [
-      { it: "Aperto tutti i giorni: 10:00-18:00 in estate (30 marzo - 21 ottobre), 10:00-17:00 in inverno (22 ottobre - 29 marzo).",
-        en: "Open every day: 10am-6pm in summer (30 March - 21 October), 10am-5pm in winter (22 October - 29 March).",
-        es: "Abierto todos los días: 10:00-18:00 en verano (30 de marzo - 21 de octubre), 10:00-17:00 en invierno (22 de octubre - 29 de marzo)." },
       { it: "In luglio e agosto il biglietto normale costa 48€ per adulto invece di 44€.",
         en: "In July and August the regular ticket costs €48 per adult instead of €44.",
         es: "En julio y agosto la entrada normal cuesta 48 € por adulto en lugar de 44 €." },
@@ -2307,7 +2310,8 @@ const ESPLORA_CATALOG = [
     title: "Loro Parque",
     category: "parchi-spettacoli",
     zone: "Puerto de la Cruz",
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    // Al posto di "Giornata intera" l'orario vero, spostato qui da `notes`.
+    duration: { it: "09:30-17:30", en: "9:30am-5:30pm", es: "09:30-17:30" },
     priceFrom: 44,
     priceAdult: 44,
     priceChild: 32,
@@ -2348,11 +2352,6 @@ const ESPLORA_CATALOG = [
       es: "Disponible bajo petición, desde Tenerife Sur. Todos los días desde Costa Adeje y Los Cristianos; lunes, miércoles, jueves y sábado desde Alcalá, Abama y Los Gigantes; martes y viernes desde Golf del Sur. Basta con indicar el hotel o la dirección de recogida."
     },
     transferPrice: { adult: 65, child: 49 },
-    notes: [
-      { it: "Aperto tutti i giorni, 09:30-17:30.",
-        en: "Open every day, 9:30am-5:30pm.",
-        es: "Abierto todos los días, 09:30-17:30." }
-    ],
     family: true,
     desc: {
       it: "Zoo e giardino tropicale, conosciuto in tutto il mondo per i suoi animali.",

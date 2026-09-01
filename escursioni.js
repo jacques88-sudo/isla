@@ -55,7 +55,7 @@ function esc(testo) {
 
 function tourPrice(tour) {
   if (tour.priceFrom === null) return t("tour.onRequest");
-  return t("tour.from", { p: tour.priceFrom }) + priceUnitSuffix(tour);
+  return t("tour.from", { p: eur(tour.priceFrom) }) + priceUnitSuffix(tour);
 }
 
 function categoryName(id) {
@@ -160,9 +160,9 @@ function calcolaTotale(tour, req) {
   // Bambini senza il loro prezzo: il totale verrebbe fuori come se non
   // pagassero. Meglio niente che un numero falso.
   if (!p || req.adults < 1 || (req.kids > 0 && !p.bambino)) return null;
-  const pezzi = [req.adults + " " + t(req.adults === 1 ? "wa.adult" : "wa.adults") + " × €" + p.adulto];
+  const pezzi = [req.adults + " " + t(req.adults === 1 ? "wa.adult" : "wa.adults") + " × €" + eur(p.adulto)];
   if (req.kids > 0) {
-    pezzi.push(req.kids + " " + t(req.kids === 1 ? "wa.child" : "wa.children") + " × €" + p.bambino);
+    pezzi.push(req.kids + " " + t(req.kids === 1 ? "wa.child" : "wa.children") + " × €" + eur(p.bambino));
   }
   return {
     totale: req.adults * p.adulto + req.kids * p.bambino,
@@ -208,7 +208,7 @@ function righeRichiesta(tour, req) {
   // attaccato: il prezzo buono e' quello della conferma, non questo.
   const conto = calcolaTotale(tour, req);
   if (conto) {
-    righe.push("• " + t("wa.total") + ": €" + conto.totale + " (" + conto.dettaglio + ")");
+    righe.push("• " + t("wa.total") + ": €" + eur(conto.totale) + " (" + conto.dettaglio + ")");
   }
   if (req.note) righe.push("• " + t("wa.notes") + ": " + req.note);
   return righe;
@@ -534,7 +534,7 @@ function initRequestDialog() {
       voce.value = tf(scelta.label);
       const prezzo = scelta.price || scelta.priceAdult;
       voce.textContent = prezzo
-        ? tf(scelta.label) + " — €" + prezzo
+        ? tf(scelta.label) + " — €" + eur(prezzo)
         : tf(scelta.label);
       optionEl.appendChild(voce);
     });
@@ -652,7 +652,7 @@ function initRequestDialog() {
       return;
     }
     totalEl.innerHTML =
-      '<strong>' + t("req.total") + ' €' + conto.totale + '</strong>' +
+      '<strong>' + t("req.total") + ' €' + eur(conto.totale) + '</strong>' +
       '<span>' + conto.dettaglio + '</span>' +
       '<small>' + t("req.totalNote") + '</small>';
     totalEl.hidden = false;

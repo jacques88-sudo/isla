@@ -3103,3 +3103,75 @@ indirizzi diretti (`tour.html?id=paisaje-lunar` ecc.) danno la pagina "Escursion
 trovata" invece di rompersi, home a posto, zero errori console. `node --check
 esplora-catalog.js` ok, `node controlla.js` → 0 errori (restano i due avvisi noti, `opera-60`
 e la foto di Gladiux). Alzato `sw.js` a `isla-v176`.
+
+### Castillo San Miguel: i prezzi veri dal modulo di prenotazione, e i centesimi (1 settembre 2026)
+
+Il proprietario ha incollato la pagina intera di CanaryVIP per la cena medievale, **modulo di
+prenotazione compreso**: non piu' solo un prezzo "da", ma i quattro prezzi veri per tipo di
+biglietto e per fascia, piu' il prezzo del transfer. Sono gli stessi dati che ad agosto
+avevano dato solo "49,50 €" e un tier VIP senza prezzo.
+
+**I numeri**: normale 49,50 € adulto / 29 € bambino, VIP 59,50 € / 35 €, transfer +15 €
+adulto e +10 € bambino. Il transfer in catalogo si scrive **completo** (prezzo del biglietto
+piu' il bus, e' quello che serve al totale), quindi `transferPrice: { adult: 64.50, child: 39 }`.
+I due tipi di biglietto sono diventati due `options`, sullo stesso modello di Siam Park e Loro
+Parque. Sparita la nota "pacchetto VIP: prezzo su richiesta": adesso il prezzo c'e'.
+
+**Cosa NON e' stato copiato**, come sempre da questo rivenditore: "Miglior prezzo garantito",
+"Biglietti Ufficiali", "Pagamento sicuro", "Prenotate in anticipo, i posti si riempiono
+velocemente", punteggio e numero di recensioni, e la loro politica di cancellazione (che qui
+diceva 24 ore come la nostra, ma resta la nostra per principio: non si copia una policy, si
+scrive la propria). Le note sul menu e sullo spettacolo sono riscritte da zero nelle tre lingue.
+
+**Manca ancora**: le fasce d'eta'. Il modulo del fornitore ha "Adulto" e "Bambino" con un
+punto interrogativo accanto, ma il testo delle fasce non era nella pagina incollata. Niente
+campo `ages`, quindi la pagina scrive "Adulti €49,50" e "Bambini €29" senza dire da che eta'
+a che eta' — **da chiedere all'ufficio**, e' il buco piu' fastidioso di questa scheda.
+
+**I centesimi: il sito non sapeva scriverli.** 49,50 € e' il primo prezzo del catalogo con i
+decimali, e tutti i punti che stampano un prezzo facevano `"€" + numero`: sarebbe uscito
+"€49.5", che su una pagina di prenotazione sembra un errore di battitura. Il proprietario ha
+scelto di **mettere i prezzi esatti e sistemare la stampa**, invece di arrotondare a 50 € (che
+avrebbe dato totali diversi da quelli del fornitore: 2 adulti €100 invece di €99).
+
+Aggiunta quindi `eur(n)` in `i18n.js`, accanto a `t()` e `tf()` perche' la virgola e' una
+questione di lingua e quel file lo caricano tutte le pagine. Regole: **i prezzi interi restano
+come sono** ("44", non "44,00" — sono quasi tutti cosi' e riempire il sito di zeri non l'ha
+chiesto nessuno), quelli coi centesimi prendono sempre due decimali, con la virgola in
+italiano e spagnolo e il punto in inglese. Il simbolo € non lo mette lei: lo scrivono gia' i
+19 punti che la chiamano, in `escursioni.js`, `tour.js` e `lista.js` (card, "In breve",
+bottoni delle varianti, totale della finestra, messaggio WhatsApp, lista delle richieste).
+
+**Non toccato `data-option-price`** in `tour.js`: e' un attributo che nessuno rilegge (come il
+`<select>` morto della finestra), e per un dato il numero grezzo e' piu' giusto di un numero
+formattato.
+
+**Trovato e corretto un bug mentre si provava — il terzo dello stesso tipo.** Con la variante
+VIP scelta, la riga "Con il transfer" continuava a dire "€64,50 adulti · €39 bambini", cioe' i
+prezzi dell'**ingresso normale**, mentre due righe sotto il totale diceva €194: due numeri
+sulla stessa pagina che si contraddicono. Il totale (`prezziAPersona()`) era gia' stato
+insegnato a rifare il conto sulla variante, la riga di "In breve" no. Aggiunta `conVariante()`
+in `detailRows()`: prende il supplemento del bus e lo somma al prezzo della variante scelta,
+e non fa niente quando la variante un prezzo a persona non ce l'ha (le cabine VIP di Siam
+Park, che si pagano a spazio) — li' resta il prezzo della scheda, come prima.
+
+**Il bug c'era gia' e non solo qui**: su Loro Parque il "tutto compreso" mostrava "Con il
+transfer €65 · €49" (i prezzi del biglietto normale) mentre il totale calcolava 153/149.
+Adesso la riga dice €153 · €149, cioe' gli stessi numeri gia' scritti in queste note ad
+agosto. Siam Park non era toccato dal problema perche' usa `transferPriceLabel`, che mostra
+il **supplemento** (€25/€21) e non cambia con la variante.
+
+Provato nel browser vero, in italiano e in inglese, su tutte e tre le schede che hanno
+varianti e transfer insieme. Totali verificati a mano, 2 adulti + 1 bambino:
+Castillo normale €128 (2×49,50+29) e €168 col transfer (2×64,50+39), VIP €154 (2×59,50+35) e
+€194 col transfer (2×74,50+45); Loro Parque €120/€179 sul normale e €396/€455 sul tutto
+compreso; Siam Park €120/€191 sul normale, totale nascosto sul tutto compreso e sulle VIP
+(giusto: il prezzo bambini non ce l'hanno). Controllato che le schede a prezzo intero non
+siano cambiate: `siam-park`, `loro-parque`, `combo-jungle-aqualand`, `private-charter` e
+`gladiux-show` scrivono ancora "€44", "€165", "€350", mai "€44,00". In inglese i decimali
+escono col punto ("€49.50"), in italiano e spagnolo con la virgola. Zero errori console.
+`node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v177`.
+
+**Da confermare con l'ufficio**: le fasce d'eta' adulto/bambino; e i prezzi restano quelli
+del rivenditore col banner dello sconto natalizio, quindi valgono gli stessi avvisi delle
+altre schede prese da CanaryVIP.

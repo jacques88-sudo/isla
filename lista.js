@@ -141,7 +141,7 @@ function listaWhatsappUrl(nome) {
     blocchi.join("\n\n");
   if (somma > 0) {
     testo += "\n\n" + (senzaPrezzo ? t("wa.totalPartial") : t("wa.total")) +
-      ": €" + somma;
+      ": €" + eur(somma);
   }
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
 }
@@ -251,7 +251,7 @@ function initLista() {
             <strong>${esc(tf(riga.tour.title))}</strong>
             <span>${esc(dettagli.join(" · "))}</span>
           </div>
-          <span class="lista-voce-prezzo">${riga.conto ? "€" + riga.conto.totale : esc(tourPrice(riga.tour))}</span>
+          <span class="lista-voce-prezzo">${riga.conto ? "€" + eur(riga.conto.totale) : esc(tourPrice(riga.tour))}</span>
           <button class="iconbtn lista-voce-togli" type="button" data-lista-remove="${i}"
                   aria-label="${esc(t("lista.remove"))}">✕</button>
         </li>`;
@@ -260,7 +260,7 @@ function initLista() {
     const { somma, senzaPrezzo } = listaSomma(voci);
     const totale = somma > 0
       ? `<p class="lista-totale">
-           <strong>€${somma}</strong>
+           <strong>€${eur(somma)}</strong>
            <small>${esc(senzaPrezzo ? t("wa.totalPartial") : t("wa.total"))}</small>
          </p>`
       : "";

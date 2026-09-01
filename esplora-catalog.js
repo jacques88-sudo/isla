@@ -2309,14 +2309,45 @@ const ESPLORA_CATALOG = [
     zone: "Puerto de la Cruz",
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: 44,
-    priceAdult: 0,
-    priceChild: 0,
-    included: ["transfer"],
-    transfer: {
-      it: "Disponibile su richiesta",
-      en: "Available on request",
-      es: "Disponible bajo petición"
+    priceAdult: 44,
+    priceChild: 32,
+    priceInfant: 0,
+    ages: { adult: "12+", child: "3-11", infant: "0-2" },
+    // Due varianti di biglietto, come su Siam Park: il normale e' a
+    // persona, il tutto compreso ha lo stesso prezzo per adulti e bambini
+    // (dato cosi' dall'ufficio, non e' un errore).
+    options: {
+      label: { it: "Tipo di biglietto", en: "Ticket type", es: "Tipo de entrada" },
+      choices: [
+        {
+          label: { it: "Biglietti normali", en: "Regular tickets", es: "Entradas normales" },
+          priceAdult: 44,
+          priceChild: 32,
+          desc: {
+            it: "Biglietti d'ingresso regolari.",
+            en: "Regular admission tickets.",
+            es: "Entradas regulares."
+          }
+        },
+        {
+          label: { it: "Biglietti tutto compreso", en: "All-inclusive tickets", es: "Entradas todo incluido" },
+          priceAdult: 132,
+          priceChild: 132,
+          included: ["drinks", "lunch"],
+          desc: {
+            it: "Ingresso VIP con accesso all-inclusive: cappellino Loro Parque, esperienza Loro Explore, posti riservati VIP agli spettacoli e cibo e bevande illimitati nei ristoranti (escluso il Mercato del Gambia, negozi e bazar). Stesso prezzo per adulti e bambini.",
+            en: "VIP admission with all-inclusive access: Loro Parque cap, Loro Explore experience, VIP reserved seats at the shows and unlimited food and drinks at the restaurants (not including the Gambia Market, shops and bazaar). Same price for adults and children.",
+            es: "Entrada VIP con acceso todo incluido: gorra de Loro Parque, experiencia Loro Explore, asientos VIP reservados en los espectáculos y comida y bebida ilimitadas en los restaurantes (no incluye el Mercado de Gambia, tiendas y bazar). Mismo precio para adultos y niños."
+          }
+        }
+      ]
     },
+    transfer: {
+      it: "Disponibile su richiesta, da Tenerife Sud. Tutti i giorni da Costa Adeje e Los Cristianos; lunedì, mercoledì, giovedì e sabato da Alcalá, Abama e Los Gigantes; martedì e venerdì da Golf del Sur. Basta indicare l'hotel o l'indirizzo di ritiro.",
+      en: "Available on request, from Tenerife South. Every day from Costa Adeje and Los Cristianos; Mondays, Wednesdays, Thursdays and Saturdays from Alcalá, Abama and Los Gigantes; Tuesdays and Fridays from Golf del Sur. Just give the hotel or pickup address.",
+      es: "Disponible bajo petición, desde Tenerife Sur. Todos los días desde Costa Adeje y Los Cristianos; lunes, miércoles, jueves y sábado desde Alcalá, Abama y Los Gigantes; martes y viernes desde Golf del Sur. Basta con indicar el hotel o la dirección de recogida."
+    },
+    transferPrice: { adult: 65, child: 49 },
     notes: [
       { it: "Aperto tutti i giorni, 09:30-17:30.",
         en: "Open every day, 9:30am-5:30pm.",

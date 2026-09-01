@@ -238,6 +238,7 @@ const I18N = {
   "req.langAny":        { it: "Indifferente", en: "No preference", es: "Indiferente" },
   "req.menu":           { it: "Esigenze sul menu", en: "Dietary requirements", es: "Necesidades del menú" },
   "req.menuStandard":   { it: "Menu standard", en: "Standard menu", es: "Menú estándar" },
+  "req.menuError":      { it: "Hai indicato più menu speciali che persone.", en: "You've asked for more special menus than there are people.", es: "Has indicado más menús especiales que personas." },
   "req.menuHint":       { it: "Allergie o intolleranze: scrivile nelle note qui sotto, così la cucina le sa in anticipo.", en: "Allergies or intolerances: write them in the notes below, so the kitchen knows in advance.", es: "Alergias o intolerancias: escríbelas en las notas de abajo, para que la cocina lo sepa con antelación." },
   "req.dayError":       { it: "Questa escursione si fa solo: {giorni}.", en: "This excursion only runs on: {giorni}.", es: "Esta excursión solo se hace: {giorni}." },
 

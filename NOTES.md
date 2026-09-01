@@ -3287,3 +3287,50 @@ Provato nel browser vero. Totali verificati a mano: **Oro €188** (2×94), **Pl
 "Adatta a: Adulti". **Provata anche la validazione della data**: giovedi' 3 settembre viene
 rifiutato con "Questa escursione si fa solo: Ven · Sab", venerdi' 4 e sabato 5 passano. Zero
 errori console. `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v179`.
+
+### History – The Evolution of Music: tre fasce di prezzo, una gratis (1 settembre 2026)
+
+Quarta e ultima pagina intera. Questa volta senza contraddizioni: il modulo di prenotazione
+ha **tre righe** invece delle solite due — Adulto 49 €, Bambino 25 € e **"Bambino
+(gratuito)"**. La scheda aveva solo il `priceFrom: 49` e nessun prezzo a persona.
+
+**Le fasce le ha date il proprietario, non la pagina**: "bambini 5-15". Il fornitore le tre
+righe le scrive senza dire a che eta' valgono. Da li' il resto viene da se': `16+` per gli
+adulti e `0-4` per i gratuiti sono **gli unici completamenti che non lasciano buchi** fra le
+tre righe del modulo. Messe cosi' in `ages`, e `controlla.js` conferma che combaciano.
+
+**Questo e' uno dei rari casi in cui `priceInfant: 0` e' giusto davvero**: il modulo scrive
+"gratuito" a lettere, quindi lo zero vuol dire "non pagano" e non "non lo sappiamo". Sulla
+pagina esce "Neonati (0-4): Gratis". Su tutte le altre schede spettacolo il campo resta
+assente apposta.
+
+**Confermato, non cambiato**: giorni (ogni sabato), orario (porte 20:00, spettacolo 21:00) e
+durata 2h15. Su questa scheda avevo letto giusto gia' ad agosto — la pagina dice "due ore piu'
+un intervallo di 15 minuti", che fa esattamente il "≈ 2:15h" dell'intestazione. Aggiunta una
+nota con questa spiegazione e col fatto che e' presentato in inglese, e arricchita la
+descrizione con quello che si vede davvero (trenta artisti, musica/danza/teatro/acrobazie,
+dal classico a Elvis, Beatles, Queen, ABBA e Michael Jackson).
+
+**Trovato un pezzo di pagina sbagliato dal fornitore, e non copiato.** La pagina ha un
+paragrafo "Ingresso della mostra: usate l'ingresso designato sul lato sinistro dell'ingresso
+principale **dell'hotel**" — ma questo spettacolo si tiene in un auditorium, non in un hotel.
+E' la stessa identica frase della pagina del flamenco, che invece sta davvero dentro il GF
+Victoria: e' un copia-incolla che il fornitore si e' portato dietro. **Quarta prova che le
+parti "di contorno" di queste pagine non sono affidabili** (dopo l'orario del flamenco, la sua
+durata e i giorni di Scandal): fidarsi del modulo e delle righe specifiche, non del testo
+riempitivo.
+
+**Non copiato**: "Miglior prezzo garantito", "Biglietti Ufficiali", "Pagamento sicuro", "Nuovo
+spettacolo a Tenerife!", punteggio e recensioni, gli spettacoli privati per eventi aziendali,
+gli sconti gruppi non quantificati, e la loro cancellazione a 24 ore (che qui coincide con la
+nostra, ma resta la nostra per principio).
+
+Provato nel browser vero in italiano e in inglese. Le tre righe escono complete: "Adulti
+(16+) €49", "Bambini (5-15) €25", "Neonati (0-4) Gratis" / "Infants (0-4) Free". Totale
+verificato a mano, 2 adulti + 1 bambino: **€123** (2×49 + 25), e i neonati non entrano nel
+totale, come vuole la regola. Zero errori console. `node controlla.js` → 0 errori. Alzato
+`sw.js` a `isla-v180`.
+
+**Con questa, quattro delle sei schede spettacolo sono complete** (Castillo, Flamenco,
+Scandal, History). Restano: **Gladiux**, che ha i dati ma non la foto, e **MHT – Music Hall
+Tavern**, che non e' mai arrivata e resta com'era, "Da definire" su zona e orari.

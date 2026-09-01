@@ -2786,23 +2786,33 @@ const ESPLORA_CATALOG = [
     zone: "Playa de las Américas",
     duration: { it: "2 ore e 15", en: "2 hours 15 minutes", es: "2 horas y 15 minutos" },
     priceFrom: 49,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 49,
+    priceChild: 25,
+    // Qui `0` vuol dire davvero gratis: il modulo del fornitore ha una terza
+    // riga, "Bambino (gratuito)", accanto a quelle da 49 € e 25 €.
+    priceInfant: 0,
+    // "Bambini 5-15" l'ha detto l'ufficio: il fornitore le fasce non le scrive.
+    // Il 16+ e lo 0-4 sono gli unici completamenti che non lasciano buchi
+    // fra le tre righe del modulo.
+    ages: { adult: "16+", child: "5-15", infant: "0-4" },
     family: true,
     days: ["sab"],
     times: ["21:00"],
     desc: {
-      it: "Spettacolo musicale dal vivo che ripercorre la storia della musica.",
-      en: "A live music show travelling through the history of music.",
-      es: "Espectáculo musical en directo que recorre la historia de la música."
+      it: "Spettacolo musicale dal vivo con più di trenta artisti, fra musica, danza, teatro e acrobazie: dalla musica classica a Elvis, Beatles, Queen, ABBA e Michael Jackson.",
+      en: "A live music show with more than thirty performers, mixing music, dance, theatre and acrobatics: from classical music to Elvis, the Beatles, Queen, ABBA and Michael Jackson.",
+      es: "Espectáculo musical en directo con más de treinta artistas, entre música, danza, teatro y acrobacias: desde la música clásica hasta Elvis, los Beatles, Queen, ABBA y Michael Jackson."
     },
     notes: [
       { it: "Si tiene all'Auditorio Pirámide de Arona. Apertura porte alle 20:00, posti non assegnati (ordine di arrivo). Parcheggio sotterraneo al CC Oasis, di fronte alla sede.",
         en: "Held at the Auditorio Pirámide de Arona. Doors open at 20:00, unassigned seating (first come, first served). Underground parking at CC Oasis, opposite the venue.",
         es: "Se celebra en el Auditorio Pirámide de Arona. Apertura de puertas a las 20:00, asientos no numerados (por orden de llegada). Aparcamiento subterráneo en el CC Oasis, enfrente del recinto." },
-      { it: "Dress code smart casual: niente abbigliamento sportivo o pantaloncini.",
-        en: "Smart casual dress code: no sportswear or shorts.",
-        es: "Código de vestimenta smart casual: nada de ropa deportiva ni pantalones cortos." }
+      { it: "Due ore di spettacolo più un intervallo di 15 minuti. Presentato in inglese.",
+        en: "Two hours of show plus a 15-minute interval. Presented in English.",
+        es: "Dos horas de espectáculo más un intervalo de 15 minutos. Presentado en inglés." },
+      { it: "Dress code smart casual (jeans ok): niente abbigliamento sportivo o pantaloncini.",
+        en: "Smart casual dress code (jeans OK): no sportswear or shorts.",
+        es: "Código de vestimenta smart casual (vaqueros permitidos): nada de ropa deportiva ni pantalones cortos." }
     ],
     image: "history-music-show.jpg",
     published: true

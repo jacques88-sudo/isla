@@ -193,6 +193,10 @@ function righeRichiesta(tour, req) {
   if (tour.options && req.option) {
     righe.push("• " + tf(tour.options.label) + ": " + req.option);
   }
+  // Come l'orario e la lingua: la riga compare solo se il cliente ha scelto
+  // qualcosa di diverso dal menu standard. Un "menu standard" scritto in chat
+  // sarebbe una riga in piu' da leggere che non dice niente; un "vegano" no.
+  if (req.menu) righe.push("• " + t("wa.menu") + ": " + req.menu);
   // La risposta si scrive sempre, anche quando e' "no": cosi' l'ufficio sa che
   // la domanda e' stata fatta, invece di doverla rifare in chat.
   if (tour.transfer) {
@@ -406,6 +410,9 @@ function initRequestDialog() {
   const dayErrorEl = document.querySelector("[data-request-day-error]");
   const langEl = document.querySelector("[data-request-lang]");
   const langLabelEl = document.querySelector("[data-request-lang-label]");
+  const menuEl = document.querySelector("[data-request-menu]");
+  const menuLabelEl = document.querySelector("[data-request-menu-label]");
+  const menuHintEl = document.querySelector("[data-request-menu-hint]");
   const totalEl = document.querySelector("[data-request-total]");
   const adultsInput = document.getElementById("reqAdults");
   const kidsInput = document.getElementById("reqKids");
@@ -481,6 +488,7 @@ function initRequestDialog() {
     if (langEl) langEl.value = "";
     riempiOrari(tour);
     riempiLingue(tour);
+    riempiMenu(tour);
     aggiornaGiorno();
     aggiornaTotale();
 
@@ -591,6 +599,36 @@ function initRequestDialog() {
       langEl.appendChild(voce);
     });
     langEl.value = scelta;
+  }
+
+  // Le scelte di menu, sulle attivita' dove si mangia. Come le lingue, compare
+  // **solo** dove l'attivita' ha il campo `menus`. La prima voce e' "Menu
+  // standard" e vale stringa vuota: chi la lascia li' non fa comparire nessuna
+  // riga nel messaggio, perche' all'ufficio interessa solo l'esigenza vera.
+  // Le allergie non stanno nell'elenco: la riga sotto ricorda di scriverle
+  // nelle note, che e' testo libero.
+  function riempiMenu(tour) {
+    if (!menuEl || !menuLabelEl) return;
+    const voci = Array.isArray(tour.menus) ? tour.menus : [];
+    menuEl.hidden = !voci.length;
+    menuLabelEl.hidden = !voci.length;
+    if (menuHintEl) menuHintEl.hidden = !voci.length;
+    if (!voci.length) return;
+
+    const scelta = menuEl.value;
+    menuEl.innerHTML = "";
+    const standard = document.createElement("option");
+    standard.value = "";
+    standard.textContent = t("req.menuStandard");
+    menuEl.appendChild(standard);
+    voci.forEach(voceMenu => {
+      const opt = document.createElement("option");
+      // il valore e' il testo tradotto: e' quello che finisce su WhatsApp
+      opt.value = tf(voceMenu);
+      opt.textContent = tf(voceMenu);
+      menuEl.appendChild(opt);
+    });
+    menuEl.value = scelta;
   }
 
   function riempiOrari(tour) {
@@ -733,6 +771,7 @@ function initRequestDialog() {
     // "Da concordare" e "2 adulti × €55" sono tradotti: si rifanno tutti e due
     riempiOrari(current);
     riempiLingue(current);
+    riempiMenu(current);
     aggiornaTotale();
     aggiornaGiorno();
   });
@@ -746,6 +785,7 @@ function initRequestDialog() {
       date: dateInput.value,
       time: timeEl ? timeEl.value : "",
       lang: (langEl && !langEl.hidden) ? langEl.value : "",
+      menu: (menuEl && !menuEl.hidden) ? menuEl.value : "",
       adults: parseInt(document.getElementById("reqAdults").value, 10) || 1,
       kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
       note: document.getElementById("reqNote").value.trim(),
@@ -770,6 +810,7 @@ function initRequestDialog() {
         date: req.date,
         time: req.time,
         lang: req.lang,
+        menu: req.menu,
         adults: req.adults,
         kids: req.kids,
         option: req.option,

@@ -230,6 +230,7 @@ function controllaTraduzioni(t) {
    "transferPriceLabel", "transferSiam", "transferSiamLabel", "transferSiamPriceLabel"]
     .forEach(c => guarda(t[c], c));
   guarda(t.notes, "notes");
+  guarda(t.menus, "menus");
   guarda(t.itinerary, "itinerary");
   varianti(t).forEach((v, i) => {
     ["label", "desc"].forEach(c => guarda(v[c], "variante " + (i + 1) + "." + c));

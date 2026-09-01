@@ -120,6 +120,21 @@
 //                scrivere il campo. Vuoto vuol dire "non ci sono orari fissi,
 //                si concorda" e lascia solo "Da concordare"; il campo che manca
 //                fa comparire le fasce segnaposto.
+//   menus      → facoltativo: le scelte di menu, sulle attivita' dove si mangia
+//                e la cucina prepara alternative (vegetariano, vegano, menu
+//                bambini). Solo dove c'e' questo campo la finestra della
+//                richiesta mostra la domanda "Esigenze sul menu", e la scelta
+//                finisce nel messaggio WhatsApp. Come `languages`: si mette solo
+//                dove il fornitore lo dice, non ovunque ci sia una cena.
+//                A differenza di `languages` queste sono parole normali, quindi
+//                si scrivono nelle tre lingue:
+//                    menus: [ { it: "Vegetariano", en: "Vegetarian", es: "Vegetariano" } ]
+//                La voce "Menu standard" non si scrive: la mette il sito come
+//                prima scelta, e chi la lascia li' non fa comparire nessuna riga
+//                nel messaggio — all'ufficio interessa solo l'esigenza vera.
+//                Le allergie **non** vanno qui: sono troppo diverse una
+//                dall'altra per stare in un elenco, e si scrivono nelle note.
+//                Sotto la domanda compare da sola una riga che lo ricorda.
 //   days       → facoltativo: i giorni in cui l'attivita' si fa. Dove c'e', il
 //                cliente che sceglie un altro giorno se lo sente dire subito,
 //                sotto la data, e la richiesta non parte.
@@ -2565,6 +2580,11 @@ const ESPLORA_CATALOG = [
     // Cena di tre portate e foto ricordo, tutte e due comprese. Le bevande
     // **no**: la pagina parla di un "drinks menu", cioe' un bar dove si paga.
     included: ["lunch", "photos"],
+    menus: [
+      { it: "Vegetariano", en: "Vegetarian", es: "Vegetariano" },
+      { it: "Vegano", en: "Vegan", es: "Vegano" },
+      { it: "Menu bambini (pizza)", en: "Children's menu (pizza)", es: "Menú infantil (pizza)" }
+    ],
     desc: {
       it: "Cena e spettacolo drag al Music Hall Tavern: commedia, musica dal vivo e una cena di tre portate servita mentre lo spettacolo va avanti.",
       en: "Dinner and drag show at the Music Hall Tavern: comedy, live music and a three-course dinner served while the show goes on.",
@@ -2577,6 +2597,9 @@ const ESPLORA_CATALOG = [
       { it: "I bambini sotto i 4 anni non pagano, ma vanno segnalati lo stesso nella richiesta: servono a chi prepara i posti a sedere.",
         en: "Children under 4 don't pay, but still need to be mentioned in the request: whoever arranges the seating needs to know.",
         es: "Los menores de 4 años no pagan, pero hay que indicarlos igualmente en la solicitud: quien prepara los asientos necesita saberlo." },
+      { it: "La cena si può avere vegetariana o vegana, e per i bambini c'è un menu con la pizza: si sceglie nella richiesta. Qualsiasi allergia o intolleranza va segnalata lì, così la cucina la sa in anticipo.",
+        en: "Dinner can be vegetarian or vegan, and there is a children's menu with pizza: you choose in the request. Any allergy or intolerance should be flagged there, so the kitchen knows in advance.",
+        es: "La cena puede ser vegetariana o vegana, y para los niños hay un menú con pizza: se elige en la solicitud. Cualquier alergia o intolerancia hay que indicarla ahí, para que la cocina lo sepa con antelación." },
       { it: "Si tiene al Vivo Show Bar, in Avenida Rafael Puig Lluvina 7, a due passi dal centro di Playa de las Américas. L'operatore non offre nessun servizio di trasporto: ci si arriva a piedi o in taxi.",
         en: "Held at the Vivo Show Bar, Avenida Rafael Puig Lluvina 7, a short walk from the centre of Playa de las Américas. The operator offers no transport service: you get there on foot or by taxi.",
         es: "Se celebra en el Vivo Show Bar, Avenida Rafael Puig Lluvina 7, a dos pasos del centro de Playa de las Américas. El operador no ofrece ningún servicio de transporte: se llega a pie o en taxi." }
@@ -2597,6 +2620,14 @@ const ESPLORA_CATALOG = [
     days: ["mar", "gio", "sab"],
     times: ["19:00"],
     included: ["lunch", "drinks"],
+    // Il piatto del menu bambini qui non e' scritto da nessuna parte: su MHT
+    // l'ufficio ha detto che e' pizza, per il castello no, quindi resta
+    // "Menu bambini" senza specificare.
+    menus: [
+      { it: "Vegetariano", en: "Vegetarian", es: "Vegetariano" },
+      { it: "Vegano", en: "Vegan", es: "Vegano" },
+      { it: "Menu bambini", en: "Children's menu", es: "Menú infantil" }
+    ],
     // I due tipi di biglietto del modulo di prenotazione del fornitore. Il
     // normale ripete il prezzo della scheda: cosi' il cliente che sceglie
     // "VIP" vede cambiare il totale, invece di dover indovinare.
@@ -2643,9 +2674,9 @@ const ESPLORA_CATALOG = [
       { it: "La cena è di tre portate: zuppa di verdure, filetto di pollo in salsa di funghi e torta gelato. Vino, succo e acqua compresi.",
         en: "Dinner is three courses: vegetable soup, chicken fillet in mushroom sauce and ice cream cake. Wine, juice and water included.",
         es: "La cena es de tres platos: sopa de verduras, filete de pollo en salsa de setas y tarta helada. Vino, zumo y agua incluidos." },
-      { it: "Menu vegetariano e menu bambini disponibili su richiesta.",
-        en: "Vegetarian menu and children's menu available on request.",
-        es: "Menú vegetariano y menú infantil disponibles bajo petición." },
+      { it: "La cena si può avere vegetariana o vegana, e per i bambini c'è un menu apposta: si sceglie nella richiesta. Qualsiasi allergia o intolleranza va segnalata lì, così la cucina la sa in anticipo.",
+        en: "Dinner can be vegetarian or vegan, and there is a dedicated children's menu: you choose in the request. Any allergy or intolerance should be flagged there, so the kitchen knows in advance.",
+        es: "La cena puede ser vegetariana o vegana, y para los niños hay un menú aparte: se elige en la solicitud. Cualquier alergia o intolerancia hay que indicarla ahí, para que la cocina lo sepa con antelación." },
       { it: "Lo spettacolo è in inglese: otto cavalieri a cavallo, giostre e duelli di spada.",
         en: "The show is in English: eight knights on horseback, jousting and sword duels.",
         es: "El espectáculo es en inglés: ocho caballeros a caballo, justas y duelos de espada." }

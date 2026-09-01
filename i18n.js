@@ -236,6 +236,9 @@ const I18N = {
   "req.timeAny":        { it: "Da concordare", en: "To be agreed", es: "Por concretar" },
   "req.lang":           { it: "In che lingua", en: "Which language", es: "En qué idioma" },
   "req.langAny":        { it: "Indifferente", en: "No preference", es: "Indiferente" },
+  "req.menu":           { it: "Esigenze sul menu", en: "Dietary requirements", es: "Necesidades del menú" },
+  "req.menuStandard":   { it: "Menu standard", en: "Standard menu", es: "Menú estándar" },
+  "req.menuHint":       { it: "Allergie o intolleranze: scrivile nelle note qui sotto, così la cucina le sa in anticipo.", en: "Allergies or intolerances: write them in the notes below, so the kitchen knows in advance.", es: "Alergias o intolerancias: escríbelas en las notas de abajo, para que la cocina lo sepa con antelación." },
   "req.dayError":       { it: "Questa escursione si fa solo: {giorni}.", en: "This excursion only runs on: {giorni}.", es: "Esta excursión solo se hace: {giorni}." },
 
   // I giorni della settimana, in forma corta: servono alla riga "Giorni" e al
@@ -270,6 +273,7 @@ const I18N = {
   "wa.date":            { it: "Data", en: "Date", es: "Fecha" },
   "wa.time":            { it: "Orario", en: "Time", es: "Hora" },
   "wa.lang":            { it: "Lingua", en: "Language", es: "Idioma" },
+  "wa.menu":            { it: "Menu", en: "Menu", es: "Menú" },
   "wa.people":          { it: "Persone", en: "People", es: "Personas" },
   "wa.notes":           { it: "Note", en: "Notes", es: "Notas" },
   "wa.transfer":        { it: "Transfer", en: "Transfer", es: "Traslado" },

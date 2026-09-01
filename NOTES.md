@@ -3399,3 +3399,60 @@ il risultato giusto. Zero errori console. `node controlla.js` → 0 errori. Alza
 dati ma non la foto, quindi e' online col segnaposto, e non ha i prezzi per persona (il
 riassunto di CanaryVIP dava solo il "da 35 €"). Se arriva la sua pagina intera, si chiude
 anche quella.
+
+### Il menu si sceglie nella richiesta: campo `menus` (1 settembre 2026)
+
+Il proprietario ha chiesto di scrivere nelle informazioni che si puo' avere il menu
+vegetariano o vegano e quello per bambini, di ricordare di segnalare le allergie, e **di far
+scegliere l'opzione nella finestra della richiesta** — su MHT e sul Castillo San Miguel.
+
+La prima parte era testo, la seconda un pezzo di meccanismo che non c'era. Costruito sul
+modello di `languages`, che fa esattamente la stessa cosa per la lingua del tour: un campo
+facoltativo del catalogo che accende una domanda nella finestra e aggiunge una riga al
+messaggio WhatsApp.
+
+**Il campo nuovo si chiama `menus`** ed e' un elenco di scelte scritte nelle tre lingue
+(a differenza di `languages`, dove le lingue si scrivono nella lingua stessa e non si
+traducono). Dove il campo non c'e', la domanda non compare: come per le lingue, si mette
+**solo dove il fornitore lo dice**, non ovunque ci sia una cena.
+
+**"Menu standard" non si scrive nel catalogo**: lo mette il sito come prima voce e vale
+stringa vuota, quindi chi la lascia li' non fa comparire nessuna riga nel messaggio. E' la
+stessa scelta gia' fatta per l'orario e per la lingua: all'ufficio serve leggere l'esigenza
+vera, non un "nessuna esigenza" che allunga il messaggio senza dire niente.
+
+**Le allergie non stanno nell'elenco, e apposta.** Sono troppo diverse una dall'altra per
+entrare in una tendina: sotto la domanda compare una riga fissa che ricorda di scriverle
+nelle note, che sono gia' testo libero e finiscono in fondo al messaggio. Cosi' l'ufficio
+riceve "Menu: Vegano" e "Note: allergia alle noci" come due righe distinte.
+
+**Toccati sette file**, che e' il prezzo di una domanda nuova nella finestra:
+`esplora-catalog.js` (il campo e il vocabolario in testa), `i18n.js` (quattro testi nuovi),
+`escursioni.js` (riferimenti, `riempiMenu()`, raccolta del valore, riga del messaggio,
+richiesta messa da parte), `lista.js` (la scelta si legge anche nella lista), `controlla.js`
+(le tre lingue del campo nuovo si controllano come quelle di `notes`), e **tutti e due gli
+HTML**: `tour.html` **e** `escursioni.html`, perche' la finestra della richiesta e' scritta
+due volte e chi ne tocca una sola lascia l'altra rotta. Provate tutte e due.
+
+**`controlla.js` ha preso un errore mentre lavoravo**, ed e' giusto cosi': avevo scritto
+`req.menuHint` su tre righe per leggibilita', ma il controllo legge `i18n.js` una riga per
+chiave e diceva che mancavano l'inglese e lo spagnolo. Rimessa su una riga sola come tutte le
+altre, anche le lunghissime: e' la convenzione del file, non un capriccio del controllo.
+
+**I dati sulle due schede.** MHT: vegetariano, vegano e menu bambini **con la pizza**, che e'
+il dettaglio dato dall'ufficio. Castillo: vegetariano, vegano e menu bambini **senza dire
+quale piatto** — la pizza l'ufficio l'ha detta parlando di MHT, e per il castello non la dice
+nessuno: la pagina del fornitore parlava solo di "menu vegetariano e menu bambini". **Da
+chiedere: se anche al castello il menu bambini e' la pizza, si aggiunge in un secondo.** Su
+tutte e due la nota vecchia sui menu e' stata riscritta, perche' adesso rimanda alla scelta
+nella richiesta invece di dire genericamente "su richiesta".
+
+Provato nel browser vero nelle tre lingue: la domanda esce su MHT e sul castello con le voci
+giuste e la riga delle allergie, e **non esce** su `flamenco-show` e `siam-park`, che il campo
+non ce l'hanno. Provata anche la copia della finestra dentro `escursioni.html` (i bottoni che
+la aprono li disegna solo `tour.js`, quindi per esercitarla ho iniettato il bottone vero):
+identica. Messaggio WhatsApp verificato in tre casi: col menu standard nessuna riga, con
+"Vegano" e con "Menu bambini (pizza)" la riga "• Menu: …" al posto giusto, e l'allergia
+scritta nelle note che resta la sua riga in fondo. Provata la richiesta messa da parte: la
+scelta si salva e si rilegge nella lista ("… · 2 adulti e 1 bambino · Menu bambini (pizza)").
+`node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v182`.

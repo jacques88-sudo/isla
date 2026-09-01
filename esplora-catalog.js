@@ -2627,23 +2627,35 @@ const ESPLORA_CATALOG = [
     title: "¡Olé! Flamenco Show",
     category: "parchi-spettacoli",
     zone: "Costa Adeje",
-    duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
-    priceFrom: 49,
-    priceAdult: 0,
-    priceChild: 0,
+    // Lo spettacolo vero dura 90 minuti (21:00-22:30, intervallo di 15 minuti
+    // compreso): il "≈ 2h" dell'intestazione del fornitore conta dall'apertura
+    // delle porte, non dall'inizio.
+    duration: { it: "1 ora e 30", en: "1.5 hours", es: "1 hora y media" },
+    priceFrom: 51,
+    priceAdult: 51,
+    priceChild: 25.50,
+    // "3-12 anni" e' scritto dal fornitore accanto al prezzo bambini. La fascia
+    // adulti non la scrive: 13+ e' l'unico completamento possibile di 3-12.
+    // Niente fascia neonati e niente priceInfant: sotto i 3 anni non si entra,
+    // che non e' "gratis" (vedi la descrizione).
+    ages: { adult: "13+", child: "3-12" },
     family: true,
     days: ["gio"],
-    times: ["20:15"],
-    // Il fornitore dava un prezzo "da" (51€) che pero' cadeva fra i due
-    // prezzi veri delle categorie (Gold 49€, Platinum 59€), segnalato dal
-    // fornitore stesso come da riconciliare: usati i due prezzi di categoria
-    // come varianti, priceFrom preso dal piu' basso (Gold).
+    // 20:15 e' l'apertura delle porte, non l'inizio: lo spettacolo comincia
+    // alle 21:00. L'intestazione del fornitore ("ogni giovedi' alle 20:15")
+    // dava l'una per l'altro, il corpo della pagina lo chiarisce.
+    times: ["21:00"],
+    // I due prezzi del **modulo di prenotazione** (51 e 61), non i 49 e 59 che
+    // il corpo della pagina continua a citare: quello che il cliente paga
+    // davvero e' il modulo. Cosi' torna anche il "da 51 €" dell'intestazione,
+    // che sembrava incoerente coi prezzi vecchi.
     options: {
       label: { it: "Categoria posto", en: "Seating category", es: "Categoría de asiento" },
       choices: [
         {
           label: { it: "Gold", en: "Gold", es: "Gold" },
-          price: 49,
+          priceAdult: 51,
+          priceChild: 25.50,
           desc: {
             it: "140 posti, buona vista sul palco.",
             en: "140 seats, good view of the stage.",
@@ -2652,7 +2664,8 @@ const ESPLORA_CATALOG = [
         },
         {
           label: { it: "Platinum", en: "Platinum", es: "Platinum" },
-          price: 59,
+          priceAdult: 61,
+          priceChild: 30.50,
           included: ["drinks", "snack"],
           desc: {
             it: "80 posti vicino al palco; include un bicchiere di vino e snack leggeri.",
@@ -2663,11 +2676,17 @@ const ESPLORA_CATALOG = [
       ]
     },
     desc: {
-      it: "Spettacolo di flamenco dal vivo, con musicisti e ballerini. I bambini dai 3 ai 12 anni pagano meno; sotto i 3 anni non si entra.",
-      en: "A live flamenco show, with musicians and dancers. Children aged 3 to 12 pay less; under 3s are not admitted.",
-      es: "Espectáculo de flamenco en directo, con músicos y bailaores. Los niños de 3 a 12 años pagan menos; menores de 3 años no entran."
+      it: "Spettacolo di flamenco dal vivo, con cante, chitarra e ballo. Sotto i 3 anni non si entra.",
+      en: "A live flamenco show, with singing, guitar and dance. Under 3s are not admitted.",
+      es: "Espectáculo de flamenco en directo, con cante, guitarra y baile. Menores de 3 años no entran."
     },
     notes: [
+      { it: "Apertura porte alle 20:15, lo spettacolo comincia alle 21:00 e finisce alle 22:30, con un intervallo di 15 minuti.",
+        en: "Doors open at 20:15, the show starts at 21:00 and ends at 22:30, with a 15-minute interval.",
+        es: "Apertura de puertas a las 20:15, el espectáculo empieza a las 21:00 y termina a las 22:30, con un intervalo de 15 minutos." },
+      { it: "Si tiene nella sala Las Olas dell'hotel GF Victoria: si entra dalla porta sul lato sinistro dell'ingresso principale dell'hotel.",
+        en: "Held in the Las Olas showroom of the GF Victoria hotel: use the door on the left-hand side of the hotel's main entrance.",
+        es: "Se celebra en la sala Las Olas del hotel GF Victoria: se entra por la puerta del lado izquierdo de la entrada principal del hotel." },
       { it: "Dress code smart casual (jeans ok): niente abbigliamento sportivo o pantaloncini.",
         en: "Smart casual dress code (jeans OK): no sportswear or shorts.",
         es: "Código de vestimenta smart casual (vaqueros permitidos): nada de ropa deportiva ni pantalones cortos." },

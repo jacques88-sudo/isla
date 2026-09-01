@@ -2719,3 +2719,19 @@ domande di transfer col testo giusto (zona, non "Siam Park"), i totali di entram
 combinazioni transfer × variante corretti a mano (69/53, 59/42, 190/—, 180/—), e il totale
 che sparisce invece di mostrare un numero falso quando si mettono bambini sul biglietto tutto
 compreso. `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v165`.
+
+### Twin Ticket: stesso problema, stessa etichetta (31 agosto 2026)
+
+Il proprietario ha visto la finestra di richiesta del **Twin Ticket** (non di Siam Park) e
+l'ha trovata confusionaria: "Vuoi il transfer?" non dice ne' la zona ne' il parco, e "Vuoi
+il transfer per il Siam Park?" ripete "Siam Park" come se fosse l'unico dei due a riguardarlo.
+Il meccanismo `transferLabel`/`transferSiamLabel` costruito per Siam Park serviva esattamente
+a questo: aggiunte le due etichette al Twin Ticket, riprendendo la stessa coppia
+zona/parco gia' scritta in `transferPriceLabel`/`transferSiamPriceLabel` sulla pagina di
+dettaglio ("Transfer Loro Parque (da sud)" → "Vuoi il transfer da sud per Loro Parque?",
+"Transfer Siam Park (da nord)" → "Vuoi il transfer da nord per Siam Park?"). Nessun'altra
+modifica al codice: il campo esisteva gia'.
+
+Provato nel browser vero (`tour.html?id=twin-ticket`): le due domande si leggono ora chiare,
+i totali restano quelli di sempre (€78 base, €99 con transfer sud, €103 con transfer nord).
+`node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v166`.

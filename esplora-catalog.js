@@ -2312,6 +2312,16 @@ const ESPLORA_CATALOG = [
       en: "Loro Parque transfer (from the south)",
       es: "Traslado a Loro Parque (desde el sur)"
     },
+    // Senza queste due, la finestra della richiesta chiede "Vuoi il
+    // transfer?" e poi "Vuoi il transfer per il Siam Park?": la prima non
+    // dice ne' la zona ne' il parco, e con due domande sulla stessa scheda
+    // si legge come se riguardassero la stessa cosa due volte. Qui si scrive
+    // la stessa coppia zona/parco gia' usata sopra in `transferPriceLabel`.
+    transferLabel: {
+      it: "Vuoi il transfer da sud per Loro Parque?",
+      en: "Would you like the transfer from the south, to Loro Parque?",
+      es: "¿Quieres el traslado desde el sur, a Loro Parque?"
+    },
     transferSiam: {
       it: "Disponibile su richiesta, solo per la giornata al Siam Park",
       en: "Available on request, for the Siam Park day only",
@@ -2322,6 +2332,11 @@ const ESPLORA_CATALOG = [
       it: "Transfer Siam Park (da nord)",
       en: "Siam Park transfer (from the north)",
       es: "Traslado a Siam Park (desde el norte)"
+    },
+    transferSiamLabel: {
+      it: "Vuoi il transfer da nord per Siam Park?",
+      en: "Would you like the transfer from the north, to Siam Park?",
+      es: "¿Quieres el traslado desde el norte, a Siam Park?"
     },
     family: true,
     desc: {

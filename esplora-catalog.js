@@ -1656,42 +1656,6 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    id: "paisaje-lunar",
-    title: "Paisaje Lunar",
-    category: "teide-natura",
-    zone: "Vilaflor",
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: false,
-    desc: {
-      it: "Camminata tra le formazioni di tufo bianco scolpite dall'erosione, dal paesaggio quasi lunare.",
-      en: "A walk among white tuff formations carved by erosion, in an almost lunar landscape.",
-      es: "Caminata entre formaciones de toba blanca esculpidas por la erosión, en un paisaje casi lunar."
-    },
-    image: "",
-    published: false
-  },
-  {
-    id: "canyoning",
-    title: { it: "Canyoning", en: "Canyoning", es: "Barranquismo" },
-    category: "teide-natura",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: false,
-    desc: {
-      it: "Discesa di un canyon vulcanico tra calate in corda e pozze d'acqua.",
-      en: "Descending a volcanic canyon between rope abseils and rock pools.",
-      es: "Descenso de un barranco volcánico entre rápeles y pozas de agua."
-    },
-    image: "",
-    published: false
-  },
-  {
     id: "trekking-bici",
     title: { it: "Trekking e bici", en: "Hiking & biking", es: "Senderismo y bici" },
     category: "teide-natura",
@@ -1708,24 +1672,6 @@ const ESPLORA_CATALOG = [
     },
     image: "trekking-bici.jpg",
     published: true
-  },
-  {
-    id: "pico-teide",
-    title: { it: "Salita al Pico del Teide", en: "Teide summit climb", es: "Subida al Pico del Teide" },
-    category: "teide-natura",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: false,
-    desc: {
-      it: "Salita a piedi fino alla cima del Teide. Serve il permesso, che va chiesto in anticipo.",
-      en: "The climb on foot to the summit of Teide. A permit is required and must be requested in advance.",
-      es: "La subida a pie hasta la cima del Teide. Hace falta permiso, que se solicita con antelación."
-    },
-    image: "",
-    published: false
   },
 
   // ─── STELLE E ASTRONOMIA ──────────────────────────────────────────────────
@@ -2885,24 +2831,6 @@ const ESPLORA_CATALOG = [
     },
     image: "icod-garachico-orotava.jpg",
     published: true
-  },
-  {
-    id: "puerto-de-la-cruz",
-    title: "Puerto de la Cruz",
-    category: "tour-isola",
-    zone: { it: "Tenerife nord", en: "North Tenerife", es: "Tenerife norte" },
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Una delle città più antiche dell'isola: Lago Martiánez, giardino botanico e Plaza del Charco.",
-      en: "One of the oldest towns on the island: Lago Martiánez, the botanical garden and Plaza del Charco.",
-      es: "Una de las ciudades más antiguas de la isla: Lago Martiánez, jardín botánico y Plaza del Charco."
-    },
-    image: "",
-    published: false
   },
   {
     id: "la-palma",

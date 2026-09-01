@@ -3175,3 +3175,56 @@ escono col punto ("€49.50"), in italiano e spagnolo con la virgola. Zero error
 **Da confermare con l'ufficio**: le fasce d'eta' adulto/bambino; e i prezzi restano quelli
 del rivenditore col banner dello sconto natalizio, quindi valgono gli stessi avvisi delle
 altre schede prese da CanaryVIP.
+
+### ¡Olé! Flamenco Show: la pagina intera, e due dati che avevo sbagliato (1 settembre 2026)
+
+Stessa storia di Castillo: il proprietario ha incollato la pagina intera con dentro il
+**modulo di prenotazione**, e i dati veri hanno smentito due cose che avevo scritto ad agosto
+partendo dal riassunto.
+
+**1. I prezzi erano 49/59, sono 51/61.** Il modulo dice Gold 51 € e Platinum 61 €; il corpo
+della pagina continua a scrivere "49 euro" e "59 euro" nel testo descrittivo. **Vale il
+modulo**: e' quello che il cliente paga davvero, il testo intorno e' rimasto indietro. E cosi'
+torna anche il "Da 51,00 €" dell'intestazione, che ad agosto sembrava incoerente e che avevo
+scartato proprio perche' non tornava coi 49/59 — era l'unico dei tre numeri giusto.
+
+**2. La durata era "1 ora e 30", io l'avevo cambiata in "2 ore": sbagliato, ed e' tornata
+com'era.** Il riassunto di agosto diceva "≈ 2h" e mi ero fidato. La pagina intera dice
+"spettacolo di 90 minuti" e da' gli orari: porte 20:15, inizio **21:00**, fine 22:30, con un
+intervallo di 15 minuti. 21:00-22:30 fa un'ora e mezza. Il "≈ 2h" del fornitore conta
+dall'apertura delle porte.
+
+**3. E per lo stesso motivo l'orario era sbagliato.** Avevo `times: ["20:15"]` perche'
+l'intestazione del fornitore dice "ogni giovedi' alle 20:15", ma quella e' l'**apertura delle
+porte**: lo spettacolo comincia alle 21:00. Anche l'"interval_min: 15" del riassunto di agosto
+non erano partenze ogni quarto d'ora, era l'intervallo in mezzo allo spettacolo. Messo
+`times: ["21:00"]`, con porte e intervallo in una nota.
+
+**Morale, per la prossima volta**: quando arriva un riassunto e poi la pagina intera, i numeri
+del **modulo di prenotazione** battono tutto il resto, e un orario in cima a una pagina puo'
+essere l'apertura delle porte anche se sembra l'inizio.
+
+**Prezzi bambini e fasce d'eta', che prima non c'erano proprio**: Gold 25,50 €, Platinum
+30,50 €, e il fornitore scrive **"3-12 anni"** accanto al prezzo bambini del Platinum. Messo
+`ages: { adult: "13+", child: "3-12" }`: il 13+ non e' scritto da nessuna parte ma e' l'unico
+completamento possibile di 3-12, e `controlla.js` vuole la fascia adulti quando c'e' quella
+bambini. **Niente fascia neonati e niente `priceInfant`**: sotto i 3 anni non si entra, che
+non e' "gratis" — resta scritto nella descrizione, dove stava gia'.
+
+Le due varianti sono passate da `price` (un numero solo sul bottone) a `priceAdult` +
+`priceChild`: cosi' il totale della finestra si fa davvero, invece di restare nascosto.
+
+**Cosa NON e' stato copiato**: "Miglior prezzo garantito", "Biglietti Ufficiali", "Pagamento
+sicuro", "Molto popolare!", "i posti si riempiono velocemente", punteggio e recensioni, gli
+eventi privati organizzati dal rivenditore, e **la loro cancellazione a 48 ore** — qui, al
+contrario di Castillo, e' proprio diversa dalla nostra: Isla resta a 24 ore. Lasciato fuori
+anche il nome del direttore artistico, come i presentatori di Scandal: e' una locandina, non
+un dato che serve a prenotare. La descrizione e' stata riscritta piu' corta, togliendo la
+frase sui bambini che adesso e' scritta due volte (la fascia esce da sola accanto al prezzo).
+
+Provato nel browser vero in italiano e in inglese, tutte e due le varianti. Totali verificati
+a mano, 2 adulti + 1 bambino: **Gold €127,50** (2×51 + 25,50) e **Platinum €152,50**
+(2×61 + 30,50) — due totali coi centesimi, che e' anche la prova sul campo della `eur()`
+aggiunta poco fa: "€25,50" in italiano, "€25.50" in inglese. Le fasce escono accanto ai
+prezzi ("Adulti (13+)", "Bambini (3-12)"). Zero errori console. `node controlla.js` → 0
+errori, e le due fasce combaciano senza buchi. Alzato `sw.js` a `isla-v178`.

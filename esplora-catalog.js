@@ -2559,33 +2559,65 @@ const ESPLORA_CATALOG = [
     category: "parchi-spettacoli",
     zone: "San Miguel de Abona",
     duration: { it: "2 ore e 30", en: "2.5 hours", es: "2 horas y media" },
-    priceFrom: 50,
-    priceAdult: 0,
-    priceChild: 0,
+    priceFrom: 49.50,
+    priceAdult: 49.50,
+    priceChild: 29,
     family: true,
     days: ["mar", "gio", "sab"],
     times: ["19:00"],
     included: ["lunch", "drinks"],
-    transfer: {
-      it: "Navetta opzionale, dettagli e prezzo comunicati al momento della prenotazione.",
-      en: "Optional shuttle, details and price given when booking.",
-      es: "Lanzadera opcional, detalles y precio se indican al reservar."
+    // I due tipi di biglietto del modulo di prenotazione del fornitore. Il
+    // normale ripete il prezzo della scheda: cosi' il cliente che sceglie
+    // "VIP" vede cambiare il totale, invece di dover indovinare.
+    options: {
+      label: { it: "Tipo di biglietto", en: "Ticket type", es: "Tipo de entrada" },
+      choices: [
+        {
+          label: { it: "Ingresso normale", en: "Standard entry", es: "Entrada normal" },
+          priceAdult: 49.50,
+          priceChild: 29,
+          desc: {
+            it: "Spettacolo, cena di tre portate e bevande incluse.",
+            en: "Show, three-course dinner and drinks included.",
+            es: "Espectáculo, cena de tres platos y bebidas incluidas."
+          }
+        },
+        {
+          label: { it: "Ingresso VIP", en: "VIP entry", es: "Entrada VIP" },
+          priceAdult: 59.50,
+          priceChild: 35,
+          desc: {
+            it: "Tutto quello dell'ingresso normale, più ingresso prioritario, un bicchiere di cava di benvenuto e posti nelle file migliori.",
+            en: "Everything in the standard entry, plus priority entry, a glass of welcome cava and seats in the best rows.",
+            es: "Todo lo de la entrada normal, más entrada prioritaria, una copa de cava de bienvenida y asientos en las mejores filas."
+          }
+        }
+      ]
     },
+    transfer: {
+      it: "Ritiro dal tuo hotel nel sud di Tenerife, a pagamento: basta indicare l'hotel nella richiesta.",
+      en: "Pickup from your hotel in the south of Tenerife, at extra cost: just give the hotel in the request.",
+      es: "Recogida en tu hotel en el sur de Tenerife, con suplemento: basta con indicar el hotel en la solicitud."
+    },
+    transferPrice: { adult: 64.50, child: 39 },
     desc: {
       it: "Serata medievale al castello: cavalieri, cavalli e torneo, con cena servita durante lo spettacolo.",
       en: "A medieval night at the castle: knights, horses and a tournament, with dinner served during the show.",
       es: "Noche medieval en el castillo: caballeros, caballos y torneo, con cena servida durante el espectáculo."
     },
     notes: [
-      { it: "A circa 20 minuti da Costa Adeje. Apertura porte alle 18:30. Parcheggio gratuito in loco.",
-        en: "About 20 minutes from Costa Adeje. Doors open at 18:30. Free on-site parking.",
-        es: "A unos 20 minutos de Costa Adeje. Apertura de puertas a las 18:30. Aparcamiento gratuito en el recinto." },
+      { it: "A circa 20 minuti da Costa Adeje e da Playa de las Américas. Apertura porte alle 18:30. Parcheggio gratuito in loco.",
+        en: "About 20 minutes from Costa Adeje and Playa de las Américas. Doors open at 18:30. Free on-site parking.",
+        es: "A unos 20 minutos de Costa Adeje y de Playa de las Américas. Apertura de puertas a las 18:30. Aparcamiento gratuito en el recinto." },
+      { it: "La cena è di tre portate: zuppa di verdure, filetto di pollo in salsa di funghi e torta gelato. Vino, succo e acqua compresi.",
+        en: "Dinner is three courses: vegetable soup, chicken fillet in mushroom sauce and ice cream cake. Wine, juice and water included.",
+        es: "La cena es de tres platos: sopa de verduras, filete de pollo en salsa de setas y tarta helada. Vino, zumo y agua incluidos." },
       { it: "Menu vegetariano e menu bambini disponibili su richiesta.",
         en: "Vegetarian menu and children's menu available on request.",
         es: "Menú vegetariano y menú infantil disponibles bajo petición." },
-      { it: "Disponibile anche un pacchetto VIP (ingresso prioritario, cava di benvenuto, posti premium): prezzo su richiesta.",
-        en: "A VIP package is also available (priority entry, welcome cava, premium seats): price on request.",
-        es: "También hay disponible un paquete VIP (entrada prioritaria, cava de bienvenida, asientos premium): precio a consultar." }
+      { it: "Lo spettacolo è in inglese: otto cavalieri a cavallo, giostre e duelli di spada.",
+        en: "The show is in English: eight knights on horseback, jousting and sword duels.",
+        es: "El espectáculo es en inglés: ocho caballeros a caballo, justas y duelos de espada." }
     ],
     image: "castillo-san-miguel.jpg",
     published: true

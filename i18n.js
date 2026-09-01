@@ -376,6 +376,24 @@ function t(key, vars) {
   return fill(testo, vars);
 }
 
+// Il numero di un prezzo, scritto come lo scrive la lingua attiva.
+//
+// I prezzi interi restano come sono ("44"): sono quasi tutti cosi' e "44,00"
+// riempirebbe il sito di zeri che nessuno ha chiesto. Quelli coi centesimi
+// prendono sempre **due** decimali, con la virgola in italiano e spagnolo
+// ("49,50") e il punto in inglese ("49.50"): "49.5" non e' un prezzo, e' un
+// numero, e su una pagina di prenotazione sembra un errore.
+//
+// Il simbolo € non lo mette: lo scrivono gia' i punti che la usano, che lo
+// mettono prima del numero ("€49,50") in tutte e tre le lingue.
+function eur(n) {
+  const num = Number(n);
+  if (!isFinite(num)) return String(n);
+  if (Number.isInteger(num)) return String(num);
+  const testo = num.toFixed(2);
+  return I18N_CURRENT === "en" ? testo : testo.replace(".", ",");
+}
+
 // Campo del catalogo che può essere una stringa uguale in tutte le lingue
 // (i nomi propri, per esempio "Siam Park") oppure un oggetto { it, en, es }.
 function tf(campo) {

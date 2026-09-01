@@ -101,7 +101,7 @@ function detailRows(tour, variante) {
     tour.priceTiers.forEach(fascia => {
       righe.push([
         t("detail.people", { from: fascia.from, to: fascia.to }),
-        "€" + fascia.price
+        "€" + eur(fascia.price)
       ]);
     });
   } else if (adulto > 0) {
@@ -110,7 +110,7 @@ function detailRows(tour, variante) {
   } else if (variante && variante.price) {
     // variante col prezzo ma senza le fasce: il numero e' quello del mezzo o
     // del gruppo, e resta sulla riga generica
-    righe.push([t("detail.price"), "€" + variante.price + priceUnitSuffix(tour)]);
+    righe.push([t("detail.price"), "€" + eur(variante.price) + priceUnitSuffix(tour)]);
   } else {
     righe.push([t("detail.price"), tourPrice(tour)]);
   }
@@ -123,15 +123,15 @@ function detailRows(tour, variante) {
   // tf() perche' una fascia puo' avere bisogno delle tre lingue: "0-3" si
   // scrive uguale dappertutto, "0-11 mesi" no.
   const conEta = (etichetta, fascia) => fascia ? etichetta + " (" + tf(fascia) + ")" : etichetta;
-  if (adulto > 0) righe.push([conEta(t("req.adults"), eta.adult), "€" + adulto]);
-  if (bambino > 0) righe.push([conEta(t("req.kids"), eta.child), "€" + bambino]);
+  if (adulto > 0) righe.push([conEta(t("req.adults"), eta.adult), "€" + eur(adulto)]);
+  if (bambino > 0) righe.push([conEta(t("req.kids"), eta.child), "€" + eur(bambino)]);
   // Per i neonati lo zero vuol dire davvero gratis, non "da decidere": la
   // riga si mostra solo se il campo c'e', e sparisce se manca.
   // Solo insieme alle altre righe a persona: sulla variante che si paga a
   // barca, "Neonati: Gratis" non vuol dire niente — non paga nessuno a testa.
   if (tour.priceInfant !== undefined && adulto > 0) {
     righe.push([conEta(t("detail.infants"), eta.infant),
-      tour.priceInfant > 0 ? "€" + tour.priceInfant : t("detail.free")]);
+      tour.priceInfant > 0 ? "€" + eur(tour.priceInfant) : t("detail.free")]);
   }
   righe.push([t("detail.suitable"), t(tour.family ? "detail.kidsYes" : "detail.kidsNo")]);
   // "€99 adulti · €74 bambini": il posto per i neonati esiste solo qui, e'
@@ -139,9 +139,9 @@ function detailRows(tour, variante) {
   const prezzoTransfer = tp => {
     if (!tp) return "";
     const parti = [];
-    if (tp.adult) parti.push("€" + tp.adult + " " + t("wa.adults"));
-    if (tp.child) parti.push("€" + tp.child + " " + t("wa.children"));
-    if (tp.baby) parti.push("€" + tp.baby + " " + t("wa.babies") + " (" + t("detail.babySeat") + ")");
+    if (tp.adult) parti.push("€" + eur(tp.adult) + " " + t("wa.adults"));
+    if (tp.child) parti.push("€" + eur(tp.child) + " " + t("wa.children"));
+    if (tp.baby) parti.push("€" + eur(tp.baby) + " " + t("wa.babies") + " (" + t("detail.babySeat") + ")");
     return parti.join(" · ");
   };
   // `tp` in catalogo e' sempre il prezzo **completo** (biglietto+transfer),
@@ -154,6 +154,25 @@ function detailRows(tour, variante) {
     if (tp.child) s.child = tp.child - (tour.priceChild || 0);
     return s;
   };
+  // Il prezzo completo pero' e' quello del prezzo **base** della scheda, e con
+  // una variante scelta che ha un suo prezzo a persona (il VIP di Castillo San
+  // Miguel, il tutto compreso di Siam Park e di Loro Parque) non e' piu' quello
+  // giusto: va rifatto sul prezzo della variante, cioe' il supplemento del bus
+  // sommato al prezzo di quella variante. E' lo stesso conto che fa gia'
+  // prezziAPersona() per il totale: senza, la pagina scriveva "Con il transfer
+  // €64,50 adulti" e due righe sotto un totale da €194.
+  // Niente da rifare quando la variante il prezzo a persona non ce l'ha (le
+  // cabine VIP di Siam Park, che si pagano a spazio): li' resta il prezzo della
+  // scheda, come prima.
+  const conVariante = tp => {
+    if (!tp || !variante || !variante.priceAdult) return tp;
+    const rifatto = { adult: variante.priceAdult + (tp.adult - (tour.priceAdult || 0)) };
+    if (tp.child && variante.priceChild) {
+      rifatto.child = variante.priceChild + (tp.child - (tour.priceChild || 0));
+    }
+    if (tp.baby) rifatto.baby = tp.baby;
+    return rifatto;
+  };
   // `transferPriceLabel` accorpa descrizione e prezzo in una riga sola: serve
   // sulle schede con due transfer diversi (Twin Ticket, Siam Park), che
   // altrimenti diventerebbero quattro righe che si confondono a vicenda. Le
@@ -165,7 +184,7 @@ function detailRows(tour, variante) {
   } else {
     if (tour.transfer) righe.push([t("detail.transfer"), tf(tour.transfer)]);
     if (tour.transferPrice && !tour.transferPriceHidden) {
-      const prezzo = prezzoTransfer(tour.transferPrice);
+      const prezzo = prezzoTransfer(conVariante(tour.transferPrice));
       if (prezzo) righe.push([t("detail.withTransfer"), prezzo]);
     }
   }
@@ -176,7 +195,7 @@ function detailRows(tour, variante) {
   } else {
     if (tour.transferSiam) righe.push([t("detail.transferSiam"), tf(tour.transferSiam)]);
     if (tour.transferSiamPrice && !tour.transferSiamPriceHidden) {
-      const prezzo = prezzoTransfer(tour.transferSiamPrice);
+      const prezzo = prezzoTransfer(conVariante(tour.transferSiamPrice));
       if (prezzo) righe.push([t("detail.withTransferSiam"), prezzo]);
     }
   }
@@ -334,7 +353,7 @@ function detailOptions(tour) {
                   ${scelta.desc ? `data-option-desc="${esc(tf(scelta.desc))}"` : ""}
                   aria-pressed="${i === 0 ? "true" : "false"}">
             <span class="detail-option-name">${esc(tf(scelta.label))}</span>
-            ${prezzo ? `<span class="detail-option-price">€${prezzo}</span>` : ""}
+            ${prezzo ? `<span class="detail-option-price">€${eur(prezzo)}</span>` : ""}
           </button>`; }).join("")}
       </div>
       ${opz.choices.some(s => s.desc)

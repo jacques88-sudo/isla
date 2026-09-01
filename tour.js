@@ -86,11 +86,15 @@ function detailRows(tour, variante) {
     righe.push([t("detail.languages"), tour.languages.join(" · ")]);
   }
   // I due prezzi a persona: quelli della variante scelta se ce li ha, se no
-  // quelli della scheda. Il `price` liscio della variante non entra qui: puo'
-  // essere il prezzo del mezzo e non della persona (vedi prezziAPersona()).
-  const perPersona = !!(variante && variante.priceAdult > 0);
-  const adulto = perPersona ? variante.priceAdult : tour.priceAdult;
-  const bambino = perPersona ? (variante.priceChild || 0) : tour.priceChild;
+  // quelli della scheda, ma solo quando non c'e' una variante scelta. Il
+  // `price` liscio della variante non entra qui: puo' essere il prezzo del
+  // mezzo o del gruppo, non della persona (vedi prezziAPersona() in
+  // escursioni.js). Se la variante scelta non ha `priceAdult` (una cabina
+  // VIP, il jet ski a moto d'acqua) niente ripiego sul prezzo della scheda,
+  // se no la cabina VIP di Siam Park mostrerebbe il prezzo del biglietto
+  // normale invece di sparire.
+  const adulto = variante ? (variante.priceAdult || 0) : (tour.priceAdult || 0);
+  const bambino = variante ? (variante.priceChild || 0) : (tour.priceChild || 0);
 
   // prezzi a scaglioni: una riga per fascia al posto della riga "Prezzo"
   if (Array.isArray(tour.priceTiers) && tour.priceTiers.length) {

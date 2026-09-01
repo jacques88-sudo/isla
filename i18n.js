@@ -181,7 +181,11 @@ const I18N = {
   "inc.snack":          { it: "Snack", en: "Snacks", es: "Snacks" },
   "inc.fingerfood":     { it: "Finger food", en: "Finger food", es: "Finger food" },
   "inc.swimstop":       { it: "Bagno e snorkeling", en: "Swim & snorkel", es: "Baño y snorkel" },
-  "inc.lunch":          { it: "Pranzo", en: "Lunch", es: "Almuerzo" },
+  // Generico apposta: la stessa icona sta su sei gite in barca (dove il pasto
+  // e' davvero un pranzo) e su tre cene-spettacolo, dove "Pranzo" era proprio
+  // sbagliato. Stesso motivo per cui "Bevande a bordo" e' diventato "Bevande
+  // incluse" quando l'icona e' finita su un parco.
+  "inc.lunch":          { it: "Pasto incluso", en: "Meal included", es: "Comida incluida" },
   "inc.tasting":        { it: "Degustazione", en: "Tasting", es: "Degustación" },
   "inc.guide":          { it: "Guida", en: "Guide", es: "Guía" },
   "inc.transfer":       { it: "Transfer", en: "Transfer", es: "Traslado" },

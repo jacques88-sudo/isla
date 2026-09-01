@@ -3442,8 +3442,9 @@ altre, anche le lunghissime: e' la convenzione del file, non un capriccio del co
 **I dati sulle due schede.** MHT: vegetariano, vegano e menu bambini **con la pizza**, che e'
 il dettaglio dato dall'ufficio. Castillo: vegetariano, vegano e menu bambini **senza dire
 quale piatto** — la pizza l'ufficio l'ha detta parlando di MHT, e per il castello non la dice
-nessuno: la pagina del fornitore parlava solo di "menu vegetariano e menu bambini". **Da
-chiedere: se anche al castello il menu bambini e' la pizza, si aggiunge in un secondo.** Su
+nessuno: la pagina del fornitore parlava solo di "menu vegetariano e menu bambini".
+**Confermato dal proprietario: al castello la pizza non c'e'**, quindi resta "Menu bambini" e
+la domanda e' chiusa — il commento nel catalogo lo dice, cosi' non si riapre fra sei mesi. Su
 tutte e due la nota vecchia sui menu e' stata riscritta, perche' adesso rimanda alla scelta
 nella richiesta invece di dire genericamente "su richiesta".
 

@@ -3070,3 +3070,36 @@ foto). Alzato `sw.js` a `isla-v175`.
 **Resta da fare**: la foto vera. Finche' non arriva, la scheda e' online col segnaposto —
 **da chiedere all'ufficio o al fornitore diretto** (quella sulla pagina di CanaryVIP e' di un
 rivenditore concorrente e resta non scaricata).
+
+### Tolte quattro schede segnaposto mai compilate (1 settembre 2026)
+
+Subito dopo aver pubblicato Gladiux, il proprietario ha chiesto di eliminare definitivamente
+`paisaje-lunar`, `canyoning`, `pico-teide` e `puerto-de-la-cruz`. Erano le quattro schede
+rimaste dal primo abbozzo del catalogo, mai compilate: `published: false`, `image: ""`,
+`priceFrom: null`, `priceAdult`/`priceChild` a `0`, zona e durata "Da definire". L'unica cosa
+scritta davvero era la descrizione nelle tre lingue.
+
+**Controllato prima di cancellare** che non le richiamasse nessuno: nessun altro file del
+repo le nomina, e tutti i `privateOption` del catalogo puntano a `private-charter`, non a
+loro. Quindi via il blocco e basta, niente da sistemare altrove.
+
+**Nessun effetto per i clienti**: erano tutte e quattro invisibili, quindi il catalogo passa
+da 75 a **71 schede ma le pubblicate restano 67**. Le due categorie toccate mostrano le
+stesse card di prima (`teide-natura` 3, `tour-isola` 8): quello che sparisce e' solo roba che
+non si vedeva.
+
+**Se dovessero servire di nuovo** non vanno riscritte a mano: stanno nella storia di git fino
+al commit precedente (`git show 80be84e:esplora-catalog.js`). Per lo stesso motivo le
+descrizioni gia' scritte nelle tre lingue non sono perse.
+
+**Non toccate le altre quattro schede senza foto** (`charter-privato`,
+`tour-privato-su-misura`, `teide-privato-giorno`, `teide-privato-notte`): il proprietario ha
+nominato solo queste quattro, e quelle private sono un'altra cosa — hanno una categoria
+tutta loro e un senso commerciale, non sono abbozzi dimenticati. **Da chiedere** se vanno
+tenute cosi' o compilate.
+
+Provato nel browser vero: le due categorie renderizzano con le card di sempre, i quattro
+indirizzi diretti (`tour.html?id=paisaje-lunar` ecc.) danno la pagina "Escursione non
+trovata" invece di rompersi, home a posto, zero errori console. `node --check
+esplora-catalog.js` ok, `node controlla.js` → 0 errori (restano i due avvisi noti, `opera-60`
+e la foto di Gladiux). Alzato `sw.js` a `isla-v176`.

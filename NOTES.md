@@ -3448,6 +3448,12 @@ la domanda e' chiusa — il commento nel catalogo lo dice, cosi' non si riapre f
 tutte e due la nota vecchia sui menu e' stata riscritta, perche' adesso rimanda alla scelta
 nella richiesta invece di dire genericamente "su richiesta".
 
+**⚠ Questa prima versione era sbagliata, ed e' stata rifatta il giorno stesso: vedi la
+sezione qui sotto.** Una tendina sola non regge una coppia in cui uno mangia standard e
+l'altro vegetariano — se ne e' accorto il proprietario. Il resto di quello che c'e' scritto
+qui (dove sta il campo, perche' le allergie restano nelle note, i sette file da toccare)
+vale ancora.
+
 Provato nel browser vero nelle tre lingue: la domanda esce su MHT e sul castello con le voci
 giuste e la riga delle allergie, e **non esce** su `flamenco-show` e `siam-park`, che il campo
 non ce l'hanno. Provata anche la copia della finestra dentro `escursioni.html` (i bottoni che
@@ -3457,3 +3463,49 @@ identica. Messaggio WhatsApp verificato in tre casi: col menu standard nessuna r
 scritta nelle note che resta la sua riga in fondo. Provata la richiesta messa da parte: la
 scelta si salva e si rilegge nella lista ("… · 2 adulti e 1 bambino · Menu bambini (pizza)").
 `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v182`.
+
+### Il menu era una scelta sola per tutta la prenotazione: rifatto a numeri (1 settembre 2026)
+
+Consegnata la tendina del menu, il proprietario ha fatto la domanda giusta: **"se prenotano
+più persone, ad esempio una coppia una con menu standard e l'altro vegetariano, come faccio a
+capire?"**
+
+Non si capiva. Era un buco vero del disegno, non un dettaglio: la tendina dava **una scelta
+sola per tutta la richiesta**, quindi "Menu: Vegetariano" su una prenotazione da due persone
+poteva voler dire "tutti e due vegetariani" oppure "uno dei due", e l'ufficio doveva
+richiedere in chat proprio la cosa che la domanda serviva a evitare. E il caso della coppia
+con un menu diverso a testa non e' l'eccezione, e' il caso normale.
+
+**Rifatta con una casella numerica per ogni menu**, sullo stesso schema delle righe "Quante
+persone" che stanno due campi piu' su (stesso markup, stessa classe CSS, nessuno stile
+nuovo). Chi non ha esigenze lascia tutto a zero e non succede niente.
+
+**Il resto del gruppo si scrive da solo come standard.** Con due persone e un vegetariano il
+messaggio dice `Vegetariano × 1 · Menu standard × 1`: l'ufficio legge la composizione del
+tavolo senza fare la sottrazione fra il numero di persone e i menu speciali. Se sono tutti
+vegetariani non compare nessuno "standard" di troppo, e se non c'e' nessuna esigenza la riga
+non compare affatto, come prima.
+
+**Scritto "Vegetariano × 2" e non "2 Vegetariano".** Il "×" e' gia' il modo in cui il sito
+scrive le quantita' nel totale ("2 adulti × €49,50"), ma il motivo vero e' un altro: le
+etichette dei menu le scrive il catalogo in tre lingue e nessuna delle tre fa il plurale allo
+stesso modo. "2 Vegetariano" e' italiano sbagliato, e inventare una regola per pluralizzare
+delle etichette libere sarebbe stato peggio del problema.
+
+**Aggiunto un controllo**: piu' menu speciali che persone e' sicuramente un errore, quindi
+sotto le caselle compare "Hai indicato più menu speciali che persone." e la richiesta non
+parte — stessa idea del giorno sbagliato sotto la data. L'avviso si riaccende anche se il
+cliente **toglie una persona** dopo aver messo i menu, non solo se cambia i menu.
+
+**Un dettaglio che si vede solo provando**: cambiare lingua ridisegna le caselle, e i numeri
+gia' messi si sarebbero azzerati. Le righe si ricostruiscono tenendo i valori, con l'indice
+come chiave e non l'etichetta — che cambiando lingua cambia.
+
+Provato nel browser vero nelle tre lingue, su MHT e sul castello, e anche nella copia della
+finestra dentro `escursioni.html`. I casi verificati: coppia con 1 vegetariano
+(`Vegetariano × 1 · Menu standard × 1`), famiglia di 3 con vegano e menu bambini
+(`Vegano × 1 · Menu bambini × 1 · Menu standard × 1`), tutti standard (nessuna riga), tutti e
+due vegetariani (`Vegetariano × 2`, senza standard di troppo), e 3 menu per 2 persone: avviso
+acceso, invio bloccato, finestra ancora aperta, e avviso che sparisce da solo rimettendo 1.
+La richiesta messa da parte si rilegge nella lista col riepilogo scritto per esteso.
+`node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v183`.

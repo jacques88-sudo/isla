@@ -152,6 +152,29 @@ function prezziAPersona(tour, req) {
   };
 }
 
+// I menu speciali del gruppo, scritti per l'ufficio: "1 Vegetariano · 1 Menu
+// standard". Una tendina sola non bastava: in una coppia uno puo' mangiare
+// standard e l'altro vegetariano, quindi si conta **quante** persone per ogni
+// menu, non quale menu ha scelto la prenotazione.
+//
+// Chi non chiede niente di speciale non produce nessuna riga. Chi ne chiede,
+// si porta dietro anche il resto del gruppo scritto come standard: cosi'
+// l'ufficio legge "1 vegetariano e 1 standard" invece di dover sottrarre da
+// solo il numero di persone.
+function menuTesto(req) {
+  const scelti = (req.menus || []).filter(m => m.n > 0);
+  if (!scelti.length) return "";
+  // "Vegetariano × 2" e non "2 Vegetariano": il "×" e' gia' il modo in cui il
+  // sito scrive le quantita' nel totale, e soprattutto evita i plurali. Le
+  // etichette dei menu le scrive il catalogo in tre lingue, e nessuna delle
+  // tre fa il plurale allo stesso modo: "2 Vegetariano" sarebbe sbagliato in
+  // italiano, e inventare una regola per pluralizzarle sarebbe peggio.
+  const parti = scelti.map(m => m.label + " × " + m.n);
+  const restanti = (req.adults + req.kids) - scelti.reduce((tot, m) => tot + m.n, 0);
+  if (restanti > 0) parti.push(t("req.menuStandard") + " × " + restanti);
+  return parti.join(" · ");
+}
+
 // Il totale e il conto da cui viene, oppure null quando non si puo' fare.
 // Lo usano sia la finestra (che lo mostra) sia il messaggio (che lo scrive):
 // un conto solo, cosi' i due numeri non possono diventare diversi.
@@ -193,10 +216,11 @@ function righeRichiesta(tour, req) {
   if (tour.options && req.option) {
     righe.push("• " + tf(tour.options.label) + ": " + req.option);
   }
-  // Come l'orario e la lingua: la riga compare solo se il cliente ha scelto
-  // qualcosa di diverso dal menu standard. Un "menu standard" scritto in chat
-  // sarebbe una riga in piu' da leggere che non dice niente; un "vegano" no.
-  if (req.menu) righe.push("• " + t("wa.menu") + ": " + req.menu);
+  // Come l'orario e la lingua: la riga compare solo se qualcuno del gruppo ha
+  // un'esigenza. Un "tutti standard" scritto in chat sarebbe una riga in piu'
+  // da leggere che non dice niente; "1 vegetariano e 1 standard" no.
+  const menu = menuTesto(req);
+  if (menu) righe.push("• " + t("wa.menu") + ": " + menu);
   // La risposta si scrive sempre, anche quando e' "no": cosi' l'ufficio sa che
   // la domanda e' stata fatta, invece di doverla rifare in chat.
   if (tour.transfer) {
@@ -410,9 +434,10 @@ function initRequestDialog() {
   const dayErrorEl = document.querySelector("[data-request-day-error]");
   const langEl = document.querySelector("[data-request-lang]");
   const langLabelEl = document.querySelector("[data-request-lang-label]");
-  const menuEl = document.querySelector("[data-request-menu]");
+  const menuRowsEl = document.querySelector("[data-request-menu-rows]");
   const menuLabelEl = document.querySelector("[data-request-menu-label]");
   const menuHintEl = document.querySelector("[data-request-menu-hint]");
+  const menuErrorEl = document.querySelector("[data-request-menu-error]");
   const totalEl = document.querySelector("[data-request-total]");
   const adultsInput = document.getElementById("reqAdults");
   const kidsInput = document.getElementById("reqKids");
@@ -601,34 +626,83 @@ function initRequestDialog() {
     langEl.value = scelta;
   }
 
-  // Le scelte di menu, sulle attivita' dove si mangia. Come le lingue, compare
-  // **solo** dove l'attivita' ha il campo `menus`. La prima voce e' "Menu
-  // standard" e vale stringa vuota: chi la lascia li' non fa comparire nessuna
-  // riga nel messaggio, perche' all'ufficio interessa solo l'esigenza vera.
-  // Le allergie non stanno nell'elenco: la riga sotto ricorda di scriverle
-  // nelle note, che e' testo libero.
+  // Le esigenze sul menu, sulle attivita' dove si mangia. Come le lingue,
+  // compare **solo** dove l'attivita' ha il campo `menus`.
+  //
+  // Una casella per ogni menu, col numero di persone: **non** una tendina con
+  // una scelta sola. Una coppia in cui uno mangia standard e l'altro
+  // vegetariano e' il caso normale, non l'eccezione, e con una tendina sola
+  // l'ufficio non poteva saperlo. Chi non ha esigenze lascia tutto a zero.
+  //
+  // Le allergie non stanno qui: sono troppo diverse una dall'altra per fare
+  // una casella ciascuna, e la riga sotto ricorda di scriverle nelle note.
   function riempiMenu(tour) {
-    if (!menuEl || !menuLabelEl) return;
+    if (!menuRowsEl || !menuLabelEl) return;
     const voci = Array.isArray(tour.menus) ? tour.menus : [];
-    menuEl.hidden = !voci.length;
+    menuRowsEl.hidden = !voci.length;
     menuLabelEl.hidden = !voci.length;
     if (menuHintEl) menuHintEl.hidden = !voci.length;
-    if (!voci.length) return;
+    if (menuErrorEl) menuErrorEl.hidden = true;
+    if (!voci.length) { menuRowsEl.innerHTML = ""; return; }
 
-    const scelta = menuEl.value;
-    menuEl.innerHTML = "";
-    const standard = document.createElement("option");
-    standard.value = "";
-    standard.textContent = t("req.menuStandard");
-    menuEl.appendChild(standard);
-    voci.forEach(voceMenu => {
-      const opt = document.createElement("option");
-      // il valore e' il testo tradotto: e' quello che finisce su WhatsApp
-      opt.value = tf(voceMenu);
-      opt.textContent = tf(voceMenu);
-      menuEl.appendChild(opt);
+    // I numeri gia' messi si tengono, se la voce c'e' ancora: cambiare lingua
+    // ridisegna le righe e sarebbe sgradevole ritrovarle azzerate.
+    const prima = {};
+    menuRowsEl.querySelectorAll("[data-request-menu-n]").forEach(inp => {
+      prima[inp.dataset.requestMenuN] = inp.value;
     });
-    menuEl.value = scelta;
+
+    menuRowsEl.innerHTML = "";
+    voci.forEach((voceMenu, i) => {
+      const etichetta = tf(voceMenu);
+      const id = "reqMenu" + i;
+      const label = document.createElement("label");
+      label.setAttribute("for", id);
+      const nome = document.createElement("span");
+      nome.textContent = etichetta;
+      const input = document.createElement("input");
+      input.id = id;
+      input.type = "number";
+      input.inputMode = "numeric";
+      input.min = "0";
+      input.max = "30";
+      // la chiave e' l'indice, non l'etichetta: cambiando lingua l'etichetta
+      // cambia ma il numero deve restare dov'e'
+      input.dataset.requestMenuN = String(i);
+      input.value = prima[String(i)] !== undefined ? prima[String(i)] : "0";
+      input.addEventListener("input", aggiornaMenu);
+      label.appendChild(nome);
+      label.appendChild(input);
+      menuRowsEl.appendChild(label);
+    });
+  }
+
+  // Quante persone per ogni menu, come le legge il form.
+  function menuScelti(tour) {
+    if (!menuRowsEl || menuRowsEl.hidden) return [];
+    const voci = Array.isArray(tour && tour.menus) ? tour.menus : [];
+    return [...menuRowsEl.querySelectorAll("[data-request-menu-n]")].map(inp => ({
+      label: tf(voci[Number(inp.dataset.requestMenuN)] || ""),
+      n: parseInt(inp.value, 10) || 0
+    }));
+  }
+
+  // Piu' menu speciali che persone e' sicuramente un errore: si dice subito,
+  // sotto le caselle, e la richiesta non parte. Stessa idea del giorno
+  // sbagliato sotto la data.
+  function menuValido() {
+    if (!current || !menuRowsEl || menuRowsEl.hidden) return true;
+    const somma = menuScelti(current).reduce((tot, m) => tot + m.n, 0);
+    const persone = (parseInt(adultsInput.value, 10) || 0) +
+                    (parseInt(kidsInput.value, 10) || 0);
+    return somma <= persone;
+  }
+
+  function aggiornaMenu() {
+    if (!menuErrorEl) return;
+    const ok = menuValido();
+    if (!ok) menuErrorEl.textContent = t("req.menuError");
+    menuErrorEl.hidden = ok;
   }
 
   function riempiOrari(tour) {
@@ -743,6 +817,13 @@ function initRequestDialog() {
     campo.addEventListener("input", aggiornaTotale);
     campo.addEventListener("change", aggiornaTotale);
   });
+  // Il controllo sui menu dipende da quante persone sono: se il cliente toglie
+  // una persona dopo aver messo i menu, l'avviso deve accendersi subito.
+  [adultsInput, kidsInput].forEach(campo => {
+    if (!campo) return;
+    campo.addEventListener("input", aggiornaMenu);
+    campo.addEventListener("change", aggiornaMenu);
+  });
 
   document.querySelectorAll("[data-request-close]").forEach(b =>
     b.addEventListener("click", close)
@@ -785,7 +866,7 @@ function initRequestDialog() {
       date: dateInput.value,
       time: timeEl ? timeEl.value : "",
       lang: (langEl && !langEl.hidden) ? langEl.value : "",
-      menu: (menuEl && !menuEl.hidden) ? menuEl.value : "",
+      menus: menuScelti(current),
       adults: parseInt(document.getElementById("reqAdults").value, 10) || 1,
       kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
       note: document.getElementById("reqNote").value.trim(),
@@ -797,6 +878,9 @@ function initRequestDialog() {
     // Il giorno sbagliato ferma la richiesta: il messaggio e' gia' li' sotto
     // la data da quando l'ha scelta.
     if (!giornoValido()) { aggiornaGiorno(); dateInput.focus(); return; }
+    // Piu' menu speciali che persone: stessa idea, l'avviso e' gia' sotto le
+    // caselle da quando ha messo il numero di troppo.
+    if (!menuValido()) { aggiornaMenu(); return; }
 
     // In modalita' "aggiungi" non si va su WhatsApp: la richiesta si mette da
     // parte e il cliente continua a guardare le altre escursioni.
@@ -810,7 +894,9 @@ function initRequestDialog() {
         date: req.date,
         time: req.time,
         lang: req.lang,
-        menu: req.menu,
+        // nella lista si salva il riepilogo gia' scritto ("1 Vegetariano · 1
+        // Menu standard"), come si fa gia' per la variante e per la lingua
+        menu: menuTesto(req),
         adults: req.adults,
         kids: req.kids,
         option: req.option,

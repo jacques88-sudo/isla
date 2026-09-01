@@ -2885,3 +2885,28 @@ gli orari di ritorno e l'avviso di arrivare 15 minuti prima (i posti si riempion
 di arrivo). Provato nel browser vero: la sezione "Consigli" resta leggibile anche con tre
 paragrafi lunghi, non rompe il layout. `node controlla.js` → 0 errori. Alzato `sw.js` a
 `isla-v171`.
+
+### Aqualand (scheda singola): stesso trattamento del combo (1 settembre 2026)
+
+Stessa pagina del rivenditore (CanaryVIP), stavolta per Aqualand da solo. Anche qui
+`priceAdult: 0` e `priceChild: 0` erano mai stati compilati. Prezzi veri: adulto 36€,
+bambino 29€, "toddler" 16€.
+
+**Fasce d'eta' non ripetute dalla pagina**, come per il combo: riusate le stesse 12+/4-11/0-3
+gia' confermate dall'ufficio per il biglietto combinato, trattandosi dello stesso parco.
+**Da confermare se valgono anche qui.**
+
+**Aggiunto lo spettacolo dei delfini (15:30, incluso nel biglietto)**, che sulla pagina del
+combo non c'era scritto in dettaglio. E i punti di ritiro della navetta, stavolta piu'
+completi che sul combo: **la pagina di Aqualand elenca due fermate in piu'** che il combo
+aveva fuso in una sola — "Bar Leonardo" (9:45/10:45/11:45) come fermata separata da "Hotel
+Best Tenerife" (9:40/10:40/11:40, sul combo erano allo stesso orario), e "Via Llanos de
+Troya" (9:50/10:50/11:50) che sul combo non c'era proprio. **Le due pagine dello stesso
+rivenditore non concordano fra loro** sulla stessa navetta: presa la versione piu' dettagliata
+(quella di Aqualand) per questa scheda. **Da valutare se allineare anche le note del combo**,
+non fatto qui per restare nello scopo della richiesta.
+
+Provato nel browser vero (`tour.html?id=aqualand`): le tre righe prezzo, "Transfer" incluso,
+le tre note leggibili senza rompere il layout, "24 ore" nella finestra della richiesta.
+Totale verificato: 2 adulti + 1 bambino → €101 (2×36 + 1×29). `node controlla.js` → 0 errori.
+Alzato `sw.js` a `isla-v172`.

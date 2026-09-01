@@ -2475,19 +2475,27 @@ const ESPLORA_CATALOG = [
     zone: "Costa Adeje",
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: 36,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 36,
+    priceChild: 29,
+    priceInfant: 16,
+    ages: { adult: "12+", child: "4-11", infant: "0-3" },
     included: ["transfer"],
     notes: [
-      { it: "Aperto tutti i giorni, 10:00-17:00.",
-        en: "Open every day, 10am-5pm.",
-        es: "Abierto todos los días, 10:00-17:00." }
+      { it: "Aperto tutti i giorni, 10:00-17:00. Spettacolo dei delfini alle 15:30, incluso nel biglietto.",
+        en: "Open every day, 10am-5pm. Dolphin show at 3:30pm, included in the ticket.",
+        es: "Abierto todos los días, 10:00-17:00. Espectáculo de delfines a las 15:30, incluido en la entrada." },
+      { it: "Navetta gratuita Aqualand: Centro Commerciale Pasarela (Los Cristianos) alle 9:30, 10:30 e 11:30; Hotel Sol Arona alle 9:35, 10:35 e 11:35; Hotel Best Tenerife alle 9:40, 10:40 e 11:40; Bar Leonardo alle 9:45, 10:45 e 11:45; Via Llanos de Troya alle 9:50, 10:50 e 11:50; H. Suite Labranda e C.C. Duke Shops (Costa Adeje) alle 10:05, 11:05 e 12:05; Hotel Sunwing Fañabé alle 10:10, 11:10 e 12:10. Ritorno da Aqualand alle 16:30 e alle 17:15.",
+        en: "Free Aqualand shuttle: Pasarela shopping centre (Los Cristianos) at 9:30, 10:30 and 11:30; Hotel Sol Arona at 9:35, 10:35 and 11:35; Hotel Best Tenerife at 9:40, 10:40 and 11:40; Bar Leonardo at 9:45, 10:45 and 11:45; Via Llanos de Troya at 9:50, 10:50 and 11:50; H. Suite Labranda and Duke Shops mall (Costa Adeje) at 10:05, 11:05 and 12:05; Hotel Sunwing Fañabé at 10:10, 11:10 and 12:10. Return from Aqualand at 16:30 and 17:15.",
+        es: "Lanzadera gratuita a Aqualand: C.C. Pasarela (Los Cristianos) a las 9:30, 10:30 y 11:30; Hotel Sol Arona a las 9:35, 10:35 y 11:35; Hotel Best Tenerife a las 9:40, 10:40 y 11:40; Bar Leonardo a las 9:45, 10:45 y 11:45; Via Llanos de Troya a las 9:50, 10:50 y 11:50; H. Suite Labranda y C.C. Duke Shops (Costa Adeje) a las 10:05, 11:05 y 12:05; Hotel Sunwing Fañabé a las 10:10, 11:10 y 12:10. Regreso desde Aqualand a las 16:30 y a las 17:15." },
+      { it: "I posti in navetta si assegnano in ordine di arrivo, senza prenotazione: presentarsi al punto di ritiro con un po' di anticipo.",
+        en: "Shuttle seats are given on a first-come, first-served basis, no booking: arrive at the pickup point a little early.",
+        es: "Las plazas en la lanzadera se asignan por orden de llegada, sin reserva: preséntese en el punto de recogida con algo de antelación." }
     ],
     family: true,
     desc: {
-      it: "Parco acquatico con scivoli e aree per tutte le età.",
-      en: "Water park with slides and areas for every age.",
-      es: "Parque acuático con toboganes y zonas para todas las edades."
+      it: "Parco acquatico a Costa Adeje con scivoli per tutte le età, spettacolo dei delfini incluso nel biglietto e navetta gratuita da diverse zone del sud dell'isola.",
+      en: "Water park in Costa Adeje with slides for every age, a dolphin show included in the ticket and a free shuttle from several areas in the south of the island.",
+      es: "Parque acuático en Costa Adeje con toboganes para todas las edades, espectáculo de delfines incluido en la entrada y lanzadera gratuita desde varias zonas del sur de la isla."
     },
     image: "aqualand.jpg",
     published: true

@@ -3228,3 +3228,62 @@ a mano, 2 adulti + 1 bambino: **Gold €127,50** (2×51 + 25,50) e **Platinum �
 aggiunta poco fa: "€25,50" in italiano, "€25.50" in inglese. Le fasce escono accanto ai
 prezzi ("Adulti (13+)", "Bambini (3-12)"). Zero errori console. `node controlla.js` → 0
 errori, e le due fasce combaciano senza buchi. Alzato `sw.js` a `isla-v178`.
+
+### Scandal Dinner Show: pagina intera, e la pagina si contraddice in due punti (1 settembre 2026)
+
+Terza pagina intera di fila. La regola imparata col flamenco — **il modulo di prenotazione
+batte il testo intorno** — e' servita subito, due volte.
+
+**1. I biglietti sono due, non tre.** Il corpo della pagina parla di "tre livelli (Standard,
+Gold, Platinum)" e ci costruisce sopra una domanda frequente che spiega le differenze fra
+tutti e tre. Nel modulo pero' lo Standard **non si puo' comprare**: ci sono solo "Ingresso Oro"
+(94 €) e "Ingresso Platinum" (114 €). Messe due varianti, non tre. E il "Da 94,00 €"
+dell'intestazione torna con l'Oro, che e' il piu' economico dei due comprabili.
+
+**2. I giorni: "ogni sabato" contro "venerdi' e sabato".** L'intestazione dice sabato, il corpo
+dice **venerdi' e sabato** nella riga degli orari e lo ripete nelle domande frequenti ("il
+venerdi' e il sabato sera, con occasionali eccezioni in date specifiche"). Anche il riassunto
+di agosto diceva solo sabato, ma quel riassunto veniva dalla stessa intestazione, quindi non e'
+una conferma indipendente: e' la stessa fonte contata due volte.
+
+**Tenuto venerdi' e sabato**, per due motivi. Il primo: e' il dato scritto due volte e nei
+punti piu' precisi della pagina, mentre le intestazioni di questo fornitore hanno gia'
+sbagliato due volte (l'orario del flamenco, che era l'apertura delle porte, e la sua durata).
+Il secondo, che conta di piu': **`days` blocca la richiesta del cliente**. Se scrivo solo
+sabato e il venerdi' si fa davvero, un cliente che vuole il venerdi' non riesce nemmeno a
+mandare la richiesta — vendita persa e lui non sa perche'. Al contrario, se scrivo anche il
+venerdi' e non si fa, la richiesta arriva in ufficio e l'ufficio risponde: nessuna prenotazione
+e' automatica, c'e' sempre una persona in mezzo. Il danno e' asimmetrico, quindi si sbaglia
+dalla parte che si puo' correggere. **DA CONFERMARE CON L'UFFICIO: e' la cosa piu' importante
+di questo aggiornamento.**
+
+**Prezzi**: `priceAdult: 94` (prima era `0`, c'era solo il `priceFrom`), Oro 94 € e Platinum
+114 € come varianti. **Niente `priceChild`**: si entra solo dai 16 anni, quindi un prezzo
+bambini non esiste — non e' "non lo sappiamo". Aggiunto `ages: { adult: "16+" }`, cosi' il
+limite d'eta' si legge accanto al prezzo e non solo dentro la descrizione. Provato: se un
+cliente mette un bambino nella finestra, il totale **sparisce** invece di dare un numero
+falso, che e' il comportamento giusto.
+
+Aggiunto `included: ["lunch", "drinks"]` (menu degustazione e bevande di base illimitate) e
+tre note nuove: come si svolge la serata (porte 20:00 col drink di benvenuto, chiusura 20:30,
+fine 23:30, portate alternate ai numeri), il menu di cinque portate con cosa e' compreso e
+cosa si paga a parte, e la sede con i parcheggi.
+
+**Il menu esatto non e' stato copiato**, al contrario di Castillo dove i tre piatti sono
+scritti: qui la pagina stessa dice che "il menu cambia periodicamente", quindi elencare i
+cinque piatti di adesso vorrebbe dire pubblicare una cosa che invecchia da sola. Scritto solo
+il fatto che resta vero: cinque portate, fusion asiatico-mediterranea, cambia di tanto in
+tanto.
+
+**Non copiato**: "Miglior prezzo garantito", "Biglietti Ufficiali", "Pagamento sicuro",
+"Molto popolare!", "i posti si riempiono velocemente", punteggio e recensioni, **la
+cancellazione a 48 ore e gli scaglioni per i gruppi** (Isla resta a 24 ore), i pacchetti per
+addii al nubilato e gruppi privati da 30-150 persone, i nomi delle presentatrici, e tutto il
+testo di paragone con gli altri spettacoli dell'isola ("il piu' raffinato del sud", "in stile
+Las Vegas"), che e' marketing del rivenditore contro i suoi concorrenti.
+
+Provato nel browser vero. Totali verificati a mano: **Oro €188** (2×94), **Platinum €228**
+(2×114); col bambino il totale sparisce. La riga "Adulti (16+)" esce col limite d'eta',
+"Adatta a: Adulti". **Provata anche la validazione della data**: giovedi' 3 settembre viene
+rifiutato con "Questa escursione si fa solo: Ven · Sab", venerdi' 4 e sabato 5 passano. Zero
+errori console. `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v179`.

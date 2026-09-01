@@ -2704,11 +2704,48 @@ const ESPLORA_CATALOG = [
     zone: "Costa Adeje",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 94,
-    priceAdult: 0,
+    priceAdult: 94,
+    // Niente priceChild: si entra solo dai 16 anni in su, un prezzo bambini
+    // qui non esiste (non e' "non lo sappiamo").
     priceChild: 0,
+    ages: { adult: "16+" },
     family: false,
-    days: ["sab"],
+    // ⚠ La pagina del fornitore si contraddice: l'intestazione dice "ogni
+    // sabato", ma il corpo e le domande frequenti dicono **venerdi' e sabato**,
+    // due volte. Tenuto venerdi' e sabato, che e' il dato scritto piu' volte e
+    // nel punto piu' preciso: `days` blocca la richiesta del cliente, quindi
+    // sbagliare per difetto gli impedirebbe di chiedere una data buona.
+    // DA CONFERMARE CON L'UFFICIO.
+    days: ["ven", "sab"],
     times: ["20:30"],
+    included: ["lunch", "drinks"],
+    // I due biglietti del modulo di prenotazione. Il corpo della pagina parla
+    // di **tre** livelli (Standard, Gold, Platinum) e ci costruisce sopra una
+    // domanda frequente, ma nel modulo lo Standard non si puo' comprare: ci
+    // sono solo Oro e Platinum. Vale il modulo, come per il flamenco.
+    options: {
+      label: { it: "Tipo di biglietto", en: "Ticket type", es: "Tipo de entrada" },
+      choices: [
+        {
+          label: { it: "Ingresso Oro", en: "Gold entry", es: "Entrada Oro" },
+          priceAdult: 94,
+          desc: {
+            it: "Posti vicini al palco, a tavoli condivisi con altri ospiti.",
+            en: "Seats close to the stage, at tables shared with other guests.",
+            es: "Asientos cerca del escenario, en mesas compartidas con otros huéspedes."
+          }
+        },
+        {
+          label: { it: "Ingresso Platinum", en: "Platinum entry", es: "Entrada Platinum" },
+          priceAdult: 114,
+          desc: {
+            it: "I posti migliori, in prima fila, con tavolo privato da 2 a 8 persone solo per il tuo gruppo. Stesso menu e stesse bevande.",
+            en: "The best seats, front row, with a private table for 2 to 8 people just for your group. Same menu and same drinks.",
+            es: "Los mejores asientos, en primera fila, con mesa privada de 2 a 8 personas solo para tu grupo. Mismo menú y mismas bebidas."
+          }
+        }
+      ]
+    },
     transfer: {
       it: "Trasferimento opzionale da Los Gigantes, Playa Paraíso, Puerto de la Cruz e Caletillas, da richiedere in fase di prenotazione; prezzo su richiesta.",
       en: "Optional transfer from Los Gigantes, Playa Paraíso, Puerto de la Cruz and Caletillas, to request when booking; price on request.",
@@ -2720,15 +2757,24 @@ const ESPLORA_CATALOG = [
       es: "Cena y cabaret en una velada pensada para adultos: prohibida a menores de 16 años."
     },
     notes: [
-      { it: "Le porte aprono alle 20:00 e chiudono alle 20:30: non si entra dopo quell'orario.",
-        en: "Doors open at 20:00 and close at 20:30: no entry after that time.",
-        es: "Las puertas abren a las 20:00 y cierran a las 20:30: no se permite la entrada después de esa hora." },
+      { it: "Le porte aprono alle 20:00 col drink di benvenuto e chiudono alle 20:30, quando comincia lo spettacolo: chi arriva dopo perde la prima portata. Si finisce verso le 23:30.",
+        en: "Doors open at 20:00 with a welcome drink and close at 20:30, when the show starts: anyone arriving later misses the first course. It ends around 23:30.",
+        es: "Las puertas abren a las 20:00 con la copa de bienvenida y cierran a las 20:30, cuando empieza el espectáculo: quien llegue después se pierde el primer plato. Termina sobre las 23:30." },
+      { it: "Le portate arrivano fra un numero e l'altro: si cena e si guarda lo spettacolo insieme, non uno dopo l'altro. Spettacolo in inglese e spagnolo.",
+        en: "The courses come between the acts: you have dinner and watch the show at the same time, not one after the other. The show is in English and Spanish.",
+        es: "Los platos llegan entre número y número: se cena y se ve el espectáculo a la vez, no uno después del otro. El espectáculo es en inglés y español." },
+      { it: "Menu degustazione di cinque portate, cucina fusion asiatico-mediterranea; cambia di tanto in tanto. Compresi vino della casa, birra, acqua e bibite: superalcolici, cava e champagne si pagano a parte.",
+        en: "Five-course tasting menu, Asian-Mediterranean fusion; it changes from time to time. House wine, beer, water and soft drinks are included: spirits, cava and champagne are paid separately.",
+        es: "Menú degustación de cinco platos, cocina fusión asiático-mediterránea; cambia de vez en cuando. Incluye vino de la casa, cerveza, agua y refrescos: licores, cava y champán se pagan aparte." },
       { it: "Dress code smart/elegant casual: pantaloni lunghi per uomo, vietati costume da bagno, sandali, infradito e abbigliamento sportivo, controllato all'ingresso.",
         en: "Smart/elegant casual dress code: long trousers for men, no swimwear, sandals, flip-flops or sportswear, checked at the door.",
         es: "Código de vestimenta smart/elegante: pantalón largo para hombres, prohibido bañador, sandalias, chanclas y ropa deportiva, se comprueba en la entrada." },
       { it: "Menu vegetariano, vegano e senza glutine su richiesta; per allergie avvisare almeno 24 ore prima.",
         en: "Vegetarian, vegan and gluten-free menus on request; notify allergies at least 24 hours in advance.",
-        es: "Menú vegetariano, vegano y sin gluten bajo petición; para alergias avisar con al menos 24 horas de antelación." }
+        es: "Menú vegetariano, vegano y sin gluten bajo petición; para alergias avisar con al menos 24 horas de antelación." },
+      { it: "Si tiene nella sala Las Olas dell'hotel GF Victoria, a Costa Adeje: l'ingresso allo spettacolo è segnalato dalla hall. Parcheggio pubblico gratuito al CC Plaza del Duque, a circa 5 minuti a piedi; parcheggio sotterraneo dell'hotel a pagamento.",
+        en: "Held in the Las Olas showroom of the GF Victoria hotel, in Costa Adeje: the way in to the show is signposted from the lobby. Free public parking at CC Plaza del Duque, about a 5-minute walk; paid underground parking at the hotel.",
+        es: "Se celebra en la sala Las Olas del hotel GF Victoria, en Costa Adeje: la entrada al espectáculo está señalizada desde el hall. Aparcamiento público gratuito en el CC Plaza del Duque, a unos 5 minutos a pie; aparcamiento subterráneo del hotel de pago." }
     ],
     image: "scandal-dinner-show.jpg",
     published: true

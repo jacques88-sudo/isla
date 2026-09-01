@@ -2875,3 +2875,13 @@ Provato nel browser vero (`tour.html?id=combo-jungle-aqualand`): le tre righe pr
 ore" nella finestra della richiesta (non 72). Totale verificato a mano nella finestra
 richiesta: 2 adulti + 1 bambino → €144 (2×51 + 1×42), coerente con `priceAdult`/`priceChild`
 soltanto. `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v170`.
+
+**Aggiunti i punti di ritiro delle navette, su richiesta del proprietario (1 settembre
+2026).** La pagina CanaryVIP elencava fermate e orari precisi per la navetta Aqualand (Los
+Cristianos, Playa de las Américas, Costa Adeje, con orari diversi per punto) e per quella
+Jungle Park (collegamento diretto da Aqualand). Sono fatti pratici, non pubblicità del
+rivenditore, quindi presi e tradotti nelle tre lingue: tre righe nuove in `notes`, con anche
+gli orari di ritorno e l'avviso di arrivare 15 minuti prima (i posti si riempiono in ordine
+di arrivo). Provato nel browser vero: la sezione "Consigli" resta leggibile anche con tre
+paragrafi lunghi, non rompe il layout. `node controlla.js` → 0 errori. Alzato `sw.js` a
+`isla-v171`.

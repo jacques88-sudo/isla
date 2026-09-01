@@ -2851,3 +2851,27 @@ l'orario al posto di "Giornata intera", "Consigli" non ripete piu' l'orario (su 
 la sezione "Consigli" sparisce del tutto, non essendoci altro). Controllata anche la card
 nell'elenco (`escursioni.html`): l'orario ci sta su una riga sola, senza rompere il layout.
 `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v169`.
+
+### Combo Aqualand + Jungle Park: prezzi veri al posto del segnaposto (1 settembre 2026)
+
+`combo-jungle-aqualand` aveva `priceAdult: 0` e `priceChild: 0` (mai compilati), col solo
+`priceFrom: 51` a comparire sulla card. Arrivati da una pagina di un rivenditore (CanaryVIP):
+adulto 51€, bambino 42€, un terzo prezzo a 21€.
+
+**Non copiati**: la cancellazione a 72 ore (Isla resta a 24, come sempre), "best price
+guarantee", punteggio e numero di recensioni, tutto il testo promozionale — la descrizione e'
+riscritta da zero nelle tre lingue, con dentro solo i due fatti utili (un giorno per parco,
+navetta gratuita) e senza gli orari che stavano gia' in `notes`.
+
+**Deciso senza conferma dell'ufficio**: le fasce d'eta' per il terzo prezzo. La pagina non
+le scriveva vicino ai prezzi; l'ufficio ha indicato **12+ / 4-11 / 0-3** (non 3-11/0-2 come
+altre schede parchi) — messe cosi' in `ages`, con `priceInfant: 21` (a pagamento, non
+gratis: **da riconfermare con l'ufficio se e' davvero cosi'**, la pagina del rivenditore non
+lo diceva esplicitamente). Orari (Aqualand 10-17, Jungle Park 10-17:30) e navetta gratuita
+confermati uguali a quanto gia' in `notes`/`included`.
+
+Provato nel browser vero (`tour.html?id=combo-jungle-aqualand`): le tre righe prezzo
+(Adulti 12+ €51, Bambini 4-11 €42, Neonati 0-3 €21), "Transfer" nel riquadro incluso, "24
+ore" nella finestra della richiesta (non 72). Totale verificato a mano nella finestra
+richiesta: 2 adulti + 1 bambino → €144 (2×51 + 1×42), coerente con `priceAdult`/`priceChild`
+soltanto. `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v170`.

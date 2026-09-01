@@ -2527,8 +2527,10 @@ const ESPLORA_CATALOG = [
       es: "2 días, 1 por parque (no necesariamente consecutivos)"
     },
     priceFrom: 51,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 51,
+    priceChild: 42,
+    priceInfant: 21,
+    ages: { adult: "12+", child: "4-11", infant: "0-3" },
     included: ["transfer"],
     notes: [
       { it: "Aqualand 10:00-17:00, Jungle Park 10:00-17:30.",
@@ -2537,9 +2539,9 @@ const ESPLORA_CATALOG = [
     ],
     family: true,
     desc: {
-      it: "Biglietto combinato per i due parchi del sud.",
-      en: "Combined ticket for the two parks in the south.",
-      es: "Entrada combinada para los dos parques del sur."
+      it: "Biglietto combinato per i due parchi del sud: un giorno all'Aqualand e uno al Jungle Park, con navetta gratuita da diverse zone del sud dell'isola.",
+      en: "Combined ticket for the two parks in the south: one day at Aqualand and one at Jungle Park, with a free shuttle from several areas in the south of the island.",
+      es: "Entrada combinada para los dos parques del sur: un día en Aqualand y otro en Jungle Park, con lanzadera gratuita desde varias zonas del sur de la isla."
     },
     image: "combo-jungle-aqualand.jpg",
     published: true

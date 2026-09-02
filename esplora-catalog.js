@@ -2383,11 +2383,38 @@ const ESPLORA_CATALOG = [
     id: "gran-canaria",
     title: "Poema del Mar",
     category: "parchi-spettacoli",
-    zone: "Santa Cruz",
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
+    // Il transfer dal sud e' compreso, quindi il cliente non parte da Santa
+    // Cruz: ci arriva. La zona lo dice, se no "Punto di partenza: Santa Cruz"
+    // farebbe pensare a chi sta nel sud di doverci andare da solo.
+    zone: {
+      it: "Ritiro dal sud, imbarco a Santa Cruz",
+      en: "Pickup in the south, boarding at Santa Cruz",
+      es: "Recogida en el sur, embarque en Santa Cruz"
+    },
+    duration: {
+      it: "Giornata intera (traghetto 10:00-18:00)",
+      en: "Full day (ferry 10:00-18:00)",
+      es: "Día completo (ferry 10:00-18:00)"
+    },
+    priceFrom: 135,
+    priceAdult: 135,
+    priceChild: 32,
+    // I neonati **pagano**: 20 €, non e' uno zero. Il posto sul pullman e sulla
+    // nave lo occupano comunque.
+    priceInfant: 20,
+    // "Children (3-11)" e' scritto nel modulo di prenotazione; il 12+ degli
+    // adulti e lo 0-2 dei neonati sono gli unici completamenti che non lasciano
+    // buchi fra le tre righe.
+    ages: { adult: "12+", child: "3-11", infant: "0-2" },
+    days: ["ven"],
+    // La partenza vera e' una sola: il traghetto delle 10:00. Il ritiro dagli
+    // hotel del sud e' prima e cambia da hotel a hotel, quindi non e' un orario
+    // che si possa scrivere qui: sta nella nota del transfer.
+    times: ["10:00"],
+    // Il servizio di guida ufficiale e' in queste tre lingue, ed e' una scelta
+    // vera del cliente. L'italiano non c'e': il modulo del fornitore lo elenca
+    // ma risponde "no excursions available".
+    languages: ["English", "Español", "Deutsch"],
     included: ["transfer", "ferry", "ticket", "guide", "tasting"],
     itinerary: [
       { time: "10:00", text: { it: "Nave da Santa Cruz verso Agaete",
@@ -2413,12 +2440,15 @@ const ESPLORA_CATALOG = [
                                es: "Barco desde Agaete hacia Santa Cruz" } }
     ],
     notes: [
-      { it: "Il pranzo non è incluso.",
-        en: "Lunch is not included.",
-        es: "El almuerzo no está incluido." },
-      { it: "Il transfer dal sud fino al porto di Santa Cruz è compreso, andata e ritorno.",
-        en: "The transfer from the south to Santa Cruz harbour is included, both ways.",
-        es: "El traslado desde el sur hasta el puerto de Santa Cruz está incluido, ida y vuelta." }
+      { it: "Serve il documento d'identità o il passaporto originale, in corso di validità: senza non si sale sulla nave.",
+        en: "You need your original ID card or passport, still valid: without it you can't board the ferry.",
+        es: "Hace falta el DNI o el pasaporte original, en vigor: sin él no se puede embarcar." },
+      { it: "Il pranzo non è incluso. Si può mangiare al ristorante dentro il Poema del Mar, che affaccia sulla vasca grande.",
+        en: "Lunch is not included. You can eat at the restaurant inside Poema del Mar, which looks onto the big tank.",
+        es: "El almuerzo no está incluido. Se puede comer en el restaurante dentro del Poema del Mar, con vistas al tanque grande." },
+      { it: "Il transfer dal sud fino al porto di Santa Cruz è compreso, andata e ritorno: l'ora del ritiro in hotel si conferma con la prenotazione.",
+        en: "The transfer from the south to Santa Cruz harbour is included, both ways: the hotel pickup time is confirmed with the booking.",
+        es: "El traslado desde el sur hasta el puerto de Santa Cruz está incluido, ida y vuelta: la hora de recogida en el hotel se confirma con la reserva." }
     ],
     family: true,
     desc: {

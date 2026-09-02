@@ -3548,3 +3548,60 @@ Provato nel browser vero nelle tre lingue. Totale verificato a mano: 2 adulti + 
 domanda sul menu **non** compare (il campo `menus` questa scheda non ce l'ha, ed e' giusto:
 al parco non si mangia niente di compreso). Zero errori console. `node controlla.js` → 0
 errori. Alzato `sw.js` a `isla-v184`.
+
+### Poema del Mar: i tre prezzi dal modulo di prenotazione (2 settembre 2026)
+
+La scheda `gran-canaria` (titolo "Poema del Mar") era gia' fra le piu' complete del catalogo —
+itinerario della giornata, icone di "Cosa e' incluso", due note — ma **senza un prezzo**:
+`priceFrom: null`, quindi sulla card usciva "Su richiesta". Arrivata la pagina dell'operatore
+col modulo di prenotazione, e la prima cosa che si nota e' che **itinerario e incluse
+scritti mesi fa combaciano riga per riga** con quello che dice la pagina: quella parte non e'
+stata toccata.
+
+**Tre prezzi, tre fasce**: adulti 135 €, bambini 32 €, neonati 20 €. Il modulo scrive
+"Children (3-11)" per esteso; il `12+` degli adulti e lo `0-2` dei neonati sono gli unici
+completamenti che non lasciano buchi. **I neonati pagano**, non e' uno zero: 20 €, il posto
+sul pullman e sulla nave lo occupano comunque.
+
+**Il salto fra 135 e 32 e' grosso** (un bambino paga meno di un quarto), ma e' quello che
+scrive il modulo, che e' la fonte piu' affidabile che abbiamo. **Se all'ufficio arriva un
+totale che sembra sbagliato, il numero viene da li'.**
+
+**Solo il venerdi'**: `days: ["ven"]`, prima mancava e la scheda risultava "tutti i giorni".
+`times: ["10:00"]`, che e' l'orario del traghetto: il ritiro in hotel e' prima e cambia da
+hotel a hotel, quindi non e' un orario da mettere li' — sta nella nota del transfer, che ora
+dice anche che l'ora del ritiro si conferma con la prenotazione.
+
+**Aggiunto `languages`** — inglese, spagnolo e tedesco. Qui il campo ci vuole davvero: e' il
+servizio di guida ufficiale e il cliente sceglie. **L'italiano non c'e'**: il modulo del
+fornitore lo elenca nella tendina ma poi risponde "no excursions available", quindi non e'
+stato messo.
+
+**La nota piu' importante e' quella nuova sul documento**: senza carta d'identita' o passaporto
+originale e in corso di validita' **non si sale sulla nave**. E' il tipo di dato che rovina la
+giornata a chi lo scopre al porto, quindi sta in cima alle note. Estesa anche la nota sul
+pranzo (si puo' mangiare al ristorante dentro l'acquario).
+
+**Zona**: da "Santa Cruz" a "Ritiro dal sud, imbarco a Santa Cruz". Con il transfer compreso
+il cliente a Santa Cruz non ci parte, ci arriva: "Punto di partenza: Santa Cruz" faceva pensare
+a chi sta nel sud di doverci andare da solo.
+
+**Non copiato**: "il miglior acquario d'Europa", "il vetro curvo piu' grande del mondo" e il
+resto dei superlativi, piu' la prosa da depliant ("Sei pronto a vivere un'avventura che ti
+lascera' con la voglia di tornare?"). La descrizione che c'era gia' e' fattuale e non e' stata
+toccata.
+
+**Un limite notato provando, da decidere piu' avanti**: i neonati a pagamento **non entrano nel
+totale** della finestra, perche' il totale usa solo `priceAdult` e `priceChild` (regola di
+`CLAUDE.md`). Con una famiglia che porta un neonato il numero mostrato e' quindi piu' basso di
+quello vero, di 20 €. La riga "Neonati (0-2): €20" si vede lo stesso in pagina, e il totale e'
+dichiarato indicativo, quindi non e' un numero falso — ma le schede con neonati a pagamento
+sono ormai **cinque** (`ragnarok` 5 €, `gran-canaria` 20 €, `aqualand` 16 €, `jungle-park`
+16 €, `combo-jungle-aqualand` 21 €). **Da decidere se farli entrare nel totale**: non fatto
+qui perche' tocca il conto di tutte le schede, non solo di questa.
+
+Provato nel browser vero. Totale verificato a mano: 2 adulti + 1 bambino → **€302**
+(2×135 + 32). Le tre righe di prezzo escono con le fasce, la tendina delle lingue compare con
+le tre giuste, l'orario e' solo 10:00, e sui giorni **venerdi' passa mentre sabato e lunedi'
+vengono rifiutati**. Zero errori console. `node controlla.js` → 0 errori. Alzato `sw.js` a
+`isla-v185`.

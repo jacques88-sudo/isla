@@ -237,7 +237,7 @@ function initLista() {
       const dettagli = [formatDate(voce.date)];
       if (voce.time) dettagli.push(voce.time);
       if (voce.lang) dettagli.push(voce.lang);
-      dettagli.push(peopleText(voce.adults, voce.kids));
+      dettagli.push(peopleText(voce.adults, voce.kids, voce.babies));
       if (voce.option) dettagli.push(voce.option);
       if (voce.menu) dettagli.push(voce.menu);
       if (riga.tour.transfer && voce.transfer) {

@@ -2814,13 +2814,11 @@ const ESPLORA_CATALOG = [
     priceChild: 0,
     ages: { adult: "16+" },
     family: false,
-    // ⚠ La pagina del fornitore si contraddice: l'intestazione dice "ogni
-    // sabato", ma il corpo e le domande frequenti dicono **venerdi' e sabato**,
-    // due volte. Tenuto venerdi' e sabato, che e' il dato scritto piu' volte e
-    // nel punto piu' preciso: `days` blocca la richiesta del cliente, quindi
-    // sbagliare per difetto gli impedirebbe di chiedere una data buona.
-    // DA CONFERMARE CON L'UFFICIO.
-    days: ["ven", "sab"],
+    // Solo il sabato, **confermato dall'ufficio**. La pagina del fornitore si
+    // contraddiceva: l'intestazione diceva "ogni sabato" e il corpo "venerdi' e
+    // sabato" (due volte, domande frequenti comprese). Era stato tenuto il piu'
+    // largo dei due in attesa della conferma; aveva ragione l'intestazione.
+    days: ["sab"],
     times: ["20:30"],
     included: ["lunch", "drinks"],
     // I due biglietti del modulo di prenotazione. Il corpo della pagina parla

@@ -2921,46 +2921,6 @@ const ESPLORA_CATALOG = [
     image: "history-music-show.jpg",
     published: true
   },
-  {
-    id: "gladiux-show",
-    title: "Gladiux Show Tenerife",
-    category: "parchi-spettacoli",
-    zone: {
-      it: "A circa 20 minuti da Costa Adeje",
-      en: "About 20 minutes from Costa Adeje",
-      es: "A unos 20 minutos de Costa Adeje"
-    },
-    // Durata dedotta dagli orari 19:30-21:00: il fornitore non la dichiara
-    // esplicitamente, quindi non e' certa al 100%.
-    duration: { it: "≈ 1 ora e 30", en: "≈ 1.5 hours", es: "≈ 1 hora y media" },
-    priceFrom: 35,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    days: ["mer", "sab"],
-    times: ["19:30"],
-    transfer: {
-      it: "Navetta opzionale a pagamento dal sud di Tenerife, dettagli e prezzo su richiesta.",
-      en: "Optional paid shuttle from the south of Tenerife, details and price on request.",
-      es: "Lanzadera opcional de pago desde el sur de Tenerife, detalles y precio a consultar."
-    },
-    desc: {
-      it: "Spettacolo con combattimenti tra gladiatori a cavallo. Il sabato è compresa anche una cena alla griglia con bevande; il mercoledì è solo lo spettacolo, con un menu à la carte a parte.",
-      en: "A show with mounted gladiator battles. On Saturdays a grilled dinner with drinks is also included; on Wednesdays it's the show only, with a separate à la carte menu.",
-      es: "Espectáculo con combates de gladiadores a caballo. Los sábados incluye también una cena a la parrilla con bebidas; los miércoles es solo el espectáculo, con un menú a la carta aparte."
-    },
-    notes: [
-      { it: "Spettacolo in inglese.", en: "The show is in English.", es: "El espectáculo es en inglés." },
-      { it: "Il sabato: menu vegetariano e senza glutine disponibili su richiesta per la cena.",
-        en: "On Saturdays: vegetarian and gluten-free menus available on request for dinner.",
-        es: "Los sábados: menú vegetariano y sin gluten disponibles bajo petición para la cena." },
-      { it: "Parcheggio gratuito in loco.", en: "Free on-site parking.", es: "Aparcamiento gratuito en el recinto." }
-    ],
-    // Pubblicata senza foto, su richiesta del proprietario: nell'elenco e sulla
-    // pagina esce il segnaposto "Foto in arrivo" finche' non ne arriva una vera.
-    image: "",
-    published: true
-  },
 
   // ─── TOUR DELL'ISOLA ──────────────────────────────────────────────────────
   {

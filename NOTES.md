@@ -3684,3 +3684,30 @@ gruppo.
 Provato nel browser vero: la categoria mostra le sue 14 schede senza Gladiux,
 `tour.html?id=gladiux-show` da' la pagina "Escursione non trovata" invece di rompersi, home a
 posto, zero errori console. `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v187`.
+
+### Scandal: solo il sabato, confermato — e avevo scommesso sull'altra (2 settembre 2026)
+
+L'ufficio ha risposto alla domanda lasciata aperta: **lo Scandal si fa solo il sabato**.
+Rimesso `days: ["sab"]`.
+
+**Aveva ragione l'intestazione del fornitore, non il corpo della pagina.** E' il contrario di
+come avevo ragionato: avevo tenuto "venerdi' e sabato" perche' lo diceva due volte e nei punti
+piu' precisi (riga degli orari e domande frequenti), mentre "ogni sabato" stava solo in un
+punto elenco in cima — e perche' su questo fornitore le intestazioni avevano gia' sbagliato
+due volte (l'orario del flamenco, che era l'apertura delle porte, e la sua durata).
+
+**La lezione vera, per la prossima volta.** Il ragionamento era buono a meta'. La parte sul
+danno asimmetrico regge ancora: `days` blocca la richiesta del cliente, quindi sbagliare per
+difetto gli impedisce di chiedere una data buona e non se ne accorge nessuno, mentre sbagliare
+per eccesso finisce in ufficio e si corregge parlando — e infatti nel frattempo non e'
+successo niente di male. La parte sulle fonti invece era sbagliata: di **CanaryVIP non e'
+affidabile ne' l'intestazione ne' il corpo**, e cercare quale dei due pesi di piu' e' una
+partita persa. L'unica parte affidabile e' il **modulo di prenotazione**, e per i giorni il
+**calendario** quando c'e' (come quello dell'operatore di MHT, che elencava le date una per
+una). Quando la pagina si contraddice sui giorni e non c'e' un calendario da guardare, la
+risposta non e' scegliere il lato piu' probabile: **e' chiedere all'ufficio e intanto tenere
+il piu' largo**, che e' quello che ha permesso di correggere oggi senza aver perso richieste.
+
+Provato nel browser vero: la riga "Giorni" dice "Sab", e nella finestra della richiesta i due
+venerdi' provati vengono rifiutati mentre i due sabati passano. `node controlla.js` → 0
+errori. Alzato `sw.js` a `isla-v188`.

@@ -3711,3 +3711,104 @@ il piu' largo**, che e' quello che ha permesso di correggere oggi senza aver per
 Provato nel browser vero: la riga "Giorni" dice "Sab", e nella finestra della richiesta i due
 venerdi' provati vengono rifiutati mentre i due sabati passano. `node controlla.js` → 0
 errori. Alzato `sw.js` a `isla-v188`.
+
+### Avventura e motori: quad, buggy, cavallo, elicottero, parapendio da canaryvip.com (2 settembre 2026)
+
+Arrivati da canaryvip.com i dati di 6 attivita' "fun activities". Aqua Termal SPA e Parco
+Forestale erano gia' escluse dal catalogo (scartate durante il confronto con Canary2Go, vedi
+sopra): **nessuna traccia da togliere**, controllato con una grep sull'intero repo.
+
+Le altre cinque corrispondevano a schede Admiral gia' in catalogo, ferme sui campi
+segnaposto ("Da definire") messi mesi fa: `quad-teide-adventure` e `quad-teide-sunset` (le
+due varianti mattina/tramonto dello stesso prodotto `teide-quad-safari` del fornitore),
+`cavallo`, `helicopter-tours`, `paragliding`. La sesta (il quad da Puerto de la Cruz) non
+esisteva: creata come `quad-nord-puerto-cruz`, controllato prima che non fosse un doppione
+delle due schede quad del sud (porto, itinerario e prezzo tutti diversi — Chio' contro
+Puerto de la Cruz).
+
+**Prezzo pieno, non quello scontato**: la fonte da' sia `price.from` (scontato) sia
+`price.list` (pieno, barrato) per quattro delle sei. Preso sempre `list` quando c'era,
+mai `from` — regola del CLAUDE.md, prezzi barrati sono sconti del rivenditore. Quad Teide
+140€ (non 98), equitazione 50€ (non 45), quad Puerto de la Cruz 140€ (non 120). Il
+parapendio aveva gia' 110€ in catalogo: coincide esattamente col `list` della fonte, buon
+segno che la scheda originale fosse gia' su un prezzo sensato. L'elicottero aveva 98€: la
+fonte segnala un conflitto (riepilogo 110€, corpo pagina 98€) e dice che il valore
+canonico e' 110 — usato quello, **non piu' i 98 di prima**.
+
+**Quad Teide**: le due schede gia' in catalogo (`quad-teide-adventure` = mattina,
+`quad-teide-sunset` = tramonto) corrispondono bene alle due varianti del prodotto del
+fornitore, stessa durata (3 ore) gia' giusta. Aggiunti `zone: "Chio'"` (prima "Da
+definire"), pickup gratuito in hotel a Tenerife Sud (`included: ["guide","transfer"]`),
+e in nota conducenti 18+/patente, passeggeri da 7 anni, casco e guanti forniti,
+assicurazione di base inclusa. **Non messo `priceAdult`**: la fonte stessa segnala che non
+sa se il prezzo e' a persona o a quad, quindi il totale resta "Su richiesta" finche' non
+arriva la conferma dall'ufficio.
+
+**Buggy**: le tre schede esistenti (`buggy-volcano-4h`, `buggy-volcano-sunset`,
+`buggy-2-3h`) sono nate da un'altra fonte (probabilmente Canary2Go, non canaryvip) — zona
+"Da definire" ma durate e temi gia' abbastanza precisi da riconoscere. Confrontando le
+foto (guardate una per una, come vuole la procedura) con le cinque varianti della fonte:
+`buggy-volcano-4h` mostra il Teide sullo sfondo → associata a "Avventura sul Teide" (210
+min, **durata corretta da "4 ore" a "3 ore e mezza"**); `buggy-volcano-sunset` mostra una
+strada al tramonto tra i pini → associata a "Avventura al tramonto" (210 min, **corretta da
+"3 ore" a "3 ore e mezza"**); `buggy-2-3h` mostra un tratto sterrato polveroso →
+associata alle due varianti "Off-road 2H/3H" (50 min di fuoristrada su 55 km, **corretto
+da "40 minuti" a "50 minuti"**), trasformate in `options` con le due durate selezionabili
+al posto del vecchio testo con i prezzi separati (che non sono piu' confermabili: la fonte
+non da' il prezzo per singola variante).
+
+**Scartata la sesta variante della fonte, "Avventura costiera" (2 ore, senza tratto
+fuoristrada)**: nessuna delle tre foto esistenti la rappresenta bene (sono tutte Teide o
+sterrato, non costa), e senza una foto propria avrebbe dovuto restare `published: false`
+come il quad del nord. **Deciso di non creare una quarta scheda buggy per una sola
+variante minore** — da rivedere se l'ufficio manda una foto e conferma che vale la pena
+avere una scheda a parte.
+
+Prezzo di tutte e tre le schede buggy portato a 140€ (`priceFrom`), con
+`priceUnit: "/buggy"` invece di `priceAdult`/`priceChild` (0 = non deciso): la fonte dice
+esplicitamente che il prezzo e' a buggy (1-2 persone), non a persona, quindi sommarlo per
+il numero di persone avrebbe dato un totale falso.
+
+**Cavallo**: `zone: "Guargacho"` (il riepilogo del fornitore la da' come canonica contro
+Las Galletas del corpo pagina). `priceAdult: 50` messo perche' qui il prezzo e'
+inequivocabilmente a persona (tipico per l'equitazione, nessun conflitto di unita'
+segnalato). Due varianti (1h/2h) con `options`, prezzo confermato solo per l'ora singola.
+Nota sull'eta' minima (10 anni, dal corpo pagina — il riepilogo non la dice) e sul gruppo
+massimo (6 persone). **Non messo il pickup**: la fonte lo definisce "unclear" (disponibile
+si', ma zone e costo non chiari), meglio tacere che promettere qualcosa di incerto.
+
+**Elicottero**: `zone: "Adeje"`, pickup non disponibile (il cliente arriva da solo
+all'elisuperficie) — spiegato in nota invece che con un campo pickup che non esiste nello
+schema. `priceAdult: 110` (la fonte dice esplicitamente "a persona"). Due itinerari come
+`options` senza prezzo (la fonte non lo scompone). Nota su peso massimo 110 kg e 4
+passeggeri a volo.
+
+**Parapendio**: gia' a 110€, confermato dal prezzo pieno della fonte. Quattro varianti di
+volo come `options`, ciascuna con quota di decollo e punto di atterraggio in `desc`. `zone`
+lasciata "Da definire": punti di decollo e atterraggio cambiano troppo da variante a
+variante (da 800 a 2.200 metri, atterraggio a La Caleta o a Puerto de la Cruz) per un unico
+valore. **Conflitto di eta' non risolto, scritto in nota invece che scelto a caso**: il
+riepilogo dice 8-80 anni, il corpo pagina 14+. E' un dato che cambia se una famiglia puo'
+prenotare o no, quindi va chiesto all'ufficio prima di dire "8 anni" a un cliente.
+
+**Nessuna cancellazione copiata**: la fonte da' 48h per il quad, 48h/70%/0% per il buggy,
+7 giorni per l'elicottero, 48h per parapendio e equitazione — **tutte ignorate**, restano
+le 24 ore di Isla che non sono un campo della scheda ma una regola fissa del sito.
+
+**Foto**: tutte e cinque le schede aggiornate avevano gia' la loro foto Admiral, guardate
+una per una prima di confermare l'abbinamento zona/variante (vedi sopra per i buggy).
+`quad-nord-puerto-cruz` non ha una foto propria — la fonte ne aveva una, ma e' di
+canaryvip.com, un rivenditore concorrente, stessa scelta gia' fatta altre volte: **`image: ""`
+e `published: false`**, da pubblicare quando arriva una foto vera di Admiral o del
+fornitore diretto.
+
+Provato nel browser vero le otto schede toccate: righe "Punto di partenza", prezzo,
+lingue, "Cosa e' incluso" e note tutte a posto; le due schede con `options` etichettate
+"Durata" (buggy 2-3h e cavallo) nascondono giustamente la riga Durata doppia, come previsto
+dal codice. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60, non riguarda
+questo aggiornamento). Alzato `sw.js` a `isla-v189`.
+
+**Da riconfermare con l'ufficio**: se il prezzo del quad (140€) e' a persona o a quad;
+prezzo della variante equitazione da 2 ore; prezzo per singola variante buggy ed elicottero;
+l'eta' minima vera del parapendio (8 o 14 anni); se vale la pena aggiungere la "Avventura
+costiera" del buggy come quarta scheda quando arrivera' una foto.

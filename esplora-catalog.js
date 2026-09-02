@@ -1768,17 +1768,37 @@ const ESPLORA_CATALOG = [
     id: "buggy-volcano-4h",
     title: "4-Hour Volcano Buggy Tour",
     category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
-    priceFrom: 210,
+    zone: "Tenerife Sud",
+    duration: { it: "3 ore e mezza", en: "3.5 hours", es: "3,5 horas" },
+    priceFrom: 140,
+    priceUnit: { it: "/buggy", en: "/buggy", es: "/buggy" },
     priceAdult: 0,
     priceChild: 0,
     family: false,
     desc: {
-      it: "Quattro ore in buggy tra i vulcani, di cui un'ora di fuoristrada. Disponibile a 2, 4 o 6 posti.",
-      en: "Four hours of buggy among the volcanoes, one of them off-road. Available as a 2, 4 or 6 seater.",
-      es: "Cuatro horas en buggy entre volcanes, una de ellas fuera de pista. Disponible de 2, 4 o 6 plazas."
+      it: "Buggy automatico verso il Teide, fra colate laviche e punti panoramici sul vulcano. Guida multilingue, soste per foto, spuntino e bevanda inclusi.",
+      en: "An automatic buggy ride towards Teide, through lava fields and scenic viewpoints over the volcano. Multilingual guide, photo stops, snack and drink included.",
+      es: "Buggy automático hacia el Teide, entre coladas de lava y miradores sobre el volcán. Guía multilingüe, paradas para fotos, tentempié y bebida incluidos."
     },
+    included: ["guide", "fuel", "snack", "drinks"],
+    notes: [
+      {
+        it: "Prelievo e riconsegna gratuiti da Fañabé, Torvisca, Las Américas, Los Cristianos e Golf del Sur; da Playa Paraíso su richiesta.",
+        en: "Free pickup and drop-off from Fañabé, Torvisca, Las Américas, Los Cristianos and Golf del Sur; from Playa Paraíso on request.",
+        es: "Recogida y regreso gratuitos desde Fañabé, Torvisca, Las Américas, Los Cristianos y Golf del Sur; desde Playa Paraíso bajo petición."
+      },
+      {
+        it: "Buggy da 1-2 persone: chi guida deve avere almeno 18 anni e patente B1 valida (non provvisoria); i passeggeri salgono da 7 anni, con almeno 1,20 m di altezza.",
+        en: "Buggies seat 1-2 people: drivers must be at least 18 with a valid B1 licence (no provisional licences); passengers from age 7, at least 1.20 m tall.",
+        es: "Buggies de 1-2 personas: quien conduce debe tener al menos 18 años y carné B1 válido (no provisional); los pasajeros suben desde los 7 años, con al menos 1,20 m de altura."
+      },
+      {
+        it: "Casco, guanti, giacca e occhiali forniti. Non consigliato in gravidanza. Pacchetto foto professionale disponibile a pagamento.",
+        en: "Helmet, gloves, jacket and goggles provided. Not recommended during pregnancy. Professional photo package available for an extra fee.",
+        es: "Casco, guantes, chaqueta y gafas incluidos. No recomendado durante el embarazo. Paquete de fotos profesionales disponible con coste adicional."
+      }
+    ],
+    languages: LINGUE_TOUR,
     image: "buggy-volcano-4h.jpg",
     published: true
   },
@@ -1786,17 +1806,37 @@ const ESPLORA_CATALOG = [
     id: "buggy-volcano-sunset",
     title: "Volcano Sunset Buggy Tour",
     category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: 190,
+    zone: "Tenerife Sud",
+    duration: { it: "3 ore e mezza", en: "3.5 hours", es: "3,5 horas" },
+    priceFrom: 140,
+    priceUnit: { it: "/buggy", en: "/buggy", es: "/buggy" },
     priceAdult: 0,
     priceChild: 0,
     family: false,
     desc: {
-      it: "Buggy al tramonto tra i coni vulcanici, tre ore. Disponibile a 2, 4 o 6 posti.",
-      en: "Buggy at sunset among the volcanic cones, three hours. Available as a 2, 4 or 6 seater.",
-      es: "Buggy al atardecer entre los conos volcánicos, tres horas. Disponible de 2, 4 o 6 plazas."
+      it: "Lo stesso percorso fra i coni vulcanici, al tramonto: si chiude con un brindisi (vino o cava analcolica) e uno spuntino salato mentre il sole scende dietro il Teide.",
+      en: "The same route among the volcanic cones, at sunset: it ends with a toast (wine or alcohol-free cava) and a savoury snack as the sun goes down behind Teide.",
+      es: "El mismo recorrido entre los conos volcánicos, al atardecer: termina con un brindis (vino o cava sin alcohol) y un tentempié salado mientras el sol se pone tras el Teide."
     },
+    included: ["guide", "fuel", "drinks", "snack"],
+    notes: [
+      {
+        it: "Prelievo e riconsegna gratuiti da Fañabé, Torvisca, Las Américas, Los Cristianos e Golf del Sur; da Playa Paraíso su richiesta.",
+        en: "Free pickup and drop-off from Fañabé, Torvisca, Las Américas, Los Cristianos and Golf del Sur; from Playa Paraíso on request.",
+        es: "Recogida y regreso gratuitos desde Fañabé, Torvisca, Las Américas, Los Cristianos y Golf del Sur; desde Playa Paraíso bajo petición."
+      },
+      {
+        it: "Buggy da 1-2 persone: chi guida deve avere almeno 18 anni e patente B1 valida (non provvisoria); i passeggeri salgono da 7 anni, con almeno 1,20 m di altezza.",
+        en: "Buggies seat 1-2 people: drivers must be at least 18 with a valid B1 licence (no provisional licences); passengers from age 7, at least 1.20 m tall.",
+        es: "Buggies de 1-2 personas: quien conduce debe tener al menos 18 años y carné B1 válido (no provisional); los pasajeros suben desde los 7 años, con al menos 1,20 m de altura."
+      },
+      {
+        it: "Casco, guanti, giacca e occhiali forniti. Non consigliato in gravidanza. Pacchetto foto professionale disponibile a pagamento.",
+        en: "Helmet, gloves, jacket and goggles provided. Not recommended during pregnancy. Professional photo package available for an extra fee.",
+        es: "Casco, guantes, chaqueta y gafas incluidos. No recomendado durante el embarazo. Paquete de fotos profesionales disponible con coste adicional."
+      }
+    ],
+    languages: LINGUE_TOUR,
     image: "buggy-volcano-sunset.jpg",
     published: true
   },
@@ -1804,17 +1844,44 @@ const ESPLORA_CATALOG = [
     id: "buggy-2-3h",
     title: "2 or 3-Hour Buggy Tour",
     category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Tenerife Sud",
     duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
-    priceFrom: 160,
+    priceFrom: 140,
+    priceUnit: { it: "/buggy", en: "/buggy", es: "/buggy" },
     priceAdult: 0,
     priceChild: 0,
     family: false,
-    desc: {
-      it: "Due o tre ore in buggy, di cui 40 minuti di fuoristrada. Due ore da €160, tre ore da €190.",
-      en: "Two or three hours of buggy, including 40 minutes off-road. Two hours from €160, three hours from €190.",
-      es: "Dos o tres horas en buggy, con 40 minutos fuera de pista. Dos horas desde €160, tres horas desde €190."
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        { label: { it: "2 ore", en: "2 hours", es: "2 horas" }, duration: { it: "2 ore", en: "2 hours", es: "2 horas" } },
+        { label: { it: "3 ore", en: "3 hours", es: "3 horas" }, duration: { it: "3 ore", en: "3 hours", es: "3 horas" } }
+      ]
     },
+    desc: {
+      it: "Un percorso di 55 km con 50 minuti di fuoristrada vero, a scelta fra due e tre ore. Guida multilingue, spuntino e bevanda inclusi.",
+      en: "A 55 km route with 50 minutes of genuine off-road driving, in a two or three-hour version. Multilingual guide, snack and drink included.",
+      es: "Un recorrido de 55 km con 50 minutos de todoterreno real, a elegir entre dos y tres horas. Guía multilingüe, tentempié y bebida incluidos."
+    },
+    included: ["guide", "fuel", "snack", "drinks"],
+    notes: [
+      {
+        it: "Prelievo e riconsegna gratuiti da Fañabé, Torvisca, Las Américas, Los Cristianos e Golf del Sur; da Playa Paraíso su richiesta.",
+        en: "Free pickup and drop-off from Fañabé, Torvisca, Las Américas, Los Cristianos and Golf del Sur; from Playa Paraíso on request.",
+        es: "Recogida y regreso gratuitos desde Fañabé, Torvisca, Las Américas, Los Cristianos y Golf del Sur; desde Playa Paraíso bajo petición."
+      },
+      {
+        it: "Buggy da 1-2 persone: chi guida deve avere almeno 18 anni e patente B1 valida (non provvisoria); i passeggeri salgono da 7 anni, con almeno 1,20 m di altezza.",
+        en: "Buggies seat 1-2 people: drivers must be at least 18 with a valid B1 licence (no provisional licences); passengers from age 7, at least 1.20 m tall.",
+        es: "Buggies de 1-2 personas: quien conduce debe tener al menos 18 años y carné B1 válido (no provisional); los pasajeros suben desde los 7 años, con al menos 1,20 m de altura."
+      },
+      {
+        it: "Casco, guanti, giacca e occhiali forniti. Non consigliato in gravidanza. Pacchetto foto professionale disponibile a pagamento.",
+        en: "Helmet, gloves, jacket and goggles provided. Not recommended during pregnancy. Professional photo package available for an extra fee.",
+        es: "Casco, guantes, chaqueta y gafas incluidos. No recomendado durante el embarazo. Paquete de fotos profesionales disponible con coste adicional."
+      }
+    ],
+    languages: LINGUE_TOUR,
     image: "buggy-2-3h.jpg",
     published: true
   },
@@ -1822,17 +1889,31 @@ const ESPLORA_CATALOG = [
     id: "quad-teide-sunset",
     title: "Sunset on Teide Quad Tour",
     category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Chío",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: 150,
+    priceFrom: 140,
     priceAdult: 0,
     priceChild: 0,
     family: false,
     desc: {
-      it: "Tre ore in quad verso il Teide, al tramonto.",
-      en: "Three hours on a quad towards Teide, at sunset.",
-      es: "Tres horas en quad hacia el Teide, al atardecer."
+      it: "Safari guidato in quad automatico da Chío verso il Parco Nazionale del Teide, con soste panoramiche mentre il sole tramonta sull'isola.",
+      en: "A guided automatic quad safari from Chío towards Teide National Park, with scenic stops as the sun sets over the island.",
+      es: "Safari guiado en quad automático desde Chío hacia el Parque Nacional del Teide, con paradas panorámicas mientras el sol se pone sobre la isla."
     },
+    included: ["guide", "transfer"],
+    notes: [
+      {
+        it: "Prelievo e riconsegna in hotel incluso a Tenerife Sud. Chi guida deve avere almeno 18 anni e patente valida; i passeggeri salgono da 7 anni.",
+        en: "Hotel pickup and drop-off included in Tenerife South. Drivers must be at least 18 with a valid licence; passengers from age 7.",
+        es: "Recogida y regreso en el hotel incluidos en Tenerife Sur. Quien conduce debe tener al menos 18 años y carné válido; los pasajeros suben desde los 7 años."
+      },
+      {
+        it: "Casco e guanti forniti, scarpe chiuse consigliate. Assicurazione di base inclusa, copertura completa disponibile a pagamento. Non adatto in gravidanza.",
+        en: "Helmet and gloves provided, closed shoes recommended. Basic insurance included, full cover available for an extra fee. Not suitable during pregnancy.",
+        es: "Casco y guantes incluidos, se recomienda calzado cerrado. Seguro básico incluido, cobertura completa disponible con coste adicional. No apto durante el embarazo."
+      }
+    ],
+    languages: LINGUE_TOUR,
     image: "quad-teide-sunset.jpg",
     published: true
   },
@@ -1840,35 +1921,128 @@ const ESPLORA_CATALOG = [
     id: "quad-teide-adventure",
     title: "Teide Quad Adventure",
     category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Chío",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: 150,
+    priceFrom: 140,
     priceAdult: 0,
     priceChild: 0,
     family: false,
     desc: {
-      it: "Tre ore in quad sul Teide.",
-      en: "Three hours on a quad on Teide.",
-      es: "Tres horas en quad en el Teide."
+      it: "Safari guidato in quad automatico da Chío verso il Parco Nazionale del Teide, con soste panoramiche e culturali lungo il percorso.",
+      en: "A guided automatic quad safari from Chío towards Teide National Park, with scenic and cultural stops along the way.",
+      es: "Safari guiado en quad automático desde Chío hacia el Parque Nacional del Teide, con paradas panorámicas y culturales por el camino."
     },
+    included: ["guide", "transfer"],
+    notes: [
+      {
+        it: "Prelievo e riconsegna in hotel incluso a Tenerife Sud. Chi guida deve avere almeno 18 anni e patente valida; i passeggeri salgono da 7 anni.",
+        en: "Hotel pickup and drop-off included in Tenerife South. Drivers must be at least 18 with a valid licence; passengers from age 7.",
+        es: "Recogida y regreso en el hotel incluidos en Tenerife Sur. Quien conduce debe tener al menos 18 años y carné válido; los pasajeros suben desde los 7 años."
+      },
+      {
+        it: "Casco e guanti forniti, scarpe chiuse consigliate. Assicurazione di base inclusa, copertura completa disponibile a pagamento. Non adatto in gravidanza.",
+        en: "Helmet and gloves provided, closed shoes recommended. Basic insurance included, full cover available for an extra fee. Not suitable during pregnancy.",
+        es: "Casco y guantes incluidos, se recomienda calzado cerrado. Seguro básico incluido, cobertura completa disponible con coste adicional. No apto durante el embarazo."
+      }
+    ],
+    languages: LINGUE_TOUR,
     image: "quad-teide-adventure.jpg",
     published: true
+  },
+  {
+    id: "quad-nord-puerto-cruz",
+    title: {
+      it: "Quad e fuoristrada del Teide da Puerto de la Cruz",
+      en: "Teide Quad & Off-Road Tour from Puerto de la Cruz",
+      es: "Quad y todoterreno del Teide desde Puerto de la Cruz"
+    },
+    category: "avventura-motori",
+    zone: "Puerto de la Cruz",
+    duration: { it: "2 ore e mezza o 3 ore", en: "2.5 or 3 hours", es: "2,5 o 3 horas" },
+    priceFrom: 140,
+    priceAdult: 0,
+    priceChild: 0,
+    family: false,
+    options: {
+      label: { it: "Itinerario", en: "Route", es: "Itinerario" },
+      choices: [
+        {
+          label: { it: "Su strada, verso Izaña", en: "On-road, towards Izaña", es: "En carretera, hacia Izaña" },
+          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          desc: {
+            it: "Tutto su asfalto: La Orotava, il Mirador Roque Bermejo e il Corral del Niño, a quasi 2.300 metri.",
+            en: "All on paved roads: La Orotava, the Roque Bermejo viewpoint and Corral del Niño, at almost 2,300 metres.",
+            es: "Todo sobre asfalto: La Orotava, el mirador Roque Bermejo y el Corral del Niño, a casi 2.300 metros."
+          }
+        },
+        {
+          label: { it: "Con tratto fuoristrada", en: "With an off-road stretch", es: "Con tramo todoterreno" },
+          duration: { it: "2 ore e mezza", en: "2.5 hours", es: "2,5 horas" },
+          desc: {
+            it: "Le spiagge naturali del nord, Los Realejos, 30 minuti di vero fuoristrada e il Mirador de El Lance, a circa 800 metri.",
+            en: "The natural beaches of the north, Los Realejos, 30 minutes of genuine off-roading and the El Lance viewpoint, at about 800 metres.",
+            es: "Las playas naturales del norte, Los Realejos, 30 minutos de todoterreno real y el mirador de El Lance, a unos 800 metros."
+          }
+        }
+      ]
+    },
+    desc: {
+      it: "Due itinerari in quad automatico con partenza da Puerto de la Cruz: uno tutto su strada verso i miradores del nord, l'altro con un tratto fuoristrada fra le spiagge naturali.",
+      en: "Two automatic quad routes departing from Puerto de la Cruz: one entirely on paved roads towards the northern viewpoints, the other with an off-road stretch among the natural beaches.",
+      es: "Dos itinerarios en quad automático con salida desde Puerto de la Cruz: uno totalmente en carretera hacia los miradores del norte, el otro con un tramo todoterreno entre las playas naturales."
+    },
+    included: ["guide", "snack", "drinks"],
+    notes: [
+      {
+        it: "Nessun prelievo: si parte dalla base del fornitore a Puerto de la Cruz. Chi guida deve avere almeno 18 anni e patente valida; i passeggeri salgono da 7 anni.",
+        en: "No pickup: departure is from the operator's base in Puerto de la Cruz. Drivers must be at least 18 with a valid licence; passengers from age 7.",
+        es: "Sin recogida: la salida es desde la base del proveedor en Puerto de la Cruz. Quien conduce debe tener al menos 18 años y carné válido; los pasajeros suben desde los 7 años."
+      },
+      {
+        it: "Peso massimo 175 kg per quad. Non consigliato in gravidanza o con problemi di schiena.",
+        en: "Maximum weight 175 kg per quad. Not recommended during pregnancy or with back problems.",
+        es: "Peso máximo 175 kg por quad. No recomendado durante el embarazo o con problemas de espalda."
+      }
+    ],
+    languages: LINGUE_TOUR,
+    image: "",
+    published: false
   },
   {
     id: "helicopter-tours",
     title: "Helicopter Tours",
     category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 98,
-    priceAdult: 0,
+    zone: "Adeje",
+    duration: { it: "Da 8 a 50 minuti di volo", en: "8 to 50 minutes of flight", es: "De 8 a 50 minutos de vuelo" },
+    priceFrom: 110,
+    priceAdult: 110,
     priceChild: 0,
     family: true,
-    desc: {
-      it: "Tenerife vista dall'alto: sorvolo dell'isola in elicottero.",
-      en: "Tenerife seen from above: a helicopter flight over the island.",
-      es: "Tenerife vista desde el aire: sobrevuelo de la isla en helicóptero."
+    options: {
+      label: { it: "Percorso", en: "Route", es: "Recorrido" },
+      choices: [
+        { label: { it: "Volo costiero (circa 20 km)", en: "Coastal flight (about 20 km)", es: "Vuelo costero (unos 20 km)" } },
+        { label: { it: "Los Gigantes e il Teide (circa 120 km)", en: "Los Gigantes and Teide (about 120 km)", es: "Los Gigantes y el Teide (unos 120 km)" } }
+      ]
     },
+    desc: {
+      it: "Tenerife vista dall'alto: sorvolo in elicottero da Adeje, in tour condiviso o privato, con il commento del pilota durante il volo.",
+      en: "Tenerife seen from above: a helicopter flight from Adeje, shared or private, with the pilot's commentary along the way.",
+      es: "Tenerife vista desde el aire: sobrevuelo en helicóptero desde Adeje, en tour compartido o privado, con los comentarios del piloto durante el vuelo."
+    },
+    notes: [
+      {
+        it: "Nessun servizio di prelievo: il punto d'incontro è l'elisuperficie di Adeje, raggiungibile in autonomia. Documento d'identità richiesto.",
+        en: "No pickup service: the meeting point is the Adeje helipad, reached independently. Valid ID required.",
+        es: "Sin servicio de recogida: el punto de encuentro es el helipuerto de Adeje, al que se llega por cuenta propia. Se requiere documento de identidad."
+      },
+      {
+        it: "Limite di peso 110 kg a passeggero (oltre puo' servire un posto aggiuntivo), massimo 4 passeggeri a volo. Pacchetto foto/video opzionale a pagamento.",
+        en: "Weight limit 110 kg per passenger (an extra seat may be needed above that), maximum 4 passengers per flight. Optional photo/video package available for an extra fee.",
+        es: "Límite de peso 110 kg por pasajero (por encima puede requerir un asiento adicional), máximo 4 pasajeros por vuelo. Paquete de foto/vídeo opcional con coste adicional."
+      }
+    ],
+    languages: ["English", "Español"],
     image: "helicopter-tours.jpg",
     published: true
   },
@@ -1877,16 +2051,67 @@ const ESPLORA_CATALOG = [
     title: "Paragliding",
     category: "avventura-motori",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Attività di 2 o 4 ore, volo di 15-45 minuti", en: "2 to 4-hour activity, 15-45 minute flight", es: "Actividad de 2 o 4 horas, vuelo de 15-45 minutos" },
     priceFrom: 110,
-    priceAdult: 0,
+    priceAdult: 110,
     priceChild: 0,
     family: false,
-    desc: {
-      it: "Volo in parapendio in tandem con istruttore.",
-      en: "A tandem paragliding flight with an instructor.",
-      es: "Vuelo en parapente en tándem con instructor."
+    options: {
+      label: { it: "Volo", en: "Flight", es: "Vuelo" },
+      choices: [
+        {
+          label: { it: "15-25 minuti, decollo a 800 m", en: "15-25 minutes, takeoff at 800 m", es: "15-25 minutos, despegue a 800 m" },
+          desc: {
+            it: "Atterraggio sulla Playa de la Enramada, a La Caleta.",
+            en: "Landing at Playa de la Enramada, in La Caleta.",
+            es: "Aterrizaje en la Playa de la Enramada, en La Caleta."
+          }
+        },
+        {
+          label: { it: "20-30 minuti, decollo a 1.100 m", en: "20-30 minutes, takeoff at 1,100 m", es: "20-30 minutos, despegue a 1.100 m" },
+          desc: {
+            it: "Atterraggio sulla Playa de la Enramada, a La Caleta.",
+            en: "Landing at Playa de la Enramada, in La Caleta.",
+            es: "Aterrizaje en la Playa de la Enramada, en La Caleta."
+          }
+        },
+        {
+          label: { it: "30-40 minuti, decollo a 1.100 m", en: "30-40 minutes, takeoff at 1,100 m", es: "30-40 minutos, despegue a 1.100 m" },
+          desc: {
+            it: "Volo di alte prestazioni, a caccia delle correnti termiche. Atterraggio sulla Playa de la Enramada, a La Caleta.",
+            en: "A high-performance flight, chasing thermal currents. Landing at Playa de la Enramada, in La Caleta.",
+            es: "Vuelo de altas prestaciones, buscando las térmicas. Aterrizaje en la Playa de la Enramada, en La Caleta."
+          }
+        },
+        {
+          label: { it: "40-45 minuti, decollo a 2.200 m", en: "40-45 minutes, takeoff at 2,200 m", es: "40-45 minutos, despegue a 2.200 m" },
+          desc: {
+            it: "Passa sopra il Parco Nazionale del Teide. Atterraggio a Puerto de la Cruz o al Puertito de Güímar.",
+            en: "Passes over Teide National Park. Landing in Puerto de la Cruz or Puertito de Güímar.",
+            es: "Sobrevuela el Parque Nacional del Teide. Aterrizaje en Puerto de la Cruz o en el Puertito de Güímar."
+          }
+        }
+      ]
     },
+    desc: {
+      it: "Volo in tandem con istruttore esperto: decollo in quota, dove porta il vento, e atterraggio in spiaggia. Prelievo e riconsegna gratuiti.",
+      en: "A tandem flight with an experienced instructor: takeoff at altitude, wherever the wind takes you, landing on the beach. Free pickup and drop-off.",
+      es: "Vuelo en tándem con instructor experimentado: despegue en altura, allí donde lleve el viento, y aterrizaje en la playa. Recogida y regreso gratuitos."
+    },
+    included: ["guide", "transfer"],
+    notes: [
+      {
+        it: "Età 8-80 anni secondo il fornitore, ma la pagina segnala altrove un minimo di 14 anni: da confermare prima di prenotare per un bambino.",
+        en: "Ages 8-80 according to the operator, though the page states a minimum of 14 elsewhere: to be confirmed before booking for a child.",
+        es: "Edad 8-80 años según el proveedor, aunque la página indica en otra parte un mínimo de 14 años: a confirmar antes de reservar para un menor."
+      },
+      {
+        it: "Peso fra 40 e 100 kg. Non consigliato in gravidanza o con determinate condizioni mediche. Scarpe comode e abbigliamento a strati.",
+        en: "Weight between 40 and 100 kg. Not recommended during pregnancy or with certain medical conditions. Comfortable shoes and layered clothing.",
+        es: "Peso entre 40 y 100 kg. No recomendado durante el embarazo o con determinadas condiciones médicas. Calzado cómodo y ropa por capas."
+      }
+    ],
+    languages: LINGUE_TOUR,
     image: "paragliding.jpg",
     published: true
   },
@@ -1912,17 +2137,41 @@ const ESPLORA_CATALOG = [
     id: "cavallo",
     title: { it: "Passeggiata a cavallo", en: "Horseback riding", es: "Paseo a caballo" },
     category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
+    zone: "Guargacho",
+    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
+    priceFrom: 50,
+    priceAdult: 50,
     priceChild: 0,
     family: true,
-    desc: {
-      it: "Passeggiata a cavallo con guida, lungo sentieri con vista sull'oceano.",
-      en: "A guided horseback ride along trails with ocean views.",
-      es: "Paseo a caballo con guía por senderos con vistas al océano."
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        { label: { it: "1 ora", en: "1 hour", es: "1 hora" }, price: 50 },
+        {
+          label: { it: "2 ore (percorso costiero o al tramonto)", en: "2 hours (coastal or sunset route)", es: "2 horas (ruta costera o al atardecer)" },
+          duration: { it: "2 ore", en: "2 hours", es: "2 horas" }
+        }
+      ]
     },
+    desc: {
+      it: "Passeggiata a cavallo con guida da Guargacho, in gruppo o privata, lungo sentieri adatti anche a chi non ha mai cavalcato.",
+      en: "A guided horseback ride from Guargacho, in a group or private, along trails suitable even for first-time riders.",
+      es: "Paseo a caballo con guía desde Guargacho, en grupo o privado, por senderos aptos incluso para quien nunca ha montado."
+    },
+    included: ["guide", "equipment"],
+    notes: [
+      {
+        it: "Età minima 10 anni. Gruppo di massimo 6 persone. Consigliati pantaloni lunghi e scarpe robuste.",
+        en: "Minimum age 10. Groups of up to 6 people. Long trousers and sturdy shoes recommended.",
+        es: "Edad mínima 10 años. Grupos de hasta 6 personas. Se recomiendan pantalones largos y calzado resistente."
+      },
+      {
+        it: "Casco di sicurezza e armadietti per gli effetti personali inclusi.",
+        en: "Safety helmet and lockers for personal belongings included.",
+        es: "Casco de seguridad y taquillas para los objetos personales incluidos."
+      }
+    ],
+    languages: ["English", "Español"],
     image: "cavallo.jpg",
     published: true
   },

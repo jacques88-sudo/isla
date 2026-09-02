@@ -3658,3 +3658,29 @@ da parte salva `babies` e la lista la rilegge: "2 adulti, 1 bambino e 1 neonato 
 Guardata anche la finestra: tre caselle in due colonne, "Neonati" va a capo sotto e sta bene.
 Le richieste salvate **prima** di questa modifica non hanno il campo e valgono zero, senza
 rompersi. `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v186`.
+
+### Eliminata la scheda Gladiux Show (2 settembre 2026)
+
+Il proprietario ha chiesto di **eliminarla definitivamente, non di nasconderla**. Via il
+blocco dal catalogo.
+
+**Controllato prima di cancellare**, come per le quattro segnaposto di ieri: nessun altro file
+del repo la nomina, nessun `privateOption` ci punta, e in `assets/` non c'era nessuna foto sua
+da rimuovere (la scheda era proprio senza foto). Quindi niente riferimenti rotti.
+
+**Differenza importante rispetto alle quattro di ieri: questa era pubblicata**, quindi
+sparisce anche per i clienti. La categoria "Parchi e spettacoli" torna da 15 a 14 attivita' e
+il catalogo passa da 71 a 70 schede, 66 pubblicate. Sparito anche l'avviso di `controlla.js`
+sulla foto mancante, che era acceso solo per lei: si resta con un avviso solo, quello storico
+di `opera-60`.
+
+**Se dovesse tornare** non va riscritta a mano: sta nella storia di git fino al commit
+precedente (`git show 150d48f:esplora-catalog.js`), con dentro tutto quello che era stato
+ricavato dal riassunto di CanaryVIP — giorni, orario, la cena inclusa solo il sabato, il
+transfer, le note. **Era arrivata solo come riassunto, mai come pagina intera**: le mancavano
+i prezzi per persona e la foto, ed e' il motivo per cui e' rimasta l'ultima incompleta del
+gruppo.
+
+Provato nel browser vero: la categoria mostra le sue 14 schede senza Gladiux,
+`tour.html?id=gladiux-show` da' la pagina "Escursione non trovata" invece di rompersi, home a
+posto, zero errori console. `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v187`.

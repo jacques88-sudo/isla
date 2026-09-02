@@ -84,10 +84,15 @@ function formatDate(iso) {
   return g + "/" + m + "/" + y;
 }
 
-function peopleText(adults, kids) {
+// "2 adulti e 1 bambino", oppure "2 adulti, 1 bambino e 1 neonato". Con tre
+// pezzi l'ultimo si attacca con la "e" e gli altri con la virgola: tre "e" di
+// fila non le scrive nessuno.
+function peopleText(adults, kids, babies) {
   const parti = [adults + " " + t(adults === 1 ? "wa.adult" : "wa.adults")];
   if (kids > 0) parti.push(kids + " " + t(kids === 1 ? "wa.child" : "wa.children"));
-  return parti.join(" " + t("wa.and") + " ");
+  if (babies > 0) parti.push(babies + " " + t(babies === 1 ? "wa.baby" : "wa.babies"));
+  const ultimo = parti.pop();
+  return parti.length ? parti.join(", ") + " " + t("wa.and") + " " + ultimo : ultimo;
 }
 
 // I prezzi a testa da usare per il totale, oppure null quando il totale non si
@@ -125,6 +130,11 @@ function prezziAPersona(tour, req) {
     ? (variante.priceAdult > 0 ? { adulto: variante.priceAdult, bambino: variante.priceChild || 0 } : null)
     : (tour.priceAdult > 0 ? { adulto: tour.priceAdult, bambino: tour.priceChild || 0 } : null);
   if (!base) return null;
+  // I neonati stanno solo sulla scheda, non sulla variante: il catalogo non ha
+  // un prezzo neonati per variante. `undefined` non e' zero — vuol dire che di
+  // quella scheda non sappiamo niente sui neonati, e piu' sotto il totale si
+  // rifiuta di farsi invece di contarli gratis.
+  base.neonato = tour.priceInfant;
 
   // Col transfer il listino e' un altro: per il Twin Ticket €78 diventano €99.
   // Il listino in catalogo e' quello **completo** (biglietto+transfer) ma
@@ -139,16 +149,26 @@ function prezziAPersona(tour, req) {
       bambino: tp.child ? tp.child - (tour.priceChild || 0) : 0
     };
   };
+  // Il posto sul pullman per i neonati, quando il fornitore lo fa pagare. A
+  // differenza di adulti e bambini `tp.baby` e' gia' il prezzo **completo** del
+  // neonato col transfer (senza transfer quel posto non esiste), quindi
+  // sostituisce `priceInfant` invece di sommarcisi. Oggi nessuna scheda ce
+  // l'ha: sta qui perche' il campo esiste nel vocabolario e il giorno che
+  // arriva deve tornare da solo.
+  const neonatoColTransfer = tp => (tp && tp.baby !== undefined) ? tp.baby : undefined;
   // Il secondo transfer, una seconda zona di partenza: stessa logica, listino
   // diverso. I due checkbox si escludono a vicenda nella finestra, quindi qui
   // non serve gestire il caso in cui sono spuntati tutti e due.
-  const s = req.transfer ? supplemento(tour.transferPrice)
-    : req.transferSiam ? supplemento(tour.transferSiamPrice)
+  const tp = req.transfer ? tour.transferPrice
+    : req.transferSiam ? tour.transferSiamPrice
     : null;
+  const s = supplemento(tp);
   if (!s) return base;
+  const baby = neonatoColTransfer(tp);
   return {
     adulto: base.adulto + s.adulto,
-    bambino: base.bambino > 0 ? base.bambino + s.bambino : 0
+    bambino: base.bambino > 0 ? base.bambino + s.bambino : 0,
+    neonato: baby !== undefined ? baby : base.neonato
   };
 }
 
@@ -183,12 +203,24 @@ function calcolaTotale(tour, req) {
   // Bambini senza il loro prezzo: il totale verrebbe fuori come se non
   // pagassero. Meglio niente che un numero falso.
   if (!p || req.adults < 1 || (req.kids > 0 && !p.bambino)) return null;
+  // Stessa regola per i neonati: se il cliente ne porta uno ma di quella scheda
+  // non sappiamo se e quanto pagano (`priceInfant` assente), il totale non si
+  // fa. Zero invece e' un numero vero, vuol dire gratis, e va bene.
+  const neonati = req.babies || 0;
+  if (neonati > 0 && p.neonato === undefined) return null;
+
   const pezzi = [req.adults + " " + t(req.adults === 1 ? "wa.adult" : "wa.adults") + " × €" + eur(p.adulto)];
   if (req.kids > 0) {
     pezzi.push(req.kids + " " + t(req.kids === 1 ? "wa.child" : "wa.children") + " × €" + eur(p.bambino));
   }
+  // I neonati gratis si contano fra le persone ma non nel dettaglio del conto:
+  // "1 neonato × €0" e' una riga che non aggiunge niente al totale e sembra un
+  // errore. Che ci siano si legge gia' nella riga delle persone.
+  if (neonati > 0 && p.neonato > 0) {
+    pezzi.push(neonati + " " + t(neonati === 1 ? "wa.baby" : "wa.babies") + " × €" + eur(p.neonato));
+  }
   return {
-    totale: req.adults * p.adulto + req.kids * p.bambino,
+    totale: req.adults * p.adulto + req.kids * p.bambino + neonati * (p.neonato || 0),
     dettaglio: pezzi.join(" + ")
   };
 }
@@ -210,7 +242,7 @@ function righeRichiesta(tour, req) {
   // Come l'orario: si scrive solo se il cliente ha scelto. "Indifferente" e'
   // l'assenza della riga, non una riga che dice "indifferente".
   if (req.lang) righe.push("• " + t("wa.lang") + ": " + req.lang);
-  righe.push("• " + t("wa.people") + ": " + peopleText(req.adults, req.kids));
+  righe.push("• " + t("wa.people") + ": " + peopleText(req.adults, req.kids, req.babies));
   // La variante scelta sta in alto: e' la prima cosa che l'ufficio deve sapere
   // per rispondere col prezzo giusto.
   if (tour.options && req.option) {
@@ -441,6 +473,8 @@ function initRequestDialog() {
   const totalEl = document.querySelector("[data-request-total]");
   const adultsInput = document.getElementById("reqAdults");
   const kidsInput = document.getElementById("reqKids");
+  const babiesInput = document.getElementById("reqBabies");
+  const babiesBox = document.querySelector("[data-request-babies]");
   const nameBox = document.querySelector("[data-request-name]");
   const nameInput = document.getElementById("reqName");
   if (!dialog || !scrim || !form || !dateInput) return;
@@ -514,6 +548,7 @@ function initRequestDialog() {
     riempiOrari(tour);
     riempiLingue(tour);
     riempiMenu(tour);
+    mostraNeonati(tour);
     aggiornaGiorno();
     aggiornaTotale();
 
@@ -636,6 +671,18 @@ function initRequestDialog() {
   //
   // Le allergie non stanno qui: sono troppo diverse una dall'altra per fare
   // una casella ciascuna, e la riga sotto ricorda di scriverle nelle note.
+  // Il campo dei neonati compare **solo** dove la scheda dice qualcosa su di
+  // loro (`priceInfant` scritto, gratis o a pagamento che sia). Dove il campo
+  // manca non sappiamo nemmeno se salgono, quindi chiederne il numero
+  // prometterebbe una risposta che non abbiamo. Nascosto, si azzera: se no un
+  // "1" lasciato su un'altra scheda resterebbe li' a vista.
+  function mostraNeonati(tour) {
+    if (!babiesBox || !babiesInput) return;
+    const haNeonati = tour && tour.priceInfant !== undefined;
+    babiesBox.hidden = !haNeonati;
+    if (!haNeonati) babiesInput.value = "0";
+  }
+
   function riempiMenu(tour) {
     if (!menuRowsEl || !menuLabelEl) return;
     const voci = Array.isArray(tour.menus) ? tour.menus : [];
@@ -753,6 +800,8 @@ function initRequestDialog() {
     const conto = calcolaTotale(current, {
       adults: parseInt(adultsInput.value, 10) || 0,
       kids: parseInt(kidsInput.value, 10) || 0,
+      babies: (babiesBox && !babiesBox.hidden && babiesInput)
+        ? (parseInt(babiesInput.value, 10) || 0) : 0,
       transfer: !!(transferInput && transferInput.checked),
       transferSiam: !!(transferSiamInput && transferSiamInput.checked),
       // senza la variante il totale userebbe il prezzo sbagliato su tutte le
@@ -812,7 +861,7 @@ function initRequestDialog() {
 
   // Il totale segue i numeri mentre il cliente li cambia, e la spunta dei
   // transfer perche' col transfer il prezzo e' un altro.
-  [adultsInput, kidsInput, transferInput, transferSiamInput].forEach(campo => {
+  [adultsInput, kidsInput, babiesInput, transferInput, transferSiamInput].forEach(campo => {
     if (!campo) return;
     campo.addEventListener("input", aggiornaTotale);
     campo.addEventListener("change", aggiornaTotale);
@@ -853,6 +902,7 @@ function initRequestDialog() {
     riempiOrari(current);
     riempiLingue(current);
     riempiMenu(current);
+    mostraNeonati(current);
     aggiornaTotale();
     aggiornaGiorno();
   });
@@ -869,6 +919,8 @@ function initRequestDialog() {
       menus: menuScelti(current),
       adults: parseInt(document.getElementById("reqAdults").value, 10) || 1,
       kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
+      babies: (babiesBox && !babiesBox.hidden && babiesInput)
+        ? (parseInt(babiesInput.value, 10) || 0) : 0,
       note: document.getElementById("reqNote").value.trim(),
       transfer: !!(transferInput && transferInput.checked),
       transferSiam: !!(transferSiamInput && transferSiamInput.checked),
@@ -899,6 +951,7 @@ function initRequestDialog() {
         menu: menuTesto(req),
         adults: req.adults,
         kids: req.kids,
+        babies: req.babies,
         option: req.option,
         transfer: req.transfer,
         transferSiam: req.transferSiam,

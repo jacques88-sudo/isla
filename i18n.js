@@ -257,6 +257,7 @@ const I18N = {
   "req.totalNote":      { it: "Totale indicativo: te lo confermiamo noi su WhatsApp.", en: "Estimated total: we confirm it on WhatsApp.", es: "Total orientativo: te lo confirmamos por WhatsApp." },
   "req.adults":         { it: "Adulti", en: "Adults", es: "Adultos" },
   "req.kids":           { it: "Bambini", en: "Children", es: "Niños" },
+  "req.babies":         { it: "Neonati", en: "Infants", es: "Bebés" },
   "req.note":           { it: "Note", en: "Notes", es: "Notas" },
   "req.optional":       { it: "(facoltativo)", en: "(optional)", es: "(opcional)" },
   "req.notePlaceholder":{ it: "Hotel, zona, richieste particolari…", en: "Hotel, area, special requests…", es: "Hotel, zona, peticiones especiales…" },
@@ -288,6 +289,7 @@ const I18N = {
   "wa.adults":          { it: "adulti", en: "adults", es: "adultos" },
   "wa.child":           { it: "bambino", en: "child", es: "niño" },
   "wa.children":        { it: "bambini", en: "children", es: "niños" },
+  "wa.baby":            { it: "neonato", en: "baby", es: "bebé" },
   "wa.babies":          { it: "neonati", en: "babies", es: "bebés" },
   "wa.and":             { it: "e", en: "and", es: "y" },
 

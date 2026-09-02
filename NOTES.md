@@ -3605,3 +3605,56 @@ Provato nel browser vero. Totale verificato a mano: 2 adulti + 1 bambino → **�
 le tre giuste, l'orario e' solo 10:00, e sui giorni **venerdi' passa mentre sabato e lunedi'
 vengono rifiutati**. Zero errori console. `node controlla.js` → 0 errori. Alzato `sw.js` a
 `isla-v185`.
+
+### I neonati entrano nel totale (2 settembre 2026)
+
+Segnalato nella scheda di Poema del Mar che i neonati a pagamento non entravano nel conto, il
+proprietario ha detto di farceli entrare. Non era una riga da cambiare: **nella finestra della
+richiesta un campo per i neonati non c'era proprio**, si potevano dire solo adulti e bambini.
+Quindi prima di contarli bisognava dare al cliente il modo di dirlo.
+
+**Il campo compare solo dove la scheda dice qualcosa sui neonati** (`priceInfant` scritto,
+gratis o a pagamento che sia). Dove il campo manca non sappiamo nemmeno se salgono: chiederne
+il numero prometterebbe una risposta che non abbiamo. Sono **19 schede su 71**: 14 con neonati
+gratis e 5 a pagamento (`ragnarok` 5 €, `gran-canaria` 20 €, `aqualand` 16 €, `jungle-park`
+16 €, `combo-jungle-aqualand` 21 €). Quando e' nascosto si azzera da solo, se no un "1"
+lasciato su un'altra scheda resterebbe li' a vista.
+
+**I neonati gratis si contano fra le persone ma non nel dettaglio del conto.** "1 neonato ×
+€0" e' una riga che non cambia il totale e sembra un errore; che ci sia un neonato si legge
+gia' nella riga delle persone, che ora dice "2 adulti, 1 bambino e 1 neonato". Con tre pezzi
+l'ultimo si attacca con la "e" e gli altri con la virgola: tre "e" di fila non le scrive
+nessuno. Aggiunto `wa.baby` singolare, che mancava (c'era solo il plurale).
+
+**`priceInfant` assente non e' zero.** Se un cliente indicasse dei neonati su una scheda che
+non dice niente su di loro, il totale **non si fa**, esattamente come gia' succede coi bambini
+senza prezzo: meglio niente che un numero falso. In pratica non capita, perche' il campo li'
+e' nascosto, ma la regola sta nel conto e non solo nell'interfaccia.
+
+**Il posto sul pullman per i neonati** (`transferPrice.baby`) e' gestito, anche se **oggi non
+lo usa nessuna scheda**: a differenza di adulti e bambini quel numero e' gia' il prezzo
+completo del neonato col transfer (senza transfer quel posto non esiste), quindi sostituisce
+`priceInfant` invece di sommarcisi. Scritto adesso perche' il campo esiste nel vocabolario e
+il giorno che arriva un dato vero deve tornare da solo.
+
+**Trovato un bug mentre si provava, ed e' il solito di questo progetto: la stessa cosa scritta
+due volte.** Il `req` che la finestra passa al conto e' costruito in **due punti** — uno in
+`aggiornaTotale()`, che aggiorna il totale mentre il cliente digita, e uno nel submit, che fa
+il messaggio. Avevo aggiunto i neonati solo al secondo: il messaggio WhatsApp diceva €322 e il
+totale nella finestra €302, cioe' due numeri diversi per la stessa richiesta. Preso perche' la
+prova confrontava tutti e due; guardando solo il messaggio sarebbe passato.
+
+Toccati `i18n.js` (due chiavi nuove), `escursioni.js` (`peopleText`, `prezziAPersona`,
+`calcolaTotale`, i due `req`, mostra/nascondi, raccolta, lista), `lista.js`, e **tutti e due
+gli HTML**, che la finestra e' scritta due volte.
+
+Provato nel browser vero nelle tre lingue (ADULTI/BAMBINI/NEONATI, ADULTS/CHILDREN/INFANTS,
+ADULTOS/NIÑOS/BEBÉS) e nella copia della finestra dentro `escursioni.html`. Totali verificati a
+mano su Poema del Mar: 2 adulti + 1 bambino **€302**, coi neonati **€322** (+20), 2 adulti + 2
+neonati **€310**. Sui neonati gratis (History) il totale non cambia e non compare nessuna riga
+a zero. Su una scheda senza neonati (Flamenco) il campo non c'e' e il conto resta quello di
+prima. Con Siam Park col transfer i numeri restano €120 e €191 come prima. La richiesta messa
+da parte salva `babies` e la lista la rilegge: "2 adulti, 1 bambino e 1 neonato | €322".
+Guardata anche la finestra: tre caselle in due colonne, "Neonati" va a capo sotto e sta bene.
+Le richieste salvate **prima** di questa modifica non hanno il campo e valgono zero, senza
+rompersi. `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v186`.

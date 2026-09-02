@@ -17,6 +17,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { execFileSync } = require("child_process");
 
 const RADICE = __dirname;
 const leggi = f => fs.readFileSync(path.join(RADICE, f), "utf8");
@@ -30,6 +31,7 @@ eval(sorgenteCatalogo);
 
 const sorgenteTour = leggi("tour.js");
 const sorgenteI18n = leggi("i18n.js");
+const sorgenteSw = leggi("sw.js");
 
 // Le icone disponibili, lette da tour.js: sono le chiavi di INCLUDED_ICONS.
 const ICONE = new Set(
@@ -44,6 +46,42 @@ const ICONE = new Set(
 const FOTO = new Set(fs.readdirSync(path.join(RADICE, "assets")));
 const CATEGORIE = new Set(CATEGORIES.map(c => c.id));
 const LINGUE = ["it", "en", "es"];
+
+// I file .js/.css/.html che il service worker mette in cache: sono letti da
+// ASSETS in sw.js, non riscritti a mano qui. Un elenco duplicato a mano
+// rischia di restare indietro (e' successo: "style.css" invece di
+// "styles.css", e per giunta commentato) - questo si aggiorna da solo ogni
+// volta che ASSETS cambia.
+const FILE_IN_CACHE = sorgenteSw
+  .split("const ASSETS = [")[1]
+  .split("];")[0]
+  .match(/"\.\/([^"]+)"/g)
+  .map(s => s.slice(3, -1))
+  .filter(f => /\.(js|css|html)$/.test(f));
+
+// Esegue un comando git nella cartella del progetto. Torna null se fallisce
+// (niente .git, ref assente, git non installato): i controlli che lo usano si
+// saltano invece di far cadere tutto controlla.js.
+function git(argomenti) {
+  try {
+    return execFileSync("git", argomenti, { cwd: RADICE, stdio: ["ignore", "pipe", "ignore"] })
+      .toString()
+      .trim();
+  } catch (e) {
+    return null;
+  }
+}
+
+// true se il file e' diverso fra il commit `base` e la copia di lavoro
+// attuale, comprese le modifiche non ancora committate.
+function differisce(base, file) {
+  try {
+    execFileSync("git", ["diff", "--quiet", base, "--", file], { cwd: RADICE, stdio: "ignore" });
+    return false;
+  } catch (e) {
+    return true;
+  }
+}
 
 // ─── Raccolta dei problemi ─────────────────────────────────────────────────
 const errori = [];
@@ -275,11 +313,36 @@ function controllaI18n() {
 // ─── 11. La cache del service worker ───────────────────────────────────────
 // Se non si alza il numero, chi ha gia' visitato il sito continua a vedere la
 // versione vecchia: la modifica c'e' ma non la vede nessuno.
+//
+// Il confronto e' con `origin/main` (o `main`, o il commit precedente se non
+// c'e' nessuno dei due): e' il punto in cui questo branch si e' staccato,
+// quindi quello che e' cambiato da li' in poi e' cambiato per questa
+// consegna. Nessuno stato salvato su disco: in un clone nuovo (ogni sessione
+// remota parte cosi') un file del genere non avrebbe memoria di niente e il
+// controllo passerebbe sempre al primo colpo. Con git invece la base c'e'
+// sempre, anche al primo lancio.
 function controllaServiceWorker() {
-  const nome = (leggi("sw.js").match(/CACHE_NAME = "([^"]+)"/) || [])[1];
+  const nome = (sorgenteSw.match(/CACHE_NAME = "([^"]+)"/) || [])[1];
   if (!nome) return errore("sw.js", "non trovo CACHE_NAME.");
   console.log("  cache del service worker: " + nome +
     "  (da alzare a ogni modifica di file .js, .css o .html)");
+
+  if (git(["rev-parse", "--is-inside-work-tree"]) !== "true") return;
+  const base = git(["merge-base", "HEAD", "origin/main"]) ||
+               git(["merge-base", "HEAD", "main"]) ||
+               git(["rev-parse", "HEAD~1"]);
+  if (!base) return;
+
+  const cambiati = FILE_IN_CACHE.filter(f => differisce(base, f));
+  if (!cambiati.length) return;
+
+  const swBase = git(["show", base + ":sw.js"]) || "";
+  const nomeBase = (swBase.match(/CACHE_NAME = "([^"]+)"/) || [])[1];
+  if (nomeBase && nomeBase === nome) {
+    errore("sw.js", "hai modificato " + cambiati.join(", ") + " ma CACHE_NAME e' rimasto \"" +
+      nome + "\" (uguale a " + base.slice(0, 7) + "): chi ha gia' visitato il sito " +
+      "continuerebbe a vedere la versione vecchia. Alza il numero in sw.js.");
+  }
 }
 
 // ─── Esecuzione ────────────────────────────────────────────────────────────

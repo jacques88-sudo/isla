@@ -2536,17 +2536,30 @@ const ESPLORA_CATALOG = [
     id: "monkey-park",
     title: "Monkey Park",
     category: "parchi-spettacoli",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: { it: "Vicino a Los Cristianos", en: "Near Los Cristianos", es: "Cerca de Los Cristianos" },
+    // Orario di apertura al posto di "Da definire", come su Siam Park e Loro
+    // Parque. Aperto tutti i giorni, quindi niente `days`.
+    duration: { it: "09:30-16:00", en: "9:30am-4pm", es: "09:30-16:00" },
     priceFrom: 10,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 10,
+    priceChild: 5,
+    // Il parco scrive due tariffe sole e dice che quella bambini vale "hasta
+    // los 12 años": da li' il 13+ degli adulti. **Non dice niente sui piu'
+    // piccoli**, quindi niente `priceInfant` e nessuna fascia neonati — la
+    // fascia bambini parte da 0 perche' e' quello che dice il listino, non
+    // perche' sappiamo che i neonati pagano. Da chiedere.
+    ages: { adult: "13+", child: "0-12" },
     family: true,
     desc: {
-      it: "Piccolo parco dedicato alle scimmie e ad altri animali.",
-      en: "A small park dedicated to monkeys and other animals.",
-      es: "Pequeño parque dedicado a los monos y a otros animales."
+      it: "Piccolo zoo dove si entra nei recinti per vedere da vicino e dare da mangiare agli animali: lemuri, scimmiette, iguane, tartarughe e pappagalli, e qualche specie a rischio come il coccodrillo cubano.",
+      en: "A small zoo where you go inside the enclosures to get close to the animals and feed them: lemurs, squirrel monkeys, iguanas, tortoises and parrots, plus a few endangered species such as the Cuban crocodile.",
+      es: "Pequeño zoo donde se entra en los recintos para ver de cerca y dar de comer a los animales: lémures, monos ardilla, iguanas, tortugas y papagayos, y alguna especie amenazada como el cocodrilo cubano."
     },
+    notes: [
+      { it: "A circa 5 minuti da Los Cristianos e 10 da Playa de las Américas. Aperto tutti i giorni.",
+        en: "About 5 minutes from Los Cristianos and 10 from Playa de las Américas. Open every day.",
+        es: "A unos 5 minutos de Los Cristianos y 10 de Playa de las Américas. Abierto todos los días." }
+    ],
     image: "monkey-park.jpg",
     published: true
   },

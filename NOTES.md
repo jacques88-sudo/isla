@@ -3509,3 +3509,42 @@ due vegetariani (`Vegetariano × 2`, senza standard di troppo), e 3 menu per 2 p
 acceso, invio bloccato, finestra ancora aperta, e avviso che sparisce da solo rimettendo 1.
 La richiesta messa da parte si rilegge nella lista col riepilogo scritto per esteso.
 `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v183`.
+
+### Monkey Park: prezzi e orario dal sito del parco (1 settembre 2026)
+
+Seconda pagina di un operatore vero (dopo MHT), non di un rivenditore: il sito del parco, in
+spagnolo. La scheda era rimasta al primo abbozzo — "Da definire" su zona e durata,
+`priceAdult`/`priceChild` a `0`, col solo `priceFrom: 10` a comparire sulla card.
+
+**Prezzi**: adulti 10 €, bambini 5 €. Il parco scrive due tariffe sole e dice che quella
+bambini vale **"hasta los 12 años"**, da cui il `13+` degli adulti. `ages: { adult: "13+",
+child: "0-12" }`.
+
+**Sui piu' piccoli il listino non dice niente**, ed e' la cosa da tenere d'occhio: niente
+`priceInfant` e nessuna fascia neonati, quindi la fascia bambini parte da 0 perche' e' quello
+che dice il listino, **non perche' sappiamo che i neonati pagano**. Scritto cosi' invece di
+inventare un "3-12", che avrebbe lasciato un buco: un bambino di un anno sarebbe rimasto
+senza nessuna fascia, cioe' proprio l'errore che `controlla.js` esiste per prendere. **Da
+chiedere: se sotto una certa eta' non si paga, si aggiunge `priceInfant: 0` e la fascia.**
+
+**Orario al posto di "Da definire"**: 09:30-16:00, come gia' fatto per Siam Park e Loro
+Parque. **Aperto tutti i giorni**, quindi niente campo `days`: sette giorni su sette non sono
+una limitazione da mostrare, e infatti nella finestra della richiesta nessuna data viene
+rifiutata. Niente `times`: e' un parco con un orario di apertura, non una partenza, e restano
+le fasce segnaposto come sugli altri parchi.
+
+**Zona**: da "Da definire" a "Vicino a Los Cristianos". Il sito non nomina il comune, dice
+solo "sud di Tenerife" e le distanze, quindi la zona resta quella e le distanze precise
+(5 minuti da Los Cristianos, 10 da Playa de las Américas) vanno in nota.
+
+**Descrizione riscritta**, che era generica ("piccolo parco dedicato alle scimmie"): adesso
+dice la cosa che distingue davvero il posto — si entra nei recinti per vedere da vicino e dar
+da mangiare agli animali — con qualche specie nominata. **Non copiato** il "l'unico zoo delle
+Canarie che...": e' un superlativo di marketing, come "best price guarantee", e vale la stessa
+regola. Fuori anche il resto della prosa promozionale.
+
+Provato nel browser vero nelle tre lingue. Totale verificato a mano: 2 adulti + 2 bambini →
+**€30** (2×10 + 2×5). Le fasce escono accanto ai prezzi, nessuna data viene rifiutata, e la
+domanda sul menu **non** compare (il campo `menus` questa scheda non ce l'ha, ed e' giusto:
+al parco non si mangia niente di compreso). Zero errori console. `node controlla.js` → 0
+errori. Alzato `sw.js` a `isla-v184`.

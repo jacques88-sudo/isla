@@ -1472,20 +1472,127 @@ const ESPLORA_CATALOG = [
     id: "luxury-cruiser",
     title: "Luxury Cruiser Experience",
     category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    // Confermato dall'ufficio: si parte da Las Galletas, cioe' la Marina del
+    // Sur che si legge nel cartello dietro la barca nelle foto. Nome proprio,
+    // uguale nelle tre lingue.
+    zone: "Las Galletas",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: 65,
-    privateOption: "private-charter",
-    priceAdult: 0,
-    priceChild: 0,
+    times: ["10:00", "13:00", "16:00"],
+    priceFrom: 55,
+    // I due prezzi stanno anche qui, non solo dentro la variante in
+    // condivisione, perche' il supplemento del transfer si calcola come
+    // `transferPrice - priceAdult` della **scheda**: lasciandoli a 0 il
+    // ritiro sarebbe costato €60 in piu' invece di €5.
+    priceAdult: 55,
+    priceChild: 35,
+    // I bambini 3-11 li ha confermati l'ufficio; il 12+ degli adulti discende
+    // da li', sopra gli 11 non c'e' un'altra fascia. Sotto i 3 anni invece
+    // niente `priceInfant`: assente vuol dire "non lo sappiamo", 0 vorrebbe
+    // dire "non pagano" e nessuno ce l'ha detto. Resta da chiedere.
+    ages: { adult: "12+", child: "3-11" },
     family: true,
-    included: ["swimstop"],
+    // Segnalate dal fornitore: la guida a bordo parla queste tre.
+    languages: ["Español", "English", "Italiano"],
+    // `swimstop` e' la sosta bagno, che c'e'; l'attrezzatura da snorkeling il
+    // fornitore non la nomina, quindi niente `snorkel`. Il cibo a bordo e' "un
+    // tentempie'", uno spuntino: `snack`, non `lunch`. Il transfer **non** sta
+    // qui: costa €5 in piu' e le icone dicono "vale sempre".
+    included: ["swimstop", "snack", "drinks", "guide"],
+    // I prezzi stanno dentro il testo, e la riga automatica sotto e' spenta
+    // (`transferPriceHidden`), perche' quella riga e' una sola per tutta la
+    // scheda e non segue la variante: sulla barca privata avrebbe continuato a
+    // dire "€60 a adulto · €40 a bambino", che li' non vuol dire niente — il
+    // ritiro costa €50 per la barca intera, non a testa.
+    transfer: {
+      it: "Ti veniamo a prendere negli hotel del sud dell'isola, circa 30 minuti prima della partenza: €60 a adulto e €40 a bambino invece di €55 e €35. Sulla barca privata sono €500 invece di €450.",
+      en: "We pick you up at hotels in the south of the island, about 30 minutes before departure: €60 per adult and €40 per child instead of €55 and €35. On the private boat it is €500 instead of €450.",
+      es: "Te recogemos en los hoteles del sur de la isla, unos 30 minutos antes de la salida: 60 € por adulto y 40 € por niño en lugar de 55 € y 35 €. En el barco privado son 500 € en lugar de 450 €."
+    },
+    // Prezzo **completo** col ritiro, non il supplemento: €55 diventano €60 e
+    // €35 diventano €40. Serve al totale, non si stampa (vedi sopra).
+    transferPrice: { adult: 60, child: 40 },
+    transferPriceHidden: true,
+    options: {
+      label: { it: "Formula", en: "Option", es: "Fórmula" },
+      choices: [
+        {
+          label: { it: "3 ore, in condivisione", en: "3 hours, shared", es: "3 horas, compartido" },
+          priceAdult: 55,
+          priceChild: 35,
+          times: ["10:00", "13:00", "16:00"],
+          desc: {
+            it: "Si sale insieme ad altri: tre ore lungo la costa sud, con la sosta bagno a metà giro e uno spuntino a bordo. Partenze alle 10:00, alle 13:00 e alle 16:00.",
+            en: "You share the boat with others: three hours along the south coast, with the swim stop halfway and a snack on board. Departures at 10:00, 13:00 and 16:00.",
+            es: "Se sube junto a otras personas: tres horas por la costa sur, con la parada de baño a mitad de recorrido y un tentempié a bordo. Salidas a las 10:00, 13:00 y 16:00."
+          }
+        },
+        {
+          label: { it: "Barca privata", en: "Private boat", es: "Barco privado" },
+          price: 450,
+          // Lista vuota, non campo mancante: con la barca tutta per se' l'ora
+          // si concorda. Senza questa riga sarebbero comparse le fasce
+          // segnaposto, cioe' degli orari inventati.
+          times: [],
+          desc: {
+            it: "La barca solo per il tuo gruppo: €450 per le tre ore, €500 con il ritiro compreso. Il prezzo è della barca intera, non a persona: scrivici quante siete e a che ora vorreste partire.",
+            en: "The boat just for your group: €450 for the three hours, €500 with pick-up included. The price is for the whole boat, not per person: tell us how many you are and what time you would like to leave.",
+            es: "El barco solo para tu grupo: 450 € por las tres horas, 500 € con la recogida incluida. El precio es del barco entero, no por persona: escríbenos cuántos sois y a qué hora queréis salir."
+          }
+        }
+      ]
+    },
+    itinerary: [
+      {
+        text: {
+          it: "Navigazione lungo la costa sud, con le scogliere e le grotte che si vedono solo dal mare, in cerca di delfini e balene.",
+          en: "Sailing along the south coast, past cliffs and caves you can only see from the water, looking for dolphins and whales.",
+          es: "Navegación por la costa sur, con los acantilados y las cuevas que solo se ven desde el mar, buscando delfines y ballenas."
+        }
+      },
+      {
+        text: {
+          it: "A metà giro la sosta in una baia riparata, dove si fa il bagno; a bordo lo spuntino e le bevande.",
+          en: "Halfway through, a stop in a sheltered bay for a swim; snack and drinks on board.",
+          es: "A mitad de recorrido, parada en una bahía resguardada para bañarse; tentempié y bebidas a bordo."
+        }
+      },
+      {
+        text: {
+          it: "Rientro breve e tranquillo verso il porto.",
+          en: "A short, relaxed return to the harbour.",
+          es: "Vuelta corta y tranquila al puerto."
+        }
+      }
+    ],
+    notes: [
+      {
+        it: "Con il ritiro il pulmino passa circa 30 minuti prima della partenza: l'orario esatto te lo confermiamo insieme alla prenotazione.",
+        en: "With pick-up, the minibus comes by about 30 minutes before departure: we confirm the exact time along with the booking.",
+        es: "Con la recogida, la furgoneta pasa unos 30 minutos antes de la salida: la hora exacta te la confirmamos junto con la reserva."
+      },
+      {
+        it: "La barca ha due ponti, più posti dove stare all'ombra o al sole, e la toilette a bordo.",
+        en: "The boat has two decks, several places to sit in the shade or in the sun, and a toilet on board.",
+        es: "El barco tiene dos cubiertas, varios sitios para estar a la sombra o al sol, y aseo a bordo."
+      },
+      {
+        it: "Delfini e balene si incontrano spesso lungo questa costa, ma sono animali liberi: nessuno può prometterteli.",
+        en: "Dolphins and whales are often met along this coast, but they are wild animals: nobody can promise them.",
+        es: "Delfines y ballenas se encuentran a menudo en esta costa, pero son animales libres: nadie puede prometértelos."
+      },
+      {
+        it: "Porta costume, asciugamano e crema solare.",
+        en: "Bring swimwear, a towel and sun cream.",
+        es: "Trae bañador, toalla y crema solar."
+      }
+    ],
     desc: {
-      it: "Tre ore a bordo di un cruiser di lusso, senza fretta.",
-      en: "Three hours aboard a luxury cruiser, with no rush.",
-      es: "Tres horas a bordo de un crucero de lujo, sin prisa."
+      it: "Tre ore lungo la costa sud di Tenerife su un cruiser a due ponti, senza fretta. Si costeggiano scogliere e grotte che dalla strada non si vedono, si cercano delfini e balene, e a metà giro ci si ferma in una baia riparata per il bagno, con uno spuntino e le bevande a bordo. L'equipaggio spiega tutto e risponde alle domande in spagnolo, inglese e italiano. Se ti serve, veniamo a prenderti in hotel nel sud dell'isola.",
+      en: "Three hours along the south coast of Tenerife on a two-deck cruiser, with no rush. You follow cliffs and caves you cannot see from the road, look for dolphins and whales, and halfway through you stop in a sheltered bay for a swim, with a snack and drinks on board. The crew explains everything and answers questions in Spanish, English and Italian. If you need it, we pick you up at your hotel in the south of the island.",
+      es: "Tres horas por la costa sur de Tenerife en un crucero de dos cubiertas, sin prisa. Se bordean acantilados y cuevas que desde la carretera no se ven, se buscan delfines y ballenas, y a mitad de recorrido se para en una bahía resguardada para bañarse, con un tentempié y bebidas a bordo. La tripulación lo explica todo y responde a las preguntas en español, inglés e italiano. Si lo necesitas, te recogemos en tu hotel del sur de la isla."
     },
     image: "luxury-cruiser.jpg",
+    gallery: ["luxury-cruiser-2.jpg", "luxury-cruiser-3.jpg", "luxury-cruiser-4.jpg"],
     published: true
   },
   {
@@ -3586,6 +3693,40 @@ const ESPLORA_CATALOG = [
       es: "El mismo yate a motor Fairline, de casi 13 metros, reservado para tu grupo, con capitán y tripulación, aperitivos y bebidas incluidas. El precio es por el barco entero, no por persona."
     },
     image: "skyline-cruiser.jpg",
+    published: true
+  },
+  {
+    id: "luxury-cruiser-charter",
+    title: "Luxury Cruiser Experience",
+    category: "tour-privati",
+    zone: "Las Galletas",
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    // La barca e' tutta del gruppo: l'ora si concorda, non si sceglie fra le
+    // tre partenze del giro in condivisione.
+    times: [],
+    // Qui il prezzo e' quello vero, non i €350 uguali per tutte le altre schede
+    // gemelle: il proprietario ha chiesto apposta di scrivere €450 (e €500 col
+    // ritiro, nella riga del transfer), perche' il prezzo lo sappiamo. Un
+    // "da €350" letto dal cliente e poi corretto a €450 dall'ufficio sarebbe
+    // un prezzo alzato dopo, che e' la cosa da non fare mai.
+    priceFrom: 450,
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    included: ["swimstop", "snack", "drinks", "guide"],
+    transfer: {
+      it: "Ritiro dagli hotel del sud dell'isola, circa 30 minuti prima della partenza: €500 invece di €450.",
+      en: "Pick-up from hotels in the south of the island, about 30 minutes before departure: €500 instead of €450.",
+      es: "Recogida en los hoteles del sur de la isla, unos 30 minutos antes de la salida: 500 € en lugar de 450 €."
+    },
+    desc: {
+      it: "Lo stesso cruiser a due ponti, riservato solo al tuo gruppo per tre ore sulla costa sud, con sosta bagno, spuntino e bevande a bordo. Il prezzo è per l'intera barca, non a persona.",
+      en: "The same two-deck cruiser, reserved for your group alone for three hours on the south coast, with a swim stop, a snack and drinks on board. The price is for the whole boat, not per person.",
+      es: "El mismo crucero de dos cubiertas, reservado solo para tu grupo durante tres horas por la costa sur, con parada de baño, tentempié y bebidas a bordo. El precio es por el barco entero, no por persona."
+    },
+    image: "luxury-cruiser.jpg",
+    gallery: ["luxury-cruiser-2.jpg", "luxury-cruiser-3.jpg", "luxury-cruiser-4.jpg"],
     published: true
   },
   {

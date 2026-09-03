@@ -4204,14 +4204,21 @@ sull'Opera 60, quindi resta com'e'.
 assente vuol dire "non lo sappiamo o non si sale", non "gratis". Nella finestra della
 richiesta la riga dei neonati infatti non compare.
 
-**Il ritiro e' una riga di testo e non un `transferPrice`.** La pagina del rivenditore
-elenca supplementi diversi per zona (€2 a persona nel sud, €4 a Callao Salvaje e Palm-Mar,
-€15 a macchina a El Medano, €10 a Golf del Sur). Un `transferPrice` e' **un numero solo** e
-finirebbe nel totale: quattro tariffe non ci stanno. Scritto quindi a parole nella riga
-`transfer` ("il supplemento cambia da zona a zona, scrivi l'indirizzo nelle note"), **senza
-i numeri del rivenditore**, che sono i suoi e non i nostri, e **senza "transfer" fra le
-icone**, che direbbe che e' compreso. Stessa scelta gia' fatta sul giro col ritiro gratis
-solo alle 12:00. **Da decidere con l'ufficio** se pubblicare i supplementi veri di Admiral.
+**Il ritiro e' una riga di testo e non un `transferPrice`.** Sono quattro supplementi
+diversi (€2 a persona nel sud, €4 a persona da Callao Salvaje e Palm-Mar, €10 a macchina
+dal Golf del Sur, €15 a macchina da El Medano), e due sono **a macchina invece che a
+persona**. `transferPrice` e' `{ adult, child, baby }`, cioe' **un numero per fascia** che
+finisce nel totale: quattro tariffe non ci stanno, e quelle a macchina non si ricavano
+dal numero di persone. Scritto quindi a parole nella riga `transfer`, e **senza "transfer"
+fra le icone**, che direbbe che e' compreso. Stessa scelta gia' fatta sul giro col ritiro
+gratis solo alle 12:00.
+
+Prima li avevo tenuti fuori del tutto, perche' erano i numeri di un rivenditore e non i
+nostri, lasciando "il supplemento cambia da zona a zona, scrivi l'indirizzo nelle note".
+**Il proprietario li ha poi confermati come giusti anche per noi**, quindi adesso sono
+scritti per esteso nelle tre lingue: sapere prima quanto costa il ritiro vale piu' di una
+riga generica, e sono soldi che si pagano all'arrivo, fuori dal totale. Il totale infatti
+non cambia spuntando la casella del transfer, ed e' giusto cosi'.
 
 **Niente `languages`, anche se la pagina dice "guide in inglese e spagnolo".** Vale la
 regola del proprietario: il menu delle lingue si mette solo dove lo segnala lui. Stessa
@@ -4234,4 +4241,4 @@ Provato nel browser vero: la pagina mostra Los Cristianos, 2 ore, "10:00 · 12:3
 della richiesta il menu "A che ora" ha le tre partenze vere e **nessun "Da concordare"**, e
 2 adulti + 1 bambino fanno **€90** (35 × 2 + 20). In elenco la card esce con "LOS
 CRISTIANOS · 2 ORE · ADATTA AI BAMBINI · TRANSFER DISPONIBILE · da €35".
-`node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a `isla-v200`.
+`node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a `isla-v200`, e a `isla-v201` con i supplementi del ritiro.

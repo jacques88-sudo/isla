@@ -4242,3 +4242,93 @@ della richiesta il menu "A che ora" ha le tre partenze vere e **nessun "Da conco
 2 adulti + 1 bambino fanno **€90** (35 × 2 + 20). In elenco la card esce con "LOS
 CRISTIANOS · 2 ORE · ADATTA AI BAMBINI · TRANSFER DISPONIBILE · da €35".
 `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a `isla-v200`, e a `isla-v201` con i supplementi del ritiro.
+
+### Luxury Cruiser Experience: la scheda segnaposto diventa vera (3 settembre 2026)
+
+Dati arrivati dall'ufficio insieme a otto foto: 3 ore, partenze alle **10:00, 13:00 e
+16:00**, ritiro 30 minuti prima nel sud dell'isola, **€55 a adulto e €35 a bambino** senza
+ritiro, **€60 e €40** con il ritiro, **barca privata a €450**, €500 col ritiro, cibo e
+bevande a bordo. La barca si chiama **FARAÓN**.
+
+**Prima cosa fatta, come dice la procedura: il confronto con le altre `mare-barche`.** Era
+gia' successo con `skyline-cruiser`, che ha gli stessi €65 e le stesse 3 ore. Stavolta i
+dati nuovi li separano da soli: porto diverso (le foto sono a Marina del Sur, Skyline parte
+da Puerto Colón), orari diversi (10:00/13:00/16:00 contro 09:45/13:15/16:20), prezzi
+diversi (€55/€35 contro €65/€45) e una barca diversa nelle foto. Nessun doppione.
+
+**I prezzi stanno anche sulla scheda, non solo dentro la variante in condivisione, e c'e'
+un motivo che si vede solo provando.** Il supplemento del ritiro `escursioni.js` lo calcola
+come `transferPrice.adult - tour.priceAdult`, cioe' dal prezzo della **scheda**. Con
+`priceAdult: 0` (come su Opera 60 e Small Group Catamaran, che il transfer non ce l'hanno)
+il supplemento sarebbe stato €60 invece di €5, e 2 adulti + 1 bambino col ritiro avrebbero
+fatto €265 invece di €160. Scritti sulla scheda **e** sulla variante, il conto torna.
+
+**La riga automatica "Col transfer" e' spenta (`transferPriceHidden`), e non e' una
+questione di estetica.** Quella riga e' una sola per tutta la scheda e non segue la
+variante scelta: con "Barca privata" premuto continuava a dire "€60 a adulto · €40 a
+bambino", che su una barca intera non vuol dire niente — li' il ritiro costa €50 per tutta
+la barca. Trovato guardando la pagina resa, non il codice. Adesso i numeri stanno dentro il
+testo della riga `transfer`, che li puo' spiegare tutti e due.
+
+**Cosa ho lasciato fuori, di proposito:**
+- **`ages`**: l'ufficio scrive "adulto" e "bambini" senza dire dove finisce l'uno e
+  comincia l'altro. Senza fasce non si puo' scrivere "Bambini (3-11)", e inventarle
+  lascerebbe fuori qualcuno. **Da chiedere.**
+- **`priceInfant`**: assente, che vuol dire "non lo sappiamo". Metterlo a 0 avrebbe detto
+  "i neonati non pagano", che nessuno ci ha detto. **Da chiedere insieme alle fasce.**
+- **`snorkel`**: il fornitore parla di sosta bagno, non di maschere prestate. Solo
+  `swimstop`.
+- **`transfer` fra le icone**: il ritiro costa €5 in piu' a testa, quindi non e' compreso
+  nel prezzo che si legge, e le icone dicono "vale sempre".
+- **`lunch`**: a bordo c'e' "un tentempié", uno spuntino. `snack`, come sul Luxury
+  Catamaran.
+- **Non copiati** dalla pagina del fornitore: "cancelación gratuita" e il reso integrale,
+  "reserva ahora y paga después", "grupos privados o reducidos disponibles" come slogan. La
+  nostra riga delle 24 ore resta la nostra. Le descrizioni sono riscritte da zero nelle tre
+  lingue: dal loro testo sono usciti solo i fatti (durata, sosta bagno a meta' giro, due
+  ponti, toilette a bordo, equipaggio che spiega, costa sud, grotte e scogliere).
+
+**`zone` non e' piu' "Da definire" ma "Sud dell'isola", e non e' il porto.** Il cartello
+"Marina del Sur" si legge dietro la barca in due foto, ma **una foto non e' un dato**: il
+porto vero resta da confermare. "Sud dell'isola" invece e' un fatto che l'ufficio ha
+scritto (il giro e' sulla costa sud, il ritiro e' nel sud), e per il cliente che viene
+preso in hotel e' anche l'informazione che gli serve davvero.
+
+**La scheda gemella `luxury-cruiser-charter`** segue la convenzione delle altre: €350 "a
+gruppo", che e' la soglia uguale per tutte per scelta del proprietario, con il prezzo vero
+(€450, €500 col ritiro) sulla scheda della barca dentro la variante "Barca privata", come
+Opera 60 (€545) e Small Group Catamaran (€800). Tolto il vecchio
+`privateOption: "private-charter"`: con una variante privata sulla stessa pagina, un rimando
+a un charter generico da €350 si sarebbe contraddetto da solo.
+
+**Le foto: otto arrivate, quattro pubblicate.** Guardate una per una, come dice la regola,
+e le due scartate si sono viste solo cosi':
+- **La foto aerea con l'acqua turchese**, la piu' bella del gruppo, e' di **un'altra
+  barca** — un pesca d'altura con la torretta, non un flybridge come il FARAÓN — e sul
+  vetro porta il **marchio di un altro operatore**, leggibile ingrandendo. Stesso motivo
+  per cui ne era gia' stata scartata una.
+- **La foto sfocata da lontano** porta stampato sopra il watermark "Aufnahme mit moto g7
+  power" col nome di chi l'ha scattata.
+- **L'interno della cabina** e' scartato per una terza ragione: nello specchio in fondo si
+  vede **riflesso a torso nudo chi sta scattando**. Il taglio che lo toglie lascia solo un
+  materasso in primo piano. Se arriva una foto dell'interno senza il riflesso, si aggiunge.
+- **La scogliera dalla prua** e' scartata perche' in 3:2 o perde la scogliera o resta
+  acqua vuota per due terzi, e comunque ripete l'inquadratura della grotta, che e' migliore.
+
+Pubblicate: FARAÓN ormeggiato a Marina del Sur (`image`, al posto della vecchia foto, che
+era **un'altra barca ancora** — si legge "Mistral" sullo scafo, capovolto), il branco di
+globicefali con i clienti a prua, la grotta con l'acqua turchese, il flybridge con i
+cuscini bianchi. Tutte 1200×800, fra 102 e 173 KB.
+
+Provato nel browser vero, in tutte e tre le lingue: la pagina mostra "Sud dell'isola",
+3 ore, "10:00 · 13:00 · 16:00", "Español · English · Italiano", "Adulti €55",
+"Bambini €35", le quattro icone e le quattro note; nella finestra della richiesta
+2 adulti + 1 bambino fanno **€145** (55 × 2 + 35) e **€160** col ritiro (60 × 2 + 40).
+Premendo "Barca privata" la riga diventa "Prezzo €450", gli orari diventano solo "Da
+concordare" e il totale **sparisce**, che e' giusto: €450 e' della barca, non a testa. In
+elenco la card esce con "SUD DELL'ISOLA · 3 ORE · ADATTA AI BAMBINI · TRANSFER DISPONIBILE
+· da €55". `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a
+`isla-v203`.
+
+**Restano in sospeso, da chiedere all'ufficio**: le fasce d'eta' di adulti e bambini, cosa
+pagano (o se salgono) i neonati, e il porto di partenza.

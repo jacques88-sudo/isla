@@ -547,8 +547,21 @@ function initTourPage() {
   if (!document.querySelector("[data-tour]")) return;
   const tour = tourFromUrl();
   renderTour(tour);
-  // al cambio lingua la scheda va ridisegnata: e' costruita da JavaScript
-  document.addEventListener("islalang", () => renderTour(tourFromUrl()));
+  // Al cambio lingua la scheda va ridisegnata: e' costruita da JavaScript.
+  // I bottoni delle varianti pero' rinascono col primo premuto, e chi aveva
+  // scelto le 2 ore si ritrovava sul giro da 40 minuti — prezzo, orari e
+  // durata compresi — senza che niente glielo dicesse. Si tiene la posizione,
+  // non l'etichetta: quella e' cambiata proprio adesso. Stessa cosa che fa
+  // gia' il menu delle varianti dentro la finestra della richiesta.
+  document.addEventListener("islalang", () => {
+    const bottoni = [...document.querySelectorAll("[data-detail-options] .detail-option")];
+    const scelto = bottoni.findIndex(b => b.getAttribute("aria-pressed") === "true");
+    renderTour(tourFromUrl());
+    if (scelto > 0) {
+      const nuovi = document.querySelectorAll("[data-detail-options] .detail-option");
+      if (nuovi[scelto]) nuovi[scelto].click();
+    }
+  });
 }
 
 document.addEventListener("DOMContentLoaded", initTourPage);

@@ -2258,23 +2258,23 @@ const ESPLORA_CATALOG = [
     // varianti: questi valgono per il giro da 40 minuti, che non ha i suoi.
     times: ["10:00", "12:00", "14:00", "16:00", "17:00"],
     options: {
-      label: { it: "Durata e persone a bordo", en: "Duration and riders", es: "Duración y personas a bordo" },
+      label: { it: "Durata e tipo di moto", en: "Duration and jet ski", es: "Duración y tipo de moto" },
       choices: [
-        { label: { it: "40 min · 1 persona", en: "40 min · 1 person", es: "40 min · 1 persona" },
+        { label: { it: "40 min · moto singola", en: "40 min · single jet ski", es: "40 min · moto individual" },
           price: 90,
           duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" } },
-        { label: { it: "40 min · 2 persone", en: "40 min · 2 people", es: "40 min · 2 personas" },
+        { label: { it: "40 min · moto doppia", en: "40 min · double jet ski", es: "40 min · moto doble" },
           price: 110,
           duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" } },
-        { label: { it: "1 ora · 1 persona", en: "1 hour · 1 person", es: "1 hora · 1 persona" },
+        { label: { it: "1 ora · moto singola", en: "1 hour · single jet ski", es: "1 hora · moto individual" },
           price: 100,
           duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
           times: ["10:00", "14:00", "16:00", "17:00"] },
-        { label: { it: "1 ora · 2 persone", en: "1 hour · 2 people", es: "1 hora · 2 personas" },
+        { label: { it: "1 ora · moto doppia", en: "1 hour · double jet ski", es: "1 hora · moto doble" },
           price: 120,
           duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
           times: ["10:00", "14:00", "16:00", "17:00"] },
-        { label: { it: "2 ore · 1 persona", en: "2 hours · 1 person", es: "2 horas · 1 persona" },
+        { label: { it: "2 ore · moto singola", en: "2 hours · single jet ski", es: "2 horas · moto individual" },
           price: 180,
           duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
           times: ["12:00"],
@@ -2283,7 +2283,7 @@ const ESPLORA_CATALOG = [
             en: "Departure at 12:00. On some days there may also be one at 10:00 or 16:00: add it in the notes and the office will tell you if it runs that day.",
             es: "Salida a las 12:00. Algunos días puede haber también a las 10:00 o a las 16:00: escríbelo en las notas y la oficina te dirá si ese día sale."
           } },
-        { label: { it: "2 ore · 2 persone", en: "2 hours · 2 people", es: "2 horas · 2 personas" },
+        { label: { it: "2 ore · moto doppia", en: "2 hours · double jet ski", es: "2 horas · moto doble" },
           price: 200,
           duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
           times: ["12:00"],
@@ -2310,9 +2310,9 @@ const ESPLORA_CATALOG = [
     },
     notes: [
       {
-        it: "Il prezzo è per moto d'acqua e non a persona: la stessa moto porta una o due persone. Un istruttore accompagna il gruppo in motoscafo.",
-        en: "The price is per jet ski, not per person: the same machine carries one or two people. An instructor follows the group on a speedboat.",
-        es: "El precio es por moto de agua, no por persona: la misma moto lleva a una o dos personas. Un instructor acompaña al grupo en lancha."
+        it: "Il prezzo è per moto d'acqua e non a persona: la singola porta una persona, la doppia due. Un istruttore accompagna il gruppo in motoscafo.",
+        en: "The price is per jet ski, not per person: a single carries one person, a double carries two. An instructor follows the group on a speedboat.",
+        es: "El precio es por moto de agua, no por persona: la individual lleva a una persona, la doble a dos. Un instructor acompaña al grupo en lancha."
       },
       {
         it: "Si parte da Puerto Colón o da Las Galletas: scrivi nelle note quale ti è più comodo e l'ufficio ti conferma il porto.",

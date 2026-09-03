@@ -3965,3 +3965,52 @@ boat e jet ski non compaiono piu' ne' "Esigenze sul menu" ne' "Neonati"; su MHT 
 la domanda sui menu c'e' con le sue tre righe; su Twin Ticket e Siam Park restano i due
 transfer, il totale e il campo neonati; sul buggy resta la domanda sulla lingua con le sue
 sei voci. Alzato `sw.js` a `isla-v193`.
+
+## La variante scelta si perdeva, e il messaggio si contraddiceva
+
+Segnalazione del proprietario sul jet ski: "quando si sceglie un tour poi non
+corrisponde alla scelta su richiedi disponibilita' e il messaggio risulta sbagliato".
+Provando sono venute fuori tre cose diverse, due mie e una che c'era gia'.
+
+**1. Il messaggio diceva due volte quante persone, con due numeri diversi.** Le varianti
+si chiamavano "40 min · 1 persona" e "40 min · 2 persone", ma la finestra della richiesta
+ha gia' il suo "Quante persone", che parte da 2 adulti. Veniva fuori:
+
+```
+• Persone: 2 adulti
+• Durata e persone a bordo: 40 min · 1 persona
+```
+
+Due righe che si smentiscono, e l'ufficio non sa quale leggere. Colpa di come avevo
+scritto le varianti: il numero di persone stava in due posti. **Adesso le varianti parlano
+della moto**, che e' quello che si paga: "40 min · moto singola", "40 min · moto doppia"
+(`en: single/double jet ski`, `es: moto individual/doble`), etichetta del gruppo "Durata e
+tipo di moto". Cosi' "2 adulti" e "moto doppia" dicono due cose diverse che stanno insieme,
+e la nota spiega quante persone porta ciascuna.
+
+**2. Al cambio di lingua la variante scelta tornava alla prima, in silenzio.** Chi sceglieva
+"2 ore · moto doppia" (€200) e poi toccava EN si ritrovava su "40 min · single jet ski"
+(€90) con orari e durata di quella, senza che niente glielo dicesse. Non e' un problema
+del jet ski: succedeva su tutte le schede con `options` (buggy 2-3 ore, Siam Park, cavallo)
+da quando la pagina di dettaglio si ridisegna al cambio lingua — `renderTour()` rifa' i
+bottoni e il primo nasce premuto. In `tour.js` adesso si legge **la posizione** del bottone
+premuto prima di ridisegnare e si ripreme quello, con un `click()` che rifa' partire anche
+il resto (righe "In breve", `desc` della variante, "Cosa e' incluso"). Si tiene la
+posizione e non l'etichetta perche' l'etichetta e' cambiata proprio in quel momento: e' la
+stessa cosa che il menu dentro la finestra della richiesta faceva gia' da solo.
+
+**3. Nella finestra della richiesta la scelta non si vedeva.** Il cliente sceglie la
+variante sulla pagina, apre "Richiedi disponibilita'" e li' dentro non ne trovava piu'
+traccia: doveva fidarsi. Adesso in cima c'e' **"Jet Ski Safari — 2 ore · moto doppia"**,
+cioe' nome dell'attivita' piu' variante. L'etichetta si prende dal **catalogo per
+posizione**, non dal bottone: al cambio lingua i due si ridisegnano ognuno per conto suo e
+per un attimo il bottone porta ancora l'etichetta vecchia, mentre la posizione non cambia
+mai. Dalla pagina catalogo, dove i bottoni non ci sono e la variante si sceglie col menu
+dentro la finestra, non si aggiunge niente: sarebbe la stessa cosa scritta due volte.
+
+Provato nel browser: scegliendo "2 ore · moto doppia" la finestra dice
+"Jet Ski Safari — 2 ore · moto doppia", l'orario proposto e' 12:00 e il messaggio porta
+"Durata e tipo di moto: 2 ore · moto doppia"; cambiando lingua a meta' resta premuto
+"2 hours · double jet ski" con €200, 2 hours e 12:00, e il messaggio in inglese e'
+d'accordo con la pagina. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60).
+Alzato `sw.js` a `isla-v194`.

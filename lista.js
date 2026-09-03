@@ -239,6 +239,8 @@ function initLista() {
       if (voce.lang) dettagli.push(voce.lang);
       dettagli.push(peopleText(voce.adults, voce.kids, voce.babies));
       if (voce.option) dettagli.push(voce.option);
+      const quanti = quantitaTesto(riga.tour, voce);
+      if (quanti) dettagli.push(quanti);
       if (voce.menu) dettagli.push(voce.menu);
       if (riga.tour.transfer && voce.transfer) {
         dettagli.push(riga.tour.transferLabel ? tf(riga.tour.transferLabel) : t("wa.transfer"));

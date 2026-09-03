@@ -106,7 +106,15 @@ function peopleText(adults, kids, babies) {
 function unitaTesto(tour, req) {
   if (typeof req.units === "string") return req.units;
   if (!tour.units || !Array.isArray(req.units)) return "";
-  return req.units.filter(u => u.n > 0).map(u => u.label + " × " + u.n).join(" · ");
+  const tipi = Array.isArray(tour.units.types) ? tour.units.types : [];
+  // il nome si rilegge dal catalogo per posizione, cosi' una voce salvata in
+  // italiano si legge in inglese se il cliente cambia lingua; quello salvato
+  // nella voce resta come ripiego
+  return req.units
+    .map((u, i) => ({ n: u.n, label: tipi[i] ? tf(tipi[i].name) : u.label }))
+    .filter(u => u.n > 0)
+    .map(u => u.label + " × " + u.n)
+    .join(" · ");
 }
 
 // I prezzi a testa da usare per il totale, oppure null quando il totale non si
@@ -117,6 +125,22 @@ function unitaTesto(tour, req) {
 function varianteDi(tour, etichetta) {
   if (!etichetta || !tour.options || !Array.isArray(tour.options.choices)) return null;
   return tour.options.choices.find(s => tf(s.label) === etichetta) || null;
+}
+
+// La variante di una richiesta, ritrovata nel catalogo. **Per posizione** se
+// c'e' (`optionIndex`, che le voci della lista salvano apposta), se no cercando
+// l'etichetta. La lista salva anche il testo di allora, ma quel testo e' nella
+// lingua di allora: cambiando lingua non lo si ritrova piu' nel catalogo, e con
+// la variante sparivano i suoi prezzi — il totale di una moto d'acqua salvata
+// in italiano spariva passando all'inglese. La posizione non cambia mai.
+function varianteScelta(tour, req) {
+  const scelte = tour.options && Array.isArray(tour.options.choices)
+    ? tour.options.choices : null;
+  if (!scelte) return null;
+  if (typeof req.optionIndex === "number" && scelte[req.optionIndex]) {
+    return scelte[req.optionIndex];
+  }
+  return varianteDi(tour, req.option);
 }
 
 function prezziAPersona(tour, req) {
@@ -139,7 +163,7 @@ function prezziAPersona(tour, req) {
   // e' apposta non a persona, e cadere sul prezzo della scheda darebbe un
   // totale falso (la cabina VIP di Siam Park mostrerebbe il prezzo del
   // biglietto normale). Il ripiego sulla scheda vale solo senza variante.
-  const variante = varianteDi(tour, req.option);
+  const variante = varianteScelta(tour, req);
   const base = variante
     ? (variante.priceAdult > 0 ? { adulto: variante.priceAdult, bambino: variante.priceChild || 0 } : null)
     : (tour.priceAdult > 0 ? { adulto: tour.priceAdult, bambino: tour.priceChild || 0 } : null);
@@ -214,10 +238,53 @@ function menuTesto(req) {
   return parti.join(" · ");
 }
 
+// Il conto quando si paga il mezzo e non la persona: tante moto d'acqua per
+// il loro prezzo, piu' il ritiro che pure e' a moto. I prezzi dei tipi stanno
+// nella variante scelta (`unitPrices`), perche' cambiano con la durata; una
+// scheda senza varianti puo' averli su di se'.
+//
+// Torna null appena un pezzo manca — un tipo contato senza prezzo, o il ritiro
+// chiesto senza sapere quanto costa — invece di dare un totale che sembra buono
+// e non lo e'. E' la stessa regola dei bambini senza prezzo qui sotto.
+function totaleMezzi(tour, req) {
+  const mezzi = tour.units;
+  if (!mezzi || !Array.isArray(req.units) || !req.units.length) return null;
+  const tipi = Array.isArray(mezzi.types) ? mezzi.types : [];
+  const variante = varianteScelta(tour, req);
+  const prezzi = (variante && variante.unitPrices) || tour.unitPrices;
+  if (!prezzi) return null;
+
+  let totale = 0;
+  let quanti = 0;
+  let manca = false;
+  const pezzi = [];
+  req.units.forEach((scelto, i) => {
+    if (!scelto.n) return;
+    const chiave = tipi[i] && tipi[i].key;
+    const prezzo = chiave ? prezzi[chiave] : undefined;
+    if (!prezzo) { manca = true; return; }
+    totale += prezzo * scelto.n;
+    quanti += scelto.n;
+    pezzi.push(scelto.n + " " + scelto.label + " × €" + eur(prezzo));
+  });
+  if (manca || !quanti) return null;
+
+  if (req.transfer) {
+    if (!mezzi.transferPrice) return null;
+    totale += mezzi.transferPrice * quanti;
+    pezzi.push(t("wa.transfer") + " " + quanti + " × €" + eur(mezzi.transferPrice));
+  }
+  return { totale: totale, dettaglio: pezzi.join(" + ") };
+}
+
 // Il totale e il conto da cui viene, oppure null quando non si puo' fare.
 // Lo usano sia la finestra (che lo mostra) sia il messaggio (che lo scrive):
 // un conto solo, cosi' i due numeri non possono diventare diversi.
 function calcolaTotale(tour, req) {
+  // Dove si contano i mezzi le persone non entrano nel conto: o torna il conto
+  // delle moto o non torna niente, senza ripiegare sul prezzo a persona che su
+  // queste schede non esiste.
+  if (tour.units) return totaleMezzi(tour, req);
   const p = prezziAPersona(tour, req);
   // Bambini senza il loro prezzo: il totale verrebbe fuori come se non
   // pagassero. Meglio niente che un numero falso.
@@ -269,8 +336,10 @@ function righeRichiesta(tour, req) {
   }
   // La variante scelta sta in alto: e' la prima cosa che l'ufficio deve sapere
   // per rispondere col prezzo giusto.
-  if (tour.options && req.option) {
-    righe.push("• " + tf(tour.options.label) + ": " + req.option);
+  const variante = varianteScelta(tour, req);
+  const etichettaVariante = variante ? tf(variante.label) : req.option;
+  if (tour.options && etichettaVariante) {
+    righe.push("• " + tf(tour.options.label) + ": " + etichettaVariante);
   }
   // Quanti mezzi e di che tipo, subito sotto la durata: e' la riga con cui
   // l'ufficio fa il prezzo.
@@ -639,6 +708,13 @@ function initRequestDialog() {
   // vecchia: la posizione invece non cambia mai. Vuota dove i bottoni non ci
   // sono, cioe' dalla pagina catalogo, dove la variante si sceglie col menu
   // qui dentro e riscriverla in cima sarebbe la stessa cosa detta due volte.
+  function indiceVariante(tour) {
+    const scelte = tour && tour.options && Array.isArray(tour.options.choices)
+      ? tour.options.choices : null;
+    if (!scelte) return -1;
+    return scelte.indexOf(sceltaCorrente(tour));
+  }
+
   function etichettaDallaPagina(tour) {
     const scelta = varianteDallaPosizione(tour);
     return scelta ? tf(scelta.label) : "";
@@ -801,7 +877,7 @@ function initRequestDialog() {
       // la prima riga parte da 1 e le altre da 0: chi ne vuole una sola, che
       // e' il caso piu' frequente, non deve toccare niente
       input.value = prima[String(i)] !== undefined ? prima[String(i)] : (i === 0 ? "1" : "0");
-      input.addEventListener("input", aggiornaUnita);
+      input.addEventListener("input", () => { aggiornaUnita(); aggiornaTotale(); });
       label.appendChild(nome);
       label.appendChild(input);
       unitsRowsEl.appendChild(label);
@@ -965,7 +1041,8 @@ function initRequestDialog() {
       transferSiam: !!(transferSiamInput && transferSiamInput.checked),
       // senza la variante il totale userebbe il prezzo sbagliato su tutte le
       // schede dove il prezzo dipende dalla durata
-      option: opzioneScelta()
+      option: opzioneScelta(),
+      units: unitaScelte(current)
     });
     if (!conto) {
       totalEl.hidden = true;
@@ -1116,7 +1193,13 @@ function initRequestDialog() {
         kids: req.kids,
         babies: req.babies,
         option: req.option,
-        units: unitaTesto(current, req),
+        // la posizione oltre al testo: il testo serve a leggerla anche se un
+        // domani la variante non c'e' piu', la posizione a ritrovare i prezzi
+        optionIndex: indiceVariante(current),
+        // qui i **numeri** e non il riepilogo gia' scritto come per i menu: il
+        // totale della lista si rifa' ogni volta leggendo i prezzi di adesso,
+        // e da un testo non si puo'
+        units: req.units,
         transfer: req.transfer,
         transferSiam: req.transferSiam,
         note: req.note

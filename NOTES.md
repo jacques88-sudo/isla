@@ -4122,3 +4122,51 @@ messaggio dice "Durata: 2 ore" e "Moto d'acqua: Singola × 2 · Doppia × 1", la
 riepilogo e il messaggio unico della lista ora porta anche la riga dei menu dell'altra
 escursione. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a
 `isla-v197`.
+
+## Il totale del jet ski, e la variante ritrovata per posizione
+
+Ultimo pezzo di questo giro: il conto sulle schede dove si pagano i mezzi.
+
+**`totaleMezzi()` in `escursioni.js`**, chiamato da `calcolaTotale()` prima di tutto il
+resto: dove c'e' `units` il conto e' quello e basta, senza ripiegare sul prezzo a persona
+che su queste schede non esiste. Somma ogni tipo per il suo prezzo — presi dalla
+**variante** (`unitPrices`), perche' cambiano con la durata — e aggiunge il ritiro, che pure
+e' a moto: `units.transferPrice`, €10 sul jet ski. Sta li' e non in `transferPrice` della
+scheda, che e' fatto di prezzi a testa.
+
+Torna `null` appena manca un pezzo: un tipo contato senza prezzo, o il transfer spuntato su
+una scheda che non dice quanto costa a mezzo. E' la stessa regola dei bambini senza prezzo —
+meglio nessun numero che un numero verosimile e falso. Con l'aggiunta del ritiro il conto e'
+completo: due ore, due singole e una doppia col ritiro fanno 2×180 + 200 + 3×10 = **€590**,
+e nel messaggio ci va anche il dettaglio.
+
+### Le voci della lista salvano anche la posizione della variante
+
+Provando il totale e' saltato fuori un difetto che c'era gia' e che **si vedeva poco**: la
+lista salva la variante come **testo** ("2 ore"), e cambiando lingua quel testo non si
+ritrova piu' nel catalogo, che intanto e' in inglese. Con la variante sparivano i suoi
+prezzi: la moto d'acqua salvata in italiano, passando all'inglese, perdeva il totale e
+tornava a "from €90 per jet ski". Lo stesso valeva da sempre per le varianti a persona
+(Freebird, Royal Delfin): totale giusto in italiano, sparito in inglese.
+
+Adesso la voce salva anche **`optionIndex`**, la posizione, e `varianteScelta(tour, req)` —
+una funzione sola usata dal conto a persona, dal conto dei mezzi, dal messaggio e dalla
+lista — prova prima quella e solo dopo l'etichetta. Il testo resta salvato come ripiego, per
+le voci di prima e per il caso in cui un domani la variante non ci sia piu'. Di conseguenza
+la riga della lista e quella del messaggio adesso si **rileggono nella lingua di adesso**:
+"2 ore" diventa "2 hours", "Singola × 2" diventa "Single × 2". Le voci salvate prima di
+questa modifica restano com'erano e senza totale in un'altra lingua: sono di poche ore fa,
+non vale la pena migrarle.
+
+E' la terza volta oggi che il difetto e' lo stesso — **cercare per etichetta una cosa che
+la lingua riscrive** — dopo i bottoni della variante e i prezzi delle caselle. Vale come
+regola: fra due parti che si ridisegnano da sole, l'unica cosa che non cambia mai e' la
+posizione.
+
+Provato nel browser: in finestra il totale segue le caselle (1 singola €180, due singole e
+una doppia €560, col ritiro €590, zero moto nessun totale) e cambia coi prezzi della durata
+(40 minuti, una singola e due doppie, €310); nel messaggio finisce come "Totale indicativo:
+€590 (2 Singola × €180 + 1 Doppia × €200 + Transfer 3 × €10)"; nella lista la voce fa €560 e
+tiene il totale anche passando all'inglese; le schede a persona non sono cambiate (Freebird
+3 ore, 2 adulti e 1 bambino, €117 prima e dopo il cambio lingua). `node controlla.js` → 0
+errori, 1 avviso invariato (opera-60). Alzato `sw.js` a `isla-v198`.

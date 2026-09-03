@@ -39,6 +39,13 @@
 //                    unitPrices: { singola: 180, doppia: 200 }
 //                La prima riga parte da 1 e le altre da 0; zero mezzi in tutto
 //                non e' una richiesta e la finestra lo dice.
+//                `transferPrice` dentro `units` e' quanto costa il ritiro **a
+//                mezzo** (sul jet ski €10 a moto, non a persona: e' il motivo
+//                per cui non sta in `transferPrice` della scheda, che invece e'
+//                fatto di prezzi a testa). Serve al totale: senza, con il
+//                transfer spuntato il conto non si fa, perche' mancherebbe un
+//                pezzo di quello che il cliente paga.
+//                    units: { ..., transferPrice: 10 }
 //   priceTiers → facoltativo: prezzi a scaglioni per numero di persone. La
 //                scheda del catalogo mostra comunque priceFrom, la pagina di
 //                dettaglio elenca tutti gli scaglioni:
@@ -2277,6 +2284,7 @@ const ESPLORA_CATALOG = [
     units: {
       label: { it: "Quante moto d'acqua", en: "How many jet skis", es: "¿Cuántas motos de agua?" },
       name: { it: "Moto d'acqua", en: "Jet skis", es: "Motos de agua" },
+      transferPrice: 10,
       types: [
         { key: "singola", name: { it: "Singola", en: "Single", es: "Individual" } },
         { key: "doppia", name: { it: "Doppia", en: "Double", es: "Doble" } }

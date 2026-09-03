@@ -1472,11 +1472,10 @@ const ESPLORA_CATALOG = [
     id: "luxury-cruiser",
     title: "Luxury Cruiser Experience",
     category: "mare-barche",
-    // Il porto non ce l'ha ancora mandato l'ufficio. Le foto sono scattate a
-    // Marina del Sur (il cartello si legge dietro la barca), ma una foto non e'
-    // un dato: quello che sappiamo per certo e' che il giro e' sulla costa sud
-    // e che il ritiro e' compreso nel sud dell'isola. Da confermare.
-    zone: { it: "Sud dell'isola", en: "South of the island", es: "Sur de la isla" },
+    // Confermato dall'ufficio: si parte da Las Galletas, cioe' la Marina del
+    // Sur che si legge nel cartello dietro la barca nelle foto. Nome proprio,
+    // uguale nelle tre lingue.
+    zone: "Las Galletas",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     times: ["10:00", "13:00", "16:00"],
     priceFrom: 55,
@@ -1486,10 +1485,11 @@ const ESPLORA_CATALOG = [
     // ritiro sarebbe costato €60 in piu' invece di €5.
     priceAdult: 55,
     priceChild: 35,
-    // Niente `ages`: l'ufficio manda "adulto" e "bambini" senza dire dove
-    // finisce l'uno e comincia l'altro, e niente `priceInfant`, che vorrebbe
-    // dire "i neonati non pagano" — non sappiamo se sotto una certa eta' si
-    // sale gratis o non si sale proprio. Tutte e due da chiedere.
+    // I bambini 3-11 li ha confermati l'ufficio; il 12+ degli adulti discende
+    // da li', sopra gli 11 non c'e' un'altra fascia. Sotto i 3 anni invece
+    // niente `priceInfant`: assente vuol dire "non lo sappiamo", 0 vorrebbe
+    // dire "non pagano" e nessuno ce l'ha detto. Resta da chiedere.
+    ages: { adult: "12+", child: "3-11" },
     family: true,
     // Segnalate dal fornitore: la guida a bordo parla queste tre.
     languages: ["Español", "English", "Italiano"],
@@ -3699,25 +3699,26 @@ const ESPLORA_CATALOG = [
     id: "luxury-cruiser-charter",
     title: "Luxury Cruiser Experience",
     category: "tour-privati",
-    zone: { it: "Sud dell'isola", en: "South of the island", es: "Sur de la isla" },
+    zone: "Las Galletas",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     // La barca e' tutta del gruppo: l'ora si concorda, non si sceglie fra le
     // tre partenze del giro in condivisione.
     times: [],
-    // I €350 sono la soglia uguale per tutte le schede gemelle, per scelta del
-    // proprietario: il prezzo vero di questa barca (€450, €500 col ritiro) sta
-    // sulla sua scheda in "Mare e barche", come per Opera 60 e Small Group
-    // Catamaran.
-    priceFrom: 350,
+    // Qui il prezzo e' quello vero, non i €350 uguali per tutte le altre schede
+    // gemelle: il proprietario ha chiesto apposta di scrivere €450 (e €500 col
+    // ritiro, nella riga del transfer), perche' il prezzo lo sappiamo. Un
+    // "da €350" letto dal cliente e poi corretto a €450 dall'ufficio sarebbe
+    // un prezzo alzato dopo, che e' la cosa da non fare mai.
+    priceFrom: 450,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
     priceAdult: 0,
     priceChild: 0,
     family: true,
     included: ["swimstop", "snack", "drinks", "guide"],
     transfer: {
-      it: "Ritiro dagli hotel del sud dell'isola disponibile su richiesta, circa 30 minuti prima della partenza.",
-      en: "Pick-up from hotels in the south of the island available on request, about 30 minutes before departure.",
-      es: "Recogida en los hoteles del sur de la isla disponible bajo petición, unos 30 minutos antes de la salida."
+      it: "Ritiro dagli hotel del sud dell'isola, circa 30 minuti prima della partenza: €500 invece di €450.",
+      en: "Pick-up from hotels in the south of the island, about 30 minutes before departure: €500 instead of €450.",
+      es: "Recogida en los hoteles del sur de la isla, unos 30 minutos antes de la salida: 500 € en lugar de 450 €."
     },
     desc: {
       it: "Lo stesso cruiser a due ponti, riservato solo al tuo gruppo per tre ore sulla costa sud, con sosta bagno, spuntino e bevande a bordo. Il prezzo è per l'intera barca, non a persona.",

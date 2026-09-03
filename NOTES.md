@@ -4330,5 +4330,19 @@ elenco la card esce con "SUD DELL'ISOLA · 3 ORE · ADATTA AI BAMBINI · TRANSFE
 · da €55". `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a
 `isla-v203`.
 
-**Restano in sospeso, da chiedere all'ufficio**: le fasce d'eta' di adulti e bambini, cosa
-pagano (o se salgono) i neonati, e il porto di partenza.
+**Risposto dal proprietario lo stesso giorno**, e la scheda aggiornata subito:
+- **Bambini 3-11**, quindi `ages: { adult: "12+", child: "3-11" }`: il 12+ discende dalla
+  fascia dei bambini, sopra gli 11 non c'e' altro. Sotto i 3 anni resta il buco: niente
+  `priceInfant`, che vorrebbe dire "non pagano". **Ancora da chiedere.**
+- **Il porto e' Las Galletas**, che e' poi il paese della Marina del Sur letta nel cartello
+  delle foto. `zone: "Las Galletas"` come nome proprio, uguale nelle tre lingue, al posto
+  di "Sud dell'isola".
+- **La gemella privata mostra il prezzo vero, €450**, non i €350 uguali per tutte le altre:
+  l'ha chiesto lui esplicitamente. E' la scelta giusta anche per la regola dei prezzi —
+  far leggere "da €350" e poi farlo diventare €450 all'ufficio sarebbe un prezzo alzato
+  dopo. I €500 col ritiro stanno nella riga `transfer` della gemella. Nota per la prossima
+  gemella: la soglia dei €350 vale dove il prezzo non lo sappiamo, non dove lo sappiamo.
+
+Riprovato nel browser: "Las Galletas", "Adulti (12+) €55", "Bambini (3-11) €35", totale
+2 adulti + 1 bambino sempre €145 e €160 col ritiro; la gemella esce con "da €450 a gruppo"
+e la riga del ritiro a €500. `sw.js` alzato a `isla-v204`.

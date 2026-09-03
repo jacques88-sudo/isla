@@ -3930,13 +3930,38 @@ Provato nel browser tutte e sei le varianti: "Punto di partenza", "Durata", "Ora
 mostra 12:00 sola sulle 2 ore e i cinque orari sul 40 minuti, la riga del transfer c'e' e
 il totale continua a non farsi (giusto: il prezzo e' della moto).
 
-### Trovato per strada, non toccato: "Esigenze sul menu" si vede su tutte le schede
+## `hidden` non spegneva: due domande di troppo nella finestra della richiesta
 
-In `tour.html` e `escursioni.html` l'etichetta `data-request-menu-label` ha l'attributo
-`hidden`, ma `.request-people-label` in `styles.css` ha `display: block` e vince
-sull'`[hidden]` del browser: risultato, **"ESIGENZE SUL MENU" compare nella finestra della
-richiesta anche dove la scheda non ha `menus`**, con niente sotto. Visto sul jet ski, poi
-riprovato su parascending e banana boat: c'e' dappertutto, quindi non l'ha introdotto
-questa modifica. Si aggiusta con una riga (`.request-people-label[hidden] { display:
-none; }`, come gia' fa `.request-day-error[hidden]`), ma e' un'altra cosa e riguarda tutte
-le schede: lasciata fuori da questo giro.
+Trovato provando il jet ski, poi sistemato su richiesta del proprietario ("dove non
+c'entra e' inutile farla vedere").
+
+`hidden` e' un attributo del browser e porta con se' un `display: none`, ma e' **la regola
+piu' debole che esista**: qualsiasi classe che dia un `display` suo lo scavalca senza
+dire niente. Nella finestra della richiesta succedeva a due elementi:
+
+- **"Esigenze sul menu"** (`.request-people-label`, `display: block`): l'etichetta
+  compariva su **tutte e 76 le schede**, con il vuoto sotto, mentre le schede con `menus`
+  sono due sole (MHT drag show e Castillo). Insieme a lei restava acceso anche il
+  contenitore vuoto delle righe (`.request-people`, `display: grid`).
+- **Il campo "Neonati"** (`label` senza classe, `display: flex`): peggio, perche' non era
+  solo brutto. `escursioni.js` lo nasconde dove la scheda non dice niente sui neonati
+  (`priceInfant` assente) proprio per non chiedere un numero a cui non sappiamo
+  rispondere, e quando manda la richiesta **legge `.hidden` e manda 0**. Il campo pero' si
+  vedeva: un cliente poteva scrivere "2 neonati" e vederli sparire dal messaggio WhatsApp
+  senza un avviso.
+
+In `styles.css` c'era gia' un elenco di quattro selettori che spegnevano a mano i singoli
+casi scoperti prima (il select delle opzioni, quello delle lingue e le loro etichette):
+segno che il problema si ripresentava a ogni campo nuovo. Sostituito l'elenco con **una
+regola sola**, che vale anche per il prossimo campo che nasconderemo:
+
+```css
+.ticket-dialog [hidden] { display: none; }
+```
+
+Ha piu' peso delle classi (due pezzi contro uno) e tocca solo roba gia' marcata `hidden`,
+quindi non puo' spegnere niente che si debba vedere. Verificato nel browser: su banana
+boat e jet ski non compaiono piu' ne' "Esigenze sul menu" ne' "Neonati"; su MHT e Castillo
+la domanda sui menu c'e' con le sue tre righe; su Twin Ticket e Siam Park restano i due
+transfer, il totale e il campo neonati; sul buggy resta la domanda sulla lingua con le sue
+sei voci. Alzato `sw.js` a `isla-v193`.

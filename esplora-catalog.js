@@ -17,19 +17,28 @@
 //                oppure { it: "a barca", en: "per boat", es: "por barco" }.
 //                Quello che inizia con "/" si attacca al prezzo, il resto va
 //                staccato: ci pensa il sito.
-//   quantity   → facoltativo, e va insieme a priceUnit: quando il prezzo e' del
-//                mezzo e non della persona, quanti mezzi prenotare. Nella
-//                finestra della richiesta compare un campo in piu' e il numero
-//                finisce nel messaggio e nella lista. Due testi: `label` e' la
-//                domanda nella finestra, `name` il nome che va nel messaggio,
-//                perche' "Quante moto d'acqua" e "Moto d'acqua: 2" non si
-//                ricavano l'uno dall'altro in tre lingue.
-//                    quantity: {
-//                      label: { it: "Quante moto d'acqua", en: "How many jet skis", es: "..." },
-//                      name:  { it: "Moto d'acqua", en: "Jet skis", es: "Motos de agua" }
+//   units      → facoltativo, e va insieme a priceUnit: dove il prezzo e' del
+//                mezzo e non della persona, i mezzi da prenotare, uno per tipo.
+//                Nella finestra della richiesta prende il posto di "Quante
+//                persone" — non si aggiunge, lo **sostituisce**: sul jet ski
+//                quattro amici sono "due doppie e due singole", e un "4 adulti"
+//                accanto sarebbe un secondo numero da far tornare.
+//                    units: {
+//                      label: { it: "Quante moto d'acqua", en: "...", es: "..." },
+//                      name:  { it: "Moto d'acqua", en: "Jet skis", es: "..." },
+//                      types: [
+//                        { key: "singola", name: { it: "Singola", ... } },
+//                        { key: "doppia",  name: { it: "Doppia",  ... } }
+//                      ]
 //                    }
-//                Senza il campo non si chiede niente e il cliente resta con un
-//                mezzo solo, che e' il caso normale.
+//                `label` e' la domanda nella finestra, `name` il nome che va
+//                nel messaggio ("Moto d'acqua: Singola × 2 · Doppia × 1"): in
+//                tre lingue non si ricavano l'uno dall'altro.
+//                Il prezzo di ogni tipo lo mette la **variante**, con
+//                `unitPrices` e le stesse chiavi, perche' cambia con la durata:
+//                    unitPrices: { singola: 180, doppia: 200 }
+//                La prima riga parte da 1 e le altre da 0; zero mezzi in tutto
+//                non e' una richiesta e la finestra lo dice.
 //   priceTiers → facoltativo: prezzi a scaglioni per numero di persone. La
 //                scheda del catalogo mostra comunque priceFrom, la pagina di
 //                dettaglio elenca tutti gli scaglioni:
@@ -2265,9 +2274,13 @@ const ESPLORA_CATALOG = [
     // non e' a persona. Per lo stesso motivo le varianti hanno `price` e non
     // `priceAdult`.
     priceUnit: { it: "a moto d'acqua", en: "per jet ski", es: "por moto de agua" },
-    quantity: {
+    units: {
       label: { it: "Quante moto d'acqua", en: "How many jet skis", es: "¿Cuántas motos de agua?" },
-      name: { it: "Moto d'acqua", en: "Jet skis", es: "Motos de agua" }
+      name: { it: "Moto d'acqua", en: "Jet skis", es: "Motos de agua" },
+      types: [
+        { key: "singola", name: { it: "Singola", en: "Single", es: "Individual" } },
+        { key: "doppia", name: { it: "Doppia", en: "Double", es: "Doble" } }
+      ]
     },
     priceAdult: 0,
     priceChild: 0,
@@ -2275,35 +2288,22 @@ const ESPLORA_CATALOG = [
     // varianti: questi valgono per il giro da 40 minuti, che non ha i suoi.
     times: ["10:00", "12:00", "14:00", "16:00", "17:00"],
     options: {
-      label: { it: "Durata e tipo di moto", en: "Duration and jet ski", es: "Duración y tipo de moto" },
+      label: { it: "Durata", en: "Duration", es: "Duración" },
       choices: [
-        { label: { it: "40 min · moto singola", en: "40 min · single jet ski", es: "40 min · moto individual" },
+        { label: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
           price: 90,
-          duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" } },
-        { label: { it: "40 min · moto doppia", en: "40 min · double jet ski", es: "40 min · moto doble" },
-          price: 110,
-          duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" } },
-        { label: { it: "1 ora · moto singola", en: "1 hour · single jet ski", es: "1 hora · moto individual" },
+          duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
+          unitPrices: { singola: 90, doppia: 110 } },
+        { label: { it: "1 ora", en: "1 hour", es: "1 hora" },
           price: 100,
           duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
-          times: ["10:00", "14:00", "16:00", "17:00"] },
-        { label: { it: "1 ora · moto doppia", en: "1 hour · double jet ski", es: "1 hora · moto doble" },
-          price: 120,
-          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
-          times: ["10:00", "14:00", "16:00", "17:00"] },
-        { label: { it: "2 ore · moto singola", en: "2 hours · single jet ski", es: "2 horas · moto individual" },
+          times: ["10:00", "14:00", "16:00", "17:00"],
+          unitPrices: { singola: 100, doppia: 120 } },
+        { label: { it: "2 ore", en: "2 hours", es: "2 horas" },
           price: 180,
           duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
           times: ["12:00"],
-          desc: {
-            it: "Partenza alle 12:00. In certi giorni può esserci anche alle 10:00 o alle 16:00: scrivilo nelle note e l'ufficio ti dice se quel giorno c'è.",
-            en: "Departure at 12:00. On some days there may also be one at 10:00 or 16:00: add it in the notes and the office will tell you if it runs that day.",
-            es: "Salida a las 12:00. Algunos días puede haber también a las 10:00 o a las 16:00: escríbelo en las notas y la oficina te dirá si ese día sale."
-          } },
-        { label: { it: "2 ore · moto doppia", en: "2 hours · double jet ski", es: "2 horas · moto doble" },
-          price: 200,
-          duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
-          times: ["12:00"],
+          unitPrices: { singola: 180, doppia: 200 },
           desc: {
             it: "Partenza alle 12:00. In certi giorni può esserci anche alle 10:00 o alle 16:00: scrivilo nelle note e l'ufficio ti dice se quel giorno c'è.",
             en: "Departure at 12:00. On some days there may also be one at 10:00 or 16:00: add it in the notes and the office will tell you if it runs that day.",

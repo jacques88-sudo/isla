@@ -2244,24 +2244,64 @@ const ESPLORA_CATALOG = [
     id: "jet-ski-safari-1-2h",
     title: "Jet Ski Safari – 1 or 2 Hours",
     category: "sport-acquatici",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
-    priceFrom: 150,
+    zone: "Las Galletas",
+    duration: { it: "40 minuti, 1 o 2 ore", en: "40 minutes, 1 or 2 hours", es: "40 minutos, 1 o 2 horas" },
+    priceFrom: 90,
+    // Il prezzo e' della moto d'acqua, che porta una o due persone: senza
+    // questo campo il totale moltiplicherebbe per le persone un numero che
+    // non e' a persona. Per lo stesso motivo le varianti hanno `price` e non
+    // `priceAdult`.
+    priceUnit: { it: "a moto d'acqua", en: "per jet ski", es: "por moto de agua" },
     priceAdult: 0,
     priceChild: 0,
+    times: ["10:00", "12:00", "14:00", "16:00", "17:00"],
     options: {
-      label: { it: "Durata", en: "Duration", es: "Duración" },
+      label: { it: "Durata e persone a bordo", en: "Duration and riders", es: "Duración y personas a bordo" },
       choices: [
-        { label: { it: "1 ora",  en: "1 hour",  es: "1 hora" },  price: 150 },
-        { label: { it: "2 ore",  en: "2 hours", es: "2 horas" }, price: 180 }
+        { label: { it: "40 min · 1 persona", en: "40 min · 1 person", es: "40 min · 1 persona" },
+          price: 90,
+          duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" } },
+        { label: { it: "40 min · 2 persone", en: "40 min · 2 people", es: "40 min · 2 personas" },
+          price: 110,
+          duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" } },
+        { label: { it: "1 ora · 1 persona", en: "1 hour · 1 person", es: "1 hora · 1 persona" },
+          price: 100,
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora" } },
+        { label: { it: "1 ora · 2 persone", en: "1 hour · 2 people", es: "1 hora · 2 personas" },
+          price: 120,
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora" } },
+        { label: { it: "2 ore · 1 persona", en: "2 hours · 1 person", es: "2 horas · 1 persona" },
+          price: 180,
+          duration: { it: "2 ore", en: "2 hours", es: "2 horas" } },
+        { label: { it: "2 ore · 2 persone", en: "2 hours · 2 people", es: "2 horas · 2 personas" },
+          price: 200,
+          duration: { it: "2 ore", en: "2 hours", es: "2 horas" } }
       ]
     },
     family: false,
     desc: {
-      it: "Safari in moto d'acqua lungo la costa, con istruttore. Un'ora da €150, due ore da €180.",
-      en: "Jet ski safari along the coast, with an instructor. One hour from €150, two hours from €180.",
-      es: "Safari en moto de agua por la costa, con instructor. Una hora desde €150, dos horas desde €180."
+      it: "Giro guidato in moto d'acqua lungo la costa sud, con istruttore e barca d'appoggio. Si sceglie fra 40 minuti, un'ora e due ore; il prezzo è per moto d'acqua, con una o due persone a bordo.",
+      en: "A guided jet ski ride along the south coast, with an instructor and a support boat. Choose between 40 minutes, one hour and two hours; the price is per jet ski, with one or two people on board.",
+      es: "Paseo guiado en moto de agua por la costa sur, con instructor y lancha de apoyo. Se elige entre 40 minutos, una hora y dos horas; el precio es por moto de agua, con una o dos personas a bordo."
     },
+    included: ["guide"],
+    notes: [
+      {
+        it: "Il prezzo è per moto d'acqua e non a persona: la stessa moto porta una o due persone. Un istruttore accompagna il gruppo in motoscafo.",
+        en: "The price is per jet ski, not per person: the same machine carries one or two people. An instructor follows the group on a speedboat.",
+        es: "El precio es por moto de agua, no por persona: la misma moto lleva a una o dos personas. Un instructor acompaña al grupo en lancha."
+      },
+      {
+        it: "Passeggeri dai 7 anni, sempre insieme a un adulto. Si guida da 16 anni: a 16 e 17 serve l'autorizzazione firmata di un genitore, o il genitore presente alla partenza, e non si può portare un altro minorenne sulla stessa moto d'acqua.",
+        en: "Passengers from age 7, always with an adult. Riding is allowed from 16: at 16 and 17 a signed parental authorisation is required, or the parent present at departure, and they cannot carry another minor on the same jet ski.",
+        es: "Pasajeros a partir de 7 años, siempre con un adulto. Se conduce desde los 16: a los 16 y 17 hace falta la autorización firmada de un progenitor, o su presencia en la salida, y no se puede llevar a otro menor en la misma moto de agua."
+      },
+      {
+        it: "Porta costume, asciugamano e crema solare; le scarpe restano custodite a terra. Non adatta in gravidanza. Le foto in acqua le fanno gli operatori sul posto e si pagano a loro il giorno stesso: non sono comprese nel prezzo.",
+        en: "Bring swimwear, a towel and sunscreen; shoes are kept safe on land. Not suitable during pregnancy. Photos in the water are taken by the operators on site and paid to them on the day: they are not included in the price.",
+        es: "Trae bañador, toalla y crema solar; el calzado queda guardado en tierra. No apta durante el embarazo. Las fotos en el agua las hacen los operadores allí mismo y se pagan el día de la actividad: no están incluidas en el precio."
+      }
+    ],
     image: "jet-ski-safari-1-2h.jpg",
     published: true
   },

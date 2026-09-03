@@ -3858,3 +3858,72 @@ cinque gemelle); "Mare e barche" non mostra piu' "Private Charter"; il rimando "
 barca solo per il tuo gruppo?" sulle pagine di Whale & Dolphin e Luxury Catamaran porta
 alla scheda gemella giusta. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60,
 non riguarda questo aggiornamento). Alzato `sw.js` a `isla-v190`.
+
+## Jet ski: prezzi veri dall'ufficio, e il prezzo e' della moto
+
+Arrivata la pagina di **canaryvip.com** (un rivenditore concorrente) sul tour in moto
+d'acqua, piu' in fondo l'elenco dell'ufficio con i **prezzi nostri**: 40 min 90/110,
+1 ora 100/120, 2 ore 180/200 (singola/doppia), orari 10:00 12:00 14:00 16:00 17:00, e la
+riga che conta: **"il prezzo e' per moto non per persona"**. Riscritta con questi dati la
+scheda `jet-ski-safari-1-2h`, che prima aveva due varianti a 150 e 180 e `zone: "Da
+definire"`.
+
+**I prezzi buoni sono quelli dell'ufficio, non quelli della pagina.** CanaryVIP mostra
+110€ barrato e 80€ "offerta", 135€ per le 2 ore: sono numeri suoi, e sono piu' bassi dei
+nostri. Regola gia' scritta in CLAUDE.md — lo sconto di un altro non e' nostro, sul sito
+va il prezzo pieno, e i nostri prezzi non si abbassano copiando un concorrente.
+
+**Il prezzo e' della moto d'acqua**, quindi `priceUnit: { it: "a moto d'acqua", ... }` sulla
+scheda e solo `price` (niente `priceAdult`) sulle sei varianti. Cosi' `prezziAPersona()`
+torna `null` e il totale non si fa: era il caso gia' previsto nei commenti del catalogo e
+di `escursioni.js` ("il jet ski si paga a moto d'acqua, non a testa"), qui ci e' finito
+davvero per la prima volta. Verificato nel browser: sulla pagina di dettaglio la riga e'
+"Prezzo: €200 a moto d'acqua" e nella finestra della richiesta non compare nessun totale
+con 2 adulti e 1 bambino; nell'elenco la card dice "da €90 a moto d'acqua".
+
+**Sei varianti invece di due dimensioni.** La scelta vera e' incrociata (3 durate × moto
+singola o doppia) ma `options.choices` e' una lista sola, quindi sei bottoni: "40 min ·
+1 persona", "40 min · 2 persone", e via. Ognuno ha la sua `duration`, e la riga "Durata"
+in breve segue il bottone premuto (provato tutte e sei).
+
+**Non copiato dalla pagina**: la cancellazione a 48/72 ore (le nostre sono 24, sempre), il
+"miglior prezzo garantito", "biglietti ufficiali", il 4,98 su 56 recensioni, e tutto il
+testo promozionale. Descrizione e note riscritte da zero nelle tre lingue. **Niente
+`languages`** anche se la pagina dice "guide multilingue": si mette solo dove il fornitore
+lo segnala come scelta vera. **Niente `days`**: si fa tutti i giorni. `included: ["guide"]`
+e basta — le foto sono a pagamento e le fanno gli operatori sul posto (finito in nota), il
+giubbotto non e' scritto da nessuna parte e non si inventa.
+
+**Fasce d'eta' non messe**: `ages` compare accanto alle righe di prezzo a persona, che qui
+non ci sono. Le regole d'eta' (passeggeri da 7 anni con un adulto, si guida da 16 con
+autorizzazione firmata, un 16-17enne non porta un altro minorenne) stanno nelle note, dove
+si leggono comunque.
+
+`node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a `isla-v191`.
+
+**Da riconfermare con l'ufficio:**
+
+- **Il titolo dice ancora "1 or 2 Hours"** ma adesso c'e' anche la variante da 40 minuti.
+  Lasciato com'e' perche' i titoli li scrive Admiral: basta una parola per cambiarlo.
+- **Il punto di partenza**: messo "Las Galletas" (porto di Marina del Sur) perche' e'
+  scritto sulla pagina del fornitore, ma i prezzi non coincidono con i suoi, quindi
+  potrebbe non essere lo stesso operatore.
+- **Gli orari per durata**: l'ufficio ha mandato una lista sola di cinque orari e quella e'
+  finita in `times`. La pagina di CanaryVIP invece divide (1 ora alle 10/14/16/17, 2 ore
+  alle 12): non ho ristretto niente per non togliere orari che l'ufficio ha dato.
+- **Il ritiro in hotel**: la stessa pagina lo dice gratuito nel testo e "+10€ a moto,
+  pagati al ritiro" nel modulo. Contraddizione loro: non pubblicato niente, nessun campo
+  `transfer` sulla scheda.
+- **Il prezzo del 40 minuti** non e' sulla pagina del fornitore, viene solo dall'elenco
+  dell'ufficio: se e' un pacchetto che non fa quel fornitore, va confermato che esista.
+
+### Trovato per strada, non toccato: "Esigenze sul menu" si vede su tutte le schede
+
+In `tour.html` e `escursioni.html` l'etichetta `data-request-menu-label` ha l'attributo
+`hidden`, ma `.request-people-label` in `styles.css` ha `display: block` e vince
+sull'`[hidden]` del browser: risultato, **"ESIGENZE SUL MENU" compare nella finestra della
+richiesta anche dove la scheda non ha `menus`**, con niente sotto. Visto sul jet ski, poi
+riprovato su parascending e banana boat: c'e' dappertutto, quindi non l'ha introdotto
+questa modifica. Si aggiusta con una riga (`.request-people-label[hidden] { display:
+none; }`, come gia' fa `.request-day-error[hidden]`), ma e' un'altra cosa e riguarda tutte
+le schede: lasciata fuori da questo giro.

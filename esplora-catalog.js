@@ -17,6 +17,19 @@
 //                oppure { it: "a barca", en: "per boat", es: "por barco" }.
 //                Quello che inizia con "/" si attacca al prezzo, il resto va
 //                staccato: ci pensa il sito.
+//   quantity   → facoltativo, e va insieme a priceUnit: quando il prezzo e' del
+//                mezzo e non della persona, quanti mezzi prenotare. Nella
+//                finestra della richiesta compare un campo in piu' e il numero
+//                finisce nel messaggio e nella lista. Due testi: `label` e' la
+//                domanda nella finestra, `name` il nome che va nel messaggio,
+//                perche' "Quante moto d'acqua" e "Moto d'acqua: 2" non si
+//                ricavano l'uno dall'altro in tre lingue.
+//                    quantity: {
+//                      label: { it: "Quante moto d'acqua", en: "How many jet skis", es: "..." },
+//                      name:  { it: "Moto d'acqua", en: "Jet skis", es: "Motos de agua" }
+//                    }
+//                Senza il campo non si chiede niente e il cliente resta con un
+//                mezzo solo, che e' il caso normale.
 //   priceTiers → facoltativo: prezzi a scaglioni per numero di persone. La
 //                scheda del catalogo mostra comunque priceFrom, la pagina di
 //                dettaglio elenca tutti gli scaglioni:
@@ -2252,6 +2265,10 @@ const ESPLORA_CATALOG = [
     // non e' a persona. Per lo stesso motivo le varianti hanno `price` e non
     // `priceAdult`.
     priceUnit: { it: "a moto d'acqua", en: "per jet ski", es: "por moto de agua" },
+    quantity: {
+      label: { it: "Quante moto d'acqua", en: "How many jet skis", es: "¿Cuántas motos de agua?" },
+      name: { it: "Moto d'acqua", en: "Jet skis", es: "Motos de agua" }
+    },
     priceAdult: 0,
     priceChild: 0,
     // Gli orari cambiano con la durata, quindi quelli veri stanno dentro le

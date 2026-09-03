@@ -4014,3 +4014,50 @@ Provato nel browser: scegliendo "2 ore · moto doppia" la finestra dice
 "2 hours · double jet ski" con €200, 2 hours e 12:00, e il messaggio in inglese e'
 d'accordo con la pagina. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60).
 Alzato `sw.js` a `isla-v194`.
+
+## "Quante moto d'acqua": il campo per i mezzi, non per le persone
+
+Chiesto dal proprietario subito dopo la correzione delle varianti. Con il prezzo a moto
+d'acqua restava scoperto il caso di chi ne vuole due: prima si scriveva nelle note, quando
+il cliente se lo ricordava.
+
+**Campo nuovo del catalogo, `quantity`**, documentato in testa a `esplora-catalog.js`
+accanto a `priceUnit`, con cui va a braccetto: si mette dove il prezzo e' del mezzo e non
+della persona. Tiene **due testi** nelle tre lingue:
+
+```js
+quantity: {
+  label: { it: "Quante moto d'acqua", en: "How many jet skis", es: "¿Cuántas motos de agua?" },
+  name:  { it: "Moto d'acqua", en: "Jet skis", es: "Motos de agua" }
+}
+```
+
+Due e non uno perche' "Quante moto d'acqua" (la domanda nella finestra) e "Moto d'acqua: 2"
+(la riga nel messaggio) non si ricavano l'uno dall'altro: in italiano l'accordo cambia da
+"quante moto" a "quanti buggy", e tradurre a pezzi in tre lingue va storto. Senza il campo
+non si chiede niente e resta un mezzo solo, che e' il caso normale — la stessa idea di
+`menus` e `languages`.
+
+Il numero si comporta come quello dei neonati: **nascosto torna a 1**, se no un "3"
+lasciato su un'altra scheda resterebbe li' (la finestra e' una sola per tutte le
+attivita'). Nel messaggio la riga sta **subito sotto la variante** — prima *quale* moto,
+poi *quante* — e si scrive anche quando e' una sola: a differenza dell'orario e della
+lingua, dove l'assenza vuol dire "non ho scelto", qui "1" e' una risposta vera.
+
+Il testo lo fa `quantitaTesto()` in `escursioni.js`, una funzione sola usata **sia dal
+messaggio sia dalla lista**: sono due posti che devono dire la stessa cosa, ed e' il motivo
+per cui `peopleText()` sta li' da sempre. La finestra e' scritta due volte, quindi il campo
+e' andato **in `tour.html` e in `escursioni.html`**, uguale.
+
+**Il totale non lo fa lo stesso**, ed e' voluto per adesso: `priceUnit` fa tornare `null` a
+`prezziAPersona()`, quindi la lista mostra "da €90 a moto d'acqua" e non somma. Con
+`quantity` il conto vero adesso sarebbe possibile (prezzo della variante × mezzi), ma
+andrebbe messo dentro anche il ritiro, che e' €10 **a moto**: due cose insieme in un
+passaggio solo, meglio separarle.
+
+Provato nel browser: sul jet ski il campo c'e' e la domanda si traduce cambiando lingua
+(tenendo il numero gia' scritto), su banana boat non compare ne' il campo ne' l'etichetta;
+il messaggio con 4 adulti e 2 moto porta "• Durata e tipo di moto: 2 ore · moto doppia"
+seguito da "• Moto d'acqua: 2"; la voce salvata nella lista tiene `quantity: 3` e la riga
+la mostra in fondo ai dettagli. `node controlla.js` → 0 errori, 1 avviso invariato
+(opera-60). Alzato `sw.js` a `isla-v195`.

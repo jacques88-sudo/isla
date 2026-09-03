@@ -95,6 +95,14 @@ function peopleText(adults, kids, babies) {
   return parti.length ? parti.join(", ") + " " + t("wa.and") + " " + ultimo : ultimo;
 }
 
+// "Moto d'acqua: 2". Solo dove il prezzo e' del mezzo e la scheda chiede quanti
+// (`quantity`): altrove il numero non esiste e la riga non si scrive. La usano
+// il messaggio WhatsApp e la lista, che devono dire la stessa cosa.
+function quantitaTesto(tour, req) {
+  if (!tour.quantity || !req.quantity) return "";
+  return tf(tour.quantity.name) + ": " + req.quantity;
+}
+
 // I prezzi a testa da usare per il totale, oppure null quando il totale non si
 // puo' fare. Moltiplicare per le persone un prezzo che **non e' a persona**
 // (a barca, all'ora, a scaglioni di gruppo) darebbe un numero sbagliato, e un
@@ -248,6 +256,11 @@ function righeRichiesta(tour, req) {
   if (tour.options && req.option) {
     righe.push("• " + tf(tour.options.label) + ": " + req.option);
   }
+  // Quanti mezzi, subito sotto: prima *quale* moto d'acqua, poi quante. Si
+  // scrive anche quando e' una sola, al contrario dell'orario e della lingua:
+  // li' l'assenza vuol dire "non ho scelto", qui "1" e' una risposta vera.
+  const quanti = quantitaTesto(tour, req);
+  if (quanti) righe.push("• " + quanti);
   // Come l'orario e la lingua: la riga compare solo se qualcuno del gruppo ha
   // un'esigenza. Un "tutti standard" scritto in chat sarebbe una riga in piu'
   // da leggere che non dice niente; "1 vegetariano e 1 standard" no.
@@ -475,6 +488,9 @@ function initRequestDialog() {
   const kidsInput = document.getElementById("reqKids");
   const babiesInput = document.getElementById("reqBabies");
   const babiesBox = document.querySelector("[data-request-babies]");
+  const quantityInput = document.getElementById("reqQuantity");
+  const quantityBox = document.querySelector("[data-request-quantity]");
+  const quantityLabelEl = document.querySelector("[data-request-quantity-label]");
   const nameBox = document.querySelector("[data-request-name]");
   const nameInput = document.getElementById("reqName");
   if (!dialog || !scrim || !form || !dateInput) return;
@@ -549,6 +565,7 @@ function initRequestDialog() {
     riempiLingue(tour);
     riempiMenu(tour);
     mostraNeonati(tour);
+    mostraQuantita(tour);
     aggiornaGiorno();
     aggiornaTotale();
 
@@ -706,6 +723,19 @@ function initRequestDialog() {
     const haNeonati = tour && tour.priceInfant !== undefined;
     babiesBox.hidden = !haNeonati;
     if (!haNeonati) babiesInput.value = "0";
+  }
+
+  // Quanti mezzi prenotare. Compare solo dove la scheda ha `quantity`, cioe'
+  // dove il prezzo e' del mezzo e non della persona: due moto d'acqua sono due
+  // prezzi, e prima il cliente doveva scriverlo nelle note. Nascosto torna a 1,
+  // se no un "3" lasciato su un'altra scheda resterebbe li'.
+  function mostraQuantita(tour) {
+    if (!quantityBox || !quantityLabelEl || !quantityInput) return;
+    const quanti = tour && tour.quantity;
+    quantityBox.hidden = !quanti;
+    quantityLabelEl.hidden = !quanti;
+    if (!quanti) { quantityInput.value = "1"; return; }
+    quantityLabelEl.textContent = tf(quanti.label);
   }
 
   function riempiMenu(tour) {
@@ -928,6 +958,7 @@ function initRequestDialog() {
     riempiLingue(current);
     riempiMenu(current);
     mostraNeonati(current);
+    mostraQuantita(current);
     aggiornaTotale();
     aggiornaGiorno();
   });
@@ -946,6 +977,8 @@ function initRequestDialog() {
       kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
       babies: (babiesBox && !babiesBox.hidden && babiesInput)
         ? (parseInt(babiesInput.value, 10) || 0) : 0,
+      quantity: (quantityBox && !quantityBox.hidden && quantityInput)
+        ? Math.max(1, parseInt(quantityInput.value, 10) || 1) : 0,
       note: document.getElementById("reqNote").value.trim(),
       transfer: !!(transferInput && transferInput.checked),
       transferSiam: !!(transferSiamInput && transferSiamInput.checked),
@@ -978,6 +1011,7 @@ function initRequestDialog() {
         kids: req.kids,
         babies: req.babies,
         option: req.option,
+        quantity: req.quantity,
         transfer: req.transfer,
         transferSiam: req.transferSiam,
         note: req.note

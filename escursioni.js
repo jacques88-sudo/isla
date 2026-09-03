@@ -507,7 +507,7 @@ function initRequestDialog() {
       submitBtn.setAttribute("data-i18n", chiave);
       submitBtn.textContent = t(chiave);
     }
-    activityEl.textContent = tf(tour.title);
+    aggiornaAttivita(tour);
     // se l'attivita' si fa solo in certi mesi lo si dice qui, prima che il
     // cliente scelga una data in cui non si puo' fare
     if (seasonEl) {
@@ -581,6 +581,31 @@ function initRequestDialog() {
   // Come sopra, ma come oggetto del catalogo: serve per leggerne gli orari.
   function sceltaCorrente(tour) {
     return varianteDi(tour, opzioneScelta());
+  }
+
+  // L'etichetta della variante scelta coi bottoni, presa dal catalogo per
+  // posizione invece che dal bottone. Al cambio lingua i due si ridisegnano
+  // ognuno per conto suo e per un attimo il bottone porta ancora l'etichetta
+  // vecchia: la posizione invece non cambia mai. Vuota dove i bottoni non ci
+  // sono, cioe' dalla pagina catalogo, dove la variante si sceglie col menu
+  // qui dentro e riscriverla in cima sarebbe la stessa cosa detta due volte.
+  function etichettaDallaPagina(tour) {
+    if (!tour || !tour.options || !Array.isArray(tour.options.choices)) return "";
+    const bottoni = [...document.querySelectorAll(
+      "[data-detail-options] .detail-option")];
+    const i = bottoni.findIndex(b => b.getAttribute("aria-pressed") === "true");
+    const scelta = i >= 0 ? tour.options.choices[i] : null;
+    return scelta ? tf(scelta.label) : "";
+  }
+
+  // "Jet Ski Safari — 2 ore · moto doppia": il nome dell'attivita' in cima
+  // alla finestra, con accanto la variante scelta fuori di qui. Senza, il
+  // cliente sceglie le 2 ore sulla pagina, apre la richiesta e non trova piu'
+  // nessuna traccia della sua scelta, che pero' e' dentro il messaggio.
+  function aggiornaAttivita(tour) {
+    if (!activityEl || !tour) return;
+    const variante = etichettaDallaPagina(tour);
+    activityEl.textContent = tf(tour.title) + (variante ? " — " + variante : "");
   }
 
   // Le voci portano il prezzo quando lo sappiamo ("2 ore — €180"), cosi' il
@@ -886,7 +911,7 @@ function initRequestDialog() {
   // dell'attività in cima.
   document.addEventListener("islalang", () => {
     if (!current) return;
-    activityEl.textContent = tf(current.title);
+    aggiornaAttivita(current);
     if (seasonEl && current.season) seasonEl.textContent = tf(current.season);
     if (transferNoteEl && current.transfer) transferNoteEl.textContent = tf(current.transfer);
     if (transferLabelEl) transferLabelEl.textContent = current.transferLabel ? tf(current.transferLabel) : t("req.transfer");

@@ -3858,3 +3858,110 @@ cinque gemelle); "Mare e barche" non mostra piu' "Private Charter"; il rimando "
 barca solo per il tuo gruppo?" sulle pagine di Whale & Dolphin e Luxury Catamaran porta
 alla scheda gemella giusta. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60,
 non riguarda questo aggiornamento). Alzato `sw.js` a `isla-v190`.
+
+## Jet ski: prezzi veri dall'ufficio, e il prezzo e' della moto
+
+Arrivata la pagina di **canaryvip.com** (un rivenditore concorrente) sul tour in moto
+d'acqua, piu' in fondo l'elenco dell'ufficio con i **prezzi nostri**: 40 min 90/110,
+1 ora 100/120, 2 ore 180/200 (singola/doppia), orari 10:00 12:00 14:00 16:00 17:00, e la
+riga che conta: **"il prezzo e' per moto non per persona"**. Riscritta con questi dati la
+scheda `jet-ski-safari-1-2h`, che prima aveva due varianti a 150 e 180 e `zone: "Da
+definire"`. Il `title` e' cambiato ma **l'`id` no**: cambiarlo avrebbe staccato le voci
+gia' salvate nella lista dei clienti che ce l'hanno dentro.
+
+**I prezzi buoni sono quelli dell'ufficio, non quelli della pagina.** CanaryVIP mostra
+110€ barrato e 80€ "offerta", 135€ per le 2 ore: sono numeri suoi, e sono piu' bassi dei
+nostri. Regola gia' scritta in CLAUDE.md — lo sconto di un altro non e' nostro, sul sito
+va il prezzo pieno, e i nostri prezzi non si abbassano copiando un concorrente.
+
+**Il prezzo e' della moto d'acqua**, quindi `priceUnit: { it: "a moto d'acqua", ... }` sulla
+scheda e solo `price` (niente `priceAdult`) sulle sei varianti. Cosi' `prezziAPersona()`
+torna `null` e il totale non si fa: era il caso gia' previsto nei commenti del catalogo e
+di `escursioni.js` ("il jet ski si paga a moto d'acqua, non a testa"), qui ci e' finito
+davvero per la prima volta. Verificato nel browser: sulla pagina di dettaglio la riga e'
+"Prezzo: €200 a moto d'acqua" e nella finestra della richiesta non compare nessun totale
+con 2 adulti e 1 bambino; nell'elenco la card dice "da €90 a moto d'acqua".
+
+**Sei varianti invece di due dimensioni.** La scelta vera e' incrociata (3 durate × moto
+singola o doppia) ma `options.choices` e' una lista sola, quindi sei bottoni: "40 min ·
+1 persona", "40 min · 2 persone", e via. Ognuno ha la sua `duration`, e la riga "Durata"
+in breve segue il bottone premuto (provato tutte e sei).
+
+**Non copiato dalla pagina**: la cancellazione a 48/72 ore (le nostre sono 24, sempre), il
+"miglior prezzo garantito", "biglietti ufficiali", il 4,98 su 56 recensioni, e tutto il
+testo promozionale. Descrizione e note riscritte da zero nelle tre lingue. **Niente
+`languages`** anche se la pagina dice "guide multilingue": si mette solo dove il fornitore
+lo segnala come scelta vera. **Niente `days`**: si fa tutti i giorni. `included: ["guide"]`
+e basta — le foto sono a pagamento e le fanno gli operatori sul posto (finito in nota), il
+giubbotto non e' scritto da nessuna parte e non si inventa.
+
+**Fasce d'eta' non messe**: `ages` compare accanto alle righe di prezzo a persona, che qui
+non ci sono. Le regole d'eta' (passeggeri da 7 anni con un adulto, si guida da 16 con
+autorizzazione firmata, un 16-17enne non porta un altro minorenne) stanno nelle note, dove
+si leggono comunque.
+
+**Le cinque cose in sospeso, chieste al proprietario e risposte subito.** Sono finite
+tutte nella scheda, e sono il motivo di com'e' fatta adesso:
+
+- **Titolo**: "solo moto d'acqua senza orari", quindi `title: "Jet Ski Safari"` senza piu'
+  il "– 1 or 2 Hours", che con la variante da 40 minuti era diventato falso.
+- **I porti sono due**, Puerto Colón e Las Galletas (la pagina del fornitore ne diceva uno
+  solo). `zone` li nomina tutti e due e una nota dice di scrivere nelle note quale conviene:
+  il porto lo conferma l'ufficio insieme alla data.
+- **Gli orari sono quelli di CanaryVIP, divisi per durata**: 1 ora alle 10:00, 14:00, 16:00
+  e 17:00, 2 ore solo alle 12:00, dentro il campo `times` **della variante**. I cinque
+  orari dell'ufficio restano sulla scheda e servono al giro da 40 minuti, che e' l'unico
+  senza orari suoi. Le due varianti da 2 ore hanno una `desc` che spiega la riga della
+  pagina del fornitore sugli orari in piu' (10:00 o 16:00) che dipendono dal giorno: la si
+  chiede nelle note invece di metterla fra le partenze come se fosse sicura.
+- **Il ritiro in hotel si paga**: €10 a moto d'acqua al ritiro, non gratis. Sta nel campo
+  `transfer` come testo e **non** in `transferPrice`, che e' fatto di prezzi a testa
+  (adulto/bambino/neonato) e qui darebbe il numero sbagliato: il supplemento e' del mezzo,
+  come il prezzo. Cosi' la card mostra "Transfer disponibile", la finestra della richiesta
+  fa la domanda "Vuoi il transfer?" e la risposta finisce nel messaggio WhatsApp.
+- **Il giro da 40 minuti esiste**, anche se sulla pagina del fornitore non c'e': confermato
+  dal proprietario, resta con i suoi 90/110€.
+
+`node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a `isla-v192`
+(v191 era il primo giro, prima delle cinque risposte).
+
+Provato nel browser tutte e sei le varianti: "Punto di partenza", "Durata", "Orari" e
+"Prezzo" seguono il bottone premuto, il menu "A che ora" nella finestra della richiesta
+mostra 12:00 sola sulle 2 ore e i cinque orari sul 40 minuti, la riga del transfer c'e' e
+il totale continua a non farsi (giusto: il prezzo e' della moto).
+
+## `hidden` non spegneva: due domande di troppo nella finestra della richiesta
+
+Trovato provando il jet ski, poi sistemato su richiesta del proprietario ("dove non
+c'entra e' inutile farla vedere").
+
+`hidden` e' un attributo del browser e porta con se' un `display: none`, ma e' **la regola
+piu' debole che esista**: qualsiasi classe che dia un `display` suo lo scavalca senza
+dire niente. Nella finestra della richiesta succedeva a due elementi:
+
+- **"Esigenze sul menu"** (`.request-people-label`, `display: block`): l'etichetta
+  compariva su **tutte e 76 le schede**, con il vuoto sotto, mentre le schede con `menus`
+  sono due sole (MHT drag show e Castillo). Insieme a lei restava acceso anche il
+  contenitore vuoto delle righe (`.request-people`, `display: grid`).
+- **Il campo "Neonati"** (`label` senza classe, `display: flex`): peggio, perche' non era
+  solo brutto. `escursioni.js` lo nasconde dove la scheda non dice niente sui neonati
+  (`priceInfant` assente) proprio per non chiedere un numero a cui non sappiamo
+  rispondere, e quando manda la richiesta **legge `.hidden` e manda 0**. Il campo pero' si
+  vedeva: un cliente poteva scrivere "2 neonati" e vederli sparire dal messaggio WhatsApp
+  senza un avviso.
+
+In `styles.css` c'era gia' un elenco di quattro selettori che spegnevano a mano i singoli
+casi scoperti prima (il select delle opzioni, quello delle lingue e le loro etichette):
+segno che il problema si ripresentava a ogni campo nuovo. Sostituito l'elenco con **una
+regola sola**, che vale anche per il prossimo campo che nasconderemo:
+
+```css
+.ticket-dialog [hidden] { display: none; }
+```
+
+Ha piu' peso delle classi (due pezzi contro uno) e tocca solo roba gia' marcata `hidden`,
+quindi non puo' spegnere niente che si debba vedere. Verificato nel browser: su banana
+boat e jet ski non compaiono piu' ne' "Esigenze sul menu" ne' "Neonati"; su MHT e Castillo
+la domanda sui menu c'e' con le sue tre righe; su Twin Ticket e Siam Park restano i due
+transfer, il totale e il campo neonati; sul buggy resta la domanda sulla lingua con le sue
+sei voci. Alzato `sw.js` a `isla-v193`.

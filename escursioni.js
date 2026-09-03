@@ -95,12 +95,18 @@ function peopleText(adults, kids, babies) {
   return parti.length ? parti.join(", ") + " " + t("wa.and") + " " + ultimo : ultimo;
 }
 
-// "Moto d'acqua: 2". Solo dove il prezzo e' del mezzo e la scheda chiede quanti
-// (`quantity`): altrove il numero non esiste e la riga non si scrive. La usano
-// il messaggio WhatsApp e la lista, che devono dire la stessa cosa.
-function quantitaTesto(tour, req) {
-  if (!tour.quantity || !req.quantity) return "";
-  return tf(tour.quantity.name) + ": " + req.quantity;
+// "Singola × 3 · Doppia × 1": quanti mezzi, di che tipo. Solo dove il prezzo e'
+// del mezzo e non della persona (`units`). Il "×" e il punto in mezzo sono gli
+// stessi dei menu, e per lo stesso motivo: evitano i plurali, che in tre lingue
+// non si fanno allo stesso modo.
+//
+// Dalla finestra arrivano i numeri (`units` come elenco), dalla lista il
+// riepilogo gia' scritto (`units` come testo), com'e' gia' per la variante e
+// per la lingua: quello che il cliente ha scelto allora si riscrive uguale.
+function unitaTesto(tour, req) {
+  if (typeof req.units === "string") return req.units;
+  if (!tour.units || !Array.isArray(req.units)) return "";
+  return req.units.filter(u => u.n > 0).map(u => u.label + " × " + u.n).join(" · ");
 }
 
 // I prezzi a testa da usare per il totale, oppure null quando il totale non si
@@ -190,6 +196,11 @@ function prezziAPersona(tour, req) {
 // l'ufficio legge "1 vegetariano e 1 standard" invece di dover sottrarre da
 // solo il numero di persone.
 function menuTesto(req) {
+  // Dalla lista il riepilogo arriva gia' scritto (`menu`), non come numeri:
+  // senza questa riga la richiesta partita dalla lista perdeva per strada
+  // "1 Vegetariano", che nella lista si vedeva. Le allergie stanno nelle note,
+  // ma un vegano che sparisce e' comunque un vegano che l'ufficio non legge.
+  if (typeof req.menu === "string") return req.menu;
   const scelti = (req.menus || []).filter(m => m.n > 0);
   if (!scelti.length) return "";
   // "Vegetariano × 2" e non "2 Vegetariano": il "×" e' gia' il modo in cui il
@@ -250,17 +261,21 @@ function righeRichiesta(tour, req) {
   // Come l'orario: si scrive solo se il cliente ha scelto. "Indifferente" e'
   // l'assenza della riga, non una riga che dice "indifferente".
   if (req.lang) righe.push("• " + t("wa.lang") + ": " + req.lang);
-  righe.push("• " + t("wa.people") + ": " + peopleText(req.adults, req.kids, req.babies));
+  // Dove si contano i mezzi le persone non si chiedono: sul jet ski quattro
+  // amici sono "2 singole e 1 doppia", e un "4 adulti" accanto sarebbe un
+  // secondo numero da far tornare. Vedi mostraPersone() piu' sotto.
+  if (!tour.units) {
+    righe.push("• " + t("wa.people") + ": " + peopleText(req.adults, req.kids, req.babies));
+  }
   // La variante scelta sta in alto: e' la prima cosa che l'ufficio deve sapere
   // per rispondere col prezzo giusto.
   if (tour.options && req.option) {
     righe.push("• " + tf(tour.options.label) + ": " + req.option);
   }
-  // Quanti mezzi, subito sotto: prima *quale* moto d'acqua, poi quante. Si
-  // scrive anche quando e' una sola, al contrario dell'orario e della lingua:
-  // li' l'assenza vuol dire "non ho scelto", qui "1" e' una risposta vera.
-  const quanti = quantitaTesto(tour, req);
-  if (quanti) righe.push("• " + quanti);
+  // Quanti mezzi e di che tipo, subito sotto la durata: e' la riga con cui
+  // l'ufficio fa il prezzo.
+  const mezzi = unitaTesto(tour, req);
+  if (mezzi) righe.push("• " + tf(tour.units.name) + ": " + mezzi);
   // Come l'orario e la lingua: la riga compare solo se qualcuno del gruppo ha
   // un'esigenza. Un "tutti standard" scritto in chat sarebbe una riga in piu'
   // da leggere che non dice niente; "1 vegetariano e 1 standard" no.
@@ -488,9 +503,11 @@ function initRequestDialog() {
   const kidsInput = document.getElementById("reqKids");
   const babiesInput = document.getElementById("reqBabies");
   const babiesBox = document.querySelector("[data-request-babies]");
-  const quantityInput = document.getElementById("reqQuantity");
-  const quantityBox = document.querySelector("[data-request-quantity]");
-  const quantityLabelEl = document.querySelector("[data-request-quantity-label]");
+  const peopleBoxEl = document.querySelector("[data-request-people]");
+  const peopleLabelEl = document.querySelector("[data-request-people-label]");
+  const unitsRowsEl = document.querySelector("[data-request-units]");
+  const unitsLabelEl = document.querySelector("[data-request-units-label]");
+  const unitsErrorEl = document.querySelector("[data-request-units-error]");
   const nameBox = document.querySelector("[data-request-name]");
   const nameInput = document.getElementById("reqName");
   if (!dialog || !scrim || !form || !dateInput) return;
@@ -565,7 +582,8 @@ function initRequestDialog() {
     riempiLingue(tour);
     riempiMenu(tour);
     mostraNeonati(tour);
-    mostraQuantita(tour);
+    mostraPersone(tour);
+    riempiUnita(tour);
     aggiornaGiorno();
     aggiornaTotale();
 
@@ -595,9 +613,24 @@ function initRequestDialog() {
       (optionEl && !optionEl.hidden ? optionEl.value : "");
   }
 
-  // Come sopra, ma come oggetto del catalogo: serve per leggerne gli orari.
+  // La variante premuta sulla pagina di dettaglio, presa dal catalogo **per
+  // posizione**. Al cambio lingua i bottoni e questa finestra si ridisegnano
+  // ognuno per conto suo, e per un attimo il bottone porta ancora l'etichetta
+  // vecchia: cercarla nel catalogo, che intanto e' gia' nella lingua nuova,
+  // non trova niente. La posizione invece non cambia mai.
+  function varianteDallaPosizione(tour) {
+    if (!tour || !tour.options || !Array.isArray(tour.options.choices)) return null;
+    const bottoni = [...document.querySelectorAll(
+      "[data-detail-options] .detail-option")];
+    const i = bottoni.findIndex(b => b.getAttribute("aria-pressed") === "true");
+    return i >= 0 ? (tour.options.choices[i] || null) : null;
+  }
+
+  // Come sopra, ma come oggetto del catalogo: serve per leggerne gli orari e i
+  // prezzi dei mezzi. Il ripiego sull'etichetta serve alla pagina catalogo,
+  // dove i bottoni non ci sono e la variante si sceglie col menu qui dentro.
   function sceltaCorrente(tour) {
-    return varianteDi(tour, opzioneScelta());
+    return varianteDallaPosizione(tour) || varianteDi(tour, opzioneScelta());
   }
 
   // L'etichetta della variante scelta coi bottoni, presa dal catalogo per
@@ -607,11 +640,7 @@ function initRequestDialog() {
   // sono, cioe' dalla pagina catalogo, dove la variante si sceglie col menu
   // qui dentro e riscriverla in cima sarebbe la stessa cosa detta due volte.
   function etichettaDallaPagina(tour) {
-    if (!tour || !tour.options || !Array.isArray(tour.options.choices)) return "";
-    const bottoni = [...document.querySelectorAll(
-      "[data-detail-options] .detail-option")];
-    const i = bottoni.findIndex(b => b.getAttribute("aria-pressed") === "true");
-    const scelta = i >= 0 ? tour.options.choices[i] : null;
+    const scelta = varianteDallaPosizione(tour);
     return scelta ? tf(scelta.label) : "";
   }
 
@@ -725,17 +754,92 @@ function initRequestDialog() {
     if (!haNeonati) babiesInput.value = "0";
   }
 
-  // Quanti mezzi prenotare. Compare solo dove la scheda ha `quantity`, cioe'
-  // dove il prezzo e' del mezzo e non della persona: due moto d'acqua sono due
-  // prezzi, e prima il cliente doveva scriverlo nelle note. Nascosto torna a 1,
-  // se no un "3" lasciato su un'altra scheda resterebbe li'.
-  function mostraQuantita(tour) {
-    if (!quantityBox || !quantityLabelEl || !quantityInput) return;
-    const quanti = tour && tour.quantity;
-    quantityBox.hidden = !quanti;
-    quantityLabelEl.hidden = !quanti;
-    if (!quanti) { quantityInput.value = "1"; return; }
-    quantityLabelEl.textContent = tf(quanti.label);
+  // Quanti mezzi prenotare, uno per tipo. Compare solo dove la scheda ha
+  // `units`, cioe' dove il prezzo e' del mezzo: sul jet ski un gruppo prende
+  // quattro moto, magari due doppie e due singole, e sono quattro prezzi.
+  // I prezzi accanto ai nomi sono quelli della **variante scelta**, che qui e'
+  // la durata: la doppia costa 110 sul giro da 40 minuti e 200 su quello da
+  // due ore.
+  function riempiUnita(tour) {
+    if (!unitsRowsEl || !unitsLabelEl) return;
+    const mezzi = tour && tour.units;
+    const tipi = mezzi && Array.isArray(mezzi.types) ? mezzi.types : [];
+    unitsRowsEl.hidden = !tipi.length;
+    unitsLabelEl.hidden = !tipi.length;
+    if (unitsErrorEl) unitsErrorEl.hidden = true;
+    if (!tipi.length) { unitsRowsEl.innerHTML = ""; return; }
+
+    unitsLabelEl.textContent = tf(mezzi.label);
+    const variante = sceltaCorrente(tour);
+    const prezzi = (variante && variante.unitPrices) || {};
+
+    // I numeri gia' messi si tengono: cambiare lingua ridisegna le righe, e
+    // ritrovare azzerate le tre moto appena contate sarebbe sgradevole.
+    // Stessa cosa che fanno le righe dei menu, e per la stessa ragione.
+    const prima = {};
+    unitsRowsEl.querySelectorAll("[data-request-unit-n]").forEach(inp => {
+      prima[inp.dataset.requestUnitN] = inp.value;
+    });
+
+    unitsRowsEl.innerHTML = "";
+    tipi.forEach((tipo, i) => {
+      const id = "reqUnit" + i;
+      const label = document.createElement("label");
+      label.setAttribute("for", id);
+      const nome = document.createElement("span");
+      const prezzo = prezzi[tipo.key];
+      nome.textContent = tf(tipo.name) + (prezzo ? " · €" + eur(prezzo) : "");
+      const input = document.createElement("input");
+      input.id = id;
+      input.type = "number";
+      input.inputMode = "numeric";
+      input.min = "0";
+      input.max = "20";
+      // la chiave e' la posizione, non il nome: cambiando lingua il nome
+      // cambia ma il numero deve restare dov'e'
+      input.dataset.requestUnitN = String(i);
+      // la prima riga parte da 1 e le altre da 0: chi ne vuole una sola, che
+      // e' il caso piu' frequente, non deve toccare niente
+      input.value = prima[String(i)] !== undefined ? prima[String(i)] : (i === 0 ? "1" : "0");
+      input.addEventListener("input", aggiornaUnita);
+      label.appendChild(nome);
+      label.appendChild(input);
+      unitsRowsEl.appendChild(label);
+    });
+  }
+
+  function unitaScelte(tour) {
+    if (!unitsRowsEl || unitsRowsEl.hidden) return [];
+    const tipi = (tour && tour.units && tour.units.types) || [];
+    return [...unitsRowsEl.querySelectorAll("[data-request-unit-n]")].map(inp => ({
+      label: tf((tipi[Number(inp.dataset.requestUnitN)] || {}).name || ""),
+      n: parseInt(inp.value, 10) || 0
+    }));
+  }
+
+  // Zero mezzi non e' una richiesta: si dice sotto le caselle e non si parte,
+  // come per il giorno sbagliato e per i menu di troppo.
+  function unitaValide() {
+    if (!current || !unitsRowsEl || unitsRowsEl.hidden) return true;
+    return unitaScelte(current).reduce((tot, u) => tot + u.n, 0) > 0;
+  }
+
+  function aggiornaUnita() {
+    if (!unitsErrorEl) return;
+    const ok = unitaValide();
+    if (!ok) unitsErrorEl.textContent = t("req.unitsError");
+    unitsErrorEl.hidden = ok;
+  }
+
+  // Dove si contano i mezzi non si contano le persone. Sul jet ski il prezzo
+  // e' della moto e un gruppo di quattro puo' essere due doppie, oppure una
+  // doppia e due singole: chiedere anche "quanti adulti" fa scrivere due volte
+  // la stessa cosa in due modi che non tornano.
+  function mostraPersone(tour) {
+    if (!peopleBoxEl || !peopleLabelEl) return;
+    const aMezzo = !!(tour && tour.units);
+    peopleBoxEl.hidden = aMezzo;
+    peopleLabelEl.hidden = aMezzo;
   }
 
   function riempiMenu(tour) {
@@ -958,7 +1062,8 @@ function initRequestDialog() {
     riempiLingue(current);
     riempiMenu(current);
     mostraNeonati(current);
-    mostraQuantita(current);
+    mostraPersone(current);
+    riempiUnita(current);
     aggiornaTotale();
     aggiornaGiorno();
   });
@@ -977,8 +1082,7 @@ function initRequestDialog() {
       kids: parseInt(document.getElementById("reqKids").value, 10) || 0,
       babies: (babiesBox && !babiesBox.hidden && babiesInput)
         ? (parseInt(babiesInput.value, 10) || 0) : 0,
-      quantity: (quantityBox && !quantityBox.hidden && quantityInput)
-        ? Math.max(1, parseInt(quantityInput.value, 10) || 1) : 0,
+      units: unitaScelte(current),
       note: document.getElementById("reqNote").value.trim(),
       transfer: !!(transferInput && transferInput.checked),
       transferSiam: !!(transferSiamInput && transferSiamInput.checked),
@@ -991,6 +1095,7 @@ function initRequestDialog() {
     // Piu' menu speciali che persone: stessa idea, l'avviso e' gia' sotto le
     // caselle da quando ha messo il numero di troppo.
     if (!menuValido()) { aggiornaMenu(); return; }
+    if (!unitaValide()) { aggiornaUnita(); return; }
 
     // In modalita' "aggiungi" non si va su WhatsApp: la richiesta si mette da
     // parte e il cliente continua a guardare le altre escursioni.
@@ -1011,7 +1116,7 @@ function initRequestDialog() {
         kids: req.kids,
         babies: req.babies,
         option: req.option,
-        quantity: req.quantity,
+        units: unitaTesto(current, req),
         transfer: req.transfer,
         transferSiam: req.transferSiam,
         note: req.note

@@ -180,8 +180,8 @@
       <label for="reqLang" data-request-lang-label hidden data-i18n="req.lang">In che lingua</label>
       <select id="reqLang" name="lang" data-request-lang hidden></select>
 
-      <span class="request-people-label" data-i18n="req.people">Quante persone</span>
-      <div class="request-people">
+      <span class="request-people-label" data-request-people-label data-i18n="req.people">Quante persone</span>
+      <div class="request-people" data-request-people>
         <label for="reqAdults"><span data-i18n="req.adults">Adulti</span>
           <input id="reqAdults" name="adults" type="number" inputmode="numeric" min="1" max="30" value="2" required />
         </label>
@@ -193,11 +193,9 @@
         </label>
       </div>
 
-      <span class="request-people-label" id="reqQuantityLabel" data-request-quantity-label hidden>Quante moto d'acqua</span>
-      <div class="request-people" data-request-quantity hidden>
-        <input id="reqQuantity" name="quantity" type="number" inputmode="numeric"
-               min="1" max="10" value="1" aria-labelledby="reqQuantityLabel" />
-      </div>
+      <span class="request-people-label" data-request-units-label hidden>Quante moto d'acqua</span>
+      <div class="request-people" data-request-units hidden></div>
+      <p class="request-day-error" data-request-units-error hidden></p>
 
       <p class="request-total" data-request-total hidden></p>
 

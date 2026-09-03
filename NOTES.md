@@ -4061,3 +4061,64 @@ il messaggio con 4 adulti e 2 moto porta "• Durata e tipo di moto: 2 ore · mo
 seguito da "• Moto d'acqua: 2"; la voce salvata nella lista tiene `quantity: 3` e la riga
 la mostra in fondo ai dettagli. `node controlla.js` → 0 errori, 1 avviso invariato
 (opera-60). Alzato `sw.js` a `isla-v195`.
+
+## Sul jet ski si contano le moto, non le persone
+
+Il proprietario, dopo aver visto il campo "Quante moto d'acqua" aggiunto un'ora prima:
+"nelle moto d'acqua non servono le persone ma le moto, visto che il prezzo e' a moto...
+possono essere 4 moto ad esempio 2 doppie e 2 singoli o 3 singoli e un doppio, quindi
+scegliere le persone in questo caso e' confusionario". Ha ragione, e il modo in cui avevo
+messo le varianti non reggeva quel caso: **"2 ore · moto doppia" e' una moto sola**, e un
+gruppo con due doppie e due singole non aveva modo di dirlo.
+
+**Come funziona davvero.** La durata la sceglie il gruppo **una volta** (tutti insieme 40
+minuti, o un'ora, o due), poi si prenotano **N moto miste**. Quindi:
+
+- le varianti tornano a essere **solo la durata**: tre bottoni invece di sei;
+- i mezzi si contano con due caselle, **Singola** e **Doppia**, ognuna col suo prezzo;
+- **la domanda "Quante persone" sparisce** su questa scheda. Non si aggiunge alle caselle
+  dei mezzi: le sostituisce. Quattro amici sono "due doppie", e un "4 adulti" accanto
+  sarebbe un secondo numero da far tornare — proprio la confusione segnalata.
+
+**Campo `units`** al posto di `quantity`, che era di poche ore prima e non serviva piu' (un
+contatore solo, senza tipi). Sta in testa a `esplora-catalog.js`: `label` e' la domanda,
+`name` il nome per il messaggio, `types` i tipi con la loro **chiave**. I prezzi non stanno
+li' ma **dentro la variante**, in `unitPrices`, con le stesse chiavi, perche' cambiano con
+la durata: la doppia costa 110 sul giro da 40 minuti e 200 su quello da due ore. Le caselle
+si ridisegnano coi prezzi giusti a ogni apertura della finestra.
+
+Fatto sullo stampo delle righe dei menu, che e' la stessa forma (righe costruite in JS, una
+per voce, la chiave e' la posizione e non il nome cosi' cambiando lingua i numeri restano).
+La prima casella parte da 1 e le altre da 0: chi ne vuole una sola non tocca niente. Zero
+mezzi in tutto non e' una richiesta e la finestra lo dice, come per il giorno sbagliato:
+testo nuovo `req.unitsError`.
+
+Nel messaggio: `• Durata: 2 ore` e sotto `• Moto d'acqua: Singola × 2 · Doppia × 1`. Il "×"
+e' quello dei menu e per lo stesso motivo, evita i plurali che in tre lingue non si fanno
+allo stesso modo.
+
+**Un difetto vecchio trovato per strada e sistemato.** `righeRichiesta()` scrive la riga dei
+menu leggendo `req.menus` (i numeri), ma la lista salva il riepilogo **gia' scritto** in
+`voce.menu` (un testo), come fa per la variante e per la lingua. Risultato: la richiesta
+partita dalla lista **perdeva la riga dei menu**, che nella lista si vedeva. Un vegetariano
+che l'ufficio non legge. Ora `menuTesto()` accetta tutti e due i casi, e `unitaTesto()` e'
+nato gia' cosi'.
+
+**Terza volta che l'etichetta del bottone tradisce.** Al cambio lingua i prezzi accanto a
+Singola e Doppia sparivano: la finestra cercava la variante nel catalogo **per etichetta**,
+e per un attimo il bottone ha ancora quella vecchia mentre il catalogo e' gia' tradotto. Ora
+`sceltaCorrente()` la prende **per posizione** (`varianteDallaPosizione()`), e ne
+beneficiano anche gli orari, che dipendono dalla stessa funzione. La regola, ormai: fra le
+due parti che si ridisegnano da sole, l'unica cosa che non cambia mai e' la posizione.
+
+**Il totale continua a non farsi**, e adesso e' l'unica cosa che manca: con i mezzi contati
+e i prezzi per tipo il conto sarebbe 2 × €180 + 1 × €200, e ci andrebbe dentro anche il
+ritiro (€10 **a moto**). Lasciato fuori apposta, e' un passaggio suo.
+
+Provato nel browser: i prezzi delle due caselle seguono la durata (90/110, 100/120,
+180/200), "Quante persone" non compare sul jet ski e compare su banana boat, a zero moto la
+richiesta non parte e appare l'avviso, cambiando lingua restano numeri e prezzi, il
+messaggio dice "Durata: 2 ore" e "Moto d'acqua: Singola × 2 · Doppia × 1", la lista salva il
+riepilogo e il messaggio unico della lista ora porta anche la riga dei menu dell'altra
+escursione. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a
+`isla-v197`.

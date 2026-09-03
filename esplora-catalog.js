@@ -319,34 +319,6 @@ const ESPLORA_CATALOG = [
   // cosi' il cliente vede lo stesso nome del sito e, quando la richiesta
   // arriva su WhatsApp, in ufficio si ritrova il nome esatto da cercare.
   {
-    id: "private-charter",
-    title: "Private Charter",
-    category: "mare-barche",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 350,
-    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
-    // La barca e' tutta tua: l'ora di partenza si concorda, non si sceglie da un
-    // elenco. `times: []` lascia "Da concordare" come unica voce, invece delle
-    // fasce segnaposto che qui sarebbero inventate.
-    times: [],
-    priceTiers: [
-      { from: 7,  to: 10, price: 350 },
-      { from: 11, to: 15, price: 450 }
-    ],
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    included: ["swimstop"],
-    desc: {
-      it: "Barca riservata solo al tuo gruppo, con percorso e orari concordati. Il prezzo è per l'intera barca, non a persona.",
-      en: "A boat reserved for your group alone, with the route and times agreed with you. The price is for the whole boat, not per person.",
-      es: "Barco reservado solo para tu grupo, con ruta y horarios acordados. El precio es por el barco entero, no por persona."
-    },
-    image: "private-charter.jpg",
-    published: true
-  },
-  {
     id: "freebird-catamaran",
     title: "Freebird Catamaran Trip",
     category: "mare-barche",
@@ -599,7 +571,7 @@ const ESPLORA_CATALOG = [
     // gia' fatto per la partenza delle 9:30 di Royal Delfin.
     times: ["09:00", "12:00", "15:00", "18:00"],
     priceFrom: 55,
-    privateOption: "private-charter",
+    privateOption: "whale-dolphin-3h-charter",
     priceAdult: 55,
     priceChild: 30,
     priceInfant: 0,
@@ -935,6 +907,7 @@ const ESPLORA_CATALOG = [
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 75,
+    privateOption: "luxury-catamaran-charter",
     priceAdult: 75,
     priceChild: 50,
     priceInfant: 0,
@@ -1494,7 +1467,7 @@ const ESPLORA_CATALOG = [
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     times: ["09:45", "13:15", "16:20"],
     priceFrom: 65,
-    privateOption: "private-charter",
+    privateOption: "skyline-cruiser-charter",
     priceAdult: 65,
     priceChild: 45,
     // 13+ discende dai bambini 2-12: sopra i 12 non c'e' altra fascia.
@@ -3345,6 +3318,144 @@ const ESPLORA_CATALOG = [
   },
 
   // ─── TOUR PRIVATI ─────────────────────────────────────────────────────────
+  {
+    id: "private-charter",
+    title: "Private Charter",
+    category: "tour-privati",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 350,
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    // La barca e' tutta tua: l'ora di partenza si concorda, non si sceglie da un
+    // elenco. `times: []` lascia "Da concordare" come unica voce, invece delle
+    // fasce segnaposto che qui sarebbero inventate.
+    times: [],
+    priceTiers: [
+      { from: 7,  to: 10, price: 350 },
+      { from: 11, to: 15, price: 450 }
+    ],
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    included: ["swimstop"],
+    desc: {
+      it: "Barca riservata solo al tuo gruppo, con percorso e orari concordati. Il prezzo è per l'intera barca, non a persona.",
+      en: "A boat reserved for your group alone, with the route and times agreed with you. The price is for the whole boat, not per person.",
+      es: "Barco reservado solo para tu grupo, con ruta y horarios acordados. El precio es por el barco entero, no por persona."
+    },
+    image: "private-charter.jpg",
+    published: true
+  },
+
+  // Schede gemelle delle barche di "Mare e barche" che offrono anche il
+  // charter privato: stessa barca, stessa foto, stessi orari, ma prezzo a
+  // gruppo "a partire da" invece che a persona. Il prezzo di partenza (350€)
+  // e' lo stesso per tutte, anche dove la barca ha gia' un charter a un
+  // prezzo diverso (Small Group Catamaran, Opera 60): e' una scelta esplicita
+  // del proprietario, il prezzo vero resta sulla scheda della barca.
+  {
+    id: "whale-dolphin-3h-charter",
+    title: "3-Hour Whale & Dolphin Boat Trip",
+    category: "tour-privati",
+    zone: "Puerto Colón",
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    times: ["09:00", "12:00", "15:00", "18:00"],
+    priceFrom: 350,
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    included: ["snorkel", "snack", "drinks", "swimstop"],
+    desc: {
+      it: "La stessa barca a vela per l'avvistamento di balene e delfini, riservata solo al tuo gruppo, con sosta per lo snorkeling. Il prezzo è per l'intera barca, non a persona.",
+      en: "The same sailing boat for whale and dolphin watching, reserved for your group alone, with a snorkelling stop. The price is for the whole boat, not per person.",
+      es: "El mismo velero para avistar ballenas y delfines, reservado solo para tu grupo, con parada para hacer snorkel. El precio es por el barco entero, no por persona."
+    },
+    image: "whale-dolphin-3h.jpg",
+    published: true
+  },
+  {
+    id: "luxury-catamaran-charter",
+    title: "Luxury Catamaran Experience",
+    category: "tour-privati",
+    zone: "Puerto Colón",
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    priceFrom: 350,
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    included: ["fingerfood", "drinks", "swimstop"],
+    desc: {
+      it: "Lo stesso catamarano di categoria superiore, riservato solo al tuo gruppo, con aree lounge e avvistamento di delfini e balene. Il prezzo è per l'intera barca, non a persona.",
+      en: "The same upscale catamaran, reserved for your group alone, with lounge areas and dolphin and whale watching. The price is for the whole boat, not per person.",
+      es: "El mismo catamarán de categoría superior, reservado solo para tu grupo, con zonas lounge y avistamiento de delfines y ballenas. El precio es por el barco entero, no por persona."
+    },
+    image: "luxury-catamaran.jpg",
+    published: true
+  },
+  {
+    id: "small-group-catamaran-charter",
+    title: "Small Group Catamaran",
+    category: "tour-privati",
+    zone: "Puerto Colón",
+    duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas" },
+    priceFrom: 350,
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    included: ["lunch", "drinks", "swimstop", "snorkel", "guide"],
+    desc: {
+      it: "Lo stesso catamarano fino a 23 persone, tutto per il tuo gruppo, per tre o sei ore lungo la costa con sosta bagno, snorkeling e paella di pollo a bordo. Il prezzo è per l'intera barca, non a persona.",
+      en: "The same catamaran that takes up to 23 people, all to yourselves, for three or six hours along the coast with a swim stop, snorkelling and chicken paella on board. The price is for the whole boat, not per person.",
+      es: "El mismo catamarán que lleva hasta 23 personas, todo para tu grupo, durante tres o seis horas por la costa con parada de baño, snorkel y paella de pollo a bordo. El precio es por el barco entero, no por persona."
+    },
+    image: "small-group-catamaran.jpg",
+    published: true
+  },
+  {
+    id: "opera-60-charter",
+    title: "Opera 60",
+    category: "tour-privati",
+    zone: "Puerto Colón",
+    duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas" },
+    times: ["10:00", "13:30"],
+    priceFrom: 350,
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    included: ["swimstop", "snorkel", "drinks", "guide"],
+    desc: {
+      it: "Lo stesso gommone rigido di diciotto metri, riservato al tuo gruppo, da tre a nove ore lungo la costa sud-ovest, con snorkeling, cibo e bevande a bordo. Il prezzo è per l'intera barca, non a persona.",
+      en: "The same eighteen-metre rigid inflatable, reserved for your group, from three to nine hours along the south-west coast, with snorkelling, food and drinks on board. The price is for the whole boat, not per person.",
+      es: "La misma neumática rígida de dieciocho metros, reservada para tu grupo, de tres a nueve horas por la costa suroeste, con snorkel, comida y bebida a bordo. El precio es por el barco entero, no por persona."
+    },
+    image: "opera-60.jpg",
+    published: true
+  },
+  {
+    id: "skyline-cruiser-charter",
+    title: "Skyline Cruiser",
+    category: "tour-privati",
+    zone: "Puerto Colón",
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    times: ["09:45", "13:15", "16:20"],
+    priceFrom: 350,
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    included: ["swimstop", "snorkel", "fingerfood", "drinks", "towels"],
+    desc: {
+      it: "Lo stesso motoryacht Fairline di quasi 13 metri, riservato al tuo gruppo, con capitano ed equipaggio, snack e bevande comprese. Il prezzo è per l'intera barca, non a persona.",
+      en: "The same Fairline motor yacht, just under 13 metres, reserved for your group, with captain and crew, snacks and drinks included. The price is for the whole boat, not per person.",
+      es: "El mismo yate a motor Fairline, de casi 13 metros, reservado para tu grupo, con capitán y tripulación, aperitivos y bebidas incluidas. El precio es por el barco entero, no por persona."
+    },
+    image: "skyline-cruiser.jpg",
+    published: true
+  },
   {
     id: "charter-privato",
     title: {

@@ -3812,3 +3812,49 @@ questo aggiornamento). Alzato `sw.js` a `isla-v189`.
 prezzo della variante equitazione da 2 ore; prezzo per singola variante buggy ed elicottero;
 l'eta' minima vera del parapendio (8 o 14 anni); se vale la pena aggiungere la "Avventura
 costiera" del buggy come quarta scheda quando arrivera' una foto.
+
+## Card "Tour privati" rimessa, e riempita con le barche in charter
+
+La card "Tour privati" in home era sparita dalla griglia categorie di `index.html` (la
+categoria esisteva gia' in `CATEGORIES`, in `esplora-catalog.js`, ma senza nessuna scheda
+`published: true` dentro non aveva senso linkarla: `escursioni.html?cat=tour-privati` era
+vuota). **Rimessa la card in `index.html`** e, insieme, **riempita la categoria** cosi' il
+link porta davvero a qualcosa.
+
+**Spostata la scheda "Private Charter"** (`id: "private-charter"`) da `category:
+"mare-barche"` a `category: "tour-privati"`: e' un'offerta generica di noleggio barca, non
+una barca specifica di Admiral, quindi non aveva senso fra le barche vere della pagina
+"Mare e barche" — e' li' che il proprietario ha chiesto di toglierla. Spostata fisicamente
+nel file, dentro la sezione TOUR PRIVATI, non solo cambiato il campo `category`. Freebird
+Catamaran e Royal Delfin, le due barche che avevano `privateOption: "private-charter"`,
+continuano a puntarci: lo spostamento di categoria non tocca quel collegamento.
+
+**Aggiunte cinque schede gemelle in "tour-privati"**, una per ciascuna di queste barche di
+"Mare e barche": 3-Hour Whale & Dolphin Boat Trip, Luxury Catamaran Experience, Small
+Group Catamaran, Opera 60, Skyline Cruiser (scelte dal proprietario, non tutte le barche
+con `privateOption`). Ogni gemella ripete nome, zona, durata, orari, foto e `included`
+della barca vera — stessa barca, versione charter — ma il prezzo e' `priceFrom: 350`
+uguale per tutte, come "a partire da" a gruppo (`priceAdult`/`priceChild: 0`, niente
+`ages`), sullo schema gia' usato da "Private Charter".
+
+**Punto delicato, deciso col proprietario e non per conto mio**: Small Group Catamaran e
+Opera 60 hanno gia', dentro la loro scheda in "Mare e barche", un'opzione "Charter privato"
+con un prezzo reale diverso (rispettivamente €800 e €545, non €350). Messo comunque 350€
+sulla gemella in "tour-privati": e' un prezzo d'ingresso, il prezzo vero resta quello che
+il cliente vede aprendo la scheda della barca. Per questo motivo **non aggiunto
+`privateOption` su queste due barche**: avrebbero mostrato due prezzi diversi per lo stesso
+charter sulla stessa pagina di dettaglio, ed e' gia' abbastanza chiaro cosi' con l'opzione
+"Charter privato" che hanno gia'.
+
+Per le altre tre barche, **`privateOption` aggiornato per puntare alla gemella nuova**
+invece che alla scheda generica: Whale & Dolphin e Skyline Cruiser puntavano gia' a
+`"private-charter"`, ora puntano a `"whale-dolphin-3h-charter"` e
+`"skyline-cruiser-charter"`; Luxury Catamaran non aveva `privateOption`, aggiunto punta a
+`"luxury-catamaran-charter"`.
+
+Provato nel browser vero: la card "Tour privati" c'e' in home e porta a
+`escursioni.html?cat=tour-privati`, che ora mostra le sei schede (Private Charter + le
+cinque gemelle); "Mare e barche" non mostra piu' "Private Charter"; il rimando "vuoi la
+barca solo per il tuo gruppo?" sulle pagine di Whale & Dolphin e Luxury Catamaran porta
+alla scheda gemella giusta. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60,
+non riguarda questo aggiornamento). Alzato `sw.js` a `isla-v190`.

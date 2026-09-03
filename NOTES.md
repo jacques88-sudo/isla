@@ -4170,3 +4170,63 @@ una doppia €560, col ritiro €590, zero moto nessun totale) e cambia coi prez
 tiene il totale anche passando all'inglese; le schede a persona non sono cambiate (Freebird
 3 ore, 2 adulti e 1 bambino, €117 prima e dopo il cambio lingua). `node controlla.js` → 0
 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a `isla-v198`.
+
+## Kayak con lo snorkeling: dati veri da CanaryVIP e dall'ufficio (3 settembre 2026)
+
+`kayak-snorkelling` era un segnaposto: zona e durata "Da definire", prezzi a 0, nessun
+orario. Sono arrivate la pagina di CanaryVIP ("Kayak con le tartarughe Tenerife") e, dal
+proprietario, i due dati che la pagina non dava in modo utilizzabile: **bambini 6-10 anni**
+e gli **orari 10:00, 12:30, 14:00**.
+
+**Prima di tutto, non era un doppione.** Elencate le undici schede di `sport-acquatici`:
+nessun'altra ha kayak, e le due con prezzo simile (banana boat €18, parascending €60) sono
+altre attivita'. Si aggiorna la scheda che c'e', non se ne apre una seconda.
+
+**Riempiti:** zona Los Cristianos, durata 2 ore (un'ora e mezza di pagaiata piu' mezz'ora
+di snorkeling, come scrive il fornitore), `times: ["10:00", "12:30", "14:00"]`,
+`ages: { adult: "11+", child: "6-10" }`, `included: ["snorkel", "lifejacket", "guide",
+"swimstop"]`, sei note pratiche e la riga `transfer`. Niente `days`: si fa tutti i giorni,
+e sette giorni su sette non sono una limitazione da mostrare.
+
+**I prezzi, e perche' sono due numeri di due pagine diverse.** La pagina era in offerta:
+adulti **€45 barrato → €35**. Vale la regola del 25 agosto, sul sito va il pieno: adulti
+**€45**, che era gia' il `priceFrom` della scheda. Il prezzo dei bambini (**€20**) invece
+**non era barrato**, esattamente come sull'Opera 60, quindi si prende com'e'. Chiesto e
+confermato dal proprietario, tutti e due. Si puo' sempre abbassare dopo; alzare un prezzo
+gia' letto no.
+
+**Sotto i 6 anni non si sale**, quindi niente fascia neonati e **niente `priceInfant`**:
+assente vuol dire "non lo sappiamo o non si sale", non "gratis". Nella finestra della
+richiesta la riga dei neonati infatti non compare.
+
+**Il ritiro e' una riga di testo e non un `transferPrice`.** La pagina del rivenditore
+elenca supplementi diversi per zona (€2 a persona nel sud, €4 a Callao Salvaje e Palm-Mar,
+€15 a macchina a El Medano, €10 a Golf del Sur). Un `transferPrice` e' **un numero solo** e
+finirebbe nel totale: quattro tariffe non ci stanno. Scritto quindi a parole nella riga
+`transfer` ("il supplemento cambia da zona a zona, scrivi l'indirizzo nelle note"), **senza
+i numeri del rivenditore**, che sono i suoi e non i nostri, e **senza "transfer" fra le
+icone**, che direbbe che e' compreso. Stessa scelta gia' fatta sul giro col ritiro gratis
+solo alle 12:00. **Da decidere con l'ufficio** se pubblicare i supplementi veri di Admiral.
+
+**Niente `languages`, anche se la pagina dice "guide in inglese e spagnolo".** Vale la
+regola del proprietario: il menu delle lingue si mette solo dove lo segnala lui. Stessa
+decisione gia' presa altrove.
+
+**Non copiato**, come sempre da CanaryVIP: la "politica di cancellazione di 24 ore" loro
+(la nostra e' 24 ore per conto suo, non perche' lo dicono loro), "miglior prezzo
+garantito", "biglietti ufficiali", "pagamento sicuro", "prenotate in anticipo e
+risparmiate", il 5.00 su 5 e le 7 recensioni. Le descrizioni sono riscritte da zero nelle
+tre lingue: dal loro testo sono usciti solo i fatti (durata, orari, cosa c'e' a bordo, cosa
+portare, saper nuotare, gravidanza oltre i 5 mesi, si pagaia da soli o fino a tre senza
+cambio di prezzo).
+
+**Sui delfini la descrizione dice che non sono promessi.** La pagina del fornitore titola
+"avvistamenti di delfini e tartarughe" e poi ammette che dipende: sul sito nostro la
+riserva sta nella prima riga, non in fondo.
+
+Provato nel browser vero: la pagina mostra Los Cristianos, 2 ore, "10:00 · 12:30 · 14:00",
+"Adulti (11+) €45", "Bambini (6-10) €20", le quattro icone e le sei note; nella finestra
+della richiesta il menu "A che ora" ha le tre partenze vere e **nessun "Da concordare"**, e
+2 adulti + 1 bambino fanno **€110** (45 × 2 + 20). In elenco la card esce con "LOS
+CRISTIANOS · 2 ORE · ADATTA AI BAMBINI · TRANSFER DISPONIBILE · da €45".
+`node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a `isla-v199`.

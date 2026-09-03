@@ -2237,17 +2237,54 @@ const ESPLORA_CATALOG = [
     id: "kayak-snorkelling",
     title: "Kayaking & Snorkelling Combo",
     category: "sport-acquatici",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Los Cristianos",
+    duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+    // Il prezzo adulti e' quello pieno: la pagina del rivenditore lo dava
+    // barrato (45 -> 35) e lo sconto di un altro non e' nostro. Il prezzo dei
+    // bambini non era barrato, quindi resta com'era scritto, come sull'Opera 60.
     priceFrom: 45,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 45,
+    priceChild: 20,
+    // Sotto i 6 anni non si sale: per questo non c'e' nessuna fascia neonati
+    // e nessun priceInfant. Assente non vuol dire gratis.
+    ages: { adult: "11+", child: "6-10" },
+    times: ["10:00", "12:30", "14:00"],
     family: true,
     desc: {
-      it: "Kayak lungo la costa e sosta con maschera e boccaglio, nella stessa uscita.",
-      en: "Kayaking along the coast plus a mask-and-snorkel stop, in the same outing.",
-      es: "Kayak por la costa y parada con máscara y tubo, en la misma salida."
+      it: "Un'ora e mezza di pagaiata lungo la costa di Los Cristianos, poi mezz'ora in acqua con maschera e boccaglio dove passano le tartarughe. Delfini e razze capita di vederli, ma dipende dal mare e non sono promessi.",
+      en: "An hour and a half of paddling along the Los Cristianos coast, then half an hour in the water with mask and snorkel where the turtles go by. Dolphins and rays do turn up, but that depends on the sea and is not promised.",
+      es: "Hora y media remando por la costa de Los Cristianos y luego media hora en el agua con máscara y tubo, por donde pasan las tortugas. Delfines y rayas se ven algunos días, pero depende del mar y no están garantizados."
     },
+    included: ["snorkel", "lifejacket", "guide", "swimstop"],
+    // Il supplemento del ritiro cambia da zona a zona, quindi e' una condizione
+    // da spiegare a parole e non un `transferPrice`, che sarebbe un numero solo.
+    // Per lo stesso motivo "transfer" non sta fra le icone: quelle dicono
+    // "vale sempre", e qui si paga a parte.
+    transfer: {
+      it: "Ritiro dall'hotel nel sud di Tenerife su richiesta, con un supplemento che cambia da zona a zona. Scrivi l'indirizzo nelle note e l'ufficio ti conferma quanto costa.",
+      en: "Hotel pick-up in the south of Tenerife on request, with a supplement that changes from area to area. Add your address in the notes and the office will confirm the cost.",
+      es: "Recogida en el hotel en el sur de Tenerife bajo petición, con un suplemento que cambia según la zona. Escribe tu dirección en las notas y la oficina te confirma el precio."
+    },
+    notes: [
+      { it: "Bisogna saper nuotare: mezz'ora dell'uscita si passa in acqua con maschera e boccaglio.",
+        en: "You need to be able to swim: half an hour of the trip is spent in the water with mask and snorkel.",
+        es: "Hay que saber nadar: media hora de la salida se pasa en el agua con máscara y tubo." },
+      { it: "Si sale dai 6 anni compiuti, e i più piccoli vanno in kayak insieme a un adulto.",
+        en: "Minimum age 6, and the youngest paddlers share a kayak with an adult.",
+        es: "Se sube a partir de los 6 años cumplidos, y los más pequeños van en el kayak con un adulto." },
+      { it: "Il kayak si può fare da soli, in due o in tre: il prezzo non cambia.",
+        en: "You can paddle alone, in a pair or in a three: the price is the same.",
+        es: "Puedes ir solo, en pareja o de tres en el kayak: el precio no cambia." },
+      { it: "Costume sotto i vestiti, scarpe chiuse (le infradito non tengono), crema solare, cappello e un asciugamano per dopo.",
+        en: "Swimsuit under your clothes, closed shoes (flip-flops do not hold), sun cream, a hat and a towel for afterwards.",
+        es: "Bañador debajo de la ropa, zapato cerrado (las chanclas no sujetan), crema solar, gorra y una toalla para después." },
+      { it: "Ci sono gli armadietti per lasciare le tue cose mentre sei in acqua.",
+        en: "There are lockers to leave your things in while you are in the water.",
+        es: "Hay taquillas para dejar tus cosas mientras estás en el agua." },
+      { it: "Sconsigliata in gravidanza oltre il quinto mese.",
+        en: "Not recommended in pregnancy beyond the fifth month.",
+        es: "No se recomienda en embarazos de más de cinco meses." }
+    ],
     image: "kayak-snorkelling.jpg",
     published: true
   },

@@ -2239,11 +2239,13 @@ const ESPLORA_CATALOG = [
     category: "sport-acquatici",
     zone: "Los Cristianos",
     duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
-    // Il prezzo adulti e' quello pieno: la pagina del rivenditore lo dava
-    // barrato (45 -> 35) e lo sconto di un altro non e' nostro. Il prezzo dei
-    // bambini non era barrato, quindi resta com'era scritto, come sull'Opera 60.
-    priceFrom: 45,
-    priceAdult: 45,
+    // 35 e' il prezzo che ha deciso l'ufficio, non lo sconto copiato dal
+    // rivenditore: la sua pagina dava 45 barrato -> 35, e il pieno sarebbe
+    // stato 45. Abbassare si puo' sempre ed e' una scelta di Admiral; e'
+    // alzarlo dopo che il cliente l'ha letto che non si fa. Il prezzo dei
+    // bambini non era barrato, quindi resta com'era scritto.
+    priceFrom: 35,
+    priceAdult: 35,
     priceChild: 20,
     // Sotto i 6 anni non si sale: per questo non c'e' nessuna fascia neonati
     // e nessun priceInfant. Assente non vuol dire gratis.

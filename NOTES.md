@@ -4188,12 +4188,17 @@ di snorkeling, come scrive il fornitore), `times: ["10:00", "12:30", "14:00"]`,
 "swimstop"]`, sei note pratiche e la riga `transfer`. Niente `days`: si fa tutti i giorni,
 e sette giorni su sette non sono una limitazione da mostrare.
 
-**I prezzi, e perche' sono due numeri di due pagine diverse.** La pagina era in offerta:
-adulti **€45 barrato → €35**. Vale la regola del 25 agosto, sul sito va il pieno: adulti
-**€45**, che era gia' il `priceFrom` della scheda. Il prezzo dei bambini (**€20**) invece
-**non era barrato**, esattamente come sull'Opera 60, quindi si prende com'e'. Chiesto e
-confermato dal proprietario, tutti e due. Si puo' sempre abbassare dopo; alzare un prezzo
-gia' letto no.
+**I prezzi, e perche' €35 non e' una violazione della regola dei prezzi barrati.** La
+pagina era in offerta: adulti **€45 barrato → €35**. Applicando la regola del 25 agosto
+avevo messo il pieno, **€45**, che era anche il `priceFrom` che la scheda aveva gia'. Il
+proprietario ha poi deciso **€35**, ed e' un'altra cosa: quella regola vieta di **copiare**
+lo sconto di un rivenditore come se fosse nostro, non vieta ad Admiral di fare il suo
+prezzo. E' lo stesso caso del Small Group Catamaran, dove €60 era il numero dell'ufficio e
+non si e' sovrascritto con i €75 della pagina. La direzione conta: **abbassare si puo'
+sempre, alzare dopo che il cliente l'ha letto e' la cosa che fa arrabbiare** — ed e' anche
+il motivo per cui partire da €45 e scendere a €35 non ha fatto danni, mentre il contrario
+li avrebbe fatti. Il prezzo dei bambini (**€20**) **non era barrato**, esattamente come
+sull'Opera 60, quindi resta com'e'.
 
 **Sotto i 6 anni non si sale**, quindi niente fascia neonati e **niente `priceInfant`**:
 assente vuol dire "non lo sappiamo o non si sale", non "gratis". Nella finestra della
@@ -4225,8 +4230,8 @@ cambio di prezzo).
 riserva sta nella prima riga, non in fondo.
 
 Provato nel browser vero: la pagina mostra Los Cristianos, 2 ore, "10:00 · 12:30 · 14:00",
-"Adulti (11+) €45", "Bambini (6-10) €20", le quattro icone e le sei note; nella finestra
+"Adulti (11+) €35", "Bambini (6-10) €20", le quattro icone e le sei note; nella finestra
 della richiesta il menu "A che ora" ha le tre partenze vere e **nessun "Da concordare"**, e
-2 adulti + 1 bambino fanno **€110** (45 × 2 + 20). In elenco la card esce con "LOS
-CRISTIANOS · 2 ORE · ADATTA AI BAMBINI · TRANSFER DISPONIBILE · da €45".
-`node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a `isla-v199`.
+2 adulti + 1 bambino fanno **€90** (35 × 2 + 20). In elenco la card esce con "LOS
+CRISTIANOS · 2 ORE · ADATTA AI BAMBINI · TRANSFER DISPONIBILE · da €35".
+`node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a `isla-v200`.

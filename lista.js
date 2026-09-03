@@ -242,7 +242,11 @@ function initLista() {
       if (!riga.tour.units) {
         dettagli.push(peopleText(voce.adults, voce.kids, voce.babies));
       }
-      if (voce.option) dettagli.push(voce.option);
+      // l'etichetta della variante si rilegge dal catalogo quando si riesce a
+      // ritrovarla: quella salvata e' nella lingua di allora
+      const variante = varianteScelta(riga.tour, voce);
+      if (variante) dettagli.push(tf(variante.label));
+      else if (voce.option) dettagli.push(voce.option);
       const mezzi = unitaTesto(riga.tour, voce);
       if (mezzi) dettagli.push(tf(riga.tour.units.name) + ": " + mezzi);
       if (voce.menu) dettagli.push(voce.menu);

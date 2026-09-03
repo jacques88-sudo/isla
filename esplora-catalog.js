@@ -2258,14 +2258,14 @@ const ESPLORA_CATALOG = [
       es: "Hora y media remando por la costa de Los Cristianos y luego media hora en el agua con máscara y tubo, por donde pasan las tortugas. Delfines y rayas se ven algunos días, pero depende del mar y no están garantizados."
     },
     included: ["snorkel", "lifejacket", "guide", "swimstop"],
-    // Il supplemento del ritiro cambia da zona a zona, quindi e' una condizione
-    // da spiegare a parole e non un `transferPrice`, che sarebbe un numero solo.
-    // Per lo stesso motivo "transfer" non sta fra le icone: quelle dicono
-    // "vale sempre", e qui si paga a parte.
+    // Quattro supplementi diversi, e due sono a macchina invece che a persona:
+    // in `transferPrice` ci sta **un numero solo**, che poi finisce nel totale,
+    // quindi qui il ritiro si spiega a parole. Per lo stesso motivo "transfer"
+    // non sta fra le icone: quelle dicono "vale sempre", e qui si paga a parte.
     transfer: {
-      it: "Ritiro dall'hotel nel sud di Tenerife su richiesta, con un supplemento che cambia da zona a zona. Scrivi l'indirizzo nelle note e l'ufficio ti conferma quanto costa.",
-      en: "Hotel pick-up in the south of Tenerife on request, with a supplement that changes from area to area. Add your address in the notes and the office will confirm the cost.",
-      es: "Recogida en el hotel en el sur de Tenerife bajo petición, con un suplemento que cambia según la zona. Escribe tu dirección en las notas y la oficina te confirma el precio."
+      it: "Ritiro dall'hotel su richiesta, con un supplemento da pagare all'arrivo: €2 a persona nel sud di Tenerife, €4 a persona da Callao Salvaje e Palm-Mar, €10 a macchina dal Golf del Sur e €15 a macchina da El Médano. Scrivi nelle note l'indirizzo o il nome dell'hotel.",
+      en: "Hotel pick-up on request, with a supplement paid on arrival: €2 per person in the south of Tenerife, €4 per person from Callao Salvaje and Palm-Mar, €10 per car from Golf del Sur and €15 per car from El Médano. Add your address or hotel name in the notes.",
+      es: "Recogida en el hotel bajo petición, con un suplemento a pagar al llegar: €2 por persona en el sur de Tenerife, €4 por persona desde Callao Salvaje y Palm-Mar, €10 por coche desde Golf del Sur y €15 por coche desde El Médano. Escribe en las notas la dirección o el nombre del hotel."
     },
     notes: [
       { it: "Bisogna saper nuotare: mezz'ora dell'uscita si passa in acqua con maschera e boccaglio.",

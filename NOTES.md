@@ -3866,7 +3866,8 @@ d'acqua, piu' in fondo l'elenco dell'ufficio con i **prezzi nostri**: 40 min 90/
 1 ora 100/120, 2 ore 180/200 (singola/doppia), orari 10:00 12:00 14:00 16:00 17:00, e la
 riga che conta: **"il prezzo e' per moto non per persona"**. Riscritta con questi dati la
 scheda `jet-ski-safari-1-2h`, che prima aveva due varianti a 150 e 180 e `zone: "Da
-definire"`.
+definire"`. Il `title` e' cambiato ma **l'`id` no**: cambiarlo avrebbe staccato le voci
+gia' salvate nella lista dei clienti che ce l'hanno dentro.
 
 **I prezzi buoni sono quelli dell'ufficio, non quelli della pagina.** CanaryVIP mostra
 110€ barrato e 80€ "offerta", 135€ per le 2 ore: sono numeri suoi, e sono piu' bassi dei
@@ -3899,23 +3900,35 @@ non ci sono. Le regole d'eta' (passeggeri da 7 anni con un adulto, si guida da 1
 autorizzazione firmata, un 16-17enne non porta un altro minorenne) stanno nelle note, dove
 si leggono comunque.
 
-`node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a `isla-v191`.
+**Le cinque cose in sospeso, chieste al proprietario e risposte subito.** Sono finite
+tutte nella scheda, e sono il motivo di com'e' fatta adesso:
 
-**Da riconfermare con l'ufficio:**
+- **Titolo**: "solo moto d'acqua senza orari", quindi `title: "Jet Ski Safari"` senza piu'
+  il "– 1 or 2 Hours", che con la variante da 40 minuti era diventato falso.
+- **I porti sono due**, Puerto Colón e Las Galletas (la pagina del fornitore ne diceva uno
+  solo). `zone` li nomina tutti e due e una nota dice di scrivere nelle note quale conviene:
+  il porto lo conferma l'ufficio insieme alla data.
+- **Gli orari sono quelli di CanaryVIP, divisi per durata**: 1 ora alle 10:00, 14:00, 16:00
+  e 17:00, 2 ore solo alle 12:00, dentro il campo `times` **della variante**. I cinque
+  orari dell'ufficio restano sulla scheda e servono al giro da 40 minuti, che e' l'unico
+  senza orari suoi. Le due varianti da 2 ore hanno una `desc` che spiega la riga della
+  pagina del fornitore sugli orari in piu' (10:00 o 16:00) che dipendono dal giorno: la si
+  chiede nelle note invece di metterla fra le partenze come se fosse sicura.
+- **Il ritiro in hotel si paga**: €10 a moto d'acqua al ritiro, non gratis. Sta nel campo
+  `transfer` come testo e **non** in `transferPrice`, che e' fatto di prezzi a testa
+  (adulto/bambino/neonato) e qui darebbe il numero sbagliato: il supplemento e' del mezzo,
+  come il prezzo. Cosi' la card mostra "Transfer disponibile", la finestra della richiesta
+  fa la domanda "Vuoi il transfer?" e la risposta finisce nel messaggio WhatsApp.
+- **Il giro da 40 minuti esiste**, anche se sulla pagina del fornitore non c'e': confermato
+  dal proprietario, resta con i suoi 90/110€.
 
-- **Il titolo dice ancora "1 or 2 Hours"** ma adesso c'e' anche la variante da 40 minuti.
-  Lasciato com'e' perche' i titoli li scrive Admiral: basta una parola per cambiarlo.
-- **Il punto di partenza**: messo "Las Galletas" (porto di Marina del Sur) perche' e'
-  scritto sulla pagina del fornitore, ma i prezzi non coincidono con i suoi, quindi
-  potrebbe non essere lo stesso operatore.
-- **Gli orari per durata**: l'ufficio ha mandato una lista sola di cinque orari e quella e'
-  finita in `times`. La pagina di CanaryVIP invece divide (1 ora alle 10/14/16/17, 2 ore
-  alle 12): non ho ristretto niente per non togliere orari che l'ufficio ha dato.
-- **Il ritiro in hotel**: la stessa pagina lo dice gratuito nel testo e "+10€ a moto,
-  pagati al ritiro" nel modulo. Contraddizione loro: non pubblicato niente, nessun campo
-  `transfer` sulla scheda.
-- **Il prezzo del 40 minuti** non e' sulla pagina del fornitore, viene solo dall'elenco
-  dell'ufficio: se e' un pacchetto che non fa quel fornitore, va confermato che esista.
+`node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato `sw.js` a `isla-v192`
+(v191 era il primo giro, prima delle cinque risposte).
+
+Provato nel browser tutte e sei le varianti: "Punto di partenza", "Durata", "Orari" e
+"Prezzo" seguono il bottone premuto, il menu "A che ora" nella finestra della richiesta
+mostra 12:00 sola sulle 2 ore e i cinque orari sul 40 minuti, la riga del transfer c'e' e
+il totale continua a non farsi (giusto: il prezzo e' della moto).
 
 ### Trovato per strada, non toccato: "Esigenze sul menu" si vede su tutte le schede
 

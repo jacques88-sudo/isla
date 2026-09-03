@@ -2242,9 +2242,9 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "jet-ski-safari-1-2h",
-    title: "Jet Ski Safari – 1 or 2 Hours",
+    title: "Jet Ski Safari",
     category: "sport-acquatici",
-    zone: "Las Galletas",
+    zone: { it: "Puerto Colón o Las Galletas", en: "Puerto Colón or Las Galletas", es: "Puerto Colón o Las Galletas" },
     duration: { it: "40 minuti, 1 o 2 ore", en: "40 minutes, 1 or 2 hours", es: "40 minutos, 1 o 2 horas" },
     priceFrom: 90,
     // Il prezzo e' della moto d'acqua, che porta una o due persone: senza
@@ -2254,6 +2254,8 @@ const ESPLORA_CATALOG = [
     priceUnit: { it: "a moto d'acqua", en: "per jet ski", es: "por moto de agua" },
     priceAdult: 0,
     priceChild: 0,
+    // Gli orari cambiano con la durata, quindi quelli veri stanno dentro le
+    // varianti: questi valgono per il giro da 40 minuti, che non ha i suoi.
     times: ["10:00", "12:00", "14:00", "16:00", "17:00"],
     options: {
       label: { it: "Durata e persone a bordo", en: "Duration and riders", es: "Duración y personas a bordo" },
@@ -2266,16 +2268,30 @@ const ESPLORA_CATALOG = [
           duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" } },
         { label: { it: "1 ora · 1 persona", en: "1 hour · 1 person", es: "1 hora · 1 persona" },
           price: 100,
-          duration: { it: "1 ora", en: "1 hour", es: "1 hora" } },
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+          times: ["10:00", "14:00", "16:00", "17:00"] },
         { label: { it: "1 ora · 2 persone", en: "1 hour · 2 people", es: "1 hora · 2 personas" },
           price: 120,
-          duration: { it: "1 ora", en: "1 hour", es: "1 hora" } },
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+          times: ["10:00", "14:00", "16:00", "17:00"] },
         { label: { it: "2 ore · 1 persona", en: "2 hours · 1 person", es: "2 horas · 1 persona" },
           price: 180,
-          duration: { it: "2 ore", en: "2 hours", es: "2 horas" } },
+          duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          times: ["12:00"],
+          desc: {
+            it: "Partenza alle 12:00. In certi giorni può esserci anche alle 10:00 o alle 16:00: scrivilo nelle note e l'ufficio ti dice se quel giorno c'è.",
+            en: "Departure at 12:00. On some days there may also be one at 10:00 or 16:00: add it in the notes and the office will tell you if it runs that day.",
+            es: "Salida a las 12:00. Algunos días puede haber también a las 10:00 o a las 16:00: escríbelo en las notas y la oficina te dirá si ese día sale."
+          } },
         { label: { it: "2 ore · 2 persone", en: "2 hours · 2 people", es: "2 horas · 2 personas" },
           price: 200,
-          duration: { it: "2 ore", en: "2 hours", es: "2 horas" } }
+          duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          times: ["12:00"],
+          desc: {
+            it: "Partenza alle 12:00. In certi giorni può esserci anche alle 10:00 o alle 16:00: scrivilo nelle note e l'ufficio ti dice se quel giorno c'è.",
+            en: "Departure at 12:00. On some days there may also be one at 10:00 or 16:00: add it in the notes and the office will tell you if it runs that day.",
+            es: "Salida a las 12:00. Algunos días puede haber también a las 10:00 o a las 16:00: escríbelo en las notas y la oficina te dirá si ese día sale."
+          } }
       ]
     },
     family: false,
@@ -2285,11 +2301,23 @@ const ESPLORA_CATALOG = [
       es: "Paseo guiado en moto de agua por la costa sur, con instructor y lancha de apoyo. Se elige entre 40 minutos, una hora y dos horas; el precio es por moto de agua, con una o dos personas a bordo."
     },
     included: ["guide"],
+    // Il supplemento e' a moto d'acqua, non a persona: sta scritto qui e non
+    // in `transferPrice`, che e' fatto di prezzi a testa.
+    transfer: {
+      it: "Ritiro dall'hotel nel sud dell'isola (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje): €10 in più a moto d'acqua, da pagare al ritiro. Senza ritiro si arriva al porto per conto proprio.",
+      en: "Hotel pickup in the south of the island (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje): €10 extra per jet ski, paid at pickup. Without it you make your own way to the port.",
+      es: "Recogida en el hotel en el sur de la isla (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje): €10 más por moto de agua, a pagar en la recogida. Sin recogida se llega al puerto por cuenta propia."
+    },
     notes: [
       {
         it: "Il prezzo è per moto d'acqua e non a persona: la stessa moto porta una o due persone. Un istruttore accompagna il gruppo in motoscafo.",
         en: "The price is per jet ski, not per person: the same machine carries one or two people. An instructor follows the group on a speedboat.",
         es: "El precio es por moto de agua, no por persona: la misma moto lleva a una o dos personas. Un instructor acompaña al grupo en lancha."
+      },
+      {
+        it: "Si parte da Puerto Colón o da Las Galletas: scrivi nelle note quale ti è più comodo e l'ufficio ti conferma il porto.",
+        en: "Departures are from Puerto Colón or Las Galletas: say in the notes which suits you and the office will confirm the port.",
+        es: "Se sale desde Puerto Colón o desde Las Galletas: indica en las notas cuál te viene mejor y la oficina te confirma el puerto."
       },
       {
         it: "Passeggeri dai 7 anni, sempre insieme a un adulto. Si guida da 16 anni: a 16 e 17 serve l'autorizzazione firmata di un genitore, o il genitore presente alla partenza, e non si può portare un altro minorenne sulla stessa moto d'acqua.",

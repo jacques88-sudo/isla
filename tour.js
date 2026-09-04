@@ -485,9 +485,9 @@ function renderTour(tour) {
 
         ${detailItinerary(tour)}
         ${detailIncluded(tour)}
-        ${detailNotes(tour)}
         ${askBtn}
         <p class="hint" data-i18n-html="req.hint"></p>
+        ${detailNotes(tour)}
         ${detailPrivate(tour)}
       </div>
     </article>

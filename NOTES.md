@@ -4476,3 +4476,76 @@ DISPONIBILE · da €45". `node controlla.js` → 0 errori, 1 avviso invariato. 
 
 Restano da sapere solo gli **orari** delle immersioni con brevetto e dei corsi. `sw.js` a
 `isla-v208`.
+
+## Parapendio: i dati ufficiali del fornitore al posto di quelli di CanaryVIP (4 settembre 2026)
+
+La scheda `paragliding` era ferma sui dati presi da canaryvip.com il 2 settembre: prezzo
+unico 110€, quattro varianti senza prezzo, `zone: "Da definire"`, nessun orario. Sono
+arrivati i **dati ufficiali del fornitore diretto**, che contraddicono quelli del
+rivenditore su quasi tutto. Vince il fornitore: CanaryVIP e' un altro rivenditore, non
+l'operatore.
+
+**Orari veri, finalmente**: `times: ["10:00", "12:00", "14:00", "16:00"]`. Da qui in poi
+la finestra della richiesta mostra le quattro partenze e **"Da concordare" sparisce**, come
+vuole il vocabolario per un `times` pieno.
+
+**Tre voli, non quattro, e ognuno col suo prezzo.** Il fornitore ne elenca tre:
+
+| volo | quota | in aria | prezzo |
+|---|---|---|---|
+| classico | 750 m | 20-25 min | 95€ |
+| lungo / prima volta | 1.000 m | 30-40 min | 115€ |
+| alte prestazioni | 1.000 m | 25-30 min | 130€ |
+
+Non coincide con CanaryVIP ne' sulle quote (800/1.100/1.100/2.200) ne' sulle durate ne'
+sui prezzi (99/130/150/200). I prezzi sono quelli del fornitore, e sono **prezzi pieni**:
+i 99€ di CanaryVIP erano un 110€ barrato, cioe' lo sconto di un altro, che sul sito non ci
+va mai.
+
+I prezzi delle varianti stanno in **`priceAdult`, non in `price`**: qui il prezzo e' a
+testa, e solo `priceAdult` entra nel totale. Con `price` da solo il bottone avrebbe mostrato
+il numero giusto e il totale sarebbe rimasto "Su richiesta". Scheda a `priceFrom: 95` e
+`priceAdult: 95` (era 110): il volo piu' corto e' il piu' economico, quindi il "da €95"
+della card e' vero.
+
+**Il quarto volo, quello sopra il Teide (2.200 m, 40-45 minuti, 200€ da CanaryVIP), e'
+stato tolto.** Nell'elenco ufficiale non c'e'. Tenerlo pubblicato voleva dire far chiedere
+a un cliente un volo che il fornitore forse non fa, con l'unico prezzo disponibile che e'
+il listino di un concorrente. **Da chiedere all'ufficio**: se il fornitore lo fa, torna con
+prezzo e durata veri (e allora la `duration` della scheda torna a dire "2 o 4 ore").
+
+**`zone` da "Da definire" a "Adeje"**: i tre voli ufficiali decollano tutti dalla stessa
+zona, quindi il motivo per cui la zona era stata lasciata vuota (decolli da 800 a 2.200 m,
+atterraggi opposti) e' caduto insieme al volo sul Teide.
+
+**Il ritiro e' una nota, non il campo `transfer`.** Il dato nuovo e' che il pulmino passa
+**mezz'ora prima** dell'orario scelto. Messo prima in `transfer`, che pero' fa comparire la
+pillola "Transfer disponibile" e la domanda "Vuoi il transfer?" nella finestra: il transfer
+qui e' **sempre compreso**, non e' una scelta, e in tutto il resto del catalogo le schede
+col transfer dentro `included` (royal-delfin, shogun, i due quad, aqualand…) non scrivono
+il campo `transfer` — lo usa solo submarine-safari, dove il transfer si paga. Spostato in
+nota, e l'icona "Transfer" continua a dire che e' incluso.
+
+**Il conflitto sull'eta' resta aperto**, come il 2 settembre (8-80 anni nel riepilogo,
+14+ nel corpo pagina di CanaryVIP): i dati ufficiali non lo toccano, quindi la nota resta e
+niente `ages`. Aggiunto invece un **secondo conflitto** che prima era stato appiattito: sul
+peso massimo la stessa pagina dice 100 kg in alto e 120 kg nella sezione sicurezza. Prima
+in nota c'era solo "40-100 kg"; ora la nota dice i due numeri e che vanno confermati.
+
+**Descrizioni riscritte da zero** nelle tre lingue sulle tre varianti nuove: valli e
+costoni sopra Adeje per il classico, Costa Adeje e La Gomera all'orizzonte per il lungo,
+correnti termiche e comandi provati per l'alte prestazioni. Del testo di CanaryVIP non
+resta niente, e delle sue policy (48 ore di cancellazione, "miglior prezzo garantito",
+le 9 recensioni) neanche una riga: le 24 ore sono di Isla.
+
+Provato nel browser vero: le tre varianti cambiano la riga "Adulti" (€95 / €115 / €130) e
+la finestra della richiesta con 2 adulti sull'alte prestazioni fa **€260**, con le quattro
+partenze in tendina e nessun "Da concordare". In elenco la card dice "ADEJE · ATTIVITA' DI
+CIRCA 2 ORE, VOLO DI 20-40 MINUTI · da €95". `node controlla.js` → 0 errori, 1 avviso
+invariato (opera-60). `sw.js` a `isla-v209`.
+
+**Da confermare con l'ufficio**: se il volo sopra il Teide esiste ancora e a che prezzo;
+l'eta' minima vera (8 o 14 anni); il peso massimo (100 o 120 kg); se c'e' un prezzo
+bambini (ora `priceChild: 0`, quindi con un bambino nella richiesta il totale non si fa) e
+se le "circa 2 ore" di attivita' totale e l'atterraggio a La Enramada — presi dalla pagina
+del rivenditore, non dai dati ufficiali — sono giusti.

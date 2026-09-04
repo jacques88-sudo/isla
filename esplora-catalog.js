@@ -2159,65 +2159,71 @@ const ESPLORA_CATALOG = [
     id: "paragliding",
     title: "Paragliding",
     category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Attività di 2 o 4 ore, volo di 15-45 minuti", en: "2 to 4-hour activity, 15-45 minute flight", es: "Actividad de 2 o 4 horas, vuelo de 15-45 minutos" },
-    priceFrom: 110,
-    priceAdult: 110,
+    zone: "Adeje",
+    duration: { it: "Attività di circa 2 ore, volo di 20-40 minuti", en: "About 2 hours in all, 20-40 minutes in the air", es: "Actividad de unas 2 horas, vuelo de 20-40 minutos" },
+    priceFrom: 95,
+    priceAdult: 95,
     priceChild: 0,
     family: false,
+    times: ["10:00", "12:00", "14:00", "16:00"],
     options: {
       label: { it: "Volo", en: "Flight", es: "Vuelo" },
       choices: [
         {
-          label: { it: "15-25 minuti, decollo a 800 m", en: "15-25 minutes, takeoff at 800 m", es: "15-25 minutos, despegue a 800 m" },
+          label: { it: "20-25 minuti, decollo a 750 m", en: "20-25 minutes, takeoff at 750 m", es: "20-25 minutos, despegue a 750 m" },
+          priceAdult: 95,
           desc: {
-            it: "Atterraggio sulla Playa de la Enramada, a La Caleta.",
-            en: "Landing at Playa de la Enramada, in La Caleta.",
-            es: "Aterrizaje en la Playa de la Enramada, en La Caleta."
+            it: "Il volo classico: si sorvolano le valli e i costoni sopra Adeje, con tutto il sud dell'isola davanti. In aria si sta 20-25 minuti, secondo il vento della giornata.",
+            en: "The classic flight: over the valleys and ridges above Adeje, with the whole south of the island in front of you. You stay up 20-25 minutes, depending on the day's wind.",
+            es: "El vuelo clásico: se sobrevuelan los valles y las laderas sobre Adeje, con todo el sur de la isla enfrente. En el aire se está 20-25 minutos, según el viento del día."
           }
         },
         {
-          label: { it: "20-30 minuti, decollo a 1.100 m", en: "20-30 minutes, takeoff at 1,100 m", es: "20-30 minutos, despegue a 1.100 m" },
+          label: { it: "30-40 minuti, decollo a 1.000 m", en: "30-40 minutes, takeoff at 1,000 m", es: "30-40 minutos, despegue a 1.000 m" },
+          priceAdult: 115,
           desc: {
-            it: "Atterraggio sulla Playa de la Enramada, a La Caleta.",
-            en: "Landing at Playa de la Enramada, in La Caleta.",
-            es: "Aterrizaje en la Playa de la Enramada, en La Caleta."
+            it: "Il volo più lungo e più tranquillo, quello buono per la prima volta: si decolla sopra Adeje, con la Costa Adeje sotto e La Gomera all'orizzonte. In aria si sta 30-40 minuti, secondo il vento della giornata.",
+            en: "The longest and calmest flight, the good one for a first time: takeoff above Adeje, with Costa Adeje below and La Gomera on the horizon. You stay up 30-40 minutes, depending on the day's wind.",
+            es: "El vuelo más largo y más tranquilo, el bueno para la primera vez: se despega sobre Adeje, con Costa Adeje abajo y La Gomera en el horizonte. En el aire se está 30-40 minutos, según el viento del día."
           }
         },
         {
-          label: { it: "30-40 minuti, decollo a 1.100 m", en: "30-40 minutes, takeoff at 1,100 m", es: "30-40 minutos, despegue a 1.100 m" },
+          label: { it: "25-30 minuti, decollo a 1.000 m, alte prestazioni", en: "25-30 minutes, takeoff at 1,000 m, high performance", es: "25-30 minutos, despegue a 1.000 m, altas prestaciones" },
+          priceAdult: 130,
           desc: {
-            it: "Volo di alte prestazioni, a caccia delle correnti termiche. Atterraggio sulla Playa de la Enramada, a La Caleta.",
-            en: "A high-performance flight, chasing thermal currents. Landing at Playa de la Enramada, in La Caleta.",
-            es: "Vuelo de altas prestaciones, buscando las térmicas. Aterrizaje en la Playa de la Enramada, en La Caleta."
-          }
-        },
-        {
-          label: { it: "40-45 minuti, decollo a 2.200 m", en: "40-45 minutes, takeoff at 2,200 m", es: "40-45 minutos, despegue a 2.200 m" },
-          desc: {
-            it: "Passa sopra il Parco Nazionale del Teide. Atterraggio a Puerto de la Cruz o al Puertito de Güímar.",
-            en: "Passes over Teide National Park. Landing in Puerto de la Cruz or Puertito de Güímar.",
-            es: "Sobrevuela el Parque Nacional del Teide. Aterrizaje en Puerto de la Cruz o en el Puertito de Güímar."
+            it: "Il volo sportivo: si cercano le correnti termiche per salire di quota e, se te la senti, il pilota ti fa provare i comandi della vela. In aria si sta 25-30 minuti, secondo il vento della giornata.",
+            en: "The sporty flight: you chase thermals to gain height and, if you feel up to it, the pilot lets you try the glider's controls. You stay up 25-30 minutes, depending on the day's wind.",
+            es: "El vuelo deportivo: se buscan las térmicas para ganar altura y, si te apetece, el piloto te deja probar los mandos de la vela. En el aire se está 25-30 minutos, según el viento del día."
           }
         }
       ]
     },
     desc: {
-      it: "Volo in tandem con istruttore esperto: decollo in quota, dove porta il vento, e atterraggio in spiaggia. Prelievo e riconsegna gratuiti.",
-      en: "A tandem flight with an experienced instructor: takeoff at altitude, wherever the wind takes you, landing on the beach. Free pickup and drop-off.",
-      es: "Vuelo en tándem con instructor experimentado: despegue en altura, allí donde lleve el viento, y aterrizaje en la playa. Recogida y regreso gratuitos."
+      it: "Volo in tandem con istruttore esperto: decollo in quota sopra Adeje, dove porta il vento, e atterraggio in spiaggia. Prelievo e riconsegna gratuiti.",
+      en: "A tandem flight with an experienced instructor: takeoff up above Adeje, wherever the wind takes you, landing on the beach. Free pickup and drop-off.",
+      es: "Vuelo en tándem con instructor experimentado: despegue en altura sobre Adeje, allí donde lleve el viento, y aterrizaje en la playa. Recogida y regreso gratuitos."
     },
     included: ["guide", "transfer"],
     notes: [
+      {
+        it: "Il ritiro in hotel a Tenerife Sud è compreso: il pulmino passa mezz'ora prima dell'orario scelto, e alla fine ti riporta indietro.",
+        en: "Hotel pickup in the south of Tenerife is included: the van comes half an hour before the time you pick, and brings you back at the end.",
+        es: "La recogida en el hotel en el sur de Tenerife está incluida: la furgoneta pasa media hora antes de la hora elegida y al final te lleva de vuelta."
+      },
       {
         it: "Età 8-80 anni secondo il fornitore, ma la pagina segnala altrove un minimo di 14 anni: da confermare prima di prenotare per un bambino.",
         en: "Ages 8-80 according to the operator, though the page states a minimum of 14 elsewhere: to be confirmed before booking for a child.",
         es: "Edad 8-80 años según el proveedor, aunque la página indica en otra parte un mínimo de 14 años: a confirmar antes de reservar para un menor."
       },
       {
-        it: "Peso fra 40 e 100 kg. Non consigliato in gravidanza o con determinate condizioni mediche. Scarpe comode e abbigliamento a strati.",
-        en: "Weight between 40 and 100 kg. Not recommended during pregnancy or with certain medical conditions. Comfortable shoes and layered clothing.",
-        es: "Peso entre 40 y 100 kg. No recomendado durante el embarazo o con determinadas condiciones médicas. Calzado cómodo y ropa por capas."
+        it: "Peso da 40 kg in su; sul massimo il fornitore dà due numeri diversi, 100 e 120 kg, da confermare. Non consigliato in gravidanza o con determinate condizioni mediche. Scarpe comode e abbigliamento a strati.",
+        en: "Weight from 40 kg up; on the maximum the operator gives two different figures, 100 and 120 kg, to be confirmed. Not recommended during pregnancy or with certain medical conditions. Comfortable shoes and layered clothing.",
+        es: "Peso a partir de 40 kg; sobre el máximo el proveedor da dos cifras distintas, 100 y 120 kg, a confirmar. No recomendado durante el embarazo o con determinadas condiciones médicas. Calzado cómodo y ropa por capas."
+      },
+      {
+        it: "L'atterraggio è di solito sulla Playa de la Enramada, a La Caleta, quando il vento lo permette.",
+        en: "Landing is usually on La Enramada beach, in La Caleta, when the wind allows it.",
+        es: "El aterrizaje suele ser en la playa de La Enramada, en La Caleta, cuando el viento lo permite."
       }
     ],
     languages: LINGUE_TOUR,

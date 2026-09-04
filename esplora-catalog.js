@@ -2125,6 +2125,17 @@ const ESPLORA_CATALOG = [
     duration: { it: "Da 8 a 50 minuti di volo", en: "8 to 50 minutes of flight", es: "De 8 a 50 minutos de vuelo" },
     priceFrom: 98,
     priceAdult: 98,
+    // Sul volo paga lo stesso prezzo chiunque occupi un posto, l'ha confermato
+    // l'ufficio: bambini e neonati come gli adulti. Percio' `priceChild` e'
+    // uguale a `priceAdult` su ogni variante, e non c'e' nessun `ages`: senza
+    // uno sconto per eta' non c'e' nessuna fascia da scrivere.
+    // **Niente `priceInfant`**, e non e' una dimenticanza: il campo sta solo
+    // sulla scheda e non sulla variante (vedi prezziAPersona in escursioni.js),
+    // quindi un numero solo qui varrebbe uguale sul volo da €98 e su quello da
+    // €495, e il totale di chi porta un neonato sul Grand Teide verrebbe fuori
+    // sbagliato di quattrocento euro. Con la riga "Neonati" nascosta il cliente
+    // li conta fra i passeggeri, che al prezzo pieno e' esatto, e la nota qui
+    // sotto glielo dice.
     priceChild: 98,
     family: true,
     times: [],
@@ -2205,9 +2216,9 @@ const ESPLORA_CATALOG = [
         es: "Límite de peso 110 kg por pasajero (por encima puede requerir un asiento adicional), máximo 4 pasajeros por vuelo. Paquete de foto/vídeo opcional con coste adicional."
       },
       {
-        it: "I bambini pagano come gli adulti: non c'è un prezzo ridotto. L'orario del volo si concorda con l'ufficio.",
-        en: "Children pay the same as adults: there is no reduced price. The time of the flight is arranged with the office.",
-        es: "Los niños pagan lo mismo que los adultos: no hay precio reducido. La hora del vuelo se acuerda con la oficina."
+        it: "Il prezzo è uguale per tutti, bambini e neonati compresi: ogni passeggero occupa un posto e non c'è un prezzo ridotto. Nella richiesta contali tutti fra i passeggeri. L'orario del volo si concorda con l'ufficio.",
+        en: "The price is the same for everyone, children and infants included: every passenger takes a seat and there is no reduced price. Count them all as passengers in your request. The time of the flight is arranged with the office.",
+        es: "El precio es el mismo para todos, niños y bebés incluidos: cada pasajero ocupa una plaza y no hay precio reducido. En la solicitud cuéntalos a todos como pasajeros. La hora del vuelo se acuerda con la oficina."
       }
     ],
     languages: ["English", "Español"],

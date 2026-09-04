@@ -4647,11 +4647,24 @@ fa **€558** e con 2 adulti + 1 bambino **€837** (279 × 3), e in "A che ora"
 concordare". In elenco la card dice "ADEJE · DA 8 A 50 MINUTI DI VOLO · da €98".
 `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). `sw.js` a `isla-v211`.
 
-**Da confermare con l'ufficio**: cosa sia esattamente il percorso **"85km Low Island"** —
-messo come "Il giro lungo dell'isola" perche' "Low Island" in italiano non vuol dire
-niente, ma potrebbe essere la **Isla Baja** (Garachico, Buenavista, Los Silos), che e' un
-nome proprio e andrebbe lasciato tale; se i prezzi sono **a persona** (dati per tali
-perche' l'ufficio parla di bambini che pagano come gli adulti); se esiste un'**eta'
-minima** e se sotto quella eta' si sale gratis o non si sale (per ora nessun
-`priceInfant`, che e' il modo di dire "non lo sappiamo"); se il **volo privato** esiste
-ancora e a che prezzo.
+**I quattro dubbi, chiusi dall'ufficio lo stesso giorno**: "Il giro lungo dell'isola" va
+bene come nome (non era la Isla Baja); i prezzi sono **a persona**; **pagano tutti il
+prezzo dell'adulto, neonati compresi**; il **volo privato non c'e'**, quindi la
+descrizione senza "condiviso o privato" resta com'e'.
+
+**I neonati pagano, ma `priceInfant` non c'e' lo stesso** — ed e' la decisione meno ovvia
+di questa scheda. `priceInfant` sta **solo sulla scheda e non sulla variante**
+(`prezziAPersona` in `escursioni.js` lo prende sempre da `tour`, con tanto di commento che
+lo spiega): un numero solo varrebbe uguale sul volo da €98 e su quello da €495, e chi
+porta un neonato sul Grand Teide si vedrebbe un totale sbagliato di quattrocento euro.
+Scrivere 98 li' dentro sarebbe stato peggio che non scrivere niente. Senza il campo la
+riga "Neonati" nella finestra resta nascosta, il cliente conta il neonato fra i passeggeri
+e al prezzo pieno il conto torna esatto; la nota in pagina glielo dice a parole, in tutte
+e tre le lingue ("ogni passeggero occupa un posto", "contali tutti fra i passeggeri").
+L'alternativa vera — far leggere `priceInfant` anche dentro `options.choices[]` — e' un
+cambio al motore dei prezzi che qui non serve a niente: tre righe identiche da €495 non
+dicono al cliente niente di piu' di una.
+
+Per lo stesso motivo **niente `ages`**: le fasce d'eta' servono a dire chi paga quanto, e
+qui pagano tutti uguale. Resta da sapere se ci sia un'**eta' minima per volare**, che e'
+un'altra domanda (sicurezza, non prezzo) e non ha ancora risposta.

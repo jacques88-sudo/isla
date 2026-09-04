@@ -4462,11 +4462,17 @@ nessun totale. In elenco la card esce con "LOS CRISTIANOS · ADATTA AI BAMBINI �
 DISPONIBILE · da €45". `node controlla.js` → 0 errori, 1 avviso invariato. `sw.js` a
 `isla-v207`.
 
-**Restano tre cose da far vedere al proprietario**, tutte scelte prese da qui:
-- Il prezzo bambini e' finito **anche sui corsi PADI**, perche' "pagano uguale" e' stato
-  detto in generale: sul Rescue Diver si legge "Bambini (8-11) €450". Se i corsi hanno
-  un'eta' minima loro, va tolto.
-- Del testo CanaryVIP e' rimasto fuori **"sopra i 65 anni si sente prima"**: e' l'unica
-  cosa sulle eta' che l'ufficio non ha confermato.
-- Le **durate delle altre tredici varianti** e gli **orari delle immersioni con brevetto**
-  e dei corsi non li sappiamo ancora.
+**Le tre cose portate al proprietario, e cosa ha risposto:**
+- **Il prezzo bambini anche sui corsi PADI** (sul Rescue Diver si legge "Bambini (8-11)
+  €450"): va bene, "il prezzo e' uguale per tutti". Niente da cambiare.
+- **"Sopra i 65 anni si sente prima"**, l'unica riga sulle eta' che l'ufficio non aveva
+  confermato: resta fuori. Era di CanaryVIP, che e' un altro operatore.
+- **Le durate delle altre tredici varianti**: si concordano. Non era un buco, era una
+  risposta, e le due cose vanno scritte diverse. `duration` della scheda passa da
+  "Da definire" a **"Da concordare"**: la prima `daDefinire()` la nasconde e in pagina non
+  compariva nessuna riga, la seconda si legge — come sul tour privato su misura, che gia'
+  la usava. Snorkeling e battesimo continuano a mostrare la loro, che sta sulla variante e
+  batte quella della scheda. In elenco la card guadagna la pillola "DA CONCORDARE".
+
+Restano da sapere solo gli **orari** delle immersioni con brevetto e dei corsi. `sw.js` a
+`isla-v208`.

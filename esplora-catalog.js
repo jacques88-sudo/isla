@@ -2513,10 +2513,12 @@ const ESPLORA_CATALOG = [
     },
     category: "sport-acquatici",
     zone: "Los Cristianos",
-    // Il listino del centro non dice quanto dura niente, ne' il battesimo ne'
-    // i corsi. Resta "Da definire" finche' l'ufficio non lo manda: inventare
-    // "mezza giornata" per un corso che puo' durare tre giorni sarebbe peggio.
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    // Le uniche due durate certe sono quelle di snorkeling e battesimo, e stanno
+    // sulle loro varianti. Per tutto il resto — le immersioni con brevetto e i
+    // corsi — l'ufficio ha detto che si concordano, e questa e' una risposta,
+    // non un buco: "Da definire" la pagina la nasconde (vedi daDefinire()),
+    // "Da concordare" invece si legge, come sul tour privato su misura.
+    duration: { it: "Da concordare", en: "By arrangement", es: "A convenir" },
     // 45 e' lo snorkeling, la cosa piu' economica del listino. L'immersione
     // vera parte da 50.
     priceFrom: 45,

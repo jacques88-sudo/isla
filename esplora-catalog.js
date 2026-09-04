@@ -1995,67 +1995,108 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    id: "quad-teide-sunset",
-    title: "Sunset on Teide Quad Tour",
-    category: "avventura-motori",
-    zone: "Chío",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: 140,
-    priceAdult: 0,
-    priceChild: 0,
-    family: false,
-    desc: {
-      it: "Safari guidato in quad automatico da Chío verso il Parco Nazionale del Teide, con soste panoramiche mentre il sole tramonta sull'isola.",
-      en: "A guided automatic quad safari from Chío towards Teide National Park, with scenic stops as the sun sets over the island.",
-      es: "Safari guiado en quad automático desde Chío hacia el Parque Nacional del Teide, con paradas panorámicas mientras el sol se pone sobre la isla."
-    },
-    included: ["guide", "transfer"],
-    notes: [
-      {
-        it: "Prelievo e riconsegna in hotel incluso a Tenerife Sud. Chi guida deve avere almeno 18 anni e patente valida; i passeggeri salgono da 7 anni.",
-        en: "Hotel pickup and drop-off included in Tenerife South. Drivers must be at least 18 with a valid licence; passengers from age 7.",
-        es: "Recogida y regreso en el hotel incluidos en Tenerife Sur. Quien conduce debe tener al menos 18 años y carné válido; los pasajeros suben desde los 7 años."
-      },
-      {
-        it: "Casco e guanti forniti, scarpe chiuse consigliate. Assicurazione di base inclusa, copertura completa disponibile a pagamento. Non adatto in gravidanza.",
-        en: "Helmet and gloves provided, closed shoes recommended. Basic insurance included, full cover available for an extra fee. Not suitable during pregnancy.",
-        es: "Casco y guantes incluidos, se recomienda calzado cerrado. Seguro básico incluido, cobertura completa disponible con coste adicional. No apto durante el embarazo."
-      }
-    ],
-    languages: LINGUE_TOUR,
-    image: "quad-teide-sunset.jpg",
-    published: true
-  },
-  {
+    // Una scheda sola per le due partenze dello stesso safari: prima erano due
+    // schede gemelle (`quad-teide-adventure` per la mattina e
+    // `quad-teide-sunset` per il tramonto) identiche in tutto tranne la foto e
+    // il titolo. Stesso porto, stessa durata, stesso quad, stesso percorso: due
+    // card affiancate in elenco sembravano un doppione. Ora l'ora del giorno e'
+    // una variante, e la foto del tramonto e' finita nella galleria.
     id: "quad-teide-adventure",
     title: "Teide Quad Adventure",
     category: "avventura-motori",
     zone: "Chío",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    // Prezzo pieno del fornitore. La sua pagina ne mostra anche uno scontato
+    // (€98) e due prezzi "da" nel modulo (€109 la mattina, €135 il tramonto):
+    // sono offerte del rivenditore e prezzi di partenza di cui non sappiamo a
+    // quale quad si riferiscono, quindi resta il pieno. Da confermare con
+    // l'ufficio.
     priceFrom: 140,
+    // Il prezzo e' del quad e non della persona: il modulo del fornitore fa
+    // contare quanti quad singoli e quanti doppi, non quante persone. E' la
+    // risposta al dubbio lasciato aperto il 2 settembre.
+    priceUnit: { it: "a quad", en: "per quad", es: "por quad" },
+    units: {
+      // Quanti persone porta ognuno sta nella domanda e non nel nome del tipo:
+      // il nome finisce anche nel messaggio all'ufficio e nel riepilogo della
+      // lista, dove "Singolo (1 persona) x 1 . Doppio (2 persone) x 2" e' una
+      // riga che va a capo tre volte per dire una cosa sola.
+      label: {
+        it: "Quanti quad — il singolo porta 1 persona, il doppio 2",
+        en: "How many quads — a single carries 1 person, a double 2",
+        es: "¿Cuántos quads? — el individual lleva 1 persona, el doble 2"
+      },
+      name: { it: "Quad", en: "Quads", es: "Quads" },
+      types: [
+        { key: "singolo", name: { it: "Singolo", en: "Single", es: "Individual" } },
+        { key: "doppio", name: { it: "Doppio", en: "Double", es: "Doble" } }
+      ]
+    },
+    // Nessun `unitPrices`: il prezzo del quad doppio non lo sappiamo, e senza
+    // quello il totale verrebbe fuori solo per chi prende un singolo. Meglio
+    // "Su richiesta" per tutti che un conto giusto a meta'.
     priceAdult: 0,
     priceChild: 0,
     family: false,
-    desc: {
-      it: "Safari guidato in quad automatico da Chío verso il Parco Nazionale del Teide, con soste panoramiche e culturali lungo il percorso.",
-      en: "A guided automatic quad safari from Chío towards Teide National Park, with scenic and cultural stops along the way.",
-      es: "Safari guiado en quad automático desde Chío hacia el Parque Nacional del Teide, con paradas panorámicas y culturales por el camino."
+    options: {
+      label: { it: "Quando", en: "When", es: "Cuándo" },
+      choices: [
+        {
+          label: { it: "Mattina", en: "Morning", es: "Mañana" },
+          times: ["10:00", "11:00"],
+          desc: {
+            it: "Partenza alle 10:00 o alle 11:00, con la luce piena sul cratere e sulle colate laviche.",
+            en: "Departure at 10:00 or 11:00, with full daylight over the crater and the lava fields.",
+            es: "Salida a las 10:00 o a las 11:00, con luz plena sobre el cráter y las coladas de lava."
+          }
+        },
+        {
+          label: { it: "Tramonto", en: "Sunset", es: "Atardecer" },
+          times: ["16:00", "17:00"],
+          desc: {
+            it: "Partenza alle 16:00 o alle 17:00: stesso percorso, con le soste nel momento in cui il sole scende dietro il Teide.",
+            en: "Departure at 16:00 or 17:00: the same route, with the stops timed for the sun going down behind Teide.",
+            es: "Salida a las 16:00 o a las 17:00: el mismo recorrido, con las paradas justo cuando el sol baja tras el Teide."
+          }
+        }
+      ]
     },
-    included: ["guide", "transfer"],
+    desc: {
+      it: "Safari guidato in quad automatico da Chío verso il Parco Nazionale del Teide, fra pinete, villaggi di montagna e colate laviche, con soste ai punti panoramici. Si sceglie fra la partenza del mattino e quella del tramonto.",
+      en: "A guided automatic quad safari from Chío towards Teide National Park, through pine woods, mountain villages and lava fields, with stops at the viewpoints. Choose between the morning and the sunset departure.",
+      es: "Safari guiado en quad automático desde Chío hacia el Parque Nacional del Teide, entre pinares, pueblos de montaña y coladas de lava, con paradas en los miradores. Se elige entre la salida de la mañana y la del atardecer."
+    },
+    included: ["guide", "transfer", "equipment"],
     notes: [
       {
-        it: "Prelievo e riconsegna in hotel incluso a Tenerife Sud. Chi guida deve avere almeno 18 anni e patente valida; i passeggeri salgono da 7 anni.",
-        en: "Hotel pickup and drop-off included in Tenerife South. Drivers must be at least 18 with a valid licence; passengers from age 7.",
-        es: "Recogida y regreso en el hotel incluidos en Tenerife Sur. Quien conduce debe tener al menos 18 años y carné válido; los pasajeros suben desde los 7 años."
+        it: "Il prezzo è per quad e non a persona: il singolo porta una persona, il doppio due. Si va in gruppi piccoli, dietro alla guida.",
+        en: "The price is per quad, not per person: a single carries one person, a double carries two. You ride in small groups, behind the guide.",
+        es: "El precio es por quad y no por persona: el individual lleva a una persona, el doble a dos. Se va en grupos pequeños, detrás del guía."
       },
       {
-        it: "Casco e guanti forniti, scarpe chiuse consigliate. Assicurazione di base inclusa, copertura completa disponibile a pagamento. Non adatto in gravidanza.",
-        en: "Helmet and gloves provided, closed shoes recommended. Basic insurance included, full cover available for an extra fee. Not suitable during pregnancy.",
-        es: "Casco y guantes incluidos, se recomienda calzado cerrado. Seguro básico incluido, cobertura completa disponible con coste adicional. No apto durante el embarazo."
+        it: "Prelievo e riconsegna in hotel inclusi a Tenerife Sud. Chi guida deve avere almeno 18 anni e la patente con sé: senza, non si può guidare. I passeggeri salgono da 7 anni.",
+        en: "Hotel pickup and drop-off included in Tenerife South. Drivers must be at least 18 and have their licence with them: without it, they cannot ride. Passengers from age 7.",
+        es: "Recogida y regreso en el hotel incluidos en Tenerife Sur. Quien conduce debe tener al menos 18 años y llevar el carné encima: sin él, no puede conducir. Los pasajeros suben desde los 7 años."
+      },
+      {
+        it: "Quad automatici, senza marce da cambiare: non serve esperienza, le istruzioni si danno prima di partire. Si resta sempre sull'asfalto, il fuoristrada non è previsto.",
+        en: "Automatic quads, no gears to change: no experience needed, instructions are given before setting off. You stay on paved roads throughout; off-roading is not part of this tour.",
+        es: "Quads automáticos, sin marchas que cambiar: no hace falta experiencia, las instrucciones se dan antes de salir. Se va siempre por asfalto; el todoterreno no forma parte de este tour."
+      },
+      {
+        it: "Casco e guanti forniti, scarpe chiuse obbligatorie (niente sandali o infradito) e una giacca nei mesi freddi; per la partenza del mattino anche crema solare, occhiali da sole e cappello. Assicurazione di base inclusa, copertura completa a pagamento.",
+        en: "Helmet and gloves provided, closed shoes required (no sandals or flip-flops) and a jacket in the colder months; for the morning departure also sun cream, sunglasses and a hat. Basic insurance included, full cover for an extra fee.",
+        es: "Casco y guantes incluidos, calzado cerrado obligatorio (nada de sandalias ni chanclas) y una chaqueta en los meses fríos; para la salida de la mañana también crema solar, gafas de sol y gorra. Seguro básico incluido, cobertura completa con coste adicional."
+      },
+      {
+        it: "Non adatto in gravidanza o in presenza di certe condizioni mediche: se hai un dubbio, scrivilo nelle note e l'ufficio ti risponde prima di confermare. Il pacchetto foto professionale è a pagamento e si paga sul posto.",
+        en: "Not suitable during pregnancy or with certain medical conditions: if in doubt, add it in the notes and the office will get back to you before confirming. The professional photo package costs extra and is paid on site.",
+        es: "No apto durante el embarazo ni con ciertas condiciones médicas: si tienes dudas, escríbelo en las notas y la oficina te responde antes de confirmar. El paquete de fotos profesionales tiene coste adicional y se paga allí mismo."
       }
     ],
     languages: LINGUE_TOUR,
     image: "quad-teide-adventure.jpg",
+    gallery: ["quad-teide-sunset.jpg"],
     published: true
   },
   {

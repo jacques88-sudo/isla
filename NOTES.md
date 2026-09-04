@@ -4668,3 +4668,91 @@ dicono al cliente niente di piu' di una.
 Per lo stesso motivo **niente `ages`**: le fasce d'eta' servono a dire chi paga quanto, e
 qui pagano tutti uguale. Resta da sapere se ci sia un'**eta' minima per volare**, che e'
 un'altra domanda (sicurezza, non prezzo) e non ha ancora risposta.
+
+## Quad del Teide: due schede gemelle diventano una sola (4 settembre 2026)
+
+Arrivata dal proprietario la pagina CanaryVIP del "Teide Quad Tour" con la richiesta di
+**riunire le due schede quad in una sola** (lasciando fuori
+`1.5 Hour Provisional License Quad Trip`, che è un prodotto diverso) e di aggiornarla con
+quei dati.
+
+**Erano davvero un doppione.** `quad-teide-adventure` (mattina) e `quad-teide-sunset`
+(tramonto) avevano stesso porto (Chío), stessa durata (3 ore), stesso quad, stesso
+percorso, stesso prezzo, stesse note: cambiavano solo il titolo e la foto. Affiancate in
+elenco sembravano due attività diverse quando erano due orari della stessa. Ora l'ora del
+giorno è una **variante** (`options`, etichetta "Quando"): Mattina con `times: ["10:00",
+"11:00"]` e Tramonto con `times: ["16:00", "17:00"]`, gli orari veri del modulo del
+fornitore al posto delle fasce segnaposto che c'erano prima.
+
+**Sopravvive l'id `quad-teide-adventure`**, non uno nuovo: gli indirizzi già in giro
+continuano a funzionare. `tour.html?id=quad-teide-sunset` ora dà la pagina "Escursione non
+trovata", che è la risposta giusta e pulita — provata nel browser.
+
+**La foto del tramonto non è persa, è finita in `gallery`.** Guardate una per una:
+`quad-teide-adventure.jpg` mostra due quad in marcia sulla strada del parco (l'attività) e
+resta `image`; `quad-teide-sunset.jpg` mostra la fila di quad parcheggiati sopra le nuvole
+al tramonto (il momento) e diventa la seconda miniatura. È il primo uso della galleria
+fuori dalle barche, e non ha richiesto una riga di codice: il meccanismo era già generico.
+
+### Il prezzo è **a quad**, non a persona — il dubbio del 2 settembre è chiuso
+
+Era la domanda rimasta aperta ("se il prezzo del quad è a persona o a quad"). Il **modulo
+di prenotazione** — l'unica parte affidabile di CanaryVIP, come già imparato sullo Scandal
+— non chiede quante persone: chiede **quanti quad singoli** (1 persona a bordo) e **quanti
+quad doppi** (2 persone sullo stesso quad), con due contatori separati. Quindi
+`priceUnit: "a quad"` e `units` con i due tipi, come sul jet ski.
+
+**`units` senza `unitPrices`**: il prezzo del quad doppio non lo sappiamo, e `totaleMezzi`
+torna `null` appena un tipo contato non ha prezzo. Meglio "Su richiesta" per tutti che un
+totale giusto solo per chi prende un singolo. I due contatori servono comunque: nel
+messaggio WhatsApp l'ufficio legge "Quad: Singolo × 1 · Doppio × 2", che è esattamente
+quello che deve prenotare.
+
+**Quante persone porta ognuno sta nella domanda, non nel nome del tipo.** Prima scritto
+come `Singolo (1 persona)` / `Doppio (2 persone)`: chiaro nella finestra, ma il nome del
+tipo finisce **anche** nel messaggio e nel riepilogo della lista, dove
+"Quad: Singolo (1 persona) × 1 · Doppio (2 persone) × 2" andava a capo tre volte per dire
+una cosa sola. Spostato dentro `units.label` ("Quanti quad — il singolo porta 1 persona, il
+doppio 2"): si legge una volta sopra i due contatori e il resto resta corto.
+
+### I prezzi non toccati, e perché
+
+La pagina ne dà **tre**: €140 barrato, €98 "in offerta", e nel modulo €109 "da" per la
+mattina e €135 "da" per il tramonto. Resta **€140**, il pieno, come già deciso il 2
+settembre: 98 è lo sconto del rivenditore e non è nostro; 109 e 135 sono prezzi di
+partenza di cui non sappiamo a quale quad si riferiscano (il modulo dice che lo sconto si
+attiva **dal secondo quad**, quindi potrebbero già essere prezzi scontati). Pubblicarli
+vorrebbe dire rischiare di doverli **alzare** dopo che il cliente li ha letti, che è la
+cosa da non fare mai. **Da confermare con l'ufficio**: quanto costa il singolo, quanto il
+doppio, e se mattina e tramonto costano davvero diverso.
+
+### Cosa è entrato di nuovo dalla pagina
+
+- `included`: aggiunta `equipment` (casco e guanti forniti) a `guide` e `transfer`.
+- **Non si esce dall'asfalto**: la pagina lo scrive esplicitamente ("Non è consentito il
+  fuoristrada"). Messo in nota, ed è la differenza vera con i buggy, che il fuoristrada ce
+  l'hanno.
+- Quad automatici, nessuna esperienza richiesta, istruzioni prima di partire; gruppi
+  piccoli.
+- Scarpe chiuse **obbligatorie** (prima era "consigliate": la pagina dice "niente sandali o
+  infradito"), giacca nei mesi freddi, e per la mattina crema solare, occhiali e cappello.
+- Chi guida deve avere la patente **con sé**: senza, non si guida.
+- Non adatto in gravidanza o con certe condizioni mediche, con l'invito a scriverlo nelle
+  note invece di rinunciare.
+- Pacchetto foto professionale a pagamento, si paga sul posto.
+
+**Non copiati**, come sempre: le 48 ore di cancellazione (le nostre sono 24), "miglior
+prezzo garantito", "biglietti ufficiali", "pagamento sicuro", il punteggio e le 20
+recensioni, e i testi promozionali — le descrizioni sono riscritte da zero nelle tre
+lingue.
+
+**`family` resta `false`**: i passeggeri salgono da 7 anni, ma la scelta che quad e buggy
+non entrino nel filtro "Con bambini" è già stata presa e non la cambio da solo.
+
+Provato nel browser vero (390×844) nelle tre lingue: i due bottoni cambiano insieme la
+riga **Orari** (10:00 · 11:00 → 16:00 · 17:00) e la spiegazione sotto; le due miniature
+scambiano la foto grande; la finestra della richiesta mostra "Quanti quad" al posto di
+"Quante persone", il totale resta "Su richiesta" e il messaggio WhatsApp esce con
+"Quad: Singolo × 1 · Doppio × 2"; salvata nella lista e riletta, il riepilogo tiene la
+variante e i due conteggi. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60).
+`sw.js` a `isla-v212`.

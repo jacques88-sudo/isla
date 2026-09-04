@@ -2006,12 +2006,13 @@ const ESPLORA_CATALOG = [
     category: "avventura-motori",
     zone: "Chío",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    // Prezzo pieno del fornitore. La sua pagina ne mostra anche uno scontato
-    // (€98) e due prezzi "da" nel modulo (€109 la mattina, €135 il tramonto):
-    // sono offerte del rivenditore e prezzi di partenza di cui non sappiamo a
-    // quale quad si riferiscono, quindi resta il pieno. Da confermare con
-    // l'ufficio.
-    priceFrom: 140,
+    // Il quad piu' economico che si puo' davvero prenotare: il singolo del
+    // mattino. Prima erano i €140 del listino CanaryVIP, un segnaposto tenuto
+    // finche' non sapevamo i prezzi veri; adesso l'ufficio li ha dati (110/120
+    // il mattino, 130 e 130 il tramonto) e "da €140" direbbe un numero che non
+    // esiste piu' su nessuna variante, piu' alto di quello che la finestra
+    // della richiesta calcola davvero.
+    priceFrom: 110,
     // Il prezzo e' del quad e non della persona: il modulo del fornitore fa
     // contare quanti quad singoli e quanti doppi, non quante persone. E' la
     // risposta al dubbio lasciato aperto il 2 settembre.
@@ -2032,9 +2033,9 @@ const ESPLORA_CATALOG = [
         { key: "doppio", name: { it: "Doppio", en: "Double", es: "Doble" } }
       ]
     },
-    // Nessun `unitPrices`: il prezzo del quad doppio non lo sappiamo, e senza
-    // quello il totale verrebbe fuori solo per chi prende un singolo. Meglio
-    // "Su richiesta" per tutti che un conto giusto a meta'.
+    // I prezzi dei due tipi stanno nelle varianti (`unitPrices`): cambiano con
+    // l'ora del giorno, non con la persona. Qui `priceAdult` e `priceChild`
+    // restano a 0 perche' su questa scheda non si paga a testa.
     priceAdult: 0,
     priceChild: 0,
     family: false,
@@ -2043,6 +2044,10 @@ const ESPLORA_CATALOG = [
       choices: [
         {
           label: { it: "Mattina", en: "Morning", es: "Mañana" },
+          // `price` e' quello che si scrive sul bottone: il piu' basso dei due
+          // tipi, cioe' il singolo. Il doppio costa 10 in piu' solo la mattina.
+          price: 110,
+          unitPrices: { singolo: 110, doppio: 120 },
           times: ["10:00", "11:00"],
           desc: {
             it: "Partenza alle 10:00 o alle 11:00, con la luce piena sul cratere e sulle colate laviche.",
@@ -2052,6 +2057,10 @@ const ESPLORA_CATALOG = [
         },
         {
           label: { it: "Tramonto", en: "Sunset", es: "Atardecer" },
+          // Al tramonto singolo e doppio costano uguale: 130 e 130, confermati
+          // dall'ufficio. Non e' un errore di copiatura.
+          price: 130,
+          unitPrices: { singolo: 130, doppio: 130 },
           times: ["16:00", "17:00"],
           desc: {
             it: "Partenza alle 16:00 o alle 17:00: stesso percorso, con le soste nel momento in cui il sole scende dietro il Teide.",

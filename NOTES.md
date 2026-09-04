@@ -4702,11 +4702,12 @@ di prenotazione** — l'unica parte affidabile di CanaryVIP, come già imparato 
 quad doppi** (2 persone sullo stesso quad), con due contatori separati. Quindi
 `priceUnit: "a quad"` e `units` con i due tipi, come sul jet ski.
 
-**`units` senza `unitPrices`**: il prezzo del quad doppio non lo sappiamo, e `totaleMezzi`
-torna `null` appena un tipo contato non ha prezzo. Meglio "Su richiesta" per tutti che un
-totale giusto solo per chi prende un singolo. I due contatori servono comunque: nel
-messaggio WhatsApp l'ufficio legge "Quad: Singolo × 1 · Doppio × 2", che è esattamente
-quello che deve prenotare.
+**`units` senza `unitPrices`**, per mezza giornata: il prezzo del quad doppio non lo
+sapevamo, e `totaleMezzi` torna `null` appena un tipo contato non ha prezzo. Meglio "Su
+richiesta" per tutti che un totale giusto solo per chi prende un singolo. I due contatori
+servivano comunque: nel messaggio WhatsApp l'ufficio legge "Quad: Singolo × 1 · Doppio ×
+2", che è esattamente quello che deve prenotare. **I prezzi sono arrivati lo stesso
+giorno**, vedi qui sotto.
 
 **Quante persone porta ognuno sta nella domanda, non nel nome del tipo.** Prima scritto
 come `Singolo (1 persona)` / `Doppio (2 persone)`: chiaro nella finestra, ma il nome del
@@ -4723,8 +4724,9 @@ settembre: 98 è lo sconto del rivenditore e non è nostro; 109 e 135 sono prezz
 partenza di cui non sappiamo a quale quad si riferiscano (il modulo dice che lo sconto si
 attiva **dal secondo quad**, quindi potrebbero già essere prezzi scontati). Pubblicarli
 vorrebbe dire rischiare di doverli **alzare** dopo che il cliente li ha letti, che è la
-cosa da non fare mai. **Da confermare con l'ufficio**: quanto costa il singolo, quanto il
-doppio, e se mattina e tramonto costano davvero diverso.
+cosa da non fare mai. Chiesto all'ufficio quanto costa il singolo, quanto il doppio, e se
+mattina e tramonto costano diverso — **risposta arrivata lo stesso giorno**, vedi la
+sezione qui sotto.
 
 ### Cosa è entrato di nuovo dalla pagina
 
@@ -4756,3 +4758,42 @@ scambiano la foto grande; la finestra della richiesta mostra "Quanti quad" al po
 "Quad: Singolo × 1 · Doppio × 2"; salvata nella lista e riletta, il riepilogo tiene la
 variante e i due conteggi. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60).
 `sw.js` a `isla-v212`.
+
+### I prezzi veri, dall'ufficio (4 settembre 2026)
+
+Nessuno dei tre numeri della pagina CanaryVIP era quello giusto. L'ufficio ha dato i
+prezzi **a quad**, che cambiano con l'ora del giorno:
+
+| | singolo | doppio |
+|---|---|---|
+| Mattina | €110 | €120 |
+| Tramonto | €130 | €130 |
+
+Finiti in `unitPrices` dentro le due varianti, non sulla scheda: cambiano con la variante,
+esattamente come sul jet ski. Su ogni bottone c'è anche `price` (110 e 130), che è il più
+basso dei due tipi — la stessa convenzione del jet ski, dove il bottone scrive il singolo.
+
+**Al tramonto singolo e doppio costano uguale, e non è un errore di copiatura**: scritto
+anche nel commento accanto, perché è il genere di riga che fra sei mesi qualcuno
+"corregge" pensando a un copia-incolla sbagliato.
+
+**`priceFrom` sceso da 140 a 110**, ed è la decisione presa da solo su cui l'ufficio può
+correggermi in una parola. La domanda "i €140 pieni sono ancora il prezzo giusto?" ha
+avuto come risposta "lascia stare", cioè non era una cosa da discutere; ma i €140 erano il
+listino di CanaryVIP tenuto come segnaposto **proprio perché non avevamo i prezzi veri**, e
+adesso ci sono. Lasciandoli, la card avrebbe detto "da €140 a quad" mentre la finestra
+della richiesta, due tocchi dopo, calcolava €110 per lo stesso quad: un numero più alto di
+quello vero, scritto nel posto che il cliente legge per primo. Il verso del cambiamento è
+anche quello sicuro — un prezzo si può abbassare, è alzarlo dopo che il cliente l'ha letto
+che fa arrabbiare.
+
+Come effetto la riga "Prezzo" della pagina di dettaglio non dice più "Su richiesta": adesso
+segue la variante (€110 a quad la mattina, €130 il tramonto), come già facevano durata e
+orari.
+
+Provato nel browser vero (390×844) nelle tre lingue: i bottoni scrivono €110 e €130; la
+finestra della richiesta mostra "SINGOLO · €110 / DOPPIO · €120" la mattina e "€130 / €130"
+al tramonto; **1 singolo + 2 doppi fa €350 la mattina e €390 al tramonto**, e il messaggio
+WhatsApp porta lo stesso conto per esteso ("Totale indicativo: €350 (1 Singolo × €110 + 2
+Doppio × €120)"). In elenco la card dice "da €110 a quad". `node controlla.js` → 0 errori,
+1 avviso invariato (opera-60). `sw.js` a `isla-v213`.

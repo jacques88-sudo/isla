@@ -1628,6 +1628,9 @@ body.menu-open { overflow: hidden; }
   font-weight: 400;
 }
 .detail-main .btn-block { margin-top: .8rem; }
+/* i due pulsanti stanno in mezzo alla scheda: l'avviso delle 24 ore
+   ha i Consigli subito sotto e serve lo stacco */
+.detail-main .hint { margin-bottom: 1.6rem; }
 
 /* Rimando al charter privato, in coda alla scheda */
 .detail-alt {

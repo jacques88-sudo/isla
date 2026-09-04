@@ -4797,3 +4797,35 @@ al tramonto; **1 singolo + 2 doppi fa €350 la mattina e €390 al tramonto**, 
 WhatsApp porta lo stesso conto per esteso ("Totale indicativo: €350 (1 Singolo × €110 + 2
 Doppio × €120)"). In elenco la card dice "da €110 a quad". `node controlla.js` → 0 errori,
 1 avviso invariato (opera-60). `sw.js` a `isla-v213`.
+
+---
+
+## I pulsanti della richiesta tra "Cosa è incluso" e i "Consigli" (4 settembre 2026)
+
+Sulla pagina di dettaglio "Richiedi disponibilità" e "Aggiungi alla lista" stavano **dopo**
+i Consigli, cioè in fondo a tutto. Adesso stanno **subito dopo "Cosa è incluso"**, e i
+Consigli vengono dopo.
+
+Il motivo è dove finisce la lettura. Fino a "Cosa è incluso" il cliente sa già tutto quello
+che gli serve per decidere: che cosa è, quanto dura, quanto costa, cosa c'è dentro. I
+Consigli sono un'altra cosa — sono le istruzioni per **dopo** aver deciso (portati la crema,
+arriva dieci minuti prima, il transfer c'è solo sul giro da 3 ore). Su una lista lunga,
+mettere il pulsante in fondo vuol dire chiederlo a chi ha già finito di decidere e sta
+leggendo altro; molti si fermano prima e il pulsante non lo vedono proprio.
+
+L'avviso delle 24 ore resta **attaccato ai pulsanti**, non ai Consigli: parla di come si
+prenota, quindi segue il pulsante ovunque vada.
+
+Il rimando al charter privato (`detail-alt`) resta in fondo, insieme a "Altre esperienze":
+sono tutti e due rimandi ad altre schede, non parti di questa.
+
+Una riga di CSS in più, `.detail-main .hint { margin-bottom: 1.6rem }`: prima l'avviso
+chiudeva il blocco e non aveva bisogno di spazio sotto, adesso ha il titolo "Consigli"
+subito dopo e senza stacco i due si toccavano.
+
+Provato nel browser vero (420×900) su `freebird-catamaran`, che ha sia "Cosa è incluso" sia
+i Consigli: l'ordine è Cosa è incluso → i due pulsanti → avviso 24 ore → Consigli → charter
+privato, e la finestra della richiesta si apre ancora dal pulsante. Nessun errore in
+console (l'unica richiesta fallita è il CSS dei font di Google, che la rete del container
+blocca sempre). `node controlla.js` → 0 errori, 1 avviso invariato (opera-60).
+`sw.js` a `isla-v214`.

@@ -4668,3 +4668,132 @@ dicono al cliente niente di piu' di una.
 Per lo stesso motivo **niente `ages`**: le fasce d'eta' servono a dire chi paga quanto, e
 qui pagano tutti uguale. Resta da sapere se ci sia un'**eta' minima per volare**, che e'
 un'altra domanda (sicurezza, non prezzo) e non ha ancora risposta.
+
+## Quad del Teide: due schede gemelle diventano una sola (4 settembre 2026)
+
+Arrivata dal proprietario la pagina CanaryVIP del "Teide Quad Tour" con la richiesta di
+**riunire le due schede quad in una sola** (lasciando fuori
+`1.5 Hour Provisional License Quad Trip`, che è un prodotto diverso) e di aggiornarla con
+quei dati.
+
+**Erano davvero un doppione.** `quad-teide-adventure` (mattina) e `quad-teide-sunset`
+(tramonto) avevano stesso porto (Chío), stessa durata (3 ore), stesso quad, stesso
+percorso, stesso prezzo, stesse note: cambiavano solo il titolo e la foto. Affiancate in
+elenco sembravano due attività diverse quando erano due orari della stessa. Ora l'ora del
+giorno è una **variante** (`options`, etichetta "Quando"): Mattina con `times: ["10:00",
+"11:00"]` e Tramonto con `times: ["16:00", "17:00"]`, gli orari veri del modulo del
+fornitore al posto delle fasce segnaposto che c'erano prima.
+
+**Sopravvive l'id `quad-teide-adventure`**, non uno nuovo: gli indirizzi già in giro
+continuano a funzionare. `tour.html?id=quad-teide-sunset` ora dà la pagina "Escursione non
+trovata", che è la risposta giusta e pulita — provata nel browser.
+
+**La foto del tramonto non è persa, è finita in `gallery`.** Guardate una per una:
+`quad-teide-adventure.jpg` mostra due quad in marcia sulla strada del parco (l'attività) e
+resta `image`; `quad-teide-sunset.jpg` mostra la fila di quad parcheggiati sopra le nuvole
+al tramonto (il momento) e diventa la seconda miniatura. È il primo uso della galleria
+fuori dalle barche, e non ha richiesto una riga di codice: il meccanismo era già generico.
+
+### Il prezzo è **a quad**, non a persona — il dubbio del 2 settembre è chiuso
+
+Era la domanda rimasta aperta ("se il prezzo del quad è a persona o a quad"). Il **modulo
+di prenotazione** — l'unica parte affidabile di CanaryVIP, come già imparato sullo Scandal
+— non chiede quante persone: chiede **quanti quad singoli** (1 persona a bordo) e **quanti
+quad doppi** (2 persone sullo stesso quad), con due contatori separati. Quindi
+`priceUnit: "a quad"` e `units` con i due tipi, come sul jet ski.
+
+**`units` senza `unitPrices`**, per mezza giornata: il prezzo del quad doppio non lo
+sapevamo, e `totaleMezzi` torna `null` appena un tipo contato non ha prezzo. Meglio "Su
+richiesta" per tutti che un totale giusto solo per chi prende un singolo. I due contatori
+servivano comunque: nel messaggio WhatsApp l'ufficio legge "Quad: Singolo × 1 · Doppio ×
+2", che è esattamente quello che deve prenotare. **I prezzi sono arrivati lo stesso
+giorno**, vedi qui sotto.
+
+**Quante persone porta ognuno sta nella domanda, non nel nome del tipo.** Prima scritto
+come `Singolo (1 persona)` / `Doppio (2 persone)`: chiaro nella finestra, ma il nome del
+tipo finisce **anche** nel messaggio e nel riepilogo della lista, dove
+"Quad: Singolo (1 persona) × 1 · Doppio (2 persone) × 2" andava a capo tre volte per dire
+una cosa sola. Spostato dentro `units.label` ("Quanti quad — il singolo porta 1 persona, il
+doppio 2"): si legge una volta sopra i due contatori e il resto resta corto.
+
+### I prezzi non toccati, e perché
+
+La pagina ne dà **tre**: €140 barrato, €98 "in offerta", e nel modulo €109 "da" per la
+mattina e €135 "da" per il tramonto. Resta **€140**, il pieno, come già deciso il 2
+settembre: 98 è lo sconto del rivenditore e non è nostro; 109 e 135 sono prezzi di
+partenza di cui non sappiamo a quale quad si riferiscano (il modulo dice che lo sconto si
+attiva **dal secondo quad**, quindi potrebbero già essere prezzi scontati). Pubblicarli
+vorrebbe dire rischiare di doverli **alzare** dopo che il cliente li ha letti, che è la
+cosa da non fare mai. Chiesto all'ufficio quanto costa il singolo, quanto il doppio, e se
+mattina e tramonto costano diverso — **risposta arrivata lo stesso giorno**, vedi la
+sezione qui sotto.
+
+### Cosa è entrato di nuovo dalla pagina
+
+- `included`: aggiunta `equipment` (casco e guanti forniti) a `guide` e `transfer`.
+- **Non si esce dall'asfalto**: la pagina lo scrive esplicitamente ("Non è consentito il
+  fuoristrada"). Messo in nota, ed è la differenza vera con i buggy, che il fuoristrada ce
+  l'hanno.
+- Quad automatici, nessuna esperienza richiesta, istruzioni prima di partire; gruppi
+  piccoli.
+- Scarpe chiuse **obbligatorie** (prima era "consigliate": la pagina dice "niente sandali o
+  infradito"), giacca nei mesi freddi, e per la mattina crema solare, occhiali e cappello.
+- Chi guida deve avere la patente **con sé**: senza, non si guida.
+- Non adatto in gravidanza o con certe condizioni mediche, con l'invito a scriverlo nelle
+  note invece di rinunciare.
+- Pacchetto foto professionale a pagamento, si paga sul posto.
+
+**Non copiati**, come sempre: le 48 ore di cancellazione (le nostre sono 24), "miglior
+prezzo garantito", "biglietti ufficiali", "pagamento sicuro", il punteggio e le 20
+recensioni, e i testi promozionali — le descrizioni sono riscritte da zero nelle tre
+lingue.
+
+**`family` resta `false`**: i passeggeri salgono da 7 anni, ma la scelta che quad e buggy
+non entrino nel filtro "Con bambini" è già stata presa e non la cambio da solo.
+
+Provato nel browser vero (390×844) nelle tre lingue: i due bottoni cambiano insieme la
+riga **Orari** (10:00 · 11:00 → 16:00 · 17:00) e la spiegazione sotto; le due miniature
+scambiano la foto grande; la finestra della richiesta mostra "Quanti quad" al posto di
+"Quante persone", il totale resta "Su richiesta" e il messaggio WhatsApp esce con
+"Quad: Singolo × 1 · Doppio × 2"; salvata nella lista e riletta, il riepilogo tiene la
+variante e i due conteggi. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60).
+`sw.js` a `isla-v212`.
+
+### I prezzi veri, dall'ufficio (4 settembre 2026)
+
+Nessuno dei tre numeri della pagina CanaryVIP era quello giusto. L'ufficio ha dato i
+prezzi **a quad**, che cambiano con l'ora del giorno:
+
+| | singolo | doppio |
+|---|---|---|
+| Mattina | €110 | €120 |
+| Tramonto | €130 | €130 |
+
+Finiti in `unitPrices` dentro le due varianti, non sulla scheda: cambiano con la variante,
+esattamente come sul jet ski. Su ogni bottone c'è anche `price` (110 e 130), che è il più
+basso dei due tipi — la stessa convenzione del jet ski, dove il bottone scrive il singolo.
+
+**Al tramonto singolo e doppio costano uguale, e non è un errore di copiatura**: scritto
+anche nel commento accanto, perché è il genere di riga che fra sei mesi qualcuno
+"corregge" pensando a un copia-incolla sbagliato.
+
+**`priceFrom` sceso da 140 a 110**, ed è la decisione presa da solo su cui l'ufficio può
+correggermi in una parola. La domanda "i €140 pieni sono ancora il prezzo giusto?" ha
+avuto come risposta "lascia stare", cioè non era una cosa da discutere; ma i €140 erano il
+listino di CanaryVIP tenuto come segnaposto **proprio perché non avevamo i prezzi veri**, e
+adesso ci sono. Lasciandoli, la card avrebbe detto "da €140 a quad" mentre la finestra
+della richiesta, due tocchi dopo, calcolava €110 per lo stesso quad: un numero più alto di
+quello vero, scritto nel posto che il cliente legge per primo. Il verso del cambiamento è
+anche quello sicuro — un prezzo si può abbassare, è alzarlo dopo che il cliente l'ha letto
+che fa arrabbiare.
+
+Come effetto la riga "Prezzo" della pagina di dettaglio non dice più "Su richiesta": adesso
+segue la variante (€110 a quad la mattina, €130 il tramonto), come già facevano durata e
+orari.
+
+Provato nel browser vero (390×844) nelle tre lingue: i bottoni scrivono €110 e €130; la
+finestra della richiesta mostra "SINGOLO · €110 / DOPPIO · €120" la mattina e "€130 / €130"
+al tramonto; **1 singolo + 2 doppi fa €350 la mattina e €390 al tramonto**, e il messaggio
+WhatsApp porta lo stesso conto per esteso ("Totale indicativo: €350 (1 Singolo × €110 + 2
+Doppio × €120)"). In elenco la card dice "da €110 a quad". `node controlla.js` → 0 errori,
+1 avviso invariato (opera-60). `sw.js` a `isla-v213`.

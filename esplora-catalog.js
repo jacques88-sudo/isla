@@ -2521,22 +2521,30 @@ const ESPLORA_CATALOG = [
     // vera parte da 50.
     priceFrom: 45,
     priceAdult: 45,
-    priceChild: 0,
-    family: false,
+    // I bambini pagano come gli adulti, l'ha confermato l'ufficio: percio' ogni
+    // variante porta priceChild uguale a priceAdult e il totale di una famiglia
+    // si fa. Le due fasce si toccano senza buchi e senza sovrapposizioni; il
+    // 12+ discende dagli 8-11, sopra gli 11 non c'e' altro. Sotto gli 8 anni
+    // non si scende, quindi niente fascia neonati e niente priceInfant:
+    // assente non vuol dire gratis.
+    priceChild: 45,
+    ages: { adult: "12+", child: "8-11" },
+    family: true,
     desc: {
       it: "Il centro Big Fish di Los Cristianos porta sott'acqua sia chi non si è mai immerso sia chi ha già il brevetto: il battesimo con l'istruttore accanto, le immersioni singole o a pacchetto, quella notturna e i corsi PADI fino al livello Rescue.",
       en: "The Big Fish centre in Los Cristianos takes both first-timers and certified divers underwater: the taster dive with an instructor beside you, single dives or dive packages, the night dive, and PADI courses up to Rescue level.",
       es: "El centro Big Fish de Los Cristianos lleva bajo el agua tanto a quien no se ha sumergido nunca como a quien ya tiene el título: el bautizo con el instructor al lado, inmersiones sueltas o en paquete, la nocturna y los cursos PADI hasta el nivel Rescue."
     },
-    // Il listino dice "the dives include: full equipment, instructor and
-    // transfer from your Hotel": qui il ritiro e' compreso davvero, quindi
-    // sta fra le icone (che vogliono dire "vale sempre") e non fra i
-    // supplementi da pagare all'arrivo.
-    included: ["equipment", "guide", "transfer"],
+    // Attrezzatura e istruttore valgono per tutto. Il ritiro **no**: lo
+    // snorkeling delle 10:30 e' senza, l'ha detto l'ufficio. Le icone della
+    // scheda vogliono dire "vale sempre", quindi `transfer` sta nell'`included`
+    // delle singole varianti che ce l'hanno, e il riquadro si ridisegna a ogni
+    // bottone premuto.
+    included: ["equipment", "guide"],
     transfer: {
-      it: "Ritiro e riconsegna in hotel compresi nel prezzo. Scrivi nelle note l'indirizzo o il nome dell'hotel.",
-      en: "Hotel pick-up and drop-off included in the price. Add your address or hotel name in the notes.",
-      es: "Recogida y regreso al hotel incluidos en el precio. Escribe en las notas la dirección o el nombre del hotel."
+      it: "Ritiro e riconsegna in hotel compresi nel prezzo delle immersioni e dei corsi. Per il battesimo il pulmino passa 20 minuti prima dell'orario scelto. Lo snorkeling delle 10:30 è invece senza ritiro: a Los Cristianos ci si arriva da soli. Scrivi nelle note l'indirizzo o il nome dell'hotel.",
+      en: "Hotel pick-up and drop-off are included in the price of the dives and the courses. For the taster dive the minibus comes 20 minutes before the time you choose. The 10:30 snorkelling has no pick-up: you make your own way to Los Cristianos. Add your address or hotel name in the notes.",
+      es: "Recogida y regreso al hotel incluidos en el precio de las inmersiones y de los cursos. Para el bautizo la furgoneta pasa 20 minutos antes de la hora elegida. El snorkel de las 10:30 va sin recogida: a Los Cristianos se llega por cuenta propia. Escribe en las notas la dirección o el nombre del hotel."
     },
     options: {
       label: { it: "Cosa vuoi fare", en: "What you want to do", es: "Qué quieres hacer" },
@@ -2553,6 +2561,15 @@ const ESPLORA_CATALOG = [
         {
           label: { it: "Snorkeling", en: "Snorkelling", es: "Snorkel" },
           priceAdult: 45,
+          priceChild: 45,
+          // L'ora e mezza e' quella dell'uscita, l'ora e' il tempo in acqua.
+          duration: {
+            it: "1 ora e mezza, di cui 1 ora in acqua",
+            en: "1 hour 30, an hour of it in the water",
+            es: "1 hora y media, de ellas 1 hora en el agua"
+          },
+          times: ["10:30"],
+          // Niente "transfer": e' l'unica variante senza ritiro.
           included: ["snorkel"],
           desc: {
             it: "Uscita in superficie con maschera, boccaglio e pinne, accompagnati. Per chi non vuole scendere con le bombole o accompagna chi si immerge.",
@@ -2566,6 +2583,16 @@ const ESPLORA_CATALOG = [
           // Admiral, e' alzarlo dopo che il cliente l'ha letto che non si fa.
           label: { it: "Battesimo subacqueo", en: "Try dive", es: "Bautizo de buceo" },
           priceAdult: 70,
+          priceChild: 70,
+          included: ["transfer"],
+          // Le due ore e mezza contano anche il viaggio: il pulmino passa 20
+          // minuti prima dell'orario scelto e riporta indietro dopo.
+          duration: {
+            it: "2 ore e mezza: 1 di scuola, 1 di immersione, mezz'ora di ritiro e riconsegna",
+            en: "2 hours 30: 1 of lessons, 1 of diving, half an hour of pick-up and drop-off",
+            es: "2 horas y media: 1 de clase, 1 de inmersión, media hora de recogida y regreso"
+          },
+          times: ["09:00", "11:00", "13:00", "15:00"],
           desc: {
             it: "La prima immersione, senza brevetto e senza esperienza: si scende con l'istruttore accanto per tutto il tempo. Bisogna saper nuotare.",
             en: "A first dive, no certification and no experience needed: you go down with the instructor beside you the whole time. You do need to be able to swim.",
@@ -2575,6 +2602,8 @@ const ESPLORA_CATALOG = [
         {
           label: { it: "1 immersione con brevetto", en: "1 dive, certified", es: "1 inmersión con título" },
           priceAdult: 50,
+          priceChild: 50,
+          included: ["transfer"],
           desc: {
             it: "Una singola immersione per chi ha già il brevetto.",
             en: "A single dive for divers who already hold a certification.",
@@ -2584,6 +2613,8 @@ const ESPLORA_CATALOG = [
         {
           label: { it: "2 immersioni con brevetto", en: "2 dives, certified", es: "2 inmersiones con título" },
           priceAdult: 90,
+          priceChild: 90,
+          included: ["transfer"],
           desc: {
             it: "Due immersioni a 45 € l'una: 90 € a persona.",
             en: "Two dives at €45 each: €90 per person.",
@@ -2596,6 +2627,7 @@ const ESPLORA_CATALOG = [
             en: "3-4 dives, certified (€40 each)",
             es: "3-4 inmersiones con título (40 € cada una)"
           },
+          included: ["transfer"],
           desc: {
             it: "Quaranta euro a immersione: 120 € per tre, 160 € per quattro.",
             en: "Forty euros per dive: €120 for three, €160 for four.",
@@ -2608,6 +2640,7 @@ const ESPLORA_CATALOG = [
             en: "5-9 dives, certified (€35 each)",
             es: "5-9 inmersiones con título (35 € cada una)"
           },
+          included: ["transfer"],
           desc: {
             it: "Trentacinque euro a immersione: da 175 € per cinque a 315 € per nove.",
             en: "Thirty-five euros per dive: from €175 for five to €315 for nine.",
@@ -2617,6 +2650,8 @@ const ESPLORA_CATALOG = [
         {
           label: { it: "10 immersioni con brevetto", en: "10 dives, certified", es: "10 inmersiones con título" },
           priceAdult: 300,
+          priceChild: 300,
+          included: ["transfer"],
           desc: {
             it: "Dieci immersioni a 30 € l'una: 300 € a persona.",
             en: "Ten dives at €30 each: €300 per person.",
@@ -2626,6 +2661,13 @@ const ESPLORA_CATALOG = [
         {
           label: { it: "Immersione notturna", en: "Night dive", es: "Inmersión nocturna" },
           priceAdult: 65,
+          priceChild: 65,
+          included: ["transfer"],
+          // `times: []` e non "campo assente": le fasce segnaposto sono di
+          // giorno (09:00-10:00 e via cosi') e su una notturna facevano ridere.
+          // Vuoto lascia solo "Da concordare", che qui e' anche vero: l'ora
+          // dipende da quando tramonta, e cambia lungo l'anno.
+          times: [],
           desc: {
             it: "Un'immersione dopo il tramonto, per chi ha già il brevetto.",
             en: "A dive after sunset, for certified divers.",
@@ -2635,6 +2677,8 @@ const ESPLORA_CATALOG = [
         {
           label: "Discover Scuba Diver",
           priceAdult: 150,
+          priceChild: 150,
+          included: ["transfer"],
           desc: {
             it: "Il primo passo verso il brevetto: la teoria di base e due immersioni, una da riva e una dalla barca.",
             en: "The first step towards certification: the basic theory plus two dives, one from the shore and one from the boat.",
@@ -2644,6 +2688,8 @@ const ESPLORA_CATALOG = [
         {
           label: "Scuba Diver",
           priceAdult: 300,
+          priceChild: 300,
+          included: ["transfer"],
           desc: {
             it: "Brevetto limitato, per chi vuole cominciare con calma: permette di scendere fino a 12 metri accompagnati da un istruttore.",
             en: "A limited certification, for anyone who would rather start gradually: it allows dives to 12 metres alongside an instructor.",
@@ -2653,6 +2699,8 @@ const ESPLORA_CATALOG = [
         {
           label: "Open Water Diver (OWD)",
           priceAdult: 460,
+          priceChild: 460,
+          included: ["transfer"],
           desc: {
             it: "Il primo livello PADI vero e proprio: si scende fino a 18 metri in tutto il mondo, con compagni di pari livello o superiore. Non serve aver fatto prima lo Scuba Diver.",
             en: "The first full PADI level: dives to 18 metres anywhere in the world, with buddies of the same level or higher. The Scuba Diver course is not a prerequisite.",
@@ -2662,6 +2710,8 @@ const ESPLORA_CATALOG = [
         {
           label: "Advanced Open Water Diver",
           priceAdult: 350,
+          priceChild: 350,
+          included: ["transfer"],
           desc: {
             it: "Per chi ha già l'Open Water e vuole andare avanti: si arriva a 30 metri e si provano ambienti nuovi.",
             en: "For divers who already hold the Open Water and want to go further: down to 30 metres, and new environments to try.",
@@ -2671,6 +2721,8 @@ const ESPLORA_CATALOG = [
         {
           label: "Re-activate",
           priceAdult: 90,
+          priceChild: 90,
+          included: ["transfer"],
           desc: {
             it: "Un'immersione di ripasso per chi ha il brevetto ma è fermo da un po', da fare prima di ripartire.",
             en: "A refresher dive for certified divers who have been out of the water for a while, to do before starting again.",
@@ -2680,6 +2732,8 @@ const ESPLORA_CATALOG = [
         {
           label: "Rescue Diver + EFR",
           priceAdult: 450,
+          priceChild: 450,
+          included: ["transfer"],
           desc: {
             it: "Corso di soccorso subacqueo per subacquei esperti: come si prevengono gli incidenti e cosa si fa quando succedono.",
             en: "An underwater rescue course for experienced divers: how accidents are prevented, and what to do when they happen.",
@@ -2692,6 +2746,7 @@ const ESPLORA_CATALOG = [
             en: "PADI specialties (from €99)",
             es: "Especialidades PADI (desde 99 €)"
           },
+          included: ["transfer"],
           desc: {
             it: "Corsi brevi per chi ha già il brevetto e vuole aggiungere una specialità. Il prezzo cambia con la specialità scelta: lo conferma l'ufficio.",
             en: "Short courses for certified divers who want to add a specialty. The price depends on which one: the office confirms it.",
@@ -2704,12 +2759,12 @@ const ESPLORA_CATALOG = [
       { it: "Bisogna saper nuotare, anche per il battesimo: l'esperienza subacquea non serve, il saper stare in acqua sì.",
         en: "You need to be able to swim, the taster dive included: no diving experience is required, but being at ease in the water is.",
         es: "Hay que saber nadar, también para el bautizo: la experiencia de buceo no hace falta, estar a gusto en el agua sí." },
-      { it: "L'età minima e le condizioni per i più giovani vanno confermate con l'ufficio quando mandi la richiesta.",
-        en: "The minimum age and the conditions for younger divers are confirmed by the office when you send your request.",
-        es: "La edad mínima y las condiciones para los más jóvenes se confirman con la oficina al enviar la solicitud." },
-      { it: "Attrezzatura completa, istruttore e ritiro in hotel sono compresi nel prezzo. Se hai la tua attrezzatura puoi portarla.",
-        en: "Full equipment, instructor and hotel pick-up are included in the price. If you have your own kit you can bring it.",
-        es: "Equipo completo, instructor y recogida en el hotel están incluidos en el precio. Si tienes tu propio equipo puedes traerlo." },
+      { it: "Si scende dagli 8 anni compiuti, e dagli 8 agli 11 sempre insieme a un adulto. I ragazzi pagano come gli adulti.",
+        en: "Minimum age 8, and between 8 and 11 always together with an adult. Children pay the same as adults.",
+        es: "Se baja a partir de los 8 años cumplidos, y de los 8 a los 11 siempre con un adulto. Los niños pagan como los adultos." },
+      { it: "Attrezzatura completa e istruttore sono compresi in tutto. Il ritiro in hotel è compreso nelle immersioni e nei corsi, ma non nello snorkeling. Se hai la tua attrezzatura puoi portarla.",
+        en: "Full equipment and instructor are included in everything. Hotel pick-up is included in the dives and the courses, but not in the snorkelling. If you have your own kit you can bring it.",
+        es: "Equipo completo e instructor están incluidos en todo. La recogida en el hotel está incluida en las inmersiones y los cursos, pero no en el snorkel. Si tienes tu propio equipo puedes traerlo." },
       { it: "L'acqua sta fra i 18 e i 25 °C tutto l'anno e la visibilità va dai 15 ai 30 metri. Sotto capita di incontrare razze, tartarughe, polpi, murene e barracuda: dipende dal giorno, non sono promessi.",
         en: "The water stays between 18 and 25°C all year and visibility runs from 15 to 30 metres. Down there you may meet rays, turtles, octopus, moray eels and barracuda: it depends on the day, and none of it is promised.",
         es: "El agua está entre 18 y 25 °C todo el año y la visibilidad va de 15 a 30 metros. Abajo se pueden encontrar rayas, tortugas, pulpos, morenas y barracudas: depende del día, no están garantizados." },

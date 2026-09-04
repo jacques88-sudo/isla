@@ -4422,3 +4422,51 @@ Provato nel browser vero in italiano e in inglese: la card in elenco esce con
 "Specialita' PADI" mostrano "Prezzo: Su richiesta" e **nessun totale**; con un bambino il
 totale sparisce. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato
 `sw.js` a `isla-v206`.
+
+### Le risposte dell'ufficio, lo stesso giorno
+
+Tutti e quattro i punti lasciati in sospeso sono tornati indietro pieni, e uno ha spostato
+una scelta gia' fatta.
+
+- **L'eta' minima e' giusta: 8 anni.** Quindi la fascia di CanaryVIP valeva anche qui.
+  `ages: { adult: "12+", child: "8-11" }`: il 12+ discende dagli 8-11, sopra gli 11 non
+  c'e' altro, e le due fasce si toccano senza buchi. Sotto gli 8 non si scende, quindi
+  niente fascia neonati e **niente `priceInfant`**: assente non vuol dire gratis.
+  `family` passa a **true**, come il kayak che parte dai 6 anni.
+- **I bambini pagano come gli adulti.** `priceChild` uguale a `priceAdult` su tutte e
+  dodici le varianti con un prezzo suo, e sulla scheda. Ora il totale di una famiglia si
+  fa: battesimo per 2 adulti + 1 bambino = **€210**.
+- **Le durate delle prime due varianti.** Snorkeling "1 ora e mezza, di cui 1 ora in
+  acqua"; battesimo "2 ore e mezza: 1 di scuola, 1 di immersione, mezz'ora di ritiro e
+  riconsegna". Stanno nel `duration` **della variante**, non della scheda: le altre tredici
+  non le sappiamo ancora e la scheda resta "Da definire".
+- **Gli orari veri.** Battesimo alle 09:00, 11:00, 13:00 e 15:00, col pulmino 20 minuti
+  prima; snorkeling alle 10:30. `times` sulla variante, che batte quello della scheda.
+
+**La cosa che ha spostato una scelta: lo snorkeling e' senza ritiro.** Il ritiro era fra le
+icone della scheda, dove vuol dire "vale sempre", e non e' piu' vero. Spostato
+nell'`included` delle quattordici varianti che ce l'hanno; sulla scheda restano
+`equipment` e `guide`, che valgono davvero per tutto. Il riquadro "Cosa e' incluso" si
+ridisegna a ogni bottone premuto ed e' l'unico posto dove la differenza si vede: sullo
+snorkeling l'icona del transfer non c'e'.
+
+**L'immersione notturna alle 09:00.** Senza `times` la variante ricadeva sulle fasce
+segnaposto, che sono di giorno: "09:00 - 10:00" su una notturna. Messo `times: []`, che
+lascia solo "Da concordare". Il vocabolario lo descrive per i charter, ma quello che fa e'
+esattamente giusto anche qui: l'ora dipende da quando tramonta e cambia lungo l'anno.
+
+Riprovato nel browser: snorkeling con durata, "10:30" e **senza** l'icona del transfer,
+2 adulti + 2 bambini = €180; battesimo con le quattro partenze e 2 adulti + 1 bambino =
+€210; notturna con solo "Da concordare"; "3-4 immersioni" sempre "Prezzo: Su richiesta" e
+nessun totale. In elenco la card esce con "LOS CRISTIANOS · ADATTA AI BAMBINI · TRANSFER
+DISPONIBILE · da €45". `node controlla.js` → 0 errori, 1 avviso invariato. `sw.js` a
+`isla-v207`.
+
+**Restano tre cose da far vedere al proprietario**, tutte scelte prese da qui:
+- Il prezzo bambini e' finito **anche sui corsi PADI**, perche' "pagano uguale" e' stato
+  detto in generale: sul Rescue Diver si legge "Bambini (8-11) €450". Se i corsi hanno
+  un'eta' minima loro, va tolto.
+- Del testo CanaryVIP e' rimasto fuori **"sopra i 65 anni si sente prima"**: e' l'unica
+  cosa sulle eta' che l'ufficio non ha confermato.
+- Le **durate delle altre tredici varianti** e gli **orari delle immersioni con brevetto**
+  e dei corsi non li sappiamo ancora.

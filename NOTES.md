@@ -4346,3 +4346,79 @@ elenco la card esce con "SUD DELL'ISOLA · 3 ORE · ADATTA AI BAMBINI · TRANSFE
 Riprovato nel browser: "Las Galletas", "Adulti (12+) €55", "Bambini (3-11) €35", totale
 2 adulti + 1 bambino sempre €145 e €160 col ritiro; la gemella esce con "da €450 a gruppo"
 e la riga del ritiro a €500. `sw.js` alzato a `isla-v204`.
+
+## Immersioni: il listino del Big Fish, e la riga "Prezzo" che ripiegava sulla scheda sbagliata (4 settembre 2026)
+
+La scheda `immersioni` era un segnaposto: "Da definire" ovunque, `priceFrom: null`, due
+righe di descrizione. Sono arrivate due fonti insieme e **non sono lo stesso operatore**:
+
+- il testo di una pagina **CanaryVIP** sulle immersioni a Tenerife (rivenditore, come noi),
+  con quattro battesimi da 20 e 40 minuti, da riva e dalla barca, a 55/75/75/105 €;
+- la **foto del listino stampato del Big Fish Dive Center**, Calle Jesus Dominguez Grillo
+  19, Los Cristianos — il centro vero, col suo telefono e il suo indirizzo.
+
+Il proprietario ha detto "i prezzi prendili dall'immagine", e i due listini hanno una
+**forma diversa**: CanaryVIP vende quattro battesimi per durata, il Big Fish vende un
+battesimo solo, le immersioni a pacchetto, la notturna e i corsi PADI. Non si potevano
+incollare insieme: preso il **Big Fish** per struttura e prezzi, perche' e' il centro che
+ci porta sott'acqua e perche' e' il listino da cui vengono i prezzi. Del testo CanaryVIP
+sono rimasti solo i fatti che valgono per il mare e non per l'operatore (temperatura
+dell'acqua, visibilita', cosa si incontra, saper nuotare, la gravidanza). **Buttati** i
+suoi supplementi di ritiro per zona, le sue fasce d'eta' e la sua cancellazione a 48 ore.
+
+**Il battesimo va a €70 e non a €90.** Novanta e' il prezzo del centro; settanta e' quello
+deciso dall'ufficio. Come per il kayak: abbassare e' una scelta di Admiral e si puo'
+sempre, alzarlo dopo che il cliente l'ha letto no.
+
+**Il ritiro qui e' compreso davvero.** Il listino scrive "the dives include: full
+equipment, instructor and transfer from your Hotel", e il proprietario ha confermato di
+metterlo come incluso. Quindi `transfer` sta fra le icone — che vogliono dire "vale
+sempre" — al contrario del kayak, dove il ritiro si paga all'arrivo e per questo stava
+solo nella riga `transfer` a parole.
+
+**Quindici varianti, e due modi di scrivere il prezzo.** Dove la variante si paga a testa
+e il numero e' uno solo c'e' `priceAdult` e il totale si fa: snorkeling €45, battesimo
+€70, 1 immersione €50, 2 immersioni €90, 10 immersioni €300, notturna €65, e i sei corsi
+da €90 a €460. Dove invece il listino da' un prezzo **a immersione** su un intervallo
+("3-4 dives, 40 EUR/uds", "5-9 dives, 35 EUR/uds") o un "from 99 EUR", un numero solo non
+esiste: il prezzo sta scritto **nell'etichetta** ("3-4 immersioni con brevetto (40 €
+l'una)") e i conti nella descrizione, e il totale si rifiuta di farsi. Moltiplicare 40 per
+le persone avrebbe dato un totale falso.
+
+**Il buco trovato provando, non leggendo.** Scegliendo "3-4 immersioni" la riga "In breve"
+diceva **"Prezzo: da €45"**, cioe' il `priceFrom` della scheda, che e' lo snorkeling: un
+prezzo di un'altra variante sopra un pacchetto che parte da €120. Il commento gia' scritto
+due righe sopra, in `tour.js`, diceva che quel ripiego non si deve fare ("niente ripiego
+sul prezzo della scheda, se no la cabina VIP di Siam Park mostrerebbe il prezzo del
+biglietto normale"), ma era applicato solo alle righe delle **fasce d'eta'**, non alla riga
+"Prezzo". Aggiunto un ramo: variante scelta e senza nessun prezzo suo → "Su richiesta".
+
+Il ramo tocca anche **sei schede gia' pubblicate** che hanno varianti senza prezzo:
+paragliding, buggy 2-3h, quad nord, tuk-tuk, elicottero, cavallo (la variante da 2 ore).
+Prima, scegliendo "40-45 minuti, decollo a 2.200 m" il paragliding mostrava "da €110", che
+e' il prezzo del volo **piu' corto**: la stessa bugia. Ora dicono "Su richiesta". Dove la
+variante scelta e' proprio la piu' economica si perde un numero vero, ed e' il prezzo da
+pagare per non scriverne uno falso sulle altre. **Da far vedere al proprietario.**
+
+**Lasciato in sospeso, e detto:**
+- **L'eta' minima.** CanaryVIP dice 8 anni, ma e' un altro operatore e il listino del Big
+  Fish non ne parla. Niente `ages`, e una nota che dice di confermarlo con l'ufficio.
+  Inventarla su una attivita' dove si respira sott'acqua sarebbe la cosa peggiore.
+- **Il prezzo bambini.** Il listino ha un prezzo solo per tutti, ma non dice se i bambini
+  si immergono e a quanto. `priceChild: 0` (= non lo sappiamo, la riga non compare) e
+  nessun `priceInfant`: con un bambino nella richiesta il totale sparisce, che e' giusto.
+- **Le durate.** Il listino non dice quanto dura niente, ne' il battesimo ne' i corsi:
+  `duration` resta "Da definire".
+- **Gli orari.** Nessun `times`: restano le fasce segnaposto piu' "Da concordare".
+- **Nove immersioni costano piu' di dieci** (315 contro 300): e' cosi' sul listino stampato,
+  per come sono fatti gli scaglioni. Non e' un errore di trascrizione, non "correggerlo".
+- **Lo snorkeling a €45 in una scheda di immersioni**: e' sul listino del centro ed e' la
+  cosa da proporre a chi accompagna un subacqueo, quindi e' entrato come prima variante.
+  E' anche il motivo per cui `priceFrom` e' 45 e non 50.
+
+Provato nel browser vero in italiano e in inglese: la card in elenco esce con
+"LOS CRISTIANOS · TRANSFER DISPONIBILE · da €45"; sul dettaglio il battesimo fa €140 per
+2 adulti e le 10 immersioni €600, l'Open Water €460 per uno; "3-4 immersioni" e
+"Specialita' PADI" mostrano "Prezzo: Su richiesta" e **nessun totale**; con un bambino il
+totale sparisce. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Alzato
+`sw.js` a `isla-v206`.

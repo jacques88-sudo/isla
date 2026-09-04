@@ -111,6 +111,15 @@ function detailRows(tour, variante) {
     // variante col prezzo ma senza le fasce: il numero e' quello del mezzo o
     // del gruppo, e resta sulla riga generica
     righe.push([t("detail.price"), "€" + eur(variante.price) + priceUnitSuffix(tour)]);
+  } else if (variante) {
+    // Variante scelta e senza nessun prezzo suo: e' il caso delle immersioni a
+    // pacchetto, dove il listino da' un prezzo **a immersione** ("3-4 dives,
+    // 40 EUR/uds") e non a persona, e quello delle specialita' PADI "da 99".
+    // Il prezzo della scheda qui e' di un'altra variante: scriverlo direbbe
+    // "da €45" sopra un pacchetto che parte da €120. Stessa ragione per cui
+    // due righe piu' su le fasce d'eta' non ripiegano sulla scheda; il numero
+    // vero sta nell'etichetta della variante e nella sua descrizione.
+    righe.push([t("detail.price"), t("tour.onRequest")]);
   } else {
     righe.push([t("detail.price"), tourPrice(tour)]);
   }

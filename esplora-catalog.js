@@ -2512,17 +2512,217 @@ const ESPLORA_CATALOG = [
       es: "Buceo: bautizo y curso"
     },
     category: "sport-acquatici",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Los Cristianos",
+    // Il listino del centro non dice quanto dura niente, ne' il battesimo ne'
+    // i corsi. Resta "Da definire" finche' l'ufficio non lo manda: inventare
+    // "mezza giornata" per un corso che puo' durare tre giorni sarebbe peggio.
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
+    // 45 e' lo snorkeling, la cosa piu' economica del listino. L'immersione
+    // vera parte da 50.
+    priceFrom: 45,
+    priceAdult: 45,
     priceChild: 0,
     family: false,
     desc: {
-      it: "Prima immersione per principianti, oppure percorso per il brevetto.",
-      en: "A first dive for beginners, or the full path to certification.",
-      es: "Primera inmersión para principiantes o curso completo para obtener el título."
+      it: "Il centro Big Fish di Los Cristianos porta sott'acqua sia chi non si è mai immerso sia chi ha già il brevetto: il battesimo con l'istruttore accanto, le immersioni singole o a pacchetto, quella notturna e i corsi PADI fino al livello Rescue.",
+      en: "The Big Fish centre in Los Cristianos takes both first-timers and certified divers underwater: the taster dive with an instructor beside you, single dives or dive packages, the night dive, and PADI courses up to Rescue level.",
+      es: "El centro Big Fish de Los Cristianos lleva bajo el agua tanto a quien no se ha sumergido nunca como a quien ya tiene el título: el bautizo con el instructor al lado, inmersiones sueltas o en paquete, la nocturna y los cursos PADI hasta el nivel Rescue."
     },
+    // Il listino dice "the dives include: full equipment, instructor and
+    // transfer from your Hotel": qui il ritiro e' compreso davvero, quindi
+    // sta fra le icone (che vogliono dire "vale sempre") e non fra i
+    // supplementi da pagare all'arrivo.
+    included: ["equipment", "guide", "transfer"],
+    transfer: {
+      it: "Ritiro e riconsegna in hotel compresi nel prezzo. Scrivi nelle note l'indirizzo o il nome dell'hotel.",
+      en: "Hotel pick-up and drop-off included in the price. Add your address or hotel name in the notes.",
+      es: "Recogida y regreso al hotel incluidos en el precio. Escribe en las notas la dirección o el nombre del hotel."
+    },
+    options: {
+      label: { it: "Cosa vuoi fare", en: "What you want to do", es: "Qué quieres hacer" },
+      // Due modi di scrivere il prezzo, e la differenza conta.
+      // Dove una variante si paga **a testa** e il numero e' uno solo, c'e'
+      // `priceAdult`: il totale della richiesta si fa e viene giusto.
+      // Dove invece il listino da' un prezzo **a immersione** su un intervallo
+      // ("3-4 dives, 40 EUR/uds") o un "da 99 EUR", un numero solo non esiste:
+      // moltiplicarlo per le persone darebbe un totale falso. In quei casi il
+      // prezzo sta scritto **nell'etichetta** e non in `price`, cosi' il
+      // cliente lo legge sul bottone e il totale si rifiuta di farsi invece di
+      // mostrare una cifra verosimile e sbagliata.
+      choices: [
+        {
+          label: { it: "Snorkeling", en: "Snorkelling", es: "Snorkel" },
+          priceAdult: 45,
+          included: ["snorkel"],
+          desc: {
+            it: "Uscita in superficie con maschera, boccaglio e pinne, accompagnati. Per chi non vuole scendere con le bombole o accompagna chi si immerge.",
+            en: "A guided outing on the surface with mask, snorkel and fins. For anyone who would rather not go down with tanks, or who is coming along with someone who is diving.",
+            es: "Salida en superficie con máscara, tubo y aletas, acompañados. Para quien no quiere bajar con botellas o acompaña a quien se sumerge."
+          }
+        },
+        {
+          // Il centro lo tiene a 90; 70 e' il prezzo che ha deciso l'ufficio.
+          // Come per il kayak: abbassare si puo' sempre ed e' una scelta di
+          // Admiral, e' alzarlo dopo che il cliente l'ha letto che non si fa.
+          label: { it: "Battesimo subacqueo", en: "Try dive", es: "Bautizo de buceo" },
+          priceAdult: 70,
+          desc: {
+            it: "La prima immersione, senza brevetto e senza esperienza: si scende con l'istruttore accanto per tutto il tempo. Bisogna saper nuotare.",
+            en: "A first dive, no certification and no experience needed: you go down with the instructor beside you the whole time. You do need to be able to swim.",
+            es: "La primera inmersión, sin título ni experiencia: se baja con el instructor al lado todo el rato. Hay que saber nadar."
+          }
+        },
+        {
+          label: { it: "1 immersione con brevetto", en: "1 dive, certified", es: "1 inmersión con título" },
+          priceAdult: 50,
+          desc: {
+            it: "Una singola immersione per chi ha già il brevetto.",
+            en: "A single dive for divers who already hold a certification.",
+            es: "Una inmersión suelta para quien ya tiene el título."
+          }
+        },
+        {
+          label: { it: "2 immersioni con brevetto", en: "2 dives, certified", es: "2 inmersiones con título" },
+          priceAdult: 90,
+          desc: {
+            it: "Due immersioni a 45 € l'una: 90 € a persona.",
+            en: "Two dives at €45 each: €90 per person.",
+            es: "Dos inmersiones a 45 € cada una: 90 € por persona."
+          }
+        },
+        {
+          label: {
+            it: "3-4 immersioni con brevetto (40 € l'una)",
+            en: "3-4 dives, certified (€40 each)",
+            es: "3-4 inmersiones con título (40 € cada una)"
+          },
+          desc: {
+            it: "Quaranta euro a immersione: 120 € per tre, 160 € per quattro.",
+            en: "Forty euros per dive: €120 for three, €160 for four.",
+            es: "Cuarenta euros por inmersión: 120 € por tres, 160 € por cuatro."
+          }
+        },
+        {
+          label: {
+            it: "5-9 immersioni con brevetto (35 € l'una)",
+            en: "5-9 dives, certified (€35 each)",
+            es: "5-9 inmersiones con título (35 € cada una)"
+          },
+          desc: {
+            it: "Trentacinque euro a immersione: da 175 € per cinque a 315 € per nove.",
+            en: "Thirty-five euros per dive: from €175 for five to €315 for nine.",
+            es: "Treinta y cinco euros por inmersión: desde 175 € por cinco hasta 315 € por nueve."
+          }
+        },
+        {
+          label: { it: "10 immersioni con brevetto", en: "10 dives, certified", es: "10 inmersiones con título" },
+          priceAdult: 300,
+          desc: {
+            it: "Dieci immersioni a 30 € l'una: 300 € a persona.",
+            en: "Ten dives at €30 each: €300 per person.",
+            es: "Diez inmersiones a 30 € cada una: 300 € por persona."
+          }
+        },
+        {
+          label: { it: "Immersione notturna", en: "Night dive", es: "Inmersión nocturna" },
+          priceAdult: 65,
+          desc: {
+            it: "Un'immersione dopo il tramonto, per chi ha già il brevetto.",
+            en: "A dive after sunset, for certified divers.",
+            es: "Una inmersión después del atardecer, para quien ya tiene el título."
+          }
+        },
+        {
+          label: "Discover Scuba Diver",
+          priceAdult: 150,
+          desc: {
+            it: "Il primo passo verso il brevetto: la teoria di base e due immersioni, una da riva e una dalla barca.",
+            en: "The first step towards certification: the basic theory plus two dives, one from the shore and one from the boat.",
+            es: "El primer paso hacia el título: la teoría básica y dos inmersiones, una desde la orilla y otra desde el barco."
+          }
+        },
+        {
+          label: "Scuba Diver",
+          priceAdult: 300,
+          desc: {
+            it: "Brevetto limitato, per chi vuole cominciare con calma: permette di scendere fino a 12 metri accompagnati da un istruttore.",
+            en: "A limited certification, for anyone who would rather start gradually: it allows dives to 12 metres alongside an instructor.",
+            es: "Título limitado, para quien quiere empezar con calma: permite bajar hasta 12 metros acompañado de un instructor."
+          }
+        },
+        {
+          label: "Open Water Diver (OWD)",
+          priceAdult: 460,
+          desc: {
+            it: "Il primo livello PADI vero e proprio: si scende fino a 18 metri in tutto il mondo, con compagni di pari livello o superiore. Non serve aver fatto prima lo Scuba Diver.",
+            en: "The first full PADI level: dives to 18 metres anywhere in the world, with buddies of the same level or higher. The Scuba Diver course is not a prerequisite.",
+            es: "El primer nivel PADI de verdad: se baja hasta 18 metros en todo el mundo, con compañeros del mismo nivel o superior. No hace falta haber hecho antes el Scuba Diver."
+          }
+        },
+        {
+          label: "Advanced Open Water Diver",
+          priceAdult: 350,
+          desc: {
+            it: "Per chi ha già l'Open Water e vuole andare avanti: si arriva a 30 metri e si provano ambienti nuovi.",
+            en: "For divers who already hold the Open Water and want to go further: down to 30 metres, and new environments to try.",
+            es: "Para quien ya tiene el Open Water y quiere seguir: se llega a 30 metros y se prueban ambientes nuevos."
+          }
+        },
+        {
+          label: "Re-activate",
+          priceAdult: 90,
+          desc: {
+            it: "Un'immersione di ripasso per chi ha il brevetto ma è fermo da un po', da fare prima di ripartire.",
+            en: "A refresher dive for certified divers who have been out of the water for a while, to do before starting again.",
+            es: "Una inmersión de repaso para quien tiene el título pero lleva tiempo parado, para hacer antes de volver a empezar."
+          }
+        },
+        {
+          label: "Rescue Diver + EFR",
+          priceAdult: 450,
+          desc: {
+            it: "Corso di soccorso subacqueo per subacquei esperti: come si prevengono gli incidenti e cosa si fa quando succedono.",
+            en: "An underwater rescue course for experienced divers: how accidents are prevented, and what to do when they happen.",
+            es: "Curso de rescate subacuático para buceadores con experiencia: cómo se previenen los accidentes y qué hacer cuando ocurren."
+          }
+        },
+        {
+          label: {
+            it: "Specialità PADI (da 99 €)",
+            en: "PADI specialties (from €99)",
+            es: "Especialidades PADI (desde 99 €)"
+          },
+          desc: {
+            it: "Corsi brevi per chi ha già il brevetto e vuole aggiungere una specialità. Il prezzo cambia con la specialità scelta: lo conferma l'ufficio.",
+            en: "Short courses for certified divers who want to add a specialty. The price depends on which one: the office confirms it.",
+            es: "Cursos cortos para quien ya tiene el título y quiere añadir una especialidad. El precio cambia según cuál: lo confirma la oficina."
+          }
+        }
+      ]
+    },
+    notes: [
+      { it: "Bisogna saper nuotare, anche per il battesimo: l'esperienza subacquea non serve, il saper stare in acqua sì.",
+        en: "You need to be able to swim, the taster dive included: no diving experience is required, but being at ease in the water is.",
+        es: "Hay que saber nadar, también para el bautizo: la experiencia de buceo no hace falta, estar a gusto en el agua sí." },
+      { it: "L'età minima e le condizioni per i più giovani vanno confermate con l'ufficio quando mandi la richiesta.",
+        en: "The minimum age and the conditions for younger divers are confirmed by the office when you send your request.",
+        es: "La edad mínima y las condiciones para los más jóvenes se confirman con la oficina al enviar la solicitud." },
+      { it: "Attrezzatura completa, istruttore e ritiro in hotel sono compresi nel prezzo. Se hai la tua attrezzatura puoi portarla.",
+        en: "Full equipment, instructor and hotel pick-up are included in the price. If you have your own kit you can bring it.",
+        es: "Equipo completo, instructor y recogida en el hotel están incluidos en el precio. Si tienes tu propio equipo puedes traerlo." },
+      { it: "L'acqua sta fra i 18 e i 25 °C tutto l'anno e la visibilità va dai 15 ai 30 metri. Sotto capita di incontrare razze, tartarughe, polpi, murene e barracuda: dipende dal giorno, non sono promessi.",
+        en: "The water stays between 18 and 25°C all year and visibility runs from 15 to 30 metres. Down there you may meet rays, turtles, octopus, moray eels and barracuda: it depends on the day, and none of it is promised.",
+        es: "El agua está entre 18 y 25 °C todo el año y la visibilidad va de 15 a 30 metros. Abajo se pueden encontrar rayas, tortugas, pulpos, morenas y barracudas: depende del día, no están garantizados." },
+      { it: "Porta il costume, un asciugamano e le infradito. La macchina fotografica subacquea puoi portarla, a tuo rischio.",
+        en: "Bring a swimsuit, a towel and flip-flops. You can bring an underwater camera, at your own risk.",
+        es: "Trae bañador, una toalla y chanclas. Puedes traer una cámara subacuática, bajo tu responsabilidad." },
+      { it: "Sconsigliata in gravidanza oltre il quinto mese.",
+        en: "Not recommended in pregnancy beyond the fifth month.",
+        es: "No se recomienda en embarazos de más de cinco meses." },
+      { it: "Il centro fa anche i livelli professionali: se ti interessano, chiedi in ufficio.",
+        en: "The centre also runs the professional levels: ask the office if you are interested.",
+        es: "El centro también imparte los niveles profesionales: pregunta en la oficina si te interesan." }
+    ],
     image: "immersioni.jpg",
     published: true
   },

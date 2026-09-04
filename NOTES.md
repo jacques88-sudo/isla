@@ -4585,3 +4585,86 @@ passa da €51/€25,50 a €61/€30,50 con "Bevande" e "Snack" in "Cosa e' inc
 righe non mostrano niente e la variante premessa all'apertura (40 minuti) non apre nessun
 riquadro vuoto. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). `sw.js` a
 `isla-v210`.
+
+## Elicottero: il listino vero di Admiral, cinque percorsi (4 settembre 2026)
+
+Arrivati dall'ufficio i prezzi veri dei giri in elicottero, con le durate di volo. La
+scheda `helicopter-tours` era ferma sui dati di canaryvip.com del 2 settembre: prezzo
+unico 110€ e **due** varianti senza prezzo ("Volo costiero circa 20 km", "Los Gigantes e
+il Teide circa 120 km"). Ora sono **cinque varianti, ognuna col suo prezzo e la sua
+durata**:
+
+| percorso | volo | prezzo |
+|---|---|---|
+| 20 km — Costa sud | 8-9 min | €98 |
+| 30 km — Spiagge e barrancos | 12-15 min | €145 |
+| 50 km — Scogliere di Los Gigantes | 20-22 min | €279 |
+| 85 km — Il giro lungo dell'isola | 35-40 min | €390 |
+| Grand Teide Luxury | 45-50 min | €495 |
+
+**Si torna ai 98€ di partenza, e stavolta con la fonte giusta.** Il 2 settembre il prezzo
+era stato alzato da 98 a 110 perche' canaryvip.com segnalava 110 come valore canonico
+contro i 98 del corpo pagina. Il listino dell'ufficio dice 98 per il volo piu' corto:
+**i 110 di canaryvip erano del rivenditore, non di Admiral**, ed erano proprio i 98 che la
+scheda aveva prima. `priceFrom` e `priceAdult` tornano a 98.
+
+**I bambini pagano come gli adulti**, detto dall'ufficio: `priceChild` uguale a
+`priceAdult` su ogni variante (98, 145, 279, 390, 495). Non e' `priceChild: 0` — quello
+vuol dire "non ancora deciso" e lascia il totale senza la riga dei bambini. Niente `ages`:
+il listino non da' nessuna fascia d'eta', e inventarla sarebbe peggio che non averla. In
+nota c'e' scritto per esteso che il prezzo ridotto non esiste, cosi' nessuno legge
+"Bambini €279" e pensa a un errore.
+
+**`times: []`**, perche' l'ufficio dice che gli orari si concordano: in pagina resta la
+sola voce "Da concordare" e spariscono le fasce segnaposto di `ORARI_PREDEFINITI` che
+c'erano finche' il campo mancava.
+
+**Il volo da 120 km non esiste piu'** nel listino vero: il piu' lungo e' il Grand Teide da
+45-50 minuti. La vecchia variante veniva da canaryvip, quindi e' stata tolta senza
+rimpianti insieme all'altra.
+
+**Descrizioni riscritte da zero** nelle tre lingue, una per variante. Del testo del
+fornitore ("unforgettable ride", "will leave you speechless", "Pure luxury, pure magic")
+non resta niente: sono aggettivi, non fatti. Quello che e' rimasto sono i fatti — costa
+sud, barrancos, le scogliere a picco con La Gomera all'orizzonte, i 3.715 metri del Teide
+e il cratere delle Cañadas — e i minuti di volo, che sono l'unica cosa che il cliente sta
+davvero comprando.
+
+**Il passaporto al posto del documento d'identita'**: la nota diceva "Documento d'identita'
+richiesto" (canaryvip), l'ufficio dice passaporto. Cambiata. Restano invariate le altre
+condizioni gia' in nota e confermate dall'ufficio: **limite di peso 110 kg**, **nessun
+prelievo** (ritrovo all'elisuperficie di Adeje), massimo 4 passeggeri e pacchetto
+foto/video a pagamento.
+
+**Tolto "in tour condiviso o privato" dalla descrizione**: i prezzi nuovi sono a persona e
+un volo privato non ha un prezzo nel listino. Meglio non nominarlo che nominarlo senza
+poterlo quotare — se il privato esiste, torna con un prezzo suo.
+
+Provato nel browser vero (390×844) nelle tre lingue: i cinque bottoni cambiano insieme
+"Adulti", "Bambini" e la riga **Durata**, che segue la variante (8-9 → 20-22 minuti) e non
+resta sulla durata della scheda; la finestra della richiesta su Los Gigantes con 2 adulti
+fa **€558** e con 2 adulti + 1 bambino **€837** (279 × 3), e in "A che ora" c'e' solo "Da
+concordare". In elenco la card dice "ADEJE · DA 8 A 50 MINUTI DI VOLO · da €98".
+`node controlla.js` → 0 errori, 1 avviso invariato (opera-60). `sw.js` a `isla-v211`.
+
+**I quattro dubbi, chiusi dall'ufficio lo stesso giorno**: "Il giro lungo dell'isola" va
+bene come nome (non era la Isla Baja); i prezzi sono **a persona**; **pagano tutti il
+prezzo dell'adulto, neonati compresi**; il **volo privato non c'e'**, quindi la
+descrizione senza "condiviso o privato" resta com'e'.
+
+**I neonati pagano, ma `priceInfant` non c'e' lo stesso** — ed e' la decisione meno ovvia
+di questa scheda. `priceInfant` sta **solo sulla scheda e non sulla variante**
+(`prezziAPersona` in `escursioni.js` lo prende sempre da `tour`, con tanto di commento che
+lo spiega): un numero solo varrebbe uguale sul volo da €98 e su quello da €495, e chi
+porta un neonato sul Grand Teide si vedrebbe un totale sbagliato di quattrocento euro.
+Scrivere 98 li' dentro sarebbe stato peggio che non scrivere niente. Senza il campo la
+riga "Neonati" nella finestra resta nascosta, il cliente conta il neonato fra i passeggeri
+e al prezzo pieno il conto torna esatto; la nota in pagina glielo dice a parole, in tutte
+e tre le lingue ("ogni passeggero occupa un posto", "contali tutti fra i passeggeri").
+L'alternativa vera — far leggere `priceInfant` anche dentro `options.choices[]` — e' un
+cambio al motore dei prezzi che qui non serve a niente: tre righe identiche da €495 non
+dicono al cliente niente di piu' di una.
+
+Per lo stesso motivo **niente `ages`**: le fasce d'eta' servono a dire chi paga quanto, e
+qui pagano tutti uguale. Resta da sapere se ci sia un'**eta' minima per volare**, che e'
+un'altra domanda (sicurezza, non prezzo) e non ha ancora risposta.

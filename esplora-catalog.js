@@ -2123,32 +2123,102 @@ const ESPLORA_CATALOG = [
     category: "avventura-motori",
     zone: "Adeje",
     duration: { it: "Da 8 a 50 minuti di volo", en: "8 to 50 minutes of flight", es: "De 8 a 50 minutos de vuelo" },
-    priceFrom: 110,
-    priceAdult: 110,
-    priceChild: 0,
+    priceFrom: 98,
+    priceAdult: 98,
+    // Sul volo paga lo stesso prezzo chiunque occupi un posto, l'ha confermato
+    // l'ufficio: bambini e neonati come gli adulti. Percio' `priceChild` e'
+    // uguale a `priceAdult` su ogni variante, e non c'e' nessun `ages`: senza
+    // uno sconto per eta' non c'e' nessuna fascia da scrivere.
+    // **Niente `priceInfant`**, e non e' una dimenticanza: il campo sta solo
+    // sulla scheda e non sulla variante (vedi prezziAPersona in escursioni.js),
+    // quindi un numero solo qui varrebbe uguale sul volo da €98 e su quello da
+    // €495, e il totale di chi porta un neonato sul Grand Teide verrebbe fuori
+    // sbagliato di quattrocento euro. Con la riga "Neonati" nascosta il cliente
+    // li conta fra i passeggeri, che al prezzo pieno e' esatto, e la nota qui
+    // sotto glielo dice.
+    priceChild: 98,
     family: true,
+    times: [],
     options: {
       label: { it: "Percorso", en: "Route", es: "Recorrido" },
       choices: [
-        { label: { it: "Volo costiero (circa 20 km)", en: "Coastal flight (about 20 km)", es: "Vuelo costero (unos 20 km)" } },
-        { label: { it: "Los Gigantes e il Teide (circa 120 km)", en: "Los Gigantes and Teide (about 120 km)", es: "Los Gigantes y el Teide (unos 120 km)" } }
+        {
+          label: { it: "20 km - Costa sud", en: "20 km - South Coast", es: "20 km - Costa sur" },
+          priceAdult: 98,
+          priceChild: 98,
+          duration: { it: "8-9 minuti di volo", en: "8-9 minutes of flight", es: "8-9 minutos de vuelo" },
+          desc: {
+            it: "Il giro più breve: si decolla da Adeje e si segue la costa sud, sopra spiagge, porticcioli e la roccia vulcanica che scende in mare. In aria si sta 8-9 minuti.",
+            en: "The shortest ride: you lift off from Adeje and follow the south coast, over beaches, small harbours and the volcanic rock running down to the sea. You stay up 8-9 minutes.",
+            es: "El recorrido más corto: se despega en Adeje y se sigue la costa sur, sobre playas, puertos deportivos y la roca volcánica que baja hasta el mar. En el aire se está 8-9 minutos."
+          }
+        },
+        {
+          label: { it: "30 km - Spiagge e barrancos", en: "30 km - Beaches and ravines", es: "30 km - Playas y barrancos" },
+          priceAdult: 145,
+          priceChild: 145,
+          duration: { it: "12-15 minuti di volo", en: "12-15 minutes of flight", es: "12-15 minutos de vuelo" },
+          desc: {
+            it: "Il giro si allarga sulle spiagge e sui barrancos, i valloni scavati nella roccia che dall'interno scendono verso la costa. In aria si sta 12-15 minuti.",
+            en: "A wider loop over the beaches and the barrancos, the ravines cut into the rock that run down from inland to the coast. You stay up 12-15 minutes.",
+            es: "El recorrido se amplía sobre las playas y los barrancos, las gargantas excavadas en la roca que bajan del interior hacia la costa. En el aire se está 12-15 minutos."
+          }
+        },
+        {
+          label: { it: "50 km - Scogliere di Los Gigantes", en: "50 km - Los Gigantes cliffs", es: "50 km - Acantilados de Los Gigantes" },
+          priceAdult: 279,
+          priceChild: 279,
+          duration: { it: "20-22 minuti di volo", en: "20-22 minutes of flight", es: "20-22 minutos de vuelo" },
+          desc: {
+            it: "Si risale la costa fino alle scogliere di Los Gigantes, che cadono a picco sull'oceano per centinaia di metri, con La Gomera all'orizzonte. In aria si sta 20-22 minuti.",
+            en: "Up along the coast to the Los Gigantes cliffs, dropping sheer into the ocean for hundreds of metres, with La Gomera on the horizon. You stay up 20-22 minutes.",
+            es: "Se remonta la costa hasta los acantilados de Los Gigantes, que caen a pico sobre el océano cientos de metros, con La Gomera en el horizonte. En el aire se está 20-22 minutos."
+          }
+        },
+        {
+          label: { it: "85 km - Il giro lungo dell'isola", en: "85 km - The long island loop", es: "85 km - La vuelta larga a la isla" },
+          priceAdult: 390,
+          priceChild: 390,
+          duration: { it: "35-40 minuti di volo", en: "35-40 minutes of flight", es: "35-40 minutos de vuelo" },
+          desc: {
+            it: "Il giro lungo: coste, valli e coni vulcanici dell'interno, per vedere in un volo solo i paesaggi diversi dell'isola. In aria si sta 35-40 minuti.",
+            en: "The long loop: coastline, valleys and the volcanic cones inland, the island's different landscapes in a single flight. You stay up 35-40 minutes.",
+            es: "La vuelta larga: costa, valles y conos volcánicos del interior, los distintos paisajes de la isla en un solo vuelo. En el aire se está 35-40 minutos."
+          }
+        },
+        {
+          label: "Grand Teide Luxury",
+          priceAdult: 495,
+          priceChild: 495,
+          duration: { it: "45-50 minuti di volo", en: "45-50 minutes of flight", es: "45-50 minutos de vuelo" },
+          desc: {
+            it: "Il volo più lungo, fin sopra il Teide: i 3.715 metri della vetta più alta di Spagna e il cratere delle Cañadas, con l'isola intera intorno. In aria si sta 45-50 minuti.",
+            en: "The longest flight, all the way over Teide: the 3,715 metres of Spain's highest peak and the Cañadas crater, with the whole island around it. You stay up 45-50 minutes.",
+            es: "El vuelo más largo, hasta sobrevolar el Teide: los 3.715 metros de la cima más alta de España y el circo de Las Cañadas, con la isla entera alrededor. En el aire se está 45-50 minutos."
+          }
+        }
       ]
     },
     desc: {
-      it: "Tenerife vista dall'alto: sorvolo in elicottero da Adeje, in tour condiviso o privato, con il commento del pilota durante il volo.",
-      en: "Tenerife seen from above: a helicopter flight from Adeje, shared or private, with the pilot's commentary along the way.",
-      es: "Tenerife vista desde el aire: sobrevuelo en helicóptero desde Adeje, en tour compartido o privado, con los comentarios del piloto durante el vuelo."
+      it: "Tenerife vista dall'alto: sorvolo in elicottero dall'elisuperficie di Adeje, con cinque percorsi fra la costa sud e il Teide e il commento del pilota durante il volo.",
+      en: "Tenerife seen from above: a helicopter flight from the Adeje helipad, with five routes between the south coast and Teide and the pilot's commentary along the way.",
+      es: "Tenerife vista desde el aire: sobrevuelo en helicóptero desde el helipuerto de Adeje, con cinco recorridos entre la costa sur y el Teide y los comentarios del piloto durante el vuelo."
     },
     notes: [
       {
-        it: "Nessun servizio di prelievo: il punto d'incontro è l'elisuperficie di Adeje, raggiungibile in autonomia. Documento d'identità richiesto.",
-        en: "No pickup service: the meeting point is the Adeje helipad, reached independently. Valid ID required.",
-        es: "Sin servicio de recogida: el punto de encuentro es el helipuerto de Adeje, al que se llega por cuenta propia. Se requiere documento de identidad."
+        it: "Nessun servizio di prelievo: il punto d'incontro è l'elisuperficie di Adeje, raggiungibile in autonomia. Serve il passaporto per ogni passeggero.",
+        en: "No pickup service: the meeting point is the Adeje helipad, reached independently. A passport is required for every passenger.",
+        es: "Sin servicio de recogida: el punto de encuentro es el helipuerto de Adeje, al que se llega por cuenta propia. Se requiere pasaporte para cada pasajero."
       },
       {
         it: "Limite di peso 110 kg a passeggero (oltre puo' servire un posto aggiuntivo), massimo 4 passeggeri a volo. Pacchetto foto/video opzionale a pagamento.",
         en: "Weight limit 110 kg per passenger (an extra seat may be needed above that), maximum 4 passengers per flight. Optional photo/video package available for an extra fee.",
         es: "Límite de peso 110 kg por pasajero (por encima puede requerir un asiento adicional), máximo 4 pasajeros por vuelo. Paquete de foto/vídeo opcional con coste adicional."
+      },
+      {
+        it: "Il prezzo è uguale per tutti, bambini e neonati compresi: ogni passeggero occupa un posto e non c'è un prezzo ridotto. Nella richiesta contali tutti fra i passeggeri. L'orario del volo si concorda con l'ufficio.",
+        en: "The price is the same for everyone, children and infants included: every passenger takes a seat and there is no reduced price. Count them all as passengers in your request. The time of the flight is arranged with the office.",
+        es: "El precio es el mismo para todos, niños y bebés incluidos: cada pasajero ocupa una plaza y no hay precio reducido. En la solicitud cuéntalos a todos como pasajeros. La hora del vuelo se acuerda con la oficina."
       }
     ],
     languages: ["English", "Español"],

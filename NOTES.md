@@ -4549,3 +4549,39 @@ l'eta' minima vera (8 o 14 anni); il peso massimo (100 o 120 kg); se c'e' un pre
 bambini (ora `priceChild: 0`, quindi con un bambino nella richiesta il totale non si fa) e
 se le "circa 2 ore" di attivita' totale e l'atterraggio a La Enramada — presi dalla pagina
 del rivenditore, non dai dati ufficiali — sono giusti.
+
+## La spiegazione della variante sotto il suo bottone (4 settembre 2026)
+
+Segnalato guardando la pagina: **premi una variante e la spiegazione compare in fondo**,
+sotto tutta la fila dei bottoni. Con due varianti affiancate il testo sta sotto tutte e
+due e non dice a quale si riferisce; chi premeva "Platinum" leggeva un riquadro che
+sembrava commentare l'insieme, non la sua scelta.
+
+Prima c'era **un solo riquadro** (`[data-detail-option-desc]`) riempito da JavaScript col
+testo del bottone premuto, preso dall'attributo `data-option-desc`. Ora ogni variante ha
+**il suo paragrafo**, scritto nella pagina dentro la riga della variante
+(`.detail-option-row` = bottone + spiegazione), e si vede solo quando quel bottone e'
+premuto. L'attributo `data-option-desc` non serve piu' ed e' stato tolto.
+
+**Resta valido il motivo per cui il riquadro era uno solo** (vedi il Freebird, piu' su):
+le spiegazioni si vedono **una alla volta**. Quattro varianti con due righe di testo a
+testa tutte aperte insieme sono un muro, e non si sceglie piu' niente. E' cambiato **dove**
+si apre il testo, non quante se ne vedono.
+
+**Il layout cambia solo dove serve.** Se almeno una variante ha `desc`, l'elenco prende la
+classe `has-desc` e i bottoni vanno **in colonna**, uno per riga: affiancati, un testo
+sotto un bottone stretto meta' pagina non ci sta. Dove nessuna variante ha `desc`
+(self-drive-boats e le altre) la fila resta affiancata **esattamente come prima**, senza
+righe e senza colonna.
+
+**Spaziature scelte a occhio, non a caso**: fra il bottone e la sua spiegazione `.35rem`,
+fra una variante e l'altra `1rem`. Con lo stesso spazio sopra e sotto il riquadro sembrava
+appartenere al bottone successivo.
+
+Provato nel browser vero (390×844, `flamenco-show`): all'apertura Gold e' premuto e si
+legge solo la sua riga; premendo Platinum il testo si sposta sotto Platinum e "In breve"
+passa da €51/€25,50 a €61/€30,50 con "Bevande" e "Snack" in "Cosa e' incluso". Su
+`jet-ski-safari-1-2h`, dove solo la variante da 2 ore ha una descrizione, le altre due
+righe non mostrano niente e la variante premessa all'apertura (40 minuti) non apre nessun
+riquadro vuoto. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). `sw.js` a
+`isla-v210`.

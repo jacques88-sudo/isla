@@ -1985,11 +1985,26 @@ body.menu-open { overflow: hidden; }
   border-color: var(--text);
   background: var(--sand);
 }
+/* Dove le varianti hanno una spiegazione i bottoni vanno in colonna, uno per
+   riga: la spiegazione si apre sotto quello premuto, e affiancati non ci
+   starebbe. Senza spiegazioni la fila resta affiancata come prima. */
+.detail-options-list.has-desc {
+  flex-direction: column;
+  /* piu' spazio fra una variante e l'altra che fra il bottone e la sua
+     spiegazione: cosi' si vede a colpo d'occhio di chi e' quel testo */
+  gap: 1rem;
+}
+.detail-option-row {
+  display: flex;
+  flex-direction: column;
+}
+.detail-options-list.has-desc .detail-option { width: 100%; }
+
 /* Il dettaglio della variante scelta: giorni, orario, cosa si mangia. Sta
-   sotto la fila dei bottoni e ne mostra una alla volta — dentro ogni bottone
-   quattro varianti con due righe di testo a testa diventano un muro. */
+   sotto il suo bottone e se ne vede una alla volta — tutte aperte, quattro
+   varianti con due righe di testo a testa diventano un muro. */
 .detail-option-desc {
-  margin: .8rem 0 0;
+  margin: .35rem 0 0;
   padding: .75rem .9rem;
   background: var(--cream);
   border-radius: 10px;

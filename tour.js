@@ -345,28 +345,40 @@ function detailOptions(tour) {
   const opz = tour.options;
   if (!opz || !Array.isArray(opz.choices) || !opz.choices.length) return "";
 
+  // Se almeno una variante ha la sua spiegazione i bottoni vanno in colonna,
+  // uno per riga: la spiegazione si apre sotto quello premuto, e affiancati
+  // non ci starebbe. Senza spiegazioni la fila resta come prima.
+  const conDesc = opz.choices.some(s => s.desc);
+
   return `
     <div class="detail-options" data-detail-options
          role="group" aria-label="${esc(tf(opz.label))}">
       <span class="detail-options-label">${esc(tf(opz.label))}</span>
-      <div class="detail-options-list">
+      <div class="detail-options-list${conDesc ? " has-desc" : ""}">
         ${opz.choices.map((scelta, i) => {
           // `price` e' il numero da scrivere sul bottone; `priceAdult` c'e'
           // dove il prezzo della variante e' a persona e sappiamo anche
           // quello dei bambini. Sul bottone vale lo stesso.
           const prezzo = scelta.price || scelta.priceAdult;
-          return `
+          const premuto = i === 0;
+          const bottone = `
           <button type="button" class="detail-option"
                   data-option-value="${esc(tf(scelta.label))}"
                   ${prezzo ? `data-option-price="${prezzo}"` : ""}
-                  ${scelta.desc ? `data-option-desc="${esc(tf(scelta.desc))}"` : ""}
-                  aria-pressed="${i === 0 ? "true" : "false"}">
+                  aria-pressed="${premuto ? "true" : "false"}">
             <span class="detail-option-name">${esc(tf(scelta.label))}</span>
             ${prezzo ? `<span class="detail-option-price">€${eur(prezzo)}</span>` : ""}
-          </button>`; }).join("")}
+          </button>`;
+          if (!conDesc) return bottone;
+          // Il testo nasce gia' scritto nella pagina, non arriva da un
+          // attributo: il paragrafo sta dentro la riga della sua variante, e
+          // resta nascosto finche' quella variante non e' premuta.
+          const spiegazione = scelta.desc
+            ? `<p class="detail-option-desc" data-detail-option-desc${premuto ? "" : " hidden"}>${esc(tf(scelta.desc))}</p>`
+            : "";
+          return `<div class="detail-option-row">${bottone}${spiegazione}</div>`;
+        }).join("")}
       </div>
-      ${opz.choices.some(s => s.desc)
-        ? '<p class="detail-option-desc" data-detail-option-desc></p>' : ""}
     </div>`;
 }
 
@@ -509,17 +521,24 @@ function collegaOpzioni(contenitore, tour) {
   const gruppo = contenitore.querySelector("[data-detail-options]");
   if (!gruppo) return;
 
-  // La descrizione della variante scelta sta in un riquadro sotto i bottoni,
-  // non dentro ognuno: con quattro varianti che hanno due righe di testo a
-  // testa la fila di bottoni diventa un muro e non si scelgono piu'.
-  const descEl = contenitore.querySelector("[data-detail-option-desc]");
+  // La descrizione di ogni variante sta sotto il suo bottone, dentro la stessa
+  // riga: cosi' si legge attaccata a quello che si e' appena premuto. Se ne
+  // vede pero' **una alla volta** — tutte aperte, quattro varianti con due
+  // righe di testo a testa diventano un muro e non si sceglie piu' niente.
   const righeEl = contenitore.querySelector("[data-detail-rows]");
   const inclusoEl = contenitore.querySelector("[data-detail-included]");
   const inclusoListaEl = contenitore.querySelector("[data-detail-included-list]");
 
+  // La riga di un bottone: il contenitore che tiene insieme il bottone e la
+  // sua spiegazione. Dove le spiegazioni non ci sono la riga non esiste, e
+  // qui torna null senza rompere niente.
+  function rigaDi(bottone) {
+    return bottone.closest(".detail-option-row");
+  }
+
   // Tre pezzi di pagina seguono la variante scelta, e si aggiornano insieme:
   //   - "In breve", dove i prezzi per fascia d'eta' sono quelli della variante
-  //   - le due righe che spiegano la variante, sotto i bottoni
+  //   - le due righe che spiegano la variante, sotto il suo bottone
   //   - "Cosa e' incluso": sul giro di 2 ore non c'e' ne' il pranzo ne' il
   //     transfer, e mostrarli lo stesso sarebbe una promessa non mantenuta
   function aggiornaScheda(bottone) {
@@ -527,11 +546,10 @@ function collegaOpzioni(contenitore, tour) {
 
     if (righeEl) righeEl.innerHTML = detailRows(tour, variante);
 
-    if (descEl) {
-      const d = bottone.getAttribute("data-option-desc") || "";
-      descEl.textContent = d;
-      descEl.hidden = !d;
-    }
+    const riga = rigaDi(bottone);
+    gruppo.querySelectorAll("[data-detail-option-desc]").forEach(p => {
+      p.hidden = !riga || p.closest(".detail-option-row") !== riga;
+    });
 
     if (inclusoEl && inclusoListaEl) {
       const voci = paroleIncluse(tour, variante);

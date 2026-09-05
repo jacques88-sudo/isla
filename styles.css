@@ -38,6 +38,10 @@
 * { box-sizing: border-box; }
 
 html { color-scheme: light; scroll-behavior: smooth; scroll-padding-top: 9rem; }
+/* I 9rem qui sopra lasciano il posto a .site-banner, che e' fisso e alto. La
+   home ha invece la striscia sticky, alta 60 px: 9rem lascerebbero un buco di
+   aria sopra il titolo a cui si e' saltati. */
+html:has(.home-bar) { scroll-padding-top: 5rem; }
 
 body {
   margin: 0;
@@ -232,29 +236,6 @@ a { text-decoration: none; color: inherit; }
   color: var(--text);
 }
 
-/* Hero — video overlaid by the fixed site banner, separated from the page below by a thin line */
-.hero {
-  position: relative;
-  height: 58vh;
-  min-height: 380px;
-  overflow: hidden;
-  border-bottom: 1px solid var(--border);
-}
-@media (min-width: 768px) {
-  .hero { height: 52vh; min-height: 420px; }
-}
-.hero-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.hero-fade {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, oklch(0.24 0.012 60 / .45) 0%, oklch(0.24 0.012 60 / .08) 30%, oklch(0.24 0.012 60 / .1) 55%, var(--bg) 100%);
-}
 .hero-top {
   width: 100%;
   max-width: var(--max);
@@ -426,18 +407,13 @@ a { text-decoration: none; color: inherit; }
 }
 .pill-icon { font-size: .85rem; }
 
-.hero-controls {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 1.75rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.1rem;
-}
+/* Il pulsante di pausa del video, nell'angolo in alto della fascia */
 .playbtn {
-  width: 56px;
-  height: 56px;
+  position: absolute;
+  top: 1.9rem;
+  right: 2rem;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-pill);
   border: 1px solid oklch(1 0 0 / .6);
   background: oklch(1 0 0 / .12);
@@ -446,19 +422,141 @@ a { text-decoration: none; color: inherit; }
   display: grid;
   place-items: center;
 }
-.playbtn svg { width: 20px; height: 20px; }
+.playbtn svg { width: 16px; height: 16px; }
 /* L'attributo hidden non spegne un <svg>: la regola "[hidden] { display: none }"
    del browser vale solo per i tag HTML, e questi due sono SVG. Senza questa
    riga le due icone (pausa e play) si disegnano una sopra l'altra. */
 .playbtn svg[hidden] { display: none; }
-.discover {
-  background: #fff;
-  color: var(--text);
-  padding: .8rem 1.7rem;
-  border-radius: var(--radius-pill);
-  font-size: .68rem;
+/* ─── Testata della home ────────────────────────────────────────────────────
+   Fascia con il video, logo tondo che ci sta sopra, nome del posto, lingue in
+   fila, e la striscia dei pulsanti che si ferma in cima quando si scorre.
+   Le altre pagine tengono .site-banner, che invece e' fisso. */
+.home-hero {
+  position: relative;
+  max-width: var(--max-wide);
+  margin: .9rem auto 0;
+  /* lo spazio sotto e' quello che il logo tondo sborda dalla foto */
+  padding: 0 1.25rem 3.4rem;
+}
+.home-hero-media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 18px;
+  background: var(--cream);
+}
+/* Su schermo largo la stessa proporzione darebbe una fascia alta 600 px:
+   diventa piu' bassa e larga, come una striscia panoramica. */
+@media (min-width: 960px) {
+  .home-hero-media { aspect-ratio: 21 / 9; }
+}
+.home-hero-mark {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 116px;
+  height: 116px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  border: 4px solid var(--bg);
+  box-shadow: var(--shadow);
+}
+.home-hero-mark img {
+  width: 58%;
+  height: 58%;
+  object-fit: contain;
+}
+
+.home-head {
+  text-align: center;
+  padding-top: 1.2rem;
+}
+.home-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.7rem;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  line-height: 1;
+}
+.home-tagline {
+  margin: .5rem 0 1.1rem;
+  color: var(--muted);
+  font-size: .62rem;
   text-transform: uppercase;
   letter-spacing: .22em;
+}
+
+/* Le tre lingue tutte in vista, invece del bottone tondo che apre l'elenco.
+   paintLangButtons() in i18n.js accende quella attiva con .is-active. */
+.lang-row {
+  display: inline-flex;
+  gap: .25rem;
+  padding: .3rem;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.lang-row button {
+  min-width: 54px;
+  padding: .5rem .2rem;
+  border-radius: var(--radius-pill);
+  color: var(--muted);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+.lang-row button.is-active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* "sticky" vuol dire: scorre con la pagina finche' arriva in cima, poi si
+   ferma li'. Costa meno di .site-banner, che essendo "fixed" esce dal flusso
+   e obbliga le altre pagine a un padding-top che gli lascia il posto.
+   Sfondo e sfocatura servono perche' il contenuto le passa sotto. */
+.home-bar {
+  position: sticky;
+  top: 0;
+  /* sopra la pagina, sotto il pallino dell'assistente (39) e le finestre (40 e 41) */
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  margin-top: 1.4rem;
+  padding: .6rem 1.25rem;
+  background: color-mix(in oklab, var(--bg) 85%, transparent);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+}
+/* .pill-ghost nasce bianco su trasparente, per stare sopra un video. Qui
+   sotto c'e' carta chiara: senza questo sarebbe testo bianco su bianco. */
+.home-bar .pill-ghost {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+}
+/* Quattro pillole con la scritta non ci stanno su un telefono da 412 px (le
+   altre hanno white-space: nowrap e uscirebbero dallo schermo): questa e' solo
+   l'icona, il nome sta nell'aria-label. */
+.pill-install {
+  flex: 0 0 auto;
+  width: 40px;
+  padding: 0;
+}
+.pill-install svg { width: 18px; height: 18px; }
+/* .pill e' inline-flex e vince sull'[hidden] del browser: senza questa riga la
+   pillola dell'installazione si vedrebbe sempre. */
+.pill[hidden] { display: none; }
+
+/* Sotto la striscia l'intro non ha bisogno dei suoi 4rem di aria */
+.home-bar + .intro { padding-top: 2.2rem; }
+@media (min-width: 960px) {
+  .home-bar + .intro { padding-top: 3rem; }
 }
 
 /* Intro */

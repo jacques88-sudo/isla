@@ -77,53 +77,44 @@
 
   <a class="skip" href="#main" data-i18n="common.skip">Vai al contenuto</a>
 
-  <header class="site-banner">
-    <div class="hero-top">
-      <a class="hero-logo" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
-        <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
-      </a>
-      <div class="hero-brand">
-        <span class="hero-brand-title">Isla</span>
-        <span class="hero-brand-sub">so easy so tenerife</span>
-      </div>
-      <div class="lang-switch">
-        <button class="lang-toggle" type="button" data-lang-toggle
-                data-i18n-aria-label="lang.change" aria-label="Cambia lingua"
-                aria-haspopup="true" aria-expanded="false">
-          <span data-lang-current>IT</span>
-        </button>
-        <ul class="lang-menu" data-lang-menu hidden>
-          <li><button type="button" data-lang-set="it">Italiano</button></li>
-          <li><button type="button" data-lang-set="en">English</button></li>
-          <li><button type="button" data-lang-set="es">Español</button></li>
-        </ul>
-      </div>
-    </div>
-    <nav class="hero-pills" data-i18n-aria-label="nav.aria" aria-label="Menu principale">
-      <a class="pill pill-ghost" href="./escursioni.html" data-i18n="nav.experiences">Esperienze</a>
-      <button class="pill pill-solid" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.bookNow">Prenota ora</button>
-      <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
-        <span class="pill-icon" aria-hidden="true">☰</span> <span data-i18n="nav.menu">Menu</span>
-      </button>
-    </nav>
-  </header>
-
   <main id="main">
-    <section class="hero">
-      <video class="hero-video" id="heroVideo" aria-hidden="true" autoplay muted loop playsinline
+    <div class="home-hero">
+      <video class="home-hero-media" id="heroVideo" aria-hidden="true" autoplay muted loop playsinline
              poster="./assets/hero-tenerife.webp">
         <source src="./assets/Hero-poster.mp4" type="video/mp4" />
       </video>
-      <div class="hero-fade" aria-hidden="true"></div>
+      <button class="playbtn" id="videoToggle" type="button" data-i18n-aria-label="hero.pause" aria-label="Metti in pausa il video">
+        <svg id="iconPause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+        <svg id="iconPlay" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <a class="home-hero-mark" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
+        <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
+      </a>
+    </div>
 
-      <div class="hero-controls">
-        <button class="playbtn" id="videoToggle" type="button" data-i18n-aria-label="hero.pause" aria-label="Metti in pausa il video">
-          <svg id="iconPause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-          <svg id="iconPlay" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M8 5v14l11-7z"/></svg>
-        </button>
-        <a class="discover" href="#intro" data-i18n="hero.discover">Scopri di più</a>
+    <div class="wrap home-head">
+      <p class="home-name">Isla</p>
+      <p class="home-tagline">so easy so tenerife</p>
+      <div class="lang-row" data-i18n-aria-label="lang.label" aria-label="Lingua" role="group">
+        <button type="button" data-lang-set="it">IT</button>
+        <button type="button" data-lang-set="en">EN</button>
+        <button type="button" data-lang-set="es">ES</button>
       </div>
-    </section>
+    </div>
+
+    <nav class="home-bar" data-i18n-aria-label="nav.aria" aria-label="Menu principale">
+      <div class="hero-pills">
+        <a class="pill pill-ghost" href="./escursioni.html" data-i18n="nav.experiences">Esperienze</a>
+        <button class="pill pill-solid" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.bookNow">Prenota ora</button>
+        <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
+          <span class="pill-icon" aria-hidden="true">☰</span> <span data-i18n="nav.menu">Menu</span>
+        </button>
+        <button class="pill pill-ghost pill-install" type="button" data-install-btn hidden
+                data-i18n-aria-label="menu.install" aria-label="Installa l'app">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 6v8m0 0-3-3m3 3 3-3"/><path d="M10.5 18.5h3"/></svg>
+        </button>
+      </div>
+    </nav>
 
     <section class="intro" id="intro">
       <div class="wrap">

@@ -122,8 +122,10 @@ document.addEventListener("DOMContentLoaded", initTicketDialog);
 // In-app install button: shown only when the browser offers installation
 // and the app isn't already running installed.
 function initInstallButton() {
-  const btn = document.querySelector("[data-install-btn]");
-  if (!btn) return;
+  // Piu' di uno: il bottone sta nel menu laterale, e la home puo' averne un
+  // secondo piu' in vista. Con querySelector si sarebbe acceso solo il primo.
+  const btns = [...document.querySelectorAll("[data-install-btn]")];
+  if (!btns.length) return;
 
   const standalone = matchMedia("(display-mode: standalone)").matches ||
     window.navigator.standalone === true;
@@ -134,21 +136,21 @@ function initInstallButton() {
   window.addEventListener("beforeinstallprompt", e => {
     e.preventDefault();
     deferred = e;
-    btn.hidden = false;
+    btns.forEach(b => { b.hidden = false; });
   });
 
   window.addEventListener("appinstalled", () => {
     deferred = null;
-    btn.hidden = true;
+    btns.forEach(b => { b.hidden = true; });
   });
 
-  btn.addEventListener("click", async () => {
+  btns.forEach(btn => btn.addEventListener("click", async () => {
     if (!deferred) return;
     deferred.prompt();
     await deferred.userChoice;
     deferred = null;
-    btn.hidden = true;
-  });
+    btns.forEach(b => { b.hidden = true; });
+  }));
 }
 
 document.addEventListener("DOMContentLoaded", initInstallButton);

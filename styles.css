@@ -447,6 +447,10 @@ a { text-decoration: none; color: inherit; }
   place-items: center;
 }
 .playbtn svg { width: 20px; height: 20px; }
+/* L'attributo hidden non spegne un <svg>: la regola "[hidden] { display: none }"
+   del browser vale solo per i tag HTML, e questi due sono SVG. Senza questa
+   riga le due icone (pausa e play) si disegnano una sopra l'altra. */
+.playbtn svg[hidden] { display: none; }
 .discover {
   background: #fff;
   color: var(--text);
@@ -479,9 +483,11 @@ a { text-decoration: none; color: inherit; }
 .bento-grid {
   list-style: none;
   /* .wrap centra con "margin: 0 auto": qui va ripetuto, altrimenti questa
-     regola (che viene dopo) lo annulla e la griglia resta a sinistra */
+     regola (che viene dopo) lo annulla e la griglia resta a sinistra.
+     Il padding invece NON si ripete: .bento-grid viene dopo .wrap e ha la
+     stessa specificita', quindi un "padding: 0" qui annullava il margine
+     laterale e i riquadri finivano attaccati ai bordi dello schermo. */
   margin: 0 auto;
-  padding: 0;
   display: grid;
   gap: .8rem;
   grid-template-columns: repeat(2, 1fr);

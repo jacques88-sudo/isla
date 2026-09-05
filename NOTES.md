@@ -4829,3 +4829,168 @@ privato, e la finestra della richiesta si apre ancora dal pulsante. Nessun error
 console (l'unica richiesta fallita è il CSS dei font di Google, che la rete del container
 blocca sempre). `node controlla.js` → 0 errori, 1 avviso invariato (opera-60).
 `sw.js` a `isla-v214`.
+
+---
+
+## `prova-layout.html`: la prova del layout "menu del ristorante" (5 settembre 2026)
+
+Guardando l'app di un ristorante (`app.deskbay.io`) è venuta la domanda: quel layout — foto
+in cima, logo tondo che ci sta sopra, nome del posto, lingue in fila, bottone "Filtra Menù",
+categorie come linguette sottolineate — starebbe bene su Isla? La domanda vera non è se è
+bello, è **quanto costa provarlo**.
+
+Costa un file. `prova-layout.html` è una pagina **usa e getta**: non è collegata da nessun
+menu, non è in `ASSETS` di `sw.js` (quindi `CACHE_NAME` non si alza), e tutto il suo stile
+sta in un `<style>` dentro il file con prefisso `db-`. `styles.css`, `escursioni.js` e le
+altre pagine non sono state toccate: se il layout non piace si cancella un file solo.
+
+**Perché ha funzionato senza modificare il JavaScript.** `initCatalog` non sa com'è fatta la
+pagina: cerca `[data-grid]`, `[data-chips]`, `[data-count]`, `[data-empty]` e — se c'è —
+`[data-search]`. Tenendo quei ganci, la pagina si riempie da sola: **71 schede e 9
+categorie, uguali a `escursioni.html`, zero errori in console**. Le linguette sottolineate
+sono gli stessi bottoni `.chip` che crea `escursioni.js`, vestiti da `.db-tabs .chip`. Il
+bottone "Filtra" della prima versione era un `<details>`: si apre e si chiude da solo, zero
+JS. Il pallino "Mio Ordine" del ristorante è già il nostro `.lista-fab`.
+
+Poi la scelta: al posto del bottone "Filtra Menù" ci vanno **l'intro "Inizia la tua
+avventura con…" e i riquadri bento**, presi da `index.html` così com'erano. Sotto il logo
+tondo il titolo della pagina è stato tolto e c'è il **nome del posto** ("Isla — so easy so
+tenerife"), come sul menu del ristorante: due titoli grandi uno sotto l'altro si
+disturbavano, e il titolo della sezione ("TUTTE LE ESCURSIONI") fa già quel lavoro più giù.
+Il campo di ricerca sparisce con il bottone che lo conteneva — `initCatalog` regge perché
+cerca `[data-search]` dentro un `if`, ma con 71 schede è una perdita da decidere.
+
+**Il numero che conta non è la bellezza, è dove comincia la prima scheda.** Su uno schermo
+alto 915 px: `escursioni.html` la mette a **456 px** (mezza foto si vede subito), la prova
+con intro e bento a **1339 px** (tre schermate di scorrimento prima di vedere un'escursione).
+Su un menu di ristorante ha senso — sei seduto lì, il locale è uno solo. Su Isla la merce
+sono le 71 escursioni. Quella pagina lì è una **home**, non l'elenco.
+
+Deciso così: la prova diventa una **home**. Le linguette, il titolo di sezione e le 71
+schede sono usciti; al loro posto c'è la sezione `#categories` di `index.html`, copiata
+com'era. L'ordine finale è **foto + logo tondo + nome + lingue → intro → bento →
+categorie**. `initCatalog` non parte nemmeno, perché `[data-grid]` non c'è più (`if (!grid)
+return`), e i due riquadri bento che puntavano a `./index.html#categories` adesso puntano a
+`#categories` di questa stessa pagina. Cambiati anche `<title>` e `meta`, da
+`meta.catalog.*` a `meta.home.*`: è una home, non l'elenco.
+
+Misurato a confronto con la home di oggi (412×915): l'intro passa da **531 a 413 px** e le
+categorie da **1971 a 1130 px**. Attenzione a non prendersi il merito sbagliato: gran parte
+di quegli 841 px non è il layout nuovo, è che **la prova non ha la sezione "Tre passi,
+nessun pensiero"**, che su `index.html` sta tra i bento e le categorie. Il resto è il video
+a tutto schermo sostituito da una fascia 16/9.
+
+Restano fuori dalla prova, e sono da rimettere se il layout piace: `steps`, `secret`,
+`about` e `faq`. La pagina si porta ancora dietro la finestra della richiesta ereditata da
+`escursioni.html`: invisibile e innocua, ma su una home vera non serve.
+
+Notato di passaggio, e **non** sistemato perché non c'entra con questa prova: sulla home i
+riquadri bento toccano i bordi dello schermo mentre tutto il resto ha il margine, perché
+`.bento-grid` mette `padding: 0` e annulla il `padding: 0 1.25rem` di `.wrap`. Misurato:
+primo riquadro da 0 a 200 px su 412, identico su `index.html` e sulla prova — quindi è di
+prima, non l'ha rotto la pagina nuova.
+
+Poi la striscia. Dove il menu del ristorante mette le linguette dei piatti
+("Piatti del giorno · Antipasti · Pasta"), Isla mette le sue tre pillole —
+**Esperienze · Prenota ora · Menu** — e da lì in giù **non si muove più**: è
+`position: sticky; top: 0`, quindi scorre con la pagina finché arriva in cima e
+lì si ferma. È lo stesso lavoro che sulle altre pagine fa `.site-banner`, ma
+costa meno: `sticky` sta nel flusso della pagina, quindi non serve il
+`padding-top` che compensa un elemento tolto dal flusso (`.catalog-page` ne ha
+11rem apposta), e non serve il JavaScript che accorcia il banner allo scroll.
+
+Due cose obbligate, tutte e due nel `<style>` della pagina. Lo sfondo: sotto la
+striscia ci passa il contenuto, e senza `background` più `backdrop-filter` si
+leggerebbe tutto sovrapposto. E `.db-bar .pill-ghost`: la pillola nasce **bianca
+su trasparente** perché su `index.html` sta sopra il video; qui sotto c'è carta
+chiara, e senza quella regola sarebbe testo bianco su bianco.
+
+Le pillole sono le stesse di `index.html`, con gli stessi `data-ticket-open` e
+`data-menu-open`: la finestra "Scan ticket" e il menu laterale erano già nella
+pagina (ereditati da `escursioni.html`) e funzionano senza toccare `app.js`.
+Provato: il menu si apre davvero.
+
+Misure (412×915): la striscia comincia a **435 px** ed è alta **60 px**, l'intro
+a 496, le categorie a 1209, pagina alta 3537. `html` ha `scroll-padding-top:
+9rem`, tarato sul banner fisso alto delle altre pagine: qui la striscia è meno
+di metà, quindi il salto a `#categories` dal riquadro "Pacchetti" lascia un buco
+di aria sopra. Non toccato, ma è la prima cosa da sistemare se il layout passa.
+
+Restano fuori: `steps`, `secret`, `about` e `faq`. E resta il video della home,
+che qui è diventato la sua foto ferma (`hero-tenerife.webp` è il `poster` del
+video): se questo layout va su `index.html`, il video si può rimettere dentro la
+fascia 16/9 invece di perderlo.
+
+### Le cinque cose sistemate dopo
+
+**1. Il video torna in cima.** `hero-tenerife.webp` era il *poster* del video della
+home: mettendo quella foto ferma nella fascia, il video spariva. Adesso nella fascia
+16/9 c'è il `<video>` con gli stessi attributi di `index.html` (`autoplay muted loop
+playsinline`, stesso poster), e il pulsante di pausa — che sulla home è grande e sta in
+fondo allo schermo intero — qui è piccolo nell'angolo. `initHeroVideo` lo trova da solo:
+cerca `#heroVideo` e `#videoToggle`, che sono gli stessi id. **Non l'ho visto suonare**:
+il Chromium del container non ha il codec H.264 (`networkState: 3`, nessun errore) e
+mostra il poster — ma si comporta **identico su `index.html`**, quindi è il container,
+non il markup.
+
+**2. La lingua attiva era colpa mia.** Non mancava niente a `i18n.js`: `paintLangButtons()`
+segna già ogni `[data-lang-set]` con la classe `.is-active` e `aria-pressed`. Avevo
+scritto il selettore sbagliato (`[aria-current="true"]`). Una parola cambiata.
+
+**3. `scroll-padding-top` a 5rem.** I 9rem di `styles.css` sono tarati sul banner fisso
+alto delle altre pagine; qui la striscia è 60 px. Misurato: dopo il salto da "Pacchetti"
+le categorie stanno a **80 px** dal bordo, cioè 20 px sotto la striscia. Prima ce n'erano
+144.
+
+**4. "Installa l'app" esce dal menu.** È il bottone più prezioso di una PWA e stava a tre
+tocchi di distanza. Adesso è anche un sesto riquadro bento, largo, sotto il noleggio.
+Due cose sono servite:
+- `initInstallButton` in `app.js` usava `querySelector`: con due bottoni si sarebbe
+  acceso solo il primo. Adesso `querySelectorAll`, e il `beforeinstallprompt` li accende
+  tutti (provato mandando l'evento a mano: si accendono il riquadro **e** quello del menu).
+- `.bento-tile[hidden] { display: none }`: `.bento-tile` è `display: flex`, che vince
+  sull'`[hidden]` del browser. Senza quella riga il riquadro si vedeva **sempre**, anche
+  dove non c'è niente da installare.
+
+**5. I bento non toccano più i bordi.** In `.bento-grid` c'era `padding: 0`, che veniva
+dopo `.wrap` con la stessa specificità e ne annullava il `padding: 0 1.25rem`. Tolta
+quella riga: primo riquadro da **0..200 a 20..200**, uguale sulla prova e su
+`index.html`. Questa è l'unica delle cinque che tocca il sito vero — e lo aggiusta.
+
+**Trovato mentre facevo la 1, e sistemato: le due icone del pulsante video si
+disegnavano una sopra l'altra.** `<svg id="iconPlay" hidden>` non si spegne: la regola
+`[hidden] { display: none }` del browser vale solo per i tag HTML, e quelli sono SVG.
+Verificato che succedeva **anche sulla home di oggi** (`display: block` su un elemento
+con `hidden`). Aggiunta `.playbtn svg[hidden] { display: none }` in `styles.css`, quindi
+vale per tutte le pagine.
+
+Provato nel browser vero (412×915) con Playwright: la lingua attiva è marcata, il
+riquadro "Installa" appare solo quando arriva l'evento, il salto alle categorie lascia
+20 px sotto la striscia, i bento hanno il margine su tutte e due le pagine, nessun errore
+JS. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). **`sw.js` a
+`isla-v215`**: stavolta `styles.css` e `app.js` sono cambiati davvero.
+
+### "Installa l'app" nella striscia (5 settembre 2026)
+
+Il riquadro bento è durato poco: il posto giusto è la striscia, insieme a Esperienze,
+Prenota ora e Menu. Lì però **quattro pillole con la scritta non ci stanno**: le altre
+tre hanno `white-space: nowrap` e su 412 px uscirebbero dallo schermo. Quindi la quarta
+è **solo l'icona** (40 px, larghezza fissa), e il nome sta nell'`aria-label`, tradotto
+come tutto il resto. Misurato con e senza: le pillole passano da `20..135 / 143..269 /
+277..392` a `20..130 / 138..241 / 249..344 / 352..392`, e la pagina non scorre di lato in
+nessuno dei due casi.
+
+**Comparire e sparire non è codice nuovo.** `initInstallButton` in `app.js` faceva già
+tutto: accende i bottoni su `beforeinstallprompt`, li spegne su `appinstalled`, e non
+accende niente se la pagina gira già come app installata (`display-mode: standalone`).
+Serviva solo che li trovasse tutti — ed è la modifica di prima, `querySelectorAll` al
+posto di `querySelector`. Provato mandando i due eventi a mano: alla comparsa si accendono
+la pillola **e** il bottone nel menu laterale, all'installazione spariscono tutti e due.
+
+Una riga obbligata, la stessa trappola di `.bento-tile`: **`.pill[hidden] { display: none }`**.
+`.pill` è `display: inline-flex`, che vince sull'`[hidden]` del browser, e senza quella
+riga la pillola si vedrebbe sempre — anche su un telefono che non ha niente da installare
+e anche dopo l'installazione.
+
+Provato nel browser vero (412×915): nessun errore JS. `sw.js` resta a `isla-v215`, alzato
+poco fa: qui è cambiato solo `prova-layout.html`, che non è nella cache.

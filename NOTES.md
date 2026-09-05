@@ -4994,3 +4994,49 @@ e anche dopo l'installazione.
 
 Provato nel browser vero (412×915): nessun errore JS. `sw.js` resta a `isla-v215`, alzato
 poco fa: qui è cambiato solo `prova-layout.html`, che non è nella cache.
+
+---
+
+## Il layout nuovo passa sulla home vera (5 settembre 2026)
+
+`prova-layout.html` ha fatto il suo lavoro ed è **cancellato**. Quello che c'era dentro
+adesso è `index.html`, e lo stile è passato dal `<style>` della pagina a `styles.css`,
+con nomi che dicono cosa sono invece del prefisso `db-` di quando era una prova:
+`.home-hero`, `.home-hero-media`, `.home-hero-mark`, `.home-head`, `.home-name`,
+`.home-tagline`, `.lang-row`, `.home-bar`, `.pill-install`.
+
+**Cosa se ne va dalla home.** Il `.site-banner` fisso e la sezione `.hero` a schermo
+intero. Il video non sparisce: si sposta dentro la fascia 16/9 in cima, con il logo tondo
+che ci sta sopra. Con loro se ne va il CSS che serviva solo a loro — `.hero`,
+`.hero-video`, `.hero-fade`, `.hero-controls`, `.discover` — controllato prima che
+nessun'altra pagina li usasse. `.hero-top`, `.hero-brand`, `.hero-pills` e `.lang-switch`
+**restano**: `escursioni.html` e `tour.html` tengono il banner fisso e li usano ancora.
+Il pulsante del video (`.playbtn`) da 56 px in fondo allo schermo diventa 40 px
+nell'angolo della fascia.
+
+**Su schermo largo la fascia cambia proporzione.** A 16/9 su 1120 px sarebbe alta 630 px:
+da 960 px in su diventa 21/9, cioè 1080×463. Misurato.
+
+**`html:has(.home-bar) { scroll-padding-top: 5rem }`.** I 9rem globali lasciano il posto
+a `.site-banner`, che è alto; la striscia della home è 60 px. Invece di una classe sul
+`<body>`, la regola si accorge da sola di essere sulla home. Se un browser non capisce
+`:has` non si rompe niente: restano i 9rem. Misurato: dal menu, il salto a `#secret`
+lascia **80 px**, cioè 20 sotto la striscia.
+
+**Il menu delle lingue a tendina non c'è più sulla home**, ma resta su
+`escursioni.html` e `tour.html`: lì il posto in cima è poco. `paintLangButtons()` accende
+la lingua attiva in tutte e due le forme, non è cambiato niente in `i18n.js`.
+
+Due cose rimaste indietro apposta, che non fanno danno:
+- `initStickyBanner` in `app.js` cerca ancora `.hero` per decidere se il banner deve
+  partire trasparente. Adesso nessuna pagina ce l'ha, quindi prende sempre la strada
+  "compatto e basta". Il ramo con lo scroll è codice morto: si toglie quando si tocca
+  quel file per un altro motivo.
+- La chiave `hero.discover` ("Scopri di più") in `i18n.js` non la usa più nessuno.
+
+Provato nel browser vero con Playwright, a 412×915 e a 1280×900: la striscia si ferma a
+0 px dal bordo su tutte e due, la lingua attiva è marcata, la pillola "Installa" compare
+sull'evento e sparisce dopo l'installazione insieme a quella del menu, la pagina non
+scorre di lato. Ricontrollate anche `escursioni.html`, `tour.html` e `booking.html`: il
+banner fisso è al suo posto, 71 schede in elenco, nessun errore JS.
+`node controlla.js` → 0 errori, 1 avviso invariato (opera-60). `sw.js` a **`isla-v216`**.

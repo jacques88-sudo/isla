@@ -213,6 +213,24 @@
       backdrop-filter: blur(16px);
       border-bottom: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
     }
+    /* Il quarto posto nella striscia. Su un telefono da 412 px quattro pillole
+       con la scritta non ci stanno (le altre tre hanno white-space: nowrap e
+       uscirebbero dallo schermo), quindi questa e' solo l'icona: il nome sta
+       nell'aria-label, tradotto come tutto il resto.
+       Compare da sola quando il telefono offre l'installazione, e sparisce da
+       sola quando l'app e' installata: ci pensa initInstallButton in app.js,
+       che ascolta beforeinstallprompt e appinstalled e non accende niente se
+       la pagina gira gia' come app (display-mode: standalone). */
+    .db-install {
+      flex: 0 0 auto;
+      width: 40px;
+      padding: 0;
+    }
+    .db-install svg { width: 18px; height: 18px; }
+    /* Come .bento-tile: .pill e' inline-flex e vince sull'[hidden] del
+       browser, quindi senza questa riga la pillola si vedrebbe sempre. */
+    .pill[hidden] { display: none; }
+
     /* .pill-ghost nasce bianco su trasparente, per stare sopra il video della
        home. Qui sotto c'e' carta chiara: senza questo, testo bianco su bianco. */
     .db-bar .pill-ghost {
@@ -220,11 +238,6 @@
       border-color: var(--border);
       color: var(--text);
     }
-
-    /* .bento-tile e' display:flex, che vince su [hidden] del browser: senza
-       questa riga il riquadro "Installa l'app" si vedrebbe anche quando il
-       telefono non ha niente da installare. */
-    .bento-tile[hidden] { display: none; }
 
     /* Intro e bento sono quelli della home: qui si cambia solo lo spazio
        sopra, perche' il logo tondo e le lingue stanno gia' in alto. */
@@ -266,6 +279,10 @@
         <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
           <span class="pill-icon" aria-hidden="true">☰</span> <span data-i18n="nav.menu">Menu</span>
         </button>
+        <button class="pill pill-ghost db-install" type="button" data-install-btn hidden
+                data-i18n-aria-label="menu.install" aria-label="Installa l'app">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 6v8m0 0-3-3m3 3 3-3"/><path d="M10.5 18.5h3"/></svg>
+        </button>
       </div>
     </nav>
 
@@ -298,10 +315,6 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M4 17v-4l2-5h12l2 5v4"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/><path d="M6 13h12"/></svg>
           <span data-i18n="bento.rental">Noleggio auto, moto e bici</span>
         </a>
-        <button class="bento-tile bento-tile-wide" type="button" data-install-btn hidden>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 6v8m0 0-3-3m3 3 3-3"/><path d="M10.5 18.5h3"/></svg>
-          <span data-i18n="menu.install">Installa l'app</span>
-        </button>
       </div>
     </section>
 

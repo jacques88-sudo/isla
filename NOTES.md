@@ -4969,3 +4969,28 @@ riquadro "Installa" appare solo quando arriva l'evento, il salto alle categorie 
 20 px sotto la striscia, i bento hanno il margine su tutte e due le pagine, nessun errore
 JS. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). **`sw.js` a
 `isla-v215`**: stavolta `styles.css` e `app.js` sono cambiati davvero.
+
+### "Installa l'app" nella striscia (5 settembre 2026)
+
+Il riquadro bento è durato poco: il posto giusto è la striscia, insieme a Esperienze,
+Prenota ora e Menu. Lì però **quattro pillole con la scritta non ci stanno**: le altre
+tre hanno `white-space: nowrap` e su 412 px uscirebbero dallo schermo. Quindi la quarta
+è **solo l'icona** (40 px, larghezza fissa), e il nome sta nell'`aria-label`, tradotto
+come tutto il resto. Misurato con e senza: le pillole passano da `20..135 / 143..269 /
+277..392` a `20..130 / 138..241 / 249..344 / 352..392`, e la pagina non scorre di lato in
+nessuno dei due casi.
+
+**Comparire e sparire non è codice nuovo.** `initInstallButton` in `app.js` faceva già
+tutto: accende i bottoni su `beforeinstallprompt`, li spegne su `appinstalled`, e non
+accende niente se la pagina gira già come app installata (`display-mode: standalone`).
+Serviva solo che li trovasse tutti — ed è la modifica di prima, `querySelectorAll` al
+posto di `querySelector`. Provato mandando i due eventi a mano: alla comparsa si accendono
+la pillola **e** il bottone nel menu laterale, all'installazione spariscono tutti e due.
+
+Una riga obbligata, la stessa trappola di `.bento-tile`: **`.pill[hidden] { display: none }`**.
+`.pill` è `display: inline-flex`, che vince sull'`[hidden]` del browser, e senza quella
+riga la pillola si vedrebbe sempre — anche su un telefono che non ha niente da installare
+e anche dopo l'installazione.
+
+Provato nel browser vero (412×915): nessun errore JS. `sw.js` resta a `isla-v215`, alzato
+poco fa: qui è cambiato solo `prova-layout.html`, che non è nella cache.

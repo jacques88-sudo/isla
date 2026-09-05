@@ -129,6 +129,23 @@
       object-fit: contain;
     }
 
+    /* Il salto alle ancore (dal riquadro "Pacchetti" a #categories) lascia
+       spazio alla striscia che si ferma in cima. styles.css ne tiene 9rem,
+       tarati sul banner alto delle altre pagine: qui la striscia e' 60 px,
+       e 9rem lasciavano un buco di aria sopra il titolo. */
+    html { scroll-padding-top: 5rem; }
+
+    /* Il pulsante di pausa del video: quello della home e' grande e sta in
+       fondo allo schermo intero, qui va piccolo nell'angolo della fascia. */
+    .db-playbtn {
+      position: absolute;
+      top: .7rem;
+      right: .7rem;
+      width: 38px;
+      height: 38px;
+    }
+    .db-playbtn svg { width: 15px; height: 15px; }
+
     .db-head {
       text-align: center;
       padding-top: 1.2rem;
@@ -172,7 +189,7 @@
       text-transform: uppercase;
       letter-spacing: .12em;
     }
-    .db-langs button[aria-current="true"] {
+    .db-langs button.is-active {
       background: var(--primary);
       color: var(--primary-foreground);
     }
@@ -204,6 +221,11 @@
       color: var(--text);
     }
 
+    /* .bento-tile e' display:flex, che vince su [hidden] del browser: senza
+       questa riga il riquadro "Installa l'app" si vedrebbe anche quando il
+       telefono non ha niente da installare. */
+    .bento-tile[hidden] { display: none; }
+
     /* Intro e bento sono quelli della home: qui si cambia solo lo spazio
        sopra, perche' il logo tondo e le lingue stanno gia' in alto. */
     .db-intro { padding: 2.2rem 0 1.6rem; }
@@ -212,7 +234,15 @@
 
   <main id="main" class="db-page">
     <div class="db-hero">
-      <img class="db-hero-photo" src="./assets/hero-tenerife.webp" alt="" />
+      <video class="db-hero-photo" id="heroVideo" aria-hidden="true" autoplay muted loop playsinline
+             poster="./assets/hero-tenerife.webp">
+        <source src="./assets/Hero-poster.mp4" type="video/mp4" />
+      </video>
+      <button class="playbtn db-playbtn" id="videoToggle" type="button"
+              data-i18n-aria-label="hero.pause" aria-label="Metti in pausa il video">
+        <svg id="iconPause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+        <svg id="iconPlay" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M8 5v14l11-7z"/></svg>
+      </button>
       <a class="db-hero-mark" href="./index.html" aria-label="Isla home">
         <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
       </a>
@@ -268,6 +298,10 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M4 17v-4l2-5h12l2 5v4"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/><path d="M6 13h12"/></svg>
           <span data-i18n="bento.rental">Noleggio auto, moto e bici</span>
         </a>
+        <button class="bento-tile bento-tile-wide" type="button" data-install-btn hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 6v8m0 0-3-3m3 3 3-3"/><path d="M10.5 18.5h3"/></svg>
+          <span data-i18n="menu.install">Installa l'app</span>
+        </button>
       </div>
     </section>
 

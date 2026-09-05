@@ -4921,7 +4921,51 @@ che qui è diventato la sua foto ferma (`hero-tenerife.webp` è il `poster` del
 video): se questo layout va su `index.html`, il video si può rimettere dentro la
 fascia 16/9 invece di perderlo.
 
-Provato nel browser vero (412×915) con Playwright: 5 riquadri bento, 8
-categorie, la striscia resta a 0 px dal bordo dopo lo scroll, il menu si apre,
-nessun errore JS. `node controlla.js` → 0 errori, 1 avviso invariato
-(opera-60). `sw.js` resta a `isla-v214`: nessun file dell'app è cambiato.
+### Le cinque cose sistemate dopo
+
+**1. Il video torna in cima.** `hero-tenerife.webp` era il *poster* del video della
+home: mettendo quella foto ferma nella fascia, il video spariva. Adesso nella fascia
+16/9 c'è il `<video>` con gli stessi attributi di `index.html` (`autoplay muted loop
+playsinline`, stesso poster), e il pulsante di pausa — che sulla home è grande e sta in
+fondo allo schermo intero — qui è piccolo nell'angolo. `initHeroVideo` lo trova da solo:
+cerca `#heroVideo` e `#videoToggle`, che sono gli stessi id. **Non l'ho visto suonare**:
+il Chromium del container non ha il codec H.264 (`networkState: 3`, nessun errore) e
+mostra il poster — ma si comporta **identico su `index.html`**, quindi è il container,
+non il markup.
+
+**2. La lingua attiva era colpa mia.** Non mancava niente a `i18n.js`: `paintLangButtons()`
+segna già ogni `[data-lang-set]` con la classe `.is-active` e `aria-pressed`. Avevo
+scritto il selettore sbagliato (`[aria-current="true"]`). Una parola cambiata.
+
+**3. `scroll-padding-top` a 5rem.** I 9rem di `styles.css` sono tarati sul banner fisso
+alto delle altre pagine; qui la striscia è 60 px. Misurato: dopo il salto da "Pacchetti"
+le categorie stanno a **80 px** dal bordo, cioè 20 px sotto la striscia. Prima ce n'erano
+144.
+
+**4. "Installa l'app" esce dal menu.** È il bottone più prezioso di una PWA e stava a tre
+tocchi di distanza. Adesso è anche un sesto riquadro bento, largo, sotto il noleggio.
+Due cose sono servite:
+- `initInstallButton` in `app.js` usava `querySelector`: con due bottoni si sarebbe
+  acceso solo il primo. Adesso `querySelectorAll`, e il `beforeinstallprompt` li accende
+  tutti (provato mandando l'evento a mano: si accendono il riquadro **e** quello del menu).
+- `.bento-tile[hidden] { display: none }`: `.bento-tile` è `display: flex`, che vince
+  sull'`[hidden]` del browser. Senza quella riga il riquadro si vedeva **sempre**, anche
+  dove non c'è niente da installare.
+
+**5. I bento non toccano più i bordi.** In `.bento-grid` c'era `padding: 0`, che veniva
+dopo `.wrap` con la stessa specificità e ne annullava il `padding: 0 1.25rem`. Tolta
+quella riga: primo riquadro da **0..200 a 20..200**, uguale sulla prova e su
+`index.html`. Questa è l'unica delle cinque che tocca il sito vero — e lo aggiusta.
+
+**Trovato mentre facevo la 1, e sistemato: le due icone del pulsante video si
+disegnavano una sopra l'altra.** `<svg id="iconPlay" hidden>` non si spegne: la regola
+`[hidden] { display: none }` del browser vale solo per i tag HTML, e quelli sono SVG.
+Verificato che succedeva **anche sulla home di oggi** (`display: block` su un elemento
+con `hidden`). Aggiunta `.playbtn svg[hidden] { display: none }` in `styles.css`, quindi
+vale per tutte le pagine.
+
+Provato nel browser vero (412×915) con Playwright: la lingua attiva è marcata, il
+riquadro "Installa" appare solo quando arriva l'evento, il salto alle categorie lascia
+20 px sotto la striscia, i bento hanno il margine su tutte e due le pagine, nessun errore
+JS. `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). **`sw.js` a
+`isla-v215`**: stavolta `styles.css` e `app.js` sono cambiati davvero.

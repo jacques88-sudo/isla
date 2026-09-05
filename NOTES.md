@@ -4829,3 +4829,50 @@ privato, e la finestra della richiesta si apre ancora dal pulsante. Nessun error
 console (l'unica richiesta fallita è il CSS dei font di Google, che la rete del container
 blocca sempre). `node controlla.js` → 0 errori, 1 avviso invariato (opera-60).
 `sw.js` a `isla-v214`.
+
+---
+
+## `prova-layout.html`: la prova del layout "menu del ristorante" (5 settembre 2026)
+
+Guardando l'app di un ristorante (`app.deskbay.io`) è venuta la domanda: quel layout — foto
+in cima, logo tondo che ci sta sopra, nome del posto, lingue in fila, bottone "Filtra Menù",
+categorie come linguette sottolineate — starebbe bene su Isla? La domanda vera non è se è
+bello, è **quanto costa provarlo**.
+
+Costa un file. `prova-layout.html` è una pagina **usa e getta**: non è collegata da nessun
+menu, non è in `ASSETS` di `sw.js` (quindi `CACHE_NAME` non si alza), e tutto il suo stile
+sta in un `<style>` dentro il file con prefisso `db-`. `styles.css`, `escursioni.js` e le
+altre pagine non sono state toccate: se il layout non piace si cancella un file solo.
+
+**Perché ha funzionato senza modificare il JavaScript.** `initCatalog` non sa com'è fatta la
+pagina: cerca `[data-grid]`, `[data-chips]`, `[data-count]`, `[data-empty]` e — se c'è —
+`[data-search]`. Tenendo quei ganci, la pagina si riempie da sola: **71 schede e 9
+categorie, uguali a `escursioni.html`, zero errori in console**. Le linguette sottolineate
+sono gli stessi bottoni `.chip` che crea `escursioni.js`, vestiti da `.db-tabs .chip`. Il
+bottone "Filtra" della prima versione era un `<details>`: si apre e si chiude da solo, zero
+JS. Il pallino "Mio Ordine" del ristorante è già il nostro `.lista-fab`.
+
+Poi la scelta: al posto del bottone "Filtra Menù" ci vanno **l'intro "Inizia la tua
+avventura con…" e i riquadri bento**, presi da `index.html` così com'erano. Sotto il logo
+tondo il titolo della pagina è stato tolto e c'è il **nome del posto** ("Isla — so easy so
+tenerife"), come sul menu del ristorante: due titoli grandi uno sotto l'altro si
+disturbavano, e il titolo della sezione ("TUTTE LE ESCURSIONI") fa già quel lavoro più giù.
+Il campo di ricerca sparisce con il bottone che lo conteneva — `initCatalog` regge perché
+cerca `[data-search]` dentro un `if`, ma con 71 schede è una perdita da decidere.
+
+**Il numero che conta non è la bellezza, è dove comincia la prima scheda.** Su uno schermo
+alto 915 px: `escursioni.html` la mette a **456 px** (mezza foto si vede subito), la prova
+con intro e bento a **1339 px** (tre schermate di scorrimento prima di vedere un'escursione).
+Su un menu di ristorante ha senso — sei seduto lì, il locale è uno solo. Su Isla la merce
+sono le 71 escursioni. Quella pagina lì è una **home**, non l'elenco: se il layout piace, va
+messo su `index.html`, non su `escursioni.html`.
+
+Notato di passaggio, e **non** sistemato perché non c'entra con questa prova: sulla home i
+riquadri bento toccano i bordi dello schermo mentre tutto il resto ha il margine, perché
+`.bento-grid` mette `padding: 0` e annulla il `padding: 0 1.25rem` di `.wrap`. Misurato:
+primo riquadro da 0 a 200 px su 412, identico su `index.html` e sulla prova — quindi è di
+prima, non l'ha rotto la pagina nuova.
+
+Provato nel browser vero (412×915) con Playwright: nessun errore JS, le linguette filtrano,
+il pallino della lista compare. `node controlla.js` → 0 errori, 1 avviso invariato
+(opera-60). `sw.js` resta a `isla-v214`: nessun file dell'app è cambiato.

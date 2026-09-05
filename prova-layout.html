@@ -80,11 +80,14 @@
   <!-- ===================================================================
        PROVA DI LAYOUT — pagina usa e getta, non collegata a nessun menu e
        non messa in cache dal service worker. Serve solo a guardare se lo
-       stile "menu del ristorante" (foto in cima, logo tondo, bandiere,
-       bottone Filtra, linguette di categoria) sta bene con le schede di
+       stile "menu del ristorante" (foto in cima, logo tondo, nome, lingue
+       in fila, linguette di categoria) sta bene con l'intro, i bento e le
+       schede di
        Isla. Il markup sotto e' lo stesso di escursioni.html: stessi
-       data-grid / data-chips / data-search, quindi escursioni.js riempie
-       la pagina senza sapere che e' cambiato il vestito.
+       data-grid / data-chips / data-count, quindi escursioni.js riempie
+       la pagina senza sapere che e' cambiato il vestito. Il campo di
+       ricerca qui non c'e': al suo posto ci sono l'intro e i riquadri
+       bento della home. initCatalog regge (cerca [data-search] con un if).
        Quando hai deciso, questo file si cancella.
        =================================================================== -->
   <style>
@@ -131,11 +134,23 @@
       text-align: center;
       padding-top: 1.2rem;
     }
-    .db-head h1 {
-      margin: 0 0 1.1rem;
-      font-weight: 400;
-      font-size: clamp(1.9rem, 1.5rem + 2vw, 2.6rem);
-      line-height: 1.15;
+    /* Sotto il logo tondo va il nome del posto, come sul menu del
+       ristorante: il titolo della pagina arriva piu' giu'. */
+    .db-name {
+      margin: 0;
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 1.7rem;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      line-height: 1;
+    }
+    .db-tagline {
+      margin: .5rem 0 1.1rem;
+      color: var(--muted);
+      font-size: .62rem;
+      text-transform: uppercase;
+      letter-spacing: .22em;
     }
 
     /* Le lingue come riga di pillole sempre visibili, non piu' nel menu a
@@ -163,24 +178,9 @@
       color: var(--primary-foreground);
     }
 
-    /* "Filtra" e' un <details>: si apre e si chiude da solo, zero JS. */
-    .db-filter {
-      margin: 1.4rem 0 .4rem;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--surface);
-    }
-    .db-filter > summary {
-      list-style: none;
-      padding: .95rem 1rem;
-      text-align: center;
-      color: var(--text);
-      cursor: pointer;
-    }
-    .db-filter > summary::-webkit-details-marker { display: none; }
-    .db-filter[open] > summary { border-bottom: 1px solid var(--border); }
-    .db-filter .catalog-search { padding: .9rem; }
-    .db-filter .catalog-search svg { left: 2rem; }
+    /* Intro e bento sono quelli della home: qui si cambia solo lo spazio
+       sopra, perche' il logo tondo e le lingue stanno gia' in alto. */
+    .db-intro { padding: 2.4rem 0 1.6rem; }
 
     /* Le categorie diventano linguette sottolineate invece che pillole.
        Sono gli stessi bottoni .chip che crea escursioni.js: cambia solo
@@ -230,7 +230,8 @@
     </div>
 
     <div class="wrap db-head">
-      <h1 data-i18n="catalog.title">Tutte le escursioni</h1>
+      <p class="db-name">Isla</p>
+      <p class="db-tagline">so easy so tenerife</p>
 
       <div class="db-langs" role="group" aria-label="Lingua">
         <button type="button" data-lang-set="it">IT</button>
@@ -238,15 +239,39 @@
         <button type="button" data-lang-set="es">ES</button>
       </div>
 
-      <details class="db-filter">
-        <summary data-i18n="catalog.searchLabel">Cerca un'escursione</summary>
-        <label class="catalog-search">
-          <span class="visually-hidden" data-i18n="catalog.searchLabel">Cerca un'escursione</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-          <input type="search" data-search data-i18n-placeholder="catalog.searchPlaceholder" placeholder="Cerca: barca, Teide, quad…" autocomplete="off" />
-        </label>
-      </details>
     </div>
+
+    <section class="intro db-intro" id="intro">
+      <div class="wrap">
+        <span class="eyebrow" data-i18n="intro.eyebrow">Tenerife</span>
+        <h1 data-i18n="intro.title">Inizia la tua avventura con&hellip;</h1>
+      </div>
+    </section>
+
+    <section class="bento">
+      <div class="wrap bento-grid">
+        <a class="bento-tile" href="./index.html#categories">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
+          <span data-i18n="bento.packages">Pacchetti</span>
+        </a>
+        <button class="bento-tile" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h5v5H4zM4 15h5v5H4zM15 4h5v5h-5z"/><path d="M15 15h2v2h-2zM19 15h1v1h-1zM15 19h1v1h-1zM19 19h1v1h-1zM17 17h1v1h-1z"/></svg>
+          <span data-i18n="bento.scan">Scan ticket</span>
+        </button>
+        <a class="bento-tile" href="./escursioni.html?family=1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M4 20c0-3 2.2-5 5-5s5 2 5 5"/><circle cx="18" cy="9" r="2.2"/><path d="M15.2 20c.2-2.3 1.7-3.8 3.8-3.8s3.5 1.5 3.7 3.8"/></svg>
+          <span data-i18n="bento.kids">Con bambini</span>
+        </a>
+        <a class="bento-tile" href="./index.html#categories">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+          <span data-i18n="bento.days">3/5/7 Days Experience</span>
+        </a>
+        <a class="bento-tile bento-tile-wide" data-rental-link href="#" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M4 17v-4l2-5h12l2 5v4"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/><path d="M6 13h12"/></svg>
+          <span data-i18n="bento.rental">Noleggio auto, moto e bici</span>
+        </a>
+      </div>
+    </section>
 
     <nav class="chip-row db-tabs" data-chips data-i18n-aria-label="catalog.filterAria" aria-label="Filtra per categoria"></nav>
 

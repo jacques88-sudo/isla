@@ -4864,8 +4864,25 @@ cerca `[data-search]` dentro un `if`, ma con 71 schede è una perdita da decider
 alto 915 px: `escursioni.html` la mette a **456 px** (mezza foto si vede subito), la prova
 con intro e bento a **1339 px** (tre schermate di scorrimento prima di vedere un'escursione).
 Su un menu di ristorante ha senso — sei seduto lì, il locale è uno solo. Su Isla la merce
-sono le 71 escursioni. Quella pagina lì è una **home**, non l'elenco: se il layout piace, va
-messo su `index.html`, non su `escursioni.html`.
+sono le 71 escursioni. Quella pagina lì è una **home**, non l'elenco.
+
+Deciso così: la prova diventa una **home**. Le linguette, il titolo di sezione e le 71
+schede sono usciti; al loro posto c'è la sezione `#categories` di `index.html`, copiata
+com'era. L'ordine finale è **foto + logo tondo + nome + lingue → intro → bento →
+categorie**. `initCatalog` non parte nemmeno, perché `[data-grid]` non c'è più (`if (!grid)
+return`), e i due riquadri bento che puntavano a `./index.html#categories` adesso puntano a
+`#categories` di questa stessa pagina. Cambiati anche `<title>` e `meta`, da
+`meta.catalog.*` a `meta.home.*`: è una home, non l'elenco.
+
+Misurato a confronto con la home di oggi (412×915): l'intro passa da **531 a 413 px** e le
+categorie da **1971 a 1130 px**. Attenzione a non prendersi il merito sbagliato: gran parte
+di quegli 841 px non è il layout nuovo, è che **la prova non ha la sezione "Tre passi,
+nessun pensiero"**, che su `index.html` sta tra i bento e le categorie. Il resto è il video
+a tutto schermo sostituito da una fascia 16/9.
+
+Restano fuori dalla prova, e sono da rimettere se il layout piace: `steps`, `secret`,
+`about` e `faq`. La pagina si porta ancora dietro la finestra della richiesta ereditata da
+`escursioni.html`: invisibile e innocua, ma su una home vera non serve.
 
 Notato di passaggio, e **non** sistemato perché non c'entra con questa prova: sulla home i
 riquadri bento toccano i bordi dello schermo mentre tutto il resto ha il margine, perché
@@ -4873,6 +4890,7 @@ riquadri bento toccano i bordi dello schermo mentre tutto il resto ha il margine
 primo riquadro da 0 a 200 px su 412, identico su `index.html` e sulla prova — quindi è di
 prima, non l'ha rotto la pagina nuova.
 
-Provato nel browser vero (412×915) con Playwright: nessun errore JS, le linguette filtrano,
-il pallino della lista compare. `node controlla.js` → 0 errori, 1 avviso invariato
-(opera-60). `sw.js` resta a `isla-v214`: nessun file dell'app è cambiato.
+Provato nel browser vero (412×915) con Playwright: 5 riquadri bento e 8 categorie, nessun
+errore JS, il pallino dell'assistente al suo posto, pagina alta 3458 px. `node controlla.js`
+→ 0 errori, 1 avviso invariato (opera-60). `sw.js` resta a `isla-v214`: nessun file
+dell'app è cambiato.

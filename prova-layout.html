@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#fcfaf6" />
-  <meta name="description" data-i18n-content="meta.catalog.desc" content="Tutte le escursioni, i tour e gli show di Isla a Tenerife: mare, Teide, parchi, avventura e molto altro." />
-  <title>Tutte le escursioni · Isla</title>
+  <meta name="description" data-i18n-content="meta.home.desc" content="Isla — trova subito orario, punto d'incontro e informazioni della tua escursione a Tenerife." />
+  <title>Isla · La tua escursione a Tenerife</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./assets/icon-192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -66,7 +66,7 @@
     }
   </style>
 </head>
-<body data-i18n-doctitle="meta.catalog.title">
+<body data-i18n-doctitle="meta.home.title">
   <div class="splash" id="splash" aria-hidden="true">
     <div class="splash-mark">
       <span class="splash-ring"></span>
@@ -80,14 +80,13 @@
   <!-- ===================================================================
        PROVA DI LAYOUT — pagina usa e getta, non collegata a nessun menu e
        non messa in cache dal service worker. Serve solo a guardare se lo
-       stile "menu del ristorante" (foto in cima, logo tondo, nome, lingue
-       in fila, linguette di categoria) sta bene con l'intro, i bento e le
-       schede di
-       Isla. Il markup sotto e' lo stesso di escursioni.html: stessi
-       data-grid / data-chips / data-count, quindi escursioni.js riempie
-       la pagina senza sapere che e' cambiato il vestito. Il campo di
-       ricerca qui non c'e': al suo posto ci sono l'intro e i riquadri
-       bento della home. initCatalog regge (cerca [data-search] con un if).
+       stile "menu del ristorante" (foto in cima, logo tondo, nome del posto,
+       lingue in fila) sta bene sopra l'intro, i bento e le categorie di Isla.
+       E' una prova di HOME, non dell'elenco: le 71 schede non ci sono, e sotto
+       i bento ci vanno le categorie, come su index.html. Intro, bento e
+       categorie sono copiati da index.html senza cambiarli: stessi testi
+       i18n, stesse classi .intro / .bento / .categories di styles.css. Cambia
+       solo il vestito della testata, e sta tutto in questo file.
        Quando hai deciso, questo file si cancella.
        =================================================================== -->
   <style>
@@ -182,43 +181,6 @@
        sopra, perche' il logo tondo e le lingue stanno gia' in alto. */
     .db-intro { padding: 2.4rem 0 1.6rem; }
 
-    /* Le categorie diventano linguette sottolineate invece che pillole.
-       Sono gli stessi bottoni .chip che crea escursioni.js: cambia solo
-       come sono vestiti. */
-    .db-tabs {
-      margin: 1.4rem 0 0;
-      padding: 0 1.25rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .db-tabs .chip {
-      padding: .85rem .2rem;
-      margin-right: 1.6rem;
-      border: 0;
-      border-bottom: 2px solid transparent;
-      border-radius: 0;
-      background: 0;
-      color: var(--muted);
-    }
-    .db-tabs .chip.is-active {
-      background: 0;
-      color: var(--text);
-      border-bottom-color: var(--text);
-    }
-
-    .db-section {
-      padding-top: 2rem;
-      padding-bottom: 1.2rem;
-    }
-    .db-section h2 {
-      margin: 0;
-      font-size: 1.5rem;
-      font-weight: 400;
-      text-transform: uppercase;
-      letter-spacing: .18em;
-      padding-bottom: .8rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .db-section .catalog-count { padding-top: .7rem; }
   </style>
 
   <main id="main" class="db-page">
@@ -250,7 +212,7 @@
 
     <section class="bento">
       <div class="wrap bento-grid">
-        <a class="bento-tile" href="./index.html#categories">
+        <a class="bento-tile" href="#categories">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
           <span data-i18n="bento.packages">Pacchetti</span>
         </a>
@@ -262,7 +224,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M4 20c0-3 2.2-5 5-5s5 2 5 5"/><circle cx="18" cy="9" r="2.2"/><path d="M15.2 20c.2-2.3 1.7-3.8 3.8-3.8s3.5 1.5 3.7 3.8"/></svg>
           <span data-i18n="bento.kids">Con bambini</span>
         </a>
-        <a class="bento-tile" href="./index.html#categories">
+        <a class="bento-tile" href="#categories">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
           <span data-i18n="bento.days">3/5/7 Days Experience</span>
         </a>
@@ -273,17 +235,47 @@
       </div>
     </section>
 
-    <nav class="chip-row db-tabs" data-chips data-i18n-aria-label="catalog.filterAria" aria-label="Filtra per categoria"></nav>
+    <section class="categories" id="categories">
+      <div class="wrap">
+        <span class="eyebrow" data-i18n="categories.eyebrow">Esplora</span>
+        <h2 data-i18n="categories.title">Categorie</h2>
+        <ul class="cat-grid">
+          <li class="cat-card">
+            <a href="./escursioni.html?cat=mare-barche" class="cat-link"><img src="./assets/Cat-mare.jpg" data-i18n-cat="mare-barche" alt="Mare e barche a Tenerife" loading="eager" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="mare-barche">Mare e barche</span></a>
+          </li>
+          <li class="cat-card">
+            <a href="./escursioni.html?cat=teide-natura" class="cat-link"><img src="./assets/Cat-teide.jpg" data-i18n-cat="teide-natura" alt="Teide e natura a Tenerife" loading="eager" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="teide-natura">Teide e natura</span></a>
+          </li>
+          <li class="cat-card">
+            <a href="./escursioni.html?cat=stelle" class="cat-link"><img src="./assets/Cat-stelle.jpg" data-i18n-cat="stelle" alt="Sotto le stelle a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="stelle">Sotto le stelle</span></a>
+          </li>
+          <li class="cat-card">
+            <a href="./escursioni.html?cat=avventura-motori" class="cat-link"><img src="./assets/Cat-avventura.jpg" data-i18n-cat="avventura-motori" alt="Avventura a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="avventura-motori">Avventura</span></a>
+          </li>
+          <li class="cat-card">
+            <a href="./escursioni.html?cat=sport-acquatici" class="cat-link"><img src="./assets/Cat-sport.jpg" data-i18n-cat="sport-acquatici" alt="Sport acquatici a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="sport-acquatici">Sport acquatici</span></a>
+          </li>
+          <li class="cat-card">
+            <a href="./escursioni.html?cat=parchi-spettacoli" class="cat-link"><img src="./assets/Cat-parchi.jpg" data-i18n-cat="parchi-spettacoli" alt="Parchi e spettacoli a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="parchi-spettacoli">Parchi e spettacoli</span></a>
+          </li>
+          <li class="cat-card">
+            <a href="./escursioni.html?cat=tour-isola" class="cat-link"><img src="./assets/santa-cruz-taganana.jpg" data-i18n-cat="tour-isola" alt="Tour e visite a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="tour-isola">Tour e visite</span></a>
+          </li>
+          <li class="cat-card">
+            <a href="./escursioni.html?cat=tour-privati" class="cat-link"><img src="./assets/Cat-privati.jpg" data-i18n-cat="tour-privati" alt="Tour privati a Tenerife" loading="lazy" width="1400" height="1250" />
+            <span class="cat-label" data-i18n-cat="tour-privati">Tour privati</span></a>
+          </li>
+        </ul>
+      </div>
+    </section>
 
-    <div class="wrap db-section">
-      <h2 data-i18n="catalog.title">Tutte le escursioni</h2>
-      <p class="catalog-count" data-count></p>
-    </div>
-
-    <div class="wrap">
-      <ul class="tour-grid" data-grid></ul>
-      <div class="catalog-empty" data-empty hidden></div>
-    </div>
   </main>
 
   <div class="menu-scrim" data-menu-scrim hidden></div>
@@ -303,7 +295,7 @@
     <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn data-i18n="menu.install" hidden>Installa l'app</button>
     <nav class="more-menu-nav" data-i18n-aria-label="menu.sections" aria-label="Sezioni">
       <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
-      <a href="./index.html#categories" data-menu-link data-i18n="menu.packages">Pacchetti</a>
+      <a href="#categories" data-menu-link data-i18n="menu.packages">Pacchetti</a>
       <button type="button" data-menu-link data-ticket-open data-i18n="menu.scan">Scan ticket</button>
       <a href="./index.html#secret" data-menu-link data-i18n="menu.secret">Posti segreti</a>
       <a href="./index.html#about" data-menu-link data-i18n="menu.about">Chi siamo</a>

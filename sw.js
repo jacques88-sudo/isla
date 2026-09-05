@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v216";
+const CACHE_NAME = "isla-v217";
 const ASSETS = [
   "./",
   "./index.html",
@@ -24,7 +24,15 @@ const ASSETS = [
 
 self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then(cache =>
+      // "reload" vuol dire: scaricali dalla rete, non dalla cache del browser.
+      // Senza, questi file passano dalla cache HTTP di GitHub Pages, che dice
+      // al browser di tenerseli per dieci minuti: una versione nuova del
+      // service worker poteva mettersi in cache l'index.html vecchio, e da li'
+      // non si usciva piu' — la versione era nuova ma il contenuto era quello
+      // di prima, e ricaricare non serviva a niente.
+      cache.addAll(ASSETS.map(url => new Request(url, { cache: "reload" })))
+    )
   );
   self.skipWaiting();
 });

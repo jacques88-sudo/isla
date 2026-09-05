@@ -5040,3 +5040,45 @@ sull'evento e sparisce dopo l'installazione insieme a quella del menu, la pagina
 scorre di lato. Ricontrollate anche `escursioni.html`, `tour.html` e `booking.html`: il
 banner fisso è al suo posto, 71 schede in elenco, nessun errore JS.
 `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). `sw.js` a **`isla-v216`**.
+
+---
+
+## Il service worker si scaricava i file dalla cache del browser (5 settembre 2026)
+
+Dopo il merge della home nuova, il sito era pubblicato e giusto — deploy di GitHub Pages
+riuscito sul commit `487b0c3` — ma sul telefono continuava a vedersi la versione vecchia.
+In incognito si vedeva quella nuova: la prova che il sito era a posto e che a tenere il
+vecchio era il **service worker** già installato.
+
+Sbloccare un telefono si fa a mano (Impostazioni sito → Cancella e reimposta), ma il
+motivo per cui poteva restare bloccato era nostro.
+
+`cache.addAll(ASSETS)` scarica i file **passando dalla cache HTTP del browser**. GitHub
+Pages dice ai browser di tenersi i file per dieci minuti. Quindi c'era questa finestra:
+`sw.js` cambia, il browser lo vede, installa la versione nuova — e la versione nuova si
+mette in cache l'`index.html` **vecchio**, quello ancora fresco nella cache HTTP. Da lì
+non si usciva più: per il browser la versione era nuova (`CACHE_NAME` diverso, niente da
+aggiornare) ma il contenuto era quello di prima, e ricaricare non serviva a niente.
+Alzare `CACHE_NAME`, la regola che seguiamo a ogni consegna, non bastava a proteggerci:
+proteggeva dal *non* riscaricare, non dal riscaricare roba vecchia.
+
+La riga adesso è:
+
+```js
+cache.addAll(ASSETS.map(url => new Request(url, { cache: "reload" })))
+```
+
+`"reload"` vuol dire: prendili dalla rete, salta la cache del browser. Costa un
+download in più solo al cambio di versione, che è esattamente quando lo vogliamo.
+
+Restano due cose vere, che non sono bachi ma vanno sapute quando si guarda il sito appena
+pubblicato:
+- il browser si accorge che `sw.js` è cambiato solo quando la sua copia scade — fino a
+  dieci minuti su GitHub Pages;
+- la versione nuova prende il comando **dal caricamento successivo**, perché la pagina
+  aperta è già stata disegnata con l'HTML vecchio. Due ricaricate, non una.
+
+Provato nel browser vero con Playwright: alla prima visita il service worker si installa e
+si attiva, la cache è `isla-v217` con 20 file, e l'`index.html` dentro la cache è quello
+**nuovo** (contiene `home-bar`, non contiene `site-banner`). Alla seconda visita la pagina
+è servita dal service worker e la striscia c'è. Nessun errore JS. `sw.js` a `isla-v217`.

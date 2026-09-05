@@ -177,9 +177,36 @@
       color: var(--primary-foreground);
     }
 
+    /* La striscia con Esperienze / Prenota ora / Menu. Sta sotto le lingue e
+       da li' in giu' non si muove piu': "sticky" vuol dire che scorre con la
+       pagina finche' arriva in cima, poi si ferma li'. Sfondo e sfocatura
+       servono perche' il contenuto le passa sotto e senza si leggerebbe
+       tutto sovrapposto. */
+    .db-bar {
+      position: sticky;
+      top: 0;
+      /* stesso piano del banner fisso delle altre pagine: sopra la pagina,
+         sotto il pallino dell'assistente (39) e le finestre (40 e 41) */
+      z-index: 20;
+      display: flex;
+      justify-content: center;
+      margin-top: 1.4rem;
+      padding: .6rem 1.25rem;
+      background: color-mix(in oklab, var(--bg) 85%, transparent);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+    }
+    /* .pill-ghost nasce bianco su trasparente, per stare sopra il video della
+       home. Qui sotto c'e' carta chiara: senza questo, testo bianco su bianco. */
+    .db-bar .pill-ghost {
+      background: var(--surface);
+      border-color: var(--border);
+      color: var(--text);
+    }
+
     /* Intro e bento sono quelli della home: qui si cambia solo lo spazio
        sopra, perche' il logo tondo e le lingue stanno gia' in alto. */
-    .db-intro { padding: 2.4rem 0 1.6rem; }
+    .db-intro { padding: 2.2rem 0 1.6rem; }
 
   </style>
 
@@ -200,8 +227,17 @@
         <button type="button" data-lang-set="en">EN</button>
         <button type="button" data-lang-set="es">ES</button>
       </div>
-
     </div>
+
+    <nav class="db-bar" data-i18n-aria-label="nav.aria" aria-label="Menu principale">
+      <div class="hero-pills">
+        <a class="pill pill-ghost" href="./escursioni.html" data-i18n="nav.experiences">Esperienze</a>
+        <button class="pill pill-solid" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.bookNow">Prenota ora</button>
+        <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
+          <span class="pill-icon" aria-hidden="true">☰</span> <span data-i18n="nav.menu">Menu</span>
+        </button>
+      </div>
+    </nav>
 
     <section class="intro db-intro" id="intro">
       <div class="wrap">

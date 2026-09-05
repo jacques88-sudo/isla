@@ -4890,7 +4890,38 @@ riquadri bento toccano i bordi dello schermo mentre tutto il resto ha il margine
 primo riquadro da 0 a 200 px su 412, identico su `index.html` e sulla prova — quindi è di
 prima, non l'ha rotto la pagina nuova.
 
-Provato nel browser vero (412×915) con Playwright: 5 riquadri bento e 8 categorie, nessun
-errore JS, il pallino dell'assistente al suo posto, pagina alta 3458 px. `node controlla.js`
-→ 0 errori, 1 avviso invariato (opera-60). `sw.js` resta a `isla-v214`: nessun file
-dell'app è cambiato.
+Poi la striscia. Dove il menu del ristorante mette le linguette dei piatti
+("Piatti del giorno · Antipasti · Pasta"), Isla mette le sue tre pillole —
+**Esperienze · Prenota ora · Menu** — e da lì in giù **non si muove più**: è
+`position: sticky; top: 0`, quindi scorre con la pagina finché arriva in cima e
+lì si ferma. È lo stesso lavoro che sulle altre pagine fa `.site-banner`, ma
+costa meno: `sticky` sta nel flusso della pagina, quindi non serve il
+`padding-top` che compensa un elemento tolto dal flusso (`.catalog-page` ne ha
+11rem apposta), e non serve il JavaScript che accorcia il banner allo scroll.
+
+Due cose obbligate, tutte e due nel `<style>` della pagina. Lo sfondo: sotto la
+striscia ci passa il contenuto, e senza `background` più `backdrop-filter` si
+leggerebbe tutto sovrapposto. E `.db-bar .pill-ghost`: la pillola nasce **bianca
+su trasparente** perché su `index.html` sta sopra il video; qui sotto c'è carta
+chiara, e senza quella regola sarebbe testo bianco su bianco.
+
+Le pillole sono le stesse di `index.html`, con gli stessi `data-ticket-open` e
+`data-menu-open`: la finestra "Scan ticket" e il menu laterale erano già nella
+pagina (ereditati da `escursioni.html`) e funzionano senza toccare `app.js`.
+Provato: il menu si apre davvero.
+
+Misure (412×915): la striscia comincia a **435 px** ed è alta **60 px**, l'intro
+a 496, le categorie a 1209, pagina alta 3537. `html` ha `scroll-padding-top:
+9rem`, tarato sul banner fisso alto delle altre pagine: qui la striscia è meno
+di metà, quindi il salto a `#categories` dal riquadro "Pacchetti" lascia un buco
+di aria sopra. Non toccato, ma è la prima cosa da sistemare se il layout passa.
+
+Restano fuori: `steps`, `secret`, `about` e `faq`. E resta il video della home,
+che qui è diventato la sua foto ferma (`hero-tenerife.webp` è il `poster` del
+video): se questo layout va su `index.html`, il video si può rimettere dentro la
+fascia 16/9 invece di perderlo.
+
+Provato nel browser vero (412×915) con Playwright: 5 riquadri bento, 8
+categorie, la striscia resta a 0 px dal bordo dopo lo scroll, il menu si apre,
+nessun errore JS. `node controlla.js` → 0 errori, 1 avviso invariato
+(opera-60). `sw.js` resta a `isla-v214`: nessun file dell'app è cambiato.

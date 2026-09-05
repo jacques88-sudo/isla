@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#fcfaf6" />
+  <meta name="description" data-i18n-content="meta.catalog.desc" content="Tutte le escursioni, i tour e gli show di Isla a Tenerife: mare, Teide, parchi, avventura e molto altro." />
+  <title>Tutte le escursioni · Isla</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./assets/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="./styles.css" />
+  <!-- Critical splash styles, inlined so the loading screen never flashes
+       unstyled while styles.css is still being fetched. -->
+  <style>
+    .splash {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.4rem;
+      background: oklch(0.985 0.006 85);
+    }
+    .splash-mark {
+      position: relative;
+      width: 108px;
+      height: 108px;
+      display: grid;
+      place-items: center;
+    }
+    .splash-logo {
+      width: 58%;
+      height: 58%;
+      object-fit: contain;
+      border: 0;
+    }
+    .splash-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg,
+        transparent 0%,
+        oklch(0.74 0.1 210) 20%,
+        oklch(0.6 0.11 235) 45%,
+        transparent 55%,
+        transparent 100%);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
+              mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
+      animation: splash-spin 1.6s linear infinite;
+    }
+    .splash-brand {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 500;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: .3em;
+      color: oklch(0.24 0.012 60);
+    }
+    @keyframes splash-spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body data-i18n-doctitle="meta.catalog.title">
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="splash-mark">
+      <span class="splash-ring"></span>
+      <img src="./assets/logo-isla.png" alt="" class="splash-logo" />
+    </div>
+    <span class="splash-brand">Isla</span>
+  </div>
+
+  <a class="skip" href="#main" data-i18n="common.skip">Vai al contenuto</a>
+
+  <!-- ===================================================================
+       PROVA DI LAYOUT — pagina usa e getta, non collegata a nessun menu e
+       non messa in cache dal service worker. Serve solo a guardare se lo
+       stile "menu del ristorante" (foto in cima, logo tondo, bandiere,
+       bottone Filtra, linguette di categoria) sta bene con le schede di
+       Isla. Il markup sotto e' lo stesso di escursioni.html: stessi
+       data-grid / data-chips / data-search, quindi escursioni.js riempie
+       la pagina senza sapere che e' cambiato il vestito.
+       Quando hai deciso, questo file si cancella.
+       =================================================================== -->
+  <style>
+    /* Tutto lo stile di prova sta qui dentro, con prefisso db-, cosi'
+       styles.css non viene toccato e nessuna altra pagina cambia. */
+    .db-page {
+      padding-top: 0;
+      padding-bottom: 5rem;
+    }
+
+    /* Fascia foto in cima, angoli tondi, col logo tondo che ci sta sopra. */
+    .db-hero {
+      position: relative;
+      margin: .9rem 1.25rem 0;
+      padding-bottom: 3.4rem;
+    }
+    .db-hero-photo {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+    .db-hero-mark {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 116px;
+      height: 116px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--surface);
+      border: 4px solid var(--bg);
+      box-shadow: var(--shadow);
+    }
+    .db-hero-mark img {
+      width: 58%;
+      height: 58%;
+      object-fit: contain;
+    }
+
+    .db-head {
+      text-align: center;
+      padding-top: 1.2rem;
+    }
+    .db-head h1 {
+      margin: 0 0 1.1rem;
+      font-weight: 400;
+      font-size: clamp(1.9rem, 1.5rem + 2vw, 2.6rem);
+      line-height: 1.15;
+    }
+
+    /* Le lingue come riga di pillole sempre visibili, non piu' nel menu a
+       tendina: sono tre, ci stanno. */
+    .db-langs {
+      display: inline-flex;
+      gap: .25rem;
+      padding: .3rem;
+      border-radius: var(--radius-pill);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .db-langs button {
+      min-width: 54px;
+      padding: .5rem .2rem;
+      border-radius: var(--radius-pill);
+      color: var(--muted);
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+    .db-langs button[aria-current="true"] {
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    /* "Filtra" e' un <details>: si apre e si chiude da solo, zero JS. */
+    .db-filter {
+      margin: 1.4rem 0 .4rem;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+    }
+    .db-filter > summary {
+      list-style: none;
+      padding: .95rem 1rem;
+      text-align: center;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .db-filter > summary::-webkit-details-marker { display: none; }
+    .db-filter[open] > summary { border-bottom: 1px solid var(--border); }
+    .db-filter .catalog-search { padding: .9rem; }
+    .db-filter .catalog-search svg { left: 2rem; }
+
+    /* Le categorie diventano linguette sottolineate invece che pillole.
+       Sono gli stessi bottoni .chip che crea escursioni.js: cambia solo
+       come sono vestiti. */
+    .db-tabs {
+      margin: 1.4rem 0 0;
+      padding: 0 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .db-tabs .chip {
+      padding: .85rem .2rem;
+      margin-right: 1.6rem;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      border-radius: 0;
+      background: 0;
+      color: var(--muted);
+    }
+    .db-tabs .chip.is-active {
+      background: 0;
+      color: var(--text);
+      border-bottom-color: var(--text);
+    }
+
+    .db-section {
+      padding-top: 2rem;
+      padding-bottom: 1.2rem;
+    }
+    .db-section h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      padding-bottom: .8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .db-section .catalog-count { padding-top: .7rem; }
+  </style>
+
+  <main id="main" class="db-page">
+    <div class="db-hero">
+      <img class="db-hero-photo" src="./assets/hero-tenerife.webp" alt="" />
+      <a class="db-hero-mark" href="./index.html" aria-label="Isla home">
+        <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
+      </a>
+    </div>
+
+    <div class="wrap db-head">
+      <h1 data-i18n="catalog.title">Tutte le escursioni</h1>
+
+      <div class="db-langs" role="group" aria-label="Lingua">
+        <button type="button" data-lang-set="it">IT</button>
+        <button type="button" data-lang-set="en">EN</button>
+        <button type="button" data-lang-set="es">ES</button>
+      </div>
+
+      <details class="db-filter">
+        <summary data-i18n="catalog.searchLabel">Cerca un'escursione</summary>
+        <label class="catalog-search">
+          <span class="visually-hidden" data-i18n="catalog.searchLabel">Cerca un'escursione</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="search" data-search data-i18n-placeholder="catalog.searchPlaceholder" placeholder="Cerca: barca, Teide, quad…" autocomplete="off" />
+        </label>
+      </details>
+    </div>
+
+    <nav class="chip-row db-tabs" data-chips data-i18n-aria-label="catalog.filterAria" aria-label="Filtra per categoria"></nav>
+
+    <div class="wrap db-section">
+      <h2 data-i18n="catalog.title">Tutte le escursioni</h2>
+      <p class="catalog-count" data-count></p>
+    </div>
+
+    <div class="wrap">
+      <ul class="tour-grid" data-grid></ul>
+      <div class="catalog-empty" data-empty hidden></div>
+    </div>
+  </main>
+
+  <div class="menu-scrim" data-menu-scrim hidden></div>
+  <aside class="more-menu" id="moreMenu" role="dialog" aria-modal="true" data-i18n-aria-label="menu.aria" aria-label="Menu" hidden>
+    <div class="more-menu-head">
+      <span class="more-menu-brand">Isla</span>
+      <button class="iconbtn" type="button" data-menu-close data-i18n-aria-label="menu.close" aria-label="Chiudi menu">✕</button>
+    </div>
+    <div class="more-menu-lang">
+      <span class="more-menu-lang-label" data-i18n="lang.label">Lingua</span>
+      <div class="lang-seg">
+        <button type="button" data-lang-set="it">IT</button>
+        <button type="button" data-lang-set="en">EN</button>
+        <button type="button" data-lang-set="es">ES</button>
+      </div>
+    </div>
+    <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn data-i18n="menu.install" hidden>Installa l'app</button>
+    <nav class="more-menu-nav" data-i18n-aria-label="menu.sections" aria-label="Sezioni">
+      <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
+      <a href="./index.html#categories" data-menu-link data-i18n="menu.packages">Pacchetti</a>
+      <button type="button" data-menu-link data-ticket-open data-i18n="menu.scan">Scan ticket</button>
+      <a href="./index.html#secret" data-menu-link data-i18n="menu.secret">Posti segreti</a>
+      <a href="./index.html#about" data-menu-link data-i18n="menu.about">Chi siamo</a>
+    </nav>
+    <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link data-i18n="menu.cta">Prenota ora</a>
+  </aside>
+
+  <div class="ticket-scrim" data-request-scrim hidden></div>
+  <div class="ticket-dialog request-dialog" id="requestDialog" role="dialog" aria-modal="true" aria-labelledby="requestTitle" hidden>
+    <div class="ticket-dialog-head">
+      <h2 id="requestTitle" data-i18n="req.title">Richiedi disponibilità</h2>
+      <button class="iconbtn" type="button" data-request-close data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
+    </div>
+    <p class="request-activity" data-request-activity></p>
+    <p class="request-season" data-request-season hidden></p>
+    <form data-request-form>
+      <div data-request-name>
+        <label for="reqName" data-i18n="req.name">Il tuo nome</label>
+        <input id="reqName" name="name" type="text" autocomplete="name"
+               data-i18n-placeholder="req.namePlaceholder" placeholder="Nome e cognome" required />
+      </div>
+
+      <label for="reqDate" data-i18n="req.date">Quando vorresti andare</label>
+      <input id="reqDate" name="date" type="date" required />
+      <p class="request-day-error" data-request-day-error hidden></p>
+
+      <label for="reqTime" data-i18n="req.time">A che ora</label>
+      <select id="reqTime" name="time" data-request-time></select>
+
+      <label for="reqLang" data-request-lang-label hidden data-i18n="req.lang">In che lingua</label>
+      <select id="reqLang" name="lang" data-request-lang hidden></select>
+
+      <span class="request-people-label" data-request-people-label data-i18n="req.people">Quante persone</span>
+      <div class="request-people" data-request-people>
+        <label for="reqAdults"><span data-i18n="req.adults">Adulti</span>
+          <input id="reqAdults" name="adults" type="number" inputmode="numeric" min="1" max="30" value="2" required />
+        </label>
+        <label for="reqKids"><span data-i18n="req.kids">Bambini</span>
+          <input id="reqKids" name="kids" type="number" inputmode="numeric" min="0" max="30" value="0" />
+        </label>
+        <label for="reqBabies" data-request-babies hidden><span data-i18n="req.babies">Neonati</span>
+          <input id="reqBabies" name="babies" type="number" inputmode="numeric" min="0" max="30" value="0" />
+        </label>
+      </div>
+
+      <span class="request-people-label" data-request-units-label hidden>Quante moto d'acqua</span>
+      <div class="request-people" data-request-units hidden></div>
+      <p class="request-day-error" data-request-units-error hidden></p>
+
+      <p class="request-total" data-request-total hidden></p>
+
+      <label for="reqOption" data-request-option-label hidden>Opzione</label>
+      <select id="reqOption" name="option" data-request-option hidden></select>
+
+      <span class="request-people-label" data-request-menu-label hidden data-i18n="req.menu">Esigenze sul menu</span>
+      <div class="request-people" data-request-menu-rows hidden></div>
+      <p class="request-day-error" data-request-menu-error hidden></p>
+      <p class="hint" data-request-menu-hint hidden data-i18n="req.menuHint">Allergie o intolleranze: scrivile nelle note qui sotto, così la cucina le sa in anticipo.</p>
+
+      <label class="request-check" data-request-transfer hidden>
+        <input id="reqTransfer" name="transfer" type="checkbox" />
+        <span>
+          <span data-i18n="req.transfer" data-request-transfer-label>Vuoi il transfer?</span>
+          <small data-request-transfer-note></small>
+        </span>
+      </label>
+
+      <label class="request-check" data-request-transfer-siam hidden>
+        <input id="reqTransferSiam" name="transferSiam" type="checkbox" />
+        <span>
+          <span data-i18n="req.transferSiam" data-request-transfer-siam-label>Vuoi il transfer per il Siam Park?</span>
+          <small data-request-transfer-siam-note></small>
+        </span>
+      </label>
+
+      <label for="reqNote"><span data-i18n="req.note">Note</span> <span class="request-optional" data-i18n="req.optional">(facoltativo)</span></label>
+      <input id="reqNote" name="note" type="text" autocomplete="off"
+             data-i18n-placeholder="req.notePlaceholder" placeholder="Hotel, zona, richieste particolari…" />
+
+      <button class="btn btn-primary btn-block request-submit" type="submit" data-i18n="req.submit">Continua su WhatsApp</button>
+
+      <p class="hint" data-i18n-html="req.hint">Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.</p>
+      <p class="hint request-privacy" data-i18n="req.privacy">Quello che scrivi qui serve solo a risponderti su WhatsApp: non viene salvato dal sito.</p>
+    </form>
+  </div>
+
+  <div class="ticket-scrim" data-ticket-scrim hidden></div>
+  <div class="ticket-dialog" id="ticketDialog" role="dialog" aria-modal="true" aria-labelledby="ticketDialogTitle" hidden>
+    <div class="ticket-dialog-head">
+      <h2 id="ticketDialogTitle" data-i18n="ticket.title">Scan ticket</h2>
+      <button class="iconbtn" type="button" data-ticket-close data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
+    </div>
+    <form data-lookup-form>
+      <label for="codeInput" data-i18n="ticket.codeLabel">Codice prenotazione o ticket</label>
+      <div class="lookup-row">
+        <input id="codeInput" name="code" type="text" inputmode="text" autocomplete="off"
+               data-i18n-placeholder="ticket.placeholder" placeholder="Es. ISLA-4521" required />
+        <button class="btn btn-primary" type="submit" data-i18n="common.search">Cerca</button>
+      </div>
+      <p class="hint" data-i18n="ticket.hint">Lo trovi nella email o nel messaggio di conferma della prenotazione.</p>
+    </form>
+  </div>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
+        <div>
+          <strong>Isla</strong>
+          <span>so easy so tenerife</span>
+        </div>
+      </div>
+      <button class="footer-link" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="footer.findCode">Cerca il tuo codice</button>
+    </div>
+    <p class="footer-copy" data-i18n="footer.copy">© Isla · Escursioni a Tenerife</p>
+  </footer>
+
+  <script src="./i18n.js"></script>
+  <script src="./esplora-catalog.js"></script>
+  <script src="./escursioni.js"></script>
+  <script src="./lista.js"></script>
+  <script src="./assistente.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

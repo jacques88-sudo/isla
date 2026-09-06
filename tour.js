@@ -444,7 +444,13 @@ function renderTour(tour) {
   const contenitore = document.querySelector("[data-tour]");
   if (!contenitore) return;
 
+  const fascia = document.querySelector("[data-tour-hero]");
+  const banda = fascia && fascia.closest(".home-hero");
+
   if (!tour) {
+    // niente scheda, niente foto: la fascia vuota sarebbe una striscia beige
+    // alta due dita sopra il messaggio di errore
+    if (banda) banda.hidden = true;
     document.title = t("detail.notFound") + " · Isla";
     contenitore.innerHTML = `
       <div class="state">
@@ -456,6 +462,12 @@ function renderTour(tour) {
   }
 
   document.title = tf(tour.title) + " · Isla";
+
+  // La foto grande sta nella fascia in cima, sopra la scheda: la scheda tiene
+  // solo la striscia delle miniature. Si riempie qui e non nell'HTML perche'
+  // al cambio lingua renderTour rigira e l'alt della foto e' tradotto.
+  if (banda) banda.hidden = false;
+  if (fascia) fascia.innerHTML = detailMedia(tour);
 
   // Due strade dallo stesso punto: chiedere solo questa, oppure metterla da
   // parte e continuare a guardare. La prima resta il pulsante pieno, perche'
@@ -470,7 +482,6 @@ function renderTour(tour) {
   contenitore.innerHTML = `
     <article class="detail-tour">
       <div class="detail-media">
-        <div class="detail-hero">${detailMedia(tour)}</div>
         ${detailGallery(tour)}
       </div>
       <div class="detail-main">
@@ -503,7 +514,8 @@ function renderTour(tour) {
 // principale: niente pagina nuova, niente libreria di lightbox.
 function collegaGalleria(contenitore) {
   const galleria = contenitore.querySelector("[data-detail-gallery]");
-  const heroImg = contenitore.querySelector("[data-hero-img]");
+  // la foto grande adesso sta nella fascia in cima, fuori dalla scheda
+  const heroImg = document.querySelector("[data-hero-img]");
   if (!galleria || !heroImg) return;
 
   galleria.addEventListener("click", e => {

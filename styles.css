@@ -445,6 +445,19 @@ a { text-decoration: none; color: inherit; }
   border-radius: 18px;
   background: var(--cream);
 }
+/* Sulle schede dell'attivita' la foto la scrive tour.js, quindi li' la fascia
+   e' un contenitore e non l'immagine: la foto dentro la riempie tutta. */
+.home-hero-box {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.home-hero-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* Su schermo largo la stessa proporzione darebbe una fascia alta 600 px:
    diventa piu' bassa e larga, come una striscia panoramica. */
 @media (min-width: 960px) {
@@ -552,6 +565,14 @@ a { text-decoration: none; color: inherit; }
 /* .pill e' inline-flex e vince sull'[hidden] del browser: senza questa riga la
    pillola dell'installazione si vedrebbe sempre. */
 .pill[hidden] { display: none; }
+
+/* Sull'elenco e sulle schede il nome e le lingue non ci sono: la striscia
+   arriva subito sotto il logo tondo e le serve un po' piu' d'aria sopra. */
+.home-hero + .home-bar { margin-top: 1.9rem; }
+/* .detail-page e' un flex a colonna con gap 1.2rem, che si somma al margine
+   qui sopra: senza questa riga fra il logo tondo e la striscia c'e' quasi il
+   doppio dell'aria che c'e' sull'elenco. */
+.detail-page .home-hero + .home-bar { margin-top: .7rem; }
 
 /* Sotto la striscia l'intro non ha bisogno dei suoi 4rem di aria */
 .home-bar + .intro { padding-top: 2.2rem; }
@@ -1610,7 +1631,9 @@ body.menu-open { overflow: hidden; }
 
 /* ── Pagina di dettaglio di una singola escursione ────────────────────── */
 .detail-page {
-  padding: 7.5rem 0 4rem;
+  /* niente spazio in cima: la striscia e' sticky e sta nel flusso, il banner
+     fisso qui non c'e' piu' */
+  padding: 0 0 4rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -1632,18 +1655,6 @@ body.menu-open { overflow: hidden; }
   border-radius: 20px;
   overflow: hidden;
   box-shadow: var(--shadow);
-}
-.detail-hero {
-  aspect-ratio: 16 / 10;
-  background: var(--cream);
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
-.detail-hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 .detail-media {
   display: flex;
@@ -1817,13 +1828,23 @@ body.menu-open { overflow: hidden; }
   /* da tablet in su il contenitore si allarga: a 640px le due colonne
      mandavano a capo anche "Puerto Colon" */
   .detail-page .wrap { max-width: var(--max-wide); }
-  .detail-tour {
-    display: grid;
-    grid-template-columns: 1.15fr 1fr;
+  /* Le due colonne servivano a mettere la foto grande di fianco al testo. La
+     foto adesso sta nella fascia in cima, quindi la scheda torna a una
+     colonna sola; il testo pero' non deve allargarsi a 1120 px, o le righe
+     diventano il doppio di quanto si legge comodo. */
+  .detail-tour { display: block; }
+  .detail-main {
+    padding: 2.2rem 2rem 2.4rem;
+    max-width: 68ch;
+    margin: 0 auto;
   }
-  .detail-media { height: 100%; }
-  .detail-hero { aspect-ratio: auto; flex: 1 1 auto; min-height: 0; }
-  .detail-main { padding: 2rem 2rem 2.2rem; }
+  /* le miniature seguono la stessa colonna del testo, se no restano
+     appiccicate al bordo sinistro mentre il testo sta in mezzo */
+  .detail-media {
+    max-width: 68ch;
+    margin: 0 auto;
+    width: 100%;
+  }
   .detail-related ul { flex-direction: row; }
   .detail-related li { flex: 1; }
 }

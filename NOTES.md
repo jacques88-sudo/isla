@@ -5131,3 +5131,44 @@ torna la foto generica; cambiando lingua con "Sotto le stelle" attivo il titolo 
 la pagina non scorre di lato, la striscia si ferma a 0 px dal bordo. `tour.html` e
 `index.html` ricontrollate e intatte. `node controlla.js` → 0 errori, 1 avviso invariato
 (opera-60). `sw.js` a `isla-v218`.
+
+### Poi via il nome e le lingue, e la stessa testata sulle schede
+
+**Sull'elenco e sulle schede il blocco "ISLA / so easy so tenerife" e la riga delle lingue
+non ci sono.** Il marchio ce l'ha già il logo tondo, e il titolo vero è quello della
+categoria (o dell'attività) subito sotto. La prima scheda dell'elenco passa da **776 a
+649 px**. La lingua non si perde: resta nel menu laterale (☰ → Lingua), che c'è su tutte
+le pagine — la riga IT/EN/ES resta solo sulla home, dove c'è spazio.
+
+**Sulle schede dell'attività la foto grande è uscita dalla scheda ed è salita nella
+fascia.** Era l'unico modo per non vederla due volte a mezzo schermo di distanza: la
+scheda aveva già `.detail-hero` in cima, e una fascia con la stessa foto sopra sarebbe
+stata un doppione. Adesso `renderTour` scrive la foto dentro `[data-tour-hero]` invece che
+dentro la scheda, e la scheda comincia con la striscia delle miniature.
+
+Tre conseguenze, tutte sistemate:
+- `collegaGalleria` cercava la foto grande **dentro** il contenitore della scheda. Adesso
+  la foto sta fuori, quindi la cerca nel documento. Le miniature cambiano ancora la foto
+  in cima: provato, il clic sulla terza mette `freebird-3.jpg` nella fascia.
+- La foto la scrive il JavaScript e non l'HTML **apposta**: al cambio lingua `renderTour`
+  rigira e l'`alt` della foto è tradotto.
+- Con un `id` che non esiste non c'è nessuna foto: la fascia si nasconde, se no sopra il
+  messaggio "Escursione non trovata" restava una striscia beige alta due dita.
+
+**Da 900 px in su la scheda non ha più due colonne.** Servivano a mettere la foto grande
+di fianco al testo; senza la foto restava una colonna quasi vuota con dentro solo le
+miniature. Adesso è una colonna sola, con il testo e le miniature larghi al massimo 68ch
+e centrati: a 1120 px le righe sarebbero lunghe il doppio di quanto si legge comodo.
+Misurato: miniature e testo occupano tutti e due `294..986`.
+
+`.detail-page` perde `padding-top: 7.5rem` (era il posto del banner fisso) e prende una
+riga in più: è un flex a colonna con `gap: 1.2rem`, che si sommava al margine della
+striscia e lasciava fra il logo e i pulsanti quasi il doppio dell'aria che c'è
+sull'elenco.
+
+Provato nel browser vero (412×915 e 1280×900) su tre casi diversi: `freebird-catamaran`
+(con galleria, 4 miniature), `aqualand` (senza galleria, la scheda comincia dal testo) e
+un `id` inesistente (fascia nascosta, messaggio giusto, striscia ancora al suo posto).
+Nessuna foto doppia, nessun errore JS, la pagina non scorre di lato. Cambiando lingua dal
+menu il titolo e la foto restano quelli giusti. `node controlla.js` → 0 errori, 1 avviso
+invariato (opera-60). `sw.js` a `isla-v219`.

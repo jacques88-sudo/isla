@@ -77,41 +77,34 @@
 
   <a class="skip" href="#main" data-i18n="common.skip">Vai al contenuto</a>
 
-  <header class="site-banner">
-    <div class="hero-top">
-      <a class="hero-logo" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
+  <main id="main" class="catalog-page">
+    <!-- Stessa testata della home. La foto pero' non e' il video: e' quella
+         della categoria scelta, e la cambia initCatalog in escursioni.js
+         (attributo data-hero-photo). Senza filtro resta la foto dell'isola. -->
+    <div class="home-hero">
+      <img class="home-hero-media" data-hero-photo src="./assets/hero-tenerife.webp" alt="" />
+      <a class="home-hero-mark" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
         <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
       </a>
-      <div class="hero-brand">
-        <span class="hero-brand-title">Isla</span>
-        <span class="hero-brand-sub">so easy so tenerife</span>
-      </div>
-      <div class="lang-switch">
-        <button class="lang-toggle" type="button" data-lang-toggle
-                data-i18n-aria-label="lang.change" aria-label="Cambia lingua"
-                aria-haspopup="true" aria-expanded="false">
-          <span data-lang-current>IT</span>
-        </button>
-        <ul class="lang-menu" data-lang-menu hidden>
-          <li><button type="button" data-lang-set="it">Italiano</button></li>
-          <li><button type="button" data-lang-set="en">English</button></li>
-          <li><button type="button" data-lang-set="es">Español</button></li>
-        </ul>
-      </div>
     </div>
-    <nav class="hero-pills" data-i18n-aria-label="nav.aria" aria-label="Menu principale">
-      <a class="pill pill-ghost" href="./escursioni.html" data-i18n="nav.experiences">Esperienze</a>
-      <button class="pill pill-solid" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.bookNow">Prenota ora</button>
-      <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
-        <span class="pill-icon" aria-hidden="true">☰</span> <span data-i18n="nav.menu">Menu</span>
-      </button>
-    </nav>
-  </header>
 
-  <main id="main" class="catalog-page">
+    <nav class="home-bar" data-i18n-aria-label="nav.aria" aria-label="Menu principale">
+      <div class="hero-pills">
+        <a class="pill pill-ghost" href="./escursioni.html" data-i18n="nav.experiences">Esperienze</a>
+        <button class="pill pill-solid" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.bookNow">Prenota ora</button>
+        <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
+          <span class="pill-icon" aria-hidden="true">☰</span> <span data-i18n="nav.menu">Menu</span>
+        </button>
+        <button class="pill pill-ghost pill-install" type="button" data-install-btn hidden
+                data-i18n-aria-label="menu.install" aria-label="Installa l'app">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 6v8m0 0-3-3m3 3 3-3"/><path d="M10.5 18.5h3"/></svg>
+        </button>
+      </div>
+    </nav>
+
     <div class="wrap catalog-head">
       <span class="eyebrow" data-i18n="catalog.eyebrow">Esplora</span>
-      <h1 data-i18n="catalog.title">Tutte le escursioni</h1>
+      <h1 data-catalog-title>Tutte le escursioni</h1>
       <p class="catalog-count" data-count></p>
     </div>
 

@@ -427,6 +427,8 @@ function initCatalog() {
   const searchInput = document.querySelector("[data-search]");
   const countEl = document.querySelector("[data-count]");
   const emptyEl = document.querySelector("[data-empty]");
+  const heroPhoto = document.querySelector("[data-hero-photo]");
+  const titleEl = document.querySelector("[data-catalog-title]");
   if (!grid) return;
 
   const published = ESPLORA_CATALOG.filter(x => x.published);
@@ -463,6 +465,25 @@ function initCatalog() {
     });
   }
 
+  // La foto in cima e il titolo seguono la categoria scelta: se ne e' scelta
+  // una sola sono la sua foto e il suo nome, se no la foto dell'isola e
+  // "Tutte le escursioni". Con piu' categorie insieme (l'assistente sa
+  // mandarne due) non c'e' una foto giusta, quindi si torna a quella generica.
+  function categoriaSola() {
+    if (state.categories.length !== 1) return null;
+    return usedCategories.find(c => c.id === state.categories[0]) || null;
+  }
+
+  function dipingiTestata() {
+    const cat = categoriaSola();
+    if (heroPhoto) {
+      heroPhoto.src = cat && cat.image ? "./assets/" + cat.image : "./assets/hero-tenerife.webp";
+    }
+    if (titleEl) {
+      titleEl.textContent = cat ? tf(cat.name) : t("catalog.title");
+    }
+  }
+
   function matches(tour) {
     if (state.categories.length && !state.categories.includes(tour.category)) return false;
     if (state.family && !tour.family) return false;
@@ -481,6 +502,8 @@ function initCatalog() {
 
   function render() {
     const results = published.filter(matches);
+
+    dipingiTestata();
 
     grid.innerHTML = "";
     results.forEach(tour => grid.appendChild(tourCard(tour)));

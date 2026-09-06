@@ -38,9 +38,9 @@
 * { box-sizing: border-box; }
 
 html { color-scheme: light; scroll-behavior: smooth; scroll-padding-top: 9rem; }
-/* I 9rem qui sopra lasciano il posto a .site-banner, che e' fisso e alto. La
-   home ha invece la striscia sticky, alta 60 px: 9rem lascerebbero un buco di
-   aria sopra il titolo a cui si e' saltati. */
+/* Tutte le pagine hanno la striscia sticky, alta 60 px: i 9rem qui sopra
+   lascerebbero un buco di aria sopra il titolo a cui si e' saltati. Restano
+   per le pagine che la striscia non ce l'hanno, come booking.html. */
 html:has(.home-bar) { scroll-padding-top: 5rem; }
 
 body {
@@ -204,117 +204,6 @@ a { text-decoration: none; color: inherit; }
   color: var(--text);
 }
 
-/* Site banner — logo, wordmark and pill nav, fixed at the top for the whole home page.
-   Transparent and roomy over the hero video; shrinks to a compact blurred bar on scroll. */
-.site-banner {
-  position: fixed;
-  inset-inline: 0;
-  top: 0;
-  z-index: 20;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .75rem;
-  padding: 1rem 1.25rem;
-  color: #fff;
-  background: transparent;
-  border-bottom: 1px solid transparent;
-  transition: padding .3s ease, background .3s ease, border-color .3s ease, color .3s ease, box-shadow .3s ease;
-}
-.site-banner.is-scrolled {
-  padding: .5rem 1.25rem;
-  color: var(--text);
-  background: color-mix(in oklab, var(--bg) 85%, transparent);
-  backdrop-filter: blur(16px);
-  border-bottom-color: color-mix(in oklab, var(--border) 80%, transparent);
-  box-shadow: 0 14px 30px -22px oklch(0.24 0.012 60 / .25);
-}
-.site-banner.is-scrolled .hero-brand-sub { color: var(--muted); }
-.site-banner.is-scrolled .pill-ghost {
-  background: var(--surface);
-  border-color: var(--border);
-  color: var(--text);
-}
-
-.hero-top {
-  width: 100%;
-  max-width: var(--max);
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-}
-.hero-logo {
-  flex: 0 0 auto;
-}
-.hero-logo img {
-  width: 38px;
-  height: 38px;
-  object-fit: contain;
-  display: block;
-}
-/* Selettore lingua nella barra in alto: occupa lo stesso spazio del logo
-   sull'altro lato, così la scritta "Isla" resta centrata. */
-.lang-switch {
-  position: relative;
-  flex: 0 0 38px;
-  display: flex;
-  justify-content: flex-end;
-}
-.lang-toggle {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: .62rem;
-  font-weight: 500;
-  letter-spacing: .1em;
-  background: oklch(1 0 0 / .1);
-  border: 1px solid oklch(1 0 0 / .55);
-  color: #fff;
-  backdrop-filter: blur(6px);
-  transition: background .3s ease, border-color .3s ease, color .3s ease;
-}
-.site-banner.is-scrolled .lang-toggle {
-  background: var(--surface);
-  border-color: var(--border);
-  color: var(--text);
-}
-.lang-menu {
-  position: absolute;
-  top: calc(100% + .5rem);
-  right: 0;
-  z-index: 30;
-  min-width: 150px;
-  margin: 0;
-  padding: .3rem;
-  list-style: none;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  box-shadow: var(--shadow);
-}
-.lang-menu[hidden] { display: none; }
-.lang-scrim {
-  position: fixed;
-  inset: 0;
-  z-index: 19;
-}
-.lang-scrim[hidden] { display: none; }
-.lang-menu button {
-  width: 100%;
-  padding: .6rem .7rem;
-  border-radius: 7px;
-  text-align: left;
-  font-size: .9rem;
-  color: var(--text);
-}
-.lang-menu button:hover { background: var(--cream); }
-.lang-menu button.is-active {
-  background: var(--text);
-  color: var(--primary-foreground);
-}
-
 /* Stesso selettore, in forma larga, dentro il menu laterale */
 .more-menu-lang {
   display: flex;
@@ -349,27 +238,6 @@ a { text-decoration: none; color: inherit; }
 .lang-seg button.is-active {
   background: var(--text);
   color: var(--primary-foreground);
-}
-.hero-brand {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .15rem;
-  text-align: center;
-}
-.hero-brand-title {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: .16em;
-}
-.hero-brand-sub {
-  font-size: .6rem;
-  text-transform: uppercase;
-  letter-spacing: .26em;
-  color: oklch(1 0 0 / .85);
 }
 .hero-pills {
   width: 100%;
@@ -430,7 +298,8 @@ a { text-decoration: none; color: inherit; }
 /* ─── Testata della home ────────────────────────────────────────────────────
    Fascia con il video, logo tondo che ci sta sopra, nome del posto, lingue in
    fila, e la striscia dei pulsanti che si ferma in cima quando si scorre.
-   Le altre pagine tengono .site-banner, che invece e' fisso. */
+   L'elenco e le schede usano la stessa testata, con una foto al posto del
+   video e senza il nome e le lingue. */
 .home-hero {
   position: relative;
   max-width: var(--max-wide);
@@ -530,9 +399,10 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* "sticky" vuol dire: scorre con la pagina finche' arriva in cima, poi si
-   ferma li'. Costa meno di .site-banner, che essendo "fixed" esce dal flusso
-   e obbliga le altre pagine a un padding-top che gli lascia il posto.
-   Sfondo e sfocatura servono perche' il contenuto le passa sotto. */
+   ferma li'. Costa meno della barra fissa che c'era prima: quella, essendo
+   "fixed", usciva dal flusso e obbligava ogni pagina a un padding-top che le
+   lasciasse il posto. Sfondo e sfocatura servono perche' il contenuto le
+   passa sotto. */
 .home-bar {
   position: sticky;
   top: 0;

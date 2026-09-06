@@ -38,7 +38,6 @@ const I18N = {
   "common.homeAria":    { it: "Isla, vai alla home", en: "Isla, go to home", es: "Isla, ir al inicio" },
   "common.logoAlt":     { it: "Logo Isla", en: "Isla logo", es: "Logo de Isla" },
   "lang.label":         { it: "Lingua", en: "Language", es: "Idioma" },
-  "lang.change":        { it: "Cambia lingua", en: "Change language", es: "Cambiar idioma" },
 
   // ── barra in alto ───────────────────────────────────────────────────────
   "nav.aria":           { it: "Menu principale", en: "Main menu", es: "Menú principal" },
@@ -56,7 +55,6 @@ const I18N = {
   // ── hero ────────────────────────────────────────────────────────────────
   "hero.pause":         { it: "Metti in pausa il video", en: "Pause the video", es: "Pausar el vídeo" },
   "hero.play":          { it: "Riproduci il video", en: "Play the video", es: "Reproducir el vídeo" },
-  "hero.discover":      { it: "Scopri di più", en: "Discover more", es: "Descubre más" },
 
   // ── intro e bento ───────────────────────────────────────────────────────
   "intro.eyebrow":      { it: "Tenerife", en: "Tenerife", es: "Tenerife" },
@@ -472,65 +470,15 @@ function paintLangButtons() {
     btn.classList.toggle("is-active", attivo);
     btn.setAttribute("aria-pressed", attivo ? "true" : "false");
   });
-  document.querySelectorAll("[data-lang-current]").forEach(el => {
-    el.textContent = I18N_CURRENT.toUpperCase();
-  });
 }
 
-// Selettore nella barra in alto: un bottone tondo con la sigla della lingua
-// che apre l'elenco delle tre lingue.
-let chiudiMenuLingua = function () {};   // sostituita sotto se il menu esiste
-
+// I bottoni della lingua: la riga IT/EN/ES della home e quella dentro il menu
+// laterale. Il vecchio bottone tondo che apriva un elenco a tendina non c'e'
+// piu' su nessuna pagina, ed e' andato via con la barra fissa che lo teneva.
 function initLangSwitch() {
   document.querySelectorAll("[data-lang-set]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      setLang(btn.dataset.langSet);
-      chiudiMenuLingua();
-    });
+    btn.addEventListener("click", () => setLang(btn.dataset.langSet));
   });
-
-  const toggle = document.querySelector("[data-lang-toggle]");
-  const menu = document.querySelector("[data-lang-menu]");
-  if (!toggle || !menu) return;
-
-  // Velo invisibile a tutto schermo: mentre l'elenco è aperto raccoglie lui
-  // il tocco fuori e chiude. Senza, l'elenco coprirebbe i pulsanti sotto e
-  // un tocco di troppo cambierebbe lingua per sbaglio.
-  const velo = document.createElement("div");
-  velo.className = "lang-scrim";
-  velo.hidden = true;
-  document.body.appendChild(velo);
-
-  function apri() {
-    menu.hidden = false;
-    velo.hidden = false;
-    toggle.setAttribute("aria-expanded", "true");
-  }
-  function chiudi() {
-    menu.hidden = true;
-    velo.hidden = true;
-    toggle.setAttribute("aria-expanded", "false");
-  }
-  chiudiMenuLingua = chiudi;
-
-  toggle.addEventListener("click", () => {
-    if (menu.hidden) apri(); else chiudi();
-  });
-  velo.addEventListener("click", chiudi);
-  // Il velo sta sotto la barra in alto: un tocco sugli altri pulsanti della
-  // barra arriva qui e chiude comunque l'elenco.
-  document.addEventListener("click", e => {
-    if (menu.hidden) return;
-    if (menu.contains(e.target) || toggle.contains(e.target)) return;
-    chiudi();
-  });
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape" && !menu.hidden) chiudi();
-  });
-  // scorrendo, la barra si rimpicciolisce e l'elenco resterebbe staccato
-  window.addEventListener("scroll", () => {
-    if (!menu.hidden) chiudi();
-  }, { passive: true });
 }
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -5172,3 +5172,55 @@ un `id` inesistente (fascia nascosta, messaggio giusto, striscia ancora al suo p
 Nessuna foto doppia, nessun errore JS, la pagina non scorre di lato. Cambiando lingua dal
 menu il titolo e la foto restano quelli giusti. `node controlla.js` → 0 errori, 1 avviso
 invariato (opera-60). `sw.js` a `isla-v219`.
+
+---
+
+## Pulizia: via la barra fissa che non usava piu' nessuno (6 settembre 2026)
+
+Dopo che home, elenco e schede sono passati tutti alla testata nuova, `.site-banner` —
+la barra fissa in alto — non la usava piu' nessuna pagina. Restava lì, con tutto quello
+che le girava intorno. Questa è una PR di sola pulizia: **204 righe in meno, e sullo
+schermo non cambia niente.**
+
+Cosa se n'è andato, e perché era morto:
+
+- **`initStickyBanner` in `app.js`** (22 righe). Serviva a far diventare compatta la barra
+  fissa quando la pagina scorreva. Senza `.site-banner` non trovava piu' niente e usciva
+  subito.
+- **Il selettore lingua a tendina in `i18n.js`** (56 righe): il bottone tondo con la sigla
+  che apriva l'elenco delle tre lingue, con il suo velo, i suoi tasti Escape e la chiusura
+  allo scorrimento. Stava dentro la barra fissa. `initLangSwitch` adesso fa una cosa sola:
+  attacca il clic ai bottoni `[data-lang-set]`, che sono quelli veri — la riga IT/EN/ES
+  della home e quella dentro il menu laterale. Via anche il giro su `[data-lang-current]`
+  in `paintLangButtons`, che scriveva la sigla dentro quel bottone tondo.
+- **139 righe di `styles.css`**: `.site-banner` e i suoi stati, `.hero-top`, `.hero-logo`,
+  `.hero-brand*`, `.lang-switch`, `.lang-toggle`, `.lang-menu*`, `.lang-scrim`.
+- **Due chiavi di `i18n.js`**: `hero.discover` ("Scopri di più"), che era il link sotto il
+  video a schermo intero, e `lang.change`, l'etichetta di quel bottone tondo.
+
+Restano, e non sono morte: `.hero-pills` (la usa la striscia nuova), `.lang-seg` (il
+selettore dentro il menu laterale), `.playbtn` (il pulsante del video), `.top`/`.nav`/
+`.brand` (le usa `booking.html`).
+
+**Come ho controllato che non cambiasse niente.** Non a occhio: ho misurato le stesse
+quattro posizioni prima e dopo, con la pulizia messa da parte con `git stash` e poi
+rimessa. Identiche al pixel:
+
+| | home, titolo | home, categorie | elenco, prima scheda | scheda, titolo |
+|---|---|---|---|---|
+| prima | 572 px | 1867 px | 649 px | 556 px |
+| dopo | 572 px | 1867 px | 649 px | 556 px |
+
+E la striscia è alta 60 px su tutte e quattro, prima e dopo.
+
+Provato anche che la lingua si cambi ancora da tutte e due i posti rimasti: dal menu
+laterale su una categoria (il titolo diventa "Bajo las estrellas" e ES resta acceso) e
+dalla riga sulla home (l'intro torna in italiano e IT resta acceso). Nessun errore JS su
+`index.html`, `escursioni.html`, `tour.html` e `booking.html`.
+
+Notato di passaggio, **non** sistemato perché non c'entra con la pulizia: `booking.html`
+non ha nessun modo di cambiare lingua — non ha né la riga né il menu laterale. Segue la
+lingua salvata da prima, quindi nessuno resta bloccato, ma se ci arrivi da un link diretto
+non puoi cambiarla. Era così anche prima.
+
+`node controlla.js` → 0 errori, 1 avviso invariato (opera-60). `sw.js` a `isla-v220`.

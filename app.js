@@ -34,28 +34,6 @@ function initSplash() {
 
 initSplash();
 
-// Site banner shrinks to a compact bar once the page scrolls.
-// Sulle pagine senza video hero sotto resta sempre nello stato compatto:
-// da trasparente sarebbe testo bianco su sfondo chiaro, quindi illeggibile.
-function initStickyBanner() {
-  const banner = document.querySelector(".site-banner");
-  if (!banner) return;
-
-  if (!document.querySelector(".hero")) {
-    banner.classList.add("is-scrolled");
-    return;
-  }
-
-  function paint() {
-    banner.classList.toggle("is-scrolled", window.scrollY > 24);
-  }
-
-  paint();
-  window.addEventListener("scroll", paint, { passive: true });
-}
-
-document.addEventListener("DOMContentLoaded", initStickyBanner);
-
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./sw.js").catch(() => {});

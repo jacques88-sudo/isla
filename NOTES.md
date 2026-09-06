@@ -5224,3 +5224,45 @@ lingua salvata da prima, quindi nessuno resta bloccato, ma se ci arrivi da un li
 non puoi cambiarla. Era così anche prima.
 
 `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). `sw.js` a `isla-v220`.
+
+---
+
+## Il logo copriva la barca, e la foto adesso si apre intera (6 settembre 2026)
+
+Sulle schede delle attività il logo tondo stava in mezzo, in basso: esattamente dove le
+foto mettono il soggetto. Sul Freebird **il catamarano finiva dietro al logo**. Non era
+sfortuna di quella foto: chi fotografa una barca la mette al centro.
+
+**Il logo si sposta nell'angolo in basso a sinistra e passa da 116 a 76 px.** Solo su
+`.detail-page`: sulla home e sull'elenco resta dov'è. Nell'angolo copre acqua o cielo.
+
+Provata anche l'altra strada, il logo **sotto** la foto senza toccarla: è l'unica che
+garantisce che nessuna foto venga mai coperta, e resta la scelta giusta se un giorno
+l'angolo desse fastidio. Ma con l'angolo la scheda somiglia ancora alla home, e la
+differenza si vede solo se le metti vicine.
+
+**In cambio la foto si apre intera toccandola.** Serve perché nella fascia è comunque
+tagliata a 16/9 e ha il logo in un angolo: nella finestra si vede tutta, senza ritaglio e
+senza niente sopra. Mostra **quella che si sta guardando**, quindi segue anche le
+miniature: se cambi foto con la galleria e poi tocchi la fascia, si apre quella.
+
+Come è fatta, e le trappole trovate:
+- La fascia è diventata un `<button>`: cliccabile davvero, non un `div` con un listener
+  attaccato, così funziona anche da tastiera e i lettori di schermo la annunciano
+  ("Ingrandisci la foto", chiave `detail.zoom`).
+- Il segno dell'ingrandimento in alto a destra ha `pointer-events: none`: se prendesse lui
+  il tocco, toccare proprio quel punto non aprirebbe niente.
+- **`.photo-viewer[hidden] { display: none }`**: è la terza volta in questo giro
+  (`.bento-tile`, `.pill`, e adesso questa). `display: grid` vince sull'`[hidden]` del
+  browser, e senza quella riga la finestra sarebbe sempre aperta.
+- Lo sfondo scuro è **pieno**: al 93% la pagina sotto si leggeva ancora e rubava l'occhio
+  alla foto.
+- Si chiude con la ✕, con Escape e toccando lo sfondo — non toccando la foto. Il blocco
+  dello scorrimento usa `body.menu-open`, come tutte le altre finestre. Chiudendo, il
+  `src` della foto grande si toglie e il fuoco torna dov'era.
+
+Provato nel browser vero (412×915): la foto si apre a 372×248 dalla sorgente 1200×800
+(intera, non tagliata); Escape chiude e sblocca lo scorrimento; dopo il clic sulla terza
+miniatura si apre `freebird-3.jpg`; il tocco sullo sfondo chiude; su un `id` inesistente
+la fascia resta nascosta e non si apre niente. Nessun errore JS. `node controlla.js` →
+0 errori, 1 avviso invariato (opera-60). `sw.js` a `isla-v221`.

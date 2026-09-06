@@ -604,3 +604,46 @@ function initTourPage() {
 }
 
 document.addEventListener("DOMContentLoaded", initTourPage);
+
+// La foto della fascia a tutto schermo, toccandola. Serve perche' nella fascia
+// la foto e' tagliata a 16/9 e col logo sopra: qui si vede intera, senza
+// ritaglio e senza niente davanti. Mostra quella che si sta guardando, quindi
+// segue anche le miniature della galleria.
+function initPhotoViewer() {
+  const fascia = document.querySelector("[data-tour-hero]");
+  const viewer = document.querySelector("[data-photo-viewer]");
+  if (!fascia || !viewer) return;
+
+  const grande = viewer.querySelector("[data-photo-full]");
+  const chiudiBtn = viewer.querySelector("[data-photo-close]");
+  let tornaA = null;
+
+  function apri() {
+    const img = fascia.querySelector("[data-hero-img]");
+    // scheda senza foto: non c'e' niente da ingrandire
+    if (!img) return;
+    grande.src = img.src;
+    grande.alt = img.alt;
+    tornaA = document.activeElement;
+    viewer.hidden = false;
+    document.body.classList.add("menu-open");
+    chiudiBtn.focus();
+  }
+
+  function chiudi() {
+    if (viewer.hidden) return;
+    viewer.hidden = true;
+    // la foto grande non resta in memoria mentre nessuno la guarda
+    grande.removeAttribute("src");
+    document.body.classList.remove("menu-open");
+    if (tornaA) tornaA.focus();
+  }
+
+  fascia.addEventListener("click", apri);
+  chiudiBtn.addEventListener("click", chiudi);
+  // un tocco sullo sfondo scuro chiude, uno sulla foto no
+  viewer.addEventListener("click", e => { if (e.target === viewer) chiudi(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") chiudi(); });
+}
+
+document.addEventListener("DOMContentLoaded", initPhotoViewer);

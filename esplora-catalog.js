@@ -1838,24 +1838,6 @@ const ESPLORA_CATALOG = [
 
   // ─── AVVENTURA E MOTORI ───────────────────────────────────────────────────
   {
-    id: "quad-provisional-license",
-    title: "1.5 Hour Provisional License Quad Trip",
-    category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "1 ora e mezza", en: "1.5 hours", es: "1,5 horas" },
-    priceFrom: 160,
-    priceAdult: 0,
-    priceChild: 0,
-    family: false,
-    desc: {
-      it: "Uscita in quad di un'ora e mezza, nella formula con licenza provvisoria.",
-      en: "An hour and a half out on a quad, in the provisional licence format.",
-      es: "Salida en quad de hora y media, en la modalidad con licencia provisional."
-    },
-    image: "quad-provisional-license.jpg",
-    published: true
-  },
-  {
     id: "mustang-experience",
     title: "Mustang Experience",
     category: "avventura-motori",

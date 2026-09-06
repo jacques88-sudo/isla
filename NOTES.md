@@ -5266,3 +5266,28 @@ Provato nel browser vero (412×915): la foto si apre a 372×248 dalla sorgente 1
 miniatura si apre `freebird-3.jpg`; il tocco sullo sfondo chiude; su un `id` inesistente
 la fascia resta nascosta e non si apre niente. Nessun errore JS. `node controlla.js` →
 0 errori, 1 avviso invariato (opera-60). `sw.js` a `isla-v221`.
+
+## Il quad con licenza provvisoria non si vende più: scheda eliminata (6 settembre 2026)
+
+Il proprietario ha detto di **togliere definitivamente** `1.5 Hour Provisional License
+Quad Trip`: non è più a catalogo. Non è un "nascondi", quindi non basta `published:
+false` — la scheda è stata **cancellata** da `esplora-catalog.js` e la foto
+`assets/quad-provisional-license.jpg` è stata rimossa insieme a lei, perché una foto che
+non serve più a nessuna scheda resta lì a pesare e a confondere chi cerca l'immagine
+giusta.
+
+Era l'unica scheda quad rimasta fuori dall'unione del 4 settembre (`quad-teide-adventure`
++ `quad-teide-sunset`), ed è giusto così: quella riuniva due orari dello stesso tour,
+questa era un prodotto diverso. Ora in *Avventura e motori* i quad sono uno solo.
+
+Nessun altro file la nominava: niente link, niente immagini di riserva, niente testi in
+`i18n.js` — cercato `quad-provisional-license` in tutto il progetto prima di toccare.
+Chi avesse il vecchio indirizzo salvato trova `tour.html?id=quad-provisional-license` →
+"Escursione non trovata", che è la risposta giusta.
+
+Provato nel browser vero: l'elenco di *Avventura e motori* non contiene più la parola
+"Provisional" e gli unici link quad puntano a `quad-teide-adventure`, che si apre ancora
+regolarmente. Nessun errore JS della pagina (restano i due mancati caricamenti di sempre
+in questo ambiente: il font di Google e il poster del video, bloccati dalla rete della
+sandbox). `node controlla.js` → 0 errori, 1 avviso invariato (opera-60); 75 schede, 70
+pubblicate. `sw.js` a `isla-v222`.

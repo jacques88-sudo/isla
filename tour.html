@@ -83,7 +83,11 @@
          La foto la scrive renderTour in tour.js dentro [data-tour-hero], ed e'
          la stessa che le miniature della galleria cambiano. -->
     <div class="home-hero">
-      <div class="home-hero-media home-hero-box" data-tour-hero></div>
+      <button class="home-hero-media home-hero-box" type="button" data-tour-hero
+              data-i18n-aria-label="detail.zoom" aria-label="Ingrandisci la foto"></button>
+      <span class="home-hero-zoom" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4v5M15 4h5v5M15 20h5v-5M9 20H4v-5"/></svg>
+      </span>
       <a class="home-hero-mark" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
         <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
       </a>
@@ -110,6 +114,12 @@
     </div>
     <div class="wrap" data-tour><!-- riempito da tour.js --></div>
   </main>
+
+  <div class="photo-viewer" data-photo-viewer hidden>
+    <button class="iconbtn photo-viewer-close" type="button" data-photo-close
+            data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
+    <img data-photo-full alt="" />
+  </div>
 
   <div class="menu-scrim" data-menu-scrim hidden></div>
   <aside class="more-menu" id="moreMenu" role="dialog" aria-modal="true" data-i18n-aria-label="menu.aria" aria-label="Menu" hidden>

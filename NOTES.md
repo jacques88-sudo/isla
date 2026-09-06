@@ -5082,3 +5082,52 @@ Provato nel browser vero con Playwright: alla prima visita il service worker si 
 si attiva, la cache è `isla-v217` con 20 file, e l'`index.html` dentro la cache è quello
 **nuovo** (contiene `home-bar`, non contiene `site-banner`). Alla seconda visita la pagina
 è servita dal service worker e la striscia c'è. Nessun errore JS. `sw.js` a `isla-v217`.
+
+---
+
+## L'elenco prende la testata della home, con la foto della categoria (5 settembre 2026)
+
+`escursioni.html` perde il `.site-banner` fisso e prende la stessa testata di `index.html`:
+fascia in cima, logo tondo sopra, nome, lingue in fila, striscia sticky. Al posto del
+video però c'è **la foto della categoria scelta**.
+
+**Le foto c'erano già.** `CATEGORIES` in `esplora-catalog.js` ha il campo `image` su tutte
+e otto (`Cat-mare.jpg`, `Cat-teide.jpg`, …, e `santa-cruz-taganana.jpg` per "Tour e
+visite"): sono le stesse che la home usa nei riquadri delle categorie. Non è stato
+inventato nessun dato nuovo, e non c'è una seconda lista da tenere allineata.
+
+**La foto cambia senza ricaricare la pagina.** Le linguette non toccano l'indirizzo:
+filtrano e basta. Quindi la foto non può venire dall'HTML, la scrive `dipingiTestata()`
+dentro `render()` di `initCatalog`, che gira già a ogni clic e a ogni cambio lingua.
+
+**Il titolo segue la foto.** Con la foto del mare in cima e scritto "Tutte le escursioni"
+sotto, la pagina si contraddiceva: adesso l'`h1` dice il nome della categoria ("Mare e
+barche", "Bajo las estrellas"…) e torna "Tutte le escursioni" quando il filtro non c'è.
+Per farlo l'`h1` ha perso il `data-i18n="catalog.title"` e ha preso `data-catalog-title`:
+con il `data-i18n` addosso, `applyI18n` glielo avrebbe riscritto sopra a ogni cambio
+lingua. Adesso il testo lo mette solo il JavaScript, in tutte e due i casi.
+
+**Con più categorie insieme si torna alla foto generica.** L'assistente sa mandare
+`?cat=avventura-motori,sport-acquatici`: due categorie, nessuna foto giusta, quindi resta
+`hero-tenerife.webp` e il titolo "Tutte le escursioni". `categoriaSola()` fa solo questo.
+
+`.catalog-page` perde `padding-top: 11rem` (e i 12rem da 960 px in su): erano lì per
+lasciare il posto al banner fisso, che adesso non c'è. La striscia è sticky, sta nel
+flusso e il posto se lo prende da sé.
+
+**Il costo, misurato:** la prima scheda passa da **456 a 776 px** su uno schermo da 915.
+Su una pagina che è un elenco è tanto, e la parte che si potrebbe togliere è "ISLA / so
+easy so tenerife" sotto il logo: qui la pagina non è la home, il nome ce l'ha già il logo
+tondo, e il titolo vero è quello della categoria appena sotto. Sono un'ottantina di pixel.
+Lasciato com'è perché la richiesta era "lo stesso layout della home".
+
+`tour.html` **tiene il banner fisso**: la richiesta parlava delle categorie.
+
+Provato nel browser vero (412×915 e 1280×900): senza filtro foto dell'isola e "Tutte le
+escursioni" con 71 schede; `?cat=mare-barche` dà `Cat-mare.jpg`, "Sea and boats" e 16
+schede; il clic su Avventura cambia foto e titolo senza ricaricare; tornando su "Tutte"
+torna la foto generica; cambiando lingua con "Sotto le stelle" attivo il titolo diventa
+"Bajo las estrellas" e la foto resta la sua. Nessuna immagine rotta, nessun errore JS,
+la pagina non scorre di lato, la striscia si ferma a 0 px dal bordo. `tour.html` e
+`index.html` ricontrollate e intatte. `node controlla.js` → 0 errori, 1 avviso invariato
+(opera-60). `sw.js` a `isla-v218`.

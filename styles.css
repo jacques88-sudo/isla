@@ -1382,8 +1382,8 @@ body.menu-open { overflow: hidden; }
 }
 
 .catalog-page {
-  /* lascia spazio al banner fisso, che qui non ha l'hero sotto */
-  padding-top: 11rem;
+  /* niente spazio in cima: da quando l'elenco ha la stessa testata della home,
+     la striscia e' sticky e sta nel flusso, non piu' fissa sopra la pagina */
   padding-bottom: 4rem;
 }
 .catalog-head {
@@ -1854,7 +1854,6 @@ body.menu-open { overflow: hidden; }
 }
 
 @media (min-width: 960px) {
-  .catalog-page { padding-top: 12rem; }
   .catalog-head .wrap,
   .catalog-tools,
   .catalog-page .wrap { max-width: var(--max-wide); }

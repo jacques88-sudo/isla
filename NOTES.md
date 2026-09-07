@@ -5764,16 +5764,23 @@ parada de guagua". Gli originali del fornitore erano note per gli autisti —
 stampatello, spagnolo e inglese mescolati, roba come "PARADA TAXI bajando
 cuesta / TAXI RANK down the hill" — e sono stati riscritti tutti e 65 a mano.
 
-**Tre messaggi diversi, non due**, ed e' l'errore preso al primo giro:
+**La riga e' corta: etichetta e posto, niente altro.** La prima versione
+spiegava ("non e' il tuo hotel", "l'ora te la confermiamo su WhatsApp") e il
+proprietario l'ha bocciata subito: troppo lunga. Aveva ragione — il cliente ha
+appena scritto il nome del suo hotel e vede da solo se il punto e' un altro, e
+la riga sotto dice gia' che si conferma tutto su WhatsApp. Resta
+"Punto di raccolta / Best Tenerife, alla fermata dell'autobus", e per chi sale
+sotto casa "Punto di raccolta / il tuo hotel".
+
+**Tre casi da distinguere lo stesso**, ed e' l'errore preso al primo giro:
 
 - punto `0`, oppure il punto si chiama come l'hotel e non ha un tipo →
-  "passiamo a prenderti in hotel";
-- il punto si chiama come l'hotel **ma ha un tipo** → "al tuo hotel, al
-  posteggio dei taxi" (11 hotel). Al Granada Park si sale al posteggio in fondo
+  "il tuo hotel";
+- il punto si chiama come l'hotel **ma ha un tipo** → il nome e il tipo
+  ("Granada Park, al posteggio dei taxi"), 11 hotel. Al Granada Park si sale al posteggio in fondo
   alla discesa e al Bahia del Duque alla sbarra: confrontare i due nomi e dire
   "passiamo in hotel" mandava il cliente ad aspettare davanti alla reception;
-- punto diverso → "Ti prendiamo a Best Tenerife, alla fermata dell'autobus —
-  **non e' il tuo hotel**".
+- punto diverso → il nome del posto e il tipo.
 
 **Il punto si ricava dall'hotel, non si salva** insieme alla richiesta: cosi'
 vale anche per le richieste rimaste nella lista da ieri, e se un domani un punto

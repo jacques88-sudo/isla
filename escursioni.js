@@ -461,6 +461,8 @@ function initHotelField() {
   if (!campo || !input || !lista) return;
 
   const puntoEl = document.querySelector("[data-hotel-punto]");
+  const etichettaEl = document.querySelector("[data-hotel-punto-et]");
+  const valoreEl = document.querySelector("[data-hotel-punto-val]");
   const aiutoEl = document.querySelector("[data-hotel-hint]");
   let scelto = -1;
 
@@ -498,10 +500,17 @@ function initHotelField() {
   function mostraPunto() {
     if (!puntoEl) return;
     const p = hotelPunto(input.value);
-    puntoEl.textContent = !p ? ""
-      : p.dove === "hotel" ? t("req.pickupAtHotel")
-      : p.dove === "stesso" ? t("req.pickupAtOwn", { t: p.tipo })
-      : t("req.pickupAt", { p: p.nome });
+    // Un'etichetta e un posto, niente di piu': il cliente ha appena scritto il
+    // nome del suo hotel e vede da solo se il punto e' un altro. Le frasi
+    // lunghe che c'erano prima ("non e' il tuo hotel", "l'ora te la
+    // confermiamo") le ha bocciate il proprietario, e aveva ragione: la riga
+    // sotto dice gia' che si conferma tutto su WhatsApp.
+    if (etichettaEl) etichettaEl.textContent = t("req.pickup");
+    if (valoreEl) {
+      valoreEl.textContent = !p ? ""
+        : p.dove === "hotel" ? t("req.pickupHotel")
+        : p.nome;
+    }
     puntoEl.hidden = !p;
     if (aiutoEl) aiutoEl.hidden = !!p;
   }

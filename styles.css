@@ -2597,8 +2597,21 @@ body.menu-open { overflow: hidden; }
    proprio albergo ma a una fermata dell'autobus a due strade, ed e' la cosa
    che devono leggere. */
 .hotel-punto {
-  color: var(--text);
+  margin: .8rem 0 0;
   background: var(--cream);
   border-radius: 12px;
   padding: .7rem .9rem;
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--muted);
+}
+.hotel-punto strong {
+  display: block;
+  margin-top: .25rem;
+  font-size: .95rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text);
 }

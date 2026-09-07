@@ -5782,6 +5782,27 @@ sotto casa "Punto di raccolta / il tuo hotel".
   "passiamo in hotel" mandava il cliente ad aspettare davanti alla reception;
 - punto diverso → il nome del posto e il tipo.
 
+### L'orario
+
+`PICKUP_TIMES[idScheda][idPunto]` in `hotel.js`. **Il punto e' lo stesso per
+tutte le escursioni, l'ora no**: per questo la tabella e' per scheda, e una
+scheda che non c'e' dentro mostra il punto senza l'ora invece di indovinarne
+una. Provato: sul Teide National Park esce "09:15 · Best Tenerife, alla fermata
+dell'autobus", su Teide + Masca lo stesso posto senza ora.
+
+Riempita per ora solo `teide-national-park`, con i 63 orari presi dal widget.
+**La pagina "teide-medio-dia" del fornitore e' quella della nostra scheda**,
+anche se il nome dice mezza giornata e la nostra durata dice 6-8 ore:
+confermato dal proprietario, che ha anche confermato che gli orari di Admiral
+sono gli stessi del fornitore. Ci ho sbattuto contro una volta e ho chiesto
+invece di indovinare — le due pagine sembravano due tour diversi.
+
+Per un'altra escursione servono **103 richieste, non 567**: siccome il punto non
+cambia mai, basta un hotel campione per punto. Un minuto e mezzo.
+
+Quando il punto e' proprio l'hotel e l'ora si sa, si scrive "08:20 · il tuo
+hotel": l'ora vale anche per chi non si sposta di un metro.
+
 **Il punto si ricava dall'hotel, non si salva** insieme alla richiesta: cosi'
 vale anche per le richieste rimaste nella lista da ieri, e se un domani un punto
 cambia non resta scritto quello vecchio nel browser del cliente.

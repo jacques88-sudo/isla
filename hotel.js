@@ -658,3 +658,88 @@ const HOTELS = [
   ["Yucca Park", 20],
   ["Zentral Center", 29],
 ];
+
+// Gli orari del pulmino, escursione per escursione.
+//
+// `PICKUP_TIMES[idScheda][idPunto]` = l'ora a cui il pulmino passa da quel
+// punto per quella escursione. **Il punto e' lo stesso per tutte, l'ora no**:
+// per questo la tabella e' per scheda, e una scheda che non c'e' qui mostra il
+// punto senza l'ora invece di indovinarne una.
+//
+// Confermato dal proprietario il 7 settembre 2026: gli orari di Admiral su
+// queste escursioni sono gli stessi del fornitore, e la pagina "teide-medio-dia"
+// del fornitore e' quella della nostra scheda `teide-national-park`, anche se
+// il nome dice mezza giornata.
+//
+// Le 12:15 del punto 41 sono giuste, anche se tutte le altre partenze stanno
+// fra le 08:15 e le 09:25: confermate a mano, gli hotel sono vicinissimi.
+// `09:04` e `09:16` erano refusi del fornitore, corretti in `09:05` e `09:15`.
+const PICKUP_TIMES = {
+  "teide-national-park": {
+    1: "08:15",
+    2: "08:20",
+    3: "08:20",
+    4: "08:20",
+    6: "08:40",
+    9: "08:40",
+    10: "08:40",
+    11: "08:40",
+    14: "08:50",
+    16: "08:50",
+    17: "08:55",
+    19: "08:55",
+    20: "09:00",
+    22: "09:00",
+    23: "09:05",
+    24: "09:05",
+    25: "09:05",
+    26: "09:10",
+    27: "09:10",
+    28: "09:15",
+    29: "09:15",
+    31: "09:20",
+    33: "09:20",
+    34: "09:20",
+    36: "09:25",
+    37: "09:25",
+    39: "09:25",
+    40: "09:25",
+    41: "12:15",
+    42: "08:50",
+    43: "08:50",
+    44: "08:50",
+    45: "08:50",
+    46: "08:50",
+    51: "09:20",
+    53: "09:00",
+    57: "08:15",
+    65: "09:05",
+    68: "08:20",
+    10000: "08:50",
+    10009: "08:50",
+    10010: "08:40",
+    10011: "08:45",
+    10012: "08:35",
+    10014: "08:50",
+    10015: "09:15",
+    10016: "09:15",
+    10017: "08:30",
+    10018: "08:55",
+    10020: "08:40",
+    10023: "09:20",
+    10024: "08:40",
+    10025: "08:30",
+    10028: "08:40",
+    10029: "08:24",
+    10030: "08:35",
+    10033: "09:00",
+    10035: "08:50",
+    10036: "08:50",
+    10037: "08:40",
+    10063: "08:40",
+    10064: "08:20",
+    10088: "09:00",
+    10103: "09:00",
+    10155: "08:40",
+  }
+};

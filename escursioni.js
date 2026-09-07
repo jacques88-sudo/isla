@@ -419,7 +419,7 @@ function hotelCerca(testo, quanti) {
 //   null     → l'hotel non e' nell'elenco, oppure del suo punto non sappiamo il
 //              nome (sono quelli del nord). Non si mostra niente: meglio il
 //              silenzio di un'indicazione a meta'.
-function hotelPunto(nomeHotel) {
+function hotelPunto(nomeHotel, idScheda) {
   if (typeof HOTELS === "undefined" || typeof PICKUP_POINTS === "undefined") return null;
   const k = hotelChiave(nomeHotel.trim());
   if (!k) return null;
@@ -431,13 +431,19 @@ function hotelPunto(nomeHotel) {
   // il tipo si traduce, il nome del posto no: e' un nome proprio, e chi lo
   // deve chiedere per strada lo chiede cosi' com'e'
   const tipo = punto[1] ? t("pickup." + punto[1]) : "";
-  const nome = punto[0] + (tipo ? ", " + tipo : "");
+  // L'ora dipende dall'escursione, il punto no: senza la scheda si mostra il
+  // posto e basta, che e' sempre meglio di un orario indovinato.
+  const ore = (typeof PICKUP_TIMES !== "undefined" && idScheda) ? PICKUP_TIMES[idScheda] : null;
+  const ora = (ore && ore[riga[1]]) || "";
+  const nome = (ora ? ora + " · " : "") + punto[0] + (tipo ? ", " + tipo : "");
   // Il punto si chiama come l'hotel, ma **non e' la stessa cosa**: al Granada
   // Park si sale al posteggio dei taxi in fondo alla discesa, al Bahia del
   // Duque alla sbarra. Dire "passiamo in hotel" manderebbe il cliente ad
   // aspettare davanti alla reception. Senza tipo invece e' davvero l'hotel.
-  if (hotelChiave(punto[0]) === k) {
-    return tipo ? { dove: "stesso", nome: nome, tipo: tipo } : { dove: "hotel" };
+  if (hotelChiave(punto[0]) === k && !tipo) {
+    // il punto e' proprio l'hotel: se sappiamo l'ora la diciamo, se no basta
+    // "il tuo hotel"
+    return ora ? { dove: "punto", nome: ora + " · " + t("req.pickupHotel") } : { dove: "hotel" };
   }
   return { dove: "punto", nome: nome };
 }
@@ -453,6 +459,11 @@ function hotelPunto(nomeHotel) {
 // appartamento privato che nell'elenco non c'e' scrive lo stesso il suo
 // indirizzo, e la riga sotto glielo dice.
 const HOTEL_QUANTI = 8;
+
+// La scheda aperta nella finestra. Serve al campo dell'hotel per sapere di
+// quale escursione mostrare l'orario, e vive qui fuori perche' initHotelField()
+// e initRequestDialog() sono due funzioni separate.
+let SCHEDA_APERTA = null;
 
 function initHotelField() {
   const campo = document.querySelector("[data-hotel-field]");
@@ -499,7 +510,7 @@ function initHotelField() {
   // stessa cosa, e una volta che l'hotel c'e' quella generica non serve piu'.
   function mostraPunto() {
     if (!puntoEl) return;
-    const p = hotelPunto(input.value);
+    const p = hotelPunto(input.value, SCHEDA_APERTA && SCHEDA_APERTA.id);
     // Un'etichetta e un posto, niente di piu': il cliente ha appena scritto il
     // nome del suo hotel e vede da solo se il punto e' un altro. Le frasi
     // lunghe che c'erano prima ("non e' il tuo hotel", "l'ora te la
@@ -624,7 +635,7 @@ function righeRichiesta(tour, req) {
     // Il punto si ricava dall'hotel invece di salvarlo: cosi' vale anche per le
     // richieste rimaste nella lista da ieri, e se domani un punto cambia non
     // resta scritto quello vecchio nel browser del cliente.
-    const p = hotelPunto(req.hotel);
+    const p = hotelPunto(req.hotel, tour && tour.id);
     if (p) righe.push("• " + t("wa.pickup") + ": " + (p.dove === "hotel" ? t("wa.pickupHotel") : p.nome));
   }
   if (req.note) righe.push("• " + t("wa.notes") + ": " + req.note);
@@ -883,6 +894,7 @@ function initRequestDialog() {
 
   function open(tour, comeAggiunta) {
     current = tour;
+    SCHEDA_APERTA = tour;
     modo = comeAggiunta ? "aggiungi" : "invia";
     if (nameBox) nameBox.hidden = comeAggiunta;
     // required su un campo nascosto blocca l'invio senza dire perche': il

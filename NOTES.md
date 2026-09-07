@@ -5696,3 +5696,41 @@ mostrarla: e' il pezzo dopo.
 le lingue, "Cleopatra" che finisce nel messaggio come "• Hotel: Cleopatra", e
 l'hotel che sopravvive al salvataggio nella lista e ricompare nel messaggio
 unico. Nessun errore JS. `sw.js` a `isla-v230`.
+
+### Il `<datalist>` non andava bene, e si e' visto solo sul telefono
+
+Sul computer la lista dei suggerimenti sembrava a posto. Sul telefono del
+proprietario no: Android disegna il `<datalist>` come un **pannello scuro a
+tutto schermo** che copre il campo e nasconde quello che stai scrivendo, con i
+suoi colori e non i nostri. Non si puo' ne' colorare, ne' accorciare, ne'
+spostare: quella tendina la fa il browser.
+
+E cercava il testo **ovunque dentro il nome**: scrivendo `cl` proponeva
+`Apartamentos el Ancla`. Tecnicamente giusto, illeggibile per chi guarda.
+
+Rifatta a mano: `initHotelField()` in `escursioni.js`, `.hotel-sugg` in
+`styles.css`. Otto nomi per volta, dentro la finestra, con i colori del sito.
+
+**Si cerca solo dall'inizio di una parola**, prima i nomi che cominciano col
+testo scritto e poi quelli dove il testo comincia una parola qualsiasi: `cl` da'
+Cleopatra e i Club, `mar` da' anche Club la Mar. Gli accenti non contano —
+`sueno` trova `Sueño Azul`, perche' nessuno va a cercare la enne con lo
+scarabocchio sulla tastiera del telefono.
+
+Resta una **casella di testo**, non un menu obbligato: `casa mia` non da'
+suggerimenti e resta scritto. Funziona anche con le frecce e l'Invio, e l'Invio
+che sceglie un hotel non manda la richiesta.
+
+La finestra che si chiude col suggerimento aperto lo lasciava li' sospeso:
+`close()` manda un evento `islarequestclose` e il campo si chiude da solo.
+
+**La lezione**: un campo di testo va guardato sul telefono vero prima di dirlo
+finito. Sul computer non si vedeva niente di quello che non andava.
+
+### Provato
+
+`node controlla.js` → 0 errori. Nel browser, finestra a 390 px: `cl` → Cleopatra
+e sette Club, niente Ancla; `cleo` → solo Cleopatra; `sueno` → Sueño Azul;
+`parque` → otto; `casa mia` → nessun suggerimento e il testo resta. Scelta col
+tocco e con le frecce, hotel nel messaggio WhatsApp, nessun errore JS. `sw.js` a
+`isla-v231`.

@@ -2596,8 +2596,11 @@ body.menu-open { overflow: hidden; }
    riga di aiuto e si vede di piu': meta' dei clienti non sale davanti al
    proprio albergo ma a una fermata dell'autobus a due strade, ed e' la cosa
    che devono leggere. */
+/* sotto la data, subito prima di "A che ora": senza il margine sotto la riga
+   si incolla all'etichetta che segue */
+[data-hotel-hint] { margin-bottom: 1.1rem; }
 .hotel-punto {
-  margin: .8rem 0 0;
+  margin: .8rem 0 1.1rem;
   background: var(--cream);
   border-radius: 12px;
   padding: .7rem .9rem;
@@ -2615,3 +2618,14 @@ body.menu-open { overflow: hidden; }
   letter-spacing: 0;
   color: var(--text);
 }
+
+/* "A che ora" sulle schede col pick-up: non un menu ma l'ora dell'hotel
+   scelto, scritta e basta. Stessa forma del campo che sostituisce, senza il
+   bordo — non e' una cosa su cui si clicca. */
+.request-ora-fissa {
+  margin: 0 0 1.2rem;
+  font-size: 1.15rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.request-ora-fissa[hidden] { display: none; }

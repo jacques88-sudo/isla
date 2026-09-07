@@ -434,18 +434,17 @@ function hotelPunto(nomeHotel, idScheda) {
   // L'ora dipende dall'escursione, il punto no: senza la scheda si mostra il
   // posto e basta, che e' sempre meglio di un orario indovinato.
   const ore = (typeof PICKUP_TIMES !== "undefined" && idScheda) ? PICKUP_TIMES[idScheda] : null;
+  // L'ora torna a parte e non attaccata al posto: la scrive il campo "A che
+  // ora", che su queste schede non e' piu' una domanda ma una risposta.
   const ora = (ore && ore[riga[1]]) || "";
-  const nome = (ora ? ora + " · " : "") + punto[0] + (tipo ? ", " + tipo : "");
+  const nome = punto[0] + (tipo ? ", " + tipo : "");
   // Il punto si chiama come l'hotel, ma **non e' la stessa cosa**: al Granada
   // Park si sale al posteggio dei taxi in fondo alla discesa, al Bahia del
   // Duque alla sbarra. Dire "passiamo in hotel" manderebbe il cliente ad
   // aspettare davanti alla reception. Senza tipo invece e' davvero l'hotel.
-  if (hotelChiave(punto[0]) === k && !tipo) {
-    // il punto e' proprio l'hotel: se sappiamo l'ora la diciamo, se no basta
-    // "il tuo hotel"
-    return ora ? { dove: "punto", nome: ora + " · " + t("req.pickupHotel") } : { dove: "hotel" };
-  }
-  return { dove: "punto", nome: nome };
+  // il punto e' proprio l'hotel, e senza un tipo vuol dire davanti alla porta
+  if (hotelChiave(punto[0]) === k && !tipo) return { dove: "hotel", ora: ora };
+  return { dove: "punto", nome: nome, ora: ora };
 }
 
 // Il campo con i suggerimenti, scritto a mano invece di usare <datalist>.
@@ -472,6 +471,8 @@ function initHotelField() {
   if (!campo || !input || !lista) return;
 
   const puntoEl = document.querySelector("[data-hotel-punto]");
+  const oraFissaEl = document.querySelector("[data-request-time-fixed]");
+  const timeLabel = document.querySelector("[data-request-time-label]");
   const etichettaEl = document.querySelector("[data-hotel-punto-et]");
   const valoreEl = document.querySelector("[data-hotel-punto-val]");
   const aiutoEl = document.querySelector("[data-hotel-hint]");
@@ -524,6 +525,21 @@ function initHotelField() {
     }
     puntoEl.hidden = !p;
     if (aiutoEl) aiutoEl.hidden = !!p;
+    mostraOraHotel(p);
+  }
+
+  // "A che ora" sulle schede col pick-up non e' una domanda ma una risposta:
+  // l'etichetta resta, il menu no, e sotto c'e' l'ora dell'hotel scelto.
+  // Finche' l'hotel non c'e' non si mostra niente: un'ora vuota sotto
+  // un'etichetta e' peggio che nessuna etichetta.
+  function mostraOraHotel(p) {
+    if (!oraFissaEl) return;
+    const daHotel = typeof PICKUP_TIMES !== "undefined" && SCHEDA_APERTA && PICKUP_TIMES[SCHEDA_APERTA.id];
+    if (!daHotel) return;   // sulle altre schede il menu c'e' e non si tocca
+    const ora = p && p.ora;
+    oraFissaEl.textContent = ora || "";
+    oraFissaEl.hidden = !ora;
+    if (timeLabel) timeLabel.hidden = !ora;
   }
 
   function apri() {
@@ -553,6 +569,15 @@ function initHotelField() {
   }
 
   input.addEventListener("input", () => { apri(); mostraPunto(); });
+  // "dove passiamo a prenderti" oppure "dove e a che ora", secondo la scheda
+  document.addEventListener("islarequestopen", () => {
+    if (!aiutoEl) return;
+    const conOra = typeof PICKUP_TIMES !== "undefined" && SCHEDA_APERTA && PICKUP_TIMES[SCHEDA_APERTA.id];
+    const chiave = conOra ? "req.hotelHintTime" : "req.hotelHint";
+    aiutoEl.dataset.i18n = chiave;
+    aiutoEl.textContent = t(chiave);
+    mostraPunto();
+  });
   input.addEventListener("focus", apri);
   input.addEventListener("blur", () => setTimeout(chiudi, 120));
   input.addEventListener("keydown", e => {
@@ -581,10 +606,18 @@ function initHotelField() {
 
 function righeRichiesta(tour, req) {
   const righe = ["• " + t("wa.date") + ": " + formatDate(req.date)];
+  // Dove e quando passa il pulmino, ricavati dall'hotel. Si calcolano qui in
+  // cima perche' l'ora va nella riga dell'orario, insieme alle altre, e non in
+  // fondo attaccata al punto.
+  const punto = req.hotel ? hotelPunto(req.hotel, tour && tour.id) : null;
   // L'orario si scrive solo se il cliente ne ha scelto uno. "Da concordare" e'
   // l'assenza della riga, non una riga che dice "da concordare": all'ufficio
   // non serve leggere che il cliente non ha deciso.
-  if (req.time) righe.push("• " + t("wa.time") + ": " + req.time);
+  // Sulle schede col pick-up l'ora non l'ha scelta il cliente: gliel'ha detta
+  // il sito leggendo il suo hotel. Nel messaggio resta la stessa riga, cosi'
+  // l'ufficio legge sempre le stesse cose nello stesso ordine.
+  const ora = req.time || (punto && punto.ora) || "";
+  if (ora) righe.push("• " + t("wa.time") + ": " + ora);
   // Come l'orario: si scrive solo se il cliente ha scelto. "Indifferente" e'
   // l'assenza della riga, non una riga che dice "indifferente".
   if (req.lang) righe.push("• " + t("wa.lang") + ": " + req.lang);
@@ -635,8 +668,10 @@ function righeRichiesta(tour, req) {
     // Il punto si ricava dall'hotel invece di salvarlo: cosi' vale anche per le
     // richieste rimaste nella lista da ieri, e se domani un punto cambia non
     // resta scritto quello vecchio nel browser del cliente.
-    const p = hotelPunto(req.hotel, tour && tour.id);
-    if (p) righe.push("• " + t("wa.pickup") + ": " + (p.dove === "hotel" ? t("wa.pickupHotel") : p.nome));
+    if (punto) {
+      righe.push("• " + t("wa.pickup") + ": " +
+        (punto.dove === "hotel" ? t("wa.pickupHotel") : punto.nome));
+    }
   }
   if (req.note) righe.push("• " + t("wa.notes") + ": " + req.note);
   return righe;
@@ -857,6 +892,8 @@ function initRequestDialog() {
   const optionLabelEl = document.querySelector("[data-request-option-label]");
   const dateInput = document.getElementById("reqDate");
   const timeEl = document.querySelector("[data-request-time]");
+  const timeLabelEl = document.querySelector("[data-request-time-label]");
+  const oraFissaEl2 = document.querySelector("[data-request-time-fixed]");
   const dayErrorEl = document.querySelector("[data-request-day-error]");
   const langEl = document.querySelector("[data-request-lang]");
   const langLabelEl = document.querySelector("[data-request-lang-label]");
@@ -895,6 +932,8 @@ function initRequestDialog() {
   function open(tour, comeAggiunta) {
     current = tour;
     SCHEDA_APERTA = tour;
+    // il campo dell'hotel vive in un'altra funzione e deve sapere che scheda e'
+    document.dispatchEvent(new CustomEvent("islarequestopen"));
     modo = comeAggiunta ? "aggiungi" : "invia";
     if (nameBox) nameBox.hidden = comeAggiunta;
     // required su un campo nascosto blocca l'invio senza dire perche': il
@@ -1287,6 +1326,24 @@ function initRequestDialog() {
 
   function riempiOrari(tour) {
     if (!timeEl) return;
+    // Dove il pulmino passa a prendere la gente in hotel, l'ora non si sceglie:
+    // la decide dove dormi. Al Cleopatra si parte alle 9:15 e basta. Chiedere
+    // "a che ora" e proporre "Da concordare" sarebbe una domanda finta, e
+    // peggio: farebbe credere che l'ora si tratti. Il menu sparisce, e l'ora
+    // la dice la riga del punto di raccolta sotto il campo dell'hotel.
+    const oraDaHotel = typeof PICKUP_TIMES !== "undefined" && tour && PICKUP_TIMES[tour.id];
+    // l'etichetta la accende il campo dell'hotel quando sa l'ora: qui si parte
+    // sempre spenta, per non lasciarla sospesa su un menu che non c'e' piu'
+    if (timeLabelEl) timeLabelEl.hidden = !!oraDaHotel;
+    if (oraFissaEl2) oraFissaEl2.hidden = true;
+    timeEl.hidden = !!oraDaHotel;
+    if (oraDaHotel) {
+      // se resta un valore vecchio, il messaggio porterebbe un orario che il
+      // cliente non ha scelto e che non c'entra col suo hotel
+      timeEl.innerHTML = "";
+      timeEl.value = "";
+      return;
+    }
     const scelto = timeEl.value;
     timeEl.innerHTML = "";
     // Su certe barche l'orario dipende dalla durata scelta: il giro di 2 ore

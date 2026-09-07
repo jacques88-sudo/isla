@@ -165,8 +165,19 @@
       <input id="reqDate" name="date" type="date" required />
       <p class="request-day-error" data-request-day-error hidden></p>
 
-      <label for="reqTime" data-i18n="req.time">A che ora</label>
+      <label for="reqHotel"><span data-i18n="req.hotel">Dove alloggi</span> <span class="request-optional" data-i18n="req.hotelWhy">(utile per il pick-up)</span></label>
+      <div class="hotel-field" data-hotel-field>
+        <input id="reqHotel" name="hotel" type="text" autocomplete="off" role="combobox"
+               aria-expanded="false" aria-autocomplete="list" aria-controls="reqHotelList"
+               data-i18n-placeholder="req.hotelPlaceholder" placeholder="Scrivi le prime lettere dell'hotel" />
+        <ul class="hotel-sugg" id="reqHotelList" role="listbox" hidden></ul>
+      </div>
+      <p class="hint" data-hotel-hint data-i18n="req.hotelHint">Serve a dirti dove passiamo a prenderti. Se non trovi il tuo, scrivilo nelle note.</p>
+
+      <label for="reqTime" data-request-time-label data-i18n="req.time">A che ora</label>
       <select id="reqTime" name="time" data-request-time></select>
+      <p class="request-ora-fissa" data-request-time-fixed hidden></p>
+      <p class="hotel-punto" data-hotel-punto hidden><span data-hotel-punto-et>Punto di raccolta</span> <strong data-hotel-punto-val></strong></p>
 
       <label for="reqLang" data-request-lang-label hidden data-i18n="req.lang">In che lingua</label>
       <select id="reqLang" name="lang" data-request-lang hidden></select>
@@ -213,16 +224,6 @@
           <small data-request-transfer-siam-note></small>
         </span>
       </label>
-
-      <label for="reqHotel"><span data-i18n="req.hotel">Dove alloggi</span> <span class="request-optional" data-i18n="req.optional">(facoltativo)</span></label>
-      <div class="hotel-field" data-hotel-field>
-        <input id="reqHotel" name="hotel" type="text" autocomplete="off" role="combobox"
-               aria-expanded="false" aria-autocomplete="list" aria-controls="reqHotelList"
-               data-i18n-placeholder="req.hotelPlaceholder" placeholder="Scrivi le prime lettere dell'hotel" />
-        <ul class="hotel-sugg" id="reqHotelList" role="listbox" hidden></ul>
-      </div>
-      <p class="hint" data-hotel-hint data-i18n="req.hotelHint">Serve a dirti dove passiamo a prenderti. Se non trovi il tuo, scrivilo nelle note.</p>
-      <p class="hotel-punto" data-hotel-punto hidden><span data-hotel-punto-et>Punto di raccolta</span> <strong data-hotel-punto-val></strong></p>
 
       <label for="reqNote"><span data-i18n="req.note">Note</span> <span class="request-optional" data-i18n="req.optional">(facoltativo)</span></label>
       <input id="reqNote" name="note" type="text" autocomplete="off"

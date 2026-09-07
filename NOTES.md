@@ -5827,3 +5827,68 @@ hotel, al posteggio dei taxi"; Bahia del Duque → "alla sbarra"; Sendymar
 (punto 0) → "direttamente in hotel", e nel messaggio "Punto di raccolta: in
 hotel"; Girasol (punto senza nome) e "casa mia" → nessuna riga e resta quella di
 aiuto. Nessun errore JS. `sw.js` a `isla-v232`.
+
+### "A che ora" smette di essere una domanda e diventa una risposta
+
+Sul Teide il menu **A che ora** proponeva "Da concordare" e sette fasce
+segnaposto. Ma l'ora non si concorda per niente: al Cleopatra si parte alle
+9:15 e basta, e chi sta al Playa la Arena alle 8:40. Il menu faceva **due**
+danni insieme — chiedeva una cosa gia' decisa, e faceva credere che l'ora si
+trattasse.
+
+Ora, se la scheda sta in `PICKUP_TIMES`, **l'etichetta resta e il menu no**: al
+suo posto c'e' l'ora dell'hotel scelto, scritta e basta. Prima l'avevo tolto del
+tutto e messo l'ora dentro la riga del punto ("09:15 · Best Tenerife…"): il
+proprietario ha chiesto il campo indietro, ed e' meglio — l'orario e' la cosa
+che il cliente cerca, e cercarla dentro un'altra riga e' un giro in piu'.
+
+Finche' l'hotel non c'e', **non si mostra niente**: un'etichetta "A che ora" con
+sotto il vuoto e' peggio di nessuna etichetta.
+
+Nel messaggio la riga "Orario" torna al suo posto di sempre, fra la data e le
+persone, con l'ora ricavata dall'hotel; il punto di raccolta resta in fondo col
+solo posto. L'ufficio legge le stesse cose nello stesso ordine di tutte le altre
+richieste.
+
+L'ordine nella finestra e' data → hotel → **ora** → punto: prima chi sei e
+quando, poi dove dormi, poi la risposta.
+
+Sulle schede senza orari nostri non cambia niente: restano il menu, "Da
+concordare" e le fasce, come deciso.
+
+La riga di aiuto sotto il campo hotel cambia di conseguenza: "dove passiamo a
+prenderti" diventa "**dove e a che ora** passiamo a prenderti".
+
+Il campo dell'hotel vive in `initHotelField()` e la finestra in
+`initRequestDialog()`: si parlano con due eventi, `islarequestopen` quando si
+apre su una scheda e `islarequestclose` quando si chiude.
+
+**Da non riproporre**: le fasce segnaposto restano dove le partenze vere non le
+sappiamo (e' una cosa gia' decisa). Qui non e' il caso — le partenze le
+sappiamo, hotel per hotel.
+
+### Provato
+
+`node controlla.js` → 0 errori. Sul Teide National Park, senza hotel non si vede
+ne' etichetta ne' menu; con Cleopatra compare "A che ora / 09:15" e sotto "Punto
+di raccolta / Best Tenerife, alla fermata dell'autobus"; con Roca Nivaria
+"08:20" e "il tuo hotel"; con Sendymar, che un'ora non ce l'ha, solo "il tuo
+hotel". Il messaggio arriva con "Orario: 09:15" al posto giusto. Su Teide +
+Masca il menu c'e' ancora con "Da concordare" e le fasce. Riga di aiuto giusta
+in tutte e tre le lingue, anche cambiando lingua a finestra aperta. Nessun
+errore JS. `sw.js` a `isla-v237`.
+
+### "Dove alloggi" sale sotto la data
+
+Stava in fondo, sopra le note. Ora sta **subito dopo la data**, prima
+dell'orario e delle persone.
+
+Il motivo e' che ha smesso di essere un dettaglio: da quando l'hotel decide il
+punto di raccolta e l'ora, e' il campo che cambia la risposta. Chiederlo per
+ultimo voleva dire far scorrere tutta la finestra prima di sapere a che ora si
+parte — e con le escursioni che avranno pick-up e orari diversi, sara' vero per
+quasi tutte.
+
+Il "(facoltativo)" accanto all'etichetta e' diventato "**(utile per il
+pick-up)**": dice perche' compilarlo invece di dire che si puo' saltare. Il
+campo resta facoltativo davvero, non ha `required`.

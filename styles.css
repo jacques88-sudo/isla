@@ -2591,3 +2591,14 @@ body.menu-open { overflow: hidden; }
 }
 .hotel-sugg-voce.is-on,
 .hotel-sugg-voce:hover { background: var(--cream); }
+
+/* Dove passa il pulmino, sotto la casella dell'hotel. Prende il posto della
+   riga di aiuto e si vede di piu': meta' dei clienti non sale davanti al
+   proprio albergo ma a una fermata dell'autobus a due strade, ed e' la cosa
+   che devono leggere. */
+.hotel-punto {
+  color: var(--text);
+  background: var(--cream);
+  border-radius: 12px;
+  padding: .7rem .9rem;
+}

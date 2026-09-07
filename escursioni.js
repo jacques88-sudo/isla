@@ -399,7 +399,7 @@ function hotelCerca(testo, quanti) {
   const q = hotelChiave(testo.trim());
   if (q.length < 2 || typeof HOTELS === "undefined") return [];
   const primi = [], secondi = [];
-  for (const nome of HOTELS) {
+  for (const [nome] of HOTELS) {
     const k = hotelChiave(nome);
     if (k.startsWith(q)) primi.push(nome);
     // il confine di parola: uno spazio, una parentesi, un trattino
@@ -407,6 +407,39 @@ function hotelCerca(testo, quanti) {
     if (primi.length >= quanti) break;
   }
   return primi.concat(secondi).slice(0, quanti);
+}
+
+// Il punto di raccolta di un hotel, pronto da mostrare.
+//
+// Tre risposte diverse, e la differenza conta:
+//   "hotel"  → si sale davanti al proprio albergo (punto 0, oppure il punto si
+//              chiama come l'hotel: RIU Arecas che sale a "RIU Arecas")
+//   "punto"  → si va da un'altra parte, e va detto: e' la meta' dei casi, e
+//              spesso e' una fermata dell'autobus pubblico a due strade
+//   null     → l'hotel non e' nell'elenco, oppure del suo punto non sappiamo il
+//              nome (sono quelli del nord). Non si mostra niente: meglio il
+//              silenzio di un'indicazione a meta'.
+function hotelPunto(nomeHotel) {
+  if (typeof HOTELS === "undefined" || typeof PICKUP_POINTS === "undefined") return null;
+  const k = hotelChiave(nomeHotel.trim());
+  if (!k) return null;
+  const riga = HOTELS.find(h => hotelChiave(h[0]) === k);
+  if (!riga) return null;
+  if (riga[1] === 0) return { dove: "hotel" };
+  const punto = PICKUP_POINTS[riga[1]];
+  if (!punto) return null;
+  // il tipo si traduce, il nome del posto no: e' un nome proprio, e chi lo
+  // deve chiedere per strada lo chiede cosi' com'e'
+  const tipo = punto[1] ? t("pickup." + punto[1]) : "";
+  const nome = punto[0] + (tipo ? ", " + tipo : "");
+  // Il punto si chiama come l'hotel, ma **non e' la stessa cosa**: al Granada
+  // Park si sale al posteggio dei taxi in fondo alla discesa, al Bahia del
+  // Duque alla sbarra. Dire "passiamo in hotel" manderebbe il cliente ad
+  // aspettare davanti alla reception. Senza tipo invece e' davvero l'hotel.
+  if (hotelChiave(punto[0]) === k) {
+    return tipo ? { dove: "stesso", nome: nome, tipo: tipo } : { dove: "hotel" };
+  }
+  return { dove: "punto", nome: nome };
 }
 
 // Il campo con i suggerimenti, scritto a mano invece di usare <datalist>.
@@ -427,6 +460,8 @@ function initHotelField() {
   const lista = document.getElementById("reqHotelList");
   if (!campo || !input || !lista) return;
 
+  const puntoEl = document.querySelector("[data-hotel-punto]");
+  const aiutoEl = document.querySelector("[data-hotel-hint]");
   let scelto = -1;
 
   function chiudi() {
@@ -453,7 +488,22 @@ function initHotelField() {
   function prendi(nome) {
     input.value = nome;
     chiudi();
+    mostraPunto();
     input.focus();
+  }
+
+  // Dove passa il pulmino, scritto sotto la casella appena si riconosce
+  // l'hotel. Prende il posto della riga di aiuto: sono due cose che dicono la
+  // stessa cosa, e una volta che l'hotel c'e' quella generica non serve piu'.
+  function mostraPunto() {
+    if (!puntoEl) return;
+    const p = hotelPunto(input.value);
+    puntoEl.textContent = !p ? ""
+      : p.dove === "hotel" ? t("req.pickupAtHotel")
+      : p.dove === "stesso" ? t("req.pickupAtOwn", { t: p.tipo })
+      : t("req.pickupAt", { p: p.nome });
+    puntoEl.hidden = !p;
+    if (aiutoEl) aiutoEl.hidden = !!p;
   }
 
   function apri() {
@@ -482,7 +532,7 @@ function initHotelField() {
     input.setAttribute("aria-expanded", "true");
   }
 
-  input.addEventListener("input", apri);
+  input.addEventListener("input", () => { apri(); mostraPunto(); });
   input.addEventListener("focus", apri);
   input.addEventListener("blur", () => setTimeout(chiudi, 120));
   input.addEventListener("keydown", e => {
@@ -503,6 +553,10 @@ function initHotelField() {
   // La finestra si chiude col suggerimento ancora aperto: alla riapertura
   // resterebbe li' sospeso sopra un campo che nel frattempo e' cambiato.
   document.addEventListener("islarequestclose", chiudi);
+  // "fermata dell'autobus" deve diventare "bus stop" anche se la riga e' gia'
+  // scritta: il cambio lingua non ricarica la pagina
+  document.addEventListener("islalang", mostraPunto);
+  mostraPunto();
 }
 
 function righeRichiesta(tour, req) {
@@ -556,7 +610,14 @@ function righeRichiesta(tour, req) {
   // Dove alloggia il cliente: l'ufficio ne ha bisogno per dirgli dove e a che
   // ora passa il pulmino. Sta sopra le note perche' e' un dato, non un
   // commento. Come l'orario e la lingua, la riga compare solo se c'e'.
-  if (req.hotel) righe.push("• " + t("wa.hotel") + ": " + req.hotel);
+  if (req.hotel) {
+    righe.push("• " + t("wa.hotel") + ": " + req.hotel);
+    // Il punto si ricava dall'hotel invece di salvarlo: cosi' vale anche per le
+    // richieste rimaste nella lista da ieri, e se domani un punto cambia non
+    // resta scritto quello vecchio nel browser del cliente.
+    const p = hotelPunto(req.hotel);
+    if (p) righe.push("• " + t("wa.pickup") + ": " + (p.dove === "hotel" ? t("wa.pickupHotel") : p.nome));
+  }
   if (req.note) righe.push("• " + t("wa.notes") + ": " + req.note);
   return righe;
 }

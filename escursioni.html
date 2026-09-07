@@ -223,7 +223,8 @@
                data-i18n-placeholder="req.hotelPlaceholder" placeholder="Scrivi le prime lettere dell'hotel" />
         <ul class="hotel-sugg" id="reqHotelList" role="listbox" hidden></ul>
       </div>
-      <p class="hint" data-i18n="req.hotelHint">Serve a dirti dove passiamo a prenderti. Se non trovi il tuo, scrivilo nelle note.</p>
+      <p class="hint" data-hotel-hint data-i18n="req.hotelHint">Serve a dirti dove passiamo a prenderti. Se non trovi il tuo, scrivilo nelle note.</p>
+      <p class="hint hotel-punto" data-hotel-punto hidden></p>
 
       <label for="reqNote"><span data-i18n="req.note">Note</span> <span class="request-optional" data-i18n="req.optional">(facoltativo)</span></label>
       <input id="reqNote" name="note" type="text" autocomplete="off"

@@ -5582,3 +5582,73 @@ Provati anche i quattro casi che `controlla.js` deve prendere, uno per uno. `sw.
 **Confermato dal proprietario:** il 45 e' il prezzo che si applichera' **dopo** la
 promozione, non un listino gia' praticato. **Resta da confermare la data**, messa al 31
 ottobre 2026: e' il giorno in cui il prezzo sale da solo, quindi non e' un dettaglio.
+
+## Masca + Teide VIP Cabrio Bus: scheda nuova in "Teide e natura" (7 settembre 2026)
+
+Arrivata dall'ufficio la pagina di un fornitore (Nere Izerdie / Island Excursions S.L.,
+Costa Adeje) con l'escursione **Masca + Teide VIP Cabrio Bus**: bus panoramico scoperto,
+Masca, Parco Nazionale del Teide con funivia facoltativa, mirador Pino Gordo a Vilaflor.
+
+### Prima domanda: era un doppione?
+
+In "Teide e natura" c'era gia' `teide-masca` — "Teide + Masca Tour", 60 €, ma un
+segnaposto: zona e durata "Da definire", `priceAdult` e `priceChild` a 0. Stesso giro,
+stessi due nomi nel titolo: il caso Kalima Kat in piccolo.
+
+Chiesto al proprietario invece di decidere da soli. Risposta: **schede separate**. Il
+mezzo e' un altro (bus cabrio scoperto, servizio esclusivo) e il prezzo pure — 80 € contro
+60 —, quindi sono due prodotti, non due nomi dello stesso. `teide-masca` resta com'e',
+pubblicata.
+
+### Cosa e' entrato nella scheda (`masca-teide-cabrio-bus`)
+
+- `priceAdult: 80`, `priceChild: 80` — **il bambino paga come l'adulto**, e' il listino del
+  fornitore, non una svista: sui mezzi piccoli ed esclusivi il posto costa uguale.
+- `ages: { adult: "14+", child: "3-13", infant: "0-2" }`. Le fasce le scrive il fornitore
+  come "Niños (3-13)" e "Bebés (0-2)": l'adulto e' quindi 14+, e le tre fasce combaciano
+  senza buchi (`controlla.js` d'accordo).
+- `priceInfant: 0` — qui si puo' mettere davvero, perche' la pagina del fornitore scrive
+  "Bebés (0-2) 0 €": e' scritto "gratis", non "non lo sappiamo".
+- `itinerary` di tre tappe (Masca, Cañadas del Teide, mirador Pino Gordo) **senza `time`**:
+  gli orari veri non ce li hanno mandati.
+- Due `notes`: la funivia facoltativa a parte, e il consiglio su felpa/cappellino — il bus
+  e' scoperto e si sale sopra i 2.000 metri, due fatti del mezzo e della quota, non due
+  frasi copiate.
+
+### Cosa NON e' entrato, di proposito
+
+- **Niente `included`.** Il fornitore non scrive cosa comprende il prezzo: nessuna icona,
+  che vuol dire "vale sempre", si puo' accendere per deduzione. Meglio un riquadro assente
+  di uno che promette una guida che magari non c'e'.
+- **Niente `days`, niente `times`.** `days` assente = tutti i giorni, `times` assente =
+  restano le fasce segnaposto piu' "Da concordare". Sono i due stati giusti per "non lo
+  sappiamo ancora", ma vanno **confermati**: se il giro non si fa tutti i giorni, adesso il
+  sito dice il falso.
+- **Niente `languages`.** Sulla pagina c'era un menu "Idioma" con dentro il solo
+  "Español". Non basta: un elenco con una voce sola puo' essere un menu troncato nel
+  copia-incolla, e la regola dice di metterlo solo dove l'ufficio lo segnala.
+- **Niente testo del fornitore.** Descrizione e tappe riscritte da zero nelle tre lingue;
+  il "servicio personalizado y exclusivo" e il resto del tono promozionale sono rimasti
+  sulla loro pagina.
+- **Il 24 ore di preavviso e' il nostro**, come sempre: la pagina del fornitore non c'entra.
+
+### La foto
+
+Non ne e' arrivata nessuna, e `image` e' rimasto vuoto: in elenco esce il riquadro "Foto in
+arrivo" e `controlla.js` da' l'avviso giusto. Riusare `teide-masca.jpg` sarebbe stato
+peggio: due card affiancate nella stessa categoria con la stessa identica foto di Masca
+sembrano un doppione, cioe' proprio la cosa che si voleva evitare. La foto che serve e'
+quella del **bus cabrio**, che e' il motivo per cui questa scheda esiste.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi (quello noto di `opera-60` e la foto mancante).
+Nel browser vero, pagina di dettaglio in inglese e in italiano: titolo, tre righe di
+prezzo con le fasce fra parentesi, "Neonati (0-2) Gratis", itinerario e consigli a posto,
+nessun errore JS. Nella finestra della richiesta: **2 adulti + 1 bambino = 240 €**, e i due
+neonati aggiunti non spostano il totale. Il menu degli orari mostra "Da concordare" piu' le
+fasce segnaposto, e la domanda sulla lingua non compare (giusto, `languages` non c'e').
+`sw.js` alzato a `isla-v230`.
+
+**Da confermare all'ufficio:** durata, orari di partenza, giorni, punto di ritrovo o
+ritiro in hotel, cosa e' compreso nel prezzo, e la foto.

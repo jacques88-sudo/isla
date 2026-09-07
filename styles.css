@@ -459,6 +459,19 @@ a { text-decoration: none; color: inherit; }
    doppio dell'aria che c'e' sull'elenco. */
 .detail-page .home-hero + .home-bar { margin-top: .7rem; }
 
+/* Sulle schede la foto e' un po' piu' alta che sulla home: 3/2 invece di
+   16/9, cioe' 248 px invece di 209 su un telefono da 412. Qui la foto e' la
+   merce, non un fondale. Da 960 px in su resta la fascia panoramica di tutti:
+   3/2 su 1080 px vorrebbe dire 720 px di altezza, un muro. */
+.detail-page .home-hero-media { aspect-ratio: 3 / 2; }
+/* Su schermo largo no: il 3/2 su una fascia da 1080 px sarebbe alta 720, un
+   muro. Questa regola sta qui sotto e non nel blocco da 960 px piu' su,
+   perche' ha la stessa specificita' della riga sopra e a parita' vince chi
+   viene dopo. */
+@media (min-width: 960px) {
+  .detail-page .home-hero-media { aspect-ratio: 21 / 9; }
+}
+
 /* Sulle schede il logo non sta piu' in mezzo: le foto delle attivita' hanno il
    soggetto al centro in basso, cioe' esattamente dove stava il cerchio, e la
    barca finiva dietro al logo. Nell'angolo copre acqua o cielo. */

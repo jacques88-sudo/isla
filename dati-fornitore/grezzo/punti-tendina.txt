@@ -1,0 +1,75 @@
+1 ||| TITSA CALLAO (REST. NEBULA)
+2 ||| TITSA PARAISO AV Playa Paraiso (Titsa 7717) Bahia principe
+3 ||| ROCA NIVARIA
+4 ||| RIU BUENAVISTA
+6 ||| HOVIMA JARDIN CALETA
+9 ||| RIU ARECAS (bus stop TITSA)
+10 ||| JARDINES DEL TEIDE
+11 ||| BAHIA DEL DUQUE(Barrera)
+12 ||| EXIT PALACE
+14 ||| AQUALAND
+16 ||| VILLA TAGORO
+17 ||| GRAN TACANDE
+19 ||| CC DUKE SHOPS
+20 ||| HOVIMA SUITES (Labranda Suite C. Adeje)
+22 ||| Princess Inspire Tenerife
+23 ||| HIBISCOS (Titsa bus stop)
+24 ||| OLE TROPICAL PLAYA
+25 ||| GARA SUITES (Barrera/Barrier)
+26 ||| COLON SANTANDER (Banco Santander esquina)
+27 ||| COLUMBUS ( por fuera de recepcion)
+28 ||| TIGOTAN
+29 ||| BEST TENERIFE (Bus stop)
+31 ||| UDALLA(BUS STOP Marola Park)
+32 ||| MARYLANZA
+33 ||| Villa Mandi Golf Resort
+34 ||| GRANADA (PARADA TAXI bajando cuesta / TAXI RANK down the hill)
+36 ||| HG TENERIFE SUR
+37 ||| CC PASARELA (siam Park bus stop)
+39 ||| ARONA GRAN ( RECEPTION)
+40 ||| Sol Arona Tenerife by Melia
+42 ||| Muthu Royal Park Albatros
+43 ||| Alua Atlántico Golf Resort(HOTEL RECEPCION)
+44 ||| Santa Barbara Golf and Ocean Club
+45 ||| SAND CLUB (PARADA TITSA)
+46 ||| TITSA SAN ANDRES
+47 ||| PLANTACION
+51 ||| Coral Compostela Golf
+57 ||| GRAN CALLAO SPORT(titsa bus stop)
+65 ||| VILLA ADEJEBEACH
+68 ||| HARD ROCK HOTEL
+10000 ||| ARCO ROQUE DEL CONDE
+10001 ||| CHAYOFA THAI (bus stop)
+10002 ||| CHAYOFA TENIS (bus stop)
+10008 ||| MIRADOR DEL DUQUE
+10009 ||| FANTASIA BAHIA PRINCIPE GOLF DEL SUR
+10010 ||| ROYAL HIDEAWAY (CORAL SUITES)
+10011 ||| SERVATUR ISORA EX ALLERO ISORA ( TITSA BUS STOP)
+10012 ||| BARCELÓ SANTIAGO
+10014 ||| GRAN MELIA PALACIO DE ISORA
+10015 ||| SUNPRIME CORAL SUITES & SPA
+10016 ||| CORAL COMPOSTELA BEACH (Enfrente de ZARA safari)
+10017 ||| Landmar Costa Los Gigantes
+10018 ||| ABAMA Ritz-Carlton (BARRERA )
+10020 ||| Playa la Arena(Bus TITSA El Lajial nº8156)
+10023 ||| OASIS GRAN RESORT(PARADA TAXI bajando cuesta / TAXI RANK down the hill)
+10024 ||| ROYAL GARDEN VILLAS
+10025 ||| TITSA bus stop-HARBOUR CLUB( next to Tipsy Bar)
+10028 ||| ROYAL RIVER LUXURY
+10029 ||| TITSA (Bus Stop) CORREOS (frente Vigilia Park)
+10030 ||| TAMAIMO TROPICAL
+10033 ||| CLUB HOTEL MARAZUL
+10035 ||| THE SALMAR (VINCCI TENERIFE GOLF )
+10036 ||| Barceló (Sandos San Blas)
+10037 ||| EL MEDANO (TITSA LA IGLESIA)
+10063 ||| KN ARENAS DEL MAR - EL MEDANO
+10064 ||| H10 ATLANTIC SUNSET (PLAYA PARAISO)
+10084 ||| ALTAMIRA
+10088 ||| TORRE TEN BEL
+10103 ||| PARADA BUS PALM-MAR (SUPERMERCADO DIPLO AV PALMAR 31)
+10155 ||| TITSA LA CALETA, LA ENRAMADA (N7162)
+42 ||| Muthu Royal Park Albatros
+23 ||| HIBISCOS (Titsa bus stop)
+40 ||| Sol Arona Tenerife by Melia
+10018 ||| ABAMA Ritz-Carlton (BARRERA )
+29 ||| BEST TENERIFE (Bus stop)

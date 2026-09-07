@@ -5582,3 +5582,76 @@ Provati anche i quattro casi che `controlla.js` deve prendere, uno per uno. `sw.
 **Confermato dal proprietario:** il 45 e' il prezzo che si applichera' **dopo** la
 promozione, non un listino gia' praticato. **Resta da confermare la data**, messa al 31
 ottobre 2026: e' il giorno in cui il prezzo sale da solo, quindi non e' un dettaglio.
+
+---
+
+## I dati di pick-up del fornitore (7 settembre 2026)
+
+Su una pagina del fornitore c'e' una tendina con tutti gli hotel dove passa il pulmino.
+Serviva per costruire un campo **hotel** nella richiesta: molte escursioni fanno il
+pick-up lo stesso giorno, da hotel diversi e a orari diversi.
+
+I dati sono in `dati-fornitore/`, con il loro README. **Il sito non li usa ancora.**
+
+### Come sono venuti fuori
+
+La pagina non era copiabile a mano: le tendine sono fatte con **TomSelect**, cioe' il
+`<select>` vero e' nascosto e sopra ci sono dei `<div>`. Cambiare il `<select>` da codice
+non fa reagire il sito: bisogna passare da `select.tomselect.setValue(...)`. Sono andate
+perse mezz'ora e cinque tentativi prima di accorgersene — le righe uscivano tutte uguali,
+con lo stesso punto e la stessa ora, e sembrava un problema di attesa.
+
+L'ora **non e' scritta nella pagina**: a ogni cambio hotel il widget chiede al server
+(`POST /webfapinere/widget/hotel_pickup`) e riceve `{"result":"ok","id_punto":"1",
+"hora":"08:15"}`. Cercarla dentro gli script, nell'HTML e nelle variabili globali non ha
+dato niente, ed e' stato tempo speso bene: ha escluso le tre strade sbagliate.
+
+Il modo che ha funzionato: una spia su `fetch` e `XMLHttpRequest` che registra le
+risposte, poi un giro sui 567 hotel a una richiesta al secondo, leggendo il JSON invece
+del DOM. Leggere il JSON e' molto piu' solido che leggere la pagina: niente attese da
+indovinare.
+
+### Cosa si e' scoperto sulla forma dei dati
+
+**Il punto di raccolta dipende solo dall'hotel, l'ora dipende dall'escursione.** Provato
+su due escursioni diverse (Teide mezza giornata ed escursione 308, Masca+Teide in bus
+cabrio): stesso hotel, stesso `id_punto`, ora diversa. Quindi le tabelle sono tre e
+separate — i punti, l'abbinamento hotel-punto, e gli orari per escursione — e solo la
+terza va rifatta per ogni tour nuovo.
+
+Questo e' il motivo per cui **non** va fatto un campo `hotel` con dentro l'orario: sarebbe
+567 orari da riscrivere a ogni escursione, invece di settanta.
+
+**Il punto di raccolta spesso non e' l'hotel**: 30 punti su 70 sono fermate TITSA, sbarre
+di residence, posteggi taxi, centri commerciali. E' la cosa che il cliente deve leggere
+piu' dell'orario: chi sta al CLEOPATRA deve camminare fino alla fermata del BEST TENERIFE.
+
+**`id_punto: 0` vuol dire "si sale direttamente in hotel"**, non "dato mancante"
+(confermato dal proprietario). Sono 29 hotel, e sul sito diventano "passiamo a prenderti
+in hotel".
+
+**Ora assente** (`"hora": false`) vuol dire che quel punto non e' servito da
+quell'escursione — non che l'orario e' ignoto. Sul Teide mezza giornata sono 170 hotel,
+quasi tutti a Puerto de la Cruz e nel nord.
+
+### Confermato dal proprietario
+
+- gli orari di Admiral su queste escursioni sono **gli stessi** del fornitore;
+- le **12:15** del punto 41 (REGENCY COUNTRY CLUB, FLORIDA, CHAYOFA CLUB) sono corrette,
+  anche se tutte le altre partenze stanno fra le 08:15 e le 09:25;
+- `09:04` e `09:16` erano refusi: corretti in `09:05` e `09:15` nei file puliti, lasciati
+  com'erano in `dati-fornitore/grezzo/`.
+
+### Cosa manca
+
+- **39 punti su 104 non hanno il nome**: la tendina di un'escursione mostra solo i punti
+  che quell'escursione serve. Si recuperano aprendo la tendina su un'escursione che parte
+  dal nord.
+- **Gli orari delle altre escursioni**, che deve dare l'ufficio.
+
+### La regola da non dimenticare
+
+Un orario e' una promessa. I nomi degli hotel e i punti di raccolta sono luoghi e si
+possono pubblicare subito; l'ora no, finche' l'ufficio non la conferma. Un cliente alla
+fermata all'ora sbagliata e' il danno peggiore che questo campo possa fare — peggio che
+non avere il campo.

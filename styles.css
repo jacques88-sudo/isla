@@ -302,6 +302,10 @@ a { text-decoration: none; color: inherit; }
    video e senza il nome e le lingue. */
 .home-hero {
   position: relative;
+  /* il 100% e' obbligatorio: dentro .detail-page, che e' un flex a colonna, il
+     "margin: auto" ai lati spegne l'allargamento automatico, e la fascia si
+     stringeva su quanto e' larga la foto che ha dentro */
+  width: 100%;
   max-width: var(--max-wide);
   margin: .9rem auto 0;
   /* lo spazio sotto e' quello che il logo tondo sborda dalla foto */
@@ -317,11 +321,22 @@ a { text-decoration: none; color: inherit; }
 /* Sulle schede dell'attivita' la foto la scrive tour.js, quindi li' la fascia
    e' un contenitore e non l'immagine: la foto dentro la riempie tutta. */
 .home-hero-box {
+  position: relative;
   display: grid;
   place-items: center;
   overflow: hidden;
+  /* e' un <button>, e i browser ai bottoni danno un padding loro (1px 6px):
+     senza questa riga la foto restava 12 px piu' stretta di quella della home
+     e si vedevano due strisce di sfondo ai lati. */
+  padding: 0;
 }
+/* La foto riempie la fascia. Serve "position: absolute": l'altezza della
+   fascia viene da aspect-ratio, e un "height: 100%" normale non trova un
+   numero su cui calcolarsi — la foto restava 372x248 dentro una fascia da
+   372x209 e sbordava. Con inset lo trova. */
 .home-hero-box img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;

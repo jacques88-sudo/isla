@@ -5291,3 +5291,52 @@ regolarmente. Nessun errore JS della pagina (restano i due mancati caricamenti d
 in questo ambiente: il font di Google e il poster del video, bloccati dalla rete della
 sandbox). `node controlla.js` → 0 errori, 1 avviso invariato (opera-60); 75 schede, 70
 pubblicate. `sw.js` a `isla-v222`.
+---
+
+## La foto delle schede era piu' piccola di quella della home (6 settembre 2026)
+
+Segnalato guardando il sito: sulle schede la foto sembrava piu' piccola, e intorno si
+vedeva una striscia beige. Non era un'impressione, ed era un difetto introdotto dalla
+modifica di prima — quella che ha reso la fascia toccabile.
+
+Misurato invece che guardato:
+
+| | fascia | foto dentro |
+|---|---|---|
+| home | 372×209 | 372×209 |
+| elenco | 372×209 | 372×209 |
+| **scheda, prima** | 372×209, `padding: 1px 6px` | **360×248** |
+| scheda, adesso | 372×209 | 372×209 |
+
+**Due cose diverse, tutte e due dovute al fatto che la fascia e' diventata un `<button>`.**
+
+1. **Il padding dei bottoni.** I browser danno a ogni `<button>` un `padding: 1px 6px`
+   loro. `button` in `styles.css` azzerava bordo e sfondo ma non il padding, quindi la
+   foto stava 12 px piu' stretta e ai lati si vedeva il `background: var(--cream)` della
+   fascia: la striscia beige.
+2. **La foto non riempiva piu' l'altezza.** `height: 100%` ha bisogno di un'altezza vera
+   su cui calcolarsi; l'altezza della fascia pero' viene da `aspect-ratio`, e li' il
+   browser non gliela da'. Cosi' la foto restava 360×248 (la sua proporzione, 3:2) dentro
+   una fascia da 372×209: sbordava sotto e la teneva dentro solo `overflow: hidden`.
+   Risolto con `position: absolute; inset: 0`, che un'altezza vera ce l'ha.
+
+**E qui e' saltata fuori la terza, che non c'entrava con il bottone.** Messa la foto in
+`position: absolute`, la fascia si e' ridotta a 40 px. `.detail-page` e' un flex a
+colonna: dentro un flex, un `margin: auto` ai lati **spegne l'allargamento automatico**,
+e la fascia si allargava solo perche' la foto dentro la spingeva. Tolta la foto dal
+flusso, non la spingeva piu' niente. Ci vuole `width: 100%` scritto a mano.
+
+Quindi tre righe, e nessuna delle tre e' un capriccio: senza il `padding: 0` restano le
+strisce beige, senza `position: absolute` la foto sborda, senza `width: 100%` la fascia
+sparisce.
+
+Provato nel browser vero (412×915 e 1280×900): le tre fasce misurano uguale su home,
+elenco e scheda, e la foto le riempie esatte; su desktop 1080×463. La foto si apre ancora
+a tutto schermo, le miniature la cambiano, Escape chiude, la lingua si cambia da tutte e
+due i posti. Nessun errore JS. `node controlla.js` → 0 errori, 1 avviso invariato
+(opera-60). `sw.js` a `isla-v223`: nel frattempo la cancellazione della scheda quad
+aveva gia' preso il `v222`.
+
+Se un giorno la fascia delle schede la si vuole **piu' alta di quella della home** (non
+uguale: piu' alta), basta cambiarle la proporzione da 16/9 a 3/2 dentro `.detail-page`:
+su un telefono da 412 px sono 248 px invece di 209.

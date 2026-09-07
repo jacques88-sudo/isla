@@ -1,11 +1,13 @@
 // Gli hotel dove il fornitore passa a prendere i clienti, e i punti di
 // raccolta dove il pulmino si ferma davvero.
 //
-// Ogni riga di HOTELS e' `[nome, punto]`. Il **punto** e' quasi sempre un
-// posto diverso dall'hotel: trenta punti su sessantacinque sono fermate
-// dell'autobus pubblico, sbarre di residence, posteggi taxi, centri
-// commerciali. Chi sta al Cleopatra sale alla fermata del Best Tenerife, e se
-// non glielo diciamo resta davanti al suo hotel a guardare l'ora.
+// Ogni riga di HOTELS e' `[nome, punto]`. Il **punto e' quasi sempre un posto
+// diverso dall'hotel**: su 416 hotel di cui sappiamo il punto, 351 salgono
+// altrove. Ventisette punti su 64 non sono nemmeno un edificio — sono fermate
+// dell'autobus pubblico, sbarre di residence, posteggi taxi, un centro
+// commerciale, un angolo di strada. Chi sta al Cleopatra sale alla fermata del
+// Best Tenerife, e se non glielo diciamo resta davanti al suo hotel a
+// guardare l'ora.
 //
 // `punto: 0` vuol dire che **si sale direttamente in hotel** (confermato dal
 // proprietario), non che il dato manca. Un punto che non sta in PICKUP_POINTS

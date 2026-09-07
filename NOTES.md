@@ -5741,8 +5741,15 @@ Scelto l'hotel, sotto la casella compare **dove passa il pulmino**, e la stessa
 riga finisce nel messaggio all'ufficio. Nessun orario: quello e' il pezzo dopo,
 e prima lo deve confermare l'ufficio.
 
-`hotel.js` adesso porta due tabelle: `PICKUP_POINTS` (65 punti, nome + tipo) e
+`hotel.js` adesso porta due tabelle: `PICKUP_POINTS` (64 punti, nome + tipo) e
 `HOTELS`, dove ogni riga e' `[nome, punto]`.
+
+**Quanto serviva davvero:** dei 416 hotel di cui sappiamo il punto, **351
+salgono da un'altra parte**, non davanti al proprio albergo. Ventisette punti su
+64 non sono nemmeno un edificio: fermate dell'autobus pubblico, sbarre, posteggi
+taxi, un centro commerciale, un angolo di strada. Gli altri casi sono 29 hotel
+col punto `0`, 25 dove il punto e' proprio l'hotel, e 11 dove e' l'hotel ma alla
+sbarra o alla fermata.
 
 **Il punto dipende solo dall'hotel, non dall'escursione** — verificato su due
 escursioni del fornitore — quindi sta nei dati dell'hotel e non in quelli del
@@ -5762,8 +5769,8 @@ cuesta / TAXI RANK down the hill" — e sono stati riscritti tutti e 65 a mano.
 - punto `0`, oppure il punto si chiama come l'hotel e non ha un tipo →
   "passiamo a prenderti in hotel";
 - il punto si chiama come l'hotel **ma ha un tipo** → "al tuo hotel, al
-  posteggio dei taxi". Al Granada Park si sale al posteggio in fondo alla
-  discesa e al Bahia del Duque alla sbarra: confrontare i due nomi e dire
+  posteggio dei taxi" (11 hotel). Al Granada Park si sale al posteggio in fondo
+  alla discesa e al Bahia del Duque alla sbarra: confrontare i due nomi e dire
   "passiamo in hotel" mandava il cliente ad aspettare davanti alla reception;
 - punto diverso → "Ti prendiamo a Best Tenerife, alla fermata dell'autobus —
   **non e' il tuo hotel**".

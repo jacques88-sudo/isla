@@ -167,6 +167,51 @@ function controllaPrezzi(t) {
   if (t.priceAdult > 0 && t.ages && !t.ages.adult) {
     avviso(t.id, "ha il prezzo adulti ma nessuna fascia ages.adult.");
   }
+  controllaOfferta(t);
+}
+
+// ─── 2-bis. L'offerta a tempo ──────────────────────────────────────────────
+// `priceList` e' il prezzo barrato. Su un prezzo barrato la legge europea
+// (direttiva Omnibus, in Spagna dal 2022) chiede che il "prima" sia un prezzo
+// davvero applicato nei 30 giorni precedenti: un numero gonfiato per far
+// sembrare piu' bello lo sconto e' una pratica sanzionabile. Da qui non si
+// puo' verificare — nessuno sa cosa e' stato incassato — ma si controlla
+// tutto quello che invece si vede da fuori.
+function controllaOfferta(t) {
+  if (t.priceList === undefined) {
+    if (t.offerUntil !== undefined) {
+      errore(t.id, "ha offerUntil ma nessun priceList: una scadenza senza offerta non vuol dire niente.");
+    }
+    return;
+  }
+  if (typeof t.priceList !== "number" || !(t.priceList > 0)) {
+    return errore(t.id, "priceList deve essere un numero di euro maggiore di zero.");
+  }
+  const paga = t.priceFrom;
+  if (typeof paga !== "number") {
+    return errore(t.id, "ha priceList ma nessun priceFrom: non c'e' il prezzo da confrontare col barrato.");
+  }
+  if (t.priceList <= paga) {
+    errore(t.id, "priceList (€" + t.priceList + ") non e' piu' alto del prezzo che si paga (€" +
+      paga + "): barrarlo direbbe al cliente il contrario di quello che succede.");
+  }
+  if (t.offerUntil === undefined) {
+    avviso(t.id, "ha un prezzo di listino barrato ma nessun offerUntil: l'offerta non scade mai " +
+      "da sola, e il prezzo non tornera' mai al listino. Uno sconto permanente non e' uno sconto, " +
+      "ed e' proprio il caso che la legge guarda.");
+  } else if (!/^\d{4}-\d{2}-\d{2}$/.test(t.offerUntil)) {
+    errore(t.id, 'offerUntil scritto male: "' + t.offerUntil + '" (atteso "2026-12-31").');
+  } else {
+    const oggi = new Date();
+    const oggiISO = oggi.getFullYear() + "-" +
+      String(oggi.getMonth() + 1).padStart(2, "0") + "-" +
+      String(oggi.getDate()).padStart(2, "0");
+    if (t.offerUntil < oggiISO) {
+      avviso(t.id, "l'offerta e' scaduta il " + t.offerUntil + ": il prezzo in pagina e' gia' salito " +
+        "al listino (€" + t.priceList + ") e il barrato non si vede piu'. Fai pulizia: metti €" +
+        t.priceList + " in priceFrom/priceAdult e togli priceList e offerUntil.");
+    }
+  }
 }
 
 // ─── 3. Le sigle dei giorni devono esistere ────────────────────────────────

@@ -150,6 +150,7 @@ const I18N = {
   // ── schede attività ─────────────────────────────────────────────────────
   "tour.onRequest":     { it: "Su richiesta", en: "On request", es: "Bajo petición" },
   "tour.from":          { it: "da €{p}", en: "from €{p}", es: "desde €{p}" },
+  "tour.offer":         { it: "Offerta", en: "Offer", es: "Oferta" },
   "tour.family":        { it: "Adatta ai bambini", en: "Kid-friendly", es: "Apta para niños" },
   "tour.transfer":      { it: "Transfer disponibile", en: "Transfer available", es: "Traslado disponible" },
   "tour.ask":           { it: "Richiedi disponibilità", en: "Check availability", es: "Consultar disponibilidad" },
@@ -164,6 +165,8 @@ const I18N = {
   "detail.departure":   { it: "Punto di partenza", en: "Departure point", es: "Punto de salida" },
   "detail.duration":    { it: "Durata", en: "Duration", es: "Duración" },
   "detail.price":       { it: "Prezzo", en: "Price", es: "Precio" },
+  "detail.offer":       { it: "Offerta", en: "Offer", es: "Oferta" },
+  "detail.offerUntil":  { it: "Valida fino al {d}", en: "Valid until {d}", es: "Válida hasta el {d}" },
   "detail.suitable":    { it: "Adatta a", en: "Suitable for", es: "Apta para" },
   "detail.season":      { it: "Periodo", en: "Season", es: "Temporada" },
   "detail.infants":     { it: "Neonati", en: "Infants", es: "Bebés" },

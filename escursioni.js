@@ -58,6 +58,58 @@ function tourPrice(tour) {
   return t("tour.from", { p: eur(tour.priceFrom) }) + priceUnitSuffix(tour);
 }
 
+// "2026-12-31" scritto come lo legge un cliente, nella sua lingua.
+function dataLeggibile(iso) {
+  const pezzi = String(iso).split("-").map(Number);
+  const [anno, mese, giorno] = pezzi;
+  if (pezzi.length !== 3 || pezzi.some(n => !n)) return String(iso);
+  // new Date(anno, mese - 1, giorno) e non new Date("2026-12-31"): la stringa
+  // ISO viene letta come mezzanotte UTC, e per un cliente a ovest di
+  // Greenwich diventerebbe il giorno prima. Coi pezzi separati e' locale.
+  const d = new Date(anno, mese - 1, giorno);
+  const locali = { it: "it-IT", en: "en-GB", es: "es-ES" };
+  try {
+    return d.toLocaleDateString(locali[getLang()] || "en-GB",
+      { day: "numeric", month: "long", year: "numeric" });
+  } catch (e) {
+    return giorno + "/" + mese + "/" + anno;
+  }
+}
+
+// L'OFFERTA A TEMPO
+//
+// `priceList` e' il prezzo di listino, quello barrato; il prezzo che si paga
+// resta `priceFrom`/`priceAdult`. Sono due numeri separati apposta: il totale
+// della richiesta si fa col prezzo vero, e un'offerta non puo' sbagliare un
+// conto.
+//
+// La SCADENZA non si controlla qui: la applica esplora-catalog.js appena si
+// carica, togliendo `priceList` e alzando il prezzo al listino. Quando si
+// arriva a questa funzione un'offerta scaduta non esiste piu'. Il controllo
+// sulla data resta comunque, perche' costa niente ed e' l'unica rete se un
+// giorno qualcuno usasse il catalogo senza quel passaggio.
+//
+// Due condizioni: il listino c'e', ed e' piu' ALTO del prezzo che si paga (se
+// no non e' uno sconto, e mostrarlo sarebbe una bugia al contrario).
+function offertaAttiva(tour, prezzoPagato) {
+  const pieno = tour.priceList;
+  const paga = prezzoPagato === undefined ? tour.priceFrom : prezzoPagato;
+  if (typeof pieno !== "number" || typeof paga !== "number") return false;
+  if (!(pieno > paga)) return false;
+  if (tour.offerUntil && tour.offerUntil < dataOggiISO()) return false;
+  return true;
+}
+
+// Il prezzo della card, in HTML, col barrato davanti quando l'offerta e'
+// viva. Sta separata da tourPrice() perche' quella finisce dentro esc() in
+// tre punti (le card "altre esperienze", il rimando alla privata, la lista
+// delle richieste): se restituisse dei tag, li' si vedrebbero scritti.
+function tourPriceHTML(tour) {
+  const testo = esc(tourPrice(tour));
+  if (!offertaAttiva(tour)) return testo;
+  return '<s class="price-before">€' + esc(eur(tour.priceList)) + "</s> " + testo;
+}
+
 function categoryName(id) {
   const cat = CATEGORIES.find(c => c.id === id);
   return cat ? tf(cat.name) : id;
@@ -411,9 +463,10 @@ function tourCard(tour) {
         ${tour.family ? "<li>" + t("tour.family") + "</li>" : ""}
         ${(tour.transfer || tour.transferSiam) ? "<li>" + t("tour.transfer") + "</li>" : ""}
         ${tour.season ? `<li class="tour-meta-season">${tf(tour.season)}</li>` : ""}
+        ${offertaAttiva(tour) ? `<li class="tour-meta-offer">${t("tour.offer")}</li>` : ""}
       </ul>
       <div class="tour-foot">
-        <span class="tour-price">${tourPrice(tour)}</span>
+        <span class="tour-price">${tourPriceHTML(tour)}</span>
         ${askBtn}
       </div>
     </div>

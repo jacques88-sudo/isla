@@ -5481,3 +5481,104 @@ prima passata e il `v226` quello dei tre giorni, durato una manciata di minuti.
 **Resta in sospeso** solo la foto `teide-national-park.jpg`, che e' **300×300** invece dei
 1200×800 di tutte le altre. Non e' stata toccata (era gia' pubblicata, e ingrandirla la
 sgranerebbe soltanto): serve l'originale piu' grande, non un ritocco.
+
+---
+
+## Le offerte a tempo, e il prezzo barrato (7 settembre 2026)
+
+Il proprietario ha chiesto per il Teide National Park **45 € barrato e 39 € di vendita**,
+come offerta temporanea. Il meccanismo non esisteva: e' stato costruito adesso, generico,
+perche' la seconda scheda in offerta non deve ricominciare da capo.
+
+### Due campi nuovi
+
+`priceList: 45` e' il **prezzo di listino**, quello barrato. `offerUntil: "2026-10-31"` e'
+l'ultimo giorno in cui si paga lo sconto, e vale per tutto quel giorno.
+
+Finche' l'offerta e' viva si paga `priceAdult`, cioe' 39. **Sono due numeri separati
+apposta:** il totale della richiesta si fa col prezzo vero, e nessuna offerta puo'
+sbagliare un conto.
+
+### Alla scadenza il prezzo SALE, e sale anche il totale
+
+Dal 1 novembre la scheda passa da sola a 45: barrato via, pillola via, riga della scadenza
+via, e **il prezzo diventa il listino**. Verificato simulando una data passata: la card
+dice "da €45", la riga adulti dice €45, e il preventivo di 2 adulti + 1 bambino passa da
+**105 € a 117 €** (45×2 + 27).
+
+Questo va **contro la regola generale del progetto**, che dice di non alzare un prezzo gia'
+letto. E' una scelta esplicita del proprietario del 7 settembre 2026: qui l'aumento e' il
+senso stesso di una promozione a tempo. Prima era stato costruito al contrario (il prezzo
+restava 39), ed e' stato rifatto quando ha chiarito che il 45 e' il prezzo **futuro**.
+
+**Dove sta la scadenza, e perche' proprio li'.** In `esplora-catalog.js`, in fondo al file,
+non nel codice che disegna le pagine. Il motivo e' che il prezzo non e' solo una scritta:
+entra nel totale della richiesta e nel messaggio WhatsApp. Se la scadenza la gestisse la
+grafica, dal 1 novembre la card direbbe 45 e il preventivo continuerebbe a fare 39 — un
+numero falso mandato in ufficio. Il catalogo si carica per primo su tutte le pagine, quindi
+correggerlo li' una volta sola sistema tutto quello che viene dopo, e nessuna delle altre
+funzioni deve sapere che le offerte esistono. Tolto `priceList`, la scheda torna
+indistinguibile da una senza offerta: e' cosi' che barrato e pillola spariscono da soli.
+
+### Il problema legale, che resta aperto
+
+Su un prezzo barrato la **direttiva Omnibus** (UE 2019/2161, in Spagna dal 2022) chiede che
+il barrato sia un prezzo davvero applicato nei **30 giorni precedenti**.
+
+Qui il 45 e' il prezzo **futuro**: il proprietario l'ha detto esplicitamente. Non e' mai
+stato applicato, quindi barrarlo e' proprio la pratica che la norma sanziona, e la sanzione
+la prenderebbe Admiral. E' stato fatto lo stesso perche' e' una sua decisione, presa dopo
+che la cosa gli era stata spiegata due volte.
+
+**La strada pulita, se un giorno si volesse:** non barrare niente e scrivere "39 €, prezzo
+di lancio — dal 1 novembre 45 €". Stessa urgenza, nessun rischio, ed e' anche piu' onesta
+verso il cliente. Sarebbe una riga di lavoro: la struttura c'e' gia' tutta.
+
+### I controlli automatici
+
+`controlla.js` non puo' sapere cosa e' stato incassato, quindi controlla quello che si vede
+da fuori:
+
+- `priceList` piu' basso o uguale al prezzo che si paga → **errore**: barrarlo direbbe al
+  cliente il contrario di quello che succede;
+- `offerUntil` senza `priceList` → **errore**: una scadenza senza offerta non vuol dire
+  niente;
+- `priceList` senza `offerUntil` → **avviso**: l'offerta non scade mai e il prezzo non
+  tornera' mai al listino;
+- `offerUntil` gia' passata → **avviso**: il prezzo in pagina e' gia' salito da solo, e
+  conviene fare pulizia scrivendo il listino nei campi normali.
+
+### Dove si vede
+
+Sulla card dell'elenco: `€45` sbarrato davanti a `da €39`, piu' una pillola **Offerta**
+scura, che si stacca da quelle neutre come fa gia' quella stagionale. Sulla scheda: la riga
+"Adulti (12+)" mostra `€45 €39`, e in fondo compare "Offerta — Valida fino al 31 ottobre
+2026", con la data scritta nella lingua di chi guarda (31 October 2026, 31 de octubre de
+2026).
+
+### Due trappole trovate scrivendolo
+
+1. **`tourPrice()` non poteva restituire HTML.** Finisce dentro `esc()` in tre punti (le
+   card "altre esperienze", il rimando alla versione privata, la lista delle richieste): i
+   tag si sarebbero visti scritti. Per questo il barrato sta in una funzione separata,
+   `tourPriceHTML()`, usata solo dove serve.
+2. **Le righe della scheda erano tutte escapate**, giustamente. Invece di togliere `esc()`
+   — che avrebbe aperto un buco su tutte le righe — una riga puo' ora portare un **terzo**
+   elemento con l'HTML gia' pronto, e solo il prezzo lo usa. Tutto il resto continua a
+   passare da `esc()`.
+
+La data si formatta con `new Date(anno, mese - 1, giorno)` e non con
+`new Date("2026-10-31")`: la stringa ISO viene letta come mezzanotte UTC, e per un cliente
+a ovest di Greenwich "fino al 31" sarebbe diventato il 30.
+
+### Provato
+
+`node controlla.js` → 0 errori. Nel browser vero, tutte e tre le lingue: barrato, pillola,
+riga della scadenza e date corrette, totale 105 €, nessun errore JS. Poi con una data
+passata: card e scheda a €45, barrato e pillola spariti, e il totale salito a **117 €**.
+Provati anche i quattro casi che `controlla.js` deve prendere, uno per uno. `sw.js` a
+`isla-v229`.
+
+**Confermato dal proprietario:** il 45 e' il prezzo che si applichera' **dopo** la
+promozione, non un listino gia' praticato. **Resta da confermare la data**, messa al 31
+ottobre 2026: e' il giorno in cui il prezzo sale da solo, quindi non e' un dettaglio.

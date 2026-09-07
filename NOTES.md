@@ -5860,3 +5860,18 @@ sua etichetta non ci sono, e il messaggio arriva senza riga "Orario" e con
 + Masca il menu c'e' ancora, con "Da concordare" e le sette fasce. Riga di aiuto
 giusta in tutte e tre le lingue, anche cambiando lingua a finestra aperta.
 Nessun errore JS. `sw.js` a `isla-v235`.
+
+### "Dove alloggi" sale sotto la data
+
+Stava in fondo, sopra le note. Ora sta **subito dopo la data**, prima
+dell'orario e delle persone.
+
+Il motivo e' che ha smesso di essere un dettaglio: da quando l'hotel decide il
+punto di raccolta e l'ora, e' il campo che cambia la risposta. Chiederlo per
+ultimo voleva dire far scorrere tutta la finestra prima di sapere a che ora si
+parte — e con le escursioni che avranno pick-up e orari diversi, sara' vero per
+quasi tutte.
+
+Il "(facoltativo)" accanto all'etichetta e' diventato "**(utile per il
+pick-up)**": dice perche' compilarlo invece di dire che si puo' saltare. Il
+campo resta facoltativo davvero, non ha `required`.

@@ -2596,8 +2596,11 @@ body.menu-open { overflow: hidden; }
    riga di aiuto e si vede di piu': meta' dei clienti non sale davanti al
    proprio albergo ma a una fermata dell'autobus a due strade, ed e' la cosa
    che devono leggere. */
+/* sotto la data, subito prima di "A che ora": senza il margine sotto la riga
+   si incolla all'etichetta che segue */
+[data-hotel-hint] { margin-bottom: 1.1rem; }
 .hotel-punto {
-  margin: .8rem 0 0;
+  margin: .8rem 0 1.1rem;
   background: var(--cream);
   border-radius: 12px;
   padding: .7rem .9rem;

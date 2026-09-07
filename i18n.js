@@ -271,6 +271,7 @@ const I18N = {
   "pickup.reception":   { it: "fuori dalla reception", en: "outside reception", es: "fuera de recepción" },
   "pickup.centro":      { it: "al centro commerciale", en: "at the shopping centre", es: "en el centro comercial" },
   "pickup.angolo":      { it: "all'angolo", en: "on the corner", es: "en la esquina" },
+  "req.hotelWhy":       { it: "(utile per il pick-up)", en: "(useful for the pick-up)", es: "(útil para la recogida)" },
   "req.hotelHintTime":  { it: "Serve a dirti dove e a che ora passiamo a prenderti. Se non trovi il tuo, scrivilo nelle note.", en: "It tells us where and when to pick you up. If yours is not listed, write it in the notes.", es: "Nos dice dónde y a qué hora recogerte. Si no encuentras el tuyo, escríbelo en las notas." },
   "req.hotelHint":      { it: "Serve a dirti dove passiamo a prenderti. Se non trovi il tuo, scrivilo nelle note.", en: "It tells us where to pick you up. If yours is not listed, write it in the notes.", es: "Nos dice dónde recogerte. Si no encuentras el tuyo, escríbelo en las notas." },
   "req.note":           { it: "Note", en: "Notes", es: "Notas" },

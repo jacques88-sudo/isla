@@ -5372,3 +5372,112 @@ errori, 1 avviso invariato (opera-60). `sw.js` a `isla-v224`.
 
 Per tornare indietro basta togliere una riga (`.detail-page .home-hero-media` e la sua
 eccezione da 960 px).
+
+---
+
+## Il Teide National Park prende i prezzi veri (7 settembre 2026)
+
+Era un segnaposto: `priceFrom: 48` inventato, `priceAdult` e `priceChild` a zero, zona e
+durata "Da definire". Ora ha il listino del fornitore.
+
+**39 € adulti, 27 € bambini 2-11, 0 € bebe'.** Il proprietario li ha mandati scrivendo
+"questi sono i prezzi ufficiali", presi dal foglio dell'operatore (quello in spagnolo con
+l'itinerario Vilaflor → Roques de Garcia → Teleferico → Chio), non dalla pagina del
+rivenditore che stava nello stesso messaggio.
+
+### Il 39 non e' un prezzo barrato, anche se sembra
+
+Nel messaggio c'era anche una pagina CanaryVIP con **50 € sbarrato e 39 €** accanto, e la
+regola del progetto dice che i prezzi barrati sono offerte del rivenditore e sul sito va
+il **prezzo pieno**. Qui pero' il 39 arriva dal listino dell'operatore, dove e' il prezzo
+e basta: e' una coincidenza che il rivenditore sia sceso allo stesso numero. Il 50 non
+compare da nessuna parte nel listino, quindi non e' il prezzo pieno di nessuno.
+
+Nel dubbio la direzione e' comunque quella giusta: 39 e' **piu' basso** di 48, e abbassare
+un prezzo si puo'; alzarlo dopo che il cliente l'ha letto no.
+
+### Le fasce d'eta': il listino ne da' una sola
+
+Il fornitore scrive solo "Ninos (2-11)". Adulti `12+` e bebe' `0-1` sono gli unici
+completamenti che non lasciano buchi ne' sovrapposizioni: sopra gli 11 e sotto i 2 non
+c'e' altra fascia. Stessa scelta gia' fatta sul Flipper One, che ha lo stesso 2-11.
+
+`priceInfant: 0` qui e' uno **zero vero**, non un "non lo sappiamo": il listino scrive
+"Bebes 0€", il posto in pullman per i piu' piccoli non si paga. Verificato nella finestra
+della richiesta: due neonati in piu' non spostano il totale.
+
+### Cosa NON e' stato copiato dalla pagina del rivenditore
+
+La cancellazione a scaglioni (24 ore per i singoli, 48 per i gruppi da 5-7, 4 giorni per
+gli 8-14, 6 giorni oltre i 15): **le nostre sono 24 ore e basta**, sempre. E poi "miglior
+prezzo garantito", "biglietti ufficiali", "pagamento sicuro", "prenota ora e risparmia",
+il 5.00 su 5 con 7 recensioni. Le descrizioni sono riscritte da zero nelle tre lingue.
+
+Lasciata fuori anche la seconda partenza da **Puerto de la Cruz a 50 €, solo il
+mercoledi'**: e' un prezzo del rivenditore, non del listino, e non sappiamo se Admiral
+rivende anche quella. Se un giorno serve, diventa una variante in `options`.
+
+### Le due cose decise senza averle sul listino — e poi confermate
+
+Erano rimaste in sospeso per mezza giornata, poi l'ufficio ha risposto lo stesso giorno.
+
+1. **I giorni: `mar mer sab dom`, martedi' compreso.** Il foglio dell'operatore sui giorni
+   non dice niente, e li avevo presi dalla pagina del rivenditore. **Il campo e' stato
+   scritto tre volte in un giorno:** quattro giorni (dal rivenditore, segnati come da
+   confermare), poi tre perche' l'ufficio aveva detto `mer sab dom`, poi di nuovo quattro
+   perche' l'ufficio si e' corretto: il martedi' c'e'. Buona la prima, per il valore.
+2. **Il menu delle lingue** (`languages: LINGUE_TOUR`). La regola dice di metterlo solo
+   dove viene segnalato, non ovunque appaia "multilingual guides". Qui il segnale c'e' ed
+   e' del fornitore, nel suo campo Observaciones: "Todos los idiomas". L'ufficio ha
+   confermato che sono le cinque solite di `LINGUE_TOUR`.
+
+**Se un giorno qualcuno trova quel `mar` e pensa di toglierlo, e' scritto anche nel
+commento del catalogo: e' confermato, non e' un residuo.** Nel mezzo di questa storia
+avevo scritto qui una regola generale — "la pagina di un rivenditore non e' una fonte per i
+giorni" — costruita su una sola conferma che si e' rivelata sbagliata. Toglierla e'
+il motivo per cui questo paragrafo esiste: **in `NOTES.md` non si scrive una regola
+generale al primo caso**, tanto meno mentre il dato sta ancora ballando. Il fatto singolo
+("l'ufficio ha detto X il giorno tale") invecchia bene; la regola dedotta da quel fatto
+diventa un errore che qualcuno seguira' fra sei mesi.
+
+Quello che invece regge, ed e' il motivo per cui la domanda andava fatta comunque: `days`
+e' l'unico campo dove **un giorno di troppo fa danno in silenzio**. Il sito accetterebbe
+una richiesta per un giorno in cui il pullman non parte, e l'errore salterebbe fuori solo
+in ufficio, una richiesta alla volta. Un giorno mancante invece si vede subito, perche' un
+cliente che sa di poter partire si trova la data rifiutata. Per questo `days` in dubbio si
+lascia non scritto e si chiede — che e' quello che e' stato fatto, ed e' anche il motivo
+per cui la correzione e' costata due commit e non una telefonata dell'ufficio arrabbiato.
+
+### Il resto
+
+`included: ["transfer", "guide"]` e nient'altro: **niente `ticket`**, perche' la salita in
+funivia e' facoltativa e si paga sul posto. Sta scritto anche nella prima nota, perche' e'
+la cosa che un cliente da' per scontata leggendo "Teide".
+
+`times` **non scritto**: le partenze vere non le sappiamo (il ritiro cambia da hotel a
+hotel e nessuna delle due fonti da' un orario), quindi restano le fasce segnaposto piu'
+"Da concordare". L'itinerario e' senza orari per lo stesso motivo.
+
+Durata `6-8 ore circa`, come il listino. Il rivenditore diceva "circa 7 ore": vince il
+fornitore.
+
+`zone: "Tenerife Sud"` come stringa singola, che e' la forma gia' usata da altre tre
+schede. Nota: resta "Tenerife Sud" anche in inglese e spagnolo. E' una stonatura di tutte
+e quattro le schede, non di questa; si sistema in un colpo solo, non qui.
+
+### Provato
+
+`node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Nel browser vero, tutte e
+tre le lingue: prezzi, fasce, giorni e itinerario a posto, nessun errore JS. Il totale
+fatto a mano nella finestra della richiesta: 2 adulti + 1 bambino = **105 €**
+(39×2 + 27), e i neonati non lo spostano.
+
+Sui giorni sono state provate tutte e cinque le date, in tutte e tre le lingue: **martedi',
+mercoledi', sabato e domenica passano**; il lunedi' viene fermato con "Questa escursione si
+fa solo: Mar · Mer · Sab · Dom" e le sue due traduzioni. Cioe' `mar` esce martedi' e `mer`
+mercoledi', che e' l'errore facile di quelle sigle. `sw.js` a `isla-v227`: il `v225` era la
+prima passata e il `v226` quello dei tre giorni, durato una manciata di minuti.
+
+**Resta in sospeso** solo la foto `teide-national-park.jpg`, che e' **300×300** invece dei
+1200×800 di tutte le altre. Non e' stata toccata (era gia' pubblicata, e ingrandirla la
+sgranerebbe soltanto): serve l'originale piu' grande, non un ritocco.

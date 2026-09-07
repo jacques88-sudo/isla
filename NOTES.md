@@ -5827,3 +5827,36 @@ hotel, al posteggio dei taxi"; Bahia del Duque → "alla sbarra"; Sendymar
 (punto 0) → "direttamente in hotel", e nel messaggio "Punto di raccolta: in
 hotel"; Girasol (punto senza nome) e "casa mia" → nessuna riga e resta quella di
 aiuto. Nessun errore JS. `sw.js` a `isla-v232`.
+
+### "A che ora" sparisce dove l'ora la decide l'hotel
+
+Sul Teide il menu **A che ora** proponeva "Da concordare" e sette fasce
+segnaposto. Ma l'ora non si concorda per niente: al Cleopatra si parte alle
+9:15 e basta, e chi sta al Playa la Arena alle 8:40. Il menu faceva **due**
+danni insieme — chiedeva una cosa gia' decisa, e faceva credere che l'ora si
+trattasse.
+
+Ora, se la scheda sta in `PICKUP_TIMES`, l'etichetta e il menu spariscono e
+`req.time` resta vuoto: nel messaggio non c'e' nessuna riga "Orario", perche'
+l'ora sta gia' nella riga del punto di raccolta. Sulle schede senza orari nostri
+non cambia niente: restano "Da concordare" e le fasce, come deciso.
+
+La riga di aiuto sotto il campo hotel cambia di conseguenza: "dove passiamo a
+prenderti" diventa "**dove e a che ora** passiamo a prenderti".
+
+Il campo dell'hotel vive in `initHotelField()` e la finestra in
+`initRequestDialog()`: si parlano con due eventi, `islarequestopen` quando si
+apre su una scheda e `islarequestclose` quando si chiude.
+
+**Da non riproporre**: le fasce segnaposto restano dove le partenze vere non le
+sappiamo (e' una cosa gia' decisa). Qui non e' il caso — le partenze le
+sappiamo, hotel per hotel.
+
+### Provato
+
+`node controlla.js` → 0 errori. Sul Teide National Park il menu "A che ora" e la
+sua etichetta non ci sono, e il messaggio arriva senza riga "Orario" e con
+"Punto di raccolta: 09:15 · Best Tenerife, alla fermata dell'autobus". Su Teide
++ Masca il menu c'e' ancora, con "Da concordare" e le sette fasce. Riga di aiuto
+giusta in tutte e tre le lingue, anche cambiando lingua a finestra aperta.
+Nessun errore JS. `sw.js` a `isla-v235`.

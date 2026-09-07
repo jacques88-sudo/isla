@@ -553,6 +553,15 @@ function initHotelField() {
   }
 
   input.addEventListener("input", () => { apri(); mostraPunto(); });
+  // "dove passiamo a prenderti" oppure "dove e a che ora", secondo la scheda
+  document.addEventListener("islarequestopen", () => {
+    if (!aiutoEl) return;
+    const conOra = typeof PICKUP_TIMES !== "undefined" && SCHEDA_APERTA && PICKUP_TIMES[SCHEDA_APERTA.id];
+    const chiave = conOra ? "req.hotelHintTime" : "req.hotelHint";
+    aiutoEl.dataset.i18n = chiave;
+    aiutoEl.textContent = t(chiave);
+    mostraPunto();
+  });
   input.addEventListener("focus", apri);
   input.addEventListener("blur", () => setTimeout(chiudi, 120));
   input.addEventListener("keydown", e => {
@@ -857,6 +866,7 @@ function initRequestDialog() {
   const optionLabelEl = document.querySelector("[data-request-option-label]");
   const dateInput = document.getElementById("reqDate");
   const timeEl = document.querySelector("[data-request-time]");
+  const timeLabelEl = document.querySelector("[data-request-time-label]");
   const dayErrorEl = document.querySelector("[data-request-day-error]");
   const langEl = document.querySelector("[data-request-lang]");
   const langLabelEl = document.querySelector("[data-request-lang-label]");
@@ -895,6 +905,8 @@ function initRequestDialog() {
   function open(tour, comeAggiunta) {
     current = tour;
     SCHEDA_APERTA = tour;
+    // il campo dell'hotel vive in un'altra funzione e deve sapere che scheda e'
+    document.dispatchEvent(new CustomEvent("islarequestopen"));
     modo = comeAggiunta ? "aggiungi" : "invia";
     if (nameBox) nameBox.hidden = comeAggiunta;
     // required su un campo nascosto blocca l'invio senza dire perche': il
@@ -1287,6 +1299,21 @@ function initRequestDialog() {
 
   function riempiOrari(tour) {
     if (!timeEl) return;
+    // Dove il pulmino passa a prendere la gente in hotel, l'ora non si sceglie:
+    // la decide dove dormi. Al Cleopatra si parte alle 9:15 e basta. Chiedere
+    // "a che ora" e proporre "Da concordare" sarebbe una domanda finta, e
+    // peggio: farebbe credere che l'ora si tratti. Il menu sparisce, e l'ora
+    // la dice la riga del punto di raccolta sotto il campo dell'hotel.
+    const oraDaHotel = typeof PICKUP_TIMES !== "undefined" && tour && PICKUP_TIMES[tour.id];
+    if (timeLabelEl) timeLabelEl.hidden = !!oraDaHotel;
+    timeEl.hidden = !!oraDaHotel;
+    if (oraDaHotel) {
+      // se resta un valore vecchio, il messaggio porterebbe un orario che il
+      // cliente non ha scelto e che non c'entra col suo hotel
+      timeEl.innerHTML = "";
+      timeEl.value = "";
+      return;
+    }
     const scelto = timeEl.value;
     timeEl.innerHTML = "";
     // Su certe barche l'orario dipende dalla durata scelta: il giro di 2 ore

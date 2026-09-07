@@ -58,16 +58,6 @@ function tourPrice(tour) {
   return t("tour.from", { p: eur(tour.priceFrom) }) + priceUnitSuffix(tour);
 }
 
-// La data di oggi come "2026-09-07". Si confrontano le stringhe, non due
-// oggetti Date: cosi' non c'e' nessun fuso orario di mezzo e "fino al 31"
-// vale per tutto il 31.
-function dataOggiISO() {
-  const d = new Date();
-  return d.getFullYear() + "-" +
-    String(d.getMonth() + 1).padStart(2, "0") + "-" +
-    String(d.getDate()).padStart(2, "0");
-}
-
 // "2026-12-31" scritto come lo legge un cliente, nella sua lingua.
 function dataLeggibile(iso) {
   const pezzi = String(iso).split("-").map(Number);
@@ -88,21 +78,21 @@ function dataLeggibile(iso) {
 
 // L'OFFERTA A TEMPO
 //
-// `priceBefore` e' il prezzo di listino, quello barrato; il prezzo che si
-// paga resta `priceFrom`/`priceAdult` come su tutte le altre schede. Sono
-// due numeri separati apposta: il totale della richiesta continua a farsi
-// con il prezzo vero, e un'offerta non puo' sbagliare un conto.
+// `priceList` e' il prezzo di listino, quello barrato; il prezzo che si paga
+// resta `priceFrom`/`priceAdult`. Sono due numeri separati apposta: il totale
+// della richiesta si fa col prezzo vero, e un'offerta non puo' sbagliare un
+// conto.
 //
-// Tre condizioni, tutte necessarie:
-//   1. il barrato c'e';
-//   2. e' piu' ALTO del prezzo che si paga (se no non e' uno sconto, e
-//      mostrarlo sarebbe una bugia al contrario);
-//   3. la data non e' passata.
-// Quando l'offerta scade la scheda torna a mostrare il prezzo liscio, che
-// resta quello scontato: il barrato sparisce, il numero da pagare NON sale.
-// Alzare un prezzo che il cliente ha gia' letto e' la cosa che fa arrabbiare.
+// La SCADENZA non si controlla qui: la applica esplora-catalog.js appena si
+// carica, togliendo `priceList` e alzando il prezzo al listino. Quando si
+// arriva a questa funzione un'offerta scaduta non esiste piu'. Il controllo
+// sulla data resta comunque, perche' costa niente ed e' l'unica rete se un
+// giorno qualcuno usasse il catalogo senza quel passaggio.
+//
+// Due condizioni: il listino c'e', ed e' piu' ALTO del prezzo che si paga (se
+// no non e' uno sconto, e mostrarlo sarebbe una bugia al contrario).
 function offertaAttiva(tour, prezzoPagato) {
-  const pieno = tour.priceBefore;
+  const pieno = tour.priceList;
   const paga = prezzoPagato === undefined ? tour.priceFrom : prezzoPagato;
   if (typeof pieno !== "number" || typeof paga !== "number") return false;
   if (!(pieno > paga)) return false;
@@ -117,7 +107,7 @@ function offertaAttiva(tour, prezzoPagato) {
 function tourPriceHTML(tour) {
   const testo = esc(tourPrice(tour));
   if (!offertaAttiva(tour)) return testo;
-  return '<s class="price-before">€' + esc(eur(tour.priceBefore)) + "</s> " + testo;
+  return '<s class="price-before">€' + esc(eur(tour.priceList)) + "</s> " + testo;
 }
 
 function categoryName(id) {

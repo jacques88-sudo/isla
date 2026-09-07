@@ -50,33 +50,37 @@
 //                scheda del catalogo mostra comunque priceFrom, la pagina di
 //                dettaglio elenca tutti gli scaglioni:
 //                    priceTiers: [ { from: 7, to: 10, price: 350 } ]
-//   priceBefore → facoltativo: il prezzo di listino, quello che si vede
-//                BARRATO davanti al prezzo di vendita. Serve solo alle offerte
-//                a tempo. Il prezzo che si paga resta priceFrom/priceAdult:
-//                sono due numeri separati apposta, cosi' il totale della
-//                richiesta continua a farsi col prezzo vero e un'offerta non
-//                puo' sbagliare un conto.
-//                Deve essere piu' ALTO del prezzo che si paga, se no non e'
-//                uno sconto e controlla.js da' errore.
+//   priceList  → facoltativo: il prezzo di LISTINO, quello pieno. Serve alle
+//                offerte a tempo e va insieme a `offerUntil`.
+//                Finche' l'offerta e' viva si vede BARRATO davanti al prezzo
+//                scontato, e si paga `priceAdult`. Quando l'offerta scade
+//                questo diventa il prezzo vero: la scheda si aggiorna da
+//                sola, e con lei il totale della richiesta.
+//                Deve essere piu' ALTO del prezzo scontato, se no non e' uno
+//                sconto e controlla.js da' errore.
 //                ⚠ ATTENZIONE, NON E' SOLO GRAFICA: su un prezzo barrato la
-//                legge europea (direttiva Omnibus, in Spagna dal 2022) chiede
-//                che il "prima" sia un prezzo davvero applicato nei 30 giorni
-//                precedenti. Un numero gonfiato per far sembrare piu' bello
-//                lo sconto e' una pratica sanzionabile, e la sanzione la
-//                prende Admiral. Qui si scrive il listino vero, quello che si
-//                chiede quando la promozione non c'e'.
+//                direttiva Omnibus (UE 2019/2161, in Spagna dal 2022) chiede
+//                che il prezzo barrato sia stato davvero applicato nei 30
+//                giorni PRECEDENTI. Un listino che entra in vigore solo DOPO
+//                la promozione non lo e' mai stato, e barrarlo e' la pratica
+//                che la norma sanziona — la sanzione la prende Admiral. Se il
+//                45 e' il prezzo futuro e non quello passato, la strada
+//                pulita e' non barrare niente e scrivere "prezzo di lancio,
+//                dal 1 novembre 45 €": stessa urgenza, nessun rischio.
 //                Da non confondere col prezzo barrato di un RIVENDITORE, che
-//                invece non si copia mai: quello e' lo sconto di un altro.
-//                    priceBefore: 45
-//   offerUntil → facoltativo, e va insieme a priceBefore: l'ultimo giorno in
-//                cui l'offerta vale, scritto "2026-10-31". Vale per tutto quel
-//                giorno. Passata la data il barrato sparisce da solo e la
-//                scheda torna al prezzo liscio — che resta quello scontato: il
-//                numero da pagare NON risale. Alzare un prezzo dopo che il
-//                cliente l'ha letto e' la cosa che fa arrabbiare.
+//                non si copia mai: quello e' lo sconto di un altro.
+//                    priceList: 45
+//   offerUntil → facoltativo, e va insieme a priceList: l'ultimo giorno in cui
+//                si paga il prezzo scontato, scritto "2026-10-31". Vale per
+//                tutto quel giorno.
+//                Il giorno dopo la scheda passa da sola a `priceList`: il
+//                barrato sparisce, il prezzo SALE al listino e il totale della
+//                richiesta lo segue. E' una scelta esplicita del proprietario
+//                (7 settembre 2026) e va contro la regola generale del
+//                progetto, che dice di non alzare un prezzo gia' letto: qui
+//                l'aumento e' il senso stesso della promozione a tempo.
 //                Senza questo campo l'offerta non scade mai, e controlla.js
-//                avvisa: uno sconto permanente non e' uno sconto, ed e'
-//                proprio il caso che la legge guarda.
+//                avvisa: uno sconto permanente non e' uno sconto.
 //                    offerUntil: "2026-10-31"
 //   priceAdult → prezzo per adulto, in euro. 0 = non ancora deciso.
 //   priceChild → prezzo per bambino, in euro. 0 = non ancora deciso.
@@ -1778,15 +1782,14 @@ const ESPLORA_CATALOG = [
     zone: "Tenerife Sud",
     duration: { it: "6-8 ore circa", en: "About 6-8 hours", es: "6-8 horas aprox." },
     priceFrom: 39,
-    // Offerta a tempo decisa da Admiral: listino 45, si vende a 39. Il 45 e'
-    // il prezzo pieno di Admiral, NON il barrato copiato dal rivenditore
-    // (quello era 50 sulla pagina CanaryVIP e non si copia). Il fornitore
-    // fattura 39: sopra ci sta il margine, e il listino a 45 e' la stessa
-    // cifra senza la promozione.
-    priceBefore: 45,
-    // ⚠ Data da confermare: messa a fine ottobre 2026 per non lasciare
-    // un'offerta "temporanea" che non scade mai. Passata, il barrato sparisce
-    // e restano i 39: il prezzo non risale.
+    // Offerta a tempo decisa dal proprietario: si vende a 39 fino al 31
+    // ottobre, poi il prezzo diventa 45. Il 45 NON e' un prezzo gia' applicato
+    // in passato: e' quello futuro (detto esplicitamente il 7 settembre 2026).
+    // E' anche il motivo per cui questo barrato e' il caso che la direttiva
+    // Omnibus guarda — vedi la nota su `priceList` in testa al file.
+    // Da non confondere col barrato del rivenditore: la pagina CanaryVIP
+    // dava 50 -> 39, e quello non si copia mai.
+    priceList: 45,
     offerUntil: "2026-10-31",
     priceAdult: 39,
     priceChild: 27,
@@ -4261,3 +4264,39 @@ const ESPLORA_CATALOG = [
     published: false
   },
 ];
+
+// La data di oggi come "2026-09-07". Si confrontano le stringhe, non due
+// oggetti Date: cosi' non c'e' nessun fuso orario di mezzo e "fino al 31"
+// vale per tutto il 31. La usa anche escursioni.js.
+function dataOggiISO() {
+  const d = new Date();
+  return d.getFullYear() + "-" +
+    String(d.getMonth() + 1).padStart(2, "0") + "-" +
+    String(d.getDate()).padStart(2, "0");
+}
+
+// QUANDO L'OFFERTA SCADE, IL PREZZO TORNA AL LISTINO
+//
+// Sta qui, e non nel codice che disegna le pagine, per un motivo preciso: il
+// prezzo scontato non e' solo una scritta, entra nel totale della richiesta e
+// nel messaggio WhatsApp. Se la scadenza la gestisse solo la grafica, dal 1
+// novembre la card direbbe 45 e il preventivo continuerebbe a fare 39: un
+// numero falso mandato in ufficio.
+//
+// Questo file si carica per primo su tutte le pagine, quindi correggere qui il
+// catalogo una volta sola sistema tutto quello che viene dopo, senza che
+// nessuna delle altre funzioni debba sapere che le offerte esistono.
+//
+// Tolto `priceList`, la scheda diventa indistinguibile da una senza offerta:
+// e' cosi' che il barrato e la pillola spariscono da soli.
+(function applicaScadenzaOfferte() {
+  const oggi = dataOggiISO();
+  ESPLORA_CATALOG.forEach(t => {
+    if (typeof t.priceList !== "number" || !t.offerUntil) return;
+    if (t.offerUntil >= oggi) return;
+    if (t.priceFrom !== null && t.priceFrom !== undefined) t.priceFrom = t.priceList;
+    if (t.priceAdult > 0) t.priceAdult = t.priceList;
+    delete t.priceList;
+    delete t.offerUntil;
+  });
+})();

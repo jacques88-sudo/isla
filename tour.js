@@ -135,10 +135,10 @@ function detailRows(tour, variante) {
   if (adulto > 0) {
     // Il barrato va solo sul prezzo della scheda: se il cliente ha scelto una
     // variante, il numero mostrato e' quello della variante e il listino di
-    // `priceBefore` non e' piu' il suo "prima".
+    // `priceList` non e' piu' il suo listino.
     const offerta = !variante && offertaAttiva(tour, adulto);
     righe.push([conEta(t("req.adults"), eta.adult), "€" + eur(adulto),
-      offerta ? '<s class="price-before">€' + esc(eur(tour.priceBefore)) + "</s> €" + esc(eur(adulto)) : null]);
+      offerta ? '<s class="price-before">€' + esc(eur(tour.priceList)) + "</s> €" + esc(eur(adulto)) : null]);
   }
   if (bambino > 0) righe.push([conEta(t("req.kids"), eta.child), "€" + eur(bambino)]);
   // Per i neonati lo zero vuol dire davvero gratis, non "da decidere": la

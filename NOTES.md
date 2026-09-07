@@ -5492,49 +5492,61 @@ perche' la seconda scheda in offerta non deve ricominciare da capo.
 
 ### Due campi nuovi
 
-`priceBefore: 45` e' il **prezzo di listino**, quello barrato. `offerUntil: "2026-10-31"`
-e' l'ultimo giorno in cui vale, e vale per tutto quel giorno.
+`priceList: 45` e' il **prezzo di listino**, quello barrato. `offerUntil: "2026-10-31"` e'
+l'ultimo giorno in cui si paga lo sconto, e vale per tutto quel giorno.
 
-Il prezzo che si paga resta `priceFrom`/`priceAdult`, cioe' 39. **Sono due numeri separati
-apposta:** il totale della richiesta continua a farsi col prezzo vero, e nessuna offerta
-puo' sbagliare un conto. Verificato a mano: 2 adulti + 1 bambino fa ancora 105 € (39×2 +
-27), il 45 non entra da nessuna parte.
+Finche' l'offerta e' viva si paga `priceAdult`, cioe' 39. **Sono due numeri separati
+apposta:** il totale della richiesta si fa col prezzo vero, e nessuna offerta puo'
+sbagliare un conto.
 
-### Cosa succede quando l'offerta scade
+### Alla scadenza il prezzo SALE, e sale anche il totale
 
-Il barrato sparisce, la pillola "Offerta" sparisce, la riga "Valida fino al" sparisce — e
-**il prezzo resta 39**. Non risale a 45.
+Dal 1 novembre la scheda passa da sola a 45: barrato via, pillola via, riga della scadenza
+via, e **il prezzo diventa il listino**. Verificato simulando una data passata: la card
+dice "da €45", la riga adulti dice €45, e il preventivo di 2 adulti + 1 bambino passa da
+**105 € a 117 €** (45×2 + 27).
 
-Questa e' la scelta importante, ed e' voluta: alzare un prezzo dopo che il cliente l'ha
-letto e' la cosa che fa arrabbiare, ed e' gia' scritta come regola del progetto. Se un
-giorno si vuole davvero tornare a 45, si cambia `priceAdult` a mano, di proposito, non per
-scadenza di un campo. Provato mettendo una data passata: card e scheda tornano al prezzo
-liscio e `controlla.js` avvisa che l'offerta e' scaduta.
+Questo va **contro la regola generale del progetto**, che dice di non alzare un prezzo gia'
+letto. E' una scelta esplicita del proprietario del 7 settembre 2026: qui l'aumento e' il
+senso stesso di una promozione a tempo. Prima era stato costruito al contrario (il prezzo
+restava 39), ed e' stato rifatto quando ha chiarito che il 45 e' il prezzo **futuro**.
 
-### La ragione per cui c'e' la scadenza, e non e' l'ordine
+**Dove sta la scadenza, e perche' proprio li'.** In `esplora-catalog.js`, in fondo al file,
+non nel codice che disegna le pagine. Il motivo e' che il prezzo non e' solo una scritta:
+entra nel totale della richiesta e nel messaggio WhatsApp. Se la scadenza la gestisse la
+grafica, dal 1 novembre la card direbbe 45 e il preventivo continuerebbe a fare 39 — un
+numero falso mandato in ufficio. Il catalogo si carica per primo su tutte le pagine, quindi
+correggerlo li' una volta sola sistema tutto quello che viene dopo, e nessuna delle altre
+funzioni deve sapere che le offerte esistono. Tolto `priceList`, la scheda torna
+indistinguibile da una senza offerta: e' cosi' che barrato e pillola spariscono da soli.
 
-Su un prezzo barrato la **direttiva Omnibus** (UE 2019/2161, in Spagna dal 2022) chiede
-che il "prima" sia un prezzo davvero applicato nei **30 giorni precedenti**. Un numero
-gonfiato per far sembrare piu' bello lo sconto e' una pratica sanzionabile, e la sanzione
-la prende Admiral, non il fornitore. Uno sconto permanente e' esattamente il caso che la
-norma guarda: se il 45 non e' mai stato incassato, barrarlo e' il problema.
+### Il problema legale, che resta aperto
 
-Da qui dentro non si puo' verificare — nessuno sa cosa e' stato incassato — quindi
-`controlla.js` controlla tutto quello che invece si vede da fuori:
+Su un prezzo barrato la **direttiva Omnibus** (UE 2019/2161, in Spagna dal 2022) chiede che
+il barrato sia un prezzo davvero applicato nei **30 giorni precedenti**.
 
-- `priceBefore` piu' basso o uguale al prezzo che si paga → **errore**: barrarlo direbbe
-  al cliente il contrario di quello che succede;
-- `offerUntil` senza `priceBefore` → **errore**: una scadenza senza offerta non vuol dire
+Qui il 45 e' il prezzo **futuro**: il proprietario l'ha detto esplicitamente. Non e' mai
+stato applicato, quindi barrarlo e' proprio la pratica che la norma sanziona, e la sanzione
+la prenderebbe Admiral. E' stato fatto lo stesso perche' e' una sua decisione, presa dopo
+che la cosa gli era stata spiegata due volte.
+
+**La strada pulita, se un giorno si volesse:** non barrare niente e scrivere "39 €, prezzo
+di lancio — dal 1 novembre 45 €". Stessa urgenza, nessun rischio, ed e' anche piu' onesta
+verso il cliente. Sarebbe una riga di lavoro: la struttura c'e' gia' tutta.
+
+### I controlli automatici
+
+`controlla.js` non puo' sapere cosa e' stato incassato, quindi controlla quello che si vede
+da fuori:
+
+- `priceList` piu' basso o uguale al prezzo che si paga → **errore**: barrarlo direbbe al
+  cliente il contrario di quello che succede;
+- `offerUntil` senza `priceList` → **errore**: una scadenza senza offerta non vuol dire
   niente;
-- `priceBefore` senza `offerUntil` → **avviso**: l'offerta non scade mai da sola;
-- `offerUntil` gia' passata → **avviso**: in pagina non si vede piu', togli i due campi o
-  sposta la data.
-
-**Il 45 e' il listino di Admiral, non il barrato del rivenditore.** La pagina CanaryVIP
-dello stesso tour dava 50 barrato → 39, e quello non si copia: e' lo sconto di un altro. Il
-fornitore fattura 39; il 45 e' la stessa cifra col margine, quello che si chiede quando la
-promozione non c'e'. La distinzione e' la stessa gia' fatta su `kayak-snorkelling`, dove il
-barrato del rivenditore era stato buttato e tenuto solo il prezzo deciso dall'ufficio.
+- `priceList` senza `offerUntil` → **avviso**: l'offerta non scade mai e il prezzo non
+  tornera' mai al listino;
+- `offerUntil` gia' passata → **avviso**: il prezzo in pagina e' gia' salito da solo, e
+  conviene fare pulizia scrivendo il listino nei campi normali.
 
 ### Dove si vede
 
@@ -5562,9 +5574,11 @@ a ovest di Greenwich "fino al 31" sarebbe diventato il 30.
 ### Provato
 
 `node controlla.js` → 0 errori. Nel browser vero, tutte e tre le lingue: barrato, pillola,
-riga della scadenza e date corrette; totale invariato a 105 €; nessun errore JS. Provati
-anche i quattro casi che `controlla.js` deve prendere, uno per uno. `sw.js` a `isla-v228`.
+riga della scadenza e date corrette, totale 105 €, nessun errore JS. Poi con una data
+passata: card e scheda a €45, barrato e pillola spariti, e il totale salito a **117 €**.
+Provati anche i quattro casi che `controlla.js` deve prendere, uno per uno. `sw.js` a
+`isla-v229`.
 
-**Da confermare dal proprietario:** che **45 € sia il listino vero** (e non un numero messo
-solo per far risaltare il 39), e la **data di scadenza**, messa al 31 ottobre 2026 come
-segnaposto ragionevole per non lasciare in giro un'offerta "temporanea" senza fine.
+**Confermato dal proprietario:** il 45 e' il prezzo che si applichera' **dopo** la
+promozione, non un listino gia' praticato. **Resta da confermare la data**, messa al 31
+ottobre 2026: e' il giorno in cui il prezzo sale da solo, quindi non e' un dettaglio.

@@ -5421,23 +5421,32 @@ rivende anche quella. Se un giorno serve, diventa una variante in `options`.
 
 Erano rimaste in sospeso per mezza giornata, poi l'ufficio ha risposto lo stesso giorno.
 
-1. **I giorni.** Il foglio dell'operatore sui giorni non dice niente, e li avevo presi
-   dalla pagina del rivenditore: `mar mer sab dom`. **L'ufficio ne ha dati tre: `mer sab
-   dom`.** Il martedi' del rivenditore era di troppo ed e' stato tolto.
+1. **I giorni: `mar mer sab dom`, martedi' compreso.** Il foglio dell'operatore sui giorni
+   non dice niente, e li avevo presi dalla pagina del rivenditore. **Il campo e' stato
+   scritto tre volte in un giorno:** quattro giorni (dal rivenditore, segnati come da
+   confermare), poi tre perche' l'ufficio aveva detto `mer sab dom`, poi di nuovo quattro
+   perche' l'ufficio si e' corretto: il martedi' c'e'. Buona la prima, per il valore.
 2. **Il menu delle lingue** (`languages: LINGUE_TOUR`). La regola dice di metterlo solo
    dove viene segnalato, non ovunque appaia "multilingual guides". Qui il segnale c'e' ed
    e' del fornitore, nel suo campo Observaciones: "Todos los idiomas". L'ufficio ha
    confermato che sono le cinque solite di `LINGUE_TOUR`.
 
-**La lezione, che vale oltre questa scheda: sui giorni la pagina di un rivenditore non e'
-una fonte, nemmeno quando l'itinerario coincide tappa per tappa.** Qui coincideva — stesse
-soste, stessa durata, stesso pullman — e i giorni erano lo stesso sbagliati. Il rivenditore
-vende anche una partenza da Puerto de la Cruz del solo mercoledi', e i quattro giorni della
-sua pagina sono la somma delle *sue* partenze, non i giorni dell'operatore. Il danno non
-sarebbe stato visibile da nessuna parte: con `mar` in elenco il sito avrebbe **accettato**
-richieste per un martedi' in cui il pullman non parte, e l'errore sarebbe saltato fuori
-solo in ufficio, una richiesta alla volta. Nel dubbio meglio lasciare `days` non scritto e
-chiedere: un giorno di troppo fa danno, uno mancante lo fa vedere subito.
+**Se un giorno qualcuno trova quel `mar` e pensa di toglierlo, e' scritto anche nel
+commento del catalogo: e' confermato, non e' un residuo.** Nel mezzo di questa storia
+avevo scritto qui una regola generale — "la pagina di un rivenditore non e' una fonte per i
+giorni" — costruita su una sola conferma che si e' rivelata sbagliata. Toglierla e'
+il motivo per cui questo paragrafo esiste: **in `NOTES.md` non si scrive una regola
+generale al primo caso**, tanto meno mentre il dato sta ancora ballando. Il fatto singolo
+("l'ufficio ha detto X il giorno tale") invecchia bene; la regola dedotta da quel fatto
+diventa un errore che qualcuno seguira' fra sei mesi.
+
+Quello che invece regge, ed e' il motivo per cui la domanda andava fatta comunque: `days`
+e' l'unico campo dove **un giorno di troppo fa danno in silenzio**. Il sito accetterebbe
+una richiesta per un giorno in cui il pullman non parte, e l'errore salterebbe fuori solo
+in ufficio, una richiesta alla volta. Un giorno mancante invece si vede subito, perche' un
+cliente che sa di poter partire si trova la data rifiutata. Per questo `days` in dubbio si
+lascia non scritto e si chiede — che e' quello che e' stato fatto, ed e' anche il motivo
+per cui la correzione e' costata due commit e non una telefonata dell'ufficio arrabbiato.
 
 ### Il resto
 
@@ -5463,11 +5472,11 @@ tre le lingue: prezzi, fasce, giorni e itinerario a posto, nessun errore JS. Il 
 fatto a mano nella finestra della richiesta: 2 adulti + 1 bambino = **105 €**
 (39×2 + 27), e i neonati non lo spostano.
 
-Sui giorni sono state provate tutte e cinque le date, in tutte e tre le lingue: mercoledi',
-sabato e domenica passano; **il martedi' viene fermato** (dopo la correzione dell'ufficio)
-e il lunedi' pure, con "Questa escursione si fa solo: Mer · Sab · Dom" e le sue due
-traduzioni. Cioe' `mer` esce mercoledi' e non martedi', che e' l'errore facile di quelle
-sigle. `sw.js` a `isla-v226` (il `v225` era la prima passata, quella con i quattro giorni).
+Sui giorni sono state provate tutte e cinque le date, in tutte e tre le lingue: **martedi',
+mercoledi', sabato e domenica passano**; il lunedi' viene fermato con "Questa escursione si
+fa solo: Mar · Mer · Sab · Dom" e le sue due traduzioni. Cioe' `mar` esce martedi' e `mer`
+mercoledi', che e' l'errore facile di quelle sigle. `sw.js` a `isla-v227`: il `v225` era la
+prima passata e il `v226` quello dei tre giorni, durato una manciata di minuti.
 
 **Resta in sospeso** solo la foto `teide-national-park.jpg`, che e' **300×300** invece dei
 1200×800 di tutte le altre. Non e' stata toccata (era gia' pubblicata, e ingrandirla la

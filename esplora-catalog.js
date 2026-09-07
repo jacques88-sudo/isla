@@ -1759,11 +1759,11 @@ const ESPLORA_CATALOG = [
     // bebe' sono gli unici completamenti che non lasciano buchi fra le tre
     // righe: sopra gli 11 e sotto i 2 non c'e' altra fascia.
     ages: { adult: "12+", child: "2-11", infant: "0-1" },
-    // Tre giorni, confermati dall'ufficio il 7 settembre 2026. La pagina di un
-    // rivenditore ne dava quattro (ci metteva anche il martedi'): non e' quella
-    // la fonte buona, e un giorno in piu' qui avrebbe accettato richieste per
-    // un giorno in cui il pullman non parte.
-    days: ["mer", "sab", "dom"],
+    // Quattro giorni, **martedi' compreso**, confermati dall'ufficio il 7
+    // settembre 2026. Ci siamo passati sopra due volte: prima erano stati
+    // corretti in tre, poi rimessi a quattro. Il martedi' c'e': se lo trovi
+    // tolto, e' un errore, non una correzione.
+    days: ["mar", "mer", "sab", "dom"],
     // Confermate dall'ufficio: sono le cinque solite. Il segnale sta anche sul
     // foglio del fornitore, nel suo campo Observaciones ("Todos los idiomas").
     languages: LINGUE_TOUR,

@@ -5340,3 +5340,35 @@ aveva gia' preso il `v222`.
 Se un giorno la fascia delle schede la si vuole **piu' alta di quella della home** (non
 uguale: piu' alta), basta cambiarle la proporzione da 16/9 a 3/2 dentro `.detail-page`:
 su un telefono da 412 px sono 248 px invece di 209.
+
+---
+
+## La fascia delle schede passa a 3/2 (6 settembre 2026)
+
+Sulle schede la foto e' un po' piu' alta che sulla home: **3/2 invece di 16/9**, cioe'
+**248 px invece di 209** su un telefono da 412. Sulla home e sull'elenco non cambia niente.
+
+Il motivo non e' solo "un po' piu' grande". Contate le foto in `assets`: **89 delle 114
+sono esattamente 3:2** (le altre: 8 quadrate, 6 in 4:3, 2 in 16:9, 2 sparse). Con la
+fascia in 16/9 quelle 89 venivano tagliate sopra e sotto; in 3/2 si vedono **intere**,
+senza ritaglio. Sulla scheda la foto e' la merce, non un fondale: e' il posto giusto per
+darle la sua proporzione.
+
+**Su schermo largo no.** Da 960 px in su resta la fascia panoramica 21/9 di tutte le
+pagine: 3/2 su una fascia da 1080 px vorrebbe dire alta **720 px**, un muro.
+
+Una trappola del CSS, trovata provando. La regola dell'eccezione per schermo largo sta
+**subito sotto** quella del 3/2, e non dentro il blocco `@media (min-width: 960px)` che
+sta piu' su insieme al 21/9 generale. Il motivo e' che `.detail-page .home-hero-media` e
+`.detail-page .home-hero-media` dentro il media query hanno **la stessa specificita'**, e
+a parita' vince quella scritta dopo: messa piu' su perdeva, e su desktop la fascia
+restava 1080×720. Misurato prima e dopo lo spostamento: 720 → 463.
+
+Costo: il titolo dell'attivita' scende da 556 a 594 px, 38 px piu' in basso.
+
+Provato nel browser vero: scheda 372×248 con la foto che la riempie esatta, home ed
+elenco fermi a 372×209, desktop 1080×463. Nessun errore JS. `node controlla.js` → 0
+errori, 1 avviso invariato (opera-60). `sw.js` a `isla-v224`.
+
+Per tornare indietro basta togliere una riga (`.detail-page .home-hero-media` e la sua
+eccezione da 960 px).

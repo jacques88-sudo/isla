@@ -371,6 +371,14 @@ function calcolaTotale(tour, req) {
 // Le usano tutti e due i messaggi, quello per una sola escursione e quello per
 // la lista intera: cosi' l'ufficio legge sempre le stesse cose nello stesso
 // ordine, invece di due formati da imparare.
+// La casella dell'hotel vive dentro la finestra della richiesta, che esiste
+// solo su escursioni.html e tour.html: altrove non c'e' e va letta a vuoto
+// senza rompere niente.
+function hotelInputValue() {
+  const el = document.getElementById("reqHotel");
+  return el ? el.value.trim() : "";
+}
+
 function righeRichiesta(tour, req) {
   const righe = ["• " + t("wa.date") + ": " + formatDate(req.date)];
   // L'orario si scrive solo se il cliente ne ha scelto uno. "Da concordare" e'
@@ -419,6 +427,10 @@ function righeRichiesta(tour, req) {
   if (conto) {
     righe.push("• " + t("wa.total") + ": €" + eur(conto.totale) + " (" + conto.dettaglio + ")");
   }
+  // Dove alloggia il cliente: l'ufficio ne ha bisogno per dirgli dove e a che
+  // ora passa il pulmino. Sta sopra le note perche' e' un dato, non un
+  // commento. Come l'orario e la lingua, la riga compare solo se c'e'.
+  if (req.hotel) righe.push("• " + t("wa.hotel") + ": " + req.hotel);
   if (req.note) righe.push("• " + t("wa.notes") + ": " + req.note);
   return righe;
 }
@@ -624,6 +636,24 @@ function initRequestDialog() {
   const form = document.querySelector("[data-request-form]");
   const activityEl = document.querySelector("[data-request-activity]");
   const seasonEl = document.querySelector("[data-request-season]");
+  // I 562 hotel del suggerimento. Si scrivono qui e non nell'HTML perche' la
+  // finestra della richiesta e' copiata in due pagine: 562 righe da tenere
+  // uguali a mano in due file sono 562 occasioni di sbagliare.
+  //
+  // <datalist> e' il suggerimento del browser: il cliente scrive, lui filtra.
+  // Non e' un <select> obbligato — chi sta in un appartamento che nell'elenco
+  // non c'e' deve poter scrivere lo stesso il suo indirizzo.
+  const hotelList = document.getElementById("hotelList");
+  if (hotelList && typeof HOTELS !== "undefined" && !hotelList.children.length) {
+    const pezzi = document.createDocumentFragment();
+    HOTELS.forEach(nome => {
+      const o = document.createElement("option");
+      o.value = nome;
+      pezzi.appendChild(o);
+    });
+    hotelList.appendChild(pezzi);
+  }
+
   const transferEl = document.querySelector("[data-request-transfer]");
   const transferLabelEl = document.querySelector("[data-request-transfer-label]");
   const transferNoteEl = document.querySelector("[data-request-transfer-note]");
@@ -1236,6 +1266,7 @@ function initRequestDialog() {
       babies: (babiesBox && !babiesBox.hidden && babiesInput)
         ? (parseInt(babiesInput.value, 10) || 0) : 0,
       units: unitaScelte(current),
+      hotel: hotelInputValue(),
       note: document.getElementById("reqNote").value.trim(),
       transfer: !!(transferInput && transferInput.checked),
       transferSiam: !!(transferSiamInput && transferSiamInput.checked),
@@ -1278,6 +1309,7 @@ function initRequestDialog() {
         units: req.units,
         transfer: req.transfer,
         transferSiam: req.transferSiam,
+        hotel: req.hotel,
         note: req.note
       });
       close();

@@ -214,9 +214,15 @@
         </span>
       </label>
 
+      <label for="reqHotel"><span data-i18n="req.hotel">Dove alloggi</span> <span class="request-optional" data-i18n="req.optional">(facoltativo)</span></label>
+      <input id="reqHotel" name="hotel" type="text" autocomplete="off" list="hotelList"
+             data-i18n-placeholder="req.hotelPlaceholder" placeholder="Scrivi le prime lettere dell'hotel" />
+      <datalist id="hotelList"></datalist>
+      <p class="hint" data-i18n="req.hotelHint">Serve a dirti dove passiamo a prenderti. Se non trovi il tuo, scrivilo nelle note.</p>
+
       <label for="reqNote"><span data-i18n="req.note">Note</span> <span class="request-optional" data-i18n="req.optional">(facoltativo)</span></label>
       <input id="reqNote" name="note" type="text" autocomplete="off"
-             data-i18n-placeholder="req.notePlaceholder" placeholder="Hotel, zona, richieste particolari…" />
+             data-i18n-placeholder="req.notePlaceholder" placeholder="Richieste particolari…" />
 
       <button class="btn btn-primary btn-block request-submit" type="submit" data-i18n="req.submit">Continua su WhatsApp</button>
 
@@ -258,6 +264,7 @@
 
   <script src="./i18n.js"></script>
   <script src="./esplora-catalog.js"></script>
+  <script src="./hotel.js"></script>
   <script src="./escursioni.js"></script>
   <script src="./tour.js"></script>
   <script src="./lista.js"></script>

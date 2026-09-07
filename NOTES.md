@@ -5655,3 +5655,44 @@ Un orario e' una promessa. I nomi degli hotel e i punti di raccolta sono luoghi 
 possono pubblicare subito; l'ora no, finche' l'ufficio non la conferma. Un cliente alla
 fermata all'ora sbagliata e' il danno peggiore che questo campo possa fare — peggio che
 non avere il campo.
+
+### Il campo hotel nella richiesta (primo pezzo)
+
+`hotel.js` porta i 562 nomi, la finestra della richiesta ha una casella **Dove
+alloggi** con il suggerimento del browser, e il nome scelto finisce nel messaggio
+WhatsApp sopra le note.
+
+**Perche' un `<datalist>` e non un `<select>`.** Un menu obbligato con 562 voci su
+un telefono e' inusabile, e soprattutto sarebbe una gabbia: chi alloggia in un
+appartamento privato o in un hotel che nell'elenco non c'e' non potrebbe scrivere
+niente. Col `<datalist>` il cliente scrive tre lettere, sceglie se lo trova, e se
+non lo trova scrive lo stesso. Sotto la casella c'e' la riga che glielo dice.
+
+**I nomi si riempiono da JavaScript, non dall'HTML.** La finestra della richiesta
+e' scritta due volte, in `escursioni.html` e in `tour.html`: 562 `<option>` da
+tenere uguali a mano in due file sarebbero 562 occasioni di sbagliare. Nell'HTML
+c'e' solo `<datalist id="hotelList">` vuoto, e `initRequestDialog()` lo riempie.
+
+**Il campo e' facoltativo e sta su tutte le schede**, non solo dove c'e' il
+transfer: anche senza pick-up, sapere dove alloggia il cliente serve all'ufficio
+per rispondere. Le note hanno smesso di chiedere l'hotel — il placeholder e'
+passato da "Hotel, zona, richieste particolari…" a "Richieste particolari…" — se
+no la stessa cosa si scriveva in due posti.
+
+**Nel messaggio la riga dell'hotel sta sopra le note**, perche' e' un dato e non
+un commento, e come l'orario e la lingua compare solo se c'e'.
+
+Salvato anche nella lista delle richieste, cosi' il messaggio unico lo porta per
+tutte le escursioni messe da parte.
+
+**Qui non ci sono ancora ne' punto di raccolta ne' orario.** Servono le due
+tabelle in `dati-fornitore/`, e l'ora va confermata dall'ufficio prima di
+mostrarla: e' il pezzo dopo.
+
+### Provato
+
+`node controlla.js` → 0 errori. Nel browser vero: 562 suggerimenti su
+`escursioni.html` e su `tour.html`, etichetta e placeholder giusti in tutte e tre
+le lingue, "Cleopatra" che finisce nel messaggio come "• Hotel: Cleopatra", e
+l'hotel che sopravvive al salvataggio nella lista e ricompare nel messaggio
+unico. Nessun errore JS. `sw.js` a `isla-v230`.

@@ -2618,3 +2618,14 @@ body.menu-open { overflow: hidden; }
   letter-spacing: 0;
   color: var(--text);
 }
+
+/* "A che ora" sulle schede col pick-up: non un menu ma l'ora dell'hotel
+   scelto, scritta e basta. Stessa forma del campo che sostituisce, senza il
+   bordo — non e' una cosa su cui si clicca. */
+.request-ora-fissa {
+  margin: 0 0 1.2rem;
+  font-size: 1.15rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.request-ora-fissa[hidden] { display: none; }

@@ -1747,16 +1747,62 @@ const ESPLORA_CATALOG = [
     id: "teide-national-park",
     title: "Teide National Park",
     category: "teide-natura",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 48,
-    priceAdult: 0,
-    priceChild: 0,
+    zone: "Tenerife Sud",
+    duration: { it: "6-8 ore circa", en: "About 6-8 hours", es: "6-8 horas aprox." },
+    priceFrom: 39,
+    priceAdult: 39,
+    priceChild: 27,
+    // Zero vero, non un "non lo sappiamo": il listino del fornitore scrive
+    // "Bebes 0€", il posto in pullman per i piu' piccoli non si paga.
+    priceInfant: 0,
+    // Il listino da' solo "Ninos (2-11)". Il 12+ degli adulti e lo 0-1 dei
+    // bebe' sono gli unici completamenti che non lasciano buchi fra le tre
+    // righe: sopra gli 11 e sotto i 2 non c'e' altra fascia.
+    ages: { adult: "12+", child: "2-11", infant: "0-1" },
+    // ⚠ I giorni arrivano dalla pagina di un rivenditore, non dal listino del
+    // fornitore, che sui giorni non dice niente: da confermare con l'ufficio.
+    days: ["mar", "mer", "sab", "dom"],
+    // "Observaciones: todos los idiomas" e' scritto sul foglio del fornitore,
+    // attivita' per attivita': e' il segnale che serve per il menu delle lingue.
+    languages: LINGUE_TOUR,
+    // Il biglietto della funivia NON e' incluso: si compra sul posto ed e'
+    // facoltativo, quindi niente `ticket` qui.
+    included: ["transfer", "guide"],
+    // Senza orari: il fornitore da' le tappe in ordine ma non l'ora, e il
+    // ritiro cambia da hotel a hotel.
+    itinerary: [
+      { text: { it: "Ritiro in hotel e salita verso il parco",
+                en: "Hotel pickup and the climb up towards the park",
+                es: "Recogida en el hotel y subida hacia el parque" } },
+      { text: { it: "Sosta a Vilaflor, il paese più alto della Spagna, in mezzo ai pini",
+                en: "Stop at Vilaflor, the highest village in Spain, in the middle of the pine woods",
+                es: "Parada en Vilaflor, el pueblo más alto de España, entre los pinos" } },
+      { text: { it: "Roques de García: si cammina fra le rocce e le colate di lava, dentro la caldera delle Cañadas",
+                en: "Roques de García: a walk among the rocks and the lava flows, inside the Cañadas caldera",
+                es: "Roques de García: se camina entre las rocas y las coladas de lava, dentro de la caldera de Las Cañadas" } },
+      { text: { it: "Sosta alla funivia del Teide, con il tempo per salire in cima a chi vuole",
+                en: "Stop at the Teide cable car, with time to go up to the top for those who want to",
+                es: "Parada en el teleférico del Teide, con tiempo para subir a la cumbre a quien quiera" } },
+      { text: { it: "Rientro in hotel scendendo per il paese di Chío",
+                en: "Back to the hotel, coming down through the village of Chío",
+                es: "Vuelta al hotel bajando por el pueblo de Chío" } }
+    ],
+    notes: [
+      { it: "La salita in funivia è facoltativa e non è compresa nel prezzo: il biglietto si compra sul posto.",
+        en: "Going up by cable car is optional and not included in the price: you buy the ticket there.",
+        es: "La subida en teleférico es opcional y no está incluida en el precio: el billete se compra allí." },
+      { it: "A 2.000 metri fa freddo anche in piena estate: porta una felpa o una giacca. E la macchina fotografica.",
+        en: "At 2,000 metres it's cold even in high summer: bring a sweatshirt or a jacket. And your camera.",
+        es: "A 2.000 metros hace frío incluso en pleno verano: lleva una sudadera o una chaqueta. Y la cámara." },
+      { it: "Il pranzo non è incluso.",
+        en: "Lunch is not included.",
+        es: "El almuerzo no está incluido." }
+    ],
     family: true,
     desc: {
-      it: "Giornata nel Parco Nazionale del Teide, fra colate laviche e paesaggi vulcanici.",
-      en: "A day in Teide National Park, among lava flows and volcanic landscapes.",
-      es: "Un día en el Parque Nacional del Teide, entre coladas de lava y paisajes volcánicos."
+      it: "Giornata nel Parco Nazionale del Teide: Vilaflor, i Roques de García e la sosta alla funivia, con ritiro in hotel.",
+      en: "A day in Teide National Park: Vilaflor, the Roques de García and the cable car stop, with hotel pickup.",
+      es: "Un día en el Parque Nacional del Teide: Vilaflor, los Roques de García y la parada del teleférico, con recogida en el hotel."
     },
     image: "teide-national-park.jpg",
     published: true

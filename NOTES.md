@@ -5582,3 +5582,155 @@ Provati anche i quattro casi che `controlla.js` deve prendere, uno per uno. `sw.
 **Confermato dal proprietario:** il 45 e' il prezzo che si applichera' **dopo** la
 promozione, non un listino gia' praticato. **Resta da confermare la data**, messa al 31
 ottobre 2026: e' il giorno in cui il prezzo sale da solo, quindi non e' un dettaglio.
+
+---
+
+## I dati di pick-up del fornitore (7 settembre 2026)
+
+Su una pagina del fornitore c'e' una tendina con tutti gli hotel dove passa il pulmino.
+Serviva per costruire un campo **hotel** nella richiesta: molte escursioni fanno il
+pick-up lo stesso giorno, da hotel diversi e a orari diversi.
+
+I dati sono in `dati-fornitore/`, con il loro README. **Il sito non li usa ancora.**
+
+### Come sono venuti fuori
+
+La pagina non era copiabile a mano: le tendine sono fatte con **TomSelect**, cioe' il
+`<select>` vero e' nascosto e sopra ci sono dei `<div>`. Cambiare il `<select>` da codice
+non fa reagire il sito: bisogna passare da `select.tomselect.setValue(...)`. Sono andate
+perse mezz'ora e cinque tentativi prima di accorgersene — le righe uscivano tutte uguali,
+con lo stesso punto e la stessa ora, e sembrava un problema di attesa.
+
+L'ora **non e' scritta nella pagina**: a ogni cambio hotel il widget chiede al server
+(`POST /webfapinere/widget/hotel_pickup`) e riceve `{"result":"ok","id_punto":"1",
+"hora":"08:15"}`. Cercarla dentro gli script, nell'HTML e nelle variabili globali non ha
+dato niente, ed e' stato tempo speso bene: ha escluso le tre strade sbagliate.
+
+Il modo che ha funzionato: una spia su `fetch` e `XMLHttpRequest` che registra le
+risposte, poi un giro sui 567 hotel a una richiesta al secondo, leggendo il JSON invece
+del DOM. Leggere il JSON e' molto piu' solido che leggere la pagina: niente attese da
+indovinare.
+
+### Cosa si e' scoperto sulla forma dei dati
+
+**Il punto di raccolta dipende solo dall'hotel, l'ora dipende dall'escursione.** Provato
+su due escursioni diverse (Teide mezza giornata ed escursione 308, Masca+Teide in bus
+cabrio): stesso hotel, stesso `id_punto`, ora diversa. Quindi le tabelle sono tre e
+separate — i punti, l'abbinamento hotel-punto, e gli orari per escursione — e solo la
+terza va rifatta per ogni tour nuovo.
+
+Questo e' il motivo per cui **non** va fatto un campo `hotel` con dentro l'orario: sarebbe
+567 orari da riscrivere a ogni escursione, invece di settanta.
+
+**Il punto di raccolta spesso non e' l'hotel**: 30 punti su 70 sono fermate TITSA, sbarre
+di residence, posteggi taxi, centri commerciali. E' la cosa che il cliente deve leggere
+piu' dell'orario: chi sta al CLEOPATRA deve camminare fino alla fermata del BEST TENERIFE.
+
+**`id_punto: 0` vuol dire "si sale direttamente in hotel"**, non "dato mancante"
+(confermato dal proprietario). Sono 29 hotel, e sul sito diventano "passiamo a prenderti
+in hotel".
+
+**Ora assente** (`"hora": false`) vuol dire che quel punto non e' servito da
+quell'escursione — non che l'orario e' ignoto. Sul Teide mezza giornata sono 170 hotel,
+quasi tutti a Puerto de la Cruz e nel nord.
+
+### Confermato dal proprietario
+
+- gli orari di Admiral su queste escursioni sono **gli stessi** del fornitore;
+- le **12:15** del punto 41 (REGENCY COUNTRY CLUB, FLORIDA, CHAYOFA CLUB) sono corrette,
+  anche se tutte le altre partenze stanno fra le 08:15 e le 09:25;
+- `09:04` e `09:16` erano refusi: corretti in `09:05` e `09:15` nei file puliti, lasciati
+  com'erano in `dati-fornitore/grezzo/`.
+
+### Cosa manca
+
+- **39 punti su 104 non hanno il nome**: la tendina di un'escursione mostra solo i punti
+  che quell'escursione serve. Si recuperano aprendo la tendina su un'escursione che parte
+  dal nord.
+- **Gli orari delle altre escursioni**, che deve dare l'ufficio.
+
+### La regola da non dimenticare
+
+Un orario e' una promessa. I nomi degli hotel e i punti di raccolta sono luoghi e si
+possono pubblicare subito; l'ora no, finche' l'ufficio non la conferma. Un cliente alla
+fermata all'ora sbagliata e' il danno peggiore che questo campo possa fare — peggio che
+non avere il campo.
+
+### Il campo hotel nella richiesta (primo pezzo)
+
+`hotel.js` porta i 562 nomi, la finestra della richiesta ha una casella **Dove
+alloggi** con il suggerimento del browser, e il nome scelto finisce nel messaggio
+WhatsApp sopra le note.
+
+**Perche' un `<datalist>` e non un `<select>`.** Un menu obbligato con 562 voci su
+un telefono e' inusabile, e soprattutto sarebbe una gabbia: chi alloggia in un
+appartamento privato o in un hotel che nell'elenco non c'e' non potrebbe scrivere
+niente. Col `<datalist>` il cliente scrive tre lettere, sceglie se lo trova, e se
+non lo trova scrive lo stesso. Sotto la casella c'e' la riga che glielo dice.
+
+**I nomi si riempiono da JavaScript, non dall'HTML.** La finestra della richiesta
+e' scritta due volte, in `escursioni.html` e in `tour.html`: 562 `<option>` da
+tenere uguali a mano in due file sarebbero 562 occasioni di sbagliare. Nell'HTML
+c'e' solo `<datalist id="hotelList">` vuoto, e `initRequestDialog()` lo riempie.
+
+**Il campo e' facoltativo e sta su tutte le schede**, non solo dove c'e' il
+transfer: anche senza pick-up, sapere dove alloggia il cliente serve all'ufficio
+per rispondere. Le note hanno smesso di chiedere l'hotel — il placeholder e'
+passato da "Hotel, zona, richieste particolari…" a "Richieste particolari…" — se
+no la stessa cosa si scriveva in due posti.
+
+**Nel messaggio la riga dell'hotel sta sopra le note**, perche' e' un dato e non
+un commento, e come l'orario e la lingua compare solo se c'e'.
+
+Salvato anche nella lista delle richieste, cosi' il messaggio unico lo porta per
+tutte le escursioni messe da parte.
+
+**Qui non ci sono ancora ne' punto di raccolta ne' orario.** Servono le due
+tabelle in `dati-fornitore/`, e l'ora va confermata dall'ufficio prima di
+mostrarla: e' il pezzo dopo.
+
+### Provato
+
+`node controlla.js` → 0 errori. Nel browser vero: 562 suggerimenti su
+`escursioni.html` e su `tour.html`, etichetta e placeholder giusti in tutte e tre
+le lingue, "Cleopatra" che finisce nel messaggio come "• Hotel: Cleopatra", e
+l'hotel che sopravvive al salvataggio nella lista e ricompare nel messaggio
+unico. Nessun errore JS. `sw.js` a `isla-v230`.
+
+### Il `<datalist>` non andava bene, e si e' visto solo sul telefono
+
+Sul computer la lista dei suggerimenti sembrava a posto. Sul telefono del
+proprietario no: Android disegna il `<datalist>` come un **pannello scuro a
+tutto schermo** che copre il campo e nasconde quello che stai scrivendo, con i
+suoi colori e non i nostri. Non si puo' ne' colorare, ne' accorciare, ne'
+spostare: quella tendina la fa il browser.
+
+E cercava il testo **ovunque dentro il nome**: scrivendo `cl` proponeva
+`Apartamentos el Ancla`. Tecnicamente giusto, illeggibile per chi guarda.
+
+Rifatta a mano: `initHotelField()` in `escursioni.js`, `.hotel-sugg` in
+`styles.css`. Otto nomi per volta, dentro la finestra, con i colori del sito.
+
+**Si cerca solo dall'inizio di una parola**, prima i nomi che cominciano col
+testo scritto e poi quelli dove il testo comincia una parola qualsiasi: `cl` da'
+Cleopatra e i Club, `mar` da' anche Club la Mar. Gli accenti non contano —
+`sueno` trova `Sueño Azul`, perche' nessuno va a cercare la enne con lo
+scarabocchio sulla tastiera del telefono.
+
+Resta una **casella di testo**, non un menu obbligato: `casa mia` non da'
+suggerimenti e resta scritto. Funziona anche con le frecce e l'Invio, e l'Invio
+che sceglie un hotel non manda la richiesta.
+
+La finestra che si chiude col suggerimento aperto lo lasciava li' sospeso:
+`close()` manda un evento `islarequestclose` e il campo si chiude da solo.
+
+**La lezione**: un campo di testo va guardato sul telefono vero prima di dirlo
+finito. Sul computer non si vedeva niente di quello che non andava.
+
+### Provato
+
+`node controlla.js` → 0 errori. Nel browser, finestra a 390 px: `cl` → Cleopatra
+e sette Club, niente Ancla; `cleo` → solo Cleopatra; `sueno` → Sueño Azul;
+`parque` → otto; `casa mia` → nessun suggerimento e il testo resta. Scelta col
+tocco e con le frecce, hotel nel messaggio WhatsApp, nessun errore JS. `sw.js` a
+`isla-v231`.

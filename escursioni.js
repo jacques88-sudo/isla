@@ -371,6 +371,140 @@ function calcolaTotale(tour, req) {
 // Le usano tutti e due i messaggi, quello per una sola escursione e quello per
 // la lista intera: cosi' l'ufficio legge sempre le stesse cose nello stesso
 // ordine, invece di due formati da imparare.
+// La casella dell'hotel vive dentro la finestra della richiesta, che esiste
+// solo su escursioni.html e tour.html: altrove non c'e' e va letta a vuoto
+// senza rompere niente.
+function hotelInputValue() {
+  const el = document.getElementById("reqHotel");
+  return el ? el.value.trim() : "";
+}
+
+// "Cleopatra" e "CLEOPATRA" e "cleopatra" devono valere uguale, e "Sueño" si
+// deve trovare scrivendo "sueno": chi e' in vacanza non va a cercare la enne
+// con lo scarabocchio sulla tastiera del telefono.
+function hotelChiave(s) {
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
+// I 562 hotel filtrati mentre il cliente scrive.
+//
+// **Si cerca solo dall'inizio di una parola.** La lista del browser cercava il
+// pezzo di testo ovunque dentro il nome, e scrivendo "cl" proponeva
+// "Apartamentos el Ancla": tecnicamente giusto, illeggibile per chi guarda.
+// Chi cerca il suo albergo ne scrive l'inizio, non una sillaba di mezzo.
+//
+// Prima quelli che cominciano col testo scritto ("cle" → Cleopatra), poi
+// quelli dove il testo comincia una parola qualsiasi ("mar" → Club la Mar).
+function hotelCerca(testo, quanti) {
+  const q = hotelChiave(testo.trim());
+  if (q.length < 2 || typeof HOTELS === "undefined") return [];
+  const primi = [], secondi = [];
+  for (const nome of HOTELS) {
+    const k = hotelChiave(nome);
+    if (k.startsWith(q)) primi.push(nome);
+    // il confine di parola: uno spazio, una parentesi, un trattino
+    else if (new RegExp("[\\s(\\-/]" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).test(k)) secondi.push(nome);
+    if (primi.length >= quanti) break;
+  }
+  return primi.concat(secondi).slice(0, quanti);
+}
+
+// Il campo con i suggerimenti, scritto a mano invece di usare <datalist>.
+//
+// Il <datalist> lo disegna il browser, e su Android diventa un pannellone
+// scuro che copre mezzo schermo, nasconde quello che stai scrivendo e non si
+// puo' ne' colorare ne' accorciare. Questa lista sta dentro la finestra, ha i
+// colori del sito, e mostra otto nomi per volta invece di cento.
+//
+// Resta una **casella di testo**, non un menu obbligato: chi sta in un
+// appartamento privato che nell'elenco non c'e' scrive lo stesso il suo
+// indirizzo, e la riga sotto glielo dice.
+const HOTEL_QUANTI = 8;
+
+function initHotelField() {
+  const campo = document.querySelector("[data-hotel-field]");
+  const input = document.getElementById("reqHotel");
+  const lista = document.getElementById("reqHotelList");
+  if (!campo || !input || !lista) return;
+
+  let scelto = -1;
+
+  function chiudi() {
+    lista.hidden = true;
+    lista.innerHTML = "";
+    scelto = -1;
+    input.setAttribute("aria-expanded", "false");
+    input.removeAttribute("aria-activedescendant");
+  }
+
+  function evidenzia(i) {
+    const voci = lista.children;
+    if (!voci.length) return;
+    scelto = (i + voci.length) % voci.length;
+    for (let n = 0; n < voci.length; n++) {
+      const attivo = n === scelto;
+      voci[n].classList.toggle("is-on", attivo);
+      voci[n].setAttribute("aria-selected", attivo ? "true" : "false");
+    }
+    input.setAttribute("aria-activedescendant", voci[scelto].id);
+    voci[scelto].scrollIntoView({ block: "nearest" });
+  }
+
+  function prendi(nome) {
+    input.value = nome;
+    chiudi();
+    input.focus();
+  }
+
+  function apri() {
+    const trovati = hotelCerca(input.value, HOTEL_QUANTI);
+    // Niente lista quando il cliente ha gia' scritto esattamente un nome: ha
+    // finito, e una tendina aperta sopra il campo gli coprirebbe il resto.
+    if (!trovati.length || (trovati.length === 1 && trovati[0] === input.value.trim())) {
+      chiudi();
+      return;
+    }
+    lista.innerHTML = "";
+    trovati.forEach((nome, i) => {
+      const li = document.createElement("li");
+      li.id = "reqHotelOpt" + i;
+      li.className = "hotel-sugg-voce";
+      li.setAttribute("role", "option");
+      li.setAttribute("aria-selected", "false");
+      // textContent e non innerHTML: i nomi vengono da un file nostro, ma
+      // un'apostrofo o una parentesi non deve poter diventare markup
+      li.textContent = nome;
+      li.addEventListener("mousedown", e => { e.preventDefault(); prendi(nome); });
+      lista.appendChild(li);
+    });
+    lista.hidden = false;
+    scelto = -1;
+    input.setAttribute("aria-expanded", "true");
+  }
+
+  input.addEventListener("input", apri);
+  input.addEventListener("focus", apri);
+  input.addEventListener("blur", () => setTimeout(chiudi, 120));
+  input.addEventListener("keydown", e => {
+    if (lista.hidden) {
+      if (e.key === "ArrowDown") { apri(); e.preventDefault(); }
+      return;
+    }
+    if (e.key === "ArrowDown") { evidenzia(scelto + 1); e.preventDefault(); }
+    else if (e.key === "ArrowUp") { evidenzia(scelto - 1); e.preventDefault(); }
+    else if (e.key === "Escape") { chiudi(); }
+    else if (e.key === "Enter" && scelto >= 0) {
+      prendi(lista.children[scelto].textContent);
+      // l'Invio ha scelto un hotel, non ha mandato la richiesta
+      e.preventDefault();
+    }
+  });
+
+  // La finestra si chiude col suggerimento ancora aperto: alla riapertura
+  // resterebbe li' sospeso sopra un campo che nel frattempo e' cambiato.
+  document.addEventListener("islarequestclose", chiudi);
+}
+
 function righeRichiesta(tour, req) {
   const righe = ["• " + t("wa.date") + ": " + formatDate(req.date)];
   // L'orario si scrive solo se il cliente ne ha scelto uno. "Da concordare" e'
@@ -419,6 +553,10 @@ function righeRichiesta(tour, req) {
   if (conto) {
     righe.push("• " + t("wa.total") + ": €" + eur(conto.totale) + " (" + conto.dettaglio + ")");
   }
+  // Dove alloggia il cliente: l'ufficio ne ha bisogno per dirgli dove e a che
+  // ora passa il pulmino. Sta sopra le note perche' e' un dato, non un
+  // commento. Come l'orario e la lingua, la riga compare solo se c'e'.
+  if (req.hotel) righe.push("• " + t("wa.hotel") + ": " + req.hotel);
   if (req.note) righe.push("• " + t("wa.notes") + ": " + req.note);
   return righe;
 }
@@ -624,6 +762,8 @@ function initRequestDialog() {
   const form = document.querySelector("[data-request-form]");
   const activityEl = document.querySelector("[data-request-activity]");
   const seasonEl = document.querySelector("[data-request-season]");
+  initHotelField();
+
   const transferEl = document.querySelector("[data-request-transfer]");
   const transferLabelEl = document.querySelector("[data-request-transfer-label]");
   const transferNoteEl = document.querySelector("[data-request-transfer-note]");
@@ -1132,6 +1272,9 @@ function initRequestDialog() {
   }
 
   function close() {
+    // il suggerimento dell'hotel vive per conto suo e non sa che la finestra
+    // si sta chiudendo: glielo diciamo, se no resta aperto sotto
+    document.dispatchEvent(new CustomEvent("islarequestclose"));
     dialog.classList.remove("is-open");
     scrim.classList.remove("is-visible");
     document.body.classList.remove("menu-open");
@@ -1236,6 +1379,7 @@ function initRequestDialog() {
       babies: (babiesBox && !babiesBox.hidden && babiesInput)
         ? (parseInt(babiesInput.value, 10) || 0) : 0,
       units: unitaScelte(current),
+      hotel: hotelInputValue(),
       note: document.getElementById("reqNote").value.trim(),
       transfer: !!(transferInput && transferInput.checked),
       transferSiam: !!(transferSiamInput && transferSiamInput.checked),
@@ -1278,6 +1422,7 @@ function initRequestDialog() {
         units: req.units,
         transfer: req.transfer,
         transferSiam: req.transferSiam,
+        hotel: req.hotel,
         note: req.note
       });
       close();

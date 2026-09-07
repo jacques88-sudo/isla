@@ -5734,3 +5734,96 @@ e sette Club, niente Ancla; `cleo` → solo Cleopatra; `sueno` → Sueño Azul;
 `parque` → otto; `casa mia` → nessun suggerimento e il testo resta. Scelta col
 tocco e con le frecce, hotel nel messaggio WhatsApp, nessun errore JS. `sw.js` a
 `isla-v231`.
+
+### Il punto di raccolta (secondo pezzo)
+
+Scelto l'hotel, sotto la casella compare **dove passa il pulmino**, e la stessa
+riga finisce nel messaggio all'ufficio. Nessun orario: quello e' il pezzo dopo,
+e prima lo deve confermare l'ufficio.
+
+`hotel.js` adesso porta due tabelle: `PICKUP_POINTS` (64 punti, nome + tipo) e
+`HOTELS`, dove ogni riga e' `[nome, punto]`.
+
+**Quanto serviva davvero:** dei 416 hotel di cui sappiamo il punto, **351
+salgono da un'altra parte**, non davanti al proprio albergo. Ventisette punti su
+64 non sono nemmeno un edificio: fermate dell'autobus pubblico, sbarre, posteggi
+taxi, un centro commerciale, un angolo di strada. Gli altri casi sono 29 hotel
+col punto `0`, 25 dove il punto e' proprio l'hotel, e 11 dove e' l'hotel ma alla
+sbarra o alla fermata.
+
+**Il punto dipende solo dall'hotel, non dall'escursione** — verificato su due
+escursioni del fornitore — quindi sta nei dati dell'hotel e non in quelli del
+tour. Gli orari no: quelli cambiano da un'escursione all'altra, e per questo
+non sono qui.
+
+**Il nome del posto non si traduce, il tipo si'.** "Best Tenerife" e' un nome
+proprio e resta uguale in tutte e tre le lingue, come i titoli delle escursioni:
+chi lo deve chiedere per strada lo chiede cosi'. A tradursi e' la seconda voce,
+il tipo, che diventa "alla fermata dell'autobus", "at the bus stop", "en la
+parada de guagua". Gli originali del fornitore erano note per gli autisti —
+stampatello, spagnolo e inglese mescolati, roba come "PARADA TAXI bajando
+cuesta / TAXI RANK down the hill" — e sono stati riscritti tutti e 65 a mano.
+
+**La riga e' corta: etichetta e posto, niente altro.** La prima versione
+spiegava ("non e' il tuo hotel", "l'ora te la confermiamo su WhatsApp") e il
+proprietario l'ha bocciata subito: troppo lunga. Aveva ragione — il cliente ha
+appena scritto il nome del suo hotel e vede da solo se il punto e' un altro, e
+la riga sotto dice gia' che si conferma tutto su WhatsApp. Resta
+"Punto di raccolta / Best Tenerife, alla fermata dell'autobus", e per chi sale
+sotto casa "Punto di raccolta / il tuo hotel".
+
+**Tre casi da distinguere lo stesso**, ed e' l'errore preso al primo giro:
+
+- punto `0`, oppure il punto si chiama come l'hotel e non ha un tipo →
+  "il tuo hotel";
+- il punto si chiama come l'hotel **ma ha un tipo** → il nome e il tipo
+  ("Granada Park, al posteggio dei taxi"), 11 hotel. Al Granada Park si sale al posteggio in fondo
+  alla discesa e al Bahia del Duque alla sbarra: confrontare i due nomi e dire
+  "passiamo in hotel" mandava il cliente ad aspettare davanti alla reception;
+- punto diverso → il nome del posto e il tipo.
+
+### L'orario
+
+`PICKUP_TIMES[idScheda][idPunto]` in `hotel.js`. **Il punto e' lo stesso per
+tutte le escursioni, l'ora no**: per questo la tabella e' per scheda, e una
+scheda che non c'e' dentro mostra il punto senza l'ora invece di indovinarne
+una. Provato: sul Teide National Park esce "09:15 · Best Tenerife, alla fermata
+dell'autobus", su Teide + Masca lo stesso posto senza ora.
+
+Riempita per ora solo `teide-national-park`, con i 63 orari presi dal widget.
+**La pagina "teide-medio-dia" del fornitore e' quella della nostra scheda**,
+anche se il nome dice mezza giornata e la nostra durata dice 6-8 ore:
+confermato dal proprietario, che ha anche confermato che gli orari di Admiral
+sono gli stessi del fornitore. Ci ho sbattuto contro una volta e ho chiesto
+invece di indovinare — le due pagine sembravano due tour diversi.
+
+Per un'altra escursione servono **103 richieste, non 567**: siccome il punto non
+cambia mai, basta un hotel campione per punto. Un minuto e mezzo.
+
+Quando il punto e' proprio l'hotel e l'ora si sa, si scrive "08:20 · il tuo
+hotel": l'ora vale anche per chi non si sposta di un metro.
+
+**Il punto si ricava dall'hotel, non si salva** insieme alla richiesta: cosi'
+vale anche per le richieste rimaste nella lista da ieri, e se un domani un punto
+cambia non resta scritto quello vecchio nel browser del cliente.
+
+**Copre 416 hotel su 562.** Gli altri 146 (96 al nord, 50 al sud) hanno un punto
+di cui non sappiamo il nome — sono i 39 punti che la tendina del Teide non
+mostrava. Per loro non compare niente: meglio il silenzio di un'indicazione a
+meta'. Si recuperano aprendo la tendina dei punti su un'escursione che parte dal
+nord.
+
+La riga prende il posto di quella di aiuto ("se non trovi il tuo, scrivilo nelle
+note"): dicono la stessa cosa, e una volta che l'hotel c'e' quella generica non
+serve piu'. Si riscrive anche al cambio lingua a finestra aperta, che non
+ricarica la pagina.
+
+### Provato
+
+`node controlla.js` → 0 errori. Nel browser a 390 px, tutte e tre le lingue:
+Cleopatra → "Best Tenerife, alla fermata dell'autobus — non e' il tuo hotel";
+RIU Arecas → "al tuo hotel, alla fermata dell'autobus"; Granada Park → "al tuo
+hotel, al posteggio dei taxi"; Bahia del Duque → "alla sbarra"; Sendymar
+(punto 0) → "direttamente in hotel", e nel messaggio "Punto di raccolta: in
+hotel"; Girasol (punto senza nome) e "casa mia" → nessuna riga e resta quella di
+aiuto. Nessun errore JS. `sw.js` a `isla-v232`.

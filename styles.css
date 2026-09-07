@@ -1550,6 +1550,22 @@ body.menu-open { overflow: hidden; }
   color: var(--text) !important;
 }
 
+/* Offerta a tempo: la pillola si stacca dalle etichette neutre come fa
+   quella stagionale, ma tira l'occhio invece di avvisare. */
+.tour-meta-offer {
+  background: var(--text) !important;
+  color: var(--cream) !important;
+}
+/* Il prezzo di listino barrato, davanti a quello che si paga. Piu' piccolo e
+   smorzato: il numero che conta e' quello dopo, non questo. */
+.price-before {
+  margin-right: .35rem;
+  color: var(--muted);
+  font-size: .82em;
+  font-weight: 400;
+  text-decoration-thickness: 1px;
+}
+
 .request-season {
   margin: -.4rem 0 .8rem;
   padding: .6rem .8rem;

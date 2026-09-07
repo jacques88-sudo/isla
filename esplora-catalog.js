@@ -50,6 +50,34 @@
 //                scheda del catalogo mostra comunque priceFrom, la pagina di
 //                dettaglio elenca tutti gli scaglioni:
 //                    priceTiers: [ { from: 7, to: 10, price: 350 } ]
+//   priceBefore → facoltativo: il prezzo di listino, quello che si vede
+//                BARRATO davanti al prezzo di vendita. Serve solo alle offerte
+//                a tempo. Il prezzo che si paga resta priceFrom/priceAdult:
+//                sono due numeri separati apposta, cosi' il totale della
+//                richiesta continua a farsi col prezzo vero e un'offerta non
+//                puo' sbagliare un conto.
+//                Deve essere piu' ALTO del prezzo che si paga, se no non e'
+//                uno sconto e controlla.js da' errore.
+//                ⚠ ATTENZIONE, NON E' SOLO GRAFICA: su un prezzo barrato la
+//                legge europea (direttiva Omnibus, in Spagna dal 2022) chiede
+//                che il "prima" sia un prezzo davvero applicato nei 30 giorni
+//                precedenti. Un numero gonfiato per far sembrare piu' bello
+//                lo sconto e' una pratica sanzionabile, e la sanzione la
+//                prende Admiral. Qui si scrive il listino vero, quello che si
+//                chiede quando la promozione non c'e'.
+//                Da non confondere col prezzo barrato di un RIVENDITORE, che
+//                invece non si copia mai: quello e' lo sconto di un altro.
+//                    priceBefore: 45
+//   offerUntil → facoltativo, e va insieme a priceBefore: l'ultimo giorno in
+//                cui l'offerta vale, scritto "2026-10-31". Vale per tutto quel
+//                giorno. Passata la data il barrato sparisce da solo e la
+//                scheda torna al prezzo liscio — che resta quello scontato: il
+//                numero da pagare NON risale. Alzare un prezzo dopo che il
+//                cliente l'ha letto e' la cosa che fa arrabbiare.
+//                Senza questo campo l'offerta non scade mai, e controlla.js
+//                avvisa: uno sconto permanente non e' uno sconto, ed e'
+//                proprio il caso che la legge guarda.
+//                    offerUntil: "2026-10-31"
 //   priceAdult → prezzo per adulto, in euro. 0 = non ancora deciso.
 //   priceChild → prezzo per bambino, in euro. 0 = non ancora deciso.
 //                A 0 le righe NON compaiono sulla pagina: un "€0" davanti a un
@@ -1750,6 +1778,16 @@ const ESPLORA_CATALOG = [
     zone: "Tenerife Sud",
     duration: { it: "6-8 ore circa", en: "About 6-8 hours", es: "6-8 horas aprox." },
     priceFrom: 39,
+    // Offerta a tempo decisa da Admiral: listino 45, si vende a 39. Il 45 e'
+    // il prezzo pieno di Admiral, NON il barrato copiato dal rivenditore
+    // (quello era 50 sulla pagina CanaryVIP e non si copia). Il fornitore
+    // fattura 39: sopra ci sta il margine, e il listino a 45 e' la stessa
+    // cifra senza la promozione.
+    priceBefore: 45,
+    // ⚠ Data da confermare: messa a fine ottobre 2026 per non lasciare
+    // un'offerta "temporanea" che non scade mai. Passata, il barrato sparisce
+    // e restano i 39: il prezzo non risale.
+    offerUntil: "2026-10-31",
     priceAdult: 39,
     priceChild: 27,
     // Zero vero, non un "non lo sappiamo": il listino del fornitore scrive

@@ -5481,3 +5481,90 @@ prima passata e il `v226` quello dei tre giorni, durato una manciata di minuti.
 **Resta in sospeso** solo la foto `teide-national-park.jpg`, che e' **300×300** invece dei
 1200×800 di tutte le altre. Non e' stata toccata (era gia' pubblicata, e ingrandirla la
 sgranerebbe soltanto): serve l'originale piu' grande, non un ritocco.
+
+---
+
+## Le offerte a tempo, e il prezzo barrato (7 settembre 2026)
+
+Il proprietario ha chiesto per il Teide National Park **45 € barrato e 39 € di vendita**,
+come offerta temporanea. Il meccanismo non esisteva: e' stato costruito adesso, generico,
+perche' la seconda scheda in offerta non deve ricominciare da capo.
+
+### Due campi nuovi
+
+`priceBefore: 45` e' il **prezzo di listino**, quello barrato. `offerUntil: "2026-10-31"`
+e' l'ultimo giorno in cui vale, e vale per tutto quel giorno.
+
+Il prezzo che si paga resta `priceFrom`/`priceAdult`, cioe' 39. **Sono due numeri separati
+apposta:** il totale della richiesta continua a farsi col prezzo vero, e nessuna offerta
+puo' sbagliare un conto. Verificato a mano: 2 adulti + 1 bambino fa ancora 105 € (39×2 +
+27), il 45 non entra da nessuna parte.
+
+### Cosa succede quando l'offerta scade
+
+Il barrato sparisce, la pillola "Offerta" sparisce, la riga "Valida fino al" sparisce — e
+**il prezzo resta 39**. Non risale a 45.
+
+Questa e' la scelta importante, ed e' voluta: alzare un prezzo dopo che il cliente l'ha
+letto e' la cosa che fa arrabbiare, ed e' gia' scritta come regola del progetto. Se un
+giorno si vuole davvero tornare a 45, si cambia `priceAdult` a mano, di proposito, non per
+scadenza di un campo. Provato mettendo una data passata: card e scheda tornano al prezzo
+liscio e `controlla.js` avvisa che l'offerta e' scaduta.
+
+### La ragione per cui c'e' la scadenza, e non e' l'ordine
+
+Su un prezzo barrato la **direttiva Omnibus** (UE 2019/2161, in Spagna dal 2022) chiede
+che il "prima" sia un prezzo davvero applicato nei **30 giorni precedenti**. Un numero
+gonfiato per far sembrare piu' bello lo sconto e' una pratica sanzionabile, e la sanzione
+la prende Admiral, non il fornitore. Uno sconto permanente e' esattamente il caso che la
+norma guarda: se il 45 non e' mai stato incassato, barrarlo e' il problema.
+
+Da qui dentro non si puo' verificare — nessuno sa cosa e' stato incassato — quindi
+`controlla.js` controlla tutto quello che invece si vede da fuori:
+
+- `priceBefore` piu' basso o uguale al prezzo che si paga → **errore**: barrarlo direbbe
+  al cliente il contrario di quello che succede;
+- `offerUntil` senza `priceBefore` → **errore**: una scadenza senza offerta non vuol dire
+  niente;
+- `priceBefore` senza `offerUntil` → **avviso**: l'offerta non scade mai da sola;
+- `offerUntil` gia' passata → **avviso**: in pagina non si vede piu', togli i due campi o
+  sposta la data.
+
+**Il 45 e' il listino di Admiral, non il barrato del rivenditore.** La pagina CanaryVIP
+dello stesso tour dava 50 barrato → 39, e quello non si copia: e' lo sconto di un altro. Il
+fornitore fattura 39; il 45 e' la stessa cifra col margine, quello che si chiede quando la
+promozione non c'e'. La distinzione e' la stessa gia' fatta su `kayak-snorkelling`, dove il
+barrato del rivenditore era stato buttato e tenuto solo il prezzo deciso dall'ufficio.
+
+### Dove si vede
+
+Sulla card dell'elenco: `€45` sbarrato davanti a `da €39`, piu' una pillola **Offerta**
+scura, che si stacca da quelle neutre come fa gia' quella stagionale. Sulla scheda: la riga
+"Adulti (12+)" mostra `€45 €39`, e in fondo compare "Offerta — Valida fino al 31 ottobre
+2026", con la data scritta nella lingua di chi guarda (31 October 2026, 31 de octubre de
+2026).
+
+### Due trappole trovate scrivendolo
+
+1. **`tourPrice()` non poteva restituire HTML.** Finisce dentro `esc()` in tre punti (le
+   card "altre esperienze", il rimando alla versione privata, la lista delle richieste): i
+   tag si sarebbero visti scritti. Per questo il barrato sta in una funzione separata,
+   `tourPriceHTML()`, usata solo dove serve.
+2. **Le righe della scheda erano tutte escapate**, giustamente. Invece di togliere `esc()`
+   — che avrebbe aperto un buco su tutte le righe — una riga puo' ora portare un **terzo**
+   elemento con l'HTML gia' pronto, e solo il prezzo lo usa. Tutto il resto continua a
+   passare da `esc()`.
+
+La data si formatta con `new Date(anno, mese - 1, giorno)` e non con
+`new Date("2026-10-31")`: la stringa ISO viene letta come mezzanotte UTC, e per un cliente
+a ovest di Greenwich "fino al 31" sarebbe diventato il 30.
+
+### Provato
+
+`node controlla.js` → 0 errori. Nel browser vero, tutte e tre le lingue: barrato, pillola,
+riga della scadenza e date corrette; totale invariato a 105 €; nessun errore JS. Provati
+anche i quattro casi che `controlla.js` deve prendere, uno per uno. `sw.js` a `isla-v228`.
+
+**Da confermare dal proprietario:** che **45 € sia il listino vero** (e non un numero messo
+solo per far risaltare il 39), e la **data di scadenza**, messa al 31 ottobre 2026 come
+segnaposto ragionevole per non lasciare in giro un'offerta "temporanea" senza fine.

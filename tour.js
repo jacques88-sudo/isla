@@ -132,7 +132,14 @@ function detailRows(tour, variante) {
   // tf() perche' una fascia puo' avere bisogno delle tre lingue: "0-3" si
   // scrive uguale dappertutto, "0-11 mesi" no.
   const conEta = (etichetta, fascia) => fascia ? etichetta + " (" + tf(fascia) + ")" : etichetta;
-  if (adulto > 0) righe.push([conEta(t("req.adults"), eta.adult), "€" + eur(adulto)]);
+  if (adulto > 0) {
+    // Il barrato va solo sul prezzo della scheda: se il cliente ha scelto una
+    // variante, il numero mostrato e' quello della variante e il listino di
+    // `priceBefore` non e' piu' il suo "prima".
+    const offerta = !variante && offertaAttiva(tour, adulto);
+    righe.push([conEta(t("req.adults"), eta.adult), "€" + eur(adulto),
+      offerta ? '<s class="price-before">€' + esc(eur(tour.priceBefore)) + "</s> €" + esc(eur(adulto)) : null]);
+  }
   if (bambino > 0) righe.push([conEta(t("req.kids"), eta.child), "€" + eur(bambino)]);
   // Per i neonati lo zero vuol dire davvero gratis, non "da decidere": la
   // riga si mostra solo se il campo c'e', e sparisce se manca.
@@ -209,11 +216,19 @@ function detailRows(tour, variante) {
     }
   }
   if (tour.season) righe.push([t("detail.season"), tf(tour.season)]);
+  // Fino a quando vale l'offerta. Si scrive solo se c'e' una data: un'offerta
+  // "temporanea" senza scadenza scritta non e' temporanea per chi legge.
+  if (!variante && offertaAttiva(tour) && tour.offerUntil) {
+    righe.push([t("detail.offer"), t("detail.offerUntil", { d: dataLeggibile(tour.offerUntil) })]);
+  }
 
-  return righe.map(([etichetta, valore]) => `
+  // Il terzo elemento, quando c'e', e' HTML gia' costruito qui dentro (il
+  // prezzo barrato): tutto il resto continua a passare da esc(), che e' il
+  // motivo per cui l'eccezione e' un campo a parte e non un flag.
+  return righe.map(([etichetta, valore, html]) => `
     <div class="detail-row">
       <dt>${esc(etichetta)}</dt>
-      <dd>${esc(valore)}</dd>
+      <dd>${html || esc(valore)}</dd>
     </div>`).join("");
 }
 

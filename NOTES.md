@@ -5417,17 +5417,27 @@ Lasciata fuori anche la seconda partenza da **Puerto de la Cruz a 50 €, solo i
 mercoledi'**: e' un prezzo del rivenditore, non del listino, e non sappiamo se Admiral
 rivende anche quella. Se un giorno serve, diventa una variante in `options`.
 
-### Le due cose decise senza averle sul listino
+### Le due cose decise senza averle sul listino — e poi confermate
 
-1. **I giorni** (`mar mer sab dom`) vengono dalla pagina del rivenditore, non dal foglio
-   dell'operatore, che sui giorni non dice niente. Messi lo stesso perche' i due
-   itinerari coincidono tappa per tappa, quindi e' lo stesso pullman — ma il commento nel
-   catalogo lo dice, e vanno confermati. Il rischio e' concreto: un giorno sbagliato qui
-   **blocca la richiesta** di un cliente che invece potrebbe partire.
+Erano rimaste in sospeso per mezza giornata, poi l'ufficio ha risposto lo stesso giorno.
+
+1. **I giorni.** Il foglio dell'operatore sui giorni non dice niente, e li avevo presi
+   dalla pagina del rivenditore: `mar mer sab dom`. **L'ufficio ne ha dati tre: `mer sab
+   dom`.** Il martedi' del rivenditore era di troppo ed e' stato tolto.
 2. **Il menu delle lingue** (`languages: LINGUE_TOUR`). La regola dice di metterlo solo
    dove viene segnalato, non ovunque appaia "multilingual guides". Qui il segnale c'e' ed
-   e' del fornitore, nel suo campo Observaciones: "Todos los idiomas". Le cinque lingue
-   restano quelle solite di `LINGUE_TOUR`, che sono anch'esse da confermare.
+   e' del fornitore, nel suo campo Observaciones: "Todos los idiomas". L'ufficio ha
+   confermato che sono le cinque solite di `LINGUE_TOUR`.
+
+**La lezione, che vale oltre questa scheda: sui giorni la pagina di un rivenditore non e'
+una fonte, nemmeno quando l'itinerario coincide tappa per tappa.** Qui coincideva — stesse
+soste, stessa durata, stesso pullman — e i giorni erano lo stesso sbagliati. Il rivenditore
+vende anche una partenza da Puerto de la Cruz del solo mercoledi', e i quattro giorni della
+sua pagina sono la somma delle *sue* partenze, non i giorni dell'operatore. Il danno non
+sarebbe stato visibile da nessuna parte: con `mar` in elenco il sito avrebbe **accettato**
+richieste per un martedi' in cui il pullman non parte, e l'errore sarebbe saltato fuori
+solo in ufficio, una richiesta alla volta. Nel dubbio meglio lasciare `days` non scritto e
+chiedere: un giorno di troppo fa danno, uno mancante lo fa vedere subito.
 
 ### Il resto
 
@@ -5451,11 +5461,14 @@ e quattro le schede, non di questa; si sistema in un colpo solo, non qui.
 `node controlla.js` → 0 errori, 1 avviso invariato (opera-60). Nel browser vero, tutte e
 tre le lingue: prezzi, fasce, giorni e itinerario a posto, nessun errore JS. Il totale
 fatto a mano nella finestra della richiesta: 2 adulti + 1 bambino = **105 €**
-(39×2 + 27), e i neonati non lo spostano. Il martedi' passa, il lunedi' viene fermato con
-"This excursion only runs on: Tue · Wed · Sat · Sun" — cioe' `mar` e `mer` sono usciti
-martedi' e mercoledi', che e' l'errore facile di quelle sigle. `sw.js` a `isla-v225`.
+(39×2 + 27), e i neonati non lo spostano.
 
-**Resta in sospeso:** i giorni e le lingue da confermare, e la foto
-`teide-national-park.jpg` che e' **300×300** invece dei 1200×800 di tutte le altre. Non e'
-stata toccata (era gia' pubblicata, e ingrandirla la sgranerebbe soltanto): serve
-l'originale piu' grande, non un ritocco.
+Sui giorni sono state provate tutte e cinque le date, in tutte e tre le lingue: mercoledi',
+sabato e domenica passano; **il martedi' viene fermato** (dopo la correzione dell'ufficio)
+e il lunedi' pure, con "Questa escursione si fa solo: Mer · Sab · Dom" e le sue due
+traduzioni. Cioe' `mer` esce mercoledi' e non martedi', che e' l'errore facile di quelle
+sigle. `sw.js` a `isla-v226` (il `v225` era la prima passata, quella con i quattro giorni).
+
+**Resta in sospeso** solo la foto `teide-national-park.jpg`, che e' **300×300** invece dei
+1200×800 di tutte le altre. Non e' stata toccata (era gia' pubblicata, e ingrandirla la
+sgranerebbe soltanto): serve l'originale piu' grande, non un ritocco.

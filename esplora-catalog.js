@@ -1759,11 +1759,13 @@ const ESPLORA_CATALOG = [
     // bebe' sono gli unici completamenti che non lasciano buchi fra le tre
     // righe: sopra gli 11 e sotto i 2 non c'e' altra fascia.
     ages: { adult: "12+", child: "2-11", infant: "0-1" },
-    // ⚠ I giorni arrivano dalla pagina di un rivenditore, non dal listino del
-    // fornitore, che sui giorni non dice niente: da confermare con l'ufficio.
-    days: ["mar", "mer", "sab", "dom"],
-    // "Observaciones: todos los idiomas" e' scritto sul foglio del fornitore,
-    // attivita' per attivita': e' il segnale che serve per il menu delle lingue.
+    // Tre giorni, confermati dall'ufficio il 7 settembre 2026. La pagina di un
+    // rivenditore ne dava quattro (ci metteva anche il martedi'): non e' quella
+    // la fonte buona, e un giorno in piu' qui avrebbe accettato richieste per
+    // un giorno in cui il pullman non parte.
+    days: ["mer", "sab", "dom"],
+    // Confermate dall'ufficio: sono le cinque solite. Il segnale sta anche sul
+    // foglio del fornitore, nel suo campo Observaciones ("Todos los idiomas").
     languages: LINGUE_TOUR,
     // Il biglietto della funivia NON e' incluso: si compra sul posto ed e'
     // facoltativo, quindi niente `ticket` qui.

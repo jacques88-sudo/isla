@@ -1525,13 +1525,15 @@ function initRequestDialog() {
       option: opzioneScelta()
     };
     if (!req.date) return;
-    // Il giorno fuori elenco **non ferma piu' la richiesta** (proprietario,
-    // 8 settembre 2026): il cliente sceglie la data in cui pensa ci sia
-    // l'escursione, e se e' un altro giorno glielo dice l'ufficio prima della
-    // conferma. Prima si fermava qui, e quel "no" non arrivava nemmeno in
-    // ufficio: la richiesta non partiva e la trattativa moriva sul sito. Il
-    // messaggio sotto la data resta, ma e' un avviso, non un divieto — e serve
-    // di piu' adesso, perche' i giorni cambiano anche con la lingua della guida.
+    // Il giorno sbagliato ferma la richiesta: il messaggio e' gia' li' sotto
+    // la data da quando l'ha scelta.
+    //
+    // Provato a toglierlo l'8 settembre 2026 e **rimesso lo stesso giorno**,
+    // per scelta del proprietario: un'escursione non si prenota nel giorno in
+    // cui non c'e', punto. Che i giorni possano cambiare con la lingua si dice
+    // al cliente in una nota della scheda, non lasciandogli mandare una
+    // richiesta per un giorno in cui non si parte.
+    if (!giornoValido()) { aggiornaGiorno(); dateInput.focus(); return; }
     // Piu' menu speciali che persone: stessa idea, l'avviso e' gia' sotto le
     // caselle da quando ha messo il numero di troppo.
     if (!menuValido()) { aggiornaMenu(); return; }

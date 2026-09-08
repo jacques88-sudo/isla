@@ -3922,6 +3922,13 @@ const ESPLORA_CATALOG = [
     // si fa mai. Ogni variante poi stringe sui suoi giorni, e la variante
     // vince — dal sud si parte lun mar mer ven sab, dal nord mar gio sab.
     days: ["lun", "mar", "mer", "gio", "ven", "sab"],
+    // Le sette lingue mandate dall'ufficio (8 settembre 2026), le stesse di
+    // `icod-garachico-orotava`. Scritte per esteso anche qui e **non messe in
+    // una costante in comune**, anche se le due liste oggi sono identiche: la
+    // regola e' che ogni scheda ha le sue (proprietario, 8 settembre 2026), e
+    // una costante condivisa farebbe cambiare l'altra scheda il giorno che un
+    // fornitore toglie una lingua.
+    languages: ["Español", "English", "Deutsch", "Русский", "Italiano", "Français", "Nederlands"],
     // Le partenze vere non le sappiamo: il ritiro dipende dall'hotel e il
     // fornitore lo comunica con la conferma. Niente campo `times`, cosi'
     // restano le fasce segnaposto piu' "Da concordare".

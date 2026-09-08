@@ -6681,3 +6681,58 @@ proprio: al suo posto l'ora dell'hotel scelto. Verificato che l'aggiunta delle l
 l'abbia toccato — le due domande vivono una accanto all'altra e restano indipendenti.
 
 `CACHE_NAME` alzato a `isla-v250`.
+
+---
+
+## Le stesse sette lingue anche su La Gomera (8 settembre 2026)
+
+Quarta scheda a cui l'ufficio manda le lingue. `la-gomera` non aveva il campo, adesso ha le
+**stesse sette** di `icod-garachico-orotava` — le due sono dello stesso fornitore (Nere
+Izerdie / Island Excursions), quindi non sorprende.
+
+### Perché non è stata fatta una costante in comune
+
+Due schede con la lista identica sono la tentazione classica: si scrive una `LINGUE_SETTE`
+accanto a `LINGUE_TOUR` e si mette quella in tutte e due. **Non è stato fatto, ed è una
+scelta, non una dimenticanza.**
+
+La regola del proprietario è "ogni scheda ha la sua lingua". Una costante condivisa
+capovolge proprio quello: il giorno che uno dei due fornitori toglie il russo, chi corregge
+la sua scheda cambia **anche l'altra** senza accorgersene, e la scheda sbagliata non la
+segnala nessuno — non è un errore di sintassi, è una lingua di troppo in un menu. Sette
+stringhe scritte due volte costano niente; una lingua sbagliata in un menu costa un cliente
+che si aspetta la guida nella sua lingua e non la trova.
+
+`LINGUE_TOUR` resta l'unica costante, e resta quello che è: il **valore di default** delle
+schede che hanno le cinque solite, non un elenco da cui pescare.
+
+### Come sta il catalogo adesso
+
+Quindici schede hanno `languages`, e le liste vere sono sei diverse:
+
+| lingue | schede |
+| --- | --- |
+| 7 (+ olandese e russo) | `icod-garachico-orotava`, `la-gomera` |
+| 6 (+ olandese) | `santa-cruz-taganana` |
+| 5 (`LINGUE_TOUR`) | Teide National Park, i tre buggy, i due quad, Submarine Safari, Paragliding |
+| 3 | Luxury Cruiser, Poema del Mar |
+| 2 | Helicopter Tours, Passeggiata a cavallo |
+
+Le altre sessanta schede il campo non ce l'hanno, e va bene così: vuol dire che le lingue
+non gliele abbiamo ancora chieste, non che parlino le solite.
+
+### Provato
+
+Nel browser a 420 px, nelle tre lingue del sito: la riga "Lingue" in "In breve" con tutti e
+sette i nomi, il menu "In che lingua" con sette voci più "Indifferente", cirillico
+compreso.
+
+**Una cosa scoperta per strada, e non è un difetto:** con la data di giovedì la richiesta
+non parte. Non c'entrano le lingue — è la variante. La scheda ha due partenze e i giorni
+della **variante vincono** su quelli della scheda: dal sud si va lun mar mer ven sab, e la
+finestra risponde "Questa escursione si fa solo: Lun · Mar · Mer · Ven · Sab". Con il
+lunedì passa, e il messaggio esce intero: lingua `Русский`, variante "Tenerife sud", totale
+**€295** (2 × 110 + 75). Anche in "In breve" i giorni mostrati sono quelli della variante
+scelta, cinque e non sei.
+
+`CACHE_NAME` alzato a `isla-v251`.

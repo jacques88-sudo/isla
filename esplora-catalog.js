@@ -3840,17 +3840,153 @@ const ESPLORA_CATALOG = [
     id: "la-gomera",
     title: "La Gomera Island Tour",
     category: "tour-isola",
+    // La zona e' la destinazione, non il punto di ritiro: il ritiro cambia con
+    // la variante (sud dell'isola o Puerto de la Cruz) e sta scritto li'.
     zone: { it: "Isola di La Gomera", en: "Island of La Gomera", es: "Isla de La Gomera" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 99,
-    priceAdult: 0,
-    priceChild: 0,
+    duration: { it: "Circa 10 ore", en: "About 10 hours", es: "Unas 10 horas" },
+    // I giorni della scheda sono l'unione delle due partenze: la domenica non
+    // si fa mai. Ogni variante poi stringe sui suoi giorni, e la variante
+    // vince — dal sud si parte lun mar mer ven sab, dal nord mar gio sab.
+    days: ["lun", "mar", "mer", "gio", "ven", "sab"],
+    // Le partenze vere non le sappiamo: il ritiro dipende dall'hotel e il
+    // fornitore lo comunica con la conferma. Niente campo `times`, cosi'
+    // restano le fasce segnaposto piu' "Da concordare".
+    priceFrom: 110,
+    priceAdult: 110,
+    priceChild: 75,
+    // 15,50 € non e' gratis: i neonati pagano il posto sul traghetto. La cifra
+    // e' quella del fornitore per il ritiro dal sud.
+    priceInfant: 15.5,
+    // Le tre fasce combaciano senza buchi: 0-3, 4-11, 12+.
+    ages: { adult: "12+", child: "4-11", infant: "0-3" },
     family: true,
+    // Il ritiro in hotel e' compreso in tutte e due le varianti, quindi sta
+    // fra le icone; non e' un `transfer` opzionale da spuntare, perche' non
+    // esiste un prezzo senza. `ferry` e' la traversata Fred Olsen andata e
+    // ritorno, `lunch` il pranzo al Restaurante Las Rosas.
+    included: ["transfer", "ferry", "guide", "lunch"],
     desc: {
-      it: "Escursione di una giornata sull'isola vicina di La Gomera.",
-      en: "A day trip to the neighbouring island of La Gomera.",
-      es: "Excursión de un día a la isla vecina de La Gomera."
+      it: "Una giornata sull'isola accanto: traghetto Fred Olsen, il Roque de Agando, la foresta di Garajonay e il pranzo gomero.",
+      en: "A day on the island next door: the Fred Olsen ferry, Roque de Agando, the Garajonay forest and a Gomeran lunch.",
+      es: "Un día en la isla de al lado: ferry Fred Olsen, el Roque de Agando, el bosque de Garajonay y el almuerzo gomero."
     },
+    options: {
+      label: { it: "Da dove ti veniamo a prendere", en: "Where we pick you up", es: "Dónde te recogemos" },
+      choices: [
+        {
+          label: { it: "Tenerife sud", en: "South Tenerife", es: "Tenerife sur" },
+          priceAdult: 110,
+          priceChild: 75,
+          days: ["lun", "mar", "mer", "ven", "sab"],
+          desc: {
+            it: "Ritiro negli hotel del sud dell'isola e imbarco a Los Cristianos. Si parte lunedì, martedì, mercoledì, venerdì e sabato.",
+            en: "Pick-up at hotels in the south of the island and boarding at Los Cristianos. It runs Monday, Tuesday, Wednesday, Friday and Saturday.",
+            es: "Recogida en los hoteles del sur de la isla y embarque en Los Cristianos. Sale lunes, martes, miércoles, viernes y sábado."
+          }
+        },
+        {
+          label: { it: "Puerto de la Cruz", en: "Puerto de la Cruz", es: "Puerto de la Cruz" },
+          // Solo `price`, senza `priceAdult`: 115 € e' il prezzo adulti che il
+          // fornitore scrive per il nord, ma per bambini e neonati da li' non
+          // ci ha dato niente. Con `priceAdult` il totale si sarebbe fatto
+          // lo stesso e avrebbe contato i piccoli col prezzo del sud, cioe'
+          // un numero verosimile e falso. Cosi' invece il conto non si fa e
+          // il prezzo lo conferma l'ufficio. Da chiedere.
+          price: 115,
+          days: ["mar", "gio", "sab"],
+          desc: {
+            it: "Ritiro dal nord, a Puerto de la Cruz: €115 a adulto, martedì, giovedì e sabato. Il prezzo per bambini e neonati da qui te lo confermiamo in ufficio.",
+            en: "Pick-up from the north, in Puerto de la Cruz: €115 per adult, on Tuesday, Thursday and Saturday. We confirm the price for children and babies from here with the office.",
+            es: "Recogida desde el norte, en Puerto de la Cruz: 115 € por adulto, martes, jueves y sábado. El precio para niños y bebés desde aquí te lo confirmamos en la oficina."
+          }
+        }
+      ]
+    },
+    itinerary: [
+      {
+        text: {
+          it: "Ritiro in hotel e trasferimento al porto di Los Cristianos, dove si prende il traghetto Fred Olsen per San Sebastián de La Gomera.",
+          en: "Hotel pick-up and transfer to the port of Los Cristianos, where you board the Fred Olsen ferry to San Sebastián de La Gomera.",
+          es: "Recogida en el hotel y traslado al puerto de Los Cristianos, donde se toma el ferry de Fred Olsen hasta San Sebastián de La Gomera."
+        }
+      },
+      {
+        text: {
+          it: "Sbarcati sull'isola si prende la strada del sud, con una sosta ai piedi del Roque de Agando: è il camino di un vulcano rimasto in piedi dopo che il resto si è consumato.",
+          en: "Once ashore you take the southern road, with a stop at the foot of Roque de Agando: the plug of a volcano still standing after the rest wore away.",
+          es: "Ya en la isla se toma la carretera del sur, con una parada al pie del Roque de Agando: la chimenea de un volcán que quedó en pie después de que el resto se desgastara."
+        }
+      },
+      {
+        text: {
+          it: "Passeggiata dentro il Parco Nazionale di Garajonay, la foresta di laurisilva che l'UNESCO ha dichiarato patrimonio dell'umanità nel 1986: alberi sempre verdi e nebbia bassa a pochi chilometri dal versante arido dell'isola.",
+          en: "A walk inside Garajonay National Park, the laurel forest UNESCO listed as a World Heritage site in 1986: evergreen trees and low mist a few kilometres from the dry side of the island.",
+          es: "Paseo por el Parque Nacional de Garajonay, el bosque de laurisilva que la UNESCO declaró Patrimonio de la Humanidad en 1986: árboles siempre verdes y niebla baja a pocos kilómetros de la vertiente árida de la isla."
+        }
+      },
+      {
+        text: {
+          it: "Pranzo al Restaurante Las Rosas, cucina gomera, compreso nel prezzo.",
+          en: "Lunch at Restaurante Las Rosas, Gomeran cooking, included in the price.",
+          es: "Almuerzo en el Restaurante Las Rosas, cocina gomera, incluido en el precio."
+        }
+      },
+      {
+        text: {
+          it: "Dopo mangiato, la dimostrazione del silbo gomero: la lingua fischiata con cui sull'isola ci si parla da una valle all'altra, insegnata di maestro in allievo e ancora usata da più di ventimila persone.",
+          en: "After lunch, a demonstration of the silbo gomero: the whistled language islanders use to speak across valleys, passed from master to pupil and still used by more than twenty thousand people.",
+          es: "Después de comer, la demostración del silbo gomero: la lengua silbada con la que en la isla se habla de un valle a otro, transmitida de maestro a discípulo y usada todavía por más de veinte mil personas."
+        }
+      },
+      {
+        text: {
+          it: "Sosta ad Agulo, paese del nord affacciato sull'oceano, con le sue strade lastricate e il Teide di fronte, dall'altra parte del mare.",
+          en: "A stop in Agulo, a northern village facing the ocean, with its cobbled streets and Teide across the water.",
+          es: "Parada en Agulo, pueblo del norte asomado al océano, con sus calles empedradas y el Teide enfrente, al otro lado del mar."
+        }
+      },
+      {
+        text: {
+          it: "Rientro a San Sebastián, la capitale: cinquecento anni di storia in poche strade, la Torre del Conde, la chiesa dell'Asunción e il pozzo della Casa de la Aguada, quello da cui — si racconta — Colombo prese l'acqua prima di partire per le Americhe.",
+          en: "Back to San Sebastián, the capital: five hundred years of history in a few streets, the Torre del Conde, the church of la Asunción and the well of the Casa de la Aguada, the one Columbus is said to have drawn water from before sailing for the Americas.",
+          es: "Vuelta a San Sebastián, la capital: quinientos años de historia en pocas calles, la Torre del Conde, la iglesia de la Asunción y el pozo de la Casa de la Aguada, aquel del que —se cuenta— Colón tomó el agua antes de partir hacia América."
+        }
+      },
+      {
+        text: {
+          it: "Imbarco per il ritorno a Los Cristianos e rientro in hotel. Nel canale fra le due isole capita spesso di incrociare globicefali e delfini.",
+          en: "Boarding for the return to Los Cristianos and back to the hotel. Pilot whales and dolphins are often met in the channel between the two islands.",
+          es: "Embarque de vuelta a Los Cristianos y regreso al hotel. En el canal entre las dos islas es frecuente cruzarse con calderones y delfines."
+        }
+      }
+    ],
+    notes: [
+      {
+        it: "Serve un documento d'identità valido il giorno dell'escursione — il fornitore chiede il passaporto. Senza, la compagnia non fa salire sul traghetto e la giornata è persa.",
+        en: "You need a valid ID document on the day of the trip — the operator asks for a passport. Without it the ferry company will not let you board and the day is lost.",
+        es: "Hace falta un documento de identidad válido el día de la excursión: el proveedor pide el pasaporte. Sin él, la naviera no deja embarcar y el día se pierde."
+      },
+      {
+        it: "È una giornata intera, circa dieci ore fra ritiro e rientro: il ritiro in hotel è presto la mattina e l'orario esatto te lo confermiamo insieme alla prenotazione.",
+        en: "It is a full day, about ten hours from pick-up to drop-off: the hotel pick-up is early in the morning and we confirm the exact time along with the booking.",
+        es: "Es un día entero, unas diez horas entre la recogida y la vuelta: la recogida en el hotel es temprano por la mañana y la hora exacta te la confirmamos junto con la reserva."
+      },
+      {
+        it: "A Garajonay si sta in quota e spesso c'è nebbia: fa più fresco che sulla costa, porta una giacca leggera e scarpe comode.",
+        en: "Garajonay is up in the hills and often misty: it is cooler than on the coast, so bring a light jacket and comfortable shoes.",
+        es: "En Garajonay se está en altura y a menudo hay niebla: hace más fresco que en la costa, lleva una chaqueta ligera y calzado cómodo."
+      },
+      {
+        it: "Balene e delfini durante la traversata si vedono spesso, ma sono animali liberi: nessuno può prometterteli.",
+        en: "Whales and dolphins are often seen during the crossing, but they are wild animals: nobody can promise them.",
+        es: "Ballenas y delfines se ven a menudo durante la travesía, pero son animales libres: nadie puede prometértelos."
+      },
+      {
+        it: "Se hai un'allergia o un'esigenza alimentare per il pranzo, scrivicelo nella richiesta: lo giriamo al ristorante.",
+        en: "If you have an allergy or a dietary requirement for lunch, tell us in your request: we pass it on to the restaurant.",
+        es: "Si tienes una alergia o una necesidad alimentaria para el almuerzo, escríbenoslo en la solicitud: se lo pasamos al restaurante."
+      }
+    ],
     image: "la-gomera.jpg",
     published: true
   },

@@ -5892,3 +5892,83 @@ quasi tutte.
 Il "(facoltativo)" accanto all'etichetta e' diventato "**(utile per il
 pick-up)**": dice perche' compilarlo invece di dire che si puo' saltare. Il
 campo resta facoltativo davvero, non ha `required`.
+
+## La Gomera: la scheda riempita con i dati ufficiali
+
+Era un segnaposto: `duration` "Da definire", `priceFrom: 99`, `priceAdult` e
+`priceChild` a 0, tre righe di descrizione e niente altro. Il proprietario ha
+mandato due fonti — la pagina del fornitore che organizza il tour (in spagnolo,
+con il modulo di prenotazione) e la pagina di CanaryVIP, che rivende lo stesso
+giro — dicendo che **in caso di contrasto vale la prima**.
+
+### Cosa e' entrato e cosa no
+
+Dalla pagina ufficiale: il percorso (Los Cristianos, traghetto Fred Olsen, Roque
+de Agando, Parco Nazionale di Garajonay, pranzo al Restaurante Las Rosas, silbo
+gomero, Agulo, San Sebastian, ritorno in traghetto) e i tre prezzi, **110 / 75 /
+15,50**, con le fasce `12+` `4-11` `0-3` che combaciano da sole.
+
+Da CanaryVIP solo i fatti operativi: la durata di circa 10 ore, il passaporto
+obbligatorio, e i due punti di ritiro con i loro giorni. **Non** e' entrato
+niente del resto — la cancellazione gratis a 48 ore (le nostre sono 24, sempre),
+la "garanzia del miglior prezzo", i "biglietti ufficiali", il 5,00 su 7
+recensioni. Le descrizioni sono riscritte da zero nelle tre lingue: nessuna
+frase viene da nessuna delle due pagine.
+
+`priceInfant: 15.5` e' un numero vero, non uno zero: i neonati **pagano** il
+posto sul traghetto. Metterlo a 0 avrebbe scritto "Gratis" sulla pagina.
+
+### I due ritiri sono varianti, non un transfer
+
+CanaryVIP vende lo stesso giro da due zone: dal sud a 110 € e da Puerto de la
+Cruz a 115 €, e i giorni non sono gli stessi — dal sud "tutti i giorni tranne
+giovedi' e domenica", dal nord martedi', giovedi' e sabato.
+
+Il campo `transfer` **non andava bene**: quello e' per il ritiro che si aggiunge
+a un prezzo che esiste anche senza. Qui il ritiro in hotel e' dentro il prezzo
+in tutte e due i casi, non esiste una versione "senza". Quindi sta fra le icone
+(`transfer`, insieme a `ferry`, `guide`, `lunch`) e le due zone sono due
+`options.choices`, che e' anche l'unico posto dove i **giorni** possono cambiare
+da una all'altra.
+
+Il contrasto interno di CanaryVIP — l'intestazione dice "dal lunedi' al sabato",
+il modulo dice due elenchi diversi — si scioglie da solo: l'intestazione e'
+l'**unione** dei due. Quindi `days` della scheda e' `lun mar mer gio ven sab`
+(la domenica non si fa mai, e questo vale anche in lista dove la variante non
+c'e') e ogni variante stringe sui suoi: la variante vince.
+
+### La variante nord ha `price` e non `priceAdult`, apposta
+
+Del nord sappiamo solo il prezzo adulti. Con `priceAdult: 115` il totale si
+sarebbe fatto lo stesso, prendendo bambini e neonati dal **listino del sud**:
+115 + 75 + 15,50 e' un numero che sembra giusto e non lo e'. Con il solo `price`
+il bottone scrive 115 € e il totale non si fa: l'ufficio lo conferma. Provato in
+pagina — dal nord la riga "In breve" passa da tre righe di prezzo a una sola,
+"Prezzo 115 €", e il conto sparisce.
+
+E' la stessa scelta gia' fatta sul Luxury Cruiser per la barca privata, per un
+motivo diverso (li' il prezzo e' della barca, qui e' incompleto): in tutti e due
+i casi `price` senza `priceAdult` vuol dire "non moltiplicarmi per le persone".
+
+### Restano da chiedere
+
+- **prezzo bambini e neonati da Puerto de la Cruz** (il +5 € vale anche per
+  loro?);
+- **le lingue**: il modulo del fornitore ha un menu "Idioma", quindi la scelta
+  esiste, ma nella pagina si legge solo "Espanol". Finche' non arriva l'elenco
+  vero, niente campo `languages`: meglio nessuna domanda che una domanda con una
+  risposta sola;
+- **gli orari di partenza**: `times` resta assente (fasce segnaposto), perche'
+  il ritiro dipende dall'hotel e il fornitore lo comunica con la conferma;
+- **la foto**: `la-gomera.jpg` e' quadrata e da 27 KB, fuori dal formato
+  1200x800 delle altre. Non l'ho toccata perche' non ne e' arrivata un'altra, ma
+  e' quella che stona di piu' adesso che la scheda e' piena.
+
+### Provato
+
+`node controlla.js` → 0 errori (l'unico avviso e' quello di sempre su
+`opera-60`). Nel browser vero, tutte e tre le lingue: giorni giusti in italiano
+(`Lun · Mar · Mer · Ven · Sab` dal sud, `Mar · Gio · Sab` dal nord — mar e'
+martedi'), le righe dei prezzi che seguono la variante, nessun errore JS. Conti
+a mano dal sud: 2 adulti 220 €, 2 adulti + 1 bambino 295 €, con un neonato
+310,50 €. Dal nord nessun totale, come voluto. `sw.js` a `isla-v238`.

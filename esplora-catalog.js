@@ -4080,6 +4080,12 @@ const ESPLORA_CATALOG = [
     // Lunedi' e giovedi' non stavano nei dati ufficiali, erano presi dalla
     // pagina del rivenditore: confermati dal proprietario (8 settembre 2026).
     days: ["lun", "gio"],
+    // Le sei lingue le ha date il proprietario (8 settembre 2026). Non e'
+    // `LINGUE_TOUR`: quella lista ne ha cinque e qui c'e' anche l'olandese,
+    // quindi la lista e' scritta per esteso. Come sempre nella lingua stessa —
+    // "Nederlands", non "Olandese" — cosi' un olandese riconosce la sua riga
+    // anche guardando il sito in spagnolo. L'ordine e' quello dell'ufficio.
+    languages: ["Español", "English", "Deutsch", "Italiano", "Français", "Nederlands"],
     // `times` non c'e': le partenze vere non le sappiamo. L'ora del ritiro
     // dipende dall'hotel e si conferma con la prenotazione (vedi le note),
     // quindi restano le fasce segnaposto piu' "Da concordare".

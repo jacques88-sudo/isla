@@ -6530,12 +6530,28 @@ garantito", né "biglietti ufficiali", né il 5.00 su 7 recensioni, né i due pr
 (50 € dal sud, 58 € da Puerto de la Cruz: da noi la partenza è una sola, il sud). Le
 descrizioni sono riscritte da zero nelle tre lingue.
 
-### Le due cose che si sarebbe potuto mettere e non si sono messe
+### Le lingue: sei, e non sono `LINGUE_TOUR`
 
-**`languages`.** Il modulo ufficiale ha un campo "Idioma", ma l'unica lingua che ci si
-legge dentro è "Español", e CanaryVIP promette "guide multilingue" senza dire quali. Un
-menu delle lingue con dentro cinque voci inventate è peggio di nessun menu: il campo non
-c'è, e quali lingue ci siano davvero è una domanda per l'ufficio.
+All'inizio il campo non c'era. Il modulo ufficiale ha un campo "Idioma" ma l'unica lingua
+che ci si legge dentro è "Español", e CanaryVIP promette "guide multilingue" senza dire
+quali: un menu con dentro cinque voci indovinate sarebbe stato peggio di nessun menu.
+Chiesto all'ufficio, il proprietario ha mandato l'elenco vero (8 settembre 2026):
+
+    languages: ["Español", "English", "Deutsch", "Italiano", "Français", "Nederlands"]
+
+**Non si può usare `LINGUE_TOUR`**, ed è il motivo per cui la lista è scritta per esteso:
+la costante ne ha cinque e qui ce n'è una sesta, l'**olandese**. Scriverla nella lingua
+stessa — "Nederlands", non "Olandese" — è la regola di sempre del campo: un olandese
+riconosce la sua riga anche se sta guardando il sito in spagnolo. L'ordine è quello in cui
+le ha mandate l'ufficio, che parte dallo spagnolo invece che dall'inglese.
+
+Provato nelle tre lingue del sito: l'etichetta si traduce ("In che lingua", "En qué
+idioma", "Which language") e così la prima voce ("Indifferente", "Indiferente", "No
+preference"), mentre i sei nomi restano uguali. Scelto "Nederlands", il messaggio WhatsApp
+porta la riga `• Lingua: Nederlands` insieme al totale giusto. In "In breve" è comparsa la
+riga "Lingue", che con sei voci va a capo su due righe e si legge bene.
+
+### La cosa che si sarebbe potuta mettere e non si è messa
 
 **`guide`** fra le icone di "Cosa è incluso". Il fornitore ufficiale non la nomina mai; la
 "visita guidata" è testo del rivenditore. Stessa scelta fatta su `la-palma`. Resta la sola
@@ -6560,7 +6576,8 @@ conferma con la prenotazione.
   Lun · Gio." e blocca l'invio; il giovedì passa;
 - la scheda compare fra le 4 di "Teide e natura", con "da €50".
 
-Nessun errore JS. `CACHE_NAME` alzato a `isla-v247`, e a `isla-v248` con la conferma di giorni e prezzo.
+Nessun errore JS. `CACHE_NAME` alzato a `isla-v247`, poi a `isla-v248` con la conferma di
+giorni e prezzo e a `isla-v249` con le lingue.
 
 ### Un conflitto di merge rimasto dentro NOTES.md
 

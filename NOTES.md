@@ -6842,3 +6842,137 @@ data di venerdì (18 settembre 2026) la richiesta passa, e il messaggio esce com
 totale **€322** con 2 adulti, 1 bambino e 1 neonato (2 × 135 + 32 + 20). Nessun errore JS.
 
 `CACHE_NAME` alzato a `isla-v253`.
+
+---
+
+## La guida c'è su tutte, e il documento c'era già (8 settembre 2026)
+
+Tre cose dette dal proprietario in una volta sola, sulle escursioni toccate oggi
+(`santa-cruz-taganana`, `teide-national-park`, `icod-garachico-orotava`, `la-gomera`,
+`la-palma`, `gran-canaria`). Due chiuse qui, una lasciata aperta perché è una domanda vera.
+
+### 1. La guida c'è su tutte
+
+Mancava su tre schede, e mancava **per una ragione che si è rivelata sbagliata**: la pagina
+del fornitore non la nominava, quindi era stata tenuta fuori seguendo la regola "solo quello
+che il fornitore scrive". Su `santa-cruz-taganana` e su `la-palma` sta scritto nero su
+bianco nei commenti di ieri: "Niente `guide`: il fornitore non la nomina".
+
+**La regola resta giusta, ma l'ufficio batte la pagina del fornitore.** Admiral vende quelle
+escursioni e sa cosa c'è dentro; la pagina pubblica di un fornitore è materiale di vendita,
+non un contratto, e tace su un sacco di cose che ci sono. Quando l'ufficio dice "la guida
+c'è", quello è il dato migliore che abbiamo.
+
+Aggiunta a `santa-cruz-taganana`, `icod-garachico-orotava` e `la-palma`; le altre tre ce
+l'avevano già. Adesso tutte e sei mostrano l'icona.
+
+**Su `la-palma` la guida entra ma il transfer no**, ed è voluto: quella partenza è "sin
+recogida", si va al porto da soli. Sono due cose diverse e il fatto che una sia stata
+aggiunta non trascina l'altra.
+
+### 2. Il documento per il traghetto c'era già
+
+Le tre isole — La Palma, La Gomera, Gran Canaria — avevano **già tutte e tre** la nota del
+documento d'identità o passaporto, scritta con parole diverse ma con lo stesso contenuto, e
+in tutte e tre le lingue. Controllate una per una prima di rispondere: niente da aggiungere.
+Le altre tre escursioni non prendono nessun traghetto, quindi la nota lì non ci va.
+
+### 3. I giorni cambiano secondo la lingua — questo resta aperto
+
+Il proprietario ha detto che **i giorni di queste escursioni cambiano secondo la lingua**
+della guida. È un'informazione che il campo `days` non sa rappresentare, e il motivo è che
+`days` fa **due cose insieme**: scrive la riga "Giorni" in "In breve" **e blocca l'invio**
+della richiesta per le date fuori elenco, con "Questa escursione si fa solo: …".
+
+Se i giorni dipendono dalla lingua, quel blocco può dire di no a un cliente che invece
+potrebbe andare — e il no del sito non arriva nemmeno in ufficio, la richiesta non parte.
+Gli elenchi che abbiamo adesso sono quasi certamente i giorni di **una** lingua sola, non
+l'unione di tutte.
+
+Le tre strade, con quello che costano:
+
+| | cosa succede | cosa si perde |
+| --- | --- | --- |
+| togliere `days` | nessun no sbagliato, l'ufficio conferma la data | sparisce la riga "Giorni" |
+| lasciare com'è | la riga resta | il sito continua a rifiutare date buone |
+| giorni per lingua | la cosa giusta | va cambiato il codice **e** servono i giorni lingua per lingua, che non abbiamo |
+
+**Non deciso qui**: è un campo che il cliente legge e che gli impedisce di scrivere, e su
+`teide-national-park` c'è per giunta un avviso esplicito, scritto il 7 settembre, che i
+suoi quattro giorni sono confermati e che toglierli "è un errore, non una correzione".
+Domanda per il proprietario, non deduzione da fare qui.
+
+`CACHE_NAME` alzato a `isla-v254`.
+
+---
+
+## Il giorno "sbagliato" non ferma più la richiesta (8 settembre 2026)
+
+Poche ore fa, qui sopra, era stata scritta una domanda per il proprietario: i giorni
+cambiano secondo la lingua, e `days` blocca l'invio — che si fa? La risposta è stata prima
+"lasciare tutto com'è", e subito dopo la domanda che rimetteva tutto in fila:
+
+> perché il cliente è bloccato? il cliente sceglie la data in cui pensa ci sia l'escursione
+> e noi nel caso l'escursione sia un altro giorno lo comunichiamo prima della conferma
+
+**Le due risposte non si contraddicono: dicono che a essere sbagliato non era il dato, era
+il codice.** I giorni in catalogo restano quelli, la riga "Giorni" resta in "In breve" — a
+cambiare è cosa succede quando il cliente sceglie un'altra data.
+
+### Cosa faceva, e perché era un guaio
+
+`escursioni.js` fermava l'invio: `if (!giornoValido()) { … return; }`. Il cliente vedeva
+"Questa escursione si fa solo: Lun · Gio." e il bottone non faceva niente.
+
+Era stato pensato come una gentilezza — dirglielo subito invece di fargli aspettare una
+risposta — e con giorni certi lo sarebbe stato. Ma i giorni **non sono certi**: cambiano
+con la lingua della guida. Quindi il sito diceva di no a richieste buone, e quel no **non
+arrivava nemmeno in ufficio**: la richiesta non partiva, e la trattativa moriva lì senza
+che nessuno lo sapesse. Un cliente perso non lascia traccia da nessuna parte.
+
+Adesso il flusso è quello vero di Admiral: il cliente manda la data che gli va bene, e se
+quel giorno non si fa **glielo dice l'ufficio prima di confermare**. Che è esattamente
+quello che il resto della finestra dice già ("Ti rispondiamo entro 24 ore con la conferma").
+
+### Le tre modifiche
+
+**Il blocco via** (`escursioni.js`). Restano i due controlli che fermano davvero, e devono:
+troppi menu speciali per il numero di persone, e zero mezzi scelti su un jet ski. Lì il
+problema è dentro la richiesta e l'ufficio non potrebbe farci niente.
+
+**Il testo riscritto** (`i18n.js`, `req.dayError`). Da "Questa escursione **si fa solo**:
+{giorni}." a "Questa escursione **di solito** si fa: {giorni}. **Manda pure la richiesta**:
+se quel giorno non si fa, te lo diciamo prima della conferma." Nelle tre lingue. Un avviso
+che non dice come va a finire è peggio di niente: questo dice cosa fare adesso.
+
+**Il rosso via** (`styles.css`, `tour.html`, `escursioni.html`). Il messaggio usava
+`.request-day-error`, rosso `--danger`. Ma il rosso dice "hai sbagliato e non puoi andare
+avanti", cioè il contrario di quello che succede adesso.
+
+⚠ **La classe era condivisa con i due errori che bloccano davvero** (mezzi e menu): tinta
+di sabbia lì dentro, avrebbe fatto sembrare avvisi anche quelli. Trovato provando, non
+leggendo. Quindi l'avviso del giorno ha una classe sua, **`.request-day-note`**, color
+sabbia come il riquadro del totale; `.request-day-error` resta rossa dov'era. Cambiate le
+due righe in `tour.html` e `escursioni.html` — **la finestra è scritta due volte**, e
+toccarne una sola avrebbe lasciato la pagina di dettaglio col rosso e l'elenco senza.
+
+Il nome della chiave i18n resta `req.dayError` anche se non è più un errore: la usano tre
+file e due pagine, e rinominarla è churn per zero. Scritto in un commento, così chi la
+legge non si fida del nome.
+
+### Provato
+
+Su `santa-cruz-taganana`, che si fa lun e gio, con un **mercoledì** (16 settembre 2026),
+nelle tre lingue: l'avviso esce, è color sabbia con il testo scuro (non rosso), e **la
+richiesta parte** — il messaggio WhatsApp arriva completo con la data del mercoledì dentro,
+che è proprio quello che l'ufficio deve vedere per poter rispondere.
+
+Poi il contrario, che è la metà che si dimentica: su `jet-ski-safari-1-2h` con **zero
+mezzi** scelti il messaggio esce ancora **rosso** e la richiesta **non parte**. I due
+controlli veri sono intatti.
+
+Aggiornato anche il vocabolario in testa a `esplora-catalog.js`, che diceva ancora "e la
+richiesta non parte": era la riga che avrebbe rimesso il blocco alla prossima persona che
+la leggeva.
+
+`CACHE_NAME` alzato a `isla-v255`.

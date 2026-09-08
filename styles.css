@@ -1935,6 +1935,10 @@ body.menu-open { overflow: hidden; }
    scoprirlo alla fine, con tutto gia' compilato, e' la cosa che fa chiudere
    la pagina. Il margine negativo lo attacca al campo qui sopra, che ha gia'
    il suo margine sotto. */
+/* Rosso perche' ferma davvero: lo usano il messaggio dei menu speciali e
+   quello dei mezzi, che non lasciano partire la richiesta finche' il numero
+   non torna. Il messaggio del giorno **non e' piu' qui**: da quando la data
+   fuori elenco non blocca piu', ha una classe sua qui sotto. */
 .request-day-error {
   margin: -.8rem 0 1.1rem;
   padding: .6rem .9rem;
@@ -1944,6 +1948,21 @@ body.menu-open { overflow: hidden; }
   line-height: 1.45;
   color: var(--danger);
 }
+
+/* Il giorno fuori elenco: stessa forma, colore diverso. E' un avviso e la
+   richiesta parte lo stesso, quindi il rosso direbbe al cliente che ha
+   sbagliato qualcosa e che non puo' proseguire — il contrario di quello che
+   succede. Sabbia come il riquadro del totale, che nella finestra e' gia' il
+   colore delle cose da leggere prima di premere. */
+.request-day-note {
+  margin: -.8rem 0 1.1rem;
+  padding: .6rem .9rem;
+  background: var(--sand);
+  border-radius: 10px;
+  font-size: .85rem;
+  line-height: 1.45;
+}
+.request-day-note[hidden] { display: none; }
 .request-day-error[hidden] { display: none; }
 
 .request-optional {

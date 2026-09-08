@@ -4054,19 +4054,158 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "la-palma",
+    // Il titolo resta quello scritto da Admiral. Il fornitore la chiama
+    // "La Palma Tour Volcán": da cambiare solo se lo dice l'ufficio.
     title: "La Palma",
     category: "tour-isola",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
+    // Come su La Gomera, la zona e' la destinazione: il punto di ritrovo
+    // (porto di Los Cristianos) sta nell'itinerario e nelle note.
+    zone: { it: "Isola di La Palma", en: "Island of La Palma", es: "Isla de La Palma" },
+    duration: { it: "Circa 12 ore", en: "About 12 hours", es: "Unas 12 horas" },
+    // Una partenza sola e fissa: il ritrovo delle 07:45 al porto. Scritta
+    // qui, "Da concordare" sparisce e il cliente sa a che ora deve esserci.
+    times: ["07:45"],
+    // `days` non c'e': il fornitore non scrive in che giorni si fa. Da
+    // chiedere all'ufficio — un traghetto non va per forza tutti i giorni.
+    priceFrom: 145,
+    priceAdult: 145,
+    priceChild: 126,
+    // 20 € non e' gratis: i neonati pagano il posto sul traghetto.
+    priceInfant: 20,
+    // Le tre fasce combaciano senza buchi: 0-3, 4-11, 12+.
+    ages: { adult: "12+", child: "4-11", infant: "0-3" },
     family: true,
+    // Solo quello che il fornitore scrive: il pranzo ("Incluye: almuerzo en
+    // uno de los restaurantes típicos") e la traversata andata e ritorno.
+    // Niente `transfer`: questa partenza e' "sin recogida", si va al porto
+    // da soli. Niente `guide`: il fornitore non la nomina.
+    included: ["ferry", "lunch"],
     desc: {
-      it: "Escursione di una giornata sull'isola di La Palma.",
-      en: "A day trip to the island of La Palma.",
-      es: "Excursión de un día a la isla de La Palma."
+      it: "Una giornata sull'isola del vulcano: traghetto da Los Cristianos, il Mirador de la Concepción sopra il cratere della Caldereta e le colate del Cumbre Vieja, le più giovani di Spagna.",
+      en: "A day on the volcano island: the ferry from Los Cristianos, the Mirador de la Concepción above the Caldereta crater and the Cumbre Vieja lava flows, the youngest in Spain.",
+      es: "Un día en la isla del volcán: ferry desde Los Cristianos, el Mirador de la Concepción sobre el cráter de la Caldereta y las coladas del Cumbre Vieja, las más jóvenes de España."
     },
+    itinerary: [
+      {
+        time: "07:45",
+        text: {
+          it: "Ritrovo al porto di Los Cristianos, davanti all'ufficio Fred Olsen. Al porto ci si arriva da soli: su questa partenza il ritiro in hotel non c'è.",
+          en: "Meeting at the port of Los Cristianos, in front of the Fred Olsen office. You make your own way to the port: this departure has no hotel pick-up.",
+          es: "Encuentro en el puerto de Los Cristianos, delante de la oficina de Fred Olsen. Al puerto se llega por cuenta propia: esta salida no lleva recogida en el hotel."
+        }
+      },
+      {
+        time: "08:30",
+        text: {
+          it: "Partenza del traghetto per Santa Cruz de La Palma. La traversata dura circa due ore e un quarto.",
+          en: "The ferry leaves for Santa Cruz de La Palma. The crossing takes about two and a quarter hours.",
+          es: "Salida del ferry hacia Santa Cruz de La Palma. La travesía dura unas dos horas y cuarto."
+        }
+      },
+      {
+        time: "11:00",
+        text: {
+          it: "Sbarco nella capitale e tempo libero in centro: il Barco de la Virgen, il Castillo de Santa Catalina e la via dei balconi di legno, fra i più belli rimasti nelle Canarie.",
+          en: "Landing in the capital and free time in the centre: the Barco de la Virgen, the Castillo de Santa Catalina and the street of wooden balconies, among the finest left in the Canaries.",
+          es: "Desembarque en la capital y tiempo libre por el centro: el Barco de la Virgen, el Castillo de Santa Catalina y la calle de los balcones de madera, de los mejores que se conservan en Canarias."
+        }
+      },
+      {
+        text: {
+          it: "Si sale al Mirador de la Concepción, in cima al vulcano della Caldereta, dichiarato Spazio Naturale: da lassù si vedono insieme il cratere e la capitale.",
+          en: "Up to the Mirador de la Concepción, on top of the Caldereta volcano, a protected natural area: from there you see the crater and the capital in one view.",
+          es: "Se sube al Mirador de la Concepción, en lo alto del volcán de la Caldereta, declarado Espacio Natural: desde allí se ven a la vez el cráter y la capital."
+        }
+      },
+      {
+        text: {
+          it: "Si riprende la strada verso il Túnel del Tiempo: attraversando l'isola la vegetazione cambia sotto gli occhi, fino ad arrivare a sud-ovest, nella zona toccata dall'eruzione del Cumbre Vieja.",
+          en: "Back on the road towards the Túnel del Tiempo: crossing the island the vegetation changes before your eyes, until you reach the south-west and the area hit by the Cumbre Vieja eruption.",
+          es: "Se retoma el camino hacia el Túnel del Tiempo: al cruzar la isla la vegetación cambia a la vista, hasta llegar al suroeste, a la zona afectada por la erupción del Cumbre Vieja."
+        }
+      },
+      {
+        text: {
+          it: "Prima sosta nella zona di esclusione del quartiere di Tacande, con la prima vista sul vulcano. Poi si scende verso Tazacorte, costeggiando le colate laviche più giovani di Spagna.",
+          en: "First stop in the exclusion zone of the Tacande district, with the first view of the volcano. Then down towards Tazacorte, alongside the youngest lava flows in Spain.",
+          es: "Primera parada en la zona de exclusión del barrio de Tacande, con la primera vista del volcán. Después se baja hacia Tazacorte, bordeando las coladas lávicas más jóvenes de España."
+        }
+      },
+      {
+        text: {
+          it: "Pranzo in un ristorante tipico della zona, compreso nel prezzo.",
+          en: "Lunch at a local restaurant in the area, included in the price.",
+          es: "Almuerzo en un restaurante típico de la zona, incluido en el precio."
+        }
+      },
+      {
+        text: {
+          it: "Dopo mangiato si va al porto di Tazacorte a vedere la fajana: il delta di lava che l'eruzione ha costruito entrando in mare.",
+          en: "After lunch, on to the port of Tazacorte to see the fajana: the lava delta the eruption built as it reached the sea.",
+          es: "Después de comer se va al puerto de Tazacorte a ver la fajana: el delta lávico que la erupción formó al entrar en el mar."
+        }
+      },
+      {
+        text: {
+          it: "Ultima tappa al mirador della chiesa della Sagrada Familia, nel quartiere di Tajuya: l'ultimo vulcano delle Canarie è lì davanti, a circa due chilometri.",
+          en: "Last stop at the viewpoint by the church of the Sagrada Familia, in the Tajuya district: the most recent volcano in the Canaries stands right there, about two kilometres away.",
+          es: "Última parada en el mirador de la iglesia de la Sagrada Familia, en el barrio de Tajuya: el último volcán de Canarias está justo enfrente, a unos dos kilómetros."
+        }
+      },
+      {
+        time: "16:30",
+        text: {
+          it: "Rientro al porto di Santa Cruz de La Palma; il traghetto riparte alle 17:00.",
+          en: "Back at the port of Santa Cruz de La Palma; the ferry leaves again at 17:00.",
+          es: "Regreso al puerto de Santa Cruz de La Palma; el ferry sale de nuevo a las 17:00."
+        }
+      },
+      {
+        time: "19:30",
+        text: {
+          it: "Arrivo al porto di Los Cristianos.",
+          en: "Arrival at the port of Los Cristianos.",
+          es: "Llegada al puerto de Los Cristianos."
+        }
+      }
+    ],
+    notes: [
+      {
+        it: "Serve un documento d'identità o il passaporto in corso di validità: la compagnia lo chiede all'imbarco e senza non si sale sul traghetto.",
+        en: "You need a valid ID card or passport: the ferry company asks for it at boarding and without it you cannot get on.",
+        es: "Hace falta el documento de identidad o el pasaporte en vigor: la naviera lo pide al embarcar y sin él no se sube al ferry."
+      },
+      {
+        it: "Su questa partenza non c'è il ritiro in hotel: il ritrovo è alle 07:45 al porto di Los Cristianos, davanti all'ufficio Fred Olsen. Calcola il tempo per arrivarci.",
+        en: "This departure has no hotel pick-up: you meet at 07:45 at the port of Los Cristianos, in front of the Fred Olsen office. Allow time to get there.",
+        es: "Esta salida no lleva recogida en el hotel: el encuentro es a las 07:45 en el puerto de Los Cristianos, delante de la oficina de Fred Olsen. Calcula el tiempo para llegar."
+      },
+      {
+        it: "È una giornata intera, circa dodici ore: si torna a Los Cristianos verso le 19:30.",
+        en: "It is a full day, about twelve hours: you are back in Los Cristianos around 19:30.",
+        es: "Es un día entero, unas doce horas: se vuelve a Los Cristianos sobre las 19:30."
+      },
+      {
+        it: "La traversata dura più di due ore per parte. Se soffri il mare, il fornitore consiglia di prendere qualcosa contro il mal di mare prima di imbarcarti.",
+        en: "The crossing takes more than two hours each way. If you get seasick, the operator suggests taking something for it before boarding.",
+        es: "La travesía dura más de dos horas por trayecto. Si te mareas, el proveedor recomienda tomar algo para el mareo antes de embarcar."
+      },
+      {
+        it: "Ai miradores si sta in quota e fa più fresco che sulla costa: porta scarpe comode e qualcosa di caldo.",
+        en: "The viewpoints are up in the hills and cooler than the coast: bring comfortable shoes and something warm.",
+        es: "Los miradores están en altura y hace más fresco que en la costa: lleva calzado cómodo y algo de abrigo."
+      },
+      {
+        it: "L'escursione si svolge in spagnolo.",
+        en: "The excursion is run in Spanish.",
+        es: "La excursión se realiza en español."
+      },
+      {
+        it: "Se hai un'allergia o un'esigenza alimentare per il pranzo, scrivicelo nella richiesta: lo giriamo al ristorante.",
+        en: "If you have an allergy or a dietary requirement for lunch, tell us in your request: we pass it on to the restaurant.",
+        es: "Si tienes una alergia o una necesidad alimentaria para el almuerzo, escríbenoslo en la solicitud: se lo pasamos al restaurante."
+      }
+    ],
     image: "la-palma.jpg",
     published: true
   },

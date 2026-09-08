@@ -6077,3 +6077,116 @@ hotel, e che a cambiare e' solo l'ora. Manca la colonna delle ore, che e' una pa
 sul widget — e poi la conferma dell'ufficio, senza la quale un orario non si pubblica.
 Fatto quello, basta una riga in `PICKUP_TIMES` e anche qui "A che ora" smette di essere
 una domanda.
+
+---
+
+## La Palma: il segnaposto diventa il Tour Volcán (8 settembre 2026)
+
+La scheda `la-palma` esisteva dal principio come segnaposto — titolo, foto,
+`priceFrom: null`, zona e durata "Da definire". Adesso è arrivata la pagina del
+fornitore (**Island Excursions S.L. / Viajes Nere Izerdie**, lo stesso di
+`dati-fornitore/`) con il prodotto vero: *La Palma Tour Volcán*, la gita di un
+giorno all'isola del vulcano.
+
+**Prima cosa: non è un doppione.** Il confronto su `tour-isola` per prezzo,
+durata, porto e capienza non ha trovato nient'altro che passi da La Palma —
+l'unica scheda con quel nome era il segnaposto stesso. Quindi si riempie, non si
+crea.
+
+### Cosa è entrato e cosa no
+
+Dalla pagina del fornitore solo i fatti: il ritrovo alle **07:45** al porto di
+Los Cristianos davanti all'ufficio Fred Olsen, la partenza alle 08:30, l'arrivo
+a Santa Cruz de La Palma verso le 11:00, le tappe (Mirador de la Concepción sul
+cratere della Caldereta, Túnel del Tiempo, zona di esclusione di Tacande,
+Tazacorte, il pranzo, la fajana al porto di Tazacorte, il mirador della Sagrada
+Familia a Tajuya), il rientro alle 16:30 / 17:00 / 19:30, le **12 ore** di
+durata, la traversata di 2h15, il pranzo compreso, il documento obbligatorio per
+imbarcarsi, i consigli su scarpe e abrigo.
+
+I tre prezzi sono quelli del modulo: **145 / 126 / 20**, con le fasce `12+`
+`4-11` `0-3` che combaciano da sole, come su La Gomera.
+
+**Non** è entrato niente del contorno: le "excursiones que también te pueden
+interesar", i recapiti e la partita IVA del fornitore, nessuna frase copiata. Le
+descrizioni e le note sono riscritte da zero nelle tre lingue.
+
+### `priceInfant: 20`, e perché non è uno zero
+
+I bebè **pagano** 20 €: è il posto sul traghetto, esattamente come i 15,50 € di
+La Gomera. Metterlo a 0 avrebbe scritto "Gratis" su una riga che gratis non è.
+
+### Niente `transfer`: questa partenza è *sin recogida*
+
+Il prodotto si chiama per esteso "LA PALMA TOUR VOLCÁN **SIN RECOGIDA, DIRECTOS
+MUELLE SUR**": al porto ci si va da soli. È l'opposto di La Gomera, dove il
+ritiro in hotel è dentro il prezzo e sta fra le icone.
+
+Quindi `included` è solo `["ferry", "lunch"]`, e il fatto che il ritiro non ci
+sia è scritto due volte dove il cliente lo legge davvero: nella prima tappa
+dell'itinerario e nella seconda nota. Non è un dettaglio grafico — è la
+differenza fra essere alle 07:45 al porto ed essere alle 07:45 davanti al
+proprio hotel.
+
+Niente `guide` fra le icone: il fornitore non la nomina mai, e le icone dicono
+"vale sempre".
+
+⚠ Resta un attrito da guardare: nella finestra della richiesta il campo hotel
+dice "utile per il ritiro" — testo **fisso e condiviso da tutte le schede**. Su
+una scheda senza ritiro suona storto. Non l'ho toccato perché è UI comune a
+settanta schede e cambiarlo qui non era il compito; se dà fastidio si risolve
+con una riga condizionale, non con questa scheda.
+
+### `times: ["07:45"]` è il ritrovo, non la partenza del traghetto
+
+C'è una partenza sola e fissa. Scritta, "Da concordare" sparisce e la tendina
+mostra l'unica ora che al cliente serve sapere: quella in cui deve **esserci**.
+Le 08:30 del traghetto stanno nell'itinerario, dove sono un'informazione e non
+un appuntamento.
+
+### `days` assente, e questa volta è una domanda aperta
+
+Il fornitore non scrive in che giorni si fa. Il campo assente vuol dire "tutti i
+giorni", che su una gita in traghetto è una promessa che nessuno ci ha fatto —
+La Gomera, per dire, la domenica non si fa mai. **Da chiedere all'ufficio**: è
+la cosa che sulla scheda può essere sbagliata adesso.
+
+### `languages`: stessa scelta di La Gomera
+
+Il modulo del fornitore ha un menu "Idioma" con dentro solo **Español**. Una
+domanda con una risposta sola non è una domanda: niente campo `languages`, e il
+fatto — l'escursione si svolge in spagnolo — sta in una nota, dove si legge
+senza dover aprire niente.
+
+### Il titolo resta "La Palma"
+
+Il fornitore la chiama "La Palma Tour Volcán". Il segnaposto lo aveva scritto
+Admiral come "La Palma", e i titoli restano come li scrive Admiral: rinominarla
+è una parola dell'ufficio, non una decisione mia. Commento lasciato accanto al
+campo.
+
+### Restano da chiedere
+
+- **i giorni** in cui si fa (vedi sopra: adesso la scheda dice "tutti");
+- **se esiste la versione *con recogida*** — il nome del prodotto lo lascia
+  intendere. Se c'è, diventa una seconda `options.choices` col suo prezzo, non
+  un `transfer`, per lo stesso motivo di La Gomera;
+- **il titolo**: "La Palma" o "La Palma Tour Volcán";
+- **le altre lingue**, se ce ne sono oltre lo spagnolo.
+
+### Provato
+
+`node controlla.js` → 0 errori (l'unico avviso è quello di sempre su
+`opera-60`). Nel browser vero, tutte e tre le lingue, nessun errore JS: le tre
+righe di prezzo con le fasce fra parentesi, l'itinerario con gli orari solo dove
+ci sono, le due icone, le sette note. Conti a mano: 2 adulti **290 €**, 2 adulti
++ 1 bambino **416 €**, con un neonato **436 €**. La card in elenco mostra "da
+€145", "Isola di La Palma", "Circa 12 ore". `sw.js` alzato a `isla-v241`
+(v239 al momento del commit, poi il merge con `main` — che era passata a v240 col
+Cabrio Bus — ha imposto un numero piu' alto di tutti e due).
+
+La foto `la-palma.jpg` era già lì e l'ho lasciata: è Santa Cruz de La Palma
+vista da sopra, cioè letteralmente il panorama del Mirador de la Concepción, che
+è una tappa del giro. Nessun marchio di altri sopra. È 1000×563 invece di
+1200×800 — fuori formato come quella di La Gomera, ma non ne è arrivata
+un'altra e sostituirla con una peggiore non è un miglioramento.

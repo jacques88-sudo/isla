@@ -5893,7 +5893,6 @@ Il "(facoltativo)" accanto all'etichetta e' diventato "**(utile per il
 pick-up)**": dice perche' compilarlo invece di dire che si puo' saltare. Il
 campo resta facoltativo davvero, non ha `required`.
 
-<<<<<<< HEAD
 ### La seconda escursione: Teide, Icod, Garachico e Masca
 
 `PICKUP_TIMES["teide-icod-garachico-masca"]`, 66 orari raccolti il 7 settembre
@@ -5961,7 +5960,9 @@ schede: su Icod Cleopatra 08:45 e Perla Gris 07:45, sul Teide 09:15 e 08:15,
 stesso punto di raccolta in tutti e due i casi. Girasol, che il punto ce l'ha
 senza nome, non mostra niente su nessuna delle due. Nessun errore JS. `sw.js` a
 `isla-v246`.
-=======
+
+---
+
 ## La Gomera: la scheda riempita con i dati ufficiali
 
 Era un segnaposto: `duration` "Da definire", `priceFrom: 99`, `priceAdult` e
@@ -6450,4 +6451,121 @@ Cristianos, Las Galletas, Costa Adeje, Chío, Guargacho…), e i casi con una pa
 Provato nel browser in inglese e in spagnolo su tre schede (`teide-national-park`,
 `buggy-2-3h`, `santa-cruz-taganana`): "South Tenerife" e "Tenerife sur". `CACHE_NAME`
 alzato a `isla-v245`.
->>>>>>> origin/main
+
+---
+
+## Santa Cruz + Anaga + La Laguna: la scheda riempita coi dati ufficiali (8 settembre 2026)
+
+Era un segnaposto: titolo "Santa Cruz + Taganana Tour", `duration` "Da definire",
+`priceFrom: 48` con `priceAdult` e `priceChild` a **0**, tre righe di descrizione e niente
+altro. Il proprietario ha mandato due fonti — la pagina del fornitore che organizza il
+giro (Nere Izerdie / Island Excursions, in spagnolo, col modulo di prenotazione) e quella
+di CanaryVIP che rivende un giro simile — dicendo, come per La Gomera, che **in caso di
+contrasto vale la prima**.
+
+### Aggiornata, non creata
+
+Prima cosa: la scheda c'era già. `santa-cruz-taganana` è lo stesso giro (stessa capitale,
+stesso massiccio di Anaga, stessa partenza dal sud), quindi si aggiorna quella invece di
+fare il doppione che a suo tempo era stato il Kalima Kat.
+
+**L'id resta `santa-cruz-taganana`** anche se il titolo non nomina più Taganana. È la
+stessa regola delle tre categorie rinominate ad agosto: si cambia quello che si vede, non
+gli id. Cambiarlo qui butterebbe via i link già mandati e le richieste ferme in
+`localStorage` di chi la scheda l'ha già messa in lista. Per lo stesso motivo resta
+`santa-cruz-taganana.jpg`: quel file è anche la foto della categoria "Tour e visite" in
+`index.html`, e rinominarlo sarebbe una modifica in tre punti per zero guadagno.
+
+**Spostata in "Teide e natura"** (`teide-natura`), come ha chiesto il proprietario: mezza
+giornata sta dentro il Parco Rurale di Anaga, che è Riserva della Biosfera. "Tour e visite"
+scende a 6 schede, "Teide e natura" sale a 4. La foto della categoria "Tour e visite" non
+si tocca: vive in `CATEGORIES`, non nel catalogo.
+
+### Il contrasto vero: Cruz del Carmen, non Taganana
+
+Le due fonti descrivono **due percorsi diversi** dentro Anaga. L'ufficiale si ferma a
+**Cruz del Carmen**; CanaryVIP a **Taganana**, e ci aggiunge il Monte de las Mercedes. È
+esattamente il caso in cui vale la prima: nell'itinerario e nel titolo c'è Cruz del
+Carmen, Taganana è sparita da tutte e tre le lingue.
+
+Sulla Playa de las Teresitas le due fonti vanno d'accordo — **si passa davanti e non ci si
+ferma** — ed è il tipo di dettaglio che è meglio scritto che taciuto: un cliente che legge
+"Teresitas" nell'itinerario si porta il costume per niente. Sta nell'itinerario ("senza
+sosta") e ripetuto fra i consigli.
+
+### I prezzi: 50 e 31,50, e il 48 che c'era prima
+
+Dal modulo ufficiale: **adulti 50 €**, **bambini (2-11) 31,50 €**. Le due fasce combaciano
+da sole, `2-11` e `12+`, senza il buco che `controlla.js` cerca.
+
+**`priceInfant` non c'è, ed è voluto.** Il fornitore scrive "Bebés (**NO PONER**)": la riga
+dei neonati non va messa. Assente vuol dire "non lo sappiamo", che qui è la verità — non
+sappiamo se sotto i 2 anni si sale gratis o non si sale. Provato nel browser: la riga
+"Neonati" nella finestra della richiesta non compare proprio.
+
+⚠ **Il prezzo sale da 48 a 50.** In catalogo c'era `priceFrom: 48`, che nessuno ha
+documentato da dove venisse; l'ufficiale dice 50. È il caso che `CLAUDE.md` chiama "alzare
+un prezzo dopo che il cliente l'ha letto", quindi va detto invece che fatto di nascosto:
+qui `priceAdult` e `priceChild` erano a **0**, cioè un totale non si è mai potuto fare e
+il cliente non ha mai visto un conto vero, solo un "da €48" in elenco. **Se l'ufficio
+preferisce tenere il 48 si cambia in una riga.**
+
+### Cosa è entrato da CanaryVIP e cosa no
+
+Solo i fatti operativi, e solo dove l'ufficiale tace:
+
+- **la durata**, circa 8 ore;
+- **i giorni**, lunedì e giovedì.
+
+⚠ **I giorni sono la cosa da confermare.** Non stanno nei dati ufficiali, e `days` non è un
+campo innocuo: chi sceglie un mercoledì **si vede bloccare la richiesta**. In più CanaryVIP
+vende il percorso di Taganana, quindi i suoi giorni potrebbero non essere quelli di questo
+giro. Sono stati messi lo stesso perché il proprietario ha dato quella pagina apposta per
+riempire i buchi, ma è la prima riga da far guardare all'ufficio.
+
+**Non è entrato niente altro**: né la politica di cancellazione (48 ore per i gruppi, 4 e 6
+giorni per quelli grossi — le nostre restano **24 ore, sempre**), né "miglior prezzo
+garantito", né "biglietti ufficiali", né il 5.00 su 7 recensioni, né i due prezzi per zona
+(50 € dal sud, 58 € da Puerto de la Cruz: da noi la partenza è una sola, il sud). Le
+descrizioni sono riscritte da zero nelle tre lingue.
+
+### Le due cose che si sarebbe potuto mettere e non si sono messe
+
+**`languages`.** Il modulo ufficiale ha un campo "Idioma", ma l'unica lingua che ci si
+legge dentro è "Español", e CanaryVIP promette "guide multilingue" senza dire quali. Un
+menu delle lingue con dentro cinque voci inventate è peggio di nessun menu: il campo non
+c'è, e quali lingue ci siano davvero è una domanda per l'ufficio.
+
+**`guide`** fra le icone di "Cosa è incluso". Il fornitore ufficiale non la nomina mai; la
+"visita guidata" è testo del rivenditore. Stessa scelta fatta su `la-palma`. Resta la sola
+`transfer`, il ritiro in hotel.
+
+**`times` non c'è**, quindi in "A che ora" restano le fasce segnaposto più "Da concordare",
+e la scheda non è in `PICKUP_TIMES`: mostra il punto di raccolta senza l'ora. È il modo
+giusto finché gli orari veri non arrivano — un'ora inventata mette un cliente alla fermata
+all'ora sbagliata. Nei consigli c'è scritto che l'ora del ritiro dipende dall'hotel e si
+conferma con la prenotazione.
+
+### Provato
+
+`node controlla.js` → 0 errori (i due avvisi sono quelli di prima, `opera-60` e
+`masca-teide-cabrio-bus`). Nel browser, a 420 px:
+
+- la pagina di dettaglio nelle **tre lingue**: titolo uguale in tutte e tre, "Punto di
+  partenza — Tenerife Sud / South Tenerife / Tenerife sur", "Giorni — Lun · Gio";
+- **il totale a mano**: 2 adulti + 1 bambino → **€131,50** (2 × 50 + 31,50);
+- niente riga "Neonati", niente menu "In che lingua";
+- **una data di mercoledì** (16 settembre 2026) fa uscire "Questa escursione si fa solo:
+  Lun · Gio." e blocca l'invio; il giovedì passa;
+- la scheda compare fra le 4 di "Teide e natura", con "da €50".
+
+Nessun errore JS. `CACHE_NAME` alzato a `isla-v247`.
+
+### Un conflitto di merge rimasto dentro NOTES.md
+
+Trovato passando di qui, non c'entra con la scheda: `NOTES.md` su `main` aveva ancora
+dentro i tre marcatori `<<<<<<< HEAD`, `=======` e `>>>>>>> origin/main` (righe 5896, 5964
+e 6453), da un merge chiuso male. **I due lati erano tutti e due contenuto buono e
+diverso** — gli orari del pick-up di Teide/Icod/Garachico/Masca da una parte, La Gomera e
+le sezioni dopo dall'altra — quindi sono stati tenuti tutti e due, in quell'ordine, con il
+`---` di sempre in mezzo. Non è stato buttato via niente.

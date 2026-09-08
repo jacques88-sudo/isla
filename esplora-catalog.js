@@ -4058,23 +4058,114 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    // L'id resta `santa-cruz-taganana` anche se il titolo non dice piu'
+    // Taganana: gli id non si cambiano (stessa regola delle tre categorie
+    // rinominate ad agosto), e cambiarlo qui butterebbe via i link gia' salvati
+    // e le richieste ferme in localStorage. Il nome del file della foto lo
+    // segue: `santa-cruz-taganana.jpg` serve anche alla griglia della home.
     id: "santa-cruz-taganana",
-    title: "Santa Cruz + Taganana Tour",
-    category: "tour-isola",
+    // Il titolo e' quello del fornitore ufficiale, uguale in tutte e tre le
+    // lingue come tutti gli altri.
+    title: "Santa Cruz + Anaga + La Laguna",
+    // Spostata da "Tour e visite" a "Teide e natura" per scelta del
+    // proprietario (8 settembre 2026): mezza giornata sta nel Parco Rurale di
+    // Anaga, Riserva della Biosfera.
+    category: "teide-natura",
     // Il nord-est e' dove va il pullman, non da dove parte: come sul giro di
     // Icod, quel campo in pagina si legge "Punto di partenza", e la partenza
-    // e' una sola, il sud (proprietario, 8 settembre 2026). Santa Cruz e
-    // Taganana restano scritte nel titolo e nella descrizione.
+    // e' una sola, il sud (proprietario, 8 settembre 2026). Santa Cruz, Anaga
+    // e La Laguna restano scritte nel titolo e nella descrizione.
     zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 48,
-    priceAdult: 0,
-    priceChild: 0,
+    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
+    // ⚠ DA CONFERMARE: lunedi' e giovedi' non stanno nei dati ufficiali, sono
+    // presi dalla pagina del rivenditore. Se sono sbagliati un cliente che
+    // sceglie un altro giorno si vede bloccare la richiesta.
+    days: ["lun", "gio"],
+    // `times` non c'e': le partenze vere non le sappiamo. L'ora del ritiro
+    // dipende dall'hotel e si conferma con la prenotazione (vedi le note),
+    // quindi restano le fasce segnaposto piu' "Da concordare".
+    priceFrom: 50,
+    priceAdult: 50,
+    priceChild: 31.5,
+    // Niente `priceInfant`: il fornitore scrive "Bebés (NO PONER)", cioe' la
+    // riga dei neonati non si mette. Assente vuol dire "non lo sappiamo", che
+    // qui e' la verita': non sappiamo se sotto i 2 anni si sale gratis.
+    // Le due fasce combaciano: 2-11 e 12+.
+    ages: { adult: "12+", child: "2-11" },
+    // Solo il ritiro in hotel. Niente `guide`: il fornitore ufficiale non la
+    // nomina, e "guide multilingue" e' testo del rivenditore.
+    included: ["transfer"],
+    itinerary: [
+      {
+        text: {
+          it: "Ritiro alla fermata concordata e salita verso la capitale per l'autostrada del sud",
+          en: "Pickup at your agreed stop and the drive up to the capital along the southern motorway",
+          es: "Recogida en su parada y subida hacia la capital por la autopista del sur"
+        }
+      },
+      {
+        text: {
+          it: "Santa Cruz: tempo libero fra i luoghi simbolo della capitale e i negozi",
+          en: "Santa Cruz: free time among the capital's landmarks and its shops",
+          es: "Santa Cruz: tiempo libre entre los lugares emblemáticos de la capital y las tiendas"
+        }
+      },
+      {
+        text: {
+          it: "Si prosegue verso Anaga passando davanti alla Playa de las Teresitas, senza sosta",
+          en: "On towards Anaga, passing Playa de las Teresitas without stopping",
+          es: "Se sigue hacia Anaga pasando por la Playa de las Teresitas, sin parada"
+        }
+      },
+      {
+        text: {
+          it: "Cruz del Carmen, dentro il Parco Rurale di Anaga, Riserva della Biosfera: le vedute sul massiccio e la sosta per il pranzo",
+          en: "Cruz del Carmen, inside the Anaga Rural Park, a Biosphere Reserve: the views over the massif and the lunch stop",
+          es: "Cruz del Carmen, dentro del Parque Rural de Anaga, Reserva de la Biosfera: las vistas del macizo y la parada para almorzar"
+        }
+      },
+      {
+        text: {
+          it: "La Laguna, città storica e universitaria, Patrimonio dell'Umanità UNESCO dal 1999",
+          en: "La Laguna, the historic university city, a UNESCO World Heritage Site since 1999",
+          es: "La Laguna, ciudad histórica y universitaria, Patrimonio de la Humanidad por la UNESCO desde 1999"
+        }
+      },
+      {
+        text: {
+          it: "Rientro in hotel",
+          en: "Back to the hotel",
+          es: "Vuelta al hotel"
+        }
+      }
+    ],
+    notes: [
+      {
+        it: "Il pranzo non è incluso: la sosta per mangiare si fa a Cruz del Carmen.",
+        en: "Lunch is not included: the meal stop is at Cruz del Carmen.",
+        es: "El almuerzo no está incluido: la parada para comer se hace en Cruz del Carmen."
+      },
+      {
+        it: "Alla Playa de las Teresitas si passa davanti ma non ci si ferma: non è una tappa del giro.",
+        en: "Playa de las Teresitas is only driven past, there is no stop: it is not one of the stages.",
+        es: "Por la Playa de las Teresitas solo se pasa, no hay parada: no es una etapa del recorrido."
+      },
+      {
+        it: "Ad Anaga si sta in quota e il tempo cambia in fretta, anche quando al sud c'è il sole: porta una felpa o una giacca leggera.",
+        en: "Anaga is up in the hills and the weather changes quickly, even when it is sunny in the south: bring a sweatshirt or a light jacket.",
+        es: "En Anaga se está en altura y el tiempo cambia rápido, aunque en el sur haga sol: lleva una sudadera o una chaqueta ligera."
+      },
+      {
+        it: "L'ora del ritiro dipende dall'hotel e si conferma con la prenotazione.",
+        en: "The pickup time depends on your hotel and is confirmed with the booking.",
+        es: "La hora de recogida depende del hotel y se confirma con la reserva."
+      }
+    ],
     family: true,
     desc: {
-      it: "La capitale Santa Cruz e il borgo di Taganana, nel massiccio di Anaga.",
-      en: "The capital Santa Cruz and the village of Taganana, in the Anaga massif.",
-      es: "La capital, Santa Cruz, y el pueblo de Taganana, en el macizo de Anaga."
+      it: "La capitale Santa Cruz, il Parco Rurale di Anaga a Cruz del Carmen e La Laguna, Patrimonio UNESCO: il nord-est dell'isola in una giornata, con ritiro alla fermata concordata.",
+      en: "The capital Santa Cruz, the Anaga Rural Park at Cruz del Carmen and UNESCO-listed La Laguna: the north-east of the island in a day, with pickup at your agreed stop.",
+      es: "La capital, Santa Cruz, el Parque Rural de Anaga en Cruz del Carmen y La Laguna, Patrimonio de la UNESCO: el noreste de la isla en un día, con recogida en su parada."
     },
     image: "santa-cruz-taganana.jpg",
     published: true

@@ -1880,7 +1880,12 @@ const ESPLORA_CATALOG = [
     // Categoria decisa dal proprietario l'8 settembre 2026: sta con il Teide,
     // non con i tour dell'isola.
     category: "teide-natura",
-    zone: { it: "Tenerife nord", en: "North Tenerife", es: "Tenerife norte" },
+    // "Tenerife nord" era rimasto da quando la scheda si chiamava
+    // Icod/Garachico/Orotava, e diceva il falso: quel campo in pagina si legge
+    // "Punto di partenza", e dal nord non parte niente. Il proprietario l'8
+    // settembre 2026: la partenza e' **una sola**, il sud, e vale per tutte
+    // le escursioni. Il nord qui e' dove si va, non da dove si parte.
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     // Listino del fornitore (Nere Izerdie / Island Excursions, Costa Adeje),
     // mandato dall'ufficio l'8 settembre 2026: 58 € adulti, 37,50 € bambini.
@@ -1892,6 +1897,10 @@ const ESPLORA_CATALOG = [
     // `ages.infant` e niente `priceInfant`. Campo assente = "non lo
     // sappiamo", che e' esattamente la situazione — non "gratis".
     ages: { adult: "12+", child: "2-11" },
+    // Tutti i giorni tranne la domenica (proprietario, 8 settembre 2026). Il
+    // campo elenca i giorni buoni, non quello escluso, quindi sono sei sigle.
+    // **mar e' martedi', mer e' mercoledi'.**
+    days: ["lun", "mar", "mer", "gio", "ven", "sab"],
     // Il fornitore scrive solo il ritiro ("le recogeremos en su parada"):
     // il transfer si puo' accendere, la guida no, che non la nomina.
     included: ["transfer"],
@@ -4045,7 +4054,11 @@ const ESPLORA_CATALOG = [
     id: "santa-cruz-taganana",
     title: "Santa Cruz + Taganana Tour",
     category: "tour-isola",
-    zone: { it: "Tenerife nord-est", en: "North-east Tenerife", es: "Tenerife noreste" },
+    // Il nord-est e' dove va il pullman, non da dove parte: come sul giro di
+    // Icod, quel campo in pagina si legge "Punto di partenza", e la partenza
+    // e' una sola, il sud (proprietario, 8 settembre 2026). Santa Cruz e
+    // Taganana restano scritte nel titolo e nella descrizione.
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 48,
     priceAdult: 0,

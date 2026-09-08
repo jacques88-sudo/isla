@@ -6308,3 +6308,52 @@ scheda che la vuole. Non va sul `masca-teide-cabrio-bus`, che aspetta ancora la 
 **bus scoperto**, per il motivo scritto ieri.
 
 `CACHE_NAME` alzato a `isla-v243`.
+
+---
+
+## La partenza è una sola, e la domenica non si va (8 settembre 2026)
+
+Risposte del proprietario alle due domande lasciate aperte sul giro Teide + Icod +
+Garachico + Masca.
+
+### "Non c'è partenza dal nord, è una sola, e questo vale per tutto"
+
+Il campo `zone` in pagina si legge **"Punto di partenza"**, e su `icod-garachico-orotava`
+diceva "Tenerife nord": un residuo del rinomino di agosto, quando la scheda era il giro di
+Icod/Garachico/Orotava e quel nord era la zona del giro. Adesso dice il vero:
+**"Tenerife Sud"**, nelle tre lingue.
+
+La regola vale per tutte le escursioni, quindi è stata applicata anche a
+**`santa-cruz-taganana`**, che era l'altro caso identico: "Tenerife nord-est" era la
+destinazione del pullman, non il punto di ritiro. Santa Cruz e Taganana restano scritte nel
+titolo e nella descrizione, che è dove il cliente le cerca.
+
+**Due schede col nord sono state lasciate come stanno, di proposito** — lì il nord non è la
+partenza di un pullman ma il posto dove sta l'attività:
+
+- `loro-parque` → "Puerto de la Cruz" è dove sta il parco. La riga `transfer` dice già, per
+  esteso, "da Tenerife Sud", con i giorni zona per zona.
+- `quad-nord-puerto-cruz` → il quad si guida lì, e la descrizione del fornitore dice
+  "partenza da Puerto de la Cruz". Se anche questa si fa col ritiro dal sud, va cambiata:
+  è una domanda per l'ufficio, non una deduzione da fare qui.
+
+Resta un piccolo scarto di scrittura: `teide-national-park` e i tre buggy hanno
+`zone: "Tenerife Sud"` come **stringa sola**, quindi in inglese e spagnolo si legge
+"Tenerife Sud" in italiano. Le due schede toccate oggi hanno la forma a tre lingue. Da
+uniformare quando si passa di lì.
+
+### I giorni: tutti tranne la domenica
+
+`days: ["lun", "mar", "mer", "gio", "ven", "sab"]` su `icod-garachico-orotava`. Il campo
+elenca i **giorni buoni**, non quello escluso, e per questo sono sei sigle invece di una
+frase "tranne la domenica".
+
+Provato nel browser: la riga "Giorni — Lun · Mar · Mer · Gio · Ven · Sab" compare in
+"In breve", e nella finestra della richiesta una data di domenica (13 settembre 2026) fa
+uscire subito "Questa escursione si fa solo: Lun · Mar · Mer · Gio · Ven · Sab" e blocca
+l'invio; il lunedì passa.
+
+`CACHE_NAME` alzato a `isla-v244`.
+
+**Resta aperto** solo l'orario: le partenze vere non le abbiamo, quindi in "A che ora"
+restano le fasce segnaposto più "Da concordare".

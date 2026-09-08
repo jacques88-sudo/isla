@@ -6620,9 +6620,19 @@ tutte le altre che la usano.
 
 ### L'avviso in testa a `LINGUE_TOUR` resta
 
-La costante ha ancora scritto sopra "⚠ QUESTA LISTA E' DA CONFERMARE", e **resta com'è**:
-il proprietario ha confermato quelle cinque per il Teide, non per ogni scheda che usa la
-costante. L'avviso continua a valere per le altre, che le lingue non se le sono ancora
-sentite chiedere una per una.
+La costante ha ancora scritto sopra "⚠ QUESTA LISTA E' DA CONFERMARE", e **resta com'è**.
+Chiesto al proprietario se quelle cinque valessero per tutte le schede che usano la
+costante, la risposta è stata netta: **"ogni scheda ha la sua lingua"** (8 settembre 2026).
+
+È la regola che chiude la questione, e vale la pena tenerla a mente perché è controintuitiva
+quando si guarda il codice: `LINGUE_TOUR` sembra "le lingue di Isla", e invece è solo una
+**scorciatoia di scrittura** per le schede che per caso hanno quelle cinque. Non è una
+verità sul catalogo. Quindi:
+
+- una scheda **senza** `languages` non vuol dire "parla le solite": vuol dire che non lo
+  abbiamo ancora chiesto, e infatti la domanda "In che lingua" non compare;
+- le lingue si chiedono **una scheda alla volta**, come i giorni e gli orari;
+- `LINGUE_TOUR` non si allarga né si restringe per far tornare una scheda: si cambia solo
+  se cambiano davvero le cinque di default, e cambierebbe sotto i piedi a tutte le altre.
 
 Nessun file di codice toccato, quindi `CACHE_NAME` resta a `isla-v249`.

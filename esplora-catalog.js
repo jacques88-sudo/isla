@@ -1915,9 +1915,11 @@ const ESPLORA_CATALOG = [
     // lo parla, anche guardando il sito in spagnolo. L'ordine e' quello
     // dell'ufficio.
     languages: ["Español", "English", "Deutsch", "Русский", "Italiano", "Français", "Nederlands"],
-    // Il fornitore scrive solo il ritiro ("le recogeremos en su parada"):
-    // il transfer si puo' accendere, la guida no, che non la nomina.
-    included: ["transfer"],
+    // Il fornitore scriveva solo il ritiro ("le recogeremos en su parada") e
+    // per questo la guida era rimasta fuori. Il proprietario ha detto che la
+    // guida c'e' su tutte queste escursioni (8 settembre 2026): l'ufficio sa
+    // cosa vende meglio della pagina del fornitore, e la guida entra.
+    included: ["transfer", "guide"],
     // Le tappe sono in ordine ma senza orario: il fornitore non li da', e
     // l'ora del ritiro cambia da fermata a fermata.
     itinerary: [
@@ -4130,9 +4132,10 @@ const ESPLORA_CATALOG = [
     // qui e' la verita': non sappiamo se sotto i 2 anni si sale gratis.
     // Le due fasce combaciano: 2-11 e 12+.
     ages: { adult: "12+", child: "2-11" },
-    // Solo il ritiro in hotel. Niente `guide`: il fornitore ufficiale non la
-    // nomina, e "guide multilingue" e' testo del rivenditore.
-    included: ["transfer"],
+    // Il ritiro in hotel e la guida. La guida era rimasta fuori perche' il
+    // fornitore ufficiale non la nominava e "guide multilingue" era testo del
+    // rivenditore; il proprietario ha confermato che c'e' (8 settembre 2026).
+    included: ["transfer", "guide"],
     itinerary: [
       {
         text: {
@@ -4259,11 +4262,13 @@ const ESPLORA_CATALOG = [
     // Le tre fasce combaciano senza buchi: 0-3, 4-11, 12+.
     ages: { adult: "12+", child: "4-11", infant: "0-3" },
     family: true,
-    // Solo quello che il fornitore scrive: il pranzo ("Incluye: almuerzo en
-    // uno de los restaurantes típicos") e la traversata andata e ritorno.
-    // Niente `transfer`: questa partenza e' "sin recogida", si va al porto
-    // da soli. Niente `guide`: il fornitore non la nomina.
-    included: ["ferry", "lunch"],
+    // Il pranzo ("Incluye: almuerzo en uno de los restaurantes típicos"), la
+    // traversata andata e ritorno, e la guida — che il fornitore non nominava
+    // ma che il proprietario ha confermato (8 settembre 2026).
+    // **Niente `transfer` lo stesso**: questa partenza e' "sin recogida", si va
+    // al porto da soli. La guida c'e', il ritiro no: sono due cose diverse e
+    // qui la seconda resta fuori.
+    included: ["ferry", "lunch", "guide"],
     desc: {
       it: "Una giornata sull'isola del vulcano: traghetto da Los Cristianos, il Mirador de la Concepción sopra il cratere della Caldereta e le colate del Cumbre Vieja, le più giovani di Spagna.",
       en: "A day on the volcano island: the ferry from Los Cristianos, the Mirador de la Concepción above the Caldereta crater and the Cumbre Vieja lava flows, the youngest in Spain.",

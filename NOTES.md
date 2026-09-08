@@ -6842,3 +6842,64 @@ data di venerdì (18 settembre 2026) la richiesta passa, e il messaggio esce com
 totale **€322** con 2 adulti, 1 bambino e 1 neonato (2 × 135 + 32 + 20). Nessun errore JS.
 
 `CACHE_NAME` alzato a `isla-v253`.
+
+---
+
+## La guida c'è su tutte, e il documento c'era già (8 settembre 2026)
+
+Tre cose dette dal proprietario in una volta sola, sulle escursioni toccate oggi
+(`santa-cruz-taganana`, `teide-national-park`, `icod-garachico-orotava`, `la-gomera`,
+`la-palma`, `gran-canaria`). Due chiuse qui, una lasciata aperta perché è una domanda vera.
+
+### 1. La guida c'è su tutte
+
+Mancava su tre schede, e mancava **per una ragione che si è rivelata sbagliata**: la pagina
+del fornitore non la nominava, quindi era stata tenuta fuori seguendo la regola "solo quello
+che il fornitore scrive". Su `santa-cruz-taganana` e su `la-palma` sta scritto nero su
+bianco nei commenti di ieri: "Niente `guide`: il fornitore non la nomina".
+
+**La regola resta giusta, ma l'ufficio batte la pagina del fornitore.** Admiral vende quelle
+escursioni e sa cosa c'è dentro; la pagina pubblica di un fornitore è materiale di vendita,
+non un contratto, e tace su un sacco di cose che ci sono. Quando l'ufficio dice "la guida
+c'è", quello è il dato migliore che abbiamo.
+
+Aggiunta a `santa-cruz-taganana`, `icod-garachico-orotava` e `la-palma`; le altre tre ce
+l'avevano già. Adesso tutte e sei mostrano l'icona.
+
+**Su `la-palma` la guida entra ma il transfer no**, ed è voluto: quella partenza è "sin
+recogida", si va al porto da soli. Sono due cose diverse e il fatto che una sia stata
+aggiunta non trascina l'altra.
+
+### 2. Il documento per il traghetto c'era già
+
+Le tre isole — La Palma, La Gomera, Gran Canaria — avevano **già tutte e tre** la nota del
+documento d'identità o passaporto, scritta con parole diverse ma con lo stesso contenuto, e
+in tutte e tre le lingue. Controllate una per una prima di rispondere: niente da aggiungere.
+Le altre tre escursioni non prendono nessun traghetto, quindi la nota lì non ci va.
+
+### 3. I giorni cambiano secondo la lingua — questo resta aperto
+
+Il proprietario ha detto che **i giorni di queste escursioni cambiano secondo la lingua**
+della guida. È un'informazione che il campo `days` non sa rappresentare, e il motivo è che
+`days` fa **due cose insieme**: scrive la riga "Giorni" in "In breve" **e blocca l'invio**
+della richiesta per le date fuori elenco, con "Questa escursione si fa solo: …".
+
+Se i giorni dipendono dalla lingua, quel blocco può dire di no a un cliente che invece
+potrebbe andare — e il no del sito non arriva nemmeno in ufficio, la richiesta non parte.
+Gli elenchi che abbiamo adesso sono quasi certamente i giorni di **una** lingua sola, non
+l'unione di tutte.
+
+Le tre strade, con quello che costano:
+
+| | cosa succede | cosa si perde |
+| --- | --- | --- |
+| togliere `days` | nessun no sbagliato, l'ufficio conferma la data | sparisce la riga "Giorni" |
+| lasciare com'è | la riga resta | il sito continua a rifiutare date buone |
+| giorni per lingua | la cosa giusta | va cambiato il codice **e** servono i giorni lingua per lingua, che non abbiamo |
+
+**Non deciso qui**: è un campo che il cliente legge e che gli impedisce di scrivere, e su
+`teide-national-park` c'è per giunta un avviso esplicito, scritto il 7 settembre, che i
+suoi quattro giorni sono confermati e che toglierli "è un errore, non una correzione".
+Domanda per il proprietario, non deduzione da fare qui.
+
+`CACHE_NAME` alzato a `isla-v254`.

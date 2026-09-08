@@ -4148,6 +4148,61 @@ const ESPLORA_CATALOG = [
 
   // ─── TOUR PRIVATI ─────────────────────────────────────────────────────────
   {
+    id: "masca-teide-cabrio-bus",
+    title: "Masca + Teide VIP Cabrio Bus",
+    category: "tour-privati",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 80,
+    priceAdult: 80,
+    priceChild: 80,
+    priceInfant: 0,
+    ages: { adult: "14+", child: "3-13", infant: "0-2" },
+    itinerary: [
+      {
+        text: {
+          it: "Discesa verso Masca: il borgo in fondo al barranco, fra le palme e le pareti di roccia che scendono fino al mare",
+          en: "The road down to Masca: the hamlet at the bottom of the ravine, among the palms and the rock walls that drop to the sea",
+          es: "Bajada hacia Masca: el caserío en el fondo del barranco, entre las palmeras y las paredes de roca que caen al mar"
+        }
+      },
+      {
+        text: {
+          it: "Parco Nazionale delle Cañadas del Teide, patrimonio Unesco: colate di lava, piante che crescono solo qui e il vulcano più alto della Spagna, 3.718 metri",
+          en: "Las Cañadas del Teide National Park, a Unesco site: lava flows, plants that grow nowhere else and the highest volcano in Spain, 3,718 metres",
+          es: "Parque Nacional de Las Cañadas del Teide, patrimonio de la Unesco: coladas de lava, plantas que solo crecen aquí y el volcán más alto de España, 3.718 metros"
+        }
+      },
+      {
+        text: {
+          it: "Nella discesa verso sud, sosta al mirador di Pino Gordo, a Vilaflor, il paese più alto della Spagna",
+          en: "On the way back south, a stop at the Pino Gordo viewpoint, in Vilaflor, the highest village in Spain",
+          es: "En la bajada hacia el sur, parada en el mirador de Pino Gordo, en Vilaflor, el pueblo más alto de España"
+        }
+      }
+    ],
+    notes: [
+      {
+        it: "La salita in funivia è facoltativa e non è compresa nel prezzo: il biglietto si compra sul posto.",
+        en: "Going up by cable car is optional and not included in the price: you buy the ticket there.",
+        es: "La subida en teleférico es opcional y no está incluida en el precio: el billete se compra allí."
+      },
+      {
+        it: "Il bus è scoperto e in cima si arriva a oltre 2.000 metri: porta una felpa o una giacca, e cappellino e crema solare per il tratto al sole.",
+        en: "The bus is open-top and you get above 2,000 metres up there: bring a sweatshirt or a jacket, plus a hat and sunscreen for the sunny stretch.",
+        es: "El bus es descapotable y arriba se pasa de los 2.000 metros: lleva una sudadera o una chaqueta, y gorra y crema solar para el tramo al sol."
+      }
+    ],
+    family: true,
+    desc: {
+      it: "Masca e il Parco Nazionale del Teide a bordo di un bus scoperto: il paesaggio si guarda a 360°, senza un vetro di mezzo.",
+      en: "Masca and Teide National Park aboard an open-top bus: you watch the landscape all around you, with no window in the way.",
+      es: "Masca y el Parque Nacional del Teide a bordo de un bus descapotable: el paisaje se mira en 360°, sin un cristal de por medio."
+    },
+    image: "",
+    published: true
+  },
+  {
     id: "private-charter",
     title: "Private Charter",
     category: "tour-privati",

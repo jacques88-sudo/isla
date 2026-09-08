@@ -6357,3 +6357,27 @@ l'invio; il lunedì passa.
 
 **Resta aperto** solo l'orario: le partenze vere non le abbiamo, quindi in "A che ora"
 restano le fasce segnaposto più "Da concordare".
+
+---
+
+## "Tenerife Sud" uniformato nelle tre lingue (8 settembre 2026)
+
+Lo scarto notato ieri stesso, chiuso subito. Quattro schede avevano
+`zone: "Tenerife Sud"` come **stringa sola**: `teide-national-park`, `buggy-volcano-4h`,
+`buggy-volcano-sunset`, `buggy-2-3h`. La stringa sola è la forma giusta per i nomi propri
+("Puerto Colón", "Costa Adeje"), ma "Tenerife Sud" è italiano: un inglese leggeva
+"Departure point — Tenerife Sud" e uno spagnolo "Punto de salida — Tenerife Sud".
+
+Ora tutte e sei le schede del sud hanno la stessa riga:
+
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" }
+
+**Nel resto del catalogo non è rimasto niente da tradurre in `zone`.** Le altre stringhe
+sole sono tutti nomi di posti che non cambiano da una lingua all'altra (Puerto Colón, Los
+Cristianos, Las Galletas, Costa Adeje, Chío, Guargacho…), e i casi con una parola dentro —
+"Vicino a Los Cristianos", "Tutta l'isola", "Ritiro dal sud, imbarco a Santa Cruz",
+"Puerto Colón o Las Galletas" — erano già scritti nelle tre lingue.
+
+Provato nel browser in inglese e in spagnolo su tre schede (`teide-national-park`,
+`buggy-2-3h`, `santa-cruz-taganana`): "South Tenerife" e "Tenerife sur". `CACHE_NAME`
+alzato a `isla-v245`.

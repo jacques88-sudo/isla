@@ -3903,7 +3903,11 @@ const ESPLORA_CATALOG = [
     },
     category: "tour-isola",
     zone: { it: "Tenerife nord", en: "North Tenerife", es: "Tenerife norte" },
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
+    // Niente `times`: l'ora di partenza non e' una sola, la decide il punto di
+    // raccolta del cliente. Sta in PICKUP_TIMES dentro hotel.js, e la finestra
+    // della richiesta al posto del menu "A che ora" mostra l'ora del suo hotel
+    // (Perla Gris 07:45, Cleopatra 08:45).
     priceFrom: null,
     priceAdult: 0,
     priceChild: 0,

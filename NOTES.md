@@ -5926,6 +5926,14 @@ qualcuno.
 Copre 385 hotel con ora e posto, 31 col solo posto (i 29 che salgono in hotel
 piu' due punti senza orario), 146 col solito buco del nord.
 
+**Durata: 8 ore circa**, detta dal proprietario. E **niente `times` sulla
+scheda**: l'ora di partenza non e' una sola, la decide il punto di raccolta del
+cliente. E' il primo caso in cui `times` resta assente non perche' non lo
+sappiamo, ma perche' la domanda non ha una risposta unica — e infatti la
+finestra della richiesta al posto del menu "A che ora" mostra l'ora dell'hotel
+scelto. Il commento accanto alla scheda lo dice, se no il prossimo che passa
+prova a riempirlo.
+
 ### Due cose da sapere per la prossima volta
 
 **`Promise {<pending>}` non vuol dire "sta ancora girando".** Chrome scrive
@@ -5944,4 +5952,4 @@ stampa e' scorsa via:
 schede: su Icod Cleopatra 08:45 e Perla Gris 07:45, sul Teide 09:15 e 08:15,
 stesso punto di raccolta in tutti e due i casi. Girasol, che il punto ce l'ha
 senza nome, non mostra niente su nessuna delle due. Nessun errore JS. `sw.js` a
-`isla-v239`.
+`isla-v240`.

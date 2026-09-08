@@ -3370,7 +3370,12 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "gran-canaria",
-    title: "Poema del Mar",
+    // Il titolo del fornitore ufficiale e' POEMA DEL MAR "GRAN CANARIA
+    // EXPERIENCE". Prima qui c'era solo "Poema del Mar", che in una categoria
+    // di parchi si legge come il biglietto di un acquario: questa invece e' una
+    // giornata su un'altra isola, nave compresa. Il nome dell'isola nel titolo
+    // e' la differenza fra le due cose.
+    title: "Poema del Mar – Gran Canaria Experience",
     category: "parchi-spettacoli",
     // Il transfer dal sud e' compreso, quindi il cliente non parte da Santa
     // Cruz: ci arriva. La zona lo dice, se no "Punto di partenza: Santa Cruz"
@@ -3380,10 +3385,15 @@ const ESPLORA_CATALOG = [
       en: "Pickup in the south, boarding at Santa Cruz",
       es: "Recogida en el sur, embarque en Santa Cruz"
     },
+    // "Circa 12 ore" viene dalla pagina del rivenditore, che e' l'unica a dire
+    // quanto dura in tutto; l'ufficiale da' solo gli orari della nave, che
+    // restano fra parentesi perche' sono il pezzo certo. "Giornata intera" era
+    // vero ma vago, e qui la differenza si sente: chi parte alle 8 e torna alle
+    // 20:30 la sera non la organizza.
     duration: {
-      it: "Giornata intera (traghetto 10:00-18:00)",
-      en: "Full day (ferry 10:00-18:00)",
-      es: "Día completo (ferry 10:00-18:00)"
+      it: "Circa 12 ore (traghetto 10:00-18:00)",
+      en: "About 12 hours (ferry 10:00-18:00)",
+      es: "Unas 12 horas (ferry 10:00-18:00)"
     },
     priceFrom: 135,
     priceAdult: 135,
@@ -3402,8 +3412,9 @@ const ESPLORA_CATALOG = [
     times: ["10:00"],
     // Il servizio di guida ufficiale e' in queste tre lingue, ed e' una scelta
     // vera del cliente. L'italiano non c'e': il modulo del fornitore lo elenca
-    // ma risponde "no excursions available".
-    languages: ["English", "Español", "Deutsch"],
+    // ma risponde "no excursions available". Le tre sono state riconfermate
+    // dall'ufficio l'8 settembre 2026, e sono scritte nel suo ordine.
+    languages: ["Español", "Deutsch", "English"],
     included: ["transfer", "ferry", "ticket", "guide", "tasting"],
     itinerary: [
       { time: "10:00", text: { it: "Nave da Santa Cruz verso Agaete",
@@ -3437,7 +3448,13 @@ const ESPLORA_CATALOG = [
         es: "El almuerzo no está incluido. Se puede comer en el restaurante dentro del Poema del Mar, con vistas al tanque grande." },
       { it: "Il transfer dal sud fino al porto di Santa Cruz è compreso, andata e ritorno: l'ora del ritiro in hotel si conferma con la prenotazione.",
         en: "The transfer from the south to Santa Cruz harbour is included, both ways: the hotel pickup time is confirmed with the booking.",
-        es: "El traslado desde el sur hasta el puerto de Santa Cruz está incluido, ida y vuelta: la hora de recogida en el hotel se confirma con la reserva." }
+        es: "El traslado desde el sur hasta el puerto de Santa Cruz está incluido, ida y vuelta: la hora de recogida en el hotel se confirma con la reserva." },
+      // Le due ore approssimate vengono dalla pagina del rivenditore. Stanno in
+      // una nota, con "intorno a" davanti, e non in `times` o in PICKUP_TIMES:
+      // li' sarebbero un orario preciso che nessuno ci ha dato.
+      { it: "È una giornata lunga: si parte dall'hotel intorno alle 8:00 e si rientra intorno alle 20:30, con qualche minuto di differenza secondo l'hotel.",
+        en: "It is a long day: you leave the hotel around 8:00 and get back around 20:30, give or take a few minutes depending on your hotel.",
+        es: "Es un día largo: se sale del hotel sobre las 8:00 y se vuelve sobre las 20:30, con algunos minutos de diferencia según el hotel." }
     ],
     family: true,
     desc: {
@@ -4228,6 +4245,12 @@ const ESPLORA_CATALOG = [
     times: ["07:45"],
     // `days` non c'e': il fornitore non scrive in che giorni si fa. Da
     // chiedere all'ufficio — un traghetto non va per forza tutti i giorni.
+    // Tre lingue sole, mandate dall'ufficio (8 settembre 2026): e' l'elenco
+    // piu' corto fra i tour dell'isola, meta' di quello di La Gomera. Sono le
+    // stesse tre della gita a Gran Canaria (id `gran-canaria`, titolo "Poema
+    // del Mar"), e come sempre restano scritte qui e non in una costante in
+    // comune: ogni scheda ha le sue.
+    languages: ["English", "Español", "Deutsch"],
     priceFrom: 145,
     priceAdult: 145,
     priceChild: 126,

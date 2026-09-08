@@ -5975,6 +5975,111 @@ a mano dal sud: 2 adulti 220 €, 2 adulti + 1 bambino 295 €, con un neonato
 
 ---
 
+## Masca + Teide VIP Cabrio Bus: scheda nuova, e finita in "Tour privati" (7 settembre 2026)
+
+Arrivata dall'ufficio la pagina di un fornitore (Nere Izerdie / Island Excursions S.L.,
+Costa Adeje) con l'escursione **Masca + Teide VIP Cabrio Bus**: bus panoramico scoperto,
+Masca, Parco Nazionale del Teide con funivia facoltativa, mirador Pino Gordo a Vilaflor.
+
+### Prima domanda: era un doppione?
+
+In "Teide e natura" c'era gia' `teide-masca` — "Teide + Masca Tour", 60 €, ma un
+segnaposto: zona e durata "Da definire", `priceAdult` e `priceChild` a 0. Stesso giro,
+stessi due nomi nel titolo: il caso Kalima Kat in piccolo.
+
+Chiesto al proprietario invece di decidere da soli. Risposta: **schede separate**. Il
+mezzo e' un altro (bus cabrio scoperto, servizio esclusivo) e il prezzo pure — 80 € contro
+60 —, quindi sono due prodotti, non due nomi dello stesso. `teide-masca` resta com'e',
+pubblicata.
+
+### E poi la categoria e' cambiata: "Tour privati", non "Teide e natura"
+
+Scritta prima in "Teide e natura", su indicazione del proprietario. Subito dopo, sempre
+lui: **va in Tour privati**, ed e' coerente con come la vende il fornitore, "servicio
+personalizado y exclusivo".
+
+`category` e' un campo solo: spostarla vuol dire toglierla da "Teide e natura", non
+metterla in due posti. Una seconda voce con gli stessi dati sarebbe il doppione che
+mezz'ora prima si era evitato.
+
+**Quello che stona, e resta da guardare insieme:** e' l'unica scheda di "Tour privati"
+con un prezzo **a persona**. Le altre undici sono charter a gruppo — "da 350 € a gruppo",
+"da 450 € a gruppo" — e questa apre l'elenco con "da 80 €" senza unita' accanto. Non e'
+un errore del sito (il prezzo e' davvero a testa: 80 € adulti, 80 € bambini) ed e' giusto
+che il totale si conti per persone; ma chi scorre la categoria legge 80 accanto a 350 e
+puo' capire che sia lo stesso tipo di prezzo. Se dovesse dare fastidio, le strade sono
+due: un `priceUnit` " a persona" solo su questa, oppure riportarla fra i tour di gruppo.
+
+### Cosa e' entrato nella scheda (`masca-teide-cabrio-bus`)
+
+- `priceAdult: 80`, `priceChild: 80` — **il bambino paga come l'adulto**, e' il listino del
+  fornitore, non una svista: sui mezzi piccoli ed esclusivi il posto costa uguale.
+- `ages: { adult: "14+", child: "3-13", infant: "0-2" }`. Le fasce le scrive il fornitore
+  come "Niños (3-13)" e "Bebés (0-2)": l'adulto e' quindi 14+, e le tre fasce combaciano
+  senza buchi (`controlla.js` d'accordo).
+- `priceInfant: 0` — qui si puo' mettere davvero, perche' la pagina del fornitore scrive
+  "Bebés (0-2) 0 €": e' scritto "gratis", non "non lo sappiamo".
+- `itinerary` di tre tappe (Masca, Cañadas del Teide, mirador Pino Gordo) **senza `time`**:
+  gli orari veri non ce li hanno mandati.
+- Due `notes`: la funivia facoltativa a parte, e il consiglio su felpa/cappellino — il bus
+  e' scoperto e si sale sopra i 2.000 metri, due fatti del mezzo e della quota, non due
+  frasi copiate.
+
+### Cosa NON e' entrato, di proposito
+
+- **Niente `included`.** Il fornitore non scrive cosa comprende il prezzo: nessuna icona,
+  che vuol dire "vale sempre", si puo' accendere per deduzione. Meglio un riquadro assente
+  di uno che promette una guida che magari non c'e'.
+- **Niente `days`, niente `times`.** `days` assente = tutti i giorni, `times` assente =
+  restano le fasce segnaposto piu' "Da concordare". Sono i due stati giusti per "non lo
+  sappiamo ancora", ma vanno **confermati**: se il giro non si fa tutti i giorni, adesso il
+  sito dice il falso.
+- **Niente `languages`.** Sulla pagina c'era un menu "Idioma" con dentro il solo
+  "Español". Non basta: un elenco con una voce sola puo' essere un menu troncato nel
+  copia-incolla, e la regola dice di metterlo solo dove l'ufficio lo segnala.
+- **Niente testo del fornitore.** Descrizione e tappe riscritte da zero nelle tre lingue;
+  il "servicio personalizado y exclusivo" e il resto del tono promozionale sono rimasti
+  sulla loro pagina.
+- **Il 24 ore di preavviso e' il nostro**, come sempre: la pagina del fornitore non c'entra.
+
+### La foto
+
+Non ne e' arrivata nessuna, e `image` e' rimasto vuoto: in elenco esce il riquadro "Foto in
+arrivo" e `controlla.js` da' l'avviso giusto. Riusare `teide-masca.jpg` sarebbe stato
+peggio: due card affiancate nella stessa categoria con la stessa identica foto di Masca
+sembrano un doppione, cioe' proprio la cosa che si voleva evitare. La foto che serve e'
+quella del **bus cabrio**, che e' il motivo per cui questa scheda esiste.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi (quello noto di `opera-60` e la foto mancante).
+Nel browser vero, pagina di dettaglio in inglese e in italiano: titolo, tre righe di
+prezzo con le fasce fra parentesi, "Neonati (0-2) Gratis", itinerario e consigli a posto,
+nessun errore JS. Nella finestra della richiesta: **2 adulti + 1 bambino = 240 €**, e i due
+neonati aggiunti non spostano il totale. Il menu degli orari mostra "Da concordare" piu' le
+fasce segnaposto, e la domanda sulla lingua non compare (giusto, `languages` non c'e').
+Dopo lo spostamento, riprovato: la scheda apre l'elenco di **Tour privati**, non e' piu'
+in "Teide e natura" (restano le tre di prima), la pagina di dettaglio e il totale non
+cambiano, nessun errore JS. `sw.js` alzato a `isla-v240`.
+
+Il branch e' stato riallineato su `main` a merge gia' chiesto: nel frattempo erano
+entrate quattro PR (campo hotel, orari di pick-up, La Gomera) e il conflitto era su
+`NOTES.md` e su `CACHE_NAME`. Niente di sostanziale: il menu "A che ora" di questa scheda
+resta quello di prima, perche' `PICKUP_TIMES` per ora ha i soli orari del
+`teide-national-park`.
+
+**Da confermare all'ufficio:** durata, giorni, cosa e' compreso nel prezzo, e la foto.
+
+**Gli orari, invece, sono a meta' strada.** Il giro del 7 settembre sul widget del
+fornitore aveva toccato anche questa escursione (la 308, "Masca+Teide in bus cabrio"): si
+sa gia' che il **punto di raccolta e' lo stesso** del Teide mezza giornata, hotel per
+hotel, e che a cambiare e' solo l'ora. Manca la colonna delle ore, che e' una passata sola
+sul widget — e poi la conferma dell'ufficio, senza la quale un orario non si pubblica.
+Fatto quello, basta una riga in `PICKUP_TIMES` e anche qui "A che ora" smette di essere
+una domanda.
+
+---
+
 ## La Palma: il segnaposto diventa il Tour Volcán (8 settembre 2026)
 
 La scheda `la-palma` esisteva dal principio come segnaposto — titolo, foto,
@@ -6076,7 +6181,9 @@ campo.
 righe di prezzo con le fasce fra parentesi, l'itinerario con gli orari solo dove
 ci sono, le due icone, le sette note. Conti a mano: 2 adulti **290 €**, 2 adulti
 + 1 bambino **416 €**, con un neonato **436 €**. La card in elenco mostra "da
-€145", "Isola di La Palma", "Circa 12 ore". `sw.js` alzato a `isla-v239`.
+€145", "Isola di La Palma", "Circa 12 ore". `sw.js` alzato a `isla-v241`
+(v239 al momento del commit, poi il merge con `main` — che era passata a v240 col
+Cabrio Bus — ha imposto un numero piu' alto di tutti e due).
 
 La foto `la-palma.jpg` era già lì e l'ho lasciata: è Santa Cruz de La Palma
 vista da sopra, cioè letteralmente il panorama del Mirador de la Concepción, che

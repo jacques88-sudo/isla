@@ -6736,3 +6736,42 @@ lunedì passa, e il messaggio esce intero: lingua `Русский`, variante "Te
 scelta, cinque e non sei.
 
 `CACHE_NAME` alzato a `isla-v251`.
+
+---
+
+## Le tre lingue di La Palma (8 settembre 2026)
+
+Quinta scheda a cui l'ufficio manda le lingue, e stavolta è l'elenco **più corto**:
+
+    languages: ["English", "Español", "Deutsch"]
+
+Tre, contro le sette di La Gomera. Le due sono la stessa cosa a guardarle da lontano —
+un'isola vicina, il traghetto, la giornata intera — e hanno un elenco lungo la metà. È la
+prova migliore che "ogni scheda ha la sua lingua" non è una formalità: se le lingue si
+fossero dedotte dal tipo di gita, questa sarebbe uscita sbagliata di quattro voci.
+
+Sono le stesse tre della gita a Gran Canaria (id `gran-canaria`, titolo "Poema del Mar"),
+e anche qui **restano scritte nella scheda**, non in una costante in comune.
+
+### Un id sbagliato preso al volo
+
+Nel commento avevo scritto "le stesse tre di `poema-del-mar`". **Quell'id non esiste**: la
+scheda si chiama `gran-canaria` e "Poema del Mar" è solo il titolo. Un id inventato in un
+commento non rompe niente e non lo segnala nessuno strumento — resta lì finché qualcuno lo
+cerca e non lo trova. Corretto scrivendo tutti e due, id e titolo. Vale la pena ricordarsi
+che **il titolo di una scheda e il suo id spesso non si somigliano affatto**: qui, e su
+`santa-cruz-taganana` che si chiama Santa Cruz + Anaga + La Laguna, e su
+`icod-garachico-orotava` che La Orotava non la vede più.
+
+### Provato
+
+Nel browser a 420 px nelle tre lingue del sito: la riga "Lingue" in "In breve" con i tre
+nomi, il menu con tre voci più "Indifferente", l'etichetta che si traduce e i nomi no.
+
+Il messaggio WhatsApp esce completo, e su questa scheda ha due righe in più delle altre:
+**l'orario**, perché `times: ["07:45"]` è una partenza sola e fissa e quindi "Da concordare"
+non c'è, e **i neonati**, perché qui `priceInfant: 20` è un prezzo vero (il posto sul
+traghetto si paga) e non un "gratis". Totale della prova con 2 adulti, 1 bambino e 1
+neonato: **€436** (2 × 145 + 126 + 20).
+
+`CACHE_NAME` alzato a `isla-v252`.

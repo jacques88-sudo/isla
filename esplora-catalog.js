@@ -4228,6 +4228,12 @@ const ESPLORA_CATALOG = [
     times: ["07:45"],
     // `days` non c'e': il fornitore non scrive in che giorni si fa. Da
     // chiedere all'ufficio — un traghetto non va per forza tutti i giorni.
+    // Tre lingue sole, mandate dall'ufficio (8 settembre 2026): e' l'elenco
+    // piu' corto fra i tour dell'isola, meta' di quello di La Gomera. Sono le
+    // stesse tre della gita a Gran Canaria (id `gran-canaria`, titolo "Poema
+    // del Mar"), e come sempre restano scritte qui e non in una costante in
+    // comune: ogni scheda ha le sue.
+    languages: ["English", "Español", "Deutsch"],
     priceFrom: 145,
     priceAdult: 145,
     priceChild: 126,

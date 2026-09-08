@@ -5975,7 +5975,7 @@ a mano dal sud: 2 adulti 220 €, 2 adulti + 1 bambino 295 €, con un neonato
 
 ---
 
-## Masca + Teide VIP Cabrio Bus: scheda nuova in "Teide e natura" (7 settembre 2026)
+## Masca + Teide VIP Cabrio Bus: scheda nuova, e finita in "Tour privati" (7 settembre 2026)
 
 Arrivata dall'ufficio la pagina di un fornitore (Nere Izerdie / Island Excursions S.L.,
 Costa Adeje) con l'escursione **Masca + Teide VIP Cabrio Bus**: bus panoramico scoperto,
@@ -5991,6 +5991,24 @@ Chiesto al proprietario invece di decidere da soli. Risposta: **schede separate*
 mezzo e' un altro (bus cabrio scoperto, servizio esclusivo) e il prezzo pure — 80 € contro
 60 —, quindi sono due prodotti, non due nomi dello stesso. `teide-masca` resta com'e',
 pubblicata.
+
+### E poi la categoria e' cambiata: "Tour privati", non "Teide e natura"
+
+Scritta prima in "Teide e natura", su indicazione del proprietario. Subito dopo, sempre
+lui: **va in Tour privati**, ed e' coerente con come la vende il fornitore, "servicio
+personalizado y exclusivo".
+
+`category` e' un campo solo: spostarla vuol dire toglierla da "Teide e natura", non
+metterla in due posti. Una seconda voce con gli stessi dati sarebbe il doppione che
+mezz'ora prima si era evitato.
+
+**Quello che stona, e resta da guardare insieme:** e' l'unica scheda di "Tour privati"
+con un prezzo **a persona**. Le altre undici sono charter a gruppo — "da 350 € a gruppo",
+"da 450 € a gruppo" — e questa apre l'elenco con "da 80 €" senza unita' accanto. Non e'
+un errore del sito (il prezzo e' davvero a testa: 80 € adulti, 80 € bambini) ed e' giusto
+che il totale si conti per persone; ma chi scorre la categoria legge 80 accanto a 350 e
+puo' capire che sia lo stesso tipo di prezzo. Se dovesse dare fastidio, le strade sono
+due: un `priceUnit` " a persona" solo su questa, oppure riportarla fra i tour di gruppo.
 
 ### Cosa e' entrato nella scheda (`masca-teide-cabrio-bus`)
 
@@ -6040,7 +6058,22 @@ prezzo con le fasce fra parentesi, "Neonati (0-2) Gratis", itinerario e consigli
 nessun errore JS. Nella finestra della richiesta: **2 adulti + 1 bambino = 240 €**, e i due
 neonati aggiunti non spostano il totale. Il menu degli orari mostra "Da concordare" piu' le
 fasce segnaposto, e la domanda sulla lingua non compare (giusto, `languages` non c'e').
-`sw.js` alzato a `isla-v230`.
+Dopo lo spostamento, riprovato: la scheda apre l'elenco di **Tour privati**, non e' piu'
+in "Teide e natura" (restano le tre di prima), la pagina di dettaglio e il totale non
+cambiano, nessun errore JS. `sw.js` alzato a `isla-v240`.
 
-**Da confermare all'ufficio:** durata, orari di partenza, giorni, punto di ritrovo o
-ritiro in hotel, cosa e' compreso nel prezzo, e la foto.
+Il branch e' stato riallineato su `main` a merge gia' chiesto: nel frattempo erano
+entrate quattro PR (campo hotel, orari di pick-up, La Gomera) e il conflitto era su
+`NOTES.md` e su `CACHE_NAME`. Niente di sostanziale: il menu "A che ora" di questa scheda
+resta quello di prima, perche' `PICKUP_TIMES` per ora ha i soli orari del
+`teide-national-park`.
+
+**Da confermare all'ufficio:** durata, giorni, cosa e' compreso nel prezzo, e la foto.
+
+**Gli orari, invece, sono a meta' strada.** Il giro del 7 settembre sul widget del
+fornitore aveva toccato anche questa escursione (la 308, "Masca+Teide in bus cabrio"): si
+sa gia' che il **punto di raccolta e' lo stesso** del Teide mezza giornata, hotel per
+hotel, e che a cambiare e' solo l'ora. Manca la colonna delle ore, che e' una passata sola
+sul widget — e poi la conferma dell'ufficio, senza la quale un orario non si pubblica.
+Fatto quello, basta una riga in `PICKUP_TIMES` e anche qui "A che ora" smette di essere
+una domanda.

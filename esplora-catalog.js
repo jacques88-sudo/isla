@@ -1779,7 +1779,7 @@ const ESPLORA_CATALOG = [
     id: "teide-national-park",
     title: "Teide National Park",
     category: "teide-natura",
-    zone: "Tenerife Sud",
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "6-8 ore circa", en: "About 6-8 hours", es: "6-8 horas aprox." },
     priceFrom: 39,
     // Offerta a tempo decisa dal proprietario: si vende a 39 fino al 31
@@ -1851,24 +1851,6 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    id: "teide-masca",
-    title: "Teide + Masca Tour",
-    category: "teide-natura",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 60,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Il Parco Nazionale del Teide e il borgo di Masca nella stessa giornata.",
-      en: "Teide National Park and the hamlet of Masca in the same day.",
-      es: "El Parque Nacional del Teide y el pueblo de Masca en la misma jornada."
-    },
-    image: "teide-masca.jpg",
-    published: true
-  },
-  {
     id: "trekking-bici",
     title: { it: "Trekking e bici", en: "Hiking & biking", es: "Senderismo y bici" },
     category: "teide-natura",
@@ -1884,6 +1866,91 @@ const ESPLORA_CATALOG = [
       es: "Jornada entre senderos y bicicleta, con guía."
     },
     image: "trekking-bici.jpg",
+    published: true
+  },
+  {
+    id: "icod-garachico-orotava",
+    // L'id nomina ancora La Orotava, dove il tour non passa piu' dal 24
+    // agosto: i codici interni non si cambiano, si romperebbero i link.
+    title: {
+      it: "Teide, Icod, Garachico e Masca",
+      en: "Teide, Icod, Garachico & Masca",
+      es: "Teide, Icod, Garachico y Masca"
+    },
+    // Categoria decisa dal proprietario l'8 settembre 2026: sta con il Teide,
+    // non con i tour dell'isola.
+    category: "teide-natura",
+    // "Tenerife nord" era rimasto da quando la scheda si chiamava
+    // Icod/Garachico/Orotava, e diceva il falso: quel campo in pagina si legge
+    // "Punto di partenza", e dal nord non parte niente. Il proprietario l'8
+    // settembre 2026: la partenza e' **una sola**, il sud, e vale per tutte
+    // le escursioni. Il nord qui e' dove si va, non da dove si parte.
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    // "Circa 8 ore", detto dal proprietario l'8 settembre 2026. Era "Giornata
+    // intera": vero ma vago, e per chi deve organizzarsi la giornata otto ore
+    // e dodici non sono la stessa cosa.
+    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
+    // Niente `times`: l'ora di partenza non e' una sola, la decide il punto di
+    // raccolta del cliente. Sta in PICKUP_TIMES dentro hotel.js, e la finestra
+    // della richiesta al posto del menu "A che ora" mostra l'ora del suo hotel
+    // (Perla Gris 07:45, Cleopatra 08:45).
+    // Listino del fornitore (Nere Izerdie / Island Excursions, Costa Adeje),
+    // mandato dall'ufficio l'8 settembre 2026: 58 € adulti, 37,50 € bambini.
+    priceFrom: 58,
+    priceAdult: 58,
+    priceChild: 37.5,
+    // Il fornitore da' solo "Ninos (2-11)", quindi gli adulti sono 12+.
+    // La riga dei bebe' l'ufficio ha scritto di NON metterla: niente
+    // `ages.infant` e niente `priceInfant`. Campo assente = "non lo
+    // sappiamo", che e' esattamente la situazione — non "gratis".
+    ages: { adult: "12+", child: "2-11" },
+    // Tutti i giorni tranne la domenica (proprietario, 8 settembre 2026). Il
+    // campo elenca i giorni buoni, non quello escluso, quindi sono sei sigle.
+    // **mar e' martedi', mer e' mercoledi'.**
+    days: ["lun", "mar", "mer", "gio", "ven", "sab"],
+    // Il fornitore scrive solo il ritiro ("le recogeremos en su parada"):
+    // il transfer si puo' accendere, la guida no, che non la nomina.
+    included: ["transfer"],
+    // Le tappe sono in ordine ma senza orario: il fornitore non li da', e
+    // l'ora del ritiro cambia da fermata a fermata.
+    itinerary: [
+      { text: { it: "Ritiro alla fermata concordata e salita verso il Parco Nazionale delle Cañadas del Teide",
+                en: "Pickup at your agreed stop and the climb up towards Las Cañadas del Teide National Park",
+                es: "Recogida en su parada y subida hacia el Parque Nacional de Las Cañadas del Teide" } },
+      { text: { it: "Breve sosta a Vilaflor, il paese più alto della Spagna",
+                en: "A short stop at Vilaflor, the highest village in Spain",
+                es: "Breve parada en Vilaflor, el pueblo más alto de España" } },
+      { text: { it: "Seconda sosta dentro il Parco Nazionale, fra le colate di lava e i roques",
+                en: "A second stop inside the National Park, among the lava flows and the roques",
+                es: "Segunda parada dentro del Parque Nacional, entre las coladas de lava y los roques" } },
+      { text: { it: "Icod de los Vinos, dove c'è il Drago Millenario, l'albero simbolo delle Canarie",
+                en: "Icod de los Vinos, home of the thousand-year-old dragon tree, the symbol of the Canaries",
+                es: "Icod de los Vinos, donde está el Drago Milenario, el árbol símbolo de Canarias" } },
+      { text: { it: "Si prosegue lungo la costa nord fino alla villa storica di Garachico",
+                en: "On along the north coast to the historic town of Garachico",
+                es: "Se sigue por la costa norte hasta la histórica Villa de Garachico" } },
+      { text: { it: "Ultima tappa a Masca, il borgo in fondo al barranco, fra pareti di roccia e vegetazione",
+                en: "Last stop at Masca, the hamlet at the bottom of the ravine, among rock walls and greenery",
+                es: "Última parada en Masca, el caserío en el fondo del barranco, entre paredes de roca y vegetación" } },
+      { text: { it: "Rientro in hotel",
+                en: "Back to the hotel",
+                es: "Vuelta al hotel" } }
+    ],
+    notes: [
+      { it: "Il pranzo non è incluso: la sosta per mangiare si fa a Icod o a Garachico.",
+        en: "Lunch is not included: the meal stop is either in Icod or in Garachico.",
+        es: "El almuerzo no está incluido: la parada para comer se hace en Icod o en Garachico." },
+      { it: "Nel parco si sta sopra i 2.000 metri e fa freddo anche d'estate: porta una felpa o una giacca.",
+        en: "Up in the park you are above 2,000 metres and it is cold even in summer: bring a sweatshirt or a jacket.",
+        es: "En el parque se está por encima de los 2.000 metros y hace frío incluso en verano: lleva una sudadera o una chaqueta." }
+    ],
+    family: true,
+    desc: {
+      it: "Una giornata sola per il Parco Nazionale del Teide, il Drago Millenario di Icod, la villa storica di Garachico e il borgo di Masca, con ritiro alla fermata concordata.",
+      en: "A single day for Teide National Park, the thousand-year-old dragon tree of Icod, the historic town of Garachico and the hamlet of Masca, with pickup at your agreed stop.",
+      es: "Un solo día para el Parque Nacional del Teide, el Drago Milenario de Icod, la histórica Villa de Garachico y el pueblo de Masca, con recogida en su parada."
+    },
+    image: "icod-garachico-orotava.jpg",
     published: true
   },
 
@@ -1948,7 +2015,7 @@ const ESPLORA_CATALOG = [
     id: "buggy-volcano-4h",
     title: "4-Hour Volcano Buggy Tour",
     category: "avventura-motori",
-    zone: "Tenerife Sud",
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "3 ore e mezza", en: "3.5 hours", es: "3,5 horas" },
     priceFrom: 140,
     priceUnit: { it: "/buggy", en: "/buggy", es: "/buggy" },
@@ -1986,7 +2053,7 @@ const ESPLORA_CATALOG = [
     id: "buggy-volcano-sunset",
     title: "Volcano Sunset Buggy Tour",
     category: "avventura-motori",
-    zone: "Tenerife Sud",
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "3 ore e mezza", en: "3.5 hours", es: "3,5 horas" },
     priceFrom: 140,
     priceUnit: { it: "/buggy", en: "/buggy", es: "/buggy" },
@@ -2024,7 +2091,7 @@ const ESPLORA_CATALOG = [
     id: "buggy-2-3h",
     title: "2 or 3-Hour Buggy Tour",
     category: "avventura-motori",
-    zone: "Tenerife Sud",
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
     priceFrom: 140,
     priceUnit: { it: "/buggy", en: "/buggy", es: "/buggy" },
@@ -3840,17 +3907,153 @@ const ESPLORA_CATALOG = [
     id: "la-gomera",
     title: "La Gomera Island Tour",
     category: "tour-isola",
+    // La zona e' la destinazione, non il punto di ritiro: il ritiro cambia con
+    // la variante (sud dell'isola o Puerto de la Cruz) e sta scritto li'.
     zone: { it: "Isola di La Gomera", en: "Island of La Gomera", es: "Isla de La Gomera" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 99,
-    priceAdult: 0,
-    priceChild: 0,
+    duration: { it: "Circa 10 ore", en: "About 10 hours", es: "Unas 10 horas" },
+    // I giorni della scheda sono l'unione delle due partenze: la domenica non
+    // si fa mai. Ogni variante poi stringe sui suoi giorni, e la variante
+    // vince — dal sud si parte lun mar mer ven sab, dal nord mar gio sab.
+    days: ["lun", "mar", "mer", "gio", "ven", "sab"],
+    // Le partenze vere non le sappiamo: il ritiro dipende dall'hotel e il
+    // fornitore lo comunica con la conferma. Niente campo `times`, cosi'
+    // restano le fasce segnaposto piu' "Da concordare".
+    priceFrom: 110,
+    priceAdult: 110,
+    priceChild: 75,
+    // 15,50 € non e' gratis: i neonati pagano il posto sul traghetto. La cifra
+    // e' quella del fornitore per il ritiro dal sud.
+    priceInfant: 15.5,
+    // Le tre fasce combaciano senza buchi: 0-3, 4-11, 12+.
+    ages: { adult: "12+", child: "4-11", infant: "0-3" },
     family: true,
+    // Il ritiro in hotel e' compreso in tutte e due le varianti, quindi sta
+    // fra le icone; non e' un `transfer` opzionale da spuntare, perche' non
+    // esiste un prezzo senza. `ferry` e' la traversata Fred Olsen andata e
+    // ritorno, `lunch` il pranzo al Restaurante Las Rosas.
+    included: ["transfer", "ferry", "guide", "lunch"],
     desc: {
-      it: "Escursione di una giornata sull'isola vicina di La Gomera.",
-      en: "A day trip to the neighbouring island of La Gomera.",
-      es: "Excursión de un día a la isla vecina de La Gomera."
+      it: "Una giornata sull'isola accanto: traghetto Fred Olsen, il Roque de Agando, la foresta di Garajonay e il pranzo gomero.",
+      en: "A day on the island next door: the Fred Olsen ferry, Roque de Agando, the Garajonay forest and a Gomeran lunch.",
+      es: "Un día en la isla de al lado: ferry Fred Olsen, el Roque de Agando, el bosque de Garajonay y el almuerzo gomero."
     },
+    options: {
+      label: { it: "Da dove ti veniamo a prendere", en: "Where we pick you up", es: "Dónde te recogemos" },
+      choices: [
+        {
+          label: { it: "Tenerife sud", en: "South Tenerife", es: "Tenerife sur" },
+          priceAdult: 110,
+          priceChild: 75,
+          days: ["lun", "mar", "mer", "ven", "sab"],
+          desc: {
+            it: "Ritiro negli hotel del sud dell'isola e imbarco a Los Cristianos. Si parte lunedì, martedì, mercoledì, venerdì e sabato.",
+            en: "Pick-up at hotels in the south of the island and boarding at Los Cristianos. It runs Monday, Tuesday, Wednesday, Friday and Saturday.",
+            es: "Recogida en los hoteles del sur de la isla y embarque en Los Cristianos. Sale lunes, martes, miércoles, viernes y sábado."
+          }
+        },
+        {
+          label: { it: "Puerto de la Cruz", en: "Puerto de la Cruz", es: "Puerto de la Cruz" },
+          // Solo `price`, senza `priceAdult`: 115 € e' il prezzo adulti che il
+          // fornitore scrive per il nord, ma per bambini e neonati da li' non
+          // ci ha dato niente. Con `priceAdult` il totale si sarebbe fatto
+          // lo stesso e avrebbe contato i piccoli col prezzo del sud, cioe'
+          // un numero verosimile e falso. Cosi' invece il conto non si fa e
+          // il prezzo lo conferma l'ufficio. Da chiedere.
+          price: 115,
+          days: ["mar", "gio", "sab"],
+          desc: {
+            it: "Ritiro dal nord, a Puerto de la Cruz: €115 a adulto, martedì, giovedì e sabato. Il prezzo per bambini e neonati da qui te lo confermiamo in ufficio.",
+            en: "Pick-up from the north, in Puerto de la Cruz: €115 per adult, on Tuesday, Thursday and Saturday. We confirm the price for children and babies from here with the office.",
+            es: "Recogida desde el norte, en Puerto de la Cruz: 115 € por adulto, martes, jueves y sábado. El precio para niños y bebés desde aquí te lo confirmamos en la oficina."
+          }
+        }
+      ]
+    },
+    itinerary: [
+      {
+        text: {
+          it: "Ritiro in hotel e trasferimento al porto di Los Cristianos, dove si prende il traghetto Fred Olsen per San Sebastián de La Gomera.",
+          en: "Hotel pick-up and transfer to the port of Los Cristianos, where you board the Fred Olsen ferry to San Sebastián de La Gomera.",
+          es: "Recogida en el hotel y traslado al puerto de Los Cristianos, donde se toma el ferry de Fred Olsen hasta San Sebastián de La Gomera."
+        }
+      },
+      {
+        text: {
+          it: "Sbarcati sull'isola si prende la strada del sud, con una sosta ai piedi del Roque de Agando: è il camino di un vulcano rimasto in piedi dopo che il resto si è consumato.",
+          en: "Once ashore you take the southern road, with a stop at the foot of Roque de Agando: the plug of a volcano still standing after the rest wore away.",
+          es: "Ya en la isla se toma la carretera del sur, con una parada al pie del Roque de Agando: la chimenea de un volcán que quedó en pie después de que el resto se desgastara."
+        }
+      },
+      {
+        text: {
+          it: "Passeggiata dentro il Parco Nazionale di Garajonay, la foresta di laurisilva che l'UNESCO ha dichiarato patrimonio dell'umanità nel 1986: alberi sempre verdi e nebbia bassa a pochi chilometri dal versante arido dell'isola.",
+          en: "A walk inside Garajonay National Park, the laurel forest UNESCO listed as a World Heritage site in 1986: evergreen trees and low mist a few kilometres from the dry side of the island.",
+          es: "Paseo por el Parque Nacional de Garajonay, el bosque de laurisilva que la UNESCO declaró Patrimonio de la Humanidad en 1986: árboles siempre verdes y niebla baja a pocos kilómetros de la vertiente árida de la isla."
+        }
+      },
+      {
+        text: {
+          it: "Pranzo al Restaurante Las Rosas, cucina gomera, compreso nel prezzo.",
+          en: "Lunch at Restaurante Las Rosas, Gomeran cooking, included in the price.",
+          es: "Almuerzo en el Restaurante Las Rosas, cocina gomera, incluido en el precio."
+        }
+      },
+      {
+        text: {
+          it: "Dopo mangiato, la dimostrazione del silbo gomero: la lingua fischiata con cui sull'isola ci si parla da una valle all'altra, insegnata di maestro in allievo e ancora usata da più di ventimila persone.",
+          en: "After lunch, a demonstration of the silbo gomero: the whistled language islanders use to speak across valleys, passed from master to pupil and still used by more than twenty thousand people.",
+          es: "Después de comer, la demostración del silbo gomero: la lengua silbada con la que en la isla se habla de un valle a otro, transmitida de maestro a discípulo y usada todavía por más de veinte mil personas."
+        }
+      },
+      {
+        text: {
+          it: "Sosta ad Agulo, paese del nord affacciato sull'oceano, con le sue strade lastricate e il Teide di fronte, dall'altra parte del mare.",
+          en: "A stop in Agulo, a northern village facing the ocean, with its cobbled streets and Teide across the water.",
+          es: "Parada en Agulo, pueblo del norte asomado al océano, con sus calles empedradas y el Teide enfrente, al otro lado del mar."
+        }
+      },
+      {
+        text: {
+          it: "Rientro a San Sebastián, la capitale: cinquecento anni di storia in poche strade, la Torre del Conde, la chiesa dell'Asunción e il pozzo della Casa de la Aguada, quello da cui — si racconta — Colombo prese l'acqua prima di partire per le Americhe.",
+          en: "Back to San Sebastián, the capital: five hundred years of history in a few streets, the Torre del Conde, the church of la Asunción and the well of the Casa de la Aguada, the one Columbus is said to have drawn water from before sailing for the Americas.",
+          es: "Vuelta a San Sebastián, la capital: quinientos años de historia en pocas calles, la Torre del Conde, la iglesia de la Asunción y el pozo de la Casa de la Aguada, aquel del que —se cuenta— Colón tomó el agua antes de partir hacia América."
+        }
+      },
+      {
+        text: {
+          it: "Imbarco per il ritorno a Los Cristianos e rientro in hotel. Nel canale fra le due isole capita spesso di incrociare globicefali e delfini.",
+          en: "Boarding for the return to Los Cristianos and back to the hotel. Pilot whales and dolphins are often met in the channel between the two islands.",
+          es: "Embarque de vuelta a Los Cristianos y regreso al hotel. En el canal entre las dos islas es frecuente cruzarse con calderones y delfines."
+        }
+      }
+    ],
+    notes: [
+      {
+        it: "Serve un documento d'identità valido il giorno dell'escursione — il fornitore chiede il passaporto. Senza, la compagnia non fa salire sul traghetto e la giornata è persa.",
+        en: "You need a valid ID document on the day of the trip — the operator asks for a passport. Without it the ferry company will not let you board and the day is lost.",
+        es: "Hace falta un documento de identidad válido el día de la excursión: el proveedor pide el pasaporte. Sin él, la naviera no deja embarcar y el día se pierde."
+      },
+      {
+        it: "È una giornata intera, circa dieci ore fra ritiro e rientro: il ritiro in hotel è presto la mattina e l'orario esatto te lo confermiamo insieme alla prenotazione.",
+        en: "It is a full day, about ten hours from pick-up to drop-off: the hotel pick-up is early in the morning and we confirm the exact time along with the booking.",
+        es: "Es un día entero, unas diez horas entre la recogida y la vuelta: la recogida en el hotel es temprano por la mañana y la hora exacta te la confirmamos junto con la reserva."
+      },
+      {
+        it: "A Garajonay si sta in quota e spesso c'è nebbia: fa più fresco che sulla costa, porta una giacca leggera e scarpe comode.",
+        en: "Garajonay is up in the hills and often misty: it is cooler than on the coast, so bring a light jacket and comfortable shoes.",
+        es: "En Garajonay se está en altura y a menudo hay niebla: hace más fresco que en la costa, lleva una chaqueta ligera y calzado cómodo."
+      },
+      {
+        it: "Balene e delfini durante la traversata si vedono spesso, ma sono animali liberi: nessuno può prometterteli.",
+        en: "Whales and dolphins are often seen during the crossing, but they are wild animals: nobody can promise them.",
+        es: "Ballenas y delfines se ven a menudo durante la travesía, pero son animales libres: nadie puede prometértelos."
+      },
+      {
+        it: "Se hai un'allergia o un'esigenza alimentare per il pranzo, scrivicelo nella richiesta: lo giriamo al ristorante.",
+        en: "If you have an allergy or a dietary requirement for lunch, tell us in your request: we pass it on to the restaurant.",
+        es: "Si tienes una alergia o una necesidad alimentaria para el almuerzo, escríbenoslo en la solicitud: se lo pasamos al restaurante."
+      }
+    ],
     image: "la-gomera.jpg",
     published: true
   },
@@ -3858,7 +4061,11 @@ const ESPLORA_CATALOG = [
     id: "santa-cruz-taganana",
     title: "Santa Cruz + Taganana Tour",
     category: "tour-isola",
-    zone: { it: "Tenerife nord-est", en: "North-east Tenerife", es: "Tenerife noreste" },
+    // Il nord-est e' dove va il pullman, non da dove parte: come sul giro di
+    // Icod, quel campo in pagina si legge "Punto di partenza", e la partenza
+    // e' una sola, il sud (proprietario, 8 settembre 2026). Santa Cruz e
+    // Taganana restano scritte nel titolo e nella descrizione.
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 48,
     priceAdult: 0,
@@ -3895,46 +4102,159 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    id: "teide-icod-garachico-masca",
-    title: {
-      it: "Teide, Icod, Garachico e Masca",
-      en: "Teide, Icod, Garachico & Masca",
-      es: "Teide, Icod, Garachico y Masca"
-    },
-    category: "tour-isola",
-    zone: { it: "Tenerife nord", en: "North Tenerife", es: "Tenerife norte" },
-    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
-    // Niente `times`: l'ora di partenza non e' una sola, la decide il punto di
-    // raccolta del cliente. Sta in PICKUP_TIMES dentro hotel.js, e la finestra
-    // della richiesta al posto del menu "A che ora" mostra l'ora del suo hotel
-    // (Perla Gris 07:45, Cleopatra 08:45).
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Il Teide, il Drago Millenario di Icod, le piscine naturali di Garachico e il borgo di Masca, in una giornata sola.",
-      en: "The Teide, the thousand-year-old dragon tree of Icod, the natural pools of Garachico and the hamlet of Masca, in a single day.",
-      es: "El Teide, el Drago Milenario de Icod, las piscinas naturales de Garachico y el pueblo de Masca, en un solo día."
-    },
-    image: "teide-icod-garachico-masca.jpg",
-    published: true
-  },
-  {
     id: "la-palma",
+    // Il titolo resta quello scritto da Admiral. Il fornitore la chiama
+    // "La Palma Tour Volcán": da cambiare solo se lo dice l'ufficio.
     title: "La Palma",
     category: "tour-isola",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
+    // Come su La Gomera, la zona e' la destinazione: il punto di ritrovo
+    // (porto di Los Cristianos) sta nell'itinerario e nelle note.
+    zone: { it: "Isola di La Palma", en: "Island of La Palma", es: "Isla de La Palma" },
+    duration: { it: "Circa 12 ore", en: "About 12 hours", es: "Unas 12 horas" },
+    // Una partenza sola e fissa: il ritrovo delle 07:45 al porto. Scritta
+    // qui, "Da concordare" sparisce e il cliente sa a che ora deve esserci.
+    times: ["07:45"],
+    // `days` non c'e': il fornitore non scrive in che giorni si fa. Da
+    // chiedere all'ufficio — un traghetto non va per forza tutti i giorni.
+    priceFrom: 145,
+    priceAdult: 145,
+    priceChild: 126,
+    // 20 € non e' gratis: i neonati pagano il posto sul traghetto.
+    priceInfant: 20,
+    // Le tre fasce combaciano senza buchi: 0-3, 4-11, 12+.
+    ages: { adult: "12+", child: "4-11", infant: "0-3" },
     family: true,
+    // Solo quello che il fornitore scrive: il pranzo ("Incluye: almuerzo en
+    // uno de los restaurantes típicos") e la traversata andata e ritorno.
+    // Niente `transfer`: questa partenza e' "sin recogida", si va al porto
+    // da soli. Niente `guide`: il fornitore non la nomina.
+    included: ["ferry", "lunch"],
     desc: {
-      it: "Escursione di una giornata sull'isola di La Palma.",
-      en: "A day trip to the island of La Palma.",
-      es: "Excursión de un día a la isla de La Palma."
+      it: "Una giornata sull'isola del vulcano: traghetto da Los Cristianos, il Mirador de la Concepción sopra il cratere della Caldereta e le colate del Cumbre Vieja, le più giovani di Spagna.",
+      en: "A day on the volcano island: the ferry from Los Cristianos, the Mirador de la Concepción above the Caldereta crater and the Cumbre Vieja lava flows, the youngest in Spain.",
+      es: "Un día en la isla del volcán: ferry desde Los Cristianos, el Mirador de la Concepción sobre el cráter de la Caldereta y las coladas del Cumbre Vieja, las más jóvenes de España."
     },
+    itinerary: [
+      {
+        time: "07:45",
+        text: {
+          it: "Ritrovo al porto di Los Cristianos, davanti all'ufficio Fred Olsen. Al porto ci si arriva da soli: su questa partenza il ritiro in hotel non c'è.",
+          en: "Meeting at the port of Los Cristianos, in front of the Fred Olsen office. You make your own way to the port: this departure has no hotel pick-up.",
+          es: "Encuentro en el puerto de Los Cristianos, delante de la oficina de Fred Olsen. Al puerto se llega por cuenta propia: esta salida no lleva recogida en el hotel."
+        }
+      },
+      {
+        time: "08:30",
+        text: {
+          it: "Partenza del traghetto per Santa Cruz de La Palma. La traversata dura circa due ore e un quarto.",
+          en: "The ferry leaves for Santa Cruz de La Palma. The crossing takes about two and a quarter hours.",
+          es: "Salida del ferry hacia Santa Cruz de La Palma. La travesía dura unas dos horas y cuarto."
+        }
+      },
+      {
+        time: "11:00",
+        text: {
+          it: "Sbarco nella capitale e tempo libero in centro: il Barco de la Virgen, il Castillo de Santa Catalina e la via dei balconi di legno, fra i più belli rimasti nelle Canarie.",
+          en: "Landing in the capital and free time in the centre: the Barco de la Virgen, the Castillo de Santa Catalina and the street of wooden balconies, among the finest left in the Canaries.",
+          es: "Desembarque en la capital y tiempo libre por el centro: el Barco de la Virgen, el Castillo de Santa Catalina y la calle de los balcones de madera, de los mejores que se conservan en Canarias."
+        }
+      },
+      {
+        text: {
+          it: "Si sale al Mirador de la Concepción, in cima al vulcano della Caldereta, dichiarato Spazio Naturale: da lassù si vedono insieme il cratere e la capitale.",
+          en: "Up to the Mirador de la Concepción, on top of the Caldereta volcano, a protected natural area: from there you see the crater and the capital in one view.",
+          es: "Se sube al Mirador de la Concepción, en lo alto del volcán de la Caldereta, declarado Espacio Natural: desde allí se ven a la vez el cráter y la capital."
+        }
+      },
+      {
+        text: {
+          it: "Si riprende la strada verso il Túnel del Tiempo: attraversando l'isola la vegetazione cambia sotto gli occhi, fino ad arrivare a sud-ovest, nella zona toccata dall'eruzione del Cumbre Vieja.",
+          en: "Back on the road towards the Túnel del Tiempo: crossing the island the vegetation changes before your eyes, until you reach the south-west and the area hit by the Cumbre Vieja eruption.",
+          es: "Se retoma el camino hacia el Túnel del Tiempo: al cruzar la isla la vegetación cambia a la vista, hasta llegar al suroeste, a la zona afectada por la erupción del Cumbre Vieja."
+        }
+      },
+      {
+        text: {
+          it: "Prima sosta nella zona di esclusione del quartiere di Tacande, con la prima vista sul vulcano. Poi si scende verso Tazacorte, costeggiando le colate laviche più giovani di Spagna.",
+          en: "First stop in the exclusion zone of the Tacande district, with the first view of the volcano. Then down towards Tazacorte, alongside the youngest lava flows in Spain.",
+          es: "Primera parada en la zona de exclusión del barrio de Tacande, con la primera vista del volcán. Después se baja hacia Tazacorte, bordeando las coladas lávicas más jóvenes de España."
+        }
+      },
+      {
+        text: {
+          it: "Pranzo in un ristorante tipico della zona, compreso nel prezzo.",
+          en: "Lunch at a local restaurant in the area, included in the price.",
+          es: "Almuerzo en un restaurante típico de la zona, incluido en el precio."
+        }
+      },
+      {
+        text: {
+          it: "Dopo mangiato si va al porto di Tazacorte a vedere la fajana: il delta di lava che l'eruzione ha costruito entrando in mare.",
+          en: "After lunch, on to the port of Tazacorte to see the fajana: the lava delta the eruption built as it reached the sea.",
+          es: "Después de comer se va al puerto de Tazacorte a ver la fajana: el delta lávico que la erupción formó al entrar en el mar."
+        }
+      },
+      {
+        text: {
+          it: "Ultima tappa al mirador della chiesa della Sagrada Familia, nel quartiere di Tajuya: l'ultimo vulcano delle Canarie è lì davanti, a circa due chilometri.",
+          en: "Last stop at the viewpoint by the church of the Sagrada Familia, in the Tajuya district: the most recent volcano in the Canaries stands right there, about two kilometres away.",
+          es: "Última parada en el mirador de la iglesia de la Sagrada Familia, en el barrio de Tajuya: el último volcán de Canarias está justo enfrente, a unos dos kilómetros."
+        }
+      },
+      {
+        time: "16:30",
+        text: {
+          it: "Rientro al porto di Santa Cruz de La Palma; il traghetto riparte alle 17:00.",
+          en: "Back at the port of Santa Cruz de La Palma; the ferry leaves again at 17:00.",
+          es: "Regreso al puerto de Santa Cruz de La Palma; el ferry sale de nuevo a las 17:00."
+        }
+      },
+      {
+        time: "19:30",
+        text: {
+          it: "Arrivo al porto di Los Cristianos.",
+          en: "Arrival at the port of Los Cristianos.",
+          es: "Llegada al puerto de Los Cristianos."
+        }
+      }
+    ],
+    notes: [
+      {
+        it: "Serve un documento d'identità o il passaporto in corso di validità: la compagnia lo chiede all'imbarco e senza non si sale sul traghetto.",
+        en: "You need a valid ID card or passport: the ferry company asks for it at boarding and without it you cannot get on.",
+        es: "Hace falta el documento de identidad o el pasaporte en vigor: la naviera lo pide al embarcar y sin él no se sube al ferry."
+      },
+      {
+        it: "Su questa partenza non c'è il ritiro in hotel: il ritrovo è alle 07:45 al porto di Los Cristianos, davanti all'ufficio Fred Olsen. Calcola il tempo per arrivarci.",
+        en: "This departure has no hotel pick-up: you meet at 07:45 at the port of Los Cristianos, in front of the Fred Olsen office. Allow time to get there.",
+        es: "Esta salida no lleva recogida en el hotel: el encuentro es a las 07:45 en el puerto de Los Cristianos, delante de la oficina de Fred Olsen. Calcula el tiempo para llegar."
+      },
+      {
+        it: "È una giornata intera, circa dodici ore: si torna a Los Cristianos verso le 19:30.",
+        en: "It is a full day, about twelve hours: you are back in Los Cristianos around 19:30.",
+        es: "Es un día entero, unas doce horas: se vuelve a Los Cristianos sobre las 19:30."
+      },
+      {
+        it: "La traversata dura più di due ore per parte. Se soffri il mare, il fornitore consiglia di prendere qualcosa contro il mal di mare prima di imbarcarti.",
+        en: "The crossing takes more than two hours each way. If you get seasick, the operator suggests taking something for it before boarding.",
+        es: "La travesía dura más de dos horas por trayecto. Si te mareas, el proveedor recomienda tomar algo para el mareo antes de embarcar."
+      },
+      {
+        it: "Ai miradores si sta in quota e fa più fresco che sulla costa: porta scarpe comode e qualcosa di caldo.",
+        en: "The viewpoints are up in the hills and cooler than the coast: bring comfortable shoes and something warm.",
+        es: "Los miradores están en altura y hace más fresco que en la costa: lleva calzado cómodo y algo de abrigo."
+      },
+      {
+        it: "L'escursione si svolge in spagnolo.",
+        en: "The excursion is run in Spanish.",
+        es: "La excursión se realiza en español."
+      },
+      {
+        it: "Se hai un'allergia o un'esigenza alimentare per il pranzo, scrivicelo nella richiesta: lo giriamo al ristorante.",
+        en: "If you have an allergy or a dietary requirement for lunch, tell us in your request: we pass it on to the restaurant.",
+        es: "Si tienes una alergia o una necesidad alimentaria para el almuerzo, escríbenoslo en la solicitud: se lo pasamos al restaurante."
+      }
+    ],
     image: "la-palma.jpg",
     published: true
   },
@@ -4015,6 +4335,61 @@ const ESPLORA_CATALOG = [
   },
 
   // ─── TOUR PRIVATI ─────────────────────────────────────────────────────────
+  {
+    id: "masca-teide-cabrio-bus",
+    title: "Masca + Teide VIP Cabrio Bus",
+    category: "tour-privati",
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    priceFrom: 80,
+    priceAdult: 80,
+    priceChild: 80,
+    priceInfant: 0,
+    ages: { adult: "14+", child: "3-13", infant: "0-2" },
+    itinerary: [
+      {
+        text: {
+          it: "Discesa verso Masca: il borgo in fondo al barranco, fra le palme e le pareti di roccia che scendono fino al mare",
+          en: "The road down to Masca: the hamlet at the bottom of the ravine, among the palms and the rock walls that drop to the sea",
+          es: "Bajada hacia Masca: el caserío en el fondo del barranco, entre las palmeras y las paredes de roca que caen al mar"
+        }
+      },
+      {
+        text: {
+          it: "Parco Nazionale delle Cañadas del Teide, patrimonio Unesco: colate di lava, piante che crescono solo qui e il vulcano più alto della Spagna, 3.718 metri",
+          en: "Las Cañadas del Teide National Park, a Unesco site: lava flows, plants that grow nowhere else and the highest volcano in Spain, 3,718 metres",
+          es: "Parque Nacional de Las Cañadas del Teide, patrimonio de la Unesco: coladas de lava, plantas que solo crecen aquí y el volcán más alto de España, 3.718 metros"
+        }
+      },
+      {
+        text: {
+          it: "Nella discesa verso sud, sosta al mirador di Pino Gordo, a Vilaflor, il paese più alto della Spagna",
+          en: "On the way back south, a stop at the Pino Gordo viewpoint, in Vilaflor, the highest village in Spain",
+          es: "En la bajada hacia el sur, parada en el mirador de Pino Gordo, en Vilaflor, el pueblo más alto de España"
+        }
+      }
+    ],
+    notes: [
+      {
+        it: "La salita in funivia è facoltativa e non è compresa nel prezzo: il biglietto si compra sul posto.",
+        en: "Going up by cable car is optional and not included in the price: you buy the ticket there.",
+        es: "La subida en teleférico es opcional y no está incluida en el precio: el billete se compra allí."
+      },
+      {
+        it: "Il bus è scoperto e in cima si arriva a oltre 2.000 metri: porta una felpa o una giacca, e cappellino e crema solare per il tratto al sole.",
+        en: "The bus is open-top and you get above 2,000 metres up there: bring a sweatshirt or a jacket, plus a hat and sunscreen for the sunny stretch.",
+        es: "El bus es descapotable y arriba se pasa de los 2.000 metros: lleva una sudadera o una chaqueta, y gorra y crema solar para el tramo al sol."
+      }
+    ],
+    family: true,
+    desc: {
+      it: "Masca e il Parco Nazionale del Teide a bordo di un bus scoperto: il paesaggio si guarda a 360°, senza un vetro di mezzo.",
+      en: "Masca and Teide National Park aboard an open-top bus: you watch the landscape all around you, with no window in the way.",
+      es: "Masca y el Parque Nacional del Teide a bordo de un bus descapotable: el paisaje se mira en 360°, sin un cristal de por medio."
+    },
+    image: "",
+    published: true
+  },
   {
     id: "private-charter",
     title: "Private Charter",

@@ -243,7 +243,12 @@ const I18N = {
   "req.menuError":      { it: "Hai indicato più menu speciali che persone.", en: "You've asked for more special menus than there are people.", es: "Has indicado más menús especiales que personas." },
   "req.unitsError":     { it: "Serve almeno un mezzo per fare la richiesta.", en: "Add at least one to send the request.", es: "Hace falta al menos uno para enviar la solicitud." },
   "req.menuHint":       { it: "Allergie o intolleranze: scrivile nelle note qui sotto, così la cucina le sa in anticipo.", en: "Allergies or intolerances: write them in the notes below, so the kitchen knows in advance.", es: "Alergias o intolerancias: escríbelas en las notas de abajo, para que la cocina lo sepa con antelación." },
-  "req.dayError":       { it: "Questa escursione si fa solo: {giorni}.", en: "This excursion only runs on: {giorni}.", es: "Esta excursión solo se hace: {giorni}." },
+  // Non e' piu' un errore che ferma la richiesta, e' un avviso: la data si puo'
+  // mandare lo stesso ed e' l'ufficio a dire se quel giorno si fa. Per questo
+  // dice "di solito" e non "solo", e finisce dicendo cosa succede adesso.
+  // La chiave si chiama ancora `dayError` perche' la usano tre file e due
+  // pagine HTML: il nome e' rimasto, il senso no.
+  "req.dayError":       { it: "Questa escursione di solito si fa: {giorni}. Manda pure la richiesta: se quel giorno non si fa, te lo diciamo prima della conferma.", en: "This excursion usually runs on: {giorni}. Send your request anyway: if it doesn't run that day, we'll tell you before confirming.", es: "Esta excursión suele hacerse: {giorni}. Envía igualmente la solicitud: si ese día no se hace, te lo decimos antes de confirmar." },
 
   // I giorni della settimana, in forma corta: servono alla riga "Giorni" e al
   // messaggio che compare quando il cliente sceglie una data in cui

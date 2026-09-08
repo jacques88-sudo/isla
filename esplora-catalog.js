@@ -196,9 +196,15 @@
 //                Le allergie **non** vanno qui: sono troppo diverse una
 //                dall'altra per stare in un elenco, e si scrivono nelle note.
 //                Sotto la domanda compare da sola una riga che lo ricorda.
-//   days       → facoltativo: i giorni in cui l'attivita' si fa. Dove c'e', il
-//                cliente che sceglie un altro giorno se lo sente dire subito,
-//                sotto la data, e la richiesta non parte.
+//   days       → facoltativo: i giorni in cui l'attivita' si fa **di solito**.
+//                Dove c'e', il cliente che sceglie un altro giorno se lo sente
+//                dire subito, sotto la data — ma **la richiesta parte lo
+//                stesso** (proprietario, 8 settembre 2026). Il cliente sceglie
+//                la data in cui pensa ci sia l'escursione, e se e' un altro
+//                giorno glielo dice l'ufficio prima della conferma. Fino a
+//                quel giorno il campo fermava l'invio: fermava anche richieste
+//                buone, perche' i giorni cambiano con la lingua della guida, e
+//                quel "no" non arrivava nemmeno in ufficio.
 //                Si scrivono con queste sette sigle, e basta sbagliarne una
 //                per pubblicare dei giorni sbagliati: **mar e' martedi', mer e'
 //                mercoledi'**.

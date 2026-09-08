@@ -2552,3 +2552,80 @@ body.menu-open { overflow: hidden; }
   .assist-fab { right: 1.6rem; bottom: 1.6rem; }
   .lista-fab { left: 1.6rem; bottom: 1.6rem; }
 }
+
+/* La casella dell'hotel e i suoi suggerimenti.
+   La lista e' scritta a mano invece che con <datalist> perche' su Android il
+   <datalist> diventa un pannello scuro a tutto schermo che copre il campo:
+   non si puo' ne' colorare ne' accorciare, e cercava il testo anche in mezzo
+   a una parola. Vedi initHotelField() in escursioni.js. */
+.hotel-field {
+  position: relative;
+  /* il campo dentro porta gia' il suo margine sotto */
+  margin-bottom: 0;
+}
+.hotel-sugg {
+  position: absolute;
+  z-index: 2;
+  top: calc(100% - .9rem);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: .3rem;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  max-height: 15.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.hotel-sugg[hidden] { display: none; }
+.hotel-sugg-voce {
+  padding: .7rem .9rem;
+  border-radius: 10px;
+  font-size: .93rem;
+  line-height: 1.35;
+  color: var(--text);
+  cursor: pointer;
+}
+.hotel-sugg-voce.is-on,
+.hotel-sugg-voce:hover { background: var(--cream); }
+
+/* Dove passa il pulmino, sotto la casella dell'hotel. Prende il posto della
+   riga di aiuto e si vede di piu': meta' dei clienti non sale davanti al
+   proprio albergo ma a una fermata dell'autobus a due strade, ed e' la cosa
+   che devono leggere. */
+/* sotto la data, subito prima di "A che ora": senza il margine sotto la riga
+   si incolla all'etichetta che segue */
+[data-hotel-hint] { margin-bottom: 1.1rem; }
+.hotel-punto {
+  margin: .8rem 0 1.1rem;
+  background: var(--cream);
+  border-radius: 12px;
+  padding: .7rem .9rem;
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--muted);
+}
+.hotel-punto strong {
+  display: block;
+  margin-top: .25rem;
+  font-size: .95rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text);
+}
+
+/* "A che ora" sulle schede col pick-up: non un menu ma l'ora dell'hotel
+   scelto, scritta e basta. Stessa forma del campo che sostituisce, senza il
+   bordo — non e' una cosa su cui si clicca. */
+.request-ora-fissa {
+  margin: 0 0 1.2rem;
+  font-size: 1.15rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.request-ora-fissa[hidden] { display: none; }

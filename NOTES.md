@@ -5583,6 +5583,398 @@ Provati anche i quattro casi che `controlla.js` deve prendere, uno per uno. `sw.
 promozione, non un listino gia' praticato. **Resta da confermare la data**, messa al 31
 ottobre 2026: e' il giorno in cui il prezzo sale da solo, quindi non e' un dettaglio.
 
+---
+
+## I dati di pick-up del fornitore (7 settembre 2026)
+
+Su una pagina del fornitore c'e' una tendina con tutti gli hotel dove passa il pulmino.
+Serviva per costruire un campo **hotel** nella richiesta: molte escursioni fanno il
+pick-up lo stesso giorno, da hotel diversi e a orari diversi.
+
+I dati sono in `dati-fornitore/`, con il loro README. **Il sito non li usa ancora.**
+
+### Come sono venuti fuori
+
+La pagina non era copiabile a mano: le tendine sono fatte con **TomSelect**, cioe' il
+`<select>` vero e' nascosto e sopra ci sono dei `<div>`. Cambiare il `<select>` da codice
+non fa reagire il sito: bisogna passare da `select.tomselect.setValue(...)`. Sono andate
+perse mezz'ora e cinque tentativi prima di accorgersene — le righe uscivano tutte uguali,
+con lo stesso punto e la stessa ora, e sembrava un problema di attesa.
+
+L'ora **non e' scritta nella pagina**: a ogni cambio hotel il widget chiede al server
+(`POST /webfapinere/widget/hotel_pickup`) e riceve `{"result":"ok","id_punto":"1",
+"hora":"08:15"}`. Cercarla dentro gli script, nell'HTML e nelle variabili globali non ha
+dato niente, ed e' stato tempo speso bene: ha escluso le tre strade sbagliate.
+
+Il modo che ha funzionato: una spia su `fetch` e `XMLHttpRequest` che registra le
+risposte, poi un giro sui 567 hotel a una richiesta al secondo, leggendo il JSON invece
+del DOM. Leggere il JSON e' molto piu' solido che leggere la pagina: niente attese da
+indovinare.
+
+### Cosa si e' scoperto sulla forma dei dati
+
+**Il punto di raccolta dipende solo dall'hotel, l'ora dipende dall'escursione.** Provato
+su due escursioni diverse (Teide mezza giornata ed escursione 308, Masca+Teide in bus
+cabrio): stesso hotel, stesso `id_punto`, ora diversa. Quindi le tabelle sono tre e
+separate — i punti, l'abbinamento hotel-punto, e gli orari per escursione — e solo la
+terza va rifatta per ogni tour nuovo.
+
+Questo e' il motivo per cui **non** va fatto un campo `hotel` con dentro l'orario: sarebbe
+567 orari da riscrivere a ogni escursione, invece di settanta.
+
+**Il punto di raccolta spesso non e' l'hotel**: 30 punti su 70 sono fermate TITSA, sbarre
+di residence, posteggi taxi, centri commerciali. E' la cosa che il cliente deve leggere
+piu' dell'orario: chi sta al CLEOPATRA deve camminare fino alla fermata del BEST TENERIFE.
+
+**`id_punto: 0` vuol dire "si sale direttamente in hotel"**, non "dato mancante"
+(confermato dal proprietario). Sono 29 hotel, e sul sito diventano "passiamo a prenderti
+in hotel".
+
+**Ora assente** (`"hora": false`) vuol dire che quel punto non e' servito da
+quell'escursione — non che l'orario e' ignoto. Sul Teide mezza giornata sono 170 hotel,
+quasi tutti a Puerto de la Cruz e nel nord.
+
+### Confermato dal proprietario
+
+- gli orari di Admiral su queste escursioni sono **gli stessi** del fornitore;
+- le **12:15** del punto 41 (REGENCY COUNTRY CLUB, FLORIDA, CHAYOFA CLUB) sono corrette,
+  anche se tutte le altre partenze stanno fra le 08:15 e le 09:25;
+- `09:04` e `09:16` erano refusi: corretti in `09:05` e `09:15` nei file puliti, lasciati
+  com'erano in `dati-fornitore/grezzo/`.
+
+### Cosa manca
+
+- **39 punti su 104 non hanno il nome**: la tendina di un'escursione mostra solo i punti
+  che quell'escursione serve. Si recuperano aprendo la tendina su un'escursione che parte
+  dal nord.
+- **Gli orari delle altre escursioni**, che deve dare l'ufficio.
+
+### La regola da non dimenticare
+
+Un orario e' una promessa. I nomi degli hotel e i punti di raccolta sono luoghi e si
+possono pubblicare subito; l'ora no, finche' l'ufficio non la conferma. Un cliente alla
+fermata all'ora sbagliata e' il danno peggiore che questo campo possa fare — peggio che
+non avere il campo.
+
+### Il campo hotel nella richiesta (primo pezzo)
+
+`hotel.js` porta i 562 nomi, la finestra della richiesta ha una casella **Dove
+alloggi** con il suggerimento del browser, e il nome scelto finisce nel messaggio
+WhatsApp sopra le note.
+
+**Perche' un `<datalist>` e non un `<select>`.** Un menu obbligato con 562 voci su
+un telefono e' inusabile, e soprattutto sarebbe una gabbia: chi alloggia in un
+appartamento privato o in un hotel che nell'elenco non c'e' non potrebbe scrivere
+niente. Col `<datalist>` il cliente scrive tre lettere, sceglie se lo trova, e se
+non lo trova scrive lo stesso. Sotto la casella c'e' la riga che glielo dice.
+
+**I nomi si riempiono da JavaScript, non dall'HTML.** La finestra della richiesta
+e' scritta due volte, in `escursioni.html` e in `tour.html`: 562 `<option>` da
+tenere uguali a mano in due file sarebbero 562 occasioni di sbagliare. Nell'HTML
+c'e' solo `<datalist id="hotelList">` vuoto, e `initRequestDialog()` lo riempie.
+
+**Il campo e' facoltativo e sta su tutte le schede**, non solo dove c'e' il
+transfer: anche senza pick-up, sapere dove alloggia il cliente serve all'ufficio
+per rispondere. Le note hanno smesso di chiedere l'hotel — il placeholder e'
+passato da "Hotel, zona, richieste particolari…" a "Richieste particolari…" — se
+no la stessa cosa si scriveva in due posti.
+
+**Nel messaggio la riga dell'hotel sta sopra le note**, perche' e' un dato e non
+un commento, e come l'orario e la lingua compare solo se c'e'.
+
+Salvato anche nella lista delle richieste, cosi' il messaggio unico lo porta per
+tutte le escursioni messe da parte.
+
+**Qui non ci sono ancora ne' punto di raccolta ne' orario.** Servono le due
+tabelle in `dati-fornitore/`, e l'ora va confermata dall'ufficio prima di
+mostrarla: e' il pezzo dopo.
+
+### Provato
+
+`node controlla.js` → 0 errori. Nel browser vero: 562 suggerimenti su
+`escursioni.html` e su `tour.html`, etichetta e placeholder giusti in tutte e tre
+le lingue, "Cleopatra" che finisce nel messaggio come "• Hotel: Cleopatra", e
+l'hotel che sopravvive al salvataggio nella lista e ricompare nel messaggio
+unico. Nessun errore JS. `sw.js` a `isla-v230`.
+
+### Il `<datalist>` non andava bene, e si e' visto solo sul telefono
+
+Sul computer la lista dei suggerimenti sembrava a posto. Sul telefono del
+proprietario no: Android disegna il `<datalist>` come un **pannello scuro a
+tutto schermo** che copre il campo e nasconde quello che stai scrivendo, con i
+suoi colori e non i nostri. Non si puo' ne' colorare, ne' accorciare, ne'
+spostare: quella tendina la fa il browser.
+
+E cercava il testo **ovunque dentro il nome**: scrivendo `cl` proponeva
+`Apartamentos el Ancla`. Tecnicamente giusto, illeggibile per chi guarda.
+
+Rifatta a mano: `initHotelField()` in `escursioni.js`, `.hotel-sugg` in
+`styles.css`. Otto nomi per volta, dentro la finestra, con i colori del sito.
+
+**Si cerca solo dall'inizio di una parola**, prima i nomi che cominciano col
+testo scritto e poi quelli dove il testo comincia una parola qualsiasi: `cl` da'
+Cleopatra e i Club, `mar` da' anche Club la Mar. Gli accenti non contano —
+`sueno` trova `Sueño Azul`, perche' nessuno va a cercare la enne con lo
+scarabocchio sulla tastiera del telefono.
+
+Resta una **casella di testo**, non un menu obbligato: `casa mia` non da'
+suggerimenti e resta scritto. Funziona anche con le frecce e l'Invio, e l'Invio
+che sceglie un hotel non manda la richiesta.
+
+La finestra che si chiude col suggerimento aperto lo lasciava li' sospeso:
+`close()` manda un evento `islarequestclose` e il campo si chiude da solo.
+
+**La lezione**: un campo di testo va guardato sul telefono vero prima di dirlo
+finito. Sul computer non si vedeva niente di quello che non andava.
+
+### Provato
+
+`node controlla.js` → 0 errori. Nel browser, finestra a 390 px: `cl` → Cleopatra
+e sette Club, niente Ancla; `cleo` → solo Cleopatra; `sueno` → Sueño Azul;
+`parque` → otto; `casa mia` → nessun suggerimento e il testo resta. Scelta col
+tocco e con le frecce, hotel nel messaggio WhatsApp, nessun errore JS. `sw.js` a
+`isla-v231`.
+
+### Il punto di raccolta (secondo pezzo)
+
+Scelto l'hotel, sotto la casella compare **dove passa il pulmino**, e la stessa
+riga finisce nel messaggio all'ufficio. Nessun orario: quello e' il pezzo dopo,
+e prima lo deve confermare l'ufficio.
+
+`hotel.js` adesso porta due tabelle: `PICKUP_POINTS` (64 punti, nome + tipo) e
+`HOTELS`, dove ogni riga e' `[nome, punto]`.
+
+**Quanto serviva davvero:** dei 416 hotel di cui sappiamo il punto, **351
+salgono da un'altra parte**, non davanti al proprio albergo. Ventisette punti su
+64 non sono nemmeno un edificio: fermate dell'autobus pubblico, sbarre, posteggi
+taxi, un centro commerciale, un angolo di strada. Gli altri casi sono 29 hotel
+col punto `0`, 25 dove il punto e' proprio l'hotel, e 11 dove e' l'hotel ma alla
+sbarra o alla fermata.
+
+**Il punto dipende solo dall'hotel, non dall'escursione** — verificato su due
+escursioni del fornitore — quindi sta nei dati dell'hotel e non in quelli del
+tour. Gli orari no: quelli cambiano da un'escursione all'altra, e per questo
+non sono qui.
+
+**Il nome del posto non si traduce, il tipo si'.** "Best Tenerife" e' un nome
+proprio e resta uguale in tutte e tre le lingue, come i titoli delle escursioni:
+chi lo deve chiedere per strada lo chiede cosi'. A tradursi e' la seconda voce,
+il tipo, che diventa "alla fermata dell'autobus", "at the bus stop", "en la
+parada de guagua". Gli originali del fornitore erano note per gli autisti —
+stampatello, spagnolo e inglese mescolati, roba come "PARADA TAXI bajando
+cuesta / TAXI RANK down the hill" — e sono stati riscritti tutti e 65 a mano.
+
+**La riga e' corta: etichetta e posto, niente altro.** La prima versione
+spiegava ("non e' il tuo hotel", "l'ora te la confermiamo su WhatsApp") e il
+proprietario l'ha bocciata subito: troppo lunga. Aveva ragione — il cliente ha
+appena scritto il nome del suo hotel e vede da solo se il punto e' un altro, e
+la riga sotto dice gia' che si conferma tutto su WhatsApp. Resta
+"Punto di raccolta / Best Tenerife, alla fermata dell'autobus", e per chi sale
+sotto casa "Punto di raccolta / il tuo hotel".
+
+**Tre casi da distinguere lo stesso**, ed e' l'errore preso al primo giro:
+
+- punto `0`, oppure il punto si chiama come l'hotel e non ha un tipo →
+  "il tuo hotel";
+- il punto si chiama come l'hotel **ma ha un tipo** → il nome e il tipo
+  ("Granada Park, al posteggio dei taxi"), 11 hotel. Al Granada Park si sale al posteggio in fondo
+  alla discesa e al Bahia del Duque alla sbarra: confrontare i due nomi e dire
+  "passiamo in hotel" mandava il cliente ad aspettare davanti alla reception;
+- punto diverso → il nome del posto e il tipo.
+
+### L'orario
+
+`PICKUP_TIMES[idScheda][idPunto]` in `hotel.js`. **Il punto e' lo stesso per
+tutte le escursioni, l'ora no**: per questo la tabella e' per scheda, e una
+scheda che non c'e' dentro mostra il punto senza l'ora invece di indovinarne
+una. Provato: sul Teide National Park esce "09:15 · Best Tenerife, alla fermata
+dell'autobus", su Teide + Masca lo stesso posto senza ora.
+
+Riempita per ora solo `teide-national-park`, con i 63 orari presi dal widget.
+**La pagina "teide-medio-dia" del fornitore e' quella della nostra scheda**,
+anche se il nome dice mezza giornata e la nostra durata dice 6-8 ore:
+confermato dal proprietario, che ha anche confermato che gli orari di Admiral
+sono gli stessi del fornitore. Ci ho sbattuto contro una volta e ho chiesto
+invece di indovinare — le due pagine sembravano due tour diversi.
+
+Per un'altra escursione servono **103 richieste, non 567**: siccome il punto non
+cambia mai, basta un hotel campione per punto. Un minuto e mezzo.
+
+Quando il punto e' proprio l'hotel e l'ora si sa, si scrive "08:20 · il tuo
+hotel": l'ora vale anche per chi non si sposta di un metro.
+
+**Il punto si ricava dall'hotel, non si salva** insieme alla richiesta: cosi'
+vale anche per le richieste rimaste nella lista da ieri, e se un domani un punto
+cambia non resta scritto quello vecchio nel browser del cliente.
+
+**Copre 416 hotel su 562.** Gli altri 146 (96 al nord, 50 al sud) hanno un punto
+di cui non sappiamo il nome — sono i 39 punti che la tendina del Teide non
+mostrava. Per loro non compare niente: meglio il silenzio di un'indicazione a
+meta'. Si recuperano aprendo la tendina dei punti su un'escursione che parte dal
+nord.
+
+La riga prende il posto di quella di aiuto ("se non trovi il tuo, scrivilo nelle
+note"): dicono la stessa cosa, e una volta che l'hotel c'e' quella generica non
+serve piu'. Si riscrive anche al cambio lingua a finestra aperta, che non
+ricarica la pagina.
+
+### Provato
+
+`node controlla.js` → 0 errori. Nel browser a 390 px, tutte e tre le lingue:
+Cleopatra → "Best Tenerife, alla fermata dell'autobus — non e' il tuo hotel";
+RIU Arecas → "al tuo hotel, alla fermata dell'autobus"; Granada Park → "al tuo
+hotel, al posteggio dei taxi"; Bahia del Duque → "alla sbarra"; Sendymar
+(punto 0) → "direttamente in hotel", e nel messaggio "Punto di raccolta: in
+hotel"; Girasol (punto senza nome) e "casa mia" → nessuna riga e resta quella di
+aiuto. Nessun errore JS. `sw.js` a `isla-v232`.
+
+### "A che ora" smette di essere una domanda e diventa una risposta
+
+Sul Teide il menu **A che ora** proponeva "Da concordare" e sette fasce
+segnaposto. Ma l'ora non si concorda per niente: al Cleopatra si parte alle
+9:15 e basta, e chi sta al Playa la Arena alle 8:40. Il menu faceva **due**
+danni insieme — chiedeva una cosa gia' decisa, e faceva credere che l'ora si
+trattasse.
+
+Ora, se la scheda sta in `PICKUP_TIMES`, **l'etichetta resta e il menu no**: al
+suo posto c'e' l'ora dell'hotel scelto, scritta e basta. Prima l'avevo tolto del
+tutto e messo l'ora dentro la riga del punto ("09:15 · Best Tenerife…"): il
+proprietario ha chiesto il campo indietro, ed e' meglio — l'orario e' la cosa
+che il cliente cerca, e cercarla dentro un'altra riga e' un giro in piu'.
+
+Finche' l'hotel non c'e', **non si mostra niente**: un'etichetta "A che ora" con
+sotto il vuoto e' peggio di nessuna etichetta.
+
+Nel messaggio la riga "Orario" torna al suo posto di sempre, fra la data e le
+persone, con l'ora ricavata dall'hotel; il punto di raccolta resta in fondo col
+solo posto. L'ufficio legge le stesse cose nello stesso ordine di tutte le altre
+richieste.
+
+L'ordine nella finestra e' data → hotel → **ora** → punto: prima chi sei e
+quando, poi dove dormi, poi la risposta.
+
+Sulle schede senza orari nostri non cambia niente: restano il menu, "Da
+concordare" e le fasce, come deciso.
+
+La riga di aiuto sotto il campo hotel cambia di conseguenza: "dove passiamo a
+prenderti" diventa "**dove e a che ora** passiamo a prenderti".
+
+Il campo dell'hotel vive in `initHotelField()` e la finestra in
+`initRequestDialog()`: si parlano con due eventi, `islarequestopen` quando si
+apre su una scheda e `islarequestclose` quando si chiude.
+
+**Da non riproporre**: le fasce segnaposto restano dove le partenze vere non le
+sappiamo (e' una cosa gia' decisa). Qui non e' il caso — le partenze le
+sappiamo, hotel per hotel.
+
+### Provato
+
+`node controlla.js` → 0 errori. Sul Teide National Park, senza hotel non si vede
+ne' etichetta ne' menu; con Cleopatra compare "A che ora / 09:15" e sotto "Punto
+di raccolta / Best Tenerife, alla fermata dell'autobus"; con Roca Nivaria
+"08:20" e "il tuo hotel"; con Sendymar, che un'ora non ce l'ha, solo "il tuo
+hotel". Il messaggio arriva con "Orario: 09:15" al posto giusto. Su Teide +
+Masca il menu c'e' ancora con "Da concordare" e le fasce. Riga di aiuto giusta
+in tutte e tre le lingue, anche cambiando lingua a finestra aperta. Nessun
+errore JS. `sw.js` a `isla-v237`.
+
+### "Dove alloggi" sale sotto la data
+
+Stava in fondo, sopra le note. Ora sta **subito dopo la data**, prima
+dell'orario e delle persone.
+
+Il motivo e' che ha smesso di essere un dettaglio: da quando l'hotel decide il
+punto di raccolta e l'ora, e' il campo che cambia la risposta. Chiederlo per
+ultimo voleva dire far scorrere tutta la finestra prima di sapere a che ora si
+parte — e con le escursioni che avranno pick-up e orari diversi, sara' vero per
+quasi tutte.
+
+Il "(facoltativo)" accanto all'etichetta e' diventato "**(utile per il
+pick-up)**": dice perche' compilarlo invece di dire che si puo' saltare. Il
+campo resta facoltativo davvero, non ha `required`.
+
+## La Gomera: la scheda riempita con i dati ufficiali
+
+Era un segnaposto: `duration` "Da definire", `priceFrom: 99`, `priceAdult` e
+`priceChild` a 0, tre righe di descrizione e niente altro. Il proprietario ha
+mandato due fonti — la pagina del fornitore che organizza il tour (in spagnolo,
+con il modulo di prenotazione) e la pagina di CanaryVIP, che rivende lo stesso
+giro — dicendo che **in caso di contrasto vale la prima**.
+
+### Cosa e' entrato e cosa no
+
+Dalla pagina ufficiale: il percorso (Los Cristianos, traghetto Fred Olsen, Roque
+de Agando, Parco Nazionale di Garajonay, pranzo al Restaurante Las Rosas, silbo
+gomero, Agulo, San Sebastian, ritorno in traghetto) e i tre prezzi, **110 / 75 /
+15,50**, con le fasce `12+` `4-11` `0-3` che combaciano da sole.
+
+Da CanaryVIP solo i fatti operativi: la durata di circa 10 ore, il passaporto
+obbligatorio, e i due punti di ritiro con i loro giorni. **Non** e' entrato
+niente del resto — la cancellazione gratis a 48 ore (le nostre sono 24, sempre),
+la "garanzia del miglior prezzo", i "biglietti ufficiali", il 5,00 su 7
+recensioni. Le descrizioni sono riscritte da zero nelle tre lingue: nessuna
+frase viene da nessuna delle due pagine.
+
+`priceInfant: 15.5` e' un numero vero, non uno zero: i neonati **pagano** il
+posto sul traghetto. Metterlo a 0 avrebbe scritto "Gratis" sulla pagina.
+
+### I due ritiri sono varianti, non un transfer
+
+CanaryVIP vende lo stesso giro da due zone: dal sud a 110 € e da Puerto de la
+Cruz a 115 €, e i giorni non sono gli stessi — dal sud "tutti i giorni tranne
+giovedi' e domenica", dal nord martedi', giovedi' e sabato.
+
+Il campo `transfer` **non andava bene**: quello e' per il ritiro che si aggiunge
+a un prezzo che esiste anche senza. Qui il ritiro in hotel e' dentro il prezzo
+in tutte e due i casi, non esiste una versione "senza". Quindi sta fra le icone
+(`transfer`, insieme a `ferry`, `guide`, `lunch`) e le due zone sono due
+`options.choices`, che e' anche l'unico posto dove i **giorni** possono cambiare
+da una all'altra.
+
+Il contrasto interno di CanaryVIP — l'intestazione dice "dal lunedi' al sabato",
+il modulo dice due elenchi diversi — si scioglie da solo: l'intestazione e'
+l'**unione** dei due. Quindi `days` della scheda e' `lun mar mer gio ven sab`
+(la domenica non si fa mai, e questo vale anche in lista dove la variante non
+c'e') e ogni variante stringe sui suoi: la variante vince.
+
+### La variante nord ha `price` e non `priceAdult`, apposta
+
+Del nord sappiamo solo il prezzo adulti. Con `priceAdult: 115` il totale si
+sarebbe fatto lo stesso, prendendo bambini e neonati dal **listino del sud**:
+115 + 75 + 15,50 e' un numero che sembra giusto e non lo e'. Con il solo `price`
+il bottone scrive 115 € e il totale non si fa: l'ufficio lo conferma. Provato in
+pagina — dal nord la riga "In breve" passa da tre righe di prezzo a una sola,
+"Prezzo 115 €", e il conto sparisce.
+
+E' la stessa scelta gia' fatta sul Luxury Cruiser per la barca privata, per un
+motivo diverso (li' il prezzo e' della barca, qui e' incompleto): in tutti e due
+i casi `price` senza `priceAdult` vuol dire "non moltiplicarmi per le persone".
+
+### Restano da chiedere
+
+- **prezzo bambini e neonati da Puerto de la Cruz** (il +5 € vale anche per
+  loro?);
+- **le lingue**: il modulo del fornitore ha un menu "Idioma", quindi la scelta
+  esiste, ma nella pagina si legge solo "Espanol". Finche' non arriva l'elenco
+  vero, niente campo `languages`: meglio nessuna domanda che una domanda con una
+  risposta sola;
+- **gli orari di partenza**: `times` resta assente (fasce segnaposto), perche'
+  il ritiro dipende dall'hotel e il fornitore lo comunica con la conferma;
+- **la foto**: `la-gomera.jpg` e' quadrata e da 27 KB, fuori dal formato
+  1200x800 delle altre. Non l'ho toccata perche' non ne e' arrivata un'altra, ma
+  e' quella che stona di piu' adesso che la scheda e' piena.
+
+### Provato
+
+`node controlla.js` → 0 errori (l'unico avviso e' quello di sempre su
+`opera-60`). Nel browser vero, tutte e tre le lingue: giorni giusti in italiano
+(`Lun · Mar · Mer · Ven · Sab` dal sud, `Mar · Gio · Sab` dal nord — mar e'
+martedi'), le righe dei prezzi che seguono la variante, nessun errore JS. Conti
+a mano dal sud: 2 adulti 220 €, 2 adulti + 1 bambino 295 €, con un neonato
+310,50 €. Dal nord nessun totale, come voluto. `sw.js` a `isla-v238`.
+
+---
+
 ## Masca + Teide VIP Cabrio Bus: scheda nuova in "Teide e natura" (7 settembre 2026)
 
 Arrivata dall'ufficio la pagina di un fornitore (Nere Izerdie / Island Excursions S.L.,

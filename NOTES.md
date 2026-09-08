@@ -6587,3 +6587,42 @@ e 6453), da un merge chiuso male. **I due lati erano tutti e due contenuto buono
 diverso** — gli orari del pick-up di Teide/Icod/Garachico/Masca da una parte, La Gomera e
 le sezioni dopo dall'altra — quindi sono stati tenuti tutti e due, in quell'ordine, con il
 `---` di sempre in mezzo. Non è stato buttato via niente.
+
+---
+
+## Le lingue del Teide erano già giuste (8 settembre 2026)
+
+Il proprietario ha mandato le lingue del **Teide National Park**: "le stesse ma senza
+l'olandese", cioè le cinque di Santa Cruz meno il `Nederlands`.
+
+**Non c'è stato niente da cambiare: la scheda le aveva già.** `teide-national-park` ha
+`languages: LINGUE_TOUR` dal 7 settembre, e `LINGUE_TOUR` è esattamente quelle cinque.
+Verificato nel browser prima di rispondere, invece di fidarsi del codice: in "In breve" la
+riga dice "English · Español · Deutsch · Italiano · Français" e il menu "In che lingua"
+ha cinque voci più "Indifferente", **senza `Nederlands`**.
+
+### Le due schede non si devono unificare
+
+Vale la pena scriverlo perché adesso il catalogo ha due liste che si somigliano e **non
+sono la stessa cosa**:
+
+| scheda | lingue | come è scritto |
+| --- | --- | --- |
+| `teide-national-park` | 5 | `languages: LINGUE_TOUR` |
+| `santa-cruz-taganana` | 6, con l'olandese | la lista per esteso |
+
+Chi passa di qui e vede la lista lunga scritta a mano potrebbe pensare a una svista e
+"sistemarla" in `LINGUE_TOUR`, o al contrario allargare la costante a sei lingue perché
+"tanto è la stessa gita in pullman". Sono tutte e due modifiche sbagliate: le due
+escursioni sono di **due fornitori diversi**, e l'olandese ce l'ha solo quella di Santa
+Cruz. Toccare `LINGUE_TOUR` per far contenta una scheda cambierebbe per giunta anche
+tutte le altre che la usano.
+
+### L'avviso in testa a `LINGUE_TOUR` resta
+
+La costante ha ancora scritto sopra "⚠ QUESTA LISTA E' DA CONFERMARE", e **resta com'è**:
+il proprietario ha confermato quelle cinque per il Teide, non per ogni scheda che usa la
+costante. L'avviso continua a valere per le altre, che le lingue non se le sono ancora
+sentite chiedere una per una.
+
+Nessun file di codice toccato, quindi `CACHE_NAME` resta a `isla-v249`.

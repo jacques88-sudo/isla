@@ -1886,6 +1886,75 @@ const ESPLORA_CATALOG = [
     image: "trekking-bici.jpg",
     published: true
   },
+  {
+    id: "icod-garachico-orotava",
+    // L'id nomina ancora La Orotava, dove il tour non passa piu' dal 24
+    // agosto: i codici interni non si cambiano, si romperebbero i link.
+    title: {
+      it: "Teide, Icod, Garachico e Masca",
+      en: "Teide, Icod, Garachico & Masca",
+      es: "Teide, Icod, Garachico y Masca"
+    },
+    // Categoria decisa dal proprietario l'8 settembre 2026: sta con il Teide,
+    // non con i tour dell'isola.
+    category: "teide-natura",
+    zone: { it: "Tenerife nord", en: "North Tenerife", es: "Tenerife norte" },
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    // Listino del fornitore (Nere Izerdie / Island Excursions, Costa Adeje),
+    // mandato dall'ufficio l'8 settembre 2026: 58 € adulti, 37,50 € bambini.
+    priceFrom: 58,
+    priceAdult: 58,
+    priceChild: 37.5,
+    // Il fornitore da' solo "Ninos (2-11)", quindi gli adulti sono 12+.
+    // La riga dei bebe' l'ufficio ha scritto di NON metterla: niente
+    // `ages.infant` e niente `priceInfant`. Campo assente = "non lo
+    // sappiamo", che e' esattamente la situazione — non "gratis".
+    ages: { adult: "12+", child: "2-11" },
+    // Il fornitore scrive solo il ritiro ("le recogeremos en su parada"):
+    // il transfer si puo' accendere, la guida no, che non la nomina.
+    included: ["transfer"],
+    // Le tappe sono in ordine ma senza orario: il fornitore non li da', e
+    // l'ora del ritiro cambia da fermata a fermata.
+    itinerary: [
+      { text: { it: "Ritiro alla fermata concordata e salita verso il Parco Nazionale delle Cañadas del Teide",
+                en: "Pickup at your agreed stop and the climb up towards Las Cañadas del Teide National Park",
+                es: "Recogida en su parada y subida hacia el Parque Nacional de Las Cañadas del Teide" } },
+      { text: { it: "Breve sosta a Vilaflor, il paese più alto della Spagna",
+                en: "A short stop at Vilaflor, the highest village in Spain",
+                es: "Breve parada en Vilaflor, el pueblo más alto de España" } },
+      { text: { it: "Seconda sosta dentro il Parco Nazionale, fra le colate di lava e i roques",
+                en: "A second stop inside the National Park, among the lava flows and the roques",
+                es: "Segunda parada dentro del Parque Nacional, entre las coladas de lava y los roques" } },
+      { text: { it: "Icod de los Vinos, dove c'è il Drago Millenario, l'albero simbolo delle Canarie",
+                en: "Icod de los Vinos, home of the thousand-year-old dragon tree, the symbol of the Canaries",
+                es: "Icod de los Vinos, donde está el Drago Milenario, el árbol símbolo de Canarias" } },
+      { text: { it: "Si prosegue lungo la costa nord fino alla villa storica di Garachico",
+                en: "On along the north coast to the historic town of Garachico",
+                es: "Se sigue por la costa norte hasta la histórica Villa de Garachico" } },
+      { text: { it: "Ultima tappa a Masca, il borgo in fondo al barranco, fra pareti di roccia e vegetazione",
+                en: "Last stop at Masca, the hamlet at the bottom of the ravine, among rock walls and greenery",
+                es: "Última parada en Masca, el caserío en el fondo del barranco, entre paredes de roca y vegetación" } },
+      { text: { it: "Rientro in hotel",
+                en: "Back to the hotel",
+                es: "Vuelta al hotel" } }
+    ],
+    notes: [
+      { it: "Il pranzo non è incluso: la sosta per mangiare si fa a Icod o a Garachico.",
+        en: "Lunch is not included: the meal stop is either in Icod or in Garachico.",
+        es: "El almuerzo no está incluido: la parada para comer se hace en Icod o en Garachico." },
+      { it: "Nel parco si sta sopra i 2.000 metri e fa freddo anche d'estate: porta una felpa o una giacca.",
+        en: "Up in the park you are above 2,000 metres and it is cold even in summer: bring a sweatshirt or a jacket.",
+        es: "En el parque se está por encima de los 2.000 metros y hace frío incluso en verano: lleva una sudadera o una chaqueta." }
+    ],
+    family: true,
+    desc: {
+      it: "Una giornata sola per il Parco Nazionale del Teide, il Drago Millenario di Icod, la villa storica di Garachico e il borgo di Masca, con ritiro alla fermata concordata.",
+      en: "A single day for Teide National Park, the thousand-year-old dragon tree of Icod, the historic town of Garachico and the hamlet of Masca, with pickup at your agreed stop.",
+      es: "Un solo día para el Parque Nacional del Teide, el Drago Milenario de Icod, la histórica Villa de Garachico y el pueblo de Masca, con recogida en su parada."
+    },
+    image: "icod-garachico-orotava.jpg",
+    published: true
+  },
 
   // ─── STELLE E ASTRONOMIA ──────────────────────────────────────────────────
   {
@@ -4028,28 +4097,6 @@ const ESPLORA_CATALOG = [
       es: "Los lugares emblemáticos de Tenerife en un solo día, en autobús con guía."
     },
     image: "island-tour-completo.jpg",
-    published: true
-  },
-  {
-    id: "icod-garachico-orotava",
-    title: {
-      it: "Teide, Icod, Garachico e Masca",
-      en: "Teide, Icod, Garachico & Masca",
-      es: "Teide, Icod, Garachico y Masca"
-    },
-    category: "tour-isola",
-    zone: { it: "Tenerife nord", en: "North Tenerife", es: "Tenerife norte" },
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Il Teide, il Drago Millenario di Icod, le piscine naturali di Garachico e il borgo di Masca, in una giornata sola.",
-      en: "The Teide, the thousand-year-old dragon tree of Icod, the natural pools of Garachico and the hamlet of Masca, in a single day.",
-      es: "El Teide, el Drago Milenario de Icod, las piscinas naturales de Garachico y el pueblo de Masca, en un solo día."
-    },
-    image: "icod-garachico-orotava.jpg",
     published: true
   },
   {

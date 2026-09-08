@@ -6190,3 +6190,91 @@ vista da sopra, cioè letteralmente il panorama del Mirador de la Concepción, c
 è una tappa del giro. Nessun marchio di altri sopra. È 1000×563 invece di
 1200×800 — fuori formato come quella di La Gomera, ma non ne è arrivata
 un'altra e sostituirla con una peggiore non è un miglioramento.
+
+---
+
+## Teide + Icod + Garachico + Masca: prezzi veri su una scheda che c'era già (8 settembre 2026)
+
+L'ufficio ha mandato la pagina del fornitore (**Nere Izerdie / Island Excursions S.L.**,
+Costa Adeje — lo stesso del Masca + Teide VIP Cabrio Bus) con l'escursione **TEIDE + ICOD +
+GARACHICO + MASCA**, dicendo "se non c'è una scheda creala nuova e mettila su Teide e
+natura".
+
+### La scheda c'era: `icod-garachico-orotava`
+
+Prima di crearne una, il controllo di sempre — ed è servito. In "Tour e visite" c'era già
+**"Teide, Icod, Garachico e Masca"**, cioè lo stesso giro con gli stessi quattro nomi nel
+titolo: il rinomino del 24 agosto (da "Icod, Garachico & La Orotava") aveva già allineato
+la scheda a questo prodotto. Era un segnaposto: `priceFrom: null`, `priceAdult: 0`,
+`priceChild: 0`, niente itinerario.
+
+Quindi **niente scheda nuova**: i dati ufficiali sono entrati lì dentro. Una seconda voce
+con lo stesso giro sarebbe stato il caso Kalima Kat un'altra volta, e questa volta con due
+card affiancate nella stessa categoria.
+
+**L'id resta `icod-garachico-orotava`** anche se nomina La Orotava, dove il tour non passa
+più: i codici interni non si cambiano, si romperebbero i link e il nome della foto.
+
+### La categoria: chiesto, non deciso da soli
+
+L'indicazione "mettila su Teide e natura" valeva per la scheda nuova, che non è stata
+creata. Chiesto al proprietario cosa fare con quella esistente: **spostarla in "Teide e
+natura"**. Fatto — "Teide e natura" passa da 3 a 4 schede, "Tour e visite" da 8 a 7.
+`category` è un campo solo: lo spostamento la toglie da dov'era, non la mette in due posti.
+
+Sta in fondo alla categoria, **dopo `trekking-bici`**, non attaccata a `teide-masca`: due
+card consecutive che dicono tutte e due "Teide" e "Masca" si leggono come un doppione.
+
+### Cosa è entrato
+
+- `priceAdult: 58`, `priceChild: 37.5` — il listino del fornitore ("Adultos 58€, Niños
+  (2-11) 37.50€"). I 37,50 escono scritti giusti in tutte e tre le lingue ("€37,50" in
+  italiano e spagnolo, "€37.50" in inglese): ci pensa `eur()` in `i18n.js`.
+- `ages: { adult: "12+", child: "2-11" }`. Il fornitore dà solo la fascia dei bambini,
+  quindi gli adulti sono 12+ e le due fasce combaciano.
+- **Niente `priceInfant` e niente `ages.infant`.** Sulla pagina del fornitore la riga dei
+  bebè ha accanto, scritto dall'ufficio, **"NO PONER"**: non si mette. Campo assente vuol
+  dire "non lo sappiamo / non è previsto", che è la cosa vera — non "gratis". Effetto
+  visibile: nella finestra della richiesta il campo "Neonati" non compare proprio.
+- `included: ["transfer"]`, e basta quello. Il fornitore scrive solo il ritiro ("le
+  recogeremos en su parada correspondiente"). **Niente `guide`**: non la nomina, e
+  un'icona dice "vale sempre".
+- `itinerary` di sette tappe **senza `time`**: l'ordine ce l'abbiamo, gli orari no, e
+  l'ora del ritiro cambia da fermata a fermata.
+- Due `notes`: il pranzo non incluso, con dove si mangia (Icod o Garachico), e il freddo
+  sopra i 2.000 metri.
+- `desc` riscritta: quella vecchia parlava delle **piscine naturali di Garachico**, che
+  questo giro non tocca — un residuo del rinomino di agosto.
+
+### Cosa NON è entrato, di proposito
+
+- **Niente `days`, niente `times`.** Non li mandano. Restano i due stati "non lo sappiamo":
+  tutti i giorni e le fasce segnaposto più "Da concordare". Da confermare.
+- **Niente `languages`.** Come sul Cabrio Bus, il menu "Idioma" del fornitore aveva dentro
+  il solo "Español": un elenco con una voce sola può essere un copia-incolla troncato, e la
+  regola dice di metterlo solo dove lo segnala l'ufficio.
+- **Niente testo del fornitore.** Descrizione, tappe e consigli riscritti da zero nelle tre
+  lingue.
+- **Le 24 ore di preavviso restano le nostre**, come sempre.
+
+### Resta da guardare
+
+- **`zone` dice ancora "Tenerife nord"**, ed è rimasto da quando la scheda si chiamava
+  Icod/Garachico/Orotava. Sulla pagina quel campo si legge "Punto di partenza", ma qui la
+  partenza è la fermata del cliente (il fornitore sta a Costa Adeje) e la prima tappa è il
+  Teide. Non è stato cambiato perché il fornitore non scrive da che zona ritira: `teide-
+  national-park`, che è lo stesso tipo di giro, ha "Tenerife Sud". Una parola, quando
+  l'ufficio conferma.
+- **Sono ancora due le schede che fanno Teide e Masca in "Teide e natura"**: questa
+  (58 €, con Icod e Garachico) e `teide-masca` (60 €, segnaposto senza prezzi veri, solo
+  Teide e Masca). Ora si distinguono per prezzo e per tappe, ma `teide-masca` resta senza
+  dati: o arrivano, o va tolta.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi (i due noti: `opera-60` e la foto del Cabrio Bus).
+Nel browser vero, pagina di dettaglio nelle tre lingue: prezzi con le fasce fra parentesi,
+nessuna riga neonati, "Cosa è incluso" con il solo transfer, itinerario e consigli a posto,
+nessun errore JS. Nella finestra della richiesta: **2 adulti + 1 bambino = €153,50**, il
+campo "Neonati" non c'è, la domanda sulla lingua non compare e gli orari sono le fasce
+segnaposto più "Da concordare". `CACHE_NAME` alzato a `isla-v242`.

@@ -6775,3 +6775,70 @@ traghetto si paga) e non un "gratis". Totale della prova con 2 adulti, 1 bambino
 neonato: **€436** (2 × 145 + 126 + 20).
 
 `CACHE_NAME` alzato a `isla-v252`.
+
+---
+
+## Poema del Mar – Gran Canaria Experience, ripassata sui dati ufficiali (8 settembre 2026)
+
+L'ufficio ha mandato la pagina del fornitore (Nere Izerdie / Island Excursions) più quella
+di CanaryVIP come complemento, e le lingue: spagnolo, tedesco, inglese.
+
+**La sorpresa è che non c'era quasi niente da correggere.** La scheda `gran-canaria` era
+già stata riempita da queste stesse fonti: prezzi 135 / 32 / 20, fasce `12+` `3-11` `0-2`,
+`days: ["ven"]`, l'itinerario con 10:00, 11:30, 17:00 e 18:00, le cinque icone
+(`transfer`, `ferry`, `ticket`, `guide`, `tasting`) che ricalcano esattamente l'elenco
+"Incluye", e le note sul documento e sul pranzo. Riletta riga per riga contro l'originale:
+combacia.
+
+### Le quattro cose cambiate
+
+**Il titolo.** Da "Poema del Mar" a **"Poema del Mar – Gran Canaria Experience"**, che è il
+nome del fornitore. Non è cosmetica: la scheda sta in "Parchi e spettacoli", e lì "Poema
+del Mar" da solo si legge come il biglietto di un acquario. Questa invece è una giornata su
+**un'altra isola**, nave compresa, a 135 € contro i 39 di un parco. Il nome dell'isola nel
+titolo è la differenza fra le due cose, e la sbaglia il cliente, non noi.
+
+**La durata.** Da "Giornata intera" a **"Circa 12 ore"**, con gli orari della nave che
+restano fra parentesi perché sono il pezzo certo. Le 12 ore le dice solo il rivenditore,
+ma "giornata intera" era vero e vago insieme: chi parte alle 8 e rientra alle 20:30 la sera
+non se la organizza.
+
+**Una nota in più**, sempre dal rivenditore: si parte dall'hotel **intorno alle 8:00** e si
+rientra **intorno alle 20:30**. Sta in una nota, con "intorno a" davanti, e **non** in
+`times` né in `PICKUP_TIMES`: lì sarebbero un orario preciso che nessuno ci ha dato.
+
+**L'ordine delle lingue**, riscritto come lo manda l'ufficio (spagnolo, tedesco, inglese).
+Le tre erano già giuste, e resta valido il motivo per cui l'italiano non c'è: il modulo del
+fornitore lo elenca ma risponde "no excursions available".
+
+### Cosa NON è stato copiato, di nuovo
+
+La cancellazione **72 ore** di CanaryVIP (le nostre sono 24, sempre), "miglior prezzo
+garantito", "biglietti ufficiali", il 5.00 su 8 recensioni. E soprattutto il **ritiro anche
+dal nord**: CanaryVIP scrive "free pick-up in North Tenerife and South Tenerife", l'ufficiale
+dice "traslados desde el sur". Vale il primo, e la scheda continua a dire "Ritiro dal sud".
+
+### Resta aperto: `times: ["10:00"]` è la nave, non il ritiro
+
+Non toccato, ma va guardato. Il campo mostra "10:00" sotto la domanda **"A che ora"**, e
+nel messaggio WhatsApp esce come `• Orario: 10:00`. Solo che alle 10:00 parte **la nave**:
+il cliente dal suo hotel parte intorno alle 8:00.
+
+Sulla pagina si capisce — la durata dice "(traghetto 10:00-18:00)", l'itinerario mette
+10:00 accanto alla nave e adesso la nota dice l'orario dell'hotel. **Nel messaggio no**: lì
+"Orario: 10:00" è nudo, e un cliente che se lo rilegge può aspettare il pulmino alle 10.
+
+La scelta di scriverci il 10:00 era ragionata (il commento nella scheda la spiega: è
+l'unica partenza vera che sappiamo). L'alternativa è **togliere `times`**, così tornano le
+fasce più "Da concordare" e nel messaggio non compare nessun orario finto — l'ora vera la
+conferma l'ufficio, che è quello che succede comunque. **Decisione del proprietario**, non
+da prendere qui: è un campo che il cliente legge.
+
+### Provato
+
+Nel browser a 420 px nelle tre lingue: titolo nuovo in tutte e tre (è un nome proprio,
+quindi uguale), durata tradotta, le tre lingue nel loro ordine, i giorni "Ven". Con una
+data di venerdì (18 settembre 2026) la richiesta passa, e il messaggio esce completo:
+totale **€322** con 2 adulti, 1 bambino e 1 neonato (2 × 135 + 32 + 20). Nessun errore JS.
+
+`CACHE_NAME` alzato a `isla-v253`.

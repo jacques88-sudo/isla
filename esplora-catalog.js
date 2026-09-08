@@ -3895,7 +3895,7 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    id: "icod-garachico-orotava",
+    id: "teide-icod-garachico-masca",
     title: {
       it: "Teide, Icod, Garachico e Masca",
       en: "Teide, Icod, Garachico & Masca",
@@ -3913,7 +3913,7 @@ const ESPLORA_CATALOG = [
       en: "The Teide, the thousand-year-old dragon tree of Icod, the natural pools of Garachico and the hamlet of Masca, in a single day.",
       es: "El Teide, el Drago Milenario de Icod, las piscinas naturales de Garachico y el pueblo de Masca, en un solo día."
     },
-    image: "icod-garachico-orotava.jpg",
+    image: "teide-icod-garachico-masca.jpg",
     published: true
   },
   {

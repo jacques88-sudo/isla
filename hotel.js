@@ -750,7 +750,7 @@ const PICKUP_TIMES = {
   // **Nessuno dei 64 punti in comune ha la stessa ora del Teide.** E' la prova
   // che questa tabella deve stare per scheda: copiare gli orari di
   // un'escursione su un'altra avrebbe sbagliato tutti gli hotel, non qualcuno.
-  "icod-garachico-orotava": {
+  "teide-icod-garachico-masca": {
     1: "07:45",
     2: "07:50",
     3: "07:50",

@@ -5895,7 +5895,20 @@ campo resta facoltativo davvero, non ha `required`.
 
 ### La seconda escursione: Teide, Icod, Garachico e Masca
 
-`PICKUP_TIMES["icod-garachico-orotava"]`, 66 orari raccolti il 7 settembre 2026.
+`PICKUP_TIMES["teide-icod-garachico-masca"]`, 66 orari raccolti il 7 settembre
+2026.
+
+**Il codice della scheda era sbagliato**: si chiamava `icod-garachico-orotava`,
+ma l'Orotava in questo tour non c'e' — il titolo dice "Teide, Icod, Garachico e
+Masca". L'ha visto il proprietario. Rinominato in `teide-icod-garachico-masca`
+in `esplora-catalog.js`, in `hotel.js` e nel nome della foto. Il codice si vede
+nella barra dell'indirizzo (`tour.html?id=...`), quindi non e' una cosa solo
+interna: era una bugia leggibile dal cliente.
+
+Il vecchio indirizzo adesso non risponde piu', e una richiesta di questa scheda
+rimasta nella lista di qualcuno sparirebbe: la lista salva l'id e lo ricerca in
+catalogo. Rischio accettato perche' la scheda ha ancora `priceAdult: 0` e non e'
+vendibile — nessuno puo' averla messa da parte.
 
 **Ci sono voluti un comando e un minuto e mezzo**, non i dieci della prima
 volta: siccome il punto e' lo stesso per tutte le escursioni, basta interrogare
@@ -5931,4 +5944,4 @@ stampa e' scorsa via:
 schede: su Icod Cleopatra 08:45 e Perla Gris 07:45, sul Teide 09:15 e 08:15,
 stesso punto di raccolta in tutti e due i casi. Girasol, che il punto ce l'ha
 senza nome, non mostra niente su nessuna delle due. Nessun errore JS. `sw.js` a
-`isla-v238`.
+`isla-v239`.

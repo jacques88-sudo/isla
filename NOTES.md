@@ -5893,6 +5893,75 @@ Il "(facoltativo)" accanto all'etichetta e' diventato "**(utile per il
 pick-up)**": dice perche' compilarlo invece di dire che si puo' saltare. Il
 campo resta facoltativo davvero, non ha `required`.
 
+<<<<<<< HEAD
+### La seconda escursione: Teide, Icod, Garachico e Masca
+
+`PICKUP_TIMES["teide-icod-garachico-masca"]`, 66 orari raccolti il 7 settembre
+2026.
+
+**Il codice della scheda dice ancora Orotava, e per ora resta cosi'.** Il
+proprietario ha fatto notare che l'Orotava in questo tour non c'e', e io avevo
+rinominato la scheda in `teide-icod-garachico-masca`. Nel frattempo un'altra
+sessione stava riempiendo la stessa scheda su `main` e ha deciso il contrario,
+scrivendolo nel codice: *"i codici interni non si cambiano, si romperebbero i
+link"*.
+
+Al merge la rinomina e' stata annullata: `icod-garachico-orotava` resta, e
+`PICKUP_TIMES` usa quella chiave. La decisione vera — rinominare accettando che
+i vecchi link si rompano, oppure tenere un id che dice il falso nella barra
+dell'indirizzo — e' del proprietario, e non l'ha ancora presa.
+
+**La lezione del merge**: le due sessioni hanno lavorato sulla stessa scheda
+senza sapersi. Git non ha visto conflitto sulla riga dell'id, ma la scheda era
+stata **spostata** nel file, e il merge automatico l'avrebbe duplicata — due
+schede con lo stesso tour e id diversi, e `controlla.js` che nemmeno partiva.
+Provato prima su un ramo di prova, buttato via, e rifatto a mano tenendo la
+versione dell'altra sessione, che era molto piu' completa.
+
+**Ci sono voluti un comando e un minuto e mezzo**, non i dieci della prima
+volta: siccome il punto e' lo stesso per tutte le escursioni, basta interrogare
+**un hotel campione per punto** — 103 richieste invece di 567. La lista dei 103
+hotel campione sta nella conversazione e si ricava da `dati-fornitore/hotel.tsv`
+prendendo il primo hotel di ogni punto.
+
+**Nessuno dei 64 punti in comune ha la stessa ora del Teide.** Questa giornata
+intera parte prima e passa da tutti i punti con circa mezz'ora d'anticipo:
+Perla Gris alle 07:45 invece che alle 08:15, Cleopatra alle 08:45 invece che
+alle 09:15. E' la prova che la tabella deve stare per scheda: copiare gli orari
+di un'escursione su un'altra avrebbe sbagliato **tutti** gli hotel, non
+qualcuno.
+
+Copre 385 hotel con ora e posto, 31 col solo posto (i 29 che salgono in hotel
+piu' due punti senza orario), 146 col solito buco del nord.
+
+**Durata: 8 ore circa**, detta dal proprietario. E **niente `times` sulla
+scheda**: l'ora di partenza non e' una sola, la decide il punto di raccolta del
+cliente. E' il primo caso in cui `times` resta assente non perche' non lo
+sappiamo, ma perche' la domanda non ha una risposta unica — e infatti la
+finestra della richiesta al posto del menu "A che ora" mostra l'ora dell'hotel
+scelto. Il commento accanto alla scheda lo dice, se no il prossimo che passa
+prova a riempirlo.
+
+### Due cose da sapere per la prossima volta
+
+**`Promise {<pending>}` non vuol dire "sta ancora girando".** Chrome scrive
+quella riga nel momento in cui lanci il comando e non la aggiorna mai piu',
+nemmeno a lavoro finito. Ci abbiamo perso qualche minuto a credere che fosse
+bloccato mentre aveva gia' finito. Per sapere davvero a che punto e':
+`window.__log.length`.
+
+**Il risultato si puo' ricostruire dalla spia** anche se il ciclo e' finito e la
+stampa e' scorsa via:
+`copy(window.__log.map(r => { const j = JSON.parse(r); return j.id_punto + " | " + (j.hora || "") }).join("\n"))`
+
+### Provato
+
+`node controlla.js` → 0 errori. Nel browser, stesse quattro prove sulle due
+schede: su Icod Cleopatra 08:45 e Perla Gris 07:45, sul Teide 09:15 e 08:15,
+stesso punto di raccolta in tutti e due i casi. Girasol, che il punto ce l'ha
+senza nome, non mostra niente su nessuna delle due. Nessun errore JS. `sw.js` a
+`isla-v246`.
+=======
 ## La Gomera: la scheda riempita con i dati ufficiali
 
 Era un segnaposto: `duration` "Da definire", `priceFrom: 99`, `priceAdult` e
@@ -6060,7 +6129,7 @@ neonati aggiunti non spostano il totale. Il menu degli orari mostra "Da concorda
 fasce segnaposto, e la domanda sulla lingua non compare (giusto, `languages` non c'e').
 Dopo lo spostamento, riprovato: la scheda apre l'elenco di **Tour privati**, non e' piu'
 in "Teide e natura" (restano le tre di prima), la pagina di dettaglio e il totale non
-cambiano, nessun errore JS. `sw.js` alzato a `isla-v240`.
+cambiano, nessun errore JS. `sw.js` alzato a `isla-v246`.
 
 Il branch e' stato riallineato su `main` a merge gia' chiesto: nel frattempo erano
 entrate quattro PR (campo hotel, orari di pick-up, La Gomera) e il conflitto era su
@@ -6381,3 +6450,4 @@ Cristianos, Las Galletas, Costa Adeje, Chío, Guargacho…), e i casi con una pa
 Provato nel browser in inglese e in spagnolo su tre schede (`teide-national-park`,
 `buggy-2-3h`, `santa-cruz-taganana`): "South Tenerife" e "Tenerife sur". `CACHE_NAME`
 alzato a `isla-v245`.
+>>>>>>> origin/main

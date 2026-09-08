@@ -1886,7 +1886,14 @@ const ESPLORA_CATALOG = [
     // settembre 2026: la partenza e' **una sola**, il sud, e vale per tutte
     // le escursioni. Il nord qui e' dove si va, non da dove si parte.
     zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    // "Circa 8 ore", detto dal proprietario l'8 settembre 2026. Era "Giornata
+    // intera": vero ma vago, e per chi deve organizzarsi la giornata otto ore
+    // e dodici non sono la stessa cosa.
+    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
+    // Niente `times`: l'ora di partenza non e' una sola, la decide il punto di
+    // raccolta del cliente. Sta in PICKUP_TIMES dentro hotel.js, e la finestra
+    // della richiesta al posto del menu "A che ora" mostra l'ora del suo hotel
+    // (Perla Gris 07:45, Cleopatra 08:45).
     // Listino del fornitore (Nere Izerdie / Island Excursions, Costa Adeje),
     // mandato dall'ufficio l'8 settembre 2026: 58 € adulti, 37,50 € bambini.
     priceFrom: 58,

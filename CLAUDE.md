@@ -128,6 +128,36 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
 - **Il pallino della chat resta dov'è**, anche quando passa sopra un prezzo.
 - **Le fasce d'orario segnaposto restano** dove le partenze vere non le sappiamo: sono
   intervalli, il cliente li legge come una preferenza.
+- **Sulle escursioni nuove non si chiedono pick-up e orari.** Prima si mettono tutte le
+  schede, poi il proprietario aggiunge punto di raccolta e orari **una alla volta**, con
+  calma. Una scheda senza orari suoi non è incompleta: mostra il punto senza l'ora, o
+  niente, e va benissimo così.
+
+---
+
+## Il pick-up
+
+Il **punto di raccolta dipende solo dall'hotel**, l'**ora dipende dall'escursione**.
+Sono due tabelle separate in `hotel.js`, e vale la pena non confonderle: il punto si
+scrive una volta e vale per tutte le escursioni, gli orari vanno messi per ognuna.
+
+| tabella | cosa c'è | quando cambia |
+|---|---|---|
+| `PICKUP_POINTS` | 64 punti: nome e tipo | quasi mai |
+| `HOTELS` | 562 hotel, ognuno col suo punto | quando apre un hotel nuovo |
+| `PICKUP_TIMES[scheda][punto]` | gli orari, escursione per escursione | quando il fornitore li cambia |
+
+**Il nome del posto non si traduce, il tipo sì.** "Best Tenerife" è un nome proprio e
+resta uguale in tutte e tre le lingue, come i titoli delle escursioni: chi lo deve
+chiedere per strada lo chiede così. A tradursi è il tipo (`pickup.bus`, `pickup.taxi`…).
+
+**Una scheda che non sta in `PICKUP_TIMES` mostra il punto senza l'ora**, e il menu
+"A che ora" resta quello normale con le fasce. Dove invece gli orari ci sono, il menu
+sparisce e al suo posto c'è l'ora dell'hotel scelto: non è più una domanda, è una
+risposta. Un'ora inventata è la cosa peggiore che questo campo possa fare — un cliente
+alla fermata all'ora sbagliata.
+
+I dati grezzi e la storia di come sono stati raccolti stanno in `dati-fornitore/`.
 
 ---
 

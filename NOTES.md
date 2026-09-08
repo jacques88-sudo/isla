@@ -6278,3 +6278,33 @@ nessuna riga neonati, "Cosa è incluso" con il solo transfer, itinerario e consi
 nessun errore JS. Nella finestra della richiesta: **2 adulti + 1 bambino = €153,50**, il
 campo "Neonati" non c'è, la domanda sulla lingua non compare e gli orari sono le fasce
 segnaposto più "Da concordare". `CACHE_NAME` alzato a `isla-v242`.
+
+---
+
+## `teide-masca` cancellata (8 settembre 2026)
+
+Deciso dal proprietario subito dopo: la scheda **"Teide + Masca Tour"** (60 €) è stata
+**tolta dal catalogo**, non nascosta. Era il segnaposto rimasto senza dati veri — zona e
+durata "Da definire", `priceAdult` e `priceChild` a 0 — e da oggi il giro Teide + Masca sul
+sito è quello con i prezzi veri (`icod-garachico-orotava`, 58 €, con dentro anche Icod e
+Garachico). Si chiude così la sovrapposizione aperta il 24 agosto.
+
+"Teide e natura" resta di **3 schede**; il catalogo passa da 76 a 75, pubblicate da 71 a 70.
+
+Due cose viste prima di cancellare:
+
+- **L'id non era usato da nessun'altra parte**: solo nella sua voce del catalogo. Chi
+  arrivasse da un vecchio link `tour.html?id=teide-masca` trova la pagina "escursione non
+  trovata", che è il comportamento giusto, non un errore.
+- **Chi l'avesse in lista** (localStorage) non vede più la riga: `lista.js` salta le voci
+  che non trovano più la scheda nel catalogo. Il conteggio "senza prezzo" in fondo però la
+  conta ancora, perché `listaSomma` guarda tutte le voci salvate. Vale per qualsiasi scheda
+  cancellata, non solo per questa, ed è un caso di poche persone su un dispositivo solo: se
+  dovesse dare fastidio, si sistema in `listaSomma`.
+
+**La foto `assets/teide-masca.jpg` è rimasta**: è una buona foto di Masca, non pesa a
+nessuno (le foto non stanno nella precache del service worker) e serve se domani arriva una
+scheda che la vuole. Non va sul `masca-teide-cabrio-bus`, che aspetta ancora la foto del
+**bus scoperto**, per il motivo scritto ieri.
+
+`CACHE_NAME` alzato a `isla-v243`.

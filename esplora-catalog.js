@@ -1851,24 +1851,6 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    id: "teide-masca",
-    title: "Teide + Masca Tour",
-    category: "teide-natura",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 60,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Il Parco Nazionale del Teide e il borgo di Masca nella stessa giornata.",
-      en: "Teide National Park and the hamlet of Masca in the same day.",
-      es: "El Parque Nacional del Teide y el pueblo de Masca en la misma jornada."
-    },
-    image: "teide-masca.jpg",
-    published: true
-  },
-  {
     id: "trekking-bici",
     title: { it: "Trekking e bici", en: "Hiking & biking", es: "Senderismo y bici" },
     category: "teide-natura",

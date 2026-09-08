@@ -196,15 +196,15 @@
 //                Le allergie **non** vanno qui: sono troppo diverse una
 //                dall'altra per stare in un elenco, e si scrivono nelle note.
 //                Sotto la domanda compare da sola una riga che lo ricorda.
-//   days       → facoltativo: i giorni in cui l'attivita' si fa **di solito**.
-//                Dove c'e', il cliente che sceglie un altro giorno se lo sente
-//                dire subito, sotto la data — ma **la richiesta parte lo
-//                stesso** (proprietario, 8 settembre 2026). Il cliente sceglie
-//                la data in cui pensa ci sia l'escursione, e se e' un altro
-//                giorno glielo dice l'ufficio prima della conferma. Fino a
-//                quel giorno il campo fermava l'invio: fermava anche richieste
-//                buone, perche' i giorni cambiano con la lingua della guida, e
-//                quel "no" non arrivava nemmeno in ufficio.
+//   days       → facoltativo: i giorni in cui l'attivita' si fa. Dove c'e', il
+//                cliente che sceglie un altro giorno se lo sente dire subito,
+//                sotto la data, e la richiesta non parte.
+//                Il blocco e' voluto: un'escursione non si prenota nel giorno
+//                in cui non c'e' (proprietario, 8 settembre 2026, dopo averlo
+//                provato a togliere e rimesso lo stesso giorno).
+//                Dove i giorni possono cambiare con la lingua della guida, il
+//                cliente lo legge in una **nota** della scheda — l'avviso e la
+//                nota fanno due mestieri diversi e stanno bene insieme.
 //                Si scrivono con queste sette sigle, e basta sbagliarne una
 //                per pubblicare dei giorni sbagliati: **mar e' martedi', mer e'
 //                mercoledi'**.
@@ -1845,7 +1845,16 @@ const ESPLORA_CATALOG = [
         es: "A 2.000 metros hace frío incluso en pleno verano: lleva una sudadera o una chaqueta. Y la cámara." },
       { it: "Il pranzo non è incluso.",
         en: "Lunch is not included.",
-        es: "El almuerzo no está incluido." }
+        es: "El almuerzo no está incluido." },
+      // I giorni sono un blocco: la finestra non lascia mandare una richiesta
+      // per un giorno in cui non si parte. Questa nota fa il mestiere che il
+      // blocco non puo fare — dire che quei giorni non sono incisi nella
+      // pietra, perche cambiano con la lingua della guida — e dare una via al
+      // cliente che ha una data fuori: WhatsApp, dove la richiesta arriva
+      // sempre. Avviso e nota insieme, non uno al posto dell altro.
+      { it: "I giorni possono cambiare secondo la lingua della guida. Se la tua data non è fra quelle qui sopra, scrivici su WhatsApp prima di rinunciare: la verifichiamo per te.",
+        en: "The days can change depending on the language of the guide. If your date is not among those listed above, message us on WhatsApp before giving up: we will check it for you.",
+        es: "Los días pueden cambiar según el idioma del guía. Si tu fecha no está entre las de arriba, escríbenos por WhatsApp antes de renunciar: la comprobamos por ti." }
     ],
     family: true,
     desc: {
@@ -1957,7 +1966,16 @@ const ESPLORA_CATALOG = [
         es: "El almuerzo no está incluido: la parada para comer se hace en Icod o en Garachico." },
       { it: "Nel parco si sta sopra i 2.000 metri e fa freddo anche d'estate: porta una felpa o una giacca.",
         en: "Up in the park you are above 2,000 metres and it is cold even in summer: bring a sweatshirt or a jacket.",
-        es: "En el parque se está por encima de los 2.000 metros y hace frío incluso en verano: lleva una sudadera o una chaqueta." }
+        es: "En el parque se está por encima de los 2.000 metros y hace frío incluso en verano: lleva una sudadera o una chaqueta." },
+      // I giorni sono un blocco: la finestra non lascia mandare una richiesta
+      // per un giorno in cui non si parte. Questa nota fa il mestiere che il
+      // blocco non puo fare — dire che quei giorni non sono incisi nella
+      // pietra, perche cambiano con la lingua della guida — e dare una via al
+      // cliente che ha una data fuori: WhatsApp, dove la richiesta arriva
+      // sempre. Avviso e nota insieme, non uno al posto dell altro.
+      { it: "I giorni possono cambiare secondo la lingua della guida. Se la tua data non è fra quelle qui sopra, scrivici su WhatsApp prima di rinunciare: la verifichiamo per te.",
+        en: "The days can change depending on the language of the guide. If your date is not among those listed above, message us on WhatsApp before giving up: we will check it for you.",
+        es: "Los días pueden cambiar según el idioma del guía. Si tu fecha no está entre las de arriba, escríbenos por WhatsApp antes de renunciar: la comprobamos por ti." }
     ],
     family: true,
     desc: {
@@ -3462,7 +3480,16 @@ const ESPLORA_CATALOG = [
       // li' sarebbero un orario preciso che nessuno ci ha dato.
       { it: "È una giornata lunga: si parte dall'hotel intorno alle 8:00 e si rientra intorno alle 20:30, con qualche minuto di differenza secondo l'hotel.",
         en: "It is a long day: you leave the hotel around 8:00 and get back around 20:30, give or take a few minutes depending on your hotel.",
-        es: "Es un día largo: se sale del hotel sobre las 8:00 y se vuelve sobre las 20:30, con algunos minutos de diferencia según el hotel." }
+        es: "Es un día largo: se sale del hotel sobre las 8:00 y se vuelve sobre las 20:30, con algunos minutos de diferencia según el hotel." },
+      // I giorni sono un blocco: la finestra non lascia mandare una richiesta
+      // per un giorno in cui non si parte. Questa nota fa il mestiere che il
+      // blocco non puo fare — dire che quei giorni non sono incisi nella
+      // pietra, perche cambiano con la lingua della guida — e dare una via al
+      // cliente che ha una data fuori: WhatsApp, dove la richiesta arriva
+      // sempre. Avviso e nota insieme, non uno al posto dell altro.
+      { it: "I giorni possono cambiare secondo la lingua della guida. Se la tua data non è fra quelle qui sopra, scrivici su WhatsApp prima di rinunciare: la verifichiamo per te.",
+        en: "The days can change depending on the language of the guide. If your date is not among those listed above, message us on WhatsApp before giving up: we will check it for you.",
+        es: "Los días pueden cambiar según el idioma del guía. Si tu fecha no está entre las de arriba, escríbenos por WhatsApp antes de renunciar: la comprobamos por ti." }
     ],
     family: true,
     desc: {
@@ -4091,7 +4118,16 @@ const ESPLORA_CATALOG = [
         it: "Se hai un'allergia o un'esigenza alimentare per il pranzo, scrivicelo nella richiesta: lo giriamo al ristorante.",
         en: "If you have an allergy or a dietary requirement for lunch, tell us in your request: we pass it on to the restaurant.",
         es: "Si tienes una alergia o una necesidad alimentaria para el almuerzo, escríbenoslo en la solicitud: se lo pasamos al restaurante."
-      }
+      },
+      // I giorni sono un blocco: la finestra non lascia mandare una richiesta
+      // per un giorno in cui non si parte. Questa nota fa il mestiere che il
+      // blocco non puo fare — dire che quei giorni non sono incisi nella
+      // pietra, perche cambiano con la lingua della guida — e dare una via al
+      // cliente che ha una data fuori: WhatsApp, dove la richiesta arriva
+      // sempre. Avviso e nota insieme, non uno al posto dell altro.
+      { it: "I giorni possono cambiare secondo la lingua della guida. Se la tua data non è fra quelle qui sopra, scrivici su WhatsApp prima di rinunciare: la verifichiamo per te.",
+        en: "The days can change depending on the language of the guide. If your date is not among those listed above, message us on WhatsApp before giving up: we will check it for you.",
+        es: "Los días pueden cambiar según el idioma del guía. Si tu fecha no está entre las de arriba, escríbenos por WhatsApp antes de renunciar: la comprobamos por ti." }
     ],
     image: "la-gomera.jpg",
     published: true
@@ -4206,7 +4242,16 @@ const ESPLORA_CATALOG = [
         it: "L'ora del ritiro dipende dall'hotel e si conferma con la prenotazione.",
         en: "The pickup time depends on your hotel and is confirmed with the booking.",
         es: "La hora de recogida depende del hotel y se confirma con la reserva."
-      }
+      },
+      // I giorni sono un blocco: la finestra non lascia mandare una richiesta
+      // per un giorno in cui non si parte. Questa nota fa il mestiere che il
+      // blocco non puo fare — dire che quei giorni non sono incisi nella
+      // pietra, perche cambiano con la lingua della guida — e dare una via al
+      // cliente che ha una data fuori: WhatsApp, dove la richiesta arriva
+      // sempre. Avviso e nota insieme, non uno al posto dell altro.
+      { it: "I giorni possono cambiare secondo la lingua della guida. Se la tua data non è fra quelle qui sopra, scrivici su WhatsApp prima di rinunciare: la verifichiamo per te.",
+        en: "The days can change depending on the language of the guide. If your date is not among those listed above, message us on WhatsApp before giving up: we will check it for you.",
+        es: "Los días pueden cambiar según el idioma del guía. Si tu fecha no está entre las de arriba, escríbenos por WhatsApp antes de renunciar: la comprobamos por ti." }
     ],
     family: true,
     desc: {

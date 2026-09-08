@@ -6976,3 +6976,62 @@ richiesta non parte": era la riga che avrebbe rimesso il blocco alla prossima pe
 la leggeva.
 
 `CACHE_NAME` alzato a `isla-v255`.
+
+---
+
+## Il blocco dei giorni rimesso, e la nota accanto (8 settembre 2026)
+
+Poche ore dopo averlo tolto, il blocco è tornato. Vale la pena scrivere per intero come è
+andata, perché è un errore di lettura che si può rifare.
+
+Il proprietario aveva detto due cose: che i giorni cambiano secondo la lingua, e poi —
+alla domanda su cosa fare — *"il cliente sceglie la data in cui pensa ci sia l'escursione e
+noi nel caso l'escursione sia un altro giorno lo comunichiamo prima della conferma"*. Da
+lì era stato tolto il blocco. **Era la lettura sbagliata.** La correzione:
+
+> vorrei che ritornasse come prima, che l'escursione non fosse prenotabile il giorno in cui
+> effettivamente non c'è! e che ci fosse solo una nota che i giorni potrebbero cambiare per
+> avvisare solo il cliente
+
+Quella frase sulla conferma descriveva **come lavora l'ufficio**, non un permesso a far
+partire richieste per giorni in cui non si parte. Un'escursione non si prenota nel giorno
+in cui non c'è, punto — e prendere una descrizione del lavoro d'ufficio per una specifica
+del sito è il modo tipico di sbagliare qui.
+
+### Rimesso com'era
+
+- `escursioni.js`: torna `if (!giornoValido()) { … return; }`;
+- `i18n.js`: `req.dayError` torna a **"Questa escursione si fa solo: {giorni}."**, nelle tre
+  lingue;
+- `styles.css`, `tour.html`, `escursioni.html`: via la classe `.request-day-note` inventata
+  poche ore prima, il messaggio torna sulla `.request-day-error` rossa insieme agli altri
+  due che bloccano. Il rosso adesso è di nuovo giusto: **ferma davvero**;
+- il vocabolario in testa a `esplora-catalog.js` torna a dire "e la richiesta non parte",
+  con scritto accanto che il blocco è voluto e che è stato provato a togliere e rimesso lo
+  stesso giorno. Serve a non rifarlo.
+
+### La nota, che è la parte nuova
+
+Su `santa-cruz-taganana`, `teide-national-park`, `icod-garachico-orotava`, `la-gomera` e
+`gran-canaria` — le cinque con `days` fra quelle toccate oggi:
+
+> I giorni possono cambiare secondo la lingua della guida. Se la tua data non è fra quelle
+> qui sopra, scrivici su WhatsApp prima di rinunciare: la verifichiamo per te.
+
+Su `la-palma` **no**, e non è una dimenticanza: quella scheda non ha `days`, quindi non c'è
+nessun elenco a cui la nota si possa riferire e nessun giorno viene rifiutato.
+
+**Avviso e nota fanno due mestieri diversi, e per questo stanno bene insieme.** L'avviso
+arriva dopo che il cliente ha scelto la data e dice che quella non va; la nota si legge
+prima, sulla scheda, e dice che l'elenco non è inciso nella pietra. E dà una via a chi ha
+una data fuori: **WhatsApp**, dove la richiesta arriva sempre — il pallino della chat c'è
+su ogni pagina e porta lì. Quella via esiste già, la nota si limita a indicarla.
+
+### Provato
+
+Nelle tre lingue, su `santa-cruz-taganana` (lun e gio): la nota compare fra i consigli
+tradotta; nella finestra un **mercoledì** fa uscire l'avviso rosso e **la richiesta non
+parte**, un **giovedì** passa e il messaggio arriva. Come prima, che è quello che si
+voleva.
+
+`CACHE_NAME` alzato a `isla-v256`.

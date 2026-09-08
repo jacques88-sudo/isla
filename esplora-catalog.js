@@ -4077,13 +4077,14 @@ const ESPLORA_CATALOG = [
     // e La Laguna restano scritte nel titolo e nella descrizione.
     zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
-    // ⚠ DA CONFERMARE: lunedi' e giovedi' non stanno nei dati ufficiali, sono
-    // presi dalla pagina del rivenditore. Se sono sbagliati un cliente che
-    // sceglie un altro giorno si vede bloccare la richiesta.
+    // Lunedi' e giovedi' non stavano nei dati ufficiali, erano presi dalla
+    // pagina del rivenditore: confermati dal proprietario (8 settembre 2026).
     days: ["lun", "gio"],
     // `times` non c'e': le partenze vere non le sappiamo. L'ora del ritiro
     // dipende dall'hotel e si conferma con la prenotazione (vedi le note),
     // quindi restano le fasce segnaposto piu' "Da concordare".
+    // 50 e' il prezzo del fornitore ufficiale, e prende il posto del 48 che
+    // c'era prima: alzarlo l'ha confermato il proprietario (8 settembre 2026).
     priceFrom: 50,
     priceAdult: 50,
     priceChild: 31.5,

@@ -6503,12 +6503,13 @@ dei neonati non va messa. Assente vuol dire "non lo sappiamo", che qui è la ver
 sappiamo se sotto i 2 anni si sale gratis o non si sale. Provato nel browser: la riga
 "Neonati" nella finestra della richiesta non compare proprio.
 
-⚠ **Il prezzo sale da 48 a 50.** In catalogo c'era `priceFrom: 48`, che nessuno ha
-documentato da dove venisse; l'ufficiale dice 50. È il caso che `CLAUDE.md` chiama "alzare
-un prezzo dopo che il cliente l'ha letto", quindi va detto invece che fatto di nascosto:
-qui `priceAdult` e `priceChild` erano a **0**, cioè un totale non si è mai potuto fare e
-il cliente non ha mai visto un conto vero, solo un "da €48" in elenco. **Se l'ufficio
-preferisce tenere il 48 si cambia in una riga.**
+**Il prezzo sale da 48 a 50, e l'aumento l'ha confermato il proprietario** (8 settembre
+2026, stesso giorno). In catalogo c'era `priceFrom: 48`, che nessuno ha documentato da
+dove venisse; l'ufficiale dice 50. È il caso che `CLAUDE.md` chiama "alzare un prezzo dopo
+che il cliente l'ha letto", quindi era da chiedere invece che da fare di nascosto — e la
+domanda si poteva fare a cuor leggero perché qui `priceAdult` e `priceChild` erano a **0**:
+un totale non si è mai potuto fare e il cliente non ha mai visto un conto vero, solo un
+"da €48" in elenco.
 
 ### Cosa è entrato da CanaryVIP e cosa no
 
@@ -6517,11 +6518,11 @@ Solo i fatti operativi, e solo dove l'ufficiale tace:
 - **la durata**, circa 8 ore;
 - **i giorni**, lunedì e giovedì.
 
-⚠ **I giorni sono la cosa da confermare.** Non stanno nei dati ufficiali, e `days` non è un
-campo innocuo: chi sceglie un mercoledì **si vede bloccare la richiesta**. In più CanaryVIP
-vende il percorso di Taganana, quindi i suoi giorni potrebbero non essere quelli di questo
-giro. Sono stati messi lo stesso perché il proprietario ha dato quella pagina apposta per
-riempire i buchi, ma è la prima riga da far guardare all'ufficio.
+**I giorni erano la cosa da confermare, e il proprietario li ha confermati** (8 settembre
+2026, stesso giorno): lunedì e giovedì sono giusti anche per questo percorso. Valeva la
+pena chiedere, perché `days` non è un campo innocuo — chi sceglie un mercoledì **si vede
+bloccare la richiesta** — e perché CanaryVIP vende il percorso di Taganana, quindi non era
+detto che i suoi giorni fossero quelli di questo giro.
 
 **Non è entrato niente altro**: né la politica di cancellazione (48 ore per i gruppi, 4 e 6
 giorni per quelli grossi — le nostre restano **24 ore, sempre**), né "miglior prezzo
@@ -6559,7 +6560,7 @@ conferma con la prenotazione.
   Lun · Gio." e blocca l'invio; il giovedì passa;
 - la scheda compare fra le 4 di "Teide e natura", con "da €50".
 
-Nessun errore JS. `CACHE_NAME` alzato a `isla-v247`.
+Nessun errore JS. `CACHE_NAME` alzato a `isla-v247`, e a `isla-v248` con la conferma di giorni e prezzo.
 
 ### Un conflitto di merge rimasto dentro NOTES.md
 

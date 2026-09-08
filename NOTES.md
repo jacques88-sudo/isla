@@ -5892,3 +5892,43 @@ quasi tutte.
 Il "(facoltativo)" accanto all'etichetta e' diventato "**(utile per il
 pick-up)**": dice perche' compilarlo invece di dire che si puo' saltare. Il
 campo resta facoltativo davvero, non ha `required`.
+
+### La seconda escursione: Teide, Icod, Garachico e Masca
+
+`PICKUP_TIMES["icod-garachico-orotava"]`, 66 orari raccolti il 7 settembre 2026.
+
+**Ci sono voluti un comando e un minuto e mezzo**, non i dieci della prima
+volta: siccome il punto e' lo stesso per tutte le escursioni, basta interrogare
+**un hotel campione per punto** — 103 richieste invece di 567. La lista dei 103
+hotel campione sta nella conversazione e si ricava da `dati-fornitore/hotel.tsv`
+prendendo il primo hotel di ogni punto.
+
+**Nessuno dei 64 punti in comune ha la stessa ora del Teide.** Questa giornata
+intera parte prima e passa da tutti i punti con circa mezz'ora d'anticipo:
+Perla Gris alle 07:45 invece che alle 08:15, Cleopatra alle 08:45 invece che
+alle 09:15. E' la prova che la tabella deve stare per scheda: copiare gli orari
+di un'escursione su un'altra avrebbe sbagliato **tutti** gli hotel, non
+qualcuno.
+
+Copre 385 hotel con ora e posto, 31 col solo posto (i 29 che salgono in hotel
+piu' due punti senza orario), 146 col solito buco del nord.
+
+### Due cose da sapere per la prossima volta
+
+**`Promise {<pending>}` non vuol dire "sta ancora girando".** Chrome scrive
+quella riga nel momento in cui lanci il comando e non la aggiorna mai piu',
+nemmeno a lavoro finito. Ci abbiamo perso qualche minuto a credere che fosse
+bloccato mentre aveva gia' finito. Per sapere davvero a che punto e':
+`window.__log.length`.
+
+**Il risultato si puo' ricostruire dalla spia** anche se il ciclo e' finito e la
+stampa e' scorsa via:
+`copy(window.__log.map(r => { const j = JSON.parse(r); return j.id_punto + " | " + (j.hora || "") }).join("\n"))`
+
+### Provato
+
+`node controlla.js` → 0 errori. Nel browser, stesse quattro prove sulle due
+schede: su Icod Cleopatra 08:45 e Perla Gris 07:45, sul Teide 09:15 e 08:15,
+stesso punto di raccolta in tutti e due i casi. Girasol, che il punto ce l'ha
+senza nome, non mostra niente su nessuna delle due. Nessun errore JS. `sw.js` a
+`isla-v238`.

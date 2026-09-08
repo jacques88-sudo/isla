@@ -5899,17 +5899,24 @@ campo resta facoltativo davvero, non ha `required`.
 `PICKUP_TIMES["teide-icod-garachico-masca"]`, 66 orari raccolti il 7 settembre
 2026.
 
-**Il codice della scheda era sbagliato**: si chiamava `icod-garachico-orotava`,
-ma l'Orotava in questo tour non c'e' — il titolo dice "Teide, Icod, Garachico e
-Masca". L'ha visto il proprietario. Rinominato in `teide-icod-garachico-masca`
-in `esplora-catalog.js`, in `hotel.js` e nel nome della foto. Il codice si vede
-nella barra dell'indirizzo (`tour.html?id=...`), quindi non e' una cosa solo
-interna: era una bugia leggibile dal cliente.
+**Il codice della scheda dice ancora Orotava, e per ora resta cosi'.** Il
+proprietario ha fatto notare che l'Orotava in questo tour non c'e', e io avevo
+rinominato la scheda in `teide-icod-garachico-masca`. Nel frattempo un'altra
+sessione stava riempiendo la stessa scheda su `main` e ha deciso il contrario,
+scrivendolo nel codice: *"i codici interni non si cambiano, si romperebbero i
+link"*.
 
-Il vecchio indirizzo adesso non risponde piu', e una richiesta di questa scheda
-rimasta nella lista di qualcuno sparirebbe: la lista salva l'id e lo ricerca in
-catalogo. Rischio accettato perche' la scheda ha ancora `priceAdult: 0` e non e'
-vendibile — nessuno puo' averla messa da parte.
+Al merge la rinomina e' stata annullata: `icod-garachico-orotava` resta, e
+`PICKUP_TIMES` usa quella chiave. La decisione vera — rinominare accettando che
+i vecchi link si rompano, oppure tenere un id che dice il falso nella barra
+dell'indirizzo — e' del proprietario, e non l'ha ancora presa.
+
+**La lezione del merge**: le due sessioni hanno lavorato sulla stessa scheda
+senza sapersi. Git non ha visto conflitto sulla riga dell'id, ma la scheda era
+stata **spostata** nel file, e il merge automatico l'avrebbe duplicata — due
+schede con lo stesso tour e id diversi, e `controlla.js` che nemmeno partiva.
+Provato prima su un ramo di prova, buttato via, e rifatto a mano tenendo la
+versione dell'altra sessione, che era molto piu' completa.
 
 **Ci sono voluti un comando e un minuto e mezzo**, non i dieci della prima
 volta: siccome il punto e' lo stesso per tutte le escursioni, basta interrogare
@@ -5953,7 +5960,7 @@ stampa e' scorsa via:
 schede: su Icod Cleopatra 08:45 e Perla Gris 07:45, sul Teide 09:15 e 08:15,
 stesso punto di raccolta in tutti e due i casi. Girasol, che il punto ce l'ha
 senza nome, non mostra niente su nessuna delle due. Nessun errore JS. `sw.js` a
-`isla-v240`.
+`isla-v246`.
 =======
 ## La Gomera: la scheda riempita con i dati ufficiali
 
@@ -6122,7 +6129,7 @@ neonati aggiunti non spostano il totale. Il menu degli orari mostra "Da concorda
 fasce segnaposto, e la domanda sulla lingua non compare (giusto, `languages` non c'e').
 Dopo lo spostamento, riprovato: la scheda apre l'elenco di **Tour privati**, non e' piu'
 in "Teide e natura" (restano le tre di prima), la pagina di dettaglio e il totale non
-cambiano, nessun errore JS. `sw.js` alzato a `isla-v240`.
+cambiano, nessun errore JS. `sw.js` alzato a `isla-v246`.
 
 Il branch e' stato riallineato su `main` a merge gia' chiesto: nel frattempo erano
 entrate quattro PR (campo hotel, orari di pick-up, La Gomera) e il conflitto era su

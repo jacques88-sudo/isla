@@ -6636,3 +6636,48 @@ verità sul catalogo. Quindi:
   se cambiano davvero le cinque di default, e cambierebbe sotto i piedi a tutte le altre.
 
 Nessun file di codice toccato, quindi `CACHE_NAME` resta a `isla-v249`.
+
+---
+
+## Le sette lingue di Teide + Icod + Garachico + Masca, e il primo cirillico (8 settembre 2026)
+
+Terza scheda a cui l'ufficio manda le lingue, e la più lunga finora: **sette**.
+
+    languages: ["Español", "English", "Deutsch", "Русский", "Italiano", "Français", "Nederlands"]
+
+Sono le cinque di `LINGUE_TOUR` più l'olandese **e il russo**. È la conferma pratica della
+regola di ieri — "ogni scheda ha la sua lingua" — vista adesso su tre schede della stessa
+categoria che hanno tre elenchi diversi:
+
+| scheda | lingue | come è scritto |
+| --- | --- | --- |
+| `teide-national-park` | 5 | `languages: LINGUE_TOUR` |
+| `santa-cruz-taganana` | 6 (+ olandese) | la lista per esteso |
+| `icod-garachico-orotava` | 7 (+ olandese e russo) | la lista per esteso |
+
+Tre fornitori, tre elenchi. Chi vede tre liste simili e pensa di accorparle in una costante
+sola sta per cancellare un dato vero.
+
+### "Русский", non "Russo"
+
+Il russo è **il primo alfabeto non latino del catalogo**, e si scrive come tutti gli altri:
+nella lingua stessa. Un russo cerca "Русский" e lo trova a colpo d'occhio anche se sta
+guardando il sito in spagnolo, che è esattamente il motivo per cui questo campo non si
+traduce mai — vale per il cirillico come per "Deutsch".
+
+**Provato che si veda davvero, non solo che sia scritto giusto nel file.** Un alfabeto
+nuovo può uscire in quadratini se manca il font o se qualcosa per strada rompe la codifica,
+ed è il tipo di cosa che `node --check` non vede e `controlla.js` nemmeno. Nel browser a
+420 px, nelle tre lingue del sito: la riga "Lingue" in "In breve" mostra tutti e sette i
+nomi (con sette voci va a capo su tre righe e si legge bene), il menu "In che lingua" ha
+sette voci più "Indifferente", e le lettere cirilliche sono lettere, non rettangoli.
+
+Scelto "Русский", il messaggio WhatsApp arriva intero — `• Lingua: Русский` — quindi il
+cirillico regge anche il giro dentro `encodeURIComponent` e l'indirizzo di WhatsApp. Totale
+della prova: 2 adulti + 1 bambino = **€153,50** (2 × 58 + 37,50).
+
+Questa scheda sta in `PICKUP_TIMES`, quindi nella finestra il menu "A che ora" non c'è
+proprio: al suo posto l'ora dell'hotel scelto. Verificato che l'aggiunta delle lingue non
+l'abbia toccato — le due domande vivono una accanto all'altra e restano indipendenti.
+
+`CACHE_NAME` alzato a `isla-v250`.

@@ -1908,6 +1908,13 @@ const ESPLORA_CATALOG = [
     // campo elenca i giorni buoni, non quello escluso, quindi sono sei sigle.
     // **mar e' martedi', mer e' mercoledi'.**
     days: ["lun", "mar", "mer", "gio", "ven", "sab"],
+    // Sette lingue, mandate dal proprietario (8 settembre 2026). E' la scheda
+    // che ne ha di piu': le cinque di `LINGUE_TOUR` piu' l'olandese e il
+    // **russo**, che qui compare per la prima volta. Come sempre nella lingua
+    // stessa — "Русский" in cirillico, non "Russo" — che e' come lo trova chi
+    // lo parla, anche guardando il sito in spagnolo. L'ordine e' quello
+    // dell'ufficio.
+    languages: ["Español", "English", "Deutsch", "Русский", "Italiano", "Français", "Nederlands"],
     // Il fornitore scrive solo il ritiro ("le recogeremos en su parada"):
     // il transfer si puo' accendere, la guida no, che non la nomina.
     included: ["transfer"],

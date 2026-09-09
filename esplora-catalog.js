@@ -2056,11 +2056,12 @@ const ESPLORA_CATALOG = [
     category: "avventura-motori",
     zone: "Las Chafiras",
     duration: { it: "3 o 4 ore", en: "3 or 4 hours", es: "3 o 4 horas" },
-    priceFrom: 140,
-    // Il prezzo e' del buggy e non della persona: 140 € chi guida da solo, 200 €
-    // il buggy da 2 posti, 250 € quello da 4, 360 € quello da 6. Senza questo
-    // campo il totale moltiplicherebbe per le persone un numero che il mezzo lo
-    // comprende gia' tutto.
+    priceFrom: 180,
+    // Il prezzo e' del buggy e non della persona: 180 € il buggy da 2 posti,
+    // 240 € quello da 4, 330 € quello da 6, uguali su tutti e quattro i giri
+    // (prezzi Admiral, 9 settembre). Senza questo campo il totale
+    // moltiplicherebbe per le persone un numero che il mezzo lo comprende
+    // gia' tutto.
     priceUnit: { it: "/buggy", en: "/buggy", es: "/buggy" },
     units: {
       label: {
@@ -2070,7 +2071,6 @@ const ESPLORA_CATALOG = [
       },
       name: { it: "Buggy", en: "Buggies", es: "Buggies" },
       types: [
-        { key: "solo", name: { it: "Da solo", en: "On your own", es: "Solo" } },
         { key: "due", name: { it: "2 posti", en: "2 seats", es: "2 plazas" } },
         { key: "quattro", name: { it: "4 posti", en: "4 seats", es: "4 plazas" } },
         { key: "sei", name: { it: "6 posti", en: "6 seats", es: "6 plazas" } }
@@ -2087,60 +2087,80 @@ const ESPLORA_CATALOG = [
       label: { it: "Percorso", en: "Route", es: "Recorrido" },
       choices: [
         { label: { it: "Offroad, 3 ore", en: "Off-road, 3 hours", es: "Offroad, 3 horas" },
-          price: 140,
+          price: 180,
           duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-          unitPrices: { solo: 140, due: 200, quattro: 250, sei: 360 },
+          included: ["transfer", "fuel"],
+          unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Il giro vicino alla costa, con la parte fuori dall'asfalto: sterrato, polvere e saliscendi nel sud dell'isola.",
             en: "The route close to the coast, with the off-road part: dirt tracks, dust and climbs in the south of the island.",
             es: "El recorrido cerca de la costa, con la parte fuera del asfalto: pistas de tierra, polvo y subidas en el sur de la isla."
           } },
         { label: { it: "Tramonto, 3 ore", en: "Sunset, 3 hours", es: "Atardecer, 3 horas" },
-          price: 140,
+          price: 180,
           duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-          unitPrices: { solo: 140, due: 200, quattro: 250, sei: 360 },
+          included: ["transfer", "fuel"],
+          unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Lo stesso paesaggio con la luce della sera, e le soste per le foto quando il sole è basso.",
             en: "The same landscape in evening light, with photo stops while the sun is low.",
             es: "El mismo paisaje con la luz de la tarde, y las paradas para fotos cuando el sol está bajo."
           } },
         { label: { it: "Completo, 4 ore", en: "Full tour, 4 hours", es: "Completo, 4 horas" },
-          price: 140,
+          price: 180,
           duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
-          unitPrices: { solo: 140, due: 200, quattro: 250, sei: 360 },
+          included: ["transfer", "fuel"],
+          unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Il giro lungo: il Parco Nazionale del Teide, un tratto vicino alla costa e la parte fuoristrada.",
             en: "The long tour: Teide National Park, a stretch near the coast and the off-road part.",
             es: "El tour largo: el Parque Nacional del Teide, un tramo cerca de la costa y la parte todoterreno."
+          } },
+        // Il quarto giro non e' di King Buggy ma di Ultimate Buggies: parte da
+        // un altro posto, non ha il ritiro in hotel e vuole 21 anni per
+        // guidare. Le sue regole stanno qui dentro e non fra le note della
+        // scheda, che direbbero "vale sempre"; `zone` dentro la variante fa
+        // cambiare da sola la riga "Punto di partenza", e `included` aggiunge
+        // l'attrezzatura senza promettere il transfer degli altri tre.
+        { label: { it: "Montagna su strada, 3 ore", en: "Mountain roads, 3 hours", es: "Montaña por carretera, 3 horas" },
+          price: 180,
+          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          zone: "Playa de las Américas",
+          included: ["equipment"],
+          unitPrices: { due: 180, quattro: 240, sei: 330 },
+          desc: {
+            it: "Tutto su asfalto, senza fuoristrada: strade di montagna, villaggi canari e i punti panoramici del Parco Nazionale. Ritrovo a Playa de las Américas, senza ritiro in hotel, e si guida da 21 anni.",
+            en: "All on paved roads, no off-road: mountain roads, Canarian villages and the viewpoints of the National Park. Meeting point in Playa de las Américas, no hotel pickup, and drivers from 21.",
+            es: "Todo por asfalto, sin todoterreno: carreteras de montaña, pueblos canarios y los miradores del Parque Nacional. Punto de encuentro en Playa de las Américas, sin recogida en el hotel, y se conduce desde los 21 años."
           } }
       ]
     },
     desc: {
-      it: "Al volante di un buggy fra i paesaggi del sud di Tenerife: si sceglie fra il giro fuoristrada, quello al tramonto e il giro lungo che arriva nel Parco Nazionale del Teide. Buggy da 2, 4 e 6 posti; guida chi ha la patente B.",
-      en: "At the wheel of a buggy through the landscapes of southern Tenerife: choose between the off-road route, the sunset ride and the long tour that reaches Teide National Park. Buggies with 2, 4 and 6 seats; driving requires a category B licence.",
-      es: "Al volante de un buggy por los paisajes del sur de Tenerife: se elige entre el recorrido todoterreno, el del atardecer y el tour largo que llega al Parque Nacional del Teide. Buggies de 2, 4 y 6 plazas; conduce quien tenga el carné B."
+      it: "Al volante di un buggy fra i paesaggi del sud di Tenerife: quattro giri fra cui scegliere — il fuoristrada, il tramonto, il giro lungo fino al Parco Nazionale del Teide e quello di sola montagna su strada, per chi la polvere non la vuole. Buggy da 2, 4 e 6 posti, e si guida con la patente.",
+      en: "At the wheel of a buggy through the landscapes of southern Tenerife: four routes to choose from — the off-road ride, the sunset one, the long tour up to Teide National Park and the all-tarmac mountain route, for those who would rather skip the dust. Buggies with 2, 4 and 6 seats; a driving licence is required.",
+      es: "Al volante de un buggy por los paisajes del sur de Tenerife: cuatro recorridos a elegir — el todoterreno, el del atardecer, el tour largo hasta el Parque Nacional del Teide y el de montaña solo por asfalto, para quien prefiere evitar el polvo. Buggies de 2, 4 y 6 plazas, y se conduce con el carné."
     },
-    included: ["guide", "transfer", "fuel"],
+    included: ["guide"],
     notes: [
       {
-        it: "Il prezzo è del buggy e non a persona: 140 € per chi guida da solo, 200 € il buggy da 2 posti, 250 € quello da 4 e 360 € quello da 6. Nella richiesta si contano i buggy, non le persone.",
-        en: "The price is per buggy, not per person: €140 riding on your own, €200 for the 2-seat buggy, €250 for the 4-seat and €360 for the 6-seat. In the request you count buggies, not people.",
-        es: "El precio es por buggy y no por persona: 140 € conduciendo solo, 200 € el buggy de 2 plazas, 250 € el de 4 y 360 € el de 6. En la solicitud se cuentan los buggies, no las personas."
+        it: "Il prezzo è del buggy e non a persona: 180 € il buggy da 2 posti, 240 € quello da 4 e 330 € quello da 6, uguali su tutti e quattro i giri. Nella richiesta si contano i buggy, non le persone.",
+        en: "The price is per buggy, not per person: €180 for the 2-seat buggy, €240 for the 4-seat and €330 for the 6-seat, the same on all four routes. In the request you count buggies, not people.",
+        es: "El precio es por buggy y no por persona: 180 € el buggy de 2 plazas, 240 € el de 4 y 330 € el de 6, iguales en los cuatro recorridos. En la solicitud se cuentan los buggies, no las personas."
       },
       {
-        it: "Il ritiro in hotel è gratuito: il punto e l'ora te li conferma l'ufficio dopo la richiesta. Chi preferisce arrivare da sé parte dalla base di Las Chafiras (Polígono las Andoriñas).",
-        en: "Hotel pickup is free: the office confirms the point and the time after your request. If you prefer to make your own way, the base is in Las Chafiras (Polígono las Andoriñas).",
-        es: "La recogida en el hotel es gratuita: el punto y la hora te los confirma la oficina después de la solicitud. Quien prefiera llegar por su cuenta sale de la base de Las Chafiras (Polígono las Andoriñas)."
+        it: "Ritiro in hotel gratuito su Offroad, Tramonto e Completo; Montagna su strada parte da Playa de las Américas, senza ritiro. Il punto e l'ora te li conferma l'ufficio.",
+        en: "Free hotel pickup on the Off-road, Sunset and Full tours; Mountain roads starts from Playa de las Américas, with no pickup. The office confirms the point and the time.",
+        es: "Recogida en el hotel gratuita en Offroad, Atardecer y Completo; Montaña por carretera sale desde Playa de las Américas, sin recogida. El punto y la hora te los confirma la oficina."
       },
       {
-        it: "Buggy da 2, 4 e 6 posti, con motori da 800 e 1000 cc e la versione Turbo. Chi guida deve avere la patente B valida e portarla con sé.",
-        en: "Buggies with 2, 4 and 6 seats, with 800cc and 1000cc engines and a Turbo version. Drivers must hold a valid category B licence and bring it with them.",
-        es: "Buggies de 2, 4 y 6 plazas, con motores de 800 y 1000 cc y la versión Turbo. Quien conduce debe tener el carné B válido y llevarlo consigo."
+        it: "Buggy automatici da 2, 4 e 6 posti. Chi guida porta con sé la patente valida, l'originale e non una fotocopia; su Montagna su strada servono 21 anni e la patente da un anno.",
+        en: "Automatic buggies with 2, 4 and 6 seats. Drivers carry a valid licence, the original and not a photocopy; Mountain roads asks for 21 years of age and a licence held for a year.",
+        es: "Buggies automáticos de 2, 4 y 6 plazas. Quien conduce lleva consigo el carné válido, el original y no una fotocopia; en Montaña por carretera hacen falta 21 años y el carné desde hace un año."
       },
       {
-        it: "I passeggeri salgono dai 7 anni, con almeno 1,20 m di altezza.",
-        en: "Passengers from age 7, at least 1.20 m tall.",
-        es: "Los pasajeros suben desde los 7 años, con al menos 1,20 m de altura."
+        it: "Passeggeri dai 7 anni e almeno 1,20 m. Su Montagna su strada: 1,20 m sul 2 posti, dai 5 anni sul 4 posti, dietro con un adulto.",
+        en: "Passengers from age 7 and at least 1.20 m. On Mountain roads: 1.20 m in the 2-seater, from age 5 in the 4-seater, in the rear with an adult.",
+        es: "Pasajeros desde los 7 años y al menos 1,20 m. En Montaña por carretera: 1,20 m en el de 2 plazas, desde los 5 años en el de 4, detrás con un adulto."
       },
       {
         it: "Casco, guanti, giacca e occhiali forniti. Non consigliato in gravidanza. Pacchetto foto professionale disponibile a pagamento.",
@@ -2187,9 +2207,9 @@ const ESPLORA_CATALOG = [
         es: "Motor de 900 cc, dos plazas. Quien conduce debe tener el carné B válido y llevarlo consigo."
       },
       {
-        it: "Il ritiro in hotel è gratuito: il punto e l'ora te li conferma l'ufficio dopo la richiesta. Chi preferisce arrivare da sé parte dalla base di Las Chafiras (Polígono las Andoriñas).",
-        en: "Hotel pickup is free: the office confirms the point and the time after your request. If you prefer to make your own way, the base is in Las Chafiras (Polígono las Andoriñas).",
-        es: "La recogida en el hotel es gratuita: el punto y la hora te los confirma la oficina después de la solicitud. Quien prefiera llegar por su cuenta sale de la base de Las Chafiras (Polígono las Andoriñas)."
+        it: "Ritiro in hotel gratuito su Offroad, Tramonto e Completo; Montagna su strada parte da Playa de las Américas, senza ritiro. Il punto e l'ora te li conferma l'ufficio.",
+        en: "Free hotel pickup on the Off-road, Sunset and Full tours; Mountain roads starts from Playa de las Américas, with no pickup. The office confirms the point and the time.",
+        es: "Recogida en el hotel gratuita en Offroad, Atardecer y Completo; Montaña por carretera sale desde Playa de las Américas, sin recogida. El punto y la hora te los confirma la oficina."
       }
     ],
     image: "",

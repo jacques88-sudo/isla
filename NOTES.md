@@ -7208,3 +7208,115 @@ correzione di snack e bevande qui sopra.
 
 **Già confermato dal proprietario** (9 settembre): il titolo "Buggy Tour Tenerife" va bene;
 guida e carburante sono inclusi, snack e bevande no.
+
+---
+
+## v260 — la seconda compagnia entra nella stessa scheda, e i prezzi diventano quelli di Admiral
+
+Arrivata dal proprietario la pagina di **Ultimate Buggies Tenerife**
+(ultimatebuggiestenerife.com), seconda compagnia di buggy, con una richiesta chiara:
+**più compagnie fanno lo stesso giro, non ha senso una scheda per ognuna — vanno tutte
+dentro "Buggy Tour Tenerife"**. Prima di scrivere una riga gli ho fatto vedere cosa
+c'era dentro, che è la parte che ha evitato tre doppioni.
+
+### Dei tre giri di Ultimate ne è entrato uno
+
+| giro di Ultimate | durata | cos'è | esito |
+|---|---|---|---|
+| Coastal Off-Road | 3 ore | costa sud, El Médano, fino a 1 ora di sterrato | **doppione** di "Offroad, 3 ore" |
+| Sunset Mountain | 3 ore | montagna, Parco Nazionale, sosta al tramonto | **doppione** di "Tramonto, 3 ore" |
+| Daytime Mountain | 3 ore | **tutto asfalto, zero fuoristrada**, villaggi e miradores | **nuovo**, entrato |
+
+Il criterio: entra quello che il cliente sceglierebbe **diversamente**. Il fuoristrada e il
+tramonto ci sono già, e due righe quasi identiche in elenco avrebbero solo chiesto al
+cliente di indovinare chi lo porta in giro — che è l'informazione che a lui serve meno. Il
+giro di sola montagna invece è l'unico che dice una cosa nuova: **il Teide senza polvere**,
+per chi il fuoristrada non lo vuole. Chi porta gli altri due lo decide l'ufficio quando
+conferma, ed è giusto così: qui si manda una *richiesta*, non si prenota.
+
+### Le regole della seconda compagnia stanno dentro la variante, non nelle note
+
+È il punto tecnico di questo giro. Ultimate contraddice King Buggy su tre cose che il
+cliente deve sapere prima di uscire di casa: **niente ritiro in hotel** (si arriva da sé a
+Playa de las Américas), **21 anni** e patente da almeno un anno per guidare, **bambini dai
+5 anni** dietro sul 4 posti invece che dai 7. Scritte fra le note della scheda sarebbero
+diventate promesse valide per tutti e quattro i giri.
+
+Sono finite dentro la variante, dove il vocabolario le regge già tutte:
+
+- **`zone` dentro la variante**: premendo "Montagna su strada" la riga *Punto di partenza*
+  cambia da sola da "Las Chafiras" a "Playa de las Américas". Primo uso di questo campo
+  fuori dalle prove.
+- **`included` dentro la variante**: il `transfer` è **sceso dalla scheda alle tre varianti
+  di King Buggy**, insieme al `fuel`. Sulla scheda resta `guide`, l'unica cosa vera per
+  tutti. Le icone dicono "vale sempre", e un'icona Transfer su un giro senza ritiro sarebbe
+  stata una bugia disegnata. Sul giro nuovo c'è `equipment`, che Ultimate scrive
+  esplicitamente (occhiali, guanti, giacche).
+- **`unitPrices` dentro la variante**: già c'erano.
+
+Il carburante su quel giro **non c'è fra le icone**: Ultimate elenca guida, attrezzatura e
+assicurazione, il carburante no. Non si indovina — se l'ufficio conferma che è compreso, è
+una parola.
+
+### I prezzi ora sono quelli di Admiral, non quelli del fornitore
+
+Il proprietario ha dato il listino suo, uguale su tutti e quattro i giri: **180 € il buggy
+da 2 posti, 240 € quello da 4, 330 € quello da 6**, e anche qui **si contano i buggy, non
+le persone**. Sostituisce il 140/200/250/360 di King Buggy della v258.
+
+**Sparisce il tipo "Da solo"**: nel listino nuovo non c'è una tariffa per chi guida da solo,
+quindi il conteggio parte dal buggy da 2 posti e `priceFrom` passa da 140 a 180. Chi va da
+solo prende il 2 posti. È l'unico numero che *sale* rispetto a ieri (140 → 180): è una
+decisione del proprietario, non un'inferenza, e vale la pena saperlo perché va contro la
+regola di non alzare un prezzo già letto.
+
+**Il 6 posti resta anche sul giro di Ultimate**, che sul suo sito dà buggy solo da 2 e 4
+posti: il proprietario ha detto "per tutti i tour", e sui prezzi decide lui. Da rivedere se
+su quel giro il 6 posti non esiste davvero.
+
+### Le note accorciate prima di consegnarle
+
+Scritte per esteso, le tre note con l'eccezione dentro erano da cinque-sei righe l'una: nel
+riquadro Consigli si leggevano come paragrafi, esattamente quello che il proprietario aveva
+fatto tagliare in v257. Riscritte in due frasi ciascuna, e lo stesso per la descrizione
+della variante nuova.
+
+### Non copiato da Ultimate
+
+La loro **politica di rimborso** (100% oltre un mese, 50% entro un mese, 0% entro 14
+giorni): le nostre sono 24 ore e non sono un campo della scheda. E poi "premium", "most
+popular", "best for couples", la conferma immediata e il pagamento online (da noi è una
+richiesta su WhatsApp), l'obbligo di assicurazione di viaggio, la clausola sul
+comportamento. Le descrizioni sono scritte da zero nelle tre lingue.
+
+**Non messo l'indirizzo esatto del ritrovo.** Ultimate lo dà come "Vivo Mini Golf, Av.
+Rafael Puig Lluvina 7", ma i dati stessi avvisano che viene da una FAQ in cache e da
+Facebook, **non dalla pagina viva**. Un punto di ritrovo sbagliato è la stessa specie di
+errore di un'ora sbagliata: sulla scheda c'è la zona ("Playa de las Américas") e il resto lo
+conferma l'ufficio con la richiesta.
+
+**Lasciati fuori** anche i limiti di peso (300 kg sul 2 posti, 450 kg sul 4), il limite di
+60 km/h, la gabbia di sicurezza, i gruppi da 4-5 buggy e l'assicurazione compresa: sono
+tutte cose che **scrive solo Ultimate**, e sulla scheda intera diventerebbero promesse anche
+per i giri di King Buggy. Sono qui, pronte, se l'ufficio conferma che valgono per tutti.
+
+### Provato
+
+Nel browser vero (390×844), in italiano: i quattro bottoni cambiano insieme *Durata*,
+*Punto di partenza* (Las Chafiras → **Playa de las Américas** sul quarto) e il riquadro
+*Cosa è incluso* (Guida · Transfer · Carburante sui tre di King Buggy, **Guida ·
+Attrezzatura** sul quarto). I contatori mostrano 2 posti €180, 4 posti €240, 6 posti €330; il
+totale di un buggy per tipo fa **€750**. Nessun errore in console. `node controlla.js` → 0
+errori, 2 avvisi invariati. `CACHE_NAME` a `isla-v260`.
+
+### Da confermare con l'ufficio
+
+- se sul giro **Montagna su strada** il **carburante** è compreso (Ultimate non lo scrive) e
+  se il **buggy da 6 posti** esiste davvero;
+- l'**indirizzo esatto** del ritrovo di Playa de las Américas, da verificare sulla pagina
+  viva prima di scriverlo sulla scheda;
+- se i dati di sicurezza di Ultimate (60 km/h, gabbia, assicurazione, peso massimo) valgono
+  anche per King Buggy: allora vanno sulla scheda, non su una variante;
+- gli **orari di partenza**, che nessuna delle due compagnie pubblica;
+- se arriveranno altre compagnie di buggy: ormai la scheda regge, ogni giro davvero diverso
+  è una variante in più e i doppioni non entrano.

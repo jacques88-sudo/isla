@@ -2043,32 +2043,104 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    // Una scheda sola per i tre giri in buggy di King Buggy Tenerife: prima
+    // erano tre schede (`buggy-volcano-4h` per il Teide, `buggy-volcano-sunset`
+    // per il tramonto, `buggy-2-3h` per il fuoristrada), nate da un'altra fonte
+    // e uguali in tutto tranne la foto, il titolo e la durata. Stesso
+    // fornitore, stessi buggy, stessa base: affiancate in elenco sembravano tre
+    // attivita' diverse quando sono tre percorsi della stessa.
+    // Sopravvive l'id `buggy-volcano-4h`, non uno nuovo, perche' gli indirizzi
+    // gia' in giro continuino a funzionare — come si era fatto per i due quad.
     id: "buggy-volcano-4h",
-    title: "4-Hour Volcano Buggy Tour",
+    title: "Buggy Tour Tenerife",
     category: "avventura-motori",
-    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
-    duration: { it: "3 ore e mezza", en: "3.5 hours", es: "3,5 horas" },
+    zone: "Las Chafiras",
+    duration: { it: "3 o 4 ore", en: "3 or 4 hours", es: "3 o 4 horas" },
     priceFrom: 140,
+    // Il prezzo e' del buggy e non della persona: 140 € chi guida da solo, 200 €
+    // il buggy da 2 posti, 250 € quello da 4, 360 € quello da 6. Senza questo
+    // campo il totale moltiplicherebbe per le persone un numero che il mezzo lo
+    // comprende gia' tutto.
     priceUnit: { it: "/buggy", en: "/buggy", es: "/buggy" },
+    units: {
+      label: {
+        it: "Quanti buggy — il prezzo è del mezzo e cambia con i posti",
+        en: "How many buggies — the price is per buggy and changes with the seats",
+        es: "¿Cuántos buggies? — el precio es por buggy y cambia con las plazas"
+      },
+      name: { it: "Buggy", en: "Buggies", es: "Buggies" },
+      types: [
+        { key: "solo", name: { it: "Da solo", en: "On your own", es: "Solo" } },
+        { key: "due", name: { it: "2 posti", en: "2 seats", es: "2 plazas" } },
+        { key: "quattro", name: { it: "4 posti", en: "4 seats", es: "4 plazas" } },
+        { key: "sei", name: { it: "6 posti", en: "6 seats", es: "6 plazas" } }
+      ]
+    },
     priceAdult: 0,
     priceChild: 0,
     family: false,
-    desc: {
-      it: "Buggy automatico verso il Teide, fra colate laviche e punti panoramici sul vulcano. Guida multilingue, soste per foto, spuntino e bevanda inclusi.",
-      en: "An automatic buggy ride towards Teide, through lava fields and scenic viewpoints over the volcano. Multilingual guide, photo stops, snack and drink included.",
-      es: "Buggy automático hacia el Teide, entre coladas de lava y miradores sobre el volcán. Guía multilingüe, paradas para fotos, tentempié y bebida incluidos."
+    // I tre percorsi del fornitore. I prezzi stanno dentro le varianti anche se
+    // oggi sono uguali su tutte e tre: e' li' che il sito li legge per scriverli
+    // accanto ai contatori, ed e' li' che andranno cambiati se un giro comincia
+    // a costare piu' di un altro.
+    options: {
+      label: { it: "Percorso", en: "Route", es: "Recorrido" },
+      choices: [
+        { label: { it: "Offroad, 3 ore", en: "Off-road, 3 hours", es: "Offroad, 3 horas" },
+          price: 140,
+          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          unitPrices: { solo: 140, due: 200, quattro: 250, sei: 360 },
+          desc: {
+            it: "Il giro vicino alla costa, con la parte fuori dall'asfalto: sterrato, polvere e saliscendi nel sud dell'isola.",
+            en: "The route close to the coast, with the off-road part: dirt tracks, dust and climbs in the south of the island.",
+            es: "El recorrido cerca de la costa, con la parte fuera del asfalto: pistas de tierra, polvo y subidas en el sur de la isla."
+          } },
+        { label: { it: "Tramonto, 3 ore", en: "Sunset, 3 hours", es: "Atardecer, 3 horas" },
+          price: 140,
+          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          unitPrices: { solo: 140, due: 200, quattro: 250, sei: 360 },
+          desc: {
+            it: "Lo stesso paesaggio con la luce della sera, e le soste per le foto quando il sole è basso.",
+            en: "The same landscape in evening light, with photo stops while the sun is low.",
+            es: "El mismo paisaje con la luz de la tarde, y las paradas para fotos cuando el sol está bajo."
+          } },
+        { label: { it: "Completo, 4 ore", en: "Full tour, 4 hours", es: "Completo, 4 horas" },
+          price: 140,
+          duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
+          unitPrices: { solo: 140, due: 200, quattro: 250, sei: 360 },
+          desc: {
+            it: "Il giro lungo: il Parco Nazionale del Teide, un tratto vicino alla costa e la parte fuoristrada.",
+            en: "The long tour: Teide National Park, a stretch near the coast and the off-road part.",
+            es: "El tour largo: el Parque Nacional del Teide, un tramo cerca de la costa y la parte todoterreno."
+          } }
+      ]
     },
-    included: ["guide", "fuel", "snack", "drinks"],
+    desc: {
+      it: "Al volante di un buggy fra i paesaggi del sud di Tenerife: si sceglie fra il giro fuoristrada, quello al tramonto e il giro lungo che arriva nel Parco Nazionale del Teide. Buggy da 2, 4 e 6 posti; guida chi ha la patente B.",
+      en: "At the wheel of a buggy through the landscapes of southern Tenerife: choose between the off-road route, the sunset ride and the long tour that reaches Teide National Park. Buggies with 2, 4 and 6 seats; driving requires a category B licence.",
+      es: "Al volante de un buggy por los paisajes del sur de Tenerife: se elige entre el recorrido todoterreno, el del atardecer y el tour largo que llega al Parque Nacional del Teide. Buggies de 2, 4 y 6 plazas; conduce quien tenga el carné B."
+    },
+    included: ["guide", "transfer", "fuel", "snack", "drinks"],
     notes: [
       {
-        it: "Prelievo e riconsegna gratuiti da Fañabé, Torvisca, Las Américas, Los Cristianos e Golf del Sur; da Playa Paraíso su richiesta.",
-        en: "Free pickup and drop-off from Fañabé, Torvisca, Las Américas, Los Cristianos and Golf del Sur; from Playa Paraíso on request.",
-        es: "Recogida y regreso gratuitos desde Fañabé, Torvisca, Las Américas, Los Cristianos y Golf del Sur; desde Playa Paraíso bajo petición."
+        it: "Il prezzo è del buggy e non a persona: 140 € per chi guida da solo, 200 € il buggy da 2 posti, 250 € quello da 4 e 360 € quello da 6. Nella richiesta si contano i buggy, non le persone.",
+        en: "The price is per buggy, not per person: €140 riding on your own, €200 for the 2-seat buggy, €250 for the 4-seat and €360 for the 6-seat. In the request you count buggies, not people.",
+        es: "El precio es por buggy y no por persona: 140 € conduciendo solo, 200 € el buggy de 2 plazas, 250 € el de 4 y 360 € el de 6. En la solicitud se cuentan los buggies, no las personas."
       },
       {
-        it: "Buggy da 1-2 persone: chi guida deve avere almeno 18 anni e patente B1 valida (non provvisoria); i passeggeri salgono da 7 anni, con almeno 1,20 m di altezza.",
-        en: "Buggies seat 1-2 people: drivers must be at least 18 with a valid B1 licence (no provisional licences); passengers from age 7, at least 1.20 m tall.",
-        es: "Buggies de 1-2 personas: quien conduce debe tener al menos 18 años y carné B1 válido (no provisional); los pasajeros suben desde los 7 años, con al menos 1,20 m de altura."
+        it: "Il ritiro in hotel è gratuito: il punto e l'ora te li conferma l'ufficio dopo la richiesta. Chi preferisce arrivare da sé parte dalla base di Las Chafiras (Polígono las Andoriñas).",
+        en: "Hotel pickup is free: the office confirms the point and the time after your request. If you prefer to make your own way, the base is in Las Chafiras (Polígono las Andoriñas).",
+        es: "La recogida en el hotel es gratuita: el punto y la hora te los confirma la oficina después de la solicitud. Quien prefiera llegar por su cuenta sale de la base de Las Chafiras (Polígono las Andoriñas)."
+      },
+      {
+        it: "Buggy da 2, 4 e 6 posti, con motori da 800 e 1000 cc e la versione Turbo. Chi guida deve avere la patente B valida e portarla con sé.",
+        en: "Buggies with 2, 4 and 6 seats, with 800cc and 1000cc engines and a Turbo version. Drivers must hold a valid category B licence and bring it with them.",
+        es: "Buggies de 2, 4 y 6 plazas, con motores de 800 y 1000 cc y la versión Turbo. Quien conduce debe tener el carné B válido y llevarlo consigo."
+      },
+      {
+        it: "I passeggeri salgono dai 7 anni, con almeno 1,20 m di altezza.",
+        en: "Passengers from age 7, at least 1.20 m tall.",
+        es: "Los pasajeros suben desde los 7 años, con al menos 1,20 m de altura."
       },
       {
         it: "Casco, guanti, giacca e occhiali forniti. Non consigliato in gravidanza. Pacchetto foto professionale disponibile a pagamento.",
@@ -2078,90 +2150,50 @@ const ESPLORA_CATALOG = [
     ],
     languages: LINGUE_TOUR,
     image: "buggy-volcano-4h.jpg",
+    gallery: ["buggy-2-3h.jpg", "buggy-volcano-sunset.jpg"],
     published: true
   },
   {
-    id: "buggy-volcano-sunset",
-    title: "Volcano Sunset Buggy Tour",
+    // Il quarto prodotto di King Buggy non e' un buggy: e' una moto Spyder a
+    // tre ruote, due posti, con un giro suo di quattro ore fra la costa, la
+    // citta' e il Teide. Sta fuori dalla scheda dei buggy perche' il mezzo e'
+    // un altro, e resta `published: false` finche' non arriva una foto nostra:
+    // senza, in elenco uscirebbe il riquadro grigio.
+    id: "spyder-costa-teide",
+    title: "Spyder Costa & Teide",
     category: "avventura-motori",
-    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
-    duration: { it: "3 ore e mezza", en: "3.5 hours", es: "3,5 horas" },
-    priceFrom: 140,
-    priceUnit: { it: "/buggy", en: "/buggy", es: "/buggy" },
+    zone: "Las Chafiras",
+    duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
+    priceFrom: 200,
+    priceUnit: { it: "/moto", en: "/bike", es: "/moto" },
     priceAdult: 0,
     priceChild: 0,
     family: false,
     desc: {
-      it: "Lo stesso percorso fra i coni vulcanici, al tramonto: si chiude con un brindisi (vino o cava analcolica) e uno spuntino salato mentre il sole scende dietro il Teide.",
-      en: "The same route among the volcanic cones, at sunset: it ends with a toast (wine or alcohol-free cava) and a savoury snack as the sun goes down behind Teide.",
-      es: "El mismo recorrido entre los conos volcánicos, al atardecer: termina con un brindis (vino o cava sin alcohol) y un tentempié salado mientras el sol se pone tras el Teide."
+      it: "Quattro ore in moto Spyder, la tre ruote da due posti: la costa del sud, il passaggio in città e la salita nel Parco Nazionale del Teide.",
+      en: "Four hours on a Spyder, the two-seat three-wheeler: the southern coast, a stretch through town and the climb into Teide National Park.",
+      es: "Cuatro horas en moto Spyder, la de tres ruedas y dos plazas: la costa del sur, el paso por la ciudad y la subida al Parque Nacional del Teide."
     },
-    included: ["guide", "fuel", "drinks", "snack"],
+    included: ["transfer"],
     notes: [
       {
-        it: "Prelievo e riconsegna gratuiti da Fañabé, Torvisca, Las Américas, Los Cristianos e Golf del Sur; da Playa Paraíso su richiesta.",
-        en: "Free pickup and drop-off from Fañabé, Torvisca, Las Américas, Los Cristianos and Golf del Sur; from Playa Paraíso on request.",
-        es: "Recogida y regreso gratuitos desde Fañabé, Torvisca, Las Américas, Los Cristianos y Golf del Sur; desde Playa Paraíso bajo petición."
+        it: "Il prezzo è della moto e non a persona: 200 € la Spyder, che porta due persone.",
+        en: "The price is per bike, not per person: €200 for the Spyder, which carries two people.",
+        es: "El precio es por moto y no por persona: 200 € la Spyder, que lleva a dos personas."
       },
       {
-        it: "Buggy da 1-2 persone: chi guida deve avere almeno 18 anni e patente B1 valida (non provvisoria); i passeggeri salgono da 7 anni, con almeno 1,20 m di altezza.",
-        en: "Buggies seat 1-2 people: drivers must be at least 18 with a valid B1 licence (no provisional licences); passengers from age 7, at least 1.20 m tall.",
-        es: "Buggies de 1-2 personas: quien conduce debe tener al menos 18 años y carné B1 válido (no provisional); los pasajeros suben desde los 7 años, con al menos 1,20 m de altura."
+        it: "Motore 900 cc, due posti. Chi guida deve avere la patente B valida e portarla con sé.",
+        en: "900cc engine, two seats. Drivers must hold a valid category B licence and bring it with them.",
+        es: "Motor de 900 cc, dos plazas. Quien conduce debe tener el carné B válido y llevarlo consigo."
       },
       {
-        it: "Casco, guanti, giacca e occhiali forniti. Non consigliato in gravidanza. Pacchetto foto professionale disponibile a pagamento.",
-        en: "Helmet, gloves, jacket and goggles provided. Not recommended during pregnancy. Professional photo package available for an extra fee.",
-        es: "Casco, guantes, chaqueta y gafas incluidos. No recomendado durante el embarazo. Paquete de fotos profesionales disponible con coste adicional."
+        it: "Il ritiro in hotel è gratuito: il punto e l'ora te li conferma l'ufficio dopo la richiesta. Chi preferisce arrivare da sé parte dalla base di Las Chafiras (Polígono las Andoriñas).",
+        en: "Hotel pickup is free: the office confirms the point and the time after your request. If you prefer to make your own way, the base is in Las Chafiras (Polígono las Andoriñas).",
+        es: "La recogida en el hotel es gratuita: el punto y la hora te los confirma la oficina después de la solicitud. Quien prefiera llegar por su cuenta sale de la base de Las Chafiras (Polígono las Andoriñas)."
       }
     ],
-    languages: LINGUE_TOUR,
-    image: "buggy-volcano-sunset.jpg",
-    published: true
-  },
-  {
-    id: "buggy-2-3h",
-    title: "2 or 3-Hour Buggy Tour",
-    category: "avventura-motori",
-    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
-    duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
-    priceFrom: 140,
-    priceUnit: { it: "/buggy", en: "/buggy", es: "/buggy" },
-    priceAdult: 0,
-    priceChild: 0,
-    family: false,
-    options: {
-      label: { it: "Durata", en: "Duration", es: "Duración" },
-      choices: [
-        { label: { it: "2 ore", en: "2 hours", es: "2 horas" }, duration: { it: "2 ore", en: "2 hours", es: "2 horas" } },
-        { label: { it: "3 ore", en: "3 hours", es: "3 horas" }, duration: { it: "3 ore", en: "3 hours", es: "3 horas" } }
-      ]
-    },
-    desc: {
-      it: "Un percorso di 55 km con 50 minuti di fuoristrada vero, a scelta fra due e tre ore. Guida multilingue, spuntino e bevanda inclusi.",
-      en: "A 55 km route with 50 minutes of genuine off-road driving, in a two or three-hour version. Multilingual guide, snack and drink included.",
-      es: "Un recorrido de 55 km con 50 minutos de todoterreno real, a elegir entre dos y tres horas. Guía multilingüe, tentempié y bebida incluidos."
-    },
-    included: ["guide", "fuel", "snack", "drinks"],
-    notes: [
-      {
-        it: "Prelievo e riconsegna gratuiti da Fañabé, Torvisca, Las Américas, Los Cristianos e Golf del Sur; da Playa Paraíso su richiesta.",
-        en: "Free pickup and drop-off from Fañabé, Torvisca, Las Américas, Los Cristianos and Golf del Sur; from Playa Paraíso on request.",
-        es: "Recogida y regreso gratuitos desde Fañabé, Torvisca, Las Américas, Los Cristianos y Golf del Sur; desde Playa Paraíso bajo petición."
-      },
-      {
-        it: "Buggy da 1-2 persone: chi guida deve avere almeno 18 anni e patente B1 valida (non provvisoria); i passeggeri salgono da 7 anni, con almeno 1,20 m di altezza.",
-        en: "Buggies seat 1-2 people: drivers must be at least 18 with a valid B1 licence (no provisional licences); passengers from age 7, at least 1.20 m tall.",
-        es: "Buggies de 1-2 personas: quien conduce debe tener al menos 18 años y carné B1 válido (no provisional); los pasajeros suben desde los 7 años, con al menos 1,20 m de altura."
-      },
-      {
-        it: "Casco, guanti, giacca e occhiali forniti. Non consigliato in gravidanza. Pacchetto foto professionale disponibile a pagamento.",
-        en: "Helmet, gloves, jacket and goggles provided. Not recommended during pregnancy. Professional photo package available for an extra fee.",
-        es: "Casco, guantes, chaqueta y gafas incluidos. No recomendado durante el embarazo. Paquete de fotos profesionales disponible con coste adicional."
-      }
-    ],
-    languages: LINGUE_TOUR,
-    image: "buggy-2-3h.jpg",
-    published: true
+    image: "",
+    published: false
   },
   {
     // Una scheda sola per le due partenze dello stesso safari: prima erano due

@@ -7069,3 +7069,132 @@ Nelle tre lingue su `santa-cruz-taganana`, in `tour.html`: la nota esce fra i co
 un punto elenco di due righe, in fila con gli altri. Nessun errore in console.
 
 `CACHE_NAME` alzato a `isla-v257`.
+
+---
+
+## v258 — le tre schede buggy diventano una sola, con i dati di King Buggy Tenerife
+
+Arrivati dal proprietario i dati di **King Buggy Tenerife** (kingbuggytenerife.com, base in
+Pol. Ind. las Andoriñas a Las Chafiras) con la richiesta di **aggiornare la card buggy e,
+se ce n'era più di una, unirle**. Ce n'erano tre.
+
+### Prima domanda, e non era una formalità: stesso fornitore?
+
+`buggy-volcano-4h`, `buggy-volcano-sunset` e `buggy-2-3h` erano nate il 2 settembre da
+un'altra fonte (probabilmente Canary2Go), e su tre punti dicevano il contrario di King
+Buggy: **buggy da 1-2 persone** contro 2, 4 e 6 posti; **patente B1** contro carnet B;
+**ritiro da Fañabé, Torvisca, Las Américas, Los Cristianos e Golf del Sur** contro ritiro
+gratuito in hotel da una base a Las Chafiras. Unire le schede e versarci dentro i dati
+nuovi senza chiedere voleva dire pubblicare i dati di due operatori mescolati.
+
+Chiesto, e **il proprietario ha confermato che è lo stesso prodotto**: dove i due si
+contraddicono vince King Buggy, che è il fornitore diretto. Il coincidere esatto del prezzo
+di partenza (140 €) e dei tre temi (fuoristrada, tramonto, Teide) era il segnale, ma restava
+un indizio, non una prova: la differenza fra i due la sa l'ufficio, non io.
+
+### Una scheda, tre percorsi
+
+Le tre schede erano uguali in tutto tranne foto, titolo e durata: affiancate in elenco
+sembravano tre attività diverse quando sono tre percorsi della stessa. Ora il percorso è una
+**variante** (`options`, etichetta "Percorso"), come si era fatto per i due quad il 4
+settembre:
+
+| variante | durata | dov'era prima |
+|---|---|---|
+| Offroad, 3 ore | 3 ore | `buggy-2-3h` (era "2 o 3 ore") |
+| Tramonto, 3 ore | 3 ore | `buggy-volcano-sunset` (era "3 ore e mezza") |
+| Completo, 4 ore | 4 ore | `buggy-volcano-4h` (era "3 ore e mezza") |
+
+**Le durate tornano quelle del fornitore diretto**: 3h, 3h, 4h. Quelle di prima (3,5 ore per
+due schede su tre) venivano dai minuti di canaryvip, e il "4-Hour" del titolo originale
+adesso torna giusto proprio sul giro completo. **Sparisce la versione da 2 ore** del
+fuoristrada: King Buggy il giro da 2 ore non ce l'ha.
+
+**Sopravvive l'id `buggy-volcano-4h`**, non uno nuovo: gli indirizzi già in giro continuano
+a funzionare. `tour.html?id=buggy-2-3h` e `?id=buggy-volcano-sunset` ora danno "Escursione
+non trovata", che è la risposta giusta e pulita — provate nel browser.
+
+**Il titolo è l'unica cosa che ho scelto io**: "Buggy Tour Tenerife". I titoli restano come
+li scrive Admiral, ma qui i tre titoli di partenza avevano tutti una durata dentro
+("4-Hour", "2 or 3-Hour") e nessuno poteva reggere una scheda che ne contiene tre. **Da
+confermare**: se l'ufficio ne ha uno suo, si cambia in una riga.
+
+**Le due foto non sono perse, sono finite in `gallery`.** Guardate una per una: la Teide
+(`buggy-volcano-4h.jpg`, il buggy fermo davanti al vulcano) resta `image` perché è quella
+della scheda che sopravvive; `buggy-2-3h.jpg` (due buggy sullo sterrato fra i mulini, con
+le persone a bordo) e `buggy-volcano-sunset.jpg` (la fila in strada nella luce della sera)
+diventano la seconda e la terza miniatura. Tutte e tre mostrano lo stesso modello a 2
+posti: quando arriveranno foto dei buggy da 4 e da 6 varrà la pena aggiungerle.
+
+### Il prezzo è del buggy e cambia con i posti
+
+King Buggy dà quattro tariffe, uguali su tutti i giri: **140 € chi guida da solo, 200 € il
+buggy da 2 posti, 250 € quello da 4, 360 € quello da 6**. Il proprietario ha scelto di
+**pubblicarle**, sapendo che la fonte le dà come non verificate e che le stesse quattro
+cifre compaiono identiche su tour di durata e mezzi diversi (potrebbe essere un modello del
+sito non aggiornato).
+
+Quindi `units` con quattro tipi (`solo`, `due`, `quattro`, `sei`) e `unitPrices` dentro ogni
+variante, come sul jet ski: nella finestra della richiesta le quattro caselle prendono il
+posto di "Quante persone" — **dove si paga il mezzo non si contano le persone** — e il
+totale si fa davvero. `priceFrom` resta 140 con `priceUnit: "/buggy"`.
+
+I prezzi stanno **dentro le varianti** anche se oggi sono uguali su tutte e tre: è lì che il
+sito li legge per scriverli accanto ai contatori (in `riempiUnita()` non c'è ripiego sul
+campo della scheda), ed è lì che andranno cambiati se un giro comincerà a costare più di un
+altro.
+
+Ogni variante ha anche `price: 140`, se no la riga "Prezzo" della pagina di dettaglio
+diceva "Su richiesta" su una scheda che in elenco dice "da €140": il numero sul bottone e
+nella riga è il prezzo di partenza, e la prima nota lo scompone per intero.
+
+### Cosa è entrato, cosa è restato, cosa non ho copiato
+
+Entrato da King Buggy: il **ritiro gratuito in hotel** (`included: transfer` e una nota — il
+punto e l'ora li conferma l'ufficio, non li inventa il sito), la **base di Las Chafiras**
+come `zone` al posto di "Tenerife Sud", i **buggy da 2, 4 e 6 posti** coi motori 800/1000 cc
+e Turbo, la **patente B** al posto di B1.
+
+Restato dalla fonte vecchia, perché King Buggy non lo contraddice: guida, carburante, snack
+e bevande fra le cose incluse, i passeggeri dai 7 anni e 1,20 m, casco/guanti/giacca/
+occhiali, la gravidanza, il pacchetto foto a pagamento, e `languages: LINGUE_TOUR`. **Da
+confermare con l'ufficio**: la lista "cosa è incluso" di King Buggy parla solo del ritiro in
+hotel, e l'età minima dei passeggeri non la scrive nessuno dei due.
+
+Non copiati, come sempre: la politica di cancellazione (le nostre 24 ore valgono comunque),
+i testi promozionali e il resto del marketing. Le descrizioni sono riscritte da zero nelle
+tre lingue.
+
+### La Spyder è un'altra cosa, e sta ferma
+
+Il quarto prodotto di King Buggy non è un buggy: è una **moto Spyder** a tre ruote, due
+posti, 900 cc, con un giro suo di 4 ore fra costa, città e Teide, a 200 € a moto. Messa in
+una scheda a parte (`spyder-costa-teide`) e **`published: false` con `image: ""`**: senza una
+foto nostra in elenco uscirebbe il riquadro grigio, la stessa scelta già fatta per
+`quad-nord-puerto-cruz`. Niente `languages`: King Buggy non dice in che lingue si va, e quel
+campo si mette solo dove il fornitore lo segnala.
+
+### Provato
+
+Nel browser vero (390×844), nelle tre lingue: i tre bottoni cambiano insieme la riga
+**Durata** (3 ore → 4 ore) e la spiegazione sotto; le tre miniature scambiano la foto
+grande; la finestra mostra "Quanti buggy" con le quattro caselle e il prezzo accanto a
+ognuna (l'etichetta lunga va a capo su due righe anche in spagnolo e ci sta); il totale fa
+**€250** per un buggy da 4 posti, **€970** per uno da 4 più due da 6, **€340** per un
+singolo più un 2 posti. Messaggio WhatsApp: "Buggy: 4 posti × 1 · 6 posti × 1 — Totale
+indicativo: €610". Salvata nella lista e riletta: "15/10/2026 · Tramonto, 3 ore · Buggy: 2
+posti × 2". In elenco la categoria Avventura passa da 9 a 7 voci e il buggy è uno solo.
+
+`node controlla.js` → 0 errori, 2 avvisi invariati (opera-60 e masca-teide-cabrio-bus, non
+riguardano questo aggiornamento). `CACHE_NAME` alzato a `isla-v258`.
+
+### Da confermare con l'ufficio
+
+- il **titolo** della scheda unita ("Buggy Tour Tenerife" l'ho scelto io);
+- se le **quattro tariffe** valgono davvero uguali su tutti e tre i giri, o se il giro da 4
+  ore costa di più;
+- se **guida, carburante, snack e bevande** sono davvero inclusi da King Buggy;
+- l'**età minima** dei passeggeri (7 anni e 1,20 m vengono dalla fonte vecchia) e se sui
+  buggy da 4 e 6 posti cambia qualcosa;
+- gli **orari di partenza** veri, che non sappiamo (restano le fasce segnaposto);
+- se pubblicare la **Spyder**, e con quale foto.

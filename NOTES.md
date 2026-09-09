@@ -7069,3 +7069,335 @@ Nelle tre lingue su `santa-cruz-taganana`, in `tour.html`: la nota esce fra i co
 un punto elenco di due righe, in fila con gli altri. Nessun errore in console.
 
 `CACHE_NAME` alzato a `isla-v257`.
+
+---
+
+## v258 — le tre schede buggy diventano una sola, con i dati di King Buggy Tenerife
+
+Arrivati dal proprietario i dati di **King Buggy Tenerife** (kingbuggytenerife.com, base in
+Pol. Ind. las Andoriñas a Las Chafiras) con la richiesta di **aggiornare la card buggy e,
+se ce n'era più di una, unirle**. Ce n'erano tre.
+
+### Prima domanda, e non era una formalità: stesso fornitore?
+
+`buggy-volcano-4h`, `buggy-volcano-sunset` e `buggy-2-3h` erano nate il 2 settembre da
+un'altra fonte (probabilmente Canary2Go), e su tre punti dicevano il contrario di King
+Buggy: **buggy da 1-2 persone** contro 2, 4 e 6 posti; **patente B1** contro carnet B;
+**ritiro da Fañabé, Torvisca, Las Américas, Los Cristianos e Golf del Sur** contro ritiro
+gratuito in hotel da una base a Las Chafiras. Unire le schede e versarci dentro i dati
+nuovi senza chiedere voleva dire pubblicare i dati di due operatori mescolati.
+
+Chiesto, e **il proprietario ha confermato che è lo stesso prodotto**: dove i due si
+contraddicono vince King Buggy, che è il fornitore diretto. Il coincidere esatto del prezzo
+di partenza (140 €) e dei tre temi (fuoristrada, tramonto, Teide) era il segnale, ma restava
+un indizio, non una prova: la differenza fra i due la sa l'ufficio, non io.
+
+### Una scheda, tre percorsi
+
+Le tre schede erano uguali in tutto tranne foto, titolo e durata: affiancate in elenco
+sembravano tre attività diverse quando sono tre percorsi della stessa. Ora il percorso è una
+**variante** (`options`, etichetta "Percorso"), come si era fatto per i due quad il 4
+settembre:
+
+| variante | durata | dov'era prima |
+|---|---|---|
+| Offroad, 3 ore | 3 ore | `buggy-2-3h` (era "2 o 3 ore") |
+| Tramonto, 3 ore | 3 ore | `buggy-volcano-sunset` (era "3 ore e mezza") |
+| Completo, 4 ore | 4 ore | `buggy-volcano-4h` (era "3 ore e mezza") |
+
+**Le durate tornano quelle del fornitore diretto**: 3h, 3h, 4h. Quelle di prima (3,5 ore per
+due schede su tre) venivano dai minuti di canaryvip, e il "4-Hour" del titolo originale
+adesso torna giusto proprio sul giro completo. **Sparisce la versione da 2 ore** del
+fuoristrada: King Buggy il giro da 2 ore non ce l'ha.
+
+**Sopravvive l'id `buggy-volcano-4h`**, non uno nuovo: gli indirizzi già in giro continuano
+a funzionare. `tour.html?id=buggy-2-3h` e `?id=buggy-volcano-sunset` ora danno "Escursione
+non trovata", che è la risposta giusta e pulita — provate nel browser.
+
+**Il titolo l'ho scelto io e il proprietario l'ha approvato**: "Buggy Tour Tenerife". I
+titoli restano come li scrive Admiral, ma qui i tre titoli di partenza avevano tutti una
+durata dentro ("4-Hour", "2 or 3-Hour") e nessuno poteva reggere una scheda che ne contiene
+tre.
+
+**Le due foto non sono perse, sono finite in `gallery`.** Guardate una per una: la Teide
+(`buggy-volcano-4h.jpg`, il buggy fermo davanti al vulcano) resta `image` perché è quella
+della scheda che sopravvive; `buggy-2-3h.jpg` (due buggy sullo sterrato fra i mulini, con
+le persone a bordo) e `buggy-volcano-sunset.jpg` (la fila in strada nella luce della sera)
+diventano la seconda e la terza miniatura. Tutte e tre mostrano lo stesso modello a 2
+posti: quando arriveranno foto dei buggy da 4 e da 6 varrà la pena aggiungerle.
+
+### Il prezzo è del buggy e cambia con i posti
+
+King Buggy dà quattro tariffe, uguali su tutti i giri: **140 € chi guida da solo, 200 € il
+buggy da 2 posti, 250 € quello da 4, 360 € quello da 6**. Il proprietario ha scelto di
+**pubblicarle**, sapendo che la fonte le dà come non verificate e che le stesse quattro
+cifre compaiono identiche su tour di durata e mezzi diversi (potrebbe essere un modello del
+sito non aggiornato).
+
+Quindi `units` con quattro tipi (`solo`, `due`, `quattro`, `sei`) e `unitPrices` dentro ogni
+variante, come sul jet ski: nella finestra della richiesta le quattro caselle prendono il
+posto di "Quante persone" — **dove si paga il mezzo non si contano le persone** — e il
+totale si fa davvero. `priceFrom` resta 140 con `priceUnit: "/buggy"`.
+
+I prezzi stanno **dentro le varianti** anche se oggi sono uguali su tutte e tre: è lì che il
+sito li legge per scriverli accanto ai contatori (in `riempiUnita()` non c'è ripiego sul
+campo della scheda), ed è lì che andranno cambiati se un giro comincerà a costare più di un
+altro.
+
+Ogni variante ha anche `price: 140`, se no la riga "Prezzo" della pagina di dettaglio
+diceva "Su richiesta" su una scheda che in elenco dice "da €140": il numero sul bottone e
+nella riga è il prezzo di partenza, e la prima nota lo scompone per intero.
+
+### Cosa è entrato, cosa è restato, cosa non ho copiato
+
+Entrato da King Buggy: il **ritiro gratuito in hotel** (`included: transfer` e una nota — il
+punto e l'ora li conferma l'ufficio, non li inventa il sito), la **base di Las Chafiras**
+come `zone` al posto di "Tenerife Sud", i **buggy da 2, 4 e 6 posti** coi motori 800/1000 cc
+e Turbo, la **patente B** al posto di B1.
+
+Restato dalla fonte vecchia, perché King Buggy non lo contraddice: i passeggeri dai 7 anni e
+1,20 m, casco/guanti/giacca/occhiali, la gravidanza, il pacchetto foto a pagamento, e
+`languages: LINGUE_TOUR`. L'età minima dei passeggeri non la scrive nessuno dei due:
+resta da confermare.
+
+**Snack e bevande sono usciti da "Cosa è incluso" (v259).** Erano l'unico punto in cui la
+fonte vecchia prometteva più di quello che il fornitore diretto dichiara — King Buggy elenca
+solo il ritiro gratuito in hotel — e il dubbio è durato meno di un'ora: **il proprietario ha
+confermato che sono inclusi guida e carburante, non snack e bevande**. Il riquadro ora dice
+Guida, Transfer, Carburante e basta. Vale la pena ricordarselo la prossima volta che si
+eredita una scheda da un rivenditore: quello che il rivenditore aggiunge nel suo pacchetto
+non è detto che lo dia l'operatore.
+
+Non copiati, come sempre: la politica di cancellazione (le nostre 24 ore valgono comunque),
+i testi promozionali e il resto del marketing. Le descrizioni sono riscritte da zero nelle
+tre lingue.
+
+### La Spyder è un'altra cosa, e sta ferma
+
+Il quarto prodotto di King Buggy non è un buggy: è una **moto Spyder** a tre ruote, due
+posti, 900 cc, con un giro suo di 4 ore fra costa, città e Teide, a 200 € a moto. Messa in
+una scheda a parte (`spyder-costa-teide`) e **`published: false` con `image: ""`**: senza una
+foto nostra in elenco uscirebbe il riquadro grigio, la stessa scelta già fatta per
+`quad-nord-puerto-cruz`. Niente `languages`: King Buggy non dice in che lingue si va, e quel
+campo si mette solo dove il fornitore lo segnala.
+
+### Provato
+
+Nel browser vero (390×844), nelle tre lingue: i tre bottoni cambiano insieme la riga
+**Durata** (3 ore → 4 ore) e la spiegazione sotto; le tre miniature scambiano la foto
+grande; la finestra mostra "Quanti buggy" con le quattro caselle e il prezzo accanto a
+ognuna (l'etichetta lunga va a capo su due righe anche in spagnolo e ci sta); il totale fa
+**€250** per un buggy da 4 posti, **€970** per uno da 4 più due da 6, **€340** per un
+singolo più un 2 posti. Messaggio WhatsApp: "Buggy: 4 posti × 1 · 6 posti × 1 — Totale
+indicativo: €610". Salvata nella lista e riletta: "15/10/2026 · Tramonto, 3 ore · Buggy: 2
+posti × 2". In elenco la categoria Avventura passa da 9 a 7 voci e il buggy è uno solo.
+
+`node controlla.js` → 0 errori, 2 avvisi invariati (opera-60 e masca-teide-cabrio-bus, non
+riguardano questo aggiornamento). `CACHE_NAME` alzato a `isla-v258`, e a `isla-v259` con la
+correzione di snack e bevande qui sopra.
+
+### Da confermare con l'ufficio
+
+- se le **quattro tariffe** valgono davvero uguali su tutti e tre i giri, o se il giro da 4
+  ore costa di più;
+- l'**età minima** dei passeggeri (7 anni e 1,20 m vengono dalla fonte vecchia) e se sui
+  buggy da 4 e 6 posti cambia qualcosa;
+- gli **orari di partenza** veri, che non sappiamo (restano le fasce segnaposto);
+- se pubblicare la **Spyder**, e con quale foto — e se anche lì guida e carburante sono
+  compresi (per ora la scheda nascosta dichiara solo il ritiro in hotel).
+
+**Già confermato dal proprietario** (9 settembre): il titolo "Buggy Tour Tenerife" va bene;
+guida e carburante sono inclusi, snack e bevande no.
+
+---
+
+## v260 — la seconda compagnia entra nella stessa scheda, e i prezzi diventano quelli di Admiral
+
+Arrivata dal proprietario la pagina di **Ultimate Buggies Tenerife**
+(ultimatebuggiestenerife.com), seconda compagnia di buggy, con una richiesta chiara:
+**più compagnie fanno lo stesso giro, non ha senso una scheda per ognuna — vanno tutte
+dentro "Buggy Tour Tenerife"**. Prima di scrivere una riga gli ho fatto vedere cosa
+c'era dentro, che è la parte che ha evitato tre doppioni.
+
+### Dei tre giri di Ultimate ne è entrato uno
+
+| giro di Ultimate | durata | cos'è | esito |
+|---|---|---|---|
+| Coastal Off-Road | 3 ore | costa sud, El Médano, fino a 1 ora di sterrato | **doppione** di "Offroad, 3 ore" |
+| Sunset Mountain | 3 ore | montagna, Parco Nazionale, sosta al tramonto | **doppione** di "Tramonto, 3 ore" |
+| Daytime Mountain | 3 ore | **tutto asfalto, zero fuoristrada**, villaggi e miradores | **nuovo**, entrato |
+
+Il criterio: entra quello che il cliente sceglierebbe **diversamente**. Il fuoristrada e il
+tramonto ci sono già, e due righe quasi identiche in elenco avrebbero solo chiesto al
+cliente di indovinare chi lo porta in giro — che è l'informazione che a lui serve meno. Il
+giro di sola montagna invece è l'unico che dice una cosa nuova: **il Teide senza polvere**,
+per chi il fuoristrada non lo vuole. Chi porta gli altri due lo decide l'ufficio quando
+conferma, ed è giusto così: qui si manda una *richiesta*, non si prenota.
+
+### Le regole della seconda compagnia stanno dentro la variante, non nelle note
+
+È il punto tecnico di questo giro. Ultimate contraddice King Buggy su tre cose che il
+cliente deve sapere prima di uscire di casa: **niente ritiro in hotel** (si arriva da sé a
+Playa de las Américas), **21 anni** e patente da almeno un anno per guidare, **bambini dai
+5 anni** dietro sul 4 posti invece che dai 7. Scritte fra le note della scheda sarebbero
+diventate promesse valide per tutti e quattro i giri.
+
+Sono finite dentro la variante, dove il vocabolario le regge già tutte:
+
+- **`zone` dentro la variante**: premendo "Montagna su strada" la riga *Punto di partenza*
+  cambia da sola da "Las Chafiras" a "Playa de las Américas". Primo uso di questo campo
+  fuori dalle prove.
+- **`included` dentro la variante**: il `transfer` è **sceso dalla scheda alle tre varianti
+  di King Buggy**, insieme al `fuel`. Sulla scheda resta `guide`, l'unica cosa vera per
+  tutti. Le icone dicono "vale sempre", e un'icona Transfer su un giro senza ritiro sarebbe
+  stata una bugia disegnata. Sul giro nuovo c'è `equipment`, che Ultimate scrive
+  esplicitamente (occhiali, guanti, giacche).
+- **`unitPrices` dentro la variante**: già c'erano.
+
+Il carburante su quel giro **non c'è fra le icone**: Ultimate elenca guida, attrezzatura e
+assicurazione, il carburante no. Non si indovina — se l'ufficio conferma che è compreso, è
+una parola.
+
+### I prezzi ora sono quelli di Admiral, non quelli del fornitore
+
+Il proprietario ha dato il listino suo, uguale su tutti e quattro i giri: **180 € il buggy
+da 2 posti, 240 € quello da 4, 330 € quello da 6**, e anche qui **si contano i buggy, non
+le persone**. Sostituisce il 140/200/250/360 di King Buggy della v258.
+
+**Sparisce il tipo "Da solo"**: nel listino nuovo non c'è una tariffa per chi guida da solo,
+quindi il conteggio parte dal buggy da 2 posti e `priceFrom` passa da 140 a 180. Chi va da
+solo prende il 2 posti. È l'unico numero che *sale* rispetto a ieri (140 → 180): è una
+decisione del proprietario, non un'inferenza, e vale la pena saperlo perché va contro la
+regola di non alzare un prezzo già letto.
+
+**Il 6 posti resta anche sul giro di Ultimate**, che sul suo sito dà buggy solo da 2 e 4
+posti: il proprietario ha detto "per tutti i tour", e sui prezzi decide lui. Da rivedere se
+su quel giro il 6 posti non esiste davvero.
+
+### Le note accorciate prima di consegnarle
+
+Scritte per esteso, le tre note con l'eccezione dentro erano da cinque-sei righe l'una: nel
+riquadro Consigli si leggevano come paragrafi, esattamente quello che il proprietario aveva
+fatto tagliare in v257. Riscritte in due frasi ciascuna, e lo stesso per la descrizione
+della variante nuova.
+
+### Non copiato da Ultimate
+
+La loro **politica di rimborso** (100% oltre un mese, 50% entro un mese, 0% entro 14
+giorni): le nostre sono 24 ore e non sono un campo della scheda. E poi "premium", "most
+popular", "best for couples", la conferma immediata e il pagamento online (da noi è una
+richiesta su WhatsApp), l'obbligo di assicurazione di viaggio, la clausola sul
+comportamento. Le descrizioni sono scritte da zero nelle tre lingue.
+
+**Non messo l'indirizzo esatto del ritrovo.** Ultimate lo dà come "Vivo Mini Golf, Av.
+Rafael Puig Lluvina 7", ma i dati stessi avvisano che viene da una FAQ in cache e da
+Facebook, **non dalla pagina viva**. Un punto di ritrovo sbagliato è la stessa specie di
+errore di un'ora sbagliata: sulla scheda c'è la zona ("Playa de las Américas") e il resto lo
+conferma l'ufficio con la richiesta.
+
+**Lasciati fuori** anche i limiti di peso (300 kg sul 2 posti, 450 kg sul 4), il limite di
+60 km/h, la gabbia di sicurezza, i gruppi da 4-5 buggy e l'assicurazione compresa: sono
+tutte cose che **scrive solo Ultimate**, e sulla scheda intera diventerebbero promesse anche
+per i giri di King Buggy. Sono qui, pronte, se l'ufficio conferma che valgono per tutti.
+
+### Provato
+
+Nel browser vero (390×844), in italiano: i quattro bottoni cambiano insieme *Durata*,
+*Punto di partenza* (Las Chafiras → **Playa de las Américas** sul quarto) e il riquadro
+*Cosa è incluso* (Guida · Transfer · Carburante sui tre di King Buggy, **Guida ·
+Attrezzatura** sul quarto). I contatori mostrano 2 posti €180, 4 posti €240, 6 posti €330; il
+totale di un buggy per tipo fa **€750**. Nessun errore in console. `node controlla.js` → 0
+errori, 2 avvisi invariati. `CACHE_NAME` a `isla-v260`.
+
+### Da confermare con l'ufficio
+
+- l'**indirizzo esatto** del ritrovo di Playa de las Américas, da verificare sulla pagina
+  viva prima di scriverlo sulla scheda;
+- se il **limite di 60 km/h** e la **gabbia di sicurezza** valgono anche per King Buggy
+  (carburante, attrezzatura e assicurazione sono già confermati, vedi v261);
+- gli **orari di partenza**, che nessuna delle due compagnie pubblica;
+- se arriveranno altre compagnie di buggy: ormai la scheda regge, ogni giro davvero diverso
+  è una variante in più e i doppioni non entrano.
+
+---
+
+## v261 — carburante e assicurazione per tutti, e l'icona numero ventuno
+
+Le risposte del proprietario alle domande lasciate aperte dalla v260, tutte lo stesso
+giorno:
+
+- **il carburante è incluso anche sul giro di Ultimate** (loro non lo scrivono, ma lo è);
+- **l'assicurazione è compresa da tutti e due i fornitori**;
+- **i limiti di peso restano fuori** (detto due volte, quindi era davvero quello che
+  intendeva);
+- **il buggy da 6 posti resta anche sul giro di Ultimate**, che ha solo 2 e 4 posti: se
+  serve, quel giro lo fa King Buggy. Sul catalogo la scelta la fa il cliente, chi ce lo
+  porta lo decide l'ufficio.
+
+Quindi `included` si ricompone: sulla **scheda** `guide`, `fuel`, `equipment` e
+`insurance` — le quattro cose vere per tutti e quattro i giri — e sulle **tre varianti di
+King Buggy** solo `transfer`, l'unica che il giro di Ultimate non ha. Il riquadro passa da
+due voci a cinque sui giri con ritiro e a quattro su quello senza, e resta esatto su
+entrambi senza una parola in più.
+
+### L'icona `insurance`
+
+Non c'era, e servivano le solite due righe: il disegno in `INCLUDED_ICONS` (`tour.js`) e il
+testo `inc.insurance` in `i18n.js` ("Assicurazione", "Insurance", "Seguro"). È **uno scudo
+con la spunta dentro**. Lo scudo vuoto, guardato in fila con le altre, sembrava una targa o
+una foglia; con la spunta dice "sei coperto" e non lo confondi con niente — l'unica altra
+icona di sicurezza è il salvagente, che è tonda.
+
+**Guardate tutte e ventuno in fila**, come vuole la regola, su tre colonne e alla
+dimensione vera: nessuna collisione. Il conto in `CLAUDE.md` era rimasto a "diciannove"
+(la borsa frigo era già la ventesima): corretto a ventuno.
+
+### Provato
+
+Nel browser vero: i quattro bottoni cambiano il riquadro fra **Guida · Carburante ·
+Attrezzatura · Assicurazione · Transfer** (Offroad, Tramonto, Completo) e **Guida ·
+Carburante · Attrezzatura · Assicurazione** (Montagna su strada). Nessun errore in console,
+prezzi e totale invariati (€750 per un buggy di ogni tipo). `node controlla.js` → 0 errori,
+2 avvisi invariati. `CACHE_NAME` a `isla-v261`.
+
+---
+
+## v262 — il transfer esce dalle icone
+
+Ultima correzione del proprietario sulla scheda buggy: **il ritiro in hotel non va fra le
+icone**. Ce l'hanno i tre giri di King Buggy, non quello di Ultimate, e mettere `transfer`
+nell'`included` delle tre varianti — che era la soluzione della v261 — resta comunque una
+mezza verità: chi guarda il riquadro non sta confrontando quattro riquadri, sta leggendo
+quello del giro che ha davanti, e un'icona la legge come una promessa della scheda.
+
+Adesso il riquadro dice **Guida · Carburante · Attrezzatura · Assicurazione** su tutti e
+quattro i giri, cioè solo quello che è vero per tutti, e il ritiro sta **nella nota**, che
+è l'unico posto capace di dire *dove sì e dove no*:
+
+> Ritiro in hotel gratuito su Offroad, Tramonto e Completo; Montagna su strada parte da
+> Playa de las Américas, senza ritiro. Il punto e l'ora te li conferma l'ufficio.
+
+È la stessa regola del `CLAUDE.md` ("se una condizione vale solo per una variante non
+metterla fra le icone"), applicata un giro più stretto di come l'avevo applicata io.
+
+**Chiusi anche gli ultimi dubbi**: il limite di 60 km/h e la gabbia di sicurezza restano
+fuori, non si chiedono; gli orari di partenza si metteranno più avanti, una scheda alla
+volta come sempre.
+
+### Un errore preso al volo, che vale la pena raccontare
+
+Il primo tentativo di togliere `included: ["transfer"]` era una sostituzione su **tutto il
+file**: `included: ["transfer"],` è una riga comunissima, e ne avrebbe cancellate **17** —
+tre della scheda buggy e quattordici di altre schede, che il transfer ce l'hanno per
+davvero. Se ne è accorto solo perché lo script stampava quante righe toccava: `controlla.js`
+non se ne sarebbe accorto (nessun errore, il catalogo restava valido) e nemmeno il browser,
+guardando la scheda buggy. Rimesso tutto con `git checkout` e rifatto **dentro i confini
+della scheda**, ritagliando il testo fra `id: "buggy-volcano-4h"` e la scheda dopo.
+
+Regola per la prossima volta: una sostituzione su `esplora-catalog.js` va **limitata alla
+scheda**, e va fatta stampare quante righe cambia. Un file di catalogo è pieno di righe
+identiche che appartengono a schede diverse.
+
+`node controlla.js` → 0 errori, 2 avvisi invariati. Provato nel browser: il riquadro è
+uguale su tutti e quattro i giri, cambia solo il *Punto di partenza*. `CACHE_NAME` a
+`isla-v262`.

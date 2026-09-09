@@ -163,7 +163,7 @@ I dati grezzi e la storia di come sono stati raccolti stanno in `dati-fornitore/
 
 ## Icone di "Cosa è incluso"
 
-Diciannove, disegnate a mano su griglia 24×24, prendono il colore del testo. Per
+Ventuno, disegnate a mano su griglia 24×24, prendono il colore del testo. Per
 aggiungerne una servono **due righe**: il disegno in `INCLUDED_ICONS` (`tour.js`) e il
 testo `inc.<parola>` in `i18n.js`. Una parola senza icona **viene saltata in silenzio** —
 `controlla.js` la segnala.

@@ -199,6 +199,7 @@ const I18N = {
   "inc.towels":         { it: "Asciugamani", en: "Towels", es: "Toallas" },
   "inc.cooler":         { it: "Borsa frigo", en: "Cooler box", es: "Nevera portátil" },
   "inc.fuel":           { it: "Carburante", en: "Fuel", es: "Combustible" },
+  "inc.insurance":      { it: "Assicurazione", en: "Insurance", es: "Seguro" },
   // ── la lista delle richieste ────────────────────────────────────────────
   "lista.title":        { it: "La tua lista", en: "Your list", es: "Tu lista" },
   "lista.added":        { it: "Aggiunta alla tua lista", en: "Added to your list", es: "Añadida a tu lista" },

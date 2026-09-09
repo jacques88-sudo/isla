@@ -7035,3 +7035,37 @@ parte**, un **giovedì** passa e il messaggio arriva. Come prima, che è quello 
 voleva.
 
 `CACHE_NAME` alzato a `isla-v256`.
+
+---
+
+## v257 — la nota sui giorni torna a una riga sola
+
+Nel riquadro **Consigli** la nota dei giorni era di due frasi e prendeva cinque righe: da
+sola era più lunga di tutti gli altri consigli messi insieme, e sullo schermo del telefono
+non si leggeva più come un punto elenco ma come un paragrafo attaccato in fondo alla
+scheda. Il proprietario l'ha cerchiata in rosso in una foto: **basta la prima frase.**
+
+Resta:
+
+> I giorni possono cambiare secondo la lingua della guida.
+
+Via la seconda frase ("Se la tua data non è fra quelle qui sopra, scrivici su WhatsApp
+prima di rinunciare: la verifichiamo per te"), nelle tre lingue, su tutte e cinque le
+schede che ce l'hanno: `teide-national-park`, `icod-garachico-orotava`, `gran-canaria`,
+`la-gomera`, `santa-cruz-taganana`.
+
+**Non si perde niente di quello che la seconda frase faceva.** La via su WhatsApp resta
+dov'era: il pallino della chat è su ogni pagina, e l'avviso rosso nella finestra continua a
+uscire quando il cliente sceglie un giorno in cui non si parte. La nota ora fa solo il suo
+mestiere — dire che l'elenco dei giorni non è inciso nella pietra — e lo fa in una riga.
+
+Il commento sopra la nota in `esplora-catalog.js` è stato riscritto di conseguenza:
+spiegava anche il pezzo su WhatsApp, che non c'è più, e ora dice invece perché la nota deve
+restare corta.
+
+### Provato
+
+Nelle tre lingue su `santa-cruz-taganana`, in `tour.html`: la nota esce fra i consigli come
+un punto elenco di due righe, in fila con gli altri. Nessun errore in console.
+
+`CACHE_NAME` alzato a `isla-v257`.

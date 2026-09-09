@@ -2089,7 +2089,7 @@ const ESPLORA_CATALOG = [
         { label: { it: "Offroad, 3 ore", en: "Off-road, 3 hours", es: "Offroad, 3 horas" },
           price: 180,
           duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-          included: ["transfer", "fuel"],
+          included: ["transfer"],
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Il giro vicino alla costa, con la parte fuori dall'asfalto: sterrato, polvere e saliscendi nel sud dell'isola.",
@@ -2099,7 +2099,7 @@ const ESPLORA_CATALOG = [
         { label: { it: "Tramonto, 3 ore", en: "Sunset, 3 hours", es: "Atardecer, 3 horas" },
           price: 180,
           duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-          included: ["transfer", "fuel"],
+          included: ["transfer"],
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Lo stesso paesaggio con la luce della sera, e le soste per le foto quando il sole è basso.",
@@ -2109,7 +2109,7 @@ const ESPLORA_CATALOG = [
         { label: { it: "Completo, 4 ore", en: "Full tour, 4 hours", es: "Completo, 4 horas" },
           price: 180,
           duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
-          included: ["transfer", "fuel"],
+          included: ["transfer"],
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Il giro lungo: il Parco Nazionale del Teide, un tratto vicino alla costa e la parte fuoristrada.",
@@ -2126,7 +2126,6 @@ const ESPLORA_CATALOG = [
           price: 180,
           duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
           zone: "Playa de las Américas",
-          included: ["equipment"],
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Tutto su asfalto, senza fuoristrada: strade di montagna, villaggi canari e i punti panoramici del Parco Nazionale. Ritrovo a Playa de las Américas, senza ritiro in hotel, e si guida da 21 anni.",
@@ -2140,7 +2139,7 @@ const ESPLORA_CATALOG = [
       en: "At the wheel of a buggy through the landscapes of southern Tenerife: four routes to choose from — the off-road ride, the sunset one, the long tour up to Teide National Park and the all-tarmac mountain route, for those who would rather skip the dust. Buggies with 2, 4 and 6 seats; a driving licence is required.",
       es: "Al volante de un buggy por los paisajes del sur de Tenerife: cuatro recorridos a elegir — el todoterreno, el del atardecer, el tour largo hasta el Parque Nacional del Teide y el de montaña solo por asfalto, para quien prefiere evitar el polvo. Buggies de 2, 4 y 6 plazas, y se conduce con el carné."
     },
-    included: ["guide"],
+    included: ["guide", "fuel", "equipment", "insurance"],
     notes: [
       {
         it: "Il prezzo è del buggy e non a persona: 180 € il buggy da 2 posti, 240 € quello da 4 e 330 € quello da 6, uguali su tutti e quattro i giri. Nella richiesta si contano i buggy, non le persone.",

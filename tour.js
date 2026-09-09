@@ -268,7 +268,12 @@ const INCLUDED_ICONS = {
   cooler:    '<rect x="2" y="7.5" width="20" height="4.5" rx="1.5"/><path d="M4 12v6.5a1.5 1.5 0 0 0 1.5 1.5h13a1.5 1.5 0 0 0 1.5-1.5V12"/><path d="M12 14v4M10.3 15 13.7 17M13.7 15 10.3 17"/>',
   // La pompa di benzina. Senza il basamento sotto e il vetro del display
   // sembrava una caraffa col manico.
-  fuel:      '<path d="M3.5 20.5V5a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v15.5"/><path d="M2.5 20.5h11"/><rect x="5.5" y="5.5" width="5" height="4" rx="1"/><path d="M12.5 10.5h3a2 2 0 0 1 2 2v4.75a1.75 1.75 0 0 0 3.5 0V10.5l-2.2-2.2"/>'
+  fuel:      '<path d="M3.5 20.5V5a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v15.5"/><path d="M2.5 20.5h11"/><rect x="5.5" y="5.5" width="5" height="4" rx="1"/><path d="M12.5 10.5h3a2 2 0 0 1 2 2v4.75a1.75 1.75 0 0 0 3.5 0V10.5l-2.2-2.2"/>',
+  // Lo scudo con la spunta: e' il segno che tutti leggono come "sei coperto".
+  // Senza la spunta dentro, in fila con le altre lo scudo vuoto sembrava una
+  // targa o una foglia; con la spunta non lo confondi con niente, e non
+  // somiglia al salvagente, che e' l'unica altra icona tonda di sicurezza.
+  insurance: '<path d="M12 2.5 4.5 5.5v6c0 4.6 3.1 8.4 7.5 10 4.4-1.6 7.5-5.4 7.5-10v-6z"/><path d="m8.8 11.9 2.4 2.4 4.2-4.4"/>'
 };
 
 // L'itinerario: una riga per tappa, con l'orario a sinistra dove c'e'. E'

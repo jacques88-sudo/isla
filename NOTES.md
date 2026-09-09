@@ -7311,12 +7311,51 @@ errori, 2 avvisi invariati. `CACHE_NAME` a `isla-v260`.
 
 ### Da confermare con l'ufficio
 
-- se sul giro **Montagna su strada** il **carburante** è compreso (Ultimate non lo scrive) e
-  se il **buggy da 6 posti** esiste davvero;
 - l'**indirizzo esatto** del ritrovo di Playa de las Américas, da verificare sulla pagina
   viva prima di scriverlo sulla scheda;
-- se i dati di sicurezza di Ultimate (60 km/h, gabbia, assicurazione, peso massimo) valgono
-  anche per King Buggy: allora vanno sulla scheda, non su una variante;
+- se il **limite di 60 km/h** e la **gabbia di sicurezza** valgono anche per King Buggy
+  (carburante, attrezzatura e assicurazione sono già confermati, vedi v261);
 - gli **orari di partenza**, che nessuna delle due compagnie pubblica;
 - se arriveranno altre compagnie di buggy: ormai la scheda regge, ogni giro davvero diverso
   è una variante in più e i doppioni non entrano.
+
+---
+
+## v261 — carburante e assicurazione per tutti, e l'icona numero ventuno
+
+Le risposte del proprietario alle domande lasciate aperte dalla v260, tutte lo stesso
+giorno:
+
+- **il carburante è incluso anche sul giro di Ultimate** (loro non lo scrivono, ma lo è);
+- **l'assicurazione è compresa da tutti e due i fornitori**;
+- **i limiti di peso restano fuori** (detto due volte, quindi era davvero quello che
+  intendeva);
+- **il buggy da 6 posti resta anche sul giro di Ultimate**, che ha solo 2 e 4 posti: se
+  serve, quel giro lo fa King Buggy. Sul catalogo la scelta la fa il cliente, chi ce lo
+  porta lo decide l'ufficio.
+
+Quindi `included` si ricompone: sulla **scheda** `guide`, `fuel`, `equipment` e
+`insurance` — le quattro cose vere per tutti e quattro i giri — e sulle **tre varianti di
+King Buggy** solo `transfer`, l'unica che il giro di Ultimate non ha. Il riquadro passa da
+due voci a cinque sui giri con ritiro e a quattro su quello senza, e resta esatto su
+entrambi senza una parola in più.
+
+### L'icona `insurance`
+
+Non c'era, e servivano le solite due righe: il disegno in `INCLUDED_ICONS` (`tour.js`) e il
+testo `inc.insurance` in `i18n.js` ("Assicurazione", "Insurance", "Seguro"). È **uno scudo
+con la spunta dentro**. Lo scudo vuoto, guardato in fila con le altre, sembrava una targa o
+una foglia; con la spunta dice "sei coperto" e non lo confondi con niente — l'unica altra
+icona di sicurezza è il salvagente, che è tonda.
+
+**Guardate tutte e ventuno in fila**, come vuole la regola, su tre colonne e alla
+dimensione vera: nessuna collisione. Il conto in `CLAUDE.md` era rimasto a "diciannove"
+(la borsa frigo era già la ventesima): corretto a ventuno.
+
+### Provato
+
+Nel browser vero: i quattro bottoni cambiano il riquadro fra **Guida · Carburante ·
+Attrezzatura · Assicurazione · Transfer** (Offroad, Tramonto, Completo) e **Guida ·
+Carburante · Attrezzatura · Assicurazione** (Montagna su strada). Nessun errore in console,
+prezzi e totale invariati (€750 per un buggy di ogni tipo). `node controlla.js` → 0 errori,
+2 avvisi invariati. `CACHE_NAME` a `isla-v261`.

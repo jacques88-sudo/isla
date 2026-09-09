@@ -2095,14 +2095,14 @@ const ESPLORA_CATALOG = [
             en: "The route close to the coast, with the off-road part: dirt tracks, dust and climbs in the south of the island.",
             es: "El recorrido cerca de la costa, con la parte fuera del asfalto: pistas de tierra, polvo y subidas en el sur de la isla."
           } },
-        { label: { it: "Tramonto, 3 ore", en: "Sunset, 3 hours", es: "Atardecer, 3 horas" },
+        { label: { it: "Tramonto sul Teide, 3 ore", en: "Teide at sunset, 3 hours", es: "Atardecer en el Teide, 3 horas" },
           price: 180,
           duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
-            it: "Lo stesso paesaggio con la luce della sera, e le soste per le foto quando il sole è basso.",
-            en: "The same landscape in evening light, with photo stops while the sun is low.",
-            es: "El mismo paisaje con la luz de la tarde, y las paradas para fotos cuando el sol está bajo."
+            it: "Su verso il Teide con la luce della sera, tutto su strada: le soste per le foto quando il sole è basso.",
+            en: "Up towards Teide in the evening light, all on paved roads: photo stops while the sun is low.",
+            es: "Subida hacia el Teide con la luz de la tarde, todo por carretera: las paradas para fotos cuando el sol está bajo."
           } },
         { label: { it: "Completo, 4 ore", en: "Full tour, 4 hours", es: "Completo, 4 horas" },
           price: 180,
@@ -2134,9 +2134,9 @@ const ESPLORA_CATALOG = [
       ]
     },
     desc: {
-      it: "Al volante di un buggy fra i paesaggi del sud di Tenerife: quattro giri fra cui scegliere — il fuoristrada, il tramonto, il giro lungo fino al Parco Nazionale del Teide e quello di sola montagna su strada, per chi la polvere non la vuole. Buggy da 2, 4 e 6 posti, e si guida con la patente.",
-      en: "At the wheel of a buggy through the landscapes of southern Tenerife: four routes to choose from — the off-road ride, the sunset one, the long tour up to Teide National Park and the all-tarmac mountain route, for those who would rather skip the dust. Buggies with 2, 4 and 6 seats; a driving licence is required.",
-      es: "Al volante de un buggy por los paisajes del sur de Tenerife: cuatro recorridos a elegir — el todoterreno, el del atardecer, el tour largo hasta el Parque Nacional del Teide y el de montaña solo por asfalto, para quien prefiere evitar el polvo. Buggies de 2, 4 y 6 plazas, y se conduce con el carné."
+      it: "Al volante di un buggy fra i paesaggi del sud di Tenerife: quattro giri fra cui scegliere — il fuoristrada, il Teide al tramonto, il giro lungo che li mette insieme e la montagna di giorno, tutta su strada. Buggy da 2, 4 e 6 posti, e si guida con la patente.",
+      en: "At the wheel of a buggy through the landscapes of southern Tenerife: four routes to choose from — the off-road ride, Teide at sunset, the long tour that puts the two together, and the mountains by day, all on paved roads. Buggies with 2, 4 and 6 seats; a driving licence is required.",
+      es: "Al volante de un buggy por los paisajes del sur de Tenerife: cuatro recorridos a elegir — el todoterreno, el Teide al atardecer, el tour largo que junta los dos y la montaña de día, todo por carretera. Buggies de 2, 4 y 6 plazas, y se conduce con el carné."
     },
     included: ["guide", "fuel", "equipment", "insurance"],
     notes: [
@@ -2146,9 +2146,9 @@ const ESPLORA_CATALOG = [
         es: "El precio es por buggy y no por persona: 180 € el buggy de 2 plazas, 240 € el de 4 y 330 € el de 6, iguales en los cuatro recorridos. En la solicitud se cuentan los buggies, no las personas."
       },
       {
-        it: "Ritiro in hotel gratuito su Offroad, Tramonto e Completo; Montagna su strada parte da Playa de las Américas, senza ritiro. Il punto e l'ora te li conferma l'ufficio.",
-        en: "Free hotel pickup on the Off-road, Sunset and Full tours; Mountain roads starts from Playa de las Américas, with no pickup. The office confirms the point and the time.",
-        es: "Recogida en el hotel gratuita en Offroad, Atardecer y Completo; Montaña por carretera sale desde Playa de las Américas, sin recogida. El punto y la hora te los confirma la oficina."
+        it: "Ritiro in hotel gratuito su Offroad, Tramonto sul Teide e Completo; Montagna su strada parte da Playa de las Américas, senza ritiro. Il punto e l'ora te li conferma l'ufficio.",
+        en: "Free hotel pickup on the Off-road, Teide at sunset and Full tours; Mountain roads starts from Playa de las Américas, with no pickup. The office confirms the point and the time.",
+        es: "Recogida en el hotel gratuita en Offroad, Atardecer en el Teide y Completo; Montaña por carretera sale desde Playa de las Américas, sin recogida. El punto y la hora te los confirma la oficina."
       },
       {
         it: "Buggy automatici da 2, 4 e 6 posti. Chi guida porta con sé la patente valida, l'originale e non una fotocopia; su Montagna su strada servono 21 anni e la patente da un anno.",
@@ -2156,9 +2156,9 @@ const ESPLORA_CATALOG = [
         es: "Buggies automáticos de 2, 4 y 6 plazas. Quien conduce lleva consigo el carné válido, el original y no una fotocopia; en Montaña por carretera hacen falta 21 años y el carné desde hace un año."
       },
       {
-        it: "Passeggeri dai 7 anni e almeno 1,20 m. Su Montagna su strada: 1,20 m sul 2 posti, dai 5 anni sul 4 posti, dietro con un adulto.",
-        en: "Passengers from age 7 and at least 1.20 m. On Mountain roads: 1.20 m in the 2-seater, from age 5 in the 4-seater, in the rear with an adult.",
-        es: "Pasajeros desde los 7 años y al menos 1,20 m. En Montaña por carretera: 1,20 m en el de 2 plazas, desde los 5 años en el de 4, detrás con un adulto."
+        it: "I passeggeri salgono dai 3 anni.",
+        en: "Passengers from age 3.",
+        es: "Los pasajeros suben desde los 3 años."
       },
       {
         it: "Casco, guanti, giacca e occhiali forniti. Non consigliato in gravidanza. Pacchetto foto professionale disponibile a pagamento.",

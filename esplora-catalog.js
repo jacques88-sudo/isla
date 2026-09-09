@@ -1849,12 +1849,11 @@ const ESPLORA_CATALOG = [
       // I giorni sono un blocco: la finestra non lascia mandare una richiesta
       // per un giorno in cui non si parte. Questa nota fa il mestiere che il
       // blocco non puo fare — dire che quei giorni non sono incisi nella
-      // pietra, perche cambiano con la lingua della guida — e dare una via al
-      // cliente che ha una data fuori: WhatsApp, dove la richiesta arriva
-      // sempre. Avviso e nota insieme, non uno al posto dell altro.
-      { it: "I giorni possono cambiare secondo la lingua della guida. Se la tua data non è fra quelle qui sopra, scrivici su WhatsApp prima di rinunciare: la verifichiamo per te.",
-        en: "The days can change depending on the language of the guide. If your date is not among those listed above, message us on WhatsApp before giving up: we will check it for you.",
-        es: "Los días pueden cambiar según el idioma del guía. Si tu fecha no está entre las de arriba, escríbenos por WhatsApp antes de renunciar: la comprobamos por ti." }
+      // pietra, perche cambiano con la lingua della guida. Una riga sola: nel
+      // riquadro dei consigli una nota lunga si legge come un paragrafo.
+      { it: "I giorni possono cambiare secondo la lingua della guida.",
+        en: "The days can change depending on the language of the guide.",
+        es: "Los días pueden cambiar según el idioma del guía." }
     ],
     family: true,
     desc: {
@@ -1970,12 +1969,11 @@ const ESPLORA_CATALOG = [
       // I giorni sono un blocco: la finestra non lascia mandare una richiesta
       // per un giorno in cui non si parte. Questa nota fa il mestiere che il
       // blocco non puo fare — dire che quei giorni non sono incisi nella
-      // pietra, perche cambiano con la lingua della guida — e dare una via al
-      // cliente che ha una data fuori: WhatsApp, dove la richiesta arriva
-      // sempre. Avviso e nota insieme, non uno al posto dell altro.
-      { it: "I giorni possono cambiare secondo la lingua della guida. Se la tua data non è fra quelle qui sopra, scrivici su WhatsApp prima di rinunciare: la verifichiamo per te.",
-        en: "The days can change depending on the language of the guide. If your date is not among those listed above, message us on WhatsApp before giving up: we will check it for you.",
-        es: "Los días pueden cambiar según el idioma del guía. Si tu fecha no está entre las de arriba, escríbenos por WhatsApp antes de renunciar: la comprobamos por ti." }
+      // pietra, perche cambiano con la lingua della guida. Una riga sola: nel
+      // riquadro dei consigli una nota lunga si legge come un paragrafo.
+      { it: "I giorni possono cambiare secondo la lingua della guida.",
+        en: "The days can change depending on the language of the guide.",
+        es: "Los días pueden cambiar según el idioma del guía." }
     ],
     family: true,
     desc: {
@@ -3484,12 +3482,11 @@ const ESPLORA_CATALOG = [
       // I giorni sono un blocco: la finestra non lascia mandare una richiesta
       // per un giorno in cui non si parte. Questa nota fa il mestiere che il
       // blocco non puo fare — dire che quei giorni non sono incisi nella
-      // pietra, perche cambiano con la lingua della guida — e dare una via al
-      // cliente che ha una data fuori: WhatsApp, dove la richiesta arriva
-      // sempre. Avviso e nota insieme, non uno al posto dell altro.
-      { it: "I giorni possono cambiare secondo la lingua della guida. Se la tua data non è fra quelle qui sopra, scrivici su WhatsApp prima di rinunciare: la verifichiamo per te.",
-        en: "The days can change depending on the language of the guide. If your date is not among those listed above, message us on WhatsApp before giving up: we will check it for you.",
-        es: "Los días pueden cambiar según el idioma del guía. Si tu fecha no está entre las de arriba, escríbenos por WhatsApp antes de renunciar: la comprobamos por ti." }
+      // pietra, perche cambiano con la lingua della guida. Una riga sola: nel
+      // riquadro dei consigli una nota lunga si legge come un paragrafo.
+      { it: "I giorni possono cambiare secondo la lingua della guida.",
+        en: "The days can change depending on the language of the guide.",
+        es: "Los días pueden cambiar según el idioma del guía." }
     ],
     family: true,
     desc: {
@@ -4122,12 +4119,11 @@ const ESPLORA_CATALOG = [
       // I giorni sono un blocco: la finestra non lascia mandare una richiesta
       // per un giorno in cui non si parte. Questa nota fa il mestiere che il
       // blocco non puo fare — dire che quei giorni non sono incisi nella
-      // pietra, perche cambiano con la lingua della guida — e dare una via al
-      // cliente che ha una data fuori: WhatsApp, dove la richiesta arriva
-      // sempre. Avviso e nota insieme, non uno al posto dell altro.
-      { it: "I giorni possono cambiare secondo la lingua della guida. Se la tua data non è fra quelle qui sopra, scrivici su WhatsApp prima di rinunciare: la verifichiamo per te.",
-        en: "The days can change depending on the language of the guide. If your date is not among those listed above, message us on WhatsApp before giving up: we will check it for you.",
-        es: "Los días pueden cambiar según el idioma del guía. Si tu fecha no está entre las de arriba, escríbenos por WhatsApp antes de renunciar: la comprobamos por ti." }
+      // pietra, perche cambiano con la lingua della guida. Una riga sola: nel
+      // riquadro dei consigli una nota lunga si legge come un paragrafo.
+      { it: "I giorni possono cambiare secondo la lingua della guida.",
+        en: "The days can change depending on the language of the guide.",
+        es: "Los días pueden cambiar según el idioma del guía." }
     ],
     image: "la-gomera.jpg",
     published: true
@@ -4246,12 +4242,11 @@ const ESPLORA_CATALOG = [
       // I giorni sono un blocco: la finestra non lascia mandare una richiesta
       // per un giorno in cui non si parte. Questa nota fa il mestiere che il
       // blocco non puo fare — dire che quei giorni non sono incisi nella
-      // pietra, perche cambiano con la lingua della guida — e dare una via al
-      // cliente che ha una data fuori: WhatsApp, dove la richiesta arriva
-      // sempre. Avviso e nota insieme, non uno al posto dell altro.
-      { it: "I giorni possono cambiare secondo la lingua della guida. Se la tua data non è fra quelle qui sopra, scrivici su WhatsApp prima di rinunciare: la verifichiamo per te.",
-        en: "The days can change depending on the language of the guide. If your date is not among those listed above, message us on WhatsApp before giving up: we will check it for you.",
-        es: "Los días pueden cambiar según el idioma del guía. Si tu fecha no está entre las de arriba, escríbenos por WhatsApp antes de renunciar: la comprobamos por ti." }
+      // pietra, perche cambiano con la lingua della guida. Una riga sola: nel
+      // riquadro dei consigli una nota lunga si legge come un paragrafo.
+      { it: "I giorni possono cambiare secondo la lingua della guida.",
+        en: "The days can change depending on the language of the guide.",
+        es: "Los días pueden cambiar según el idioma del guía." }
     ],
     family: true,
     desc: {

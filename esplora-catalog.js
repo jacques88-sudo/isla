@@ -2089,7 +2089,6 @@ const ESPLORA_CATALOG = [
         { label: { it: "Offroad, 3 ore", en: "Off-road, 3 hours", es: "Offroad, 3 horas" },
           price: 180,
           duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-          included: ["transfer"],
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Il giro vicino alla costa, con la parte fuori dall'asfalto: sterrato, polvere e saliscendi nel sud dell'isola.",
@@ -2099,7 +2098,6 @@ const ESPLORA_CATALOG = [
         { label: { it: "Tramonto, 3 ore", en: "Sunset, 3 hours", es: "Atardecer, 3 horas" },
           price: 180,
           duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-          included: ["transfer"],
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Lo stesso paesaggio con la luce della sera, e le soste per le foto quando il sole è basso.",
@@ -2109,7 +2107,6 @@ const ESPLORA_CATALOG = [
         { label: { it: "Completo, 4 ore", en: "Full tour, 4 hours", es: "Completo, 4 horas" },
           price: 180,
           duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
-          included: ["transfer"],
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Il giro lungo: il Parco Nazionale del Teide, un tratto vicino alla costa e la parte fuoristrada.",
@@ -2120,8 +2117,10 @@ const ESPLORA_CATALOG = [
         // un altro posto, non ha il ritiro in hotel e vuole 21 anni per
         // guidare. Le sue regole stanno qui dentro e non fra le note della
         // scheda, che direbbero "vale sempre"; `zone` dentro la variante fa
-        // cambiare da sola la riga "Punto di partenza", e `included` aggiunge
-        // l'attrezzatura senza promettere il transfer degli altri tre.
+        // cambiare da sola la riga "Punto di partenza". Il ritiro in hotel
+        // invece non e' fra le icone di nessuno dei quattro giri: ce l'hanno
+        // solo i tre di King Buggy, e un'icona dice "vale sempre". Sta nelle
+        // note, che possono dire su quali giri c'e' e su quale no.
         { label: { it: "Montagna su strada, 3 ore", en: "Mountain roads, 3 hours", es: "Montaña por carretera, 3 horas" },
           price: 180,
           duration: { it: "3 ore", en: "3 hours", es: "3 horas" },

@@ -7359,3 +7359,45 @@ Attrezzatura · Assicurazione · Transfer** (Offroad, Tramonto, Completo) e **Gu
 Carburante · Attrezzatura · Assicurazione** (Montagna su strada). Nessun errore in console,
 prezzi e totale invariati (€750 per un buggy di ogni tipo). `node controlla.js` → 0 errori,
 2 avvisi invariati. `CACHE_NAME` a `isla-v261`.
+
+---
+
+## v262 — il transfer esce dalle icone
+
+Ultima correzione del proprietario sulla scheda buggy: **il ritiro in hotel non va fra le
+icone**. Ce l'hanno i tre giri di King Buggy, non quello di Ultimate, e mettere `transfer`
+nell'`included` delle tre varianti — che era la soluzione della v261 — resta comunque una
+mezza verità: chi guarda il riquadro non sta confrontando quattro riquadri, sta leggendo
+quello del giro che ha davanti, e un'icona la legge come una promessa della scheda.
+
+Adesso il riquadro dice **Guida · Carburante · Attrezzatura · Assicurazione** su tutti e
+quattro i giri, cioè solo quello che è vero per tutti, e il ritiro sta **nella nota**, che
+è l'unico posto capace di dire *dove sì e dove no*:
+
+> Ritiro in hotel gratuito su Offroad, Tramonto e Completo; Montagna su strada parte da
+> Playa de las Américas, senza ritiro. Il punto e l'ora te li conferma l'ufficio.
+
+È la stessa regola del `CLAUDE.md` ("se una condizione vale solo per una variante non
+metterla fra le icone"), applicata un giro più stretto di come l'avevo applicata io.
+
+**Chiusi anche gli ultimi dubbi**: il limite di 60 km/h e la gabbia di sicurezza restano
+fuori, non si chiedono; gli orari di partenza si metteranno più avanti, una scheda alla
+volta come sempre.
+
+### Un errore preso al volo, che vale la pena raccontare
+
+Il primo tentativo di togliere `included: ["transfer"]` era una sostituzione su **tutto il
+file**: `included: ["transfer"],` è una riga comunissima, e ne avrebbe cancellate **17** —
+tre della scheda buggy e quattordici di altre schede, che il transfer ce l'hanno per
+davvero. Se ne è accorto solo perché lo script stampava quante righe toccava: `controlla.js`
+non se ne sarebbe accorto (nessun errore, il catalogo restava valido) e nemmeno il browser,
+guardando la scheda buggy. Rimesso tutto con `git checkout` e rifatto **dentro i confini
+della scheda**, ritagliando il testo fra `id: "buggy-volcano-4h"` e la scheda dopo.
+
+Regola per la prossima volta: una sostituzione su `esplora-catalog.js` va **limitata alla
+scheda**, e va fatta stampare quante righe cambia. Un file di catalogo è pieno di righe
+identiche che appartengono a schede diverse.
+
+`node controlla.js` → 0 errori, 2 avvisi invariati. Provato nel browser: il riquadro è
+uguale su tutti e quattro i giri, cambia solo il *Punto di partenza*. `CACHE_NAME` a
+`isla-v262`.

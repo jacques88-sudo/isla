@@ -7114,10 +7114,10 @@ fuoristrada: King Buggy il giro da 2 ore non ce l'ha.
 a funzionare. `tour.html?id=buggy-2-3h` e `?id=buggy-volcano-sunset` ora danno "Escursione
 non trovata", che è la risposta giusta e pulita — provate nel browser.
 
-**Il titolo è l'unica cosa che ho scelto io**: "Buggy Tour Tenerife". I titoli restano come
-li scrive Admiral, ma qui i tre titoli di partenza avevano tutti una durata dentro
-("4-Hour", "2 or 3-Hour") e nessuno poteva reggere una scheda che ne contiene tre. **Da
-confermare**: se l'ufficio ne ha uno suo, si cambia in una riga.
+**Il titolo l'ho scelto io e il proprietario l'ha approvato**: "Buggy Tour Tenerife". I
+titoli restano come li scrive Admiral, ma qui i tre titoli di partenza avevano tutti una
+durata dentro ("4-Hour", "2 or 3-Hour") e nessuno poteva reggere una scheda che ne contiene
+tre.
 
 **Le due foto non sono perse, sono finite in `gallery`.** Guardate una per una: la Teide
 (`buggy-volcano-4h.jpg`, il buggy fermo davanti al vulcano) resta `image` perché è quella
@@ -7155,11 +7155,18 @@ punto e l'ora li conferma l'ufficio, non li inventa il sito), la **base di Las C
 come `zone` al posto di "Tenerife Sud", i **buggy da 2, 4 e 6 posti** coi motori 800/1000 cc
 e Turbo, la **patente B** al posto di B1.
 
-Restato dalla fonte vecchia, perché King Buggy non lo contraddice: guida, carburante, snack
-e bevande fra le cose incluse, i passeggeri dai 7 anni e 1,20 m, casco/guanti/giacca/
-occhiali, la gravidanza, il pacchetto foto a pagamento, e `languages: LINGUE_TOUR`. **Da
-confermare con l'ufficio**: la lista "cosa è incluso" di King Buggy parla solo del ritiro in
-hotel, e l'età minima dei passeggeri non la scrive nessuno dei due.
+Restato dalla fonte vecchia, perché King Buggy non lo contraddice: i passeggeri dai 7 anni e
+1,20 m, casco/guanti/giacca/occhiali, la gravidanza, il pacchetto foto a pagamento, e
+`languages: LINGUE_TOUR`. L'età minima dei passeggeri non la scrive nessuno dei due:
+resta da confermare.
+
+**Snack e bevande sono usciti da "Cosa è incluso" (v259).** Erano l'unico punto in cui la
+fonte vecchia prometteva più di quello che il fornitore diretto dichiara — King Buggy elenca
+solo il ritiro gratuito in hotel — e il dubbio è durato meno di un'ora: **il proprietario ha
+confermato che sono inclusi guida e carburante, non snack e bevande**. Il riquadro ora dice
+Guida, Transfer, Carburante e basta. Vale la pena ricordarselo la prossima volta che si
+eredita una scheda da un rivenditore: quello che il rivenditore aggiunge nel suo pacchetto
+non è detto che lo dia l'operatore.
 
 Non copiati, come sempre: la politica di cancellazione (le nostre 24 ore valgono comunque),
 i testi promozionali e il resto del marketing. Le descrizioni sono riscritte da zero nelle
@@ -7186,15 +7193,18 @@ indicativo: €610". Salvata nella lista e riletta: "15/10/2026 · Tramonto, 3 o
 posti × 2". In elenco la categoria Avventura passa da 9 a 7 voci e il buggy è uno solo.
 
 `node controlla.js` → 0 errori, 2 avvisi invariati (opera-60 e masca-teide-cabrio-bus, non
-riguardano questo aggiornamento). `CACHE_NAME` alzato a `isla-v258`.
+riguardano questo aggiornamento). `CACHE_NAME` alzato a `isla-v258`, e a `isla-v259` con la
+correzione di snack e bevande qui sopra.
 
 ### Da confermare con l'ufficio
 
-- il **titolo** della scheda unita ("Buggy Tour Tenerife" l'ho scelto io);
 - se le **quattro tariffe** valgono davvero uguali su tutti e tre i giri, o se il giro da 4
   ore costa di più;
-- se **guida, carburante, snack e bevande** sono davvero inclusi da King Buggy;
 - l'**età minima** dei passeggeri (7 anni e 1,20 m vengono dalla fonte vecchia) e se sui
   buggy da 4 e 6 posti cambia qualcosa;
 - gli **orari di partenza** veri, che non sappiamo (restano le fasce segnaposto);
-- se pubblicare la **Spyder**, e con quale foto.
+- se pubblicare la **Spyder**, e con quale foto — e se anche lì guida e carburante sono
+  compresi (per ora la scheda nascosta dichiara solo il ritiro in hotel).
+
+**Già confermato dal proprietario** (9 settembre): il titolo "Buggy Tour Tenerife" va bene;
+guida e carburante sono inclusi, snack e bevande no.

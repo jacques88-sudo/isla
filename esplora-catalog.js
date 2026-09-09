@@ -2120,7 +2120,7 @@ const ESPLORA_CATALOG = [
       en: "At the wheel of a buggy through the landscapes of southern Tenerife: choose between the off-road route, the sunset ride and the long tour that reaches Teide National Park. Buggies with 2, 4 and 6 seats; driving requires a category B licence.",
       es: "Al volante de un buggy por los paisajes del sur de Tenerife: se elige entre el recorrido todoterreno, el del atardecer y el tour largo que llega al Parque Nacional del Teide. Buggies de 2, 4 y 6 plazas; conduce quien tenga el carné B."
     },
-    included: ["guide", "transfer", "fuel", "snack", "drinks"],
+    included: ["guide", "transfer", "fuel"],
     notes: [
       {
         it: "Il prezzo è del buggy e non a persona: 140 € per chi guida da solo, 200 € il buggy da 2 posti, 250 € quello da 4 e 360 € quello da 6. Nella richiesta si contano i buggy, non le persone.",

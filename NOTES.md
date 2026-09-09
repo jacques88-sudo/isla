@@ -7401,3 +7401,43 @@ identiche che appartengono a schede diverse.
 `node controlla.js` → 0 errori, 2 avvisi invariati. Provato nel browser: il riquadro è
 uguale su tutti e quattro i giri, cambia solo il *Punto di partenza*. `CACHE_NAME` a
 `isla-v262`.
+
+---
+
+## v263 — il tramonto è sul Teide, e i bambini salgono dai 3 anni
+
+Due correzioni del proprietario sulla scheda buggy appena consegnata. Vengono da lui, non
+dai fornitori: la fonte vecchia era imprecisa su tutte e due.
+
+**Il giro al tramonto va sul Teide, ed è tutto su strada.** La descrizione diceva "lo stesso
+paesaggio con la luce della sera", cioè lo stesso percorso del fuoristrada visto di sera —
+ed era sbagliato: si sale verso il Teide, senza uscire dall'asfalto. Riscritta la
+descrizione nelle tre lingue, e cambiata anche l'etichetta della variante da "Tramonto" a
+**"Tramonto sul Teide"**, che era l'unica riga della fila a non dire dove porta. La nota del
+ritiro nomina i giri uno per uno, quindi è stata aggiornata anche lì.
+
+Ne esce anche una scheda più leggibile: adesso i quattro giri si distinguono per **dove
+vanno e quando**, non per chi li fa. Il fuoristrada, il Teide al tramonto, il giro lungo che
+mette insieme i due, e la montagna di giorno tutta su strada.
+
+**I passeggeri salgono dai 3 anni**, non dai 7. La nota prima diceva "dai 7 anni e almeno
+1,20 m", con l'eccezione di Ultimate ("1,20 m sul 2 posti, dai 5 anni sul 4 posti"): era
+tutta roba ereditata dalle pagine dei fornitori, e il proprietario l'ha corretta in blocco.
+Adesso la nota è una riga sola.
+
+**Tolta anche l'altezza minima di 1,20 m**, e non è una dimenticanza: un bambino di 3 anni è
+alto sui 95 cm, quindi le due condizioni non potevano stare insieme. Fra le due ha vinto
+quella detta dal proprietario. Se sul buggy da 2 posti l'altezza conta ancora davvero, si
+rimette in una riga — chiesto.
+
+**`family` resta `false`.** Ora che si sale dai 3 anni la scheda potrebbe entrare nel filtro
+"Con bambini", ma la scelta di tenerci fuori quad e buggy è del proprietario e non la
+cambio da solo: è una domanda, non una conseguenza automatica.
+
+### Provato
+
+Nel browser vero, in italiano e spagnolo: la fila delle varianti mostra Offroad · **Tramonto
+sul Teide** · Completo · Montagna su strada, la descrizione del tramonto è quella nuova, e
+il riquadro Consigli ha cinque righe corte, quella dei passeggeri ridotta a una. Prezzi,
+totale e punto di partenza invariati. `node controlla.js` → 0 errori, 2 avvisi invariati.
+`CACHE_NAME` a `isla-v263`.

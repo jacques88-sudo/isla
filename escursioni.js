@@ -744,8 +744,16 @@ function initCatalog() {
   // "cat" accetta anche più categorie separate da virgola: l'assistente
   // manda qui combinazioni come "avventura-motori,sport-acquatici".
   // Lista vuota = nessun filtro di categoria.
+  //
+  // Gli id che non esistono si buttano via invece di filtrarci sopra: un id
+  // sconosciuto non toglie una categoria, le toglie **tutte**, e la pagina
+  // esce con zero attività e nessuna spiegazione. Succede per davvero, non
+  // solo con un indirizzo scritto male: "stelle" era una categoria vera fino
+  // a ieri, e chi si è salvato quel link — o Google, che l'ha indicizzato —
+  // ci arriva ancora. Meglio l'elenco intero che una pagina vuota.
   const state = {
-    categories: (params.get("cat") || "").split(",").filter(Boolean),
+    categories: (params.get("cat") || "").split(",")
+      .filter(id => CATEGORIES.some(c => c.id === id)),
     family: params.get("family") === "1",
     query: ""
   };

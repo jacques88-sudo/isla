@@ -8254,3 +8254,73 @@ I conti sono cambiati per via del merge, non per via di questa modifica: `main` 
 **70** schede, 64 pubblicate — e le sei da togliere erano esattamente le stesse sei.
 
 `CACHE_NAME` a `isla-v272`.
+
+---
+
+## v273 — le stelle entrano nel Teide, e la categoria da una voce sola sparisce
+
+Quattro modifiche chieste dal proprietario, che però sono una cosa sola: la categoria
+*Sotto le stelle* aveva **una scheda soltanto**, e una categoria con dentro una voce sola
+fa fare un giro in più per arrivare a una cosa — apri il riquadro, e dentro c'è un
+riquadro.
+
+| prima | dopo |
+|---|---|
+| `stargazing-group`, titolo "Stargazing Experience" | stesso id, titolo **"Teide by Night"** |
+| categoria `stelle` | categoria `teide-natura` |
+| `stelle` — "Sotto le stelle", 1 scheda | cancellata |
+| `teide-natura` — "Teide e natura", 4 schede | **"Natura, Teide e stelle"**, 5 schede |
+
+**L'id resta `stargazing-group`.** Cambia il titolo, non l'indirizzo: `tour.html?id=...` è
+quello che finisce nei preferiti e nei messaggi WhatsApp già mandati. Un id è un indirizzo,
+un titolo è quello che si legge — due cose diverse, e solo la seconda l'ha cambiata il
+proprietario.
+
+**Il titolo è uguale in tutte e tre le lingue**, come tutti i titoli di Admiral. Tradotti
+restano descrizione, zona e durata.
+
+Il nome nuovo della categoria è scritto **in un posto solo**, in `CATEGORIES` dentro
+`esplora-catalog.js`: `i18n.js` lo legge da lì per ogni `data-i18n-cat`, quindi il riquadro
+in home, il titolo della pagina elenco e il chip del filtro cambiano tutti insieme.
+
+### Le due cose che si sarebbero rotte in silenzio
+
+**L'assistente aveva una risposta "Stelle di notte"** che puntava a `cats: ["stelle"]`.
+Lasciata lì avrebbe portato a una lista vuota. Tolta la riga da `ASSIST_INTERESSI` e tolta
+la chiave `assist.int.stars` da `i18n.js`; `assist.int.nature` adesso dice "Natura, Teide e
+stelle", uguale al nome della categoria — la risposta e il posto dove porta si devono
+leggere uguali. Non ho rimesso una seconda riga che puntasse a `teide-natura`: due risposte
+che portano allo stesso posto sono una domanda mal fatta.
+
+**`escursioni.html?cat=stelle` usciva con zero attività.** Questo non l'aveva chiesto
+nessuno ed è saltato fuori dalla prova nel browser: `state.categories` prendeva l'id
+dall'indirizzo **senza controllare che esistesse**, e un id sconosciuto non toglie una
+categoria, le toglie tutte. `stelle` era un indirizzo vero fino a ieri: chi se l'è salvato,
+e Google che l'ha indicizzato, ci arrivano ancora. Adesso gli id che non stanno in
+`CATEGORIES` si buttano via prima di filtrare, e la pagina esce con l'elenco intero invece
+che vuota. Vale anche per un indirizzo scritto male, che prima faceva la stessa fine.
+
+### Rimasto indietro
+
+`assets/Cat-stelle.jpg` non la usa più nessuno: era la foto del riquadro della categoria.
+**Non l'ho cancellata** — non me l'ha chiesto, e se un domani le stelle tornano a essere una
+categoria loro serve di nuovo. Le foto in `assets/` restano 117.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati. 64 schede, tutte pubblicate.
+
+Nel browser vero, viewport telefono, **in tutte e tre le lingue** (la lingua sta in
+`localStorage` sotto `isla-lang`, non nell'indirizzo — la prima prova non cambiava niente e
+leggeva tre volte l'inglese):
+
+- i riquadri in home passano da 8 a **7**; "Natura, Teide e stelle" / "Nature, Teide and
+  stars" / "Naturaleza, Teide y estrellas" ci sono, "Sotto le stelle" e le sue traduzioni no
+- `?cat=teide-natura`: **5 schede**, con "Teide by Night" in elenco e il vecchio
+  "Stargazing Experience" sparito
+- `?cat=stelle`: **64 attività**, cioè l'elenco intero (prima della correzione: 0)
+- `tour.html?id=stargazing-group` si apre, col titolo nuovo
+- l'assistente ha sei risposte, nessuna porta più a `stelle`
+- nessun errore in console
+
+`CACHE_NAME` a `isla-v273`.

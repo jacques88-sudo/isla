@@ -341,15 +341,13 @@ const CATEGORIES = [
     name: { it: "Mare e barche", en: "Sea and boats", es: "Mar y barcos" },
     image: "Cat-mare.jpg"
   },
+  // La categoria "stelle" non c'e' piu': aveva una scheda sola, e una categoria
+  // con dentro un'unica voce fa fare un giro in piu' per arrivare a una cosa.
+  // La serata al Teide e' passata di qua, e il nome lo dice.
   {
     id: "teide-natura",
-    name: { it: "Teide e natura", en: "Teide and nature", es: "Teide y naturaleza" },
+    name: { it: "Natura, Teide e stelle", en: "Nature, Teide and stars", es: "Naturaleza, Teide y estrellas" },
     image: "Cat-teide.jpg"
-  },
-  {
-    id: "stelle",
-    name: { it: "Sotto le stelle", en: "Under the stars", es: "Bajo las estrellas" },
-    image: "Cat-stelle.jpg"
   },
   {
     id: "avventura-motori",
@@ -1887,13 +1885,17 @@ const ESPLORA_CATALOG = [
     // parla spagnolo solo il grande. Senza la lingua sul bottone un italiano
     // premerebbe "Gruppo grande" e lo scoprirebbe troppo tardi.
     id: "stargazing-group",
-    // Le parole che i due titoli di Admiral hanno in comune. I titoli interi
-    // erano "Stargazing - Large Group Experience" e "VIP Stargazing
-    // Experience": il "VIP" e' caduto insieme ai nomi dei fornitori, perche'
-    // due etichette che si confrontano su una cosa sola — quanti si e', e in
-    // che lingua — si leggono in un colpo d'occhio.
-    title: "Stargazing Experience",
-    category: "stelle",
+    // I titoli di Admiral erano "Stargazing - Large Group Experience" e "VIP
+    // Stargazing Experience": il "VIP" e' caduto insieme ai nomi dei fornitori,
+    // perche' due etichette che si confrontano su una cosa sola — quanti si e',
+    // e in che lingua — si leggono in un colpo d'occhio. Da "Stargazing
+    // Experience" a **"Teide by Night"** e' una scelta del proprietario: dice
+    // dove si va, non solo cosa si guarda, e adesso che la scheda sta fra le
+    // altre del Teide si legge in fila con loro. Uguale in tutte e tre le
+    // lingue, come tutti i titoli.
+    title: "Teide by Night",
+    // Era la sola scheda della categoria "stelle", che infatti non c'e' piu'.
+    category: "teide-natura",
     // Tutte e due le serate salgono nel Parco Nazionale: qui la riga non e'
     // piu' "Da definire" come quando del gruppo grande non sapevamo niente.
     zone: { it: "Parco Nazionale del Teide", en: "Teide National Park", es: "Parque Nacional del Teide" },

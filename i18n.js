@@ -327,10 +327,12 @@ const I18N = {
   "assist.yes":         { it: "Sì", en: "Yes", es: "Sí" },
   "assist.no":          { it: "No", en: "No", es: "No" },
   "assist.int.sea":     { it: "Mare e barche", en: "Sea and boats", es: "Mar y barcos" },
-  "assist.int.nature":  { it: "Teide e natura", en: "Teide and nature", es: "Teide y naturaleza" },
+  // Segue il nome della categoria in esplora-catalog.js: la risposta e il posto
+  // dove porta si devono leggere uguali. La riga "assist.int.stars" e' sparita
+  // con la categoria "stelle": adesso le stelle stanno qui dentro.
+  "assist.int.nature":  { it: "Natura, Teide e stelle", en: "Nature, Teide and stars", es: "Naturaleza, Teide y estrellas" },
   "assist.int.adrenaline": { it: "Adrenalina", en: "Adrenaline", es: "Adrenalina" },
   "assist.int.parks":   { it: "Parchi e spettacoli", en: "Parks and shows", es: "Parques y espectáculos" },
-  "assist.int.stars":   { it: "Stelle di notte", en: "Stars at night", es: "Estrellas de noche" },
   "assist.int.island":  { it: "Girare l'isola", en: "Tour the island", es: "Recorrer la isla" },
   "assist.int.unsure":  { it: "Non lo so ancora", en: "I'm not sure yet", es: "Todavía no lo sé" },
   "assist.q3":          { it: "Che budget hai in mente?", en: "What's your budget?", es: "¿Qué presupuesto tienes?" },

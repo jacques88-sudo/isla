@@ -7441,3 +7441,131 @@ sul Teide** · Completo · Montagna su strada, la descrizione del tramonto è qu
 il riquadro Consigli ha cinque righe corte, quella dei passeggeri ridotta a una. Prezzi,
 totale e punto di partenza invariati. `node controlla.js` → 0 errori, 2 avvisi invariati.
 `CACHE_NAME` a `isla-v263`.
+
+---
+
+## v264 — le due schede stargazing diventano una sola
+
+Stessa mossa dei buggy, su una coppia più semplice: `stargazing-group`
+("Stargazing – Large Group Experience", da 75 €) e `stargazing-vip`
+("VIP Stargazing Experience", 85 €) erano due schede uguali in tutto tranne il titolo, la
+foto e il prezzo. È la stessa serata sotto lo stesso cielo venduta in due formati:
+affiancate nella categoria "Sotto le stelle" sembravano due attività diverse, e la
+categoria aveva due voci quando ne ha una.
+
+Adesso è **una scheda con due varianti**, `Gruppo grande` e `VIP, gruppo ristretto`. Il
+catalogo passa da 74 schede a 73.
+
+### Quale id sopravvive
+
+`stargazing-group`, come per i buggy si è tenuto un id già esistente invece di
+inventarne uno nuovo. Ha vinto quello del gruppo grande perché la scheda unita porta il
+suo prezzo di partenza (75 €) e la sua foto. L'indirizzo `tour.html?id=stargazing-vip`
+**non risponde più**: mostra la pagina "Escursione non trovata", come era successo ai due
+buggy assorbiti. Non c'è un meccanismo di rimando dai vecchi id, e non è stato aggiunto
+adesso per due schede.
+
+### Il titolo
+
+`Stargazing Experience`, cioè le parole che i due titoli di Admiral hanno in comune. I
+titoli interi non si perdono: sono le **etichette delle due varianti**, che è il punto in
+cui il cliente sceglie fra i due formati. Stessa logica del buggy, dove i tre titoli sono
+diventati i tre percorsi.
+
+### I dati veri stanno tutti sulla variante VIP
+
+Del gruppo grande sappiamo ancora **solo il prezzo di partenza**. Della VIP invece è
+arrivata la scheda completa del fornitore, e ci sta tutta dentro la variante — che è
+esattamente il posto giusto, perché un dato scritto sulla scheda direbbe "vale per tutte e
+due":
+
+| dato | dove sta |
+|---|---|
+| `zone: Parco Nazionale del Teide` | variante VIP |
+| `duration: 5 ore` | variante VIP |
+| `days` (sei giorni, non il sabato) | variante VIP |
+| `times: ["17:00"]` | variante VIP |
+| `priceAdult: 85`, `priceChild: 80` | variante VIP |
+| `included: transfer, fingerfood, drinks, equipment, photos` | variante VIP |
+| `included: guide` | scheda: la guida ce l'hanno tutte e due |
+
+`zone` e `duration` della scheda restano **"Da definire"**: sono quelli del gruppo grande,
+che non li ha. Nel browser si vede il meccanismo funzionare — sul bottone "Gruppo grande"
+il riquadro "In breve" ha due righe, sul bottone VIP ne ha sette.
+
+### I prezzi: uno entra nel totale, l'altro no
+
+Sul gruppo grande si è scritto **`price: 75` e non `priceAdult`**. È il prezzo di partenza
+che ha dato Admiral, ma nessuno ha confermato che sia a testa: `price` da solo sul bottone
+si vede e nel totale non entra, che è proprio la distinzione per cui il campo esiste. Chi
+sceglie quella variante e conta le persone non vede nessun totale, e va bene così — meglio
+niente che un numero falso.
+
+Sulla VIP invece i due prezzi a persona sono veri e il totale si fa.
+
+### Le fasce d'età le ha date il proprietario
+
+Il listino del fornitore aveva il prezzo bambino (80 €) **senza dire fino a che età**. È
+una domanda, non una cosa da indovinare: chiesta, e la risposta è **2-11**, quindi
+`ages: { adult: "12+", child: "2-11" }`.
+
+**Niente `priceInfant`.** Sotto i 2 anni non sappiamo se pagano, se sono gratis o se non
+salgono proprio: il campo assente è il modo di dirlo. `priceInfant: 0` avrebbe promesso
+"gratis" a nome di un fornitore che non l'ha mai detto.
+
+Le fasce stanno sulla scheda e non sulla variante (`options` non le prevede), ma non fanno
+danno: compaiono **solo accanto alle righe del prezzo**, e quelle oggi le ha solo la VIP.
+
+### L'orario delle 17:00, e perché ha una nota accanto
+
+`times: ["17:00"]` è l'orario del fornitore, quindi va scritto. Ma è una serata che segue
+il **tramonto**, e a Tenerife il sole va giù alle 18:07 a dicembre e alle 21:00 a giugno:
+un'ora fissa tutto l'anno non può essere vera. La pagina del fornitore lo dice a mezza voce
+e la nota lo dice per intero — le 17:00 sono l'orario di riferimento, l'ora esatta la
+conferma l'ufficio. Il menu "A che ora" mostra solo 17:00, senza "Da concordare", che è
+quello che fa un `times` pieno.
+
+### Non copiato
+
+- **"Uno dei 5 cieli migliori al mondo", "83 costellazioni su 86", 5 stelle su 8
+  recensioni.** Sono i testi promozionali e i punteggi del fornitore. La descrizione è
+  riscritta da zero nelle tre lingue e descrive quello che succede (si sale sopra le
+  nuvole, prima il tramonto, poi il buio) senza superlativi presi in prestito
+- **La politica di cancellazione**, che non è nostra
+- **Le lingue.** Il fornitore dice "guida madrelingua inglese", cioè una lingua sola: un
+  menu `languages` con una voce sarebbe una domanda senza scelta. Sta nella descrizione
+  della variante, dove si legge
+- **Il preavviso.** Restano le 24 ore di Isla
+
+### Le foto sono restate quelle di prima
+
+`stargazing-group.jpg` come foto principale e `stargazing-vip.jpg` nella galleria: la
+scheda unita se le tiene tutte e due, come il buggy tiene le foto dei tre giri.
+
+Le **quattro foto nuove** mandate in chat (due lune al telescopio, due di gruppo col
+Dobson sotto le stelle) **non sono entrate**: dalla chat arriva il contenuto
+dell'immagine, non il file, e in `assets/` un file bisogna scriverlo. Vanno caricate nel
+repository e poi aggiunte a `gallery`. Le due di gruppo sono in verticale, quindi nella
+cornice 16:10 andranno ritagliate.
+
+Da scaricare dal sito del fornitore no: sono le sue foto, e le foto le assegna l'ufficio.
+Fra l'altro non sarebbero nemmeno queste — nelle foto mandate c'è un **Dobson Skywatcher**,
+mentre il fornitore della VIP scrive di un Celestron Evolution 8. Sono due serate diverse.
+
+### Provato
+
+Nel browser vero, in inglese e in italiano. La categoria "Sotto le stelle" ha **una voce
+sola**, "da 75 €". Sulla pagina di dettaglio i due bottoni mostrano 75 € e 85 €; premendo
+VIP cambiano insieme punto di partenza, durata, giorni, orari, le due righe del prezzo con
+le fasce fra parentesi e il riquadro "Cosa è incluso", che passa da una icona a sei. La
+finestra della richiesta mostra solo le 17:00. `tour.html?id=stargazing-vip` dà
+"Escursione non trovata", come previsto. Nessun errore in console.
+
+`node controlla.js` → 0 errori, 2 avvisi, gli stessi di prima. `CACHE_NAME` a `isla-v264`.
+
+### Da confermare con l'ufficio
+
+- Del **gruppo grande** manca tutto tranne il prezzo: dove si va, quanto dura, in che
+  giorni, a che ora, cosa comprende, e se i 75 € sono a persona
+- Le **quattro foto** da caricare in `assets/`
+- L'**età minima** della VIP, e se sotto i 2 anni si sale

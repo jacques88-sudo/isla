@@ -1987,39 +1987,91 @@ const ESPLORA_CATALOG = [
 
   // ─── STELLE E ASTRONOMIA ──────────────────────────────────────────────────
   {
+    // Una scheda sola per le due serate di stargazing: prima erano
+    // `stargazing-group` (gruppo grande, da 75 EUR) e `stargazing-vip` (gruppo
+    // ristretto, 85 EUR), uguali in tutto tranne il titolo, la foto e il
+    // prezzo. E' la stessa serata sotto lo stesso cielo venduta in due
+    // formati: affiancate in elenco sembravano due attivita' diverse. Come per
+    // i tre giri in buggy e per le due moto d'acqua, le due versioni diventano
+    // due varianti e il prezzo della scheda parte dalla piu' economica.
+    // Sopravvive l'id `stargazing-group`, che porta il prezzo di partenza e la
+    // foto della scheda unita; l'indirizzo `stargazing-vip` non risponde piu',
+    // come era successo ai due buggy assorbiti.
     id: "stargazing-group",
-    title: "Stargazing – Large Group Experience",
+    // Le parole che i due titoli di Admiral hanno in comune. Per intero
+    // ("Stargazing - Large Group Experience", "VIP Stargazing Experience") non
+    // si perdono: restano sulle etichette delle varianti, dove il cliente
+    // sceglie.
+    title: "Stargazing Experience",
     category: "stelle",
+    // Della versione in gruppo grande non sappiamo ancora ne' dove si va ne'
+    // quanto dura, quindi la scheda resta su "Da definire". La variante VIP,
+    // che invece li ha, se li scrive da sola e batte queste due righe.
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 75,
     priceAdult: 0,
     priceChild: 0,
+    // Fasce confermate dall'ufficio (10 settembre 2026). Sotto i 2 anni non
+    // sappiamo se e quanto pagano: `priceInfant` non si scrive, perche'
+    // assente non vuol dire gratis. Le fasce compaiono solo accanto alle righe
+    // del prezzo, e quelle oggi le ha solo la variante VIP.
+    ages: { adult: "12+", child: "2-11" },
     family: true,
-    desc: {
-      it: "Serata di osservazione delle stelle in gruppo, con guida.",
-      en: "An evening of stargazing in a group, with a guide.",
-      es: "Velada de observación de estrellas en grupo, con guía."
+    // I due formati della stessa serata. Il gruppo grande porta `price` e non
+    // `priceAdult`: 75 EUR e' il prezzo di partenza che ci ha dato Admiral, ma
+    // nessuno ha ancora confermato che sia a testa, e `price` da solo nel
+    // totale non entra. La VIP invece ha i due prezzi a persona veri, e il suo
+    // totale si fa.
+    options: {
+      label: { it: "Versione", en: "Version", es: "Versión" },
+      choices: [
+        { label: { it: "Gruppo grande", en: "Large group", es: "Grupo grande" },
+          price: 75,
+          desc: {
+            it: "La serata in gruppo numeroso, con la guida. Il giorno, l'ora e il punto di ritrovo te li conferma l'ufficio insieme alla richiesta.",
+            en: "The evening in a larger group, with a guide. The office confirms the day, the time and the meeting point together with your request.",
+            es: "La velada en grupo numeroso, con guía. La oficina te confirma el día, la hora y el punto de encuentro junto con la solicitud."
+          } },
+        { label: { it: "VIP, gruppo ristretto", en: "VIP, small group", es: "VIP, grupo reducido" },
+          priceAdult: 85,
+          priceChild: 80,
+          duration: { it: "5 ore", en: "5 hours", es: "5 horas" },
+          zone: { it: "Parco Nazionale del Teide", en: "Teide National Park", es: "Parque Nacional del Teide" },
+          // Tutti i giorni tranne il sabato: si scrivono i sei giorni, perche'
+          // il campo assente vorrebbe dire sette su sette.
+          days: ["dom", "lun", "mar", "mer", "gio", "ven"],
+          times: ["17:00"],
+          // Quello che questa versione ha **in piu'** rispetto alla scheda: la
+          // guida sta gia' sopra e vale per tutte e due.
+          included: ["transfer", "fingerfood", "drinks", "equipment", "photos"],
+          desc: {
+            it: "Al massimo 8 persone, con ritiro in hotel e minibus. Si sale sopra le nuvole per il tramonto, con tapas e vino, poi si resta al buio a osservare col telescopio. La guida racconta in inglese, e le foto della serata sono comprese.",
+            en: "Eight people at most, with hotel pickup and a minibus. You go up above the clouds for sunset, with tapas and wine, then stay out in the dark observing through the telescope. The guide speaks English, and the photos of the evening are included.",
+            es: "Como máximo 8 personas, con recogida en el hotel y minibús. Se sube por encima de las nubes para el atardecer, con tapas y vino, y luego se observa a oscuras con el telescopio. El guía cuenta en inglés, y las fotos de la velada están incluidas."
+          } }
+      ]
     },
+    desc: {
+      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due versioni fra cui scegliere — in gruppo grande, oppure la VIP a numero chiuso, con ritiro in hotel, tapas e vino.",
+      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two versions to choose from — in a larger group, or the VIP one with limited places, hotel pickup, tapas and wine.",
+      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos versiones a elegir: en grupo numeroso, o la VIP con plazas limitadas, recogida en el hotel, tapas y vino."
+    },
+    included: ["guide"],
+    notes: [
+      {
+        it: "Si sta fermi al buio e in quota: fa freddo anche d'estate. Sulla VIP giacca, cappello e guanti li dà il fornitore; sul gruppo grande conviene portarsi qualcosa di pesante.",
+        en: "You stand still in the dark, high up: it gets cold even in summer. On the VIP version the operator provides jacket, hat and gloves; on the large group it is worth bringing something warm.",
+        es: "Se está quieto a oscuras y en altura: hace frío incluso en verano. En la VIP el proveedor da chaqueta, gorro y guantes; en el grupo grande conviene llevar algo de abrigo."
+      },
+      {
+        it: "La partenza delle 17:00 della VIP segue il tramonto e si sposta con la stagione: l'ora esatta e il punto di ritiro te li conferma l'ufficio.",
+        en: "The 17:00 departure of the VIP version follows the sunset and moves with the season: the office confirms the exact time and the pickup point.",
+        es: "La salida de las 17:00 de la VIP sigue al atardecer y se mueve con la temporada: la oficina te confirma la hora exacta y el punto de recogida."
+      }
+    ],
     image: "stargazing-group.jpg",
-    published: true
-  },
-  {
-    id: "stargazing-vip",
-    title: "VIP Stargazing Experience",
-    category: "stelle",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 85,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Osservazione delle stelle in versione VIP, in gruppo ristretto.",
-      en: "Stargazing in its VIP version, in a small group.",
-      es: "Observación de estrellas en versión VIP, en grupo reducido."
-    },
-    image: "stargazing-vip.jpg",
+    gallery: ["stargazing-vip.jpg"],
     published: true
   },
 

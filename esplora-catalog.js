@@ -2106,6 +2106,155 @@ const ESPLORA_CATALOG = [
     gallery: ["stargazing-vip.jpg"],
     published: true
   },
+  {
+    // La terza serata di stargazing, e sta su una scheda sua invece che come
+    // terza variante di `stargazing-group`. Non e' una preferenza: tre campi
+    // che le servono **non esistono** dentro `options.choices[]`.
+    //   `languages` — qui il cliente sceglie davvero fra sei lingue, ma il
+    //      campo sta sulla scheda: sulla scheda unita offrirebbe le stesse sei
+    //      anche alla serata che si fa solo in italiano
+    //   `menus`     — vegetariano e vegano, che sulle altre due non si mangia
+    //   `itinerary` — le sei tappe, che sono solo sue
+    // E poi questa serata ha gia' le sue varianti, con e senza cena: una
+    // variante dentro una variante non si puo' fare.
+    id: "stargazing-cena",
+    // ⚠ TITOLO DA CONFERMARE: Admiral non ce l'ha ancora dato. Questo tiene la
+    // famiglia insieme con "Stargazing Experience" e dice cos'e', senza
+    // nominare l'operatore — che non si pubblica, come sull'altra scheda.
+    title: "Stargazing Dinner Experience",
+    category: "stelle",
+    zone: { it: "Parco Nazionale del Teide", en: "Teide National Park", es: "Parque Nacional del Teide" },
+    // Ritiro fra le 15:00 e le 16:00, rientro verso le 22:00 (le 23:00
+    // d'estate): sono sei o sette ore secondo la stagione, non una durata
+    // sola.
+    duration: { it: "6-7 ore", en: "6 to 7 hours", es: "6-7 horas" },
+    priceFrom: 63,
+    // I prezzi a persona veri stanno dentro le due varianti, perche' cambiano
+    // con la cena. Qui resta solo quello dei piu' piccoli, uguale su tutte e
+    // due.
+    priceAdult: 0,
+    priceChild: 0,
+    // Sotto i 4 anni non si paga: qui lo zero e' un prezzo vero e vuol dire
+    // gratis, al contrario dei due sopra. Le condizioni — in braccio a un
+    // adulto, pasto non compreso — stanno nelle note, dove si leggono prima
+    // di prenotare.
+    priceInfant: 0,
+    ages: { adult: "11+", child: "4-10", infant: "0-3" },
+    family: true,
+    // Le sei lingue le dichiara il fornitore una per una e il cliente ne
+    // sceglie una davvero: e' il caso per cui `languages` esiste. Lista sua e
+    // non LINGUE_TOUR, perche' qui c'e' anche l'olandese.
+    languages: ["English", "Español", "Deutsch", "Nederlands", "Français", "Italiano"],
+    menus: [
+      { it: "Vegetariano", en: "Vegetarian", es: "Vegetariano" },
+      { it: "Vegano", en: "Vegan", es: "Vegano" }
+    ],
+    // Una fascia sola, quella vera del fornitore, invece delle fasce
+    // segnaposto. Senza il campo il menu "A che ora" avrebbe offerto anche
+    // "09:00 - 10:00" su una serata che parte per il tramonto: le fasce
+    // segnaposto restano dove le partenze non le sappiamo, e qui la sappiamo.
+    // Che l'ora si sposti con la stagione e cambi da un hotel all'altro lo
+    // dice la nota, ed e' l'ufficio a confermarla.
+    // Niente `days`: si fa tutti i giorni, e sette su sette non e' una
+    // limitazione da mostrare.
+    times: ["15:00 - 16:00"],
+    options: {
+      label: { it: "Con o senza cena", en: "With or without dinner", es: "Con o sin cena" },
+      choices: [
+        { label: { it: "Senza cena", en: "Without dinner", es: "Sin cena" },
+          priceAdult: 63,
+          priceChild: 45,
+          desc: {
+            it: "Alla sosta di Guía de Isora aspetti col gruppo senza sederti a tavola: c'è il bar, e chi vuole ordina alla carta a parte. Il resto della serata è identico.",
+            en: "At the Guía de Isora stop you wait with the group without sitting down to eat: there is a bar, and anyone who wants can order à la carte at their own expense. The rest of the evening is identical.",
+            es: "En la parada de Guía de Isora esperas con el grupo sin sentarte a la mesa: hay bar, y quien quiera pide a la carta por su cuenta. El resto de la velada es idéntico."
+          } },
+        { label: { it: "Con cena canaria", en: "With Canarian dinner", es: "Con cena canaria" },
+          priceAdult: 78,
+          priceChild: 55,
+          included: ["lunch", "drinks"],
+          desc: {
+            it: "Cena di tre portate in un ristorante di paese: zuppa di zucca, mezzo pollo arrosto con patate e mojo canario, tiramisù, servita col vino. Vegetariano e vegano si chiedono nella richiesta.",
+            en: "A three-course dinner in a village restaurant: pumpkin soup, half a roast chicken with potatoes and Canarian mojo, tiramisu, served with wine. Vegetarian and vegan are asked for in the request.",
+            es: "Cena de tres platos en un restaurante de pueblo: crema de calabaza, medio pollo asado con papas y mojo canario, tiramisú, servida con vino. Vegetariano y vegano se piden en la solicitud."
+          } }
+      ]
+    },
+    desc: {
+      it: "Si parte dall'hotel nel pomeriggio, con una sosta in un ristorante di Guía de Isora dove si può cenare oppure solo aspettare. Poi si sale in tempo per il tramonto, che da lassù si guarda sopra il mare di nuvole, e si arriva a 2.250 metri dentro il Parco Nazionale per un'ora e mezza di telescopio: la Luna proiettata su uno schermo, le costellazioni indicate col laser e un astronomo che racconta. Rientro verso le 22.",
+      en: "You leave your hotel in the afternoon, with a stop at a restaurant in Guía de Isora where you can have dinner or simply wait. Then you climb in time for sunset, which up there you watch above a sea of clouds, and reach 2,250 metres inside the National Park for an hour and a half at the telescope: the Moon projected on a screen, the constellations picked out with a laser and an astronomer telling the story. Back around 22:00.",
+      es: "Se sale del hotel por la tarde, con una parada en un restaurante de Guía de Isora donde se puede cenar o simplemente esperar. Después se sube a tiempo para el atardecer, que desde allí se mira por encima del mar de nubes, y se llega a 2.250 metros dentro del Parque Nacional para una hora y media de telescopio: la Luna proyectada en una pantalla, las constelaciones señaladas con láser y un astrónomo que lo cuenta. Regreso hacia las 22.",
+    },
+    included: ["guide", "transfer", "equipment"],
+    itinerary: [
+      { text: {
+          it: "Il ritiro in hotel, nel pomeriggio: il pullman fa il giro degli hotel del sud.",
+          en: "Hotel pickup in the afternoon: the coach does a round of the southern hotels.",
+          es: "La recogida en el hotel, por la tarde: el autobús hace la ronda de los hoteles del sur."
+        } },
+      { text: {
+          it: "Sosta in un ristorante di Guía de Isora: chi ha preso la cena si siede a tavola, gli altri aspettano al bar.",
+          en: "A stop at a restaurant in Guía de Isora: those who booked dinner sit down, the others wait at the bar.",
+          es: "Parada en un restaurante de Guía de Isora: quien ha reservado cena se sienta a la mesa, los demás esperan en el bar."
+        } },
+      { text: {
+          it: "Si sale verso il Teide in tempo per il tramonto, che da quella quota si guarda sopra il mare di nuvole.",
+          en: "Up towards Teide in time for sunset, which from that height you watch above the sea of clouds.",
+          es: "Subida hacia el Teide a tiempo para el atardecer, que desde esa altura se mira por encima del mar de nubes."
+        } },
+      { text: {
+          it: "Ingresso nel Parco Nazionale, con un po' di tempo libero per due passi prima che faccia buio.",
+          en: "Into the National Park, with some free time for a short walk before it gets dark.",
+          es: "Entrada en el Parque Nacional, con algo de tiempo libre para un paseo antes de que oscurezca."
+        } },
+      { text: {
+          it: "Un'ora e mezza al telescopio a 2.250 metri: pianeti e oggetti del cielo profondo a turno, la Luna proiettata su uno schermo e le costellazioni indicate col puntatore laser.",
+          en: "An hour and a half at the telescope at 2,250 metres: planets and deep-sky objects in turn, the Moon projected on a screen and the constellations picked out with a laser pointer.",
+          es: "Una hora y media de telescopio a 2.250 metros: planetas y objetos de cielo profundo por turnos, la Luna proyectada en una pantalla y las constelaciones señaladas con puntero láser."
+        } },
+      { text: {
+          it: "Rientro in hotel verso le 22, un'ora più tardi nei mesi d'estate.",
+          en: "Back at the hotel around 22:00, an hour later in the summer months.",
+          es: "Regreso al hotel hacia las 22, una hora más tarde en los meses de verano."
+        } }
+    ],
+    notes: [
+      {
+        it: "Il ritiro è negli hotel del sud dell'isola, nel pomeriggio fra le 15:00 e le 16:00 circa: l'ora segue il tramonto e cambia con la stagione. Chi sta fuori zona raggiunge uno dei punti di ritrovo. L'ora e il punto te li conferma l'ufficio.",
+        en: "Pickup is at hotels in the south of the island, in the afternoon between roughly 15:00 and 16:00: the time follows the sunset and changes with the season. Anyone outside the area makes their way to one of the meeting points. The office confirms the time and the point.",
+        es: "La recogida es en los hoteles del sur de la isla, por la tarde entre las 15:00 y las 16:00 aproximadamente: la hora sigue al atardecer y cambia con la temporada. Quien esté fuera de zona se acerca a uno de los puntos de encuentro. La oficina te confirma la hora y el punto."
+      },
+      {
+        it: "Si osserva a 2.250 metri, senza funivia. Dopo il tramonto la temperatura crolla in fretta anche d'estate: giacca pesante, pantaloni lunghi e scarpe chiuse.",
+        en: "You observe at 2,250 metres, with no cable car. After sunset the temperature drops fast even in summer: a warm jacket, long trousers and closed shoes.",
+        es: "Se observa a 2.250 metros, sin teleférico. Después del atardecer la temperatura cae deprisa incluso en verano: chaqueta de abrigo, pantalón largo y zapatos cerrados."
+      },
+      {
+        it: "La guida parla più lingue e l'inglese c'è sempre; se il gruppo della tua lingua non si riempie può essere accorpato a un altro. Segnala la lingua nella richiesta e prenota per tempo.",
+        en: "The guide speaks several languages and English is always there; if the group for your language does not fill up it may be merged with another. Say which language in your request, and book early.",
+        es: "El guía habla varios idiomas y el inglés está siempre; si el grupo de tu idioma no se llena puede juntarse con otro. Indica el idioma en la solicitud y reserva con tiempo."
+      },
+      {
+        it: "Non serve essere allenati: durante l'osservazione si sta in piedi o seduti, come si preferisce. Il pullman non ha la toilette a bordo e i posti non sono assegnati; se qualcuno ha bisogno di una mano a salire, scrivilo nella richiesta.",
+        en: "No fitness required: during the session you can stand or sit as you prefer. The coach has no toilet on board and seats are not assigned; if anyone needs a hand getting on, say so in the request.",
+        es: "No hace falta estar en forma: durante la observación se puede estar de pie o sentado, como se prefiera. El autobús no tiene aseo a bordo y los asientos no están asignados; si alguien necesita ayuda para subir, escríbelo en la solicitud."
+      },
+      {
+        it: "Sotto i 4 anni non si paga, ma si viaggia in braccio a un adulto e il pasto non è compreso: se serve, portalo da casa.",
+        en: "Under 4s do not pay, but they travel on an adult's lap and no meal is provided: bring one from home if you need it.",
+        es: "Los menores de 4 años no pagan, pero viajan en brazos de un adulto y la comida no está incluida: si hace falta, llévala de casa."
+      },
+      {
+        it: "Le foto professionali della serata si possono comprare sul posto.",
+        en: "Professional photos of the evening can be bought on the spot.",
+        es: "Las fotos profesionales de la velada se pueden comprar allí mismo."
+      }
+    ],
+    // Foto ancora da caricare: in elenco esce il riquadro grigio, e
+    // `controlla.js` lo segnala finche' non arriva.
+    image: "",
+    published: true
+  },
 
   // ─── AVVENTURA E MOTORI ───────────────────────────────────────────────────
   {

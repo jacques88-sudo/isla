@@ -7790,3 +7790,120 @@ nuovo non era nel file ma nella frase scritta accanto: la prima volta niente, la
 la lingua e la capienza, la terza il tedesco. Vale la pena dirlo prima di rileggere 200
 righe di JSON in cerca di qualcosa che non c'è — e vale la pena chiedere, quando la frase
 di oggi contraddice quella di ieri.
+
+---
+
+## v269 — la terza serata di stargazing, e perché non è una terza variante
+
+Una pagina davvero nuova, questa volta: un tour serale sul Teide **con cena**, di un terzo
+operatore, in bus condiviso. Catalogo da 73 a 74 schede, `stelle` da una voce a due.
+
+### Perché una scheda nuova e non un terzo bottone
+
+La tentazione era ovvia — c'è già una scheda con due serate dentro, si aggiunge la terza.
+**Non si può, e non è una preferenza:** tre campi che a questa serata servono non esistono
+dentro `options.choices[]`.
+
+| campo | cosa fa qui | perché non sta nella variante |
+|---|---|---|
+| `languages` | sei lingue fra cui il cliente sceglie | sta sulla scheda: le offrirebbe anche alla serata che si fa solo in italiano |
+| `menus` | vegetariano e vegano | sulle altre due non si mangia |
+| `itinerary` | le sei tappe della serata | sono solo sue |
+
+E c'è un motivo che chiude il discorso: **questa serata ha già le sue varianti**, con e
+senza cena. Una variante dentro una variante non si può fare.
+
+Vale la pena tenerlo a mente come regola: una serata si unisce a un'altra finché le
+differenze stanno nei campi che la variante conosce (`zone`, `duration`, `days`, `times`,
+`priceAdult`, `priceChild`, `included`, `desc`). Appena servono `languages`, `menus`,
+`itinerary` o un secondo livello di scelta, la scheda dev'essere sua.
+
+### `languages` qui ci sta davvero, ed è la prima volta
+
+Sull'altra scheda `languages` è stato escluso apposta (v268): il campo sta sulla scheda e
+le due serate hanno lingue diverse. Qui invece è **una serata sola con sei lingue**, e il
+cliente ne sceglie una: la domanda "In che lingua" compare nella richiesta e la risposta
+finisce su WhatsApp. Lista sua e non `LINGUE_TOUR`, perché c'è anche **l'olandese**.
+
+La guida però è multilingue e i gruppi possono essere accorpati quando una lingua non si
+riempie: sta in una nota, perché è una cosa che il cliente deve sapere prima e non è una
+promessa che possiamo mantenere noi.
+
+### Le fasce d'orario segnaposto qui sarebbero state ridicole
+
+Senza `times` il menu "A che ora" avrebbe offerto **"09:00 - 10:00" su una serata che parte
+per il tramonto**. La regola del progetto dice che le fasce segnaposto restano *dove le
+partenze non le sappiamo* — qui la sappiamo: il fornitore scrive che il ritiro è fra le
+15:00 e le 16:00. Quindi `times: ["15:00 - 16:00"]`, una fascia sola e vera.
+
+Che l'ora si sposti col tramonto e cambi da un hotel all'altro lo dice la nota, ed è
+l'ufficio a confermarla. Se il proprietario preferisce rimettere le fasce, è una riga.
+
+### I prezzi, le fasce d'età e i neonati
+
+Due varianti, con e senza cena, coi prezzi a persona dentro:
+
+| | senza cena | con cena |
+|---|---|---|
+| adulti (11+) | 63 € | 78 € |
+| bambini (4-10) | 45 € | 55 € |
+| neonati (0-3) | gratis | gratis |
+
+`priceInfant: 0` e qui **lo zero vuol dire davvero gratis**, non "non lo sappiamo": è il
+fornitore a dirlo. Le condizioni stanno nella nota, dove si leggono prima di prenotare —
+sotto i 4 anni si viaggia **in braccio a un adulto** e **il pasto non è compreso**. Un
+"gratis" senza quelle due righe sarebbe una mezza verità.
+
+Le tre fasce combaciano: `0-3`, `4-10`, `11+`. `controlla.js` le ha verificate.
+
+### Non copiato, e qui c'era parecchio
+
+- **Gli sconti a scaglioni** (15 € da 4 persone, fino a 90 € da 24). Sono **sconti del
+  rivenditore**, non nostri: è esattamente il caso della regola sui prezzi barrati. Sul
+  sito va il prezzo pieno
+- **Il modello di pagamento** (acconto online, saldo alla guida): è il carrello di un altro
+  sito. Da Isla parte una *richiesta* su WhatsApp e il pagamento si concorda dopo
+- **La cancellazione a 48 ore**: non è nostra, restano le 24 ore di Isla
+- **4,3 su 33 recensioni** e la distribuzione delle stelle
+- **I nomi dell'operatore e del rivenditore**, i loro telefoni, la mail e l'indirizzo
+  dell'ufficio a Costa Adeje. I nomi non si pubblicano (v267), e i contatti di un altro su
+  una nostra scheda manderebbero il cliente a prenotare altrove
+- **L'avvertenza del rivenditore** sulla cena ("pasto semplice, non alta cucina"). Al suo
+  posto la scheda scrive **cosa si mangia** — zuppa di zucca, mezzo pollo arrosto con
+  patate e mojo, tiramisù, col vino — e lascia giudicare al cliente
+
+### Foto: non ce n'è
+
+`image: ""`, quindi in elenco esce il riquadro grigio e `controlla.js` lo segnala. Gli
+avvisi passano da 2 a 3, ed è il meccanismo che funziona: la scheda resta pubblicata e
+sott'occhio finché la foto non arriva. Le quattro foto mandate in chat continuano a non
+essere in `assets/`.
+
+### Il titolo è provvisorio
+
+`Stargazing Dinner Experience` **non è un titolo di Admiral**: non ce l'hanno ancora dato.
+Tiene insieme la famiglia con "Stargazing Experience", dice cos'è e non nomina l'operatore.
+Da sostituire appena arriva quello vero.
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo. Premendo i due bottoni cambiano i due
+prezzi e il riquadro "Cosa è incluso", che passa da tre icone a cinque (`lunch` e `drinks`
+si sommano). "In breve" mostra le sei lingue, le tre fasce d'età e "Neonati (0-3) Gratis".
+Il riquadro "Come si svolge" ha le sei tappe. Nella richiesta il menu "A che ora" ha solo
+"15:00 - 16:00", "In che lingua" ha le sei lingue e "Esigenze sul menu" ha vegetariano e
+vegano, tradotti in tutte e tre. Totali verificati con `calcolaTotale()`: 2 adulti + 1
+bambino fanno €171 senza cena e €211 con la cena, e il neonato non cambia il conto.
+Nessun errore in console.
+
+`node controlla.js` → 74 schede, 0 errori, 3 avvisi. `CACHE_NAME` a `isla-v269`.
+
+### Da confermare con l'ufficio
+
+- Il **titolo vero** di questa scheda
+- La **foto**
+- I **giorni** in cui si fa davvero e la **dimensione massima del gruppo**: il rivenditore
+  non li pubblica
+- I **punti di ritrovo** per chi sta fuori dalla zona di ritiro: esistono solo come mappa
+  Google, non come elenco
+- Se le **fasce d'orario** vanno bene come le ho messe (una sola, 15:00 - 16:00)

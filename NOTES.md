@@ -8636,3 +8636,76 @@ etichette e su tutte le spiegazioni.
 
 Restano aperte le voci di v276 (casco compreso, orario di apertura del circuito, biposto,
 Tanda 2-Drive accessibile), meno quella sulle gare, che è stata risolta qui.
+
+## v278 — le tre risposte dell'ufficio, e una che smentiva una deduzione
+
+Il proprietario ha risposto alle domande rimaste aperte in v276: il casco è compreso,
+l'orario è 10:00–20:30, e la Tanda 2-Drive **non è** il kart accessibile.
+
+### Il casco: `equipment` entra, e la nota cambia mestiere
+
+Era l'unica scheda avventura senza il riquadro "Cosa è incluso". Adesso c'è, con
+`included: ["equipment"]`.
+
+La nota è stata riscritta di conseguenza. Prima diceva solo "il casco si può portare da
+casa": era il massimo che si potesse dire senza inventare, ma letta da sola sembrava che il
+casco te lo dovessi procurare. Adesso dice **prima** che lo dà il circuito e **poi** che chi
+preferisce il suo può portarlo. Stesso fatto, ordine opposto, e cambia la risposta alla
+domanda che si fa davvero il cliente.
+
+### L'orario di apertura non è finito in una nota e basta
+
+10:00–20:30, tutti i giorni. Scriverlo in nota era la mossa minima, ma lasciava un problema
+che la nota non tocca: il menu **"A che ora"** della finestra della richiesta mostrava le
+fasce segnaposto di `ORARI_PREDEFINITI`, che sono sbagliate in tutte e due le direzioni —
+offrivano le **09:00**, a cancello chiuso, e si fermavano alle **17:00**, cioè prima delle
+ore in cui la pista è illuminata, che è una cosa che la descrizione promette.
+
+Quindi la scheda ha adesso i suoi `times`, cinque fasce da due ore che coprono l'orario
+vero: `10:00 - 12:00` … `18:00 - 20:30`.
+
+**Il prezzo da pagare è che "Da concordare" sparisce**, perché `escursioni.js` lo offre solo
+dove gli orari non ci sono o sono `[]`. Su una barca che parte alle 10:00 è giusto così; qui
+le tande sono libere e l'ora si concorda davvero, quindi "Da concordare" sarebbe stata
+onesta. Fra le due imprecisioni ho scelto questa: una fascia dentro l'orario di apertura è
+comunque una preferenza vera, mentre le 09:00 mandavano un cliente davanti al cancello
+chiuso. Segnalato al proprietario, si torna indietro togliendo una riga.
+
+### La Tanda 2-Drive: la deduzione era sbagliata
+
+In v276 lo scraping suggeriva che il 2-Drive (freno e acceleratore al volante) fosse il kart
+per chi ha problemi di mobilità, e la scheda del fornitore non lo scriveva. Bene aver
+aspettato: **non lo è**. L'ufficio dice che è il kart per i bambini che ancora non sanno
+guidare, e che **si sale dai 3 anni**, come passeggeri.
+
+Sarebbe stato un errore brutto da pubblicare: un'informazione di accessibilità falsa non è
+un dato sbagliato qualsiasi, è una persona che fa il viaggio fino a Fañabé per una cosa che
+non c'è. È la conferma della regola — su un dato di accessibilità, dedurre non basta mai.
+
+**Attenzione a un numero che non torna.** La scheda del fornitore per il biposto dice
+*altezza minima del copilota 1,20 m*; un bambino di 3 anni sta sui 95 cm. O il metro e venti
+vale per un'altra cosa, o in pratica il circuito guarda l'età. In scheda è finita **la
+versione dell'ufficio** (dai 3 anni, senza guidare), perché è chi vende a saperlo, ma la
+discrepanza è segnalata al proprietario ed è il caso che qualcuno la chieda al circuito.
+
+Nessun `priceInfant` e nessuna fascia `ages.infant`, nemmeno adesso: il biposto si paga
+**25 € a kart**, non a testa, quindi non c'è un prezzo a persona da scrivere per un bambino
+di tre anni. Le fasce `14+` e `7-13` continuano a dire chi **guida**, che è quello che i due
+prezzi a persona misurano.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati.
+
+Nel browser vero, viewport telefono, `tour.html?id=karting` in italiano: compare il riquadro
+"Cosa è incluso" con **Attrezzatura** e la sua icona davvero disegnata (contato l'`svg`, non
+solo il testo); in "In breve" c'è la riga "Orari" con le cinque fasce; nella finestra della
+richiesta il menu "A che ora" mostra quelle e **non** "Da concordare". Le quattro formule e i
+loro totali sono invariati. Nessun errore JS.
+
+`CACHE_NAME` a `isla-v278`.
+
+### Cosa resta aperto
+
+Una cosa sola: **il metro e venti del copilota contro i 3 anni**. Tutto il resto delle
+domande di v276 ha avuto risposta.

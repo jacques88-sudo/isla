@@ -2472,6 +2472,13 @@ const ESPLORA_CATALOG = [
     priceChild: 16,
     ages: { adult: "14+", child: "7-13" },
     family: true,
+    included: ["equipment"],
+    // Il circuito e' aperto 10:00-20:30 (ufficio, 10 settembre 2026) e le tande
+    // sono libere: non ci sono partenze, si arriva e si guida. Queste fasce
+    // restano quindi una preferenza, come le segnaposto, ma coprono l'orario
+    // vero: quelle generiche offrivano le 09:00 a cancello chiuso e si
+    // fermavano alle 17:00, cioe' prima delle ore in cui la pista e' illuminata.
+    times: ["10:00 - 12:00", "12:00 - 14:00", "14:00 - 16:00", "16:00 - 18:00", "18:00 - 20:30"],
     options: {
       label: { it: "Formula", en: "Format", es: "Fórmula" },
       choices: [
@@ -2533,9 +2540,9 @@ const ESPLORA_CATALOG = [
         es: "Karts de adulto a partir de los 14 años. Karts junior de 7 a 13 años, con al menos 1,30 m de altura. Los menores de 18 años deben ir acompañados de un adulto."
       },
       {
-        it: "Da 1,20 m di altezza i bambini possono salire sul kart biposto, guidato da un adulto maggiorenne. Il biposto costa 25 € a kart, non a persona.",
-        en: "From 1.20 m tall, children can ride in the two-seater kart, driven by an adult over 18. The two-seater costs €25 per kart, not per person.",
-        es: "A partir de 1,20 m de altura los niños pueden subir al kart biplaza, conducido por un adulto mayor de 18 años. El biplaza cuesta 25 € por kart, no por persona."
+        it: "Chi è troppo piccolo per guidare sale sul kart biposto come passeggero: si può dai 3 anni, con un adulto maggiorenne al volante. Costa 25 € a kart, non a persona.",
+        en: "Anyone too small to drive rides in the two-seater kart as a passenger: from age 3, with an adult over 18 at the wheel. It costs €25 per kart, not per person.",
+        es: "Quien es demasiado pequeño para conducir sube al kart biplaza como pasajero: se puede desde los 3 años, con un adulto mayor de 18 al volante. Cuesta 25 € por kart, no por persona."
       },
       {
         it: "Nel fine settimana i kart junior girano solo in due fasce, dalle 10:00 alle 11:00 e dalle 15:00 alle 16:00. Negli altri giorni non ci sono fasce riservate.",
@@ -2543,9 +2550,9 @@ const ESPLORA_CATALOG = [
         es: "Los fines de semana los karts junior ruedan solo en dos franjas, de 10:00 a 11:00 y de 15:00 a 16:00. El resto de días no hay franjas reservadas."
       },
       {
-        it: "Il casco si può portare da casa, purché sia un integrale da moto.",
-        en: "You may bring your own helmet, as long as it is a full-face motorcycle helmet.",
-        es: "Se puede traer el casco propio, siempre que sea un integral de moto."
+        it: "Il circuito è aperto tutti i giorni dalle 10:00 alle 20:30. Il casco lo dà il circuito; chi preferisce il suo può portarlo, purché sia un integrale da moto.",
+        en: "The track is open every day from 10:00 to 20:30. The helmet is provided; if you prefer your own you may bring it, as long as it is a full-face motorcycle helmet.",
+        es: "El circuito abre todos los días de 10:00 a 20:30. El casco lo da el circuito; quien prefiera el suyo puede traerlo, siempre que sea un integral de moto."
       },
       {
         it: "Le tre formule di gara si prenotano prima e hanno un gruppo minimo. Se siete meno, resta la tanda libera: quella non ha minimi.",

@@ -8544,3 +8544,95 @@ altre schede: non c'entra con questa modifica.
 - **Il biposto a 25 €**: è a kart, e va confermato che Admiral lo rivenda.
 - **La Tanda 2-Drive è il kart accessibile?** Se sì va detto sulla scheda.
 - **`family: true`** è una valutazione, non un dato del fornitore.
+
+## v277 — le gare del karting diventano quattro formule
+
+In v276 le nove gare erano rimaste fuori perché il sito dava due prezzi diversi su cinque
+formati su sei. Il proprietario ha confermato che **vale il carrello**, e ha chiesto di
+metterle come categorie separate.
+
+### Le sei gare diventano quattro bottoni, e non è una semplificazione
+
+Il fornitore le vende come **sei prodotti**: Mini, Gran Premio e Super Gran Premio, ognuno in
+versione adulto e in versione junior. Sulla scheda sono diventate **tre formule** più la
+tanda libera, perché le varianti di questo catalogo hanno già `priceAdult` e `priceChild`
+separati: la coppia adulto/junior dello stesso formato è esattamente quello che una variante
+sa dire da sola.
+
+| formula | adulto | bambino | durata adulto | durata bambino | minimo |
+|---|---|---|---|---|---|
+| Tanda libera | 22 | 16 | 10′ | 10′ | nessuno |
+| Mini Gran Premio | 45 | 35 | 20′ | 13′ | 8 adulti / 6 bambini |
+| Gran Premio | 60 | 50 | 30′ | 20′ | 8 adulti / 6 bambini |
+| Super Gran Premio | 70 | 70 | 40′ | 40′ | **8, in tutti e due i casi** |
+
+La tanda libera è la **prima** variante, quindi è quella premuta all'apertura: è la formula
+che fa la maggior parte dei clienti, ed è l'unica senza gruppo minimo. `priceFrom` resta 22 e
+combacia col bottone acceso.
+
+### Il dettaglio delle gare smentiva quello che stavo per scrivere
+
+La prima stesura delle varianti diceva "gara con classifica finale" su tutte e tre, e
+"servono 8 adulti o 6 bambini" anche sul Super. Rileggendo le descrizioni del fornitore nel
+JSON, due cose erano sbagliate:
+
+- **il Mini Gran Premio non ha il podio.** Adulto: 10 minuti di prove cronometrate e 10 di
+  gara, e basta. Il podio (e per i bambini il brindisi analcolico) c'è dal Gran Premio in su;
+- **il Super Gran Premio Junior vuole 8 bambini, non 6.** È l'unico formato junior che alza
+  il minimo, e allinearlo agli altri avrebbe mandato un gruppo di sei a chiedere una gara che
+  non gli fanno.
+
+È la stessa lezione di v276 in piccolo: il riassunto di un prodotto non è il prodotto. Qui
+per fortuna il file grezzo era già in casa.
+
+### Le durate stanno nella variante, con due numeri in una riga
+
+`duration: "30 minuti (20 per i bambini)"`. Non è elegantissimo, ma la riga "Durata" è una
+sola e i due pubblici hanno davvero due durate: scrivere solo quella dell'adulto vorrebbe
+dire promettere dieci minuti in più a un bambino. Dove le durate coincidono (tanda libera e
+Super Gran Premio) la parentesi non c'è.
+
+Il minimo di gruppo invece **non ha un campo**, e sta nella `desc` di ogni variante: sono le
+due righe che si aprono sotto il bottone premuto. Non è finito nell'etichetta perché
+"Mini Gran Premio (da 8 adulti o 6 bambini)" su un bottone da telefono non ci sta.
+
+La nota condivisa adesso dice solo che le gare si prenotano prima e hanno un minimo, e che
+**la tanda libera non ne ha**: è la risposta alla domanda che si fa chi è in due.
+
+### La finestra della richiesta non sa contare le persone minime
+
+Un cliente in due può scegliere "Gran Premio" e mandare la richiesta: la finestra non lo
+ferma, come farebbe invece `days` con un giorno sbagliato. È voluto — l'ufficio conferma
+entro 24 ore e in quel momento propone la tanda libera — ma se capita spesso, il posto dove
+sistemarlo è la finestra, non la scheda.
+
+### Non copiato
+
+**La gara gratis al festeggiato** dai 10 partecipanti in su (dai 9 per i bambini). È una
+promozione del circuito, e lo sconto di un altro non è nostro da regalare: se Admiral vuole
+farlo, è una decisione dell'ufficio, non un dato da ricopiare.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati.
+
+Nel browser vero, viewport telefono, `tour.html?id=karting`: quattro bottoni, e premendoli
+uno a uno la tabella "In breve" li segue — durata, prezzo adulto e prezzo bambino cambiano
+insieme al bottone. Il totale di 2 adulti + 1 bambino, verificato a mano su tutte e quattro:
+
+| formula | totale | conto |
+|---|---|---|
+| Tanda libera | 60 € | 2 × 22 + 16 |
+| Mini Gran Premio | 125 € | 2 × 45 + 35 |
+| Gran Premio | 170 € | 2 × 60 + 50 |
+| Super Gran Premio | 210 € | 2 × 70 + 70 |
+
+Nessun errore JS. Provato in italiano e in inglese; le tre lingue ci sono su tutte le
+etichette e su tutte le spiegazioni.
+
+`CACHE_NAME` a `isla-v277`.
+
+### Da confermare con l'ufficio
+
+Restano aperte le voci di v276 (casco compreso, orario di apertura del circuito, biposto,
+Tanda 2-Drive accessibile), meno quella sulle gare, che è stata risolta qui.

@@ -99,10 +99,12 @@ dall'esterno non si legge.
 Undici prodotti presi dalle schede WooCommerce: le tande, le nove gare, la
 promozione per residenti, i tre modelli di kart, indirizzo e dati del circuito.
 
-**Nella scheda `karting` ne sono finiti solo tre** — tanda adulto, tanda junior
-e biposto. Le gare no: su cinque formati su sei il sito dà **due prezzi
-diversi** (il carrello e la descrizione), e il file li tiene tutti e due
-(`precio` e `precio_en_descripcion`). Il perché sta in `NOTES.md`, alla voce
-v276.
+Su cinque formati di gara su sei il sito dà **due prezzi diversi**, e il file
+li tiene tutti e due (`precio`, dal carrello, e `precio_en_descripcion`). Il
+proprietario ha confermato il **10 settembre 2026 che vale il carrello**: 45,
+60, 70 per gli adulti, 35, 50, 70 per i bambini. Da lì le sei gare sono
+diventate le quattro formule della scheda (v277).
 
-Si riapre quando l'ufficio dice quale dei due prezzi vale.
+Non è finito in scheda quello che il file chiama `plaza_gratis_desde`: il
+circuito regala la gara al festeggiato dai 10 partecipanti in su, ma è la
+promozione di un altro e non è nostra da offrire.

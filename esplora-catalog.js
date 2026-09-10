@@ -2472,6 +2472,55 @@ const ESPLORA_CATALOG = [
     priceChild: 16,
     ages: { adult: "14+", child: "7-13" },
     family: true,
+    options: {
+      label: { it: "Formula", en: "Format", es: "Fórmula" },
+      choices: [
+        {
+          label: { it: "Tanda libera", en: "Open session", es: "Tanda libre" },
+          duration: { it: "10 minuti", en: "10 minutes", es: "10 minutos" },
+          priceAdult: 22,
+          priceChild: 16,
+          desc: {
+            it: "Una tanda da 10 minuti in pista. È l'unica formula senza gruppo minimo: si va anche in due.",
+            en: "One 10-minute session on track. It is the only format with no minimum group: two people are enough.",
+            es: "Una tanda de 10 minutos en pista. Es la única fórmula sin grupo mínimo: se puede ir incluso de dos."
+          }
+        },
+        {
+          label: { it: "Mini Gran Premio", en: "Mini Grand Prix", es: "Mini Gran Premio" },
+          duration: { it: "20 minuti (13 per i bambini)", en: "20 minutes (13 for children)", es: "20 minutos (13 para niños)" },
+          priceAdult: 45,
+          priceChild: 35,
+          desc: {
+            it: "Dieci minuti di prove cronometrate e dieci di gara. Per i bambini sono cinque di prove e otto di gara. Servono almeno 8 adulti, oppure 6 bambini.",
+            en: "Ten minutes of timed practice and ten of racing. For children it is five of practice and eight of racing. A minimum of 8 adults, or 6 children.",
+            es: "Diez minutos de entrenamientos cronometrados y diez de carrera. Para los niños son cinco de entrenamientos y ocho de carrera. Mínimo 8 adultos, o 6 niños."
+          }
+        },
+        {
+          label: { it: "Gran Premio", en: "Grand Prix", es: "Gran Premio" },
+          duration: { it: "30 minuti (20 per i bambini)", en: "30 minutes (20 for children)", es: "30 minutos (20 para niños)" },
+          priceAdult: 60,
+          priceChild: 50,
+          desc: {
+            it: "Prove libere, prove cronometrate e dieci minuti di gara, poi il podio — per i bambini con brindisi analcolico. La loro gara salta le prove libere. Servono almeno 8 adulti, oppure 6 bambini.",
+            en: "Free practice, timed practice and ten minutes of racing, then the podium — with an alcohol-free toast for the children. Their race skips the free practice. A minimum of 8 adults, or 6 children.",
+            es: "Entrenamientos libres, entrenamientos cronometrados y diez minutos de carrera, después el pódium, con cava infantil para los niños. Su carrera se salta los entrenamientos libres. Mínimo 8 adultos, o 6 niños."
+          }
+        },
+        {
+          label: { it: "Super Gran Premio", en: "Super Grand Prix", es: "Super Gran Premio" },
+          duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
+          priceAdult: 70,
+          priceChild: 70,
+          desc: {
+            it: "La formula lunga: prove libere, prove cronometrate e venti minuti di gara, poi il podio. Uguale per adulti e bambini, e qui il minimo è 8 in tutti e due i casi.",
+            en: "The long format: free practice, timed practice and twenty minutes of racing, then the podium. The same for adults and children, and here the minimum is 8 either way.",
+            es: "La fórmula larga: entrenamientos libres, entrenamientos cronometrados y veinte minutos de carrera, después el pódium. Igual para adultos y niños, y aquí el mínimo es 8 en ambos casos."
+          }
+        }
+      ]
+    },
     desc: {
       it: "Pista all'aperto di 857 metri a Fañabé, otto curve e impianto di illuminazione per girare anche dopo il tramonto. Si guida a tande da 10 minuti: kart da adulto dai 14 anni, kart junior dai 7, e un biposto per chi è ancora troppo piccolo per guidare da solo.",
       en: "An 857-metre outdoor track in Fañabé, eight corners and floodlights for driving after sunset too. You drive in 10-minute sessions: adult karts from 14, junior karts from 7, and a two-seater for anyone still too small to drive alone.",
@@ -2499,9 +2548,9 @@ const ESPLORA_CATALOG = [
         es: "Se puede traer el casco propio, siempre que sea un integral de moto."
       },
       {
-        it: "Oltre alle tande libere il circuito organizza gare con classifica, da 20 a 40 minuti in pista: servono almeno 8 adulti, oppure 6 bambini per la gara junior. Si prenotano prima e il prezzo si concorda con la richiesta.",
-        en: "Besides the open sessions the track runs races with a final classification, from 20 to 40 minutes on track: a minimum of 8 adults, or 6 children for the junior race. They are booked in advance and the price is agreed with your request.",
-        es: "Además de las tandas libres el circuito organiza carreras con clasificación, de 20 a 40 minutos en pista: mínimo 8 adultos, o 6 niños para la carrera junior. Se reservan antes y el precio se acuerda con la solicitud."
+        it: "Le tre formule di gara si prenotano prima e hanno un gruppo minimo. Se siete meno, resta la tanda libera: quella non ha minimi.",
+        en: "The three race formats are booked in advance and have a minimum group. If there are fewer of you, the open session is still there: that one has no minimum.",
+        es: "Las tres fórmulas de carrera se reservan antes y tienen un grupo mínimo. Si sois menos, queda la tanda libre: esa no tiene mínimo."
       }
     ],
     image: "karting.jpg",

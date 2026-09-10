@@ -2002,7 +2002,17 @@ const ESPLORA_CATALOG = [
       }
     ],
     image: "stargazing-group.jpg",
-    gallery: ["stargazing-vip.jpg"],
+    // La terza foto era `Cat-stelle.jpg`, il riquadro della categoria "stelle"
+    // che non esiste piu': rinominata col nome della scheda, perche' una foto
+    // qui dentro si chiama come la scheda che la usa, non come il posto da cui
+    // arriva. E' il Roque Cinchado sotto l'arco della Via Lattea, cioe' la
+    // sagoma che si riconosce del Parco Nazionale: adesso che il titolo dice
+    // "Teide by Night", quella e' la foto che lo fa vedere.
+    //
+    // In fila si leggono come una sera che passa: il tramonto sopra le nuvole,
+    // poi il buio con la Via Lattea. La copertina resta quella dei due
+    // telescopi.
+    gallery: ["stargazing-vip.jpg", "teide-by-night.jpg"],
     published: true
   },
 

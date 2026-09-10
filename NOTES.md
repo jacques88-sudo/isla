@@ -8324,3 +8324,52 @@ leggeva tre volte l'inglese):
 - nessun errore in console
 
 `CACHE_NAME` a `isla-v273`.
+
+---
+
+## v274 — la foto delle stelle entra nella scheda, e prende il nome della scheda
+
+`Cat-stelle.jpg` era il riquadro della categoria *Sotto le stelle*, che in v273 è sparita:
+la foto era rimasta in `assets/` senza che la usasse più nessuno. Il proprietario ha chiesto
+di metterla nella scheda, e ci sta bene.
+
+**Rinominata `teide-by-night.jpg`.** Una foto in `assets/` si chiama come la **scheda che la
+usa**, non come il posto da cui arriva: un `Cat-` davanti al nome vuol dire "riquadro di
+categoria", e chi legge il catalogo fra sei mesi si chiederebbe perché una scheda tira su
+un'immagine di categoria. `git mv`, così la cronologia della foto non si perde.
+
+**Messa in `gallery`, non al posto della copertina.** La richiesta era metterla nella
+scheda; cambiare la foto di apertura è un'altra decisione, e non l'ha chiesta nessuno.
+
+### Le tre foto guardate in fila
+
+Come per le icone: una alla volta sembrano tutte giuste, in fila si capisce l'ordine.
+
+| | cosa si vede |
+|---|---|
+| copertina — `stargazing-group.jpg` | due telescopi al buio sotto la Via Lattea |
+| `stargazing-vip.jpg` | un telescopio contro il tramonto, sopra le nuvole |
+| `teide-by-night.jpg` | il Roque Cinchado sotto l'arco della Via Lattea |
+
+Messa **dopo** il tramonto e non prima: in fila si leggono come una sera che passa — la luce
+che se ne va, poi il buio vero. È anche la più forte delle tre, e chiude meglio di come
+aprirebbe.
+
+Vale la pena dirlo: `teide-by-night.jpg` è il **Roque Cinchado**, cioè la sagoma che si
+riconosce del Parco Nazionale. Adesso che il titolo dice "Teide by Night", è l'unica delle
+tre che fa vedere il Teide invece che un telescopio. Se un domani il proprietario vuole
+**quella** in copertina basta scambiare `image` e la terza voce di `gallery` — segnalato a
+lui, non fatto di mia iniziativa.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati. Le foto in `assets/` restano **117**: la
+rinomina non ne aggiunge e non ne toglie.
+
+Nel browser vero, viewport telefono, su `tour.html?id=stargazing-group`: la fila delle
+miniature ne mostra **tre**, tutte e tre caricate davvero (1200×800, 1200×1200, 1200×800 —
+controllato `naturalWidth`, non solo che il tag ci fosse), nell'ordine copertina → tramonto →
+Via Lattea. Nessuna richiesta di immagine in errore. In elenco la copertina è ancora
+`stargazing-group.jpg`, invariata.
+
+`CACHE_NAME` a `isla-v274`.

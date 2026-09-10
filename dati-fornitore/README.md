@@ -86,3 +86,23 @@ di pubblicarli, e ricontrollati quando il fornitore cambia i giri.
 
 I **nomi degli hotel** e i **punti di raccolta**, invece, si possono usare
 subito: sono luoghi, non promesse.
+
+---
+
+## Non solo pick-up: `grezzo/karting-las-americas.json`
+
+Questa cartella è nata per gli orari di raccolta, ma qui dentro sta anche lo
+**scraping del sito di Karting Las Américas** (10 settembre 2026), mandato dal
+proprietario perché `www.kartingamericas.com` è bloccato dal proxy di rete e
+dall'esterno non si legge.
+
+Undici prodotti presi dalle schede WooCommerce: le tande, le nove gare, la
+promozione per residenti, i tre modelli di kart, indirizzo e dati del circuito.
+
+**Nella scheda `karting` ne sono finiti solo tre** — tanda adulto, tanda junior
+e biposto. Le gare no: su cinque formati su sei il sito dà **due prezzi
+diversi** (il carrello e la descrizione), e il file li tiene tutti e due
+(`precio` e `precio_en_descripcion`). Il perché sta in `NOTES.md`, alla voce
+v276.
+
+Si riapre quando l'ufficio dice quale dei due prezzi vale.

@@ -2465,17 +2465,45 @@ const ESPLORA_CATALOG = [
     id: "karting",
     title: "Karting",
     category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Fañabé",
     duration: { it: "10 minuti a tanda", en: "10-minute session", es: "10 minutos por tanda" },
-    priceFrom: 20,
-    priceAdult: 20,
-    priceChild: 15,
-    family: false,
+    priceFrom: 22,
+    priceAdult: 22,
+    priceChild: 16,
+    ages: { adult: "14+", child: "7-13" },
+    family: true,
     desc: {
-      it: "Giri in pista su kart, cronometrati.",
-      en: "Timed laps on a go-kart track.",
-      es: "Vueltas cronometradas en pista de karts."
+      it: "Pista all'aperto di 857 metri a Fañabé, otto curve e impianto di illuminazione per girare anche dopo il tramonto. Si guida a tande da 10 minuti: kart da adulto dai 14 anni, kart junior dai 7, e un biposto per chi è ancora troppo piccolo per guidare da solo.",
+      en: "An 857-metre outdoor track in Fañabé, eight corners and floodlights for driving after sunset too. You drive in 10-minute sessions: adult karts from 14, junior karts from 7, and a two-seater for anyone still too small to drive alone.",
+      es: "Circuito al aire libre de 857 metros en Fañabé, ocho curvas e iluminación para rodar también después del atardecer. Se conduce en tandas de 10 minutos: karts de adulto desde los 14 años, karts junior desde los 7 y un biplaza para quien todavía es pequeño para conducir solo."
     },
+    notes: [
+      {
+        it: "Kart da adulto dai 14 anni in su. Kart junior dai 7 ai 13 anni, con almeno 1,30 m di altezza. Chi non è maggiorenne deve essere accompagnato da un adulto.",
+        en: "Adult karts from age 14 up. Junior karts from 7 to 13, with a minimum height of 1.30 m. Anyone under 18 must be accompanied by an adult.",
+        es: "Karts de adulto a partir de los 14 años. Karts junior de 7 a 13 años, con al menos 1,30 m de altura. Los menores de 18 años deben ir acompañados de un adulto."
+      },
+      {
+        it: "Da 1,20 m di altezza i bambini possono salire sul kart biposto, guidato da un adulto maggiorenne. Il biposto costa 25 € a kart, non a persona.",
+        en: "From 1.20 m tall, children can ride in the two-seater kart, driven by an adult over 18. The two-seater costs €25 per kart, not per person.",
+        es: "A partir de 1,20 m de altura los niños pueden subir al kart biplaza, conducido por un adulto mayor de 18 años. El biplaza cuesta 25 € por kart, no por persona."
+      },
+      {
+        it: "Nel fine settimana i kart junior girano solo in due fasce, dalle 10:00 alle 11:00 e dalle 15:00 alle 16:00. Negli altri giorni non ci sono fasce riservate.",
+        en: "At weekends the junior karts run in two slots only, from 10:00 to 11:00 and from 15:00 to 16:00. On other days there are no set slots.",
+        es: "Los fines de semana los karts junior ruedan solo en dos franjas, de 10:00 a 11:00 y de 15:00 a 16:00. El resto de días no hay franjas reservadas."
+      },
+      {
+        it: "Il casco si può portare da casa, purché sia un integrale da moto.",
+        en: "You may bring your own helmet, as long as it is a full-face motorcycle helmet.",
+        es: "Se puede traer el casco propio, siempre que sea un integral de moto."
+      },
+      {
+        it: "Oltre alle tande libere il circuito organizza gare con classifica, da 20 a 40 minuti in pista: servono almeno 8 adulti, oppure 6 bambini per la gara junior. Si prenotano prima e il prezzo si concorda con la richiesta.",
+        en: "Besides the open sessions the track runs races with a final classification, from 20 to 40 minutes on track: a minimum of 8 adults, or 6 children for the junior race. They are booked in advance and the price is agreed with your request.",
+        es: "Además de las tandas libres el circuito organiza carreras con clasificación, de 20 a 40 minutos en pista: mínimo 8 adultos, o 6 niños para la carrera junior. Se reservan antes y el precio se acuerda con la solicitud."
+      }
+    ],
     image: "karting.jpg",
     published: true
   },

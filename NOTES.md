@@ -8192,3 +8192,65 @@ La categoria "Sotto le stelle" ha una voce sola. Nessun errore in console.
   niente sui neonati, e la richiesta con un neonato non fa il totale
 - I **giorni** e gli **orari di ritiro** dei quattro fornitori, se un giorno si vuole
   tornare a scriverli
+
+---
+
+## v272 — via le sei schede non pubblicate
+
+Il proprietario ha chiesto di togliere tutte le schede con `published: false`. Erano sei, e
+in elenco non le vedeva nessuno: adesso il catalogo è di 64 schede, **tutte pubblicate**.
+
+| scheda | categoria | perché era ferma |
+|---|---|---|
+| `spyder-costa-teide` | avventura-motori | aspettava una foto nostra: senza, in elenco usciva il riquadro grigio |
+| `quad-nord-puerto-cruz` | avventura-motori | idem |
+| `charter-privato` | tour-privati | segnaposto, `image: ""` e `priceFrom: null` |
+| `tour-privato-su-misura` | tour-privati | segnaposto |
+| `teide-privato-giorno` | tour-privati | segnaposto |
+| `teide-privato-notte` | tour-privati | segnaposto |
+
+Le prime due non erano segnaposto: avevano prezzi, durate, note e descrizioni vere,
+trascritte dal fornitore (King Buggy per la Spyder). Quei dati **non stanno in
+`dati-fornitore/`**, quindi l'unica copia che resta è nella cronologia git — si riprendono
+con `git show b48dd47:esplora-catalog.js` se un domani arriva la foto e le si vuole
+rimettere. Detto al proprietario prima di cancellarle; la scelta è sua.
+
+**Nessuna foto tolta da `assets/`**: tutte e sei avevano `image` vuoto o assente, e nessuna
+aveva una `gallery`. Le 117 foto restano quelle.
+
+**Nessun `privateOption` puntava a queste sei.** Controllato uno per uno: i cinque
+`privateOption` del catalogo vanno a `private-charter`, `whale-dolphin-3h-charter`,
+`luxury-catamaran-charter` e `skyline-cruiser-charter`, tutte vive. Niente in
+`PICKUP_TIMES`, niente in `i18n.js`.
+
+Le quattro schede private stavano **in fondo all'array**, le ultime quattro: cancellandole
+l'array finisce ora su `luxury-cruiser-charter` seguito da `];`. La virgola finale prima
+della parentesi resta, ed è JavaScript valido.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati. Schede 70 → 64, pubblicate 64 → 64
+(non cambia: erano tutte invisibili).
+
+Nel browser vero, viewport telefono: l'elenco mostra 64 schede e nessuna delle sei.
+*Avventura e motori* passa da 9 a **7**, *Tour privati* da 12 a **8**, e in tutte e due le
+categorie le schede rimaste si aprono (`quad-teide-adventure`, `buggy-volcano-4h`,
+`private-charter`, `opera-60-charter`). L'indirizzo di una scheda cancellata esce sulla
+pagina *not found*, come deve. Nessun errore in console.
+
+### Il merge con lo stargazing
+
+Mentre lavoravo `main` è andata avanti da sola: le sette versioni dello stargazing
+(v265-v271) sono arrivate dopo che avevo già staccato il branch, e la PR è uscita in
+conflitto. Risolto tirando dentro `main` con un merge, non riscrivendo la cronologia.
+
+Il conflitto vero era solo su due punti: `CACHE_NAME` (v265 mio contro v271 di `main`,
+risolto **v272**, più alto di tutti e due) e la coda di `NOTES.md`, dove le due parti
+avevano scritto una sezione ciascuna sulla stessa riga. Tenute tutte e due, quelle dello
+stargazing prima e la mia rinumerata da v265 a v272. `esplora-catalog.js` si è unito da
+solo: lo stargazing tocca la categoria `stelle`, io `avventura-motori` e `tour-privati`.
+
+I conti sono cambiati per via del merge, non per via di questa modifica: `main` era a
+**70** schede, 64 pubblicate — e le sei da togliere erano esattamente le stesse sei.
+
+`CACHE_NAME` a `isla-v272`.

@@ -1857,39 +1857,150 @@ const ESPLORA_CATALOG = [
 
   // ─── STELLE E ASTRONOMIA ──────────────────────────────────────────────────
   {
+    // Una scheda sola con dentro due serate, scelta del proprietario: prima
+    // erano due schede, `stargazing-group` e `stargazing-vip`. Sopravvive
+    // `stargazing-group`; l'indirizzo `stargazing-vip` non risponde piu', come
+    // era successo ai due buggy assorbiti.
+    //
+    // DIETRO OGNI BOTTONE C'E' PIU' DI UN FORNITORE, e i loro nomi non si
+    // pubblicano (proprietario, 10 settembre 2026). Admiral vende due
+    // prodotti a due prezzi suoi, e sceglie il fornitore in base alla lingua:
+    //   gruppo grande  75 EUR  pullman, inglese - spagnolo - tedesco - francese
+    //   gruppo piccolo 79 EUR  minivan, italiano - inglese - tedesco
+    // DUE FORNITORI PER BOTTONE, quattro in tutto. E' il motivo per cui
+    // nessuna delle due varianti ha `days`, `times` o una durata sola: quei
+    // campi descrivevano un fornitore solo, e lasciarli avrebbe raccontato la
+    // serata sbagliata a chi sceglie l'altra lingua.
+    // Stessa ragione per cui il gruppo grande **non ha un'icona per il cibo**:
+    // sulla serata in inglese, spagnolo e tedesco c'e' una cena in quota, su
+    // quella in francese un panino alla sosta. "Pasto incluso" sopra un panino
+    // promette troppo, "Snack" sopra una cena a tre portate svende: la
+    // differenza sta scritta nella descrizione, che si legge sotto il bottone
+    // appena lo premi. Fuori per lo stesso motivo `photos` (gratis su una,
+    // a pagamento sull'altra) e `drinks` (dichiarate solo da una).
+    //
+    // La lingua sta nelle etichette dei bottoni e non in `languages`: quel
+    // campo sta sulla scheda e non sulla variante, e offrirebbe le lingue di
+    // una serata anche all'altra. Adesso serve anche di piu' di prima, perche'
+    // le due liste **si sovrappongono in parte**: chi parla inglese o tedesco
+    // sceglie davvero fra le due, chi parla italiano ha solo il piccolo e chi
+    // parla spagnolo solo il grande. Senza la lingua sul bottone un italiano
+    // premerebbe "Gruppo grande" e lo scoprirebbe troppo tardi.
     id: "stargazing-group",
-    title: "Stargazing – Large Group Experience",
+    // Le parole che i due titoli di Admiral hanno in comune. I titoli interi
+    // erano "Stargazing - Large Group Experience" e "VIP Stargazing
+    // Experience": il "VIP" e' caduto insieme ai nomi dei fornitori, perche'
+    // due etichette che si confrontano su una cosa sola — quanti si e', e in
+    // che lingua — si leggono in un colpo d'occhio.
+    title: "Stargazing Experience",
     category: "stelle",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    // Tutte e due le serate salgono nel Parco Nazionale: qui la riga non e'
+    // piu' "Da definire" come quando del gruppo grande non sapevamo niente.
+    zone: { it: "Parco Nazionale del Teide", en: "Teide National Park", es: "Parque Nacional del Teide" },
+    // Da cinque a otto ore secondo la serata: il pullman e' il piu' lungo, il
+    // minivan il piu' corto. Ogni variante scrive poi la sua.
+    duration: { it: "5-8 ore", en: "5 to 8 hours", es: "5-8 horas" },
     priceFrom: 75,
+    // I prezzi a persona veri stanno dentro le varianti. Sono i prezzi di
+    // ADMIRAL, non quelli dei fornitori: 75 EUR il gruppo grande, 79 EUR il
+    // piccolo, e i bambini pagano 10 EUR in meno su tutte e due
+    // (proprietario, 10 settembre 2026).
     priceAdult: 0,
     priceChild: 0,
+    // Fasce del proprietario. Sotto i 2 anni non sappiamo se e quanto pagano:
+    // `priceInfant` non si scrive, perche' assente non vuol dire gratis.
+    ages: { adult: "12+", child: "2-11" },
     family: true,
-    desc: {
-      it: "Serata di osservazione delle stelle in gruppo, con guida.",
-      en: "An evening of stargazing in a group, with a guide.",
-      es: "Velada de observación de estrellas en grupo, con guía."
+    options: {
+      label: { it: "Serata", en: "Evening", es: "Velada" },
+      choices: [
+        { label: {
+            it: "Gruppo grande (inglese, spagnolo, tedesco, francese)",
+            en: "Big group (English, Spanish, German, French)",
+            es: "Grupo grande (inglés, español, alemán, francés)"
+          },
+          priceAdult: 75,
+          priceChild: 65,
+          duration: { it: "6-8 ore", en: "6 to 8 hours", es: "6-8 horas" },
+          included: ["transfer", "equipment"],
+          desc: {
+            it: "La serata in pullman, con ritiro in hotel nel sud dell'isola: si sale nel Parco Nazionale, si guarda il tramonto sopra le nuvole e poi si osserva col telescopio, con l'astronomo che racconta il cielo. Si mangia, ma non allo stesso modo: sulla serata in inglese, spagnolo e tedesco c'è una cena in quota, su quella in francese un panino alla sosta lungo la strada.",
+            en: "The coach evening, with hotel pickup in the south of the island: you climb into the National Park, watch the sunset above the clouds and then observe through the telescope, with an astronomer telling the story of the sky. You eat, but not in the same way: the English, Spanish and German evening has dinner up there, the French one a sandwich at the stop along the way.",
+            es: "La velada en autobús, con recogida en el hotel en el sur de la isla: se sube al Parque Nacional, se mira el atardecer por encima de las nubes y después se observa con el telescopio, con el astrónomo contando el cielo. Se come, pero no de la misma manera: la velada en inglés, español y alemán incluye una cena en altura, la de francés un bocadillo en la parada del camino."
+          } },
+        { label: {
+            it: "Gruppo piccolo (italiano, inglese, tedesco)",
+            en: "Small group (Italian, English, German)",
+            es: "Grupo pequeño (italiano, inglés, alemán)"
+          },
+          priceAdult: 79,
+          priceChild: 69,
+          duration: { it: "5-6 ore", en: "5 to 6 hours", es: "5-6 horas" },
+          included: ["transfer", "equipment", "fingerfood", "drinks", "photos"],
+          desc: {
+            it: "La serata in minivan, in gruppo ridotto: ritiro in hotel, tramonto sopra le nuvole con un picnic — qualcosa da mangiare e da bere all'aperto, non una cena a tavola — e poi il telescopio col buio. Sulla serata in inglese e tedesco si è al massimo in otto; quella in italiano è un gruppo un po' più largo, con l'astrofotografia e la foto della galassia da portare a casa.",
+            en: "The minivan evening, in a small group: hotel pickup, sunset above the clouds with a picnic — something to eat and drink outdoors, not a sit-down dinner — then the telescope once it is dark. The English and German evening is eight people at most; the Italian one is a slightly larger group, with live astrophotography and a photo of the galaxy to take home.",
+            es: "La velada en minivan, en grupo reducido: recogida en el hotel, atardecer por encima de las nubes con un picnic — algo de comer y beber al aire libre, no una cena de mesa — y después el telescopio ya de noche. La velada en inglés y alemán es de ocho personas como máximo; la de italiano es un grupo algo más amplio, con astrofotografía en directo y una foto de la galaxia para llevarse a casa."
+          } }
+      ]
     },
+    desc: {
+      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due serate fra cui scegliere, e cambia anche la lingua: il gruppo grande sale in pullman e si fa in inglese, spagnolo, tedesco e francese; il gruppo piccolo va in minivan, porta un picnic al tramonto e si fa in italiano, inglese e tedesco.",
+      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two evenings to choose from, and the language changes too: the big group goes up by coach and runs in English, Spanish, German and French; the small group travels by minivan, brings a picnic for sunset and runs in Italian, English and German.",
+      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir, y el idioma también cambia: el grupo grande sube en autobús y se hace en inglés, español, alemán y francés; el grupo pequeño va en minivan, lleva un picnic al atardecer y se hace en italiano, inglés y alemán."
+    },
+    included: ["guide"],
+    // Le tappe stanno sulla scheda e non sulla variante, perche' `itinerary`
+    // dentro `options.choices[]` non esiste. Sono scritte al livello che e'
+    // vero per tutti e quattro i fornitori: nessuna quota, nessuna durata
+    // della sessione, nessun nome di paese — quelli cambiavano da una serata
+    // all'altra e qui direbbero "vale sempre".
+    itinerary: [
+      { text: {
+          it: "Il ritiro in hotel, nel pomeriggio: si parte dagli hotel del sud dell'isola.",
+          en: "Hotel pickup in the afternoon: you set off from the hotels in the south of the island.",
+          es: "La recogida en el hotel, por la tarde: se sale desde los hoteles del sur de la isla."
+        } },
+      { text: {
+          it: "Si sale verso il Parco Nazionale, con la sosta per mangiare: una cena, un panino o un picnic secondo la serata scelta.",
+          en: "Up towards the National Park, with a stop to eat: dinner, a sandwich or a picnic depending on the evening you choose.",
+          es: "Se sube hacia el Parque Nacional, con la parada para comer: una cena, un bocadillo o un picnic según la velada elegida."
+        } },
+      { text: {
+          it: "Il tramonto visto dall'alto, sopra il mare di nuvole.",
+          en: "The sunset seen from up there, above the sea of clouds.",
+          es: "El atardecer visto desde arriba, por encima del mar de nubes."
+        } },
+      { text: {
+          it: "Col buio l'osservazione col telescopio: pianeti, costellazioni e la guida che racconta cosa si sta guardando.",
+          en: "Once it is dark, the telescope session: planets, constellations and the guide talking you through what you are looking at.",
+          es: "Ya de noche, la observación con telescopio: planetas, constelaciones y el guía contando lo que se está viendo."
+        } },
+      { text: {
+          it: "Rientro in hotel a sera.",
+          en: "Back at the hotel in the evening.",
+          es: "Regreso al hotel por la noche."
+        } }
+    ],
+    notes: [
+      {
+        it: "La lingua non è un extra da chiedere: è quello che decide la serata. In italiano si va solo col gruppo piccolo; in spagnolo e in francese solo col grande; in inglese e tedesco si può scegliere. Scrivi la tua nella richiesta e l'ufficio ti mette sulla partenza giusta.",
+        en: "The language is not an extra to ask for: it is what decides the evening. In Italian only the small group runs; in Spanish and French only the big one; in English and German you can choose. Say yours in the request and the office puts you on the right departure.",
+        es: "El idioma no es un extra que se pida: es lo que decide la velada. En italiano solo va el grupo pequeño; en español y en francés solo el grande; en inglés y alemán se puede elegir. Indica el tuyo en la solicitud y la oficina te pone en la salida correcta."
+      },
+      {
+        it: "Il ritiro è negli hotel del sud dell'isola, nel pomeriggio: l'ora segue il tramonto e si sposta con la stagione, quindi te la conferma l'ufficio insieme al punto di ritiro.",
+        en: "Pickup is at hotels in the south of the island, in the afternoon: the time follows the sunset and moves with the season, so the office confirms it together with the pickup point.",
+        es: "La recogida es en los hoteles del sur de la isla, por la tarde: la hora sigue al atardecer y se mueve con la temporada, así que te la confirma la oficina junto con el punto de recogida."
+      },
+      {
+        it: "Si sta fermi al buio e in quota: fa freddo anche d'estate. Su qualche serata giacca e cappello li presta il fornitore, ma non su tutte: vestiti a strati e mettiti scarpe chiuse.",
+        en: "You stand still in the dark, high up: it gets cold even in summer. On some evenings the operator lends a jacket and hat, but not on all of them: dress in layers and wear closed shoes.",
+        es: "Se está quieto a oscuras y en altura: hace frío incluso en verano. En algunas veladas el proveedor presta chaqueta y gorro, pero no en todas: vístete por capas y ponte zapatos cerrados."
+      }
+    ],
     image: "stargazing-group.jpg",
-    published: true
-  },
-  {
-    id: "stargazing-vip",
-    title: "VIP Stargazing Experience",
-    category: "stelle",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 85,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Osservazione delle stelle in versione VIP, in gruppo ristretto.",
-      en: "Stargazing in its VIP version, in a small group.",
-      es: "Observación de estrellas en versión VIP, en grupo reducido."
-    },
-    image: "stargazing-vip.jpg",
+    gallery: ["stargazing-vip.jpg"],
     published: true
   },
 

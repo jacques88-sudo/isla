@@ -7482,3 +7482,50 @@ errore: esce la pagina *Excursion not found*, che c'era già. In console nessun 
 parte i font di Google che qui non si scaricano (rete chiusa, non c'entra con la modifica).
 
 `CACHE_NAME` a `isla-v264`.
+
+---
+
+## v265 — via le sei schede non pubblicate
+
+Il proprietario ha chiesto di togliere tutte le schede con `published: false`. Erano sei, e
+in elenco non le vedeva nessuno: adesso il catalogo è di 65 schede, **tutte pubblicate**.
+
+| scheda | categoria | perché era ferma |
+|---|---|---|
+| `spyder-costa-teide` | avventura-motori | aspettava una foto nostra: senza, in elenco usciva il riquadro grigio |
+| `quad-nord-puerto-cruz` | avventura-motori | idem |
+| `charter-privato` | tour-privati | segnaposto, `image: ""` e `priceFrom: null` |
+| `tour-privato-su-misura` | tour-privati | segnaposto |
+| `teide-privato-giorno` | tour-privati | segnaposto |
+| `teide-privato-notte` | tour-privati | segnaposto |
+
+Le prime due non erano segnaposto: avevano prezzi, durate, note e descrizioni vere,
+trascritte dal fornitore (King Buggy per la Spyder). Quei dati **non stanno in
+`dati-fornitore/`**, quindi l'unica copia che resta è nella cronologia git — si riprendono
+con `git show b48dd47:esplora-catalog.js` se un domani arriva la foto e le si vuole
+rimettere. Detto al proprietario prima di cancellarle; la scelta è sua.
+
+**Nessuna foto tolta da `assets/`**: tutte e sei avevano `image` vuoto o assente, e nessuna
+aveva una `gallery`. Le 117 foto restano quelle.
+
+**Nessun `privateOption` puntava a queste sei.** Controllato uno per uno: i cinque
+`privateOption` del catalogo vanno a `private-charter`, `whale-dolphin-3h-charter`,
+`luxury-catamaran-charter` e `skyline-cruiser-charter`, tutte vive. Niente in
+`PICKUP_TIMES`, niente in `i18n.js`.
+
+Le quattro schede private stavano **in fondo all'array**, le ultime quattro: cancellandole
+l'array finisce ora su `luxury-cruiser-charter` seguito da `];`. La virgola finale prima
+della parentesi resta, ed è JavaScript valido.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati. Schede 71 → 65, pubblicate 65 → 65
+(non cambia: erano tutte invisibili).
+
+Nel browser vero, viewport telefono: l'elenco mostra 65 schede e nessuna delle sei.
+*Avventura e motori* passa da 9 a **7**, *Tour privati* da 12 a **8**, e in tutte e due le
+categorie le schede rimaste si aprono (`quad-teide-adventure`, `buggy-volcano-4h`,
+`private-charter`, `opera-60-charter`). L'indirizzo di una scheda cancellata esce sulla
+pagina *not found*, come deve. Nessun errore in console.
+
+`CACHE_NAME` a `isla-v265`.

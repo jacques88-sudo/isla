@@ -2042,48 +2042,6 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    // Il quarto prodotto di King Buggy non e' un buggy: e' una moto Spyder a
-    // tre ruote, due posti, con un giro suo di quattro ore fra la costa, la
-    // citta' e il Teide. Sta fuori dalla scheda dei buggy perche' il mezzo e'
-    // un altro, e resta `published: false` finche' non arriva una foto nostra:
-    // senza, in elenco uscirebbe il riquadro grigio.
-    id: "spyder-costa-teide",
-    title: "Spyder Costa & Teide",
-    category: "avventura-motori",
-    zone: "Las Chafiras",
-    duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
-    priceFrom: 200,
-    priceUnit: { it: "/moto", en: "/bike", es: "/moto" },
-    priceAdult: 0,
-    priceChild: 0,
-    family: false,
-    desc: {
-      it: "Quattro ore in moto Spyder, la tre ruote da due posti: la costa del sud, il passaggio in città e la salita nel Parco Nazionale del Teide.",
-      en: "Four hours on a Spyder, the two-seat three-wheeler: the southern coast, a stretch through town and the climb into Teide National Park.",
-      es: "Cuatro horas en moto Spyder, la de tres ruedas y dos plazas: la costa del sur, el paso por la ciudad y la subida al Parque Nacional del Teide."
-    },
-    included: ["transfer"],
-    notes: [
-      {
-        it: "Il prezzo è della moto e non a persona: 200 € la Spyder, che porta due persone.",
-        en: "The price is per bike, not per person: €200 for the Spyder, which carries two people.",
-        es: "El precio es por moto y no por persona: 200 € la Spyder, que lleva a dos personas."
-      },
-      {
-        it: "Motore 900 cc, due posti. Chi guida deve avere la patente B valida e portarla con sé.",
-        en: "900cc engine, two seats. Drivers must hold a valid category B licence and bring it with them.",
-        es: "Motor de 900 cc, dos plazas. Quien conduce debe tener el carné B válido y llevarlo consigo."
-      },
-      {
-        it: "Ritiro in hotel gratuito su Offroad, Tramonto e Completo; Montagna su strada parte da Playa de las Américas, senza ritiro. Il punto e l'ora te li conferma l'ufficio.",
-        en: "Free hotel pickup on the Off-road, Sunset and Full tours; Mountain roads starts from Playa de las Américas, with no pickup. The office confirms the point and the time.",
-        es: "Recogida en el hotel gratuita en Offroad, Atardecer y Completo; Montaña por carretera sale desde Playa de las Américas, sin recogida. El punto y la hora te los confirma la oficina."
-      }
-    ],
-    image: "",
-    published: false
-  },
-  {
     // Una scheda sola per le due partenze dello stesso safari: prima erano due
     // schede gemelle (`quad-teide-adventure` per la mattina e
     // `quad-teide-sunset` per il tramonto) identiche in tutto tranne la foto e
@@ -2196,65 +2154,6 @@ const ESPLORA_CATALOG = [
     image: "quad-teide-adventure.jpg",
     gallery: ["quad-teide-sunset.jpg"],
     published: true
-  },
-  {
-    id: "quad-nord-puerto-cruz",
-    title: {
-      it: "Quad e fuoristrada del Teide da Puerto de la Cruz",
-      en: "Teide Quad & Off-Road Tour from Puerto de la Cruz",
-      es: "Quad y todoterreno del Teide desde Puerto de la Cruz"
-    },
-    category: "avventura-motori",
-    zone: "Puerto de la Cruz",
-    duration: { it: "2 ore e mezza o 3 ore", en: "2.5 or 3 hours", es: "2,5 o 3 horas" },
-    priceFrom: 140,
-    priceAdult: 0,
-    priceChild: 0,
-    family: false,
-    options: {
-      label: { it: "Itinerario", en: "Route", es: "Itinerario" },
-      choices: [
-        {
-          label: { it: "Su strada, verso Izaña", en: "On-road, towards Izaña", es: "En carretera, hacia Izaña" },
-          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-          desc: {
-            it: "Tutto su asfalto: La Orotava, il Mirador Roque Bermejo e il Corral del Niño, a quasi 2.300 metri.",
-            en: "All on paved roads: La Orotava, the Roque Bermejo viewpoint and Corral del Niño, at almost 2,300 metres.",
-            es: "Todo sobre asfalto: La Orotava, el mirador Roque Bermejo y el Corral del Niño, a casi 2.300 metros."
-          }
-        },
-        {
-          label: { it: "Con tratto fuoristrada", en: "With an off-road stretch", es: "Con tramo todoterreno" },
-          duration: { it: "2 ore e mezza", en: "2.5 hours", es: "2,5 horas" },
-          desc: {
-            it: "Le spiagge naturali del nord, Los Realejos, 30 minuti di vero fuoristrada e il Mirador de El Lance, a circa 800 metri.",
-            en: "The natural beaches of the north, Los Realejos, 30 minutes of genuine off-roading and the El Lance viewpoint, at about 800 metres.",
-            es: "Las playas naturales del norte, Los Realejos, 30 minutos de todoterreno real y el mirador de El Lance, a unos 800 metros."
-          }
-        }
-      ]
-    },
-    desc: {
-      it: "Due itinerari in quad automatico con partenza da Puerto de la Cruz: uno tutto su strada verso i miradores del nord, l'altro con un tratto fuoristrada fra le spiagge naturali.",
-      en: "Two automatic quad routes departing from Puerto de la Cruz: one entirely on paved roads towards the northern viewpoints, the other with an off-road stretch among the natural beaches.",
-      es: "Dos itinerarios en quad automático con salida desde Puerto de la Cruz: uno totalmente en carretera hacia los miradores del norte, el otro con un tramo todoterreno entre las playas naturales."
-    },
-    included: ["guide", "snack", "drinks"],
-    notes: [
-      {
-        it: "Nessun prelievo: si parte dalla base del fornitore a Puerto de la Cruz. Chi guida deve avere almeno 18 anni e patente valida; i passeggeri salgono da 7 anni.",
-        en: "No pickup: departure is from the operator's base in Puerto de la Cruz. Drivers must be at least 18 with a valid licence; passengers from age 7.",
-        es: "Sin recogida: la salida es desde la base del proveedor en Puerto de la Cruz. Quien conduce debe tener al menos 18 años y carné válido; los pasajeros suben desde los 7 años."
-      },
-      {
-        it: "Peso massimo 175 kg per quad. Non consigliato in gravidanza o con problemi di schiena.",
-        en: "Maximum weight 175 kg per quad. Not recommended during pregnancy or with back problems.",
-        es: "Peso máximo 175 kg por quad. No recomendado durante el embarazo o con problemas de espalda."
-      }
-    ],
-    languages: LINGUE_TOUR,
-    image: "",
-    published: false
   },
   {
     id: "helicopter-tours",
@@ -4649,86 +4548,6 @@ const ESPLORA_CATALOG = [
     image: "luxury-cruiser.jpg",
     gallery: ["luxury-cruiser-2.jpg", "luxury-cruiser-3.jpg", "luxury-cruiser-4.jpg"],
     published: true
-  },
-  {
-    id: "charter-privato",
-    title: {
-      it: "Charter privato all inclusive",
-      en: "All-inclusive private charter",
-      es: "Chárter privado todo incluido"
-    },
-    category: "tour-privati",
-    zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Barca riservata al tuo gruppo, con percorso e orari concordati.",
-      en: "A boat reserved for your group, with the route and times agreed with you.",
-      es: "Barco reservado para tu grupo, con ruta y horarios acordados."
-    },
-    image: "",
-    published: false
-  },
-  {
-    id: "tour-privato-su-misura",
-    title: {
-      it: "Tour privato su misura",
-      en: "Tailor-made private tour",
-      es: "Tour privado a medida"
-    },
-    category: "tour-privati",
-    zone: { it: "Tutta l'isola", en: "All over the island", es: "Toda la isla" },
-    duration: { it: "Da concordare", en: "By arrangement", es: "A convenir" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Itinerario costruito su richiesta, con guida e mezzo dedicati.",
-      en: "An itinerary built on request, with a dedicated guide and vehicle.",
-      es: "Itinerario diseñado a petición, con guía y vehículo dedicados."
-    },
-    image: "",
-    published: false
-  },
-  {
-    id: "teide-privato-giorno",
-    title: { it: "Tour privato del Teide", en: "Private Teide Tour", es: "Tour privado del Teide" },
-    category: "tour-privati",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Il Parco Nazionale del Teide con guida e mezzo riservati al tuo gruppo.",
-      en: "Teide National Park with a guide and vehicle reserved for your group.",
-      es: "El Parque Nacional del Teide con guía y vehículo reservados para tu grupo."
-    },
-    image: "",
-    published: false
-  },
-  {
-    id: "teide-privato-notte",
-    title: { it: "Tour privato del Teide di notte", en: "Private Teide Tour by Night", es: "Tour privado del Teide de noche" },
-    category: "tour-privati",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Salita al Teide dopo il tramonto, con guida e mezzo solo per il tuo gruppo.",
-      en: "Up to Teide after sunset, with a guide and vehicle for your group alone.",
-      es: "Subida al Teide tras el atardecer, con guía y vehículo solo para tu grupo."
-    },
-    image: "",
-    published: false
   },
 ];
 

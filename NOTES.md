@@ -7670,3 +7670,64 @@ Nessun errore in console.
 - Le **quattro foto** da caricare in `assets/`
 - L'**età minima** della VIP, e se sotto i 2 anni si sale
 - Se il **12+** vale anche sul gruppo grande
+
+---
+
+## v267 — i nomi degli operatori non si pubblicano, e le due serate diventano piccolo e grande
+
+Due correzioni del proprietario sulla scheda stargazing, arrivate insieme.
+
+### I nomi restano fuori
+
+La scheda diceva "La serata di Andromeda". Fuori: **i nomi dei due operatori non si
+pubblicano**.
+
+È l'eccezione alla regola delle barche, e vale la pena capire perché non è una
+contraddizione. Sulle barche il nome vero ci va (Freebird, Royal Delfin, Shogun, Peter Pan)
+perché è **quello che il cliente ritrova al porto**: sale su uno scafo con quel nome
+scritto sopra, e se la scheda ne dicesse un altro sarebbe perso. Qui non c'è nessun nome
+scritto da nessuna parte: c'è un minibus che passa a prenderti e un telescopio in cima. Il
+nome dell'operatore non serve al cliente — serve solo a far vedere a un concorrente chi
+lavora con Admiral.
+
+Il catalogo adesso non contiene nessuno dei due nomi, verificato con `grep`.
+
+### Piccolo e grande, non "grande" e "VIP"
+
+Le due etichette erano `Gruppo grande (in italiano)` e `VIP, gruppo ristretto (in inglese)`.
+Adesso sono:
+
+- **Gruppo grande (in italiano)** — `Large group (in Italian)`, `Grupo grande (en italiano)`
+- **Gruppo piccolo (in inglese)** — `Small group (in English)`, `Grupo pequeño (en inglés)`
+
+Il "VIP" è caduto, e non è solo una parola in meno. **Due etichette si leggono in un colpo
+d'occhio solo se si confrontano su una cosa sola.** "Grande" contro "VIP" metteva a
+confronto due assi diversi — quanti si è da una parte, quanto è di lusso dall'altra — e non
+faceva scegliere nessuno. "Grande" contro "piccolo", con la lingua fra parentesi, è una
+domanda con due risposte: quanti volete essere, e in che lingua volete che vi raccontino il
+cielo.
+
+Il "VIP" era una parola di Admiral, presa dal titolo "VIP Stargazing Experience". Il titolo
+della scheda resta `Stargazing Experience`, le parole che i due titoli hanno in comune.
+
+La parola **VIP è sparita anche dalle note e dalle descrizioni**, dove diceva "sulla VIP
+giacca e guanti li dà il fornitore": adesso dice "sul gruppo piccolo". Le note nominano le
+varianti una per una, quindi quando un'etichetta cambia vanno riguardate tutte — è la
+stessa cosa già successa col buggy quando "Tramonto" è diventato "Tramonto sul Teide".
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo: i due bottoni escono "Gruppo grande (in
+italiano)" e "Gruppo piccolo (in inglese)" con le due lingue tradotte, e nessuna delle tre
+versioni nomina un operatore. Prezzi, totali, giorni, orari e compresi invariati rispetto a
+v266. Nessun errore in console.
+
+`node controlla.js` → 0 errori, 2 avvisi, i soliti. `CACHE_NAME` a `isla-v267`.
+
+### Da confermare con l'ufficio
+
+- Del **gruppo grande** manca ancora dove si va, quanto dura, in che giorni, a che ora,
+  cosa comprende e quanto pagano i bambini
+- Le **quattro foto** da caricare in `assets/`
+- L'**età minima** del gruppo piccolo, e se sotto i 2 anni si sale
+- Se il **12+** vale anche sul gruppo grande

@@ -1994,25 +1994,32 @@ const ESPLORA_CATALOG = [
     // due fornitori e due serate diverse — ma il cliente li sceglie uno
     // accanto all'altro, e in elenco due righe quasi identiche sotto "Sotto le
     // stelle" facevano solo confusione.
-    // Quello che le distingue davvero non e' il prezzo ma **la lingua**:
-    // Andromeda va in italiano con un gruppo fino a 16, la VIP va in inglese e
-    // al massimo in otto (proprietario, 10 settembre 2026). E' il dato che
-    // decide quale delle due prenotare, quindi sta nelle etichette dei
-    // bottoni, non solo nelle descrizioni: chi non parla nessuna delle due se
-    // ne accorge prima di mandare la richiesta, non dopo.
+    // Quello che le distingue davvero non e' il prezzo ma **la lingua**: il
+    // gruppo grande va in italiano e arriva a 16 persone, il gruppo piccolo va
+    // in inglese e si ferma a otto (proprietario, 10 settembre 2026). E' il
+    // dato che decide quale delle due prenotare, quindi sta nelle etichette
+    // dei bottoni, non solo nelle descrizioni: chi non parla nessuna delle due
+    // se ne accorge prima di mandare la richiesta, non dopo.
+    // I NOMI DEI DUE OPERATORI NON SI PUBBLICANO (proprietario, 10 settembre
+    // 2026) — al contrario delle barche, dove il nome vero e' proprio quello
+    // che il cliente ritrova al porto. Qui le due serate si distinguono per
+    // quanti si e' e in che lingua, e basta quello.
     // Sopravvive l'id `stargazing-group`, che porta il prezzo di partenza e la
     // foto della scheda unita; l'indirizzo `stargazing-vip` non risponde piu',
     // come era successo ai due buggy assorbiti.
     id: "stargazing-group",
-    // Le parole che i due titoli di Admiral hanno in comune. Per intero
-    // ("Stargazing - Large Group Experience", "VIP Stargazing Experience") non
-    // si perdono: restano sulle etichette delle varianti, dove il cliente
-    // sceglie.
+    // Le parole che i due titoli di Admiral hanno in comune. I titoli interi
+    // erano "Stargazing - Large Group Experience" e "VIP Stargazing
+    // Experience": il "VIP" e' caduto insieme ai nomi degli operatori, perche'
+    // due etichette che si confrontano su una cosa sola (quanti si e', e in
+    // che lingua) si leggono in un colpo d'occhio, mentre "gruppo grande"
+    // contro "VIP" mette a confronto due cose diverse e non fa scegliere
+    // nessuno.
     title: "Stargazing Experience",
     category: "stelle",
     // Della versione in gruppo grande non sappiamo ancora ne' dove si va ne'
-    // quanto dura, quindi la scheda resta su "Da definire". La variante VIP,
-    // che invece li ha, se li scrive da sola e batte queste due righe.
+    // quanto dura, quindi la scheda resta su "Da definire". Il gruppo piccolo,
+    // che invece li ha, se li scrive da solo e batte queste due righe.
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 75,
@@ -2024,7 +2031,7 @@ const ESPLORA_CATALOG = [
     // scrive, perche' assente non vuol dire gratis.
     // Stanno sulla scheda e non sulla variante, che non le prevede: il "(12+)"
     // si legge accanto a tutte e due le righe "Adulti". Il "(2-11)" invece si
-    // vede solo sulla VIP, che e' l'unica con un prezzo bambini.
+    // vede solo sul gruppo piccolo, l'unico con un prezzo bambini.
     ages: { adult: "12+", child: "2-11" },
     family: true,
     // Le due serate. I prezzi sono a persona su tutte e due (proprietario, 10
@@ -2045,14 +2052,14 @@ const ESPLORA_CATALOG = [
           // senza `priceChild` il totale non si fa appena la richiesta ne
           // conta uno: meglio nessun totale che uno che li conta gratis.
           desc: {
-            it: "La serata di Andromeda, raccontata in italiano, con un gruppo che arriva fino a 16 persone. Il giorno, l'ora e il punto di ritrovo te li conferma l'ufficio insieme alla richiesta.",
-            en: "The Andromeda evening, guided in Italian, with a group of up to 16 people. The office confirms the day, the time and the meeting point together with your request.",
-            es: "La velada de Andromeda, contada en italiano, con un grupo de hasta 16 personas. La oficina te confirma el día, la hora y el punto de encuentro junto con la solicitud."
+            it: "La serata raccontata in italiano, con un gruppo che arriva fino a 16 persone. Il giorno, l'ora e il punto di ritrovo te li conferma l'ufficio insieme alla richiesta.",
+            en: "The evening guided in Italian, with a group of up to 16 people. The office confirms the day, the time and the meeting point together with your request.",
+            es: "La velada contada en italiano, con un grupo de hasta 16 personas. La oficina te confirma el día, la hora y el punto de encuentro junto con la solicitud."
           } },
         { label: {
-            it: "VIP, gruppo ristretto (in inglese)",
-            en: "VIP, small group (in English)",
-            es: "VIP, grupo reducido (en inglés)"
+            it: "Gruppo piccolo (in inglese)",
+            en: "Small group (in English)",
+            es: "Grupo pequeño (en inglés)"
           },
           priceAdult: 85,
           priceChild: 80,
@@ -2073,21 +2080,21 @@ const ESPLORA_CATALOG = [
       ]
     },
     desc: {
-      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due serate fra cui scegliere, e la differenza è soprattutto la lingua: quella in gruppo grande è in italiano, fino a 16 persone; la VIP è in inglese, al massimo in otto, con ritiro in hotel, tapas e vino.",
-      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two evenings to choose from, and the difference is above all the language: the larger group is guided in Italian, up to 16 people; the VIP one is in English, eight at most, with hotel pickup, tapas and wine.",
-      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir, y la diferencia es sobre todo el idioma: la de grupo grande se cuenta en italiano, hasta 16 personas; la VIP es en inglés, ocho como máximo, con recogida en el hotel, tapas y vino."
+      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due serate fra cui scegliere, e la differenza è soprattutto la lingua: il gruppo grande è in italiano, fino a 16 persone; il gruppo piccolo è in inglese, al massimo in otto, con ritiro in hotel, tapas e vino.",
+      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two evenings to choose from, and the difference is above all the language: the big group is guided in Italian, up to 16 people; the small group is in English, eight at most, with hotel pickup, tapas and wine.",
+      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir, y la diferencia es sobre todo el idioma: el grupo grande se cuenta en italiano, hasta 16 personas; el grupo pequeño es en inglés, ocho como máximo, con recogida en el hotel, tapas y vino."
     },
     included: ["guide"],
     notes: [
       {
-        it: "Si sta fermi al buio e in quota: fa freddo anche d'estate. Sulla VIP giacca, cappello e guanti li dà il fornitore; sul gruppo grande conviene portarsi qualcosa di pesante.",
-        en: "You stand still in the dark, high up: it gets cold even in summer. On the VIP version the operator provides jacket, hat and gloves; on the large group it is worth bringing something warm.",
-        es: "Se está quieto a oscuras y en altura: hace frío incluso en verano. En la VIP el proveedor da chaqueta, gorro y guantes; en el grupo grande conviene llevar algo de abrigo."
+        it: "Si sta fermi al buio e in quota: fa freddo anche d'estate. Sul gruppo piccolo giacca, cappello e guanti li dà il fornitore; sul gruppo grande conviene portarsi qualcosa di pesante.",
+        en: "You stand still in the dark, high up: it gets cold even in summer. On the small group the operator provides jacket, hat and gloves; on the big group it is worth bringing something warm.",
+        es: "Se está quieto a oscuras y en altura: hace frío incluso en verano. En el grupo pequeño el proveedor da chaqueta, gorro y guantes; en el grupo grande conviene llevar algo de abrigo."
       },
       {
-        it: "La partenza delle 17:00 della VIP segue il tramonto e si sposta con la stagione: l'ora esatta e il punto di ritiro te li conferma l'ufficio.",
-        en: "The 17:00 departure of the VIP version follows the sunset and moves with the season: the office confirms the exact time and the pickup point.",
-        es: "La salida de las 17:00 de la VIP sigue al atardecer y se mueve con la temporada: la oficina te confirma la hora exacta y el punto de recogida."
+        it: "La partenza delle 17:00 del gruppo piccolo segue il tramonto e si sposta con la stagione: l'ora esatta e il punto di ritiro te li conferma l'ufficio.",
+        en: "The 17:00 departure of the small group follows the sunset and moves with the season: the office confirms the exact time and the pickup point.",
+        es: "La salida de las 17:00 del grupo pequeño sigue al atardecer y se mueve con la temporada: la oficina te confirma la hora exacta y el punto de recogida."
       }
     ],
     image: "stargazing-group.jpg",

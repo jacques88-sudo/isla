@@ -7907,3 +7907,140 @@ Nessun errore in console.
 - I **punti di ritrovo** per chi sta fuori dalla zona di ritiro: esistono solo come mappa
   Google, non come elenco
 - Se le **fasce d'orario** vanno bene come le ho messe (una sola, 15:00 - 16:00)
+
+---
+
+## v270 — quattro fornitori, due prodotti, e i prezzi diventano quelli di Admiral
+
+Sono arrivati in un colpo solo i dati di **quattro** fornitori di stargazing, e dal
+proprietario la regola per metterli in ordine. È il cambiamento più grosso della
+categoria "Sotto le stelle" da quando esiste.
+
+### La regola: Admiral vende due prodotti, non quattro tour
+
+| | prezzo adulti | bambini | mezzo | si mangia | lingue |
+|---|---|---|---|---|---|
+| **Gruppo grande** | 75 € | 65 € | pullman | **cena** | inglese, spagnolo, tedesco |
+| **Gruppo piccolo** | 79 € | 69 € | minivan | **picnic** | italiano, inglese, tedesco |
+
+Dietro ogni bottone c'è **più di un fornitore**, e Admiral sceglie quale in base alla
+lingua richiesta. I nomi non si pubblicano (v267), quindi la scheda non dice mai chi sono:
+dice quanti si è, in che lingua si va e cosa si mangia, che è tutto quello che serve a
+scegliere.
+
+Il **prezzo è di Admiral, non del fornitore**: i listini dei quattro andavano da 63 a 85 €
+e non c'entrano più niente. Ed è la prima volta che questa categoria ha dei prezzi veri —
+prima erano tutti `priceAdult: 0`, cioè "non ancora deciso".
+
+**I bambini pagano 10 € in meno**, regola del proprietario che vale su tutte e due.
+
+### Il numero che non tornava
+
+Il gruppo piccolo aveva il prezzo bambini a **80 €**, ereditato dal fornitore quando
+l'adulto era 85. Con l'adulto sceso a 79, **il bambino sarebbe costato più dell'adulto**.
+Chiesto invece di scegliere un numero a caso, e la risposta è stata la regola dei 10 € in
+meno, che risolve tutte e due le schede insieme.
+
+Vale la pena ricordarselo: quando cambia il prezzo adulti, il prezzo bambini **non è un
+campo indipendente** — va riguardato, se no si pubblica un listino che si contraddice.
+
+### Il gruppo piccolo perde `days`, `times` e la durata sola
+
+Prima il gruppo piccolo era un fornitore solo, e la variante portava i suoi dati: 5 ore,
+sei giorni senza il sabato, partenza alle 17:00. Adesso i fornitori sono **due**, uno per
+l'italiano e uno per inglese e tedesco, e quei tre campi descrivevano solo il secondo.
+
+Sono stati tolti. È la regola generale, scritta qui perché costa capirla una volta sola:
+**un campo su una variante vale per tutto quello che c'è dietro quella variante.** Se
+dietro c'è più di un fornitore, ci resta solo quello che è vero per tutti — qui `zone`
+(salgono tutti nel Parco Nazionale) e una durata a intervallo (5-6 ore).
+
+Nell'altro senso la scheda ci ha guadagnato: `zone` non è più "Da definire" ma **Parco
+Nazionale del Teide**, perché adesso è vero per tutte e due le serate.
+
+### Le lingue adesso si sovrappongono, e il bottone conta più di prima
+
+Fino a ieri le due liste erano separate (italiano da una parte, inglese e tedesco
+dall'altra). Adesso no:
+
+- **italiano** → solo gruppo piccolo
+- **spagnolo** → solo gruppo grande
+- **inglese e tedesco** → si sceglie
+
+Le etichette dei bottoni portano le tre lingue ciascuna, tradotte
+(`Gruppo grande (inglese, spagnolo, tedesco)`), e una nota dice a chiare lettere che la
+lingua è quello che decide la serata. Senza, un italiano premerebbe "Gruppo grande" e lo
+scoprirebbe troppo tardi.
+
+### La scheda "Dinner Experience" non aveva la cena
+
+Errore mio, e vale la pena raccontarlo. Il listino di quel fornitore descrive una **cena
+canaria a tre portate** — zuppa, mezzo pollo, tiramisù — e la scheda era stata costruita
+tutta intorno a quella: il titolo `Stargazing Dinner Experience`, la variante con e senza
+cena, il menu vegetariano e vegano.
+
+Il proprietario ha corretto: **su quella serata Admiral vende un panino.** La cena vera ce
+l'ha solo il gruppo grande. Quindi via il titolo, via la variante con e senza cena, via il
+menu, e le sei tappe adesso dicono "sosta in un ristorante lungo la strada, con il panino".
+
+**La lezione:** il listino del fornitore dice cosa il fornitore *può* fare, non cosa
+Admiral *ha comprato*. Su quattro fornitori la differenza è saltata fuori solo perché il
+proprietario ha guardato la tabella del cibo, non le schede una per una.
+
+La scheda si chiama adesso `Stargazing Bus Experience`, provvisorio come il precedente:
+dice il formato senza nominare il fornitore.
+
+### Le lingue di quella scheda vanno in nota, non in `languages`
+
+Il fornitore ne fa sei, francese compreso — ed è per il francese che Admiral la vende. Ma
+il proprietario ha deciso: **le lingue si scrivono in una nota, e poi è l'ufficio a
+spostare il cliente sulla serata giusta.**
+
+Quindi il campo `languages` è stato tolto, e con lui la domanda "In che lingua" nella
+richiesta. Il motivo è serio: quel menu prometterebbe che la scelta la fa il cliente da
+solo, sempre e comunque, mentre qui la fa l'ufficio guardando tre schede insieme. La nota
+invece dice le lingue **e** dice chi decide.
+
+### Cosa non è entrato
+
+- **Gli sconti a scaglioni** di un rivenditore (15 € da 4 persone, fino a 90 € da 24):
+  sconti di un altro, e adesso nemmeno il prezzo è più il suo
+- **Il modello di pagamento** con acconto online e saldo alla guida
+- **Le politiche di cancellazione** dei quattro, che vanno da 24 a 48 ore: resta il
+  preavviso di 24 ore di Isla
+- **Punteggi e recensioni**: 5 su 8, 4,3 su 33, 4,8 su 107, "oltre 2.500 recensioni a 5
+  stelle su Tripadvisor"
+- **I nomi dei quattro fornitori**, i loro telefoni, mail, indirizzi e il codice di turismo
+  attivo di uno di loro
+- **I 96 punti di ritiro** di un fornitore: sono i suoi, non quelli delle altre tre
+  serate, e la scheda copre più fornitori. Il punto lo conferma l'ufficio, come dice la
+  nota
+- **L'astrofotografia come titolo**: la foto della galassia da portare a casa è una cosa
+  sola di uno dei due fornitori del gruppo piccolo, e sta nella descrizione della
+  variante, dove si legge come "quella in italiano", non come una promessa della scheda
+
+### Provato
+
+Nel browser vero. Sulla scheda unita i due bottoni escono con le tre lingue ciascuno e
+premendoli cambiano durata, prezzi e compresi: il grande ha "Pasto incluso", il piccolo
+"Finger food". Totali verificati con `calcolaTotale()`: 2 adulti + 1 bambino fanno €215 sul
+grande e €227 sul piccolo, e il neonato non fa più il totale perché di lui non sappiamo
+niente. Sulla scheda del pullman: 75 € e 65 €, neonati gratis, "Snack" al posto di "Pasto
+incluso", le sei tappe col panino e la nota delle sei lingue. Nessun errore in console.
+
+`node controlla.js` → 74 schede, 0 errori, 3 avvisi. `CACHE_NAME` a `isla-v270`.
+
+### Da confermare con l'ufficio
+
+- I **titoli veri** delle due schede: `Stargazing Experience` e `Stargazing Bus Experience`
+  sono segnaposto
+- Le **foto**: la scheda del pullman non ne ha nessuna, e le quattro mandate in chat non
+  sono in `assets/`
+- Le **fasce d'età**: la scheda unita usa quelle di Admiral (12+ / 2-11), quella del
+  pullman quelle del fornitore (11+ / 4-10 / 0-3 gratis). Se valgono le stesse ovunque,
+  si riallineano
+- Se sotto i 2 anni si sale, sulla scheda unita
+- **Se la scheda del pullman deve restare separata**: adesso che costa 75 € come il gruppo
+  grande ed è anche lei un pullman, la differenza vera è il panino contro la cena e le sei
+  lingue. Se il proprietario la vuole dentro come terzo bottone, si perdono le sue sei
+  tappe — `itinerary` non esiste dentro le varianti

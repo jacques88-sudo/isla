@@ -7442,6 +7442,7 @@ il riquadro Consigli ha cinque righe corte, quella dei passeggeri ridotta a una.
 totale e punto di partenza invariati. `node controlla.js` → 0 errori, 2 avvisi invariati.
 `CACHE_NAME` a `isla-v263`.
 
+
 ---
 
 ## v264 — via i noleggi di barche, resta la Fiat 500
@@ -7482,3 +7483,712 @@ errore: esce la pagina *Excursion not found*, che c'era già. In console nessun 
 parte i font di Google che qui non si scaricano (rete chiusa, non c'entra con la modifica).
 
 `CACHE_NAME` a `isla-v264`.
+
+---
+
+## v265 — una scheda sola per le due serate di stargazing, coi prezzi veri
+
+`stargazing-group` ("Stargazing – Large Group Experience", 75 €) e `stargazing-vip`
+("VIP Stargazing Experience", 85 €) erano due schede col minimo indispensabile: un titolo,
+una foto, un prezzo di partenza e nient'altro. Sono arrivati i dati del fornitore della
+VIP (Active Tenerife) e, dal proprietario, i prezzi di tutte e due.
+
+Adesso sono **una scheda con due bottoni**: `Gruppo grande` e `VIP, gruppo ristretto`. Il
+catalogo passa da 74 schede a 73.
+
+### Non è lo stesso caso dei buggy, e vale la pena dirlo
+
+Coi quattro giri in buggy si erano unite quattro **varianti della stessa uscita**: stesso
+piazzale, stessi mezzi, cambia il percorso. Qui no — sono **due tour diversi**, con due
+fornitori, due gruppi e due serate che non si somigliano. Il proprietario lo ha detto a
+chiare lettere: il Freebird e il Royal Delfin sono due schede, non due varianti, anche se
+sono tutti e due catamarani che escono a vedere le stesse balene.
+
+E però la scheda unita la vuole lui lo stesso, ed è una scelta di **come si vende**, non di
+com'è fatto il prodotto: sotto "Sotto le stelle" c'erano due righe quasi identiche, e il
+cliente che vuole guardare le stelle vuole scegliere *fra* le due, non incontrarne una e
+non sapere che esiste l'altra. Le varianti fanno esattamente questo: due bottoni, e sotto
+tutto quello che cambia.
+
+**Da tenere a mente**: `options` non vuol dire per forza "stessa cosa in due misure". Qui
+sono due prodotti affiancati, e la parola che il cliente legge lo dice — l'etichetta del
+menu non è "Versione" ma **"Serata"** (`Evening`, `Velada`), e la descrizione dice "due
+serate fra cui scegliere", non "due versioni".
+
+### L'id che sopravvive
+
+`stargazing-group`, come per i buggy si tiene un id già esistente invece di inventarne uno
+nuovo. Porta il prezzo di partenza (75 €) e la foto della scheda unita.
+`tour.html?id=stargazing-vip` **non risponde più**: dà "Escursione non trovata". Non c'è un
+meccanismo di rimando dai vecchi id, e non è stato aggiunto adesso per una scheda.
+
+Il titolo è `Stargazing Experience`, cioè le parole che i due titoli di Admiral hanno in
+comune. I titoli interi non si perdono: sono le **etichette delle due varianti**, che è il
+punto in cui il cliente sceglie.
+
+### I prezzi sono a persona tutti e due, e il totale finalmente si fa
+
+È la novità che cambia di più. Prima tutte e due le schede avevano `priceAdult: 0`, che nel
+catalogo vuol dire "non ancora deciso": la riga del prezzo non compariva e il totale della
+richiesta non si faceva mai. Il proprietario ha confermato che **sono prezzi a testa**,
+quindi vanno in `priceAdult` e non in `price`.
+
+Il campo giusto conta: `price` sul bottone si vede ma **nel totale non entra**, perché può
+essere il prezzo di un mezzo o di un gruppo (il jet ski si paga a moto d'acqua). Con
+`priceAdult` il sito sa che sono euro a persona e li moltiplica.
+
+Come si comporta adesso, provato nel browser:
+
+| richiesta | Gruppo grande | VIP |
+|---|---|---|
+| 2 adulti | €150 | €170 |
+| 2 adulti + 1 bambino | *nessun totale* | €250 |
+| 2 adulti + 1 neonato | *nessun totale* | *nessun totale* |
+
+I "nessun totale" sono voluti e li fa già `calcolaTotale()`: del gruppo grande non
+sappiamo quanto pagano i bambini, e dei neonati non sappiamo niente su nessuna delle due.
+Meglio nessun totale che uno che li conta gratis.
+
+### Le fasce d'età, e il buco sotto i 2 anni
+
+Il listino del fornitore aveva il prezzo bambino (80 €) **senza dire fino a che età**. È
+una domanda, non una cosa da indovinare: chiesta, e la risposta del proprietario è
+**2-11**. Quindi `ages: { adult: "12+", child: "2-11" }`.
+
+**Niente `priceInfant`.** Sotto i 2 anni non sappiamo se pagano, se è gratis o se non si
+sale proprio: il campo assente è il modo di dirlo, e `priceInfant: 0` avrebbe promesso
+"gratis" a nome di un fornitore che non l'ha mai detto.
+
+Le fasce stanno **sulla scheda e non sulla variante**, perché `options` non le prevede.
+Conseguenza da sapere: il `(12+)` si legge accanto a tutte e due le righe "Adulti", quindi
+lo si sta dando per buono anche sul gruppo grande, dove nessuno l'ha confermato. È un
+rischio piccolo — 12 anni è il confine adulto quasi ovunque, e la riga bambini del gruppo
+grande non esiste — ma è una cosa data per scontata, non un dato.
+
+### Cosa cambia premendo il bottone VIP
+
+`zone` Parco Nazionale del Teide · `duration` 5 ore · `days` i sei giorni senza il sabato ·
+`times: ["17:00"]` · le due righe del prezzo con le fasce · e il riquadro "Cosa è incluso",
+che passa da una icona a sei (`transfer`, `fingerfood`, `drinks`, `equipment`, `photos` si
+sommano a `guide`, che sta sulla scheda perché ce l'hanno tutte e due).
+
+Anche il menu "A che ora" nella finestra della richiesta cambia da solo: sul gruppo grande
+restano le fasce segnaposto più "Da concordare", sulla VIP c'è solo `17:00`.
+
+**Le 17:00 hanno una nota accanto, e ci vuole.** È l'orario del fornitore, quindi va
+scritto — ma è una serata che segue il **tramonto**, e a Tenerife il sole va giù alle 18:07
+a dicembre e alle 21:00 a giugno. Un'ora fissa tutto l'anno non può essere vera: la nota
+dice che è l'orario di riferimento e che l'ora esatta la conferma l'ufficio.
+
+### Non copiato dal fornitore
+
+- **"Uno dei 5 cieli migliori al mondo", "83 costellazioni su 86", 5 stelle su 8
+  recensioni.** Testi promozionali e punteggi. Le descrizioni sono riscritte da zero nelle
+  tre lingue e raccontano quello che succede — si sale sopra le nuvole, prima il tramonto,
+  poi il buio — senza superlativi presi in prestito
+- **La politica di cancellazione**, che non è nostra. Restano le 24 ore di Isla
+- **Le lingue.** Il fornitore dice "guida madrelingua inglese", cioè una lingua sola: un
+  menu `languages` con una voce sarebbe una domanda senza scelta. Sta nella descrizione
+  della variante, dove si legge
+- **Il prezzo della versione privata** (520 €) e quello del self-drive: sono altri due
+  prodotti, e finché non li vende Admiral non entrano
+
+### Le foto: sono ancora le due di prima
+
+`stargazing-group.jpg` come foto principale e `stargazing-vip.jpg` nella galleria — la
+scheda unita se le tiene tutte e due, come il buggy tiene le foto dei tre giri.
+
+Le **quattro foto mandate in chat** (due lune al telescopio, due di gruppo col Dobson sotto
+le stelle) **non sono in `assets/`**: la cartella ne ha 120 e quelle non ci sono, né sul
+branch né su `main`. Vale quello già scritto per le 13 foto di agosto — dalla chat arriva
+il contenuto dell'immagine, non il file, e un file in `assets/` bisogna scriverlo. Vanno
+caricate nel repository, e poi si aggiungono a `gallery`. Le due di gruppo sono verticali,
+quindi nella cornice 16:10 andranno ritagliate.
+
+Un dettaglio da tenere a mente quando si assegnano: nelle foto mandate c'è un **Dobson
+Skywatcher**, mentre il fornitore della VIP scrive di un **Celestron Evolution 8**. Non
+sono la stessa serata, e la foto sbagliata sulla scheda sbagliata è già successa.
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo. La categoria "Sotto le stelle" ha una
+voce sola, "da 75 €". Premendo i due bottoni cambiano insieme punto di partenza, durata,
+giorni, orari, righe del prezzo e icone dei compresi. I giorni in spagnolo escono
+"Dom · Lun · Mar · Mié · Jue · Vie", cioè martedì e mercoledì al posto giusto. I sei totali
+della tabella qui sopra verificati chiamando `calcolaTotale()` sulla pagina.
+`tour.html?id=stargazing-vip` dà "Escursione non trovata". Nessun errore in console.
+
+`node controlla.js` → 0 errori, 2 avvisi, gli stessi di prima. `CACHE_NAME` a `isla-v265`.
+
+### Da confermare con l'ufficio
+
+- Del **gruppo grande** manca ancora quasi tutto: chi è il fornitore, dove si va, quanto
+  dura, in che giorni, a che ora, cosa comprende e quanto pagano i bambini
+- Le **quattro foto** da caricare in `assets/`
+- L'**età minima** della VIP, e se sotto i 2 anni si sale
+- Se il **12+** vale anche sul gruppo grande
+
+---
+
+## v266 — quello che divide le due serate è la lingua, non il prezzo
+
+La stessa pagina del fornitore è arrivata una seconda volta, identica campo per campo. Non
+c'era niente di nuovo dentro, ma rileggendola è saltata fuori **una contraddizione nel file
+stesso**:
+
+```
+"gruppo": { "max_standard": 8, "max_con_self_drive": 16, "tipico": "10-12 persone" }
+```
+
+Sulla scheda c'era scritto "Al massimo 8 persone", che è l'highlight del fornitore — ma lo
+stesso file diceva che il gruppo tipico è 10-12 e che con gli ospiti self-drive si arriva a
+16. Chiesto al proprietario quale dei tre numeri vale per noi, e la risposta ha spiegato
+l'intera scheda.
+
+### Le due serate sono di due operatori diversi, e parlano due lingue diverse
+
+- **Gruppo grande** → è **Andromeda**: gruppo fino a **16 persone**, e si va **solo in
+  italiano**
+- **VIP** → gruppo di **8 al massimo**, e si va **solo in inglese**
+
+Il 10-12 e il 16 del file erano numeri dell'altra versione (quella con gli ospiti che
+arrivano in auto propria), che Admiral non vende: per i nostri clienti gli 8 sono veri, e
+restano scritti.
+
+**Quello che decide quale prenotare non è il prezzo, sono i 10 € di differenza fra due
+lingue.** Un cliente italiano vuole Andromeda anche se il gruppo è il doppio; un inglese
+non ha scelta, e uno spagnolo o un tedesco deve sapere subito che nessuna delle due è nella
+sua lingua — prima di mandare la richiesta, non dopo.
+
+### Dove sta scritta, e perché non è un campo `languages`
+
+`languages` è il **menu** "In che lingua", cioè una domanda con delle risposte: si mette
+dove il cliente può scegliere. Qui non sceglie niente — ogni serata ha la sua lingua e
+basta. Un menu da una voce sola sarebbe una domanda finta, e due menu diversi per due
+varianti il campo non li prevede.
+
+Quindi la lingua sta scritta in tre punti, in ordine di quanto presto la si legge:
+
+1. **Nelle etichette dei bottoni**: "Gruppo grande (in italiano)" e "VIP, gruppo ristretto
+   (in inglese)". È la prima cosa che si vede, e finisce anche nel messaggio WhatsApp, così
+   l'ufficio sa quale serata è già dalla riga della richiesta
+2. **Nella descrizione della scheda**, che adesso dice che la differenza è soprattutto la
+   lingua, con i due numeri del gruppo accanto
+3. **Nella descrizione di ogni variante**, per esteso
+
+Le tre lingue del sito restano tre: la scheda si legge in italiano, inglese e spagnolo
+anche quando racconta di una serata che si fa solo in italiano. Sono due cose diverse — la
+lingua del sito e la lingua della guida — ed è il motivo per cui "(in italiano)" va
+tradotto ("in Italian", "en italiano") mentre il nome **Andromeda** resta uguale in tutte e
+tre, come i nomi delle barche.
+
+### Non copiato, di nuovo
+
+Dalla stessa pagina è restato fuori il **"solo 35 minuti di viaggio dal sud dell'isola"**.
+Non è solo che sta fra gli highlight promozionali: **non torna**. Da Costa Adeje al Parco
+Nazionale del Teide c'è un'ora buona di strada di montagna, e scrivere 35 minuti
+manderebbe qualcuno a fare i conti sbagliati sulla serata. Se il punto di osservazione è
+davvero più vicino, è l'ufficio a doverlo dire.
+
+Fuori anche il **riprogrammare per maltempo** della FAQ: è la politica del fornitore, e le
+politiche non si copiano.
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo: i due bottoni portano la lingua fra
+parentesi tradotta, "Andromeda" resta uguale in tutte e tre, e le descrizioni cambiano col
+bottone premuto. Prezzi, totali, giorni, orari e compresi invariati rispetto a v265.
+Nessun errore in console.
+
+`node controlla.js` → 0 errori, 2 avvisi, gli stessi di sempre. `CACHE_NAME` a `isla-v266`.
+
+### Da confermare con l'ufficio
+
+- **"Andromeda" è il nome giusto** dell'operatore del gruppo grande? Sulla scheda è
+  scritto, come si fa coi nomi delle barche
+- Del gruppo grande manca ancora dove si va, quanto dura, in che giorni, a che ora, cosa
+  comprende e quanto pagano i bambini
+- Le **quattro foto** da caricare in `assets/`
+- L'**età minima** della VIP, e se sotto i 2 anni si sale
+- Se il **12+** vale anche sul gruppo grande
+
+---
+
+## v267 — i nomi degli operatori non si pubblicano, e le due serate diventano piccolo e grande
+
+Due correzioni del proprietario sulla scheda stargazing, arrivate insieme.
+
+### I nomi restano fuori
+
+La scheda diceva "La serata di Andromeda". Fuori: **i nomi dei due operatori non si
+pubblicano**.
+
+È l'eccezione alla regola delle barche, e vale la pena capire perché non è una
+contraddizione. Sulle barche il nome vero ci va (Freebird, Royal Delfin, Shogun, Peter Pan)
+perché è **quello che il cliente ritrova al porto**: sale su uno scafo con quel nome
+scritto sopra, e se la scheda ne dicesse un altro sarebbe perso. Qui non c'è nessun nome
+scritto da nessuna parte: c'è un minibus che passa a prenderti e un telescopio in cima. Il
+nome dell'operatore non serve al cliente — serve solo a far vedere a un concorrente chi
+lavora con Admiral.
+
+Il catalogo adesso non contiene nessuno dei due nomi, verificato con `grep`.
+
+### Piccolo e grande, non "grande" e "VIP"
+
+Le due etichette erano `Gruppo grande (in italiano)` e `VIP, gruppo ristretto (in inglese)`.
+Adesso sono:
+
+- **Gruppo grande (in italiano)** — `Large group (in Italian)`, `Grupo grande (en italiano)`
+- **Gruppo piccolo (in inglese)** — `Small group (in English)`, `Grupo pequeño (en inglés)`
+
+Il "VIP" è caduto, e non è solo una parola in meno. **Due etichette si leggono in un colpo
+d'occhio solo se si confrontano su una cosa sola.** "Grande" contro "VIP" metteva a
+confronto due assi diversi — quanti si è da una parte, quanto è di lusso dall'altra — e non
+faceva scegliere nessuno. "Grande" contro "piccolo", con la lingua fra parentesi, è una
+domanda con due risposte: quanti volete essere, e in che lingua volete che vi raccontino il
+cielo.
+
+Il "VIP" era una parola di Admiral, presa dal titolo "VIP Stargazing Experience". Il titolo
+della scheda resta `Stargazing Experience`, le parole che i due titoli hanno in comune.
+
+La parola **VIP è sparita anche dalle note e dalle descrizioni**, dove diceva "sulla VIP
+giacca e guanti li dà il fornitore": adesso dice "sul gruppo piccolo". Le note nominano le
+varianti una per una, quindi quando un'etichetta cambia vanno riguardate tutte — è la
+stessa cosa già successa col buggy quando "Tramonto" è diventato "Tramonto sul Teide".
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo: i due bottoni escono "Gruppo grande (in
+italiano)" e "Gruppo piccolo (in inglese)" con le due lingue tradotte, e nessuna delle tre
+versioni nomina un operatore. Prezzi, totali, giorni, orari e compresi invariati rispetto a
+v266. Nessun errore in console.
+
+`node controlla.js` → 0 errori, 2 avvisi, i soliti. `CACHE_NAME` a `isla-v267`.
+
+### Da confermare con l'ufficio
+
+- Del **gruppo grande** manca ancora dove si va, quanto dura, in che giorni, a che ora,
+  cosa comprende e quanto pagano i bambini
+- Le **quattro foto** da caricare in `assets/`
+- L'**età minima** del gruppo piccolo, e se sotto i 2 anni si sale
+- Se il **12+** vale anche sul gruppo grande
+
+---
+
+## v268 — il gruppo piccolo va anche in tedesco
+
+La pagina del fornitore è arrivata una terza volta, sempre identica, ma con accanto una
+frase nuova: «questa è per inglesi e tedeschi».
+
+**Stonava con quella di prima**, che diceva «parlano solo inglese». Sono due affermazioni
+che non possono essere vere insieme, e la lingua qui non è un dettaglio: è la riga sul
+bottone che decide quale serata prenota il cliente. Un tedesco che legge "tedesco" e al
+belvedere trova una guida che parla solo inglese è il danno peggiore che questa scheda
+possa fare — quindi chiesto, invece di scegliere l'ultima frase arrivata.
+
+Risposta: **in inglese e tedesco**. Il che torna anche col fornitore, che è una società
+tedesca.
+
+Adesso le tre lingue delle guide sono:
+
+| serata | lingua | gruppo | prezzo |
+|---|---|---|---|
+| Gruppo grande | italiano | fino a 16 | 75 € |
+| Gruppo piccolo | inglese e tedesco | 8 al massimo | 85 € · 80 € bambini |
+
+Il bottone dice `Gruppo piccolo (in inglese e tedesco)`, tradotto nelle tre lingue del sito
+(`Small group (in English and German)`, `Grupo pequeño (en inglés y alemán)`).
+
+### E adesso `languages` servirebbe davvero — ma non si può
+
+Con due lingue sulla stessa serata il cliente **sceglierebbe per davvero**, che è
+esattamente il caso in cui il campo `languages` esiste: farebbe comparire la domanda "In
+che lingua" nella finestra della richiesta, e la risposta finirebbe nel messaggio WhatsApp.
+L'ufficio saprebbe quale guida serve prima di confermare.
+
+Non si può, e il motivo è strutturale: **`languages` sta sulla scheda, non sulla variante**.
+Metterlo qui offrirebbe inglese e tedesco anche a chi ha scelto la serata in italiano, dove
+non c'è niente da scegliere. Fra una domanda sbagliata su una variante e nessuna domanda,
+meglio nessuna: la lingua resta testo, scritta in tre punti (etichetta, descrizione della
+scheda, descrizione della variante).
+
+Se un giorno serve davvero, la strada è **portare `languages` dentro `options.choices[]`**,
+come si è già fatto per `days`, `times`, `zone` e `duration`. Non è stato fatto adesso
+perché è una modifica al motore, non al catalogo, e questa scheda non la richiede.
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo: i due bottoni, la descrizione della
+scheda e quella della variante dicono tutti e tre "inglese e tedesco", tradotto. Prezzi,
+totali, giorni, orari e compresi invariati rispetto a v267. Nessun errore in console.
+
+`node controlla.js` → 0 errori, 2 avvisi, i soliti. `CACHE_NAME` a `isla-v268`.
+
+### Nota di metodo, per la prossima volta
+
+La stessa pagina del fornitore è arrivata **tre volte identica**, e ogni volta il dato
+nuovo non era nel file ma nella frase scritta accanto: la prima volta niente, la seconda
+la lingua e la capienza, la terza il tedesco. Vale la pena dirlo prima di rileggere 200
+righe di JSON in cerca di qualcosa che non c'è — e vale la pena chiedere, quando la frase
+di oggi contraddice quella di ieri.
+
+---
+
+## v269 — la terza serata di stargazing, e perché non è una terza variante
+
+Una pagina davvero nuova, questa volta: un tour serale sul Teide **con cena**, di un terzo
+operatore, in bus condiviso. Catalogo da 73 a 74 schede, `stelle` da una voce a due.
+
+### Perché una scheda nuova e non un terzo bottone
+
+La tentazione era ovvia — c'è già una scheda con due serate dentro, si aggiunge la terza.
+**Non si può, e non è una preferenza:** tre campi che a questa serata servono non esistono
+dentro `options.choices[]`.
+
+| campo | cosa fa qui | perché non sta nella variante |
+|---|---|---|
+| `languages` | sei lingue fra cui il cliente sceglie | sta sulla scheda: le offrirebbe anche alla serata che si fa solo in italiano |
+| `menus` | vegetariano e vegano | sulle altre due non si mangia |
+| `itinerary` | le sei tappe della serata | sono solo sue |
+
+E c'è un motivo che chiude il discorso: **questa serata ha già le sue varianti**, con e
+senza cena. Una variante dentro una variante non si può fare.
+
+Vale la pena tenerlo a mente come regola: una serata si unisce a un'altra finché le
+differenze stanno nei campi che la variante conosce (`zone`, `duration`, `days`, `times`,
+`priceAdult`, `priceChild`, `included`, `desc`). Appena servono `languages`, `menus`,
+`itinerary` o un secondo livello di scelta, la scheda dev'essere sua.
+
+### `languages` qui ci sta davvero, ed è la prima volta
+
+Sull'altra scheda `languages` è stato escluso apposta (v268): il campo sta sulla scheda e
+le due serate hanno lingue diverse. Qui invece è **una serata sola con sei lingue**, e il
+cliente ne sceglie una: la domanda "In che lingua" compare nella richiesta e la risposta
+finisce su WhatsApp. Lista sua e non `LINGUE_TOUR`, perché c'è anche **l'olandese**.
+
+La guida però è multilingue e i gruppi possono essere accorpati quando una lingua non si
+riempie: sta in una nota, perché è una cosa che il cliente deve sapere prima e non è una
+promessa che possiamo mantenere noi.
+
+### Le fasce d'orario segnaposto qui sarebbero state ridicole
+
+Senza `times` il menu "A che ora" avrebbe offerto **"09:00 - 10:00" su una serata che parte
+per il tramonto**. La regola del progetto dice che le fasce segnaposto restano *dove le
+partenze non le sappiamo* — qui la sappiamo: il fornitore scrive che il ritiro è fra le
+15:00 e le 16:00. Quindi `times: ["15:00 - 16:00"]`, una fascia sola e vera.
+
+Che l'ora si sposti col tramonto e cambi da un hotel all'altro lo dice la nota, ed è
+l'ufficio a confermarla. Se il proprietario preferisce rimettere le fasce, è una riga.
+
+### I prezzi, le fasce d'età e i neonati
+
+Due varianti, con e senza cena, coi prezzi a persona dentro:
+
+| | senza cena | con cena |
+|---|---|---|
+| adulti (11+) | 63 € | 78 € |
+| bambini (4-10) | 45 € | 55 € |
+| neonati (0-3) | gratis | gratis |
+
+`priceInfant: 0` e qui **lo zero vuol dire davvero gratis**, non "non lo sappiamo": è il
+fornitore a dirlo. Le condizioni stanno nella nota, dove si leggono prima di prenotare —
+sotto i 4 anni si viaggia **in braccio a un adulto** e **il pasto non è compreso**. Un
+"gratis" senza quelle due righe sarebbe una mezza verità.
+
+Le tre fasce combaciano: `0-3`, `4-10`, `11+`. `controlla.js` le ha verificate.
+
+### Non copiato, e qui c'era parecchio
+
+- **Gli sconti a scaglioni** (15 € da 4 persone, fino a 90 € da 24). Sono **sconti del
+  rivenditore**, non nostri: è esattamente il caso della regola sui prezzi barrati. Sul
+  sito va il prezzo pieno
+- **Il modello di pagamento** (acconto online, saldo alla guida): è il carrello di un altro
+  sito. Da Isla parte una *richiesta* su WhatsApp e il pagamento si concorda dopo
+- **La cancellazione a 48 ore**: non è nostra, restano le 24 ore di Isla
+- **4,3 su 33 recensioni** e la distribuzione delle stelle
+- **I nomi dell'operatore e del rivenditore**, i loro telefoni, la mail e l'indirizzo
+  dell'ufficio a Costa Adeje. I nomi non si pubblicano (v267), e i contatti di un altro su
+  una nostra scheda manderebbero il cliente a prenotare altrove
+- **L'avvertenza del rivenditore** sulla cena ("pasto semplice, non alta cucina"). Al suo
+  posto la scheda scrive **cosa si mangia** — zuppa di zucca, mezzo pollo arrosto con
+  patate e mojo, tiramisù, col vino — e lascia giudicare al cliente
+
+### Foto: non ce n'è
+
+`image: ""`, quindi in elenco esce il riquadro grigio e `controlla.js` lo segnala. Gli
+avvisi passano da 2 a 3, ed è il meccanismo che funziona: la scheda resta pubblicata e
+sott'occhio finché la foto non arriva. Le quattro foto mandate in chat continuano a non
+essere in `assets/`.
+
+### Il titolo è provvisorio
+
+`Stargazing Dinner Experience` **non è un titolo di Admiral**: non ce l'hanno ancora dato.
+Tiene insieme la famiglia con "Stargazing Experience", dice cos'è e non nomina l'operatore.
+Da sostituire appena arriva quello vero.
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo. Premendo i due bottoni cambiano i due
+prezzi e il riquadro "Cosa è incluso", che passa da tre icone a cinque (`lunch` e `drinks`
+si sommano). "In breve" mostra le sei lingue, le tre fasce d'età e "Neonati (0-3) Gratis".
+Il riquadro "Come si svolge" ha le sei tappe. Nella richiesta il menu "A che ora" ha solo
+"15:00 - 16:00", "In che lingua" ha le sei lingue e "Esigenze sul menu" ha vegetariano e
+vegano, tradotti in tutte e tre. Totali verificati con `calcolaTotale()`: 2 adulti + 1
+bambino fanno €171 senza cena e €211 con la cena, e il neonato non cambia il conto.
+Nessun errore in console.
+
+`node controlla.js` → 74 schede, 0 errori, 3 avvisi. `CACHE_NAME` a `isla-v269`.
+
+### Da confermare con l'ufficio
+
+- Il **titolo vero** di questa scheda
+- La **foto**
+- I **giorni** in cui si fa davvero e la **dimensione massima del gruppo**: il rivenditore
+  non li pubblica
+- I **punti di ritrovo** per chi sta fuori dalla zona di ritiro: esistono solo come mappa
+  Google, non come elenco
+- Se le **fasce d'orario** vanno bene come le ho messe (una sola, 15:00 - 16:00)
+
+---
+
+## v270 — quattro fornitori, due prodotti, e i prezzi diventano quelli di Admiral
+
+Sono arrivati in un colpo solo i dati di **quattro** fornitori di stargazing, e dal
+proprietario la regola per metterli in ordine. È il cambiamento più grosso della
+categoria "Sotto le stelle" da quando esiste.
+
+### La regola: Admiral vende due prodotti, non quattro tour
+
+| | prezzo adulti | bambini | mezzo | si mangia | lingue |
+|---|---|---|---|---|---|
+| **Gruppo grande** | 75 € | 65 € | pullman | **cena** | inglese, spagnolo, tedesco |
+| **Gruppo piccolo** | 79 € | 69 € | minivan | **picnic** | italiano, inglese, tedesco |
+
+Dietro ogni bottone c'è **più di un fornitore**, e Admiral sceglie quale in base alla
+lingua richiesta. I nomi non si pubblicano (v267), quindi la scheda non dice mai chi sono:
+dice quanti si è, in che lingua si va e cosa si mangia, che è tutto quello che serve a
+scegliere.
+
+Il **prezzo è di Admiral, non del fornitore**: i listini dei quattro andavano da 63 a 85 €
+e non c'entrano più niente. Ed è la prima volta che questa categoria ha dei prezzi veri —
+prima erano tutti `priceAdult: 0`, cioè "non ancora deciso".
+
+**I bambini pagano 10 € in meno**, regola del proprietario che vale su tutte e due.
+
+### Il numero che non tornava
+
+Il gruppo piccolo aveva il prezzo bambini a **80 €**, ereditato dal fornitore quando
+l'adulto era 85. Con l'adulto sceso a 79, **il bambino sarebbe costato più dell'adulto**.
+Chiesto invece di scegliere un numero a caso, e la risposta è stata la regola dei 10 € in
+meno, che risolve tutte e due le schede insieme.
+
+Vale la pena ricordarselo: quando cambia il prezzo adulti, il prezzo bambini **non è un
+campo indipendente** — va riguardato, se no si pubblica un listino che si contraddice.
+
+### Il gruppo piccolo perde `days`, `times` e la durata sola
+
+Prima il gruppo piccolo era un fornitore solo, e la variante portava i suoi dati: 5 ore,
+sei giorni senza il sabato, partenza alle 17:00. Adesso i fornitori sono **due**, uno per
+l'italiano e uno per inglese e tedesco, e quei tre campi descrivevano solo il secondo.
+
+Sono stati tolti. È la regola generale, scritta qui perché costa capirla una volta sola:
+**un campo su una variante vale per tutto quello che c'è dietro quella variante.** Se
+dietro c'è più di un fornitore, ci resta solo quello che è vero per tutti — qui `zone`
+(salgono tutti nel Parco Nazionale) e una durata a intervallo (5-6 ore).
+
+Nell'altro senso la scheda ci ha guadagnato: `zone` non è più "Da definire" ma **Parco
+Nazionale del Teide**, perché adesso è vero per tutte e due le serate.
+
+### Le lingue adesso si sovrappongono, e il bottone conta più di prima
+
+Fino a ieri le due liste erano separate (italiano da una parte, inglese e tedesco
+dall'altra). Adesso no:
+
+- **italiano** → solo gruppo piccolo
+- **spagnolo** → solo gruppo grande
+- **inglese e tedesco** → si sceglie
+
+Le etichette dei bottoni portano le tre lingue ciascuna, tradotte
+(`Gruppo grande (inglese, spagnolo, tedesco)`), e una nota dice a chiare lettere che la
+lingua è quello che decide la serata. Senza, un italiano premerebbe "Gruppo grande" e lo
+scoprirebbe troppo tardi.
+
+### La scheda "Dinner Experience" non aveva la cena
+
+Errore mio, e vale la pena raccontarlo. Il listino di quel fornitore descrive una **cena
+canaria a tre portate** — zuppa, mezzo pollo, tiramisù — e la scheda era stata costruita
+tutta intorno a quella: il titolo `Stargazing Dinner Experience`, la variante con e senza
+cena, il menu vegetariano e vegano.
+
+Il proprietario ha corretto: **su quella serata Admiral vende un panino.** La cena vera ce
+l'ha solo il gruppo grande. Quindi via il titolo, via la variante con e senza cena, via il
+menu, e le sei tappe adesso dicono "sosta in un ristorante lungo la strada, con il panino".
+
+**La lezione:** il listino del fornitore dice cosa il fornitore *può* fare, non cosa
+Admiral *ha comprato*. Su quattro fornitori la differenza è saltata fuori solo perché il
+proprietario ha guardato la tabella del cibo, non le schede una per una.
+
+La scheda si chiama adesso `Stargazing Bus Experience`, provvisorio come il precedente:
+dice il formato senza nominare il fornitore.
+
+### Le lingue di quella scheda vanno in nota, non in `languages`
+
+Il fornitore ne fa sei, francese compreso — ed è per il francese che Admiral la vende. Ma
+il proprietario ha deciso: **le lingue si scrivono in una nota, e poi è l'ufficio a
+spostare il cliente sulla serata giusta.**
+
+Quindi il campo `languages` è stato tolto, e con lui la domanda "In che lingua" nella
+richiesta. Il motivo è serio: quel menu prometterebbe che la scelta la fa il cliente da
+solo, sempre e comunque, mentre qui la fa l'ufficio guardando tre schede insieme. La nota
+invece dice le lingue **e** dice chi decide.
+
+### Cosa non è entrato
+
+- **Gli sconti a scaglioni** di un rivenditore (15 € da 4 persone, fino a 90 € da 24):
+  sconti di un altro, e adesso nemmeno il prezzo è più il suo
+- **Il modello di pagamento** con acconto online e saldo alla guida
+- **Le politiche di cancellazione** dei quattro, che vanno da 24 a 48 ore: resta il
+  preavviso di 24 ore di Isla
+- **Punteggi e recensioni**: 5 su 8, 4,3 su 33, 4,8 su 107, "oltre 2.500 recensioni a 5
+  stelle su Tripadvisor"
+- **I nomi dei quattro fornitori**, i loro telefoni, mail, indirizzi e il codice di turismo
+  attivo di uno di loro
+- **I 96 punti di ritiro** di un fornitore: sono i suoi, non quelli delle altre tre
+  serate, e la scheda copre più fornitori. Il punto lo conferma l'ufficio, come dice la
+  nota
+- **L'astrofotografia come titolo**: la foto della galassia da portare a casa è una cosa
+  sola di uno dei due fornitori del gruppo piccolo, e sta nella descrizione della
+  variante, dove si legge come "quella in italiano", non come una promessa della scheda
+
+### Provato
+
+Nel browser vero. Sulla scheda unita i due bottoni escono con le tre lingue ciascuno e
+premendoli cambiano durata, prezzi e compresi: il grande ha "Pasto incluso", il piccolo
+"Finger food". Totali verificati con `calcolaTotale()`: 2 adulti + 1 bambino fanno €215 sul
+grande e €227 sul piccolo, e il neonato non fa più il totale perché di lui non sappiamo
+niente. Sulla scheda del pullman: 75 € e 65 €, neonati gratis, "Snack" al posto di "Pasto
+incluso", le sei tappe col panino e la nota delle sei lingue. Nessun errore in console.
+
+`node controlla.js` → 74 schede, 0 errori, 3 avvisi. `CACHE_NAME` a `isla-v270`.
+
+### Da confermare con l'ufficio
+
+- I **titoli veri** delle due schede: `Stargazing Experience` e `Stargazing Bus Experience`
+  sono segnaposto
+- Le **foto**: la scheda del pullman non ne ha nessuna, e le quattro mandate in chat non
+  sono in `assets/`
+- Le **fasce d'età**: la scheda unita usa quelle di Admiral (12+ / 2-11), quella del
+  pullman quelle del fornitore (11+ / 4-10 / 0-3 gratis). Se valgono le stesse ovunque,
+  si riallineano
+- Se sotto i 2 anni si sale, sulla scheda unita
+- **Se la scheda del pullman deve restare separata**: adesso che costa 75 € come il gruppo
+  grande ed è anche lei un pullman, la differenza vera è il panino contro la cena e le sei
+  lingue. Se il proprietario la vuole dentro come terzo bottone, si perdono le sue sei
+  tappe — `itinerary` non esiste dentro le varianti
+
+---
+
+## v271 — la scheda del pullman rientra nel gruppo grande
+
+Decisione del proprietario: la serata col pullman e il panino non è un prodotto a sé, **è
+il gruppo grande**. La scheda `stargazing-cena` sparisce e diventa il secondo fornitore
+dietro quel bottone. Catalogo da 74 a 73 schede, `stelle` torna a una voce sola, e gli
+avvisi di `controlla.js` tornano da 3 a 2 perché sparisce anche la scheda senza foto.
+
+`tour.html?id=stargazing-cena` adesso dà "Escursione non trovata": è vissuta un giorno.
+
+Adesso la categoria è **una scheda, due bottoni, quattro fornitori**:
+
+| | prezzo | mezzo | fornitori | lingue |
+|---|---|---|---|---|
+| Gruppo grande | 75 € · 65 € | pullman | due | inglese, spagnolo, tedesco, **francese** |
+| Gruppo piccolo | 79 € · 69 € | minivan | due | italiano, inglese, tedesco |
+
+### Il gruppo grande perde tre icone, ed è la parte che insegna qualcosa
+
+Assorbire un fornitore dentro una variante non è copiare i suoi campi: è **tenere solo
+quello che resta vero anche per l'altro**. Tre icone di "Cosa è incluso" non ce l'hanno
+fatta:
+
+| icona | primo fornitore | secondo | verdetto |
+|---|---|---|---|
+| `lunch` | cena in quota | un panino alla sosta | fuori |
+| `photos` | foto gratis | foto in vendita sul posto | fuori |
+| `drinks` | brindisi al tramonto | non dichiarate | fuori |
+
+Sul cibo la tentazione era di tenerne una comunque. Non regge in nessuna delle due
+direzioni: **"Pasto incluso" sopra un panino promette troppo, "Snack" sopra una cena a tre
+portate svende quello che il cliente paga.** Quindi niente icona, e la differenza sta
+scritta nella descrizione della variante — che si legge sotto il bottone appena lo premi,
+non dieci righe più in là: *«Si mangia, ma non allo stesso modo: sulla serata in inglese,
+spagnolo e tedesco c'è una cena in quota, su quella in francese un panino alla sosta.»*
+
+Al gruppo grande restano `transfer` e `attrezzatura`, più la `guida` che sta sulla scheda.
+Il gruppo piccolo tiene tutte le sue cinque, perché lì i due fornitori danno davvero le
+stesse cose.
+
+### Le tappe si salvano, ma cambiano livello
+
+Avevo scritto che assorbire la scheda del pullman avrebbe fatto perdere le sue sei tappe,
+perché `itinerary` non esiste dentro `options.choices[]`. Vero a metà: non si possono
+mettere sulla **variante**, ma sulla **scheda** sì — a patto di riscriverle al livello che
+è vero per tutti e quattro i fornitori.
+
+Da sei tappe a cinque, e via tutto quello che era di uno solo: la quota di 2.250 metri, la
+sessione da un'ora e mezza, il nome del paese della sosta. Resta l'arco che fanno tutti:
+ritiro in hotel → salita con la sosta per mangiare → tramonto sopra le nuvole →
+osservazione col telescopio → rientro. La seconda tappa dice «una cena, un panino o un
+picnic secondo la serata scelta», che è il modo di essere precisi senza mentire su
+nessuna delle due.
+
+Il riquadro "Come si svolge" adesso compare su tutte e due le varianti, cosa che prima
+aveva solo la scheda del pullman.
+
+### Le lingue: il francese entra nel bottone
+
+`Gruppo grande (inglese, spagnolo, tedesco, francese)`. La nota adesso dice tutto il
+quadro, e dice anche chi decide:
+
+> In italiano si va solo col gruppo piccolo; in spagnolo e in francese solo col grande; in
+> inglese e tedesco si può scegliere. Scrivi la tua nella richiesta e l'ufficio ti mette
+> sulla partenza giusta.
+
+Quattro lingue fra parentesi sono lunghe per un bottone, ma il bottone va a capo e la
+lingua resta la prima cosa che si legge. È il campo che decide la serata: sta li'.
+
+### Cosa si è perso, e non è poco
+
+Da mettere in conto quando si assorbe una scheda dentro una variante:
+
+- le **sei tappe** dettagliate del pullman → cinque generiche
+- la **quota di 2.250 metri** e la **sessione da un'ora e mezza**
+- `times: ["15:00 - 16:00"]`, perché il secondo fornitore del gruppo grande ha un altro
+  orario di ritiro (due ore e mezza prima del tramonto). Il menu "A che ora" torna alle
+  fasce segnaposto
+- `priceInfant: 0` e la fascia `0-3`: i neonati gratis erano una cosa del pullman, e delle
+  altre tre serate non sappiamo niente. Adesso la richiesta con un neonato non fa il
+  totale — che è giusto, ma è un dato in meno
+- la nota sul **pullman senza toilette** e sui posti non assegnati
+
+Sono tutte cose vere di un fornitore su quattro. In una scheda che ne copre due per
+bottone, "vero per uno" vuol dire "falso per l'altro".
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo: due bottoni, quattro lingue sul primo e
+tre sul secondo, tradotte. Premendo cambiano durata (6-8 ore contro 5-6), prezzi (75/65
+contro 79/69), descrizione e icone (tre contro sei). Il riquadro "Come si svolge" ha le
+cinque tappe su tutte e due. `tour.html?id=stargazing-cena` dà "Escursione non trovata".
+La categoria "Sotto le stelle" ha una voce sola. Nessun errore in console.
+
+`node controlla.js` → 73 schede, 0 errori, 2 avvisi, quelli di sempre.
+`CACHE_NAME` a `isla-v271`.
+
+### Da confermare con l'ufficio
+
+- Il **titolo vero**: `Stargazing Experience` è un segnaposto
+- Le **quattro foto** da caricare in `assets/`
+- Se sotto una certa età i più piccoli pagano meno o non pagano: adesso la scheda non dice
+  niente sui neonati, e la richiesta con un neonato non fa il totale
+- I **giorni** e gli **orari di ritiro** dei quattro fornitori, se un giorno si vuole
+  tornare a scriverli

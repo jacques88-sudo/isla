@@ -8192,3 +8192,55 @@ La categoria "Sotto le stelle" ha una voce sola. Nessun errore in console.
   niente sui neonati, e la richiesta con un neonato non fa il totale
 - I **giorni** e gli **orari di ritiro** dei quattro fornitori, se un giorno si vuole
   tornare a scriverli
+
+---
+
+## v272 — il picnic lo dà il fornitore, e la scheda diceva il contrario
+
+Correzione del proprietario: **il picnic del gruppo piccolo è compreso nel prezzo, non se
+lo porta il cliente.**
+
+La scheda non lo diceva mai apertamente, ma il verbo lo faceva capire al contrario. La
+descrizione diceva:
+
+> il gruppo piccolo va in minivan, **porta** un picnic al tramonto
+
+E in inglese era anche peggio — *«the small group travels by minivan, **brings** a picnic
+for sunset»* — dove "brings" ha come soggetto più naturale chi legge, non il fornitore.
+Uguale in spagnolo con *«lleva un picnic»*.
+
+Le icone dicevano già la verità (`fingerfood` e `drinks` sono fra i compresi del gruppo
+piccolo), ma **le parole battono le icone**: un cliente legge la frase e si porta i panini
+da casa, oppure — peggio — non prenota perché pensa di doverseli preparare.
+
+Corretti tutti e tre i punti dove il cibo compariva, nelle tre lingue:
+
+| dove | adesso dice |
+|---|---|
+| descrizione della scheda | «al tramonto **ti offre** un picnic, compreso nel prezzo» |
+| descrizione della variante | «un picnic **preparato dal fornitore e compreso nel prezzo**» |
+| tappa dell'itinerario | «**Lo porta il fornitore, non c'è niente da preparare a casa**» |
+
+La riga dell'itinerario è quella che chiude il discorso per tutte e tre le serate insieme:
+sta sulla scheda, quindi vale sia per la cena del gruppo grande, sia per il panino, sia per
+il picnic. Nessuno dei tre può più essere letto come "portatelo da casa".
+
+**Da tenere a mente:** quando una scheda dice cosa si mangia, il verbo deve dire anche
+**chi lo porta**. "Con un picnic" non basta — è ambiguo in tutte e tre le lingue, e
+l'ambiguità cade sempre dalla parte sbagliata, cioè addosso al cliente.
+
+### `controlla.js` ha fatto il suo mestiere
+
+Modificato `esplora-catalog.js` e lanciato il controllo prima di alzare `CACHE_NAME`:
+**1 errore**, con scritto quali file erano cambiati e che il nome della cache era rimasto
+uguale al merge-base. Alzato a `isla-v272`, tornato a 0 errori. È il controllo aggiunto
+apposta perché questa cosa non si dimentichi: senza, la correzione ci sarebbe stata nel
+codice e nessuno l'avrebbe vista sul sito.
+
+### Provato
+
+Nel browser vero, nelle tre lingue: la descrizione della scheda, quella del gruppo piccolo
+e la tappa del cibo dicono tutte e tre che lo porta il fornitore. Prezzi, totali, lingue,
+icone e tappe invariati. Nessun errore in console.
+
+`node controlla.js` → 70 schede, 0 errori, 2 avvisi. `CACHE_NAME` a `isla-v272`.

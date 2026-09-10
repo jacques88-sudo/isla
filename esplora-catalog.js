@@ -1938,16 +1938,16 @@ const ESPLORA_CATALOG = [
           duration: { it: "5-6 ore", en: "5 to 6 hours", es: "5-6 horas" },
           included: ["transfer", "equipment", "fingerfood", "drinks", "photos"],
           desc: {
-            it: "La serata in minivan, in gruppo ridotto: ritiro in hotel, tramonto sopra le nuvole con un picnic — qualcosa da mangiare e da bere all'aperto, non una cena a tavola — e poi il telescopio col buio. Sulla serata in inglese e tedesco si è al massimo in otto; quella in italiano è un gruppo un po' più largo, con l'astrofotografia e la foto della galassia da portare a casa.",
-            en: "The minivan evening, in a small group: hotel pickup, sunset above the clouds with a picnic — something to eat and drink outdoors, not a sit-down dinner — then the telescope once it is dark. The English and German evening is eight people at most; the Italian one is a slightly larger group, with live astrophotography and a photo of the galaxy to take home.",
-            es: "La velada en minivan, en grupo reducido: recogida en el hotel, atardecer por encima de las nubes con un picnic — algo de comer y beber al aire libre, no una cena de mesa — y después el telescopio ya de noche. La velada en inglés y alemán es de ocho personas como máximo; la de italiano es un grupo algo más amplio, con astrofotografía en directo y una foto de la galaxia para llevarse a casa."
+            it: "La serata in minivan, in gruppo ridotto: ritiro in hotel, tramonto sopra le nuvole con un picnic preparato dal fornitore e compreso nel prezzo — da mangiare e da bere all'aperto, non una cena a tavola — e poi il telescopio col buio. Sulla serata in inglese e tedesco si è al massimo in otto; quella in italiano è un gruppo un po' più largo, con l'astrofotografia e la foto della galassia da portare a casa.",
+            en: "The minivan evening, in a small group: hotel pickup, sunset above the clouds with a picnic laid on by the operator and included in the price — food and drink outdoors, not a sit-down dinner — then the telescope once it is dark. The English and German evening is eight people at most; the Italian one is a slightly larger group, with live astrophotography and a photo of the galaxy to take home.",
+            es: "La velada en minivan, en grupo reducido: recogida en el hotel, atardecer por encima de las nubes con un picnic preparado por el proveedor e incluido en el precio — de comer y beber al aire libre, no una cena de mesa — y después el telescopio ya de noche. La velada en inglés y alemán es de ocho personas como máximo; la de italiano es un grupo algo más amplio, con astrofotografía en directo y una foto de la galaxia para llevarse a casa."
           } }
       ]
     },
     desc: {
-      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due serate fra cui scegliere, e cambia anche la lingua: il gruppo grande sale in pullman e si fa in inglese, spagnolo, tedesco e francese; il gruppo piccolo va in minivan, porta un picnic al tramonto e si fa in italiano, inglese e tedesco.",
-      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two evenings to choose from, and the language changes too: the big group goes up by coach and runs in English, Spanish, German and French; the small group travels by minivan, brings a picnic for sunset and runs in Italian, English and German.",
-      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir, y el idioma también cambia: el grupo grande sube en autobús y se hace en inglés, español, alemán y francés; el grupo pequeño va en minivan, lleva un picnic al atardecer y se hace en italiano, inglés y alemán."
+      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due serate fra cui scegliere, e cambia anche la lingua: il gruppo grande sale in pullman e si fa in inglese, spagnolo, tedesco e francese; il gruppo piccolo va in minivan e al tramonto ti offre un picnic, compreso nel prezzo, in italiano, inglese e tedesco.",
+      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two evenings to choose from, and the language changes too: the big group goes up by coach and runs in English, Spanish, German and French; the small group travels by minivan and lays on a picnic at sunset, included in the price, in Italian, English and German.",
+      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir, y el idioma también cambia: el grupo grande sube en autobús y se hace en inglés, español, alemán y francés; el grupo pequeño va en minivan y al atardecer te ofrece un picnic, incluido en el precio, en italiano, inglés y alemán."
     },
     included: ["guide"],
     // Le tappe stanno sulla scheda e non sulla variante, perche' `itinerary`
@@ -1962,9 +1962,9 @@ const ESPLORA_CATALOG = [
           es: "La recogida en el hotel, por la tarde: se sale desde los hoteles del sur de la isla."
         } },
       { text: {
-          it: "Si sale verso il Parco Nazionale, con la sosta per mangiare: una cena, un panino o un picnic secondo la serata scelta.",
-          en: "Up towards the National Park, with a stop to eat: dinner, a sandwich or a picnic depending on the evening you choose.",
-          es: "Se sube hacia el Parque Nacional, con la parada para comer: una cena, un bocadillo o un picnic según la velada elegida."
+          it: "Si sale verso il Parco Nazionale, con la sosta per mangiare: una cena, un panino o un picnic secondo la serata scelta. Lo porta il fornitore, non c'è niente da preparare a casa.",
+          en: "Up towards the National Park, with a stop to eat: dinner, a sandwich or a picnic depending on the evening you choose. The operator brings it — there is nothing to pack at home.",
+          es: "Se sube hacia el Parque Nacional, con la parada para comer: una cena, un bocadillo o un picnic según la velada elegida. Lo pone el proveedor, no hay nada que preparar en casa."
         } },
       { text: {
           it: "Il tramonto visto dall'alto, sopra il mare di nuvole.",

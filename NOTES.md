@@ -143,7 +143,7 @@ quattro, quelli con un operatore unico e un listino esposto:
 | --- | --- | --- | --- |
 | Trenino turistico | 9 | 5 | prezzo esposto a bordo |
 | Submarine Safari | 61 | 37 | sito di prenotazione dell'operatore |
-| Karting | 20 | 15 | listino del circuito, tanda da 10 minuti |
+| Karting | 20 | 15 | listino del circuito, tanda da 10 minuti — **il bambino è passato a 16 in v275**, vedi in fondo |
 | Tuk tuk | 24 | — | prezzo a persona di un tour |
 
 **Gli altri 22 non sono stati messi, e non e' pigrizia.** Due motivi:
@@ -8373,3 +8373,339 @@ Via Lattea. Nessuna richiesta di immagine in errore. In elenco la copertina è a
 `stargazing-group.jpg`, invariata.
 
 `CACHE_NAME` a `isla-v274`.
+
+## v276 — il karting prende i dati del circuito vero, al secondo tentativo
+
+Il proprietario ha mandato `https://www.kartingamericas.com/`: è il **Karting Las Américas**
+di Fañabé, cioè il circuito che si vede già nella foto della scheda (`karting.jpg` ha il
+cartellone "Karting Las Américas" a bordo pista). Quindi non era una scheda nuova e non
+c'era niente da confrontare: era la stessa attività che stava in catalogo dal 24 agosto con
+tre righe e la zona "Da definire".
+
+### La lezione sta all'inizio: i riassunti di ricerca non sono un listino
+
+`www.kartingamericas.com` è **bloccato dal proxy di rete**, come `admiral-excursions.com` e
+come `myguidetenerife.com`: `WebFetch` risponde `EGRESS_BLOCKED` su ogni pagina. La scheda
+è stata quindi scritta una prima volta sui **riassunti di ricerca** delle pagine ufficiali.
+Poi il proprietario ha mandato uno **scraping vero** del sito (`karting-las-americas.json`,
+11 prodotti, presi dalle schede WooCommerce), e due dati su tre erano sbagliati:
+
+| dato | dai riassunti di ricerca | dallo scraping | chi aveva ragione |
+|---|---|---|---|
+| tanda adulto | 20 € | **22 €** | lo scraping |
+| lunghezza pista | 725 m | **857 m** | lo scraping |
+| tanda junior | 16 € (e un 15) | **16 €** | pari |
+| orario del circuito | 10:00–20:30 | non c'è | nessuno dei due |
+
+I 725 metri e il 10:00–20:30 giravano su più siti e sembravano solidi proprio per questo:
+gli aggregatori si copiano fra loro, e una cifra vecchia ripetuta da quattro siti sembra
+una conferma quando invece è la stessa fonte contata quattro volte. **Un riassunto di
+ricerca dice che una pagina esiste, non cosa c'è scritto dentro.** La prossima volta che un
+sito fornitore è bloccato, vale la pena chiedere subito la pagina salvata invece di
+ricostruirla da fuori.
+
+Dai rivenditori (Groupon, Tiqets, Musement, Klook, Pelago) non è stato preso niente: là il
+karting parte da "16,99 €" ed è lo sconto di un altro.
+
+### Cosa è entrato
+
+| campo | prima | adesso |
+|---|---|---|
+| `zone` | "Da definire" | `"Fañabé"` |
+| `priceFrom` / `priceAdult` | 20 | **22** |
+| `priceChild` | 15 | **16** |
+| `ages` | assente | `{ adult: "14+", child: "7-13" }` |
+| `family` | `false` | `true` |
+| `desc` | una riga | riscritta nelle tre lingue |
+| `notes` | assenti | cinque |
+
+La pista: **857 metri**, 8 di larghezza, 5 curve a destra e 3 a sinistra — otto in tutto, ed
+è così che è scritto nella descrizione, perché "5 destra 3 sinistra" a un cliente non dice
+niente. Il circuito è **illuminato** (`iluminacion: true`) e questo sì che è entrato: vuol
+dire che si può girare la sera, ed è una cosa che il cliente usa per decidere. I modelli dei
+kart (Sodikart SR4 Honda 270cc, LR5 Honda 200cc) **non** sono entrati: sono roba da
+appassionati e la scheda non è per loro.
+
+### I prezzi sono saliti, ed è la direzione che il progetto dice di evitare
+
+20 → 22 per gli adulti, 15 → 16 per i bambini. La regola del progetto è che un prezzo si
+può abbassare ma non alzare dopo che il cliente l'ha letto. Qui è stata fatta lo stesso, e
+il motivo è che l'alternativa era peggio: pubblicare 20 quando il circuito ne incassa 22
+vuol dire che l'aumento lo fa l'ufficio **al momento di confermare**, con il cliente già in
+conversazione. Meglio il numero vero adesso.
+
+Il 22 è il prezzo del **carrello WooCommerce**, che lo scraping segnala come quello
+canonico: su cinque prodotti la descrizione ne scrive un altro (il Mini Gran Premio adulto
+dice 40 e il carrello 45), e in quei casi vale il carrello.
+
+### Le fasce d'età combaciano, e per una volta senza inventare niente
+
+Il circuito le dà già pulite: adulto **dai 14 anni**, junior **dai 7 ai 13** (più 1,30 m di
+altezza). `14+` e `7-13` si toccano senza buco e senza sovrapposizione, `controlla.js` è
+contento.
+
+**Niente `priceInfant`.** Sotto i 7 anni non si guida, punto: non è "gratis", è "non si
+sale". Il campo assente è esattamente quello che vuol dire. Chi è più piccolo può salire sul
+**biposto** dal metro e venti di altezza, guidato da un maggiorenne — ma quello costa 25 € **a
+kart**, non a persona, quindi non può stare in `priceAdult`/`priceChild`: sommato a testa
+darebbe un totale falso. Sta in una nota, con scritto che è a kart.
+
+### `family: true`, e non è una svista
+
+Era `false`. Con i kart junior dai 7 anni e il biposto dal metro e venti, "adatta ai
+bambini" è la risposta giusta. Resta una valutazione, come per tutte le altre schede: se
+l'ufficio la vede diversa, si rimette `false` in una parola.
+
+### `included` è rimasto vuoto, apposta
+
+Le FAQ dicono "puoi portare il tuo casco, purché integrale da moto". Da lì si **capisce** che
+il casco lo dà il circuito, ma capirlo non è che lo scriva, e nello scraping non c'è nessun
+campo che elenchi cosa è compreso. `equipment` non è entrato e la frase è finita in nota,
+come la dice il fornitore. È l'unica scheda avventura senza il riquadro "Cosa è incluso", e
+va bene così finché l'ufficio non conferma.
+
+### Gli orari: le fasce segnaposto restano, ma i junior no
+
+Le tande sono **libere**: non ci sono partenze, si arriva e si guida. Quindi `times` resta
+**assente** — non `[]`, che vuol dire charter — e il cliente sceglie fra le fasce segnaposto,
+che qui sono davvero una preferenza. `days` resta assente: sette giorni su sette non sono
+una limitazione.
+
+L'orario di apertura del circuito **non è stato scritto**: i riassunti dicevano 10:00–20:30,
+un aggregatore 9:00–22:00, e nello scraping non c'è. Un orario inventato su questa scheda
+è esattamente il danno descritto in `CLAUDE.md` per il pick-up.
+
+Quello che invece c'è, e conta, è che **nel fine settimana i kart junior girano solo dalle
+10:00 alle 11:00 e dalle 15:00 alle 16:00**. È l'unico vincolo d'orario documentato, ed è
+quello che manda una famiglia al circuito nel momento sbagliato: è finito in nota.
+
+### Le nove gare non sono entrate come prezzi, e non è pigrizia
+
+Lo scraping porta nove formati di gara (Mini Gran Premio, Gran Premio, Super Gran Premio,
+adulto e junior) con prezzi da 35 a 70 euro. Nessuno è finito in `options`, per tre motivi
+messi insieme:
+
+| prodotto | carrello | descrizione |
+|---|---|---|
+| Mini Gran Premio Adulto | 45 | 40 |
+| Gran Premio Adulto | 60 | 60 |
+| Super Gran Premio Adulto | 70 | 65 |
+| Mini Gran Premio Junior | 35 | 30 |
+| **Gran Premio Junior** | **50** | **35** |
+| Super Gran Premio Junior | 70 | 70 |
+
+1. su cinque formati su sei il sito dà **due numeri diversi**, e sul Gran Premio Junior
+   ballano 15 euro: lo scraping stesso scrive di confermarlo prima di pubblicare;
+2. le gare hanno un **minimo di gruppo** (8 adulti, 6 bambini) che la finestra della
+   richiesta non sa far rispettare: un cliente in due chiederebbe una gara che non esiste;
+3. sono un prodotto da prenotare prima, non da tanda libera.
+
+Sta in nota che le gare ci sono, con i minimi e "il prezzo si concorda con la richiesta".
+I numeri qui sopra restano scritti qui: appena l'ufficio conferma quale colonna vale,
+diventano `options` in mezz'ora.
+
+**Scartati apposta anche due prodotti**: il *Día del kartista* (25 €, due tande, dal lunedì
+al venerdì) è **solo per residenti canari** e non va offerto a un turista; la *Tanda 2-Drive*
+(25 € a persona, dai 18 anni, freno e acceleratore al volante) è quasi certamente il kart
+per chi ha problemi di mobilità, ma la scheda del fornitore **non lo scrive** — è una
+deduzione dello scraping, e su un dato di accessibilità dedurre non basta. Se l'ufficio
+conferma, quella riga vale più di tutte le altre messe insieme.
+
+Del circuito **non** sono entrati il telefono e la prenotazione diretta: le richieste passano
+dal WhatsApp di Admiral, non dal fornitore. E niente politica di cancellazione loro: le
+nostre 24 ore valgono comunque.
+
+### Nello zip c'era anche un componente React
+
+`KartingCard.jsx`, una scheda prodotto che legge direttamente il JSON. Non è utilizzabile:
+Isla è HTML, CSS e JavaScript a mano, senza framework e senza build. Non è stato copiato
+niente da lì. Il JSON invece è servito, e vale la pena tenerlo: se il proprietario lo mette
+in `dati-fornitore/grezzo/` diventa la fonte da riaprire quando l'ufficio conferma le gare.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati (`opera-60`, `masca-teide-cabrio-bus`).
+
+Nel browser vero, viewport telefono, `tour.html?id=karting` nelle tre lingue: descrizione,
+"In breve", "Adulti (14+) €22", "Bambini (7-13) €16", "Adatta a Famiglie con bambini" e le
+cinque note escono tutte tradotte. Nella finestra della richiesta il totale torna a mano:
+2 adulti + 1 bambino = **60 €** (2 × 22 + 16), scritto "2 adults × €22 + 1 child × €16".
+Nessun errore JS. L'unica richiesta in errore è Google Fonts, bloccata dal proxy anche sulle
+altre schede: non c'entra con questa modifica.
+
+`CACHE_NAME` a `isla-v276`.
+
+### Da confermare con l'ufficio
+
+- **22 € e 16 €** sono i prezzi del carrello del circuito: Admiral li rivende a quelli?
+- **Il casco è compreso nel prezzo?** Se sì entra `equipment` fra le icone.
+- **L'orario di apertura del circuito**, che non è stato scritto da nessuna parte.
+- **Le gare**: quale colonna vale, carrello o descrizione? Poi diventano `options`.
+- **Il biposto a 25 €**: è a kart, e va confermato che Admiral lo rivenda.
+- **La Tanda 2-Drive è il kart accessibile?** Se sì va detto sulla scheda.
+- **`family: true`** è una valutazione, non un dato del fornitore.
+
+## v277 — le gare del karting diventano quattro formule
+
+In v276 le nove gare erano rimaste fuori perché il sito dava due prezzi diversi su cinque
+formati su sei. Il proprietario ha confermato che **vale il carrello**, e ha chiesto di
+metterle come categorie separate.
+
+### Le sei gare diventano quattro bottoni, e non è una semplificazione
+
+Il fornitore le vende come **sei prodotti**: Mini, Gran Premio e Super Gran Premio, ognuno in
+versione adulto e in versione junior. Sulla scheda sono diventate **tre formule** più la
+tanda libera, perché le varianti di questo catalogo hanno già `priceAdult` e `priceChild`
+separati: la coppia adulto/junior dello stesso formato è esattamente quello che una variante
+sa dire da sola.
+
+| formula | adulto | bambino | durata adulto | durata bambino | minimo |
+|---|---|---|---|---|---|
+| Tanda libera | 22 | 16 | 10′ | 10′ | nessuno |
+| Mini Gran Premio | 45 | 35 | 20′ | 13′ | 8 adulti / 6 bambini |
+| Gran Premio | 60 | 50 | 30′ | 20′ | 8 adulti / 6 bambini |
+| Super Gran Premio | 70 | 70 | 40′ | 40′ | **8, in tutti e due i casi** |
+
+La tanda libera è la **prima** variante, quindi è quella premuta all'apertura: è la formula
+che fa la maggior parte dei clienti, ed è l'unica senza gruppo minimo. `priceFrom` resta 22 e
+combacia col bottone acceso.
+
+### Il dettaglio delle gare smentiva quello che stavo per scrivere
+
+La prima stesura delle varianti diceva "gara con classifica finale" su tutte e tre, e
+"servono 8 adulti o 6 bambini" anche sul Super. Rileggendo le descrizioni del fornitore nel
+JSON, due cose erano sbagliate:
+
+- **il Mini Gran Premio non ha il podio.** Adulto: 10 minuti di prove cronometrate e 10 di
+  gara, e basta. Il podio (e per i bambini il brindisi analcolico) c'è dal Gran Premio in su;
+- **il Super Gran Premio Junior vuole 8 bambini, non 6.** È l'unico formato junior che alza
+  il minimo, e allinearlo agli altri avrebbe mandato un gruppo di sei a chiedere una gara che
+  non gli fanno.
+
+È la stessa lezione di v276 in piccolo: il riassunto di un prodotto non è il prodotto. Qui
+per fortuna il file grezzo era già in casa.
+
+### Le durate stanno nella variante, con due numeri in una riga
+
+`duration: "30 minuti (20 per i bambini)"`. Non è elegantissimo, ma la riga "Durata" è una
+sola e i due pubblici hanno davvero due durate: scrivere solo quella dell'adulto vorrebbe
+dire promettere dieci minuti in più a un bambino. Dove le durate coincidono (tanda libera e
+Super Gran Premio) la parentesi non c'è.
+
+Il minimo di gruppo invece **non ha un campo**, e sta nella `desc` di ogni variante: sono le
+due righe che si aprono sotto il bottone premuto. Non è finito nell'etichetta perché
+"Mini Gran Premio (da 8 adulti o 6 bambini)" su un bottone da telefono non ci sta.
+
+La nota condivisa adesso dice solo che le gare si prenotano prima e hanno un minimo, e che
+**la tanda libera non ne ha**: è la risposta alla domanda che si fa chi è in due.
+
+### La finestra della richiesta non sa contare le persone minime
+
+Un cliente in due può scegliere "Gran Premio" e mandare la richiesta: la finestra non lo
+ferma, come farebbe invece `days` con un giorno sbagliato. È voluto — l'ufficio conferma
+entro 24 ore e in quel momento propone la tanda libera — ma se capita spesso, il posto dove
+sistemarlo è la finestra, non la scheda.
+
+### Non copiato
+
+**La gara gratis al festeggiato** dai 10 partecipanti in su (dai 9 per i bambini). È una
+promozione del circuito, e lo sconto di un altro non è nostro da regalare: se Admiral vuole
+farlo, è una decisione dell'ufficio, non un dato da ricopiare.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati.
+
+Nel browser vero, viewport telefono, `tour.html?id=karting`: quattro bottoni, e premendoli
+uno a uno la tabella "In breve" li segue — durata, prezzo adulto e prezzo bambino cambiano
+insieme al bottone. Il totale di 2 adulti + 1 bambino, verificato a mano su tutte e quattro:
+
+| formula | totale | conto |
+|---|---|---|
+| Tanda libera | 60 € | 2 × 22 + 16 |
+| Mini Gran Premio | 125 € | 2 × 45 + 35 |
+| Gran Premio | 170 € | 2 × 60 + 50 |
+| Super Gran Premio | 210 € | 2 × 70 + 70 |
+
+Nessun errore JS. Provato in italiano e in inglese; le tre lingue ci sono su tutte le
+etichette e su tutte le spiegazioni.
+
+`CACHE_NAME` a `isla-v277`.
+
+### Da confermare con l'ufficio
+
+Restano aperte le voci di v276 (casco compreso, orario di apertura del circuito, biposto,
+Tanda 2-Drive accessibile), meno quella sulle gare, che è stata risolta qui.
+
+## v278 — le tre risposte dell'ufficio, e una che smentiva una deduzione
+
+Il proprietario ha risposto alle domande rimaste aperte in v276: il casco è compreso,
+l'orario è 10:00–20:30, e la Tanda 2-Drive **non è** il kart accessibile.
+
+### Il casco: `equipment` entra, e la nota cambia mestiere
+
+Era l'unica scheda avventura senza il riquadro "Cosa è incluso". Adesso c'è, con
+`included: ["equipment"]`.
+
+La nota è stata riscritta di conseguenza. Prima diceva solo "il casco si può portare da
+casa": era il massimo che si potesse dire senza inventare, ma letta da sola sembrava che il
+casco te lo dovessi procurare. Adesso dice **prima** che lo dà il circuito e **poi** che chi
+preferisce il suo può portarlo. Stesso fatto, ordine opposto, e cambia la risposta alla
+domanda che si fa davvero il cliente.
+
+### L'orario di apertura non è finito in una nota e basta
+
+10:00–20:30, tutti i giorni. Scriverlo in nota era la mossa minima, ma lasciava un problema
+che la nota non tocca: il menu **"A che ora"** della finestra della richiesta mostrava le
+fasce segnaposto di `ORARI_PREDEFINITI`, che sono sbagliate in tutte e due le direzioni —
+offrivano le **09:00**, a cancello chiuso, e si fermavano alle **17:00**, cioè prima delle
+ore in cui la pista è illuminata, che è una cosa che la descrizione promette.
+
+Quindi la scheda ha adesso i suoi `times`, cinque fasce da due ore che coprono l'orario
+vero: `10:00 - 12:00` … `18:00 - 20:30`.
+
+**Il prezzo da pagare è che "Da concordare" sparisce**, perché `escursioni.js` lo offre solo
+dove gli orari non ci sono o sono `[]`. Su una barca che parte alle 10:00 è giusto così; qui
+le tande sono libere e l'ora si concorda davvero, quindi "Da concordare" sarebbe stata
+onesta. Fra le due imprecisioni ho scelto questa: una fascia dentro l'orario di apertura è
+comunque una preferenza vera, mentre le 09:00 mandavano un cliente davanti al cancello
+chiuso. Segnalato al proprietario, si torna indietro togliendo una riga.
+
+### La Tanda 2-Drive: la deduzione era sbagliata
+
+In v276 lo scraping suggeriva che il 2-Drive (freno e acceleratore al volante) fosse il kart
+per chi ha problemi di mobilità, e la scheda del fornitore non lo scriveva. Bene aver
+aspettato: **non lo è**. L'ufficio dice che è il kart per i bambini che ancora non sanno
+guidare, e che **si sale dai 3 anni**, come passeggeri.
+
+Sarebbe stato un errore brutto da pubblicare: un'informazione di accessibilità falsa non è
+un dato sbagliato qualsiasi, è una persona che fa il viaggio fino a Fañabé per una cosa che
+non c'è. È la conferma della regola — su un dato di accessibilità, dedurre non basta mai.
+
+**Attenzione a un numero che non torna.** La scheda del fornitore per il biposto dice
+*altezza minima del copilota 1,20 m*; un bambino di 3 anni sta sui 95 cm. O il metro e venti
+vale per un'altra cosa, o in pratica il circuito guarda l'età. In scheda è finita **la
+versione dell'ufficio** (dai 3 anni, senza guidare), perché è chi vende a saperlo, ma la
+discrepanza è segnalata al proprietario ed è il caso che qualcuno la chieda al circuito.
+
+Nessun `priceInfant` e nessuna fascia `ages.infant`, nemmeno adesso: il biposto si paga
+**25 € a kart**, non a testa, quindi non c'è un prezzo a persona da scrivere per un bambino
+di tre anni. Le fasce `14+` e `7-13` continuano a dire chi **guida**, che è quello che i due
+prezzi a persona misurano.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati.
+
+Nel browser vero, viewport telefono, `tour.html?id=karting` in italiano: compare il riquadro
+"Cosa è incluso" con **Attrezzatura** e la sua icona davvero disegnata (contato l'`svg`, non
+solo il testo); in "In breve" c'è la riga "Orari" con le cinque fasce; nella finestra della
+richiesta il menu "A che ora" mostra quelle e **non** "Da concordare". Le quattro formule e i
+loro totali sono invariati. Nessun errore JS.
+
+`CACHE_NAME` a `isla-v278`.
+
+### Cosa resta aperto
+
+Una cosa sola: **il metro e venti del copilota contro i 3 anni**. Tutto il resto delle
+domande di v276 ha avuto risposta.

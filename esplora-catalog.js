@@ -2465,17 +2465,101 @@ const ESPLORA_CATALOG = [
     id: "karting",
     title: "Karting",
     category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Fañabé",
     duration: { it: "10 minuti a tanda", en: "10-minute session", es: "10 minutos por tanda" },
-    priceFrom: 20,
-    priceAdult: 20,
-    priceChild: 15,
-    family: false,
-    desc: {
-      it: "Giri in pista su kart, cronometrati.",
-      en: "Timed laps on a go-kart track.",
-      es: "Vueltas cronometradas en pista de karts."
+    priceFrom: 22,
+    priceAdult: 22,
+    priceChild: 16,
+    ages: { adult: "14+", child: "7-13" },
+    family: true,
+    included: ["equipment"],
+    // Il circuito e' aperto 10:00-20:30 (ufficio, 10 settembre 2026) e le tande
+    // sono libere: non ci sono partenze, si arriva e si guida. Queste fasce
+    // restano quindi una preferenza, come le segnaposto, ma coprono l'orario
+    // vero: quelle generiche offrivano le 09:00 a cancello chiuso e si
+    // fermavano alle 17:00, cioe' prima delle ore in cui la pista e' illuminata.
+    times: ["10:00 - 12:00", "12:00 - 14:00", "14:00 - 16:00", "16:00 - 18:00", "18:00 - 20:30"],
+    options: {
+      label: { it: "Formula", en: "Format", es: "Fórmula" },
+      choices: [
+        {
+          label: { it: "Tanda libera", en: "Open session", es: "Tanda libre" },
+          duration: { it: "10 minuti", en: "10 minutes", es: "10 minutos" },
+          priceAdult: 22,
+          priceChild: 16,
+          desc: {
+            it: "Una tanda da 10 minuti in pista. È l'unica formula senza gruppo minimo: si va anche in due.",
+            en: "One 10-minute session on track. It is the only format with no minimum group: two people are enough.",
+            es: "Una tanda de 10 minutos en pista. Es la única fórmula sin grupo mínimo: se puede ir incluso de dos."
+          }
+        },
+        {
+          label: { it: "Mini Gran Premio", en: "Mini Grand Prix", es: "Mini Gran Premio" },
+          duration: { it: "20 minuti (13 per i bambini)", en: "20 minutes (13 for children)", es: "20 minutos (13 para niños)" },
+          priceAdult: 45,
+          priceChild: 35,
+          desc: {
+            it: "Dieci minuti di prove cronometrate e dieci di gara. Per i bambini sono cinque di prove e otto di gara. Servono almeno 8 adulti, oppure 6 bambini.",
+            en: "Ten minutes of timed practice and ten of racing. For children it is five of practice and eight of racing. A minimum of 8 adults, or 6 children.",
+            es: "Diez minutos de entrenamientos cronometrados y diez de carrera. Para los niños son cinco de entrenamientos y ocho de carrera. Mínimo 8 adultos, o 6 niños."
+          }
+        },
+        {
+          label: { it: "Gran Premio", en: "Grand Prix", es: "Gran Premio" },
+          duration: { it: "30 minuti (20 per i bambini)", en: "30 minutes (20 for children)", es: "30 minutos (20 para niños)" },
+          priceAdult: 60,
+          priceChild: 50,
+          desc: {
+            it: "Prove libere, prove cronometrate e dieci minuti di gara, poi il podio — per i bambini con brindisi analcolico. La loro gara salta le prove libere. Servono almeno 8 adulti, oppure 6 bambini.",
+            en: "Free practice, timed practice and ten minutes of racing, then the podium — with an alcohol-free toast for the children. Their race skips the free practice. A minimum of 8 adults, or 6 children.",
+            es: "Entrenamientos libres, entrenamientos cronometrados y diez minutos de carrera, después el pódium, con cava infantil para los niños. Su carrera se salta los entrenamientos libres. Mínimo 8 adultos, o 6 niños."
+          }
+        },
+        {
+          label: { it: "Super Gran Premio", en: "Super Grand Prix", es: "Super Gran Premio" },
+          duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
+          priceAdult: 70,
+          priceChild: 70,
+          desc: {
+            it: "La formula lunga: prove libere, prove cronometrate e venti minuti di gara, poi il podio. Uguale per adulti e bambini, e qui il minimo è 8 in tutti e due i casi.",
+            en: "The long format: free practice, timed practice and twenty minutes of racing, then the podium. The same for adults and children, and here the minimum is 8 either way.",
+            es: "La fórmula larga: entrenamientos libres, entrenamientos cronometrados y veinte minutos de carrera, después el pódium. Igual para adultos y niños, y aquí el mínimo es 8 en ambos casos."
+          }
+        }
+      ]
     },
+    desc: {
+      it: "Pista all'aperto di 857 metri a Fañabé, otto curve e impianto di illuminazione per girare anche dopo il tramonto. Si guida a tande da 10 minuti: kart da adulto dai 14 anni, kart junior dai 7, e un biposto per chi è ancora troppo piccolo per guidare da solo.",
+      en: "An 857-metre outdoor track in Fañabé, eight corners and floodlights for driving after sunset too. You drive in 10-minute sessions: adult karts from 14, junior karts from 7, and a two-seater for anyone still too small to drive alone.",
+      es: "Circuito al aire libre de 857 metros en Fañabé, ocho curvas e iluminación para rodar también después del atardecer. Se conduce en tandas de 10 minutos: karts de adulto desde los 14 años, karts junior desde los 7 y un biplaza para quien todavía es pequeño para conducir solo."
+    },
+    notes: [
+      {
+        it: "Kart da adulto dai 14 anni in su. Kart junior dai 7 ai 13 anni, con almeno 1,30 m di altezza. Chi non è maggiorenne deve essere accompagnato da un adulto.",
+        en: "Adult karts from age 14 up. Junior karts from 7 to 13, with a minimum height of 1.30 m. Anyone under 18 must be accompanied by an adult.",
+        es: "Karts de adulto a partir de los 14 años. Karts junior de 7 a 13 años, con al menos 1,30 m de altura. Los menores de 18 años deben ir acompañados de un adulto."
+      },
+      {
+        it: "Chi è troppo piccolo per guidare sale sul kart biposto come passeggero: si può dai 3 anni, con un adulto maggiorenne al volante. Costa 25 € a kart, non a persona.",
+        en: "Anyone too small to drive rides in the two-seater kart as a passenger: from age 3, with an adult over 18 at the wheel. It costs €25 per kart, not per person.",
+        es: "Quien es demasiado pequeño para conducir sube al kart biplaza como pasajero: se puede desde los 3 años, con un adulto mayor de 18 al volante. Cuesta 25 € por kart, no por persona."
+      },
+      {
+        it: "Nel fine settimana i kart junior girano solo in due fasce, dalle 10:00 alle 11:00 e dalle 15:00 alle 16:00. Negli altri giorni non ci sono fasce riservate.",
+        en: "At weekends the junior karts run in two slots only, from 10:00 to 11:00 and from 15:00 to 16:00. On other days there are no set slots.",
+        es: "Los fines de semana los karts junior ruedan solo en dos franjas, de 10:00 a 11:00 y de 15:00 a 16:00. El resto de días no hay franjas reservadas."
+      },
+      {
+        it: "Il circuito è aperto tutti i giorni dalle 10:00 alle 20:30. Il casco lo dà il circuito; chi preferisce il suo può portarlo, purché sia un integrale da moto.",
+        en: "The track is open every day from 10:00 to 20:30. The helmet is provided; if you prefer your own you may bring it, as long as it is a full-face motorcycle helmet.",
+        es: "El circuito abre todos los días de 10:00 a 20:30. El casco lo da el circuito; quien prefiera el suyo puede traerlo, siempre que sea un integral de moto."
+      },
+      {
+        it: "Le tre formule di gara si prenotano prima e hanno un gruppo minimo. Se siete meno, resta la tanda libera: quella non ha minimi.",
+        en: "The three race formats are booked in advance and have a minimum group. If there are fewer of you, the open session is still there: that one has no minimum.",
+        es: "Las tres fórmulas de carrera se reservan antes y tienen un grupo mínimo. Si sois menos, queda la tanda libre: esa no tiene mínimo."
+      }
+    ],
     image: "karting.jpg",
     published: true
   },

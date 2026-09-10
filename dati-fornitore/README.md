@@ -86,3 +86,25 @@ di pubblicarli, e ricontrollati quando il fornitore cambia i giri.
 
 I **nomi degli hotel** e i **punti di raccolta**, invece, si possono usare
 subito: sono luoghi, non promesse.
+
+---
+
+## Non solo pick-up: `grezzo/karting-las-americas.json`
+
+Questa cartella è nata per gli orari di raccolta, ma qui dentro sta anche lo
+**scraping del sito di Karting Las Américas** (10 settembre 2026), mandato dal
+proprietario perché `www.kartingamericas.com` è bloccato dal proxy di rete e
+dall'esterno non si legge.
+
+Undici prodotti presi dalle schede WooCommerce: le tande, le nove gare, la
+promozione per residenti, i tre modelli di kart, indirizzo e dati del circuito.
+
+Su cinque formati di gara su sei il sito dà **due prezzi diversi**, e il file
+li tiene tutti e due (`precio`, dal carrello, e `precio_en_descripcion`). Il
+proprietario ha confermato il **10 settembre 2026 che vale il carrello**: 45,
+60, 70 per gli adulti, 35, 50, 70 per i bambini. Da lì le sei gare sono
+diventate le quattro formule della scheda (v277).
+
+Non è finito in scheda quello che il file chiama `plaza_gratis_desde`: il
+circuito regala la gara al festeggiato dai 10 partecipanti in su, ma è la
+promozione di un altro e non è nostra da offrire.

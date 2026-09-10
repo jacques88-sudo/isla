@@ -1993,8 +1993,13 @@ const ESPLORA_CATALOG = [
     // della stessa uscita come i quattro giri in buggy — sono due tour, con
     // due fornitori e due serate diverse — ma il cliente li sceglie uno
     // accanto all'altro, e in elenco due righe quasi identiche sotto "Sotto le
-    // stelle" facevano solo confusione. Le varianti servono a questo: due
-    // bottoni e, sotto, tutto quello che cambia.
+    // stelle" facevano solo confusione.
+    // Quello che le distingue davvero non e' il prezzo ma **la lingua**:
+    // Andromeda va in italiano con un gruppo fino a 16, la VIP va in inglese e
+    // al massimo in otto (proprietario, 10 settembre 2026). E' il dato che
+    // decide quale delle due prenotare, quindi sta nelle etichette dei
+    // bottoni, non solo nelle descrizioni: chi non parla nessuna delle due se
+    // ne accorge prima di mandare la richiesta, non dopo.
     // Sopravvive l'id `stargazing-group`, che porta il prezzo di partenza e la
     // foto della scheda unita; l'indirizzo `stargazing-vip` non risponde piu',
     // come era successo ai due buggy assorbiti.
@@ -2030,17 +2035,25 @@ const ESPLORA_CATALOG = [
     options: {
       label: { it: "Serata", en: "Evening", es: "Velada" },
       choices: [
-        { label: { it: "Gruppo grande", en: "Large group", es: "Grupo grande" },
+        { label: {
+            it: "Gruppo grande (in italiano)",
+            en: "Large group (in Italian)",
+            es: "Grupo grande (en italiano)"
+          },
           priceAdult: 75,
           // Quanto pagano i bambini su questa serata non lo sappiamo ancora, e
           // senza `priceChild` il totale non si fa appena la richiesta ne
           // conta uno: meglio nessun totale che uno che li conta gratis.
           desc: {
-            it: "La serata in gruppo numeroso, con la guida. Il giorno, l'ora e il punto di ritrovo te li conferma l'ufficio insieme alla richiesta.",
-            en: "The evening in a larger group, with a guide. The office confirms the day, the time and the meeting point together with your request.",
-            es: "La velada en grupo numeroso, con guía. La oficina te confirma el día, la hora y el punto de encuentro junto con la solicitud."
+            it: "La serata di Andromeda, raccontata in italiano, con un gruppo che arriva fino a 16 persone. Il giorno, l'ora e il punto di ritrovo te li conferma l'ufficio insieme alla richiesta.",
+            en: "The Andromeda evening, guided in Italian, with a group of up to 16 people. The office confirms the day, the time and the meeting point together with your request.",
+            es: "La velada de Andromeda, contada en italiano, con un grupo de hasta 16 personas. La oficina te confirma el día, la hora y el punto de encuentro junto con la solicitud."
           } },
-        { label: { it: "VIP, gruppo ristretto", en: "VIP, small group", es: "VIP, grupo reducido" },
+        { label: {
+            it: "VIP, gruppo ristretto (in inglese)",
+            en: "VIP, small group (in English)",
+            es: "VIP, grupo reducido (en inglés)"
+          },
           priceAdult: 85,
           priceChild: 80,
           duration: { it: "5 ore", en: "5 hours", es: "5 horas" },
@@ -2053,16 +2066,16 @@ const ESPLORA_CATALOG = [
           // guida sta gia' sopra e vale per tutte e due.
           included: ["transfer", "fingerfood", "drinks", "equipment", "photos"],
           desc: {
-            it: "Al massimo 8 persone, con ritiro in hotel e minibus. Si sale sopra le nuvole per il tramonto, con tapas e vino, poi si resta al buio a osservare col telescopio. La guida racconta in inglese, e le foto della serata sono comprese.",
-            en: "Eight people at most, with hotel pickup and a minibus. You go up above the clouds for sunset, with tapas and wine, then stay out in the dark observing through the telescope. The guide speaks English, and the photos of the evening are included.",
-            es: "Como máximo 8 personas, con recogida en el hotel y minibús. Se sube por encima de las nubes para el atardecer, con tapas y vino, y luego se observa a oscuras con el telescopio. El guía cuenta en inglés, y las fotos de la velada están incluidas."
+            it: "Al massimo 8 persone e tutto in inglese, con ritiro in hotel e minibus. Si sale sopra le nuvole per il tramonto, con tapas e vino, poi si resta al buio a osservare col telescopio. Le foto della serata sono comprese.",
+            en: "Eight people at most and everything in English, with hotel pickup and a minibus. You go up above the clouds for sunset, with tapas and wine, then stay out in the dark observing through the telescope. The photos of the evening are included.",
+            es: "Como máximo 8 personas y todo en inglés, con recogida en el hotel y minibús. Se sube por encima de las nubes para el atardecer, con tapas y vino, y luego se observa a oscuras con el telescopio. Las fotos de la velada están incluidas."
           } }
       ]
     },
     desc: {
-      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due serate fra cui scegliere — in gruppo grande, oppure la VIP a numero chiuso, con ritiro in hotel, tapas e vino.",
-      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two evenings to choose from — in a larger group, or the VIP one with limited places, hotel pickup, tapas and wine.",
-      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir: en grupo numeroso, o la VIP con plazas limitadas, recogida en el hotel, tapas y vino."
+      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due serate fra cui scegliere, e la differenza è soprattutto la lingua: quella in gruppo grande è in italiano, fino a 16 persone; la VIP è in inglese, al massimo in otto, con ritiro in hotel, tapas e vino.",
+      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two evenings to choose from, and the difference is above all the language: the larger group is guided in Italian, up to 16 people; the VIP one is in English, eight at most, with hotel pickup, tapas and wine.",
+      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir, y la diferencia es sobre todo el idioma: la de grupo grande se cuenta en italiano, hasta 16 personas; la VIP es en inglés, ocho como máximo, con recogida en el hotel, tapas y vino."
     },
     included: ["guide"],
     notes: [

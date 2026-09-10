@@ -7586,3 +7586,87 @@ della tabella qui sopra verificati chiamando `calcolaTotale()` sulla pagina.
 - Le **quattro foto** da caricare in `assets/`
 - L'**età minima** della VIP, e se sotto i 2 anni si sale
 - Se il **12+** vale anche sul gruppo grande
+
+---
+
+## v266 — quello che divide le due serate è la lingua, non il prezzo
+
+La stessa pagina del fornitore è arrivata una seconda volta, identica campo per campo. Non
+c'era niente di nuovo dentro, ma rileggendola è saltata fuori **una contraddizione nel file
+stesso**:
+
+```
+"gruppo": { "max_standard": 8, "max_con_self_drive": 16, "tipico": "10-12 persone" }
+```
+
+Sulla scheda c'era scritto "Al massimo 8 persone", che è l'highlight del fornitore — ma lo
+stesso file diceva che il gruppo tipico è 10-12 e che con gli ospiti self-drive si arriva a
+16. Chiesto al proprietario quale dei tre numeri vale per noi, e la risposta ha spiegato
+l'intera scheda.
+
+### Le due serate sono di due operatori diversi, e parlano due lingue diverse
+
+- **Gruppo grande** → è **Andromeda**: gruppo fino a **16 persone**, e si va **solo in
+  italiano**
+- **VIP** → gruppo di **8 al massimo**, e si va **solo in inglese**
+
+Il 10-12 e il 16 del file erano numeri dell'altra versione (quella con gli ospiti che
+arrivano in auto propria), che Admiral non vende: per i nostri clienti gli 8 sono veri, e
+restano scritti.
+
+**Quello che decide quale prenotare non è il prezzo, sono i 10 € di differenza fra due
+lingue.** Un cliente italiano vuole Andromeda anche se il gruppo è il doppio; un inglese
+non ha scelta, e uno spagnolo o un tedesco deve sapere subito che nessuna delle due è nella
+sua lingua — prima di mandare la richiesta, non dopo.
+
+### Dove sta scritta, e perché non è un campo `languages`
+
+`languages` è il **menu** "In che lingua", cioè una domanda con delle risposte: si mette
+dove il cliente può scegliere. Qui non sceglie niente — ogni serata ha la sua lingua e
+basta. Un menu da una voce sola sarebbe una domanda finta, e due menu diversi per due
+varianti il campo non li prevede.
+
+Quindi la lingua sta scritta in tre punti, in ordine di quanto presto la si legge:
+
+1. **Nelle etichette dei bottoni**: "Gruppo grande (in italiano)" e "VIP, gruppo ristretto
+   (in inglese)". È la prima cosa che si vede, e finisce anche nel messaggio WhatsApp, così
+   l'ufficio sa quale serata è già dalla riga della richiesta
+2. **Nella descrizione della scheda**, che adesso dice che la differenza è soprattutto la
+   lingua, con i due numeri del gruppo accanto
+3. **Nella descrizione di ogni variante**, per esteso
+
+Le tre lingue del sito restano tre: la scheda si legge in italiano, inglese e spagnolo
+anche quando racconta di una serata che si fa solo in italiano. Sono due cose diverse — la
+lingua del sito e la lingua della guida — ed è il motivo per cui "(in italiano)" va
+tradotto ("in Italian", "en italiano") mentre il nome **Andromeda** resta uguale in tutte e
+tre, come i nomi delle barche.
+
+### Non copiato, di nuovo
+
+Dalla stessa pagina è restato fuori il **"solo 35 minuti di viaggio dal sud dell'isola"**.
+Non è solo che sta fra gli highlight promozionali: **non torna**. Da Costa Adeje al Parco
+Nazionale del Teide c'è un'ora buona di strada di montagna, e scrivere 35 minuti
+manderebbe qualcuno a fare i conti sbagliati sulla serata. Se il punto di osservazione è
+davvero più vicino, è l'ufficio a doverlo dire.
+
+Fuori anche il **riprogrammare per maltempo** della FAQ: è la politica del fornitore, e le
+politiche non si copiano.
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo: i due bottoni portano la lingua fra
+parentesi tradotta, "Andromeda" resta uguale in tutte e tre, e le descrizioni cambiano col
+bottone premuto. Prezzi, totali, giorni, orari e compresi invariati rispetto a v265.
+Nessun errore in console.
+
+`node controlla.js` → 0 errori, 2 avvisi, gli stessi di sempre. `CACHE_NAME` a `isla-v266`.
+
+### Da confermare con l'ufficio
+
+- **"Andromeda" è il nome giusto** dell'operatore del gruppo grande? Sulla scheda è
+  scritto, come si fa coi nomi delle barche
+- Del gruppo grande manca ancora dove si va, quanto dura, in che giorni, a che ora, cosa
+  comprende e quanto pagano i bambini
+- Le **quattro foto** da caricare in `assets/`
+- L'**età minima** della VIP, e se sotto i 2 anni si sale
+- Se il **12+** vale anche sul gruppo grande

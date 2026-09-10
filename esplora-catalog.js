@@ -2473,12 +2473,13 @@ const ESPLORA_CATALOG = [
     ages: { adult: "14+", child: "7-13" },
     family: true,
     included: ["equipment"],
-    // Il circuito e' aperto 10:00-20:30 (ufficio, 10 settembre 2026) e le tande
-    // sono libere: non ci sono partenze, si arriva e si guida. Queste fasce
-    // restano quindi una preferenza, come le segnaposto, ma coprono l'orario
-    // vero: quelle generiche offrivano le 09:00 a cancello chiuso e si
-    // fermavano alle 17:00, cioe' prima delle ore in cui la pista e' illuminata.
-    times: ["10:00 - 12:00", "12:00 - 14:00", "14:00 - 16:00", "16:00 - 18:00", "18:00 - 20:30"],
+    // Una voce sola, e non e' una svista: le tande sono libere, non ci sono
+    // partenze, e l'unico orario vero e' quando il circuito e' aperto
+    // (10:00-20:30, ufficio 10 settembre 2026). Spezzarlo in fasce faceva
+    // sembrare che si scegliesse fra dei turni che non esistono; le fasce
+    // segnaposto erano peggio ancora, offrivano le 09:00 a cancello chiuso.
+    // Chi ha una preferenza sull'ora la scrive nelle note della richiesta.
+    times: ["10:00 - 20:30"],
     options: {
       label: { it: "Formula", en: "Format", es: "Fórmula" },
       choices: [
@@ -2488,9 +2489,9 @@ const ESPLORA_CATALOG = [
           priceAdult: 22,
           priceChild: 16,
           desc: {
-            it: "Una tanda da 10 minuti in pista. È l'unica formula senza gruppo minimo: si va anche in due.",
-            en: "One 10-minute session on track. It is the only format with no minimum group: two people are enough.",
-            es: "Una tanda de 10 minutos en pista. Es la única fórmula sin grupo mínimo: se puede ir incluso de dos."
+            it: "Una tanda da 10 minuti.",
+            en: "One 10-minute session.",
+            es: "Una tanda de 10 minutos."
           }
         },
         {

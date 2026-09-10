@@ -8709,3 +8709,64 @@ loro totali sono invariati. Nessun errore JS.
 
 Una cosa sola: **il metro e venti del copilota contro i 3 anni**. Tutto il resto delle
 domande di v276 ha avuto risposta.
+
+## v279 — due righe che dicevano più del necessario
+
+Il proprietario, guardando la scheda finita: per la tanda basta scrivere "una tanda da 10
+minuti", e per gli orari basta "dalle 10:00 alle 20:30". Ha ragione tutte e due le volte, e
+per due motivi diversi.
+
+### La tanda: la spiegazione ripeteva la nota
+
+Diceva: *"Una tanda da 10 minuti in pista. È l'unica formula senza gruppo minimo: si va
+anche in due."* La seconda frase c'era **già** in fondo alla scheda, nella nota sulle gare
+("Se siete meno, resta la tanda libera: quella non ha minimi"). Ripetuta sotto il bottone
+diventava rumore proprio sulla variante che quasi tutti scelgono senza leggere niente.
+
+Adesso è **"Una tanda da 10 minuti."** e basta. Le altre tre varianti tengono la loro
+spiegazione, perché lì il contenuto (prove, podio, minimo di gruppo) non sta scritto da
+nessun'altra parte.
+
+### Gli orari: cinque fasce facevano sembrare che ci fossero dei turni
+
+In v278 la scheda aveva `times` con cinque fasce da due ore, da `10:00 - 12:00` a
+`18:00 - 20:30`. Coprivano l'orario vero, ma raccontavano una cosa falsa: che si scegliesse
+fra dei **turni**. Al karting non ci sono turni — si arriva e si guida, e l'unico orario che
+esiste è quando il cancello è aperto.
+
+Adesso `times: ["10:00 - 20:30"]`, una voce sola. In "In breve" la riga "Orari" dice
+`10:00 - 20:30`, che è esattamente il dato.
+
+**La conseguenza sta nella finestra della richiesta**, e va detta: il menu "A che ora" ha
+adesso **una sola voce**. Una tendina con una scelta sola è un comando morto. Le alternative
+erano due, e nessuna delle due migliore:
+
+| | riga "Orari" | menu "A che ora" |
+|---|---|---|
+| cinque fasce (v278) | cinque fasce, sembrano turni | cinque scelte, ma finte |
+| **una voce (adesso)** | **`10:00 - 20:30`, il dato vero** | **una scelta sola** |
+| `times: []` | **sparisce** | "Da concordare", da solo |
+
+Con `times: []` si sarebbe perso proprio quello che il proprietario voleva vedere. Fra un
+dato giusto in pagina e una tendina viva, ha più valore il dato: chi ha una preferenza
+sull'ora la scrive nelle **note** della richiesta, che sono lì sotto.
+
+Da non sistemare nella scheda, se un giorno dà fastidio: `escursioni.js` offre "Da
+concordare" solo dove `times` manca o è `[]` (riga ~1371). Farlo comparire **anche** accanto
+a un orario unico è una modifica di una riga lì, e varrebbe per tutte e 64 le schede — quindi
+è una decisione sul sito, non su questa scheda.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati.
+
+Un errore in più c'è stato, per mezzo secondo, ed è quello giusto: `esplora-catalog.js`
+modificato con `CACHE_NAME` ancora a `isla-v278`. È il controllo di sezione 11, e ha fatto
+esattamente il mestiere per cui esiste.
+
+Nel browser vero, viewport telefono, in italiano: sotto "Tanda libera €22" c'è solo *"Una
+tanda da 10 minuti."*; in "In breve" la riga "Orari" dice `10:00 - 20:30`; il menu "A che
+ora" ha una voce, contata (`options.length === 1`), che è la conseguenza scritta qui sopra.
+Le altre tre formule e i loro prezzi sono invariati. Nessun errore JS.
+
+`CACHE_NAME` a `isla-v279`.

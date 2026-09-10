@@ -8044,3 +8044,110 @@ incluso", le sei tappe col panino e la nota delle sei lingue. Nessun errore in c
   grande ed è anche lei un pullman, la differenza vera è il panino contro la cena e le sei
   lingue. Se il proprietario la vuole dentro come terzo bottone, si perdono le sue sei
   tappe — `itinerary` non esiste dentro le varianti
+
+---
+
+## v271 — la scheda del pullman rientra nel gruppo grande
+
+Decisione del proprietario: la serata col pullman e il panino non è un prodotto a sé, **è
+il gruppo grande**. La scheda `stargazing-cena` sparisce e diventa il secondo fornitore
+dietro quel bottone. Catalogo da 74 a 73 schede, `stelle` torna a una voce sola, e gli
+avvisi di `controlla.js` tornano da 3 a 2 perché sparisce anche la scheda senza foto.
+
+`tour.html?id=stargazing-cena` adesso dà "Escursione non trovata": è vissuta un giorno.
+
+Adesso la categoria è **una scheda, due bottoni, quattro fornitori**:
+
+| | prezzo | mezzo | fornitori | lingue |
+|---|---|---|---|---|
+| Gruppo grande | 75 € · 65 € | pullman | due | inglese, spagnolo, tedesco, **francese** |
+| Gruppo piccolo | 79 € · 69 € | minivan | due | italiano, inglese, tedesco |
+
+### Il gruppo grande perde tre icone, ed è la parte che insegna qualcosa
+
+Assorbire un fornitore dentro una variante non è copiare i suoi campi: è **tenere solo
+quello che resta vero anche per l'altro**. Tre icone di "Cosa è incluso" non ce l'hanno
+fatta:
+
+| icona | primo fornitore | secondo | verdetto |
+|---|---|---|---|
+| `lunch` | cena in quota | un panino alla sosta | fuori |
+| `photos` | foto gratis | foto in vendita sul posto | fuori |
+| `drinks` | brindisi al tramonto | non dichiarate | fuori |
+
+Sul cibo la tentazione era di tenerne una comunque. Non regge in nessuna delle due
+direzioni: **"Pasto incluso" sopra un panino promette troppo, "Snack" sopra una cena a tre
+portate svende quello che il cliente paga.** Quindi niente icona, e la differenza sta
+scritta nella descrizione della variante — che si legge sotto il bottone appena lo premi,
+non dieci righe più in là: *«Si mangia, ma non allo stesso modo: sulla serata in inglese,
+spagnolo e tedesco c'è una cena in quota, su quella in francese un panino alla sosta.»*
+
+Al gruppo grande restano `transfer` e `attrezzatura`, più la `guida` che sta sulla scheda.
+Il gruppo piccolo tiene tutte le sue cinque, perché lì i due fornitori danno davvero le
+stesse cose.
+
+### Le tappe si salvano, ma cambiano livello
+
+Avevo scritto che assorbire la scheda del pullman avrebbe fatto perdere le sue sei tappe,
+perché `itinerary` non esiste dentro `options.choices[]`. Vero a metà: non si possono
+mettere sulla **variante**, ma sulla **scheda** sì — a patto di riscriverle al livello che
+è vero per tutti e quattro i fornitori.
+
+Da sei tappe a cinque, e via tutto quello che era di uno solo: la quota di 2.250 metri, la
+sessione da un'ora e mezza, il nome del paese della sosta. Resta l'arco che fanno tutti:
+ritiro in hotel → salita con la sosta per mangiare → tramonto sopra le nuvole →
+osservazione col telescopio → rientro. La seconda tappa dice «una cena, un panino o un
+picnic secondo la serata scelta», che è il modo di essere precisi senza mentire su
+nessuna delle due.
+
+Il riquadro "Come si svolge" adesso compare su tutte e due le varianti, cosa che prima
+aveva solo la scheda del pullman.
+
+### Le lingue: il francese entra nel bottone
+
+`Gruppo grande (inglese, spagnolo, tedesco, francese)`. La nota adesso dice tutto il
+quadro, e dice anche chi decide:
+
+> In italiano si va solo col gruppo piccolo; in spagnolo e in francese solo col grande; in
+> inglese e tedesco si può scegliere. Scrivi la tua nella richiesta e l'ufficio ti mette
+> sulla partenza giusta.
+
+Quattro lingue fra parentesi sono lunghe per un bottone, ma il bottone va a capo e la
+lingua resta la prima cosa che si legge. È il campo che decide la serata: sta li'.
+
+### Cosa si è perso, e non è poco
+
+Da mettere in conto quando si assorbe una scheda dentro una variante:
+
+- le **sei tappe** dettagliate del pullman → cinque generiche
+- la **quota di 2.250 metri** e la **sessione da un'ora e mezza**
+- `times: ["15:00 - 16:00"]`, perché il secondo fornitore del gruppo grande ha un altro
+  orario di ritiro (due ore e mezza prima del tramonto). Il menu "A che ora" torna alle
+  fasce segnaposto
+- `priceInfant: 0` e la fascia `0-3`: i neonati gratis erano una cosa del pullman, e delle
+  altre tre serate non sappiamo niente. Adesso la richiesta con un neonato non fa il
+  totale — che è giusto, ma è un dato in meno
+- la nota sul **pullman senza toilette** e sui posti non assegnati
+
+Sono tutte cose vere di un fornitore su quattro. In una scheda che ne copre due per
+bottone, "vero per uno" vuol dire "falso per l'altro".
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo: due bottoni, quattro lingue sul primo e
+tre sul secondo, tradotte. Premendo cambiano durata (6-8 ore contro 5-6), prezzi (75/65
+contro 79/69), descrizione e icone (tre contro sei). Il riquadro "Come si svolge" ha le
+cinque tappe su tutte e due. `tour.html?id=stargazing-cena` dà "Escursione non trovata".
+La categoria "Sotto le stelle" ha una voce sola. Nessun errore in console.
+
+`node controlla.js` → 73 schede, 0 errori, 2 avvisi, quelli di sempre.
+`CACHE_NAME` a `isla-v271`.
+
+### Da confermare con l'ufficio
+
+- Il **titolo vero**: `Stargazing Experience` è un segnaposto
+- Le **quattro foto** da caricare in `assets/`
+- Se sotto una certa età i più piccoli pagano meno o non pagano: adesso la scheda non dice
+  niente sui neonati, e la richiesta con un neonato non fa il totale
+- I **giorni** e gli **orari di ritiro** dei quattro fornitori, se un giorno si vuole
+  tornare a scriverli

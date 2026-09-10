@@ -1995,13 +1995,19 @@ const ESPLORA_CATALOG = [
     // DIETRO OGNI BOTTONE C'E' PIU' DI UN FORNITORE, e i loro nomi non si
     // pubblicano (proprietario, 10 settembre 2026). Admiral vende due
     // prodotti a due prezzi suoi, e sceglie il fornitore in base alla lingua:
-    //   gruppo grande  75 EUR  pullman, cena, inglese - spagnolo - tedesco
-    //   gruppo piccolo 79 EUR  minivan, picnic, italiano - inglese - tedesco
-    // Il gruppo piccolo ne mette insieme due, uno per l'italiano e uno per
-    // inglese e tedesco: e' il motivo per cui questa variante NON ha `days`,
-    // `times` e una durata sola. Quei tre campi descrivevano un fornitore
-    // solo, e lasciarli qui avrebbe raccontato la serata sbagliata a chi
-    // sceglie l'altra lingua.
+    //   gruppo grande  75 EUR  pullman, inglese - spagnolo - tedesco - francese
+    //   gruppo piccolo 79 EUR  minivan, italiano - inglese - tedesco
+    // DUE FORNITORI PER BOTTONE, quattro in tutto. E' il motivo per cui
+    // nessuna delle due varianti ha `days`, `times` o una durata sola: quei
+    // campi descrivevano un fornitore solo, e lasciarli avrebbe raccontato la
+    // serata sbagliata a chi sceglie l'altra lingua.
+    // Stessa ragione per cui il gruppo grande **non ha un'icona per il cibo**:
+    // sulla serata in inglese, spagnolo e tedesco c'e' una cena in quota, su
+    // quella in francese un panino alla sosta. "Pasto incluso" sopra un panino
+    // promette troppo, "Snack" sopra una cena a tre portate svende: la
+    // differenza sta scritta nella descrizione, che si legge sotto il bottone
+    // appena lo premi. Fuori per lo stesso motivo `photos` (gratis su una,
+    // a pagamento sull'altra) e `drinks` (dichiarate solo da una).
     //
     // La lingua sta nelle etichette dei bottoni e non in `languages`: quel
     // campo sta sulla scheda e non sulla variante, e offrirebbe le lingue di
@@ -2039,21 +2045,18 @@ const ESPLORA_CATALOG = [
       label: { it: "Serata", en: "Evening", es: "Velada" },
       choices: [
         { label: {
-            it: "Gruppo grande (inglese, spagnolo, tedesco)",
-            en: "Big group (English, Spanish, German)",
-            es: "Grupo grande (inglés, español, alemán)"
+            it: "Gruppo grande (inglese, spagnolo, tedesco, francese)",
+            en: "Big group (English, Spanish, German, French)",
+            es: "Grupo grande (inglés, español, alemán, francés)"
           },
           priceAdult: 75,
           priceChild: 65,
-          duration: { it: "Circa 8 ore", en: "About 8 hours", es: "Unas 8 horas" },
-          // La cena e' di questa serata sola: gli altri fornitori danno un
-          // picnic o un panino, e un'icona sulla scheda direbbe "vale
-          // sempre".
-          included: ["transfer", "equipment", "lunch", "drinks", "photos"],
+          duration: { it: "6-8 ore", en: "6 to 8 hours", es: "6-8 horas" },
+          included: ["transfer", "equipment"],
           desc: {
-            it: "La serata in pullman, con ritiro in hotel nel sud dell'isola: si sale nel Parco Nazionale ascoltando la storia dei vulcani, si cena in quota, si brinda al tramonto e poi si osserva col telescopio insieme alle guide. È l'unica delle due con la cena vera e propria. Le giacche pesanti si prendono in prestito e le foto della serata sono comprese.",
-            en: "The coach evening, with hotel pickup in the south of the island: you climb into the National Park hearing the story of the volcanoes, have dinner up there, toast the sunset and then observe through the telescope with the guides. It is the only one of the two with a proper dinner. Warm jackets are lent to you and the photos of the evening are included.",
-            es: "La velada en autobús, con recogida en el hotel en el sur de la isla: se sube al Parque Nacional escuchando la historia de los volcanes, se cena en altura, se brinda al atardecer y después se observa con el telescopio junto a los guías. Es la única de las dos con cena de verdad. Las chaquetas de abrigo se prestan y las fotos de la velada están incluidas."
+            it: "La serata in pullman, con ritiro in hotel nel sud dell'isola: si sale nel Parco Nazionale, si guarda il tramonto sopra le nuvole e poi si osserva col telescopio, con l'astronomo che racconta il cielo. Si mangia, ma non allo stesso modo: sulla serata in inglese, spagnolo e tedesco c'è una cena in quota, su quella in francese un panino alla sosta lungo la strada.",
+            en: "The coach evening, with hotel pickup in the south of the island: you climb into the National Park, watch the sunset above the clouds and then observe through the telescope, with an astronomer telling the story of the sky. You eat, but not in the same way: the English, Spanish and German evening has dinner up there, the French one a sandwich at the stop along the way.",
+            es: "La velada en autobús, con recogida en el hotel en el sur de la isla: se sube al Parque Nacional, se mira el atardecer por encima de las nubes y después se observa con el telescopio, con el astrónomo contando el cielo. Se come, pero no de la misma manera: la velada en inglés, español y alemán incluye una cena en altura, la de francés un bocadillo en la parada del camino."
           } },
         { label: {
             it: "Gruppo piccolo (italiano, inglese, tedesco)",
@@ -2072,16 +2075,48 @@ const ESPLORA_CATALOG = [
       ]
     },
     desc: {
-      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due serate fra cui scegliere, e cambia anche la lingua: il gruppo grande sale in pullman, cena in quota e si fa in inglese, spagnolo e tedesco; il gruppo piccolo va in minivan, porta un picnic al tramonto e si fa in italiano, inglese e tedesco.",
-      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two evenings to choose from, and the language changes too: the big group goes up by coach, has dinner up there and runs in English, Spanish and German; the small group travels by minivan, brings a picnic for sunset and runs in Italian, English and German.",
-      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir, y el idioma también cambia: el grupo grande sube en autobús, cena en altura y se hace en inglés, español y alemán; el grupo pequeño va en minivan, lleva un picnic al atardecer y se hace en italiano, inglés y alemán."
+      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due serate fra cui scegliere, e cambia anche la lingua: il gruppo grande sale in pullman e si fa in inglese, spagnolo, tedesco e francese; il gruppo piccolo va in minivan, porta un picnic al tramonto e si fa in italiano, inglese e tedesco.",
+      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two evenings to choose from, and the language changes too: the big group goes up by coach and runs in English, Spanish, German and French; the small group travels by minivan, brings a picnic for sunset and runs in Italian, English and German.",
+      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir, y el idioma también cambia: el grupo grande sube en autobús y se hace en inglés, español, alemán y francés; el grupo pequeño va en minivan, lleva un picnic al atardecer y se hace en italiano, inglés y alemán."
     },
     included: ["guide"],
+    // Le tappe stanno sulla scheda e non sulla variante, perche' `itinerary`
+    // dentro `options.choices[]` non esiste. Sono scritte al livello che e'
+    // vero per tutti e quattro i fornitori: nessuna quota, nessuna durata
+    // della sessione, nessun nome di paese — quelli cambiavano da una serata
+    // all'altra e qui direbbero "vale sempre".
+    itinerary: [
+      { text: {
+          it: "Il ritiro in hotel, nel pomeriggio: si parte dagli hotel del sud dell'isola.",
+          en: "Hotel pickup in the afternoon: you set off from the hotels in the south of the island.",
+          es: "La recogida en el hotel, por la tarde: se sale desde los hoteles del sur de la isla."
+        } },
+      { text: {
+          it: "Si sale verso il Parco Nazionale, con la sosta per mangiare: una cena, un panino o un picnic secondo la serata scelta.",
+          en: "Up towards the National Park, with a stop to eat: dinner, a sandwich or a picnic depending on the evening you choose.",
+          es: "Se sube hacia el Parque Nacional, con la parada para comer: una cena, un bocadillo o un picnic según la velada elegida."
+        } },
+      { text: {
+          it: "Il tramonto visto dall'alto, sopra il mare di nuvole.",
+          en: "The sunset seen from up there, above the sea of clouds.",
+          es: "El atardecer visto desde arriba, por encima del mar de nubes."
+        } },
+      { text: {
+          it: "Col buio l'osservazione col telescopio: pianeti, costellazioni e la guida che racconta cosa si sta guardando.",
+          en: "Once it is dark, the telescope session: planets, constellations and the guide talking you through what you are looking at.",
+          es: "Ya de noche, la observación con telescopio: planetas, constelaciones y el guía contando lo que se está viendo."
+        } },
+      { text: {
+          it: "Rientro in hotel a sera.",
+          en: "Back at the hotel in the evening.",
+          es: "Regreso al hotel por la noche."
+        } }
+    ],
     notes: [
       {
-        it: "La lingua non è un extra da chiedere: è quello che decide la serata. In italiano si va solo col gruppo piccolo, in spagnolo solo col grande, e in inglese o tedesco si può scegliere.",
-        en: "The language is not an extra to ask for: it is what decides the evening. In Italian only the small group runs, in Spanish only the big one, and in English or German you can choose.",
-        es: "El idioma no es un extra que se pida: es lo que decide la velada. En italiano solo va el grupo pequeño, en español solo el grande, y en inglés o alemán se puede elegir."
+        it: "La lingua non è un extra da chiedere: è quello che decide la serata. In italiano si va solo col gruppo piccolo; in spagnolo e in francese solo col grande; in inglese e tedesco si può scegliere. Scrivi la tua nella richiesta e l'ufficio ti mette sulla partenza giusta.",
+        en: "The language is not an extra to ask for: it is what decides the evening. In Italian only the small group runs; in Spanish and French only the big one; in English and German you can choose. Say yours in the request and the office puts you on the right departure.",
+        es: "El idioma no es un extra que se pida: es lo que decide la velada. En italiano solo va el grupo pequeño; en español y en francés solo el grande; en inglés y alemán se puede elegir. Indica el tuyo en la solicitud y la oficina te pone en la salida correcta."
       },
       {
         it: "Il ritiro è negli hotel del sud dell'isola, nel pomeriggio: l'ora segue il tramonto e si sposta con la stagione, quindi te la conferma l'ufficio insieme al punto di ritiro.",
@@ -2096,133 +2131,6 @@ const ESPLORA_CATALOG = [
     ],
     image: "stargazing-group.jpg",
     gallery: ["stargazing-vip.jpg"],
-    published: true
-  },
-  {
-    // La terza serata di stargazing, su una scheda sua invece che come terzo
-    // bottone di `stargazing-group`. Non e' una preferenza: `itinerary` non
-    // esiste dentro `options.choices[]`, e le sei tappe sono solo sue.
-    //
-    // ⚠ QUI NON SI CENA. Il listino del fornitore descrive una cena canaria a
-    // tre portate, ma quello che Admiral vende su questa serata e' **un
-    // panino** (proprietario, 10 settembre 2026): la cena vera ce l'ha solo il
-    // gruppo grande di `stargazing-group`, e le due serate in minivan hanno il
-    // picnic. Da qui e' sparita la variante con e senza cena, il menu
-    // vegetariano/vegano e il titolo "Dinner Experience", che prometteva la
-    // cosa sbagliata.
-    id: "stargazing-cena",
-    // ⚠ TITOLO PROVVISORIO: Admiral non ce l'ha ancora dato. Dice il formato —
-    // il pullman — senza nominare il fornitore, che non si pubblica.
-    title: "Stargazing Bus Experience",
-    category: "stelle",
-    zone: { it: "Parco Nazionale del Teide", en: "Teide National Park", es: "Parque Nacional del Teide" },
-    // Ritiro fra le 15:00 e le 16:00, rientro verso le 22:00 (le 23:00
-    // d'estate): sei o sette ore secondo la stagione.
-    duration: { it: "6-7 ore", en: "6 to 7 hours", es: "6-7 horas" },
-    // Prezzi di ADMIRAL e non del fornitore: 75 EUR come il gruppo grande, e i
-    // bambini pagano 10 EUR in meno (proprietario, 10 settembre 2026).
-    priceFrom: 75,
-    priceAdult: 75,
-    priceChild: 65,
-    // Sotto i 4 anni non si paga: qui lo zero e' un prezzo vero e vuol dire
-    // gratis. Le condizioni — in braccio a un adulto, niente panino — stanno
-    // nelle note, dove si leggono prima di prenotare.
-    priceInfant: 0,
-    // Fasce del fornitore di questa serata, diverse da quelle di
-    // `stargazing-group` (12+ / 2-11): li' sono le fasce di Admiral, qui sono
-    // quelle del pullman, dove i piu' piccoli viaggiano in braccio. Da
-    // riallineare se l'ufficio dice che valgono le sue anche qui.
-    ages: { adult: "11+", child: "4-10", infant: "0-3" },
-    family: true,
-    // NIENTE `languages`, anche se il fornitore ne fa sei. Il proprietario
-    // (10 settembre 2026): le lingue si scrivono in una nota, e poi e'
-    // l'ufficio a spostare il cliente sulla serata giusta secondo la lingua
-    // che ha chiesto. Un menu "In che lingua" prometterebbe invece che la
-    // scelta la fa il cliente da solo, sempre e comunque.
-    // Niente `days`: si fa tutti i giorni, e sette su sette non e' una
-    // limitazione da mostrare.
-    // Una fascia sola e vera al posto delle fasce segnaposto: senza `times` il
-    // menu "A che ora" avrebbe offerto anche "09:00 - 10:00" su una serata che
-    // parte per il tramonto.
-    times: ["15:00 - 16:00"],
-    desc: {
-      it: "Si parte dall'hotel nel pomeriggio, con una sosta in un ristorante lungo la strada dove si mangia un panino. Poi si sale in tempo per il tramonto, che da lassù si guarda sopra il mare di nuvole, e si arriva a 2.250 metri dentro il Parco Nazionale per un'ora e mezza di telescopio: la Luna proiettata su uno schermo, le costellazioni indicate col laser e un astronomo che racconta. Rientro verso le 22.",
-      en: "You leave your hotel in the afternoon, with a stop at a restaurant along the way for a sandwich. Then you climb in time for sunset, which up there you watch above a sea of clouds, and reach 2,250 metres inside the National Park for an hour and a half at the telescope: the Moon projected on a screen, the constellations picked out with a laser and an astronomer telling the story. Back around 22:00.",
-      es: "Se sale del hotel por la tarde, con una parada en un restaurante por el camino donde se come un bocadillo. Después se sube a tiempo para el atardecer, que desde allí se mira por encima del mar de nubes, y se llega a 2.250 metros dentro del Parque Nacional para una hora y media de telescopio: la Luna proyectada en una pantalla, las constelaciones señaladas con láser y un astrónomo que lo cuenta. Regreso hacia las 22."
-    },
-    included: ["guide", "transfer", "equipment", "snack"],
-    itinerary: [
-      { text: {
-          it: "Il ritiro in hotel, nel pomeriggio: il pullman fa il giro degli hotel del sud.",
-          en: "Hotel pickup in the afternoon: the coach does a round of the southern hotels.",
-          es: "La recogida en el hotel, por la tarde: el autobús hace la ronda de los hoteles del sur."
-        } },
-      { text: {
-          it: "Sosta in un ristorante lungo la strada, con il panino e il tempo per sgranchirsi le gambe.",
-          en: "A stop at a restaurant along the way, with the sandwich and time to stretch your legs.",
-          es: "Parada en un restaurante por el camino, con el bocadillo y tiempo para estirar las piernas."
-        } },
-      { text: {
-          it: "Si sale verso il Teide in tempo per il tramonto, che da quella quota si guarda sopra il mare di nuvole.",
-          en: "Up towards Teide in time for sunset, which from that height you watch above the sea of clouds.",
-          es: "Subida hacia el Teide a tiempo para el atardecer, que desde esa altura se mira por encima del mar de nubes."
-        } },
-      { text: {
-          it: "Ingresso nel Parco Nazionale, con un po' di tempo libero per due passi prima che faccia buio.",
-          en: "Into the National Park, with some free time for a short walk before it gets dark.",
-          es: "Entrada en el Parque Nacional, con algo de tiempo libre para un paseo antes de que oscurezca."
-        } },
-      { text: {
-          it: "Un'ora e mezza al telescopio a 2.250 metri: pianeti e oggetti del cielo profondo a turno, la Luna proiettata su uno schermo e le costellazioni indicate col puntatore laser.",
-          en: "An hour and a half at the telescope at 2,250 metres: planets and deep-sky objects in turn, the Moon projected on a screen and the constellations picked out with a laser pointer.",
-          es: "Una hora y media de telescopio a 2.250 metros: planetas y objetos de cielo profundo por turnos, la Luna proyectada en una pantalla y las constelaciones señaladas con puntero láser."
-        } },
-      { text: {
-          it: "Rientro in hotel verso le 22, un'ora più tardi nei mesi d'estate.",
-          en: "Back at the hotel around 22:00, an hour later in the summer months.",
-          es: "Regreso al hotel hacia las 22, una hora más tarde en los meses de verano."
-        } }
-    ],
-    notes: [
-      {
-        it: "Questa serata si fa in francese, italiano, inglese, spagnolo, tedesco e olandese. Scrivi la tua nella richiesta: l'ufficio ti mette sulla partenza giusta, e se il gruppo della tua lingua non si riempie può essere accorpato a un altro.",
-        en: "This evening runs in French, Italian, English, Spanish, German and Dutch. Say yours in the request: the office puts you on the right departure, and if the group for your language does not fill up it may be merged with another.",
-        es: "Esta velada se hace en francés, italiano, inglés, español, alemán y neerlandés. Indica el tuyo en la solicitud: la oficina te pone en la salida correcta, y si el grupo de tu idioma no se llena puede juntarse con otro."
-      },
-      {
-        it: "Alla sosta si mangia un panino, non una cena a tavola: se hai fame per davvero, mangia prima di partire. Al ristorante si può ordinare alla carta a proprie spese.",
-        en: "At the stop you get a sandwich, not a sit-down dinner: if you are properly hungry, eat before you leave. You can order à la carte at the restaurant at your own expense.",
-        es: "En la parada se come un bocadillo, no una cena de mesa: si tienes hambre de verdad, come antes de salir. En el restaurante se puede pedir a la carta por cuenta propia."
-      },
-      {
-        it: "Il ritiro è negli hotel del sud dell'isola, nel pomeriggio fra le 15:00 e le 16:00 circa: l'ora segue il tramonto e cambia con la stagione. Chi sta fuori zona raggiunge uno dei punti di ritrovo. L'ora e il punto te li conferma l'ufficio.",
-        en: "Pickup is at hotels in the south of the island, in the afternoon between roughly 15:00 and 16:00: the time follows the sunset and changes with the season. Anyone outside the area makes their way to one of the meeting points. The office confirms the time and the point.",
-        es: "La recogida es en los hoteles del sur de la isla, por la tarde entre las 15:00 y las 16:00 aproximadamente: la hora sigue al atardecer y cambia con la temporada. Quien esté fuera de zona se acerca a uno de los puntos de encuentro. La oficina te confirma la hora y el punto."
-      },
-      {
-        it: "Si osserva a 2.250 metri, senza funivia. Dopo il tramonto la temperatura crolla in fretta anche d'estate: giacca pesante, pantaloni lunghi e scarpe chiuse.",
-        en: "You observe at 2,250 metres, with no cable car. After sunset the temperature drops fast even in summer: a warm jacket, long trousers and closed shoes.",
-        es: "Se observa a 2.250 metros, sin teleférico. Después del atardecer la temperatura cae deprisa incluso en verano: chaqueta de abrigo, pantalón largo y zapatos cerrados."
-      },
-      {
-        it: "Non serve essere allenati: durante l'osservazione si sta in piedi o seduti, come si preferisce. Il pullman non ha la toilette a bordo e i posti non sono assegnati; se qualcuno ha bisogno di una mano a salire, scrivilo nella richiesta.",
-        en: "No fitness required: during the session you can stand or sit as you prefer. The coach has no toilet on board and seats are not assigned; if anyone needs a hand getting on, say so in the request.",
-        es: "No hace falta estar en forma: durante la observación se puede estar de pie o sentado, como se prefiera. El autobús no tiene aseo a bordo y los asientos no están asignados; si alguien necesita ayuda para subir, escríbelo en la solicitud."
-      },
-      {
-        it: "Sotto i 4 anni non si paga, ma si viaggia in braccio a un adulto e il panino non è compreso.",
-        en: "Under 4s do not pay, but they travel on an adult's lap and the sandwich is not included.",
-        es: "Los menores de 4 años no pagan, pero viajan en brazos de un adulto y el bocadillo no está incluido."
-      },
-      {
-        it: "Le foto professionali della serata si possono comprare sul posto.",
-        en: "Professional photos of the evening can be bought on the spot.",
-        es: "Las fotos profesionales de la velada se pueden comprar allí mismo."
-      }
-    ],
-    // Foto ancora da caricare: in elenco esce il riquadro grigio, e
-    // `controlla.js` lo segnala finche' non arriva.
-    image: "",
     published: true
   },
 

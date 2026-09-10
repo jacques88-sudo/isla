@@ -1996,10 +1996,15 @@ const ESPLORA_CATALOG = [
     // stelle" facevano solo confusione.
     // Quello che le distingue davvero non e' il prezzo ma **la lingua**: il
     // gruppo grande va in italiano e arriva a 16 persone, il gruppo piccolo va
-    // in inglese e si ferma a otto (proprietario, 10 settembre 2026). E' il
-    // dato che decide quale delle due prenotare, quindi sta nelle etichette
-    // dei bottoni, non solo nelle descrizioni: chi non parla nessuna delle due
-    // se ne accorge prima di mandare la richiesta, non dopo.
+    // in inglese e tedesco e si ferma a otto (proprietario, 10 settembre
+    // 2026). E' il dato che decide quale delle due prenotare, quindi sta nelle
+    // etichette dei bottoni, non solo nelle descrizioni: chi non parla
+    // nessuna delle tre se ne accorge prima di mandare la richiesta, non dopo.
+    // NON si usa `languages`, anche se sul gruppo piccolo il cliente fra
+    // inglese e tedesco sceglierebbe davvero: quel campo sta sulla scheda e
+    // non sulla variante, quindi offrirebbe le stesse lingue anche sulla
+    // serata in italiano, dove non si sceglie niente. Finche' resta cosi', la
+    // lingua e' testo.
     // I NOMI DEI DUE OPERATORI NON SI PUBBLICANO (proprietario, 10 settembre
     // 2026) — al contrario delle barche, dove il nome vero e' proprio quello
     // che il cliente ritrova al porto. Qui le due serate si distinguono per
@@ -2057,9 +2062,9 @@ const ESPLORA_CATALOG = [
             es: "La velada contada en italiano, con un grupo de hasta 16 personas. La oficina te confirma el día, la hora y el punto de encuentro junto con la solicitud."
           } },
         { label: {
-            it: "Gruppo piccolo (in inglese)",
-            en: "Small group (in English)",
-            es: "Grupo pequeño (en inglés)"
+            it: "Gruppo piccolo (in inglese e tedesco)",
+            en: "Small group (in English and German)",
+            es: "Grupo pequeño (en inglés y alemán)"
           },
           priceAdult: 85,
           priceChild: 80,
@@ -2073,16 +2078,16 @@ const ESPLORA_CATALOG = [
           // guida sta gia' sopra e vale per tutte e due.
           included: ["transfer", "fingerfood", "drinks", "equipment", "photos"],
           desc: {
-            it: "Al massimo 8 persone e tutto in inglese, con ritiro in hotel e minibus. Si sale sopra le nuvole per il tramonto, con tapas e vino, poi si resta al buio a osservare col telescopio. Le foto della serata sono comprese.",
-            en: "Eight people at most and everything in English, with hotel pickup and a minibus. You go up above the clouds for sunset, with tapas and wine, then stay out in the dark observing through the telescope. The photos of the evening are included.",
-            es: "Como máximo 8 personas y todo en inglés, con recogida en el hotel y minibús. Se sube por encima de las nubes para el atardecer, con tapas y vino, y luego se observa a oscuras con el telescopio. Las fotos de la velada están incluidas."
+            it: "Al massimo 8 persone, in inglese e in tedesco, con ritiro in hotel e minibus. Si sale sopra le nuvole per il tramonto, con tapas e vino, poi si resta al buio a osservare col telescopio. Le foto della serata sono comprese.",
+            en: "Eight people at most, in English and in German, with hotel pickup and a minibus. You go up above the clouds for sunset, with tapas and wine, then stay out in the dark observing through the telescope. The photos of the evening are included.",
+            es: "Como máximo 8 personas, en inglés y en alemán, con recogida en el hotel y minibús. Se sube por encima de las nubes para el atardecer, con tapas y vino, y luego se observa a oscuras con el telescopio. Las fotos de la velada están incluidas."
           } }
       ]
     },
     desc: {
-      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due serate fra cui scegliere, e la differenza è soprattutto la lingua: il gruppo grande è in italiano, fino a 16 persone; il gruppo piccolo è in inglese, al massimo in otto, con ritiro in hotel, tapas e vino.",
-      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two evenings to choose from, and the difference is above all the language: the big group is guided in Italian, up to 16 people; the small group is in English, eight at most, with hotel pickup, tapas and wine.",
-      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir, y la diferencia es sobre todo el idioma: el grupo grande se cuenta en italiano, hasta 16 personas; el grupo pequeño es en inglés, ocho como máximo, con recogida en el hotel, tapas y vino."
+      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due serate fra cui scegliere, e la differenza è soprattutto la lingua: il gruppo grande è in italiano, fino a 16 persone; il gruppo piccolo è in inglese e tedesco, al massimo in otto, con ritiro in hotel, tapas e vino.",
+      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two evenings to choose from, and the difference is above all the language: the big group is guided in Italian, up to 16 people; the small group is in English and German, eight at most, with hotel pickup, tapas and wine.",
+      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir, y la diferencia es sobre todo el idioma: el grupo grande se cuenta en italiano, hasta 16 personas; el grupo pequeño es en inglés y alemán, ocho como máximo, con recogida en el hotel, tapas y vino."
     },
     included: ["guide"],
     notes: [

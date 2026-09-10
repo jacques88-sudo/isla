@@ -7731,3 +7731,62 @@ v266. Nessun errore in console.
 - Le **quattro foto** da caricare in `assets/`
 - L'**età minima** del gruppo piccolo, e se sotto i 2 anni si sale
 - Se il **12+** vale anche sul gruppo grande
+
+---
+
+## v268 — il gruppo piccolo va anche in tedesco
+
+La pagina del fornitore è arrivata una terza volta, sempre identica, ma con accanto una
+frase nuova: «questa è per inglesi e tedeschi».
+
+**Stonava con quella di prima**, che diceva «parlano solo inglese». Sono due affermazioni
+che non possono essere vere insieme, e la lingua qui non è un dettaglio: è la riga sul
+bottone che decide quale serata prenota il cliente. Un tedesco che legge "tedesco" e al
+belvedere trova una guida che parla solo inglese è il danno peggiore che questa scheda
+possa fare — quindi chiesto, invece di scegliere l'ultima frase arrivata.
+
+Risposta: **in inglese e tedesco**. Il che torna anche col fornitore, che è una società
+tedesca.
+
+Adesso le tre lingue delle guide sono:
+
+| serata | lingua | gruppo | prezzo |
+|---|---|---|---|
+| Gruppo grande | italiano | fino a 16 | 75 € |
+| Gruppo piccolo | inglese e tedesco | 8 al massimo | 85 € · 80 € bambini |
+
+Il bottone dice `Gruppo piccolo (in inglese e tedesco)`, tradotto nelle tre lingue del sito
+(`Small group (in English and German)`, `Grupo pequeño (en inglés y alemán)`).
+
+### E adesso `languages` servirebbe davvero — ma non si può
+
+Con due lingue sulla stessa serata il cliente **sceglierebbe per davvero**, che è
+esattamente il caso in cui il campo `languages` esiste: farebbe comparire la domanda "In
+che lingua" nella finestra della richiesta, e la risposta finirebbe nel messaggio WhatsApp.
+L'ufficio saprebbe quale guida serve prima di confermare.
+
+Non si può, e il motivo è strutturale: **`languages` sta sulla scheda, non sulla variante**.
+Metterlo qui offrirebbe inglese e tedesco anche a chi ha scelto la serata in italiano, dove
+non c'è niente da scegliere. Fra una domanda sbagliata su una variante e nessuna domanda,
+meglio nessuna: la lingua resta testo, scritta in tre punti (etichetta, descrizione della
+scheda, descrizione della variante).
+
+Se un giorno serve davvero, la strada è **portare `languages` dentro `options.choices[]`**,
+come si è già fatto per `days`, `times`, `zone` e `duration`. Non è stato fatto adesso
+perché è una modifica al motore, non al catalogo, e questa scheda non la richiede.
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo: i due bottoni, la descrizione della
+scheda e quella della variante dicono tutti e tre "inglese e tedesco", tradotto. Prezzi,
+totali, giorni, orari e compresi invariati rispetto a v267. Nessun errore in console.
+
+`node controlla.js` → 0 errori, 2 avvisi, i soliti. `CACHE_NAME` a `isla-v268`.
+
+### Nota di metodo, per la prossima volta
+
+La stessa pagina del fornitore è arrivata **tre volte identica**, e ogni volta il dato
+nuovo non era nel file ma nella frase scritta accanto: la prima volta niente, la seconda
+la lingua e la capienza, la terza il tedesco. Vale la pena dirlo prima di rileggere 200
+righe di JSON in cerca di qualcosa che non c'è — e vale la pena chiedere, quando la frase
+di oggi contraddice quella di ieri.

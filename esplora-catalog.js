@@ -1987,13 +1987,14 @@ const ESPLORA_CATALOG = [
 
   // ─── STELLE E ASTRONOMIA ──────────────────────────────────────────────────
   {
-    // Una scheda sola per le due serate di stargazing: prima erano
-    // `stargazing-group` (gruppo grande, da 75 EUR) e `stargazing-vip` (gruppo
-    // ristretto, 85 EUR), uguali in tutto tranne il titolo, la foto e il
-    // prezzo. E' la stessa serata sotto lo stesso cielo venduta in due
-    // formati: affiancate in elenco sembravano due attivita' diverse. Come per
-    // i tre giri in buggy e per le due moto d'acqua, le due versioni diventano
-    // due varianti e il prezzo della scheda parte dalla piu' economica.
+    // Una scheda sola con dentro due serate diverse, scelta del proprietario
+    // (10 settembre 2026): prima erano due schede, `stargazing-group` (gruppo
+    // grande) e `stargazing-vip` (gruppo ristretto). Non sono due formati
+    // della stessa uscita come i quattro giri in buggy — sono due tour, con
+    // due fornitori e due serate diverse — ma il cliente li sceglie uno
+    // accanto all'altro, e in elenco due righe quasi identiche sotto "Sotto le
+    // stelle" facevano solo confusione. Le varianti servono a questo: due
+    // bottoni e, sotto, tutto quello che cambia.
     // Sopravvive l'id `stargazing-group`, che porta il prezzo di partenza e la
     // foto della scheda unita; l'indirizzo `stargazing-vip` non risponde piu',
     // come era successo ai due buggy assorbiti.
@@ -2012,22 +2013,28 @@ const ESPLORA_CATALOG = [
     priceFrom: 75,
     priceAdult: 0,
     priceChild: 0,
-    // Fasce confermate dall'ufficio (10 settembre 2026). Sotto i 2 anni non
-    // sappiamo se e quanto pagano: `priceInfant` non si scrive, perche'
-    // assente non vuol dire gratis. Le fasce compaiono solo accanto alle righe
-    // del prezzo, e quelle oggi le ha solo la variante VIP.
+    // Fasce confermate dal proprietario (10 settembre 2026): il listino del
+    // fornitore aveva il prezzo bambino senza dire fino a che eta' valesse.
+    // Sotto i 2 anni non sappiamo se e quanto pagano: `priceInfant` non si
+    // scrive, perche' assente non vuol dire gratis.
+    // Stanno sulla scheda e non sulla variante, che non le prevede: il "(12+)"
+    // si legge accanto a tutte e due le righe "Adulti". Il "(2-11)" invece si
+    // vede solo sulla VIP, che e' l'unica con un prezzo bambini.
     ages: { adult: "12+", child: "2-11" },
     family: true,
-    // I due formati della stessa serata. Il gruppo grande porta `price` e non
-    // `priceAdult`: 75 EUR e' il prezzo di partenza che ci ha dato Admiral, ma
-    // nessuno ha ancora confermato che sia a testa, e `price` da solo nel
-    // totale non entra. La VIP invece ha i due prezzi a persona veri, e il suo
-    // totale si fa.
+    // Le due serate. I prezzi sono a persona su tutte e due (proprietario, 10
+    // settembre 2026), quindi si scrivono in `priceAdult` e non in `price`:
+    // solo cosi' entrano nel totale della richiesta. Prima la scheda aveva
+    // `priceAdult: 0`, cioe' "prezzo non ancora deciso", e il conto non si
+    // faceva mai.
     options: {
-      label: { it: "Versione", en: "Version", es: "Versión" },
+      label: { it: "Serata", en: "Evening", es: "Velada" },
       choices: [
         { label: { it: "Gruppo grande", en: "Large group", es: "Grupo grande" },
-          price: 75,
+          priceAdult: 75,
+          // Quanto pagano i bambini su questa serata non lo sappiamo ancora, e
+          // senza `priceChild` il totale non si fa appena la richiesta ne
+          // conta uno: meglio nessun totale che uno che li conta gratis.
           desc: {
             it: "La serata in gruppo numeroso, con la guida. Il giorno, l'ora e il punto di ritrovo te li conferma l'ufficio insieme alla richiesta.",
             en: "The evening in a larger group, with a guide. The office confirms the day, the time and the meeting point together with your request.",
@@ -2053,9 +2060,9 @@ const ESPLORA_CATALOG = [
       ]
     },
     desc: {
-      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due versioni fra cui scegliere — in gruppo grande, oppure la VIP a numero chiuso, con ritiro in hotel, tapas e vino.",
-      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two versions to choose from — in a larger group, or the VIP one with limited places, hotel pickup, tapas and wine.",
-      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos versiones a elegir: en grupo numeroso, o la VIP con plazas limitadas, recogida en el hotel, tapas y vino."
+      it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due serate fra cui scegliere — in gruppo grande, oppure la VIP a numero chiuso, con ritiro in hotel, tapas e vino.",
+      en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two evenings to choose from — in a larger group, or the VIP one with limited places, hotel pickup, tapas and wine.",
+      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir: en grupo numeroso, o la VIP con plazas limitadas, recogida en el hotel, tapas y vino."
     },
     included: ["guide"],
     notes: [

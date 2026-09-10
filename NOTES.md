@@ -7445,6 +7445,47 @@ totale e punto di partenza invariati. `node controlla.js` → 0 errori, 2 avvisi
 
 ---
 
+## v264 — via i noleggi di barche, resta la Fiat 500
+
+Il proprietario ha chiesto di togliere le schede di noleggio. Cancellate tutte e tre da
+`esplora-catalog.js`:
+
+| scheda | categoria | cos'era |
+|---|---|---|
+| `self-drive-boats` | sport-acquatici | barca senza skipper, da €190 a barca, 2-5 ore |
+| `small-catamaran-rental` | sport-acquatici | catamarano piccolo, €100 l'ora, 2-6 ore |
+| `jet-car-rental` | sport-acquatici | jet car, da €100 |
+
+Resta **`fiat-500-water-car`**, l'unica di questa famiglia che il proprietario vuole tenere.
+La Jet Car era di fatto la stessa cosa — una macchina galleggiante da guidare — con foto e
+prezzo diversi: due schede per un prodotto solo, il caso di Kalima Kat un'altra volta.
+
+**Cancellate anche le tre foto** (`self-drive-boats.jpg`, `small-catamaran-rental.jpg`,
+`jet-car-rental.jpg`): 120 → 117 in `assets/`. Prima di toccarle, cercati i tre `id` in
+tutti i `.js`, `.html` e `.css`: comparivano **solo** dentro la loro scheda, nient'altro.
+Nessun `privateOption` che ci puntava, niente in `PICKUP_TIMES`, niente in `sw.js` (il
+service worker non ha un elenco di `.jpg`).
+
+Le due schede lunghe stavano **attaccate** nel file, righe 1379-1508, in mezzo alle barche
+del mare — non nel blocco "SPORT ACQUATICI" più in basso, dove stanno invece la Fiat 500 e
+la Jet Car. Il commento di sezione `─── SPORT ACQUATICI ───` è rimasto dov'era, perché le
+schede che introduce ci sono ancora.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati (l'`infant` di opera-60 e la foto che
+manca a masca-teide-cabrio-bus). Schede 74 → 71, pubblicate 68 → 65.
+
+Nel browser vero, in inglese: l'elenco mostra 65 schede e nessuna delle tre; la Fiat 500 c'è
+ancora ed è al suo posto. `tour.html?id=fiat-500-water-car` si apre. `tour.html?id=jet-car-rental`
+— l'indirizzo di una scheda cancellata, che qualcuno può avere nei preferiti — non va in
+errore: esce la pagina *Excursion not found*, che c'era già. In console nessun errore, a
+parte i font di Google che qui non si scaricano (rete chiusa, non c'entra con la modifica).
+
+`CACHE_NAME` a `isla-v264`.
+
+---
+
 ## v265 — una scheda sola per le due serate di stargazing, coi prezzi veri
 
 `stargazing-group` ("Stargazing – Large Group Experience", 75 €) e `stargazing-vip`

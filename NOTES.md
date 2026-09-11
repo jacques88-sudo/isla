@@ -9207,3 +9207,102 @@ errore JS.
 **Quanto dura davvero una di queste giornate**, dall'ora del ritiro all'ora del rientro. È
 la domanda più utile delle quattro ancora aperte su questa scheda: senza, la riga resta
 vuota.
+
+---
+
+## v285 — il pick-up non dipende solo dall'hotel: dipende anche dal fornitore
+
+Il proprietario: su questa escursione **si sale direttamente in hotel**, non ai punti di
+ritrovo segnati — e come questa ce ne sono altre.
+
+Non era un dato sbagliato in una scheda: era un **campo che non esisteva**, e intanto il
+sito dava un'indicazione falsa a chiunque aprisse la finestra della richiesta.
+
+### Il bug, riprodotto prima di toccare il codice
+
+Sulla scheda Trekking, scrivendo il nome dell'hotel:
+
+| hotel | cosa diceva | cosa succede davvero |
+|---|---|---|
+| Acapulco | "Punto di raccolta: **Los Hibiscos**, alla fermata dell'autobus" | il pulmino passa sotto l'Acapulco |
+| Aguamar | "Punto di raccolta: **HG Tenerife Sur**" | idem |
+| Cleopatra | "Punto di raccolta: **Best Tenerife**, alla fermata dell'autobus" | idem |
+
+Alle otto di mattina il cliente esce e cammina fino a due strade di distanza, mentre il
+pulmino lo aspetta davanti alla porta.
+
+È **lo stesso errore che questo progetto aveva già scritto in testa a `hotel.js`, girato al
+contrario**: lì la paura era "chi sta al Cleopatra sale alla fermata del Best Tenerife, e se
+non glielo diciamo resta davanti al suo hotel a guardare l'ora". Qui è il rovescio, e fa lo
+stesso danno.
+
+### La regola era vera, ma di un fornitore solo
+
+`hotel.js` diceva, e ci credevo:
+
+> **Il punto dipende solo dall'hotel, non dall'escursione**: verificato su due escursioni
+> diverse del fornitore.
+
+La verifica era vera. Quello che non era scritto è che quelle due escursioni erano **dello
+stesso fornitore** — Island Excursions, da cui vengono `PICKUP_POINTS` e `HOTELS`. Un altro
+fornitore fa un altro giro, e Canaventura porta il pulmino sotto l'albergo.
+
+«Verificato su due casi» non è «vale sempre»: i due casi avevano in comune una cosa che non
+era stata guardata, ed è quella che decide.
+
+### Come è fatto
+
+Una terza tabella in `hotel.js`, accanto alle altre due:
+
+```js
+const PICKUP_IN_HOTEL = [
+  "trekking-bici"
+];
+```
+
+e in `hotelPunto()` (`escursioni.js`) un ritorno anticipato **prima** del punto: se la
+scheda è in quella lista, si risponde `{ dove: "hotel" }` e la tabella dei punti non si
+guarda nemmeno.
+
+Sta in `hotel.js` e non nel catalogo perché è un dato di pick-up, e i dati di pick-up
+stanno tutti lì: `PICKUP_TIMES` è già indicizzata per id di scheda, questa gli sta accanto
+con la stessa chiave.
+
+**Due dettagli decisi apposta:**
+
+- **Vale solo per gli hotel che stanno in `HOTELS`.** Il controllo sta *dopo* la ricerca
+  dell'hotel, non prima: a chi scrive "casa privata a Los Cristianos" non si promette
+  niente, perché il giro copre gli alloggi del sud e di un appartamento non sappiamo
+  nemmeno dov'è. Per lui resta la riga di aiuto che dice di scriverlo nelle note.
+- **L'ora continua a funzionare.** Il ritorno anticipato porta con sé `ora`, presa da
+  `PICKUP_TIMES` come prima. Oggi nessuna scheda ha tutte e due le cose, ma il giorno in
+  cui l'ufficio manderà gli orari delle camminate non si scoprirà che uno dei due
+  meccanismi ha spento l'altro.
+
+### Niente testi nuovi
+
+`req.pickupHotel` ("il tuo hotel") e `wa.pickupHotel` ("in hotel") c'erano già in `i18n.js`,
+perché 29 hotel hanno `punto: 0` e quel caso era già previsto. Serviva solo arrivarci.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, invariati.
+
+Nel browser vero, viewport telefono, in italiano — e la metà che conta è la seconda:
+
+- **Trekking**: Acapulco, Aguamar e Cleopatra dicono tutti e tre "Punto di raccolta: il tuo
+  hotel"; un indirizzo che non conosciamo non mostra niente e tiene la riga di aiuto;
+- **Teide National Park**: invariato, punti veri **e** ora (Acapulco → Los Hibiscos, 09:05);
+- **Santa Cruz + Anaga**: invariato, punti veri senza ora;
+- nel messaggio WhatsApp: "• Punto di raccolta: in hotel" sul Trekking, le altre due
+  intatte;
+- nessun errore JS.
+
+`CACHE_NAME` a `isla-v285`.
+
+### Resta da chiedere
+
+**Quali sono le altre.** Il proprietario dice che ce ne sono, e la lista è pronta ad
+accoglierle: aggiungere una scheda è scrivere il suo id in `PICKUP_IN_HOTEL`, una riga. Non
+ne ho indovinata nessuna — mettere in quella lista una scheda che non ci va fa esattamente
+il danno che questa versione ripara, solo dall'altro lato.

@@ -425,15 +425,24 @@ function hotelPunto(nomeHotel, idScheda) {
   if (!k) return null;
   const riga = HOTELS.find(h => hotelChiave(h[0]) === k);
   if (!riga) return null;
+  // L'ora dipende dall'escursione, il punto no: senza la scheda si mostra il
+  // posto e basta, che e' sempre meglio di un orario indovinato.
+  const ore = (typeof PICKUP_TIMES !== "undefined" && idScheda) ? PICKUP_TIMES[idScheda] : null;
+  // Su certe escursioni il pulmino passa sotto l'hotel qualunque sia il punto
+  // della tabella: e' un altro fornitore, che fa un altro giro (PICKUP_IN_HOTEL
+  // in hotel.js). Va guardato **prima** del punto, se no il cliente andrebbe a
+  // una fermata dove quel giorno non si ferma nessuno. Solo per gli hotel che
+  // conosciamo: per questo sta dopo il controllo qui sopra.
+  if (idScheda && typeof PICKUP_IN_HOTEL !== "undefined"
+      && PICKUP_IN_HOTEL.indexOf(idScheda) !== -1) {
+    return { dove: "hotel", ora: (ore && ore[riga[1]]) || "" };
+  }
   if (riga[1] === 0) return { dove: "hotel" };
   const punto = PICKUP_POINTS[riga[1]];
   if (!punto) return null;
   // il tipo si traduce, il nome del posto no: e' un nome proprio, e chi lo
   // deve chiedere per strada lo chiede cosi' com'e'
   const tipo = punto[1] ? t("pickup." + punto[1]) : "";
-  // L'ora dipende dall'escursione, il punto no: senza la scheda si mostra il
-  // posto e basta, che e' sempre meglio di un orario indovinato.
-  const ore = (typeof PICKUP_TIMES !== "undefined" && idScheda) ? PICKUP_TIMES[idScheda] : null;
   // L'ora torna a parte e non attaccata al posto: la scrive il campo "A che
   // ora", che su queste schede non e' piu' una domanda ma una risposta.
   const ora = (ore && ore[riga[1]]) || "";

@@ -14,10 +14,13 @@
 // e' un punto di cui non sappiamo il nome: sono quelli del nord, e per quegli
 // hotel non mostriamo niente.
 //
-// **Il punto dipende solo dall'hotel, non dall'escursione**: verificato su due
-// escursioni diverse del fornitore. Gli **orari** invece cambiano da
-// un'escursione all'altra, e per questo qui non ci sono: un'ora e' una
-// promessa, e la conferma l'ufficio.
+// **Il punto dipende solo dall'hotel, non dall'escursione** — ma solo dentro un
+// fornitore. Verificato su due escursioni di Island Excursions, che e' da dove
+// vengono queste due tabelle. Un altro fornitore fa un altro giro: quelli che
+// passano sotto l'albergo stanno in PICKUP_IN_HOTEL, piu' sotto, e per loro
+// queste righe non valgono.
+// Gli **orari** invece cambiano da un'escursione all'altra, e per questo qui
+// non ci sono: un'ora e' una promessa, e la conferma l'ufficio.
 //
 // I nomi vengono dai dati in dati-fornitore/, riscritti: gli originali sono
 // note per gli autisti, in stampatello e con spagnolo e inglese mescolati.
@@ -657,6 +660,32 @@ const HOTELS = [
   ["Xibana", 10045],
   ["Yucca Park", 20],
   ["Zentral Center", 29],
+];
+
+// Le escursioni che passano a prendere il cliente **sotto il suo hotel**,
+// qualunque punto gli assegni la tabella qui sopra.
+//
+// Il punto dipende dall'hotel e non dall'escursione: e' scritto in testa a
+// questo file, ed era vero — verificato su due escursioni. Ma era vero **di un
+// fornitore solo**, Island Excursions, da cui vengono PICKUP_POINTS e HOTELS.
+// Un altro fornitore fa un altro giro: Canaventura, sulle tre camminate, il
+// pulmino lo porta sotto l'albergo (proprietario, 11 settembre 2026).
+//
+// Senza questa lista il danno e' concreto e in una direzione sola: chi sta
+// all'Acapulco leggeva "Punto di raccolta: Los Hibiscos, alla fermata
+// dell'autobus" e alle otto del mattino usciva per andare a due strade di
+// distanza, mentre il pulmino lo aspettava davanti alla porta. Il file dice
+// gia' il danno opposto — "chi sta al Cleopatra sale alla fermata del Best
+// Tenerife, e se non glielo diciamo resta davanti al suo hotel a guardare
+// l'ora" — e questo e' lo stesso errore girato al contrario.
+//
+// Vale **solo per gli hotel che stanno in HOTELS**: a chi scrive un indirizzo
+// che non conosciamo non si promette niente, perche' il giro copre gli
+// alloggi del sud e di un appartamento privato non sappiamo nemmeno dov'e'.
+// Resta la riga di aiuto che dice di scriverlo nelle note.
+const PICKUP_IN_HOTEL = [
+  // Le tre camminate di Canaventura, che stanno tutte nella scheda "Trekking".
+  "trekking-bici"
 ];
 
 // Gli orari del pulmino, escursione per escursione.

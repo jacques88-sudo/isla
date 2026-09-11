@@ -1732,9 +1732,131 @@ const ESPLORA_CATALOG = [
     image: "teide-national-park.jpg",
     published: true
   },
+  // ─── Trekking e bici: due schede, non piu' una ────────────────────────────
+  // Fino a v280 "Trekking e bici" era **una scheda segnaposto sola** che
+  // prometteva due cose diverse ("Giornata fra sentieri e bicicletta"), e le
+  // tre camminate di Canaventura stavano fuori, una per scheda. Scelta del
+  // proprietario (11 settembre 2026): la scheda si chiama **Trekking** e tiene
+  // i tre cammini come varianti, la **bici** diventa una scheda sua.
+  //
+  // Il motivo per cui i tre cammini stanno insieme e non separati: sono lo
+  // stesso prodotto comprato tre volte — stesso fornitore, stesso prezzo,
+  // stessa formula (bus dal sud, guida di montagna, un giorno fisso a
+  // settimana). Quello che cambia e' **dove si cammina**, ed e' esattamente la
+  // domanda a cui servono i bottoni delle varianti. Tre schede uguali in fila,
+  // tutte "da 59 €", facevano scegliere fra tre righe identiche.
+  //
+  // L'id resta `trekking-bici` anche se la scheda adesso e' solo il trekking:
+  // gli id non si cambiano, si romperebbero i link gia' salvati e le richieste
+  // ferme in localStorage. Stessa regola di `santa-cruz-taganana`.
   {
     id: "trekking-bici",
-    title: { it: "Trekking e bici", en: "Hiking & biking", es: "Senderismo y bici" },
+    title: { it: "Trekking", en: "Hiking", es: "Senderismo" },
+    category: "teide-natura",
+    // Il bus passa a prendere il cliente dagli alloggi del sud: la partenza e'
+    // il sud su tutti e tre i cammini, anche su Camino Real che si cammina a
+    // Santiago del Teide e su Anaga che sta all'altro capo dell'isola. Questo
+    // campo in pagina si legge "Punto di partenza" — e' lo stesso inciampo
+    // gia' fatto sul giro di Icod, dove diceva "Tenerife nord" e dal nord non
+    // partiva niente. Dove si cammina sta nelle varianti.
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    priceFrom: 59,
+    // I prezzi stanno **sia qui sia dentro ogni variante**, ed e' voluto: qui
+    // perche' tutti e tre i cammini costano uguale e le righe "Adulti €59" e
+    // "Bambini €29,50" devono vedersi in "In breve" prima ancora di scegliere;
+    // dentro le varianti perche' il totale, appena una variante e' scelta,
+    // guarda **solo** il suo `priceAdult` e non ripiega su quello della scheda
+    // (escursioni.js, riga ~219). Senza, chi preme un bottone vedrebbe sparire
+    // il totale.
+    priceAdult: 59,
+    priceChild: 29.5,
+    // Il fornitore da' due soli prezzi, adulto e bambino fino a 11 anni: due
+    // fasce sole vogliono dire che sotto i 12 si paga il prezzo bambino. 12+ e
+    // 0-11 combaciano senza buchi. Niente `priceInfant`: non sappiamo se sotto
+    // una certa eta' si cammina, e assente non vuol dire gratis.
+    ages: { adult: "12+", child: "0-11" },
+    // L'unione dei tre giorni: ogni cammino ne ha uno solo, e la sua variante
+    // lo restringe (escursioni.js, `giorniDi`, riga ~24). Qui serve perche'
+    // prima di scegliere il cammino il blocco non deve rifiutare un giorno
+    // buono. **mer e' mercoledi'.**
+    days: ["lun", "mer", "gio"],
+    // Valgono per tutti e tre. Acqua e pranzo al sacco NON sono compresi:
+    // stanno nelle note, perche' "Cosa e' incluso" dice quello che c'e'.
+    included: ["guide", "transfer"],
+    options: {
+      label: { it: "Quale cammino", en: "Which walk", es: "Qué recorrido" },
+      choices: [
+        // I nomi dei percorsi sono quelli del fornitore e restano uguali in
+        // tutte e tre le lingue, come i titoli: quando la richiesta arriva su
+        // WhatsApp, in ufficio si ritrova il nome esatto da cercare.
+        { label: "Teide Light",
+          priceAdult: 59,
+          priceChild: 29.5,
+          days: ["gio"],
+          desc: {
+            it: "Il giovedì, nel Parco Nazionale del Teide: due ore di cammino in quota fra i paesaggi vulcanici, 175 metri di dislivello, difficoltà 2 su 6. È il più facile dei tre.",
+            en: "Thursdays, in Teide National Park: two hours of walking at altitude through the volcanic landscapes, 175 metres of ascent, difficulty 2 out of 6. The easiest of the three.",
+            es: "Los jueves, en el Parque Nacional del Teide: dos horas de caminata en altura entre los paisajes volcánicos, 175 metros de desnivel, dificultad 2 sobre 6. El más fácil de los tres."
+          } },
+        { label: "Camino Real",
+          priceAdult: 59,
+          priceChild: 29.5,
+          days: ["mer"],
+          desc: {
+            it: "Il mercoledì, sull'antico camino real che parte da Santiago del Teide, dove arriva il bus: tre ore e mezza di cammino, 350 metri di dislivello, difficoltà 3 su 6. È il più impegnativo dei tre.",
+            en: "Wednesdays, on the old royal path out of Santiago del Teide, where the bus drops you off: three and a half hours of walking, 350 metres of ascent, difficulty 3 out of 6. The most demanding of the three.",
+            es: "Los miércoles, por el antiguo camino real que sale de Santiago del Teide, adonde llega el autobús: tres horas y media de caminata, 350 metros de desnivel, dificultad 3 sobre 6. El más exigente de los tres."
+          } },
+        { label: "La Laguna & Anaga",
+          priceAdult: 59,
+          priceChild: 29.5,
+          days: ["lun"],
+          desc: {
+            it: "Il lunedì, fra La Laguna — città Patrimonio UNESCO — e il Parco Rurale di Anaga, Riserva della Biosfera: un'ora e mezza di cammino, 300 metri di dislivello, difficoltà 2 su 6. È il più corto dei tre.",
+            en: "Mondays, between UNESCO-listed La Laguna and the Anaga Rural Park, a Biosphere Reserve: an hour and a half of walking, 300 metres of ascent, difficulty 2 out of 6. The shortest of the three.",
+            es: "Los lunes, entre La Laguna — ciudad Patrimonio de la UNESCO — y el Parque Rural de Anaga, Reserva de la Biosfera: hora y media de caminata, 300 metros de desnivel, dificultad 2 sobre 6. El más corto de los tres."
+          } }
+      ]
+    },
+    notes: [
+      { it: "Acqua e pranzo al sacco non sono compresi: portali con te.",
+        en: "Water and a packed lunch are not included: bring them with you.",
+        es: "El agua y el picnic no están incluidos: llévalos contigo." },
+      { it: "Scarpe chiuse da camminata. In quota fa più fresco che sulla costa e il tempo cambia in fretta, anche quando al sud c'è il sole: porta una felpa o una giacca leggera.",
+        en: "Closed walking shoes. It is cooler up there than on the coast and the weather changes quickly, even when it is sunny in the south: bring a sweatshirt or a light jacket.",
+        es: "Calzado cerrado de montaña. En altura hace más fresco que en la costa y el tiempo cambia rápido, aunque en el sur haga sol: lleva una sudadera o una chaqueta ligera." },
+      { it: "Ogni cammino si fa in un giorno solo della settimana: scegli il percorso qui sopra e la data si regola da sola.",
+        en: "Each walk runs on one day of the week only: pick the route above and the date adjusts to it.",
+        es: "Cada recorrido se hace un solo día de la semana: elige el itinerario arriba y la fecha se ajusta sola." }
+    ],
+    // `family: true` con una riserva scritta nelle varianti. Due cammini su
+    // tre sono corti e facili; il Camino Real con le sue tre ore e mezza lo
+    // dice da se' nella sua riga ("il più impegnativo dei tre"). `family` sta
+    // sulla scheda e non sulla variante, quindi il filtro "Con bambini" e' uno
+    // solo per tutte e tre: tenerla fuori avrebbe nascosto anche le due facili.
+    family: true,
+    desc: {
+      it: "Tre cammini con guida di montagna, uno per giorno della settimana: il Parco Nazionale del Teide, l'antico camino real di Santiago del Teide e la laurisilva di Anaga con La Laguna. Bus andata e ritorno dagli alloggi del sud.",
+      en: "Three guided walks with a mountain guide, one for each day of the week: Teide National Park, the old royal path out of Santiago del Teide, and the Anaga laurel forest with La Laguna. Return bus from accommodation in the south.",
+      es: "Tres recorridos con guía de montaña, uno por día de la semana: el Parque Nacional del Teide, el antiguo camino real de Santiago del Teide y la laurisilva de Anaga con La Laguna. Autobús de ida y vuelta desde los alojamientos del sur."
+    },
+    // Foto ancora da caricare: canaventura.es e il suo CDN sono bloccati dal
+    // proxy di rete, come gia' kartingamericas.com, quindi le foto dei tre
+    // cammini non si scaricano e non si possono nemmeno guardare. Le deve
+    // mandare l'ufficio. `trekking-bici.jpg` non e' rimasta qui: e' un
+    // ciclista, ed e' passata alla scheda della bici, che e' il suo soggetto.
+    image: "",
+    published: true
+  },
+  {
+    // La meta' "bici" della vecchia scheda, staccata: era una promessa dentro
+    // una scheda che parlava d'altro, e adesso che il trekking ha tre cammini
+    // veri con i prezzi sarebbe sparita del tutto. Resta un segnaposto — di
+    // giri in bici non abbiamo ancora ne' prezzi ne' giorni — ma un segnaposto
+    // che si vede.
+    id: "bici",
+    title: { it: "Bici", en: "Biking", es: "Bici" },
     category: "teide-natura",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
@@ -1743,11 +1865,15 @@ const ESPLORA_CATALOG = [
     priceChild: 0,
     family: false,
     desc: {
-      it: "Giornata fra sentieri e bicicletta, con guida.",
-      en: "A day between trails and bike, with a guide.",
-      es: "Jornada entre senderos y bicicleta, con guía."
+      it: "Giornata in bicicletta sui sentieri dell'isola, con guida.",
+      en: "A day on two wheels along the island's trails, with a guide.",
+      es: "Jornada en bicicleta por los senderos de la isla, con guía."
     },
-    image: "trekking-bici.jpg",
+    // La foto che stava sulla vecchia scheda "Trekking e bici": un ciclista in
+    // mezzo alle lave. Rinominata `bici.jpg` perche' adesso il nome dice quello
+    // che c'e' dentro, e il file non e' citato da nessun'altra parte (solo da
+    // qui: sw.js precarica solo le icone).
+    image: "bici.jpg",
     published: true
   },
   {

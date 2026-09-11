@@ -9101,3 +9101,47 @@ spagnolo: le tre righe dicono le durate nuove, il resto della scheda è intatto,
 errore JS.
 
 `CACHE_NAME` a `isla-v282`.
+
+---
+
+## v283 — le fasce d'età dei cammini sono confermate, non più dedotte
+
+Il proprietario, in tre parole: **bambini fino a 11 anni**.
+
+**In catalogo non cambia niente**, ed è il punto: `ages: { adult: "12+", child: "0-11" }`
+c'era già dalla v280, e la conferma dice che era giusto. Cambia solo il commento, che dalla
+v280 raccontava le fasce come una **deduzione** dalle due sole righe del listino del
+fornitore. Adesso sono un dato confermato, e il commento lo dice.
+
+### La conseguenza vera sta su `priceInfant`
+
+Due fasce sole vogliono dire che **chiunque abbia meno di 12 anni paga il prezzo bambino,
+neonati compresi**. Non c'è una fascia gratis da scrivere.
+
+Quindi `priceInfant` resta assente, ma adesso per un motivo diverso da quello di v280.
+Prima l'assenza voleva dire *"non lo sappiamo"*; adesso vuol dire *"non esiste una riga
+neonati su questa scheda"*. Il campo è lo stesso e la pagina è identica — la riga "Neonati"
+non compare in nessuno dei due casi — ma chi legge il catalogo fra sei mesi deve sapere
+quale dei due è, se no riapre una domanda già chiusa.
+
+È lo stesso campo con due significati di cui parla `CLAUDE.md`, guardato dal lato in cui il
+significato lo porta il commento e non il codice.
+
+### Quello che resta aperto è un'altra domanda
+
+«Fino a 11 anni» dice **quanto paga** un bambino, non **se ci può andare**. Su un sentiero
+di montagna con 350 metri di dislivello può esistere un'età sotto la quale non si sale, e
+quella non è un prezzo: è una nota sulla scheda. Resta da chiedere, ed è l'unica cosa
+rimasta sulle fasce.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, invariati.
+
+Nel browser vero, in italiano: "Adulti (12+) €59" e "Bambini (0-11) €29,50", la riga
+"Neonati" non c'è nella finestra della richiesta, il totale 2 adulti + 1 bambino fa
+€147,50. Tutto come prima della modifica, che su un cambio di solo commento è esattamente
+il risultato che si vuole.
+
+`CACHE_NAME` a `isla-v283` — il file toccato è un `.js`, e la regola non fa eccezioni per i
+commenti.

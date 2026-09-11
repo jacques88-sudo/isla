@@ -1771,10 +1771,15 @@ const ESPLORA_CATALOG = [
     // il totale.
     priceAdult: 59,
     priceChild: 29.5,
-    // Il fornitore da' due soli prezzi, adulto e bambino fino a 11 anni: due
-    // fasce sole vogliono dire che sotto i 12 si paga il prezzo bambino. 12+ e
-    // 0-11 combaciano senza buchi. Niente `priceInfant`: non sappiamo se sotto
-    // una certa eta' si cammina, e assente non vuol dire gratis.
+    // **Bambini fino a 11 anni, confermato dal proprietario l'11 settembre
+    // 2026.** Erano dedotte dalle due sole fasce del fornitore, adesso sono
+    // confermate: 12+ e 0-11, che combaciano senza buchi.
+    // Niente `priceInfant`, ed e' la conseguenza della conferma: due fasce
+    // sole vogliono dire che **chiunque abbia meno di 12 anni paga il prezzo
+    // bambino**, neonati compresi. Non c'e' una fascia gratis da scrivere, e
+    // il campo assente e' proprio questo — non "non lo sappiamo".
+    // Resta da chiedere una cosa sola, ed e' un'altra: se sotto una certa eta'
+    // sul sentiero non si sale proprio. Quella non e' un prezzo, e' una nota.
     ages: { adult: "12+", child: "0-11" },
     // L'unione dei tre giorni: ogni cammino ne ha uno solo, e la sua variante
     // lo restringe (escursioni.js, `giorniDi`, riga ~24). Qui serve perche'

@@ -1804,18 +1804,18 @@ const ESPLORA_CATALOG = [
           priceChild: 29.5,
           days: ["mer"],
           desc: {
-            it: "Il mercoledì, sull'antico camino real che parte da Santiago del Teide, dove arriva il bus: tre ore e mezza di cammino, 350 metri di dislivello, difficoltà 3 su 6. È il più impegnativo dei tre.",
-            en: "Wednesdays, on the old royal path out of Santiago del Teide, where the bus drops you off: three and a half hours of walking, 350 metres of ascent, difficulty 3 out of 6. The most demanding of the three.",
-            es: "Los miércoles, por el antiguo camino real que sale de Santiago del Teide, adonde llega el autobús: tres horas y media de caminata, 350 metros de desnivel, dificultad 3 sobre 6. El más exigente de los tres."
+            it: "Il mercoledì, sull'antico camino real che parte da Santiago del Teide, dove arriva il bus: dalle 3 ore e mezza alle 4 ore di cammino, 350 metri di dislivello, difficoltà 3 su 6. È il più impegnativo dei tre.",
+            en: "Wednesdays, on the old royal path out of Santiago del Teide, where the bus drops you off: three and a half to four hours of walking, 350 metres of ascent, difficulty 3 out of 6. The most demanding of the three.",
+            es: "Los miércoles, por el antiguo camino real que sale de Santiago del Teide, adonde llega el autobús: de tres horas y media a cuatro de caminata, 350 metros de desnivel, dificultad 3 sobre 6. El más exigente de los tres."
           } },
         { label: "La Laguna & Anaga",
           priceAdult: 59,
           priceChild: 29.5,
           days: ["lun"],
           desc: {
-            it: "Il lunedì, fra La Laguna — città Patrimonio UNESCO — e il Parco Rurale di Anaga, Riserva della Biosfera: un'ora e mezza di cammino, 300 metri di dislivello, difficoltà 2 su 6. È il più corto dei tre.",
-            en: "Mondays, between UNESCO-listed La Laguna and the Anaga Rural Park, a Biosphere Reserve: an hour and a half of walking, 300 metres of ascent, difficulty 2 out of 6. The shortest of the three.",
-            es: "Los lunes, entre La Laguna — ciudad Patrimonio de la UNESCO — y el Parque Rural de Anaga, Reserva de la Biosfera: hora y media de caminata, 300 metros de desnivel, dificultad 2 sobre 6. El más corto de los tres."
+            it: "Il lunedì, fra La Laguna — città Patrimonio UNESCO — e il Parco Rurale di Anaga, Riserva della Biosfera: da un'ora e mezza a due ore di cammino, 300 metri di dislivello, difficoltà 2 su 6. È il più corto dei tre.",
+            en: "Mondays, between UNESCO-listed La Laguna and the Anaga Rural Park, a Biosphere Reserve: an hour and a half to two hours of walking, 300 metres of ascent, difficulty 2 out of 6. The shortest of the three.",
+            es: "Los lunes, entre La Laguna — ciudad Patrimonio de la UNESCO — y el Parque Rural de Anaga, Reserva de la Biosfera: de hora y media a dos horas de caminata, 300 metros de desnivel, dificultad 2 sobre 6. El más corto de los tres."
           } }
       ]
     },
@@ -1831,7 +1831,7 @@ const ESPLORA_CATALOG = [
         es: "Cada recorrido se hace un solo día de la semana: elige el itinerario arriba y la fecha se ajusta sola." }
     ],
     // `family: true` con una riserva scritta nelle varianti. Due cammini su
-    // tre sono corti e facili; il Camino Real con le sue tre ore e mezza lo
+    // tre sono corti e facili; il Camino Real con le sue tre ore e mezza-quattro lo
     // dice da se' nella sua riga ("il più impegnativo dei tre"). `family` sta
     // sulla scheda e non sulla variante, quindi il filtro "Con bambini" e' uno
     // solo per tutte e tre: tenerla fuori avrebbe nascosto anche le due facili.

@@ -9036,3 +9036,68 @@ orari di partenza hotel per hotel, lingue della guida. In più, adesso: **i dati
 bici**, che sono una scheda vuota che aspetta.
 
 `CACHE_NAME` a `isla-v281`.
+
+---
+
+## v282 — le durate che sono intervalli tornano intervalli
+
+Il proprietario ha rimandato la tabella dei tre cammini. Giorni, difficoltà e dislivello
+combaciavano già con quello che c'era in catalogo; l'unica differenza erano **due durate**:
+
+| cammino | in catalogo (v281) | nella tabella |
+|---|---|---|
+| Teide Light | 2h | 2h — uguale |
+| Camino Real | «tre ore e mezza» | **3h30-4h** |
+| La Laguna & Anaga | «un'ora e mezza» | **1h30-2h** |
+
+Adesso le varianti dicono l'intervallo: *"dalle 3 ore e mezza alle 4 ore di cammino"* e
+*"da un'ora e mezza a due ore di cammino"*, nelle tre lingue.
+
+### La regola che avevo scritto in v280 era girata al contrario
+
+In v280 avevo scelto il minimo, e l'avevo motivato così:
+
+> In nota va la **più bassa**: chi si organizza la giornata su tre ore e mezza non resta a
+> piedi se ne diventano quattro.
+
+**È il ragionamento al rovescio.** Chi legge "tre ore e mezza" e organizza la giornata su
+tre ore e mezza è esattamente quello che resta a piedi se ne diventano quattro: l'ha letto
+come una promessa e ha preso impegni dopo. Il minimo di un intervallo è il numero che
+rassicura di più e informa di meno.
+
+Con una durata secca le alternative erano tre, e nessuna delle prime due va bene:
+
+| | cosa legge il cliente | cosa succede se dura 4h |
+|---|---|---|
+| minimo (`3h30`) | una promessa | ha preso impegni troppo presto |
+| massimo (`4h`) | una promessa più cauta | niente, ma due rinunciano a prenotare |
+| **intervallo (`3h30-4h`)** | **una forchetta** | **niente: gliel'avevamo detto** |
+
+Un intervallo si legge per quello che è — una forchetta — e il cliente si organizza sul
+limite alto da solo. Il dato del fornitore *era* un intervallo: schiacciarlo su un numero
+solo buttava via l'unica informazione che serviva.
+
+**Dove vale questa regola:** su una durata, un'ora di rientro, una quantità. Non vale sulle
+**fasce d'orario segnaposto**, che sono un'altra cosa — lì l'intervallo non è la durata
+vera, è un modo di dire "scegli una preferenza". E non vale sui **prezzi**, dove la regola
+del progetto resta quella che è: sul sito va il prezzo pieno.
+
+Il file grezzo lo diceva già, e l'avevo pure trascritto senza ascoltarlo:
+`"note_estrazione": "La pagina riporta sia 'Duración: 4 hora(s)' sia 'Duración del
+senderismo: 3h30/4h00'. Il campo durata_trekking_min usa il valore minimo (3h30)."`
+
+### Quello che NON è cambiato
+
+Giorni (gio, mer, lun), difficoltà (2, 3, 2 su 6) e dislivello (±175, ±352, ±300 m) erano
+già giusti in v281: la tabella li ha confermati, non corretti. Teide Light aveva già 2h
+secche, e 2h secche restano — il fornitore lì non dà un intervallo.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, invariati.
+
+Nel browser vero, viewport telefono, premendo i tre bottoni in italiano, inglese e
+spagnolo: le tre righe dicono le durate nuove, il resto della scheda è intatto, nessun
+errore JS.
+
+`CACHE_NAME` a `isla-v282`.

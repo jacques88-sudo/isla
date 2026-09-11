@@ -8770,3 +8770,151 @@ ora" ha una voce, contata (`options.length === 1`), che è la conseguenza scritt
 Le altre tre formule e i loro prezzi sono invariati. Nessun errore JS.
 
 `CACHE_NAME` a `isla-v279`.
+
+---
+
+## v280 — le tre camminate di Canaventura
+
+Sono arrivati i dati di tre escursioni di trekking di **Canaventura**, in JSON già pulito:
+Teide Light, Camino Real, La Laguna & Anaga. Stesso prezzo tutte e tre (59 € adulti,
+29,50 € bambini), stessa formula — bus A/R dagli alloggi del sud, guida di montagna, un
+giorno fisso a settimana.
+
+Il catalogo passa da 64 a **67 schede**.
+
+### La categoria: niente "trekking" nuova
+
+Il JSON le chiamava `"categoria": "trekking"`, che in Isla non esiste. Le sette categorie
+sono quelle della home, e aprirne un'ottava per tre schede fa fare un giro in più per
+arrivare a una cosa — è lo stesso motivo per cui la categoria "stelle" è stata chiusa
+quando aveva una scheda sola. Sono finite in **`teide-natura`** ("Natura, Teide e
+stelle"), dove sta già il segnaposto "Trekking e bici".
+
+**Il segnaposto resta dov'è.** Copre anche la bici, che in queste tre non c'è. Se un
+giorno arrivano anche i giri in bicicletta, la domanda si riapre.
+
+### `zone` è "Tenerife Sud" su tutte e tre, anche su quelle che camminano altrove
+
+Camino Real si cammina a **Santiago del Teide** e La Laguna & Anaga sta all'altro capo
+dell'isola, ma quel campo in pagina si legge **"Punto di partenza"**, e il bus passa a
+prendere il cliente dagli alloggi del sud. Scriverci "Santiago del Teide" avrebbe detto
+il falso — è lo stesso inciampo già fatto sul giro di Icod, dove `zone` diceva "Tenerife
+nord" e dal nord non partiva niente.
+
+Dove si cammina sta nel titolo, nella descrizione e in una nota ("Il sentiero parte da
+Santiago del Teide, dove arriva il bus").
+
+### `times` non c'è — e nei dati grezzi c'era `[]`
+
+Il JSON del fornitore dava `"times": []` su tutte e tre, perché la sua pagina non pubblica
+l'ora. Copiato così avrebbe detto **un'altra cosa**: lista vuota vuol dire charter, la
+barca è tua e l'ora si concorda davvero. Qui non è un charter: è un bus con un giro fisso,
+e l'ora esiste — non la sappiamo.
+
+Quindi il campo **manca**, che è il terzo stato: restano le fasce segnaposto più "Da
+concordare". Quando l'ufficio manderà gli orari veri andranno in `PICKUP_TIMES` di
+`hotel.js`, perché dipendono dall'hotel come su tutte le escursioni in bus.
+
+### Le fasce d'età: 12+ e 0-11
+
+Il fornitore dà due soli prezzi, adulto e "bambino fino a 11 anni". Due fasce sole
+significa che chiunque abbia meno di 12 anni paga il prezzo bambino: `adult: "12+"` e
+`child: "0-11"` combaciano senza buchi e senza sovrapposizioni.
+
+**Niente `priceInfant`.** Non sappiamo se sotto una certa età si cammina, e il campo
+assente vuol dire esattamente questo — non "gratis". Verificato nel browser: la riga
+"Neonati" non compare su nessuna delle tre.
+
+### `family: false` sul Camino Real — è una scelta, non un dato
+
+I bambini hanno il loro prezzo e salgono su tutte e tre. Ma il filtro "Con bambini" non
+chiede "i bambini sono ammessi", chiede "è adatta". Tre ore e mezza di cammino con 350
+metri di dislivello e difficoltà 3 su 6 non sono quello che cerca chi spunta quel filtro;
+le altre due (2 ore e 1 ora e mezza, difficoltà 2) ci stanno.
+
+Da correggere in una parola se il proprietario la vede diversamente.
+
+### Non è un doppione di "Santa Cruz + Anaga + La Laguna"
+
+Il segnale c'era e andava guardato: la scheda `santa-cruz-taganana` va **negli stessi
+posti** e parte lo **stesso giorno**, il lunedì. È il caso Kalima Kat, e questa volta il
+confronto è stato fatto prima di scrivere.
+
+| | Santa Cruz + Anaga + La Laguna | Senderismo – La Laguna & Anaga |
+|---|---|---|
+| che cos'è | giornata in pullman, soste e tempo libero | camminata con guida di montagna |
+| fornitore | quello ufficiale di Admiral | Canaventura |
+| prezzo | 50 € / 31,50 € | 59 € / 29,50 € |
+| giorni | lun, gio | lun |
+| a piedi | niente | 1h30, 300 m di dislivello |
+
+Sono due prodotti diversi che passano dagli stessi posti. Restano tutte e due, e in elenco
+si vedono vicine: per questo il titolo dice "Senderismo" e la descrizione dice "camminata
+di un'ora e mezza" — chi le vede affiancate deve capire in che cosa sono diverse senza
+aprirle.
+
+### Le foto: non ci sono
+
+Gli undici link del fornitore stanno su `canaventura.es` e sul suo CDN
+(`crokis-sites.fra1.cdn.digitaloceanspaces.com`): **tutti e due bloccati dal proxy di
+rete** (403 sul CONNECT), come già `kartingamericas.com`. Da qui non si scaricano e non si
+possono nemmeno guardare — e una foto non guardata non si pubblica.
+
+Le tre schede escono con `image: ""`, cioè il riquadro "Foto in arrivo", come
+`masca-teide-cabrio-bus`. `controlla.js` lo segnala con un avviso, che è giusto: sono tre
+avvisi in più, e spariscono quando le foto arrivano.
+
+**`trekking-bici.jpg` non è stata riciclata**: è un ciclista in mezzo alle lave, e su tre
+schede di camminate avrebbe messo una bici dove non c'è.
+
+I link grezzi sono salvati in `dati-fornitore/grezzo/canaventura-senderismo.json`, così
+quando l'ufficio manda le foto si sa quali sono.
+
+### I titoli restano in spagnolo
+
+"Senderismo – Teide Light" anche in italiano e in inglese. È la regola dei titoli, che
+non si traducono e restano uguali nelle tre lingue: quando la richiesta arriva su
+WhatsApp, in ufficio si ritrova il nome esatto da cercare. Precedente: "Santa Cruz +
+Anaga + La Laguna".
+
+### Camino Real: due durate sulla stessa pagina
+
+Il fornitore scriveva sia "Duración: 4 hora(s)" sia "Duración del senderismo: 3h30/4h00".
+In nota va la **più bassa**: chi si organizza la giornata su tre ore e mezza non resta a
+piedi se ne diventano quattro. Il contrario sì.
+
+### Quello che non è stato copiato
+
+Dal JSON non è passato niente di promozionale, perché non ce n'era. Non è passato nemmeno
+il `booking_url` di Canaventura: le richieste di Isla vanno su WhatsApp all'ufficio, non
+sul motore di prenotazione di un altro. E le 24 ore di preavviso restano quelle di Isla.
+
+### Provato
+
+`node controlla.js` → **0 errori, 5 avvisi**: i 2 di prima più i 3 delle foto mancanti.
+Un errore in più c'è stato fino a che `CACHE_NAME` è rimasto a `isla-v279`, ed è il
+controllo che ha fatto il suo mestiere.
+
+Nel browser vero, viewport telefono, tutte e tre le schede in italiano, inglese e
+spagnolo:
+
+- il totale **2 adulti + 1 bambino fa €147,50** su tutte e tre (59 × 2 + 29,50);
+- la riga "Neonati" non c'è;
+- i giorni sono quelli giusti — **Mer** su Camino Real, non martedì;
+- il blocco dei giorni funziona: su Teide Light una data di lunedì risponde *"This
+  excursion only runs on: Thu."* e la richiesta non parte;
+- il menu "A che ora" ha "Da concordare" più le sette fasce segnaposto, che è quello che
+  deve fare una scheda senza orari suoi;
+- nessun errore JS. L'unica richiesta fallita è il CSS di Google Fonts, bloccato dal
+  proxy anche sulle schede vecchie.
+
+### Cosa resta da chiedere all'ufficio
+
+1. **Le foto** delle tre camminate (da qui non si scaricano).
+2. **Sotto i 12 anni c'è un'età minima?** Se sotto una certa età non si cammina va detto
+   in nota; se i più piccoli non pagano, allora è `priceInfant: 0` con la sua fascia.
+3. **Gli orari di partenza**, hotel per hotel, quando ci sono.
+4. **Le lingue della guida**: Canaventura non le dice, quindi il campo `languages` non
+   c'è e la domanda "In che lingua" non compare.
+
+`CACHE_NAME` a `isla-v280`.

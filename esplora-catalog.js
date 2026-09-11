@@ -1750,6 +1750,156 @@ const ESPLORA_CATALOG = [
     image: "trekking-bici.jpg",
     published: true
   },
+  // ─── Le tre camminate di Canaventura ──────────────────────────────────────
+  // Arrivate l'11 settembre 2026. Stanno qui e non in una categoria "trekking"
+  // tutta loro: una categoria nuova si apre quando le schede sono tante, e tre
+  // camminate dentro "Natura, Teide e stelle" si trovano dove uno le cerca.
+  // La scheda segnaposto "Trekking e bici" resta dov'e': copre anche la bici,
+  // che qui non c'e'.
+  //
+  // Tre cose valgono per tutte e tre, e sono quelle che si sbagliano:
+  //
+  // `zone` e' **Tenerife Sud** su tutte, anche su Camino Real che si cammina a
+  // Santiago del Teide e su Anaga che sta dall'altra parte dell'isola: quel
+  // campo in pagina si legge "Punto di partenza", e il bus passa a prendere il
+  // cliente dagli alloggi del sud. Dove si cammina sta nel titolo, nella
+  // descrizione e nelle note. E' lo stesso inciampo gia' fatto sul giro di
+  // Icod, dove "Tenerife nord" diceva il falso.
+  //
+  // Niente `times`. Il fornitore non pubblica l'ora di partenza e il ritiro e'
+  // in bus dagli alloggi, quindi l'ora dipendera' dall'hotel: il campo **non
+  // c'e'**, che vuol dire "non le sappiamo ancora" e lascia le fasce
+  // segnaposto. I dati grezzi scrivevano `times: []`, che avrebbe detto
+  // un'altra cosa — charter con l'ora da concordare davvero.
+  //
+  // Le fasce: il fornitore da' due soli prezzi, adulto e bambino fino a 11
+  // anni. Da li' 12+ e 0-11, che combaciano senza buchi. Niente `priceInfant`:
+  // non sappiamo se sotto una certa eta' si cammina, e assente non vuol dire
+  // gratis. Da chiedere all'ufficio.
+  {
+    id: "senderismo-teide-light",
+    // Titolo del fornitore, uguale in tutte e tre le lingue come gli altri.
+    title: "Senderismo – Teide Light",
+    category: "teide-natura",
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    priceFrom: 59,
+    priceAdult: 59,
+    priceChild: 29.5,
+    ages: { adult: "12+", child: "0-11" },
+    // Giovedi'. **gio**, dal `thursday` dei dati grezzi.
+    days: ["gio"],
+    // La guida di montagna e il bus A/R dagli alloggi del sud, tutti e due
+    // compresi nel prezzo. Acqua e pranzo al sacco no: stanno nelle note,
+    // perche' "Cosa e' incluso" dice quello che c'e', non quello che manca.
+    included: ["guide", "transfer"],
+    notes: [
+      { it: "Si cammina circa 2 ore, con 175 metri di dislivello: difficoltà 2 su 6, alla portata di chi cammina normalmente.",
+        en: "About 2 hours of walking with 175 metres of ascent: difficulty 2 out of 6, fine for anyone used to walking.",
+        es: "Se camina unas 2 horas, con 175 metros de desnivel: dificultad 2 sobre 6, al alcance de quien camina con normalidad." },
+      { it: "Acqua e pranzo al sacco non sono compresi: portali con te.",
+        en: "Water and a packed lunch are not included: bring them with you.",
+        es: "El agua y el picnic no están incluidos: llévalos contigo." },
+      { it: "Scarpe chiuse da camminata. In quota fa più fresco che sulla costa: porta una felpa o una giacca leggera.",
+        en: "Closed walking shoes. It is cooler up there than on the coast: bring a sweatshirt or a light jacket.",
+        es: "Calzado cerrado de montaña. En altura hace más fresco que en la costa: lleva una sudadera o una chaqueta ligera." }
+    ],
+    family: true,
+    desc: {
+      it: "Una giornata nel Parco Nazionale del Teide con guida di montagna: due ore di cammino in quota, fra i paesaggi vulcanici, su un percorso facile. Bus andata e ritorno dagli alloggi del sud.",
+      en: "A day in Teide National Park with a mountain guide: two hours of walking at altitude through the volcanic landscapes, on an easy route. Return bus from accommodation in the south.",
+      es: "Una jornada en el Parque Nacional del Teide con guía de montaña: dos horas de caminata en altura, entre los paisajes volcánicos, por un recorrido fácil. Autobús de ida y vuelta desde los alojamientos del sur."
+    },
+    // Foto ancora da caricare: canaventura.es e il suo CDN sono bloccati dal
+    // proxy di rete, come gia' kartingamericas.com. Le deve mandare l'ufficio.
+    image: "",
+    published: true
+  },
+  {
+    id: "senderismo-camino-real",
+    title: "Senderismo – Camino Real",
+    category: "teide-natura",
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    priceFrom: 59,
+    priceAdult: 59,
+    priceChild: 29.5,
+    ages: { adult: "12+", child: "0-11" },
+    // Mercoledi'. **mer**, dal `wednesday` dei dati grezzi.
+    days: ["mer"],
+    included: ["guide", "transfer"],
+    notes: [
+      // I dati del fornitore davano due durate diverse sulla stessa pagina,
+      // "4 ore" e "3h30/4h00". Qui va la piu' bassa: chi si organizza la
+      // giornata su tre ore e mezza non resta a piedi se ne diventano quattro.
+      { it: "Si cammina circa 3 ore e mezza, con 350 metri di dislivello: difficoltà 3 su 6, la più impegnativa delle tre camminate.",
+        en: "About three and a half hours of walking with 350 metres of ascent: difficulty 3 out of 6, the most demanding of the three walks.",
+        es: "Se camina unas tres horas y media, con 350 metros de desnivel: dificultad 3 sobre 6, la más exigente de las tres caminatas." },
+      { it: "Il sentiero parte da Santiago del Teide, dove arriva il bus.",
+        en: "The trail starts at Santiago del Teide, where the bus drops you off.",
+        es: "El sendero sale de Santiago del Teide, adonde llega el autobús." },
+      { it: "Acqua e pranzo al sacco non sono compresi: portali con te.",
+        en: "Water and a packed lunch are not included: bring them with you.",
+        es: "El agua y el picnic no están incluidos: llévalos contigo." },
+      { it: "Scarpe chiuse da camminata e una giacca leggera.",
+        en: "Closed walking shoes and a light jacket.",
+        es: "Calzado cerrado de montaña y una chaqueta ligera." }
+    ],
+    // `family: false` e' una scelta, non un dato del fornitore: i bambini hanno
+    // il loro prezzo e salgono, ma tre ore e mezza di cammino con 350 metri di
+    // dislivello non sono quello che cerca chi filtra "Con bambini". Le altre
+    // due camminate sono piu' corte e stanno nel filtro.
+    family: false,
+    desc: {
+      it: "L'antico camino real che parte da Santiago del Teide, con guida di montagna: tre ore e mezza di cammino e 350 metri di dislivello fra i sentieri storici dell'ovest dell'isola. Bus andata e ritorno dagli alloggi del sud.",
+      en: "The old royal path out of Santiago del Teide, with a mountain guide: three and a half hours of walking and 350 metres of ascent along the historic trails of the west of the island. Return bus from accommodation in the south.",
+      es: "El antiguo camino real que sale de Santiago del Teide, con guía de montaña: tres horas y media de caminata y 350 metros de desnivel por los senderos históricos del oeste de la isla. Autobús de ida y vuelta desde los alojamientos del sur."
+    },
+    image: "",
+    published: true
+  },
+  {
+    id: "senderismo-laguna-anaga",
+    title: "Senderismo – La Laguna & Anaga",
+    category: "teide-natura",
+    // Non e' un doppione di "Santa Cruz + Anaga + La Laguna": quella e' una
+    // giornata in pullman con le soste e il tempo libero, questa e' una
+    // camminata con la guida di montagna, di un altro fornitore e a un altro
+    // prezzo. Vanno negli stessi posti e partono tutte e due di lunedi', ed e'
+    // il motivo per cui questa riga sta qui: chi le vede vicine in elenco deve
+    // capire in che cosa sono diverse, e lo dicono il titolo e la descrizione.
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    priceFrom: 59,
+    priceAdult: 59,
+    priceChild: 29.5,
+    ages: { adult: "12+", child: "0-11" },
+    // Lunedi'. **lun**, dal `monday` dei dati grezzi.
+    days: ["lun"],
+    included: ["guide", "transfer"],
+    notes: [
+      { it: "Si cammina circa un'ora e mezza, con 300 metri di dislivello: difficoltà 2 su 6, la più corta delle tre camminate.",
+        en: "About an hour and a half of walking with 300 metres of ascent: difficulty 2 out of 6, the shortest of the three walks.",
+        es: "Se camina hora y media aproximadamente, con 300 metros de desnivel: dificultad 2 sobre 6, la más corta de las tres caminatas." },
+      { it: "Acqua e pranzo al sacco non sono compresi: portali con te.",
+        en: "Water and a packed lunch are not included: bring them with you.",
+        es: "El agua y el picnic no están incluidos: llévalos contigo." },
+      // Stessa nota che sta sul giro in pullman di Anaga: li' in quota il tempo
+      // cambia in fretta anche quando al sud c'e' il sole, e camminando conta
+      // ancora di piu'.
+      { it: "Ad Anaga si sta in quota e il tempo cambia in fretta, anche quando al sud c'è il sole: scarpe chiuse e una giacca leggera.",
+        en: "Anaga is up in the hills and the weather changes quickly, even when it is sunny in the south: closed shoes and a light jacket.",
+        es: "En Anaga se está en altura y el tiempo cambia rápido, aunque en el sur haga sol: calzado cerrado y una chaqueta ligera." }
+    ],
+    family: true,
+    desc: {
+      it: "La Laguna, città Patrimonio UNESCO, e una camminata di un'ora e mezza nel Parco Rurale di Anaga, Riserva della Biosfera, con guida di montagna. Bus andata e ritorno dagli alloggi del sud.",
+      en: "UNESCO-listed La Laguna and an hour-and-a-half walk in the Anaga Rural Park, a Biosphere Reserve, with a mountain guide. Return bus from accommodation in the south.",
+      es: "La Laguna, ciudad Patrimonio de la UNESCO, y una caminata de hora y media en el Parque Rural de Anaga, Reserva de la Biosfera, con guía de montaña. Autobús de ida y vuelta desde los alojamientos del sur."
+    },
+    image: "",
+    published: true
+  },
   {
     id: "icod-garachico-orotava",
     // L'id nomina ancora La Orotava, dove il tour non passa piu' dal 24

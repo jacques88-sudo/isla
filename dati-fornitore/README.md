@@ -108,3 +108,25 @@ diventate le quattro formule della scheda (v277).
 Non è finito in scheda quello che il file chiama `plaza_gratis_desde`: il
 circuito regala la gara al festeggiato dai 10 partecipanti in su, ma è la
 promozione di un altro e non è nostra da offrire.
+
+---
+
+## `grezzo/canaventura-senderismo.json`
+
+Le tre camminate di **Canaventura** (11 settembre 2026), mandate dall'ufficio già in JSON
+pulito: Teide Light, Camino Real, La Laguna & Anaga. Da lì sono nate le tre schede
+`senderismo-*` (v280).
+
+Il file è tenuto **com'è arrivato**, e due dei suoi campi in catalogo sono cambiati apposta:
+
+- **`times: []` non è stato copiato.** Nel file vuol dire "la pagina del fornitore non
+  pubblica l'ora"; in Isla la lista vuota vuol dire charter, con l'ora da concordare
+  davvero. Nelle schede il campo **manca**, che è lo stato giusto — non le sappiamo ancora.
+- **`punto_partenza: "Santiago del Teide"`** è dove comincia il sentiero, non da dove parte
+  il cliente: in scheda `zone` è "Tenerife Sud" come su tutte le escursioni in bus, e
+  Santiago del Teide sta in una nota.
+
+Gli **undici link delle foto** servono ancora: `canaventura.es` e il suo CDN
+(`crokis-sites.fra1.cdn.digitaloceanspaces.com`) sono bloccati dal proxy di rete, come
+`kartingamericas.com`, quindi le foto le deve mandare l'ufficio. Finché non arrivano le tre
+schede escono col riquadro "Foto in arrivo".

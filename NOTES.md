@@ -9145,3 +9145,65 @@ il risultato che si vuole.
 
 `CACHE_NAME` a `isla-v283` — il file toccato è un `.js`, e la regola non fa eccezioni per i
 commenti.
+
+---
+
+## v284 — «Giornata intera» era falsa, e non è stata sostituita con un'altra
+
+Il proprietario, guardando la scheda: nella durata c'è scritto "giornata intera" ma **non è
+così**.
+
+Veniva dal `durata_escursione` del file grezzo di Canaventura, che lo dice su tutti e tre i
+cammini, e l'avevo trascritto senza metterlo in dubbio. È l'errore che la skill
+`nuova-scheda` chiama per nome — prendere per buono un campo del fornitore invece di
+chiedere — e qui è caduto sul campo dove pesa di più.
+
+### Perché non ho messo un altro numero
+
+Le ore vere non ce le ho. Le alternative erano tre:
+
+| | cosa legge il cliente | cosa succede |
+|---|---|---|
+| «Giornata intera» (prima) | tieni libero tutto il giorno | è falso, l'ha detto il proprietario |
+| un numero dedotto («circa 7 ore») | una promessa precisa | **inventata**: nessuno l'ha mai detta |
+| **«Da definire»** | **niente** | niente, finché l'ufficio non manda le ore |
+
+Dedurlo sarebbe stato possibile — il giro in pullman ad Anaga dice "8 ore circa", il Teide
+"6-8 ore" — ma sarebbe stata una mia stima travestita da dato del fornitore, cioè
+esattamente la cosa che su questo campo non si fa. Il tempo di **cammino**, che invece è un
+dato certo, sta già in ogni variante e non è stato toccato.
+
+### "Da definire" non si vede: la riga sparisce
+
+Non è un segnaposto che il cliente legge. `daDefinire()` (`escursioni.js`, riga 14) è un
+meccanismo che c'era già: dove zona o durata valgono "Da definire", la riga di "In breve"
+non viene stampata (`tour.js`, riga 66) e la pillola dell'elenco nemmeno
+(`escursioni.js`, riga 716). Verificato in pagina nelle tre lingue: la riga "Durata"
+**non c'è**, e in elenco restano solo "Tenerife Sud", "Adatta ai bambini" e "da €59".
+
+Una cosa da sapere se un giorno si tocca: `daDefinire()` guarda **solo l'italiano**
+(`/Da definire/.test(valore.it)`). Scrivere "To be confirmed" in inglese senza "Da
+definire" in italiano non nasconderebbe niente.
+
+### Dove andrà la durata vera
+
+Se è uguale per tutti e tre, torna qui sulla scheda. Se cambia da un cammino all'altro —
+ed è probabile, visto che La Laguna & Anaga va all'altro capo dell'isola e Teide Light no —
+va **dentro le varianti**: `duration` sulla variante batte quella della scheda, ed è già
+così che funziona su Teide by Night, dove il pullman e il minivan durano diverso.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, invariati.
+
+Nel browser vero, viewport telefono, in italiano, inglese e spagnolo: la riga "Durata" non
+compare più sulla scheda, la pillola non compare in elenco, il resto è intatto, nessun
+errore JS.
+
+`CACHE_NAME` a `isla-v284`.
+
+### Resta da chiedere
+
+**Quanto dura davvero una di queste giornate**, dall'ora del ritiro all'ora del rientro. È
+la domanda più utile delle quattro ancora aperte su questa scheda: senza, la riga resta
+vuota.

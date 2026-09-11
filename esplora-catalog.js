@@ -1760,7 +1760,18 @@ const ESPLORA_CATALOG = [
     // gia' fatto sul giro di Icod, dove diceva "Tenerife nord" e dal nord non
     // partiva niente. Dove si cammina sta nelle varianti.
     zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    // "Giornata intera" veniva dal `durata_escursione` dei dati grezzi ed e'
+    // **sbagliata**: lo dice il proprietario l'11 settembre 2026. Non e' stata
+    // sostituita con un altro numero perche' quello vero non ce l'abbiamo
+    // ancora, e su questo campo tirare a indovinare e' il danno peggiore — chi
+    // legge "giornata intera" tiene libero il pomeriggio, chi legge "4 ore"
+    // prende un impegno alle 15. Il segnaposto dice quello che sappiamo, cioe'
+    // niente; il tempo di cammino, che invece e' un dato certo, sta gia' in
+    // ogni variante.
+    // Da rimettere appena l'ufficio manda le ore vere. Se cambiano da un
+    // cammino all'altro vanno **dentro le varianti** (`duration` sulla
+    // variante batte quella della scheda), se no qui.
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 59,
     // I prezzi stanno **sia qui sia dentro ogni variante**, ed e' voluto: qui
     // perche' tutti e tre i cammini costano uguale e le righe "Adulti €59" e

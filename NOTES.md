@@ -9306,3 +9306,82 @@ Nel browser vero, viewport telefono, in italiano — e la metà che conta è la 
 accoglierle: aggiungere una scheda è scrivere il suo id in `PICKUP_IN_HOTEL`, una riga. Non
 ne ho indovinata nessuna — mettere in quella lista una scheda che non ci va fa esattamente
 il danno che questa versione ripara, solo dall'altro lato.
+
+---
+
+## v286 — due durate, perché sono due domande
+
+Il proprietario: la durata dell'**attività** è specifica, quella dell'**escursione** è tutta
+la giornata — si può differenziare?
+
+Sì, e la v284 aveva risolto il problema sbagliato. «Giornata intera» era vera: in giro si
+sta tutto il giorno. Quello che mancava non era un numero migliore, era **la riga accanto**.
+
+### Il campo nuovo: `activityDuration` (+ `activityLabel`)
+
+In "In breve" adesso ci sono due righe, una sotto l'altra:
+
+```
+Durata              Giornata intera
+Tempo di cammino    3h30 – 4h
+```
+
+- **`activityDuration`** è il valore. Sta sulla scheda **oppure dentro la variante**, dove
+  vince come `duration`, `zone` e `days`: i tre cammini durano diverso, e la riga segue il
+  bottone premuto.
+- **`activityLabel`** è il nome della riga e sta solo sulla scheda, perché è lo stesso per
+  tutte le varianti: quello che cambia è il numero. Senza, si ripiega su `detail.activity`
+  ("Durata dell'attività"), generico apposta — la parola giusta ("Tempo di cammino",
+  "Tempo in acqua") la sa la scheda, non `i18n.js`.
+
+Il campo è **generico**, non "tempo di cammino": la stessa forma serve a un'immersione
+dentro una giornata in barca o a un'ora di kayak dentro mezza giornata. Si vede solo sulla
+pagina di dettaglio — fra le pillole dell'elenco sarebbe una terza riga senza nemmeno una
+variante scelta.
+
+### Perché due righe e non una
+
+Erano due informazioni che si scacciavano a vicenda dentro un campo solo:
+
+| cosa c'era scritto | cosa perdeva |
+|---|---|
+| «Giornata intera» | chi voleva sapere quanto si cammina non lo trovava |
+| «2 ore» (se avessi messo la variante `duration`) | il cliente torna a pranzo, e invece è via tutto il giorno |
+| «Da definire» (v284) | tutte e due |
+| **due righe** | **niente** |
+
+Da non rifare: mettere il tempo di cammino nella `duration` della **variante**. Quel campo
+esiste e avrebbe funzionato senza errori — solo che in pagina si legge "Durata", e avrebbe
+detto che l'escursione dura due ore.
+
+### Le descrizioni si accorciano
+
+Il tempo di cammino era dentro la `desc` di ogni variante, e con la riga nuova sarebbe
+stato scritto due volte. È uscito dalle descrizioni, che tengono quello che la riga non
+dice: dove si cammina, il dislivello, la difficoltà, quale dei tre è il più duro. Stessa
+potatura della v279, stesso motivo.
+
+### La notazione compatta
+
+`"2h"`, `"3h30 – 4h"`, `"1h30 – 2h"`, **stringhe lisce** e non `{ it, en, es }`: la "h" si
+legge in tutte e tre le lingue, come "Costa Adeje". In forma distesa ("3 ore e mezza – 4
+ore") il valore riempiva la riga fino al bordo. Ed è la notazione con cui l'ufficio ha
+mandato la tabella.
+
+**Un falso allarme, annotato perché non ci ricaschi:** nello screenshot a pagina intera il
+valore sembrava tagliato a metà dal pallino della chat. Misurato, non lo è —
+`scrollWidth === clientWidth` a 390px e a 320px, e sul punto del testo non c'è niente
+sopra. Il pallino è `fixed`: in una cattura a pagina intera finisce disegnato su una riga a
+caso, e scorrendo la pagina si sposta. Il suo posto resta dov'è (cosa decisa).
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, invariati.
+
+Nel browser vero, viewport telefono, premendo i tre bottoni in italiano, inglese e
+spagnolo: "Durata: Giornata intera" sempre uguale, e sotto "Tempo di cammino" che cambia —
+2h, 3h30 – 4h, 1h30 – 2h. Su Teide National Park, che il campo non ce l'ha, sotto "Durata:
+6-8 ore circa" viene "Giorni" come prima: la riga in più non compare dove non è scritta.
+Nessun errore JS.
+
+`CACHE_NAME` a `isla-v286`.

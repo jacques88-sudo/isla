@@ -164,6 +164,10 @@ const I18N = {
   "detail.summary":     { it: "In breve", en: "At a glance", es: "En resumen" },
   "detail.departure":   { it: "Punto di partenza", en: "Departure point", es: "Punto de salida" },
   "detail.duration":    { it: "Durata", en: "Duration", es: "Duración" },
+  // Ripiego per la riga di `activityDuration` quando la scheda non scrive il
+  // suo `activityLabel`. Generica apposta: la parola giusta ("Tempo di
+  // cammino", "Tempo in acqua") la sa solo la scheda.
+  "detail.activity":    { it: "Durata dell'attività", en: "Activity time", es: "Duración de la actividad" },
   "detail.price":       { it: "Prezzo", en: "Price", es: "Precio" },
   "detail.offer":       { it: "Offerta", en: "Offer", es: "Oferta" },
   "detail.offerUntil":  { it: "Valida fino al {d}", en: "Valid until {d}", es: "Válida hasta el {d}" },

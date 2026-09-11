@@ -66,6 +66,21 @@ function detailRows(tour, variante) {
   if (!daDefinire(durata) && !opzioniSonoLaDurata) {
     righe.push([t("detail.duration"), tf(durata)]);
   }
+  // Quanto dura l'ATTIVITA' dentro la giornata, che non e' quanto dura
+  // l'escursione: le camminate di Canaventura sono due ore dentro una giornata
+  // intera, e le due cose finivano per scacciarsi a vicenda — o si scriveva
+  // "Giornata intera" e chi voleva sapere quanto si cammina non lo trovava, o
+  // si scriveva "2 ore" e il cliente tornava a pranzo. Sono due righe perche'
+  // sono due domande.
+  // Come la zona e la durata, la variante vince: i tre cammini durano diverso.
+  const attivita = (variante && variante.activityDuration) || tour.activityDuration;
+  if (attivita && !daDefinire(attivita)) {
+    // L'etichetta la sceglie la scheda ("Tempo di cammino"), perche' generica
+    // accanto a "Durata" non si capirebbe. Senza, un ripiego che almeno dice
+    // che si parla dell'attivita' e non della giornata.
+    const etichetta = tour.activityLabel ? tf(tour.activityLabel) : t("detail.activity");
+    righe.push([etichetta, tf(attivita)]);
+  }
 
   // Orari e lingue stavano solo dentro la finestra della richiesta, dove si
   // arriva col pulsante: chi guardava la pagina non li trovava. Qui ci vanno

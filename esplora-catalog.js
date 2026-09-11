@@ -123,6 +123,25 @@
 //                prima", "porta il costume" cambiano troppo da attivita' a
 //                attivita' per stare in un vocabolario.
 //                    notes: [ { it: "...", en: "...", es: "..." } ]
+//   activityDuration, activityLabel → facoltativi, e vanno insieme: quanto dura
+//                l'**attivita'** dentro la giornata, che non e' quanto dura
+//                l'escursione. Sulle camminate si sta in giro tutto il giorno e
+//                si cammina due ore: scritte da sole le due cose si scacciano a
+//                vicenda — "Giornata intera" nasconde quanto si cammina, "2 ore"
+//                fa tornare il cliente a pranzo. Sono due righe di "In breve",
+//                una sotto l'altra, perche' sono due domande.
+//                `activityDuration` e' il valore e sta sulla scheda oppure
+//                **dentro la variante**, dove vince come `duration` e `days`:
+//                i tre cammini durano diverso.
+//                `activityLabel` e' il nome della riga e sta solo sulla scheda,
+//                perche' e' lo stesso per tutte le varianti. Senza, si ripiega
+//                su `detail.activity` ("Durata dell'attivita'"), che e' generico
+//                apposta: la parola giusta la sa la scheda.
+//                    activityLabel: { it: "Tempo di cammino", en: "Walking time", es: "..." }
+//                    // e dentro ogni variante:
+//                    activityDuration: { it: "2 ore", en: "2 hours", es: "2 horas" }
+//                Si vede solo sulla pagina di dettaglio: fra le pillole
+//                dell'elenco sarebbe una terza riga senza la variante scelta.
 //   privateOption → facoltativo: id dell'escursione in versione privata. Sulla
 //                pagina di dettaglio compare un rimando "vuoi la barca solo per
 //                il tuo gruppo?".
@@ -1760,18 +1779,15 @@ const ESPLORA_CATALOG = [
     // gia' fatto sul giro di Icod, dove diceva "Tenerife nord" e dal nord non
     // partiva niente. Dove si cammina sta nelle varianti.
     zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
-    // "Giornata intera" veniva dal `durata_escursione` dei dati grezzi ed e'
-    // **sbagliata**: lo dice il proprietario l'11 settembre 2026. Non e' stata
-    // sostituita con un altro numero perche' quello vero non ce l'abbiamo
-    // ancora, e su questo campo tirare a indovinare e' il danno peggiore — chi
-    // legge "giornata intera" tiene libero il pomeriggio, chi legge "4 ore"
-    // prende un impegno alle 15. Il segnaposto dice quello che sappiamo, cioe'
-    // niente; il tempo di cammino, che invece e' un dato certo, sta gia' in
-    // ogni variante.
-    // Da rimettere appena l'ufficio manda le ore vere. Se cambiano da un
-    // cammino all'altro vanno **dentro le varianti** (`duration` sulla
-    // variante batte quella della scheda), se no qui.
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    // "Giornata intera" e' giusta, e la domanda era un'altra: in giro si sta
+    // tutto il giorno, ma **si cammina** due ore (proprietario, 11 settembre
+    // 2026). In v284 avevo tolto la durata credendola falsa; era vera, mancava
+    // la riga accanto. Adesso sono due: questa dice quanto dura la giornata,
+    // `activityDuration` dentro ogni variante dice quanto dura il cammino.
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    // Il nome della seconda riga. Sta sulla scheda e non nelle varianti perche'
+    // e' lo stesso per tutti e tre: quello che cambia e' il numero.
+    activityLabel: { it: "Tempo di cammino", en: "Walking time", es: "Tiempo de caminata" },
     priceFrom: 59,
     // I prezzi stanno **sia qui sia dentro ogni variante**, ed e' voluto: qui
     // perche' tutti e tre i cammini costano uguale e le righe "Adulti €59" e
@@ -1810,28 +1826,34 @@ const ESPLORA_CATALOG = [
           priceAdult: 59,
           priceChild: 29.5,
           days: ["gio"],
+          // Notazione compatta, uguale in tutte e tre le lingue: "h" si legge
+          // ovunque, e in forma distesa ("3 ore e mezza – 4 ore") il valore
+          // finiva sotto il pallino della chat, che non si sposta.
+          activityDuration: "2h",
           desc: {
-            it: "Il giovedì, nel Parco Nazionale del Teide: due ore di cammino in quota fra i paesaggi vulcanici, 175 metri di dislivello, difficoltà 2 su 6. È il più facile dei tre.",
-            en: "Thursdays, in Teide National Park: two hours of walking at altitude through the volcanic landscapes, 175 metres of ascent, difficulty 2 out of 6. The easiest of the three.",
-            es: "Los jueves, en el Parque Nacional del Teide: dos horas de caminata en altura entre los paisajes volcánicos, 175 metros de desnivel, dificultad 2 sobre 6. El más fácil de los tres."
+            it: "Il giovedì, nel Parco Nazionale del Teide: si cammina in quota fra i paesaggi vulcanici, con 175 metri di dislivello e difficoltà 2 su 6. È il più facile dei tre.",
+            en: "Thursdays, in Teide National Park: walking at altitude through the volcanic landscapes, with 175 metres of ascent and difficulty 2 out of 6. The easiest of the three.",
+            es: "Los jueves, en el Parque Nacional del Teide: se camina en altura entre los paisajes volcánicos, con 175 metros de desnivel y dificultad 2 sobre 6. El más fácil de los tres."
           } },
         { label: "Camino Real",
           priceAdult: 59,
           priceChild: 29.5,
           days: ["mer"],
+          activityDuration: "3h30 – 4h",
           desc: {
-            it: "Il mercoledì, sull'antico camino real che parte da Santiago del Teide, dove arriva il bus: dalle 3 ore e mezza alle 4 ore di cammino, 350 metri di dislivello, difficoltà 3 su 6. È il più impegnativo dei tre.",
-            en: "Wednesdays, on the old royal path out of Santiago del Teide, where the bus drops you off: three and a half to four hours of walking, 350 metres of ascent, difficulty 3 out of 6. The most demanding of the three.",
-            es: "Los miércoles, por el antiguo camino real que sale de Santiago del Teide, adonde llega el autobús: de tres horas y media a cuatro de caminata, 350 metros de desnivel, dificultad 3 sobre 6. El más exigente de los tres."
+            it: "Il mercoledì, sull'antico camino real che parte da Santiago del Teide, dove arriva il bus: 350 metri di dislivello e difficoltà 3 su 6. È il più impegnativo dei tre.",
+            en: "Wednesdays, on the old royal path out of Santiago del Teide, where the bus drops you off: 350 metres of ascent and difficulty 3 out of 6. The most demanding of the three.",
+            es: "Los miércoles, por el antiguo camino real que sale de Santiago del Teide, adonde llega el autobús: 350 metros de desnivel y dificultad 3 sobre 6. El más exigente de los tres."
           } },
         { label: "La Laguna & Anaga",
           priceAdult: 59,
           priceChild: 29.5,
           days: ["lun"],
+          activityDuration: "1h30 – 2h",
           desc: {
-            it: "Il lunedì, fra La Laguna — città Patrimonio UNESCO — e il Parco Rurale di Anaga, Riserva della Biosfera: da un'ora e mezza a due ore di cammino, 300 metri di dislivello, difficoltà 2 su 6. È il più corto dei tre.",
-            en: "Mondays, between UNESCO-listed La Laguna and the Anaga Rural Park, a Biosphere Reserve: an hour and a half to two hours of walking, 300 metres of ascent, difficulty 2 out of 6. The shortest of the three.",
-            es: "Los lunes, entre La Laguna — ciudad Patrimonio de la UNESCO — y el Parque Rural de Anaga, Reserva de la Biosfera: de hora y media a dos horas de caminata, 300 metros de desnivel, dificultad 2 sobre 6. El más corto de los tres."
+            it: "Il lunedì, fra La Laguna — città Patrimonio UNESCO — e il Parco Rurale di Anaga, Riserva della Biosfera: 300 metri di dislivello e difficoltà 2 su 6. È il più corto dei tre.",
+            en: "Mondays, between UNESCO-listed La Laguna and the Anaga Rural Park, a Biosphere Reserve: 300 metres of ascent and difficulty 2 out of 6. The shortest of the three.",
+            es: "Los lunes, entre La Laguna — ciudad Patrimonio de la UNESCO — y el Parque Rural de Anaga, Reserva de la Biosfera: 300 metros de desnivel y dificultad 2 sobre 6. El más corto de los tres."
           } }
       ]
     },

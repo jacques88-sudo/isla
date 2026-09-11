@@ -114,8 +114,8 @@ promozione di un altro e non è nostra da offrire.
 ## `grezzo/canaventura-senderismo.json`
 
 Le tre camminate di **Canaventura** (11 settembre 2026), mandate dall'ufficio già in JSON
-pulito: Teide Light, Camino Real, La Laguna & Anaga. Da lì sono nate le tre schede
-`senderismo-*` (v280).
+pulito: Teide Light, Camino Real, La Laguna & Anaga. Sono le **tre varianti** della scheda
+`trekking-bici`, che dalla v281 si chiama "Trekking" (in v280 erano tre schede separate).
 
 Il file è tenuto **com'è arrivato**, e due dei suoi campi in catalogo sono cambiati apposta:
 

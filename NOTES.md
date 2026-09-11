@@ -8918,3 +8918,121 @@ spagnolo:
    c'è e la domanda "In che lingua" non compare.
 
 `CACHE_NAME` a `isla-v280`.
+
+---
+
+## v281 — "Trekking e bici" diventa due schede
+
+Scelta del proprietario, guardando la v280: la scheda si chiama **Trekking** e tiene i tre
+cammini **come varianti**; la **bici** si stacca in una scheda sua.
+
+In v280 avevo fatto il contrario — tre schede separate (`senderismo-*`) e il segnaposto
+"Trekking e bici" lasciato dov'era. Ha ragione lui, e il motivo si vede in elenco.
+
+### Perché i tre cammini stanno meglio insieme
+
+Sono **lo stesso prodotto comprato tre volte**: stesso fornitore, stesso prezzo (59 € e
+29,50 €), stessa formula — bus dal sud, guida di montagna, un giorno fisso a settimana.
+L'unica cosa che cambia è **dove si cammina**, ed è esattamente la domanda a cui servono i
+bottoni delle varianti.
+
+Tre schede in fila, tutte "da €59", tutte "Giornata intera", tutte "Tenerife Sud",
+chiedevano al cliente di scegliere fra tre righe che si distinguevano solo per il titolo.
+Adesso la scelta si fa dentro, dove accanto a ogni nome c'è la riga che dice quanto si
+cammina e quanto è dura.
+
+Il catalogo scende da 67 a **65 schede** (le tre di v280 ne diventano una, più quella
+della bici).
+
+### `priceAdult` va ripetuto dentro ogni variante, anche se è lo stesso
+
+È la cosa che poteva rompersi in silenzio. `escursioni.js` (riga ~219):
+
+```js
+const base = variante
+  ? (variante.priceAdult > 0 ? { ... } : null)
+  : (tour.priceAdult > 0 ? { ... } : null);
+```
+
+**Appena una variante è scelta, il totale guarda solo il prezzo della variante e non
+ripiega su quello della scheda.** È voluto: una variante con `price` ma senza `priceAdult`
+(la cabina VIP di Siam Park, il jet ski a moto d'acqua) non si paga a persona, ed ereditare
+il prezzo della scheda darebbe un totale falso.
+
+Qui i tre cammini costano tutti uguale, quindi veniva naturale scrivere il prezzo una volta
+sola sulla scheda. Sarebbe stato un bug muto: premi un bottone e **il totale sparisce**.
+`priceAdult: 59` e `priceChild: 29.5` stanno perciò **sia sulla scheda sia su tutte e tre
+le varianti**. Sulla scheda servono alle righe "Adulti €59" e "Bambini €29,50" di "In
+breve", che si devono vedere prima ancora di scegliere.
+
+La conseguenza visibile è che sui tre bottoni c'è scritto **€59 tre volte**. Sembra rumore
+e invece risponde a una domanda che uno si fa: no, quello più duro non costa di più.
+
+### I giorni: l'unione sulla scheda, uno per variante
+
+Ogni cammino si fa un giorno solo — lunedì, mercoledì, giovedì. `giorniDi` (riga ~24) legge
+`variante.days || tour.days`, quindi la variante restringe. Sulla scheda c'è l'**unione**
+`["lun", "mer", "gio"]`, che serve prima che una variante sia scelta: senza, il blocco
+rifiuterebbe un giorno buono.
+
+Provato in pagina: scelto Camino Real, una data di giovedì risponde *"This excursion only
+runs on: Wed."* e la richiesta non parte; il mercoledì passa.
+
+### La foto del ciclista passa alla bici
+
+`trekking-bici.jpg` è un ciclista in mezzo alle lave: sulla scheda del trekking avrebbe
+messo una bici dove non c'è. È stata **rinominata `bici.jpg`** (`git mv`) e sta sulla scheda
+della bici, che è il suo soggetto. Il file non era citato da nessun'altra parte — `sw.js`
+precarica solo le icone — quindi il rinomino non rompe niente.
+
+La scheda Trekking resta col riquadro "Foto in arrivo": le foto di Canaventura stanno
+dietro un dominio bloccato dal proxy e non si possono nemmeno guardare.
+
+### L'id resta `trekking-bici`
+
+La scheda si chiama "Trekking" ma l'id no: gli id non si cambiano, si romperebbero i link
+già salvati e le richieste ferme in localStorage. Stessa regola di `santa-cruz-taganana`,
+che nel titolo non dice più Taganana. La bici, che è una scheda **nuova**, prende `bici`.
+
+### Il titolo è tradotto, e qui è voluto
+
+`{ it: "Trekking", en: "Hiking", es: "Senderismo" }`. La regola dei titoli uguali in tutte
+e tre le lingue vale per i **nomi dei prodotti dei fornitori** — "Freebird Catamaran Trip",
+"Santa Cruz + Anaga + La Laguna" — perché l'ufficio si ritrova il nome esatto da cercare
+quando la richiesta arriva su WhatsApp. Questa scheda invece è un raggruppamento di Isla, e
+già prima era tradotta ("Trekking e bici" / "Hiking & biking" / "Senderismo y bici").
+
+I **nomi dei tre cammini**, quelli sì, restano identici nelle tre lingue: "Teide Light",
+"Camino Real", "La Laguna & Anaga" sono i nomi del fornitore, e finiscono nel messaggio
+WhatsApp.
+
+### `family: true` sulla scheda, la riserva nella variante
+
+In v280 il Camino Real aveva `family: false` perché tre ore e mezza con 350 metri di
+dislivello non sono quello che cerca chi spunta "Con bambini". Adesso `family` è **uno solo
+per tutte e tre**: sta sulla scheda, non sulla variante. Tenerlo a `false` avrebbe nascosto
+dal filtro anche i due cammini facili, che è il danno più grande. Resta `true`, e la riga
+del Camino Real lo dice da sé — *"il più impegnativo dei tre"*.
+
+### Provato
+
+`node controlla.js` → **0 errori, 3 avvisi** (i 2 di sempre più la scheda Trekking senza
+foto). In v280 erano 5: tre schede senza foto ne diventa una.
+
+Nel browser vero, viewport telefono, in italiano e in inglese:
+
+- i tre bottoni con il loro prezzo, e la descrizione che cambia con quello premuto;
+- il totale **2 adulti + 1 bambino fa €147,50 su tutte e tre** le varianti — è la prova
+  che il `priceAdult` ripetuto serve;
+- la riga "Giorni" segue la variante: **Gio**, **Mer**, **Lun**;
+- il blocco dei giorni si restringe con la variante scelta;
+- la scheda Bici esce con la sua foto e "Su richiesta", come segnaposto;
+- nessun errore JS.
+
+### Cosa resta da chiedere all'ufficio
+
+Le stesse quattro di v280, meno niente: foto delle camminate, età minima sotto i 12 anni,
+orari di partenza hotel per hotel, lingue della guida. In più, adesso: **i dati dei giri in
+bici**, che sono una scheda vuota che aspetta.
+
+`CACHE_NAME` a `isla-v281`.

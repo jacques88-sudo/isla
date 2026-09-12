@@ -339,12 +339,18 @@ function totaleMezzi(tour, req) {
   if (manca || !quanti) return null;
 
   if (req.transfer) {
-    if (!mezzi.transferPrice) return null;
-    totale += mezzi.transferPrice * quanti;
-    // stesso nome della casella e della riga del messaggio: nel dettaglio del
-    // conto "Transfer" accanto a "Ritiro in hotel" sembrerebbero due cose
-    pezzi.push((tour.transferLabel ? tf(tour.transferLabel) : t("wa.transfer")) +
-      " " + quanti + " × €" + eur(mezzi.transferPrice));
+    // Tre stati, come `priceInfant`: assente vuol dire che il supplemento non
+    // lo sappiamo, e un totale senza sarebbe piu' basso di quello vero; zero
+    // vuol dire compreso, ed e' un numero vero, quindi il conto si fa lo stesso
+    // e non compare nessuna riga (un "× €0" fa solo chiedere che cos'e').
+    if (mezzi.transferPrice === undefined) return null;
+    if (mezzi.transferPrice) {
+      totale += mezzi.transferPrice * quanti;
+      // stesso nome della casella e della riga del messaggio: nel dettaglio del
+      // conto "Transfer" accanto a "Ritiro in hotel" sembrerebbero due cose
+      pezzi.push((tour.transferLabel ? tf(tour.transferLabel) : t("wa.transfer")) +
+        " " + quanti + " × €" + eur(mezzi.transferPrice));
+    }
   }
   return { totale: totale, dettaglio: pezzi.join(" + ") };
 }

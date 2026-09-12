@@ -9959,3 +9959,61 @@ la pena notarlo: la stessa trappola scatta uguale nel codice del sito e nei cont
 `node controlla.js` → 0 errori, 3 avvisi invariati. Provato in browser sulle tre lingue: la
 riga "In breve" senza "10" e senza "pagare", il totale `€380` con la riga del ritiro intatta.
 Alzato `sw.js` a `isla-v295`.
+
+---
+
+## 12 settembre 2026 — Il ritiro del jet ski e' compreso, e come si sceglie il porto non si racconta (v296)
+
+Il proprietario, spiegando come funziona la vendita davvero: «se a noi arriva un cliente
+che cerca una moto d'acqua alle 15 di 2 ore, noi vediamo dove metterlo a seconda della
+disponibilita'; il cliente non deve essere informato di questa cosa, lui vedra' solo il
+posto dove andra'». E: transfer da Las Galletas, **senza aumenti di prezzo**, e niente
+altro.
+
+Due cose insieme, tutte e due in sottrazione.
+
+**1. Il supplemento sparisce.** `units.transferPrice` da `10` a `0`: il ritiro e'
+compreso. Spuntando la casella il totale non si muove piu' (€360 con e senza), e nel conto
+non compare nessuna riga — un `Ritiro in hotel 2 × €0` sarebbe solo una domanda in piu'.
+I €10, aggiunti il 12 mattina su sua indicazione e tolti dal testo poche ore fa, adesso non
+ci sono proprio: la scheda ha fatto il giro completo in un giorno, ed e' il modo normale in
+cui si scopre come funziona davvero un prodotto.
+
+**2. Il meccanismo interno esce dalla scheda.** Il testo diceva «il porto lo assegniamo noi
+in base all'orario e alle moto d'acqua che scegli»: vero, ma e' **come lavoriamo noi**, non
+qualcosa che il cliente possa usare. Non lo aiuta a decidere niente — le sue due scelte le
+fa lo stesso — e in cambio gli mette in testa che il posto non sia ancora sicuro. Adesso la
+scheda dice solo le due cose che gli servono davvero: **da dove** parte il ritiro e che lo
+deve **chiedere nella richiesta**. Il porto lo legge nella conferma, gia' deciso.
+
+Vale la pena tenerla come regola: **la scheda dice al cliente quello che lui deve fare, non
+quello che facciamo noi.** Spiegare la propria logica di magazzino sembra trasparenza ed e'
+rumore: obbliga a leggere un paragrafo per scoprire che non c'era niente da scegliere.
+
+### `transferPrice` dentro `units` adesso ha tre stati
+
+Come `priceInfant`, e per lo stesso motivo:
+
+| valore | vuol dire |
+|---|---|
+| `12` | supplemento a mezzo: entra nel totale, con la sua riga nel conto |
+| `0` | compreso: niente riga, il totale non cambia |
+| assente | non si sa quanto costa: col ritiro spuntato **il totale non si fa** |
+
+Prima il codice faceva `if (!mezzi.transferPrice) return null`, che mette assente e zero
+nello stesso sacco: con `transferPrice: 0` la casella spuntata avrebbe fatto **sparire il
+totale**, che e' il modo peggiore di dire "e' gratis". Adesso solo l'assenza ferma il conto.
+Zero e' un numero vero, l'assenza e' una cosa che non sappiamo: e' la stessa distinzione che
+il progetto fa gia' sui neonati, e la sbagliavamo qui perche' finora `transferPrice` c'era
+sempre.
+
+Corretto anche il commento della Mustang, che diceva «niente `transferPrice`: il ritiro e'
+compreso». La', senza campo `transfer`, la casella non esiste e nessuno se ne accorge; ma
+scritto cosi' insegnava la regola sbagliata al prossimo che legge. Le altre tre schede con
+`units` (Mustang, buggy, quad) non hanno la casella del ritiro, quindi il cambio di codice
+tocca solo il jet ski.
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. Provato in browser sulle tre lingue:
+totale €360 identico con e senza la casella, nessun `× €0` nel conto, e il messaggio
+all'ufficio che continua a portare `• Ritiro in hotel: sì` — che e' la riga da cui decide
+il porto. Alzato `sw.js` a `isla-v296`.

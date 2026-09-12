@@ -40,12 +40,19 @@
 //                La prima riga parte da 1 e le altre da 0; zero mezzi in tutto
 //                non e' una richiesta e la finestra lo dice.
 //                `transferPrice` dentro `units` e' quanto costa il ritiro **a
-//                mezzo** (sul jet ski €10 a moto, non a persona: e' il motivo
-//                per cui non sta in `transferPrice` della scheda, che invece e'
-//                fatto di prezzi a testa). Serve al totale: senza, con il
-//                transfer spuntato il conto non si fa, perche' mancherebbe un
-//                pezzo di quello che il cliente paga.
-//                    units: { ..., transferPrice: 10 }
+//                mezzo**, non a persona: e' il motivo per cui non sta in
+//                `transferPrice` della scheda, che invece e' fatto di prezzi a
+//                testa. Ha tre stati, come `priceInfant`:
+//                    transferPrice: 12  → supplemento a mezzo, entra nel totale
+//                                         con la sua riga nel conto
+//                    transferPrice: 0   → ritiro compreso: niente riga, il
+//                                         totale non cambia
+//                    (assente)          → non si sa quanto costa: col transfer
+//                                         spuntato il totale non si fa, perche'
+//                                         mancherebbe un pezzo di quello che il
+//                                         cliente paga
+//                Zero e' un numero vero e va scritto: "assente" vuol dire che
+//                non lo sappiamo, non che e' gratis.
 //   priceTiers → facoltativo: prezzi a scaglioni per numero di persone. La
 //                scheda del catalogo mostra comunque priceFrom, la pagina di
 //                dettaglio elenca tutti gli scaglioni:
@@ -2234,10 +2241,12 @@ const ESPLORA_CATALOG = [
         { key: "due", name: { it: "Con 1 o 2 persone", en: "With 1 or 2 people", es: "Con 1 o 2 personas" } },
         { key: "quattro", name: { it: "Con 3 o 4 persone", en: "With 3 or 4 people", es: "Con 3 o 4 personas" } }
       ]
-      // Niente `transferPrice`: il ritiro e' **compreso nel prezzo**
-      // (proprietario, 12 settembre 2026), quindi non c'e' un supplemento da
-      // sommare. Sta fra le icone di `included`, non nel campo `transfer`:
-      // vedi il commento li' sotto.
+      // Niente `transferPrice` perche' qui non c'e' nessuna casella del
+      // ritiro: e' **compreso nel prezzo** (proprietario, 12 settembre 2026) e
+      // sta fra le icone di `included`, non nel campo `transfer` — vedi il
+      // commento li' sotto. Se un giorno la casella ci finisse, il campo da
+      // mettere sarebbe `transferPrice: 0` ("compreso"), non l'assenza, che
+      // vuol dire "quanto costa non lo sappiamo" e fa sparire il totale.
     },
     // Il prezzo di ogni fascia. Sta sulla scheda e non dentro una variante
     // perche' qui varianti non ce ne sono: a cambiare non e' la durata, e'
@@ -3032,7 +3041,7 @@ const ESPLORA_CATALOG = [
     units: {
       label: { it: "Quante moto d'acqua", en: "How many jet skis", es: "¿Cuántas motos de agua?" },
       name: { it: "Moto d'acqua", en: "Jet skis", es: "Motos de agua" },
-      transferPrice: 10,
+      transferPrice: 0,
       types: [
         { key: "singola", name: { it: "Singola", en: "Single", es: "Individual" } },
         { key: "doppia", name: { it: "Doppia", en: "Double", es: "Doble" } }
@@ -3071,26 +3080,22 @@ const ESPLORA_CATALOG = [
       es: "Paseo guiado en moto de agua por la costa sur, con instructor y lancha de apoyo. Se elige entre 40 minutos, una hora y dos horas; el precio es por moto de agua, con una o dos personas a bordo."
     },
     included: ["guide"],
-    // Il supplemento sta in `units.transferPrice`, non nel `transferPrice`
-    // della scheda, che e' un prezzo a testa: qui e' a moto d'acqua.
-    // Il numero lo scrive il totale ("Ritiro in hotel 2 x 10 EUR"), quindi il
-    // testo non lo ripete (proprietario, 12 settembre 2026): la stessa cifra
-    // detta una volta in una frase e una volta in un conto sembra un secondo
-    // addebito, e "da pagare al ritiro" diceva il contrario del totale, dove
-    // i 10 euro sono gia' dentro.
-    // Il ritiro si fa **solo dalle partenze di Las Galletas**, e il porto non lo
-    // sceglie il cliente: lo assegna l'ufficio **in base all'orario e alle moto
-    // che il cliente ha scelto** (proprietario, 12 settembre 2026). Quelle due
-    // cose le sceglie lui, il porto no: e' il pezzo che si dimentica leggendo
-    // la scheda. Quindi la casella non e' una cosa che il sito puo' promettere, e'
-    // una richiesta che l'ufficio prova a far stare: spuntata, cerca di mettere
-    // il cliente su una partenza da Las Galletas e glielo conferma rispondendo.
-    // Il testo lo dice per esteso, perche' una casella che sembra una garanzia
-    // e poi non lo e' e' peggio di non averla.
+    // Il ritiro e' **compreso** (`transferPrice: 0`, proprietario 12 settembre
+    // 2026): niente supplemento, e infatti il totale non cambia spuntandolo.
+    // Due righe e basta, e non e' poco lavoro tolto per pigrizia: il cliente
+    // chiede **quando** e **quante moto**, poi l'ufficio guarda la
+    // disponibilita' e decide da quale porto farlo partire. Come si decide e'
+    // roba nostra: al cliente arriva solo il posto dove deve andare, scritto
+    // nella conferma. Il testo di prima glielo spiegava ("il porto lo
+    // assegniamo noi in base all'orario e alle moto che scegli") ed era un
+    // dettaglio di magazzino in vetrina: non lo aiutava a decidere niente, e
+    // in cambio lo faceva dubitare che il posto fosse gia' sicuro.
+    // Quello che serve sapere resta: da dove parte il ritiro, e che lo deve
+    // chiedere nella richiesta.
     transfer: {
-      it: "Il ritiro in hotel si fa solo sulle partenze da Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). Il porto lo assegniamo noi in base all'orario e alle moto d'acqua che scegli: se chiedi il ritiro proviamo a metterti su una partenza da Las Galletas e te lo confermiamo nella risposta. Sulle partenze da Puerto Colón si arriva al porto per conto proprio.",
-      en: "Hotel pickup is only available on departures from Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). We assign the port based on the time and the jet skis you choose: if you ask for pickup we try to put you on a Las Galletas departure and confirm it in our reply. On Puerto Colón departures you make your own way to the port.",
-      es: "La recogida en el hotel solo se hace en las salidas desde Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). El puerto lo asignamos nosotros según la hora y las motos de agua que elijas: si pides la recogida intentamos ponerte en una salida desde Las Galletas y te lo confirmamos en la respuesta. En las salidas desde Puerto Colón se llega al puerto por cuenta propia."
+      it: "Ritiro in hotel senza supplemento sulle partenze da Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). Chiedilo nella richiesta: te lo confermiamo nella risposta.",
+      en: "Free hotel pickup on departures from Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). Ask for it in your request: we confirm it in our reply.",
+      es: "Recogida en el hotel sin suplemento en las salidas desde Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). Pídela en la solicitud: te lo confirmamos en la respuesta."
     },
     // "Vuoi il transfer?" fa pensare a un pullman che porta all'escursione, e
     // qui la domanda vera e' un'altra. Vale sia per la casella nella finestra
@@ -3104,9 +3109,9 @@ const ESPLORA_CATALOG = [
         es: "El precio es por moto de agua, no por persona: la individual lleva a una persona, la doble a dos. Un instructor acompaña al grupo en lancha."
       },
       {
-        it: "Si parte da Puerto Colón o da Las Galletas: il porto lo assegniamo noi in base all'orario e alle moto d'acqua che scegli, e te lo diciamo nella conferma. Se ti serve il ritiro in hotel chiedilo nella richiesta: si fa solo dalle partenze di Las Galletas.",
-        en: "Departures are from Puerto Colón or Las Galletas: we assign the port based on the time and the jet skis you choose, and tell you in the confirmation. If you need hotel pickup, ask for it in your request: it is only available on Las Galletas departures.",
-        es: "Se sale desde Puerto Colón o desde Las Galletas: el puerto lo asignamos nosotros según la hora y las motos de agua que elijas, y te lo decimos en la confirmación. Si necesitas recogida en el hotel, pídela en la solicitud: solo se hace en las salidas desde Las Galletas."
+        it: "Si parte da Puerto Colón o da Las Galletas: il porto te lo diciamo nella conferma. Se ti serve il ritiro in hotel chiedilo nella richiesta: si fa dalle partenze di Las Galletas.",
+        en: "Departures are from Puerto Colón or Las Galletas: we tell you which one in the confirmation. If you need hotel pickup, ask for it in your request: it runs from the Las Galletas departures.",
+        es: "Se sale desde Puerto Colón o desde Las Galletas: el puerto te lo decimos en la confirmación. Si necesitas recogida en el hotel, pídela en la solicitud: se hace desde las salidas de Las Galletas."
       },
       {
         it: "Passeggeri dai 7 anni, sempre insieme a un adulto. Si guida da 16 anni: a 16 e 17 serve l'autorizzazione firmata di un genitore, o il genitore presente alla partenza, e non si può portare un altro minorenne sulla stessa moto d'acqua.",

@@ -9695,3 +9695,79 @@ ripiego nuovo si attiva solo dove la variante non c'è. Nessun errore JS.
 
 Le quattro della v287, invariate: età minima, **zone del pick-up e quanto costa** (adesso
 serve anche al totale), le foto per la galleria, il francese.
+
+---
+
+## v290 — il transfer è compreso, e quindi non è più una domanda
+
+Il proprietario: **il transfer è incluso.** Una riga, e cade tutto quello che in v287 e v289
+era stato costruito attorno al non saperlo.
+
+### Il campo `transfer` era quello sbagliato
+
+`transfer` nel vocabolario vuol dire "**quando l'attività si può avere** col trasporto
+incluso": qualcosa che si chiede, e che di solito si paga. Da lì vengono la pillola
+"Transfer disponibile" in elenco, la riga in "In breve", e soprattutto la domanda **"Vuoi
+il transfer?"** nella finestra della richiesta.
+
+Se il ritiro è compreso per tutti e sempre, quella domanda non è solo inutile: è **dannosa**.
+Un cliente che risponde "no" — e qualcuno risponde no a tutto quello che sembra un extra —
+manda all'ufficio `• Transfer: no` su un ritiro che ha già pagato, e l'ufficio non sa se
+deve passare a prenderlo.
+
+Il campo giusto è `included`, che è esattamente la definizione di "compreso per tutti e
+sempre". Quindi: `included: ["snack", "drinks", "transfer"]`, e il campo `transfer` via.
+
+### Cosa cambia in pagina
+
+| | prima | adesso |
+| --- | --- | --- |
+| "Cosa è incluso" | Snack, Bevande | Snack, Bevande, **Transfer** |
+| "In breve" | riga "Transfer: passano a prenderti…" | niente |
+| elenco | pillola "Transfer disponibile" | la frase nella descrizione |
+| richiesta | "Vuoi il transfer?" | niente |
+| messaggio | `• Transfer: no` | niente |
+
+La pillola dell'elenco si perde, e non c'è un modo di scrivere "transfer **incluso**" fra le
+pillole. È finita nella descrizione, che in elenco si legge per intero: "…il prezzo è
+dell'auto e non a persona, e il ritiro in hotel è compreso." Meglio di una pillola che
+diceva "disponibile" quando è compreso.
+
+Il testo che stava nel campo `transfer` (dove si passa a prendere, cosa fare se l'hotel non
+è in elenco) è diventato una **nota**: un'icona dice *che* c'è, la nota dice *come funziona*,
+e sono due mestieri diversi.
+
+### E il totale non può più sparire
+
+Era la cosa segnalata in fondo alla v289: `totaleMezzi()` torna `null` se il transfer è
+spuntato e `units.transferPrice` non c'è, perché preferisce niente a un numero incompleto.
+Senza la casella, `req.transfer` è sempre falso e quel ramo non si tocca più: **il totale
+c'è sempre**. Non è stato aggiustato un pezzo di motore — è sparito il caso.
+
+Una cosa da sapere se un domani il ritiro dovesse diventare a pagamento: la strada è
+rimettere il campo `transfer` **e** `units.transferPrice`, tutti e due. Il prezzo del ritiro
+su una scheda a mezzo sta dentro `units`, non in `transferPrice` della scheda, perché è a
+veicolo e non a testa.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, gli stessi.
+
+Nel browser vero, viewport telefono, nelle tre lingue: "Cosa è incluso" mostra Snack,
+Bevande incluse, **Transfer** (Snacks/Drinks/Transfer, Snacks/Bebidas/Traslado), e la riga
+"Transfer disponibile" in "In breve" è sparita in tutte e tre. Le tre icone guardate in
+fila, non una alla volta: panino, bicchiere, pulmino — si distinguono.
+
+Nella finestra: la domanda sul transfer non c'è più (`hidden`), e il totale regge sia con
+una auto (€250) sia con due (€600). Il messaggio WhatsApp non ha più la riga `Transfer`.
+
+In elenco la pillola è sparita e la descrizione dice del ritiro compreso.
+
+`CACHE_NAME` a `isla-v290`.
+
+### Resta da chiedere
+
+Tre, una in meno: **età minima**, **le foto** per la galleria, **il francese**. Le zone
+coperte dal pick-up non sono più una domanda sul prezzo — resta solo da sapere fin dove
+arrivano, e per gli hotel che non conosciamo il sito già non promette niente e dice di
+scriverlo nelle note.

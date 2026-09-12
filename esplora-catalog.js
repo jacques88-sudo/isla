@@ -2234,10 +2234,10 @@ const ESPLORA_CATALOG = [
         { key: "due", name: { it: "Con 1 o 2 persone", en: "With 1 or 2 people", es: "Con 1 o 2 personas" } },
         { key: "quattro", name: { it: "Con 3 o 4 persone", en: "With 3 or 4 people", es: "Con 3 o 4 personas" } }
       ]
-      // `transferPrice` (quanto costa il ritiro **a auto**) non si scrive:
-      // non lo sappiamo. Finche' manca, spuntando il transfer il totale
-      // sparisce invece di dare un numero incompleto — e' la regola di
-      // totaleMezzi(), ed e' un motivo in piu' per farsi dare quel prezzo.
+      // Niente `transferPrice`: il ritiro e' **compreso nel prezzo**
+      // (proprietario, 12 settembre 2026), quindi non c'e' un supplemento da
+      // sommare. Sta fra le icone di `included`, non nel campo `transfer`:
+      // vedi il commento li' sotto.
     },
     // Il prezzo di ogni fascia. Sta sulla scheda e non dentro una variante
     // perche' qui varianti non ce ne sono: a cambiare non e' la durata, e'
@@ -2268,11 +2268,18 @@ const ESPLORA_CATALOG = [
     // `priceTiers` e' stato tolto e non tenuto insieme: avrebbe scritto gli
     // stessi due numeri una seconda volta, sopra i bottoni che li dicono gia'.
     desc: {
-      it: "Una Ford Mustang decappottabile solo per te, su per la strada del Parco Nazionale del Teide con la luce della sera: si sale fra le colate di lava fino alla Cañada Blanca e si torna che è già buio. Guidi tu, se hai la patente; se preferisci non guidare, l'auto la porta una guida dell'agenzia. Il prezzo è dell'auto, non a persona.",
-      en: "A Ford Mustang convertible just for you, up the road into Teide National Park in the evening light: you climb between the lava flows as far as Cañada Blanca and come back down after dark. You drive, if you hold a licence; if you would rather not, one of the agency's guides takes the wheel. The price is for the car, not per person.",
-      es: "Un Ford Mustang descapotable solo para ti, subiendo por la carretera del Parque Nacional del Teide con la luz de la tarde: se sube entre las coladas de lava hasta la Cañada Blanca y se vuelve ya de noche. Conduces tú, si tienes carné; si prefieres no conducir, el coche lo lleva un guía de la agencia. El precio es del coche, no por persona."
+      it: "Una Ford Mustang decappottabile solo per te, su per la strada del Parco Nazionale del Teide con la luce della sera: si sale fra le colate di lava fino alla Cañada Blanca e si torna che è già buio. Guidi tu, se hai la patente; se preferisci non guidare, l'auto la porta una guida dell'agenzia. Il prezzo è dell'auto e non a persona, e il ritiro in hotel è compreso.",
+      en: "A Ford Mustang convertible just for you, up the road into Teide National Park in the evening light: you climb between the lava flows as far as Cañada Blanca and come back down after dark. You drive, if you hold a licence; if you would rather not, one of the agency's guides takes the wheel. The price is for the car and not per person, and hotel pickup is included.",
+      es: "Un Ford Mustang descapotable solo para ti, subiendo por la carretera del Parque Nacional del Teide con la luz de la tarde: se sube entre las coladas de lava hasta la Cañada Blanca y se vuelve ya de noche. Conduces tú, si tienes carné; si prefieres no conducir, el coche lo lleva un guía de la agencia. El precio es del coche y no por persona, y la recogida en el hotel está incluida."
     },
-    included: ["snack", "drinks"],
+    // `transfer` sta qui fra le icone, e **non** nel campo `transfer` della
+    // scheda, che quello vuol dire un'altra cosa: "si puo' avere col trasporto
+    // incluso", cioe' una cosa da chiedere e magari da pagare. Qui il ritiro
+    // e' compreso per tutti e sempre, che e' esattamente quello che dicono le
+    // icone. Tenendo il campo, la finestra della richiesta avrebbe continuato
+    // a chiedere "Vuoi il transfer?" e un cliente che risponde no avrebbe
+    // mandato all'ufficio "Transfer: no" su un ritiro che e' gia' pagato.
+    included: ["snack", "drinks", "transfer"],
     itinerary: [
       { text: {
           it: "Il ritiro in hotel, nel tardo pomeriggio, e la partenza da Adeje con la capote abbassata.",
@@ -2302,6 +2309,11 @@ const ESPLORA_CATALOG = [
       { it: "Si parte nel tardo pomeriggio, non prima delle 17:00: l'ora esatta segue il tramonto e si muove con la stagione, quindi te la conferma l'ufficio.",
         en: "You set off in the late afternoon, not before 17:00: the exact time follows the sunset and moves with the season, so the office confirms it with you.",
         es: "Se sale a última hora de la tarde, no antes de las 17:00: la hora exacta sigue al atardecer y se mueve con la temporada, así que te la confirma la oficina." },
+      // Il ritiro e' compreso, quindi non e' una domanda ma un fatto: sta
+      // fra le icone e detto per esteso qui, non nel campo `transfer`.
+      { it: "Il ritiro in hotel è compreso nel prezzo: passano a prenderti sotto il tuo albergo, senza supplemento. Scrivi dove alloggi nella richiesta; se non trovi il tuo hotel nell'elenco, mettilo nelle note.",
+        en: "Hotel pickup is included in the price: they come for you at your own hotel, with no supplement. Put where you are staying in the request; if you cannot find your hotel in the list, write it in the notes.",
+        es: "La recogida en el hotel está incluida en el precio: te recogen en tu propio hotel, sin suplemento. Escribe dónde te alojas en la solicitud; si no encuentras tu hotel en la lista, ponlo en las notas." },
       // I due numeri non si ripetono qui: li dicono gia' le righe di "In
       // breve" e i contatori della richiesta. Quello che resta e' il
       // principio, piu' la capienza — che era dentro le vecchie varianti e
@@ -2313,17 +2325,11 @@ const ESPLORA_CATALOG = [
         en: "You travel with the roof down and up there you go above 2,000 metres: at sunset it is chilly even in summer. Bring a sweatshirt or a jacket.",
         es: "Se va con la capota bajada y allí arriba se pasan los 2.000 metros: al atardecer refresca incluso en verano. Lleva una sudadera o una chaqueta." }
     ],
-    // Passano a prendere sotto l'hotel (proprietario, 12 settembre 2026): per
-    // questo la scheda sta in PICKUP_IN_HOTEL in hotel.js, se no il cliente
-    // leggerebbe una fermata delle tabelle di Island Excursions, che e' un
-    // altro fornitore e un altro giro. Le zone coperte e l'eventuale
-    // supplemento restano da confermare, e finche' non arrivano non si
-    // scrive `transferPrice`: un prezzo inventato entrerebbe nel totale.
-    transfer: {
-      it: "Passano a prenderti sotto l'hotel. Le zone coperte e l'eventuale supplemento te li conferma l'ufficio.",
-      en: "They pick you up at your hotel. The areas covered and any supplement are confirmed by the office.",
-      es: "Te recogen en tu hotel. Las zonas cubiertas y el posible suplemento te los confirma la oficina."
-    },
+    // Niente campo `transfer`: il ritiro e' compreso, e sta fra le icone di
+    // `included` piu' sopra. Passano sotto l'hotel (proprietario, 12
+    // settembre 2026), ed e' per questo che la scheda sta in PICKUP_IN_HOTEL
+    // in hotel.js: se no il cliente leggerebbe una fermata delle tabelle di
+    // Island Excursions, che e' un altro fornitore e un altro giro.
     image: "mustang-experience.jpg",
     published: true
   },

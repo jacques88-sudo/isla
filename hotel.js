@@ -689,8 +689,10 @@ const PICKUP_IN_HOTEL = [
   // La Mustang al tramonto di Pirati Tenerife: un fornitore nuovo, e la
   // domanda e' stata fatta prima di pubblicare la scheda invece di dare per
   // buone le tabelle qui sopra (proprietario, 12 settembre 2026). Passano
-  // sotto l'hotel. Le zone coperte restano da confermare: per gli hotel che
-  // non stanno in HOTELS non si promette niente, ci pensa hotelPunto().
+  // sotto l'hotel, e il ritiro e' compreso nel prezzo: sulla scheda infatti
+  // sta fra le icone di `included` e non nel campo `transfer`.
+  // Per gli hotel che non stanno in HOTELS non si promette niente lo stesso,
+  // ci pensa hotelPunto(): la scheda dice di scriverlo nelle note.
   "mustang-experience"
 ];
 

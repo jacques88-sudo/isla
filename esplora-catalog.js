@@ -2182,19 +2182,102 @@ const ESPLORA_CATALOG = [
 
   // ─── AVVENTURA E MOTORI ───────────────────────────────────────────────────
   {
+    // Era un segnaposto della vetrina Admiral: solo il prezzo (250) e la foto,
+    // zona e durata "Da definire". I dati veri sono arrivati il 12 settembre
+    // 2026 e sono quelli del "Mustang Sunset Tour al Teide" di Pirati
+    // Tenerife: stesso prezzo di partenza, stessa Mustang decappottabile,
+    // stessa meta, e la foto che c'era gia' e' proprio quella — una Mustang
+    // blu ai Roques de Garcia col sole basso.
+    // L'id resta `mustang-experience` e non diventa `mustang-sunset-teide`:
+    // e' la stessa scelta fatta per i tre giri in buggy, gli indirizzi gia' in
+    // giro devono continuare a funzionare. Anche il titolo resta quello di
+    // Admiral, come tutti i titoli.
+    // Attenzione se un domani arrivano altri dati Mustang: Pirati Tenerife ha
+    // **due** prodotti, questo al tramonto e un "Mustang Teide" diurno che e'
+    // un'altra cosa. Il secondo non e' una scheda nuova, e' una variante di
+    // questa — come i tre percorsi del buggy qui sotto.
     id: "mustang-experience",
     title: "Mustang Experience",
     category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Adeje",
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 250,
+    // Il prezzo e' dell'**auto**, non della persona, e cambia con quanti si
+    // sale: 250 € fino a due, 350 € da tre a quattro. Con `priceUnit` il sito
+    // smette di moltiplicare per le persone (prezziAPersona() torna null) e
+    // scrive "da €250 a Mustang" invece di un totale falso.
+    priceUnit: { it: "a Mustang", en: "per Mustang", es: "por Mustang" },
+    priceTiers: [
+      { from: 1, to: 2, price: 250 },
+      { from: 3, to: 4, price: 350 }
+    ],
     priceAdult: 0,
     priceChild: 0,
+    // Nessuna tariffa ridotta per i bambini (fornitore). Non e' scritto da
+    // nessuna parte se e da che eta' si sale, quindi niente `ages` e niente
+    // `priceInfant`: assente non vuol dire gratis. `family` resta false in
+    // attesa di sapere l'eta' minima.
     family: false,
+    // L'auto e' tutta del cliente e l'ora segue il tramonto, che si sposta di
+    // ore fra dicembre e giugno: e' il caso del charter, `times: []` lascia
+    // "Da concordare" come unica voce. Il fornitore dice "a partire dalle
+    // 17:00" e quel riferimento sta nelle note, dove si puo' spiegare; messo
+    // in `times` sarebbe diventato un orario da scegliere, cioe' una promessa.
+    times: [],
+    // Si fa tutti i giorni: `days` non si scrive.
+    languages: ["Italiano", "English", "Français", "Español"],
     desc: {
-      it: "Al volante di una Ford Mustang decappottabile, su fino ai punti panoramici del Teide.",
-      en: "At the wheel of a Ford Mustang convertible, up to the viewpoints on Teide.",
-      es: "Al volante de un Ford Mustang descapotable, hasta los miradores del Teide."
+      it: "Una Ford Mustang decappottabile solo per te, su per la strada del Parco Nazionale del Teide con la luce della sera: si sale fra le colate di lava fino alla Cañada Blanca e si torna che è già buio. Guidi tu, se hai la patente; se preferisci non guidare, l'auto la porta una guida dell'agenzia. Il prezzo è dell'auto, non a persona.",
+      en: "A Ford Mustang convertible just for you, up the road into Teide National Park in the evening light: you climb between the lava flows as far as Cañada Blanca and come back down after dark. You drive, if you hold a licence; if you would rather not, one of the agency's guides takes the wheel. The price is for the car, not per person.",
+      es: "Un Ford Mustang descapotable solo para ti, subiendo por la carretera del Parque Nacional del Teide con la luz de la tarde: se sube entre las coladas de lava hasta la Cañada Blanca y se vuelve ya de noche. Conduces tú, si tienes carné; si prefieres no conducir, el coche lo lleva un guía de la agencia. El precio es del coche, no por persona."
+    },
+    included: ["snack", "drinks"],
+    itinerary: [
+      { text: {
+          it: "Il ritiro in hotel, nel tardo pomeriggio, e la partenza da Adeje con la capote abbassata.",
+          en: "Hotel pickup in the late afternoon, then off from Adeje with the roof down.",
+          es: "La recogida en el hotel, a última hora de la tarde, y la salida desde Adeje con la capota bajada."
+        } },
+      { text: {
+          it: "La salita al Parco Nazionale del Teide: la strada che sale fra i pini e poi esce sull'altopiano.",
+          en: "The climb into Teide National Park: the road up through the pines, then out onto the plateau.",
+          es: "La subida al Parque Nacional del Teide: la carretera que sube entre los pinos y sale a la llanura."
+        } },
+      { text: {
+          it: "Cañada Blanca, con la sosta per le foto mentre il sole va giù dietro le colate di lava.",
+          en: "Cañada Blanca, with a photo stop while the sun drops behind the lava flows.",
+          es: "Cañada Blanca, con la parada para las fotos mientras el sol baja detrás de las coladas de lava."
+        } },
+      { text: {
+          it: "Il ritorno verso la costa, col buio.",
+          en: "The drive back down to the coast, in the dark.",
+          es: "La vuelta hacia la costa, ya de noche."
+        } }
+    ],
+    notes: [
+      { it: "Per guidare serve la patente di guida in corso di validità. Se preferisci non guidare tu, l'auto la porta una guida dell'agenzia: scrivilo nella richiesta.",
+        en: "To drive you need a valid driving licence. If you would rather not drive, one of the agency's guides takes the wheel: say so in your request.",
+        es: "Para conducir hace falta un carné de conducir en vigor. Si prefieres no conducir, el coche lo lleva un guía de la agencia: escríbelo en la solicitud." },
+      { it: "Si parte nel tardo pomeriggio, non prima delle 17:00: l'ora esatta segue il tramonto e si muove con la stagione, quindi te la conferma l'ufficio.",
+        en: "You set off in the late afternoon, not before 17:00: the exact time follows the sunset and moves with the season, so the office confirms it with you.",
+        es: "Se sale a última hora de la tarde, no antes de las 17:00: la hora exacta sigue al atardecer y se mueve con la temporada, así que te la confirma la oficina." },
+      { it: "Il prezzo è dell'auto e non della persona: 250 € fino a due persone, 350 € da tre a quattro.",
+        en: "The price is for the car, not per person: €250 for up to two people, €350 for three or four.",
+        es: "El precio es del coche y no por persona: 250 € hasta dos personas, 350 € de tres a cuatro." },
+      { it: "Si va con la capote abbassata e lassù si passano i 2.000 metri: al tramonto fa fresco anche d'estate. Porta una felpa o una giacca.",
+        en: "You travel with the roof down and up there you go above 2,000 metres: at sunset it is chilly even in summer. Bring a sweatshirt or a jacket.",
+        es: "Se va con la capota bajada y allí arriba se pasan los 2.000 metros: al atardecer refresca incluso en verano. Lleva una sudadera o una chaqueta." }
+    ],
+    // Passano a prendere sotto l'hotel (proprietario, 12 settembre 2026): per
+    // questo la scheda sta in PICKUP_IN_HOTEL in hotel.js, se no il cliente
+    // leggerebbe una fermata delle tabelle di Island Excursions, che e' un
+    // altro fornitore e un altro giro. Le zone coperte e l'eventuale
+    // supplemento restano da confermare, e finche' non arrivano non si
+    // scrive `transferPrice`: un prezzo inventato entrerebbe nel totale.
+    transfer: {
+      it: "Passano a prenderti sotto l'hotel. Le zone coperte e l'eventuale supplemento te li conferma l'ufficio.",
+      en: "They pick you up at your hotel. The areas covered and any supplement are confirmed by the office.",
+      es: "Te recogen en tu hotel. Las zonas cubiertas y el posible suplemento te los confirma la oficina."
     },
     image: "mustang-experience.jpg",
     published: true

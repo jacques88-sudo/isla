@@ -9385,3 +9385,127 @@ spagnolo: "Durata: Giornata intera" sempre uguale, e sotto "Tempo di cammino" ch
 Nessun errore JS.
 
 `CACHE_NAME` a `isla-v286`.
+
+---
+
+## v287 — la Mustang al tramonto: non una scheda nuova, il segnaposto che si riempie
+
+Sono arrivati i dati del **"Mustang Sunset Tour al Teide"** di Pirati Tenerife, un
+fornitore che non era ancora in catalogo. Prima domanda della procedura, e per una volta
+ha morso: **esisteva già.**
+
+### Il doppione evitato
+
+`mustang-experience` stava in "Avventura e motori" da agosto, segnaposto della vetrina
+Admiral: prezzo 250, la foto, e zona e durata a "Da definire". Confrontando come dice la
+regola — prezzo, durata, porto, mezzo:
+
+| | `mustang-experience` (agosto) | i dati nuovi |
+| --- | --- | --- |
+| prezzo | 250 | 250 fino a 2 persone |
+| mezzo | Ford Mustang decappottabile | Ford Mustang |
+| meta | "i punti panoramici del Teide" | Parco Nazionale del Teide, Cañada Blanca |
+| foto | Mustang blu ai Roques de García, sole basso | la stessa scena |
+
+Quattro valori su quattro. Chiesto al proprietario invece di indovinare, e la risposta è
+stata **riempire quella che c'è**: stessa scelta dei tre giri in buggy, l'id
+`mustang-experience` sopravvive perché gli indirizzi già in giro continuino a funzionare.
+Il titolo resta "Mustang Experience", quello di Admiral, e non diventa il titolo del
+fornitore.
+
+**Attenzione se arrivano altri dati Mustang:** Pirati Tenerife ha **due** prodotti, questo
+al tramonto e un "Mustang Teide" diurno che è un'altra cosa. Il secondo non è una scheda
+nuova: è una **variante** di questa, come i tre percorsi del buggy. È scritto anche nel
+commento sopra la scheda, che è dove lo si legge al momento giusto.
+
+### Il prezzo è dell'auto, e il sito lo sa in tre punti
+
+250 € fino a due persone, 350 € da tre a quattro. È un prezzo a mezzo, come il buggy e il
+jet ski, e quindi:
+
+- `priceUnit: { it: "a Mustang", … }` — l'elenco scrive "da €250 a Mustang", e soprattutto
+  `prezziAPersona()` torna `null`: il totale della richiesta non si fa più, invece di
+  moltiplicare 250 per quattro e chiedere mille euro a un cliente.
+- `priceTiers` con i due scaglioni — sulla pagina di dettaglio prendono il posto della riga
+  "Prezzo": "Da 1 a 2 persone €250", "Da 3 a 4 persone €350".
+- e la stessa cosa **scritta a parole** in una nota, perché una tabella si legge di sfuggita
+  e una frase no.
+
+Niente `units` come sul jet ski: lì il cliente conta i mezzi, qui l'auto è una e quello che
+cambia è quanti ci salgono. `units` avrebbe sostituito "Quante persone", che qui è proprio
+la domanda che decide il prezzo.
+
+### `times: []` e non `["17:00"]`
+
+Il fornitore dice "partenza **a partire dalle** 17:00" e aggiunge che l'ora effettiva si
+muove con la stagione, perché segue il tramonto. Messo in `times` il 17:00 sarebbe
+diventato una voce da scegliere in un menu, cioè **una promessa**: a giugno il sole va giù
+alle 21. Con `times: []` resta "Da concordare" — che è il vero stato delle cose, l'auto è
+tutta del cliente — e il 17:00 sta nelle note, dove si può spiegare che è un riferimento e
+non un orario.
+
+`days` non c'è: si fa tutti e sette i giorni, e sette su sette non è una limitazione da
+mostrare.
+
+### Il pick-up: la domanda fatta prima, non dopo
+
+Fornitore nuovo, quindi la domanda della v285: **dove passano a prendere il cliente?** Se
+non la si fa, `hotelPunto()` risponde lo stesso — con le fermate di Island Excursions, che
+valgono dentro quel fornitore e non fra fornitori. Un cliente alla fermata del Best
+Tenerife per un'auto che non ci passa.
+
+Risposta del proprietario: **passano sotto l'hotel**. Quindi `mustang-experience` entra in
+`PICKUP_IN_HOTEL` accanto a `trekking-bici`, ed è la seconda scheda a starci. In pagina:
+"Punto di raccolta — il tuo hotel". L'ora no: `PICKUP_TIMES` non ha questa scheda, e il
+menu "A che ora" resta quello normale (che qui è la sola voce "Da concordare").
+
+### Quello che non è stato copiato
+
+- La **promozione 10% su Mustang e Dolce Vita** richiedibile via WhatsApp: è lo sconto del
+  fornitore, non nostro. Sul sito va il prezzo pieno.
+- Le 24 ore di preavviso restano le nostre, come sempre.
+- La descrizione, l'itinerario e le note sono **riscritti da zero** nelle tre lingue: dal
+  fornitore sono presi solo i fatti (prezzi, durata, orario, partenza, lingue, cosa è
+  compreso, la patente). Il campo `descrizione_it` dei dati arrivati era comunque vuoto.
+- Le foto: `piratitenerife.com` è fuori dalla policy di rete di questa sessione, le 18
+  immagini non si sono potute scaricare. La scheda tiene la foto che aveva già — che è
+  proprio questa scena — e **la galleria resta da fare**.
+
+### Le età: niente `ages`, niente `priceInfant`
+
+"Nessuna tariffa ridotta per bambini" dice cosa si paga, non da che età si sale. Senza età
+minima non si scrive `ages`, e `priceInfant` men che meno: assente non vuol dire gratis.
+`family` resta `false` finché non sappiamo l'età minima.
+
+### Le lingue
+
+Quattro — Italiano, English, Français, Español — dal riepilogo del fornitore. Nel corpo
+della sua pagina ne elenca tre (senza il francese): la nota di estrazione dice di aver
+applicato la regola "riepilogo canonico". È un conflitto del fornitore, non nostro, ma
+tanto vale saperlo: **se il francese non c'è davvero, va tolto.**
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, gli stessi di prima.
+
+Nel browser vero, viewport telefono, nelle tre lingue: descrizione, "In breve" (Adeje, 3
+ore, le quattro lingue, i due scaglioni, "Adatta a: Adulti", la riga Transfer), itinerario,
+"Cosa è incluso" (Snack, Bevande), i quattro consigli. Nessun errore JS.
+
+Nella finestra della richiesta, scrivendo un hotel vero (Cleopatra): "A che ora → Da
+concordare" come unica voce, "Punto di raccolta → il tuo hotel", il menu delle lingue con
+le quattro voci, e **nessun totale** — che è il punto: il prezzo è dell'auto.
+
+In elenco, la pillola: "da €250 a Mustang", con ADEJE · 3 ORE · TRANSFER DISPONIBILE.
+
+`CACHE_NAME` a `isla-v287`.
+
+### Resta da chiedere
+
+- **L'età minima**, e se sotto quell'età si sale gratis o non si sale. Da lì dipendono
+  `ages`, `priceInfant` e `family`.
+- **Le zone coperte dal pick-up** e se c'è un supplemento. Finché non si sa, `transferPrice`
+  non si scrive: un prezzo inventato entrerebbe nel totale.
+- **Le foto**: le 18 del fornitore, per la galleria.
+- **Il francese**, vedi sopra.
+- **Il "Mustang Teide" diurno**: quando arriva, è una variante di questa scheda.

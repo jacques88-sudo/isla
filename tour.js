@@ -219,7 +219,13 @@ function detailRows(tour, variante) {
     const prezzo = prezzoTransfer(supplemento(tour.transferPrice));
     if (prezzo) righe.push([tf(tour.transferPriceLabel), prezzo]);
   } else {
-    if (tour.transfer) righe.push([t("detail.transfer"), tf(tour.transfer)]);
+    // L'etichetta della scheda vince anche qui, non solo sulla casella della
+    // finestra: dove il transfer si chiama "Ritiro in hotel", "Transfer" in
+    // "In breve" sarebbe un terzo nome per la stessa cosa.
+    if (tour.transfer) {
+      righe.push([tour.transferLabel ? tf(tour.transferLabel) : t("detail.transfer"),
+        tf(tour.transfer)]);
+    }
     if (tour.transferPrice && !tour.transferPriceHidden) {
       const prezzo = prezzoTransfer(conVariante(tour.transferPrice));
       if (prezzo) righe.push([t("detail.withTransfer"), prezzo]);

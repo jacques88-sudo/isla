@@ -341,7 +341,10 @@ function totaleMezzi(tour, req) {
   if (req.transfer) {
     if (!mezzi.transferPrice) return null;
     totale += mezzi.transferPrice * quanti;
-    pezzi.push(t("wa.transfer") + " " + quanti + " × €" + eur(mezzi.transferPrice));
+    // stesso nome della casella e della riga del messaggio: nel dettaglio del
+    // conto "Transfer" accanto a "Ritiro in hotel" sembrerebbero due cose
+    pezzi.push((tour.transferLabel ? tf(tour.transferLabel) : t("wa.transfer")) +
+      " " + quanti + " × €" + eur(mezzi.transferPrice));
   }
   return { totale: totale, dettaglio: pezzi.join(" + ") };
 }

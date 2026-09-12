@@ -2207,10 +2207,6 @@ const ESPLORA_CATALOG = [
     // smette di moltiplicare per le persone (prezziAPersona() torna null) e
     // scrive "da €250 a Mustang" invece di un totale falso.
     priceUnit: { it: "a Mustang", en: "per Mustang", es: "por Mustang" },
-    priceTiers: [
-      { from: 1, to: 2, price: 250 },
-      { from: 3, to: 4, price: 350 }
-    ],
     priceAdult: 0,
     priceChild: 0,
     // Nessuna tariffa ridotta per i bambini (fornitore). Non e' scritto da
@@ -2226,6 +2222,34 @@ const ESPLORA_CATALOG = [
     times: [],
     // Si fa tutti i giorni: `days` non si scrive.
     languages: ["Italiano", "English", "Français", "Español"],
+    // I due scaglioni del prezzo erano `priceTiers`, cioe' due righe da
+    // **leggere** sulla pagina di dettaglio e niente altro: il cliente non
+    // poteva dire in quanti sale, e nel messaggio all'ufficio non finiva
+    // niente. Diventati `options`, sono due bottoni sulla scheda e una tendina
+    // nella finestra della richiesta, e la scelta arriva su WhatsApp.
+    // `price` e non `priceAdult`: il numero e' dell'auto, non della persona, e
+    // `priceAdult` lo farebbe moltiplicare per quanti sono — 350 × 4.
+    // `priceTiers` e' stato tolto e non tenuto insieme: avrebbe scritto gli
+    // stessi due numeri una seconda volta, sopra i bottoni che li dicono gia'.
+    options: {
+      label: { it: "Quanti salite in Mustang", en: "How many in the Mustang", es: "Cuántos vais en el Mustang" },
+      choices: [
+        { label: { it: "1 o 2 persone", en: "1 or 2 people", es: "1 o 2 personas" },
+          price: 250,
+          desc: {
+            it: "L'auto è la stessa e il prezzo è dell'auto: che siate in uno o in due, sono 250 €.",
+            en: "The car is the same and the price is for the car: whether you are one or two, it is €250.",
+            es: "El coche es el mismo y el precio es del coche: seáis uno o dos, son 250 €."
+          } },
+        { label: { it: "3 o 4 persone", en: "3 or 4 people", es: "3 o 4 personas" },
+          price: 350,
+          desc: {
+            it: "Da tre persone in su il prezzo dell'auto è 350 €. In Mustang si sta in quattro al massimo, autista compreso.",
+            en: "From three people up, the car costs €350. The Mustang seats four at most, driver included.",
+            es: "A partir de tres personas el coche cuesta 350 €. En el Mustang caben cuatro como máximo, conductor incluido."
+          } }
+      ]
+    },
     desc: {
       it: "Una Ford Mustang decappottabile solo per te, su per la strada del Parco Nazionale del Teide con la luce della sera: si sale fra le colate di lava fino alla Cañada Blanca e si torna che è già buio. Guidi tu, se hai la patente; se preferisci non guidare, l'auto la porta una guida dell'agenzia. Il prezzo è dell'auto, non a persona.",
       en: "A Ford Mustang convertible just for you, up the road into Teide National Park in the evening light: you climb between the lava flows as far as Cañada Blanca and come back down after dark. You drive, if you hold a licence; if you would rather not, one of the agency's guides takes the wheel. The price is for the car, not per person.",
@@ -2261,9 +2285,12 @@ const ESPLORA_CATALOG = [
       { it: "Si parte nel tardo pomeriggio, non prima delle 17:00: l'ora esatta segue il tramonto e si muove con la stagione, quindi te la conferma l'ufficio.",
         en: "You set off in the late afternoon, not before 17:00: the exact time follows the sunset and moves with the season, so the office confirms it with you.",
         es: "Se sale a última hora de la tarde, no antes de las 17:00: la hora exacta sigue al atardecer y se mueve con la temporada, así que te la confirma la oficina." },
-      { it: "Il prezzo è dell'auto e non della persona: 250 € fino a due persone, 350 € da tre a quattro.",
-        en: "The price is for the car, not per person: €250 for up to two people, €350 for three or four.",
-        es: "El precio es del coche y no por persona: 250 € hasta dos personas, 350 € de tres a cuatro." },
+      // I due numeri non si ripetono qui: li dicono gia' i bottoni e la riga
+      // sotto il bottone premuto. Quello che resta e' il principio, che e'
+      // la cosa che si legge male in una tabella.
+      { it: "Il prezzo è dell'auto e non della persona: a cambiare è quanti ci salgono, non quanto paga ognuno.",
+        en: "The price is for the car, not per person: what changes is how many of you get in, not what each one pays.",
+        es: "El precio es del coche y no por persona: lo que cambia es cuántos subís, no lo que paga cada uno." },
       { it: "Si va con la capote abbassata e lassù si passano i 2.000 metri: al tramonto fa fresco anche d'estate. Porta una felpa o una giacca.",
         en: "You travel with the roof down and up there you go above 2,000 metres: at sunset it is chilly even in summer. Bring a sweatshirt or a jacket.",
         es: "Se va con la capota bajada y allí arriba se pasan los 2.000 metros: al atardecer refresca incluso en verano. Lleva una sudadera o una chaqueta." }

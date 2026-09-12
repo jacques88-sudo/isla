@@ -9509,3 +9509,86 @@ In elenco, la pillola: "da €250 a Mustang", con ADEJE · 3 ORE · TRANSFER DIS
 - **Le foto**: le 18 del fornitore, per la galleria.
 - **Il francese**, vedi sopra.
 - **Il "Mustang Teide" diurno**: quando arriva, è una variante di questa scheda.
+
+---
+
+## v288 — i due scaglioni erano da leggere, non da scegliere
+
+Il proprietario, guardando la scheda: **manca l'opzione di scelta fra 1-2 persone e 3-4
+persone.** Aveva ragione, ed è un errore di categoria che vale la pena capire, perché il
+campo sbagliato "funzionava".
+
+### Cosa faceva `priceTiers` e cosa non faceva
+
+In v287 i due prezzi erano scritti con `priceTiers`, e in pagina si vedevano:
+
+```
+Da 1 a 2 persone     €250
+Da 3 a 4 persone     €350
+```
+
+Corretto, e **inerte**. `priceTiers` è un listino da *leggere*: due righe dentro "In
+breve", niente che si possa premere. Il cliente non poteva dire in quanti sale, e
+soprattutto **nel messaggio all'ufficio non finiva niente**: arrivava una richiesta per la
+Mustang senza sapere se era da 250 o da 350, e quel pezzo lo doveva chiedere l'ufficio.
+
+Il campo giusto era `options`, che è esattamente la stessa cosa dei tre percorsi del buggy:
+due bottoni sulla pagina di dettaglio, la variante che segue il bottone premuto, e la
+scelta che arriva su WhatsApp.
+
+### `price` e non `priceAdult`
+
+Dentro la variante il numero sta su `price`, e la distinzione qui è tutta:
+
+- `priceAdult` direbbe "questa variante si paga a testa", e il totale farebbe 350 × 4.
+- `price` è il numero da scrivere sul bottone e basta — che è il caso del mezzo, come il
+  jet ski a moto d'acqua.
+
+`priceUnit: "a Mustang"` resta dov'era e fa la sua parte: `prezziAPersona()` torna `null`,
+il totale non si fa, e in "In breve" la riga diventa "Prezzo: €350 a Mustang", che segue il
+bottone premuto.
+
+### `priceTiers` è stato tolto, non affiancato
+
+Tenuti tutti e due, la pagina avrebbe scritto gli stessi due numeri due volte: le righe del
+listino sopra i bottoni che li dicono già. Stessa ragione per cui in `tour.js` le righe per
+fascia d'età prendono il posto della riga "Prezzo" invece di aggiungersi.
+
+Per lo stesso motivo la nota che ripeteva "250 € fino a due, 350 € da tre a quattro" adesso
+dice solo il **principio** — "il prezzo è dell'auto e non della persona: a cambiare è
+quanti ci salgono, non quanto paga ognuno" — e i numeri li lascia ai bottoni e alla riga
+sotto il bottone premuto. I numeri in pagina stavano per finire in quattro posti.
+
+### La tendina nella finestra resta nascosta, ed è giusto così
+
+`riempiOpzioni()` nasconde il `<select>` quando `sceltaDallaPagina()` trova un bottone
+premuto, ed è sempre il caso: dall'elenco la finestra della richiesta non si apre, sulla
+card c'è solo "Scopri di più". È il `<select>` che CLAUDE.md chiama codice morto. La scelta
+passa lo stesso, per posizione (`optionIndex`), e nell'intestazione della finestra si legge
+**"Mustang Experience — 3 o 4 persone"**.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, gli stessi.
+
+Nel browser vero, viewport telefono, premendo tutti e due i bottoni nelle tre lingue: il
+titolo del gruppo ("Quanti salite in Mustang" / "How many in the Mustang" / "Cuántos vais
+en el Mustang"), i due bottoni col prezzo, la riga di spiegazione che cambia sotto il
+bottone premuto, e "Prezzo: €250 a Mustang" che diventa "€350 a Mustang". Nessun errore JS.
+
+Aprendo la richiesta col secondo bottone premuto: intestazione "Mustang Experience — 3 o 4
+persone", tendina varianti nascosta, e il resto invariato (Da concordare, punto di raccolta
+in hotel, nessun totale).
+
+`CACHE_NAME` a `isla-v288`.
+
+### Resta aperto
+
+Le quattro cose della v287, tutte ancora lì: età minima, zone del pick-up, le foto per la
+galleria, il francese.
+
+E una nuova, piccola: col bottone premuto il **totale** si potrebbe finalmente mostrare —
+è 250 o 350, secco, senza moltiplicare niente. Oggi non si vede, perché `prezziAPersona()`
+si ferma davanti a `priceUnit` e non esiste un modo di dire "questa variante è un prezzo di
+gruppo, mostralo così com'è". Non è stato fatto qui: è un campo nuovo nel motore, e il
+proprietario aveva chiesto la scelta, non il totale.

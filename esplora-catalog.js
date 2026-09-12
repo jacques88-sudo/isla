@@ -3040,8 +3040,12 @@ const ESPLORA_CATALOG = [
     },
     priceAdult: 0,
     priceChild: 0,
-    // Gli orari cambiano con la durata, quindi quelli veri stanno dentro le
-    // varianti: questi valgono per il giro da 40 minuti, che non ha i suoi.
+    // Gli stessi cinque orari per tutte e tre le durate: confermato dal
+    // proprietario il 12 settembre 2026. Prima erano divisi per durata (1 ora
+    // alle 10/14/16/17, 2 ore alle 12) perche' cosi' li scriveva la pagina di
+    // CanaryVIP, un rivenditore: era la sua disponibilita', non la nostra.
+    // Quindi niente `times` dentro le varianti, e niente `desc` sulle 2 ore,
+    // che serviva solo a spiegare gli orari "forse" di quella pagina.
     times: ["10:00", "12:00", "14:00", "16:00", "17:00"],
     options: {
       label: { it: "Durata", en: "Duration", es: "Duración" },
@@ -3053,18 +3057,11 @@ const ESPLORA_CATALOG = [
         { label: { it: "1 ora", en: "1 hour", es: "1 hora" },
           price: 100,
           duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
-          times: ["10:00", "14:00", "16:00", "17:00"],
           unitPrices: { singola: 100, doppia: 120 } },
         { label: { it: "2 ore", en: "2 hours", es: "2 horas" },
           price: 180,
           duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
-          times: ["12:00"],
-          unitPrices: { singola: 180, doppia: 200 },
-          desc: {
-            it: "Partenza alle 12:00. In certi giorni può esserci anche alle 10:00 o alle 16:00: scrivilo nelle note e l'ufficio ti dice se quel giorno c'è.",
-            en: "Departure at 12:00. On some days there may also be one at 10:00 or 16:00: add it in the notes and the office will tell you if it runs that day.",
-            es: "Salida a las 12:00. Algunos días puede haber también a las 10:00 o a las 16:00: escríbelo en las notas y la oficina te dirá si ese día sale."
-          } }
+          unitPrices: { singola: 180, doppia: 200 } }
       ]
     },
     family: false,

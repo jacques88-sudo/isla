@@ -9840,3 +9840,55 @@ nella riga Orari, e il menu "A che ora" della finestra della richiesta li mostra
 cinque su tutte e tre le durate; in pagina non resta nessun paragrafo di spiegazione. La
 riga "Durata" resta giustamente nascosta, perché il gruppo di bottoni si chiama già
 "Durata". `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v292`.
+
+## Il ritiro del jet ski si può chiedere, non si può promettere
+
+Domanda del proprietario: "come possiamo mettere il transfer che è possibile solo da Las
+Galletas, ma le persone al momento non scelgono dove andare, loro dicono solo quando, e noi
+in base alla disponibilità scegliamo dove mandarli?".
+
+E' un vincolo che **non sta nei dati dell'escursione, sta nel modo in cui lavora
+l'ufficio**, e il sito lo diceva sbagliato in due punti: la casella del transfer sembrava
+una cosa sempre disponibile, e una nota diceva al cliente di **scrivere nelle note quale
+porto preferisce** — cosa che non serve a niente, visto che il porto non lo sceglie lui.
+
+La soluzione non e' un campo nuovo: e' **cambiare cosa vuol dire la casella**. Da "voglio
+il transfer" (una cosa che il sito promette) a "chiedo il ritiro" (una cosa che l'ufficio
+prova a far stare). Spuntata, l'ufficio sa che deve cercare di mettere quel cliente su una
+partenza da Las Galletas, ed e' l'unica informazione che gli serve per decidere dove
+mandarlo: la casella **diventa un dato per chi assegna il porto**, non una promessa fatta
+al cliente.
+
+Tre pezzi:
+
+- **`transfer`** riscritto: dice che il ritiro si fa solo dalle partenze di Las Galletas,
+  che il porto lo assegna l'ufficio secondo la disponibilita' del giorno, che chiedendolo
+  si prova a metterlo li' e glielo si conferma rispondendo, e che dalle partenze di Puerto
+  Colón si arriva al porto per conto proprio. Una casella che sembra una garanzia e poi non
+  lo e' e' peggio di non averla.
+- **`transferLabel: "Ritiro in hotel"`**: "Vuoi il transfer?" fa pensare a un pullman che
+  porta all'escursione, e qui la domanda e' un'altra.
+- **La nota sui due porti** non chiede piu' di scegliere: dice chi assegna il porto e
+  quando lo si sa.
+
+**Il nome adesso e' uno solo in tutti e quattro i posti dove si legge.** `transferLabel`
+valeva gia' per la casella nella finestra e per la riga del messaggio; aggiunto anche alla
+riga di "In breve" (`tour.js`) e al dettaglio del totale (`totaleMezzi()` in
+`escursioni.js`), dove restava scritto "Transfer". Con la casella che dice "Ritiro in
+hotel" e il conto che diceva "Transfer 2 × €10" sembravano due cose diverse. Le schede
+senza `transferLabel` non cambiano: Twin Ticket e Siam Park tengono i loro nomi.
+
+**I €10 a moto restano nel totale** anche se il ritiro e' da confermare. E' la direzione
+giusta dell'errore: se poi non si puo' fare, il cliente paga **meno** di quanto aveva
+letto, e CLAUDE.md dice che abbassare un prezzo dopo si puo', alzarlo dopo che il cliente
+l'ha letto e' la cosa che fa arrabbiare. Il totale e' gia' marcato "indicativo, te lo
+confermiamo noi".
+
+Provato nel browser: la riga in "In breve" si chiama "Ritiro in hotel" e porta il testo
+nuovo, la casella nella finestra pure, il totale scrive "2 Singola × €90 + Ritiro in hotel
+2 × €10" e il messaggio "• Ritiro in hotel: sì". `node controlla.js` → 0 errori, 3 avvisi
+invariati. Alzato `sw.js` a `isla-v293`.
+
+**Resta da chiedere all'ufficio**: se il ritiro non si riesce a fare, il cliente viene
+avvisato e basta, oppure gli si propone l'altro porto e puo' disdire? Adesso il sito dice
+solo che il porto si conferma rispondendo, e non promette niente di piu'.

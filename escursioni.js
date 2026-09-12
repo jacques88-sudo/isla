@@ -1189,7 +1189,9 @@ function initRequestDialog() {
   // quattro moto, magari due doppie e due singole, e sono quattro prezzi.
   // I prezzi accanto ai nomi sono quelli della **variante scelta**, che qui e'
   // la durata: la doppia costa 110 sul giro da 40 minuti e 200 su quello da
-  // due ore.
+  // due ore. Dove di varianti non ce ne sono, i prezzi stanno sulla scheda
+  // (`tour.unitPrices`): e' il caso della Mustang, dove a cambiare non e' la
+  // durata ma quanti salgono in macchina.
   function riempiUnita(tour) {
     if (!unitsRowsEl || !unitsLabelEl) return;
     const mezzi = tour && tour.units;
@@ -1201,7 +1203,11 @@ function initRequestDialog() {
 
     unitsLabelEl.textContent = tf(mezzi.label);
     const variante = sceltaCorrente(tour);
-    const prezzi = (variante && variante.unitPrices) || {};
+    // Lo stesso ripiego che fa totaleMezzi(): senza, il totale usava
+    // `tour.unitPrices` ma le righe qui restavano senza prezzo accanto, e il
+    // cliente vedeva un totale comparire da numeri che non erano scritti da
+    // nessuna parte.
+    const prezzi = (variante && variante.unitPrices) || tour.unitPrices || {};
 
     // I numeri gia' messi si tengono: cambiare lingua ridisegna le righe, e
     // ritrovare azzerate le tre moto appena contate sarebbe sgradevole.

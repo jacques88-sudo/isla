@@ -685,7 +685,13 @@ const HOTELS = [
 // Resta la riga di aiuto che dice di scriverlo nelle note.
 const PICKUP_IN_HOTEL = [
   // Le tre camminate di Canaventura, che stanno tutte nella scheda "Trekking".
-  "trekking-bici"
+  "trekking-bici",
+  // La Mustang al tramonto di Pirati Tenerife: un fornitore nuovo, e la
+  // domanda e' stata fatta prima di pubblicare la scheda invece di dare per
+  // buone le tabelle qui sopra (proprietario, 12 settembre 2026). Passano
+  // sotto l'hotel. Le zone coperte restano da confermare: per gli hotel che
+  // non stanno in HOTELS non si promette niente, ci pensa hotelPunto().
+  "mustang-experience"
 ];
 
 // Gli orari del pulmino, escursione per escursione.

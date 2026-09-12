@@ -9920,3 +9920,42 @@ e nessuna delle due si poteva dedurre dal testo. Una domanda sola, tre risposte 
 scritte per esteso, e la scheda e' giusta al primo colpo.
 
 `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v294`.
+
+---
+
+## 12 settembre 2026 — I €10 del ritiro si dicono una volta sola (v295)
+
+Il proprietario: «Se i 10 euro sono gia' nel prezzo, non importa scrivere 10 a moto
+d'acqua». Tolto da `transfer` (jet ski, tutte e tre le lingue) il pezzo "€10 a moto
+d'acqua, da pagare al ritiro": adesso la frase dice solo **da dove** si fa il ritiro e
+**chi** sceglie il porto.
+
+Il numero non sparisce: lo scrive il totale, che con la casella spuntata mostra
+`2 Singola × €180 + Ritiro in hotel 2 × €10` → `Totale €380`. E' il posto giusto, perche'
+li' il cliente li vede **sommati**, non come una cifra da ricordarsi a parte.
+
+Due motivi, non uno solo:
+
+1. **La stessa cifra detta due volte sembra due addebiti.** Una in mezzo a una frase e una
+   in un conto: chi legge in fretta puo' capire che i €10 si pagano in piu' rispetto al
+   totale.
+2. **"Da pagare al ritiro" diceva il contrario del totale.** Nel totale i €10 ci sono gia'
+   dentro. Quella mezza riga era rimasta da quando il supplemento non era ancora calcolato,
+   e nessuno se n'era accorto perche' le due cose si guardano in due schermate diverse.
+
+La regola che ne esce: **un prezzo che il sito calcola non si ripete a parole.** Dove la
+macchina fa il conto, la prosa dice le condizioni (da dove, per chi, quando), non la cifra:
+se un giorno il supplemento passa a €12 si cambia `units.transferPrice` e basta, senza
+cercare il "10" scritto in nove testi in tre lingue. Il rischio opposto — il cliente che
+pensa che il ritiro sia gratis — non si corre, perche' la casella e il totale stanno nella
+stessa finestra: spuntandola il totale sale sotto i suoi occhi.
+
+Nel test in browser ho ripreso, per la terza volta in due giorni, **il bug di cercare per
+etichetta una cosa che la lingua riscrive**: il bottone lo cercavo con `/disponibilit/`, che
+non prende lo spagnolo "disponibilidad". Questa volta era solo il mio script di prova, e si
+e' visto subito perche' lo spagnolo tornava vuoto mentre italiano e inglese passavano. Vale
+la pena notarlo: la stessa trappola scatta uguale nel codice del sito e nei controlli.
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. Provato in browser sulle tre lingue: la
+riga "In breve" senza "10" e senza "pagare", il totale `€380` con la riga del ritiro intatta.
+Alzato `sw.js` a `isla-v295`.

@@ -2207,6 +2207,42 @@ const ESPLORA_CATALOG = [
     // smette di moltiplicare per le persone (prezziAPersona() torna null) e
     // scrive "da €250 a Mustang" invece di un totale falso.
     priceUnit: { it: "a Mustang", en: "per Mustang", es: "por Mustang" },
+    // Le due fasce restano scritte anche in "In breve": `units` piu' sotto e'
+    // la finestra della richiesta, qui e' il listino che si legge prima di
+    // arrivarci. Non si ripetono a vicenda, stanno in due posti diversi.
+    priceTiers: [
+      { from: 1, to: 2, price: 250 },
+      { from: 3, to: 4, price: 350 }
+    ],
+    // Le Mustang si contano, e possono essere piu' di una: in sei si va con
+    // due auto, una con quattro e una con due, e sono due prezzi diversi
+    // (350 + 250). E' la stessa forma del jet ski, dove quattro amici sono
+    // "due doppie e due singole".
+    // I due "tipi" non sono due modelli di auto ma le due fasce di prezzo:
+    // e' quanti salgono a cambiare il prezzo dell'auto, non l'auto.
+    // `units` **sostituisce** "Quante persone" nella finestra (mostraPersone()
+    // la nasconde): il numero delle persone e' gia' dentro il nome della
+    // fascia, e chiederlo due volte darebbe due conti da far tornare.
+    units: {
+      label: {
+        it: "Quante Mustang — il prezzo è dell'auto e cambia con quanti ci salgono",
+        en: "How many Mustangs — the price is per car and changes with how many get in",
+        es: "¿Cuántos Mustang? — el precio es del coche y cambia según cuántos suban"
+      },
+      name: { it: "Mustang", en: "Mustangs", es: "Mustang" },
+      types: [
+        { key: "due", name: { it: "Con 1 o 2 persone", en: "With 1 or 2 people", es: "Con 1 o 2 personas" } },
+        { key: "quattro", name: { it: "Con 3 o 4 persone", en: "With 3 or 4 people", es: "Con 3 o 4 personas" } }
+      ]
+      // `transferPrice` (quanto costa il ritiro **a auto**) non si scrive:
+      // non lo sappiamo. Finche' manca, spuntando il transfer il totale
+      // sparisce invece di dare un numero incompleto — e' la regola di
+      // totaleMezzi(), ed e' un motivo in piu' per farsi dare quel prezzo.
+    },
+    // Il prezzo di ogni fascia. Sta sulla scheda e non dentro una variante
+    // perche' qui varianti non ce ne sono: a cambiare non e' la durata, e'
+    // quanti salgono.
+    unitPrices: { due: 250, quattro: 350 },
     priceAdult: 0,
     priceChild: 0,
     // Nessuna tariffa ridotta per i bambini (fornitore). Non e' scritto da
@@ -2231,25 +2267,6 @@ const ESPLORA_CATALOG = [
     // `priceAdult` lo farebbe moltiplicare per quanti sono — 350 × 4.
     // `priceTiers` e' stato tolto e non tenuto insieme: avrebbe scritto gli
     // stessi due numeri una seconda volta, sopra i bottoni che li dicono gia'.
-    options: {
-      label: { it: "Quanti salite in Mustang", en: "How many in the Mustang", es: "Cuántos vais en el Mustang" },
-      choices: [
-        { label: { it: "1 o 2 persone", en: "1 or 2 people", es: "1 o 2 personas" },
-          price: 250,
-          desc: {
-            it: "L'auto è la stessa e il prezzo è dell'auto: che siate in uno o in due, sono 250 €.",
-            en: "The car is the same and the price is for the car: whether you are one or two, it is €250.",
-            es: "El coche es el mismo y el precio es del coche: seáis uno o dos, son 250 €."
-          } },
-        { label: { it: "3 o 4 persone", en: "3 or 4 people", es: "3 o 4 personas" },
-          price: 350,
-          desc: {
-            it: "Da tre persone in su il prezzo dell'auto è 350 €. In Mustang si sta in quattro al massimo, autista compreso.",
-            en: "From three people up, the car costs €350. The Mustang seats four at most, driver included.",
-            es: "A partir de tres personas el coche cuesta 350 €. En el Mustang caben cuatro como máximo, conductor incluido."
-          } }
-      ]
-    },
     desc: {
       it: "Una Ford Mustang decappottabile solo per te, su per la strada del Parco Nazionale del Teide con la luce della sera: si sale fra le colate di lava fino alla Cañada Blanca e si torna che è già buio. Guidi tu, se hai la patente; se preferisci non guidare, l'auto la porta una guida dell'agenzia. Il prezzo è dell'auto, non a persona.",
       en: "A Ford Mustang convertible just for you, up the road into Teide National Park in the evening light: you climb between the lava flows as far as Cañada Blanca and come back down after dark. You drive, if you hold a licence; if you would rather not, one of the agency's guides takes the wheel. The price is for the car, not per person.",
@@ -2285,12 +2302,13 @@ const ESPLORA_CATALOG = [
       { it: "Si parte nel tardo pomeriggio, non prima delle 17:00: l'ora esatta segue il tramonto e si muove con la stagione, quindi te la conferma l'ufficio.",
         en: "You set off in the late afternoon, not before 17:00: the exact time follows the sunset and moves with the season, so the office confirms it with you.",
         es: "Se sale a última hora de la tarde, no antes de las 17:00: la hora exacta sigue al atardecer y se mueve con la temporada, así que te la confirma la oficina." },
-      // I due numeri non si ripetono qui: li dicono gia' i bottoni e la riga
-      // sotto il bottone premuto. Quello che resta e' il principio, che e'
-      // la cosa che si legge male in una tabella.
-      { it: "Il prezzo è dell'auto e non della persona: a cambiare è quanti ci salgono, non quanto paga ognuno.",
-        en: "The price is for the car, not per person: what changes is how many of you get in, not what each one pays.",
-        es: "El precio es del coche y no por persona: lo que cambia es cuántos subís, no lo que paga cada uno." },
+      // I due numeri non si ripetono qui: li dicono gia' le righe di "In
+      // breve" e i contatori della richiesta. Quello che resta e' il
+      // principio, piu' la capienza — che era dentro le vecchie varianti e
+      // senza questa riga andava persa.
+      { it: "Il prezzo è dell'auto e non della persona: a cambiare è quanti ci salgono, non quanto paga ognuno. In Mustang si sta in quattro al massimo, autista compreso; se siete di più si prendono due auto, e nella richiesta le conti tu.",
+        en: "The price is for the car, not per person: what changes is how many of you get in, not what each one pays. The Mustang seats four at most, driver included; if there are more of you, you take two cars — you count them yourself in the request.",
+        es: "El precio es del coche y no por persona: lo que cambia es cuántos subís, no lo que paga cada uno. En el Mustang caben cuatro como máximo, conductor incluido; si sois más se cogen dos coches, y en la solicitud los cuentas tú." },
       { it: "Si va con la capote abbassata e lassù si passano i 2.000 metri: al tramonto fa fresco anche d'estate. Porta una felpa o una giacca.",
         en: "You travel with the roof down and up there you go above 2,000 metres: at sunset it is chilly even in summer. Bring a sweatshirt or a jacket.",
         es: "Se va con la capota bajada y allí arriba se pasan los 2.000 metros: al atardecer refresca incluso en verano. Lleva una sudadera o una chaqueta." }

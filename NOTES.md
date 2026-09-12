@@ -9592,3 +9592,106 @@ E una nuova, piccola: col bottone premuto il **totale** si potrebbe finalmente m
 si ferma davanti a `priceUnit` e non esiste un modo di dire "questa variante è un prezzo di
 gruppo, mostralo così com'è". Non è stato fatto qui: è un campo nuovo nel motore, e il
 proprietario aveva chiesto la scelta, non il totale.
+
+---
+
+## v289 — più di una Mustang, e un ripiego che mancava nel motore
+
+Il proprietario: **è possibile selezionare anche più Mustang?** In sei si va con due auto,
+una con quattro persone e una con due — che sono due prezzi diversi, 350 + 250.
+
+Il campo per questo esiste già ed è `units`, quello del jet ski: "quattro amici sono due
+doppie e due singole". Qui i "tipi" non sono due modelli di auto, sono **le due fasce di
+prezzo**, perché a cambiare il prezzo dell'auto è quanti ci salgono.
+
+```
+Quante Mustang — il prezzo è dell'auto e cambia con quanti ci salgono
+  Con 1 o 2 persone · €250     [ 1 ]
+  Con 3 o 4 persone · €350     [ 1 ]
+
+  Totale €600
+  1 Con 1 o 2 persone × €250 + 1 Con 3 o 4 persone × €350
+```
+
+E il totale, che in v287 e v288 non si faceva, adesso si fa: era l'ultima cosa rimasta
+aperta in fondo alla v288, e la risposta non era un campo nuovo nel motore — era usare il
+campo giusto.
+
+### Le `options` sono state tolte, non affiancate
+
+In v288 le due fasce erano `options`, due bottoni. Con `units` sarebbero diventate due modi
+diversi di dire la stessa cosa nella stessa finestra: un bottone che sceglie la fascia e due
+contatori che la scelgono di nuovo.
+
+E `options` non sapeva fare quello che è stato chiesto: **una variante sola vale per tutta
+la richiesta**, quindi con le fasce come varianti tutte le auto dovevano stare nella stessa
+fascia. Due auto, una da quattro e una da due, non si potevano scrivere. Coi tipi di `units`
+sì, perché ogni tipo ha il suo contatore.
+
+I due prezzi restano leggibili sulla pagina di dettaglio: è tornato `priceTiers`, tolto in
+v288 perché allora duplicava i bottoni. Adesso i due campi stanno in due posti diversi —
+`priceTiers` è il listino in "In breve", `units` è la finestra della richiesta — e non si
+ripetono a vicenda.
+
+`units` **sostituisce** "Quante persone" (lo fa `mostraPersone()`), ed è giusto: il numero
+delle persone è già dentro il nome della fascia, e chiederlo due volte darebbe due conti da
+far tornare. La capienza massima — quattro, autista compreso — era dentro le `desc` delle
+vecchie varianti: senza un posto dove andare sarebbe sparita, ed è finita nella nota del
+prezzo, insieme al fatto che se si è di più si prendono due auto.
+
+### Il ripiego che mancava in `riempiUnita()` (escursioni.js)
+
+Il vocabolario dice da sempre che **una scheda senza varianti può tenere `unitPrices` su di
+sé**, e `totaleMezzi()` infatti fa il ripiego:
+
+```js
+const prezzi = (variante && variante.unitPrices) || tour.unitPrices;
+```
+
+`riempiUnita()`, che disegna le righe coi contatori, no: si fermava a
+`(variante && variante.unitPrices) || {}`. Finché le uniche schede a mezzo erano jet ski,
+buggy e quad — tutte con varianti — non si vedeva. Sulla Mustang, che varianti non ne ha,
+sarebbe uscito il caso peggiore: **contatori senza prezzo accanto e un totale che compare
+lo stesso**, cioè un numero costruito con prezzi che in pagina non sono scritti da nessuna
+parte.
+
+Aggiunto lo stesso ripiego. È una riga, ed è quella che rende vero quello che il vocabolario
+prometteva.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, gli stessi.
+
+Nel browser vero, viewport telefono, il conto a mano:
+
+| contatori | totale | atteso |
+| --- | --- | --- |
+| 1 × "1 o 2" | €250 | ✓ |
+| 1 × "3 o 4" | €350 | ✓ |
+| 1 + 1 (sei persone, due auto) | €600 | ✓ |
+| 3 × "3 o 4" | €1050 | ✓ |
+| 0 + 0 | nessun totale, "Serve almeno un mezzo" | ✓ |
+
+Col **transfer spuntato il totale sparisce**, e non è un bug: `units.transferPrice` non c'è
+perché il prezzo del ritiro non lo sappiamo, e `totaleMezzi()` preferisce non dare un numero
+piuttosto che darne uno a cui manca un pezzo. È un motivo in più per farsi dare quel prezzo.
+
+Contatori, prezzi accanto e totale verificati in tutte e tre le lingue. Il messaggio che
+parte davvero su WhatsApp, intercettato:
+
+```
+• Mustang: Con 1 o 2 persone × 1 · Con 3 o 4 persone × 1
+• Totale indicativo: €600 (1 Con 1 o 2 persone × €250 + 1 Con 3 o 4 persone × €350)
+```
+
+**E le altre tre schede a mezzo, perché il motore è condiviso:** jet ski, buggy e quad
+riaperti uno per uno, premendo anche l'ultima variante. I prezzi accanto ai contatori
+continuano a essere quelli della variante (jet ski €90 → €180, quad €110 → €130): il
+ripiego nuovo si attiva solo dove la variante non c'è. Nessun errore JS.
+
+`CACHE_NAME` a `isla-v289`.
+
+### Resta da chiedere
+
+Le quattro della v287, invariate: età minima, **zone del pick-up e quanto costa** (adesso
+serve anche al totale), le foto per la galleria, il francese.

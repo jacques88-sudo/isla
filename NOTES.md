@@ -9806,3 +9806,37 @@ Provato nel browser: i tre bottoni del jet ski mostrano 90/110, 100/120 e 180/20
 tiene i suoi "2 ore €30", la Mustang tiene le sue due fasce. `node controlla.js` → 0
 errori, 3 avvisi invariati (opera-60 e due schede senza foto, nessuno dei tre riguarda
 questa modifica).
+
+## Gli orari del jet ski sono gli stessi per tutte e tre le durate
+
+Correzione del proprietario, 12 settembre 2026: "tutte e 3 le tempistiche hanno gli stessi
+orari di partenza". **Questo annulla la divisione per durata** scritta più su in queste
+note (1 ora alle 10/14/16/17, 2 ore solo alle 12): quegli orari venivano dalla pagina di
+**CanaryVIP**, un rivenditore concorrente, ed erano la disponibilità sua, non la nostra.
+L'ufficio aveva mandato fin dall'inizio una lista sola di cinque orari, e quella era
+giusta: 10:00, 12:00, 14:00, 16:00, 17:00, uguali per 40 minuti, 1 ora e 2 ore.
+
+Tolti i `times` dalle varianti — restano i cinque sulla scheda, che valgono per tutte — e
+tolta la `desc` della variante da 2 ore, che esisteva **solo** per spiegare il "forse" di
+quella pagina ("in certi giorni può esserci anche alle 10:00 o alle 16:00"). Senza quel
+forse non c'è più niente da spiegare.
+
+Due cose si sistemano da sole:
+
+- **Il paragrafo spaiato.** Il proprietario aveva notato che la spiegazione c'era solo sul
+  bottone delle 2 ore. Non era un errore — il testo stava dove c'era qualcosa da dire — ma
+  con una sola variante spiegata i bottoni andavano in colonna e la pagina si muoveva
+  premendo quel bottone. Adesso non ci sono più `desc` e la fila torna compatta.
+- **Una domanda in meno all'ufficio**: "in quali giorni il giro da 2 ore parte anche alle
+  10:00 o alle 16:00" non ha più senso di essere fatta.
+
+**La lezione, che vale oltre il jet ski**: da una pagina di un rivenditore si prendono i
+fatti dell'attività (porto, età, cosa è incluso), non la **sua disponibilità**. Gli orari
+che vede un rivenditore sono le sue quote, non quelle dell'operatore. Vale come i prezzi
+barrati: quelli sono i suoi sconti, non i nostri.
+
+Provato nel browser: i tre bottoni mostrano tutti "10:00 · 12:00 · 14:00 · 16:00 · 17:00"
+nella riga Orari, e il menu "A che ora" della finestra della richiesta li mostra tutti e
+cinque su tutte e tre le durate; in pagina non resta nessun paragrafo di spiegazione. La
+riga "Durata" resta giustamente nascosta, perché il gruppo di bottoni si chiama già
+"Durata". `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v292`.

@@ -3074,16 +3074,18 @@ const ESPLORA_CATALOG = [
     // Il supplemento e' a moto d'acqua, non a persona: sta scritto qui e non
     // in `transferPrice`, che e' fatto di prezzi a testa.
     // Il ritiro si fa **solo dalle partenze di Las Galletas**, e il porto non lo
-    // sceglie il cliente: lo assegna l'ufficio secondo la disponibilita' del
-    // giorno. Quindi la casella non e' una cosa che il sito puo' promettere, e'
+    // sceglie il cliente: lo assegna l'ufficio **in base all'orario e alle moto
+    // che il cliente ha scelto** (proprietario, 12 settembre 2026). Quelle due
+    // cose le sceglie lui, il porto no: e' il pezzo che si dimentica leggendo
+    // la scheda. Quindi la casella non e' una cosa che il sito puo' promettere, e'
     // una richiesta che l'ufficio prova a far stare: spuntata, cerca di mettere
     // il cliente su una partenza da Las Galletas e glielo conferma rispondendo.
     // Il testo lo dice per esteso, perche' una casella che sembra una garanzia
     // e poi non lo e' e' peggio di non averla.
     transfer: {
-      it: "Il ritiro in hotel si fa solo sulle partenze da Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje): €10 a moto d'acqua, da pagare al ritiro. Il porto lo assegniamo noi secondo la disponibilità del giorno: se chiedi il ritiro proviamo a metterti su una partenza da Las Galletas e te lo confermiamo nella risposta. Sulle partenze da Puerto Colón si arriva al porto per conto proprio.",
-      en: "Hotel pickup is only available on departures from Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje): €10 per jet ski, paid at pickup. We assign the port according to the day's availability: if you ask for pickup we try to put you on a Las Galletas departure and confirm it in our reply. On Puerto Colón departures you make your own way to the port.",
-      es: "La recogida en el hotel solo se hace en las salidas desde Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje): €10 por moto de agua, a pagar en la recogida. El puerto lo asignamos nosotros según la disponibilidad del día: si pides la recogida intentamos ponerte en una salida desde Las Galletas y te lo confirmamos en la respuesta. En las salidas desde Puerto Colón se llega al puerto por cuenta propia."
+      it: "Il ritiro in hotel si fa solo sulle partenze da Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje): €10 a moto d'acqua, da pagare al ritiro. Il porto lo assegniamo noi in base all'orario e alle moto d'acqua che scegli: se chiedi il ritiro proviamo a metterti su una partenza da Las Galletas e te lo confermiamo nella risposta. Sulle partenze da Puerto Colón si arriva al porto per conto proprio.",
+      en: "Hotel pickup is only available on departures from Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje): €10 per jet ski, paid at pickup. We assign the port based on the time and the jet skis you choose: if you ask for pickup we try to put you on a Las Galletas departure and confirm it in our reply. On Puerto Colón departures you make your own way to the port.",
+      es: "La recogida en el hotel solo se hace en las salidas desde Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje): €10 por moto de agua, a pagar en la recogida. El puerto lo asignamos nosotros según la hora y las motos de agua que elijas: si pides la recogida intentamos ponerte en una salida desde Las Galletas y te lo confirmamos en la respuesta. En las salidas desde Puerto Colón se llega al puerto por cuenta propia."
     },
     // "Vuoi il transfer?" fa pensare a un pullman che porta all'escursione, e
     // qui la domanda vera e' un'altra. Vale sia per la casella nella finestra
@@ -3097,9 +3099,9 @@ const ESPLORA_CATALOG = [
         es: "El precio es por moto de agua, no por persona: la individual lleva a una persona, la doble a dos. Un instructor acompaña al grupo en lancha."
       },
       {
-        it: "Si parte da Puerto Colón o da Las Galletas: il porto lo assegniamo noi secondo la disponibilità del giorno e te lo diciamo nella conferma. Se ti serve il ritiro in hotel chiedilo nella richiesta: si fa solo dalle partenze di Las Galletas.",
-        en: "Departures are from Puerto Colón or Las Galletas: we assign the port according to the day's availability and tell you in the confirmation. If you need hotel pickup, ask for it in your request: it is only available on Las Galletas departures.",
-        es: "Se sale desde Puerto Colón o desde Las Galletas: el puerto lo asignamos nosotros según la disponibilidad del día y te lo decimos en la confirmación. Si necesitas recogida en el hotel, pídela en la solicitud: solo se hace en las salidas desde Las Galletas."
+        it: "Si parte da Puerto Colón o da Las Galletas: il porto lo assegniamo noi in base all'orario e alle moto d'acqua che scegli, e te lo diciamo nella conferma. Se ti serve il ritiro in hotel chiedilo nella richiesta: si fa solo dalle partenze di Las Galletas.",
+        en: "Departures are from Puerto Colón or Las Galletas: we assign the port based on the time and the jet skis you choose, and tell you in the confirmation. If you need hotel pickup, ask for it in your request: it is only available on Las Galletas departures.",
+        es: "Se sale desde Puerto Colón o desde Las Galletas: el puerto lo asignamos nosotros según la hora y las motos de agua que elijas, y te lo decimos en la confirmación. Si necesitas recogida en el hotel, pídela en la solicitud: solo se hace en las salidas desde Las Galletas."
       },
       {
         it: "Passeggeri dai 7 anni, sempre insieme a un adulto. Si guida da 16 anni: a 16 e 17 serve l'autorizzazione firmata di un genitore, o il genitore presente alla partenza, e non si può portare un altro minorenne sulla stessa moto d'acqua.",

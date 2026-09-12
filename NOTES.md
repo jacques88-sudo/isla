@@ -9892,3 +9892,31 @@ invariati. Alzato `sw.js` a `isla-v293`.
 **Resta da chiedere all'ufficio**: se il ritiro non si riesce a fare, il cliente viene
 avvisato e basta, oppure gli si propone l'altro porto e puo' disdire? Adesso il sito dice
 solo che il porto si conferma rispondendo, e non promette niente di piu'.
+
+## Come si assegna il porto del jet ski: confermato, e la casella resta
+
+Il proprietario ha chiuso le due domande rimaste aperte sul ritiro (12 settembre 2026):
+
+> "Il cliente sceglie l'orario e la moto d'acqua e in base a questo noi scegliamo il porto
+> con o senza trasporto! anche i 10 euro restano nel totale"
+
+**Il criterio non e' la disponibilita' generica del giorno: sono l'orario e le moto che il
+cliente ha scelto.** Quelle due cose le sceglie lui, il porto no. Corretto il testo del
+ritiro e la nota sui due porti in tutte e tre le lingue: dove dicevano "secondo la
+disponibilita' del giorno" adesso dicono "in base all'orario e alle moto d'acqua che
+scegli". Non e' pignoleria: chi legge "disponibilita'" pensa che sia una lotteria, mentre
+cosi' capisce che la sua scelta conta ed e' lui a determinarla in parte.
+
+**La casella resta** (chiesto esplicitamente, fra tre possibilita': toglierla, lasciarla,
+o lasciarla gia' spuntata). Quindi niente cambia nel comportamento: il cliente puo' chiedere
+il ritiro, e i €10 a moto entrano nel totale quando lo chiede. Era la lettura che avevo gia'
+implementato, e i €10 nel totale erano gia' come li voleva.
+
+Vale la pena ricordarsi **perche' si e' chiesto invece di indovinare**: "in base a questo
+noi scegliamo il porto con o senza trasporto" si poteva leggere anche come "il cliente non
+sceglie niente sul ritiro, quindi la casella va tolta e i €10 stanno sempre nel totale". Le
+due letture davano due finestre della richiesta diverse — una con la domanda e una senza —
+e nessuna delle due si poteva dedurre dal testo. Una domanda sola, tre risposte possibili
+scritte per esteso, e la scheda e' giusta al primo colpo.
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v294`.

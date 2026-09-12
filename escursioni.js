@@ -290,6 +290,23 @@ function menuTesto(req) {
   return parti.join(" · ");
 }
 
+// "Singola €180 · Doppia €200": i prezzi di **tutti** i tipi di mezzo di una
+// variante, non solo del primo. Sul bottone della durata e nella riga "Prezzo"
+// c'era il solo `price` della variante, che e' il piu' basso: sul jet ski era
+// quello della singola, e chi voleva la doppia doveva aprire la finestra della
+// richiesta per scoprire quanto costa. Vuota dove i mezzi non si contano: li'
+// il prezzo e' uno solo e lo scrive chi chiama. La usa `tour.js` in tutti e due
+// i posti dove quel prezzo si vede, cosi' non possono dire due cose diverse.
+function prezziVarianteTesto(tour, variante) {
+  const tipi = (tour.units && Array.isArray(tour.units.types)) ? tour.units.types : [];
+  const prezzi = (variante && variante.unitPrices) || tour.unitPrices;
+  if (!tipi.length || !prezzi) return "";
+  return tipi
+    .filter(tipo => prezzi[tipo.key])
+    .map(tipo => tf(tipo.name) + " €" + eur(prezzi[tipo.key]))
+    .join(" · ");
+}
+
 // Il conto quando si paga il mezzo e non la persona: tante moto d'acqua per
 // il loro prezzo, piu' il ritiro che pure e' a moto. I prezzi dei tipi stanno
 // nella variante scelta (`unitPrices`), perche' cambiano con la durata; una

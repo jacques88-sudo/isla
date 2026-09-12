@@ -122,6 +122,12 @@ function detailRows(tour, variante) {
   } else if (adulto > 0) {
     // "Prezzo: €55" sopra "Adulti: €55" e' la stessa cosa scritta due volte:
     // si tengono solo le righe per fascia d'eta', che sono piu' precise.
+  } else if (prezziVarianteTesto(tour, variante)) {
+    // Dove i mezzi sono di piu' tipi i prezzi sono tanti quanti i tipi:
+    // "Singola €180 · Doppia €200". Niente `priceUnitSuffix` appiccicato in
+    // fondo, perche' il nome di ogni tipo dice gia' che si paga a mezzo e
+    // "a moto d'acqua" sarebbe la stessa cosa detta una terza volta.
+    righe.push([t("detail.price"), prezziVarianteTesto(tour, variante)]);
   } else if (variante && variante.price) {
     // variante col prezzo ma senza le fasce: il numero e' quello del mezzo o
     // del gruppo, e resta sulla riga generica
@@ -395,6 +401,10 @@ function detailOptions(tour) {
           // dove il prezzo della variante e' a persona e sappiamo anche
           // quello dei bambini. Sul bottone vale lo stesso.
           const prezzo = scelta.price || scelta.priceAdult;
+          // Dove i mezzi sono di piu' tipi il bottone li porta tutti
+          // ("Singola €180 · Doppia €200"): `price` da solo e' il piu' basso.
+          const testoPrezzo = prezziVarianteTesto(tour, scelta) ||
+            (prezzo ? "€" + eur(prezzo) : "");
           const premuto = i === 0;
           const bottone = `
           <button type="button" class="detail-option"
@@ -402,7 +412,7 @@ function detailOptions(tour) {
                   ${prezzo ? `data-option-price="${prezzo}"` : ""}
                   aria-pressed="${premuto ? "true" : "false"}">
             <span class="detail-option-name">${esc(tf(scelta.label))}</span>
-            ${prezzo ? `<span class="detail-option-price">€${eur(prezzo)}</span>` : ""}
+            ${testoPrezzo ? `<span class="detail-option-price">${esc(testoPrezzo)}</span>` : ""}
           </button>`;
           if (!conDesc) return bottone;
           // Il testo nasce gia' scritto nella pagina, non arriva da un

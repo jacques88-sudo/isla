@@ -9771,3 +9771,38 @@ Tre, una in meno: **età minima**, **le foto** per la galleria, **il francese**.
 coperte dal pick-up non sono più una domanda sul prezzo — resta solo da sapere fin dove
 arrivano, e per gli hotel che non conosciamo il sito già non promette niente e dice di
 scriverlo nelle note.
+
+## Sui bottoni della durata c'era il prezzo della singola soltanto
+
+Segnalato dal proprietario: "nelle scelte c'e' scritto solo il prezzo del singolo, e'
+possibile mettere anche quello del doppio". Sul bottone il numero veniva da `price` della
+variante, che e' uno solo, e sul jet ski dentro c'e' il prezzo della **singola**: chi
+voleva la doppia doveva aprire la finestra della richiesta per scoprire quanto costa. Sulle
+schede normali un prezzo solo e' giusto — e' *il* prezzo — ma dove i mezzi sono di piu'
+tipi i prezzi sono tanti quanti i tipi.
+
+`prezziVarianteTesto(tour, variante)` in `escursioni.js` scrive "Singola €180 · Doppia
+€200" leggendo `unitPrices` della variante (o quello della scheda, come sulla Mustang) e i
+nomi da `units.types`. Torna vuota dove i mezzi non si contano, e li' resta tutto com'era.
+La usa `tour.js` in **tutti e due** i posti dove il prezzo della variante si vede — il
+bottone e la riga "Prezzo" di "In breve" — cosi' non possono dire due cose diverse.
+
+Nella riga "Prezzo" coi prezzi per tipo **non si aggiunge `priceUnitSuffix`**: "Singola
+€180 · Doppia €200 a moto d'acqua" e' il nome del mezzo scritto una terza volta. La card
+dell'elenco resta "da €90 a moto d'acqua": li' e' un prezzo d'ingresso e va bene che sia il
+piu' basso.
+
+La Mustang non cambia: non ha varianti, quindi bottoni non ne ha, e la sua riga del prezzo
+la fanno i `priceTiers`, che vengono prima nel giro di `detailRows()`.
+
+**Nota di lavoro.** Questa modifica era partita da un branch fermo a `isla-v198`, mentre
+`main` intanto era arrivato a **v290** con 56 commit (fra cui tutta la Mustang, che usa
+`units` come il jet ski). Il merge dava conflitto: rifatta da capo sul `main` di adesso —
+una modifica di tre punti si riscrive in due minuti, un merge di 56 commit no. Da qui
+`isla-v291` invece di v199.
+
+Provato nel browser: i tre bottoni del jet ski mostrano 90/110, 100/120 e 180/200, la riga
+"Prezzo" segue il bottone premuto, e a 390px i due prezzi stanno su una riga sola. Freebird
+tiene i suoi "2 ore €30", la Mustang tiene le sue due fasce. `node controlla.js` → 0
+errori, 3 avvisi invariati (opera-60 e due schede senza foto, nessuno dei tre riguarda
+questa modifica).

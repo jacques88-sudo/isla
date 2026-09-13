@@ -3571,21 +3571,198 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    // Franz Surf School, Playa de las Americas (dati del 13 settembre 2026,
+    // in dati-fornitore/grezzo/franz-surf-school.json).
+    //
+    // Il fornitore vende anche il noleggio delle tavole (softboard, fibra,
+    // longboard): **non e' in catalogo per scelta del proprietario** (13
+    // settembre 2026). Ad Admiral interessano le lezioni. Se un giorno
+    // cambia idea, i prezzi stanno nel file grezzo, e la strada era il
+    // prezzo nell'etichetta ("da 15 € al giorno") perche' il fornitore
+    // pubblica solo il primo giorno.
     id: "surf-lesson",
-    title: { it: "Lezione di surf", en: "Surf lesson", es: "Clase de surf" },
+    title: { it: "Lezioni di surf", en: "Surf lessons", es: "Clases de surf" },
     category: "sport-acquatici",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
+    zone: "Playa de las Américas",
+    // Due ore, tutte: in gruppo, private e dentro i pacchetti (proprietario,
+    // 13 settembre 2026). Il sito del fornitore la dichiarava solo sul
+    // pacchetto da 3 lezioni. Le varianti dei pacchetti hanno la loro durata
+    // ("3 lezioni da 2 ore"), che dice anche quante sono.
+    duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+    priceFrom: 35,
+    priceAdult: 35,
+    // Dai 13 anni in su, e sopra i 13 si paga tutti uguale: non c'e' una
+    // tariffa bambini da mettere, e `priceChild` a 0 tiene la riga spenta.
+    // L'eta' vale per tutte le lezioni, singole o di gruppo (proprietario,
+    // 13 settembre 2026) - sul sito del fornitore era scritta solo sotto le
+    // lezioni di gruppo.
     priceChild: 0,
-    family: true,
+    ages: { adult: "13+" },
+    // Il filtro "Con bambini" non la deve pescare: sotto i 13 anni non si
+    // entra in acqua con la scuola.
+    family: false,
     desc: {
-      it: "Prima lezione di surf con istruttore, tavola e muta compresi.",
-      en: "A first surf lesson with an instructor, board and wetsuit included.",
-      es: "Primera clase de surf con instructor, tabla y neopreno incluidos."
+      it: "La Franz Surf School insegna sulla spiaggia di Playa de las Américas: lezioni da due ore in gruppi di sei persone al massimo, lezioni private con l'istruttore solo per te, lezioni riservate a una famiglia o a un gruppo di amici, e pacchetti da tre, cinque o sette lezioni per chi vuole andare avanti per tutto il soggiorno. Muta, tavola e scarpette in neoprene sono comprese.",
+      en: "Franz Surf School teaches on the beach at Playa de las Américas: two-hour lessons in groups of no more than six, private lessons with the instructor all to yourself, lessons kept for one family or group of friends, and packages of three, five or seven lessons for anyone who wants to keep going through the whole stay. Wetsuit, board and neoprene boots are included.",
+      es: "La Franz Surf School enseña en la playa de Playa de las Américas: clases de dos horas en grupos de seis personas como máximo, clases privadas con el instructor solo para ti, clases reservadas a una familia o a un grupo de amigos, y packs de tres, cinco o siete clases para quien quiere seguir durante toda la estancia. Neopreno, tabla y escarpines están incluidos."
     },
-    included: ["board", "wetsuit"],
+    // Vale per tutte e nove le varianti, quindi sta sulla scheda: muta,
+    // tavola e scarpette in neoprene sono comprese in ogni lezione e in ogni
+    // pacchetto, e l'istruttore c'e' sempre. Le scarpette non hanno una
+    // parola loro nel vocabolario: stanno nella descrizione e in nota.
+    included: ["board", "wetsuit", "guide"],
+    options: {
+      label: { it: "Cosa vuoi fare", en: "What you want to do", es: "Qué quieres hacer" },
+      // Due modi di scrivere il prezzo, come sulle immersioni.
+      // Le lezioni e i pacchetti si pagano **a testa** e hanno un numero
+      // solo: `priceAdult`, e il totale della richiesta si fa.
+      // La lezione riservata al proprio gruppo si paga **a gruppo** e cambia
+      // con quante persone siete: li' c'e' `price` (il numero sul bottone) e
+      // gli scaglioni scritti in `desc`, cosi' il totale si rifiuta di farsi
+      // invece di moltiplicare 120 € per le teste.
+      choices: [
+        {
+          label: { it: "Lezione di gruppo", en: "Group lesson", es: "Clase en grupo" },
+          priceAdult: 35,
+          desc: {
+            it: "Due ore in gruppo di massimo sei persone, con l'istruttore in acqua. Si parte da zero: come stare sulla tavola, come remare, come alzarsi in piedi.",
+            en: "Two hours in a group of no more than six, with the instructor in the water with you. It starts from scratch: how to lie on the board, how to paddle, how to stand up.",
+            es: "Dos horas en grupo de un máximo de seis personas, con el instructor en el agua. Se empieza de cero: cómo colocarse en la tabla, cómo remar, cómo ponerse de pie."
+          }
+        },
+        {
+          label: { it: "Lezione privata", en: "Private lesson", es: "Clase privada" },
+          priceAdult: 80,
+          desc: {
+            it: "Un istruttore per un allievo solo: il ritmo e gli esercizi sono decisi su di te. Il prezzo è di una lezione.",
+            en: "One instructor for one student: the pace and the exercises are set around you. The price is for one lesson.",
+            es: "Un instructor para un solo alumno: el ritmo y los ejercicios se deciden sobre ti. El precio es de una clase."
+          }
+        },
+        {
+          // A gruppo, non a testa: niente priceAdult, se no il totale
+          // moltiplicherebbe 120 € per il numero di persone.
+          label: {
+            it: "Lezione privata per famiglie o amici (da 2 a 6 persone)",
+            en: "Private lesson for family or friends (2 to 6 people)",
+            es: "Clase privada para familias o amigos (de 2 a 6 personas)"
+          },
+          price: 120,
+          desc: {
+            it: "Lezione riservata al tuo gruppo, con l'istruttore solo per voi: si può essere di livelli diversi, principianti compresi. Il prezzo è del gruppo intero e non a testa, e si parte da due persone: 120 € in due, 165 € in tre, 200 € in quattro, 225 € in cinque. In sei si può, e il prezzo del sesto posto te lo confermiamo noi.",
+            en: "A lesson kept for your own group, with the instructor only for you: you can be at different levels, complete beginners included. The price is for the whole group and not per person, and it starts at two people: €120 for two, €165 for three, €200 for four, €225 for five. Six is possible too, and we confirm the price for the sixth place.",
+            es: "Clase reservada a tu grupo, con el instructor solo para vosotros: podéis ser de niveles distintos, principiantes incluidos. El precio es del grupo entero y no por persona, y se empieza desde dos personas: 120 € en dos, 165 € en tres, 200 € en cuatro, 225 € en cinco. En seis también se puede, y el precio de la sexta plaza te lo confirmamos nosotros."
+          }
+        },
+        {
+          label: {
+            it: "Pacchetto 3 lezioni di gruppo",
+            en: "Package of 3 group lessons",
+            es: "Pack de 3 clases en grupo"
+          },
+          priceAdult: 95,
+          duration: { it: "3 lezioni da 2 ore", en: "3 lessons of 2 hours", es: "3 clases de 2 horas" },
+          desc: {
+            it: "Tre lezioni di gruppo, da usare nei giorni che vuoi durante il soggiorno. Il pacchetto è intestato a una persona e non si può passare a un'altra.",
+            en: "Three group lessons, to use on whichever days you like during your stay. The package is in one person's name and cannot be passed on to someone else.",
+            es: "Tres clases en grupo, para usar los días que quieras durante la estancia. El pack va a nombre de una persona y no se puede ceder a otra."
+          }
+        },
+        {
+          label: {
+            it: "Pacchetto 5 lezioni di gruppo",
+            en: "Package of 5 group lessons",
+            es: "Pack de 5 clases en grupo"
+          },
+          priceAdult: 140,
+          duration: { it: "5 lezioni da 2 ore", en: "5 lessons of 2 hours", es: "5 clases de 2 horas" },
+          desc: {
+            it: "Cinque lezioni di gruppo, da usare nei giorni che vuoi durante il soggiorno.",
+            en: "Five group lessons, to use on whichever days you like during your stay.",
+            es: "Cinco clases en grupo, para usar los días que quieras durante la estancia."
+          }
+        },
+        {
+          label: {
+            it: "Pacchetto 7 lezioni di gruppo",
+            en: "Package of 7 group lessons",
+            es: "Pack de 7 clases en grupo"
+          },
+          priceAdult: 175,
+          duration: { it: "7 lezioni da 2 ore", en: "7 lessons of 2 hours", es: "7 clases de 2 horas" },
+          desc: {
+            it: "Sette lezioni di gruppo: è la formula che costa meno a lezione, per i soggiorni lunghi.",
+            en: "Seven group lessons: the cheapest formula per lesson, for longer stays.",
+            es: "Siete clases en grupo: es la fórmula que menos cuesta por clase, para estancias largas."
+          }
+        },
+        {
+          label: {
+            it: "Pacchetto 3 lezioni private",
+            en: "Package of 3 private lessons",
+            es: "Pack de 3 clases privadas"
+          },
+          priceAdult: 230,
+          duration: { it: "3 lezioni da 2 ore", en: "3 lessons of 2 hours", es: "3 clases de 2 horas" },
+          desc: {
+            it: "Tre lezioni individuali con l'istruttore dedicato. Il pacchetto è intestato a una persona e non si può passare a un'altra.",
+            en: "Three one-to-one lessons with your own instructor. The package is in one person's name and cannot be passed on to someone else.",
+            es: "Tres clases individuales con el instructor dedicado. El pack va a nombre de una persona y no se puede ceder a otra."
+          }
+        },
+        {
+          label: {
+            it: "Pacchetto 5 lezioni private",
+            en: "Package of 5 private lessons",
+            es: "Pack de 5 clases privadas"
+          },
+          priceAdult: 370,
+          duration: { it: "5 lezioni da 2 ore", en: "5 lessons of 2 hours", es: "5 clases de 2 horas" },
+          desc: {
+            it: "Cinque lezioni individuali con l'istruttore dedicato.",
+            en: "Five one-to-one lessons with your own instructor.",
+            es: "Cinco clases individuales con el instructor dedicado."
+          }
+        },
+        {
+          label: {
+            it: "Pacchetto 7 lezioni private",
+            en: "Package of 7 private lessons",
+            es: "Pack de 7 clases privadas"
+          },
+          priceAdult: 490,
+          duration: { it: "7 lezioni da 2 ore", en: "7 lessons of 2 hours", es: "7 clases de 2 horas" },
+          desc: {
+            it: "Sette lezioni individuali con l'istruttore dedicato.",
+            en: "Seven one-to-one lessons with your own instructor.",
+            es: "Siete clases individuales con el instructor dedicado."
+          }
+        }
+      ]
+    },
+    notes: [
+      { it: "Si va dai 13 anni in su, ed è lo stesso per tutte le lezioni: in gruppo, private o riservate alla famiglia. Il prezzo è uguale per tutti, quindi nella richiesta conta anche i ragazzi fra gli adulti.",
+        en: "From 13 years old, and it is the same for every lesson: group, private or kept for the family. Everyone pays the same, so count teenagers among the adults when you send the request.",
+        es: "A partir de los 13 años, y es igual para todas las clases: en grupo, privadas o reservadas a la familia. El precio es igual para todos, así que en la solicitud cuenta también a los chavales entre los adultos." },
+      { it: "In acqua non si è mai più di sei per istruttore: vale per le lezioni di gruppo, per i pacchetti e per quelle riservate a una famiglia o a un gruppo di amici.",
+        en: "There are never more than six of you in the water per instructor: that goes for the group lessons, for the packages and for the ones kept for a family or a group of friends.",
+        es: "En el agua nunca se está más de seis por instructor: vale para las clases en grupo, para los packs y para las reservadas a una familia o a un grupo de amigos." },
+      { it: "Ogni lezione dura due ore, anche quelle dentro un pacchetto.",
+        en: "Every lesson lasts two hours, the ones inside a package included.",
+        es: "Cada clase dura dos horas, también las que van dentro de un pack." },
+      { it: "Gli orari delle lezioni seguono la marea e cambiano di giorno in giorno: si concordano con la scuola quando la richiesta viene confermata.",
+        en: "Lesson times follow the tide and change from day to day: they are agreed with the school when your request is confirmed.",
+        es: "Los horarios de las clases siguen la marea y cambian de un día a otro: se acuerdan con la escuela cuando se confirma la solicitud." },
+      { it: "Muta, tavola e scarpette in neoprene le dà la scuola, in tutte le lezioni e in tutti i pacchetti.",
+        en: "Wetsuit, board and neoprene boots are provided by the school, in every lesson and every package.",
+        es: "Neopreno, tabla y escarpines los pone la escuela, en todas las clases y en todos los packs." },
+      { it: "Il ritrovo è a Playa de las Américas: ci si arriva da soli, la scuola non passa a prendere in hotel. Il punto esatto te lo diciamo insieme all'ora, quando confermiamo la richiesta.",
+        en: "You meet in Playa de las Américas: you make your own way there, the school does not pick you up at your hotel. We give you the exact spot along with the time, when we confirm your request.",
+        es: "El punto de encuentro está en Playa de las Américas: se llega por cuenta propia, la escuela no recoge en el hotel. El sitio exacto te lo decimos junto con la hora, cuando confirmamos la solicitud." },
+      { it: "Porta il costume, un asciugamano, la crema solare e qualcosa da bere: il resto lo dà la scuola.",
+        en: "Bring a swimsuit, a towel, sun cream and something to drink: the school provides the rest.",
+        es: "Trae bañador, una toalla, crema solar y algo de beber: el resto lo pone la escuela." }
+    ],
     image: "surf-lesson.jpg",
     published: true
   },

@@ -10651,3 +10651,273 @@ e spagnolo, nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi
 Alzato `sw.js` a `isla-v307`.
 
 Sui gonfiabili non resta più niente in sospeso.
+
+## 13 settembre 2026 — Franz Surf School: la scheda del surf, che era vuota da sempre (v308)
+
+`surf-lesson` era un segnaposto rimasto in catalogo dal primo giorno: zona "Da definire",
+durata "Da definire", `priceFrom: null`, prezzi a zero, due righe di descrizione inventate.
+Adesso ha dentro il listino vero di una scuola, la **Franz Surf School** di Playa de las
+Américas (dati WooCommerce mandati dall'ufficio, salvati in
+`dati-fornitore/grezzo/franz-surf-school.json`).
+
+**Una scheda sola, dodici varianti.** La tentazione era di farne tre: lezioni, pacchetti,
+noleggio. È stata scartata per il motivo delle immersioni, che sono già fatte così: chi
+cerca il surf fa **una domanda sola** — "cosa voglio fare?" — e tre schede vicine con la
+stessa foto si leggono come dei doppioni (è il modo in cui è nato il caso Kalima Kat, da
+un'altra parte). Il titolo segue lo stesso schema di `immersioni`: **"Surf: lezioni e
+noleggio tavole"**, che dice subito che dentro c'è anche il noleggio. Qui il titolo è
+nostro e non di Admiral, quindi si può scrivere così.
+
+**Due modi di scrivere il prezzo, e servono tutti e due.**
+
+- Lezioni e pacchetti si pagano **a testa** e hanno un numero solo: `priceAdult` sulla
+  variante, e il totale della richiesta si fa (35, 80, 95, 140, 175, 230, 370, 490).
+- La **lezione riservata a famiglia o amici** si paga **a gruppo** e cambia con quante
+  persone siete: 120 € in due, 165 in tre, 200 in quattro, 225 in cinque. Lì c'è `price`
+  (il numero sul bottone) e **niente `priceAdult`**, così il totale si rifiuta di farsi
+  invece di moltiplicare 120 € per le teste. Gli scaglioni stanno scritti in `desc`, perché
+  `priceTiers` sta sulla scheda e non si può legare a una variante sola (stessa strada delle
+  VIP del Siam Park).
+- I **tre noleggi** sono un "a partire da": il fornitore vende a giornate e l'API espone
+  solo il prezzo del primo giorno. Un "da 15 €" non è un numero da sommare, quindi sta
+  **nell'etichetta** del bottone e non in `price` — la strada già battuta con le "3-4
+  immersioni con brevetto (40 € l'una)". In pagina la riga "Prezzo" dice "Su richiesta",
+  che è la verità.
+
+**Le sei softboard sono diventate una variante sola.** Il listino ne ha sei (6'6", 7'0",
+7'6", 8'0", in due marche) e costano **tutte 15 €**: sei bottoni identici avrebbero
+chiesto al cliente di scegliere una cosa che in negozio si decide guardandolo in faccia.
+Una variante, le misure in descrizione, e la frase che la misura la sceglie il negozio.
+
+**`included` sulla scheda tiene solo `board`.** È l'unica cosa vera per tutte e dodici le
+varianti — il noleggio *è* la tavola. Muta e istruttore stanno dentro le varianti delle
+lezioni: le icone della scheda vogliono dire "vale sempre", e sul noleggio non vale.
+
+**`family: false`, ed è un cambiamento rispetto al segnaposto.** L'unica età che il
+fornitore scrive è il **minimo di 13 anni sulle lezioni di gruppo**; sulle private e sul
+gruppo privato non c'è scritto niente. "Adatta ai bambini" con un 13+ nell'unico dato certo
+sarebbe una promessa non verificata, e il filtro "Con bambini" porterebbe lì una famiglia
+con un bambino di sei anni. Niente `ages` per lo stesso motivo: una fascia sola ("13+") in
+cima a una scheda dove quattro varianti su dodici non hanno un'età dichiarata direbbe più
+di quello che sappiamo. L'informazione sta in una nota, che può dire "questo sì, quest'altro
+chiedilo": è il posto giusto per un dato a metà.
+
+**Cosa non è entrato.** La **tariffa residenti** (25 €, "Clases Grupales para Residentes"):
+è riservata a chi risiede a Tenerife e Admiral vende a turisti — pubblicarla vuol dire far
+leggere a un cliente un prezzo che non può avere. I due **prodotti di test** del fornitore
+(0,05 € e 0 €) sono già segnati come esclusi nel file grezzo.
+
+**La muta nel noleggio: il buco lasciato aperto apposta.** La pagina del fornitore dice
+due cose diverse — il riepilogo breve dice che la muta non è inclusa, la descrizione lunga
+dice che ne è inclusa una corta. Non è stata messa fra le incluse (assente ≠ compreso) e
+non è stato scritto "non è compresa": in descrizione c'è che per più giorni e per la muta
+conferma l'ufficio, che è l'unica frase vera oggi. In `notes` la riga dice che muta, tavola
+e scarpette sono comprese **nelle lezioni e nei pacchetti**, e non nel noleggio della tavola
+da sola.
+
+**Orari e punto di ritrovo: non chiesti, come da regola sulle schede nuove.** `times` non
+c'è (restano le fasce segnaposto) tranne sui tre noleggi, dove c'è `times: []` — che per il
+catalogo vuol dire proprio "noleggio, l'ora si concorda". Gli orari delle lezioni
+**seguono la marea** e cambiano di giorno in giorno: sta in una nota, ed è un dato del
+fornitore, non una scusa. Il negozio è in Calle México 15; la nota lo dice e aggiunge che
+il **punto di ritrovo** lo conferma l'ufficio — un indirizzo di negozio non è una promessa
+di ritrovo, ed è il fornitore nuovo di cui non sappiamo dove passa a prendere il cliente.
+
+**La durata** la dichiara solo il pacchetto da 3 lezioni di gruppo (2 ore a lezione) e sta
+sulla sua variante. Sulla scheda resta "Da definire", che la pagina nasconde. Che le lezioni
+singole durino le stesse 2 ore è verosimile e **non è stato scritto**.
+
+**Provato nel browser vero** (420px): la pagina apre, i dodici bottoni cambiano prezzo,
+durata e riquadro "Cosa è incluso" uno per uno (Tavola sola sui noleggi, Tavola + Muta +
+Guida sulle lezioni), "In breve" mostra Playa de las Américas e la giornata di noleggio di
+12 ore dalle 08:30 dove serve, nessun errore in console (a parte Google Fonts, che il proxy
+di rete blocca sempre). `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js`
+a `isla-v308`.
+
+Da confermare con l'ufficio, in ordine di quanto costa sbagliarle:
+
+1. **La muta nel noleggio**: è compresa o no?
+2. **L'età minima delle lezioni private e di quella per famiglie** — se la scuola prende i
+   bambini piccoli, torna `family: true` e la nota si accorcia.
+3. **La tariffa residenti**: si vende o no? Oggi è fuori.
+4. **La durata** delle lezioni singole e dei pacchetti da 5 e 7.
+5. **Gli scaglioni del noleggio** oltre il primo giorno (il sito espone solo il minimo).
+6. Se il **numero massimo di 6 persone e il minimo di 13 anni** valgono davvero solo per le
+   lezioni di gruppo: sulla pagina del fornitore quel testo è incollato anche sotto le
+   private, e sembra un copia-incolla loro più che un dato.
+
+## 13 settembre 2026 — Le tre correzioni del proprietario sul surf (v309)
+
+Arrivate subito dopo la consegna, e tutte e tre su punti che erano stati segnalati come
+"da confermare". Come sui gonfiabili: **scriverli invece di tapparli** con un valore
+verosimile fa sì che il proprietario corregga in una riga.
+
+**Il noleggio delle tavole esce dal catalogo.** «A noi interessano solo le lezioni.» Via le
+tre varianti (softboard, fibra, longboard) e con loro il "da 15 € al giorno"
+nell'etichetta, la giornata di 12 ore dalle 08:30 e i due `times: []`. Di conseguenza **il
+titolo torna a parlare solo di lezioni** — "Lezioni di surf", non più "Surf: lezioni e
+noleggio tavole": un titolo che promette il noleggio su una scheda che non ce l'ha è una
+porta che sbatte in faccia. Restano nove varianti.
+
+Due cose che il noleggio si è portato via risolvendosi da sole:
+
+- **la muta nel noleggio non è più una domanda.** Era la prima delle cose da confermare (la
+  pagina del fornitore diceva compresa in un punto e non compresa in un altro): senza
+  noleggio non c'è più un posto dove quell'ambiguità possa far danno. Nelle lezioni la muta
+  è compresa e lo è sempre stata;
+- **`included` è salito sulla scheda.** Con le sole lezioni, `board`, `wetsuit` e `guide`
+  sono veri per tutte e nove le varianti, che è la condizione per stare in cima. Prima sulla
+  scheda c'era solo `board`, perché il noleggio è la tavola e basta.
+
+I prezzi del noleggio restano nel file grezzo e il perché della strada scelta
+(prezzo nell'etichetta, non in `price`) sta scritto in un commento nella scheda: se un
+giorno il proprietario cambia idea non si ricomincia da capo.
+
+**L'età è 13+ per tutti, non solo per il gruppo.** Il sito del fornitore scriveva "max 6
+persone, dai 13 anni" solo sotto le lezioni di gruppo, e quel testo sembrava un
+copia-incolla finito anche sotto le private — era la sesta domanda della lista. Il
+proprietario dice che **vale per tutte**: singole, di gruppo e per famiglie. Quindi
+`ages: { adult: "13+" }` sulla scheda, e in pagina si legge "Adulti (13+) €35".
+
+`family` **resta `false`**, e adesso per un motivo pieno invece che per prudenza: sotto i 13
+anni non si entra in acqua con la scuola, quindi il filtro "Con bambini" non la deve
+pescare. Niente fascia `child` e niente `priceChild`: sopra i 13 anni si paga tutti uguale,
+non esistono due tariffe da distinguere.
+
+Una conseguenza che si vede solo aprendo la finestra della richiesta: il contatore
+"Bambini" c'è lo stesso, perché è di tutte le schede. Un genitore che scrive il figlio di
+14 anni lì dentro farebbe un totale più basso del vero (i bambini senza `priceChild` non
+sommano niente). Per questo la nota sull'età finisce con **"nella richiesta conta anche i
+ragazzi fra gli adulti"**: una riga di testo al posto di un campo nuovo. Su Utopia (18+) il
+problema non si pone — nessuno chiama "bambino" un diciassettenne per sbaglio, e comunque
+non sale.
+
+**Tutte le lezioni durano 2 ore.** Il fornitore la dichiarava solo sul pacchetto da 3. Ora
+`duration: "2 ore"` sta sulla scheda, e ogni pacchetto porta la sua ("3 lezioni da 2 ore",
+"5 lezioni da 2 ore", "7 lezioni da 2 ore"): la variante vince sulla scheda, e detta così
+dice **due cose in una riga** — quante sono e quanto durano. Sulle tre lezioni singole la
+riga della scheda basta.
+
+**Provato nel browser vero** (420px, italiano): nove bottoni, la durata segue la variante,
+"Adulti (13+) €35", "Cosa è incluso" mostra Tavola + Muta + Guida su tutte, le sei note
+escono. Nella finestra della richiesta **2 adulti sulla lezione di gruppo fanno €70**
+("2 adulti × €35") e la variante per famiglie **non mostra nessun totale**, che è quello
+che deve fare: 120 € sono del gruppo intero. Nessun errore in console. `node controlla.js`
+→ 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v309`.
+
+Resta da confermare, molto meno di prima:
+
+1. **La durata delle lezioni private** — il proprietario ha detto "durano tutte 2 ore" e
+   così è scritto; se le private fossero più corte, è una riga.
+2. **Il massimo di 6 persone**: è scritto solo nella descrizione della lezione di gruppo, e
+   non è sicuro che valga anche per la lezione riservata a famiglie e amici (che arriva a
+   cinque nel listino, quindi il dubbio è piccolo).
+3. **Il punto di ritrovo**: oggi la nota dice l'indirizzo del negozio e rimanda all'ufficio.
+
+## 13 settembre 2026 — Il tetto di sei vale per tutte le lezioni (v310)
+
+Era la penultima domanda rimasta: il "max 6 persone" stava scritto solo nella descrizione
+della lezione di gruppo, e non si sapeva se valesse anche per quella riservata a famiglie e
+amici. Il proprietario: **sì, per tutte massimo 6 persone**.
+
+Scritto in tre posti, ognuno per un motivo diverso:
+
+- **una nota**, che è il posto dove una regola vale per tutta la scheda: "in acqua non si è
+  mai più di sei per istruttore";
+- **nell'etichetta della variante a gruppo**, che da "(da 2 persone)" diventa **"(da 2 a 6
+  persone)"**: lì il numero è parte della scelta, e chi è in sette deve saperlo prima di
+  premere il bottone, non dopo;
+- **nella descrizione di quella variante**, per la crepa che il tetto apre.
+
+**La crepa: il listino arriva a cinque, il tetto a sei.** Gli scaglioni del fornitore sono
+120 € in due, 165 in tre, 200 in quattro, 225 in cinque — e si fermano lì. Gli scarti (45,
+35, 25) non sono una progressione da cui indovinare il sesto: 245? 240? Sarebbe un numero
+verosimile e inventato, cioè il modo preciso in cui si finisce per alzare un prezzo già
+letto. La descrizione dice **"in sei si può, e il prezzo del sesto posto te lo confermiamo
+noi"**: è vero oggi, non promette una cifra, e non fa tornare indietro chi è in sei.
+
+Vale la pena notare che **una risposta ha aperto una domanda nuova**: prima il gruppo
+arrivava a cinque e i prezzi c'erano tutti. È il caso in cui confermare un limite più largo
+del listino scopre un buco che prima non c'era — da tenere a mente quando una conferma
+sembra chiudere e basta.
+
+Il **massimo non tocca la lezione privata** (un istruttore per un allievo) né i prezzi a
+testa: sei è un tetto, non una tariffa.
+
+**Provato nel browser vero** (420px, italiano): il bottone dice "(da 2 a 6 persone) €120",
+la descrizione esce per esteso sotto, le sette note al loro posto, nessun errore in console.
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v310`.
+
+Sul surf resta una cosa sola: **il prezzo del sesto posto** nella lezione per famiglie e
+amici. E, quando ci sarà, il punto di ritrovo.
+
+## 13 settembre 2026 — Il punto di ritrovo del surf: al negozio, e ci si va da soli (v311)
+
+Il proprietario ha incollato la pagina **"Come arrivare"** del sito della scuola (salvata
+in `dati-fornitore/grezzo/franz-surf-school-come-arrivare.txt`, com'è arrivata) dicendo
+solo: «per il punto di ritrovo». La pagina dà l'indirizzo — **Calle México 15, Playa de las
+Américas** — e due numeri di telefono.
+
+La nota passa da *"il punto di ritrovo lo conferma l'ufficio"* a **"il ritrovo è al negozio
+della scuola, in Calle México 15: ci si arriva da soli, la scuola non passa a prendere in
+hotel"**.
+
+**Perché è stata scritta anche la seconda metà.** Il dato incollato dice dov'è la scuola,
+non che il cliente ci vada da solo — quella frase è una deduzione, e va detto. Ma è la
+deduzione **giusta da sbagliare**, se proprio si deve: una scuola che passa a prenderti non
+pubblica una pagina intitolata "come arrivare da noi", e in tutto il listino non c'è
+nessuna riga di transfer. Soprattutto, i due errori non costano uguale — è la regola del
+pick-up di `CLAUDE.md`, vista dal lato del danno:
+
+- se scrivo "ci si arriva da soli" e invece passassero a prendere, il cliente va al negozio
+  e fa due passi in più;
+- se lascio la frase in sospeso, quel campo della finestra della richiesta si chiama **"Dove
+  alloggi (utile per il pick-up)"**: chi lo compila capisce che qualcuno passa, e alle nove
+  è davanti alla reception mentre la lezione comincia in spiaggia.
+
+Nel dubbio si scrive la frase che, se è sbagliata, fa perdere due minuti invece di una
+lezione. Resta segnalata al proprietario come deduzione, che è il posto dove va segnalata.
+
+**I due numeri di telefono della scuola non vanno sul sito.** Sono nel file grezzo e lì
+restano: Admiral è un rivenditore, e un cliente che chiama direttamente la scuola esce dal
+giro della richiesta su WhatsApp — che è il modo in cui l'ufficio sa cosa è stato venduto.
+Non è una questione di dati sensibili ma di chi risponde al cliente.
+
+**L'ora resta dov'era**, nella nota della marea: una nota dice una cosa sola, e il posto e
+l'ora sono due domande diverse.
+
+**Provato nel browser vero** nelle tre lingue: la nota esce giusta in italiano, inglese e
+spagnolo, sette note in tutto, nessun errore in console. `node controlla.js` → 0 errori,
+3 avvisi invariati. Alzato `sw.js` a `isla-v311`.
+
+Sul surf resta aperto solo **il prezzo del sesto posto** nella lezione per famiglie e amici.
+
+## 13 settembre 2026 — "Scrivi pure las Américas": il ritrovo torna a essere la zona (v312)
+
+Un'ora dopo aver mandato la pagina "Come arrivare", il proprietario: «o più in generale las
+Américas, scrivi pure las Américas». La nota perde l'indirizzo:
+
+> Il ritrovo è a **Playa de las Américas**: ci si arriva da soli, la scuola non passa a
+> prendere in hotel. Il punto esatto te lo diciamo insieme all'ora, quando confermiamo la
+> richiesta.
+
+**È un passo indietro sulla precisione, ed è giusto così.** "Calle México 15" veniva dalla
+pagina del fornitore ed era vero — è il loro negozio — ma da un indirizzo scritto sul sito
+il cliente capisce *"il ritrovo è la porta del negozio"*, e questo il fornitore non l'ha mai
+detto: una lezione di surf comincia in spiaggia, e dove si trovi il gruppo lo sa chi vende.
+È lo stesso caso del **Pantalán 4** sui gonfiabili (v306), dove la fonte del rivenditore
+sembrava più precisa di quanto fosse e il proprietario ha corretto: **la precisione di una
+fonte non verificata non è un dato**. La differenza è che qui non è stato neanche sbagliato
+a lungo.
+
+Quello che **resta** è la parte che conta davvero, cioè le due frasi che evitano un danno:
+"ci si arriva da soli" (se no si aspetta in reception) e "il punto esatto te lo diciamo con
+l'ora" (che dice al cliente *quando* saprà il resto, invece di lasciarlo con una domanda).
+Detto così, l'indirizzo non serve: chi prenota lo riceve da chi conferma.
+
+L'indirizzo resta in `dati-fornitore/grezzo/franz-surf-school-come-arrivare.txt`, che è il
+posto dei dati del fornitore, e `zone` della scheda era già "Playa de las Américas" dal
+primo giorno.
+
+**Provato nelle tre lingue**, sette note, nessun errore in console. `node controlla.js` →
+0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v312`.

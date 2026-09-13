@@ -174,10 +174,16 @@ Le **foto** non servono: la scheda usa `surf-lesson.jpg`, che era già in `asset
 
 La pagina "Come arrivare" del loro sito, incollata dal proprietario lo stesso giorno come
 risposta alla domanda sul punto di ritrovo: **Calle México 15, Playa de las Américas**, cioè
-il negozio. In scheda la nota dice che il ritrovo è lì e che **ci si arriva da soli** — la
-seconda metà è una deduzione (una scuola che passa a prenderti non pubblica una pagina
-"come arrivare"), scritta così perché fra i due errori possibili è quello che costa due
-passi invece di una lezione persa.
+il negozio.
+
+**L'indirizzo si ferma qui e non va in scheda.** Poche ore dopo il proprietario ha precisato
+«o più in generale las Américas», e la nota dice appunto che il ritrovo è a **Playa de las
+Américas** e che il punto esatto lo conferma l'ufficio insieme all'ora: da un indirizzo
+scritto sul sito il cliente capirebbe "ci vediamo alla porta del negozio", e una lezione di
+surf comincia in spiaggia. Quello che resta in scheda è che **ci si arriva da soli** — una
+deduzione (una scuola che passa a prenderti non pubblica una pagina "come arrivare"),
+scritta così perché fra i due errori possibili è quello che costa due passi invece di una
+lezione persa.
 
 I **due numeri di telefono** della scuola stanno in questo file e non sul sito: Admiral è un
 rivenditore, e un cliente che chiama la scuola esce dal giro della richiesta su WhatsApp.

@@ -3756,9 +3756,9 @@ const ESPLORA_CATALOG = [
       { it: "Muta, tavola e scarpette in neoprene le dà la scuola, in tutte le lezioni e in tutti i pacchetti.",
         en: "Wetsuit, board and neoprene boots are provided by the school, in every lesson and every package.",
         es: "Neopreno, tabla y escarpines los pone la escuela, en todas las clases y en todos los packs." },
-      { it: "Il ritrovo è al negozio della scuola, in Calle México 15, a Playa de las Américas: ci si arriva da soli, la scuola non passa a prendere in hotel.",
-        en: "You meet at the school's shop, at Calle México 15 in Playa de las Américas: you make your own way there, the school does not pick you up at your hotel.",
-        es: "El punto de encuentro es la tienda de la escuela, en la Calle México 15, en Playa de las Américas: se llega por cuenta propia, la escuela no recoge en el hotel." },
+      { it: "Il ritrovo è a Playa de las Américas: ci si arriva da soli, la scuola non passa a prendere in hotel. Il punto esatto te lo diciamo insieme all'ora, quando confermiamo la richiesta.",
+        en: "You meet in Playa de las Américas: you make your own way there, the school does not pick you up at your hotel. We give you the exact spot along with the time, when we confirm your request.",
+        es: "El punto de encuentro está en Playa de las Américas: se llega por cuenta propia, la escuela no recoge en el hotel. El sitio exacto te lo decimos junto con la hora, cuando confirmamos la solicitud." },
       { it: "Porta il costume, un asciugamano, la crema solare e qualcosa da bere: il resto lo dà la scuola.",
         en: "Bring a swimsuit, a towel, sun cream and something to drink: the school provides the rest.",
         es: "Trae bañador, una toalla, crema solar y algo de beber: el resto lo pone la escuela." }

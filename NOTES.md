@@ -10891,3 +10891,33 @@ spagnolo, sette note in tutto, nessun errore in console. `node controlla.js` →
 3 avvisi invariati. Alzato `sw.js` a `isla-v311`.
 
 Sul surf resta aperto solo **il prezzo del sesto posto** nella lezione per famiglie e amici.
+
+## 13 settembre 2026 — "Scrivi pure las Américas": il ritrovo torna a essere la zona (v312)
+
+Un'ora dopo aver mandato la pagina "Come arrivare", il proprietario: «o più in generale las
+Américas, scrivi pure las Américas». La nota perde l'indirizzo:
+
+> Il ritrovo è a **Playa de las Américas**: ci si arriva da soli, la scuola non passa a
+> prendere in hotel. Il punto esatto te lo diciamo insieme all'ora, quando confermiamo la
+> richiesta.
+
+**È un passo indietro sulla precisione, ed è giusto così.** "Calle México 15" veniva dalla
+pagina del fornitore ed era vero — è il loro negozio — ma da un indirizzo scritto sul sito
+il cliente capisce *"il ritrovo è la porta del negozio"*, e questo il fornitore non l'ha mai
+detto: una lezione di surf comincia in spiaggia, e dove si trovi il gruppo lo sa chi vende.
+È lo stesso caso del **Pantalán 4** sui gonfiabili (v306), dove la fonte del rivenditore
+sembrava più precisa di quanto fosse e il proprietario ha corretto: **la precisione di una
+fonte non verificata non è un dato**. La differenza è che qui non è stato neanche sbagliato
+a lungo.
+
+Quello che **resta** è la parte che conta davvero, cioè le due frasi che evitano un danno:
+"ci si arriva da soli" (se no si aspetta in reception) e "il punto esatto te lo diciamo con
+l'ora" (che dice al cliente *quando* saprà il resto, invece di lasciarlo con una domanda).
+Detto così, l'indirizzo non serve: chi prenota lo riceve da chi conferma.
+
+L'indirizzo resta in `dati-fornitore/grezzo/franz-surf-school-come-arrivare.txt`, che è il
+posto dei dati del fornitore, e `zone` della scheda era già "Playa de las Américas" dal
+primo giorno.
+
+**Provato nelle tre lingue**, sette note, nessun errore in console. `node controlla.js` →
+0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v312`.

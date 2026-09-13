@@ -10563,3 +10563,59 @@ nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi invariati. 
 Da confermare con l'ufficio, in una parola ciascuno: se i 18 € sono a persona; se i
 ragazzi 10-15 pagano come gli adulti; se il titolo deve nominare anche il Crazy UFO; gli
 orari di apertura veri del porto, che farebbero sparire le fasce segnaposto.
+
+## 13 settembre 2026 — Le tre correzioni del proprietario sui gonfiabili (v306)
+
+Tutte e tre arrivate insieme, subito dopo la consegna, e tutte e tre su punti che erano
+stati segnalati come "da confermare". È il motivo per cui vale la pena scriverli invece di
+tapparli con un numero inventato: il proprietario corregge in una riga.
+
+**Il prezzo è 15 €, non 18, e vale per tutti.** I 18 € venivano dal "da €18,00" delle tre
+pagine di canaryvip.com; il prezzo vero di Admiral è 15 € a persona per una corsa, ragazzi
+compresi. `priceFrom`, `priceAdult` e `priceChild` a 15 sulla scheda e dentro tutte e tre
+le varianti. Di nuovo la strada giusta, la stessa del kayak (45 → 35) e del parascending
+(60 → 55): **si parte dal numero alto della fonte e si aspetta la conferma**. Scendere non
+fa danni a nessuno, salire dopo che il cliente ha letto sì. Le fasce `16+` e `10-15`
+restano, anche se ora i due prezzi coincidono: qui non servono a distinguere due tariffe
+ma a dire **da che età si sale**, ed è accanto al prezzo che il cliente le legge.
+
+**Il Crazy UFO entra nel titolo**: "Banana Boat or Fly Fish Ride" diventa **"Banana Boat,
+Fly Fish or Crazy UFO Ride"**. Era la domanda lasciata aperta — la scheda conteneva un
+gonfiabile che nel titolo non c'era, e chi scorreva l'elenco cercando quello non lo
+trovava. Non era un dato mancante ma una scelta commerciale, per questo non era stata
+fatta da soli: i titoli sono di Admiral e li cambia Admiral.
+
+**Partono tutti e tre da Puerto Colón.** La fonte dava il Pantalán 4 solo per il Crazy UFO
+(operatore RADIKAL) e quella distinzione era finita nella descrizione della variante e in
+nota. Il proprietario dice che il molo è lo stesso per tutti e tre, e la distinzione è
+stata tolta da tutte e due. Vale la pena notarlo: era **esattamente** il caso in cui una
+fonte di rivenditore sembra più precisa di quanto sia, e un molo sbagliato dentro un porto
+grande manda il cliente dalla parte opposta della darsena. La precisione di una fonte non
+verificata non è un dato: chi vende la corsa sa dove parte.
+
+**Gli orari: `times: ["10:00 - 18:00"]`, una voce sola.** Il proprietario ha detto "dalle
+10 alle 18", ed è stato scritto **come intervallo e non come otto partenze**. È la lezione
+del parascending, presa in tempo stavolta: là "dalle 10 alle 18" era diventato nove
+partenze con l'ultima alle 18:00, e il proprietario aveva dovuto correggere che l'ultimo
+volo era alle 17:00. Qui l'ambiguità non si pone proprio, perché le corse **sono
+continue**: non ci sono turni fra cui scegliere, si va al molo e si sale. È lo stesso caso
+del karting (`"10:00 - 20:30"`), e la soluzione è la stessa. In una nota c'è scritto per
+esteso che le corse sono continue.
+
+Una conseguenza da tenere d'occhio: con `times` pieno, "Da concordare" e le sette fasce
+segnaposto spariscono, e nella finestra della richiesta il menu "A che ora" ha adesso una
+voce sola. Chi ha una preferenza sull'ora la scrive nelle note, come sul karting. Se un
+giorno il proprietario vuole che il cliente indichi un'ora, la strada è dare le fasce vere
+del molo, non rimettere quelle segnaposto.
+
+**Provato nel browser vero** (390px, italiano): titolo nuovo in testa e dentro la finestra
+della richiesta; "In breve" mostra Orari 10:00 - 18:00 su tutte e tre le varianti e la
+Durata che continua a seguire la variante (10 minuti / Circa 10 minuti / 15 minuti);
+Adulti (16+) €15 e Bambini (10-15) €15; le otto note escono tutte; nella finestra il menu
+"A che ora" ha solo "10:00 - 18:00" e **2 adulti + 1 bambino fanno €45** ("2 adulti × €15
++ 1 bambino × €15"); nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi
+invariati. Alzato `sw.js` a `isla-v306`.
+
+Resta da chiedere una cosa sola: se i 15 € valgono anche per i gruppi o se lì c'è una
+tariffa diversa (la nota dice di scriverlo nella richiesta, che per ora è la risposta
+onesta).

@@ -2944,28 +2944,35 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "banana-boat",
-    title: "Banana Boat or Fly Fish Ride",
+    title: "Banana Boat, Fly Fish or Crazy UFO Ride",
     category: "sport-acquatici",
     zone: "Puerto Colón, Costa Adeje",
     duration: { it: "10 o 15 minuti", en: "10 or 15 minutes", es: "10 o 15 minutos" },
-    priceFrom: 18,
-    priceAdult: 18,
-    priceChild: 18,
+    priceFrom: 15,
+    priceAdult: 15,
+    priceChild: 15,
     ages: { adult: "16+", child: "10-15" },
     family: true,
     included: ["lifejacket", "equipment", "guide"],
-    // Tre gonfiabili diversi dello stesso porto, tenuti in una scheda sola per
-    // scelta del proprietario (13 settembre 2026): la corsa è la stessa cosa,
-    // cambia solo l'attrezzo. Il Crazy UFO parte dal Pantalán 4 e non dal molo
-    // degli altri due, ed è scritto nella sua variante.
+    // Una voce sola, come sul karting: le corse sono continue, non ci sono
+    // partenze fra cui scegliere e l'unico orario vero e' quando il molo e'
+    // aperto (10:00-18:00, proprietario 13 settembre 2026). Scritto come
+    // intervallo non c'e' l'ambiguita' che sul parascending era costata una
+    // correzione: qui le 18:00 sono la chiusura, non l'ultima partenza.
+    times: ["10:00 - 18:00"],
+    // Tre gonfiabili diversi tenuti in una scheda sola per scelta del
+    // proprietario (13 settembre 2026): la corsa è la stessa cosa, cambia solo
+    // l'attrezzo. Partono tutti e tre dallo stesso molo di Puerto Colón, sempre
+    // dal proprietario: la fonte dava il Pantalán 4 solo per il Crazy UFO, e
+    // quella distinzione è stata tolta.
     options: {
       label: { it: "Quale gonfiabile", en: "Which inflatable", es: "Qué hinchable" },
       choices: [
         {
           label: "Banana Boat",
           duration: { it: "10 minuti", en: "10 minutes", es: "10 minutos" },
-          priceAdult: 18,
-          priceChild: 18,
+          priceAdult: 15,
+          priceChild: 15,
           desc: {
             it: "La banana classica trainata dal motoscafo, fino a dodici persone per corsa: ci si tiene forte e si finisce quasi sempre in acqua. Non serve saper nuotare.",
             en: "The classic banana towed by the speedboat, up to twelve people per ride: you hold on tight and almost always end up in the water. You do not need to know how to swim.",
@@ -2975,8 +2982,8 @@ const ESPLORA_CATALOG = [
         {
           label: "Fly Fish",
           duration: { it: "Circa 10 minuti", en: "About 10 minutes", es: "Unos 10 minutos" },
-          priceAdult: 18,
-          priceChild: 18,
+          priceAdult: 15,
+          priceChild: 15,
           desc: {
             it: "La zattera che con la velocità si stacca dall'acqua e si alza come un'ala, fino a sei persone per corsa. Su questa bisogna saper nuotare.",
             en: "The raft that lifts off the water like a wing as the boat picks up speed, up to six people per ride. For this one you need to be able to swim.",
@@ -2986,12 +2993,12 @@ const ESPLORA_CATALOG = [
         {
           label: "Crazy UFO & Twister",
           duration: { it: "15 minuti", en: "15 minutes", es: "15 minutos" },
-          priceAdult: 18,
-          priceChild: 18,
+          priceAdult: 15,
+          priceChild: 15,
           desc: {
-            it: "Il gonfiabile rotondo che gira e sbanda dietro al motoscafo, fino a otto persone per corsa. È la corsa più lunga delle tre e parte dal Pantalán 4.",
-            en: "The round inflatable that spins and slides behind the speedboat, up to eight people per ride. It is the longest of the three and leaves from Pantalán 4.",
-            es: "El hinchable redondo que gira y derrapa detrás de la lancha, hasta ocho personas por salida. Es la salida más larga de las tres y sale del Pantalán 4."
+            it: "Il gonfiabile rotondo che gira e sbanda dietro al motoscafo, fino a otto persone per corsa: è la più lunga delle tre.",
+            en: "The round inflatable that spins and slides behind the speedboat, up to eight people per ride: it is the longest of the three.",
+            es: "El hinchable redondo que gira y derrapa detrás de la lancha, hasta ocho personas por salida: es la más larga de las tres."
           }
         }
       ]
@@ -3018,9 +3025,9 @@ const ESPLORA_CATALOG = [
         es: "No se recomienda a quien tiene problemas de espalda o de corazón, durante el embarazo, ni a quien no se siente cómodo en el agua: es una salida física y se acaba en el mar."
       },
       {
-        it: "Non c'è il ritiro in hotel: al Puerto Colón ci si arriva da soli. Il Crazy UFO parte dal Pantalán 4, gli altri due dal molo dei gonfiabili.",
-        en: "There is no hotel pick-up: you make your own way to Puerto Colón. The Crazy UFO leaves from Pantalán 4, the other two from the inflatables' jetty.",
-        es: "No hay recogida en el hotel: se llega por cuenta propia a Puerto Colón. El Crazy UFO sale del Pantalán 4, los otros dos del pantalán de los hinchables."
+        it: "Non c'è il ritiro in hotel: al Puerto Colón ci si arriva da soli. Tutti e tre i gonfiabili partono da lì.",
+        en: "There is no hotel pick-up: you make your own way to Puerto Colón. All three inflatables leave from there.",
+        es: "No hay recogida en el hotel: se llega por cuenta propia a Puerto Colón. Los tres hinchables salen de allí."
       },
       {
         it: "Porta il costume da bagno, un asciugamano e la crema solare. Al porto ci sono le cassette dove lasciare scarpe, telefono e chiavi.",
@@ -3031,6 +3038,11 @@ const ESPLORA_CATALOG = [
         it: "Le foto e i video della corsa non sono compresi: si comprano sul posto, lo stesso giorno.",
         en: "Photos and videos of the ride are not included: you can buy them on the spot, on the day.",
         es: "Las fotos y los vídeos de la salida no están incluidos: se compran allí mismo, el mismo día."
+      },
+      {
+        it: "Si va dalle 10:00 alle 18:00, tutti i giorni: le corse sono continue, non ci sono partenze fisse.",
+        en: "It runs from 10:00 to 18:00, every day: the rides are continuous, there are no set departure times.",
+        es: "Se sale de 10:00 a 18:00, todos los días: las salidas son continuas, no hay horarios fijos."
       },
       {
         it: "Il prezzo è a persona, per una corsa. Per i gruppi ci sono tariffe dedicate: scrivicelo nella richiesta.",

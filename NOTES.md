@@ -10080,3 +10080,85 @@ strada piu' corta sarebbe una terza lista in `hotel.js` — le schede col ritrov
 e in inglese: la nota del ritrovo esce sotto "Consigli", "Lingue" compare in "In breve",
 "Guida" in "Cosa e' incluso" e la domanda "In che lingua" nella finestra della richiesta,
 con le quattro lingue e senza il tedesco. Alzato `sw.js` a `isla-v297`.
+
+## 13 settembre 2026 — Secret Volcano Tour: il primo percorso del tuk tuk con un listino vero (v298)
+
+Arrivata la pagina di prenotazione di **un** percorso dei tre, il **Secret Volcano Tour**.
+Adesso quella variante ha prezzo, durata, fasce d'eta' e una descrizione sua; le altre due
+restano come prima, senza prezzo.
+
+### Il percorso che ha un nome
+
+`label: "Secret Volcano Tour"`, stringa sola: e' un nome proprio del fornitore e resta
+uguale nelle tre lingue, come "Freebird" o "Royal Delfin". **Ho unito questo tour alla
+variante che prima si chiamava "Completo, fino ai vulcani"**, perche' e' l'unico percorso
+che va a un vulcano (la Caldera del Rey). Se invece sono due prodotti diversi vanno
+separati: e' la prima cosa da far confermare.
+
+Il vantaggio pratico del nome vero: finisce nel messaggio WhatsApp, e l'ufficio cerca
+quello nel sistema del fornitore.
+
+| dato | valore | da dove |
+|---|---|---|
+| `priceAdult` | 24 | pagina di prenotazione, 11+ anni |
+| `priceChild` | 12 | 3-10 anni |
+| `priceInfant` | 0 | "Gratis", scritto dal fornitore |
+| `ages` | `11+` / `3-10` / `0-2` | combaciano senza buchi ne' sovrapposizioni |
+| `duration` (variante) | 1 ora | "Duración: 1 hour" |
+
+I 24 euro **confermano** il `priceFrom: 24` trovato in rete il 24 agosto: era il prezzo
+adulto di questo tour. Un dato cercato allora e verificato oggi.
+
+### Le lingue sono scese da quattro a due
+
+Il sito del fornitore dice quattro lingue, la pagina del singolo tour ne dice due:
+«Disponible en: español, inglés», e fra le cose incluse «Spanish and English guide».
+**Ho pubblicato le due**, non le quattro. Promettere una guida italiana che quel giorno non
+c'e' e' il tipo di errore che si scopre alla partenza, quando non si puo' piu' rimediare;
+offrirne meno di quelle che ci sono costa al massimo una domanda su WhatsApp. Da
+confermare con l'ufficio: forse italiano e francese sono di altri tour, o solo su richiesta.
+
+### Il ritrovo, confermato due volte
+
+`Punto de encuentro: 10 Avenida de España, Costa Adeje 38660` — lo stesso indirizzo del
+Wakanda Origen gia' scritto nella nota. E fra le cose **non** incluse c'e' `Hotel pick up`:
+la nota adesso dice "il ritiro in hotel non e' compreso", che e' la stessa cosa detta con
+le parole del fornitore.
+
+### Il calendario non dice i giorni, dice il passato
+
+Nel calendario di settembre i giorni **1-12 risultano non disponibili e dal 13 in poi
+tutti liberi**. Il 13 e' oggi: quelli chiusi sono i giorni gia' passati, non un giorno di
+chiusura settimanale. Quindi **`days` resta assente** — sette giorni su sette non sono una
+limitazione da mostrare. Se ci avessi letto una regola («non si fa il lunedi'») avrei
+pubblicato una chiusura inventata.
+
+`times` resta assente allo stesso modo: dalla pagina si vede una sola partenza (le 13:00
+del giorno scelto) e sotto un elenco di fasce di cui non si leggono gli orari. Restano le
+fasce segnaposto.
+
+### Cosa non e' entrato
+
+Il testo di "Detalles" e "Lo mas destacado" **non e' stato tradotto ma riscritto**: la
+descrizione della variante e' nostra, in tre lingue. Fuori anche la politica di
+cancellazione del fornitore (le nostre sono 24 ore) e il conteggio dei posti come dato
+commerciale — il «6 people per vehicle» e' invece entrato come **nota**, perche' a un
+gruppo di sette serve saperlo prima.
+
+Aggiunta anche la nota sui neonati in braccio con la cintura: e' la ragione per cui non
+pagano, e un genitore che porta il passeggino la deve leggere prima di uscire di casa.
+
+### Resta aperto, e adesso costa di piu'
+
+La casella "Dove alloggi" nella finestra della richiesta continua a scrivere «Serve a dirti
+dove passiamo a prenderti» e a mostrare un punto di raccolta preso dalle tabelle di Island
+Excursions. Su questa scheda il fornitore scrive nero su bianco che **il ritiro in hotel
+non c'e'**: adesso non e' piu' un sospetto mio, e' una contraddizione dentro la stessa
+pagina. La proposta resta quella: una terza lista in `hotel.js` con le schede dal ritrovo
+fisso, guardata per prima da `hotelPunto()`.
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. Provato in browser a 390px nelle tre
+lingue: scegliendo il Secret Volcano Tour la durata passa a "1 ora", compaiono Adulti
+(11+) €24, Bambini (3-10) €12 e Neonati (0-2) Gratis, e sulle altre due varianti quelle
+righe spariscono. Totale controllato a mano: 2 adulti + 1 bambino + 1 neonato = **€60**.
+Alzato `sw.js` a `isla-v298`.

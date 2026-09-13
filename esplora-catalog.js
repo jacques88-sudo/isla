@@ -4807,18 +4807,32 @@ const ESPLORA_CATALOG = [
     category: "tour-isola",
     zone: "Costa Adeje",
     duration: { it: "Da 1 ora", en: "From 1 hour", es: "Desde 1 hora" },
-    // Le quattro lingue le segnala il fornitore: niente tedesco, quindi non e'
-    // LINGUE_TOUR ma la sua lista.
-    languages: ["Español", "English", "Italiano", "Français"],
+    // Il sito del fornitore dice quattro lingue (anche italiano e francese), ma
+    // la pagina di prenotazione del singolo tour ne scrive due: "Disponible en
+    // español, inglés", e fra le cose incluse "Spanish and English guide". Qui
+    // si scrive la meno generosa: promettere una guida italiana che quel giorno
+    // non c'e' e' peggio che non offrirla. Da confermare con l'ufficio.
+    languages: ["Español", "English"],
     priceFrom: 24,
     priceAdult: 0,
     priceChild: 0,
+    // Fasce e neonati vengono dalla pagina di prenotazione del Secret Volcano
+    // Tour, l'unico percorso di cui abbiamo il listino. Combaciano senza buchi
+    // (0-2, 3-10, 11+). Lo zero dei neonati e' scritto dal fornitore
+    // ("Gratis"), non dedotto.
+    ages: { adult: "11+", child: "3-10", infant: "0-2" },
+    priceInfant: 0,
     included: ["guide"],
     notes: [
       {
-        it: "Il ritrovo è davanti al ristorante Wakanda Origen, in Avenida de España 10, a Costa Adeje. Non c'è il ritiro in hotel: al punto di partenza ci si arriva per conto proprio, qualche minuto prima dell'ora concordata.",
-        en: "The meeting point is in front of the Wakanda Origen restaurant, Avenida de España 10, Costa Adeje. There is no hotel pickup: you reach the departure point on your own, a few minutes before the agreed time.",
-        es: "El punto de encuentro es frente al restaurante Wakanda Origen, en Avenida de España 10, Costa Adeje. No hay recogida en el hotel: al punto de salida se llega por cuenta propia, unos minutos antes de la hora acordada."
+        it: "Il ritrovo è davanti al ristorante Wakanda Origen, in Avenida de España 10, a Costa Adeje. Il ritiro in hotel non è compreso: al punto di partenza ci si arriva per conto proprio, qualche minuto prima dell'ora concordata.",
+        en: "The meeting point is in front of the Wakanda Origen restaurant, Avenida de España 10, Costa Adeje. Hotel pickup is not included: you reach the departure point on your own, a few minutes before the agreed time.",
+        es: "El punto de encuentro es frente al restaurante Wakanda Origen, en Avenida de España 10, Costa Adeje. La recogida en el hotel no está incluida: al punto de salida se llega por cuenta propia, unos minutos antes de la hora acordada."
+      },
+      {
+        it: "Su ogni tuk tuk salgono al massimo 6 persone. I bambini fino a 2 anni non pagano, ma viaggiano in braccio a un adulto con la cintura allacciata: è la regola del fornitore.",
+        en: "Each tuk tuk takes up to 6 people. Children up to 2 years old travel free, but on an adult's lap with the seatbelt fastened: that is the supplier's rule.",
+        es: "En cada tuk tuk suben como máximo 6 personas. Los niños de hasta 2 años no pagan, pero viajan en el regazo de un adulto con el cinturón abrochado: es la norma del proveedor."
       }
     ],
     options: {
@@ -4832,10 +4846,20 @@ const ESPLORA_CATALOG = [
             it: "I punti principali di Costa Adeje",
             en: "The main sights of Costa Adeje",
             es: "Los puntos principales de Costa Adeje" } },
-        { label: {
-            it: "Completo, fino ai vulcani",
-            en: "The complete one, out to the volcanoes",
-            es: "La completa, hasta los volcanes" } }
+        // Il percorso dei vulcani ha un nome suo dal fornitore, "Secret Volcano
+        // Tour", e resta uguale nelle tre lingue come i nomi delle barche: e' il
+        // nome con cui l'ufficio lo cerca quando conferma.
+        {
+          label: "Secret Volcano Tour",
+          priceAdult: 24,
+          priceChild: 12,
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+          desc: {
+            it: "Da Puerto Colón si sale alla Caldera del Rey, il monumento naturale sopra Costa Adeje: un vulcano spento, oggi coperto di piantagioni di banane, con La Gomera all'orizzonte. Per strada Torviscas, la marina e Las Américas, e la guida racconta com'è nata l'isola.",
+            en: "From Puerto Colón you climb to the Caldera del Rey, the natural monument above Costa Adeje: an extinct volcano, now covered in banana plantations, with La Gomera on the horizon. On the way, Torviscas, the marina and Las Américas, while the guide tells you how the island was born.",
+            es: "Desde Puerto Colón se sube a la Caldera del Rey, el monumento natural sobre Costa Adeje: un volcán apagado, hoy cubierto de plataneras, con La Gomera en el horizonte. Por el camino, Torviscas, la marina y Las Américas, mientras el guía cuenta cómo nació la isla."
+          }
+        }
       ]
     },
     family: true,

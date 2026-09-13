@@ -10383,3 +10383,93 @@ dove quella fissa confonderebbe: campo assente = testo di sempre. Il vocabolario
 Il riquadro porta «Tuk tuk privato · da €86 a gruppo» e il click apre `tuk-tuk-privato`.
 Il rimando e' **in un senso solo**, come sulle barche: dalla scheda in condivisione a
 quella privata, non viceversa. Alzato `sw.js` a `isla-v301`.
+
+## Parascending: dati veri da canaryvip.com (13 settembre 2026)
+
+Il proprietario ha incollato la scheda "Parasailing Tenerife" di canaryvip.com chiedendo
+"la pagina parasailing".
+
+**Non era una scheda da creare: era il segnaposto `parascending`.** Parasailing e
+parascending sono la stessa attivita' — paracadute trainato dal motoscafo — e la scheda
+esisteva gia' dal primo riempimento del catalogo, ferma su zona e durata "Da definire" con
+un `priceFrom: 60`. Confrontate le otto schede di `sport-acquatici` prima di toccare
+qualcosa: nessun'altra e' un volo trainato (banana boat, jet ski, kayak, flyboard, surf,
+immersioni, Fiat 500 galleggiante), e la foto che la scheda aveva gia' — guardata, non solo
+elencata — e' esattamente un paracadute sopra la costa di Costa Adeje col motoscafo giallo
+che lo traina. **Aggiornata quella, non aperta una seconda.** E' lo stesso errore del
+Kalima Kat, evitato stavolta dal confronto.
+
+**Il titolo resta "Parascending"**, quello di Admiral, e non diventa "Parasailing
+Tenerife" che e' il nome del prodotto sul rivenditore: i titoli restano come li scrive
+Admiral, uguali nelle tre lingue.
+
+**Riempiti**: `zone: "Puerto Colón, Costa Adeje"` (nome proprio, uguale nelle tre lingue),
+`duration` 40 minuti, `included: ["equipment", "lifejacket", "guide"]`, la descrizione
+riscritta da zero nelle tre lingue e sette note pratiche.
+
+**Le due durate, e perche' ci vogliono tutte e due.** Quaranta minuti e' l'uscita col
+tragitto in barca, dieci sono i minuti in aria. Scritta una sola, l'altra diventa una
+bugia: "40 minuti" fa credere di volare mezz'ora, "10 minuti" fa aspettare il cliente al
+porto mezz'ora prima del dovuto. Sono i campi `activityLabel` ("Tempo di volo") e
+`activityDuration` ("Circa 10 minuti"), nati sulle camminate per la stessa ragione.
+
+**Il prezzo, in due passi nello stesso giorno.** La fonte dava `price_from: 55` con
+`list_price: null`, cioe' nessun barrato: quei 55 erano il prezzo pieno **di CanaryVIP**,
+non un prezzo di Admiral, e la scheda portava €60 da prima. Messo prima €60 e chiesto
+conferma — mai copiare il prezzo di un rivenditore, e nel dubbio si resta sul numero piu'
+alto gia' pubblicato, perche' abbassare si puo' sempre e alzare no. **Il proprietario ha
+poi confermato €55, a persona**: il prezzo e' **sceso**, che e' la direzione permessa. E'
+la stessa strada del kayak (da €45 a €35) e vale la pena notarla: partire dal numero alto
+e aspettare la conferma non e' tempo perso, e' l'unico ordine in cui l'errore si corregge
+senza far danni.
+
+**Bambini allo stesso prezzo degli adulti**, sempre dal proprietario: `priceChild: 55`
+uguale a `priceAdult`, come sull'elicottero. Percio' **niente `ages`**: senza uno sconto
+per eta' non c'e' nessuna fascia da scrivere fra parentesi. **Niente `priceInfant`**:
+sotto i 3 anni non si vola, e assente non vuol dire gratis — la casella dei neonati resta
+giustamente nascosta nella finestra.
+
+**Gli orari veri, sempre dal proprietario: ogni ora dalle 10:00 alle 18:00.** Scritti in
+`times`, prendono il posto delle fasce segnaposto e "Da concordare" sparisce. La fonte
+diceva solo "partenze per tutta la giornata, l'ora si concorda alla prenotazione", che non
+e' un orario: le fasce sono rimaste finche' i numeri veri non sono arrivati. **Niente
+`days`**: si vola tutti i giorni.
+
+**Non copiato da CanaryVIP**, come sempre. Stavolta la loro cancellazione era "gratis fino
+a 24 ore", cioe' lo stesso numero del nostro preavviso, e **non e' stata scritta lo
+stesso**: che i numeri coincidano non trasforma la promessa di un altro in una nostra, e
+la riga sulle 24 ore la mette il sito da solo. Fuori anche il punteggio 5.0 con 7
+recensioni, e le foto: sono di un rivenditore concorrente, resta la foto Admiral che
+c'era.
+
+**Niente pickup.** La fonte dice esplicitamente che i trasferimenti dall'hotel non sono
+compresi, quindi nessuna riga `transfer`, niente `PICKUP_TIMES` e niente `PICKUP_IN_HOTEL`:
+di questo fornitore non sappiamo nemmeno chi sia (CanaryVIP e' un rivenditore), e le
+tabelle di `hotel.js` valgono per Island Excursions. In nota c'e' scritto che al Puerto
+Colón ci si arriva da soli. Resta pero' un dettaglio da guardare prima o poi: la finestra
+della richiesta chiede comunque "Dove alloggi (utile per il pick-up)", che qui e' una
+domanda senza risposta — vale per tutte le schede senza ritiro (elicottero, cena
+medievale), quindi non e' roba di questa scheda e non l'ho toccata.
+
+**Foto non aggiunte**: le tre della galleria della fonte sono di canaryvip.com, stessa
+scelta gia' fatta col quad del nord. Se l'ufficio manda foto sue si apre `gallery`.
+
+**Provato nel browser vero** (420px, tutte e tre le lingue): "In breve" mostra Punto di
+partenza / Durata 40 minuti / Tempo di volo Circa 10 minuti / da €60 / Famiglie con
+bambini; le tre icone di "Cosa e' incluso" ci sono tutte; le sette note escono nelle tre
+lingue; il menu "A che ora" mostra "Da concordare" piu' le sette fasce segnaposto, come
+previsto senza `times`; nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi
+invariati (opera-60, trekking-bici e masca-teide-cabrio-bus, nessuno dei tre riguarda
+questa scheda). Alzato `sw.js` a `isla-v302`.
+
+**Provato di nuovo dopo la conferma del proprietario** (stesso giorno): "In breve" mostra
+la riga Orari con le nove partenze, Adulti €55 e Bambini €55 nelle tre lingue; nella
+finestra il menu "A che ora" ha solo le nove ore vere, senza "Da concordare" e senza
+fasce; 2 adulti e 1 bambino fanno **€165** ("2 adulti × €55 + 1 bambino × €55"); la
+casella dei neonati resta nascosta. `node controlla.js` → 0 errori, 3 avvisi invariati.
+Alzato `sw.js` a `isla-v303`.
+
+**Resta una sola cosa da guardare**: "dalle 10 alle 18" l'ho letto come **ultima partenza
+alle 18:00**, quindi nove voli. Se l'ultimo e' alle 17:00 si toglie una riga da `times`.
+Da chiedere anche, un giorno, se il paracadute a 2 o 3 persone si paga a testa comunque
+(oggi il totale moltiplica per le persone, che e' quello che il proprietario ha detto).

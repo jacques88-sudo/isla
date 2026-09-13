@@ -10850,3 +10850,44 @@ la descrizione esce per esteso sotto, le sette note al loro posto, nessun errore
 
 Sul surf resta una cosa sola: **il prezzo del sesto posto** nella lezione per famiglie e
 amici. E, quando ci sarà, il punto di ritrovo.
+
+## 13 settembre 2026 — Il punto di ritrovo del surf: al negozio, e ci si va da soli (v311)
+
+Il proprietario ha incollato la pagina **"Come arrivare"** del sito della scuola (salvata
+in `dati-fornitore/grezzo/franz-surf-school-come-arrivare.txt`, com'è arrivata) dicendo
+solo: «per il punto di ritrovo». La pagina dà l'indirizzo — **Calle México 15, Playa de las
+Américas** — e due numeri di telefono.
+
+La nota passa da *"il punto di ritrovo lo conferma l'ufficio"* a **"il ritrovo è al negozio
+della scuola, in Calle México 15: ci si arriva da soli, la scuola non passa a prendere in
+hotel"**.
+
+**Perché è stata scritta anche la seconda metà.** Il dato incollato dice dov'è la scuola,
+non che il cliente ci vada da solo — quella frase è una deduzione, e va detto. Ma è la
+deduzione **giusta da sbagliare**, se proprio si deve: una scuola che passa a prenderti non
+pubblica una pagina intitolata "come arrivare da noi", e in tutto il listino non c'è
+nessuna riga di transfer. Soprattutto, i due errori non costano uguale — è la regola del
+pick-up di `CLAUDE.md`, vista dal lato del danno:
+
+- se scrivo "ci si arriva da soli" e invece passassero a prendere, il cliente va al negozio
+  e fa due passi in più;
+- se lascio la frase in sospeso, quel campo della finestra della richiesta si chiama **"Dove
+  alloggi (utile per il pick-up)"**: chi lo compila capisce che qualcuno passa, e alle nove
+  è davanti alla reception mentre la lezione comincia in spiaggia.
+
+Nel dubbio si scrive la frase che, se è sbagliata, fa perdere due minuti invece di una
+lezione. Resta segnalata al proprietario come deduzione, che è il posto dove va segnalata.
+
+**I due numeri di telefono della scuola non vanno sul sito.** Sono nel file grezzo e lì
+restano: Admiral è un rivenditore, e un cliente che chiama direttamente la scuola esce dal
+giro della richiesta su WhatsApp — che è il modo in cui l'ufficio sa cosa è stato venduto.
+Non è una questione di dati sensibili ma di chi risponde al cliente.
+
+**L'ora resta dov'era**, nella nota della marea: una nota dice una cosa sola, e il posto e
+l'ora sono due domande diverse.
+
+**Provato nel browser vero** nelle tre lingue: la nota esce giusta in italiano, inglese e
+spagnolo, sette note in tutto, nessun errore in console. `node controlla.js` → 0 errori,
+3 avvisi invariati. Alzato `sw.js` a `isla-v311`.
+
+Sul surf resta aperto solo **il prezzo del sesto posto** nella lezione per famiglie e amici.

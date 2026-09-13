@@ -169,3 +169,15 @@ resta com'è arrivato, la risposta sta qui:
   scritto che lo conferma l'ufficio. Non si ricava dagli altri: gli scarti sono 45, 35, 25.
 
 Le **foto** non servono: la scheda usa `surf-lesson.jpg`, che era già in `assets/`.
+
+### `grezzo/franz-surf-school-come-arrivare.txt`
+
+La pagina "Come arrivare" del loro sito, incollata dal proprietario lo stesso giorno come
+risposta alla domanda sul punto di ritrovo: **Calle México 15, Playa de las Américas**, cioè
+il negozio. In scheda la nota dice che il ritrovo è lì e che **ci si arriva da soli** — la
+seconda metà è una deduzione (una scuola che passa a prenderti non pubblica una pagina
+"come arrivare"), scritta così perché fra i due errori possibili è quello che costa due
+passi invece di una lezione persa.
+
+I **due numeri di telefono** della scuola stanno in questo file e non sul sito: Admiral è un
+rivenditore, e un cliente che chiama la scuola esce dal giro della richiesta su WhatsApp.

@@ -152,6 +152,15 @@
 //   privateOption → facoltativo: id dell'escursione in versione privata. Sulla
 //                pagina di dettaglio compare un rimando "vuoi la barca solo per
 //                il tuo gruppo?".
+//   privateTitle, privateLink → facoltativi, e vanno con privateOption:
+//                sostituiscono quelle due frasi fisse, che parlano di barche
+//                perche' li' sono nate. Servono dove la versione privata non e'
+//                una barca — sul tuk tuk "vuoi la barca" sarebbe la frase
+//                sbagliata — e si scrivono nelle tre lingue come tutto il resto.
+//                Senza questi campi resta il testo di sempre, quindi le schede
+//                delle barche non si toccano.
+//                    privateTitle: { it: "Vuoi il tuk tuk solo per il tuo gruppo?", ... }
+//                    privateLink:  { it: "Vedi i giri privati", ... }
 //   season     → facoltativo: quando l'attivita' si fa solo in certi mesi. Compare
 //                come etichetta sulla scheda, come riga sulla pagina di dettaglio e
 //                come avviso nella finestra della richiesta, cioe' prima che il
@@ -4890,6 +4899,21 @@ const ESPLORA_CATALOG = [
       it: "Un'ora in tuk tuk elettrico sulla costa di Adeje, con una guida che racconta. Due percorsi: quello dei paesi e delle spiagge del sud e quello che sale alla Caldera del Rey, il vulcano spento sopra Costa Adeje. Si va in sei, e c'è anche la versione privata.",
       en: "An hour in an electric tuk tuk along the Adeje coast, with a guide who tells you about it. Two routes: the southern villages and beaches, and the climb to the Caldera del Rey, the extinct volcano above Costa Adeje. Six people go at a time, and there is a private version too.",
       es: "Una hora en tuk tuk eléctrico por la costa de Adeje, con un guía que lo cuenta. Dos recorridos: el de los pueblos y las playas del sur y el que sube a la Caldera del Rey, el volcán apagado sobre Costa Adeje. Se va de seis en seis, y también existe la versión privada."
+    },
+    // Il rimando alla scheda privata, come sulle barche. Le due frasi sono
+    // scritte qui e non prese da i18n.js perche' quelle fisse dicono "vuoi la
+    // barca solo per il tuo gruppo?" e "vedi il charter privato": giuste sulle
+    // barche, sbagliate su un tuk tuk.
+    privateOption: "tuk-tuk-privato",
+    privateTitle: {
+      it: "Vuoi il tuk tuk solo per il tuo gruppo?",
+      en: "Want the tuk tuk just for your group?",
+      es: "¿Quieres el tuk tuk solo para tu grupo?"
+    },
+    privateLink: {
+      it: "Vedi i giri privati",
+      en: "See the private tours",
+      es: "Ver los tours privados"
     },
     image: "tuk-tuk.jpg",
     published: true

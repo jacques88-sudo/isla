@@ -10345,3 +10345,41 @@ testo fisso dice «Vuoi **la barca** solo per il tuo gruppo?» — e' nato sulle
 tuk tuk si leggerebbe male. Per accenderlo servono due frasi generiche in `i18n.js`, che
 pero' cambiano anche le cinque schede delle barche. Per ora la versione privata e' nominata
 nella descrizione della scheda in condivisione.
+
+## 13 settembre 2026 — Il rimando alla versione privata, anche dove non e' una barca (v301)
+
+«Fallo come le barche», e cosi' e'. Sulla scheda del tuk tuk in condivisione c'e' il
+riquadro che porta a quella privata, esattamente come sul Freebird o sul Royal Delfin:
+titolo, nome della scheda privata col suo prezzo, e la freccia.
+
+Il problema era una frase sola: il testo fisso dice «Vuoi **la barca** solo per il tuo
+gruppo?» e «Vedi il **charter** privato». Su un tuk tuk non si poteva leggere.
+
+### Due campi nuovi invece di una frase generica
+
+`privateTitle` e `privateLink`, facoltativi, nelle tre lingue. Dove ci sono, prendono il
+posto delle due frasi fisse; **dove non ci sono resta il testo di sempre**, quindi le
+cinque schede delle barche non sono state toccate.
+
+La strada piu' corta sarebbe stata cambiare le due frasi in `i18n.js` una volta per tutte,
+e generalizzarle in qualcosa come «vuoi tutto per il tuo gruppo?». Non e' stato fatto
+perche' peggiora le barche: «vuoi la barca solo per il tuo gruppo» dice **cosa** ti stai
+prendendo, la frase generica no. Una modifica che sistema una scheda e ne smussa cinque non
+e' un pareggio.
+
+E' lo stesso meccanismo di `transferLabel`, che sostituisce la domanda fissa del transfer
+dove quella fissa confonderebbe: campo assente = testo di sempre. Il vocabolario in testa a
+`esplora-catalog.js` lo dice accanto a `privateOption`.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. In browser a 390px nelle tre lingue:
+
+| scheda | it | en | es |
+|---|---|---|---|
+| tuk tuk | Vuoi il tuk tuk solo per il tuo gruppo? · Vedi i giri privati | Want the tuk tuk just for your group? · See the private tours | ¿Quieres el tuk tuk solo para tu grupo? · Ver los tours privados |
+| Freebird | Vuoi la barca solo per il tuo gruppo? · Vedi il charter privato | invariato | invariato |
+
+Il riquadro porta «Tuk tuk privato · da €86 a gruppo» e il click apre `tuk-tuk-privato`.
+Il rimando e' **in un senso solo**, come sulle barche: dalla scheda in condivisione a
+quella privata, non viceversa. Alzato `sw.js` a `isla-v301`.

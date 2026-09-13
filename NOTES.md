@@ -10244,3 +10244,104 @@ Nota a margine: `controlla.js` **non guarda le tabelle di `hotel.js`**, quindi u
 sbagliato in `PICKUP_NESSUNO` (o in `PICKUP_IN_HOTEL`) non lo segnala nessuno — non fa
 danno, semplicemente non succede niente. Vale anche per `PICKUP_TIMES`, ed e' cosi' da
 sempre: se un giorno diventa un problema, il controllo e' tre righe.
+
+## 13 settembre 2026 — I cinque tour veri del tuk tuk, e la scheda si sdoppia (v300)
+
+L'ufficio ha mandato le pagine di prenotazione di tutti i giri: **quelli sono i tour del
+sito e quelli sono i nomi**. Cinque prodotti, non tre.
+
+| tour | durata | prezzo |
+|---|---|---|
+| Costa Adeje Tour | 1 ora | 24 € adulti (11+), 12 € bambini (3-10), neonati gratis |
+| Secret Volcano Tour | 1 ora | uguale: 24 / 12 / gratis |
+| Costa Adeje Private Tour | 1 ora | 86 € fino a 3 persone, 128 € fino a 6 |
+| Secret Volcano Private Tour | 1 ora | 86 € fino a 3, 128 € fino a 6 |
+| Double Private Tour | 2 ore | 136 € fino a 3, 198 € fino a 6 |
+
+### Le due etichette inventate sono sparite
+
+«Panoramico, con sosta per un drink» e «I punti principali di Costa Adeje» erano
+descrizioni scritte ad agosto per dire che i percorsi erano piu' d'uno, non nomi. Adesso ci
+sono i nomi veri. **Della sosta per un drink non c'e' traccia in nessuno dei cinque**: se
+esiste, e' un giro che non era fra quelli mandati.
+
+Sciolto anche il dubbio di stamattina: «Completo, fino ai vulcani» **era** il Secret
+Volcano Tour, non un quarto prodotto — unirli e' stato giusto.
+
+### Perche' due schede e non una con cinque varianti
+
+`tuk-tuk` tiene i due giri **in condivisione**, `tuk-tuk-privato` (in "Tour privati", come
+le gemelle delle barche) i tre **privati**. La ragione e' che si pagano in due modi
+diversi:
+
+- in condivisione si paga **a persona** e il totale si fa: 2 adulti + 1 bambino = 60 €
+- in privato si paga **il mezzo**, e il prezzo cambia con quanti sono
+
+Su una scheda sola la riga del prezzo dell'elenco avrebbe dovuto dire «da €24» **e** «da
+€86 a gruppo» insieme, e `priceUnit` vale per la scheda intera: non c'e' modo di scriverne
+una per variante. Due schede, una foto sola (`tuk-tuk.jpg` sta in tutte e due, il telefono
+la scarica una volta).
+
+### I due scaglioni stanno nella descrizione, e non sono sei bottoni
+
+`priceTiers` e' della **scheda**, non della variante: scritto li', il Double Private Tour
+avrebbe mostrato 86 e 128 al posto dei suoi 136 e 198. E' lo stesso muro contro cui era
+finita la cabina VIP di Siam Park.
+
+La strada della Mustang — un bottone per scaglione — qui voleva dire **sei bottoni** con
+tre nomi ripetuti. Non fatto, e non per l'ingombro: **quanti sono il cliente lo scrive gia'
+nella richiesta**. Un secondo numero scelto a parte potrebbe contraddire il primo, ed e' la
+stessa ragione per cui dove si contano i mezzi non si contano le persone. Cosi' il bottone
+dice il prezzo di partenza («€86», «€136») e la descrizione sotto dice tutti e due gli
+scaglioni; sul messaggio arrivano il nome del tour e quante persone, che e' quanto basta
+all'ufficio per applicare lo scaglione giusto.
+
+### Il prezzo va scritto DUE volte, e per poco non me ne accorgevo
+
+Messi i 24 € e i 12 € solo sulla scheda, la pagina diceva **«Prezzo: Su richiesta»** e il
+totale non si faceva — con i due numeri scritti nel catalogo due righe piu' su. Non e' un
+bug: quando una variante e' scelta il sito **non ripiega** sul prezzo della scheda, apposta
+(se no la cabina VIP di Siam Park mostrerebbe il prezzo del biglietto normale). E sulla
+pagina di dettaglio una variante e' **sempre** scelta, perche' la prima parte gia' premuta.
+
+Quindi `priceAdult`/`priceChild` stanno **dentro ogni variante** e restano anche sulla
+scheda, per le richieste che partono senza variante. Trovato solo guardando la pagina resa:
+`node controlla.js` non poteva vederlo, e il codice era giusto in tutte e due i posti.
+
+### Cosa e' entrato di nuovo dalle pagine
+
+- **10-15 minuti prima** al punto di ritrovo, al posto del vago "qualche minuto"
+- **crema solare e una bottiglia d'acqua**, che lo scrive il fornitore
+- i **sei posti vicini e uno di fronte all'altro**, e il consiglio del fornitore di
+  prendere il privato per chi ha difficolta' a muoversi o vuole piu' spazio. Riscritto
+  senza la sua formula ("large proportions"), che in italiano sarebbe suonata male
+- le **lingue confermate altre quattro volte**: español e inglés su tutte le pagine. La
+  scelta di ieri di scendere da quattro a due era quella giusta
+
+### Cosa e' rimasto fuori
+
+La politica di cancellazione del fornitore (24 ore di rimborso pieno, no-show pagato per
+intero): **non si copia**, le nostre 24 ore sono di preavviso e sono un'altra cosa. Fuori
+anche il blocco "Salud y seguridad" sulle pulizie, che e' un testo promozionale del 2020.
+
+`days` e `times` restano assenti su tutte e due le schede: nel calendario i giorni chiusi
+sono quelli passati, e degli orari si legge solo che il Secret Volcano di domenica parte
+alle 13:00 e il Costa Adeje alle 14:00.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati, 66 schede. In browser a 390px nelle tre
+lingue: sui due giri in condivisione escono Adulti (11+) €24, Bambini (3-10) €12 e Neonati
+Gratis, totale 60 € per 2+1+1; sui tre privati «€86 a gruppo» / «€136 a gruppo», nessun
+totale (giusto: dipende da quanti sono) e il messaggio porta nome del tour e numero di
+persone. La casella dell'hotel non compare su nessuna delle due: `tuk-tuk-privato` e'
+stata aggiunta a `PICKUP_NESSUNO` insieme all'altra, stesso ritrovo e stesso "Hotel pick
+up" fra le cose non incluse. Alzato `sw.js` a `isla-v300`.
+
+### Resta da decidere
+
+Il rimando «vuoi la versione privata?» fra le due schede (`privateOption`) **non c'e'**: il
+testo fisso dice «Vuoi **la barca** solo per il tuo gruppo?» — e' nato sulle barche e su un
+tuk tuk si leggerebbe male. Per accenderlo servono due frasi generiche in `i18n.js`, che
+pero' cambiano anche le cinque schede delle barche. Per ora la versione privata e' nominata
+nella descrizione della scheda in condivisione.

@@ -716,8 +716,10 @@ const PICKUP_NESSUNO = [
   // Tuk Tuk Sweet Tours: il ritrovo e' davanti al Wakanda Origen, e il
   // fornitore scrive "Hotel pick up" fra le cose NON incluse. Il transfer non
   // e' compreso, quindi il punto di raccolta non si mostra (proprietario,
-  // 13 settembre 2026).
-  "tuk-tuk"
+  // 13 settembre 2026). Vale per tutte e due le schede: i tre giri privati
+  // partono dallo stesso posto e hanno la stessa riga fra le cose NON incluse.
+  "tuk-tuk",
+  "tuk-tuk-privato"
 ];
 
 // Gli orari del pulmino, escursione per escursione.

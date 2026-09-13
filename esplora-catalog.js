@@ -3029,20 +3029,21 @@ const ESPLORA_CATALOG = [
     duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
     activityLabel: { it: "Tempo di volo", en: "Flight time", es: "Tiempo de vuelo" },
     activityDuration: { it: "Circa 10 minuti", en: "About 10 minutes", es: "Unos 10 minutos" },
-    // €60 e' il prezzo che aveva gia' la scheda, cioe' quello di Admiral. La
-    // pagina del rivenditore (CanaryVIP) da' €55 senza nessun barrato: e' il
-    // suo prezzo pieno, non uno sconto nostro, e non si copia. Abbassare a 55
-    // si puo' sempre, ma lo decide l'ufficio. `priceAdult` resta a 0 (cioe'
-    // "Su richiesta") finche' non e' confermato che il prezzo e' a persona e
-    // quanto pagano i bambini: la fonte non lo dice, e un totale inventato
-    // qui vale piu' di un prezzo mancante.
-    priceFrom: 60,
-    priceAdult: 0,
-    priceChild: 0,
+    // €55 a persona, confermato dal proprietario il 13 settembre 2026: la
+    // scheda portava €60 da prima ed e' **sceso**, che e' la direzione
+    // permessa. Sul volo paga lo stesso prezzo chiunque occupi un posto,
+    // bambini compresi, quindi `priceChild` e' uguale a `priceAdult` e non
+    // c'e' nessun `ages`: senza uno sconto per eta' non c'e' nessuna fascia
+    // da scrivere. Niente `priceInfant`: sotto i 3 anni non si vola, e
+    // assente non vuol dire gratis.
+    priceFrom: 55,
+    priceAdult: 55,
+    priceChild: 55,
     family: true,
-    // Niente `times`: la fonte dice solo "partenze per tutta la giornata,
-    // l'ora si concorda alla prenotazione", quindi restano le fasce segnaposto.
+    // Le partenze vere, dal proprietario: ogni ora dalle 10:00 alle 18:00.
+    // Prendono il posto delle fasce segnaposto e "Da concordare" sparisce.
     // Niente `days`: si vola tutti i giorni.
+    times: ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"],
     desc: {
       it: "Si decolla dalla barca appesi al paracadute e si sale sopra la costa di Costa Adeje: una decina di minuti in aria, con il porto, le spiagge e le montagne sotto i piedi. Fra il tragitto in barca e il volo si sta fuori circa quaranta minuti.",
       en: "You lift off from the boat hanging under the parachute and rise above the Costa Adeje coast: some ten minutes in the air, with the marina, the beaches and the mountains under your feet. Between the boat ride and the flight you are out for about forty minutes.",

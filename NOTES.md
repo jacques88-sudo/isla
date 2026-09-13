@@ -10413,26 +10413,27 @@ bugia: "40 minuti" fa credere di volare mezz'ora, "10 minuti" fa aspettare il cl
 porto mezz'ora prima del dovuto. Sono i campi `activityLabel` ("Tempo di volo") e
 `activityDuration` ("Circa 10 minuti"), nati sulle camminate per la stessa ragione.
 
-**Il prezzo: lasciato €60, non abbassato a €55.** La fonte da' `price_from: 55` e
-`list_price: null`, cioe' nessun barrato: quei 55 sono il prezzo pieno **di CanaryVIP**,
-non uno sconto e non un prezzo di Admiral. I €60 in scheda sono il numero dell'ufficio, ed
-e' lo stesso caso del Small Group Catamaran (€60 dell'ufficio contro €75 della pagina) e
-del parapendio. Abbassare a 55 si puo' sempre e lo decide il proprietario; alzarlo dopo
-no, ed e' per questo che nel dubbio si resta sul numero piu' alto gia' pubblicato.
+**Il prezzo, in due passi nello stesso giorno.** La fonte dava `price_from: 55` con
+`list_price: null`, cioe' nessun barrato: quei 55 erano il prezzo pieno **di CanaryVIP**,
+non un prezzo di Admiral, e la scheda portava €60 da prima. Messo prima €60 e chiesto
+conferma — mai copiare il prezzo di un rivenditore, e nel dubbio si resta sul numero piu'
+alto gia' pubblicato, perche' abbassare si puo' sempre e alzare no. **Il proprietario ha
+poi confermato €55, a persona**: il prezzo e' **sceso**, che e' la direzione permessa. E'
+la stessa strada del kayak (da €45 a €35) e vale la pena notarla: partire dal numero alto
+e aspettare la conferma non e' tempo perso, e' l'unico ordine in cui l'errore si corregge
+senza far danni.
 
-**`priceAdult` e `priceChild` restano a 0, cioe' "Su richiesta".** La fonte non dice se il
-prezzo e' a persona o a volo (il paracadute porta fino a **tre** persone), e non da'
-nessun prezzo bambini pur avendo un'eta' minima di 3 anni. E' lo stesso caso del quad,
-dove il totale e' rimasto fermo finche' l'ufficio non ha confermato l'unita': meglio
-"Su richiesta" che un totale verosimile e falso. Provato in finestra: con 2 adulti non
-compare nessun totale, ed e' giusto.
+**Bambini allo stesso prezzo degli adulti**, sempre dal proprietario: `priceChild: 55`
+uguale a `priceAdult`, come sull'elicottero. Percio' **niente `ages`**: senza uno sconto
+per eta' non c'e' nessuna fascia da scrivere fra parentesi. **Niente `priceInfant`**:
+sotto i 3 anni non si vola, e assente non vuol dire gratis — la casella dei neonati resta
+giustamente nascosta nella finestra.
 
-**Niente `times`** (la fonte dice solo "partenze per tutta la giornata, l'ora si concorda
-alla prenotazione": le partenze vere non le sappiamo, restano le fasce segnaposto) e
-**niente `days`** (si vola tutti i giorni). **Niente `ages`**: senza un prezzo bambini non
-c'e' nessuna fascia da scrivere accanto a una riga di prezzo che non esiste; l'eta' minima
-di 3 anni sta in nota. **Niente `priceInfant`**: sotto i 3 anni non si sale, e assente non
-vuol dire gratis.
+**Gli orari veri, sempre dal proprietario: ogni ora dalle 10:00 alle 18:00.** Scritti in
+`times`, prendono il posto delle fasce segnaposto e "Da concordare" sparisce. La fonte
+diceva solo "partenze per tutta la giornata, l'ora si concorda alla prenotazione", che non
+e' un orario: le fasce sono rimaste finche' i numeri veri non sono arrivati. **Niente
+`days`**: si vola tutti i giorni.
 
 **Non copiato da CanaryVIP**, come sempre. Stavolta la loro cancellazione era "gratis fino
 a 24 ore", cioe' lo stesso numero del nostro preavviso, e **non e' stata scritta lo
@@ -10461,6 +10462,14 @@ previsto senza `times`; nessun errore in console. `node controlla.js` → 0 erro
 invariati (opera-60, trekking-bici e masca-teide-cabrio-bus, nessuno dei tre riguarda
 questa scheda). Alzato `sw.js` a `isla-v302`.
 
-**Da confermare con l'ufficio**: se il prezzo giusto e' €60 o €55; se e' a persona o a
-volo (fino a 3 persone); il prezzo dei bambini e da che eta' vale; gli orari veri delle
-partenze.
+**Provato di nuovo dopo la conferma del proprietario** (stesso giorno): "In breve" mostra
+la riga Orari con le nove partenze, Adulti €55 e Bambini €55 nelle tre lingue; nella
+finestra il menu "A che ora" ha solo le nove ore vere, senza "Da concordare" e senza
+fasce; 2 adulti e 1 bambino fanno **€165** ("2 adulti × €55 + 1 bambino × €55"); la
+casella dei neonati resta nascosta. `node controlla.js` → 0 errori, 3 avvisi invariati.
+Alzato `sw.js` a `isla-v303`.
+
+**Resta una sola cosa da guardare**: "dalle 10 alle 18" l'ho letto come **ultima partenza
+alle 18:00**, quindi nove voli. Se l'ultimo e' alle 17:00 si toglie una riga da `times`.
+Da chiedere anche, un giorno, se il paracadute a 2 o 3 persone si paga a testa comunque
+(oggi il totale moltiplica per le persone, che e' quello che il proprietario ha detto).

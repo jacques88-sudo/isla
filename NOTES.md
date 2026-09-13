@@ -10162,3 +10162,85 @@ lingue: scegliendo il Secret Volcano Tour la durata passa a "1 ora", compaiono A
 (11+) €24, Bambini (3-10) €12 e Neonati (0-2) Gratis, e sulle altre due varianti quelle
 righe spariscono. Totale controllato a mano: 2 adulti + 1 bambino + 1 neonato = **€60**.
 Alzato `sw.js` a `isla-v298`.
+
+## 13 settembre 2026 — Dove il transfer non c'e', il punto di raccolta non si mostra (v299)
+
+Decisione del proprietario, sul tuk tuk: **«lascia perdere qui i punti di raccolta perche'
+il transfer non e' incluso»**. Fatto, e fatto in modo che valga per qualsiasi altra scheda
+che un giorno si trovi nella stessa situazione.
+
+### Il guaio, per come si vedeva
+
+La casella "Dove alloggi" nella finestra della richiesta pescava un punto dalle tabelle di
+`hotel.js` **su qualunque scheda**. Sul tuk tuk questo voleva dire: scrivi "Acapulco", e la
+pagina rispondeva «Punto di raccolta: Los Hibiscos, alla fermata dell'autobus». Due righe
+piu' su la stessa pagina diceva che il ritrovo e' al Wakanda Origen e che il ritiro in
+hotel non e' compreso.
+
+Quella fermata **esiste davvero**, ed e' questo che la rendeva pericolosa: e' il punto da
+cui Island Excursions fa salire i clienti di un'altra escursione. Un cliente del tuk tuk
+ci sarebbe andato, e li' quel giorno non passava nessuno.
+
+### La terza lista: `PICKUP_NESSUNO`
+
+In `hotel.js`, accanto a `PICKUP_IN_HOTEL`. Dentro c'e' `"tuk-tuk"`.
+
+| lista | vuol dire |
+|---|---|
+| `PICKUP_IN_HOTEL` | il pulmino passa **sotto l'hotel**, qualunque sia il punto della tabella |
+| `PICKUP_NESSUNO` | **non passa nessuno**: il ritrovo e' un posto solo, scritto nelle note |
+| ne' l'una ne' l'altra | valgono le tabelle: il punto dipende dall'hotel |
+
+Da non confondere con una scheda che non sta in `PICKUP_TIMES`: quella il ritiro ce l'ha,
+sono gli **orari** a mancare, e il punto si mostra lo stesso.
+
+### Due punti soli nel codice, e tutti e due voluti
+
+1. **Dentro `hotelPunto()`**, in cima: per queste schede risponde `null` e basta. Sta li' e
+   non solo nella finestra perche' la stessa funzione scrive anche la riga «Punto di
+   raccolta» del **messaggio WhatsApp** — e una richiesta rimasta nella lista da ieri porta
+   ancora scritto l'hotel di allora. Provato: col tuk tuk e l'hotel gia' salvato il
+   messaggio non ha la riga del punto, sul Teide ce l'ha ancora insieme all'ora
+2. **Dentro `mostraPunto()`**: spariscono l'etichetta, la casella e la riga di aiuto. La
+   domanda non si fa proprio. "Dove alloggi (utile per il pick-up)" con sotto «Serve a
+   dirti dove passiamo a prenderti» e' una promessa, non una domanda: lasciarla e togliere
+   solo il punto avrebbe corretto la parte precisa e tenuto quella vaga
+
+La casella si **svuota** quando sparisce: la finestra e' una sola per tutte le attivita', e
+l'hotel scritto per l'escursione di prima sarebbe finito nel messaggio di questa, sotto una
+domanda che qui non e' stata fatta.
+
+Nessun tocco all'HTML: l'etichetta si trova da `label[for="reqHotel"]`, che e' uguale nelle
+**due copie** della finestra (`escursioni.html` e `tour.html`). Una modifica scritta due
+volte e' una modifica dimenticata una volta.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. In browser a 390px:
+
+- **tuk tuk**: niente etichetta, niente casella, niente riga di aiuto, niente punto
+- **Teide** (sta in `PICKUP_TIMES`): casella al suo posto, «Los Hibiscos, alla fermata
+  dell'autobus» e l'ora 09:05 al posto del menu — invariato
+- **trekking-bici** e **mustang-experience** (`PICKUP_IN_HOTEL`): rispondono ancora "in
+  hotel"
+- aperto il tuk tuk dopo il Teide con l'hotel gia' scritto: la casella sparisce **e** il
+  valore si azzera
+
+Alzato `sw.js` a `isla-v299`.
+
+### Le altre due schede che dicono gia' la stessa cosa
+
+Non le ho toccate perche' la richiesta era sul tuk tuk, ma la loro nota lo scrive da sola e
+basta una riga in `PICKUP_NESSUNO`:
+
+- **`elicottero`** — «Nessun servizio di prelievo: il punto d'incontro e' l'elisuperficie
+  di Adeje». Oggi con "Acapulco" mostra comunque Los Hibiscos
+- **`opera-60` / lo Scandal al Vivo Show Bar** — «L'operatore non offre nessun servizio di
+  trasporto: ci si arriva a piedi o in taxi»
+
+Da dire e basta, si fa in un passo.
+
+Nota a margine: `controlla.js` **non guarda le tabelle di `hotel.js`**, quindi un id
+sbagliato in `PICKUP_NESSUNO` (o in `PICKUP_IN_HOTEL`) non lo segnala nessuno — non fa
+danno, semplicemente non succede niente. Vale anche per `PICKUP_TIMES`, ed e' cosi' da
+sempre: se un giorno diventa un problema, il controllo e' tre righe.

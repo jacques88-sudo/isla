@@ -447,6 +447,14 @@ function hotelCerca(testo, quanti) {
 //              silenzio di un'indicazione a meta'.
 function hotelPunto(nomeHotel, idScheda) {
   if (typeof HOTELS === "undefined" || typeof PICKUP_POINTS === "undefined") return null;
+  // Dove il ritiro non esiste non c'e' nessun punto da mostrare: le tabelle
+  // sono di un altro fornitore e la fermata che ne uscirebbe manderebbe il
+  // cliente ad aspettare dove non passa nessuno (PICKUP_NESSUNO in hotel.js).
+  // Sta qui in cima e non solo nella finestra perche' la stessa funzione scrive
+  // anche la riga del messaggio WhatsApp, e una richiesta rimasta nella lista
+  // da ieri porta ancora scritto l'hotel.
+  if (idScheda && typeof PICKUP_NESSUNO !== "undefined"
+      && PICKUP_NESSUNO.indexOf(idScheda) !== -1) return null;
   const k = hotelChiave(nomeHotel.trim());
   if (!k) return null;
   const riga = HOTELS.find(h => hotelChiave(h[0]) === k);
@@ -504,6 +512,9 @@ function initHotelField() {
   const input = document.getElementById("reqHotel");
   const lista = document.getElementById("reqHotelList");
   if (!campo || !input || !lista) return;
+  // L'etichetta non ha un data-attributo suo: si trova dal `for`, che e'
+  // l'unica cosa che le due copie della finestra hanno per forza uguale.
+  const etichettaCampo = document.querySelector('label[for="reqHotel"]');
 
   const puntoEl = document.querySelector("[data-hotel-punto]");
   const oraFissaEl = document.querySelector("[data-request-time-fixed]");
@@ -544,9 +555,26 @@ function initHotelField() {
   // Dove passa il pulmino, scritto sotto la casella appena si riconosce
   // l'hotel. Prende il posto della riga di aiuto: sono due cose che dicono la
   // stessa cosa, e una volta che l'hotel c'e' quella generica non serve piu'.
+  // Dove non si passa a prendere nessuno la domanda non si fa proprio: "dove
+  // alloggi" serve solo a dire dove si sale, e su queste schede si sale in un
+  // posto solo, scritto nelle note. Chiederlo lo stesso vorrebbe dire promettere
+  // un ritiro che non c'e' — la riga di aiuto dice "dove passiamo a prenderti" —
+  // e far scrivere al cliente un dato che nessuno usera'.
+  function senzaRitiro() {
+    return !!(typeof PICKUP_NESSUNO !== "undefined" && SCHEDA_APERTA
+      && PICKUP_NESSUNO.indexOf(SCHEDA_APERTA.id) !== -1);
+  }
+
   function mostraPunto() {
     if (!puntoEl) return;
-    const p = hotelPunto(input.value, SCHEDA_APERTA && SCHEDA_APERTA.id);
+    const spento = senzaRitiro();
+    if (etichettaCampo) etichettaCampo.hidden = spento;
+    campo.hidden = spento;
+    // Svuotare non e' una finezza: la finestra e' una sola per tutte le
+    // attivita', e l'hotel scritto per l'escursione di prima finirebbe nel
+    // messaggio di questa, sotto una domanda che qui non e' stata fatta.
+    if (spento && input.value) { input.value = ""; chiudi(); }
+    const p = spento ? null : hotelPunto(input.value, SCHEDA_APERTA && SCHEDA_APERTA.id);
     // Un'etichetta e un posto, niente di piu': il cliente ha appena scritto il
     // nome del suo hotel e vede da solo se il punto e' un altro. Le frasi
     // lunghe che c'erano prima ("non e' il tuo hotel", "l'ora te la
@@ -559,7 +587,7 @@ function initHotelField() {
         : p.nome;
     }
     puntoEl.hidden = !p;
-    if (aiutoEl) aiutoEl.hidden = !!p;
+    if (aiutoEl) aiutoEl.hidden = spento || !!p;
     mostraOraHotel(p);
   }
 
@@ -606,11 +634,14 @@ function initHotelField() {
   input.addEventListener("input", () => { apri(); mostraPunto(); });
   // "dove passiamo a prenderti" oppure "dove e a che ora", secondo la scheda
   document.addEventListener("islarequestopen", () => {
-    if (!aiutoEl) return;
-    const conOra = typeof PICKUP_TIMES !== "undefined" && SCHEDA_APERTA && PICKUP_TIMES[SCHEDA_APERTA.id];
-    const chiave = conOra ? "req.hotelHintTime" : "req.hotelHint";
-    aiutoEl.dataset.i18n = chiave;
-    aiutoEl.textContent = t(chiave);
+    if (aiutoEl) {
+      const conOra = typeof PICKUP_TIMES !== "undefined" && SCHEDA_APERTA && PICKUP_TIMES[SCHEDA_APERTA.id];
+      const chiave = conOra ? "req.hotelHintTime" : "req.hotelHint";
+      aiutoEl.dataset.i18n = chiave;
+      aiutoEl.textContent = t(chiave);
+    }
+    // fuori dall'if: e' mostraPunto() che fa sparire la casella dove il ritiro
+    // non c'e', e non deve dipendere dal fatto che la riga di aiuto esista
     mostraPunto();
   });
   input.addEventListener("focus", apri);

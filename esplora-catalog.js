@@ -2946,17 +2946,98 @@ const ESPLORA_CATALOG = [
     id: "banana-boat",
     title: "Banana Boat or Fly Fish Ride",
     category: "sport-acquatici",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto Colón, Costa Adeje",
+    duration: { it: "10 o 15 minuti", en: "10 or 15 minutes", es: "10 o 15 minutos" },
     priceFrom: 18,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 18,
+    priceChild: 18,
+    ages: { adult: "16+", child: "10-15" },
     family: true,
-    desc: {
-      it: "Il gonfiabile trainato dal motoscafo, in versione banana o fly fish. Si sceglie sul posto.",
-      en: "The inflatable towed by a speedboat, banana or fly fish. You choose on the spot.",
-      es: "El hinchable remolcado por la lancha, en versión banana o fly fish. Se elige allí mismo."
+    included: ["lifejacket", "equipment", "guide"],
+    // Tre gonfiabili diversi dello stesso porto, tenuti in una scheda sola per
+    // scelta del proprietario (13 settembre 2026): la corsa è la stessa cosa,
+    // cambia solo l'attrezzo. Il Crazy UFO parte dal Pantalán 4 e non dal molo
+    // degli altri due, ed è scritto nella sua variante.
+    options: {
+      label: { it: "Quale gonfiabile", en: "Which inflatable", es: "Qué hinchable" },
+      choices: [
+        {
+          label: "Banana Boat",
+          duration: { it: "10 minuti", en: "10 minutes", es: "10 minutos" },
+          priceAdult: 18,
+          priceChild: 18,
+          desc: {
+            it: "La banana classica trainata dal motoscafo, fino a dodici persone per corsa: ci si tiene forte e si finisce quasi sempre in acqua. Non serve saper nuotare.",
+            en: "The classic banana towed by the speedboat, up to twelve people per ride: you hold on tight and almost always end up in the water. You do not need to know how to swim.",
+            es: "La banana clásica remolcada por la lancha, hasta doce personas por salida: hay que agarrarse fuerte y casi siempre se acaba en el agua. No hace falta saber nadar."
+          }
+        },
+        {
+          label: "Fly Fish",
+          duration: { it: "Circa 10 minuti", en: "About 10 minutes", es: "Unos 10 minutos" },
+          priceAdult: 18,
+          priceChild: 18,
+          desc: {
+            it: "La zattera che con la velocità si stacca dall'acqua e si alza come un'ala, fino a sei persone per corsa. Su questa bisogna saper nuotare.",
+            en: "The raft that lifts off the water like a wing as the boat picks up speed, up to six people per ride. For this one you need to be able to swim.",
+            es: "La balsa que con la velocidad se despega del agua y se eleva como un ala, hasta seis personas por salida. En esta hay que saber nadar."
+          }
+        },
+        {
+          label: "Crazy UFO & Twister",
+          duration: { it: "15 minuti", en: "15 minutes", es: "15 minutos" },
+          priceAdult: 18,
+          priceChild: 18,
+          desc: {
+            it: "Il gonfiabile rotondo che gira e sbanda dietro al motoscafo, fino a otto persone per corsa. È la corsa più lunga delle tre e parte dal Pantalán 4.",
+            en: "The round inflatable that spins and slides behind the speedboat, up to eight people per ride. It is the longest of the three and leaves from Pantalán 4.",
+            es: "El hinchable redondo que gira y derrapa detrás de la lancha, hasta ocho personas por salida. Es la salida más larga de las tres y sale del Pantalán 4."
+          }
+        }
+      ]
     },
+    desc: {
+      it: "Una corsa breve sul gonfiabile trainato dal motoscafo, davanti a Puerto Colón: la banana classica, il Fly Fish che si alza sull'acqua o il Crazy UFO che gira su se stesso. Dieci o quindici minuti, giubbotto e briefing compresi, con il personale del motoscafo che segue la corsa dall'inizio alla fine. Al porto ci si arriva da soli.",
+      en: "A short ride on an inflatable towed by a speedboat, just off Puerto Colón: the classic banana, the Fly Fish that lifts off the water or the Crazy UFO that spins on itself. Ten or fifteen minutes, life jacket and briefing included, with the speedboat crew watching the ride from start to finish. You make your own way to the marina.",
+      es: "Una salida corta en el hinchable remolcado por la lancha, frente a Puerto Colón: la banana clásica, el Fly Fish que se eleva sobre el agua o el Crazy UFO que gira sobre sí mismo. Diez o quince minutos, chaleco y briefing incluidos, con el personal de la lancha siguiendo la salida de principio a fin. Al puerto se llega por cuenta propia."
+    },
+    notes: [
+      {
+        it: "Si sale dai 10 anni compiuti. Chi non ha ancora 16 anni deve essere accompagnato da un adulto.",
+        en: "Minimum age 10. Anyone under 16 must be accompanied by an adult.",
+        es: "Se sube a partir de los 10 años cumplidos. Los menores de 16 deben ir acompañados de un adulto."
+      },
+      {
+        it: "Sul Fly Fish bisogna saper nuotare. Sulla banana e sul Crazy UFO no: basta il giubbotto, che è compreso.",
+        en: "On the Fly Fish you need to be able to swim. On the banana and the Crazy UFO you do not: the life jacket is enough, and it is included.",
+        es: "En el Fly Fish hay que saber nadar. En la banana y en el Crazy UFO no: basta el chaleco, que está incluido."
+      },
+      {
+        it: "Sconsigliato a chi ha problemi di schiena o di cuore, in gravidanza, e a chi in acqua non si sente a proprio agio: è una corsa fisica e si finisce in mare.",
+        en: "Not advisable if you have back or heart problems, during pregnancy, or if you are not comfortable in the water: it is a physical ride and you end up in the sea.",
+        es: "No se recomienda a quien tiene problemas de espalda o de corazón, durante el embarazo, ni a quien no se siente cómodo en el agua: es una salida física y se acaba en el mar."
+      },
+      {
+        it: "Non c'è il ritiro in hotel: al Puerto Colón ci si arriva da soli. Il Crazy UFO parte dal Pantalán 4, gli altri due dal molo dei gonfiabili.",
+        en: "There is no hotel pick-up: you make your own way to Puerto Colón. The Crazy UFO leaves from Pantalán 4, the other two from the inflatables' jetty.",
+        es: "No hay recogida en el hotel: se llega por cuenta propia a Puerto Colón. El Crazy UFO sale del Pantalán 4, los otros dos del pantalán de los hinchables."
+      },
+      {
+        it: "Porta il costume da bagno, un asciugamano e la crema solare. Al porto ci sono le cassette dove lasciare scarpe, telefono e chiavi.",
+        en: "Bring a swimsuit, a towel and sun cream. There are lockers at the marina for shoes, phone and keys.",
+        es: "Lleva bañador, una toalla y crema solar. En el puerto hay taquillas para dejar zapatos, móvil y llaves."
+      },
+      {
+        it: "Le foto e i video della corsa non sono compresi: si comprano sul posto, lo stesso giorno.",
+        en: "Photos and videos of the ride are not included: you can buy them on the spot, on the day.",
+        es: "Las fotos y los vídeos de la salida no están incluidos: se compran allí mismo, el mismo día."
+      },
+      {
+        it: "Il prezzo è a persona, per una corsa. Per i gruppi ci sono tariffe dedicate: scrivicelo nella richiesta.",
+        en: "The price is per person, for one ride. There are group rates: tell us in your request.",
+        es: "El precio es por persona, por una salida. Para grupos hay tarifas especiales: indícanoslo en la solicitud."
+      }
+    ],
     image: "banana-boat.jpg",
     published: true
   },

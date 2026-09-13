@@ -140,22 +140,28 @@ mandato dall'ufficio già in JSON pulito: diciannove prodotti presi dall'API Woo
 del loro sito (`wp-json/wc/store/v1/products`), più l'indirizzo del negozio e le anomalie
 trovate durante l'estrazione.
 
-È tutto dentro la scheda `surf-lesson`, che prima era un segnaposto vuoto, tranne due
-cose:
+Nella scheda `surf-lesson`, che prima era un segnaposto vuoto, sono finite **solo le nove
+lezioni**. Resta fuori:
 
-- la **tariffa residenti** (25 €, `clases-grupales-para-residentes`) è riservata a chi
+- tutto il **noleggio delle tavole** (le sei softboard a 15 €, la fibra a 20, la longboard
+  a 25): il proprietario ha detto il 13 settembre 2026 che ad Admiral interessano solo le
+  lezioni. I prezzi restano qui per il giorno che cambiasse idea, e la strada era il prezzo
+  scritto **nell'etichetta** della variante ("da 15 € al giorno"), perché il fornitore
+  vende a giornate e pubblica solo il primo giorno;
+- la **tariffa residenti** (25 €, `clases-grupales-para-residentes`), riservata a chi
   risiede a Tenerife: Admiral vende a turisti, e un prezzo che il cliente non può avere è
   peggio di nessun prezzo;
 - i due **prodotti di test** del fornitore (0,05 € e 0 €), che il file segna già in
   `esclusi`.
 
-Le **sei softboard** del file sono una variante sola in catalogo: costano tutte 15 € e
-cambiano solo di misura, che in negozio si sceglie guardando il cliente.
+Il campo `anomalie_da_verificare` è l'elenco delle domande che il file si portava dietro.
+Tre sono chiuse dal proprietario (13 settembre 2026) e **il file non è stato ritoccato** —
+resta com'è arrivato, la risposta sta qui:
 
-Il campo `anomalie_da_verificare` è l'elenco delle domande ancora aperte, e vale la pena
-leggerlo prima di toccare la scheda: la più importante è la **muta nel noleggio**, che
-sulla pagina del fornitore è scritta compresa in un punto e non compresa in un altro. In
-catalogo non è né fra le incluse né negata: finché non risponde la scuola, l'unica frase
-vera è che lo conferma l'ufficio.
+- la **muta nel noleggio** (compresa in un punto della loro pagina, non compresa in un
+  altro) non è più una domanda: il noleggio non si vende;
+- il **minimo di 13 anni** vale per tutte le lezioni, non solo per quelle di gruppo, anche
+  se il loro sito lo scrive solo lì;
+- le lezioni durano **2 ore tutte**, non solo quelle del pacchetto da 3.
 
 Le **foto** non servono: la scheda usa `surf-lesson.jpg`, che era già in `assets/`.

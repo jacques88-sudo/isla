@@ -10745,3 +10745,71 @@ Da confermare con l'ufficio, in ordine di quanto costa sbagliarle:
 6. Se il **numero massimo di 6 persone e il minimo di 13 anni** valgono davvero solo per le
    lezioni di gruppo: sulla pagina del fornitore quel testo è incollato anche sotto le
    private, e sembra un copia-incolla loro più che un dato.
+
+## 13 settembre 2026 — Le tre correzioni del proprietario sul surf (v309)
+
+Arrivate subito dopo la consegna, e tutte e tre su punti che erano stati segnalati come
+"da confermare". Come sui gonfiabili: **scriverli invece di tapparli** con un valore
+verosimile fa sì che il proprietario corregga in una riga.
+
+**Il noleggio delle tavole esce dal catalogo.** «A noi interessano solo le lezioni.» Via le
+tre varianti (softboard, fibra, longboard) e con loro il "da 15 € al giorno"
+nell'etichetta, la giornata di 12 ore dalle 08:30 e i due `times: []`. Di conseguenza **il
+titolo torna a parlare solo di lezioni** — "Lezioni di surf", non più "Surf: lezioni e
+noleggio tavole": un titolo che promette il noleggio su una scheda che non ce l'ha è una
+porta che sbatte in faccia. Restano nove varianti.
+
+Due cose che il noleggio si è portato via risolvendosi da sole:
+
+- **la muta nel noleggio non è più una domanda.** Era la prima delle cose da confermare (la
+  pagina del fornitore diceva compresa in un punto e non compresa in un altro): senza
+  noleggio non c'è più un posto dove quell'ambiguità possa far danno. Nelle lezioni la muta
+  è compresa e lo è sempre stata;
+- **`included` è salito sulla scheda.** Con le sole lezioni, `board`, `wetsuit` e `guide`
+  sono veri per tutte e nove le varianti, che è la condizione per stare in cima. Prima sulla
+  scheda c'era solo `board`, perché il noleggio è la tavola e basta.
+
+I prezzi del noleggio restano nel file grezzo e il perché della strada scelta
+(prezzo nell'etichetta, non in `price`) sta scritto in un commento nella scheda: se un
+giorno il proprietario cambia idea non si ricomincia da capo.
+
+**L'età è 13+ per tutti, non solo per il gruppo.** Il sito del fornitore scriveva "max 6
+persone, dai 13 anni" solo sotto le lezioni di gruppo, e quel testo sembrava un
+copia-incolla finito anche sotto le private — era la sesta domanda della lista. Il
+proprietario dice che **vale per tutte**: singole, di gruppo e per famiglie. Quindi
+`ages: { adult: "13+" }` sulla scheda, e in pagina si legge "Adulti (13+) €35".
+
+`family` **resta `false`**, e adesso per un motivo pieno invece che per prudenza: sotto i 13
+anni non si entra in acqua con la scuola, quindi il filtro "Con bambini" non la deve
+pescare. Niente fascia `child` e niente `priceChild`: sopra i 13 anni si paga tutti uguale,
+non esistono due tariffe da distinguere.
+
+Una conseguenza che si vede solo aprendo la finestra della richiesta: il contatore
+"Bambini" c'è lo stesso, perché è di tutte le schede. Un genitore che scrive il figlio di
+14 anni lì dentro farebbe un totale più basso del vero (i bambini senza `priceChild` non
+sommano niente). Per questo la nota sull'età finisce con **"nella richiesta conta anche i
+ragazzi fra gli adulti"**: una riga di testo al posto di un campo nuovo. Su Utopia (18+) il
+problema non si pone — nessuno chiama "bambino" un diciassettenne per sbaglio, e comunque
+non sale.
+
+**Tutte le lezioni durano 2 ore.** Il fornitore la dichiarava solo sul pacchetto da 3. Ora
+`duration: "2 ore"` sta sulla scheda, e ogni pacchetto porta la sua ("3 lezioni da 2 ore",
+"5 lezioni da 2 ore", "7 lezioni da 2 ore"): la variante vince sulla scheda, e detta così
+dice **due cose in una riga** — quante sono e quanto durano. Sulle tre lezioni singole la
+riga della scheda basta.
+
+**Provato nel browser vero** (420px, italiano): nove bottoni, la durata segue la variante,
+"Adulti (13+) €35", "Cosa è incluso" mostra Tavola + Muta + Guida su tutte, le sei note
+escono. Nella finestra della richiesta **2 adulti sulla lezione di gruppo fanno €70**
+("2 adulti × €35") e la variante per famiglie **non mostra nessun totale**, che è quello
+che deve fare: 120 € sono del gruppo intero. Nessun errore in console. `node controlla.js`
+→ 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v309`.
+
+Resta da confermare, molto meno di prima:
+
+1. **La durata delle lezioni private** — il proprietario ha detto "durano tutte 2 ore" e
+   così è scritto; se le private fossero più corte, è una riga.
+2. **Il massimo di 6 persone**: è scritto solo nella descrizione della lezione di gruppo, e
+   non è sicuro che valga anche per la lezione riservata a famiglie e amici (che arriva a
+   cinque nel listino, quindi il dubbio è piccolo).
+3. **Il punto di ritrovo**: oggi la nota dice l'indirizzo del negozio e rimanda all'ufficio.

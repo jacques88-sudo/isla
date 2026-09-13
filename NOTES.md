@@ -10813,3 +10813,40 @@ Resta da confermare, molto meno di prima:
    non è sicuro che valga anche per la lezione riservata a famiglie e amici (che arriva a
    cinque nel listino, quindi il dubbio è piccolo).
 3. **Il punto di ritrovo**: oggi la nota dice l'indirizzo del negozio e rimanda all'ufficio.
+
+## 13 settembre 2026 — Il tetto di sei vale per tutte le lezioni (v310)
+
+Era la penultima domanda rimasta: il "max 6 persone" stava scritto solo nella descrizione
+della lezione di gruppo, e non si sapeva se valesse anche per quella riservata a famiglie e
+amici. Il proprietario: **sì, per tutte massimo 6 persone**.
+
+Scritto in tre posti, ognuno per un motivo diverso:
+
+- **una nota**, che è il posto dove una regola vale per tutta la scheda: "in acqua non si è
+  mai più di sei per istruttore";
+- **nell'etichetta della variante a gruppo**, che da "(da 2 persone)" diventa **"(da 2 a 6
+  persone)"**: lì il numero è parte della scelta, e chi è in sette deve saperlo prima di
+  premere il bottone, non dopo;
+- **nella descrizione di quella variante**, per la crepa che il tetto apre.
+
+**La crepa: il listino arriva a cinque, il tetto a sei.** Gli scaglioni del fornitore sono
+120 € in due, 165 in tre, 200 in quattro, 225 in cinque — e si fermano lì. Gli scarti (45,
+35, 25) non sono una progressione da cui indovinare il sesto: 245? 240? Sarebbe un numero
+verosimile e inventato, cioè il modo preciso in cui si finisce per alzare un prezzo già
+letto. La descrizione dice **"in sei si può, e il prezzo del sesto posto te lo confermiamo
+noi"**: è vero oggi, non promette una cifra, e non fa tornare indietro chi è in sei.
+
+Vale la pena notare che **una risposta ha aperto una domanda nuova**: prima il gruppo
+arrivava a cinque e i prezzi c'erano tutti. È il caso in cui confermare un limite più largo
+del listino scopre un buco che prima non c'era — da tenere a mente quando una conferma
+sembra chiudere e basta.
+
+Il **massimo non tocca la lezione privata** (un istruttore per un allievo) né i prezzi a
+testa: sei è un tetto, non una tariffa.
+
+**Provato nel browser vero** (420px, italiano): il bottone dice "(da 2 a 6 persone) €120",
+la descrizione esce per esteso sotto, le sette note al loro posto, nessun errore in console.
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v310`.
+
+Sul surf resta una cosa sola: **il prezzo del sesto posto** nella lezione per famiglie e
+amici. E, quando ci sarà, il punto di ritrovo.

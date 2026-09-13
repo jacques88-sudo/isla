@@ -162,6 +162,10 @@ resta com'è arrivato, la risposta sta qui:
   altro) non è più una domanda: il noleggio non si vende;
 - il **minimo di 13 anni** vale per tutte le lezioni, non solo per quelle di gruppo, anche
   se il loro sito lo scrive solo lì;
-- le lezioni durano **2 ore tutte**, non solo quelle del pacchetto da 3.
+- le lezioni durano **2 ore tutte**, non solo quelle del pacchetto da 3;
+- il **massimo di 6 persone** vale per tutte le lezioni, non solo per quelle di gruppo. Da
+  qui una domanda nuova: gli scaglioni della lezione per famiglie e amici si fermano a
+  cinque (120-165-200-225 €), quindi **il prezzo del sesto posto non c'è** e in scheda è
+  scritto che lo conferma l'ufficio. Non si ricava dagli altri: gli scarti sono 45, 35, 25.
 
 Le **foto** non servono: la scheda usa `surf-lesson.jpg`, che era già in `assets/`.

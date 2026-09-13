@@ -3643,15 +3643,15 @@ const ESPLORA_CATALOG = [
           // A gruppo, non a testa: niente priceAdult, se no il totale
           // moltiplicherebbe 120 € per il numero di persone.
           label: {
-            it: "Lezione privata per famiglie o amici (da 2 persone)",
-            en: "Private lesson for family or friends (from 2 people)",
-            es: "Clase privada para familias o amigos (desde 2 personas)"
+            it: "Lezione privata per famiglie o amici (da 2 a 6 persone)",
+            en: "Private lesson for family or friends (2 to 6 people)",
+            es: "Clase privada para familias o amigos (de 2 a 6 personas)"
           },
           price: 120,
           desc: {
-            it: "Lezione riservata al tuo gruppo, con l'istruttore solo per voi: si può essere di livelli diversi, principianti compresi. Il prezzo è del gruppo intero e non a testa, e si parte da due persone: 120 € in due, 165 € in tre, 200 € in quattro, 225 € in cinque.",
-            en: "A lesson kept for your own group, with the instructor only for you: you can be at different levels, complete beginners included. The price is for the whole group and not per person, and it starts at two people: €120 for two, €165 for three, €200 for four, €225 for five.",
-            es: "Clase reservada a tu grupo, con el instructor solo para vosotros: podéis ser de niveles distintos, principiantes incluidos. El precio es del grupo entero y no por persona, y se empieza desde dos personas: 120 € en dos, 165 € en tres, 200 € en cuatro, 225 € en cinco."
+            it: "Lezione riservata al tuo gruppo, con l'istruttore solo per voi: si può essere di livelli diversi, principianti compresi. Il prezzo è del gruppo intero e non a testa, e si parte da due persone: 120 € in due, 165 € in tre, 200 € in quattro, 225 € in cinque. In sei si può, e il prezzo del sesto posto te lo confermiamo noi.",
+            en: "A lesson kept for your own group, with the instructor only for you: you can be at different levels, complete beginners included. The price is for the whole group and not per person, and it starts at two people: €120 for two, €165 for three, €200 for four, €225 for five. Six is possible too, and we confirm the price for the sixth place.",
+            es: "Clase reservada a tu grupo, con el instructor solo para vosotros: podéis ser de niveles distintos, principiantes incluidos. El precio es del grupo entero y no por persona, y se empieza desde dos personas: 120 € en dos, 165 € en tres, 200 € en cuatro, 225 € en cinco. En seis también se puede, y el precio de la sexta plaza te lo confirmamos nosotros."
           }
         },
         {
@@ -3744,6 +3744,9 @@ const ESPLORA_CATALOG = [
       { it: "Si va dai 13 anni in su, ed è lo stesso per tutte le lezioni: in gruppo, private o riservate alla famiglia. Il prezzo è uguale per tutti, quindi nella richiesta conta anche i ragazzi fra gli adulti.",
         en: "From 13 years old, and it is the same for every lesson: group, private or kept for the family. Everyone pays the same, so count teenagers among the adults when you send the request.",
         es: "A partir de los 13 años, y es igual para todas las clases: en grupo, privadas o reservadas a la familia. El precio es igual para todos, así que en la solicitud cuenta también a los chavales entre los adultos." },
+      { it: "In acqua non si è mai più di sei per istruttore: vale per le lezioni di gruppo, per i pacchetti e per quelle riservate a una famiglia o a un gruppo di amici.",
+        en: "There are never more than six of you in the water per instructor: that goes for the group lessons, for the packages and for the ones kept for a family or a group of friends.",
+        es: "En el agua nunca se está más de seis por instructor: vale para las clases en grupo, para los packs y para las reservadas a una familia o a un grupo de amigos." },
       { it: "Ogni lezione dura due ore, anche quelle dentro un pacchetto.",
         en: "Every lesson lasts two hours, the ones inside a package included.",
         es: "Cada clase dura dos horas, también las que van dentro de un pack." },

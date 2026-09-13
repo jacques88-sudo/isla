@@ -10479,3 +10479,143 @@ chiede, e finche' non arriva la risposta si scrive che e' una lettura, non un da
 
 Da chiedere ancora, un giorno: se il paracadute a 2 o 3 persone si paga a testa comunque
 (oggi il totale moltiplica per le persone, che e' quello che il proprietario ha detto).
+
+## 13 settembre 2026 — Banana, Fly Fish e Crazy UFO: tre corse, una scheda sola (v305)
+
+Sono arrivate tre pagine di canaryvip.com — Flyfish Tenerife, Crazy UFO & Twister, Banana
+Boat Tenerife — e il proprietario ha detto subito come volerle: **una scheda sola con le
+varianti**, come Freebird o i quad, non tre schede in fila. La decisione è giusta anche
+guardando i dati: stesso porto, stesso prezzo di partenza, stessa mezz'ora di vita, stesso
+gesto. Tre riquadri identici nell'elenco avrebbero solo fatto sembrare il catalogo più
+grande di quello che è.
+
+**La scheda esisteva già, e quello è stato il primo controllo.** `banana-boat` era in
+catalogo dal principio, come "Banana Boat or Fly Fish Ride" a €18 con zona e durata "Da
+definire": due dei tre gonfiabili erano già lì. Il terzo (Crazy UFO) è diventato la terza
+variante, non una scheda nuova — è la stessa trappola del Kalima Kat, presa in tempo
+stavolta perché il confronto prezzo/porto/durata si fa **prima** di scrivere.
+
+**Il titolo non è stato toccato**: "Banana Boat or Fly Fish Ride" è come lo scrive Admiral
+e i titoli restano suoi. Resta però una cosa da decidere: ora la scheda contiene anche il
+Crazy UFO, che nel titolo non compare, e chi scorre l'elenco cercando quello non lo trova.
+Non l'ho cambiato da solo perché non è un dato mancante, è una scelta commerciale.
+
+**Le tre varianti, con la loro durata.** `options.choices[]` con `duration` dentro ciascuna:
+Banana Boat 10 minuti, Fly Fish "Circa 10 minuti" (la fonte diceva "approssimativi", e una
+durata approssimata scritta come esatta è una promessa in più), Crazy UFO 15 minuti. Sulla
+scheda `duration` è "10 o 15 minuti", che è quello che si legge nell'elenco prima di
+scegliere. Nel browser la riga "Durata" di "In breve" cambia davvero a ogni bottone
+premuto: è il controllo che sul cavallo non era stato fatto e aveva lasciato una durata
+ferma sulla variante sbagliata.
+
+**Il prezzo: €18 a persona, uguale su tutte e tre.** Le tre pagine dicono tutte "da
+€18,00" e le varianti vere sono caricate via JS, quindi non c'erano importi per i gruppi
+né per gli spettatori. `priceAdult: 18` e `priceChild: 18`, ripetuti dentro ogni variante.
+**Da confermare con l'ufficio**: che i 18 € siano a testa e non a corsa, e che i ragazzi
+paghino come gli adulti. Il verso dell'errore è quello giusto — se domani il prezzo
+bambini è più basso si abbassa, mentre partire da un numero più basso e poi alzarlo è la
+cosa che fa arrabbiare il cliente.
+
+**`ages: { adult: "16+", child: "10-15" }`, e non è un listino, è l'età minima.** La fonte
+dà due regole d'accesso: si sale dai 10 anni, sotto i 16 serve un adulto. Scritte come
+fasce diventano visibili accanto al prezzo, che è dove il cliente le legge davvero — "10
+anni" in fondo alle note lo trova solo chi arriva in fondo. Le due fasce combaciano
+(10-15 e 16+, nessun buco, nessuna sovrapposizione). **Niente `priceInfant`**: sotto i 10
+anni non si sale proprio, e assente vuol dire "non lo sappiamo o non si può", non gratis.
+
+**`swimstop` non c'entra e non è stato messo.** Qui non c'è nessuna sosta bagno: in acqua
+ci si finisce, non ci si ferma. Le icone sono tre e valgono per tutte le varianti —
+`lifejacket`, `equipment`, `guide` — le stesse del parascending, che è lo stesso porto e
+lo stesso tipo di supervisione.
+
+**Il saper nuotare cambia con la variante, quindi non è un'icona.** Il Fly Fish lo chiede,
+la banana e il Crazy UFO no. Sta nella `desc` di ogni variante e in una nota: le icone
+dicono "vale sempre", e questa vale su una corsa su tre.
+
+**`times` non scritto.** Le fonti dicono "giri disponibili durante tutto l'arco della
+giornata" e "orario scelto in fase di prenotazione", che non sono orari. Restano le fasce
+segnaposto più "Da concordare", come prima. Niente `days`: si fa tutti i giorni.
+
+**Non copiato da CanaryVIP**: la loro cancellazione (24 ore, di nuovo lo stesso numero del
+nostro preavviso), i punteggi 5.0 con 7, 6 e 2 recensioni, i "sconti gruppo" senza
+importi, le foto. Resta la foto Admiral che c'era, `banana-boat.jpg`. Le descrizioni sono
+riscritte da zero nelle tre lingue.
+
+**Niente pickup**, come sul parascending: le fonti dicono che il trasporto non è compreso
+e che al porto ci si arriva da soli. Nessuna riga `transfer`, niente `PICKUP_TIMES`,
+niente `PICKUP_IN_HOTEL`. Un dettaglio vero però c'è ed è in nota: **il Crazy UFO parte
+dal Pantalán 4**, gli altri due dal molo dei gonfiabili. È un fornitore diverso (la fonte
+lo chiama RADIKAL) dentro lo stesso porto, ed è esattamente il caso in cui "il punto
+dipende solo dall'hotel" non vale. Resta il solito neo già annotato altrove: la finestra
+chiede "Dove alloggi (utile per il pick-up)" anche qui, e vale per tutte le schede senza
+ritiro — non è roba di questa scheda.
+
+**Provato nel browser vero** (390px, italiano e inglese): i tre bottoni compaiono sotto la
+descrizione, la `desc` della variante scelta esce sotto i bottoni una alla volta, "In
+breve" mostra Punto di partenza Puerto Colón / Durata che segue la variante (10 minuti,
+Circa 10 minuti, 15 minuti) / Adulti (16+) €18 / Bambini (10-15) €18 / Famiglie con
+bambini; le tre icone ci sono; le sette note escono in italiano; nella finestra il titolo
+diventa "Banana Boat or Fly Fish Ride — Crazy UFO & Twister" e **2 adulti + 1 bambino
+fanno €54** ("2 adulti × €18 + 1 bambino × €18"), che è il conto giusto a 18 € a testa;
+nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato
+`sw.js` a `isla-v305`.
+
+Da confermare con l'ufficio, in una parola ciascuno: se i 18 € sono a persona; se i
+ragazzi 10-15 pagano come gli adulti; se il titolo deve nominare anche il Crazy UFO; gli
+orari di apertura veri del porto, che farebbero sparire le fasce segnaposto.
+
+## 13 settembre 2026 — Le tre correzioni del proprietario sui gonfiabili (v306)
+
+Tutte e tre arrivate insieme, subito dopo la consegna, e tutte e tre su punti che erano
+stati segnalati come "da confermare". È il motivo per cui vale la pena scriverli invece di
+tapparli con un numero inventato: il proprietario corregge in una riga.
+
+**Il prezzo è 15 €, non 18, e vale per tutti.** I 18 € venivano dal "da €18,00" delle tre
+pagine di canaryvip.com; il prezzo vero di Admiral è 15 € a persona per una corsa, ragazzi
+compresi. `priceFrom`, `priceAdult` e `priceChild` a 15 sulla scheda e dentro tutte e tre
+le varianti. Di nuovo la strada giusta, la stessa del kayak (45 → 35) e del parascending
+(60 → 55): **si parte dal numero alto della fonte e si aspetta la conferma**. Scendere non
+fa danni a nessuno, salire dopo che il cliente ha letto sì. Le fasce `16+` e `10-15`
+restano, anche se ora i due prezzi coincidono: qui non servono a distinguere due tariffe
+ma a dire **da che età si sale**, ed è accanto al prezzo che il cliente le legge.
+
+**Il Crazy UFO entra nel titolo**: "Banana Boat or Fly Fish Ride" diventa **"Banana Boat,
+Fly Fish or Crazy UFO Ride"**. Era la domanda lasciata aperta — la scheda conteneva un
+gonfiabile che nel titolo non c'era, e chi scorreva l'elenco cercando quello non lo
+trovava. Non era un dato mancante ma una scelta commerciale, per questo non era stata
+fatta da soli: i titoli sono di Admiral e li cambia Admiral.
+
+**Partono tutti e tre da Puerto Colón.** La fonte dava il Pantalán 4 solo per il Crazy UFO
+(operatore RADIKAL) e quella distinzione era finita nella descrizione della variante e in
+nota. Il proprietario dice che il molo è lo stesso per tutti e tre, e la distinzione è
+stata tolta da tutte e due. Vale la pena notarlo: era **esattamente** il caso in cui una
+fonte di rivenditore sembra più precisa di quanto sia, e un molo sbagliato dentro un porto
+grande manda il cliente dalla parte opposta della darsena. La precisione di una fonte non
+verificata non è un dato: chi vende la corsa sa dove parte.
+
+**Gli orari: `times: ["10:00 - 18:00"]`, una voce sola.** Il proprietario ha detto "dalle
+10 alle 18", ed è stato scritto **come intervallo e non come otto partenze**. È la lezione
+del parascending, presa in tempo stavolta: là "dalle 10 alle 18" era diventato nove
+partenze con l'ultima alle 18:00, e il proprietario aveva dovuto correggere che l'ultimo
+volo era alle 17:00. Qui l'ambiguità non si pone proprio, perché le corse **sono
+continue**: non ci sono turni fra cui scegliere, si va al molo e si sale. È lo stesso caso
+del karting (`"10:00 - 20:30"`), e la soluzione è la stessa. In una nota c'è scritto per
+esteso che le corse sono continue.
+
+Una conseguenza da tenere d'occhio: con `times` pieno, "Da concordare" e le sette fasce
+segnaposto spariscono, e nella finestra della richiesta il menu "A che ora" ha adesso una
+voce sola. Chi ha una preferenza sull'ora la scrive nelle note, come sul karting. Se un
+giorno il proprietario vuole che il cliente indichi un'ora, la strada è dare le fasce vere
+del molo, non rimettere quelle segnaposto.
+
+**Provato nel browser vero** (390px, italiano): titolo nuovo in testa e dentro la finestra
+della richiesta; "In breve" mostra Orari 10:00 - 18:00 su tutte e tre le varianti e la
+Durata che continua a seguire la variante (10 minuti / Circa 10 minuti / 15 minuti);
+Adulti (16+) €15 e Bambini (10-15) €15; le otto note escono tutte; nella finestra il menu
+"A che ora" ha solo "10:00 - 18:00" e **2 adulti + 1 bambino fanno €45** ("2 adulti × €15
++ 1 bambino × €15"); nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi
+invariati. Alzato `sw.js` a `isla-v306`.
+
+Resta da chiedere una cosa sola: se i 15 € valgono anche per i gruppi o se lì c'è una
+tariffa diversa (la nota dice di scriverlo nella richiesta, che per ora è la risposta
+onesta).

@@ -130,3 +130,32 @@ Gli **undici link delle foto** servono ancora: `canaventura.es` e il suo CDN
 (`crokis-sites.fra1.cdn.digitaloceanspaces.com`) sono bloccati dal proxy di rete, come
 `kartingamericas.com`, quindi le foto le deve mandare l'ufficio. Finché non arrivano le tre
 schede escono col riquadro "Foto in arrivo".
+
+---
+
+## `grezzo/franz-surf-school.json`
+
+Il listino della **Franz Surf School** di Playa de las Américas (13 settembre 2026),
+mandato dall'ufficio già in JSON pulito: diciannove prodotti presi dall'API WooCommerce
+del loro sito (`wp-json/wc/store/v1/products`), più l'indirizzo del negozio e le anomalie
+trovate durante l'estrazione.
+
+È tutto dentro la scheda `surf-lesson`, che prima era un segnaposto vuoto, tranne due
+cose:
+
+- la **tariffa residenti** (25 €, `clases-grupales-para-residentes`) è riservata a chi
+  risiede a Tenerife: Admiral vende a turisti, e un prezzo che il cliente non può avere è
+  peggio di nessun prezzo;
+- i due **prodotti di test** del fornitore (0,05 € e 0 €), che il file segna già in
+  `esclusi`.
+
+Le **sei softboard** del file sono una variante sola in catalogo: costano tutte 15 € e
+cambiano solo di misura, che in negozio si sceglie guardando il cliente.
+
+Il campo `anomalie_da_verificare` è l'elenco delle domande ancora aperte, e vale la pena
+leggerlo prima di toccare la scheda: la più importante è la **muta nel noleggio**, che
+sulla pagina del fornitore è scritta compresa in un punto e non compresa in un altro. In
+catalogo non è né fra le incluse né negata: finché non risponde la scuola, l'unica frase
+vera è che lo conferma l'ufficio.
+
+Le **foto** non servono: la scheda usa `surf-lesson.jpg`, che era già in `assets/`.

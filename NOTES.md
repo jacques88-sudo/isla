@@ -10651,3 +10651,97 @@ e spagnolo, nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi
 Alzato `sw.js` a `isla-v307`.
 
 Sui gonfiabili non resta più niente in sospeso.
+
+## 13 settembre 2026 — Franz Surf School: la scheda del surf, che era vuota da sempre (v308)
+
+`surf-lesson` era un segnaposto rimasto in catalogo dal primo giorno: zona "Da definire",
+durata "Da definire", `priceFrom: null`, prezzi a zero, due righe di descrizione inventate.
+Adesso ha dentro il listino vero di una scuola, la **Franz Surf School** di Playa de las
+Américas (dati WooCommerce mandati dall'ufficio, salvati in
+`dati-fornitore/grezzo/franz-surf-school.json`).
+
+**Una scheda sola, dodici varianti.** La tentazione era di farne tre: lezioni, pacchetti,
+noleggio. È stata scartata per il motivo delle immersioni, che sono già fatte così: chi
+cerca il surf fa **una domanda sola** — "cosa voglio fare?" — e tre schede vicine con la
+stessa foto si leggono come dei doppioni (è il modo in cui è nato il caso Kalima Kat, da
+un'altra parte). Il titolo segue lo stesso schema di `immersioni`: **"Surf: lezioni e
+noleggio tavole"**, che dice subito che dentro c'è anche il noleggio. Qui il titolo è
+nostro e non di Admiral, quindi si può scrivere così.
+
+**Due modi di scrivere il prezzo, e servono tutti e due.**
+
+- Lezioni e pacchetti si pagano **a testa** e hanno un numero solo: `priceAdult` sulla
+  variante, e il totale della richiesta si fa (35, 80, 95, 140, 175, 230, 370, 490).
+- La **lezione riservata a famiglia o amici** si paga **a gruppo** e cambia con quante
+  persone siete: 120 € in due, 165 in tre, 200 in quattro, 225 in cinque. Lì c'è `price`
+  (il numero sul bottone) e **niente `priceAdult`**, così il totale si rifiuta di farsi
+  invece di moltiplicare 120 € per le teste. Gli scaglioni stanno scritti in `desc`, perché
+  `priceTiers` sta sulla scheda e non si può legare a una variante sola (stessa strada delle
+  VIP del Siam Park).
+- I **tre noleggi** sono un "a partire da": il fornitore vende a giornate e l'API espone
+  solo il prezzo del primo giorno. Un "da 15 €" non è un numero da sommare, quindi sta
+  **nell'etichetta** del bottone e non in `price` — la strada già battuta con le "3-4
+  immersioni con brevetto (40 € l'una)". In pagina la riga "Prezzo" dice "Su richiesta",
+  che è la verità.
+
+**Le sei softboard sono diventate una variante sola.** Il listino ne ha sei (6'6", 7'0",
+7'6", 8'0", in due marche) e costano **tutte 15 €**: sei bottoni identici avrebbero
+chiesto al cliente di scegliere una cosa che in negozio si decide guardandolo in faccia.
+Una variante, le misure in descrizione, e la frase che la misura la sceglie il negozio.
+
+**`included` sulla scheda tiene solo `board`.** È l'unica cosa vera per tutte e dodici le
+varianti — il noleggio *è* la tavola. Muta e istruttore stanno dentro le varianti delle
+lezioni: le icone della scheda vogliono dire "vale sempre", e sul noleggio non vale.
+
+**`family: false`, ed è un cambiamento rispetto al segnaposto.** L'unica età che il
+fornitore scrive è il **minimo di 13 anni sulle lezioni di gruppo**; sulle private e sul
+gruppo privato non c'è scritto niente. "Adatta ai bambini" con un 13+ nell'unico dato certo
+sarebbe una promessa non verificata, e il filtro "Con bambini" porterebbe lì una famiglia
+con un bambino di sei anni. Niente `ages` per lo stesso motivo: una fascia sola ("13+") in
+cima a una scheda dove quattro varianti su dodici non hanno un'età dichiarata direbbe più
+di quello che sappiamo. L'informazione sta in una nota, che può dire "questo sì, quest'altro
+chiedilo": è il posto giusto per un dato a metà.
+
+**Cosa non è entrato.** La **tariffa residenti** (25 €, "Clases Grupales para Residentes"):
+è riservata a chi risiede a Tenerife e Admiral vende a turisti — pubblicarla vuol dire far
+leggere a un cliente un prezzo che non può avere. I due **prodotti di test** del fornitore
+(0,05 € e 0 €) sono già segnati come esclusi nel file grezzo.
+
+**La muta nel noleggio: il buco lasciato aperto apposta.** La pagina del fornitore dice
+due cose diverse — il riepilogo breve dice che la muta non è inclusa, la descrizione lunga
+dice che ne è inclusa una corta. Non è stata messa fra le incluse (assente ≠ compreso) e
+non è stato scritto "non è compresa": in descrizione c'è che per più giorni e per la muta
+conferma l'ufficio, che è l'unica frase vera oggi. In `notes` la riga dice che muta, tavola
+e scarpette sono comprese **nelle lezioni e nei pacchetti**, e non nel noleggio della tavola
+da sola.
+
+**Orari e punto di ritrovo: non chiesti, come da regola sulle schede nuove.** `times` non
+c'è (restano le fasce segnaposto) tranne sui tre noleggi, dove c'è `times: []` — che per il
+catalogo vuol dire proprio "noleggio, l'ora si concorda". Gli orari delle lezioni
+**seguono la marea** e cambiano di giorno in giorno: sta in una nota, ed è un dato del
+fornitore, non una scusa. Il negozio è in Calle México 15; la nota lo dice e aggiunge che
+il **punto di ritrovo** lo conferma l'ufficio — un indirizzo di negozio non è una promessa
+di ritrovo, ed è il fornitore nuovo di cui non sappiamo dove passa a prendere il cliente.
+
+**La durata** la dichiara solo il pacchetto da 3 lezioni di gruppo (2 ore a lezione) e sta
+sulla sua variante. Sulla scheda resta "Da definire", che la pagina nasconde. Che le lezioni
+singole durino le stesse 2 ore è verosimile e **non è stato scritto**.
+
+**Provato nel browser vero** (420px): la pagina apre, i dodici bottoni cambiano prezzo,
+durata e riquadro "Cosa è incluso" uno per uno (Tavola sola sui noleggi, Tavola + Muta +
+Guida sulle lezioni), "In breve" mostra Playa de las Américas e la giornata di noleggio di
+12 ore dalle 08:30 dove serve, nessun errore in console (a parte Google Fonts, che il proxy
+di rete blocca sempre). `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js`
+a `isla-v308`.
+
+Da confermare con l'ufficio, in ordine di quanto costa sbagliarle:
+
+1. **La muta nel noleggio**: è compresa o no?
+2. **L'età minima delle lezioni private e di quella per famiglie** — se la scuola prende i
+   bambini piccoli, torna `family: true` e la nota si accorcia.
+3. **La tariffa residenti**: si vende o no? Oggi è fuori.
+4. **La durata** delle lezioni singole e dei pacchetti da 5 e 7.
+5. **Gli scaglioni del noleggio** oltre il primo giorno (il sito espone solo il minimo).
+6. Se il **numero massimo di 6 persone e il minimo di 13 anni** valgono davvero solo per le
+   lezioni di gruppo: sulla pagina del fornitore quel testo è incollato anche sotto le
+   private, e sembra un copia-incolla loro più che un dato.

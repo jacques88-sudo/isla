@@ -152,6 +152,15 @@
 //   privateOption → facoltativo: id dell'escursione in versione privata. Sulla
 //                pagina di dettaglio compare un rimando "vuoi la barca solo per
 //                il tuo gruppo?".
+//   privateTitle, privateLink → facoltativi, e vanno con privateOption:
+//                sostituiscono quelle due frasi fisse, che parlano di barche
+//                perche' li' sono nate. Servono dove la versione privata non e'
+//                una barca — sul tuk tuk "vuoi la barca" sarebbe la frase
+//                sbagliata — e si scrivono nelle tre lingue come tutto il resto.
+//                Senza questi campi resta il testo di sempre, quindi le schede
+//                delle barche non si toccano.
+//                    privateTitle: { it: "Vuoi il tuk tuk solo per il tuo gruppo?", ... }
+//                    privateLink:  { it: "Vedi i giri privati", ... }
 //   season     → facoltativo: quando l'attivita' si fa solo in certi mesi. Compare
 //                come etichetta sulla scheda, come riga sulla pagina di dettaglio e
 //                come avviso nella finestra della richiesta, cioe' prima che il
@@ -4795,36 +4804,116 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    // Fornitore: Tuk Tuk Sweet Tours S.L. (sweettourstenerife.com), lo stesso
+    // operatore della livrea in foto. Fornitore nuovo, quindi la domanda sul
+    // ritiro e' stata fatta prima di pubblicare: non passano sotto l'hotel, il
+    // ritrovo e' fisso davanti al Wakanda Origen. Per questo la scheda sta in
+    // PICKUP_NESSUNO (hotel.js) e il punto e' scritto nelle note. Il loro
+    // sistema di prenotazione (FareHarbor) non si usa: le richieste passano
+    // dall'ufficio come tutte le altre.
+    //
+    // Qui ci sono i due giri **in condivisione**, che si pagano a persona. I
+    // tre privati si pagano a gruppo e stanno in "tuk-tuk-privato", in fondo al
+    // file: due modi di pagare diversi sulla stessa scheda avrebbero messo
+    // "da €24" e "da €86 a gruppo" nella stessa riga di prezzo.
     id: "tuk-tuk",
     title: { it: "Tour in tuk tuk", en: "Tuk Tuk Tour", es: "Tour en tuk tuk" },
     category: "tour-isola",
     zone: "Costa Adeje",
-    duration: { it: "Da 1 ora", en: "From 1 hour", es: "Desde 1 hora" },
+    duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+    // Il sito del fornitore dice quattro lingue (anche italiano e francese), ma
+    // tutte e cinque le pagine di prenotazione ne scrivono due: "Disponible en
+    // español, inglés", e fra le cose incluse "Spanish and English guide". Qui
+    // si scrive la meno generosa: promettere una guida italiana che quel giorno
+    // non c'e' e' peggio che non offrirla. Da confermare con l'ufficio.
+    languages: ["Español", "English"],
+    // I due percorsi costano uguale, ma il prezzo va scritto **due volte**:
+    // sulla scheda e dentro ogni variante. Quando una variante e' scelta — e
+    // sulla pagina di dettaglio lo e' sempre, la prima parte gia' premuta — il
+    // sito NON ripiega sul prezzo della scheda: e' voluto, se no la cabina VIP
+    // di Siam Park mostrerebbe il prezzo del biglietto normale. Senza i numeri
+    // dentro le varianti questa scheda diceva "Prezzo: Su richiesta" e il
+    // totale non si faceva, con i 24 € scritti due righe piu' su.
+    // Quelli qui sotto servono alle richieste che partono senza variante.
     priceFrom: 24,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 24,
+    priceChild: 12,
+    // Fasce dalla pagina di prenotazione. Combaciano senza buchi (0-2, 3-10,
+    // 11+). Lo zero dei neonati e' scritto dal fornitore ("Gratis"), non
+    // dedotto.
+    ages: { adult: "11+", child: "3-10", infant: "0-2" },
+    priceInfant: 0,
+    included: ["guide"],
+    notes: [
+      {
+        it: "Il ritrovo è davanti al ristorante Wakanda Origen, in Avenida de España 10, a Costa Adeje. Il ritiro in hotel non è compreso: al punto di partenza ci si arriva per conto proprio, 10-15 minuti prima della partenza.",
+        en: "The meeting point is in front of the Wakanda Origen restaurant, Avenida de España 10, Costa Adeje. Hotel pickup is not included: you reach the departure point on your own, 10-15 minutes before the start.",
+        es: "El punto de encuentro es frente al restaurante Wakanda Origen, en Avenida de España 10, Costa Adeje. La recogida en el hotel no está incluida: al punto de salida se llega por cuenta propia, 10-15 minutos antes de la salida."
+      },
+      {
+        it: "Su ogni tuk tuk salgono al massimo 6 persone, sedute vicine e una di fronte all'altra. I bambini fino a 2 anni non pagano, ma viaggiano in braccio a un adulto con la cintura allacciata: è la regola del fornitore.",
+        en: "Each tuk tuk takes up to 6 people, seated close together and facing each other. Children up to 2 years old travel free, but on an adult's lap with the seatbelt fastened: that is the supplier's rule.",
+        es: "En cada tuk tuk suben como máximo 6 personas, sentadas juntas y unas frente a otras. Los niños de hasta 2 años no pagan, pero viajan en el regazo de un adulto con el cinturón abrochado: es la norma del proveedor."
+      },
+      {
+        it: "Il fornitore consiglia il tuk tuk in privato a chi ha difficoltà a muoversi o ha bisogno di più spazio: i posti restano gli stessi, ma il mezzo è solo del gruppo.",
+        en: "The supplier recommends the private tuk tuk for anyone with reduced mobility or who needs more room: the seats are the same, but the vehicle is your group's alone.",
+        es: "El proveedor recomienda el tuk tuk en privado a quien tiene dificultades de movilidad o necesita más espacio: las plazas son las mismas, pero el vehículo es solo del grupo."
+      },
+      {
+        it: "Porta crema solare e una bottiglia d'acqua.",
+        en: "Bring sunscreen and a bottle of water.",
+        es: "Lleva crema solar y una botella de agua."
+      }
+    ],
+    // I nomi sono quelli del sito del fornitore e restano uguali nelle tre
+    // lingue, come i nomi delle barche: sono quelli che l'ufficio cerca nel
+    // sistema quando conferma, e arrivano su WhatsApp scritti cosi'.
     options: {
       label: { it: "Percorso", en: "Route", es: "Ruta" },
       choices: [
-        { label: {
-            it: "Panoramico, con sosta per un drink",
-            en: "Scenic, with a drinks stop",
-            es: "Panorámica, con parada para tomar algo" } },
-        { label: {
-            it: "I punti principali di Costa Adeje",
-            en: "The main sights of Costa Adeje",
-            es: "Los puntos principales de Costa Adeje" } },
-        { label: {
-            it: "Completo, fino ai vulcani",
-            en: "The complete one, out to the volcanoes",
-            es: "La completa, hasta los volcanes" } }
+        {
+          label: "Costa Adeje Tour",
+          priceAdult: 24,
+          priceChild: 12,
+          desc: {
+            it: "Il giro dei paesi e delle spiagge del sud: Fañabé, la zona del Duque, la spiaggia della Enramada, La Caleta e Torviscas. Lungo la strada la guida racconta dove si mangia davvero e cosa vale la pena vedere nei giorni che restano.",
+            en: "The tour of the southern villages and beaches: Fañabé, the Duque area, La Enramada beach, La Caleta and Torviscas. Along the way the guide tells you where people really eat and what is worth seeing in the days you have left.",
+            es: "El recorrido por los pueblos y las playas del sur: Fañabé, la zona del Duque, la playa de La Enramada, La Caleta y Torviscas. Por el camino el guía cuenta dónde se come de verdad y qué merece la pena ver en los días que quedan."
+          }
+        },
+        {
+          label: "Secret Volcano Tour",
+          priceAdult: 24,
+          priceChild: 12,
+          desc: {
+            it: "Da Puerto Colón si sale alla Caldera del Rey, il monumento naturale sopra Costa Adeje: un vulcano spento, oggi coperto di piantagioni di banane, con La Gomera all'orizzonte. Per strada Torviscas, la marina e Las Américas, e la guida racconta com'è nata l'isola.",
+            en: "From Puerto Colón you climb to the Caldera del Rey, the natural monument above Costa Adeje: an extinct volcano, now covered in banana plantations, with La Gomera on the horizon. On the way, Torviscas, the marina and Las Américas, while the guide tells you how the island was born.",
+            es: "Desde Puerto Colón se sube a la Caldera del Rey, el monumento natural sobre Costa Adeje: un volcán apagado, hoy cubierto de plataneras, con La Gomera en el horizonte. Por el camino, Torviscas, la marina y Las Américas, mientras el guía cuenta cómo nació la isla."
+          }
+        }
       ]
     },
     family: true,
     desc: {
-      it: "Giro guidato in tuk tuk elettrico sulla costa di Adeje. Ci sono più percorsi: quello panoramico con sosta per un drink, quello dei punti principali di Costa Adeje e quello lungo che arriva fino ai vulcani.",
-      en: "A guided ride in an electric tuk tuk along the Adeje coast. There are several routes: the scenic one with a drinks stop, the one around the main sights of Costa Adeje, and the long one that reaches the volcanoes.",
-      es: "Recorrido guiado en tuk tuk eléctrico por la costa de Adeje. Hay varias rutas: la panorámica con parada para tomar algo, la de los puntos principales de Costa Adeje y la larga que llega hasta los volcanes."
+      it: "Un'ora in tuk tuk elettrico sulla costa di Adeje, con una guida che racconta. Due percorsi: quello dei paesi e delle spiagge del sud e quello che sale alla Caldera del Rey, il vulcano spento sopra Costa Adeje. Si va in sei, e c'è anche la versione privata.",
+      en: "An hour in an electric tuk tuk along the Adeje coast, with a guide who tells you about it. Two routes: the southern villages and beaches, and the climb to the Caldera del Rey, the extinct volcano above Costa Adeje. Six people go at a time, and there is a private version too.",
+      es: "Una hora en tuk tuk eléctrico por la costa de Adeje, con un guía que lo cuenta. Dos recorridos: el de los pueblos y las playas del sur y el que sube a la Caldera del Rey, el volcán apagado sobre Costa Adeje. Se va de seis en seis, y también existe la versión privada."
+    },
+    // Il rimando alla scheda privata, come sulle barche. Le due frasi sono
+    // scritte qui e non prese da i18n.js perche' quelle fisse dicono "vuoi la
+    // barca solo per il tuo gruppo?" e "vedi il charter privato": giuste sulle
+    // barche, sbagliate su un tuk tuk.
+    privateOption: "tuk-tuk-privato",
+    privateTitle: {
+      it: "Vuoi il tuk tuk solo per il tuo gruppo?",
+      en: "Want the tuk tuk just for your group?",
+      es: "¿Quieres el tuk tuk solo para tu grupo?"
+    },
+    privateLink: {
+      it: "Vedi i giri privati",
+      en: "See the private tours",
+      es: "Ver los tours privados"
     },
     image: "tuk-tuk.jpg",
     published: true
@@ -5074,6 +5163,96 @@ const ESPLORA_CATALOG = [
     },
     image: "luxury-cruiser.jpg",
     gallery: ["luxury-cruiser-2.jpg", "luxury-cruiser-3.jpg", "luxury-cruiser-4.jpg"],
+    published: true
+  },
+
+  // La gemella privata del tuk tuk, come le gemelle delle barche qui sopra:
+  // stessa foto, stesso fornitore (Tuk Tuk Sweet Tours), stesso ritrovo, ma il
+  // prezzo e' del mezzo e non della persona. Sta su una scheda sua e non fra le
+  // varianti di "tuk-tuk" perche' li' convivrebbero due modi di pagare diversi:
+  // la riga del prezzo dell'elenco puo' dire "da €24" **oppure** "da €86 a
+  // gruppo", non tutti e due, e `priceUnit` vale per la scheda intera.
+  {
+    id: "tuk-tuk-privato",
+    title: { it: "Tuk tuk privato", en: "Private Tuk Tuk Tour", es: "Tuk tuk privado" },
+    category: "tour-privati",
+    zone: "Costa Adeje",
+    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
+    languages: ["Español", "English"],
+    priceFrom: 86,
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    // A gruppo, quindi niente prezzi a persona: il totale automatico non si fa,
+    // che e' giusto — il prezzo cambia con quanti sono, e moltiplicarlo per le
+    // persone darebbe un numero falso (vedi prezziAPersona() in escursioni.js).
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    included: ["guide"],
+    notes: [
+      {
+        it: "Il ritrovo è davanti al ristorante Wakanda Origen, in Avenida de España 10, a Costa Adeje. Il ritiro in hotel non è compreso: al punto di partenza ci si arriva per conto proprio, 10-15 minuti prima della partenza.",
+        en: "The meeting point is in front of the Wakanda Origen restaurant, Avenida de España 10, Costa Adeje. Hotel pickup is not included: you reach the departure point on your own, 10-15 minutes before the start.",
+        es: "El punto de encuentro es frente al restaurante Wakanda Origen, en Avenida de España 10, Costa Adeje. La recogida en el hotel no está incluida: al punto de salida se llega por cuenta propia, 10-15 minutos antes de la salida."
+      },
+      {
+        it: "Il tuk tuk ha 6 posti, vicini e uno di fronte all'altro: il prezzo vale per tutto il mezzo, fino a 6 persone. I bambini fino a 2 anni viaggiano in braccio a un adulto con la cintura allacciata.",
+        en: "The tuk tuk has 6 seats, close together and facing each other: the price is for the whole vehicle, up to 6 people. Children up to 2 years old travel on an adult's lap with the seatbelt fastened.",
+        es: "El tuk tuk tiene 6 plazas, juntas y unas frente a otras: el precio es por el vehículo entero, hasta 6 personas. Los niños de hasta 2 años viajan en el regazo de un adulto con el cinturón abrochado."
+      },
+      {
+        it: "Porta crema solare e una bottiglia d'acqua.",
+        en: "Bring sunscreen and a bottle of water.",
+        es: "Lleva crema solar y una botella de agua."
+      }
+    ],
+    // I due scaglioni (fino a 3 e fino a 6 persone) stanno nella descrizione
+    // della variante e non in `priceTiers`: quello e' della scheda intera e qui
+    // i tre tour hanno scaglioni diversi: scritto sulla scheda, il Double
+    // Private mostrerebbe 86 e 128 invece dei suoi 136 e 198. E non diventano
+    // sei bottoni (il tour per lo scaglione, come sulla Mustang) perche' quanti
+    // sono il cliente lo scrive gia' nella richiesta: un secondo numero,
+    // scelto a parte, potrebbe contraddire il primo.
+    options: {
+      label: { it: "Percorso", en: "Route", es: "Ruta" },
+      choices: [
+        {
+          label: "Costa Adeje Private Tour",
+          price: 86,
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+          desc: {
+            it: "86 € per un gruppo fino a 3 persone, 128 € fino a 6. Il giro dei paesi e delle spiagge del sud — Fañabé, la zona del Duque, la Enramada, La Caleta, Torviscas — con il tuk tuk solo per voi.",
+            en: "€86 for a group of up to 3, €128 up to 6. The tour of the southern villages and beaches — Fañabé, the Duque area, La Enramada, La Caleta, Torviscas — with the tuk tuk to yourselves.",
+            es: "86 € para un grupo de hasta 3 personas, 128 € hasta 6. El recorrido por los pueblos y las playas del sur — Fañabé, la zona del Duque, La Enramada, La Caleta, Torviscas — con el tuk tuk solo para vosotros."
+          }
+        },
+        {
+          label: "Secret Volcano Private Tour",
+          price: 86,
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+          desc: {
+            it: "86 € per un gruppo fino a 3 persone, 128 € fino a 6. La salita alla Caldera del Rey, il vulcano spento coperto di piantagioni di banane sopra Costa Adeje, con il tuk tuk solo per voi.",
+            en: "€86 for a group of up to 3, €128 up to 6. The climb to the Caldera del Rey, the extinct volcano covered in banana plantations above Costa Adeje, with the tuk tuk to yourselves.",
+            es: "86 € para un grupo de hasta 3 personas, 128 € hasta 6. La subida a la Caldera del Rey, el volcán apagado cubierto de plataneras sobre Costa Adeje, con el tuk tuk solo para vosotros."
+          }
+        },
+        {
+          label: "Double Private Tour",
+          price: 136,
+          duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          desc: {
+            it: "136 € per un gruppo fino a 3 persone, 198 € fino a 6. Due ore, i due percorsi in uno: prima la salita alla Caldera del Rey, poi tutta la costa fino a La Caleta.",
+            en: "€136 for a group of up to 3, €198 up to 6. Two hours, the two routes in one: first the climb to the Caldera del Rey, then the whole coast down to La Caleta.",
+            es: "136 € para un grupo de hasta 3 personas, 198 € hasta 6. Dos horas, los dos recorridos en uno: primero la subida a la Caldera del Rey, después toda la costa hasta La Caleta."
+          }
+        }
+      ]
+    },
+    desc: {
+      it: "Il tuk tuk elettrico solo per il tuo gruppo, fino a 6 persone: gli stessi due percorsi del giro in condivisione, oppure i due insieme in due ore. Il prezzo è del mezzo e non a persona, e cambia con quanti siete.",
+      en: "The electric tuk tuk for your group alone, up to 6 people: the same two routes as the shared ride, or both together over two hours. The price is for the vehicle and not per person, and it changes with how many you are.",
+      es: "El tuk tuk eléctrico solo para tu grupo, hasta 6 personas: los mismos dos recorridos que la salida compartida, o los dos juntos en dos horas. El precio es del vehículo y no por persona, y cambia según cuántos seáis."
+    },
+    image: "tuk-tuk.jpg",
     published: true
   },
 ];

@@ -696,6 +696,32 @@ const PICKUP_IN_HOTEL = [
   "mustang-experience"
 ];
 
+// Le schede dove non si passa a prendere nessuno.
+//
+// Il ritiro non c'e' proprio: il cliente arriva da solo a un posto solo, che e'
+// scritto nelle note della scheda. Qui le tabelle qui sopra non vanno nemmeno
+// consultate — sono di Island Excursions, e la fermata che ne uscirebbe e' di
+// un altro fornitore, in un'altra strada, a un'altra ora. E' l'errore peggiore
+// che questo campo possa fare: manda il cliente ad aspettare dove non passa
+// nessuno, con la pagina che gliel'ha detto in tono sicuro.
+//
+// Su queste schede la finestra della richiesta non chiede nemmeno l'hotel: la
+// domanda "dove alloggi" esiste solo per dire dove si sale, e qui la risposta
+// e' gia' scritta e uguale per tutti.
+//
+// Non e' la stessa cosa di una scheda che non sta in PICKUP_TIMES: quella il
+// ritiro ce l'ha e sono gli **orari** a mancare, quindi il punto si mostra
+// lo stesso.
+const PICKUP_NESSUNO = [
+  // Tuk Tuk Sweet Tours: il ritrovo e' davanti al Wakanda Origen, e il
+  // fornitore scrive "Hotel pick up" fra le cose NON incluse. Il transfer non
+  // e' compreso, quindi il punto di raccolta non si mostra (proprietario,
+  // 13 settembre 2026). Vale per tutte e due le schede: i tre giri privati
+  // partono dallo stesso posto e hanno la stessa riga fra le cose NON incluse.
+  "tuk-tuk",
+  "tuk-tuk-privato"
+];
+
 // Gli orari del pulmino, escursione per escursione.
 //
 // `PICKUP_TIMES[idScheda][idPunto]` = l'ora a cui il pulmino passa da quel

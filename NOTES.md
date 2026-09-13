@@ -10017,3 +10017,369 @@ tocca solo il jet ski.
 totale €360 identico con e senza la casella, nessun `× €0` nel conto, e il messaggio
 all'ufficio che continua a portare `• Ritiro in hotel: sì` — che e' la riga da cui decide
 il porto. Alzato `sw.js` a `isla-v296`.
+
+## 13 settembre 2026 — Il tuk tuk ha un fornitore e un nome: Tuk Tuk Sweet Tours (v297)
+
+L'ufficio ha mandato i dati grezzi del tuk tuk. **Non e' una scheda nuova:** `tuk-tuk` era
+gia' in catalogo dal 24 agosto, e i dati arrivati sono dello stesso operatore — la livrea
+in foto porta scritto `sweettourstenerife.com`, che e' proprio il loro sito. Quindi la
+scheda e' stata **arricchita**, non duplicata. Era il controllo numero uno della procedura
+(vedi Kalima Kat) e questa volta ha funzionato.
+
+### Il fornitore
+
+**Tuk Tuk Sweet Tours S.L.** (CIF B76696640), `sweettourstenerife.com`. Scritto in un
+commento sopra la scheda, non in pagina: il cliente compra da Admiral.
+
+### Cosa e' entrato nella scheda
+
+- **`languages: ["Español", "English", "Italiano", "Français"]`** — le quattro lingue le
+  segnala il fornitore. **Non e' `LINGUE_TOUR`**, che contiene anche il tedesco: il menu
+  deve offrire solo quello che c'e' davvero. Ora la finestra della richiesta fa la domanda
+  "In che lingua"
+- **`included: ["guide"]`** — il giro e' guidato, la guida e' l'attivita' stessa
+- **Una nota col punto di ritrovo:** davanti al ristorante **Wakanda Origen**, Avenida de
+  España 10, Costa Adeje. Il nome del posto non si traduce, come i titoli; a tradursi e' il
+  resto della frase
+
+### La domanda sul ritiro, fatta prima e non dopo
+
+Fornitore nuovo, quindi vale la regola: **si chiede dove passano a prendere il cliente**,
+non si danno per buone le tabelle di `hotel.js` (che sono di Island Excursions). Risposta
+nei dati: **non passano da nessuna parte, il ritrovo e' fisso**. Perche' la scheda **non**
+sta in `PICKUP_IN_HOTEL` e **non** sta in `PICKUP_TIMES`.
+
+### Quello che e' arrivato e non si pubblica
+
+| dato mandato | perche' resta fuori |
+|---|---|
+| telefono, email e sito del fornitore | il cliente compra da Admiral: pubblicarli e' regalare la vendita |
+| `booking: fareharbor` (shortname, flow) | non c'e' backend e le richieste passano da WhatsApp; il sistema del fornitore non e' il nostro |
+| codice TripAdvisor | punteggi e recensioni di altri non si copiano |
+| `prezzo: { da: null }` | in catalogo c'e' gia' **24 €**, prezzo a persona trovato il 24 agosto. Un `null` che cancella un prezzo gia' letto e' un passo indietro, non un dato nuovo |
+
+`days` e `times` restano **assenti** apposta: il calendario vero non ce l'abbiamo, quindi
+fasce segnaposto e "Da concordare".
+
+### Il problema che questa scheda mette in luce (da decidere)
+
+Nella finestra della richiesta la casella "Dove alloggi" **mostra comunque un punto di
+raccolta** preso dalle tabelle di Island Excursions, su qualunque scheda. Provato sul tuk
+tuk: scrivendo "Acapulco" esce «Punto di raccolta: Los Hibiscos, alla fermata
+dell'autobus», mentre due righe piu' su la nota dice che il ritrovo e' al Wakanda Origen e
+che il ritiro non c'e'. **Due indicazioni diverse sulla stessa pagina, e quella sbagliata
+e' la piu' precisa.**
+
+Non e' un guaio nato oggi: vale gia' per l'elicottero («nessun servizio di prelievo»), per
+lo Scandal al Vivo Show Bar e per tutte le schede con un ritrovo fisso. Non l'ho toccato
+perche' e' la macchina condivisa da tutte le schede e la scelta e' del proprietario. La
+strada piu' corta sarebbe una terza lista in `hotel.js` — le schede col ritrovo fisso — che
+`hotelPunto()` guarda per prima e per cui non mostra nessun punto.
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. Provato in browser (390px) in italiano
+e in inglese: la nota del ritrovo esce sotto "Consigli", "Lingue" compare in "In breve",
+"Guida" in "Cosa e' incluso" e la domanda "In che lingua" nella finestra della richiesta,
+con le quattro lingue e senza il tedesco. Alzato `sw.js` a `isla-v297`.
+
+## 13 settembre 2026 — Secret Volcano Tour: il primo percorso del tuk tuk con un listino vero (v298)
+
+Arrivata la pagina di prenotazione di **un** percorso dei tre, il **Secret Volcano Tour**.
+Adesso quella variante ha prezzo, durata, fasce d'eta' e una descrizione sua; le altre due
+restano come prima, senza prezzo.
+
+### Il percorso che ha un nome
+
+`label: "Secret Volcano Tour"`, stringa sola: e' un nome proprio del fornitore e resta
+uguale nelle tre lingue, come "Freebird" o "Royal Delfin". **Ho unito questo tour alla
+variante che prima si chiamava "Completo, fino ai vulcani"**, perche' e' l'unico percorso
+che va a un vulcano (la Caldera del Rey). Se invece sono due prodotti diversi vanno
+separati: e' la prima cosa da far confermare.
+
+Il vantaggio pratico del nome vero: finisce nel messaggio WhatsApp, e l'ufficio cerca
+quello nel sistema del fornitore.
+
+| dato | valore | da dove |
+|---|---|---|
+| `priceAdult` | 24 | pagina di prenotazione, 11+ anni |
+| `priceChild` | 12 | 3-10 anni |
+| `priceInfant` | 0 | "Gratis", scritto dal fornitore |
+| `ages` | `11+` / `3-10` / `0-2` | combaciano senza buchi ne' sovrapposizioni |
+| `duration` (variante) | 1 ora | "Duración: 1 hour" |
+
+I 24 euro **confermano** il `priceFrom: 24` trovato in rete il 24 agosto: era il prezzo
+adulto di questo tour. Un dato cercato allora e verificato oggi.
+
+### Le lingue sono scese da quattro a due
+
+Il sito del fornitore dice quattro lingue, la pagina del singolo tour ne dice due:
+«Disponible en: español, inglés», e fra le cose incluse «Spanish and English guide».
+**Ho pubblicato le due**, non le quattro. Promettere una guida italiana che quel giorno non
+c'e' e' il tipo di errore che si scopre alla partenza, quando non si puo' piu' rimediare;
+offrirne meno di quelle che ci sono costa al massimo una domanda su WhatsApp. Da
+confermare con l'ufficio: forse italiano e francese sono di altri tour, o solo su richiesta.
+
+### Il ritrovo, confermato due volte
+
+`Punto de encuentro: 10 Avenida de España, Costa Adeje 38660` — lo stesso indirizzo del
+Wakanda Origen gia' scritto nella nota. E fra le cose **non** incluse c'e' `Hotel pick up`:
+la nota adesso dice "il ritiro in hotel non e' compreso", che e' la stessa cosa detta con
+le parole del fornitore.
+
+### Il calendario non dice i giorni, dice il passato
+
+Nel calendario di settembre i giorni **1-12 risultano non disponibili e dal 13 in poi
+tutti liberi**. Il 13 e' oggi: quelli chiusi sono i giorni gia' passati, non un giorno di
+chiusura settimanale. Quindi **`days` resta assente** — sette giorni su sette non sono una
+limitazione da mostrare. Se ci avessi letto una regola («non si fa il lunedi'») avrei
+pubblicato una chiusura inventata.
+
+`times` resta assente allo stesso modo: dalla pagina si vede una sola partenza (le 13:00
+del giorno scelto) e sotto un elenco di fasce di cui non si leggono gli orari. Restano le
+fasce segnaposto.
+
+### Cosa non e' entrato
+
+Il testo di "Detalles" e "Lo mas destacado" **non e' stato tradotto ma riscritto**: la
+descrizione della variante e' nostra, in tre lingue. Fuori anche la politica di
+cancellazione del fornitore (le nostre sono 24 ore) e il conteggio dei posti come dato
+commerciale — il «6 people per vehicle» e' invece entrato come **nota**, perche' a un
+gruppo di sette serve saperlo prima.
+
+Aggiunta anche la nota sui neonati in braccio con la cintura: e' la ragione per cui non
+pagano, e un genitore che porta il passeggino la deve leggere prima di uscire di casa.
+
+### Resta aperto, e adesso costa di piu'
+
+La casella "Dove alloggi" nella finestra della richiesta continua a scrivere «Serve a dirti
+dove passiamo a prenderti» e a mostrare un punto di raccolta preso dalle tabelle di Island
+Excursions. Su questa scheda il fornitore scrive nero su bianco che **il ritiro in hotel
+non c'e'**: adesso non e' piu' un sospetto mio, e' una contraddizione dentro la stessa
+pagina. La proposta resta quella: una terza lista in `hotel.js` con le schede dal ritrovo
+fisso, guardata per prima da `hotelPunto()`.
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. Provato in browser a 390px nelle tre
+lingue: scegliendo il Secret Volcano Tour la durata passa a "1 ora", compaiono Adulti
+(11+) €24, Bambini (3-10) €12 e Neonati (0-2) Gratis, e sulle altre due varianti quelle
+righe spariscono. Totale controllato a mano: 2 adulti + 1 bambino + 1 neonato = **€60**.
+Alzato `sw.js` a `isla-v298`.
+
+## 13 settembre 2026 — Dove il transfer non c'e', il punto di raccolta non si mostra (v299)
+
+Decisione del proprietario, sul tuk tuk: **«lascia perdere qui i punti di raccolta perche'
+il transfer non e' incluso»**. Fatto, e fatto in modo che valga per qualsiasi altra scheda
+che un giorno si trovi nella stessa situazione.
+
+### Il guaio, per come si vedeva
+
+La casella "Dove alloggi" nella finestra della richiesta pescava un punto dalle tabelle di
+`hotel.js` **su qualunque scheda**. Sul tuk tuk questo voleva dire: scrivi "Acapulco", e la
+pagina rispondeva «Punto di raccolta: Los Hibiscos, alla fermata dell'autobus». Due righe
+piu' su la stessa pagina diceva che il ritrovo e' al Wakanda Origen e che il ritiro in
+hotel non e' compreso.
+
+Quella fermata **esiste davvero**, ed e' questo che la rendeva pericolosa: e' il punto da
+cui Island Excursions fa salire i clienti di un'altra escursione. Un cliente del tuk tuk
+ci sarebbe andato, e li' quel giorno non passava nessuno.
+
+### La terza lista: `PICKUP_NESSUNO`
+
+In `hotel.js`, accanto a `PICKUP_IN_HOTEL`. Dentro c'e' `"tuk-tuk"`.
+
+| lista | vuol dire |
+|---|---|
+| `PICKUP_IN_HOTEL` | il pulmino passa **sotto l'hotel**, qualunque sia il punto della tabella |
+| `PICKUP_NESSUNO` | **non passa nessuno**: il ritrovo e' un posto solo, scritto nelle note |
+| ne' l'una ne' l'altra | valgono le tabelle: il punto dipende dall'hotel |
+
+Da non confondere con una scheda che non sta in `PICKUP_TIMES`: quella il ritiro ce l'ha,
+sono gli **orari** a mancare, e il punto si mostra lo stesso.
+
+### Due punti soli nel codice, e tutti e due voluti
+
+1. **Dentro `hotelPunto()`**, in cima: per queste schede risponde `null` e basta. Sta li' e
+   non solo nella finestra perche' la stessa funzione scrive anche la riga «Punto di
+   raccolta» del **messaggio WhatsApp** — e una richiesta rimasta nella lista da ieri porta
+   ancora scritto l'hotel di allora. Provato: col tuk tuk e l'hotel gia' salvato il
+   messaggio non ha la riga del punto, sul Teide ce l'ha ancora insieme all'ora
+2. **Dentro `mostraPunto()`**: spariscono l'etichetta, la casella e la riga di aiuto. La
+   domanda non si fa proprio. "Dove alloggi (utile per il pick-up)" con sotto «Serve a
+   dirti dove passiamo a prenderti» e' una promessa, non una domanda: lasciarla e togliere
+   solo il punto avrebbe corretto la parte precisa e tenuto quella vaga
+
+La casella si **svuota** quando sparisce: la finestra e' una sola per tutte le attivita', e
+l'hotel scritto per l'escursione di prima sarebbe finito nel messaggio di questa, sotto una
+domanda che qui non e' stata fatta.
+
+Nessun tocco all'HTML: l'etichetta si trova da `label[for="reqHotel"]`, che e' uguale nelle
+**due copie** della finestra (`escursioni.html` e `tour.html`). Una modifica scritta due
+volte e' una modifica dimenticata una volta.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. In browser a 390px:
+
+- **tuk tuk**: niente etichetta, niente casella, niente riga di aiuto, niente punto
+- **Teide** (sta in `PICKUP_TIMES`): casella al suo posto, «Los Hibiscos, alla fermata
+  dell'autobus» e l'ora 09:05 al posto del menu — invariato
+- **trekking-bici** e **mustang-experience** (`PICKUP_IN_HOTEL`): rispondono ancora "in
+  hotel"
+- aperto il tuk tuk dopo il Teide con l'hotel gia' scritto: la casella sparisce **e** il
+  valore si azzera
+
+Alzato `sw.js` a `isla-v299`.
+
+### Le altre due schede che dicono gia' la stessa cosa
+
+Non le ho toccate perche' la richiesta era sul tuk tuk, ma la loro nota lo scrive da sola e
+basta una riga in `PICKUP_NESSUNO`:
+
+- **`elicottero`** — «Nessun servizio di prelievo: il punto d'incontro e' l'elisuperficie
+  di Adeje». Oggi con "Acapulco" mostra comunque Los Hibiscos
+- **`opera-60` / lo Scandal al Vivo Show Bar** — «L'operatore non offre nessun servizio di
+  trasporto: ci si arriva a piedi o in taxi»
+
+Da dire e basta, si fa in un passo.
+
+Nota a margine: `controlla.js` **non guarda le tabelle di `hotel.js`**, quindi un id
+sbagliato in `PICKUP_NESSUNO` (o in `PICKUP_IN_HOTEL`) non lo segnala nessuno — non fa
+danno, semplicemente non succede niente. Vale anche per `PICKUP_TIMES`, ed e' cosi' da
+sempre: se un giorno diventa un problema, il controllo e' tre righe.
+
+## 13 settembre 2026 — I cinque tour veri del tuk tuk, e la scheda si sdoppia (v300)
+
+L'ufficio ha mandato le pagine di prenotazione di tutti i giri: **quelli sono i tour del
+sito e quelli sono i nomi**. Cinque prodotti, non tre.
+
+| tour | durata | prezzo |
+|---|---|---|
+| Costa Adeje Tour | 1 ora | 24 € adulti (11+), 12 € bambini (3-10), neonati gratis |
+| Secret Volcano Tour | 1 ora | uguale: 24 / 12 / gratis |
+| Costa Adeje Private Tour | 1 ora | 86 € fino a 3 persone, 128 € fino a 6 |
+| Secret Volcano Private Tour | 1 ora | 86 € fino a 3, 128 € fino a 6 |
+| Double Private Tour | 2 ore | 136 € fino a 3, 198 € fino a 6 |
+
+### Le due etichette inventate sono sparite
+
+«Panoramico, con sosta per un drink» e «I punti principali di Costa Adeje» erano
+descrizioni scritte ad agosto per dire che i percorsi erano piu' d'uno, non nomi. Adesso ci
+sono i nomi veri. **Della sosta per un drink non c'e' traccia in nessuno dei cinque**: se
+esiste, e' un giro che non era fra quelli mandati.
+
+Sciolto anche il dubbio di stamattina: «Completo, fino ai vulcani» **era** il Secret
+Volcano Tour, non un quarto prodotto — unirli e' stato giusto.
+
+### Perche' due schede e non una con cinque varianti
+
+`tuk-tuk` tiene i due giri **in condivisione**, `tuk-tuk-privato` (in "Tour privati", come
+le gemelle delle barche) i tre **privati**. La ragione e' che si pagano in due modi
+diversi:
+
+- in condivisione si paga **a persona** e il totale si fa: 2 adulti + 1 bambino = 60 €
+- in privato si paga **il mezzo**, e il prezzo cambia con quanti sono
+
+Su una scheda sola la riga del prezzo dell'elenco avrebbe dovuto dire «da €24» **e** «da
+€86 a gruppo» insieme, e `priceUnit` vale per la scheda intera: non c'e' modo di scriverne
+una per variante. Due schede, una foto sola (`tuk-tuk.jpg` sta in tutte e due, il telefono
+la scarica una volta).
+
+### I due scaglioni stanno nella descrizione, e non sono sei bottoni
+
+`priceTiers` e' della **scheda**, non della variante: scritto li', il Double Private Tour
+avrebbe mostrato 86 e 128 al posto dei suoi 136 e 198. E' lo stesso muro contro cui era
+finita la cabina VIP di Siam Park.
+
+La strada della Mustang — un bottone per scaglione — qui voleva dire **sei bottoni** con
+tre nomi ripetuti. Non fatto, e non per l'ingombro: **quanti sono il cliente lo scrive gia'
+nella richiesta**. Un secondo numero scelto a parte potrebbe contraddire il primo, ed e' la
+stessa ragione per cui dove si contano i mezzi non si contano le persone. Cosi' il bottone
+dice il prezzo di partenza («€86», «€136») e la descrizione sotto dice tutti e due gli
+scaglioni; sul messaggio arrivano il nome del tour e quante persone, che e' quanto basta
+all'ufficio per applicare lo scaglione giusto.
+
+### Il prezzo va scritto DUE volte, e per poco non me ne accorgevo
+
+Messi i 24 € e i 12 € solo sulla scheda, la pagina diceva **«Prezzo: Su richiesta»** e il
+totale non si faceva — con i due numeri scritti nel catalogo due righe piu' su. Non e' un
+bug: quando una variante e' scelta il sito **non ripiega** sul prezzo della scheda, apposta
+(se no la cabina VIP di Siam Park mostrerebbe il prezzo del biglietto normale). E sulla
+pagina di dettaglio una variante e' **sempre** scelta, perche' la prima parte gia' premuta.
+
+Quindi `priceAdult`/`priceChild` stanno **dentro ogni variante** e restano anche sulla
+scheda, per le richieste che partono senza variante. Trovato solo guardando la pagina resa:
+`node controlla.js` non poteva vederlo, e il codice era giusto in tutte e due i posti.
+
+### Cosa e' entrato di nuovo dalle pagine
+
+- **10-15 minuti prima** al punto di ritrovo, al posto del vago "qualche minuto"
+- **crema solare e una bottiglia d'acqua**, che lo scrive il fornitore
+- i **sei posti vicini e uno di fronte all'altro**, e il consiglio del fornitore di
+  prendere il privato per chi ha difficolta' a muoversi o vuole piu' spazio. Riscritto
+  senza la sua formula ("large proportions"), che in italiano sarebbe suonata male
+- le **lingue confermate altre quattro volte**: español e inglés su tutte le pagine. La
+  scelta di ieri di scendere da quattro a due era quella giusta
+
+### Cosa e' rimasto fuori
+
+La politica di cancellazione del fornitore (24 ore di rimborso pieno, no-show pagato per
+intero): **non si copia**, le nostre 24 ore sono di preavviso e sono un'altra cosa. Fuori
+anche il blocco "Salud y seguridad" sulle pulizie, che e' un testo promozionale del 2020.
+
+`days` e `times` restano assenti su tutte e due le schede: nel calendario i giorni chiusi
+sono quelli passati, e degli orari si legge solo che il Secret Volcano di domenica parte
+alle 13:00 e il Costa Adeje alle 14:00.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati, 66 schede. In browser a 390px nelle tre
+lingue: sui due giri in condivisione escono Adulti (11+) €24, Bambini (3-10) €12 e Neonati
+Gratis, totale 60 € per 2+1+1; sui tre privati «€86 a gruppo» / «€136 a gruppo», nessun
+totale (giusto: dipende da quanti sono) e il messaggio porta nome del tour e numero di
+persone. La casella dell'hotel non compare su nessuna delle due: `tuk-tuk-privato` e'
+stata aggiunta a `PICKUP_NESSUNO` insieme all'altra, stesso ritrovo e stesso "Hotel pick
+up" fra le cose non incluse. Alzato `sw.js` a `isla-v300`.
+
+### Resta da decidere
+
+Il rimando «vuoi la versione privata?» fra le due schede (`privateOption`) **non c'e'**: il
+testo fisso dice «Vuoi **la barca** solo per il tuo gruppo?» — e' nato sulle barche e su un
+tuk tuk si leggerebbe male. Per accenderlo servono due frasi generiche in `i18n.js`, che
+pero' cambiano anche le cinque schede delle barche. Per ora la versione privata e' nominata
+nella descrizione della scheda in condivisione.
+
+## 13 settembre 2026 — Il rimando alla versione privata, anche dove non e' una barca (v301)
+
+«Fallo come le barche», e cosi' e'. Sulla scheda del tuk tuk in condivisione c'e' il
+riquadro che porta a quella privata, esattamente come sul Freebird o sul Royal Delfin:
+titolo, nome della scheda privata col suo prezzo, e la freccia.
+
+Il problema era una frase sola: il testo fisso dice «Vuoi **la barca** solo per il tuo
+gruppo?» e «Vedi il **charter** privato». Su un tuk tuk non si poteva leggere.
+
+### Due campi nuovi invece di una frase generica
+
+`privateTitle` e `privateLink`, facoltativi, nelle tre lingue. Dove ci sono, prendono il
+posto delle due frasi fisse; **dove non ci sono resta il testo di sempre**, quindi le
+cinque schede delle barche non sono state toccate.
+
+La strada piu' corta sarebbe stata cambiare le due frasi in `i18n.js` una volta per tutte,
+e generalizzarle in qualcosa come «vuoi tutto per il tuo gruppo?». Non e' stato fatto
+perche' peggiora le barche: «vuoi la barca solo per il tuo gruppo» dice **cosa** ti stai
+prendendo, la frase generica no. Una modifica che sistema una scheda e ne smussa cinque non
+e' un pareggio.
+
+E' lo stesso meccanismo di `transferLabel`, che sostituisce la domanda fissa del transfer
+dove quella fissa confonderebbe: campo assente = testo di sempre. Il vocabolario in testa a
+`esplora-catalog.js` lo dice accanto a `privateOption`.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. In browser a 390px nelle tre lingue:
+
+| scheda | it | en | es |
+|---|---|---|---|
+| tuk tuk | Vuoi il tuk tuk solo per il tuo gruppo? · Vedi i giri privati | Want the tuk tuk just for your group? · See the private tours | ¿Quieres el tuk tuk solo para tu grupo? · Ver los tours privados |
+| Freebird | Vuoi la barca solo per il tuo gruppo? · Vedi il charter privato | invariato | invariato |
+
+Il riquadro porta «Tuk tuk privato · da €86 a gruppo» e il click apre `tuk-tuk-privato`.
+Il rimando e' **in un senso solo**, come sulle barche: dalla scheda in condivisione a
+quella privata, non viceversa. Alzato `sw.js` a `isla-v301`.

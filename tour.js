@@ -478,16 +478,25 @@ function detailRelated(tour) {
 
 // Rimando alla versione privata della stessa uscita, per chi vuole la barca
 // riservata al proprio gruppo.
+//
+// Il testo fisso parla di barche perche' li' e' nato, ed e' giusto che lo
+// faccia: "vuoi la barca solo per il tuo gruppo?" dice piu' di una frase
+// generica. Dove la versione privata non e' una barca, la scheda si scrive le
+// sue due frasi con `privateTitle` e `privateLink` — come fa gia' il transfer
+// con `transferLabel`. Senza quei campi resta il testo di sempre.
 function detailPrivate(tour) {
   if (!tour.privateOption) return "";
   const privata = ESPLORA_CATALOG.find(x => x.id === tour.privateOption && x.published);
   if (!privata) return "";
 
+  const titolo = tour.privateTitle ? tf(tour.privateTitle) : t("detail.privateTitle");
+  const vaiA = tour.privateLink ? tf(tour.privateLink) : t("detail.privateLink");
+
   return `
     <a class="detail-alt" href="./tour.html?id=${encodeURIComponent(privata.id)}">
-      <span class="detail-alt-title">${esc(t("detail.privateTitle"))}</span>
+      <span class="detail-alt-title">${esc(titolo)}</span>
       <span class="detail-alt-name">${esc(tf(privata.title))} · ${esc(tourPrice(privata))}</span>
-      <span class="detail-alt-go">${esc(t("detail.privateLink"))} →</span>
+      <span class="detail-alt-go">${esc(vaiA)} →</span>
     </a>`;
 }
 

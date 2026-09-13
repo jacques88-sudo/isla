@@ -3045,9 +3045,9 @@ const ESPLORA_CATALOG = [
         es: "Se sale de 10:00 a 18:00, todos los días: las salidas son continuas, no hay horarios fijos."
       },
       {
-        it: "Il prezzo è a persona, per una corsa. Per i gruppi ci sono tariffe dedicate: scrivicelo nella richiesta.",
-        en: "The price is per person, for one ride. There are group rates: tell us in your request.",
-        es: "El precio es por persona, por una salida. Para grupos hay tarifas especiales: indícanoslo en la solicitud."
+        it: "Il prezzo è a persona, per una corsa, ed è lo stesso per tutti: adulti, ragazzi e gruppi.",
+        en: "The price is per person, for one ride, and it is the same for everyone: adults, teenagers and groups.",
+        es: "El precio es por persona, por una salida, y es el mismo para todos: adultos, jóvenes y grupos."
       }
     ],
     image: "banana-boat.jpg",

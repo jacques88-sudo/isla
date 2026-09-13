@@ -10619,3 +10619,35 @@ invariati. Alzato `sw.js` a `isla-v306`.
 Resta da chiedere una cosa sola: se i 15 € valgono anche per i gruppi o se lì c'è una
 tariffa diversa (la nota dice di scriverlo nella richiesta, che per ora è la risposta
 onesta).
+
+## 13 settembre 2026 — I 15 € valgono anche per i gruppi, e la nota che prometteva il contrario (v307)
+
+Era l'ultima domanda rimasta aperta sui gonfiabili, e la risposta del proprietario è
+**no sconto: 15 € a persona per tutti, gruppi compresi**. Sembra una conferma senza
+conseguenze e invece c'era una riga da correggere subito.
+
+**La nota prometteva uno sconto che non esiste.** Diceva "Per i gruppi ci sono tariffe
+dedicate: scrivicelo nella richiesta" — scritta quando gli importi non li sapevamo, e
+scritta per non chiudere una porta. Con la risposta arrivata è diventata una promessa
+falsa: chi è in otto la legge, scrive nella richiesta che sono un gruppo e si aspetta un
+numero più basso di 15 €. L'ufficio gli risponde 15 € a testa, cioè **gli toglie uno
+sconto che gli aveva fatto sperare il sito**. È lo stesso danno di alzare un prezzo già
+letto, solo per un'altra strada: il cliente non paga di più, ma si sente preso in giro
+lo stesso.
+
+Adesso dice quello che è vero: *"Il prezzo è a persona, per una corsa, ed è lo stesso per
+tutti: adulti, ragazzi e gruppi."* Detto così chiude la domanda invece di aprirla —
+nessuno scrive nelle note "siamo in otto, quanto ci fate?".
+
+**Il numero non è stato ripetuto nella nota**, ed è una scelta: scrivere "15 €" dentro un
+testo in tre lingue vuol dire che il giorno che il prezzo cambia bisogna ricordarsi di
+toccare `priceAdult`, `priceChild`, le tre varianti **e** tre righe di testo. La prima
+volta che qualcuno se ne dimentica il sito dice due prezzi diversi nella stessa pagina.
+Il prezzo vive in un campo solo e la nota parla di **come** si paga, non di quanto: vale
+per tutte le note, non solo per questa.
+
+**Provato nel browser vero** nelle tre lingue: la nota esce corretta in italiano, inglese
+e spagnolo, nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi invariati.
+Alzato `sw.js` a `isla-v307`.
+
+Sui gonfiabili non resta più niente in sospeso.

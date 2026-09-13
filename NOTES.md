@@ -10383,3 +10383,84 @@ dove quella fissa confonderebbe: campo assente = testo di sempre. Il vocabolario
 Il riquadro porta «Tuk tuk privato · da €86 a gruppo» e il click apre `tuk-tuk-privato`.
 Il rimando e' **in un senso solo**, come sulle barche: dalla scheda in condivisione a
 quella privata, non viceversa. Alzato `sw.js` a `isla-v301`.
+
+## Parascending: dati veri da canaryvip.com (13 settembre 2026)
+
+Il proprietario ha incollato la scheda "Parasailing Tenerife" di canaryvip.com chiedendo
+"la pagina parasailing".
+
+**Non era una scheda da creare: era il segnaposto `parascending`.** Parasailing e
+parascending sono la stessa attivita' — paracadute trainato dal motoscafo — e la scheda
+esisteva gia' dal primo riempimento del catalogo, ferma su zona e durata "Da definire" con
+un `priceFrom: 60`. Confrontate le otto schede di `sport-acquatici` prima di toccare
+qualcosa: nessun'altra e' un volo trainato (banana boat, jet ski, kayak, flyboard, surf,
+immersioni, Fiat 500 galleggiante), e la foto che la scheda aveva gia' — guardata, non solo
+elencata — e' esattamente un paracadute sopra la costa di Costa Adeje col motoscafo giallo
+che lo traina. **Aggiornata quella, non aperta una seconda.** E' lo stesso errore del
+Kalima Kat, evitato stavolta dal confronto.
+
+**Il titolo resta "Parascending"**, quello di Admiral, e non diventa "Parasailing
+Tenerife" che e' il nome del prodotto sul rivenditore: i titoli restano come li scrive
+Admiral, uguali nelle tre lingue.
+
+**Riempiti**: `zone: "Puerto Colón, Costa Adeje"` (nome proprio, uguale nelle tre lingue),
+`duration` 40 minuti, `included: ["equipment", "lifejacket", "guide"]`, la descrizione
+riscritta da zero nelle tre lingue e sette note pratiche.
+
+**Le due durate, e perche' ci vogliono tutte e due.** Quaranta minuti e' l'uscita col
+tragitto in barca, dieci sono i minuti in aria. Scritta una sola, l'altra diventa una
+bugia: "40 minuti" fa credere di volare mezz'ora, "10 minuti" fa aspettare il cliente al
+porto mezz'ora prima del dovuto. Sono i campi `activityLabel` ("Tempo di volo") e
+`activityDuration` ("Circa 10 minuti"), nati sulle camminate per la stessa ragione.
+
+**Il prezzo: lasciato €60, non abbassato a €55.** La fonte da' `price_from: 55` e
+`list_price: null`, cioe' nessun barrato: quei 55 sono il prezzo pieno **di CanaryVIP**,
+non uno sconto e non un prezzo di Admiral. I €60 in scheda sono il numero dell'ufficio, ed
+e' lo stesso caso del Small Group Catamaran (€60 dell'ufficio contro €75 della pagina) e
+del parapendio. Abbassare a 55 si puo' sempre e lo decide il proprietario; alzarlo dopo
+no, ed e' per questo che nel dubbio si resta sul numero piu' alto gia' pubblicato.
+
+**`priceAdult` e `priceChild` restano a 0, cioe' "Su richiesta".** La fonte non dice se il
+prezzo e' a persona o a volo (il paracadute porta fino a **tre** persone), e non da'
+nessun prezzo bambini pur avendo un'eta' minima di 3 anni. E' lo stesso caso del quad,
+dove il totale e' rimasto fermo finche' l'ufficio non ha confermato l'unita': meglio
+"Su richiesta" che un totale verosimile e falso. Provato in finestra: con 2 adulti non
+compare nessun totale, ed e' giusto.
+
+**Niente `times`** (la fonte dice solo "partenze per tutta la giornata, l'ora si concorda
+alla prenotazione": le partenze vere non le sappiamo, restano le fasce segnaposto) e
+**niente `days`** (si vola tutti i giorni). **Niente `ages`**: senza un prezzo bambini non
+c'e' nessuna fascia da scrivere accanto a una riga di prezzo che non esiste; l'eta' minima
+di 3 anni sta in nota. **Niente `priceInfant`**: sotto i 3 anni non si sale, e assente non
+vuol dire gratis.
+
+**Non copiato da CanaryVIP**, come sempre. Stavolta la loro cancellazione era "gratis fino
+a 24 ore", cioe' lo stesso numero del nostro preavviso, e **non e' stata scritta lo
+stesso**: che i numeri coincidano non trasforma la promessa di un altro in una nostra, e
+la riga sulle 24 ore la mette il sito da solo. Fuori anche il punteggio 5.0 con 7
+recensioni, e le foto: sono di un rivenditore concorrente, resta la foto Admiral che
+c'era.
+
+**Niente pickup.** La fonte dice esplicitamente che i trasferimenti dall'hotel non sono
+compresi, quindi nessuna riga `transfer`, niente `PICKUP_TIMES` e niente `PICKUP_IN_HOTEL`:
+di questo fornitore non sappiamo nemmeno chi sia (CanaryVIP e' un rivenditore), e le
+tabelle di `hotel.js` valgono per Island Excursions. In nota c'e' scritto che al Puerto
+Colón ci si arriva da soli. Resta pero' un dettaglio da guardare prima o poi: la finestra
+della richiesta chiede comunque "Dove alloggi (utile per il pick-up)", che qui e' una
+domanda senza risposta — vale per tutte le schede senza ritiro (elicottero, cena
+medievale), quindi non e' roba di questa scheda e non l'ho toccata.
+
+**Foto non aggiunte**: le tre della galleria della fonte sono di canaryvip.com, stessa
+scelta gia' fatta col quad del nord. Se l'ufficio manda foto sue si apre `gallery`.
+
+**Provato nel browser vero** (420px, tutte e tre le lingue): "In breve" mostra Punto di
+partenza / Durata 40 minuti / Tempo di volo Circa 10 minuti / da €60 / Famiglie con
+bambini; le tre icone di "Cosa e' incluso" ci sono tutte; le sette note escono nelle tre
+lingue; il menu "A che ora" mostra "Da concordare" piu' le sette fasce segnaposto, come
+previsto senza `times`; nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi
+invariati (opera-60, trekking-bici e masca-teide-cabrio-bus, nessuno dei tre riguarda
+questa scheda). Alzato `sw.js` a `isla-v302`.
+
+**Da confermare con l'ufficio**: se il prezzo giusto e' €60 o €55; se e' a persona o a
+volo (fino a 3 persone); il prezzo dei bambini e da che eta' vale; gli orari veri delle
+partenze.

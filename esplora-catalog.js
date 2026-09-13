@@ -3574,6 +3574,12 @@ const ESPLORA_CATALOG = [
     // Franz Surf School, Playa de las Americas (dati del 13 settembre 2026,
     // in dati-fornitore/grezzo/franz-surf-school.json).
     //
+    // ⚠ Il nome della scuola **non va sul sito** (proprietario, 13 settembre
+    // 2026): in descrizione si dice "una scuola di surf". Qui nel commento
+    // resta, perche' serve a ritrovare il fornitore fra sei mesi. Attenzione:
+    // e' il contrario delle barche, dove il nome vero (Freebird, Shogun) e'
+    // proprio quello che il cliente deve leggere.
+    //
     // Il fornitore vende anche il noleggio delle tavole (softboard, fibra,
     // longboard): **non e' in catalogo per scelta del proprietario** (13
     // settembre 2026). Ad Admiral interessano le lezioni. Se un giorno
@@ -3602,9 +3608,9 @@ const ESPLORA_CATALOG = [
     // entra in acqua con la scuola.
     family: false,
     desc: {
-      it: "La Franz Surf School insegna sulla spiaggia di Playa de las Américas: lezioni da due ore in gruppi di sei persone al massimo, lezioni private con l'istruttore solo per te, lezioni riservate a una famiglia o a un gruppo di amici, e pacchetti da tre, cinque o sette lezioni per chi vuole andare avanti per tutto il soggiorno. Muta, tavola e scarpette in neoprene sono comprese.",
-      en: "Franz Surf School teaches on the beach at Playa de las Américas: two-hour lessons in groups of no more than six, private lessons with the instructor all to yourself, lessons kept for one family or group of friends, and packages of three, five or seven lessons for anyone who wants to keep going through the whole stay. Wetsuit, board and neoprene boots are included.",
-      es: "La Franz Surf School enseña en la playa de Playa de las Américas: clases de dos horas en grupos de seis personas como máximo, clases privadas con el instructor solo para ti, clases reservadas a una familia o a un grupo de amigos, y packs de tres, cinco o siete clases para quien quiere seguir durante toda la estancia. Neopreno, tabla y escarpines están incluidos."
+      it: "Una scuola di surf sulla spiaggia di Playa de las Américas: lezioni da due ore in gruppi di sei persone al massimo, lezioni private con l'istruttore solo per te, lezioni riservate a una famiglia o a un gruppo di amici, e pacchetti da tre, cinque o sette lezioni per chi vuole andare avanti per tutto il soggiorno. Muta, tavola e scarpette in neoprene sono comprese.",
+      en: "A surf school on the beach at Playa de las Américas: two-hour lessons in groups of no more than six, private lessons with the instructor all to yourself, lessons kept for one family or group of friends, and packages of three, five or seven lessons for anyone who wants to keep going through the whole stay. Wetsuit, board and neoprene boots are included.",
+      es: "Una escuela de surf en la playa de Playa de las Américas: clases de dos horas en grupos de seis personas como máximo, clases privadas con el instructor solo para ti, clases reservadas a una familia o a un grupo de amigos, y packs de tres, cinco o siete clases para quien quiere seguir durante toda la estancia. Neopreno, tabla y escarpines están incluidos."
     },
     // Vale per tutte e nove le varianti, quindi sta sulla scheda: muta,
     // tavola e scarpette in neoprene sono comprese in ogni lezione e in ogni

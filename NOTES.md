@@ -10921,3 +10921,32 @@ primo giorno.
 
 **Provato nelle tre lingue**, sette note, nessun errore in console. `node controlla.js` →
 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v312`.
+
+## 13 settembre 2026 — Il nome della scuola di surf non va sul sito (v313)
+
+«Non specificare scuola di surf Franz, ma scuola di surf in generale.» La descrizione passa
+da *"La Franz Surf School insegna sulla spiaggia di Playa de las Américas"* a **"Una scuola
+di surf sulla spiaggia di Playa de las Américas"**, in tutte e tre le lingue. Era l'unico
+posto del sito dove il nome compariva.
+
+**È il contrario della regola delle barche, ed è voluto.** Su Freebird, Royal Delfin, Shogun
+e Peter Pan il nome vero è proprio quello che il cliente deve leggere — `CLAUDE.md` lo dice
+in testa: Admiral è un rivenditore e le schede portano il nome della barca vera. Lì il nome
+serve al cliente per ritrovare la barca al porto. Qui il fornitore non è un mezzo con una
+livrea riconoscibile ma una scuola con un suo sito, un suo carrello e due suoi numeri di
+telefono in fondo a ogni pagina: **scriverne il nome è dire al cliente dove andare a
+prenotare senza di noi**. Lo stesso motivo per cui i due numeri erano già rimasti fuori
+(v311), applicato al nome.
+
+Non è una regola nuova da mettere in `CLAUDE.md`: è la stessa regola di sempre — il nome ci
+va quando serve al cliente per trovare quello che ha comprato — che su una barca dice sì e
+su una scuola con un negozio dice no.
+
+**Il nome resta nel commento in cima alla scheda** (con scritto a chiare lettere che sul
+sito non ci va, e perché), in `NOTES.md` e in `dati-fornitore/`: fra sei mesi, quando
+arriverà un listino aggiornato, bisogna sapere di chi è. Un commento non lo legge nessun
+cliente.
+
+**Provato nel browser vero** nelle tre lingue, sulla pagina di dettaglio e nell'elenco:
+"Franz" non compare più da nessuna parte, nessun errore in console. `node controlla.js` →
+0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v313`.

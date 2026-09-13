@@ -4795,14 +4795,32 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    // Fornitore: Tuk Tuk Sweet Tours S.L. (sweettourstenerife.com), lo stesso
+    // operatore della livrea in foto. Fornitore nuovo, quindi la domanda sul
+    // ritiro e' stata fatta prima di pubblicare: non passano sotto l'hotel, il
+    // ritrovo e' fisso davanti al Wakanda Origen. Per questo la scheda non sta
+    // ne' in PICKUP_TIMES ne' in PICKUP_IN_HOTEL, e il punto e' scritto nelle
+    // note. Il loro sistema di prenotazione (FareHarbor) non si usa: le
+    // richieste passano dall'ufficio come tutte le altre.
     id: "tuk-tuk",
     title: { it: "Tour in tuk tuk", en: "Tuk Tuk Tour", es: "Tour en tuk tuk" },
     category: "tour-isola",
     zone: "Costa Adeje",
     duration: { it: "Da 1 ora", en: "From 1 hour", es: "Desde 1 hora" },
+    // Le quattro lingue le segnala il fornitore: niente tedesco, quindi non e'
+    // LINGUE_TOUR ma la sua lista.
+    languages: ["Español", "English", "Italiano", "Français"],
     priceFrom: 24,
     priceAdult: 0,
     priceChild: 0,
+    included: ["guide"],
+    notes: [
+      {
+        it: "Il ritrovo è davanti al ristorante Wakanda Origen, in Avenida de España 10, a Costa Adeje. Non c'è il ritiro in hotel: al punto di partenza ci si arriva per conto proprio, qualche minuto prima dell'ora concordata.",
+        en: "The meeting point is in front of the Wakanda Origen restaurant, Avenida de España 10, Costa Adeje. There is no hotel pickup: you reach the departure point on your own, a few minutes before the agreed time.",
+        es: "El punto de encuentro es frente al restaurante Wakanda Origen, en Avenida de España 10, Costa Adeje. No hay recogida en el hotel: al punto de salida se llega por cuenta propia, unos minutos antes de la hora acordada."
+      }
+    ],
     options: {
       label: { it: "Percorso", en: "Route", es: "Ruta" },
       choices: [

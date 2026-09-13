@@ -10017,3 +10017,66 @@ tocca solo il jet ski.
 totale €360 identico con e senza la casella, nessun `× €0` nel conto, e il messaggio
 all'ufficio che continua a portare `• Ritiro in hotel: sì` — che e' la riga da cui decide
 il porto. Alzato `sw.js` a `isla-v296`.
+
+## 13 settembre 2026 — Il tuk tuk ha un fornitore e un nome: Tuk Tuk Sweet Tours (v297)
+
+L'ufficio ha mandato i dati grezzi del tuk tuk. **Non e' una scheda nuova:** `tuk-tuk` era
+gia' in catalogo dal 24 agosto, e i dati arrivati sono dello stesso operatore — la livrea
+in foto porta scritto `sweettourstenerife.com`, che e' proprio il loro sito. Quindi la
+scheda e' stata **arricchita**, non duplicata. Era il controllo numero uno della procedura
+(vedi Kalima Kat) e questa volta ha funzionato.
+
+### Il fornitore
+
+**Tuk Tuk Sweet Tours S.L.** (CIF B76696640), `sweettourstenerife.com`. Scritto in un
+commento sopra la scheda, non in pagina: il cliente compra da Admiral.
+
+### Cosa e' entrato nella scheda
+
+- **`languages: ["Español", "English", "Italiano", "Français"]`** — le quattro lingue le
+  segnala il fornitore. **Non e' `LINGUE_TOUR`**, che contiene anche il tedesco: il menu
+  deve offrire solo quello che c'e' davvero. Ora la finestra della richiesta fa la domanda
+  "In che lingua"
+- **`included: ["guide"]`** — il giro e' guidato, la guida e' l'attivita' stessa
+- **Una nota col punto di ritrovo:** davanti al ristorante **Wakanda Origen**, Avenida de
+  España 10, Costa Adeje. Il nome del posto non si traduce, come i titoli; a tradursi e' il
+  resto della frase
+
+### La domanda sul ritiro, fatta prima e non dopo
+
+Fornitore nuovo, quindi vale la regola: **si chiede dove passano a prendere il cliente**,
+non si danno per buone le tabelle di `hotel.js` (che sono di Island Excursions). Risposta
+nei dati: **non passano da nessuna parte, il ritrovo e' fisso**. Perche' la scheda **non**
+sta in `PICKUP_IN_HOTEL` e **non** sta in `PICKUP_TIMES`.
+
+### Quello che e' arrivato e non si pubblica
+
+| dato mandato | perche' resta fuori |
+|---|---|
+| telefono, email e sito del fornitore | il cliente compra da Admiral: pubblicarli e' regalare la vendita |
+| `booking: fareharbor` (shortname, flow) | non c'e' backend e le richieste passano da WhatsApp; il sistema del fornitore non e' il nostro |
+| codice TripAdvisor | punteggi e recensioni di altri non si copiano |
+| `prezzo: { da: null }` | in catalogo c'e' gia' **24 €**, prezzo a persona trovato il 24 agosto. Un `null` che cancella un prezzo gia' letto e' un passo indietro, non un dato nuovo |
+
+`days` e `times` restano **assenti** apposta: il calendario vero non ce l'abbiamo, quindi
+fasce segnaposto e "Da concordare".
+
+### Il problema che questa scheda mette in luce (da decidere)
+
+Nella finestra della richiesta la casella "Dove alloggi" **mostra comunque un punto di
+raccolta** preso dalle tabelle di Island Excursions, su qualunque scheda. Provato sul tuk
+tuk: scrivendo "Acapulco" esce «Punto di raccolta: Los Hibiscos, alla fermata
+dell'autobus», mentre due righe piu' su la nota dice che il ritrovo e' al Wakanda Origen e
+che il ritiro non c'e'. **Due indicazioni diverse sulla stessa pagina, e quella sbagliata
+e' la piu' precisa.**
+
+Non e' un guaio nato oggi: vale gia' per l'elicottero («nessun servizio di prelievo»), per
+lo Scandal al Vivo Show Bar e per tutte le schede con un ritrovo fisso. Non l'ho toccato
+perche' e' la macchina condivisa da tutte le schede e la scelta e' del proprietario. La
+strada piu' corta sarebbe una terza lista in `hotel.js` — le schede col ritrovo fisso — che
+`hotelPunto()` guarda per prima e per cui non mostra nessun punto.
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. Provato in browser (390px) in italiano
+e in inglese: la nota del ritrovo esce sotto "Consigli", "Lingue" compare in "In breve",
+"Guida" in "Cosa e' incluso" e la domanda "In che lingua" nella finestra della richiesta,
+con le quattro lingue e senza il tedesco. Alzato `sw.js` a `isla-v297`.

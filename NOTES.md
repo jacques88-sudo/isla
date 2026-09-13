@@ -10429,11 +10429,11 @@ per eta' non c'e' nessuna fascia da scrivere fra parentesi. **Niente `priceInfan
 sotto i 3 anni non si vola, e assente non vuol dire gratis — la casella dei neonati resta
 giustamente nascosta nella finestra.
 
-**Gli orari veri, sempre dal proprietario: ogni ora dalle 10:00 alle 18:00.** Scritti in
-`times`, prendono il posto delle fasce segnaposto e "Da concordare" sparisce. La fonte
-diceva solo "partenze per tutta la giornata, l'ora si concorda alla prenotazione", che non
-e' un orario: le fasce sono rimaste finche' i numeri veri non sono arrivati. **Niente
-`days`**: si vola tutti i giorni.
+**Gli orari veri, sempre dal proprietario: ogni ora dalle 10:00, ultimo volo alle 17:00**
+— otto partenze. Scritti in `times`, prendono il posto delle fasce segnaposto e "Da
+concordare" sparisce. La fonte diceva solo "partenze per tutta la giornata, l'ora si
+concorda alla prenotazione", che non e' un orario: le fasce sono rimaste finche' i numeri
+veri non sono arrivati. **Niente `days`**: si vola tutti i giorni.
 
 **Non copiato da CanaryVIP**, come sempre. Stavolta la loro cancellazione era "gratis fino
 a 24 ore", cioe' lo stesso numero del nostro preavviso, e **non e' stata scritta lo
@@ -10469,7 +10469,13 @@ fasce; 2 adulti e 1 bambino fanno **€165** ("2 adulti × €55 + 1 bambino × 
 casella dei neonati resta nascosta. `node controlla.js` → 0 errori, 3 avvisi invariati.
 Alzato `sw.js` a `isla-v303`.
 
-**Resta una sola cosa da guardare**: "dalle 10 alle 18" l'ho letto come **ultima partenza
-alle 18:00**, quindi nove voli. Se l'ultimo e' alle 17:00 si toglie una riga da `times`.
-Da chiedere anche, un giorno, se il paracadute a 2 o 3 persone si paga a testa comunque
+**L'orario di chiusura, chiesto e corretto lo stesso giorno.** "Dalle 10 alle 18" era
+stato scritto come nove partenze, con l'ultima alle 18:00, e segnalato come lettura da
+confermare: il proprietario ha risposto che **l'ultimo volo e' alle 17:00**, quindi le
+partenze sono otto e le 18:00 sono state tolte (`isla-v304`). Vale la pena tenerlo a
+mente: un intervallo detto a voce non dice se l'ultimo numero e' una partenza o l'ora in
+cui si chiude, e la differenza e' un cliente al porto quando la barca non c'e' piu'. Si
+chiede, e finche' non arriva la risposta si scrive che e' una lettura, non un dato.
+
+Da chiedere ancora, un giorno: se il paracadute a 2 o 3 persone si paga a testa comunque
 (oggi il totale moltiplica per le persone, che e' quello che il proprietario ha detto).

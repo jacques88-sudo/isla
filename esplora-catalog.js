@@ -3040,10 +3040,10 @@ const ESPLORA_CATALOG = [
     priceAdult: 55,
     priceChild: 55,
     family: true,
-    // Le partenze vere, dal proprietario: ogni ora dalle 10:00 alle 18:00.
-    // Prendono il posto delle fasce segnaposto e "Da concordare" sparisce.
-    // Niente `days`: si vola tutti i giorni.
-    times: ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"],
+    // Le partenze vere, dal proprietario: ogni ora dalle 10:00, e **l'ultimo
+    // volo e' alle 17:00**. Prendono il posto delle fasce segnaposto e "Da
+    // concordare" sparisce. Niente `days`: si vola tutti i giorni.
+    times: ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"],
     desc: {
       it: "Si decolla dalla barca appesi al paracadute e si sale sopra la costa di Costa Adeje: una decina di minuti in aria, con il porto, le spiagge e le montagne sotto i piedi. Fra il tragitto in barca e il volo si sta fuori circa quaranta minuti.",
       en: "You lift off from the boat hanging under the parachute and rise above the Costa Adeje coast: some ten minutes in the air, with the marina, the beaches and the mountains under your feet. Between the boat ride and the flight you are out for about forty minutes.",

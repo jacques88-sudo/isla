@@ -1612,44 +1612,107 @@ body.menu-open { overflow: hidden; }
   font-size: .92rem;
   line-height: 1.6;
 }
+
+/* La vetrina, stile bento come in home: riquadri quadrati con la foto, e il
+   primo piu' grande degli altri. Il primo e' grande e basta, non "quello in
+   offerta": se un domani l'ordine cambia, cambia solo quale riquadro e' largo,
+   e nessun testo diventa falso. */
 .pack-grid {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 1.4rem;
-  grid-template-columns: 1fr;
+  gap: .8rem;
+  grid-template-columns: repeat(2, 1fr);
 }
-/* Due colonne solo da schermo largo: la scheda di un pacchetto e' alta (tre
-   escursioni dentro) e in due colonne strette i bottoni finiscono sotto il
-   testo a fisarmonica. */
-@media (min-width: 960px) {
-  .pack-grid { grid-template-columns: repeat(2, 1fr); }
-}
-.pack-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--surface);
-  border: 1px solid var(--border);
+.pack-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: var(--shadow);
 }
-.pack-media {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  background: var(--cream);
+/* Il primo: su due colonne sta largo e basso, come il riquadro del noleggio
+   in home. */
+.pack-tile:first-child {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 10;
 }
-.pack-media img {
+/* Sul telefono i riquadri piccoli sono larghi 168px: col prezzo barrato
+   davanti, "a persona" finisce su una riga sua e il blocco di testo diventa
+   alto il doppio. Il barrato sparisce solo li' — sul riquadro grande, da
+   tablet in su e nella pagina del pacchetto ci sta e resta, che e' il posto
+   dove il cliente guarda quanto risparmia. Il bollino lo dice comunque. */
+@media (max-width: 639px) {
+  .pack-tile:not(:first-child) .price-before { display: none; }
+  /* L'ultimo riquadro rimasto spaiato sulla riga da due si prende tutta la
+     larghezza invece di lasciare un buco, come il riquadro del noleggio in
+     home. Il primo e' gia' largo, quindi "spaiato" vuol dire che i riquadri
+     sono in numero pari. */
+  .pack-tile:nth-child(even):last-child {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 10;
+  }
+}
+@media (min-width: 640px) {
+  .pack-grid { grid-template-columns: repeat(3, 1fr); }
+  .pack-tile:first-child { grid-column: span 2; aspect-ratio: auto; }
+}
+@media (min-width: 960px) {
+  .pack-grid { grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  /* due colonne e due righe: il quadrato grande del bento */
+  .pack-tile:first-child { grid-column: span 2; grid-row: span 2; }
+}
+.pack-tile-link {
   display: block;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+}
+.pack-tile img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+/* La sfumatura e' decorativa: senza pointer-events copre il link e i tocchi
+   non passano. Stessa trappola gia' presa con le foto delle categorie. */
+.pack-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, oklch(0.24 0.012 60 / .82) 100%);
+  pointer-events: none;
+}
+.pack-tile-testo {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: .9rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+.pack-tile-testo strong {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.15rem;
+  line-height: 1.15;
+}
+@media (min-width: 960px) {
+  .pack-tile:first-child .pack-tile-testo strong { font-size: 1.6rem; }
+}
+/* Il prezzo sulla foto: piu' piccolo e in bianco, se no il numero scuro della
+   pagina sparisce dentro la sfumatura. */
+.pack-tile .pack-price { font-size: 1rem; }
+.pack-tile .pack-price strong { font-weight: 500; }
+.pack-tile .price-before { color: oklch(1 0 0 / .65); }
+.pack-tile .pack-price small { color: oklch(1 0 0 / .75); }
 .pack-badge {
   position: absolute;
   top: .8rem;
   right: .8rem;
+  z-index: 1;
   background: var(--text);
   color: var(--cream);
   border-radius: var(--radius-pill);
@@ -1657,35 +1720,50 @@ body.menu-open { overflow: hidden; }
   font-size: .7rem;
   letter-spacing: .06em;
 }
-.pack-body {
+
+/* ── Il pacchetto aperto ──────────────────────────────────────────────── */
+.pack-detail {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  gap: .6rem;
-  padding: 1.1rem 1.2rem 1.2rem;
+  gap: .7rem;
 }
-.pack-title {
+.pack-detail-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--cream);
+  margin-bottom: .5rem;
+}
+.pack-detail-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pack-detail-title {
   margin: 0;
-  font-weight: 500;
-  font-size: 1.35rem;
-  line-height: 1.2;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 1.5rem + 2vw, 2.8rem);
+  line-height: 1.1;
 }
-.pack-desc {
+.pack-detail-lead {
   margin: 0;
   color: var(--muted);
   font-weight: 300;
-  font-size: .88rem;
-  line-height: 1.55;
+  font-size: .95rem;
+  line-height: 1.6;
 }
 .pack-foot {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: .3rem .8rem;
+  margin-top: .3rem;
 }
 .pack-price {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 500;
 }
 /* "a persona" e' l'unita' del numero, non una frase: piccola e attaccata,
@@ -1698,22 +1776,15 @@ body.menu-open { overflow: hidden; }
   letter-spacing: .1em;
   color: var(--muted);
 }
-.pack-save {
-  background: var(--sand);
-  border-radius: var(--radius-pill);
-  padding: .25rem .7rem;
-  font-size: .7rem;
-  letter-spacing: .04em;
-}
 .pack-note {
   margin: 0;
   color: var(--muted);
   font-weight: 300;
-  font-size: .76rem;
+  font-size: .78rem;
   line-height: 1.5;
 }
 .pack-inside {
-  margin-top: .3rem;
+  margin-top: .8rem;
   font-size: .62rem;
   text-transform: uppercase;
   letter-spacing: .2em;
@@ -1721,31 +1792,21 @@ body.menu-open { overflow: hidden; }
 }
 .pack-voci {
   list-style: none;
-  margin: 0;
+  margin: 0 0 1.4rem;
   padding: 0;
 }
 .pack-voce {
-  border-top: 1px solid var(--border);
-}
-/* Tocca-tutta-la-riga: su un telefono stretto un pulsante in fondo lasciava
-   al titolo meno di meta' riga. */
-.pack-voce-link {
   display: flex;
-  align-items: center;
-  gap: .7rem;
-  padding: .75rem .3rem .75rem 0;
-  color: inherit;
-}
-.pack-voce-freccia {
-  flex: none;
-  width: 18px;
-  height: 18px;
-  color: var(--muted);
+  align-items: flex-start;
+  gap: .8rem;
+  padding: .9rem 0;
+  border-top: 1px solid var(--border);
 }
 .pack-voce-n {
   flex: none;
   width: 26px;
   height: 26px;
+  margin-top: .1rem;
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -1754,51 +1815,41 @@ body.menu-open { overflow: hidden; }
   color: var(--muted);
 }
 /* min-width: 0 su un figlio flex serve o un titolo lungo allarga la riga
-   invece di andare a capo, e il bottone esce dalla scheda. */
+   invece di andare a capo. */
 .pack-voce-testo {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: .15rem;
+  gap: .2rem;
 }
 .pack-voce-testo strong {
   font-weight: 500;
-  font-size: .92rem;
+  font-size: .95rem;
   line-height: 1.25;
 }
-.pack-voce-testo span {
+.pack-voce-meta {
   color: var(--muted);
-  font-weight: 300;
   font-size: .76rem;
 }
-/* Gia' nella lista: il pallino del numero si riempie, e il "Gia' nella lista"
-   sta fra i dettagli della riga. Resta un link — ci si torna per cambiare
-   giorno o per toglierla. */
-.pack-voce.is-in .pack-voce-n {
-  background: var(--text);
-  color: var(--cream);
-}
-@media (min-width: 960px) {
-  .pack-voce-link { transition: background .2s ease; }
-  .pack-voce-link:hover { background: var(--cream); }
-}
-.pack-howto {
-  margin: .2rem 0 0;
+/* Le due righe che dicono che cos'e': dal pacchetto non si esce per andare a
+   leggerlo sulla scheda, quindi il minimo per capirlo sta qui. */
+.pack-voce-desc {
   color: var(--muted);
   font-weight: 300;
-  font-size: .78rem;
+  font-size: .84rem;
   line-height: 1.5;
 }
-.pack-state {
-  margin: 0;
-  padding: .55rem .8rem;
-  background: var(--cream);
-  border-radius: 12px;
-  font-size: .8rem;
-}
-.pack-state.is-full {
-  background: var(--sand);
+/* La nota sotto la data e l'etichetta delle persone si toccavano: il .hint
+   ha solo il margine sopra, e li' sotto ci va un campo nuovo. */
+#packDialog .hint { margin-bottom: 1.1rem; }
+#packDialog .request-total { margin-top: .2rem; }
+
+.pack-back {
+  align-self: center;
+  margin-top: .4rem;
+  color: var(--muted);
+  font-size: .82rem;
 }
 
 /* ── Pagina di dettaglio di una singola escursione ────────────────────── */
@@ -2416,26 +2467,6 @@ body.menu-open { overflow: hidden; }
 
 .detail-add { margin-top: .6rem; }
 
-/* "Fa parte del pacchetto X", sopra i due pulsanti: chi arriva da un
-   pacchetto deve ritrovare il filo, o lo sconto che scatta dopo nella lista
-   sembra uscito dal nulla. */
-.detail-pack {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: .2rem .8rem;
-  margin: 1.4rem 0 .8rem;
-  padding: .7rem .9rem;
-  background: var(--cream);
-  border-radius: 12px;
-  font-size: .84rem;
-}
-.detail-pack a {
-  color: var(--muted);
-  font-size: .78rem;
-}
-
 /* Galleggia in basso a destra e c'e' solo quando la lista ha qualcosa dentro.
    Sta sopra tutto tranne le finestre, che hanno z-index 40 e 41. */
 .lista-fab {
@@ -2516,20 +2547,6 @@ body.menu-open { overflow: hidden; }
   height: 32px;
   font-size: .8rem;
   color: var(--muted);
-}
-
-/* Lo sconto del pacchetto, sopra il totale: e' la riga che spiega perche' il
-   numero sotto e' piu' basso della somma delle escursioni. */
-.lista-sconto {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: .2rem .8rem;
-  margin: 0 0 .5rem;
-  padding: .6rem 1rem;
-  background: var(--cream);
-  border-radius: 12px;
-  font-size: .82rem;
 }
 
 .lista-totale {

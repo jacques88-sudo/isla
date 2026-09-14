@@ -411,7 +411,7 @@ function detailOptions(tour) {
           // ("Singola €180 · Doppia €200"): `price` da solo e' il piu' basso.
           const testoPrezzo = prezziVarianteTesto(tour, scelta) ||
             (prezzo ? "€" + eur(prezzo) : "");
-          const premuto = i === varianteIniziale(tour);
+          const premuto = i === 0;
           const bottone = `
           <button type="button" class="detail-option"
                   data-option-value="${esc(tf(scelta.label))}"
@@ -436,32 +436,9 @@ function detailOptions(tour) {
 // La variante premuta all'apertura e' sempre la prima: la tabella e il riquadro
 // devono nascere gia' d'accordo coi bottoni, se no al primo sguardo dicono i
 // numeri di una variante che nessuno ha scelto.
-// Quale variante e' premuta all'apertura. Normalmente la prima; se pero' si
-// arriva da un pacchetto l'indirizzo dice quale ha deciso lui
-// (tour.html?id=...&option=1), e la pagina si apre gia' su quella: il cliente
-// ha letto "stargazing in gruppo piccolo" nella scheda del pacchetto e deve
-// ritrovare quello, non il gruppo grande col suo prezzo diverso.
-// Un numero fuori posto (variante tolta dal catalogo, indirizzo storto) non
-// rompe niente: si torna alla prima.
-function varianteIniziale(tour) {
-  const scelte = (tour && tour.options && tour.options.choices) || [];
-  const n = parseInt(new URLSearchParams(location.search).get("option"), 10);
-  return (isFinite(n) && n >= 0 && n < scelte.length) ? n : 0;
-}
-
 function primaVariante(tour) {
   const scelte = (tour.options && tour.options.choices) || [];
-  return scelte[varianteIniziale(tour)] || null;
-}
-
-// Il pacchetto da cui si arriva, se si arriva da un pacchetto. Serve a due
-// cose: la riga che lo dice in cima ai pulsanti, e il campo `pack` che la voce
-// si porta dentro la lista — e' quello che fa scattare lo sconto quando ci
-// sono tutte e tre.
-function pacchettoDallUrl() {
-  const id = new URLSearchParams(location.search).get("pack");
-  if (!id || typeof pacchettoDi !== "function") return null;
-  return pacchettoDi(id);
+  return scelte[0] || null;
 }
 
 // Una scheda per categoria diversa da quella aperta, cosi' si vede un
@@ -552,20 +529,6 @@ function renderTour(tour) {
   if (banda) banda.hidden = false;
   if (fascia) fascia.innerHTML = detailMedia(tour);
 
-  // Chi arriva da un pacchetto deve sapere di esserci dentro: senza questa
-  // riga la pagina e' identica a quella di un'escursione qualsiasi, e lo
-  // sconto che scatta dopo, nella lista, sembrerebbe uscito dal nulla.
-  // `body.dataset.pack` lo legge escursioni.js quando scrive la voce nella
-  // lista: e' l'unica cosa che lega quella voce al pacchetto.
-  const pack = pacchettoDallUrl();
-  document.body.dataset.pack = pack ? pack.id : "";
-  const rigaPack = pack
-    ? `<p class="detail-pack">
-         <span>${esc(t("pack.partOf", { name: tf(pack.title) }))}</span>
-         <a href="./pacchetti.html">${esc(t("pack.backToPacks"))}</a>
-       </p>`
-    : "";
-
   // Due strade dallo stesso punto: chiedere solo questa, oppure metterla da
   // parte e continuare a guardare. La prima resta il pulsante pieno, perche'
   // e' quella che fa la maggior parte dei clienti.
@@ -593,7 +556,6 @@ function renderTour(tour) {
 
         ${detailItinerary(tour)}
         ${detailIncluded(tour)}
-        ${rigaPack}
         ${askBtn}
         <p class="hint" data-i18n-html="req.hint"></p>
         ${detailNotes(tour)}

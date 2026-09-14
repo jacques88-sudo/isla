@@ -11420,3 +11420,44 @@ nessun "prezzo fisso" sulle voci, e la nota sui mezzi (che non parla di sconti) 
 sulla versione buggy. Nella finestra della richiesta il totale vivo per due adulti fa
 €265 · Risparmi €11, cioè 138×2 meno 5,50×2. `node controlla.js` → 0 errori, 3 avvisi
 invariati. Alzato `sw.js` a `isla-v320`.
+
+---
+
+## 14 settembre 2026 — Una foto sola nel riquadro Pacchetti: Puerto de la Cruz (v321)
+
+Il mosaico di tre foto di stamattina (v318) è durato mezza giornata. Su un riquadro largo
+169px tre foto sono tre francobolli: si capisce che sono foto, non si capisce **di cosa**.
+Una sola, alla stessa misura, si legge.
+
+Al posto dei tre ritagli c'è la foto che apre la home — **Puerto de la Cruz dall'alto, col
+Lago Martiánez davanti e il Teide dietro**, cioè `hero-tenerife.webp`, il poster del video
+in cima alla pagina. Sceglierla vuol dire che chi scorre la home ritrova la stessa immagine
+due volte in venti centimetri: non è una ripetizione, è la stessa mano.
+
+Il ritaglio è quadrato e fatto apposta, **520×520, 66 KB**: quanto pesavano i tre di prima
+tutti insieme, e 520 è esattamente il doppio del riquadro più grande (260px sul desktop),
+quindi sugli schermi a densità doppia è nitida e non un pixel di più. La foto di partenza è
+1920×1080 e pesa 400 KB — appenderla intera a un riquadro da 169px sarebbe stato scaricare
+sei volte il necessario.
+
+Il taglio al centro tiene tutto quello che conta: il Teide resta al centro e la città con le
+piscine sta nella metà bassa. Verificato guardando il ritaglio prima di agganciarlo, che è
+la regola di sempre per le foto quadrate.
+
+### Il mosaico se ne va e si porta via la sua trappola
+
+`.bento-mosaico` era uno `<span>` con dentro tre `<img>` in griglia, e aveva già fatto
+danni: la regola della scritta, scritta `span` e basta, prendeva anche lui e gli toglieva il
+`position: absolute` (vedi l'entrata del v318). Adesso la foto è un `<img class="bento-foto">`
+e dentro il riquadro di `<span>` ce n'è **uno solo**, quindi il `:not(.bento-mosaico)` non
+serve più. Il `>` invece resta, e il commento pure: una regola larga dentro un riquadro che
+cambia si ripresenta.
+
+Cancellati `bento-pacchetti-mare.jpg`, `-terra.jpg` e `-aria.jpg`: non li usava nient'altro,
+verificato con una ricerca su tutto il progetto prima di toglierli.
+
+**Provato nel browser vero** a 390px e 1280px: la foto riempie il riquadro (167×167 dentro
+169, 258×258 dentro 260 — i due pixel sono il bordo), carica il 520×520 giusto, la scritta
+"Pacchetti" resta bianca e leggibile sopra la sfumatura, e il tocco porta a `pacchetti.html`
+con i sette pacchetti. Nessun errore in console, nessuna foto mancante. `node controlla.js`
+→ 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v321`.

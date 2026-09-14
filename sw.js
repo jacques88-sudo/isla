@@ -1,10 +1,18 @@
-const CACHE_NAME = "isla-v323";
+const CACHE_NAME = "isla-v324";
 const ASSETS = [
   "./",
   "./index.html",
   "./booking.html",
   "./escursioni.html",
   "./pacchetti.html",
+  // La vista "In famiglia" e' la stessa pagina con `?famiglia=1` attaccato, ma
+  // per la cache e' un altro indirizzo: `caches.match` guarda anche la parte
+  // dopo il "?", quindi senza questa riga il riquadro della home, da offline,
+  // finirebbe sulla pagina "sei senza connessione". Stessa cosa per l'elenco
+  // delle escursioni per bambini. Il server manda lo stesso file, e' il
+  // browser a doverselo ritrovare con l'indirizzo giusto.
+  "./pacchetti.html?famiglia=1",
+  "./escursioni.html?family=1",
   "./pacchetto.html",
   "./tour.html",
   "./offline.html",

@@ -11598,3 +11598,100 @@ verificato con una ricerca su tutto il progetto prima di toglierli.
 "Pacchetti" resta bianca e leggibile sopra la sfumatura, e il tocco porta a `pacchetti.html`
 con i sette pacchetti. Nessun errore in console, nessuna foto mancante. `node controlla.js`
 → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v323`.
+
+---
+
+## 14 settembre 2026 — "Con bambini" diventa "In famiglia", e porta a cinque pacchetti suoi (v324)
+
+Il riquadro del bento portava a `escursioni.html?family=1`: l'elenco delle 55 schede adatte ai
+bambini. Un filtro, non una proposta. Chi ha due figli e una settimana da riempire non ha
+bisogno di 55 schede, ha bisogno di tre escursioni già messe in fila da qualcuno che le
+conosce — che è esattamente quello che fanno i pacchetti, nati stamattina.
+
+Quindi il riquadro cambia nome e destinazione: **"In famiglia"**, e porta a
+`pacchetti.html?famiglia=1`. Il nome è una scelta del proprietario: "Con bambini" parla dei
+bambini, "In famiglia" parla a chi prenota. **L'elenco filtrato non si perde**: il link sta in
+fondo alla pagina nuova, insieme a quello per tutti i pacchetti.
+
+### I cinque pacchetti
+
+Tutti e cinque sono fatti di schede con `family: true`, tutte col prezzo dei bambini scritto, e
+tutti risparmiano qualcosa (un pacchetto di soli biglietti a prezzo fisso non risparmia niente:
+la lezione di "Tre sere a Tenerife").
+
+| pacchetto | dentro | a persona | famiglia 2+2 |
+|---|---|---|---|
+| Il mare dei bambini | Peter Pan + Submarine Safari + Aqualand | €124 → **115,20** | 406 → **378,40** |
+| Animali da vicino | Whale & Dolphin 3h + Loro Parque + Monkey Park | €109 → **103,50** | 352 → **335,00** |
+| Piccoli esploratori | Tuk tuk + Glass Bottom Boat + Jungle Park | €117 → **108,80** | 406 → **378,20** |
+| Per i ragazzi grandi | Karting + Banana Boat + Siam Park | €81 → **77,30** | 288 → **274,40** |
+| Stelle in famiglia | Stargazing gruppo piccolo + Luxury Cruiser 3h + Siam Park | €178 → **164,60** | 628 → **580,40** |
+
+"Stelle in famiglia" porta dentro due dei quattro prodotti da spingere (lo stargazing in gruppo
+piccolo e il Luxury Cruiser) e al Teide ci sale **una volta sola**, di sera, come vuole la regola.
+
+**Le età minime stanno nella descrizione**, non nascoste in fondo alla scheda: sul kart dei
+ragazzi si sale dai 7 anni e sul gonfiabile dai 10 (fasce `7-13` e `10-15` delle rispettive
+schede). Chi ha un bambino di sei anni deve saperlo prima di mandare la richiesta, non dopo.
+
+### Cosa cambia un `famiglia: true`
+
+Tre cose, e nessuna è grafica:
+
+1. Il pacchetto esce in `pacchetti.html?famiglia=1`. Nella pagina di tutti i pacchetti c'è lo
+   stesso: un pacchetto di famiglia resta un pacchetto, e chi arriva dal riquadro "Pacchetti"
+   deve poterlo trovare. Dodici in tutto lì, cinque nella vista filtrata.
+2. Ogni riga mostra **due** prezzi — "€27 adulti · €13 bambini (3-11)" — con la fascia d'età
+   accanto. Le fasce non combaciano fra schede diverse ed è normale: il sottomarino chiama
+   bambino un dodicenne (2-14), la goletta no (3-11). Un prezzo bambini senza la sua fascia
+   sarebbe giusto per certe famiglie e falso per altre.
+3. Sotto il prezzo a persona compare il conto di una **famiglia tipo, due adulti e due
+   bambini**: è il numero che si va davvero a cercare, perché "a persona" con dei bambini
+   dentro non si moltiplica per quattro. Resta un esempio, e la nota lo dice: con altri numeri
+   il totale si rifà da solo nella finestra della richiesta.
+
+`controlla.js` verifica tutte e tre le condizioni (tutte le schede `family: true`, tutte col
+prezzo bambini, nessun prezzo a mezzo) più la controprova: il conto di 2+2 deve venire.
+Provato su un pacchetto sbagliato apposta — jet ski e cavallo dentro — e li ha presi tutti.
+
+### Un 0 che voleva dire "gratis" e non lo era
+
+`pacchettoTotale` rifiutava di fare il conto solo quando il prezzo bambini era **assente**. Ma
+sulle schede `priceChild: 0` vuol dire "non lo sappiamo ancora" (è il vocabolario di
+`esplora-catalog.js`, ed è per quello che la riga a 0 non si accende nemmeno): con un pacchetto
+che ne conteneva una, una famiglia di quattro avrebbe visto il prezzo di due adulti. Nessuno dei
+sette pacchetti di stamattina ci cascava — per caso, non per costruzione — e il primo pacchetto
+di famiglia ci sarebbe cascato dritto. Adesso zero e assente si trattano uguale, che è già come
+si comporta la finestra della richiesta di una singola escursione (`escursioni.js`, riga 369).
+
+### Una pagina sola, con l'indirizzo che cambia
+
+`?famiglia=1` non è una pagina nuova: è `pacchetti.html` che si cambia il vestito. Il vestito si
+cambia spostando le **chiavi** di i18n (`packs.title` → `packs.familyTitle`) e non scrivendo il
+testo, così il cambio lingua continua a funzionare da solo. Una seconda pagina copiata sarebbe
+stato un secondo posto da aggiornare per sempre — la finestra della richiesta scritta due volte
+fra `escursioni.html` e `tour.html` è lì a ricordarlo.
+
+### Due cose prese solo nel browser vero
+
+**`display: flex` vince su `hidden`.** Il piede con i due link nasce `hidden` e si accende solo
+in modalità famiglia, ma `.packs-foot { display: flex }` copre il `display: none` del browser:
+nella pagina di tutti i pacchetti usciva lo stesso, con scritto "tutte le escursioni adatte ai
+bambini". Serve `.packs-foot[hidden] { display: none; }`, e vale per ogni elemento che nasce
+nascosto e ha un display suo.
+
+**La cache guarda anche dopo il "?".** `caches.match` confronta l'indirizzo intero, quindi
+`pacchetti.html?famiglia=1` non è `pacchetti.html`: da offline il riquadro nuovo sarebbe finito
+sulla pagina "sei senza connessione". Aggiunti tutti e due gli indirizzi con la domanda
+(`?famiglia=1` e `?family=1`) alla lista `ASSETS` di `sw.js`. Il server manda lo stesso file, è
+il browser a doverselo ritrovare con la chiave giusta. **Resta da guardare**: `tour.html?id=...`
+ha lo stesso problema e non è stato toccato qui — sono 66 indirizzi, e la strada giusta è
+semmai `ignoreSearch` nel `match`, che è una modifica da fare con calma e da provare da sola.
+
+**Provato nel browser vero** a 390px e 1280px, in tutte e tre le lingue: il riquadro dice "In
+famiglia / As a family / En familia" e sta su una riga, la vista filtrata mostra cinque
+pacchetti e il piede, quella normale dodici e nessun piede, i due link del piede portano dove
+devono (55 schede l'elenco filtrato), le righe mostrano i due prezzi con la fascia, la finestra
+della richiesta con 2 adulti e 2 bambini fa €580,40 su "Stelle in famiglia" e il messaggio
+all'ufficio esce col totale e il risparmio. Nessun errore in console.
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v324`.

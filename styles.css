@@ -1824,6 +1824,14 @@ body.menu-open { overflow: hidden; }
   font-size: .78rem;
   line-height: 1.5;
 }
+/* Il conto della famiglia tipo, sotto il prezzo a persona. Non e' un titolo ma
+   un numero: piu' piccolo del prezzo grande, piu' scuro della nota che gli sta
+   sotto, cosi' si legge nell'ordine giusto (prezzo, famiglia, avvertenza). */
+.pack-family {
+  margin: .1rem 0 0;
+  font-size: .92rem;
+  font-weight: 400;
+}
 .pack-inside {
   margin-top: .8rem;
   font-size: .62rem;
@@ -1892,6 +1900,21 @@ body.menu-open { overflow: hidden; }
   color: var(--muted);
   font-size: .82rem;
 }
+
+/* Il piede della vista "In famiglia": le due uscite, in colonna e centrate.
+   Nella pagina di tutti i pacchetti resta `hidden` e non occupa niente. */
+.packs-foot {
+  margin-top: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+}
+/* `display: flex` vince su `[hidden]`, che e' solo `display: none` del browser:
+   senza questa riga il piede si vedeva anche nella pagina di tutti i pacchetti,
+   con scritto "tutte le escursioni adatte ai bambini". Vale per ogni elemento
+   che nasce nascosto e ha un display suo. */
+.packs-foot[hidden] { display: none; }
 
 /* ── Pagina di dettaglio di una singola escursione ────────────────────── */
 .detail-page {

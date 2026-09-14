@@ -527,6 +527,39 @@ function controllaPacchetti() {
         "fisso — le categorie " + PACCHETTI_CATEGORIE_SENZA_SCONTO.join(", ") +
         " e le schede con `fixedPrice`.");
     }
+
+    // I pacchetti di famiglia. Le tre regole stanno in testa a `pacchetti.js`
+    // sotto "I PACCHETTI IN FAMIGLIA", e sbagliarle non si vede guardando la
+    // pagina: il pacchetto esce lo stesso, solo che promette una cosa e dentro
+    // ne ha un'altra.
+    if (pacchettoDiFamiglia(pack)) {
+      pack.voci.forEach(voce => {
+        const tour = ESPLORA_CATALOG.find(t => t.id === voce.id);
+        if (!tour || !tour.published) return;   // gia' detto piu' sopra
+
+        if (!tour.family) {
+          errore(dove, 'e\' un pacchetto di famiglia ma "' + voce.id + '" non ha ' +
+            "`family: true`: dentro c'e' qualcosa dove i bambini non vanno.");
+        }
+        if (!pacchettoVocePrezzoBambino(voce)) {
+          errore(dove, 'di "' + voce.id + '" manca il prezzo dei bambini ' +
+            "(assente o a 0, che vuol dire \"non lo sappiamo\"): senza, il conto " +
+            "della famiglia non si fa e il pacchetto e' di famiglia solo di nome.");
+        }
+        const prezzo = pacchettoVocePrezzo(voce);
+        if (prezzo && prezzo.tipo === "mezzo") {
+          errore(dove, '"' + voce.id + '" si paga a mezzo (buggy, moto d\'acqua): ' +
+            "in un pacchetto di famiglia non ci sta, il totale non si potrebbe fare.");
+        }
+      });
+
+      // La controprova, che e' poi quello che vede il cliente: il conto di due
+      // adulti e due bambini deve venire.
+      if (!pacchettoTotale(pack, 2, 2)) {
+        errore(dove, "il conto di 2 adulti e 2 bambini non si fa: la pagina " +
+          "mostrerebbe un pacchetto di famiglia senza il numero della famiglia.");
+      }
+    }
   });
 }
 

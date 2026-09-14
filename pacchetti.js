@@ -96,6 +96,42 @@
 //   spiegazione la da' l'ufficio rispondendo, che e' anche dove si concorda il
 //   pagamento.
 
+// I PACCHETTI IN FAMIGLIA
+//   `famiglia: true` marca i pacchetti fatti per chi viaggia coi bambini. Non
+//   e' un'etichetta grafica: cambia tre cose.
+//     1. Si vedono da soli su `pacchetti.html?famiglia=1`, che e' dove porta il
+//        riquadro "In famiglia" della home. Nella pagina di tutti i pacchetti
+//        ci sono lo stesso: un pacchetto di famiglia resta un pacchetto.
+//     2. Ogni voce mostra **due** prezzi, adulti e bambini, con la fascia
+//        d'eta' accanto. Su un pacchetto di famiglia il prezzo che conta e'
+//        quello dei bambini, e farlo cercare scheda per scheda non ha senso.
+//     3. Sotto il prezzo a persona compare il conto di una famiglia tipo — due
+//        adulti e due bambini — che e' il numero vero che si va a cercare.
+//
+//   Perche' un pacchetto possa essere di famiglia servono tre cose, e
+//   `controlla.js` le verifica tutte e tre:
+//     - **tutte** le schede dentro hanno `family: true`. Una sola che non ce
+//       l'ha e il pacchetto promette una vacanza coi bambini e dentro ha
+//       qualcosa dove i bambini non salgono.
+//     - **tutte** hanno un prezzo bambini vero (non 0, che vuol dire "non lo
+//       sappiamo"). Se ne manca uno il conto della famiglia non si fa, e un
+//       pacchetto di famiglia senza il conto della famiglia e' mezzo pacchetto.
+//     - niente prezzi a mezzo (buggy, moto d'acqua): li' il totale non si puo'
+//       fare finche' non si sa quanti mezzi servono, e la domanda "quanti
+//       buggy per due adulti e due bambini" non ha una risposta scritta.
+//
+//   LE FASCE D'ETA' NON COMBACIANO FRA SCHEDE DIVERSE, ed e' normale: il
+//   sottomarino chiama bambino un dodicenne (2-14), la goletta no (3-11). Per
+//   questo la fascia si scrive accanto a ogni prezzo e il conto della famiglia
+//   porta la sua nota: "due bambini" qui vuol dire due bambini **nella fascia
+//   di quella escursione**. Un numero solo senza la nota sarebbe giusto per
+//   alcune famiglie e falso per altre.
+//
+//   L'ETA' MINIMA SI SCRIVE NELLA DESCRIZIONE. Il kart dei ragazzi parte dai
+//   7 anni, il gonfiabile dai 10: non e' un dettaglio da scoprire dopo aver
+//   mandato la richiesta. Dove c'e' un limite, sta scritto nel testo del
+//   pacchetto.
+
 const PACCHETTI_SCONTO_DEFAULT = 10;
 
 const PACCHETTI_CATEGORIE_SENZA_SCONTO = ["parchi-spettacoli"];
@@ -300,6 +336,137 @@ const PACCHETTI = [
       en: "Three evenings out: the drag show with dinner, the medieval night at the castle and the stars from Teide, with a picnic at sunset above the clouds. For anyone on half board who goes out in the evening.",
       es: "Tres noches fuera: el drag show con cena, la noche medieval en el castillo y las estrellas desde el Teide, con picnic al atardecer por encima de las nubes. Para quien está en media pensión y sale por la noche."
     }
+  },
+
+  // ─── IN FAMIGLIA ──────────────────────────────────────────────────────────
+  // Da qui in giu' i pacchetti con `famiglia: true`: le regole stanno in testa
+  // al file, sotto "I PACCHETTI IN FAMIGLIA". Niente mezzi da dividere, niente
+  // notti fuori tranne quella delle stelle (e li' e' scritto che si torna
+  // tardi), e ogni scheda col suo prezzo bambini.
+
+  {
+    id: "famiglia-mare",
+    // 27 + 61 + 36 = 124 a persona, bambini 13 + 37 + 29 = 79. L'Aqualand e' un
+    // biglietto e non si sconta: −8,80 sul prezzo di un adulto → 115,20.
+    title: {
+      it: "Il mare dei bambini",
+      en: "The sea for kids",
+      es: "El mar de los niños"
+    },
+    image: "submarine-safari.jpg",
+    sconto: 10,
+    famiglia: true,
+    voci: [
+      { id: "peter-pan" },
+      { id: "submarine-safari" },
+      { id: "aqualand" }
+    ],
+    desc: {
+      it: "Il mare guardato da sopra, da sotto e a tutta velocità: due ore sulla goletta di legno da Los Cristianos a cercare delfini e globicefali, un'ora nel sottomarino giallo dove ogni posto ha il suo oblò, e una giornata di scivoli all'Aqualand.",
+      en: "The sea seen from above, from below and at full speed: two hours on the wooden schooner out of Los Cristianos looking for dolphins and pilot whales, an hour in the yellow submarine where every seat has its own porthole, and a day of slides at Aqualand.",
+      es: "El mar visto desde arriba, desde abajo y a toda velocidad: dos horas en la goleta de madera desde Los Cristianos buscando delfines y calderones, una hora en el submarino amarillo donde cada asiento tiene su ojo de buey, y un día de toboganes en Aqualand."
+    }
+  },
+
+  {
+    id: "famiglia-animali",
+    // 55 + 44 + 10 = 109 a persona, bambini 30 + 32 + 5 = 67. Loro Parque e
+    // Monkey Park sono biglietti: si sconta solo la barca a vela, −5,50 → 103,50.
+    title: {
+      it: "Animali da vicino",
+      en: "Animals up close",
+      es: "Animales de cerca"
+    },
+    image: "loro-parque.jpg",
+    sconto: 10,
+    famiglia: true,
+    voci: [
+      { id: "whale-dolphin-3h" },
+      { id: "loro-parque" },
+      { id: "monkey-park" }
+    ],
+    desc: {
+      it: "Gli animali dove vivono e gli animali da toccare: tre ore in barca a vela da Puerto Colón in cerca di balene e delfini, una giornata al Loro Parque e il Monkey Park, il piccolo zoo dove si entra nei recinti e si dà da mangiare a lemuri, iguane e pappagalli.",
+      en: "Animals where they live and animals you can touch: three hours on a sailing boat from Puerto Colón looking for whales and dolphins, a day at Loro Parque and Monkey Park, the little zoo where you walk into the enclosures and feed lemurs, iguanas and parrots.",
+      es: "Los animales donde viven y los animales que se tocan: tres horas en velero desde Puerto Colón buscando ballenas y delfines, un día en el Loro Parque y el Monkey Park, el pequeño zoo donde se entra en los recintos y se da de comer a lémures, iguanas y loros."
+    }
+  },
+
+  {
+    id: "famiglia-piccoli",
+    // 24 + 58 + 35 = 117 a persona, bambini 12 + 45 + 29 = 86. Il Jungle Park e'
+    // un biglietto: si scontano tuk tuk e barca, −8,20 → 108,80.
+    title: {
+      it: "Piccoli esploratori",
+      en: "Little explorers",
+      es: "Pequeños exploradores"
+    },
+    image: "tuk-tuk.jpg",
+    sconto: 10,
+    famiglia: true,
+    voci: [
+      { id: "tuk-tuk" },
+      { id: "glass-bottom-boat" },
+      { id: "jungle-park" }
+    ],
+    desc: {
+      it: "Tre uscite tranquille, per chi ha bambini piccoli: un'ora in tuk tuk elettrico sulla costa di Adeje con la guida che racconta, tre ore sulla barca col fondo di vetro a guardare i pesci restando a bordo, e una giornata al Jungle Park fra i rapaci in volo libero e le scimmie.",
+      en: "Three unhurried outings, for families with small children: an hour in an electric tuk tuk along the Adeje coast with a guide, three hours on the glass-bottom boat watching the fish without leaving the deck, and a day at Jungle Park among free-flying birds of prey and monkeys.",
+      es: "Tres salidas tranquilas, para quien viaja con niños pequeños: una hora en tuk tuk eléctrico por la costa de Adeje con un guía que cuenta, tres horas en el barco con fondo de cristal mirando los peces sin bajar de a bordo, y un día en el Jungle Park entre rapaces en vuelo libre y monos."
+    }
+  },
+
+  {
+    id: "famiglia-ragazzi",
+    // 22 + 15 + 44 = 81 a persona, bambini 16 + 15 + 32 = 63. Il Siam Park e' un
+    // biglietto: si scontano kart e gonfiabile, −3,70 → 77,30.
+    // Le eta' minime sono nella descrizione, e vengono dalle fasce delle schede:
+    // kart dei ragazzi 7-13, gonfiabile 10-15. Chi ha un bambino di sei anni
+    // deve saperlo prima di mandare la richiesta, non dopo.
+    title: {
+      it: "Per i ragazzi grandi",
+      en: "For the big kids",
+      es: "Para los mayores"
+    },
+    image: "karting.jpg",
+    sconto: 10,
+    famiglia: true,
+    voci: [
+      { id: "karting" },
+      { id: "banana-boat" },
+      { id: "siam-park" }
+    ],
+    desc: {
+      it: "Per chi in famiglia non è più un bambino piccolo: dieci minuti di kart sulla pista di Fañabé, una corsa sul gonfiabile trainato dal motoscafo davanti a Puerto Colón e una giornata al Siam Park. Sul kart dei ragazzi si sale dai 7 anni, sul gonfiabile dai 10.",
+      en: "For the ones in the family who aren't little any more: ten minutes of karting on the Fañabé track, a ride on the inflatable towed by the speedboat off Puerto Colón and a day at Siam Park. The kids' kart starts at 7, the inflatable at 10.",
+      es: "Para quien en la familia ya no es un niño pequeño: diez minutos de kart en el circuito de Fañabé, una vuelta en el hinchable remolcado por la lancha frente a Puerto Colón y un día en el Siam Park. En el kart de los chicos se sube desde los 7 años; en el hinchable, desde los 10."
+    }
+  },
+
+  {
+    id: "famiglia-stelle",
+    // 79 + 55 + 44 = 178 a persona, bambini 69 + 35 + 32 = 136. Il Siam Park e'
+    // un biglietto: si scontano stelle e barca, −13,40 → 164,60.
+    // Teide: una volta sola, ed e' quella della sera.
+    title: {
+      it: "Stelle in famiglia",
+      en: "Stars as a family",
+      es: "Estrellas en familia"
+    },
+    image: "stargazing-group.jpg",
+    sconto: 10,
+    famiglia: true,
+    voci: [
+      // optionIndex 1 = gruppo piccolo, in minivan e anche in italiano.
+      { id: "stargazing-group", optionIndex: 1 },
+      { id: "luxury-cruiser", optionIndex: 0 },
+      { id: "siam-park" }
+    ],
+    desc: {
+      it: "Una serata grande e due giornate con calma: il tramonto sopra le nuvole col picnic e il telescopio, in gruppo piccolo, poi tre ore in barca da Las Galletas con la sosta per il bagno e una giornata al Siam Park. Dal Teide si torna tardi: il giorno dopo, sveglia con comodo.",
+      en: "One big evening and two easy days: sunset above the clouds with a picnic and the telescope, in a small group, then three hours on the water from Las Galletas with a swim stop and a day at Siam Park. You get back from Teide late, so take the next morning slowly.",
+      es: "Una noche grande y dos días con calma: el atardecer por encima de las nubes con picnic y telescopio, en grupo pequeño, luego tres horas en barco desde Las Galletas con parada de baño y un día en el Siam Park. Del Teide se vuelve tarde: al día siguiente, sin madrugar."
+    }
   }
 
 ];
@@ -395,6 +562,28 @@ function pacchettoVocePrezzo(voce) {
   return adulto ? { tipo: "persona", prezzo: adulto } : null;
 }
 
+// Il prezzo di un bambino su una voce, o null dove non c'e'.
+//
+// Zero **non** e' un prezzo: sulle schede `priceChild: 0` vuol dire "non lo
+// sappiamo ancora" (il vocabolario in testa a `esplora-catalog.js`), e infatti
+// la riga del prezzo bambini li' non si accende nemmeno. Trattarlo come gratis
+// farebbe uscire una famiglia di quattro al prezzo di due adulti: un numero
+// verosimile e falso, che e' il tipo peggiore.
+function pacchettoVocePrezzoBambino(voce) {
+  const tour = pacchettoVoceTour(voce);
+  if (!tour) return null;
+  const variante = pacchettoVoceVariante(voce, tour);
+  const bambino = (variante && variante.priceChild !== undefined)
+    ? variante.priceChild
+    : tour.priceChild;
+  return bambino > 0 ? bambino : null;
+}
+
+// I pacchetti per chi viaggia coi bambini. Le regole stanno in testa al file.
+function pacchettoDiFamiglia(pack) {
+  return pack.famiglia === true;
+}
+
 // Su questa voce lo sconto si puo' fare? Una scheda che non si trova non si
 // sconta: nel dubbio si sconta di meno, mai di piu' di quello che si puo'.
 //
@@ -487,11 +676,13 @@ function pacchettoTotale(pack, adulti, bambini) {
     const prezzo = pacchettoVocePrezzo(voce);
     if (!tour || !prezzo || prezzo.tipo === "mezzo") { possibile = false; return; }
 
-    const variante = pacchettoVoceVariante(voce, tour);
-    const bambino = (variante && variante.priceChild !== undefined)
-      ? variante.priceChild
-      : tour.priceChild;
-    if (k > 0 && bambino === undefined) { possibile = false; return; }
+    // `null` quando il prezzo dei bambini non c'e' **o e' zero**: zero vuol
+    // dire "non lo sappiamo", non "gratis". Con dei bambini dentro, un totale
+    // che li conta a zero e' piu' basso del vero, e il cliente lo scopre
+    // quando l'ufficio gli risponde con un altro numero. Stessa regola della
+    // finestra della richiesta di una singola escursione.
+    const bambino = pacchettoVocePrezzoBambino(voce);
+    if (k > 0 && !bambino) { possibile = false; return; }
 
     unAdulto += prezzo.prezzo;
     unBambino += bambino || 0;
@@ -759,15 +950,56 @@ function pacchettoTileHTML(pack) {
     </li>`;
 }
 
+// La vista "In famiglia" e' la stessa pagina con un indirizzo diverso,
+// `pacchetti.html?famiglia=1`, non una pagina nuova: la vetrina, la finestra
+// della richiesta e il conto sono gli stessi, cambiano il titolo e quali
+// pacchetti si vedono. Una seconda pagina copiata sarebbe un secondo posto da
+// aggiornare a ogni modifica — e' gia' successo con la finestra della
+// richiesta, scritta due volte fra `escursioni.html` e `tour.html`.
+//
+// Il vestito si cambia spostando le **chiavi** di i18n, non scrivendo il testo:
+// cosi' il cambio lingua continua a funzionare da solo, che e' il lavoro di
+// `applyI18n`. Si fa una volta al caricamento, non a ogni ridisegno.
+function pacchettiVestiDaFamiglia() {
+  const cambia = (chiaveVecchia, chiaveNuova) => {
+    const el = document.querySelector('[data-i18n="' + chiaveVecchia + '"]');
+    if (el) el.dataset.i18n = chiaveNuova;
+  };
+  cambia("packs.eyebrow", "packs.familyEyebrow");
+  cambia("packs.title", "packs.familyTitle");
+  cambia("packs.intro", "packs.familyIntro");
+
+  const meta = document.querySelector('[data-i18n-content="meta.packs.desc"]');
+  if (meta) meta.dataset.i18nContent = "meta.family.desc";
+  if (document.body.dataset.i18nDoctitle === "meta.packs.title") {
+    document.body.dataset.i18nDoctitle = "meta.family.title";
+  }
+
+  // I due modi di uscire di qui: le escursioni per bambini una per una, o
+  // tutti i pacchetti. Nella pagina normale questo piede resta nascosto.
+  const piede = document.querySelector("[data-pack-foot]");
+  if (piede) piede.hidden = false;
+
+  if (typeof applyI18n === "function") applyI18n();
+}
+
 function initPacchettiGriglia() {
   const grid = document.querySelector("[data-pack-grid]");
   if (!grid || typeof ESPLORA_CATALOG === "undefined") return;
+
+  const soloFamiglia = new URLSearchParams(location.search).get("famiglia") === "1";
+  if (soloFamiglia) pacchettiVestiDaFamiglia();
 
   function disegna() {
     // Un pacchetto con dentro una scheda che nel catalogo non c'e' piu' non si
     // mostra: meglio un pacchetto in meno che uno che promette tre escursioni
     // e ne ha due.
+    //
+    // Nella pagina di tutti i pacchetti ci sono anche quelli di famiglia: sono
+    // pacchetti, e chi arriva dal riquadro "Pacchetti" deve poterli trovare.
+    // A togliere qualcosa e' solo `?famiglia=1`, che tiene solo quelli.
     grid.innerHTML = PACCHETTI
+      .filter(p => !soloFamiglia || pacchettoDiFamiglia(p))
       .filter(p => p.voci.every(v => pacchettoVoceTour(v)))
       .map(pacchettoTileHTML)
       .join("");
@@ -783,17 +1015,28 @@ function initPacchettiGriglia() {
 // descrizione serve proprio a questo, a far sapere che cos'e' senza doverla
 // aprire; dove il pacchetto ha scelto una variante si usa la descrizione della
 // variante, che e' piu' precisa di quella della scheda.
-function pacchettoVoceHTML(voce, n) {
+function pacchettoVoceHTML(voce, n, famiglia) {
   const tour = pacchettoVoceTour(voce);
   if (!tour) return "";
 
   const variante = pacchettoVoceVariante(voce, tour);
   const prezzo = pacchettoVocePrezzo(voce);
   const desc = (variante && variante.desc) ? tf(variante.desc) : tf(tour.desc);
+  const bambino = pacchettoVocePrezzoBambino(voce);
 
   const dettagli = [];
   if (variante) dettagli.push(tf(variante.label));
-  if (prezzo) dettagli.push("€" + eur(prezzo.prezzo) + priceUnitSuffix(tour));
+  // In un pacchetto di famiglia la riga porta tutti e due i prezzi, con la
+  // fascia d'eta' accanto a quello dei bambini: le fasce cambiano da una
+  // scheda all'altra (il sottomarino chiama bambino un dodicenne, la goletta
+  // no) e senza scriverla il numero vale per la famiglia sbagliata.
+  if (prezzo && famiglia && prezzo.tipo === "persona" && bambino) {
+    dettagli.push(t("pack.priceAdults", { n: eur(prezzo.prezzo) }));
+    const fascia = (tour.ages && tour.ages.child) ? " (" + tf(tour.ages.child) + ")" : "";
+    dettagli.push(t("pack.priceChildren", { n: eur(bambino) }) + fascia);
+  } else if (prezzo) {
+    dettagli.push("€" + eur(prezzo.prezzo) + priceUnitSuffix(tour));
+  }
 
   return `
     <li class="pack-voce">
@@ -804,6 +1047,24 @@ function pacchettoVoceHTML(voce, n) {
         <span class="pack-voce-desc">${esc(desc)}</span>
       </div>
     </li>`;
+}
+
+// Il conto di una famiglia tipo — due adulti e due bambini — sotto il prezzo a
+// persona. E' il numero che su un pacchetto di famiglia si va a cercare: "a
+// persona" con dei bambini dentro non si moltiplica per quattro.
+//
+// Due e due e' un esempio, non un vincolo: chi e' in tre o in cinque fa il suo
+// conto nella finestra della richiesta, dove i numeri si battono e il totale si
+// rifa' da solo. E resta un esempio anche sulle eta': "due bambini" vuol dire
+// due bambini nella fascia di **ogni** escursione, che e' quello che dice la
+// nota qui sotto.
+function pacchettoFamigliaHTML(pack) {
+  if (!pacchettoDiFamiglia(pack)) return "";
+  const conto = pacchettoTotale(pack, 2, 2);
+  if (!conto) return "";
+  return `
+        <p class="pack-family">${esc(t("pack.familyTotal", { n: eur(conto.totale) }))}</p>
+        <p class="pack-note">${esc(t("pack.familyAges"))}</p>`;
 }
 
 function initPacchetto() {
@@ -828,7 +1089,10 @@ function initPacchetto() {
 
     document.title = tf(pack.title) + " · Isla";
     const conto = pacchettoConto(pack);
-    const righe = pack.voci.map((voce, i) => pacchettoVoceHTML(voce, i + 1)).join("");
+    const famiglia = pacchettoDiFamiglia(pack);
+    const righe = pack.voci
+      .map((voce, i) => pacchettoVoceHTML(voce, i + 1, famiglia))
+      .join("");
 
     contenitore.innerHTML = `
       <article class="pack-detail">
@@ -843,6 +1107,7 @@ function initPacchetto() {
         <p class="pack-detail-lead">${esc(tf(pack.desc))}</p>
         <div class="pack-foot">${pacchettoPrezzoHTML(conto)}</div>
         ${conto && conto.misto ? `<p class="pack-note">${esc(t("pack.unitNote"))}</p>` : ""}
+        ${pacchettoFamigliaHTML(pack)}
         <span class="pack-inside">${esc(t("pack.inside"))}</span>
         <ol class="pack-voci">${righe}</ol>
         <button class="btn btn-primary btn-block" type="button" data-pack-ask="${esc(pack.id)}"

@@ -109,6 +109,14 @@
     <div class="wrap">
       <ul class="pack-grid" data-pack-grid></ul>
     </div>
+
+    <!-- Si accende solo nella vista "In famiglia" (pacchetti.html?famiglia=1),
+         ed e' `pacchetti.js` ad accenderlo: sono i due modi di uscire di qui,
+         le escursioni per bambini una per una o tutti i pacchetti. -->
+    <div class="wrap packs-foot" data-pack-foot hidden>
+      <a class="btn btn-soft btn-block" href="./escursioni.html?family=1" data-i18n="packs.familyAll">Tutte le escursioni adatte ai bambini</a>
+      <a class="pack-back" href="./pacchetti.html" data-i18n="pack.seeAll">Vedi tutti i pacchetti</a>
+    </div>
   </main>
 
   <div class="menu-scrim" data-menu-scrim hidden></div>

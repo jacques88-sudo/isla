@@ -51,6 +51,8 @@ const I18N = {
   "meta.catalog.title": { it: "Tutte le escursioni · Isla", en: "All excursions · Isla", es: "Todas las excursiones · Isla" },
   "meta.catalog.desc":  { it: "Tutte le escursioni, i tour e gli show di Isla a Tenerife: mare, Teide, parchi, avventura e molto altro.", en: "All of Isla's excursions, tours and shows in Tenerife: sea, Teide, parks, adventure and much more.", es: "Todas las excursiones, tours y espectáculos de Isla en Tenerife: mar, Teide, parques, aventura y mucho más." },
   "meta.packs.title":   { it: "I pacchetti · Isla", en: "Packages · Isla", es: "Los paquetes · Isla" },
+  "meta.family.title":  { it: "In famiglia · Isla", en: "As a family · Isla", es: "En familia · Isla" },
+  "meta.family.desc":   { it: "I pacchetti di Isla per chi viaggia coi bambini a Tenerife: tre escursioni insieme, col prezzo dei bambini scritto accanto a quello degli adulti.", en: "Isla's packages for families travelling with children in Tenerife: three excursions together, with the kids' price written next to the adults'.", es: "Los paquetes de Isla para quien viaja con niños en Tenerife: tres excursiones juntas, con el precio de los niños junto al de los adultos." },
   "meta.packs.desc":    { it: "I pacchetti di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "Isla's packages in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Los paquetes de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado." },
   "meta.pack.desc":     { it: "Un pacchetto di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "An Isla package in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Un paquete de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado." },
   "meta.booking.title": { it: "La tua prenotazione · Isla", en: "Your booking · Isla", es: "Tu reserva · Isla" },
@@ -64,7 +66,10 @@ const I18N = {
   "intro.title":        { it: "Inizia la tua avventura con…", en: "Start your adventure with…", es: "Empieza tu aventura con…" },
   "bento.packages":     { it: "Pacchetti", en: "Packages", es: "Paquetes" },
   "bento.scan":         { it: "Scan ticket", en: "Scan ticket", es: "Scan ticket" },
-  "bento.kids":         { it: "Con bambini", en: "With kids", es: "Con niños" },
+  // Era "Con bambini" e portava all'elenco filtrato: adesso porta ai pacchetti
+  // di famiglia. Il nome cambiato e' una scelta del proprietario (14 settembre
+  // 2026): "In famiglia" parla a chi viaggia coi bambini, non ai bambini.
+  "bento.family":       { it: "In famiglia", en: "As a family", es: "En familia" },
   "bento.days":         { it: "3/5/7 Days Experience", en: "3/5/7 Days Experience", es: "3/5/7 Days Experience" },
   "bento.rental":       { it: "Noleggio auto, moto e bici", en: "Car, moto & bike rental", es: "Alquiler de coche, moto y bici" },
   "wa.rental":          { it: "Ciao Isla! Vorrei noleggiare un mezzo a Tenerife. Mi interessa: ", en: "Hi Isla! I'd like to rent a vehicle in Tenerife. I'm interested in: ", es: "¡Hola Isla! Quisiera alquilar un vehículo en Tenerife. Me interesa: " },
@@ -220,6 +225,10 @@ const I18N = {
   "packs.eyebrow":      { it: "Scelti per te", en: "Picked for you", es: "Elegidos para ti" },
   "packs.title":        { it: "I pacchetti", en: "Packages", es: "Los paquetes" },
   "packs.intro":        { it: "Tre escursioni che stanno bene insieme, con lo sconto già tolto dal prezzo. Si prendono intere: una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "Three excursions that go well together, with the discount already taken off. You take them as a whole: one single request, and we agree the days together.", es: "Tres excursiones que van bien juntas, con el descuento ya aplicado. Se toman enteras: una sola solicitud, y los días los acordamos juntos." },
+  "packs.familyEyebrow": { it: "Con i bambini", en: "With the kids", es: "Con los niños" },
+  "packs.familyTitle":  { it: "In famiglia", en: "As a family", es: "En familia" },
+  "packs.familyIntro":  { it: "Pacchetti per chi viaggia coi bambini: tre escursioni dove i piccoli hanno il loro prezzo, con lo sconto già tolto. Si prendono interi: una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "Packages for families travelling with children: three excursions where the little ones have their own price, with the discount already taken off. You take them as a whole: one single request, and we agree the days together.", es: "Paquetes para quien viaja con niños: tres excursiones donde los pequeños tienen su propio precio, con el descuento ya aplicado. Se toman enteros: una sola solicitud, y los días los acordamos juntos." },
+  "packs.familyAll":    { it: "Tutte le escursioni adatte ai bambini", en: "All the kid-friendly excursions", es: "Todas las excursiones aptas para niños" },
   "pack.eyebrow":       { it: "Pacchetto", en: "Package", es: "Paquete" },
   "pack.ask":           { it: "Richiedi il pacchetto", en: "Request the package", es: "Solicitar el paquete" },
   "pack.oneRequest":    { it: "Il pacchetto si chiede intero, con una richiesta sola: i tre giorni li mettiamo d'accordo insieme quando ti rispondiamo.", en: "The package is requested as a whole, in a single request: we agree the three days together when we reply.", es: "El paquete se solicita entero, con una sola solicitud: los tres días los acordamos juntos cuando te respondemos." },
@@ -235,6 +244,10 @@ const I18N = {
   "pack.save":          { it: "Risparmi €{n}", en: "You save €{n}", es: "Ahorras €{n}" },
   "pack.noPrice":       { it: "Prezzo su richiesta", en: "Price on request", es: "Precio a consultar" },
   "pack.unitNote":      { it: "Qui dentro c'è un mezzo che si paga a buggy o a moto d'acqua, non a testa: questo è il prezzo di una persona da sola, e in due o in tre a testa si paga meno.", en: "This one includes a vehicle priced per buggy or per jet ski, not per head: this is the price for one person on their own, and with two or three of you it comes down.", es: "Aquí hay un vehículo que se paga por buggy o por moto de agua, no por persona: este es el precio de una persona sola, y entre dos o tres sale menos." },
+  "pack.priceAdults":   { it: "€{n} adulti", en: "€{n} adults", es: "€{n} adultos" },
+  "pack.priceChildren": { it: "€{n} bambini", en: "€{n} kids", es: "€{n} niños" },
+  "pack.familyTotal":   { it: "Famiglia tipo, 2 adulti e 2 bambini: €{n} in tutto", en: "A typical family, 2 adults and 2 kids: €{n} in total", es: "Familia tipo, 2 adultos y 2 niños: €{n} en total" },
+  "pack.familyAges":    { it: "Le fasce d'età cambiano da un'escursione all'altra: le trovi qui sotto, accanto al prezzo dei bambini. Con altri numeri il totale si rifà da solo nella richiesta.", en: "Age brackets differ from one excursion to the next: you'll find them below, next to the children's price. With other numbers the total recalculates itself in the request.", es: "Las franjas de edad cambian de una excursión a otra: las encuentras abajo, junto al precio de los niños. Con otros números el total se recalcula solo en la solicitud." },
   "pack.inside":        { it: "Cosa c'è dentro", en: "What's inside", es: "Qué incluye" },
 
   "detail.days":        { it: "Giorni", en: "Days", es: "Días" },

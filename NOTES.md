@@ -11695,3 +11695,27 @@ devono (55 schede l'elenco filtrato), le righe mostrano i due prezzi con la fasc
 della richiesta con 2 adulti e 2 bambini fa €580,40 su "Stelle in famiglia" e il messaggio
 all'ufficio esce col totale e il risparmio. Nessun errore in console.
 `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v324`.
+
+### La foto al posto dell'icona nel riquadro "In famiglia" (v325)
+
+Poche ore dopo, la foto mandata dal proprietario: ragazzi sotto il secchio d'acqua che si
+rovescia, braccia in alto, palma e cielo. Ha preso il posto delle due figurine stilizzate.
+Le figurine dicevano "famiglia" per modo di dire — un adulto e un bambino disegnati con due
+cerchi — la foto lo dice e basta, e dice anche che ci si diverte.
+
+Stesso trattamento della foto dei Pacchetti, che è la regola di quel riquadro: **ritaglio
+quadrato 520×520, 67 KB**, il doppio dei 260px del riquadro più grande sul desktop, così sugli
+schermi a densità doppia è nitida senza scaricare un pixel di troppo. La sorgente era
+960×641: ritaglio centrale alto quanto la foto (641×641), guardato prima di agganciarlo —
+provati anche quello a sinistra, che taglia male la ragazza di bordo, e quello a destra.
+
+Adesso i riquadri con la foto sono **due**, e il commento nell'HTML che diceva "l'unico" è
+stato corretto: una riga falsa in un commento è peggio di nessun commento. Sulla griglia non
+si pestano i piedi — sul telefono stanno in diagonale (Pacchetti in alto a sinistra, In
+famiglia sotto a destra… anzi sotto a sinistra), sul desktop sono il primo e il terzo dei
+quattro.
+
+**Provato nel browser vero** a 390px e 1280px: la foto riempie il riquadro (167×167 e
+258×258, file da 520×520 caricato per intero), la scritta bianca "IN FAMIGLIA" resta leggibile
+sopra la sfumatura e il tocco porta ai cinque pacchetti di famiglia. `node controlla.js` →
+0 errori, 3 avvisi invariati (la foto nuova porta assets a 119). Alzato `sw.js` a `isla-v325`.

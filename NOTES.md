@@ -79,9 +79,10 @@ scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
 
 Home: splash con anello blu di caricamento → banner fisso in cima (logo, wordmark, pillole
 Esperienze / Prenota ora / Menu, si restringe scorrendo) → video hero con play/pausa →
-"Inizia la tua avventura con…" → griglia bento (Pacchetti, Scan ticket, Con bambini,
+"Inizia la tua avventura con…" → griglia bento (Pacchetti, Scan ticket, In famiglia,
 3/5/7 Days, più un riquadro largo "Noleggio auto, moto e bici" che apre WhatsApp;
-"Pacchetti" porta alla pagina dei pacchetti) →
+"Pacchetti" porta alla pagina dei pacchetti, "In famiglia" a quelli di famiglia e
+"3/5/7 Days" agli itinerari a giorni) →
 "come funziona" → categorie (7 foto vere) → posti segreti → chi siamo →
 FAQ → richiamo finale → footer. Layout ottimizzato anche per desktop.
 
@@ -1705,9 +1706,9 @@ Cose da ricordare, imparate sistemando la versione PC:
   barra non si vede. Su schermo largo devono andare a capo. E' successo ai
   filtri per categoria
 
-- Il riquadro bento "Pacchetti" porta a `pacchetti.html` (dal 14 settembre 2026).
-  **"3/5/7 Days Experience" punta ancora a `#categories`**, cioè alle categorie della
-  home: è l'ultimo riquadro rimasto senza una pagina sua
+- Il riquadro bento "Pacchetti" porta a `pacchetti.html` (dal 14 settembre 2026), e
+  **"3/5/7 Days Experience" porta agli itinerari a giorni** (`pacchetti.html?giorni=tutti`,
+  dal 14 settembre 2026). Adesso ogni riquadro della home porta da qualche parte
 - Il riquadro "Noleggio auto, moto e bici" non è un'attività del catalogo: non ha una
   scheda, apre WhatsApp con un messaggio già scritto (`wa.rental` in `i18n.js`). Il link
   lo costruisce `initRentalLink()` in `app.js`, che si nasconde da solo se
@@ -11719,3 +11720,103 @@ quattro.
 258×258, file da 520×520 caricato per intero), la scritta bianca "IN FAMIGLIA" resta leggibile
 sopra la sfumatura e il tocco porta ai cinque pacchetti di famiglia. `node controlla.js` →
 0 errori, 3 avvisi invariati (la foto nuova porta assets a 119). Alzato `sw.js` a `isla-v325`.
+
+
+## Gli itinerari a 3, 5 e 7 giorni (14 settembre 2026, v326)
+
+Dopo "In famiglia", la stessa idea applicata al tempo: **itinerari per chi sta sull'isola tre,
+cinque o sette giorni** — o resta di più ma vuole impegnarsi solo quelli. È quello che mancava
+dietro al riquadro "3/5/7 Days Experience" della home, che dal primo giorno puntava a
+`#categories`: l'ultimo riquadro senza una pagina sua.
+
+Sei itinerari nuovi in `pacchetti.js`, marcati con `giorni: 3 | 5 | 7`: per ogni durata uno
+classico e uno di famiglia.
+
+### Le tre decisioni del proprietario
+
+1. **Un giorno, un'escursione.** Sette giorni vuol dire sette escursioni, non "una settimana con
+   dentro cinque uscite". `controlla.js` verifica che `giorni` sia uguale al numero delle voci.
+2. **Lo sconto cresce coi giorni: 10% a tre, 12% a cinque, 15% a sette.** Resta un campo per
+   itinerario (`sconto`), non una costante: `controlla.js` dà un **avviso** se uno esce dalla
+   scala, perché uno sconto sbagliato non si vede guardando la pagina — si vede solo che si
+   risparmia meno.
+3. **Itinerari nuovi e dedicati**, non i dodici pacchetti da tre riciclati come "3 giorni".
+
+### Il cinque contiene il tre, il sette contiene il cinque
+
+Non è un vezzo: è la cosa che li tiene onesti. Chi allunga la vacanza non scopre di aver preso
+"l'itinerario sbagliato", aggiunge dei giorni; e per chi li scrive è una rete, perché se i primi
+tre giorni sono giusti lo sono già anche negli altri due itinerari.
+
+- **3 giorni** (€120 a persona, era 129): Teide in pullman + Luxury Cruiser + kayak e snorkeling
+- **5 giorni** (€216,60, era 234): i tre di sopra + parascending + Santa Cruz/Anaga/La Laguna
+- **7 giorni** (€293, era 320): i cinque di sopra + lezione di surf + flamenco
+- Gli stessi tre passi in famiglia: goletta/Aqualand/tuk tuk → + sottomarino e Siam Park →
+  + Monkey Park e barca col fondo di vetro. Una famiglia di due adulti e due bambini:
+  €266,80, €588,24, €782,90.
+
+**Niente prezzi a mezzo** (buggy, moto d'acqua), ed è voluto: su tre escursioni il "prezzo di una
+persona da sola" si spiega in una riga, su sette diventa un totale che non somiglia a quello che
+si paga. Così il numero in vetrina è esatto in tutti e sei.
+
+**Niente stargazing**, che pure è uno dei prodotti da spingere: il Teide sta nel primo giorno del
+tre, e le stelle sono un'altra salita al Teide. La regola "al parco ci si sale una volta" ha
+vinto sulla spinta commerciale — nei pacchetti a tema lo stargazing c'è già in cinque su sette.
+
+### Il buco nel controllo del Teide, trovato scrivendo questi
+
+`icod-garachico-orotava` **sale al Parco Nazionale del Teide** — lo dice la prima riga della sua
+descrizione — ma non era nell'elenco `SALE_AL_TEIDE` di `controlla.js`. Il primo cinque giorni
+che avevo scritto aveva il Teide due volte e il controllo diceva "0 errori". Cercando per
+descrizione e non per titolo ne sono saltate fuori **quattro**: `icod-garachico-orotava`,
+`masca-teide-cabrio-bus`, `mustang-experience` ("su per la strada del Parco Nazionale fino alla
+Cañada Blanca") e `island-tour-completo`. Aggiunte tutte.
+
+La lezione è quella già scritta per le icone: **un elenco di eccezioni si controlla leggendo i
+dati, non i nomi.** Il Teide nel nome non ce l'hanno tutte.
+
+### Dove vivono
+
+`pacchetti.html?giorni=3|5|7`, e `?giorni=tutti` per la vetrina intera — che è dove porta il
+riquadro della home. È la **terza** vista della stessa pagina (pacchetti, famiglia, giorni), e si
+veste sempre allo stesso modo: spostando le chiavi di i18n, mai scrivendo il testo. Le funzioni
+`pacchettiCambiaChiave` e `pacchettiCambiaTesta` sono nate qui, estratte da quella di famiglia
+invece di copiarla.
+
+Le durate sono **link** e non bottoni: ogni durata deve avere un indirizzo suo da mandare a un
+cliente ("ti mando i cinque giorni") e da ritrovare col tasto indietro del telefono.
+
+**Gli itinerari si vedono solo nella loro vetrina**, e non in mezzo ai pacchetti né in
+`?famiglia=1` — al contrario dei pacchetti di famiglia, che restano pacchetti. Un itinerario ha
+un'altra misura: il prezzo di sette giorni accanto a quello di tre non è un confronto, è uno
+spavento. Se un giorno si decidesse il contrario, basta togliere un `!pacchettoGiorni(p)` dal
+filtro in `initPacchettiGriglia` — ma allora vanno riscritti gli "tre escursioni" di
+`packs.intro` e delle due `meta`, che oggi sono veri.
+
+### Le due trappole già scritte qui, e rispettate
+
+**La cache guarda anche dopo il "?".** Aggiunti a `ASSETS` di `sw.js` tutti e quattro gli
+indirizzi con la domanda (`?giorni=tutti|3|5|7`), come era stato fatto per `?famiglia=1`.
+
+**`display: flex` vince su `hidden`.** Il piede della vista a giorni usa la classe `.packs-foot`,
+che ha già la sua riga `[hidden] { display: none; }`. `.days-nav` invece non ha nessun `display`
+suo, apposta: è un div, e un div nascosto sparisce da solo.
+
+### Una cosa presa solo nel browser vero
+
+Le quattro pillole delle durate **vanno a capo anche sul telefono**, al contrario dei filtri per
+categoria dell'elenco che si scorrono col dito: su uno schermo da 412 px la quarta ("7 giorni")
+restava mezza fuori dal bordo, e quella pillola è l'unica strada per arrivare a una vetrina
+intera. Le categorie possono permettersi di scorrere perché nessuna di loro è l'unica strada per
+qualcosa.
+
+### Provato nel browser vero
+
+A 412, 820 e 1280 px, nelle tre lingue: la vetrina "tutti" mostra sei riquadri con la durata
+sopra il titolo, `?giorni=5` ne mostra due, `?giorni=pippo` non rompe niente e mostra tutti; la
+pagina dei pacchetti resta a dodici e quella di famiglia a cinque, senza pillole; `giorni-7`
+apre con "Itinerario di 7 giorni", "Giorno per giorno" e sette righe numerate 1-7; la finestra
+della richiesta dice "il primo dei 7 giorni" e il messaggio all'ufficio esce con
+"l'itinerario «Sette giorni a Tenerife», 7 giorni" e il totale; un pacchetto normale manda il
+messaggio di prima, invariato. Nessun errore in console.
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v326`.

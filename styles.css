@@ -1749,6 +1749,34 @@ body.menu-open { overflow: hidden; }
 .pack-tile .pack-price strong { font-weight: 500; }
 .pack-tile .price-before { color: oklch(1 0 0 / .65); }
 .pack-tile .pack-price small { color: oklch(1 0 0 / .75); }
+/* ── Gli itinerari a giorni ───────────────────────────────────────────── */
+/* La riga delle durate sopra la vetrina. Sono le stesse pillole dei filtri per
+   categoria dell'elenco (.chip-row/.chip): e' lo stesso gesto — scegli una
+   cosa, la griglia sotto cambia — e impararlo una volta basta.
+   Niente `display` qui dentro: `.days-nav` e' un div, e un div nascosto con
+   [hidden] sparisce da solo. Una riga `display: flex` lo farebbe ricomparire
+   in tutte e tre le viste, come e' gia' successo a .packs-foot. */
+.days-nav { margin-bottom: 1.1rem; }
+/* Le durate vanno **a capo** anche sul telefono, al contrario delle categorie
+   dell'elenco che si scorrono col dito. Sono quattro e non venti, e l'ultima
+   e' "7 giorni": scorrendo, su uno schermo da 412 px restava mezza fuori dal
+   bordo: una vetrina intera che non si sa che c'e'. Le categorie si possono
+   permettere di scorrere perche' nessuna di loro e' l'unica strada per
+   arrivare da qualche parte. */
+.days-nav .chip-row {
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+
+/* Quanti giorni sono, sopra il titolo del riquadro. Bianco smorzato come "a
+   persona" del prezzo: deve dirsi prima del titolo ma non prima della foto. */
+.pack-tile-giorni {
+  font-size: .62rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: oklch(1 0 0 / .8);
+}
+
 .pack-badge {
   position: absolute;
   top: .8rem;

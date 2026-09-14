@@ -431,7 +431,15 @@ const SALE_AL_TEIDE = new Set([
   "buggy-volcano-4h/1",     // Tramonto sul Teide
   "buggy-volcano-4h/2",     // Completo: dentro c'e' il parco
   "trekking-bici/0",        // Teide Light
-  "helicopter-tours/4"      // Grand Teide Luxury
+  "helicopter-tours/4",     // Grand Teide Luxury
+  // Queste quattro mancavano, e il Teide nel nome non ce l'hanno tutte: sono
+  // arrivate leggendo le descrizioni una per una, non i titoli. Il controllo
+  // diceva "0 errori" su un itinerario che al parco ci saliva due volte.
+  "icod-garachico-orotava", // "Una giornata sola per il Parco Nazionale del
+                            //  Teide, il Drago Millenario di Icod..."
+  "masca-teide-cabrio-bus", // Masca e il parco, in bus scoperto
+  "mustang-experience",     // su per la strada del parco fino a Cañada Blanca
+  "island-tour-completo"    // "i punti simbolo in un giorno solo": c'e' dentro
 ]);
 
 // Il buggy senza `optionIndex` lascia scegliere fra quattro percorsi, e due dei
@@ -466,6 +474,29 @@ function controllaPacchetti() {
     if (!Array.isArray(pack.voci) || pack.voci.length < 2) {
       errore(dove, "un pacchetto ha almeno due escursioni dentro.");
       return;
+    }
+
+    // Gli itinerari a giorni: `giorni` e' scritto nei dati e il numero delle
+    // voci e' un'altra cosa, quindi possono contraddirsi. Se si contraddicono
+    // la pagina non si rompe — dice "7 giorni" in cima e sotto ne elenca
+    // cinque, e chi la guarda pensa che manchi la roba, non il numero.
+    if (pack.giorni !== undefined) {
+      if ([3, 5, 7].indexOf(pack.giorni) === -1) {
+        errore(dove, "giorni e' " + pack.giorni + ": le vetrine sono 3, 5 e 7, " +
+          "e una durata fuori da quelle non ha una pillola che la mostri.");
+      } else if (pack.giorni !== pack.voci.length) {
+        errore(dove, "dice " + pack.giorni + " giorni ma ha " + pack.voci.length +
+          " escursioni: qui e' una al giorno.");
+      }
+      // Lo sconto che cresce coi giorni. Non e' un errore — il proprietario
+      // puo' fare quello che vuole su un itinerario singolo — ma se cambia per
+      // sbaglio non se ne accorge nessuno guardando la pagina: si vede solo
+      // che si risparmia meno.
+      const atteso = { 3: 10, 5: 12, 7: 15 }[pack.giorni];
+      if (atteso && pacchettoSconto(pack) !== atteso) {
+        avviso(dove, "sconto " + pacchettoSconto(pack) + "% su un itinerario da " +
+          pack.giorni + " giorni: la scala decisa e' 10/12/15.");
+      }
     }
 
     pack.voci.forEach(voce => {

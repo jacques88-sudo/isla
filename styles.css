@@ -596,8 +596,8 @@ a { text-decoration: none; color: inherit; }
   padding: 1.15rem 1rem;
 }
 
-/* Il riquadro dei pacchetti: tre foto al posto dell'icona. Mare, terra e aria,
-   che e' quello che i pacchetti vendono davvero. La scritta resta dov'era ma
+/* Il riquadro dei pacchetti: una foto al posto dell'icona, Puerto de la Cruz
+   col Teide dietro — la stessa che apre la home. La scritta resta dov'era ma
    scende in fondo e diventa bianca, come sulle foto delle categorie. */
 .bento-tile-photo {
   position: relative;
@@ -606,22 +606,13 @@ a { text-decoration: none; color: inherit; }
   justify-content: flex-end;
   border-color: transparent;
 }
-.bento-mosaico {
+.bento-foto {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 2px;
-  background: var(--cream);
-}
-/* La prima sta larga sopra, le altre due sotto affiancate. */
-.bento-mosaico img:first-child { grid-column: 1 / -1; }
-.bento-mosaico img {
   display: block;
   width: 100%;
-  /* senza height il width/height nell'HTML batte il ritaglio e le foto
-     escono alte come sono: e' gia' successo alla foto di "Chi siamo" */
+  /* senza height il width/height nell'HTML batte il ritaglio e la foto
+     esce alta come e': e' gia' successo alla foto di "Chi siamo" */
   height: 100%;
   object-fit: cover;
 }
@@ -633,11 +624,13 @@ a { text-decoration: none; color: inherit; }
   background: linear-gradient(180deg, transparent 35%, oklch(0.24 0.012 60 / .9) 100%);
   pointer-events: none;
 }
-/* `> span:not(.bento-mosaico)`: dentro questo riquadro di span ce ne sono
-   due, la scritta e il mosaico. Scritta cosi' com'era ("span" e basta") la
-   regola prendeva anche il mosaico e gli toglieva il `position: absolute` —
-   le foto finivano nel flusso e restavano alte due terzi del riquadro. */
-.bento-tile-photo > span:not(.bento-mosaico) {
+/* La scritta. Quando la foto era un mosaico di tre dentro uno <span>, questa
+   regola scritta "span" e basta prendeva anche il mosaico e gli toglieva il
+   `position: absolute`: le foto finivano nel flusso e restavano alte due terzi
+   del riquadro. Adesso la foto e' un <img> e lo span qui dentro e' uno solo,
+   ma il `>` resta: una regola larga dentro un riquadro che cambia si
+   ripresenta. */
+.bento-tile-photo > span {
   position: relative;
   z-index: 1;
   padding: 0 .7rem .9rem;

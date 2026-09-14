@@ -407,7 +407,10 @@ function pacchettoVocePrezzo(voce) {
 function pacchettoVoceScontabile(voce) {
   const tour = pacchettoVoceTour(voce);
   if (!tour) return false;
-  if (PACCHETTI_CATEGORIE_SENZA_SCONTO.indexOf(tour.category) >= 0) return false;
+  // Basta una categoria sola fra quelle senza sconto: una scheda che sta nei
+  // parchi e anche nei tour resta comunque un biglietto comprato a prezzo
+  // fisso, e scontarlo toglierebbe il 10% al margine di Admiral.
+  if (categorieDi(tour).some(id => PACCHETTI_CATEGORIE_SENZA_SCONTO.indexOf(id) >= 0)) return false;
   const variante = pacchettoVoceVariante(voce, tour);
   if (variante && variante.fixedPrice !== undefined) return !variante.fixedPrice;
   return !tour.fixedPrice;

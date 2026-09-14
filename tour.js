@@ -444,11 +444,20 @@ function primaVariante(tour) {
 // Una scheda per categoria diversa da quella aperta, cosi' si vede un
 // assaggio del resto del catalogo invece che altre tre barche uguali.
 function detailRelated(tour) {
-  const viste = new Set();
+  // "Diversa da quella aperta" vuol dire diversa da **tutte** le sue: una
+  // scheda che sta anche in questa categoria non e' il resto del catalogo.
+  // Cosi' resta fuori anche la scheda aperta, che le sue categorie le
+  // condivide con se stessa.
+  //
+  // `viste` si riempie con tutte le categorie di quelle gia' prese, non solo
+  // con la principale: dopo "Teide National Park", il quad che sale al Teide
+  // e' un'altra cosa al Teide, e queste tre righe servono a far vedere che il
+  // catalogo ha anche dell'altro.
+  const viste = new Set(categorieDi(tour));
   const altre = [];
   for (const x of ESPLORA_CATALOG) {
-    if (!x.published || x.category === tour.category || viste.has(x.category)) continue;
-    viste.add(x.category);
+    if (!x.published || categorieDi(x).some(id => viste.has(id))) continue;
+    categorieDi(x).forEach(id => viste.add(id));
     altre.push(x);
     if (altre.length >= DETAIL_MAX_CORRELATE) break;
   }

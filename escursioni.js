@@ -826,7 +826,7 @@ function initCatalog() {
 
   // Solo le categorie che hanno almeno un'attività pubblicata
   const usedCategories = CATEGORIES.filter(c =>
-    published.some(x => x.category === c.id)
+    published.some(x => categorieDi(x).includes(c.id))
   );
 
   function buildChips() {
@@ -866,14 +866,17 @@ function initCatalog() {
   }
 
   function matches(tour) {
-    if (state.categories.length && !state.categories.includes(tour.category)) return false;
+    // Basta che UNA delle categorie della scheda sia fra quelle scelte: le
+    // schede con `alsoIn` stanno in piu' di una, ed escono sotto ognuna.
+    if (state.categories.length &&
+        !categorieDi(tour).some(id => state.categories.includes(id))) return false;
     if (state.family && !tour.family) return false;
     if (state.query) {
       // Si cerca in tutte e tre le lingue: chi scrive "boat" trova la
       // stessa attività di chi scrive "barca".
       const haystack = [tour.title, tour.desc, tour.zone]
         .map(campo => typeof campo === "string" ? campo : Object.values(campo).join(" "))
-        .concat(categoryName(tour.category))
+        .concat(categorieDi(tour).map(categoryName))
         .join(" ")
         .toLowerCase();
       if (!haystack.includes(state.query)) return false;

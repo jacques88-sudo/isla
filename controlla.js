@@ -329,11 +329,30 @@ function controllaBase(t) {
   if (!t.id) return errore("(senza id)", "scheda senza id.");
   if (!t.category) errore(t.id, "senza categoria.");
   else if (!CATEGORIE.has(t.category)) errore(t.id, 'categoria inesistente: "' + t.category + '".');
+  if (t.alsoIn !== undefined) controllaAlsoIn(t);
   if (!t.title) errore(t.id, "senza titolo.");
   if (t.published && !t.desc) avviso(t.id, "pubblicata senza descrizione.");
   if (t.privateOption && !ESPLORA_CATALOG.some(x => x.id === t.privateOption)) {
     errore(t.id, 'privateOption punta a "' + t.privateOption + '", che non esiste.');
   }
+}
+
+// Le categorie in piu' di `alsoIn`. Una categoria che non esiste qui non fa
+// sparire la scheda: la scheda resta nella sua, e la categoria in piu' non la
+// trova nessuno - cioe' l'errore non si vede guardando il sito, e per questo
+// va detto qui.
+function controllaAlsoIn(t) {
+  if (!Array.isArray(t.alsoIn)) {
+    errore(t.id, "alsoIn deve essere un elenco di categorie, es. [\"tour-isola\"].");
+    return;
+  }
+  const viste = new Set();
+  t.alsoIn.forEach(id => {
+    if (!CATEGORIE.has(id)) errore(t.id, 'alsoIn: categoria inesistente: "' + id + '".');
+    else if (id === t.category) errore(t.id, 'alsoIn ripete la categoria principale: "' + id + '".');
+    else if (viste.has(id)) errore(t.id, 'alsoIn: "' + id + '" scritta due volte.');
+    viste.add(id);
+  });
 }
 
 // ─── 9. Nessun id ripetuto ─────────────────────────────────────────────────

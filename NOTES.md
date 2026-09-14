@@ -11423,7 +11423,144 @@ invariati. Alzato `sw.js` a `isla-v320`.
 
 ---
 
-## 14 settembre 2026 — Una foto sola nel riquadro Pacchetti: Puerto de la Cruz (v321)
+## 14 settembre 2026 — Una scheda può stare in due categorie (v321)
+
+Domanda del proprietario: «ci sono escursioni che corrispondono a più categorie, come Poema
+del Mar che è sia un parco sia un'isola — possiamo metterlo su entrambe?». Sì, e la parte da
+decidere non era *se*, era *come*.
+
+### Non due schede: una scheda con una categoria in più
+
+La strada sbagliata era copiare la voce e cambiarle categoria. Due voci vogliono dire due
+prezzi, due descrizioni, due orari da tenere allineati a mano: il giorno che il fornitore
+alza di cinque euro se ne aggiorna una sola, e il cliente legge un numero e ne paga un
+altro. Peggio ancora, `id` è la chiave di tutto (il link della pagina, la lista delle
+richieste, i pacchetti): due id per la stessa cosa fanno uscire la stessa escursione due
+volte nella lista di chi la chiede.
+
+Quindi un campo facoltativo sulla scheda, `alsoIn`, con dentro le **altre** categorie:
+
+```js
+category: "parchi-spettacoli",
+alsoIn: ["tour-isola"],
+```
+
+`category` resta una sola e resta quella principale. È il nome che si legge sulla card e in
+cima alla pagina di dettaglio, **anche quando si è arrivati filtrando l'altra categoria**:
+un riquadro che cambia etichetta a seconda del filtro premuto non si riconosce più da una
+pagina all'altra, e la stessa foto con due nomi diversi sembra un errore del sito.
+
+### Chi legge il catalogo deve leggere le stesse categorie
+
+Il campo da solo non basta: `x.category` era scritto in cinque posti diversi, e uno che
+avesse continuato a leggere solo quello avrebbe fatto uscire la scheda da una parte e
+sparire dall'altra. Per questo `categorieDi(tour)` sta in `esplora-catalog.js`, accanto a
+`CATEGORIES`, cioè nel file che caricano tutte le pagine — restituisce `category` più
+`alsoIn`, e la usano tutti e cinque:
+
+| dove | cosa cambia |
+|---|---|
+| `escursioni.js`, i filtri | la scheda esce sotto ognuna delle sue categorie |
+| `escursioni.js`, le chip | una categoria "esiste" se qualcuno ci sta, anche di rimbalzo |
+| `escursioni.js`, la ricerca | cercando "tour e visite" esce anche Poema del Mar |
+| `assistente.js` | stesso filtro, stessi risultati della pagina |
+| `tour.js`, le correlate | "un'altra categoria" vuol dire diversa da **tutte** le sue |
+| `pacchetti.js` | lo sconto, ed è il punto delicato qui sotto |
+
+### Lo sconto va nella direzione prudente
+
+`PACCHETTI_CATEGORIE_SENZA_SCONTO` conteneva `parchi-spettacoli`. Con due categorie la
+domanda diventa: basta una per togliere lo sconto, o servono tutte? **Basta una.** Poema del
+Mar è un biglietto comprato a prezzo fisso e rivenduto uguale: che compaia anche fra i tour
+non cambia quanto costa ad Admiral, e un 10% uscirebbe dal suo margine, non da quello del
+fornitore. La scelta larga (sconto se almeno una categoria lo permette) avrebbe fatto perdere
+soldi in silenzio, che è il tipo di errore che nessuno vede finché non si guardano i conti.
+
+### Il controllo
+
+`controlla.js` ora dà **errore** su `alsoIn` se non è un elenco, se cita una categoria che
+non esiste, se ripete la categoria principale o se scrive due volte la stessa. Serve perché
+questo è un errore che **non si vede guardando il sito**: una categoria sbagliata non fa
+sparire niente, semplicemente la scheda non compare dove ci si aspettava, e nessuno se ne
+accorge. Provato apposta con tutti e tre gli sbagli insieme: tre errori, uno per riga.
+
+### Poema del Mar, e per ora solo lui
+
+L'unica scheda con `alsoIn` è `gran-canaria` (`parchi-spettacoli` + `tour-isola`): l'acquario
+è un parco, ma la giornata è una gita a Gran Canaria con nave, guida e distilleria. Le altre
+si aggiungono una alla volta, quando il proprietario dice quali: una categoria in più su ogni
+scheda "che un po' ci sta" svuota le categorie di significato, e a quel punto filtrare non
+serve più a niente.
+
+**Provato nel browser vero**: "Tour e visite" passa da 6 a 7 schede e Poema del Mar c'è,
+"Parchi e spettacoli" resta 14 e c'è anche lì, l'elenco completo resta 66 schede senza
+doppioni, la chip cliccata e la ricerca per nome di categoria lo trovano, in inglese uguale.
+Sulla pagina di dettaglio l'etichetta è "Parchi e spettacoli" e le tre correlate vengono da
+mare, Teide e avventura — né parchi né tour. Nel conto dei pacchetti la voce resta non
+scontabile. `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v321`.
+
+---
+
+## 14 settembre 2026 — Chi va al Teide sta fra il Teide, e il giro delle città torna fra i tour (v322)
+
+Prima applicazione vera di `alsoIn` (v321), decisa dal proprietario nello stesso pomeriggio.
+Due mosse opposte, ed è il confronto fra le due che dice quando la seconda categoria si mette
+e quando invece si sposta e basta.
+
+### Tre schede a motore entrano anche in "Natura, Teide e stelle"
+
+`mustang-experience`, `buggy-volcano-4h`, `quad-teide-adventure`: la Mustang al tramonto sui
+Roques de García, i buggy che salgono al Parco Nazionale, il quad che il Teide ce l'ha nel
+titolo. `category` resta `avventura-motori` su tutte e tre — quello che si compra è il mezzo,
+il posto dove va è la seconda metà della frase — e `alsoIn: ["teide-natura"]` le fa uscire
+anche fra chi cerca cosa fare al Teide.
+
+**Il buggy è il caso interessante**: dei suoi quattro giri solo due salgono al Parco Nazionale
+(Tramonto sul Teide e Completo), gli altri due sono fuoristrada e strade di montagna. `alsoIn`
+è della scheda e non della variante, e va bene così: la scheda è una, ci si arriva per quella,
+e chi entra dal Teide legge i bottoni e sceglie il giro giusto. Un filtro capace di nascondere
+due varianti su quattro vorrebbe dire tornare a quattro schede separate — proprio la cosa da
+cui si è venuti via il 9 settembre.
+
+Sul conto dei pacchetti non cambia niente, ed è giusto che sia così: `teide-natura` non è fra
+le categorie senza sconto, e le tre schede restano scontabili come prima (buggy compreso, che
+sta dentro tre pacchetti su sette).
+
+### "Santa Cruz + Anaga + La Laguna" torna in "Tour e visite", e ci torna da sola
+
+L'8 settembre il proprietario l'aveva spostata in "Teide e natura" per via del Parco Rurale di
+Anaga; il 14 ha cambiato idea. Il giro è fatto di tre paesi, e in una categoria che si chiama
+"Teide" chi cerca una giornata di città non la guarda nemmeno.
+
+**Spostata del tutto, non messa in due**, ed è stato chiesto esplicitamente così. La regola che
+ne esce, e che vale per le prossime: una scheda sta in due categorie quando **ognuna la
+racconta per intero** — Poema del Mar è un parco *ed è* una gita a Gran Canaria, il quad è un
+giro in quad *ed è* una salita al Teide. Qui invece la natura è un pezzo del giro, non il giro:
+due categorie l'avrebbero fatta comparire fra le cose di natura promettendo più Anaga di quanta
+ce ne sia. Se si ricambia idea la riga da aggiungere è una, ed è scritta nel commento.
+
+Effetto collaterale gradito: la foto `santa-cruz-taganana.jpg` è il riquadro di "Tour e visite"
+in home, e adesso la categoria del riquadro e la categoria della scheda tornano a coincidere.
+
+### Una correzione alle "altre esperienze"
+
+`detailRelated` in `tour.js` prende una scheda per categoria diversa da quella aperta. Con le
+categorie multiple `viste` teneva solo la principale, e in fondo alla pagina di Santa Cruz
+uscivano il Teide National Park **e** la Mustang, che al Teide ci sale pure lei: due assaggi
+dello stesso posto in tre righe che servono a far vedere che il catalogo ha dell'altro. Ora
+`viste` si riempie con **tutte** le categorie delle schede già prese, e al posto della Mustang
+esce l'elicottero.
+
+**Provato nel browser vero** a 390px: "Natura, Teide e stelle" passa da 6 a 8 schede (le tre a
+motore dentro, Santa Cruz fuori), "Avventura" resta 7 con le stesse tre, "Tour e visite" passa
+da 7 a 8, l'elenco completo resta 66 senza doppioni e le due categorie insieme fanno 12 schede
+senza ripetizioni. Sulle card dentro il filtro Teide l'etichetta resta "Avventura", che è la
+categoria principale. `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a
+`isla-v322`.
+
+---
+
+## 14 settembre 2026 — Una foto sola nel riquadro Pacchetti: Puerto de la Cruz (v323)
 
 Il mosaico di tre foto di stamattina (v318) è durato mezza giornata. Su un riquadro largo
 169px tre foto sono tre francobolli: si capisce che sono foto, non si capisce **di cosa**.
@@ -11460,4 +11597,4 @@ verificato con una ricerca su tutto il progetto prima di toglierli.
 169, 258×258 dentro 260 — i due pixel sono il bordo), carica il 520×520 giusto, la scritta
 "Pacchetti" resta bianca e leggibile sopra la sfumatura, e il tocco porta a `pacchetti.html`
 con i sette pacchetti. Nessun errore in console, nessuna foto mancante. `node controlla.js`
-→ 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v321`.
+→ 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v323`.

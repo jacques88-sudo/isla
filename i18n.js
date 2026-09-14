@@ -50,6 +50,8 @@ const I18N = {
   "meta.home.desc":     { it: "Isla — trova subito orario, punto d'incontro e informazioni della tua escursione a Tenerife.", en: "Isla — find the time, meeting point and details of your excursion in Tenerife straight away.", es: "Isla — encuentra al instante el horario, el punto de encuentro y la información de tu excursión en Tenerife." },
   "meta.catalog.title": { it: "Tutte le escursioni · Isla", en: "All excursions · Isla", es: "Todas las excursiones · Isla" },
   "meta.catalog.desc":  { it: "Tutte le escursioni, i tour e gli show di Isla a Tenerife: mare, Teide, parchi, avventura e molto altro.", en: "All of Isla's excursions, tours and shows in Tenerife: sea, Teide, parks, adventure and much more.", es: "Todas las excursiones, tours y espectáculos de Isla en Tenerife: mar, Teide, parques, aventura y mucho más." },
+  "meta.packs.title":   { it: "I pacchetti · Isla", en: "Packages · Isla", es: "Los paquetes · Isla" },
+  "meta.packs.desc":    { it: "I pacchetti di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "Isla's packages in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Los paquetes de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado." },
   "meta.booking.title": { it: "La tua prenotazione · Isla", en: "Your booking · Isla", es: "Tu reserva · Isla" },
 
   // ── hero ────────────────────────────────────────────────────────────────
@@ -212,6 +214,23 @@ const I18N = {
   "lista.clear":        { it: "Svuota la lista", en: "Empty the list", es: "Vaciar la lista" },
   "lista.full":         { it: "Nella lista ci stanno al massimo {n} escursioni. Mandaci questa richiesta e poi ne inizi un'altra.", en: "The list holds at most {n} excursions. Send this request and then start another one.", es: "En la lista caben como máximo {n} excursiones. Envíanos esta solicitud y luego empiezas otra." },
   "lista.hint":         { it: "Parte un solo messaggio con tutte le escursioni della lista.", en: "One single message goes out with every excursion in the list.", es: "Se envía un solo mensaje con todas las excursiones de la lista." },
+  "lista.discount":     { it: "Sconto pacchetto", en: "Package discount", es: "Descuento del paquete" },
+
+  // ── i pacchetti ─────────────────────────────────────────────────────────
+  "packs.eyebrow":      { it: "Scelti per te", en: "Picked for you", es: "Elegidos para ti" },
+  "packs.title":        { it: "I pacchetti", en: "Packages", es: "Los paquetes" },
+  "packs.intro":        { it: "Tre escursioni che stanno bene insieme, con lo sconto già tolto. Le scegli, le metti nella tua lista e ci mandi una richiesta sola.", en: "Three excursions that go well together, with the discount already taken off. Pick them, put them in your list and send us a single request.", es: "Tres excursiones que van bien juntas, con el descuento ya aplicado. Las eliges, las pones en tu lista y nos envías una sola solicitud." },
+  "pack.perPerson":     { it: "a persona", en: "per person", es: "por persona" },
+  "pack.save":          { it: "Risparmi €{n}", en: "You save €{n}", es: "Ahorras €{n}" },
+  "pack.noPrice":       { it: "Prezzo su richiesta", en: "Price on request", es: "Precio a consultar" },
+  "pack.unitNote":      { it: "Qui dentro c'è un mezzo che si paga a buggy o a moto d'acqua, non a testa: questo è il prezzo di una persona da sola, e in due o in tre a testa si paga meno.", en: "This one includes a vehicle priced per buggy or per jet ski, not per head: this is the price for one person on their own, and with two or three of you it comes down.", es: "Aquí hay un vehículo que se paga por buggy o por moto de agua, no por persona: este es el precio de una persona sola, y entre dos o tres sale menos." },
+  "pack.inside":        { it: "Cosa c'è dentro", en: "What's inside", es: "Qué incluye" },
+  "pack.again":         { it: "Già nella lista", en: "Already in your list", es: "Ya en tu lista" },
+  "pack.howto":         { it: "Tocca un'escursione per vederla e metterla nella tua lista, ognuna col suo giorno. Quando ci sono tutte e {n}, lo sconto si applica da solo.", en: "Tap an excursion to see it and put it in your list, each with its own day. Once all {n} are there, the discount applies by itself.", es: "Toca una excursión para verla y ponerla en tu lista, cada una con su día. Cuando estén las {n}, el descuento se aplica solo." },
+  "pack.progress":      { it: "{n} di {tot} nella tua lista", en: "{n} of {tot} in your list", es: "{n} de {tot} en tu lista" },
+  "pack.progressFull":  { it: "Ci sono tutte: lo sconto del {n}% è attivo nella tua lista.", en: "They're all in: the {n}% discount is live in your list.", es: "Están todas: el descuento del {n}% está activo en tu lista." },
+  "pack.partOf":        { it: "Fa parte del pacchetto {name}", en: "Part of the {name} package", es: "Forma parte del paquete {name}" },
+  "pack.backToPacks":   { it: "Torna ai pacchetti", en: "Back to the packages", es: "Volver a los paquetes" },
 
   "detail.days":        { it: "Giorni", en: "Days", es: "Días" },
   "detail.times":       { it: "Orari", en: "Departure times", es: "Horarios" },

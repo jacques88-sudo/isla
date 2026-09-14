@@ -64,6 +64,10 @@ scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
 - `tour.html` + `tour.js` — pagina di dettaglio di una singola escursione,
   indirizzo `tour.html?id=<id della voce nel catalogo>`. Riusa da `escursioni.js`
   il prezzo, il nome della categoria e la finestra della richiesta
+- `pacchetti.html` + `pacchetti.js` — i pacchetti: gruppi di escursioni del catalogo
+  vendute insieme con uno sconto. Nel file ci sono i dati (`PACCHETTI`), il conto del
+  prezzo (letto dal catalogo, mai scritto a mano) e la pagina. Lo carica anche chi non
+  la mostra: serve a `lista.js` per lo sconto
 - `esplora-catalog.js` — dati delle 45 attività, divise nelle 8 categorie
 - `assistente.js` — assistente guidato: tre domande (interesse, bambini, budget), poi
   consigli dal catalogo e un riquadro per chiedere su WhatsApp quello che non c'è
@@ -76,7 +80,8 @@ scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
 Home: splash con anello blu di caricamento → banner fisso in cima (logo, wordmark, pillole
 Esperienze / Prenota ora / Menu, si restringe scorrendo) → video hero con play/pausa →
 "Inizia la tua avventura con…" → griglia bento (Pacchetti, Scan ticket, Con bambini,
-3/5/7 Days, più un riquadro largo "Noleggio auto, moto e bici" che apre WhatsApp) →
+3/5/7 Days, più un riquadro largo "Noleggio auto, moto e bici" che apre WhatsApp;
+"Pacchetti" porta alla pagina dei pacchetti) →
 "come funziona" → categorie (7 foto vere) → posti segreti → chi siamo →
 FAQ → richiamo finale → footer. Layout ottimizzato anche per desktop.
 
@@ -1700,8 +1705,9 @@ Cose da ricordare, imparate sistemando la versione PC:
   barra non si vede. Su schermo largo devono andare a capo. E' successo ai
   filtri per categoria
 
-- I riquadri bento (Pacchetti, Con bambini, 3/5/7 Days) puntano a `#categories` e al
-  filtro famiglia: servono pagine vere per i pacchetti
+- Il riquadro bento "Pacchetti" porta a `pacchetti.html` (dal 14 settembre 2026).
+  **"3/5/7 Days Experience" punta ancora a `#categories`**, cioè alle categorie della
+  home: è l'ultimo riquadro rimasto senza una pagina sua
 - Il riquadro "Noleggio auto, moto e bici" non è un'attività del catalogo: non ha una
   scheda, apre WhatsApp con un messaggio già scritto (`wa.rental` in `i18n.js`). Il link
   lo costruisce `initRentalLink()` in `app.js`, che si nasconde da solo se
@@ -10950,3 +10956,87 @@ cliente.
 **Provato nel browser vero** nelle tre lingue, sulla pagina di dettaglio e nell'elenco:
 "Franz" non compare più da nessuna parte, nessun errore in console. `node controlla.js` →
 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v313`.
+
+## 14 settembre 2026 — La pagina dei pacchetti, e lo sconto che si applica da solo (v314)
+
+Il riquadro bento "Pacchetti" puntava a `#categories` dal primo giorno: portava alle
+categorie della home, cioè da nessuna parte. Adesso c'è `pacchetti.html` con otto
+pacchetti, e il riquadro (più la voce "Pacchetti" dei menu di tutte le pagine) ci porta.
+
+**Il prezzo non è scritto da nessuna parte.** Si somma leggendo `esplora-catalog.js` e si
+toglie `sconto`: è la stessa regola della lista (*"Mai il prezzo. I prezzi cambiano"*).
+Cambiare 39 in 45 sul Teide aggiorna da solo i due pacchetti che lo contengono.
+
+**Tre schede hanno `priceAdult: 0` e il prezzo dentro la variante**, e sono proprio quelle
+che questi pacchetti spingono: stargazing (75 o 79 a persona), buggy e jet ski (180 e 100,
+ma **a mezzo**). Sommare `priceAdult` e basta le avrebbe fatte entrare nel conto come
+**gratis** — "Tre mosse, versione buggy" sarebbe uscito a €99 invece che €279. Quindi
+`pacchettoVocePrezzo()` legge in quest'ordine: la variante decisa dal pacchetto, poi la
+scheda, e dove il prezzo è del mezzo ripiega su `priceFrom` (il mezzo più piccolo). Se non
+riesce a leggere un prezzo il pacchetto esce **senza nessun numero**, non con uno finto;
+`controlla.js` lo segnala come avviso.
+
+**Il numero dei quattro pacchetti misti è quello di una persona da sola, e non si chiama
+"da €X".** Il buggy si divide fra chi ci sale: da solo sono 180 a testa, in due 90. Quindi
+più gente c'è e *meno* si paga a persona, e un "da €170" (il prezzo in due) sarebbe il
+minimo ma **salirebbe** in faccia a chi viaggia da solo — la cosa che `CLAUDE.md` dice di
+non fare mai. Il numero che mostriamo è il più alto: l'unico che al cliente può solo
+scendere. Una riga sotto il prezzo spiega perché.
+
+**Lo sconto vale su tutto, mezzi compresi** (deciso il 14 settembre): una regola sola, che
+l'ufficio sa ripetere al telefono.
+
+### Come si richiede un pacchetto
+
+Le tre escursioni si aggiungono **una alla volta**, dalla loro pagina di dettaglio. Non è
+una semplificazione: **la lista non sa modificare una voce**. Ogni riga vuole già giorno,
+ora e persone, si riempiono nella finestra della richiesta e dopo si può solo togliere la
+voce. Un pulsante "aggiungi tutte e tre" avrebbe messo in lista tre righe senza data, e il
+messaggio all'ufficio sarebbe partito coi buchi.
+
+Quindi ogni riga della scheda è un link a `tour.html?id=…&pack=<pacchetto>&option=<n>`:
+- `option` fa aprire la pagina **già sulla variante che il pacchetto ha deciso** (il jet
+  ski da un'ora, lo stargazing in gruppo piccolo). Prima i bottoni delle varianti nascevano
+  sempre col primo premuto: il cliente leggeva "gruppo piccolo €79" nel pacchetto e apriva
+  il gruppo grande a €75.
+- `pack` lo scrive `tour.js` su `document.body.dataset.pack`, e `escursioni.js` lo mette
+  nella voce della lista. È l'unica cosa che lega quella voce al pacchetto.
+
+**Quando nella lista ci sono tutte e tre, lo sconto si applica da solo**, nel totale della
+finestra e nel messaggio WhatsApp (`Sconto pacchetto Tenerife in tre mosse: −€27,60`).
+Calcolato sul prezzo **vero** della richiesta — due adulti sono 276, non 138 — non sul
+numero della vetrina, che è di una persona sola. Se il cliente ne toglie una lo sconto
+sparisce e la scheda torna a dire "2 di 3 nella tua lista".
+
+"Tutte e tre" vuol dire una per voce, **con la variante decisa dal pacchetto**: chi cambia
+variante sulla pagina di dettaglio esce dal pacchetto, perché è un altro prezzo. Dove il
+pacchetto la variante non la decide (il buggy, di proposito: i quattro percorsi costano
+uguale) va bene qualunque.
+
+### Cose imparate o decise
+
+- **La riga di un'escursione è un link, tutta quanta, non un bottone in fondo.** Col
+  bottone "Guarda e aggiungi" su un telefono da 390px il titolo aveva meno di metà riga:
+  *Luxury Cruiser Experience* andava su tre righe. Adesso c'è una freccia a destra e si
+  tocca dove si vuole.
+- **La finestra della richiesta non è stata copiata una terza volta.** È già scritta due
+  volte (`escursioni.html` e `tour.html`) e `CLAUDE.md` avverte di tenerle allineate: da
+  `pacchetti.html` non si richiede niente, si va sulla pagina di dettaglio. Che è anche
+  meglio: il cliente vede che cos'è prima di metterla nella lista.
+- `pacchetti.js` finisce con `if (typeof document !== "undefined")` prima del listener:
+  `controlla.js` lo carica da Node, dove `document` non esiste.
+- **`controlla.js` adesso controlla anche i pacchetti**: id che esistono e sono pubblicati,
+  `optionIndex` dentro il numero di varianti, foto in `assets/`, titolo e descrizione nelle
+  tre lingue, sconto fra 1 e 99, niente doppioni. Un id sbagliato faceva sparire una voce
+  in silenzio.
+- **`siam-park` nel pacchetto non ha `optionIndex`**: il cliente può scegliere anche la
+  Villa VIP da €1320 e lo sconto scatta lo stesso, sul prezzo vero. È voluto che sia il
+  cliente a scegliere il biglietto, e in vetrina c'è il prezzo del biglietto normale (€44,
+  che è `priceAdult` della scheda). Se un giorno desse fastidio, basta fissare
+  `optionIndex: 0`.
+
+**Provato nel browser vero** (Chromium, 390px e 1280px): il giro dalla home al riquadro
+bento, alla scheda del pacchetto, alla pagina di dettaglio con la variante giusta già
+premuta, alla lista con lo sconto e al messaggio WhatsApp. Nelle tre lingue, nessuna chiave
+non tradotta, nessun errore in console, nessuno scorrimento orizzontale.
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v314`.

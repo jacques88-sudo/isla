@@ -1603,6 +1603,204 @@ body.menu-open { overflow: hidden; }
 .tour-title a { color: inherit; }
 .tour-title a:hover { text-decoration: underline; }
 
+/* ── I pacchetti ──────────────────────────────────────────────────────── */
+.packs-intro {
+  margin: 0 auto;
+  max-width: 52ch;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .92rem;
+  line-height: 1.6;
+}
+.pack-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.4rem;
+  grid-template-columns: 1fr;
+}
+/* Due colonne solo da schermo largo: la scheda di un pacchetto e' alta (tre
+   escursioni dentro) e in due colonne strette i bottoni finiscono sotto il
+   testo a fisarmonica. */
+@media (min-width: 960px) {
+  .pack-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.pack-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.pack-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--cream);
+}
+.pack-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pack-badge {
+  position: absolute;
+  top: .8rem;
+  right: .8rem;
+  background: var(--text);
+  color: var(--cream);
+  border-radius: var(--radius-pill);
+  padding: .3rem .75rem;
+  font-size: .7rem;
+  letter-spacing: .06em;
+}
+.pack-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: .6rem;
+  padding: 1.1rem 1.2rem 1.2rem;
+}
+.pack-title {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+.pack-desc {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .88rem;
+  line-height: 1.55;
+}
+.pack-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .3rem .8rem;
+}
+.pack-price {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+/* "a persona" e' l'unita' del numero, non una frase: piccola e attaccata,
+   come il "/buggy" dei prezzi a mezzo. */
+.pack-price small {
+  font-family: var(--font-body);
+  font-size: .68rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+.pack-save {
+  background: var(--sand);
+  border-radius: var(--radius-pill);
+  padding: .25rem .7rem;
+  font-size: .7rem;
+  letter-spacing: .04em;
+}
+.pack-note {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .76rem;
+  line-height: 1.5;
+}
+.pack-inside {
+  margin-top: .3rem;
+  font-size: .62rem;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--gold);
+}
+.pack-voci {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.pack-voce {
+  border-top: 1px solid var(--border);
+}
+/* Tocca-tutta-la-riga: su un telefono stretto un pulsante in fondo lasciava
+   al titolo meno di meta' riga. */
+.pack-voce-link {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .75rem .3rem .75rem 0;
+  color: inherit;
+}
+.pack-voce-freccia {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+}
+.pack-voce-n {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cream);
+  font-size: .72rem;
+  color: var(--muted);
+}
+/* min-width: 0 su un figlio flex serve o un titolo lungo allarga la riga
+   invece di andare a capo, e il bottone esce dalla scheda. */
+.pack-voce-testo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+}
+.pack-voce-testo strong {
+  font-weight: 500;
+  font-size: .92rem;
+  line-height: 1.25;
+}
+.pack-voce-testo span {
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .76rem;
+}
+/* Gia' nella lista: il pallino del numero si riempie, e il "Gia' nella lista"
+   sta fra i dettagli della riga. Resta un link — ci si torna per cambiare
+   giorno o per toglierla. */
+.pack-voce.is-in .pack-voce-n {
+  background: var(--text);
+  color: var(--cream);
+}
+@media (min-width: 960px) {
+  .pack-voce-link { transition: background .2s ease; }
+  .pack-voce-link:hover { background: var(--cream); }
+}
+.pack-howto {
+  margin: .2rem 0 0;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .78rem;
+  line-height: 1.5;
+}
+.pack-state {
+  margin: 0;
+  padding: .55rem .8rem;
+  background: var(--cream);
+  border-radius: 12px;
+  font-size: .8rem;
+}
+.pack-state.is-full {
+  background: var(--sand);
+}
+
 /* ── Pagina di dettaglio di una singola escursione ────────────────────── */
 .detail-page {
   /* niente spazio in cima: la striscia e' sticky e sta nel flusso, il banner
@@ -2218,6 +2416,26 @@ body.menu-open { overflow: hidden; }
 
 .detail-add { margin-top: .6rem; }
 
+/* "Fa parte del pacchetto X", sopra i due pulsanti: chi arriva da un
+   pacchetto deve ritrovare il filo, o lo sconto che scatta dopo nella lista
+   sembra uscito dal nulla. */
+.detail-pack {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .2rem .8rem;
+  margin: 1.4rem 0 .8rem;
+  padding: .7rem .9rem;
+  background: var(--cream);
+  border-radius: 12px;
+  font-size: .84rem;
+}
+.detail-pack a {
+  color: var(--muted);
+  font-size: .78rem;
+}
+
 /* Galleggia in basso a destra e c'e' solo quando la lista ha qualcosa dentro.
    Sta sopra tutto tranne le finestre, che hanno z-index 40 e 41. */
 .lista-fab {
@@ -2298,6 +2516,20 @@ body.menu-open { overflow: hidden; }
   height: 32px;
   font-size: .8rem;
   color: var(--muted);
+}
+
+/* Lo sconto del pacchetto, sopra il totale: e' la riga che spiega perche' il
+   numero sotto e' piu' basso della somma delle escursioni. */
+.lista-sconto {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .2rem .8rem;
+  margin: 0 0 .5rem;
+  padding: .6rem 1rem;
+  background: var(--cream);
+  border-radius: 12px;
+  font-size: .82rem;
 }
 
 .lista-totale {

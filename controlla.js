@@ -401,6 +401,25 @@ function controllaServiceWorker() {
 // se ne accorge. Stessa cosa per un `optionIndex` che punta a una variante che
 // non c'e' piu': il pacchetto promette "gruppo piccolo" e apre il gruppo
 // grande, con un altro prezzo.
+// Le voci che salgono al Parco Nazionale del Teide. La regola e' in testa a
+// `pacchetti.js`: in un pacchetto ci si sale **una volta**, se no e' lo stesso
+// posto venduto tre volte. La chiave e' "id" per tutta la scheda, oppure
+// "id/indice" quando ci sale solo una variante.
+const SALE_AL_TEIDE = new Set([
+  "teide-national-park",
+  "stargazing-group",
+  "quad-teide-adventure",
+  "buggy-volcano-4h/1",     // Tramonto sul Teide
+  "buggy-volcano-4h/2",     // Completo: dentro c'e' il parco
+  "trekking-bici/0",        // Teide Light
+  "helicopter-tours/4"      // Grand Teide Luxury
+]);
+
+// Il buggy senza `optionIndex` lascia scegliere fra quattro percorsi, e due dei
+// quattro al parco ci vanno: non e' una salita certa, ma nemmeno una salita da
+// escludere.
+const FORSE_AL_TEIDE = new Set(["buggy-volcano-4h"]);
+
 function controllaPacchetti() {
   const visti = new Set();
 
@@ -458,6 +477,26 @@ function controllaPacchetti() {
     const doppie = pack.voci.map(v => v.id + "/" + v.optionIndex);
     if (new Set(doppie).size !== doppie.length) {
       errore(dove, "c'e' due volte la stessa escursione con la stessa variante.");
+    }
+
+    // Il Teide una volta sola.
+    const salite = [];
+    let forse = 0;
+    pack.voci.forEach(voce => {
+      if (SALE_AL_TEIDE.has(voce.id) ||
+          SALE_AL_TEIDE.has(voce.id + "/" + voce.optionIndex)) {
+        salite.push(voce.id);
+      } else if (voce.optionIndex === undefined && FORSE_AL_TEIDE.has(voce.id)) {
+        forse++;
+      }
+    });
+    if (salite.length > 1) {
+      errore(dove, "al Teide ci si sale " + salite.length + " volte (" +
+        salite.join(", ") + "): nel pacchetto ci sta una volta sola.");
+    } else if (salite.length === 1 && forse > 0) {
+      avviso(dove, "c'e' gia' una salita al Teide (" + salite[0] + ") e il buggy " +
+        "e' senza `optionIndex`: due dei quattro percorsi al parco ci vanno. " +
+        "Fissa `optionIndex: 0` o `3`.");
     }
 
     // Tutto a prezzo fisso: il pacchetto esiste ma non fa risparmiare niente.

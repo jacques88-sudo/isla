@@ -11261,3 +11261,95 @@ margine di `.wrap`, il `padding: 0` che annullava quello laterale).
 169 di riquadro, misurato), la scritta si legge sopra la sfumatura, il tocco porta a
 `pacchetti.html` con gli otto riquadri, nessun errore in console. `node controlla.js` →
 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v318`.
+
+---
+
+## 14 settembre 2026 — Sette pacchetti, e al Teide ci si sale una volta sola (v319)
+
+Rifatta la lista dei pacchetti: da otto a sette. Escono "Famiglia" e "Il Teide tre volte",
+entra "Terra, mare e stelle". Il resto di `pacchetti.js` — il conto, la finestra della
+richiesta, il disegno delle schede — non si tocca: cambia solo il blocco `const PACCHETTI`,
+che è esattamente quello che quel file doveva permettere.
+
+### Perché "Il Teide tre volte" non regge
+
+Sembrava l'idea migliore delle otto: lo stesso parco di giorno, al tramonto e di notte.
+Ma tre salite allo stesso posto sono **lo stesso posto venduto tre volte**, e il cliente se
+ne accorge il secondo giorno, non prima di pagare. Un pacchetto deve coprire l'isola, non
+ripetersi.
+
+Da qui la regola nuova, scritta in testa a `pacchetti.js`: **in un pacchetto al Parco
+Nazionale ci si sale una volta**. Vale quando si scrive un pacchetto, non quando lo si
+legge — non è un controllo sui dati del catalogo, è una regola su come si compone.
+
+La parte che non si vede a occhio è **quali voci ci salgono**. Non sono solo quelle col
+Teide nel nome:
+
+    teide-national-park                il parco di giorno
+    stargazing-group                   ci si sale la sera
+    buggy-volcano-4h  optionIndex 1    "Tramonto sul Teide"
+    buggy-volcano-4h  optionIndex 2    "Completo": dentro c'è il parco
+    quad-teide-adventure               tutte e due le varianti
+    trekking-bici     optionIndex 0    "Teide Light"
+    helicopter-tours  optionIndex 4    "Grand Teide Luxury"
+
+Un elenco così, lasciato in un commento, dura finché qualcuno non lo legge. Quindi
+`controlla.js` adesso lo verifica da solo: due salite nello stesso pacchetto sono un
+**errore**, una salita più un buggy senza `optionIndex` è un **avviso** (dei quattro
+percorsi, due al parco ci vanno — va fissato `optionIndex: 0` o `3`). Provato con due
+pacchetti finti: scattano tutte e due. Il vecchio "Il Teide tre volte", oggi, non passerebbe
+il controllo.
+
+### Via "Famiglia": il pacchetto non è il tipo di viaggiatore
+
+"Famiglia" era barca + Monkey Park + Siam Park, cioè due biglietti a prezzo fisso su tre:
+lo sconto lavorava solo sui 55 della barca, −5,50 su 109. Un pacchetto che risparmia il
+cinque per cento non è un'offerta, è un elenco con un titolo. E costruire sul tipo di
+viaggiatore ("famiglia", "coppia") promette qualcosa che le escursioni dentro non hanno:
+sono le stesse per tutti. Per la stessa ragione "Cielo e mare" ha perso la riga "per chi
+viaggia in due" — quello che lo tiene insieme è l'orario, tre cose che si fanno tardi, e
+vale per chiunque.
+
+### "Terra, mare e stelle": il pacchetto dove lo sconto si vede tutto
+
+Buggy offroad + Luxury Cruiser + stargazing in gruppo piccolo. 180 + 55 + 79 = 314, e
+**nessun biglietto a prezzo fisso dentro**: il 10% si applica su tutto, −31,40. È il
+risparmio più alto dei sette, ed è l'unico pacchetto con dentro tre dei quattro prodotti da
+spingere.
+
+Il buggy è fissato su `optionIndex: 0` (Offroad) apposta: è un percorso che al parco non
+sale, e la salita al Teide in questo pacchetto è già quella della sera. È il primo posto
+dove la regola nuova ha cambiato un dato invece di spiegarlo.
+
+Come stanno i sette adesso: il Luxury Cruiser in cinque pacchetti, il buggy e lo stargazing
+in tre, il jet ski in due.
+
+### La barca privata entrava nel conto a 55 invece che a 450
+
+Trovato leggendo, non provando. `pacchettoVocePrezzo()` guardava `variante.price` **solo**
+se la scheda aveva `units` o `priceUnit`. La variante "Barca privata" del Luxury Cruiser ha
+`price: 450` e la scheda non ha né l'uno né l'altro: si ricadeva su `tour.priceAdult` e il
+conto leggeva **55**, il prezzo del posto singolo spacciato per quello di tutta la barca.
+
+Non faceva danni perché nessun pacchetto usa quella variante — ma è il tipo di errore che
+non si scopre il giorno che sbaglia, si scopre dopo. Adesso una variante con `price` e
+senza `priceAdult` è il prezzo di tutta la cosa anche dove la scheda non ha `units`: vale
+per la barca privata (450) e per le cabine VIP del Siam Park (660, 990, 1320). È la stessa
+riga di `CLAUDE.md`: *`price` da solo può essere il prezzo di tutta la barca*.
+
+Verificato che i sette conti non si muovono di un centesimo: 138, 279, 314, 335, 170, 185,
+177,50 pieni; 128,60 / 255,50 / 282,60 / 301,50 / 153 / 171,60 / 169,60 scontati — gli
+stessi numeri scritti nei commenti sopra ogni pacchetto.
+
+### I due vecchi indirizzi
+
+`pacchetto.html?id=famiglia` e `?id=teide-tre-volte` adesso non esistono più. Provati nel
+browser: esce "Pacchetto non trovato" con il rimando alla vetrina, che è quello che quella
+pagina doveva già fare. I link condivisi sono di ieri e sono pochi, ma vale la pena saperlo
+prima di togliere un pacchetto: **un pacchetto che esce si porta dietro il suo indirizzo**.
+
+**Provato nel browser vero** a 390px: sette riquadri in vetrina con foto, prezzo barrato e
+"Risparmi €X" giusti, la pagina di "Terra, mare e stelle" con le tre voci e le loro
+descrizioni, la finestra della richiesta che si apre coi campi al posto giusto, i due
+vecchi indirizzi che finiscono sulla pagina "non trovato". `node controlla.js` → 0 errori,
+3 avvisi invariati. Alzato `sw.js` a `isla-v319`.

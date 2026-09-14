@@ -11,7 +11,8 @@
 //   Cruiser Experience, i giri in buggy, lo stargazing in gruppo piccolo e il
 //   jet ski da un'ora. Ognuno compare in piu' pacchetti, dentro temi diversi,
 //   cosi' il cliente ci arriva da strade diverse e non sembra la stessa
-//   proposta ripetuta otto volte.
+//   proposta ripetuta sette volte. Nei sette di oggi: il Luxury Cruiser sta in
+//   cinque, il buggy e lo stargazing in tre, il jet ski in due.
 //
 // IL PREZZO NON SI SCRIVE QUI
 //   Nessun pacchetto ha un prezzo suo. Si somma quello delle escursioni
@@ -39,6 +40,22 @@
 //     jet-ski-safari-1-2h 0 quaranta minuti · 1 un'ora · 2 due ore
 //     stargazing-group    0 gruppo grande · 1 gruppo piccolo
 //     luxury-cruiser      0 tre ore in condivisione · 1 barca privata
+//
+// IL TEIDE UNA VOLTA SOLA
+//   Vale quando si **scrive** un pacchetto, non quando lo si legge: il Parco
+//   Nazionale ci puo' stare una volta. Tre salite allo stesso posto sono lo
+//   stesso posto venduto tre volte, e il cliente se ne accorge il secondo
+//   giorno. Le voci che ci salgono non sono solo quelle col Teide nel nome:
+//     teide-national-park                il parco di giorno
+//     stargazing-group                   ci si sale la sera, tutte e due le varianti
+//     buggy-volcano-4h  optionIndex 1    "Tramonto sul Teide"
+//     buggy-volcano-4h  optionIndex 2    "Completo": dentro c'e' il parco
+//     quad-teide-adventure               tutte e due le varianti
+//     trekking-bici     optionIndex 0    "Teide Light"
+//     helicopter-tours  optionIndex 4    "Grand Teide Luxury"
+//   Il buggy lasciato senza `optionIndex` puo' finire su un percorso del
+//   Teide: dove succede, nel pacchetto non ci deve stare nient'altro che ci
+//   salga.
 //
 // PREZZO A PERSONA E PREZZO A MEZZO
 //   Attenzione ai pacchetti con buggy o jet ski: quelle schede hanno
@@ -81,6 +98,7 @@ const PACCHETTI = [
     image: "teide-national-park.jpg",
     sconto: 10,
     // 39 + 55 + 44 = 138, ma il Siam Park non si sconta: −9,40 → 128,60 a persona
+    // Teide: una volta, di giorno.
     voci: [
       { id: "teide-national-park" },
       { id: "luxury-cruiser", optionIndex: 0 },
@@ -96,6 +114,8 @@ const PACCHETTI = [
   {
     id: "tenerife-buggy",
     // PREZZO MISTO: il buggy si paga a mezzo, le altre due a persona.
+    // 180 + 55 + 44 = 279, ma il Siam Park non si sconta: −23,50 → 255,50
+    // per una persona da sola.
     title: {
       it: "Tre mosse, versione buggy",
       en: "Three moves, buggy version",
@@ -103,76 +123,59 @@ const PACCHETTI = [
     },
     image: "buggy-volcano-4h.jpg",
     sconto: 10,
+    // Il percorso resta aperto: i quattro costano uguale e si concorda
+    // rispondendo. Qui si puo' fare perche' nel pacchetto non c'e' nient'altro
+    // che salga al Teide — se un giorno ci si aggiunge lo stargazing, il
+    // percorso va fissato su `optionIndex: 0` (Offroad) o `3` (Montagna su
+    // strada), gli unici due che al parco non ci vanno.
     voci: [
-      // Senza `optionIndex`: dei quattro percorsi sceglie il cliente. E' voluto
-      // — qui il buggy e' il pezzo forte del pacchetto e non va ristretto.
-      // I quattro costano uguale (180 il buggy da due posti), quindi il numero
-      // in vetrina non cambia con la scelta.
       { id: "buggy-volcano-4h" },
       { id: "luxury-cruiser", optionIndex: 0 },
       { id: "siam-park" }
     ],
     desc: {
-      it: "Lo stesso giro del pacchetto classico, ma alla montagna ci si arriva col buggy invece che in pullman: si sceglie il percorso, dall'offroad sulla costa alla salita al vulcano. Poi il mare e il Siam Park.",
-      en: "The same trip as the classic package, but you reach the mountain in a buggy instead of a coach: you pick the route, from the coastal off-road to the climb up the volcano. Then the sea and Siam Park.",
-      es: "El mismo recorrido del paquete clásico, pero a la montaña se llega en buggy en vez de en autocar: se elige el recorrido, del offroad en la costa a la subida al volcán. Después el mar y el Siam Park."
-    }
-  },
-
-  {
-    id: "famiglia",
-    title: {
-      it: "Famiglia",
-      en: "Family",
-      es: "Familia"
-    },
-    image: "luxury-cruiser.jpg",
-    sconto: 10,
-    // 55 + 10 + 44 = 109, ma i due parchi non si scontano: lo sconto e' solo
-    // sulla barca, −5,50 → 103,50 a persona (i bambini pagano meno su tutte e tre)
-    voci: [
-      { id: "luxury-cruiser", optionIndex: 0 },
-      { id: "monkey-park" },
-      { id: "siam-park" }
-    ],
-    desc: {
-      it: "La barca, le scimmie e il parco acquatico. Tre uscite per chi viaggia coi bambini, tutte con prezzo ridotto per i piccoli e nessuna sveglia all'alba.",
-      en: "The boat, the monkeys and the water park. Three days out for families, all with a reduced price for children and no early starts.",
-      es: "El barco, los monos y el parque acuático. Tres salidas para quien viaja con niños, todas con precio reducido para los pequeños y sin madrugones."
-    }
-  },
-
-  // ─── IL TEIDE ─────────────────────────────────────────────────────────────
-
-  {
-    id: "teide-tre-volte",
-    // PREZZO MISTO: il buggy si paga a mezzo, il pullman e la serata a persona.
-    title: {
-      it: "Il Teide tre volte",
-      en: "Teide three times over",
-      es: "El Teide tres veces"
-    },
-    image: "teide-by-night.jpg",
-    sconto: 10,
-    voci: [
-      { id: "teide-national-park" },
-      // optionIndex 1 = "Tramonto sul Teide, 3 ore".
-      { id: "buggy-volcano-4h", optionIndex: 1 },
-      // optionIndex 1 = gruppo piccolo, in minivan, con l'astrofotografia.
-      { id: "stargazing-group", optionIndex: 1 }
-    ],
-    desc: {
-      it: "Lo stesso parco a tre ore diverse: di giorno col pullman e la guida, al tramonto col buggy, e di notte col telescopio in gruppo piccolo. Chi lo fa torna a casa con tre Teide diversi, non con la stessa foto tre volte.",
-      en: "The same park at three different hours: by day with the coach and a guide, at sunset in a buggy, and at night with the telescope in a small group. You go home with three different Teides, not the same photo three times.",
-      es: "El mismo parque a tres horas distintas: de día en autocar con guía, al atardecer en buggy, y de noche con el telescopio en grupo pequeño. Te vuelves con tres Teides distintos, no con la misma foto tres veces."
+      it: "Le stesse tre mosse, ma al volante: il buggy al posto del pullman, la giornata in barca da Las Galletas e il Siam Park. Il percorso del buggy lo scegliamo insieme quando rispondiamo.",
+      en: "The same three moves, but behind the wheel: a buggy instead of the coach, the day on the water from Las Galletas and Siam Park. We agree on the buggy route when we reply.",
+      es: "Los mismos tres pasos, pero al volante: el buggy en lugar del autocar, el día en barco desde Las Galletas y el Siam Park. El recorrido del buggy lo elegimos juntos al responder."
     }
   },
 
   // ─── PER TEMA ─────────────────────────────────────────────────────────────
 
   {
+    id: "terra-mare-stelle",
+    // PREZZO MISTO: il buggy si paga a mezzo, barca e stelle a persona.
+    // 180 + 55 + 79 = 314, tutto scontabile: −31,40 → 282,60 per una persona
+    // da sola. E' il pacchetto con dentro tre dei quattro prodotti da
+    // spingere e nessun biglietto a prezzo fisso: lo sconto si vede tutto.
+    title: {
+      it: "Terra, mare e stelle",
+      en: "Land, sea and stars",
+      es: "Tierra, mar y estrellas"
+    },
+    image: "teide-by-night.jpg",
+    sconto: 10,
+    voci: [
+      // optionIndex 0 = "Offroad, 3 ore". Fissato apposta: e' un percorso che
+      // al Parco Nazionale non sale, e la salita al Teide in questo pacchetto
+      // e' gia' quella della sera.
+      { id: "buggy-volcano-4h", optionIndex: 0 },
+      { id: "luxury-cruiser", optionIndex: 0 },
+      // optionIndex 1 = gruppo piccolo, in minivan.
+      { id: "stargazing-group", optionIndex: 1 }
+    ],
+    desc: {
+      it: "Tre giorni, tre modi di stare sull'isola: lo sterrato nel sud al volante del buggy, la costa vista dal mare con la barca da Las Galletas e la notte in quota col telescopio, in gruppo piccolo. Al Teide si sale una volta sola, e al buio.",
+      en: "Three days, three ways to be on the island: the dirt tracks in the south at the wheel of a buggy, the coast seen from the water on the boat from Las Galletas, and the night up high with the telescope, in a small group. You go up to Teide once, and in the dark.",
+      es: "Tres días, tres formas de vivir la isla: las pistas de tierra del sur al volante del buggy, la costa vista desde el mar en el barco de Las Galletas y la noche en altura con el telescopio, en grupo pequeño. Al Teide se sube una sola vez, y de noche."
+    }
+  },
+
+  {
     id: "adrenalina",
     // PREZZO MISTO: buggy e jet ski si pagano a mezzo, il parascending a persona.
+    // 180 + 100 + 55 = 335, tutto scontabile: −33,50 → 301,50 per una persona
+    // da sola.
     title: {
       it: "Adrenalina",
       en: "Adrenaline",
@@ -181,7 +184,8 @@ const PACCHETTI = [
     image: "parascending.jpg",
     sconto: 10,
     voci: [
-      // optionIndex 2 = "Completo, 4 ore", il percorso lungo.
+      // optionIndex 2 = "Completo, 4 ore", il percorso lungo. Dentro c'e' il
+      // Parco Nazionale: e' l'unica salita al Teide di questo pacchetto.
       { id: "buggy-volcano-4h", optionIndex: 2 },
       // optionIndex 1 = un'ora. I quaranta minuti sono un assaggio, le due ore
       // sono un'altra spesa: l'ora e' quella che si vende.
@@ -198,6 +202,8 @@ const PACCHETTI = [
   {
     id: "mare-a-tutto-gas",
     // PREZZO MISTO: il jet ski si paga a mezzo, le altre due a persona.
+    // 55 + 100 + 15 = 170, tutto scontabile: −17,00 → 153,00 per una persona
+    // da sola.
     title: {
       it: "Mare a tutto gas",
       en: "Sea, full throttle",
@@ -233,9 +239,12 @@ const PACCHETTI = [
       { id: "flamenco-show" }
     ],
     desc: {
-      it: "Tre serate lente, per chi viaggia in due: le stelle dal Teide in gruppo piccolo, il tramonto dalla barca e il flamenco. Niente sveglie presto, niente code.",
-      en: "Three slow evenings, for couples: the stars from Teide in a small group, the sunset from the boat and a flamenco show. No early starts, no queues.",
-      es: "Tres veladas tranquilas, para quien viaja en pareja: las estrellas desde el Teide en grupo pequeño, el atardecer desde el barco y el flamenco. Sin madrugones y sin colas."
+      // Prima diceva "per chi viaggia in due": il pacchetto e' rimasto, la
+      // riga sulla coppia no. Quello che lo tiene insieme e' l'orario — tre
+      // cose che si fanno tardi — e vale per chiunque, non per una coppia.
+      it: "Tre appuntamenti lenti, tutti nella seconda metà della giornata: le stelle dal Teide in gruppo piccolo, il pomeriggio in barca da Las Galletas e il flamenco. Niente sveglie presto, niente code.",
+      en: "Three unhurried outings, all in the second half of the day: the stars from Teide in a small group, an afternoon on the water from Las Galletas and a flamenco show. No early starts, no queues.",
+      es: "Tres citas tranquilas, todas en la segunda mitad del día: las estrellas desde el Teide en grupo pequeño, la tarde en barco desde Las Galletas y el flamenco. Sin madrugones y sin colas."
     }
   },
 
@@ -260,7 +269,7 @@ const PACCHETTI = [
     voci: [
       { id: "mht-drag-show" },
       { id: "castillo-san-miguel" },
-      // optionIndex 1 = gruppo piccolo, in minivan, in italiano.
+      // optionIndex 1 = gruppo piccolo, in minivan.
       { id: "stargazing-group", optionIndex: 1 }
     ],
     desc: {
@@ -349,6 +358,15 @@ function pacchettoVocePrezzo(voce) {
   if (tour.units || tour.priceUnit) {
     const prezzo = (variante && variante.price) || tour.priceFrom;
     return prezzo ? { tipo: "mezzo", prezzo: prezzo } : null;
+  }
+
+  // Una variante con `price` e senza `priceAdult` e' il prezzo di tutta la cosa
+  // — la barca privata del Luxury Cruiser, le cabine VIP del Siam Park — anche
+  // quando la scheda non ha `units`. Senza questa riga si ricadeva su
+  // `tour.priceAdult` e la barca privata da 450 entrava nel conto a 55: il
+  // prezzo del posto singolo spacciato per quello dell'intera barca.
+  if (variante && variante.priceAdult === undefined && variante.price) {
+    return { tipo: "mezzo", prezzo: variante.price };
   }
 
   const adulto = (variante && variante.priceAdult !== undefined)

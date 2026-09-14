@@ -11498,3 +11498,62 @@ doppioni, la chip cliccata e la ricerca per nome di categoria lo trovano, in ing
 Sulla pagina di dettaglio l'etichetta è "Parchi e spettacoli" e le tre correlate vengono da
 mare, Teide e avventura — né parchi né tour. Nel conto dei pacchetti la voce resta non
 scontabile. `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v321`.
+
+---
+
+## 14 settembre 2026 — Chi va al Teide sta fra il Teide, e il giro delle città torna fra i tour (v322)
+
+Prima applicazione vera di `alsoIn` (v321), decisa dal proprietario nello stesso pomeriggio.
+Due mosse opposte, ed è il confronto fra le due che dice quando la seconda categoria si mette
+e quando invece si sposta e basta.
+
+### Tre schede a motore entrano anche in "Natura, Teide e stelle"
+
+`mustang-experience`, `buggy-volcano-4h`, `quad-teide-adventure`: la Mustang al tramonto sui
+Roques de García, i buggy che salgono al Parco Nazionale, il quad che il Teide ce l'ha nel
+titolo. `category` resta `avventura-motori` su tutte e tre — quello che si compra è il mezzo,
+il posto dove va è la seconda metà della frase — e `alsoIn: ["teide-natura"]` le fa uscire
+anche fra chi cerca cosa fare al Teide.
+
+**Il buggy è il caso interessante**: dei suoi quattro giri solo due salgono al Parco Nazionale
+(Tramonto sul Teide e Completo), gli altri due sono fuoristrada e strade di montagna. `alsoIn`
+è della scheda e non della variante, e va bene così: la scheda è una, ci si arriva per quella,
+e chi entra dal Teide legge i bottoni e sceglie il giro giusto. Un filtro capace di nascondere
+due varianti su quattro vorrebbe dire tornare a quattro schede separate — proprio la cosa da
+cui si è venuti via il 9 settembre.
+
+Sul conto dei pacchetti non cambia niente, ed è giusto che sia così: `teide-natura` non è fra
+le categorie senza sconto, e le tre schede restano scontabili come prima (buggy compreso, che
+sta dentro tre pacchetti su sette).
+
+### "Santa Cruz + Anaga + La Laguna" torna in "Tour e visite", e ci torna da sola
+
+L'8 settembre il proprietario l'aveva spostata in "Teide e natura" per via del Parco Rurale di
+Anaga; il 14 ha cambiato idea. Il giro è fatto di tre paesi, e in una categoria che si chiama
+"Teide" chi cerca una giornata di città non la guarda nemmeno.
+
+**Spostata del tutto, non messa in due**, ed è stato chiesto esplicitamente così. La regola che
+ne esce, e che vale per le prossime: una scheda sta in due categorie quando **ognuna la
+racconta per intero** — Poema del Mar è un parco *ed è* una gita a Gran Canaria, il quad è un
+giro in quad *ed è* una salita al Teide. Qui invece la natura è un pezzo del giro, non il giro:
+due categorie l'avrebbero fatta comparire fra le cose di natura promettendo più Anaga di quanta
+ce ne sia. Se si ricambia idea la riga da aggiungere è una, ed è scritta nel commento.
+
+Effetto collaterale gradito: la foto `santa-cruz-taganana.jpg` è il riquadro di "Tour e visite"
+in home, e adesso la categoria del riquadro e la categoria della scheda tornano a coincidere.
+
+### Una correzione alle "altre esperienze"
+
+`detailRelated` in `tour.js` prende una scheda per categoria diversa da quella aperta. Con le
+categorie multiple `viste` teneva solo la principale, e in fondo alla pagina di Santa Cruz
+uscivano il Teide National Park **e** la Mustang, che al Teide ci sale pure lei: due assaggi
+dello stesso posto in tre righe che servono a far vedere che il catalogo ha dell'altro. Ora
+`viste` si riempie con **tutte** le categorie delle schede già prese, e al posto della Mustang
+esce l'elicottero.
+
+**Provato nel browser vero** a 390px: "Natura, Teide e stelle" passa da 6 a 8 schede (le tre a
+motore dentro, Santa Cruz fuori), "Avventura" resta 7 con le stesse tre, "Tour e visite" passa
+da 7 a 8, l'elenco completo resta 66 senza doppioni e le due categorie insieme fanno 12 schede
+senza ripetizioni. Sulle card dentro il filtro Teide l'etichetta resta "Avventura", che è la
+categoria principale. `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a
+`isla-v322`.

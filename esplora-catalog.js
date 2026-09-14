@@ -2263,7 +2263,12 @@ const ESPLORA_CATALOG = [
     // questa — come i tre percorsi del buggy qui sotto.
     id: "mustang-experience",
     title: "Mustang Experience",
+    // Sta anche in "Natura, Teide e stelle" (proprietario, 14 settembre 2026):
+    // la meta e' il Parco Nazionale, e chi cerca cosa fare al Teide questa la
+    // deve trovare. La principale resta l'avventura, perche' la cosa che si
+    // compra e' la Mustang: il posto dove va e' la seconda meta' della frase.
     category: "avventura-motori",
+    alsoIn: ["teide-natura"],
     zone: "Adeje",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 250,
@@ -2411,7 +2416,15 @@ const ESPLORA_CATALOG = [
     // gia' in giro continuino a funzionare — come si era fatto per i due quad.
     id: "buggy-volcano-4h",
     title: "Buggy Tour Tenerife",
+    // Anche fra Teide e natura (proprietario, 14 settembre 2026). Qui `alsoIn`
+    // e' della scheda e non della variante: dei quattro giri due salgono al
+    // Parco Nazionale (Tramonto sul Teide e Completo) e due no, ma la scheda
+    // e' una e ci si arriva per quella. Chi entra dal Teide legge i bottoni e
+    // sceglie il giro giusto — un filtro che nascondesse le altre due varianti
+    // vorrebbe dire quattro schede di nuovo separate, che e' esattamente
+    // quello da cui si e' venuti via.
     category: "avventura-motori",
+    alsoIn: ["teide-natura"],
     zone: "Las Chafiras",
     duration: { it: "3 o 4 ore", en: "3 or 4 hours", es: "3 o 4 horas" },
     priceFrom: 180,
@@ -2538,7 +2551,11 @@ const ESPLORA_CATALOG = [
     // una variante, e la foto del tramonto e' finita nella galleria.
     id: "quad-teide-adventure",
     title: "Teide Quad Adventure",
+    // Anche fra Teide e natura (proprietario, 14 settembre 2026): il Teide sta
+    // gia' nel titolo, e restare fuori da quella categoria era la cosa che
+    // stonava di piu' di tutte.
     category: "avventura-motori",
+    alsoIn: ["teide-natura"],
     zone: "Chío",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     // Il quad piu' economico che si puo' davvero prenotare: il singolo del
@@ -4851,10 +4868,22 @@ const ESPLORA_CATALOG = [
     // Il titolo e' quello del fornitore ufficiale, uguale in tutte e tre le
     // lingue come tutti gli altri.
     title: "Santa Cruz + Anaga + La Laguna",
-    // Spostata da "Tour e visite" a "Teide e natura" per scelta del
-    // proprietario (8 settembre 2026): mezza giornata sta nel Parco Rurale di
-    // Anaga, Riserva della Biosfera.
-    category: "teide-natura",
+    // E' tornata in "Tour e visite" per scelta del proprietario (14 settembre
+    // 2026), dopo mezza settimana in "Teide e natura" dove l'aveva spostata
+    // lui stesso l'8 settembre per via del Parco Rurale di Anaga. Il giro e'
+    // fatto di tre paesi — Santa Cruz, La Laguna e le case di Anaga — e in una
+    // categoria che si chiama "Teide" chi cerca una giornata di citta' non la
+    // guarda nemmeno.
+    // E' un ritorno **completo**, non un `alsoIn`: si poteva tenerla in tutte
+    // e due, ed e' stato chiesto di no. Una scheda in due categorie ha senso
+    // quando ognuna la racconta per intero (Poema del Mar e' un parco ed e'
+    // una gita a Gran Canaria); qui la natura e' un pezzo del giro, non il
+    // giro. Se un giorno si ricambia idea, la riga da aggiungere e'
+    // `alsoIn: ["teide-natura"]`.
+    // La foto `santa-cruz-taganana.jpg` e' anche il riquadro di "Tour e
+    // visite" in home: adesso la categoria del riquadro e la categoria della
+    // scheda tornano a essere la stessa.
+    category: "tour-isola",
     // Il nord-est e' dove va il pullman, non da dove parte: come sul giro di
     // Icod, quel campo in pagina si legge "Punto di partenza", e la partenza
     // e' una sola, il sud (proprietario, 8 settembre 2026). Santa Cruz, Anaga

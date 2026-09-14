@@ -4612,7 +4612,14 @@ const ESPLORA_CATALOG = [
         es: "Código de vestimenta smart casual (vaqueros permitidos): nada de ropa deportiva ni pantalones cortos." }
     ],
     image: "history-music-show.jpg",
-    published: true
+    // Tolta dal sito il 14 settembre 2026, per scelta del proprietario. La
+    // scheda resta qui con tutti i suoi dati (orari, sala, fasce d'eta',
+    // dress code: roba raccolta una volta e che non si ritrova a memoria):
+    // `published: false` la toglie dall'elenco, dalla ricerca, dall'assistente
+    // e dai pacchetti, e chi arrivasse al vecchio indirizzo trova la pagina
+    // "escursione non trovata". Per rimetterla in vetrina basta rimettere
+    // `true`. E' la prima scheda non pubblicata del catalogo.
+    published: false
   },
 
   // ─── TOUR DELL'ISOLA ──────────────────────────────────────────────────────

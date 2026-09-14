@@ -11112,3 +11112,31 @@ parco" sarebbe una foto che racconta un'altra cosa. Serve una foto vera del Teid
 parziale con la nota, e il conto della lista con il Siam Park fuori), il messaggio WhatsApp,
 nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js`
 a `isla-v315`.
+
+## 14 settembre 2026 — "History – The Evolution of Music" esce dal sito (v316)
+
+«Togli history.» La scheda è **nascosta, non cancellata**: `published: false`. Sparisce
+dall'elenco (65 attività invece di 66), dalla ricerca, dall'assistente e dai pacchetti, e
+chi arriva al vecchio indirizzo `tour.html?id=history-music-show` trova "Escursione non
+trovata". Per rimetterla in vetrina basta rimettere `true`.
+
+**È la prima scheda non pubblicata del catalogo**: fino a oggi `published` era `true` su
+tutte e 66, e il campo non era mai servito davvero. `controlla.js` continua a controllarla
+come le altre (lo dice anche il riepilogo: "schede: 66, di cui pubblicate 65") — quindi se
+un domani qualcuno la rimette in vetrina con un buco nelle fasce d'età, il controllo lo
+prende lo stesso.
+
+**Perché non cancellarla.** Dentro ci sono orari, sala (Auditorio Pirámide de Arona),
+apertura porte, posti non assegnati, parcheggio, dress code, lingua dello spettacolo e le
+fasce d'età che *l'ufficio* aveva dovuto chiarire (il fornitore non le scrive). Roba
+raccolta una volta e che non si ritrova a memoria: cancellare il file vuol dire rifare quel
+lavoro il giorno che l'escursione torna. Se il proprietario la vuole via per sempre è un
+secondo passaggio, non una cosa da fare per conto proprio.
+
+Era anche la terza serata di "Tre sere a Tenerife" fino a un'ora fa (v315): era già uscita
+da lì per un altro motivo — tre show a prezzo fisso facevano un pacchetto con sconto zero —
+e al suo posto c'era già entrato lo stargazing. Nessun pacchetto la cita più.
+
+`assets/history-music-show.jpg` resta in `assets/`: non la usa più nessuno, ma è la foto di
+quella scheda e il giorno che torna serve. `node controlla.js` → 0 errori, 3 avvisi
+invariati. Alzato `sw.js` a `isla-v316`.

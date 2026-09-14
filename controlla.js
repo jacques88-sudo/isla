@@ -29,6 +29,10 @@ const leggi = f => fs.readFileSync(path.join(RADICE, f), "utf8");
 const sorgenteCatalogo = leggi("esplora-catalog.js").replace(/^const /gm, "var ");
 eval(sorgenteCatalogo);
 
+// Stessa cosa per i pacchetti: qui servono sia i dati (PACCHETTI) sia le
+// funzioni del prezzo, per controllare che ogni pacchetto un prezzo ce l'abbia.
+eval(leggi("pacchetti.js").replace(/^const /gm, "var "));
+
 const sorgenteTour = leggi("tour.js");
 const sorgenteI18n = leggi("i18n.js");
 const sorgenteSw = leggi("sw.js");
@@ -390,6 +394,83 @@ function controllaServiceWorker() {
   }
 }
 
+// ─── 12. I pacchetti ───────────────────────────────────────────────────────
+// Un pacchetto e' fatto di id del catalogo. Se un id e' scritto male, o la
+// scheda viene spubblicata, la voce sparisce dalla pagina **in silenzio**: il
+// cliente vede un pacchetto da due escursioni al posto di uno da tre e nessuno
+// se ne accorge. Stessa cosa per un `optionIndex` che punta a una variante che
+// non c'e' piu': il pacchetto promette "gruppo piccolo" e apre il gruppo
+// grande, con un altro prezzo.
+function controllaPacchetti() {
+  const visti = new Set();
+
+  PACCHETTI.forEach(pack => {
+    const dove = "pacchetto " + pack.id;
+
+    if (visti.has(pack.id)) errore(dove, "questo id e' usato due volte.");
+    visti.add(pack.id);
+
+    LINGUE.forEach(l => {
+      if (!pack.title || !pack.title[l]) errore(dove, "manca il titolo in " + l + ".");
+      if (!pack.desc || !pack.desc[l]) errore(dove, "manca la descrizione in " + l + ".");
+    });
+
+    if (!pack.image) errore(dove, "manca la foto di copertina.");
+    else if (!FOTO.has(pack.image)) {
+      errore(dove, 'la foto "' + pack.image + '" non c\'e\' in assets/.');
+    }
+
+    const sconto = pacchettoSconto(pack);
+    if (!(sconto > 0 && sconto < 100)) {
+      errore(dove, "lo sconto e' " + sconto + "%: deve stare fra 1 e 99.");
+    }
+
+    if (!Array.isArray(pack.voci) || pack.voci.length < 2) {
+      errore(dove, "un pacchetto ha almeno due escursioni dentro.");
+      return;
+    }
+
+    pack.voci.forEach(voce => {
+      const tour = ESPLORA_CATALOG.find(t => t.id === voce.id);
+      if (!tour) {
+        errore(dove, 'l\'id "' + voce.id + '" non esiste nel catalogo.');
+        return;
+      }
+      if (!tour.published) {
+        errore(dove, '"' + voce.id + '" non e\' pubblicata: il pacchetto la salterebbe.');
+        return;
+      }
+      if (voce.optionIndex !== undefined) {
+        const scelte = (tour.options && tour.options.choices) || [];
+        if (!scelte[voce.optionIndex]) {
+          errore(dove, '"' + voce.id + '" non ha la variante numero ' + voce.optionIndex +
+            " (ne ha " + scelte.length + ").");
+        }
+      }
+      if (!pacchettoVocePrezzo(voce)) {
+        avviso(dove, 'di "' + voce.id + '" non si riesce a leggere un prezzo: ' +
+          "il pacchetto esce senza nessun numero in vetrina.");
+      }
+    });
+
+    // Un pacchetto con dentro due volte la stessa escursione: la lista lo
+    // conterebbe una volta sola e lo sconto non scatterebbe mai.
+    const doppie = pack.voci.map(v => v.id + "/" + v.optionIndex);
+    if (new Set(doppie).size !== doppie.length) {
+      errore(dove, "c'e' due volte la stessa escursione con la stessa variante.");
+    }
+
+    // Tutto a prezzo fisso: il pacchetto esiste ma non fa risparmiare niente.
+    // Non e' un errore (puo' essere una proposta, non un'offerta) ma va visto:
+    // e' successo a "Tre sere a Tenerife", che era fatto di tre soli show.
+    const conto = pacchettoConto(pack);
+    if (conto && conto.risparmio === 0) {
+      avviso(dove, "non fa risparmiare niente: e' fatto solo di biglietti a " +
+        "prezzo fisso (" + PACCHETTI_CATEGORIE_SENZA_SCONTO.join(", ") + ").");
+    }
+  });
+}
+
 // ─── Esecuzione ────────────────────────────────────────────────────────────
 const CONTROLLI = [controllaBase, controllaEta, controllaPrezzi, controllaGiorni,
                    controllaOrari, controllaIncluse, controllaFoto, controllaTraduzioni];
@@ -398,6 +479,7 @@ console.log("\nControllo del catalogo Isla\n");
 ESPLORA_CATALOG.forEach(t => CONTROLLI.forEach(c => c(t)));
 controllaIdUnici();
 controllaI18n();
+controllaPacchetti();
 controllaServiceWorker();
 
 const pubblicate = ESPLORA_CATALOG.filter(t => t.published).length;

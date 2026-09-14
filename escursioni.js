@@ -1628,6 +1628,11 @@ function initRequestDialog() {
       // conto si rifa' ogni volta leggendo il catalogo.
       listaAggiungi({
         id: current.id,
+        // Da quale pacchetto arriva questa voce, se ci arriva: lo scrive
+        // tour.js sul <body> leggendo l'indirizzo (tour.html?...&pack=...).
+        // Senza, lo sconto del pacchetto non avrebbe modo di sapere che questa
+        // voce e' una delle sue. `undefined` non finisce nel localStorage.
+        pack: (document.body.dataset.pack || undefined),
         date: req.date,
         time: req.time,
         lang: req.lang,

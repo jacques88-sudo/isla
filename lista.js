@@ -106,6 +106,11 @@ function listaVoceConto(voce) {
 // La somma delle voci che un totale ce l'hanno, e quante non ce l'hanno.
 // Le due cose vanno insieme: "€280" senza dire che due escursioni non sono
 // contate e' un numero che il cliente legge come il prezzo di tutto.
+//
+// Lo sconto dei pacchetti si toglie qui e in nessun altro posto: `totale` e'
+// il numero che il cliente paga, `somma` quello di prima. Chi li mostra
+// (la finestra) e chi li scrive (il messaggio) leggono gli stessi due numeri,
+// cosi' non possono raccontare due storie diverse.
 function listaSomma(voci) {
   let somma = 0;
   let senzaPrezzo = 0;
@@ -114,7 +119,23 @@ function listaSomma(voci) {
     if (riga && riga.conto) somma += riga.conto.totale;
     else senzaPrezzo += 1;
   });
-  return { somma: somma, senzaPrezzo: senzaPrezzo };
+
+  // `pacchetti.js` non e' caricato dappertutto: dove non c'e', la lista
+  // funziona come prima e lo sconto semplicemente non esiste.
+  const pack = (typeof pacchettiScontoLista === "function" && somma > 0)
+    ? pacchettiScontoLista(voci, v => {
+        const riga = listaVoceConto(v);
+        return riga && riga.conto;
+      })
+    : { sconto: 0, nomi: [] };
+
+  return {
+    somma: somma,
+    senzaPrezzo: senzaPrezzo,
+    sconto: pack.sconto,
+    pacchetti: pack.nomi,
+    totale: somma - pack.sconto
+  };
 }
 
 // Il messaggio con tutte le escursioni della lista. Con una sola voce si usa
@@ -136,12 +157,19 @@ function listaWhatsappUrl(nome) {
       righeRichiesta(riga.tour, voce).join("\n"));
   });
 
-  const { somma, senzaPrezzo } = listaSomma(voci);
+  const { somma, senzaPrezzo, sconto, pacchetti, totale } = listaSomma(voci);
   let testo = t("wa.introList", { name: nome, n: voci.length }) + "\n\n" +
     blocchi.join("\n\n");
   if (somma > 0) {
-    testo += "\n\n" + (senzaPrezzo ? t("wa.totalPartial") : t("wa.total")) +
-      ": €" + eur(somma);
+    // Lo sconto si scrive prima del totale, col nome del pacchetto: l'ufficio
+    // deve poter rifare il conto senza chiedere da dove esce quel numero.
+    if (sconto > 0) {
+      testo += "\n\n" + t("lista.discount") + " " + pacchetti.join(" + ") +
+        ": −€" + eur(sconto);
+    }
+    testo += (sconto > 0 ? "\n" : "\n\n") +
+      (senzaPrezzo ? t("wa.totalPartial") : t("wa.total")) +
+      ": €" + eur(totale);
   }
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
 }
@@ -268,11 +296,17 @@ function initLista() {
         </li>`;
     }).join("");
 
-    const { somma, senzaPrezzo } = listaSomma(voci);
-    const totale = somma > 0
-      ? `<p class="lista-totale">
-           <strong>€${eur(somma)}</strong>
-           <small>${esc(senzaPrezzo ? t("wa.totalPartial") : t("wa.total"))}</small>
+    const conto = listaSomma(voci);
+    const rigaSconto = conto.sconto > 0
+      ? `<p class="lista-sconto">
+           <span>${esc(t("lista.discount"))} ${esc(conto.pacchetti.join(" + "))}</span>
+           <span>−€${eur(conto.sconto)}</span>
+         </p>`
+      : "";
+    const totale = conto.somma > 0
+      ? rigaSconto + `<p class="lista-totale">
+           <strong>€${eur(conto.totale)}</strong>
+           <small>${esc(conto.senzaPrezzo ? t("wa.totalPartial") : t("wa.total"))}</small>
          </p>`
       : "";
 

@@ -64,6 +64,10 @@ scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
 - `tour.html` + `tour.js` — pagina di dettaglio di una singola escursione,
   indirizzo `tour.html?id=<id della voce nel catalogo>`. Riusa da `escursioni.js`
   il prezzo, il nome della categoria e la finestra della richiesta
+- `pacchetti.html` + `pacchetti.js` — i pacchetti: gruppi di escursioni del catalogo
+  vendute insieme con uno sconto. Nel file ci sono i dati (`PACCHETTI`), il conto del
+  prezzo (letto dal catalogo, mai scritto a mano) e la pagina. Lo carica anche chi non
+  la mostra: serve a `lista.js` per lo sconto
 - `esplora-catalog.js` — dati delle 45 attività, divise nelle 8 categorie
 - `assistente.js` — assistente guidato: tre domande (interesse, bambini, budget), poi
   consigli dal catalogo e un riquadro per chiedere su WhatsApp quello che non c'è
@@ -76,7 +80,8 @@ scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
 Home: splash con anello blu di caricamento → banner fisso in cima (logo, wordmark, pillole
 Esperienze / Prenota ora / Menu, si restringe scorrendo) → video hero con play/pausa →
 "Inizia la tua avventura con…" → griglia bento (Pacchetti, Scan ticket, Con bambini,
-3/5/7 Days, più un riquadro largo "Noleggio auto, moto e bici" che apre WhatsApp) →
+3/5/7 Days, più un riquadro largo "Noleggio auto, moto e bici" che apre WhatsApp;
+"Pacchetti" porta alla pagina dei pacchetti) →
 "come funziona" → categorie (7 foto vere) → posti segreti → chi siamo →
 FAQ → richiamo finale → footer. Layout ottimizzato anche per desktop.
 
@@ -1700,8 +1705,9 @@ Cose da ricordare, imparate sistemando la versione PC:
   barra non si vede. Su schermo largo devono andare a capo. E' successo ai
   filtri per categoria
 
-- I riquadri bento (Pacchetti, Con bambini, 3/5/7 Days) puntano a `#categories` e al
-  filtro famiglia: servono pagine vere per i pacchetti
+- Il riquadro bento "Pacchetti" porta a `pacchetti.html` (dal 14 settembre 2026).
+  **"3/5/7 Days Experience" punta ancora a `#categories`**, cioè alle categorie della
+  home: è l'ultimo riquadro rimasto senza una pagina sua
 - Il riquadro "Noleggio auto, moto e bici" non è un'attività del catalogo: non ha una
   scheda, apre WhatsApp con un messaggio già scritto (`wa.rental` in `i18n.js`). Il link
   lo costruisce `initRentalLink()` in `app.js`, che si nasconde da solo se
@@ -10950,3 +10956,177 @@ cliente.
 **Provato nel browser vero** nelle tre lingue, sulla pagina di dettaglio e nell'elenco:
 "Franz" non compare più da nessuna parte, nessun errore in console. `node controlla.js` →
 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v313`.
+
+## 14 settembre 2026 — La pagina dei pacchetti, e lo sconto che si applica da solo (v314)
+
+Il riquadro bento "Pacchetti" puntava a `#categories` dal primo giorno: portava alle
+categorie della home, cioè da nessuna parte. Adesso c'è `pacchetti.html` con otto
+pacchetti, e il riquadro (più la voce "Pacchetti" dei menu di tutte le pagine) ci porta.
+
+**Il prezzo non è scritto da nessuna parte.** Si somma leggendo `esplora-catalog.js` e si
+toglie `sconto`: è la stessa regola della lista (*"Mai il prezzo. I prezzi cambiano"*).
+Cambiare 39 in 45 sul Teide aggiorna da solo i due pacchetti che lo contengono.
+
+**Tre schede hanno `priceAdult: 0` e il prezzo dentro la variante**, e sono proprio quelle
+che questi pacchetti spingono: stargazing (75 o 79 a persona), buggy e jet ski (180 e 100,
+ma **a mezzo**). Sommare `priceAdult` e basta le avrebbe fatte entrare nel conto come
+**gratis** — "Tre mosse, versione buggy" sarebbe uscito a €99 invece che €279. Quindi
+`pacchettoVocePrezzo()` legge in quest'ordine: la variante decisa dal pacchetto, poi la
+scheda, e dove il prezzo è del mezzo ripiega su `priceFrom` (il mezzo più piccolo). Se non
+riesce a leggere un prezzo il pacchetto esce **senza nessun numero**, non con uno finto;
+`controlla.js` lo segnala come avviso.
+
+**Il numero dei quattro pacchetti misti è quello di una persona da sola, e non si chiama
+"da €X".** Il buggy si divide fra chi ci sale: da solo sono 180 a testa, in due 90. Quindi
+più gente c'è e *meno* si paga a persona, e un "da €170" (il prezzo in due) sarebbe il
+minimo ma **salirebbe** in faccia a chi viaggia da solo — la cosa che `CLAUDE.md` dice di
+non fare mai. Il numero che mostriamo è il più alto: l'unico che al cliente può solo
+scendere. Una riga sotto il prezzo spiega perché.
+
+**Lo sconto vale su tutto, mezzi compresi** (deciso il 14 settembre): una regola sola, che
+l'ufficio sa ripetere al telefono.
+
+### Come si richiede un pacchetto
+
+Le tre escursioni si aggiungono **una alla volta**, dalla loro pagina di dettaglio. Non è
+una semplificazione: **la lista non sa modificare una voce**. Ogni riga vuole già giorno,
+ora e persone, si riempiono nella finestra della richiesta e dopo si può solo togliere la
+voce. Un pulsante "aggiungi tutte e tre" avrebbe messo in lista tre righe senza data, e il
+messaggio all'ufficio sarebbe partito coi buchi.
+
+Quindi ogni riga della scheda è un link a `tour.html?id=…&pack=<pacchetto>&option=<n>`:
+- `option` fa aprire la pagina **già sulla variante che il pacchetto ha deciso** (il jet
+  ski da un'ora, lo stargazing in gruppo piccolo). Prima i bottoni delle varianti nascevano
+  sempre col primo premuto: il cliente leggeva "gruppo piccolo €79" nel pacchetto e apriva
+  il gruppo grande a €75.
+- `pack` lo scrive `tour.js` su `document.body.dataset.pack`, e `escursioni.js` lo mette
+  nella voce della lista. È l'unica cosa che lega quella voce al pacchetto.
+
+**Quando nella lista ci sono tutte e tre, lo sconto si applica da solo**, nel totale della
+finestra e nel messaggio WhatsApp (`Sconto pacchetto Tenerife in tre mosse: −€27,60`).
+Calcolato sul prezzo **vero** della richiesta — due adulti sono 276, non 138 — non sul
+numero della vetrina, che è di una persona sola. Se il cliente ne toglie una lo sconto
+sparisce e la scheda torna a dire "2 di 3 nella tua lista".
+
+"Tutte e tre" vuol dire una per voce, **con la variante decisa dal pacchetto**: chi cambia
+variante sulla pagina di dettaglio esce dal pacchetto, perché è un altro prezzo. Dove il
+pacchetto la variante non la decide (il buggy, di proposito: i quattro percorsi costano
+uguale) va bene qualunque.
+
+### Cose imparate o decise
+
+- **La riga di un'escursione è un link, tutta quanta, non un bottone in fondo.** Col
+  bottone "Guarda e aggiungi" su un telefono da 390px il titolo aveva meno di metà riga:
+  *Luxury Cruiser Experience* andava su tre righe. Adesso c'è una freccia a destra e si
+  tocca dove si vuole.
+- **La finestra della richiesta non è stata copiata una terza volta.** È già scritta due
+  volte (`escursioni.html` e `tour.html`) e `CLAUDE.md` avverte di tenerle allineate: da
+  `pacchetti.html` non si richiede niente, si va sulla pagina di dettaglio. Che è anche
+  meglio: il cliente vede che cos'è prima di metterla nella lista.
+- `pacchetti.js` finisce con `if (typeof document !== "undefined")` prima del listener:
+  `controlla.js` lo carica da Node, dove `document` non esiste.
+- **`controlla.js` adesso controlla anche i pacchetti**: id che esistono e sono pubblicati,
+  `optionIndex` dentro il numero di varianti, foto in `assets/`, titolo e descrizione nelle
+  tre lingue, sconto fra 1 e 99, niente doppioni. Un id sbagliato faceva sparire una voce
+  in silenzio.
+- **`siam-park` nel pacchetto non ha `optionIndex`**: il cliente può scegliere anche la
+  Villa VIP da €1320 e lo sconto scatta lo stesso, sul prezzo vero. È voluto che sia il
+  cliente a scegliere il biglietto, e in vetrina c'è il prezzo del biglietto normale (€44,
+  che è `priceAdult` della scheda). Se un giorno desse fastidio, basta fissare
+  `optionIndex: 0`.
+
+**Provato nel browser vero** (Chromium, 390px e 1280px): il giro dalla home al riquadro
+bento, alla scheda del pacchetto, alla pagina di dettaglio con la variante giusta già
+premuta, alla lista con lo sconto e al messaggio WhatsApp. Nelle tre lingue, nessuna chiave
+non tradotta, nessun errore in console, nessuno scorrimento orizzontale.
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v314`.
+
+## 14 settembre 2026 — Sui parchi e sugli show lo sconto non si può fare (v315)
+
+«Non è possibile fare lo sconto sui prezzi dei parchi/show notturni.» Sono biglietti a
+prezzo fisso: li paghiamo quanto li rivendiamo, e un 10% in meno uscirebbe dalla tasca di
+Admiral invece che dal margine. Tocca sei pacchetti su otto.
+
+**La regola è la categoria, non un elenco di schede.** `PACCHETTI_CATEGORIE_SENZA_SCONTO =
+["parchi-spettacoli"]`, che oggi copre esattamente Siam Park, Monkey Park, flamenco, drag
+show, castello e history of music. Scelto contro l'elenco di id scritto a mano (deciso il
+14 settembre) per una ragione sola: un elenco a mano si dimentica, e dimenticarselo vuol
+dire **promettere al cliente uno sconto che l'ufficio non può fare** — l'errore caro, non
+quello gratis. Un parco o uno show nuovo è coperto il giorno che entra nel catalogo.
+
+| pacchetto | pieno | scontabile | risparmio | paga |
+|---|---|---|---|---|
+| Tenerife in tre mosse | €138 | €94 | €9,40 | €128,60 |
+| Tre mosse, versione buggy | €279 | €235 | €23,50 | €255,50 |
+| Famiglia | €109 | €55 | €5,50 | €103,50 |
+| Il Teide tre volte | €298 | €298 | €29,80 | €268,20 |
+| Adrenalina | €335 | €335 | €33,50 | €301,50 |
+| Mare a tutto gas | €170 | €170 | €17 | €153 |
+| Cielo e mare | €185 | €134 | €13,40 | €171,60 |
+| Tre sere a Tenerife | €177,50 | €79 | €7,90 | €169,60 |
+
+**Il bollino "−10%" è sparito.** Su un pacchetto dove lo sconto vale su 94 euro di 138, un
+"−10%" è un numero falso: il cliente lo fa a mente, trova 124,20 e sul sito legge 128,60.
+Al suo posto il risparmio in euro, che è vero sempre: **"Risparmi €9,40"**. Sotto il prezzo
+c'è la riga che dice perché, e **ogni riga che non si sconta lo dice da sé** ("€44 · prezzo
+fisso"): la nota senza i nomi obbligherebbe a indovinare quale delle tre.
+
+Il prezzo barrato compare **solo dove c'è davvero qualcosa da togliere**. Un pacchetto di
+soli biglietti a prezzo fisso mostra un prezzo solo, senza barrato e senza bollino: barrare
+un numero e riscrivere lo stesso numero è una finta offerta.
+
+**Lo stesso vale nella lista**, dove il conto è quello vero: sul pacchetto classico in due
+lo sconto è €18,80, cioè il 10% di 188 (78 del Teide + 110 della barca), e gli 88 del Siam
+Park restano fuori. Un solo punto lo decide, `pacchettoVoceScontabile()`, usato sia dalla
+vetrina sia dalla lista: due regole separate sarebbero diventate diverse.
+
+### "Tre sere a Tenerife" era diventato un pacchetto che non risparmiava niente
+
+Drag show + castello + history of music: tre biglietti a prezzo fisso, sconto €0. Tre cose
+a prezzo pieno messe in fila non sono un pacchetto, sono un elenco — il cliente le può già
+aggiungere alla lista dal catalogo e paga uguale.
+
+Al posto di `history-music-show` (il più generico dei tre) è entrato lo **stargazing in
+gruppo piccolo**. Non è una scelta di gusto: è **l'unica serata scontabile del catalogo con
+un prezzo a persona**. Le altre serali sono a mezzo (buggy al tramonto, quad al tramonto)
+oppure non hanno un prezzo leggibile (la passeggiata a cavallo di 2 ore non ce l'ha), e in
+un pacchetto di serate un prezzo a buggy avrebbe portato dentro tutta la nota del prezzo
+misto. Ed è uno dei quattro prodotti da spingere.
+
+**La descrizione è stata riscritta, non ritoccata.** Diceva *"Tre spettacoli con la cena
+compresa"* e non è più vero: la scheda dello stargazing dice a chiare lettere che il picnic
+al tramonto **non è una cena a tavola**. Adesso dice "il drag show con la cena, la notte
+medievale al castello e le stelle dal Teide, con il picnic al tramonto sopra le nuvole".
+
+**`controlla.js` adesso avvisa se un pacchetto non fa risparmiare niente**: è esattamente
+il caso in cui era finito questo, ed era invisibile finché non si faceva il conto a mano.
+
+### Da sistemare, visto passando
+
+`assets/teide-national-park.jpg` è **300×300**: in copertina del pacchetto (16/9, fino a
+550px sul desktop) viene ingrandita e si ammorbidisce. Non è stata sostituita con un'altra
+foto a caso — `Cat-teide.jpg` è grande ma è un buggy al tramonto, e su "montagna, mare e
+parco" sarebbe una foto che racconta un'altra cosa. Serve una foto vera del Teide a ~1200px.
+
+**Provato nel browser vero** a 390px, nelle tre lingue: i tre casi (sconto pieno, sconto
+parziale con la nota, e il conto della lista con il Siam Park fuori), il messaggio WhatsApp,
+nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js`
+a `isla-v315`.
+
+## 14 settembre 2026 — History resta nel catalogo: esce solo dal pacchetto (v316)
+
+Mezz'ora di scheda nascosta per un malinteso, e vale la pena scriverlo perché è il tipo di
+errore che si rifà. «Togli history» è stato letto come *togli la scheda dal sito*
+(`published: false`), mentre voleva dire *togli history dal pacchetto "Tre sere"* — che era
+già stato fatto in v315, per un motivo diverso: tre show a prezzo fisso facevano un
+pacchetto con sconto zero, e al suo posto era entrato lo stargazing.
+
+Rimessa `published: true`: la scheda è di nuovo in elenco (66 attività), nella ricerca e
+nell'assistente, col suo indirizzo che funziona. **Non è in nessun pacchetto**, ed è
+l'unica cosa che questo branch le ha fatto.
+
+La lezione, per la prossima volta: *"togli X"* quando X sta **in due posti** (nel catalogo
+e in un pacchetto) non è un'istruzione completa, e va chiesto quale dei due — nascondere una
+scheda di catalogo si vede su tutto il sito, toglierla da un pacchetto si vede in un punto
+solo. `CACHE_NAME` resta `isla-v316`: la scheda nascosta non è mai uscita da questo branch,
+nessuno l'ha vista sparire dal sito vero.

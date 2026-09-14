@@ -446,8 +446,13 @@ function primaVariante(tour) {
 function detailRelated(tour) {
   const viste = new Set();
   const altre = [];
+  // "Diversa da quella aperta" vuol dire diversa da **tutte** le sue: una
+  // scheda che sta anche in questa categoria non e' il resto del catalogo.
+  // Cosi' resta fuori anche la scheda aperta, che le sue categorie le
+  // condivide con se stessa.
+  const mie = new Set(categorieDi(tour));
   for (const x of ESPLORA_CATALOG) {
-    if (!x.published || x.category === tour.category || viste.has(x.category)) continue;
+    if (!x.published || categorieDi(x).some(id => mie.has(id)) || viste.has(x.category)) continue;
     viste.add(x.category);
     altre.push(x);
     if (altre.length >= DETAIL_MAX_CORRELATE) break;

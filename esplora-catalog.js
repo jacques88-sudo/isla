@@ -317,6 +317,29 @@
 //                          dipendono dalla durata (il giro di 2 ore parte alle
 //                          11:00 e quello di 3 alle 10:00). Battono il campo
 //                          `times` dell'attivita'.
+//   category   → la categoria in cui sta la scheda, una sola. E' quella
+//                scritta sulla card e in cima alla pagina di dettaglio.
+//   alsoIn     → facoltativo: le ALTRE categorie in cui la stessa scheda deve
+//                comparire, quando una sola non la racconta tutta. "Poema del
+//                Mar" e' un parco (l'acquario) ed e' una giornata su un'altra
+//                isola: chi guarda fra i parchi e chi guarda fra i tour devono
+//                trovarla tutti e due.
+//                    category: "parchi-spettacoli",
+//                    alsoIn: ["tour-isola"]
+//                La scheda resta **una**, con un id solo e una pagina sola: e'
+//                lo stesso riquadro che esce sotto piu' filtri. Copiarla in
+//                due voci vorrebbe dire due prezzi da tenere allineati a mano,
+//                e prima o poi uno resta indietro.
+//                Il nome scritto sulla card resta quello di `category`, anche
+//                quando si e' arrivati dall'altra categoria: un riquadro che
+//                cambia etichetta a seconda del filtro premuto non si
+//                riconosce piu' da una pagina all'altra.
+//                Attenzione ai pacchetti: basta che UNA delle categorie sia
+//                fra quelle senza sconto (`PACCHETTI_CATEGORIE_SENZA_SCONTO`
+//                in pacchetti.js) perche' lo sconto non si faccia. E' la
+//                direzione prudente: su un biglietto di un parco, comprato a
+//                prezzo fisso e rivenduto uguale, il 10% uscirebbe dalla
+//                tasca di Admiral.
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
 //   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
@@ -424,6 +447,16 @@ const CATEGORIES = [
     image: "Cat-privati.jpg"
   }
 ];
+
+// Le categorie di una scheda: la sua, piu' quelle facoltative di `alsoIn`.
+// Sta qui, accanto a CATEGORIES, perche' questo file lo caricano tutte le
+// pagine — e perche' chi legge il catalogo deve vedere le stesse categorie
+// dappertutto: i filtri dell'elenco, la ricerca, l'assistente, le schede
+// correlate e il conto dei pacchetti. Se uno dei cinque leggesse solo
+// `category`, la scheda uscirebbe in una categoria e sparirebbe nell'altra.
+function categorieDi(tour) {
+  return [tour.category].concat(tour.alsoIn || []);
+}
 
 const ESPLORA_CATALOG = [
 
@@ -4073,7 +4106,13 @@ const ESPLORA_CATALOG = [
     // giornata su un'altra isola, nave compresa. Il nome dell'isola nel titolo
     // e' la differenza fra le due cose.
     title: "Poema del Mar – Gran Canaria Experience",
+    // Due categorie per una scheda sola: l'acquario e' un parco, ma la
+    // giornata e' una gita a Gran Canaria, nave e guida comprese. Chi filtra
+    // "Parchi e spettacoli" e chi filtra "Tour e visite" la trovano tutti e
+    // due, ed e' sempre la stessa pagina. Il nome sulla card resta quello di
+    // `category`: "Parchi e spettacoli".
     category: "parchi-spettacoli",
+    alsoIn: ["tour-isola"],
     // Il transfer dal sud e' compreso, quindi il cliente non parte da Santa
     // Cruz: ci arriva. La zona lo dice, se no "Punto di partenza: Santa Cruz"
     // farebbe pensare a chi sta nel sud di doverci andare da solo.

@@ -596,6 +596,54 @@ a { text-decoration: none; color: inherit; }
   padding: 1.15rem 1rem;
 }
 
+/* Il riquadro dei pacchetti: tre foto al posto dell'icona. Mare, terra e aria,
+   che e' quello che i pacchetti vendono davvero. La scritta resta dov'era ma
+   scende in fondo e diventa bianca, come sulle foto delle categorie. */
+.bento-tile-photo {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  justify-content: flex-end;
+  border-color: transparent;
+}
+.bento-mosaico {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
+  background: var(--cream);
+}
+/* La prima sta larga sopra, le altre due sotto affiancate. */
+.bento-mosaico img:first-child { grid-column: 1 / -1; }
+.bento-mosaico img {
+  display: block;
+  width: 100%;
+  /* senza height il width/height nell'HTML batte il ritaglio e le foto
+     escono alte come sono: e' gia' successo alla foto di "Chi siamo" */
+  height: 100%;
+  object-fit: cover;
+}
+/* La sfumatura e' decorativa: senza pointer-events copre il link. */
+.bento-tile-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 35%, oklch(0.24 0.012 60 / .9) 100%);
+  pointer-events: none;
+}
+/* `> span:not(.bento-mosaico)`: dentro questo riquadro di span ce ne sono
+   due, la scritta e il mosaico. Scritta cosi' com'era ("span" e basta") la
+   regola prendeva anche il mosaico e gli toglieva il `position: absolute` —
+   le foto finivano nel flusso e restavano alte due terzi del riquadro. */
+.bento-tile-photo > span:not(.bento-mosaico) {
+  position: relative;
+  z-index: 1;
+  padding: 0 .7rem .9rem;
+  color: #fff;
+}
+
 .bento-tile svg {
   width: 28px;
   height: 28px;

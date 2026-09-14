@@ -106,6 +106,19 @@
       <p class="packs-intro" data-i18n="packs.intro"></p>
     </div>
 
+    <!-- Le pillole della vista "3, 5 o 7 giorni": restano nascoste nelle altre
+         due viste di questa pagina, e le accende `pacchetti.js`. Sono link e
+         non bottoni perche' ogni durata ha un indirizzo suo — si manda a un
+         cliente, e il tasto indietro del telefono ci torna. -->
+    <div class="wrap days-nav" data-days-nav hidden>
+      <nav class="chip-row" data-i18n-aria-label="days.navAria" aria-label="Quanti giorni">
+        <a class="chip" href="./pacchetti.html?giorni=tutti" data-days-link="0" data-i18n="days.all">Tutti</a>
+        <a class="chip" href="./pacchetti.html?giorni=3" data-days-link="3" data-i18n="days.d3">3 giorni</a>
+        <a class="chip" href="./pacchetti.html?giorni=5" data-days-link="5" data-i18n="days.d5">5 giorni</a>
+        <a class="chip" href="./pacchetti.html?giorni=7" data-days-link="7" data-i18n="days.d7">7 giorni</a>
+      </nav>
+    </div>
+
     <div class="wrap">
       <ul class="pack-grid" data-pack-grid></ul>
     </div>
@@ -115,6 +128,12 @@
          le escursioni per bambini una per una o tutti i pacchetti. -->
     <div class="wrap packs-foot" data-pack-foot hidden>
       <a class="btn btn-soft btn-block" href="./escursioni.html?family=1" data-i18n="packs.familyAll">Tutte le escursioni adatte ai bambini</a>
+      <a class="pack-back" href="./pacchetti.html" data-i18n="pack.seeAll">Vedi tutti i pacchetti</a>
+    </div>
+
+    <!-- Il piede della vista a giorni: da qui si esce verso i pacchetti a tema,
+         che sono l'altra proposta. Anche questo lo accende `pacchetti.js`. -->
+    <div class="wrap packs-foot" data-days-foot hidden>
       <a class="pack-back" href="./pacchetti.html" data-i18n="pack.seeAll">Vedi tutti i pacchetti</a>
     </div>
   </main>

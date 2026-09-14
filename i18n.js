@@ -53,6 +53,8 @@ const I18N = {
   "meta.packs.title":   { it: "I pacchetti · Isla", en: "Packages · Isla", es: "Los paquetes · Isla" },
   "meta.family.title":  { it: "In famiglia · Isla", en: "As a family · Isla", es: "En familia · Isla" },
   "meta.family.desc":   { it: "I pacchetti di Isla per chi viaggia coi bambini a Tenerife: tre escursioni insieme, col prezzo dei bambini scritto accanto a quello degli adulti.", en: "Isla's packages for families travelling with children in Tenerife: three excursions together, with the kids' price written next to the adults'.", es: "Los paquetes de Isla para quien viaja con niños en Tenerife: tres excursiones juntas, con el precio de los niños junto al de los adultos." },
+  "meta.days.title":    { it: "3, 5 o 7 giorni · Isla", en: "3, 5 or 7 days · Isla", es: "3, 5 o 7 días · Isla" },
+  "meta.days.desc":     { it: "Gli itinerari di Isla a Tenerife da 3, 5 o 7 giorni: una escursione al giorno, con lo sconto già tolto dal prezzo.", en: "Isla's 3, 5 and 7-day itineraries in Tenerife: one excursion a day, with the discount already taken off.", es: "Los itinerarios de Isla en Tenerife de 3, 5 o 7 días: una excursión al día, con el descuento ya aplicado." },
   "meta.packs.desc":    { it: "I pacchetti di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "Isla's packages in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Los paquetes de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado." },
   "meta.pack.desc":     { it: "Un pacchetto di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "An Isla package in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Un paquete de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado." },
   "meta.booking.title": { it: "La tua prenotazione · Isla", en: "Your booking · Isla", es: "Tu reserva · Isla" },
@@ -250,6 +252,27 @@ const I18N = {
   "pack.familyAges":    { it: "Le fasce d'età cambiano da un'escursione all'altra: le trovi qui sotto, accanto al prezzo dei bambini. Con altri numeri il totale si rifà da solo nella richiesta.", en: "Age brackets differ from one excursion to the next: you'll find them below, next to the children's price. With other numbers the total recalculates itself in the request.", es: "Las franjas de edad cambian de una excursión a otra: las encuentras abajo, junto al precio de los niños. Con otros números el total se recalcula solo en la solicitud." },
   "pack.inside":        { it: "Cosa c'è dentro", en: "What's inside", es: "Qué incluye" },
 
+  // ── Gli itinerari a giorni (3/5/7) ──────────────────────────────────────
+  // Chiavi loro, non "pack." riscritte: la pagina e' la stessa e i testi si
+  // scambiano spostando le chiavi (vedi `pacchettiVestiDaGiorni`). Dove c'e'
+  // {n} il numero arriva dai dati — scrivere "sette" a mano vorrebbe dire
+  // riscrivere queste righe il giorno che nasce un itinerario da dieci giorni.
+  "days.eyebrow":       { it: "Quanti giorni hai", en: "How many days", es: "Cuántos días tienes" },
+  "days.title":         { it: "3, 5 o 7 giorni", en: "3, 5 or 7 days", es: "3, 5 o 7 días" },
+  "days.intro":         { it: "Un'escursione al giorno, scelte per non ripetersi. L'itinerario si prende intero, con una richiesta sola, e i giorni li mettiamo d'accordo insieme. Se resti sull'isola più a lungo, gli altri giorni restano tuoi.", en: "One excursion a day, picked so they don't repeat each other. You take the itinerary as a whole, in a single request, and we agree the days together. If you're staying on the island longer, the other days stay yours.", es: "Una excursión al día, elegidas para no repetirse. El itinerario se toma entero, con una sola solicitud, y los días los acordamos juntos. Si te quedas más tiempo en la isla, los demás días siguen siendo tuyos." },
+  "days.navAria":       { it: "Quanti giorni", en: "How many days", es: "Cuántos días" },
+  "days.all":           { it: "Tutti", en: "All", es: "Todos" },
+  "days.d3":            { it: "3 giorni", en: "3 days", es: "3 días" },
+  "days.d5":            { it: "5 giorni", en: "5 days", es: "5 días" },
+  "days.d7":            { it: "7 giorni", en: "7 days", es: "7 días" },
+  "days.count":         { it: "{n} giorni", en: "{n} days", es: "{n} días" },
+  "days.detailEyebrow": { it: "Itinerario di {n} giorni", en: "{n}-day itinerary", es: "Itinerario de {n} días" },
+  "days.inside":        { it: "Giorno per giorno", en: "Day by day", es: "Día a día" },
+  "days.ask":           { it: "Richiedi l'itinerario", en: "Request the itinerary", es: "Solicitar el itinerario" },
+  "days.oneRequest":    { it: "L'itinerario si chiede intero, con una richiesta sola: i {n} giorni li mettiamo d'accordo insieme quando ti rispondiamo.", en: "The itinerary is requested as a whole, in a single request: we agree the {n} days together when we reply.", es: "El itinerario se solicita entero, con una sola solicitud: los {n} días los acordamos juntos cuando te respondemos." },
+  "days.fromDayHint":   { it: "Il primo dei {n} giorni, indicativo: gli altri li mettiamo d'accordo quando ti rispondiamo.", en: "The first of the {n} days, roughly: we agree the others when we reply.", es: "El primero de los {n} días, orientativo: los demás los acordamos cuando te respondemos." },
+  "days.seeAll":        { it: "Vedi gli altri itinerari", en: "See the other itineraries", es: "Ver los demás itinerarios" },
+
   "detail.days":        { it: "Giorni", en: "Days", es: "Días" },
   "detail.times":       { it: "Orari", en: "Departure times", es: "Horarios" },
   "detail.languages":   { it: "Lingue", en: "Languages", es: "Idiomas" },
@@ -349,6 +372,7 @@ const I18N = {
   "wa.introList":       { it: "Ciao Isla! Sono {name}, vorrei richiedere disponibilità per {n} escursioni:", en: "Hi Isla! I'm {name}, I'd like to check availability for {n} excursions:", es: "¡Hola Isla! Soy {name}, quisiera consultar disponibilidad para {n} excursiones:" },
   "wa.fromDay":         { it: "Dal giorno", en: "From", es: "Desde el día" },
   "wa.introPack":       { it: "Ciao Isla! Sono {name}, vorrei richiedere il pacchetto «{pack}»:", en: "Hi Isla! I'm {name}, I'd like to request the «{pack}» package:", es: "¡Hola Isla! Soy {name}, quisiera solicitar el paquete «{pack}»:" },
+  "wa.introDays":       { it: "Ciao Isla! Sono {name}, vorrei richiedere l'itinerario «{pack}», {n} giorni:", en: "Hi Isla! I'm {name}, I'd like to request the «{pack}» itinerary, {n} days:", es: "¡Hola Isla! Soy {name}, quisiera solicitar el itinerario «{pack}», {n} días:" },
   "wa.totalPartial":    { it: "Totale indicativo (solo le escursioni con il prezzo)", en: "Estimated total (priced excursions only)", es: "Total orientativo (solo las excursiones con precio)" },
   "wa.yes":             { it: "sì", en: "yes", es: "sí" },
   "wa.no":              { it: "no", en: "no", es: "no" },

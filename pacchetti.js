@@ -132,6 +132,44 @@
 //   mandato la richiesta. Dove c'e' un limite, sta scritto nel testo del
 //   pacchetto.
 
+// GLI ITINERARI A GIORNI (3, 5, 7)
+//   `giorni: 3 | 5 | 7` marca gli itinerari della vetrina "3/5/7 Days
+//   Experience" — il riquadro della home che fino a oggi non portava da
+//   nessuna parte. Non sono pacchetti a tema: sono la stessa vacanza in tre
+//   misure, per chi sta sull'isola quei giorni, o resta di piu' ma vuole
+//   impegnarsi solo quelli.
+//
+//   UN GIORNO, UNA ESCURSIONE. `giorni` non e' un'etichetta: deve essere
+//   uguale al numero delle voci, e `controlla.js` lo verifica. Un itinerario
+//   che dice sette giorni e dentro ne ha cinque promette una settimana piena e
+//   ne riempie cinque.
+//
+//   LO SCONTO CRESCE COI GIORNI: 10% a tre, 12% a cinque, 15% a sette (scelta
+//   del proprietario, 14 settembre 2026). Vale la regola di sempre — si sconta
+//   solo quello che non e' a prezzo fisso — quindi su un itinerario pieno di
+//   parchi e di pullman il 15% si vedrebbe appena. Per questo dentro ci sono
+//   soprattutto cose scontabili (barche, kayak, parascending, stelle): se no
+//   il numero grande in cima e' una promessa che il conto non mantiene.
+//
+//   NIENTE PREZZI A MEZZO, ed e' voluto. Su tre escursioni il "prezzo di una
+//   persona da sola" del buggy si spiega in una riga; su sette diventa un
+//   totale che non somiglia a quello che si paga davvero. Senza mezzi il
+//   numero in vetrina e' esatto in tutti e sei gli itinerari, e la finestra
+//   della richiesta fa il totale vero anche coi bambini.
+//
+//   SI VEDONO SOLO NELLA LORO VETRINA, `pacchetti.html?giorni=...`. Non stanno
+//   in mezzo ai pacchetti e nemmeno in `?famiglia=1` — al contrario dei
+//   pacchetti di famiglia, che restano pacchetti. Un itinerario ha un'altra
+//   misura: in una griglia di pacchetti da tre farebbe sembrare gli altri
+//   piccoli e se stesso caro, perche' il prezzo di sette giorni accanto a
+//   quello di tre non e' un confronto, e' uno spavento. Chi cerca "In
+//   famiglia" trova i cinque pacchetti da tre, che su quello sono calibrati.
+//
+//   QUELLI DI FAMIGLIA VALGONO LE STESSE TRE REGOLE scritte qui sopra (tutte
+//   le schede `family: true`, tutte col prezzo bambini vero, niente prezzi a
+//   mezzo): un itinerario di famiglia e' un pacchetto di famiglia piu' lungo,
+//   non un'altra cosa.
+
 const PACCHETTI_SCONTO_DEFAULT = 10;
 
 const PACCHETTI_CATEGORIE_SENZA_SCONTO = ["parchi-spettacoli"];
@@ -467,6 +505,191 @@ const PACCHETTI = [
       en: "One big evening and two easy days: sunset above the clouds with a picnic and the telescope, in a small group, then three hours on the water from Las Galletas with a swim stop and a day at Siam Park. You get back from Teide late, so take the next morning slowly.",
       es: "Una noche grande y dos días con calma: el atardecer por encima de las nubes con picnic y telescopio, en grupo pequeño, luego tres horas en barco desde Las Galletas con parada de baño y un día en el Siam Park. Del Teide se vuelve tarde: al día siguiente, sin madrugar."
     }
+  },
+
+  // ─── A GIORNI: 3, 5, 7 ────────────────────────────────────────────────────
+  // Da qui in giu' gli itinerari con `giorni`: le regole stanno in testa al
+  // file, sotto "GLI ITINERARI A GIORNI". Sono tre misure della stessa
+  // vacanza, e si contengono: **il cinque e' il tre piu' due giorni, il sette
+  // e' il cinque piu' due**. E' scritto apposta cosi': chi allunga la vacanza
+  // non scopre di aver preso "l'itinerario sbagliato", aggiunge dei giorni. E
+  // per chi li scrive e' una rete: se il tre e' giusto, i primi tre giorni
+  // degli altri due lo sono gia'.
+  //
+  // Il Teide sta nel primo giorno del tre, quindi ce l'hanno tutti e tre gli
+  // itinerari — una volta sola per itinerario, che e' la regola. Per lo stesso
+  // motivo qui non c'e' lo stargazing: e' un'altra salita al Teide, e nei
+  // pacchetti a tema ce n'e' gia' in abbondanza.
+
+  {
+    id: "giorni-3",
+    title: {
+      it: "Tre giorni a Tenerife",
+      en: "Three days in Tenerife",
+      es: "Tres días en Tenerife"
+    },
+    image: "teide-masca.jpg",
+    giorni: 3,
+    sconto: 10,
+    // 39 + 55 + 35 = 129. Il Teide in pullman e' `fixedPrice` e non si sconta:
+    // il 10% si toglie da 90 → −9,00 → 120,00 a persona.
+    voci: [
+      { id: "teide-national-park" },
+      // optionIndex 0 = tre ore in condivisione. La barca privata e' un prezzo
+      // a barca e qui dentro i prezzi a mezzo non ci vanno.
+      { id: "luxury-cruiser", optionIndex: 0 },
+      { id: "kayak-snorkelling" }
+    ],
+    desc: {
+      it: "Un giorno in montagna, uno in mare e uno sulla costa: il Parco Nazionale del Teide in pullman con la guida, tre ore di barca lungo le scogliere del sud con la sosta per il bagno, e l'uscita in kayak da Los Cristianos, con mezz'ora in acqua dove passano le tartarughe. Una escursione al giorno: il resto della giornata resta tuo.",
+      en: "One day in the mountains, one at sea and one along the coast: Teide National Park by coach with a guide, three hours on the water along the southern cliffs with a swim stop, and the kayak outing from Los Cristianos, with half an hour in the water where the turtles pass. One excursion a day: the rest of the day stays yours.",
+      es: "Un día en la montaña, uno en el mar y uno en la costa: el Parque Nacional del Teide en autocar con guía, tres horas en barco por los acantilados del sur con parada de baño, y la salida en kayak desde Los Cristianos, con media hora en el agua por donde pasan las tortugas. Una excursión al día: el resto del día sigue siendo tuyo."
+    }
+  },
+
+  {
+    id: "giorni-3-famiglia",
+    title: {
+      it: "Tre giorni in famiglia",
+      en: "Three days as a family",
+      es: "Tres días en familia"
+    },
+    image: "peter-pan.jpg",
+    giorni: 3,
+    sconto: 10,
+    famiglia: true,
+    // 27 + 36 + 24 = 87 a persona, bambini 13 + 29 + 12 = 54. L'Aqualand e' un
+    // biglietto e non si sconta: −5,10 sull'adulto → 81,90.
+    voci: [
+      { id: "peter-pan" },
+      { id: "aqualand" },
+      // La scelta fra i due percorsi resta aperta: costano uguale (24 tutti e
+      // due) e si concorda rispondendo.
+      { id: "tuk-tuk" }
+    ],
+    desc: {
+      it: "Tre giorni misurati sui bambini: due ore sulla goletta di legno da Los Cristianos a cercare delfini e globicefali, una giornata di scivoli all'Aqualand con lo spettacolo dei delfini compreso, e un'ora in tuk tuk elettrico sulla costa di Adeje con la guida che racconta.",
+      en: "Three days measured on the children: two hours on the wooden schooner out of Los Cristianos looking for dolphins and pilot whales, a day of slides at Aqualand with the dolphin show included, and an hour in an electric tuk tuk along the Adeje coast with a guide.",
+      es: "Tres días pensados para los niños: dos horas en la goleta de madera desde Los Cristianos buscando delfines y calderones, un día de toboganes en Aqualand con el espectáculo de delfines incluido, y una hora en tuk tuk eléctrico por la costa de Adeje con un guía que cuenta."
+    }
+  },
+
+  {
+    id: "giorni-5",
+    title: {
+      it: "Cinque giorni a Tenerife",
+      en: "Five days in Tenerife",
+      es: "Cinco días en Tenerife"
+    },
+    image: "luxury-cruiser-3.jpg",
+    giorni: 5,
+    sconto: 12,
+    // I tre di "giorni-3" piu' due. 129 + 55 + 50 = 234. Santa Cruz e' in
+    // pullman con guida (`fixedPrice`) come il Teide: si sconta sempre la
+    // stessa roba, 55 + 35 + 55 = 145 → −17,40 → 216,60 a persona.
+    voci: [
+      { id: "teide-national-park" },
+      { id: "luxury-cruiser", optionIndex: 0 },
+      { id: "kayak-snorkelling" },
+      { id: "parascending" },
+      { id: "santa-cruz-taganana" }
+    ],
+    desc: {
+      it: "Gli stessi tre giorni, con dentro altri due: il volo col paracadute trainato dalla barca sopra Costa Adeje, una decina di minuti in aria, e una giornata dall'altra parte dell'isola — Santa Cruz, La Laguna Patrimonio UNESCO e il bosco di allori del Parco Rurale di Anaga, in pullman con la guida.",
+      en: "The same three days, with two more inside: the parachute flight towed by the boat above Costa Adeje, about ten minutes in the air, and a day on the other side of the island — Santa Cruz, La Laguna (a UNESCO site) and the laurel forest of the Anaga Rural Park, by coach with a guide.",
+      es: "Los mismos tres días, con otros dos dentro: el vuelo en paracaídas remolcado por la lancha sobre Costa Adeje, unos diez minutos en el aire, y un día al otro lado de la isla — Santa Cruz, La Laguna Patrimonio UNESCO y la laurisilva del Parque Rural de Anaga, en autocar con guía."
+    }
+  },
+
+  {
+    id: "giorni-5-famiglia",
+    title: {
+      it: "Cinque giorni in famiglia",
+      en: "Five days as a family",
+      es: "Cinco días en familia"
+    },
+    image: "submarine-safari.jpg",
+    giorni: 5,
+    sconto: 12,
+    famiglia: true,
+    // I tre di "giorni-3-famiglia" piu' due. 87 + 61 + 44 = 192 a persona,
+    // bambini 54 + 37 + 32 = 123. Aqualand e Siam Park sono biglietti: si
+    // scontano goletta, tuk tuk e sottomarino, −13,44 sull'adulto → 178,56.
+    voci: [
+      { id: "peter-pan" },
+      { id: "aqualand" },
+      { id: "tuk-tuk" },
+      { id: "submarine-safari" },
+      { id: "siam-park", optionIndex: 0 }
+    ],
+    desc: {
+      it: "Gli stessi tre giorni, con dentro altri due: l'ora nel sottomarino giallo, dove ogni posto ha il suo oblò e si scende fra i 30 e i 60 metri restando all'asciutto, e una giornata intera al Siam Park.",
+      en: "The same three days, with two more inside: the hour in the yellow submarine, where every seat has its own porthole and you go down between 30 and 60 metres without getting wet, and a full day at Siam Park.",
+      es: "Los mismos tres días, con otros dos dentro: la hora en el submarino amarillo, donde cada asiento tiene su ojo de buey y se baja entre 30 y 60 metros sin mojarse, y un día entero en el Siam Park."
+    }
+  },
+
+  {
+    id: "giorni-7",
+    title: {
+      it: "Sette giorni a Tenerife",
+      en: "Seven days in Tenerife",
+      es: "Siete días en Tenerife"
+    },
+    image: "kayak-snorkelling.jpg",
+    giorni: 7,
+    sconto: 15,
+    // I cinque di "giorni-5" piu' due. 234 + 35 + 51 = 320. Il flamenco e' uno
+    // spettacolo e non si sconta: 55 + 35 + 55 + 35 = 180 → −27,00 → 293,00.
+    voci: [
+      { id: "teide-national-park" },
+      { id: "luxury-cruiser", optionIndex: 0 },
+      { id: "kayak-snorkelling" },
+      { id: "parascending" },
+      { id: "santa-cruz-taganana" },
+      // optionIndex 0 = lezione di gruppo, due ore. Le private e i pacchetti da
+      // tre o cinque lezioni sono un'altra spesa e un altro impegno: qui il
+      // surf e' un giorno, non un corso.
+      { id: "surf-lesson", optionIndex: 0 },
+      // optionIndex 0 = Gold. Il Platinum costa dieci euro in piu' e cambia il
+      // posto a sedere: la serata e' la stessa.
+      { id: "flamenco-show", optionIndex: 0 }
+    ],
+    desc: {
+      it: "La settimana intera, una uscita al giorno: il Teide, la barca lungo le scogliere, il kayak, il volo col paracadute e la giornata nel nord-est, più due giorni che ci sono solo qui — la prima lezione di surf, due ore in gruppo con l'istruttore, e il flamenco dal vivo, con cante, chitarra e ballo.",
+      en: "The whole week, one outing a day: Teide, the boat along the cliffs, the kayak, the parachute flight and the day in the north-east, plus two days you only get here — a first surf lesson, two hours in a group with the instructor, and live flamenco, with singing, guitar and dance.",
+      es: "La semana entera, una salida al día: el Teide, el barco por los acantilados, el kayak, el vuelo en paracaídas y el día en el noreste, más dos días que solo están aquí — la primera clase de surf, dos horas en grupo con el monitor, y el flamenco en directo, con cante, guitarra y baile."
+    }
+  },
+
+  {
+    id: "giorni-7-famiglia",
+    title: {
+      it: "Sette giorni in famiglia",
+      en: "Seven days as a family",
+      es: "Siete días en familia"
+    },
+    image: "glass-bottom-boat.jpg",
+    giorni: 7,
+    sconto: 15,
+    famiglia: true,
+    // I cinque di "giorni-5-famiglia" piu' due. 192 + 10 + 58 = 260 a persona,
+    // bambini 123 + 5 + 45 = 173. I tre parchi sono biglietti: si scontano le
+    // due barche, il tuk tuk e il sottomarino, −25,50 sull'adulto → 234,50.
+    voci: [
+      { id: "peter-pan" },
+      { id: "aqualand" },
+      { id: "tuk-tuk" },
+      { id: "submarine-safari" },
+      { id: "siam-park", optionIndex: 0 },
+      { id: "monkey-park" },
+      { id: "glass-bottom-boat" }
+    ],
+    desc: {
+      it: "La settimana intera, una uscita al giorno: la goletta, l'Aqualand, il tuk tuk, il sottomarino e il Siam Park, più due giorni che ci sono solo qui — il Monkey Park, dove si entra nei recinti a dare da mangiare a lemuri, iguane e pappagalli, e le tre ore sulla barca col fondo di vetro, che finiscono con il bagno.",
+      en: "The whole week, one outing a day: the schooner, Aqualand, the tuk tuk, the submarine and Siam Park, plus two days you only get here — Monkey Park, where you walk into the enclosures to feed lemurs, iguanas and parrots, and three hours on the glass-bottom boat, which end with a swim.",
+      es: "La semana entera, una salida al día: la goleta, Aqualand, el tuk tuk, el submarino y el Siam Park, más dos días que solo están aquí — el Monkey Park, donde se entra en los recintos a dar de comer a lémures, iguanas y loros, y las tres horas en el barco con fondo de cristal, que terminan con un baño."
+    }
   }
 
 ];
@@ -582,6 +805,24 @@ function pacchettoVocePrezzoBambino(voce) {
 // I pacchetti per chi viaggia coi bambini. Le regole stanno in testa al file.
 function pacchettoDiFamiglia(pack) {
   return pack.famiglia === true;
+}
+
+// Quanti giorni dura un itinerario, 0 se e' un pacchetto a tema. Il numero e'
+// scritto nei dati e non ricavato da `voci.length` apposta: cosi' i due si
+// possono contraddire, e `controlla.js` se ne accorge. Ricavarlo avrebbe reso
+// impossibile l'errore "sette giorni con cinque escursioni" e anche
+// impossibile accorgersi di averlo pensato.
+function pacchettoGiorni(pack) {
+  return pack.giorni || 0;
+}
+
+// I giorni chiesti dall'indirizzo: 3, 5, 7, oppure 0 per "tutti". Qualunque
+// altra cosa (`?giorni=tutti`, ma anche una schifezza scritta a mano nella
+// barra dell'indirizzo) vale 0: in una vetrina, davanti a un parametro che non
+// si capisce, far vedere tutto e' meglio che far vedere niente.
+function pacchettiGiorniChiesti(valore) {
+  const n = parseInt(valore, 10);
+  return [3, 5, 7].indexOf(n) === -1 ? 0 : n;
 }
 
 // Su questa voce lo sconto si puo' fare? Una scheda che non si trova non si
@@ -737,7 +978,13 @@ function pacchettoWhatsappUrl(pack, req) {
     righe.push("• " + t("pack.unitAsk"));
   }
 
-  const testo = t("wa.introPack", { name: req.name, pack: tf(pack.title) }) +
+  // "il pacchetto «X»" su un itinerario da sette giorni fa arrivare in ufficio
+  // una richiesta che sembra di tre: il numero dei giorni e' la prima cosa da
+  // cui si parte per rispondere, e va scritto nella prima riga.
+  const giorni = pacchettoGiorni(pack);
+  const testo = (giorni
+      ? t("wa.introDays", { name: req.name, pack: tf(pack.title), n: giorni })
+      : t("wa.introPack", { name: req.name, pack: tf(pack.title) })) +
     "\n\n" + righe.join("\n");
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
 }
@@ -770,9 +1017,10 @@ function initPacchettoRichiesta() {
   function disegna() {
     if (!corrente) return;
     const conto = pacchettoTotale(corrente, 2, 0);
+    const giorni = pacchettoGiorni(corrente);
     dialog.innerHTML = `
       <div class="ticket-dialog-head">
-        <h2 id="packDialogTitle">${esc(t("pack.ask"))}</h2>
+        <h2 id="packDialogTitle">${esc(giorni ? t("days.ask") : t("pack.ask"))}</h2>
         <button class="iconbtn" type="button" data-pack-close
                 aria-label="${esc(t("common.close"))}">✕</button>
       </div>
@@ -785,7 +1033,7 @@ function initPacchettoRichiesta() {
         <label for="packDate">${esc(t("pack.fromDay"))}</label>
         <input id="packDate" name="date" type="date" required
                min="${minRequestDate()}" max="${maxRequestDate()}" />
-        <p class="hint">${esc(t("pack.fromDayHint"))}</p>
+        <p class="hint">${esc(giorni ? t("days.fromDayHint", { n: giorni }) : t("pack.fromDayHint"))}</p>
 
         <span class="request-people-label">${esc(t("req.people"))}</span>
         <div class="request-people">
@@ -932,14 +1180,19 @@ function pacchettoPrezzoHTML(conto) {
       <small>${esc(t("pack.perPerson"))}</small></span>`;
 }
 
-// Il riquadro della vetrina: foto, titolo e prezzo, e si tocca tutto.
+// Il riquadro della vetrina: foto, titolo e prezzo, e si tocca tutto. Sugli
+// itinerari sopra il titolo c'e' quanti giorni sono: nella vetrina "tutti" i
+// sei riquadri si somigliano, e "Tre giorni" e "Sette giorni" scritti nel
+// titolo si leggono solo dopo — il numero sopra si legge prima.
 function pacchettoTileHTML(pack) {
   const conto = pacchettoConto(pack);
+  const giorni = pacchettoGiorni(pack);
   return `
     <li class="pack-tile">
       <a class="pack-tile-link" href="${pacchettoHref(pack)}">
         <img src="./assets/${encodeURIComponent(pack.image)}" alt="" loading="lazy" />
         <span class="pack-tile-testo">
+          ${giorni ? `<span class="pack-tile-giorni">${esc(t("days.count", { n: giorni }))}</span>` : ""}
           <strong>${esc(tf(pack.title))}</strong>
           <span class="pack-tile-prezzo">${pacchettoPrezzoHTML(conto)}</span>
         </span>
@@ -950,30 +1203,36 @@ function pacchettoTileHTML(pack) {
     </li>`;
 }
 
+// Le due viste di questa pagina — "In famiglia" e "3/5/7 giorni" — si vestono
+// spostando le **chiavi** di i18n, non scrivendo il testo: cosi' il cambio
+// lingua continua a funzionare da solo, che e' il lavoro di `applyI18n`. Si fa
+// una volta al caricamento, non a ogni ridisegno.
+function pacchettiCambiaChiave(chiaveVecchia, chiaveNuova) {
+  const el = document.querySelector('[data-i18n="' + chiaveVecchia + '"]');
+  if (el) el.dataset.i18n = chiaveNuova;
+}
+
+// Titolo della finestra del browser e descrizione per chi condivide il link:
+// due attributi che stanno fuori dalla pagina e che e' facile dimenticare.
+function pacchettiCambiaTesta(chiaveDesc, chiaveTitolo) {
+  const meta = document.querySelector('[data-i18n-content="meta.packs.desc"]');
+  if (meta) meta.dataset.i18nContent = chiaveDesc;
+  if (document.body.dataset.i18nDoctitle === "meta.packs.title") {
+    document.body.dataset.i18nDoctitle = chiaveTitolo;
+  }
+}
+
 // La vista "In famiglia" e' la stessa pagina con un indirizzo diverso,
 // `pacchetti.html?famiglia=1`, non una pagina nuova: la vetrina, la finestra
 // della richiesta e il conto sono gli stessi, cambiano il titolo e quali
 // pacchetti si vedono. Una seconda pagina copiata sarebbe un secondo posto da
 // aggiornare a ogni modifica — e' gia' successo con la finestra della
 // richiesta, scritta due volte fra `escursioni.html` e `tour.html`.
-//
-// Il vestito si cambia spostando le **chiavi** di i18n, non scrivendo il testo:
-// cosi' il cambio lingua continua a funzionare da solo, che e' il lavoro di
-// `applyI18n`. Si fa una volta al caricamento, non a ogni ridisegno.
 function pacchettiVestiDaFamiglia() {
-  const cambia = (chiaveVecchia, chiaveNuova) => {
-    const el = document.querySelector('[data-i18n="' + chiaveVecchia + '"]');
-    if (el) el.dataset.i18n = chiaveNuova;
-  };
-  cambia("packs.eyebrow", "packs.familyEyebrow");
-  cambia("packs.title", "packs.familyTitle");
-  cambia("packs.intro", "packs.familyIntro");
-
-  const meta = document.querySelector('[data-i18n-content="meta.packs.desc"]');
-  if (meta) meta.dataset.i18nContent = "meta.family.desc";
-  if (document.body.dataset.i18nDoctitle === "meta.packs.title") {
-    document.body.dataset.i18nDoctitle = "meta.family.title";
-  }
+  pacchettiCambiaChiave("packs.eyebrow", "packs.familyEyebrow");
+  pacchettiCambiaChiave("packs.title", "packs.familyTitle");
+  pacchettiCambiaChiave("packs.intro", "packs.familyIntro");
+  pacchettiCambiaTesta("meta.family.desc", "meta.family.title");
 
   // I due modi di uscire di qui: le escursioni per bambini una per una, o
   // tutti i pacchetti. Nella pagina normale questo piede resta nascosto.
@@ -983,25 +1242,67 @@ function pacchettiVestiDaFamiglia() {
   if (typeof applyI18n === "function") applyI18n();
 }
 
+// La vista "3, 5 o 7 giorni", `pacchetti.html?giorni=...`, e' la terza volta
+// che questa pagina si riveste. In piu' rispetto a quella di famiglia ha la
+// riga delle pillole: e' un filtro fatto di **link**, non di bottoni, perche'
+// ogni durata deve avere un indirizzo suo da mandare a un cliente ("ti mando i
+// cinque giorni") e da ritrovare indietro col tasto del telefono.
+function pacchettiVestiDaGiorni(quanti) {
+  pacchettiCambiaChiave("packs.eyebrow", "days.eyebrow");
+  pacchettiCambiaChiave("packs.title", "days.title");
+  pacchettiCambiaChiave("packs.intro", "days.intro");
+  pacchettiCambiaTesta("meta.days.desc", "meta.days.title");
+
+  const nav = document.querySelector("[data-days-nav]");
+  if (nav) {
+    nav.hidden = false;
+    nav.querySelectorAll("[data-days-link]").forEach(a => {
+      const attivo = parseInt(a.dataset.daysLink, 10) === quanti;
+      a.classList.toggle("is-active", attivo);
+      // Per chi legge la pagina con lo screen reader: "is-active" e' un
+      // colore, e un colore da solo non si sente.
+      if (attivo) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+    });
+  }
+
+  const piede = document.querySelector("[data-days-foot]");
+  if (piede) piede.hidden = false;
+
+  if (typeof applyI18n === "function") applyI18n();
+}
+
 function initPacchettiGriglia() {
   const grid = document.querySelector("[data-pack-grid]");
   if (!grid || typeof ESPLORA_CATALOG === "undefined") return;
 
-  const soloFamiglia = new URLSearchParams(location.search).get("famiglia") === "1";
-  if (soloFamiglia) pacchettiVestiDaFamiglia();
+  const parametri = new URLSearchParams(location.search);
+  const soloFamiglia = parametri.get("famiglia") === "1";
+  // `?giorni` c'e' o non c'e': e' questo a decidere la vetrina. **Quali**
+  // giorni e' un'altra domanda, e la risposta puo' essere "tutti".
+  const vistaGiorni = parametri.has("giorni");
+  const quanti = vistaGiorni ? pacchettiGiorniChiesti(parametri.get("giorni")) : 0;
+
+  if (vistaGiorni) pacchettiVestiDaGiorni(quanti);
+  else if (soloFamiglia) pacchettiVestiDaFamiglia();
 
   function disegna() {
     // Un pacchetto con dentro una scheda che nel catalogo non c'e' piu' non si
     // mostra: meglio un pacchetto in meno che uno che promette tre escursioni
     // e ne ha due.
     //
-    // Nella pagina di tutti i pacchetti ci sono anche quelli di famiglia: sono
-    // pacchetti, e chi arriva dal riquadro "Pacchetti" deve poterli trovare.
-    // A togliere qualcosa e' solo `?famiglia=1`, che tiene solo quelli.
+    // Chi entra da dove:
+    //   ?giorni=...  solo gli itinerari, tutti o quelli di una durata
+    //   ?famiglia=1  solo i pacchetti di famiglia, che restano pacchetti
+    //   niente       tutti i pacchetti, compresi quelli di famiglia
+    // Gli itinerari a giorni stanno **solo** nella loro vetrina: il perche' e'
+    // in testa al file, sotto "GLI ITINERARI A GIORNI".
     grid.innerHTML = PACCHETTI
-      .filter(p => !soloFamiglia || pacchettoDiFamiglia(p))
+      .filter(p => vistaGiorni
+        ? (pacchettoGiorni(p) && (!quanti || pacchettoGiorni(p) === quanti))
+        : (!pacchettoGiorni(p) && (!soloFamiglia || pacchettoDiFamiglia(p))))
       .filter(p => p.voci.every(v => pacchettoVoceTour(v)))
-      .map(pacchettoTileHTML)
+      .map(p => pacchettoTileHTML(p))
       .join("");
   }
 
@@ -1090,9 +1391,19 @@ function initPacchetto() {
     document.title = tf(pack.title) + " · Isla";
     const conto = pacchettoConto(pack);
     const famiglia = pacchettoDiFamiglia(pack);
+    // Su un itinerario a giorni la stessa pagina cambia quattro parole, e sono
+    // quelle che dicono che cos'e': il numero sopra il titolo, il titolo
+    // dell'elenco ("Giorno per giorno" invece di "Cosa c'e' dentro" — li' il
+    // numero nel pallino **e'** il giorno), il bottone e la riga sotto. Il
+    // resto — prezzo, conto della famiglia, finestra della richiesta — e'
+    // identico, perche' identico e' quello che succede.
+    const giorni = pacchettoGiorni(pack);
     const righe = pack.voci
       .map((voce, i) => pacchettoVoceHTML(voce, i + 1, famiglia))
       .join("");
+    const indietro = giorni
+      ? "./pacchetti.html?giorni=" + giorni
+      : "./pacchetti.html";
 
     contenitore.innerHTML = `
       <article class="pack-detail">
@@ -1102,18 +1413,18 @@ function initPacchetto() {
             ? `<span class="pack-badge">${esc(t("pack.save", { n: eur(conto.risparmio) }))}</span>`
             : ""}
         </div>
-        <span class="eyebrow">${esc(t("pack.eyebrow"))}</span>
+        <span class="eyebrow">${esc(giorni ? t("days.detailEyebrow", { n: giorni }) : t("pack.eyebrow"))}</span>
         <h1 class="pack-detail-title">${esc(tf(pack.title))}</h1>
         <p class="pack-detail-lead">${esc(tf(pack.desc))}</p>
         <div class="pack-foot">${pacchettoPrezzoHTML(conto)}</div>
         ${conto && conto.misto ? `<p class="pack-note">${esc(t("pack.unitNote"))}</p>` : ""}
         ${pacchettoFamigliaHTML(pack)}
-        <span class="pack-inside">${esc(t("pack.inside"))}</span>
+        <span class="pack-inside">${esc(giorni ? t("days.inside") : t("pack.inside"))}</span>
         <ol class="pack-voci">${righe}</ol>
         <button class="btn btn-primary btn-block" type="button" data-pack-ask="${esc(pack.id)}"
-                aria-haspopup="dialog" aria-controls="packDialog">${esc(t("pack.ask"))}</button>
-        <p class="hint">${esc(t("pack.oneRequest"))}</p>
-        <a class="pack-back" href="./pacchetti.html">${esc(t("pack.seeAll"))}</a>
+                aria-haspopup="dialog" aria-controls="packDialog">${esc(giorni ? t("days.ask") : t("pack.ask"))}</button>
+        <p class="hint">${esc(giorni ? t("days.oneRequest", { n: giorni }) : t("pack.oneRequest"))}</p>
+        <a class="pack-back" href="${indietro}">${esc(giorni ? t("days.seeAll") : t("pack.seeAll"))}</a>
       </article>`;
   }
 

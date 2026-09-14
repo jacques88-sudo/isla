@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#fcfaf6" />
-  <meta name="description" data-i18n-content="meta.catalog.desc" content="Tutte le escursioni, i tour e gli show di Isla a Tenerife: mare, Teide, parchi, avventura e molto altro." />
-  <title>Tutte le escursioni · Isla</title>
+  <meta name="description" data-i18n-content="meta.pack.desc" content="Un pacchetto di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo." />
+  <title>Pacchetto · Isla</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./assets/icon-192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -66,7 +66,7 @@
     }
   </style>
 </head>
-<body data-i18n-doctitle="meta.catalog.title">
+<body>
   <div class="splash" id="splash" aria-hidden="true">
     <div class="splash-mark">
       <span class="splash-ring"></span>
@@ -77,12 +77,10 @@
 
   <a class="skip" href="#main" data-i18n="common.skip">Vai al contenuto</a>
 
-  <main id="main" class="catalog-page">
-    <!-- Stessa testata della home. La foto pero' non e' il video: e' quella
-         della categoria scelta, e la cambia initCatalog in escursioni.js
-         (attributo data-hero-photo). Senza filtro resta la foto dell'isola. -->
+  <main id="main" class="catalog-page pack-page">
+    <!-- Stessa testata della home, con la foto dell'isola. -->
     <div class="home-hero">
-      <img class="home-hero-media" data-hero-photo src="./assets/hero-tenerife.webp" alt="" />
+      <img class="home-hero-media" src="./assets/hero-tenerife.webp" alt="" />
       <a class="home-hero-mark" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
         <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
       </a>
@@ -102,25 +100,7 @@
       </div>
     </nav>
 
-    <div class="wrap catalog-head">
-      <span class="eyebrow" data-i18n="catalog.eyebrow">Esplora</span>
-      <h1 data-catalog-title>Tutte le escursioni</h1>
-      <p class="catalog-count" data-count></p>
-    </div>
-
-    <div class="wrap catalog-tools">
-      <label class="catalog-search">
-        <span class="visually-hidden" data-i18n="catalog.searchLabel">Cerca un'escursione</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input type="search" data-search data-i18n-placeholder="catalog.searchPlaceholder" placeholder="Cerca: barca, Teide, quad…" autocomplete="off" />
-      </label>
-      <nav class="chip-row" data-chips data-i18n-aria-label="catalog.filterAria" aria-label="Filtra per categoria"></nav>
-    </div>
-
-    <div class="wrap">
-      <ul class="tour-grid" data-grid></ul>
-      <div class="catalog-empty" data-empty hidden></div>
-    </div>
+    <div class="wrap" data-pack-detail></div>
   </main>
 
   <div class="menu-scrim" data-menu-scrim hidden></div>
@@ -147,96 +127,6 @@
     </nav>
     <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link data-i18n="menu.cta">Prenota ora</a>
   </aside>
-
-  <div class="ticket-scrim" data-request-scrim hidden></div>
-  <div class="ticket-dialog request-dialog" id="requestDialog" role="dialog" aria-modal="true" aria-labelledby="requestTitle" hidden>
-    <div class="ticket-dialog-head">
-      <h2 id="requestTitle" data-i18n="req.title">Richiedi disponibilità</h2>
-      <button class="iconbtn" type="button" data-request-close data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
-    </div>
-    <p class="request-activity" data-request-activity></p>
-    <p class="request-season" data-request-season hidden></p>
-    <form data-request-form>
-      <div data-request-name>
-        <label for="reqName" data-i18n="req.name">Il tuo nome</label>
-        <input id="reqName" name="name" type="text" autocomplete="name"
-               data-i18n-placeholder="req.namePlaceholder" placeholder="Nome e cognome" required />
-      </div>
-
-      <label for="reqDate" data-i18n="req.date">Quando vorresti andare</label>
-      <input id="reqDate" name="date" type="date" required />
-      <p class="request-day-error" data-request-day-error hidden></p>
-
-      <label for="reqHotel"><span data-i18n="req.hotel">Dove alloggi</span> <span class="request-optional" data-i18n="req.hotelWhy">(utile per il pick-up)</span></label>
-      <div class="hotel-field" data-hotel-field>
-        <input id="reqHotel" name="hotel" type="text" autocomplete="off" role="combobox"
-               aria-expanded="false" aria-autocomplete="list" aria-controls="reqHotelList"
-               data-i18n-placeholder="req.hotelPlaceholder" placeholder="Scrivi le prime lettere dell'hotel" />
-        <ul class="hotel-sugg" id="reqHotelList" role="listbox" hidden></ul>
-      </div>
-      <p class="hint" data-hotel-hint data-i18n="req.hotelHint">Serve a dirti dove passiamo a prenderti. Se non trovi il tuo, scrivilo nelle note.</p>
-
-      <label for="reqTime" data-request-time-label data-i18n="req.time">A che ora</label>
-      <select id="reqTime" name="time" data-request-time></select>
-      <p class="request-ora-fissa" data-request-time-fixed hidden></p>
-      <p class="hotel-punto" data-hotel-punto hidden><span data-hotel-punto-et>Punto di raccolta</span> <strong data-hotel-punto-val></strong></p>
-
-      <label for="reqLang" data-request-lang-label hidden data-i18n="req.lang">In che lingua</label>
-      <select id="reqLang" name="lang" data-request-lang hidden></select>
-
-      <span class="request-people-label" data-request-people-label data-i18n="req.people">Quante persone</span>
-      <div class="request-people" data-request-people>
-        <label for="reqAdults"><span data-i18n="req.adults">Adulti</span>
-          <input id="reqAdults" name="adults" type="number" inputmode="numeric" min="1" max="30" value="2" required />
-        </label>
-        <label for="reqKids"><span data-i18n="req.kids">Bambini</span>
-          <input id="reqKids" name="kids" type="number" inputmode="numeric" min="0" max="30" value="0" />
-        </label>
-        <label for="reqBabies" data-request-babies hidden><span data-i18n="req.babies">Neonati</span>
-          <input id="reqBabies" name="babies" type="number" inputmode="numeric" min="0" max="30" value="0" />
-        </label>
-      </div>
-
-      <span class="request-people-label" data-request-units-label hidden>Quante moto d'acqua</span>
-      <div class="request-people" data-request-units hidden></div>
-      <p class="request-day-error" data-request-units-error hidden></p>
-
-      <p class="request-total" data-request-total hidden></p>
-
-      <label for="reqOption" data-request-option-label hidden>Opzione</label>
-      <select id="reqOption" name="option" data-request-option hidden></select>
-
-      <span class="request-people-label" data-request-menu-label hidden data-i18n="req.menu">Esigenze sul menu</span>
-      <div class="request-people" data-request-menu-rows hidden></div>
-      <p class="request-day-error" data-request-menu-error hidden></p>
-      <p class="hint" data-request-menu-hint hidden data-i18n="req.menuHint">Allergie o intolleranze: scrivile nelle note qui sotto, così la cucina le sa in anticipo.</p>
-
-      <label class="request-check" data-request-transfer hidden>
-        <input id="reqTransfer" name="transfer" type="checkbox" />
-        <span>
-          <span data-i18n="req.transfer" data-request-transfer-label>Vuoi il transfer?</span>
-          <small data-request-transfer-note></small>
-        </span>
-      </label>
-
-      <label class="request-check" data-request-transfer-siam hidden>
-        <input id="reqTransferSiam" name="transferSiam" type="checkbox" />
-        <span>
-          <span data-i18n="req.transferSiam" data-request-transfer-siam-label>Vuoi il transfer per il Siam Park?</span>
-          <small data-request-transfer-siam-note></small>
-        </span>
-      </label>
-
-      <label for="reqNote"><span data-i18n="req.note">Note</span> <span class="request-optional" data-i18n="req.optional">(facoltativo)</span></label>
-      <input id="reqNote" name="note" type="text" autocomplete="off"
-             data-i18n-placeholder="req.notePlaceholder" placeholder="Richieste particolari…" />
-
-      <button class="btn btn-primary btn-block request-submit" type="submit" data-i18n="req.submit">Continua su WhatsApp</button>
-
-      <p class="hint" data-i18n-html="req.hint">Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.</p>
-      <p class="hint request-privacy" data-i18n="req.privacy">Quello che scrivi qui serve solo a risponderti su WhatsApp: non viene salvato dal sito.</p>
-    </form>
-  </div>
 
   <div class="ticket-scrim" data-ticket-scrim hidden></div>
   <div class="ticket-dialog" id="ticketDialog" role="dialog" aria-modal="true" aria-labelledby="ticketDialogTitle" hidden>
@@ -271,8 +161,8 @@
 
   <script src="./i18n.js"></script>
   <script src="./esplora-catalog.js"></script>
-  <script src="./hotel.js"></script>
   <script src="./escursioni.js"></script>
+  <script src="./pacchetti.js"></script>
   <script src="./lista.js"></script>
   <script src="./assistente.js"></script>
   <script src="./app.js"></script>

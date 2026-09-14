@@ -11130,3 +11130,89 @@ e in un pacchetto) non è un'istruzione completa, e va chiesto quale dei due —
 scheda di catalogo si vede su tutto il sito, toglierla da un pacchetto si vede in un punto
 solo. `CACHE_NAME` resta `isla-v316`: la scheda nascosta non è mai uscita da questo branch,
 nessuno l'ha vista sparire dal sito vero.
+
+## 14 settembre 2026 — Il pacchetto si prende intero, e la vetrina è un bento (v317)
+
+«Vorrei che si potesse scegliere solo il pacchetto e non le escursioni singolarmente, e si
+potessero visualizzare stile bento.» Due cose insieme, e la prima ribalta il flusso di
+qualche ora fa (v314): le tre escursioni **non** si aggiungono più una alla volta alla
+lista, il pacchetto si chiede tutto con una richiesta sola.
+
+### Due pagine invece di una
+
+- **`pacchetti.html`** è la vetrina: otto riquadri con la foto, stile bento come in home —
+  il primo grande, gli altri quadrati.
+- **`pacchetto.html?id=…`** è il pacchetto aperto. Pagina sua e non una finestra, per una
+  ragione sola: **ha un indirizzo da mandare**. L'ufficio su WhatsApp scrive "ti mando il
+  pacchetto Adrenalina" e il cliente apre quello, non la pagina di tutti e otto.
+
+### La richiesta
+
+Un pulsante solo, "Richiedi il pacchetto", e una finestra corta: nome, **da che giorno**,
+quanti adulti e bambini, hotel e note. Poi WhatsApp.
+
+**Non si chiede l'orario**, e non è una dimenticanza: tre escursioni in tre giorni diversi
+non hanno un'ora sola da scegliere, e chiederla darebbe l'idea di una prenotazione che
+questo sito non fa. Per lo stesso motivo la data è "da che giorno": il primo dei tre,
+indicativo, e gli altri due li mette d'accordo l'ufficio rispondendo. Nel messaggio la riga
+è **"Dal giorno"**, non "Data", o all'ufficio arriva come una data fissa.
+
+**Il totale si fa solo dove tutti i prezzi sono a persona**: adulti × la loro somma +
+bambini × la loro, meno lo sconto sulla parte scontabile. Sui quattro pacchetti col buggy o
+col jet ski **no**, e invece di tacere si dice perché: "il totale non si può ancora fare,
+qui c'è un mezzo che si paga a buggy o a moto d'acqua". È la stessa regola della finestra
+della richiesta — meglio niente che un numero falso — ma detta invece che subita. Il totale
+si rifà a ogni numero battuto: 3 adulti e 1 bambino sul pacchetto classico fanno €473,60
+con €34,40 di sconto, e il cliente lo vede prima di mandare.
+
+Anche qui **niente terza copia della finestra della richiesta**: questa è costruita in
+JavaScript dentro `pacchetti.js`, come fa `lista.js` con la sua. Copiare quella delle
+escursioni voleva dire portarsi dietro orario, varianti, mezzi da contare, transfer e
+lingue — dieci campi da nascondere.
+
+### Le tre escursioni dentro non sono link
+
+Portavano alla loro scheda; adesso ognuna si porta **due righe di descrizione**, prese dal
+catalogo (dalla variante dove il pacchetto ne ha scelta una, che è più precisa: "Tramonto
+sul Teide" ha la sua). Chiesto così: dal pacchetto non si esce per andare a prendere una
+escursione da sola, ma cosa sia il Luxury Cruiser si deve poter capire lì.
+
+### Cosa è stato tolto
+
+Il flusso di v314 era: le tre si aggiungono una alla volta dalla pagina di dettaglio,
+ognuna col campo `pack`, e lo sconto scatta da solo quando ci sono tutte. Se il pacchetto
+si prende intero **non c'è più niente da taggare**, quindi è tutto codice morto e se ne va:
+
+- `pack` nella voce della lista (`escursioni.js`) e lo sconto in `lista.js` — quel file
+  torna **identico** a com'era su `main`;
+- la riga "Fa parte del pacchetto X" e `tour.html?…&option=N` in `tour.js`: senza un
+  pacchetto che linka la pagina di dettaglio, quel parametro non lo passa più nessuno;
+- `pacchettoVociPresenti()`, `pacchettoCompleto()`, `pacchettiScontoLista()` e le chiavi
+  `pack.again`, `pack.howto`, `pack.progress`, `pack.progressFull`, `pack.partOf`,
+  `pack.backToPacks`, `lista.discount`;
+- `pacchetti.js` non è più caricato da `index.html`, `escursioni.html` e `tour.html`:
+  serviva solo allo sconto nella lista, e sono 29 KB che quelle pagine non aprono più.
+
+Restano **tutte le regole sui prezzi**, che non c'entravano col flusso: il prezzo letto
+dalla variante e non da `priceAdult: 0`, il numero di una persona sola sui pacchetti misti,
+i parchi e gli spettacoli che non si scontano, il barrato solo dove c'è qualcosa da
+togliere.
+
+### Due dettagli del bento, visti solo nel browser
+
+- **Sul telefono i riquadri piccoli sono larghi 169px**: col prezzo barrato davanti,
+  "a persona" finiva su una riga sua e il blocco di testo diventava alto il doppio. Il
+  barrato sparisce **solo lì** (`max-width: 639px`, escluso il primo riquadro che è largo):
+  sul grande, da tablet in su e nella pagina del pacchetto ci sta e resta, ed è lì che il
+  cliente guarda quanto risparmia. Il bollino "Risparmi €X" lo dice comunque.
+- **L'ultimo riquadro restava spaiato** sulla riga da due. Adesso si prende tutta la
+  larghezza, come il riquadro del noleggio in home. Il primo è già largo, quindi "spaiato"
+  vuol dire che i riquadri sono in numero pari: `:nth-child(even):last-child`.
+
+**Provato nel browser vero** a 390px e 1280px, nelle tre lingue: il giro dalla home al
+riquadro bento alla griglia al pacchetto, la finestra col totale che cambia mentre si
+battono i numeri, il messaggio WhatsApp, il pacchetto misto che dice perché il totale non
+c'è, un `id` inventato che mostra "Pacchetto non trovato", e le pagine di prima (catalogo
+66 schede, scheda del jet ski sulla sua prima variante, nessuna riga del pacchetto).
+Nessuna chiave non tradotta, nessun errore in console, nessuno scorrimento orizzontale.
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v317`.

@@ -3,7 +3,8 @@
 // A COSA SERVE
 //   Un pacchetto e' un gruppo di escursioni del catalogo vendute insieme con
 //   uno sconto. Sono quelli che l'ufficio ha gia' deciso: il cliente li trova
-//   pronti nella pagina "Pacchetti" del riquadro bento.
+//   pronti nella pagina "Pacchetti", e li chiede **interi** — un pacchetto non
+//   si smonta, vedi "IL PACCHETTO SI CHIEDE INTERO" piu' sotto.
 //
 // COSA SI SPINGE
 //   Questa lista e' costruita attorno a quattro prodotti da spingere: Luxury
@@ -25,10 +26,12 @@
 //                 ma non se ne accorge nessuno: lo controlla `controlla.js`.
 //   optionIndex → facoltativo: quale variante, contando da 0 nell'ordine in
 //                 cui stanno in `options.choices`. Serve quando il pacchetto
-//                 vende una variante precisa e non lascia scegliere (il jet
-//                 ski da un'ora, lo stargazing in gruppo piccolo). Senza,
-//                 sceglie il cliente nella finestra della richiesta. E' lo
-//                 stesso campo che le voci della lista gia' salvano.
+//                 vende una variante precisa (il jet ski da un'ora, lo
+//                 stargazing in gruppo piccolo): quella finisce scritta fra
+//                 parentesi nel messaggio all'ufficio. Senza, la scelta resta
+//                 aperta e si concorda rispondendo — e' il caso del buggy,
+//                 dove i quattro percorsi costano uguale e scegliere prima non
+//                 serve a nessuno.
 //
 //   Gli indici che servono qui, presi dal catalogo:
 //     buggy-volcano-4h    0 Offroad 3h · 1 Tramonto sul Teide · 2 Completo 4h
@@ -402,209 +405,418 @@ function pacchettoConto(pack) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// IL PACCHETTO DENTRO LA LISTA
+// IL PACCHETTO SI CHIEDE INTERO
 //
-// Le escursioni di un pacchetto si aggiungono alla lista **una alla volta**,
-// dalla loro pagina di dettaglio: ognuna ha il suo giorno e le sue persone, e
-// la lista non sa modificare una voce gia' dentro. Quella voce si porta pero'
-// dietro il campo `pack` con l'id del pacchetto, e quando nella lista ci sono
-// **tutte** le voci di un pacchetto lo sconto si applica da solo.
+// Un pacchetto non si smonta: il cliente lo chiede tutto con una richiesta
+// sola, e le tre escursioni non si aggiungono una alla volta alla lista. Sono
+// **dentro** il pacchetto, e i tre giorni li mette d'accordo l'ufficio quando
+// risponde — che e' poi quello che succede gia' al telefono.
 //
-// "Tutte" vuol dire una per voce, con la stessa variante che ha deciso il
-// pacchetto. Se il cliente sulla pagina di dettaglio cambia variante (prende
-// lo stargazing in gruppo grande invece che piccolo) quella voce non conta
-// piu': e' un altro prezzo, e lo sconto di questo pacchetto non c'entra.
+// Per questo qui non si chiede un orario: tre escursioni in tre giorni diversi
+// non hanno un'ora sola da scegliere, e chiederla darebbe l'idea di una
+// prenotazione che questo sito non fa. Si chiede il minimo per poter
+// rispondere: da che giorno, in quanti, dove alloggia e il nome.
 // ─────────────────────────────────────────────────────────────────────────
 
-// Voce per voce: quelle del pacchetto che sono gia' nella lista.
-// Una voce della lista vale per una voce sola del pacchetto (`presi`): la
-// stessa escursione aggiunta due volte non fa un pacchetto completo.
-function pacchettoVociPresenti(pack, voci) {
-  const inLista = voci || (typeof listaLeggi === "function" ? listaLeggi() : []);
-  const presi = [];
+// Il totale di un pacchetto per una comitiva, o `null` quando non si puo' fare.
+// I tre casi in cui torna null sono tutti lo stesso caso — meglio niente che un
+// numero falso, la regola della finestra della richiesta:
+//   - una voce si paga a mezzo (buggy, jet ski): finche' non si sa quanti
+//     mezzi servono, un totale a persona non esiste
+//   - ci sono bambini e una delle escursioni il prezzo dei bambini non ce l'ha
+//   - una voce non ha un prezzo leggibile
+function pacchettoTotale(pack, adulti, bambini) {
+  const n = Math.max(1, parseInt(adulti, 10) || 0);
+  const k = Math.max(0, parseInt(bambini, 10) || 0);
 
+  let unAdulto = 0;
+  let unBambino = 0;
+  let scontabileAdulto = 0;
+  let scontabileBambino = 0;
+  let possibile = true;
+
+  pack.voci.forEach(voce => {
+    const tour = pacchettoVoceTour(voce);
+    const prezzo = pacchettoVocePrezzo(voce);
+    if (!tour || !prezzo || prezzo.tipo === "mezzo") { possibile = false; return; }
+
+    const variante = pacchettoVoceVariante(voce, tour);
+    const bambino = (variante && variante.priceChild !== undefined)
+      ? variante.priceChild
+      : tour.priceChild;
+    if (k > 0 && bambino === undefined) { possibile = false; return; }
+
+    unAdulto += prezzo.prezzo;
+    unBambino += bambino || 0;
+    if (pacchettoVoceScontabile(voce)) {
+      scontabileAdulto += prezzo.prezzo;
+      scontabileBambino += bambino || 0;
+    }
+  });
+  if (!possibile) return null;
+
+  const pieno = unAdulto * n + unBambino * k;
+  const base = scontabileAdulto * n + scontabileBambino * k;
+  const risparmio = pacchettoArrotonda(base * pacchettoSconto(pack) / 100);
+  return {
+    pieno: pacchettoArrotonda(pieno),
+    risparmio: risparmio,
+    totale: pacchettoArrotonda(pieno - risparmio)
+  };
+}
+
+// "Teide National Park + Luxury Cruiser Experience (3 ore, in condivisione) +
+// Siam Park": cosa c'e' dentro, per il messaggio. La variante fra parentesi
+// solo dove il pacchetto l'ha decisa, perche' li' non e' una scelta del
+// cliente ma parte di quello che sta chiedendo.
+function pacchettoVociTesto(pack) {
   return pack.voci.map(voce => {
-    const i = inLista.findIndex((v, idx) =>
-      presi.indexOf(idx) < 0 &&
-      v.pack === pack.id &&
-      v.id === voce.id &&
-      (voce.optionIndex === undefined || v.optionIndex === voce.optionIndex));
-    if (i < 0) return false;
-    presi.push(i);
-    return true;
-  });
+    const tour = pacchettoVoceTour(voce);
+    if (!tour) return "";
+    const variante = pacchettoVoceVariante(voce, tour);
+    return tf(tour.title) + (variante ? " (" + tf(variante.label) + ")" : "");
+  }).filter(Boolean).join(" + ");
 }
 
-// Quante ce ne sono: serve alla pagina per dire "2 di 3".
-function pacchettoVociInLista(pack, voci) {
-  return pacchettoVociPresenti(pack, voci).filter(Boolean).length;
+function pacchettoWhatsappUrl(pack, req) {
+  const righe = [
+    "• " + t("pack.inside") + ": " + pacchettoVociTesto(pack),
+    // "Dal giorno" e non "Data": e' il primo dei tre, non una data fissa, e
+    // l'ufficio deve saperlo leggendo il messaggio.
+    "• " + t("wa.fromDay") + ": " + formatDate(req.date),
+    "• " + t("wa.people") + ": " + peopleText(req.adults, req.kids, 0)
+  ];
+  if (req.hotel) righe.push("• " + t("wa.hotel") + ": " + req.hotel);
+  if (req.note) righe.push("• " + t("wa.notes") + ": " + req.note);
+
+  const conto = pacchettoTotale(pack, req.adults, req.kids);
+  if (conto) {
+    righe.push("• " + t("wa.total") + ": €" + eur(conto.totale) +
+      (conto.risparmio > 0 ? " (" + t("pack.save", { n: eur(conto.risparmio) }) + ")" : ""));
+  } else {
+    // Niente totale: invece di tacere si dice **perche'**, o all'ufficio
+    // arriva una richiesta che sembra dimenticarsi il prezzo.
+    righe.push("• " + t("pack.unitAsk"));
+  }
+
+  const testo = t("wa.introPack", { name: req.name, pack: tf(pack.title) }) +
+    "\n\n" + righe.join("\n");
+  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
 }
 
-function pacchettoCompleto(pack, voci) {
-  return pacchettoVociInLista(pack, voci) === pack.voci.length;
-}
+// La finestra della richiesta del pacchetto. Costruita qui in JavaScript e non
+// nell'HTML per la stessa ragione della lista: quella delle escursioni e' gia'
+// scritta due volte (escursioni.html e tour.html) e tenerle allineate e' una
+// fatica che si paga a ogni modifica. Questa e' anche piu' corta — niente
+// orario, niente varianti, niente mezzi da contare — quindi copiare l'altra
+// sarebbe stato portarsi dietro dieci campi da nascondere.
+function initPacchettoRichiesta() {
+  if (typeof WHATSAPP_NUMBER === "undefined" || !WHATSAPP_NUMBER) return;
 
-// Lo sconto in euro che i pacchetti completi tolgono a una lista, e i loro
-// nomi. Lo chiama `lista.js`: la somma della lista e' la somma dei prezzi di
-// adesso, e questo e' l'unico punto in cui il pacchetto entra nel conto.
-//
-// Lo sconto si calcola sul prezzo **vero** delle voci (quello della richiesta,
-// con le persone e i mezzi che ha scelto il cliente), non sul numero della
-// vetrina: quello e' di una persona sola e qui ci sono famiglie intere.
-function pacchettiScontoLista(voci, contoDiVoce) {
-  let sconto = 0;
-  const nomi = [];
+  const scrim = document.createElement("div");
+  scrim.className = "ticket-scrim";
+  scrim.hidden = true;
+  document.body.appendChild(scrim);
 
-  PACCHETTI.forEach(pack => {
-    if (!pacchettoCompleto(pack, voci)) return;
-    let somma = 0;
-    voci.forEach(v => {
-      if (v.pack !== pack.id) return;
-      // I biglietti dei parchi e degli spettacoli stanno nel pacchetto ma non
-      // nella somma da scontare: prezzo fisso, non c'e' margine da tagliare.
-      if (!pacchettoVoceScontabile(v)) return;
-      const conto = contoDiVoce(v);
-      if (conto) somma += conto.totale;
+  const dialog = document.createElement("div");
+  dialog.className = "ticket-dialog request-dialog";
+  dialog.id = "packDialog";
+  dialog.setAttribute("role", "dialog");
+  dialog.setAttribute("aria-modal", "true");
+  dialog.setAttribute("aria-labelledby", "packDialogTitle");
+  dialog.hidden = true;
+  document.body.appendChild(dialog);
+
+  let corrente = null;
+
+  function disegna() {
+    if (!corrente) return;
+    const conto = pacchettoTotale(corrente, 2, 0);
+    dialog.innerHTML = `
+      <div class="ticket-dialog-head">
+        <h2 id="packDialogTitle">${esc(t("pack.ask"))}</h2>
+        <button class="iconbtn" type="button" data-pack-close
+                aria-label="${esc(t("common.close"))}">✕</button>
+      </div>
+      <p class="request-activity">${esc(tf(corrente.title))}</p>
+      <form data-pack-form>
+        <label for="packName">${esc(t("req.name"))}</label>
+        <input id="packName" name="name" type="text" autocomplete="name"
+               placeholder="${esc(t("req.namePlaceholder"))}" required />
+
+        <label for="packDate">${esc(t("pack.fromDay"))}</label>
+        <input id="packDate" name="date" type="date" required
+               min="${minRequestDate()}" max="${maxRequestDate()}" />
+        <p class="hint">${esc(t("pack.fromDayHint"))}</p>
+
+        <span class="request-people-label">${esc(t("req.people"))}</span>
+        <div class="request-people">
+          <label for="packAdults"><span>${esc(t("req.adults"))}</span>
+            <input id="packAdults" name="adults" type="number" inputmode="numeric"
+                   min="1" max="30" value="2" required />
+          </label>
+          <label for="packKids"><span>${esc(t("req.kids"))}</span>
+            <input id="packKids" name="kids" type="number" inputmode="numeric"
+                   min="0" max="30" value="0" />
+          </label>
+        </div>
+
+        <p class="request-total" data-pack-total></p>
+
+        <label for="packHotel"><span>${esc(t("req.hotel"))}</span>
+          <span class="request-optional">${esc(t("req.hotelWhy"))}</span></label>
+        <input id="packHotel" name="hotel" type="text" autocomplete="off"
+               placeholder="${esc(t("pack.hotelPlaceholder"))}" />
+
+        <label for="packNote"><span>${esc(t("wa.notes"))}</span>
+          <span class="request-optional">${esc(t("req.optional"))}</span></label>
+        <input id="packNote" name="note" type="text" autocomplete="off"
+               placeholder="${esc(t("req.notePlaceholder"))}" />
+
+        <button class="btn btn-primary btn-block request-submit" type="submit">
+          ${esc(t("req.submit"))}</button>
+        <p class="hint">${esc(t("pack.askHint"))}</p>
+        <p class="hint request-privacy">${esc(t("req.privacy"))}</p>
+      </form>`;
+    aggiornaTotale();
+  }
+
+  // Il totale si rifa' a ogni numero battuto: il cliente mette 4 adulti e vede
+  // il conto cambiare li', senza mandare niente.
+  function aggiornaTotale() {
+    const el = dialog.querySelector("[data-pack-total]");
+    if (!el || !corrente) return;
+    const adulti = dialog.querySelector("#packAdults").value;
+    const bambini = dialog.querySelector("#packKids").value;
+    const conto = pacchettoTotale(corrente, adulti, bambini);
+    if (!conto) {
+      el.hidden = false;
+      el.textContent = t("pack.unitAsk");
+      return;
+    }
+    el.hidden = false;
+    el.textContent = t("wa.total") + ": €" + eur(conto.totale) +
+      (conto.risparmio > 0 ? " · " + t("pack.save", { n: eur(conto.risparmio) }) : "");
+  }
+
+  function apri(pack) {
+    corrente = pack;
+    disegna();
+    dialog.hidden = false;
+    scrim.hidden = false;
+    requestAnimationFrame(() => {
+      dialog.classList.add("is-open");
+      scrim.classList.add("is-visible");
     });
-    if (!somma) return;
-    sconto += pacchettoArrotonda(somma * pacchettoSconto(pack) / 100);
-    nomi.push(tf(pack.title));
+    document.body.classList.add("menu-open");
+  }
+
+  function chiudi() {
+    dialog.classList.remove("is-open");
+    scrim.classList.remove("is-visible");
+    document.body.classList.remove("menu-open");
+    setTimeout(() => {
+      dialog.hidden = true;
+      scrim.hidden = true;
+    }, 300);
+  }
+
+  document.addEventListener("click", e => {
+    const btn = e.target.closest("[data-pack-ask]");
+    if (!btn) return;
+    const pack = pacchettoDi(btn.dataset.packAsk);
+    if (pack) apri(pack);
   });
 
-  return { sconto: pacchettoArrotonda(sconto), nomi: nomi };
+  dialog.addEventListener("click", e => {
+    if (e.target.closest("[data-pack-close]")) chiudi();
+  });
+  scrim.addEventListener("click", chiudi);
+  dialog.addEventListener("input", aggiornaTotale);
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && dialog.classList.contains("is-open")) chiudi();
+  });
+  // Cambio lingua a finestra aperta: si riscrive com'e', coi campi gia'
+  // riempiti — il nome scritto a meta' non si perde.
+  document.addEventListener("islalang", () => {
+    if (!dialog.classList.contains("is-open")) return;
+    const vecchi = ["packName", "packDate", "packAdults", "packKids", "packHotel", "packNote"]
+      .map(id => [id, (dialog.querySelector("#" + id) || {}).value]);
+    disegna();
+    vecchi.forEach(([id, val]) => {
+      const campo = dialog.querySelector("#" + id);
+      if (campo && val) campo.value = val;
+    });
+    aggiornaTotale();
+  });
+
+  dialog.addEventListener("submit", e => {
+    e.preventDefault();
+    if (!corrente) return;
+    const req = {
+      name: dialog.querySelector("#packName").value.trim(),
+      date: dialog.querySelector("#packDate").value,
+      adults: parseInt(dialog.querySelector("#packAdults").value, 10) || 1,
+      kids: parseInt(dialog.querySelector("#packKids").value, 10) || 0,
+      hotel: dialog.querySelector("#packHotel").value.trim(),
+      note: dialog.querySelector("#packNote").value.trim()
+    };
+    if (!req.name || !req.date) return;
+    chiudi();
+    window.location.href = pacchettoWhatsappUrl(corrente, req);
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// LA PAGINA
+// LE DUE PAGINE
+//
+// `pacchetti.html` e' la vetrina: i riquadri, stile bento come in home.
+// `pacchetto.html?id=...` e' il pacchetto aperto, con un indirizzo suo da
+// mandare a un cliente ("ti mando il pacchetto Adrenalina") invece della
+// pagina di tutti e otto.
 // ─────────────────────────────────────────────────────────────────────────
 
-// La riga di una escursione dentro la scheda del pacchetto. Non apre la
-// richiesta: porta alla pagina di dettaglio, dove il cliente vede che cos'e'
-// prima di metterla nella lista. L'indirizzo si porta dietro la variante
-// decisa dal pacchetto (`option`) e l'id del pacchetto (`pack`), che tour.js
-// rimette nella voce della lista.
-//
-// Il link e' **tutta la riga**, non un pulsante in fondo: su un telefono da
-// 390px un bottone con scritto "Guarda e aggiungi" si prendeva meta' riga e
-// spingeva "Luxury Cruiser Experience" su tre righe. Cosi' il posto dove
-// toccare e' piu' grande e il titolo respira.
-function pacchettoVoceHTML(pack, voce, n, giaDentro) {
+function pacchettoHref(pack) {
+  return "./pacchetto.html?id=" + encodeURIComponent(pack.id);
+}
+
+// Il prezzo come si scrive in vetrina: barrato + scontato dove c'e' uno
+// sconto, il numero solo dove non c'e' niente da togliere (barrare un numero e
+// riscrivere lo stesso numero e' una finta offerta).
+function pacchettoPrezzoHTML(conto) {
+  if (!conto) {
+    return `<span class="pack-price"><strong>${esc(t("pack.noPrice"))}</strong></span>`;
+  }
+  const barrato = conto.risparmio > 0
+    ? `<s class="price-before">€${esc(eur(conto.pieno))}</s> `
+    : "";
+  return `<span class="pack-price">${barrato}<strong>€${esc(eur(conto.scontato))}</strong>
+      <small>${esc(t("pack.perPerson"))}</small></span>`;
+}
+
+// Il riquadro della vetrina: foto, titolo e prezzo, e si tocca tutto.
+function pacchettoTileHTML(pack) {
+  const conto = pacchettoConto(pack);
+  return `
+    <li class="pack-tile">
+      <a class="pack-tile-link" href="${pacchettoHref(pack)}">
+        <img src="./assets/${encodeURIComponent(pack.image)}" alt="" loading="lazy" />
+        <span class="pack-tile-testo">
+          <strong>${esc(tf(pack.title))}</strong>
+          <span class="pack-tile-prezzo">${pacchettoPrezzoHTML(conto)}</span>
+        </span>
+        ${conto && conto.risparmio > 0
+          ? `<span class="pack-badge">${esc(t("pack.save", { n: eur(conto.risparmio) }))}</span>`
+          : ""}
+      </a>
+    </li>`;
+}
+
+function initPacchettiGriglia() {
+  const grid = document.querySelector("[data-pack-grid]");
+  if (!grid || typeof ESPLORA_CATALOG === "undefined") return;
+
+  function disegna() {
+    // Un pacchetto con dentro una scheda che nel catalogo non c'e' piu' non si
+    // mostra: meglio un pacchetto in meno che uno che promette tre escursioni
+    // e ne ha due.
+    grid.innerHTML = PACCHETTI
+      .filter(p => p.voci.every(v => pacchettoVoceTour(v)))
+      .map(pacchettoTileHTML)
+      .join("");
+  }
+
+  disegna();
+  document.addEventListener("islalang", disegna);
+}
+
+// La riga di un'escursione dentro il pacchetto: titolo, due righe di cosa e',
+// e il prezzo. **Non e' un link**: dal pacchetto non si esce per andare a
+// prendere una escursione da sola — si chiede il pacchetto intero. La
+// descrizione serve proprio a questo, a far sapere che cos'e' senza doverla
+// aprire; dove il pacchetto ha scelto una variante si usa la descrizione della
+// variante, che e' piu' precisa di quella della scheda.
+function pacchettoVoceHTML(voce, n) {
   const tour = pacchettoVoceTour(voce);
   if (!tour) return "";
 
   const variante = pacchettoVoceVariante(voce, tour);
   const prezzo = pacchettoVocePrezzo(voce);
+  const desc = (variante && variante.desc) ? tf(variante.desc) : tf(tour.desc);
+
   const dettagli = [];
   if (variante) dettagli.push(tf(variante.label));
   if (prezzo) dettagli.push("€" + eur(prezzo.prezzo) + priceUnitSuffix(tour));
-  // Quale delle tre non si sconta si dice sulla riga, non solo nella nota
-  // sotto il prezzo: cosi' il cliente non deve indovinare quale sia.
   if (!pacchettoVoceScontabile(voce)) dettagli.push(t("pack.fixedShort"));
-  if (giaDentro) dettagli.push(t("pack.again"));
-
-  let href = "./tour.html?id=" + encodeURIComponent(tour.id) +
-    "&pack=" + encodeURIComponent(pack.id);
-  if (voce.optionIndex !== undefined) href += "&option=" + voce.optionIndex;
 
   return `
-    <li class="pack-voce${giaDentro ? " is-in" : ""}">
-      <a class="pack-voce-link" href="${href}">
-        <span class="pack-voce-n" aria-hidden="true">${n}</span>
-        <span class="pack-voce-testo">
-          <strong>${esc(tf(tour.title))}</strong>
-          <span>${esc(dettagli.join(" · "))}</span>
-        </span>
-        <svg class="pack-voce-freccia" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="m9 6 6 6-6 6"/>
-        </svg>
-      </a>
+    <li class="pack-voce">
+      <span class="pack-voce-n" aria-hidden="true">${n}</span>
+      <div class="pack-voce-testo">
+        <strong>${esc(tf(tour.title))}</strong>
+        <span class="pack-voce-meta">${esc(dettagli.join(" · "))}</span>
+        <span class="pack-voce-desc">${esc(desc)}</span>
+      </div>
     </li>`;
 }
 
-function pacchettoCardHTML(pack) {
-  const conto = pacchettoConto(pack);
-  const presenti = pacchettoVociPresenti(pack);
-  const quante = presenti.filter(Boolean).length;
-  const tutte = quante === pack.voci.length;
+function initPacchetto() {
+  const contenitore = document.querySelector("[data-pack-detail]");
+  if (!contenitore || typeof ESPLORA_CATALOG === "undefined") return;
 
-  const righe = pack.voci
-    .map((voce, i) => pacchettoVoceHTML(pack, voce, i + 1, presenti[i]))
-    .join("");
+  function disegna() {
+    const id = new URLSearchParams(location.search).get("id");
+    const pack = id ? pacchettoDi(id) : null;
+    const completo = pack && pack.voci.every(v => pacchettoVoceTour(v));
 
-  // Tre casi, non due: col prezzo e con lo sconto, col prezzo ma senza sconto
-  // (un pacchetto di soli biglietti a prezzo fisso), senza prezzo. Il prezzo
-  // barrato compare **solo** dove c'e' davvero qualcosa da togliere: barrare
-  // un numero e riscrivere lo stesso numero e' una finta offerta.
-  let prezzo;
-  if (!conto) {
-    prezzo = `<span class="pack-price"><strong>${esc(t("pack.noPrice"))}</strong></span>`;
-  } else if (conto.risparmio > 0) {
-    prezzo = `<span class="pack-price">
-         <s class="price-before">€${esc(eur(conto.pieno))}</s>
-         <strong>€${esc(eur(conto.scontato))}</strong>
-         <small>${esc(t("pack.perPerson"))}</small>
-       </span>`;
-  } else {
-    prezzo = `<span class="pack-price">
-         <strong>€${esc(eur(conto.pieno))}</strong>
-         <small>${esc(t("pack.perPerson"))}</small>
-       </span>`;
-  }
+    if (!completo) {
+      document.title = t("pack.notFound") + " · Isla";
+      contenitore.innerHTML = `
+        <div class="state">
+          <h2>${esc(t("pack.notFound"))}</h2>
+          <p>${esc(t("pack.notFoundText"))}</p>
+          <a class="btn btn-primary" href="./pacchetti.html">${esc(t("pack.seeAll"))}</a>
+        </div>`;
+      return;
+    }
 
-  // Lo stato della lista si scrive solo quando c'e' qualcosa da dire: a lista
-  // vuota un "0 di 3" sembra un compito da finire.
-  const stato = quante === 0 ? "" : `
-    <p class="pack-state${tutte ? " is-full" : ""}">
-      ${esc(tutte
-        ? t("pack.progressFull")
-        : t("pack.progress", { n: quante, tot: pack.voci.length }))}
-    </p>`;
+    document.title = tf(pack.title) + " · Isla";
+    const conto = pacchettoConto(pack);
+    const righe = pack.voci.map((voce, i) => pacchettoVoceHTML(voce, i + 1)).join("");
 
-  return `
-    <li class="pack-card" data-pack-card="${esc(pack.id)}">
-      <div class="pack-media">
-        <img src="./assets/${encodeURIComponent(pack.image)}" alt="" loading="lazy" />
-        ${conto && conto.risparmio > 0
-          ? `<span class="pack-badge">${esc(t("pack.save", { n: eur(conto.risparmio) }))}</span>`
-          : ""}
-      </div>
-      <div class="pack-body">
-        <h2 class="pack-title">${esc(tf(pack.title))}</h2>
-        <p class="pack-desc">${esc(tf(pack.desc))}</p>
-        <div class="pack-foot">${prezzo}</div>
+    contenitore.innerHTML = `
+      <article class="pack-detail">
+        <div class="pack-detail-media">
+          <img src="./assets/${encodeURIComponent(pack.image)}" alt="" />
+          ${conto && conto.risparmio > 0
+            ? `<span class="pack-badge">${esc(t("pack.save", { n: eur(conto.risparmio) }))}</span>`
+            : ""}
+        </div>
+        <span class="eyebrow">${esc(t("pack.eyebrow"))}</span>
+        <h1 class="pack-detail-title">${esc(tf(pack.title))}</h1>
+        <p class="pack-detail-lead">${esc(tf(pack.desc))}</p>
+        <div class="pack-foot">${pacchettoPrezzoHTML(conto)}</div>
         ${conto && conto.parziale ? `<p class="pack-note">${esc(t("pack.fixedNote"))}</p>` : ""}
         ${conto && conto.misto ? `<p class="pack-note">${esc(t("pack.unitNote"))}</p>` : ""}
         <span class="pack-inside">${esc(t("pack.inside"))}</span>
         <ol class="pack-voci">${righe}</ol>
-        <p class="pack-howto">${esc(t("pack.howto", { n: pack.voci.length }))}</p>
-        ${stato}
-      </div>
-    </li>`;
-}
-
-function initPacchetti() {
-  const grid = document.querySelector("[data-pack-grid]");
-  if (!grid || typeof ESPLORA_CATALOG === "undefined") return;
-
-  function disegna() {
-    // Un pacchetto con una voce che nel catalogo non c'e' piu' non si mostra:
-    // meglio un pacchetto in meno che uno che promette due escursioni su tre.
-    grid.innerHTML = PACCHETTI
-      .filter(p => p.voci.every(v => pacchettoVoceTour(v)))
-      .map(pacchettoCardHTML)
-      .join("");
+        <button class="btn btn-primary btn-block" type="button" data-pack-ask="${esc(pack.id)}"
+                aria-haspopup="dialog" aria-controls="packDialog">${esc(t("pack.ask"))}</button>
+        <p class="hint">${esc(t("pack.oneRequest"))}</p>
+        <a class="pack-back" href="./pacchetti.html">${esc(t("pack.seeAll"))}</a>
+      </article>`;
   }
 
   disegna();
-  // La lista cambia da un'altra parte (il cliente ne toglie una dalla finestra
-  // della lista, che sta su tutte le pagine): le schede si riscrivono da sole.
-  document.addEventListener("islalista", disegna);
   document.addEventListener("islalang", disegna);
 }
 
-// `controlla.js` carica questo file da Node per controllare i pacchetti, e li'
-// `document` non esiste: senza questa riga il controllo si fermerebbe qui.
+// `controlla.js` carica questo file da Node, dove `document` non esiste:
+// senza questa riga il controllo si fermerebbe qui.
 if (typeof document !== "undefined") {
-  document.addEventListener("DOMContentLoaded", initPacchetti);
+  document.addEventListener("DOMContentLoaded", () => {
+    initPacchettiGriglia();
+    initPacchetto();
+    initPacchettoRichiesta();
+  });
 }

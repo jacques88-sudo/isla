@@ -236,8 +236,6 @@ const I18N = {
   "pack.noPrice":       { it: "Prezzo su richiesta", en: "Price on request", es: "Precio a consultar" },
   "pack.unitNote":      { it: "Qui dentro c'è un mezzo che si paga a buggy o a moto d'acqua, non a testa: questo è il prezzo di una persona da sola, e in due o in tre a testa si paga meno.", en: "This one includes a vehicle priced per buggy or per jet ski, not per head: this is the price for one person on their own, and with two or three of you it comes down.", es: "Aquí hay un vehículo que se paga por buggy o por moto de agua, no por persona: este es el precio de una persona sola, y entre dos o tres sale menos." },
   "pack.inside":        { it: "Cosa c'è dentro", en: "What's inside", es: "Qué incluye" },
-  "pack.fixedNote":     { it: "Sui biglietti dei parchi e degli spettacoli lo sconto non si applica: sono a prezzo fisso. Lo sconto è già tolto dal resto.", en: "The discount doesn't apply to park and show tickets: those are fixed-price. It's already taken off the rest.", es: "El descuento no se aplica a las entradas de parques y espectáculos: son de precio fijo. Ya está descontado del resto." },
-  "pack.fixedShort":    { it: "prezzo fisso", en: "fixed price", es: "precio fijo" },
 
   "detail.days":        { it: "Giorni", en: "Days", es: "Días" },
   "detail.times":       { it: "Orari", en: "Departure times", es: "Horarios" },

@@ -504,8 +504,9 @@ function controllaPacchetti() {
     // e' successo a "Tre sere a Tenerife", che era fatto di tre soli show.
     const conto = pacchettoConto(pack);
     if (conto && conto.risparmio === 0) {
-      avviso(dove, "non fa risparmiare niente: e' fatto solo di biglietti a " +
-        "prezzo fisso (" + PACCHETTI_CATEGORIE_SENZA_SCONTO.join(", ") + ").");
+      avviso(dove, "non fa risparmiare niente: e' fatto solo di cose a prezzo " +
+        "fisso — le categorie " + PACCHETTI_CATEGORIE_SENZA_SCONTO.join(", ") +
+        " e le schede con `fixedPrice`.");
     }
   });
 }

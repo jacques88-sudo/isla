@@ -72,13 +72,29 @@
 //   vedi qui sotto.
 //
 // SU COSA LO SCONTO NON SI PUO' FARE
-//   Sui biglietti dei parchi e degli spettacoli: Siam Park, Monkey Park, il
-//   flamenco, il drag show, il castello. Sono biglietti a prezzo fisso, li
-//   paghiamo quanto li rivendiamo e un 10% in meno uscirebbe dalla tasca di
-//   Admiral, non dal margine. La regola e' la **categoria**, non un elenco di
-//   schede: cosi' un parco o uno show nuovo e' gia' coperto il giorno che
-//   entra nel catalogo. Un elenco a mano si dimentica, e dimenticarselo vuol
-//   dire promettere al cliente uno sconto che l'ufficio non puo' fare.
+//   Su quello che si compra a prezzo fisso e si rivende uguale: un 10% in meno
+//   uscirebbe dalla tasca di Admiral, non dal margine. Sono due elenchi, e
+//   servono tutti e due.
+//     1. I parchi e gli spettacoli — Siam Park, Monkey Park, il flamenco, il
+//        drag show, il castello — per **categoria**, qui sotto. Cosi' un parco
+//        o uno show nuovo e' gia' coperto il giorno che entra nel catalogo.
+//     2. I giri in pullman con guida e i biglietti a giornata, con
+//        `fixedPrice: true` sulla **scheda** (vedi il vocabolario in testa a
+//        `esplora-catalog.js`). Qui la categoria non basta: i tour in bus
+//        stanno in tre categorie diverse, e "Teide National Park" sta nella
+//        stessa dello stargazing, che invece si sconta.
+//   Il campo sta sulla scheda e non in un elenco dentro questo file perche' un
+//   elenco lontano dai dati si dimentica, e dimenticarselo vuol dire promettere
+//   al cliente uno sconto che l'ufficio non puo' fare.
+//
+// QUELLO CHE NON SI SCONTA NON SI SCRIVE IN PAGINA
+//   Il sito non dice piu' **su cosa** lo sconto non si applica: niente nota
+//   sotto il prezzo, niente "prezzo fisso" accanto alle voci (14 settembre
+//   2026, scelta del proprietario). Quello che si vede resta vero e verificabile
+//   — il prezzo pieno barrato, quello scontato e "Risparmi €X" — e sono numeri
+//   giusti: il conto continua a togliere lo sconto solo dove si puo' fare. La
+//   spiegazione la da' l'ufficio rispondendo, che e' anche dove si concorda il
+//   pagamento.
 
 const PACCHETTI_SCONTO_DEFAULT = 10;
 
@@ -90,14 +106,18 @@ const PACCHETTI = [
 
   {
     id: "tenerife-classico",
+    // Il nome non si traduce: "Tenerife Trio" e' un nome, e vale nelle tre
+    // lingue come i titoli delle escursioni. A tradursi e' solo quello che lo
+    // descrive, cioe' "versione buggy" sull'altro.
     title: {
-      it: "Tenerife in tre mosse",
-      en: "Tenerife in three moves",
-      es: "Tenerife en tres pasos"
+      it: "Tenerife Trio",
+      en: "Tenerife Trio",
+      es: "Tenerife Trio"
     },
     image: "teide-national-park.jpg",
     sconto: 10,
-    // 39 + 55 + 44 = 138, ma il Siam Park non si sconta: −9,40 → 128,60 a persona
+    // 39 + 55 + 44 = 138. Si sconta solo la barca: il Siam Park e' un
+    // biglietto, il Teide in pullman e' `fixedPrice`. −5,50 → 132,50 a persona
     // Teide: una volta, di giorno.
     voci: [
       { id: "teide-national-park" },
@@ -117,9 +137,9 @@ const PACCHETTI = [
     // 180 + 55 + 44 = 279, ma il Siam Park non si sconta: −23,50 → 255,50
     // per una persona da sola.
     title: {
-      it: "Tre mosse, versione buggy",
-      en: "Three moves, buggy version",
-      es: "Tres pasos, versión buggy"
+      it: "Tenerife Trio, versione buggy",
+      en: "Tenerife Trio, buggy version",
+      es: "Tenerife Trio, versión buggy"
     },
     image: "buggy-volcano-4h.jpg",
     sconto: 10,
@@ -134,9 +154,9 @@ const PACCHETTI = [
       { id: "siam-park" }
     ],
     desc: {
-      it: "Le stesse tre mosse, ma al volante: il buggy al posto del pullman, la giornata in barca da Las Galletas e il Siam Park. Il percorso del buggy lo scegliamo insieme quando rispondiamo.",
-      en: "The same three moves, but behind the wheel: a buggy instead of the coach, the day on the water from Las Galletas and Siam Park. We agree on the buggy route when we reply.",
-      es: "Los mismos tres pasos, pero al volante: el buggy en lugar del autocar, el día en barco desde Las Galletas y el Siam Park. El recorrido del buggy lo elegimos juntos al responder."
+      it: "Lo stesso trio, ma al volante: il buggy al posto del pullman, la giornata in barca da Las Galletas e il Siam Park. Il percorso del buggy lo scegliamo insieme quando rispondiamo.",
+      en: "The same trio, but behind the wheel: a buggy instead of the coach, the day on the water from Las Galletas and Siam Park. We agree on the buggy route when we reply.",
+      es: "El mismo trío, pero al volante: el buggy en lugar del autocar, el día en barco desde Las Galletas y el Siam Park. El recorrido del buggy lo elegimos juntos al responder."
     }
   },
 
@@ -377,10 +397,20 @@ function pacchettoVocePrezzo(voce) {
 
 // Su questa voce lo sconto si puo' fare? Una scheda che non si trova non si
 // sconta: nel dubbio si sconta di meno, mai di piu' di quello che si puo'.
+//
+// Due strade, e servono tutte e due. La **categoria** copre i parchi e gli
+// spettacoli in blocco, cosi' un parco nuovo e' escluso il giorno che entra in
+// catalogo senza che nessuno se ne ricordi. Il campo **`fixedPrice`** copre
+// quello che una categoria non sa dire: i giri in pullman con guida stanno in
+// tre categorie diverse, e nella stessa categoria dello stargazing, che invece
+// si sconta. La variante vince sulla scheda, come per `days` e `times`.
 function pacchettoVoceScontabile(voce) {
   const tour = pacchettoVoceTour(voce);
   if (!tour) return false;
-  return PACCHETTI_CATEGORIE_SENZA_SCONTO.indexOf(tour.category) < 0;
+  if (PACCHETTI_CATEGORIE_SENZA_SCONTO.indexOf(tour.category) >= 0) return false;
+  const variante = pacchettoVoceVariante(voce, tour);
+  if (variante && variante.fixedPrice !== undefined) return !variante.fixedPrice;
+  return !tour.fixedPrice;
 }
 
 // Il conto di un pacchetto:
@@ -390,9 +420,6 @@ function pacchettoVoceScontabile(voce) {
 //   scontato   quello che paga: pieno meno risparmio
 //   misto      c'e' dentro almeno un prezzo a mezzo: il numero vale per una
 //              persona da sola e va scritto con la sua nota
-//   parziale   una parte del pacchetto e' a prezzo fisso (parchi, spettacoli)
-//              e va detto, o il cliente fa il 10% a mente e trova un altro
-//              numero
 // Torna null se anche una sola voce non ha un prezzo leggibile.
 function pacchettoConto(pack) {
   let pieno = 0;
@@ -417,8 +444,7 @@ function pacchettoConto(pack) {
     risparmio: risparmio,
     scontato: pacchettoArrotonda(pieno - risparmio),
     sconto: sconto,
-    misto: misto,
-    parziale: scontabile < pieno
+    misto: misto
   };
 }
 
@@ -765,7 +791,6 @@ function pacchettoVoceHTML(voce, n) {
   const dettagli = [];
   if (variante) dettagli.push(tf(variante.label));
   if (prezzo) dettagli.push("€" + eur(prezzo.prezzo) + priceUnitSuffix(tour));
-  if (!pacchettoVoceScontabile(voce)) dettagli.push(t("pack.fixedShort"));
 
   return `
     <li class="pack-voce">
@@ -814,7 +839,6 @@ function initPacchetto() {
         <h1 class="pack-detail-title">${esc(tf(pack.title))}</h1>
         <p class="pack-detail-lead">${esc(tf(pack.desc))}</p>
         <div class="pack-foot">${pacchettoPrezzoHTML(conto)}</div>
-        ${conto && conto.parziale ? `<p class="pack-note">${esc(t("pack.fixedNote"))}</p>` : ""}
         ${conto && conto.misto ? `<p class="pack-note">${esc(t("pack.unitNote"))}</p>` : ""}
         <span class="pack-inside">${esc(t("pack.inside"))}</span>
         <ol class="pack-voci">${righe}</ol>

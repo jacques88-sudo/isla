@@ -98,6 +98,20 @@
 //                dire davvero gratis**, al contrario di priceAdult e priceChild
 //                dove 0 vuol dire "non ancora deciso". Se il campo manca del tutto
 //                la riga non compare: e' cosi' che si dice "non lo sappiamo".
+//   fixedPrice → facoltativo: questa attivita' si compra a prezzo fisso e si
+//                rivende uguale, quindi **lo sconto dei pacchetti non la
+//                tocca**. Ci vanno i giri in pullman con guida, dove si compra
+//                un posto sul bus di un operatore, e i biglietti a giornata:
+//                un 10% in meno uscirebbe dalla tasca di Admiral, non dal
+//                margine. I parchi e gli spettacoli non hanno bisogno di
+//                questo campo — sono gia' coperti per categoria, vedi
+//                `PACCHETTI_CATEGORIE_SENZA_SCONTO` in pacchetti.js.
+//                Si puo' mettere anche dentro una singola variante, e li' la
+//                variante vince: se un giorno lo stesso tour si fa in pullman
+//                o in minivan, il pullman e' a prezzo fisso e il minivan no.
+//                Non cambia niente su questa scheda: si vede solo nel conto di
+//                un pacchetto che la contiene.
+//                    fixedPrice: true
 //   ages       → facoltativo: le fasce d'eta', scritte come le scrive il fornitore.
 //                Di solito bastano dei numeri ("12+", "4-11"), uguali in tutte
 //                le lingue. Quando invece c'e' una parola dentro si scrivono
@@ -1691,6 +1705,7 @@ const ESPLORA_CATALOG = [
     zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "6-8 ore circa", en: "About 6-8 hours", es: "6-8 horas aprox." },
     priceFrom: 39,
+    fixedPrice: true,
     // Offerta a tempo decisa dal proprietario: si vende a 39 fino al 31
     // ottobre, poi il prezzo diventa 45. Il 45 NON e' un prezzo gia' applicato
     // in passato: e' quello futuro (detto esplicitamente il 7 settembre 2026).
@@ -1959,6 +1974,7 @@ const ESPLORA_CATALOG = [
     // Listino del fornitore (Nere Izerdie / Island Excursions, Costa Adeje),
     // mandato dall'ufficio l'8 settembre 2026: 58 € adulti, 37,50 € bambini.
     priceFrom: 58,
+    fixedPrice: true,
     priceAdult: 58,
     priceChild: 37.5,
     // Il fornitore da' solo "Ninos (2-11)", quindi gli adulti sono 12+.
@@ -4639,6 +4655,7 @@ const ESPLORA_CATALOG = [
     // fornitore lo comunica con la conferma. Niente campo `times`, cosi'
     // restano le fasce segnaposto piu' "Da concordare".
     priceFrom: 110,
+    fixedPrice: true,
     priceAdult: 110,
     priceChild: 75,
     // 15,50 € non e' gratis: i neonati pagano il posto sul traghetto. La cifra
@@ -4820,6 +4837,7 @@ const ESPLORA_CATALOG = [
     // 50 e' il prezzo del fornitore ufficiale, e prende il posto del 48 che
     // c'era prima: alzarlo l'ha confermato il proprietario (8 settembre 2026).
     priceFrom: 50,
+    fixedPrice: true,
     priceAdult: 50,
     priceChild: 31.5,
     // Niente `priceInfant`: il fornitore scrive "Bebés (NO PONER)", cioe' la
@@ -4925,6 +4943,7 @@ const ESPLORA_CATALOG = [
     zone: { it: "Tutta l'isola", en: "All over the island", es: "Toda la isla" },
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    fixedPrice: true,
     priceAdult: 0,
     priceChild: 0,
     family: true,
@@ -4958,6 +4977,7 @@ const ESPLORA_CATALOG = [
     // comune: ogni scheda ha le sue.
     languages: ["English", "Español", "Deutsch"],
     priceFrom: 145,
+    fixedPrice: true,
     priceAdult: 145,
     priceChild: 126,
     // 20 € non e' gratis: i neonati pagano il posto sul traghetto.
@@ -5112,6 +5132,7 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    fixedPrice: true,
     priceAdult: 0,
     priceChild: 0,
     family: false,
@@ -5245,6 +5266,7 @@ const ESPLORA_CATALOG = [
     zone: "Costa Adeje – Los Cristianos",
     duration: { it: "Tutto il giorno", en: "All day", es: "Todo el día" },
     priceFrom: 9,
+    fixedPrice: true,
     priceAdult: 9,
     priceChild: 5,
     family: true,
@@ -5265,6 +5287,7 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 80,
+    fixedPrice: true,
     priceAdult: 80,
     priceChild: 80,
     priceInfant: 0,

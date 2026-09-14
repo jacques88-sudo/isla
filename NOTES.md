@@ -11353,3 +11353,70 @@ prima di togliere un pacchetto: **un pacchetto che esce si porta dietro il suo i
 descrizioni, la finestra della richiesta che si apre coi campi al posto giusto, i due
 vecchi indirizzi che finiscono sulla pagina "non trovato". `node controlla.js` → 0 errori,
 3 avvisi invariati. Alzato `sw.js` a `isla-v319`.
+
+---
+
+## 14 settembre 2026 — I tour in bus non si scontano, e il sito non spiega più perché (v320)
+
+Tre cose chieste dal proprietario nello stesso momento, e vale la pena tenerle insieme
+perché la prima e la terza tirano nella stessa direzione.
+
+### "Tenerife in tre mosse" diventa "Tenerife Trio"
+
+Uguale nelle tre lingue, come i titoli delle escursioni: **il nome non si traduce**, si
+traduce quello che lo descrive. Quindi "Tenerife Trio" in italiano, inglese e spagnolo, e
+solo "versione buggy / buggy version / versión buggy" cambia. Le descrizioni dicevano "le
+stesse tre mosse": riscritte in "lo stesso trio", se no il nome nuovo e il testo si
+contraddicono a due righe di distanza.
+
+### Lo sconto non si fa nemmeno sui tour in pullman
+
+Rettifica del proprietario: i giri in bus si comprano a prezzo fisso come i biglietti dei
+parchi — un posto sul pullman di un operatore, pagato quanto lo si rivende.
+
+**La categoria qui non basta, ed è il punto interessante.** Per i parchi funzionava
+(`parchi-spettacoli` copre tutto e copre anche quelli di domani), ma i tour in bus stanno in
+tre categorie diverse — `teide-natura`, `tour-isola`, `tour-privati` — e soprattutto "Teide
+National Park" sta **nella stessa categoria dello stargazing**, che invece si sconta ed è
+uno dei quattro prodotti da spingere. Una regola per categoria avrebbe portato via lo sconto
+a Teide by Night per sbaglio.
+
+Quindi un campo nuovo sulla scheda, `fixedPrice: true`, documentato nel vocabolario in testa
+a `esplora-catalog.js`. Sta **sul dato e non in un elenco dentro `pacchetti.js`**: un elenco
+lontano dai dati si dimentica il giorno che entra una scheda nuova, e dimenticarselo vuol
+dire promettere uno sconto che l'ufficio non può fare. Vale anche dentro una variante, e lì
+la variante vince — serve già oggi in potenza: dentro Teide by Night il gruppo grande sale
+in pullman e il piccolo va in minivan.
+
+Le nove schede segnate (scelte dal proprietario): i cinque tour in pullman con guida
+(`teide-national-park`, `icod-garachico-orotava`, `santa-cruz-taganana`,
+`island-tour-completo`, `masca-teide-cabrio-bus`), le due giornate sull'isola accanto
+(`la-gomera`, `la-palma`) e i due biglietti (`trenino-turistico`, `cantine-vinicole`). Lo
+stargazing in gruppo grande **non** è segnato, per sua scelta.
+
+Sui sette pacchetti cambia un numero solo: **Tenerife Trio** risparmia 5,50 invece di 9,40
+(138 → 132,50), perché dei tre pezzi resta scontabile solo la barca. Il proprietario ha
+deciso di lasciarlo così: "Tre sere" risparmia 7,90 su 177,50 e vive lo stesso — un
+pacchetto vale per come è fatto, non per la percentuale.
+
+### Il sito non scrive più su cosa lo sconto non si applica
+
+Via la nota sotto il prezzo ("Sui biglietti dei parchi e degli spettacoli lo sconto non si
+applica…") e via il "prezzo fisso" accanto alle singole voci. Due chiavi in meno in
+`i18n.js`, e `conto.parziale` è diventato codice morto — serviva solo ad accendere quella
+nota — quindi è uscito anche lui.
+
+**Quello che resta in pagina resta vero**: il prezzo pieno barrato, quello scontato e
+"Risparmi €X" sono gli stessi numeri di prima, e il conto continua a togliere lo sconto solo
+dove si può fare. Cambia cosa si racconta, non cosa si calcola. Il cliente che fa il 10% a
+mente trova un numero diverso dal nostro — era proprio quello che la nota spiegava — e da
+oggi la spiegazione la dà l'ufficio rispondendo, che è anche dove si concorda il pagamento.
+È una scelta del proprietario, ed è scritta in testa a `pacchetti.js` perché fra sei mesi
+"manca una spiegazione" sembrerà una dimenticanza e non una decisione.
+
+**Provato nel browser vero** a 390px e nelle tre lingue: i nomi nuovi in vetrina e sulla
+pagina, Tenerife Trio a 138 → 132,50 con "Risparmi €5,50", nessuna nota sotto il prezzo,
+nessun "prezzo fisso" sulle voci, e la nota sui mezzi (che non parla di sconti) al suo posto
+sulla versione buggy. Nella finestra della richiesta il totale vivo per due adulti fa
+€265 · Risparmi €11, cioè 138×2 meno 5,50×2. `node controlla.js` → 0 errori, 3 avvisi
+invariati. Alzato `sw.js` a `isla-v320`.

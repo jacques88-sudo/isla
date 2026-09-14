@@ -11040,3 +11040,75 @@ bento, alla scheda del pacchetto, alla pagina di dettaglio con la variante giust
 premuta, alla lista con lo sconto e al messaggio WhatsApp. Nelle tre lingue, nessuna chiave
 non tradotta, nessun errore in console, nessuno scorrimento orizzontale.
 `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v314`.
+
+## 14 settembre 2026 — Sui parchi e sugli show lo sconto non si può fare (v315)
+
+«Non è possibile fare lo sconto sui prezzi dei parchi/show notturni.» Sono biglietti a
+prezzo fisso: li paghiamo quanto li rivendiamo, e un 10% in meno uscirebbe dalla tasca di
+Admiral invece che dal margine. Tocca sei pacchetti su otto.
+
+**La regola è la categoria, non un elenco di schede.** `PACCHETTI_CATEGORIE_SENZA_SCONTO =
+["parchi-spettacoli"]`, che oggi copre esattamente Siam Park, Monkey Park, flamenco, drag
+show, castello e history of music. Scelto contro l'elenco di id scritto a mano (deciso il
+14 settembre) per una ragione sola: un elenco a mano si dimentica, e dimenticarselo vuol
+dire **promettere al cliente uno sconto che l'ufficio non può fare** — l'errore caro, non
+quello gratis. Un parco o uno show nuovo è coperto il giorno che entra nel catalogo.
+
+| pacchetto | pieno | scontabile | risparmio | paga |
+|---|---|---|---|---|
+| Tenerife in tre mosse | €138 | €94 | €9,40 | €128,60 |
+| Tre mosse, versione buggy | €279 | €235 | €23,50 | €255,50 |
+| Famiglia | €109 | €55 | €5,50 | €103,50 |
+| Il Teide tre volte | €298 | €298 | €29,80 | €268,20 |
+| Adrenalina | €335 | €335 | €33,50 | €301,50 |
+| Mare a tutto gas | €170 | €170 | €17 | €153 |
+| Cielo e mare | €185 | €134 | €13,40 | €171,60 |
+| Tre sere a Tenerife | €177,50 | €79 | €7,90 | €169,60 |
+
+**Il bollino "−10%" è sparito.** Su un pacchetto dove lo sconto vale su 94 euro di 138, un
+"−10%" è un numero falso: il cliente lo fa a mente, trova 124,20 e sul sito legge 128,60.
+Al suo posto il risparmio in euro, che è vero sempre: **"Risparmi €9,40"**. Sotto il prezzo
+c'è la riga che dice perché, e **ogni riga che non si sconta lo dice da sé** ("€44 · prezzo
+fisso"): la nota senza i nomi obbligherebbe a indovinare quale delle tre.
+
+Il prezzo barrato compare **solo dove c'è davvero qualcosa da togliere**. Un pacchetto di
+soli biglietti a prezzo fisso mostra un prezzo solo, senza barrato e senza bollino: barrare
+un numero e riscrivere lo stesso numero è una finta offerta.
+
+**Lo stesso vale nella lista**, dove il conto è quello vero: sul pacchetto classico in due
+lo sconto è €18,80, cioè il 10% di 188 (78 del Teide + 110 della barca), e gli 88 del Siam
+Park restano fuori. Un solo punto lo decide, `pacchettoVoceScontabile()`, usato sia dalla
+vetrina sia dalla lista: due regole separate sarebbero diventate diverse.
+
+### "Tre sere a Tenerife" era diventato un pacchetto che non risparmiava niente
+
+Drag show + castello + history of music: tre biglietti a prezzo fisso, sconto €0. Tre cose
+a prezzo pieno messe in fila non sono un pacchetto, sono un elenco — il cliente le può già
+aggiungere alla lista dal catalogo e paga uguale.
+
+Al posto di `history-music-show` (il più generico dei tre) è entrato lo **stargazing in
+gruppo piccolo**. Non è una scelta di gusto: è **l'unica serata scontabile del catalogo con
+un prezzo a persona**. Le altre serali sono a mezzo (buggy al tramonto, quad al tramonto)
+oppure non hanno un prezzo leggibile (la passeggiata a cavallo di 2 ore non ce l'ha), e in
+un pacchetto di serate un prezzo a buggy avrebbe portato dentro tutta la nota del prezzo
+misto. Ed è uno dei quattro prodotti da spingere.
+
+**La descrizione è stata riscritta, non ritoccata.** Diceva *"Tre spettacoli con la cena
+compresa"* e non è più vero: la scheda dello stargazing dice a chiare lettere che il picnic
+al tramonto **non è una cena a tavola**. Adesso dice "il drag show con la cena, la notte
+medievale al castello e le stelle dal Teide, con il picnic al tramonto sopra le nuvole".
+
+**`controlla.js` adesso avvisa se un pacchetto non fa risparmiare niente**: è esattamente
+il caso in cui era finito questo, ed era invisibile finché non si faceva il conto a mano.
+
+### Da sistemare, visto passando
+
+`assets/teide-national-park.jpg` è **300×300**: in copertina del pacchetto (16/9, fino a
+550px sul desktop) viene ingrandita e si ammorbidisce. Non è stata sostituita con un'altra
+foto a caso — `Cat-teide.jpg` è grande ma è un buggy al tramonto, e su "montagna, mare e
+parco" sarebbe una foto che racconta un'altra cosa. Serve una foto vera del Teide a ~1200px.
+
+**Provato nel browser vero** a 390px, nelle tre lingue: i tre casi (sconto pieno, sconto
+parziale con la nota, e il conto della lista con il Siam Park fuori), il messaggio WhatsApp,
+nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js`
+a `isla-v315`.

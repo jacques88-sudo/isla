@@ -228,7 +228,9 @@ const I18N = {
   "pack.again":         { it: "Già nella lista", en: "Already in your list", es: "Ya en tu lista" },
   "pack.howto":         { it: "Tocca un'escursione per vederla e metterla nella tua lista, ognuna col suo giorno. Quando ci sono tutte e {n}, lo sconto si applica da solo.", en: "Tap an excursion to see it and put it in your list, each with its own day. Once all {n} are there, the discount applies by itself.", es: "Toca una excursión para verla y ponerla en tu lista, cada una con su día. Cuando estén las {n}, el descuento se aplica solo." },
   "pack.progress":      { it: "{n} di {tot} nella tua lista", en: "{n} of {tot} in your list", es: "{n} de {tot} en tu lista" },
-  "pack.progressFull":  { it: "Ci sono tutte: lo sconto del {n}% è attivo nella tua lista.", en: "They're all in: the {n}% discount is live in your list.", es: "Están todas: el descuento del {n}% está activo en tu lista." },
+  "pack.progressFull":  { it: "Ci sono tutte: lo sconto è attivo nella tua lista.", en: "They're all in: the discount is live in your list.", es: "Están todas: el descuento está activo en tu lista." },
+  "pack.fixedNote":     { it: "Sui biglietti dei parchi e degli spettacoli lo sconto non si applica: sono a prezzo fisso. Lo sconto è già tolto dal resto.", en: "The discount doesn't apply to park and show tickets: those are fixed-price. It's already taken off the rest.", es: "El descuento no se aplica a las entradas de parques y espectáculos: son de precio fijo. Ya está descontado del resto." },
+  "pack.fixedShort":    { it: "prezzo fisso", en: "fixed price", es: "precio fijo" },
   "pack.partOf":        { it: "Fa parte del pacchetto {name}", en: "Part of the {name} package", es: "Forma parte del paquete {name}" },
   "pack.backToPacks":   { it: "Torna ai pacchetti", en: "Back to the packages", es: "Volver a los paquetes" },
 

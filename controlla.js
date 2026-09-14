@@ -459,6 +459,15 @@ function controllaPacchetti() {
     if (new Set(doppie).size !== doppie.length) {
       errore(dove, "c'e' due volte la stessa escursione con la stessa variante.");
     }
+
+    // Tutto a prezzo fisso: il pacchetto esiste ma non fa risparmiare niente.
+    // Non e' un errore (puo' essere una proposta, non un'offerta) ma va visto:
+    // e' successo a "Tre sere a Tenerife", che era fatto di tre soli show.
+    const conto = pacchettoConto(pack);
+    if (conto && conto.risparmio === 0) {
+      avviso(dove, "non fa risparmiare niente: e' fatto solo di biglietti a " +
+        "prezzo fisso (" + PACCHETTI_CATEGORIE_SENZA_SCONTO.join(", ") + ").");
+    }
   });
 }
 

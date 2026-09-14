@@ -45,13 +45,24 @@
 //   VETRINA" piu' giu'.
 //
 // LO SCONTO
-//   `sconto` e' una percentuale sulla somma. Oggi sono tutti al 10%: resta un
-//   campo per pacchetto e non una costante unica perche' il primo pacchetto
-//   che va al 15% non deve costringere a riscrivere la struttura. Vale su
-//   tutto, mezzi compresi: e' lo sconto nostro sul pacchetto intero, e una
-//   regola sola e' una regola che l'ufficio sa ripetere al telefono.
+//   `sconto` e' una percentuale: oggi sono tutti al 10%: resta un campo per
+//   pacchetto e non una costante unica perche' il primo pacchetto che va al
+//   15% non deve costringere a riscrivere la struttura. Vale sui mezzi come
+//   sulle persone — il buggy sconta come la barca — ma **non su tutto**:
+//   vedi qui sotto.
+//
+// SU COSA LO SCONTO NON SI PUO' FARE
+//   Sui biglietti dei parchi e degli spettacoli: Siam Park, Monkey Park, il
+//   flamenco, il drag show, il castello. Sono biglietti a prezzo fisso, li
+//   paghiamo quanto li rivendiamo e un 10% in meno uscirebbe dalla tasca di
+//   Admiral, non dal margine. La regola e' la **categoria**, non un elenco di
+//   schede: cosi' un parco o uno show nuovo e' gia' coperto il giorno che
+//   entra nel catalogo. Un elenco a mano si dimentica, e dimenticarselo vuol
+//   dire promettere al cliente uno sconto che l'ufficio non puo' fare.
 
 const PACCHETTI_SCONTO_DEFAULT = 10;
+
+const PACCHETTI_CATEGORIE_SENZA_SCONTO = ["parchi-spettacoli"];
 
 const PACCHETTI = [
 
@@ -66,7 +77,7 @@ const PACCHETTI = [
     },
     image: "teide-national-park.jpg",
     sconto: 10,
-    // 39 + 55 + 44 = 138 → 124,20 a persona
+    // 39 + 55 + 44 = 138, ma il Siam Park non si sconta: −9,40 → 128,60 a persona
     voci: [
       { id: "teide-national-park" },
       { id: "luxury-cruiser", optionIndex: 0 },
@@ -114,7 +125,8 @@ const PACCHETTI = [
     },
     image: "luxury-cruiser.jpg",
     sconto: 10,
-    // 55 + 10 + 44 = 109 → 98,10 a persona (i bambini pagano meno su tutte e tre)
+    // 55 + 10 + 44 = 109, ma i due parchi non si scontano: lo sconto e' solo
+    // sulla barca, −5,50 → 103,50 a persona (i bambini pagano meno su tutte e tre)
     voci: [
       { id: "luxury-cruiser", optionIndex: 0 },
       { id: "monkey-park" },
@@ -211,7 +223,7 @@ const PACCHETTI = [
     },
     image: "luxury-cruiser-2.jpg",
     sconto: 10,
-    // 79 + 55 + 51 = 185 → 166,50 a persona
+    // 79 + 55 + 51 = 185, ma il flamenco non si sconta: −13,40 → 171,60 a persona
     voci: [
       { id: "stargazing-group", optionIndex: 1 },
       { id: "luxury-cruiser", optionIndex: 0 },
@@ -233,16 +245,28 @@ const PACCHETTI = [
     },
     image: "castillo-san-miguel.jpg",
     sconto: 10,
-    // 49 + 49,50 + 49 = 147,50 → 132,75 a persona
+    // 49 + 49,50 + 79 = 177,50, ma si sconta solo lo stargazing (i due show
+    // sono a prezzo fisso): −7,90 → 169,60 a persona.
+    //
+    // Il terzo era "history-music-show", e i tre show insieme facevano un
+    // pacchetto che **non risparmiava niente**: tre biglietti a prezzo fisso
+    // messi in fila non sono un pacchetto, sono un elenco. Al suo posto lo
+    // stargazing in gruppo piccolo, che e' l'unica serata scontabile del
+    // catalogo con un prezzo a persona (le altre serali si pagano a mezzo o
+    // non hanno un prezzo leggibile) — ed e' uno dei prodotti da spingere.
     voci: [
       { id: "mht-drag-show" },
       { id: "castillo-san-miguel" },
-      { id: "history-music-show" }
+      // optionIndex 1 = gruppo piccolo, in minivan, in italiano.
+      { id: "stargazing-group", optionIndex: 1 }
     ],
     desc: {
-      it: "Tre spettacoli con la cena compresa: il drag show, la notte medievale al castello e il viaggio nella storia della musica. Per chi sta in hotel a mezza pensione e la sera esce.",
-      en: "Three shows with dinner included: the drag show, the medieval night at the castle and the journey through the history of music. For anyone on half board who goes out in the evening.",
-      es: "Tres espectáculos con cena incluida: el drag show, la noche medieval en el castillo y el viaje por la historia de la música. Para quien está en media pensión y sale por la noche."
+      // "cena compresa" valeva per tre show; adesso la terza sera e' un picnic
+      // al tramonto in quota, che la scheda dello stargazing dice a chiare
+      // lettere non essere una cena a tavola. Scritto come e'.
+      it: "Tre sere fuori: il drag show con la cena, la notte medievale al castello e le stelle dal Teide, con il picnic al tramonto sopra le nuvole. Per chi sta in hotel a mezza pensione e la sera esce.",
+      en: "Three evenings out: the drag show with dinner, the medieval night at the castle and the stars from Teide, with a picnic at sunset above the clouds. For anyone on half board who goes out in the evening.",
+      es: "Tres noches fuera: el drag show con cena, la noche medieval en el castillo y las estrellas desde el Teide, con picnic al atardecer por encima de las nubes. Para quien está en media pensión y sale por la noche."
     }
   }
 
@@ -330,15 +354,28 @@ function pacchettoVocePrezzo(voce) {
   return adulto ? { tipo: "persona", prezzo: adulto } : null;
 }
 
+// Su questa voce lo sconto si puo' fare? Una scheda che non si trova non si
+// sconta: nel dubbio si sconta di meno, mai di piu' di quello che si puo'.
+function pacchettoVoceScontabile(voce) {
+  const tour = pacchettoVoceTour(voce);
+  if (!tour) return false;
+  return PACCHETTI_CATEGORIE_SENZA_SCONTO.indexOf(tour.category) < 0;
+}
+
 // Il conto di un pacchetto:
-//   pieno     la somma senza sconto
-//   scontato  la somma con lo sconto
-//   risparmio la differenza, che e' il numero che il cliente guarda davvero
-//   misto     c'e' dentro almeno un prezzo a mezzo: il numero vale per una
-//             persona da sola e va scritto con la sua nota
+//   pieno      la somma di tutto
+//   scontabile la parte su cui lo sconto si puo' fare
+//   risparmio  quanto si toglie davvero — il numero che il cliente guarda
+//   scontato   quello che paga: pieno meno risparmio
+//   misto      c'e' dentro almeno un prezzo a mezzo: il numero vale per una
+//              persona da sola e va scritto con la sua nota
+//   parziale   una parte del pacchetto e' a prezzo fisso (parchi, spettacoli)
+//              e va detto, o il cliente fa il 10% a mente e trova un altro
+//              numero
 // Torna null se anche una sola voce non ha un prezzo leggibile.
 function pacchettoConto(pack) {
   let pieno = 0;
+  let scontabile = 0;
   let misto = false;
   let completo = true;
 
@@ -347,17 +384,20 @@ function pacchettoConto(pack) {
     if (!p) { completo = false; return; }
     if (p.tipo === "mezzo") misto = true;
     pieno += p.prezzo;
+    if (pacchettoVoceScontabile(voce)) scontabile += p.prezzo;
   });
   if (!completo) return null;
 
   const sconto = pacchettoSconto(pack);
-  const scontato = pacchettoArrotonda(pieno * (100 - sconto) / 100);
+  const risparmio = pacchettoArrotonda(scontabile * sconto / 100);
   return {
     pieno: pacchettoArrotonda(pieno),
-    scontato: scontato,
-    risparmio: pacchettoArrotonda(pieno - scontato),
+    scontabile: pacchettoArrotonda(scontabile),
+    risparmio: risparmio,
+    scontato: pacchettoArrotonda(pieno - risparmio),
     sconto: sconto,
-    misto: misto
+    misto: misto,
+    parziale: scontabile < pieno
   };
 }
 
@@ -420,6 +460,9 @@ function pacchettiScontoLista(voci, contoDiVoce) {
     let somma = 0;
     voci.forEach(v => {
       if (v.pack !== pack.id) return;
+      // I biglietti dei parchi e degli spettacoli stanno nel pacchetto ma non
+      // nella somma da scontare: prezzo fisso, non c'e' margine da tagliare.
+      if (!pacchettoVoceScontabile(v)) return;
       const conto = contoDiVoce(v);
       if (conto) somma += conto.totale;
     });
@@ -454,6 +497,9 @@ function pacchettoVoceHTML(pack, voce, n, giaDentro) {
   const dettagli = [];
   if (variante) dettagli.push(tf(variante.label));
   if (prezzo) dettagli.push("€" + eur(prezzo.prezzo) + priceUnitSuffix(tour));
+  // Quale delle tre non si sconta si dice sulla riga, non solo nella nota
+  // sotto il prezzo: cosi' il cliente non deve indovinare quale sia.
+  if (!pacchettoVoceScontabile(voce)) dettagli.push(t("pack.fixedShort"));
   if (giaDentro) dettagli.push(t("pack.again"));
 
   let href = "./tour.html?id=" + encodeURIComponent(tour.id) +
@@ -486,21 +532,32 @@ function pacchettoCardHTML(pack) {
     .map((voce, i) => pacchettoVoceHTML(pack, voce, i + 1, presenti[i]))
     .join("");
 
-  const prezzo = conto
-    ? `<span class="pack-price">
+  // Tre casi, non due: col prezzo e con lo sconto, col prezzo ma senza sconto
+  // (un pacchetto di soli biglietti a prezzo fisso), senza prezzo. Il prezzo
+  // barrato compare **solo** dove c'e' davvero qualcosa da togliere: barrare
+  // un numero e riscrivere lo stesso numero e' una finta offerta.
+  let prezzo;
+  if (!conto) {
+    prezzo = `<span class="pack-price"><strong>${esc(t("pack.noPrice"))}</strong></span>`;
+  } else if (conto.risparmio > 0) {
+    prezzo = `<span class="pack-price">
          <s class="price-before">€${esc(eur(conto.pieno))}</s>
          <strong>€${esc(eur(conto.scontato))}</strong>
          <small>${esc(t("pack.perPerson"))}</small>
-       </span>
-       <span class="pack-save">${esc(t("pack.save", { n: eur(conto.risparmio) }))}</span>`
-    : `<span class="pack-price"><strong>${esc(t("pack.noPrice"))}</strong></span>`;
+       </span>`;
+  } else {
+    prezzo = `<span class="pack-price">
+         <strong>€${esc(eur(conto.pieno))}</strong>
+         <small>${esc(t("pack.perPerson"))}</small>
+       </span>`;
+  }
 
   // Lo stato della lista si scrive solo quando c'e' qualcosa da dire: a lista
   // vuota un "0 di 3" sembra un compito da finire.
   const stato = quante === 0 ? "" : `
     <p class="pack-state${tutte ? " is-full" : ""}">
       ${esc(tutte
-        ? t("pack.progressFull", { n: conto ? conto.sconto : pacchettoSconto(pack) })
+        ? t("pack.progressFull")
         : t("pack.progress", { n: quante, tot: pack.voci.length }))}
     </p>`;
 
@@ -508,12 +565,15 @@ function pacchettoCardHTML(pack) {
     <li class="pack-card" data-pack-card="${esc(pack.id)}">
       <div class="pack-media">
         <img src="./assets/${encodeURIComponent(pack.image)}" alt="" loading="lazy" />
-        <span class="pack-badge">−${esc(String(pacchettoSconto(pack)))}%</span>
+        ${conto && conto.risparmio > 0
+          ? `<span class="pack-badge">${esc(t("pack.save", { n: eur(conto.risparmio) }))}</span>`
+          : ""}
       </div>
       <div class="pack-body">
         <h2 class="pack-title">${esc(tf(pack.title))}</h2>
         <p class="pack-desc">${esc(tf(pack.desc))}</p>
         <div class="pack-foot">${prezzo}</div>
+        ${conto && conto.parziale ? `<p class="pack-note">${esc(t("pack.fixedNote"))}</p>` : ""}
         ${conto && conto.misto ? `<p class="pack-note">${esc(t("pack.unitNote"))}</p>` : ""}
         <span class="pack-inside">${esc(t("pack.inside"))}</span>
         <ol class="pack-voci">${righe}</ol>

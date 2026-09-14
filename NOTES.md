@@ -11216,3 +11216,48 @@ c'è, un `id` inventato che mostra "Pacchetto non trovato", e le pagine di prima
 66 schede, scheda del jet ski sulla sua prima variante, nessuna riga del pacchetto).
 Nessuna chiave non tradotta, nessun errore in console, nessuno scorrimento orizzontale.
 `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v317`.
+
+## 14 settembre 2026 — Il riquadro Pacchetti in home ha tre foto (v318)
+
+«Puoi mettere un'immagine al bento pacchetti sulla home, o più immagini, come ti sembra
+meglio.» Tre, non una: **un pacchetto è tre escursioni diverse messe insieme**, e tre foto
+lo dicono senza una parola. Una foto sola avrebbe detto "un'escursione".
+
+Mare, terra e aria — le balene viste dalla barca, il buggy col Teide dietro, il
+parascending — che è poi quello che i pacchetti vendono davvero. La foto grande sopra, le
+due piccole sotto affiancate; la scritta "Pacchetti" scende in fondo e diventa bianca sopra
+una sfumatura, come sulle foto delle categorie.
+
+**È l'unico riquadro con le foto, ed è voluto**: gli altri quattro restano crema con
+l'icona. Il riquadro dei pacchetti è quello da spingere e l'unico che porta a una pagina
+nuova: in mezzo a quattro riquadri uguali, tira l'occhio da solo.
+
+### Le foto sono ritagli fatti apposta, non quelle del catalogo
+
+`assets/bento-pacchetti-mare.jpg` (560×280), `-terra.jpg` e `-aria.jpg` (280×280): **64 KB
+in tutto**, contro i 467 KB delle tre originali a 1200×800. Un riquadro che sul telefono è
+largo 169px non ha nessun motivo di scaricare tre foto da 1200. I ritagli sono al doppio
+della misura in cui si vedono, per gli schermi a densità doppia, e sono `loading="lazy"`:
+il bento sta sotto la prima schermata.
+
+Fatti con Pillow (`pip install Pillow`), ritaglio al centro e qualità 82, la stessa ricetta
+che `NOTES.md` già usa per le foto grandi. Se le foto di partenza cambiano, i ritagli vanno
+rifatti a mano: non c'è niente che li rigeneri da solo, ed è un prezzo che vale la pena
+pagare per 400 KB in meno sulla home.
+
+### La trappola del giorno: `span` prende anche il mosaico
+
+La regola della scritta era `.bento-tile-photo span { position: relative }`. Dentro quel
+riquadro di `span` ce ne sono **due** — la scritta e il mosaico — e la regola li prendeva
+tutti e due, togliendo al mosaico il suo `position: absolute`. Risultato: le foto finivano
+nel flusso e restavano alte due terzi del riquadro, con una fascia scura sotto. Si vede
+solo guardando la pagina: il CSS era valido e non si lamentava nessuno.
+
+Adesso è `> span:not(.bento-mosaico)`. È la stessa famiglia di errori già in questo file:
+una regola scritta larga che prende più di quello che credi (`.bento-grid` che annullava il
+margine di `.wrap`, il `padding: 0` che annullava quello laterale).
+
+**Provato nel browser vero** a 390px e 1280px: il mosaico riempie il riquadro (167×167 su
+169 di riquadro, misurato), la scritta si legge sopra la sfumatura, il tocco porta a
+`pacchetti.html` con gli otto riquadri, nessun errore in console. `node controlla.js` →
+0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v318`.

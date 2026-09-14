@@ -125,8 +125,17 @@
 
     <section class="bento">
       <div class="wrap bento-grid">
-        <a class="bento-tile" href="./pacchetti.html">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
+        <!-- L'unico riquadro con le foto invece dell'icona: i pacchetti sono
+             la cosa da spingere, e tre foto dicono senza parole che un
+             pacchetto e' tre escursioni diverse insieme. Sono ritagli piccoli
+             fatti apposta (65 KB in tutto), non le foto del catalogo a
+             grandezza intera. -->
+        <a class="bento-tile bento-tile-photo" href="./pacchetti.html">
+          <span class="bento-mosaico" aria-hidden="true">
+            <img src="./assets/bento-pacchetti-mare.jpg" alt="" loading="lazy" width="560" height="280" />
+            <img src="./assets/bento-pacchetti-terra.jpg" alt="" loading="lazy" width="280" height="280" />
+            <img src="./assets/bento-pacchetti-aria.jpg" alt="" loading="lazy" width="280" height="280" />
+          </span>
           <span data-i18n="bento.packages">Pacchetti</span>
         </a>
         <button class="bento-tile" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">

@@ -12044,3 +12044,70 @@ che i clienti non vedono.
 ### Il karting è chiuso
 
 Non resta niente da confermare.
+
+## v330 — il riquadro "3/5/7 Days Experience" diventa cinque foto a strisce oblique
+
+Richiesta del proprietario, con uno schizzo a mano sopra uno screenshot del sito: dividere
+il riquadro in 5 strisce oblique e mettere una foto diversa in ognuna.
+
+**Non è la prima volta che si prova più foto in un riquadro bento piccolo.** Il 14 settembre
+2026 (v318) c'era stato un mosaico di tre foto nel riquadro "Pacchetti", durato mezza
+giornata: su un riquadro di quella misura tre miniature in griglia sono tre francobolli, si
+vede che sono foto ma non si capisce di cosa (v323 l'ha tolto). Le strisce oblique sono
+diverse dal mosaico nel punto che contava: **ogni striscia arriva alta quanto tutto il
+riquadro**, non è una miniatura piccola in un angolo — è una foto intera vista da uno
+spiraglio verticale, non un francobollo. Provato nel browser vero a 179px (mobile) prima di
+darlo per buono, non solo guardato nel codice.
+
+### Come sono tagliate le strisce
+
+`clip-path: polygon(...)` su cinque `<img class="bento-foto">` impilati uno sull'altro, la
+stessa foto di sfondo di sempre (`.bento-tile-photo`, `object-fit: cover`, riempiono tutto
+il riquadro) ma ognuno ritagliato a parallelogramma. Prima volta fatta, i punti delle cinque
+polygon combaciavano esatti da una striscia alla prossima; il proprietario ha chiesto una
+riga bianca a separarle, quindi adesso il bordo destro della striscia N è un po' *prima* del
+bordo sinistro della N+1, della stessa quantità in percentuale su tutti e cinque i tagli —
+e sotto le foto c'è sfondo bianco (`.bento-tile.bento-tile-stripes { background: #fff }`)
+invece del crema del riquadro, così lo spacco esce come una riga bianca e non come un buco
+color crema. Sono in `styles.css`, `.bento-tile-stripes .bento-stripe-1` … `-5`: se un
+domani cambia il numero di strisce o la larghezza dello spacco vanno ricalcolati tutti
+insieme, non uno alla volta.
+
+Tolta l'icona del calendario: gli altri due riquadri con la foto (Pacchetti, In famiglia)
+non hanno icona, solo foto e scritta bianca in basso sulla sfumatura — per coerenza questo
+adesso fa lo stesso.
+
+### Le cinque foto
+
+Nessuna delle sei foto di `#categories` (`Cat-mare.jpg` e le altre): quelle compaiono già
+più sotto nella stessa pagina, e NOTES.md ricorda già che una foto vista due volte sulla
+stessa home è un problema evitato apposta altrove (`Cat-mare.jpg` / `Cat-teide.jpg`).
+Scelte invece cinque foto che non compaiono da nessun'altra parte in home, una per
+atmosfera diversa — Teide, mare/delfini, parco acquatico, avventura al tramonto, cielo
+stellato:
+
+- `bento-giorni-teide.jpg` ← `teide-national-park.jpg`
+- `bento-giorni-mare.jpg` ← `luxury-catamaran.jpg`
+- `bento-giorni-parco.jpg` ← `siam-park.jpg`
+- `bento-giorni-avventura.jpg` ← `quad-teide-adventure.jpg`
+- `bento-giorni-stelle.jpg` ← `stargazing-group.jpg`
+
+Ritagliate a 520×520 (Pillow, centrate, qualità 82), la stessa ricetta di
+`bento-pacchetti.jpg` e `bento-famiglia.jpg` — non la foto intera, altrimenti la striscia più
+grossa (`bento-giorni-parco.jpg`, partiva da un file da 361 KB) pesava troppo per un
+riquadro che in realtà se ne vede uno spicchio.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati (foto in assets: 119 → 124, le 5 nuove).
+
+Nel browser vero, mobile (412px) e desktop (1280px): le cinque strisce si vedono ognuna
+per intero, niente spacchi né sovrapposizioni ai bordi, la scritta resta leggibile sopra la
+sfumatura, il link porta a `pacchetti.html?giorni=tutti` come prima. Nessun errore in
+console (a parte un font esterno bloccato dal proxy di sviluppo, non c'entra con la
+modifica).
+
+Rifatto anche dopo aggiunta la riga bianca fra le strisce: stessa prova, stesso risultato,
+niente spacchi color crema al posto del bianco.
+
+`CACHE_NAME` da `isla-v328` a `isla-v330`: toccati `index.html` e `styles.css`.

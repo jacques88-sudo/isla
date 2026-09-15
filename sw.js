@@ -1,9 +1,27 @@
-const CACHE_NAME = "isla-v280";
+const CACHE_NAME = "isla-v327";
 const ASSETS = [
   "./",
   "./index.html",
   "./booking.html",
   "./escursioni.html",
+  "./pacchetti.html",
+  // La vista "In famiglia" e' la stessa pagina con `?famiglia=1` attaccato, ma
+  // per la cache e' un altro indirizzo: `caches.match` guarda anche la parte
+  // dopo il "?", quindi senza questa riga il riquadro della home, da offline,
+  // finirebbe sulla pagina "sei senza connessione". Stessa cosa per l'elenco
+  // delle escursioni per bambini. Il server manda lo stesso file, e' il
+  // browser a doverselo ritrovare con l'indirizzo giusto.
+  "./pacchetti.html?famiglia=1",
+  "./escursioni.html?family=1",
+  // Stessa storia per la vetrina degli itinerari: quattro indirizzi, uno per
+  // pillola. "tutti" e' quello del riquadro in home, gli altri tre sono quelli
+  // che si mandano a un cliente ("ti mando i cinque giorni") ed e' proprio da
+  // quelli che si apre l'app la seconda volta.
+  "./pacchetti.html?giorni=tutti",
+  "./pacchetti.html?giorni=3",
+  "./pacchetti.html?giorni=5",
+  "./pacchetti.html?giorni=7",
+  "./pacchetto.html",
   "./tour.html",
   "./offline.html",
   "./styles.css",
@@ -12,6 +30,7 @@ const ASSETS = [
   "./booking.js",
   "./escursioni.js",
   "./tour.js",
+  "./pacchetti.js",
   "./lista.js",
   "./assistente.js",
   "./esplora-catalog.js",

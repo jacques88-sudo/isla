@@ -66,6 +66,21 @@ function detailRows(tour, variante) {
   if (!daDefinire(durata) && !opzioniSonoLaDurata) {
     righe.push([t("detail.duration"), tf(durata)]);
   }
+  // Quanto dura l'ATTIVITA' dentro la giornata, che non e' quanto dura
+  // l'escursione: le camminate di Canaventura sono due ore dentro una giornata
+  // intera, e le due cose finivano per scacciarsi a vicenda — o si scriveva
+  // "Giornata intera" e chi voleva sapere quanto si cammina non lo trovava, o
+  // si scriveva "2 ore" e il cliente tornava a pranzo. Sono due righe perche'
+  // sono due domande.
+  // Come la zona e la durata, la variante vince: i tre cammini durano diverso.
+  const attivita = (variante && variante.activityDuration) || tour.activityDuration;
+  if (attivita && !daDefinire(attivita)) {
+    // L'etichetta la sceglie la scheda ("Tempo di cammino"), perche' generica
+    // accanto a "Durata" non si capirebbe. Senza, un ripiego che almeno dice
+    // che si parla dell'attivita' e non della giornata.
+    const etichetta = tour.activityLabel ? tf(tour.activityLabel) : t("detail.activity");
+    righe.push([etichetta, tf(attivita)]);
+  }
 
   // Orari e lingue stavano solo dentro la finestra della richiesta, dove si
   // arriva col pulsante: chi guardava la pagina non li trovava. Qui ci vanno
@@ -107,6 +122,12 @@ function detailRows(tour, variante) {
   } else if (adulto > 0) {
     // "Prezzo: €55" sopra "Adulti: €55" e' la stessa cosa scritta due volte:
     // si tengono solo le righe per fascia d'eta', che sono piu' precise.
+  } else if (prezziVarianteTesto(tour, variante)) {
+    // Dove i mezzi sono di piu' tipi i prezzi sono tanti quanti i tipi:
+    // "Singola €180 · Doppia €200". Niente `priceUnitSuffix` appiccicato in
+    // fondo, perche' il nome di ogni tipo dice gia' che si paga a mezzo e
+    // "a moto d'acqua" sarebbe la stessa cosa detta una terza volta.
+    righe.push([t("detail.price"), prezziVarianteTesto(tour, variante)]);
   } else if (variante && variante.price) {
     // variante col prezzo ma senza le fasce: il numero e' quello del mezzo o
     // del gruppo, e resta sulla riga generica
@@ -198,7 +219,13 @@ function detailRows(tour, variante) {
     const prezzo = prezzoTransfer(supplemento(tour.transferPrice));
     if (prezzo) righe.push([tf(tour.transferPriceLabel), prezzo]);
   } else {
-    if (tour.transfer) righe.push([t("detail.transfer"), tf(tour.transfer)]);
+    // L'etichetta della scheda vince anche qui, non solo sulla casella della
+    // finestra: dove il transfer si chiama "Ritiro in hotel", "Transfer" in
+    // "In breve" sarebbe un terzo nome per la stessa cosa.
+    if (tour.transfer) {
+      righe.push([tour.transferLabel ? tf(tour.transferLabel) : t("detail.transfer"),
+        tf(tour.transfer)]);
+    }
     if (tour.transferPrice && !tour.transferPriceHidden) {
       const prezzo = prezzoTransfer(conVariante(tour.transferPrice));
       if (prezzo) righe.push([t("detail.withTransfer"), prezzo]);
@@ -380,6 +407,10 @@ function detailOptions(tour) {
           // dove il prezzo della variante e' a persona e sappiamo anche
           // quello dei bambini. Sul bottone vale lo stesso.
           const prezzo = scelta.price || scelta.priceAdult;
+          // Dove i mezzi sono di piu' tipi il bottone li porta tutti
+          // ("Singola €180 · Doppia €200"): `price` da solo e' il piu' basso.
+          const testoPrezzo = prezziVarianteTesto(tour, scelta) ||
+            (prezzo ? "€" + eur(prezzo) : "");
           const premuto = i === 0;
           const bottone = `
           <button type="button" class="detail-option"
@@ -387,7 +418,7 @@ function detailOptions(tour) {
                   ${prezzo ? `data-option-price="${prezzo}"` : ""}
                   aria-pressed="${premuto ? "true" : "false"}">
             <span class="detail-option-name">${esc(tf(scelta.label))}</span>
-            ${prezzo ? `<span class="detail-option-price">€${eur(prezzo)}</span>` : ""}
+            ${testoPrezzo ? `<span class="detail-option-price">${esc(testoPrezzo)}</span>` : ""}
           </button>`;
           if (!conDesc) return bottone;
           // Il testo nasce gia' scritto nella pagina, non arriva da un
@@ -413,11 +444,20 @@ function primaVariante(tour) {
 // Una scheda per categoria diversa da quella aperta, cosi' si vede un
 // assaggio del resto del catalogo invece che altre tre barche uguali.
 function detailRelated(tour) {
-  const viste = new Set();
+  // "Diversa da quella aperta" vuol dire diversa da **tutte** le sue: una
+  // scheda che sta anche in questa categoria non e' il resto del catalogo.
+  // Cosi' resta fuori anche la scheda aperta, che le sue categorie le
+  // condivide con se stessa.
+  //
+  // `viste` si riempie con tutte le categorie di quelle gia' prese, non solo
+  // con la principale: dopo "Teide National Park", il quad che sale al Teide
+  // e' un'altra cosa al Teide, e queste tre righe servono a far vedere che il
+  // catalogo ha anche dell'altro.
+  const viste = new Set(categorieDi(tour));
   const altre = [];
   for (const x of ESPLORA_CATALOG) {
-    if (!x.published || x.category === tour.category || viste.has(x.category)) continue;
-    viste.add(x.category);
+    if (!x.published || categorieDi(x).some(id => viste.has(id))) continue;
+    categorieDi(x).forEach(id => viste.add(id));
     altre.push(x);
     if (altre.length >= DETAIL_MAX_CORRELATE) break;
   }
@@ -447,16 +487,25 @@ function detailRelated(tour) {
 
 // Rimando alla versione privata della stessa uscita, per chi vuole la barca
 // riservata al proprio gruppo.
+//
+// Il testo fisso parla di barche perche' li' e' nato, ed e' giusto che lo
+// faccia: "vuoi la barca solo per il tuo gruppo?" dice piu' di una frase
+// generica. Dove la versione privata non e' una barca, la scheda si scrive le
+// sue due frasi con `privateTitle` e `privateLink` — come fa gia' il transfer
+// con `transferLabel`. Senza quei campi resta il testo di sempre.
 function detailPrivate(tour) {
   if (!tour.privateOption) return "";
   const privata = ESPLORA_CATALOG.find(x => x.id === tour.privateOption && x.published);
   if (!privata) return "";
 
+  const titolo = tour.privateTitle ? tf(tour.privateTitle) : t("detail.privateTitle");
+  const vaiA = tour.privateLink ? tf(tour.privateLink) : t("detail.privateLink");
+
   return `
     <a class="detail-alt" href="./tour.html?id=${encodeURIComponent(privata.id)}">
-      <span class="detail-alt-title">${esc(t("detail.privateTitle"))}</span>
+      <span class="detail-alt-title">${esc(titolo)}</span>
       <span class="detail-alt-name">${esc(tf(privata.title))} · ${esc(tourPrice(privata))}</span>
-      <span class="detail-alt-go">${esc(t("detail.privateLink"))} →</span>
+      <span class="detail-alt-go">${esc(vaiA)} →</span>
     </a>`;
 }
 

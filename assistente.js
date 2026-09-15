@@ -182,7 +182,7 @@ function initAssistente() {
 
   function mostraRisultati(cats, soloFamiglia, budget) {
     let trovate = ESPLORA_CATALOG.filter(x => x.published);
-    if (cats) trovate = trovate.filter(x => cats.includes(x.category));
+    if (cats) trovate = trovate.filter(x => categorieDi(x).some(id => cats.includes(id)));
     if (soloFamiglia) trovate = trovate.filter(x => x.family);
 
     // Le voci "Su richiesta" restano fuori quando c'e' un budget: senza un

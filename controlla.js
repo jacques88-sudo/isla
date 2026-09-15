@@ -29,6 +29,10 @@ const leggi = f => fs.readFileSync(path.join(RADICE, f), "utf8");
 const sorgenteCatalogo = leggi("esplora-catalog.js").replace(/^const /gm, "var ");
 eval(sorgenteCatalogo);
 
+// Stessa cosa per i pacchetti: qui servono sia i dati (PACCHETTI) sia le
+// funzioni del prezzo, per controllare che ogni pacchetto un prezzo ce l'abbia.
+eval(leggi("pacchetti.js").replace(/^const /gm, "var "));
+
 const sorgenteTour = leggi("tour.js");
 const sorgenteI18n = leggi("i18n.js");
 const sorgenteSw = leggi("sw.js");
@@ -325,11 +329,30 @@ function controllaBase(t) {
   if (!t.id) return errore("(senza id)", "scheda senza id.");
   if (!t.category) errore(t.id, "senza categoria.");
   else if (!CATEGORIE.has(t.category)) errore(t.id, 'categoria inesistente: "' + t.category + '".');
+  if (t.alsoIn !== undefined) controllaAlsoIn(t);
   if (!t.title) errore(t.id, "senza titolo.");
   if (t.published && !t.desc) avviso(t.id, "pubblicata senza descrizione.");
   if (t.privateOption && !ESPLORA_CATALOG.some(x => x.id === t.privateOption)) {
     errore(t.id, 'privateOption punta a "' + t.privateOption + '", che non esiste.');
   }
+}
+
+// Le categorie in piu' di `alsoIn`. Una categoria che non esiste qui non fa
+// sparire la scheda: la scheda resta nella sua, e la categoria in piu' non la
+// trova nessuno - cioe' l'errore non si vede guardando il sito, e per questo
+// va detto qui.
+function controllaAlsoIn(t) {
+  if (!Array.isArray(t.alsoIn)) {
+    errore(t.id, "alsoIn deve essere un elenco di categorie, es. [\"tour-isola\"].");
+    return;
+  }
+  const viste = new Set();
+  t.alsoIn.forEach(id => {
+    if (!CATEGORIE.has(id)) errore(t.id, 'alsoIn: categoria inesistente: "' + id + '".');
+    else if (id === t.category) errore(t.id, 'alsoIn ripete la categoria principale: "' + id + '".');
+    else if (viste.has(id)) errore(t.id, 'alsoIn: "' + id + '" scritta due volte.');
+    viste.add(id);
+  });
 }
 
 // ─── 9. Nessun id ripetuto ─────────────────────────────────────────────────
@@ -390,6 +413,187 @@ function controllaServiceWorker() {
   }
 }
 
+// ─── 12. I pacchetti ───────────────────────────────────────────────────────
+// Un pacchetto e' fatto di id del catalogo. Se un id e' scritto male, o la
+// scheda viene spubblicata, la voce sparisce dalla pagina **in silenzio**: il
+// cliente vede un pacchetto da due escursioni al posto di uno da tre e nessuno
+// se ne accorge. Stessa cosa per un `optionIndex` che punta a una variante che
+// non c'e' piu': il pacchetto promette "gruppo piccolo" e apre il gruppo
+// grande, con un altro prezzo.
+// Le voci che salgono al Parco Nazionale del Teide. La regola e' in testa a
+// `pacchetti.js`: in un pacchetto ci si sale **una volta**, se no e' lo stesso
+// posto venduto tre volte. La chiave e' "id" per tutta la scheda, oppure
+// "id/indice" quando ci sale solo una variante.
+const SALE_AL_TEIDE = new Set([
+  "teide-national-park",
+  "stargazing-group",
+  "quad-teide-adventure",
+  "buggy-volcano-4h/1",     // Tramonto sul Teide
+  "buggy-volcano-4h/2",     // Completo: dentro c'e' il parco
+  "trekking-bici/0",        // Teide Light
+  "helicopter-tours/4",     // Grand Teide Luxury
+  // Queste quattro mancavano, e il Teide nel nome non ce l'hanno tutte: sono
+  // arrivate leggendo le descrizioni una per una, non i titoli. Il controllo
+  // diceva "0 errori" su un itinerario che al parco ci saliva due volte.
+  "icod-garachico-orotava", // "Una giornata sola per il Parco Nazionale del
+                            //  Teide, il Drago Millenario di Icod..."
+  "masca-teide-cabrio-bus", // Masca e il parco, in bus scoperto
+  "mustang-experience",     // su per la strada del parco fino a Cañada Blanca
+  "island-tour-completo"    // "i punti simbolo in un giorno solo": c'e' dentro
+]);
+
+// Il buggy senza `optionIndex` lascia scegliere fra quattro percorsi, e due dei
+// quattro al parco ci vanno: non e' una salita certa, ma nemmeno una salita da
+// escludere.
+const FORSE_AL_TEIDE = new Set(["buggy-volcano-4h"]);
+
+function controllaPacchetti() {
+  const visti = new Set();
+
+  PACCHETTI.forEach(pack => {
+    const dove = "pacchetto " + pack.id;
+
+    if (visti.has(pack.id)) errore(dove, "questo id e' usato due volte.");
+    visti.add(pack.id);
+
+    LINGUE.forEach(l => {
+      if (!pack.title || !pack.title[l]) errore(dove, "manca il titolo in " + l + ".");
+      if (!pack.desc || !pack.desc[l]) errore(dove, "manca la descrizione in " + l + ".");
+    });
+
+    if (!pack.image) errore(dove, "manca la foto di copertina.");
+    else if (!FOTO.has(pack.image)) {
+      errore(dove, 'la foto "' + pack.image + '" non c\'e\' in assets/.');
+    }
+
+    const sconto = pacchettoSconto(pack);
+    if (!(sconto > 0 && sconto < 100)) {
+      errore(dove, "lo sconto e' " + sconto + "%: deve stare fra 1 e 99.");
+    }
+
+    if (!Array.isArray(pack.voci) || pack.voci.length < 2) {
+      errore(dove, "un pacchetto ha almeno due escursioni dentro.");
+      return;
+    }
+
+    // Gli itinerari a giorni: `giorni` e' scritto nei dati e il numero delle
+    // voci e' un'altra cosa, quindi possono contraddirsi. Se si contraddicono
+    // la pagina non si rompe — dice "7 giorni" in cima e sotto ne elenca
+    // cinque, e chi la guarda pensa che manchi la roba, non il numero.
+    if (pack.giorni !== undefined) {
+      if ([3, 5, 7].indexOf(pack.giorni) === -1) {
+        errore(dove, "giorni e' " + pack.giorni + ": le vetrine sono 3, 5 e 7, " +
+          "e una durata fuori da quelle non ha una pillola che la mostri.");
+      } else if (pack.giorni !== pack.voci.length) {
+        errore(dove, "dice " + pack.giorni + " giorni ma ha " + pack.voci.length +
+          " escursioni: qui e' una al giorno.");
+      }
+      // Lo sconto che cresce coi giorni. Non e' un errore — il proprietario
+      // puo' fare quello che vuole su un itinerario singolo — ma se cambia per
+      // sbaglio non se ne accorge nessuno guardando la pagina: si vede solo
+      // che si risparmia meno.
+      const atteso = { 3: 10, 5: 12, 7: 15 }[pack.giorni];
+      if (atteso && pacchettoSconto(pack) !== atteso) {
+        avviso(dove, "sconto " + pacchettoSconto(pack) + "% su un itinerario da " +
+          pack.giorni + " giorni: la scala decisa e' 10/12/15.");
+      }
+    }
+
+    pack.voci.forEach(voce => {
+      const tour = ESPLORA_CATALOG.find(t => t.id === voce.id);
+      if (!tour) {
+        errore(dove, 'l\'id "' + voce.id + '" non esiste nel catalogo.');
+        return;
+      }
+      if (!tour.published) {
+        errore(dove, '"' + voce.id + '" non e\' pubblicata: il pacchetto la salterebbe.');
+        return;
+      }
+      if (voce.optionIndex !== undefined) {
+        const scelte = (tour.options && tour.options.choices) || [];
+        if (!scelte[voce.optionIndex]) {
+          errore(dove, '"' + voce.id + '" non ha la variante numero ' + voce.optionIndex +
+            " (ne ha " + scelte.length + ").");
+        }
+      }
+      if (!pacchettoVocePrezzo(voce)) {
+        avviso(dove, 'di "' + voce.id + '" non si riesce a leggere un prezzo: ' +
+          "il pacchetto esce senza nessun numero in vetrina.");
+      }
+    });
+
+    // Un pacchetto con dentro due volte la stessa escursione: la lista lo
+    // conterebbe una volta sola e lo sconto non scatterebbe mai.
+    const doppie = pack.voci.map(v => v.id + "/" + v.optionIndex);
+    if (new Set(doppie).size !== doppie.length) {
+      errore(dove, "c'e' due volte la stessa escursione con la stessa variante.");
+    }
+
+    // Il Teide una volta sola.
+    const salite = [];
+    let forse = 0;
+    pack.voci.forEach(voce => {
+      if (SALE_AL_TEIDE.has(voce.id) ||
+          SALE_AL_TEIDE.has(voce.id + "/" + voce.optionIndex)) {
+        salite.push(voce.id);
+      } else if (voce.optionIndex === undefined && FORSE_AL_TEIDE.has(voce.id)) {
+        forse++;
+      }
+    });
+    if (salite.length > 1) {
+      errore(dove, "al Teide ci si sale " + salite.length + " volte (" +
+        salite.join(", ") + "): nel pacchetto ci sta una volta sola.");
+    } else if (salite.length === 1 && forse > 0) {
+      avviso(dove, "c'e' gia' una salita al Teide (" + salite[0] + ") e il buggy " +
+        "e' senza `optionIndex`: due dei quattro percorsi al parco ci vanno. " +
+        "Fissa `optionIndex: 0` o `3`.");
+    }
+
+    // Tutto a prezzo fisso: il pacchetto esiste ma non fa risparmiare niente.
+    // Non e' un errore (puo' essere una proposta, non un'offerta) ma va visto:
+    // e' successo a "Tre sere a Tenerife", che era fatto di tre soli show.
+    const conto = pacchettoConto(pack);
+    if (conto && conto.risparmio === 0) {
+      avviso(dove, "non fa risparmiare niente: e' fatto solo di cose a prezzo " +
+        "fisso — le categorie " + PACCHETTI_CATEGORIE_SENZA_SCONTO.join(", ") +
+        " e le schede con `fixedPrice`.");
+    }
+
+    // I pacchetti di famiglia. Le tre regole stanno in testa a `pacchetti.js`
+    // sotto "I PACCHETTI IN FAMIGLIA", e sbagliarle non si vede guardando la
+    // pagina: il pacchetto esce lo stesso, solo che promette una cosa e dentro
+    // ne ha un'altra.
+    if (pacchettoDiFamiglia(pack)) {
+      pack.voci.forEach(voce => {
+        const tour = ESPLORA_CATALOG.find(t => t.id === voce.id);
+        if (!tour || !tour.published) return;   // gia' detto piu' sopra
+
+        if (!tour.family) {
+          errore(dove, 'e\' un pacchetto di famiglia ma "' + voce.id + '" non ha ' +
+            "`family: true`: dentro c'e' qualcosa dove i bambini non vanno.");
+        }
+        if (!pacchettoVocePrezzoBambino(voce)) {
+          errore(dove, 'di "' + voce.id + '" manca il prezzo dei bambini ' +
+            "(assente o a 0, che vuol dire \"non lo sappiamo\"): senza, il conto " +
+            "della famiglia non si fa e il pacchetto e' di famiglia solo di nome.");
+        }
+        const prezzo = pacchettoVocePrezzo(voce);
+        if (prezzo && prezzo.tipo === "mezzo") {
+          errore(dove, '"' + voce.id + '" si paga a mezzo (buggy, moto d\'acqua): ' +
+            "in un pacchetto di famiglia non ci sta, il totale non si potrebbe fare.");
+        }
+      });
+
+      // La controprova, che e' poi quello che vede il cliente: il conto di due
+      // adulti e due bambini deve venire.
+      if (!pacchettoTotale(pack, 2, 2)) {
+        errore(dove, "il conto di 2 adulti e 2 bambini non si fa: la pagina " +
+          "mostrerebbe un pacchetto di famiglia senza il numero della famiglia.");
+      }
+    }
+  });
+}
+
 // ─── Esecuzione ────────────────────────────────────────────────────────────
 const CONTROLLI = [controllaBase, controllaEta, controllaPrezzi, controllaGiorni,
                    controllaOrari, controllaIncluse, controllaFoto, controllaTraduzioni];
@@ -398,6 +602,7 @@ console.log("\nControllo del catalogo Isla\n");
 ESPLORA_CATALOG.forEach(t => CONTROLLI.forEach(c => c(t)));
 controllaIdUnici();
 controllaI18n();
+controllaPacchetti();
 controllaServiceWorker();
 
 const pubblicate = ESPLORA_CATALOG.filter(t => t.published).length;

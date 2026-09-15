@@ -596,6 +596,47 @@ a { text-decoration: none; color: inherit; }
   padding: 1.15rem 1rem;
 }
 
+/* Il riquadro dei pacchetti: una foto al posto dell'icona, Puerto de la Cruz
+   col Teide dietro — la stessa che apre la home. La scritta resta dov'era ma
+   scende in fondo e diventa bianca, come sulle foto delle categorie. */
+.bento-tile-photo {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  justify-content: flex-end;
+  border-color: transparent;
+}
+.bento-foto {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  /* senza height il width/height nell'HTML batte il ritaglio e la foto
+     esce alta come e': e' gia' successo alla foto di "Chi siamo" */
+  height: 100%;
+  object-fit: cover;
+}
+/* La sfumatura e' decorativa: senza pointer-events copre il link. */
+.bento-tile-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 35%, oklch(0.24 0.012 60 / .9) 100%);
+  pointer-events: none;
+}
+/* La scritta. Quando la foto era un mosaico di tre dentro uno <span>, questa
+   regola scritta "span" e basta prendeva anche il mosaico e gli toglieva il
+   `position: absolute`: le foto finivano nel flusso e restavano alte due terzi
+   del riquadro. Adesso la foto e' un <img> e lo span qui dentro e' uno solo,
+   ma il `>` resta: una regola larga dentro un riquadro che cambia si
+   ripresenta. */
+.bento-tile-photo > span {
+  position: relative;
+  z-index: 1;
+  padding: 0 .7rem .9rem;
+  color: #fff;
+}
+
 .bento-tile svg {
   width: 28px;
   height: 28px;
@@ -1602,6 +1643,306 @@ body.menu-open { overflow: hidden; }
 .tour-media { display: grid; }
 .tour-title a { color: inherit; }
 .tour-title a:hover { text-decoration: underline; }
+
+/* ── I pacchetti ──────────────────────────────────────────────────────── */
+.packs-intro {
+  margin: 0 auto;
+  max-width: 52ch;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .92rem;
+  line-height: 1.6;
+}
+
+/* La vetrina, stile bento come in home: riquadri quadrati con la foto, e il
+   primo piu' grande degli altri. Il primo e' grande e basta, non "quello in
+   offerta": se un domani l'ordine cambia, cambia solo quale riquadro e' largo,
+   e nessun testo diventa falso. */
+.pack-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: .8rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+.pack-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+/* Il primo: su due colonne sta largo e basso, come il riquadro del noleggio
+   in home. */
+.pack-tile:first-child {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 10;
+}
+/* Sul telefono i riquadri piccoli sono larghi 168px: col prezzo barrato
+   davanti, "a persona" finisce su una riga sua e il blocco di testo diventa
+   alto il doppio. Il barrato sparisce solo li' — sul riquadro grande, da
+   tablet in su e nella pagina del pacchetto ci sta e resta, che e' il posto
+   dove il cliente guarda quanto risparmia. Il bollino lo dice comunque. */
+@media (max-width: 639px) {
+  .pack-tile:not(:first-child) .price-before { display: none; }
+  /* L'ultimo riquadro rimasto spaiato sulla riga da due si prende tutta la
+     larghezza invece di lasciare un buco, come il riquadro del noleggio in
+     home. Il primo e' gia' largo, quindi "spaiato" vuol dire che i riquadri
+     sono in numero pari. */
+  .pack-tile:nth-child(even):last-child {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 10;
+  }
+}
+@media (min-width: 640px) {
+  .pack-grid { grid-template-columns: repeat(3, 1fr); }
+  .pack-tile:first-child { grid-column: span 2; aspect-ratio: auto; }
+}
+@media (min-width: 960px) {
+  .pack-grid { grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  /* due colonne e due righe: il quadrato grande del bento */
+  .pack-tile:first-child { grid-column: span 2; grid-row: span 2; }
+}
+.pack-tile-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+}
+.pack-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* La sfumatura e' decorativa: senza pointer-events copre il link e i tocchi
+   non passano. Stessa trappola gia' presa con le foto delle categorie. */
+.pack-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, oklch(0.24 0.012 60 / .82) 100%);
+  pointer-events: none;
+}
+.pack-tile-testo {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: .9rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+.pack-tile-testo strong {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.15rem;
+  line-height: 1.15;
+}
+@media (min-width: 960px) {
+  .pack-tile:first-child .pack-tile-testo strong { font-size: 1.6rem; }
+}
+/* Il prezzo sulla foto: piu' piccolo e in bianco, se no il numero scuro della
+   pagina sparisce dentro la sfumatura. */
+.pack-tile .pack-price { font-size: 1rem; }
+.pack-tile .pack-price strong { font-weight: 500; }
+.pack-tile .price-before { color: oklch(1 0 0 / .65); }
+.pack-tile .pack-price small { color: oklch(1 0 0 / .75); }
+/* ── Gli itinerari a giorni ───────────────────────────────────────────── */
+/* La riga delle durate sopra la vetrina. Sono le stesse pillole dei filtri per
+   categoria dell'elenco (.chip-row/.chip): e' lo stesso gesto — scegli una
+   cosa, la griglia sotto cambia — e impararlo una volta basta.
+   Niente `display` qui dentro: `.days-nav` e' un div, e un div nascosto con
+   [hidden] sparisce da solo. Una riga `display: flex` lo farebbe ricomparire
+   in tutte e tre le viste, come e' gia' successo a .packs-foot. */
+.days-nav { margin-bottom: 1.1rem; }
+/* Le durate vanno **a capo** anche sul telefono, al contrario delle categorie
+   dell'elenco che si scorrono col dito. Sono quattro e non venti, e l'ultima
+   e' "7 giorni": scorrendo, su uno schermo da 412 px restava mezza fuori dal
+   bordo: una vetrina intera che non si sa che c'e'. Le categorie si possono
+   permettere di scorrere perche' nessuna di loro e' l'unica strada per
+   arrivare da qualche parte. */
+.days-nav .chip-row {
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+
+/* Quanti giorni sono, sopra il titolo del riquadro. Bianco smorzato come "a
+   persona" del prezzo: deve dirsi prima del titolo ma non prima della foto. */
+.pack-tile-giorni {
+  font-size: .62rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: oklch(1 0 0 / .8);
+}
+
+.pack-badge {
+  position: absolute;
+  top: .8rem;
+  right: .8rem;
+  z-index: 1;
+  background: var(--text);
+  color: var(--cream);
+  border-radius: var(--radius-pill);
+  padding: .3rem .75rem;
+  font-size: .7rem;
+  letter-spacing: .06em;
+}
+
+/* ── Il pacchetto aperto ──────────────────────────────────────────────── */
+.pack-detail {
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+}
+.pack-detail-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--cream);
+  margin-bottom: .5rem;
+}
+.pack-detail-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pack-detail-title {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 1.5rem + 2vw, 2.8rem);
+  line-height: 1.1;
+}
+.pack-detail-lead {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .95rem;
+  line-height: 1.6;
+}
+.pack-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .3rem .8rem;
+  margin-top: .3rem;
+}
+.pack-price {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+/* "a persona" e' l'unita' del numero, non una frase: piccola e attaccata,
+   come il "/buggy" dei prezzi a mezzo. */
+.pack-price small {
+  font-family: var(--font-body);
+  font-size: .68rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+.pack-note {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .78rem;
+  line-height: 1.5;
+}
+/* Il conto della famiglia tipo, sotto il prezzo a persona. Non e' un titolo ma
+   un numero: piu' piccolo del prezzo grande, piu' scuro della nota che gli sta
+   sotto, cosi' si legge nell'ordine giusto (prezzo, famiglia, avvertenza). */
+.pack-family {
+  margin: .1rem 0 0;
+  font-size: .92rem;
+  font-weight: 400;
+}
+.pack-inside {
+  margin-top: .8rem;
+  font-size: .62rem;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--gold);
+}
+.pack-voci {
+  list-style: none;
+  margin: 0 0 1.4rem;
+  padding: 0;
+}
+.pack-voce {
+  display: flex;
+  align-items: flex-start;
+  gap: .8rem;
+  padding: .9rem 0;
+  border-top: 1px solid var(--border);
+}
+.pack-voce-n {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  margin-top: .1rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cream);
+  font-size: .72rem;
+  color: var(--muted);
+}
+/* min-width: 0 su un figlio flex serve o un titolo lungo allarga la riga
+   invece di andare a capo. */
+.pack-voce-testo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+.pack-voce-testo strong {
+  font-weight: 500;
+  font-size: .95rem;
+  line-height: 1.25;
+}
+.pack-voce-meta {
+  color: var(--muted);
+  font-size: .76rem;
+}
+/* Le due righe che dicono che cos'e': dal pacchetto non si esce per andare a
+   leggerlo sulla scheda, quindi il minimo per capirlo sta qui. */
+.pack-voce-desc {
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .84rem;
+  line-height: 1.5;
+}
+/* La nota sotto la data e l'etichetta delle persone si toccavano: il .hint
+   ha solo il margine sopra, e li' sotto ci va un campo nuovo. */
+#packDialog .hint { margin-bottom: 1.1rem; }
+#packDialog .request-total { margin-top: .2rem; }
+
+.pack-back {
+  align-self: center;
+  margin-top: .4rem;
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+/* Il piede della vista "In famiglia": le due uscite, in colonna e centrate.
+   Nella pagina di tutti i pacchetti resta `hidden` e non occupa niente. */
+.packs-foot {
+  margin-top: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+}
+/* `display: flex` vince su `[hidden]`, che e' solo `display: none` del browser:
+   senza questa riga il piede si vedeva anche nella pagina di tutti i pacchetti,
+   con scritto "tutte le escursioni adatte ai bambini". Vale per ogni elemento
+   che nasce nascosto e ha un display suo. */
+.packs-foot[hidden] { display: none; }
 
 /* ── Pagina di dettaglio di una singola escursione ────────────────────── */
 .detail-page {

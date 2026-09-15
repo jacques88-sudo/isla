@@ -12495,3 +12495,84 @@ Da fare uno alla volta, in quest'ordine:
 5. **Il nome, forse, non va chiesto**: il messaggio parte dal WhatsApp del cliente e
    l'ufficio vede già chi scrive. Domanda per il proprietario, non decisione da prendere
    qui.
+
+## v337 — il nome scende in fondo alla finestra della richiesta
+
+Secondo dei cinque passi sulla prenotazione. Il primo campo della finestra era **"Il tuo
+nome"**: la prima cosa che il cliente si trovava davanti, prima ancora di "quando vorresti
+andare".
+
+### Prima: la nota della v336 era sbagliata
+
+Lì avevo scritto «la tastiera si apre in faccia». **Non è vero, e vale la pena scriverlo
+qui perché non ci torni qualcun altro.** Ho cercato: nella finestra non c'è nessun
+`focus()` all'apertura — gli unici sono la casella dell'hotel dopo aver scelto un
+suggerimento e la data quando il giorno è sbagliato. La tastiera si apre **quando il
+cliente tocca il campo**, non da sola.
+
+Il problema vero, quello che resta dopo aver tolto l'esagerazione, è un altro e più
+semplice: **il nome è l'unica domanda che non riguarda l'escursione**, ed è l'unica a cui
+si risponde battendo a macchina. Metterla per prima vuol dire aprire la finestra su un
+adempimento invece che sulla domanda vera. Adesso la finestra si apre su "Quando vorresti
+andare" e il nome si scrive alla fine, quando si sta già mandando.
+
+### Cosa cambia
+
+Il blocco `[data-request-name]` si sposta in fondo, appena sopra il piede. Basta spostarlo:
+nessuno stile era legato alla sua posizione (niente `:first-child`), e il codice lo cerca
+per attributo, non per posizione.
+
+Niente cambia nel messaggio WhatsApp — il nome ci finisce come prima, nella stessa riga
+d'apertura. Niente cambia nella modalità "aggiungi alla lista", dove la riga sparisce lo
+stesso: il nome lì si chiede una volta sola, quando si manda la lista.
+
+Fatto anche nella finestra dei pacchetti, dove `packName` era il primo campo per lo stesso
+motivo.
+
+### Quello che questo spostamento poteva rompere
+
+**Il nome è adesso l'ultimo campo prima di una barra opaca.** Il piede della v336 è alto
+169 px e sta incollato in fondo: un campo che gli finisce sotto è un campo che il cliente
+non vede mentre ci scrive dentro. Controllato con `elementFromPoint` sul centro della
+casella, su sei combinazioni di schermo e scheda: quando la casella prende il fuoco il
+browser la porta da sola sopra al piede, e sopra al suo centro c'è `reqName` e non il
+piede. Lo stesso in quella dei pacchetti.
+
+**La casella è `required`.** Con il campo in cima, il browser che rifiuta l'invio portava
+il cliente indietro di una schermata; adesso il campo è già lì, sotto il pulsante che ha
+appena premuto. Provato: invio col nome vuoto → la finestra resta aperta, su WhatsApp non
+parte niente, e il fumetto del browser esce sulla casella giusta.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `pacchetti.js`.
+
+Nel browser vero, iPhone SE (375×667) e iPhone X (390×844), su Freebird, Mustang e MHT: il
+primo campo è `reqDate` in tutti e sei i casi, e all'apertura si vedono data, hotel e
+orario invece del nome.
+
+Il giro completo, fino al messaggio: richiesta con nome → su WhatsApp arriva
+"I'm Mario Rossi…" come prima; richiesta col nome vuoto → bloccata; "aggiungi alla lista"
+→ nome nascosto, non obbligatorio, una voce salvata e finestra chiusa. Più il pacchetto
+"Tenerife Trio", messaggio compreso. Zero errori in console.
+
+⚠ **Quello che qui non si può provare**: come si comporta la tastiera vera su un iPhone.
+`max-height: 88dvh` non si accorcia quando la tastiera sale su Safari iOS, quindi il fondo
+della finestra — dove adesso c'è il nome — potrebbe finirci sotto. Su Chromium il browser
+porta la casella in vista da solo, ma **la tastiera di iOS non è simulabile qui**: va
+guardata sul telefono. Se dà noia, il rimedio non è rimettere il nome in cima.
+
+`CACHE_NAME` da `isla-v336` a `isla-v337`: toccati i due `.html` e `pacchetti.js`.
+
+### Dove siamo coi cinque passi
+
+Fatti: il piede col conto (v336), il nome in fondo (v337). Restano:
+
+1. **Adulti e bambini sono caselle numeriche** → un `− 2 +`. È l'interazione più ripetuta
+   del modulo, ed è il prossimo.
+2. **Nome e hotel non si ricordano.** Da decidere insieme cosa fare della riga sulla
+   privacy, che oggi promette che il sito non salva niente.
+3. **La data è tutta a mano** → pastiglie "domani / dopodomani", costruite già saltando i
+   giorni in cui non si parte.
+4. **Il nome, forse, non va chiesto**: il messaggio parte dal WhatsApp del cliente.
+   Domanda per il proprietario.

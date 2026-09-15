@@ -2881,37 +2881,39 @@ const ESPLORA_CATALOG = [
           }
         },
         {
-          // Il listino la dà per gli adulti e basta: senza `priceChild` il
-          // totale con dei bambini non si fa, invece di farli passare gratis.
+          // Per i junior i venti minuti non esistono (ufficio, 15 settembre
+          // 2026): senza `priceChild` il totale con dei bambini non si fa,
+          // invece di farli passare gratis.
           label: { it: "Tanda da 20 minuti", en: "20-minute session", es: "Tanda de 20 minutos" },
           duration: { it: "20 minuti", en: "20 minutes", es: "20 minutos" },
           priceAdult: 35,
           desc: {
-            it: "Venti minuti di pista. Sul listino del circuito è una formula per adulti: se ci sono bambini, il prezzo te lo confermiamo con la risposta.",
-            en: "Twenty minutes on track. The track's price list gives it for adults: if there are children, we confirm the price when we reply.",
-            es: "Veinte minutos en pista. En la lista del circuito es una fórmula para adultos: si hay niños, te confirmamos el precio al responder."
+            it: "Venti minuti di pista. Esiste solo per gli adulti: i bambini fanno la tanda da 10 minuti.",
+            en: "Twenty minutes on track. It exists for adults only: children do the 10-minute session.",
+            es: "Veinte minutos en pista. Existe solo para adultos: los niños hacen la tanda de 10 minutos."
           }
         },
         {
           label: { it: "Mini Prix", en: "Mini Prix", es: "Mini Prix" },
           duration: { it: "20 minuti", en: "20 minutes", es: "20 minutos" },
+          // Solo adulti (ufficio, 15 settembre 2026): niente `priceChild`, cosi'
+          // con dei bambini il totale non si fa invece di contarli a 40 euro.
           priceAdult: 40,
-          priceChild: 40,
           desc: {
-            it: "Dieci minuti di qualifica, dieci di gara e la coppa al primo. Da 5 a 15 persone, stesso prezzo per tutti.",
-            en: "Ten minutes of qualifying, ten of racing and a trophy for the winner. From 5 to 15 people, the same price for everyone.",
-            es: "Diez minutos de clasificación, diez de carrera y el trofeo para el primero. De 5 a 15 personas, el mismo precio para todos."
+            it: "Dieci minuti di qualifica, dieci di gara e la coppa al primo. Da 5 a 15 persone, e solo adulti: alle gare i bambini non partecipano.",
+            en: "Ten minutes of qualifying, ten of racing and a trophy for the winner. From 5 to 15 people, and adults only: children do not take part in the races.",
+            es: "Diez minutos de clasificación, diez de carrera y el trofeo para el primero. De 5 a 15 personas, y solo adultos: los niños no participan en las carreras."
           }
         },
         {
           label: { it: "Grand Prix", en: "Grand Prix", es: "Grand Prix" },
           duration: { it: "30 minuti", en: "30 minutes", es: "30 minutos" },
+          // Solo adulti, come il Mini Prix.
           priceAdult: 60,
-          priceChild: 60,
           desc: {
-            it: "Dieci minuti di prove, dieci di qualifica e dieci di gara, poi la coppa e il brindisi. Da 5 a 15 persone, stesso prezzo per tutti.",
-            en: "Ten minutes of practice, ten of qualifying and ten of racing, then the trophy and a toast. From 5 to 15 people, the same price for everyone.",
-            es: "Diez minutos de entrenamientos, diez de clasificación y diez de carrera, después el trofeo y el brindis. De 5 a 15 personas, el mismo precio para todos."
+            it: "Dieci minuti di prove, dieci di qualifica e dieci di gara, poi la coppa e il brindisi. Da 5 a 15 persone, e solo adulti.",
+            en: "Ten minutes of practice, ten of qualifying and ten of racing, then the trophy and a toast. From 5 to 15 people, and adults only.",
+            es: "Diez minutos de entrenamientos, diez de clasificación y diez de carrera, después el trofeo y el brindis. De 5 a 15 personas, y solo adultos."
           }
         }
       ]
@@ -2943,9 +2945,9 @@ const ESPLORA_CATALOG = [
         es: "El circuito abre todos los días de 10:00 a 20:30. El casco lo da el circuito; quien prefiera el suyo puede traerlo, siempre que sea un integral de moto."
       },
       {
-        it: "Il Mini Prix e il Grand Prix si prenotano prima e vogliono un gruppo da 5 a 15 persone. Se siete meno, restano le tande: quelle non hanno minimi.",
-        en: "The Mini Prix and the Grand Prix are booked in advance and need a group of 5 to 15 people. If there are fewer of you, the open sessions are still there: those have no minimum.",
-        es: "El Mini Prix y el Grand Prix se reservan antes y necesitan un grupo de 5 a 15 personas. Si sois menos, quedan las tandas: esas no tienen mínimo."
+        it: "Il Mini Prix e il Grand Prix sono solo per adulti, si prenotano prima e vogliono un gruppo da 5 a 15 persone. Per i bambini, e per chi è in pochi, c'è la tanda da 10 minuti: quella non ha minimi.",
+        en: "The Mini Prix and the Grand Prix are for adults only, are booked in advance and need a group of 5 to 15 people. For children, and for small parties, there is the 10-minute session: that one has no minimum.",
+        es: "El Mini Prix y el Grand Prix son solo para adultos, se reservan antes y necesitan un grupo de 5 a 15 personas. Para los niños, y para quien va en pocos, está la tanda de 10 minutos: esa no tiene mínimo."
       }
     ],
     image: "karting.jpg",

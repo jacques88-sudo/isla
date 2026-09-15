@@ -1,4 +1,10 @@
 :root {
+  /* Dice al browser che il sito ha tutti e due i temi. Serve per le cose che
+     disegna lui e non il foglio di stile: il calendario del campo data, la
+     freccia delle tendine, la barra di scorrimento. Senza, al buio restavano
+     neri su nero. */
+  color-scheme: light dark;
+
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-body: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
   /* la calligrafia della cartolina: la usa solo la lista */
@@ -3236,5 +3242,86 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
     grid-row: 1 / span 2;
     padding-left: 1.7rem;
     border-left: 1.5px solid oklch(0.78 0.02 75);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Tema scuro
+   ------------------------------------------------------------------------ */
+
+/* Il telefono dice al sito come lo vuole il suo padrone, e il sito si gira. Non
+   c'e' un interruttore da premere ne' una preferenza da salvare: `prefers-color-
+   scheme` arriva dalle impostazioni del sistema.
+
+   I colori non cambiano: si girano. Il nero caldo del testo diventa il fondo, la
+   carta chiara diventa il testo. Le foto restano quelle che sono — su un sito di
+   escursioni e' meta' del lavoro, al buio sembrano accese. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: oklch(0.19 0.012 60);
+    --surface: oklch(0.235 0.014 60);
+    --cream: oklch(0.275 0.016 65);
+    --sand: oklch(0.335 0.022 70);
+    --border: oklch(0.36 0.014 65);
+    --text: oklch(0.95 0.008 85);
+    --muted: oklch(0.73 0.014 70);
+    /* di giorno il pulsante e' nero caldo su carta chiara: di notte si gira */
+    --primary: oklch(0.94 0.01 85);
+    --primary-foreground: oklch(0.2 0.012 60);
+    --gold: oklch(0.8 0.06 68);
+    --danger: oklch(0.7 0.16 30);
+  }
+
+  /* --- le cose che non si girano da sole ---------------------------------
+     Quasi tutti i colori scritti a mano nel foglio sono bianchi sopra una foto
+     o ombre: restano giusti anche al buio. Questi tre no. */
+
+  /* .pill-solid prende il fondo da --text e la scritta da un #fff scritto a
+     mano: al buio --text diventa chiaro e il pulsante finiva bianco su bianco.
+     Le altre tre regole che usano --text come fondo prendono la scritta da una
+     variabile, quindi si girano da sole. */
+  .pill-solid { color: var(--bg); }
+
+  /* Il riquadro a strisce ha il fondo scritto a mano, non una variabile. */
+  .bento-tile.bento-tile-stripes { background: oklch(0.235 0.014 60); }
+
+  /* --- la cartolina resta di carta ---------------------------------------
+     Una cartolina nera non e' una cartolina: la carta e l'inchiostro restano
+     quelli del giorno, e sul fondo scuro sembra appoggiata sul comodino. Percio'
+     qui l'inchiostro va riscritto scuro a mano, se no eredita il testo chiaro
+     del tema e sparisce sulla carta. */
+  .lista-dialog {
+    background-color: #f0e7d5;
+    color: oklch(0.24 0.012 60);
+  }
+  .lista-dialog .lista-voce-testo strong,
+  .lista-dialog .lista-voce-prezzo,
+  .lista-dialog .lista-totale strong,
+  .lista-dialog input[type="text"] { color: oklch(0.24 0.012 60); }
+  .lista-dialog .lista-voce-testo span,
+  .lista-dialog .lista-luogo,
+  .lista-dialog .lista-totale small,
+  .lista-dialog .hint,
+  .lista-dialog .lista-svuota,
+  .lista-dialog label { color: oklch(0.45 0.016 65); }
+  .lista-dialog input[type="text"]::placeholder { color: oklch(0.55 0.016 65); }
+  /* .iconbtn e il francobollo prendono il fondo da --surface: sulla carta
+     chiara diventavano due macchie scure. */
+  .lista-dialog .iconbtn {
+    background: #fbf7ee;
+    border-color: oklch(0.78 0.02 75);
+    color: oklch(0.24 0.012 60);
+  }
+  .lista-dialog .lista-francobollo { background: #fffdf7; }
+  .lista-dialog .btn-primary {
+    background: oklch(0.26 0.014 60);
+    color: oklch(0.98 0.008 85);
+  }
+  .lista-dialog .lista-francobollo::before {
+    background-image:
+      radial-gradient(circle 4px at 4px 4px, #f0e7d5 97%, transparent 100%),
+      radial-gradient(circle 4px at 4px 4px, #f0e7d5 97%, transparent 100%),
+      radial-gradient(circle 4px at 4px 4px, #f0e7d5 97%, transparent 100%),
+      radial-gradient(circle 4px at 4px 4px, #f0e7d5 97%, transparent 100%);
   }
 }

@@ -12308,3 +12308,82 @@ nome funzionano come prima.
 
 `CACHE_NAME` da `isla-v333` a `isla-v334`: toccati `lista.js`, `styles.css` e i sei
 `.html` col link dei font.
+
+## v335 — il sito si gira quando il telefono è scuro
+
+Richiesta del proprietario: lasciando i colori quelli originali, il sito deve cambiare a
+seconda che il telefono sia impostato chiaro o scuro.
+
+Niente interruttore da premere, niente preferenza da salvare: `prefers-color-scheme` arriva
+dalle impostazioni del sistema e il browser la passa al foglio di stile. Un interruttore
+nel menu vorrebbe dire una scelta in più da salvare, da tradurre e da tenere allineata
+alla lingua: si può aggiungere dopo, se qualcuno lo chiede.
+
+**I colori non cambiano: si girano.** Il nero caldo del testo diventa il fondo, la carta
+chiara diventa il testo, il pulsante pieno passa da nero-su-chiaro a chiaro-su-scuro. Le
+foto restano quelle che sono, ed è metà del lavoro: su un sito di escursioni al buio
+sembrano accese.
+
+### Il tema sta tutto dentro una `@media`
+
+Le 12 variabili di `:root` riscritte dentro `@media (prefers-color-scheme: dark)`. Il tema
+chiaro non è stato toccato da nessuna riga: **verificato misurando**, non a occhio —
+sfondo, colore, bordo, ombra e font di 13 elementi su 4 pagine, letti dal browser sulla
+versione vecchia e su questa, 52 confronti, zero differenze.
+
+### Le tre cose che non si giravano da sole
+
+Dei 42 colori scritti a mano fuori dalle variabili, quasi tutti sono bianchi sopra una foto
+o ombre, e restano giusti anche al buio. Tre no, e si vedevano solo provando:
+
+1. **`.pill-solid`** (il "Prenota ora" in cima) prende il fondo da `--text` e la scritta da
+   un `#fff` scritto a mano: al buio `--text` diventa chiaro e il pulsante finiva bianco su
+   bianco. Le altre tre regole che usano `--text` come fondo prendono la scritta da una
+   variabile, quindi si girano da sole.
+2. **Il francobollo della cartolina** prende il fondo da `--surface`: diventava un quadrato
+   nero.
+3. **Le ✕ della cartolina** (`.iconbtn`, stesso fondo) diventavano due macchie scure sulla
+   carta chiara.
+
+### `color-scheme: light dark`
+
+Su `:root`, fuori dalla media query. Serve per le cose che disegna il browser e non il
+foglio di stile: il calendario del campo data nella finestra "Richiedi disponibilità", la
+freccia delle tendine, la barra di scorrimento. Senza quella riga restavano neri su nero —
+il campo data era inservibile al buio.
+
+### La cartolina resta di carta
+
+Una cartolina nera non è una cartolina. La carta crema e l'inchiostro scuro restano quelli
+del giorno, e sul fondo scuro sembra appoggiata sul comodino. Per questo dentro
+`.lista-dialog` l'inchiostro va riscritto scuro a mano: se no eredita il testo chiaro del
+tema e sparisce sulla carta.
+
+### Le altre due pagine fuori dal foglio
+
+`offline.html` non usa `styles.css` — è il ripiego di quando non c'è rete e si porta i
+colori dentro — quindi ha la sua `@media` di quattro righe: se no chi ha il telefono al
+buio e perde la linea si prende una pagina bianca in faccia.
+
+Il `theme-color` delle sei pagine era uno solo, chiaro: adesso sono due, uno per tema, con
+`media="(prefers-color-scheme: ...)"`. È la striscia del browser sopra il sito.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi (e si è accorto da solo che avevo toccato
+`styles.css` senza alzare `CACHE_NAME`, come alla v331). `node --check` su `sw.js`.
+
+Nel browser vero (Pixel 5), al buio: home, elenco, pacchetti, pacchetto, booking, offline,
+più menu, finestra richiesta, finestra ticket, assistente e cartolina. Nessun errore in
+console.
+
+Poi un controllo automatico del contrasto su sette pagine: prende ogni elemento che
+contiene testo, risale ai genitori finché trova un fondo pieno, calcola il rapporto e
+segnala sotto 3:1. **Al buio: zero.** Alla luce ne escono 114, ma non li ho toccati: sono
+quelli di sempre, e quasi tutti sono scritte sopra le foto, che lo script misura contro il
+fondo della scheda invece che contro la foto. Restano veri i due casi dell'oro
+(`.eyebrow` e `.tour-cat`, 2,16:1 e 2,25:1 su carta chiara): scelta di marca, non una
+rottura, e al buio l'oro un filo più chiaro li porta sopra la soglia.
+
+`CACHE_NAME` da `isla-v334` a `isla-v335`: toccati `styles.css`, `offline.html` e i sei
+`.html` col `theme-color`.

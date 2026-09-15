@@ -17,6 +17,12 @@
       padding:20px;
     }
     .box{max-width:500px}
+    /* Questa pagina non usa styles.css: e' il ripiego di quando non c'e' rete,
+       quindi si porta i colori dentro. Anche quelli del tema scuro, se no chi
+       ha il telefono al buio si prende una pagina bianca in faccia. */
+    @media (prefers-color-scheme: dark){
+      body{ background:#18130e; color:#f1ece3 }
+    }
   </style>
 </head>
 <body data-i18n-doctitle="offline.title">

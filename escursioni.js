@@ -888,8 +888,6 @@ function initRequestDialog() {
   const transferSiamLabelEl = document.querySelector("[data-request-transfer-siam-label]");
   const transferSiamNoteEl = document.querySelector("[data-request-transfer-siam-note]");
   const transferSiamInput = document.getElementById("reqTransferSiam");
-  const optionEl = document.querySelector("[data-request-option]");
-  const optionLabelEl = document.querySelector("[data-request-option-label]");
   const dateInput = document.getElementById("reqDate");
   const timeEl = document.querySelector("[data-request-time]");
   const timeLabelEl = document.querySelector("[data-request-time-label]");
@@ -953,11 +951,6 @@ function initRequestDialog() {
       seasonEl.textContent = tour.season ? tf(tour.season) : "";
       seasonEl.hidden = !tour.season;
     }
-    // Il menu delle varianti compare solo dove ci sono. Si ricostruisce a ogni
-    // apertura: la finestra e' una sola per tutte le attivita', quindi le voci
-    // di quella aperta prima resterebbero li'.
-    riempiOpzioni(tour);
-
     // la domanda sul transfer compare solo dove il transfer esiste davvero, e
     // riparte sempre da non spuntata: la finestra e' la stessa per tutte le
     // attivita' e si riapre com'era rimasta
@@ -1012,11 +1005,12 @@ function initRequestDialog() {
     return premuto ? premuto.getAttribute("data-option-value") || "" : "";
   }
 
-  // La variante scelta, da qualunque parte l'abbia scelta il cliente: coi
-  // bottoni sulla pagina di dettaglio o col menu qui dentro.
+  // La variante scelta. Arriva sempre dai bottoni della pagina di dettaglio:
+  // sono l'unico posto da cui questa finestra si apre, e il primo bottone e'
+  // gia' premuto. Fino a v273 c'era anche un <select> qui dentro come
+  // ripiego, che non si e' mai visto una volta.
   function opzioneScelta() {
-    return sceltaDallaPagina() ||
-      (optionEl && !optionEl.hidden ? optionEl.value : "");
+    return sceltaDallaPagina();
   }
 
   // La variante premuta sulla pagina di dettaglio, presa dal catalogo **per
@@ -1067,30 +1061,6 @@ function initRequestDialog() {
     activityEl.textContent = tf(tour.title) + (variante ? " — " + variante : "");
   }
 
-  // Le voci portano il prezzo quando lo sappiamo ("2 ore — €180"), cosi' il
-  // cliente sceglie sapendo quanto costa invece di doverlo chiedere.
-  function riempiOpzioni(tour) {
-    if (!optionEl || !optionLabelEl) return;
-    const opz = tour.options;
-    const ci_sono = !!(opz && Array.isArray(opz.choices) && opz.choices.length)
-      && !sceltaDallaPagina();
-    optionEl.hidden = !ci_sono;
-    optionLabelEl.hidden = !ci_sono;
-    optionEl.innerHTML = "";
-    if (!ci_sono) return;
-
-    optionLabelEl.textContent = tf(opz.label);
-    opz.choices.forEach(scelta => {
-      const voce = document.createElement("option");
-      // il valore e' il testo stesso: e' quello che finisce su WhatsApp
-      voce.value = tf(scelta.label);
-      const prezzo = scelta.price || scelta.priceAdult;
-      voce.textContent = prezzo
-        ? tf(scelta.label) + " — €" + eur(prezzo)
-        : tf(scelta.label);
-      optionEl.appendChild(voce);
-    });
-  }
 
   // Gli orari fra cui scegliere. "Da concordare" vale stringa vuota e non c'e'
   // sempre: compare solo dove un orario fisso non esiste, cioe' sui charter e
@@ -1486,12 +1456,6 @@ function initRequestDialog() {
     if (transferLabelEl) transferLabelEl.textContent = current.transferLabel ? tf(current.transferLabel) : t("req.transfer");
     if (transferSiamNoteEl && current.transferSiam) transferSiamNoteEl.textContent = tf(current.transferSiam);
     if (transferSiamLabelEl) transferSiamLabelEl.textContent = current.transferSiamLabel ? tf(current.transferSiamLabel) : t("req.transferSiam");
-    // il menu si ricostruisce tradotto, tenendo la posizione scelta
-    if (optionEl && current.options) {
-      const scelto = optionEl.selectedIndex;
-      riempiOpzioni(current);
-      if (scelto >= 0) optionEl.selectedIndex = scelto;
-    }
     // "Da concordare" e "2 adulti × €55" sono tradotti: si rifanno tutti e due
     riempiOrari(current);
     riempiLingue(current);

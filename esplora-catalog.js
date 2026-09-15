@@ -2020,7 +2020,14 @@ const ESPLORA_CATALOG = [
       en: "At the wheel of a Ford Mustang convertible, up to the viewpoints on Teide.",
       es: "Al volante de un Ford Mustang descapotable, hasta los miradores del Teide."
     },
-    image: "mustang-experience.jpg",
+    // Stessa foto della card "Avventura e motori" in home: `mustang-experience.jpg`
+    // era un doppione byte per byte di `Cat-avventura.jpg`, cioe' 202 KB che il
+    // telefono scaricava due volte. Tolto il doppione e puntata questa, come si
+    // fa col Twin Ticket su `Cat-parchi.jpg`.
+    // ⚠ Adesso le due immagini sono LEGATE: cambiare la foto del Mustang
+    // cambia anche quella della categoria in home. Se un giorno devono essere
+    // diverse, si rimette un file suo.
+    image: "Cat-avventura.jpg",
     published: true
   },
   {

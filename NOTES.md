@@ -8244,3 +8244,90 @@ e la tappa del cibo dicono tutte e tre che lo porta il fornitore. Prezzi, totali
 icone e tappe invariati. Nessun errore in console.
 
 `node controlla.js` → 70 schede, 0 errori, 2 avvisi. `CACHE_NAME` a `isla-v272`.
+
+---
+
+## v273 — la pulizia, e quanto poco c'era da pulire
+
+Richiesta del proprietario: togliere dal sito tutto il superfluo. Prima di cancellare
+qualsiasi cosa è stato fatto l'inventario, e il risultato più utile è **quanto poco è
+venuto fuori**. Vale la pena scriverlo, così la prossima volta nessuno rifà lo stesso giro.
+
+| cercato | trovato |
+|---|---|
+| classi CSS mai usate | **0** su 206 |
+| funzioni JS mai chiamate | **0** |
+| chiavi i18n mai usate | **0** su 283 (una sembrava morta, vedi sotto) |
+| file elencati in `sw.js` che non esistono | **0** |
+| foto in `assets/` che nessuno nomina | **1** su 117 |
+| foto identiche fra loro | **1 coppia** |
+| codice morto | il `<select>` delle varianti, ~35 righe |
+
+### Quello che è stato tolto
+
+**Il `<select>` delle varianti dentro la finestra della richiesta.** CLAUDE.md lo dava già
+per morto, ma prima di cancellarlo è stato verificato nel codice invece che sulla parola:
+
+- si mostra solo se `!sceltaDallaPagina()`, cioè se nessun bottone della pagina di
+  dettaglio è premuto
+- in `tour.js` i bottoni si disegnano con `premuto = i === 0`: **il primo è sempre
+  premuto**
+- `data-request-open`, cioè l'unica cosa che apre la finestra, esiste solo in `tour.js`
+
+Quindi la condizione per vederlo non si avvera mai. Tolti il `<select>` e la sua `<label>`
+da tutti e due gli HTML, la funzione `riempiOpzioni()` che lo riempiva, i due
+`querySelector` e il blocco che lo ricostruiva al cambio lingua. `opzioneScelta()` adesso è
+una riga sola.
+
+**`assets/teide-masca.jpg`**, 30 KB, che nessun file nominava.
+
+**`assets/mustang-experience.jpg`**, byte per byte identica a `Cat-avventura.jpg`: 202 KB
+che il telefono scaricava due volte. La scheda Mustang punta adesso alla foto della
+categoria, come già fa il Twin Ticket con `Cat-parchi.jpg`. ⚠ **Le due immagini sono
+legate**: cambiare la foto del Mustang cambia anche la card "Avventura e motori" in home.
+Sta scritto nel commento sopra il campo `image`.
+
+### Quello che sembrava morto e non lo era
+
+**`categories.altSuffix`.** Il primo controllo la dava per mai usata, perché cercava le
+chiavi in tutti i file **tranne** `i18n.js`. È usata proprio lì dentro, per scrivere il
+testo alternativo delle immagini delle categorie (`nome + " " + t("categories.altSuffix")`).
+
+L'ha salvata un `assert` nello script di pulizia, che pretendeva di trovare esattamente una
+riga e ne ha trovate due. **Quando si cancella in blocco, il controllo va scritto perché
+fallisca**: uno script che "toglie quello che trova" avrebbe cancellato la chiave e rotto
+tutti gli `alt` delle categorie senza che nessun test se ne accorgesse.
+
+### Quello che NON si tocca, e perché
+
+- **Le 6 schede `published: false`** (Spyder, Quad da Puerto de la Cruz, Charter privato,
+  Tour privato su misura, Teide privato di giorno e di notte). Scelta del proprietario:
+  sono lavoro in sospeso, non roba morta. Non si vedono sul sito e non pesano sul
+  caricamento — sono righe di testo dentro un file che si scarica comunque
+- **`booking.html` e `booking.js`** col loro `TODO` e i dati finti: il flusso "Prenota ora"
+  resta per scelta del proprietario, è il segnaposto di un sistema di prenotazioni futuro
+- **`dati-fornitore/`** (68 KB): CLAUDE.md lo documenta come il posto dei dati grezzi e
+  della storia di come sono stati raccolti
+- **`NOTES.md`** (490 KB): è la memoria lunga, non un file di appoggio
+- **La finestra della richiesta duplicata** in `escursioni.html` e `tour.html`: è voluta, e
+  un `diff` conferma che i due blocchi sono ancora identici
+- **Le icone `speaker` e `cooler`**, disegnate ma non usate da nessuna scheda: due voci in
+  `INCLUDED_ICONS` non pesano niente, e il giorno che arriva una barca con l'impianto
+  audio ci sono già
+- **`About-team.jpg`, 5 MB.** Segnalata al proprietario perché da sola è un quinto di tutte
+  le foto del sito: ha deciso di lasciarla com'è. **Resta il file più pesante del
+  progetto** — se un giorno la pagina "Chi siamo" sembra lenta, è lei
+
+### Provato
+
+Nel browser vero. Il pezzo delicato era la finestra della richiesta, quindi è stata provata
+su tre schede con varianti (stargazing 2, buggy 4, Freebird 4) e su una senza: il titolo
+della richiesta porta ancora la variante premuta, e il messaggio WhatsApp esce completo —
+«Serata: Gruppo piccolo (italiano, inglese, tedesco)» con «Totale indicativo: €227 (2
+adulti × €79 + 1 bambino × €69)». Il `<select>` non c'è più in nessuna delle due pagine.
+
+Poi tutte le foto: aperte home, elenco, dettaglio e prenota, e scorso l'elenco fino in
+fondo per far partire il caricamento pigro. **Nessuna immagine rotta e nessuna richiesta a
+`assets/` fallita.** Foto da 117 a 115.
+
+`node controlla.js` → 70 schede, 0 errori, 2 avvisi. `CACHE_NAME` a `isla-v273`.

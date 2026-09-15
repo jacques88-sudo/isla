@@ -947,6 +947,93 @@ function initCatalog() {
 
 document.addEventListener("DOMContentLoaded", initCatalog);
 
+// Il "meno / più" accanto ai numeri: persone, mezzi, menu.
+//
+// Contare quante persone sono e' l'unica cosa che nella finestra si fa quasi
+// sempre, e con la sola casella erano quattro gesti — tocca, aspetta il
+// tastierino, batti, chiudilo — per arrivare da 2 a 3. Adesso e' un tocco.
+//
+// **La casella resta lei a dire il numero.** I bottoni le scrivono dentro e
+// poi sparano un evento `input`: il totale, il controllo dei menu e quello dei
+// mezzi stavano gia' ad ascoltarlo e continuano a funzionare senza sapere che
+// i bottoni esistono. Niente secondo posto dove il numero e' scritto, che
+// sarebbe il modo di ritrovarsi due numeri diversi.
+//
+// E si puo' ancora battere a mano: per dodici persone scrivere "12" e' piu'
+// svelto che premere dieci volte. I bottoni servono al caso normale — "siamo
+// due, piu' un bambino".
+function applicaStepper(dove) {
+  if (!dove) return;
+  dove.querySelectorAll('input[type="number"]').forEach(vesti);
+}
+
+function vesti(input) {
+  // Ridisegnando le righe (cambio lingua) si ripassa di qui: se e' gia'
+  // vestita si lascia stare, se no i bottoni si moltiplicano.
+  if (input.parentElement && input.parentElement.classList.contains("stepper")) return;
+
+  const guscio = document.createElement("div");
+  guscio.className = "stepper";
+  input.parentNode.insertBefore(guscio, input);
+
+  const meno = bottone(-1);
+  const piu = bottone(1);
+  guscio.appendChild(meno);
+  guscio.appendChild(input);
+  guscio.appendChild(piu);
+
+  function bottone(passo) {
+    const b = document.createElement("button");
+    // Dentro un <form> un bottone senza `type` e' un bottone d'invio: senza
+    // questa riga, toccare "+" mandava la richiesta.
+    b.type = "button";
+    b.className = "stepper-btn";
+    b.textContent = passo < 0 ? "−" : "+";
+    // Il segno da solo non si legge ad alta voce: il nome vero sta qui, ed e'
+    // tradotto come tutto il resto.
+    b.setAttribute("aria-label", t(passo < 0 ? "req.minus" : "req.plus"));
+    // Fuori dal giro del tasto Tab: chi gira con la tastiera ha gia' la
+    // casella, dove i numeri si battono e le frecce funzionano. Due fermate in
+    // piu' per campo sarebbero otto fermate in piu' nella finestra.
+    b.tabIndex = -1;
+    b.addEventListener("click", () => muovi(passo));
+    return b;
+  }
+
+  function limiti() {
+    return {
+      min: input.min === "" ? -Infinity : Number(input.min),
+      max: input.max === "" ? Infinity : Number(input.max)
+    };
+  }
+
+  function muovi(passo) {
+    const { min, max } = limiti();
+    const ora = parseInt(input.value, 10);
+    const partenza = isNaN(ora) ? (min === -Infinity ? 0 : min) : ora;
+    const nuovo = Math.min(max, Math.max(min, partenza + passo));
+    if (nuovo === ora) return;
+    input.value = String(nuovo);
+    // `bubbles`: la finestra dei pacchetti ascolta l'evento **sulla finestra**,
+    // non sulla casella. Senza, li' il totale non si muoveva.
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    aggiorna();
+  }
+
+  // I bottoni si spengono ai limiti invece di non fare niente: "adulti" parte
+  // da uno, e un meno che resta acceso e non toglie sembra rotto.
+  function aggiorna() {
+    const { min, max } = limiti();
+    const ora = parseInt(input.value, 10);
+    meno.disabled = !isNaN(ora) && ora <= min;
+    piu.disabled = !isNaN(ora) && ora >= max;
+  }
+
+  // Anche battendo a mano: chi scrive "30" deve vedere il piu' spegnersi.
+  input.addEventListener("input", aggiorna);
+  aggiorna();
+}
+
 // Finestra "Richiedi disponibilità": raccoglie data e persone, poi apre
 // WhatsApp col messaggio già compilato.
 function initRequestDialog() {
@@ -991,6 +1078,11 @@ function initRequestDialog() {
   if (!dialog || !scrim || !form || !dateInput) return;
   // dopo la guardia: in home la finestra non c'e' e `form` e' null
   const submitBtn = form.querySelector(".request-submit");
+
+  // Le tre caselle delle persone sono nell'HTML e non cambiano mai: si vestono
+  // col "meno / piu'" una volta sola, qui. Quelle dei mezzi e dei menu nascono
+  // invece a ogni apertura, e si vestono dove nascono.
+  applicaStepper(peopleBoxEl);
 
   // Blocca le date che non rispettano il preavviso di 24 ore
   dateInput.min = minRequestDate();
@@ -1272,6 +1364,7 @@ function initRequestDialog() {
       label.appendChild(input);
       unitsRowsEl.appendChild(label);
     });
+    applicaStepper(unitsRowsEl);
   }
 
   function unitaScelte(tour) {
@@ -1347,6 +1440,7 @@ function initRequestDialog() {
       label.appendChild(input);
       menuRowsEl.appendChild(label);
     });
+    applicaStepper(menuRowsEl);
   }
 
   // Quante persone per ogni menu, come le legge il form.

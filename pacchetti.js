@@ -1069,6 +1069,9 @@ function initPacchettoRichiesta() {
         <p class="hint">${esc(t("pack.askHint"))}</p>
         <p class="hint request-privacy">${esc(t("req.privacy"))}</p>
       </form>`;
+    // La finestra si ridisegna tutta a ogni apertura e a ogni cambio lingua:
+    // le caselle sono nuove ogni volta, e ogni volta si rivestono.
+    applicaStepper(dialog);
     aggiornaTotale();
   }
 

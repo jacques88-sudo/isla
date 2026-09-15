@@ -330,6 +330,10 @@ const I18N = {
   "req.adults":         { it: "Adulti", en: "Adults", es: "Adultos" },
   "req.kids":           { it: "Bambini", en: "Children", es: "Niños" },
   "req.babies":         { it: "Neonati", en: "Infants", es: "Bebés" },
+  // I due bottoni del "meno / piu'" accanto ai numeri. Non si leggono: sono un
+  // segno solo, e questo e' il nome che sente chi usa lo schermo a voce.
+  "req.minus":          { it: "Uno in meno", en: "One less", es: "Uno menos" },
+  "req.plus":           { it: "Uno in più", en: "One more", es: "Uno más" },
   "req.hotel":          { it: "Dove alloggi", en: "Where you are staying", es: "Dónde te alojas" },
   "req.hotelPlaceholder": { it: "Scrivi le prime lettere dell'hotel", en: "Type the first letters of your hotel", es: "Escribe las primeras letras del hotel" },
   "req.pickup":         { it: "Punto di raccolta", en: "Pick-up point", es: "Punto de recogida" },

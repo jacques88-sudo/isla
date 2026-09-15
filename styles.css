@@ -2297,6 +2297,67 @@ body.menu-open { overflow: hidden; }
 }
 .request-people input:focus { border-color: var(--text); }
 
+/* ── Il "meno / più" accanto ai numeri ────────────────────────────────────
+   Persone, mezzi, menu: sono le stesse caselle di prima, con un bottone per
+   lato. La casella resta e si puo' ancora battere — per dodici persone e' piu'
+   svelto scrivere "12" — ma il caso normale, "siamo due piu' un bambino", da
+   quattro gesti (tocca, aspetta il tastierino, batti, chiudilo) diventa uno.
+
+   La griglia delle persone e' a due colonne: su un telefono da 375 px sono
+   circa 158 px per colonna, da cui 2×38 di bottoni e il resto al numero. Per
+   questo i bottoni sono quadrati e stretti e la casella non ha piu' il suo
+   padding ai lati: e' il numero che deve restare leggibile, non la cornice. */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+.stepper input {
+  /* `min-width: 0` se no la casella si rifiuta di stringersi e i bottoni
+     escono dalla colonna */
+  min-width: 0;
+  flex: 1;
+  padding-left: .2rem;
+  padding-right: .2rem;
+}
+/* Le frecce che il browser mette da solo sulle caselle numeriche: con due
+   bottoni veri accanto sarebbero la stessa cosa detta due volte, e su desktop
+   comparivano al passaggio del mouse rubando spazio al numero. */
+.stepper input::-webkit-outer-spin-button,
+.stepper input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.stepper input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.stepper-btn {
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  /* il segno "−" e il "+" a occhio nudo non sono alti uguali: il line-height
+     fisso li mette sulla stessa riga invece di farne ballare uno */
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  /* niente evidenziazione grigia al tocco su Android */
+  -webkit-tap-highlight-color: transparent;
+}
+.stepper-btn:active { background: var(--sand); }
+/* Spento ai limiti — "adulti" parte da uno — invece di restare acceso e non
+   fare niente, che sembra rotto. */
+.stepper-btn:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
 /* "Questa escursione si fa solo: Lun · Mer · Ven." Compare sotto la data
    appena il cliente ne sceglie una che non va, non dopo aver premuto invia:
    scoprirlo alla fine, con tutto gia' compilato, e' la cosa che fa chiudere

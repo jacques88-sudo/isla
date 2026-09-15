@@ -12144,3 +12144,58 @@ dialog dei ticket (`#ticketDialog`, verificato che perde `hidden` e prende `is-o
 Nessun errore in console.
 
 `CACHE_NAME` da `isla-v330` a `isla-v331`: toccati `index.html` e `styles.css`.
+
+## v332 — la barra "Prenota ora" in fondo alla scheda escursione
+
+Richiesta del proprietario: nella pagina dell'escursione il "book now" va in basso, come
+fanno i siti di escursioni che tiene d'occhio, e per il resto la pagina resta com'era.
+
+Una scheda è lunga: prezzi, riepilogo, itinerario, cosa include, note. Chi decide a metà
+lettura doveva scorrere fino in fondo per trovare il pulsante. Adesso prezzo e pulsante
+stanno appoggiati in fondo allo schermo e seguono chi legge.
+
+**Aggiunta, non spostata.** I due pulsanti dentro la scheda ("Richiedi disponibilità" e
+"Aggiungi alla lista") restano dove sono: chi arriva in fondo leggendo li trova al loro
+posto, e "Aggiungi alla lista" non ha un gemello nella barra perché la barra serve a
+prenotare, non a mettere da parte.
+
+### Il prezzo è quello di partenza, non quello della variante scelta
+
+In barra ci va `tourPriceHTML(tour)`, la stessa cosa scritta sulle schede in elenco ("da
+€60", col barrato se c'è l'offerta). Non segue la variante scelta più sotto: è il prezzo
+**da cui si parte**, e resta vero comunque si giri la scheda. Farlo seguire la variante
+voleva dire tenere allineate due scritture dello stesso numero, e sul chárter privato da
+€800 la barra avrebbe smesso di dire "da quanto parte".
+
+### Il pulsante non ha un suo codice
+
+Porta `data-request-open` con l'id della scheda, come il pulsante dentro la scheda:
+l'ascoltatore in `escursioni.js` sta su `document`, quindi prende anche un pulsante che
+sta fuori dal contenitore. Nessuna finestra nuova, nessun secondo modo di prenotare da
+tenere allineato al primo.
+
+### Due pallini le finivano sopra
+
+In basso ci stavano già `.lista-fab` (a sinistra, quando la lista non è vuota) e
+`.assist-fab` (a destra). `mostraBarraPrenota` mette `has-book-bar` sul `body` e quella
+classe li alza di 4.75rem, più il piede che prende spazio sotto. La classe si toglie
+quando la barra non c'è: su una scheda inesistente, e se un domani `WHATSAPP_NUMBER`
+fosse vuoto — nello stesso caso in cui spariscono i due pulsanti dentro la scheda.
+
+La barra sta solo in `tour.html`: le altre pagine non hanno il pezzo di HTML, quindi non
+c'è niente da nascondere altrove.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi sulle foto che mancano. `node --check` su
+`tour.js` e `sw.js`.
+
+Nel browser vero (Pixel 5, 393px), su `tour.html?id=small-group-catamaran`: la barra c'è,
+scrive "da €60", il pulsante porta l'id giusto e apre `#requestDialog`; in fondo alla
+pagina la barra è ancora lì e il "© Isla" del piede non ci finisce sotto; al cambio lingua
+in spagnolo diventa "RESERVAR" e "desde €60"; con una voce in lista, `.lista-fab` e
+`.assist-fab` stanno sopra la barra senza toccarla (misurati i rettangoli, non a occhio).
+Su `tour.html?id=non-esiste` la barra non compare, e in `escursioni.html` non esiste
+proprio. Nessun errore in console.
+
+`CACHE_NAME` da `isla-v331` a `isla-v332`: toccati `tour.html`, `tour.js` e `styles.css`.

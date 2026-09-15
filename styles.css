@@ -2991,3 +2991,66 @@ body.menu-open { overflow: hidden; }
   font-variant-numeric: tabular-nums;
 }
 .request-ora-fissa[hidden] { display: none; }
+
+/* ---------------------------------------------------------------------------
+   Barra "Prenota ora" in fondo alla scheda escursione
+   ------------------------------------------------------------------------ */
+
+/* Il prezzo e il pulsante seguono chi legge invece di aspettarlo in fondo alla
+   pagina: la scheda di un'escursione e' lunga, e chi ha gia' deciso a meta'
+   lettura non deve scorrere fino in fondo per prenotare. Il pulsante dentro la
+   scheda resta dov'e': chi arriva in fondo leggendo lo trova al suo posto. */
+.book-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* sotto .assist-fab (39) e sotto le finestre (40 e 41) */
+  z-index: 38;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: .7rem 1.1rem;
+  /* la striscia del telefono sotto il pollice non mangia il pulsante */
+  padding-bottom: calc(.7rem + env(safe-area-inset-bottom, 0px));
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -10px 30px -18px oklch(0.24 0.012 60 / .5);
+}
+.book-bar[hidden] { display: none; }
+
+.book-bar-price {
+  margin: 0;
+  flex: none;
+  font-size: 1.05rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.book-bar-price .price-before { margin-right: .3rem; }
+
+.book-bar-cta {
+  flex: 1;
+  min-height: 48px;
+}
+
+/* La barra copre l'angolo dei due pallini: quando c'e', salgono sopra di lei.
+   Stessa cosa per il messaggio della lista, che spunta da li' sotto. */
+body.has-book-bar .lista-fab,
+body.has-book-bar .assist-fab { bottom: calc(1.1rem + 4.75rem); }
+body.has-book-bar .lista-toast { bottom: calc(5.5rem + 4.75rem); }
+
+/* L'ultima riga del piede resterebbe sotto la barra: le si fa posto. */
+body.has-book-bar .footer { padding-bottom: 5.5rem; }
+
+/* Da tablet in su la barra non serve larga quanto lo schermo: il pulsante
+   diventa una fascia lunga un metro e mezzo. Si tiene sulla stessa misura del
+   contenuto, come .wrap. */
+@media (min-width: 720px) {
+  .book-bar {
+    justify-content: center;
+  }
+  .book-bar-cta {
+    flex: none;
+    min-width: 280px;
+  }
+}

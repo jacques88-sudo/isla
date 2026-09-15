@@ -637,6 +637,22 @@ a { text-decoration: none; color: inherit; }
   color: #fff;
 }
 
+/* Il riquadro "3/5/7 Days Experience": cinque foto invece di una, tagliate a
+   striscia obliqua con clip-path. Ogni striscia e' un <img class="bento-foto">
+   pieno quanto il riquadro (regola sopra) e viene ritagliato in un
+   parallelogramma. Fra una striscia e la prossima c'e' uno spacco (il bordo
+   destro della striscia N e' un po' PRIMA del bordo sinistro della N+1,
+   sempre della stessa quantita' in percentuale): sotto le foto c'e' sfondo
+   bianco invece del crema del riquadro, cosi' lo spacco esce come una riga
+   bianca che separa le foto. Se cambia il numero di strisce o la larghezza
+   dello spacco vanno ricalcolati tutti insieme, non uno alla volta. */
+.bento-tile.bento-tile-stripes { background: #fff; }
+.bento-tile-stripes .bento-stripe-1 { clip-path: polygon(14.9% 0%, 33.1% 0%, 5.1% 100%, -13.1% 100%); }
+.bento-tile-stripes .bento-stripe-2 { clip-path: polygon(34.9% 0%, 53.1% 0%, 25.1% 100%, 6.9% 100%); }
+.bento-tile-stripes .bento-stripe-3 { clip-path: polygon(54.9% 0%, 73.1% 0%, 45.1% 100%, 26.9% 100%); }
+.bento-tile-stripes .bento-stripe-4 { clip-path: polygon(74.9% 0%, 93.1% 0%, 65.1% 100%, 46.9% 100%); }
+.bento-tile-stripes .bento-stripe-5 { clip-path: polygon(94.9% 0%, 113.1% 0%, 85.1% 100%, 66.9% 100%); }
+
 .bento-tile svg {
   width: 28px;
   height: 28px;

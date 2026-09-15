@@ -1947,7 +1947,6 @@ body.menu-open { overflow: hidden; }
 /* La nota sotto la data e l'etichetta delle persone si toccavano: il .hint
    ha solo il margine sopra, e li' sotto ci va un campo nuovo. */
 #packDialog .hint { margin-bottom: 1.1rem; }
-#packDialog .request-total { margin-top: .2rem; }
 
 .pack-back {
   align-self: center;
@@ -2551,31 +2550,73 @@ body.menu-open { overflow: hidden; }
   font-size: .78rem;
 }
 
+/* Il piede della finestra: il conto e il pulsante, appiccicati in basso
+   mentre il resto del modulo scorre.
+
+   Il modulo e' sempre piu' alto di un telefono — 1262 px contro 844 sulla
+   scheda piu' semplice, 1563 dove ci sono i menu — e prima il pulsante stava
+   in fondo a tutto: il cliente compilava una schermata e mezza senza vedere
+   ne' quanto viene ne' dove si manda. Il totale stava a meta' modulo e gli
+   passava davanti una volta sola, mentre e' il numero che cambia ogni volta
+   che tocca "adulti".
+
+   I margini negativi ai lati pareggiano il padding della finestra: la barra
+   arriva da bordo a bordo e il modulo le scorre sotto invece che di fianco.
+   `sticky` regge finche' sotto al piede c'e' ancora qualcosa da scorrere —
+   sono le due righe del preavviso e della privacy, che per questo restano
+   fuori. */
+/* Il respiro in fondo lo mette il modulo, non la finestra. Il piede si
+   incolla al fondo di quello che scorre, che finisce dove finisce il
+   contenuto: col padding in fondo alla finestra il piede restava due
+   centimetri piu' su e i campi gli spuntavano da sotto. */
+.request-dialog { padding-bottom: 0; }
+.request-dialog form { padding-bottom: 2rem; }
+
+.request-foot {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  margin: .3rem -1.4rem 0;
+  padding: .9rem 1.4rem 1rem;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+
 /* Il totale: si aggiorna mentre il cliente cambia i numeri delle persone.
-   Il numero grosso per primo perche' e' quello che si cerca, il conto sotto
-   per far vedere da dove viene, e la nota che e' indicativo. */
+   Il numero grosso a sinistra perche' e' quello che si cerca, il conto di
+   fianco per far vedere da dove viene, e sotto la nota che e' indicativo.
+   Su una riga sola e non tre: nel piede lo spazio e' quello che tolgo al
+   modulo, e tre righe fisse su un telefono piccolo erano troppe.
+   `flex` e non `grid` per via del totale dei pacchetti, che qui dentro e'
+   testo semplice senza ne' <strong> ne' <span>: in una colonna di griglia si
+   spezzava a meta' ("You save / €11"), come riga di flex si distende. */
 .request-total {
   display: flex;
-  flex-direction: column;
-  gap: .2rem;
-  margin: -.2rem 0 1.1rem;
-  padding: .85rem 1rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: .6rem;
+  row-gap: .1rem;
+  margin: 0 0 .7rem;
+  padding: .55rem .9rem;
   background: var(--sand);
   border-radius: 12px;
 }
 .request-total[hidden] { display: none; }
 .request-total strong {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 500;
   line-height: 1.1;
   color: var(--text);
 }
 .request-total span {
+  margin-left: auto;
+  text-align: right;
   font-size: .85rem;
   color: var(--text);
 }
 .request-total small {
+  flex: 1 0 100%;
   font-size: .75rem;
   color: var(--muted);
 }

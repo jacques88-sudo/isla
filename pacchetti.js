@@ -1047,8 +1047,6 @@ function initPacchettoRichiesta() {
           </label>
         </div>
 
-        <p class="request-total" data-pack-total></p>
-
         <label for="packHotel"><span>${esc(t("req.hotel"))}</span>
           <span class="request-optional">${esc(t("req.hotelWhy"))}</span></label>
         <input id="packHotel" name="hotel" type="text" autocomplete="off"
@@ -1059,8 +1057,13 @@ function initPacchettoRichiesta() {
         <input id="packNote" name="note" type="text" autocomplete="off"
                placeholder="${esc(t("req.notePlaceholder"))}" />
 
-        <button class="btn btn-primary btn-block request-submit" type="submit">
-          ${esc(t("req.submit"))}</button>
+        <!-- Come nella finestra della richiesta: conto e pulsante restano in
+             fondo mentre il modulo scorre. -->
+        <div class="request-foot">
+          <p class="request-total" data-pack-total></p>
+          <button class="btn btn-primary btn-block request-submit" type="submit">
+            ${esc(t("req.submit"))}</button>
+        </div>
         <p class="hint">${esc(t("pack.askHint"))}</p>
         <p class="hint request-privacy">${esc(t("req.privacy"))}</p>
       </form>`;

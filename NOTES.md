@@ -12387,3 +12387,111 @@ rottura, e al buio l'oro un filo più chiaro li porta sopra la soglia.
 
 `CACHE_NAME` da `isla-v334` a `isla-v335`: toccati `styles.css`, `offline.html` e i sei
 `.html` col `theme-color`.
+
+## v336 — il conto e il pulsante restano in fondo alla finestra della richiesta
+
+Il proprietario: «il momento della prenotazione è macchinoso, come potremmo farlo più
+fluido». Prima di rispondere ho misurato la finestra "Richiedi disponibilità" in un
+telefono vero, perché "macchinoso" da solo non dice **dove**.
+
+| scheda | modulo | campi | dove stava il pulsante |
+|---|---|---|---|
+| Freebird, la più semplice | 1262 px | 8 | 1142 px → **1,4 schermate** |
+| Mustang, varianti + mezzi | 1301 px | 8 | 1181 px |
+| MHT Drag Show, coi menu | 1563 px | 11 | 1443 px → **1,9 schermate** |
+
+Il telefono ne mostra 844 (un iPhone SE 667). Quindi **anche sulla scheda più leggera il
+cliente compilava una schermata e mezza senza vedere né quanto viene né dove si manda**, e
+il totale — il numero che cambia ogni volta che tocca "adulti" — stava a metà modulo e gli
+passava davanti una volta sola, per poi sparire di sopra.
+
+Questo è il primo dei passi, non l'unico: gli altri sono scritti in fondo.
+
+### Cosa cambia
+
+Un `.request-foot` con dentro il totale e il pulsante, `position: sticky; bottom: 0`. Il
+modulo gli scorre sotto, il conto è sempre lì e "Continua su WhatsApp" non va più cercato.
+
+Non cambia **niente** di quello che finisce nel messaggio: stessi campi, stesso ordine,
+stesse regole. È solo dove stanno sullo schermo.
+
+### Le due righe sotto restano fuori dal piede
+
+Il preavviso di 24 ore e la riga della privacy stanno **dopo** il piede, non dentro. Due
+ragioni, e la seconda non è estetica:
+
+- lette una volta non servono più, e dentro occuperebbero spazio fisso a tutti;
+- `position: sticky` regge solo finché sotto c'è ancora qualcosa da scorrere. Se il piede
+  fosse l'ultima cosa del modulo, non si incollerebbe a niente.
+
+### L'errore preso: il piede si fermava 2 rem troppo in alto
+
+Prima versione, e i campi gli spuntavano da sotto: sotto la barra si vedeva la tendina
+"A che ora", che nel modulo sta molto più su. Misurato: piede a 635, finestra a 667.
+
+I 32 px sono il `padding-bottom: 2rem` di `.ticket-dialog`. Quello che scorre finisce dove
+finisce il **contenuto**, e il padding in fondo resta fuori: `bottom: 0` si incollava lì.
+
+Risolto spostando il respiro dalla finestra al modulo — `.request-dialog { padding-bottom:
+0 }` e `.request-dialog form { padding-bottom: 2rem }` — invece di scrivere un
+`bottom: -2rem` che sarebbe stato un numero magico legato a una regola 1500 righe più su,
+di quelli che si rompono da soli il giorno che qualcuno tocca il padding.
+
+### Il totale da tre righe a due
+
+Nel piede lo spazio è quello che tolgo al modulo. Il numero grosso a sinistra, il conto
+("2 adulti × €30") a destra sulla stessa riga, e sotto la nota che è indicativo. Quella
+nota **non si tocca**: il prezzo buono è quello della conferma, e toglierla per guadagnare
+una riga sarebbe stato un guadagno pagato con un dato.
+
+`flex` e non `grid`: il totale dei pacchetti qui dentro è **testo semplice**, senza
+`<strong>` né `<span>` (lo scrive `textContent` in `pacchetti.js`). In una colonna di
+griglia si spezzava a metà — "You save / €11" —, come riga di flex si distende.
+
+### Anche i pacchetti, e perché
+
+Il piede è in tre posti: `escursioni.html`, `tour.html` e la finestra che `pacchetti.js`
+costruisce in JavaScript. Le prime due sono la solita copia doppia (controllate riga per
+riga: identiche). La terza ha lo stesso identico problema — modulo da 1109 px in 587 — e
+lasciarla indietro voleva dire due comportamenti diversi nella stessa app, sullo stesso
+gesto.
+
+La finestra della lista (`lista.js`) invece **no**: ha un campo solo e non scorre. Un piede
+fisso lì non risolve niente e ruba spazio.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `escursioni.js`,
+`tour.js`, `pacchetti.js`.
+
+Nel browser vero, iPhone SE (375×667) e iPhone X (390×844), su tre schede scelte apposta
+diverse — Freebird (nuda), Mustang (varianti e mezzi), MHT (menu, la più lunga): il
+pulsante è visibile **all'apertura** in tutti e sei i casi, il piede arriva esatto al fondo
+della finestra, e in fondo allo scorrimento si stacca e lascia vedere le due righe. Più la
+finestra dei pacchetti, il desktop a 1200 px (angoli tondi a posto) e la copia di
+`escursioni.html`, aperta a mano perché da quella pagina le schede portano al dettaglio e
+lì dentro niente la apre. Zero errori in console.
+
+**Controllato apposta**: la tendina dei 562 hotel passa **sopra** il piede e non sotto
+(`z-index` 2 contro 1) — verificato con `elementFromPoint` sulle prime quattro voci, non a
+occhio. Era la cosa che una barra opaca in fondo poteva rompere in silenzio.
+
+`CACHE_NAME` da `isla-v335` a `isla-v336`: toccati `styles.css`, i due `.html` e
+`pacchetti.js`.
+
+### Gli altri passi, misurati ma non fatti
+
+Da fare uno alla volta, in quest'ordine:
+
+1. **La tastiera si apre in faccia.** Il primo campo è "Il tuo nome", testo libero, e il
+   nome serve solo alla fine. Spostarlo in fondo, o ricordarlo.
+2. **Adulti e bambini sono caselle numeriche.** Tap, tastierino che copre lo schermo,
+   digita, chiudi — ed è l'interazione più ripetuta del modulo. Un `− 2 +` è un tap.
+3. **Nome e hotel non si ricordano.** Chi chiede tre escursioni li riscrive tre volte, e
+   l'hotel per tutta la vacanza è lo stesso. Da decidere insieme cosa fare della riga sulla
+   privacy, che oggi promette che il sito non salva niente.
+4. **La data è tutta a mano.** Pastiglie "domani / dopodomani", costruite già saltando i
+   giorni in cui non si parte: toglie i tap **e** toglie l'errore dopo la scelta.
+5. **Il nome, forse, non va chiesto**: il messaggio parte dal WhatsApp del cliente e
+   l'ufficio vede già chi scrive. Domanda per il proprietario, non decisione da prendere
+   qui.

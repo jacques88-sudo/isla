@@ -115,19 +115,79 @@ function categoryName(id) {
   return cat ? tf(cat.name) : id;
 }
 
+// Una data in "2026-10-19", letta **in ora locale**.
+//
+// `toISOString()` passa per UTC, e a Tenerife d'estate siamo a UTC+1: chi
+// apriva la finestra fra mezzanotte e l'una si prendeva la data di ieri, e il
+// minimo del campo diventava **oggi** invece di domani — cioè un buco nelle 24
+// ore di preavviso, che sono la regola di Isla. Stretto (un'ora al giorno per
+// metà dell'anno) ma vero, e in vacanza alle 00:30 si prenota.
+//
+// È lo stesso inciampo che giornoValido() ha già schivato a modo suo:
+// new Date("2026-09-12") lo tratta come UTC e in certi fusi torna indietro di
+// un giorno. Qui si leggono i pezzi della data locale e si scrivono a mano.
+function dataLocale(d) {
+  const mese = String(d.getMonth() + 1).padStart(2, "0");
+  const giorno = String(d.getDate()).padStart(2, "0");
+  return d.getFullYear() + "-" + mese + "-" + giorno;
+}
+
 // Data minima richiedibile: domani, cioè almeno 24 ore di preavviso.
 // Restituisce il formato AAAA-MM-GG che <input type="date"> si aspetta.
 function minRequestDate() {
   const d = new Date();
   d.setDate(d.getDate() + 1);
-  return d.toISOString().slice(0, 10);
+  return dataLocale(d);
 }
 
 // Oltre un anno avanti è quasi sempre un errore di digitazione
 function maxRequestDate() {
   const d = new Date();
   d.setFullYear(d.getFullYear() + 1);
-  return d.toISOString().slice(0, 10);
+  return dataLocale(d);
+}
+
+// Le prime date in cui l'attività si fa davvero, da domani in avanti.
+//
+// Serve alle pastiglie sopra il campo della data: invece di far scegliere al
+// cliente un giorno e poi dirgli che quel giorno non si parte, gli si offrono
+// **solo giorni buoni**. L'avviso sotto il campo resta comunque, perché il
+// calendario del telefono lascia scegliere qualunque data e quello è il modo
+// in cui un giorno sbagliato entra ancora.
+//
+// Si guarda avanti tre settimane e non di più: un'attività che si fa un giorno
+// alla settimana ne dà tre, e oltre le tre settimane una pastiglia non è più
+// una scorciatoia — è una data che tanto vale scegliere col calendario.
+function primeDateUtili(tour, variante, quante) {
+  const giorni = giorniDi(tour, variante);
+  const trovate = [];
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  for (let i = 0; i < 21 && trovate.length < quante; i++) {
+    // lista vuota = si fa tutti i giorni, quindi va bene qualunque data
+    if (!giorni.length || giorni.includes(d.getDay())) trovate.push(dataLocale(d));
+    d.setDate(d.getDate() + 1);
+  }
+  return trovate;
+}
+
+// L'etichetta di una pastiglia. "Domani" solo per domani — è la parola che
+// dice da sola quello che serve. Le altre portano giorno e numero ("Sab 19"):
+// più utile di "dopodomani", e in inglese "the day after tomorrow" su una
+// pastiglia non ci sta comunque.
+//
+// Il mese si scrive **solo quando cambia**. Sull'Utopia, che va il sabato e
+// basta, le tre pastiglie erano "Sab 19 · Sab 26 · Sab 3": il 3 è ottobre, ma
+// letto di fretta sembra andare indietro. Col mese diventa "Sab 3/10". Il
+// numero e non il nome del mese: dodici nomi per tre lingue sono trentasei
+// righe di vocabolario per una pastiglia, e "3/10" si legge in tutte e tre.
+function etichettaData(iso, domani) {
+  if (iso === domani) return t("req.tomorrow");
+  const [a, m, g] = iso.split("-").map(Number);
+  const d = new Date(a, m - 1, g);
+  const altroMese = d.getMonth() !== new Date().getMonth();
+  const numero = altroMese ? d.getDate() + "/" + (d.getMonth() + 1) : String(d.getDate());
+  return t(GIORNI_CHIAVI[d.getDay()]) + " " + numero;
 }
 
 // "2026-08-23" → "23/08/2026", più leggibile nel messaggio
@@ -1126,6 +1186,13 @@ function initRequestDialog() {
   // invece a ogni apertura, e si vestono dove nascono.
   applicaStepper(peopleBoxEl);
 
+  // Il contenitore delle pastiglie della data, infilato fra l'etichetta e il
+  // campo: le scorciatoie prima, il calendario sotto come via di scampo.
+  const dateBox = document.createElement("div");
+  dateBox.className = "date-pills";
+  dateBox.hidden = true;
+  dateInput.parentNode.insertBefore(dateBox, dateInput);
+
   // Blocca le date che non rispettano il preavviso di 24 ore
   dateInput.min = minRequestDate();
   dateInput.max = maxRequestDate();
@@ -1188,6 +1255,7 @@ function initRequestDialog() {
     // riparte sempre da "Da concordare" invece di tenere la scelta di prima.
     if (timeEl) timeEl.value = "";
     if (langEl) langEl.value = "";
+    riempiDate(tour);
     riempiOrari(tour);
     riempiLingue(tour);
     riempiMenu(tour);
@@ -1287,6 +1355,55 @@ function initRequestDialog() {
     // come UTC e in certi fusi orari torna indietro di un giorno.
     const [a, m, g] = dateInput.value.split("-").map(Number);
     return giorni.includes(new Date(a, m - 1, g).getDay());
+  }
+
+  // Le pastiglie sopra il campo della data: le prime tre date in cui
+  // l'attività si fa davvero.
+  //
+  // Nascono qui e non nell'HTML, come i bottoni del "meno / più": così la
+  // copia doppia della finestra non c'entra niente, e le date sono comunque da
+  // calcolare a ogni apertura (domani non è più domani il giorno dopo, e i
+  // giorni buoni dipendono dalla variante scelta).
+  //
+  // Il campo del calendario resta sotto e non si tocca: le pastiglie coprono
+  // il caso normale — "vado domani", "vado sabato" — e chi parte fra tre
+  // settimane usa il calendario come prima.
+  function riempiDate(tour) {
+    if (!dateBox) return;
+    const domani = minRequestDate();
+    const date = primeDateUtili(tour, sceltaCorrente(tour), 3);
+    dateBox.innerHTML = "";
+    dateBox.hidden = !date.length;
+    date.forEach(iso => {
+      const b = document.createElement("button");
+      // dentro un <form>, un bottone senza tipo manda la richiesta
+      b.type = "button";
+      b.className = "date-pill";
+      b.dataset.dateValue = iso;
+      b.textContent = etichettaData(iso, domani);
+      b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", () => {
+        dateInput.value = iso;
+        // il campo è cambiato per mano nostra, e gli ascoltatori suoi non
+        // scattano da soli: l'avviso del giorno e le pastiglie si rifanno qui
+        aggiornaGiorno();
+        premiData();
+      });
+      dateBox.appendChild(b);
+    });
+    premiData();
+  }
+
+  // Quale pastiglia è quella scelta. Si rifà anche quando la data arriva dal
+  // calendario: chi sceglie col calendario il giorno che una pastiglia offriva
+  // già deve vederla accesa, se no sembra che le due cose non si parlino.
+  function premiData() {
+    if (!dateBox) return;
+    dateBox.querySelectorAll(".date-pill").forEach(b => {
+      const scelta = b.dataset.dateValue === dateInput.value;
+      b.setAttribute("aria-pressed", scelta ? "true" : "false");
+      b.classList.toggle("is-on", scelta);
+    });
   }
 
   function aggiornaGiorno() {
@@ -1628,8 +1745,10 @@ function initRequestDialog() {
     if (tour) open(tour, comeAggiunta);
   });
 
-  dateInput.addEventListener("input", aggiornaGiorno);
-  dateInput.addEventListener("change", aggiornaGiorno);
+  // `premiData` anche qui: la data può arrivare dal calendario, e se è uno dei
+  // giorni che una pastiglia offriva già, quella pastiglia deve accendersi.
+  dateInput.addEventListener("input", () => { aggiornaGiorno(); premiData(); });
+  dateInput.addEventListener("change", () => { aggiornaGiorno(); premiData(); });
 
   // I due transfer si escludono a vicenda: un cliente sta o al nord o al sud,
   // non in tutti e due i posti. Spuntarne uno toglie la spunta all'altro.
@@ -1675,6 +1794,9 @@ function initRequestDialog() {
     if (transferLabelEl) transferLabelEl.textContent = current.transferLabel ? tf(current.transferLabel) : t("req.transfer");
     if (transferSiamNoteEl && current.transferSiam) transferSiamNoteEl.textContent = tf(current.transferSiam);
     if (transferSiamLabelEl) transferSiamLabelEl.textContent = current.transferSiamLabel ? tf(current.transferSiamLabel) : t("req.transferSiam");
+    // "Domani" e "Sab 19" sono tradotti: le pastiglie si rifanno, e premiData()
+    // dentro riempiDate() rimette l'accesa dov'era
+    riempiDate(current);
     // "Da concordare" e "2 adulti × €55" sono tradotti: si rifanno tutti e due
     riempiOrari(current);
     riempiLingue(current);

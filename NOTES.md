@@ -13055,3 +13055,128 @@ giorni in cui non si parte: toglie i tap **e** toglie l'errore dopo la scelta.
 
 E la domanda per il proprietario, che non è un passo: **il nome, forse, non va chiesto** —
 il messaggio parte dal WhatsApp del cliente e l'ufficio vede già chi scrive.
+
+## v342 — le pastiglie della data, e un buco nelle 24 ore
+
+Ultimo dei cinque passi sulla prenotazione. La data era l'unico campo rimasto tutto a
+mano: apri il calendario del telefono, cerca il giorno, confermalo. E sulle schede che non
+si fanno tutti i giorni si poteva scegliere il giorno sbagliato e **scoprirlo dopo**.
+
+Adesso sopra il campo ci sono tre pastiglie con le prime tre date in cui l'attività si fa
+**davvero**: "Domani · Sab 19 · Mar 22". Un tocco, e quel tocco non può sbagliare.
+
+### Il calendario resta, e l'avviso anche
+
+Il campo `type="date"` sta sotto e non si tocca: le pastiglie coprono il caso normale
+("vado domani", "vado sabato"), chi parte fra tre settimane usa il calendario come prima.
+
+E **l'avviso del giorno sbagliato resta**, perché il calendario lascia scegliere qualunque
+data ed è da lì che un giorno sbagliato entra ancora. Le pastiglie **riducono** l'errore,
+non lo sostituiscono: provato di proposito, scegliendo col calendario un mercoledì sul
+Castillo San Miguel (che va mar/gio/sab) escono l'avviso e il blocco dell'invio come
+prima, e nessuna pastiglia resta accesa.
+
+### Quanto avanti si guarda, e perché tre settimane
+
+`primeDateUtili()` scorre i giorni da domani in avanti e prende i primi tre buoni,
+fermandosi a **21 giorni**. Un'attività che si fa un giorno alla settimana — l'Utopia va
+il sabato e basta — ne dà tre. Oltre le tre settimane una pastiglia non è più una
+scorciatoia: è una data che tanto vale scegliere col calendario.
+
+**La variante vince**, come dice la regola. Royal Delfin non ha `days` sulla scheda, ma la
+variante da 2 ore va mar/gio/dom: le pastiglie escono Gio · Dom · Mar, non tre giorni di
+fila. Controllato apposta perché a prima vista sembrava un errore.
+
+### Il mese si scrive solo quando cambia
+
+Sull'Utopia le tre pastiglie erano **"Sab 19 · Sab 26 · Sab 3"**. Il 3 è ottobre, ma letto
+di fretta sembra andare indietro. Adesso quando il mese non è quello di oggi il numero
+diventa "3/10".
+
+Il numero e non il nome del mese: dodici nomi per tre lingue sono trentasei righe di
+vocabolario per una pastiglia, e "3/10" si legge in italiano, in inglese e in spagnolo.
+
+### "Domani" e poi le date, non "dopodomani"
+
+Solo la prima pastiglia ha una parola, e solo se domani è davvero un giorno buono. Le
+altre portano giorno e numero. Due ragioni: una data vera dice più di "dopodomani", e in
+inglese "the day after tomorrow" su una pastiglia non ci sta. Una chiave sola in
+`i18n.js` (`req.tomorrow`) invece di due.
+
+Sull'Utopia, che il mercoledì non parte, la prima pastiglia dice "Sab 19" e non "Domani":
+la parola compare solo quando è vera.
+
+### Il buco nelle 24 ore, trovato passando di qui
+
+`minRequestDate()` faceva `new Date()`, +1 giorno, `toISOString().slice(0,10)`. Ma
+`toISOString()` passa per **UTC**, e a Tenerife d'estate siamo a UTC+1: chi apriva la
+finestra fra mezzanotte e l'una si prendeva la data di ieri, e il minimo del campo
+diventava **oggi** invece di domani.
+
+Cioè un buco nelle **24 ore di preavviso**, che sono la regola di Isla. Stretto — un'ora
+al giorno, per metà dell'anno — ma vero, e in vacanza alle 00:30 si prenota.
+
+È lo stesso inciampo che `giornoValido()` aveva già schivato a modo suo, col commento che
+lo dice: `new Date("2026-09-12")` lo tratta come UTC e in certi fusi torna indietro di un
+giorno. Adesso c'è `dataLocale()`, che legge i pezzi della data locale e li scrive a mano,
+e la usano `minRequestDate`, `maxRequestDate` e le pastiglie.
+
+Non l'ho cercato: mi serviva costruire le date delle pastiglie in ora locale, e passando
+ho visto che quelle due funzioni facevano l'errore che il file stesso documenta.
+
+### Niente HTML, di nuovo
+
+Le pastiglie nascono in JavaScript, come i bottoni del "meno / più": la copia doppia della
+finestra non c'entra niente. E dovevano nascere a ogni apertura comunque — domani non è
+più domani il giorno dopo, e i giorni buoni dipendono dalla variante scelta.
+
+Lo stile: quella scelta si segna come le pillole delle varianti sulla pagina di dettaglio,
+bordo scuro e fondo sabbia. Prima avevo scritto un riquadro nero **e nel commento avevo
+scritto "come le varianti"**, che era falso: le varianti fanno sabbia. Allineato allo stile
+che c'era già — è lo stesso gesto, "scelgo fra questi", e deve avere lo stesso segno.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `escursioni.js` e
+`i18n.js`.
+
+Nel browser vero, iPhone SE (375×667), su schede scelte per coprire i casi:
+
+| scheda | giorni | pastiglie |
+|---|---|---|
+| `peter-pan` | nessun `days`, nessuno nelle varianti | Domani · Gio 17 · Ven 18 (tre di fila) |
+| `freebird-catamaran` | variante lun/mer/ven | Domani · Ven 18 · Lun 21 |
+| `castillo-san-miguel` | mar/gio/sab | Gio 17 · Sab 19 · Mar 22 |
+| `utopia-boat-party` | solo sab | Sab 19 · Sab 26 · **Sab 3/10** |
+| `royal-delfin` | variante mar/gio/dom | Gio 17 · Dom 20 · Mar 22 |
+
+Verificato **a macchina** che ogni data offerta cadesse in un giorno buono, non a occhio:
+per Freebird i giorni della settimana offerti sono 3-5-1, per Teide 3-6-0.
+
+Più: un tocco mette la data e accende la pastiglia; una data scelta col **calendario** che
+coincide con una pastiglia la accende (se no sembra che le due cose non si parlino); una
+data sbagliata dal calendario fa uscire l'avviso, spegne le pastiglie e **blocca l'invio**;
+il cambio lingua traduce le pastiglie e tiene accesa quella scelta; `min` del campo è
+domani. Più al buio, desktop a 1200 px e la home dove la finestra non c'è.
+
+Rifatti anche i passi di prima: memoria dell'hotel su sette casi, partenza da una persona,
+giro completo fino al messaggio.
+
+`CACHE_NAME` da `isla-v341` a `isla-v342`: toccati `escursioni.js`, `i18n.js` e
+`styles.css`.
+
+### I cinque passi sono chiusi
+
+1. ✅ v336 — conto e pulsante fissi in fondo alla finestra
+2. ✅ v337 — il nome scende in fondo, la finestra si apre sulla data
+3. ✅ v339/v340 — il "meno / più", e si parte da una persona
+4. ✅ v341 — l'hotel si ricorda, il nome no
+5. ✅ v342 — le pastiglie della data
+
+**Resta la domanda per il proprietario**, che non è un passo di codice: il nome, forse,
+non va chiesto affatto — il messaggio parte dal WhatsApp del cliente e l'ufficio vede già
+chi scrive e da che numero. Se la risposta è "non serve", il campo sparisce e la finestra
+perde l'ultima cosa che si batte a macchina.
+
+**E resta da guardare sul telefono vero** quello che qui non si può simulare: la tastiera
+di iOS che sale sul fondo della finestra, dove adesso c'è il campo del nome.

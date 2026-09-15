@@ -12495,8 +12495,205 @@ Da fare uno alla volta, in quest'ordine:
 5. **Il nome, forse, non va chiesto**: il messaggio parte dal WhatsApp del cliente e
    l'ufficio vede già chi scrive. Domanda per il proprietario, non decisione da prendere
    qui.
+## v272 — il picnic lo dà il fornitore, e la scheda diceva il contrario
 
-## v337 — il nome scende in fondo alla finestra della richiesta
+Correzione del proprietario: **il picnic del gruppo piccolo è compreso nel prezzo, non se
+lo porta il cliente.**
+
+La scheda non lo diceva mai apertamente, ma il verbo lo faceva capire al contrario. La
+descrizione diceva:
+
+> il gruppo piccolo va in minivan, **porta** un picnic al tramonto
+
+E in inglese era anche peggio — *«the small group travels by minivan, **brings** a picnic
+for sunset»* — dove "brings" ha come soggetto più naturale chi legge, non il fornitore.
+Uguale in spagnolo con *«lleva un picnic»*.
+
+Le icone dicevano già la verità (`fingerfood` e `drinks` sono fra i compresi del gruppo
+piccolo), ma **le parole battono le icone**: un cliente legge la frase e si porta i panini
+da casa, oppure — peggio — non prenota perché pensa di doverseli preparare.
+
+Corretti tutti e tre i punti dove il cibo compariva, nelle tre lingue:
+
+| dove | adesso dice |
+|---|---|
+| descrizione della scheda | «al tramonto **ti offre** un picnic, compreso nel prezzo» |
+| descrizione della variante | «un picnic **preparato dal fornitore e compreso nel prezzo**» |
+| tappa dell'itinerario | «**Lo porta il fornitore, non c'è niente da preparare a casa**» |
+
+La riga dell'itinerario è quella che chiude il discorso per tutte e tre le serate insieme:
+sta sulla scheda, quindi vale sia per la cena del gruppo grande, sia per il panino, sia per
+il picnic. Nessuno dei tre può più essere letto come "portatelo da casa".
+
+**Da tenere a mente:** quando una scheda dice cosa si mangia, il verbo deve dire anche
+**chi lo porta**. "Con un picnic" non basta — è ambiguo in tutte e tre le lingue, e
+l'ambiguità cade sempre dalla parte sbagliata, cioè addosso al cliente.
+
+### `controlla.js` ha fatto il suo mestiere
+
+Modificato `esplora-catalog.js` e lanciato il controllo prima di alzare `CACHE_NAME`:
+**1 errore**, con scritto quali file erano cambiati e che il nome della cache era rimasto
+uguale al merge-base. Alzato a `isla-v272`, tornato a 0 errori. È il controllo aggiunto
+apposta perché questa cosa non si dimentichi: senza, la correzione ci sarebbe stata nel
+codice e nessuno l'avrebbe vista sul sito.
+
+### Provato
+
+Nel browser vero, nelle tre lingue: la descrizione della scheda, quella del gruppo piccolo
+e la tappa del cibo dicono tutte e tre che lo porta il fornitore. Prezzi, totali, lingue,
+icone e tappe invariati. Nessun errore in console.
+
+`node controlla.js` → 70 schede, 0 errori, 2 avvisi. `CACHE_NAME` a `isla-v272`.
+
+---
+
+## v273 — la pulizia, e quanto poco c'era da pulire
+
+Richiesta del proprietario: togliere dal sito tutto il superfluo. Prima di cancellare
+qualsiasi cosa è stato fatto l'inventario, e il risultato più utile è **quanto poco è
+venuto fuori**. Vale la pena scriverlo, così la prossima volta nessuno rifà lo stesso giro.
+
+| cercato | trovato |
+|---|---|
+| classi CSS mai usate | **0** su 206 |
+| funzioni JS mai chiamate | **0** |
+| chiavi i18n mai usate | **0** su 283 (una sembrava morta, vedi sotto) |
+| file elencati in `sw.js` che non esistono | **0** |
+| foto in `assets/` che nessuno nomina | **1** su 117 |
+| foto identiche fra loro | **1 coppia** |
+| codice morto | il `<select>` delle varianti, ~35 righe |
+
+### Quello che è stato tolto
+
+**Il `<select>` delle varianti dentro la finestra della richiesta.** CLAUDE.md lo dava già
+per morto, ma prima di cancellarlo è stato verificato nel codice invece che sulla parola:
+
+- si mostra solo se `!sceltaDallaPagina()`, cioè se nessun bottone della pagina di
+  dettaglio è premuto
+- in `tour.js` i bottoni si disegnano con `premuto = i === 0`: **il primo è sempre
+  premuto**
+- `data-request-open`, cioè l'unica cosa che apre la finestra, esiste solo in `tour.js`
+
+Quindi la condizione per vederlo non si avvera mai. Tolti il `<select>` e la sua `<label>`
+da tutti e due gli HTML, la funzione `riempiOpzioni()` che lo riempiva, i due
+`querySelector` e il blocco che lo ricostruiva al cambio lingua. `opzioneScelta()` adesso è
+una riga sola.
+
+**`assets/teide-masca.jpg`**, 30 KB, che nessun file nominava — **poi rimessa**, vedi sotto.
+
+**`assets/mustang-experience.jpg`**, byte per byte identica a `Cat-avventura.jpg`: 202 KB
+che il telefono scaricava due volte. La scheda Mustang punta adesso alla foto della
+categoria, come già fa il Twin Ticket con `Cat-parchi.jpg`. ⚠ **Le due immagini sono
+legate**: cambiare la foto del Mustang cambia anche la card "Avventura e motori" in home.
+Sta scritto nel commento sopra il campo `image`.
+
+### Quello che sembrava morto e non lo era
+
+**`categories.altSuffix`.** Il primo controllo la dava per mai usata, perché cercava le
+chiavi in tutti i file **tranne** `i18n.js`. È usata proprio lì dentro, per scrivere il
+testo alternativo delle immagini delle categorie (`nome + " " + t("categories.altSuffix")`).
+
+L'ha salvata un `assert` nello script di pulizia, che pretendeva di trovare esattamente una
+riga e ne ha trovate due. **Quando si cancella in blocco, il controllo va scritto perché
+fallisca**: uno script che "toglie quello che trova" avrebbe cancellato la chiave e rotto
+tutti gli `alt` delle categorie senza che nessun test se ne accorgesse.
+
+### Quello che NON si tocca, e perché
+
+- **Le 6 schede `published: false`** (Spyder, Quad da Puerto de la Cruz, Charter privato,
+  Tour privato su misura, Teide privato di giorno e di notte). Scelta del proprietario:
+  sono lavoro in sospeso, non roba morta. Non si vedono sul sito e non pesano sul
+  caricamento — sono righe di testo dentro un file che si scarica comunque
+- **`booking.html` e `booking.js`** col loro `TODO` e i dati finti: il flusso "Prenota ora"
+  resta per scelta del proprietario, è il segnaposto di un sistema di prenotazioni futuro
+- **`dati-fornitore/`** (68 KB): CLAUDE.md lo documenta come il posto dei dati grezzi e
+  della storia di come sono stati raccolti
+- **`NOTES.md`** (490 KB): è la memoria lunga, non un file di appoggio
+- **La finestra della richiesta duplicata** in `escursioni.html` e `tour.html`: è voluta, e
+  un `diff` conferma che i due blocchi sono ancora identici
+- **Le icone `speaker` e `cooler`**, disegnate ma non usate da nessuna scheda: due voci in
+  `INCLUDED_ICONS` non pesano niente, e il giorno che arriva una barca con l'impianto
+  audio ci sono già
+- **`About-team.jpg`, 5 MB.** Segnalata al proprietario perché da sola è un quinto di tutte
+  le foto del sito: ha deciso di lasciarla com'è. **Resta il file più pesante del
+  progetto** — se un giorno la pagina "Chi siamo" sembra lenta, è lei
+
+### Provato
+
+Nel browser vero. Il pezzo delicato era la finestra della richiesta, quindi è stata provata
+su tre schede con varianti (stargazing 2, buggy 4, Freebird 4) e su una senza: il titolo
+della richiesta porta ancora la variante premuta, e il messaggio WhatsApp esce completo —
+«Serata: Gruppo piccolo (italiano, inglese, tedesco)» con «Totale indicativo: €227 (2
+adulti × €79 + 1 bambino × €69)». Il `<select>` non c'è più in nessuna delle due pagine.
+
+Poi tutte le foto: aperte home, elenco, dettaglio e prenota, e scorso l'elenco fino in
+fondo per far partire il caricamento pigro. **Nessuna immagine rotta e nessuna richiesta a
+`assets/` fallita.** Foto da 117 a 115.
+
+`node controlla.js` → 70 schede, 0 errori, 2 avvisi. `CACHE_NAME` a `isla-v273`.
+
+### Poi il branch e' rimasto indietro di 45 PR, e una foto orfana non lo era piu'
+
+Fra la pulizia e il merge sono entrate su `main` **quarantacinque** PR — i pacchetti, il
+karting, il surf, la barra "Prenota ora", il conto in fondo alla finestra. Riallineando,
+`controlla.js` ha dato **1 errore**:
+
+```
+pacchetto giorni-3
+    la foto "teide-masca.jpg" non c'e' in assets/.
+```
+
+La foto che il 10 settembre non usava nessuno, il 15 la usa il pacchetto "3 Days
+Experience" di `pacchetti.js`, che allora non esisteva. **Rimessa.**
+
+È il limite di qualsiasi ricerca di roba orfana: dice cosa non serve **oggi**, non cosa non
+servira' domani. Su un file di 30 KB il guadagno era zero e il rischio no. La regola che ne
+esce: **una foto orfana si cancella solo se e' anche brutta, sbagliata o doppia** — se e'
+solo inutilizzata, costa meno lasciarla li'.
+
+`mustang-experience.jpg` invece resta cancellata, perche' li' il motivo non era
+"non la usa nessuno" ma "e' lo stesso file di un'altra": un doppione resta un doppione
+anche fra sei mesi.
+
+### Il `<select>` riverificato su main di oggi
+
+Prima di tenere la cancellazione e' stato rifatto il ragionamento sul main nuovo, non su
+quello di cinque giorni prima — con la barra "Prenota ora" (#242) e due pagine nuove
+(`pacchetti.html`, `pacchetto.html`) poteva essere cambiato tutto:
+
+- `data-request-open` adesso sta in due posti, `tour.html` (la barra) e `tour.js` (il
+  bottone): **tutti e due sulla pagina di dettaglio**
+- `tour.js` disegna ancora i bottoni con `premuto = i === 0`
+- le due pagine dei pacchetti **non hanno** la finestra della richiesta
+
+La condizione per vedere il `<select>` continua a non avverarsi mai. Se una delle due cose
+fosse cambiata, la cancellazione andava annullata.
+
+### I conflitti del riallineamento
+
+Quattro file, e uno meritava attenzione:
+
+| file | come e' stato risolto |
+|---|---|
+| `escursioni.html`, `tour.html` | **non ha vinto nessuno dei due lati**: il mio aveva la riga del totale, che main ha spostato in fondo alla finestra (#244); quello di main aveva il `<select>`, che ho tolto io. Al suo posto non ci va niente |
+| `esplora-catalog.js` | ha vinto main, che ha riscritto la scheda Mustang (icone, tappe, note). La mia unica modifica era la riga `image`, rimessa sopra il testo nuovo |
+| `sw.js` | main a `isla-v336`, il branch a `isla-v273`: messo `isla-v337`, piu' alto di tutti e due |
+| `NOTES.md` | scrivono tutti e due in fondo: tenute entrambe, prima main |
+
+Il primo e' quello che un "prendi il mio" o un "prendi il loro" avrebbe sbagliato in tutti
+e due i versi: tenendo il mio lato tornava il totale in mezzo alla finestra, tenendo quello
+di main tornava il `<select>` morto.
+
+### Riprovato dopo il riallineamento
+
+`node controlla.js` → 66 schede, **0 errori**, 3 avvisi (i due di sempre piu' `trekking-bici`
+senza foto, che arriva da main). Nel browser: la finestra della richiesta su tre schede con
+varianti, il messaggio WhatsApp completo — «Teide by Night — Gruppo piccolo (italiano,
+inglese, tedesco)», «€227 (2 adulti × €79 + 1 bambino × €69)» — il totale che compare in
+fondo come vuole #244, e nessuna immagine rotta su home, elenco, pacchetti, prenota e
+dettaglio. `CACHE_NAME` a `isla-v337`.
+
+## v338 — il nome scende in fondo alla finestra della richiesta
 
 Secondo dei cinque passi sulla prenotazione. Il primo campo della finestra era **"Il tuo
 nome"**: la prima cosa che il cliente si trovava davanti, prima ancora di "quando vorresti
@@ -12562,7 +12759,25 @@ della finestra — dove adesso c'è il nome — potrebbe finirci sotto. Su Chrom
 porta la casella in vista da solo, ma **la tastiera di iOS non è simulabile qui**: va
 guardata sul telefono. Se dà noia, il rimedio non è rimettere il nome in cima.
 
-`CACHE_NAME` da `isla-v336` a `isla-v337`: toccati i due `.html` e `pacchetti.js`.
+`CACHE_NAME` da `isla-v337` a `isla-v338`: toccati i due `.html` e `pacchetti.js`.
+
+### Trovato passando di qui, e non c'entra con questa modifica
+
+Rifacendo le prove dopo aver portato dentro `main` (che nel frattempo ha tolto il `<select>`
+morto delle varianti): aprendo la finestra della richiesta **dalla pagina catalogo**, su una
+scheda i cui prezzi stanno solo nelle varianti, il totale non compare.
+
+Il perche': senza quel `<select>`, `opzioneScelta()` non ha piu' da dove leggere la variante
+quando i bottoni della pagina di dettaglio non ci sono, quindi torna vuota, `calcolaTotale()`
+non trova prezzi e la riga resta nascosta.
+
+**Non e' una regressione di questa modifica** — misurato uguale su `main` da solo — e
+soprattutto **non e' una strada che un cliente puo' fare**: i pulsanti `data-request-open` e
+`data-request-add` li scrive solo `tour.js`, e dalla pagina catalogo le schede portano al
+dettaglio. In `escursioni.html` la finestra c'e' ma non la apre niente: l'ho aperta a mano
+per provarla. Da tenere a mente il giorno che si volesse chiedere una richiesta direttamente
+dall'elenco: quel giorno il `<select>` servirebbe di nuovo, o servirebbe un altro modo di
+sapere la variante.
 
 ### Dove siamo coi cinque passi
 

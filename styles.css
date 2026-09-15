@@ -1,6 +1,14 @@
 :root {
+  /* Dice al browser che il sito ha tutti e due i temi. Serve per le cose che
+     disegna lui e non il foglio di stile: il calendario del campo data, la
+     freccia delle tendine, la barra di scorrimento. Senza, al buio restavano
+     neri su nero. */
+  color-scheme: light dark;
+
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-body: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* la calligrafia della cartolina: la usa solo la lista */
+  --font-hand: "Caveat", "Segoe Script", cursive;
 
   /* soft white */
   --bg: oklch(0.985 0.006 85);
@@ -586,8 +594,11 @@ a { text-decoration: none; color: inherit; }
   border-radius: 20px;
   color: var(--text);
 }
-/* Il quinto riquadro: da solo su una riga da 2 o 4 colonne resterebbe
-   spaiato, quindi occupa tutta la larghezza e mette icona e testo in fila. */
+/* Il riquadro che non fa coppia con gli altri, da solo su una riga: occupa
+   tutta la larghezza (invece di restare spaiato in una griglia da 2 o 4
+   colonne) e mette icona e testo in fila invece che impilati. Non e' legato
+   a un riquadro preciso — l'ha portato prima "Noleggio auto, moto e bici" in
+   fondo alla griglia, adesso "Scan ticket" in cima. */
 .bento-tile-wide {
   grid-column: 1 / -1;
   aspect-ratio: auto;
@@ -595,6 +606,63 @@ a { text-decoration: none; color: inherit; }
   gap: .9rem;
   padding: 1.15rem 1rem;
 }
+
+/* Il riquadro dei pacchetti: una foto al posto dell'icona, Puerto de la Cruz
+   col Teide dietro — la stessa che apre la home. La scritta resta dov'era ma
+   scende in fondo e diventa bianca, come sulle foto delle categorie. */
+.bento-tile-photo {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  justify-content: flex-end;
+  border-color: transparent;
+}
+.bento-foto {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  /* senza height il width/height nell'HTML batte il ritaglio e la foto
+     esce alta come e': e' gia' successo alla foto di "Chi siamo" */
+  height: 100%;
+  object-fit: cover;
+}
+/* La sfumatura e' decorativa: senza pointer-events copre il link. */
+.bento-tile-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 35%, oklch(0.24 0.012 60 / .9) 100%);
+  pointer-events: none;
+}
+/* La scritta. Quando la foto era un mosaico di tre dentro uno <span>, questa
+   regola scritta "span" e basta prendeva anche il mosaico e gli toglieva il
+   `position: absolute`: le foto finivano nel flusso e restavano alte due terzi
+   del riquadro. Adesso la foto e' un <img> e lo span qui dentro e' uno solo,
+   ma il `>` resta: una regola larga dentro un riquadro che cambia si
+   ripresenta. */
+.bento-tile-photo > span {
+  position: relative;
+  z-index: 1;
+  padding: 0 .7rem .9rem;
+  color: #fff;
+}
+
+/* Il riquadro "3/5/7 Days Experience": cinque foto invece di una, tagliate a
+   striscia obliqua con clip-path. Ogni striscia e' un <img class="bento-foto">
+   pieno quanto il riquadro (regola sopra) e viene ritagliato in un
+   parallelogramma. Fra una striscia e la prossima c'e' uno spacco (il bordo
+   destro della striscia N e' un po' PRIMA del bordo sinistro della N+1,
+   sempre della stessa quantita' in percentuale): sotto le foto c'e' sfondo
+   bianco invece del crema del riquadro, cosi' lo spacco esce come una riga
+   bianca che separa le foto. Se cambia il numero di strisce o la larghezza
+   dello spacco vanno ricalcolati tutti insieme, non uno alla volta. */
+.bento-tile.bento-tile-stripes { background: #fff; }
+.bento-tile-stripes .bento-stripe-1 { clip-path: polygon(14.9% 0%, 33.1% 0%, 5.1% 100%, -13.1% 100%); }
+.bento-tile-stripes .bento-stripe-2 { clip-path: polygon(34.9% 0%, 53.1% 0%, 25.1% 100%, 6.9% 100%); }
+.bento-tile-stripes .bento-stripe-3 { clip-path: polygon(54.9% 0%, 73.1% 0%, 45.1% 100%, 26.9% 100%); }
+.bento-tile-stripes .bento-stripe-4 { clip-path: polygon(74.9% 0%, 93.1% 0%, 65.1% 100%, 46.9% 100%); }
+.bento-tile-stripes .bento-stripe-5 { clip-path: polygon(94.9% 0%, 113.1% 0%, 85.1% 100%, 66.9% 100%); }
 
 .bento-tile svg {
   width: 28px;
@@ -1603,6 +1671,305 @@ body.menu-open { overflow: hidden; }
 .tour-title a { color: inherit; }
 .tour-title a:hover { text-decoration: underline; }
 
+/* ── I pacchetti ──────────────────────────────────────────────────────── */
+.packs-intro {
+  margin: 0 auto;
+  max-width: 52ch;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .92rem;
+  line-height: 1.6;
+}
+
+/* La vetrina, stile bento come in home: riquadri quadrati con la foto, e il
+   primo piu' grande degli altri. Il primo e' grande e basta, non "quello in
+   offerta": se un domani l'ordine cambia, cambia solo quale riquadro e' largo,
+   e nessun testo diventa falso. */
+.pack-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: .8rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+.pack-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+/* Il primo: su due colonne sta largo e basso, come il riquadro del noleggio
+   in home. */
+.pack-tile:first-child {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 10;
+}
+/* Sul telefono i riquadri piccoli sono larghi 168px: col prezzo barrato
+   davanti, "a persona" finisce su una riga sua e il blocco di testo diventa
+   alto il doppio. Il barrato sparisce solo li' — sul riquadro grande, da
+   tablet in su e nella pagina del pacchetto ci sta e resta, che e' il posto
+   dove il cliente guarda quanto risparmia. Il bollino lo dice comunque. */
+@media (max-width: 639px) {
+  .pack-tile:not(:first-child) .price-before { display: none; }
+  /* L'ultimo riquadro rimasto spaiato sulla riga da due si prende tutta la
+     larghezza invece di lasciare un buco, come il riquadro del noleggio in
+     home. Il primo e' gia' largo, quindi "spaiato" vuol dire che i riquadri
+     sono in numero pari. */
+  .pack-tile:nth-child(even):last-child {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 10;
+  }
+}
+@media (min-width: 640px) {
+  .pack-grid { grid-template-columns: repeat(3, 1fr); }
+  .pack-tile:first-child { grid-column: span 2; aspect-ratio: auto; }
+}
+@media (min-width: 960px) {
+  .pack-grid { grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  /* due colonne e due righe: il quadrato grande del bento */
+  .pack-tile:first-child { grid-column: span 2; grid-row: span 2; }
+}
+.pack-tile-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+}
+.pack-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* La sfumatura e' decorativa: senza pointer-events copre il link e i tocchi
+   non passano. Stessa trappola gia' presa con le foto delle categorie. */
+.pack-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, oklch(0.24 0.012 60 / .82) 100%);
+  pointer-events: none;
+}
+.pack-tile-testo {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: .9rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+.pack-tile-testo strong {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.15rem;
+  line-height: 1.15;
+}
+@media (min-width: 960px) {
+  .pack-tile:first-child .pack-tile-testo strong { font-size: 1.6rem; }
+}
+/* Il prezzo sulla foto: piu' piccolo e in bianco, se no il numero scuro della
+   pagina sparisce dentro la sfumatura. */
+.pack-tile .pack-price { font-size: 1rem; }
+.pack-tile .pack-price strong { font-weight: 500; }
+.pack-tile .price-before { color: oklch(1 0 0 / .65); }
+.pack-tile .pack-price small { color: oklch(1 0 0 / .75); }
+/* ── Gli itinerari a giorni ───────────────────────────────────────────── */
+/* La riga delle durate sopra la vetrina. Sono le stesse pillole dei filtri per
+   categoria dell'elenco (.chip-row/.chip): e' lo stesso gesto — scegli una
+   cosa, la griglia sotto cambia — e impararlo una volta basta.
+   Niente `display` qui dentro: `.days-nav` e' un div, e un div nascosto con
+   [hidden] sparisce da solo. Una riga `display: flex` lo farebbe ricomparire
+   in tutte e tre le viste, come e' gia' successo a .packs-foot. */
+.days-nav { margin-bottom: 1.1rem; }
+/* Le durate vanno **a capo** anche sul telefono, al contrario delle categorie
+   dell'elenco che si scorrono col dito. Sono quattro e non venti, e l'ultima
+   e' "7 giorni": scorrendo, su uno schermo da 412 px restava mezza fuori dal
+   bordo: una vetrina intera che non si sa che c'e'. Le categorie si possono
+   permettere di scorrere perche' nessuna di loro e' l'unica strada per
+   arrivare da qualche parte. */
+.days-nav .chip-row {
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+
+/* Quanti giorni sono, sopra il titolo del riquadro. Bianco smorzato come "a
+   persona" del prezzo: deve dirsi prima del titolo ma non prima della foto. */
+.pack-tile-giorni {
+  font-size: .62rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: oklch(1 0 0 / .8);
+}
+
+.pack-badge {
+  position: absolute;
+  top: .8rem;
+  right: .8rem;
+  z-index: 1;
+  background: var(--text);
+  color: var(--cream);
+  border-radius: var(--radius-pill);
+  padding: .3rem .75rem;
+  font-size: .7rem;
+  letter-spacing: .06em;
+}
+
+/* ── Il pacchetto aperto ──────────────────────────────────────────────── */
+.pack-detail {
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+}
+.pack-detail-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--cream);
+  margin-bottom: .5rem;
+}
+.pack-detail-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pack-detail-title {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 1.5rem + 2vw, 2.8rem);
+  line-height: 1.1;
+}
+.pack-detail-lead {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .95rem;
+  line-height: 1.6;
+}
+.pack-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .3rem .8rem;
+  margin-top: .3rem;
+}
+.pack-price {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+/* "a persona" e' l'unita' del numero, non una frase: piccola e attaccata,
+   come il "/buggy" dei prezzi a mezzo. */
+.pack-price small {
+  font-family: var(--font-body);
+  font-size: .68rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+.pack-note {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .78rem;
+  line-height: 1.5;
+}
+/* Il conto della famiglia tipo, sotto il prezzo a persona. Non e' un titolo ma
+   un numero: piu' piccolo del prezzo grande, piu' scuro della nota che gli sta
+   sotto, cosi' si legge nell'ordine giusto (prezzo, famiglia, avvertenza). */
+.pack-family {
+  margin: .1rem 0 0;
+  font-size: .92rem;
+  font-weight: 400;
+}
+.pack-inside {
+  margin-top: .8rem;
+  font-size: .62rem;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--gold);
+}
+.pack-voci {
+  list-style: none;
+  margin: 0 0 1.4rem;
+  padding: 0;
+}
+.pack-voce {
+  display: flex;
+  align-items: flex-start;
+  gap: .8rem;
+  padding: .9rem 0;
+  border-top: 1px solid var(--border);
+}
+.pack-voce-n {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  margin-top: .1rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cream);
+  font-size: .72rem;
+  color: var(--muted);
+}
+/* min-width: 0 su un figlio flex serve o un titolo lungo allarga la riga
+   invece di andare a capo. */
+.pack-voce-testo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+.pack-voce-testo strong {
+  font-weight: 500;
+  font-size: .95rem;
+  line-height: 1.25;
+}
+.pack-voce-meta {
+  color: var(--muted);
+  font-size: .76rem;
+}
+/* Le due righe che dicono che cos'e': dal pacchetto non si esce per andare a
+   leggerlo sulla scheda, quindi il minimo per capirlo sta qui. */
+.pack-voce-desc {
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .84rem;
+  line-height: 1.5;
+}
+/* La nota sotto la data e l'etichetta delle persone si toccavano: il .hint
+   ha solo il margine sopra, e li' sotto ci va un campo nuovo. */
+#packDialog .hint { margin-bottom: 1.1rem; }
+
+.pack-back {
+  align-self: center;
+  margin-top: .4rem;
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+/* Il piede della vista "In famiglia": le due uscite, in colonna e centrate.
+   Nella pagina di tutti i pacchetti resta `hidden` e non occupa niente. */
+.packs-foot {
+  margin-top: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+}
+/* `display: flex` vince su `[hidden]`, che e' solo `display: none` del browser:
+   senza questa riga il piede si vedeva anche nella pagina di tutti i pacchetti,
+   con scritto "tutte le escursioni adatte ai bambini". Vale per ogni elemento
+   che nasce nascosto e ha un display suo. */
+.packs-foot[hidden] { display: none; }
+
 /* ── Pagina di dettaglio di una singola escursione ────────────────────── */
 .detail-page {
   /* niente spazio in cima: la striscia e' sticky e sta nel flusso, il banner
@@ -2183,31 +2550,73 @@ body.menu-open { overflow: hidden; }
   font-size: .78rem;
 }
 
+/* Il piede della finestra: il conto e il pulsante, appiccicati in basso
+   mentre il resto del modulo scorre.
+
+   Il modulo e' sempre piu' alto di un telefono — 1262 px contro 844 sulla
+   scheda piu' semplice, 1563 dove ci sono i menu — e prima il pulsante stava
+   in fondo a tutto: il cliente compilava una schermata e mezza senza vedere
+   ne' quanto viene ne' dove si manda. Il totale stava a meta' modulo e gli
+   passava davanti una volta sola, mentre e' il numero che cambia ogni volta
+   che tocca "adulti".
+
+   I margini negativi ai lati pareggiano il padding della finestra: la barra
+   arriva da bordo a bordo e il modulo le scorre sotto invece che di fianco.
+   `sticky` regge finche' sotto al piede c'e' ancora qualcosa da scorrere —
+   sono le due righe del preavviso e della privacy, che per questo restano
+   fuori. */
+/* Il respiro in fondo lo mette il modulo, non la finestra. Il piede si
+   incolla al fondo di quello che scorre, che finisce dove finisce il
+   contenuto: col padding in fondo alla finestra il piede restava due
+   centimetri piu' su e i campi gli spuntavano da sotto. */
+.request-dialog { padding-bottom: 0; }
+.request-dialog form { padding-bottom: 2rem; }
+
+.request-foot {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  margin: .3rem -1.4rem 0;
+  padding: .9rem 1.4rem 1rem;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+
 /* Il totale: si aggiorna mentre il cliente cambia i numeri delle persone.
-   Il numero grosso per primo perche' e' quello che si cerca, il conto sotto
-   per far vedere da dove viene, e la nota che e' indicativo. */
+   Il numero grosso a sinistra perche' e' quello che si cerca, il conto di
+   fianco per far vedere da dove viene, e sotto la nota che e' indicativo.
+   Su una riga sola e non tre: nel piede lo spazio e' quello che tolgo al
+   modulo, e tre righe fisse su un telefono piccolo erano troppe.
+   `flex` e non `grid` per via del totale dei pacchetti, che qui dentro e'
+   testo semplice senza ne' <strong> ne' <span>: in una colonna di griglia si
+   spezzava a meta' ("You save / €11"), come riga di flex si distende. */
 .request-total {
   display: flex;
-  flex-direction: column;
-  gap: .2rem;
-  margin: -.2rem 0 1.1rem;
-  padding: .85rem 1rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: .6rem;
+  row-gap: .1rem;
+  margin: 0 0 .7rem;
+  padding: .55rem .9rem;
   background: var(--sand);
   border-radius: 12px;
 }
 .request-total[hidden] { display: none; }
 .request-total strong {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 500;
   line-height: 1.1;
   color: var(--text);
 }
 .request-total span {
+  margin-left: auto;
+  text-align: right;
   font-size: .85rem;
   color: var(--text);
 }
 .request-total small {
+  flex: 1 0 100%;
   font-size: .75rem;
   color: var(--muted);
 }
@@ -2631,3 +3040,329 @@ body.menu-open { overflow: hidden; }
   font-variant-numeric: tabular-nums;
 }
 .request-ora-fissa[hidden] { display: none; }
+
+/* ---------------------------------------------------------------------------
+   Barra "Prenota ora" in fondo alla scheda escursione
+   ------------------------------------------------------------------------ */
+
+/* Il prezzo e il pulsante seguono chi legge invece di aspettarlo in fondo alla
+   pagina: la scheda di un'escursione e' lunga, e chi ha gia' deciso a meta'
+   lettura non deve scorrere fino in fondo per prenotare. Il pulsante dentro la
+   scheda resta dov'e': chi arriva in fondo leggendo lo trova al suo posto. */
+.book-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* sotto .assist-fab (39) e sotto le finestre (40 e 41) */
+  z-index: 38;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: .7rem 1.1rem;
+  /* la striscia del telefono sotto il pollice non mangia il pulsante */
+  padding-bottom: calc(.7rem + env(safe-area-inset-bottom, 0px));
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -10px 30px -18px oklch(0.24 0.012 60 / .5);
+}
+.book-bar[hidden] { display: none; }
+
+.book-bar-price {
+  margin: 0;
+  flex: none;
+  font-size: 1.05rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.book-bar-price .price-before { margin-right: .3rem; }
+
+.book-bar-cta {
+  flex: 1;
+  min-height: 48px;
+}
+
+/* La barra copre l'angolo dei due pallini: quando c'e', salgono sopra di lei.
+   Stessa cosa per il messaggio della lista, che spunta da li' sotto. */
+body.has-book-bar .lista-fab,
+body.has-book-bar .assist-fab { bottom: calc(1.1rem + 4.75rem); }
+body.has-book-bar .lista-toast { bottom: calc(5.5rem + 4.75rem); }
+
+/* L'ultima riga del piede resterebbe sotto la barra: le si fa posto. */
+body.has-book-bar .footer { padding-bottom: 5.5rem; }
+
+/* Da tablet in su la barra non serve larga quanto lo schermo: il pulsante
+   diventa una fascia lunga un metro e mezzo. Si tiene sulla stessa misura del
+   contenuto, come .wrap. */
+@media (min-width: 720px) {
+  .book-bar {
+    justify-content: center;
+  }
+  .book-bar-cta {
+    flex: none;
+    min-width: 280px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   La lista vestita da retro di cartolina
+   ------------------------------------------------------------------------ */
+
+/* Solo l'aspetto: le voci, il totale, il nome e il pulsante WhatsApp restano
+   quelli di prima, al loro posto e con lo stesso codice dietro. Ogni regola
+   parte da .lista-dialog, cosi' le altre finestre non cambiano. */
+
+.lista-dialog {
+  background-color: var(--cream);
+  /* la grana della carta: un puntino ogni 4px, cosi' chiaro che si vede solo
+     come "non e' uno schermo bianco" */
+  background-image: radial-gradient(oklch(0.24 0.012 60 / .05) 1px, transparent 1px);
+  background-size: 4px 4px;
+  /* la cornicetta stampata sul retro. Outline e non un bordo dentro il
+     contenuto: la finestra scorre, e l'outline sta sul riquadro della
+     finestra, quindi resta ferma mentre le voci scorrono sotto. */
+  outline: 1px solid oklch(0.78 0.02 75);
+  outline-offset: -10px;
+}
+
+.lista-intestazione { min-width: 0; }
+.lista-luogo {
+  margin: .15rem 0 0;
+  font-size: .62rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---- francobollo e timbro ---- */
+
+/* Sta fra il titolo e la ✕: in alto a destra e' il suo posto sulle cartoline
+   vere, e la ✕ resta dov'e' che la gente la cerca. */
+.lista-dialog .lista-francobollo {
+  position: relative;
+  flex: none;
+  margin-left: auto;
+  width: 58px;
+  height: 70px;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  transform: rotate(3deg);
+  box-shadow: inset 0 0 0 1px oklch(0.8 0.03 70 / .6), 0 1px 3px oklch(0.24 0.012 60 / .12);
+}
+.lista-dialog .lista-francobollo img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+/* La dentellatura: pallini del colore della carta mangiati sui quattro lati. */
+.lista-dialog .lista-francobollo::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle 4px at 4px 4px, var(--cream) 97%, transparent 100%),
+    radial-gradient(circle 4px at 4px 4px, var(--cream) 97%, transparent 100%),
+    radial-gradient(circle 4px at 4px 4px, var(--cream) 97%, transparent 100%),
+    radial-gradient(circle 4px at 4px 4px, var(--cream) 97%, transparent 100%);
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  background-size: 10px 8px, 10px 8px, 8px 10px, 8px 10px;
+  background-position: top left, bottom left, top left, top right;
+}
+
+/* Il timbro: l'anello storto sull'angolo del francobollo, come quando lo
+   annullano allo sportello. Niente scritte dentro: sarebbero tre traduzioni
+   per un disegno che nessuno legge. */
+.lista-dialog .lista-timbro {
+  position: absolute;
+  left: -24px;
+  bottom: -10px;
+  width: 48px;
+  height: 48px;
+  border: 2px solid var(--muted);
+  border-radius: var(--radius-pill);
+  opacity: .5;
+  transform: rotate(-12deg);
+  pointer-events: none;
+}
+/* Le righe dell'annullo che escono dal timbro e vanno a finire sulla carta. */
+.lista-dialog .lista-timbro::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: calc(100% - 6px);
+  width: 40px;
+  height: 14px;
+  transform: translateY(-50%);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--muted) 0 2px,
+    transparent 2px 6px
+  );
+}
+
+/* ---- il lato del messaggio: le voci ---- */
+
+/* Scritte a mano, come si scrive una cartolina. Il Caveat arriva dallo stesso
+   foglio di Google Fonts degli altri due: nessuna richiesta in piu', e il file
+   del font lo scarica solo il browser che apre la lista. */
+.lista-dialog .lista-voce { border-bottom-style: dotted; }
+.lista-dialog .lista-voce-testo strong {
+  font-family: var(--font-hand);
+  font-size: 1.45rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+.lista-dialog .lista-voce-prezzo {
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Il totale non e' piu' un riquadro pieno: sulla carta e' l'ultima riga del
+   conto, tirata sotto con una riga piu' marcata. */
+.lista-dialog .lista-totale {
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .8rem;
+  padding: .9rem 0 0;
+  background: none;
+  border-radius: 0;
+  border-top: 1.5px solid oklch(0.78 0.02 75);
+}
+.lista-dialog .lista-totale strong {
+  font-family: var(--font-hand);
+  font-size: 2rem;
+  font-weight: 600;
+}
+.lista-dialog .lista-totale small { text-align: right; }
+
+.lista-dialog .lista-empty {
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  color: var(--text);
+}
+
+/* ---- il lato indirizzo: nome e invio ---- */
+
+/* Il nome si scrive su una riga, come sull'indirizzo di una cartolina, non
+   dentro una pillola. */
+.lista-dialog input[type="text"] {
+  border: none;
+  border-bottom: 1px solid var(--muted);
+  border-radius: 0;
+  background: none;
+  padding: .55rem .2rem;
+  font-family: var(--font-hand);
+  font-size: 1.45rem;
+  margin-bottom: 1.3rem;
+}
+.lista-dialog input[type="text"]:focus { border-bottom-color: var(--text); }
+.lista-dialog input[type="text"]::placeholder { font-family: var(--font-hand); }
+
+/* Da 640px in su la finestra sta in mezzo allo schermo e c'e' spazio per la
+   cartolina vera: messaggio a sinistra, indirizzo a destra, separati dalla
+   riga verticale stampata. Sul telefono no — due colonne da 160px sarebbero
+   due colonne illeggibili, e li' la cartolina resta per il lungo. */
+@media (min-width: 640px) {
+  .lista-dialog { width: min(100%, 640px); }
+  .lista-dialog [data-lista-body] {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    column-gap: 1.7rem;
+    align-items: start;
+  }
+  .lista-dialog .lista-voci,
+  .lista-dialog .lista-totale { grid-column: 1; }
+  .lista-dialog [data-lista-form] {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    padding-left: 1.7rem;
+    border-left: 1.5px solid oklch(0.78 0.02 75);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Tema scuro
+   ------------------------------------------------------------------------ */
+
+/* Il telefono dice al sito come lo vuole il suo padrone, e il sito si gira. Non
+   c'e' un interruttore da premere ne' una preferenza da salvare: `prefers-color-
+   scheme` arriva dalle impostazioni del sistema.
+
+   I colori non cambiano: si girano. Il nero caldo del testo diventa il fondo, la
+   carta chiara diventa il testo. Le foto restano quelle che sono — su un sito di
+   escursioni e' meta' del lavoro, al buio sembrano accese. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: oklch(0.19 0.012 60);
+    --surface: oklch(0.235 0.014 60);
+    --cream: oklch(0.275 0.016 65);
+    --sand: oklch(0.335 0.022 70);
+    --border: oklch(0.36 0.014 65);
+    --text: oklch(0.95 0.008 85);
+    --muted: oklch(0.73 0.014 70);
+    /* di giorno il pulsante e' nero caldo su carta chiara: di notte si gira */
+    --primary: oklch(0.94 0.01 85);
+    --primary-foreground: oklch(0.2 0.012 60);
+    --gold: oklch(0.8 0.06 68);
+    --danger: oklch(0.7 0.16 30);
+  }
+
+  /* --- le cose che non si girano da sole ---------------------------------
+     Quasi tutti i colori scritti a mano nel foglio sono bianchi sopra una foto
+     o ombre: restano giusti anche al buio. Questi tre no. */
+
+  /* .pill-solid prende il fondo da --text e la scritta da un #fff scritto a
+     mano: al buio --text diventa chiaro e il pulsante finiva bianco su bianco.
+     Le altre tre regole che usano --text come fondo prendono la scritta da una
+     variabile, quindi si girano da sole. */
+  .pill-solid { color: var(--bg); }
+
+  /* Il riquadro a strisce ha il fondo scritto a mano, non una variabile. */
+  .bento-tile.bento-tile-stripes { background: oklch(0.235 0.014 60); }
+
+  /* --- la cartolina resta di carta ---------------------------------------
+     Una cartolina nera non e' una cartolina: la carta e l'inchiostro restano
+     quelli del giorno, e sul fondo scuro sembra appoggiata sul comodino. Percio'
+     qui l'inchiostro va riscritto scuro a mano, se no eredita il testo chiaro
+     del tema e sparisce sulla carta. */
+  .lista-dialog {
+    background-color: #f0e7d5;
+    color: oklch(0.24 0.012 60);
+  }
+  .lista-dialog .lista-voce-testo strong,
+  .lista-dialog .lista-voce-prezzo,
+  .lista-dialog .lista-totale strong,
+  .lista-dialog input[type="text"] { color: oklch(0.24 0.012 60); }
+  .lista-dialog .lista-voce-testo span,
+  .lista-dialog .lista-luogo,
+  .lista-dialog .lista-totale small,
+  .lista-dialog .hint,
+  .lista-dialog .lista-svuota,
+  .lista-dialog label { color: oklch(0.45 0.016 65); }
+  .lista-dialog input[type="text"]::placeholder { color: oklch(0.55 0.016 65); }
+  /* .iconbtn e il francobollo prendono il fondo da --surface: sulla carta
+     chiara diventavano due macchie scure. */
+  .lista-dialog .iconbtn {
+    background: #fbf7ee;
+    border-color: oklch(0.78 0.02 75);
+    color: oklch(0.24 0.012 60);
+  }
+  .lista-dialog .lista-francobollo { background: #fffdf7; }
+  .lista-dialog .btn-primary {
+    background: oklch(0.26 0.014 60);
+    color: oklch(0.98 0.008 85);
+  }
+  .lista-dialog .lista-francobollo::before {
+    background-image:
+      radial-gradient(circle 4px at 4px 4px, #f0e7d5 97%, transparent 100%),
+      radial-gradient(circle 4px at 4px 4px, #f0e7d5 97%, transparent 100%),
+      radial-gradient(circle 4px at 4px 4px, #f0e7d5 97%, transparent 100%),
+      radial-gradient(circle 4px at 4px 4px, #f0e7d5 97%, transparent 100%);
+  }
+}

@@ -86,3 +86,108 @@ di pubblicarli, e ricontrollati quando il fornitore cambia i giri.
 
 I **nomi degli hotel** e i **punti di raccolta**, invece, si possono usare
 subito: sono luoghi, non promesse.
+
+---
+
+## Non solo pick-up: `grezzo/karting-las-americas.json`
+
+Questa cartella è nata per gli orari di raccolta, ma qui dentro sta anche lo
+**scraping del sito di Karting Las Américas** (10 settembre 2026), mandato dal
+proprietario perché `www.kartingamericas.com` è bloccato dal proxy di rete e
+dall'esterno non si legge.
+
+Undici prodotti presi dalle schede WooCommerce: le tande, le nove gare, la
+promozione per residenti, i tre modelli di kart, indirizzo e dati del circuito.
+
+Su cinque formati di gara su sei il sito dà **due prezzi diversi**, e il file
+li tiene tutti e due (`precio`, dal carrello, e `precio_en_descripcion`).
+
+**Sui prezzi però non si guarda più questo file.** Il 15 settembre 2026
+l'ufficio ha mandato la foto del **listino esposto al circuito**, trascritto
+in `grezzo/karting-listino.txt`, e quello è la fonte: dà 20 e 15 dove il
+carrello dà 22 e 16, e gruppi **da 5 a 15 persone** dove il carrello chiede un
+minimo di 8. Il JSON resta per quello che il volantino non dice — fasce d'età,
+altezze, modelli dei kart, orari junior del fine settimana.
+
+Non è finito in scheda quello che il file chiama `plaza_gratis_desde`: il
+circuito regala la gara al festeggiato dai 10 partecipanti in su, ma è la
+promozione di un altro e non è nostra da offrire.
+
+---
+
+## `grezzo/canaventura-senderismo.json`
+
+Le tre camminate di **Canaventura** (11 settembre 2026), mandate dall'ufficio già in JSON
+pulito: Teide Light, Camino Real, La Laguna & Anaga. Sono le **tre varianti** della scheda
+`trekking-bici`, che dalla v281 si chiama "Trekking" (in v280 erano tre schede separate).
+
+Il file è tenuto **com'è arrivato**, e due dei suoi campi in catalogo sono cambiati apposta:
+
+- **`times: []` non è stato copiato.** Nel file vuol dire "la pagina del fornitore non
+  pubblica l'ora"; in Isla la lista vuota vuol dire charter, con l'ora da concordare
+  davvero. Nelle schede il campo **manca**, che è lo stato giusto — non le sappiamo ancora.
+- **`punto_partenza: "Santiago del Teide"`** è dove comincia il sentiero, non da dove parte
+  il cliente: in scheda `zone` è "Tenerife Sud" come su tutte le escursioni in bus, e
+  Santiago del Teide sta in una nota.
+
+Gli **undici link delle foto** servono ancora: `canaventura.es` e il suo CDN
+(`crokis-sites.fra1.cdn.digitaloceanspaces.com`) sono bloccati dal proxy di rete, come
+`kartingamericas.com`, quindi le foto le deve mandare l'ufficio. Finché non arrivano le tre
+schede escono col riquadro "Foto in arrivo".
+
+---
+
+## `grezzo/franz-surf-school.json`
+
+Il listino della **Franz Surf School** di Playa de las Américas (13 settembre 2026),
+mandato dall'ufficio già in JSON pulito: diciannove prodotti presi dall'API WooCommerce
+del loro sito (`wp-json/wc/store/v1/products`), più l'indirizzo del negozio e le anomalie
+trovate durante l'estrazione.
+
+Nella scheda `surf-lesson`, che prima era un segnaposto vuoto, sono finite **solo le nove
+lezioni**. Resta fuori:
+
+- tutto il **noleggio delle tavole** (le sei softboard a 15 €, la fibra a 20, la longboard
+  a 25): il proprietario ha detto il 13 settembre 2026 che ad Admiral interessano solo le
+  lezioni. I prezzi restano qui per il giorno che cambiasse idea, e la strada era il prezzo
+  scritto **nell'etichetta** della variante ("da 15 € al giorno"), perché il fornitore
+  vende a giornate e pubblica solo il primo giorno;
+- la **tariffa residenti** (25 €, `clases-grupales-para-residentes`), riservata a chi
+  risiede a Tenerife: Admiral vende a turisti, e un prezzo che il cliente non può avere è
+  peggio di nessun prezzo;
+- i due **prodotti di test** del fornitore (0,05 € e 0 €), che il file segna già in
+  `esclusi`.
+
+Il campo `anomalie_da_verificare` è l'elenco delle domande che il file si portava dietro.
+Tre sono chiuse dal proprietario (13 settembre 2026) e **il file non è stato ritoccato** —
+resta com'è arrivato, la risposta sta qui:
+
+- la **muta nel noleggio** (compresa in un punto della loro pagina, non compresa in un
+  altro) non è più una domanda: il noleggio non si vende;
+- il **minimo di 13 anni** vale per tutte le lezioni, non solo per quelle di gruppo, anche
+  se il loro sito lo scrive solo lì;
+- le lezioni durano **2 ore tutte**, non solo quelle del pacchetto da 3;
+- il **massimo di 6 persone** vale per tutte le lezioni, non solo per quelle di gruppo. Da
+  qui una domanda nuova: gli scaglioni della lezione per famiglie e amici si fermano a
+  cinque (120-165-200-225 €), quindi **il prezzo del sesto posto non c'è** e in scheda è
+  scritto che lo conferma l'ufficio. Non si ricava dagli altri: gli scarti sono 45, 35, 25.
+
+Le **foto** non servono: la scheda usa `surf-lesson.jpg`, che era già in `assets/`.
+
+### `grezzo/franz-surf-school-come-arrivare.txt`
+
+La pagina "Come arrivare" del loro sito, incollata dal proprietario lo stesso giorno come
+risposta alla domanda sul punto di ritrovo: **Calle México 15, Playa de las Américas**, cioè
+il negozio.
+
+**L'indirizzo si ferma qui e non va in scheda.** Poche ore dopo il proprietario ha precisato
+«o più in generale las Américas», e la nota dice appunto che il ritrovo è a **Playa de las
+Américas** e che il punto esatto lo conferma l'ufficio insieme all'ora: da un indirizzo
+scritto sul sito il cliente capirebbe "ci vediamo alla porta del negozio", e una lezione di
+surf comincia in spiaggia. Quello che resta in scheda è che **ci si arriva da soli** — una
+deduzione (una scuola che passa a prenderti non pubblica una pagina "come arrivare"),
+scritta così perché fra i due errori possibili è quello che costa due passi invece di una
+lezione persa.
+
+I **due numeri di telefono** della scuola stanno in questo file e non sul sito: Admiral è un
+rivenditore, e un cliente che chiama la scuola esce dal giro della richiesta su WhatsApp.

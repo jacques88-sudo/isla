@@ -3,14 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#fcfaf6" />
+  <meta name="theme-color" content="#fcfaf6" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#18130e" media="(prefers-color-scheme: dark)" />
   <meta name="description" data-i18n-content="meta.catalog.desc" content="Tutte le escursioni, i tour e gli show di Isla a Tenerife: mare, Teide, parchi, avventura e molto altro." />
   <title>Tutte le escursioni · Isla</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./assets/icon-192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
   <link rel="stylesheet" href="./styles.css" />
   <!-- Critical splash styles, inlined so the loading screen never flashes
        unstyled while styles.css is still being fetched. -->
@@ -140,7 +141,7 @@
     <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn data-i18n="menu.install" hidden>Installa l'app</button>
     <nav class="more-menu-nav" data-i18n-aria-label="menu.sections" aria-label="Sezioni">
       <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
-      <a href="./index.html#categories" data-menu-link data-i18n="menu.packages">Pacchetti</a>
+      <a href="./pacchetti.html" data-menu-link data-i18n="menu.packages">Pacchetti</a>
       <button type="button" data-menu-link data-ticket-open data-i18n="menu.scan">Scan ticket</button>
       <a href="./index.html#secret" data-menu-link data-i18n="menu.secret">Posti segreti</a>
       <a href="./index.html#about" data-menu-link data-i18n="menu.about">Chi siamo</a>
@@ -201,7 +202,6 @@
       <div class="request-people" data-request-units hidden></div>
       <p class="request-day-error" data-request-units-error hidden></p>
 
-      <p class="request-total" data-request-total hidden></p>
 
       <span class="request-people-label" data-request-menu-label hidden data-i18n="req.menu">Esigenze sul menu</span>
       <div class="request-people" data-request-menu-rows hidden></div>
@@ -228,7 +228,20 @@
       <input id="reqNote" name="note" type="text" autocomplete="off"
              data-i18n-placeholder="req.notePlaceholder" placeholder="Richieste particolari…" />
 
-      <button class="btn btn-primary btn-block request-submit" type="submit" data-i18n="req.submit">Continua su WhatsApp</button>
+      <!-- Il conto e il pulsante stanno in un piede che resta appiccicato in
+           fondo alla finestra mentre il resto scorre. Il modulo e' piu' alto
+           di un telefono (1262 px contro 844 sulla scheda piu' semplice, 1563
+           dove ci sono i menu): prima il cliente compilava senza vedere ne'
+           quanto viene ne' dove si manda, e il totale gli passava davanti a
+           meta' strada per poi sparire di sopra.
+           Le due righe sotto restano fuori dal piede: se fossero dentro
+           occuperebbero lo spazio fisso di tutti, e lette una volta non
+           servono piu'. Servono anche a far scorrere qualcosa sotto al piede,
+           che e' quello che tiene in piedi il `position: sticky`. -->
+      <div class="request-foot">
+        <p class="request-total" data-request-total hidden></p>
+        <button class="btn btn-primary btn-block request-submit" type="submit" data-i18n="req.submit">Continua su WhatsApp</button>
+      </div>
 
       <p class="hint" data-i18n-html="req.hint">Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.</p>
       <p class="hint request-privacy" data-i18n="req.privacy">Quello che scrivi qui serve solo a risponderti su WhatsApp: non viene salvato dal sito.</p>

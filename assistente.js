@@ -15,7 +15,9 @@ const ASSIST_INTERESSI = [
   { key: "assist.int.nature",     cats: ["teide-natura"] },
   { key: "assist.int.adrenaline", cats: ["avventura-motori", "sport-acquatici"] },
   { key: "assist.int.parks",      cats: ["parchi-spettacoli"] },
-  { key: "assist.int.stars",      cats: ["stelle"] },
+  // Niente riga per le stelle: la categoria "stelle" non esiste piu' e la
+  // serata al Teide sta in "teide-natura", che e' gia' la riga qui sopra. Due
+  // risposte che portano allo stesso posto sono una domanda mal fatta.
   { key: "assist.int.island",     cats: ["tour-isola"] },
   { key: "assist.int.unsure",     cats: null }   // null = nessun filtro
 ];
@@ -180,7 +182,7 @@ function initAssistente() {
 
   function mostraRisultati(cats, soloFamiglia, budget) {
     let trovate = ESPLORA_CATALOG.filter(x => x.published);
-    if (cats) trovate = trovate.filter(x => cats.includes(x.category));
+    if (cats) trovate = trovate.filter(x => categorieDi(x).some(id => cats.includes(id)));
     if (soloFamiglia) trovate = trovate.filter(x => x.family);
 
     // Le voci "Su richiesta" restano fuori quando c'e' un budget: senza un

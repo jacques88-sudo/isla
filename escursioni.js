@@ -290,6 +290,23 @@ function menuTesto(req) {
   return parti.join(" · ");
 }
 
+// "Singola €180 · Doppia €200": i prezzi di **tutti** i tipi di mezzo di una
+// variante, non solo del primo. Sul bottone della durata e nella riga "Prezzo"
+// c'era il solo `price` della variante, che e' il piu' basso: sul jet ski era
+// quello della singola, e chi voleva la doppia doveva aprire la finestra della
+// richiesta per scoprire quanto costa. Vuota dove i mezzi non si contano: li'
+// il prezzo e' uno solo e lo scrive chi chiama. La usa `tour.js` in tutti e due
+// i posti dove quel prezzo si vede, cosi' non possono dire due cose diverse.
+function prezziVarianteTesto(tour, variante) {
+  const tipi = (tour.units && Array.isArray(tour.units.types)) ? tour.units.types : [];
+  const prezzi = (variante && variante.unitPrices) || tour.unitPrices;
+  if (!tipi.length || !prezzi) return "";
+  return tipi
+    .filter(tipo => prezzi[tipo.key])
+    .map(tipo => tf(tipo.name) + " €" + eur(prezzi[tipo.key]))
+    .join(" · ");
+}
+
 // Il conto quando si paga il mezzo e non la persona: tante moto d'acqua per
 // il loro prezzo, piu' il ritiro che pure e' a moto. I prezzi dei tipi stanno
 // nella variante scelta (`unitPrices`), perche' cambiano con la durata; una
@@ -322,9 +339,18 @@ function totaleMezzi(tour, req) {
   if (manca || !quanti) return null;
 
   if (req.transfer) {
-    if (!mezzi.transferPrice) return null;
-    totale += mezzi.transferPrice * quanti;
-    pezzi.push(t("wa.transfer") + " " + quanti + " × €" + eur(mezzi.transferPrice));
+    // Tre stati, come `priceInfant`: assente vuol dire che il supplemento non
+    // lo sappiamo, e un totale senza sarebbe piu' basso di quello vero; zero
+    // vuol dire compreso, ed e' un numero vero, quindi il conto si fa lo stesso
+    // e non compare nessuna riga (un "× €0" fa solo chiedere che cos'e').
+    if (mezzi.transferPrice === undefined) return null;
+    if (mezzi.transferPrice) {
+      totale += mezzi.transferPrice * quanti;
+      // stesso nome della casella e della riga del messaggio: nel dettaglio del
+      // conto "Transfer" accanto a "Ritiro in hotel" sembrerebbero due cose
+      pezzi.push((tour.transferLabel ? tf(tour.transferLabel) : t("wa.transfer")) +
+        " " + quanti + " × €" + eur(mezzi.transferPrice));
+    }
   }
   return { totale: totale, dettaglio: pezzi.join(" + ") };
 }
@@ -421,19 +447,36 @@ function hotelCerca(testo, quanti) {
 //              silenzio di un'indicazione a meta'.
 function hotelPunto(nomeHotel, idScheda) {
   if (typeof HOTELS === "undefined" || typeof PICKUP_POINTS === "undefined") return null;
+  // Dove il ritiro non esiste non c'e' nessun punto da mostrare: le tabelle
+  // sono di un altro fornitore e la fermata che ne uscirebbe manderebbe il
+  // cliente ad aspettare dove non passa nessuno (PICKUP_NESSUNO in hotel.js).
+  // Sta qui in cima e non solo nella finestra perche' la stessa funzione scrive
+  // anche la riga del messaggio WhatsApp, e una richiesta rimasta nella lista
+  // da ieri porta ancora scritto l'hotel.
+  if (idScheda && typeof PICKUP_NESSUNO !== "undefined"
+      && PICKUP_NESSUNO.indexOf(idScheda) !== -1) return null;
   const k = hotelChiave(nomeHotel.trim());
   if (!k) return null;
   const riga = HOTELS.find(h => hotelChiave(h[0]) === k);
   if (!riga) return null;
+  // L'ora dipende dall'escursione, il punto no: senza la scheda si mostra il
+  // posto e basta, che e' sempre meglio di un orario indovinato.
+  const ore = (typeof PICKUP_TIMES !== "undefined" && idScheda) ? PICKUP_TIMES[idScheda] : null;
+  // Su certe escursioni il pulmino passa sotto l'hotel qualunque sia il punto
+  // della tabella: e' un altro fornitore, che fa un altro giro (PICKUP_IN_HOTEL
+  // in hotel.js). Va guardato **prima** del punto, se no il cliente andrebbe a
+  // una fermata dove quel giorno non si ferma nessuno. Solo per gli hotel che
+  // conosciamo: per questo sta dopo il controllo qui sopra.
+  if (idScheda && typeof PICKUP_IN_HOTEL !== "undefined"
+      && PICKUP_IN_HOTEL.indexOf(idScheda) !== -1) {
+    return { dove: "hotel", ora: (ore && ore[riga[1]]) || "" };
+  }
   if (riga[1] === 0) return { dove: "hotel" };
   const punto = PICKUP_POINTS[riga[1]];
   if (!punto) return null;
   // il tipo si traduce, il nome del posto no: e' un nome proprio, e chi lo
   // deve chiedere per strada lo chiede cosi' com'e'
   const tipo = punto[1] ? t("pickup." + punto[1]) : "";
-  // L'ora dipende dall'escursione, il punto no: senza la scheda si mostra il
-  // posto e basta, che e' sempre meglio di un orario indovinato.
-  const ore = (typeof PICKUP_TIMES !== "undefined" && idScheda) ? PICKUP_TIMES[idScheda] : null;
   // L'ora torna a parte e non attaccata al posto: la scrive il campo "A che
   // ora", che su queste schede non e' piu' una domanda ma una risposta.
   const ora = (ore && ore[riga[1]]) || "";
@@ -469,6 +512,9 @@ function initHotelField() {
   const input = document.getElementById("reqHotel");
   const lista = document.getElementById("reqHotelList");
   if (!campo || !input || !lista) return;
+  // L'etichetta non ha un data-attributo suo: si trova dal `for`, che e'
+  // l'unica cosa che le due copie della finestra hanno per forza uguale.
+  const etichettaCampo = document.querySelector('label[for="reqHotel"]');
 
   const puntoEl = document.querySelector("[data-hotel-punto]");
   const oraFissaEl = document.querySelector("[data-request-time-fixed]");
@@ -509,9 +555,26 @@ function initHotelField() {
   // Dove passa il pulmino, scritto sotto la casella appena si riconosce
   // l'hotel. Prende il posto della riga di aiuto: sono due cose che dicono la
   // stessa cosa, e una volta che l'hotel c'e' quella generica non serve piu'.
+  // Dove non si passa a prendere nessuno la domanda non si fa proprio: "dove
+  // alloggi" serve solo a dire dove si sale, e su queste schede si sale in un
+  // posto solo, scritto nelle note. Chiederlo lo stesso vorrebbe dire promettere
+  // un ritiro che non c'e' — la riga di aiuto dice "dove passiamo a prenderti" —
+  // e far scrivere al cliente un dato che nessuno usera'.
+  function senzaRitiro() {
+    return !!(typeof PICKUP_NESSUNO !== "undefined" && SCHEDA_APERTA
+      && PICKUP_NESSUNO.indexOf(SCHEDA_APERTA.id) !== -1);
+  }
+
   function mostraPunto() {
     if (!puntoEl) return;
-    const p = hotelPunto(input.value, SCHEDA_APERTA && SCHEDA_APERTA.id);
+    const spento = senzaRitiro();
+    if (etichettaCampo) etichettaCampo.hidden = spento;
+    campo.hidden = spento;
+    // Svuotare non e' una finezza: la finestra e' una sola per tutte le
+    // attivita', e l'hotel scritto per l'escursione di prima finirebbe nel
+    // messaggio di questa, sotto una domanda che qui non e' stata fatta.
+    if (spento && input.value) { input.value = ""; chiudi(); }
+    const p = spento ? null : hotelPunto(input.value, SCHEDA_APERTA && SCHEDA_APERTA.id);
     // Un'etichetta e un posto, niente di piu': il cliente ha appena scritto il
     // nome del suo hotel e vede da solo se il punto e' un altro. Le frasi
     // lunghe che c'erano prima ("non e' il tuo hotel", "l'ora te la
@@ -524,7 +587,7 @@ function initHotelField() {
         : p.nome;
     }
     puntoEl.hidden = !p;
-    if (aiutoEl) aiutoEl.hidden = !!p;
+    if (aiutoEl) aiutoEl.hidden = spento || !!p;
     mostraOraHotel(p);
   }
 
@@ -571,11 +634,14 @@ function initHotelField() {
   input.addEventListener("input", () => { apri(); mostraPunto(); });
   // "dove passiamo a prenderti" oppure "dove e a che ora", secondo la scheda
   document.addEventListener("islarequestopen", () => {
-    if (!aiutoEl) return;
-    const conOra = typeof PICKUP_TIMES !== "undefined" && SCHEDA_APERTA && PICKUP_TIMES[SCHEDA_APERTA.id];
-    const chiave = conOra ? "req.hotelHintTime" : "req.hotelHint";
-    aiutoEl.dataset.i18n = chiave;
-    aiutoEl.textContent = t(chiave);
+    if (aiutoEl) {
+      const conOra = typeof PICKUP_TIMES !== "undefined" && SCHEDA_APERTA && PICKUP_TIMES[SCHEDA_APERTA.id];
+      const chiave = conOra ? "req.hotelHintTime" : "req.hotelHint";
+      aiutoEl.dataset.i18n = chiave;
+      aiutoEl.textContent = t(chiave);
+    }
+    // fuori dall'if: e' mostraPunto() che fa sparire la casella dove il ritiro
+    // non c'e', e non deve dipendere dal fatto che la riga di aiuto esista
     mostraPunto();
   });
   input.addEventListener("focus", apri);
@@ -744,15 +810,23 @@ function initCatalog() {
   // "cat" accetta anche più categorie separate da virgola: l'assistente
   // manda qui combinazioni come "avventura-motori,sport-acquatici".
   // Lista vuota = nessun filtro di categoria.
+  //
+  // Gli id che non esistono si buttano via invece di filtrarci sopra: un id
+  // sconosciuto non toglie una categoria, le toglie **tutte**, e la pagina
+  // esce con zero attività e nessuna spiegazione. Succede per davvero, non
+  // solo con un indirizzo scritto male: "stelle" era una categoria vera fino
+  // a ieri, e chi si è salvato quel link — o Google, che l'ha indicizzato —
+  // ci arriva ancora. Meglio l'elenco intero che una pagina vuota.
   const state = {
-    categories: (params.get("cat") || "").split(",").filter(Boolean),
+    categories: (params.get("cat") || "").split(",")
+      .filter(id => CATEGORIES.some(c => c.id === id)),
     family: params.get("family") === "1",
     query: ""
   };
 
   // Solo le categorie che hanno almeno un'attività pubblicata
   const usedCategories = CATEGORIES.filter(c =>
-    published.some(x => x.category === c.id)
+    published.some(x => categorieDi(x).includes(c.id))
   );
 
   function buildChips() {
@@ -792,14 +866,17 @@ function initCatalog() {
   }
 
   function matches(tour) {
-    if (state.categories.length && !state.categories.includes(tour.category)) return false;
+    // Basta che UNA delle categorie della scheda sia fra quelle scelte: le
+    // schede con `alsoIn` stanno in piu' di una, ed escono sotto ognuna.
+    if (state.categories.length &&
+        !categorieDi(tour).some(id => state.categories.includes(id))) return false;
     if (state.family && !tour.family) return false;
     if (state.query) {
       // Si cerca in tutte e tre le lingue: chi scrive "boat" trova la
       // stessa attività di chi scrive "barca".
       const haystack = [tour.title, tour.desc, tour.zone]
         .map(campo => typeof campo === "string" ? campo : Object.values(campo).join(" "))
-        .concat(categoryName(tour.category))
+        .concat(categorieDi(tour).map(categoryName))
         .join(" ")
         .toLowerCase();
       if (!haystack.includes(state.query)) return false;
@@ -1142,7 +1219,9 @@ function initRequestDialog() {
   // quattro moto, magari due doppie e due singole, e sono quattro prezzi.
   // I prezzi accanto ai nomi sono quelli della **variante scelta**, che qui e'
   // la durata: la doppia costa 110 sul giro da 40 minuti e 200 su quello da
-  // due ore.
+  // due ore. Dove di varianti non ce ne sono, i prezzi stanno sulla scheda
+  // (`tour.unitPrices`): e' il caso della Mustang, dove a cambiare non e' la
+  // durata ma quanti salgono in macchina.
   function riempiUnita(tour) {
     if (!unitsRowsEl || !unitsLabelEl) return;
     const mezzi = tour && tour.units;
@@ -1154,7 +1233,11 @@ function initRequestDialog() {
 
     unitsLabelEl.textContent = tf(mezzi.label);
     const variante = sceltaCorrente(tour);
-    const prezzi = (variante && variante.unitPrices) || {};
+    // Lo stesso ripiego che fa totaleMezzi(): senza, il totale usava
+    // `tour.unitPrices` ma le righe qui restavano senza prezzo accanto, e il
+    // cliente vedeva un totale comparire da numeri che non erano scritti da
+    // nessuna parte.
+    const prezzi = (variante && variante.unitPrices) || tour.unitPrices || {};
 
     // I numeri gia' messi si tengono: cambiare lingua ridisegna le righe, e
     // ritrovare azzerate le tre moto appena contate sarebbe sgradevole.

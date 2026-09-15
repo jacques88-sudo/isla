@@ -40,12 +40,19 @@
 //                La prima riga parte da 1 e le altre da 0; zero mezzi in tutto
 //                non e' una richiesta e la finestra lo dice.
 //                `transferPrice` dentro `units` e' quanto costa il ritiro **a
-//                mezzo** (sul jet ski €10 a moto, non a persona: e' il motivo
-//                per cui non sta in `transferPrice` della scheda, che invece e'
-//                fatto di prezzi a testa). Serve al totale: senza, con il
-//                transfer spuntato il conto non si fa, perche' mancherebbe un
-//                pezzo di quello che il cliente paga.
-//                    units: { ..., transferPrice: 10 }
+//                mezzo**, non a persona: e' il motivo per cui non sta in
+//                `transferPrice` della scheda, che invece e' fatto di prezzi a
+//                testa. Ha tre stati, come `priceInfant`:
+//                    transferPrice: 12  → supplemento a mezzo, entra nel totale
+//                                         con la sua riga nel conto
+//                    transferPrice: 0   → ritiro compreso: niente riga, il
+//                                         totale non cambia
+//                    (assente)          → non si sa quanto costa: col transfer
+//                                         spuntato il totale non si fa, perche'
+//                                         mancherebbe un pezzo di quello che il
+//                                         cliente paga
+//                Zero e' un numero vero e va scritto: "assente" vuol dire che
+//                non lo sappiamo, non che e' gratis.
 //   priceTiers → facoltativo: prezzi a scaglioni per numero di persone. La
 //                scheda del catalogo mostra comunque priceFrom, la pagina di
 //                dettaglio elenca tutti gli scaglioni:
@@ -91,6 +98,20 @@
 //                dire davvero gratis**, al contrario di priceAdult e priceChild
 //                dove 0 vuol dire "non ancora deciso". Se il campo manca del tutto
 //                la riga non compare: e' cosi' che si dice "non lo sappiamo".
+//   fixedPrice → facoltativo: questa attivita' si compra a prezzo fisso e si
+//                rivende uguale, quindi **lo sconto dei pacchetti non la
+//                tocca**. Ci vanno i giri in pullman con guida, dove si compra
+//                un posto sul bus di un operatore, e i biglietti a giornata:
+//                un 10% in meno uscirebbe dalla tasca di Admiral, non dal
+//                margine. I parchi e gli spettacoli non hanno bisogno di
+//                questo campo — sono gia' coperti per categoria, vedi
+//                `PACCHETTI_CATEGORIE_SENZA_SCONTO` in pacchetti.js.
+//                Si puo' mettere anche dentro una singola variante, e li' la
+//                variante vince: se un giorno lo stesso tour si fa in pullman
+//                o in minivan, il pullman e' a prezzo fisso e il minivan no.
+//                Non cambia niente su questa scheda: si vede solo nel conto di
+//                un pacchetto che la contiene.
+//                    fixedPrice: true
 //   ages       → facoltativo: le fasce d'eta', scritte come le scrive il fornitore.
 //                Di solito bastano dei numeri ("12+", "4-11"), uguali in tutte
 //                le lingue. Quando invece c'e' una parola dentro si scrivono
@@ -123,9 +144,37 @@
 //                prima", "porta il costume" cambiano troppo da attivita' a
 //                attivita' per stare in un vocabolario.
 //                    notes: [ { it: "...", en: "...", es: "..." } ]
+//   activityDuration, activityLabel → facoltativi, e vanno insieme: quanto dura
+//                l'**attivita'** dentro la giornata, che non e' quanto dura
+//                l'escursione. Sulle camminate si sta in giro tutto il giorno e
+//                si cammina due ore: scritte da sole le due cose si scacciano a
+//                vicenda — "Giornata intera" nasconde quanto si cammina, "2 ore"
+//                fa tornare il cliente a pranzo. Sono due righe di "In breve",
+//                una sotto l'altra, perche' sono due domande.
+//                `activityDuration` e' il valore e sta sulla scheda oppure
+//                **dentro la variante**, dove vince come `duration` e `days`:
+//                i tre cammini durano diverso.
+//                `activityLabel` e' il nome della riga e sta solo sulla scheda,
+//                perche' e' lo stesso per tutte le varianti. Senza, si ripiega
+//                su `detail.activity` ("Durata dell'attivita'"), che e' generico
+//                apposta: la parola giusta la sa la scheda.
+//                    activityLabel: { it: "Tempo di cammino", en: "Walking time", es: "..." }
+//                    // e dentro ogni variante:
+//                    activityDuration: { it: "2 ore", en: "2 hours", es: "2 horas" }
+//                Si vede solo sulla pagina di dettaglio: fra le pillole
+//                dell'elenco sarebbe una terza riga senza la variante scelta.
 //   privateOption → facoltativo: id dell'escursione in versione privata. Sulla
 //                pagina di dettaglio compare un rimando "vuoi la barca solo per
 //                il tuo gruppo?".
+//   privateTitle, privateLink → facoltativi, e vanno con privateOption:
+//                sostituiscono quelle due frasi fisse, che parlano di barche
+//                perche' li' sono nate. Servono dove la versione privata non e'
+//                una barca — sul tuk tuk "vuoi la barca" sarebbe la frase
+//                sbagliata — e si scrivono nelle tre lingue come tutto il resto.
+//                Senza questi campi resta il testo di sempre, quindi le schede
+//                delle barche non si toccano.
+//                    privateTitle: { it: "Vuoi il tuk tuk solo per il tuo gruppo?", ... }
+//                    privateLink:  { it: "Vedi i giri privati", ... }
 //   season     → facoltativo: quando l'attivita' si fa solo in certi mesi. Compare
 //                come etichetta sulla scheda, come riga sulla pagina di dettaglio e
 //                come avviso nella finestra della richiesta, cioe' prima che il
@@ -268,6 +317,29 @@
 //                          dipendono dalla durata (il giro di 2 ore parte alle
 //                          11:00 e quello di 3 alle 10:00). Battono il campo
 //                          `times` dell'attivita'.
+//   category   → la categoria in cui sta la scheda, una sola. E' quella
+//                scritta sulla card e in cima alla pagina di dettaglio.
+//   alsoIn     → facoltativo: le ALTRE categorie in cui la stessa scheda deve
+//                comparire, quando una sola non la racconta tutta. "Poema del
+//                Mar" e' un parco (l'acquario) ed e' una giornata su un'altra
+//                isola: chi guarda fra i parchi e chi guarda fra i tour devono
+//                trovarla tutti e due.
+//                    category: "parchi-spettacoli",
+//                    alsoIn: ["tour-isola"]
+//                La scheda resta **una**, con un id solo e una pagina sola: e'
+//                lo stesso riquadro che esce sotto piu' filtri. Copiarla in
+//                due voci vorrebbe dire due prezzi da tenere allineati a mano,
+//                e prima o poi uno resta indietro.
+//                Il nome scritto sulla card resta quello di `category`, anche
+//                quando si e' arrivati dall'altra categoria: un riquadro che
+//                cambia etichetta a seconda del filtro premuto non si
+//                riconosce piu' da una pagina all'altra.
+//                Attenzione ai pacchetti: basta che UNA delle categorie sia
+//                fra quelle senza sconto (`PACCHETTI_CATEGORIE_SENZA_SCONTO`
+//                in pacchetti.js) perche' lo sconto non si faccia. E' la
+//                direzione prudente: su un biglietto di un parco, comprato a
+//                prezzo fisso e rivenduto uguale, il 10% uscirebbe dalla
+//                tasca di Admiral.
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
 //   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
@@ -341,15 +413,13 @@ const CATEGORIES = [
     name: { it: "Mare e barche", en: "Sea and boats", es: "Mar y barcos" },
     image: "Cat-mare.jpg"
   },
+  // La categoria "stelle" non c'e' piu': aveva una scheda sola, e una categoria
+  // con dentro un'unica voce fa fare un giro in piu' per arrivare a una cosa.
+  // La serata al Teide e' passata di qua, e il nome lo dice.
   {
     id: "teide-natura",
-    name: { it: "Teide e natura", en: "Teide and nature", es: "Teide y naturaleza" },
+    name: { it: "Natura, Teide e stelle", en: "Nature, Teide and stars", es: "Naturaleza, Teide y estrellas" },
     image: "Cat-teide.jpg"
-  },
-  {
-    id: "stelle",
-    name: { it: "Sotto le stelle", en: "Under the stars", es: "Bajo las estrellas" },
-    image: "Cat-stelle.jpg"
   },
   {
     id: "avventura-motori",
@@ -377,6 +447,16 @@ const CATEGORIES = [
     image: "Cat-privati.jpg"
   }
 ];
+
+// Le categorie di una scheda: la sua, piu' quelle facoltative di `alsoIn`.
+// Sta qui, accanto a CATEGORIES, perche' questo file lo caricano tutte le
+// pagine — e perche' chi legge il catalogo deve vedere le stesse categorie
+// dappertutto: i filtri dell'elenco, la ricerca, l'assistente, le schede
+// correlate e il conto dei pacchetti. Se uno dei cinque leggesse solo
+// `category`, la scheda uscirebbe in una categoria e sparirebbe nell'altra.
+function categorieDi(tour) {
+  return [tour.category].concat(tour.alsoIn || []);
+}
 
 const ESPLORA_CATALOG = [
 
@@ -1658,6 +1738,7 @@ const ESPLORA_CATALOG = [
     zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "6-8 ore circa", en: "About 6-8 hours", es: "6-8 horas aprox." },
     priceFrom: 39,
+    fixedPrice: true,
     // Offerta a tempo decisa dal proprietario: si vende a 39 fino al 31
     // ottobre, poi il prezzo diventa 45. Il 45 NON e' un prezzo gia' applicato
     // in passato: e' quello futuro (detto esplicitamente il 7 settembre 2026).
@@ -1734,9 +1815,150 @@ const ESPLORA_CATALOG = [
     image: "teide-national-park.jpg",
     published: true
   },
+  // ─── Trekking e bici: due schede, non piu' una ────────────────────────────
+  // Fino a v280 "Trekking e bici" era **una scheda segnaposto sola** che
+  // prometteva due cose diverse ("Giornata fra sentieri e bicicletta"), e le
+  // tre camminate di Canaventura stavano fuori, una per scheda. Scelta del
+  // proprietario (11 settembre 2026): la scheda si chiama **Trekking** e tiene
+  // i tre cammini come varianti, la **bici** diventa una scheda sua.
+  //
+  // Il motivo per cui i tre cammini stanno insieme e non separati: sono lo
+  // stesso prodotto comprato tre volte — stesso fornitore, stesso prezzo,
+  // stessa formula (bus dal sud, guida di montagna, un giorno fisso a
+  // settimana). Quello che cambia e' **dove si cammina**, ed e' esattamente la
+  // domanda a cui servono i bottoni delle varianti. Tre schede uguali in fila,
+  // tutte "da 59 €", facevano scegliere fra tre righe identiche.
+  //
+  // L'id resta `trekking-bici` anche se la scheda adesso e' solo il trekking:
+  // gli id non si cambiano, si romperebbero i link gia' salvati e le richieste
+  // ferme in localStorage. Stessa regola di `santa-cruz-taganana`.
   {
     id: "trekking-bici",
-    title: { it: "Trekking e bici", en: "Hiking & biking", es: "Senderismo y bici" },
+    title: { it: "Trekking", en: "Hiking", es: "Senderismo" },
+    category: "teide-natura",
+    // Il bus passa a prendere il cliente dagli alloggi del sud: la partenza e'
+    // il sud su tutti e tre i cammini, anche su Camino Real che si cammina a
+    // Santiago del Teide e su Anaga che sta all'altro capo dell'isola. Questo
+    // campo in pagina si legge "Punto di partenza" — e' lo stesso inciampo
+    // gia' fatto sul giro di Icod, dove diceva "Tenerife nord" e dal nord non
+    // partiva niente. Dove si cammina sta nelle varianti.
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    // "Giornata intera" e' giusta, e la domanda era un'altra: in giro si sta
+    // tutto il giorno, ma **si cammina** due ore (proprietario, 11 settembre
+    // 2026). In v284 avevo tolto la durata credendola falsa; era vera, mancava
+    // la riga accanto. Adesso sono due: questa dice quanto dura la giornata,
+    // `activityDuration` dentro ogni variante dice quanto dura il cammino.
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    // Il nome della seconda riga. Sta sulla scheda e non nelle varianti perche'
+    // e' lo stesso per tutti e tre: quello che cambia e' il numero.
+    activityLabel: { it: "Tempo di cammino", en: "Walking time", es: "Tiempo de caminata" },
+    priceFrom: 59,
+    // I prezzi stanno **sia qui sia dentro ogni variante**, ed e' voluto: qui
+    // perche' tutti e tre i cammini costano uguale e le righe "Adulti €59" e
+    // "Bambini €29,50" devono vedersi in "In breve" prima ancora di scegliere;
+    // dentro le varianti perche' il totale, appena una variante e' scelta,
+    // guarda **solo** il suo `priceAdult` e non ripiega su quello della scheda
+    // (escursioni.js, riga ~219). Senza, chi preme un bottone vedrebbe sparire
+    // il totale.
+    priceAdult: 59,
+    priceChild: 29.5,
+    // **Bambini fino a 11 anni, confermato dal proprietario l'11 settembre
+    // 2026.** Erano dedotte dalle due sole fasce del fornitore, adesso sono
+    // confermate: 12+ e 0-11, che combaciano senza buchi.
+    // Niente `priceInfant`, ed e' la conseguenza della conferma: due fasce
+    // sole vogliono dire che **chiunque abbia meno di 12 anni paga il prezzo
+    // bambino**, neonati compresi. Non c'e' una fascia gratis da scrivere, e
+    // il campo assente e' proprio questo — non "non lo sappiamo".
+    // Resta da chiedere una cosa sola, ed e' un'altra: se sotto una certa eta'
+    // sul sentiero non si sale proprio. Quella non e' un prezzo, e' una nota.
+    ages: { adult: "12+", child: "0-11" },
+    // L'unione dei tre giorni: ogni cammino ne ha uno solo, e la sua variante
+    // lo restringe (escursioni.js, `giorniDi`, riga ~24). Qui serve perche'
+    // prima di scegliere il cammino il blocco non deve rifiutare un giorno
+    // buono. **mer e' mercoledi'.**
+    days: ["lun", "mer", "gio"],
+    // Valgono per tutti e tre. Acqua e pranzo al sacco NON sono compresi:
+    // stanno nelle note, perche' "Cosa e' incluso" dice quello che c'e'.
+    included: ["guide", "transfer"],
+    options: {
+      label: { it: "Quale cammino", en: "Which walk", es: "Qué recorrido" },
+      choices: [
+        // I nomi dei percorsi sono quelli del fornitore e restano uguali in
+        // tutte e tre le lingue, come i titoli: quando la richiesta arriva su
+        // WhatsApp, in ufficio si ritrova il nome esatto da cercare.
+        { label: "Teide Light",
+          priceAdult: 59,
+          priceChild: 29.5,
+          days: ["gio"],
+          // Notazione compatta, uguale in tutte e tre le lingue: "h" si legge
+          // ovunque, e in forma distesa ("3 ore e mezza – 4 ore") il valore
+          // finiva sotto il pallino della chat, che non si sposta.
+          activityDuration: "2h",
+          desc: {
+            it: "Il giovedì, nel Parco Nazionale del Teide: si cammina in quota fra i paesaggi vulcanici, con 175 metri di dislivello e difficoltà 2 su 6. È il più facile dei tre.",
+            en: "Thursdays, in Teide National Park: walking at altitude through the volcanic landscapes, with 175 metres of ascent and difficulty 2 out of 6. The easiest of the three.",
+            es: "Los jueves, en el Parque Nacional del Teide: se camina en altura entre los paisajes volcánicos, con 175 metros de desnivel y dificultad 2 sobre 6. El más fácil de los tres."
+          } },
+        { label: "Camino Real",
+          priceAdult: 59,
+          priceChild: 29.5,
+          days: ["mer"],
+          activityDuration: "3h30 – 4h",
+          desc: {
+            it: "Il mercoledì, sull'antico camino real che parte da Santiago del Teide, dove arriva il bus: 350 metri di dislivello e difficoltà 3 su 6. È il più impegnativo dei tre.",
+            en: "Wednesdays, on the old royal path out of Santiago del Teide, where the bus drops you off: 350 metres of ascent and difficulty 3 out of 6. The most demanding of the three.",
+            es: "Los miércoles, por el antiguo camino real que sale de Santiago del Teide, adonde llega el autobús: 350 metros de desnivel y dificultad 3 sobre 6. El más exigente de los tres."
+          } },
+        { label: "La Laguna & Anaga",
+          priceAdult: 59,
+          priceChild: 29.5,
+          days: ["lun"],
+          activityDuration: "1h30 – 2h",
+          desc: {
+            it: "Il lunedì, fra La Laguna — città Patrimonio UNESCO — e il Parco Rurale di Anaga, Riserva della Biosfera: 300 metri di dislivello e difficoltà 2 su 6. È il più corto dei tre.",
+            en: "Mondays, between UNESCO-listed La Laguna and the Anaga Rural Park, a Biosphere Reserve: 300 metres of ascent and difficulty 2 out of 6. The shortest of the three.",
+            es: "Los lunes, entre La Laguna — ciudad Patrimonio de la UNESCO — y el Parque Rural de Anaga, Reserva de la Biosfera: 300 metros de desnivel y dificultad 2 sobre 6. El más corto de los tres."
+          } }
+      ]
+    },
+    notes: [
+      { it: "Acqua e pranzo al sacco non sono compresi: portali con te.",
+        en: "Water and a packed lunch are not included: bring them with you.",
+        es: "El agua y el picnic no están incluidos: llévalos contigo." },
+      { it: "Scarpe chiuse da camminata. In quota fa più fresco che sulla costa e il tempo cambia in fretta, anche quando al sud c'è il sole: porta una felpa o una giacca leggera.",
+        en: "Closed walking shoes. It is cooler up there than on the coast and the weather changes quickly, even when it is sunny in the south: bring a sweatshirt or a light jacket.",
+        es: "Calzado cerrado de montaña. En altura hace más fresco que en la costa y el tiempo cambia rápido, aunque en el sur haga sol: lleva una sudadera o una chaqueta ligera." },
+      { it: "Ogni cammino si fa in un giorno solo della settimana: scegli il percorso qui sopra e la data si regola da sola.",
+        en: "Each walk runs on one day of the week only: pick the route above and the date adjusts to it.",
+        es: "Cada recorrido se hace un solo día de la semana: elige el itinerario arriba y la fecha se ajusta sola." }
+    ],
+    // `family: true` con una riserva scritta nelle varianti. Due cammini su
+    // tre sono corti e facili; il Camino Real con le sue tre ore e mezza-quattro lo
+    // dice da se' nella sua riga ("il più impegnativo dei tre"). `family` sta
+    // sulla scheda e non sulla variante, quindi il filtro "Con bambini" e' uno
+    // solo per tutte e tre: tenerla fuori avrebbe nascosto anche le due facili.
+    family: true,
+    desc: {
+      it: "Tre cammini con guida di montagna, uno per giorno della settimana: il Parco Nazionale del Teide, l'antico camino real di Santiago del Teide e la laurisilva di Anaga con La Laguna. Bus andata e ritorno dagli alloggi del sud.",
+      en: "Three guided walks with a mountain guide, one for each day of the week: Teide National Park, the old royal path out of Santiago del Teide, and the Anaga laurel forest with La Laguna. Return bus from accommodation in the south.",
+      es: "Tres recorridos con guía de montaña, uno por día de la semana: el Parque Nacional del Teide, el antiguo camino real de Santiago del Teide y la laurisilva de Anaga con La Laguna. Autobús de ida y vuelta desde los alojamientos del sur."
+    },
+    // Foto ancora da caricare: canaventura.es e il suo CDN sono bloccati dal
+    // proxy di rete, come gia' kartingamericas.com, quindi le foto dei tre
+    // cammini non si scaricano e non si possono nemmeno guardare. Le deve
+    // mandare l'ufficio. `trekking-bici.jpg` non e' rimasta qui: e' un
+    // ciclista, ed e' passata alla scheda della bici, che e' il suo soggetto.
+    image: "",
+    published: true
+  },
+  {
+    // La meta' "bici" della vecchia scheda, staccata: era una promessa dentro
+    // una scheda che parlava d'altro, e adesso che il trekking ha tre cammini
+    // veri con i prezzi sarebbe sparita del tutto. Resta un segnaposto — di
+    // giri in bici non abbiamo ancora ne' prezzi ne' giorni — ma un segnaposto
+    // che si vede.
+    id: "bici",
+    title: { it: "Bici", en: "Biking", es: "Bici" },
     category: "teide-natura",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
@@ -1745,11 +1967,15 @@ const ESPLORA_CATALOG = [
     priceChild: 0,
     family: false,
     desc: {
-      it: "Giornata fra sentieri e bicicletta, con guida.",
-      en: "A day between trails and bike, with a guide.",
-      es: "Jornada entre senderos y bicicleta, con guía."
+      it: "Giornata in bicicletta sui sentieri dell'isola, con guida.",
+      en: "A day on two wheels along the island's trails, with a guide.",
+      es: "Jornada en bicicleta por los senderos de la isla, con guía."
     },
-    image: "trekking-bici.jpg",
+    // La foto che stava sulla vecchia scheda "Trekking e bici": un ciclista in
+    // mezzo alle lave. Rinominata `bici.jpg` perche' adesso il nome dice quello
+    // che c'e' dentro, e il file non e' citato da nessun'altra parte (solo da
+    // qui: sw.js precarica solo le icone).
+    image: "bici.jpg",
     published: true
   },
   {
@@ -1781,6 +2007,7 @@ const ESPLORA_CATALOG = [
     // Listino del fornitore (Nere Izerdie / Island Excursions, Costa Adeje),
     // mandato dall'ufficio l'8 settembre 2026: 58 € adulti, 37,50 € bambini.
     priceFrom: 58,
+    fixedPrice: true,
     priceAdult: 58,
     priceChild: 37.5,
     // Il fornitore da' solo "Ninos (2-11)", quindi gli adulti sono 12+.
@@ -1887,13 +2114,17 @@ const ESPLORA_CATALOG = [
     // parla spagnolo solo il grande. Senza la lingua sul bottone un italiano
     // premerebbe "Gruppo grande" e lo scoprirebbe troppo tardi.
     id: "stargazing-group",
-    // Le parole che i due titoli di Admiral hanno in comune. I titoli interi
-    // erano "Stargazing - Large Group Experience" e "VIP Stargazing
-    // Experience": il "VIP" e' caduto insieme ai nomi dei fornitori, perche'
-    // due etichette che si confrontano su una cosa sola — quanti si e', e in
-    // che lingua — si leggono in un colpo d'occhio.
-    title: "Stargazing Experience",
-    category: "stelle",
+    // I titoli di Admiral erano "Stargazing - Large Group Experience" e "VIP
+    // Stargazing Experience": il "VIP" e' caduto insieme ai nomi dei fornitori,
+    // perche' due etichette che si confrontano su una cosa sola — quanti si e',
+    // e in che lingua — si leggono in un colpo d'occhio. Da "Stargazing
+    // Experience" a **"Teide by Night"** e' una scelta del proprietario: dice
+    // dove si va, non solo cosa si guarda, e adesso che la scheda sta fra le
+    // altre del Teide si legge in fila con loro. Uguale in tutte e tre le
+    // lingue, come tutti i titoli.
+    title: "Teide by Night",
+    // Era la sola scheda della categoria "stelle", che infatti non c'e' piu'.
+    category: "teide-natura",
     // Tutte e due le serate salgono nel Parco Nazionale: qui la riga non e'
     // piu' "Da definire" come quando del gruppo grande non sapevamo niente.
     zone: { it: "Parco Nazionale del Teide", en: "Teide National Park", es: "Parque Nacional del Teide" },
@@ -2000,26 +2231,177 @@ const ESPLORA_CATALOG = [
       }
     ],
     image: "stargazing-group.jpg",
-    gallery: ["stargazing-vip.jpg"],
+    // La terza foto era `Cat-stelle.jpg`, il riquadro della categoria "stelle"
+    // che non esiste piu': rinominata col nome della scheda, perche' una foto
+    // qui dentro si chiama come la scheda che la usa, non come il posto da cui
+    // arriva. E' il Roque Cinchado sotto l'arco della Via Lattea, cioe' la
+    // sagoma che si riconosce del Parco Nazionale: adesso che il titolo dice
+    // "Teide by Night", quella e' la foto che lo fa vedere.
+    //
+    // In fila si leggono come una sera che passa: il tramonto sopra le nuvole,
+    // poi il buio con la Via Lattea. La copertina resta quella dei due
+    // telescopi.
+    gallery: ["stargazing-vip.jpg", "teide-by-night.jpg"],
     published: true
   },
 
   // ─── AVVENTURA E MOTORI ───────────────────────────────────────────────────
   {
+    // Era un segnaposto della vetrina Admiral: solo il prezzo (250) e la foto,
+    // zona e durata "Da definire". I dati veri sono arrivati il 12 settembre
+    // 2026 e sono quelli del "Mustang Sunset Tour al Teide" di Pirati
+    // Tenerife: stesso prezzo di partenza, stessa Mustang decappottabile,
+    // stessa meta, e la foto che c'era gia' e' proprio quella — una Mustang
+    // blu ai Roques de Garcia col sole basso.
+    // L'id resta `mustang-experience` e non diventa `mustang-sunset-teide`:
+    // e' la stessa scelta fatta per i tre giri in buggy, gli indirizzi gia' in
+    // giro devono continuare a funzionare. Anche il titolo resta quello di
+    // Admiral, come tutti i titoli.
+    // Attenzione se un domani arrivano altri dati Mustang: Pirati Tenerife ha
+    // **due** prodotti, questo al tramonto e un "Mustang Teide" diurno che e'
+    // un'altra cosa. Il secondo non e' una scheda nuova, e' una variante di
+    // questa — come i tre percorsi del buggy qui sotto.
     id: "mustang-experience",
     title: "Mustang Experience",
+    // Sta anche in "Natura, Teide e stelle" (proprietario, 14 settembre 2026):
+    // la meta e' il Parco Nazionale, e chi cerca cosa fare al Teide questa la
+    // deve trovare. La principale resta l'avventura, perche' la cosa che si
+    // compra e' la Mustang: il posto dove va e' la seconda meta' della frase.
     category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    alsoIn: ["teide-natura"],
+    zone: "Adeje",
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     priceFrom: 250,
+    // Il prezzo e' dell'**auto**, non della persona, e cambia con quanti si
+    // sale: 250 € fino a due, 350 € da tre a quattro. Con `priceUnit` il sito
+    // smette di moltiplicare per le persone (prezziAPersona() torna null) e
+    // scrive "da €250 a Mustang" invece di un totale falso.
+    priceUnit: { it: "a Mustang", en: "per Mustang", es: "por Mustang" },
+    // Le due fasce restano scritte anche in "In breve": `units` piu' sotto e'
+    // la finestra della richiesta, qui e' il listino che si legge prima di
+    // arrivarci. Non si ripetono a vicenda, stanno in due posti diversi.
+    priceTiers: [
+      { from: 1, to: 2, price: 250 },
+      { from: 3, to: 4, price: 350 }
+    ],
+    // Le Mustang si contano, e possono essere piu' di una: in sei si va con
+    // due auto, una con quattro e una con due, e sono due prezzi diversi
+    // (350 + 250). E' la stessa forma del jet ski, dove quattro amici sono
+    // "due doppie e due singole".
+    // I due "tipi" non sono due modelli di auto ma le due fasce di prezzo:
+    // e' quanti salgono a cambiare il prezzo dell'auto, non l'auto.
+    // `units` **sostituisce** "Quante persone" nella finestra (mostraPersone()
+    // la nasconde): il numero delle persone e' gia' dentro il nome della
+    // fascia, e chiederlo due volte darebbe due conti da far tornare.
+    units: {
+      label: {
+        it: "Quante Mustang — il prezzo è dell'auto e cambia con quanti ci salgono",
+        en: "How many Mustangs — the price is per car and changes with how many get in",
+        es: "¿Cuántos Mustang? — el precio es del coche y cambia según cuántos suban"
+      },
+      name: { it: "Mustang", en: "Mustangs", es: "Mustang" },
+      types: [
+        { key: "due", name: { it: "Con 1 o 2 persone", en: "With 1 or 2 people", es: "Con 1 o 2 personas" } },
+        { key: "quattro", name: { it: "Con 3 o 4 persone", en: "With 3 or 4 people", es: "Con 3 o 4 personas" } }
+      ]
+      // Niente `transferPrice` perche' qui non c'e' nessuna casella del
+      // ritiro: e' **compreso nel prezzo** (proprietario, 12 settembre 2026) e
+      // sta fra le icone di `included`, non nel campo `transfer` — vedi il
+      // commento li' sotto. Se un giorno la casella ci finisse, il campo da
+      // mettere sarebbe `transferPrice: 0` ("compreso"), non l'assenza, che
+      // vuol dire "quanto costa non lo sappiamo" e fa sparire il totale.
+    },
+    // Il prezzo di ogni fascia. Sta sulla scheda e non dentro una variante
+    // perche' qui varianti non ce ne sono: a cambiare non e' la durata, e'
+    // quanti salgono.
+    unitPrices: { due: 250, quattro: 350 },
     priceAdult: 0,
     priceChild: 0,
+    // Nessuna tariffa ridotta per i bambini (fornitore). Non e' scritto da
+    // nessuna parte se e da che eta' si sale, quindi niente `ages` e niente
+    // `priceInfant`: assente non vuol dire gratis. `family` resta false in
+    // attesa di sapere l'eta' minima.
     family: false,
+    // L'auto e' tutta del cliente e l'ora segue il tramonto, che si sposta di
+    // ore fra dicembre e giugno: e' il caso del charter, `times: []` lascia
+    // "Da concordare" come unica voce. Il fornitore dice "a partire dalle
+    // 17:00" e quel riferimento sta nelle note, dove si puo' spiegare; messo
+    // in `times` sarebbe diventato un orario da scegliere, cioe' una promessa.
+    times: [],
+    // Si fa tutti i giorni: `days` non si scrive.
+    languages: ["Italiano", "English", "Français", "Español"],
+    // I due scaglioni del prezzo erano `priceTiers`, cioe' due righe da
+    // **leggere** sulla pagina di dettaglio e niente altro: il cliente non
+    // poteva dire in quanti sale, e nel messaggio all'ufficio non finiva
+    // niente. Diventati `options`, sono due bottoni sulla scheda e una tendina
+    // nella finestra della richiesta, e la scelta arriva su WhatsApp.
+    // `price` e non `priceAdult`: il numero e' dell'auto, non della persona, e
+    // `priceAdult` lo farebbe moltiplicare per quanti sono — 350 × 4.
+    // `priceTiers` e' stato tolto e non tenuto insieme: avrebbe scritto gli
+    // stessi due numeri una seconda volta, sopra i bottoni che li dicono gia'.
     desc: {
-      it: "Al volante di una Ford Mustang decappottabile, su fino ai punti panoramici del Teide.",
-      en: "At the wheel of a Ford Mustang convertible, up to the viewpoints on Teide.",
-      es: "Al volante de un Ford Mustang descapotable, hasta los miradores del Teide."
+      it: "Una Ford Mustang decappottabile solo per te, su per la strada del Parco Nazionale del Teide con la luce della sera: si sale fra le colate di lava fino alla Cañada Blanca e si torna che è già buio. Guidi tu, se hai la patente; se preferisci non guidare, l'auto la porta una guida dell'agenzia. Il prezzo è dell'auto e non a persona, e il ritiro in hotel è compreso.",
+      en: "A Ford Mustang convertible just for you, up the road into Teide National Park in the evening light: you climb between the lava flows as far as Cañada Blanca and come back down after dark. You drive, if you hold a licence; if you would rather not, one of the agency's guides takes the wheel. The price is for the car and not per person, and hotel pickup is included.",
+      es: "Un Ford Mustang descapotable solo para ti, subiendo por la carretera del Parque Nacional del Teide con la luz de la tarde: se sube entre las coladas de lava hasta la Cañada Blanca y se vuelve ya de noche. Conduces tú, si tienes carné; si prefieres no conducir, el coche lo lleva un guía de la agencia. El precio es del coche y no por persona, y la recogida en el hotel está incluida."
     },
+    // `transfer` sta qui fra le icone, e **non** nel campo `transfer` della
+    // scheda, che quello vuol dire un'altra cosa: "si puo' avere col trasporto
+    // incluso", cioe' una cosa da chiedere e magari da pagare. Qui il ritiro
+    // e' compreso per tutti e sempre, che e' esattamente quello che dicono le
+    // icone. Tenendo il campo, la finestra della richiesta avrebbe continuato
+    // a chiedere "Vuoi il transfer?" e un cliente che risponde no avrebbe
+    // mandato all'ufficio "Transfer: no" su un ritiro che e' gia' pagato.
+    included: ["snack", "drinks", "transfer"],
+    itinerary: [
+      { text: {
+          it: "Il ritiro in hotel, nel tardo pomeriggio, e la partenza da Adeje con la capote abbassata.",
+          en: "Hotel pickup in the late afternoon, then off from Adeje with the roof down.",
+          es: "La recogida en el hotel, a última hora de la tarde, y la salida desde Adeje con la capota bajada."
+        } },
+      { text: {
+          it: "La salita al Parco Nazionale del Teide: la strada che sale fra i pini e poi esce sull'altopiano.",
+          en: "The climb into Teide National Park: the road up through the pines, then out onto the plateau.",
+          es: "La subida al Parque Nacional del Teide: la carretera que sube entre los pinos y sale a la llanura."
+        } },
+      { text: {
+          it: "Cañada Blanca, con la sosta per le foto mentre il sole va giù dietro le colate di lava.",
+          en: "Cañada Blanca, with a photo stop while the sun drops behind the lava flows.",
+          es: "Cañada Blanca, con la parada para las fotos mientras el sol baja detrás de las coladas de lava."
+        } },
+      { text: {
+          it: "Il ritorno verso la costa, col buio.",
+          en: "The drive back down to the coast, in the dark.",
+          es: "La vuelta hacia la costa, ya de noche."
+        } }
+    ],
+    notes: [
+      { it: "Per guidare serve la patente di guida in corso di validità. Se preferisci non guidare tu, l'auto la porta una guida dell'agenzia: scrivilo nella richiesta.",
+        en: "To drive you need a valid driving licence. If you would rather not drive, one of the agency's guides takes the wheel: say so in your request.",
+        es: "Para conducir hace falta un carné de conducir en vigor. Si prefieres no conducir, el coche lo lleva un guía de la agencia: escríbelo en la solicitud." },
+      { it: "Si parte nel tardo pomeriggio, non prima delle 17:00: l'ora esatta segue il tramonto e si muove con la stagione, quindi te la conferma l'ufficio.",
+        en: "You set off in the late afternoon, not before 17:00: the exact time follows the sunset and moves with the season, so the office confirms it with you.",
+        es: "Se sale a última hora de la tarde, no antes de las 17:00: la hora exacta sigue al atardecer y se mueve con la temporada, así que te la confirma la oficina." },
+      // Il ritiro e' compreso, quindi non e' una domanda ma un fatto: sta
+      // fra le icone e detto per esteso qui, non nel campo `transfer`.
+      { it: "Il ritiro in hotel è compreso nel prezzo: passano a prenderti sotto il tuo albergo, senza supplemento. Scrivi dove alloggi nella richiesta; se non trovi il tuo hotel nell'elenco, mettilo nelle note.",
+        en: "Hotel pickup is included in the price: they come for you at your own hotel, with no supplement. Put where you are staying in the request; if you cannot find your hotel in the list, write it in the notes.",
+        es: "La recogida en el hotel está incluida en el precio: te recogen en tu propio hotel, sin suplemento. Escribe dónde te alojas en la solicitud; si no encuentras tu hotel en la lista, ponlo en las notas." },
+      // I due numeri non si ripetono qui: li dicono gia' le righe di "In
+      // breve" e i contatori della richiesta. Quello che resta e' il
+      // principio, piu' la capienza — che era dentro le vecchie varianti e
+      // senza questa riga andava persa.
+      { it: "Il prezzo è dell'auto e non della persona: a cambiare è quanti ci salgono, non quanto paga ognuno. In Mustang si sta in quattro al massimo, autista compreso; se siete di più si prendono due auto, e nella richiesta le conti tu.",
+        en: "The price is for the car, not per person: what changes is how many of you get in, not what each one pays. The Mustang seats four at most, driver included; if there are more of you, you take two cars — you count them yourself in the request.",
+        es: "El precio es del coche y no por persona: lo que cambia es cuántos subís, no lo que paga cada uno. En el Mustang caben cuatro como máximo, conductor incluido; si sois más se cogen dos coches, y en la solicitud los cuentas tú." },
+      { it: "Si va con la capote abbassata e lassù si passano i 2.000 metri: al tramonto fa fresco anche d'estate. Porta una felpa o una giacca.",
+        en: "You travel with the roof down and up there you go above 2,000 metres: at sunset it is chilly even in summer. Bring a sweatshirt or a jacket.",
+        es: "Se va con la capota bajada y allí arriba se pasan los 2.000 metros: al atardecer refresca incluso en verano. Lleva una sudadera o una chaqueta." }
+    ],
+    // Niente campo `transfer`: il ritiro e' compreso, e sta fra le icone di
+    // `included` piu' sopra. Passano sotto l'hotel (proprietario, 12
+    // settembre 2026), ed e' per questo che la scheda sta in PICKUP_IN_HOTEL
+    // in hotel.js: se no il cliente leggerebbe una fermata delle tabelle di
+    // Island Excursions, che e' un altro fornitore e un altro giro.
     // Stessa foto della card "Avventura e motori" in home: `mustang-experience.jpg`
     // era un doppione byte per byte di `Cat-avventura.jpg`, cioe' 202 KB che il
     // telefono scaricava due volte. Tolto il doppione e puntata questa, come si
@@ -2041,7 +2423,15 @@ const ESPLORA_CATALOG = [
     // gia' in giro continuino a funzionare — come si era fatto per i due quad.
     id: "buggy-volcano-4h",
     title: "Buggy Tour Tenerife",
+    // Anche fra Teide e natura (proprietario, 14 settembre 2026). Qui `alsoIn`
+    // e' della scheda e non della variante: dei quattro giri due salgono al
+    // Parco Nazionale (Tramonto sul Teide e Completo) e due no, ma la scheda
+    // e' una e ci si arriva per quella. Chi entra dal Teide legge i bottoni e
+    // sceglie il giro giusto — un filtro che nascondesse le altre due varianti
+    // vorrebbe dire quattro schede di nuovo separate, che e' esattamente
+    // quello da cui si e' venuti via.
     category: "avventura-motori",
+    alsoIn: ["teide-natura"],
     zone: "Las Chafiras",
     duration: { it: "3 o 4 ore", en: "3 or 4 hours", es: "3 o 4 horas" },
     priceFrom: 180,
@@ -2160,48 +2550,6 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    // Il quarto prodotto di King Buggy non e' un buggy: e' una moto Spyder a
-    // tre ruote, due posti, con un giro suo di quattro ore fra la costa, la
-    // citta' e il Teide. Sta fuori dalla scheda dei buggy perche' il mezzo e'
-    // un altro, e resta `published: false` finche' non arriva una foto nostra:
-    // senza, in elenco uscirebbe il riquadro grigio.
-    id: "spyder-costa-teide",
-    title: "Spyder Costa & Teide",
-    category: "avventura-motori",
-    zone: "Las Chafiras",
-    duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
-    priceFrom: 200,
-    priceUnit: { it: "/moto", en: "/bike", es: "/moto" },
-    priceAdult: 0,
-    priceChild: 0,
-    family: false,
-    desc: {
-      it: "Quattro ore in moto Spyder, la tre ruote da due posti: la costa del sud, il passaggio in città e la salita nel Parco Nazionale del Teide.",
-      en: "Four hours on a Spyder, the two-seat three-wheeler: the southern coast, a stretch through town and the climb into Teide National Park.",
-      es: "Cuatro horas en moto Spyder, la de tres ruedas y dos plazas: la costa del sur, el paso por la ciudad y la subida al Parque Nacional del Teide."
-    },
-    included: ["transfer"],
-    notes: [
-      {
-        it: "Il prezzo è della moto e non a persona: 200 € la Spyder, che porta due persone.",
-        en: "The price is per bike, not per person: €200 for the Spyder, which carries two people.",
-        es: "El precio es por moto y no por persona: 200 € la Spyder, que lleva a dos personas."
-      },
-      {
-        it: "Motore 900 cc, due posti. Chi guida deve avere la patente B valida e portarla con sé.",
-        en: "900cc engine, two seats. Drivers must hold a valid category B licence and bring it with them.",
-        es: "Motor de 900 cc, dos plazas. Quien conduce debe tener el carné B válido y llevarlo consigo."
-      },
-      {
-        it: "Ritiro in hotel gratuito su Offroad, Tramonto e Completo; Montagna su strada parte da Playa de las Américas, senza ritiro. Il punto e l'ora te li conferma l'ufficio.",
-        en: "Free hotel pickup on the Off-road, Sunset and Full tours; Mountain roads starts from Playa de las Américas, with no pickup. The office confirms the point and the time.",
-        es: "Recogida en el hotel gratuita en Offroad, Atardecer y Completo; Montaña por carretera sale desde Playa de las Américas, sin recogida. El punto y la hora te los confirma la oficina."
-      }
-    ],
-    image: "",
-    published: false
-  },
-  {
     // Una scheda sola per le due partenze dello stesso safari: prima erano due
     // schede gemelle (`quad-teide-adventure` per la mattina e
     // `quad-teide-sunset` per il tramonto) identiche in tutto tranne la foto e
@@ -2210,7 +2558,11 @@ const ESPLORA_CATALOG = [
     // una variante, e la foto del tramonto e' finita nella galleria.
     id: "quad-teide-adventure",
     title: "Teide Quad Adventure",
+    // Anche fra Teide e natura (proprietario, 14 settembre 2026): il Teide sta
+    // gia' nel titolo, e restare fuori da quella categoria era la cosa che
+    // stonava di piu' di tutte.
     category: "avventura-motori",
+    alsoIn: ["teide-natura"],
     zone: "Chío",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     // Il quad piu' economico che si puo' davvero prenotare: il singolo del
@@ -2314,65 +2666,6 @@ const ESPLORA_CATALOG = [
     image: "quad-teide-adventure.jpg",
     gallery: ["quad-teide-sunset.jpg"],
     published: true
-  },
-  {
-    id: "quad-nord-puerto-cruz",
-    title: {
-      it: "Quad e fuoristrada del Teide da Puerto de la Cruz",
-      en: "Teide Quad & Off-Road Tour from Puerto de la Cruz",
-      es: "Quad y todoterreno del Teide desde Puerto de la Cruz"
-    },
-    category: "avventura-motori",
-    zone: "Puerto de la Cruz",
-    duration: { it: "2 ore e mezza o 3 ore", en: "2.5 or 3 hours", es: "2,5 o 3 horas" },
-    priceFrom: 140,
-    priceAdult: 0,
-    priceChild: 0,
-    family: false,
-    options: {
-      label: { it: "Itinerario", en: "Route", es: "Itinerario" },
-      choices: [
-        {
-          label: { it: "Su strada, verso Izaña", en: "On-road, towards Izaña", es: "En carretera, hacia Izaña" },
-          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-          desc: {
-            it: "Tutto su asfalto: La Orotava, il Mirador Roque Bermejo e il Corral del Niño, a quasi 2.300 metri.",
-            en: "All on paved roads: La Orotava, the Roque Bermejo viewpoint and Corral del Niño, at almost 2,300 metres.",
-            es: "Todo sobre asfalto: La Orotava, el mirador Roque Bermejo y el Corral del Niño, a casi 2.300 metros."
-          }
-        },
-        {
-          label: { it: "Con tratto fuoristrada", en: "With an off-road stretch", es: "Con tramo todoterreno" },
-          duration: { it: "2 ore e mezza", en: "2.5 hours", es: "2,5 horas" },
-          desc: {
-            it: "Le spiagge naturali del nord, Los Realejos, 30 minuti di vero fuoristrada e il Mirador de El Lance, a circa 800 metri.",
-            en: "The natural beaches of the north, Los Realejos, 30 minutes of genuine off-roading and the El Lance viewpoint, at about 800 metres.",
-            es: "Las playas naturales del norte, Los Realejos, 30 minutos de todoterreno real y el mirador de El Lance, a unos 800 metros."
-          }
-        }
-      ]
-    },
-    desc: {
-      it: "Due itinerari in quad automatico con partenza da Puerto de la Cruz: uno tutto su strada verso i miradores del nord, l'altro con un tratto fuoristrada fra le spiagge naturali.",
-      en: "Two automatic quad routes departing from Puerto de la Cruz: one entirely on paved roads towards the northern viewpoints, the other with an off-road stretch among the natural beaches.",
-      es: "Dos itinerarios en quad automático con salida desde Puerto de la Cruz: uno totalmente en carretera hacia los miradores del norte, el otro con un tramo todoterreno entre las playas naturales."
-    },
-    included: ["guide", "snack", "drinks"],
-    notes: [
-      {
-        it: "Nessun prelievo: si parte dalla base del fornitore a Puerto de la Cruz. Chi guida deve avere almeno 18 anni e patente valida; i passeggeri salgono da 7 anni.",
-        en: "No pickup: departure is from the operator's base in Puerto de la Cruz. Drivers must be at least 18 with a valid licence; passengers from age 7.",
-        es: "Sin recogida: la salida es desde la base del proveedor en Puerto de la Cruz. Quien conduce debe tener al menos 18 años y carné válido; los pasajeros suben desde los 7 años."
-      },
-      {
-        it: "Peso massimo 175 kg per quad. Non consigliato in gravidanza o con problemi di schiena.",
-        en: "Maximum weight 175 kg per quad. Not recommended during pregnancy or with back problems.",
-        es: "Peso máximo 175 kg por quad. No recomendado durante el embarazo o con problemas de espalda."
-      }
-    ],
-    languages: LINGUE_TOUR,
-    image: "",
-    published: false
   },
   {
     id: "helicopter-tours",
@@ -2561,17 +2854,109 @@ const ESPLORA_CATALOG = [
     id: "karting",
     title: "Karting",
     category: "avventura-motori",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Fañabé",
     duration: { it: "10 minuti a tanda", en: "10-minute session", es: "10 minutos por tanda" },
     priceFrom: 20,
     priceAdult: 20,
     priceChild: 15,
-    family: false,
-    desc: {
-      it: "Giri in pista su kart, cronometrati.",
-      en: "Timed laps on a go-kart track.",
-      es: "Vueltas cronometradas en pista de karts."
+    ages: { adult: "14+", child: "7-13" },
+    family: true,
+    included: ["equipment"],
+    // Una voce sola, e non e' una svista: le tande sono libere, non ci sono
+    // partenze, e l'unico orario vero e' quando il circuito e' aperto
+    // (10:00-20:30, ufficio 10 settembre 2026). Spezzarlo in fasce faceva
+    // sembrare che si scegliesse fra dei turni che non esistono; le fasce
+    // segnaposto erano peggio ancora, offrivano le 09:00 a cancello chiuso.
+    // Chi ha una preferenza sull'ora la scrive nelle note della richiesta.
+    times: ["10:00 - 20:30"],
+    // Le quattro voci del listino esposto al circuito (foto dell'ufficio, 15
+    // settembre 2026). Il Superkart Double non sta qui perche' si paga **a
+    // kart** e non a persona: moltiplicato per le persone darebbe il doppio.
+    // Sta in nota, col suo prezzo.
+    options: {
+      label: { it: "Formula", en: "Format", es: "Fórmula" },
+      choices: [
+        {
+          label: { it: "Tanda da 10 minuti", en: "10-minute session", es: "Tanda de 10 minutos" },
+          duration: { it: "10 minuti", en: "10 minutes", es: "10 minutos" },
+          priceAdult: 20,
+          priceChild: 15,
+          desc: {
+            it: "Una tanda da 10 minuti.",
+            en: "One 10-minute session.",
+            es: "Una tanda de 10 minutos."
+          }
+        },
+        {
+          // Per i junior i venti minuti non esistono (ufficio, 15 settembre
+          // 2026): senza `priceChild` il totale con dei bambini non si fa,
+          // invece di farli passare gratis.
+          label: { it: "Tanda da 20 minuti", en: "20-minute session", es: "Tanda de 20 minutos" },
+          duration: { it: "20 minuti", en: "20 minutes", es: "20 minutos" },
+          priceAdult: 35,
+          desc: {
+            it: "Venti minuti di pista. Esiste solo per gli adulti: i bambini fanno la tanda da 10 minuti.",
+            en: "Twenty minutes on track. It exists for adults only: children do the 10-minute session.",
+            es: "Veinte minutos en pista. Existe solo para adultos: los niños hacen la tanda de 10 minutos."
+          }
+        },
+        {
+          label: { it: "Mini Prix", en: "Mini Prix", es: "Mini Prix" },
+          duration: { it: "20 minuti", en: "20 minutes", es: "20 minutos" },
+          // Solo adulti (ufficio, 15 settembre 2026): niente `priceChild`, cosi'
+          // con dei bambini il totale non si fa invece di contarli a 40 euro.
+          priceAdult: 40,
+          desc: {
+            it: "Dieci minuti di qualifica, dieci di gara e la coppa al primo. Da 5 a 15 persone, e solo adulti: alle gare i bambini non partecipano.",
+            en: "Ten minutes of qualifying, ten of racing and a trophy for the winner. From 5 to 15 people, and adults only: children do not take part in the races.",
+            es: "Diez minutos de clasificación, diez de carrera y el trofeo para el primero. De 5 a 15 personas, y solo adultos: los niños no participan en las carreras."
+          }
+        },
+        {
+          label: { it: "Grand Prix", en: "Grand Prix", es: "Grand Prix" },
+          duration: { it: "30 minuti", en: "30 minutes", es: "30 minutos" },
+          // Solo adulti, come il Mini Prix.
+          priceAdult: 60,
+          desc: {
+            it: "Dieci minuti di prove, dieci di qualifica e dieci di gara, poi la coppa e il brindisi. Da 5 a 15 persone, e solo adulti.",
+            en: "Ten minutes of practice, ten of qualifying and ten of racing, then the trophy and a toast. From 5 to 15 people, and adults only.",
+            es: "Diez minutos de entrenamientos, diez de clasificación y diez de carrera, después el trofeo y el brindis. De 5 a 15 personas, y solo adultos."
+          }
+        }
+      ]
     },
+    desc: {
+      it: "Pista all'aperto di 857 metri a Fañabé, otto curve e impianto di illuminazione per girare anche dopo il tramonto. Si guida a tande da 10 minuti: kart da adulto dai 14 anni, kart junior dai 7, e un biposto per chi è ancora troppo piccolo per guidare da solo.",
+      en: "An 857-metre outdoor track in Fañabé, eight corners and floodlights for driving after sunset too. You drive in 10-minute sessions: adult karts from 14, junior karts from 7, and a two-seater for anyone still too small to drive alone.",
+      es: "Circuito al aire libre de 857 metros en Fañabé, ocho curvas e iluminación para rodar también después del atardecer. Se conduce en tandas de 10 minutos: karts de adulto desde los 14 años, karts junior desde los 7 y un biplaza para quien todavía es pequeño para conducir solo."
+    },
+    notes: [
+      {
+        it: "Kart da adulto dai 14 anni in su. Kart junior dai 7 ai 13 anni, con almeno 1,30 m di altezza. Chi non è maggiorenne deve essere accompagnato da un adulto.",
+        en: "Adult karts from age 14 up. Junior karts from 7 to 13, with a minimum height of 1.30 m. Anyone under 18 must be accompanied by an adult.",
+        es: "Karts de adulto a partir de los 14 años. Karts junior de 7 a 13 años, con al menos 1,30 m de altura. Los menores de 18 años deben ir acompañados de un adulto."
+      },
+      {
+        it: "Chi è troppo piccolo per guidare sale sul kart biposto come passeggero: si può dai 3 anni, con un adulto maggiorenne al volante. Costa 25 € a kart, non a persona.",
+        en: "Anyone too small to drive rides in the two-seater kart as a passenger: from age 3, with an adult over 18 at the wheel. It costs €25 per kart, not per person.",
+        es: "Quien es demasiado pequeño para conducir sube al kart biplaza como pasajero: se puede desde los 3 años, con un adulto mayor de 18 al volante. Cuesta 25 € por kart, no por persona."
+      },
+      {
+        it: "Nel fine settimana i kart junior girano solo in due fasce, dalle 10:00 alle 11:00 e dalle 15:00 alle 16:00. Negli altri giorni non ci sono fasce riservate.",
+        en: "At weekends the junior karts run in two slots only, from 10:00 to 11:00 and from 15:00 to 16:00. On other days there are no set slots.",
+        es: "Los fines de semana los karts junior ruedan solo en dos franjas, de 10:00 a 11:00 y de 15:00 a 16:00. El resto de días no hay franjas reservadas."
+      },
+      {
+        it: "Il circuito è aperto tutti i giorni dalle 10:00 alle 20:30. Il casco lo dà il circuito; chi preferisce il suo può portarlo, purché sia un integrale da moto.",
+        en: "The track is open every day from 10:00 to 20:30. The helmet is provided; if you prefer your own you may bring it, as long as it is a full-face motorcycle helmet.",
+        es: "El circuito abre todos los días de 10:00 a 20:30. El casco lo da el circuito; quien prefiera el suyo puede traerlo, siempre que sea un integral de moto."
+      },
+      {
+        it: "Il Mini Prix e il Grand Prix sono solo per adulti, si prenotano prima e vogliono un gruppo da 5 a 15 persone. Per i bambini, e per chi è in pochi, c'è la tanda da 10 minuti: quella non ha minimi.",
+        en: "The Mini Prix and the Grand Prix are for adults only, are booked in advance and need a group of 5 to 15 people. For children, and for small parties, there is the 10-minute session: that one has no minimum.",
+        es: "El Mini Prix y el Grand Prix son solo para adultos, se reservan antes y necesitan un grupo de 5 a 15 personas. Para los niños, y para quien va en pocos, está la tanda de 10 minutos: esa no tiene mínimo."
+      }
+    ],
     image: "karting.jpg",
     published: true
   },
@@ -2639,19 +3024,112 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "banana-boat",
-    title: "Banana Boat or Fly Fish Ride",
+    title: "Banana Boat, Fly Fish or Crazy UFO Ride",
     category: "sport-acquatici",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 18,
-    priceAdult: 0,
-    priceChild: 0,
+    zone: "Puerto Colón, Costa Adeje",
+    duration: { it: "10 o 15 minuti", en: "10 or 15 minutes", es: "10 o 15 minutos" },
+    priceFrom: 15,
+    priceAdult: 15,
+    priceChild: 15,
+    ages: { adult: "16+", child: "10-15" },
     family: true,
-    desc: {
-      it: "Il gonfiabile trainato dal motoscafo, in versione banana o fly fish. Si sceglie sul posto.",
-      en: "The inflatable towed by a speedboat, banana or fly fish. You choose on the spot.",
-      es: "El hinchable remolcado por la lancha, en versión banana o fly fish. Se elige allí mismo."
+    included: ["lifejacket", "equipment", "guide"],
+    // Una voce sola, come sul karting: le corse sono continue, non ci sono
+    // partenze fra cui scegliere e l'unico orario vero e' quando il molo e'
+    // aperto (10:00-18:00, proprietario 13 settembre 2026). Scritto come
+    // intervallo non c'e' l'ambiguita' che sul parascending era costata una
+    // correzione: qui le 18:00 sono la chiusura, non l'ultima partenza.
+    times: ["10:00 - 18:00"],
+    // Tre gonfiabili diversi tenuti in una scheda sola per scelta del
+    // proprietario (13 settembre 2026): la corsa è la stessa cosa, cambia solo
+    // l'attrezzo. Partono tutti e tre dallo stesso molo di Puerto Colón, sempre
+    // dal proprietario: la fonte dava il Pantalán 4 solo per il Crazy UFO, e
+    // quella distinzione è stata tolta.
+    options: {
+      label: { it: "Quale gonfiabile", en: "Which inflatable", es: "Qué hinchable" },
+      choices: [
+        {
+          label: "Banana Boat",
+          duration: { it: "10 minuti", en: "10 minutes", es: "10 minutos" },
+          priceAdult: 15,
+          priceChild: 15,
+          desc: {
+            it: "La banana classica trainata dal motoscafo, fino a dodici persone per corsa: ci si tiene forte e si finisce quasi sempre in acqua. Non serve saper nuotare.",
+            en: "The classic banana towed by the speedboat, up to twelve people per ride: you hold on tight and almost always end up in the water. You do not need to know how to swim.",
+            es: "La banana clásica remolcada por la lancha, hasta doce personas por salida: hay que agarrarse fuerte y casi siempre se acaba en el agua. No hace falta saber nadar."
+          }
+        },
+        {
+          label: "Fly Fish",
+          duration: { it: "Circa 10 minuti", en: "About 10 minutes", es: "Unos 10 minutos" },
+          priceAdult: 15,
+          priceChild: 15,
+          desc: {
+            it: "La zattera che con la velocità si stacca dall'acqua e si alza come un'ala, fino a sei persone per corsa. Su questa bisogna saper nuotare.",
+            en: "The raft that lifts off the water like a wing as the boat picks up speed, up to six people per ride. For this one you need to be able to swim.",
+            es: "La balsa que con la velocidad se despega del agua y se eleva como un ala, hasta seis personas por salida. En esta hay que saber nadar."
+          }
+        },
+        {
+          label: "Crazy UFO & Twister",
+          duration: { it: "15 minuti", en: "15 minutes", es: "15 minutos" },
+          priceAdult: 15,
+          priceChild: 15,
+          desc: {
+            it: "Il gonfiabile rotondo che gira e sbanda dietro al motoscafo, fino a otto persone per corsa: è la più lunga delle tre.",
+            en: "The round inflatable that spins and slides behind the speedboat, up to eight people per ride: it is the longest of the three.",
+            es: "El hinchable redondo que gira y derrapa detrás de la lancha, hasta ocho personas por salida: es la más larga de las tres."
+          }
+        }
+      ]
     },
+    desc: {
+      it: "Una corsa breve sul gonfiabile trainato dal motoscafo, davanti a Puerto Colón: la banana classica, il Fly Fish che si alza sull'acqua o il Crazy UFO che gira su se stesso. Dieci o quindici minuti, giubbotto e briefing compresi, con il personale del motoscafo che segue la corsa dall'inizio alla fine. Al porto ci si arriva da soli.",
+      en: "A short ride on an inflatable towed by a speedboat, just off Puerto Colón: the classic banana, the Fly Fish that lifts off the water or the Crazy UFO that spins on itself. Ten or fifteen minutes, life jacket and briefing included, with the speedboat crew watching the ride from start to finish. You make your own way to the marina.",
+      es: "Una salida corta en el hinchable remolcado por la lancha, frente a Puerto Colón: la banana clásica, el Fly Fish que se eleva sobre el agua o el Crazy UFO que gira sobre sí mismo. Diez o quince minutos, chaleco y briefing incluidos, con el personal de la lancha siguiendo la salida de principio a fin. Al puerto se llega por cuenta propia."
+    },
+    notes: [
+      {
+        it: "Si sale dai 10 anni compiuti. Chi non ha ancora 16 anni deve essere accompagnato da un adulto.",
+        en: "Minimum age 10. Anyone under 16 must be accompanied by an adult.",
+        es: "Se sube a partir de los 10 años cumplidos. Los menores de 16 deben ir acompañados de un adulto."
+      },
+      {
+        it: "Sul Fly Fish bisogna saper nuotare. Sulla banana e sul Crazy UFO no: basta il giubbotto, che è compreso.",
+        en: "On the Fly Fish you need to be able to swim. On the banana and the Crazy UFO you do not: the life jacket is enough, and it is included.",
+        es: "En el Fly Fish hay que saber nadar. En la banana y en el Crazy UFO no: basta el chaleco, que está incluido."
+      },
+      {
+        it: "Sconsigliato a chi ha problemi di schiena o di cuore, in gravidanza, e a chi in acqua non si sente a proprio agio: è una corsa fisica e si finisce in mare.",
+        en: "Not advisable if you have back or heart problems, during pregnancy, or if you are not comfortable in the water: it is a physical ride and you end up in the sea.",
+        es: "No se recomienda a quien tiene problemas de espalda o de corazón, durante el embarazo, ni a quien no se siente cómodo en el agua: es una salida física y se acaba en el mar."
+      },
+      {
+        it: "Non c'è il ritiro in hotel: al Puerto Colón ci si arriva da soli. Tutti e tre i gonfiabili partono da lì.",
+        en: "There is no hotel pick-up: you make your own way to Puerto Colón. All three inflatables leave from there.",
+        es: "No hay recogida en el hotel: se llega por cuenta propia a Puerto Colón. Los tres hinchables salen de allí."
+      },
+      {
+        it: "Porta il costume da bagno, un asciugamano e la crema solare. Al porto ci sono le cassette dove lasciare scarpe, telefono e chiavi.",
+        en: "Bring a swimsuit, a towel and sun cream. There are lockers at the marina for shoes, phone and keys.",
+        es: "Lleva bañador, una toalla y crema solar. En el puerto hay taquillas para dejar zapatos, móvil y llaves."
+      },
+      {
+        it: "Le foto e i video della corsa non sono compresi: si comprano sul posto, lo stesso giorno.",
+        en: "Photos and videos of the ride are not included: you can buy them on the spot, on the day.",
+        es: "Las fotos y los vídeos de la salida no están incluidos: se compran allí mismo, el mismo día."
+      },
+      {
+        it: "Si va dalle 10:00 alle 18:00, tutti i giorni: le corse sono continue, non ci sono partenze fisse.",
+        en: "It runs from 10:00 to 18:00, every day: the rides are continuous, there are no set departure times.",
+        es: "Se sale de 10:00 a 18:00, todos los días: las salidas son continuas, no hay horarios fijos."
+      },
+      {
+        it: "Il prezzo è a persona, per una corsa, ed è lo stesso per tutti: adulti, ragazzi e gruppi.",
+        en: "The price is per person, for one ride, and it is the same for everyone: adults, teenagers and groups.",
+        es: "El precio es por persona, por una salida, y es el mismo para todos: adultos, jóvenes y grupos."
+      }
+    ],
     image: "banana-boat.jpg",
     published: true
   },
@@ -2716,17 +3194,61 @@ const ESPLORA_CATALOG = [
     id: "parascending",
     title: "Parascending",
     category: "sport-acquatici",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: 60,
-    priceAdult: 0,
-    priceChild: 0,
+    zone: "Puerto Colón, Costa Adeje",
+    // Due durate diverse e tutte e due vere: quaranta minuti e' quanto dura
+    // l'uscita (tragitto in barca compreso), dieci e' quanto si sta in aria.
+    // Scritta una sola, l'altra diventa una bugia: "40 minuti" fa credere di
+    // volare mezz'ora, "10 minuti" fa tornare il cliente al porto troppo presto.
+    duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
+    activityLabel: { it: "Tempo di volo", en: "Flight time", es: "Tiempo de vuelo" },
+    activityDuration: { it: "Circa 10 minuti", en: "About 10 minutes", es: "Unos 10 minutos" },
+    // €55 a persona, confermato dal proprietario il 13 settembre 2026: la
+    // scheda portava €60 da prima ed e' **sceso**, che e' la direzione
+    // permessa. Sul volo paga lo stesso prezzo chiunque occupi un posto,
+    // bambini compresi, quindi `priceChild` e' uguale a `priceAdult` e non
+    // c'e' nessun `ages`: senza uno sconto per eta' non c'e' nessuna fascia
+    // da scrivere. Niente `priceInfant`: sotto i 3 anni non si vola, e
+    // assente non vuol dire gratis.
+    priceFrom: 55,
+    priceAdult: 55,
+    priceChild: 55,
     family: true,
+    // Le partenze vere, dal proprietario: ogni ora dalle 10:00, e **l'ultimo
+    // volo e' alle 17:00**. Prendono il posto delle fasce segnaposto e "Da
+    // concordare" sparisce. Niente `days`: si vola tutti i giorni.
+    times: ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"],
     desc: {
-      it: "Paracadute trainato da motoscafo, con vista dall'alto sulla costa.",
-      en: "A parachute towed by a speedboat, with the coast seen from above.",
-      es: "Paracaídas remolcado por una lancha, con vistas de la costa desde el aire."
+      it: "Si decolla dalla barca appesi al paracadute e si sale sopra la costa di Costa Adeje: una decina di minuti in aria, con il porto, le spiagge e le montagne sotto i piedi. Fra il tragitto in barca e il volo si sta fuori circa quaranta minuti.",
+      en: "You lift off from the boat hanging under the parachute and rise above the Costa Adeje coast: some ten minutes in the air, with the marina, the beaches and the mountains under your feet. Between the boat ride and the flight you are out for about forty minutes.",
+      es: "Se despega desde el barco colgado del paracaídas y se sube sobre la costa de Costa Adeje: unos diez minutos en el aire, con el puerto, las playas y las montañas bajo los pies. Entre el trayecto en barco y el vuelo se está fuera unos cuarenta minutos."
     },
+    // L'attrezzatura e il giubbotto li da' il fornitore, e l'istruttore sta a
+    // bordo per tutta l'uscita. Le foto **non** ci sono: si comprano sul posto,
+    // e stanno in nota invece che fra le icone, che dicono "compreso".
+    included: ["equipment", "lifejacket", "guide"],
+    notes: [
+      { it: "Si vola da soli, in due o in tre: il paracadute porta fino a tre persone per volo.",
+        en: "You fly alone, in a pair or in a three: the parachute carries up to three people per flight.",
+        es: "Se vuela solo, en pareja o de tres: el paracaídas lleva hasta tres personas por vuelo." },
+      { it: "Si vola dai 3 anni compiuti; sotto quell'età non si sale.",
+        en: "Minimum age 3; below that children cannot fly.",
+        es: "Se vuela a partir de los 3 años cumplidos; por debajo de esa edad no se sube." },
+      { it: "Non serve saper nuotare, e prima di partire c'è un briefing sulla sicurezza con l'istruttore.",
+        en: "You do not need to know how to swim, and there is a safety briefing with the instructor before you set off.",
+        es: "No hace falta saber nadar, y antes de salir hay un briefing de seguridad con el instructor." },
+      { it: "Sconsigliato in gravidanza.",
+        en: "Not recommended during pregnancy.",
+        es: "No se recomienda durante el embarazo." },
+      { it: "Porta il costume da bagno, un asciugamano e la crema solare.",
+        en: "Bring a swimsuit, a towel and sun cream.",
+        es: "Lleva bañador, una toalla y crema solar." },
+      { it: "Le foto del volo non sono comprese: si comprano sul posto, lo stesso giorno.",
+        en: "Photos of your flight are not included: you can buy them on the spot, on the day.",
+        es: "Las fotos del vuelo no están incluidas: se compran allí mismo, el mismo día." },
+      { it: "Non c'è il ritiro in hotel: al Puerto Colón ci si arriva da soli.",
+        en: "There is no hotel pick-up: you make your own way to Puerto Colón.",
+        es: "No hay recogida en el hotel: se llega por cuenta propia a Puerto Colón." }
+    ],
     image: "parascending.jpg",
     published: true
   },
@@ -2745,7 +3267,7 @@ const ESPLORA_CATALOG = [
     units: {
       label: { it: "Quante moto d'acqua", en: "How many jet skis", es: "¿Cuántas motos de agua?" },
       name: { it: "Moto d'acqua", en: "Jet skis", es: "Motos de agua" },
-      transferPrice: 10,
+      transferPrice: 0,
       types: [
         { key: "singola", name: { it: "Singola", en: "Single", es: "Individual" } },
         { key: "doppia", name: { it: "Doppia", en: "Double", es: "Doble" } }
@@ -2753,8 +3275,12 @@ const ESPLORA_CATALOG = [
     },
     priceAdult: 0,
     priceChild: 0,
-    // Gli orari cambiano con la durata, quindi quelli veri stanno dentro le
-    // varianti: questi valgono per il giro da 40 minuti, che non ha i suoi.
+    // Gli stessi cinque orari per tutte e tre le durate: confermato dal
+    // proprietario il 12 settembre 2026. Prima erano divisi per durata (1 ora
+    // alle 10/14/16/17, 2 ore alle 12) perche' cosi' li scriveva la pagina di
+    // CanaryVIP, un rivenditore: era la sua disponibilita', non la nostra.
+    // Quindi niente `times` dentro le varianti, e niente `desc` sulle 2 ore,
+    // che serviva solo a spiegare gli orari "forse" di quella pagina.
     times: ["10:00", "12:00", "14:00", "16:00", "17:00"],
     options: {
       label: { it: "Durata", en: "Duration", es: "Duración" },
@@ -2766,18 +3292,11 @@ const ESPLORA_CATALOG = [
         { label: { it: "1 ora", en: "1 hour", es: "1 hora" },
           price: 100,
           duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
-          times: ["10:00", "14:00", "16:00", "17:00"],
           unitPrices: { singola: 100, doppia: 120 } },
         { label: { it: "2 ore", en: "2 hours", es: "2 horas" },
           price: 180,
           duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
-          times: ["12:00"],
-          unitPrices: { singola: 180, doppia: 200 },
-          desc: {
-            it: "Partenza alle 12:00. In certi giorni può esserci anche alle 10:00 o alle 16:00: scrivilo nelle note e l'ufficio ti dice se quel giorno c'è.",
-            en: "Departure at 12:00. On some days there may also be one at 10:00 or 16:00: add it in the notes and the office will tell you if it runs that day.",
-            es: "Salida a las 12:00. Algunos días puede haber también a las 10:00 o a las 16:00: escríbelo en las notas y la oficina te dirá si ese día sale."
-          } }
+          unitPrices: { singola: 180, doppia: 200 } }
       ]
     },
     family: false,
@@ -2787,13 +3306,28 @@ const ESPLORA_CATALOG = [
       es: "Paseo guiado en moto de agua por la costa sur, con instructor y lancha de apoyo. Se elige entre 40 minutos, una hora y dos horas; el precio es por moto de agua, con una o dos personas a bordo."
     },
     included: ["guide"],
-    // Il supplemento e' a moto d'acqua, non a persona: sta scritto qui e non
-    // in `transferPrice`, che e' fatto di prezzi a testa.
+    // Il ritiro e' **compreso** (`transferPrice: 0`, proprietario 12 settembre
+    // 2026): niente supplemento, e infatti il totale non cambia spuntandolo.
+    // Due righe e basta, e non e' poco lavoro tolto per pigrizia: il cliente
+    // chiede **quando** e **quante moto**, poi l'ufficio guarda la
+    // disponibilita' e decide da quale porto farlo partire. Come si decide e'
+    // roba nostra: al cliente arriva solo il posto dove deve andare, scritto
+    // nella conferma. Il testo di prima glielo spiegava ("il porto lo
+    // assegniamo noi in base all'orario e alle moto che scegli") ed era un
+    // dettaglio di magazzino in vetrina: non lo aiutava a decidere niente, e
+    // in cambio lo faceva dubitare che il posto fosse gia' sicuro.
+    // Quello che serve sapere resta: da dove parte il ritiro, e che lo deve
+    // chiedere nella richiesta.
     transfer: {
-      it: "Ritiro dall'hotel nel sud dell'isola (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje): €10 in più a moto d'acqua, da pagare al ritiro. Senza ritiro si arriva al porto per conto proprio.",
-      en: "Hotel pickup in the south of the island (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje): €10 extra per jet ski, paid at pickup. Without it you make your own way to the port.",
-      es: "Recogida en el hotel en el sur de la isla (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje): €10 más por moto de agua, a pagar en la recogida. Sin recogida se llega al puerto por cuenta propia."
+      it: "Ritiro in hotel senza supplemento sulle partenze da Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). Chiedilo nella richiesta: te lo confermiamo nella risposta.",
+      en: "Free hotel pickup on departures from Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). Ask for it in your request: we confirm it in our reply.",
+      es: "Recogida en el hotel sin suplemento en las salidas desde Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). Pídela en la solicitud: te lo confirmamos en la respuesta."
     },
+    // "Vuoi il transfer?" fa pensare a un pullman che porta all'escursione, e
+    // qui la domanda vera e' un'altra. Vale sia per la casella nella finestra
+    // sia per la riga del messaggio ("Ritiro in hotel: sì"), che e' quello che
+    // l'ufficio legge per sapere da quale porto farlo partire.
+    transferLabel: { it: "Ritiro in hotel", en: "Hotel pickup", es: "Recogida en el hotel" },
     notes: [
       {
         it: "Il prezzo è per moto d'acqua e non a persona: la singola porta una persona, la doppia due. Un istruttore accompagna il gruppo in motoscafo.",
@@ -2801,9 +3335,9 @@ const ESPLORA_CATALOG = [
         es: "El precio es por moto de agua, no por persona: la individual lleva a una persona, la doble a dos. Un instructor acompaña al grupo en lancha."
       },
       {
-        it: "Si parte da Puerto Colón o da Las Galletas: scrivi nelle note quale ti è più comodo e l'ufficio ti conferma il porto.",
-        en: "Departures are from Puerto Colón or Las Galletas: say in the notes which suits you and the office will confirm the port.",
-        es: "Se sale desde Puerto Colón o desde Las Galletas: indica en las notas cuál te viene mejor y la oficina te confirma el puerto."
+        it: "Si parte da Puerto Colón o da Las Galletas: il porto te lo diciamo nella conferma. Se ti serve il ritiro in hotel chiedilo nella richiesta: si fa dalle partenze di Las Galletas.",
+        en: "Departures are from Puerto Colón or Las Galletas: we tell you which one in the confirmation. If you need hotel pickup, ask for it in your request: it runs from the Las Galletas departures.",
+        es: "Se sale desde Puerto Colón o desde Las Galletas: el puerto te lo decimos en la confirmación. Si necesitas recogida en el hotel, pídela en la solicitud: se hace desde las salidas de Las Galletas."
       },
       {
         it: "Passeggeri dai 7 anni, sempre insieme a un adulto. Si guida da 16 anni: a 16 e 17 serve l'autorizzazione firmata di un genitore, o il genitore presente alla partenza, e non si può portare un altro minorenne sulla stessa moto d'acqua.",
@@ -3117,21 +3651,204 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    // Franz Surf School, Playa de las Americas (dati del 13 settembre 2026,
+    // in dati-fornitore/grezzo/franz-surf-school.json).
+    //
+    // ⚠ Il nome della scuola **non va sul sito** (proprietario, 13 settembre
+    // 2026): in descrizione si dice "una scuola di surf". Qui nel commento
+    // resta, perche' serve a ritrovare il fornitore fra sei mesi. Attenzione:
+    // e' il contrario delle barche, dove il nome vero (Freebird, Shogun) e'
+    // proprio quello che il cliente deve leggere.
+    //
+    // Il fornitore vende anche il noleggio delle tavole (softboard, fibra,
+    // longboard): **non e' in catalogo per scelta del proprietario** (13
+    // settembre 2026). Ad Admiral interessano le lezioni. Se un giorno
+    // cambia idea, i prezzi stanno nel file grezzo, e la strada era il
+    // prezzo nell'etichetta ("da 15 € al giorno") perche' il fornitore
+    // pubblica solo il primo giorno.
     id: "surf-lesson",
-    title: { it: "Lezione di surf", en: "Surf lesson", es: "Clase de surf" },
+    title: { it: "Lezioni di surf", en: "Surf lessons", es: "Clases de surf" },
     category: "sport-acquatici",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
+    zone: "Playa de las Américas",
+    // Due ore, tutte: in gruppo, private e dentro i pacchetti (proprietario,
+    // 13 settembre 2026). Il sito del fornitore la dichiarava solo sul
+    // pacchetto da 3 lezioni. Le varianti dei pacchetti hanno la loro durata
+    // ("3 lezioni da 2 ore"), che dice anche quante sono.
+    duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+    priceFrom: 35,
+    priceAdult: 35,
+    // Dai 13 anni in su, e sopra i 13 si paga tutti uguale: non c'e' una
+    // tariffa bambini da mettere, e `priceChild` a 0 tiene la riga spenta.
+    // L'eta' vale per tutte le lezioni, singole o di gruppo (proprietario,
+    // 13 settembre 2026) - sul sito del fornitore era scritta solo sotto le
+    // lezioni di gruppo.
     priceChild: 0,
-    family: true,
+    ages: { adult: "13+" },
+    // Il filtro "Con bambini" non la deve pescare: sotto i 13 anni non si
+    // entra in acqua con la scuola.
+    family: false,
     desc: {
-      it: "Prima lezione di surf con istruttore, tavola e muta compresi.",
-      en: "A first surf lesson with an instructor, board and wetsuit included.",
-      es: "Primera clase de surf con instructor, tabla y neopreno incluidos."
+      it: "Una scuola di surf sulla spiaggia di Playa de las Américas: lezioni da due ore in gruppi di sei persone al massimo, lezioni private con l'istruttore solo per te, lezioni riservate a una famiglia o a un gruppo di amici, e pacchetti da tre, cinque o sette lezioni per chi vuole andare avanti per tutto il soggiorno. Muta, tavola e scarpette in neoprene sono comprese.",
+      en: "A surf school on the beach at Playa de las Américas: two-hour lessons in groups of no more than six, private lessons with the instructor all to yourself, lessons kept for one family or group of friends, and packages of three, five or seven lessons for anyone who wants to keep going through the whole stay. Wetsuit, board and neoprene boots are included.",
+      es: "Una escuela de surf en la playa de Playa de las Américas: clases de dos horas en grupos de seis personas como máximo, clases privadas con el instructor solo para ti, clases reservadas a una familia o a un grupo de amigos, y packs de tres, cinco o siete clases para quien quiere seguir durante toda la estancia. Neopreno, tabla y escarpines están incluidos."
     },
-    included: ["board", "wetsuit"],
+    // Vale per tutte e nove le varianti, quindi sta sulla scheda: muta,
+    // tavola e scarpette in neoprene sono comprese in ogni lezione e in ogni
+    // pacchetto, e l'istruttore c'e' sempre. Le scarpette non hanno una
+    // parola loro nel vocabolario: stanno nella descrizione e in nota.
+    included: ["board", "wetsuit", "guide"],
+    options: {
+      label: { it: "Cosa vuoi fare", en: "What you want to do", es: "Qué quieres hacer" },
+      // Due modi di scrivere il prezzo, come sulle immersioni.
+      // Le lezioni e i pacchetti si pagano **a testa** e hanno un numero
+      // solo: `priceAdult`, e il totale della richiesta si fa.
+      // La lezione riservata al proprio gruppo si paga **a gruppo** e cambia
+      // con quante persone siete: li' c'e' `price` (il numero sul bottone) e
+      // gli scaglioni scritti in `desc`, cosi' il totale si rifiuta di farsi
+      // invece di moltiplicare 120 € per le teste.
+      choices: [
+        {
+          label: { it: "Lezione di gruppo", en: "Group lesson", es: "Clase en grupo" },
+          priceAdult: 35,
+          desc: {
+            it: "Due ore in gruppo di massimo sei persone, con l'istruttore in acqua. Si parte da zero: come stare sulla tavola, come remare, come alzarsi in piedi.",
+            en: "Two hours in a group of no more than six, with the instructor in the water with you. It starts from scratch: how to lie on the board, how to paddle, how to stand up.",
+            es: "Dos horas en grupo de un máximo de seis personas, con el instructor en el agua. Se empieza de cero: cómo colocarse en la tabla, cómo remar, cómo ponerse de pie."
+          }
+        },
+        {
+          label: { it: "Lezione privata", en: "Private lesson", es: "Clase privada" },
+          priceAdult: 80,
+          desc: {
+            it: "Un istruttore per un allievo solo: il ritmo e gli esercizi sono decisi su di te. Il prezzo è di una lezione.",
+            en: "One instructor for one student: the pace and the exercises are set around you. The price is for one lesson.",
+            es: "Un instructor para un solo alumno: el ritmo y los ejercicios se deciden sobre ti. El precio es de una clase."
+          }
+        },
+        {
+          // A gruppo, non a testa: niente priceAdult, se no il totale
+          // moltiplicherebbe 120 € per il numero di persone.
+          label: {
+            it: "Lezione privata per famiglie o amici (da 2 a 6 persone)",
+            en: "Private lesson for family or friends (2 to 6 people)",
+            es: "Clase privada para familias o amigos (de 2 a 6 personas)"
+          },
+          price: 120,
+          desc: {
+            it: "Lezione riservata al tuo gruppo, con l'istruttore solo per voi: si può essere di livelli diversi, principianti compresi. Il prezzo è del gruppo intero e non a testa, e si parte da due persone: 120 € in due, 165 € in tre, 200 € in quattro, 225 € in cinque. In sei si può, e il prezzo del sesto posto te lo confermiamo noi.",
+            en: "A lesson kept for your own group, with the instructor only for you: you can be at different levels, complete beginners included. The price is for the whole group and not per person, and it starts at two people: €120 for two, €165 for three, €200 for four, €225 for five. Six is possible too, and we confirm the price for the sixth place.",
+            es: "Clase reservada a tu grupo, con el instructor solo para vosotros: podéis ser de niveles distintos, principiantes incluidos. El precio es del grupo entero y no por persona, y se empieza desde dos personas: 120 € en dos, 165 € en tres, 200 € en cuatro, 225 € en cinco. En seis también se puede, y el precio de la sexta plaza te lo confirmamos nosotros."
+          }
+        },
+        {
+          label: {
+            it: "Pacchetto 3 lezioni di gruppo",
+            en: "Package of 3 group lessons",
+            es: "Pack de 3 clases en grupo"
+          },
+          priceAdult: 95,
+          duration: { it: "3 lezioni da 2 ore", en: "3 lessons of 2 hours", es: "3 clases de 2 horas" },
+          desc: {
+            it: "Tre lezioni di gruppo, da usare nei giorni che vuoi durante il soggiorno. Il pacchetto è intestato a una persona e non si può passare a un'altra.",
+            en: "Three group lessons, to use on whichever days you like during your stay. The package is in one person's name and cannot be passed on to someone else.",
+            es: "Tres clases en grupo, para usar los días que quieras durante la estancia. El pack va a nombre de una persona y no se puede ceder a otra."
+          }
+        },
+        {
+          label: {
+            it: "Pacchetto 5 lezioni di gruppo",
+            en: "Package of 5 group lessons",
+            es: "Pack de 5 clases en grupo"
+          },
+          priceAdult: 140,
+          duration: { it: "5 lezioni da 2 ore", en: "5 lessons of 2 hours", es: "5 clases de 2 horas" },
+          desc: {
+            it: "Cinque lezioni di gruppo, da usare nei giorni che vuoi durante il soggiorno.",
+            en: "Five group lessons, to use on whichever days you like during your stay.",
+            es: "Cinco clases en grupo, para usar los días que quieras durante la estancia."
+          }
+        },
+        {
+          label: {
+            it: "Pacchetto 7 lezioni di gruppo",
+            en: "Package of 7 group lessons",
+            es: "Pack de 7 clases en grupo"
+          },
+          priceAdult: 175,
+          duration: { it: "7 lezioni da 2 ore", en: "7 lessons of 2 hours", es: "7 clases de 2 horas" },
+          desc: {
+            it: "Sette lezioni di gruppo: è la formula che costa meno a lezione, per i soggiorni lunghi.",
+            en: "Seven group lessons: the cheapest formula per lesson, for longer stays.",
+            es: "Siete clases en grupo: es la fórmula que menos cuesta por clase, para estancias largas."
+          }
+        },
+        {
+          label: {
+            it: "Pacchetto 3 lezioni private",
+            en: "Package of 3 private lessons",
+            es: "Pack de 3 clases privadas"
+          },
+          priceAdult: 230,
+          duration: { it: "3 lezioni da 2 ore", en: "3 lessons of 2 hours", es: "3 clases de 2 horas" },
+          desc: {
+            it: "Tre lezioni individuali con l'istruttore dedicato. Il pacchetto è intestato a una persona e non si può passare a un'altra.",
+            en: "Three one-to-one lessons with your own instructor. The package is in one person's name and cannot be passed on to someone else.",
+            es: "Tres clases individuales con el instructor dedicado. El pack va a nombre de una persona y no se puede ceder a otra."
+          }
+        },
+        {
+          label: {
+            it: "Pacchetto 5 lezioni private",
+            en: "Package of 5 private lessons",
+            es: "Pack de 5 clases privadas"
+          },
+          priceAdult: 370,
+          duration: { it: "5 lezioni da 2 ore", en: "5 lessons of 2 hours", es: "5 clases de 2 horas" },
+          desc: {
+            it: "Cinque lezioni individuali con l'istruttore dedicato.",
+            en: "Five one-to-one lessons with your own instructor.",
+            es: "Cinco clases individuales con el instructor dedicado."
+          }
+        },
+        {
+          label: {
+            it: "Pacchetto 7 lezioni private",
+            en: "Package of 7 private lessons",
+            es: "Pack de 7 clases privadas"
+          },
+          priceAdult: 490,
+          duration: { it: "7 lezioni da 2 ore", en: "7 lessons of 2 hours", es: "7 clases de 2 horas" },
+          desc: {
+            it: "Sette lezioni individuali con l'istruttore dedicato.",
+            en: "Seven one-to-one lessons with your own instructor.",
+            es: "Siete clases individuales con el instructor dedicado."
+          }
+        }
+      ]
+    },
+    notes: [
+      { it: "Si va dai 13 anni in su, ed è lo stesso per tutte le lezioni: in gruppo, private o riservate alla famiglia. Il prezzo è uguale per tutti, quindi nella richiesta conta anche i ragazzi fra gli adulti.",
+        en: "From 13 years old, and it is the same for every lesson: group, private or kept for the family. Everyone pays the same, so count teenagers among the adults when you send the request.",
+        es: "A partir de los 13 años, y es igual para todas las clases: en grupo, privadas o reservadas a la familia. El precio es igual para todos, así que en la solicitud cuenta también a los chavales entre los adultos." },
+      { it: "In acqua non si è mai più di sei per istruttore: vale per le lezioni di gruppo, per i pacchetti e per quelle riservate a una famiglia o a un gruppo di amici.",
+        en: "There are never more than six of you in the water per instructor: that goes for the group lessons, for the packages and for the ones kept for a family or a group of friends.",
+        es: "En el agua nunca se está más de seis por instructor: vale para las clases en grupo, para los packs y para las reservadas a una familia o a un grupo de amigos." },
+      { it: "Ogni lezione dura due ore, anche quelle dentro un pacchetto.",
+        en: "Every lesson lasts two hours, the ones inside a package included.",
+        es: "Cada clase dura dos horas, también las que van dentro de un pack." },
+      { it: "Gli orari delle lezioni seguono la marea e cambiano di giorno in giorno: si concordano con la scuola quando la richiesta viene confermata.",
+        en: "Lesson times follow the tide and change from day to day: they are agreed with the school when your request is confirmed.",
+        es: "Los horarios de las clases siguen la marea y cambian de un día a otro: se acuerdan con la escuela cuando se confirma la solicitud." },
+      { it: "Muta, tavola e scarpette in neoprene le dà la scuola, in tutte le lezioni e in tutti i pacchetti.",
+        en: "Wetsuit, board and neoprene boots are provided by the school, in every lesson and every package.",
+        es: "Neopreno, tabla y escarpines los pone la escuela, en todas las clases y en todos los packs." },
+      { it: "Il ritrovo è a Playa de las Américas: ci si arriva da soli, la scuola non passa a prendere in hotel. Il punto esatto te lo diciamo insieme all'ora, quando confermiamo la richiesta.",
+        en: "You meet in Playa de las Américas: you make your own way there, the school does not pick you up at your hotel. We give you the exact spot along with the time, when we confirm your request.",
+        es: "El punto de encuentro está en Playa de las Américas: se llega por cuenta propia, la escuela no recoge en el hotel. El sitio exacto te lo decimos junto con la hora, cuando confirmamos la solicitud." },
+      { it: "Porta il costume, un asciugamano, la crema solare e qualcosa da bere: il resto lo dà la scuola.",
+        en: "Bring a swimsuit, a towel, sun cream and something to drink: the school provides the rest.",
+        es: "Trae bañador, una toalla, crema solar y algo de beber: el resto lo pone la escuela." }
+    ],
     image: "surf-lesson.jpg",
     published: true
   },
@@ -3420,7 +4137,13 @@ const ESPLORA_CATALOG = [
     // giornata su un'altra isola, nave compresa. Il nome dell'isola nel titolo
     // e' la differenza fra le due cose.
     title: "Poema del Mar – Gran Canaria Experience",
+    // Due categorie per una scheda sola: l'acquario e' un parco, ma la
+    // giornata e' una gita a Gran Canaria, nave e guida comprese. Chi filtra
+    // "Parchi e spettacoli" e chi filtra "Tour e visite" la trovano tutti e
+    // due, ed e' sempre la stessa pagina. Il nome sulla card resta quello di
+    // `category`: "Parchi e spettacoli".
     category: "parchi-spettacoli",
+    alsoIn: ["tour-isola"],
     // Il transfer dal sud e' compreso, quindi il cliente non parte da Santa
     // Cruz: ci arriva. La zona lo dice, se no "Punto di partenza: Santa Cruz"
     // farebbe pensare a chi sta nel sud di doverci andare da solo.
@@ -4002,6 +4725,7 @@ const ESPLORA_CATALOG = [
     // fornitore lo comunica con la conferma. Niente campo `times`, cosi'
     // restano le fasce segnaposto piu' "Da concordare".
     priceFrom: 110,
+    fixedPrice: true,
     priceAdult: 110,
     priceChild: 75,
     // 15,50 € non e' gratis: i neonati pagano il posto sul traghetto. La cifra
@@ -4158,10 +4882,22 @@ const ESPLORA_CATALOG = [
     // Il titolo e' quello del fornitore ufficiale, uguale in tutte e tre le
     // lingue come tutti gli altri.
     title: "Santa Cruz + Anaga + La Laguna",
-    // Spostata da "Tour e visite" a "Teide e natura" per scelta del
-    // proprietario (8 settembre 2026): mezza giornata sta nel Parco Rurale di
-    // Anaga, Riserva della Biosfera.
-    category: "teide-natura",
+    // E' tornata in "Tour e visite" per scelta del proprietario (14 settembre
+    // 2026), dopo mezza settimana in "Teide e natura" dove l'aveva spostata
+    // lui stesso l'8 settembre per via del Parco Rurale di Anaga. Il giro e'
+    // fatto di tre paesi — Santa Cruz, La Laguna e le case di Anaga — e in una
+    // categoria che si chiama "Teide" chi cerca una giornata di citta' non la
+    // guarda nemmeno.
+    // E' un ritorno **completo**, non un `alsoIn`: si poteva tenerla in tutte
+    // e due, ed e' stato chiesto di no. Una scheda in due categorie ha senso
+    // quando ognuna la racconta per intero (Poema del Mar e' un parco ed e'
+    // una gita a Gran Canaria); qui la natura e' un pezzo del giro, non il
+    // giro. Se un giorno si ricambia idea, la riga da aggiungere e'
+    // `alsoIn: ["teide-natura"]`.
+    // La foto `santa-cruz-taganana.jpg` e' anche il riquadro di "Tour e
+    // visite" in home: adesso la categoria del riquadro e la categoria della
+    // scheda tornano a essere la stessa.
+    category: "tour-isola",
     // Il nord-est e' dove va il pullman, non da dove parte: come sul giro di
     // Icod, quel campo in pagina si legge "Punto di partenza", e la partenza
     // e' una sola, il sud (proprietario, 8 settembre 2026). Santa Cruz, Anaga
@@ -4183,6 +4919,7 @@ const ESPLORA_CATALOG = [
     // 50 e' il prezzo del fornitore ufficiale, e prende il posto del 48 che
     // c'era prima: alzarlo l'ha confermato il proprietario (8 settembre 2026).
     priceFrom: 50,
+    fixedPrice: true,
     priceAdult: 50,
     priceChild: 31.5,
     // Niente `priceInfant`: il fornitore scrive "Bebés (NO PONER)", cioe' la
@@ -4288,6 +5025,7 @@ const ESPLORA_CATALOG = [
     zone: { it: "Tutta l'isola", en: "All over the island", es: "Toda la isla" },
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
     priceFrom: null,
+    fixedPrice: true,
     priceAdult: 0,
     priceChild: 0,
     family: true,
@@ -4321,6 +5059,7 @@ const ESPLORA_CATALOG = [
     // comune: ogni scheda ha le sue.
     languages: ["English", "Español", "Deutsch"],
     priceFrom: 145,
+    fixedPrice: true,
     priceAdult: 145,
     priceChild: 126,
     // 20 € non e' gratis: i neonati pagano il posto sul traghetto.
@@ -4475,6 +5214,7 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: null,
+    fixedPrice: true,
     priceAdult: 0,
     priceChild: 0,
     family: false,
@@ -4487,36 +5227,116 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    // Fornitore: Tuk Tuk Sweet Tours S.L. (sweettourstenerife.com), lo stesso
+    // operatore della livrea in foto. Fornitore nuovo, quindi la domanda sul
+    // ritiro e' stata fatta prima di pubblicare: non passano sotto l'hotel, il
+    // ritrovo e' fisso davanti al Wakanda Origen. Per questo la scheda sta in
+    // PICKUP_NESSUNO (hotel.js) e il punto e' scritto nelle note. Il loro
+    // sistema di prenotazione (FareHarbor) non si usa: le richieste passano
+    // dall'ufficio come tutte le altre.
+    //
+    // Qui ci sono i due giri **in condivisione**, che si pagano a persona. I
+    // tre privati si pagano a gruppo e stanno in "tuk-tuk-privato", in fondo al
+    // file: due modi di pagare diversi sulla stessa scheda avrebbero messo
+    // "da €24" e "da €86 a gruppo" nella stessa riga di prezzo.
     id: "tuk-tuk",
     title: { it: "Tour in tuk tuk", en: "Tuk Tuk Tour", es: "Tour en tuk tuk" },
     category: "tour-isola",
     zone: "Costa Adeje",
-    duration: { it: "Da 1 ora", en: "From 1 hour", es: "Desde 1 hora" },
+    duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+    // Il sito del fornitore dice quattro lingue (anche italiano e francese), ma
+    // tutte e cinque le pagine di prenotazione ne scrivono due: "Disponible en
+    // español, inglés", e fra le cose incluse "Spanish and English guide". Qui
+    // si scrive la meno generosa: promettere una guida italiana che quel giorno
+    // non c'e' e' peggio che non offrirla. Da confermare con l'ufficio.
+    languages: ["Español", "English"],
+    // I due percorsi costano uguale, ma il prezzo va scritto **due volte**:
+    // sulla scheda e dentro ogni variante. Quando una variante e' scelta — e
+    // sulla pagina di dettaglio lo e' sempre, la prima parte gia' premuta — il
+    // sito NON ripiega sul prezzo della scheda: e' voluto, se no la cabina VIP
+    // di Siam Park mostrerebbe il prezzo del biglietto normale. Senza i numeri
+    // dentro le varianti questa scheda diceva "Prezzo: Su richiesta" e il
+    // totale non si faceva, con i 24 € scritti due righe piu' su.
+    // Quelli qui sotto servono alle richieste che partono senza variante.
     priceFrom: 24,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 24,
+    priceChild: 12,
+    // Fasce dalla pagina di prenotazione. Combaciano senza buchi (0-2, 3-10,
+    // 11+). Lo zero dei neonati e' scritto dal fornitore ("Gratis"), non
+    // dedotto.
+    ages: { adult: "11+", child: "3-10", infant: "0-2" },
+    priceInfant: 0,
+    included: ["guide"],
+    notes: [
+      {
+        it: "Il ritrovo è davanti al ristorante Wakanda Origen, in Avenida de España 10, a Costa Adeje. Il ritiro in hotel non è compreso: al punto di partenza ci si arriva per conto proprio, 10-15 minuti prima della partenza.",
+        en: "The meeting point is in front of the Wakanda Origen restaurant, Avenida de España 10, Costa Adeje. Hotel pickup is not included: you reach the departure point on your own, 10-15 minutes before the start.",
+        es: "El punto de encuentro es frente al restaurante Wakanda Origen, en Avenida de España 10, Costa Adeje. La recogida en el hotel no está incluida: al punto de salida se llega por cuenta propia, 10-15 minutos antes de la salida."
+      },
+      {
+        it: "Su ogni tuk tuk salgono al massimo 6 persone, sedute vicine e una di fronte all'altra. I bambini fino a 2 anni non pagano, ma viaggiano in braccio a un adulto con la cintura allacciata: è la regola del fornitore.",
+        en: "Each tuk tuk takes up to 6 people, seated close together and facing each other. Children up to 2 years old travel free, but on an adult's lap with the seatbelt fastened: that is the supplier's rule.",
+        es: "En cada tuk tuk suben como máximo 6 personas, sentadas juntas y unas frente a otras. Los niños de hasta 2 años no pagan, pero viajan en el regazo de un adulto con el cinturón abrochado: es la norma del proveedor."
+      },
+      {
+        it: "Il fornitore consiglia il tuk tuk in privato a chi ha difficoltà a muoversi o ha bisogno di più spazio: i posti restano gli stessi, ma il mezzo è solo del gruppo.",
+        en: "The supplier recommends the private tuk tuk for anyone with reduced mobility or who needs more room: the seats are the same, but the vehicle is your group's alone.",
+        es: "El proveedor recomienda el tuk tuk en privado a quien tiene dificultades de movilidad o necesita más espacio: las plazas son las mismas, pero el vehículo es solo del grupo."
+      },
+      {
+        it: "Porta crema solare e una bottiglia d'acqua.",
+        en: "Bring sunscreen and a bottle of water.",
+        es: "Lleva crema solar y una botella de agua."
+      }
+    ],
+    // I nomi sono quelli del sito del fornitore e restano uguali nelle tre
+    // lingue, come i nomi delle barche: sono quelli che l'ufficio cerca nel
+    // sistema quando conferma, e arrivano su WhatsApp scritti cosi'.
     options: {
       label: { it: "Percorso", en: "Route", es: "Ruta" },
       choices: [
-        { label: {
-            it: "Panoramico, con sosta per un drink",
-            en: "Scenic, with a drinks stop",
-            es: "Panorámica, con parada para tomar algo" } },
-        { label: {
-            it: "I punti principali di Costa Adeje",
-            en: "The main sights of Costa Adeje",
-            es: "Los puntos principales de Costa Adeje" } },
-        { label: {
-            it: "Completo, fino ai vulcani",
-            en: "The complete one, out to the volcanoes",
-            es: "La completa, hasta los volcanes" } }
+        {
+          label: "Costa Adeje Tour",
+          priceAdult: 24,
+          priceChild: 12,
+          desc: {
+            it: "Il giro dei paesi e delle spiagge del sud: Fañabé, la zona del Duque, la spiaggia della Enramada, La Caleta e Torviscas. Lungo la strada la guida racconta dove si mangia davvero e cosa vale la pena vedere nei giorni che restano.",
+            en: "The tour of the southern villages and beaches: Fañabé, the Duque area, La Enramada beach, La Caleta and Torviscas. Along the way the guide tells you where people really eat and what is worth seeing in the days you have left.",
+            es: "El recorrido por los pueblos y las playas del sur: Fañabé, la zona del Duque, la playa de La Enramada, La Caleta y Torviscas. Por el camino el guía cuenta dónde se come de verdad y qué merece la pena ver en los días que quedan."
+          }
+        },
+        {
+          label: "Secret Volcano Tour",
+          priceAdult: 24,
+          priceChild: 12,
+          desc: {
+            it: "Da Puerto Colón si sale alla Caldera del Rey, il monumento naturale sopra Costa Adeje: un vulcano spento, oggi coperto di piantagioni di banane, con La Gomera all'orizzonte. Per strada Torviscas, la marina e Las Américas, e la guida racconta com'è nata l'isola.",
+            en: "From Puerto Colón you climb to the Caldera del Rey, the natural monument above Costa Adeje: an extinct volcano, now covered in banana plantations, with La Gomera on the horizon. On the way, Torviscas, the marina and Las Américas, while the guide tells you how the island was born.",
+            es: "Desde Puerto Colón se sube a la Caldera del Rey, el monumento natural sobre Costa Adeje: un volcán apagado, hoy cubierto de plataneras, con La Gomera en el horizonte. Por el camino, Torviscas, la marina y Las Américas, mientras el guía cuenta cómo nació la isla."
+          }
+        }
       ]
     },
     family: true,
     desc: {
-      it: "Giro guidato in tuk tuk elettrico sulla costa di Adeje. Ci sono più percorsi: quello panoramico con sosta per un drink, quello dei punti principali di Costa Adeje e quello lungo che arriva fino ai vulcani.",
-      en: "A guided ride in an electric tuk tuk along the Adeje coast. There are several routes: the scenic one with a drinks stop, the one around the main sights of Costa Adeje, and the long one that reaches the volcanoes.",
-      es: "Recorrido guiado en tuk tuk eléctrico por la costa de Adeje. Hay varias rutas: la panorámica con parada para tomar algo, la de los puntos principales de Costa Adeje y la larga que llega hasta los volcanes."
+      it: "Un'ora in tuk tuk elettrico sulla costa di Adeje, con una guida che racconta. Due percorsi: quello dei paesi e delle spiagge del sud e quello che sale alla Caldera del Rey, il vulcano spento sopra Costa Adeje. Si va in sei, e c'è anche la versione privata.",
+      en: "An hour in an electric tuk tuk along the Adeje coast, with a guide who tells you about it. Two routes: the southern villages and beaches, and the climb to the Caldera del Rey, the extinct volcano above Costa Adeje. Six people go at a time, and there is a private version too.",
+      es: "Una hora en tuk tuk eléctrico por la costa de Adeje, con un guía que lo cuenta. Dos recorridos: el de los pueblos y las playas del sur y el que sube a la Caldera del Rey, el volcán apagado sobre Costa Adeje. Se va de seis en seis, y también existe la versión privada."
+    },
+    // Il rimando alla scheda privata, come sulle barche. Le due frasi sono
+    // scritte qui e non prese da i18n.js perche' quelle fisse dicono "vuoi la
+    // barca solo per il tuo gruppo?" e "vedi il charter privato": giuste sulle
+    // barche, sbagliate su un tuk tuk.
+    privateOption: "tuk-tuk-privato",
+    privateTitle: {
+      it: "Vuoi il tuk tuk solo per il tuo gruppo?",
+      en: "Want the tuk tuk just for your group?",
+      es: "¿Quieres el tuk tuk solo para tu grupo?"
+    },
+    privateLink: {
+      it: "Vedi i giri privati",
+      en: "See the private tours",
+      es: "Ver los tours privados"
     },
     image: "tuk-tuk.jpg",
     published: true
@@ -4528,6 +5348,7 @@ const ESPLORA_CATALOG = [
     zone: "Costa Adeje – Los Cristianos",
     duration: { it: "Tutto il giorno", en: "All day", es: "Todo el día" },
     priceFrom: 9,
+    fixedPrice: true,
     priceAdult: 9,
     priceChild: 5,
     family: true,
@@ -4548,6 +5369,7 @@ const ESPLORA_CATALOG = [
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
     priceFrom: 80,
+    fixedPrice: true,
     priceAdult: 80,
     priceChild: 80,
     priceInfant: 0,
@@ -4768,85 +5590,95 @@ const ESPLORA_CATALOG = [
     gallery: ["luxury-cruiser-2.jpg", "luxury-cruiser-3.jpg", "luxury-cruiser-4.jpg"],
     published: true
   },
+
+  // La gemella privata del tuk tuk, come le gemelle delle barche qui sopra:
+  // stessa foto, stesso fornitore (Tuk Tuk Sweet Tours), stesso ritrovo, ma il
+  // prezzo e' del mezzo e non della persona. Sta su una scheda sua e non fra le
+  // varianti di "tuk-tuk" perche' li' convivrebbero due modi di pagare diversi:
+  // la riga del prezzo dell'elenco puo' dire "da €24" **oppure** "da €86 a
+  // gruppo", non tutti e due, e `priceUnit` vale per la scheda intera.
   {
-    id: "charter-privato",
-    title: {
-      it: "Charter privato all inclusive",
-      en: "All-inclusive private charter",
-      es: "Chárter privado todo incluido"
-    },
+    id: "tuk-tuk-privato",
+    title: { it: "Tuk tuk privato", en: "Private Tuk Tuk Tour", es: "Tuk tuk privado" },
     category: "tour-privati",
-    zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    priceFrom: null,
+    zone: "Costa Adeje",
+    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
+    languages: ["Español", "English"],
+    priceFrom: 86,
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    // A gruppo, quindi niente prezzi a persona: il totale automatico non si fa,
+    // che e' giusto — il prezzo cambia con quanti sono, e moltiplicarlo per le
+    // persone darebbe un numero falso (vedi prezziAPersona() in escursioni.js).
     priceAdult: 0,
     priceChild: 0,
     family: true,
+    included: ["guide"],
+    notes: [
+      {
+        it: "Il ritrovo è davanti al ristorante Wakanda Origen, in Avenida de España 10, a Costa Adeje. Il ritiro in hotel non è compreso: al punto di partenza ci si arriva per conto proprio, 10-15 minuti prima della partenza.",
+        en: "The meeting point is in front of the Wakanda Origen restaurant, Avenida de España 10, Costa Adeje. Hotel pickup is not included: you reach the departure point on your own, 10-15 minutes before the start.",
+        es: "El punto de encuentro es frente al restaurante Wakanda Origen, en Avenida de España 10, Costa Adeje. La recogida en el hotel no está incluida: al punto de salida se llega por cuenta propia, 10-15 minutos antes de la salida."
+      },
+      {
+        it: "Il tuk tuk ha 6 posti, vicini e uno di fronte all'altro: il prezzo vale per tutto il mezzo, fino a 6 persone. I bambini fino a 2 anni viaggiano in braccio a un adulto con la cintura allacciata.",
+        en: "The tuk tuk has 6 seats, close together and facing each other: the price is for the whole vehicle, up to 6 people. Children up to 2 years old travel on an adult's lap with the seatbelt fastened.",
+        es: "El tuk tuk tiene 6 plazas, juntas y unas frente a otras: el precio es por el vehículo entero, hasta 6 personas. Los niños de hasta 2 años viajan en el regazo de un adulto con el cinturón abrochado."
+      },
+      {
+        it: "Porta crema solare e una bottiglia d'acqua.",
+        en: "Bring sunscreen and a bottle of water.",
+        es: "Lleva crema solar y una botella de agua."
+      }
+    ],
+    // I due scaglioni (fino a 3 e fino a 6 persone) stanno nella descrizione
+    // della variante e non in `priceTiers`: quello e' della scheda intera e qui
+    // i tre tour hanno scaglioni diversi: scritto sulla scheda, il Double
+    // Private mostrerebbe 86 e 128 invece dei suoi 136 e 198. E non diventano
+    // sei bottoni (il tour per lo scaglione, come sulla Mustang) perche' quanti
+    // sono il cliente lo scrive gia' nella richiesta: un secondo numero,
+    // scelto a parte, potrebbe contraddire il primo.
+    options: {
+      label: { it: "Percorso", en: "Route", es: "Ruta" },
+      choices: [
+        {
+          label: "Costa Adeje Private Tour",
+          price: 86,
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+          desc: {
+            it: "86 € per un gruppo fino a 3 persone, 128 € fino a 6. Il giro dei paesi e delle spiagge del sud — Fañabé, la zona del Duque, la Enramada, La Caleta, Torviscas — con il tuk tuk solo per voi.",
+            en: "€86 for a group of up to 3, €128 up to 6. The tour of the southern villages and beaches — Fañabé, the Duque area, La Enramada, La Caleta, Torviscas — with the tuk tuk to yourselves.",
+            es: "86 € para un grupo de hasta 3 personas, 128 € hasta 6. El recorrido por los pueblos y las playas del sur — Fañabé, la zona del Duque, La Enramada, La Caleta, Torviscas — con el tuk tuk solo para vosotros."
+          }
+        },
+        {
+          label: "Secret Volcano Private Tour",
+          price: 86,
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+          desc: {
+            it: "86 € per un gruppo fino a 3 persone, 128 € fino a 6. La salita alla Caldera del Rey, il vulcano spento coperto di piantagioni di banane sopra Costa Adeje, con il tuk tuk solo per voi.",
+            en: "€86 for a group of up to 3, €128 up to 6. The climb to the Caldera del Rey, the extinct volcano covered in banana plantations above Costa Adeje, with the tuk tuk to yourselves.",
+            es: "86 € para un grupo de hasta 3 personas, 128 € hasta 6. La subida a la Caldera del Rey, el volcán apagado cubierto de plataneras sobre Costa Adeje, con el tuk tuk solo para vosotros."
+          }
+        },
+        {
+          label: "Double Private Tour",
+          price: 136,
+          duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          desc: {
+            it: "136 € per un gruppo fino a 3 persone, 198 € fino a 6. Due ore, i due percorsi in uno: prima la salita alla Caldera del Rey, poi tutta la costa fino a La Caleta.",
+            en: "€136 for a group of up to 3, €198 up to 6. Two hours, the two routes in one: first the climb to the Caldera del Rey, then the whole coast down to La Caleta.",
+            es: "136 € para un grupo de hasta 3 personas, 198 € hasta 6. Dos horas, los dos recorridos en uno: primero la subida a la Caldera del Rey, después toda la costa hasta La Caleta."
+          }
+        }
+      ]
+    },
     desc: {
-      it: "Barca riservata al tuo gruppo, con percorso e orari concordati.",
-      en: "A boat reserved for your group, with the route and times agreed with you.",
-      es: "Barco reservado para tu grupo, con ruta y horarios acordados."
+      it: "Il tuk tuk elettrico solo per il tuo gruppo, fino a 6 persone: gli stessi due percorsi del giro in condivisione, oppure i due insieme in due ore. Il prezzo è del mezzo e non a persona, e cambia con quanti siete.",
+      en: "The electric tuk tuk for your group alone, up to 6 people: the same two routes as the shared ride, or both together over two hours. The price is for the vehicle and not per person, and it changes with how many you are.",
+      es: "El tuk tuk eléctrico solo para tu grupo, hasta 6 personas: los mismos dos recorridos que la salida compartida, o los dos juntos en dos horas. El precio es del vehículo y no por persona, y cambia según cuántos seáis."
     },
-    image: "",
-    published: false
-  },
-  {
-    id: "tour-privato-su-misura",
-    title: {
-      it: "Tour privato su misura",
-      en: "Tailor-made private tour",
-      es: "Tour privado a medida"
-    },
-    category: "tour-privati",
-    zone: { it: "Tutta l'isola", en: "All over the island", es: "Toda la isla" },
-    duration: { it: "Da concordare", en: "By arrangement", es: "A convenir" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Itinerario costruito su richiesta, con guida e mezzo dedicati.",
-      en: "An itinerary built on request, with a dedicated guide and vehicle.",
-      es: "Itinerario diseñado a petición, con guía y vehículo dedicados."
-    },
-    image: "",
-    published: false
-  },
-  {
-    id: "teide-privato-giorno",
-    title: { it: "Tour privato del Teide", en: "Private Teide Tour", es: "Tour privado del Teide" },
-    category: "tour-privati",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Il Parco Nazionale del Teide con guida e mezzo riservati al tuo gruppo.",
-      en: "Teide National Park with a guide and vehicle reserved for your group.",
-      es: "El Parque Nacional del Teide con guía y vehículo reservados para tu grupo."
-    },
-    image: "",
-    published: false
-  },
-  {
-    id: "teide-privato-notte",
-    title: { it: "Tour privato del Teide di notte", en: "Private Teide Tour by Night", es: "Tour privado del Teide de noche" },
-    category: "tour-privati",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
-    family: true,
-    desc: {
-      it: "Salita al Teide dopo il tramonto, con guida e mezzo solo per il tuo gruppo.",
-      en: "Up to Teide after sunset, with a guide and vehicle for your group alone.",
-      es: "Subida al Teide tras el atardecer, con guía y vehículo solo para tu grupo."
-    },
-    image: "",
-    published: false
+    image: "tuk-tuk.jpg",
+    published: true
   },
 ];
 

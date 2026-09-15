@@ -1,0 +1,112 @@
+[
+  {
+    "id": "canaventura-senderismo-teide-light",
+    "categoria": "trekking",
+    "operatore": "Canaventura",
+    "titolo": "Senderismo – Teide Light",
+    "source_url": "https://canaventura.es/apt-actividades/recorrido-de-senderismo-teide-light/",
+    "source_url_en": "https://canaventura.es/en/apt-actividades/senderismo-resort-teide-light/",
+    "booking_url": "https://canaventura.es/reservas/?gf_actividad=recorrido-de-senderismo-teide-light",
+    "days": ["thursday"],
+    "times": [],
+    "punto_partenza": null,
+    "durata_trekking_min": 120,
+    "durata_escursione": "giornata intera",
+    "difficolta": { "valore": 2, "scala": 6 },
+    "dislivello_m": { "salita": 175, "discesa": -175 },
+    "prezzi": {
+      "valuta": "EUR",
+      "adulto": 59.0,
+      "bambino": 29.5,
+      "bambino_eta_max": 11
+    },
+    "incluso": [
+      "Guida di montagna",
+      "Trasporto in bus A/R dagli alloggi del sud di Tenerife"
+    ],
+    "non_incluso": [
+      "Acqua e pranzo al sacco (da portare)"
+    ],
+    "immagini": [
+      "https://canaventura.es/wp-content/uploads/2024/12/1-121-scaled.jpg",
+      "https://canaventura.es/wp-content/uploads/2024/12/1-124-1.jpg",
+      "https://canaventura.es/wp-content/uploads/2024/12/1-109-1-scaled.jpg"
+    ],
+    "descrizione_it": ""
+  },
+  {
+    "id": "canaventura-senderismo-camino-real",
+    "categoria": "trekking",
+    "operatore": "Canaventura",
+    "titolo": "Senderismo – Camino Real",
+    "source_url": "https://canaventura.es/apt-actividades/recorrido-de-senderismo-camino-real/",
+    "source_url_en": null,
+    "booking_url": "https://canaventura.es/reservas/?gf_actividad=recorrido-de-senderismo-camino-real",
+    "days": ["wednesday"],
+    "times": [],
+    "punto_partenza": "Santiago del Teide",
+    "durata_trekking_min": 210,
+    "durata_escursione": "giornata intera",
+    "difficolta": { "valore": 3, "scala": 6 },
+    "dislivello_m": { "salita": 352, "discesa": -352 },
+    "prezzi": {
+      "valuta": "EUR",
+      "adulto": 59.0,
+      "bambino": 29.5,
+      "bambino_eta_max": 11
+    },
+    "incluso": [
+      "Guida di montagna",
+      "Trasporto in bus A/R dagli alloggi del sud di Tenerife"
+    ],
+    "non_incluso": [
+      "Acqua e pranzo al sacco (da portare)"
+    ],
+    "immagini": [
+      "https://crokis-sites.fra1.cdn.digitaloceanspaces.com/canaventura/wp-content/uploads/2024/12/30151752/IMG_4640-scaled.jpg",
+      "https://crokis-sites.fra1.cdn.digitaloceanspaces.com/canaventura/wp-content/uploads/2024/12/30151818/IMG_4667-scaled.jpg",
+      "https://crokis-sites.fra1.cdn.digitaloceanspaces.com/canaventura/wp-content/uploads/2024/12/30151838/IMG_4675-scaled.jpg",
+      "https://crokis-sites.fra1.cdn.digitaloceanspaces.com/canaventura/wp-content/uploads/2024/12/30151902/IMG_4681-scaled.jpg",
+      "https://crokis-sites.fra1.cdn.digitaloceanspaces.com/canaventura/wp-content/uploads/2024/12/30151925/IMG_4797-scaled.jpg"
+    ],
+    "descrizione_it": "",
+    "note_estrazione": "La pagina riporta sia 'Duración: 4 hora(s)' sia 'Duración del senderismo: 3h30/4h00'. Il campo durata_trekking_min usa il valore minimo (3h30)."
+  },
+  {
+    "id": "canaventura-senderismo-la-laguna-anaga",
+    "categoria": "trekking",
+    "operatore": "Canaventura",
+    "titolo": "Senderismo – La Laguna & Anaga",
+    "source_url": "https://canaventura.es/apt-actividades/recorrido-de-senderismo-la-laguna-anaga/",
+    "source_url_en": null,
+    "booking_url": "https://canaventura.es/reservas/?gf_actividad=recorrido-de-senderismo-la-laguna-anaga",
+    "days": ["monday"],
+    "times": [],
+    "punto_partenza": null,
+    "durata_trekking_min": 90,
+    "durata_escursione": "giornata intera",
+    "difficolta": { "valore": 2, "scala": 6 },
+    "dislivello_m": { "salita": 300, "discesa": -300 },
+    "prezzi": {
+      "valuta": "EUR",
+      "adulto": 59.0,
+      "bambino": 29.5,
+      "bambino_eta_max": 11
+    },
+    "incluso": [
+      "Guida di montagna",
+      "Trasporto in bus A/R dagli alloggi del sud di Tenerife"
+    ],
+    "non_incluso": [
+      "Acqua e pranzo al sacco (da portare)"
+    ],
+    "immagini": [
+      "https://canaventura.es/wp-content/uploads/2024/12/1-75.jpg",
+      "https://crokis-sites.fra1.cdn.digitaloceanspaces.com/canaventura/wp-content/uploads/2024/12/30144438/IMG_0413-scaled.jpg",
+      "https://crokis-sites.fra1.cdn.digitaloceanspaces.com/canaventura/wp-content/uploads/2024/12/30144856/IMG_0522-1-scaled.jpg",
+      "https://crokis-sites.fra1.cdn.digitaloceanspaces.com/canaventura/wp-content/uploads/2024/12/30144833/tenerife-4152688_1280.jpg"
+    ],
+    "descrizione_it": "",
+    "note_estrazione": "Durata trekking indicata come 1h30/2h00; durata_trekking_min usa il valore minimo."
+  }
+]

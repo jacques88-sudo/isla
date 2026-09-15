@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#fcfaf6" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#18130e" media="(prefers-color-scheme: dark)" />
+  <meta name="description" data-i18n-content="meta.packs.desc" content="I pacchetti di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo." />
+  <title>I pacchetti · Isla</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./assets/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="./styles.css" />
+  <!-- Critical splash styles, inlined so the loading screen never flashes
+       unstyled while styles.css is still being fetched. -->
+  <style>
+    .splash {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.4rem;
+      background: oklch(0.985 0.006 85);
+    }
+    .splash-mark {
+      position: relative;
+      width: 108px;
+      height: 108px;
+      display: grid;
+      place-items: center;
+    }
+    .splash-logo {
+      width: 58%;
+      height: 58%;
+      object-fit: contain;
+      border: 0;
+    }
+    .splash-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg,
+        transparent 0%,
+        oklch(0.74 0.1 210) 20%,
+        oklch(0.6 0.11 235) 45%,
+        transparent 55%,
+        transparent 100%);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
+              mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
+      animation: splash-spin 1.6s linear infinite;
+    }
+    .splash-brand {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 500;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: .3em;
+      color: oklch(0.24 0.012 60);
+    }
+    @keyframes splash-spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body data-i18n-doctitle="meta.packs.title">
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="splash-mark">
+      <span class="splash-ring"></span>
+      <img src="./assets/logo-isla.png" alt="" class="splash-logo" />
+    </div>
+    <span class="splash-brand">Isla</span>
+  </div>
+
+  <a class="skip" href="#main" data-i18n="common.skip">Vai al contenuto</a>
+
+  <main id="main" class="catalog-page packs-page">
+    <!-- Stessa testata della home, con la foto dell'isola. -->
+    <div class="home-hero">
+      <img class="home-hero-media" src="./assets/hero-tenerife.webp" alt="" />
+      <a class="home-hero-mark" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
+        <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
+      </a>
+    </div>
+
+    <nav class="home-bar" data-i18n-aria-label="nav.aria" aria-label="Menu principale">
+      <div class="hero-pills">
+        <a class="pill pill-ghost" href="./escursioni.html" data-i18n="nav.experiences">Esperienze</a>
+        <button class="pill pill-solid" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.bookNow">Prenota ora</button>
+        <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
+          <span class="pill-icon" aria-hidden="true">☰</span> <span data-i18n="nav.menu">Menu</span>
+        </button>
+        <button class="pill pill-ghost pill-install" type="button" data-install-btn hidden
+                data-i18n-aria-label="menu.install" aria-label="Installa l'app">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 6v8m0 0-3-3m3 3 3-3"/><path d="M10.5 18.5h3"/></svg>
+        </button>
+      </div>
+    </nav>
+
+    <div class="wrap catalog-head">
+      <span class="eyebrow" data-i18n="packs.eyebrow">Scelti per te</span>
+      <h1 data-i18n="packs.title">I pacchetti</h1>
+      <p class="packs-intro" data-i18n="packs.intro"></p>
+    </div>
+
+    <!-- Le pillole della vista "3, 5 o 7 giorni": restano nascoste nelle altre
+         due viste di questa pagina, e le accende `pacchetti.js`. Sono link e
+         non bottoni perche' ogni durata ha un indirizzo suo — si manda a un
+         cliente, e il tasto indietro del telefono ci torna. -->
+    <div class="wrap days-nav" data-days-nav hidden>
+      <nav class="chip-row" data-i18n-aria-label="days.navAria" aria-label="Quanti giorni">
+        <a class="chip" href="./pacchetti.html?giorni=tutti" data-days-link="0" data-i18n="days.all">Tutti</a>
+        <a class="chip" href="./pacchetti.html?giorni=3" data-days-link="3" data-i18n="days.d3">3 giorni</a>
+        <a class="chip" href="./pacchetti.html?giorni=5" data-days-link="5" data-i18n="days.d5">5 giorni</a>
+        <a class="chip" href="./pacchetti.html?giorni=7" data-days-link="7" data-i18n="days.d7">7 giorni</a>
+      </nav>
+    </div>
+
+    <div class="wrap">
+      <ul class="pack-grid" data-pack-grid></ul>
+    </div>
+
+    <!-- Si accende solo nella vista "In famiglia" (pacchetti.html?famiglia=1),
+         ed e' `pacchetti.js` ad accenderlo: sono i due modi di uscire di qui,
+         le escursioni per bambini una per una o tutti i pacchetti. -->
+    <div class="wrap packs-foot" data-pack-foot hidden>
+      <a class="btn btn-soft btn-block" href="./escursioni.html?family=1" data-i18n="packs.familyAll">Tutte le escursioni adatte ai bambini</a>
+      <a class="pack-back" href="./pacchetti.html" data-i18n="pack.seeAll">Vedi tutti i pacchetti</a>
+    </div>
+
+    <!-- Il piede della vista a giorni: da qui si esce verso i pacchetti a tema,
+         che sono l'altra proposta. Anche questo lo accende `pacchetti.js`. -->
+    <div class="wrap packs-foot" data-days-foot hidden>
+      <a class="pack-back" href="./pacchetti.html" data-i18n="pack.seeAll">Vedi tutti i pacchetti</a>
+    </div>
+  </main>
+
+  <div class="menu-scrim" data-menu-scrim hidden></div>
+  <aside class="more-menu" id="moreMenu" role="dialog" aria-modal="true" data-i18n-aria-label="menu.aria" aria-label="Menu" hidden>
+    <div class="more-menu-head">
+      <span class="more-menu-brand">Isla</span>
+      <button class="iconbtn" type="button" data-menu-close data-i18n-aria-label="menu.close" aria-label="Chiudi menu">✕</button>
+    </div>
+    <div class="more-menu-lang">
+      <span class="more-menu-lang-label" data-i18n="lang.label">Lingua</span>
+      <div class="lang-seg">
+        <button type="button" data-lang-set="it">IT</button>
+        <button type="button" data-lang-set="en">EN</button>
+        <button type="button" data-lang-set="es">ES</button>
+      </div>
+    </div>
+    <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn data-i18n="menu.install" hidden>Installa l'app</button>
+    <nav class="more-menu-nav" data-i18n-aria-label="menu.sections" aria-label="Sezioni">
+      <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
+      <a href="./pacchetti.html" data-menu-link data-i18n="menu.packages">Pacchetti</a>
+      <button type="button" data-menu-link data-ticket-open data-i18n="menu.scan">Scan ticket</button>
+      <a href="./index.html#secret" data-menu-link data-i18n="menu.secret">Posti segreti</a>
+      <a href="./index.html#about" data-menu-link data-i18n="menu.about">Chi siamo</a>
+    </nav>
+    <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link data-i18n="menu.cta">Prenota ora</a>
+  </aside>
+
+  <div class="ticket-scrim" data-ticket-scrim hidden></div>
+  <div class="ticket-dialog" id="ticketDialog" role="dialog" aria-modal="true" aria-labelledby="ticketDialogTitle" hidden>
+    <div class="ticket-dialog-head">
+      <h2 id="ticketDialogTitle" data-i18n="ticket.title">Scan ticket</h2>
+      <button class="iconbtn" type="button" data-ticket-close data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
+    </div>
+    <form data-lookup-form>
+      <label for="codeInput" data-i18n="ticket.codeLabel">Codice prenotazione o ticket</label>
+      <div class="lookup-row">
+        <input id="codeInput" name="code" type="text" inputmode="text" autocomplete="off"
+               data-i18n-placeholder="ticket.placeholder" placeholder="Es. ISLA-4521" required />
+        <button class="btn btn-primary" type="submit" data-i18n="common.search">Cerca</button>
+      </div>
+      <p class="hint" data-i18n="ticket.hint">Lo trovi nella email o nel messaggio di conferma della prenotazione.</p>
+    </form>
+  </div>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
+        <div>
+          <strong>Isla</strong>
+          <span>so easy so tenerife</span>
+        </div>
+      </div>
+      <button class="footer-link" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="footer.findCode">Cerca il tuo codice</button>
+    </div>
+    <p class="footer-copy" data-i18n="footer.copy">© Isla · Escursioni a Tenerife</p>
+  </footer>
+
+  <script src="./i18n.js"></script>
+  <script src="./esplora-catalog.js"></script>
+  <script src="./escursioni.js"></script>
+  <script src="./pacchetti.js"></script>
+  <script src="./lista.js"></script>
+  <script src="./assistente.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

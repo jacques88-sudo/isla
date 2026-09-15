@@ -1,0 +1,531 @@
+{
+  "_meta": {
+    "fuente": "https://www.kartingamericas.com/",
+    "idioma_contenidos": "es",
+    "extraido_el": "2026-09-10",
+    "plataforma": "WordPress + WooCommerce (Elementor / Woolementor)",
+    "metodo": "scraping HTML estatico de los archivos de categoria + fichas de producto",
+    "productos_totales": 11,
+    "avisos_globales": [
+      "El listado de tarifas completo solo se publica como imagen (/wp-content/uploads/2026/03/tarifa-de-precios-CAST-scaled.png): no es extraible como texto.",
+      "Varias fichas repiten en la descripcion un precio distinto al precio de WooCommerce. El precio de WooCommerce es el que se cobra en el carrito y se toma como canonico; el otro se conserva en 'precio_en_descripcion'.",
+      "Algunas fichas contienen texto reciclado del circuito hermano de Cardedeu (Barcelona), incluidos telefonos con prefijo 93. El telefono correcto de Tenerife es +34 922 713 096.",
+      "El sitio solo tiene locales es_ES y en_GB. No existe version italiana."
+    ]
+  },
+
+  "proveedor": {
+    "id": "karting-las-americas",
+    "nombre": "Karting Las Américas",
+    "grupo": "Events Karts",
+    "web": "https://www.kartingamericas.com/",
+    "email": "info@kartingamericas.com",
+    "telefono": "+34 922 713 096",
+    "direccion": {
+      "calle": "Carr. General, S/N, salida 78",
+      "localidad": "Fañabé",
+      "municipio": "Adeje",
+      "codigo_postal": "38670",
+      "provincia": "Santa Cruz de Tenerife",
+      "pais": "ES",
+      "latitud": null,
+      "longitud": null,
+      "_nota_geo": "Coordenadas no publicadas en el HTML. Rellenar manualmente antes de usar el mapa en la PWA."
+    },
+    "zona_turistica": "Costa Adeje / Playa de las Américas",
+    "redes": {
+      "facebook": "https://www.facebook.com/kartinglasamericas/",
+      "instagram": "https://www.instagram.com/kartinglasamericas/"
+    },
+    "circuito": {
+      "longitud_m": 857,
+      "anchura_m": 8,
+      "curvas_derecha": 5,
+      "curvas_izquierda": 3,
+      "cronometraje": "Events Karts",
+      "iluminacion": true
+    },
+    "politicas": {
+      "privacidad": "https://www.kartingamericas.com/politica-privacidad/",
+      "terminos": "https://www.kartingamericas.com/terminos-y-condiciones-de-uso/",
+      "seguridad": "https://www.kartingamericas.com/normas-de-seguridad/",
+      "cancelacion": "https://www.kartingamericas.com/politica-de-cancelacion/"
+    },
+    "horarios_junior_fin_de_semana": ["10:00-11:00", "15:00-16:00"]
+  },
+
+  "flota": [
+    {
+      "id": "sodikart-sr4",
+      "nombre": "Sodikart SR4",
+      "segmento": "adulto",
+      "motor": "Honda 270cc",
+      "potencia_cv": 11,
+      "url": "https://www.kartingamericas.com/sodikart-sr4/"
+    },
+    {
+      "id": "sodikart-lr5-junior",
+      "nombre": "Sodikart LR5 – Junior",
+      "segmento": "junior",
+      "motor": "Honda 200cc",
+      "potencia_cv": 7,
+      "asiento_pedales_volante_ajustables": true,
+      "url": "https://www.kartingamericas.com/sodikart-lr5-junior/"
+    },
+    {
+      "id": "sodikart-2-drive",
+      "nombre": "Sodikart 2-Drive (Doble)",
+      "segmento": "biplaza / adaptado",
+      "motor": "Honda 270cc",
+      "potencia_cv": 11,
+      "mandos_en_volante": true,
+      "url": "https://www.kartingamericas.com/sodikart-doble/"
+    }
+  ],
+
+  "productos": [
+    {
+      "id": "kla-910",
+      "wc_product_id": 910,
+      "slug": "tanda-adulto-2",
+      "nombre": "Tanda Adulto",
+      "tipo": "tanda",
+      "segmento": "adulto",
+      "categorias": ["tandas-adulto", "tienda"],
+      "url": {
+        "es": "https://www.kartingamericas.com/producto/tanda-adulto-2/",
+        "en": "https://www.kartingamericas.com/en/producto/adult-session/"
+      },
+      "precio": { "importe": 22.00, "moneda": "EUR", "por": "persona" },
+      "precio_en_descripcion": null,
+      "duracion": { "minutos_por_tanda": 10, "tandas": 1, "total_minutos": 10 },
+      "kart": "sodikart-sr4",
+      "kart_texto": "Sodikart SR4",
+      "restricciones": {
+        "edad_min": 14,
+        "edad_max": null,
+        "altura_min_cm": null,
+        "solo_residentes": false,
+        "notas": "El tique es personal. Los menores de 18 años tienen que venir acompañados de un adulto mayor de 18 años."
+      },
+      "reserva": { "necesaria": false, "telefono": "+34 922 713 096" },
+      "grupo": { "min_personas": null, "plaza_gratis_desde": null },
+      "resumen": "La actividad consiste en hacer 1 tanda de 10 minutos con el Sodikart SR4 o GT4. Para hacer esta actividad no reservamos. Si queréis hacer tandas un sábado o un domingo, os recomendamos llamar el día antes y preguntar disponibilidad horaria.",
+      "descripcion": "El tique es personal. Para poder hacer la actividad, los menores de 18 años tienen que venir acompañados de un adulto mayor de 18 años. Sodikart SR4 tiene un diseño moderno y Racing. Es un kart de alta calidad, seguro y fiable. Motor Honda 270cc – 11CV.",
+      "imagenes": [
+        "https://www.kartingamericas.com/wp-content/uploads/2024/06/tanda-adulto_.png"
+      ],
+      "modificado": "2026-03-09",
+      "_avisos": [
+        "El texto original incluye el telefono 935712453 (Barcelona). Sustituido por el telefono de Tenerife."
+      ]
+    },
+    {
+      "id": "kla-1129",
+      "wc_product_id": 1129,
+      "slug": "tanda-junior",
+      "nombre": "Tanda Junior",
+      "tipo": "tanda",
+      "segmento": "junior",
+      "categorias": ["junior", "tienda"],
+      "url": {
+        "es": "https://www.kartingamericas.com/producto/tanda-junior/",
+        "en": "https://www.kartingamericas.com/en/producto/junior-session/"
+      },
+      "precio": { "importe": 16.00, "moneda": "EUR", "por": "persona" },
+      "precio_en_descripcion": null,
+      "duracion": { "minutos_por_tanda": 10, "tandas": 1, "total_minutos": 10 },
+      "kart": "sodikart-lr5-junior",
+      "kart_texto": "Sodikart LR5 – Junior",
+      "restricciones": {
+        "edad_min": 7,
+        "edad_max": 13,
+        "altura_min_cm": 130,
+        "solo_residentes": false,
+        "notas": "De 7 a 13 años y mínimo 1,30 m. de altura."
+      },
+      "reserva": { "necesaria": false, "telefono": "+34 922 713 096" },
+      "grupo": { "min_personas": null, "plaza_gratis_desde": null },
+      "resumen": "La actividad consiste en hacer una tanda de 10 minutos con nuestro Sodikart LR5. Para hacer la actividad no reservamos. Los fines de semana tenemos unos horarios que son de 10:00 a 11:00 y de 15:00 a 16:00.",
+      "descripcion": "Para niños de 7 a 13 años y tener una altura mínima de 1,30 m. Sodikart LR5 – Junior es un kart con un diseño atractivo, muy fiable y seguro. El asiento, los pedales y el volante son ajustables. Motor Honda 200cc – 7CV.",
+      "imagenes": [
+        "https://www.kartingamericas.com/wp-content/uploads/2024/06/bono-junior-2.png"
+      ],
+      "modificado": "2026-03-09",
+      "_avisos": []
+    },
+    {
+      "id": "kla-2042",
+      "wc_product_id": 2042,
+      "slug": "dia-del-kartista-miercoles-a-viernes",
+      "nombre": "Día del kartista: Lunes a viernes (precio especial para residentes)",
+      "tipo": "promocion",
+      "segmento": "adulto",
+      "categorias": ["tandas-adulto", "tienda"],
+      "url": {
+        "es": "https://www.kartingamericas.com/producto/dia-del-kartista-miercoles-a-viernes/",
+        "en": "https://www.kartingamericas.com/en/producto/karista-day-wednesday-to-friday/"
+      },
+      "precio": { "importe": 25.00, "moneda": "EUR", "por": "persona" },
+      "precio_en_descripcion": null,
+      "duracion": { "minutos_por_tanda": 10, "tandas": 2, "total_minutos": 20 },
+      "kart": "sodikart-sr4",
+      "kart_texto": "Sodikart SR4",
+      "restricciones": {
+        "edad_min": 14,
+        "edad_max": null,
+        "altura_min_cm": null,
+        "solo_residentes": true,
+        "dias_validos": ["lunes", "martes", "miércoles", "jueves", "viernes"],
+        "notas": "El tique es personal. Los menores de 18 años tienen que venir acompañados por un adulto mayor de edad."
+      },
+      "reserva": { "necesaria": false, "telefono": "+34 922 713 096" },
+      "grupo": { "min_personas": null, "plaza_gratis_desde": null },
+      "resumen": "La promoción consiste en hacer 2 tandas de 10 minutos con el Sodikart SR4. Para hacer esta actividad no reservamos y solo es válida para residentes.",
+      "descripcion": "El tique es personal. Los menores de 18 años tienen que venir acompañados por un adulto mayor de edad. Sodikart SR4 es ligero, preciso y cómodo al volante. Ha sido diseñado para pilotos que buscan sensaciones de pilotaje. Motor Honda 270cc – 11CV.",
+      "imagenes": [
+        "https://www.kartingamericas.com/wp-content/uploads/2024/08/SA72238.jpg"
+      ],
+      "modificado": "2026-03-19",
+      "_avisos": [
+        "El slug dice 'miercoles-a-viernes' pero el titulo y el contenido actuales dicen 'lunes a viernes'. Vale el titulo.",
+        "Solo para residentes canarios: no ofrecer este producto a turistas en la PWA."
+      ]
+    },
+    {
+      "id": "kla-800",
+      "wc_product_id": 800,
+      "slug": "tanda-adulto",
+      "nombre": "Tanda Kart Doble",
+      "tipo": "tanda",
+      "segmento": "familiar",
+      "categorias": ["tienda"],
+      "url": {
+        "es": "https://www.kartingamericas.com/producto/tanda-adulto/",
+        "en": "https://www.kartingamericas.com/en/producto/double-kart-session/"
+      },
+      "precio": { "importe": 25.00, "moneda": "EUR", "por": "kart" },
+      "precio_en_descripcion": null,
+      "duracion": { "minutos_por_tanda": 10, "tandas": 1, "total_minutos": 10 },
+      "kart": "sodikart-2-drive",
+      "kart_texto": "Sodikart Doble",
+      "restricciones": {
+        "edad_min": 18,
+        "edad_max": null,
+        "altura_min_cm": null,
+        "solo_residentes": false,
+        "notas": "Junior + adulto mayor de 18 años. La edad mínima del piloto es de 18 años. La altura mínima del copiloto es de 1,20 m."
+      },
+      "reserva": { "necesaria": false, "telefono": "+34 922 713 096" },
+      "grupo": { "min_personas": null, "plaza_gratis_desde": null },
+      "resumen": "La actividad consiste en hacer 1 tanda de 10 minutos con el Sodikart Doble.",
+      "descripcion": "La edad mínima del piloto es de 18 años. La altura mínima del copiloto es de 1,20 m. Sodikart 2-Drive es un kart con una gran estabilidad y con un diseño ergonómico. Motor Honda 270cc.",
+      "imagenes": [
+        "https://www.kartingamericas.com/wp-content/uploads/2024/05/tanda-kart-doble-2.png"
+      ],
+      "modificado": "2024-08-19",
+      "_avisos": [
+        "El precio es por kart (2 plazas), no por persona: la edad_min de 18 se refiere al piloto, no al copiloto."
+      ]
+    },
+    {
+      "id": "kla-908",
+      "wc_product_id": 908,
+      "slug": "tanda-sodikart-rx7-adaptado",
+      "nombre": "Tanda 2-Drive",
+      "tipo": "tanda",
+      "segmento": "adulto",
+      "categorias": ["junior", "tienda"],
+      "url": {
+        "es": "https://www.kartingamericas.com/producto/tanda-sodikart-rx7-adaptado/",
+        "en": "https://www.kartingamericas.com/en/producto/session-sodikart-rx7-adapted/"
+      },
+      "precio": { "importe": 25.00, "moneda": "EUR", "por": "persona" },
+      "precio_en_descripcion": null,
+      "duracion": { "minutos_por_tanda": 10, "tandas": 1, "total_minutos": 10 },
+      "kart": "sodikart-2-drive",
+      "kart_texto": "Sodikart 2-Drive",
+      "restricciones": {
+        "edad_min": 18,
+        "edad_max": null,
+        "altura_min_cm": null,
+        "solo_residentes": false,
+        "notas": "El tique es personal."
+      },
+      "reserva": { "necesaria": false, "recomendada": true, "telefono": "+34 922 713 096" },
+      "grupo": { "min_personas": null, "plaza_gratis_desde": null },
+      "resumen": "La actividad consiste en hacer 1 tanda de 10 minutos con el Sodikart 2-Drive.",
+      "descripcion": "El tique es personal. Es aconsejable llamar para reservar. Sodikart 2-Drive tiene el freno y el acelerador en volante y son accionados mediante dos levas. Motor Honda 270cc – 11CV.",
+      "imagenes": [
+        "https://www.kartingamericas.com/wp-content/uploads/2024/05/tanda-kart-doble-2.png"
+      ],
+      "modificado": "2024-12-19",
+      "_avisos": [
+        "El texto original incluye el telefono (+34) 93 871 24 53 (Cardedeu). Sustituido por el de Tenerife.",
+        "Esta categorizado en 'junior' pero la limitacion es a partir de 18 años: no filtrarlo como producto infantil en la PWA.",
+        "Mandos en volante: es el kart apto para personas con movilidad reducida, aunque la ficha no lo dice explicitamente."
+      ]
+    },
+    {
+      "id": "kla-754",
+      "wc_product_id": 754,
+      "slug": "mini-gran-premio-adulto",
+      "nombre": "Mini Gran Premio Adulto",
+      "tipo": "carrera",
+      "segmento": "adulto",
+      "categorias": ["despedidas", "eventos", "gran-premio-adulto"],
+      "url": {
+        "es": "https://www.kartingamericas.com/producto/mini-gran-premio-adulto/",
+        "en": "https://www.kartingamericas.com/en/producto/mini-grand-prix-adult/"
+      },
+      "precio": { "importe": 45.00, "moneda": "EUR", "por": "persona" },
+      "precio_en_descripcion": 40.00,
+      "duracion": { "minutos_por_tanda": 10, "tandas": 2, "total_minutos": 20 },
+      "kart": "sodikart-sr4",
+      "kart_texto": "Sodikart SR4",
+      "restricciones": {
+        "edad_min": 14,
+        "edad_max": null,
+        "altura_min_cm": null,
+        "solo_residentes": false,
+        "notas": null
+      },
+      "reserva": { "necesaria": true, "telefono": "+34 922 713 096" },
+      "grupo": { "min_personas": 8, "plaza_gratis_desde": 10 },
+      "formato": [
+        { "fase": "entrenamientos cronometrados", "minutos": 10 },
+        { "fase": "carrera", "minutos": 10 }
+      ],
+      "resumen": "El Mini Gran Premio Adulto consiste en una carrera de 20 minutos. Mínimo 8 personas. A partir de 10 personas, carrera gratis para el novio o persona que cumple años.",
+      "descripcion": "La carrera consta de: 10 minutos de entrenamientos cronometrados y 10 minutos de carrera. Es necesario llamar para reservar.",
+      "imagenes": [
+        "https://www.kartingamericas.com/wp-content/uploads/2024/09/mini-gran-premio-adulto.png",
+        "https://www.kartingamericas.com/wp-content/uploads/2024/05/20190501122207_mini-gran-premio-adulto.jpeg",
+        "https://www.kartingamericas.com/wp-content/uploads/2024/05/20190501122201_mini-gran-premio-adulto.jpeg"
+      ],
+      "modificado": "2026-03-09",
+      "_avisos": [
+        "Discrepancia de precio: WooCommerce 45,00 € vs descripcion 40 €. Se toma 45,00 €."
+      ]
+    },
+    {
+      "id": "kla-758",
+      "wc_product_id": 758,
+      "slug": "gran-premio-adulto",
+      "nombre": "Gran Premio Adulto",
+      "tipo": "carrera",
+      "segmento": "adulto",
+      "categorias": ["despedidas", "eventos", "gran-premio-adulto"],
+      "url": {
+        "es": "https://www.kartingamericas.com/producto/gran-premio-adulto/",
+        "en": "https://www.kartingamericas.com/en/producto/grand-prix-adult/"
+      },
+      "precio": { "importe": 60.00, "moneda": "EUR", "por": "persona" },
+      "precio_en_descripcion": 60.00,
+      "duracion": { "minutos_por_tanda": 10, "tandas": 3, "total_minutos": 30 },
+      "kart": "sodikart-sr4",
+      "kart_texto": "Sodikart SR4",
+      "restricciones": {
+        "edad_min": 14,
+        "edad_max": null,
+        "altura_min_cm": null,
+        "solo_residentes": false,
+        "notas": null
+      },
+      "reserva": { "necesaria": true, "telefono": "+34 922 713 096" },
+      "grupo": { "min_personas": 8, "plaza_gratis_desde": 10 },
+      "formato": [
+        { "fase": "entrenamientos libres", "minutos": 10 },
+        { "fase": "entrenamientos cronometrados", "minutos": 10 },
+        { "fase": "carrera", "minutos": 10 }
+      ],
+      "extras": ["ceremonia de pódium"],
+      "resumen": "El Gran Premio Adulto consiste en una carrera de 30 minutos. Mínimo 8 personas. A partir de 10 personas, carrera gratis para el novio o persona que cumple años.",
+      "descripcion": "La carrera consta de: 10 minutos de entrenamientos libres, 10 minutos de entrenamientos cronometrados y 10 minutos de carrera. Al final habrá ceremonia de pódium. Es necesario llamar para reservar.",
+      "imagenes": [
+        "https://www.kartingamericas.com/wp-content/uploads/2024/09/super-gran-premio-adulto.png",
+        "https://www.kartingamericas.com/wp-content/uploads/2024/05/20190430121245_gran-premio-adulto.jpeg",
+        "https://www.kartingamericas.com/wp-content/uploads/2024/05/20190425045934_grand-prix-adulto.jpeg"
+      ],
+      "modificado": "2024-11-27",
+      "_avisos": [
+        "La imagen principal usa el fichero 'super-gran-premio-adulto.png', que tambien ilustra otro producto."
+      ]
+    },
+    {
+      "id": "kla-471",
+      "wc_product_id": 471,
+      "slug": "super-gran-premio-adulto",
+      "nombre": "Super Gran Premio Adulto",
+      "tipo": "carrera",
+      "segmento": "adulto",
+      "categorias": ["despedidas", "eventos", "gran-premio-adulto"],
+      "url": {
+        "es": "https://www.kartingamericas.com/producto/super-gran-premio-adulto/",
+        "en": "https://www.kartingamericas.com/en/producto/super-grand-prix-adult/"
+      },
+      "precio": { "importe": 70.00, "moneda": "EUR", "por": "persona" },
+      "precio_en_descripcion": 65.00,
+      "duracion": { "minutos_por_tanda": 10, "tandas": 4, "total_minutos": 40 },
+      "kart": "sodikart-sr4",
+      "kart_texto": "Sodikart SR4 o GT4",
+      "restricciones": {
+        "edad_min": 14,
+        "edad_max": null,
+        "altura_min_cm": null,
+        "solo_residentes": false,
+        "notas": null
+      },
+      "reserva": { "necesaria": true, "telefono": "+34 922 713 096" },
+      "grupo": { "min_personas": 8, "plaza_gratis_desde": 10 },
+      "formato": [
+        { "fase": "entrenamientos libres", "minutos": 10 },
+        { "fase": "entrenamientos cronometrados", "minutos": 10 },
+        { "fase": "carrera (2 tandas de 10)", "minutos": 20 }
+      ],
+      "extras": ["ceremonia de pódium"],
+      "resumen": "El Super Gran Premio Adulto consiste en una carrera de 40 minutos. Mínimo 8 personas. A partir de 10 personas, carrera gratis para el novio o persona que cumple años.",
+      "descripcion": "La carrera consta de: 10 minutos de entrenamientos libres, 10 minutos de entrenamientos cronometrados y 20 minutos de carrera que se harán en 2 tandas de 10 minutos. Al final habrá ceremonia de pódium. Es necesario llamar para reservar.",
+      "imagenes": [
+        "https://www.kartingamericas.com/wp-content/uploads/2024/05/20190425050016_super-grand-prix-adulto-1.jpeg",
+        "https://www.kartingamericas.com/wp-content/uploads/2024/05/suepr-gran-premi-2.jpeg",
+        "https://www.kartingamericas.com/wp-content/uploads/2024/05/super-gran-premi.jpeg"
+      ],
+      "modificado": "2026-03-09",
+      "_avisos": [
+        "Discrepancia de precio: WooCommerce 70,00 € vs descripcion 65 €. Se toma 70,00 €.",
+        "La descripcion se titula 'El Gran Premio Adulto': texto copiado del producto de 30 minutos."
+      ]
+    },
+    {
+      "id": "kla-403",
+      "wc_product_id": 403,
+      "slug": "mini-gran-premio-junior",
+      "nombre": "Mini Gran Premio Junior",
+      "tipo": "carrera",
+      "segmento": "junior",
+      "categorias": ["eventos", "gran-premio-junior"],
+      "url": {
+        "es": "https://www.kartingamericas.com/producto/mini-gran-premio-junior/",
+        "en": "https://www.kartingamericas.com/en/producto/mini-grand-prix-junior/"
+      },
+      "precio": { "importe": 35.00, "moneda": "EUR", "por": "niño" },
+      "precio_en_descripcion": 30.00,
+      "duracion": { "minutos_por_tanda": null, "tandas": 2, "total_minutos": 13 },
+      "kart": "sodikart-lr5-junior",
+      "kart_texto": "Sodikart LR5 – Junior",
+      "restricciones": {
+        "edad_min": 7,
+        "edad_max": 13,
+        "altura_min_cm": 130,
+        "solo_residentes": false,
+        "notas": "De 7 a 13 años y mínimo 1,30 m. de altura."
+      },
+      "reserva": { "necesaria": true, "telefono": "+34 922 713 096" },
+      "grupo": { "min_personas": 6, "plaza_gratis_desde": 9 },
+      "formato": [
+        { "fase": "entrenamientos cronometrados", "minutos": 5 },
+        { "fase": "carrera", "minutos": 8 }
+      ],
+      "horarios_fin_de_semana": ["10:00-11:00", "15:00-16:00"],
+      "resumen": "El Mini Gran Premio Junior consiste en una carrera de 13 minutos con el Sodikart LR5. Mínimo 6 niños. Si el grupo es superior a 8 niños, tanda gratis para el niño que cumple años.",
+      "descripcion": "La carrera consiste en: 5 minutos de entrenamientos cronometrados y 8 minutos de carrera. Es necesario llamar para reservar.",
+      "imagenes": [
+        "https://www.kartingamericas.com/wp-content/uploads/2024/09/mini-gran-premio-junior.png",
+        "https://www.kartingamericas.com/wp-content/uploads/2024/05/20190501122057_mini-gran-premio-junior.jpeg",
+        "https://www.kartingamericas.com/wp-content/uploads/2024/05/20190501122103_mini-gran-premio-junior.jpeg"
+      ],
+      "modificado": "2026-03-09",
+      "_avisos": [
+        "Discrepancia de precio: WooCommerce 35,00 € vs descripcion 30 €. Se toma 35,00 €.",
+        "'plaza_gratis_desde: 9' interpreta 'grupo superior a 8 niños'."
+      ]
+    },
+    {
+      "id": "kla-744",
+      "wc_product_id": 744,
+      "slug": "gran-premio-junior",
+      "nombre": "Gran Premio Junior",
+      "tipo": "carrera",
+      "segmento": "junior",
+      "categorias": ["cumpleanos", "eventos", "gran-premio-junior"],
+      "url": {
+        "es": "https://www.kartingamericas.com/producto/gran-premio-junior/",
+        "en": "https://www.kartingamericas.com/en/producto/grand-prix-junior/"
+      },
+      "precio": { "importe": 50.00, "moneda": "EUR", "por": "niño" },
+      "precio_en_descripcion": 35.00,
+      "duracion": { "minutos_por_tanda": 10, "tandas": 2, "total_minutos": 20 },
+      "kart": "sodikart-lr5-junior",
+      "kart_texto": "Sodikart LR5 – Junior",
+      "restricciones": {
+        "edad_min": 7,
+        "edad_max": 13,
+        "altura_min_cm": 130,
+        "solo_residentes": false,
+        "notas": "De 7 a 13 años y mínimo 1,30 m. de altura."
+      },
+      "reserva": { "necesaria": true, "telefono": "+34 922 713 096" },
+      "grupo": { "min_personas": 6, "plaza_gratis_desde": 9 },
+      "formato": [
+        { "fase": "entrenamientos cronometrados", "minutos": 10 },
+        { "fase": "carrera", "minutos": 10 }
+      ],
+      "extras": ["ceremonia de pódium con cava infantil"],
+      "resumen": "El evento consiste en una carrera de 20 minutos con el Sodikart LR5. Mínimo 6 niños. Si el grupo es superior a 8 niños, tanda gratis para el niño que cumple años.",
+      "descripcion": "La carrera consta de: 10 minutos de entrenamientos cronometrados y 10 minutos de carrera. Al final habrá ceremonia de pódium con cava infantil. Es necesario llamar para reservar.",
+      "imagenes": [
+        "https://www.kartingamericas.com/wp-content/uploads/2024/09/gran-premi-junior.png",
+        "https://www.kartingamericas.com/wp-content/uploads/2024/05/20190501122135_gran-premio-junior.jpeg",
+        "https://www.kartingamericas.com/wp-content/uploads/2024/05/20190425045803_grand-prix-junior.jpeg"
+      ],
+      "modificado": "2024-11-27",
+      "_avisos": [
+        "Discrepancia de precio importante: WooCommerce 50,00 € vs descripcion 35 €. Se toma 50,00 €, pero conviene confirmarlo con el proveedor antes de publicar."
+      ]
+    },
+    {
+      "id": "kla-2921",
+      "wc_product_id": 2921,
+      "slug": "super-gran-premio-junior",
+      "nombre": "Super Gran Premio Junior",
+      "tipo": "carrera",
+      "segmento": "junior",
+      "categorias": ["eventos", "gran-premio-junior"],
+      "url": {
+        "es": "https://www.kartingamericas.com/producto/super-gran-premio-junior/",
+        "en": "https://www.kartingamericas.com/en/producto/super-grand-prix-junior/"
+      },
+      "precio": { "importe": 70.00, "moneda": "EUR", "por": "niño" },
+      "precio_en_descripcion": 70.00,
+      "duracion": { "minutos_por_tanda": 10, "tandas": 4, "total_minutos": 40 },
+      "kart": "sodikart-lr5-junior",
+      "kart_texto": "Sodikart LR5 – Junior",
+      "restricciones": {
+        "edad_min": 7,
+        "edad_max": 13,
+        "altura_min_cm": 130,
+        "solo_residentes": false,
+        "notas": "De 7 a 13 años y mínimo 1,30 m. de altura."
+      },
+      "reserva": { "necesaria": true, "telefono": "+34 922 713 096" },
+      "grupo": { "min_personas": 8, "plaza_gratis_desde": 10 },
+      "formato": [
+        { "fase": "entrenamientos libres", "minutos": 10 },
+        { "fase": "entrenamientos cronometrados", "minutos": 10 },
+        { "fase": "carrera", "minutos": 20 }
+      ],
+      "extras": ["ceremonia de pódium"],
+      "resumen": "El Super Gran Premio Junior consiste en una carrera de 40 minutos. Mínimo 8 personas. A partir de 10 personas, carrera gratis para la persona que cumple años.",
+      "descripcion": "La carrera consta de: 10 minutos de entrenamientos libres, 10 minutos de entrenamientos cronometrados y 20 minutos de carrera. Al final habrá ceremonia de pódium. Es necesario llamar para reservar.",
+      "imagenes": [
+        "https://www.kartingamericas.com/wp-content/uploads/2024/06/tandas-junior-1-e1726834395766.png"
+      ],
+      "modificado": "2026-03-24",
+      "_avisos": [
+        "La descripcion original menciona 'el novio', texto copiado del producto adulto de despedidas. Corregido en el resumen.",
+        "La descripcion dice '20 minutos de carrera que se haran en 4 tandas de 10 minutos', lo cual es aritmeticamente incoherente. El atributo TANDAS: 4 es el dato fiable."
+      ]
+    }
+  ]
+}

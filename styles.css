@@ -1,6 +1,8 @@
 :root {
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-body: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* la calligrafia della cartolina: la usa solo la lista */
+  --font-hand: "Caveat", "Segoe Script", cursive;
 
   /* soft white */
   --bg: oklch(0.985 0.006 85);
@@ -3060,34 +3062,50 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
    ------------------------------------------------------------------------ */
 
 /* Solo l'aspetto: le voci, il totale, il nome e il pulsante WhatsApp restano
-   quelli di prima, al loro posto e con lo stesso codice dietro. */
+   quelli di prima, al loro posto e con lo stesso codice dietro. Ogni regola
+   parte da .lista-dialog, cosi' le altre finestre non cambiano. */
 
 .lista-dialog {
-  background: var(--cream);
-  /* la cornicetta stampata sul retro di una cartolina. Outline e non un bordo
-     dentro il contenuto: la finestra scorre, e l'outline sta sul riquadro
-     della finestra, quindi resta ferma mentre le voci scorrono. */
+  background-color: var(--cream);
+  /* la grana della carta: un puntino ogni 4px, cosi' chiaro che si vede solo
+     come "non e' uno schermo bianco" */
+  background-image: radial-gradient(oklch(0.24 0.012 60 / .05) 1px, transparent 1px);
+  background-size: 4px 4px;
+  /* la cornicetta stampata sul retro. Outline e non un bordo dentro il
+     contenuto: la finestra scorre, e l'outline sta sul riquadro della
+     finestra, quindi resta ferma mentre le voci scorrono sotto. */
   outline: 1px solid oklch(0.78 0.02 75);
   outline-offset: -10px;
 }
 
-/* Il francobollo sta tra il titolo e la ✕: l'angolo in alto a destra e' il suo
-   posto sulle cartoline vere, e la ✕ resta dov'e' che la gente la cerca. */
+.lista-intestazione { min-width: 0; }
+.lista-luogo {
+  margin: .15rem 0 0;
+  font-size: .62rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---- francobollo e timbro ---- */
+
+/* Sta fra il titolo e la ✕: in alto a destra e' il suo posto sulle cartoline
+   vere, e la ✕ resta dov'e' che la gente la cerca. */
 .lista-dialog .lista-francobollo {
   position: relative;
   flex: none;
   margin-left: auto;
-  width: 52px;
-  height: 62px;
+  width: 58px;
+  height: 70px;
   display: grid;
   place-items: center;
   background: var(--surface);
   transform: rotate(3deg);
-  box-shadow: inset 0 0 0 1px oklch(0.8 0.03 70 / .6);
+  box-shadow: inset 0 0 0 1px oklch(0.8 0.03 70 / .6), 0 1px 3px oklch(0.24 0.012 60 / .12);
 }
 .lista-dialog .lista-francobollo img {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
 }
 
@@ -3107,31 +3125,55 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   background-position: top left, bottom left, top left, top right;
 }
 
-/* Il timbro postale, storto sull'angolo del francobollo come quando lo
-   annullano allo sportello. Solo l'anello: una scritta dentro sarebbe da
-   tradurre in tre lingue per un disegno che nessuno legge. */
-.lista-dialog .lista-francobollo::after {
-  content: "";
+/* Il timbro: l'anello storto sull'angolo del francobollo, come quando lo
+   annullano allo sportello. Niente scritte dentro: sarebbero tre traduzioni
+   per un disegno che nessuno legge. */
+.lista-dialog .lista-timbro {
   position: absolute;
-  left: -20px;
-  bottom: -8px;
-  width: 44px;
-  height: 44px;
+  left: -24px;
+  bottom: -10px;
+  width: 48px;
+  height: 48px;
   border: 2px solid var(--muted);
   border-radius: var(--radius-pill);
-  opacity: .45;
+  opacity: .5;
   transform: rotate(-12deg);
+  pointer-events: none;
+}
+/* Le righe dell'annullo che escono dal timbro e vanno a finire sulla carta. */
+.lista-dialog .lista-timbro::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: calc(100% - 6px);
+  width: 40px;
+  height: 14px;
+  transform: translateY(-50%);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--muted) 0 2px,
+    transparent 2px 6px
+  );
 }
 
-/* Le voci diventano righe di cartolina: il titolo nel corsivo del display, e
-   la riga sotto punteggiata invece che piena. */
+/* ---- il lato del messaggio: le voci ---- */
+
+/* Scritte a mano, come si scrive una cartolina. Il Caveat arriva dallo stesso
+   foglio di Google Fonts degli altri due: nessuna richiesta in piu', e il file
+   del font lo scarica solo il browser che apre la lista. */
 .lista-dialog .lista-voce { border-bottom-style: dotted; }
 .lista-dialog .lista-voce-testo strong {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.15rem;
+  font-family: var(--font-hand);
+  font-size: 1.45rem;
+  font-weight: 600;
+  line-height: 1.1;
 }
-.lista-dialog .lista-voce-prezzo { font-variant-numeric: tabular-nums; }
+.lista-dialog .lista-voce-prezzo {
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
 
 /* Il totale non e' piu' un riquadro pieno: sulla carta e' l'ultima riga del
    conto, tirata sotto con una riga piu' marcata. */
@@ -3145,18 +3187,54 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   border-radius: 0;
   border-top: 1.5px solid oklch(0.78 0.02 75);
 }
+.lista-dialog .lista-totale strong {
+  font-family: var(--font-hand);
+  font-size: 2rem;
+  font-weight: 600;
+}
 .lista-dialog .lista-totale small { text-align: right; }
 
-/* Il lato indirizzo: il nome si scrive su una riga, come su una cartolina,
-   non dentro una pillola. */
+.lista-dialog .lista-empty {
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  color: var(--text);
+}
+
+/* ---- il lato indirizzo: nome e invio ---- */
+
+/* Il nome si scrive su una riga, come sull'indirizzo di una cartolina, non
+   dentro una pillola. */
 .lista-dialog input[type="text"] {
   border: none;
   border-bottom: 1px solid var(--muted);
   border-radius: 0;
   background: none;
-  padding: .65rem .2rem;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.15rem;
+  padding: .55rem .2rem;
+  font-family: var(--font-hand);
+  font-size: 1.45rem;
+  margin-bottom: 1.3rem;
 }
 .lista-dialog input[type="text"]:focus { border-bottom-color: var(--text); }
+.lista-dialog input[type="text"]::placeholder { font-family: var(--font-hand); }
+
+/* Da 640px in su la finestra sta in mezzo allo schermo e c'e' spazio per la
+   cartolina vera: messaggio a sinistra, indirizzo a destra, separati dalla
+   riga verticale stampata. Sul telefono no — due colonne da 160px sarebbero
+   due colonne illeggibili, e li' la cartolina resta per il lungo. */
+@media (min-width: 640px) {
+  .lista-dialog { width: min(100%, 640px); }
+  .lista-dialog [data-lista-body] {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    column-gap: 1.7rem;
+    align-items: start;
+  }
+  .lista-dialog .lista-voci,
+  .lista-dialog .lista-totale { grid-column: 1; }
+  .lista-dialog [data-lista-form] {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    padding-left: 1.7rem;
+    border-left: 1.5px solid oklch(0.78 0.02 75);
+  }
+}

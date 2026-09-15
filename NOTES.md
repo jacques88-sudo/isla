@@ -12250,3 +12250,61 @@ modulo col nome è lì. A lista vuota il pallino non compare, come prima. Nessun
 console.
 
 `CACHE_NAME` da `isla-v332` a `isla-v333`: toccati `lista.js` e `styles.css`.
+
+## v334 — la cartolina sembra di più una cartolina
+
+Il proprietario ha guardato la v333 e ha chiesto di spingere: "puoi farmela sembrare più
+cartolina". Quattro cose, nessuna delle quali tocca come funziona la lista.
+
+### La calligrafia
+
+Il corsivo del Cormorant era elegante ma leggeva "serif in corsivo", non "scritto a mano".
+Adesso i titoli delle escursioni, i prezzi, il totale e il nome del cliente sono in
+**Caveat**, aggiunto allo stesso `<link>` di Google Fonts che già porta Cormorant e Jost
+in tutte e sei le pagine.
+
+**Non è una richiesta in più**: è lo stesso foglio CSS, una famiglia in più dentro lo
+stesso indirizzo. Il file del font (~75 KB) lo scarica solo il browser che apre la lista,
+perché il font non è usato da nessun testo finché la finestra non si disegna.
+
+Il link è identico su tutte e sei le pagine anche dove la lista non c'è (`booking.html`):
+una riga sola uguale ovunque è più difficile da sbagliare di due varianti da tenere
+allineate, e il costo è zero — senza testo che lo usi, il font non parte.
+
+Da offline senza il font in cache si vede il ripiego (`"Segoe Script", cursive`, e dove
+non c'è nemmeno quello il font di sistema). È lo stesso che succede già oggi a Cormorant e
+Jost: `sw.js` mette in cache i file del sito, non quelli di Google Fonts.
+
+### Il timbro adesso annulla davvero
+
+All'anello sono state aggiunte le tre righe dell'annullo che escono dal timbro e vanno a
+finire sulla carta, come allo sportello. Sono un `::before` del timbro, non un'immagine.
+
+### La grana della carta
+
+Un puntino ogni 4px, a 5% di opacità: non si vede come puntini, si vede come "non è uno
+schermo bianco". Sopra ci sta la cornicetta stampata, che c'era già.
+
+### Da 640px in su la cartolina si divide in due
+
+Sullo schermo grande c'è spazio per il retro vero: le escursioni a sinistra (il
+messaggio), nome e invio a destra (l'indirizzo), separati dalla riga verticale stampata.
+La finestra passa da 520 a 640px per farci stare due colonne leggibili.
+
+Sul telefono no: due colonne da 160px sarebbero due colonne illeggibili, e lì la cartolina
+resta per il lungo, con la riga di separazione orizzontale sopra il totale.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `lista.js`.
+
+Nel browser vero (Pixel 5 e 1280px), con due voci in lista. Il font a mano nel container
+non si carica — Chromium non si fida del certificato del proxy — quindi per **vederlo** ho
+scaricato il woff2 di Caveat e l'ho iniettato nella pagina di prova, e poi cancellato: nel
+repo non c'è nessun file di font, in produzione resta il link di Google Fonts. Con il font
+davanti agli occhi: titoli, prezzi, totale e nome scritti a mano, timbro con le righe,
+due colonne a 1280px e una sola sul telefono. Togliere una voce, svuotare e il modulo col
+nome funzionano come prima.
+
+`CACHE_NAME` da `isla-v333` a `isla-v334`: toccati `lista.js`, `styles.css` e i sei
+`.html` col link dei font.

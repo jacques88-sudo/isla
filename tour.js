@@ -520,6 +520,7 @@ function renderTour(tour) {
     // niente scheda, niente foto: la fascia vuota sarebbe una striscia beige
     // alta due dita sopra il messaggio di errore
     if (banda) banda.hidden = true;
+    mostraBarraPrenota(null);
     document.title = t("detail.notFound") + " · Isla";
     contenitore.innerHTML = `
       <div class="state">
@@ -577,6 +578,34 @@ function renderTour(tour) {
   applyI18n(contenitore);
   collegaOpzioni(contenitore, tour);
   collegaGalleria(contenitore);
+  mostraBarraPrenota(tour);
+}
+
+// La barra in fondo allo schermo. Il prezzo e' lo stesso "da €39" delle schede
+// in elenco (tourPriceHTML tiene anche il barrato dell'offerta): e' il prezzo
+// di partenza, non quello della variante scelta, percio' resta buono comunque
+// si giri la scheda. Il pulsante porta alla stessa finestra "Richiedi
+// disponibilita'" del pulsante dentro la scheda: l'ascoltatore sta su
+// document (escursioni.js), quindi funziona anche qui fuori dal contenitore.
+function mostraBarraPrenota(tour) {
+  const barra = document.querySelector("[data-book-bar]");
+  if (!barra) return;
+
+  // Senza numero WhatsApp non c'e' nessuna richiesta da mandare: dentro la
+  // scheda i due pulsanti spariscono, e qui sparisce la barra.
+  if (!tour || !WHATSAPP_NUMBER) {
+    barra.hidden = true;
+    document.body.classList.remove("has-book-bar");
+    return;
+  }
+
+  const prezzo = barra.querySelector("[data-book-price]");
+  const cta = barra.querySelector("[data-request-open]");
+  if (prezzo) prezzo.innerHTML = tourPriceHTML(tour);
+  if (cta) cta.dataset.requestOpen = tour.id;
+  barra.hidden = false;
+  // alza i due pallini in basso: senza, la barra ci finisce sopra
+  document.body.classList.add("has-book-bar");
 }
 
 // Le miniature sotto la foto grande cambiano solo `src` dell'immagine

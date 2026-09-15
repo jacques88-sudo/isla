@@ -12144,3 +12144,167 @@ dialog dei ticket (`#ticketDialog`, verificato che perde `hidden` e prende `is-o
 Nessun errore in console.
 
 `CACHE_NAME` da `isla-v330` a `isla-v331`: toccati `index.html` e `styles.css`.
+
+## v332 — la barra "Prenota ora" in fondo alla scheda escursione
+
+Richiesta del proprietario: nella pagina dell'escursione il "book now" va in basso, come
+fanno i siti di escursioni che tiene d'occhio, e per il resto la pagina resta com'era.
+
+Una scheda è lunga: prezzi, riepilogo, itinerario, cosa include, note. Chi decide a metà
+lettura doveva scorrere fino in fondo per trovare il pulsante. Adesso prezzo e pulsante
+stanno appoggiati in fondo allo schermo e seguono chi legge.
+
+**Aggiunta, non spostata.** I due pulsanti dentro la scheda ("Richiedi disponibilità" e
+"Aggiungi alla lista") restano dove sono: chi arriva in fondo leggendo li trova al loro
+posto, e "Aggiungi alla lista" non ha un gemello nella barra perché la barra serve a
+prenotare, non a mettere da parte.
+
+### Il prezzo è quello di partenza, non quello della variante scelta
+
+In barra ci va `tourPriceHTML(tour)`, la stessa cosa scritta sulle schede in elenco ("da
+€60", col barrato se c'è l'offerta). Non segue la variante scelta più sotto: è il prezzo
+**da cui si parte**, e resta vero comunque si giri la scheda. Farlo seguire la variante
+voleva dire tenere allineate due scritture dello stesso numero, e sul chárter privato da
+€800 la barra avrebbe smesso di dire "da quanto parte".
+
+### Il pulsante non ha un suo codice
+
+Porta `data-request-open` con l'id della scheda, come il pulsante dentro la scheda:
+l'ascoltatore in `escursioni.js` sta su `document`, quindi prende anche un pulsante che
+sta fuori dal contenitore. Nessuna finestra nuova, nessun secondo modo di prenotare da
+tenere allineato al primo.
+
+### Due pallini le finivano sopra
+
+In basso ci stavano già `.lista-fab` (a sinistra, quando la lista non è vuota) e
+`.assist-fab` (a destra). `mostraBarraPrenota` mette `has-book-bar` sul `body` e quella
+classe li alza di 4.75rem, più il piede che prende spazio sotto. La classe si toglie
+quando la barra non c'è: su una scheda inesistente, e se un domani `WHATSAPP_NUMBER`
+fosse vuoto — nello stesso caso in cui spariscono i due pulsanti dentro la scheda.
+
+La barra sta solo in `tour.html`: le altre pagine non hanno il pezzo di HTML, quindi non
+c'è niente da nascondere altrove.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi sulle foto che mancano. `node --check` su
+`tour.js` e `sw.js`.
+
+Nel browser vero (Pixel 5, 393px), su `tour.html?id=small-group-catamaran`: la barra c'è,
+scrive "da €60", il pulsante porta l'id giusto e apre `#requestDialog`; in fondo alla
+pagina la barra è ancora lì e il "© Isla" del piede non ci finisce sotto; al cambio lingua
+in spagnolo diventa "RESERVAR" e "desde €60"; con una voce in lista, `.lista-fab` e
+`.assist-fab` stanno sopra la barra senza toccarla (misurati i rettangoli, non a occhio).
+Su `tour.html?id=non-esiste` la barra non compare, e in `escursioni.html` non esiste
+proprio. Nessun errore in console.
+
+`CACHE_NAME` da `isla-v331` a `isla-v332`: toccati `tour.html`, `tour.js` e `styles.css`.
+
+## v333 — la lista vestita da retro di cartolina
+
+Richiesta del proprietario: la lista deve sembrare il retro di una cartolina, col
+francobollo che porta il logo di Isla.
+
+**Solo l'aspetto.** Le voci, il totale, il campo del nome e il pulsante WhatsApp sono
+quelli di prima, nello stesso ordine e con lo stesso codice dietro: `lista.js` cambia in
+un punto solo, il `<span class="lista-francobollo">` aggiunto nell'intestazione della
+finestra. Tutto il resto è in `styles.css`.
+
+### Cosa fa la carta
+
+Fondo `--cream` al posto di `--bg`, e la cornicetta stampata del retro di una cartolina
+fatta con `outline` + `outline-offset: -10px`. Outline e non un bordo dentro il contenuto
+perché la finestra scorre: l'outline sta sul riquadro della finestra e resta ferma mentre
+le voci scorrono sotto.
+
+Le righe fra una voce e l'altra diventano punteggiate, il titolo dell'escursione passa al
+corsivo del `--font-display` (niente font nuovo da scaricare: è il Cormorant che il sito
+già carica), e il totale smette di essere il riquadro sabbia e diventa l'ultima riga del
+conto, tirata sotto con una riga più marcata. Il nome si scrive su una riga come
+sull'indirizzo di una cartolina, non dentro una pillola.
+
+### Il francobollo
+
+Sta fra il titolo e la ✕: in alto a destra è il suo posto sulle cartoline vere, e la ✕
+resta dov'è che la gente la cerca. Dentro c'è `assets/logo-isla.png`, quello del sito.
+
+La dentellatura sono pallini del colore della carta mangiati sui quattro lati
+(`::before`), il timbro postale è un anello storto sull'angolo (`::after`). Il timbro non
+ha scritte dentro: sarebbero tre traduzioni per un disegno che nessuno legge. Il
+`<span>` ha `aria-hidden="true"` e l'`<img>` l'`alt` vuoto — è decorazione, chi usa lo
+screen reader tira dritto.
+
+### Le altre finestre non si toccano
+
+Ogni regola parte da `.lista-dialog`. Verificato nel browser che `#requestDialog` ha
+ancora il fondo `--bg`, nessun outline e il campo del nome a pillola col bordo pieno: la
+cartolina è solo la lista.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `lista.js`.
+
+Nel browser vero (Pixel 5 e 1280px), con due voci in lista: la finestra si apre, il
+francobollo col logo è al suo posto, togliere una voce e svuotare funzionano ancora, il
+modulo col nome è lì. A lista vuota il pallino non compare, come prima. Nessun errore in
+console.
+
+`CACHE_NAME` da `isla-v332` a `isla-v333`: toccati `lista.js` e `styles.css`.
+
+## v334 — la cartolina sembra di più una cartolina
+
+Il proprietario ha guardato la v333 e ha chiesto di spingere: "puoi farmela sembrare più
+cartolina". Quattro cose, nessuna delle quali tocca come funziona la lista.
+
+### La calligrafia
+
+Il corsivo del Cormorant era elegante ma leggeva "serif in corsivo", non "scritto a mano".
+Adesso i titoli delle escursioni, i prezzi, il totale e il nome del cliente sono in
+**Caveat**, aggiunto allo stesso `<link>` di Google Fonts che già porta Cormorant e Jost
+in tutte e sei le pagine.
+
+**Non è una richiesta in più**: è lo stesso foglio CSS, una famiglia in più dentro lo
+stesso indirizzo. Il file del font (~75 KB) lo scarica solo il browser che apre la lista,
+perché il font non è usato da nessun testo finché la finestra non si disegna.
+
+Il link è identico su tutte e sei le pagine anche dove la lista non c'è (`booking.html`):
+una riga sola uguale ovunque è più difficile da sbagliare di due varianti da tenere
+allineate, e il costo è zero — senza testo che lo usi, il font non parte.
+
+Da offline senza il font in cache si vede il ripiego (`"Segoe Script", cursive`, e dove
+non c'è nemmeno quello il font di sistema). È lo stesso che succede già oggi a Cormorant e
+Jost: `sw.js` mette in cache i file del sito, non quelli di Google Fonts.
+
+### Il timbro adesso annulla davvero
+
+All'anello sono state aggiunte le tre righe dell'annullo che escono dal timbro e vanno a
+finire sulla carta, come allo sportello. Sono un `::before` del timbro, non un'immagine.
+
+### La grana della carta
+
+Un puntino ogni 4px, a 5% di opacità: non si vede come puntini, si vede come "non è uno
+schermo bianco". Sopra ci sta la cornicetta stampata, che c'era già.
+
+### Da 640px in su la cartolina si divide in due
+
+Sullo schermo grande c'è spazio per il retro vero: le escursioni a sinistra (il
+messaggio), nome e invio a destra (l'indirizzo), separati dalla riga verticale stampata.
+La finestra passa da 520 a 640px per farci stare due colonne leggibili.
+
+Sul telefono no: due colonne da 160px sarebbero due colonne illeggibili, e lì la cartolina
+resta per il lungo, con la riga di separazione orizzontale sopra il totale.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `lista.js`.
+
+Nel browser vero (Pixel 5 e 1280px), con due voci in lista. Il font a mano nel container
+non si carica — Chromium non si fida del certificato del proxy — quindi per **vederlo** ho
+scaricato il woff2 di Caveat e l'ho iniettato nella pagina di prova, e poi cancellato: nel
+repo non c'è nessun file di font, in produzione resta il link di Google Fonts. Con il font
+davanti agli occhi: titoli, prezzi, totale e nome scritti a mano, timbro con le righe,
+due colonne a 1280px e una sola sul telefono. Togliere una voce, svuotare e il modulo col
+nome funzionano come prima.
+
+`CACHE_NAME` da `isla-v333` a `isla-v334`: toccati `lista.js`, `styles.css` e i sei
+`.html` col link dei font.

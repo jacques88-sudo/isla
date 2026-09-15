@@ -10,7 +10,7 @@
   <link rel="icon" href="./assets/icon-192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
   <link rel="stylesheet" href="./styles.css" />
   <!-- Critical splash styles, inlined so the loading screen never flashes
        unstyled while styles.css is still being fetched. -->
@@ -114,6 +114,17 @@
     </div>
     <div class="wrap" data-tour><!-- riempito da tour.js --></div>
   </main>
+
+  <!-- Barra "Prenota ora" appoggiata in fondo allo schermo: mentre si scorre la
+       scheda, il prezzo e il pulsante restano sempre a portata di pollice. La
+       riempie renderTour in tour.js; finche' non c'e' una scheda resta nascosta,
+       cosi' la pagina "escursione non trovata" non mostra una barra vuota. -->
+  <div class="book-bar" data-book-bar hidden>
+    <p class="book-bar-price" data-book-price></p>
+    <button class="btn btn-primary book-bar-cta" type="button" data-request-open=""
+            aria-haspopup="dialog" aria-controls="requestDialog"
+            data-i18n="nav.bookNow">Prenota ora</button>
+  </div>
 
   <div class="photo-viewer" data-photo-viewer hidden>
     <button class="iconbtn photo-viewer-close" type="button" data-photo-close

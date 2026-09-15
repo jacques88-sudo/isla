@@ -586,8 +586,11 @@ a { text-decoration: none; color: inherit; }
   border-radius: 20px;
   color: var(--text);
 }
-/* Il quinto riquadro: da solo su una riga da 2 o 4 colonne resterebbe
-   spaiato, quindi occupa tutta la larghezza e mette icona e testo in fila. */
+/* Il riquadro che non fa coppia con gli altri, da solo su una riga: occupa
+   tutta la larghezza (invece di restare spaiato in una griglia da 2 o 4
+   colonne) e mette icona e testo in fila invece che impilati. Non e' legato
+   a un riquadro preciso — l'ha portato prima "Noleggio auto, moto e bici" in
+   fondo alla griglia, adesso "Scan ticket" in cima. */
 .bento-tile-wide {
   grid-column: 1 / -1;
   aspect-ratio: auto;

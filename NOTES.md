@@ -12111,3 +12111,36 @@ Rifatto anche dopo aggiunta la riga bianca fra le strisce: stessa prova, stesso 
 niente spacchi color crema al posto del bianco.
 
 `CACHE_NAME` da `isla-v328` a `isla-v330`: toccati `index.html` e `styles.css`.
+
+## v331 — "Scan ticket" sale sopra la griglia, "Noleggio" scende al suo posto
+
+Richiesta del proprietario: "Scan ticket" orizzontale come "Noleggio auto, moto e bici",
+ma sopra i riquadri invece che sotto, e al posto suo (il riquadro quadrato in mezzo agli
+altri) ci va "Noleggio".
+
+**Scambiate solo le classi e la posizione, non inventato niente di nuovo.** La classe
+`.bento-tile-wide` (larghezza piena, icona e testo in fila) esisteva già ed era su
+"Noleggio"; adesso è su "Scan ticket", messo per primo nella griglia invece che a un
+riquadro quadrato in mezzo agli altri. "Noleggio" perde `.bento-tile-wide` e diventa un
+riquadro quadrato normale, nel punto della griglia dove prima stava "Scan ticket" (subito
+dopo "Pacchetti"). Il commento sopra `.bento-tile-wide` in `styles.css` diceva "il quinto
+riquadro", legato alla posizione che aveva allora: tolto il numero, perché adesso la
+stessa classe la porta un riquadro diverso e in un punto diverso.
+
+Ordine finale nella griglia: Scan ticket (largo, in cima) → Pacchetti → Noleggio (quadrato)
+→ In famiglia → 3/5/7 Days Experience.
+
+Nessun cambio a `app.js`: sia `data-ticket-open` che `data-rental-link` sono selettori per
+attributo, non contano sulla posizione nel DOM.
+
+### Provato
+
+`node controlla.js` si è accorto da solo che avevo toccato `index.html` e `styles.css`
+senza alzare `CACHE_NAME` — errore vero, non un avviso — e l'ho alzato.
+
+Nel browser vero (412px e 1280px): "Scan ticket" in cima a tutta larghezza apre ancora il
+dialog dei ticket (`#ticketDialog`, verificato che perde `hidden` e prende `is-open`);
+"Noleggio", diventato quadrato, ha ancora l'`href` di WhatsApp con il testo precompilato.
+Nessun errore in console.
+
+`CACHE_NAME` da `isla-v330` a `isla-v331`: toccati `index.html` e `styles.css`.

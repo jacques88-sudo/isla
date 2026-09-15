@@ -11924,3 +11924,79 @@ In elenco la card dice **"da €20"**. Nessun errore JS.
   gare junior separate e più economiche: se anche al banco è così, i due prezzi vanno sdoppiati.
 - **La tanda da 20 minuti per i junior**: esiste e quanto costa?
 - Resta aperta da v278: **1,20 m di altezza minima per il copilota** contro i 3 anni.
+
+## v328 — le gare del karting sono solo per adulti
+
+Le due domande lasciate aperte in v327 hanno avuto risposta dall'ufficio, e sono due no:
+
+- **un bambino non può fare il Mini Prix o il Grand Prix**;
+- **la tanda da 20 minuti per i junior non esiste.**
+
+### Il volantino diceva "per person", e non bastava
+
+Il listino esposto scrive *MINI PRIX 40 € per person* senza distinguere fra adulti e
+bambini, e in v327 era stato preso alla lettera: `priceAdult: 40` e `priceChild: 40`. Era
+la lettura più fedele del foglio, ma il foglio parlava di **prezzo**, non di **chi può
+salire**. Erano due domande diverse e il volantino ne rispondeva a una sola.
+
+Vale la pena tenerlo: un listino dice quanto costa una cosa a chi la può comprare. Non dice
+chi la può comprare. La seconda domanda va fatta lo stesso, anche quando la prima ha una
+risposta che sembra completa.
+
+### Tre formule su quattro adesso non hanno `priceChild`
+
+| formula | adulto | bambino |
+|---|---|---|
+| Tanda da 10 minuti | 20 | **15** |
+| Tanda da 20 minuti | 35 | — |
+| Mini Prix | 40 | — |
+| Grand Prix | 60 | — |
+
+Il campo **assente** è la stessa scelta di `priceInfant`: non è zero, non è "gratis", è "qui
+un bambino non ci va". E il meccanismo che c'era già fa il resto — `calcolaTotale()` in
+`escursioni.js` restituisce `null` quando ci sono bambini senza il loro prezzo, quindi con
+quelle tre formule il riquadro del totale **sparisce** invece di contare un bambino a 40
+euro per una gara a cui non lo fanno partecipare.
+
+Non è un blocco: la richiesta parte lo stesso, e l'ufficio risponde. Un blocco vero, come
+quello di `days` sul giorno sbagliato, qui non c'è e non è stato inventato per l'occasione.
+
+### Dove è scritto, e perché in tre posti
+
+Il "solo adulti" sta in tre punti, ed è voluto che si ripeta:
+
+1. nella **spiegazione sotto il bottone** di ogni formula, dove si legge nel momento in cui
+   si sceglie;
+2. nel **totale che non compare**, che è il momento in cui uno se ne accorge da solo;
+3. nella **nota in fondo**, riscritta, che adesso chiude dicendo dove vanno i bambini invece
+   di dove va chi è in pochi: *"Per i bambini, e per chi è in pochi, c'è la tanda da 10
+   minuti: quella non ha minimi."*
+
+La terza è quella che conta: una famiglia che scopre di non poter fare la gara deve trovare
+subito la cosa che **può** fare, non solo il divieto.
+
+`family: true` resta: i kart junior dai 7 anni e il biposto dai 3 ci sono ancora, e la
+formula che si apre per prima è proprio quella che va bene ai bambini.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati.
+
+Nel browser vero, viewport telefono, in italiano, premendo le quattro formule e provando
+ognuna con e senza bambini:
+
+| formula | 2 adulti | 2 adulti + 1 bambino |
+|---|---|---|
+| Tanda 10 minuti | 40 € | **55 €** |
+| Tanda 20 minuti | 70 € | **nessun totale** |
+| Mini Prix | 80 € | **nessun totale** |
+| Grand Prix | 120 € | **nessun totale** |
+
+La riga "Bambini (7-13)" compare in "In breve" solo sulla prima. Nessun errore JS.
+
+`CACHE_NAME` a `isla-v328`.
+
+### Cosa resta aperto sul karting
+
+Una cosa sola, da v278: il fornitore scrive **1,20 m di altezza minima per il copilota** del
+biposto, ma a 3 anni si sta sui 95 cm.

@@ -1,0 +1,44 @@
+LISTINO ESPOSTO AL CIRCUITO — Karting Las Américas, Fañabé
+Foto del volantino mandata dall'ufficio il 15 settembre 2026.
+Trascritto qui parola per parola: e' la fonte, non un riassunto.
+
+  SUPERKART ADULTS   (10 MINUTES)   20 €
+  SUPERKART ADULTS   (20 MINUTES)   35 €
+  SUPERKART JUNIOR   (10 MINUTES)   15 €
+  SUPERKART DOUBLE   (10 MINUTES)   25 €
+
+  FOR GROUPS OF 5 TO 15 PEOPLE
+
+  MINI PRIX    40 € per person
+    - 10 MIN CLASSIFICATION
+    - 10 MIN RACE
+    - TROPHY
+
+  GRAND PRIX   60 € per person
+    - 10 MIN PRACTICE
+    - 10 MIN CLASSIFICATION
+    - 10 MIN RACE
+    - TROPHY AND CAVA
+
+---
+
+QUESTO LISTINO BATTE karting-las-americas.json
+
+Sono due fonti dello stesso circuito che non dicono la stessa cosa:
+
+  |                  | volantino | carrello del sito |
+  |------------------|-----------|-------------------|
+  | tanda adulto     | 20        | 22                |
+  | tanda junior     | 15        | 16                |
+  | gruppi           | 5-15      | minimo 8, o 6 bambini |
+  | Mini Prix        | 40        | 45 adulto / 35 junior |
+  | Grand Prix       | 60        | 60 adulto / 50 junior |
+  | Super Gran Premio| non c'e'  | 70                |
+
+Il proprietario ha detto che i prezzi ufficiali sono quelli del volantino
+(15 settembre 2026), e la scheda li segue. Il JSON resta perche' ha i dati
+che il volantino non da' — fasce d'eta', altezze, modelli dei kart, orari
+junior del fine settimana — ma sui PREZZI e sui MINIMI DI GRUPPO non si
+guarda piu' quello.
+
+Il Super Gran Premio e' sparito dalla scheda: sul listino esposto non c'e'.

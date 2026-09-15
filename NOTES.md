@@ -8770,3 +8770,107 @@ ora" ha una voce, contata (`options.length === 1`), che è la conseguenza scritt
 Le altre tre formule e i loro prezzi sono invariati. Nessun errore JS.
 
 `CACHE_NAME` a `isla-v279`.
+
+## v280 — il listino esposto al circuito, e i prezzi tornano indietro
+
+L'ufficio ha mandato la **foto del volantino esposto al circuito**. È il listino vero, e
+smonta metà di quello che era stato messo in v276 e v277. Trascritto in
+`dati-fornitore/grezzo/karting-listino.txt`, perché una foto in chat si perde e 3 MB di JPEG
+in un repo di una PWA non ci stanno.
+
+### Le due fonti dello stesso circuito non dicono la stessa cosa
+
+|  | volantino | carrello del sito |
+|---|---|---|
+| tanda adulto | **20** | 22 |
+| tanda junior | **15** | 16 |
+| gruppi | **da 5 a 15 persone** | minimo 8, o 6 bambini |
+| Mini Prix | **40, uguale per tutti** | 45 adulto / 35 junior |
+| Grand Prix | **60, uguale per tutti** | 60 adulto / 50 junior |
+| Super Gran Premio | **non c'è** | 70 |
+| tanda adulto da 20 minuti | **35** | non c'era |
+
+Il proprietario ha detto che i prezzi ufficiali sono quelli del volantino. La scheda li
+segue, e il JSON dello scraping resta per quello che il volantino non dice: fasce d'età,
+altezze, modelli dei kart, orari junior del fine settimana.
+
+### La cosa da ricordare: il primo giro aveva ragione
+
+In v276 la ricerca in rete diceva **20 e 15**, lo scraping del carrello diceva **22 e 16**, e
+il carrello vinse perché era "la fonte diretta". Non lo era: era il **listino della
+prenotazione online**, un prezzo diverso da quello del banco. Il volantino conferma 20 e 15.
+
+La lezione non è "fidati degli aggregatori" — i 725 metri di pista erano sbagliati sul serio,
+e lo scraping li ha corretti. È più sottile: **un sito di prenotazione può vendere a un prezzo
+e il banco a un altro**, e "fonte diretta" non vuol dire "il prezzo che paga il nostro
+cliente". La domanda giusta da fare all'ufficio non è "quale numero è vero" ma **"da quale
+listino compriamo"**.
+
+### Questa volta i prezzi scendono, ed è la direzione facile
+
+22 → 20 e 16 → 15. In v276 erano stati alzati, contro la regola del progetto, con la
+motivazione che pubblicare meno del prezzo vero fa fare l'aumento all'ufficio davanti al
+cliente. Adesso il prezzo vero è più basso, quindi si scende: nessun cliente ha letto un 22
+e si vede chiedere di più.
+
+### Le formule diventano quattro, ma non le stesse
+
+Fuori il **Super Gran Premio**: sul listino esposto non c'è, e una formula che il circuito non
+espone non la vendiamo. Dentro la **tanda da 20 minuti**, che sul volantino c'è e nel JSON no.
+
+| formula | adulto | bambino | durata |
+|---|---|---|---|
+| Tanda da 10 minuti | 20 | 15 | 10′ |
+| Tanda da 20 minuti | 35 | **nessun prezzo** | 20′ |
+| Mini Prix | 40 | 40 | 20′ |
+| Grand Prix | 60 | 60 | 30′ |
+
+Spariscono anche le durate doppie del tipo "20 minuti (13 per i bambini)": erano una
+conseguenza dei sei prodotti separati del sito. Sul volantino il Mini Prix è **uno**, 40 € a
+persona per chiunque, e la scheda lo dice così.
+
+### La tanda da 20 minuti non ha il prezzo bambini, ed è voluto
+
+Il volantino la scrive **SUPERKART ADULTS (20 MINUTES)**: per i junior un 20 minuti non c'è.
+Due tande junior farebbero 30 €, ma è aritmetica mia, non un prezzo del circuito.
+
+La variante è quindi senza `priceChild`, e il meccanismo che c'era già fa il resto:
+`calcolaTotale()` in `escursioni.js` (riga ~343) restituisce `null` quando ci sono bambini
+senza il loro prezzo — *"Bambini senza il loro prezzo: il totale verrebbe fuori come se non
+pagassero. Meglio niente che un numero falso."* Provato: con quella formula e un bambino il
+riquadro del totale **sparisce**, la richiesta parte lo stesso, e la spiegazione sotto il
+bottone dice che il prezzo lo confermiamo rispondendo.
+
+Questa è la differenza fra il campo assente e lo zero, la stessa di `priceInfant`: qui non
+sapere è un'informazione, e il sito la sa già dire.
+
+### Il Superkart Double resta fuori dalle formule
+
+25 € **a kart**, non a persona: messo fra le varianti verrebbe moltiplicato per le persone e
+darebbe il doppio. Resta dov'era, in nota, col suo prezzo e con "a kart, non a persona"
+scritto per esteso.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati.
+
+Nel browser vero, viewport telefono, in italiano, premendo le quattro formule una a una:
+
+| formula | riga "In breve" | totale 2 adulti + 1 bambino |
+|---|---|---|
+| Tanda 10 minuti | Adulti €20 · Bambini €15 | **55 €** |
+| Tanda 20 minuti | Adulti €35, **nessuna riga bambini** | **nessun totale**, voluto |
+| Mini Prix | Adulti €40 · Bambini €40 | **120 €** |
+| Grand Prix | Adulti €60 · Bambini €60 | **180 €** |
+
+In elenco la card dice **"da €20"**. Nessun errore JS.
+
+`CACHE_NAME` a `isla-v280`.
+
+### Da confermare con l'ufficio
+
+- **Un bambino può fare il Mini Prix o il Grand Prix?** Il volantino dice "40 € per person"
+  senza distinguere, e la scheda lo prende alla lettera. Il sito del circuito invece vendeva
+  gare junior separate e più economiche: se anche al banco è così, i due prezzi vanno sdoppiati.
+- **La tanda da 20 minuti per i junior**: esiste e quanto costa?
+- Resta aperta da v278: **1,20 m di altezza minima per il copilota** contro i 3 anni.

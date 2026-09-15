@@ -100,10 +100,14 @@ Undici prodotti presi dalle schede WooCommerce: le tande, le nove gare, la
 promozione per residenti, i tre modelli di kart, indirizzo e dati del circuito.
 
 Su cinque formati di gara su sei il sito dà **due prezzi diversi**, e il file
-li tiene tutti e due (`precio`, dal carrello, e `precio_en_descripcion`). Il
-proprietario ha confermato il **10 settembre 2026 che vale il carrello**: 45,
-60, 70 per gli adulti, 35, 50, 70 per i bambini. Da lì le sei gare sono
-diventate le quattro formule della scheda (v277).
+li tiene tutti e due (`precio`, dal carrello, e `precio_en_descripcion`).
+
+**Sui prezzi però non si guarda più questo file.** Il 15 settembre 2026
+l'ufficio ha mandato la foto del **listino esposto al circuito**, trascritto
+in `grezzo/karting-listino.txt`, e quello è la fonte: dà 20 e 15 dove il
+carrello dà 22 e 16, e gruppi **da 5 a 15 persone** dove il carrello chiede un
+minimo di 8. Il JSON resta per quello che il volantino non dice — fasce d'età,
+altezze, modelli dei kart, orari junior del fine settimana.
 
 Non è finito in scheda quello che il file chiama `plaza_gratis_desde`: il
 circuito regala la gara al festeggiato dai 10 partecipanti in su, ma è la

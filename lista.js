@@ -179,6 +179,11 @@ function initLista() {
   dialog.innerHTML = `
     <div class="ticket-dialog-head">
       <h2 id="listaTitle" data-i18n="lista.title">La tua lista</h2>
+      <!-- Il francobollo e' decorazione: niente testo da leggere, niente da
+           tradurre, e lo screen reader tira dritto. -->
+      <span class="lista-francobollo" aria-hidden="true">
+        <img src="./assets/logo-isla.png" alt="" width="40" height="40" loading="lazy" />
+      </span>
       <button class="iconbtn" type="button" data-lista-close
               data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
     </div>

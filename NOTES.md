@@ -12199,3 +12199,54 @@ Su `tour.html?id=non-esiste` la barra non compare, e in `escursioni.html` non es
 proprio. Nessun errore in console.
 
 `CACHE_NAME` da `isla-v331` a `isla-v332`: toccati `tour.html`, `tour.js` e `styles.css`.
+
+## v333 — la lista vestita da retro di cartolina
+
+Richiesta del proprietario: la lista deve sembrare il retro di una cartolina, col
+francobollo che porta il logo di Isla.
+
+**Solo l'aspetto.** Le voci, il totale, il campo del nome e il pulsante WhatsApp sono
+quelli di prima, nello stesso ordine e con lo stesso codice dietro: `lista.js` cambia in
+un punto solo, il `<span class="lista-francobollo">` aggiunto nell'intestazione della
+finestra. Tutto il resto è in `styles.css`.
+
+### Cosa fa la carta
+
+Fondo `--cream` al posto di `--bg`, e la cornicetta stampata del retro di una cartolina
+fatta con `outline` + `outline-offset: -10px`. Outline e non un bordo dentro il contenuto
+perché la finestra scorre: l'outline sta sul riquadro della finestra e resta ferma mentre
+le voci scorrono sotto.
+
+Le righe fra una voce e l'altra diventano punteggiate, il titolo dell'escursione passa al
+corsivo del `--font-display` (niente font nuovo da scaricare: è il Cormorant che il sito
+già carica), e il totale smette di essere il riquadro sabbia e diventa l'ultima riga del
+conto, tirata sotto con una riga più marcata. Il nome si scrive su una riga come
+sull'indirizzo di una cartolina, non dentro una pillola.
+
+### Il francobollo
+
+Sta fra il titolo e la ✕: in alto a destra è il suo posto sulle cartoline vere, e la ✕
+resta dov'è che la gente la cerca. Dentro c'è `assets/logo-isla.png`, quello del sito.
+
+La dentellatura sono pallini del colore della carta mangiati sui quattro lati
+(`::before`), il timbro postale è un anello storto sull'angolo (`::after`). Il timbro non
+ha scritte dentro: sarebbero tre traduzioni per un disegno che nessuno legge. Il
+`<span>` ha `aria-hidden="true"` e l'`<img>` l'`alt` vuoto — è decorazione, chi usa lo
+screen reader tira dritto.
+
+### Le altre finestre non si toccano
+
+Ogni regola parte da `.lista-dialog`. Verificato nel browser che `#requestDialog` ha
+ancora il fondo `--bg`, nessun outline e il campo del nome a pillola col bordo pieno: la
+cartolina è solo la lista.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `lista.js`.
+
+Nel browser vero (Pixel 5 e 1280px), con due voci in lista: la finestra si apre, il
+francobollo col logo è al suo posto, togliere una voce e svuotare funzionano ancora, il
+modulo col nome è lì. A lista vuota il pallino non compare, come prima. Nessun errore in
+console.
+
+`CACHE_NAME` da `isla-v332` a `isla-v333`: toccati `lista.js` e `styles.css`.

@@ -3054,3 +3054,109 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
     min-width: 280px;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   La lista vestita da retro di cartolina
+   ------------------------------------------------------------------------ */
+
+/* Solo l'aspetto: le voci, il totale, il nome e il pulsante WhatsApp restano
+   quelli di prima, al loro posto e con lo stesso codice dietro. */
+
+.lista-dialog {
+  background: var(--cream);
+  /* la cornicetta stampata sul retro di una cartolina. Outline e non un bordo
+     dentro il contenuto: la finestra scorre, e l'outline sta sul riquadro
+     della finestra, quindi resta ferma mentre le voci scorrono. */
+  outline: 1px solid oklch(0.78 0.02 75);
+  outline-offset: -10px;
+}
+
+/* Il francobollo sta tra il titolo e la ✕: l'angolo in alto a destra e' il suo
+   posto sulle cartoline vere, e la ✕ resta dov'e' che la gente la cerca. */
+.lista-dialog .lista-francobollo {
+  position: relative;
+  flex: none;
+  margin-left: auto;
+  width: 52px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  transform: rotate(3deg);
+  box-shadow: inset 0 0 0 1px oklch(0.8 0.03 70 / .6);
+}
+.lista-dialog .lista-francobollo img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+/* La dentellatura: pallini del colore della carta mangiati sui quattro lati. */
+.lista-dialog .lista-francobollo::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle 4px at 4px 4px, var(--cream) 97%, transparent 100%),
+    radial-gradient(circle 4px at 4px 4px, var(--cream) 97%, transparent 100%),
+    radial-gradient(circle 4px at 4px 4px, var(--cream) 97%, transparent 100%),
+    radial-gradient(circle 4px at 4px 4px, var(--cream) 97%, transparent 100%);
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  background-size: 10px 8px, 10px 8px, 8px 10px, 8px 10px;
+  background-position: top left, bottom left, top left, top right;
+}
+
+/* Il timbro postale, storto sull'angolo del francobollo come quando lo
+   annullano allo sportello. Solo l'anello: una scritta dentro sarebbe da
+   tradurre in tre lingue per un disegno che nessuno legge. */
+.lista-dialog .lista-francobollo::after {
+  content: "";
+  position: absolute;
+  left: -20px;
+  bottom: -8px;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--muted);
+  border-radius: var(--radius-pill);
+  opacity: .45;
+  transform: rotate(-12deg);
+}
+
+/* Le voci diventano righe di cartolina: il titolo nel corsivo del display, e
+   la riga sotto punteggiata invece che piena. */
+.lista-dialog .lista-voce { border-bottom-style: dotted; }
+.lista-dialog .lista-voce-testo strong {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.15rem;
+}
+.lista-dialog .lista-voce-prezzo { font-variant-numeric: tabular-nums; }
+
+/* Il totale non e' piu' un riquadro pieno: sulla carta e' l'ultima riga del
+   conto, tirata sotto con una riga piu' marcata. */
+.lista-dialog .lista-totale {
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .8rem;
+  padding: .9rem 0 0;
+  background: none;
+  border-radius: 0;
+  border-top: 1.5px solid oklch(0.78 0.02 75);
+}
+.lista-dialog .lista-totale small { text-align: right; }
+
+/* Il lato indirizzo: il nome si scrive su una riga, come su una cartolina,
+   non dentro una pillola. */
+.lista-dialog input[type="text"] {
+  border: none;
+  border-bottom: 1px solid var(--muted);
+  border-radius: 0;
+  background: none;
+  padding: .65rem .2rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.15rem;
+}
+.lista-dialog input[type="text"]:focus { border-bottom-color: var(--text); }

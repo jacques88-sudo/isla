@@ -12930,3 +12930,128 @@ pacchetti partono da 1 con €132,50, che e' la meta' esatta dei €265 di prima
 
 E la domanda per il proprietario, che non è un passo: **il nome, forse, non va chiesto** —
 il messaggio parte dal WhatsApp del cliente e l'ufficio vede già chi scrive.
+
+## v341 — l'hotel si ricorda, il nome no
+
+Quarto dei cinque passi sulla prenotazione. Fra 562 nomi, l'hotel è **l'unica domanda
+della finestra la cui risposta non cambia mai**: per tutta la vacanza il cliente sta nello
+stesso posto. La data cambia, le persone possono cambiare, l'hotel no — e glielo facevamo
+ribattere a ogni escursione.
+
+Chiesto dal proprietario: «ricordiamo hotel». Solo l'hotel, e va bene così — vedi sotto.
+
+### Il nome **non** si ricorda, e non è una dimenticanza
+
+L'hotel è un dato della vacanza, il nome è un dato della persona. Se il telefono gira di
+mano — e in vacanza gira, si passa lo schermo per far vedere una foto — il secondo è
+quello che non deve restare scritto in giro. Anche perché il nome, forse, non va chiesto
+affatto: resta la domanda aperta per il proprietario.
+
+### Dove si salva, e dove si rimette
+
+`HOTEL_KEY = "isla-hotel"` nel browser del cliente, come la scelta della lingua e come la
+lista delle richieste. `hotelRicordato()` e `ricordaHotel()` stanno in `escursioni.js`,
+l'unico file che tutte le pagine caricano, con la stessa guardia `try/catch` di `i18n.js`:
+in incognito `localStorage` solleva, e senza memoria il campo resta vuoto come prima.
+
+Si salva in **tre** momenti, non a ogni tasto battuto:
+
+| quando | perché |
+|---|---|
+| l'hotel scelto dall'elenco (`prendi`) | è un hotel vero, non tre lettere a metà |
+| la richiesta mandata | prende anche l'hotel battuto a mano, che nell'elenco non c'è |
+| l'escursione messa nella lista | stessa cosa: il controllo sta prima del bivio |
+
+Se salvasse a ogni tasto, la volta dopo il campo si riapriva con "bah" dentro.
+
+Si rimette **all'apertura della finestra**, dentro l'ascoltatore di `islarequestopen`, e
+solo se il cliente non ha già scritto qualcosa.
+
+### L'errore che ho evitato per un pelo, e uno che ho preso
+
+**`ricordaHotel("")` non cancella il ricordo, ed è la riga che tiene in piedi tutto.**
+Sulle schede senza ritiro (`PICKUP_NESSUNO`: le due del tuk tuk) `mostraPunto()` svuota la
+casella **di proposito** — la domanda lì non si fa, perché si sale in un posto solo. Se il
+salvataggio all'invio avesse salvato anche il vuoto, bastava aprire una di quelle schede e
+mandare una richiesta per **dimenticare l'hotel scritto mezz'ora prima**. Provato di
+proposito: dopo un invio dal tuk tuk la memoria dice ancora "Bahia del Duque".
+
+**Il ripristino va prima di `mostraPunto()`, non dopo.** È `mostraPunto()` che legge il
+campo e scrive sotto dove passa il pulmino e a che ora: mettendolo dopo, il punto di
+raccolta restava vuoto sotto un hotel scritto. Provato: alla riapertura escono insieme
+"Bahía del Duque, alla sbarra" e "08:40".
+
+### La riga sulla privacy era diventata falsa
+
+Diceva: «non viene salvato dal sito». Da adesso non è più vero.
+
+**E non era del tutto vero nemmeno prima**: la lista delle richieste sta in `localStorage`
+da sempre, con dentro hotel e note. La riga era già imprecisa, e questa modifica l'ha solo
+resa evidente.
+
+Riscritta nelle tre lingue, e dice le due cose che contano e sono vere:
+
+> Quello che scrivi serve solo a risponderti su WhatsApp. L'hotel resta salvato su questo
+> dispositivo, per non riscriverlo ogni volta.
+
+Prima di scriverla ho controllato che fosse vera davvero: **nel sito non c'è una sola
+chiamata di rete** che mandi qualcosa a qualcuno — niente `fetch`, niente
+`XMLHttpRequest`, niente `sendBeacon`, nessun pixel. Gli unici domini esterni sono i due
+di Google Fonts, per il carattere. Il messaggio parte quando il cliente preme il pulsante,
+e lo manda lui col suo WhatsApp.
+
+Due frasi corte e non una spiegazione lunga: quelle le ha bocciate il proprietario ai
+tempi del punto di raccolta, e aveva ragione.
+
+### `dispositivo` e non `telefono`
+
+Nella riga nuova c'è "su questo dispositivo". Più freddo di "telefono", ma su un portatile
+"telefono" sarebbe **falso**, e questa è la riga dove la precisione conta più del tono.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `escursioni.js`,
+`pacchetti.js`, `i18n.js`.
+
+Nel browser vero, iPhone SE (375×667), il giro della memoria:
+
+1. prima apertura: campo vuoto, memoria vuota;
+2. hotel scelto dall'elenco: salvato subito, e sotto escono punto di raccolta e ora;
+3. riapertura in una pagina nuova: campo già pieno, punto e ora al loro posto, **e i
+   suggerimenti non si aprono da soli** (rimettere un valore non deve far comparire la
+   tendina);
+4. scheda senza ritiro: campo svuotato, casella nascosta, **memoria intatta** — anche
+   dopo aver mandato una richiesta da lì;
+5. hotel battuto a mano e non in elenco ("Casa di mia zia a Icod"): ricordato;
+6. "aggiungi alla lista": ricordato anche da lì;
+7. finestra dei pacchetti: campo già pieno all'apertura, e salva quando parte.
+
+**Con `localStorage` che solleva a ogni tocco** (finta modalità privata, iniettata prima
+del caricamento): la finestra vive, i suggerimenti funzionano, si sceglie un hotel, niente
+in console.
+
+**Un hotel col nome cattivo**, `Hotel "La <Perla>" & Spa`: nei pacchetti l'hotel finisce
+dentro un attributo HTML, quindi ci andava guardato. `esc()` fa il suo, il campo lo
+rilegge identico e la finestra resta intera.
+
+Rifatti anche i tre passi di prima, per non averli rotti: piede col conto, nome in fondo,
+"meno / più", partenza da uno, giro completo fino al messaggio.
+
+`CACHE_NAME` da `isla-v340` a `isla-v341`: toccati `escursioni.js`, `pacchetti.js` e
+`i18n.js`.
+
+### Da tenere a mente
+
+Chi cambia hotel a metà vacanza si ritrova il campo pieno col vecchio. Il campo è in
+vista e si cambia scrivendoci sopra, e sotto c'è il punto di raccolta che si aggiorna
+mentre scrive — quindi si accorge. Se un domani il proprietario dicesse che succede
+spesso, il rimedio non è togliere la memoria: è chiedere una volta "stai ancora al
+Bahia del Duque?".
+
+### Resta un passo
+
+**La data è tutta a mano** → pastiglie "domani / dopodomani", costruite già saltando i
+giorni in cui non si parte: toglie i tap **e** toglie l'errore dopo la scelta.
+
+E la domanda per il proprietario, che non è un passo: **il nome, forse, non va chiesto** —
+il messaggio parte dal WhatsApp del cliente e l'ufficio vede già chi scrive.

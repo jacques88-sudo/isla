@@ -405,6 +405,39 @@ function hotelInputValue() {
   return el ? el.value.trim() : "";
 }
 
+// L'hotel si ricorda, il resto no.
+//
+// Per tutta la vacanza il cliente sta nello stesso hotel: fra 562 nomi, farglielo
+// ribattere a ogni escursione e' l'unica domanda della finestra la cui risposta
+// **non cambia mai**. La data cambia, le persone possono cambiare, l'hotel no.
+//
+// Resta nel browser suo, come la scelta della lingua e come la lista delle
+// richieste, e da lì non va da nessuna parte: nel sito non c'e' una sola
+// chiamata di rete che mandi qualcosa a qualcuno. Il messaggio parte quando il
+// cliente preme il pulsante, e lo scrive lui su WhatsApp.
+//
+// Il nome della persona **non** si ricorda, e non e' una dimenticanza: l'hotel
+// e' un dato della vacanza, il nome e' un dato della persona. Se il telefono
+// gira di mano — e in vacanza gira — il secondo e' quello che non deve restare
+// scritto in giro.
+const HOTEL_KEY = "isla-hotel";
+
+function hotelRicordato() {
+  // localStorage puo' non esserci (navigazione in incognito su certi browser):
+  // stessa guardia di i18n.js e lista.js, e senza memoria il campo resta vuoto
+  // come prima.
+  try { return localStorage.getItem(HOTEL_KEY) || ""; } catch (e) { return ""; }
+}
+
+function ricordaHotel(nome) {
+  // **Il campo vuoto non cancella il ricordo.** Sulle schede senza ritiro
+  // mostraPunto() svuota la casella di proposito: se questo salvasse anche il
+  // vuoto, aprire una di quelle schede farebbe dimenticare l'hotel scritto
+  // mezz'ora prima.
+  if (!nome) return;
+  try { localStorage.setItem(HOTEL_KEY, nome); } catch (e) { /* modalità privata */ }
+}
+
 // "Cleopatra" e "CLEOPATRA" e "cleopatra" devono valere uguale, e "Sueño" si
 // deve trovare scrivendo "sueno": chi e' in vacanza non va a cercare la enne
 // con lo scarabocchio sulla tastiera del telefono.
@@ -547,6 +580,10 @@ function initHotelField() {
 
   function prendi(nome) {
     input.value = nome;
+    // Scelto dall'elenco: e' un hotel vero, non tre lettere a meta'. Si
+    // ricorda qui e non a ogni tasto battuto, se no la prossima volta il campo
+    // si riapriva con "bah" dentro.
+    ricordaHotel(nome);
     chiudi();
     mostraPunto();
     input.focus();
@@ -640,6 +677,11 @@ function initHotelField() {
       aiutoEl.dataset.i18n = chiave;
       aiutoEl.textContent = t(chiave);
     }
+    // L'hotel di ieri, se c'e' e se il cliente non ha gia' scritto qualcosa.
+    // **Prima** di mostraPunto(), che e' quello che legge il campo e scrive
+    // sotto dove passa il pulmino e a che ora: rimettendolo dopo, il punto di
+    // raccolta restava vuoto sotto un hotel scritto.
+    if (!input.value) input.value = hotelRicordato();
     // fuori dall'if: e' mostraPunto() che fa sparire la casella dove il ritiro
     // non c'e', e non deve dipendere dal fatto che la riga di aiuto esista
     mostraPunto();
@@ -1666,6 +1708,10 @@ function initRequestDialog() {
       option: opzioneScelta()
     };
     if (!req.date) return;
+    // Anche l'hotel battuto a mano e non scelto dall'elenco: se il cliente
+    // manda la richiesta, quello e' il suo hotel. Qui e non prima, perche'
+    // prima e' solo roba scritta a meta'.
+    ricordaHotel(req.hotel);
     // Il giorno sbagliato ferma la richiesta: il messaggio e' gia' li' sotto
     // la data da quando l'ha scelta.
     //

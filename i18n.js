@@ -357,7 +357,15 @@ const I18N = {
   // **non si copiano qui**. Isla prenota a mano su WhatsApp e questa riga
   // resta a 24 ore finche' non e' l'ufficio a dire un altro numero.
   "req.hint":           { it: "Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.", en: "Requests must be sent at least <strong>24 hours in advance</strong>. We reply within 24 hours with the confirmation.", es: "Las solicitudes deben enviarse con al menos <strong>24 horas de antelación</strong>. Respondemos en 24 horas con la confirmación." },
-  "req.privacy":        { it: "Quello che scrivi qui serve solo a risponderti su WhatsApp: non viene salvato dal sito.", en: "What you type here is only used to reply to you on WhatsApp: the site does not store it.", es: "Lo que escribes aquí solo sirve para responderte por WhatsApp: el sitio no lo guarda." },
+  // Diceva "non viene salvato dal sito", e da quando l'hotel si ricorda non era
+  // piu' vero. Non era del tutto vero nemmeno prima: la lista delle richieste
+  // sta nel browser da sempre, hotel e note comprese.
+  // La riga nuova dice le due cose che contano e sono vere: a chi serve quello
+  // che scrive (a rispondergli su WhatsApp, e nel sito non c'e' una sola
+  // chiamata di rete che mandi qualcosa a qualcuno), e dove finisce l'hotel
+  // (nel suo dispositivo, non da noi). Due frasi corte: quelle lunghe le ha
+  // bocciate il proprietario e aveva ragione.
+  "req.privacy":        { it: "Quello che scrivi serve solo a risponderti su WhatsApp. L'hotel resta salvato su questo dispositivo, per non riscriverlo ogni volta.", en: "What you type is only used to reply to you on WhatsApp. Your hotel stays saved on this device, so you don't have to type it again.", es: "Lo que escribes solo sirve para responderte por WhatsApp. El hotel se queda guardado en este dispositivo, para no escribirlo cada vez." },
 
   // ── messaggio WhatsApp ──────────────────────────────────────────────────
   "wa.intro":           { it: "Ciao Isla! Sono {name}, vorrei richiedere disponibilità per:", en: "Hi Isla! I'm {name}, I'd like to check availability for:", es: "¡Hola Isla! Soy {name}, quisiera consultar disponibilidad para:" },

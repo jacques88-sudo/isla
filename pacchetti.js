@@ -1045,6 +1045,7 @@ function initPacchettoRichiesta() {
         <label for="packHotel"><span>${esc(t("req.hotel"))}</span>
           <span class="request-optional">${esc(t("req.hotelWhy"))}</span></label>
         <input id="packHotel" name="hotel" type="text" autocomplete="off"
+               value="${esc(hotelRicordato())}"
                placeholder="${esc(t("pack.hotelPlaceholder"))}" />
 
         <label for="packNote"><span>${esc(t("wa.notes"))}</span>
@@ -1155,6 +1156,9 @@ function initPacchettoRichiesta() {
       note: dialog.querySelector("#packNote").value.trim()
     };
     if (!req.name || !req.date) return;
+    // Come nella finestra della richiesta: l'hotel si ricorda quando la
+    // richiesta parte davvero, e solo se c'e' scritto qualcosa.
+    ricordaHotel(req.hotel);
     chiudi();
     window.location.href = pacchettoWhatsappUrl(corrente, req);
   });

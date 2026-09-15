@@ -167,12 +167,6 @@
     <p class="request-activity" data-request-activity></p>
     <p class="request-season" data-request-season hidden></p>
     <form data-request-form>
-      <div data-request-name>
-        <label for="reqName" data-i18n="req.name">Il tuo nome</label>
-        <input id="reqName" name="name" type="text" autocomplete="name"
-               data-i18n-placeholder="req.namePlaceholder" placeholder="Nome e cognome" required />
-      </div>
-
       <label for="reqDate" data-i18n="req.date">Quando vorresti andare</label>
       <input id="reqDate" name="date" type="date" required />
       <p class="request-day-error" data-request-day-error hidden></p>
@@ -236,6 +230,20 @@
       <label for="reqNote"><span data-i18n="req.note">Note</span> <span class="request-optional" data-i18n="req.optional">(facoltativo)</span></label>
       <input id="reqNote" name="note" type="text" autocomplete="off"
              data-i18n-placeholder="req.notePlaceholder" placeholder="Richieste particolari…" />
+
+      <!-- Il nome sta qui in fondo e non in cima, dove stava. E' l'unica
+           domanda che non riguarda l'escursione e l'unica a cui si risponde
+           battendo a macchina: in cima era la prima cosa che il cliente si
+           trovava davanti, prima ancora di "quando vorresti andare". Adesso la
+           finestra si apre sulla domanda vera, e il nome si scrive alla fine,
+           quando si sta gia' mandando. In modalita' "aggiungi alla lista" la
+           riga sparisce lo stesso: il nome si chiede una volta sola, quando si
+           manda la lista. -->
+      <div data-request-name>
+        <label for="reqName" data-i18n="req.name">Il tuo nome</label>
+        <input id="reqName" name="name" type="text" autocomplete="name"
+               data-i18n-placeholder="req.namePlaceholder" placeholder="Nome e cognome" required />
+      </div>
 
       <!-- Il conto e il pulsante stanno in un piede che resta appiccicato in
            fondo alla finestra mentre il resto scorre. Il modulo e' piu' alto

@@ -1026,10 +1026,6 @@ function initPacchettoRichiesta() {
       </div>
       <p class="request-activity">${esc(tf(corrente.title))}</p>
       <form data-pack-form>
-        <label for="packName">${esc(t("req.name"))}</label>
-        <input id="packName" name="name" type="text" autocomplete="name"
-               placeholder="${esc(t("req.namePlaceholder"))}" required />
-
         <label for="packDate">${esc(t("pack.fromDay"))}</label>
         <input id="packDate" name="date" type="date" required
                min="${minRequestDate()}" max="${maxRequestDate()}" />
@@ -1056,6 +1052,12 @@ function initPacchettoRichiesta() {
           <span class="request-optional">${esc(t("req.optional"))}</span></label>
         <input id="packNote" name="note" type="text" autocomplete="off"
                placeholder="${esc(t("req.notePlaceholder"))}" />
+
+        <!-- Come nella finestra della richiesta: il nome in fondo, perche' e'
+             l'unica domanda che non riguarda il viaggio. -->
+        <label for="packName">${esc(t("req.name"))}</label>
+        <input id="packName" name="name" type="text" autocomplete="name"
+               placeholder="${esc(t("req.namePlaceholder"))}" required />
 
         <!-- Come nella finestra della richiesta: conto e pulsante restano in
              fondo mentre il modulo scorre. -->

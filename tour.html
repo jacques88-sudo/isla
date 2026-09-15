@@ -211,8 +211,6 @@
       <div class="request-people" data-request-units hidden></div>
       <p class="request-day-error" data-request-units-error hidden></p>
 
-      <p class="request-total" data-request-total hidden></p>
-
       <label for="reqOption" data-request-option-label hidden>Opzione</label>
       <select id="reqOption" name="option" data-request-option hidden></select>
 
@@ -241,7 +239,20 @@
       <input id="reqNote" name="note" type="text" autocomplete="off"
              data-i18n-placeholder="req.notePlaceholder" placeholder="Richieste particolari…" />
 
-      <button class="btn btn-primary btn-block request-submit" type="submit" data-i18n="req.submit">Continua su WhatsApp</button>
+      <!-- Il conto e il pulsante stanno in un piede che resta appiccicato in
+           fondo alla finestra mentre il resto scorre. Il modulo e' piu' alto
+           di un telefono (1262 px contro 844 sulla scheda piu' semplice, 1563
+           dove ci sono i menu): prima il cliente compilava senza vedere ne'
+           quanto viene ne' dove si manda, e il totale gli passava davanti a
+           meta' strada per poi sparire di sopra.
+           Le due righe sotto restano fuori dal piede: se fossero dentro
+           occuperebbero lo spazio fisso di tutti, e lette una volta non
+           servono piu'. Servono anche a far scorrere qualcosa sotto al piede,
+           che e' quello che tiene in piedi il `position: sticky`. -->
+      <div class="request-foot">
+        <p class="request-total" data-request-total hidden></p>
+        <button class="btn btn-primary btn-block request-submit" type="submit" data-i18n="req.submit">Continua su WhatsApp</button>
+      </div>
 
       <p class="hint" data-i18n-html="req.hint">Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.</p>
       <p class="hint request-privacy" data-i18n="req.privacy">Quello che scrivi qui serve solo a risponderti su WhatsApp: non viene salvato dal sito.</p>

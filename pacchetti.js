@@ -1016,7 +1016,6 @@ function initPacchettoRichiesta() {
 
   function disegna() {
     if (!corrente) return;
-    const conto = pacchettoTotale(corrente, 2, 0);
     const giorni = pacchettoGiorni(corrente);
     dialog.innerHTML = `
       <div class="ticket-dialog-head">
@@ -1035,7 +1034,7 @@ function initPacchettoRichiesta() {
         <div class="request-people">
           <label for="packAdults"><span>${esc(t("req.adults"))}</span>
             <input id="packAdults" name="adults" type="number" inputmode="numeric"
-                   min="1" max="30" value="2" required />
+                   min="1" max="30" value="1" required />
           </label>
           <label for="packKids"><span>${esc(t("req.kids"))}</span>
             <input id="packKids" name="kids" type="number" inputmode="numeric"
@@ -1069,6 +1068,9 @@ function initPacchettoRichiesta() {
         <p class="hint">${esc(t("pack.askHint"))}</p>
         <p class="hint request-privacy">${esc(t("req.privacy"))}</p>
       </form>`;
+    // La finestra si ridisegna tutta a ogni apertura e a ogni cambio lingua:
+    // le caselle sono nuove ogni volta, e ogni volta si rivestono.
+    applicaStepper(dialog);
     aggiornaTotale();
   }
 

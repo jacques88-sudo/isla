@@ -12791,3 +12791,142 @@ Fatti: il piede col conto (v336), il nome in fondo (v337). Restano:
    giorni in cui non si parte.
 4. **Il nome, forse, non va chiesto**: il messaggio parte dal WhatsApp del cliente.
    Domanda per il proprietario.
+
+## v339 — il "meno / più" al posto delle caselle numeriche
+
+Terzo dei cinque passi sulla prenotazione. Contare quante persone sono è **l'unica cosa
+che nella finestra si fa quasi sempre**, ed era la più lenta: tocca la casella, aspetta il
+tastierino, batti il numero, chiudi il tastierino. Quattro gesti per andare da 2 a 3.
+Adesso è un tocco.
+
+### La decisione che tiene in piedi tutto il resto
+
+**La casella `type="number"` resta, ed è sempre lei a dire il numero.** I bottoni le
+scrivono dentro e poi sparano un evento `input`.
+
+Sembra un dettaglio ed è la cosa che ha reso questa modifica piccola: il totale, il
+controllo dei menu e quello dei mezzi stavano **già** ad ascoltare `input`, e continuano a
+funzionare senza sapere che i bottoni esistono. Niente secondo posto dove il numero è
+scritto — che è il modo di ritrovarsi due numeri diversi e non sapere quale vale.
+
+`bubbles: true` sull'evento non è decorativo: la finestra dei **pacchetti** ascolta
+`input` sulla finestra (`dialog.addEventListener("input", aggiornaTotale)`), non sulla
+casella. Senza, lì il totale non si muoveva.
+
+**E si può ancora battere a mano.** Per dodici persone scrivere "12" è più svelto che
+premere dieci volte. I bottoni servono al caso normale, che è "siamo due, più un bambino".
+
+### Un posto solo, e cinque punti serviti
+
+`applicaStepper(dove)` veste ogni `input[type="number"]` che trova. Sta in
+`escursioni.js`, l'unico file che **tutte** le pagine caricano (`pacchetti.js` viene
+dopo, quindi la vede). Chiamata in quattro punti:
+
+| punto | quando |
+|---|---|
+| le tre caselle delle persone | una volta sola all'avvio: stanno nell'HTML e non cambiano mai |
+| le righe dei mezzi | a ogni `riempiUnita()`: nascono e muoiono a ogni apertura |
+| le righe dei menu | a ogni `riempiMenu()`, stessa ragione |
+| la finestra dei pacchetti | a ogni `disegna()`: si ridisegna tutta ogni volta |
+
+Chi ridisegna ripassa di qui, quindi `vesti()` **controlla se la casella è già vestita** e
+in quel caso lascia stare. Senza, cambiare lingua a finestra aperta raddoppiava i bottoni
+ogni volta. Provato: Mustang e MHT restano a 10 e 12 bottoni dopo il cambio lingua, e nei
+pacchetti il "3" appena messo resta "3".
+
+**Non ho toccato l'HTML.** Il che vuol dire che per una volta la copia doppia di
+`escursioni.html` e `tour.html` non è un rischio: i bottoni li mette il JavaScript, e il
+JavaScript è uno.
+
+### Le tre trappole, e la prima poteva rendere tutto peggio del problema
+
+**1. Un bottone dentro una `<label>`.** Le caselle stanno in
+`<label for="reqAdults"><span>Adulti</span><input></label>`, e toccare una label mette a
+fuoco il suo campo. Se fosse valso anche per i bottoni, **ogni tocco su "+" avrebbe aperto
+la tastiera** — cioè esattamente la cosa che questo passo doveva togliere, peggiorata.
+
+Per specifica non succede: la label non inoltra il clic quando il bersaglio è un elemento
+interattivo, e un `<button>` lo è. Ma è troppo importante per fidarsi di una lettura della
+specifica: **misurato**. Dopo un tocco su "+", `document.activeElement` è `stepper-btn`,
+non `reqAdults`. Su sei prove diverse e anche nei pacchetti.
+
+**2. `type="button"`.** Dentro un `<form>`, un bottone senza `type` è un bottone d'invio:
+senza quella riga, toccare "+" mandava la richiesta su WhatsApp. Provato che non parte
+niente.
+
+**3. Le frecce del browser.** Le caselle numeriche ne hanno già due, e su desktop
+comparivano al passaggio del mouse rubando spazio al numero: spente, se no era la stessa
+cosa detta due volte.
+
+### I bottoni si spengono ai limiti
+
+"Adulti" parte da uno: a uno il meno si spegne. A trenta si spegne il più. Un bottone
+acceso che non fa niente sembra rotto. Vale anche battendo a mano: chi scrive "30" vede il
+più spegnersi.
+
+### `tabindex="-1"`, e perché non è un problema di accessibilità
+
+I bottoni sono fuori dal giro del tasto Tab. Chi gira con la tastiera ha già la casella,
+dove i numeri si battono e le frecce su/giù funzionano; due fermate in più per campo
+sarebbero **otto** fermate in più nella finestra. La funzione resta raggiungibile da
+tastiera — che è quello che la regola chiede — solo non due volte. Il segno "−" da solo
+non si legge ad alta voce, quindi il nome vero sta in `aria-label`, tradotto nelle tre
+lingue (`req.minus`, `req.plus`).
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `escursioni.js`,
+`pacchetti.js`, `i18n.js`.
+
+Nel browser vero, iPhone SE (375×667): un tocco su "+" porta 2 a 3 e il totale da €60 a
+€90; i limiti si accendono e si spengono; il "+" non manda la richiesta. Le righe dei menu
+(MHT, tre menu) e dei mezzi (Mustang, due tipi) vestite anche loro, e **misurato che non
+sbordano dalla colonna**: 159 px di riga, 73 al numero, 2×38 ai bottoni.
+
+Il giro completo: 3 adulti e 1 bambino messi coi bottoni → su WhatsApp arriva
+"3 adults and 1 child" e "€105 (3 adults × €30 + 1 child × €15)". "Aggiungi alla lista"
+con due bambini → salvata con due bambini. La finestra dei pacchetti: da €265 a €397,50.
+
+Più desktop a 1200 px, **al buio** (i bottoni prendono le variabili del tema, quindi si
+girano da soli), la home — dove la finestra non c'è e `applicaStepper` non viene nemmeno
+chiamata, sta dopo la guardia — e il catalogo. Zero errori in console.
+
+`CACHE_NAME` da `isla-v338` a `isla-v339`: toccati `escursioni.js`, `pacchetti.js`,
+`i18n.js` e `styles.css`.
+
+### Si parte da una persona, non da due
+
+Chiesto dal proprietario appena visti i bottoni, e le due cose stanno insieme: **finche' i
+numeri si battevano a macchina, un valore di partenza sbagliato costava quattro gesti** —
+per questo partire da due, che e' il caso piu' frequente, era la scelta giusta. Col
+"meno / piu'" costa **un tocco**, e allora conviene partire dal numero che non promette
+niente: uno.
+
+Tre posti, `value="2"` che diventa `value="1"`: le due copie dell'HTML e la finestra dei
+pacchetti. Il `min="1"` non si tocca — sotto uno non si va — quindi all'apertura il meno
+e' spento, com'e' giusto, e si riaccende al primo "+".
+
+Tolta anche una riga morta in `pacchetti.js`: `const conto = pacchettoTotale(corrente, 2,
+0)` dentro `disegna()`, che **nessuno leggeva** (il totale lo rifa' `aggiornaTotale()`
+subito dopo, dalle caselle vere). Lasciarla voleva dire lasciare in giro un "2" che sembra
+il valore di partenza e non lo e' piu'.
+
+Il singolare gia' funzionava e non c'e' stato niente da fare: sul messaggio esce
+"1 adult", non "1 adults", e nel totale "1 adult × €30".
+
+Provato: all'apertura 1 adulto, meno spento, totale €30; un "+" porta a 2, il meno si
+riaccende, totale €60; il messaggio dice "People: 1 adult" e "€30 (1 adult × €30)"; i
+pacchetti partono da 1 con €132,50, che e' la meta' esatta dei €265 di prima.
+
+`CACHE_NAME` a `isla-v340`.
+
+### Restano due passi
+
+1. **Nome e hotel non si ricordano.** Chi chiede tre escursioni li riscrive tre volte, e
+   l'hotel per tutta la vacanza è lo stesso. Da decidere insieme cosa fare della riga sulla
+   privacy, che oggi promette che il sito non salva niente.
+2. **La data è tutta a mano** → pastiglie "domani / dopodomani", costruite già saltando i
+   giorni in cui non si parte: toglie i tap **e** toglie l'errore dopo la scelta.
+
+E la domanda per il proprietario, che non è un passo: **il nome, forse, non va chiesto** —
+il messaggio parte dal WhatsApp del cliente e l'ufficio vede già chi scrive.

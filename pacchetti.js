@@ -1016,7 +1016,6 @@ function initPacchettoRichiesta() {
 
   function disegna() {
     if (!corrente) return;
-    const conto = pacchettoTotale(corrente, 2, 0);
     const giorni = pacchettoGiorni(corrente);
     dialog.innerHTML = `
       <div class="ticket-dialog-head">
@@ -1035,7 +1034,7 @@ function initPacchettoRichiesta() {
         <div class="request-people">
           <label for="packAdults"><span>${esc(t("req.adults"))}</span>
             <input id="packAdults" name="adults" type="number" inputmode="numeric"
-                   min="1" max="30" value="2" required />
+                   min="1" max="30" value="1" required />
           </label>
           <label for="packKids"><span>${esc(t("req.kids"))}</span>
             <input id="packKids" name="kids" type="number" inputmode="numeric"

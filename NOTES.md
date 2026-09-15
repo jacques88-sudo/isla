@@ -12894,6 +12894,32 @@ chiamata, sta dopo la guardia — e il catalogo. Zero errori in console.
 `CACHE_NAME` da `isla-v338` a `isla-v339`: toccati `escursioni.js`, `pacchetti.js`,
 `i18n.js` e `styles.css`.
 
+### Si parte da una persona, non da due
+
+Chiesto dal proprietario appena visti i bottoni, e le due cose stanno insieme: **finche' i
+numeri si battevano a macchina, un valore di partenza sbagliato costava quattro gesti** —
+per questo partire da due, che e' il caso piu' frequente, era la scelta giusta. Col
+"meno / piu'" costa **un tocco**, e allora conviene partire dal numero che non promette
+niente: uno.
+
+Tre posti, `value="2"` che diventa `value="1"`: le due copie dell'HTML e la finestra dei
+pacchetti. Il `min="1"` non si tocca — sotto uno non si va — quindi all'apertura il meno
+e' spento, com'e' giusto, e si riaccende al primo "+".
+
+Tolta anche una riga morta in `pacchetti.js`: `const conto = pacchettoTotale(corrente, 2,
+0)` dentro `disegna()`, che **nessuno leggeva** (il totale lo rifa' `aggiornaTotale()`
+subito dopo, dalle caselle vere). Lasciarla voleva dire lasciare in giro un "2" che sembra
+il valore di partenza e non lo e' piu'.
+
+Il singolare gia' funzionava e non c'e' stato niente da fare: sul messaggio esce
+"1 adult", non "1 adults", e nel totale "1 adult × €30".
+
+Provato: all'apertura 1 adulto, meno spento, totale €30; un "+" porta a 2, il meno si
+riaccende, totale €60; il messaggio dice "People: 1 adult" e "€30 (1 adult × €30)"; i
+pacchetti partono da 1 con €132,50, che e' la meta' esatta dei €265 di prima.
+
+`CACHE_NAME` a `isla-v340`.
+
 ### Restano due passi
 
 1. **Nome e hotel non si ricordano.** Chi chiede tre escursioni li riscrive tre volte, e

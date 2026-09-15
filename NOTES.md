@@ -12000,3 +12000,47 @@ La riga "Bambini (7-13)" compare in "In breve" solo sulla prima. Nessun errore J
 
 Una cosa sola, da v278: il fornitore scrive **1,20 m di altezza minima per il copilota** del
 biposto, ma a 3 anni si sta sui 95 cm.
+
+## v329 — il metro e venti del karting non vale, e non è la prima volta
+
+L'ufficio ha confermato: sul kart biposto **il passeggero sale dai 3 anni**. Con questo si
+chiude l'ultima domanda rimasta aperta sul karting, da v278.
+
+**In scheda non cambia niente**, e va detto invece di far finta che sia un lavoro: la nota
+diceva già "si può dai 3 anni", perché fin da v278 era stata scritta la versione
+dell'ufficio e non quella del fornitore. Quello che cambia è che non è più una versione
+contro un'altra: adesso è il dato.
+
+### Il metro e venti era una condizione che non poteva stare insieme all'altra
+
+Lo scraping del circuito, per il Sodikart Doble, scrive *"la altura mínima del copiloto es
+de 1,20 m"*. Un bambino di 3 anni è alto sui 95 cm: le due condizioni si escludono, e fra le
+due vince quella detta da chi vende. Segnato anche in
+`dati-fornitore/grezzo/karting-listino.txt`, nella tabella di cosa batte cosa, così chi
+riapre il JSON fra sei mesi non ci ricasca.
+
+### È già successo, uguale, sui buggy
+
+In **v263** sui quad e buggy la nota diceva "dai 7 anni e almeno 1,20 m", ereditato dalle
+pagine dei fornitori, e il proprietario l'ha corretta in blocco: passeggeri **dai 3 anni**,
+altezza minima via, con la stessa identica frase — *un bambino di 3 anni è alto sui 95 cm,
+quindi le due condizioni non potevano stare insieme*.
+
+Due fornitori diversi, lo stesso errore nello stesso posto. Vale la pena scriverlo come
+regola invece che come aneddoto: **l'altezza minima del passeggero, sulle pagine dei
+fornitori di mezzi, è quasi sempre copiata da un'altra scheda e non regge il confronto con
+l'età che dà l'ufficio.** Quando le due non tornano, non è un dettaglio da mediare: una
+delle due è sbagliata, e va chiesto.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati.
+
+`CACHE_NAME` **non alzato**, ed è giusto così: questa volta non è stato toccato nessun `.js`,
+`.css` o `.html` — solo `NOTES.md` e un file di `dati-fornitore/grezzo/`, che il service
+worker non mette in cache. Alzarlo avrebbe fatto riscaricare il sito a tutti per due file
+che i clienti non vedono.
+
+### Il karting è chiuso
+
+Non resta niente da confermare.

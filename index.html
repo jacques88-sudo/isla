@@ -125,6 +125,16 @@
 
     <section class="bento">
       <div class="wrap bento-grid">
+        <!-- "Scan ticket" era un riquadro quadrato in mezzo agli altri; adesso e'
+             orizzontale come "Noleggio auto, moto e bici" (stessa classe
+             bento-tile-wide) ma sopra la griglia invece che sotto: e' un accesso
+             rapido per chi ha gia' prenotato, non una proposta come le altre, e
+             sta bene per conto suo in cima. Il suo posto quadrato lo prende
+             "Noleggio", che scende qui sotto. -->
+        <button class="bento-tile bento-tile-wide" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h5v5H4zM4 15h5v5H4zM15 4h5v5h-5z"/><path d="M15 15h2v2h-2zM19 15h1v1h-1zM15 19h1v1h-1zM19 19h1v1h-1zM17 17h1v1h-1z"/></svg>
+          <span data-i18n="bento.scan">Scan ticket</span>
+        </button>
         <!-- Uno dei due riquadri con la foto invece dell'icona (l'altro e' "In
              famiglia"): i pacchetti sono la cosa da spingere. Una foto sola,
              Puerto de la Cruz col Teide dietro: e' la stessa immagine che apre
@@ -135,10 +145,14 @@
           <img class="bento-foto" src="./assets/bento-pacchetti.jpg" alt="" loading="lazy" width="520" height="520" />
           <span data-i18n="bento.packages">Pacchetti</span>
         </a>
-        <button class="bento-tile" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h5v5H4zM4 15h5v5H4zM15 4h5v5h-5z"/><path d="M15 15h2v2h-2zM19 15h1v1h-1zM15 19h1v1h-1zM19 19h1v1h-1zM17 17h1v1h-1z"/></svg>
-          <span data-i18n="bento.scan">Scan ticket</span>
-        </button>
+        <!-- "Noleggio auto, moto e bici": prendeva il posto largo in fondo alla
+             griglia, quello di "Scan ticket". Con "Scan ticket" salito sopra la
+             griglia, il riquadro diventa quadrato come gli altri (via la classe
+             bento-tile-wide) e scende qui, al suo posto. -->
+        <a class="bento-tile" data-rental-link href="#" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M4 17v-4l2-5h12l2 5v4"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/><path d="M6 13h12"/></svg>
+          <span data-i18n="bento.rental">Noleggio auto, moto e bici</span>
+        </a>
         <!-- Portava all'elenco filtrato delle escursioni adatte ai bambini; adesso
              porta ai pacchetti di famiglia, che e' una proposta invece di un
              filtro. L'elenco filtrato non si perde: il link sta in fondo a
@@ -168,10 +182,6 @@
           <img class="bento-foto bento-stripe-4" src="./assets/bento-giorni-avventura.jpg" alt="" loading="lazy" width="520" height="520" />
           <img class="bento-foto bento-stripe-5" src="./assets/bento-giorni-stelle.jpg" alt="" loading="lazy" width="520" height="520" />
           <span data-i18n="bento.days">3/5/7 Days Experience</span>
-        </a>
-        <a class="bento-tile bento-tile-wide" data-rental-link href="#" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M4 17v-4l2-5h12l2 5v4"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/><path d="M6 13h12"/></svg>
-          <span data-i18n="bento.rental">Noleggio auto, moto e bici</span>
         </a>
       </div>
     </section>

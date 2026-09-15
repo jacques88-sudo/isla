@@ -42,3 +42,9 @@ junior del fine settimana — ma sui PREZZI e sui MINIMI DI GRUPPO non si
 guarda piu' quello.
 
 Il Super Gran Premio e' sparito dalla scheda: sul listino esposto non c'e'.
+
+Non vale nemmeno l'ALTEZZA MINIMA DEL COPILOTA che il JSON riporta per il
+kart biposto ("altura minima del copiloto 1,20 m"). L'ufficio ha confermato
+il 15 settembre 2026 che il passeggero sale DAI 3 ANNI, e a 3 anni si sta
+sui 95 cm: le due condizioni non stanno insieme e vince l'eta'. In scheda
+c'e' scritto "dai 3 anni".

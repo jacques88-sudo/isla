@@ -432,8 +432,8 @@ const PACCHETTI = [
 
   {
     id: "famiglia-piccoli",
-    // 24 + 58 + 35 = 117 a persona, bambini 12 + 45 + 29 = 86. Il Jungle Park e'
-    // un biglietto: si scontano tuk tuk e barca, −8,20 → 108,80.
+    // 24 + 55 + 35 = 114 a persona, bambini 12 + 30 + 29 = 71. Il Jungle Park e'
+    // un biglietto: si scontano tuk tuk e barca, −7,90 → 106,10.
     title: {
       it: "Piccoli esploratori",
       en: "Little explorers",
@@ -444,13 +444,13 @@ const PACCHETTI = [
     famiglia: true,
     voci: [
       { id: "tuk-tuk" },
-      { id: "glass-bottom-boat" },
+      { id: "whale-dolphin-3h" },
       { id: "jungle-park" }
     ],
     desc: {
-      it: "Tre uscite tranquille, per chi ha bambini piccoli: un'ora in tuk tuk elettrico sulla costa di Adeje con la guida che racconta, tre ore sulla barca col fondo di vetro a guardare i pesci restando a bordo, e una giornata al Jungle Park fra i rapaci in volo libero e le scimmie.",
-      en: "Three unhurried outings, for families with small children: an hour in an electric tuk tuk along the Adeje coast with a guide, three hours on the glass-bottom boat watching the fish without leaving the deck, and a day at Jungle Park among free-flying birds of prey and monkeys.",
-      es: "Tres salidas tranquilas, para quien viaja con niños pequeños: una hora en tuk tuk eléctrico por la costa de Adeje con un guía que cuenta, tres horas en el barco con fondo de cristal mirando los peces sin bajar de a bordo, y un día en el Jungle Park entre rapaces en vuelo libre y monos."
+      it: "Tre uscite tranquille, per chi ha bambini piccoli: un'ora in tuk tuk elettrico sulla costa di Adeje con la guida che racconta, tre ore in barca a vela da Puerto Colón in cerca di balene e delfini, con la sosta per il bagno, e una giornata al Jungle Park fra i rapaci in volo libero e le scimmie.",
+      en: "Three unhurried outings, for families with small children: an hour in an electric tuk tuk along the Adeje coast with a guide, three hours under sail from Puerto Colón looking for whales and dolphins, with a stop for a swim, and a day at Jungle Park among free-flying birds of prey and monkeys.",
+      es: "Tres salidas tranquilas, para quien viaja con niños pequeños: una hora en tuk tuk eléctrico por la costa de Adeje con un guía que cuenta, tres horas en velero desde Puerto Colón buscando ballenas y delfines, con parada de baño, y un día en el Jungle Park entre rapaces en vuelo libre y monos."
     }
   },
 
@@ -669,13 +669,13 @@ const PACCHETTI = [
       en: "Seven days as a family",
       es: "Siete días en familia"
     },
-    image: "glass-bottom-boat.jpg",
+    image: "whale-dolphin-3h.jpg",
     giorni: 7,
     sconto: 15,
     famiglia: true,
-    // I cinque di "giorni-5-famiglia" piu' due. 192 + 10 + 58 = 260 a persona,
-    // bambini 123 + 5 + 45 = 173. I tre parchi sono biglietti: si scontano le
-    // due barche, il tuk tuk e il sottomarino, −25,50 sull'adulto → 234,50.
+    // I cinque di "giorni-5-famiglia" piu' due. 192 + 10 + 55 = 257 a persona,
+    // bambini 123 + 5 + 30 = 158. I tre parchi sono biglietti: si scontano le
+    // due barche, il tuk tuk e il sottomarino, −25,05 sull'adulto → 231,95.
     voci: [
       { id: "peter-pan" },
       { id: "aqualand" },
@@ -683,12 +683,12 @@ const PACCHETTI = [
       { id: "submarine-safari" },
       { id: "siam-park", optionIndex: 0 },
       { id: "monkey-park" },
-      { id: "glass-bottom-boat" }
+      { id: "whale-dolphin-3h" }
     ],
     desc: {
-      it: "La settimana intera, una uscita al giorno: la goletta, l'Aqualand, il tuk tuk, il sottomarino e il Siam Park, più due giorni che ci sono solo qui — il Monkey Park, dove si entra nei recinti a dare da mangiare a lemuri, iguane e pappagalli, e le tre ore sulla barca col fondo di vetro, che finiscono con il bagno.",
-      en: "The whole week, one outing a day: the schooner, Aqualand, the tuk tuk, the submarine and Siam Park, plus two days you only get here — Monkey Park, where you walk into the enclosures to feed lemurs, iguanas and parrots, and three hours on the glass-bottom boat, which end with a swim.",
-      es: "La semana entera, una salida al día: la goleta, Aqualand, el tuk tuk, el submarino y el Siam Park, más dos días que solo están aquí — el Monkey Park, donde se entra en los recintos a dar de comer a lémures, iguanas y loros, y las tres horas en el barco con fondo de cristal, que terminan con un baño."
+      it: "La settimana intera, una uscita al giorno: la goletta, l'Aqualand, il tuk tuk, il sottomarino e il Siam Park, più due giorni che ci sono solo qui — il Monkey Park, dove si entra nei recinti a dare da mangiare a lemuri, iguane e pappagalli, e le tre ore in barca a vela da Puerto Colón, che finiscono con la sosta bagno e lo snorkeling.",
+      en: "The whole week, one outing a day: the schooner, Aqualand, the tuk tuk, the submarine and Siam Park, plus two days you only get here — Monkey Park, where you walk into the enclosures to feed lemurs, iguanas and parrots, and three hours under sail from Puerto Colón, which end with a swim and a snorkel.",
+      es: "La semana entera, una salida al día: la goleta, Aqualand, el tuk tuk, el submarino y el Siam Park, más dos días que solo están aquí — el Monkey Park, donde se entra en los recintos a dar de comer a lémures, iguanas y loros, y las tres horas en velero desde Puerto Colón, que terminan con parada de baño y snorkel."
     }
   }
 

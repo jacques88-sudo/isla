@@ -922,4 +922,83 @@ const PICKUP_TIMES = {
     10094: "07:30",
     10155: "07:45",
   },
+  // La Gomera: il giro piu' servito dei quattro, 63 punti su 104 e 384 hotel
+  // con punto e ora. Solo 4 hotel hanno l'ora ma un punto ancora senza nome
+  // (punti 53 e 10019).
+  //
+  // Dei 22 punti che condivide con Poema del Mar, **tre hanno la stessa ora**
+  // (20 e 22 alle 07:55, 24 alle 08:05). Non e' un motivo per unire le due
+  // tabelle: gli altri diciannove sono diversi, e due giri che per caso passano
+  // insieme da tre fermate restano due giri.
+  //
+  // Le 08:04 del punto 65 sono come le scrive il fornitore. Non arrotondate:
+  // `09:04` e `09:16` sul Teide erano refusi confermati dall'ufficio, questa no,
+  // e un minuto inventato resta inventato.
+  //
+  // Raccolti il 16 settembre 2026 con dati-fornitore/raccogli-orari.js.
+  "la-gomera": {
+    1: "07:15",
+    2: "07:20",
+    3: "07:20",
+    4: "07:20",
+    6: "07:40",
+    9: "07:40",
+    10: "07:40",
+    11: "07:40",
+    14: "07:45",
+    16: "07:45",
+    17: "07:50",
+    19: "07:50",
+    20: "07:55",
+    22: "07:55",
+    23: "08:05",
+    24: "08:05",
+    25: "08:05",
+    26: "08:10",
+    27: "08:10",
+    28: "08:20",
+    29: "08:20",
+    31: "08:25",
+    33: "08:25",
+    34: "08:25",
+    36: "08:30",
+    37: "08:30",
+    39: "08:30",
+    40: "08:30",
+    42: "07:50",
+    43: "07:50",
+    44: "07:50",
+    45: "07:50",
+    46: "07:40",
+    51: "08:25",
+    53: "07:30",
+    57: "07:15",
+    65: "08:04",
+    68: "07:20",
+    10009: "07:50",
+    10010: "07:40",
+    10011: "07:45",
+    10012: "07:30",
+    10014: "07:50",
+    10015: "08:20",
+    10016: "08:20",
+    10017: "07:30",
+    10018: "07:55",
+    10019: "07:40",
+    10020: "07:40",
+    10023: "08:25",
+    10024: "07:40",
+    10025: "07:30",
+    10028: "07:30",
+    10029: "07:35",
+    10030: "07:35",
+    10033: "08:00",
+    10035: "07:50",
+    10036: "07:50",
+    10037: "07:40",
+    10063: "07:40",
+    10064: "07:20",
+    10103: "08:00",
+    10155: "07:40",
+  },
 };

@@ -6451,3 +6451,79 @@ Provato nel browser in inglese e in spagnolo su tre schede (`teide-national-park
 `buggy-2-3h`, `santa-cruz-taganana`): "South Tenerife" e "Tenerife sur". `CACHE_NAME`
 alzato a `isla-v245`.
 >>>>>>> origin/main
+
+---
+
+## Poema del Mar: gli orari del pick-up, e le 10:00 che non erano una partenza (16 settembre 2026)
+
+Terza scheda a ricevere gli orari del pulmino, dopo `teide-national-park` e
+`icod-garachico-orotava`. Stessa procedura: un hotel campione per ognuno dei 104
+punti, 104 richieste al fornitore invece di 567, un minuto e mezzo.
+
+Il comando che le lancia sta ora in `dati-fornitore/raccogli-orari.js`: la prima
+volta era stato scritto a mano nella chat e il proprietario ha dovuto
+richiedermelo. Ora si copia e si incolla.
+
+### Il pulmino serve 28 punti su 104
+
+Molti meno delle due escursioni del Teide, che ne servono 65 e 66. Da **282
+hotel su 562 questa escursione non passa affatto**: la casella dell'ora torna
+vuota, e sul sito quegli hotel mostrano il punto senza l'ora, che e' il
+comportamento giusto.
+
+Coperti con punto **e** ora: 252 hotel.
+
+### Quattro punti a Puerto de la Cruz, dove il Teide non arriva
+
+I punti `10047`, `10080`, `10093` e `10094` sono nel nord, e **nessuna delle due
+escursioni del Teide ci passa**. Questa si'. Il perche' non lo sappiamo — il
+traghetto parte da Santa Cruz, che dal nord e' piu' vicina — e finche' non lo
+sappiamo non lo scriviamo in nessun commento.
+
+C'e' pero' una conseguenza da segnare: la `zone` della scheda dice **"Ritiro dal
+sud, imbarco a Santa Cruz"**, e i dati ora dicono che il ritiro non e' solo dal
+sud. Sono **28 hotel** che hanno un'ora ma il cui punto non ha ancora un nome
+(sono dentro i 146 punti senza nome gia' noti), quindi sul sito oggi non vedono
+ne' il punto ne' l'ora: `hotelPunto()` restituisce `null` quando il punto non ha
+un nome, e senza il nome dire "passiamo alle 07:50" non aiuterebbe nessuno.
+Quando si recuperano i nomi dei punti del nord, quei 28 hotel si accendono da
+soli e la `zone` va riscritta.
+
+### `times: ["10:00"]` tolto dalla scheda
+
+Era stato messo con una motivazione scritta nel codice: *"La partenza vera e'
+una sola: il traghetto delle 10:00"*. Con gli orari del pick-up in mano quella
+frase non regge piu': la partenza vera del cliente e' **la sua**, fra le 07:15 e
+le 08:15 a seconda di dove alloggia.
+
+Lasciandolo, la pagina mostrava `Orari: 10:00` in alto e la finestra della
+richiesta `Orario: 08:05` poco sotto. Due numeri diversi nella stessa pagina, e
+quello grosso e in alto era quello sbagliato: chi legge in fretta si presenta
+alle 10:00 e il pullman e' passato due ore prima.
+
+Deciso dal proprietario fra tre strade (togliere la riga, lasciarla,
+rietichettarla "Traghetto"): **togliere**. Il 10:00 resta scritto dove si capisce
+che e' la nave — nella durata (`traghetto 10:00-18:00`) e nella prima riga del
+programma (`10:00 Nave da Santa Cruz verso Agaete`).
+
+Nota per il futuro: togliere `times` vuol dire, nel vocabolario del catalogo,
+"gli orari non li sappiamo" → fasce segnaposto e "Da concordare". Qui non si vede
+perche' la scheda sta in `PICKUP_TIMES` e il menu sparisce comunque. Se un giorno
+qualcuno togliesse la scheda da `PICKUP_TIMES`, tornerebbero le fasce: e sarebbe
+giusto cosi', perche' a quel punto l'ora davvero non la sapremmo piu'.
+
+### Provato
+
+Chromium a 390 px, `tour.html?id=gran-canaria`:
+
+- riga "Orari" sparita dalla scheda
+- menu "A che ora" tolto, sostituito dall'ora dell'hotel
+- Cleopatra → **08:05**, Best Tenerife, alla fermata dell'autobus
+- Perla Gris → **07:40**, Callao Salvaje (Restaurante Nebula)
+- Bahía del Duque → punto mostrato, **nessuna ora** (punto 11 non servito): giusto
+- Melia la Paz → niente, punto senza nome: giusto finche' il nome manca
+- messaggio WhatsApp con `Orario: 08:05` e il punto di raccolta
+- nessun errore JS
+
+La data di prova ha dovuto essere un **venerdi'**: la scheda va solo quel giorno
+e il modulo rifiuta le altre, correttamente.

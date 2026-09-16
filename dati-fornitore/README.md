@@ -29,6 +29,7 @@ I file in `grezzo/` sono quello che è uscito, senza ritocchi.
 |---|---|
 | `hotel.tsv` | 567 hotel: codice, nome, punto di raccolta, ora sul Teide mezza giornata |
 | `punti.tsv` | 104 punti di raccolta: codice, nome, quanti hotel serve, a che ora |
+| `raccogli-orari.js` | il comando da incollare in console per gli orari di una nuova escursione |
 | `grezzo/` | le catture originali, non toccate |
 
 Sono file separati da tabulazione (`\t`), non da virgola: parecchi nomi di
@@ -73,8 +74,25 @@ nord: da lì questa escursione non passa.
   mostra solo i punti che quell'escursione serve davvero; gli altri — quasi tutti
   del nord — hanno solo il codice. Si recuperano aprendo la tendina dei punti su
   un'escursione che parte da Puerto de la Cruz, senza altre richieste al server.
-- **Gli orari delle altre escursioni.** Ce li deve dare l'ufficio: una colonna
-  in più per ciascuna.
+- **Gli orari delle altre escursioni.** Non servono all'ufficio: si prendono in
+  novanta secondi con `raccogli-orari.js`, una colonna in più per ciascuna.
+  Fatte finora: Teide mezza giornata, Teide + Icod + Garachico + Masca, Poema
+  del Mar.
+
+---
+
+## Prendere gli orari di una nuova escursione
+
+Si apre la pagina di quell'escursione sul sito del fornitore, si incolla
+`raccogli-orari.js` nella console del browser e si aspetta un minuto e mezzo.
+Escono 104 righe `id_punto → ora`, una per punto di raccolta.
+
+**Sono 104 richieste e non 567** perché il punto dipende solo dall'hotel e quello
+è già in `hotel.tsv`: basta un hotel campione per punto. L'unica cosa che cambia
+da un'escursione all'altra è l'ora.
+
+Una casella dell'ora vuota **non è un dato mancante**: vuol dire che quel punto
+non è servito da quell'escursione.
 
 ---
 

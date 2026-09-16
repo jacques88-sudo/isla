@@ -880,5 +880,46 @@ const PICKUP_TIMES = {
     10080: "08:15",
     10103: "08:00",
     10155: "08:10",
-  }
+  },
+  // Poema del Mar: si parte prestissimo, fra le 07:15 e le 08:15, e il pulmino
+  // serve **28 punti su 104** invece dei 65 del Teide di mezza giornata: da 282
+  // hotel su 562 questa escursione non passa affatto.
+  //
+  // Quattro dei punti serviti sono a Puerto de la Cruz (10047, 10080, 10093,
+  // 10094), dove nessuna delle due escursioni del Teide arriva: il giro del
+  // nord non ce l'hanno solo i tour del nord. Il perche' non lo sappiamo, e
+  // finche' non lo sappiamo non lo scriviamo.
+  //
+  // Raccolti il 16 settembre 2026 dalla pagina del fornitore, un hotel campione
+  // per punto (104 richieste invece di 567).
+  "gran-canaria": {
+    1: "07:40",
+    2: "07:30",
+    4: "07:30",
+    6: "07:45",
+    9: "07:45",
+    10: "07:45",
+    13: "07:55",
+    16: "07:55",
+    17: "07:45",
+    19: "07:45",
+    20: "07:55",
+    22: "07:55",
+    23: "07:55",
+    24: "08:05",
+    26: "08:05",
+    29: "08:05",
+    36: "08:15",
+    39: "08:15",
+    40: "08:15",
+    42: "07:15",
+    46: "07:15",
+    48: "07:55",
+    10030: "07:15",
+    10047: "07:50",
+    10080: "07:50",
+    10093: "07:45",
+    10094: "07:30",
+    10155: "07:45",
+  },
 };

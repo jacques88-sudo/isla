@@ -4173,10 +4173,14 @@ const ESPLORA_CATALOG = [
     // buchi fra le tre righe.
     ages: { adult: "12+", child: "3-11", infant: "0-2" },
     days: ["ven"],
-    // La partenza vera e' una sola: il traghetto delle 10:00. Il ritiro dagli
-    // hotel del sud e' prima e cambia da hotel a hotel, quindi non e' un orario
-    // che si possa scrivere qui: sta nella nota del transfer.
-    times: ["10:00"],
+    // Niente `times`. Le 10:00 sono il traghetto, non la partenza del cliente:
+    // lui parte dal suo hotel, fra le 07:15 e le 08:15 a seconda di dove
+    // alloggia, e quell'ora gliela dice ora il campo dell'hotel (PICKUP_TIMES
+    // in hotel.js). Scriverle qui le faceva uscire come "Orari: 10:00" sopra la
+    // scheda, accanto a un pick-up delle 08:05: due numeri diversi nella stessa
+    // pagina, e chi legge in fretta perde il pullman.
+    // Il 10:00 resta dov'e' giusto, nella durata e nella prima riga del
+    // programma, dove si legge che e' la nave.
     // Il servizio di guida ufficiale e' in queste tre lingue, ed e' una scelta
     // vera del cliente. L'italiano non c'e': il modulo del fornitore lo elenca
     // ma risponde "no excursions available". Le tre sono state riconfermate

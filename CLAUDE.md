@@ -180,7 +180,10 @@ sparisce e al suo posto c'è l'ora dell'hotel scelto: non è più una domanda, �
 risposta. Un'ora inventata è la cosa peggiore che questo campo possa fare — un cliente
 alla fermata all'ora sbagliata.
 
-I dati grezzi e la storia di come sono stati raccolti stanno in `dati-fornitore/`.
+Gli orari di una scheda nuova si prendono in novanta secondi: si apre la pagina
+di quell'escursione sul sito del fornitore e si incolla `dati-fornitore/raccogli-orari.js`
+nella console del browser. I dati grezzi e la storia di come sono stati raccolti
+stanno in `dati-fornitore/`.
 
 ---
 

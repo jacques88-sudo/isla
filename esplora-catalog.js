@@ -5031,11 +5031,13 @@ const ESPLORA_CATALOG = [
     // settembre 2026), e la finestra della richiesta al posto del menu "A che
     // ora" mostra l'ora del suo hotel.
     //
-    // Niente `days`: il fornitore non scrive in che giorni si parte, e assente
-    // vuol dire "tutti i giorni". **Da confermare con l'ufficio**: le altre due
-    // schede dello stesso fornitore hanno giorni fissi (Icod sei su sette,
-    // Santa Cruz lunedi' e giovedi'), quindi e' probabile che ne abbia anche
-    // questa.
+    // **Solo il martedi'**, detto dal proprietario il 16 settembre 2026. Il
+    // fornitore in pagina non scrive i giorni, e il campo era rimasto assente —
+    // cioe' "tutti i giorni", che era la cosa sbagliata da dire per un giro che
+    // parte una volta a settimana. E' la scheda con meno partenze delle tre di
+    // questo fornitore (Icod sei su sette, Santa Cruz lunedi' e giovedi').
+    // **`mar` e' martedi', `mer` e' mercoledi'.**
+    days: ["mar"],
     //
     // Listino del fornitore: 50 € adulti, 31,50 € bambini. E' il prezzo
     // pieno — il "Por: 50€" del riquadro della prenotazione e' il conto di un
@@ -5050,11 +5052,15 @@ const ESPLORA_CATALOG = [
     // "gratis". Stessa situazione di `icod-garachico-orotava` e
     // `santa-cruz-taganana`.
     ages: { adult: "12+", child: "2-11" },
-    // Niente `languages`: nella finestra della prenotazione del fornitore la
-    // tendina "Idioma" ha il solo spagnolo, e una lista di una lingua sola
-    // direbbe al cliente che il giro e' in spagnolo e basta. Le lingue delle
-    // altre due schede di questo fornitore le ha mandate l'ufficio (sei su
-    // Santa Cruz, sette su Icod): **da chiedere anche per questa**.
+    // Quattro lingue, mandate dal proprietario il 16 settembre 2026. La
+    // tendina "Idioma" del fornitore mostrava il solo spagnolo e il campo era
+    // rimasto fuori apposta: una tendina di un rivenditore non e' la lista
+    // vera, e infatti sono quattro. Non e' `LINGUE_TOUR`, che ne ha cinque —
+    // qui manca il francese, quindi la lista e' scritta per esteso. Come
+    // sempre nella lingua stessa ("Deutsch", non "Tedesco"): un tedesco
+    // riconosce la sua riga anche guardando il sito in spagnolo. L'ordine e'
+    // quello dell'ufficio, che ha cominciato dall'italiano.
+    languages: ["Italiano", "Español", "English", "Deutsch"],
     //
     // Il ritiro lo scrive il fornitore ("Le recogeremos en el bus en su
     // parada"). La guida no, ma il proprietario l'8 settembre 2026 ha detto

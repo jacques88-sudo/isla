@@ -13969,3 +13969,61 @@ Chromium a 390 px, `tour.html?id=island-tour-completo`, col flusso della lista:
 - nessun errore JS
 
 `CACHE_NAME` alzato a `isla-v350`.
+
+## Il giro dell'isola: martedi' e basta, e quattro lingue (16 settembre 2026, v351)
+
+Le due cose lasciate in sospeso stamattina le ha chiuse il proprietario nel giro
+di un'ora. Tutte e due erano campi **assenti**, e in tutti e due i casi
+"assente" stava dicendo qualcosa di sbagliato.
+
+### `days: ["mar"]`
+
+Il fornitore in pagina non scrive i giorni, quindi il campo era rimasto fuori —
+che sul sito vuol dire **"tutti i giorni"**. Il proprietario: si fa **solo il
+martedi'**. Una partenza a settimana contro le sette che il sito stava
+promettendo: e' lo scarto piu' grosso che questo campo possa avere, e nessun
+controllo a macchina poteva prenderlo.
+
+E' la conferma pratica di una cosa gia' scritta qui sopra ma mai cosi' netta: su
+questo fornitore i giorni **non stanno mai nella pagina**. Sono arrivati
+dall'ufficio tutte e tre le volte — Icod sei su sette (8 settembre), Santa Cruz
+lunedi' e giovedi' (8 settembre), il giro dell'isola il martedi' (oggi). La
+prossima scheda di Nere Izerdie parte gia' con la domanda da fare.
+
+**`mar` e' martedi', `mer` e' mercoledi'.** Scritto anche nel commento accanto al
+campo, perche' e' l'errore che costa un cliente alla fermata il giorno sbagliato.
+
+### `languages: ["Italiano", "Español", "English", "Deutsch"]`
+
+Il campo era rimasto fuori perche' la tendina "Idioma" della finestra di
+prenotazione del fornitore mostrava **il solo spagnolo**, e scriverlo avrebbe
+detto al cliente che il giro si fa in spagnolo e basta. Erano quattro.
+
+La tendina di un rivenditore non e' la lista delle lingue: e' quello che quel
+rivenditore vende, o il campo che nessuno ha finito di compilare. Averla lasciata
+vuota invece di copiarla ha evitato di scrivere una limitazione che non esiste —
+tre lingue su quattro sarebbero sparite, fra cui l'italiano.
+
+Non e' `LINGUE_TOUR` (cinque): qui manca il francese, quindi la lista e' scritta
+per esteso. Come sempre **nella lingua stessa**, "Deutsch" e non "Tedesco".
+L'ordine e' quello dell'ufficio, che ha cominciato dall'italiano — le altre due
+schede di questo fornitore cominciano dallo spagnolo, e va bene cosi': l'ordine
+lo decide chi manda la lista, non la coerenza fra schede.
+
+### Provato
+
+`node controlla.js` → 0 errori (i 3 avvisi sono quelli di sempre, su altre schede).
+Chromium a 390 px, `tour.html?id=island-tour-completo`:
+
+- in vetrina compaiono le due righe nuove: **Giorni: Mar** e **Lingue: Italiano ·
+  Español · English · Deutsch**
+- il calendario scritto a mano si apre su settembre e lascia cliccabili **due sole
+  caselle, il 22 e il 29** — verificati a parte: tutti e due martedi'. Il 15 era
+  martedi' pure lui ed e' spento perche' e' passato; il 16, oggi, e' mercoledi' e
+  cade dentro le 24 ore di preavviso.
+- scelto il 22 → `#reqDate` = `2026-09-22`, etichetta "22 September 2026"
+- il menu della lingua compare ora nella finestra della richiesta, con "Nessuna
+  preferenza" davanti alle quattro
+- nessun errore JS
+
+`CACHE_NAME` alzato a `isla-v351`.

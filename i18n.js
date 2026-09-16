@@ -334,6 +334,11 @@ const I18N = {
   // segno solo, e questo e' il nome che sente chi usa lo schermo a voce.
   "req.minus":          { it: "Uno in meno", en: "One less", es: "Uno menos" },
   "req.plus":           { it: "Uno in più", en: "One more", es: "Uno más" },
+  // L'etichetta della prima pastiglia della data. Le altre portano giorno e
+  // numero ("Sab 19") e non una parola: "dopodomani" in inglese e' "the day
+  // after tomorrow", che su una pastiglia non ci sta, e una data vera dice di
+  // piu' comunque.
+  "req.tomorrow":       { it: "Domani", en: "Tomorrow", es: "Mañana" },
   "req.hotel":          { it: "Dove alloggi", en: "Where you are staying", es: "Dónde te alojas" },
   "req.hotelPlaceholder": { it: "Scrivi le prime lettere dell'hotel", en: "Type the first letters of your hotel", es: "Escribe las primeras letras del hotel" },
   "req.pickup":         { it: "Punto di raccolta", en: "Pick-up point", es: "Punto de recogida" },

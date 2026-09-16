@@ -2297,6 +2297,41 @@ body.menu-open { overflow: hidden; }
 }
 .request-people input:focus { border-color: var(--text); }
 
+/* ── Le pastiglie della data ──────────────────────────────────────────────
+   Le prime tre date in cui l'attività si fa davvero, sopra il campo del
+   calendario. Il caso normale — "vado domani", "vado sabato" — diventa un
+   tocco invece di aprire il calendario del telefono e cercare il giorno; e
+   siccome le pastiglie saltano i giorni in cui non si parte, quel tocco non
+   può nemmeno sbagliare.
+
+   `flex-wrap`: tre etichette come "Domani · Mer 21 · Ven 23" su un telefono
+   piccolo possono non stare in riga, e andare a capo è meglio che stringersi. */
+.date-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin: -.3rem 0 .9rem;
+}
+.date-pills[hidden] { display: none; }
+.date-pill {
+  padding: .5rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: .88rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Quella scelta si segna come le pillole delle varianti sulla pagina di
+   dettaglio — bordo scuro e fondo sabbia, non un riquadro nero: è lo stesso
+   gesto, "scelgo fra questi", e deve avere lo stesso segno. */
+.date-pill.is-on {
+  border-color: var(--text);
+  background: var(--sand);
+}
+
 /* ── Il "meno / più" accanto ai numeri ────────────────────────────────────
    Persone, mezzi, menu: sono le stesse caselle di prima, con un bottone per
    lato. La casella resta e si puo' ancora battere — per dodici persone e' piu'

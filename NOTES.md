@@ -13180,3 +13180,138 @@ perde l'ultima cosa che si batte a macchina.
 
 **E resta da guardare sul telefono vero** quello che qui non si può simulare: la tastiera
 di iOS che sale sul fondo della finestra, dove adesso c'è il campo del nome.
+
+## v343 — il calendario scritto a mano: i giorni in cui non si parte sono spenti
+
+Le pastiglie della v342 al proprietario non sono piaciute. La sua domanda:
+«è possibile mettere in evidenza solo i giorni selezionabili nel calendario? e non far
+selezionare i giorni che non servono».
+
+### Perché col campo del sistema non si poteva
+
+**Un `<input type="date">` non sa spegnere il mercoledì.** Accetta un minimo e un massimo,
+e niente altro: il calendario che si apre lo disegna il sistema operativo e da fuori non
+ci si arriva. Non è una mancanza di CSS o un attributo che non ho trovato — non esiste.
+
+C'è mezzo trucco che non basta, e va scritto qui perché la prossima volta non ci si perda
+tempo: `step="7"` lascia solo un giorno ogni sette, e sull'Utopia — sabato e basta —
+funzionerebbe. Ma mar/gio/sab non si scrive con un passo fisso. Quindi non è una strada.
+
+Quindi: calendario scritto a mano, `calendarioData()` in `escursioni.js`. È il pezzo più
+grosso di tutta la serie sulla prenotazione.
+
+### Com'è fatto
+
+Il campo mostra la data scelta ("17 settembre 2026") o "Scegli la data", e al tocco apre
+una griglia del mese **sopra** il resto. Scelta del proprietario fra le tre che gli ho
+messo davanti: sempre aperto avrebbe aggiunto ~280 px a un modulo che è già 1578 su un
+telefono da 587.
+
+- i giorni buoni si toccano, tutti gli altri sono `disabled` e sbiaditi;
+- **anche le iniziali in testata sono spente** nelle colonne dove non si parte: così si
+  vede subito che quei numeri sono grigi per una ragione e non per un errore;
+- la settimana comincia di **lunedì**: Italia e Spagna, e i clienti stanno qui;
+- le frecce del mese si spengono ai bordi dell'anno richiedibile, come il "meno" a quota
+  uno;
+- si apre sul mese della **prima data utile**, non su quello di oggi: un'escursione che
+  riparte a ottobre, aperta su settembre, mostrerebbe una griglia tutta grigia e
+  sembrerebbe rotta.
+
+Tre cose non si scrivono in `i18n.js`: i **nomi dei mesi**, che il browser dà giusti in
+tutte e tre le lingue (`toLocaleDateString`) — dodici nomi per tre lingue sarebbero
+trentasei righe per una cosa che sappiamo già. Le iniziali dei giorni invece sì, e sono le
+stesse (`day.mon`…) che compaiono nell'avviso "si fa solo il...".
+
+### `#reqDate` resta, nascosto
+
+Stessa scelta dei bottoni "meno / più": **un posto solo dove il dato è scritto.** Il campo
+c'è ancora ed è sempre lui a dire la data al totale, al messaggio e alla lista; il
+calendario gli scrive dentro e spara un `input`, e chi ascoltava continua a funzionare
+senza sapere che il calendario esiste.
+
+`min` e `max` restano sul campo anche se nessun calendario di sistema li legge più: li
+legge `utile()` del nostro, e averli in un posto solo vuol dire che le 24 ore di preavviso
+e il tetto di un anno non possono divergere fra i due.
+
+**Niente `required`.** Su un campo che non si vede bloccherebbe l'invio senza dire perché —
+è l'errore che `CLAUDE.md` segnala. Il controllo si fa a mano e l'avviso ("Scegli la data
+dell'escursione") esce dove prima usciva quello del giorno sbagliato. Senza questo,
+premere il pulsante senza data non faceva **niente**, in silenzio.
+
+### Il difetto preso, e perché vale raccontarlo
+
+Toccando la freccia del mese **il calendario si chiudeva da solo**. E sembrava aperto,
+perché il contenuto restava scritto: era chiuso e non si aggiornava più.
+
+La catena: la freccia ridisegna il pannello (`innerHTML = ""`), quindi **si cancella da
+sola dal documento**; poi il clic continua a salire e arriva all'ascoltatore "hai toccato
+fuori?", che chiama `dateField.contains(e.target)` su un bottone che non sta più nella
+pagina. `contains()` su un elemento staccato dice sempre "fuori". Quindi chiudeva.
+
+Risolto ascoltando **in fase di cattura** (`addEventListener(..., true)`): la domanda
+"dentro o fuori" se la fa prima che qualcuno possa toccare il documento, quando il
+bersaglio è ancora al suo posto.
+
+Trovato solo perché il test contava i pannelli e leggeva `hidden`, invece di guardare se il
+mese era cambiato: a occhio e su uno screenshot sembrava funzionare.
+
+### L'altro difetto: il mese guardato si perdeva
+
+`rifai()` azzerava il mese, e al cambio lingua chi stava guardando ottobre tornava a
+settembre. Diviso in due: `rifai()` ridisegna e **tiene il mese** (serve al cambio lingua),
+`azzera()` lo riporta alla prima data utile e si chiama solo quando la finestra si riapre —
+dove la scheda è un'altra e i giorni buoni sono altri.
+
+### La data di un'altra scheda si butta
+
+All'apertura, se la data che c'è nel campo non va bene per **questa** scheda, si svuota.
+Prima restava lì con l'avviso sotto; ora che i giorni sbagliati non si possono nemmeno
+toccare, trovarne uno scritto nel campo sarebbe una contraddizione.
+
+### Cosa **non** ho toccato
+
+**La finestra dei pacchetti tiene il campo del sistema.** Lì la data è "il primo dei tre
+giorni, più o meno" e nessun vincolo di giorno si applica: mettere un calendario che
+spegne dei giorni sarebbe inventare una regola che non c'è.
+
+**L'avviso del giorno sbagliato resta**, anche se adesso è quasi irraggiungibile. Il
+proprietario l'ha rimesso di persona l'8 settembre dopo che l'avevo tolto, e costa niente:
+è la rete se un domani qualcosa scrivesse una data nel campo senza passare dal calendario.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `escursioni.js` e
+`i18n.js`.
+
+Nel browser vero, iPhone SE (375×667). Sul Castillo San Miguel (mar/gio/sab), a settembre:
+30 giorni, **24 spenti**, cliccabili 17-19-22-24-26-29. Verificato a macchina che cadessero
+tutti in mar/gio/sab: `[2,4,6]`. Il 15 e il 16 sono spenti pur essendo martedì e mercoledì,
+perché oggi è il 16 e il minimo è domani — le 24 ore.
+
+**Il clic forzato via codice su un giorno spento non scrive niente nel campo.** È la prova
+che conta: non basta che sembri grigio.
+
+Più: scheda senza `days` (tutti i giorni da domani cliccabili, nessuna iniziale spenta);
+freccia indietro spenta nel mese minimo, avanti che porta a ottobre col 1 cliccabile;
+cambio lingua a calendario aperto ("ottobre 2026", "Lun Mar Mer Gio Ven Sab Dom", e resta
+su ottobre); Escape che chiude il calendario e **non** la finestra, e il secondo Escape che
+chiude la finestra; tocco fuori che chiude; invio senza data che mostra l'avviso e non
+manda niente; invio con la data che scrive "Data: 17/09/2026" nel messaggio; riapertura su
+una scheda coi giorni diversi che butta la data incompatibile; "aggiungi alla lista".
+
+Più al buio (il giorno scelto è un cerchio pieno chiaro), desktop a 1200 px, la home dove
+la finestra non c'è, il catalogo, e la finestra dei pacchetti che col suo campo di sistema
+manda ancora.
+
+Rifatti i passi di prima: piede col conto e pulsante visibile all'apertura, nome in fondo
+non coperto, "meno / più" coi limiti, memoria dell'hotel su quattro casi.
+
+`CACHE_NAME` da `isla-v342` a `isla-v343`: toccati `escursioni.js`, `i18n.js`,
+`styles.css` e i due `.html`.
+
+### Le pastiglie della v342 sono andate
+
+Togliere il lavoro di ieri non è uno spreco: il proprietario ha visto la cosa vera e ha
+detto che non gli piaceva, che è esattamente quando conviene cambiare strada. Restano le
+due cose che le pastiglie hanno lasciato e che valevano più di loro: `dataLocale()`, che ha
+chiuso il buco nelle 24 ore, e il fatto che i giorni buoni si sapevano già calcolare.

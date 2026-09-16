@@ -147,49 +147,6 @@ function maxRequestDate() {
   return dataLocale(d);
 }
 
-// Le prime date in cui l'attività si fa davvero, da domani in avanti.
-//
-// Serve alle pastiglie sopra il campo della data: invece di far scegliere al
-// cliente un giorno e poi dirgli che quel giorno non si parte, gli si offrono
-// **solo giorni buoni**. L'avviso sotto il campo resta comunque, perché il
-// calendario del telefono lascia scegliere qualunque data e quello è il modo
-// in cui un giorno sbagliato entra ancora.
-//
-// Si guarda avanti tre settimane e non di più: un'attività che si fa un giorno
-// alla settimana ne dà tre, e oltre le tre settimane una pastiglia non è più
-// una scorciatoia — è una data che tanto vale scegliere col calendario.
-function primeDateUtili(tour, variante, quante) {
-  const giorni = giorniDi(tour, variante);
-  const trovate = [];
-  const d = new Date();
-  d.setDate(d.getDate() + 1);
-  for (let i = 0; i < 21 && trovate.length < quante; i++) {
-    // lista vuota = si fa tutti i giorni, quindi va bene qualunque data
-    if (!giorni.length || giorni.includes(d.getDay())) trovate.push(dataLocale(d));
-    d.setDate(d.getDate() + 1);
-  }
-  return trovate;
-}
-
-// L'etichetta di una pastiglia. "Domani" solo per domani — è la parola che
-// dice da sola quello che serve. Le altre portano giorno e numero ("Sab 19"):
-// più utile di "dopodomani", e in inglese "the day after tomorrow" su una
-// pastiglia non ci sta comunque.
-//
-// Il mese si scrive **solo quando cambia**. Sull'Utopia, che va il sabato e
-// basta, le tre pastiglie erano "Sab 19 · Sab 26 · Sab 3": il 3 è ottobre, ma
-// letto di fretta sembra andare indietro. Col mese diventa "Sab 3/10". Il
-// numero e non il nome del mese: dodici nomi per tre lingue sono trentasei
-// righe di vocabolario per una pastiglia, e "3/10" si legge in tutte e tre.
-function etichettaData(iso, domani) {
-  if (iso === domani) return t("req.tomorrow");
-  const [a, m, g] = iso.split("-").map(Number);
-  const d = new Date(a, m - 1, g);
-  const altroMese = d.getMonth() !== new Date().getMonth();
-  const numero = altroMese ? d.getDate() + "/" + (d.getMonth() + 1) : String(d.getDate());
-  return t(GIORNI_CHIAVI[d.getDay()]) + " " + numero;
-}
-
 // "2026-08-23" → "23/08/2026", più leggibile nel messaggio
 function formatDate(iso) {
   const [y, m, g] = iso.split("-");
@@ -1155,6 +1112,7 @@ function initRequestDialog() {
   const transferSiamNoteEl = document.querySelector("[data-request-transfer-siam-note]");
   const transferSiamInput = document.getElementById("reqTransferSiam");
   const dateInput = document.getElementById("reqDate");
+  const dateField = document.querySelector("[data-date-field]");
   const timeEl = document.querySelector("[data-request-time]");
   const timeLabelEl = document.querySelector("[data-request-time-label]");
   const oraFissaEl2 = document.querySelector("[data-request-time-fixed]");
@@ -1186,16 +1144,14 @@ function initRequestDialog() {
   // invece a ogni apertura, e si vestono dove nascono.
   applicaStepper(peopleBoxEl);
 
-  // Il contenitore delle pastiglie della data, infilato fra l'etichetta e il
-  // campo: le scorciatoie prima, il calendario sotto come via di scampo.
-  const dateBox = document.createElement("div");
-  dateBox.className = "date-pills";
-  dateBox.hidden = true;
-  dateInput.parentNode.insertBefore(dateBox, dateInput);
-
-  // Blocca le date che non rispettano il preavviso di 24 ore
+  // `min` e `max` restano sul campo anche se adesso e' nascosto: non li legge
+  // piu' il calendario del sistema, ma li legge `utile()` del nostro, e averli
+  // scritti in un posto solo vuol dire che le 24 ore di preavviso e il tetto
+  // di un anno non possono divergere fra i due.
   dateInput.min = minRequestDate();
   dateInput.max = maxRequestDate();
+
+  const calendario = calendarioData();
 
   let current = null;
   // La stessa finestra serve a due cose: mandare subito la richiesta di questa
@@ -1255,13 +1211,18 @@ function initRequestDialog() {
     // riparte sempre da "Da concordare" invece di tenere la scelta di prima.
     if (timeEl) timeEl.value = "";
     if (langEl) langEl.value = "";
-    riempiDate(tour);
     riempiOrari(tour);
     riempiLingue(tour);
     riempiMenu(tour);
     mostraNeonati(tour);
     mostraPersone(tour);
     riempiUnita(tour);
+    // La data scelta per un'altra scheda puo' non andare bene per questa: i
+    // giorni buoni sono altri. Si butta invece di lasciarla li' con un avviso
+    // sotto — ora che i giorni sbagliati non si possono nemmeno toccare,
+    // trovarne uno scritto nel campo sarebbe una contraddizione.
+    if (dateInput.value && !giornoValido()) dateInput.value = "";
+    if (calendario) { calendario.chiudi(); calendario.azzera(); }
     aggiornaGiorno();
     aggiornaTotale();
 
@@ -1357,53 +1318,243 @@ function initRequestDialog() {
     return giorni.includes(new Date(a, m - 1, g).getDay());
   }
 
-  // Le pastiglie sopra il campo della data: le prime tre date in cui
-  // l'attività si fa davvero.
+  // ─── Il calendario della data ──────────────────────────────────────────
   //
-  // Nascono qui e non nell'HTML, come i bottoni del "meno / più": così la
-  // copia doppia della finestra non c'entra niente, e le date sono comunque da
-  // calcolare a ogni apertura (domani non è più domani il giorno dopo, e i
-  // giorni buoni dipendono dalla variante scelta).
+  // Scritto a mano, e il motivo e' uno solo: **un <input type="date"> non sa
+  // spegnere i giorni in cui l'escursione non parte.** Accetta un minimo e un
+  // massimo, niente altro: il calendario che si apre lo disegna il sistema
+  // operativo e da fuori non ci si arriva. Su una scheda che va mar/gio/sab il
+  // cliente poteva scegliere il mercoledi' e scoprirlo dopo, ed e' esattamente
+  // quello che il proprietario ha chiesto di togliere.
   //
-  // Il campo del calendario resta sotto e non si tocca: le pastiglie coprono
-  // il caso normale — "vado domani", "vado sabato" — e chi parte fra tre
-  // settimane usa il calendario come prima.
-  function riempiDate(tour) {
-    if (!dateBox) return;
-    const domani = minRequestDate();
-    const date = primeDateUtili(tour, sceltaCorrente(tour), 3);
-    dateBox.innerHTML = "";
-    dateBox.hidden = !date.length;
-    date.forEach(iso => {
-      const b = document.createElement("button");
-      // dentro un <form>, un bottone senza tipo manda la richiesta
-      b.type = "button";
-      b.className = "date-pill";
-      b.dataset.dateValue = iso;
-      b.textContent = etichettaData(iso, domani);
-      b.setAttribute("aria-pressed", "false");
-      b.addEventListener("click", () => {
-        dateInput.value = iso;
-        // il campo è cambiato per mano nostra, e gli ascoltatori suoi non
-        // scattano da soli: l'avviso del giorno e le pastiglie si rifanno qui
-        aggiornaGiorno();
-        premiData();
-      });
-      dateBox.appendChild(b);
-    });
-    premiData();
-  }
+  // (C'e' mezzo trucco che non basta: `step="7"` sul campo nativo lascia solo
+  // un giorno ogni sette, e per l'Utopia — sabato e basta — funzionerebbe. Ma
+  // mar/gio/sab non si scrive con un passo fisso, quindi non e' una strada.)
+  //
+  // Il campo `#reqDate` resta, nascosto, ed e' sempre lui a dire la data a
+  // tutto il resto — il totale, il messaggio, la lista. Stessa scelta dei
+  // bottoni "meno / piu'": un posto solo dove il dato e' scritto.
+  function calendarioData() {
+    if (!dateField) return;
 
-  // Quale pastiglia è quella scelta. Si rifà anche quando la data arriva dal
-  // calendario: chi sceglie col calendario il giorno che una pastiglia offriva
-  // già deve vederla accesa, se no sembra che le due cose non si parlino.
-  function premiData() {
-    if (!dateBox) return;
-    dateBox.querySelectorAll(".date-pill").forEach(b => {
-      const scelta = b.dataset.dateValue === dateInput.value;
-      b.setAttribute("aria-pressed", scelta ? "true" : "false");
-      b.classList.toggle("is-on", scelta);
+    let mese = null;   // il primo del mese mostrato, come Date locale
+
+    const apri_btn = document.createElement("button");
+    apri_btn.type = "button";          // dentro un <form> se no manda la richiesta
+    apri_btn.className = "date-open";
+    apri_btn.setAttribute("aria-haspopup", "true");
+    apri_btn.setAttribute("aria-expanded", "false");
+
+    const pannello = document.createElement("div");
+    pannello.className = "date-cal";
+    pannello.hidden = true;
+
+    dateField.appendChild(apri_btn);
+    dateField.appendChild(pannello);
+
+    // I giorni buoni di **questa** scheda, come numeri di getDay().
+    function giorniBuoni() {
+      return current ? giorniDi(current, sceltaCorrente(current)) : [];
+    }
+
+    // Un giorno si puo' toccare? Tre no: prima di domani (le 24 ore di
+    // preavviso), oltre un anno, e i giorni in cui non si parte.
+    function utile(iso) {
+      if (iso < minRequestDate() || iso > maxRequestDate()) return false;
+      const giorni = giorniBuoni();
+      if (!giorni.length) return true;       // vuoto = tutti i giorni
+      const [a, m, g] = iso.split("-").map(Number);
+      return giorni.includes(new Date(a, m - 1, g).getDay());
+    }
+
+    // La prima data utile, da domani in avanti. Serve a decidere **su che mese
+    // si apre**: un'escursione che riparte a ottobre, aperta su settembre,
+    // mostrerebbe una griglia tutta grigia e sembrerebbe rotta.
+    // Si guarda un anno, che e' il massimo che il campo accetta.
+    function primaUtile() {
+      const d = new Date();
+      d.setDate(d.getDate() + 1);
+      for (let i = 0; i < 366; i++) {
+        const iso = dataLocale(d);
+        if (utile(iso)) return iso;
+        d.setDate(d.getDate() + 1);
+      }
+      return "";
+    }
+
+    function etichetta() {
+      apri_btn.textContent = dateInput.value
+        ? dataLeggibile(dateInput.value)
+        : t("req.datePick");
+      apri_btn.classList.toggle("is-empty", !dateInput.value);
+    }
+
+    // Il mese di una data, come primo del mese
+    function primoDelMese(iso) {
+      const [a, m] = iso.split("-").map(Number);
+      return new Date(a, m - 1, 1);
+    }
+
+    function disegna() {
+      const giorni = giorniBuoni();
+      const prima = primaUtile();
+      if (!prima) {
+        // Nessuna data in un anno intero: lo si dice, invece di mostrare una
+        // griglia grigia.
+        pannello.innerHTML = '<p class="date-cal-vuoto"></p>';
+        pannello.querySelector(".date-cal-vuoto").textContent = t("req.dateNone");
+        return;
+      }
+      if (!mese) mese = primoDelMese(dateInput.value || prima);
+
+      const anno = mese.getFullYear();
+      const m = mese.getMonth();
+      const min = primoDelMese(minRequestDate());
+      const max = primoDelMese(maxRequestDate());
+
+      pannello.innerHTML = "";
+
+      // ── la testata: mese, anno e le due frecce
+      const testa = document.createElement("div");
+      testa.className = "date-cal-head";
+      const indietro = freccia(-1, "req.prevMonth", mese > min);
+      const titolo = document.createElement("strong");
+      // I nomi dei mesi li da' il browser, giusti nelle tre lingue: dodici nomi
+      // per tre lingue sarebbero trentasei righe di vocabolario per niente.
+      const locali = { it: "it-IT", en: "en-GB", es: "es-ES" };
+      try {
+        titolo.textContent = mese.toLocaleDateString(locali[getLang()] || "en-GB",
+          { month: "long", year: "numeric" });
+      } catch (e) {
+        titolo.textContent = (m + 1) + "/" + anno;
+      }
+      const avanti = freccia(1, "req.nextMonth", mese < max);
+      testa.appendChild(indietro);
+      testa.appendChild(titolo);
+      testa.appendChild(avanti);
+      pannello.appendChild(testa);
+
+      // ── le iniziali dei giorni, **da lunedi'**: in Italia e in Spagna la
+      // settimana comincia di lunedi', e il catalogo e' per clienti che stanno
+      // qui. Le sigle sono le stesse dell'avviso "si fa solo il...".
+      const ordine = [1, 2, 3, 4, 5, 6, 0];
+      const riga = document.createElement("div");
+      riga.className = "date-cal-dow";
+      ordine.forEach(n => {
+        const s = document.createElement("span");
+        s.textContent = t(GIORNI_CHIAVI[n]);
+        // il giorno in cui non si parte e' spento anche in testata: si vede
+        // subito che quella colonna non e' grigia per caso
+        if (giorni.length && !giorni.includes(n)) s.className = "is-off";
+        riga.appendChild(s);
+      });
+      pannello.appendChild(riga);
+
+      // ── la griglia
+      const griglia = document.createElement("div");
+      griglia.className = "date-cal-grid";
+      // quante caselle vuote davanti al primo: lunedi' = 0
+      const salto = (new Date(anno, m, 1).getDay() + 6) % 7;
+      for (let i = 0; i < salto; i++) {
+        const vuota = document.createElement("span");
+        griglia.appendChild(vuota);
+      }
+      const quanti = new Date(anno, m + 1, 0).getDate();
+      for (let g = 1; g <= quanti; g++) {
+        const iso = dataLocale(new Date(anno, m, g));
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "date-cal-day";
+        b.textContent = String(g);
+        if (!utile(iso)) {
+          b.disabled = true;
+        } else {
+          b.addEventListener("click", () => scegli(iso));
+        }
+        if (iso === dateInput.value) {
+          b.classList.add("is-on");
+          b.setAttribute("aria-current", "date");
+        }
+        griglia.appendChild(b);
+      }
+      pannello.appendChild(griglia);
+    }
+
+    function freccia(passo, chiave, si_puo) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "date-cal-nav";
+      b.textContent = passo < 0 ? "\u2039" : "\u203a";
+      b.setAttribute("aria-label", t(chiave));
+      b.disabled = !si_puo;
+      b.addEventListener("click", () => {
+        mese = new Date(mese.getFullYear(), mese.getMonth() + passo, 1);
+        disegna();
+      });
+      return b;
+    }
+
+    function scegli(iso) {
+      dateInput.value = iso;
+      // Chi ascoltava il campo continua a funzionare senza sapere che il
+      // calendario esiste: l'avviso del giorno e il totale stanno su `input`.
+      dateInput.dispatchEvent(new Event("input", { bubbles: true }));
+      etichetta();
+      chiudi();
+      apri_btn.focus();
+    }
+
+    function apri() {
+      pannello.hidden = false;
+      apri_btn.setAttribute("aria-expanded", "true");
+      disegna();
+      // aperto in fondo alla finestra resterebbe mezzo fuori
+      pannello.scrollIntoView({ block: "nearest" });
+    }
+
+    function chiudi() {
+      pannello.hidden = true;
+      apri_btn.setAttribute("aria-expanded", "false");
+    }
+
+    apri_btn.addEventListener("click", () => {
+      if (pannello.hidden) apri(); else chiudi();
     });
+
+    // Un tocco fuori chiude, come fa il suggerimento degli hotel.
+    //
+    // **In fase di cattura**, e non e' un dettaglio: la freccia del mese
+    // ridisegna il pannello, quindi si cancella da sola dal documento. Con
+    // l'ascoltatore normale questo arrivava dopo, trovava un bottone che non
+    // stava piu' nella pagina — `contains()` su un elemento staccato dice
+    // sempre "fuori" — e chiudeva il calendario appena si cambiava mese.
+    // Sembrava aperto perche' il contenuto restava scritto, ma era chiuso, e
+    // da li' in poi non si aggiornava piu'.
+    // In cattura la domanda "dentro o fuori" se la fa **prima** che qualcuno
+    // possa toccare il documento, quando il bersaglio e' ancora al suo posto.
+    document.addEventListener("click", e => {
+      if (!pannello.hidden && !dateField.contains(e.target)) chiudi();
+    }, true);
+
+    etichetta();
+
+    return {
+      aperto: () => !pannello.hidden,
+      chiudi,
+      // Ridisegna quello che c'e'. Serve al cambio lingua — mese, iniziali dei
+      // giorni ed etichetta sono tutti tradotti — e **tiene il mese guardato**:
+      // chi sta guardando ottobre e cambia lingua deve restare a ottobre.
+      rifai() {
+        etichetta();
+        if (!pannello.hidden) disegna();
+      },
+      // A ogni apertura della finestra: la scheda e' un'altra e i giorni buoni
+      // sono altri, quindi il mese riparte da quello della prima data utile.
+      azzera() {
+        mese = null;
+        etichetta();
+      }
+    };
   }
 
   function aggiornaGiorno() {
@@ -1745,10 +1896,8 @@ function initRequestDialog() {
     if (tour) open(tour, comeAggiunta);
   });
 
-  // `premiData` anche qui: la data può arrivare dal calendario, e se è uno dei
-  // giorni che una pastiglia offriva già, quella pastiglia deve accendersi.
-  dateInput.addEventListener("input", () => { aggiornaGiorno(); premiData(); });
-  dateInput.addEventListener("change", () => { aggiornaGiorno(); premiData(); });
+  dateInput.addEventListener("input", aggiornaGiorno);
+  dateInput.addEventListener("change", aggiornaGiorno);
 
   // I due transfer si escludono a vicenda: un cliente sta o al nord o al sud,
   // non in tutti e due i posti. Spuntarne uno toglie la spunta all'altro.
@@ -1781,7 +1930,11 @@ function initRequestDialog() {
   );
   scrim.addEventListener("click", close);
   document.addEventListener("keydown", e => {
-    if (e.key === "Escape" && dialog.classList.contains("is-open")) close();
+    if (e.key !== "Escape" || !dialog.classList.contains("is-open")) return;
+    // Col calendario aperto, Escape chiude quello: chiudere tutta la finestra
+    // butterebbe via anche quello che il cliente ha gia' scritto.
+    if (calendario && calendario.aperto()) { calendario.chiudi(); return; }
+    close();
   });
 
   // Se la lingua cambia mentre la finestra è aperta, cambia anche il nome
@@ -1794,9 +1947,9 @@ function initRequestDialog() {
     if (transferLabelEl) transferLabelEl.textContent = current.transferLabel ? tf(current.transferLabel) : t("req.transfer");
     if (transferSiamNoteEl && current.transferSiam) transferSiamNoteEl.textContent = tf(current.transferSiam);
     if (transferSiamLabelEl) transferSiamLabelEl.textContent = current.transferSiamLabel ? tf(current.transferSiamLabel) : t("req.transferSiam");
-    // "Domani" e "Sab 19" sono tradotti: le pastiglie si rifanno, e premiData()
-    // dentro riempiDate() rimette l'accesa dov'era
-    riempiDate(current);
+    // Il calendario ha dentro il nome del mese, le iniziali dei giorni e
+    // l'etichetta del campo: tutti e tre tradotti.
+    if (calendario) calendario.rifai();
     // "Da concordare" e "2 adulti × €55" sono tradotti: si rifanno tutti e due
     riempiOrari(current);
     riempiLingue(current);
@@ -1829,7 +1982,17 @@ function initRequestDialog() {
       transferSiam: !!(transferSiamInput && transferSiamInput.checked),
       option: opzioneScelta()
     };
-    if (!req.date) return;
+    // Prima lo diceva `required` col fumetto del browser. Su un campo nascosto
+    // non si puo', quindi l'avviso e' il nostro, nel posto dove prima usciva
+    // quello del giorno sbagliato.
+    if (!req.date) {
+      if (dayErrorEl) {
+        dayErrorEl.textContent = t("req.dateMissing");
+        dayErrorEl.hidden = false;
+      }
+      if (dateField) dateField.scrollIntoView({ block: "center" });
+      return;
+    }
     // Anche l'hotel battuto a mano e non scelto dall'elenco: se il cliente
     // manda la richiesta, quello e' il suo hotel. Qui e non prima, perche'
     // prima e' solo roba scritta a meta'.

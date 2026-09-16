@@ -2297,39 +2297,144 @@ body.menu-open { overflow: hidden; }
 }
 .request-people input:focus { border-color: var(--text); }
 
-/* ── Le pastiglie della data ──────────────────────────────────────────────
-   Le prime tre date in cui l'attività si fa davvero, sopra il campo del
-   calendario. Il caso normale — "vado domani", "vado sabato" — diventa un
-   tocco invece di aprire il calendario del telefono e cercare il giorno; e
-   siccome le pastiglie saltano i giorni in cui non si parte, quel tocco non
-   può nemmeno sbagliare.
+/* ── Il calendario della data ─────────────────────────────────────────────
+   Scritto a mano perche' un <input type="date"> non sa spegnere i giorni in cui
+   l'escursione non parte: accetta solo un minimo e un massimo, e il calendario
+   che si apre lo disegna il sistema operativo.
 
-   `flex-wrap`: tre etichette come "Domani · Mer 21 · Ven 23" su un telefono
-   piccolo possono non stare in riga, e andare a capo è meglio che stringersi. */
-.date-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .4rem;
-  margin: -.3rem 0 .9rem;
-}
-.date-pills[hidden] { display: none; }
-.date-pill {
-  padding: .5rem .9rem;
+   Il campo mostra la data scelta e si apre al tocco: la griglia sta sopra il
+   resto invece di stare sempre aperta, perche' il modulo e' gia' piu' alto di
+   un telefono e 280 px in piu' erano mezza schermata da scorrere. */
+.date-open {
+  display: block;
+  width: 100%;
+  text-align: left;
   border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
   background: var(--surface);
-  color: var(--text);
+  border-radius: var(--radius-pill);
+  padding: .8rem 1.1rem;
+  margin-bottom: 1.1rem;
   font-family: inherit;
-  font-size: .88rem;
+  font-size: 1rem;
+  color: var(--text);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
-/* Quella scelta si segna come le pillole delle varianti sulla pagina di
-   dettaglio — bordo scuro e fondo sabbia, non un riquadro nero: è lo stesso
-   gesto, "scelgo fra questi", e deve avere lo stesso segno. */
-.date-pill.is-on {
-  border-color: var(--text);
-  background: var(--sand);
+/* Finche' la data non c'e', "Scegli la data" e' un invito e non un dato: si
+   scrive col grigio dei segnaposto degli altri campi, non col nero del testo. */
+.date-open.is-empty { color: var(--muted); }
+.date-open[aria-expanded="true"] { border-color: var(--text); }
+
+/* Il contenitore e' relativo: la griglia gli si appoggia sotto. */
+[data-date-field] { position: relative; }
+
+.date-cal {
+  position: absolute;
+  /* sale sopra il piede appiccicato in fondo (z-index 1) e sopra la tendina
+     degli hotel (2): quando e' aperto e' la cosa con cui si sta parlando */
+  z-index: 3;
+  top: calc(100% - .9rem);
+  left: 0;
+  right: 0;
+  padding: .7rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+.date-cal[hidden] { display: none; }
+
+.date-cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .4rem;
+  margin-bottom: .5rem;
+}
+.date-cal-head strong {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  /* il nome del mese lo da' il browser e arriva minuscolo in italiano e in
+     spagnolo ("settembre 2026"): la maiuscola la mettiamo qui */
+  text-transform: capitalize;
+}
+.date-cal-nav {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Spenta ai bordi dell'anno richiedibile, come il "meno" a quota uno */
+.date-cal-nav:disabled { opacity: .3; cursor: default; }
+
+/* Sette colonne uguali, per le iniziali e per i numeri: se le due griglie non
+   combaciano i numeri non stanno sotto il loro giorno. */
+.date-cal-dow,
+.date-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.date-cal-dow {
+  margin-bottom: .2rem;
+}
+.date-cal-dow span {
+  text-align: center;
+  font-size: .64rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  padding: .2rem 0;
+}
+/* La colonna di un giorno in cui non si parte e' spenta anche in testata: si
+   vede subito che quei numeri sono grigi per una ragione, non per un errore. */
+.date-cal-dow span.is-off { opacity: .35; }
+
+.date-cal-day {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: .92rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Il giorno in cui non si parte: **spento e non toccabile**. E' il motivo per
+   cui questo calendario esiste. Niente barrato ne' rosso: non e' un errore del
+   cliente, e' un giorno che non c'e'. */
+.date-cal-day:disabled {
+  color: var(--muted);
+  opacity: .3;
+  cursor: default;
+}
+.date-cal-day:not(:disabled):active { background: var(--sand); }
+/* Quello scelto: pieno scuro. Qui il riquadro pieno ci vuole — in una griglia
+   di trenta numeri il bordo da solo non si trova. */
+.date-cal-day.is-on {
+  background: var(--text);
+  color: var(--bg);
+}
+
+/* Quando in tutto l'anno non c'e' un giorno buono */
+.date-cal-vuoto {
+  margin: 0;
+  padding: .3rem;
+  font-size: .86rem;
+  color: var(--muted);
 }
 
 /* ── Il "meno / più" accanto ai numeri ────────────────────────────────────

@@ -77,7 +77,7 @@ nord: da lì questa escursione non passa.
 - **Gli orari delle altre escursioni.** Non servono all'ufficio: si prendono in
   novanta secondi con `raccogli-orari.js`, una colonna in più per ciascuna.
   Fatte finora: Teide mezza giornata, Teide + Icod + Garachico + Masca, Poema
-  del Mar.
+  del Mar, La Gomera.
 
 ---
 

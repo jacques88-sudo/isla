@@ -13568,3 +13568,62 @@ Chromium a 390 px, `tour.html?id=gran-canaria`:
 
 La data di prova ha dovuto essere un **venerdi'**: la scheda va solo quel giorno
 e il modulo rifiuta le altre, correttamente.
+
+---
+
+## La Gomera: gli orari del pick-up (16 settembre 2026)
+
+Quarta scheda con gli orari del pulmino, e la prima presa col comando ormai in
+casa (`dati-fornitore/raccogli-orari.js` invece di un testo incollato in chat).
+
+### Il giro piu' servito dei quattro
+
+| scheda | punti serviti | hotel completi |
+|---|---|---|
+| Teide mezza giornata | 65 | 386 |
+| Teide + Icod + Garachico + Masca | 66 | 385 |
+| Poema del Mar | 28 | 252 |
+| **La Gomera** | **63** | **384** |
+
+Solo **4 hotel** hanno l'ora ma un punto ancora senza nome (punti 53 e 10019),
+contro i 28 di Poema del Mar: questo giro sta quasi tutto nel sud, dove i nomi
+dei punti li abbiamo. Gli altri 174 hotel non vedono niente perche' da li' il
+pulmino non passa.
+
+### Tre orari uguali a Poema del Mar, e perche' non cambia niente
+
+Dei 22 punti che le due schede condividono, **tre hanno la stessa ora**: il 20 e
+il 22 alle 07:55, il 24 alle 08:05. E' la prima coincidenza da quando esiste
+questa tabella — fra Teide mezza giornata e Teide+Icod **nessuno** dei 64 punti
+in comune combaciava.
+
+Non e' un motivo per unire le tabelle. Gli altri diciannove punti sono diversi, e
+due giri che per caso passano insieme da tre fermate restano due giri: la prima
+volta che il fornitore sposta uno dei due, una tabella sola sbaglierebbe tutti
+gli hotel dell'altro.
+
+### Le 08:04 del punto 65 restano 08:04
+
+Tutti gli altri orari finiscono per 0 o per 5; questo no, ed e' Villa Adeje Beach.
+La tentazione era arrotondare a 08:05.
+
+Non l'ho fatto. `09:04` e `09:16` sul Teide erano refusi **confermati
+dall'ufficio** prima di essere corretti; questa non l'ha confermata nessuno, e un
+minuto inventato resta inventato. Sta gia' cosi' anche su Teide+Icod, dove il
+punto 65 e' `08:34` e il 22 e' `08:31`: i quarti d'ora storti di quel fornitore
+si lasciano come sono finche' qualcuno non li guarda.
+
+### Provato
+
+Chromium a 390 px, `tour.html?id=la-gomera`, col flusso della lista:
+
+- menu "A che ora" tolto, al suo posto l'ora dell'hotel
+- Cleopatra → **08:20**, Best Tenerife, alla fermata dell'autobus
+- Perla Gris → **07:15**, Callao Salvaje (Restaurante Nebula)
+- Aquarius → **"il tuo hotel"** senza ora (punto 0, ora non servita): giusto
+- Chaparral → niente, punto 53 senza nome: giusto, l'ora c'e' ma non il posto
+- calendario che spegne le domeniche
+- messaggio WhatsApp completo, `Orario: 08:20` e il punto di raccolta
+- nessun errore JS
+
+`CACHE_NAME` alzato a `isla-v346`.

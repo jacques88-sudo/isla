@@ -13372,3 +13372,123 @@ codice.
 *(Il terzo avviso, `opera-60`, è un'altra cosa: la fascia dei neonati non è scritta in
 anni, quindi il confronto con le altre non si può fare a macchina e vuole un'occhiata a
 mano. La foto ce l'ha.)*
+
+---
+
+## v344 — via la scelta fra "prenota subito" e "metti nella lista"
+
+Segnalazione del proprietario: «ho visto che la prenotazione si intoppa tra mettere nella
+lista o prenotare subito, eliminiamo la scelta, e mettiamo direttamente tutto nella lista,
+senza riservare direttamente».
+
+Aveva ragione, e il punto non era che uno dei due pulsanti fosse sbagliato: era che
+**erano due**. Sotto ogni scheda c'erano "Richiedi disponibilità" (pieno) e "Aggiungi alla
+lista" (chiaro), più una barra in fondo che diceva "Prenota ora" e faceva la stessa cosa
+del primo. Tre bottoni per due strade, e il cliente doveva capire la differenza fra due
+cose prima di aver capito cosa voleva.
+
+Adesso c'è **una strada sola**: tutto passa dalla lista.
+
+### Il rischio che questa modifica poteva creare, e perché non lo crea
+
+Togliendo "prenota subito", il cliente compila, preme, e **niente parte**. Se non capisce
+che deve ancora mandare la lista, va in spiaggia ad aspettare una risposta che non
+arriverà: all'ufficio non è arrivato niente. Sarebbe stato molto peggio del problema
+risolto.
+
+Gliel'ho detto prima di scrivere una riga, e il proprietario ha scelto la coppia che
+regge:
+
+- **il pulsante dice "Aggiungi alla lista"**, non "Richiedi disponibilità". Non promette
+  una prenotazione, quindi non si può crederci;
+- **il cliente resta sulla pagina**, come faceva già.
+
+E funziona perché il pallino della lista **non è un avviso che sparisce**: è una pillola
+fissa in basso a sinistra che dice "① La tua lista" e resta lì finché la lista ha qualcosa
+dentro. La scritta "Aggiunta alla tua lista" dura 2,6 secondi, la pillola no. Verificato in
+figura: dopo l'aggiunta la pillola c'è.
+
+### All'ufficio non cambia niente
+
+Questa è la cosa che ha reso la modifica piccola e sicura, e non è una coincidenza: era
+già scritto in `lista.js`.
+
+**Con una voce sola, la lista manda esattamente il messaggio di prima.** `listaWhatsappUrl`
+chiama `whatsappUrl`, la stessa funzione del vecchio "Richiedi disponibilità" — c'era già
+un commento che lo spiegava: «con una voce sola si usa il messaggio normale: un elenco
+numerato di un elemento solo sarebbe strano da leggere, e all'ufficio arriverebbero due
+formati per la stessa cosa».
+
+Quindi `whatsappUrl` **non è codice morto** e non si tocca. Controllato prima di cancellare
+niente.
+
+### Il nome resta, e si chiede una volta
+
+Il campo del nome nella finestra della richiesta era già nascosto in modalità "aggiungi":
+il nome si chiede nella finestra della lista, quando parte il messaggio. Quindi la
+decisione di ieri — *il nome ci deve essere* — vale ancora e non è stata toccata: è
+chiesto, una volta sola, nel punto in cui serve.
+
+### La lista piena era un vicolo, ed era già spiegato
+
+`LISTA_MAX = 10`. Prima, a lista piena, il cliente poteva comunque usare "Richiedi
+disponibilità"; adesso non c'è altra strada. Ma il messaggio che esce era già quello
+giusto: «Nella lista ci stanno al massimo 10 escursioni. Mandaci questa richiesta e poi ne
+inizi un'altra». Dice come uscirne, quindi non serviva altro. Provato coi dieci dentro: la
+finestra non si apre e l'avviso esce.
+
+### Cosa è cambiato, in righe
+
+`tour.js`: un pulsante invece di due, e la barra in fondo che punta allo stesso attributo.
+`tour.html`: la barra dice "Aggiungi alla lista" invece di "Prenota ora".
+`escursioni.js`: via la variabile `modo` e il ramo "invia" del submit; l'ascoltatore guarda
+un attributo solo; `req` non legge più il nome.
+
+Corretto anche un `focus()` che non faceva niente: sul giorno non valido puntava
+`dateInput`, che dalla v343 è **nascosto**. Adesso punta il pulsante che apre il calendario.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `escursioni.js` e
+`tour.js`.
+
+Nel browser vero, iPhone SE (375×667):
+
+- nella scheda c'è **un pulsante solo**, e dice "Aggiungi alla lista"; la barra in fondo
+  dice la stessa cosa e porta lo stesso id;
+- nella finestra il nome è nascosto e non obbligatorio, il pulsante dice "Aggiungi alla
+  lista";
+- dopo l'aggiunta: finestra chiusa, **niente parte su WhatsApp**, una voce nella lista,
+  pillola visibile;
+- dalla lista con **una** voce: parte, e il messaggio è "Hi Isla! I'm Mario Rossi… •
+  Castillo San Miguel • Date: 17/09/2026 • Time: 19:00" — identico a quello di prima;
+- con **due** voci: messaggio numerato "1) … 2) …" e totale €76,50;
+- invio senza data: avviso, **niente aggiunto**, finestra che resta aperta;
+- lista piena a dieci: la finestra non si apre e l'avviso spiega cosa fare;
+- la memoria dell'hotel funziona ancora dal flusso nuovo.
+
+Nessun riferimento rimasto a `data-request-open`, `requestOpen` o `comeAggiunta`.
+
+`CACHE_NAME` da `isla-v343` a `isla-v344`: toccati `escursioni.js`, `tour.js` e
+`tour.html`.
+
+### Due cose morte lasciate in piedi, di proposito
+
+Un passo alla volta: queste due si togliono in un giro separato, e sono scritte qui perché
+non si perdano.
+
+1. **`#reqName` nella finestra della richiesta** adesso è nascosto per sempre. Il nome lo
+   chiede `lista.js` col suo `#listaName`. È markup irraggiungibile in due copie di HTML.
+2. **`tour.ask`** in `i18n.js` ("Richiedi disponibilità") non è più letta da nessuno. Il
+   titolo della finestra usa `req.title`, che è un'altra chiave con lo stesso testo.
+   `controlla.js` non segnala le chiavi inutilizzate, quindi non dà avvisi.
+
+### Quello che resta da guardare, e non è questo
+
+La pillola piena in testata di **tutte e cinque le pagine** dice "Prenota ora" e apre la
+finestra **"Scan ticket"**, che chiede un codice di prenotazione — un codice che si ha
+solo **dopo** aver prenotato. È il bottone più in vista del sito e non prenota niente.
+
+Non l'ho toccato perché non era il compito, ed è così da prima. Ma ora che il pulsante
+sotto la scheda dice "Aggiungi alla lista", il contrasto è più forte di prima: **da
+segnalare al proprietario.**

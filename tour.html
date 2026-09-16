@@ -122,9 +122,12 @@
        cosi' la pagina "escursione non trovata" non mostra una barra vuota. -->
   <div class="book-bar" data-book-bar hidden>
     <p class="book-bar-price" data-book-price></p>
-    <button class="btn btn-primary book-bar-cta" type="button" data-request-open=""
+    <!-- Fa la stessa cosa del pulsante dentro la scheda: mette l'escursione
+         nella lista. Prima diceva "Prenota ora" e mandava subito su WhatsApp,
+         ed erano due strade per la stessa cosa. -->
+    <button class="btn btn-primary book-bar-cta" type="button" data-request-add=""
             aria-haspopup="dialog" aria-controls="requestDialog"
-            data-i18n="nav.bookNow">Prenota ora</button>
+            data-i18n="req.addToList">Aggiungi alla lista</button>
   </div>
 
   <div class="photo-viewer" data-photo-viewer hidden>

@@ -64,6 +64,10 @@ scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
 - `tour.html` + `tour.js` — pagina di dettaglio di una singola escursione,
   indirizzo `tour.html?id=<id della voce nel catalogo>`. Riusa da `escursioni.js`
   il prezzo, il nome della categoria e la finestra della richiesta
+- `pacchetti.html` + `pacchetti.js` — i pacchetti: gruppi di escursioni del catalogo
+  vendute insieme con uno sconto. Nel file ci sono i dati (`PACCHETTI`), il conto del
+  prezzo (letto dal catalogo, mai scritto a mano) e la pagina. Lo carica anche chi non
+  la mostra: serve a `lista.js` per lo sconto
 - `esplora-catalog.js` — dati delle 45 attività, divise nelle 8 categorie
 - `assistente.js` — assistente guidato: tre domande (interesse, bambini, budget), poi
   consigli dal catalogo e un riquadro per chiedere su WhatsApp quello che non c'è
@@ -75,8 +79,10 @@ scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
 
 Home: splash con anello blu di caricamento → banner fisso in cima (logo, wordmark, pillole
 Esperienze / Prenota ora / Menu, si restringe scorrendo) → video hero con play/pausa →
-"Inizia la tua avventura con…" → griglia bento (Pacchetti, Scan ticket, Con bambini,
-3/5/7 Days, più un riquadro largo "Noleggio auto, moto e bici" che apre WhatsApp) →
+"Inizia la tua avventura con…" → griglia bento (Pacchetti, Scan ticket, In famiglia,
+3/5/7 Days, più un riquadro largo "Noleggio auto, moto e bici" che apre WhatsApp;
+"Pacchetti" porta alla pagina dei pacchetti, "In famiglia" a quelli di famiglia e
+"3/5/7 Days" agli itinerari a giorni) →
 "come funziona" → categorie (7 foto vere) → posti segreti → chi siamo →
 FAQ → richiamo finale → footer. Layout ottimizzato anche per desktop.
 
@@ -143,7 +149,7 @@ quattro, quelli con un operatore unico e un listino esposto:
 | --- | --- | --- | --- |
 | Trenino turistico | 9 | 5 | prezzo esposto a bordo |
 | Submarine Safari | 61 | 37 | sito di prenotazione dell'operatore |
-| Karting | 20 | 15 | listino del circuito, tanda da 10 minuti |
+| Karting | 20 | 15 | listino del circuito, tanda da 10 minuti — **il bambino è passato a 16 in v275**, vedi in fondo |
 | Tuk tuk | 24 | — | prezzo a persona di un tour |
 
 **Gli altri 22 non sono stati messi, e non e' pigrizia.** Due motivi:
@@ -1700,8 +1706,9 @@ Cose da ricordare, imparate sistemando la versione PC:
   barra non si vede. Su schermo largo devono andare a capo. E' successo ai
   filtri per categoria
 
-- I riquadri bento (Pacchetti, Con bambini, 3/5/7 Days) puntano a `#categories` e al
-  filtro famiglia: servono pagine vere per i pacchetti
+- Il riquadro bento "Pacchetti" porta a `pacchetti.html` (dal 14 settembre 2026), e
+  **"3/5/7 Days Experience" porta agli itinerari a giorni** (`pacchetti.html?giorni=tutti`,
+  dal 14 settembre 2026). Adesso ogni riquadro della home porta da qualche parte
 - Il riquadro "Noleggio auto, moto e bici" non è un'attività del catalogo: non ha una
   scheda, apre WhatsApp con un messaggio già scritto (`wa.rental` in `i18n.js`). Il link
   lo costruisce `initRentalLink()` in `app.js`, che si nasconde da solo se
@@ -5893,7 +5900,6 @@ Il "(facoltativo)" accanto all'etichetta e' diventato "**(utile per il
 pick-up)**": dice perche' compilarlo invece di dire che si puo' saltare. Il
 campo resta facoltativo davvero, non ha `required`.
 
-<<<<<<< HEAD
 ### La seconda escursione: Teide, Icod, Garachico e Masca
 
 `PICKUP_TIMES["teide-icod-garachico-masca"]`, 66 orari raccolti il 7 settembre
@@ -5961,7 +5967,9 @@ schede: su Icod Cleopatra 08:45 e Perla Gris 07:45, sul Teide 09:15 e 08:15,
 stesso punto di raccolta in tutti e due i casi. Girasol, che il punto ce l'ha
 senza nome, non mostra niente su nessuna delle due. Nessun errore JS. `sw.js` a
 `isla-v246`.
-=======
+
+---
+
 ## La Gomera: la scheda riempita con i dati ufficiali
 
 Era un segnaposto: `duration` "Da definire", `priceFrom: 99`, `priceAdult` e
@@ -6450,7 +6458,7040 @@ Cristianos, Las Galletas, Costa Adeje, Chío, Guargacho…), e i casi con una pa
 Provato nel browser in inglese e in spagnolo su tre schede (`teide-national-park`,
 `buggy-2-3h`, `santa-cruz-taganana`): "South Tenerife" e "Tenerife sur". `CACHE_NAME`
 alzato a `isla-v245`.
->>>>>>> origin/main
+
+---
+
+## Santa Cruz + Anaga + La Laguna: la scheda riempita coi dati ufficiali (8 settembre 2026)
+
+Era un segnaposto: titolo "Santa Cruz + Taganana Tour", `duration` "Da definire",
+`priceFrom: 48` con `priceAdult` e `priceChild` a **0**, tre righe di descrizione e niente
+altro. Il proprietario ha mandato due fonti — la pagina del fornitore che organizza il
+giro (Nere Izerdie / Island Excursions, in spagnolo, col modulo di prenotazione) e quella
+di CanaryVIP che rivende un giro simile — dicendo, come per La Gomera, che **in caso di
+contrasto vale la prima**.
+
+### Aggiornata, non creata
+
+Prima cosa: la scheda c'era già. `santa-cruz-taganana` è lo stesso giro (stessa capitale,
+stesso massiccio di Anaga, stessa partenza dal sud), quindi si aggiorna quella invece di
+fare il doppione che a suo tempo era stato il Kalima Kat.
+
+**L'id resta `santa-cruz-taganana`** anche se il titolo non nomina più Taganana. È la
+stessa regola delle tre categorie rinominate ad agosto: si cambia quello che si vede, non
+gli id. Cambiarlo qui butterebbe via i link già mandati e le richieste ferme in
+`localStorage` di chi la scheda l'ha già messa in lista. Per lo stesso motivo resta
+`santa-cruz-taganana.jpg`: quel file è anche la foto della categoria "Tour e visite" in
+`index.html`, e rinominarlo sarebbe una modifica in tre punti per zero guadagno.
+
+**Spostata in "Teide e natura"** (`teide-natura`), come ha chiesto il proprietario: mezza
+giornata sta dentro il Parco Rurale di Anaga, che è Riserva della Biosfera. "Tour e visite"
+scende a 6 schede, "Teide e natura" sale a 4. La foto della categoria "Tour e visite" non
+si tocca: vive in `CATEGORIES`, non nel catalogo.
+
+### Il contrasto vero: Cruz del Carmen, non Taganana
+
+Le due fonti descrivono **due percorsi diversi** dentro Anaga. L'ufficiale si ferma a
+**Cruz del Carmen**; CanaryVIP a **Taganana**, e ci aggiunge il Monte de las Mercedes. È
+esattamente il caso in cui vale la prima: nell'itinerario e nel titolo c'è Cruz del
+Carmen, Taganana è sparita da tutte e tre le lingue.
+
+Sulla Playa de las Teresitas le due fonti vanno d'accordo — **si passa davanti e non ci si
+ferma** — ed è il tipo di dettaglio che è meglio scritto che taciuto: un cliente che legge
+"Teresitas" nell'itinerario si porta il costume per niente. Sta nell'itinerario ("senza
+sosta") e ripetuto fra i consigli.
+
+### I prezzi: 50 e 31,50, e il 48 che c'era prima
+
+Dal modulo ufficiale: **adulti 50 €**, **bambini (2-11) 31,50 €**. Le due fasce combaciano
+da sole, `2-11` e `12+`, senza il buco che `controlla.js` cerca.
+
+**`priceInfant` non c'è, ed è voluto.** Il fornitore scrive "Bebés (**NO PONER**)": la riga
+dei neonati non va messa. Assente vuol dire "non lo sappiamo", che qui è la verità — non
+sappiamo se sotto i 2 anni si sale gratis o non si sale. Provato nel browser: la riga
+"Neonati" nella finestra della richiesta non compare proprio.
+
+**Il prezzo sale da 48 a 50, e l'aumento l'ha confermato il proprietario** (8 settembre
+2026, stesso giorno). In catalogo c'era `priceFrom: 48`, che nessuno ha documentato da
+dove venisse; l'ufficiale dice 50. È il caso che `CLAUDE.md` chiama "alzare un prezzo dopo
+che il cliente l'ha letto", quindi era da chiedere invece che da fare di nascosto — e la
+domanda si poteva fare a cuor leggero perché qui `priceAdult` e `priceChild` erano a **0**:
+un totale non si è mai potuto fare e il cliente non ha mai visto un conto vero, solo un
+"da €48" in elenco.
+
+### Cosa è entrato da CanaryVIP e cosa no
+
+Solo i fatti operativi, e solo dove l'ufficiale tace:
+
+- **la durata**, circa 8 ore;
+- **i giorni**, lunedì e giovedì.
+
+**I giorni erano la cosa da confermare, e il proprietario li ha confermati** (8 settembre
+2026, stesso giorno): lunedì e giovedì sono giusti anche per questo percorso. Valeva la
+pena chiedere, perché `days` non è un campo innocuo — chi sceglie un mercoledì **si vede
+bloccare la richiesta** — e perché CanaryVIP vende il percorso di Taganana, quindi non era
+detto che i suoi giorni fossero quelli di questo giro.
+
+**Non è entrato niente altro**: né la politica di cancellazione (48 ore per i gruppi, 4 e 6
+giorni per quelli grossi — le nostre restano **24 ore, sempre**), né "miglior prezzo
+garantito", né "biglietti ufficiali", né il 5.00 su 7 recensioni, né i due prezzi per zona
+(50 € dal sud, 58 € da Puerto de la Cruz: da noi la partenza è una sola, il sud). Le
+descrizioni sono riscritte da zero nelle tre lingue.
+
+### Le lingue: sei, e non sono `LINGUE_TOUR`
+
+All'inizio il campo non c'era. Il modulo ufficiale ha un campo "Idioma" ma l'unica lingua
+che ci si legge dentro è "Español", e CanaryVIP promette "guide multilingue" senza dire
+quali: un menu con dentro cinque voci indovinate sarebbe stato peggio di nessun menu.
+Chiesto all'ufficio, il proprietario ha mandato l'elenco vero (8 settembre 2026):
+
+    languages: ["Español", "English", "Deutsch", "Italiano", "Français", "Nederlands"]
+
+**Non si può usare `LINGUE_TOUR`**, ed è il motivo per cui la lista è scritta per esteso:
+la costante ne ha cinque e qui ce n'è una sesta, l'**olandese**. Scriverla nella lingua
+stessa — "Nederlands", non "Olandese" — è la regola di sempre del campo: un olandese
+riconosce la sua riga anche se sta guardando il sito in spagnolo. L'ordine è quello in cui
+le ha mandate l'ufficio, che parte dallo spagnolo invece che dall'inglese.
+
+Provato nelle tre lingue del sito: l'etichetta si traduce ("In che lingua", "En qué
+idioma", "Which language") e così la prima voce ("Indifferente", "Indiferente", "No
+preference"), mentre i sei nomi restano uguali. Scelto "Nederlands", il messaggio WhatsApp
+porta la riga `• Lingua: Nederlands` insieme al totale giusto. In "In breve" è comparsa la
+riga "Lingue", che con sei voci va a capo su due righe e si legge bene.
+
+### La cosa che si sarebbe potuta mettere e non si è messa
+
+**`guide`** fra le icone di "Cosa è incluso". Il fornitore ufficiale non la nomina mai; la
+"visita guidata" è testo del rivenditore. Stessa scelta fatta su `la-palma`. Resta la sola
+`transfer`, il ritiro in hotel.
+
+**`times` non c'è**, quindi in "A che ora" restano le fasce segnaposto più "Da concordare",
+e la scheda non è in `PICKUP_TIMES`: mostra il punto di raccolta senza l'ora. È il modo
+giusto finché gli orari veri non arrivano — un'ora inventata mette un cliente alla fermata
+all'ora sbagliata. Nei consigli c'è scritto che l'ora del ritiro dipende dall'hotel e si
+conferma con la prenotazione.
+
+### Provato
+
+`node controlla.js` → 0 errori (i due avvisi sono quelli di prima, `opera-60` e
+`masca-teide-cabrio-bus`). Nel browser, a 420 px:
+
+- la pagina di dettaglio nelle **tre lingue**: titolo uguale in tutte e tre, "Punto di
+  partenza — Tenerife Sud / South Tenerife / Tenerife sur", "Giorni — Lun · Gio";
+- **il totale a mano**: 2 adulti + 1 bambino → **€131,50** (2 × 50 + 31,50);
+- niente riga "Neonati", niente menu "In che lingua";
+- **una data di mercoledì** (16 settembre 2026) fa uscire "Questa escursione si fa solo:
+  Lun · Gio." e blocca l'invio; il giovedì passa;
+- la scheda compare fra le 4 di "Teide e natura", con "da €50".
+
+Nessun errore JS. `CACHE_NAME` alzato a `isla-v247`, poi a `isla-v248` con la conferma di
+giorni e prezzo e a `isla-v249` con le lingue.
+
+### Un conflitto di merge rimasto dentro NOTES.md
+
+Trovato passando di qui, non c'entra con la scheda: `NOTES.md` su `main` aveva ancora
+dentro i tre marcatori `<<<<<<< HEAD`, `=======` e `>>>>>>> origin/main` (righe 5896, 5964
+e 6453), da un merge chiuso male. **I due lati erano tutti e due contenuto buono e
+diverso** — gli orari del pick-up di Teide/Icod/Garachico/Masca da una parte, La Gomera e
+le sezioni dopo dall'altra — quindi sono stati tenuti tutti e due, in quell'ordine, con il
+`---` di sempre in mezzo. Non è stato buttato via niente.
+
+---
+
+## Le lingue del Teide erano già giuste (8 settembre 2026)
+
+Il proprietario ha mandato le lingue del **Teide National Park**: "le stesse ma senza
+l'olandese", cioè le cinque di Santa Cruz meno il `Nederlands`.
+
+**Non c'è stato niente da cambiare: la scheda le aveva già.** `teide-national-park` ha
+`languages: LINGUE_TOUR` dal 7 settembre, e `LINGUE_TOUR` è esattamente quelle cinque.
+Verificato nel browser prima di rispondere, invece di fidarsi del codice: in "In breve" la
+riga dice "English · Español · Deutsch · Italiano · Français" e il menu "In che lingua"
+ha cinque voci più "Indifferente", **senza `Nederlands`**.
+
+### Le due schede non si devono unificare
+
+Vale la pena scriverlo perché adesso il catalogo ha due liste che si somigliano e **non
+sono la stessa cosa**:
+
+| scheda | lingue | come è scritto |
+| --- | --- | --- |
+| `teide-national-park` | 5 | `languages: LINGUE_TOUR` |
+| `santa-cruz-taganana` | 6, con l'olandese | la lista per esteso |
+
+Chi passa di qui e vede la lista lunga scritta a mano potrebbe pensare a una svista e
+"sistemarla" in `LINGUE_TOUR`, o al contrario allargare la costante a sei lingue perché
+"tanto è la stessa gita in pullman". Sono tutte e due modifiche sbagliate: le due
+escursioni sono di **due fornitori diversi**, e l'olandese ce l'ha solo quella di Santa
+Cruz. Toccare `LINGUE_TOUR` per far contenta una scheda cambierebbe per giunta anche
+tutte le altre che la usano.
+
+### L'avviso in testa a `LINGUE_TOUR` resta
+
+La costante ha ancora scritto sopra "⚠ QUESTA LISTA E' DA CONFERMARE", e **resta com'è**.
+Chiesto al proprietario se quelle cinque valessero per tutte le schede che usano la
+costante, la risposta è stata netta: **"ogni scheda ha la sua lingua"** (8 settembre 2026).
+
+È la regola che chiude la questione, e vale la pena tenerla a mente perché è controintuitiva
+quando si guarda il codice: `LINGUE_TOUR` sembra "le lingue di Isla", e invece è solo una
+**scorciatoia di scrittura** per le schede che per caso hanno quelle cinque. Non è una
+verità sul catalogo. Quindi:
+
+- una scheda **senza** `languages` non vuol dire "parla le solite": vuol dire che non lo
+  abbiamo ancora chiesto, e infatti la domanda "In che lingua" non compare;
+- le lingue si chiedono **una scheda alla volta**, come i giorni e gli orari;
+- `LINGUE_TOUR` non si allarga né si restringe per far tornare una scheda: si cambia solo
+  se cambiano davvero le cinque di default, e cambierebbe sotto i piedi a tutte le altre.
+
+Nessun file di codice toccato, quindi `CACHE_NAME` resta a `isla-v249`.
+
+---
+
+## Le sette lingue di Teide + Icod + Garachico + Masca, e il primo cirillico (8 settembre 2026)
+
+Terza scheda a cui l'ufficio manda le lingue, e la più lunga finora: **sette**.
+
+    languages: ["Español", "English", "Deutsch", "Русский", "Italiano", "Français", "Nederlands"]
+
+Sono le cinque di `LINGUE_TOUR` più l'olandese **e il russo**. È la conferma pratica della
+regola di ieri — "ogni scheda ha la sua lingua" — vista adesso su tre schede della stessa
+categoria che hanno tre elenchi diversi:
+
+| scheda | lingue | come è scritto |
+| --- | --- | --- |
+| `teide-national-park` | 5 | `languages: LINGUE_TOUR` |
+| `santa-cruz-taganana` | 6 (+ olandese) | la lista per esteso |
+| `icod-garachico-orotava` | 7 (+ olandese e russo) | la lista per esteso |
+
+Tre fornitori, tre elenchi. Chi vede tre liste simili e pensa di accorparle in una costante
+sola sta per cancellare un dato vero.
+
+### "Русский", non "Russo"
+
+Il russo è **il primo alfabeto non latino del catalogo**, e si scrive come tutti gli altri:
+nella lingua stessa. Un russo cerca "Русский" e lo trova a colpo d'occhio anche se sta
+guardando il sito in spagnolo, che è esattamente il motivo per cui questo campo non si
+traduce mai — vale per il cirillico come per "Deutsch".
+
+**Provato che si veda davvero, non solo che sia scritto giusto nel file.** Un alfabeto
+nuovo può uscire in quadratini se manca il font o se qualcosa per strada rompe la codifica,
+ed è il tipo di cosa che `node --check` non vede e `controlla.js` nemmeno. Nel browser a
+420 px, nelle tre lingue del sito: la riga "Lingue" in "In breve" mostra tutti e sette i
+nomi (con sette voci va a capo su tre righe e si legge bene), il menu "In che lingua" ha
+sette voci più "Indifferente", e le lettere cirilliche sono lettere, non rettangoli.
+
+Scelto "Русский", il messaggio WhatsApp arriva intero — `• Lingua: Русский` — quindi il
+cirillico regge anche il giro dentro `encodeURIComponent` e l'indirizzo di WhatsApp. Totale
+della prova: 2 adulti + 1 bambino = **€153,50** (2 × 58 + 37,50).
+
+Questa scheda sta in `PICKUP_TIMES`, quindi nella finestra il menu "A che ora" non c'è
+proprio: al suo posto l'ora dell'hotel scelto. Verificato che l'aggiunta delle lingue non
+l'abbia toccato — le due domande vivono una accanto all'altra e restano indipendenti.
+
+`CACHE_NAME` alzato a `isla-v250`.
+
+---
+
+## Le stesse sette lingue anche su La Gomera (8 settembre 2026)
+
+Quarta scheda a cui l'ufficio manda le lingue. `la-gomera` non aveva il campo, adesso ha le
+**stesse sette** di `icod-garachico-orotava` — le due sono dello stesso fornitore (Nere
+Izerdie / Island Excursions), quindi non sorprende.
+
+### Perché non è stata fatta una costante in comune
+
+Due schede con la lista identica sono la tentazione classica: si scrive una `LINGUE_SETTE`
+accanto a `LINGUE_TOUR` e si mette quella in tutte e due. **Non è stato fatto, ed è una
+scelta, non una dimenticanza.**
+
+La regola del proprietario è "ogni scheda ha la sua lingua". Una costante condivisa
+capovolge proprio quello: il giorno che uno dei due fornitori toglie il russo, chi corregge
+la sua scheda cambia **anche l'altra** senza accorgersene, e la scheda sbagliata non la
+segnala nessuno — non è un errore di sintassi, è una lingua di troppo in un menu. Sette
+stringhe scritte due volte costano niente; una lingua sbagliata in un menu costa un cliente
+che si aspetta la guida nella sua lingua e non la trova.
+
+`LINGUE_TOUR` resta l'unica costante, e resta quello che è: il **valore di default** delle
+schede che hanno le cinque solite, non un elenco da cui pescare.
+
+### Come sta il catalogo adesso
+
+Quindici schede hanno `languages`, e le liste vere sono sei diverse:
+
+| lingue | schede |
+| --- | --- |
+| 7 (+ olandese e russo) | `icod-garachico-orotava`, `la-gomera` |
+| 6 (+ olandese) | `santa-cruz-taganana` |
+| 5 (`LINGUE_TOUR`) | Teide National Park, i tre buggy, i due quad, Submarine Safari, Paragliding |
+| 3 | Luxury Cruiser, Poema del Mar |
+| 2 | Helicopter Tours, Passeggiata a cavallo |
+
+Le altre sessanta schede il campo non ce l'hanno, e va bene così: vuol dire che le lingue
+non gliele abbiamo ancora chieste, non che parlino le solite.
+
+### Provato
+
+Nel browser a 420 px, nelle tre lingue del sito: la riga "Lingue" in "In breve" con tutti e
+sette i nomi, il menu "In che lingua" con sette voci più "Indifferente", cirillico
+compreso.
+
+**Una cosa scoperta per strada, e non è un difetto:** con la data di giovedì la richiesta
+non parte. Non c'entrano le lingue — è la variante. La scheda ha due partenze e i giorni
+della **variante vincono** su quelli della scheda: dal sud si va lun mar mer ven sab, e la
+finestra risponde "Questa escursione si fa solo: Lun · Mar · Mer · Ven · Sab". Con il
+lunedì passa, e il messaggio esce intero: lingua `Русский`, variante "Tenerife sud", totale
+**€295** (2 × 110 + 75). Anche in "In breve" i giorni mostrati sono quelli della variante
+scelta, cinque e non sei.
+
+`CACHE_NAME` alzato a `isla-v251`.
+
+---
+
+## Le tre lingue di La Palma (8 settembre 2026)
+
+Quinta scheda a cui l'ufficio manda le lingue, e stavolta è l'elenco **più corto**:
+
+    languages: ["English", "Español", "Deutsch"]
+
+Tre, contro le sette di La Gomera. Le due sono la stessa cosa a guardarle da lontano —
+un'isola vicina, il traghetto, la giornata intera — e hanno un elenco lungo la metà. È la
+prova migliore che "ogni scheda ha la sua lingua" non è una formalità: se le lingue si
+fossero dedotte dal tipo di gita, questa sarebbe uscita sbagliata di quattro voci.
+
+Sono le stesse tre della gita a Gran Canaria (id `gran-canaria`, titolo "Poema del Mar"),
+e anche qui **restano scritte nella scheda**, non in una costante in comune.
+
+### Un id sbagliato preso al volo
+
+Nel commento avevo scritto "le stesse tre di `poema-del-mar`". **Quell'id non esiste**: la
+scheda si chiama `gran-canaria` e "Poema del Mar" è solo il titolo. Un id inventato in un
+commento non rompe niente e non lo segnala nessuno strumento — resta lì finché qualcuno lo
+cerca e non lo trova. Corretto scrivendo tutti e due, id e titolo. Vale la pena ricordarsi
+che **il titolo di una scheda e il suo id spesso non si somigliano affatto**: qui, e su
+`santa-cruz-taganana` che si chiama Santa Cruz + Anaga + La Laguna, e su
+`icod-garachico-orotava` che La Orotava non la vede più.
+
+### Provato
+
+Nel browser a 420 px nelle tre lingue del sito: la riga "Lingue" in "In breve" con i tre
+nomi, il menu con tre voci più "Indifferente", l'etichetta che si traduce e i nomi no.
+
+Il messaggio WhatsApp esce completo, e su questa scheda ha due righe in più delle altre:
+**l'orario**, perché `times: ["07:45"]` è una partenza sola e fissa e quindi "Da concordare"
+non c'è, e **i neonati**, perché qui `priceInfant: 20` è un prezzo vero (il posto sul
+traghetto si paga) e non un "gratis". Totale della prova con 2 adulti, 1 bambino e 1
+neonato: **€436** (2 × 145 + 126 + 20).
+
+`CACHE_NAME` alzato a `isla-v252`.
+
+---
+
+## Poema del Mar – Gran Canaria Experience, ripassata sui dati ufficiali (8 settembre 2026)
+
+L'ufficio ha mandato la pagina del fornitore (Nere Izerdie / Island Excursions) più quella
+di CanaryVIP come complemento, e le lingue: spagnolo, tedesco, inglese.
+
+**La sorpresa è che non c'era quasi niente da correggere.** La scheda `gran-canaria` era
+già stata riempita da queste stesse fonti: prezzi 135 / 32 / 20, fasce `12+` `3-11` `0-2`,
+`days: ["ven"]`, l'itinerario con 10:00, 11:30, 17:00 e 18:00, le cinque icone
+(`transfer`, `ferry`, `ticket`, `guide`, `tasting`) che ricalcano esattamente l'elenco
+"Incluye", e le note sul documento e sul pranzo. Riletta riga per riga contro l'originale:
+combacia.
+
+### Le quattro cose cambiate
+
+**Il titolo.** Da "Poema del Mar" a **"Poema del Mar – Gran Canaria Experience"**, che è il
+nome del fornitore. Non è cosmetica: la scheda sta in "Parchi e spettacoli", e lì "Poema
+del Mar" da solo si legge come il biglietto di un acquario. Questa invece è una giornata su
+**un'altra isola**, nave compresa, a 135 € contro i 39 di un parco. Il nome dell'isola nel
+titolo è la differenza fra le due cose, e la sbaglia il cliente, non noi.
+
+**La durata.** Da "Giornata intera" a **"Circa 12 ore"**, con gli orari della nave che
+restano fra parentesi perché sono il pezzo certo. Le 12 ore le dice solo il rivenditore,
+ma "giornata intera" era vero e vago insieme: chi parte alle 8 e rientra alle 20:30 la sera
+non se la organizza.
+
+**Una nota in più**, sempre dal rivenditore: si parte dall'hotel **intorno alle 8:00** e si
+rientra **intorno alle 20:30**. Sta in una nota, con "intorno a" davanti, e **non** in
+`times` né in `PICKUP_TIMES`: lì sarebbero un orario preciso che nessuno ci ha dato.
+
+**L'ordine delle lingue**, riscritto come lo manda l'ufficio (spagnolo, tedesco, inglese).
+Le tre erano già giuste, e resta valido il motivo per cui l'italiano non c'è: il modulo del
+fornitore lo elenca ma risponde "no excursions available".
+
+### Cosa NON è stato copiato, di nuovo
+
+La cancellazione **72 ore** di CanaryVIP (le nostre sono 24, sempre), "miglior prezzo
+garantito", "biglietti ufficiali", il 5.00 su 8 recensioni. E soprattutto il **ritiro anche
+dal nord**: CanaryVIP scrive "free pick-up in North Tenerife and South Tenerife", l'ufficiale
+dice "traslados desde el sur". Vale il primo, e la scheda continua a dire "Ritiro dal sud".
+
+### Resta aperto: `times: ["10:00"]` è la nave, non il ritiro
+
+Non toccato, ma va guardato. Il campo mostra "10:00" sotto la domanda **"A che ora"**, e
+nel messaggio WhatsApp esce come `• Orario: 10:00`. Solo che alle 10:00 parte **la nave**:
+il cliente dal suo hotel parte intorno alle 8:00.
+
+Sulla pagina si capisce — la durata dice "(traghetto 10:00-18:00)", l'itinerario mette
+10:00 accanto alla nave e adesso la nota dice l'orario dell'hotel. **Nel messaggio no**: lì
+"Orario: 10:00" è nudo, e un cliente che se lo rilegge può aspettare il pulmino alle 10.
+
+La scelta di scriverci il 10:00 era ragionata (il commento nella scheda la spiega: è
+l'unica partenza vera che sappiamo). L'alternativa è **togliere `times`**, così tornano le
+fasce più "Da concordare" e nel messaggio non compare nessun orario finto — l'ora vera la
+conferma l'ufficio, che è quello che succede comunque. **Decisione del proprietario**, non
+da prendere qui: è un campo che il cliente legge.
+
+### Provato
+
+Nel browser a 420 px nelle tre lingue: titolo nuovo in tutte e tre (è un nome proprio,
+quindi uguale), durata tradotta, le tre lingue nel loro ordine, i giorni "Ven". Con una
+data di venerdì (18 settembre 2026) la richiesta passa, e il messaggio esce completo:
+totale **€322** con 2 adulti, 1 bambino e 1 neonato (2 × 135 + 32 + 20). Nessun errore JS.
+
+`CACHE_NAME` alzato a `isla-v253`.
+
+---
+
+## La guida c'è su tutte, e il documento c'era già (8 settembre 2026)
+
+Tre cose dette dal proprietario in una volta sola, sulle escursioni toccate oggi
+(`santa-cruz-taganana`, `teide-national-park`, `icod-garachico-orotava`, `la-gomera`,
+`la-palma`, `gran-canaria`). Due chiuse qui, una lasciata aperta perché è una domanda vera.
+
+### 1. La guida c'è su tutte
+
+Mancava su tre schede, e mancava **per una ragione che si è rivelata sbagliata**: la pagina
+del fornitore non la nominava, quindi era stata tenuta fuori seguendo la regola "solo quello
+che il fornitore scrive". Su `santa-cruz-taganana` e su `la-palma` sta scritto nero su
+bianco nei commenti di ieri: "Niente `guide`: il fornitore non la nomina".
+
+**La regola resta giusta, ma l'ufficio batte la pagina del fornitore.** Admiral vende quelle
+escursioni e sa cosa c'è dentro; la pagina pubblica di un fornitore è materiale di vendita,
+non un contratto, e tace su un sacco di cose che ci sono. Quando l'ufficio dice "la guida
+c'è", quello è il dato migliore che abbiamo.
+
+Aggiunta a `santa-cruz-taganana`, `icod-garachico-orotava` e `la-palma`; le altre tre ce
+l'avevano già. Adesso tutte e sei mostrano l'icona.
+
+**Su `la-palma` la guida entra ma il transfer no**, ed è voluto: quella partenza è "sin
+recogida", si va al porto da soli. Sono due cose diverse e il fatto che una sia stata
+aggiunta non trascina l'altra.
+
+### 2. Il documento per il traghetto c'era già
+
+Le tre isole — La Palma, La Gomera, Gran Canaria — avevano **già tutte e tre** la nota del
+documento d'identità o passaporto, scritta con parole diverse ma con lo stesso contenuto, e
+in tutte e tre le lingue. Controllate una per una prima di rispondere: niente da aggiungere.
+Le altre tre escursioni non prendono nessun traghetto, quindi la nota lì non ci va.
+
+### 3. I giorni cambiano secondo la lingua — questo resta aperto
+
+Il proprietario ha detto che **i giorni di queste escursioni cambiano secondo la lingua**
+della guida. È un'informazione che il campo `days` non sa rappresentare, e il motivo è che
+`days` fa **due cose insieme**: scrive la riga "Giorni" in "In breve" **e blocca l'invio**
+della richiesta per le date fuori elenco, con "Questa escursione si fa solo: …".
+
+Se i giorni dipendono dalla lingua, quel blocco può dire di no a un cliente che invece
+potrebbe andare — e il no del sito non arriva nemmeno in ufficio, la richiesta non parte.
+Gli elenchi che abbiamo adesso sono quasi certamente i giorni di **una** lingua sola, non
+l'unione di tutte.
+
+Le tre strade, con quello che costano:
+
+| | cosa succede | cosa si perde |
+| --- | --- | --- |
+| togliere `days` | nessun no sbagliato, l'ufficio conferma la data | sparisce la riga "Giorni" |
+| lasciare com'è | la riga resta | il sito continua a rifiutare date buone |
+| giorni per lingua | la cosa giusta | va cambiato il codice **e** servono i giorni lingua per lingua, che non abbiamo |
+
+**Non deciso qui**: è un campo che il cliente legge e che gli impedisce di scrivere, e su
+`teide-national-park` c'è per giunta un avviso esplicito, scritto il 7 settembre, che i
+suoi quattro giorni sono confermati e che toglierli "è un errore, non una correzione".
+Domanda per il proprietario, non deduzione da fare qui.
+
+`CACHE_NAME` alzato a `isla-v254`.
+
+---
+
+## Il giorno "sbagliato" non ferma più la richiesta (8 settembre 2026)
+
+Poche ore fa, qui sopra, era stata scritta una domanda per il proprietario: i giorni
+cambiano secondo la lingua, e `days` blocca l'invio — che si fa? La risposta è stata prima
+"lasciare tutto com'è", e subito dopo la domanda che rimetteva tutto in fila:
+
+> perché il cliente è bloccato? il cliente sceglie la data in cui pensa ci sia l'escursione
+> e noi nel caso l'escursione sia un altro giorno lo comunichiamo prima della conferma
+
+**Le due risposte non si contraddicono: dicono che a essere sbagliato non era il dato, era
+il codice.** I giorni in catalogo restano quelli, la riga "Giorni" resta in "In breve" — a
+cambiare è cosa succede quando il cliente sceglie un'altra data.
+
+### Cosa faceva, e perché era un guaio
+
+`escursioni.js` fermava l'invio: `if (!giornoValido()) { … return; }`. Il cliente vedeva
+"Questa escursione si fa solo: Lun · Gio." e il bottone non faceva niente.
+
+Era stato pensato come una gentilezza — dirglielo subito invece di fargli aspettare una
+risposta — e con giorni certi lo sarebbe stato. Ma i giorni **non sono certi**: cambiano
+con la lingua della guida. Quindi il sito diceva di no a richieste buone, e quel no **non
+arrivava nemmeno in ufficio**: la richiesta non partiva, e la trattativa moriva lì senza
+che nessuno lo sapesse. Un cliente perso non lascia traccia da nessuna parte.
+
+Adesso il flusso è quello vero di Admiral: il cliente manda la data che gli va bene, e se
+quel giorno non si fa **glielo dice l'ufficio prima di confermare**. Che è esattamente
+quello che il resto della finestra dice già ("Ti rispondiamo entro 24 ore con la conferma").
+
+### Le tre modifiche
+
+**Il blocco via** (`escursioni.js`). Restano i due controlli che fermano davvero, e devono:
+troppi menu speciali per il numero di persone, e zero mezzi scelti su un jet ski. Lì il
+problema è dentro la richiesta e l'ufficio non potrebbe farci niente.
+
+**Il testo riscritto** (`i18n.js`, `req.dayError`). Da "Questa escursione **si fa solo**:
+{giorni}." a "Questa escursione **di solito** si fa: {giorni}. **Manda pure la richiesta**:
+se quel giorno non si fa, te lo diciamo prima della conferma." Nelle tre lingue. Un avviso
+che non dice come va a finire è peggio di niente: questo dice cosa fare adesso.
+
+**Il rosso via** (`styles.css`, `tour.html`, `escursioni.html`). Il messaggio usava
+`.request-day-error`, rosso `--danger`. Ma il rosso dice "hai sbagliato e non puoi andare
+avanti", cioè il contrario di quello che succede adesso.
+
+⚠ **La classe era condivisa con i due errori che bloccano davvero** (mezzi e menu): tinta
+di sabbia lì dentro, avrebbe fatto sembrare avvisi anche quelli. Trovato provando, non
+leggendo. Quindi l'avviso del giorno ha una classe sua, **`.request-day-note`**, color
+sabbia come il riquadro del totale; `.request-day-error` resta rossa dov'era. Cambiate le
+due righe in `tour.html` e `escursioni.html` — **la finestra è scritta due volte**, e
+toccarne una sola avrebbe lasciato la pagina di dettaglio col rosso e l'elenco senza.
+
+Il nome della chiave i18n resta `req.dayError` anche se non è più un errore: la usano tre
+file e due pagine, e rinominarla è churn per zero. Scritto in un commento, così chi la
+legge non si fida del nome.
+
+### Provato
+
+Su `santa-cruz-taganana`, che si fa lun e gio, con un **mercoledì** (16 settembre 2026),
+nelle tre lingue: l'avviso esce, è color sabbia con il testo scuro (non rosso), e **la
+richiesta parte** — il messaggio WhatsApp arriva completo con la data del mercoledì dentro,
+che è proprio quello che l'ufficio deve vedere per poter rispondere.
+
+Poi il contrario, che è la metà che si dimentica: su `jet-ski-safari-1-2h` con **zero
+mezzi** scelti il messaggio esce ancora **rosso** e la richiesta **non parte**. I due
+controlli veri sono intatti.
+
+Aggiornato anche il vocabolario in testa a `esplora-catalog.js`, che diceva ancora "e la
+richiesta non parte": era la riga che avrebbe rimesso il blocco alla prossima persona che
+la leggeva.
+
+`CACHE_NAME` alzato a `isla-v255`.
+
+---
+
+## Il blocco dei giorni rimesso, e la nota accanto (8 settembre 2026)
+
+Poche ore dopo averlo tolto, il blocco è tornato. Vale la pena scrivere per intero come è
+andata, perché è un errore di lettura che si può rifare.
+
+Il proprietario aveva detto due cose: che i giorni cambiano secondo la lingua, e poi —
+alla domanda su cosa fare — *"il cliente sceglie la data in cui pensa ci sia l'escursione e
+noi nel caso l'escursione sia un altro giorno lo comunichiamo prima della conferma"*. Da
+lì era stato tolto il blocco. **Era la lettura sbagliata.** La correzione:
+
+> vorrei che ritornasse come prima, che l'escursione non fosse prenotabile il giorno in cui
+> effettivamente non c'è! e che ci fosse solo una nota che i giorni potrebbero cambiare per
+> avvisare solo il cliente
+
+Quella frase sulla conferma descriveva **come lavora l'ufficio**, non un permesso a far
+partire richieste per giorni in cui non si parte. Un'escursione non si prenota nel giorno
+in cui non c'è, punto — e prendere una descrizione del lavoro d'ufficio per una specifica
+del sito è il modo tipico di sbagliare qui.
+
+### Rimesso com'era
+
+- `escursioni.js`: torna `if (!giornoValido()) { … return; }`;
+- `i18n.js`: `req.dayError` torna a **"Questa escursione si fa solo: {giorni}."**, nelle tre
+  lingue;
+- `styles.css`, `tour.html`, `escursioni.html`: via la classe `.request-day-note` inventata
+  poche ore prima, il messaggio torna sulla `.request-day-error` rossa insieme agli altri
+  due che bloccano. Il rosso adesso è di nuovo giusto: **ferma davvero**;
+- il vocabolario in testa a `esplora-catalog.js` torna a dire "e la richiesta non parte",
+  con scritto accanto che il blocco è voluto e che è stato provato a togliere e rimesso lo
+  stesso giorno. Serve a non rifarlo.
+
+### La nota, che è la parte nuova
+
+Su `santa-cruz-taganana`, `teide-national-park`, `icod-garachico-orotava`, `la-gomera` e
+`gran-canaria` — le cinque con `days` fra quelle toccate oggi:
+
+> I giorni possono cambiare secondo la lingua della guida. Se la tua data non è fra quelle
+> qui sopra, scrivici su WhatsApp prima di rinunciare: la verifichiamo per te.
+
+Su `la-palma` **no**, e non è una dimenticanza: quella scheda non ha `days`, quindi non c'è
+nessun elenco a cui la nota si possa riferire e nessun giorno viene rifiutato.
+
+**Avviso e nota fanno due mestieri diversi, e per questo stanno bene insieme.** L'avviso
+arriva dopo che il cliente ha scelto la data e dice che quella non va; la nota si legge
+prima, sulla scheda, e dice che l'elenco non è inciso nella pietra. E dà una via a chi ha
+una data fuori: **WhatsApp**, dove la richiesta arriva sempre — il pallino della chat c'è
+su ogni pagina e porta lì. Quella via esiste già, la nota si limita a indicarla.
+
+### Provato
+
+Nelle tre lingue, su `santa-cruz-taganana` (lun e gio): la nota compare fra i consigli
+tradotta; nella finestra un **mercoledì** fa uscire l'avviso rosso e **la richiesta non
+parte**, un **giovedì** passa e il messaggio arriva. Come prima, che è quello che si
+voleva.
+
+`CACHE_NAME` alzato a `isla-v256`.
+
+---
+
+## v257 — la nota sui giorni torna a una riga sola
+
+Nel riquadro **Consigli** la nota dei giorni era di due frasi e prendeva cinque righe: da
+sola era più lunga di tutti gli altri consigli messi insieme, e sullo schermo del telefono
+non si leggeva più come un punto elenco ma come un paragrafo attaccato in fondo alla
+scheda. Il proprietario l'ha cerchiata in rosso in una foto: **basta la prima frase.**
+
+Resta:
+
+> I giorni possono cambiare secondo la lingua della guida.
+
+Via la seconda frase ("Se la tua data non è fra quelle qui sopra, scrivici su WhatsApp
+prima di rinunciare: la verifichiamo per te"), nelle tre lingue, su tutte e cinque le
+schede che ce l'hanno: `teide-national-park`, `icod-garachico-orotava`, `gran-canaria`,
+`la-gomera`, `santa-cruz-taganana`.
+
+**Non si perde niente di quello che la seconda frase faceva.** La via su WhatsApp resta
+dov'era: il pallino della chat è su ogni pagina, e l'avviso rosso nella finestra continua a
+uscire quando il cliente sceglie un giorno in cui non si parte. La nota ora fa solo il suo
+mestiere — dire che l'elenco dei giorni non è inciso nella pietra — e lo fa in una riga.
+
+Il commento sopra la nota in `esplora-catalog.js` è stato riscritto di conseguenza:
+spiegava anche il pezzo su WhatsApp, che non c'è più, e ora dice invece perché la nota deve
+restare corta.
+
+### Provato
+
+Nelle tre lingue su `santa-cruz-taganana`, in `tour.html`: la nota esce fra i consigli come
+un punto elenco di due righe, in fila con gli altri. Nessun errore in console.
+
+`CACHE_NAME` alzato a `isla-v257`.
+
+---
+
+## v258 — le tre schede buggy diventano una sola, con i dati di King Buggy Tenerife
+
+Arrivati dal proprietario i dati di **King Buggy Tenerife** (kingbuggytenerife.com, base in
+Pol. Ind. las Andoriñas a Las Chafiras) con la richiesta di **aggiornare la card buggy e,
+se ce n'era più di una, unirle**. Ce n'erano tre.
+
+### Prima domanda, e non era una formalità: stesso fornitore?
+
+`buggy-volcano-4h`, `buggy-volcano-sunset` e `buggy-2-3h` erano nate il 2 settembre da
+un'altra fonte (probabilmente Canary2Go), e su tre punti dicevano il contrario di King
+Buggy: **buggy da 1-2 persone** contro 2, 4 e 6 posti; **patente B1** contro carnet B;
+**ritiro da Fañabé, Torvisca, Las Américas, Los Cristianos e Golf del Sur** contro ritiro
+gratuito in hotel da una base a Las Chafiras. Unire le schede e versarci dentro i dati
+nuovi senza chiedere voleva dire pubblicare i dati di due operatori mescolati.
+
+Chiesto, e **il proprietario ha confermato che è lo stesso prodotto**: dove i due si
+contraddicono vince King Buggy, che è il fornitore diretto. Il coincidere esatto del prezzo
+di partenza (140 €) e dei tre temi (fuoristrada, tramonto, Teide) era il segnale, ma restava
+un indizio, non una prova: la differenza fra i due la sa l'ufficio, non io.
+
+### Una scheda, tre percorsi
+
+Le tre schede erano uguali in tutto tranne foto, titolo e durata: affiancate in elenco
+sembravano tre attività diverse quando sono tre percorsi della stessa. Ora il percorso è una
+**variante** (`options`, etichetta "Percorso"), come si era fatto per i due quad il 4
+settembre:
+
+| variante | durata | dov'era prima |
+|---|---|---|
+| Offroad, 3 ore | 3 ore | `buggy-2-3h` (era "2 o 3 ore") |
+| Tramonto, 3 ore | 3 ore | `buggy-volcano-sunset` (era "3 ore e mezza") |
+| Completo, 4 ore | 4 ore | `buggy-volcano-4h` (era "3 ore e mezza") |
+
+**Le durate tornano quelle del fornitore diretto**: 3h, 3h, 4h. Quelle di prima (3,5 ore per
+due schede su tre) venivano dai minuti di canaryvip, e il "4-Hour" del titolo originale
+adesso torna giusto proprio sul giro completo. **Sparisce la versione da 2 ore** del
+fuoristrada: King Buggy il giro da 2 ore non ce l'ha.
+
+**Sopravvive l'id `buggy-volcano-4h`**, non uno nuovo: gli indirizzi già in giro continuano
+a funzionare. `tour.html?id=buggy-2-3h` e `?id=buggy-volcano-sunset` ora danno "Escursione
+non trovata", che è la risposta giusta e pulita — provate nel browser.
+
+**Il titolo l'ho scelto io e il proprietario l'ha approvato**: "Buggy Tour Tenerife". I
+titoli restano come li scrive Admiral, ma qui i tre titoli di partenza avevano tutti una
+durata dentro ("4-Hour", "2 or 3-Hour") e nessuno poteva reggere una scheda che ne contiene
+tre.
+
+**Le due foto non sono perse, sono finite in `gallery`.** Guardate una per una: la Teide
+(`buggy-volcano-4h.jpg`, il buggy fermo davanti al vulcano) resta `image` perché è quella
+della scheda che sopravvive; `buggy-2-3h.jpg` (due buggy sullo sterrato fra i mulini, con
+le persone a bordo) e `buggy-volcano-sunset.jpg` (la fila in strada nella luce della sera)
+diventano la seconda e la terza miniatura. Tutte e tre mostrano lo stesso modello a 2
+posti: quando arriveranno foto dei buggy da 4 e da 6 varrà la pena aggiungerle.
+
+### Il prezzo è del buggy e cambia con i posti
+
+King Buggy dà quattro tariffe, uguali su tutti i giri: **140 € chi guida da solo, 200 € il
+buggy da 2 posti, 250 € quello da 4, 360 € quello da 6**. Il proprietario ha scelto di
+**pubblicarle**, sapendo che la fonte le dà come non verificate e che le stesse quattro
+cifre compaiono identiche su tour di durata e mezzi diversi (potrebbe essere un modello del
+sito non aggiornato).
+
+Quindi `units` con quattro tipi (`solo`, `due`, `quattro`, `sei`) e `unitPrices` dentro ogni
+variante, come sul jet ski: nella finestra della richiesta le quattro caselle prendono il
+posto di "Quante persone" — **dove si paga il mezzo non si contano le persone** — e il
+totale si fa davvero. `priceFrom` resta 140 con `priceUnit: "/buggy"`.
+
+I prezzi stanno **dentro le varianti** anche se oggi sono uguali su tutte e tre: è lì che il
+sito li legge per scriverli accanto ai contatori (in `riempiUnita()` non c'è ripiego sul
+campo della scheda), ed è lì che andranno cambiati se un giro comincerà a costare più di un
+altro.
+
+Ogni variante ha anche `price: 140`, se no la riga "Prezzo" della pagina di dettaglio
+diceva "Su richiesta" su una scheda che in elenco dice "da €140": il numero sul bottone e
+nella riga è il prezzo di partenza, e la prima nota lo scompone per intero.
+
+### Cosa è entrato, cosa è restato, cosa non ho copiato
+
+Entrato da King Buggy: il **ritiro gratuito in hotel** (`included: transfer` e una nota — il
+punto e l'ora li conferma l'ufficio, non li inventa il sito), la **base di Las Chafiras**
+come `zone` al posto di "Tenerife Sud", i **buggy da 2, 4 e 6 posti** coi motori 800/1000 cc
+e Turbo, la **patente B** al posto di B1.
+
+Restato dalla fonte vecchia, perché King Buggy non lo contraddice: i passeggeri dai 7 anni e
+1,20 m, casco/guanti/giacca/occhiali, la gravidanza, il pacchetto foto a pagamento, e
+`languages: LINGUE_TOUR`. L'età minima dei passeggeri non la scrive nessuno dei due:
+resta da confermare.
+
+**Snack e bevande sono usciti da "Cosa è incluso" (v259).** Erano l'unico punto in cui la
+fonte vecchia prometteva più di quello che il fornitore diretto dichiara — King Buggy elenca
+solo il ritiro gratuito in hotel — e il dubbio è durato meno di un'ora: **il proprietario ha
+confermato che sono inclusi guida e carburante, non snack e bevande**. Il riquadro ora dice
+Guida, Transfer, Carburante e basta. Vale la pena ricordarselo la prossima volta che si
+eredita una scheda da un rivenditore: quello che il rivenditore aggiunge nel suo pacchetto
+non è detto che lo dia l'operatore.
+
+Non copiati, come sempre: la politica di cancellazione (le nostre 24 ore valgono comunque),
+i testi promozionali e il resto del marketing. Le descrizioni sono riscritte da zero nelle
+tre lingue.
+
+### La Spyder è un'altra cosa, e sta ferma
+
+Il quarto prodotto di King Buggy non è un buggy: è una **moto Spyder** a tre ruote, due
+posti, 900 cc, con un giro suo di 4 ore fra costa, città e Teide, a 200 € a moto. Messa in
+una scheda a parte (`spyder-costa-teide`) e **`published: false` con `image: ""`**: senza una
+foto nostra in elenco uscirebbe il riquadro grigio, la stessa scelta già fatta per
+`quad-nord-puerto-cruz`. Niente `languages`: King Buggy non dice in che lingue si va, e quel
+campo si mette solo dove il fornitore lo segnala.
+
+### Provato
+
+Nel browser vero (390×844), nelle tre lingue: i tre bottoni cambiano insieme la riga
+**Durata** (3 ore → 4 ore) e la spiegazione sotto; le tre miniature scambiano la foto
+grande; la finestra mostra "Quanti buggy" con le quattro caselle e il prezzo accanto a
+ognuna (l'etichetta lunga va a capo su due righe anche in spagnolo e ci sta); il totale fa
+**€250** per un buggy da 4 posti, **€970** per uno da 4 più due da 6, **€340** per un
+singolo più un 2 posti. Messaggio WhatsApp: "Buggy: 4 posti × 1 · 6 posti × 1 — Totale
+indicativo: €610". Salvata nella lista e riletta: "15/10/2026 · Tramonto, 3 ore · Buggy: 2
+posti × 2". In elenco la categoria Avventura passa da 9 a 7 voci e il buggy è uno solo.
+
+`node controlla.js` → 0 errori, 2 avvisi invariati (opera-60 e masca-teide-cabrio-bus, non
+riguardano questo aggiornamento). `CACHE_NAME` alzato a `isla-v258`, e a `isla-v259` con la
+correzione di snack e bevande qui sopra.
+
+### Da confermare con l'ufficio
+
+- se le **quattro tariffe** valgono davvero uguali su tutti e tre i giri, o se il giro da 4
+  ore costa di più;
+- l'**età minima** dei passeggeri (7 anni e 1,20 m vengono dalla fonte vecchia) e se sui
+  buggy da 4 e 6 posti cambia qualcosa;
+- gli **orari di partenza** veri, che non sappiamo (restano le fasce segnaposto);
+- se pubblicare la **Spyder**, e con quale foto — e se anche lì guida e carburante sono
+  compresi (per ora la scheda nascosta dichiara solo il ritiro in hotel).
+
+**Già confermato dal proprietario** (9 settembre): il titolo "Buggy Tour Tenerife" va bene;
+guida e carburante sono inclusi, snack e bevande no.
+
+---
+
+## v260 — la seconda compagnia entra nella stessa scheda, e i prezzi diventano quelli di Admiral
+
+Arrivata dal proprietario la pagina di **Ultimate Buggies Tenerife**
+(ultimatebuggiestenerife.com), seconda compagnia di buggy, con una richiesta chiara:
+**più compagnie fanno lo stesso giro, non ha senso una scheda per ognuna — vanno tutte
+dentro "Buggy Tour Tenerife"**. Prima di scrivere una riga gli ho fatto vedere cosa
+c'era dentro, che è la parte che ha evitato tre doppioni.
+
+### Dei tre giri di Ultimate ne è entrato uno
+
+| giro di Ultimate | durata | cos'è | esito |
+|---|---|---|---|
+| Coastal Off-Road | 3 ore | costa sud, El Médano, fino a 1 ora di sterrato | **doppione** di "Offroad, 3 ore" |
+| Sunset Mountain | 3 ore | montagna, Parco Nazionale, sosta al tramonto | **doppione** di "Tramonto, 3 ore" |
+| Daytime Mountain | 3 ore | **tutto asfalto, zero fuoristrada**, villaggi e miradores | **nuovo**, entrato |
+
+Il criterio: entra quello che il cliente sceglierebbe **diversamente**. Il fuoristrada e il
+tramonto ci sono già, e due righe quasi identiche in elenco avrebbero solo chiesto al
+cliente di indovinare chi lo porta in giro — che è l'informazione che a lui serve meno. Il
+giro di sola montagna invece è l'unico che dice una cosa nuova: **il Teide senza polvere**,
+per chi il fuoristrada non lo vuole. Chi porta gli altri due lo decide l'ufficio quando
+conferma, ed è giusto così: qui si manda una *richiesta*, non si prenota.
+
+### Le regole della seconda compagnia stanno dentro la variante, non nelle note
+
+È il punto tecnico di questo giro. Ultimate contraddice King Buggy su tre cose che il
+cliente deve sapere prima di uscire di casa: **niente ritiro in hotel** (si arriva da sé a
+Playa de las Américas), **21 anni** e patente da almeno un anno per guidare, **bambini dai
+5 anni** dietro sul 4 posti invece che dai 7. Scritte fra le note della scheda sarebbero
+diventate promesse valide per tutti e quattro i giri.
+
+Sono finite dentro la variante, dove il vocabolario le regge già tutte:
+
+- **`zone` dentro la variante**: premendo "Montagna su strada" la riga *Punto di partenza*
+  cambia da sola da "Las Chafiras" a "Playa de las Américas". Primo uso di questo campo
+  fuori dalle prove.
+- **`included` dentro la variante**: il `transfer` è **sceso dalla scheda alle tre varianti
+  di King Buggy**, insieme al `fuel`. Sulla scheda resta `guide`, l'unica cosa vera per
+  tutti. Le icone dicono "vale sempre", e un'icona Transfer su un giro senza ritiro sarebbe
+  stata una bugia disegnata. Sul giro nuovo c'è `equipment`, che Ultimate scrive
+  esplicitamente (occhiali, guanti, giacche).
+- **`unitPrices` dentro la variante**: già c'erano.
+
+Il carburante su quel giro **non c'è fra le icone**: Ultimate elenca guida, attrezzatura e
+assicurazione, il carburante no. Non si indovina — se l'ufficio conferma che è compreso, è
+una parola.
+
+### I prezzi ora sono quelli di Admiral, non quelli del fornitore
+
+Il proprietario ha dato il listino suo, uguale su tutti e quattro i giri: **180 € il buggy
+da 2 posti, 240 € quello da 4, 330 € quello da 6**, e anche qui **si contano i buggy, non
+le persone**. Sostituisce il 140/200/250/360 di King Buggy della v258.
+
+**Sparisce il tipo "Da solo"**: nel listino nuovo non c'è una tariffa per chi guida da solo,
+quindi il conteggio parte dal buggy da 2 posti e `priceFrom` passa da 140 a 180. Chi va da
+solo prende il 2 posti. È l'unico numero che *sale* rispetto a ieri (140 → 180): è una
+decisione del proprietario, non un'inferenza, e vale la pena saperlo perché va contro la
+regola di non alzare un prezzo già letto.
+
+**Il 6 posti resta anche sul giro di Ultimate**, che sul suo sito dà buggy solo da 2 e 4
+posti: il proprietario ha detto "per tutti i tour", e sui prezzi decide lui. Da rivedere se
+su quel giro il 6 posti non esiste davvero.
+
+### Le note accorciate prima di consegnarle
+
+Scritte per esteso, le tre note con l'eccezione dentro erano da cinque-sei righe l'una: nel
+riquadro Consigli si leggevano come paragrafi, esattamente quello che il proprietario aveva
+fatto tagliare in v257. Riscritte in due frasi ciascuna, e lo stesso per la descrizione
+della variante nuova.
+
+### Non copiato da Ultimate
+
+La loro **politica di rimborso** (100% oltre un mese, 50% entro un mese, 0% entro 14
+giorni): le nostre sono 24 ore e non sono un campo della scheda. E poi "premium", "most
+popular", "best for couples", la conferma immediata e il pagamento online (da noi è una
+richiesta su WhatsApp), l'obbligo di assicurazione di viaggio, la clausola sul
+comportamento. Le descrizioni sono scritte da zero nelle tre lingue.
+
+**Non messo l'indirizzo esatto del ritrovo.** Ultimate lo dà come "Vivo Mini Golf, Av.
+Rafael Puig Lluvina 7", ma i dati stessi avvisano che viene da una FAQ in cache e da
+Facebook, **non dalla pagina viva**. Un punto di ritrovo sbagliato è la stessa specie di
+errore di un'ora sbagliata: sulla scheda c'è la zona ("Playa de las Américas") e il resto lo
+conferma l'ufficio con la richiesta.
+
+**Lasciati fuori** anche i limiti di peso (300 kg sul 2 posti, 450 kg sul 4), il limite di
+60 km/h, la gabbia di sicurezza, i gruppi da 4-5 buggy e l'assicurazione compresa: sono
+tutte cose che **scrive solo Ultimate**, e sulla scheda intera diventerebbero promesse anche
+per i giri di King Buggy. Sono qui, pronte, se l'ufficio conferma che valgono per tutti.
+
+### Provato
+
+Nel browser vero (390×844), in italiano: i quattro bottoni cambiano insieme *Durata*,
+*Punto di partenza* (Las Chafiras → **Playa de las Américas** sul quarto) e il riquadro
+*Cosa è incluso* (Guida · Transfer · Carburante sui tre di King Buggy, **Guida ·
+Attrezzatura** sul quarto). I contatori mostrano 2 posti €180, 4 posti €240, 6 posti €330; il
+totale di un buggy per tipo fa **€750**. Nessun errore in console. `node controlla.js` → 0
+errori, 2 avvisi invariati. `CACHE_NAME` a `isla-v260`.
+
+### Da confermare con l'ufficio
+
+- l'**indirizzo esatto** del ritrovo di Playa de las Américas, da verificare sulla pagina
+  viva prima di scriverlo sulla scheda;
+- se il **limite di 60 km/h** e la **gabbia di sicurezza** valgono anche per King Buggy
+  (carburante, attrezzatura e assicurazione sono già confermati, vedi v261);
+- gli **orari di partenza**, che nessuna delle due compagnie pubblica;
+- se arriveranno altre compagnie di buggy: ormai la scheda regge, ogni giro davvero diverso
+  è una variante in più e i doppioni non entrano.
+
+---
+
+## v261 — carburante e assicurazione per tutti, e l'icona numero ventuno
+
+Le risposte del proprietario alle domande lasciate aperte dalla v260, tutte lo stesso
+giorno:
+
+- **il carburante è incluso anche sul giro di Ultimate** (loro non lo scrivono, ma lo è);
+- **l'assicurazione è compresa da tutti e due i fornitori**;
+- **i limiti di peso restano fuori** (detto due volte, quindi era davvero quello che
+  intendeva);
+- **il buggy da 6 posti resta anche sul giro di Ultimate**, che ha solo 2 e 4 posti: se
+  serve, quel giro lo fa King Buggy. Sul catalogo la scelta la fa il cliente, chi ce lo
+  porta lo decide l'ufficio.
+
+Quindi `included` si ricompone: sulla **scheda** `guide`, `fuel`, `equipment` e
+`insurance` — le quattro cose vere per tutti e quattro i giri — e sulle **tre varianti di
+King Buggy** solo `transfer`, l'unica che il giro di Ultimate non ha. Il riquadro passa da
+due voci a cinque sui giri con ritiro e a quattro su quello senza, e resta esatto su
+entrambi senza una parola in più.
+
+### L'icona `insurance`
+
+Non c'era, e servivano le solite due righe: il disegno in `INCLUDED_ICONS` (`tour.js`) e il
+testo `inc.insurance` in `i18n.js` ("Assicurazione", "Insurance", "Seguro"). È **uno scudo
+con la spunta dentro**. Lo scudo vuoto, guardato in fila con le altre, sembrava una targa o
+una foglia; con la spunta dice "sei coperto" e non lo confondi con niente — l'unica altra
+icona di sicurezza è il salvagente, che è tonda.
+
+**Guardate tutte e ventuno in fila**, come vuole la regola, su tre colonne e alla
+dimensione vera: nessuna collisione. Il conto in `CLAUDE.md` era rimasto a "diciannove"
+(la borsa frigo era già la ventesima): corretto a ventuno.
+
+### Provato
+
+Nel browser vero: i quattro bottoni cambiano il riquadro fra **Guida · Carburante ·
+Attrezzatura · Assicurazione · Transfer** (Offroad, Tramonto, Completo) e **Guida ·
+Carburante · Attrezzatura · Assicurazione** (Montagna su strada). Nessun errore in console,
+prezzi e totale invariati (€750 per un buggy di ogni tipo). `node controlla.js` → 0 errori,
+2 avvisi invariati. `CACHE_NAME` a `isla-v261`.
+
+---
+
+## v262 — il transfer esce dalle icone
+
+Ultima correzione del proprietario sulla scheda buggy: **il ritiro in hotel non va fra le
+icone**. Ce l'hanno i tre giri di King Buggy, non quello di Ultimate, e mettere `transfer`
+nell'`included` delle tre varianti — che era la soluzione della v261 — resta comunque una
+mezza verità: chi guarda il riquadro non sta confrontando quattro riquadri, sta leggendo
+quello del giro che ha davanti, e un'icona la legge come una promessa della scheda.
+
+Adesso il riquadro dice **Guida · Carburante · Attrezzatura · Assicurazione** su tutti e
+quattro i giri, cioè solo quello che è vero per tutti, e il ritiro sta **nella nota**, che
+è l'unico posto capace di dire *dove sì e dove no*:
+
+> Ritiro in hotel gratuito su Offroad, Tramonto e Completo; Montagna su strada parte da
+> Playa de las Américas, senza ritiro. Il punto e l'ora te li conferma l'ufficio.
+
+È la stessa regola del `CLAUDE.md` ("se una condizione vale solo per una variante non
+metterla fra le icone"), applicata un giro più stretto di come l'avevo applicata io.
+
+**Chiusi anche gli ultimi dubbi**: il limite di 60 km/h e la gabbia di sicurezza restano
+fuori, non si chiedono; gli orari di partenza si metteranno più avanti, una scheda alla
+volta come sempre.
+
+### Un errore preso al volo, che vale la pena raccontare
+
+Il primo tentativo di togliere `included: ["transfer"]` era una sostituzione su **tutto il
+file**: `included: ["transfer"],` è una riga comunissima, e ne avrebbe cancellate **17** —
+tre della scheda buggy e quattordici di altre schede, che il transfer ce l'hanno per
+davvero. Se ne è accorto solo perché lo script stampava quante righe toccava: `controlla.js`
+non se ne sarebbe accorto (nessun errore, il catalogo restava valido) e nemmeno il browser,
+guardando la scheda buggy. Rimesso tutto con `git checkout` e rifatto **dentro i confini
+della scheda**, ritagliando il testo fra `id: "buggy-volcano-4h"` e la scheda dopo.
+
+Regola per la prossima volta: una sostituzione su `esplora-catalog.js` va **limitata alla
+scheda**, e va fatta stampare quante righe cambia. Un file di catalogo è pieno di righe
+identiche che appartengono a schede diverse.
+
+`node controlla.js` → 0 errori, 2 avvisi invariati. Provato nel browser: il riquadro è
+uguale su tutti e quattro i giri, cambia solo il *Punto di partenza*. `CACHE_NAME` a
+`isla-v262`.
+
+---
+
+## v263 — il tramonto è sul Teide, e i bambini salgono dai 3 anni
+
+Due correzioni del proprietario sulla scheda buggy appena consegnata. Vengono da lui, non
+dai fornitori: la fonte vecchia era imprecisa su tutte e due.
+
+**Il giro al tramonto va sul Teide, ed è tutto su strada.** La descrizione diceva "lo stesso
+paesaggio con la luce della sera", cioè lo stesso percorso del fuoristrada visto di sera —
+ed era sbagliato: si sale verso il Teide, senza uscire dall'asfalto. Riscritta la
+descrizione nelle tre lingue, e cambiata anche l'etichetta della variante da "Tramonto" a
+**"Tramonto sul Teide"**, che era l'unica riga della fila a non dire dove porta. La nota del
+ritiro nomina i giri uno per uno, quindi è stata aggiornata anche lì.
+
+Ne esce anche una scheda più leggibile: adesso i quattro giri si distinguono per **dove
+vanno e quando**, non per chi li fa. Il fuoristrada, il Teide al tramonto, il giro lungo che
+mette insieme i due, e la montagna di giorno tutta su strada.
+
+**I passeggeri salgono dai 3 anni**, non dai 7. La nota prima diceva "dai 7 anni e almeno
+1,20 m", con l'eccezione di Ultimate ("1,20 m sul 2 posti, dai 5 anni sul 4 posti"): era
+tutta roba ereditata dalle pagine dei fornitori, e il proprietario l'ha corretta in blocco.
+Adesso la nota è una riga sola.
+
+**Tolta anche l'altezza minima di 1,20 m**, e non è una dimenticanza: un bambino di 3 anni è
+alto sui 95 cm, quindi le due condizioni non potevano stare insieme. Fra le due ha vinto
+quella detta dal proprietario. Se sul buggy da 2 posti l'altezza conta ancora davvero, si
+rimette in una riga — chiesto.
+
+**`family` resta `false`.** Ora che si sale dai 3 anni la scheda potrebbe entrare nel filtro
+"Con bambini", ma la scelta di tenerci fuori quad e buggy è del proprietario e non la
+cambio da solo: è una domanda, non una conseguenza automatica.
+
+### Provato
+
+Nel browser vero, in italiano e spagnolo: la fila delle varianti mostra Offroad · **Tramonto
+sul Teide** · Completo · Montagna su strada, la descrizione del tramonto è quella nuova, e
+il riquadro Consigli ha cinque righe corte, quella dei passeggeri ridotta a una. Prezzi,
+totale e punto di partenza invariati. `node controlla.js` → 0 errori, 2 avvisi invariati.
+`CACHE_NAME` a `isla-v263`.
+
+
+---
+
+## v264 — via i noleggi di barche, resta la Fiat 500
+
+Il proprietario ha chiesto di togliere le schede di noleggio. Cancellate tutte e tre da
+`esplora-catalog.js`:
+
+| scheda | categoria | cos'era |
+|---|---|---|
+| `self-drive-boats` | sport-acquatici | barca senza skipper, da €190 a barca, 2-5 ore |
+| `small-catamaran-rental` | sport-acquatici | catamarano piccolo, €100 l'ora, 2-6 ore |
+| `jet-car-rental` | sport-acquatici | jet car, da €100 |
+
+Resta **`fiat-500-water-car`**, l'unica di questa famiglia che il proprietario vuole tenere.
+La Jet Car era di fatto la stessa cosa — una macchina galleggiante da guidare — con foto e
+prezzo diversi: due schede per un prodotto solo, il caso di Kalima Kat un'altra volta.
+
+**Cancellate anche le tre foto** (`self-drive-boats.jpg`, `small-catamaran-rental.jpg`,
+`jet-car-rental.jpg`): 120 → 117 in `assets/`. Prima di toccarle, cercati i tre `id` in
+tutti i `.js`, `.html` e `.css`: comparivano **solo** dentro la loro scheda, nient'altro.
+Nessun `privateOption` che ci puntava, niente in `PICKUP_TIMES`, niente in `sw.js` (il
+service worker non ha un elenco di `.jpg`).
+
+Le due schede lunghe stavano **attaccate** nel file, righe 1379-1508, in mezzo alle barche
+del mare — non nel blocco "SPORT ACQUATICI" più in basso, dove stanno invece la Fiat 500 e
+la Jet Car. Il commento di sezione `─── SPORT ACQUATICI ───` è rimasto dov'era, perché le
+schede che introduce ci sono ancora.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati (l'`infant` di opera-60 e la foto che
+manca a masca-teide-cabrio-bus). Schede 74 → 71, pubblicate 68 → 65.
+
+Nel browser vero, in inglese: l'elenco mostra 65 schede e nessuna delle tre; la Fiat 500 c'è
+ancora ed è al suo posto. `tour.html?id=fiat-500-water-car` si apre. `tour.html?id=jet-car-rental`
+— l'indirizzo di una scheda cancellata, che qualcuno può avere nei preferiti — non va in
+errore: esce la pagina *Excursion not found*, che c'era già. In console nessun errore, a
+parte i font di Google che qui non si scaricano (rete chiusa, non c'entra con la modifica).
+
+`CACHE_NAME` a `isla-v264`.
+
+---
+
+## v265 — una scheda sola per le due serate di stargazing, coi prezzi veri
+
+`stargazing-group` ("Stargazing – Large Group Experience", 75 €) e `stargazing-vip`
+("VIP Stargazing Experience", 85 €) erano due schede col minimo indispensabile: un titolo,
+una foto, un prezzo di partenza e nient'altro. Sono arrivati i dati del fornitore della
+VIP (Active Tenerife) e, dal proprietario, i prezzi di tutte e due.
+
+Adesso sono **una scheda con due bottoni**: `Gruppo grande` e `VIP, gruppo ristretto`. Il
+catalogo passa da 74 schede a 73.
+
+### Non è lo stesso caso dei buggy, e vale la pena dirlo
+
+Coi quattro giri in buggy si erano unite quattro **varianti della stessa uscita**: stesso
+piazzale, stessi mezzi, cambia il percorso. Qui no — sono **due tour diversi**, con due
+fornitori, due gruppi e due serate che non si somigliano. Il proprietario lo ha detto a
+chiare lettere: il Freebird e il Royal Delfin sono due schede, non due varianti, anche se
+sono tutti e due catamarani che escono a vedere le stesse balene.
+
+E però la scheda unita la vuole lui lo stesso, ed è una scelta di **come si vende**, non di
+com'è fatto il prodotto: sotto "Sotto le stelle" c'erano due righe quasi identiche, e il
+cliente che vuole guardare le stelle vuole scegliere *fra* le due, non incontrarne una e
+non sapere che esiste l'altra. Le varianti fanno esattamente questo: due bottoni, e sotto
+tutto quello che cambia.
+
+**Da tenere a mente**: `options` non vuol dire per forza "stessa cosa in due misure". Qui
+sono due prodotti affiancati, e la parola che il cliente legge lo dice — l'etichetta del
+menu non è "Versione" ma **"Serata"** (`Evening`, `Velada`), e la descrizione dice "due
+serate fra cui scegliere", non "due versioni".
+
+### L'id che sopravvive
+
+`stargazing-group`, come per i buggy si tiene un id già esistente invece di inventarne uno
+nuovo. Porta il prezzo di partenza (75 €) e la foto della scheda unita.
+`tour.html?id=stargazing-vip` **non risponde più**: dà "Escursione non trovata". Non c'è un
+meccanismo di rimando dai vecchi id, e non è stato aggiunto adesso per una scheda.
+
+Il titolo è `Stargazing Experience`, cioè le parole che i due titoli di Admiral hanno in
+comune. I titoli interi non si perdono: sono le **etichette delle due varianti**, che è il
+punto in cui il cliente sceglie.
+
+### I prezzi sono a persona tutti e due, e il totale finalmente si fa
+
+È la novità che cambia di più. Prima tutte e due le schede avevano `priceAdult: 0`, che nel
+catalogo vuol dire "non ancora deciso": la riga del prezzo non compariva e il totale della
+richiesta non si faceva mai. Il proprietario ha confermato che **sono prezzi a testa**,
+quindi vanno in `priceAdult` e non in `price`.
+
+Il campo giusto conta: `price` sul bottone si vede ma **nel totale non entra**, perché può
+essere il prezzo di un mezzo o di un gruppo (il jet ski si paga a moto d'acqua). Con
+`priceAdult` il sito sa che sono euro a persona e li moltiplica.
+
+Come si comporta adesso, provato nel browser:
+
+| richiesta | Gruppo grande | VIP |
+|---|---|---|
+| 2 adulti | €150 | €170 |
+| 2 adulti + 1 bambino | *nessun totale* | €250 |
+| 2 adulti + 1 neonato | *nessun totale* | *nessun totale* |
+
+I "nessun totale" sono voluti e li fa già `calcolaTotale()`: del gruppo grande non
+sappiamo quanto pagano i bambini, e dei neonati non sappiamo niente su nessuna delle due.
+Meglio nessun totale che uno che li conta gratis.
+
+### Le fasce d'età, e il buco sotto i 2 anni
+
+Il listino del fornitore aveva il prezzo bambino (80 €) **senza dire fino a che età**. È
+una domanda, non una cosa da indovinare: chiesta, e la risposta del proprietario è
+**2-11**. Quindi `ages: { adult: "12+", child: "2-11" }`.
+
+**Niente `priceInfant`.** Sotto i 2 anni non sappiamo se pagano, se è gratis o se non si
+sale proprio: il campo assente è il modo di dirlo, e `priceInfant: 0` avrebbe promesso
+"gratis" a nome di un fornitore che non l'ha mai detto.
+
+Le fasce stanno **sulla scheda e non sulla variante**, perché `options` non le prevede.
+Conseguenza da sapere: il `(12+)` si legge accanto a tutte e due le righe "Adulti", quindi
+lo si sta dando per buono anche sul gruppo grande, dove nessuno l'ha confermato. È un
+rischio piccolo — 12 anni è il confine adulto quasi ovunque, e la riga bambini del gruppo
+grande non esiste — ma è una cosa data per scontata, non un dato.
+
+### Cosa cambia premendo il bottone VIP
+
+`zone` Parco Nazionale del Teide · `duration` 5 ore · `days` i sei giorni senza il sabato ·
+`times: ["17:00"]` · le due righe del prezzo con le fasce · e il riquadro "Cosa è incluso",
+che passa da una icona a sei (`transfer`, `fingerfood`, `drinks`, `equipment`, `photos` si
+sommano a `guide`, che sta sulla scheda perché ce l'hanno tutte e due).
+
+Anche il menu "A che ora" nella finestra della richiesta cambia da solo: sul gruppo grande
+restano le fasce segnaposto più "Da concordare", sulla VIP c'è solo `17:00`.
+
+**Le 17:00 hanno una nota accanto, e ci vuole.** È l'orario del fornitore, quindi va
+scritto — ma è una serata che segue il **tramonto**, e a Tenerife il sole va giù alle 18:07
+a dicembre e alle 21:00 a giugno. Un'ora fissa tutto l'anno non può essere vera: la nota
+dice che è l'orario di riferimento e che l'ora esatta la conferma l'ufficio.
+
+### Non copiato dal fornitore
+
+- **"Uno dei 5 cieli migliori al mondo", "83 costellazioni su 86", 5 stelle su 8
+  recensioni.** Testi promozionali e punteggi. Le descrizioni sono riscritte da zero nelle
+  tre lingue e raccontano quello che succede — si sale sopra le nuvole, prima il tramonto,
+  poi il buio — senza superlativi presi in prestito
+- **La politica di cancellazione**, che non è nostra. Restano le 24 ore di Isla
+- **Le lingue.** Il fornitore dice "guida madrelingua inglese", cioè una lingua sola: un
+  menu `languages` con una voce sarebbe una domanda senza scelta. Sta nella descrizione
+  della variante, dove si legge
+- **Il prezzo della versione privata** (520 €) e quello del self-drive: sono altri due
+  prodotti, e finché non li vende Admiral non entrano
+
+### Le foto: sono ancora le due di prima
+
+`stargazing-group.jpg` come foto principale e `stargazing-vip.jpg` nella galleria — la
+scheda unita se le tiene tutte e due, come il buggy tiene le foto dei tre giri.
+
+Le **quattro foto mandate in chat** (due lune al telescopio, due di gruppo col Dobson sotto
+le stelle) **non sono in `assets/`**: la cartella ne ha 120 e quelle non ci sono, né sul
+branch né su `main`. Vale quello già scritto per le 13 foto di agosto — dalla chat arriva
+il contenuto dell'immagine, non il file, e un file in `assets/` bisogna scriverlo. Vanno
+caricate nel repository, e poi si aggiungono a `gallery`. Le due di gruppo sono verticali,
+quindi nella cornice 16:10 andranno ritagliate.
+
+Un dettaglio da tenere a mente quando si assegnano: nelle foto mandate c'è un **Dobson
+Skywatcher**, mentre il fornitore della VIP scrive di un **Celestron Evolution 8**. Non
+sono la stessa serata, e la foto sbagliata sulla scheda sbagliata è già successa.
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo. La categoria "Sotto le stelle" ha una
+voce sola, "da 75 €". Premendo i due bottoni cambiano insieme punto di partenza, durata,
+giorni, orari, righe del prezzo e icone dei compresi. I giorni in spagnolo escono
+"Dom · Lun · Mar · Mié · Jue · Vie", cioè martedì e mercoledì al posto giusto. I sei totali
+della tabella qui sopra verificati chiamando `calcolaTotale()` sulla pagina.
+`tour.html?id=stargazing-vip` dà "Escursione non trovata". Nessun errore in console.
+
+`node controlla.js` → 0 errori, 2 avvisi, gli stessi di prima. `CACHE_NAME` a `isla-v265`.
+
+### Da confermare con l'ufficio
+
+- Del **gruppo grande** manca ancora quasi tutto: chi è il fornitore, dove si va, quanto
+  dura, in che giorni, a che ora, cosa comprende e quanto pagano i bambini
+- Le **quattro foto** da caricare in `assets/`
+- L'**età minima** della VIP, e se sotto i 2 anni si sale
+- Se il **12+** vale anche sul gruppo grande
+
+---
+
+## v266 — quello che divide le due serate è la lingua, non il prezzo
+
+La stessa pagina del fornitore è arrivata una seconda volta, identica campo per campo. Non
+c'era niente di nuovo dentro, ma rileggendola è saltata fuori **una contraddizione nel file
+stesso**:
+
+```
+"gruppo": { "max_standard": 8, "max_con_self_drive": 16, "tipico": "10-12 persone" }
+```
+
+Sulla scheda c'era scritto "Al massimo 8 persone", che è l'highlight del fornitore — ma lo
+stesso file diceva che il gruppo tipico è 10-12 e che con gli ospiti self-drive si arriva a
+16. Chiesto al proprietario quale dei tre numeri vale per noi, e la risposta ha spiegato
+l'intera scheda.
+
+### Le due serate sono di due operatori diversi, e parlano due lingue diverse
+
+- **Gruppo grande** → è **Andromeda**: gruppo fino a **16 persone**, e si va **solo in
+  italiano**
+- **VIP** → gruppo di **8 al massimo**, e si va **solo in inglese**
+
+Il 10-12 e il 16 del file erano numeri dell'altra versione (quella con gli ospiti che
+arrivano in auto propria), che Admiral non vende: per i nostri clienti gli 8 sono veri, e
+restano scritti.
+
+**Quello che decide quale prenotare non è il prezzo, sono i 10 € di differenza fra due
+lingue.** Un cliente italiano vuole Andromeda anche se il gruppo è il doppio; un inglese
+non ha scelta, e uno spagnolo o un tedesco deve sapere subito che nessuna delle due è nella
+sua lingua — prima di mandare la richiesta, non dopo.
+
+### Dove sta scritta, e perché non è un campo `languages`
+
+`languages` è il **menu** "In che lingua", cioè una domanda con delle risposte: si mette
+dove il cliente può scegliere. Qui non sceglie niente — ogni serata ha la sua lingua e
+basta. Un menu da una voce sola sarebbe una domanda finta, e due menu diversi per due
+varianti il campo non li prevede.
+
+Quindi la lingua sta scritta in tre punti, in ordine di quanto presto la si legge:
+
+1. **Nelle etichette dei bottoni**: "Gruppo grande (in italiano)" e "VIP, gruppo ristretto
+   (in inglese)". È la prima cosa che si vede, e finisce anche nel messaggio WhatsApp, così
+   l'ufficio sa quale serata è già dalla riga della richiesta
+2. **Nella descrizione della scheda**, che adesso dice che la differenza è soprattutto la
+   lingua, con i due numeri del gruppo accanto
+3. **Nella descrizione di ogni variante**, per esteso
+
+Le tre lingue del sito restano tre: la scheda si legge in italiano, inglese e spagnolo
+anche quando racconta di una serata che si fa solo in italiano. Sono due cose diverse — la
+lingua del sito e la lingua della guida — ed è il motivo per cui "(in italiano)" va
+tradotto ("in Italian", "en italiano") mentre il nome **Andromeda** resta uguale in tutte e
+tre, come i nomi delle barche.
+
+### Non copiato, di nuovo
+
+Dalla stessa pagina è restato fuori il **"solo 35 minuti di viaggio dal sud dell'isola"**.
+Non è solo che sta fra gli highlight promozionali: **non torna**. Da Costa Adeje al Parco
+Nazionale del Teide c'è un'ora buona di strada di montagna, e scrivere 35 minuti
+manderebbe qualcuno a fare i conti sbagliati sulla serata. Se il punto di osservazione è
+davvero più vicino, è l'ufficio a doverlo dire.
+
+Fuori anche il **riprogrammare per maltempo** della FAQ: è la politica del fornitore, e le
+politiche non si copiano.
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo: i due bottoni portano la lingua fra
+parentesi tradotta, "Andromeda" resta uguale in tutte e tre, e le descrizioni cambiano col
+bottone premuto. Prezzi, totali, giorni, orari e compresi invariati rispetto a v265.
+Nessun errore in console.
+
+`node controlla.js` → 0 errori, 2 avvisi, gli stessi di sempre. `CACHE_NAME` a `isla-v266`.
+
+### Da confermare con l'ufficio
+
+- **"Andromeda" è il nome giusto** dell'operatore del gruppo grande? Sulla scheda è
+  scritto, come si fa coi nomi delle barche
+- Del gruppo grande manca ancora dove si va, quanto dura, in che giorni, a che ora, cosa
+  comprende e quanto pagano i bambini
+- Le **quattro foto** da caricare in `assets/`
+- L'**età minima** della VIP, e se sotto i 2 anni si sale
+- Se il **12+** vale anche sul gruppo grande
+
+---
+
+## v267 — i nomi degli operatori non si pubblicano, e le due serate diventano piccolo e grande
+
+Due correzioni del proprietario sulla scheda stargazing, arrivate insieme.
+
+### I nomi restano fuori
+
+La scheda diceva "La serata di Andromeda". Fuori: **i nomi dei due operatori non si
+pubblicano**.
+
+È l'eccezione alla regola delle barche, e vale la pena capire perché non è una
+contraddizione. Sulle barche il nome vero ci va (Freebird, Royal Delfin, Shogun, Peter Pan)
+perché è **quello che il cliente ritrova al porto**: sale su uno scafo con quel nome
+scritto sopra, e se la scheda ne dicesse un altro sarebbe perso. Qui non c'è nessun nome
+scritto da nessuna parte: c'è un minibus che passa a prenderti e un telescopio in cima. Il
+nome dell'operatore non serve al cliente — serve solo a far vedere a un concorrente chi
+lavora con Admiral.
+
+Il catalogo adesso non contiene nessuno dei due nomi, verificato con `grep`.
+
+### Piccolo e grande, non "grande" e "VIP"
+
+Le due etichette erano `Gruppo grande (in italiano)` e `VIP, gruppo ristretto (in inglese)`.
+Adesso sono:
+
+- **Gruppo grande (in italiano)** — `Large group (in Italian)`, `Grupo grande (en italiano)`
+- **Gruppo piccolo (in inglese)** — `Small group (in English)`, `Grupo pequeño (en inglés)`
+
+Il "VIP" è caduto, e non è solo una parola in meno. **Due etichette si leggono in un colpo
+d'occhio solo se si confrontano su una cosa sola.** "Grande" contro "VIP" metteva a
+confronto due assi diversi — quanti si è da una parte, quanto è di lusso dall'altra — e non
+faceva scegliere nessuno. "Grande" contro "piccolo", con la lingua fra parentesi, è una
+domanda con due risposte: quanti volete essere, e in che lingua volete che vi raccontino il
+cielo.
+
+Il "VIP" era una parola di Admiral, presa dal titolo "VIP Stargazing Experience". Il titolo
+della scheda resta `Stargazing Experience`, le parole che i due titoli hanno in comune.
+
+La parola **VIP è sparita anche dalle note e dalle descrizioni**, dove diceva "sulla VIP
+giacca e guanti li dà il fornitore": adesso dice "sul gruppo piccolo". Le note nominano le
+varianti una per una, quindi quando un'etichetta cambia vanno riguardate tutte — è la
+stessa cosa già successa col buggy quando "Tramonto" è diventato "Tramonto sul Teide".
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo: i due bottoni escono "Gruppo grande (in
+italiano)" e "Gruppo piccolo (in inglese)" con le due lingue tradotte, e nessuna delle tre
+versioni nomina un operatore. Prezzi, totali, giorni, orari e compresi invariati rispetto a
+v266. Nessun errore in console.
+
+`node controlla.js` → 0 errori, 2 avvisi, i soliti. `CACHE_NAME` a `isla-v267`.
+
+### Da confermare con l'ufficio
+
+- Del **gruppo grande** manca ancora dove si va, quanto dura, in che giorni, a che ora,
+  cosa comprende e quanto pagano i bambini
+- Le **quattro foto** da caricare in `assets/`
+- L'**età minima** del gruppo piccolo, e se sotto i 2 anni si sale
+- Se il **12+** vale anche sul gruppo grande
+
+---
+
+## v268 — il gruppo piccolo va anche in tedesco
+
+La pagina del fornitore è arrivata una terza volta, sempre identica, ma con accanto una
+frase nuova: «questa è per inglesi e tedeschi».
+
+**Stonava con quella di prima**, che diceva «parlano solo inglese». Sono due affermazioni
+che non possono essere vere insieme, e la lingua qui non è un dettaglio: è la riga sul
+bottone che decide quale serata prenota il cliente. Un tedesco che legge "tedesco" e al
+belvedere trova una guida che parla solo inglese è il danno peggiore che questa scheda
+possa fare — quindi chiesto, invece di scegliere l'ultima frase arrivata.
+
+Risposta: **in inglese e tedesco**. Il che torna anche col fornitore, che è una società
+tedesca.
+
+Adesso le tre lingue delle guide sono:
+
+| serata | lingua | gruppo | prezzo |
+|---|---|---|---|
+| Gruppo grande | italiano | fino a 16 | 75 € |
+| Gruppo piccolo | inglese e tedesco | 8 al massimo | 85 € · 80 € bambini |
+
+Il bottone dice `Gruppo piccolo (in inglese e tedesco)`, tradotto nelle tre lingue del sito
+(`Small group (in English and German)`, `Grupo pequeño (en inglés y alemán)`).
+
+### E adesso `languages` servirebbe davvero — ma non si può
+
+Con due lingue sulla stessa serata il cliente **sceglierebbe per davvero**, che è
+esattamente il caso in cui il campo `languages` esiste: farebbe comparire la domanda "In
+che lingua" nella finestra della richiesta, e la risposta finirebbe nel messaggio WhatsApp.
+L'ufficio saprebbe quale guida serve prima di confermare.
+
+Non si può, e il motivo è strutturale: **`languages` sta sulla scheda, non sulla variante**.
+Metterlo qui offrirebbe inglese e tedesco anche a chi ha scelto la serata in italiano, dove
+non c'è niente da scegliere. Fra una domanda sbagliata su una variante e nessuna domanda,
+meglio nessuna: la lingua resta testo, scritta in tre punti (etichetta, descrizione della
+scheda, descrizione della variante).
+
+Se un giorno serve davvero, la strada è **portare `languages` dentro `options.choices[]`**,
+come si è già fatto per `days`, `times`, `zone` e `duration`. Non è stato fatto adesso
+perché è una modifica al motore, non al catalogo, e questa scheda non la richiede.
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo: i due bottoni, la descrizione della
+scheda e quella della variante dicono tutti e tre "inglese e tedesco", tradotto. Prezzi,
+totali, giorni, orari e compresi invariati rispetto a v267. Nessun errore in console.
+
+`node controlla.js` → 0 errori, 2 avvisi, i soliti. `CACHE_NAME` a `isla-v268`.
+
+### Nota di metodo, per la prossima volta
+
+La stessa pagina del fornitore è arrivata **tre volte identica**, e ogni volta il dato
+nuovo non era nel file ma nella frase scritta accanto: la prima volta niente, la seconda
+la lingua e la capienza, la terza il tedesco. Vale la pena dirlo prima di rileggere 200
+righe di JSON in cerca di qualcosa che non c'è — e vale la pena chiedere, quando la frase
+di oggi contraddice quella di ieri.
+
+---
+
+## v269 — la terza serata di stargazing, e perché non è una terza variante
+
+Una pagina davvero nuova, questa volta: un tour serale sul Teide **con cena**, di un terzo
+operatore, in bus condiviso. Catalogo da 73 a 74 schede, `stelle` da una voce a due.
+
+### Perché una scheda nuova e non un terzo bottone
+
+La tentazione era ovvia — c'è già una scheda con due serate dentro, si aggiunge la terza.
+**Non si può, e non è una preferenza:** tre campi che a questa serata servono non esistono
+dentro `options.choices[]`.
+
+| campo | cosa fa qui | perché non sta nella variante |
+|---|---|---|
+| `languages` | sei lingue fra cui il cliente sceglie | sta sulla scheda: le offrirebbe anche alla serata che si fa solo in italiano |
+| `menus` | vegetariano e vegano | sulle altre due non si mangia |
+| `itinerary` | le sei tappe della serata | sono solo sue |
+
+E c'è un motivo che chiude il discorso: **questa serata ha già le sue varianti**, con e
+senza cena. Una variante dentro una variante non si può fare.
+
+Vale la pena tenerlo a mente come regola: una serata si unisce a un'altra finché le
+differenze stanno nei campi che la variante conosce (`zone`, `duration`, `days`, `times`,
+`priceAdult`, `priceChild`, `included`, `desc`). Appena servono `languages`, `menus`,
+`itinerary` o un secondo livello di scelta, la scheda dev'essere sua.
+
+### `languages` qui ci sta davvero, ed è la prima volta
+
+Sull'altra scheda `languages` è stato escluso apposta (v268): il campo sta sulla scheda e
+le due serate hanno lingue diverse. Qui invece è **una serata sola con sei lingue**, e il
+cliente ne sceglie una: la domanda "In che lingua" compare nella richiesta e la risposta
+finisce su WhatsApp. Lista sua e non `LINGUE_TOUR`, perché c'è anche **l'olandese**.
+
+La guida però è multilingue e i gruppi possono essere accorpati quando una lingua non si
+riempie: sta in una nota, perché è una cosa che il cliente deve sapere prima e non è una
+promessa che possiamo mantenere noi.
+
+### Le fasce d'orario segnaposto qui sarebbero state ridicole
+
+Senza `times` il menu "A che ora" avrebbe offerto **"09:00 - 10:00" su una serata che parte
+per il tramonto**. La regola del progetto dice che le fasce segnaposto restano *dove le
+partenze non le sappiamo* — qui la sappiamo: il fornitore scrive che il ritiro è fra le
+15:00 e le 16:00. Quindi `times: ["15:00 - 16:00"]`, una fascia sola e vera.
+
+Che l'ora si sposti col tramonto e cambi da un hotel all'altro lo dice la nota, ed è
+l'ufficio a confermarla. Se il proprietario preferisce rimettere le fasce, è una riga.
+
+### I prezzi, le fasce d'età e i neonati
+
+Due varianti, con e senza cena, coi prezzi a persona dentro:
+
+| | senza cena | con cena |
+|---|---|---|
+| adulti (11+) | 63 € | 78 € |
+| bambini (4-10) | 45 € | 55 € |
+| neonati (0-3) | gratis | gratis |
+
+`priceInfant: 0` e qui **lo zero vuol dire davvero gratis**, non "non lo sappiamo": è il
+fornitore a dirlo. Le condizioni stanno nella nota, dove si leggono prima di prenotare —
+sotto i 4 anni si viaggia **in braccio a un adulto** e **il pasto non è compreso**. Un
+"gratis" senza quelle due righe sarebbe una mezza verità.
+
+Le tre fasce combaciano: `0-3`, `4-10`, `11+`. `controlla.js` le ha verificate.
+
+### Non copiato, e qui c'era parecchio
+
+- **Gli sconti a scaglioni** (15 € da 4 persone, fino a 90 € da 24). Sono **sconti del
+  rivenditore**, non nostri: è esattamente il caso della regola sui prezzi barrati. Sul
+  sito va il prezzo pieno
+- **Il modello di pagamento** (acconto online, saldo alla guida): è il carrello di un altro
+  sito. Da Isla parte una *richiesta* su WhatsApp e il pagamento si concorda dopo
+- **La cancellazione a 48 ore**: non è nostra, restano le 24 ore di Isla
+- **4,3 su 33 recensioni** e la distribuzione delle stelle
+- **I nomi dell'operatore e del rivenditore**, i loro telefoni, la mail e l'indirizzo
+  dell'ufficio a Costa Adeje. I nomi non si pubblicano (v267), e i contatti di un altro su
+  una nostra scheda manderebbero il cliente a prenotare altrove
+- **L'avvertenza del rivenditore** sulla cena ("pasto semplice, non alta cucina"). Al suo
+  posto la scheda scrive **cosa si mangia** — zuppa di zucca, mezzo pollo arrosto con
+  patate e mojo, tiramisù, col vino — e lascia giudicare al cliente
+
+### Foto: non ce n'è
+
+`image: ""`, quindi in elenco esce il riquadro grigio e `controlla.js` lo segnala. Gli
+avvisi passano da 2 a 3, ed è il meccanismo che funziona: la scheda resta pubblicata e
+sott'occhio finché la foto non arriva. Le quattro foto mandate in chat continuano a non
+essere in `assets/`.
+
+### Il titolo è provvisorio
+
+`Stargazing Dinner Experience` **non è un titolo di Admiral**: non ce l'hanno ancora dato.
+Tiene insieme la famiglia con "Stargazing Experience", dice cos'è e non nomina l'operatore.
+Da sostituire appena arriva quello vero.
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo. Premendo i due bottoni cambiano i due
+prezzi e il riquadro "Cosa è incluso", che passa da tre icone a cinque (`lunch` e `drinks`
+si sommano). "In breve" mostra le sei lingue, le tre fasce d'età e "Neonati (0-3) Gratis".
+Il riquadro "Come si svolge" ha le sei tappe. Nella richiesta il menu "A che ora" ha solo
+"15:00 - 16:00", "In che lingua" ha le sei lingue e "Esigenze sul menu" ha vegetariano e
+vegano, tradotti in tutte e tre. Totali verificati con `calcolaTotale()`: 2 adulti + 1
+bambino fanno €171 senza cena e €211 con la cena, e il neonato non cambia il conto.
+Nessun errore in console.
+
+`node controlla.js` → 74 schede, 0 errori, 3 avvisi. `CACHE_NAME` a `isla-v269`.
+
+### Da confermare con l'ufficio
+
+- Il **titolo vero** di questa scheda
+- La **foto**
+- I **giorni** in cui si fa davvero e la **dimensione massima del gruppo**: il rivenditore
+  non li pubblica
+- I **punti di ritrovo** per chi sta fuori dalla zona di ritiro: esistono solo come mappa
+  Google, non come elenco
+- Se le **fasce d'orario** vanno bene come le ho messe (una sola, 15:00 - 16:00)
+
+---
+
+## v270 — quattro fornitori, due prodotti, e i prezzi diventano quelli di Admiral
+
+Sono arrivati in un colpo solo i dati di **quattro** fornitori di stargazing, e dal
+proprietario la regola per metterli in ordine. È il cambiamento più grosso della
+categoria "Sotto le stelle" da quando esiste.
+
+### La regola: Admiral vende due prodotti, non quattro tour
+
+| | prezzo adulti | bambini | mezzo | si mangia | lingue |
+|---|---|---|---|---|---|
+| **Gruppo grande** | 75 € | 65 € | pullman | **cena** | inglese, spagnolo, tedesco |
+| **Gruppo piccolo** | 79 € | 69 € | minivan | **picnic** | italiano, inglese, tedesco |
+
+Dietro ogni bottone c'è **più di un fornitore**, e Admiral sceglie quale in base alla
+lingua richiesta. I nomi non si pubblicano (v267), quindi la scheda non dice mai chi sono:
+dice quanti si è, in che lingua si va e cosa si mangia, che è tutto quello che serve a
+scegliere.
+
+Il **prezzo è di Admiral, non del fornitore**: i listini dei quattro andavano da 63 a 85 €
+e non c'entrano più niente. Ed è la prima volta che questa categoria ha dei prezzi veri —
+prima erano tutti `priceAdult: 0`, cioè "non ancora deciso".
+
+**I bambini pagano 10 € in meno**, regola del proprietario che vale su tutte e due.
+
+### Il numero che non tornava
+
+Il gruppo piccolo aveva il prezzo bambini a **80 €**, ereditato dal fornitore quando
+l'adulto era 85. Con l'adulto sceso a 79, **il bambino sarebbe costato più dell'adulto**.
+Chiesto invece di scegliere un numero a caso, e la risposta è stata la regola dei 10 € in
+meno, che risolve tutte e due le schede insieme.
+
+Vale la pena ricordarselo: quando cambia il prezzo adulti, il prezzo bambini **non è un
+campo indipendente** — va riguardato, se no si pubblica un listino che si contraddice.
+
+### Il gruppo piccolo perde `days`, `times` e la durata sola
+
+Prima il gruppo piccolo era un fornitore solo, e la variante portava i suoi dati: 5 ore,
+sei giorni senza il sabato, partenza alle 17:00. Adesso i fornitori sono **due**, uno per
+l'italiano e uno per inglese e tedesco, e quei tre campi descrivevano solo il secondo.
+
+Sono stati tolti. È la regola generale, scritta qui perché costa capirla una volta sola:
+**un campo su una variante vale per tutto quello che c'è dietro quella variante.** Se
+dietro c'è più di un fornitore, ci resta solo quello che è vero per tutti — qui `zone`
+(salgono tutti nel Parco Nazionale) e una durata a intervallo (5-6 ore).
+
+Nell'altro senso la scheda ci ha guadagnato: `zone` non è più "Da definire" ma **Parco
+Nazionale del Teide**, perché adesso è vero per tutte e due le serate.
+
+### Le lingue adesso si sovrappongono, e il bottone conta più di prima
+
+Fino a ieri le due liste erano separate (italiano da una parte, inglese e tedesco
+dall'altra). Adesso no:
+
+- **italiano** → solo gruppo piccolo
+- **spagnolo** → solo gruppo grande
+- **inglese e tedesco** → si sceglie
+
+Le etichette dei bottoni portano le tre lingue ciascuna, tradotte
+(`Gruppo grande (inglese, spagnolo, tedesco)`), e una nota dice a chiare lettere che la
+lingua è quello che decide la serata. Senza, un italiano premerebbe "Gruppo grande" e lo
+scoprirebbe troppo tardi.
+
+### La scheda "Dinner Experience" non aveva la cena
+
+Errore mio, e vale la pena raccontarlo. Il listino di quel fornitore descrive una **cena
+canaria a tre portate** — zuppa, mezzo pollo, tiramisù — e la scheda era stata costruita
+tutta intorno a quella: il titolo `Stargazing Dinner Experience`, la variante con e senza
+cena, il menu vegetariano e vegano.
+
+Il proprietario ha corretto: **su quella serata Admiral vende un panino.** La cena vera ce
+l'ha solo il gruppo grande. Quindi via il titolo, via la variante con e senza cena, via il
+menu, e le sei tappe adesso dicono "sosta in un ristorante lungo la strada, con il panino".
+
+**La lezione:** il listino del fornitore dice cosa il fornitore *può* fare, non cosa
+Admiral *ha comprato*. Su quattro fornitori la differenza è saltata fuori solo perché il
+proprietario ha guardato la tabella del cibo, non le schede una per una.
+
+La scheda si chiama adesso `Stargazing Bus Experience`, provvisorio come il precedente:
+dice il formato senza nominare il fornitore.
+
+### Le lingue di quella scheda vanno in nota, non in `languages`
+
+Il fornitore ne fa sei, francese compreso — ed è per il francese che Admiral la vende. Ma
+il proprietario ha deciso: **le lingue si scrivono in una nota, e poi è l'ufficio a
+spostare il cliente sulla serata giusta.**
+
+Quindi il campo `languages` è stato tolto, e con lui la domanda "In che lingua" nella
+richiesta. Il motivo è serio: quel menu prometterebbe che la scelta la fa il cliente da
+solo, sempre e comunque, mentre qui la fa l'ufficio guardando tre schede insieme. La nota
+invece dice le lingue **e** dice chi decide.
+
+### Cosa non è entrato
+
+- **Gli sconti a scaglioni** di un rivenditore (15 € da 4 persone, fino a 90 € da 24):
+  sconti di un altro, e adesso nemmeno il prezzo è più il suo
+- **Il modello di pagamento** con acconto online e saldo alla guida
+- **Le politiche di cancellazione** dei quattro, che vanno da 24 a 48 ore: resta il
+  preavviso di 24 ore di Isla
+- **Punteggi e recensioni**: 5 su 8, 4,3 su 33, 4,8 su 107, "oltre 2.500 recensioni a 5
+  stelle su Tripadvisor"
+- **I nomi dei quattro fornitori**, i loro telefoni, mail, indirizzi e il codice di turismo
+  attivo di uno di loro
+- **I 96 punti di ritiro** di un fornitore: sono i suoi, non quelli delle altre tre
+  serate, e la scheda copre più fornitori. Il punto lo conferma l'ufficio, come dice la
+  nota
+- **L'astrofotografia come titolo**: la foto della galassia da portare a casa è una cosa
+  sola di uno dei due fornitori del gruppo piccolo, e sta nella descrizione della
+  variante, dove si legge come "quella in italiano", non come una promessa della scheda
+
+### Provato
+
+Nel browser vero. Sulla scheda unita i due bottoni escono con le tre lingue ciascuno e
+premendoli cambiano durata, prezzi e compresi: il grande ha "Pasto incluso", il piccolo
+"Finger food". Totali verificati con `calcolaTotale()`: 2 adulti + 1 bambino fanno €215 sul
+grande e €227 sul piccolo, e il neonato non fa più il totale perché di lui non sappiamo
+niente. Sulla scheda del pullman: 75 € e 65 €, neonati gratis, "Snack" al posto di "Pasto
+incluso", le sei tappe col panino e la nota delle sei lingue. Nessun errore in console.
+
+`node controlla.js` → 74 schede, 0 errori, 3 avvisi. `CACHE_NAME` a `isla-v270`.
+
+### Da confermare con l'ufficio
+
+- I **titoli veri** delle due schede: `Stargazing Experience` e `Stargazing Bus Experience`
+  sono segnaposto
+- Le **foto**: la scheda del pullman non ne ha nessuna, e le quattro mandate in chat non
+  sono in `assets/`
+- Le **fasce d'età**: la scheda unita usa quelle di Admiral (12+ / 2-11), quella del
+  pullman quelle del fornitore (11+ / 4-10 / 0-3 gratis). Se valgono le stesse ovunque,
+  si riallineano
+- Se sotto i 2 anni si sale, sulla scheda unita
+- **Se la scheda del pullman deve restare separata**: adesso che costa 75 € come il gruppo
+  grande ed è anche lei un pullman, la differenza vera è il panino contro la cena e le sei
+  lingue. Se il proprietario la vuole dentro come terzo bottone, si perdono le sue sei
+  tappe — `itinerary` non esiste dentro le varianti
+
+---
+
+## v271 — la scheda del pullman rientra nel gruppo grande
+
+Decisione del proprietario: la serata col pullman e il panino non è un prodotto a sé, **è
+il gruppo grande**. La scheda `stargazing-cena` sparisce e diventa il secondo fornitore
+dietro quel bottone. Catalogo da 74 a 73 schede, `stelle` torna a una voce sola, e gli
+avvisi di `controlla.js` tornano da 3 a 2 perché sparisce anche la scheda senza foto.
+
+`tour.html?id=stargazing-cena` adesso dà "Escursione non trovata": è vissuta un giorno.
+
+Adesso la categoria è **una scheda, due bottoni, quattro fornitori**:
+
+| | prezzo | mezzo | fornitori | lingue |
+|---|---|---|---|---|
+| Gruppo grande | 75 € · 65 € | pullman | due | inglese, spagnolo, tedesco, **francese** |
+| Gruppo piccolo | 79 € · 69 € | minivan | due | italiano, inglese, tedesco |
+
+### Il gruppo grande perde tre icone, ed è la parte che insegna qualcosa
+
+Assorbire un fornitore dentro una variante non è copiare i suoi campi: è **tenere solo
+quello che resta vero anche per l'altro**. Tre icone di "Cosa è incluso" non ce l'hanno
+fatta:
+
+| icona | primo fornitore | secondo | verdetto |
+|---|---|---|---|
+| `lunch` | cena in quota | un panino alla sosta | fuori |
+| `photos` | foto gratis | foto in vendita sul posto | fuori |
+| `drinks` | brindisi al tramonto | non dichiarate | fuori |
+
+Sul cibo la tentazione era di tenerne una comunque. Non regge in nessuna delle due
+direzioni: **"Pasto incluso" sopra un panino promette troppo, "Snack" sopra una cena a tre
+portate svende quello che il cliente paga.** Quindi niente icona, e la differenza sta
+scritta nella descrizione della variante — che si legge sotto il bottone appena lo premi,
+non dieci righe più in là: *«Si mangia, ma non allo stesso modo: sulla serata in inglese,
+spagnolo e tedesco c'è una cena in quota, su quella in francese un panino alla sosta.»*
+
+Al gruppo grande restano `transfer` e `attrezzatura`, più la `guida` che sta sulla scheda.
+Il gruppo piccolo tiene tutte le sue cinque, perché lì i due fornitori danno davvero le
+stesse cose.
+
+### Le tappe si salvano, ma cambiano livello
+
+Avevo scritto che assorbire la scheda del pullman avrebbe fatto perdere le sue sei tappe,
+perché `itinerary` non esiste dentro `options.choices[]`. Vero a metà: non si possono
+mettere sulla **variante**, ma sulla **scheda** sì — a patto di riscriverle al livello che
+è vero per tutti e quattro i fornitori.
+
+Da sei tappe a cinque, e via tutto quello che era di uno solo: la quota di 2.250 metri, la
+sessione da un'ora e mezza, il nome del paese della sosta. Resta l'arco che fanno tutti:
+ritiro in hotel → salita con la sosta per mangiare → tramonto sopra le nuvole →
+osservazione col telescopio → rientro. La seconda tappa dice «una cena, un panino o un
+picnic secondo la serata scelta», che è il modo di essere precisi senza mentire su
+nessuna delle due.
+
+Il riquadro "Come si svolge" adesso compare su tutte e due le varianti, cosa che prima
+aveva solo la scheda del pullman.
+
+### Le lingue: il francese entra nel bottone
+
+`Gruppo grande (inglese, spagnolo, tedesco, francese)`. La nota adesso dice tutto il
+quadro, e dice anche chi decide:
+
+> In italiano si va solo col gruppo piccolo; in spagnolo e in francese solo col grande; in
+> inglese e tedesco si può scegliere. Scrivi la tua nella richiesta e l'ufficio ti mette
+> sulla partenza giusta.
+
+Quattro lingue fra parentesi sono lunghe per un bottone, ma il bottone va a capo e la
+lingua resta la prima cosa che si legge. È il campo che decide la serata: sta li'.
+
+### Cosa si è perso, e non è poco
+
+Da mettere in conto quando si assorbe una scheda dentro una variante:
+
+- le **sei tappe** dettagliate del pullman → cinque generiche
+- la **quota di 2.250 metri** e la **sessione da un'ora e mezza**
+- `times: ["15:00 - 16:00"]`, perché il secondo fornitore del gruppo grande ha un altro
+  orario di ritiro (due ore e mezza prima del tramonto). Il menu "A che ora" torna alle
+  fasce segnaposto
+- `priceInfant: 0` e la fascia `0-3`: i neonati gratis erano una cosa del pullman, e delle
+  altre tre serate non sappiamo niente. Adesso la richiesta con un neonato non fa il
+  totale — che è giusto, ma è un dato in meno
+- la nota sul **pullman senza toilette** e sui posti non assegnati
+
+Sono tutte cose vere di un fornitore su quattro. In una scheda che ne copre due per
+bottone, "vero per uno" vuol dire "falso per l'altro".
+
+### Provato
+
+Nel browser vero, in italiano, inglese e spagnolo: due bottoni, quattro lingue sul primo e
+tre sul secondo, tradotte. Premendo cambiano durata (6-8 ore contro 5-6), prezzi (75/65
+contro 79/69), descrizione e icone (tre contro sei). Il riquadro "Come si svolge" ha le
+cinque tappe su tutte e due. `tour.html?id=stargazing-cena` dà "Escursione non trovata".
+La categoria "Sotto le stelle" ha una voce sola. Nessun errore in console.
+
+`node controlla.js` → 73 schede, 0 errori, 2 avvisi, quelli di sempre.
+`CACHE_NAME` a `isla-v271`.
+
+### Da confermare con l'ufficio
+
+- Il **titolo vero**: `Stargazing Experience` è un segnaposto
+- Le **quattro foto** da caricare in `assets/`
+- Se sotto una certa età i più piccoli pagano meno o non pagano: adesso la scheda non dice
+  niente sui neonati, e la richiesta con un neonato non fa il totale
+- I **giorni** e gli **orari di ritiro** dei quattro fornitori, se un giorno si vuole
+  tornare a scriverli
+
+---
+
+## v272 — via le sei schede non pubblicate
+
+Il proprietario ha chiesto di togliere tutte le schede con `published: false`. Erano sei, e
+in elenco non le vedeva nessuno: adesso il catalogo è di 64 schede, **tutte pubblicate**.
+
+| scheda | categoria | perché era ferma |
+|---|---|---|
+| `spyder-costa-teide` | avventura-motori | aspettava una foto nostra: senza, in elenco usciva il riquadro grigio |
+| `quad-nord-puerto-cruz` | avventura-motori | idem |
+| `charter-privato` | tour-privati | segnaposto, `image: ""` e `priceFrom: null` |
+| `tour-privato-su-misura` | tour-privati | segnaposto |
+| `teide-privato-giorno` | tour-privati | segnaposto |
+| `teide-privato-notte` | tour-privati | segnaposto |
+
+Le prime due non erano segnaposto: avevano prezzi, durate, note e descrizioni vere,
+trascritte dal fornitore (King Buggy per la Spyder). Quei dati **non stanno in
+`dati-fornitore/`**, quindi l'unica copia che resta è nella cronologia git — si riprendono
+con `git show b48dd47:esplora-catalog.js` se un domani arriva la foto e le si vuole
+rimettere. Detto al proprietario prima di cancellarle; la scelta è sua.
+
+**Nessuna foto tolta da `assets/`**: tutte e sei avevano `image` vuoto o assente, e nessuna
+aveva una `gallery`. Le 117 foto restano quelle.
+
+**Nessun `privateOption` puntava a queste sei.** Controllato uno per uno: i cinque
+`privateOption` del catalogo vanno a `private-charter`, `whale-dolphin-3h-charter`,
+`luxury-catamaran-charter` e `skyline-cruiser-charter`, tutte vive. Niente in
+`PICKUP_TIMES`, niente in `i18n.js`.
+
+Le quattro schede private stavano **in fondo all'array**, le ultime quattro: cancellandole
+l'array finisce ora su `luxury-cruiser-charter` seguito da `];`. La virgola finale prima
+della parentesi resta, ed è JavaScript valido.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati. Schede 70 → 64, pubblicate 64 → 64
+(non cambia: erano tutte invisibili).
+
+Nel browser vero, viewport telefono: l'elenco mostra 64 schede e nessuna delle sei.
+*Avventura e motori* passa da 9 a **7**, *Tour privati* da 12 a **8**, e in tutte e due le
+categorie le schede rimaste si aprono (`quad-teide-adventure`, `buggy-volcano-4h`,
+`private-charter`, `opera-60-charter`). L'indirizzo di una scheda cancellata esce sulla
+pagina *not found*, come deve. Nessun errore in console.
+
+### Il merge con lo stargazing
+
+Mentre lavoravo `main` è andata avanti da sola: le sette versioni dello stargazing
+(v265-v271) sono arrivate dopo che avevo già staccato il branch, e la PR è uscita in
+conflitto. Risolto tirando dentro `main` con un merge, non riscrivendo la cronologia.
+
+Il conflitto vero era solo su due punti: `CACHE_NAME` (v265 mio contro v271 di `main`,
+risolto **v272**, più alto di tutti e due) e la coda di `NOTES.md`, dove le due parti
+avevano scritto una sezione ciascuna sulla stessa riga. Tenute tutte e due, quelle dello
+stargazing prima e la mia rinumerata da v265 a v272. `esplora-catalog.js` si è unito da
+solo: lo stargazing tocca la categoria `stelle`, io `avventura-motori` e `tour-privati`.
+
+I conti sono cambiati per via del merge, non per via di questa modifica: `main` era a
+**70** schede, 64 pubblicate — e le sei da togliere erano esattamente le stesse sei.
+
+`CACHE_NAME` a `isla-v272`.
+
+---
+
+## v273 — le stelle entrano nel Teide, e la categoria da una voce sola sparisce
+
+Quattro modifiche chieste dal proprietario, che però sono una cosa sola: la categoria
+*Sotto le stelle* aveva **una scheda soltanto**, e una categoria con dentro una voce sola
+fa fare un giro in più per arrivare a una cosa — apri il riquadro, e dentro c'è un
+riquadro.
+
+| prima | dopo |
+|---|---|
+| `stargazing-group`, titolo "Stargazing Experience" | stesso id, titolo **"Teide by Night"** |
+| categoria `stelle` | categoria `teide-natura` |
+| `stelle` — "Sotto le stelle", 1 scheda | cancellata |
+| `teide-natura` — "Teide e natura", 4 schede | **"Natura, Teide e stelle"**, 5 schede |
+
+**L'id resta `stargazing-group`.** Cambia il titolo, non l'indirizzo: `tour.html?id=...` è
+quello che finisce nei preferiti e nei messaggi WhatsApp già mandati. Un id è un indirizzo,
+un titolo è quello che si legge — due cose diverse, e solo la seconda l'ha cambiata il
+proprietario.
+
+**Il titolo è uguale in tutte e tre le lingue**, come tutti i titoli di Admiral. Tradotti
+restano descrizione, zona e durata.
+
+Il nome nuovo della categoria è scritto **in un posto solo**, in `CATEGORIES` dentro
+`esplora-catalog.js`: `i18n.js` lo legge da lì per ogni `data-i18n-cat`, quindi il riquadro
+in home, il titolo della pagina elenco e il chip del filtro cambiano tutti insieme.
+
+### Le due cose che si sarebbero rotte in silenzio
+
+**L'assistente aveva una risposta "Stelle di notte"** che puntava a `cats: ["stelle"]`.
+Lasciata lì avrebbe portato a una lista vuota. Tolta la riga da `ASSIST_INTERESSI` e tolta
+la chiave `assist.int.stars` da `i18n.js`; `assist.int.nature` adesso dice "Natura, Teide e
+stelle", uguale al nome della categoria — la risposta e il posto dove porta si devono
+leggere uguali. Non ho rimesso una seconda riga che puntasse a `teide-natura`: due risposte
+che portano allo stesso posto sono una domanda mal fatta.
+
+**`escursioni.html?cat=stelle` usciva con zero attività.** Questo non l'aveva chiesto
+nessuno ed è saltato fuori dalla prova nel browser: `state.categories` prendeva l'id
+dall'indirizzo **senza controllare che esistesse**, e un id sconosciuto non toglie una
+categoria, le toglie tutte. `stelle` era un indirizzo vero fino a ieri: chi se l'è salvato,
+e Google che l'ha indicizzato, ci arrivano ancora. Adesso gli id che non stanno in
+`CATEGORIES` si buttano via prima di filtrare, e la pagina esce con l'elenco intero invece
+che vuota. Vale anche per un indirizzo scritto male, che prima faceva la stessa fine.
+
+### Rimasto indietro
+
+`assets/Cat-stelle.jpg` non la usa più nessuno: era la foto del riquadro della categoria.
+**Non l'ho cancellata** — non me l'ha chiesto, e se un domani le stelle tornano a essere una
+categoria loro serve di nuovo. Le foto in `assets/` restano 117.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati. 64 schede, tutte pubblicate.
+
+Nel browser vero, viewport telefono, **in tutte e tre le lingue** (la lingua sta in
+`localStorage` sotto `isla-lang`, non nell'indirizzo — la prima prova non cambiava niente e
+leggeva tre volte l'inglese):
+
+- i riquadri in home passano da 8 a **7**; "Natura, Teide e stelle" / "Nature, Teide and
+  stars" / "Naturaleza, Teide y estrellas" ci sono, "Sotto le stelle" e le sue traduzioni no
+- `?cat=teide-natura`: **5 schede**, con "Teide by Night" in elenco e il vecchio
+  "Stargazing Experience" sparito
+- `?cat=stelle`: **64 attività**, cioè l'elenco intero (prima della correzione: 0)
+- `tour.html?id=stargazing-group` si apre, col titolo nuovo
+- l'assistente ha sei risposte, nessuna porta più a `stelle`
+- nessun errore in console
+
+`CACHE_NAME` a `isla-v273`.
+
+---
+
+## v274 — la foto delle stelle entra nella scheda, e prende il nome della scheda
+
+`Cat-stelle.jpg` era il riquadro della categoria *Sotto le stelle*, che in v273 è sparita:
+la foto era rimasta in `assets/` senza che la usasse più nessuno. Il proprietario ha chiesto
+di metterla nella scheda, e ci sta bene.
+
+**Rinominata `teide-by-night.jpg`.** Una foto in `assets/` si chiama come la **scheda che la
+usa**, non come il posto da cui arriva: un `Cat-` davanti al nome vuol dire "riquadro di
+categoria", e chi legge il catalogo fra sei mesi si chiederebbe perché una scheda tira su
+un'immagine di categoria. `git mv`, così la cronologia della foto non si perde.
+
+**Messa in `gallery`, non al posto della copertina.** La richiesta era metterla nella
+scheda; cambiare la foto di apertura è un'altra decisione, e non l'ha chiesta nessuno.
+
+### Le tre foto guardate in fila
+
+Come per le icone: una alla volta sembrano tutte giuste, in fila si capisce l'ordine.
+
+| | cosa si vede |
+|---|---|
+| copertina — `stargazing-group.jpg` | due telescopi al buio sotto la Via Lattea |
+| `stargazing-vip.jpg` | un telescopio contro il tramonto, sopra le nuvole |
+| `teide-by-night.jpg` | il Roque Cinchado sotto l'arco della Via Lattea |
+
+Messa **dopo** il tramonto e non prima: in fila si leggono come una sera che passa — la luce
+che se ne va, poi il buio vero. È anche la più forte delle tre, e chiude meglio di come
+aprirebbe.
+
+Vale la pena dirlo: `teide-by-night.jpg` è il **Roque Cinchado**, cioè la sagoma che si
+riconosce del Parco Nazionale. Adesso che il titolo dice "Teide by Night", è l'unica delle
+tre che fa vedere il Teide invece che un telescopio. Se un domani il proprietario vuole
+**quella** in copertina basta scambiare `image` e la terza voce di `gallery` — segnalato a
+lui, non fatto di mia iniziativa.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati. Le foto in `assets/` restano **117**: la
+rinomina non ne aggiunge e non ne toglie.
+
+Nel browser vero, viewport telefono, su `tour.html?id=stargazing-group`: la fila delle
+miniature ne mostra **tre**, tutte e tre caricate davvero (1200×800, 1200×1200, 1200×800 —
+controllato `naturalWidth`, non solo che il tag ci fosse), nell'ordine copertina → tramonto →
+Via Lattea. Nessuna richiesta di immagine in errore. In elenco la copertina è ancora
+`stargazing-group.jpg`, invariata.
+
+`CACHE_NAME` a `isla-v274`.
+
+## v276 — il karting prende i dati del circuito vero, al secondo tentativo
+
+Il proprietario ha mandato `https://www.kartingamericas.com/`: è il **Karting Las Américas**
+di Fañabé, cioè il circuito che si vede già nella foto della scheda (`karting.jpg` ha il
+cartellone "Karting Las Américas" a bordo pista). Quindi non era una scheda nuova e non
+c'era niente da confrontare: era la stessa attività che stava in catalogo dal 24 agosto con
+tre righe e la zona "Da definire".
+
+### La lezione sta all'inizio: i riassunti di ricerca non sono un listino
+
+`www.kartingamericas.com` è **bloccato dal proxy di rete**, come `admiral-excursions.com` e
+come `myguidetenerife.com`: `WebFetch` risponde `EGRESS_BLOCKED` su ogni pagina. La scheda
+è stata quindi scritta una prima volta sui **riassunti di ricerca** delle pagine ufficiali.
+Poi il proprietario ha mandato uno **scraping vero** del sito (`karting-las-americas.json`,
+11 prodotti, presi dalle schede WooCommerce), e due dati su tre erano sbagliati:
+
+| dato | dai riassunti di ricerca | dallo scraping | chi aveva ragione |
+|---|---|---|---|
+| tanda adulto | 20 € | **22 €** | lo scraping |
+| lunghezza pista | 725 m | **857 m** | lo scraping |
+| tanda junior | 16 € (e un 15) | **16 €** | pari |
+| orario del circuito | 10:00–20:30 | non c'è | nessuno dei due |
+
+I 725 metri e il 10:00–20:30 giravano su più siti e sembravano solidi proprio per questo:
+gli aggregatori si copiano fra loro, e una cifra vecchia ripetuta da quattro siti sembra
+una conferma quando invece è la stessa fonte contata quattro volte. **Un riassunto di
+ricerca dice che una pagina esiste, non cosa c'è scritto dentro.** La prossima volta che un
+sito fornitore è bloccato, vale la pena chiedere subito la pagina salvata invece di
+ricostruirla da fuori.
+
+Dai rivenditori (Groupon, Tiqets, Musement, Klook, Pelago) non è stato preso niente: là il
+karting parte da "16,99 €" ed è lo sconto di un altro.
+
+### Cosa è entrato
+
+| campo | prima | adesso |
+|---|---|---|
+| `zone` | "Da definire" | `"Fañabé"` |
+| `priceFrom` / `priceAdult` | 20 | **22** |
+| `priceChild` | 15 | **16** |
+| `ages` | assente | `{ adult: "14+", child: "7-13" }` |
+| `family` | `false` | `true` |
+| `desc` | una riga | riscritta nelle tre lingue |
+| `notes` | assenti | cinque |
+
+La pista: **857 metri**, 8 di larghezza, 5 curve a destra e 3 a sinistra — otto in tutto, ed
+è così che è scritto nella descrizione, perché "5 destra 3 sinistra" a un cliente non dice
+niente. Il circuito è **illuminato** (`iluminacion: true`) e questo sì che è entrato: vuol
+dire che si può girare la sera, ed è una cosa che il cliente usa per decidere. I modelli dei
+kart (Sodikart SR4 Honda 270cc, LR5 Honda 200cc) **non** sono entrati: sono roba da
+appassionati e la scheda non è per loro.
+
+### I prezzi sono saliti, ed è la direzione che il progetto dice di evitare
+
+20 → 22 per gli adulti, 15 → 16 per i bambini. La regola del progetto è che un prezzo si
+può abbassare ma non alzare dopo che il cliente l'ha letto. Qui è stata fatta lo stesso, e
+il motivo è che l'alternativa era peggio: pubblicare 20 quando il circuito ne incassa 22
+vuol dire che l'aumento lo fa l'ufficio **al momento di confermare**, con il cliente già in
+conversazione. Meglio il numero vero adesso.
+
+Il 22 è il prezzo del **carrello WooCommerce**, che lo scraping segnala come quello
+canonico: su cinque prodotti la descrizione ne scrive un altro (il Mini Gran Premio adulto
+dice 40 e il carrello 45), e in quei casi vale il carrello.
+
+### Le fasce d'età combaciano, e per una volta senza inventare niente
+
+Il circuito le dà già pulite: adulto **dai 14 anni**, junior **dai 7 ai 13** (più 1,30 m di
+altezza). `14+` e `7-13` si toccano senza buco e senza sovrapposizione, `controlla.js` è
+contento.
+
+**Niente `priceInfant`.** Sotto i 7 anni non si guida, punto: non è "gratis", è "non si
+sale". Il campo assente è esattamente quello che vuol dire. Chi è più piccolo può salire sul
+**biposto** dal metro e venti di altezza, guidato da un maggiorenne — ma quello costa 25 € **a
+kart**, non a persona, quindi non può stare in `priceAdult`/`priceChild`: sommato a testa
+darebbe un totale falso. Sta in una nota, con scritto che è a kart.
+
+### `family: true`, e non è una svista
+
+Era `false`. Con i kart junior dai 7 anni e il biposto dal metro e venti, "adatta ai
+bambini" è la risposta giusta. Resta una valutazione, come per tutte le altre schede: se
+l'ufficio la vede diversa, si rimette `false` in una parola.
+
+### `included` è rimasto vuoto, apposta
+
+Le FAQ dicono "puoi portare il tuo casco, purché integrale da moto". Da lì si **capisce** che
+il casco lo dà il circuito, ma capirlo non è che lo scriva, e nello scraping non c'è nessun
+campo che elenchi cosa è compreso. `equipment` non è entrato e la frase è finita in nota,
+come la dice il fornitore. È l'unica scheda avventura senza il riquadro "Cosa è incluso", e
+va bene così finché l'ufficio non conferma.
+
+### Gli orari: le fasce segnaposto restano, ma i junior no
+
+Le tande sono **libere**: non ci sono partenze, si arriva e si guida. Quindi `times` resta
+**assente** — non `[]`, che vuol dire charter — e il cliente sceglie fra le fasce segnaposto,
+che qui sono davvero una preferenza. `days` resta assente: sette giorni su sette non sono
+una limitazione.
+
+L'orario di apertura del circuito **non è stato scritto**: i riassunti dicevano 10:00–20:30,
+un aggregatore 9:00–22:00, e nello scraping non c'è. Un orario inventato su questa scheda
+è esattamente il danno descritto in `CLAUDE.md` per il pick-up.
+
+Quello che invece c'è, e conta, è che **nel fine settimana i kart junior girano solo dalle
+10:00 alle 11:00 e dalle 15:00 alle 16:00**. È l'unico vincolo d'orario documentato, ed è
+quello che manda una famiglia al circuito nel momento sbagliato: è finito in nota.
+
+### Le nove gare non sono entrate come prezzi, e non è pigrizia
+
+Lo scraping porta nove formati di gara (Mini Gran Premio, Gran Premio, Super Gran Premio,
+adulto e junior) con prezzi da 35 a 70 euro. Nessuno è finito in `options`, per tre motivi
+messi insieme:
+
+| prodotto | carrello | descrizione |
+|---|---|---|
+| Mini Gran Premio Adulto | 45 | 40 |
+| Gran Premio Adulto | 60 | 60 |
+| Super Gran Premio Adulto | 70 | 65 |
+| Mini Gran Premio Junior | 35 | 30 |
+| **Gran Premio Junior** | **50** | **35** |
+| Super Gran Premio Junior | 70 | 70 |
+
+1. su cinque formati su sei il sito dà **due numeri diversi**, e sul Gran Premio Junior
+   ballano 15 euro: lo scraping stesso scrive di confermarlo prima di pubblicare;
+2. le gare hanno un **minimo di gruppo** (8 adulti, 6 bambini) che la finestra della
+   richiesta non sa far rispettare: un cliente in due chiederebbe una gara che non esiste;
+3. sono un prodotto da prenotare prima, non da tanda libera.
+
+Sta in nota che le gare ci sono, con i minimi e "il prezzo si concorda con la richiesta".
+I numeri qui sopra restano scritti qui: appena l'ufficio conferma quale colonna vale,
+diventano `options` in mezz'ora.
+
+**Scartati apposta anche due prodotti**: il *Día del kartista* (25 €, due tande, dal lunedì
+al venerdì) è **solo per residenti canari** e non va offerto a un turista; la *Tanda 2-Drive*
+(25 € a persona, dai 18 anni, freno e acceleratore al volante) è quasi certamente il kart
+per chi ha problemi di mobilità, ma la scheda del fornitore **non lo scrive** — è una
+deduzione dello scraping, e su un dato di accessibilità dedurre non basta. Se l'ufficio
+conferma, quella riga vale più di tutte le altre messe insieme.
+
+Del circuito **non** sono entrati il telefono e la prenotazione diretta: le richieste passano
+dal WhatsApp di Admiral, non dal fornitore. E niente politica di cancellazione loro: le
+nostre 24 ore valgono comunque.
+
+### Nello zip c'era anche un componente React
+
+`KartingCard.jsx`, una scheda prodotto che legge direttamente il JSON. Non è utilizzabile:
+Isla è HTML, CSS e JavaScript a mano, senza framework e senza build. Non è stato copiato
+niente da lì. Il JSON invece è servito, e vale la pena tenerlo: se il proprietario lo mette
+in `dati-fornitore/grezzo/` diventa la fonte da riaprire quando l'ufficio conferma le gare.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati (`opera-60`, `masca-teide-cabrio-bus`).
+
+Nel browser vero, viewport telefono, `tour.html?id=karting` nelle tre lingue: descrizione,
+"In breve", "Adulti (14+) €22", "Bambini (7-13) €16", "Adatta a Famiglie con bambini" e le
+cinque note escono tutte tradotte. Nella finestra della richiesta il totale torna a mano:
+2 adulti + 1 bambino = **60 €** (2 × 22 + 16), scritto "2 adults × €22 + 1 child × €16".
+Nessun errore JS. L'unica richiesta in errore è Google Fonts, bloccata dal proxy anche sulle
+altre schede: non c'entra con questa modifica.
+
+`CACHE_NAME` a `isla-v276`.
+
+### Da confermare con l'ufficio
+
+- **22 € e 16 €** sono i prezzi del carrello del circuito: Admiral li rivende a quelli?
+- **Il casco è compreso nel prezzo?** Se sì entra `equipment` fra le icone.
+- **L'orario di apertura del circuito**, che non è stato scritto da nessuna parte.
+- **Le gare**: quale colonna vale, carrello o descrizione? Poi diventano `options`.
+- **Il biposto a 25 €**: è a kart, e va confermato che Admiral lo rivenda.
+- **La Tanda 2-Drive è il kart accessibile?** Se sì va detto sulla scheda.
+- **`family: true`** è una valutazione, non un dato del fornitore.
+
+## v277 — le gare del karting diventano quattro formule
+
+In v276 le nove gare erano rimaste fuori perché il sito dava due prezzi diversi su cinque
+formati su sei. Il proprietario ha confermato che **vale il carrello**, e ha chiesto di
+metterle come categorie separate.
+
+### Le sei gare diventano quattro bottoni, e non è una semplificazione
+
+Il fornitore le vende come **sei prodotti**: Mini, Gran Premio e Super Gran Premio, ognuno in
+versione adulto e in versione junior. Sulla scheda sono diventate **tre formule** più la
+tanda libera, perché le varianti di questo catalogo hanno già `priceAdult` e `priceChild`
+separati: la coppia adulto/junior dello stesso formato è esattamente quello che una variante
+sa dire da sola.
+
+| formula | adulto | bambino | durata adulto | durata bambino | minimo |
+|---|---|---|---|---|---|
+| Tanda libera | 22 | 16 | 10′ | 10′ | nessuno |
+| Mini Gran Premio | 45 | 35 | 20′ | 13′ | 8 adulti / 6 bambini |
+| Gran Premio | 60 | 50 | 30′ | 20′ | 8 adulti / 6 bambini |
+| Super Gran Premio | 70 | 70 | 40′ | 40′ | **8, in tutti e due i casi** |
+
+La tanda libera è la **prima** variante, quindi è quella premuta all'apertura: è la formula
+che fa la maggior parte dei clienti, ed è l'unica senza gruppo minimo. `priceFrom` resta 22 e
+combacia col bottone acceso.
+
+### Il dettaglio delle gare smentiva quello che stavo per scrivere
+
+La prima stesura delle varianti diceva "gara con classifica finale" su tutte e tre, e
+"servono 8 adulti o 6 bambini" anche sul Super. Rileggendo le descrizioni del fornitore nel
+JSON, due cose erano sbagliate:
+
+- **il Mini Gran Premio non ha il podio.** Adulto: 10 minuti di prove cronometrate e 10 di
+  gara, e basta. Il podio (e per i bambini il brindisi analcolico) c'è dal Gran Premio in su;
+- **il Super Gran Premio Junior vuole 8 bambini, non 6.** È l'unico formato junior che alza
+  il minimo, e allinearlo agli altri avrebbe mandato un gruppo di sei a chiedere una gara che
+  non gli fanno.
+
+È la stessa lezione di v276 in piccolo: il riassunto di un prodotto non è il prodotto. Qui
+per fortuna il file grezzo era già in casa.
+
+### Le durate stanno nella variante, con due numeri in una riga
+
+`duration: "30 minuti (20 per i bambini)"`. Non è elegantissimo, ma la riga "Durata" è una
+sola e i due pubblici hanno davvero due durate: scrivere solo quella dell'adulto vorrebbe
+dire promettere dieci minuti in più a un bambino. Dove le durate coincidono (tanda libera e
+Super Gran Premio) la parentesi non c'è.
+
+Il minimo di gruppo invece **non ha un campo**, e sta nella `desc` di ogni variante: sono le
+due righe che si aprono sotto il bottone premuto. Non è finito nell'etichetta perché
+"Mini Gran Premio (da 8 adulti o 6 bambini)" su un bottone da telefono non ci sta.
+
+La nota condivisa adesso dice solo che le gare si prenotano prima e hanno un minimo, e che
+**la tanda libera non ne ha**: è la risposta alla domanda che si fa chi è in due.
+
+### La finestra della richiesta non sa contare le persone minime
+
+Un cliente in due può scegliere "Gran Premio" e mandare la richiesta: la finestra non lo
+ferma, come farebbe invece `days` con un giorno sbagliato. È voluto — l'ufficio conferma
+entro 24 ore e in quel momento propone la tanda libera — ma se capita spesso, il posto dove
+sistemarlo è la finestra, non la scheda.
+
+### Non copiato
+
+**La gara gratis al festeggiato** dai 10 partecipanti in su (dai 9 per i bambini). È una
+promozione del circuito, e lo sconto di un altro non è nostro da regalare: se Admiral vuole
+farlo, è una decisione dell'ufficio, non un dato da ricopiare.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati.
+
+Nel browser vero, viewport telefono, `tour.html?id=karting`: quattro bottoni, e premendoli
+uno a uno la tabella "In breve" li segue — durata, prezzo adulto e prezzo bambino cambiano
+insieme al bottone. Il totale di 2 adulti + 1 bambino, verificato a mano su tutte e quattro:
+
+| formula | totale | conto |
+|---|---|---|
+| Tanda libera | 60 € | 2 × 22 + 16 |
+| Mini Gran Premio | 125 € | 2 × 45 + 35 |
+| Gran Premio | 170 € | 2 × 60 + 50 |
+| Super Gran Premio | 210 € | 2 × 70 + 70 |
+
+Nessun errore JS. Provato in italiano e in inglese; le tre lingue ci sono su tutte le
+etichette e su tutte le spiegazioni.
+
+`CACHE_NAME` a `isla-v277`.
+
+### Da confermare con l'ufficio
+
+Restano aperte le voci di v276 (casco compreso, orario di apertura del circuito, biposto,
+Tanda 2-Drive accessibile), meno quella sulle gare, che è stata risolta qui.
+
+## v278 — le tre risposte dell'ufficio, e una che smentiva una deduzione
+
+Il proprietario ha risposto alle domande rimaste aperte in v276: il casco è compreso,
+l'orario è 10:00–20:30, e la Tanda 2-Drive **non è** il kart accessibile.
+
+### Il casco: `equipment` entra, e la nota cambia mestiere
+
+Era l'unica scheda avventura senza il riquadro "Cosa è incluso". Adesso c'è, con
+`included: ["equipment"]`.
+
+La nota è stata riscritta di conseguenza. Prima diceva solo "il casco si può portare da
+casa": era il massimo che si potesse dire senza inventare, ma letta da sola sembrava che il
+casco te lo dovessi procurare. Adesso dice **prima** che lo dà il circuito e **poi** che chi
+preferisce il suo può portarlo. Stesso fatto, ordine opposto, e cambia la risposta alla
+domanda che si fa davvero il cliente.
+
+### L'orario di apertura non è finito in una nota e basta
+
+10:00–20:30, tutti i giorni. Scriverlo in nota era la mossa minima, ma lasciava un problema
+che la nota non tocca: il menu **"A che ora"** della finestra della richiesta mostrava le
+fasce segnaposto di `ORARI_PREDEFINITI`, che sono sbagliate in tutte e due le direzioni —
+offrivano le **09:00**, a cancello chiuso, e si fermavano alle **17:00**, cioè prima delle
+ore in cui la pista è illuminata, che è una cosa che la descrizione promette.
+
+Quindi la scheda ha adesso i suoi `times`, cinque fasce da due ore che coprono l'orario
+vero: `10:00 - 12:00` … `18:00 - 20:30`.
+
+**Il prezzo da pagare è che "Da concordare" sparisce**, perché `escursioni.js` lo offre solo
+dove gli orari non ci sono o sono `[]`. Su una barca che parte alle 10:00 è giusto così; qui
+le tande sono libere e l'ora si concorda davvero, quindi "Da concordare" sarebbe stata
+onesta. Fra le due imprecisioni ho scelto questa: una fascia dentro l'orario di apertura è
+comunque una preferenza vera, mentre le 09:00 mandavano un cliente davanti al cancello
+chiuso. Segnalato al proprietario, si torna indietro togliendo una riga.
+
+### La Tanda 2-Drive: la deduzione era sbagliata
+
+In v276 lo scraping suggeriva che il 2-Drive (freno e acceleratore al volante) fosse il kart
+per chi ha problemi di mobilità, e la scheda del fornitore non lo scriveva. Bene aver
+aspettato: **non lo è**. L'ufficio dice che è il kart per i bambini che ancora non sanno
+guidare, e che **si sale dai 3 anni**, come passeggeri.
+
+Sarebbe stato un errore brutto da pubblicare: un'informazione di accessibilità falsa non è
+un dato sbagliato qualsiasi, è una persona che fa il viaggio fino a Fañabé per una cosa che
+non c'è. È la conferma della regola — su un dato di accessibilità, dedurre non basta mai.
+
+**Attenzione a un numero che non torna.** La scheda del fornitore per il biposto dice
+*altezza minima del copilota 1,20 m*; un bambino di 3 anni sta sui 95 cm. O il metro e venti
+vale per un'altra cosa, o in pratica il circuito guarda l'età. In scheda è finita **la
+versione dell'ufficio** (dai 3 anni, senza guidare), perché è chi vende a saperlo, ma la
+discrepanza è segnalata al proprietario ed è il caso che qualcuno la chieda al circuito.
+
+Nessun `priceInfant` e nessuna fascia `ages.infant`, nemmeno adesso: il biposto si paga
+**25 € a kart**, non a testa, quindi non c'è un prezzo a persona da scrivere per un bambino
+di tre anni. Le fasce `14+` e `7-13` continuano a dire chi **guida**, che è quello che i due
+prezzi a persona misurano.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati.
+
+Nel browser vero, viewport telefono, `tour.html?id=karting` in italiano: compare il riquadro
+"Cosa è incluso" con **Attrezzatura** e la sua icona davvero disegnata (contato l'`svg`, non
+solo il testo); in "In breve" c'è la riga "Orari" con le cinque fasce; nella finestra della
+richiesta il menu "A che ora" mostra quelle e **non** "Da concordare". Le quattro formule e i
+loro totali sono invariati. Nessun errore JS.
+
+`CACHE_NAME` a `isla-v278`.
+
+### Cosa resta aperto
+
+Una cosa sola: **il metro e venti del copilota contro i 3 anni**. Tutto il resto delle
+domande di v276 ha avuto risposta.
+
+## v279 — due righe che dicevano più del necessario
+
+Il proprietario, guardando la scheda finita: per la tanda basta scrivere "una tanda da 10
+minuti", e per gli orari basta "dalle 10:00 alle 20:30". Ha ragione tutte e due le volte, e
+per due motivi diversi.
+
+### La tanda: la spiegazione ripeteva la nota
+
+Diceva: *"Una tanda da 10 minuti in pista. È l'unica formula senza gruppo minimo: si va
+anche in due."* La seconda frase c'era **già** in fondo alla scheda, nella nota sulle gare
+("Se siete meno, resta la tanda libera: quella non ha minimi"). Ripetuta sotto il bottone
+diventava rumore proprio sulla variante che quasi tutti scelgono senza leggere niente.
+
+Adesso è **"Una tanda da 10 minuti."** e basta. Le altre tre varianti tengono la loro
+spiegazione, perché lì il contenuto (prove, podio, minimo di gruppo) non sta scritto da
+nessun'altra parte.
+
+### Gli orari: cinque fasce facevano sembrare che ci fossero dei turni
+
+In v278 la scheda aveva `times` con cinque fasce da due ore, da `10:00 - 12:00` a
+`18:00 - 20:30`. Coprivano l'orario vero, ma raccontavano una cosa falsa: che si scegliesse
+fra dei **turni**. Al karting non ci sono turni — si arriva e si guida, e l'unico orario che
+esiste è quando il cancello è aperto.
+
+Adesso `times: ["10:00 - 20:30"]`, una voce sola. In "In breve" la riga "Orari" dice
+`10:00 - 20:30`, che è esattamente il dato.
+
+**La conseguenza sta nella finestra della richiesta**, e va detta: il menu "A che ora" ha
+adesso **una sola voce**. Una tendina con una scelta sola è un comando morto. Le alternative
+erano due, e nessuna delle due migliore:
+
+| | riga "Orari" | menu "A che ora" |
+|---|---|---|
+| cinque fasce (v278) | cinque fasce, sembrano turni | cinque scelte, ma finte |
+| **una voce (adesso)** | **`10:00 - 20:30`, il dato vero** | **una scelta sola** |
+| `times: []` | **sparisce** | "Da concordare", da solo |
+
+Con `times: []` si sarebbe perso proprio quello che il proprietario voleva vedere. Fra un
+dato giusto in pagina e una tendina viva, ha più valore il dato: chi ha una preferenza
+sull'ora la scrive nelle **note** della richiesta, che sono lì sotto.
+
+Da non sistemare nella scheda, se un giorno dà fastidio: `escursioni.js` offre "Da
+concordare" solo dove `times` manca o è `[]` (riga ~1371). Farlo comparire **anche** accanto
+a un orario unico è una modifica di una riga lì, e varrebbe per tutte e 64 le schede — quindi
+è una decisione sul sito, non su questa scheda.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati.
+
+Un errore in più c'è stato, per mezzo secondo, ed è quello giusto: `esplora-catalog.js`
+modificato con `CACHE_NAME` ancora a `isla-v278`. È il controllo di sezione 11, e ha fatto
+esattamente il mestiere per cui esiste.
+
+Nel browser vero, viewport telefono, in italiano: sotto "Tanda libera €22" c'è solo *"Una
+tanda da 10 minuti."*; in "In breve" la riga "Orari" dice `10:00 - 20:30`; il menu "A che
+ora" ha una voce, contata (`options.length === 1`), che è la conseguenza scritta qui sopra.
+Le altre tre formule e i loro prezzi sono invariati. Nessun errore JS.
+
+`CACHE_NAME` a `isla-v279`.
+
+---
+
+## v280 — le tre camminate di Canaventura
+
+Sono arrivati i dati di tre escursioni di trekking di **Canaventura**, in JSON già pulito:
+Teide Light, Camino Real, La Laguna & Anaga. Stesso prezzo tutte e tre (59 € adulti,
+29,50 € bambini), stessa formula — bus A/R dagli alloggi del sud, guida di montagna, un
+giorno fisso a settimana.
+
+Il catalogo passa da 64 a **67 schede**.
+
+### La categoria: niente "trekking" nuova
+
+Il JSON le chiamava `"categoria": "trekking"`, che in Isla non esiste. Le sette categorie
+sono quelle della home, e aprirne un'ottava per tre schede fa fare un giro in più per
+arrivare a una cosa — è lo stesso motivo per cui la categoria "stelle" è stata chiusa
+quando aveva una scheda sola. Sono finite in **`teide-natura`** ("Natura, Teide e
+stelle"), dove sta già il segnaposto "Trekking e bici".
+
+**Il segnaposto resta dov'è.** Copre anche la bici, che in queste tre non c'è. Se un
+giorno arrivano anche i giri in bicicletta, la domanda si riapre.
+
+### `zone` è "Tenerife Sud" su tutte e tre, anche su quelle che camminano altrove
+
+Camino Real si cammina a **Santiago del Teide** e La Laguna & Anaga sta all'altro capo
+dell'isola, ma quel campo in pagina si legge **"Punto di partenza"**, e il bus passa a
+prendere il cliente dagli alloggi del sud. Scriverci "Santiago del Teide" avrebbe detto
+il falso — è lo stesso inciampo già fatto sul giro di Icod, dove `zone` diceva "Tenerife
+nord" e dal nord non partiva niente.
+
+Dove si cammina sta nel titolo, nella descrizione e in una nota ("Il sentiero parte da
+Santiago del Teide, dove arriva il bus").
+
+### `times` non c'è — e nei dati grezzi c'era `[]`
+
+Il JSON del fornitore dava `"times": []` su tutte e tre, perché la sua pagina non pubblica
+l'ora. Copiato così avrebbe detto **un'altra cosa**: lista vuota vuol dire charter, la
+barca è tua e l'ora si concorda davvero. Qui non è un charter: è un bus con un giro fisso,
+e l'ora esiste — non la sappiamo.
+
+Quindi il campo **manca**, che è il terzo stato: restano le fasce segnaposto più "Da
+concordare". Quando l'ufficio manderà gli orari veri andranno in `PICKUP_TIMES` di
+`hotel.js`, perché dipendono dall'hotel come su tutte le escursioni in bus.
+
+### Le fasce d'età: 12+ e 0-11
+
+Il fornitore dà due soli prezzi, adulto e "bambino fino a 11 anni". Due fasce sole
+significa che chiunque abbia meno di 12 anni paga il prezzo bambino: `adult: "12+"` e
+`child: "0-11"` combaciano senza buchi e senza sovrapposizioni.
+
+**Niente `priceInfant`.** Non sappiamo se sotto una certa età si cammina, e il campo
+assente vuol dire esattamente questo — non "gratis". Verificato nel browser: la riga
+"Neonati" non compare su nessuna delle tre.
+
+### `family: false` sul Camino Real — è una scelta, non un dato
+
+I bambini hanno il loro prezzo e salgono su tutte e tre. Ma il filtro "Con bambini" non
+chiede "i bambini sono ammessi", chiede "è adatta". Tre ore e mezza di cammino con 350
+metri di dislivello e difficoltà 3 su 6 non sono quello che cerca chi spunta quel filtro;
+le altre due (2 ore e 1 ora e mezza, difficoltà 2) ci stanno.
+
+Da correggere in una parola se il proprietario la vede diversamente.
+
+### Non è un doppione di "Santa Cruz + Anaga + La Laguna"
+
+Il segnale c'era e andava guardato: la scheda `santa-cruz-taganana` va **negli stessi
+posti** e parte lo **stesso giorno**, il lunedì. È il caso Kalima Kat, e questa volta il
+confronto è stato fatto prima di scrivere.
+
+| | Santa Cruz + Anaga + La Laguna | Senderismo – La Laguna & Anaga |
+|---|---|---|
+| che cos'è | giornata in pullman, soste e tempo libero | camminata con guida di montagna |
+| fornitore | quello ufficiale di Admiral | Canaventura |
+| prezzo | 50 € / 31,50 € | 59 € / 29,50 € |
+| giorni | lun, gio | lun |
+| a piedi | niente | 1h30, 300 m di dislivello |
+
+Sono due prodotti diversi che passano dagli stessi posti. Restano tutte e due, e in elenco
+si vedono vicine: per questo il titolo dice "Senderismo" e la descrizione dice "camminata
+di un'ora e mezza" — chi le vede affiancate deve capire in che cosa sono diverse senza
+aprirle.
+
+### Le foto: non ci sono
+
+Gli undici link del fornitore stanno su `canaventura.es` e sul suo CDN
+(`crokis-sites.fra1.cdn.digitaloceanspaces.com`): **tutti e due bloccati dal proxy di
+rete** (403 sul CONNECT), come già `kartingamericas.com`. Da qui non si scaricano e non si
+possono nemmeno guardare — e una foto non guardata non si pubblica.
+
+Le tre schede escono con `image: ""`, cioè il riquadro "Foto in arrivo", come
+`masca-teide-cabrio-bus`. `controlla.js` lo segnala con un avviso, che è giusto: sono tre
+avvisi in più, e spariscono quando le foto arrivano.
+
+**`trekking-bici.jpg` non è stata riciclata**: è un ciclista in mezzo alle lave, e su tre
+schede di camminate avrebbe messo una bici dove non c'è.
+
+I link grezzi sono salvati in `dati-fornitore/grezzo/canaventura-senderismo.json`, così
+quando l'ufficio manda le foto si sa quali sono.
+
+### I titoli restano in spagnolo
+
+"Senderismo – Teide Light" anche in italiano e in inglese. È la regola dei titoli, che
+non si traducono e restano uguali nelle tre lingue: quando la richiesta arriva su
+WhatsApp, in ufficio si ritrova il nome esatto da cercare. Precedente: "Santa Cruz +
+Anaga + La Laguna".
+
+### Camino Real: due durate sulla stessa pagina
+
+Il fornitore scriveva sia "Duración: 4 hora(s)" sia "Duración del senderismo: 3h30/4h00".
+In nota va la **più bassa**: chi si organizza la giornata su tre ore e mezza non resta a
+piedi se ne diventano quattro. Il contrario sì.
+
+### Quello che non è stato copiato
+
+Dal JSON non è passato niente di promozionale, perché non ce n'era. Non è passato nemmeno
+il `booking_url` di Canaventura: le richieste di Isla vanno su WhatsApp all'ufficio, non
+sul motore di prenotazione di un altro. E le 24 ore di preavviso restano quelle di Isla.
+
+### Provato
+
+`node controlla.js` → **0 errori, 5 avvisi**: i 2 di prima più i 3 delle foto mancanti.
+Un errore in più c'è stato fino a che `CACHE_NAME` è rimasto a `isla-v279`, ed è il
+controllo che ha fatto il suo mestiere.
+
+Nel browser vero, viewport telefono, tutte e tre le schede in italiano, inglese e
+spagnolo:
+
+- il totale **2 adulti + 1 bambino fa €147,50** su tutte e tre (59 × 2 + 29,50);
+- la riga "Neonati" non c'è;
+- i giorni sono quelli giusti — **Mer** su Camino Real, non martedì;
+- il blocco dei giorni funziona: su Teide Light una data di lunedì risponde *"This
+  excursion only runs on: Thu."* e la richiesta non parte;
+- il menu "A che ora" ha "Da concordare" più le sette fasce segnaposto, che è quello che
+  deve fare una scheda senza orari suoi;
+- nessun errore JS. L'unica richiesta fallita è il CSS di Google Fonts, bloccato dal
+  proxy anche sulle schede vecchie.
+
+### Cosa resta da chiedere all'ufficio
+
+1. **Le foto** delle tre camminate (da qui non si scaricano).
+2. **Sotto i 12 anni c'è un'età minima?** Se sotto una certa età non si cammina va detto
+   in nota; se i più piccoli non pagano, allora è `priceInfant: 0` con la sua fascia.
+3. **Gli orari di partenza**, hotel per hotel, quando ci sono.
+4. **Le lingue della guida**: Canaventura non le dice, quindi il campo `languages` non
+   c'è e la domanda "In che lingua" non compare.
+
+`CACHE_NAME` a `isla-v280`.
+
+---
+
+## v281 — "Trekking e bici" diventa due schede
+
+Scelta del proprietario, guardando la v280: la scheda si chiama **Trekking** e tiene i tre
+cammini **come varianti**; la **bici** si stacca in una scheda sua.
+
+In v280 avevo fatto il contrario — tre schede separate (`senderismo-*`) e il segnaposto
+"Trekking e bici" lasciato dov'era. Ha ragione lui, e il motivo si vede in elenco.
+
+### Perché i tre cammini stanno meglio insieme
+
+Sono **lo stesso prodotto comprato tre volte**: stesso fornitore, stesso prezzo (59 € e
+29,50 €), stessa formula — bus dal sud, guida di montagna, un giorno fisso a settimana.
+L'unica cosa che cambia è **dove si cammina**, ed è esattamente la domanda a cui servono i
+bottoni delle varianti.
+
+Tre schede in fila, tutte "da €59", tutte "Giornata intera", tutte "Tenerife Sud",
+chiedevano al cliente di scegliere fra tre righe che si distinguevano solo per il titolo.
+Adesso la scelta si fa dentro, dove accanto a ogni nome c'è la riga che dice quanto si
+cammina e quanto è dura.
+
+Il catalogo scende da 67 a **65 schede** (le tre di v280 ne diventano una, più quella
+della bici).
+
+### `priceAdult` va ripetuto dentro ogni variante, anche se è lo stesso
+
+È la cosa che poteva rompersi in silenzio. `escursioni.js` (riga ~219):
+
+```js
+const base = variante
+  ? (variante.priceAdult > 0 ? { ... } : null)
+  : (tour.priceAdult > 0 ? { ... } : null);
+```
+
+**Appena una variante è scelta, il totale guarda solo il prezzo della variante e non
+ripiega su quello della scheda.** È voluto: una variante con `price` ma senza `priceAdult`
+(la cabina VIP di Siam Park, il jet ski a moto d'acqua) non si paga a persona, ed ereditare
+il prezzo della scheda darebbe un totale falso.
+
+Qui i tre cammini costano tutti uguale, quindi veniva naturale scrivere il prezzo una volta
+sola sulla scheda. Sarebbe stato un bug muto: premi un bottone e **il totale sparisce**.
+`priceAdult: 59` e `priceChild: 29.5` stanno perciò **sia sulla scheda sia su tutte e tre
+le varianti**. Sulla scheda servono alle righe "Adulti €59" e "Bambini €29,50" di "In
+breve", che si devono vedere prima ancora di scegliere.
+
+La conseguenza visibile è che sui tre bottoni c'è scritto **€59 tre volte**. Sembra rumore
+e invece risponde a una domanda che uno si fa: no, quello più duro non costa di più.
+
+### I giorni: l'unione sulla scheda, uno per variante
+
+Ogni cammino si fa un giorno solo — lunedì, mercoledì, giovedì. `giorniDi` (riga ~24) legge
+`variante.days || tour.days`, quindi la variante restringe. Sulla scheda c'è l'**unione**
+`["lun", "mer", "gio"]`, che serve prima che una variante sia scelta: senza, il blocco
+rifiuterebbe un giorno buono.
+
+Provato in pagina: scelto Camino Real, una data di giovedì risponde *"This excursion only
+runs on: Wed."* e la richiesta non parte; il mercoledì passa.
+
+### La foto del ciclista passa alla bici
+
+`trekking-bici.jpg` è un ciclista in mezzo alle lave: sulla scheda del trekking avrebbe
+messo una bici dove non c'è. È stata **rinominata `bici.jpg`** (`git mv`) e sta sulla scheda
+della bici, che è il suo soggetto. Il file non era citato da nessun'altra parte — `sw.js`
+precarica solo le icone — quindi il rinomino non rompe niente.
+
+La scheda Trekking resta col riquadro "Foto in arrivo": le foto di Canaventura stanno
+dietro un dominio bloccato dal proxy e non si possono nemmeno guardare.
+
+### L'id resta `trekking-bici`
+
+La scheda si chiama "Trekking" ma l'id no: gli id non si cambiano, si romperebbero i link
+già salvati e le richieste ferme in localStorage. Stessa regola di `santa-cruz-taganana`,
+che nel titolo non dice più Taganana. La bici, che è una scheda **nuova**, prende `bici`.
+
+### Il titolo è tradotto, e qui è voluto
+
+`{ it: "Trekking", en: "Hiking", es: "Senderismo" }`. La regola dei titoli uguali in tutte
+e tre le lingue vale per i **nomi dei prodotti dei fornitori** — "Freebird Catamaran Trip",
+"Santa Cruz + Anaga + La Laguna" — perché l'ufficio si ritrova il nome esatto da cercare
+quando la richiesta arriva su WhatsApp. Questa scheda invece è un raggruppamento di Isla, e
+già prima era tradotta ("Trekking e bici" / "Hiking & biking" / "Senderismo y bici").
+
+I **nomi dei tre cammini**, quelli sì, restano identici nelle tre lingue: "Teide Light",
+"Camino Real", "La Laguna & Anaga" sono i nomi del fornitore, e finiscono nel messaggio
+WhatsApp.
+
+### `family: true` sulla scheda, la riserva nella variante
+
+In v280 il Camino Real aveva `family: false` perché tre ore e mezza con 350 metri di
+dislivello non sono quello che cerca chi spunta "Con bambini". Adesso `family` è **uno solo
+per tutte e tre**: sta sulla scheda, non sulla variante. Tenerlo a `false` avrebbe nascosto
+dal filtro anche i due cammini facili, che è il danno più grande. Resta `true`, e la riga
+del Camino Real lo dice da sé — *"il più impegnativo dei tre"*.
+
+### Provato
+
+`node controlla.js` → **0 errori, 3 avvisi** (i 2 di sempre più la scheda Trekking senza
+foto). In v280 erano 5: tre schede senza foto ne diventa una.
+
+Nel browser vero, viewport telefono, in italiano e in inglese:
+
+- i tre bottoni con il loro prezzo, e la descrizione che cambia con quello premuto;
+- il totale **2 adulti + 1 bambino fa €147,50 su tutte e tre** le varianti — è la prova
+  che il `priceAdult` ripetuto serve;
+- la riga "Giorni" segue la variante: **Gio**, **Mer**, **Lun**;
+- il blocco dei giorni si restringe con la variante scelta;
+- la scheda Bici esce con la sua foto e "Su richiesta", come segnaposto;
+- nessun errore JS.
+
+### Cosa resta da chiedere all'ufficio
+
+Le stesse quattro di v280, meno niente: foto delle camminate, età minima sotto i 12 anni,
+orari di partenza hotel per hotel, lingue della guida. In più, adesso: **i dati dei giri in
+bici**, che sono una scheda vuota che aspetta.
+
+`CACHE_NAME` a `isla-v281`.
+
+---
+
+## v282 — le durate che sono intervalli tornano intervalli
+
+Il proprietario ha rimandato la tabella dei tre cammini. Giorni, difficoltà e dislivello
+combaciavano già con quello che c'era in catalogo; l'unica differenza erano **due durate**:
+
+| cammino | in catalogo (v281) | nella tabella |
+|---|---|---|
+| Teide Light | 2h | 2h — uguale |
+| Camino Real | «tre ore e mezza» | **3h30-4h** |
+| La Laguna & Anaga | «un'ora e mezza» | **1h30-2h** |
+
+Adesso le varianti dicono l'intervallo: *"dalle 3 ore e mezza alle 4 ore di cammino"* e
+*"da un'ora e mezza a due ore di cammino"*, nelle tre lingue.
+
+### La regola che avevo scritto in v280 era girata al contrario
+
+In v280 avevo scelto il minimo, e l'avevo motivato così:
+
+> In nota va la **più bassa**: chi si organizza la giornata su tre ore e mezza non resta a
+> piedi se ne diventano quattro.
+
+**È il ragionamento al rovescio.** Chi legge "tre ore e mezza" e organizza la giornata su
+tre ore e mezza è esattamente quello che resta a piedi se ne diventano quattro: l'ha letto
+come una promessa e ha preso impegni dopo. Il minimo di un intervallo è il numero che
+rassicura di più e informa di meno.
+
+Con una durata secca le alternative erano tre, e nessuna delle prime due va bene:
+
+| | cosa legge il cliente | cosa succede se dura 4h |
+|---|---|---|
+| minimo (`3h30`) | una promessa | ha preso impegni troppo presto |
+| massimo (`4h`) | una promessa più cauta | niente, ma due rinunciano a prenotare |
+| **intervallo (`3h30-4h`)** | **una forchetta** | **niente: gliel'avevamo detto** |
+
+Un intervallo si legge per quello che è — una forchetta — e il cliente si organizza sul
+limite alto da solo. Il dato del fornitore *era* un intervallo: schiacciarlo su un numero
+solo buttava via l'unica informazione che serviva.
+
+**Dove vale questa regola:** su una durata, un'ora di rientro, una quantità. Non vale sulle
+**fasce d'orario segnaposto**, che sono un'altra cosa — lì l'intervallo non è la durata
+vera, è un modo di dire "scegli una preferenza". E non vale sui **prezzi**, dove la regola
+del progetto resta quella che è: sul sito va il prezzo pieno.
+
+Il file grezzo lo diceva già, e l'avevo pure trascritto senza ascoltarlo:
+`"note_estrazione": "La pagina riporta sia 'Duración: 4 hora(s)' sia 'Duración del
+senderismo: 3h30/4h00'. Il campo durata_trekking_min usa il valore minimo (3h30)."`
+
+### Quello che NON è cambiato
+
+Giorni (gio, mer, lun), difficoltà (2, 3, 2 su 6) e dislivello (±175, ±352, ±300 m) erano
+già giusti in v281: la tabella li ha confermati, non corretti. Teide Light aveva già 2h
+secche, e 2h secche restano — il fornitore lì non dà un intervallo.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, invariati.
+
+Nel browser vero, viewport telefono, premendo i tre bottoni in italiano, inglese e
+spagnolo: le tre righe dicono le durate nuove, il resto della scheda è intatto, nessun
+errore JS.
+
+`CACHE_NAME` a `isla-v282`.
+
+---
+
+## v283 — le fasce d'età dei cammini sono confermate, non più dedotte
+
+Il proprietario, in tre parole: **bambini fino a 11 anni**.
+
+**In catalogo non cambia niente**, ed è il punto: `ages: { adult: "12+", child: "0-11" }`
+c'era già dalla v280, e la conferma dice che era giusto. Cambia solo il commento, che dalla
+v280 raccontava le fasce come una **deduzione** dalle due sole righe del listino del
+fornitore. Adesso sono un dato confermato, e il commento lo dice.
+
+### La conseguenza vera sta su `priceInfant`
+
+Due fasce sole vogliono dire che **chiunque abbia meno di 12 anni paga il prezzo bambino,
+neonati compresi**. Non c'è una fascia gratis da scrivere.
+
+Quindi `priceInfant` resta assente, ma adesso per un motivo diverso da quello di v280.
+Prima l'assenza voleva dire *"non lo sappiamo"*; adesso vuol dire *"non esiste una riga
+neonati su questa scheda"*. Il campo è lo stesso e la pagina è identica — la riga "Neonati"
+non compare in nessuno dei due casi — ma chi legge il catalogo fra sei mesi deve sapere
+quale dei due è, se no riapre una domanda già chiusa.
+
+È lo stesso campo con due significati di cui parla `CLAUDE.md`, guardato dal lato in cui il
+significato lo porta il commento e non il codice.
+
+### Quello che resta aperto è un'altra domanda
+
+«Fino a 11 anni» dice **quanto paga** un bambino, non **se ci può andare**. Su un sentiero
+di montagna con 350 metri di dislivello può esistere un'età sotto la quale non si sale, e
+quella non è un prezzo: è una nota sulla scheda. Resta da chiedere, ed è l'unica cosa
+rimasta sulle fasce.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, invariati.
+
+Nel browser vero, in italiano: "Adulti (12+) €59" e "Bambini (0-11) €29,50", la riga
+"Neonati" non c'è nella finestra della richiesta, il totale 2 adulti + 1 bambino fa
+€147,50. Tutto come prima della modifica, che su un cambio di solo commento è esattamente
+il risultato che si vuole.
+
+`CACHE_NAME` a `isla-v283` — il file toccato è un `.js`, e la regola non fa eccezioni per i
+commenti.
+
+---
+
+## v284 — «Giornata intera» era falsa, e non è stata sostituita con un'altra
+
+Il proprietario, guardando la scheda: nella durata c'è scritto "giornata intera" ma **non è
+così**.
+
+Veniva dal `durata_escursione` del file grezzo di Canaventura, che lo dice su tutti e tre i
+cammini, e l'avevo trascritto senza metterlo in dubbio. È l'errore che la skill
+`nuova-scheda` chiama per nome — prendere per buono un campo del fornitore invece di
+chiedere — e qui è caduto sul campo dove pesa di più.
+
+### Perché non ho messo un altro numero
+
+Le ore vere non ce le ho. Le alternative erano tre:
+
+| | cosa legge il cliente | cosa succede |
+|---|---|---|
+| «Giornata intera» (prima) | tieni libero tutto il giorno | è falso, l'ha detto il proprietario |
+| un numero dedotto («circa 7 ore») | una promessa precisa | **inventata**: nessuno l'ha mai detta |
+| **«Da definire»** | **niente** | niente, finché l'ufficio non manda le ore |
+
+Dedurlo sarebbe stato possibile — il giro in pullman ad Anaga dice "8 ore circa", il Teide
+"6-8 ore" — ma sarebbe stata una mia stima travestita da dato del fornitore, cioè
+esattamente la cosa che su questo campo non si fa. Il tempo di **cammino**, che invece è un
+dato certo, sta già in ogni variante e non è stato toccato.
+
+### "Da definire" non si vede: la riga sparisce
+
+Non è un segnaposto che il cliente legge. `daDefinire()` (`escursioni.js`, riga 14) è un
+meccanismo che c'era già: dove zona o durata valgono "Da definire", la riga di "In breve"
+non viene stampata (`tour.js`, riga 66) e la pillola dell'elenco nemmeno
+(`escursioni.js`, riga 716). Verificato in pagina nelle tre lingue: la riga "Durata"
+**non c'è**, e in elenco restano solo "Tenerife Sud", "Adatta ai bambini" e "da €59".
+
+Una cosa da sapere se un giorno si tocca: `daDefinire()` guarda **solo l'italiano**
+(`/Da definire/.test(valore.it)`). Scrivere "To be confirmed" in inglese senza "Da
+definire" in italiano non nasconderebbe niente.
+
+### Dove andrà la durata vera
+
+Se è uguale per tutti e tre, torna qui sulla scheda. Se cambia da un cammino all'altro —
+ed è probabile, visto che La Laguna & Anaga va all'altro capo dell'isola e Teide Light no —
+va **dentro le varianti**: `duration` sulla variante batte quella della scheda, ed è già
+così che funziona su Teide by Night, dove il pullman e il minivan durano diverso.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, invariati.
+
+Nel browser vero, viewport telefono, in italiano, inglese e spagnolo: la riga "Durata" non
+compare più sulla scheda, la pillola non compare in elenco, il resto è intatto, nessun
+errore JS.
+
+`CACHE_NAME` a `isla-v284`.
+
+### Resta da chiedere
+
+**Quanto dura davvero una di queste giornate**, dall'ora del ritiro all'ora del rientro. È
+la domanda più utile delle quattro ancora aperte su questa scheda: senza, la riga resta
+vuota.
+
+---
+
+## v285 — il pick-up non dipende solo dall'hotel: dipende anche dal fornitore
+
+Il proprietario: su questa escursione **si sale direttamente in hotel**, non ai punti di
+ritrovo segnati — e come questa ce ne sono altre.
+
+Non era un dato sbagliato in una scheda: era un **campo che non esisteva**, e intanto il
+sito dava un'indicazione falsa a chiunque aprisse la finestra della richiesta.
+
+### Il bug, riprodotto prima di toccare il codice
+
+Sulla scheda Trekking, scrivendo il nome dell'hotel:
+
+| hotel | cosa diceva | cosa succede davvero |
+|---|---|---|
+| Acapulco | "Punto di raccolta: **Los Hibiscos**, alla fermata dell'autobus" | il pulmino passa sotto l'Acapulco |
+| Aguamar | "Punto di raccolta: **HG Tenerife Sur**" | idem |
+| Cleopatra | "Punto di raccolta: **Best Tenerife**, alla fermata dell'autobus" | idem |
+
+Alle otto di mattina il cliente esce e cammina fino a due strade di distanza, mentre il
+pulmino lo aspetta davanti alla porta.
+
+È **lo stesso errore che questo progetto aveva già scritto in testa a `hotel.js`, girato al
+contrario**: lì la paura era "chi sta al Cleopatra sale alla fermata del Best Tenerife, e se
+non glielo diciamo resta davanti al suo hotel a guardare l'ora". Qui è il rovescio, e fa lo
+stesso danno.
+
+### La regola era vera, ma di un fornitore solo
+
+`hotel.js` diceva, e ci credevo:
+
+> **Il punto dipende solo dall'hotel, non dall'escursione**: verificato su due escursioni
+> diverse del fornitore.
+
+La verifica era vera. Quello che non era scritto è che quelle due escursioni erano **dello
+stesso fornitore** — Island Excursions, da cui vengono `PICKUP_POINTS` e `HOTELS`. Un altro
+fornitore fa un altro giro, e Canaventura porta il pulmino sotto l'albergo.
+
+«Verificato su due casi» non è «vale sempre»: i due casi avevano in comune una cosa che non
+era stata guardata, ed è quella che decide.
+
+### Come è fatto
+
+Una terza tabella in `hotel.js`, accanto alle altre due:
+
+```js
+const PICKUP_IN_HOTEL = [
+  "trekking-bici"
+];
+```
+
+e in `hotelPunto()` (`escursioni.js`) un ritorno anticipato **prima** del punto: se la
+scheda è in quella lista, si risponde `{ dove: "hotel" }` e la tabella dei punti non si
+guarda nemmeno.
+
+Sta in `hotel.js` e non nel catalogo perché è un dato di pick-up, e i dati di pick-up
+stanno tutti lì: `PICKUP_TIMES` è già indicizzata per id di scheda, questa gli sta accanto
+con la stessa chiave.
+
+**Due dettagli decisi apposta:**
+
+- **Vale solo per gli hotel che stanno in `HOTELS`.** Il controllo sta *dopo* la ricerca
+  dell'hotel, non prima: a chi scrive "casa privata a Los Cristianos" non si promette
+  niente, perché il giro copre gli alloggi del sud e di un appartamento non sappiamo
+  nemmeno dov'è. Per lui resta la riga di aiuto che dice di scriverlo nelle note.
+- **L'ora continua a funzionare.** Il ritorno anticipato porta con sé `ora`, presa da
+  `PICKUP_TIMES` come prima. Oggi nessuna scheda ha tutte e due le cose, ma il giorno in
+  cui l'ufficio manderà gli orari delle camminate non si scoprirà che uno dei due
+  meccanismi ha spento l'altro.
+
+### Niente testi nuovi
+
+`req.pickupHotel` ("il tuo hotel") e `wa.pickupHotel` ("in hotel") c'erano già in `i18n.js`,
+perché 29 hotel hanno `punto: 0` e quel caso era già previsto. Serviva solo arrivarci.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, invariati.
+
+Nel browser vero, viewport telefono, in italiano — e la metà che conta è la seconda:
+
+- **Trekking**: Acapulco, Aguamar e Cleopatra dicono tutti e tre "Punto di raccolta: il tuo
+  hotel"; un indirizzo che non conosciamo non mostra niente e tiene la riga di aiuto;
+- **Teide National Park**: invariato, punti veri **e** ora (Acapulco → Los Hibiscos, 09:05);
+- **Santa Cruz + Anaga**: invariato, punti veri senza ora;
+- nel messaggio WhatsApp: "• Punto di raccolta: in hotel" sul Trekking, le altre due
+  intatte;
+- nessun errore JS.
+
+`CACHE_NAME` a `isla-v285`.
+
+### Resta da chiedere
+
+**Quali sono le altre.** Il proprietario dice che ce ne sono, e la lista è pronta ad
+accoglierle: aggiungere una scheda è scrivere il suo id in `PICKUP_IN_HOTEL`, una riga. Non
+ne ho indovinata nessuna — mettere in quella lista una scheda che non ci va fa esattamente
+il danno che questa versione ripara, solo dall'altro lato.
+
+---
+
+## v286 — due durate, perché sono due domande
+
+Il proprietario: la durata dell'**attività** è specifica, quella dell'**escursione** è tutta
+la giornata — si può differenziare?
+
+Sì, e la v284 aveva risolto il problema sbagliato. «Giornata intera» era vera: in giro si
+sta tutto il giorno. Quello che mancava non era un numero migliore, era **la riga accanto**.
+
+### Il campo nuovo: `activityDuration` (+ `activityLabel`)
+
+In "In breve" adesso ci sono due righe, una sotto l'altra:
+
+```
+Durata              Giornata intera
+Tempo di cammino    3h30 – 4h
+```
+
+- **`activityDuration`** è il valore. Sta sulla scheda **oppure dentro la variante**, dove
+  vince come `duration`, `zone` e `days`: i tre cammini durano diverso, e la riga segue il
+  bottone premuto.
+- **`activityLabel`** è il nome della riga e sta solo sulla scheda, perché è lo stesso per
+  tutte le varianti: quello che cambia è il numero. Senza, si ripiega su `detail.activity`
+  ("Durata dell'attività"), generico apposta — la parola giusta ("Tempo di cammino",
+  "Tempo in acqua") la sa la scheda, non `i18n.js`.
+
+Il campo è **generico**, non "tempo di cammino": la stessa forma serve a un'immersione
+dentro una giornata in barca o a un'ora di kayak dentro mezza giornata. Si vede solo sulla
+pagina di dettaglio — fra le pillole dell'elenco sarebbe una terza riga senza nemmeno una
+variante scelta.
+
+### Perché due righe e non una
+
+Erano due informazioni che si scacciavano a vicenda dentro un campo solo:
+
+| cosa c'era scritto | cosa perdeva |
+|---|---|
+| «Giornata intera» | chi voleva sapere quanto si cammina non lo trovava |
+| «2 ore» (se avessi messo la variante `duration`) | il cliente torna a pranzo, e invece è via tutto il giorno |
+| «Da definire» (v284) | tutte e due |
+| **due righe** | **niente** |
+
+Da non rifare: mettere il tempo di cammino nella `duration` della **variante**. Quel campo
+esiste e avrebbe funzionato senza errori — solo che in pagina si legge "Durata", e avrebbe
+detto che l'escursione dura due ore.
+
+### Le descrizioni si accorciano
+
+Il tempo di cammino era dentro la `desc` di ogni variante, e con la riga nuova sarebbe
+stato scritto due volte. È uscito dalle descrizioni, che tengono quello che la riga non
+dice: dove si cammina, il dislivello, la difficoltà, quale dei tre è il più duro. Stessa
+potatura della v279, stesso motivo.
+
+### La notazione compatta
+
+`"2h"`, `"3h30 – 4h"`, `"1h30 – 2h"`, **stringhe lisce** e non `{ it, en, es }`: la "h" si
+legge in tutte e tre le lingue, come "Costa Adeje". In forma distesa ("3 ore e mezza – 4
+ore") il valore riempiva la riga fino al bordo. Ed è la notazione con cui l'ufficio ha
+mandato la tabella.
+
+**Un falso allarme, annotato perché non ci ricaschi:** nello screenshot a pagina intera il
+valore sembrava tagliato a metà dal pallino della chat. Misurato, non lo è —
+`scrollWidth === clientWidth` a 390px e a 320px, e sul punto del testo non c'è niente
+sopra. Il pallino è `fixed`: in una cattura a pagina intera finisce disegnato su una riga a
+caso, e scorrendo la pagina si sposta. Il suo posto resta dov'è (cosa decisa).
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, invariati.
+
+Nel browser vero, viewport telefono, premendo i tre bottoni in italiano, inglese e
+spagnolo: "Durata: Giornata intera" sempre uguale, e sotto "Tempo di cammino" che cambia —
+2h, 3h30 – 4h, 1h30 – 2h. Su Teide National Park, che il campo non ce l'ha, sotto "Durata:
+6-8 ore circa" viene "Giorni" come prima: la riga in più non compare dove non è scritta.
+Nessun errore JS.
+
+`CACHE_NAME` a `isla-v286`.
+
+---
+
+## v287 — la Mustang al tramonto: non una scheda nuova, il segnaposto che si riempie
+
+Sono arrivati i dati del **"Mustang Sunset Tour al Teide"** di Pirati Tenerife, un
+fornitore che non era ancora in catalogo. Prima domanda della procedura, e per una volta
+ha morso: **esisteva già.**
+
+### Il doppione evitato
+
+`mustang-experience` stava in "Avventura e motori" da agosto, segnaposto della vetrina
+Admiral: prezzo 250, la foto, e zona e durata a "Da definire". Confrontando come dice la
+regola — prezzo, durata, porto, mezzo:
+
+| | `mustang-experience` (agosto) | i dati nuovi |
+| --- | --- | --- |
+| prezzo | 250 | 250 fino a 2 persone |
+| mezzo | Ford Mustang decappottabile | Ford Mustang |
+| meta | "i punti panoramici del Teide" | Parco Nazionale del Teide, Cañada Blanca |
+| foto | Mustang blu ai Roques de García, sole basso | la stessa scena |
+
+Quattro valori su quattro. Chiesto al proprietario invece di indovinare, e la risposta è
+stata **riempire quella che c'è**: stessa scelta dei tre giri in buggy, l'id
+`mustang-experience` sopravvive perché gli indirizzi già in giro continuino a funzionare.
+Il titolo resta "Mustang Experience", quello di Admiral, e non diventa il titolo del
+fornitore.
+
+**Attenzione se arrivano altri dati Mustang:** Pirati Tenerife ha **due** prodotti, questo
+al tramonto e un "Mustang Teide" diurno che è un'altra cosa. Il secondo non è una scheda
+nuova: è una **variante** di questa, come i tre percorsi del buggy. È scritto anche nel
+commento sopra la scheda, che è dove lo si legge al momento giusto.
+
+### Il prezzo è dell'auto, e il sito lo sa in tre punti
+
+250 € fino a due persone, 350 € da tre a quattro. È un prezzo a mezzo, come il buggy e il
+jet ski, e quindi:
+
+- `priceUnit: { it: "a Mustang", … }` — l'elenco scrive "da €250 a Mustang", e soprattutto
+  `prezziAPersona()` torna `null`: il totale della richiesta non si fa più, invece di
+  moltiplicare 250 per quattro e chiedere mille euro a un cliente.
+- `priceTiers` con i due scaglioni — sulla pagina di dettaglio prendono il posto della riga
+  "Prezzo": "Da 1 a 2 persone €250", "Da 3 a 4 persone €350".
+- e la stessa cosa **scritta a parole** in una nota, perché una tabella si legge di sfuggita
+  e una frase no.
+
+Niente `units` come sul jet ski: lì il cliente conta i mezzi, qui l'auto è una e quello che
+cambia è quanti ci salgono. `units` avrebbe sostituito "Quante persone", che qui è proprio
+la domanda che decide il prezzo.
+
+### `times: []` e non `["17:00"]`
+
+Il fornitore dice "partenza **a partire dalle** 17:00" e aggiunge che l'ora effettiva si
+muove con la stagione, perché segue il tramonto. Messo in `times` il 17:00 sarebbe
+diventato una voce da scegliere in un menu, cioè **una promessa**: a giugno il sole va giù
+alle 21. Con `times: []` resta "Da concordare" — che è il vero stato delle cose, l'auto è
+tutta del cliente — e il 17:00 sta nelle note, dove si può spiegare che è un riferimento e
+non un orario.
+
+`days` non c'è: si fa tutti e sette i giorni, e sette su sette non è una limitazione da
+mostrare.
+
+### Il pick-up: la domanda fatta prima, non dopo
+
+Fornitore nuovo, quindi la domanda della v285: **dove passano a prendere il cliente?** Se
+non la si fa, `hotelPunto()` risponde lo stesso — con le fermate di Island Excursions, che
+valgono dentro quel fornitore e non fra fornitori. Un cliente alla fermata del Best
+Tenerife per un'auto che non ci passa.
+
+Risposta del proprietario: **passano sotto l'hotel**. Quindi `mustang-experience` entra in
+`PICKUP_IN_HOTEL` accanto a `trekking-bici`, ed è la seconda scheda a starci. In pagina:
+"Punto di raccolta — il tuo hotel". L'ora no: `PICKUP_TIMES` non ha questa scheda, e il
+menu "A che ora" resta quello normale (che qui è la sola voce "Da concordare").
+
+### Quello che non è stato copiato
+
+- La **promozione 10% su Mustang e Dolce Vita** richiedibile via WhatsApp: è lo sconto del
+  fornitore, non nostro. Sul sito va il prezzo pieno.
+- Le 24 ore di preavviso restano le nostre, come sempre.
+- La descrizione, l'itinerario e le note sono **riscritti da zero** nelle tre lingue: dal
+  fornitore sono presi solo i fatti (prezzi, durata, orario, partenza, lingue, cosa è
+  compreso, la patente). Il campo `descrizione_it` dei dati arrivati era comunque vuoto.
+- Le foto: `piratitenerife.com` è fuori dalla policy di rete di questa sessione, le 18
+  immagini non si sono potute scaricare. La scheda tiene la foto che aveva già — che è
+  proprio questa scena — e **la galleria resta da fare**.
+
+### Le età: niente `ages`, niente `priceInfant`
+
+"Nessuna tariffa ridotta per bambini" dice cosa si paga, non da che età si sale. Senza età
+minima non si scrive `ages`, e `priceInfant` men che meno: assente non vuol dire gratis.
+`family` resta `false` finché non sappiamo l'età minima.
+
+### Le lingue
+
+Quattro — Italiano, English, Français, Español — dal riepilogo del fornitore. Nel corpo
+della sua pagina ne elenca tre (senza il francese): la nota di estrazione dice di aver
+applicato la regola "riepilogo canonico". È un conflitto del fornitore, non nostro, ma
+tanto vale saperlo: **se il francese non c'è davvero, va tolto.**
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, gli stessi di prima.
+
+Nel browser vero, viewport telefono, nelle tre lingue: descrizione, "In breve" (Adeje, 3
+ore, le quattro lingue, i due scaglioni, "Adatta a: Adulti", la riga Transfer), itinerario,
+"Cosa è incluso" (Snack, Bevande), i quattro consigli. Nessun errore JS.
+
+Nella finestra della richiesta, scrivendo un hotel vero (Cleopatra): "A che ora → Da
+concordare" come unica voce, "Punto di raccolta → il tuo hotel", il menu delle lingue con
+le quattro voci, e **nessun totale** — che è il punto: il prezzo è dell'auto.
+
+In elenco, la pillola: "da €250 a Mustang", con ADEJE · 3 ORE · TRANSFER DISPONIBILE.
+
+`CACHE_NAME` a `isla-v287`.
+
+### Resta da chiedere
+
+- **L'età minima**, e se sotto quell'età si sale gratis o non si sale. Da lì dipendono
+  `ages`, `priceInfant` e `family`.
+- **Le zone coperte dal pick-up** e se c'è un supplemento. Finché non si sa, `transferPrice`
+  non si scrive: un prezzo inventato entrerebbe nel totale.
+- **Le foto**: le 18 del fornitore, per la galleria.
+- **Il francese**, vedi sopra.
+- **Il "Mustang Teide" diurno**: quando arriva, è una variante di questa scheda.
+
+---
+
+## v288 — i due scaglioni erano da leggere, non da scegliere
+
+Il proprietario, guardando la scheda: **manca l'opzione di scelta fra 1-2 persone e 3-4
+persone.** Aveva ragione, ed è un errore di categoria che vale la pena capire, perché il
+campo sbagliato "funzionava".
+
+### Cosa faceva `priceTiers` e cosa non faceva
+
+In v287 i due prezzi erano scritti con `priceTiers`, e in pagina si vedevano:
+
+```
+Da 1 a 2 persone     €250
+Da 3 a 4 persone     €350
+```
+
+Corretto, e **inerte**. `priceTiers` è un listino da *leggere*: due righe dentro "In
+breve", niente che si possa premere. Il cliente non poteva dire in quanti sale, e
+soprattutto **nel messaggio all'ufficio non finiva niente**: arrivava una richiesta per la
+Mustang senza sapere se era da 250 o da 350, e quel pezzo lo doveva chiedere l'ufficio.
+
+Il campo giusto era `options`, che è esattamente la stessa cosa dei tre percorsi del buggy:
+due bottoni sulla pagina di dettaglio, la variante che segue il bottone premuto, e la
+scelta che arriva su WhatsApp.
+
+### `price` e non `priceAdult`
+
+Dentro la variante il numero sta su `price`, e la distinzione qui è tutta:
+
+- `priceAdult` direbbe "questa variante si paga a testa", e il totale farebbe 350 × 4.
+- `price` è il numero da scrivere sul bottone e basta — che è il caso del mezzo, come il
+  jet ski a moto d'acqua.
+
+`priceUnit: "a Mustang"` resta dov'era e fa la sua parte: `prezziAPersona()` torna `null`,
+il totale non si fa, e in "In breve" la riga diventa "Prezzo: €350 a Mustang", che segue il
+bottone premuto.
+
+### `priceTiers` è stato tolto, non affiancato
+
+Tenuti tutti e due, la pagina avrebbe scritto gli stessi due numeri due volte: le righe del
+listino sopra i bottoni che li dicono già. Stessa ragione per cui in `tour.js` le righe per
+fascia d'età prendono il posto della riga "Prezzo" invece di aggiungersi.
+
+Per lo stesso motivo la nota che ripeteva "250 € fino a due, 350 € da tre a quattro" adesso
+dice solo il **principio** — "il prezzo è dell'auto e non della persona: a cambiare è
+quanti ci salgono, non quanto paga ognuno" — e i numeri li lascia ai bottoni e alla riga
+sotto il bottone premuto. I numeri in pagina stavano per finire in quattro posti.
+
+### La tendina nella finestra resta nascosta, ed è giusto così
+
+`riempiOpzioni()` nasconde il `<select>` quando `sceltaDallaPagina()` trova un bottone
+premuto, ed è sempre il caso: dall'elenco la finestra della richiesta non si apre, sulla
+card c'è solo "Scopri di più". È il `<select>` che CLAUDE.md chiama codice morto. La scelta
+passa lo stesso, per posizione (`optionIndex`), e nell'intestazione della finestra si legge
+**"Mustang Experience — 3 o 4 persone"**.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, gli stessi.
+
+Nel browser vero, viewport telefono, premendo tutti e due i bottoni nelle tre lingue: il
+titolo del gruppo ("Quanti salite in Mustang" / "How many in the Mustang" / "Cuántos vais
+en el Mustang"), i due bottoni col prezzo, la riga di spiegazione che cambia sotto il
+bottone premuto, e "Prezzo: €250 a Mustang" che diventa "€350 a Mustang". Nessun errore JS.
+
+Aprendo la richiesta col secondo bottone premuto: intestazione "Mustang Experience — 3 o 4
+persone", tendina varianti nascosta, e il resto invariato (Da concordare, punto di raccolta
+in hotel, nessun totale).
+
+`CACHE_NAME` a `isla-v288`.
+
+### Resta aperto
+
+Le quattro cose della v287, tutte ancora lì: età minima, zone del pick-up, le foto per la
+galleria, il francese.
+
+E una nuova, piccola: col bottone premuto il **totale** si potrebbe finalmente mostrare —
+è 250 o 350, secco, senza moltiplicare niente. Oggi non si vede, perché `prezziAPersona()`
+si ferma davanti a `priceUnit` e non esiste un modo di dire "questa variante è un prezzo di
+gruppo, mostralo così com'è". Non è stato fatto qui: è un campo nuovo nel motore, e il
+proprietario aveva chiesto la scelta, non il totale.
+
+---
+
+## v289 — più di una Mustang, e un ripiego che mancava nel motore
+
+Il proprietario: **è possibile selezionare anche più Mustang?** In sei si va con due auto,
+una con quattro persone e una con due — che sono due prezzi diversi, 350 + 250.
+
+Il campo per questo esiste già ed è `units`, quello del jet ski: "quattro amici sono due
+doppie e due singole". Qui i "tipi" non sono due modelli di auto, sono **le due fasce di
+prezzo**, perché a cambiare il prezzo dell'auto è quanti ci salgono.
+
+```
+Quante Mustang — il prezzo è dell'auto e cambia con quanti ci salgono
+  Con 1 o 2 persone · €250     [ 1 ]
+  Con 3 o 4 persone · €350     [ 1 ]
+
+  Totale €600
+  1 Con 1 o 2 persone × €250 + 1 Con 3 o 4 persone × €350
+```
+
+E il totale, che in v287 e v288 non si faceva, adesso si fa: era l'ultima cosa rimasta
+aperta in fondo alla v288, e la risposta non era un campo nuovo nel motore — era usare il
+campo giusto.
+
+### Le `options` sono state tolte, non affiancate
+
+In v288 le due fasce erano `options`, due bottoni. Con `units` sarebbero diventate due modi
+diversi di dire la stessa cosa nella stessa finestra: un bottone che sceglie la fascia e due
+contatori che la scelgono di nuovo.
+
+E `options` non sapeva fare quello che è stato chiesto: **una variante sola vale per tutta
+la richiesta**, quindi con le fasce come varianti tutte le auto dovevano stare nella stessa
+fascia. Due auto, una da quattro e una da due, non si potevano scrivere. Coi tipi di `units`
+sì, perché ogni tipo ha il suo contatore.
+
+I due prezzi restano leggibili sulla pagina di dettaglio: è tornato `priceTiers`, tolto in
+v288 perché allora duplicava i bottoni. Adesso i due campi stanno in due posti diversi —
+`priceTiers` è il listino in "In breve", `units` è la finestra della richiesta — e non si
+ripetono a vicenda.
+
+`units` **sostituisce** "Quante persone" (lo fa `mostraPersone()`), ed è giusto: il numero
+delle persone è già dentro il nome della fascia, e chiederlo due volte darebbe due conti da
+far tornare. La capienza massima — quattro, autista compreso — era dentro le `desc` delle
+vecchie varianti: senza un posto dove andare sarebbe sparita, ed è finita nella nota del
+prezzo, insieme al fatto che se si è di più si prendono due auto.
+
+### Il ripiego che mancava in `riempiUnita()` (escursioni.js)
+
+Il vocabolario dice da sempre che **una scheda senza varianti può tenere `unitPrices` su di
+sé**, e `totaleMezzi()` infatti fa il ripiego:
+
+```js
+const prezzi = (variante && variante.unitPrices) || tour.unitPrices;
+```
+
+`riempiUnita()`, che disegna le righe coi contatori, no: si fermava a
+`(variante && variante.unitPrices) || {}`. Finché le uniche schede a mezzo erano jet ski,
+buggy e quad — tutte con varianti — non si vedeva. Sulla Mustang, che varianti non ne ha,
+sarebbe uscito il caso peggiore: **contatori senza prezzo accanto e un totale che compare
+lo stesso**, cioè un numero costruito con prezzi che in pagina non sono scritti da nessuna
+parte.
+
+Aggiunto lo stesso ripiego. È una riga, ed è quella che rende vero quello che il vocabolario
+prometteva.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, gli stessi.
+
+Nel browser vero, viewport telefono, il conto a mano:
+
+| contatori | totale | atteso |
+| --- | --- | --- |
+| 1 × "1 o 2" | €250 | ✓ |
+| 1 × "3 o 4" | €350 | ✓ |
+| 1 + 1 (sei persone, due auto) | €600 | ✓ |
+| 3 × "3 o 4" | €1050 | ✓ |
+| 0 + 0 | nessun totale, "Serve almeno un mezzo" | ✓ |
+
+Col **transfer spuntato il totale sparisce**, e non è un bug: `units.transferPrice` non c'è
+perché il prezzo del ritiro non lo sappiamo, e `totaleMezzi()` preferisce non dare un numero
+piuttosto che darne uno a cui manca un pezzo. È un motivo in più per farsi dare quel prezzo.
+
+Contatori, prezzi accanto e totale verificati in tutte e tre le lingue. Il messaggio che
+parte davvero su WhatsApp, intercettato:
+
+```
+• Mustang: Con 1 o 2 persone × 1 · Con 3 o 4 persone × 1
+• Totale indicativo: €600 (1 Con 1 o 2 persone × €250 + 1 Con 3 o 4 persone × €350)
+```
+
+**E le altre tre schede a mezzo, perché il motore è condiviso:** jet ski, buggy e quad
+riaperti uno per uno, premendo anche l'ultima variante. I prezzi accanto ai contatori
+continuano a essere quelli della variante (jet ski €90 → €180, quad €110 → €130): il
+ripiego nuovo si attiva solo dove la variante non c'è. Nessun errore JS.
+
+`CACHE_NAME` a `isla-v289`.
+
+### Resta da chiedere
+
+Le quattro della v287, invariate: età minima, **zone del pick-up e quanto costa** (adesso
+serve anche al totale), le foto per la galleria, il francese.
+
+---
+
+## v290 — il transfer è compreso, e quindi non è più una domanda
+
+Il proprietario: **il transfer è incluso.** Una riga, e cade tutto quello che in v287 e v289
+era stato costruito attorno al non saperlo.
+
+### Il campo `transfer` era quello sbagliato
+
+`transfer` nel vocabolario vuol dire "**quando l'attività si può avere** col trasporto
+incluso": qualcosa che si chiede, e che di solito si paga. Da lì vengono la pillola
+"Transfer disponibile" in elenco, la riga in "In breve", e soprattutto la domanda **"Vuoi
+il transfer?"** nella finestra della richiesta.
+
+Se il ritiro è compreso per tutti e sempre, quella domanda non è solo inutile: è **dannosa**.
+Un cliente che risponde "no" — e qualcuno risponde no a tutto quello che sembra un extra —
+manda all'ufficio `• Transfer: no` su un ritiro che ha già pagato, e l'ufficio non sa se
+deve passare a prenderlo.
+
+Il campo giusto è `included`, che è esattamente la definizione di "compreso per tutti e
+sempre". Quindi: `included: ["snack", "drinks", "transfer"]`, e il campo `transfer` via.
+
+### Cosa cambia in pagina
+
+| | prima | adesso |
+| --- | --- | --- |
+| "Cosa è incluso" | Snack, Bevande | Snack, Bevande, **Transfer** |
+| "In breve" | riga "Transfer: passano a prenderti…" | niente |
+| elenco | pillola "Transfer disponibile" | la frase nella descrizione |
+| richiesta | "Vuoi il transfer?" | niente |
+| messaggio | `• Transfer: no` | niente |
+
+La pillola dell'elenco si perde, e non c'è un modo di scrivere "transfer **incluso**" fra le
+pillole. È finita nella descrizione, che in elenco si legge per intero: "…il prezzo è
+dell'auto e non a persona, e il ritiro in hotel è compreso." Meglio di una pillola che
+diceva "disponibile" quando è compreso.
+
+Il testo che stava nel campo `transfer` (dove si passa a prendere, cosa fare se l'hotel non
+è in elenco) è diventato una **nota**: un'icona dice *che* c'è, la nota dice *come funziona*,
+e sono due mestieri diversi.
+
+### E il totale non può più sparire
+
+Era la cosa segnalata in fondo alla v289: `totaleMezzi()` torna `null` se il transfer è
+spuntato e `units.transferPrice` non c'è, perché preferisce niente a un numero incompleto.
+Senza la casella, `req.transfer` è sempre falso e quel ramo non si tocca più: **il totale
+c'è sempre**. Non è stato aggiustato un pezzo di motore — è sparito il caso.
+
+Una cosa da sapere se un domani il ritiro dovesse diventare a pagamento: la strada è
+rimettere il campo `transfer` **e** `units.transferPrice`, tutti e due. Il prezzo del ritiro
+su una scheda a mezzo sta dentro `units`, non in `transferPrice` della scheda, perché è a
+veicolo e non a testa.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi, gli stessi.
+
+Nel browser vero, viewport telefono, nelle tre lingue: "Cosa è incluso" mostra Snack,
+Bevande incluse, **Transfer** (Snacks/Drinks/Transfer, Snacks/Bebidas/Traslado), e la riga
+"Transfer disponibile" in "In breve" è sparita in tutte e tre. Le tre icone guardate in
+fila, non una alla volta: panino, bicchiere, pulmino — si distinguono.
+
+Nella finestra: la domanda sul transfer non c'è più (`hidden`), e il totale regge sia con
+una auto (€250) sia con due (€600). Il messaggio WhatsApp non ha più la riga `Transfer`.
+
+In elenco la pillola è sparita e la descrizione dice del ritiro compreso.
+
+`CACHE_NAME` a `isla-v290`.
+
+### Resta da chiedere
+
+Tre, una in meno: **età minima**, **le foto** per la galleria, **il francese**. Le zone
+coperte dal pick-up non sono più una domanda sul prezzo — resta solo da sapere fin dove
+arrivano, e per gli hotel che non conosciamo il sito già non promette niente e dice di
+scriverlo nelle note.
+
+## Sui bottoni della durata c'era il prezzo della singola soltanto
+
+Segnalato dal proprietario: "nelle scelte c'e' scritto solo il prezzo del singolo, e'
+possibile mettere anche quello del doppio". Sul bottone il numero veniva da `price` della
+variante, che e' uno solo, e sul jet ski dentro c'e' il prezzo della **singola**: chi
+voleva la doppia doveva aprire la finestra della richiesta per scoprire quanto costa. Sulle
+schede normali un prezzo solo e' giusto — e' *il* prezzo — ma dove i mezzi sono di piu'
+tipi i prezzi sono tanti quanti i tipi.
+
+`prezziVarianteTesto(tour, variante)` in `escursioni.js` scrive "Singola €180 · Doppia
+€200" leggendo `unitPrices` della variante (o quello della scheda, come sulla Mustang) e i
+nomi da `units.types`. Torna vuota dove i mezzi non si contano, e li' resta tutto com'era.
+La usa `tour.js` in **tutti e due** i posti dove il prezzo della variante si vede — il
+bottone e la riga "Prezzo" di "In breve" — cosi' non possono dire due cose diverse.
+
+Nella riga "Prezzo" coi prezzi per tipo **non si aggiunge `priceUnitSuffix`**: "Singola
+€180 · Doppia €200 a moto d'acqua" e' il nome del mezzo scritto una terza volta. La card
+dell'elenco resta "da €90 a moto d'acqua": li' e' un prezzo d'ingresso e va bene che sia il
+piu' basso.
+
+La Mustang non cambia: non ha varianti, quindi bottoni non ne ha, e la sua riga del prezzo
+la fanno i `priceTiers`, che vengono prima nel giro di `detailRows()`.
+
+**Nota di lavoro.** Questa modifica era partita da un branch fermo a `isla-v198`, mentre
+`main` intanto era arrivato a **v290** con 56 commit (fra cui tutta la Mustang, che usa
+`units` come il jet ski). Il merge dava conflitto: rifatta da capo sul `main` di adesso —
+una modifica di tre punti si riscrive in due minuti, un merge di 56 commit no. Da qui
+`isla-v291` invece di v199.
+
+Provato nel browser: i tre bottoni del jet ski mostrano 90/110, 100/120 e 180/200, la riga
+"Prezzo" segue il bottone premuto, e a 390px i due prezzi stanno su una riga sola. Freebird
+tiene i suoi "2 ore €30", la Mustang tiene le sue due fasce. `node controlla.js` → 0
+errori, 3 avvisi invariati (opera-60 e due schede senza foto, nessuno dei tre riguarda
+questa modifica).
+
+## Gli orari del jet ski sono gli stessi per tutte e tre le durate
+
+Correzione del proprietario, 12 settembre 2026: "tutte e 3 le tempistiche hanno gli stessi
+orari di partenza". **Questo annulla la divisione per durata** scritta più su in queste
+note (1 ora alle 10/14/16/17, 2 ore solo alle 12): quegli orari venivano dalla pagina di
+**CanaryVIP**, un rivenditore concorrente, ed erano la disponibilità sua, non la nostra.
+L'ufficio aveva mandato fin dall'inizio una lista sola di cinque orari, e quella era
+giusta: 10:00, 12:00, 14:00, 16:00, 17:00, uguali per 40 minuti, 1 ora e 2 ore.
+
+Tolti i `times` dalle varianti — restano i cinque sulla scheda, che valgono per tutte — e
+tolta la `desc` della variante da 2 ore, che esisteva **solo** per spiegare il "forse" di
+quella pagina ("in certi giorni può esserci anche alle 10:00 o alle 16:00"). Senza quel
+forse non c'è più niente da spiegare.
+
+Due cose si sistemano da sole:
+
+- **Il paragrafo spaiato.** Il proprietario aveva notato che la spiegazione c'era solo sul
+  bottone delle 2 ore. Non era un errore — il testo stava dove c'era qualcosa da dire — ma
+  con una sola variante spiegata i bottoni andavano in colonna e la pagina si muoveva
+  premendo quel bottone. Adesso non ci sono più `desc` e la fila torna compatta.
+- **Una domanda in meno all'ufficio**: "in quali giorni il giro da 2 ore parte anche alle
+  10:00 o alle 16:00" non ha più senso di essere fatta.
+
+**La lezione, che vale oltre il jet ski**: da una pagina di un rivenditore si prendono i
+fatti dell'attività (porto, età, cosa è incluso), non la **sua disponibilità**. Gli orari
+che vede un rivenditore sono le sue quote, non quelle dell'operatore. Vale come i prezzi
+barrati: quelli sono i suoi sconti, non i nostri.
+
+Provato nel browser: i tre bottoni mostrano tutti "10:00 · 12:00 · 14:00 · 16:00 · 17:00"
+nella riga Orari, e il menu "A che ora" della finestra della richiesta li mostra tutti e
+cinque su tutte e tre le durate; in pagina non resta nessun paragrafo di spiegazione. La
+riga "Durata" resta giustamente nascosta, perché il gruppo di bottoni si chiama già
+"Durata". `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v292`.
+
+## Il ritiro del jet ski si può chiedere, non si può promettere
+
+Domanda del proprietario: "come possiamo mettere il transfer che è possibile solo da Las
+Galletas, ma le persone al momento non scelgono dove andare, loro dicono solo quando, e noi
+in base alla disponibilità scegliamo dove mandarli?".
+
+E' un vincolo che **non sta nei dati dell'escursione, sta nel modo in cui lavora
+l'ufficio**, e il sito lo diceva sbagliato in due punti: la casella del transfer sembrava
+una cosa sempre disponibile, e una nota diceva al cliente di **scrivere nelle note quale
+porto preferisce** — cosa che non serve a niente, visto che il porto non lo sceglie lui.
+
+La soluzione non e' un campo nuovo: e' **cambiare cosa vuol dire la casella**. Da "voglio
+il transfer" (una cosa che il sito promette) a "chiedo il ritiro" (una cosa che l'ufficio
+prova a far stare). Spuntata, l'ufficio sa che deve cercare di mettere quel cliente su una
+partenza da Las Galletas, ed e' l'unica informazione che gli serve per decidere dove
+mandarlo: la casella **diventa un dato per chi assegna il porto**, non una promessa fatta
+al cliente.
+
+Tre pezzi:
+
+- **`transfer`** riscritto: dice che il ritiro si fa solo dalle partenze di Las Galletas,
+  che il porto lo assegna l'ufficio secondo la disponibilita' del giorno, che chiedendolo
+  si prova a metterlo li' e glielo si conferma rispondendo, e che dalle partenze di Puerto
+  Colón si arriva al porto per conto proprio. Una casella che sembra una garanzia e poi non
+  lo e' e' peggio di non averla.
+- **`transferLabel: "Ritiro in hotel"`**: "Vuoi il transfer?" fa pensare a un pullman che
+  porta all'escursione, e qui la domanda e' un'altra.
+- **La nota sui due porti** non chiede piu' di scegliere: dice chi assegna il porto e
+  quando lo si sa.
+
+**Il nome adesso e' uno solo in tutti e quattro i posti dove si legge.** `transferLabel`
+valeva gia' per la casella nella finestra e per la riga del messaggio; aggiunto anche alla
+riga di "In breve" (`tour.js`) e al dettaglio del totale (`totaleMezzi()` in
+`escursioni.js`), dove restava scritto "Transfer". Con la casella che dice "Ritiro in
+hotel" e il conto che diceva "Transfer 2 × €10" sembravano due cose diverse. Le schede
+senza `transferLabel` non cambiano: Twin Ticket e Siam Park tengono i loro nomi.
+
+**I €10 a moto restano nel totale** anche se il ritiro e' da confermare. E' la direzione
+giusta dell'errore: se poi non si puo' fare, il cliente paga **meno** di quanto aveva
+letto, e CLAUDE.md dice che abbassare un prezzo dopo si puo', alzarlo dopo che il cliente
+l'ha letto e' la cosa che fa arrabbiare. Il totale e' gia' marcato "indicativo, te lo
+confermiamo noi".
+
+Provato nel browser: la riga in "In breve" si chiama "Ritiro in hotel" e porta il testo
+nuovo, la casella nella finestra pure, il totale scrive "2 Singola × €90 + Ritiro in hotel
+2 × €10" e il messaggio "• Ritiro in hotel: sì". `node controlla.js` → 0 errori, 3 avvisi
+invariati. Alzato `sw.js` a `isla-v293`.
+
+**Resta da chiedere all'ufficio**: se il ritiro non si riesce a fare, il cliente viene
+avvisato e basta, oppure gli si propone l'altro porto e puo' disdire? Adesso il sito dice
+solo che il porto si conferma rispondendo, e non promette niente di piu'.
+
+## Come si assegna il porto del jet ski: confermato, e la casella resta
+
+Il proprietario ha chiuso le due domande rimaste aperte sul ritiro (12 settembre 2026):
+
+> "Il cliente sceglie l'orario e la moto d'acqua e in base a questo noi scegliamo il porto
+> con o senza trasporto! anche i 10 euro restano nel totale"
+
+**Il criterio non e' la disponibilita' generica del giorno: sono l'orario e le moto che il
+cliente ha scelto.** Quelle due cose le sceglie lui, il porto no. Corretto il testo del
+ritiro e la nota sui due porti in tutte e tre le lingue: dove dicevano "secondo la
+disponibilita' del giorno" adesso dicono "in base all'orario e alle moto d'acqua che
+scegli". Non e' pignoleria: chi legge "disponibilita'" pensa che sia una lotteria, mentre
+cosi' capisce che la sua scelta conta ed e' lui a determinarla in parte.
+
+**La casella resta** (chiesto esplicitamente, fra tre possibilita': toglierla, lasciarla,
+o lasciarla gia' spuntata). Quindi niente cambia nel comportamento: il cliente puo' chiedere
+il ritiro, e i €10 a moto entrano nel totale quando lo chiede. Era la lettura che avevo gia'
+implementato, e i €10 nel totale erano gia' come li voleva.
+
+Vale la pena ricordarsi **perche' si e' chiesto invece di indovinare**: "in base a questo
+noi scegliamo il porto con o senza trasporto" si poteva leggere anche come "il cliente non
+sceglie niente sul ritiro, quindi la casella va tolta e i €10 stanno sempre nel totale". Le
+due letture davano due finestre della richiesta diverse — una con la domanda e una senza —
+e nessuna delle due si poteva dedurre dal testo. Una domanda sola, tre risposte possibili
+scritte per esteso, e la scheda e' giusta al primo colpo.
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v294`.
+
+---
+
+## 12 settembre 2026 — I €10 del ritiro si dicono una volta sola (v295)
+
+Il proprietario: «Se i 10 euro sono gia' nel prezzo, non importa scrivere 10 a moto
+d'acqua». Tolto da `transfer` (jet ski, tutte e tre le lingue) il pezzo "€10 a moto
+d'acqua, da pagare al ritiro": adesso la frase dice solo **da dove** si fa il ritiro e
+**chi** sceglie il porto.
+
+Il numero non sparisce: lo scrive il totale, che con la casella spuntata mostra
+`2 Singola × €180 + Ritiro in hotel 2 × €10` → `Totale €380`. E' il posto giusto, perche'
+li' il cliente li vede **sommati**, non come una cifra da ricordarsi a parte.
+
+Due motivi, non uno solo:
+
+1. **La stessa cifra detta due volte sembra due addebiti.** Una in mezzo a una frase e una
+   in un conto: chi legge in fretta puo' capire che i €10 si pagano in piu' rispetto al
+   totale.
+2. **"Da pagare al ritiro" diceva il contrario del totale.** Nel totale i €10 ci sono gia'
+   dentro. Quella mezza riga era rimasta da quando il supplemento non era ancora calcolato,
+   e nessuno se n'era accorto perche' le due cose si guardano in due schermate diverse.
+
+La regola che ne esce: **un prezzo che il sito calcola non si ripete a parole.** Dove la
+macchina fa il conto, la prosa dice le condizioni (da dove, per chi, quando), non la cifra:
+se un giorno il supplemento passa a €12 si cambia `units.transferPrice` e basta, senza
+cercare il "10" scritto in nove testi in tre lingue. Il rischio opposto — il cliente che
+pensa che il ritiro sia gratis — non si corre, perche' la casella e il totale stanno nella
+stessa finestra: spuntandola il totale sale sotto i suoi occhi.
+
+Nel test in browser ho ripreso, per la terza volta in due giorni, **il bug di cercare per
+etichetta una cosa che la lingua riscrive**: il bottone lo cercavo con `/disponibilit/`, che
+non prende lo spagnolo "disponibilidad". Questa volta era solo il mio script di prova, e si
+e' visto subito perche' lo spagnolo tornava vuoto mentre italiano e inglese passavano. Vale
+la pena notarlo: la stessa trappola scatta uguale nel codice del sito e nei controlli.
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. Provato in browser sulle tre lingue: la
+riga "In breve" senza "10" e senza "pagare", il totale `€380` con la riga del ritiro intatta.
+Alzato `sw.js` a `isla-v295`.
+
+---
+
+## 12 settembre 2026 — Il ritiro del jet ski e' compreso, e come si sceglie il porto non si racconta (v296)
+
+Il proprietario, spiegando come funziona la vendita davvero: «se a noi arriva un cliente
+che cerca una moto d'acqua alle 15 di 2 ore, noi vediamo dove metterlo a seconda della
+disponibilita'; il cliente non deve essere informato di questa cosa, lui vedra' solo il
+posto dove andra'». E: transfer da Las Galletas, **senza aumenti di prezzo**, e niente
+altro.
+
+Due cose insieme, tutte e due in sottrazione.
+
+**1. Il supplemento sparisce.** `units.transferPrice` da `10` a `0`: il ritiro e'
+compreso. Spuntando la casella il totale non si muove piu' (€360 con e senza), e nel conto
+non compare nessuna riga — un `Ritiro in hotel 2 × €0` sarebbe solo una domanda in piu'.
+I €10, aggiunti il 12 mattina su sua indicazione e tolti dal testo poche ore fa, adesso non
+ci sono proprio: la scheda ha fatto il giro completo in un giorno, ed e' il modo normale in
+cui si scopre come funziona davvero un prodotto.
+
+**2. Il meccanismo interno esce dalla scheda.** Il testo diceva «il porto lo assegniamo noi
+in base all'orario e alle moto d'acqua che scegli»: vero, ma e' **come lavoriamo noi**, non
+qualcosa che il cliente possa usare. Non lo aiuta a decidere niente — le sue due scelte le
+fa lo stesso — e in cambio gli mette in testa che il posto non sia ancora sicuro. Adesso la
+scheda dice solo le due cose che gli servono davvero: **da dove** parte il ritiro e che lo
+deve **chiedere nella richiesta**. Il porto lo legge nella conferma, gia' deciso.
+
+Vale la pena tenerla come regola: **la scheda dice al cliente quello che lui deve fare, non
+quello che facciamo noi.** Spiegare la propria logica di magazzino sembra trasparenza ed e'
+rumore: obbliga a leggere un paragrafo per scoprire che non c'era niente da scegliere.
+
+### `transferPrice` dentro `units` adesso ha tre stati
+
+Come `priceInfant`, e per lo stesso motivo:
+
+| valore | vuol dire |
+|---|---|
+| `12` | supplemento a mezzo: entra nel totale, con la sua riga nel conto |
+| `0` | compreso: niente riga, il totale non cambia |
+| assente | non si sa quanto costa: col ritiro spuntato **il totale non si fa** |
+
+Prima il codice faceva `if (!mezzi.transferPrice) return null`, che mette assente e zero
+nello stesso sacco: con `transferPrice: 0` la casella spuntata avrebbe fatto **sparire il
+totale**, che e' il modo peggiore di dire "e' gratis". Adesso solo l'assenza ferma il conto.
+Zero e' un numero vero, l'assenza e' una cosa che non sappiamo: e' la stessa distinzione che
+il progetto fa gia' sui neonati, e la sbagliavamo qui perche' finora `transferPrice` c'era
+sempre.
+
+Corretto anche il commento della Mustang, che diceva «niente `transferPrice`: il ritiro e'
+compreso». La', senza campo `transfer`, la casella non esiste e nessuno se ne accorge; ma
+scritto cosi' insegnava la regola sbagliata al prossimo che legge. Le altre tre schede con
+`units` (Mustang, buggy, quad) non hanno la casella del ritiro, quindi il cambio di codice
+tocca solo il jet ski.
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. Provato in browser sulle tre lingue:
+totale €360 identico con e senza la casella, nessun `× €0` nel conto, e il messaggio
+all'ufficio che continua a portare `• Ritiro in hotel: sì` — che e' la riga da cui decide
+il porto. Alzato `sw.js` a `isla-v296`.
+
+## 13 settembre 2026 — Il tuk tuk ha un fornitore e un nome: Tuk Tuk Sweet Tours (v297)
+
+L'ufficio ha mandato i dati grezzi del tuk tuk. **Non e' una scheda nuova:** `tuk-tuk` era
+gia' in catalogo dal 24 agosto, e i dati arrivati sono dello stesso operatore — la livrea
+in foto porta scritto `sweettourstenerife.com`, che e' proprio il loro sito. Quindi la
+scheda e' stata **arricchita**, non duplicata. Era il controllo numero uno della procedura
+(vedi Kalima Kat) e questa volta ha funzionato.
+
+### Il fornitore
+
+**Tuk Tuk Sweet Tours S.L.** (CIF B76696640), `sweettourstenerife.com`. Scritto in un
+commento sopra la scheda, non in pagina: il cliente compra da Admiral.
+
+### Cosa e' entrato nella scheda
+
+- **`languages: ["Español", "English", "Italiano", "Français"]`** — le quattro lingue le
+  segnala il fornitore. **Non e' `LINGUE_TOUR`**, che contiene anche il tedesco: il menu
+  deve offrire solo quello che c'e' davvero. Ora la finestra della richiesta fa la domanda
+  "In che lingua"
+- **`included: ["guide"]`** — il giro e' guidato, la guida e' l'attivita' stessa
+- **Una nota col punto di ritrovo:** davanti al ristorante **Wakanda Origen**, Avenida de
+  España 10, Costa Adeje. Il nome del posto non si traduce, come i titoli; a tradursi e' il
+  resto della frase
+
+### La domanda sul ritiro, fatta prima e non dopo
+
+Fornitore nuovo, quindi vale la regola: **si chiede dove passano a prendere il cliente**,
+non si danno per buone le tabelle di `hotel.js` (che sono di Island Excursions). Risposta
+nei dati: **non passano da nessuna parte, il ritrovo e' fisso**. Perche' la scheda **non**
+sta in `PICKUP_IN_HOTEL` e **non** sta in `PICKUP_TIMES`.
+
+### Quello che e' arrivato e non si pubblica
+
+| dato mandato | perche' resta fuori |
+|---|---|
+| telefono, email e sito del fornitore | il cliente compra da Admiral: pubblicarli e' regalare la vendita |
+| `booking: fareharbor` (shortname, flow) | non c'e' backend e le richieste passano da WhatsApp; il sistema del fornitore non e' il nostro |
+| codice TripAdvisor | punteggi e recensioni di altri non si copiano |
+| `prezzo: { da: null }` | in catalogo c'e' gia' **24 €**, prezzo a persona trovato il 24 agosto. Un `null` che cancella un prezzo gia' letto e' un passo indietro, non un dato nuovo |
+
+`days` e `times` restano **assenti** apposta: il calendario vero non ce l'abbiamo, quindi
+fasce segnaposto e "Da concordare".
+
+### Il problema che questa scheda mette in luce (da decidere)
+
+Nella finestra della richiesta la casella "Dove alloggi" **mostra comunque un punto di
+raccolta** preso dalle tabelle di Island Excursions, su qualunque scheda. Provato sul tuk
+tuk: scrivendo "Acapulco" esce «Punto di raccolta: Los Hibiscos, alla fermata
+dell'autobus», mentre due righe piu' su la nota dice che il ritrovo e' al Wakanda Origen e
+che il ritiro non c'e'. **Due indicazioni diverse sulla stessa pagina, e quella sbagliata
+e' la piu' precisa.**
+
+Non e' un guaio nato oggi: vale gia' per l'elicottero («nessun servizio di prelievo»), per
+lo Scandal al Vivo Show Bar e per tutte le schede con un ritrovo fisso. Non l'ho toccato
+perche' e' la macchina condivisa da tutte le schede e la scelta e' del proprietario. La
+strada piu' corta sarebbe una terza lista in `hotel.js` — le schede col ritrovo fisso — che
+`hotelPunto()` guarda per prima e per cui non mostra nessun punto.
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. Provato in browser (390px) in italiano
+e in inglese: la nota del ritrovo esce sotto "Consigli", "Lingue" compare in "In breve",
+"Guida" in "Cosa e' incluso" e la domanda "In che lingua" nella finestra della richiesta,
+con le quattro lingue e senza il tedesco. Alzato `sw.js` a `isla-v297`.
+
+## 13 settembre 2026 — Secret Volcano Tour: il primo percorso del tuk tuk con un listino vero (v298)
+
+Arrivata la pagina di prenotazione di **un** percorso dei tre, il **Secret Volcano Tour**.
+Adesso quella variante ha prezzo, durata, fasce d'eta' e una descrizione sua; le altre due
+restano come prima, senza prezzo.
+
+### Il percorso che ha un nome
+
+`label: "Secret Volcano Tour"`, stringa sola: e' un nome proprio del fornitore e resta
+uguale nelle tre lingue, come "Freebird" o "Royal Delfin". **Ho unito questo tour alla
+variante che prima si chiamava "Completo, fino ai vulcani"**, perche' e' l'unico percorso
+che va a un vulcano (la Caldera del Rey). Se invece sono due prodotti diversi vanno
+separati: e' la prima cosa da far confermare.
+
+Il vantaggio pratico del nome vero: finisce nel messaggio WhatsApp, e l'ufficio cerca
+quello nel sistema del fornitore.
+
+| dato | valore | da dove |
+|---|---|---|
+| `priceAdult` | 24 | pagina di prenotazione, 11+ anni |
+| `priceChild` | 12 | 3-10 anni |
+| `priceInfant` | 0 | "Gratis", scritto dal fornitore |
+| `ages` | `11+` / `3-10` / `0-2` | combaciano senza buchi ne' sovrapposizioni |
+| `duration` (variante) | 1 ora | "Duración: 1 hour" |
+
+I 24 euro **confermano** il `priceFrom: 24` trovato in rete il 24 agosto: era il prezzo
+adulto di questo tour. Un dato cercato allora e verificato oggi.
+
+### Le lingue sono scese da quattro a due
+
+Il sito del fornitore dice quattro lingue, la pagina del singolo tour ne dice due:
+«Disponible en: español, inglés», e fra le cose incluse «Spanish and English guide».
+**Ho pubblicato le due**, non le quattro. Promettere una guida italiana che quel giorno non
+c'e' e' il tipo di errore che si scopre alla partenza, quando non si puo' piu' rimediare;
+offrirne meno di quelle che ci sono costa al massimo una domanda su WhatsApp. Da
+confermare con l'ufficio: forse italiano e francese sono di altri tour, o solo su richiesta.
+
+### Il ritrovo, confermato due volte
+
+`Punto de encuentro: 10 Avenida de España, Costa Adeje 38660` — lo stesso indirizzo del
+Wakanda Origen gia' scritto nella nota. E fra le cose **non** incluse c'e' `Hotel pick up`:
+la nota adesso dice "il ritiro in hotel non e' compreso", che e' la stessa cosa detta con
+le parole del fornitore.
+
+### Il calendario non dice i giorni, dice il passato
+
+Nel calendario di settembre i giorni **1-12 risultano non disponibili e dal 13 in poi
+tutti liberi**. Il 13 e' oggi: quelli chiusi sono i giorni gia' passati, non un giorno di
+chiusura settimanale. Quindi **`days` resta assente** — sette giorni su sette non sono una
+limitazione da mostrare. Se ci avessi letto una regola («non si fa il lunedi'») avrei
+pubblicato una chiusura inventata.
+
+`times` resta assente allo stesso modo: dalla pagina si vede una sola partenza (le 13:00
+del giorno scelto) e sotto un elenco di fasce di cui non si leggono gli orari. Restano le
+fasce segnaposto.
+
+### Cosa non e' entrato
+
+Il testo di "Detalles" e "Lo mas destacado" **non e' stato tradotto ma riscritto**: la
+descrizione della variante e' nostra, in tre lingue. Fuori anche la politica di
+cancellazione del fornitore (le nostre sono 24 ore) e il conteggio dei posti come dato
+commerciale — il «6 people per vehicle» e' invece entrato come **nota**, perche' a un
+gruppo di sette serve saperlo prima.
+
+Aggiunta anche la nota sui neonati in braccio con la cintura: e' la ragione per cui non
+pagano, e un genitore che porta il passeggino la deve leggere prima di uscire di casa.
+
+### Resta aperto, e adesso costa di piu'
+
+La casella "Dove alloggi" nella finestra della richiesta continua a scrivere «Serve a dirti
+dove passiamo a prenderti» e a mostrare un punto di raccolta preso dalle tabelle di Island
+Excursions. Su questa scheda il fornitore scrive nero su bianco che **il ritiro in hotel
+non c'e'**: adesso non e' piu' un sospetto mio, e' una contraddizione dentro la stessa
+pagina. La proposta resta quella: una terza lista in `hotel.js` con le schede dal ritrovo
+fisso, guardata per prima da `hotelPunto()`.
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. Provato in browser a 390px nelle tre
+lingue: scegliendo il Secret Volcano Tour la durata passa a "1 ora", compaiono Adulti
+(11+) €24, Bambini (3-10) €12 e Neonati (0-2) Gratis, e sulle altre due varianti quelle
+righe spariscono. Totale controllato a mano: 2 adulti + 1 bambino + 1 neonato = **€60**.
+Alzato `sw.js` a `isla-v298`.
+
+## 13 settembre 2026 — Dove il transfer non c'e', il punto di raccolta non si mostra (v299)
+
+Decisione del proprietario, sul tuk tuk: **«lascia perdere qui i punti di raccolta perche'
+il transfer non e' incluso»**. Fatto, e fatto in modo che valga per qualsiasi altra scheda
+che un giorno si trovi nella stessa situazione.
+
+### Il guaio, per come si vedeva
+
+La casella "Dove alloggi" nella finestra della richiesta pescava un punto dalle tabelle di
+`hotel.js` **su qualunque scheda**. Sul tuk tuk questo voleva dire: scrivi "Acapulco", e la
+pagina rispondeva «Punto di raccolta: Los Hibiscos, alla fermata dell'autobus». Due righe
+piu' su la stessa pagina diceva che il ritrovo e' al Wakanda Origen e che il ritiro in
+hotel non e' compreso.
+
+Quella fermata **esiste davvero**, ed e' questo che la rendeva pericolosa: e' il punto da
+cui Island Excursions fa salire i clienti di un'altra escursione. Un cliente del tuk tuk
+ci sarebbe andato, e li' quel giorno non passava nessuno.
+
+### La terza lista: `PICKUP_NESSUNO`
+
+In `hotel.js`, accanto a `PICKUP_IN_HOTEL`. Dentro c'e' `"tuk-tuk"`.
+
+| lista | vuol dire |
+|---|---|
+| `PICKUP_IN_HOTEL` | il pulmino passa **sotto l'hotel**, qualunque sia il punto della tabella |
+| `PICKUP_NESSUNO` | **non passa nessuno**: il ritrovo e' un posto solo, scritto nelle note |
+| ne' l'una ne' l'altra | valgono le tabelle: il punto dipende dall'hotel |
+
+Da non confondere con una scheda che non sta in `PICKUP_TIMES`: quella il ritiro ce l'ha,
+sono gli **orari** a mancare, e il punto si mostra lo stesso.
+
+### Due punti soli nel codice, e tutti e due voluti
+
+1. **Dentro `hotelPunto()`**, in cima: per queste schede risponde `null` e basta. Sta li' e
+   non solo nella finestra perche' la stessa funzione scrive anche la riga «Punto di
+   raccolta» del **messaggio WhatsApp** — e una richiesta rimasta nella lista da ieri porta
+   ancora scritto l'hotel di allora. Provato: col tuk tuk e l'hotel gia' salvato il
+   messaggio non ha la riga del punto, sul Teide ce l'ha ancora insieme all'ora
+2. **Dentro `mostraPunto()`**: spariscono l'etichetta, la casella e la riga di aiuto. La
+   domanda non si fa proprio. "Dove alloggi (utile per il pick-up)" con sotto «Serve a
+   dirti dove passiamo a prenderti» e' una promessa, non una domanda: lasciarla e togliere
+   solo il punto avrebbe corretto la parte precisa e tenuto quella vaga
+
+La casella si **svuota** quando sparisce: la finestra e' una sola per tutte le attivita', e
+l'hotel scritto per l'escursione di prima sarebbe finito nel messaggio di questa, sotto una
+domanda che qui non e' stata fatta.
+
+Nessun tocco all'HTML: l'etichetta si trova da `label[for="reqHotel"]`, che e' uguale nelle
+**due copie** della finestra (`escursioni.html` e `tour.html`). Una modifica scritta due
+volte e' una modifica dimenticata una volta.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. In browser a 390px:
+
+- **tuk tuk**: niente etichetta, niente casella, niente riga di aiuto, niente punto
+- **Teide** (sta in `PICKUP_TIMES`): casella al suo posto, «Los Hibiscos, alla fermata
+  dell'autobus» e l'ora 09:05 al posto del menu — invariato
+- **trekking-bici** e **mustang-experience** (`PICKUP_IN_HOTEL`): rispondono ancora "in
+  hotel"
+- aperto il tuk tuk dopo il Teide con l'hotel gia' scritto: la casella sparisce **e** il
+  valore si azzera
+
+Alzato `sw.js` a `isla-v299`.
+
+### Le altre due schede che dicono gia' la stessa cosa
+
+Non le ho toccate perche' la richiesta era sul tuk tuk, ma la loro nota lo scrive da sola e
+basta una riga in `PICKUP_NESSUNO`:
+
+- **`elicottero`** — «Nessun servizio di prelievo: il punto d'incontro e' l'elisuperficie
+  di Adeje». Oggi con "Acapulco" mostra comunque Los Hibiscos
+- **`opera-60` / lo Scandal al Vivo Show Bar** — «L'operatore non offre nessun servizio di
+  trasporto: ci si arriva a piedi o in taxi»
+
+Da dire e basta, si fa in un passo.
+
+Nota a margine: `controlla.js` **non guarda le tabelle di `hotel.js`**, quindi un id
+sbagliato in `PICKUP_NESSUNO` (o in `PICKUP_IN_HOTEL`) non lo segnala nessuno — non fa
+danno, semplicemente non succede niente. Vale anche per `PICKUP_TIMES`, ed e' cosi' da
+sempre: se un giorno diventa un problema, il controllo e' tre righe.
+
+## 13 settembre 2026 — I cinque tour veri del tuk tuk, e la scheda si sdoppia (v300)
+
+L'ufficio ha mandato le pagine di prenotazione di tutti i giri: **quelli sono i tour del
+sito e quelli sono i nomi**. Cinque prodotti, non tre.
+
+| tour | durata | prezzo |
+|---|---|---|
+| Costa Adeje Tour | 1 ora | 24 € adulti (11+), 12 € bambini (3-10), neonati gratis |
+| Secret Volcano Tour | 1 ora | uguale: 24 / 12 / gratis |
+| Costa Adeje Private Tour | 1 ora | 86 € fino a 3 persone, 128 € fino a 6 |
+| Secret Volcano Private Tour | 1 ora | 86 € fino a 3, 128 € fino a 6 |
+| Double Private Tour | 2 ore | 136 € fino a 3, 198 € fino a 6 |
+
+### Le due etichette inventate sono sparite
+
+«Panoramico, con sosta per un drink» e «I punti principali di Costa Adeje» erano
+descrizioni scritte ad agosto per dire che i percorsi erano piu' d'uno, non nomi. Adesso ci
+sono i nomi veri. **Della sosta per un drink non c'e' traccia in nessuno dei cinque**: se
+esiste, e' un giro che non era fra quelli mandati.
+
+Sciolto anche il dubbio di stamattina: «Completo, fino ai vulcani» **era** il Secret
+Volcano Tour, non un quarto prodotto — unirli e' stato giusto.
+
+### Perche' due schede e non una con cinque varianti
+
+`tuk-tuk` tiene i due giri **in condivisione**, `tuk-tuk-privato` (in "Tour privati", come
+le gemelle delle barche) i tre **privati**. La ragione e' che si pagano in due modi
+diversi:
+
+- in condivisione si paga **a persona** e il totale si fa: 2 adulti + 1 bambino = 60 €
+- in privato si paga **il mezzo**, e il prezzo cambia con quanti sono
+
+Su una scheda sola la riga del prezzo dell'elenco avrebbe dovuto dire «da €24» **e** «da
+€86 a gruppo» insieme, e `priceUnit` vale per la scheda intera: non c'e' modo di scriverne
+una per variante. Due schede, una foto sola (`tuk-tuk.jpg` sta in tutte e due, il telefono
+la scarica una volta).
+
+### I due scaglioni stanno nella descrizione, e non sono sei bottoni
+
+`priceTiers` e' della **scheda**, non della variante: scritto li', il Double Private Tour
+avrebbe mostrato 86 e 128 al posto dei suoi 136 e 198. E' lo stesso muro contro cui era
+finita la cabina VIP di Siam Park.
+
+La strada della Mustang — un bottone per scaglione — qui voleva dire **sei bottoni** con
+tre nomi ripetuti. Non fatto, e non per l'ingombro: **quanti sono il cliente lo scrive gia'
+nella richiesta**. Un secondo numero scelto a parte potrebbe contraddire il primo, ed e' la
+stessa ragione per cui dove si contano i mezzi non si contano le persone. Cosi' il bottone
+dice il prezzo di partenza («€86», «€136») e la descrizione sotto dice tutti e due gli
+scaglioni; sul messaggio arrivano il nome del tour e quante persone, che e' quanto basta
+all'ufficio per applicare lo scaglione giusto.
+
+### Il prezzo va scritto DUE volte, e per poco non me ne accorgevo
+
+Messi i 24 € e i 12 € solo sulla scheda, la pagina diceva **«Prezzo: Su richiesta»** e il
+totale non si faceva — con i due numeri scritti nel catalogo due righe piu' su. Non e' un
+bug: quando una variante e' scelta il sito **non ripiega** sul prezzo della scheda, apposta
+(se no la cabina VIP di Siam Park mostrerebbe il prezzo del biglietto normale). E sulla
+pagina di dettaglio una variante e' **sempre** scelta, perche' la prima parte gia' premuta.
+
+Quindi `priceAdult`/`priceChild` stanno **dentro ogni variante** e restano anche sulla
+scheda, per le richieste che partono senza variante. Trovato solo guardando la pagina resa:
+`node controlla.js` non poteva vederlo, e il codice era giusto in tutte e due i posti.
+
+### Cosa e' entrato di nuovo dalle pagine
+
+- **10-15 minuti prima** al punto di ritrovo, al posto del vago "qualche minuto"
+- **crema solare e una bottiglia d'acqua**, che lo scrive il fornitore
+- i **sei posti vicini e uno di fronte all'altro**, e il consiglio del fornitore di
+  prendere il privato per chi ha difficolta' a muoversi o vuole piu' spazio. Riscritto
+  senza la sua formula ("large proportions"), che in italiano sarebbe suonata male
+- le **lingue confermate altre quattro volte**: español e inglés su tutte le pagine. La
+  scelta di ieri di scendere da quattro a due era quella giusta
+
+### Cosa e' rimasto fuori
+
+La politica di cancellazione del fornitore (24 ore di rimborso pieno, no-show pagato per
+intero): **non si copia**, le nostre 24 ore sono di preavviso e sono un'altra cosa. Fuori
+anche il blocco "Salud y seguridad" sulle pulizie, che e' un testo promozionale del 2020.
+
+`days` e `times` restano assenti su tutte e due le schede: nel calendario i giorni chiusi
+sono quelli passati, e degli orari si legge solo che il Secret Volcano di domenica parte
+alle 13:00 e il Costa Adeje alle 14:00.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati, 66 schede. In browser a 390px nelle tre
+lingue: sui due giri in condivisione escono Adulti (11+) €24, Bambini (3-10) €12 e Neonati
+Gratis, totale 60 € per 2+1+1; sui tre privati «€86 a gruppo» / «€136 a gruppo», nessun
+totale (giusto: dipende da quanti sono) e il messaggio porta nome del tour e numero di
+persone. La casella dell'hotel non compare su nessuna delle due: `tuk-tuk-privato` e'
+stata aggiunta a `PICKUP_NESSUNO` insieme all'altra, stesso ritrovo e stesso "Hotel pick
+up" fra le cose non incluse. Alzato `sw.js` a `isla-v300`.
+
+### Resta da decidere
+
+Il rimando «vuoi la versione privata?» fra le due schede (`privateOption`) **non c'e'**: il
+testo fisso dice «Vuoi **la barca** solo per il tuo gruppo?» — e' nato sulle barche e su un
+tuk tuk si leggerebbe male. Per accenderlo servono due frasi generiche in `i18n.js`, che
+pero' cambiano anche le cinque schede delle barche. Per ora la versione privata e' nominata
+nella descrizione della scheda in condivisione.
+
+## 13 settembre 2026 — Il rimando alla versione privata, anche dove non e' una barca (v301)
+
+«Fallo come le barche», e cosi' e'. Sulla scheda del tuk tuk in condivisione c'e' il
+riquadro che porta a quella privata, esattamente come sul Freebird o sul Royal Delfin:
+titolo, nome della scheda privata col suo prezzo, e la freccia.
+
+Il problema era una frase sola: il testo fisso dice «Vuoi **la barca** solo per il tuo
+gruppo?» e «Vedi il **charter** privato». Su un tuk tuk non si poteva leggere.
+
+### Due campi nuovi invece di una frase generica
+
+`privateTitle` e `privateLink`, facoltativi, nelle tre lingue. Dove ci sono, prendono il
+posto delle due frasi fisse; **dove non ci sono resta il testo di sempre**, quindi le
+cinque schede delle barche non sono state toccate.
+
+La strada piu' corta sarebbe stata cambiare le due frasi in `i18n.js` una volta per tutte,
+e generalizzarle in qualcosa come «vuoi tutto per il tuo gruppo?». Non e' stato fatto
+perche' peggiora le barche: «vuoi la barca solo per il tuo gruppo» dice **cosa** ti stai
+prendendo, la frase generica no. Una modifica che sistema una scheda e ne smussa cinque non
+e' un pareggio.
+
+E' lo stesso meccanismo di `transferLabel`, che sostituisce la domanda fissa del transfer
+dove quella fissa confonderebbe: campo assente = testo di sempre. Il vocabolario in testa a
+`esplora-catalog.js` lo dice accanto a `privateOption`.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati. In browser a 390px nelle tre lingue:
+
+| scheda | it | en | es |
+|---|---|---|---|
+| tuk tuk | Vuoi il tuk tuk solo per il tuo gruppo? · Vedi i giri privati | Want the tuk tuk just for your group? · See the private tours | ¿Quieres el tuk tuk solo para tu grupo? · Ver los tours privados |
+| Freebird | Vuoi la barca solo per il tuo gruppo? · Vedi il charter privato | invariato | invariato |
+
+Il riquadro porta «Tuk tuk privato · da €86 a gruppo» e il click apre `tuk-tuk-privato`.
+Il rimando e' **in un senso solo**, come sulle barche: dalla scheda in condivisione a
+quella privata, non viceversa. Alzato `sw.js` a `isla-v301`.
+
+## Parascending: dati veri da canaryvip.com (13 settembre 2026)
+
+Il proprietario ha incollato la scheda "Parasailing Tenerife" di canaryvip.com chiedendo
+"la pagina parasailing".
+
+**Non era una scheda da creare: era il segnaposto `parascending`.** Parasailing e
+parascending sono la stessa attivita' — paracadute trainato dal motoscafo — e la scheda
+esisteva gia' dal primo riempimento del catalogo, ferma su zona e durata "Da definire" con
+un `priceFrom: 60`. Confrontate le otto schede di `sport-acquatici` prima di toccare
+qualcosa: nessun'altra e' un volo trainato (banana boat, jet ski, kayak, flyboard, surf,
+immersioni, Fiat 500 galleggiante), e la foto che la scheda aveva gia' — guardata, non solo
+elencata — e' esattamente un paracadute sopra la costa di Costa Adeje col motoscafo giallo
+che lo traina. **Aggiornata quella, non aperta una seconda.** E' lo stesso errore del
+Kalima Kat, evitato stavolta dal confronto.
+
+**Il titolo resta "Parascending"**, quello di Admiral, e non diventa "Parasailing
+Tenerife" che e' il nome del prodotto sul rivenditore: i titoli restano come li scrive
+Admiral, uguali nelle tre lingue.
+
+**Riempiti**: `zone: "Puerto Colón, Costa Adeje"` (nome proprio, uguale nelle tre lingue),
+`duration` 40 minuti, `included: ["equipment", "lifejacket", "guide"]`, la descrizione
+riscritta da zero nelle tre lingue e sette note pratiche.
+
+**Le due durate, e perche' ci vogliono tutte e due.** Quaranta minuti e' l'uscita col
+tragitto in barca, dieci sono i minuti in aria. Scritta una sola, l'altra diventa una
+bugia: "40 minuti" fa credere di volare mezz'ora, "10 minuti" fa aspettare il cliente al
+porto mezz'ora prima del dovuto. Sono i campi `activityLabel` ("Tempo di volo") e
+`activityDuration` ("Circa 10 minuti"), nati sulle camminate per la stessa ragione.
+
+**Il prezzo, in due passi nello stesso giorno.** La fonte dava `price_from: 55` con
+`list_price: null`, cioe' nessun barrato: quei 55 erano il prezzo pieno **di CanaryVIP**,
+non un prezzo di Admiral, e la scheda portava €60 da prima. Messo prima €60 e chiesto
+conferma — mai copiare il prezzo di un rivenditore, e nel dubbio si resta sul numero piu'
+alto gia' pubblicato, perche' abbassare si puo' sempre e alzare no. **Il proprietario ha
+poi confermato €55, a persona**: il prezzo e' **sceso**, che e' la direzione permessa. E'
+la stessa strada del kayak (da €45 a €35) e vale la pena notarla: partire dal numero alto
+e aspettare la conferma non e' tempo perso, e' l'unico ordine in cui l'errore si corregge
+senza far danni.
+
+**Bambini allo stesso prezzo degli adulti**, sempre dal proprietario: `priceChild: 55`
+uguale a `priceAdult`, come sull'elicottero. Percio' **niente `ages`**: senza uno sconto
+per eta' non c'e' nessuna fascia da scrivere fra parentesi. **Niente `priceInfant`**:
+sotto i 3 anni non si vola, e assente non vuol dire gratis — la casella dei neonati resta
+giustamente nascosta nella finestra.
+
+**Gli orari veri, sempre dal proprietario: ogni ora dalle 10:00, ultimo volo alle 17:00**
+— otto partenze. Scritti in `times`, prendono il posto delle fasce segnaposto e "Da
+concordare" sparisce. La fonte diceva solo "partenze per tutta la giornata, l'ora si
+concorda alla prenotazione", che non e' un orario: le fasce sono rimaste finche' i numeri
+veri non sono arrivati. **Niente `days`**: si vola tutti i giorni.
+
+**Non copiato da CanaryVIP**, come sempre. Stavolta la loro cancellazione era "gratis fino
+a 24 ore", cioe' lo stesso numero del nostro preavviso, e **non e' stata scritta lo
+stesso**: che i numeri coincidano non trasforma la promessa di un altro in una nostra, e
+la riga sulle 24 ore la mette il sito da solo. Fuori anche il punteggio 5.0 con 7
+recensioni, e le foto: sono di un rivenditore concorrente, resta la foto Admiral che
+c'era.
+
+**Niente pickup.** La fonte dice esplicitamente che i trasferimenti dall'hotel non sono
+compresi, quindi nessuna riga `transfer`, niente `PICKUP_TIMES` e niente `PICKUP_IN_HOTEL`:
+di questo fornitore non sappiamo nemmeno chi sia (CanaryVIP e' un rivenditore), e le
+tabelle di `hotel.js` valgono per Island Excursions. In nota c'e' scritto che al Puerto
+Colón ci si arriva da soli. Resta pero' un dettaglio da guardare prima o poi: la finestra
+della richiesta chiede comunque "Dove alloggi (utile per il pick-up)", che qui e' una
+domanda senza risposta — vale per tutte le schede senza ritiro (elicottero, cena
+medievale), quindi non e' roba di questa scheda e non l'ho toccata.
+
+**Foto non aggiunte**: le tre della galleria della fonte sono di canaryvip.com, stessa
+scelta gia' fatta col quad del nord. Se l'ufficio manda foto sue si apre `gallery`.
+
+**Provato nel browser vero** (420px, tutte e tre le lingue): "In breve" mostra Punto di
+partenza / Durata 40 minuti / Tempo di volo Circa 10 minuti / da €60 / Famiglie con
+bambini; le tre icone di "Cosa e' incluso" ci sono tutte; le sette note escono nelle tre
+lingue; il menu "A che ora" mostra "Da concordare" piu' le sette fasce segnaposto, come
+previsto senza `times`; nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi
+invariati (opera-60, trekking-bici e masca-teide-cabrio-bus, nessuno dei tre riguarda
+questa scheda). Alzato `sw.js` a `isla-v302`.
+
+**Provato di nuovo dopo la conferma del proprietario** (stesso giorno): "In breve" mostra
+la riga Orari con le nove partenze, Adulti €55 e Bambini €55 nelle tre lingue; nella
+finestra il menu "A che ora" ha solo le nove ore vere, senza "Da concordare" e senza
+fasce; 2 adulti e 1 bambino fanno **€165** ("2 adulti × €55 + 1 bambino × €55"); la
+casella dei neonati resta nascosta. `node controlla.js` → 0 errori, 3 avvisi invariati.
+Alzato `sw.js` a `isla-v303`.
+
+**L'orario di chiusura, chiesto e corretto lo stesso giorno.** "Dalle 10 alle 18" era
+stato scritto come nove partenze, con l'ultima alle 18:00, e segnalato come lettura da
+confermare: il proprietario ha risposto che **l'ultimo volo e' alle 17:00**, quindi le
+partenze sono otto e le 18:00 sono state tolte (`isla-v304`). Vale la pena tenerlo a
+mente: un intervallo detto a voce non dice se l'ultimo numero e' una partenza o l'ora in
+cui si chiude, e la differenza e' un cliente al porto quando la barca non c'e' piu'. Si
+chiede, e finche' non arriva la risposta si scrive che e' una lettura, non un dato.
+
+Da chiedere ancora, un giorno: se il paracadute a 2 o 3 persone si paga a testa comunque
+(oggi il totale moltiplica per le persone, che e' quello che il proprietario ha detto).
+
+## 13 settembre 2026 — Banana, Fly Fish e Crazy UFO: tre corse, una scheda sola (v305)
+
+Sono arrivate tre pagine di canaryvip.com — Flyfish Tenerife, Crazy UFO & Twister, Banana
+Boat Tenerife — e il proprietario ha detto subito come volerle: **una scheda sola con le
+varianti**, come Freebird o i quad, non tre schede in fila. La decisione è giusta anche
+guardando i dati: stesso porto, stesso prezzo di partenza, stessa mezz'ora di vita, stesso
+gesto. Tre riquadri identici nell'elenco avrebbero solo fatto sembrare il catalogo più
+grande di quello che è.
+
+**La scheda esisteva già, e quello è stato il primo controllo.** `banana-boat` era in
+catalogo dal principio, come "Banana Boat or Fly Fish Ride" a €18 con zona e durata "Da
+definire": due dei tre gonfiabili erano già lì. Il terzo (Crazy UFO) è diventato la terza
+variante, non una scheda nuova — è la stessa trappola del Kalima Kat, presa in tempo
+stavolta perché il confronto prezzo/porto/durata si fa **prima** di scrivere.
+
+**Il titolo non è stato toccato**: "Banana Boat or Fly Fish Ride" è come lo scrive Admiral
+e i titoli restano suoi. Resta però una cosa da decidere: ora la scheda contiene anche il
+Crazy UFO, che nel titolo non compare, e chi scorre l'elenco cercando quello non lo trova.
+Non l'ho cambiato da solo perché non è un dato mancante, è una scelta commerciale.
+
+**Le tre varianti, con la loro durata.** `options.choices[]` con `duration` dentro ciascuna:
+Banana Boat 10 minuti, Fly Fish "Circa 10 minuti" (la fonte diceva "approssimativi", e una
+durata approssimata scritta come esatta è una promessa in più), Crazy UFO 15 minuti. Sulla
+scheda `duration` è "10 o 15 minuti", che è quello che si legge nell'elenco prima di
+scegliere. Nel browser la riga "Durata" di "In breve" cambia davvero a ogni bottone
+premuto: è il controllo che sul cavallo non era stato fatto e aveva lasciato una durata
+ferma sulla variante sbagliata.
+
+**Il prezzo: €18 a persona, uguale su tutte e tre.** Le tre pagine dicono tutte "da
+€18,00" e le varianti vere sono caricate via JS, quindi non c'erano importi per i gruppi
+né per gli spettatori. `priceAdult: 18` e `priceChild: 18`, ripetuti dentro ogni variante.
+**Da confermare con l'ufficio**: che i 18 € siano a testa e non a corsa, e che i ragazzi
+paghino come gli adulti. Il verso dell'errore è quello giusto — se domani il prezzo
+bambini è più basso si abbassa, mentre partire da un numero più basso e poi alzarlo è la
+cosa che fa arrabbiare il cliente.
+
+**`ages: { adult: "16+", child: "10-15" }`, e non è un listino, è l'età minima.** La fonte
+dà due regole d'accesso: si sale dai 10 anni, sotto i 16 serve un adulto. Scritte come
+fasce diventano visibili accanto al prezzo, che è dove il cliente le legge davvero — "10
+anni" in fondo alle note lo trova solo chi arriva in fondo. Le due fasce combaciano
+(10-15 e 16+, nessun buco, nessuna sovrapposizione). **Niente `priceInfant`**: sotto i 10
+anni non si sale proprio, e assente vuol dire "non lo sappiamo o non si può", non gratis.
+
+**`swimstop` non c'entra e non è stato messo.** Qui non c'è nessuna sosta bagno: in acqua
+ci si finisce, non ci si ferma. Le icone sono tre e valgono per tutte le varianti —
+`lifejacket`, `equipment`, `guide` — le stesse del parascending, che è lo stesso porto e
+lo stesso tipo di supervisione.
+
+**Il saper nuotare cambia con la variante, quindi non è un'icona.** Il Fly Fish lo chiede,
+la banana e il Crazy UFO no. Sta nella `desc` di ogni variante e in una nota: le icone
+dicono "vale sempre", e questa vale su una corsa su tre.
+
+**`times` non scritto.** Le fonti dicono "giri disponibili durante tutto l'arco della
+giornata" e "orario scelto in fase di prenotazione", che non sono orari. Restano le fasce
+segnaposto più "Da concordare", come prima. Niente `days`: si fa tutti i giorni.
+
+**Non copiato da CanaryVIP**: la loro cancellazione (24 ore, di nuovo lo stesso numero del
+nostro preavviso), i punteggi 5.0 con 7, 6 e 2 recensioni, i "sconti gruppo" senza
+importi, le foto. Resta la foto Admiral che c'era, `banana-boat.jpg`. Le descrizioni sono
+riscritte da zero nelle tre lingue.
+
+**Niente pickup**, come sul parascending: le fonti dicono che il trasporto non è compreso
+e che al porto ci si arriva da soli. Nessuna riga `transfer`, niente `PICKUP_TIMES`,
+niente `PICKUP_IN_HOTEL`. Un dettaglio vero però c'è ed è in nota: **il Crazy UFO parte
+dal Pantalán 4**, gli altri due dal molo dei gonfiabili. È un fornitore diverso (la fonte
+lo chiama RADIKAL) dentro lo stesso porto, ed è esattamente il caso in cui "il punto
+dipende solo dall'hotel" non vale. Resta il solito neo già annotato altrove: la finestra
+chiede "Dove alloggi (utile per il pick-up)" anche qui, e vale per tutte le schede senza
+ritiro — non è roba di questa scheda.
+
+**Provato nel browser vero** (390px, italiano e inglese): i tre bottoni compaiono sotto la
+descrizione, la `desc` della variante scelta esce sotto i bottoni una alla volta, "In
+breve" mostra Punto di partenza Puerto Colón / Durata che segue la variante (10 minuti,
+Circa 10 minuti, 15 minuti) / Adulti (16+) €18 / Bambini (10-15) €18 / Famiglie con
+bambini; le tre icone ci sono; le sette note escono in italiano; nella finestra il titolo
+diventa "Banana Boat or Fly Fish Ride — Crazy UFO & Twister" e **2 adulti + 1 bambino
+fanno €54** ("2 adulti × €18 + 1 bambino × €18"), che è il conto giusto a 18 € a testa;
+nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato
+`sw.js` a `isla-v305`.
+
+Da confermare con l'ufficio, in una parola ciascuno: se i 18 € sono a persona; se i
+ragazzi 10-15 pagano come gli adulti; se il titolo deve nominare anche il Crazy UFO; gli
+orari di apertura veri del porto, che farebbero sparire le fasce segnaposto.
+
+## 13 settembre 2026 — Le tre correzioni del proprietario sui gonfiabili (v306)
+
+Tutte e tre arrivate insieme, subito dopo la consegna, e tutte e tre su punti che erano
+stati segnalati come "da confermare". È il motivo per cui vale la pena scriverli invece di
+tapparli con un numero inventato: il proprietario corregge in una riga.
+
+**Il prezzo è 15 €, non 18, e vale per tutti.** I 18 € venivano dal "da €18,00" delle tre
+pagine di canaryvip.com; il prezzo vero di Admiral è 15 € a persona per una corsa, ragazzi
+compresi. `priceFrom`, `priceAdult` e `priceChild` a 15 sulla scheda e dentro tutte e tre
+le varianti. Di nuovo la strada giusta, la stessa del kayak (45 → 35) e del parascending
+(60 → 55): **si parte dal numero alto della fonte e si aspetta la conferma**. Scendere non
+fa danni a nessuno, salire dopo che il cliente ha letto sì. Le fasce `16+` e `10-15`
+restano, anche se ora i due prezzi coincidono: qui non servono a distinguere due tariffe
+ma a dire **da che età si sale**, ed è accanto al prezzo che il cliente le legge.
+
+**Il Crazy UFO entra nel titolo**: "Banana Boat or Fly Fish Ride" diventa **"Banana Boat,
+Fly Fish or Crazy UFO Ride"**. Era la domanda lasciata aperta — la scheda conteneva un
+gonfiabile che nel titolo non c'era, e chi scorreva l'elenco cercando quello non lo
+trovava. Non era un dato mancante ma una scelta commerciale, per questo non era stata
+fatta da soli: i titoli sono di Admiral e li cambia Admiral.
+
+**Partono tutti e tre da Puerto Colón.** La fonte dava il Pantalán 4 solo per il Crazy UFO
+(operatore RADIKAL) e quella distinzione era finita nella descrizione della variante e in
+nota. Il proprietario dice che il molo è lo stesso per tutti e tre, e la distinzione è
+stata tolta da tutte e due. Vale la pena notarlo: era **esattamente** il caso in cui una
+fonte di rivenditore sembra più precisa di quanto sia, e un molo sbagliato dentro un porto
+grande manda il cliente dalla parte opposta della darsena. La precisione di una fonte non
+verificata non è un dato: chi vende la corsa sa dove parte.
+
+**Gli orari: `times: ["10:00 - 18:00"]`, una voce sola.** Il proprietario ha detto "dalle
+10 alle 18", ed è stato scritto **come intervallo e non come otto partenze**. È la lezione
+del parascending, presa in tempo stavolta: là "dalle 10 alle 18" era diventato nove
+partenze con l'ultima alle 18:00, e il proprietario aveva dovuto correggere che l'ultimo
+volo era alle 17:00. Qui l'ambiguità non si pone proprio, perché le corse **sono
+continue**: non ci sono turni fra cui scegliere, si va al molo e si sale. È lo stesso caso
+del karting (`"10:00 - 20:30"`), e la soluzione è la stessa. In una nota c'è scritto per
+esteso che le corse sono continue.
+
+Una conseguenza da tenere d'occhio: con `times` pieno, "Da concordare" e le sette fasce
+segnaposto spariscono, e nella finestra della richiesta il menu "A che ora" ha adesso una
+voce sola. Chi ha una preferenza sull'ora la scrive nelle note, come sul karting. Se un
+giorno il proprietario vuole che il cliente indichi un'ora, la strada è dare le fasce vere
+del molo, non rimettere quelle segnaposto.
+
+**Provato nel browser vero** (390px, italiano): titolo nuovo in testa e dentro la finestra
+della richiesta; "In breve" mostra Orari 10:00 - 18:00 su tutte e tre le varianti e la
+Durata che continua a seguire la variante (10 minuti / Circa 10 minuti / 15 minuti);
+Adulti (16+) €15 e Bambini (10-15) €15; le otto note escono tutte; nella finestra il menu
+"A che ora" ha solo "10:00 - 18:00" e **2 adulti + 1 bambino fanno €45** ("2 adulti × €15
++ 1 bambino × €15"); nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi
+invariati. Alzato `sw.js` a `isla-v306`.
+
+Resta da chiedere una cosa sola: se i 15 € valgono anche per i gruppi o se lì c'è una
+tariffa diversa (la nota dice di scriverlo nella richiesta, che per ora è la risposta
+onesta).
+
+## 13 settembre 2026 — I 15 € valgono anche per i gruppi, e la nota che prometteva il contrario (v307)
+
+Era l'ultima domanda rimasta aperta sui gonfiabili, e la risposta del proprietario è
+**no sconto: 15 € a persona per tutti, gruppi compresi**. Sembra una conferma senza
+conseguenze e invece c'era una riga da correggere subito.
+
+**La nota prometteva uno sconto che non esiste.** Diceva "Per i gruppi ci sono tariffe
+dedicate: scrivicelo nella richiesta" — scritta quando gli importi non li sapevamo, e
+scritta per non chiudere una porta. Con la risposta arrivata è diventata una promessa
+falsa: chi è in otto la legge, scrive nella richiesta che sono un gruppo e si aspetta un
+numero più basso di 15 €. L'ufficio gli risponde 15 € a testa, cioè **gli toglie uno
+sconto che gli aveva fatto sperare il sito**. È lo stesso danno di alzare un prezzo già
+letto, solo per un'altra strada: il cliente non paga di più, ma si sente preso in giro
+lo stesso.
+
+Adesso dice quello che è vero: *"Il prezzo è a persona, per una corsa, ed è lo stesso per
+tutti: adulti, ragazzi e gruppi."* Detto così chiude la domanda invece di aprirla —
+nessuno scrive nelle note "siamo in otto, quanto ci fate?".
+
+**Il numero non è stato ripetuto nella nota**, ed è una scelta: scrivere "15 €" dentro un
+testo in tre lingue vuol dire che il giorno che il prezzo cambia bisogna ricordarsi di
+toccare `priceAdult`, `priceChild`, le tre varianti **e** tre righe di testo. La prima
+volta che qualcuno se ne dimentica il sito dice due prezzi diversi nella stessa pagina.
+Il prezzo vive in un campo solo e la nota parla di **come** si paga, non di quanto: vale
+per tutte le note, non solo per questa.
+
+**Provato nel browser vero** nelle tre lingue: la nota esce corretta in italiano, inglese
+e spagnolo, nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi invariati.
+Alzato `sw.js` a `isla-v307`.
+
+Sui gonfiabili non resta più niente in sospeso.
+
+## 13 settembre 2026 — Franz Surf School: la scheda del surf, che era vuota da sempre (v308)
+
+`surf-lesson` era un segnaposto rimasto in catalogo dal primo giorno: zona "Da definire",
+durata "Da definire", `priceFrom: null`, prezzi a zero, due righe di descrizione inventate.
+Adesso ha dentro il listino vero di una scuola, la **Franz Surf School** di Playa de las
+Américas (dati WooCommerce mandati dall'ufficio, salvati in
+`dati-fornitore/grezzo/franz-surf-school.json`).
+
+**Una scheda sola, dodici varianti.** La tentazione era di farne tre: lezioni, pacchetti,
+noleggio. È stata scartata per il motivo delle immersioni, che sono già fatte così: chi
+cerca il surf fa **una domanda sola** — "cosa voglio fare?" — e tre schede vicine con la
+stessa foto si leggono come dei doppioni (è il modo in cui è nato il caso Kalima Kat, da
+un'altra parte). Il titolo segue lo stesso schema di `immersioni`: **"Surf: lezioni e
+noleggio tavole"**, che dice subito che dentro c'è anche il noleggio. Qui il titolo è
+nostro e non di Admiral, quindi si può scrivere così.
+
+**Due modi di scrivere il prezzo, e servono tutti e due.**
+
+- Lezioni e pacchetti si pagano **a testa** e hanno un numero solo: `priceAdult` sulla
+  variante, e il totale della richiesta si fa (35, 80, 95, 140, 175, 230, 370, 490).
+- La **lezione riservata a famiglia o amici** si paga **a gruppo** e cambia con quante
+  persone siete: 120 € in due, 165 in tre, 200 in quattro, 225 in cinque. Lì c'è `price`
+  (il numero sul bottone) e **niente `priceAdult`**, così il totale si rifiuta di farsi
+  invece di moltiplicare 120 € per le teste. Gli scaglioni stanno scritti in `desc`, perché
+  `priceTiers` sta sulla scheda e non si può legare a una variante sola (stessa strada delle
+  VIP del Siam Park).
+- I **tre noleggi** sono un "a partire da": il fornitore vende a giornate e l'API espone
+  solo il prezzo del primo giorno. Un "da 15 €" non è un numero da sommare, quindi sta
+  **nell'etichetta** del bottone e non in `price` — la strada già battuta con le "3-4
+  immersioni con brevetto (40 € l'una)". In pagina la riga "Prezzo" dice "Su richiesta",
+  che è la verità.
+
+**Le sei softboard sono diventate una variante sola.** Il listino ne ha sei (6'6", 7'0",
+7'6", 8'0", in due marche) e costano **tutte 15 €**: sei bottoni identici avrebbero
+chiesto al cliente di scegliere una cosa che in negozio si decide guardandolo in faccia.
+Una variante, le misure in descrizione, e la frase che la misura la sceglie il negozio.
+
+**`included` sulla scheda tiene solo `board`.** È l'unica cosa vera per tutte e dodici le
+varianti — il noleggio *è* la tavola. Muta e istruttore stanno dentro le varianti delle
+lezioni: le icone della scheda vogliono dire "vale sempre", e sul noleggio non vale.
+
+**`family: false`, ed è un cambiamento rispetto al segnaposto.** L'unica età che il
+fornitore scrive è il **minimo di 13 anni sulle lezioni di gruppo**; sulle private e sul
+gruppo privato non c'è scritto niente. "Adatta ai bambini" con un 13+ nell'unico dato certo
+sarebbe una promessa non verificata, e il filtro "Con bambini" porterebbe lì una famiglia
+con un bambino di sei anni. Niente `ages` per lo stesso motivo: una fascia sola ("13+") in
+cima a una scheda dove quattro varianti su dodici non hanno un'età dichiarata direbbe più
+di quello che sappiamo. L'informazione sta in una nota, che può dire "questo sì, quest'altro
+chiedilo": è il posto giusto per un dato a metà.
+
+**Cosa non è entrato.** La **tariffa residenti** (25 €, "Clases Grupales para Residentes"):
+è riservata a chi risiede a Tenerife e Admiral vende a turisti — pubblicarla vuol dire far
+leggere a un cliente un prezzo che non può avere. I due **prodotti di test** del fornitore
+(0,05 € e 0 €) sono già segnati come esclusi nel file grezzo.
+
+**La muta nel noleggio: il buco lasciato aperto apposta.** La pagina del fornitore dice
+due cose diverse — il riepilogo breve dice che la muta non è inclusa, la descrizione lunga
+dice che ne è inclusa una corta. Non è stata messa fra le incluse (assente ≠ compreso) e
+non è stato scritto "non è compresa": in descrizione c'è che per più giorni e per la muta
+conferma l'ufficio, che è l'unica frase vera oggi. In `notes` la riga dice che muta, tavola
+e scarpette sono comprese **nelle lezioni e nei pacchetti**, e non nel noleggio della tavola
+da sola.
+
+**Orari e punto di ritrovo: non chiesti, come da regola sulle schede nuove.** `times` non
+c'è (restano le fasce segnaposto) tranne sui tre noleggi, dove c'è `times: []` — che per il
+catalogo vuol dire proprio "noleggio, l'ora si concorda". Gli orari delle lezioni
+**seguono la marea** e cambiano di giorno in giorno: sta in una nota, ed è un dato del
+fornitore, non una scusa. Il negozio è in Calle México 15; la nota lo dice e aggiunge che
+il **punto di ritrovo** lo conferma l'ufficio — un indirizzo di negozio non è una promessa
+di ritrovo, ed è il fornitore nuovo di cui non sappiamo dove passa a prendere il cliente.
+
+**La durata** la dichiara solo il pacchetto da 3 lezioni di gruppo (2 ore a lezione) e sta
+sulla sua variante. Sulla scheda resta "Da definire", che la pagina nasconde. Che le lezioni
+singole durino le stesse 2 ore è verosimile e **non è stato scritto**.
+
+**Provato nel browser vero** (420px): la pagina apre, i dodici bottoni cambiano prezzo,
+durata e riquadro "Cosa è incluso" uno per uno (Tavola sola sui noleggi, Tavola + Muta +
+Guida sulle lezioni), "In breve" mostra Playa de las Américas e la giornata di noleggio di
+12 ore dalle 08:30 dove serve, nessun errore in console (a parte Google Fonts, che il proxy
+di rete blocca sempre). `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js`
+a `isla-v308`.
+
+Da confermare con l'ufficio, in ordine di quanto costa sbagliarle:
+
+1. **La muta nel noleggio**: è compresa o no?
+2. **L'età minima delle lezioni private e di quella per famiglie** — se la scuola prende i
+   bambini piccoli, torna `family: true` e la nota si accorcia.
+3. **La tariffa residenti**: si vende o no? Oggi è fuori.
+4. **La durata** delle lezioni singole e dei pacchetti da 5 e 7.
+5. **Gli scaglioni del noleggio** oltre il primo giorno (il sito espone solo il minimo).
+6. Se il **numero massimo di 6 persone e il minimo di 13 anni** valgono davvero solo per le
+   lezioni di gruppo: sulla pagina del fornitore quel testo è incollato anche sotto le
+   private, e sembra un copia-incolla loro più che un dato.
+
+## 13 settembre 2026 — Le tre correzioni del proprietario sul surf (v309)
+
+Arrivate subito dopo la consegna, e tutte e tre su punti che erano stati segnalati come
+"da confermare". Come sui gonfiabili: **scriverli invece di tapparli** con un valore
+verosimile fa sì che il proprietario corregga in una riga.
+
+**Il noleggio delle tavole esce dal catalogo.** «A noi interessano solo le lezioni.» Via le
+tre varianti (softboard, fibra, longboard) e con loro il "da 15 € al giorno"
+nell'etichetta, la giornata di 12 ore dalle 08:30 e i due `times: []`. Di conseguenza **il
+titolo torna a parlare solo di lezioni** — "Lezioni di surf", non più "Surf: lezioni e
+noleggio tavole": un titolo che promette il noleggio su una scheda che non ce l'ha è una
+porta che sbatte in faccia. Restano nove varianti.
+
+Due cose che il noleggio si è portato via risolvendosi da sole:
+
+- **la muta nel noleggio non è più una domanda.** Era la prima delle cose da confermare (la
+  pagina del fornitore diceva compresa in un punto e non compresa in un altro): senza
+  noleggio non c'è più un posto dove quell'ambiguità possa far danno. Nelle lezioni la muta
+  è compresa e lo è sempre stata;
+- **`included` è salito sulla scheda.** Con le sole lezioni, `board`, `wetsuit` e `guide`
+  sono veri per tutte e nove le varianti, che è la condizione per stare in cima. Prima sulla
+  scheda c'era solo `board`, perché il noleggio è la tavola e basta.
+
+I prezzi del noleggio restano nel file grezzo e il perché della strada scelta
+(prezzo nell'etichetta, non in `price`) sta scritto in un commento nella scheda: se un
+giorno il proprietario cambia idea non si ricomincia da capo.
+
+**L'età è 13+ per tutti, non solo per il gruppo.** Il sito del fornitore scriveva "max 6
+persone, dai 13 anni" solo sotto le lezioni di gruppo, e quel testo sembrava un
+copia-incolla finito anche sotto le private — era la sesta domanda della lista. Il
+proprietario dice che **vale per tutte**: singole, di gruppo e per famiglie. Quindi
+`ages: { adult: "13+" }` sulla scheda, e in pagina si legge "Adulti (13+) €35".
+
+`family` **resta `false`**, e adesso per un motivo pieno invece che per prudenza: sotto i 13
+anni non si entra in acqua con la scuola, quindi il filtro "Con bambini" non la deve
+pescare. Niente fascia `child` e niente `priceChild`: sopra i 13 anni si paga tutti uguale,
+non esistono due tariffe da distinguere.
+
+Una conseguenza che si vede solo aprendo la finestra della richiesta: il contatore
+"Bambini" c'è lo stesso, perché è di tutte le schede. Un genitore che scrive il figlio di
+14 anni lì dentro farebbe un totale più basso del vero (i bambini senza `priceChild` non
+sommano niente). Per questo la nota sull'età finisce con **"nella richiesta conta anche i
+ragazzi fra gli adulti"**: una riga di testo al posto di un campo nuovo. Su Utopia (18+) il
+problema non si pone — nessuno chiama "bambino" un diciassettenne per sbaglio, e comunque
+non sale.
+
+**Tutte le lezioni durano 2 ore.** Il fornitore la dichiarava solo sul pacchetto da 3. Ora
+`duration: "2 ore"` sta sulla scheda, e ogni pacchetto porta la sua ("3 lezioni da 2 ore",
+"5 lezioni da 2 ore", "7 lezioni da 2 ore"): la variante vince sulla scheda, e detta così
+dice **due cose in una riga** — quante sono e quanto durano. Sulle tre lezioni singole la
+riga della scheda basta.
+
+**Provato nel browser vero** (420px, italiano): nove bottoni, la durata segue la variante,
+"Adulti (13+) €35", "Cosa è incluso" mostra Tavola + Muta + Guida su tutte, le sei note
+escono. Nella finestra della richiesta **2 adulti sulla lezione di gruppo fanno €70**
+("2 adulti × €35") e la variante per famiglie **non mostra nessun totale**, che è quello
+che deve fare: 120 € sono del gruppo intero. Nessun errore in console. `node controlla.js`
+→ 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v309`.
+
+Resta da confermare, molto meno di prima:
+
+1. **La durata delle lezioni private** — il proprietario ha detto "durano tutte 2 ore" e
+   così è scritto; se le private fossero più corte, è una riga.
+2. **Il massimo di 6 persone**: è scritto solo nella descrizione della lezione di gruppo, e
+   non è sicuro che valga anche per la lezione riservata a famiglie e amici (che arriva a
+   cinque nel listino, quindi il dubbio è piccolo).
+3. **Il punto di ritrovo**: oggi la nota dice l'indirizzo del negozio e rimanda all'ufficio.
+
+## 13 settembre 2026 — Il tetto di sei vale per tutte le lezioni (v310)
+
+Era la penultima domanda rimasta: il "max 6 persone" stava scritto solo nella descrizione
+della lezione di gruppo, e non si sapeva se valesse anche per quella riservata a famiglie e
+amici. Il proprietario: **sì, per tutte massimo 6 persone**.
+
+Scritto in tre posti, ognuno per un motivo diverso:
+
+- **una nota**, che è il posto dove una regola vale per tutta la scheda: "in acqua non si è
+  mai più di sei per istruttore";
+- **nell'etichetta della variante a gruppo**, che da "(da 2 persone)" diventa **"(da 2 a 6
+  persone)"**: lì il numero è parte della scelta, e chi è in sette deve saperlo prima di
+  premere il bottone, non dopo;
+- **nella descrizione di quella variante**, per la crepa che il tetto apre.
+
+**La crepa: il listino arriva a cinque, il tetto a sei.** Gli scaglioni del fornitore sono
+120 € in due, 165 in tre, 200 in quattro, 225 in cinque — e si fermano lì. Gli scarti (45,
+35, 25) non sono una progressione da cui indovinare il sesto: 245? 240? Sarebbe un numero
+verosimile e inventato, cioè il modo preciso in cui si finisce per alzare un prezzo già
+letto. La descrizione dice **"in sei si può, e il prezzo del sesto posto te lo confermiamo
+noi"**: è vero oggi, non promette una cifra, e non fa tornare indietro chi è in sei.
+
+Vale la pena notare che **una risposta ha aperto una domanda nuova**: prima il gruppo
+arrivava a cinque e i prezzi c'erano tutti. È il caso in cui confermare un limite più largo
+del listino scopre un buco che prima non c'era — da tenere a mente quando una conferma
+sembra chiudere e basta.
+
+Il **massimo non tocca la lezione privata** (un istruttore per un allievo) né i prezzi a
+testa: sei è un tetto, non una tariffa.
+
+**Provato nel browser vero** (420px, italiano): il bottone dice "(da 2 a 6 persone) €120",
+la descrizione esce per esteso sotto, le sette note al loro posto, nessun errore in console.
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v310`.
+
+Sul surf resta una cosa sola: **il prezzo del sesto posto** nella lezione per famiglie e
+amici. E, quando ci sarà, il punto di ritrovo.
+
+## 13 settembre 2026 — Il punto di ritrovo del surf: al negozio, e ci si va da soli (v311)
+
+Il proprietario ha incollato la pagina **"Come arrivare"** del sito della scuola (salvata
+in `dati-fornitore/grezzo/franz-surf-school-come-arrivare.txt`, com'è arrivata) dicendo
+solo: «per il punto di ritrovo». La pagina dà l'indirizzo — **Calle México 15, Playa de las
+Américas** — e due numeri di telefono.
+
+La nota passa da *"il punto di ritrovo lo conferma l'ufficio"* a **"il ritrovo è al negozio
+della scuola, in Calle México 15: ci si arriva da soli, la scuola non passa a prendere in
+hotel"**.
+
+**Perché è stata scritta anche la seconda metà.** Il dato incollato dice dov'è la scuola,
+non che il cliente ci vada da solo — quella frase è una deduzione, e va detto. Ma è la
+deduzione **giusta da sbagliare**, se proprio si deve: una scuola che passa a prenderti non
+pubblica una pagina intitolata "come arrivare da noi", e in tutto il listino non c'è
+nessuna riga di transfer. Soprattutto, i due errori non costano uguale — è la regola del
+pick-up di `CLAUDE.md`, vista dal lato del danno:
+
+- se scrivo "ci si arriva da soli" e invece passassero a prendere, il cliente va al negozio
+  e fa due passi in più;
+- se lascio la frase in sospeso, quel campo della finestra della richiesta si chiama **"Dove
+  alloggi (utile per il pick-up)"**: chi lo compila capisce che qualcuno passa, e alle nove
+  è davanti alla reception mentre la lezione comincia in spiaggia.
+
+Nel dubbio si scrive la frase che, se è sbagliata, fa perdere due minuti invece di una
+lezione. Resta segnalata al proprietario come deduzione, che è il posto dove va segnalata.
+
+**I due numeri di telefono della scuola non vanno sul sito.** Sono nel file grezzo e lì
+restano: Admiral è un rivenditore, e un cliente che chiama direttamente la scuola esce dal
+giro della richiesta su WhatsApp — che è il modo in cui l'ufficio sa cosa è stato venduto.
+Non è una questione di dati sensibili ma di chi risponde al cliente.
+
+**L'ora resta dov'era**, nella nota della marea: una nota dice una cosa sola, e il posto e
+l'ora sono due domande diverse.
+
+**Provato nel browser vero** nelle tre lingue: la nota esce giusta in italiano, inglese e
+spagnolo, sette note in tutto, nessun errore in console. `node controlla.js` → 0 errori,
+3 avvisi invariati. Alzato `sw.js` a `isla-v311`.
+
+Sul surf resta aperto solo **il prezzo del sesto posto** nella lezione per famiglie e amici.
+
+## 13 settembre 2026 — "Scrivi pure las Américas": il ritrovo torna a essere la zona (v312)
+
+Un'ora dopo aver mandato la pagina "Come arrivare", il proprietario: «o più in generale las
+Américas, scrivi pure las Américas». La nota perde l'indirizzo:
+
+> Il ritrovo è a **Playa de las Américas**: ci si arriva da soli, la scuola non passa a
+> prendere in hotel. Il punto esatto te lo diciamo insieme all'ora, quando confermiamo la
+> richiesta.
+
+**È un passo indietro sulla precisione, ed è giusto così.** "Calle México 15" veniva dalla
+pagina del fornitore ed era vero — è il loro negozio — ma da un indirizzo scritto sul sito
+il cliente capisce *"il ritrovo è la porta del negozio"*, e questo il fornitore non l'ha mai
+detto: una lezione di surf comincia in spiaggia, e dove si trovi il gruppo lo sa chi vende.
+È lo stesso caso del **Pantalán 4** sui gonfiabili (v306), dove la fonte del rivenditore
+sembrava più precisa di quanto fosse e il proprietario ha corretto: **la precisione di una
+fonte non verificata non è un dato**. La differenza è che qui non è stato neanche sbagliato
+a lungo.
+
+Quello che **resta** è la parte che conta davvero, cioè le due frasi che evitano un danno:
+"ci si arriva da soli" (se no si aspetta in reception) e "il punto esatto te lo diciamo con
+l'ora" (che dice al cliente *quando* saprà il resto, invece di lasciarlo con una domanda).
+Detto così, l'indirizzo non serve: chi prenota lo riceve da chi conferma.
+
+L'indirizzo resta in `dati-fornitore/grezzo/franz-surf-school-come-arrivare.txt`, che è il
+posto dei dati del fornitore, e `zone` della scheda era già "Playa de las Américas" dal
+primo giorno.
+
+**Provato nelle tre lingue**, sette note, nessun errore in console. `node controlla.js` →
+0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v312`.
+
+## 13 settembre 2026 — Il nome della scuola di surf non va sul sito (v313)
+
+«Non specificare scuola di surf Franz, ma scuola di surf in generale.» La descrizione passa
+da *"La Franz Surf School insegna sulla spiaggia di Playa de las Américas"* a **"Una scuola
+di surf sulla spiaggia di Playa de las Américas"**, in tutte e tre le lingue. Era l'unico
+posto del sito dove il nome compariva.
+
+**È il contrario della regola delle barche, ed è voluto.** Su Freebird, Royal Delfin, Shogun
+e Peter Pan il nome vero è proprio quello che il cliente deve leggere — `CLAUDE.md` lo dice
+in testa: Admiral è un rivenditore e le schede portano il nome della barca vera. Lì il nome
+serve al cliente per ritrovare la barca al porto. Qui il fornitore non è un mezzo con una
+livrea riconoscibile ma una scuola con un suo sito, un suo carrello e due suoi numeri di
+telefono in fondo a ogni pagina: **scriverne il nome è dire al cliente dove andare a
+prenotare senza di noi**. Lo stesso motivo per cui i due numeri erano già rimasti fuori
+(v311), applicato al nome.
+
+Non è una regola nuova da mettere in `CLAUDE.md`: è la stessa regola di sempre — il nome ci
+va quando serve al cliente per trovare quello che ha comprato — che su una barca dice sì e
+su una scuola con un negozio dice no.
+
+**Il nome resta nel commento in cima alla scheda** (con scritto a chiare lettere che sul
+sito non ci va, e perché), in `NOTES.md` e in `dati-fornitore/`: fra sei mesi, quando
+arriverà un listino aggiornato, bisogna sapere di chi è. Un commento non lo legge nessun
+cliente.
+
+**Provato nel browser vero** nelle tre lingue, sulla pagina di dettaglio e nell'elenco:
+"Franz" non compare più da nessuna parte, nessun errore in console. `node controlla.js` →
+0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v313`.
+
+## 14 settembre 2026 — La pagina dei pacchetti, e lo sconto che si applica da solo (v314)
+
+Il riquadro bento "Pacchetti" puntava a `#categories` dal primo giorno: portava alle
+categorie della home, cioè da nessuna parte. Adesso c'è `pacchetti.html` con otto
+pacchetti, e il riquadro (più la voce "Pacchetti" dei menu di tutte le pagine) ci porta.
+
+**Il prezzo non è scritto da nessuna parte.** Si somma leggendo `esplora-catalog.js` e si
+toglie `sconto`: è la stessa regola della lista (*"Mai il prezzo. I prezzi cambiano"*).
+Cambiare 39 in 45 sul Teide aggiorna da solo i due pacchetti che lo contengono.
+
+**Tre schede hanno `priceAdult: 0` e il prezzo dentro la variante**, e sono proprio quelle
+che questi pacchetti spingono: stargazing (75 o 79 a persona), buggy e jet ski (180 e 100,
+ma **a mezzo**). Sommare `priceAdult` e basta le avrebbe fatte entrare nel conto come
+**gratis** — "Tre mosse, versione buggy" sarebbe uscito a €99 invece che €279. Quindi
+`pacchettoVocePrezzo()` legge in quest'ordine: la variante decisa dal pacchetto, poi la
+scheda, e dove il prezzo è del mezzo ripiega su `priceFrom` (il mezzo più piccolo). Se non
+riesce a leggere un prezzo il pacchetto esce **senza nessun numero**, non con uno finto;
+`controlla.js` lo segnala come avviso.
+
+**Il numero dei quattro pacchetti misti è quello di una persona da sola, e non si chiama
+"da €X".** Il buggy si divide fra chi ci sale: da solo sono 180 a testa, in due 90. Quindi
+più gente c'è e *meno* si paga a persona, e un "da €170" (il prezzo in due) sarebbe il
+minimo ma **salirebbe** in faccia a chi viaggia da solo — la cosa che `CLAUDE.md` dice di
+non fare mai. Il numero che mostriamo è il più alto: l'unico che al cliente può solo
+scendere. Una riga sotto il prezzo spiega perché.
+
+**Lo sconto vale su tutto, mezzi compresi** (deciso il 14 settembre): una regola sola, che
+l'ufficio sa ripetere al telefono.
+
+### Come si richiede un pacchetto
+
+Le tre escursioni si aggiungono **una alla volta**, dalla loro pagina di dettaglio. Non è
+una semplificazione: **la lista non sa modificare una voce**. Ogni riga vuole già giorno,
+ora e persone, si riempiono nella finestra della richiesta e dopo si può solo togliere la
+voce. Un pulsante "aggiungi tutte e tre" avrebbe messo in lista tre righe senza data, e il
+messaggio all'ufficio sarebbe partito coi buchi.
+
+Quindi ogni riga della scheda è un link a `tour.html?id=…&pack=<pacchetto>&option=<n>`:
+- `option` fa aprire la pagina **già sulla variante che il pacchetto ha deciso** (il jet
+  ski da un'ora, lo stargazing in gruppo piccolo). Prima i bottoni delle varianti nascevano
+  sempre col primo premuto: il cliente leggeva "gruppo piccolo €79" nel pacchetto e apriva
+  il gruppo grande a €75.
+- `pack` lo scrive `tour.js` su `document.body.dataset.pack`, e `escursioni.js` lo mette
+  nella voce della lista. È l'unica cosa che lega quella voce al pacchetto.
+
+**Quando nella lista ci sono tutte e tre, lo sconto si applica da solo**, nel totale della
+finestra e nel messaggio WhatsApp (`Sconto pacchetto Tenerife in tre mosse: −€27,60`).
+Calcolato sul prezzo **vero** della richiesta — due adulti sono 276, non 138 — non sul
+numero della vetrina, che è di una persona sola. Se il cliente ne toglie una lo sconto
+sparisce e la scheda torna a dire "2 di 3 nella tua lista".
+
+"Tutte e tre" vuol dire una per voce, **con la variante decisa dal pacchetto**: chi cambia
+variante sulla pagina di dettaglio esce dal pacchetto, perché è un altro prezzo. Dove il
+pacchetto la variante non la decide (il buggy, di proposito: i quattro percorsi costano
+uguale) va bene qualunque.
+
+### Cose imparate o decise
+
+- **La riga di un'escursione è un link, tutta quanta, non un bottone in fondo.** Col
+  bottone "Guarda e aggiungi" su un telefono da 390px il titolo aveva meno di metà riga:
+  *Luxury Cruiser Experience* andava su tre righe. Adesso c'è una freccia a destra e si
+  tocca dove si vuole.
+- **La finestra della richiesta non è stata copiata una terza volta.** È già scritta due
+  volte (`escursioni.html` e `tour.html`) e `CLAUDE.md` avverte di tenerle allineate: da
+  `pacchetti.html` non si richiede niente, si va sulla pagina di dettaglio. Che è anche
+  meglio: il cliente vede che cos'è prima di metterla nella lista.
+- `pacchetti.js` finisce con `if (typeof document !== "undefined")` prima del listener:
+  `controlla.js` lo carica da Node, dove `document` non esiste.
+- **`controlla.js` adesso controlla anche i pacchetti**: id che esistono e sono pubblicati,
+  `optionIndex` dentro il numero di varianti, foto in `assets/`, titolo e descrizione nelle
+  tre lingue, sconto fra 1 e 99, niente doppioni. Un id sbagliato faceva sparire una voce
+  in silenzio.
+- **`siam-park` nel pacchetto non ha `optionIndex`**: il cliente può scegliere anche la
+  Villa VIP da €1320 e lo sconto scatta lo stesso, sul prezzo vero. È voluto che sia il
+  cliente a scegliere il biglietto, e in vetrina c'è il prezzo del biglietto normale (€44,
+  che è `priceAdult` della scheda). Se un giorno desse fastidio, basta fissare
+  `optionIndex: 0`.
+
+**Provato nel browser vero** (Chromium, 390px e 1280px): il giro dalla home al riquadro
+bento, alla scheda del pacchetto, alla pagina di dettaglio con la variante giusta già
+premuta, alla lista con lo sconto e al messaggio WhatsApp. Nelle tre lingue, nessuna chiave
+non tradotta, nessun errore in console, nessuno scorrimento orizzontale.
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v314`.
+
+## 14 settembre 2026 — Sui parchi e sugli show lo sconto non si può fare (v315)
+
+«Non è possibile fare lo sconto sui prezzi dei parchi/show notturni.» Sono biglietti a
+prezzo fisso: li paghiamo quanto li rivendiamo, e un 10% in meno uscirebbe dalla tasca di
+Admiral invece che dal margine. Tocca sei pacchetti su otto.
+
+**La regola è la categoria, non un elenco di schede.** `PACCHETTI_CATEGORIE_SENZA_SCONTO =
+["parchi-spettacoli"]`, che oggi copre esattamente Siam Park, Monkey Park, flamenco, drag
+show, castello e history of music. Scelto contro l'elenco di id scritto a mano (deciso il
+14 settembre) per una ragione sola: un elenco a mano si dimentica, e dimenticarselo vuol
+dire **promettere al cliente uno sconto che l'ufficio non può fare** — l'errore caro, non
+quello gratis. Un parco o uno show nuovo è coperto il giorno che entra nel catalogo.
+
+| pacchetto | pieno | scontabile | risparmio | paga |
+|---|---|---|---|---|
+| Tenerife in tre mosse | €138 | €94 | €9,40 | €128,60 |
+| Tre mosse, versione buggy | €279 | €235 | €23,50 | €255,50 |
+| Famiglia | €109 | €55 | €5,50 | €103,50 |
+| Il Teide tre volte | €298 | €298 | €29,80 | €268,20 |
+| Adrenalina | €335 | €335 | €33,50 | €301,50 |
+| Mare a tutto gas | €170 | €170 | €17 | €153 |
+| Cielo e mare | €185 | €134 | €13,40 | €171,60 |
+| Tre sere a Tenerife | €177,50 | €79 | €7,90 | €169,60 |
+
+**Il bollino "−10%" è sparito.** Su un pacchetto dove lo sconto vale su 94 euro di 138, un
+"−10%" è un numero falso: il cliente lo fa a mente, trova 124,20 e sul sito legge 128,60.
+Al suo posto il risparmio in euro, che è vero sempre: **"Risparmi €9,40"**. Sotto il prezzo
+c'è la riga che dice perché, e **ogni riga che non si sconta lo dice da sé** ("€44 · prezzo
+fisso"): la nota senza i nomi obbligherebbe a indovinare quale delle tre.
+
+Il prezzo barrato compare **solo dove c'è davvero qualcosa da togliere**. Un pacchetto di
+soli biglietti a prezzo fisso mostra un prezzo solo, senza barrato e senza bollino: barrare
+un numero e riscrivere lo stesso numero è una finta offerta.
+
+**Lo stesso vale nella lista**, dove il conto è quello vero: sul pacchetto classico in due
+lo sconto è €18,80, cioè il 10% di 188 (78 del Teide + 110 della barca), e gli 88 del Siam
+Park restano fuori. Un solo punto lo decide, `pacchettoVoceScontabile()`, usato sia dalla
+vetrina sia dalla lista: due regole separate sarebbero diventate diverse.
+
+### "Tre sere a Tenerife" era diventato un pacchetto che non risparmiava niente
+
+Drag show + castello + history of music: tre biglietti a prezzo fisso, sconto €0. Tre cose
+a prezzo pieno messe in fila non sono un pacchetto, sono un elenco — il cliente le può già
+aggiungere alla lista dal catalogo e paga uguale.
+
+Al posto di `history-music-show` (il più generico dei tre) è entrato lo **stargazing in
+gruppo piccolo**. Non è una scelta di gusto: è **l'unica serata scontabile del catalogo con
+un prezzo a persona**. Le altre serali sono a mezzo (buggy al tramonto, quad al tramonto)
+oppure non hanno un prezzo leggibile (la passeggiata a cavallo di 2 ore non ce l'ha), e in
+un pacchetto di serate un prezzo a buggy avrebbe portato dentro tutta la nota del prezzo
+misto. Ed è uno dei quattro prodotti da spingere.
+
+**La descrizione è stata riscritta, non ritoccata.** Diceva *"Tre spettacoli con la cena
+compresa"* e non è più vero: la scheda dello stargazing dice a chiare lettere che il picnic
+al tramonto **non è una cena a tavola**. Adesso dice "il drag show con la cena, la notte
+medievale al castello e le stelle dal Teide, con il picnic al tramonto sopra le nuvole".
+
+**`controlla.js` adesso avvisa se un pacchetto non fa risparmiare niente**: è esattamente
+il caso in cui era finito questo, ed era invisibile finché non si faceva il conto a mano.
+
+### Da sistemare, visto passando
+
+`assets/teide-national-park.jpg` è **300×300**: in copertina del pacchetto (16/9, fino a
+550px sul desktop) viene ingrandita e si ammorbidisce. Non è stata sostituita con un'altra
+foto a caso — `Cat-teide.jpg` è grande ma è un buggy al tramonto, e su "montagna, mare e
+parco" sarebbe una foto che racconta un'altra cosa. Serve una foto vera del Teide a ~1200px.
+
+**Provato nel browser vero** a 390px, nelle tre lingue: i tre casi (sconto pieno, sconto
+parziale con la nota, e il conto della lista con il Siam Park fuori), il messaggio WhatsApp,
+nessun errore in console. `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js`
+a `isla-v315`.
+
+## 14 settembre 2026 — History resta nel catalogo: esce solo dal pacchetto (v316)
+
+Mezz'ora di scheda nascosta per un malinteso, e vale la pena scriverlo perché è il tipo di
+errore che si rifà. «Togli history» è stato letto come *togli la scheda dal sito*
+(`published: false`), mentre voleva dire *togli history dal pacchetto "Tre sere"* — che era
+già stato fatto in v315, per un motivo diverso: tre show a prezzo fisso facevano un
+pacchetto con sconto zero, e al suo posto era entrato lo stargazing.
+
+Rimessa `published: true`: la scheda è di nuovo in elenco (66 attività), nella ricerca e
+nell'assistente, col suo indirizzo che funziona. **Non è in nessun pacchetto**, ed è
+l'unica cosa che questo branch le ha fatto.
+
+La lezione, per la prossima volta: *"togli X"* quando X sta **in due posti** (nel catalogo
+e in un pacchetto) non è un'istruzione completa, e va chiesto quale dei due — nascondere una
+scheda di catalogo si vede su tutto il sito, toglierla da un pacchetto si vede in un punto
+solo. `CACHE_NAME` resta `isla-v316`: la scheda nascosta non è mai uscita da questo branch,
+nessuno l'ha vista sparire dal sito vero.
+
+## 14 settembre 2026 — Il pacchetto si prende intero, e la vetrina è un bento (v317)
+
+«Vorrei che si potesse scegliere solo il pacchetto e non le escursioni singolarmente, e si
+potessero visualizzare stile bento.» Due cose insieme, e la prima ribalta il flusso di
+qualche ora fa (v314): le tre escursioni **non** si aggiungono più una alla volta alla
+lista, il pacchetto si chiede tutto con una richiesta sola.
+
+### Due pagine invece di una
+
+- **`pacchetti.html`** è la vetrina: otto riquadri con la foto, stile bento come in home —
+  il primo grande, gli altri quadrati.
+- **`pacchetto.html?id=…`** è il pacchetto aperto. Pagina sua e non una finestra, per una
+  ragione sola: **ha un indirizzo da mandare**. L'ufficio su WhatsApp scrive "ti mando il
+  pacchetto Adrenalina" e il cliente apre quello, non la pagina di tutti e otto.
+
+### La richiesta
+
+Un pulsante solo, "Richiedi il pacchetto", e una finestra corta: nome, **da che giorno**,
+quanti adulti e bambini, hotel e note. Poi WhatsApp.
+
+**Non si chiede l'orario**, e non è una dimenticanza: tre escursioni in tre giorni diversi
+non hanno un'ora sola da scegliere, e chiederla darebbe l'idea di una prenotazione che
+questo sito non fa. Per lo stesso motivo la data è "da che giorno": il primo dei tre,
+indicativo, e gli altri due li mette d'accordo l'ufficio rispondendo. Nel messaggio la riga
+è **"Dal giorno"**, non "Data", o all'ufficio arriva come una data fissa.
+
+**Il totale si fa solo dove tutti i prezzi sono a persona**: adulti × la loro somma +
+bambini × la loro, meno lo sconto sulla parte scontabile. Sui quattro pacchetti col buggy o
+col jet ski **no**, e invece di tacere si dice perché: "il totale non si può ancora fare,
+qui c'è un mezzo che si paga a buggy o a moto d'acqua". È la stessa regola della finestra
+della richiesta — meglio niente che un numero falso — ma detta invece che subita. Il totale
+si rifà a ogni numero battuto: 3 adulti e 1 bambino sul pacchetto classico fanno €473,60
+con €34,40 di sconto, e il cliente lo vede prima di mandare.
+
+Anche qui **niente terza copia della finestra della richiesta**: questa è costruita in
+JavaScript dentro `pacchetti.js`, come fa `lista.js` con la sua. Copiare quella delle
+escursioni voleva dire portarsi dietro orario, varianti, mezzi da contare, transfer e
+lingue — dieci campi da nascondere.
+
+### Le tre escursioni dentro non sono link
+
+Portavano alla loro scheda; adesso ognuna si porta **due righe di descrizione**, prese dal
+catalogo (dalla variante dove il pacchetto ne ha scelta una, che è più precisa: "Tramonto
+sul Teide" ha la sua). Chiesto così: dal pacchetto non si esce per andare a prendere una
+escursione da sola, ma cosa sia il Luxury Cruiser si deve poter capire lì.
+
+### Cosa è stato tolto
+
+Il flusso di v314 era: le tre si aggiungono una alla volta dalla pagina di dettaglio,
+ognuna col campo `pack`, e lo sconto scatta da solo quando ci sono tutte. Se il pacchetto
+si prende intero **non c'è più niente da taggare**, quindi è tutto codice morto e se ne va:
+
+- `pack` nella voce della lista (`escursioni.js`) e lo sconto in `lista.js` — quel file
+  torna **identico** a com'era su `main`;
+- la riga "Fa parte del pacchetto X" e `tour.html?…&option=N` in `tour.js`: senza un
+  pacchetto che linka la pagina di dettaglio, quel parametro non lo passa più nessuno;
+- `pacchettoVociPresenti()`, `pacchettoCompleto()`, `pacchettiScontoLista()` e le chiavi
+  `pack.again`, `pack.howto`, `pack.progress`, `pack.progressFull`, `pack.partOf`,
+  `pack.backToPacks`, `lista.discount`;
+- `pacchetti.js` non è più caricato da `index.html`, `escursioni.html` e `tour.html`:
+  serviva solo allo sconto nella lista, e sono 29 KB che quelle pagine non aprono più.
+
+Restano **tutte le regole sui prezzi**, che non c'entravano col flusso: il prezzo letto
+dalla variante e non da `priceAdult: 0`, il numero di una persona sola sui pacchetti misti,
+i parchi e gli spettacoli che non si scontano, il barrato solo dove c'è qualcosa da
+togliere.
+
+### Due dettagli del bento, visti solo nel browser
+
+- **Sul telefono i riquadri piccoli sono larghi 169px**: col prezzo barrato davanti,
+  "a persona" finiva su una riga sua e il blocco di testo diventava alto il doppio. Il
+  barrato sparisce **solo lì** (`max-width: 639px`, escluso il primo riquadro che è largo):
+  sul grande, da tablet in su e nella pagina del pacchetto ci sta e resta, ed è lì che il
+  cliente guarda quanto risparmia. Il bollino "Risparmi €X" lo dice comunque.
+- **L'ultimo riquadro restava spaiato** sulla riga da due. Adesso si prende tutta la
+  larghezza, come il riquadro del noleggio in home. Il primo è già largo, quindi "spaiato"
+  vuol dire che i riquadri sono in numero pari: `:nth-child(even):last-child`.
+
+**Provato nel browser vero** a 390px e 1280px, nelle tre lingue: il giro dalla home al
+riquadro bento alla griglia al pacchetto, la finestra col totale che cambia mentre si
+battono i numeri, il messaggio WhatsApp, il pacchetto misto che dice perché il totale non
+c'è, un `id` inventato che mostra "Pacchetto non trovato", e le pagine di prima (catalogo
+66 schede, scheda del jet ski sulla sua prima variante, nessuna riga del pacchetto).
+Nessuna chiave non tradotta, nessun errore in console, nessuno scorrimento orizzontale.
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v317`.
+
+## 14 settembre 2026 — Il riquadro Pacchetti in home ha tre foto (v318)
+
+«Puoi mettere un'immagine al bento pacchetti sulla home, o più immagini, come ti sembra
+meglio.» Tre, non una: **un pacchetto è tre escursioni diverse messe insieme**, e tre foto
+lo dicono senza una parola. Una foto sola avrebbe detto "un'escursione".
+
+Mare, terra e aria — le balene viste dalla barca, il buggy col Teide dietro, il
+parascending — che è poi quello che i pacchetti vendono davvero. La foto grande sopra, le
+due piccole sotto affiancate; la scritta "Pacchetti" scende in fondo e diventa bianca sopra
+una sfumatura, come sulle foto delle categorie.
+
+**È l'unico riquadro con le foto, ed è voluto**: gli altri quattro restano crema con
+l'icona. Il riquadro dei pacchetti è quello da spingere e l'unico che porta a una pagina
+nuova: in mezzo a quattro riquadri uguali, tira l'occhio da solo.
+
+### Le foto sono ritagli fatti apposta, non quelle del catalogo
+
+`assets/bento-pacchetti-mare.jpg` (560×280), `-terra.jpg` e `-aria.jpg` (280×280): **64 KB
+in tutto**, contro i 467 KB delle tre originali a 1200×800. Un riquadro che sul telefono è
+largo 169px non ha nessun motivo di scaricare tre foto da 1200. I ritagli sono al doppio
+della misura in cui si vedono, per gli schermi a densità doppia, e sono `loading="lazy"`:
+il bento sta sotto la prima schermata.
+
+Fatti con Pillow (`pip install Pillow`), ritaglio al centro e qualità 82, la stessa ricetta
+che `NOTES.md` già usa per le foto grandi. Se le foto di partenza cambiano, i ritagli vanno
+rifatti a mano: non c'è niente che li rigeneri da solo, ed è un prezzo che vale la pena
+pagare per 400 KB in meno sulla home.
+
+### La trappola del giorno: `span` prende anche il mosaico
+
+La regola della scritta era `.bento-tile-photo span { position: relative }`. Dentro quel
+riquadro di `span` ce ne sono **due** — la scritta e il mosaico — e la regola li prendeva
+tutti e due, togliendo al mosaico il suo `position: absolute`. Risultato: le foto finivano
+nel flusso e restavano alte due terzi del riquadro, con una fascia scura sotto. Si vede
+solo guardando la pagina: il CSS era valido e non si lamentava nessuno.
+
+Adesso è `> span:not(.bento-mosaico)`. È la stessa famiglia di errori già in questo file:
+una regola scritta larga che prende più di quello che credi (`.bento-grid` che annullava il
+margine di `.wrap`, il `padding: 0` che annullava quello laterale).
+
+**Provato nel browser vero** a 390px e 1280px: il mosaico riempie il riquadro (167×167 su
+169 di riquadro, misurato), la scritta si legge sopra la sfumatura, il tocco porta a
+`pacchetti.html` con gli otto riquadri, nessun errore in console. `node controlla.js` →
+0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v318`.
+
+---
+
+## 14 settembre 2026 — Sette pacchetti, e al Teide ci si sale una volta sola (v319)
+
+Rifatta la lista dei pacchetti: da otto a sette. Escono "Famiglia" e "Il Teide tre volte",
+entra "Terra, mare e stelle". Il resto di `pacchetti.js` — il conto, la finestra della
+richiesta, il disegno delle schede — non si tocca: cambia solo il blocco `const PACCHETTI`,
+che è esattamente quello che quel file doveva permettere.
+
+### Perché "Il Teide tre volte" non regge
+
+Sembrava l'idea migliore delle otto: lo stesso parco di giorno, al tramonto e di notte.
+Ma tre salite allo stesso posto sono **lo stesso posto venduto tre volte**, e il cliente se
+ne accorge il secondo giorno, non prima di pagare. Un pacchetto deve coprire l'isola, non
+ripetersi.
+
+Da qui la regola nuova, scritta in testa a `pacchetti.js`: **in un pacchetto al Parco
+Nazionale ci si sale una volta**. Vale quando si scrive un pacchetto, non quando lo si
+legge — non è un controllo sui dati del catalogo, è una regola su come si compone.
+
+La parte che non si vede a occhio è **quali voci ci salgono**. Non sono solo quelle col
+Teide nel nome:
+
+    teide-national-park                il parco di giorno
+    stargazing-group                   ci si sale la sera
+    buggy-volcano-4h  optionIndex 1    "Tramonto sul Teide"
+    buggy-volcano-4h  optionIndex 2    "Completo": dentro c'è il parco
+    quad-teide-adventure               tutte e due le varianti
+    trekking-bici     optionIndex 0    "Teide Light"
+    helicopter-tours  optionIndex 4    "Grand Teide Luxury"
+
+Un elenco così, lasciato in un commento, dura finché qualcuno non lo legge. Quindi
+`controlla.js` adesso lo verifica da solo: due salite nello stesso pacchetto sono un
+**errore**, una salita più un buggy senza `optionIndex` è un **avviso** (dei quattro
+percorsi, due al parco ci vanno — va fissato `optionIndex: 0` o `3`). Provato con due
+pacchetti finti: scattano tutte e due. Il vecchio "Il Teide tre volte", oggi, non passerebbe
+il controllo.
+
+### Via "Famiglia": il pacchetto non è il tipo di viaggiatore
+
+"Famiglia" era barca + Monkey Park + Siam Park, cioè due biglietti a prezzo fisso su tre:
+lo sconto lavorava solo sui 55 della barca, −5,50 su 109. Un pacchetto che risparmia il
+cinque per cento non è un'offerta, è un elenco con un titolo. E costruire sul tipo di
+viaggiatore ("famiglia", "coppia") promette qualcosa che le escursioni dentro non hanno:
+sono le stesse per tutti. Per la stessa ragione "Cielo e mare" ha perso la riga "per chi
+viaggia in due" — quello che lo tiene insieme è l'orario, tre cose che si fanno tardi, e
+vale per chiunque.
+
+### "Terra, mare e stelle": il pacchetto dove lo sconto si vede tutto
+
+Buggy offroad + Luxury Cruiser + stargazing in gruppo piccolo. 180 + 55 + 79 = 314, e
+**nessun biglietto a prezzo fisso dentro**: il 10% si applica su tutto, −31,40. È il
+risparmio più alto dei sette, ed è l'unico pacchetto con dentro tre dei quattro prodotti da
+spingere.
+
+Il buggy è fissato su `optionIndex: 0` (Offroad) apposta: è un percorso che al parco non
+sale, e la salita al Teide in questo pacchetto è già quella della sera. È il primo posto
+dove la regola nuova ha cambiato un dato invece di spiegarlo.
+
+Come stanno i sette adesso: il Luxury Cruiser in cinque pacchetti, il buggy e lo stargazing
+in tre, il jet ski in due.
+
+### La barca privata entrava nel conto a 55 invece che a 450
+
+Trovato leggendo, non provando. `pacchettoVocePrezzo()` guardava `variante.price` **solo**
+se la scheda aveva `units` o `priceUnit`. La variante "Barca privata" del Luxury Cruiser ha
+`price: 450` e la scheda non ha né l'uno né l'altro: si ricadeva su `tour.priceAdult` e il
+conto leggeva **55**, il prezzo del posto singolo spacciato per quello di tutta la barca.
+
+Non faceva danni perché nessun pacchetto usa quella variante — ma è il tipo di errore che
+non si scopre il giorno che sbaglia, si scopre dopo. Adesso una variante con `price` e
+senza `priceAdult` è il prezzo di tutta la cosa anche dove la scheda non ha `units`: vale
+per la barca privata (450) e per le cabine VIP del Siam Park (660, 990, 1320). È la stessa
+riga di `CLAUDE.md`: *`price` da solo può essere il prezzo di tutta la barca*.
+
+Verificato che i sette conti non si muovono di un centesimo: 138, 279, 314, 335, 170, 185,
+177,50 pieni; 128,60 / 255,50 / 282,60 / 301,50 / 153 / 171,60 / 169,60 scontati — gli
+stessi numeri scritti nei commenti sopra ogni pacchetto.
+
+### I due vecchi indirizzi
+
+`pacchetto.html?id=famiglia` e `?id=teide-tre-volte` adesso non esistono più. Provati nel
+browser: esce "Pacchetto non trovato" con il rimando alla vetrina, che è quello che quella
+pagina doveva già fare. I link condivisi sono di ieri e sono pochi, ma vale la pena saperlo
+prima di togliere un pacchetto: **un pacchetto che esce si porta dietro il suo indirizzo**.
+
+**Provato nel browser vero** a 390px: sette riquadri in vetrina con foto, prezzo barrato e
+"Risparmi €X" giusti, la pagina di "Terra, mare e stelle" con le tre voci e le loro
+descrizioni, la finestra della richiesta che si apre coi campi al posto giusto, i due
+vecchi indirizzi che finiscono sulla pagina "non trovato". `node controlla.js` → 0 errori,
+3 avvisi invariati. Alzato `sw.js` a `isla-v319`.
+
+---
+
+## 14 settembre 2026 — I tour in bus non si scontano, e il sito non spiega più perché (v320)
+
+Tre cose chieste dal proprietario nello stesso momento, e vale la pena tenerle insieme
+perché la prima e la terza tirano nella stessa direzione.
+
+### "Tenerife in tre mosse" diventa "Tenerife Trio"
+
+Uguale nelle tre lingue, come i titoli delle escursioni: **il nome non si traduce**, si
+traduce quello che lo descrive. Quindi "Tenerife Trio" in italiano, inglese e spagnolo, e
+solo "versione buggy / buggy version / versión buggy" cambia. Le descrizioni dicevano "le
+stesse tre mosse": riscritte in "lo stesso trio", se no il nome nuovo e il testo si
+contraddicono a due righe di distanza.
+
+### Lo sconto non si fa nemmeno sui tour in pullman
+
+Rettifica del proprietario: i giri in bus si comprano a prezzo fisso come i biglietti dei
+parchi — un posto sul pullman di un operatore, pagato quanto lo si rivende.
+
+**La categoria qui non basta, ed è il punto interessante.** Per i parchi funzionava
+(`parchi-spettacoli` copre tutto e copre anche quelli di domani), ma i tour in bus stanno in
+tre categorie diverse — `teide-natura`, `tour-isola`, `tour-privati` — e soprattutto "Teide
+National Park" sta **nella stessa categoria dello stargazing**, che invece si sconta ed è
+uno dei quattro prodotti da spingere. Una regola per categoria avrebbe portato via lo sconto
+a Teide by Night per sbaglio.
+
+Quindi un campo nuovo sulla scheda, `fixedPrice: true`, documentato nel vocabolario in testa
+a `esplora-catalog.js`. Sta **sul dato e non in un elenco dentro `pacchetti.js`**: un elenco
+lontano dai dati si dimentica il giorno che entra una scheda nuova, e dimenticarselo vuol
+dire promettere uno sconto che l'ufficio non può fare. Vale anche dentro una variante, e lì
+la variante vince — serve già oggi in potenza: dentro Teide by Night il gruppo grande sale
+in pullman e il piccolo va in minivan.
+
+Le nove schede segnate (scelte dal proprietario): i cinque tour in pullman con guida
+(`teide-national-park`, `icod-garachico-orotava`, `santa-cruz-taganana`,
+`island-tour-completo`, `masca-teide-cabrio-bus`), le due giornate sull'isola accanto
+(`la-gomera`, `la-palma`) e i due biglietti (`trenino-turistico`, `cantine-vinicole`). Lo
+stargazing in gruppo grande **non** è segnato, per sua scelta.
+
+Sui sette pacchetti cambia un numero solo: **Tenerife Trio** risparmia 5,50 invece di 9,40
+(138 → 132,50), perché dei tre pezzi resta scontabile solo la barca. Il proprietario ha
+deciso di lasciarlo così: "Tre sere" risparmia 7,90 su 177,50 e vive lo stesso — un
+pacchetto vale per come è fatto, non per la percentuale.
+
+### Il sito non scrive più su cosa lo sconto non si applica
+
+Via la nota sotto il prezzo ("Sui biglietti dei parchi e degli spettacoli lo sconto non si
+applica…") e via il "prezzo fisso" accanto alle singole voci. Due chiavi in meno in
+`i18n.js`, e `conto.parziale` è diventato codice morto — serviva solo ad accendere quella
+nota — quindi è uscito anche lui.
+
+**Quello che resta in pagina resta vero**: il prezzo pieno barrato, quello scontato e
+"Risparmi €X" sono gli stessi numeri di prima, e il conto continua a togliere lo sconto solo
+dove si può fare. Cambia cosa si racconta, non cosa si calcola. Il cliente che fa il 10% a
+mente trova un numero diverso dal nostro — era proprio quello che la nota spiegava — e da
+oggi la spiegazione la dà l'ufficio rispondendo, che è anche dove si concorda il pagamento.
+È una scelta del proprietario, ed è scritta in testa a `pacchetti.js` perché fra sei mesi
+"manca una spiegazione" sembrerà una dimenticanza e non una decisione.
+
+**Provato nel browser vero** a 390px e nelle tre lingue: i nomi nuovi in vetrina e sulla
+pagina, Tenerife Trio a 138 → 132,50 con "Risparmi €5,50", nessuna nota sotto il prezzo,
+nessun "prezzo fisso" sulle voci, e la nota sui mezzi (che non parla di sconti) al suo posto
+sulla versione buggy. Nella finestra della richiesta il totale vivo per due adulti fa
+€265 · Risparmi €11, cioè 138×2 meno 5,50×2. `node controlla.js` → 0 errori, 3 avvisi
+invariati. Alzato `sw.js` a `isla-v320`.
+
+---
+
+## 14 settembre 2026 — Una scheda può stare in due categorie (v321)
+
+Domanda del proprietario: «ci sono escursioni che corrispondono a più categorie, come Poema
+del Mar che è sia un parco sia un'isola — possiamo metterlo su entrambe?». Sì, e la parte da
+decidere non era *se*, era *come*.
+
+### Non due schede: una scheda con una categoria in più
+
+La strada sbagliata era copiare la voce e cambiarle categoria. Due voci vogliono dire due
+prezzi, due descrizioni, due orari da tenere allineati a mano: il giorno che il fornitore
+alza di cinque euro se ne aggiorna una sola, e il cliente legge un numero e ne paga un
+altro. Peggio ancora, `id` è la chiave di tutto (il link della pagina, la lista delle
+richieste, i pacchetti): due id per la stessa cosa fanno uscire la stessa escursione due
+volte nella lista di chi la chiede.
+
+Quindi un campo facoltativo sulla scheda, `alsoIn`, con dentro le **altre** categorie:
+
+```js
+category: "parchi-spettacoli",
+alsoIn: ["tour-isola"],
+```
+
+`category` resta una sola e resta quella principale. È il nome che si legge sulla card e in
+cima alla pagina di dettaglio, **anche quando si è arrivati filtrando l'altra categoria**:
+un riquadro che cambia etichetta a seconda del filtro premuto non si riconosce più da una
+pagina all'altra, e la stessa foto con due nomi diversi sembra un errore del sito.
+
+### Chi legge il catalogo deve leggere le stesse categorie
+
+Il campo da solo non basta: `x.category` era scritto in cinque posti diversi, e uno che
+avesse continuato a leggere solo quello avrebbe fatto uscire la scheda da una parte e
+sparire dall'altra. Per questo `categorieDi(tour)` sta in `esplora-catalog.js`, accanto a
+`CATEGORIES`, cioè nel file che caricano tutte le pagine — restituisce `category` più
+`alsoIn`, e la usano tutti e cinque:
+
+| dove | cosa cambia |
+|---|---|
+| `escursioni.js`, i filtri | la scheda esce sotto ognuna delle sue categorie |
+| `escursioni.js`, le chip | una categoria "esiste" se qualcuno ci sta, anche di rimbalzo |
+| `escursioni.js`, la ricerca | cercando "tour e visite" esce anche Poema del Mar |
+| `assistente.js` | stesso filtro, stessi risultati della pagina |
+| `tour.js`, le correlate | "un'altra categoria" vuol dire diversa da **tutte** le sue |
+| `pacchetti.js` | lo sconto, ed è il punto delicato qui sotto |
+
+### Lo sconto va nella direzione prudente
+
+`PACCHETTI_CATEGORIE_SENZA_SCONTO` conteneva `parchi-spettacoli`. Con due categorie la
+domanda diventa: basta una per togliere lo sconto, o servono tutte? **Basta una.** Poema del
+Mar è un biglietto comprato a prezzo fisso e rivenduto uguale: che compaia anche fra i tour
+non cambia quanto costa ad Admiral, e un 10% uscirebbe dal suo margine, non da quello del
+fornitore. La scelta larga (sconto se almeno una categoria lo permette) avrebbe fatto perdere
+soldi in silenzio, che è il tipo di errore che nessuno vede finché non si guardano i conti.
+
+### Il controllo
+
+`controlla.js` ora dà **errore** su `alsoIn` se non è un elenco, se cita una categoria che
+non esiste, se ripete la categoria principale o se scrive due volte la stessa. Serve perché
+questo è un errore che **non si vede guardando il sito**: una categoria sbagliata non fa
+sparire niente, semplicemente la scheda non compare dove ci si aspettava, e nessuno se ne
+accorge. Provato apposta con tutti e tre gli sbagli insieme: tre errori, uno per riga.
+
+### Poema del Mar, e per ora solo lui
+
+L'unica scheda con `alsoIn` è `gran-canaria` (`parchi-spettacoli` + `tour-isola`): l'acquario
+è un parco, ma la giornata è una gita a Gran Canaria con nave, guida e distilleria. Le altre
+si aggiungono una alla volta, quando il proprietario dice quali: una categoria in più su ogni
+scheda "che un po' ci sta" svuota le categorie di significato, e a quel punto filtrare non
+serve più a niente.
+
+**Provato nel browser vero**: "Tour e visite" passa da 6 a 7 schede e Poema del Mar c'è,
+"Parchi e spettacoli" resta 14 e c'è anche lì, l'elenco completo resta 66 schede senza
+doppioni, la chip cliccata e la ricerca per nome di categoria lo trovano, in inglese uguale.
+Sulla pagina di dettaglio l'etichetta è "Parchi e spettacoli" e le tre correlate vengono da
+mare, Teide e avventura — né parchi né tour. Nel conto dei pacchetti la voce resta non
+scontabile. `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v321`.
+
+---
+
+## 14 settembre 2026 — Chi va al Teide sta fra il Teide, e il giro delle città torna fra i tour (v322)
+
+Prima applicazione vera di `alsoIn` (v321), decisa dal proprietario nello stesso pomeriggio.
+Due mosse opposte, ed è il confronto fra le due che dice quando la seconda categoria si mette
+e quando invece si sposta e basta.
+
+### Tre schede a motore entrano anche in "Natura, Teide e stelle"
+
+`mustang-experience`, `buggy-volcano-4h`, `quad-teide-adventure`: la Mustang al tramonto sui
+Roques de García, i buggy che salgono al Parco Nazionale, il quad che il Teide ce l'ha nel
+titolo. `category` resta `avventura-motori` su tutte e tre — quello che si compra è il mezzo,
+il posto dove va è la seconda metà della frase — e `alsoIn: ["teide-natura"]` le fa uscire
+anche fra chi cerca cosa fare al Teide.
+
+**Il buggy è il caso interessante**: dei suoi quattro giri solo due salgono al Parco Nazionale
+(Tramonto sul Teide e Completo), gli altri due sono fuoristrada e strade di montagna. `alsoIn`
+è della scheda e non della variante, e va bene così: la scheda è una, ci si arriva per quella,
+e chi entra dal Teide legge i bottoni e sceglie il giro giusto. Un filtro capace di nascondere
+due varianti su quattro vorrebbe dire tornare a quattro schede separate — proprio la cosa da
+cui si è venuti via il 9 settembre.
+
+Sul conto dei pacchetti non cambia niente, ed è giusto che sia così: `teide-natura` non è fra
+le categorie senza sconto, e le tre schede restano scontabili come prima (buggy compreso, che
+sta dentro tre pacchetti su sette).
+
+### "Santa Cruz + Anaga + La Laguna" torna in "Tour e visite", e ci torna da sola
+
+L'8 settembre il proprietario l'aveva spostata in "Teide e natura" per via del Parco Rurale di
+Anaga; il 14 ha cambiato idea. Il giro è fatto di tre paesi, e in una categoria che si chiama
+"Teide" chi cerca una giornata di città non la guarda nemmeno.
+
+**Spostata del tutto, non messa in due**, ed è stato chiesto esplicitamente così. La regola che
+ne esce, e che vale per le prossime: una scheda sta in due categorie quando **ognuna la
+racconta per intero** — Poema del Mar è un parco *ed è* una gita a Gran Canaria, il quad è un
+giro in quad *ed è* una salita al Teide. Qui invece la natura è un pezzo del giro, non il giro:
+due categorie l'avrebbero fatta comparire fra le cose di natura promettendo più Anaga di quanta
+ce ne sia. Se si ricambia idea la riga da aggiungere è una, ed è scritta nel commento.
+
+Effetto collaterale gradito: la foto `santa-cruz-taganana.jpg` è il riquadro di "Tour e visite"
+in home, e adesso la categoria del riquadro e la categoria della scheda tornano a coincidere.
+
+### Una correzione alle "altre esperienze"
+
+`detailRelated` in `tour.js` prende una scheda per categoria diversa da quella aperta. Con le
+categorie multiple `viste` teneva solo la principale, e in fondo alla pagina di Santa Cruz
+uscivano il Teide National Park **e** la Mustang, che al Teide ci sale pure lei: due assaggi
+dello stesso posto in tre righe che servono a far vedere che il catalogo ha dell'altro. Ora
+`viste` si riempie con **tutte** le categorie delle schede già prese, e al posto della Mustang
+esce l'elicottero.
+
+**Provato nel browser vero** a 390px: "Natura, Teide e stelle" passa da 6 a 8 schede (le tre a
+motore dentro, Santa Cruz fuori), "Avventura" resta 7 con le stesse tre, "Tour e visite" passa
+da 7 a 8, l'elenco completo resta 66 senza doppioni e le due categorie insieme fanno 12 schede
+senza ripetizioni. Sulle card dentro il filtro Teide l'etichetta resta "Avventura", che è la
+categoria principale. `node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a
+`isla-v322`.
+
+---
+
+## 14 settembre 2026 — Una foto sola nel riquadro Pacchetti: Puerto de la Cruz (v323)
+
+Il mosaico di tre foto di stamattina (v318) è durato mezza giornata. Su un riquadro largo
+169px tre foto sono tre francobolli: si capisce che sono foto, non si capisce **di cosa**.
+Una sola, alla stessa misura, si legge.
+
+Al posto dei tre ritagli c'è la foto che apre la home — **Puerto de la Cruz dall'alto, col
+Lago Martiánez davanti e il Teide dietro**, cioè `hero-tenerife.webp`, il poster del video
+in cima alla pagina. Sceglierla vuol dire che chi scorre la home ritrova la stessa immagine
+due volte in venti centimetri: non è una ripetizione, è la stessa mano.
+
+Il ritaglio è quadrato e fatto apposta, **520×520, 66 KB**: quanto pesavano i tre di prima
+tutti insieme, e 520 è esattamente il doppio del riquadro più grande (260px sul desktop),
+quindi sugli schermi a densità doppia è nitida e non un pixel di più. La foto di partenza è
+1920×1080 e pesa 400 KB — appenderla intera a un riquadro da 169px sarebbe stato scaricare
+sei volte il necessario.
+
+Il taglio al centro tiene tutto quello che conta: il Teide resta al centro e la città con le
+piscine sta nella metà bassa. Verificato guardando il ritaglio prima di agganciarlo, che è
+la regola di sempre per le foto quadrate.
+
+### Il mosaico se ne va e si porta via la sua trappola
+
+`.bento-mosaico` era uno `<span>` con dentro tre `<img>` in griglia, e aveva già fatto
+danni: la regola della scritta, scritta `span` e basta, prendeva anche lui e gli toglieva il
+`position: absolute` (vedi l'entrata del v318). Adesso la foto è un `<img class="bento-foto">`
+e dentro il riquadro di `<span>` ce n'è **uno solo**, quindi il `:not(.bento-mosaico)` non
+serve più. Il `>` invece resta, e il commento pure: una regola larga dentro un riquadro che
+cambia si ripresenta.
+
+Cancellati `bento-pacchetti-mare.jpg`, `-terra.jpg` e `-aria.jpg`: non li usava nient'altro,
+verificato con una ricerca su tutto il progetto prima di toglierli.
+
+**Provato nel browser vero** a 390px e 1280px: la foto riempie il riquadro (167×167 dentro
+169, 258×258 dentro 260 — i due pixel sono il bordo), carica il 520×520 giusto, la scritta
+"Pacchetti" resta bianca e leggibile sopra la sfumatura, e il tocco porta a `pacchetti.html`
+con i sette pacchetti. Nessun errore in console, nessuna foto mancante. `node controlla.js`
+→ 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v323`.
+
+---
+
+## 14 settembre 2026 — "Con bambini" diventa "In famiglia", e porta a cinque pacchetti suoi (v324)
+
+Il riquadro del bento portava a `escursioni.html?family=1`: l'elenco delle 55 schede adatte ai
+bambini. Un filtro, non una proposta. Chi ha due figli e una settimana da riempire non ha
+bisogno di 55 schede, ha bisogno di tre escursioni già messe in fila da qualcuno che le
+conosce — che è esattamente quello che fanno i pacchetti, nati stamattina.
+
+Quindi il riquadro cambia nome e destinazione: **"In famiglia"**, e porta a
+`pacchetti.html?famiglia=1`. Il nome è una scelta del proprietario: "Con bambini" parla dei
+bambini, "In famiglia" parla a chi prenota. **L'elenco filtrato non si perde**: il link sta in
+fondo alla pagina nuova, insieme a quello per tutti i pacchetti.
+
+### I cinque pacchetti
+
+Tutti e cinque sono fatti di schede con `family: true`, tutte col prezzo dei bambini scritto, e
+tutti risparmiano qualcosa (un pacchetto di soli biglietti a prezzo fisso non risparmia niente:
+la lezione di "Tre sere a Tenerife").
+
+| pacchetto | dentro | a persona | famiglia 2+2 |
+|---|---|---|---|
+| Il mare dei bambini | Peter Pan + Submarine Safari + Aqualand | €124 → **115,20** | 406 → **378,40** |
+| Animali da vicino | Whale & Dolphin 3h + Loro Parque + Monkey Park | €109 → **103,50** | 352 → **335,00** |
+| Piccoli esploratori | Tuk tuk + Glass Bottom Boat + Jungle Park | €117 → **108,80** | 406 → **378,20** |
+| Per i ragazzi grandi | Karting + Banana Boat + Siam Park | €81 → **77,30** | 288 → **274,40** |
+| Stelle in famiglia | Stargazing gruppo piccolo + Luxury Cruiser 3h + Siam Park | €178 → **164,60** | 628 → **580,40** |
+
+"Stelle in famiglia" porta dentro due dei quattro prodotti da spingere (lo stargazing in gruppo
+piccolo e il Luxury Cruiser) e al Teide ci sale **una volta sola**, di sera, come vuole la regola.
+
+**Le età minime stanno nella descrizione**, non nascoste in fondo alla scheda: sul kart dei
+ragazzi si sale dai 7 anni e sul gonfiabile dai 10 (fasce `7-13` e `10-15` delle rispettive
+schede). Chi ha un bambino di sei anni deve saperlo prima di mandare la richiesta, non dopo.
+
+### Cosa cambia un `famiglia: true`
+
+Tre cose, e nessuna è grafica:
+
+1. Il pacchetto esce in `pacchetti.html?famiglia=1`. Nella pagina di tutti i pacchetti c'è lo
+   stesso: un pacchetto di famiglia resta un pacchetto, e chi arriva dal riquadro "Pacchetti"
+   deve poterlo trovare. Dodici in tutto lì, cinque nella vista filtrata.
+2. Ogni riga mostra **due** prezzi — "€27 adulti · €13 bambini (3-11)" — con la fascia d'età
+   accanto. Le fasce non combaciano fra schede diverse ed è normale: il sottomarino chiama
+   bambino un dodicenne (2-14), la goletta no (3-11). Un prezzo bambini senza la sua fascia
+   sarebbe giusto per certe famiglie e falso per altre.
+3. Sotto il prezzo a persona compare il conto di una **famiglia tipo, due adulti e due
+   bambini**: è il numero che si va davvero a cercare, perché "a persona" con dei bambini
+   dentro non si moltiplica per quattro. Resta un esempio, e la nota lo dice: con altri numeri
+   il totale si rifà da solo nella finestra della richiesta.
+
+`controlla.js` verifica tutte e tre le condizioni (tutte le schede `family: true`, tutte col
+prezzo bambini, nessun prezzo a mezzo) più la controprova: il conto di 2+2 deve venire.
+Provato su un pacchetto sbagliato apposta — jet ski e cavallo dentro — e li ha presi tutti.
+
+### Un 0 che voleva dire "gratis" e non lo era
+
+`pacchettoTotale` rifiutava di fare il conto solo quando il prezzo bambini era **assente**. Ma
+sulle schede `priceChild: 0` vuol dire "non lo sappiamo ancora" (è il vocabolario di
+`esplora-catalog.js`, ed è per quello che la riga a 0 non si accende nemmeno): con un pacchetto
+che ne conteneva una, una famiglia di quattro avrebbe visto il prezzo di due adulti. Nessuno dei
+sette pacchetti di stamattina ci cascava — per caso, non per costruzione — e il primo pacchetto
+di famiglia ci sarebbe cascato dritto. Adesso zero e assente si trattano uguale, che è già come
+si comporta la finestra della richiesta di una singola escursione (`escursioni.js`, riga 369).
+
+### Una pagina sola, con l'indirizzo che cambia
+
+`?famiglia=1` non è una pagina nuova: è `pacchetti.html` che si cambia il vestito. Il vestito si
+cambia spostando le **chiavi** di i18n (`packs.title` → `packs.familyTitle`) e non scrivendo il
+testo, così il cambio lingua continua a funzionare da solo. Una seconda pagina copiata sarebbe
+stato un secondo posto da aggiornare per sempre — la finestra della richiesta scritta due volte
+fra `escursioni.html` e `tour.html` è lì a ricordarlo.
+
+### Due cose prese solo nel browser vero
+
+**`display: flex` vince su `hidden`.** Il piede con i due link nasce `hidden` e si accende solo
+in modalità famiglia, ma `.packs-foot { display: flex }` copre il `display: none` del browser:
+nella pagina di tutti i pacchetti usciva lo stesso, con scritto "tutte le escursioni adatte ai
+bambini". Serve `.packs-foot[hidden] { display: none; }`, e vale per ogni elemento che nasce
+nascosto e ha un display suo.
+
+**La cache guarda anche dopo il "?".** `caches.match` confronta l'indirizzo intero, quindi
+`pacchetti.html?famiglia=1` non è `pacchetti.html`: da offline il riquadro nuovo sarebbe finito
+sulla pagina "sei senza connessione". Aggiunti tutti e due gli indirizzi con la domanda
+(`?famiglia=1` e `?family=1`) alla lista `ASSETS` di `sw.js`. Il server manda lo stesso file, è
+il browser a doverselo ritrovare con la chiave giusta. **Resta da guardare**: `tour.html?id=...`
+ha lo stesso problema e non è stato toccato qui — sono 66 indirizzi, e la strada giusta è
+semmai `ignoreSearch` nel `match`, che è una modifica da fare con calma e da provare da sola.
+
+**Provato nel browser vero** a 390px e 1280px, in tutte e tre le lingue: il riquadro dice "In
+famiglia / As a family / En familia" e sta su una riga, la vista filtrata mostra cinque
+pacchetti e il piede, quella normale dodici e nessun piede, i due link del piede portano dove
+devono (55 schede l'elenco filtrato), le righe mostrano i due prezzi con la fascia, la finestra
+della richiesta con 2 adulti e 2 bambini fa €580,40 su "Stelle in famiglia" e il messaggio
+all'ufficio esce col totale e il risparmio. Nessun errore in console.
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v324`.
+
+### La foto al posto dell'icona nel riquadro "In famiglia" (v325)
+
+Poche ore dopo, la foto mandata dal proprietario: ragazzi sotto il secchio d'acqua che si
+rovescia, braccia in alto, palma e cielo. Ha preso il posto delle due figurine stilizzate.
+Le figurine dicevano "famiglia" per modo di dire — un adulto e un bambino disegnati con due
+cerchi — la foto lo dice e basta, e dice anche che ci si diverte.
+
+Stesso trattamento della foto dei Pacchetti, che è la regola di quel riquadro: **ritaglio
+quadrato 520×520, 67 KB**, il doppio dei 260px del riquadro più grande sul desktop, così sugli
+schermi a densità doppia è nitida senza scaricare un pixel di troppo. La sorgente era
+960×641: ritaglio centrale alto quanto la foto (641×641), guardato prima di agganciarlo —
+provati anche quello a sinistra, che taglia male la ragazza di bordo, e quello a destra.
+
+Adesso i riquadri con la foto sono **due**, e il commento nell'HTML che diceva "l'unico" è
+stato corretto: una riga falsa in un commento è peggio di nessun commento. Sulla griglia non
+si pestano i piedi — sul telefono stanno in diagonale (Pacchetti in alto a sinistra, In
+famiglia sotto a destra… anzi sotto a sinistra), sul desktop sono il primo e il terzo dei
+quattro.
+
+**Provato nel browser vero** a 390px e 1280px: la foto riempie il riquadro (167×167 e
+258×258, file da 520×520 caricato per intero), la scritta bianca "IN FAMIGLIA" resta leggibile
+sopra la sfumatura e il tocco porta ai cinque pacchetti di famiglia. `node controlla.js` →
+0 errori, 3 avvisi invariati (la foto nuova porta assets a 119). Alzato `sw.js` a `isla-v325`.
+
+
+## Gli itinerari a 3, 5 e 7 giorni (14 settembre 2026, v326)
+
+Dopo "In famiglia", la stessa idea applicata al tempo: **itinerari per chi sta sull'isola tre,
+cinque o sette giorni** — o resta di più ma vuole impegnarsi solo quelli. È quello che mancava
+dietro al riquadro "3/5/7 Days Experience" della home, che dal primo giorno puntava a
+`#categories`: l'ultimo riquadro senza una pagina sua.
+
+Sei itinerari nuovi in `pacchetti.js`, marcati con `giorni: 3 | 5 | 7`: per ogni durata uno
+classico e uno di famiglia.
+
+### Le tre decisioni del proprietario
+
+1. **Un giorno, un'escursione.** Sette giorni vuol dire sette escursioni, non "una settimana con
+   dentro cinque uscite". `controlla.js` verifica che `giorni` sia uguale al numero delle voci.
+2. **Lo sconto cresce coi giorni: 10% a tre, 12% a cinque, 15% a sette.** Resta un campo per
+   itinerario (`sconto`), non una costante: `controlla.js` dà un **avviso** se uno esce dalla
+   scala, perché uno sconto sbagliato non si vede guardando la pagina — si vede solo che si
+   risparmia meno.
+3. **Itinerari nuovi e dedicati**, non i dodici pacchetti da tre riciclati come "3 giorni".
+
+### Il cinque contiene il tre, il sette contiene il cinque
+
+Non è un vezzo: è la cosa che li tiene onesti. Chi allunga la vacanza non scopre di aver preso
+"l'itinerario sbagliato", aggiunge dei giorni; e per chi li scrive è una rete, perché se i primi
+tre giorni sono giusti lo sono già anche negli altri due itinerari.
+
+- **3 giorni** (€120 a persona, era 129): Teide in pullman + Luxury Cruiser + kayak e snorkeling
+- **5 giorni** (€216,60, era 234): i tre di sopra + parascending + Santa Cruz/Anaga/La Laguna
+- **7 giorni** (€293, era 320): i cinque di sopra + lezione di surf + flamenco
+- Gli stessi tre passi in famiglia: goletta/Aqualand/tuk tuk → + sottomarino e Siam Park →
+  + Monkey Park e barca col fondo di vetro. Una famiglia di due adulti e due bambini:
+  €266,80, €588,24, €782,90.
+
+**Niente prezzi a mezzo** (buggy, moto d'acqua), ed è voluto: su tre escursioni il "prezzo di una
+persona da sola" si spiega in una riga, su sette diventa un totale che non somiglia a quello che
+si paga. Così il numero in vetrina è esatto in tutti e sei.
+
+**Niente stargazing**, che pure è uno dei prodotti da spingere: il Teide sta nel primo giorno del
+tre, e le stelle sono un'altra salita al Teide. La regola "al parco ci si sale una volta" ha
+vinto sulla spinta commerciale — nei pacchetti a tema lo stargazing c'è già in cinque su sette.
+
+### Il buco nel controllo del Teide, trovato scrivendo questi
+
+`icod-garachico-orotava` **sale al Parco Nazionale del Teide** — lo dice la prima riga della sua
+descrizione — ma non era nell'elenco `SALE_AL_TEIDE` di `controlla.js`. Il primo cinque giorni
+che avevo scritto aveva il Teide due volte e il controllo diceva "0 errori". Cercando per
+descrizione e non per titolo ne sono saltate fuori **quattro**: `icod-garachico-orotava`,
+`masca-teide-cabrio-bus`, `mustang-experience` ("su per la strada del Parco Nazionale fino alla
+Cañada Blanca") e `island-tour-completo`. Aggiunte tutte.
+
+La lezione è quella già scritta per le icone: **un elenco di eccezioni si controlla leggendo i
+dati, non i nomi.** Il Teide nel nome non ce l'hanno tutte.
+
+### Dove vivono
+
+`pacchetti.html?giorni=3|5|7`, e `?giorni=tutti` per la vetrina intera — che è dove porta il
+riquadro della home. È la **terza** vista della stessa pagina (pacchetti, famiglia, giorni), e si
+veste sempre allo stesso modo: spostando le chiavi di i18n, mai scrivendo il testo. Le funzioni
+`pacchettiCambiaChiave` e `pacchettiCambiaTesta` sono nate qui, estratte da quella di famiglia
+invece di copiarla.
+
+Le durate sono **link** e non bottoni: ogni durata deve avere un indirizzo suo da mandare a un
+cliente ("ti mando i cinque giorni") e da ritrovare col tasto indietro del telefono.
+
+**Gli itinerari si vedono solo nella loro vetrina**, e non in mezzo ai pacchetti né in
+`?famiglia=1` — al contrario dei pacchetti di famiglia, che restano pacchetti. Un itinerario ha
+un'altra misura: il prezzo di sette giorni accanto a quello di tre non è un confronto, è uno
+spavento. Se un giorno si decidesse il contrario, basta togliere un `!pacchettoGiorni(p)` dal
+filtro in `initPacchettiGriglia` — ma allora vanno riscritti gli "tre escursioni" di
+`packs.intro` e delle due `meta`, che oggi sono veri.
+
+### Le due trappole già scritte qui, e rispettate
+
+**La cache guarda anche dopo il "?".** Aggiunti a `ASSETS` di `sw.js` tutti e quattro gli
+indirizzi con la domanda (`?giorni=tutti|3|5|7`), come era stato fatto per `?famiglia=1`.
+
+**`display: flex` vince su `hidden`.** Il piede della vista a giorni usa la classe `.packs-foot`,
+che ha già la sua riga `[hidden] { display: none; }`. `.days-nav` invece non ha nessun `display`
+suo, apposta: è un div, e un div nascosto sparisce da solo.
+
+### Una cosa presa solo nel browser vero
+
+Le quattro pillole delle durate **vanno a capo anche sul telefono**, al contrario dei filtri per
+categoria dell'elenco che si scorrono col dito: su uno schermo da 412 px la quarta ("7 giorni")
+restava mezza fuori dal bordo, e quella pillola è l'unica strada per arrivare a una vetrina
+intera. Le categorie possono permettersi di scorrere perché nessuna di loro è l'unica strada per
+qualcosa.
+
+### Provato nel browser vero
+
+A 412, 820 e 1280 px, nelle tre lingue: la vetrina "tutti" mostra sei riquadri con la durata
+sopra il titolo, `?giorni=5` ne mostra due, `?giorni=pippo` non rompe niente e mostra tutti; la
+pagina dei pacchetti resta a dodici e quella di famiglia a cinque, senza pillole; `giorni-7`
+apre con "Itinerario di 7 giorni", "Giorno per giorno" e sette righe numerate 1-7; la finestra
+della richiesta dice "il primo dei 7 giorni" e il messaggio all'ufficio esce con
+"l'itinerario «Sette giorni a Tenerife», 7 giorni" e il totale; un pacchetto normale manda il
+messaggio di prima, invariato. Nessun errore in console.
+`node controlla.js` → 0 errori, 3 avvisi invariati. Alzato `sw.js` a `isla-v326`.
+
+## v327 — il listino esposto al circuito, e i prezzi del karting tornano indietro
+
+L'ufficio ha mandato la **foto del volantino esposto al circuito**. È il listino vero, e
+smonta metà di quello che era stato messo in v276 e v277. Trascritto in
+`dati-fornitore/grezzo/karting-listino.txt`, perché una foto in chat si perde e 3 MB di JPEG
+in un repo di una PWA non ci stanno.
+
+### Le due fonti dello stesso circuito non dicono la stessa cosa
+
+|  | volantino | carrello del sito |
+|---|---|---|
+| tanda adulto | **20** | 22 |
+| tanda junior | **15** | 16 |
+| gruppi | **da 5 a 15 persone** | minimo 8, o 6 bambini |
+| Mini Prix | **40, uguale per tutti** | 45 adulto / 35 junior |
+| Grand Prix | **60, uguale per tutti** | 60 adulto / 50 junior |
+| Super Gran Premio | **non c'è** | 70 |
+| tanda adulto da 20 minuti | **35** | non c'era |
+
+Il proprietario ha detto che i prezzi ufficiali sono quelli del volantino. La scheda li
+segue, e il JSON dello scraping resta per quello che il volantino non dice: fasce d'età,
+altezze, modelli dei kart, orari junior del fine settimana.
+
+### La cosa da ricordare: il primo giro aveva ragione
+
+In v276 la ricerca in rete diceva **20 e 15**, lo scraping del carrello diceva **22 e 16**, e
+il carrello vinse perché era "la fonte diretta". Non lo era: era il **listino della
+prenotazione online**, un prezzo diverso da quello del banco. Il volantino conferma 20 e 15.
+
+La lezione non è "fidati degli aggregatori" — i 725 metri di pista erano sbagliati sul serio,
+e lo scraping li ha corretti. È più sottile: **un sito di prenotazione può vendere a un prezzo
+e il banco a un altro**, e "fonte diretta" non vuol dire "il prezzo che paga il nostro
+cliente". La domanda giusta da fare all'ufficio non è "quale numero è vero" ma **"da quale
+listino compriamo"**.
+
+### Questa volta i prezzi scendono, ed è la direzione facile
+
+22 → 20 e 16 → 15. In v276 erano stati alzati, contro la regola del progetto, con la
+motivazione che pubblicare meno del prezzo vero fa fare l'aumento all'ufficio davanti al
+cliente. Adesso il prezzo vero è più basso, quindi si scende: nessun cliente ha letto un 22
+e si vede chiedere di più.
+
+### Le formule diventano quattro, ma non le stesse
+
+Fuori il **Super Gran Premio**: sul listino esposto non c'è, e una formula che il circuito non
+espone non la vendiamo. Dentro la **tanda da 20 minuti**, che sul volantino c'è e nel JSON no.
+
+| formula | adulto | bambino | durata |
+|---|---|---|---|
+| Tanda da 10 minuti | 20 | 15 | 10′ |
+| Tanda da 20 minuti | 35 | **nessun prezzo** | 20′ |
+| Mini Prix | 40 | 40 | 20′ |
+| Grand Prix | 60 | 60 | 30′ |
+
+Spariscono anche le durate doppie del tipo "20 minuti (13 per i bambini)": erano una
+conseguenza dei sei prodotti separati del sito. Sul volantino il Mini Prix è **uno**, 40 € a
+persona per chiunque, e la scheda lo dice così.
+
+### La tanda da 20 minuti non ha il prezzo bambini, ed è voluto
+
+Il volantino la scrive **SUPERKART ADULTS (20 MINUTES)**: per i junior un 20 minuti non c'è.
+Due tande junior farebbero 30 €, ma è aritmetica mia, non un prezzo del circuito.
+
+La variante è quindi senza `priceChild`, e il meccanismo che c'era già fa il resto:
+`calcolaTotale()` in `escursioni.js` (riga ~343) restituisce `null` quando ci sono bambini
+senza il loro prezzo — *"Bambini senza il loro prezzo: il totale verrebbe fuori come se non
+pagassero. Meglio niente che un numero falso."* Provato: con quella formula e un bambino il
+riquadro del totale **sparisce**, la richiesta parte lo stesso, e la spiegazione sotto il
+bottone dice che il prezzo lo confermiamo rispondendo.
+
+Questa è la differenza fra il campo assente e lo zero, la stessa di `priceInfant`: qui non
+sapere è un'informazione, e il sito la sa già dire.
+
+### Il Superkart Double resta fuori dalle formule
+
+25 € **a kart**, non a persona: messo fra le varianti verrebbe moltiplicato per le persone e
+darebbe il doppio. Resta dov'era, in nota, col suo prezzo e con "a kart, non a persona"
+scritto per esteso.
+
+### Provato
+
+`node controlla.js` → 0 errori, 2 avvisi invariati.
+
+Nel browser vero, viewport telefono, in italiano, premendo le quattro formule una a una:
+
+| formula | riga "In breve" | totale 2 adulti + 1 bambino |
+|---|---|---|
+| Tanda 10 minuti | Adulti €20 · Bambini €15 | **55 €** |
+| Tanda 20 minuti | Adulti €35, **nessuna riga bambini** | **nessun totale**, voluto |
+| Mini Prix | Adulti €40 · Bambini €40 | **120 €** |
+| Grand Prix | Adulti €60 · Bambini €60 | **180 €** |
+
+In elenco la card dice **"da €20"**. Nessun errore JS.
+
+`CACHE_NAME` a `isla-v327`.
+
+### Da confermare con l'ufficio
+
+- **Un bambino può fare il Mini Prix o il Grand Prix?** Il volantino dice "40 € per person"
+  senza distinguere, e la scheda lo prende alla lettera. Il sito del circuito invece vendeva
+  gare junior separate e più economiche: se anche al banco è così, i due prezzi vanno sdoppiati.
+- **La tanda da 20 minuti per i junior**: esiste e quanto costa?
+- Resta aperta da v278: **1,20 m di altezza minima per il copilota** contro i 3 anni.
+
+## v328 — le gare del karting sono solo per adulti
+
+Le due domande lasciate aperte in v327 hanno avuto risposta dall'ufficio, e sono due no:
+
+- **un bambino non può fare il Mini Prix o il Grand Prix**;
+- **la tanda da 20 minuti per i junior non esiste.**
+
+### Il volantino diceva "per person", e non bastava
+
+Il listino esposto scrive *MINI PRIX 40 € per person* senza distinguere fra adulti e
+bambini, e in v327 era stato preso alla lettera: `priceAdult: 40` e `priceChild: 40`. Era
+la lettura più fedele del foglio, ma il foglio parlava di **prezzo**, non di **chi può
+salire**. Erano due domande diverse e il volantino ne rispondeva a una sola.
+
+Vale la pena tenerlo: un listino dice quanto costa una cosa a chi la può comprare. Non dice
+chi la può comprare. La seconda domanda va fatta lo stesso, anche quando la prima ha una
+risposta che sembra completa.
+
+### Tre formule su quattro adesso non hanno `priceChild`
+
+| formula | adulto | bambino |
+|---|---|---|
+| Tanda da 10 minuti | 20 | **15** |
+| Tanda da 20 minuti | 35 | — |
+| Mini Prix | 40 | — |
+| Grand Prix | 60 | — |
+
+Il campo **assente** è la stessa scelta di `priceInfant`: non è zero, non è "gratis", è "qui
+un bambino non ci va". E il meccanismo che c'era già fa il resto — `calcolaTotale()` in
+`escursioni.js` restituisce `null` quando ci sono bambini senza il loro prezzo, quindi con
+quelle tre formule il riquadro del totale **sparisce** invece di contare un bambino a 40
+euro per una gara a cui non lo fanno partecipare.
+
+Non è un blocco: la richiesta parte lo stesso, e l'ufficio risponde. Un blocco vero, come
+quello di `days` sul giorno sbagliato, qui non c'è e non è stato inventato per l'occasione.
+
+### Dove è scritto, e perché in tre posti
+
+Il "solo adulti" sta in tre punti, ed è voluto che si ripeta:
+
+1. nella **spiegazione sotto il bottone** di ogni formula, dove si legge nel momento in cui
+   si sceglie;
+2. nel **totale che non compare**, che è il momento in cui uno se ne accorge da solo;
+3. nella **nota in fondo**, riscritta, che adesso chiude dicendo dove vanno i bambini invece
+   di dove va chi è in pochi: *"Per i bambini, e per chi è in pochi, c'è la tanda da 10
+   minuti: quella non ha minimi."*
+
+La terza è quella che conta: una famiglia che scopre di non poter fare la gara deve trovare
+subito la cosa che **può** fare, non solo il divieto.
+
+`family: true` resta: i kart junior dai 7 anni e il biposto dai 3 ci sono ancora, e la
+formula che si apre per prima è proprio quella che va bene ai bambini.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati.
+
+Nel browser vero, viewport telefono, in italiano, premendo le quattro formule e provando
+ognuna con e senza bambini:
+
+| formula | 2 adulti | 2 adulti + 1 bambino |
+|---|---|---|
+| Tanda 10 minuti | 40 € | **55 €** |
+| Tanda 20 minuti | 70 € | **nessun totale** |
+| Mini Prix | 80 € | **nessun totale** |
+| Grand Prix | 120 € | **nessun totale** |
+
+La riga "Bambini (7-13)" compare in "In breve" solo sulla prima. Nessun errore JS.
+
+`CACHE_NAME` a `isla-v328`.
+
+### Cosa resta aperto sul karting
+
+Una cosa sola, da v278: il fornitore scrive **1,20 m di altezza minima per il copilota** del
+biposto, ma a 3 anni si sta sui 95 cm.
+
+## v329 — il metro e venti del karting non vale, e non è la prima volta
+
+L'ufficio ha confermato: sul kart biposto **il passeggero sale dai 3 anni**. Con questo si
+chiude l'ultima domanda rimasta aperta sul karting, da v278.
+
+**In scheda non cambia niente**, e va detto invece di far finta che sia un lavoro: la nota
+diceva già "si può dai 3 anni", perché fin da v278 era stata scritta la versione
+dell'ufficio e non quella del fornitore. Quello che cambia è che non è più una versione
+contro un'altra: adesso è il dato.
+
+### Il metro e venti era una condizione che non poteva stare insieme all'altra
+
+Lo scraping del circuito, per il Sodikart Doble, scrive *"la altura mínima del copiloto es
+de 1,20 m"*. Un bambino di 3 anni è alto sui 95 cm: le due condizioni si escludono, e fra le
+due vince quella detta da chi vende. Segnato anche in
+`dati-fornitore/grezzo/karting-listino.txt`, nella tabella di cosa batte cosa, così chi
+riapre il JSON fra sei mesi non ci ricasca.
+
+### È già successo, uguale, sui buggy
+
+In **v263** sui quad e buggy la nota diceva "dai 7 anni e almeno 1,20 m", ereditato dalle
+pagine dei fornitori, e il proprietario l'ha corretta in blocco: passeggeri **dai 3 anni**,
+altezza minima via, con la stessa identica frase — *un bambino di 3 anni è alto sui 95 cm,
+quindi le due condizioni non potevano stare insieme*.
+
+Due fornitori diversi, lo stesso errore nello stesso posto. Vale la pena scriverlo come
+regola invece che come aneddoto: **l'altezza minima del passeggero, sulle pagine dei
+fornitori di mezzi, è quasi sempre copiata da un'altra scheda e non regge il confronto con
+l'età che dà l'ufficio.** Quando le due non tornano, non è un dettaglio da mediare: una
+delle due è sbagliata, e va chiesto.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati.
+
+`CACHE_NAME` **non alzato**, ed è giusto così: questa volta non è stato toccato nessun `.js`,
+`.css` o `.html` — solo `NOTES.md` e un file di `dati-fornitore/grezzo/`, che il service
+worker non mette in cache. Alzarlo avrebbe fatto riscaricare il sito a tutti per due file
+che i clienti non vedono.
+
+### Il karting è chiuso
+
+Non resta niente da confermare.
+
+## v330 — il riquadro "3/5/7 Days Experience" diventa cinque foto a strisce oblique
+
+Richiesta del proprietario, con uno schizzo a mano sopra uno screenshot del sito: dividere
+il riquadro in 5 strisce oblique e mettere una foto diversa in ognuna.
+
+**Non è la prima volta che si prova più foto in un riquadro bento piccolo.** Il 14 settembre
+2026 (v318) c'era stato un mosaico di tre foto nel riquadro "Pacchetti", durato mezza
+giornata: su un riquadro di quella misura tre miniature in griglia sono tre francobolli, si
+vede che sono foto ma non si capisce di cosa (v323 l'ha tolto). Le strisce oblique sono
+diverse dal mosaico nel punto che contava: **ogni striscia arriva alta quanto tutto il
+riquadro**, non è una miniatura piccola in un angolo — è una foto intera vista da uno
+spiraglio verticale, non un francobollo. Provato nel browser vero a 179px (mobile) prima di
+darlo per buono, non solo guardato nel codice.
+
+### Come sono tagliate le strisce
+
+`clip-path: polygon(...)` su cinque `<img class="bento-foto">` impilati uno sull'altro, la
+stessa foto di sfondo di sempre (`.bento-tile-photo`, `object-fit: cover`, riempiono tutto
+il riquadro) ma ognuno ritagliato a parallelogramma. Prima volta fatta, i punti delle cinque
+polygon combaciavano esatti da una striscia alla prossima; il proprietario ha chiesto una
+riga bianca a separarle, quindi adesso il bordo destro della striscia N è un po' *prima* del
+bordo sinistro della N+1, della stessa quantità in percentuale su tutti e cinque i tagli —
+e sotto le foto c'è sfondo bianco (`.bento-tile.bento-tile-stripes { background: #fff }`)
+invece del crema del riquadro, così lo spacco esce come una riga bianca e non come un buco
+color crema. Sono in `styles.css`, `.bento-tile-stripes .bento-stripe-1` … `-5`: se un
+domani cambia il numero di strisce o la larghezza dello spacco vanno ricalcolati tutti
+insieme, non uno alla volta.
+
+Tolta l'icona del calendario: gli altri due riquadri con la foto (Pacchetti, In famiglia)
+non hanno icona, solo foto e scritta bianca in basso sulla sfumatura — per coerenza questo
+adesso fa lo stesso.
+
+### Le cinque foto
+
+Nessuna delle sei foto di `#categories` (`Cat-mare.jpg` e le altre): quelle compaiono già
+più sotto nella stessa pagina, e NOTES.md ricorda già che una foto vista due volte sulla
+stessa home è un problema evitato apposta altrove (`Cat-mare.jpg` / `Cat-teide.jpg`).
+Scelte invece cinque foto che non compaiono da nessun'altra parte in home, una per
+atmosfera diversa — Teide, mare/delfini, parco acquatico, avventura al tramonto, cielo
+stellato:
+
+- `bento-giorni-teide.jpg` ← `teide-national-park.jpg`
+- `bento-giorni-mare.jpg` ← `luxury-catamaran.jpg`
+- `bento-giorni-parco.jpg` ← `siam-park.jpg`
+- `bento-giorni-avventura.jpg` ← `quad-teide-adventure.jpg`
+- `bento-giorni-stelle.jpg` ← `stargazing-group.jpg`
+
+Ritagliate a 520×520 (Pillow, centrate, qualità 82), la stessa ricetta di
+`bento-pacchetti.jpg` e `bento-famiglia.jpg` — non la foto intera, altrimenti la striscia più
+grossa (`bento-giorni-parco.jpg`, partiva da un file da 361 KB) pesava troppo per un
+riquadro che in realtà se ne vede uno spicchio.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi invariati (foto in assets: 119 → 124, le 5 nuove).
+
+Nel browser vero, mobile (412px) e desktop (1280px): le cinque strisce si vedono ognuna
+per intero, niente spacchi né sovrapposizioni ai bordi, la scritta resta leggibile sopra la
+sfumatura, il link porta a `pacchetti.html?giorni=tutti` come prima. Nessun errore in
+console (a parte un font esterno bloccato dal proxy di sviluppo, non c'entra con la
+modifica).
+
+Rifatto anche dopo aggiunta la riga bianca fra le strisce: stessa prova, stesso risultato,
+niente spacchi color crema al posto del bianco.
+
+`CACHE_NAME` da `isla-v328` a `isla-v330`: toccati `index.html` e `styles.css`.
+
+## v331 — "Scan ticket" sale sopra la griglia, "Noleggio" scende al suo posto
+
+Richiesta del proprietario: "Scan ticket" orizzontale come "Noleggio auto, moto e bici",
+ma sopra i riquadri invece che sotto, e al posto suo (il riquadro quadrato in mezzo agli
+altri) ci va "Noleggio".
+
+**Scambiate solo le classi e la posizione, non inventato niente di nuovo.** La classe
+`.bento-tile-wide` (larghezza piena, icona e testo in fila) esisteva già ed era su
+"Noleggio"; adesso è su "Scan ticket", messo per primo nella griglia invece che a un
+riquadro quadrato in mezzo agli altri. "Noleggio" perde `.bento-tile-wide` e diventa un
+riquadro quadrato normale, nel punto della griglia dove prima stava "Scan ticket" (subito
+dopo "Pacchetti"). Il commento sopra `.bento-tile-wide` in `styles.css` diceva "il quinto
+riquadro", legato alla posizione che aveva allora: tolto il numero, perché adesso la
+stessa classe la porta un riquadro diverso e in un punto diverso.
+
+Ordine finale nella griglia: Scan ticket (largo, in cima) → Pacchetti → Noleggio (quadrato)
+→ In famiglia → 3/5/7 Days Experience.
+
+Nessun cambio a `app.js`: sia `data-ticket-open` che `data-rental-link` sono selettori per
+attributo, non contano sulla posizione nel DOM.
+
+### Provato
+
+`node controlla.js` si è accorto da solo che avevo toccato `index.html` e `styles.css`
+senza alzare `CACHE_NAME` — errore vero, non un avviso — e l'ho alzato.
+
+Nel browser vero (412px e 1280px): "Scan ticket" in cima a tutta larghezza apre ancora il
+dialog dei ticket (`#ticketDialog`, verificato che perde `hidden` e prende `is-open`);
+"Noleggio", diventato quadrato, ha ancora l'`href` di WhatsApp con il testo precompilato.
+Nessun errore in console.
+
+`CACHE_NAME` da `isla-v330` a `isla-v331`: toccati `index.html` e `styles.css`.
+
+## v332 — la barra "Prenota ora" in fondo alla scheda escursione
+
+Richiesta del proprietario: nella pagina dell'escursione il "book now" va in basso, come
+fanno i siti di escursioni che tiene d'occhio, e per il resto la pagina resta com'era.
+
+Una scheda è lunga: prezzi, riepilogo, itinerario, cosa include, note. Chi decide a metà
+lettura doveva scorrere fino in fondo per trovare il pulsante. Adesso prezzo e pulsante
+stanno appoggiati in fondo allo schermo e seguono chi legge.
+
+**Aggiunta, non spostata.** I due pulsanti dentro la scheda ("Richiedi disponibilità" e
+"Aggiungi alla lista") restano dove sono: chi arriva in fondo leggendo li trova al loro
+posto, e "Aggiungi alla lista" non ha un gemello nella barra perché la barra serve a
+prenotare, non a mettere da parte.
+
+### Il prezzo è quello di partenza, non quello della variante scelta
+
+In barra ci va `tourPriceHTML(tour)`, la stessa cosa scritta sulle schede in elenco ("da
+€60", col barrato se c'è l'offerta). Non segue la variante scelta più sotto: è il prezzo
+**da cui si parte**, e resta vero comunque si giri la scheda. Farlo seguire la variante
+voleva dire tenere allineate due scritture dello stesso numero, e sul chárter privato da
+€800 la barra avrebbe smesso di dire "da quanto parte".
+
+### Il pulsante non ha un suo codice
+
+Porta `data-request-open` con l'id della scheda, come il pulsante dentro la scheda:
+l'ascoltatore in `escursioni.js` sta su `document`, quindi prende anche un pulsante che
+sta fuori dal contenitore. Nessuna finestra nuova, nessun secondo modo di prenotare da
+tenere allineato al primo.
+
+### Due pallini le finivano sopra
+
+In basso ci stavano già `.lista-fab` (a sinistra, quando la lista non è vuota) e
+`.assist-fab` (a destra). `mostraBarraPrenota` mette `has-book-bar` sul `body` e quella
+classe li alza di 4.75rem, più il piede che prende spazio sotto. La classe si toglie
+quando la barra non c'è: su una scheda inesistente, e se un domani `WHATSAPP_NUMBER`
+fosse vuoto — nello stesso caso in cui spariscono i due pulsanti dentro la scheda.
+
+La barra sta solo in `tour.html`: le altre pagine non hanno il pezzo di HTML, quindi non
+c'è niente da nascondere altrove.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi sulle foto che mancano. `node --check` su
+`tour.js` e `sw.js`.
+
+Nel browser vero (Pixel 5, 393px), su `tour.html?id=small-group-catamaran`: la barra c'è,
+scrive "da €60", il pulsante porta l'id giusto e apre `#requestDialog`; in fondo alla
+pagina la barra è ancora lì e il "© Isla" del piede non ci finisce sotto; al cambio lingua
+in spagnolo diventa "RESERVAR" e "desde €60"; con una voce in lista, `.lista-fab` e
+`.assist-fab` stanno sopra la barra senza toccarla (misurati i rettangoli, non a occhio).
+Su `tour.html?id=non-esiste` la barra non compare, e in `escursioni.html` non esiste
+proprio. Nessun errore in console.
+
+`CACHE_NAME` da `isla-v331` a `isla-v332`: toccati `tour.html`, `tour.js` e `styles.css`.
+
+## v333 — la lista vestita da retro di cartolina
+
+Richiesta del proprietario: la lista deve sembrare il retro di una cartolina, col
+francobollo che porta il logo di Isla.
+
+**Solo l'aspetto.** Le voci, il totale, il campo del nome e il pulsante WhatsApp sono
+quelli di prima, nello stesso ordine e con lo stesso codice dietro: `lista.js` cambia in
+un punto solo, il `<span class="lista-francobollo">` aggiunto nell'intestazione della
+finestra. Tutto il resto è in `styles.css`.
+
+### Cosa fa la carta
+
+Fondo `--cream` al posto di `--bg`, e la cornicetta stampata del retro di una cartolina
+fatta con `outline` + `outline-offset: -10px`. Outline e non un bordo dentro il contenuto
+perché la finestra scorre: l'outline sta sul riquadro della finestra e resta ferma mentre
+le voci scorrono sotto.
+
+Le righe fra una voce e l'altra diventano punteggiate, il titolo dell'escursione passa al
+corsivo del `--font-display` (niente font nuovo da scaricare: è il Cormorant che il sito
+già carica), e il totale smette di essere il riquadro sabbia e diventa l'ultima riga del
+conto, tirata sotto con una riga più marcata. Il nome si scrive su una riga come
+sull'indirizzo di una cartolina, non dentro una pillola.
+
+### Il francobollo
+
+Sta fra il titolo e la ✕: in alto a destra è il suo posto sulle cartoline vere, e la ✕
+resta dov'è che la gente la cerca. Dentro c'è `assets/logo-isla.png`, quello del sito.
+
+La dentellatura sono pallini del colore della carta mangiati sui quattro lati
+(`::before`), il timbro postale è un anello storto sull'angolo (`::after`). Il timbro non
+ha scritte dentro: sarebbero tre traduzioni per un disegno che nessuno legge. Il
+`<span>` ha `aria-hidden="true"` e l'`<img>` l'`alt` vuoto — è decorazione, chi usa lo
+screen reader tira dritto.
+
+### Le altre finestre non si toccano
+
+Ogni regola parte da `.lista-dialog`. Verificato nel browser che `#requestDialog` ha
+ancora il fondo `--bg`, nessun outline e il campo del nome a pillola col bordo pieno: la
+cartolina è solo la lista.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `lista.js`.
+
+Nel browser vero (Pixel 5 e 1280px), con due voci in lista: la finestra si apre, il
+francobollo col logo è al suo posto, togliere una voce e svuotare funzionano ancora, il
+modulo col nome è lì. A lista vuota il pallino non compare, come prima. Nessun errore in
+console.
+
+`CACHE_NAME` da `isla-v332` a `isla-v333`: toccati `lista.js` e `styles.css`.
+
+## v334 — la cartolina sembra di più una cartolina
+
+Il proprietario ha guardato la v333 e ha chiesto di spingere: "puoi farmela sembrare più
+cartolina". Quattro cose, nessuna delle quali tocca come funziona la lista.
+
+### La calligrafia
+
+Il corsivo del Cormorant era elegante ma leggeva "serif in corsivo", non "scritto a mano".
+Adesso i titoli delle escursioni, i prezzi, il totale e il nome del cliente sono in
+**Caveat**, aggiunto allo stesso `<link>` di Google Fonts che già porta Cormorant e Jost
+in tutte e sei le pagine.
+
+**Non è una richiesta in più**: è lo stesso foglio CSS, una famiglia in più dentro lo
+stesso indirizzo. Il file del font (~75 KB) lo scarica solo il browser che apre la lista,
+perché il font non è usato da nessun testo finché la finestra non si disegna.
+
+Il link è identico su tutte e sei le pagine anche dove la lista non c'è (`booking.html`):
+una riga sola uguale ovunque è più difficile da sbagliare di due varianti da tenere
+allineate, e il costo è zero — senza testo che lo usi, il font non parte.
+
+Da offline senza il font in cache si vede il ripiego (`"Segoe Script", cursive`, e dove
+non c'è nemmeno quello il font di sistema). È lo stesso che succede già oggi a Cormorant e
+Jost: `sw.js` mette in cache i file del sito, non quelli di Google Fonts.
+
+### Il timbro adesso annulla davvero
+
+All'anello sono state aggiunte le tre righe dell'annullo che escono dal timbro e vanno a
+finire sulla carta, come allo sportello. Sono un `::before` del timbro, non un'immagine.
+
+### La grana della carta
+
+Un puntino ogni 4px, a 5% di opacità: non si vede come puntini, si vede come "non è uno
+schermo bianco". Sopra ci sta la cornicetta stampata, che c'era già.
+
+### Da 640px in su la cartolina si divide in due
+
+Sullo schermo grande c'è spazio per il retro vero: le escursioni a sinistra (il
+messaggio), nome e invio a destra (l'indirizzo), separati dalla riga verticale stampata.
+La finestra passa da 520 a 640px per farci stare due colonne leggibili.
+
+Sul telefono no: due colonne da 160px sarebbero due colonne illeggibili, e lì la cartolina
+resta per il lungo, con la riga di separazione orizzontale sopra il totale.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `lista.js`.
+
+Nel browser vero (Pixel 5 e 1280px), con due voci in lista. Il font a mano nel container
+non si carica — Chromium non si fida del certificato del proxy — quindi per **vederlo** ho
+scaricato il woff2 di Caveat e l'ho iniettato nella pagina di prova, e poi cancellato: nel
+repo non c'è nessun file di font, in produzione resta il link di Google Fonts. Con il font
+davanti agli occhi: titoli, prezzi, totale e nome scritti a mano, timbro con le righe,
+due colonne a 1280px e una sola sul telefono. Togliere una voce, svuotare e il modulo col
+nome funzionano come prima.
+
+`CACHE_NAME` da `isla-v333` a `isla-v334`: toccati `lista.js`, `styles.css` e i sei
+`.html` col link dei font.
+
+## v335 — il sito si gira quando il telefono è scuro
+
+Richiesta del proprietario: lasciando i colori quelli originali, il sito deve cambiare a
+seconda che il telefono sia impostato chiaro o scuro.
+
+Niente interruttore da premere, niente preferenza da salvare: `prefers-color-scheme` arriva
+dalle impostazioni del sistema e il browser la passa al foglio di stile. Un interruttore
+nel menu vorrebbe dire una scelta in più da salvare, da tradurre e da tenere allineata
+alla lingua: si può aggiungere dopo, se qualcuno lo chiede.
+
+**I colori non cambiano: si girano.** Il nero caldo del testo diventa il fondo, la carta
+chiara diventa il testo, il pulsante pieno passa da nero-su-chiaro a chiaro-su-scuro. Le
+foto restano quelle che sono, ed è metà del lavoro: su un sito di escursioni al buio
+sembrano accese.
+
+### Il tema sta tutto dentro una `@media`
+
+Le 12 variabili di `:root` riscritte dentro `@media (prefers-color-scheme: dark)`. Il tema
+chiaro non è stato toccato da nessuna riga: **verificato misurando**, non a occhio —
+sfondo, colore, bordo, ombra e font di 13 elementi su 4 pagine, letti dal browser sulla
+versione vecchia e su questa, 52 confronti, zero differenze.
+
+### Le tre cose che non si giravano da sole
+
+Dei 42 colori scritti a mano fuori dalle variabili, quasi tutti sono bianchi sopra una foto
+o ombre, e restano giusti anche al buio. Tre no, e si vedevano solo provando:
+
+1. **`.pill-solid`** (il "Prenota ora" in cima) prende il fondo da `--text` e la scritta da
+   un `#fff` scritto a mano: al buio `--text` diventa chiaro e il pulsante finiva bianco su
+   bianco. Le altre tre regole che usano `--text` come fondo prendono la scritta da una
+   variabile, quindi si girano da sole.
+2. **Il francobollo della cartolina** prende il fondo da `--surface`: diventava un quadrato
+   nero.
+3. **Le ✕ della cartolina** (`.iconbtn`, stesso fondo) diventavano due macchie scure sulla
+   carta chiara.
+
+### `color-scheme: light dark`
+
+Su `:root`, fuori dalla media query. Serve per le cose che disegna il browser e non il
+foglio di stile: il calendario del campo data nella finestra "Richiedi disponibilità", la
+freccia delle tendine, la barra di scorrimento. Senza quella riga restavano neri su nero —
+il campo data era inservibile al buio.
+
+### La cartolina resta di carta
+
+Una cartolina nera non è una cartolina. La carta crema e l'inchiostro scuro restano quelli
+del giorno, e sul fondo scuro sembra appoggiata sul comodino. Per questo dentro
+`.lista-dialog` l'inchiostro va riscritto scuro a mano: se no eredita il testo chiaro del
+tema e sparisce sulla carta.
+
+### Le altre due pagine fuori dal foglio
+
+`offline.html` non usa `styles.css` — è il ripiego di quando non c'è rete e si porta i
+colori dentro — quindi ha la sua `@media` di quattro righe: se no chi ha il telefono al
+buio e perde la linea si prende una pagina bianca in faccia.
+
+Il `theme-color` delle sei pagine era uno solo, chiaro: adesso sono due, uno per tema, con
+`media="(prefers-color-scheme: ...)"`. È la striscia del browser sopra il sito.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi (e si è accorto da solo che avevo toccato
+`styles.css` senza alzare `CACHE_NAME`, come alla v331). `node --check` su `sw.js`.
+
+Nel browser vero (Pixel 5), al buio: home, elenco, pacchetti, pacchetto, booking, offline,
+più menu, finestra richiesta, finestra ticket, assistente e cartolina. Nessun errore in
+console.
+
+Poi un controllo automatico del contrasto su sette pagine: prende ogni elemento che
+contiene testo, risale ai genitori finché trova un fondo pieno, calcola il rapporto e
+segnala sotto 3:1. **Al buio: zero.** Alla luce ne escono 114, ma non li ho toccati: sono
+quelli di sempre, e quasi tutti sono scritte sopra le foto, che lo script misura contro il
+fondo della scheda invece che contro la foto. Restano veri i due casi dell'oro
+(`.eyebrow` e `.tour-cat`, 2,16:1 e 2,25:1 su carta chiara): scelta di marca, non una
+rottura, e al buio l'oro un filo più chiaro li porta sopra la soglia.
+
+`CACHE_NAME` da `isla-v334` a `isla-v335`: toccati `styles.css`, `offline.html` e i sei
+`.html` col `theme-color`.
+
+## v336 — il conto e il pulsante restano in fondo alla finestra della richiesta
+
+Il proprietario: «il momento della prenotazione è macchinoso, come potremmo farlo più
+fluido». Prima di rispondere ho misurato la finestra "Richiedi disponibilità" in un
+telefono vero, perché "macchinoso" da solo non dice **dove**.
+
+| scheda | modulo | campi | dove stava il pulsante |
+|---|---|---|---|
+| Freebird, la più semplice | 1262 px | 8 | 1142 px → **1,4 schermate** |
+| Mustang, varianti + mezzi | 1301 px | 8 | 1181 px |
+| MHT Drag Show, coi menu | 1563 px | 11 | 1443 px → **1,9 schermate** |
+
+Il telefono ne mostra 844 (un iPhone SE 667). Quindi **anche sulla scheda più leggera il
+cliente compilava una schermata e mezza senza vedere né quanto viene né dove si manda**, e
+il totale — il numero che cambia ogni volta che tocca "adulti" — stava a metà modulo e gli
+passava davanti una volta sola, per poi sparire di sopra.
+
+Questo è il primo dei passi, non l'unico: gli altri sono scritti in fondo.
+
+### Cosa cambia
+
+Un `.request-foot` con dentro il totale e il pulsante, `position: sticky; bottom: 0`. Il
+modulo gli scorre sotto, il conto è sempre lì e "Continua su WhatsApp" non va più cercato.
+
+Non cambia **niente** di quello che finisce nel messaggio: stessi campi, stesso ordine,
+stesse regole. È solo dove stanno sullo schermo.
+
+### Le due righe sotto restano fuori dal piede
+
+Il preavviso di 24 ore e la riga della privacy stanno **dopo** il piede, non dentro. Due
+ragioni, e la seconda non è estetica:
+
+- lette una volta non servono più, e dentro occuperebbero spazio fisso a tutti;
+- `position: sticky` regge solo finché sotto c'è ancora qualcosa da scorrere. Se il piede
+  fosse l'ultima cosa del modulo, non si incollerebbe a niente.
+
+### L'errore preso: il piede si fermava 2 rem troppo in alto
+
+Prima versione, e i campi gli spuntavano da sotto: sotto la barra si vedeva la tendina
+"A che ora", che nel modulo sta molto più su. Misurato: piede a 635, finestra a 667.
+
+I 32 px sono il `padding-bottom: 2rem` di `.ticket-dialog`. Quello che scorre finisce dove
+finisce il **contenuto**, e il padding in fondo resta fuori: `bottom: 0` si incollava lì.
+
+Risolto spostando il respiro dalla finestra al modulo — `.request-dialog { padding-bottom:
+0 }` e `.request-dialog form { padding-bottom: 2rem }` — invece di scrivere un
+`bottom: -2rem` che sarebbe stato un numero magico legato a una regola 1500 righe più su,
+di quelli che si rompono da soli il giorno che qualcuno tocca il padding.
+
+### Il totale da tre righe a due
+
+Nel piede lo spazio è quello che tolgo al modulo. Il numero grosso a sinistra, il conto
+("2 adulti × €30") a destra sulla stessa riga, e sotto la nota che è indicativo. Quella
+nota **non si tocca**: il prezzo buono è quello della conferma, e toglierla per guadagnare
+una riga sarebbe stato un guadagno pagato con un dato.
+
+`flex` e non `grid`: il totale dei pacchetti qui dentro è **testo semplice**, senza
+`<strong>` né `<span>` (lo scrive `textContent` in `pacchetti.js`). In una colonna di
+griglia si spezzava a metà — "You save / €11" —, come riga di flex si distende.
+
+### Anche i pacchetti, e perché
+
+Il piede è in tre posti: `escursioni.html`, `tour.html` e la finestra che `pacchetti.js`
+costruisce in JavaScript. Le prime due sono la solita copia doppia (controllate riga per
+riga: identiche). La terza ha lo stesso identico problema — modulo da 1109 px in 587 — e
+lasciarla indietro voleva dire due comportamenti diversi nella stessa app, sullo stesso
+gesto.
+
+La finestra della lista (`lista.js`) invece **no**: ha un campo solo e non scorre. Un piede
+fisso lì non risolve niente e ruba spazio.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `escursioni.js`,
+`tour.js`, `pacchetti.js`.
+
+Nel browser vero, iPhone SE (375×667) e iPhone X (390×844), su tre schede scelte apposta
+diverse — Freebird (nuda), Mustang (varianti e mezzi), MHT (menu, la più lunga): il
+pulsante è visibile **all'apertura** in tutti e sei i casi, il piede arriva esatto al fondo
+della finestra, e in fondo allo scorrimento si stacca e lascia vedere le due righe. Più la
+finestra dei pacchetti, il desktop a 1200 px (angoli tondi a posto) e la copia di
+`escursioni.html`, aperta a mano perché da quella pagina le schede portano al dettaglio e
+lì dentro niente la apre. Zero errori in console.
+
+**Controllato apposta**: la tendina dei 562 hotel passa **sopra** il piede e non sotto
+(`z-index` 2 contro 1) — verificato con `elementFromPoint` sulle prime quattro voci, non a
+occhio. Era la cosa che una barra opaca in fondo poteva rompere in silenzio.
+
+`CACHE_NAME` da `isla-v335` a `isla-v336`: toccati `styles.css`, i due `.html` e
+`pacchetti.js`.
+
+### Gli altri passi, misurati ma non fatti
+
+Da fare uno alla volta, in quest'ordine:
+
+1. **La tastiera si apre in faccia.** Il primo campo è "Il tuo nome", testo libero, e il
+   nome serve solo alla fine. Spostarlo in fondo, o ricordarlo.
+2. **Adulti e bambini sono caselle numeriche.** Tap, tastierino che copre lo schermo,
+   digita, chiudi — ed è l'interazione più ripetuta del modulo. Un `− 2 +` è un tap.
+3. **Nome e hotel non si ricordano.** Chi chiede tre escursioni li riscrive tre volte, e
+   l'hotel per tutta la vacanza è lo stesso. Da decidere insieme cosa fare della riga sulla
+   privacy, che oggi promette che il sito non salva niente.
+4. **La data è tutta a mano.** Pastiglie "domani / dopodomani", costruite già saltando i
+   giorni in cui non si parte: toglie i tap **e** toglie l'errore dopo la scelta.
+5. **Il nome, forse, non va chiesto**: il messaggio parte dal WhatsApp del cliente e
+   l'ufficio vede già chi scrive. Domanda per il proprietario, non decisione da prendere
+   qui.
+## v272 — il picnic lo dà il fornitore, e la scheda diceva il contrario
+
+Correzione del proprietario: **il picnic del gruppo piccolo è compreso nel prezzo, non se
+lo porta il cliente.**
+
+La scheda non lo diceva mai apertamente, ma il verbo lo faceva capire al contrario. La
+descrizione diceva:
+
+> il gruppo piccolo va in minivan, **porta** un picnic al tramonto
+
+E in inglese era anche peggio — *«the small group travels by minivan, **brings** a picnic
+for sunset»* — dove "brings" ha come soggetto più naturale chi legge, non il fornitore.
+Uguale in spagnolo con *«lleva un picnic»*.
+
+Le icone dicevano già la verità (`fingerfood` e `drinks` sono fra i compresi del gruppo
+piccolo), ma **le parole battono le icone**: un cliente legge la frase e si porta i panini
+da casa, oppure — peggio — non prenota perché pensa di doverseli preparare.
+
+Corretti tutti e tre i punti dove il cibo compariva, nelle tre lingue:
+
+| dove | adesso dice |
+|---|---|
+| descrizione della scheda | «al tramonto **ti offre** un picnic, compreso nel prezzo» |
+| descrizione della variante | «un picnic **preparato dal fornitore e compreso nel prezzo**» |
+| tappa dell'itinerario | «**Lo porta il fornitore, non c'è niente da preparare a casa**» |
+
+La riga dell'itinerario è quella che chiude il discorso per tutte e tre le serate insieme:
+sta sulla scheda, quindi vale sia per la cena del gruppo grande, sia per il panino, sia per
+il picnic. Nessuno dei tre può più essere letto come "portatelo da casa".
+
+**Da tenere a mente:** quando una scheda dice cosa si mangia, il verbo deve dire anche
+**chi lo porta**. "Con un picnic" non basta — è ambiguo in tutte e tre le lingue, e
+l'ambiguità cade sempre dalla parte sbagliata, cioè addosso al cliente.
+
+### `controlla.js` ha fatto il suo mestiere
+
+Modificato `esplora-catalog.js` e lanciato il controllo prima di alzare `CACHE_NAME`:
+**1 errore**, con scritto quali file erano cambiati e che il nome della cache era rimasto
+uguale al merge-base. Alzato a `isla-v272`, tornato a 0 errori. È il controllo aggiunto
+apposta perché questa cosa non si dimentichi: senza, la correzione ci sarebbe stata nel
+codice e nessuno l'avrebbe vista sul sito.
+
+### Provato
+
+Nel browser vero, nelle tre lingue: la descrizione della scheda, quella del gruppo piccolo
+e la tappa del cibo dicono tutte e tre che lo porta il fornitore. Prezzi, totali, lingue,
+icone e tappe invariati. Nessun errore in console.
+
+`node controlla.js` → 70 schede, 0 errori, 2 avvisi. `CACHE_NAME` a `isla-v272`.
+
+---
+
+## v273 — la pulizia, e quanto poco c'era da pulire
+
+Richiesta del proprietario: togliere dal sito tutto il superfluo. Prima di cancellare
+qualsiasi cosa è stato fatto l'inventario, e il risultato più utile è **quanto poco è
+venuto fuori**. Vale la pena scriverlo, così la prossima volta nessuno rifà lo stesso giro.
+
+| cercato | trovato |
+|---|---|
+| classi CSS mai usate | **0** su 206 |
+| funzioni JS mai chiamate | **0** |
+| chiavi i18n mai usate | **0** su 283 (una sembrava morta, vedi sotto) |
+| file elencati in `sw.js` che non esistono | **0** |
+| foto in `assets/` che nessuno nomina | **1** su 117 |
+| foto identiche fra loro | **1 coppia** |
+| codice morto | il `<select>` delle varianti, ~35 righe |
+
+### Quello che è stato tolto
+
+**Il `<select>` delle varianti dentro la finestra della richiesta.** CLAUDE.md lo dava già
+per morto, ma prima di cancellarlo è stato verificato nel codice invece che sulla parola:
+
+- si mostra solo se `!sceltaDallaPagina()`, cioè se nessun bottone della pagina di
+  dettaglio è premuto
+- in `tour.js` i bottoni si disegnano con `premuto = i === 0`: **il primo è sempre
+  premuto**
+- `data-request-open`, cioè l'unica cosa che apre la finestra, esiste solo in `tour.js`
+
+Quindi la condizione per vederlo non si avvera mai. Tolti il `<select>` e la sua `<label>`
+da tutti e due gli HTML, la funzione `riempiOpzioni()` che lo riempiva, i due
+`querySelector` e il blocco che lo ricostruiva al cambio lingua. `opzioneScelta()` adesso è
+una riga sola.
+
+**`assets/teide-masca.jpg`**, 30 KB, che nessun file nominava — **poi rimessa**, vedi sotto.
+
+**`assets/mustang-experience.jpg`**, byte per byte identica a `Cat-avventura.jpg`: 202 KB
+che il telefono scaricava due volte. La scheda Mustang punta adesso alla foto della
+categoria, come già fa il Twin Ticket con `Cat-parchi.jpg`. ⚠ **Le due immagini sono
+legate**: cambiare la foto del Mustang cambia anche la card "Avventura e motori" in home.
+Sta scritto nel commento sopra il campo `image`.
+
+### Quello che sembrava morto e non lo era
+
+**`categories.altSuffix`.** Il primo controllo la dava per mai usata, perché cercava le
+chiavi in tutti i file **tranne** `i18n.js`. È usata proprio lì dentro, per scrivere il
+testo alternativo delle immagini delle categorie (`nome + " " + t("categories.altSuffix")`).
+
+L'ha salvata un `assert` nello script di pulizia, che pretendeva di trovare esattamente una
+riga e ne ha trovate due. **Quando si cancella in blocco, il controllo va scritto perché
+fallisca**: uno script che "toglie quello che trova" avrebbe cancellato la chiave e rotto
+tutti gli `alt` delle categorie senza che nessun test se ne accorgesse.
+
+### Quello che NON si tocca, e perché
+
+- **Le 6 schede `published: false`** (Spyder, Quad da Puerto de la Cruz, Charter privato,
+  Tour privato su misura, Teide privato di giorno e di notte). Scelta del proprietario:
+  sono lavoro in sospeso, non roba morta. Non si vedono sul sito e non pesano sul
+  caricamento — sono righe di testo dentro un file che si scarica comunque
+- **`booking.html` e `booking.js`** col loro `TODO` e i dati finti: il flusso "Prenota ora"
+  resta per scelta del proprietario, è il segnaposto di un sistema di prenotazioni futuro
+- **`dati-fornitore/`** (68 KB): CLAUDE.md lo documenta come il posto dei dati grezzi e
+  della storia di come sono stati raccolti
+- **`NOTES.md`** (490 KB): è la memoria lunga, non un file di appoggio
+- **La finestra della richiesta duplicata** in `escursioni.html` e `tour.html`: è voluta, e
+  un `diff` conferma che i due blocchi sono ancora identici
+- **Le icone `speaker` e `cooler`**, disegnate ma non usate da nessuna scheda: due voci in
+  `INCLUDED_ICONS` non pesano niente, e il giorno che arriva una barca con l'impianto
+  audio ci sono già
+- **`About-team.jpg`, 5 MB.** Segnalata al proprietario perché da sola è un quinto di tutte
+  le foto del sito: ha deciso di lasciarla com'è. **Resta il file più pesante del
+  progetto** — se un giorno la pagina "Chi siamo" sembra lenta, è lei
+
+### Provato
+
+Nel browser vero. Il pezzo delicato era la finestra della richiesta, quindi è stata provata
+su tre schede con varianti (stargazing 2, buggy 4, Freebird 4) e su una senza: il titolo
+della richiesta porta ancora la variante premuta, e il messaggio WhatsApp esce completo —
+«Serata: Gruppo piccolo (italiano, inglese, tedesco)» con «Totale indicativo: €227 (2
+adulti × €79 + 1 bambino × €69)». Il `<select>` non c'è più in nessuna delle due pagine.
+
+Poi tutte le foto: aperte home, elenco, dettaglio e prenota, e scorso l'elenco fino in
+fondo per far partire il caricamento pigro. **Nessuna immagine rotta e nessuna richiesta a
+`assets/` fallita.** Foto da 117 a 115.
+
+`node controlla.js` → 70 schede, 0 errori, 2 avvisi. `CACHE_NAME` a `isla-v273`.
+
+### Poi il branch e' rimasto indietro di 45 PR, e una foto orfana non lo era piu'
+
+Fra la pulizia e il merge sono entrate su `main` **quarantacinque** PR — i pacchetti, il
+karting, il surf, la barra "Prenota ora", il conto in fondo alla finestra. Riallineando,
+`controlla.js` ha dato **1 errore**:
+
+```
+pacchetto giorni-3
+    la foto "teide-masca.jpg" non c'e' in assets/.
+```
+
+La foto che il 10 settembre non usava nessuno, il 15 la usa il pacchetto "3 Days
+Experience" di `pacchetti.js`, che allora non esisteva. **Rimessa.**
+
+È il limite di qualsiasi ricerca di roba orfana: dice cosa non serve **oggi**, non cosa non
+servira' domani. Su un file di 30 KB il guadagno era zero e il rischio no. La regola che ne
+esce: **una foto orfana si cancella solo se e' anche brutta, sbagliata o doppia** — se e'
+solo inutilizzata, costa meno lasciarla li'.
+
+`mustang-experience.jpg` invece resta cancellata, perche' li' il motivo non era
+"non la usa nessuno" ma "e' lo stesso file di un'altra": un doppione resta un doppione
+anche fra sei mesi.
+
+### Il `<select>` riverificato su main di oggi
+
+Prima di tenere la cancellazione e' stato rifatto il ragionamento sul main nuovo, non su
+quello di cinque giorni prima — con la barra "Prenota ora" (#242) e due pagine nuove
+(`pacchetti.html`, `pacchetto.html`) poteva essere cambiato tutto:
+
+- `data-request-open` adesso sta in due posti, `tour.html` (la barra) e `tour.js` (il
+  bottone): **tutti e due sulla pagina di dettaglio**
+- `tour.js` disegna ancora i bottoni con `premuto = i === 0`
+- le due pagine dei pacchetti **non hanno** la finestra della richiesta
+
+La condizione per vedere il `<select>` continua a non avverarsi mai. Se una delle due cose
+fosse cambiata, la cancellazione andava annullata.
+
+### I conflitti del riallineamento
+
+Quattro file, e uno meritava attenzione:
+
+| file | come e' stato risolto |
+|---|---|
+| `escursioni.html`, `tour.html` | **non ha vinto nessuno dei due lati**: il mio aveva la riga del totale, che main ha spostato in fondo alla finestra (#244); quello di main aveva il `<select>`, che ho tolto io. Al suo posto non ci va niente |
+| `esplora-catalog.js` | ha vinto main, che ha riscritto la scheda Mustang (icone, tappe, note). La mia unica modifica era la riga `image`, rimessa sopra il testo nuovo |
+| `sw.js` | main a `isla-v336`, il branch a `isla-v273`: messo `isla-v337`, piu' alto di tutti e due |
+| `NOTES.md` | scrivono tutti e due in fondo: tenute entrambe, prima main |
+
+Il primo e' quello che un "prendi il mio" o un "prendi il loro" avrebbe sbagliato in tutti
+e due i versi: tenendo il mio lato tornava il totale in mezzo alla finestra, tenendo quello
+di main tornava il `<select>` morto.
+
+### Riprovato dopo il riallineamento
+
+`node controlla.js` → 66 schede, **0 errori**, 3 avvisi (i due di sempre piu' `trekking-bici`
+senza foto, che arriva da main). Nel browser: la finestra della richiesta su tre schede con
+varianti, il messaggio WhatsApp completo — «Teide by Night — Gruppo piccolo (italiano,
+inglese, tedesco)», «€227 (2 adulti × €79 + 1 bambino × €69)» — il totale che compare in
+fondo come vuole #244, e nessuna immagine rotta su home, elenco, pacchetti, prenota e
+dettaglio. `CACHE_NAME` a `isla-v337`.
+
+## v338 — il nome scende in fondo alla finestra della richiesta
+
+Secondo dei cinque passi sulla prenotazione. Il primo campo della finestra era **"Il tuo
+nome"**: la prima cosa che il cliente si trovava davanti, prima ancora di "quando vorresti
+andare".
+
+### Prima: la nota della v336 era sbagliata
+
+Lì avevo scritto «la tastiera si apre in faccia». **Non è vero, e vale la pena scriverlo
+qui perché non ci torni qualcun altro.** Ho cercato: nella finestra non c'è nessun
+`focus()` all'apertura — gli unici sono la casella dell'hotel dopo aver scelto un
+suggerimento e la data quando il giorno è sbagliato. La tastiera si apre **quando il
+cliente tocca il campo**, non da sola.
+
+Il problema vero, quello che resta dopo aver tolto l'esagerazione, è un altro e più
+semplice: **il nome è l'unica domanda che non riguarda l'escursione**, ed è l'unica a cui
+si risponde battendo a macchina. Metterla per prima vuol dire aprire la finestra su un
+adempimento invece che sulla domanda vera. Adesso la finestra si apre su "Quando vorresti
+andare" e il nome si scrive alla fine, quando si sta già mandando.
+
+### Cosa cambia
+
+Il blocco `[data-request-name]` si sposta in fondo, appena sopra il piede. Basta spostarlo:
+nessuno stile era legato alla sua posizione (niente `:first-child`), e il codice lo cerca
+per attributo, non per posizione.
+
+Niente cambia nel messaggio WhatsApp — il nome ci finisce come prima, nella stessa riga
+d'apertura. Niente cambia nella modalità "aggiungi alla lista", dove la riga sparisce lo
+stesso: il nome lì si chiede una volta sola, quando si manda la lista.
+
+Fatto anche nella finestra dei pacchetti, dove `packName` era il primo campo per lo stesso
+motivo.
+
+### Quello che questo spostamento poteva rompere
+
+**Il nome è adesso l'ultimo campo prima di una barra opaca.** Il piede della v336 è alto
+169 px e sta incollato in fondo: un campo che gli finisce sotto è un campo che il cliente
+non vede mentre ci scrive dentro. Controllato con `elementFromPoint` sul centro della
+casella, su sei combinazioni di schermo e scheda: quando la casella prende il fuoco il
+browser la porta da sola sopra al piede, e sopra al suo centro c'è `reqName` e non il
+piede. Lo stesso in quella dei pacchetti.
+
+**La casella è `required`.** Con il campo in cima, il browser che rifiuta l'invio portava
+il cliente indietro di una schermata; adesso il campo è già lì, sotto il pulsante che ha
+appena premuto. Provato: invio col nome vuoto → la finestra resta aperta, su WhatsApp non
+parte niente, e il fumetto del browser esce sulla casella giusta.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `pacchetti.js`.
+
+Nel browser vero, iPhone SE (375×667) e iPhone X (390×844), su Freebird, Mustang e MHT: il
+primo campo è `reqDate` in tutti e sei i casi, e all'apertura si vedono data, hotel e
+orario invece del nome.
+
+Il giro completo, fino al messaggio: richiesta con nome → su WhatsApp arriva
+"I'm Mario Rossi…" come prima; richiesta col nome vuoto → bloccata; "aggiungi alla lista"
+→ nome nascosto, non obbligatorio, una voce salvata e finestra chiusa. Più il pacchetto
+"Tenerife Trio", messaggio compreso. Zero errori in console.
+
+⚠ **Quello che qui non si può provare**: come si comporta la tastiera vera su un iPhone.
+`max-height: 88dvh` non si accorcia quando la tastiera sale su Safari iOS, quindi il fondo
+della finestra — dove adesso c'è il nome — potrebbe finirci sotto. Su Chromium il browser
+porta la casella in vista da solo, ma **la tastiera di iOS non è simulabile qui**: va
+guardata sul telefono. Se dà noia, il rimedio non è rimettere il nome in cima.
+
+`CACHE_NAME` da `isla-v337` a `isla-v338`: toccati i due `.html` e `pacchetti.js`.
+
+### Trovato passando di qui, e non c'entra con questa modifica
+
+Rifacendo le prove dopo aver portato dentro `main` (che nel frattempo ha tolto il `<select>`
+morto delle varianti): aprendo la finestra della richiesta **dalla pagina catalogo**, su una
+scheda i cui prezzi stanno solo nelle varianti, il totale non compare.
+
+Il perche': senza quel `<select>`, `opzioneScelta()` non ha piu' da dove leggere la variante
+quando i bottoni della pagina di dettaglio non ci sono, quindi torna vuota, `calcolaTotale()`
+non trova prezzi e la riga resta nascosta.
+
+**Non e' una regressione di questa modifica** — misurato uguale su `main` da solo — e
+soprattutto **non e' una strada che un cliente puo' fare**: i pulsanti `data-request-open` e
+`data-request-add` li scrive solo `tour.js`, e dalla pagina catalogo le schede portano al
+dettaglio. In `escursioni.html` la finestra c'e' ma non la apre niente: l'ho aperta a mano
+per provarla. Da tenere a mente il giorno che si volesse chiedere una richiesta direttamente
+dall'elenco: quel giorno il `<select>` servirebbe di nuovo, o servirebbe un altro modo di
+sapere la variante.
+
+### Dove siamo coi cinque passi
+
+Fatti: il piede col conto (v336), il nome in fondo (v337). Restano:
+
+1. **Adulti e bambini sono caselle numeriche** → un `− 2 +`. È l'interazione più ripetuta
+   del modulo, ed è il prossimo.
+2. **Nome e hotel non si ricordano.** Da decidere insieme cosa fare della riga sulla
+   privacy, che oggi promette che il sito non salva niente.
+3. **La data è tutta a mano** → pastiglie "domani / dopodomani", costruite già saltando i
+   giorni in cui non si parte.
+4. **Il nome, forse, non va chiesto**: il messaggio parte dal WhatsApp del cliente.
+   Domanda per il proprietario.
+
+## v339 — il "meno / più" al posto delle caselle numeriche
+
+Terzo dei cinque passi sulla prenotazione. Contare quante persone sono è **l'unica cosa
+che nella finestra si fa quasi sempre**, ed era la più lenta: tocca la casella, aspetta il
+tastierino, batti il numero, chiudi il tastierino. Quattro gesti per andare da 2 a 3.
+Adesso è un tocco.
+
+### La decisione che tiene in piedi tutto il resto
+
+**La casella `type="number"` resta, ed è sempre lei a dire il numero.** I bottoni le
+scrivono dentro e poi sparano un evento `input`.
+
+Sembra un dettaglio ed è la cosa che ha reso questa modifica piccola: il totale, il
+controllo dei menu e quello dei mezzi stavano **già** ad ascoltare `input`, e continuano a
+funzionare senza sapere che i bottoni esistono. Niente secondo posto dove il numero è
+scritto — che è il modo di ritrovarsi due numeri diversi e non sapere quale vale.
+
+`bubbles: true` sull'evento non è decorativo: la finestra dei **pacchetti** ascolta
+`input` sulla finestra (`dialog.addEventListener("input", aggiornaTotale)`), non sulla
+casella. Senza, lì il totale non si muoveva.
+
+**E si può ancora battere a mano.** Per dodici persone scrivere "12" è più svelto che
+premere dieci volte. I bottoni servono al caso normale, che è "siamo due, più un bambino".
+
+### Un posto solo, e cinque punti serviti
+
+`applicaStepper(dove)` veste ogni `input[type="number"]` che trova. Sta in
+`escursioni.js`, l'unico file che **tutte** le pagine caricano (`pacchetti.js` viene
+dopo, quindi la vede). Chiamata in quattro punti:
+
+| punto | quando |
+|---|---|
+| le tre caselle delle persone | una volta sola all'avvio: stanno nell'HTML e non cambiano mai |
+| le righe dei mezzi | a ogni `riempiUnita()`: nascono e muoiono a ogni apertura |
+| le righe dei menu | a ogni `riempiMenu()`, stessa ragione |
+| la finestra dei pacchetti | a ogni `disegna()`: si ridisegna tutta ogni volta |
+
+Chi ridisegna ripassa di qui, quindi `vesti()` **controlla se la casella è già vestita** e
+in quel caso lascia stare. Senza, cambiare lingua a finestra aperta raddoppiava i bottoni
+ogni volta. Provato: Mustang e MHT restano a 10 e 12 bottoni dopo il cambio lingua, e nei
+pacchetti il "3" appena messo resta "3".
+
+**Non ho toccato l'HTML.** Il che vuol dire che per una volta la copia doppia di
+`escursioni.html` e `tour.html` non è un rischio: i bottoni li mette il JavaScript, e il
+JavaScript è uno.
+
+### Le tre trappole, e la prima poteva rendere tutto peggio del problema
+
+**1. Un bottone dentro una `<label>`.** Le caselle stanno in
+`<label for="reqAdults"><span>Adulti</span><input></label>`, e toccare una label mette a
+fuoco il suo campo. Se fosse valso anche per i bottoni, **ogni tocco su "+" avrebbe aperto
+la tastiera** — cioè esattamente la cosa che questo passo doveva togliere, peggiorata.
+
+Per specifica non succede: la label non inoltra il clic quando il bersaglio è un elemento
+interattivo, e un `<button>` lo è. Ma è troppo importante per fidarsi di una lettura della
+specifica: **misurato**. Dopo un tocco su "+", `document.activeElement` è `stepper-btn`,
+non `reqAdults`. Su sei prove diverse e anche nei pacchetti.
+
+**2. `type="button"`.** Dentro un `<form>`, un bottone senza `type` è un bottone d'invio:
+senza quella riga, toccare "+" mandava la richiesta su WhatsApp. Provato che non parte
+niente.
+
+**3. Le frecce del browser.** Le caselle numeriche ne hanno già due, e su desktop
+comparivano al passaggio del mouse rubando spazio al numero: spente, se no era la stessa
+cosa detta due volte.
+
+### I bottoni si spengono ai limiti
+
+"Adulti" parte da uno: a uno il meno si spegne. A trenta si spegne il più. Un bottone
+acceso che non fa niente sembra rotto. Vale anche battendo a mano: chi scrive "30" vede il
+più spegnersi.
+
+### `tabindex="-1"`, e perché non è un problema di accessibilità
+
+I bottoni sono fuori dal giro del tasto Tab. Chi gira con la tastiera ha già la casella,
+dove i numeri si battono e le frecce su/giù funzionano; due fermate in più per campo
+sarebbero **otto** fermate in più nella finestra. La funzione resta raggiungibile da
+tastiera — che è quello che la regola chiede — solo non due volte. Il segno "−" da solo
+non si legge ad alta voce, quindi il nome vero sta in `aria-label`, tradotto nelle tre
+lingue (`req.minus`, `req.plus`).
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `escursioni.js`,
+`pacchetti.js`, `i18n.js`.
+
+Nel browser vero, iPhone SE (375×667): un tocco su "+" porta 2 a 3 e il totale da €60 a
+€90; i limiti si accendono e si spengono; il "+" non manda la richiesta. Le righe dei menu
+(MHT, tre menu) e dei mezzi (Mustang, due tipi) vestite anche loro, e **misurato che non
+sbordano dalla colonna**: 159 px di riga, 73 al numero, 2×38 ai bottoni.
+
+Il giro completo: 3 adulti e 1 bambino messi coi bottoni → su WhatsApp arriva
+"3 adults and 1 child" e "€105 (3 adults × €30 + 1 child × €15)". "Aggiungi alla lista"
+con due bambini → salvata con due bambini. La finestra dei pacchetti: da €265 a €397,50.
+
+Più desktop a 1200 px, **al buio** (i bottoni prendono le variabili del tema, quindi si
+girano da soli), la home — dove la finestra non c'è e `applicaStepper` non viene nemmeno
+chiamata, sta dopo la guardia — e il catalogo. Zero errori in console.
+
+`CACHE_NAME` da `isla-v338` a `isla-v339`: toccati `escursioni.js`, `pacchetti.js`,
+`i18n.js` e `styles.css`.
+
+### Si parte da una persona, non da due
+
+Chiesto dal proprietario appena visti i bottoni, e le due cose stanno insieme: **finche' i
+numeri si battevano a macchina, un valore di partenza sbagliato costava quattro gesti** —
+per questo partire da due, che e' il caso piu' frequente, era la scelta giusta. Col
+"meno / piu'" costa **un tocco**, e allora conviene partire dal numero che non promette
+niente: uno.
+
+Tre posti, `value="2"` che diventa `value="1"`: le due copie dell'HTML e la finestra dei
+pacchetti. Il `min="1"` non si tocca — sotto uno non si va — quindi all'apertura il meno
+e' spento, com'e' giusto, e si riaccende al primo "+".
+
+Tolta anche una riga morta in `pacchetti.js`: `const conto = pacchettoTotale(corrente, 2,
+0)` dentro `disegna()`, che **nessuno leggeva** (il totale lo rifa' `aggiornaTotale()`
+subito dopo, dalle caselle vere). Lasciarla voleva dire lasciare in giro un "2" che sembra
+il valore di partenza e non lo e' piu'.
+
+Il singolare gia' funzionava e non c'e' stato niente da fare: sul messaggio esce
+"1 adult", non "1 adults", e nel totale "1 adult × €30".
+
+Provato: all'apertura 1 adulto, meno spento, totale €30; un "+" porta a 2, il meno si
+riaccende, totale €60; il messaggio dice "People: 1 adult" e "€30 (1 adult × €30)"; i
+pacchetti partono da 1 con €132,50, che e' la meta' esatta dei €265 di prima.
+
+`CACHE_NAME` a `isla-v340`.
+
+### Restano due passi
+
+1. **Nome e hotel non si ricordano.** Chi chiede tre escursioni li riscrive tre volte, e
+   l'hotel per tutta la vacanza è lo stesso. Da decidere insieme cosa fare della riga sulla
+   privacy, che oggi promette che il sito non salva niente.
+2. **La data è tutta a mano** → pastiglie "domani / dopodomani", costruite già saltando i
+   giorni in cui non si parte: toglie i tap **e** toglie l'errore dopo la scelta.
+
+E la domanda per il proprietario, che non è un passo: **il nome, forse, non va chiesto** —
+il messaggio parte dal WhatsApp del cliente e l'ufficio vede già chi scrive.
+
+## v341 — l'hotel si ricorda, il nome no
+
+Quarto dei cinque passi sulla prenotazione. Fra 562 nomi, l'hotel è **l'unica domanda
+della finestra la cui risposta non cambia mai**: per tutta la vacanza il cliente sta nello
+stesso posto. La data cambia, le persone possono cambiare, l'hotel no — e glielo facevamo
+ribattere a ogni escursione.
+
+Chiesto dal proprietario: «ricordiamo hotel». Solo l'hotel, e va bene così — vedi sotto.
+
+### Il nome **non** si ricorda, e non è una dimenticanza
+
+L'hotel è un dato della vacanza, il nome è un dato della persona. Se il telefono gira di
+mano — e in vacanza gira, si passa lo schermo per far vedere una foto — il secondo è
+quello che non deve restare scritto in giro. Anche perché il nome, forse, non va chiesto
+affatto: resta la domanda aperta per il proprietario.
+
+### Dove si salva, e dove si rimette
+
+`HOTEL_KEY = "isla-hotel"` nel browser del cliente, come la scelta della lingua e come la
+lista delle richieste. `hotelRicordato()` e `ricordaHotel()` stanno in `escursioni.js`,
+l'unico file che tutte le pagine caricano, con la stessa guardia `try/catch` di `i18n.js`:
+in incognito `localStorage` solleva, e senza memoria il campo resta vuoto come prima.
+
+Si salva in **tre** momenti, non a ogni tasto battuto:
+
+| quando | perché |
+|---|---|
+| l'hotel scelto dall'elenco (`prendi`) | è un hotel vero, non tre lettere a metà |
+| la richiesta mandata | prende anche l'hotel battuto a mano, che nell'elenco non c'è |
+| l'escursione messa nella lista | stessa cosa: il controllo sta prima del bivio |
+
+Se salvasse a ogni tasto, la volta dopo il campo si riapriva con "bah" dentro.
+
+Si rimette **all'apertura della finestra**, dentro l'ascoltatore di `islarequestopen`, e
+solo se il cliente non ha già scritto qualcosa.
+
+### L'errore che ho evitato per un pelo, e uno che ho preso
+
+**`ricordaHotel("")` non cancella il ricordo, ed è la riga che tiene in piedi tutto.**
+Sulle schede senza ritiro (`PICKUP_NESSUNO`: le due del tuk tuk) `mostraPunto()` svuota la
+casella **di proposito** — la domanda lì non si fa, perché si sale in un posto solo. Se il
+salvataggio all'invio avesse salvato anche il vuoto, bastava aprire una di quelle schede e
+mandare una richiesta per **dimenticare l'hotel scritto mezz'ora prima**. Provato di
+proposito: dopo un invio dal tuk tuk la memoria dice ancora "Bahia del Duque".
+
+**Il ripristino va prima di `mostraPunto()`, non dopo.** È `mostraPunto()` che legge il
+campo e scrive sotto dove passa il pulmino e a che ora: mettendolo dopo, il punto di
+raccolta restava vuoto sotto un hotel scritto. Provato: alla riapertura escono insieme
+"Bahía del Duque, alla sbarra" e "08:40".
+
+### La riga sulla privacy era diventata falsa
+
+Diceva: «non viene salvato dal sito». Da adesso non è più vero.
+
+**E non era del tutto vero nemmeno prima**: la lista delle richieste sta in `localStorage`
+da sempre, con dentro hotel e note. La riga era già imprecisa, e questa modifica l'ha solo
+resa evidente.
+
+Riscritta nelle tre lingue, e dice le due cose che contano e sono vere:
+
+> Quello che scrivi serve solo a risponderti su WhatsApp. L'hotel resta salvato su questo
+> dispositivo, per non riscriverlo ogni volta.
+
+Prima di scriverla ho controllato che fosse vera davvero: **nel sito non c'è una sola
+chiamata di rete** che mandi qualcosa a qualcuno — niente `fetch`, niente
+`XMLHttpRequest`, niente `sendBeacon`, nessun pixel. Gli unici domini esterni sono i due
+di Google Fonts, per il carattere. Il messaggio parte quando il cliente preme il pulsante,
+e lo manda lui col suo WhatsApp.
+
+Due frasi corte e non una spiegazione lunga: quelle le ha bocciate il proprietario ai
+tempi del punto di raccolta, e aveva ragione.
+
+### `dispositivo` e non `telefono`
+
+Nella riga nuova c'è "su questo dispositivo". Più freddo di "telefono", ma su un portatile
+"telefono" sarebbe **falso**, e questa è la riga dove la precisione conta più del tono.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `escursioni.js`,
+`pacchetti.js`, `i18n.js`.
+
+Nel browser vero, iPhone SE (375×667), il giro della memoria:
+
+1. prima apertura: campo vuoto, memoria vuota;
+2. hotel scelto dall'elenco: salvato subito, e sotto escono punto di raccolta e ora;
+3. riapertura in una pagina nuova: campo già pieno, punto e ora al loro posto, **e i
+   suggerimenti non si aprono da soli** (rimettere un valore non deve far comparire la
+   tendina);
+4. scheda senza ritiro: campo svuotato, casella nascosta, **memoria intatta** — anche
+   dopo aver mandato una richiesta da lì;
+5. hotel battuto a mano e non in elenco ("Casa di mia zia a Icod"): ricordato;
+6. "aggiungi alla lista": ricordato anche da lì;
+7. finestra dei pacchetti: campo già pieno all'apertura, e salva quando parte.
+
+**Con `localStorage` che solleva a ogni tocco** (finta modalità privata, iniettata prima
+del caricamento): la finestra vive, i suggerimenti funzionano, si sceglie un hotel, niente
+in console.
+
+**Un hotel col nome cattivo**, `Hotel "La <Perla>" & Spa`: nei pacchetti l'hotel finisce
+dentro un attributo HTML, quindi ci andava guardato. `esc()` fa il suo, il campo lo
+rilegge identico e la finestra resta intera.
+
+Rifatti anche i tre passi di prima, per non averli rotti: piede col conto, nome in fondo,
+"meno / più", partenza da uno, giro completo fino al messaggio.
+
+`CACHE_NAME` da `isla-v340` a `isla-v341`: toccati `escursioni.js`, `pacchetti.js` e
+`i18n.js`.
+
+### Da tenere a mente
+
+Chi cambia hotel a metà vacanza si ritrova il campo pieno col vecchio. Il campo è in
+vista e si cambia scrivendoci sopra, e sotto c'è il punto di raccolta che si aggiorna
+mentre scrive — quindi si accorge. Se un domani il proprietario dicesse che succede
+spesso, il rimedio non è togliere la memoria: è chiedere una volta "stai ancora al
+Bahia del Duque?".
+
+### Resta un passo
+
+**La data è tutta a mano** → pastiglie "domani / dopodomani", costruite già saltando i
+giorni in cui non si parte: toglie i tap **e** toglie l'errore dopo la scelta.
+
+E la domanda per il proprietario, che non è un passo: **il nome, forse, non va chiesto** —
+il messaggio parte dal WhatsApp del cliente e l'ufficio vede già chi scrive.
+
+## v342 — le pastiglie della data, e un buco nelle 24 ore
+
+Ultimo dei cinque passi sulla prenotazione. La data era l'unico campo rimasto tutto a
+mano: apri il calendario del telefono, cerca il giorno, confermalo. E sulle schede che non
+si fanno tutti i giorni si poteva scegliere il giorno sbagliato e **scoprirlo dopo**.
+
+Adesso sopra il campo ci sono tre pastiglie con le prime tre date in cui l'attività si fa
+**davvero**: "Domani · Sab 19 · Mar 22". Un tocco, e quel tocco non può sbagliare.
+
+### Il calendario resta, e l'avviso anche
+
+Il campo `type="date"` sta sotto e non si tocca: le pastiglie coprono il caso normale
+("vado domani", "vado sabato"), chi parte fra tre settimane usa il calendario come prima.
+
+E **l'avviso del giorno sbagliato resta**, perché il calendario lascia scegliere qualunque
+data ed è da lì che un giorno sbagliato entra ancora. Le pastiglie **riducono** l'errore,
+non lo sostituiscono: provato di proposito, scegliendo col calendario un mercoledì sul
+Castillo San Miguel (che va mar/gio/sab) escono l'avviso e il blocco dell'invio come
+prima, e nessuna pastiglia resta accesa.
+
+### Quanto avanti si guarda, e perché tre settimane
+
+`primeDateUtili()` scorre i giorni da domani in avanti e prende i primi tre buoni,
+fermandosi a **21 giorni**. Un'attività che si fa un giorno alla settimana — l'Utopia va
+il sabato e basta — ne dà tre. Oltre le tre settimane una pastiglia non è più una
+scorciatoia: è una data che tanto vale scegliere col calendario.
+
+**La variante vince**, come dice la regola. Royal Delfin non ha `days` sulla scheda, ma la
+variante da 2 ore va mar/gio/dom: le pastiglie escono Gio · Dom · Mar, non tre giorni di
+fila. Controllato apposta perché a prima vista sembrava un errore.
+
+### Il mese si scrive solo quando cambia
+
+Sull'Utopia le tre pastiglie erano **"Sab 19 · Sab 26 · Sab 3"**. Il 3 è ottobre, ma letto
+di fretta sembra andare indietro. Adesso quando il mese non è quello di oggi il numero
+diventa "3/10".
+
+Il numero e non il nome del mese: dodici nomi per tre lingue sono trentasei righe di
+vocabolario per una pastiglia, e "3/10" si legge in italiano, in inglese e in spagnolo.
+
+### "Domani" e poi le date, non "dopodomani"
+
+Solo la prima pastiglia ha una parola, e solo se domani è davvero un giorno buono. Le
+altre portano giorno e numero. Due ragioni: una data vera dice più di "dopodomani", e in
+inglese "the day after tomorrow" su una pastiglia non ci sta. Una chiave sola in
+`i18n.js` (`req.tomorrow`) invece di due.
+
+Sull'Utopia, che il mercoledì non parte, la prima pastiglia dice "Sab 19" e non "Domani":
+la parola compare solo quando è vera.
+
+### Il buco nelle 24 ore, trovato passando di qui
+
+`minRequestDate()` faceva `new Date()`, +1 giorno, `toISOString().slice(0,10)`. Ma
+`toISOString()` passa per **UTC**, e a Tenerife d'estate siamo a UTC+1: chi apriva la
+finestra fra mezzanotte e l'una si prendeva la data di ieri, e il minimo del campo
+diventava **oggi** invece di domani.
+
+Cioè un buco nelle **24 ore di preavviso**, che sono la regola di Isla. Stretto — un'ora
+al giorno, per metà dell'anno — ma vero, e in vacanza alle 00:30 si prenota.
+
+È lo stesso inciampo che `giornoValido()` aveva già schivato a modo suo, col commento che
+lo dice: `new Date("2026-09-12")` lo tratta come UTC e in certi fusi torna indietro di un
+giorno. Adesso c'è `dataLocale()`, che legge i pezzi della data locale e li scrive a mano,
+e la usano `minRequestDate`, `maxRequestDate` e le pastiglie.
+
+Non l'ho cercato: mi serviva costruire le date delle pastiglie in ora locale, e passando
+ho visto che quelle due funzioni facevano l'errore che il file stesso documenta.
+
+### Niente HTML, di nuovo
+
+Le pastiglie nascono in JavaScript, come i bottoni del "meno / più": la copia doppia della
+finestra non c'entra niente. E dovevano nascere a ogni apertura comunque — domani non è
+più domani il giorno dopo, e i giorni buoni dipendono dalla variante scelta.
+
+Lo stile: quella scelta si segna come le pillole delle varianti sulla pagina di dettaglio,
+bordo scuro e fondo sabbia. Prima avevo scritto un riquadro nero **e nel commento avevo
+scritto "come le varianti"**, che era falso: le varianti fanno sabbia. Allineato allo stile
+che c'era già — è lo stesso gesto, "scelgo fra questi", e deve avere lo stesso segno.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `escursioni.js` e
+`i18n.js`.
+
+Nel browser vero, iPhone SE (375×667), su schede scelte per coprire i casi:
+
+| scheda | giorni | pastiglie |
+|---|---|---|
+| `peter-pan` | nessun `days`, nessuno nelle varianti | Domani · Gio 17 · Ven 18 (tre di fila) |
+| `freebird-catamaran` | variante lun/mer/ven | Domani · Ven 18 · Lun 21 |
+| `castillo-san-miguel` | mar/gio/sab | Gio 17 · Sab 19 · Mar 22 |
+| `utopia-boat-party` | solo sab | Sab 19 · Sab 26 · **Sab 3/10** |
+| `royal-delfin` | variante mar/gio/dom | Gio 17 · Dom 20 · Mar 22 |
+
+Verificato **a macchina** che ogni data offerta cadesse in un giorno buono, non a occhio:
+per Freebird i giorni della settimana offerti sono 3-5-1, per Teide 3-6-0.
+
+Più: un tocco mette la data e accende la pastiglia; una data scelta col **calendario** che
+coincide con una pastiglia la accende (se no sembra che le due cose non si parlino); una
+data sbagliata dal calendario fa uscire l'avviso, spegne le pastiglie e **blocca l'invio**;
+il cambio lingua traduce le pastiglie e tiene accesa quella scelta; `min` del campo è
+domani. Più al buio, desktop a 1200 px e la home dove la finestra non c'è.
+
+Rifatti anche i passi di prima: memoria dell'hotel su sette casi, partenza da una persona,
+giro completo fino al messaggio.
+
+`CACHE_NAME` da `isla-v341` a `isla-v342`: toccati `escursioni.js`, `i18n.js` e
+`styles.css`.
+
+### I cinque passi sono chiusi
+
+1. ✅ v336 — conto e pulsante fissi in fondo alla finestra
+2. ✅ v337 — il nome scende in fondo, la finestra si apre sulla data
+3. ✅ v339/v340 — il "meno / più", e si parte da una persona
+4. ✅ v341 — l'hotel si ricorda, il nome no
+5. ✅ v342 — le pastiglie della data
+
+**Resta la domanda per il proprietario**, che non è un passo di codice: il nome, forse,
+non va chiesto affatto — il messaggio parte dal WhatsApp del cliente e l'ufficio vede già
+chi scrive e da che numero. Se la risposta è "non serve", il campo sparisce e la finestra
+perde l'ultima cosa che si batte a macchina.
+
+**E resta da guardare sul telefono vero** quello che qui non si può simulare: la tastiera
+di iOS che sale sul fondo della finestra, dove adesso c'è il campo del nome.
+
+## v343 — il calendario scritto a mano: i giorni in cui non si parte sono spenti
+
+Le pastiglie della v342 al proprietario non sono piaciute. La sua domanda:
+«è possibile mettere in evidenza solo i giorni selezionabili nel calendario? e non far
+selezionare i giorni che non servono».
+
+### Perché col campo del sistema non si poteva
+
+**Un `<input type="date">` non sa spegnere il mercoledì.** Accetta un minimo e un massimo,
+e niente altro: il calendario che si apre lo disegna il sistema operativo e da fuori non
+ci si arriva. Non è una mancanza di CSS o un attributo che non ho trovato — non esiste.
+
+C'è mezzo trucco che non basta, e va scritto qui perché la prossima volta non ci si perda
+tempo: `step="7"` lascia solo un giorno ogni sette, e sull'Utopia — sabato e basta —
+funzionerebbe. Ma mar/gio/sab non si scrive con un passo fisso. Quindi non è una strada.
+
+Quindi: calendario scritto a mano, `calendarioData()` in `escursioni.js`. È il pezzo più
+grosso di tutta la serie sulla prenotazione.
+
+### Com'è fatto
+
+Il campo mostra la data scelta ("17 settembre 2026") o "Scegli la data", e al tocco apre
+una griglia del mese **sopra** il resto. Scelta del proprietario fra le tre che gli ho
+messo davanti: sempre aperto avrebbe aggiunto ~280 px a un modulo che è già 1578 su un
+telefono da 587.
+
+- i giorni buoni si toccano, tutti gli altri sono `disabled` e sbiaditi;
+- **anche le iniziali in testata sono spente** nelle colonne dove non si parte: così si
+  vede subito che quei numeri sono grigi per una ragione e non per un errore;
+- la settimana comincia di **lunedì**: Italia e Spagna, e i clienti stanno qui;
+- le frecce del mese si spengono ai bordi dell'anno richiedibile, come il "meno" a quota
+  uno;
+- si apre sul mese della **prima data utile**, non su quello di oggi: un'escursione che
+  riparte a ottobre, aperta su settembre, mostrerebbe una griglia tutta grigia e
+  sembrerebbe rotta.
+
+Tre cose non si scrivono in `i18n.js`: i **nomi dei mesi**, che il browser dà giusti in
+tutte e tre le lingue (`toLocaleDateString`) — dodici nomi per tre lingue sarebbero
+trentasei righe per una cosa che sappiamo già. Le iniziali dei giorni invece sì, e sono le
+stesse (`day.mon`…) che compaiono nell'avviso "si fa solo il...".
+
+### `#reqDate` resta, nascosto
+
+Stessa scelta dei bottoni "meno / più": **un posto solo dove il dato è scritto.** Il campo
+c'è ancora ed è sempre lui a dire la data al totale, al messaggio e alla lista; il
+calendario gli scrive dentro e spara un `input`, e chi ascoltava continua a funzionare
+senza sapere che il calendario esiste.
+
+`min` e `max` restano sul campo anche se nessun calendario di sistema li legge più: li
+legge `utile()` del nostro, e averli in un posto solo vuol dire che le 24 ore di preavviso
+e il tetto di un anno non possono divergere fra i due.
+
+**Niente `required`.** Su un campo che non si vede bloccherebbe l'invio senza dire perché —
+è l'errore che `CLAUDE.md` segnala. Il controllo si fa a mano e l'avviso ("Scegli la data
+dell'escursione") esce dove prima usciva quello del giorno sbagliato. Senza questo,
+premere il pulsante senza data non faceva **niente**, in silenzio.
+
+### Il difetto preso, e perché vale raccontarlo
+
+Toccando la freccia del mese **il calendario si chiudeva da solo**. E sembrava aperto,
+perché il contenuto restava scritto: era chiuso e non si aggiornava più.
+
+La catena: la freccia ridisegna il pannello (`innerHTML = ""`), quindi **si cancella da
+sola dal documento**; poi il clic continua a salire e arriva all'ascoltatore "hai toccato
+fuori?", che chiama `dateField.contains(e.target)` su un bottone che non sta più nella
+pagina. `contains()` su un elemento staccato dice sempre "fuori". Quindi chiudeva.
+
+Risolto ascoltando **in fase di cattura** (`addEventListener(..., true)`): la domanda
+"dentro o fuori" se la fa prima che qualcuno possa toccare il documento, quando il
+bersaglio è ancora al suo posto.
+
+Trovato solo perché il test contava i pannelli e leggeva `hidden`, invece di guardare se il
+mese era cambiato: a occhio e su uno screenshot sembrava funzionare.
+
+### L'altro difetto: il mese guardato si perdeva
+
+`rifai()` azzerava il mese, e al cambio lingua chi stava guardando ottobre tornava a
+settembre. Diviso in due: `rifai()` ridisegna e **tiene il mese** (serve al cambio lingua),
+`azzera()` lo riporta alla prima data utile e si chiama solo quando la finestra si riapre —
+dove la scheda è un'altra e i giorni buoni sono altri.
+
+### La data di un'altra scheda si butta
+
+All'apertura, se la data che c'è nel campo non va bene per **questa** scheda, si svuota.
+Prima restava lì con l'avviso sotto; ora che i giorni sbagliati non si possono nemmeno
+toccare, trovarne uno scritto nel campo sarebbe una contraddizione.
+
+### Cosa **non** ho toccato
+
+**La finestra dei pacchetti tiene il campo del sistema.** Lì la data è "il primo dei tre
+giorni, più o meno" e nessun vincolo di giorno si applica: mettere un calendario che
+spegne dei giorni sarebbe inventare una regola che non c'è.
+
+**L'avviso del giorno sbagliato resta**, anche se adesso è quasi irraggiungibile. Il
+proprietario l'ha rimesso di persona l'8 settembre dopo che l'avevo tolto, e costa niente:
+è la rete se un domani qualcosa scrivesse una data nel campo senza passare dal calendario.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `escursioni.js` e
+`i18n.js`.
+
+Nel browser vero, iPhone SE (375×667). Sul Castillo San Miguel (mar/gio/sab), a settembre:
+30 giorni, **24 spenti**, cliccabili 17-19-22-24-26-29. Verificato a macchina che cadessero
+tutti in mar/gio/sab: `[2,4,6]`. Il 15 e il 16 sono spenti pur essendo martedì e mercoledì,
+perché oggi è il 16 e il minimo è domani — le 24 ore.
+
+**Il clic forzato via codice su un giorno spento non scrive niente nel campo.** È la prova
+che conta: non basta che sembri grigio.
+
+Più: scheda senza `days` (tutti i giorni da domani cliccabili, nessuna iniziale spenta);
+freccia indietro spenta nel mese minimo, avanti che porta a ottobre col 1 cliccabile;
+cambio lingua a calendario aperto ("ottobre 2026", "Lun Mar Mer Gio Ven Sab Dom", e resta
+su ottobre); Escape che chiude il calendario e **non** la finestra, e il secondo Escape che
+chiude la finestra; tocco fuori che chiude; invio senza data che mostra l'avviso e non
+manda niente; invio con la data che scrive "Data: 17/09/2026" nel messaggio; riapertura su
+una scheda coi giorni diversi che butta la data incompatibile; "aggiungi alla lista".
+
+Più al buio (il giorno scelto è un cerchio pieno chiaro), desktop a 1200 px, la home dove
+la finestra non c'è, il catalogo, e la finestra dei pacchetti che col suo campo di sistema
+manda ancora.
+
+Rifatti i passi di prima: piede col conto e pulsante visibile all'apertura, nome in fondo
+non coperto, "meno / più" coi limiti, memoria dell'hotel su quattro casi.
+
+`CACHE_NAME` da `isla-v342` a `isla-v343`: toccati `escursioni.js`, `i18n.js`,
+`styles.css` e i due `.html`.
+
+### Le pastiglie della v342 sono andate
+
+Togliere il lavoro di ieri non è uno spreco: il proprietario ha visto la cosa vera e ha
+detto che non gli piaceva, che è esattamente quando conviene cambiare strada. Restano le
+due cose che le pastiglie hanno lasciato e che valevano più di loro: `dataLocale()`, che ha
+chiuso il buco nelle 24 ore, e il fatto che i giorni buoni si sapevano già calcolare.
+
+---
+
+## Le due domande sulla prenotazione sono chiuse (16 settembre 2026)
+
+Nelle cinque sezioni qui sopra — v337, v341, v342, v343 — restavano scritte due domande
+per il proprietario. Ha risposto a tutte e due in una riga:
+
+> il nome ci deve esssere, e lascia stare la tastiera su iphone
+
+**Sono decisioni, non rinvii**, e per questo sono finite in `CLAUDE.md` sotto *"Cose
+decise, da non riproporre"*: quello è il file che si legge **prima** di toccare qualcosa,
+e queste sono due cose che senza una riga scritta qualcuno riproporrebbe fra tre mesi. Io
+per primo.
+
+### Il nome resta
+
+La proposta era di **non chiederlo affatto**: il messaggio parte dal WhatsApp del cliente,
+quindi l'ufficio vede già chi scrive e da che numero. Respinta.
+
+Vale la pena scrivere perché la proposta non era sbagliata ma la risposta è giusta lo
+stesso: quello che l'ufficio vede su WhatsApp è **il nome del profilo**, che può essere un
+soprannome, un'emoji o il nome di qualcun altro che ha prestato il telefono. Su una
+prenotazione da confermare serve il nome per esteso, quello che poi compare sulla lista
+dell'autista. Il campo non è una formalità: è l'unico posto dove il cliente lo scrive
+apposta.
+
+Conseguenza pratica: **il campo del nome è l'ultima cosa che nella finestra si batte a
+macchina**, e ci resta. Tutto il resto — data, persone, hotel, orario — si fa a tocchi.
+
+### La tastiera dell'iPhone si lascia
+
+Misurato (v343 e la prova del 16 settembre): col campo del nome a fuoco, il pulsante
+"Continua su WhatsApp" finisce **dietro** la tastiera, e la casella del nome la scavalca di
+**6 px** sull'iPhone SE e di 10 sull'iPhone 15. Il browser porta la casella in vista da
+solo, ma di un pelo, e l'altezza vera della tastiera cambia con la versione di iOS.
+
+Il rimedio esisteva: leggere `visualViewport` e alzare la finestra sopra la tastiera, così
+il piede si riappiccica al nuovo fondo. **Scartato dal proprietario**, e la ragione tecnica
+gli dà ragione: è la modifica più rischiosa di tutta la serie, perché tocca quanto è alta
+e dove sta la finestra, e un errore lì si vede su tutte e 66 le schede invece che su un
+campo. Il costo di lasciarlo è un tocco in più per chiudere la tastiera; il costo di
+sbagliarlo era la finestra rotta su tutto il sito.
+
+### Cosa resta aperto, dopo questo
+
+**Sulla prenotazione niente.** I cinque passi sono chiusi e le due domande hanno risposta.
+
+Fuori dalla prenotazione resta una cosa sola, e non è codice: **`trekking-bici` e
+`masca-teide-cabrio-bus` sono pubblicate senza `image`**, quindi in elenco escono col
+riquadro grigio. `controlla.js` le segnala a ogni avvio. Servono due foto, oppure si
+togliono dalla pubblicazione finché non arrivano — ma è una decisione sul catalogo, non sul
+codice.
+
+*(Il terzo avviso, `opera-60`, è un'altra cosa: la fascia dei neonati non è scritta in
+anni, quindi il confronto con le altre non si può fare a macchina e vuole un'occhiata a
+mano. La foto ce l'ha.)*
+
+---
+
+## v344 — via la scelta fra "prenota subito" e "metti nella lista"
+
+Segnalazione del proprietario: «ho visto che la prenotazione si intoppa tra mettere nella
+lista o prenotare subito, eliminiamo la scelta, e mettiamo direttamente tutto nella lista,
+senza riservare direttamente».
+
+Aveva ragione, e il punto non era che uno dei due pulsanti fosse sbagliato: era che
+**erano due**. Sotto ogni scheda c'erano "Richiedi disponibilità" (pieno) e "Aggiungi alla
+lista" (chiaro), più una barra in fondo che diceva "Prenota ora" e faceva la stessa cosa
+del primo. Tre bottoni per due strade, e il cliente doveva capire la differenza fra due
+cose prima di aver capito cosa voleva.
+
+Adesso c'è **una strada sola**: tutto passa dalla lista.
+
+### Il rischio che questa modifica poteva creare, e perché non lo crea
+
+Togliendo "prenota subito", il cliente compila, preme, e **niente parte**. Se non capisce
+che deve ancora mandare la lista, va in spiaggia ad aspettare una risposta che non
+arriverà: all'ufficio non è arrivato niente. Sarebbe stato molto peggio del problema
+risolto.
+
+Gliel'ho detto prima di scrivere una riga, e il proprietario ha scelto la coppia che
+regge:
+
+- **il pulsante dice "Aggiungi alla lista"**, non "Richiedi disponibilità". Non promette
+  una prenotazione, quindi non si può crederci;
+- **il cliente resta sulla pagina**, come faceva già.
+
+E funziona perché il pallino della lista **non è un avviso che sparisce**: è una pillola
+fissa in basso a sinistra che dice "① La tua lista" e resta lì finché la lista ha qualcosa
+dentro. La scritta "Aggiunta alla tua lista" dura 2,6 secondi, la pillola no. Verificato in
+figura: dopo l'aggiunta la pillola c'è.
+
+### All'ufficio non cambia niente
+
+Questa è la cosa che ha reso la modifica piccola e sicura, e non è una coincidenza: era
+già scritto in `lista.js`.
+
+**Con una voce sola, la lista manda esattamente il messaggio di prima.** `listaWhatsappUrl`
+chiama `whatsappUrl`, la stessa funzione del vecchio "Richiedi disponibilità" — c'era già
+un commento che lo spiegava: «con una voce sola si usa il messaggio normale: un elenco
+numerato di un elemento solo sarebbe strano da leggere, e all'ufficio arriverebbero due
+formati per la stessa cosa».
+
+Quindi `whatsappUrl` **non è codice morto** e non si tocca. Controllato prima di cancellare
+niente.
+
+### Il nome resta, e si chiede una volta
+
+Il campo del nome nella finestra della richiesta era già nascosto in modalità "aggiungi":
+il nome si chiede nella finestra della lista, quando parte il messaggio. Quindi la
+decisione di ieri — *il nome ci deve essere* — vale ancora e non è stata toccata: è
+chiesto, una volta sola, nel punto in cui serve.
+
+### La lista piena era un vicolo, ed era già spiegato
+
+`LISTA_MAX = 10`. Prima, a lista piena, il cliente poteva comunque usare "Richiedi
+disponibilità"; adesso non c'è altra strada. Ma il messaggio che esce era già quello
+giusto: «Nella lista ci stanno al massimo 10 escursioni. Mandaci questa richiesta e poi ne
+inizi un'altra». Dice come uscirne, quindi non serviva altro. Provato coi dieci dentro: la
+finestra non si apre e l'avviso esce.
+
+### Cosa è cambiato, in righe
+
+`tour.js`: un pulsante invece di due, e la barra in fondo che punta allo stesso attributo.
+`tour.html`: la barra dice "Aggiungi alla lista" invece di "Prenota ora".
+`escursioni.js`: via la variabile `modo` e il ramo "invia" del submit; l'ascoltatore guarda
+un attributo solo; `req` non legge più il nome.
+
+Corretto anche un `focus()` che non faceva niente: sul giorno non valido puntava
+`dateInput`, che dalla v343 è **nascosto**. Adesso punta il pulsante che apre il calendario.
+
+### Provato
+
+`node controlla.js`: 0 errori, i soliti 3 avvisi. `node --check` su `escursioni.js` e
+`tour.js`.
+
+Nel browser vero, iPhone SE (375×667):
+
+- nella scheda c'è **un pulsante solo**, e dice "Aggiungi alla lista"; la barra in fondo
+  dice la stessa cosa e porta lo stesso id;
+- nella finestra il nome è nascosto e non obbligatorio, il pulsante dice "Aggiungi alla
+  lista";
+- dopo l'aggiunta: finestra chiusa, **niente parte su WhatsApp**, una voce nella lista,
+  pillola visibile;
+- dalla lista con **una** voce: parte, e il messaggio è "Hi Isla! I'm Mario Rossi… •
+  Castillo San Miguel • Date: 17/09/2026 • Time: 19:00" — identico a quello di prima;
+- con **due** voci: messaggio numerato "1) … 2) …" e totale €76,50;
+- invio senza data: avviso, **niente aggiunto**, finestra che resta aperta;
+- lista piena a dieci: la finestra non si apre e l'avviso spiega cosa fare;
+- la memoria dell'hotel funziona ancora dal flusso nuovo.
+
+Nessun riferimento rimasto a `data-request-open`, `requestOpen` o `comeAggiunta`.
+
+`CACHE_NAME` da `isla-v343` a `isla-v344`: toccati `escursioni.js`, `tour.js` e
+`tour.html`.
+
+### Due cose morte lasciate in piedi, di proposito
+
+Un passo alla volta: queste due si togliono in un giro separato, e sono scritte qui perché
+non si perdano.
+
+1. **`#reqName` nella finestra della richiesta** adesso è nascosto per sempre. Il nome lo
+   chiede `lista.js` col suo `#listaName`. È markup irraggiungibile in due copie di HTML.
+2. **`tour.ask`** in `i18n.js` ("Richiedi disponibilità") non è più letta da nessuno. Il
+   titolo della finestra usa `req.title`, che è un'altra chiave con lo stesso testo.
+   `controlla.js` non segnala le chiavi inutilizzate, quindi non dà avvisi.
+
+### Quello che resta da guardare, e non è questo
+
+La pillola piena in testata di **tutte e cinque le pagine** dice "Prenota ora" e apre la
+finestra **"Scan ticket"**, che chiede un codice di prenotazione — un codice che si ha
+solo **dopo** aver prenotato. È il bottone più in vista del sito e non prenota niente.
+
+Non l'ho toccato perché non era il compito, ed è così da prima. Ma ora che il pulsante
+sotto la scheda dice "Aggiungi alla lista", il contrasto è più forte di prima: **da
+segnalare al proprietario.**
 
 ---
 

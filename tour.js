@@ -66,6 +66,21 @@ function detailRows(tour, variante) {
   if (!daDefinire(durata) && !opzioniSonoLaDurata) {
     righe.push([t("detail.duration"), tf(durata)]);
   }
+  // Quanto dura l'ATTIVITA' dentro la giornata, che non e' quanto dura
+  // l'escursione: le camminate di Canaventura sono due ore dentro una giornata
+  // intera, e le due cose finivano per scacciarsi a vicenda — o si scriveva
+  // "Giornata intera" e chi voleva sapere quanto si cammina non lo trovava, o
+  // si scriveva "2 ore" e il cliente tornava a pranzo. Sono due righe perche'
+  // sono due domande.
+  // Come la zona e la durata, la variante vince: i tre cammini durano diverso.
+  const attivita = (variante && variante.activityDuration) || tour.activityDuration;
+  if (attivita && !daDefinire(attivita)) {
+    // L'etichetta la sceglie la scheda ("Tempo di cammino"), perche' generica
+    // accanto a "Durata" non si capirebbe. Senza, un ripiego che almeno dice
+    // che si parla dell'attivita' e non della giornata.
+    const etichetta = tour.activityLabel ? tf(tour.activityLabel) : t("detail.activity");
+    righe.push([etichetta, tf(attivita)]);
+  }
 
   // Orari e lingue stavano solo dentro la finestra della richiesta, dove si
   // arriva col pulsante: chi guardava la pagina non li trovava. Qui ci vanno
@@ -107,6 +122,12 @@ function detailRows(tour, variante) {
   } else if (adulto > 0) {
     // "Prezzo: €55" sopra "Adulti: €55" e' la stessa cosa scritta due volte:
     // si tengono solo le righe per fascia d'eta', che sono piu' precise.
+  } else if (prezziVarianteTesto(tour, variante)) {
+    // Dove i mezzi sono di piu' tipi i prezzi sono tanti quanti i tipi:
+    // "Singola €180 · Doppia €200". Niente `priceUnitSuffix` appiccicato in
+    // fondo, perche' il nome di ogni tipo dice gia' che si paga a mezzo e
+    // "a moto d'acqua" sarebbe la stessa cosa detta una terza volta.
+    righe.push([t("detail.price"), prezziVarianteTesto(tour, variante)]);
   } else if (variante && variante.price) {
     // variante col prezzo ma senza le fasce: il numero e' quello del mezzo o
     // del gruppo, e resta sulla riga generica
@@ -198,7 +219,13 @@ function detailRows(tour, variante) {
     const prezzo = prezzoTransfer(supplemento(tour.transferPrice));
     if (prezzo) righe.push([tf(tour.transferPriceLabel), prezzo]);
   } else {
-    if (tour.transfer) righe.push([t("detail.transfer"), tf(tour.transfer)]);
+    // L'etichetta della scheda vince anche qui, non solo sulla casella della
+    // finestra: dove il transfer si chiama "Ritiro in hotel", "Transfer" in
+    // "In breve" sarebbe un terzo nome per la stessa cosa.
+    if (tour.transfer) {
+      righe.push([tour.transferLabel ? tf(tour.transferLabel) : t("detail.transfer"),
+        tf(tour.transfer)]);
+    }
     if (tour.transferPrice && !tour.transferPriceHidden) {
       const prezzo = prezzoTransfer(conVariante(tour.transferPrice));
       if (prezzo) righe.push([t("detail.withTransfer"), prezzo]);
@@ -268,7 +295,12 @@ const INCLUDED_ICONS = {
   cooler:    '<rect x="2" y="7.5" width="20" height="4.5" rx="1.5"/><path d="M4 12v6.5a1.5 1.5 0 0 0 1.5 1.5h13a1.5 1.5 0 0 0 1.5-1.5V12"/><path d="M12 14v4M10.3 15 13.7 17M13.7 15 10.3 17"/>',
   // La pompa di benzina. Senza il basamento sotto e il vetro del display
   // sembrava una caraffa col manico.
-  fuel:      '<path d="M3.5 20.5V5a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v15.5"/><path d="M2.5 20.5h11"/><rect x="5.5" y="5.5" width="5" height="4" rx="1"/><path d="M12.5 10.5h3a2 2 0 0 1 2 2v4.75a1.75 1.75 0 0 0 3.5 0V10.5l-2.2-2.2"/>'
+  fuel:      '<path d="M3.5 20.5V5a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v15.5"/><path d="M2.5 20.5h11"/><rect x="5.5" y="5.5" width="5" height="4" rx="1"/><path d="M12.5 10.5h3a2 2 0 0 1 2 2v4.75a1.75 1.75 0 0 0 3.5 0V10.5l-2.2-2.2"/>',
+  // Lo scudo con la spunta: e' il segno che tutti leggono come "sei coperto".
+  // Senza la spunta dentro, in fila con le altre lo scudo vuoto sembrava una
+  // targa o una foglia; con la spunta non lo confondi con niente, e non
+  // somiglia al salvagente, che e' l'unica altra icona tonda di sicurezza.
+  insurance: '<path d="M12 2.5 4.5 5.5v6c0 4.6 3.1 8.4 7.5 10 4.4-1.6 7.5-5.4 7.5-10v-6z"/><path d="m8.8 11.9 2.4 2.4 4.2-4.4"/>'
 };
 
 // L'itinerario: una riga per tappa, con l'orario a sinistra dove c'e'. E'
@@ -375,6 +407,10 @@ function detailOptions(tour) {
           // dove il prezzo della variante e' a persona e sappiamo anche
           // quello dei bambini. Sul bottone vale lo stesso.
           const prezzo = scelta.price || scelta.priceAdult;
+          // Dove i mezzi sono di piu' tipi il bottone li porta tutti
+          // ("Singola €180 · Doppia €200"): `price` da solo e' il piu' basso.
+          const testoPrezzo = prezziVarianteTesto(tour, scelta) ||
+            (prezzo ? "€" + eur(prezzo) : "");
           const premuto = i === 0;
           const bottone = `
           <button type="button" class="detail-option"
@@ -382,7 +418,7 @@ function detailOptions(tour) {
                   ${prezzo ? `data-option-price="${prezzo}"` : ""}
                   aria-pressed="${premuto ? "true" : "false"}">
             <span class="detail-option-name">${esc(tf(scelta.label))}</span>
-            ${prezzo ? `<span class="detail-option-price">€${eur(prezzo)}</span>` : ""}
+            ${testoPrezzo ? `<span class="detail-option-price">${esc(testoPrezzo)}</span>` : ""}
           </button>`;
           if (!conDesc) return bottone;
           // Il testo nasce gia' scritto nella pagina, non arriva da un
@@ -408,11 +444,20 @@ function primaVariante(tour) {
 // Una scheda per categoria diversa da quella aperta, cosi' si vede un
 // assaggio del resto del catalogo invece che altre tre barche uguali.
 function detailRelated(tour) {
-  const viste = new Set();
+  // "Diversa da quella aperta" vuol dire diversa da **tutte** le sue: una
+  // scheda che sta anche in questa categoria non e' il resto del catalogo.
+  // Cosi' resta fuori anche la scheda aperta, che le sue categorie le
+  // condivide con se stessa.
+  //
+  // `viste` si riempie con tutte le categorie di quelle gia' prese, non solo
+  // con la principale: dopo "Teide National Park", il quad che sale al Teide
+  // e' un'altra cosa al Teide, e queste tre righe servono a far vedere che il
+  // catalogo ha anche dell'altro.
+  const viste = new Set(categorieDi(tour));
   const altre = [];
   for (const x of ESPLORA_CATALOG) {
-    if (!x.published || x.category === tour.category || viste.has(x.category)) continue;
-    viste.add(x.category);
+    if (!x.published || categorieDi(x).some(id => viste.has(id))) continue;
+    categorieDi(x).forEach(id => viste.add(id));
     altre.push(x);
     if (altre.length >= DETAIL_MAX_CORRELATE) break;
   }
@@ -442,16 +487,25 @@ function detailRelated(tour) {
 
 // Rimando alla versione privata della stessa uscita, per chi vuole la barca
 // riservata al proprio gruppo.
+//
+// Il testo fisso parla di barche perche' li' e' nato, ed e' giusto che lo
+// faccia: "vuoi la barca solo per il tuo gruppo?" dice piu' di una frase
+// generica. Dove la versione privata non e' una barca, la scheda si scrive le
+// sue due frasi con `privateTitle` e `privateLink` — come fa gia' il transfer
+// con `transferLabel`. Senza quei campi resta il testo di sempre.
 function detailPrivate(tour) {
   if (!tour.privateOption) return "";
   const privata = ESPLORA_CATALOG.find(x => x.id === tour.privateOption && x.published);
   if (!privata) return "";
 
+  const titolo = tour.privateTitle ? tf(tour.privateTitle) : t("detail.privateTitle");
+  const vaiA = tour.privateLink ? tf(tour.privateLink) : t("detail.privateLink");
+
   return `
     <a class="detail-alt" href="./tour.html?id=${encodeURIComponent(privata.id)}">
-      <span class="detail-alt-title">${esc(t("detail.privateTitle"))}</span>
+      <span class="detail-alt-title">${esc(titolo)}</span>
       <span class="detail-alt-name">${esc(tf(privata.title))} · ${esc(tourPrice(privata))}</span>
-      <span class="detail-alt-go">${esc(t("detail.privateLink"))} →</span>
+      <span class="detail-alt-go">${esc(vaiA)} →</span>
     </a>`;
 }
 
@@ -466,6 +520,7 @@ function renderTour(tour) {
     // niente scheda, niente foto: la fascia vuota sarebbe una striscia beige
     // alta due dita sopra il messaggio di errore
     if (banda) banda.hidden = true;
+    mostraBarraPrenota(null);
     document.title = t("detail.notFound") + " · Isla";
     contenitore.innerHTML = `
       <div class="state">
@@ -484,13 +539,16 @@ function renderTour(tour) {
   if (banda) banda.hidden = false;
   if (fascia) fascia.innerHTML = detailMedia(tour);
 
-  // Due strade dallo stesso punto: chiedere solo questa, oppure metterla da
-  // parte e continuare a guardare. La prima resta il pulsante pieno, perche'
-  // e' quella che fa la maggior parte dei clienti.
+  // **Una strada sola.** Prima erano due pulsanti uno sopra l'altro — "chiedi
+  // solo questa" e "mettila da parte" — e la scelta era il punto in cui la
+  // prenotazione si intoppava: il cliente doveva decidere fra due cose che non
+  // capiva bene, prima di aver capito cosa voleva.
+  // Adesso tutto passa dalla lista, e il pulsante dice quello che fa davvero.
+  // Niente si perde: con una voce sola la lista manda esattamente il messaggio
+  // che mandava il vecchio "Richiedi disponibilita'" (lista.js lo sa fare), e
+  // il nome si chiede una volta, quando la lista parte.
   const askBtn = WHATSAPP_NUMBER
-    ? `<button class="btn btn-primary btn-block" type="button" data-request-open="${esc(tour.id)}"
-               aria-haspopup="dialog" aria-controls="requestDialog">${esc(t("tour.ask"))}</button>
-       <button class="btn btn-soft btn-block detail-add" type="button" data-request-add="${esc(tour.id)}"
+    ? `<button class="btn btn-primary btn-block" type="button" data-request-add="${esc(tour.id)}"
                aria-haspopup="dialog" aria-controls="requestDialog">${esc(t("req.addToList"))}</button>`
     : "";
 
@@ -523,6 +581,34 @@ function renderTour(tour) {
   applyI18n(contenitore);
   collegaOpzioni(contenitore, tour);
   collegaGalleria(contenitore);
+  mostraBarraPrenota(tour);
+}
+
+// La barra in fondo allo schermo. Il prezzo e' lo stesso "da €39" delle schede
+// in elenco (tourPriceHTML tiene anche il barrato dell'offerta): e' il prezzo
+// di partenza, non quello della variante scelta, percio' resta buono comunque
+// si giri la scheda. Il pulsante fa la stessa cosa di quello dentro la scheda —
+// mette l'escursione nella lista — e l'ascoltatore sta su document
+// (escursioni.js), quindi funziona anche qui fuori dal contenitore.
+function mostraBarraPrenota(tour) {
+  const barra = document.querySelector("[data-book-bar]");
+  if (!barra) return;
+
+  // Senza numero WhatsApp non c'e' nessuna richiesta da mandare: dentro la
+  // scheda i due pulsanti spariscono, e qui sparisce la barra.
+  if (!tour || !WHATSAPP_NUMBER) {
+    barra.hidden = true;
+    document.body.classList.remove("has-book-bar");
+    return;
+  }
+
+  const prezzo = barra.querySelector("[data-book-price]");
+  const cta = barra.querySelector("[data-request-add]");
+  if (prezzo) prezzo.innerHTML = tourPriceHTML(tour);
+  if (cta) cta.dataset.requestAdd = tour.id;
+  barra.hidden = false;
+  // alza i due pallini in basso: senza, la barra ci finisce sopra
+  document.body.classList.add("has-book-bar");
 }
 
 // Le miniature sotto la foto grande cambiano solo `src` dell'immagine

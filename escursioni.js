@@ -115,19 +115,36 @@ function categoryName(id) {
   return cat ? tf(cat.name) : id;
 }
 
+// Una data in "2026-10-19", letta **in ora locale**.
+//
+// `toISOString()` passa per UTC, e a Tenerife d'estate siamo a UTC+1: chi
+// apriva la finestra fra mezzanotte e l'una si prendeva la data di ieri, e il
+// minimo del campo diventava **oggi** invece di domani — cioè un buco nelle 24
+// ore di preavviso, che sono la regola di Isla. Stretto (un'ora al giorno per
+// metà dell'anno) ma vero, e in vacanza alle 00:30 si prenota.
+//
+// È lo stesso inciampo che giornoValido() ha già schivato a modo suo:
+// new Date("2026-09-12") lo tratta come UTC e in certi fusi torna indietro di
+// un giorno. Qui si leggono i pezzi della data locale e si scrivono a mano.
+function dataLocale(d) {
+  const mese = String(d.getMonth() + 1).padStart(2, "0");
+  const giorno = String(d.getDate()).padStart(2, "0");
+  return d.getFullYear() + "-" + mese + "-" + giorno;
+}
+
 // Data minima richiedibile: domani, cioè almeno 24 ore di preavviso.
 // Restituisce il formato AAAA-MM-GG che <input type="date"> si aspetta.
 function minRequestDate() {
   const d = new Date();
   d.setDate(d.getDate() + 1);
-  return d.toISOString().slice(0, 10);
+  return dataLocale(d);
 }
 
 // Oltre un anno avanti è quasi sempre un errore di digitazione
 function maxRequestDate() {
   const d = new Date();
   d.setFullYear(d.getFullYear() + 1);
-  return d.toISOString().slice(0, 10);
+  return dataLocale(d);
 }
 
 // "2026-08-23" → "23/08/2026", più leggibile nel messaggio
@@ -290,6 +307,23 @@ function menuTesto(req) {
   return parti.join(" · ");
 }
 
+// "Singola €180 · Doppia €200": i prezzi di **tutti** i tipi di mezzo di una
+// variante, non solo del primo. Sul bottone della durata e nella riga "Prezzo"
+// c'era il solo `price` della variante, che e' il piu' basso: sul jet ski era
+// quello della singola, e chi voleva la doppia doveva aprire la finestra della
+// richiesta per scoprire quanto costa. Vuota dove i mezzi non si contano: li'
+// il prezzo e' uno solo e lo scrive chi chiama. La usa `tour.js` in tutti e due
+// i posti dove quel prezzo si vede, cosi' non possono dire due cose diverse.
+function prezziVarianteTesto(tour, variante) {
+  const tipi = (tour.units && Array.isArray(tour.units.types)) ? tour.units.types : [];
+  const prezzi = (variante && variante.unitPrices) || tour.unitPrices;
+  if (!tipi.length || !prezzi) return "";
+  return tipi
+    .filter(tipo => prezzi[tipo.key])
+    .map(tipo => tf(tipo.name) + " €" + eur(prezzi[tipo.key]))
+    .join(" · ");
+}
+
 // Il conto quando si paga il mezzo e non la persona: tante moto d'acqua per
 // il loro prezzo, piu' il ritiro che pure e' a moto. I prezzi dei tipi stanno
 // nella variante scelta (`unitPrices`), perche' cambiano con la durata; una
@@ -322,9 +356,18 @@ function totaleMezzi(tour, req) {
   if (manca || !quanti) return null;
 
   if (req.transfer) {
-    if (!mezzi.transferPrice) return null;
-    totale += mezzi.transferPrice * quanti;
-    pezzi.push(t("wa.transfer") + " " + quanti + " × €" + eur(mezzi.transferPrice));
+    // Tre stati, come `priceInfant`: assente vuol dire che il supplemento non
+    // lo sappiamo, e un totale senza sarebbe piu' basso di quello vero; zero
+    // vuol dire compreso, ed e' un numero vero, quindi il conto si fa lo stesso
+    // e non compare nessuna riga (un "× €0" fa solo chiedere che cos'e').
+    if (mezzi.transferPrice === undefined) return null;
+    if (mezzi.transferPrice) {
+      totale += mezzi.transferPrice * quanti;
+      // stesso nome della casella e della riga del messaggio: nel dettaglio del
+      // conto "Transfer" accanto a "Ritiro in hotel" sembrerebbero due cose
+      pezzi.push((tour.transferLabel ? tf(tour.transferLabel) : t("wa.transfer")) +
+        " " + quanti + " × €" + eur(mezzi.transferPrice));
+    }
   }
   return { totale: totale, dettaglio: pezzi.join(" + ") };
 }
@@ -379,6 +422,39 @@ function hotelInputValue() {
   return el ? el.value.trim() : "";
 }
 
+// L'hotel si ricorda, il resto no.
+//
+// Per tutta la vacanza il cliente sta nello stesso hotel: fra 562 nomi, farglielo
+// ribattere a ogni escursione e' l'unica domanda della finestra la cui risposta
+// **non cambia mai**. La data cambia, le persone possono cambiare, l'hotel no.
+//
+// Resta nel browser suo, come la scelta della lingua e come la lista delle
+// richieste, e da lì non va da nessuna parte: nel sito non c'e' una sola
+// chiamata di rete che mandi qualcosa a qualcuno. Il messaggio parte quando il
+// cliente preme il pulsante, e lo scrive lui su WhatsApp.
+//
+// Il nome della persona **non** si ricorda, e non e' una dimenticanza: l'hotel
+// e' un dato della vacanza, il nome e' un dato della persona. Se il telefono
+// gira di mano — e in vacanza gira — il secondo e' quello che non deve restare
+// scritto in giro.
+const HOTEL_KEY = "isla-hotel";
+
+function hotelRicordato() {
+  // localStorage puo' non esserci (navigazione in incognito su certi browser):
+  // stessa guardia di i18n.js e lista.js, e senza memoria il campo resta vuoto
+  // come prima.
+  try { return localStorage.getItem(HOTEL_KEY) || ""; } catch (e) { return ""; }
+}
+
+function ricordaHotel(nome) {
+  // **Il campo vuoto non cancella il ricordo.** Sulle schede senza ritiro
+  // mostraPunto() svuota la casella di proposito: se questo salvasse anche il
+  // vuoto, aprire una di quelle schede farebbe dimenticare l'hotel scritto
+  // mezz'ora prima.
+  if (!nome) return;
+  try { localStorage.setItem(HOTEL_KEY, nome); } catch (e) { /* modalità privata */ }
+}
+
 // "Cleopatra" e "CLEOPATRA" e "cleopatra" devono valere uguale, e "Sueño" si
 // deve trovare scrivendo "sueno": chi e' in vacanza non va a cercare la enne
 // con lo scarabocchio sulla tastiera del telefono.
@@ -421,19 +497,36 @@ function hotelCerca(testo, quanti) {
 //              silenzio di un'indicazione a meta'.
 function hotelPunto(nomeHotel, idScheda) {
   if (typeof HOTELS === "undefined" || typeof PICKUP_POINTS === "undefined") return null;
+  // Dove il ritiro non esiste non c'e' nessun punto da mostrare: le tabelle
+  // sono di un altro fornitore e la fermata che ne uscirebbe manderebbe il
+  // cliente ad aspettare dove non passa nessuno (PICKUP_NESSUNO in hotel.js).
+  // Sta qui in cima e non solo nella finestra perche' la stessa funzione scrive
+  // anche la riga del messaggio WhatsApp, e una richiesta rimasta nella lista
+  // da ieri porta ancora scritto l'hotel.
+  if (idScheda && typeof PICKUP_NESSUNO !== "undefined"
+      && PICKUP_NESSUNO.indexOf(idScheda) !== -1) return null;
   const k = hotelChiave(nomeHotel.trim());
   if (!k) return null;
   const riga = HOTELS.find(h => hotelChiave(h[0]) === k);
   if (!riga) return null;
+  // L'ora dipende dall'escursione, il punto no: senza la scheda si mostra il
+  // posto e basta, che e' sempre meglio di un orario indovinato.
+  const ore = (typeof PICKUP_TIMES !== "undefined" && idScheda) ? PICKUP_TIMES[idScheda] : null;
+  // Su certe escursioni il pulmino passa sotto l'hotel qualunque sia il punto
+  // della tabella: e' un altro fornitore, che fa un altro giro (PICKUP_IN_HOTEL
+  // in hotel.js). Va guardato **prima** del punto, se no il cliente andrebbe a
+  // una fermata dove quel giorno non si ferma nessuno. Solo per gli hotel che
+  // conosciamo: per questo sta dopo il controllo qui sopra.
+  if (idScheda && typeof PICKUP_IN_HOTEL !== "undefined"
+      && PICKUP_IN_HOTEL.indexOf(idScheda) !== -1) {
+    return { dove: "hotel", ora: (ore && ore[riga[1]]) || "" };
+  }
   if (riga[1] === 0) return { dove: "hotel" };
   const punto = PICKUP_POINTS[riga[1]];
   if (!punto) return null;
   // il tipo si traduce, il nome del posto no: e' un nome proprio, e chi lo
   // deve chiedere per strada lo chiede cosi' com'e'
   const tipo = punto[1] ? t("pickup." + punto[1]) : "";
-  // L'ora dipende dall'escursione, il punto no: senza la scheda si mostra il
-  // posto e basta, che e' sempre meglio di un orario indovinato.
-  const ore = (typeof PICKUP_TIMES !== "undefined" && idScheda) ? PICKUP_TIMES[idScheda] : null;
   // L'ora torna a parte e non attaccata al posto: la scrive il campo "A che
   // ora", che su queste schede non e' piu' una domanda ma una risposta.
   const ora = (ore && ore[riga[1]]) || "";
@@ -469,6 +562,9 @@ function initHotelField() {
   const input = document.getElementById("reqHotel");
   const lista = document.getElementById("reqHotelList");
   if (!campo || !input || !lista) return;
+  // L'etichetta non ha un data-attributo suo: si trova dal `for`, che e'
+  // l'unica cosa che le due copie della finestra hanno per forza uguale.
+  const etichettaCampo = document.querySelector('label[for="reqHotel"]');
 
   const puntoEl = document.querySelector("[data-hotel-punto]");
   const oraFissaEl = document.querySelector("[data-request-time-fixed]");
@@ -501,6 +597,10 @@ function initHotelField() {
 
   function prendi(nome) {
     input.value = nome;
+    // Scelto dall'elenco: e' un hotel vero, non tre lettere a meta'. Si
+    // ricorda qui e non a ogni tasto battuto, se no la prossima volta il campo
+    // si riapriva con "bah" dentro.
+    ricordaHotel(nome);
     chiudi();
     mostraPunto();
     input.focus();
@@ -509,9 +609,26 @@ function initHotelField() {
   // Dove passa il pulmino, scritto sotto la casella appena si riconosce
   // l'hotel. Prende il posto della riga di aiuto: sono due cose che dicono la
   // stessa cosa, e una volta che l'hotel c'e' quella generica non serve piu'.
+  // Dove non si passa a prendere nessuno la domanda non si fa proprio: "dove
+  // alloggi" serve solo a dire dove si sale, e su queste schede si sale in un
+  // posto solo, scritto nelle note. Chiederlo lo stesso vorrebbe dire promettere
+  // un ritiro che non c'e' — la riga di aiuto dice "dove passiamo a prenderti" —
+  // e far scrivere al cliente un dato che nessuno usera'.
+  function senzaRitiro() {
+    return !!(typeof PICKUP_NESSUNO !== "undefined" && SCHEDA_APERTA
+      && PICKUP_NESSUNO.indexOf(SCHEDA_APERTA.id) !== -1);
+  }
+
   function mostraPunto() {
     if (!puntoEl) return;
-    const p = hotelPunto(input.value, SCHEDA_APERTA && SCHEDA_APERTA.id);
+    const spento = senzaRitiro();
+    if (etichettaCampo) etichettaCampo.hidden = spento;
+    campo.hidden = spento;
+    // Svuotare non e' una finezza: la finestra e' una sola per tutte le
+    // attivita', e l'hotel scritto per l'escursione di prima finirebbe nel
+    // messaggio di questa, sotto una domanda che qui non e' stata fatta.
+    if (spento && input.value) { input.value = ""; chiudi(); }
+    const p = spento ? null : hotelPunto(input.value, SCHEDA_APERTA && SCHEDA_APERTA.id);
     // Un'etichetta e un posto, niente di piu': il cliente ha appena scritto il
     // nome del suo hotel e vede da solo se il punto e' un altro. Le frasi
     // lunghe che c'erano prima ("non e' il tuo hotel", "l'ora te la
@@ -524,7 +641,7 @@ function initHotelField() {
         : p.nome;
     }
     puntoEl.hidden = !p;
-    if (aiutoEl) aiutoEl.hidden = !!p;
+    if (aiutoEl) aiutoEl.hidden = spento || !!p;
     mostraOraHotel(p);
   }
 
@@ -571,11 +688,19 @@ function initHotelField() {
   input.addEventListener("input", () => { apri(); mostraPunto(); });
   // "dove passiamo a prenderti" oppure "dove e a che ora", secondo la scheda
   document.addEventListener("islarequestopen", () => {
-    if (!aiutoEl) return;
-    const conOra = typeof PICKUP_TIMES !== "undefined" && SCHEDA_APERTA && PICKUP_TIMES[SCHEDA_APERTA.id];
-    const chiave = conOra ? "req.hotelHintTime" : "req.hotelHint";
-    aiutoEl.dataset.i18n = chiave;
-    aiutoEl.textContent = t(chiave);
+    if (aiutoEl) {
+      const conOra = typeof PICKUP_TIMES !== "undefined" && SCHEDA_APERTA && PICKUP_TIMES[SCHEDA_APERTA.id];
+      const chiave = conOra ? "req.hotelHintTime" : "req.hotelHint";
+      aiutoEl.dataset.i18n = chiave;
+      aiutoEl.textContent = t(chiave);
+    }
+    // L'hotel di ieri, se c'e' e se il cliente non ha gia' scritto qualcosa.
+    // **Prima** di mostraPunto(), che e' quello che legge il campo e scrive
+    // sotto dove passa il pulmino e a che ora: rimettendolo dopo, il punto di
+    // raccolta restava vuoto sotto un hotel scritto.
+    if (!input.value) input.value = hotelRicordato();
+    // fuori dall'if: e' mostraPunto() che fa sparire la casella dove il ritiro
+    // non c'e', e non deve dipendere dal fatto che la riga di aiuto esista
     mostraPunto();
   });
   input.addEventListener("focus", apri);
@@ -744,15 +869,23 @@ function initCatalog() {
   // "cat" accetta anche più categorie separate da virgola: l'assistente
   // manda qui combinazioni come "avventura-motori,sport-acquatici".
   // Lista vuota = nessun filtro di categoria.
+  //
+  // Gli id che non esistono si buttano via invece di filtrarci sopra: un id
+  // sconosciuto non toglie una categoria, le toglie **tutte**, e la pagina
+  // esce con zero attività e nessuna spiegazione. Succede per davvero, non
+  // solo con un indirizzo scritto male: "stelle" era una categoria vera fino
+  // a ieri, e chi si è salvato quel link — o Google, che l'ha indicizzato —
+  // ci arriva ancora. Meglio l'elenco intero che una pagina vuota.
   const state = {
-    categories: (params.get("cat") || "").split(",").filter(Boolean),
+    categories: (params.get("cat") || "").split(",")
+      .filter(id => CATEGORIES.some(c => c.id === id)),
     family: params.get("family") === "1",
     query: ""
   };
 
   // Solo le categorie che hanno almeno un'attività pubblicata
   const usedCategories = CATEGORIES.filter(c =>
-    published.some(x => x.category === c.id)
+    published.some(x => categorieDi(x).includes(c.id))
   );
 
   function buildChips() {
@@ -792,14 +925,17 @@ function initCatalog() {
   }
 
   function matches(tour) {
-    if (state.categories.length && !state.categories.includes(tour.category)) return false;
+    // Basta che UNA delle categorie della scheda sia fra quelle scelte: le
+    // schede con `alsoIn` stanno in piu' di una, ed escono sotto ognuna.
+    if (state.categories.length &&
+        !categorieDi(tour).some(id => state.categories.includes(id))) return false;
     if (state.family && !tour.family) return false;
     if (state.query) {
       // Si cerca in tutte e tre le lingue: chi scrive "boat" trova la
       // stessa attività di chi scrive "barca".
       const haystack = [tour.title, tour.desc, tour.zone]
         .map(campo => typeof campo === "string" ? campo : Object.values(campo).join(" "))
-        .concat(categoryName(tour.category))
+        .concat(categorieDi(tour).map(categoryName))
         .join(" ")
         .toLowerCase();
       if (!haystack.includes(state.query)) return false;
@@ -870,6 +1006,93 @@ function initCatalog() {
 
 document.addEventListener("DOMContentLoaded", initCatalog);
 
+// Il "meno / più" accanto ai numeri: persone, mezzi, menu.
+//
+// Contare quante persone sono e' l'unica cosa che nella finestra si fa quasi
+// sempre, e con la sola casella erano quattro gesti — tocca, aspetta il
+// tastierino, batti, chiudilo — per arrivare da 2 a 3. Adesso e' un tocco.
+//
+// **La casella resta lei a dire il numero.** I bottoni le scrivono dentro e
+// poi sparano un evento `input`: il totale, il controllo dei menu e quello dei
+// mezzi stavano gia' ad ascoltarlo e continuano a funzionare senza sapere che
+// i bottoni esistono. Niente secondo posto dove il numero e' scritto, che
+// sarebbe il modo di ritrovarsi due numeri diversi.
+//
+// E si puo' ancora battere a mano: per dodici persone scrivere "12" e' piu'
+// svelto che premere dieci volte. I bottoni servono al caso normale — "siamo
+// due, piu' un bambino".
+function applicaStepper(dove) {
+  if (!dove) return;
+  dove.querySelectorAll('input[type="number"]').forEach(vesti);
+}
+
+function vesti(input) {
+  // Ridisegnando le righe (cambio lingua) si ripassa di qui: se e' gia'
+  // vestita si lascia stare, se no i bottoni si moltiplicano.
+  if (input.parentElement && input.parentElement.classList.contains("stepper")) return;
+
+  const guscio = document.createElement("div");
+  guscio.className = "stepper";
+  input.parentNode.insertBefore(guscio, input);
+
+  const meno = bottone(-1);
+  const piu = bottone(1);
+  guscio.appendChild(meno);
+  guscio.appendChild(input);
+  guscio.appendChild(piu);
+
+  function bottone(passo) {
+    const b = document.createElement("button");
+    // Dentro un <form> un bottone senza `type` e' un bottone d'invio: senza
+    // questa riga, toccare "+" mandava la richiesta.
+    b.type = "button";
+    b.className = "stepper-btn";
+    b.textContent = passo < 0 ? "−" : "+";
+    // Il segno da solo non si legge ad alta voce: il nome vero sta qui, ed e'
+    // tradotto come tutto il resto.
+    b.setAttribute("aria-label", t(passo < 0 ? "req.minus" : "req.plus"));
+    // Fuori dal giro del tasto Tab: chi gira con la tastiera ha gia' la
+    // casella, dove i numeri si battono e le frecce funzionano. Due fermate in
+    // piu' per campo sarebbero otto fermate in piu' nella finestra.
+    b.tabIndex = -1;
+    b.addEventListener("click", () => muovi(passo));
+    return b;
+  }
+
+  function limiti() {
+    return {
+      min: input.min === "" ? -Infinity : Number(input.min),
+      max: input.max === "" ? Infinity : Number(input.max)
+    };
+  }
+
+  function muovi(passo) {
+    const { min, max } = limiti();
+    const ora = parseInt(input.value, 10);
+    const partenza = isNaN(ora) ? (min === -Infinity ? 0 : min) : ora;
+    const nuovo = Math.min(max, Math.max(min, partenza + passo));
+    if (nuovo === ora) return;
+    input.value = String(nuovo);
+    // `bubbles`: la finestra dei pacchetti ascolta l'evento **sulla finestra**,
+    // non sulla casella. Senza, li' il totale non si muoveva.
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    aggiorna();
+  }
+
+  // I bottoni si spengono ai limiti invece di non fare niente: "adulti" parte
+  // da uno, e un meno che resta acceso e non toglie sembra rotto.
+  function aggiorna() {
+    const { min, max } = limiti();
+    const ora = parseInt(input.value, 10);
+    meno.disabled = !isNaN(ora) && ora <= min;
+    piu.disabled = !isNaN(ora) && ora >= max;
+  }
+
+  // Anche battendo a mano: chi scrive "30" deve vedere il piu' spegnersi.
+  input.addEventListener("input", aggiorna);
+  aggiorna();
+}
+
 // Finestra "Richiedi disponibilità": raccoglie data e persone, poi apre
 // WhatsApp col messaggio già compilato.
 function initRequestDialog() {
@@ -888,9 +1111,8 @@ function initRequestDialog() {
   const transferSiamLabelEl = document.querySelector("[data-request-transfer-siam-label]");
   const transferSiamNoteEl = document.querySelector("[data-request-transfer-siam-note]");
   const transferSiamInput = document.getElementById("reqTransferSiam");
-  const optionEl = document.querySelector("[data-request-option]");
-  const optionLabelEl = document.querySelector("[data-request-option-label]");
   const dateInput = document.getElementById("reqDate");
+  const dateField = document.querySelector("[data-date-field]");
   const timeEl = document.querySelector("[data-request-time]");
   const timeLabelEl = document.querySelector("[data-request-time-label]");
   const oraFissaEl2 = document.querySelector("[data-request-time-fixed]");
@@ -917,34 +1139,46 @@ function initRequestDialog() {
   // dopo la guardia: in home la finestra non c'e' e `form` e' null
   const submitBtn = form.querySelector(".request-submit");
 
-  // Blocca le date che non rispettano il preavviso di 24 ore
+  // Le tre caselle delle persone sono nell'HTML e non cambiano mai: si vestono
+  // col "meno / piu'" una volta sola, qui. Quelle dei mezzi e dei menu nascono
+  // invece a ogni apertura, e si vestono dove nascono.
+  applicaStepper(peopleBoxEl);
+
+  // `min` e `max` restano sul campo anche se adesso e' nascosto: non li legge
+  // piu' il calendario del sistema, ma li legge `utile()` del nostro, e averli
+  // scritti in un posto solo vuol dire che le 24 ore di preavviso e il tetto
+  // di un anno non possono divergere fra i due.
   dateInput.min = minRequestDate();
   dateInput.max = maxRequestDate();
 
-  let current = null;
-  // La stessa finestra serve a due cose: mandare subito la richiesta di questa
-  // escursione ("invia"), oppure metterla nella lista per mandarne tante
-  // insieme ("aggiungi"). Cambiano due dettagli soltanto: il nome non si chiede
-  // (lo si chiede una volta sola quando si manda la lista) e il pulsante in
-  // fondo dice un'altra cosa.
-  let modo = "invia";
+  const calendario = calendarioData();
 
-  function open(tour, comeAggiunta) {
+  let current = null;
+
+  // La finestra fa **una cosa sola**: mette l'escursione nella lista.
+  //
+  // Prima ne faceva due — mandare subito questa, oppure metterla da parte — e
+  // la scelta fra le due era il punto in cui la prenotazione si intoppava: due
+  // pulsanti uno sopra l'altro, e il cliente doveva decidere prima di aver
+  // capito cosa voleva. Adesso si passa tutti dalla lista, e la lista con una
+  // voce sola manda esattamente il messaggio che mandava "Richiedi
+  // disponibilita'": all'ufficio non cambia niente.
+  //
+  // Il nome non si chiede qui ma nella finestra della lista, una volta sola.
+  function open(tour) {
     current = tour;
     SCHEDA_APERTA = tour;
     // il campo dell'hotel vive in un'altra funzione e deve sapere che scheda e'
     document.dispatchEvent(new CustomEvent("islarequestopen"));
-    modo = comeAggiunta ? "aggiungi" : "invia";
-    if (nameBox) nameBox.hidden = comeAggiunta;
-    // required su un campo nascosto blocca l'invio senza dire perche': il
+    // `required` su un campo nascosto blocca l'invio senza dire perche': il
     // browser prova a segnalare un campo che nessuno vede.
-    if (nameInput) nameInput.required = !comeAggiunta;
+    if (nameBox) nameBox.hidden = true;
+    if (nameInput) nameInput.required = false;
     if (submitBtn) {
-      const chiave = comeAggiunta ? "req.addToList" : "req.submit";
-      // anche data-i18n, non solo il testo: al cambio lingua applyI18n
-      // riscrive il pulsante e senza questo tornerebbe "Continua su WhatsApp"
-      submitBtn.setAttribute("data-i18n", chiave);
-      submitBtn.textContent = t(chiave);
+      // anche `data-i18n` e non solo il testo: al cambio lingua applyI18n
+      // riscrive il pulsante leggendo l'attributo
+      submitBtn.setAttribute("data-i18n", "req.addToList");
+      submitBtn.textContent = t("req.addToList");
     }
     aggiornaAttivita(tour);
     // se l'attivita' si fa solo in certi mesi lo si dice qui, prima che il
@@ -953,11 +1187,6 @@ function initRequestDialog() {
       seasonEl.textContent = tour.season ? tf(tour.season) : "";
       seasonEl.hidden = !tour.season;
     }
-    // Il menu delle varianti compare solo dove ci sono. Si ricostruisce a ogni
-    // apertura: la finestra e' una sola per tutte le attivita', quindi le voci
-    // di quella aperta prima resterebbero li'.
-    riempiOpzioni(tour);
-
     // la domanda sul transfer compare solo dove il transfer esiste davvero, e
     // riparte sempre da non spuntata: la finestra e' la stessa per tutte le
     // attivita' e si riapre com'era rimasta
@@ -990,6 +1219,12 @@ function initRequestDialog() {
     mostraNeonati(tour);
     mostraPersone(tour);
     riempiUnita(tour);
+    // La data scelta per un'altra scheda puo' non andare bene per questa: i
+    // giorni buoni sono altri. Si butta invece di lasciarla li' con un avviso
+    // sotto — ora che i giorni sbagliati non si possono nemmeno toccare,
+    // trovarne uno scritto nel campo sarebbe una contraddizione.
+    if (dateInput.value && !giornoValido()) dateInput.value = "";
+    if (calendario) { calendario.chiudi(); calendario.azzera(); }
     aggiornaGiorno();
     aggiornaTotale();
 
@@ -1012,11 +1247,12 @@ function initRequestDialog() {
     return premuto ? premuto.getAttribute("data-option-value") || "" : "";
   }
 
-  // La variante scelta, da qualunque parte l'abbia scelta il cliente: coi
-  // bottoni sulla pagina di dettaglio o col menu qui dentro.
+  // La variante scelta. Arriva sempre dai bottoni della pagina di dettaglio:
+  // sono l'unico posto da cui questa finestra si apre, e il primo bottone e'
+  // gia' premuto. Fino a v273 c'era anche un <select> qui dentro come
+  // ripiego, che non si e' mai visto una volta.
   function opzioneScelta() {
-    return sceltaDallaPagina() ||
-      (optionEl && !optionEl.hidden ? optionEl.value : "");
+    return sceltaDallaPagina();
   }
 
   // La variante premuta sulla pagina di dettaglio, presa dal catalogo **per
@@ -1067,30 +1303,6 @@ function initRequestDialog() {
     activityEl.textContent = tf(tour.title) + (variante ? " — " + variante : "");
   }
 
-  // Le voci portano il prezzo quando lo sappiamo ("2 ore — €180"), cosi' il
-  // cliente sceglie sapendo quanto costa invece di doverlo chiedere.
-  function riempiOpzioni(tour) {
-    if (!optionEl || !optionLabelEl) return;
-    const opz = tour.options;
-    const ci_sono = !!(opz && Array.isArray(opz.choices) && opz.choices.length)
-      && !sceltaDallaPagina();
-    optionEl.hidden = !ci_sono;
-    optionLabelEl.hidden = !ci_sono;
-    optionEl.innerHTML = "";
-    if (!ci_sono) return;
-
-    optionLabelEl.textContent = tf(opz.label);
-    opz.choices.forEach(scelta => {
-      const voce = document.createElement("option");
-      // il valore e' il testo stesso: e' quello che finisce su WhatsApp
-      voce.value = tf(scelta.label);
-      const prezzo = scelta.price || scelta.priceAdult;
-      voce.textContent = prezzo
-        ? tf(scelta.label) + " — €" + eur(prezzo)
-        : tf(scelta.label);
-      optionEl.appendChild(voce);
-    });
-  }
 
   // Gli orari fra cui scegliere. "Da concordare" vale stringa vuota e non c'e'
   // sempre: compare solo dove un orario fisso non esiste, cioe' sui charter e
@@ -1106,6 +1318,245 @@ function initRequestDialog() {
     // come UTC e in certi fusi orari torna indietro di un giorno.
     const [a, m, g] = dateInput.value.split("-").map(Number);
     return giorni.includes(new Date(a, m - 1, g).getDay());
+  }
+
+  // ─── Il calendario della data ──────────────────────────────────────────
+  //
+  // Scritto a mano, e il motivo e' uno solo: **un <input type="date"> non sa
+  // spegnere i giorni in cui l'escursione non parte.** Accetta un minimo e un
+  // massimo, niente altro: il calendario che si apre lo disegna il sistema
+  // operativo e da fuori non ci si arriva. Su una scheda che va mar/gio/sab il
+  // cliente poteva scegliere il mercoledi' e scoprirlo dopo, ed e' esattamente
+  // quello che il proprietario ha chiesto di togliere.
+  //
+  // (C'e' mezzo trucco che non basta: `step="7"` sul campo nativo lascia solo
+  // un giorno ogni sette, e per l'Utopia — sabato e basta — funzionerebbe. Ma
+  // mar/gio/sab non si scrive con un passo fisso, quindi non e' una strada.)
+  //
+  // Il campo `#reqDate` resta, nascosto, ed e' sempre lui a dire la data a
+  // tutto il resto — il totale, il messaggio, la lista. Stessa scelta dei
+  // bottoni "meno / piu'": un posto solo dove il dato e' scritto.
+  function calendarioData() {
+    if (!dateField) return;
+
+    let mese = null;   // il primo del mese mostrato, come Date locale
+
+    const apri_btn = document.createElement("button");
+    apri_btn.type = "button";          // dentro un <form> se no manda la richiesta
+    apri_btn.className = "date-open";
+    apri_btn.setAttribute("aria-haspopup", "true");
+    apri_btn.setAttribute("aria-expanded", "false");
+
+    const pannello = document.createElement("div");
+    pannello.className = "date-cal";
+    pannello.hidden = true;
+
+    dateField.appendChild(apri_btn);
+    dateField.appendChild(pannello);
+
+    // I giorni buoni di **questa** scheda, come numeri di getDay().
+    function giorniBuoni() {
+      return current ? giorniDi(current, sceltaCorrente(current)) : [];
+    }
+
+    // Un giorno si puo' toccare? Tre no: prima di domani (le 24 ore di
+    // preavviso), oltre un anno, e i giorni in cui non si parte.
+    function utile(iso) {
+      if (iso < minRequestDate() || iso > maxRequestDate()) return false;
+      const giorni = giorniBuoni();
+      if (!giorni.length) return true;       // vuoto = tutti i giorni
+      const [a, m, g] = iso.split("-").map(Number);
+      return giorni.includes(new Date(a, m - 1, g).getDay());
+    }
+
+    // La prima data utile, da domani in avanti. Serve a decidere **su che mese
+    // si apre**: un'escursione che riparte a ottobre, aperta su settembre,
+    // mostrerebbe una griglia tutta grigia e sembrerebbe rotta.
+    // Si guarda un anno, che e' il massimo che il campo accetta.
+    function primaUtile() {
+      const d = new Date();
+      d.setDate(d.getDate() + 1);
+      for (let i = 0; i < 366; i++) {
+        const iso = dataLocale(d);
+        if (utile(iso)) return iso;
+        d.setDate(d.getDate() + 1);
+      }
+      return "";
+    }
+
+    function etichetta() {
+      apri_btn.textContent = dateInput.value
+        ? dataLeggibile(dateInput.value)
+        : t("req.datePick");
+      apri_btn.classList.toggle("is-empty", !dateInput.value);
+    }
+
+    // Il mese di una data, come primo del mese
+    function primoDelMese(iso) {
+      const [a, m] = iso.split("-").map(Number);
+      return new Date(a, m - 1, 1);
+    }
+
+    function disegna() {
+      const giorni = giorniBuoni();
+      const prima = primaUtile();
+      if (!prima) {
+        // Nessuna data in un anno intero: lo si dice, invece di mostrare una
+        // griglia grigia.
+        pannello.innerHTML = '<p class="date-cal-vuoto"></p>';
+        pannello.querySelector(".date-cal-vuoto").textContent = t("req.dateNone");
+        return;
+      }
+      if (!mese) mese = primoDelMese(dateInput.value || prima);
+
+      const anno = mese.getFullYear();
+      const m = mese.getMonth();
+      const min = primoDelMese(minRequestDate());
+      const max = primoDelMese(maxRequestDate());
+
+      pannello.innerHTML = "";
+
+      // ── la testata: mese, anno e le due frecce
+      const testa = document.createElement("div");
+      testa.className = "date-cal-head";
+      const indietro = freccia(-1, "req.prevMonth", mese > min);
+      const titolo = document.createElement("strong");
+      // I nomi dei mesi li da' il browser, giusti nelle tre lingue: dodici nomi
+      // per tre lingue sarebbero trentasei righe di vocabolario per niente.
+      const locali = { it: "it-IT", en: "en-GB", es: "es-ES" };
+      try {
+        titolo.textContent = mese.toLocaleDateString(locali[getLang()] || "en-GB",
+          { month: "long", year: "numeric" });
+      } catch (e) {
+        titolo.textContent = (m + 1) + "/" + anno;
+      }
+      const avanti = freccia(1, "req.nextMonth", mese < max);
+      testa.appendChild(indietro);
+      testa.appendChild(titolo);
+      testa.appendChild(avanti);
+      pannello.appendChild(testa);
+
+      // ── le iniziali dei giorni, **da lunedi'**: in Italia e in Spagna la
+      // settimana comincia di lunedi', e il catalogo e' per clienti che stanno
+      // qui. Le sigle sono le stesse dell'avviso "si fa solo il...".
+      const ordine = [1, 2, 3, 4, 5, 6, 0];
+      const riga = document.createElement("div");
+      riga.className = "date-cal-dow";
+      ordine.forEach(n => {
+        const s = document.createElement("span");
+        s.textContent = t(GIORNI_CHIAVI[n]);
+        // il giorno in cui non si parte e' spento anche in testata: si vede
+        // subito che quella colonna non e' grigia per caso
+        if (giorni.length && !giorni.includes(n)) s.className = "is-off";
+        riga.appendChild(s);
+      });
+      pannello.appendChild(riga);
+
+      // ── la griglia
+      const griglia = document.createElement("div");
+      griglia.className = "date-cal-grid";
+      // quante caselle vuote davanti al primo: lunedi' = 0
+      const salto = (new Date(anno, m, 1).getDay() + 6) % 7;
+      for (let i = 0; i < salto; i++) {
+        const vuota = document.createElement("span");
+        griglia.appendChild(vuota);
+      }
+      const quanti = new Date(anno, m + 1, 0).getDate();
+      for (let g = 1; g <= quanti; g++) {
+        const iso = dataLocale(new Date(anno, m, g));
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "date-cal-day";
+        b.textContent = String(g);
+        if (!utile(iso)) {
+          b.disabled = true;
+        } else {
+          b.addEventListener("click", () => scegli(iso));
+        }
+        if (iso === dateInput.value) {
+          b.classList.add("is-on");
+          b.setAttribute("aria-current", "date");
+        }
+        griglia.appendChild(b);
+      }
+      pannello.appendChild(griglia);
+    }
+
+    function freccia(passo, chiave, si_puo) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "date-cal-nav";
+      b.textContent = passo < 0 ? "\u2039" : "\u203a";
+      b.setAttribute("aria-label", t(chiave));
+      b.disabled = !si_puo;
+      b.addEventListener("click", () => {
+        mese = new Date(mese.getFullYear(), mese.getMonth() + passo, 1);
+        disegna();
+      });
+      return b;
+    }
+
+    function scegli(iso) {
+      dateInput.value = iso;
+      // Chi ascoltava il campo continua a funzionare senza sapere che il
+      // calendario esiste: l'avviso del giorno e il totale stanno su `input`.
+      dateInput.dispatchEvent(new Event("input", { bubbles: true }));
+      etichetta();
+      chiudi();
+      apri_btn.focus();
+    }
+
+    function apri() {
+      pannello.hidden = false;
+      apri_btn.setAttribute("aria-expanded", "true");
+      disegna();
+      // aperto in fondo alla finestra resterebbe mezzo fuori
+      pannello.scrollIntoView({ block: "nearest" });
+    }
+
+    function chiudi() {
+      pannello.hidden = true;
+      apri_btn.setAttribute("aria-expanded", "false");
+    }
+
+    apri_btn.addEventListener("click", () => {
+      if (pannello.hidden) apri(); else chiudi();
+    });
+
+    // Un tocco fuori chiude, come fa il suggerimento degli hotel.
+    //
+    // **In fase di cattura**, e non e' un dettaglio: la freccia del mese
+    // ridisegna il pannello, quindi si cancella da sola dal documento. Con
+    // l'ascoltatore normale questo arrivava dopo, trovava un bottone che non
+    // stava piu' nella pagina — `contains()` su un elemento staccato dice
+    // sempre "fuori" — e chiudeva il calendario appena si cambiava mese.
+    // Sembrava aperto perche' il contenuto restava scritto, ma era chiuso, e
+    // da li' in poi non si aggiornava piu'.
+    // In cattura la domanda "dentro o fuori" se la fa **prima** che qualcuno
+    // possa toccare il documento, quando il bersaglio e' ancora al suo posto.
+    document.addEventListener("click", e => {
+      if (!pannello.hidden && !dateField.contains(e.target)) chiudi();
+    }, true);
+
+    etichetta();
+
+    return {
+      aperto: () => !pannello.hidden,
+      chiudi,
+      // Ridisegna quello che c'e'. Serve al cambio lingua — mese, iniziali dei
+      // giorni ed etichetta sono tutti tradotti — e **tiene il mese guardato**:
+      // chi sta guardando ottobre e cambia lingua deve restare a ottobre.
+      rifai() {
+        etichetta();
+        if (!pannello.hidden) disegna();
+      },
+      // A ogni apertura della finestra: la scheda e' un'altra e i giorni buoni
+      // sono altri, quindi il mese riparte da quello della prima data utile.
+      azzera() {
+        mese = null;
+        etichetta();
+      }
+    };
   }
 
   function aggiornaGiorno() {
@@ -1172,7 +1623,9 @@ function initRequestDialog() {
   // quattro moto, magari due doppie e due singole, e sono quattro prezzi.
   // I prezzi accanto ai nomi sono quelli della **variante scelta**, che qui e'
   // la durata: la doppia costa 110 sul giro da 40 minuti e 200 su quello da
-  // due ore.
+  // due ore. Dove di varianti non ce ne sono, i prezzi stanno sulla scheda
+  // (`tour.unitPrices`): e' il caso della Mustang, dove a cambiare non e' la
+  // durata ma quanti salgono in macchina.
   function riempiUnita(tour) {
     if (!unitsRowsEl || !unitsLabelEl) return;
     const mezzi = tour && tour.units;
@@ -1184,7 +1637,11 @@ function initRequestDialog() {
 
     unitsLabelEl.textContent = tf(mezzi.label);
     const variante = sceltaCorrente(tour);
-    const prezzi = (variante && variante.unitPrices) || {};
+    // Lo stesso ripiego che fa totaleMezzi(): senza, il totale usava
+    // `tour.unitPrices` ma le righe qui restavano senza prezzo accanto, e il
+    // cliente vedeva un totale comparire da numeri che non erano scritti da
+    // nessuna parte.
+    const prezzi = (variante && variante.unitPrices) || tour.unitPrices || {};
 
     // I numeri gia' messi si tengono: cambiare lingua ridisegna le righe, e
     // ritrovare azzerate le tre moto appena contate sarebbe sgradevole.
@@ -1219,6 +1676,7 @@ function initRequestDialog() {
       label.appendChild(input);
       unitsRowsEl.appendChild(label);
     });
+    applicaStepper(unitsRowsEl);
   }
 
   function unitaScelte(tour) {
@@ -1294,6 +1752,7 @@ function initRequestDialog() {
       label.appendChild(input);
       menuRowsEl.appendChild(label);
     });
+    applicaStepper(menuRowsEl);
   }
 
   // Quante persone per ogni menu, come le legge il form.
@@ -1425,18 +1884,18 @@ function initRequestDialog() {
 
   // Le schede sono ricreate a ogni filtro, quindi si ascolta sul contenitore
   document.addEventListener("click", e => {
-    const btn = e.target.closest("[data-request-open], [data-request-add]");
+    const btn = e.target.closest("[data-request-add]");
     if (!btn) return;
-    const comeAggiunta = btn.hasAttribute("data-request-add");
-    const id = comeAggiunta ? btn.dataset.requestAdd : btn.dataset.requestOpen;
     // La lista ha un tetto: oltre non si aggiunge, e si dice perche' invece di
-    // far finta di aver aggiunto.
-    if (comeAggiunta && typeof listaEPiena === "function" && listaEPiena()) {
+    // far finta di aver aggiunto. Adesso che la lista e' l'unica strada questo
+    // e' un vicolo chiuso, ma il messaggio dice gia' come uscirne — "mandaci
+    // questa richiesta e poi ne inizi un'altra".
+    if (typeof listaEPiena === "function" && listaEPiena()) {
       listaToast(t("lista.full", { n: LISTA_MAX }));
       return;
     }
-    const tour = ESPLORA_CATALOG.find(t => t.id === id);
-    if (tour) open(tour, comeAggiunta);
+    const tour = ESPLORA_CATALOG.find(t => t.id === btn.dataset.requestAdd);
+    if (tour) open(tour);
   });
 
   dateInput.addEventListener("input", aggiornaGiorno);
@@ -1473,7 +1932,11 @@ function initRequestDialog() {
   );
   scrim.addEventListener("click", close);
   document.addEventListener("keydown", e => {
-    if (e.key === "Escape" && dialog.classList.contains("is-open")) close();
+    if (e.key !== "Escape" || !dialog.classList.contains("is-open")) return;
+    // Col calendario aperto, Escape chiude quello: chiudere tutta la finestra
+    // butterebbe via anche quello che il cliente ha gia' scritto.
+    if (calendario && calendario.aperto()) { calendario.chiudi(); return; }
+    close();
   });
 
   // Se la lingua cambia mentre la finestra è aperta, cambia anche il nome
@@ -1486,12 +1949,9 @@ function initRequestDialog() {
     if (transferLabelEl) transferLabelEl.textContent = current.transferLabel ? tf(current.transferLabel) : t("req.transfer");
     if (transferSiamNoteEl && current.transferSiam) transferSiamNoteEl.textContent = tf(current.transferSiam);
     if (transferSiamLabelEl) transferSiamLabelEl.textContent = current.transferSiamLabel ? tf(current.transferSiamLabel) : t("req.transferSiam");
-    // il menu si ricostruisce tradotto, tenendo la posizione scelta
-    if (optionEl && current.options) {
-      const scelto = optionEl.selectedIndex;
-      riempiOpzioni(current);
-      if (scelto >= 0) optionEl.selectedIndex = scelto;
-    }
+    // Il calendario ha dentro il nome del mese, le iniziali dei giorni e
+    // l'etichetta del campo: tutti e tre tradotti.
+    if (calendario) calendario.rifai();
     // "Da concordare" e "2 adulti × €55" sono tradotti: si rifanno tutti e due
     riempiOrari(current);
     riempiLingue(current);
@@ -1508,7 +1968,6 @@ function initRequestDialog() {
     if (!current) return;
 
     const req = {
-      name: document.getElementById("reqName").value.trim(),
       date: dateInput.value,
       time: timeEl ? timeEl.value : "",
       lang: (langEl && !langEl.hidden) ? langEl.value : "",
@@ -1524,53 +1983,75 @@ function initRequestDialog() {
       transferSiam: !!(transferSiamInput && transferSiamInput.checked),
       option: opzioneScelta()
     };
-    if (!req.date) return;
+    // Prima lo diceva `required` col fumetto del browser. Su un campo nascosto
+    // non si puo', quindi l'avviso e' il nostro, nel posto dove prima usciva
+    // quello del giorno sbagliato.
+    if (!req.date) {
+      if (dayErrorEl) {
+        dayErrorEl.textContent = t("req.dateMissing");
+        dayErrorEl.hidden = false;
+      }
+      if (dateField) dateField.scrollIntoView({ block: "center" });
+      return;
+    }
+    // Anche l'hotel battuto a mano e non scelto dall'elenco: se il cliente
+    // manda la richiesta, quello e' il suo hotel. Qui e non prima, perche'
+    // prima e' solo roba scritta a meta'.
+    ricordaHotel(req.hotel);
     // Il giorno sbagliato ferma la richiesta: il messaggio e' gia' li' sotto
     // la data da quando l'ha scelta.
-    if (!giornoValido()) { aggiornaGiorno(); dateInput.focus(); return; }
+    //
+    // Provato a toglierlo l'8 settembre 2026 e **rimesso lo stesso giorno**,
+    // per scelta del proprietario: un'escursione non si prenota nel giorno in
+    // cui non c'e', punto. Che i giorni possano cambiare con la lingua si dice
+    // al cliente in una nota della scheda, non lasciandogli mandare una
+    // richiesta per un giorno in cui non si parte.
+    // `dateInput` e' nascosto: metterlo a fuoco non farebbe niente. Il posto
+    // dove mandare il cliente e' il pulsante che apre il calendario.
+    if (!giornoValido()) {
+      aggiornaGiorno();
+      const apri = dateField && dateField.querySelector(".date-open");
+      if (apri) apri.focus();
+      return;
+    }
     // Piu' menu speciali che persone: stessa idea, l'avviso e' gia' sotto le
     // caselle da quando ha messo il numero di troppo.
     if (!menuValido()) { aggiornaMenu(); return; }
     if (!unitaValide()) { aggiornaUnita(); return; }
 
-    // In modalita' "aggiungi" non si va su WhatsApp: la richiesta si mette da
-    // parte e il cliente continua a guardare le altre escursioni.
-    if (modo === "aggiungi") {
-      if (typeof listaAggiungi !== "function") return;
-      // Si salva la scelta, non il prezzo: i prezzi cambiano, e un prezzo
-      // salvato ieri nel browser del cliente domani sarebbe sbagliato. Il
-      // conto si rifa' ogni volta leggendo il catalogo.
-      listaAggiungi({
-        id: current.id,
-        date: req.date,
-        time: req.time,
-        lang: req.lang,
-        // nella lista si salva il riepilogo gia' scritto ("1 Vegetariano · 1
-        // Menu standard"), come si fa gia' per la variante e per la lingua
-        menu: menuTesto(req),
-        adults: req.adults,
-        kids: req.kids,
-        babies: req.babies,
-        option: req.option,
-        // la posizione oltre al testo: il testo serve a leggerla anche se un
-        // domani la variante non c'e' piu', la posizione a ritrovare i prezzi
-        optionIndex: indiceVariante(current),
-        // qui i **numeri** e non il riepilogo gia' scritto come per i menu: il
-        // totale della lista si rifa' ogni volta leggendo i prezzi di adesso,
-        // e da un testo non si puo'
-        units: req.units,
-        transfer: req.transfer,
-        transferSiam: req.transferSiam,
-        hotel: req.hotel,
-        note: req.note
-      });
-      close();
-      return;
-    }
-    if (!req.name) return;
+    // Non si va su WhatsApp: la richiesta si mette nella lista e il cliente
+    // continua a guardare le altre escursioni. Il messaggio parte dalla
+    // finestra della lista, dove il nome si chiede una volta sola.
+    if (typeof listaAggiungi !== "function") return;
 
+    // Si salva la scelta, non il prezzo: i prezzi cambiano, e un prezzo
+    // salvato ieri nel browser del cliente domani sarebbe sbagliato. Il
+    // conto si rifa' ogni volta leggendo il catalogo.
+    listaAggiungi({
+      id: current.id,
+      date: req.date,
+      time: req.time,
+      lang: req.lang,
+      // nella lista si salva il riepilogo gia' scritto ("1 Vegetariano · 1
+      // Menu standard"), come si fa gia' per la variante e per la lingua
+      menu: menuTesto(req),
+      adults: req.adults,
+      kids: req.kids,
+      babies: req.babies,
+      option: req.option,
+      // la posizione oltre al testo: il testo serve a leggerla anche se un
+      // domani la variante non c'e' piu', la posizione a ritrovare i prezzi
+      optionIndex: indiceVariante(current),
+      // qui i **numeri** e non il riepilogo gia' scritto come per i menu: il
+      // totale della lista si rifa' ogni volta leggendo i prezzi di adesso,
+      // e da un testo non si puo'
+      units: req.units,
+      transfer: req.transfer,
+      transferSiam: req.transferSiam,
+      hotel: req.hotel,
+      note: req.note
+    });
     close();
-    window.location.href = whatsappUrl(current, req);
   });
 }
 

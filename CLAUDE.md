@@ -132,13 +132,24 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   schede, poi il proprietario aggiunge punto di raccolta e orari **una alla volta**, con
   calma. Una scheda senza orari suoi non è incompleta: mostra il punto senza l'ora, o
   niente, e va benissimo così.
+- **Il campo "Il tuo nome" nella richiesta resta**, per scelta del proprietario. Era stata
+  proposta la sua rimozione — il messaggio parte dal WhatsApp del cliente, quindi l'ufficio
+  vede già chi scrive e da che numero — ed è stata respinta. Non si ripropone.
+- **La tastiera dell'iPhone sul fondo della finestra si lascia com'è**, per scelta del
+  proprietario. Misurato: col campo del nome a fuoco il pulsante finisce dietro la
+  tastiera e la casella la scavalca di 6 px sull'iPhone SE. Il rimedio esiste (alzare la
+  finestra leggendo `visualViewport`) ed è stato **scartato**: tocca quanto è alta e dove
+  sta la finestra, quindi un errore lì si vedrebbe su tutte le schede. Non si ripropone.
+- **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
+  Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
+  minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.
 
 ---
 
 ## Il pick-up
 
-Il **punto di raccolta dipende solo dall'hotel**, l'**ora dipende dall'escursione**.
-Sono due tabelle separate in `hotel.js`, e vale la pena non confonderle: il punto si
+Il **punto di raccolta dipende dall'hotel**, l'**ora dipende dall'escursione**.
+Sono tabelle separate in `hotel.js`, e vale la pena non confonderle: il punto si
 scrive una volta e vale per tutte le escursioni, gli orari vanno messi per ognuna.
 
 | tabella | cosa c'è | quando cambia |
@@ -146,6 +157,18 @@ scrive una volta e vale per tutte le escursioni, gli orari vanno messi per ognun
 | `PICKUP_POINTS` | 64 punti: nome e tipo | quasi mai |
 | `HOTELS` | 562 hotel, ognuno col suo punto | quando apre un hotel nuovo |
 | `PICKUP_TIMES[scheda][punto]` | gli orari, escursione per escursione | quando il fornitore li cambia |
+| `PICKUP_IN_HOTEL` | le schede che passano **sotto l'hotel** | quando si aggiunge un fornitore che fa così |
+
+**"Il punto dipende solo dall'hotel" vale dentro un fornitore, non fra fornitori.**
+`PICKUP_POINTS` e `HOTELS` vengono da Island Excursions, ed è lì che è stato verificato.
+Canaventura, sulle camminate, il pulmino lo porta sotto l'albergo: quelle schede stanno
+in `PICKUP_IN_HOTEL` e per loro le due tabelle non valgono. **Prima di mettere una scheda
+nuova di un fornitore nuovo, chiedi dove passa a prendere il cliente** — è la domanda che
+non ci si ricorda di fare, perché la risposta sembra già scritta.
+
+Sbagliarla fa danno in tutte e due le direzioni: chi legge una fermata che non esiste esce
+di casa per niente, chi legge "in hotel" quando il punto è altrove resta davanti alla
+reception a guardare l'ora.
 
 **Il nome del posto non si traduce, il tipo sì.** "Best Tenerife" è un nome proprio e
 resta uguale in tutte e tre le lingue, come i titoli delle escursioni: chi lo deve
@@ -166,7 +189,7 @@ stanno in `dati-fornitore/`.
 
 ## Icone di "Cosa è incluso"
 
-Diciannove, disegnate a mano su griglia 24×24, prendono il colore del testo. Per
+Ventuno, disegnate a mano su griglia 24×24, prendono il colore del testo. Per
 aggiungerne una servono **due righe**: il disegno in `INCLUDED_ICONS` (`tour.js`) e il
 testo `inc.<parola>` in `i18n.js`. Una parola senza icona **viene saltata in silenzio** —
 `controlla.js` la segnala.

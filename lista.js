@@ -178,7 +178,18 @@ function initLista() {
   dialog.hidden = true;
   dialog.innerHTML = `
     <div class="ticket-dialog-head">
-      <h2 id="listaTitle" data-i18n="lista.title">La tua lista</h2>
+      <div class="lista-intestazione">
+        <h2 id="listaTitle" data-i18n="lista.title">La tua lista</h2>
+        <!-- La scritta stampata sul retro di una cartolina. Due nomi di posto:
+             uguali in italiano, inglese e spagnolo, quindi niente da tradurre. -->
+        <p class="lista-luogo" aria-hidden="true">Isla · Tenerife</p>
+      </div>
+      <!-- Francobollo e timbro sono decorazione: niente testo da leggere,
+           niente da tradurre, e lo screen reader tira dritto. -->
+      <span class="lista-francobollo" aria-hidden="true">
+        <img src="./assets/logo-isla.png" alt="" width="44" height="44" loading="lazy" />
+        <span class="lista-timbro"></span>
+      </span>
       <button class="iconbtn" type="button" data-lista-close
               data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
     </div>

@@ -14,10 +14,13 @@
 // e' un punto di cui non sappiamo il nome: sono quelli del nord, e per quegli
 // hotel non mostriamo niente.
 //
-// **Il punto dipende solo dall'hotel, non dall'escursione**: verificato su due
-// escursioni diverse del fornitore. Gli **orari** invece cambiano da
-// un'escursione all'altra, e per questo qui non ci sono: un'ora e' una
-// promessa, e la conferma l'ufficio.
+// **Il punto dipende solo dall'hotel, non dall'escursione** — ma solo dentro un
+// fornitore. Verificato su due escursioni di Island Excursions, che e' da dove
+// vengono queste due tabelle. Un altro fornitore fa un altro giro: quelli che
+// passano sotto l'albergo stanno in PICKUP_IN_HOTEL, piu' sotto, e per loro
+// queste righe non valgono.
+// Gli **orari** invece cambiano da un'escursione all'altra, e per questo qui
+// non ci sono: un'ora e' una promessa, e la conferma l'ufficio.
 //
 // I nomi vengono dai dati in dati-fornitore/, riscritti: gli originali sono
 // note per gli autisti, in stampatello e con spagnolo e inglese mescolati.
@@ -657,6 +660,66 @@ const HOTELS = [
   ["Xibana", 10045],
   ["Yucca Park", 20],
   ["Zentral Center", 29],
+];
+
+// Le escursioni che passano a prendere il cliente **sotto il suo hotel**,
+// qualunque punto gli assegni la tabella qui sopra.
+//
+// Il punto dipende dall'hotel e non dall'escursione: e' scritto in testa a
+// questo file, ed era vero — verificato su due escursioni. Ma era vero **di un
+// fornitore solo**, Island Excursions, da cui vengono PICKUP_POINTS e HOTELS.
+// Un altro fornitore fa un altro giro: Canaventura, sulle tre camminate, il
+// pulmino lo porta sotto l'albergo (proprietario, 11 settembre 2026).
+//
+// Senza questa lista il danno e' concreto e in una direzione sola: chi sta
+// all'Acapulco leggeva "Punto di raccolta: Los Hibiscos, alla fermata
+// dell'autobus" e alle otto del mattino usciva per andare a due strade di
+// distanza, mentre il pulmino lo aspettava davanti alla porta. Il file dice
+// gia' il danno opposto — "chi sta al Cleopatra sale alla fermata del Best
+// Tenerife, e se non glielo diciamo resta davanti al suo hotel a guardare
+// l'ora" — e questo e' lo stesso errore girato al contrario.
+//
+// Vale **solo per gli hotel che stanno in HOTELS**: a chi scrive un indirizzo
+// che non conosciamo non si promette niente, perche' il giro copre gli
+// alloggi del sud e di un appartamento privato non sappiamo nemmeno dov'e'.
+// Resta la riga di aiuto che dice di scriverlo nelle note.
+const PICKUP_IN_HOTEL = [
+  // Le tre camminate di Canaventura, che stanno tutte nella scheda "Trekking".
+  "trekking-bici",
+  // La Mustang al tramonto di Pirati Tenerife: un fornitore nuovo, e la
+  // domanda e' stata fatta prima di pubblicare la scheda invece di dare per
+  // buone le tabelle qui sopra (proprietario, 12 settembre 2026). Passano
+  // sotto l'hotel, e il ritiro e' compreso nel prezzo: sulla scheda infatti
+  // sta fra le icone di `included` e non nel campo `transfer`.
+  // Per gli hotel che non stanno in HOTELS non si promette niente lo stesso,
+  // ci pensa hotelPunto(): la scheda dice di scriverlo nelle note.
+  "mustang-experience"
+];
+
+// Le schede dove non si passa a prendere nessuno.
+//
+// Il ritiro non c'e' proprio: il cliente arriva da solo a un posto solo, che e'
+// scritto nelle note della scheda. Qui le tabelle qui sopra non vanno nemmeno
+// consultate — sono di Island Excursions, e la fermata che ne uscirebbe e' di
+// un altro fornitore, in un'altra strada, a un'altra ora. E' l'errore peggiore
+// che questo campo possa fare: manda il cliente ad aspettare dove non passa
+// nessuno, con la pagina che gliel'ha detto in tono sicuro.
+//
+// Su queste schede la finestra della richiesta non chiede nemmeno l'hotel: la
+// domanda "dove alloggi" esiste solo per dire dove si sale, e qui la risposta
+// e' gia' scritta e uguale per tutti.
+//
+// Non e' la stessa cosa di una scheda che non sta in PICKUP_TIMES: quella il
+// ritiro ce l'ha e sono gli **orari** a mancare, quindi il punto si mostra
+// lo stesso.
+const PICKUP_NESSUNO = [
+  // Tuk Tuk Sweet Tours: il ritrovo e' davanti al Wakanda Origen, e il
+  // fornitore scrive "Hotel pick up" fra le cose NON incluse. Il transfer non
+  // e' compreso, quindi il punto di raccolta non si mostra (proprietario,
+  // 13 settembre 2026). Vale per tutte e due le schede: i tre giri privati
+  // partono dallo stesso posto e hanno la stessa riga fra le cose NON incluse.
+  "tuk-tuk",
+  "tuk-tuk-privato"
 ];
 
 // Gli orari del pulmino, escursione per escursione.

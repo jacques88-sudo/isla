@@ -50,6 +50,13 @@ const I18N = {
   "meta.home.desc":     { it: "Isla — trova subito orario, punto d'incontro e informazioni della tua escursione a Tenerife.", en: "Isla — find the time, meeting point and details of your excursion in Tenerife straight away.", es: "Isla — encuentra al instante el horario, el punto de encuentro y la información de tu excursión en Tenerife." },
   "meta.catalog.title": { it: "Tutte le escursioni · Isla", en: "All excursions · Isla", es: "Todas las excursiones · Isla" },
   "meta.catalog.desc":  { it: "Tutte le escursioni, i tour e gli show di Isla a Tenerife: mare, Teide, parchi, avventura e molto altro.", en: "All of Isla's excursions, tours and shows in Tenerife: sea, Teide, parks, adventure and much more.", es: "Todas las excursiones, tours y espectáculos de Isla en Tenerife: mar, Teide, parques, aventura y mucho más." },
+  "meta.packs.title":   { it: "I pacchetti · Isla", en: "Packages · Isla", es: "Los paquetes · Isla" },
+  "meta.family.title":  { it: "In famiglia · Isla", en: "As a family · Isla", es: "En familia · Isla" },
+  "meta.family.desc":   { it: "I pacchetti di Isla per chi viaggia coi bambini a Tenerife: tre escursioni insieme, col prezzo dei bambini scritto accanto a quello degli adulti.", en: "Isla's packages for families travelling with children in Tenerife: three excursions together, with the kids' price written next to the adults'.", es: "Los paquetes de Isla para quien viaja con niños en Tenerife: tres excursiones juntas, con el precio de los niños junto al de los adultos." },
+  "meta.days.title":    { it: "3, 5 o 7 giorni · Isla", en: "3, 5 or 7 days · Isla", es: "3, 5 o 7 días · Isla" },
+  "meta.days.desc":     { it: "Gli itinerari di Isla a Tenerife da 3, 5 o 7 giorni: una escursione al giorno, con lo sconto già tolto dal prezzo.", en: "Isla's 3, 5 and 7-day itineraries in Tenerife: one excursion a day, with the discount already taken off.", es: "Los itinerarios de Isla en Tenerife de 3, 5 o 7 días: una excursión al día, con el descuento ya aplicado." },
+  "meta.packs.desc":    { it: "I pacchetti di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "Isla's packages in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Los paquetes de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado." },
+  "meta.pack.desc":     { it: "Un pacchetto di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "An Isla package in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Un paquete de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado." },
   "meta.booking.title": { it: "La tua prenotazione · Isla", en: "Your booking · Isla", es: "Tu reserva · Isla" },
 
   // ── hero ────────────────────────────────────────────────────────────────
@@ -61,7 +68,10 @@ const I18N = {
   "intro.title":        { it: "Inizia la tua avventura con…", en: "Start your adventure with…", es: "Empieza tu aventura con…" },
   "bento.packages":     { it: "Pacchetti", en: "Packages", es: "Paquetes" },
   "bento.scan":         { it: "Scan ticket", en: "Scan ticket", es: "Scan ticket" },
-  "bento.kids":         { it: "Con bambini", en: "With kids", es: "Con niños" },
+  // Era "Con bambini" e portava all'elenco filtrato: adesso porta ai pacchetti
+  // di famiglia. Il nome cambiato e' una scelta del proprietario (14 settembre
+  // 2026): "In famiglia" parla a chi viaggia coi bambini, non ai bambini.
+  "bento.family":       { it: "In famiglia", en: "As a family", es: "En familia" },
   "bento.days":         { it: "3/5/7 Days Experience", en: "3/5/7 Days Experience", es: "3/5/7 Days Experience" },
   "bento.rental":       { it: "Noleggio auto, moto e bici", en: "Car, moto & bike rental", es: "Alquiler de coche, moto y bici" },
   "wa.rental":          { it: "Ciao Isla! Vorrei noleggiare un mezzo a Tenerife. Mi interessa: ", en: "Hi Isla! I'd like to rent a vehicle in Tenerife. I'm interested in: ", es: "¡Hola Isla! Quisiera alquilar un vehículo en Tenerife. Me interesa: " },
@@ -164,6 +174,10 @@ const I18N = {
   "detail.summary":     { it: "In breve", en: "At a glance", es: "En resumen" },
   "detail.departure":   { it: "Punto di partenza", en: "Departure point", es: "Punto de salida" },
   "detail.duration":    { it: "Durata", en: "Duration", es: "Duración" },
+  // Ripiego per la riga di `activityDuration` quando la scheda non scrive il
+  // suo `activityLabel`. Generica apposta: la parola giusta ("Tempo di
+  // cammino", "Tempo in acqua") la sa solo la scheda.
+  "detail.activity":    { it: "Durata dell'attività", en: "Activity time", es: "Duración de la actividad" },
   "detail.price":       { it: "Prezzo", en: "Price", es: "Precio" },
   "detail.offer":       { it: "Offerta", en: "Offer", es: "Oferta" },
   "detail.offerUntil":  { it: "Valida fino al {d}", en: "Valid until {d}", es: "Válida hasta el {d}" },
@@ -199,6 +213,7 @@ const I18N = {
   "inc.towels":         { it: "Asciugamani", en: "Towels", es: "Toallas" },
   "inc.cooler":         { it: "Borsa frigo", en: "Cooler box", es: "Nevera portátil" },
   "inc.fuel":           { it: "Carburante", en: "Fuel", es: "Combustible" },
+  "inc.insurance":      { it: "Assicurazione", en: "Insurance", es: "Seguro" },
   // ── la lista delle richieste ────────────────────────────────────────────
   "lista.title":        { it: "La tua lista", en: "Your list", es: "Tu lista" },
   "lista.added":        { it: "Aggiunta alla tua lista", en: "Added to your list", es: "Añadida a tu lista" },
@@ -207,6 +222,56 @@ const I18N = {
   "lista.clear":        { it: "Svuota la lista", en: "Empty the list", es: "Vaciar la lista" },
   "lista.full":         { it: "Nella lista ci stanno al massimo {n} escursioni. Mandaci questa richiesta e poi ne inizi un'altra.", en: "The list holds at most {n} excursions. Send this request and then start another one.", es: "En la lista caben como máximo {n} excursiones. Envíanos esta solicitud y luego empiezas otra." },
   "lista.hint":         { it: "Parte un solo messaggio con tutte le escursioni della lista.", en: "One single message goes out with every excursion in the list.", es: "Se envía un solo mensaje con todas las excursiones de la lista." },
+
+  // ── i pacchetti ─────────────────────────────────────────────────────────
+  "packs.eyebrow":      { it: "Scelti per te", en: "Picked for you", es: "Elegidos para ti" },
+  "packs.title":        { it: "I pacchetti", en: "Packages", es: "Los paquetes" },
+  "packs.intro":        { it: "Tre escursioni che stanno bene insieme, con lo sconto già tolto dal prezzo. Si prendono intere: una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "Three excursions that go well together, with the discount already taken off. You take them as a whole: one single request, and we agree the days together.", es: "Tres excursiones que van bien juntas, con el descuento ya aplicado. Se toman enteras: una sola solicitud, y los días los acordamos juntos." },
+  "packs.familyEyebrow": { it: "Con i bambini", en: "With the kids", es: "Con los niños" },
+  "packs.familyTitle":  { it: "In famiglia", en: "As a family", es: "En familia" },
+  "packs.familyIntro":  { it: "Pacchetti per chi viaggia coi bambini: tre escursioni dove i piccoli hanno il loro prezzo, con lo sconto già tolto. Si prendono interi: una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "Packages for families travelling with children: three excursions where the little ones have their own price, with the discount already taken off. You take them as a whole: one single request, and we agree the days together.", es: "Paquetes para quien viaja con niños: tres excursiones donde los pequeños tienen su propio precio, con el descuento ya aplicado. Se toman enteros: una sola solicitud, y los días los acordamos juntos." },
+  "packs.familyAll":    { it: "Tutte le escursioni adatte ai bambini", en: "All the kid-friendly excursions", es: "Todas las excursiones aptas para niños" },
+  "pack.eyebrow":       { it: "Pacchetto", en: "Package", es: "Paquete" },
+  "pack.ask":           { it: "Richiedi il pacchetto", en: "Request the package", es: "Solicitar el paquete" },
+  "pack.oneRequest":    { it: "Il pacchetto si chiede intero, con una richiesta sola: i tre giorni li mettiamo d'accordo insieme quando ti rispondiamo.", en: "The package is requested as a whole, in a single request: we agree the three days together when we reply.", es: "El paquete se solicita entero, con una sola solicitud: los tres días los acordamos juntos cuando te respondemos." },
+  "pack.askHint":       { it: "Le richieste vanno fatte con almeno 24 ore di anticipo. Ti rispondiamo entro 24 ore con la conferma e i giorni.", en: "Requests need at least 24 hours' notice. We reply within 24 hours with the confirmation and the days.", es: "Las solicitudes se hacen con al menos 24 horas de antelación. Te respondemos en 24 horas con la confirmación y los días." },
+  "pack.fromDay":       { it: "Da che giorno", en: "Starting from", es: "A partir de qué día" },
+  "pack.fromDayHint":   { it: "Il primo dei tre giorni, indicativo: gli altri due li mettiamo d'accordo quando ti rispondiamo.", en: "The first of the three days, roughly: we agree the other two when we reply.", es: "El primero de los tres días, orientativo: los otros dos los acordamos cuando te respondemos." },
+  "pack.hotelPlaceholder": { it: "Nome dell'hotel", en: "Hotel name", es: "Nombre del hotel" },
+  "pack.unitAsk":       { it: "Il totale non si può ancora fare: qui dentro c'è un mezzo che si paga a buggy o a moto d'acqua, e il prezzo dipende da quanti ne servono. Te lo diciamo noi rispondendo.", en: "We can't total this up yet: it includes a vehicle priced per buggy or per jet ski, and that depends on how many you need. We'll tell you when we reply.", es: "El total aún no se puede hacer: aquí hay un vehículo que se paga por buggy o por moto de agua, y depende de cuántos hagan falta. Te lo decimos al responderte." },
+  "pack.notFound":      { it: "Pacchetto non trovato", en: "Package not found", es: "Paquete no encontrado" },
+  "pack.notFoundText":  { it: "Questo indirizzo non corrisponde a nessun pacchetto. Forse è stato tolto.", en: "This address doesn't match any package. It may have been removed.", es: "Esta dirección no corresponde a ningún paquete. Puede que se haya retirado." },
+  "pack.seeAll":        { it: "Vedi tutti i pacchetti", en: "See all the packages", es: "Ver todos los paquetes" },
+  "pack.perPerson":     { it: "a persona", en: "per person", es: "por persona" },
+  "pack.save":          { it: "Risparmi €{n}", en: "You save €{n}", es: "Ahorras €{n}" },
+  "pack.noPrice":       { it: "Prezzo su richiesta", en: "Price on request", es: "Precio a consultar" },
+  "pack.unitNote":      { it: "Qui dentro c'è un mezzo che si paga a buggy o a moto d'acqua, non a testa: questo è il prezzo di una persona da sola, e in due o in tre a testa si paga meno.", en: "This one includes a vehicle priced per buggy or per jet ski, not per head: this is the price for one person on their own, and with two or three of you it comes down.", es: "Aquí hay un vehículo que se paga por buggy o por moto de agua, no por persona: este es el precio de una persona sola, y entre dos o tres sale menos." },
+  "pack.priceAdults":   { it: "€{n} adulti", en: "€{n} adults", es: "€{n} adultos" },
+  "pack.priceChildren": { it: "€{n} bambini", en: "€{n} kids", es: "€{n} niños" },
+  "pack.familyTotal":   { it: "Famiglia tipo, 2 adulti e 2 bambini: €{n} in tutto", en: "A typical family, 2 adults and 2 kids: €{n} in total", es: "Familia tipo, 2 adultos y 2 niños: €{n} en total" },
+  "pack.familyAges":    { it: "Le fasce d'età cambiano da un'escursione all'altra: le trovi qui sotto, accanto al prezzo dei bambini. Con altri numeri il totale si rifà da solo nella richiesta.", en: "Age brackets differ from one excursion to the next: you'll find them below, next to the children's price. With other numbers the total recalculates itself in the request.", es: "Las franjas de edad cambian de una excursión a otra: las encuentras abajo, junto al precio de los niños. Con otros números el total se recalcula solo en la solicitud." },
+  "pack.inside":        { it: "Cosa c'è dentro", en: "What's inside", es: "Qué incluye" },
+
+  // ── Gli itinerari a giorni (3/5/7) ──────────────────────────────────────
+  // Chiavi loro, non "pack." riscritte: la pagina e' la stessa e i testi si
+  // scambiano spostando le chiavi (vedi `pacchettiVestiDaGiorni`). Dove c'e'
+  // {n} il numero arriva dai dati — scrivere "sette" a mano vorrebbe dire
+  // riscrivere queste righe il giorno che nasce un itinerario da dieci giorni.
+  "days.eyebrow":       { it: "Quanti giorni hai", en: "How many days", es: "Cuántos días tienes" },
+  "days.title":         { it: "3, 5 o 7 giorni", en: "3, 5 or 7 days", es: "3, 5 o 7 días" },
+  "days.intro":         { it: "Un'escursione al giorno, scelte per non ripetersi. L'itinerario si prende intero, con una richiesta sola, e i giorni li mettiamo d'accordo insieme. Se resti sull'isola più a lungo, gli altri giorni restano tuoi.", en: "One excursion a day, picked so they don't repeat each other. You take the itinerary as a whole, in a single request, and we agree the days together. If you're staying on the island longer, the other days stay yours.", es: "Una excursión al día, elegidas para no repetirse. El itinerario se toma entero, con una sola solicitud, y los días los acordamos juntos. Si te quedas más tiempo en la isla, los demás días siguen siendo tuyos." },
+  "days.navAria":       { it: "Quanti giorni", en: "How many days", es: "Cuántos días" },
+  "days.all":           { it: "Tutti", en: "All", es: "Todos" },
+  "days.d3":            { it: "3 giorni", en: "3 days", es: "3 días" },
+  "days.d5":            { it: "5 giorni", en: "5 days", es: "5 días" },
+  "days.d7":            { it: "7 giorni", en: "7 days", es: "7 días" },
+  "days.count":         { it: "{n} giorni", en: "{n} days", es: "{n} días" },
+  "days.detailEyebrow": { it: "Itinerario di {n} giorni", en: "{n}-day itinerary", es: "Itinerario de {n} días" },
+  "days.inside":        { it: "Giorno per giorno", en: "Day by day", es: "Día a día" },
+  "days.ask":           { it: "Richiedi l'itinerario", en: "Request the itinerary", es: "Solicitar el itinerario" },
+  "days.oneRequest":    { it: "L'itinerario si chiede intero, con una richiesta sola: i {n} giorni li mettiamo d'accordo insieme quando ti rispondiamo.", en: "The itinerary is requested as a whole, in a single request: we agree the {n} days together when we reply.", es: "El itinerario se solicita entero, con una sola solicitud: los {n} días los acordamos juntos cuando te respondemos." },
+  "days.fromDayHint":   { it: "Il primo dei {n} giorni, indicativo: gli altri li mettiamo d'accordo quando ti rispondiamo.", en: "The first of the {n} days, roughly: we agree the others when we reply.", es: "El primero de los {n} días, orientativo: los demás los acordamos cuando te respondemos." },
+  "days.seeAll":        { it: "Vedi gli altri itinerari", en: "See the other itineraries", es: "Ver los demás itinerarios" },
 
   "detail.days":        { it: "Giorni", en: "Days", es: "Días" },
   "detail.times":       { it: "Orari", en: "Departure times", es: "Horarios" },
@@ -243,6 +308,10 @@ const I18N = {
   "req.menuError":      { it: "Hai indicato più menu speciali che persone.", en: "You've asked for more special menus than there are people.", es: "Has indicado más menús especiales que personas." },
   "req.unitsError":     { it: "Serve almeno un mezzo per fare la richiesta.", en: "Add at least one to send the request.", es: "Hace falta al menos uno para enviar la solicitud." },
   "req.menuHint":       { it: "Allergie o intolleranze: scrivile nelle note qui sotto, così la cucina le sa in anticipo.", en: "Allergies or intolerances: write them in the notes below, so the kitchen knows in advance.", es: "Alergias o intolerancias: escríbelas en las notas de abajo, para que la cocina lo sepa con antelación." },
+  // Ferma la richiesta, quindi dice "solo" e non "di solito": un'escursione non
+  // si prenota nel giorno in cui non c'e'. Che i giorni possano cambiare con la
+  // lingua della guida si dice nelle note della scheda, non qui: qui il cliente
+  // ha gia' scelto la data e gli serve sapere che quella non va.
   "req.dayError":       { it: "Questa escursione si fa solo: {giorni}.", en: "This excursion only runs on: {giorni}.", es: "Esta excursión solo se hace: {giorni}." },
 
   // I giorni della settimana, in forma corta: servono alla riga "Giorni" e al
@@ -261,6 +330,23 @@ const I18N = {
   "req.adults":         { it: "Adulti", en: "Adults", es: "Adultos" },
   "req.kids":           { it: "Bambini", en: "Children", es: "Niños" },
   "req.babies":         { it: "Neonati", en: "Infants", es: "Bebés" },
+  // I due bottoni del "meno / piu'" accanto ai numeri. Non si leggono: sono un
+  // segno solo, e questo e' il nome che sente chi usa lo schermo a voce.
+  "req.minus":          { it: "Uno in meno", en: "One less", es: "Uno menos" },
+  "req.plus":           { it: "Uno in più", en: "One more", es: "Uno más" },
+  // Il calendario della data. I nomi dei mesi **non** stanno qui: il browser li
+  // da' giusti in tutte e tre le lingue (`toLocaleDateString`), e dodici nomi
+  // per tre lingue sarebbero trentasei righe per una cosa che sappiamo gia'.
+  // I nomi dei giorni invece si', e sono quelli di sopra (`day.mon`...): sono
+  // gli stessi che compaiono nell'avviso "si fa solo il...".
+  "req.datePick":       { it: "Scegli la data", en: "Choose the date", es: "Elige la fecha" },
+  "req.dateMissing":    { it: "Scegli la data dell'escursione.", en: "Choose the date of the excursion.", es: "Elige la fecha de la excursión." },
+  "req.prevMonth":      { it: "Mese precedente", en: "Previous month", es: "Mes anterior" },
+  "req.nextMonth":      { it: "Mese successivo", en: "Next month", es: "Mes siguiente" },
+  // Quando in tutto l'anno non c'e' un giorno buono: non capita col catalogo di
+  // oggi, ma un `days` scritto male domani lo farebbe, e una griglia tutta
+  // grigia senza una riga che spieghi sembra il sito rotto.
+  "req.dateNone":       { it: "Per questa escursione non ci sono date disponibili: scrivici su WhatsApp.", en: "No dates available for this excursion: write to us on WhatsApp.", es: "No hay fechas disponibles para esta excursión: escríbenos por WhatsApp." },
   "req.hotel":          { it: "Dove alloggi", en: "Where you are staying", es: "Dónde te alojas" },
   "req.hotelPlaceholder": { it: "Scrivi le prime lettere dell'hotel", en: "Type the first letters of your hotel", es: "Escribe las primeras letras del hotel" },
   "req.pickup":         { it: "Punto di raccolta", en: "Pick-up point", es: "Punto de recogida" },
@@ -284,7 +370,15 @@ const I18N = {
   // **non si copiano qui**. Isla prenota a mano su WhatsApp e questa riga
   // resta a 24 ore finche' non e' l'ufficio a dire un altro numero.
   "req.hint":           { it: "Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.", en: "Requests must be sent at least <strong>24 hours in advance</strong>. We reply within 24 hours with the confirmation.", es: "Las solicitudes deben enviarse con al menos <strong>24 horas de antelación</strong>. Respondemos en 24 horas con la confirmación." },
-  "req.privacy":        { it: "Quello che scrivi qui serve solo a risponderti su WhatsApp: non viene salvato dal sito.", en: "What you type here is only used to reply to you on WhatsApp: the site does not store it.", es: "Lo que escribes aquí solo sirve para responderte por WhatsApp: el sitio no lo guarda." },
+  // Diceva "non viene salvato dal sito", e da quando l'hotel si ricorda non era
+  // piu' vero. Non era del tutto vero nemmeno prima: la lista delle richieste
+  // sta nel browser da sempre, hotel e note comprese.
+  // La riga nuova dice le due cose che contano e sono vere: a chi serve quello
+  // che scrive (a rispondergli su WhatsApp, e nel sito non c'e' una sola
+  // chiamata di rete che mandi qualcosa a qualcuno), e dove finisce l'hotel
+  // (nel suo dispositivo, non da noi). Due frasi corte: quelle lunghe le ha
+  // bocciate il proprietario e aveva ragione.
+  "req.privacy":        { it: "Quello che scrivi serve solo a risponderti su WhatsApp. L'hotel resta salvato su questo dispositivo, per non riscriverlo ogni volta.", en: "What you type is only used to reply to you on WhatsApp. Your hotel stays saved on this device, so you don't have to type it again.", es: "Lo que escribes solo sirve para responderte por WhatsApp. El hotel se queda guardado en este dispositivo, para no escribirlo cada vez." },
 
   // ── messaggio WhatsApp ──────────────────────────────────────────────────
   "wa.intro":           { it: "Ciao Isla! Sono {name}, vorrei richiedere disponibilità per:", en: "Hi Isla! I'm {name}, I'd like to check availability for:", es: "¡Hola Isla! Soy {name}, quisiera consultar disponibilidad para:" },
@@ -301,6 +395,9 @@ const I18N = {
   "wa.transferSiam":    { it: "Transfer Siam Park", en: "Siam Park transfer", es: "Traslado Siam Park" },
   "wa.total":           { it: "Totale indicativo", en: "Estimated total", es: "Total orientativo" },
   "wa.introList":       { it: "Ciao Isla! Sono {name}, vorrei richiedere disponibilità per {n} escursioni:", en: "Hi Isla! I'm {name}, I'd like to check availability for {n} excursions:", es: "¡Hola Isla! Soy {name}, quisiera consultar disponibilidad para {n} excursiones:" },
+  "wa.fromDay":         { it: "Dal giorno", en: "From", es: "Desde el día" },
+  "wa.introPack":       { it: "Ciao Isla! Sono {name}, vorrei richiedere il pacchetto «{pack}»:", en: "Hi Isla! I'm {name}, I'd like to request the «{pack}» package:", es: "¡Hola Isla! Soy {name}, quisiera solicitar el paquete «{pack}»:" },
+  "wa.introDays":       { it: "Ciao Isla! Sono {name}, vorrei richiedere l'itinerario «{pack}», {n} giorni:", en: "Hi Isla! I'm {name}, I'd like to request the «{pack}» itinerary, {n} days:", es: "¡Hola Isla! Soy {name}, quisiera solicitar el itinerario «{pack}», {n} días:" },
   "wa.totalPartial":    { it: "Totale indicativo (solo le escursioni con il prezzo)", en: "Estimated total (priced excursions only)", es: "Total orientativo (solo las excursiones con precio)" },
   "wa.yes":             { it: "sì", en: "yes", es: "sí" },
   "wa.no":              { it: "no", en: "no", es: "no" },
@@ -322,10 +419,12 @@ const I18N = {
   "assist.yes":         { it: "Sì", en: "Yes", es: "Sí" },
   "assist.no":          { it: "No", en: "No", es: "No" },
   "assist.int.sea":     { it: "Mare e barche", en: "Sea and boats", es: "Mar y barcos" },
-  "assist.int.nature":  { it: "Teide e natura", en: "Teide and nature", es: "Teide y naturaleza" },
+  // Segue il nome della categoria in esplora-catalog.js: la risposta e il posto
+  // dove porta si devono leggere uguali. La riga "assist.int.stars" e' sparita
+  // con la categoria "stelle": adesso le stelle stanno qui dentro.
+  "assist.int.nature":  { it: "Natura, Teide e stelle", en: "Nature, Teide and stars", es: "Naturaleza, Teide y estrellas" },
   "assist.int.adrenaline": { it: "Adrenalina", en: "Adrenaline", es: "Adrenalina" },
   "assist.int.parks":   { it: "Parchi e spettacoli", en: "Parks and shows", es: "Parques y espectáculos" },
-  "assist.int.stars":   { it: "Stelle di notte", en: "Stars at night", es: "Estrellas de noche" },
   "assist.int.island":  { it: "Girare l'isola", en: "Tour the island", es: "Recorrer la isla" },
   "assist.int.unsure":  { it: "Non lo so ancora", en: "I'm not sure yet", es: "Todavía no lo sé" },
   "assist.q3":          { it: "Che budget hai in mente?", en: "What's your budget?", es: "¿Qué presupuesto tienes?" },

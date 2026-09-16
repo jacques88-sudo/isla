@@ -334,11 +334,19 @@ const I18N = {
   // segno solo, e questo e' il nome che sente chi usa lo schermo a voce.
   "req.minus":          { it: "Uno in meno", en: "One less", es: "Uno menos" },
   "req.plus":           { it: "Uno in più", en: "One more", es: "Uno más" },
-  // L'etichetta della prima pastiglia della data. Le altre portano giorno e
-  // numero ("Sab 19") e non una parola: "dopodomani" in inglese e' "the day
-  // after tomorrow", che su una pastiglia non ci sta, e una data vera dice di
-  // piu' comunque.
-  "req.tomorrow":       { it: "Domani", en: "Tomorrow", es: "Mañana" },
+  // Il calendario della data. I nomi dei mesi **non** stanno qui: il browser li
+  // da' giusti in tutte e tre le lingue (`toLocaleDateString`), e dodici nomi
+  // per tre lingue sarebbero trentasei righe per una cosa che sappiamo gia'.
+  // I nomi dei giorni invece si', e sono quelli di sopra (`day.mon`...): sono
+  // gli stessi che compaiono nell'avviso "si fa solo il...".
+  "req.datePick":       { it: "Scegli la data", en: "Choose the date", es: "Elige la fecha" },
+  "req.dateMissing":    { it: "Scegli la data dell'escursione.", en: "Choose the date of the excursion.", es: "Elige la fecha de la excursión." },
+  "req.prevMonth":      { it: "Mese precedente", en: "Previous month", es: "Mes anterior" },
+  "req.nextMonth":      { it: "Mese successivo", en: "Next month", es: "Mes siguiente" },
+  // Quando in tutto l'anno non c'e' un giorno buono: non capita col catalogo di
+  // oggi, ma un `days` scritto male domani lo farebbe, e una griglia tutta
+  // grigia senza una riga che spieghi sembra il sito rotto.
+  "req.dateNone":       { it: "Per questa escursione non ci sono date disponibili: scrivici su WhatsApp.", en: "No dates available for this excursion: write to us on WhatsApp.", es: "No hay fechas disponibles para esta excursión: escríbenos por WhatsApp." },
   "req.hotel":          { it: "Dove alloggi", en: "Where you are staying", es: "Dónde te alojas" },
   "req.hotelPlaceholder": { it: "Scrivi le prime lettere dell'hotel", en: "Type the first letters of your hotel", es: "Escribe las primeras letras del hotel" },
   "req.pickup":         { it: "Punto di raccolta", en: "Pick-up point", es: "Punto de recogida" },

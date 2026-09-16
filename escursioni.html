@@ -158,8 +158,20 @@
     <p class="request-activity" data-request-activity></p>
     <p class="request-season" data-request-season hidden></p>
     <form data-request-form>
-      <label for="reqDate" data-i18n="req.date">Quando vorresti andare</label>
-      <input id="reqDate" name="date" type="date" required />
+      <!-- La data non e' piu' un <input type="date">: il calendario del sistema
+           non sa spegnere i giorni in cui l'escursione non parte — accetta solo
+           un minimo e un massimo — e su una scheda che va mar/gio/sab il
+           cliente poteva scegliere il mercoledi' e scoprirlo dopo. Al suo posto
+           c'e' un calendario scritto a mano (escursioni.js, calendarioData):
+           i giorni buoni si toccano, gli altri sono spenti.
+           Il campo resta come nascosto perche' e' sempre lui a dire la data a
+           tutto il resto del codice, ed e' l'unico posto dove la data e'
+           scritta. **Niente `required`**: su un campo che non si vede
+           bloccherebbe l'invio senza dire perche', quindi il controllo si fa a
+           mano e l'avviso esce qui sotto. -->
+      <span class="request-people-label" data-i18n="req.date">Quando vorresti andare</span>
+      <input id="reqDate" name="date" type="hidden" />
+      <div data-date-field></div>
       <p class="request-day-error" data-request-day-error hidden></p>
 
       <label for="reqHotel"><span data-i18n="req.hotel">Dove alloggi</span> <span class="request-optional" data-i18n="req.hotelWhy">(utile per il pick-up)</span></label>

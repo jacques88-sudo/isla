@@ -13315,3 +13315,60 @@ Togliere il lavoro di ieri non è uno spreco: il proprietario ha visto la cosa v
 detto che non gli piaceva, che è esattamente quando conviene cambiare strada. Restano le
 due cose che le pastiglie hanno lasciato e che valevano più di loro: `dataLocale()`, che ha
 chiuso il buco nelle 24 ore, e il fatto che i giorni buoni si sapevano già calcolare.
+
+---
+
+## Le due domande sulla prenotazione sono chiuse (16 settembre 2026)
+
+Nelle cinque sezioni qui sopra — v337, v341, v342, v343 — restavano scritte due domande
+per il proprietario. Ha risposto a tutte e due in una riga:
+
+> il nome ci deve esssere, e lascia stare la tastiera su iphone
+
+**Sono decisioni, non rinvii**, e per questo sono finite in `CLAUDE.md` sotto *"Cose
+decise, da non riproporre"*: quello è il file che si legge **prima** di toccare qualcosa,
+e queste sono due cose che senza una riga scritta qualcuno riproporrebbe fra tre mesi. Io
+per primo.
+
+### Il nome resta
+
+La proposta era di **non chiederlo affatto**: il messaggio parte dal WhatsApp del cliente,
+quindi l'ufficio vede già chi scrive e da che numero. Respinta.
+
+Vale la pena scrivere perché la proposta non era sbagliata ma la risposta è giusta lo
+stesso: quello che l'ufficio vede su WhatsApp è **il nome del profilo**, che può essere un
+soprannome, un'emoji o il nome di qualcun altro che ha prestato il telefono. Su una
+prenotazione da confermare serve il nome per esteso, quello che poi compare sulla lista
+dell'autista. Il campo non è una formalità: è l'unico posto dove il cliente lo scrive
+apposta.
+
+Conseguenza pratica: **il campo del nome è l'ultima cosa che nella finestra si batte a
+macchina**, e ci resta. Tutto il resto — data, persone, hotel, orario — si fa a tocchi.
+
+### La tastiera dell'iPhone si lascia
+
+Misurato (v343 e la prova del 16 settembre): col campo del nome a fuoco, il pulsante
+"Continua su WhatsApp" finisce **dietro** la tastiera, e la casella del nome la scavalca di
+**6 px** sull'iPhone SE e di 10 sull'iPhone 15. Il browser porta la casella in vista da
+solo, ma di un pelo, e l'altezza vera della tastiera cambia con la versione di iOS.
+
+Il rimedio esisteva: leggere `visualViewport` e alzare la finestra sopra la tastiera, così
+il piede si riappiccica al nuovo fondo. **Scartato dal proprietario**, e la ragione tecnica
+gli dà ragione: è la modifica più rischiosa di tutta la serie, perché tocca quanto è alta
+e dove sta la finestra, e un errore lì si vede su tutte e 66 le schede invece che su un
+campo. Il costo di lasciarlo è un tocco in più per chiudere la tastiera; il costo di
+sbagliarlo era la finestra rotta su tutto il sito.
+
+### Cosa resta aperto, dopo questo
+
+**Sulla prenotazione niente.** I cinque passi sono chiusi e le due domande hanno risposta.
+
+Fuori dalla prenotazione resta una cosa sola, e non è codice: **`trekking-bici` e
+`masca-teide-cabrio-bus` sono pubblicate senza `image`**, quindi in elenco escono col
+riquadro grigio. `controlla.js` le segnala a ogni avvio. Servono due foto, oppure si
+togliono dalla pubblicazione finché non arrivano — ma è una decisione sul catalogo, non sul
+codice.
+
+*(Il terzo avviso, `opera-60`, è un'altra cosa: la fascia dei neonati non è scritta in
+anni, quindi il confronto con le altre non si può fare a macchina e vuole un'occhiata a
+mano. La foto ce l'ha.)*

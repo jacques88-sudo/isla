@@ -185,6 +185,33 @@ di quell'escursione sul sito del fornitore e si incolla `dati-fornitore/raccogli
 nella console del browser. I dati grezzi e la storia di come sono stati raccolti
 stanno in `dati-fornitore/`.
 
+### "Senza punto" sono due cose diverse
+
+Si confondono facilmente, e una sola delle due vuol dire che si sale in hotel.
+
+| il fornitore risponde | vuol dire | la richiesta mostra |
+|---|---|---|
+| `id_punto: 0` | si sale **in hotel**, confermato dal proprietario | "il tuo hotel" |
+| un punto che sta in `PICKUP_POINTS` | la fermata, la sbarra, il posteggio taxi | il nome del posto |
+| un punto che **non** sta in `PICKUP_POINTS` | c'e' un posto, ma non ne conosciamo il nome | **niente** |
+
+Il terzo caso **non e' l'hotel**, ed e' l'errore da non fare: sono 146 hotel su 39
+punti, e sette alberghi diversi condividono il punto `10047` mentre undici
+condividono il `10044`. Un codice in comune fra piu' alberghi e' per forza una
+fermata dove si ritrovano tutti, non la porta di ognuno. Scrivere "il tuo hotel"
+li' lascerebbe il cliente davanti alla reception mentre il pulmino aspetta due
+strade piu' in la'.
+
+I nomi mancanti si recuperano copiando la tendina dei punti da un'escursione del
+fornitore che parte da Puerto de la Cruz: nessuna richiesta al loro server.
+
+**Decisione del proprietario (16 settembre 2026):** per ora si va avanti a mettere
+gli orari delle escursioni. Alla fine, quando tutte quelle col pick-up ce li hanno,
+**gli hotel che restano senza nome del punto si tolgono da `HOTELS`**. Chi ci
+alloggia non trovera' piu' il suo albergo nell'elenco e scrivera' nelle note, come
+gia' fa oggi chi ha un appartamento privato. Sono quasi tutti del nord: da valutare
+di nuovo se per allora una scheda che parte da li' avra' riempito i nomi da sola.
+
 ---
 
 ## Icone di "Cosa è incluso"

@@ -1001,4 +1001,88 @@ const PICKUP_TIMES = {
     10103: "08:00",
     10155: "07:40",
   },
+  // Il giro completo dell'isola, e la prova piu' forte che questa tabella deve
+  // stare per scheda: **il pulmino fa il giro al contrario**.
+  //
+  // Parte da El Medano, all'estremita' est, alle 07:30, corre lungo la costa
+  // verso ovest e finisce a Los Gigantes alle 09:30. Le due escursioni del
+  // Teide fanno il percorso opposto, da Callao Salvaje verso est. Sugli stessi
+  // punti gli orari si ribaltano:
+  //
+  //   punto                       giro isola   Teide mezza giornata
+  //   El Medano                   07:30        08:40
+  //   Muthu Royal Park Albatros   07:45        08:50
+  //   Callao Salvaje              08:50        08:15
+  //   Servatur Isora              09:30        08:45
+  //
+  // Chi sta a Los Gigantes e leggesse l'ora del Teide uscirebbe di casa con
+  // quarantacinque minuti di anticipo; chi sta a El Medano arriverebbe un'ora
+  // dopo che il pulmino e' passato.
+  //
+  // 59 punti serviti, 381 hotel con punto e ora, 3 hotel con l'ora ma il punto
+  // ancora senza nome (punto 41). Le 08:42 del punto 20 sono come le scrive il
+  // fornitore, non arrotondate.
+  //
+  // Raccolti il 16 settembre 2026 con dati-fornitore/raccogli-orari.js.
+  "island-tour-completo": {
+    1: "08:50",
+    2: "08:50",
+    3: "08:50",
+    4: "08:50",
+    6: "08:45",
+    9: "08:45",
+    10: "08:45",
+    11: "08:45",
+    14: "08:40",
+    16: "08:40",
+    17: "08:45",
+    19: "08:45",
+    20: "08:42",
+    22: "08:40",
+    23: "08:35",
+    24: "08:35",
+    25: "08:35",
+    26: "08:30",
+    27: "08:30",
+    28: "08:25",
+    29: "08:25",
+    31: "08:20",
+    33: "08:15",
+    34: "08:15",
+    36: "08:10",
+    37: "08:10",
+    39: "08:10",
+    40: "08:10",
+    41: "08:00",
+    42: "07:45",
+    43: "07:45",
+    44: "07:45",
+    45: "07:45",
+    46: "07:45",
+    51: "08:15",
+    65: "08:35",
+    68: "08:50",
+    10009: "07:45",
+    10010: "08:45",
+    10011: "09:30",
+    10012: "09:30",
+    10014: "09:20",
+    10015: "08:25",
+    10016: "08:25",
+    10017: "09:30",
+    10018: "09:15",
+    10020: "09:25",
+    10023: "08:15",
+    10024: "08:45",
+    10025: "09:30",
+    10029: "09:30",
+    10030: "09:30",
+    10033: "09:15",
+    10035: "07:45",
+    10036: "07:45",
+    10037: "07:30",
+    10063: "07:30",
+    10064: "08:50",
+    10155: "08:45",
+  },
 };

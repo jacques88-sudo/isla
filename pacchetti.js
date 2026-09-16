@@ -61,14 +61,14 @@
 //   Attenzione ai pacchetti con buggy o jet ski: quelle schede hanno
 //   `priceUnit` e il prezzo e' del **mezzo**, non della persona. I pacchetti
 //   dove succede hanno il commento PREZZO MISTO qui sotto, e il numero che
-//   mostrano e' quello di **una persona da sola** — vedi "IL NUMERO IN
-//   VETRINA" piu' giu'.
+//   mostrano e' un **"da €"**: il mezzo diviso fra tutti i posti che ha —
+//   vedi "IL NUMERO IN VETRINA" piu' giu'.
 //
 //   In vetrina e' un numero solo e non puo' che essere quello. Nella finestra
 //   della richiesta invece i mezzi si contano, e il totale e' quello vero:
 //   vedi "I MEZZI DENTRO UN PACCHETTO" piu' sotto, sopra pacchettoTotale().
 //   Sono due numeri diversi apposta e non si contraddicono — quello in vetrina
-//   e' il massimo a testa, quello nella finestra e' quello che si paga — ma se
+//   e' il minimo a testa, quello nella finestra e' quello che si paga — ma se
 //   tocchi uno dei due guarda anche l'altro.
 //
 // LO SCONTO
@@ -218,9 +218,10 @@ const PACCHETTI = [
 
   {
     id: "tenerife-buggy",
-    // PREZZO MISTO: il buggy si paga a mezzo, le altre due a persona.
-    // 180 + 55 + 44 = 279, ma il Siam Park non si sconta: −23,50 → 255,50
-    // per una persona da sola.
+    // PREZZO MISTO: il buggy si paga a mezzo, le altre due a persona. In
+    // vetrina il buggy entra diviso per i posti del piu' capiente: 330 : 6 =
+    // 55. 55 + 55 + 44 = 154, e il Siam Park non si sconta: −11,00 → da 143
+    // a persona.
     title: {
       it: "Tenerife Trio, versione buggy",
       en: "Tenerife Trio, buggy version",
@@ -250,9 +251,10 @@ const PACCHETTI = [
   {
     id: "terra-mare-stelle",
     // PREZZO MISTO: il buggy si paga a mezzo, barca e stelle a persona.
-    // 180 + 55 + 79 = 314, tutto scontabile: −31,40 → 282,60 per una persona
-    // da sola. E' il pacchetto con dentro tre dei quattro prodotti da
-    // spingere e nessun biglietto a prezzo fisso: lo sconto si vede tutto.
+    // Il buggy in vetrina e' 330 : 6 = 55. 55 + 55 + 79 = 189, tutto
+    // scontabile: −18,90 → da 170,10 a persona. E' il pacchetto con dentro
+    // tre dei quattro prodotti da spingere e nessun biglietto a prezzo fisso:
+    // lo sconto si vede tutto.
     title: {
       it: "Terra, mare e stelle",
       en: "Land, sea and stars",
@@ -278,9 +280,10 @@ const PACCHETTI = [
 
   {
     id: "adrenalina",
-    // PREZZO MISTO: buggy e jet ski si pagano a mezzo, il parascending a persona.
-    // 180 + 100 + 55 = 335, tutto scontabile: −33,50 → 301,50 per una persona
-    // da sola.
+    // PREZZO MISTO: buggy e jet ski si pagano a mezzo, il parascending a
+    // persona. In vetrina i due mezzi entrano divisi per i loro posti: il
+    // buggy da 6 posti 330 : 6 = 55, la moto d'acqua doppia 120 : 2 = 60.
+    // 55 + 60 + 55 = 170, tutto scontabile: −17,00 → da 153 a persona.
     title: {
       it: "Adrenalina",
       en: "Adrenaline",
@@ -306,9 +309,9 @@ const PACCHETTI = [
 
   {
     id: "mare-a-tutto-gas",
-    // PREZZO MISTO: il jet ski si paga a mezzo, le altre due a persona.
-    // 55 + 100 + 15 = 170, tutto scontabile: −17,00 → 153,00 per una persona
-    // da sola.
+    // PREZZO MISTO: il jet ski si paga a mezzo, le altre due a persona. La
+    // moto d'acqua in vetrina e' la doppia, 120 : 2 = 60. 55 + 60 + 15 = 130,
+    // tutto scontabile: −13,00 → da 117 a persona.
     title: {
       it: "Mare a tutto gas",
       en: "Sea, full throttle",
@@ -716,15 +719,31 @@ const PACCHETTI = [
 //   legge in quest'ordine: la variante scelta dal pacchetto, poi la scheda, e
 //   dove il prezzo e' del mezzo si ripiega su `priceFrom` (il mezzo piu'
 //   piccolo, cioe' il numero piu' basso che quella scheda puo' costare).
+//   Quel numero pero' e' del mezzo: per sommarlo agli altri ci vuole il
+//   prezzo **a testa**, e lo fa pacchettoMezzoAPersona() dividendo ogni
+//   mezzo per i suoi posti.
 //
 // IL NUMERO IN VETRINA
-//   Dove sono tutti prezzi a persona il numero e' esatto: "€124,20 a persona".
-//   Dove c'e' un mezzo no, perche' il buggy si divide fra chi ci sale: da solo
-//   sono 180 a testa, in due 90. Il numero che mettiamo e' quello di **una
-//   persona da sola**, cioe' il piu' alto: e' l'unico che al cliente puo' solo
-//   scendere quando si sa quanti sono. Un "da €170" (il prezzo in due) sarebbe
-//   piu' bello e sarebbe la cosa che fa arrabbiare: chi viaggia da solo se lo
-//   vedrebbe **salire** al momento della richiesta.
+//   Dove sono tutti prezzi a persona il numero e' esatto e si scrive senza
+//   "da": "€124,20 a persona". Uno solo si puo' fare, uno solo si paga.
+//
+//   Dove c'e' un mezzo il numero e' la **combinazione piu' bassa possibile a
+//   persona** (scelta del proprietario, 16 settembre 2026): ogni mezzo diviso
+//   fra tutti i posti che ha, e le escursioni a persona a testa. Su Adrenalina
+//   e' il buggy da 6 posti (330 : 6 = 55), la moto d'acqua doppia (120 : 2 =
+//   60) e il parascending (55): da €153 scontato.
+//
+//   **Si scrive "da €153", mai "€153".** Il "da" e' la differenza fra un
+//   minimo e una bugia: chi e' in due sul buggy paga 90 a testa e non 55, e un
+//   numero secco gli **salirebbe** in faccia al momento della richiesta — la
+//   cosa che `CLAUDE.md` dice di non fare mai. Col "da" davanti e la nota
+//   sotto (`pack.unitNote`, che dice che in meno persone il mezzo costa di
+//   piu' a testa) il numero resta vero e non sorprende nessuno.
+//
+//   Fino al 16 settembre 2026 qui c'era il numero opposto — quello di una
+//   persona da sola, il piu' alto — per la ragione contraria: e' l'unico che
+//   puo' solo scendere. E' stato cambiato dal proprietario. Non si torna
+//   indietro senza che lo chieda lui.
 //
 // IL CONTO VERO
 //   Lo fa la finestra della richiesta, una escursione alla volta, e poi la
@@ -765,7 +784,14 @@ function pacchettoVoceVariante(voce, tour) {
 
 // Il prezzo di una voce, con scritto **di che tipo** e':
 //   { tipo: "persona", prezzo }  il prezzo di un adulto
-//   { tipo: "mezzo",   prezzo }  il prezzo del mezzo piu' piccolo
+//   { tipo: "mezzo",   prezzo }  il prezzo del mezzo piu' piccolo, piu':
+//                                  aPersona    quanto costa a testa il mezzo
+//                                              diviso fra tutti i suoi posti
+//                                  mezzo       quale tipo di mezzo e' (per
+//                                              scriverlo accanto: "6 posti")
+//                                  prezzoMezzo quanto costa quel mezzo intero
+//                                Le ultime tre sono null dove i mezzi non si
+//                                sanno contare (vedi pacchettoMezzoAPersona).
 //   null                         non si riesce a leggere: il pacchetto non
 //                                mostra nessun numero invece di mostrarne uno
 //                                inventato
@@ -778,7 +804,15 @@ function pacchettoVocePrezzo(voce) {
   // gratis: vuol dire "qui non si paga a persona". Si guarda prima questo.
   if (tour.units || tour.priceUnit) {
     const prezzo = (variante && variante.price) || tour.priceFrom;
-    return prezzo ? { tipo: "mezzo", prezzo: prezzo } : null;
+    if (!prezzo) return null;
+    const diviso = pacchettoMezzoAPersona(voce);
+    return {
+      tipo: "mezzo",
+      prezzo: prezzo,
+      aPersona: diviso ? diviso.aPersona : null,
+      mezzo: diviso ? diviso.tipo : null,
+      prezzoMezzo: diviso ? diviso.prezzo : null
+    };
   }
 
   // Una variante con `price` e senza `priceAdult` e' il prezzo di tutta la cosa
@@ -862,9 +896,12 @@ function pacchettoVoceScontabile(voce) {
 //   scontabile la parte su cui lo sconto si puo' fare
 //   risparmio  quanto si toglie davvero — il numero che il cliente guarda
 //   scontato   quello che paga: pieno meno risparmio
-//   misto      c'e' dentro almeno un prezzo a mezzo: il numero vale per una
-//              persona da sola e va scritto con la sua nota
-// Torna null se anche una sola voce non ha un prezzo leggibile.
+//   misto      c'e' dentro almeno un prezzo a mezzo: il numero e' un minimo
+//              e si scrive "da €X", con la sua nota
+// Torna null se anche una sola voce non ha un prezzo leggibile — e, su una
+// voce a mezzo, se non si riesce a dividerla per i posti: li' un numero ci
+// sarebbe (il prezzo del mezzo intero) ma non sarebbe un prezzo a persona, e
+// sommarlo agli altri darebbe un totale che non vuol dire niente.
 function pacchettoConto(pack) {
   let pieno = 0;
   let scontabile = 0;
@@ -874,9 +911,16 @@ function pacchettoConto(pack) {
   pack.voci.forEach(voce => {
     const p = pacchettoVocePrezzo(voce);
     if (!p) { completo = false; return; }
-    if (p.tipo === "mezzo") misto = true;
-    pieno += p.prezzo;
-    if (pacchettoVoceScontabile(voce)) scontabile += p.prezzo;
+    // Il mezzo entra nel conto **diviso per i suoi posti**: e' l'unico modo
+    // per sommarlo a un prezzo a persona senza mescolare due unita' di misura.
+    let quanto = p.prezzo;
+    if (p.tipo === "mezzo") {
+      if (!p.aPersona) { completo = false; return; }
+      misto = true;
+      quanto = p.aPersona;
+    }
+    pieno += quanto;
+    if (pacchettoVoceScontabile(voce)) scontabile += quanto;
   });
   if (!completo) return null;
 
@@ -943,23 +987,58 @@ function pacchettoConto(pack) {
 // Restano fuori di proposito le voci col prezzo "di tutta la cosa" ma senza
 // `units` — la barca privata del Luxury Cruiser, le cabine VIP del Siam Park:
 // li' non c'e' niente da contare, e infatti il totale continua a non farsi.
+function pacchettoVoceMezzi(voce) {
+  const tour = pacchettoVoceTour(voce);
+  const tipi = (tour && tour.units && Array.isArray(tour.units.types)) ? tour.units.types : [];
+  if (!tipi.length) return null;
+  const variante = pacchettoVoceVariante(voce, tour);
+  // Lo stesso ripiego di totaleMezzi() in escursioni.js: i prezzi stanno
+  // nella variante dove le varianti ci sono (buggy, moto d'acqua, quad) e
+  // sulla scheda dove non ce ne sono (la Mustang, dove a cambiare non e' la
+  // durata ma quanti salgono in macchina). Piu' il terzo caso, che qui
+  // succede e nella finestra singola no: la variante il pacchetto puo' non
+  // averla scelta.
+  const prezzi = (variante && variante.unitPrices) || tour.unitPrices ||
+    pacchettoPrezziMezziUguali(tour);
+  if (!prezzi) return null;
+  return { voce: voce, tour: tour, mezzi: tour.units, tipi: tipi, prezzi: prezzi };
+}
+
 function pacchettoMezziDaContare(pack) {
   return pack.voci.map((voce, i) => {
-    const tour = pacchettoVoceTour(voce);
-    const tipi = (tour && tour.units && Array.isArray(tour.units.types)) ? tour.units.types : [];
-    if (!tipi.length) return null;
-    const variante = pacchettoVoceVariante(voce, tour);
-    // Lo stesso ripiego di totaleMezzi() in escursioni.js: i prezzi stanno
-    // nella variante dove le varianti ci sono (buggy, moto d'acqua, quad) e
-    // sulla scheda dove non ce ne sono (la Mustang, dove a cambiare non e' la
-    // durata ma quanti salgono in macchina). Piu' il terzo caso, che qui
-    // succede e nella finestra singola no: la variante il pacchetto puo' non
-    // averla scelta.
-    const prezzi = (variante && variante.unitPrices) || tour.unitPrices ||
-      pacchettoPrezziMezziUguali(tour);
-    if (!prezzi) return null;
-    return { indice: i, voce: voce, tour: tour, mezzi: tour.units, tipi: tipi, prezzi: prezzi };
+    const gruppo = pacchettoVoceMezzi(voce);
+    if (!gruppo) return null;
+    return { indice: i, voce: gruppo.voce, tour: gruppo.tour, mezzi: gruppo.mezzi,
+      tipi: gruppo.tipi, prezzi: gruppo.prezzi };
   }).filter(Boolean);
+}
+
+// IL MEZZO CHE COSTA MENO A TESTA, che e' quello che fa il "da €" della
+// vetrina. Un mezzo non si paga a persona, quindi un prezzo a persona ce
+// l'ha solo quando si dice **in quanti ci si sale**: il buggy da 6 posti
+// costa 330 e diviso per sei fa 55 a testa, quello da 2 ne costa 180 e a
+// testa ne fa 90. Il piu' basso e' sempre il mezzo pieno, e quello e' il
+// minimo vero: sotto non si puo' andare.
+//
+// Torna { aPersona, prezzo, tipo, posti }, o null dove non c'e' niente da
+// dividere: un tipo senza posti o senza prezzo non entra nel confronto, e se
+// non ne resta nemmeno uno il pacchetto non mostra nessun numero invece di
+// mostrarne uno inventato — la regola di sempre.
+function pacchettoMezzoAPersona(voce) {
+  const gruppo = pacchettoVoceMezzi(voce);
+  if (!gruppo) return null;
+
+  let migliore = null;
+  gruppo.tipi.forEach(tipo => {
+    const prezzo = gruppo.prezzi[tipo.key];
+    const posti = tipo.seats || 0;
+    if (!prezzo || !posti) return;
+    const aTesta = prezzo / posti;
+    if (!migliore || aTesta < migliore.aPersona) {
+      migliore = { aPersona: aTesta, prezzo: prezzo, tipo: tipo, posti: posti };
+    }
+  });
+  return migliore;
 }
 
 // I prezzi dei mezzi quando il pacchetto la variante non l'ha scelta. Succede
@@ -1490,6 +1569,12 @@ function pacchettoHref(pack) {
 // Il prezzo come si scrive in vetrina: barrato + scontato dove c'e' uno
 // sconto, il numero solo dove non c'e' niente da togliere (barrare un numero e
 // riscrivere lo stesso numero e' una finta offerta).
+//
+// Il "da" davanti va **solo** dove dentro c'e' un mezzo (`misto`): li' il
+// numero e' la combinazione piu' bassa possibile e in meno persone sale. Dove
+// sono tutti prezzi a persona il numero e' quello e basta, e un "da" lo
+// farebbe sembrare un minimo che puo' crescere. E' la stessa chiave `tour.from`
+// delle schede, non una seconda scritta da tenere allineata in tre lingue.
 function pacchettoPrezzoHTML(conto) {
   if (!conto) {
     return `<span class="pack-price"><strong>${esc(t("pack.noPrice"))}</strong></span>`;
@@ -1497,7 +1582,10 @@ function pacchettoPrezzoHTML(conto) {
   const barrato = conto.risparmio > 0
     ? `<s class="price-before">€${esc(eur(conto.pieno))}</s> `
     : "";
-  return `<span class="pack-price">${barrato}<strong>€${esc(eur(conto.scontato))}</strong>
+  const numero = conto.misto
+    ? t("tour.from", { p: eur(conto.scontato) })
+    : "€" + eur(conto.scontato);
+  return `<span class="pack-price">${barrato}<strong>${esc(numero)}</strong>
       <small>${esc(t("pack.perPerson"))}</small></span>`;
 }
 
@@ -1656,6 +1744,14 @@ function pacchettoVoceHTML(voce, n, famiglia) {
     dettagli.push(t("pack.priceAdults", { n: eur(prezzo.prezzo) }));
     const fascia = (tour.ages && tour.ages.child) ? " (" + tf(tour.ages.child) + ")" : "";
     dettagli.push(t("pack.priceChildren", { n: eur(bambino) }) + fascia);
+  } else if (prezzo && prezzo.tipo === "mezzo" && prezzo.aPersona) {
+    // Due numeri, e servono tutti e due: il "da €55 a persona" e' quello che
+    // entra nel conto in cima alla pagina, e "6 posti €330/buggy" e' da dove
+    // esce. Senza il secondo il cliente legge un prezzo a testa su una cosa
+    // che a testa non si paga, e nella finestra della richiesta si trova
+    // davanti i contatori dei mezzi senza sapere perche'.
+    dettagli.push(t("tour.from", { p: eur(prezzo.aPersona) }) + " " + t("pack.perPerson"));
+    dettagli.push(tf(prezzo.mezzo.name) + " €" + eur(prezzo.prezzoMezzo) + priceUnitSuffix(tour));
   } else if (prezzo) {
     dettagli.push("€" + eur(prezzo.prezzo) + priceUnitSuffix(tour));
   }

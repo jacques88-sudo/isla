@@ -13878,3 +13878,94 @@ Chromium a 390 px, `tour.html?id=island-tour-completo`, col flusso della lista:
 - nessun errore JS
 
 `CACHE_NAME` alzato a `isla-v349`, dopo il merge di `main` che era gia a `isla-v348`.
+
+## Vuelta a la Isla: il segnaposto del giro dell'isola si riempie (16 settembre 2026, v350)
+
+Ieri `island-tour-completo` aveva preso gli orari del pick-up ma restava un
+segnaposto: niente prezzo, niente giorni, niente programma. Oggi l'ufficio ha
+mandato la pagina del fornitore — Nere Izerdie / Island Excursions, Costa Adeje,
+che la chiama **"VUELTA A LA ISLA"** — e la scheda si riempie.
+
+### Non era una scheda nuova
+
+Prima cosa fatta, come dice la regola dopo il Kalima Kat: cercare il doppione.
+Non c'era da creare niente — il segnaposto c'era gia' dal 14 settembre, con lo
+stesso id, la stessa foto e la stessa tabella in `PICKUP_TIMES`. Le due schede
+vicine dello stesso fornitore sono un giro diverso:
+
+| scheda | prezzo | dove passa |
+|---|---|---|
+| `icod-garachico-orotava` | 58 € | Teide, Vilaflor, Icod, Garachico, **Masca** |
+| `santa-cruz-taganana` | 50 € | Santa Cruz, **Anaga**, La Laguna |
+| `island-tour-completo` | 50 € | **Los Gigantes**, Garachico, Icod, La Orotava, **Puerto de la Cruz**, **Candelaria** |
+
+Il 50 € in comune con Santa Cruz non e' un segnale di doppione: e' il listino di
+quel fornitore per una giornata in pullman, e infatti anche i bambini pagano gli
+stessi 31,50 €. A dividerle e' il percorso, che non ha una tappa in comune.
+
+### Quello che ha detto il fornitore
+
+- **8 ore circa** ("Duración de la excursión: 8 horas aprox").
+- **50 €** adulti, **31,50 €** bambini **2-11**. Il "Por: 50€" del riquadro della
+  prenotazione e' il conto di un adulto con le quantita' di partenza, non uno
+  sconto barrato: sul sito va il prezzo pieno e il prezzo pieno e' quello.
+- **"Bebés (NO PONER)"**: la riga dei neonati non si mette. Niente `ages.infant`,
+  niente `priceInfant` — assente vuol dire "non lo sappiamo", non "gratis".
+  Terza scheda di fila di questo fornitore con la stessa dicitura.
+- **"Le recogeremos en el bus en su parada"**: `transfer`.
+- **"la comida no está incluida"**, e la sosta per mangiare e' a Puerto de la Cruz:
+  e' una nota, non un'icona mancante.
+
+### Quello che non si e' copiato
+
+La politica di cancellazione del fornitore, il numero di telefono, il "Pago
+seguro", le tre escursioni consigliate in fondo alla pagina e il riquadro del
+cupone. Le tappe sono state **riscritte da zero** nelle tre lingue: la
+descrizione vecchia ("i punti simbolo di Tenerife in un giorno solo") era quella
+che si scrive quando non si sa ancora dove passa il pullman.
+
+### Le due decisioni prese qui
+
+**La guida entra.** Il fornitore scrive solo il ritiro, come su Icod. Ma il
+proprietario l'8 settembre 2026 ha detto che la guida c'e' su **tutte** queste
+escursioni, e quella frase vale anche per questa: `included: ["transfer", "guide"]`.
+
+**La zona diventa "Tenerife Sud".** Era "Tutta l'isola", e quel campo in pagina si
+legge **"Punto di partenza"** — stessa trappola gia' tolta a Icod ("Tenerife nord")
+e a Santa Cruz ("nord-est") l'8 settembre. La partenza e' una sola, il sud. Dove si
+va lo dicono il titolo, la descrizione e le sette tappe.
+
+### Le due cose rimaste in sospeso
+
+**I giorni.** Il fornitore non scrive in che giorni si parte, quindi `days` resta
+assente — che sul sito vuol dire "tutti i giorni". E' l'unico stato disponibile
+quando non si sa, ma **e' probabilmente sbagliato**: le altre due schede dello
+stesso fornitore hanno giorni fissi (Icod sei su sette, Santa Cruz lunedi' e
+giovedi', e in tutti e due i casi il dato e' arrivato dall'ufficio, non dalla
+pagina). Da chiedere.
+
+**Le lingue.** Nella finestra della prenotazione del fornitore la tendina "Idioma"
+ha **il solo spagnolo**. Un `languages: ["Español"]` direbbe al cliente che il giro
+si fa in spagnolo e basta, e sarebbe una cosa grossa da dire sulla base di una
+tendina di un rivenditore: Santa Cruz ne ha sei e Icod sette, tutte e due mandate
+dall'ufficio. Campo lasciato fuori finche' non arriva la lista vera.
+
+Il titolo **resta "Tour completo dell'isola"**, quello di Admiral. Stessa regola di
+`la-palma`, che il fornitore chiama "La Palma Tour Volcán": il nome sul sito lo
+cambia l'ufficio, non la pagina del fornitore.
+
+### Provato
+
+`node controlla.js` → 0 errori (i 3 avvisi sono quelli di prima, su altre schede).
+Chromium a 390 px, `tour.html?id=island-tour-completo`, col flusso della lista:
+
+- prezzi in vetrina: **Adulti (12+) €50**, **Bambini (2-11) €31,50**; nessuna riga
+  neonati, come deve essere
+- durata "8 ore circa", punto di partenza "Tenerife Sud"
+- le sette tappe in ordine, "Cosa e' incluso" con Transfer e Guida
+- menu "A che ora" ancora tolto, al suo posto l'ora dell'hotel: Perla Gris →
+  **08:50**, Callao Salvaje (Restaurante Nebula)
+- totale a mano: 2 adulti + 1 bambino → **€131,50** (2 × 50 + 31,50) ✓
+- nessun errore JS
+
+`CACHE_NAME` alzato a `isla-v350`.

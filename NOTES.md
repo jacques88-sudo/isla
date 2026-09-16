@@ -13627,3 +13627,68 @@ Chromium a 390 px, `tour.html?id=la-gomera`, col flusso della lista:
 - nessun errore JS
 
 `CACHE_NAME` alzato a `isla-v346`.
+
+---
+
+## Il giro dell'isola: il pulmino va al contrario (16 settembre 2026)
+
+Quinta scheda con gli orari del pick-up, e quella che dimostra meglio di tutte
+perche' `PICKUP_TIMES` e' per scheda e non una tabella sola.
+
+### Il giro e' invertito
+
+Il pullman parte da **El Medano**, all'estremita' est, alle **07:30**, corre lungo
+la costa verso ovest e finisce a **Los Gigantes alle 09:30**. Le due escursioni
+del Teide fanno esattamente il percorso opposto: partono da Callao Salvaje e
+vanno verso est.
+
+Sugli stessi punti gli orari si ribaltano:
+
+| punto | giro dell'isola | Teide mezza giornata |
+|---|---|---|
+| El Medano | **07:30** | 08:40 |
+| Muthu Royal Park Albatros | **07:45** | 08:50 |
+| Callao Salvaje | **08:50** | 08:15 |
+| Servatur Isora (Los Gigantes) | **09:30** | 08:45 |
+
+Chi sta a Los Gigantes e leggesse l'ora del Teide uscirebbe di casa con
+quarantacinque minuti d'anticipo — fastidioso ma innocuo. Chi sta a El Medano
+arriverebbe **un'ora dopo** che il pulmino e' passato, e resterebbe a terra.
+
+Fino a ieri la prova che serviva una tabella per scheda era statistica ("nessuno
+dei 64 punti in comune ha la stessa ora"). Questa e' un'altra cosa: non e' che gli
+orari siano diversi, e' che l'**ordine** e' rovesciato. Nessuna formula, nessun
+offset, nessuna media avrebbe potuto ricavare una tabella dall'altra.
+
+### I numeri
+
+59 punti serviti su 104, **381 hotel** con punto e ora. Solo 3 hotel hanno l'ora
+ma un punto ancora senza nome (il punto 41). I restanti 178 non vedono niente
+perche' da li' il giro non passa.
+
+Le **08:42** del punto 20 restano come le scrive il fornitore: stessa regola delle
+08:04 di La Gomera, un minuto non confermato non si arrotonda.
+
+### La scheda resta un segnaposto
+
+`island-tour-completo` non ha prezzo (`priceAdult: 0` → in vetrina "Su richiesta"),
+non ha `days`, non ha programma. Gli orari del pick-up ci vanno lo stesso: sono un
+dato indipendente dal prezzo, e una scheda senza prezzo che sa dirti a che ora
+passa il pulmino e' piu' utile di una che non sa ne' l'uno ne' l'altro.
+Segnalato al proprietario, che era sulla pagina del fornitore mentre raccoglieva
+gli orari.
+
+### Provato
+
+Chromium a 390 px, `tour.html?id=island-tour-completo`, col flusso della lista:
+
+- menu "A che ora" tolto, al suo posto l'ora dell'hotel
+- Perla Gris → **08:50**, Callao Salvaje (Restaurante Nebula)
+- Tamaimo Tropical → **09:30**, "il tuo hotel" (il punto ha il suo stesso nome e
+  nessun tipo, quindi vale come hotel: e' la regola gia' scritta in hotelPunto)
+- Aquarius → "il tuo hotel" senza ora: da li' non si passa
+- Melia la Paz → niente, punto senza nome
+- messaggio WhatsApp completo. Niente totale, perche' il prezzo non c'e' ancora.
+- nessun errore JS
+
+`CACHE_NAME` alzato a `isla-v347`.

@@ -13627,3 +13627,63 @@ Chromium a 390 px, `tour.html?id=la-gomera`, col flusso della lista:
 - nessun errore JS
 
 `CACHE_NAME` alzato a `isla-v346`.
+
+---
+
+## 16 settembre 2026 — Via il Glass Bottom Boat Adventure (v347)
+
+Il proprietario ha detto che l'escursione **non esiste piu'**. Tolta la scheda
+`glass-bottom-boat` da `esplora-catalog.js`: il catalogo passa da 66 schede a 65.
+
+### Non bastava cancellare la scheda
+
+`glass-bottom-boat` stava dentro **due pacchetti**, e un id che non esiste piu'
+non lascia un buco visibile: `controlla.js` lo prende (lo dice a voce alta), ma
+se non lo si guardasse la voce sparirebbe **in silenzio** e il cliente vedrebbe
+"Piccoli esploratori" fatto di due uscite invece di tre.
+
+Al suo posto ci va `whale-dolphin-3h` in tutti e due, **scelta del proprietario**
+fra sottomarino, Skyline Cruiser e Loro Parque. E' la barca piu' vicina come
+forma: tre ore, Puerto Colón, le stesse partenze ogni tre ore con le 18:00 solo
+d'estate, e la sosta bagno.
+
+| pacchetto | prima | adesso |
+|---|---|---|
+| Piccoli esploratori | 24 + **58** + 35 = 117 → **108,80** | 24 + **55** + 35 = 114 → **106,10** |
+| Sette giorni in famiglia | 192 + 10 + **58** = 260 → **234,50** | 192 + 10 + **55** = 257 → **231,95** |
+
+I bambini scendono di piu' degli adulti: il glass bottom costava €45 ai bambini
+(quasi quanto l'adulto), la barca a vela ne costa €30. "Piccoli esploratori" per
+un bambino passa da 86 a 71.
+
+Riscritte in tutte e tre le lingue le due descrizioni, dove la frase "la barca
+col fondo di vetro / a guardare i pesci restando a bordo" non voleva piu' dire
+niente. Cambiata anche la foto di copertina di "Sette giorni in famiglia", che
+era `glass-bottom-boat.jpg`: adesso e' `whale-dolphin-3h.jpg`.
+
+### Le tre foto
+
+`glass-bottom-boat.jpg`, `-2.jpg` e `-3.jpg` (le due della galleria erano state
+prese dalla Diamant il 31 agosto) sono state **cancellate**: restavano in
+`assets/` senza che nessuno le usasse. Se l'escursione dovesse tornare si
+riprendono da git, non si ricercano.
+
+### Chi aveva il vecchio indirizzo
+
+`tour.html?id=glass-bottom-boat` non da' errore: la pagina mostra gia' da sola
+"Questo indirizzo non corrisponde a nessuna escursione", che e' la cosa giusta.
+Chi ha la scheda nella sua lista (`localStorage`) la perde alla prossima
+apertura, ed e' giusto anche quello: era una richiesta per un'uscita che non si
+fa piu'.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi (gli stessi di prima). Chromium:
+
+- `escursioni.html`: nessuna card "Glass Bottom"
+- `tour.html?id=glass-bottom-boat`: pagina "escursione non trovata", niente errori JS
+- `pacchetto.html?id=famiglia-piccoli`: "risparmi €7,90", la barca a vela in elenco
+- `pacchetto.html?id=giorni-7-famiglia`: "risparmi €25,05"
+- `pacchetti.html?famiglia=1`: cinque pacchetti, nessuna foto mancante
+
+`CACHE_NAME` alzato a `isla-v347`.

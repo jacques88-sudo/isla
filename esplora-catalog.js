@@ -1159,37 +1159,6 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    id: "glass-bottom-boat",
-    title: "Glass Bottom Boat Adventure",
-    category: "mare-barche",
-    zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
-    // Stesse partenze del giro di tre ore in barca a vela, e anche qui le 18:00
-    // valgono solo d'estate.
-    times: ["09:00", "12:00", "15:00", "18:00"],
-    priceFrom: 58,
-    priceAdult: 58,
-    priceChild: 45,
-    ages: { adult: "12+", child: "2-11" },
-    family: true,
-    included: ["swimstop"],
-    notes: [
-      {
-        it: "Le partenze sono ogni tre ore. Quella delle 18:00 si fa solo d'estate.",
-        en: "Departures are every three hours. The 18:00 one runs in summer only.",
-        es: "Las salidas son cada tres horas. La de las 18:00 solo se hace en verano."
-      }
-    ],
-    desc: {
-      it: "Tre ore su una barca con il fondo trasparente: si guarda il fondale da bordo, poi ci si ferma per il bagno.",
-      en: "Three hours on a glass-bottomed boat: you watch the seabed from the deck, then stop for a swim.",
-      es: "Tres horas en un barco con fondo de cristal: se mira el fondo desde cubierta y luego hay parada de baño."
-    },
-    image: "glass-bottom-boat.jpg",
-    gallery: ["glass-bottom-boat-2.jpg", "glass-bottom-boat-3.jpg"],
-    published: true
-  },
-  {
     id: "utopia-boat-party",
     title: "Utopia Boat Party",
     category: "mare-barche",

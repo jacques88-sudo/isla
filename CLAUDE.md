@@ -132,6 +132,17 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   schede, poi il proprietario aggiunge punto di raccolta e orari **una alla volta**, con
   calma. Una scheda senza orari suoi non è incompleta: mostra il punto senza l'ora, o
   niente, e va benissimo così.
+- **Il campo "Il tuo nome" nella richiesta resta**, per scelta del proprietario. Era stata
+  proposta la sua rimozione — il messaggio parte dal WhatsApp del cliente, quindi l'ufficio
+  vede già chi scrive e da che numero — ed è stata respinta. Non si ripropone.
+- **La tastiera dell'iPhone sul fondo della finestra si lascia com'è**, per scelta del
+  proprietario. Misurato: col campo del nome a fuoco il pulsante finisce dietro la
+  tastiera e la casella la scavalca di 6 px sull'iPhone SE. Il rimedio esiste (alzare la
+  finestra leggendo `visualViewport`) ed è stato **scartato**: tocca quanto è alta e dove
+  sta la finestra, quindi un errore lì si vedrebbe su tutte le schede. Non si ripropone.
+- **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
+  Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
+  minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.
 
 ---
 

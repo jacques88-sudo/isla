@@ -1154,29 +1154,31 @@ function initRequestDialog() {
   const calendario = calendarioData();
 
   let current = null;
-  // La stessa finestra serve a due cose: mandare subito la richiesta di questa
-  // escursione ("invia"), oppure metterla nella lista per mandarne tante
-  // insieme ("aggiungi"). Cambiano due dettagli soltanto: il nome non si chiede
-  // (lo si chiede una volta sola quando si manda la lista) e il pulsante in
-  // fondo dice un'altra cosa.
-  let modo = "invia";
 
-  function open(tour, comeAggiunta) {
+  // La finestra fa **una cosa sola**: mette l'escursione nella lista.
+  //
+  // Prima ne faceva due — mandare subito questa, oppure metterla da parte — e
+  // la scelta fra le due era il punto in cui la prenotazione si intoppava: due
+  // pulsanti uno sopra l'altro, e il cliente doveva decidere prima di aver
+  // capito cosa voleva. Adesso si passa tutti dalla lista, e la lista con una
+  // voce sola manda esattamente il messaggio che mandava "Richiedi
+  // disponibilita'": all'ufficio non cambia niente.
+  //
+  // Il nome non si chiede qui ma nella finestra della lista, una volta sola.
+  function open(tour) {
     current = tour;
     SCHEDA_APERTA = tour;
     // il campo dell'hotel vive in un'altra funzione e deve sapere che scheda e'
     document.dispatchEvent(new CustomEvent("islarequestopen"));
-    modo = comeAggiunta ? "aggiungi" : "invia";
-    if (nameBox) nameBox.hidden = comeAggiunta;
-    // required su un campo nascosto blocca l'invio senza dire perche': il
+    // `required` su un campo nascosto blocca l'invio senza dire perche': il
     // browser prova a segnalare un campo che nessuno vede.
-    if (nameInput) nameInput.required = !comeAggiunta;
+    if (nameBox) nameBox.hidden = true;
+    if (nameInput) nameInput.required = false;
     if (submitBtn) {
-      const chiave = comeAggiunta ? "req.addToList" : "req.submit";
-      // anche data-i18n, non solo il testo: al cambio lingua applyI18n
-      // riscrive il pulsante e senza questo tornerebbe "Continua su WhatsApp"
-      submitBtn.setAttribute("data-i18n", chiave);
-      submitBtn.textContent = t(chiave);
+      // anche `data-i18n` e non solo il testo: al cambio lingua applyI18n
+      // riscrive il pulsante leggendo l'attributo
+      submitBtn.setAttribute("data-i18n", "req.addToList");
+      submitBtn.textContent = t("req.addToList");
     }
     aggiornaAttivita(tour);
     // se l'attivita' si fa solo in certi mesi lo si dice qui, prima che il
@@ -1882,18 +1884,18 @@ function initRequestDialog() {
 
   // Le schede sono ricreate a ogni filtro, quindi si ascolta sul contenitore
   document.addEventListener("click", e => {
-    const btn = e.target.closest("[data-request-open], [data-request-add]");
+    const btn = e.target.closest("[data-request-add]");
     if (!btn) return;
-    const comeAggiunta = btn.hasAttribute("data-request-add");
-    const id = comeAggiunta ? btn.dataset.requestAdd : btn.dataset.requestOpen;
     // La lista ha un tetto: oltre non si aggiunge, e si dice perche' invece di
-    // far finta di aver aggiunto.
-    if (comeAggiunta && typeof listaEPiena === "function" && listaEPiena()) {
+    // far finta di aver aggiunto. Adesso che la lista e' l'unica strada questo
+    // e' un vicolo chiuso, ma il messaggio dice gia' come uscirne — "mandaci
+    // questa richiesta e poi ne inizi un'altra".
+    if (typeof listaEPiena === "function" && listaEPiena()) {
       listaToast(t("lista.full", { n: LISTA_MAX }));
       return;
     }
-    const tour = ESPLORA_CATALOG.find(t => t.id === id);
-    if (tour) open(tour, comeAggiunta);
+    const tour = ESPLORA_CATALOG.find(t => t.id === btn.dataset.requestAdd);
+    if (tour) open(tour);
   });
 
   dateInput.addEventListener("input", aggiornaGiorno);
@@ -1966,7 +1968,6 @@ function initRequestDialog() {
     if (!current) return;
 
     const req = {
-      name: document.getElementById("reqName").value.trim(),
       date: dateInput.value,
       time: timeEl ? timeEl.value : "",
       lang: (langEl && !langEl.hidden) ? langEl.value : "",
@@ -2005,50 +2006,52 @@ function initRequestDialog() {
     // cui non c'e', punto. Che i giorni possano cambiare con la lingua si dice
     // al cliente in una nota della scheda, non lasciandogli mandare una
     // richiesta per un giorno in cui non si parte.
-    if (!giornoValido()) { aggiornaGiorno(); dateInput.focus(); return; }
+    // `dateInput` e' nascosto: metterlo a fuoco non farebbe niente. Il posto
+    // dove mandare il cliente e' il pulsante che apre il calendario.
+    if (!giornoValido()) {
+      aggiornaGiorno();
+      const apri = dateField && dateField.querySelector(".date-open");
+      if (apri) apri.focus();
+      return;
+    }
     // Piu' menu speciali che persone: stessa idea, l'avviso e' gia' sotto le
     // caselle da quando ha messo il numero di troppo.
     if (!menuValido()) { aggiornaMenu(); return; }
     if (!unitaValide()) { aggiornaUnita(); return; }
 
-    // In modalita' "aggiungi" non si va su WhatsApp: la richiesta si mette da
-    // parte e il cliente continua a guardare le altre escursioni.
-    if (modo === "aggiungi") {
-      if (typeof listaAggiungi !== "function") return;
-      // Si salva la scelta, non il prezzo: i prezzi cambiano, e un prezzo
-      // salvato ieri nel browser del cliente domani sarebbe sbagliato. Il
-      // conto si rifa' ogni volta leggendo il catalogo.
-      listaAggiungi({
-        id: current.id,
-        date: req.date,
-        time: req.time,
-        lang: req.lang,
-        // nella lista si salva il riepilogo gia' scritto ("1 Vegetariano · 1
-        // Menu standard"), come si fa gia' per la variante e per la lingua
-        menu: menuTesto(req),
-        adults: req.adults,
-        kids: req.kids,
-        babies: req.babies,
-        option: req.option,
-        // la posizione oltre al testo: il testo serve a leggerla anche se un
-        // domani la variante non c'e' piu', la posizione a ritrovare i prezzi
-        optionIndex: indiceVariante(current),
-        // qui i **numeri** e non il riepilogo gia' scritto come per i menu: il
-        // totale della lista si rifa' ogni volta leggendo i prezzi di adesso,
-        // e da un testo non si puo'
-        units: req.units,
-        transfer: req.transfer,
-        transferSiam: req.transferSiam,
-        hotel: req.hotel,
-        note: req.note
-      });
-      close();
-      return;
-    }
-    if (!req.name) return;
+    // Non si va su WhatsApp: la richiesta si mette nella lista e il cliente
+    // continua a guardare le altre escursioni. Il messaggio parte dalla
+    // finestra della lista, dove il nome si chiede una volta sola.
+    if (typeof listaAggiungi !== "function") return;
 
+    // Si salva la scelta, non il prezzo: i prezzi cambiano, e un prezzo
+    // salvato ieri nel browser del cliente domani sarebbe sbagliato. Il
+    // conto si rifa' ogni volta leggendo il catalogo.
+    listaAggiungi({
+      id: current.id,
+      date: req.date,
+      time: req.time,
+      lang: req.lang,
+      // nella lista si salva il riepilogo gia' scritto ("1 Vegetariano · 1
+      // Menu standard"), come si fa gia' per la variante e per la lingua
+      menu: menuTesto(req),
+      adults: req.adults,
+      kids: req.kids,
+      babies: req.babies,
+      option: req.option,
+      // la posizione oltre al testo: il testo serve a leggerla anche se un
+      // domani la variante non c'e' piu', la posizione a ritrovare i prezzi
+      optionIndex: indiceVariante(current),
+      // qui i **numeri** e non il riepilogo gia' scritto come per i menu: il
+      // totale della lista si rifa' ogni volta leggendo i prezzi di adesso,
+      // e da un testo non si puo'
+      units: req.units,
+      transfer: req.transfer,
+      transferSiam: req.transferSiam,
+      hotel: req.hotel,
+      note: req.note
+    });
     close();
-    window.location.href = whatsappUrl(current, req);
   });
 }
 

@@ -539,13 +539,16 @@ function renderTour(tour) {
   if (banda) banda.hidden = false;
   if (fascia) fascia.innerHTML = detailMedia(tour);
 
-  // Due strade dallo stesso punto: chiedere solo questa, oppure metterla da
-  // parte e continuare a guardare. La prima resta il pulsante pieno, perche'
-  // e' quella che fa la maggior parte dei clienti.
+  // **Una strada sola.** Prima erano due pulsanti uno sopra l'altro — "chiedi
+  // solo questa" e "mettila da parte" — e la scelta era il punto in cui la
+  // prenotazione si intoppava: il cliente doveva decidere fra due cose che non
+  // capiva bene, prima di aver capito cosa voleva.
+  // Adesso tutto passa dalla lista, e il pulsante dice quello che fa davvero.
+  // Niente si perde: con una voce sola la lista manda esattamente il messaggio
+  // che mandava il vecchio "Richiedi disponibilita'" (lista.js lo sa fare), e
+  // il nome si chiede una volta, quando la lista parte.
   const askBtn = WHATSAPP_NUMBER
-    ? `<button class="btn btn-primary btn-block" type="button" data-request-open="${esc(tour.id)}"
-               aria-haspopup="dialog" aria-controls="requestDialog">${esc(t("tour.ask"))}</button>
-       <button class="btn btn-soft btn-block detail-add" type="button" data-request-add="${esc(tour.id)}"
+    ? `<button class="btn btn-primary btn-block" type="button" data-request-add="${esc(tour.id)}"
                aria-haspopup="dialog" aria-controls="requestDialog">${esc(t("req.addToList"))}</button>`
     : "";
 
@@ -584,9 +587,9 @@ function renderTour(tour) {
 // La barra in fondo allo schermo. Il prezzo e' lo stesso "da €39" delle schede
 // in elenco (tourPriceHTML tiene anche il barrato dell'offerta): e' il prezzo
 // di partenza, non quello della variante scelta, percio' resta buono comunque
-// si giri la scheda. Il pulsante porta alla stessa finestra "Richiedi
-// disponibilita'" del pulsante dentro la scheda: l'ascoltatore sta su
-// document (escursioni.js), quindi funziona anche qui fuori dal contenitore.
+// si giri la scheda. Il pulsante fa la stessa cosa di quello dentro la scheda —
+// mette l'escursione nella lista — e l'ascoltatore sta su document
+// (escursioni.js), quindi funziona anche qui fuori dal contenitore.
 function mostraBarraPrenota(tour) {
   const barra = document.querySelector("[data-book-bar]");
   if (!barra) return;
@@ -600,9 +603,9 @@ function mostraBarraPrenota(tour) {
   }
 
   const prezzo = barra.querySelector("[data-book-price]");
-  const cta = barra.querySelector("[data-request-open]");
+  const cta = barra.querySelector("[data-request-add]");
   if (prezzo) prezzo.innerHTML = tourPriceHTML(tour);
-  if (cta) cta.dataset.requestOpen = tour.id;
+  if (cta) cta.dataset.requestAdd = tour.id;
   barra.hidden = false;
   // alza i due pallini in basso: senza, la barra ci finisce sopra
   document.body.classList.add("has-book-bar");

@@ -29,6 +29,16 @@ const leggi = f => fs.readFileSync(path.join(RADICE, f), "utf8");
 const sorgenteCatalogo = leggi("esplora-catalog.js").replace(/^const /gm, "var ");
 eval(sorgenteCatalogo);
 
+// Le funzioni dei testi. `pacchettoTotale()` non si limita piu' a fare un
+// numero: scrive anche il conto da cui viene ("1 × 4 posti €240 · 2 adulti ×
+// €55"), e per scriverlo chiama t(), tf() ed eur(), che stanno in i18n.js
+// insieme a un pezzo di codice che al caricamento tocca `navigator` e
+// `document` — qui non esistono. Tre funzioni finte bastano: questo controllo
+// guarda i numeri, e le parole le guarda controllaI18n() leggendo il file.
+global.t = chiave => chiave;
+global.tf = campo => (typeof campo === "string" ? campo : (campo && campo.it) || "");
+global.eur = n => String(n);
+
 // Stessa cosa per i pacchetti: qui servono sia i dati (PACCHETTI) sia le
 // funzioni del prezzo, per controllare che ogni pacchetto un prezzo ce l'abbia.
 eval(leggi("pacchetti.js").replace(/^const /gm, "var "));
@@ -172,6 +182,46 @@ function controllaPrezzi(t) {
     avviso(t.id, "ha il prezzo adulti ma nessuna fascia ages.adult.");
   }
   controllaOfferta(t);
+}
+
+// ─── 2-ter. I mezzi che si contano ─────────────────────────────────────────
+// Dove il prezzo e' del mezzo (buggy, quad, moto d'acqua, Mustang) ogni tipo
+// deve dire **quanti posti ha** e **quanto costa**.
+//
+// I posti servono al conto dei pacchetti, dove mezzi e persone si sommano
+// insieme: senza, il sito non puo' dire "avete scelto due posti ma siete in
+// quattro". Un tipo senza `seats` non rompe niente e non si vede da nessuna
+// parte — semplicemente quel controllo smette di funzionare in silenzio, che
+// e' il modo peggiore in cui una cosa puo' non funzionare.
+//
+// Il prezzo sta nelle varianti (`unitPrices`) dove ci sono, sulla scheda dove
+// non ce ne sono. Un tipo senza prezzo fa sparire il totale invece di
+// sbagliarlo — la regola e' quella giusta — ma resta una riga che il cliente
+// puo' contare e che non porta a nessun numero.
+function controllaMezzi(t) {
+  const mezzi = t.units;
+  if (!mezzi) return;
+
+  if (!t.priceUnit) {
+    avviso(t.id, "ha `units` ma non `priceUnit`: il prezzo in elenco uscirebbe " +
+      "come se fosse a persona.");
+  }
+
+  const tipi = Array.isArray(mezzi.types) ? mezzi.types : [];
+  if (!tipi.length) return errore(t.id, "`units` non ha nessun tipo di mezzo.");
+
+  tipi.forEach(tipo => {
+    if (!(tipo.seats > 0)) {
+      errore(t.id, 'il mezzo "' + tipo.key + '" non ha `seats`: senza i posti ' +
+        "il conto dei pacchetti non puo' dire se i mezzi scelti bastano per tutti.");
+    }
+    const conPrezzo = varianti(t).some(v => v.unitPrices && v.unitPrices[tipo.key]) ||
+      (t.unitPrices && t.unitPrices[tipo.key]);
+    if (!conPrezzo) {
+      errore(t.id, 'il mezzo "' + tipo.key + '" non ha un prezzo in nessuna variante ' +
+        "(`unitPrices`): contarlo non porterebbe a nessun totale.");
+    }
+  });
 }
 
 // ─── 2-bis. L'offerta a tempo ──────────────────────────────────────────────
@@ -549,6 +599,40 @@ function controllaPacchetti() {
         "Fissa `optionIndex: 0` o `3`.");
     }
 
+    // I pacchetti coi mezzi: la controprova di quello che vede il cliente.
+    // Scelto un mezzo del primo tipo per ogni gruppo — che e' la cosa piu'
+    // piccola che si possa chiedere — il totale deve venire. Se non viene, la
+    // finestra resta bloccata sul "scegli quanti mezzi" qualunque cosa il
+    // cliente conti, e dalla pagina non si capisce perche'.
+    const gruppi = pacchettoMezziDaContare(pack);
+    const conGruppo = new Set(gruppi.map(g => g.indice));
+
+    // Prima pero' il caso che si e' fatto prendere: una voce che si paga a
+    // mezzo **e che i mezzi non li sa contare**. Non e' un pacchetto senza
+    // mezzi, e' un pacchetto con un mezzo che non ha un listino da leggere:
+    // niente contatori nella finestra, e un totale che non verra' mai. E'
+    // successo a "Tenerife Trio versione buggy", che il percorso lo lascia
+    // aperto e i prezzi dei mezzi ce li aveva solo dentro le varianti.
+    pack.voci.forEach((voce, i) => {
+      const prezzo = pacchettoVocePrezzo(voce);
+      if (!prezzo || prezzo.tipo !== "mezzo" || conGruppo.has(i)) return;
+      errore(dove, '"' + voce.id + '" si paga a mezzo ma i suoi mezzi non si ' +
+        "possono contare: o la scheda non ha `units`, o il prezzo dei tipi " +
+        "(`unitPrices`) cambia da una variante all'altra e il pacchetto la " +
+        "variante non l'ha scelta. Nella finestra non compare nessun contatore " +
+        "e il totale non si fa mai: fissa `optionIndex` sulla voce.");
+    });
+
+    if (gruppi.length) {
+      const scelta = {};
+      gruppi.forEach(g => { scelta[g.indice] = g.tipi.map((_, i) => (i === 0 ? 1 : 0)); });
+      if (!pacchettoTotale(pack, 2, 0, scelta)) {
+        errore(dove, "ha dei mezzi da contare ma il totale non viene nemmeno " +
+          "scegliendone uno per tipo: la finestra della richiesta non mostrerebbe " +
+          "nessun numero.");
+      }
+    }
+
     // Tutto a prezzo fisso: il pacchetto esiste ma non fa risparmiare niente.
     // Non e' un errore (puo' essere una proposta, non un'offerta) ma va visto:
     // e' successo a "Tre sere a Tenerife", che era fatto di tre soli show.
@@ -595,8 +679,9 @@ function controllaPacchetti() {
 }
 
 // ─── Esecuzione ────────────────────────────────────────────────────────────
-const CONTROLLI = [controllaBase, controllaEta, controllaPrezzi, controllaGiorni,
-                   controllaOrari, controllaIncluse, controllaFoto, controllaTraduzioni];
+const CONTROLLI = [controllaBase, controllaEta, controllaPrezzi, controllaMezzi,
+                   controllaGiorni, controllaOrari, controllaIncluse, controllaFoto,
+                   controllaTraduzioni];
 
 console.log("\nControllo del catalogo Isla\n");
 ESPLORA_CATALOG.forEach(t => CONTROLLI.forEach(c => c(t)));

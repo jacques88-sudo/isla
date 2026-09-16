@@ -27,13 +27,24 @@
 //                      label: { it: "Quante moto d'acqua", en: "...", es: "..." },
 //                      name:  { it: "Moto d'acqua", en: "Jet skis", es: "..." },
 //                      types: [
-//                        { key: "singola", name: { it: "Singola", ... } },
-//                        { key: "doppia",  name: { it: "Doppia",  ... } }
+//                        { key: "singola", seats: 1, name: { it: "Singola", ... } },
+//                        { key: "doppia",  seats: 2, name: { it: "Doppia",  ... } }
 //                      ]
 //                    }
 //                `label` e' la domanda nella finestra, `name` il nome che va
 //                nel messaggio ("Moto d'acqua: Singola × 2 · Doppia × 1"): in
 //                tre lingue non si ricavano l'uno dall'altro.
+//                `seats` e' **quante persone ci salgono**, e serve al conto dei
+//                pacchetti: li' si contano i mezzi e le persone insieme (il
+//                buggy a mezzo, il parascending a testa), e senza i posti il
+//                sito non puo' dire "avete scelto due posti ma siete in
+//                quattro". Non si vede da nessuna parte in pagina: i posti
+//                dove contano sono gia' scritti dentro `name` ("2 posti") o
+//                dentro `label` ("il singolo porta 1 persona, il doppio 2"),
+//                e riscriverli accanto darebbe "2 posti · 2 posti · €180".
+//                Va su **tutti** i tipi di ogni `units`, e `controlla.js` lo
+//                verifica: un tipo senza posti farebbe sparire il controllo
+//                senza dirlo a nessuno.
 //                Il prezzo di ogni tipo lo mette la **variante**, con
 //                `unitPrices` e le stesse chiavi, perche' cambia con la durata:
 //                    unitPrices: { singola: 180, doppia: 200 }
@@ -2269,9 +2280,12 @@ const ESPLORA_CATALOG = [
         es: "¿Cuántos Mustang? — el precio es del coche y cambia según cuántos suban"
       },
       name: { it: "Mustang", en: "Mustangs", es: "Mustang" },
+      // `seats` e' il massimo della fascia, non un numero fisso: la fascia
+      // "Con 1 o 2 persone" porta fino a due. E' quello che serve al conto —
+      // quanti ce ne stanno — e il prezzo e' lo stesso che ci salga uno o due.
       types: [
-        { key: "due", name: { it: "Con 1 o 2 persone", en: "With 1 or 2 people", es: "Con 1 o 2 personas" } },
-        { key: "quattro", name: { it: "Con 3 o 4 persone", en: "With 3 or 4 people", es: "Con 3 o 4 personas" } }
+        { key: "due", seats: 2, name: { it: "Con 1 o 2 persone", en: "With 1 or 2 people", es: "Con 1 o 2 personas" } },
+        { key: "quattro", seats: 4, name: { it: "Con 3 o 4 persone", en: "With 3 or 4 people", es: "Con 3 o 4 personas" } }
       ]
       // Niente `transferPrice` perche' qui non c'e' nessuna casella del
       // ritiro: e' **compreso nel prezzo** (proprietario, 12 settembre 2026) e
@@ -2418,9 +2432,9 @@ const ESPLORA_CATALOG = [
       },
       name: { it: "Buggy", en: "Buggies", es: "Buggies" },
       types: [
-        { key: "due", name: { it: "2 posti", en: "2 seats", es: "2 plazas" } },
-        { key: "quattro", name: { it: "4 posti", en: "4 seats", es: "4 plazas" } },
-        { key: "sei", name: { it: "6 posti", en: "6 seats", es: "6 plazas" } }
+        { key: "due", seats: 2, name: { it: "2 posti", en: "2 seats", es: "2 plazas" } },
+        { key: "quattro", seats: 4, name: { it: "4 posti", en: "4 seats", es: "4 plazas" } },
+        { key: "sei", seats: 6, name: { it: "6 posti", en: "6 seats", es: "6 plazas" } }
       ]
     },
     priceAdult: 0,
@@ -2557,8 +2571,8 @@ const ESPLORA_CATALOG = [
       },
       name: { it: "Quad", en: "Quads", es: "Quads" },
       types: [
-        { key: "singolo", name: { it: "Singolo", en: "Single", es: "Individual" } },
-        { key: "doppio", name: { it: "Doppio", en: "Double", es: "Doble" } }
+        { key: "singolo", seats: 1, name: { it: "Singolo", en: "Single", es: "Individual" } },
+        { key: "doppio", seats: 2, name: { it: "Doppio", en: "Double", es: "Doble" } }
       ]
     },
     // I prezzi dei due tipi stanno nelle varianti (`unitPrices`): cambiano con
@@ -3238,8 +3252,8 @@ const ESPLORA_CATALOG = [
       name: { it: "Moto d'acqua", en: "Jet skis", es: "Motos de agua" },
       transferPrice: 0,
       types: [
-        { key: "singola", name: { it: "Singola", en: "Single", es: "Individual" } },
-        { key: "doppia", name: { it: "Doppia", en: "Double", es: "Doble" } }
+        { key: "singola", seats: 1, name: { it: "Singola", en: "Single", es: "Individual" } },
+        { key: "doppia", seats: 2, name: { it: "Doppia", en: "Double", es: "Doble" } }
       ]
     },
     priceAdult: 0,

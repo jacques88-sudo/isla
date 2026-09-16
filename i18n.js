@@ -238,7 +238,24 @@ const I18N = {
   "pack.fromDay":       { it: "Da che giorno", en: "Starting from", es: "A partir de qué día" },
   "pack.fromDayHint":   { it: "Il primo dei tre giorni, indicativo: gli altri due li mettiamo d'accordo quando ti rispondiamo.", en: "The first of the three days, roughly: we agree the other two when we reply.", es: "El primero de los tres días, orientativo: los otros dos los acordamos cuando te respondemos." },
   "pack.hotelPlaceholder": { it: "Nome dell'hotel", en: "Hotel name", es: "Nombre del hotel" },
-  "pack.unitAsk":       { it: "Il totale non si può ancora fare: qui dentro c'è un mezzo che si paga a buggy o a moto d'acqua, e il prezzo dipende da quanti ne servono. Te lo diciamo noi rispondendo.", en: "We can't total this up yet: it includes a vehicle priced per buggy or per jet ski, and that depends on how many you need. We'll tell you when we reply.", es: "El total aún no se puede hacer: aquí hay un vehículo que se paga por buggy o por moto de agua, y depende de cuántos hagan falta. Te lo decimos al responderte." },
+  // Il totale che non si fa. Prima diceva "c'è un mezzo che si paga a buggy o
+  // a moto d'acqua": adesso i mezzi si contano nella finestra e quello non è
+  // più il motivo. Restano i due casi veri — un prezzo che non si riesce a
+  // leggere, o dei bambini su un'escursione che il prezzo dei bambini non ce
+  // l'ha — e il testo non prova più a indovinare quale dei due è.
+  "pack.noTotal":       { it: "Il totale non si può fare da qui: di qualcosa qui dentro non abbiamo un prezzo da sommare senza inventarlo. Te lo diciamo noi rispondendo.", en: "We can't total this up here: for something inside we don't have a price we could add without making it up. We'll tell you when we reply.", es: "El total no se puede hacer aquí: de algo de lo que hay dentro no tenemos un precio que sumar sin inventarlo. Te lo decimos al responderte." },
+  "pack.unitsIntro":    { it: "Il mezzo si paga tutto intero, chiunque ci salga: i bambini non aggiungono niente. Le altre escursioni del pacchetto si pagano a testa.", en: "A vehicle is paid for whole, whoever rides it: children add nothing. The other excursions in the package are priced per person.", es: "El vehículo se paga entero, suba quien suba: los niños no añaden nada. Las demás excursiones del paquete se pagan por persona." },
+  "pack.unitsEmpty":    { it: "Scegli quanti mezzi: il totale si fa quando l'hai deciso.", en: "Choose how many vehicles: the total appears once you have.", es: "Elige cuántos vehículos: el total se hace cuando lo hayas decidido." },
+  // I posti e le persone scritti come due etichette e non in una frase ("{n}
+  // posti") apposta: con un mezzo solo verrebbe "1 posti", e le tre lingue non
+  // fanno il plurale allo stesso modo. E' la stessa ragione per cui il conto
+  // dei menu scrive "Vegetariano × 2" invece di provare a pluralizzare.
+  //
+  // Sono due chiavi e non una perche' i mezzi corti possono essere due (il
+  // buggy **e** la moto d'acqua): con una chiave sola la frase "va bene se non
+  // salite tutti" si sarebbe ripetuta identica due volte di fila.
+  "pack.unitsSeats":    { it: "{name}: posti scelti {n}", en: "{name}: seats chosen {n}", es: "{name}: plazas elegidas {n}" },
+  "pack.unitsSeatsNote": { it: "Siete in {p}. Va bene se non salite tutti, se no aggiungi un mezzo.", en: "You are {p}. Fine if not everyone is going, otherwise add one.", es: "Sois {p}. Está bien si no subís todos, si no añade uno." },
   "pack.notFound":      { it: "Pacchetto non trovato", en: "Package not found", es: "Paquete no encontrado" },
   "pack.notFoundText":  { it: "Questo indirizzo non corrisponde a nessun pacchetto. Forse è stato tolto.", en: "This address doesn't match any package. It may have been removed.", es: "Esta dirección no corresponde a ningún paquete. Puede que se haya retirado." },
   "pack.seeAll":        { it: "Vedi tutti i pacchetti", en: "See all the packages", es: "Ver todos los paquetes" },

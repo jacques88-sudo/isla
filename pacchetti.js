@@ -64,6 +64,13 @@
 //   mostrano e' quello di **una persona da sola** — vedi "IL NUMERO IN
 //   VETRINA" piu' giu'.
 //
+//   In vetrina e' un numero solo e non puo' che essere quello. Nella finestra
+//   della richiesta invece i mezzi si contano, e il totale e' quello vero:
+//   vedi "I MEZZI DENTRO UN PACCHETTO" piu' sotto, sopra pacchettoTotale().
+//   Sono due numeri diversi apposta e non si contraddicono — quello in vetrina
+//   e' il massimo a testa, quello nella finestra e' quello che si paga — ma se
+//   tocchi uno dei due guarda anche l'altro.
+//
 // LO SCONTO
 //   `sconto` e' una percentuale: oggi sono tutti al 10%: resta un campo per
 //   pacchetto e non una costante unica perche' il primo pacchetto che va al
@@ -116,9 +123,13 @@
 //     - **tutte** hanno un prezzo bambini vero (non 0, che vuol dire "non lo
 //       sappiamo"). Se ne manca uno il conto della famiglia non si fa, e un
 //       pacchetto di famiglia senza il conto della famiglia e' mezzo pacchetto.
-//     - niente prezzi a mezzo (buggy, moto d'acqua): li' il totale non si puo'
-//       fare finche' non si sa quanti mezzi servono, e la domanda "quanti
-//       buggy per due adulti e due bambini" non ha una risposta scritta.
+//     - niente prezzi a mezzo (buggy, moto d'acqua). La ragione di prima — "li'
+//       il totale non si puo' fare" — non vale piu': da settembre 2026 i mezzi
+//       si contano nella finestra e il totale viene. La regola resta lo stesso,
+//       e per una ragione sua: "quanti buggy per due adulti e due bambini" non
+//       ha una risposta scritta da nessuna parte, e un pacchetto di famiglia
+//       deve poter essere chiesto senza dover prima decidere una cosa del
+//       genere. Toglierla e' una scelta del proprietario, non una conseguenza.
 //
 //   LE FASCE D'ETA' NON COMBACIANO FRA SCHEDE DIVERSE, ed e' normale: il
 //   sottomarino chiama bambino un dodicenne (2-14), la goletta no (3-11). Per
@@ -895,27 +906,169 @@ function pacchettoConto(pack) {
 // rispondere: da che giorno, in quanti, dove alloggia e il nome.
 // ─────────────────────────────────────────────────────────────────────────
 
+// ─────────────────────────────────────────────────────────────────────────
+// I MEZZI DENTRO UN PACCHETTO
+//
+// Su buggy, quad, moto d'acqua e Mustang si paga il **mezzo** e non chi ci
+// sale: un buggy da 4 posti costa 240 € che ci salgano due persone o quattro,
+// e un bambino a bordo non aggiunge niente. Per questo il totale di un
+// pacchetto misto non e' "tot a persona per quante persone siete": e' la somma
+// dei mezzi (che sta li' ferma) piu' le escursioni a testa (che si
+// moltiplicano).
+//
+// Quanti mezzi servono **lo sa solo il cliente**, e non e' un dettaglio: su
+// Adrenalina, in due, due buggy e due moto singole fanno 603 €, un buggy e una
+// moto doppia ne fanno 369. Sono 234 € di differenza e tutte e due le risposte
+// sono giuste — due che vogliono guidare ognuno il suo non stanno sbagliando,
+// stanno comprando un'altra cosa.
+//
+// Quindi si chiede, e non si indovina. I contatori partono da **zero** e
+// finche' non si sceglie il totale non compare: un numero pre-riempito sarebbe
+// per forza quello della configurazione piu' piccola, cioe' il piu' basso, e
+// chi manda la richiesta senza accorgersene si vedrebbe rispondere con un
+// numero piu' alto. Alzare un prezzo dopo che il cliente l'ha letto e' la cosa
+// che non si fa.
+// ─────────────────────────────────────────────────────────────────────────
+
+// Le voci del pacchetto dove i mezzi si contano, con dentro tutto quello che
+// serve per contarli: i tipi e i prezzi **della variante che il pacchetto ha
+// scelto** (sulla moto d'acqua la doppia costa 120 sull'ora e 200 sulle due
+// ore, e il pacchetto l'ora l'ha gia' decisa).
+//
+// `indice` e' la posizione della voce dentro `pack.voci`, ed e' la chiave con
+// cui la finestra e il messaggio ritrovano i numeri battuti dal cliente. La
+// posizione e non l'id perche' un pacchetto potrebbe avere due volte lo stesso
+// mezzo in due varianti diverse.
+//
+// Restano fuori di proposito le voci col prezzo "di tutta la cosa" ma senza
+// `units` — la barca privata del Luxury Cruiser, le cabine VIP del Siam Park:
+// li' non c'e' niente da contare, e infatti il totale continua a non farsi.
+function pacchettoMezziDaContare(pack) {
+  return pack.voci.map((voce, i) => {
+    const tour = pacchettoVoceTour(voce);
+    const tipi = (tour && tour.units && Array.isArray(tour.units.types)) ? tour.units.types : [];
+    if (!tipi.length) return null;
+    const variante = pacchettoVoceVariante(voce, tour);
+    // Lo stesso ripiego di totaleMezzi() in escursioni.js: i prezzi stanno
+    // nella variante dove le varianti ci sono (buggy, moto d'acqua, quad) e
+    // sulla scheda dove non ce ne sono (la Mustang, dove a cambiare non e' la
+    // durata ma quanti salgono in macchina). Piu' il terzo caso, che qui
+    // succede e nella finestra singola no: la variante il pacchetto puo' non
+    // averla scelta.
+    const prezzi = (variante && variante.unitPrices) || tour.unitPrices ||
+      pacchettoPrezziMezziUguali(tour);
+    if (!prezzi) return null;
+    return { indice: i, voce: voce, tour: tour, mezzi: tour.units, tipi: tipi, prezzi: prezzi };
+  }).filter(Boolean);
+}
+
+// I prezzi dei mezzi quando il pacchetto la variante non l'ha scelta. Succede
+// per davvero: "Tenerife Trio versione buggy" lascia aperto il percorso, perche'
+// i quattro giri costano uguale e sceglierne uno prima non serve a nessuno.
+//
+// Valgono **solo se tutte le varianti dicono lo stesso numero**. Dove un giro
+// costasse piu' di un altro il prezzo dipenderebbe da una scelta che non e'
+// ancora stata fatta, e mettere in conto quello della prima variante sarebbe
+// tirare a indovinare fra due numeri veri: li' si torna a non fare nessun
+// totale, che e' la regola di sempre.
+function pacchettoPrezziMezziUguali(tour) {
+  const scelte = (tour.options && tour.options.choices) || [];
+  const listini = scelte.map(v => v.unitPrices).filter(Boolean);
+  // `filter` piu' corto di `scelte` vuol dire che una variante il suo listino
+  // non ce l'ha: e' proprio il caso in cui la scelta cambia il prezzo.
+  if (!listini.length || listini.length !== scelte.length) return null;
+
+  const primo = listini[0];
+  const chiavi = Object.keys(primo);
+  const uguali = listini.every(p =>
+    Object.keys(p).length === chiavi.length && chiavi.every(k => p[k] === primo[k]));
+  return uguali ? primo : null;
+}
+
+// Il conto dei mezzi di una voce, dati i numeri battuti nella finestra (un
+// numero per tipo, nell'ordine in cui stanno in `types`):
+//   costo     quanto costano in tutto — non si moltiplica per le persone
+//   posti     quante persone ci stanno sopra, per il controllo dei posti
+//   nome      "Buggy", "Moto d'acqua": il nome del gruppo, dal catalogo
+//   righe     "1 × 4 posti €240", per il conto sotto il totale e per il messaggio
+// Torna null se non si e' scelto niente o se un tipo contato non ha prezzo:
+// e' la stessa regola di sempre, meglio nessun totale che uno inventato.
+function pacchettoContoMezzi(gruppo, numeri) {
+  let costo = 0;
+  let posti = 0;
+  let quanti = 0;
+  let manca = false;
+  const righe = [];
+
+  gruppo.tipi.forEach((tipo, i) => {
+    const n = Math.max(0, parseInt((numeri || [])[i], 10) || 0);
+    if (!n) return;
+    const prezzo = gruppo.prezzi[tipo.key];
+    if (!prezzo) { manca = true; return; }
+    costo += prezzo * n;
+    posti += (tipo.seats || 0) * n;
+    quanti += n;
+    // "1 × 4 posti €240" e non "4 posti × 1": davanti il numero dei mezzi,
+    // che e' quello che il cliente ha appena battuto, e dietro il tipo col suo
+    // prezzo. Il "×" e il punto in mezzo sono gli stessi del riepilogo dei
+    // mezzi in escursioni.js, cosi' le due finestre si leggono uguali.
+    righe.push(n + " × " + tf(tipo.name) + " €" + eur(prezzo));
+  });
+  if (manca || !quanti) return null;
+
+  return {
+    costo: costo,
+    posti: posti,
+    quanti: quanti,
+    nome: tf(gruppo.mezzi.name),
+    righe: righe.join(" · ")
+  };
+}
+
 // Il totale di un pacchetto per una comitiva, o `null` quando non si puo' fare.
-// I tre casi in cui torna null sono tutti lo stesso caso — meglio niente che un
+// `mezzi` e' quello che il cliente ha scelto nella finestra, un elenco di
+// numeri per ogni voce a mezzo: `{ 0: [0, 1, 0], 1: [0, 1] }` vuol dire un
+// buggy da 4 posti e una moto doppia. Chi non ha mezzi da contare (i pacchetti
+// di famiglia, gli itinerari) lo puo' lasciare stare.
+//
+// I casi in cui torna null sono tutti lo stesso caso — meglio niente che un
 // numero falso, la regola della finestra della richiesta:
-//   - una voce si paga a mezzo (buggy, jet ski): finche' non si sa quanti
-//     mezzi servono, un totale a persona non esiste
+//   - c'e' una voce a mezzo e i mezzi non sono ancora stati scelti
 //   - ci sono bambini e una delle escursioni il prezzo dei bambini non ce l'ha
-//   - una voce non ha un prezzo leggibile
-function pacchettoTotale(pack, adulti, bambini) {
+//   - una voce non ha un prezzo leggibile, o ce l'ha "di tutta la cosa" senza
+//     `units`: li' non c'e' niente da contare (vedi pacchettoMezziDaContare)
+function pacchettoTotale(pack, adulti, bambini, mezzi) {
   const n = Math.max(1, parseInt(adulti, 10) || 0);
   const k = Math.max(0, parseInt(bambini, 10) || 0);
 
+  // I mezzi si sommano una volta sola: il loro prezzo non si moltiplica ne'
+  // per gli adulti ne' per i bambini. E' tutta la differenza fra questo conto
+  // e quello di prima, che sapeva fare solo i prezzi a testa.
+  let fisso = 0;
+  let scontabileFisso = 0;
   let unAdulto = 0;
   let unBambino = 0;
   let scontabileAdulto = 0;
   let scontabileBambino = 0;
   let possibile = true;
+  const pezzi = [];
 
-  pack.voci.forEach(voce => {
+  const gruppi = {};
+  pacchettoMezziDaContare(pack).forEach(g => { gruppi[g.indice] = g; });
+
+  pack.voci.forEach((voce, i) => {
     const tour = pacchettoVoceTour(voce);
     const prezzo = pacchettoVocePrezzo(voce);
-    if (!tour || !prezzo || prezzo.tipo === "mezzo") { possibile = false; return; }
+    if (!tour || !prezzo) { possibile = false; return; }
+
+    if (prezzo.tipo === "mezzo") {
+      const conto = gruppi[i] && pacchettoContoMezzi(gruppi[i], (mezzi || {})[i]);
+      if (!conto) { possibile = false; return; }
+      fisso += conto.costo;
+      if (pacchettoVoceScontabile(voce)) scontabileFisso += conto.costo;
+      pezzi.push(conto.nome + " " + conto.righe);
+      return;
+    }
 
     // `null` quando il prezzo dei bambini non c'e' **o e' zero**: zero vuol
     // dire "non lo sappiamo", non "gratis". Con dei bambini dentro, un totale
@@ -934,13 +1087,24 @@ function pacchettoTotale(pack, adulti, bambini) {
   });
   if (!possibile) return null;
 
-  const pieno = unAdulto * n + unBambino * k;
-  const base = scontabileAdulto * n + scontabileBambino * k;
+  // Il prezzo a testa e' la somma di tutte le voci a persona, non di una sola:
+  // "2 adulti × €173" su un pacchetto con tre escursioni a testa. Scritto voce
+  // per voce sarebbero tre righe per dire lo stesso numero.
+  if (unAdulto > 0) {
+    pezzi.push(n + " " + t(n === 1 ? "wa.adult" : "wa.adults") + " × €" + eur(unAdulto));
+  }
+  if (k > 0 && unBambino > 0) {
+    pezzi.push(k + " " + t(k === 1 ? "wa.child" : "wa.children") + " × €" + eur(unBambino));
+  }
+
+  const pieno = fisso + unAdulto * n + unBambino * k;
+  const base = scontabileFisso + scontabileAdulto * n + scontabileBambino * k;
   const risparmio = pacchettoArrotonda(base * pacchettoSconto(pack) / 100);
   return {
     pieno: pacchettoArrotonda(pieno),
     risparmio: risparmio,
-    totale: pacchettoArrotonda(pieno - risparmio)
+    totale: pacchettoArrotonda(pieno - risparmio),
+    dettaglio: pezzi.join(" · ")
   };
 }
 
@@ -965,17 +1129,28 @@ function pacchettoWhatsappUrl(pack, req) {
     "• " + t("wa.fromDay") + ": " + formatDate(req.date),
     "• " + t("wa.people") + ": " + peopleText(req.adults, req.kids, 0)
   ];
+
+  // I mezzi scelti, un rigo per gruppo ("Buggy: 1 × 4 posti €240"). Sta sopra
+  // l'hotel e sotto le persone perche' e' la seconda cosa che l'ufficio guarda
+  // per rispondere: quanti sono e su cosa salgono. Col prezzo dentro, che e'
+  // lo stesso che il cliente ha visto nella finestra: se i due numeri non
+  // combaciassero se ne accorgerebbe l'ufficio, non lui.
+  pacchettoMezziDaContare(pack).forEach(gruppo => {
+    const conto = pacchettoContoMezzi(gruppo, (req.mezzi || {})[gruppo.indice]);
+    if (conto) righe.push("• " + conto.nome + ": " + conto.righe);
+  });
+
   if (req.hotel) righe.push("• " + t("wa.hotel") + ": " + req.hotel);
   if (req.note) righe.push("• " + t("wa.notes") + ": " + req.note);
 
-  const conto = pacchettoTotale(pack, req.adults, req.kids);
+  const conto = pacchettoTotale(pack, req.adults, req.kids, req.mezzi);
   if (conto) {
     righe.push("• " + t("wa.total") + ": €" + eur(conto.totale) +
       (conto.risparmio > 0 ? " (" + t("pack.save", { n: eur(conto.risparmio) }) + ")" : ""));
   } else {
     // Niente totale: invece di tacere si dice **perche'**, o all'ufficio
     // arriva una richiesta che sembra dimenticarsi il prezzo.
-    righe.push("• " + t("pack.unitAsk"));
+    righe.push("• " + t("pack.noTotal"));
   }
 
   // "il pacchetto «X»" su un itinerario da sette giorni fa arrivare in ufficio
@@ -993,8 +1168,15 @@ function pacchettoWhatsappUrl(pack, req) {
 // nell'HTML per la stessa ragione della lista: quella delle escursioni e' gia'
 // scritta due volte (escursioni.html e tour.html) e tenerle allineate e' una
 // fatica che si paga a ogni modifica. Questa e' anche piu' corta — niente
-// orario, niente varianti, niente mezzi da contare — quindi copiare l'altra
-// sarebbe stato portarsi dietro dieci campi da nascondere.
+// orario, niente varianti — quindi copiare l'altra sarebbe stato portarsi
+// dietro dieci campi da nascondere.
+//
+// I mezzi invece si contano anche qui, e sono l'unica cosa che le due finestre
+// fanno in due modi diversi. Su una singola escursione i mezzi **sostituiscono**
+// le persone (sul jet ski quattro amici sono "due doppie", e chiedere anche
+// "quanti adulti" sarebbe un secondo numero da far tornare). In un pacchetto
+// servono tutti e due: il buggy si paga a mezzo e il parascending a testa, e
+// sono due domande diverse con due risposte diverse.
 function initPacchettoRichiesta() {
   if (typeof WHATSAPP_NUMBER === "undefined" || !WHATSAPP_NUMBER) return;
 
@@ -1013,6 +1195,105 @@ function initPacchettoRichiesta() {
   document.body.appendChild(dialog);
 
   let corrente = null;
+
+  // I contatori dei mezzi, un gruppo per ogni escursione che si paga a mezzo.
+  // Stringa vuota dove non ce n'e' nessuna, che sono quasi tutti i pacchetti.
+  //
+  // **Partono tutti da zero, anche il primo tipo**, ed e' la differenza voluta
+  // con la finestra della singola escursione, dove il primo parte da 1 perche'
+  // "una moto d'acqua" e' il caso normale e chi ne vuole una non deve toccare
+  // niente. Qui un numero gia' scritto sarebbe per forza la configurazione piu'
+  // piccola, cioe' la piu' economica, e chi manda la richiesta senza guardarla
+  // si vedrebbe rispondere un totale piu' alto di quello che ha letto.
+  //
+  // Le classi sono quelle di "Quante persone" (`request-people`): sono righe
+  // con un'etichetta e una casella, identiche a quelle, e un CSS nuovo sarebbe
+  // stato lo stesso CSS scritto una seconda volta.
+  function mezziHTML(pack) {
+    const gruppi = pacchettoMezziDaContare(pack);
+    if (!gruppi.length) return "";
+
+    const blocchi = gruppi.map(gruppo => {
+      const righe = gruppo.tipi.map((tipo, i) => {
+        const prezzo = gruppo.prezzi[tipo.key];
+        const id = "packUnit" + gruppo.indice + "_" + i;
+        // I posti non si riscrivono qui: sul buggy stanno gia' nel nome del
+        // tipo ("4 posti") e sulla moto d'acqua nella domanda sopra. `seats`
+        // serve al conto, non alla vetrina.
+        return `
+          <label for="${id}"><span>${esc(tf(tipo.name) + (prezzo ? " · €" + eur(prezzo) : ""))}</span>
+            <input id="${id}" type="number" inputmode="numeric" min="0" max="20" value="0"
+                   data-pack-unit="${gruppo.indice}" data-pack-unit-i="${i}" />
+          </label>`;
+      }).join("");
+      return `
+        <span class="request-people-label">${esc(tf(gruppo.mezzi.label))}</span>
+        <div class="request-people">${righe}</div>`;
+    }).join("");
+
+    return blocchi + `
+        <p class="hint">${esc(t("pack.unitsIntro"))}</p>
+        <p class="hint" data-pack-seats hidden></p>
+        <p class="request-day-error" data-pack-units-error hidden></p>`;
+  }
+
+  // Quello che il cliente ha battuto: `{ "0": [0, 1, 0], "1": [0, 1] }`, cioe'
+  // un elenco di numeri per ogni voce a mezzo, nell'ordine dei tipi. La chiave
+  // e' la posizione della voce dentro il pacchetto, la stessa che usano
+  // pacchettoTotale() e il messaggio: e' scritta nell'HTML delle caselle, cosi'
+  // non c'e' nessun secondo posto dove il numero possa diventare un altro.
+  function mezziScelti() {
+    const scelti = {};
+    dialog.querySelectorAll("[data-pack-unit]").forEach(inp => {
+      const chiave = inp.dataset.packUnit;
+      if (!scelti[chiave]) scelti[chiave] = [];
+      scelti[chiave][Number(inp.dataset.packUnitI)] = parseInt(inp.value, 10) || 0;
+    });
+    return scelti;
+  }
+
+  // Zero mezzi non e' una richiesta, come nella finestra della singola
+  // escursione. Vale gruppo per gruppo: su Adrenalina servono sia il buggy sia
+  // la moto d'acqua, e sceglierne uno solo lascerebbe fuori mezzo pacchetto.
+  function mezziValidi(pack) {
+    const scelti = mezziScelti();
+    return pacchettoMezziDaContare(pack)
+      .every(gruppo => !!pacchettoContoMezzi(gruppo, scelti[gruppo.indice]));
+  }
+
+  // L'avviso dei mezzi mancanti compare **solo quando si prova a mandare**, e
+  // sparisce da solo appena i mezzi ci sono. Mostrarlo da subito vorrebbe dire
+  // aprire la finestra con un errore rosso gia' acceso, quando il cliente non
+  // ha ancora fatto niente di sbagliato: ha solo appena aperto.
+  function aggiornaErroreMezzi(mostra) {
+    const el = dialog.querySelector("[data-pack-units-error]");
+    if (!el || !corrente) return;
+    const ok = mezziValidi(corrente);
+    if (ok) { el.hidden = true; return; }
+    if (!mostra) return;
+    el.textContent = t("req.unitsError");
+    el.hidden = false;
+  }
+
+  // I posti scelti bastano per quanti siete? **Non blocca**, e non deve: due
+  // persone che prendono una moto sola perche' ci sale uno solo hanno ragione
+  // loro. Ma si dice, che e' il modo di accorgersene prima di mandare la
+  // richiesta invece che dopo, leggendo la risposta dell'ufficio.
+  function aggiornaPosti() {
+    const el = dialog.querySelector("[data-pack-seats]");
+    if (!el || !corrente) return;
+    const persone = (parseInt(dialog.querySelector("#packAdults").value, 10) || 0) +
+                    (parseInt(dialog.querySelector("#packKids").value, 10) || 0);
+    const scelti = mezziScelti();
+    const corti = pacchettoMezziDaContare(corrente)
+      .map(gruppo => pacchettoContoMezzi(gruppo, scelti[gruppo.indice]))
+      .filter(conto => conto && conto.posti < persone);
+    el.hidden = !corti.length;
+    if (corti.length) {
+      el.textContent = corti.map(c => t("pack.unitsSeats", { name: c.nome, n: c.posti })).join(" · ") +
+        " — " + t("pack.unitsSeatsNote", { p: persone });
+    }
+  }
 
   function disegna() {
     if (!corrente) return;
@@ -1041,6 +1322,8 @@ function initPacchettoRichiesta() {
                    min="0" max="30" value="0" />
           </label>
         </div>
+
+        ${mezziHTML(corrente)}
 
         <label for="packHotel"><span>${esc(t("req.hotel"))}</span>
           <span class="request-optional">${esc(t("req.hotelWhy"))}</span></label>
@@ -1075,22 +1358,42 @@ function initPacchettoRichiesta() {
     aggiornaTotale();
   }
 
-  // Il totale si rifa' a ogni numero battuto: il cliente mette 4 adulti e vede
-  // il conto cambiare li', senza mandare niente.
+  // Il totale si rifa' a ogni numero battuto: il cliente mette 4 adulti, o un
+  // buggy in piu', e vede il conto cambiare li', senza mandare niente.
   function aggiornaTotale() {
     const el = dialog.querySelector("[data-pack-total]");
     if (!el || !corrente) return;
     const adulti = dialog.querySelector("#packAdults").value;
     const bambini = dialog.querySelector("#packKids").value;
-    const conto = pacchettoTotale(corrente, adulti, bambini);
+    const gruppi = pacchettoMezziDaContare(corrente);
+    const scelti = mezziScelti();
+    const conto = pacchettoTotale(corrente, adulti, bambini, scelti);
+
+    aggiornaPosti();
+    aggiornaErroreMezzi(false);
+    el.hidden = false;
+
     if (!conto) {
-      el.hidden = false;
-      el.textContent = t("pack.unitAsk");
+      // Due motivi diversi, da non confondere: i mezzi ancora da scegliere —
+      // e basta contarli — oppure un prezzo che non abbiamo, e li' non c'e'
+      // niente che il cliente possa fare. Scrivere "scegli i mezzi" dove i
+      // mezzi non c'entrano lo manderebbe a cercare un campo che non esiste.
+      const daScegliere = gruppi.some(g => !pacchettoContoMezzi(g, scelti[g.indice]));
+      el.innerHTML = "<small>" +
+        esc(t(daScegliere ? "pack.unitsEmpty" : "pack.noTotal")) + "</small>";
       return;
     }
-    el.hidden = false;
-    el.textContent = t("wa.total") + ": €" + eur(conto.totale) +
-      (conto.risparmio > 0 ? " · " + t("pack.save", { n: eur(conto.risparmio) }) : "");
+
+    // Le stesse tre parti della finestra della singola escursione, e lo stesso
+    // CSS: il totale grosso, il risparmio a destra, il conto da cui viene
+    // sotto. Il conto per esteso non e' un vezzo — e' l'unico modo perche' chi
+    // legge €472,50 possa vedere da dove vengono, invece di doverci credere.
+    el.innerHTML =
+      "<strong>" + esc(t("wa.total") + ": €" + eur(conto.totale)) + "</strong>" +
+      (conto.risparmio > 0
+        ? "<span>" + esc(t("pack.save", { n: eur(conto.risparmio) })) + "</span>"
+        : "") +
+      (conto.dettaglio ? "<small>" + esc(conto.dettaglio) + "</small>" : "");
   }
 
   function apri(pack) {
@@ -1134,8 +1437,10 @@ function initPacchettoRichiesta() {
   // riempiti — il nome scritto a meta' non si perde.
   document.addEventListener("islalang", () => {
     if (!dialog.classList.contains("is-open")) return;
-    const vecchi = ["packName", "packDate", "packAdults", "packKids", "packHotel", "packNote"]
-      .map(id => [id, (dialog.querySelector("#" + id) || {}).value]);
+    // Tutte le caselle con un id, non un elenco scritto a mano: i contatori
+    // dei mezzi ne hanno uno per tipo e per voce, e un elenco fisso li avrebbe
+    // dimenticati — cambiando lingua i tre buggy appena contati tornavano zero.
+    const vecchi = [...dialog.querySelectorAll("input[id]")].map(c => [c.id, c.value]);
     disegna();
     vecchi.forEach(([id, val]) => {
       const campo = dialog.querySelector("#" + id);
@@ -1153,9 +1458,14 @@ function initPacchettoRichiesta() {
       adults: parseInt(dialog.querySelector("#packAdults").value, 10) || 1,
       kids: parseInt(dialog.querySelector("#packKids").value, 10) || 0,
       hotel: dialog.querySelector("#packHotel").value.trim(),
-      note: dialog.querySelector("#packNote").value.trim()
+      note: dialog.querySelector("#packNote").value.trim(),
+      mezzi: mezziScelti()
     };
     if (!req.name || !req.date) return;
+    // Senza mezzi la richiesta partirebbe senza la meta' del prezzo: l'ufficio
+    // dovrebbe richiamare per chiedere quanti buggy, che e' esattamente il giro
+    // di messaggi che questa finestra serve a togliere.
+    if (!mezziValidi(corrente)) { aggiornaErroreMezzi(true); return; }
     // Come nella finestra della richiesta: l'hotel si ricorda quando la
     // richiesta parte davvero, e solo se c'e' scritto qualcosa.
     ricordaHotel(req.hotel);

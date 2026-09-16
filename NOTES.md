@@ -12529,6 +12529,25 @@ il picnic. Nessuno dei tre può più essere letto come "portatelo da casa".
 **chi lo porta**. "Con un picnic" non basta — è ambiguo in tutte e tre le lingue, e
 l'ambiguità cade sempre dalla parte sbagliata, cioè addosso al cliente.
 
+### Il pacchetto che non aveva contatori
+
+Provando tutti e quattro, "Tenerife Trio versione buggy" restava senza: quella
+voce è `{ id: "buggy-volcano-4h" }` **senza `optionIndex`**, perché i quattro
+percorsi costano uguale e sceglierne uno prima non serve a nessuno. Ma i prezzi
+dei mezzi stanno **dentro le varianti**, e senza variante scelta non c'era
+niente da leggere.
+
+`pacchettoPrezziMezziUguali()` li prende dalle varianti **solo se tutte dicono
+lo stesso numero**, che sul buggy è il caso (180/240/330 su tutti e quattro i
+giri, scritto anche nelle note della scheda). Dove un giro costasse più di un
+altro torna `null` e si resta senza totale: mettere in conto il prezzo della
+prima variante sarebbe tirare a indovinare fra due numeri veri.
+
+Il primo controllo che avevo scritto questo caso non lo prendeva — guardava
+solo i pacchetti che i gruppi ce li avevano, e qui il gruppo mancava proprio.
+Adesso l'errore è sulla voce: "si paga a mezzo ma i suoi mezzi non si possono
+contare".
+
 ### `controlla.js` ha fatto il suo mestiere
 
 Modificato `esplora-catalog.js` e lanciato il controllo prima di alzare `CACHE_NAME`:
@@ -13630,6 +13649,173 @@ Chromium a 390 px, `tour.html?id=la-gomera`, col flusso della lista:
 
 ---
 
+## 16 settembre 2026 — Via il Glass Bottom Boat Adventure (v347)
+
+Il proprietario ha detto che l'escursione **non esiste piu'**. Tolta la scheda
+`glass-bottom-boat` da `esplora-catalog.js`: il catalogo passa da 66 schede a 65.
+
+### Non bastava cancellare la scheda
+
+`glass-bottom-boat` stava dentro **due pacchetti**, e un id che non esiste piu'
+non lascia un buco visibile: `controlla.js` lo prende (lo dice a voce alta), ma
+se non lo si guardasse la voce sparirebbe **in silenzio** e il cliente vedrebbe
+"Piccoli esploratori" fatto di due uscite invece di tre.
+
+Al suo posto ci va `whale-dolphin-3h` in tutti e due, **scelta del proprietario**
+fra sottomarino, Skyline Cruiser e Loro Parque. E' la barca piu' vicina come
+forma: tre ore, Puerto Colón, le stesse partenze ogni tre ore con le 18:00 solo
+d'estate, e la sosta bagno.
+
+| pacchetto | prima | adesso |
+|---|---|---|
+| Piccoli esploratori | 24 + **58** + 35 = 117 → **108,80** | 24 + **55** + 35 = 114 → **106,10** |
+| Sette giorni in famiglia | 192 + 10 + **58** = 260 → **234,50** | 192 + 10 + **55** = 257 → **231,95** |
+
+I bambini scendono di piu' degli adulti: il glass bottom costava €45 ai bambini
+(quasi quanto l'adulto), la barca a vela ne costa €30. "Piccoli esploratori" per
+un bambino passa da 86 a 71.
+
+Riscritte in tutte e tre le lingue le due descrizioni, dove la frase "la barca
+col fondo di vetro / a guardare i pesci restando a bordo" non voleva piu' dire
+niente. Cambiata anche la foto di copertina di "Sette giorni in famiglia", che
+era `glass-bottom-boat.jpg`: adesso e' `whale-dolphin-3h.jpg`.
+
+### Le tre foto
+
+`glass-bottom-boat.jpg`, `-2.jpg` e `-3.jpg` (le due della galleria erano state
+prese dalla Diamant il 31 agosto) sono state **cancellate**: restavano in
+`assets/` senza che nessuno le usasse. Se l'escursione dovesse tornare si
+riprendono da git, non si ricercano.
+
+### Chi aveva il vecchio indirizzo
+
+`tour.html?id=glass-bottom-boat` non da' errore: la pagina mostra gia' da sola
+"Questo indirizzo non corrisponde a nessuna escursione", che e' la cosa giusta.
+Chi ha la scheda nella sua lista (`localStorage`) la perde alla prossima
+apertura, ed e' giusto anche quello: era una richiesta per un'uscita che non si
+fa piu'.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi (gli stessi di prima). Chromium:
+
+- `escursioni.html`: nessuna card "Glass Bottom"
+- `tour.html?id=glass-bottom-boat`: pagina "escursione non trovata", niente errori JS
+- `pacchetto.html?id=famiglia-piccoli`: "risparmi €7,90", la barca a vela in elenco
+- `pacchetto.html?id=giorni-7-famiglia`: "risparmi €25,05"
+- `pacchetti.html?famiglia=1`: cinque pacchetti, nessuna foto mancante
+
+`CACHE_NAME` alzato a `isla-v349`, dopo il merge di `main` che era gia a `isla-v348`.
+
+---
+
+## 16 settembre 2026 — Il totale dei pacchetti coi mezzi (v348)
+
+Il proprietario: «per la prenotazione del pack Adrenalina non è possibile fare
+il totale». Vero, e per una ragione scritta apposta: `pacchettoTotale()` si
+fermava appena trovava una voce che si paga **a mezzo** e tornava `null`.
+Dentro Adrenalina ce ne sono due su tre — il buggy (180/240/330 secondo i
+posti) e la moto d'acqua (100 singola, 120 doppia) — e il parascending, che
+invece è 55 € a testa.
+
+La finestra scriveva «il totale non si può ancora fare», mentre **la vetrina
+dello stesso pacchetto mostrava €301,50**. Quello stonava: il cliente legge un
+numero, apre la richiesta e non lo ritrova.
+
+### Perché la domanda va fatta, e non indovinata
+
+Il prezzo del mezzo non dipende da quante persone ci salgono, quindi per una
+coppia il totale dipende **solo da come si compongono i mezzi**:
+
+| due persone scelgono | buggy | moto | parascending | totale |
+|---|---|---|---|---|
+| 2 buggy da 2 + 2 moto singole | 360 | 200 | 110 | **603,00** |
+| 1 buggy da 2 + 2 moto singole | 180 | 200 | 110 | **441,00** |
+| 1 buggy da 2 + 1 moto doppia | 180 | 120 | 110 | **369,00** |
+
+234 € fra la prima e l'ultima, e sono tutte e tre risposte giuste: due persone
+che vogliono guidare ognuna il suo buggy non stanno sbagliando, stanno
+comprando un'altra cosa. Nessuna formula può scegliere per loro.
+
+**I contatori partono da zero, e finché non si sceglie il totale non compare.**
+Era stato proposto di pre-riempirli con la configurazione più piccola che tiene
+tutti, per far vedere subito un numero: **scartato**. La configurazione più
+piccola è anche la più economica (369), e chi manda la richiesta senza
+accorgersi del campo si vedrebbe rispondere 603. Alzare un prezzo dopo che il
+cliente l'ha letto è la cosa che non si fa.
+
+### Cosa è cambiato
+
+- **`seats` in catalogo**, su ogni tipo di `units`: buggy 2/4/6, moto 1/2, quad
+  1/2, Mustang 2/4 (lì è il massimo della fascia, non un numero fisso). Non si
+  vede in nessuna pagina — i posti dove contano sono già dentro `name` o dentro
+  `label`, e riscriverli darebbe «2 posti · 2 posti · €180». Serve al controllo
+  «i mezzi scelti bastano per quanti siete».
+- **`pacchettoMezziDaContare()` e `pacchettoContoMezzi()`** in `pacchetti.js`: i
+  gruppi di mezzi di un pacchetto e il loro conto, coi prezzi presi dalla
+  variante che il pacchetto ha già scelto (sulla moto la doppia costa 120
+  sull'ora e 200 sulle due ore).
+- **`pacchettoTotale(pack, adulti, bambini, mezzi)`**: i mezzi si sommano una
+  volta sola, le escursioni a testa si moltiplicano. Torna anche `dettaglio`,
+  il conto per esteso — «Buggy 1 × 4 posti €240 · Moto d'acqua 1 × Doppia €120
+  · 2 adulti × €55 · 1 bambino × €55».
+- **La finestra della richiesta** mostra i contatori, il totale nelle tre parti
+  della finestra singola (totale grosso, risparmio a destra, conto sotto) e
+  l'avviso dei posti. L'avviso **non blocca**: due persone che prendono una moto
+  sola perché ci sale uno solo hanno ragione. Blocca invece l'invio con zero
+  mezzi, e l'errore compare solo quando si prova a mandare — non all'apertura,
+  quando il cliente non ha ancora fatto niente di sbagliato.
+- **Il messaggio a WhatsApp** porta i mezzi scelti col loro prezzo, sotto le
+  persone: è la seconda cosa che l'ufficio guarda per rispondere.
+
+### Le due finestre fanno due cose diverse, ed è voluto
+
+Su una singola escursione i mezzi **sostituiscono** le persone (sul jet ski
+quattro amici sono «due doppie», e chiedere anche «quanti adulti» darebbe due
+numeri da far tornare). In un pacchetto servono tutti e due, perché il buggy si
+paga a mezzo e il parascending a testa. Per lo stesso motivo lì il primo tipo
+parte da 1 e qui da 0.
+
+### Quello che non è cambiato
+
+- **Il numero in vetrina resta quello di una persona da sola** (€301,50 su
+  Adrenalina) con la sua nota: è il massimo a testa, e in due o in tre si paga
+  meno. Sono due numeri diversi apposta.
+- **I pacchetti di famiglia restano senza prezzi a mezzo.** La ragione di prima
+  («lì il totale non si può fare») non vale più, ma la regola resta: «quanti
+  buggy per due adulti e due bambini» non ha una risposta scritta, e un
+  pacchetto di famiglia deve poter essere chiesto senza deciderlo prima.
+  Toglierla è una scelta del proprietario, non una conseguenza di questa.
+
+### `controlla.js`
+
+Due controlli nuovi: ogni tipo di `units` deve avere `seats` e un prezzo in
+`unitPrices` (un tipo senza prezzo è una riga che si può contare e che non
+porta a nessun totale), e un pacchetto coi mezzi deve dare un totale scegliendo
+un mezzo per tipo. Perché `pacchettoTotale()` adesso scrive anche del testo,
+`controlla.js` definisce tre funzioni finte al posto di `t`, `tf` ed `eur`:
+i18n.js al caricamento tocca `navigator` e `document`, che in node non ci sono.
+
+### Provato
+
+`node controlla.js` → 0 errori, 3 avvisi (gli stessi di prima). Chromium a
+390×844 su `pacchetto.html?id=adrenalina`, con i numeri verificati anche a mano:
+
+- coppia, buggy da 2 + moto singola → €351,00 (e l'avviso: un posto, due persone)
+- coppia, buggy da 2 + moto doppia → €369,00, nessun avviso
+- coppia, 2 buggy + 2 moto singole → €603,00
+- 2 adulti + 1 bambino, buggy da 4 + moto doppia → €472,50, «risparmi €52,50»
+- invio senza mezzi: si ferma e lo dice, la pagina non cambia
+- cambio lingua a finestra aperta: i mezzi già contati restano
+- `pacchetto.html?id=famiglia-mare`: nessun contatore, il totale come prima
+- tutti e quattro i pacchetti coi mezzi, un mezzo del primo tipo a testa:
+  €255,50 · €282,60 · €301,50 · €153,00 — gli stessi numeri della vetrina, che
+  è quello che devono essere: la vetrina mostra una persona da sola
+
+`CACHE_NAME` alzato a `isla-v348`.
+
+---
+
 ## Il giro dell'isola: il pulmino va al contrario (16 settembre 2026)
 
 Quinta scheda con gli orari del pick-up, e quella che dimostra meglio di tutte
@@ -13691,4 +13877,4 @@ Chromium a 390 px, `tour.html?id=island-tour-completo`, col flusso della lista:
 - messaggio WhatsApp completo. Niente totale, perche' il prezzo non c'e' ancora.
 - nessun errore JS
 
-`CACHE_NAME` alzato a `isla-v347`.
+`CACHE_NAME` alzato a `isla-v349`, dopo il merge di `main` che era gia a `isla-v348`.

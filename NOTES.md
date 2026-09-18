@@ -14027,3 +14027,105 @@ Chromium a 390 px, `tour.html?id=island-tour-completo`:
 - nessun errore JS
 
 `CACHE_NAME` alzato a `isla-v351`.
+
+## In vetrina il prezzo parte dalla combinazione più bassa (16 settembre 2026, v352)
+
+Richiesta del proprietario, in una riga: *«in tutti i pack, sia quelli in famiglia che
+giorni separati, metti il prezzo a partire dalla combinazione più bassa possibile a
+persona — tipo nel pack adrenalina sarebbe dove condividono il buggy, condividono la moto
+d'acqua, ognuno va sul parascending»*.
+
+**È l'opposto esatto di quello che c'era**, ed è una scelta sua, non una conseguenza. Fino
+a stamattina il numero dei pacchetti misti era quello di **una persona da sola** — il
+massimo a testa, l'unico che al cliente può solo scendere (vedi il 14 settembre, «Il numero
+dei quattro pacchetti misti è quello di una persona da sola»). Adesso è il minimo. Il
+rischio è quello scritto in `CLAUDE.md`, ed è vero: un minimo **sale** in faccia a chi è in
+due. Per questo il numero non si scrive mai da solo.
+
+### Come si calcola
+
+Un mezzo non ha un prezzo a persona finché non si dice **in quanti ci si sale**. Il più
+basso è sempre il mezzo pieno, e quello è il minimo vero — sotto non si può andare:
+
+| voce di Adrenalina | il mezzo | diviso | a persona |
+|---|---|---|---|
+| buggy, "Completo 4 ore" | 6 posti, €330 | : 6 | **€55** |
+| moto d'acqua, 1 ora | doppia, €120 | : 2 | **€60** |
+| parascending | — | — | **€55** |
+
+€170 pieni, tutto scontabile, −10% → **da €153 a persona**. Prima erano €301,50 (buggy da
+2 posti e moto singola, tutti e due su una testa sola).
+
+Gli altri tre misti: Tenerife Trio versione buggy **da €143** (era 255,50), Terra mare e
+stelle **da €170,10** (era 282,60), Mare a tutto gas **da €117** (era 153).
+
+Lo fa `pacchettoMezzoAPersona()`, che legge lo stesso listino dei contatori della finestra
+(`pacchettoVoceMezzi()`, tirato fuori da `pacchettoMezziDaContare()` apposta perché adesso
+lo leggono in due) e tiene il tipo col rapporto prezzo/posti più basso. Un tipo senza posti
+o senza prezzo resta fuori dal confronto; se non ne resta nessuno **il pacchetto non mostra
+nessun numero**, invece di sommare il prezzo di un mezzo a dei prezzi a persona e dare un
+totale che non vuol dire niente.
+
+### Il "da" non è grafica
+
+`pacchettoPrezzoHTML()` scrive **"da €153"** dove dentro c'è un mezzo e **"€132,50"** dove
+non ce n'è: nei pacchetti di famiglia e negli itinerari a giorni i mezzi non ci sono per
+regola, quindi lì il numero è esatto come prima e un "da" lo farebbe sembrare un minimo che
+può crescere. È la chiave `tour.from` delle schede, non una seconda scritta da tenere
+allineata in tre lingue.
+
+`pack.unitNote`, la riga sotto il prezzo, diceva *«questo è il prezzo di una persona da
+sola, e in due o in tre a testa si paga meno»*. Adesso dice il contrario, che è la cosa che
+il cliente deve sapere prima di chiedere: *«questo è il prezzo a persona quando il mezzo si
+divide fra tutti i posti che ha. Se siete di meno, a testa si paga di più — il totale vero
+lo fai nella richiesta, scegliendo quanti mezzi»*.
+
+Ogni riga del pacchetto adesso porta **due numeri invece di uno**: `da €55 a persona · 6
+posti €330/buggy`. Il primo è quello che entra nel conto in cima, il secondo è da dove
+esce. Senza il secondo il cliente legge un prezzo a testa su una cosa che a testa non si
+paga, e nella finestra si trova davanti i contatori dei mezzi senza sapere perché.
+
+### Quello che non è cambiato
+
+- **Il totale della richiesta.** Quello non è mai stato un "da": si fa sui mezzi che il
+  cliente conta. Adrenalina in due, un buggy da 2 posti e una moto doppia, fa **€369** —
+  lo stesso numero di ieri. Le due finestre continuano a dire due cose diverse apposta;
+  adesso la vetrina sta sotto e non sopra.
+- **Famiglia e itinerari a giorni.** Dentro non hanno mezzi per regola, quindi la
+  combinazione più bassa è l'unica che c'è: gli undici numeri sono rimasti uguali al
+  centesimo, e restano senza "da".
+- **Lo sconto**, che continua a non toccare parchi, spettacoli e `fixedPrice`.
+
+### `controlla.js`
+
+Un avviso nuovo: se ogni voce ha il suo prezzo ma il conto non viene, vuol dire che di un
+mezzo manca la metà che serve a dividerlo (i posti o il listino) e il pacchetto uscirebbe
+con "Prezzo su richiesta" senza che nessuno se ne accorga. Provato a mano togliendo `seats`
+dal buggy: il conto diventa `null` e l'avviso suona. L'errore che c'era già — voce a mezzo
+coi mezzi non contabili — copre il caso più comune, ma parla solo di quello.
+
+### Una riga di CSS
+
+Sul telefono i riquadri piccoli sono larghi 168 px, e "da €170,10" riempie la riga: "a
+persona" scende sotto, e va bene, ma si spezzava fra "a" e "persona". Una "a" da sola in
+fondo alla riga si legge come un errore di stampa, quindi `white-space: nowrap` su quel
+`<small>`. Nient'altro si è mosso: il riquadro resta alto uguale.
+
+### Provato
+
+`node controlla.js` → 0 errori (i 3 avvisi sono quelli di sempre, su altre schede).
+Chromium a 390 px, nelle tre lingue:
+
+- vetrina: quattro riquadri con **da €143 · da €170,10 · da €153 · da €117**, gli altri
+  otto col numero secco. Nessun testo esce dal riquadro, "Terra, mare e stelle" compreso,
+  che è quello col numero più lungo.
+- `pacchetto.html?id=adrenalina`: `€170` barrato, **da €153 A PERSONA**, la nota nuova, e
+  le righe `Completo, 4 ore · da €55 a persona · 6 posti €330/buggy` e `1 ora · da €60 a
+  persona · Doppia €120 a moto d'acqua`. In inglese e in spagnolo escono `from €55 per
+  person` e `desde €55 por persona`.
+- finestra della richiesta, 2 adulti + 1 buggy da 2 posti + 1 moto doppia → **Totale
+  indicativo €369**, `Risparmi €41`, dettaglio `Buggy 1 × 2 posti €180 · Moto d'acqua 1 ×
+  Doppia €120 · 2 adulti × €55`. Invariato.
+- nessun errore JS.
+
+`CACHE_NAME` alzato a `isla-v352`.

@@ -14448,3 +14448,105 @@ Chromium a 390 px, `teide-national-park` e `siam-park`:
 - nessun nome doppio fra i 526 rimasti, nessun errore JS
 
 `CACHE_NAME` alzato a `isla-v359`, dopo il merge di `main` che era a `isla-v358`.
+
+---
+
+## Tolti anche gli ultimi 110: in elenco restano solo gli hotel di cui sappiamo dove si sale (24 settembre 2026)
+
+Secondo passaggio dello stesso ripulimento. `HOTELS` passa da **526 a 416**.
+
+### Il criterio, in una riga
+
+**Se non sappiamo dire dove si sale, l'hotel non sta in elenco.** Prima erano
+usciti i 36 che avevano l'ora ma non il nome della fermata; adesso escono i 110
+che non avevano ne' l'una ne' l'altro. Da 562 a 416 in totale.
+
+### Perche' si puo' fare senza perdere nessuno
+
+Il campo "dove alloggi" **non e' un menu chiuso, e' una casella di testo**. Chi
+non trova il suo alloggio lo scrive a mano e arriva lo stesso nel messaggio.
+Provato: scrivendo `Casa di mia zia, calle Colon 14` il campo lo accetta, non
+inventa nessuna fermata, e il messaggio porta
+`• Hotel: Casa di mia zia, calle Colon 14`.
+
+E' la stessa strada che gia' facevano i clienti con un appartamento privato.
+
+### La scelta fra due tagli
+
+Al proprietario sono stati messi davanti i numeri di tutti e due:
+
+| taglio | restano | cosa esce |
+|---|---|---|
+| **via chi non ha il posto** | **416** | i 110 col punto senza nome |
+| via anche chi non ha l'ora | 252 | anche i 29 che salgono in hotel, e chi ha l'ora su alcune escursioni ma non su tutte |
+
+Ha scelto il primo. I 29 col punto `0` restano: "ti veniamo a prendere in hotel"
+e' una risposta completa su **dove**, e l'ora gliela dice l'ufficio.
+
+### Altamira: il conto era 415, non 416
+
+Nella scelta offerta avevo contato fuori anche **Altamira**, perche' nei dati e'
+l'unico hotel con la fermata ma senza nessun orario da nessuna parte. Controllato
+nel browser prima di toglierlo: il suo punto `10084` si chiama "Altamira" e non ha
+un tipo, quindi `hotelPunto()` lo tratta come l'hotel stesso e la pagina scrive
+**"il tuo hotel"**, identico ad Aquarius. E' uno di quelli che il taglio scelto
+tiene. Quindi resta, e i rimasti sono 416.
+
+La lezione, gia' vista con Bahia del Duque: **la tabella e il comportamento non
+dicono la stessa cosa**, e prima di togliere una riga si guarda cosa fa in pagina.
+
+### Chi e' uscito
+
+29 punti, 110 hotel — 24 nel sud e 86 fra nord e ovest:
+
+| punto | hotel |
+|---|---|
+| `7` | Townhouse la Caleta, Veril del Duque II Aptos |
+| `30` | Sir Anthony, Torres Sol |
+| `35` | Eucalipto, Las Fuentes, San Telmo, Solmar, Virginia II |
+| `52` | Annapurna - (alborada Beach Club), Don Jose, Hostal Duendes del Sur, Marina Primavera, Primavera |
+| `54` | Alondras Park, Alondras Park Club (costa del Silencio), Amarilla Bay, Apartamento Parque Carolina (costa del Silencio), Apartamentos Atlantico, Apartamentos Geranios (costa del Silencio), Atlantic View, Balcon del Mar, Club Marino, Rocas del Mar |
+| `10007` | Corales Suites Caleta |
+| `10032` | Apartamento Lago Santiago, Apartamentos Jardin (los Gigantes), Apartamentos Puerto Santiago, Arena Suites, Club la Mar, Playa la Arena Residencial |
+| `10034` | Apartamentos Hercules, Drago, Palia Don Pedro |
+| `10039` | Adonis Plaza, Contemporaneo, Cruceros, Cruceros Muelle, Mencey, Principe Paz Htl, Silken Atlantida Htl |
+| `10040` | Panoramica, Route Active |
+| `10041` | Precise Resort Puerto (Anterior Maritim) |
+| `10042` | Alua Tenerife (turquesa Playa), Bahia Playa, Be Live Adults Only, Diamante Suites, Noelia Playa, Tenerife Ving |
+| `10043` | Girasol, Hotel AF Valle Orotava - Puerto de la Cruz, Maga, Magec, Marte, Park Plaza, Puerto Azul, Sun Holidays, Trovador |
+| `10044` | Alta Aptos, Astoria Hotel, Avenida Hotel, Bambi Hotel, Concordia Hotel, Guajara Aptos, Las Vegas Hotel, Palmeras Playa Hotel, San Telmo Hotel, Sol Atlantis Hotel, Tenerife Playa Hotel |
+| `10045` | Belair, Chimisay, Condesa, La Vaggi, Marquesa, Monopol, Xibana |
+| `10046` | Apartamentos Casablanca, Carabela, Chinyero, El Tope, Pez Azul, Puerto de la Cruz |
+| `10048` | Botanico, Club la Paz |
+| `10049` | Garoe |
+| `10050` | Ambassador (club), Blue Sea Costa |
+| `10051` | Casa del Sol Hotel, Don Candido Hotel, Esplanade Hotel, Hapimag Hotel, Miramar Elegance Hotel, Taoro Garden Hotel, Tigaiga Hotel |
+| `10052` | Hotel Las Águilas Tenerife, Affiliated by Meliá |
+| `10053` | La Quinta Park Coral, Quinta Park |
+| `10061` | Globales Acuario, Puerto Palace Hotel |
+| `10062` | Direct Harbour |
+| `10091` | AluaSoul Orotava Valley |
+| `10109` | Fergus Puerto de la Cruz |
+| `10111` | Parque Vacacional Edén |
+| `10142` | Bahia Flamingo, Servatur Isora (ex Allegro), Sholeo los Gigantes |
+| `10150` | Apartamentos Teneguia, Don Manolito, Sol Puerto de la Cruz Tenerife |
+
+### Cosa NON e' stato toccato
+
+`dati-fornitore/hotel.tsv` ha ancora tutte e 567 le righe. Se un giorno si copia
+la tendina dei punti da un'escursione che parte da Puerto de la Cruz, questi 146
+si rimettono da li' **con la fermata al posto giusto**, che e' il modo giusto di
+farli tornare.
+
+### Provato
+
+Chromium a 390 px, `teide-national-park` e `siam-park`:
+
+- Botanico, Sir Anthony, Rocas del Mar → **non compaiono piu'** fra i suggerimenti
+- Cleopatra → `09:15 · Best Tenerife` sul Teide, "il tuo hotel" su Siam Park
+- Altamira e Aquarius → "il tuo hotel" su tutte e due
+- testo libero (`Appartamento di mio cugino, Adeje`) → nessuna fermata inventata
+- 416 hotel, **nessuno senza il nome della fermata**, nessun nome doppio
+- nessun errore JS
+
+`CACHE_NAME` alzato a `isla-v360`.

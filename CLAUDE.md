@@ -158,6 +158,7 @@ scrive una volta e vale per tutte le escursioni, gli orari vanno messi per ognun
 | `HOTELS` | 562 hotel, ognuno col suo punto | quando apre un hotel nuovo |
 | `PICKUP_TIMES[scheda][punto]` | gli orari, escursione per escursione | quando il fornitore li cambia |
 | `PICKUP_IN_HOTEL` | le schede che passano **sotto l'hotel** | quando si aggiunge un fornitore che fa così |
+| `PICKUP_NESSUNO` | le schede senza ritiro: il cliente ci arriva da solo | quando una scheda cambia fornitore |
 
 **"Il punto dipende solo dall'hotel" vale dentro un fornitore, non fra fornitori.**
 `PICKUP_POINTS` e `HOTELS` vengono da Island Excursions, ed è lì che è stato verificato.
@@ -169,6 +170,14 @@ non ci si ricorda di fare, perché la risposta sembra già scritta.
 Sbagliarla fa danno in tutte e due le direzioni: chi legge una fermata che non esiste esce
 di casa per niente, chi legge "in hotel" quando il punto è altrove resta davanti alla
 reception a guardare l'ora.
+
+**Le fermate di `PICKUP_POINTS` valgono solo per le sei schede di Island Excursions**, quelle
+che stanno in `PICKUP_TIMES`. Per tutte le altre il proprietario ha deciso il 24 settembre
+2026: se la scheda **permette il transfer** il pulmino arriva **all'hotel** (`PICKUP_IN_HOTEL`),
+compreso o a pagamento che sia; se **non lo permette** non c'è nessun ritiro
+(`PICKUP_NESSUNO`) e la richiesta non chiede nemmeno dove alloggi, perché la domanda
+serve solo a dire dove si sale. **Ogni scheda pubblicata sta in uno dei tre gruppi**: se ne
+aggiungi una senza metterla da nessuna parte, mostrerà la fermata di un altro fornitore.
 
 **Il nome del posto non si traduce, il tipo sì.** "Best Tenerife" è un nome proprio e
 resta uguale in tutte e tre le lingue, come i titoli delle escursioni: chi lo deve

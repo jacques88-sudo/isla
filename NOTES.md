@@ -14259,3 +14259,73 @@ Chromium a 390 px, `tour.html?id=la-palma`:
 - nessun errore JS
 
 `CACHE_NAME` alzato a `isla-v354`.
+
+---
+
+## Ogni scheda ha il suo pick-up, e le fermate valgono solo per sei (24 settembre 2026)
+
+Dopo il caso La Palma, il proprietario ha risposto alla domanda che era rimasta
+aperta su 34 schede. Due frasi, in due momenti:
+
+1. *"Tutte le altre schede non hanno punto di raccolta, il transfer arriva
+   direttamente all'hotel dove alloggiano."*
+2. *"Tutte le escursioni che permettono il transfer."*
+
+La seconda corregge la prima dove era troppo larga: **la regola dell'hotel vale
+dove il transfer c'è**, non ovunque. Dove non c'è, non c'è nemmeno il ritiro.
+
+### Tre gruppi, e adesso ogni scheda pubblicata sta in uno
+
+| gruppo | quante | cosa vede il cliente |
+|---|---|---|
+| `PICKUP_TIMES` — le sei di Island Excursions | 6 | la fermata vera **e** l'ora |
+| `PICKUP_IN_HOTEL` — permettono il transfer | 21 | "Punto di raccolta: il tuo hotel" |
+| `PICKUP_NESSUNO` — niente transfer | 38 | niente, e sparisce anche "dove alloggi" |
+
+Il transfer conta **sia compreso sia a pagamento**: è lo stesso pulmino, e la
+domanda "dove passa a prenderti" ha la stessa risposta.
+
+### Cosa c'era prima
+
+Tutte e 59 le schede fuori da `PICKUP_TIMES` pescavano dalle tabelle di Island
+Excursions, che sono di **un altro fornitore e di un altro giro**. Chi sta al
+Cleopatra si vedeva scritto "Best Tenerife, alla fermata dell'autobus" anche
+davanti a un catamarano che parte da Puerto Colón, o a un karting.
+
+Era lo stesso difetto di La Palma, moltiplicato per cinquantanove. La differenza
+è che La Palma lo smentiva nelle sue stesse note, quindi si poteva provare da
+soli; per le altre serviva la risposta del proprietario, ed è arrivata.
+
+### Il campo "dove alloggi" sparisce su 38 schede
+
+Non è un effetto collaterale, è la conseguenza giusta: la domanda esiste **solo
+per dire dove si sale**. Se non passiamo a prendere nessuno, chiedere l'hotel
+raccoglie un dato che non serve a niente e lascia credere che serva.
+
+### L'unico charter fuori dal gruppo
+
+`luxury-cruiser-charter` ha un campo `transfer` mentre gli altri cinque charter
+non ce l'hanno, quindi finisce in `PICKUP_IN_HOTEL` e i suoi fratelli in
+`PICKUP_NESSUNO`. È quello che dicono le schede oggi. Se un giorno si scopre che è
+una svista e non una differenza vera, si sposta: è una riga.
+
+### Provato
+
+Chromium a 390 px, undici schede, una per comportamento:
+
+| scheda | atteso | visto |
+|---|---|---|
+| Santa Cruz + Anaga | fermata + ora | 08:15 · Best Tenerife |
+| Teide National Park | fermata + ora | 09:15 · Best Tenerife |
+| Siam Park, Royal Delfin, Peter Pan | in hotel | "il tuo hotel" |
+| Luxury Cruiser charter | in hotel | "il tuo hotel" |
+| Freebird, Karting, Private Charter, Masca Cabrio, La Palma | niente | campo hotel tolto |
+
+Messaggi WhatsApp controllati su tutte e due le strade: Royal Delfin porta
+`Hotel: Cleopatra` + `Punto di raccolta: in hotel`, Freebird non porta nessuna
+delle due righe. Nessun errore JS.
+
+Controllato anche a macchina che **nessuna scheda pubblicata resti scoperta**, che
+nessuna stia in due liste, e che nessun id sia inventato.
+
+`CACHE_NAME` alzato a `isla-v355`.

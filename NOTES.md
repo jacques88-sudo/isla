@@ -14357,3 +14357,11 @@ Il proprietario ha chiesto di prendere **solo le informazioni** e fare la sezion
   che apre WhatsApp col messaggio generico `wa.rental`.
 - Dove si ritira il mezzo non lo sappiamo: la pagina non lo dice, lo conferma l'ufficio.
 - `initRentalLink()` in `app.js` è stata tolta: serviva solo al vecchio riquadro.
+- **Una riga per mezzo** (chiesto dal proprietario lo stesso giorno, con un disegno su
+  un tovagliolo: "PANDA 50€"). La prima versione aveva una card intera per mezzo e la
+  pagina era alta otto schermate. Ora ogni mezzo è un `<details>`: chiuso mostra nome e
+  prezzo, toccato si apre con le fasce di giorni, la patente e il bottone. Sulla riga c'è
+  il prezzo **di 1 giorno**, il più alto: aprendo si trovano solo prezzi uguali o più
+  bassi. Su PC le righe stanno in due colonne, e una riga aperta lascia vuoto lo spazio
+  accanto (`align-items: start`, altrimenti la riga vicina si allungava con lei).
+

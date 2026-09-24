@@ -94,6 +94,7 @@ const I18N = {
   "rent.day1":          { it: "1 giorno", en: "1 day", es: "1 día" },
   "rent.dayN":          { it: "{n} giorni", en: "{n} days", es: "{n} días" },
   "rent.dayExtra":      { it: "dal {n}° giorno, ogni giorno", en: "from day {n}, each day", es: "desde el día {n}, cada día" },
+  "rent.perDayShort":   { it: "al giorno", en: "per day", es: "al día" },
   "rent.unitDay":       { it: "prezzo al giorno", en: "price per day", es: "precio por día" },
   "rent.unitTotal":     { it: "prezzo per tutto il periodo", en: "price for the whole period", es: "precio por todo el periodo" },
   "rent.seats":         { it: "{n} posti", en: "{n} seats", es: "{n} plazas" },

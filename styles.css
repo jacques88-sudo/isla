@@ -1781,6 +1781,119 @@ body.menu-open { overflow: hidden; }
 .pack-tile .pack-price strong { font-weight: 500; }
 .pack-tile .price-before { color: oklch(1 0 0 / .65); }
 .pack-tile .pack-price small { color: oklch(1 0 0 / .75); }
+/* ── Il noleggio (noleggio.html) ─────────────────────────────────────── */
+/* Una riga per mezzo, come un elenco: nome a sinistra, prezzo di partenza a
+   destra. Toccandola si apre (e' un <details>) e mostra i prezzi per fascia
+   di giorni, la patente e il bottone WhatsApp. Chiuse, le 21 righe stanno in
+   poco piu' di due schermate di telefono. */
+.rent-group { padding-top: 1.2rem; scroll-margin-top: 5rem; }
+.rent-group h2 {
+  font-weight: 400;
+  font-size: 1.7rem;
+  margin: 0 0 .3rem;
+}
+.rent-note {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: .88rem;
+}
+.rent-grid {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: grid;
+  gap: .5rem;
+  grid-template-columns: 1fr;
+  /* una riga aperta non deve allungare quella accanto su PC */
+  align-items: start;
+}
+@media (min-width: 960px) { .rent-grid { grid-template-columns: repeat(2, 1fr); gap: .6rem 1rem; } }
+.rent-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.rent-card summary {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  padding: .85rem 1rem;
+  cursor: pointer;
+  list-style: none;
+}
+.rent-card summary::-webkit-details-marker { display: none; }
+/* la freccia: giu' chiusa, su aperta */
+.rent-card summary::after {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid var(--muted);
+  border-bottom: 1.5px solid var(--muted);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .2s ease;
+}
+.rent-card details[open] summary::after { transform: translateY(2px) rotate(-135deg); }
+.rent-card-head {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.rent-card-head strong {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+.rent-kind {
+  color: var(--muted);
+  font-size: .8rem;
+}
+.rent-from {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-weight: 500;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+.rent-from small {
+  color: var(--muted);
+  font-weight: 300;
+  font-size: .7rem;
+}
+.rent-card-body { padding: 0 1rem 1rem; }
+.rent-prices {
+  margin: 0;
+  border-top: 1px solid var(--border);
+}
+.rent-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .35rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: .9rem;
+}
+.rent-row:last-child { border-bottom: 0; }
+.rent-row dt { color: var(--muted); }
+.rent-row dd { margin: 0; font-weight: 500; }
+.rent-unit {
+  margin: .1rem 0 0;
+  color: var(--muted);
+  font-size: .75rem;
+  text-align: right;
+}
+.rent-license {
+  margin: .5rem 0 0;
+  font-size: .82rem;
+}
+.rent-license::before { content: "◆ "; color: var(--gold); }
+.rent-cta { margin-top: 1rem; }
+.rent-page .packs-foot .rent-note { text-align: center; }
+
 /* ── Gli itinerari a giorni ───────────────────────────────────────────── */
 /* La riga delle durate sopra la vetrina. Sono le stesse pillole dei filtri per
    categoria dell'elenco (.chip-row/.chip): e' lo stesso gesto — scegli una

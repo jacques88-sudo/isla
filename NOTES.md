@@ -1709,11 +1709,9 @@ Cose da ricordare, imparate sistemando la versione PC:
 - Il riquadro bento "Pacchetti" porta a `pacchetti.html` (dal 14 settembre 2026), e
   **"3/5/7 Days Experience" porta agli itinerari a giorni** (`pacchetti.html?giorni=tutti`,
   dal 14 settembre 2026). Adesso ogni riquadro della home porta da qualche parte
-- Il riquadro "Noleggio auto, moto e bici" non è un'attività del catalogo: non ha una
-  scheda, apre WhatsApp con un messaggio già scritto (`wa.rental` in `i18n.js`). Il link
-  lo costruisce `initRentalLink()` in `app.js`, che si nasconde da solo se
-  `WHATSAPP_NUMBER` non c'è (booking.html carica `app.js` ma non `esplora-catalog.js`).
-  Se un giorno avremo dei noleggi da listare, diventerà una categoria vera
+- Il riquadro "Noleggio auto, moto e bici" non è un'attività del catalogo. Fino al 24
+  settembre 2026 apriva WhatsApp direttamente; ora porta a `noleggio.html` (vedi la
+  sezione "La pagina del noleggio" in fondo)
 - Testo "Chi siamo" è un **placeholder onesto** (nessuna affermazione inventata) — da
   sostituire con la storia vera
 - La foto `assets/About-team.jpg` **va sostituita**, non compressa: l'ufficio ne manderà
@@ -14330,6 +14328,50 @@ nessuna stia in due liste, e che nessun id sia inventato.
 
 `CACHE_NAME` alzato a `isla-v355`.
 
+## La pagina del noleggio (24 settembre 2026)
+
+Arrivate tre foto di volantini: auto da un noleggiatore, moto e scooter da un altro.
+Il proprietario ha chiesto di prendere **solo le informazioni** e fare la sezione.
+
+- **Pagina sua, `noleggio.html` + `noleggio.js`**, non schede del catalogo: il catalogo
+  ragiona a persone (adulto/bambino), il noleggio a giorni. Il riquadro in home ci porta.
+  I dati stanno in `RENT_GROUPS`, in testa a `noleggio.js`, con la spiegazione dei campi.
+- **Prezzi uguali ai volantini**, senza ricarico (deciso dal proprietario).
+- **I nomi dei noleggiatori non si mostrano**, né telefoni, siti o QR: solo i modelli.
+  Il cliente scrive a Isla, e il messaggio WhatsApp porta il nome del mezzo.
+- **Tre fasce al giorno** (1-2, 3-6, 7+), tranne lo scooter 125 (Honda PCX), che sul
+  volantino è scritto a totali: 1 giorno €50 … 7 giorni €210, poi €30 ogni giorno in più.
+  Sulla card si legge "prezzo al giorno" o "prezzo per tutto il periodo": senza, i due
+  modi si confondono.
+- **Auto: +€5 al giorno a luglio, agosto, dicembre e gennaio** — scritto sul volantino,
+  sta come nota sopra le auto.
+- **Moto: assicurazione, casco, lucchetto e km illimitati compresi** — scritto sul
+  volantino. Per le auto il volantino non dice niente, e quindi non scriviamo niente.
+- "Automatico" sul volantino sta accanto alla Citroën Cactus e non alla Renault Captur:
+  sono due card, e l'automatico solo sulla Cactus. I posti (7) solo sul Grand Picasso,
+  l'unico dove il volantino li scrive: il Trafic resta senza numero.
+- Le moto 500/750/800 sul volantino sono gruppi di marche, non un modello: il titolo
+  è l'elenco delle marche ("Honda / Kawasaki"), la cilindrata va sotto.
+- **Le bici non ci sono ancora**: il riquadro resta "auto, moto e bici" perché arriveranno
+  (deciso dal proprietario). Per ora in fondo alla pagina c'è "Cerchi un altro mezzo?"
+  che apre WhatsApp col messaggio generico `wa.rental`.
+- Dove si ritira il mezzo non lo sappiamo: la pagina non lo dice, lo conferma l'ufficio.
+- `initRentalLink()` in `app.js` è stata tolta: serviva solo al vecchio riquadro.
+- **Una riga per mezzo** (chiesto dal proprietario lo stesso giorno, con un disegno su
+  un tovagliolo: "PANDA 50€"). La prima versione aveva una card intera per mezzo e la
+  pagina era alta otto schermate. Ora ogni mezzo è un `<details>`: chiuso mostra nome e
+  prezzo, toccato si apre con le fasce di giorni, la patente e il bottone. Sulla riga c'è
+  il prezzo **di 1 giorno**, il più alto: aprendo si trovano solo prezzi uguali o più
+  bassi. Su PC le righe stanno in due colonne, e una riga aperta lascia vuoto lo spazio
+  accanto (`align-items: start`, altrimenti la riga vicina si allungava con lei).
+- **Il riquadro in home ha la foto** (24 settembre 2026, scelta del proprietario): un
+  Maggiolino cabrio bianco sulla strada del Teide, `assets/bento-noleggio.jpg`. L'originale
+  era 552×362: il ritaglio quadrato è 362×362 e **non è stato ingrandito** (le altre foto
+  del bento sono 520). Sul telefono basta, su un PC con schermo ad alta densità è un filo
+  morbida: se arriva la stessa foto più grande, si rifà il ritaglio a 520. **La targa è
+  sfocata.** Qui non c'erano programmi per le immagini: ritaglio e sfocatura li ha fatti
+  Chromium con un `<canvas>`, via Playwright.
+
 ---
 
 ## Tolti i 36 hotel che avevano l'ora ma non il nome della fermata (24 settembre 2026)
@@ -14405,4 +14447,4 @@ Chromium a 390 px, `teide-national-park` e `siam-park`:
 - Aquarius (punto 0) → "il tuo hotel" su tutte e due
 - nessun nome doppio fra i 526 rimasti, nessun errore JS
 
-`CACHE_NAME` alzato a `isla-v356`.
+`CACHE_NAME` alzato a `isla-v359`, dopo il merge di `main` che era a `isla-v358`.

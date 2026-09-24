@@ -155,7 +155,7 @@ scrive una volta e vale per tutte le escursioni, gli orari vanno messi per ognun
 | tabella | cosa c'è | quando cambia |
 |---|---|---|
 | `PICKUP_POINTS` | 64 punti: nome e tipo | quasi mai |
-| `HOTELS` | 526 hotel, ognuno col suo punto | quando apre un hotel nuovo |
+| `HOTELS` | 416 hotel, ognuno col suo punto — **nessuno senza il nome della fermata** | quando apre un hotel nuovo |
 | `PICKUP_TIMES[scheda][punto]` | gli orari, escursione per escursione | quando il fornitore li cambia |
 | `PICKUP_IN_HOTEL` | le schede che passano **sotto l'hotel** | quando si aggiunge un fornitore che fa così |
 | `PICKUP_NESSUNO` | le schede senza ritiro: il cliente ci arriva da solo | quando una scheda cambia fornitore |
@@ -194,37 +194,39 @@ di quell'escursione sul sito del fornitore e si incolla `dati-fornitore/raccogli
 nella console del browser. I dati grezzi e la storia di come sono stati raccolti
 stanno in `dati-fornitore/`.
 
-### "Senza punto" sono due cose diverse
+### In `HOTELS` sta solo chi ha una fermata con un nome
 
-Si confondono facilmente, e una sola delle due vuol dire che si sale in hotel.
+**Se non sappiamo dire dove si sale, l'hotel non sta in elenco.** Deciso dal
+proprietario il 24 settembre 2026, in due passaggi: prima i 36 che avevano l'ora ma
+non il nome della fermata, poi i 110 che non avevano né l'una né l'altro. Da 562 a
+**416**. Gli elenchi nominativi stanno in `NOTES.md`.
+
+Si può fare senza perdere nessuno perché **il campo "dove alloggi" è una casella di
+testo, non un menu chiuso**: chi non trova il suo alloggio lo scrive a mano e arriva
+lo stesso nel messaggio, come già facevano quelli con un appartamento privato.
+Quella libertà non si toglie.
+
+Restano quindi due soli casi, e uno solo vuol dire che si sale in hotel:
 
 | il fornitore risponde | vuol dire | la richiesta mostra |
 |---|---|---|
 | `id_punto: 0` | si sale **in hotel**, confermato dal proprietario | "il tuo hotel" |
 | un punto che sta in `PICKUP_POINTS` | la fermata, la sbarra, il posteggio taxi | il nome del posto |
-| un punto che **non** sta in `PICKUP_POINTS` | c'e' un posto, ma non ne conosciamo il nome | **niente** |
 
-Il terzo caso **non e' l'hotel**, ed e' l'errore da non fare: sono 110 hotel su 29
-punti, e undici alberghi diversi condividono il punto `10044`. Un codice in comune fra piu' alberghi e' per forza una
-fermata dove si ritrovano tutti, non la porta di ognuno. Scrivere "il tuo hotel"
-li' lascerebbe il cliente davanti alla reception mentre il pulmino aspetta due
-strade piu' in la'.
+**Un hotel nuovo con un punto che non sta in `PICKUP_POINTS` non si aggiunge**: un
+codice senza nome non è l'hotel, è una fermata di cui non sappiamo l'indirizzo, e
+undici alberghi diversi possono condividerlo. Scrivere "il tuo hotel" lì lascerebbe
+il cliente davanti alla reception mentre il pulmino aspetta due strade più in là.
 
 I nomi mancanti si recuperano copiando la tendina dei punti da un'escursione del
-fornitore che parte da Puerto de la Cruz: nessuna richiesta al loro server.
+fornitore che parte da Puerto de la Cruz: nessuna richiesta al loro server. Fatto
+quello, i 146 tolti si rimettono da `dati-fornitore/hotel.tsv`, che non è stato
+toccato e ha ancora tutte e 567 le righe.
 
-**Decisione del proprietario (24 settembre 2026):** sono stati tolti da `HOTELS` i
-**36 hotel il cui punto aveva un orario ma non un nome** — il caso a metà, dove si
-sapeva a che ora passa il pulmino ma non a quale angolo. L'elenco nominativo sta in
-`NOTES.md` e i dati grezzi in `dati-fornitore/hotel.tsv`, che non è stato toccato:
-se un giorno si recuperano i nomi delle fermate, si rimettono da lì.
-
-Ne restano **110 col punto senza nome e senza nessun orario**. Quelli **non** si
-tolgono per ora: sulle 21 schede col transfer funzionano — mostrano "il tuo hotel" —
-e sparirebbero dall'elenco per niente. La domanda aperta che deciderà se togliere
-anche quelli: **il transfer di Admiral arriva fino a Puerto de la Cruz o copre solo
-il sud?** Se copre solo il sud, quei 107 del nord promettono un ritiro che non
-esiste e vanno tolti subito.
+**Prima di togliere una riga, guarda cosa fa in pagina.** Altamira stava per uscire
+perché nei dati è l'unico hotel con la fermata e senza nessun orario; nel browser
+però scrive "il tuo hotel" come i 29 col punto `0`, perché la sua fermata si chiama
+come lui e non ha un tipo. La tabella e il comportamento non dicono la stessa cosa.
 
 ---
 

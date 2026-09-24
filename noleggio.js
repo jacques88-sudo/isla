@@ -86,25 +86,45 @@ function rentRow(label, price) {
   return row;
 }
 
+// Ogni mezzo e' una riga sola: nome a sinistra, prezzo di partenza a destra.
+// Toccandola si apre e mostra le fasce di giorni, la patente e il bottone.
+// E' un <details>: si apre e si chiude da solo, senza JavaScript, e il
+// lettore di schermo lo annuncia come un elemento che si espande.
+// Il prezzo sulla riga e' quello di 1 giorno, cioe' il piu' alto: il cliente
+// che apre la riga trova prezzi uguali o piu' bassi, mai piu' alti.
 function rentCard(item) {
   const li = document.createElement("li");
   li.className = "rent-card";
+  const details = document.createElement("details");
+  li.appendChild(details);
 
-  const head = document.createElement("div");
+  const summary = document.createElement("summary");
+  const head = document.createElement("span");
   head.className = "rent-card-head";
-  const name = document.createElement("h3");
+  const name = document.createElement("strong");
   name.textContent = item.name;
   head.appendChild(name);
   const sub = [];
   if (item.kind) sub.push(t(item.kind));
   if (item.seats) sub.push(t("rent.seats", { n: item.seats }));
   if (sub.length) {
-    const kind = document.createElement("p");
+    const kind = document.createElement("span");
     kind.className = "rent-kind";
     kind.textContent = sub.join(" · ");
     head.appendChild(kind);
   }
-  li.appendChild(head);
+  const from = document.createElement("span");
+  from.className = "rent-from";
+  const first = item.perDay ? item.perDay[0] : item.totals[0];
+  from.textContent = "€" + eur(first);
+  const fromUnit = document.createElement("small");
+  fromUnit.textContent = t("rent.perDayShort");
+  from.appendChild(fromUnit);
+  summary.append(head, from);
+  details.appendChild(summary);
+
+  const body = document.createElement("div");
+  body.className = "rent-card-body";
 
   const dl = document.createElement("dl");
   dl.className = "rent-prices";
@@ -116,19 +136,19 @@ function rentCard(item) {
       dl.appendChild(rentRow(t(i === 0 ? "rent.day1" : "rent.dayN", { n: i + 1 }), "€" + eur(p))));
     dl.appendChild(rentRow(t("rent.dayExtra", { n: item.totals.length + 1 }), "€" + eur(item.extraDay)));
   }
-  li.appendChild(dl);
+  body.appendChild(dl);
   // "al giorno" o "in tutto": senza, €50 accanto a "3-6 giorni" si legge
   // come il prezzo di tutti i giorni insieme.
   const unit = document.createElement("p");
   unit.className = "rent-unit";
   unit.textContent = t(item.perDay ? "rent.unitDay" : "rent.unitTotal");
-  li.appendChild(unit);
+  body.appendChild(unit);
 
   if (item.license) {
     const lic = document.createElement("p");
     lic.className = "rent-license";
     lic.textContent = t(item.license);
-    li.appendChild(lic);
+    body.appendChild(lic);
   }
 
   const btn = document.createElement("a");
@@ -137,14 +157,17 @@ function rentCard(item) {
   btn.target = "_blank";
   btn.rel = "noopener noreferrer";
   btn.textContent = t("rent.request");
-  li.appendChild(btn);
+  body.appendChild(btn);
 
+  details.appendChild(body);
   return li;
 }
 
 function renderRent() {
   const root = document.querySelector("[data-rent-groups]");
   if (!root) return;
+  // Cambiando lingua la lista si riscrive: le righe aperte restano aperte.
+  const open = [...root.querySelectorAll(".rent-card")].map(li => li.firstChild.open);
   root.textContent = "";
 
   RENT_GROUPS.forEach(group => {
@@ -170,6 +193,7 @@ function renderRent() {
 
     root.appendChild(section);
   });
+  root.querySelectorAll(".rent-card").forEach((li, i) => { if (open[i]) li.firstChild.open = true; });
 
   const other = document.querySelector("[data-rent-other]");
   if (other) {

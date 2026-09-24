@@ -14329,3 +14329,80 @@ Controllato anche a macchina che **nessuna scheda pubblicata resti scoperta**, c
 nessuna stia in due liste, e che nessun id sia inventato.
 
 `CACHE_NAME` alzato a `isla-v355`.
+
+---
+
+## Tolti i 36 hotel che avevano l'ora ma non il nome della fermata (24 settembre 2026)
+
+Deciso dal proprietario. `HOTELS` passa da **562 a 526**.
+
+### Quali, e perche' proprio quelli
+
+Erano il caso a meta': il fornitore ci dice che il pulmino passa dal punto `10047`
+alle 07:50, ma non ci dice dove sia il punto `10047`. Sapevamo **quando** e non
+**dove**.
+
+Dieci punti, 36 hotel:
+
+| punto | orari noti | hotel |
+|---|---|---|
+| 13 | Poema 07:55 | Apartamentos Aloha Garden, Atalaya Court, Santa Monica, Villas Canarias |
+| 41 | Teide 12:15, Icod 09:05, giro isola 08:00, Santa Cruz 08:35 | Chayofa Club, Florida, Regency Country Club |
+| 48 | Poema 07:55 | Apartamentos Buenavista, Apartamentos Dream View, Apartamentos Siam, Montesol, Villas San Eugenio |
+| 53 | Teide 09:00, Icod 08:15, La Gomera 07:30 | Chaparral, Maravilla, West Haven Bay |
+| 10019 | Icod 08:10, La Gomera 07:40 | The Harbour Club |
+| 10038 | Santa Cruz 09:30 | Punta del Rey (las Caletillas) |
+| 10047 | Poema 07:50 | Canarife (blue Sea), Ikarus, Masaru, Melia la Paz, Molino Blanco, Tarajal, Weare la Paz |
+| 10080 | Icod 08:15, Poema 07:50 | Atlantic Mirage Suites & SPA, BLUESEA Puerto Resort, Interpalace (blue Sea), Semiramis, Teide Mar |
+| 10093 | Poema 07:45 | Florida Plaza Be Smart |
+| 10094 | Poema 07:30 | Be Live Experience Orotava, H10 Tenerife Playa, Hotel Silken Saaj Maar Puerto de la Cruz, San Felipe Hotel, Sol Costa Atlantis, Vallemar Hotel |
+
+### Quello che era stato detto prima di togliere
+
+Due cose, perche' restino a verbale:
+
+**Il sito non mostrava mai un'ora senza il posto.** `hotelPunto()` torna `null`
+quando il punto non ha nome, e senza punto non esce nemmeno l'ora. Quei 36 non
+erano un pericolo — erano muti. Il proprietario lo sapeva e ha scelto lo stesso di
+toglierli, per non tenere in tabella un dato che non si puo' usare.
+
+**Su 21 schede funzionavano.** Da quando esiste `PICKUP_IN_HOTEL`, ogni hotel in
+`HOTELS` vede "Punto di raccolta: il tuo hotel" sulle schede col transfer. Chi
+alloggia al Melia la Paz e prenota Siam Park adesso non trova piu' il suo albergo
+nell'elenco e deve scriverlo nelle note.
+
+### Cosa NON e' stato toccato
+
+`dati-fornitore/hotel.tsv` resta con tutte e 567 le righe. E' il dato grezzo: se un
+giorno si copia la tendina dei punti da un'escursione che parte da Puerto de la
+Cruz, questi 36 si rimettono da li' in cinque minuti, con la fermata al posto
+giusto.
+
+Restano in `HOTELS` **110 hotel col punto senza nome e senza nessun orario**: da
+quelle fermate nessuna delle sei escursioni passa. Non sono stati tolti perche'
+sulle 21 schede col transfer funzionano.
+
+### La domanda che decide i prossimi 107
+
+Dei 110 rimasti, **107 sono al nord** (Puerto de la Cruz e dintorni) e 3 nel sud.
+Se il transfer di Admiral **non** arriva fino a Puerto de la Cruz, quei 107 oggi
+promettono "ti veniamo a prendere in hotel" su 21 schede, e sarebbe una promessa
+falsa: andrebbero tolti subito. Se invece ci arriva, vanno tenuti.
+
+**Il proprietario non ha ancora risposto a questa.**
+
+### Provato
+
+Chromium a 390 px, `teide-national-park` e `siam-park`:
+
+- Melia la Paz, Chaparral, Regency Country Club → **non compaiono piu'** fra i
+  suggerimenti, su nessuna delle due
+- "Regency" trova ancora **Regency Club Torviscas**, che e' un altro albergo, col
+  punto 14 e il nome della fermata: giusto che resti
+- Cleopatra → Best Tenerife sul Teide, "il tuo hotel" su Siam Park
+- Botanico (punto senza nome, senza orari) → niente sul Teide, "il tuo hotel" su
+  Siam Park: e' uno dei 110 rimasti
+- Aquarius (punto 0) → "il tuo hotel" su tutte e due
+- nessun nome doppio fra i 526 rimasti, nessun errore JS
+
+`CACHE_NAME` alzato a `isla-v356`.

@@ -1781,6 +1781,79 @@ body.menu-open { overflow: hidden; }
 .pack-tile .pack-price strong { font-weight: 500; }
 .pack-tile .price-before { color: oklch(1 0 0 / .65); }
 .pack-tile .pack-price small { color: oklch(1 0 0 / .75); }
+/* ── Il noleggio (noleggio.html) ─────────────────────────────────────── */
+/* Card di solo testo: i mezzi non hanno foto. Una per mezzo, col nome in
+   alto, la tabella dei prezzi in mezzo e il bottone WhatsApp in fondo. Il
+   bottone sta sempre in fondo alla card (margin-top: auto) anche quando la
+   card vicina e' piu' alta, cosi' i bottoni di una riga restano allineati. */
+.rent-group { padding-top: 1.2rem; scroll-margin-top: 5rem; }
+.rent-group h2 {
+  font-weight: 400;
+  font-size: 1.7rem;
+  margin: 0 0 .3rem;
+}
+.rent-note {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: .88rem;
+}
+.rent-grid {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: grid;
+  gap: .8rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .rent-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .rent-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem; } }
+.rent-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.1rem 1.1rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+.rent-card h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.3rem;
+  line-height: 1.15;
+  margin: 0;
+}
+.rent-kind {
+  margin: .2rem 0 0;
+  color: var(--muted);
+  font-size: .82rem;
+}
+.rent-prices { margin: .8rem 0 0; }
+.rent-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .35rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: .9rem;
+}
+.rent-row:last-child { border-bottom: 0; }
+.rent-row dt { color: var(--muted); }
+.rent-row dd { margin: 0; font-weight: 500; }
+.rent-unit {
+  margin: .1rem 0 0;
+  color: var(--muted);
+  font-size: .75rem;
+  text-align: right;
+}
+.rent-license {
+  margin: .7rem 0 0;
+  font-size: .82rem;
+}
+.rent-license::before { content: "◆ "; color: var(--gold); }
+.rent-card > :nth-last-child(2) { margin-bottom: 1rem; }
+.rent-card > .rent-cta { margin-top: auto; }
+.rent-page .packs-foot .rent-note { text-align: center; }
+
 /* ── Gli itinerari a giorni ───────────────────────────────────────────── */
 /* La riga delle durate sopra la vetrina. Sono le stesse pillole dei filtri per
    categoria dell'elenco (.chip-row/.chip): e' lo stesso gesto — scegli una

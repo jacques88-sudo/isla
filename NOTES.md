@@ -14364,4 +14364,11 @@ Il proprietario ha chiesto di prendere **solo le informazioni** e fare la sezion
   il prezzo **di 1 giorno**, il più alto: aprendo si trovano solo prezzi uguali o più
   bassi. Su PC le righe stanno in due colonne, e una riga aperta lascia vuoto lo spazio
   accanto (`align-items: start`, altrimenti la riga vicina si allungava con lei).
+- **Il riquadro in home ha la foto** (24 settembre 2026, scelta del proprietario): un
+  Maggiolino cabrio bianco sulla strada del Teide, `assets/bento-noleggio.jpg`. L'originale
+  era 552×362: il ritaglio quadrato è 362×362 e **non è stato ingrandito** (le altre foto
+  del bento sono 520). Sul telefono basta, su un PC con schermo ad alta densità è un filo
+  morbida: se arriva la stessa foto più grande, si rifà il ritaglio a 520. **La targa è
+  sfocata.** Qui non c'erano programmi per le immagini: ritaglio e sfocatura li ha fatti
+  Chromium con un `<canvas>`, via Playwright.
 

@@ -719,7 +719,19 @@ const PICKUP_NESSUNO = [
   // 13 settembre 2026). Vale per tutte e due le schede: i tre giri privati
   // partono dallo stesso posto e hanno la stessa riga fra le cose NON incluse.
   "tuk-tuk",
-  "tuk-tuk-privato"
+  "tuk-tuk-privato",
+  // La Palma: **non c'e' il ritiro in hotel**, ed e' scritto nelle note della
+  // scheda dal giorno in cui e' stata riempita — "il ritrovo e' alle 07:45 al
+  // porto di Los Cristianos, davanti all'ufficio Fred Olsen". `included` infatti
+  // non ha `transfer`, ha solo `ferry`.
+  //
+  // Finche' non e' stata messa qui, la finestra della richiesta pescava lo
+  // stesso dalle tabelle di Island Excursions: a chi sta al Cleopatra diceva
+  // "Punto di raccolta: Best Tenerife, alla fermata dell'autobus", cioe' lo
+  // mandava ad aspettare un pulmino che non passa, mentre il traghetto partiva
+  // da Los Cristianos. Il `times: ["07:45"]` della scheda e' il ritrovo al
+  // porto, non un pick-up, e resta dov'e'.
+  "la-palma"
 ];
 
 // Gli orari del pulmino, escursione per escursione.

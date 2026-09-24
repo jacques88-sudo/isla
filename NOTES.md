@@ -14182,3 +14182,80 @@ Chromium a 390 px, `tour.html?id=santa-cruz-taganana`, col flusso della lista:
 - nessun errore JS
 
 `CACHE_NAME` alzato a `isla-v353`, dopo il merge di `main` che era gia a `isla-v352`.
+
+---
+
+## La Palma non ha il pick-up, e il sito lo mandava alla fermata sbagliata (24 settembre 2026)
+
+Il proprietario ha aperto la pagina di La Palma sul fornitore per raccogliere gli
+orari del pulmino, come per le altre sei. **Non vanno raccolti: su questa
+escursione il pulmino non c'e'.**
+
+### Il difetto
+
+Nelle note della scheda, scritte l'8 settembre quando e' stata riempita coi dati
+ufficiali, c'era gia' tutto:
+
+> "Su questa partenza non c'e' il ritiro in hotel: il ritrovo e' alle 07:45 al
+> porto di Los Cristianos, davanti all'ufficio Fred Olsen."
+
+E `included` ha `ferry`, non `transfer`.
+
+Ma `la-palma` non stava in `PICKUP_NESSUNO`, quindi la finestra della richiesta
+pescava lo stesso dalle tabelle di Island Excursions. Misurato nel browser prima
+della correzione:
+
+| hotel | quello che il sito diceva | quello che e' vero |
+|---|---|---|
+| Cleopatra | "Punto di raccolta: **Best Tenerife**, alla fermata dell'autobus" | ritrovo al porto di Los Cristianos |
+| Perla Gris | "Punto di raccolta: **Callao Salvaje** (Restaurante Nebula)" | ritrovo al porto di Los Cristianos |
+
+Un cliente che paga 145 € finiva a una fermata dell'autobus ad aspettare un
+pulmino che non esiste, mentre il traghetto partiva dall'altra parte. La scheda
+lo diceva anche giusto, tre righe piu' sotto, nelle note — ma la riga sbagliata
+era quella dentro la richiesta, cioe' l'ultima che si legge prima di premere
+invia.
+
+### La correzione
+
+`"la-palma"` dentro `PICKUP_NESSUNO`. Il campo "dove alloggi" sparisce del tutto
+dalla richiesta: su queste schede la domanda non ha senso, perche' il posto e'
+uno solo e uguale per tutti. Il `times: ["07:45"]` resta: quello e' il ritrovo al
+porto, ed e' giusto che il menu mostri quell'ora sola.
+
+### Le altre 34 da controllare
+
+Cercando come La Palma fosse sfuggita, ne sono uscite altre. **35 schede
+pubblicate** (La Palma compresa) mostrano un punto di raccolta senza avere ne'
+`transfer` fra le cose incluse, ne' un campo `transfer` per il trasferimento a
+pagamento:
+
+Freebird Catamaran, Whale & Dolphin 3h, Flipper One, Pesca d'altura, Luxury
+Catamaran, Small Group Catamaran, Utopia Boat Party, Opera 60, Skyline Cruiser,
+Ragnarok, Bici, Teide by Night, Buggy Tour, Helicopter Tours, Karting, Passeggiata
+a cavallo, Fiat 500 Water Car, Banana Boat, Parascending, Flyboard, Lezioni di
+surf, Siam Night, Monkey Park, MHT Drag Show, Flamenco Show, History, Cantine
+vinicole, Trenino turistico, Masca + Teide VIP Cabrio Bus, e i sei charter.
+
+**Non sono state toccate.** L'assenza del campo non prova che il pick-up non ci
+sia: puo' voler dire che la scheda e' incompleta. Molte partono da un porto
+(Puerto Colon, Los Cristianos) e quasi certamente non hanno ritiro, ma "quasi
+certamente" non basta per una riga che manda una persona in un posto.
+
+Servono due risposte dal proprietario, scheda per scheda: **il pulmino passa a
+prenderti?** e, se no, **dove ci si trova?**. Fino ad allora restano come sono:
+il difetto e' vecchio e non l'ha introdotto questa modifica.
+
+### Provato
+
+Chromium a 390 px, `tour.html?id=la-palma`:
+
+- il campo "dove alloggi" **non c'e' piu'**
+- il menu "A che ora" mostra la voce sola `07:45`
+- la nota sul ritrovo al porto e' al suo posto nella scheda
+- il messaggio WhatsApp non contiene piu' nessun punto di raccolta
+- Santa Cruz + Anaga, controllata subito dopo: Cleopatra → 08:15, Best Tenerife.
+  Le schede col pick-up vero non sono state toccate.
+- nessun errore JS
+
+`CACHE_NAME` alzato a `isla-v354`.

@@ -1085,4 +1085,87 @@ const PICKUP_TIMES = {
     10064: "08:50",
     10155: "08:45",
   },
+  // Santa Cruz + Anaga + La Laguna. 62 punti serviti, 383 hotel con punto e ora,
+  // 4 hotel con l'ora ma il punto ancora senza nome (41 e 10038).
+  //
+  // **Le 09:30 del punto 10038 non sono un errore.** Tutti gli altri stanno fra
+  // le 07:15 e le 08:35; quello e' Punta del Rey, a Las Caletillas, sulla costa
+  // est. Il pulmino finisce di raccogliere il sud, imbocca l'autostrada verso
+  // Santa Cruz e passa di li' **strada facendo**, un'ora dopo tutti gli altri.
+  // E' lo stesso caso delle 12:15 del punto 41 sul Teide: un orario lontano dagli
+  // altri che ha una spiegazione geografica, non un refuso da correggere.
+  //
+  // Il giro **non tocca Puerto de la Cruz**, nemmeno andando a nord-est: i punti
+  // 10043-10047, 10080 e 10093-10094 restano vuoti. Poema del Mar resta l'unica
+  // scheda che raccoglie da li'.
+  //
+  // Le 08:04 del punto 65 sono le stesse di La Gomera, e su Teide+Icod quel punto
+  // fa 08:34: il fornitore per Villa Adeje Beach usa sempre minuti in :04 o :34.
+  // Tre schede di fila non sono un refuso, quindi non si arrotonda.
+  //
+  // Raccolti il 24 settembre 2026 con dati-fornitore/raccogli-orari.js.
+  "santa-cruz-taganana": {
+    1: "07:15",
+    2: "07:20",
+    3: "07:20",
+    4: "07:20",
+    6: "07:40",
+    9: "07:40",
+    10: "07:40",
+    11: "07:40",
+    14: "07:50",
+    16: "07:50",
+    17: "07:55",
+    19: "07:55",
+    20: "08:00",
+    22: "08:00",
+    23: "08:05",
+    24: "08:05",
+    25: "08:05",
+    26: "08:10",
+    27: "08:10",
+    28: "08:15",
+    29: "08:15",
+    31: "08:20",
+    33: "08:20",
+    34: "08:20",
+    36: "08:25",
+    37: "08:25",
+    39: "08:25",
+    40: "08:25",
+    41: "08:35",
+    42: "07:50",
+    43: "07:50",
+    44: "07:50",
+    45: "07:50",
+    46: "07:50",
+    51: "08:20",
+    57: "07:15",
+    65: "08:04",
+    68: "07:20",
+    10009: "07:50",
+    10010: "07:40",
+    10011: "07:50",
+    10012: "07:40",
+    10014: "07:50",
+    10015: "08:15",
+    10016: "08:15",
+    10017: "07:40",
+    10018: "07:55",
+    10020: "07:40",
+    10023: "08:20",
+    10024: "07:40",
+    10025: "07:40",
+    10029: "07:40",
+    10030: "07:40",
+    10033: "08:00",
+    10035: "07:50",
+    10036: "07:50",
+    10037: "07:40",
+    10038: "09:30",
+    10063: "07:40",
+    10064: "07:20",
+    10103: "08:00",
+    10155: "07:40",
+  },
 };

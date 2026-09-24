@@ -14129,3 +14129,56 @@ Chromium a 390 px, nelle tre lingue:
 - nessun errore JS.
 
 `CACHE_NAME` alzato a `isla-v352`.
+
+---
+
+## Santa Cruz + Anaga: le 09:30 di Las Caletillas (24 settembre 2026)
+
+Sesta scheda con gli orari del pick-up. 62 punti serviti su 104, **383 hotel** con
+punto e ora, 4 con l'ora ma il punto ancora senza nome (41 e 10038).
+
+### Un orario un'ora fuori dagli altri, e non e' un errore
+
+Tutti i punti stanno fra le **07:15** (Callao Salvaje) e le **08:35**. Uno no: il
+punto `10038` fa **09:30**.
+
+Quello e' **Punta del Rey, a Las Caletillas**, sulla costa est. Il pulmino finisce
+di raccogliere il sud, imbocca l'autostrada verso Santa Cruz e passa di li'
+**strada facendo**, un'ora dopo tutti gli altri.
+
+E' lo stesso caso delle **12:15 del punto 41** sul Teide di mezza giornata: un
+orario lontanissimo dagli altri che ha una spiegazione geografica, non un refuso.
+La regola che se ne ricava: prima di correggere un orario che sembra sbagliato,
+si guarda **dove sta quel punto** — se e' sulla strada verso la meta, l'ora strana
+e' quella giusta.
+
+### Il giro non tocca Puerto de la Cruz
+
+Me lo aspettavo, e mi sbagliavo: Santa Cruz e Anaga sono a nord-est, quindi
+sembrava probabile che il pulmino passasse anche da Puerto de la Cruz. Invece i
+punti `10043`-`10047`, `10080` e `10093`-`10094` restano vuoti.
+
+**Poema del Mar resta l'unica scheda che raccoglie dal nord.** I 146 hotel di
+Puerto de la Cruz senza nome del punto non si sbloccano da soli con le schede
+nuove: o si copia la tendina dei punti, o restano cosi'.
+
+### Le 08:04 del punto 65, per la terza volta
+
+Villa Adeje Beach ha fatto `08:04` su La Gomera, `08:34` su Teide+Icod e ora
+`08:04` di nuovo. Tre schede di fila con minuti in `:04` o `:34` non sono un
+refuso: e' come il fornitore scrive quel punto. Confermata la scelta di non
+arrotondare.
+
+### Provato
+
+Chromium a 390 px, `tour.html?id=santa-cruz-taganana`, col flusso della lista:
+
+- menu "A che ora" tolto, al suo posto l'ora dell'hotel
+- Perla Gris → **07:15**, Callao Salvaje (Restaurante Nebula)
+- Cleopatra → **08:15**, Best Tenerife
+- Punta del Rey → niente: ha l'ora (09:30) ma il punto non ha nome
+- calendario che accende solo lunedi' e giovedi'
+- messaggio WhatsApp completo
+- nessun errore JS
+
+`CACHE_NAME` alzato a `isla-v353`, dopo il merge di `main` che era gia a `isla-v352`.

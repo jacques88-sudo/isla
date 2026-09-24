@@ -13879,6 +13879,257 @@ Chromium a 390 px, `tour.html?id=island-tour-completo`, col flusso della lista:
 
 `CACHE_NAME` alzato a `isla-v349`, dopo il merge di `main` che era gia a `isla-v348`.
 
+## Vuelta a la Isla: il segnaposto del giro dell'isola si riempie (16 settembre 2026, v350)
+
+Ieri `island-tour-completo` aveva preso gli orari del pick-up ma restava un
+segnaposto: niente prezzo, niente giorni, niente programma. Oggi l'ufficio ha
+mandato la pagina del fornitore — Nere Izerdie / Island Excursions, Costa Adeje,
+che la chiama **"VUELTA A LA ISLA"** — e la scheda si riempie.
+
+### Non era una scheda nuova
+
+Prima cosa fatta, come dice la regola dopo il Kalima Kat: cercare il doppione.
+Non c'era da creare niente — il segnaposto c'era gia' dal 14 settembre, con lo
+stesso id, la stessa foto e la stessa tabella in `PICKUP_TIMES`. Le due schede
+vicine dello stesso fornitore sono un giro diverso:
+
+| scheda | prezzo | dove passa |
+|---|---|---|
+| `icod-garachico-orotava` | 58 € | Teide, Vilaflor, Icod, Garachico, **Masca** |
+| `santa-cruz-taganana` | 50 € | Santa Cruz, **Anaga**, La Laguna |
+| `island-tour-completo` | 50 € | **Los Gigantes**, Garachico, Icod, La Orotava, **Puerto de la Cruz**, **Candelaria** |
+
+Il 50 € in comune con Santa Cruz non e' un segnale di doppione: e' il listino di
+quel fornitore per una giornata in pullman, e infatti anche i bambini pagano gli
+stessi 31,50 €. A dividerle e' il percorso, che non ha una tappa in comune.
+
+### Quello che ha detto il fornitore
+
+- **8 ore circa** ("Duración de la excursión: 8 horas aprox").
+- **50 €** adulti, **31,50 €** bambini **2-11**. Il "Por: 50€" del riquadro della
+  prenotazione e' il conto di un adulto con le quantita' di partenza, non uno
+  sconto barrato: sul sito va il prezzo pieno e il prezzo pieno e' quello.
+- **"Bebés (NO PONER)"**: la riga dei neonati non si mette. Niente `ages.infant`,
+  niente `priceInfant` — assente vuol dire "non lo sappiamo", non "gratis".
+  Terza scheda di fila di questo fornitore con la stessa dicitura.
+- **"Le recogeremos en el bus en su parada"**: `transfer`.
+- **"la comida no está incluida"**, e la sosta per mangiare e' a Puerto de la Cruz:
+  e' una nota, non un'icona mancante.
+
+### Quello che non si e' copiato
+
+La politica di cancellazione del fornitore, il numero di telefono, il "Pago
+seguro", le tre escursioni consigliate in fondo alla pagina e il riquadro del
+cupone. Le tappe sono state **riscritte da zero** nelle tre lingue: la
+descrizione vecchia ("i punti simbolo di Tenerife in un giorno solo") era quella
+che si scrive quando non si sa ancora dove passa il pullman.
+
+### Le due decisioni prese qui
+
+**La guida entra.** Il fornitore scrive solo il ritiro, come su Icod. Ma il
+proprietario l'8 settembre 2026 ha detto che la guida c'e' su **tutte** queste
+escursioni, e quella frase vale anche per questa: `included: ["transfer", "guide"]`.
+
+**La zona diventa "Tenerife Sud".** Era "Tutta l'isola", e quel campo in pagina si
+legge **"Punto di partenza"** — stessa trappola gia' tolta a Icod ("Tenerife nord")
+e a Santa Cruz ("nord-est") l'8 settembre. La partenza e' una sola, il sud. Dove si
+va lo dicono il titolo, la descrizione e le sette tappe.
+
+### Le due cose rimaste in sospeso
+
+**I giorni.** Il fornitore non scrive in che giorni si parte, quindi `days` resta
+assente — che sul sito vuol dire "tutti i giorni". E' l'unico stato disponibile
+quando non si sa, ma **e' probabilmente sbagliato**: le altre due schede dello
+stesso fornitore hanno giorni fissi (Icod sei su sette, Santa Cruz lunedi' e
+giovedi', e in tutti e due i casi il dato e' arrivato dall'ufficio, non dalla
+pagina). Da chiedere.
+
+**Le lingue.** Nella finestra della prenotazione del fornitore la tendina "Idioma"
+ha **il solo spagnolo**. Un `languages: ["Español"]` direbbe al cliente che il giro
+si fa in spagnolo e basta, e sarebbe una cosa grossa da dire sulla base di una
+tendina di un rivenditore: Santa Cruz ne ha sei e Icod sette, tutte e due mandate
+dall'ufficio. Campo lasciato fuori finche' non arriva la lista vera.
+
+Il titolo **resta "Tour completo dell'isola"**, quello di Admiral. Stessa regola di
+`la-palma`, che il fornitore chiama "La Palma Tour Volcán": il nome sul sito lo
+cambia l'ufficio, non la pagina del fornitore.
+
+### Provato
+
+`node controlla.js` → 0 errori (i 3 avvisi sono quelli di prima, su altre schede).
+Chromium a 390 px, `tour.html?id=island-tour-completo`, col flusso della lista:
+
+- prezzi in vetrina: **Adulti (12+) €50**, **Bambini (2-11) €31,50**; nessuna riga
+  neonati, come deve essere
+- durata "8 ore circa", punto di partenza "Tenerife Sud"
+- le sette tappe in ordine, "Cosa e' incluso" con Transfer e Guida
+- menu "A che ora" ancora tolto, al suo posto l'ora dell'hotel: Perla Gris →
+  **08:50**, Callao Salvaje (Restaurante Nebula)
+- totale a mano: 2 adulti + 1 bambino → **€131,50** (2 × 50 + 31,50) ✓
+- nessun errore JS
+
+`CACHE_NAME` alzato a `isla-v350`.
+
+## Il giro dell'isola: martedi' e basta, e quattro lingue (16 settembre 2026, v351)
+
+Le due cose lasciate in sospeso stamattina le ha chiuse il proprietario nel giro
+di un'ora. Tutte e due erano campi **assenti**, e in tutti e due i casi
+"assente" stava dicendo qualcosa di sbagliato.
+
+### `days: ["mar"]`
+
+Il fornitore in pagina non scrive i giorni, quindi il campo era rimasto fuori —
+che sul sito vuol dire **"tutti i giorni"**. Il proprietario: si fa **solo il
+martedi'**. Una partenza a settimana contro le sette che il sito stava
+promettendo: e' lo scarto piu' grosso che questo campo possa avere, e nessun
+controllo a macchina poteva prenderlo.
+
+E' la conferma pratica di una cosa gia' scritta qui sopra ma mai cosi' netta: su
+questo fornitore i giorni **non stanno mai nella pagina**. Sono arrivati
+dall'ufficio tutte e tre le volte — Icod sei su sette (8 settembre), Santa Cruz
+lunedi' e giovedi' (8 settembre), il giro dell'isola il martedi' (oggi). La
+prossima scheda di Nere Izerdie parte gia' con la domanda da fare.
+
+**`mar` e' martedi', `mer` e' mercoledi'.** Scritto anche nel commento accanto al
+campo, perche' e' l'errore che costa un cliente alla fermata il giorno sbagliato.
+
+### `languages: ["Italiano", "Español", "English", "Deutsch"]`
+
+Il campo era rimasto fuori perche' la tendina "Idioma" della finestra di
+prenotazione del fornitore mostrava **il solo spagnolo**, e scriverlo avrebbe
+detto al cliente che il giro si fa in spagnolo e basta. Erano quattro.
+
+La tendina di un rivenditore non e' la lista delle lingue: e' quello che quel
+rivenditore vende, o il campo che nessuno ha finito di compilare. Averla lasciata
+vuota invece di copiarla ha evitato di scrivere una limitazione che non esiste —
+tre lingue su quattro sarebbero sparite, fra cui l'italiano.
+
+Non e' `LINGUE_TOUR` (cinque): qui manca il francese, quindi la lista e' scritta
+per esteso. Come sempre **nella lingua stessa**, "Deutsch" e non "Tedesco".
+L'ordine e' quello dell'ufficio, che ha cominciato dall'italiano — le altre due
+schede di questo fornitore cominciano dallo spagnolo, e va bene cosi': l'ordine
+lo decide chi manda la lista, non la coerenza fra schede.
+
+### Provato
+
+`node controlla.js` → 0 errori (i 3 avvisi sono quelli di sempre, su altre schede).
+Chromium a 390 px, `tour.html?id=island-tour-completo`:
+
+- in vetrina compaiono le due righe nuove: **Giorni: Mar** e **Lingue: Italiano ·
+  Español · English · Deutsch**
+- il calendario scritto a mano si apre su settembre e lascia cliccabili **due sole
+  caselle, il 22 e il 29** — verificati a parte: tutti e due martedi'. Il 15 era
+  martedi' pure lui ed e' spento perche' e' passato; il 16, oggi, e' mercoledi' e
+  cade dentro le 24 ore di preavviso.
+- scelto il 22 → `#reqDate` = `2026-09-22`, etichetta "22 September 2026"
+- il menu della lingua compare ora nella finestra della richiesta, con "Nessuna
+  preferenza" davanti alle quattro
+- nessun errore JS
+
+`CACHE_NAME` alzato a `isla-v351`.
+
+## In vetrina il prezzo parte dalla combinazione più bassa (16 settembre 2026, v352)
+
+Richiesta del proprietario, in una riga: *«in tutti i pack, sia quelli in famiglia che
+giorni separati, metti il prezzo a partire dalla combinazione più bassa possibile a
+persona — tipo nel pack adrenalina sarebbe dove condividono il buggy, condividono la moto
+d'acqua, ognuno va sul parascending»*.
+
+**È l'opposto esatto di quello che c'era**, ed è una scelta sua, non una conseguenza. Fino
+a stamattina il numero dei pacchetti misti era quello di **una persona da sola** — il
+massimo a testa, l'unico che al cliente può solo scendere (vedi il 14 settembre, «Il numero
+dei quattro pacchetti misti è quello di una persona da sola»). Adesso è il minimo. Il
+rischio è quello scritto in `CLAUDE.md`, ed è vero: un minimo **sale** in faccia a chi è in
+due. Per questo il numero non si scrive mai da solo.
+
+### Come si calcola
+
+Un mezzo non ha un prezzo a persona finché non si dice **in quanti ci si sale**. Il più
+basso è sempre il mezzo pieno, e quello è il minimo vero — sotto non si può andare:
+
+| voce di Adrenalina | il mezzo | diviso | a persona |
+|---|---|---|---|
+| buggy, "Completo 4 ore" | 6 posti, €330 | : 6 | **€55** |
+| moto d'acqua, 1 ora | doppia, €120 | : 2 | **€60** |
+| parascending | — | — | **€55** |
+
+€170 pieni, tutto scontabile, −10% → **da €153 a persona**. Prima erano €301,50 (buggy da
+2 posti e moto singola, tutti e due su una testa sola).
+
+Gli altri tre misti: Tenerife Trio versione buggy **da €143** (era 255,50), Terra mare e
+stelle **da €170,10** (era 282,60), Mare a tutto gas **da €117** (era 153).
+
+Lo fa `pacchettoMezzoAPersona()`, che legge lo stesso listino dei contatori della finestra
+(`pacchettoVoceMezzi()`, tirato fuori da `pacchettoMezziDaContare()` apposta perché adesso
+lo leggono in due) e tiene il tipo col rapporto prezzo/posti più basso. Un tipo senza posti
+o senza prezzo resta fuori dal confronto; se non ne resta nessuno **il pacchetto non mostra
+nessun numero**, invece di sommare il prezzo di un mezzo a dei prezzi a persona e dare un
+totale che non vuol dire niente.
+
+### Il "da" non è grafica
+
+`pacchettoPrezzoHTML()` scrive **"da €153"** dove dentro c'è un mezzo e **"€132,50"** dove
+non ce n'è: nei pacchetti di famiglia e negli itinerari a giorni i mezzi non ci sono per
+regola, quindi lì il numero è esatto come prima e un "da" lo farebbe sembrare un minimo che
+può crescere. È la chiave `tour.from` delle schede, non una seconda scritta da tenere
+allineata in tre lingue.
+
+`pack.unitNote`, la riga sotto il prezzo, diceva *«questo è il prezzo di una persona da
+sola, e in due o in tre a testa si paga meno»*. Adesso dice il contrario, che è la cosa che
+il cliente deve sapere prima di chiedere: *«questo è il prezzo a persona quando il mezzo si
+divide fra tutti i posti che ha. Se siete di meno, a testa si paga di più — il totale vero
+lo fai nella richiesta, scegliendo quanti mezzi»*.
+
+Ogni riga del pacchetto adesso porta **due numeri invece di uno**: `da €55 a persona · 6
+posti €330/buggy`. Il primo è quello che entra nel conto in cima, il secondo è da dove
+esce. Senza il secondo il cliente legge un prezzo a testa su una cosa che a testa non si
+paga, e nella finestra si trova davanti i contatori dei mezzi senza sapere perché.
+
+### Quello che non è cambiato
+
+- **Il totale della richiesta.** Quello non è mai stato un "da": si fa sui mezzi che il
+  cliente conta. Adrenalina in due, un buggy da 2 posti e una moto doppia, fa **€369** —
+  lo stesso numero di ieri. Le due finestre continuano a dire due cose diverse apposta;
+  adesso la vetrina sta sotto e non sopra.
+- **Famiglia e itinerari a giorni.** Dentro non hanno mezzi per regola, quindi la
+  combinazione più bassa è l'unica che c'è: gli undici numeri sono rimasti uguali al
+  centesimo, e restano senza "da".
+- **Lo sconto**, che continua a non toccare parchi, spettacoli e `fixedPrice`.
+
+### `controlla.js`
+
+Un avviso nuovo: se ogni voce ha il suo prezzo ma il conto non viene, vuol dire che di un
+mezzo manca la metà che serve a dividerlo (i posti o il listino) e il pacchetto uscirebbe
+con "Prezzo su richiesta" senza che nessuno se ne accorga. Provato a mano togliendo `seats`
+dal buggy: il conto diventa `null` e l'avviso suona. L'errore che c'era già — voce a mezzo
+coi mezzi non contabili — copre il caso più comune, ma parla solo di quello.
+
+### Una riga di CSS
+
+Sul telefono i riquadri piccoli sono larghi 168 px, e "da €170,10" riempie la riga: "a
+persona" scende sotto, e va bene, ma si spezzava fra "a" e "persona". Una "a" da sola in
+fondo alla riga si legge come un errore di stampa, quindi `white-space: nowrap` su quel
+`<small>`. Nient'altro si è mosso: il riquadro resta alto uguale.
+
+### Provato
+
+`node controlla.js` → 0 errori (i 3 avvisi sono quelli di sempre, su altre schede).
+Chromium a 390 px, nelle tre lingue:
+
+- vetrina: quattro riquadri con **da €143 · da €170,10 · da €153 · da €117**, gli altri
+  otto col numero secco. Nessun testo esce dal riquadro, "Terra, mare e stelle" compreso,
+  che è quello col numero più lungo.
+- `pacchetto.html?id=adrenalina`: `€170` barrato, **da €153 A PERSONA**, la nota nuova, e
+  le righe `Completo, 4 ore · da €55 a persona · 6 posti €330/buggy` e `1 ora · da €60 a
+  persona · Doppia €120 a moto d'acqua`. In inglese e in spagnolo escono `from €55 per
+  person` e `desde €55 por persona`.
+- finestra della richiesta, 2 adulti + 1 buggy da 2 posti + 1 moto doppia → **Totale
+  indicativo €369**, `Risparmi €41`, dettaglio `Buggy 1 × 2 posti €180 · Moto d'acqua 1 ×
+  Doppia €120 · 2 adulti × €55`. Invariato.
+- nessun errore JS.
+
+`CACHE_NAME` alzato a `isla-v352`.
+
 ---
 
 ## Santa Cruz + Anaga: le 09:30 di Las Caletillas (24 settembre 2026)
@@ -13929,3 +14180,5 @@ Chromium a 390 px, `tour.html?id=santa-cruz-taganana`, col flusso della lista:
 - calendario che accende solo lunedi' e giovedi'
 - messaggio WhatsApp completo
 - nessun errore JS
+
+`CACHE_NAME` alzato a `isla-v353`, dopo il merge di `main` che era gia a `isla-v352`.

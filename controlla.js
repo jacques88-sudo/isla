@@ -633,10 +633,21 @@ function controllaPacchetti() {
       }
     }
 
+    const conto = pacchettoConto(pack);
+
+    // Il numero in vetrina non viene, ma tutte le voci un prezzo ce l'hanno:
+    // allora manca l'altra meta' di un mezzo, cioe' i posti o il listino per
+    // dividerlo a testa (pacchettoMezzoAPersona). L'avviso di sopra, che
+    // guarda voce per voce, qui non suona: quello dice "non c'e' un prezzo",
+    // e un prezzo c'e' — e' del mezzo, e da solo non si somma agli altri.
+    if (!conto && pack.voci.every(voce => pacchettoVocePrezzo(voce))) {
+      avviso(dove, "ogni voce ha il suo prezzo ma il numero in vetrina non si " +
+        "fa: di un mezzo non si riesce a ricavare il prezzo a persona, quindi " +
+        "il pacchetto esce con \"Prezzo su richiesta\".");
+    }
     // Tutto a prezzo fisso: il pacchetto esiste ma non fa risparmiare niente.
     // Non e' un errore (puo' essere una proposta, non un'offerta) ma va visto:
     // e' successo a "Tre sere a Tenerife", che era fatto di tre soli show.
-    const conto = pacchettoConto(pack);
     if (conto && conto.risparmio === 0) {
       avviso(dove, "non fa risparmiare niente: e' fatto solo di cose a prezzo " +
         "fisso — le categorie " + PACCHETTI_CATEGORIE_SENZA_SCONTO.join(", ") +

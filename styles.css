@@ -1713,6 +1713,11 @@ body.menu-open { overflow: hidden; }
    dove il cliente guarda quanto risparmia. Il bollino lo dice comunque. */
 @media (max-width: 639px) {
   .pack-tile:not(:first-child) .price-before { display: none; }
+  /* Col "da" davanti il numero piu' lungo ("da €170,10") riempie la riga e
+     "a persona" scende sotto: bene, ma intero. Senza questa riga si spezzava
+     fra "a" e "persona", e una "a" da sola in fondo alla riga si legge come
+     un errore di stampa. */
+  .pack-tile .pack-price small { white-space: nowrap; }
   /* L'ultimo riquadro rimasto spaiato sulla riga da due si prende tutta la
      larghezza invece di lasciare un buco, come il riquadro del noleggio in
      home. Il primo e' gia' largo, quindi "spaiato" vuol dire che i riquadri

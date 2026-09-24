@@ -5002,24 +5002,112 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    // Non e' una scheda nuova: il segnaposto c'era gia' dal 14 settembre, e da
+    // ieri ha anche gli orari del pick-up in `PICKUP_TIMES`. Qui si riempie —
+    // prezzi, durata, tappe — con la pagina del fornitore mandata
+    // dall'ufficio il 16 settembre 2026 (Nere Izerdie / Island Excursions,
+    // Costa Adeje), che la chiama "VUELTA A LA ISLA".
     id: "island-tour-completo",
+    // Il titolo resta quello scritto da Admiral, come su `la-palma`: il
+    // fornitore la chiama "Vuelta a la Isla", ma il nome sul sito lo cambia
+    // solo l'ufficio.
     title: {
       it: "Tour completo dell'isola",
       en: "Full island tour",
       es: "Tour completo de la isla"
     },
     category: "tour-isola",
-    zone: { it: "Tutta l'isola", en: "All over the island", es: "Toda la isla" },
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
-    priceFrom: null,
+    // Era "Tutta l'isola", e diceva il falso: quel campo in pagina si legge
+    // "Punto di partenza". Vale la stessa decisione del proprietario
+    // dell'8 settembre 2026 presa su `icod-garachico-orotava` e su
+    // `santa-cruz-taganana` — la partenza e' **una sola**, il sud. Dove si va
+    // lo dicono il titolo, la descrizione e le tappe.
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    // "Duración de la excursión: 8 horas aprox" sulla pagina del fornitore.
+    // Era "Giornata intera": vero ma vago, come sul giro di Icod.
+    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
+    // Niente `times`: l'ora non e' una sola, la decide il punto di raccolta
+    // del cliente. Sta in PICKUP_TIMES dentro hotel.js (raccolti il 16
+    // settembre 2026), e la finestra della richiesta al posto del menu "A che
+    // ora" mostra l'ora del suo hotel.
+    //
+    // **Solo il martedi'**, detto dal proprietario il 16 settembre 2026. Il
+    // fornitore in pagina non scrive i giorni, e il campo era rimasto assente —
+    // cioe' "tutti i giorni", che era la cosa sbagliata da dire per un giro che
+    // parte una volta a settimana. E' la scheda con meno partenze delle tre di
+    // questo fornitore (Icod sei su sette, Santa Cruz lunedi' e giovedi').
+    // **`mar` e' martedi', `mer` e' mercoledi'.**
+    days: ["mar"],
+    //
+    // Listino del fornitore: 50 € adulti, 31,50 € bambini. E' il prezzo
+    // pieno — il "Por: 50€" del riquadro della prenotazione e' il conto di un
+    // adulto, non uno sconto.
+    priceFrom: 50,
     fixedPrice: true,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 50,
+    priceChild: 31.5,
+    // Il fornitore da' solo "Niños (2-11)", quindi gli adulti sono 12+. La
+    // riga dei bebe' dice "NO PONER", cioe' non si mette: niente `ages.infant`
+    // e niente `priceInfant`. Campo assente = "non lo sappiamo" — non
+    // "gratis". Stessa situazione di `icod-garachico-orotava` e
+    // `santa-cruz-taganana`.
+    ages: { adult: "12+", child: "2-11" },
+    // Quattro lingue, mandate dal proprietario il 16 settembre 2026. La
+    // tendina "Idioma" del fornitore mostrava il solo spagnolo e il campo era
+    // rimasto fuori apposta: una tendina di un rivenditore non e' la lista
+    // vera, e infatti sono quattro. Non e' `LINGUE_TOUR`, che ne ha cinque —
+    // qui manca il francese, quindi la lista e' scritta per esteso. Come
+    // sempre nella lingua stessa ("Deutsch", non "Tedesco"): un tedesco
+    // riconosce la sua riga anche guardando il sito in spagnolo. L'ordine e'
+    // quello dell'ufficio, che ha cominciato dall'italiano.
+    languages: ["Italiano", "Español", "English", "Deutsch"],
+    //
+    // Il ritiro lo scrive il fornitore ("Le recogeremos en el bus en su
+    // parada"). La guida no, ma il proprietario l'8 settembre 2026 ha detto
+    // che c'e' su **tutte** queste escursioni: l'ufficio sa cosa vende meglio
+    // della pagina del fornitore.
+    included: ["transfer", "guide"],
+    // Le tappe sono quelle della pagina, in ordine e senza orario: il
+    // fornitore non li da', e l'ora del ritiro cambia da fermata a fermata.
+    itinerary: [
+      { text: { it: "Ritiro alla fermata concordata e viaggio verso gli Acantilados de Los Gigantes",
+                en: "Pickup at your agreed stop and the drive to the Los Gigantes cliffs",
+                es: "Recogida en su parada y viaje hacia los Acantilados de Los Gigantes" } },
+      { text: { it: "Sosta al Mirador de Garachico, affacciato sulla villa e sulla costa nord",
+                en: "A stop at the Mirador de Garachico, looking down over the town and the north coast",
+                es: "Parada en el Mirador de Garachico, asomado a la villa y a la costa norte" } },
+      { text: { it: "Icod de los Vinos, dove c'è il Drago Millenario, l'albero simbolo delle Canarie",
+                en: "Icod de los Vinos, home of the thousand-year-old dragon tree, the symbol of the Canaries",
+                es: "Icod de los Vinos, donde está el Drago Milenario, el árbol símbolo de Canarias" } },
+      { text: { it: "La Orotava, paese canario tipico, con la famosa Casa de los Balcones",
+                en: "La Orotava, a typical Canarian town, with the famous Casa de los Balcones",
+                es: "La Orotava, pueblo típico canario, con la famosa Casa de los Balcones" } },
+      { text: { it: "Puerto de la Cruz: tempo libero per il pranzo, i negozi e una passeggiata",
+                en: "Puerto de la Cruz: free time for lunch, the shops and a walk around",
+                es: "Puerto de la Cruz: tiempo libre para almorzar, las tiendas y un paseo" } },
+      { text: { it: "Ultima sosta a Candelaria, dalla Patrona dell'arcipelago",
+                en: "A last stop at Candelaria, at the patron saint of the archipelago",
+                es: "Última parada en Candelaria, ante la Patrona del Archipiélago" } },
+      { text: { it: "Rientro in hotel per l'autostrada del sud",
+                en: "Back to the hotel along the southern motorway",
+                es: "Vuelta al hotel por la autopista del sur" } }
+    ],
+    notes: [
+      { it: "Il pranzo non è incluso: la sosta per mangiare si fa a Puerto de la Cruz.",
+        en: "Lunch is not included: the meal stop is in Puerto de la Cruz.",
+        es: "El almuerzo no está incluido: la parada para comer se hace en Puerto de la Cruz." },
+      { it: "Quasi tutta la giornata si passa al nord, dove fa più fresco e nuvoloso che al sud: porta una felpa o una giacca leggera.",
+        en: "Most of the day is spent in the north, which is cooler and cloudier than the south: bring a sweatshirt or a light jacket.",
+        es: "Casi todo el día se pasa en el norte, donde hace más fresco y nublado que en el sur: lleva una sudadera o una chaqueta ligera." }
+    ],
     family: true,
+    // Riscritta da zero nelle tre lingue sulle tappe vere. Prima era generica
+    // ("i punti simbolo di Tenerife"), che e' quello che si scrive quando non
+    // si sa ancora dove passa il pullman.
     desc: {
-      it: "I punti simbolo di Tenerife in un giorno solo, in pullman con guida.",
-      en: "Tenerife's landmark sights in a single day, by coach with a guide.",
-      es: "Los lugares emblemáticos de Tenerife en un solo día, en autobús con guía."
+      it: "Il giro dell'isola in una giornata: le scogliere di Los Gigantes, Garachico dal mirador, il Drago Millenario di Icod, La Orotava e la Casa de los Balcones, Puerto de la Cruz e la Patrona di Candelaria, con ritiro alla fermata concordata.",
+      en: "The island in a single day: the Los Gigantes cliffs, Garachico from the viewpoint, the thousand-year-old dragon tree of Icod, La Orotava and its Casa de los Balcones, Puerto de la Cruz and the patron saint at Candelaria, with pickup at your agreed stop.",
+      es: "La vuelta a la isla en un día: los acantilados de Los Gigantes, Garachico desde el mirador, el Drago Milenario de Icod, La Orotava y la Casa de los Balcones, Puerto de la Cruz y la Patrona de Candelaria, con recogida en su parada."
     },
     image: "island-tour-completo.jpg",
     published: true

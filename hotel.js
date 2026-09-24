@@ -693,7 +693,39 @@ const PICKUP_IN_HOTEL = [
   // sta fra le icone di `included` e non nel campo `transfer`.
   // Per gli hotel che non stanno in HOTELS non si promette niente lo stesso,
   // ci pensa hotelPunto(): la scheda dice di scriverlo nelle note.
-  "mustang-experience"
+  "mustang-experience",
+
+  // --- Tutte le schede che offrono il transfer (proprietario, 24 settembre 2026) ---
+  //
+  // "Tutte le escursioni che permettono il transfer": il pulmino arriva
+  // direttamente all'hotel dove il cliente alloggia. Vale sia dove il transfer
+  // e' compreso nel prezzo sia dove si paga a parte — e' lo stesso pulmino.
+  //
+  // Le uniche a usare davvero le fermate di PICKUP_POINTS restano le sei di
+  // Island Excursions che stanno in PICKUP_TIMES piu' sotto: quelle hanno un
+  // giro con punti e orari veri, presi dal widget del fornitore.
+  "royal-delfin",
+  "peter-pan",
+  "submarine-safari",
+  "shogun",
+  "luxury-cruiser",
+  "quad-teide-adventure",
+  "paragliding",
+  "kayak-snorkelling",
+  "jet-ski-safari-1-2h",
+  "immersioni",
+  "siam-park",
+  "loro-parque",
+  "twin-ticket",
+  "aqualand",
+  "jungle-park",
+  "combo-jungle-aqualand",
+  "castillo-san-miguel",
+  "scandal-dinner-show",
+  // L'unico charter col transfer. Gli altri cinque non ce l'hanno e stanno in
+  // PICKUP_NESSUNO: se un giorno si scopre che e' una svista della scheda e non
+  // una differenza vera, si spostano qui.
+  "luxury-cruiser-charter"
 ];
 
 // Le schede dove non si passa a prendere nessuno.
@@ -731,7 +763,58 @@ const PICKUP_NESSUNO = [
   // mandava ad aspettare un pulmino che non passa, mentre il traghetto partiva
   // da Los Cristianos. Il `times: ["07:45"]` della scheda e' il ritrovo al
   // porto, non un pick-up, e resta dov'e'.
-  "la-palma"
+  "la-palma",
+
+  // --- Le schede senza transfer (proprietario, 24 settembre 2026) ---
+  //
+  // Il ritiro non lo permettono proprio: il cliente ci arriva da solo. Fino a
+  // oggi mostravano lo stesso una fermata pescata dalle tabelle di Island
+  // Excursions, che e' un altro fornitore e un altro giro: chi sta al Cleopatra
+  // si vedeva scritto "Best Tenerife, alla fermata dell'autobus" anche per una
+  // barca che parte da Puerto Colon.
+  //
+  // Su queste la finestra della richiesta non chiede piu' nemmeno l'hotel: se
+  // non passiamo a prendere nessuno, "dove alloggi" non serve a niente.
+  //
+  // Le barche condivise e i cinque charter senza transfer:
+  "freebird-catamaran",
+  "whale-dolphin-3h",
+  "flipper-one",
+  "pesca-altura",
+  "luxury-catamaran",
+  "small-group-catamaran",
+  "utopia-boat-party",
+  "opera-60",
+  "skyline-cruiser",
+  "ragnarok",
+  "private-charter",
+  "whale-dolphin-3h-charter",
+  "luxury-catamaran-charter",
+  "small-group-catamaran-charter",
+  "opera-60-charter",
+  "skyline-cruiser-charter",
+  // Sport, motori e attivita' con sede propria:
+  "bici",
+  "buggy-volcano-4h",
+  "helicopter-tours",
+  "karting",
+  "cavallo",
+  "fiat-500-water-car",
+  "banana-boat",
+  "parascending",
+  "flyboard",
+  "surf-lesson",
+  // Parchi e spettacoli dove il biglietto e' solo il biglietto:
+  "siam-night",
+  "monkey-park",
+  "mht-drag-show",
+  "flamenco-show",
+  "history-music-show",
+  // Tour di altri fornitori senza ritiro:
+  "stargazing-group",
+  "cantine-vinicole",
+  "trenino-turistico",
+  "masca-teide-cabrio-bus"
 ];
 
 // Gli orari del pulmino, escursione per escursione.

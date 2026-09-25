@@ -459,6 +459,19 @@ const CATEGORIES = [
   }
 ];
 
+// Le RACCOMANDATE: le schede che spingiamo. Nella pagina "Esperienze" sono il
+// primo filtro, ed e' quello acceso quando ci si arriva senza scegliere niente
+// (in fondo alla riga c'e' "Tutte"). Si scrivono gli id, uguali a quelli del
+// catalogo, nell'ordine in cui devono uscire: l'elenco li mostra cosi'.
+// Per ora sono i quattro prodotti da spingere dei pacchetti (vedi pacchetti.js).
+// Un id sbagliato o una scheda non pubblicata li segnala `controlla.js`.
+const RACCOMANDATE = [
+  "luxury-cruiser",
+  "buggy-volcano-4h",
+  "stargazing-group",
+  "jet-ski-safari-1-2h"
+];
+
 // Le categorie di una scheda: la sua, piu' quelle facoltative di `alsoIn`.
 // Sta qui, accanto a CATEGORIES, perche' questo file lo caricano tutte le
 // pagine — e perche' chi legge il catalogo deve vedere le stesse categorie

@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v360";
+const CACHE_NAME = "isla-v361";
 const ASSETS = [
   "./",
   "./index.html",
@@ -72,7 +72,15 @@ self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
-      return fetch(event.request).catch(() => caches.match("./offline.html"));
+      // La barra di ricerca della home manda a escursioni.html?q=<parola>:
+      // indirizzi infiniti, non si possono mettere in elenco come quelli
+      // sopra. Da offline si serve la pagina in cache senza guardare il "?"
+      // — la parola la legge poi escursioni.js dall'indirizzo, che e' rimasto.
+      return fetch(event.request).catch(() =>
+        new URL(event.request.url).pathname.endsWith("/escursioni.html")
+          ? caches.match("./escursioni.html", { ignoreSearch: true })
+              .then(r => r || caches.match("./offline.html"))
+          : caches.match("./offline.html"));
     })
   );
 });

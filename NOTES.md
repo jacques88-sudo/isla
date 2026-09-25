@@ -14550,3 +14550,66 @@ Chromium a 390 px, `teide-national-park` e `siam-park`:
 - nessun errore JS
 
 `CACHE_NAME` alzato a `isla-v360`.
+
+---
+
+## 25 settembre 2026 — Via "Scan ticket", la ricerca in home, le Raccomandate
+
+Richiesta del proprietario: *"al posto di scan ticket ci sia una barra di ricerca per le
+escursioni, scan ticket al momento togliamolo, e nella pagina esperienze il pulsante tutte
+le escursioni venga messo per ultimo e al primo posto le raccomandate, quelle che noi
+spingiamo"*.
+
+### "Scan ticket" tolto, la finestra no
+
+Tolti il riquadro largo in cima alla griglia della home e la voce "Scan ticket" del menu
+laterale in tutte e sei le pagine, con le due chiavi `bento.scan` e `menu.scan`.
+**La finestra del codice (`ticketDialog`) resta**: la apre anche "Prenota ora", il flusso
+coi dati finti che il proprietario tiene come segnaposto. Il suo titolo dice ancora "Scan
+ticket" (`ticket.title`): si cambia se e quando torna la funzione.
+
+### La barra di ricerca della home
+
+Sta dove stava "Scan ticket", larga quanto la griglia. **Non cerca in home**: è un
+`<form method="get">` che manda a `escursioni.html?q=<parola>`, e lì `escursioni.js` legge
+`q`, lo scrive nella casella e filtra con la ricerca che c'era già (tre lingue, titolo,
+descrizione, zona, categoria). Una ricerca sola, non due da tenere uguali.
+
+Da offline: gli indirizzi `?q=` sono infiniti e non si possono mettere nella lista della
+cache come `?family=1`. In `sw.js`, se la rete manca e la pagina chiesta è
+`escursioni.html`, si serve quella in cache **ignorando il `?`** (`ignoreSearch`).
+
+### Raccomandate prima, "Tutte le escursioni" ultima
+
+Le raccomandate sono una lista sola, `RACCOMANDATE` in `esplora-catalog.js` accanto a
+`CATEGORIES`: gli id nell'ordine in cui devono uscire. **Per partire ci sono i quattro
+prodotti da spingere dei pacchetti** (Luxury Cruiser, buggy, stargazing in gruppo, jet ski):
+se il proprietario ne vuole altre, si aggiungono lì. `controlla.js` dà errore se un id non
+esiste o la scheda non è pubblicata — sparirebbe dal filtro senza dirlo.
+
+La riga dei filtri adesso è: **Raccomandate** · le categorie · **Tutte le escursioni** (la
+pillola si chiamava "Tutte": in fondo alla riga, lontana dalle altre, il nome intero si
+capisce meglio).
+
+**Quale filtro è acceso all'arrivo:**
+
+| si arriva da | filtro acceso |
+|---|---|
+| "Esperienze", "Vedi tutte", nessun parametro | Raccomandate, titolo "Le nostre raccomandate" |
+| `?cat=...` (le categorie della home) | quella categoria |
+| `?q=...` (la barra della home) | Tutte le escursioni |
+| `?family=1` | Tutte le escursioni, solo quelle per bambini |
+
+**Scrivere nella casella stando su Raccomandate passa a "Tutte le escursioni"**: chi cerca
+"barca" fra quattro schede non la trova, e la pagina vuota direbbe che la barca non ce
+l'abbiamo.
+
+### Provato
+
+Chromium a 390 px: in home la barra al posto del riquadro, "teide" + invio →
+`escursioni.html?q=teide`, casella piena, "Tutte le escursioni" accesa, 10 di 65.
+`escursioni.html` nudo → Raccomandate accesa, le quattro schede nell'ordine della lista.
+Da lì "barca" → passa a Tutte, 18 di 65. `?cat=mare-barche` → Mare e barche. Nessun errore
+JS. `controlla.js` con un id finto in `RACCOMANDATE` → errore, come deve.
+
+`CACHE_NAME` alzato a `isla-v361`.

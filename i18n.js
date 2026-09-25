@@ -69,7 +69,6 @@ const I18N = {
   "intro.eyebrow":      { it: "Tenerife", en: "Tenerife", es: "Tenerife" },
   "intro.title":        { it: "Inizia la tua avventura con…", en: "Start your adventure with…", es: "Empieza tu aventura con…" },
   "bento.packages":     { it: "Pacchetti", en: "Packages", es: "Paquetes" },
-  "bento.scan":         { it: "Scan ticket", en: "Scan ticket", es: "Scan ticket" },
   // Era "Con bambini" e portava all'elenco filtrato: adesso porta ai pacchetti
   // di famiglia. Il nome cambiato e' una scelta del proprietario (14 settembre
   // 2026): "In famiglia" parla a chi viaggia coi bambini, non ai bambini.
@@ -166,7 +165,6 @@ const I18N = {
   "menu.install":       { it: "Installa l'app", en: "Install the app", es: "Instalar la app" },
   "menu.excursions":    { it: "Escursioni", en: "Excursions", es: "Excursiones" },
   "menu.packages":      { it: "Pacchetti", en: "Packages", es: "Paquetes" },
-  "menu.scan":          { it: "Scan ticket", en: "Scan ticket", es: "Scan ticket" },
   "menu.secret":        { it: "Posti segreti", en: "Secret spots", es: "Lugares secretos" },
   "menu.about":         { it: "Chi siamo", en: "About us", es: "Quiénes somos" },
   "menu.cta":           { it: "Prenota ora", en: "Book now", es: "Reservar" },
@@ -187,7 +185,9 @@ const I18N = {
   "catalog.searchLabel":       { it: "Cerca un'escursione", en: "Search for an excursion", es: "Busca una excursión" },
   "catalog.searchPlaceholder": { it: "Cerca: barca, Teide, quad…", en: "Search: boat, Teide, quad…", es: "Busca: barco, Teide, quad…" },
   "catalog.filterAria": { it: "Filtra per categoria", en: "Filter by category", es: "Filtrar por categoría" },
-  "catalog.all":        { it: "Tutte", en: "All", es: "Todas" },
+  "catalog.recommended":      { it: "Raccomandate", en: "Recommended", es: "Recomendadas" },
+  "catalog.recommendedTitle": { it: "Le nostre raccomandate", en: "Our recommendations", es: "Nuestras recomendadas" },
+  "catalog.all":        { it: "Tutte le escursioni", en: "All excursions", es: "Todas las excursiones" },
   "catalog.countAll":   { it: "{n} attività disponibili", en: "{n} activities available", es: "{n} actividades disponibles" },
   "catalog.countSome":  { it: "{n} di {total} attività", en: "{n} of {total} activities", es: "{n} de {total} actividades" },
   "catalog.emptyTitle": { it: "Nessun risultato", en: "No results", es: "Sin resultados" },

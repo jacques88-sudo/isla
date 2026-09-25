@@ -414,6 +414,18 @@ function controllaIdUnici() {
   });
 }
 
+// Le raccomandate devono esistere ed essere pubblicate: un id scritto male
+// sparirebbe dal filtro senza dirlo a nessuno.
+function controllaRaccomandate() {
+  if (!RACCOMANDATE.length) avviso("RACCOMANDATE", "la lista e' vuota: il filtro \"Raccomandate\" non mostra niente.");
+  RACCOMANDATE.forEach(id => {
+    const t = ESPLORA_CATALOG.find(x => x.id === id);
+    if (!t) errore("RACCOMANDATE", `"${id}" non e' l'id di nessuna scheda.`);
+    else if (!t.published) errore("RACCOMANDATE", `"${id}" non e' pubblicata: nel filtro non uscirebbe.`);
+  });
+  if (new Set(RACCOMANDATE).size !== RACCOMANDATE.length) avviso("RACCOMANDATE", "un id e' scritto due volte.");
+}
+
 // ─── 10. Le chiavi i18n in tutte e tre le lingue ───────────────────────────
 function controllaI18n() {
   // Fino a fine riga, non fino alla prima "}": le chiavi con segnaposto come
@@ -697,6 +709,7 @@ const CONTROLLI = [controllaBase, controllaEta, controllaPrezzi, controllaMezzi,
 console.log("\nControllo del catalogo Isla\n");
 ESPLORA_CATALOG.forEach(t => CONTROLLI.forEach(c => c(t)));
 controllaIdUnici();
+controllaRaccomandate();
 controllaI18n();
 controllaPacchetti();
 controllaServiceWorker();

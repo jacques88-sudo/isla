@@ -598,7 +598,7 @@ a { text-decoration: none; color: inherit; }
    tutta la larghezza (invece di restare spaiato in una griglia da 2 o 4
    colonne) e mette icona e testo in fila invece che impilati. Non e' legato
    a un riquadro preciso — l'ha portato prima "Noleggio auto, moto e bici" in
-   fondo alla griglia, adesso "Scan ticket" in cima. */
+   fondo alla griglia, poi "Scan ticket" in cima, che oggi non c'e' piu'. */
 .bento-tile-wide {
   grid-column: 1 / -1;
   aspect-ratio: auto;
@@ -1480,6 +1480,9 @@ body.menu-open { overflow: hidden; }
   font-size: .95rem;
 }
 .catalog-search input:focus { border-color: var(--text); }
+/* La stessa barra in home, al posto di "Scan ticket": larga quanto la griglia
+   dei riquadri, come lo era lui. */
+.home-search { grid-column: 1 / -1; margin: 0; }
 
 .chip-row {
   display: flex;

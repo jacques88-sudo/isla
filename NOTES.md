@@ -14584,7 +14584,8 @@ cache come `?family=1`. In `sw.js`, se la rete manca e la pagina chiesta è
 Le raccomandate sono una lista sola, `RACCOMANDATE` in `esplora-catalog.js` accanto a
 `CATEGORIES`: gli id nell'ordine in cui devono uscire. **Per partire ci sono i quattro
 prodotti da spingere dei pacchetti** (Luxury Cruiser, buggy, stargazing in gruppo, jet ski):
-se il proprietario ne vuole altre, si aggiungono lì. `controlla.js` dà errore se un id non
+se il proprietario ne vuole altre, si aggiungono lì. **Confermate dal proprietario lo stesso giorno**: le quattro vanno bene così, non sono un
+segnaposto. `controlla.js` dà errore se un id non
 esiste o la scheda non è pubblicata — sparirebbe dal filtro senza dirlo.
 
 La riga dei filtri adesso è: **Raccomandate** · le categorie · **Tutte le escursioni** (la

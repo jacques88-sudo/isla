@@ -876,20 +876,32 @@ function initCatalog() {
   // solo con un indirizzo scritto male: "stelle" era una categoria vera fino
   // a ieri, e chi si è salvato quel link — o Google, che l'ha indicizzato —
   // ci arriva ancora. Meglio l'elenco intero che una pagina vuota.
+  const categorieDaLink = (params.get("cat") || "").split(",")
+    .filter(id => CATEGORIES.some(c => c.id === id));
+  const queryDaLink = (params.get("q") || "").trim();
+  // Chi arriva senza scegliere niente (il bottone "Esperienze", "Vedi tutte")
+  // trova acceso il primo filtro, "Raccomandate": le schede che spingiamo.
+  // Con una categoria nel link, una ricerca dalla barra della home o il
+  // filtro famiglia si parte invece da tutto il catalogo: sono domande
+  // precise, e rispondere con quattro schede soltanto sarebbe sbagliato.
   const state = {
-    categories: (params.get("cat") || "").split(",")
-      .filter(id => CATEGORIES.some(c => c.id === id)),
+    categories: categorieDaLink,
+    recommended: !categorieDaLink.length && !queryDaLink && params.get("family") !== "1",
     family: params.get("family") === "1",
-    query: ""
+    query: queryDaLink.toLowerCase()
   };
+  if (searchInput && queryDaLink) searchInput.value = queryDaLink;
 
   // Solo le categorie che hanno almeno un'attività pubblicata
   const usedCategories = CATEGORIES.filter(c =>
     published.some(x => categorieDi(x).includes(c.id))
   );
 
+  // Raccomandate in testa, "Tutte" in fondo: prima le proposte, poi le
+  // categorie, e per ultimo l'elenco intero.
   function buildChips() {
-    const all = [{ id: "tutte", name: t("catalog.all") }].concat(usedCategories);
+    const all = [{ id: "raccomandate", name: t("catalog.recommended") }]
+      .concat(usedCategories, [{ id: "tutte", name: t("catalog.all") }]);
     chipRow.innerHTML = "";
     all.forEach(cat => {
       const btn = document.createElement("button");
@@ -898,7 +910,8 @@ function initCatalog() {
       btn.textContent = tf(cat.name);
       btn.dataset.cat = cat.id;
       btn.addEventListener("click", () => {
-        state.categories = cat.id === "tutte" ? [] : [cat.id];
+        state.recommended = cat.id === "raccomandate";
+        state.categories = state.recommended || cat.id === "tutte" ? [] : [cat.id];
         render();
       });
       chipRow.appendChild(btn);
@@ -920,11 +933,13 @@ function initCatalog() {
       heroPhoto.src = cat && cat.image ? "./assets/" + cat.image : "./assets/hero-tenerife.webp";
     }
     if (titleEl) {
-      titleEl.textContent = cat ? tf(cat.name) : t("catalog.title");
+      titleEl.textContent = cat ? tf(cat.name)
+        : state.recommended ? t("catalog.recommendedTitle") : t("catalog.title");
     }
   }
 
   function matches(tour) {
+    if (state.recommended && !RACCOMANDATE.includes(tour.id)) return false;
     // Basta che UNA delle categorie della scheda sia fra quelle scelte: le
     // schede con `alsoIn` stanno in piu' di una, ed escono sotto ognuna.
     if (state.categories.length &&
@@ -945,6 +960,11 @@ function initCatalog() {
 
   function render() {
     const results = published.filter(matches);
+    // Le raccomandate escono nell'ordine della lista, non in quello del
+    // catalogo: la prima e' quella che si vuole far vedere per prima.
+    if (state.recommended) {
+      results.sort((a, b) => RACCOMANDATE.indexOf(a.id) - RACCOMANDATE.indexOf(b.id));
+    }
 
     dipingiTestata();
 
@@ -952,8 +972,8 @@ function initCatalog() {
     results.forEach(tour => grid.appendChild(tourCard(tour)));
 
     chipRow.querySelectorAll(".chip").forEach(btn => {
-      const attivo = state.categories.length
-        ? state.categories.includes(btn.dataset.cat)
+      const attivo = state.recommended ? btn.dataset.cat === "raccomandate"
+        : state.categories.length ? state.categories.includes(btn.dataset.cat)
         : btn.dataset.cat === "tutte";
       btn.classList.toggle("is-active", attivo);
     });
@@ -989,6 +1009,10 @@ function initCatalog() {
   if (searchInput) {
     searchInput.addEventListener("input", () => {
       state.query = searchInput.value.trim().toLowerCase();
+      // Chi cerca "barca" stando sulle raccomandate cerca nel catalogo
+      // intero: fra quattro schede non la troverebbe, e la pagina vuota
+      // direbbe che la barca non ce l'abbiamo.
+      if (state.query && state.recommended) state.recommended = false;
       render();
     });
   }

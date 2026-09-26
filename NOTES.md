@@ -14614,3 +14614,43 @@ Da lì "barca" → passa a Tutte, 18 di 65. `?cat=mare-barche` → Mare e barche
 JS. `controlla.js` con un id finto in `RACCOMANDATE` → errore, come deve.
 
 `CACHE_NAME` alzato a `isla-v361`.
+
+## Prenotazioni vere: Supabase, ticket di carta e "Le mie escursioni" (26 settembre 2026)
+
+Il proprietario ha portato una spec: i ticket di carta dei venditori di strada devono
+comparire anche nell'app, dove il cliente li ritrova con il suo numero di telefono.
+Rivista insieme in chat; la versione corretta sta in **`supabase/SPEC.md`**, il database
+in **`supabase/schema.sql`**. Decisioni del proprietario:
+
+- **Backend: Supabase**, piano gratuito per partire (era già la direzione scritta in
+  "Scelta tecnica"). Il limite vero del gratis è **1 GB per le foto**. Poi: pausa dopo 7
+  giorni senza attività e nessun backup, quindi esportazione settimanale fatta da noi.
+- **CanaryVIP resta un concorrente** da cui si prende spunto. La prima bozza lo chiamava
+  "i prodotti CanaryVIP": sbagliato, il catalogo è di Admiral.
+- **I numeri dei ticket non si ripetono mai**, nemmeno fra venditori diversi.
+- **Due venditori**, account creati a mano.
+- **TIME sul ticket** vuol dire ritiro dove c'è, partenza dove non c'è (`time_kind`).
+
+Proposto da me e messo nella spec: il cliente entra con **telefono + numero del ticket**,
+non col solo telefono. Col solo telefono, chiunque provi numeri a caso vedrebbe dove e a
+che ora sarà una famiglia, e con quanti bambini. Il ticket il cliente ce l'ha in mano,
+quindi non serve un codice via SMS.
+
+**Come è fatta la sicurezza in `schema.sql`.** Il cliente senza login (`anon`) non può
+leggere la tabella: passa solo dalla funzione `le_mie_escursioni(telefono, ticket)`, che
+restituisce solo i campi da cliente. Con una coppia sbagliata dà zero righe, senza dire
+se il telefono esiste. Leggono e scrivono solo gli account elencati in `sellers`: un
+account qualsiasi, anche se riuscisse a registrarsi, non vede niente. Nessuno può
+cancellare righe, si usa `status = 'cancelled'`. Le foto stanno in uno spazio privato.
+
+**Provato** su un Postgres 16 locale, con finti `auth` e `storage` al posto di quelli di
+Supabase: lo schema si carica. Rifiutati come deve: il doppione del ticket, il telefono
+senza `+` e un `confirmed` senza telefono o data. Il venditore vede tutto, un account non
+venditore vede 0 righe e non può inserire, `anon` vede 0 righe dalla tabella. La funzione
+dà le 2 prenotazioni giuste senza l'hotel, e 0 righe col ticket di un altro o col
+telefono sbagliato. `delete` non cancella niente. Il non venditore non carica foto.
+
+**Le varianti non hanno un id** nel catalogo (`options.choices` ha solo `label`), quindi
+la prenotazione salva `option_label` con l'etichetta italiana. Se un giorno un'etichetta
+cambia, le prenotazioni vecchie tengono quella vecchia: va bene così, è quella che il
+cliente ha comprato.

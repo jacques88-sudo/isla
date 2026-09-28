@@ -14654,3 +14654,13 @@ telefono sbagliato. `delete` non cancella niente. Il non venditore non carica fo
 la prenotazione salva `option_label` con l'etichetta italiana. Se un giorno un'etichetta
 cambia, le prenotazioni vecchie tengono quella vecchia: va bene così, è quella che il
 cliente ha comprato.
+
+### Permessi scritti nello schema (28 settembre 2026)
+
+Creando il progetto, Supabase propone "Automatically expose new tables" acceso e consiglia
+di spegnerlo. **Spento**: nessuna tabella è raggiungibile dal sito se non lo dice
+`schema.sql`. Per questo lo schema ora dà i permessi da solo: `select` su `sellers`,
+`select/insert/update` su `bookings` e `is_seller()` a `authenticated`, niente a `anon`.
+Riprovato su Postgres locale **senza** permessi automatici: il venditore legge, aggiunge e
+corregge; `delete` → permesso negato; `anon` sulla tabella → permesso negato; la funzione
+del cliente risponde lo stesso.

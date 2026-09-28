@@ -31,6 +31,10 @@ create policy "il venditore vede se stesso"
   to authenticated
   using (user_id = auth.uid());
 
+-- Il progetto e' creato con "Automatically expose new tables" SPENTO: nessuna
+-- tabella e' raggiungibile dal sito finche' non lo diciamo noi, qui.
+grant select on public.sellers to authenticated;
+
 -- Vero se chi sta chiamando e' un venditore. Usata da tutte le regole sotto.
 create function public.is_seller()
 returns boolean
@@ -41,6 +45,9 @@ set search_path = ''
 as $$
   select exists (select 1 from public.sellers where user_id = auth.uid());
 $$;
+
+revoke all on function public.is_seller() from public;
+grant execute on function public.is_seller() to authenticated;
 
 
 -- 2. LE PRENOTAZIONI --------------------------------------------------------
@@ -122,6 +129,10 @@ create policy "i venditori correggono"
   to authenticated
   using (public.is_seller())
   with check (public.is_seller());
+
+-- I permessi della tabella: solo ai venditori col login, e solo leggere,
+-- aggiungere, correggere. Niente 'delete', niente per 'anon'.
+grant select, insert, update on public.bookings to authenticated;
 
 -- Nessuna regola per 'anon' (il cliente senza login): dalla tabella non legge
 -- niente. Passa solo dalla funzione qui sotto.

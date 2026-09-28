@@ -14664,3 +14664,67 @@ di spegnerlo. **Spento**: nessuna tabella è raggiungibile dal sito se non lo di
 Riprovato su Postgres locale **senza** permessi automatici: il venditore legge, aggiunge e
 corregge; `delete` → permesso negato; `anon` sulla tabella → permesso negato; la funzione
 del cliente risponde lo stesso.
+
+## La pagina dei venditori: `venditori.html` (28 settembre 2026)
+
+Passo 2 della spec (`supabase/SPEC.md`): il **modulo del ticket scritto a mano, senza AI**.
+Il progetto Supabase è creato (regione Europa, "Automatically expose new tables" spento,
+schema caricato). Jack e Francesca sono in `sellers`, e le registrazioni sono chiuse.
+
+**File nuovi:**
+
+| file | cosa fa |
+|---|---|
+| `supabase-config.js` | URL del progetto e chiave **publishable**: sono pubbliche per costruzione, a proteggere sono le regole dello schema. **Mai** la chiave secret/service_role. |
+| `vendor/supabase-2.117.2.js` | la libreria di Supabase, **copiata nel repo** e non presa da un CDN: non dipende da un altro sito e la versione non cambia da sola. |
+| `venditori.html` + `venditori.js` | entrata (email + password), nuovo ticket, ultimi 20 inseriti con la foto. Solo in italiano, `noindex`. |
+
+**La pagina non è collegata da nessuna parte del sito** e **non è nella cache del service
+worker**. I venditori la aprono dal loro indirizzo (`…/venditori.html`) e se la mettono
+fra i preferiti. Non la mettiamo in cache perché i 218 KB della libreria li scaricherebbe
+ogni cliente, e senza rete questa pagina comunque non può salvare niente.
+
+**Cosa fa il modulo:**
+- **Foto**: `accept="image/*"` senza `capture`, quindi fotocamera o galleria. Prima
+  dell'invio viene rimpicciolita a 1600 px sul lato lungo (JPEG 0,72): nella prova una
+  foto 4000×3000 da 930 KB è diventata 164 KB. È facoltativa, e nell'elenco si apre con
+  un link che vale un minuto, perché lo spazio delle foto è privato.
+- **Escursione**: il menu è il catalogo pubblicato, diviso per categoria, più "Non è in
+  catalogo", che obbliga a scriverla nelle note. Se la scheda ha varianti compare il
+  secondo menu, e si salva l'etichetta italiana (`option_label`).
+- **L'ora del ticket è**: "partenza" se la scheda sta in `PICKUP_NESSUNO`, altrimenti
+  "ritiro". Si può cambiare. Freebird, per esempio, esce "partenza" perché sta in
+  `PICKUP_NESSUNO`, anche se la variante da 3 ore ha il transfer: se sul ticket è l'ora
+  del ritiro, il venditore la cambia.
+- **Telefono** (nel riquadro dorato): prefisso da un menu, che si imposta da solo quando
+  si sceglie la nazionalità. "+…" o "00…" scritti a mano vincono sul menu. Lo 0 davanti
+  si toglie ovunque tranne che in Italia. Sotto si legge "Si salva come +39…", e **la
+  casella "Ho ricontrollato" si spegne a ogni modifica**: senza la spunta non si salva.
+- **Soldi**: il resto si calcola da solo (total − deposit) finché il venditore non lo
+  scrive lui. Se total ≠ deposit + rest compare un avviso, che però non blocca.
+- **Doppioni**: prima di caricare la foto si guarda se il ticket esiste già, per non
+  caricare foto inutili. Il database lo rifiuterebbe comunque (errore `23505`).
+- Dopo il salvataggio il modulo si svuota e l'escursione torna su "— scegli —".
+  Prima tornava sulla prima dell'elenco, e salvarla per sbaglio era facile. Il prefisso
+  resta: spesso i clienti in fila vengono dallo stesso paese.
+- **Senza rete all'apertura** non si esce: dopo circa 6 secondi (la libreria riprova da
+  sola) la pagina dice "Niente connessione".
+
+**Provato** con Playwright a 390 px, con Supabase simulato (da qui supabase.co non si
+raggiunge):
+- password sbagliata → messaggio;
+- entrata → "Sei Jack";
+- i controlli nell'ordine giusto: ticket, escursione, variante, data, telefono, spunta;
+- telefoni GB `07700 900123` → `+447700900123`, IT → `+393331234567`, `+49 151…` intatto,
+  `12` → non valido;
+- la riga salvata ha tutti i campi giusti, e la foto è caricata nello spazio `ticket-foto`;
+- doppione → "già inserito", fuori catalogo senza note → fermato;
+- nessuna pagina più larga dello schermo (all'inizio lo era: il campo della foto nascosto
+  prendeva `width: 100%` dalla regola generale);
+- uscita. Index, elenco e scheda senza errori.
+
+**Non ancora fatto** (prossimi passi): la coda delle foto quando manca la rete,
+correggere o annullare un ticket già salvato, e caricare più foto insieme (arriva con la
+lettura via AI).
+
+`CACHE_NAME` alzato a `isla-v362` (toccato `styles.css`).

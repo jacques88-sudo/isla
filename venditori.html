@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="it" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Pagina di lavoro dei venditori: non deve comparire su Google. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#fcfaf6" />
+  <title>Venditori · Isla</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./assets/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="vend">
+  <header class="top">
+    <div class="wrap nav">
+      <a class="brand" href="./index.html" aria-label="Isla home">
+        <img src="./assets/logo-isla.png" alt="Logo Isla" />
+        <span class="brand-text"><strong>Isla</strong><span>venditori</span></span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main" class="wrap vend-main">
+
+    <!-- 1. Entrata: email e password del venditore -->
+    <section data-vend-login hidden>
+      <h1 class="vend-h1">Entra</h1>
+      <form class="vend-form" data-login-form>
+        <label for="loginEmail">Email</label>
+        <input id="loginEmail" name="email" type="email" autocomplete="username" required />
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" name="password" type="password" autocomplete="current-password" required />
+        <p class="vend-msg" data-login-msg role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit">Entra</button>
+      </form>
+    </section>
+
+    <!-- 2. Il lavoro: nuovo ticket + ultimi inseriti -->
+    <section data-vend-work hidden>
+      <div class="vend-who">
+        <span>Sei <strong data-seller-name></strong></span>
+        <button class="btn btn-soft" type="button" data-logout>Esci</button>
+      </div>
+
+      <h1 class="vend-h1">Nuovo ticket</h1>
+
+      <form class="vend-form" data-ticket-form novalidate>
+
+        <div class="vend-photo">
+          <label class="btn btn-soft btn-block" for="tPhoto">📷 Foto del ticket</label>
+          <!-- Senza "capture": il telefono propone sia la fotocamera sia la galleria. -->
+          <input id="tPhoto" name="photo" type="file" accept="image/*" class="vend-hidden-input" />
+          <img data-photo-preview alt="Foto del ticket" hidden />
+          <small class="vend-hint">Scattata da qui, di solito non finisce in galleria: resta solo su Isla.</small>
+        </div>
+
+        <label for="tNumber">Ticket number</label>
+        <input id="tNumber" name="ticket_number" type="text" inputmode="numeric" autocomplete="off" required />
+
+        <label for="tExc">Escursione</label>
+        <select id="tExc" name="excursion_id" required></select>
+
+        <div data-option-wrap hidden>
+          <label for="tOption" data-option-label>Variante</label>
+          <select id="tOption" name="option_label"></select>
+        </div>
+
+        <div class="vend-row">
+          <div>
+            <label for="tDate">Data</label>
+            <input id="tDate" name="date" type="date" required />
+          </div>
+          <div>
+            <label for="tTime">Ora</label>
+            <input id="tTime" name="time" type="time" />
+          </div>
+        </div>
+
+        <label for="tTimeKind">L'ora del ticket è</label>
+        <select id="tTimeKind" name="time_kind">
+          <option value="pickup">l'ora del ritiro</option>
+          <option value="departure">l'ora di partenza</option>
+        </select>
+
+        <label for="tMeeting">Meeting point</label>
+        <input id="tMeeting" name="meeting_point" type="text" autocomplete="off" />
+
+        <label for="tHotel">Hotel</label>
+        <input id="tHotel" name="hotel" type="text" autocomplete="off" />
+
+        <label for="tNation">Nazionalità</label>
+        <select id="tNation" name="nationality"></select>
+
+        <fieldset class="vend-phone">
+          <legend>Telefono del cliente</legend>
+          <div class="vend-row vend-row-phone">
+            <select id="tPrefix" name="prefix" aria-label="Prefisso"></select>
+            <input id="tPhone" name="phone" type="tel" inputmode="tel" autocomplete="off"
+                   aria-label="Numero" placeholder="333 123 4567" required />
+          </div>
+          <p class="vend-phone-out" data-phone-out aria-live="polite"></p>
+          <label class="vend-check">
+            <input type="checkbox" data-phone-ok />
+            <span>Ho ricontrollato il numero con il ticket</span>
+          </label>
+        </fieldset>
+
+        <div class="vend-row vend-row-3">
+          <div>
+            <label for="tAdults">Adulti</label>
+            <input id="tAdults" name="adults" type="number" inputmode="numeric" min="0" max="99" value="1" />
+          </div>
+          <div>
+            <label for="tKids">Bambini</label>
+            <input id="tKids" name="kids" type="number" inputmode="numeric" min="0" max="99" value="0" />
+          </div>
+          <div>
+            <label for="tBabies">Neonati</label>
+            <input id="tBabies" name="babies" type="number" inputmode="numeric" min="0" max="99" value="0" />
+          </div>
+        </div>
+
+        <div class="vend-row vend-row-3">
+          <div>
+            <label for="tTotal">Total €</label>
+            <input id="tTotal" name="total" type="number" inputmode="decimal" min="0" step="0.01" />
+          </div>
+          <div>
+            <label for="tDeposit">Deposit €</label>
+            <input id="tDeposit" name="deposit" type="number" inputmode="decimal" min="0" step="0.01" />
+          </div>
+          <div>
+            <label for="tRest">Rest €</label>
+            <input id="tRest" name="rest_to_pay" type="number" inputmode="decimal" min="0" step="0.01" />
+          </div>
+        </div>
+        <p class="vend-warn" data-money-warn hidden></p>
+
+        <label for="tNotes">Reference / observations</label>
+        <input id="tNotes" name="notes" type="text" autocomplete="off" />
+
+        <p class="vend-msg" data-ticket-msg role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit" data-ticket-save>Salva ticket</button>
+      </form>
+
+      <h2 class="vend-h1">Ultimi inseriti</h2>
+      <ul class="vend-list" data-recent></ul>
+    </section>
+
+    <p class="vend-msg" data-vend-loading>Un momento…</p>
+  </main>
+
+  <script src="./vendor/supabase-2.117.2.js"></script>
+  <script src="./supabase-config.js"></script>
+  <script src="./esplora-catalog.js"></script>
+  <script src="./hotel.js"></script>
+  <script src="./venditori.js"></script>
+</body>
+</html>

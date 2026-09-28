@@ -112,6 +112,8 @@ porto e capienza con le schede della stessa categoria.
 | `lista.js` | la lista delle richieste (localStorage), costruita in JS perché serve a tre pagine |
 | `i18n.js` | tutti i testi fissi nelle tre lingue |
 | `controlla.js` | il controllo del catalogo |
+| `venditori.html/.js` | la pagina dei venditori: ticket di carta nel database (Supabase) |
+| `supabase-config.js` | URL e chiave **pubblica** di Supabase; lo schema e le regole stanno in `supabase/` |
 
 **La finestra della richiesta è scritta due volte**, in `escursioni.html` e in `tour.html`.
 Se ne tocchi una, tocca anche l'altra.

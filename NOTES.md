@@ -14986,3 +14986,16 @@ spegne con il resto della card (`.is-past`).
 **Provato** a 375 px con quattro ticket finti: con foto, di un'escursione fuori catalogo,
 con un file che non esiste, passato. Striscia sul primo e sull'ultimo, niente sugli altri
 due, nessun errore in console.
+
+**Aggiornamento, stesso giorno:** numero del ticket e "Confermata" ora stanno **sopra la
+foto**, in fondo, su una sfumatura scura (richiesta del proprietario dopo averla vista
+sul telefono). La striscia è salita a 130 px, ma in tutto la card è più bassa di prima,
+perché la riga del numero non occupa più spazio suo. Se la foto non si carica,
+l'`onerror` toglie anche la classe `ticket-hero`: la riga torna quella normale, altrimenti
+il testo bianco resterebbe sul fondo chiaro. Provato in tema chiaro e scuro.
+
+**"Cerca un'altra prenotazione" non serve per i ticket dello stesso cliente.**
+`le_mie_escursioni` restituisce **tutti** i ticket confermati con quel telefono, basta
+uno qualunque dei loro numeri: compaiono già tutti nella pagina, i prossimi in alto e i
+passati sotto. Il pulsante serve per un altro telefono (un amico, un parente): il
+telefono dimentica il ticket salvato e torna la casella di ricerca.

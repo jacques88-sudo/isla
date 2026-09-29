@@ -27,30 +27,39 @@ per installarla.
    sono la chiave contro i doppioni.
 4. **Due venditori**, con due account creati a mano. Non c'è una pagina di registrazione.
    Il campo `seller` si compila da solo con chi ha fatto il login.
-5. **TIME** vuol dire **ora del ritiro** dove il ritiro c'è, e **ora di partenza** dove non
-   c'è. L'etichetta viene dal catalogo (`hotel.js`): le schede in `PICKUP_NESSUNO` sono
-   "partenza", tutte le altre "ritiro". Il venditore la vede nel modulo e la può
-   cambiare. Si salva in `time_kind`.
+5. **TIME è l'ora in cui presentarsi al MEETING POINT**, per tutte le escursioni: sul
+   ticket le due cose stanno una accanto all'altra. Al cliente si scrive "Presentati alle
+   9:40 — Puerto Colón, Gate 15". (Deciso il 29 settembre 2026. Prima c'era una scelta
+   ritiro/partenza, `time_kind`: la colonna resta nel database ma non si usa più.)
 6. **Numero sconosciuto o sbagliato**: nessun profilo, si vede il catalogo con l'invito ad
    acquistare.
+7. **REF** (in alto sul ticket) serve alle compagnie e a volte all'ufficio: si salva
+   (`reference`), **il cliente non lo vede**.
+8. **I venditori sul ticket possono essere due** ("FRA / MATT"): il campo si precompila
+   con chi ha fatto il login e si può cambiare.
+9. **Pagamento**: Total sempre. Deposit e To Pay **sbarrati** vogliono dire "pagato
+   tutto" (si salva `rest_to_pay = 0`). Altrimenti Deposit è l'acconto e To Pay il resto.
+10. **Nessuna regola di cancellazione nell'app**: il ticket ne ha una stampata, e due
+    regole diverse confonderebbero il cliente.
 
 ## 3. Dal ticket ai campi
 
 | sul ticket | campo | note |
 |---|---|---|
-| TICKET NUMBER | `ticket_number` | unico |
+| TICKET NUMBER | `ticket_number` | unico, stampato in rosso |
+| REF (in alto, a mano) | `reference` | solo venditori e compagnie |
 | EXCURSION | `excursion_id` + `option_label` | id della scheda + etichetta italiana della variante, se c'è |
-| DATE OF EXCURSIONS | `date` | |
-| TIME | `time` + `time_kind` | ritiro o partenza, vedi decisione 5 |
+| DATE OF THE EXCURSION | `date` | scritta senza anno e col giorno ("THURS 1/10"): l'anno si deduce, il giorno fa da controllo |
+| TIME | `time` | l'ora al meeting point, vedi decisione 5 |
 | MEETING POINT | `meeting_point` | |
 | HOTEL | `hotel` | solo venditore |
-| NATIONALITY | `nationality` | solo venditore; serve anche a proporre il prefisso del telefono |
-| PHONE NUMBER | `phone` | E.164 (`+393331234567`), il database rifiuta gli altri formati |
+| — | `nationality` | **non c'è sul ticket**; facoltativa, serve a proporre il prefisso |
+| CONTACT NUMBER | `phone` | E.164 (`+393331234567`), il database rifiuta gli altri formati. Lo 0 scritto dopo il prefisso ("+44 07…") si toglie |
 | FIRMA CLIENTE | — | resta solo nella foto |
 | REFERENCE / OBSERVATIONS | `notes` | |
-| SELLER | `seller` | |
+| SIGNATURE (iniziali) | `seller` | i venditori, anche due |
 | ADULTS / KIDS / BABIES | `adults`, `kids`, `babies` | |
-| TOTAL / DEPOSIT / REST TO PAY | `total`, `deposit`, `rest_to_pay` | il modulo avvisa se total ≠ deposit + rest |
+| TOTAL / DEPOSIT / TO PAY | `total`, `deposit`, `rest_to_pay` | sbarrati = pagato tutto; il modulo avvisa se total ≠ deposit + to pay |
 
 Altri campi: `source` (`strada`, `online`, `whatsapp`), `status` (`pending`, `confirmed`,
 `cancelled`), `photo_path` (percorso nello spazio **privato**, non un link pubblico),
@@ -75,9 +84,10 @@ Altri campi: `source` (`strada`, `online`, `whatsapp`), `status` (`pending`, `co
 ## 5. Flusso cliente — "Le mie escursioni"
 
 - Telefono (prefisso scelto da un menu) + numero del ticket.
-- Si vedono: escursione, variante, data, "ritiro/partenza alle", meeting point, persone,
-  resto da pagare. Prima le escursioni future, poi quelle passate.
-- **Non si vedono mai**: hotel, nazionalità, venditore, foto, note.
+- Si vedono: escursione, variante, data, "Presentati alle … — meeting point", persone,
+  resto da pagare (o "pagato"). Prima le escursioni future, poi quelle passate.
+- **Non si vedono mai**: hotel, nazionalità, venditore, REF, foto, note, regole di
+  cancellazione.
 - Il telefono ricorda i dati (localStorage), così al secondo accesso non si riscrive
   niente.
 - In seguito: un **QR sul ticket** che apre `…?ticket=12345` già compilato.

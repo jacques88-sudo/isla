@@ -14787,3 +14787,47 @@ intatto; `+353 087…` → `+35387…`; `+1 212…` intatto; `07700…` col menu
 Le domande aperte su questi punti le ha il proprietario (vedi chat del 29 settembre).
 
 `CACHE_NAME` alzato a `isla-v364`.
+
+### Il modulo dei venditori rifatto sul ticket vero (29 settembre 2026)
+
+Le risposte del proprietario sulle domande nate dal ticket 2213:
+
+| sul ticket | deciso | nel modulo |
+|---|---|---|
+| **Time** accanto al Meeting Point | è l'ora in cui presentarsi al meeting point, **per tutte le escursioni** | "Ora ritrovo"; tolta la scelta ritiro/partenza |
+| **REF** in alto | serve alle compagnie e a volte all'ufficio | campo REF accanto al ticket number; **il cliente non lo vede** |
+| **FRA / MATT** | sono i venditori, possono essere due | campo "Venditori", precompilato con chi è entrato e modificabile |
+| **Deposit e To Pay sbarrati** | pagato tutto il Total | lasciarli vuoti; si salva `rest_to_pay = 0` e si legge "Pagato tutto: 63 €" |
+| cancellazione 48 ore stampata | **nell'app non si scrive nessuna regola** | — |
+
+**Database.** Nuova colonna `reference`. Il progetto già creato la riceve con
+`supabase/modifiche/2026-09-29-reference.sql`, una riga che si può rilanciare senza
+danni. `schema.sql` la ha già, per chi riparte da zero. `time_kind` resta nella tabella
+ma non si scrive più: toglierla sarebbe un passo in più per il proprietario, e non serve
+a niente. `le_mie_escursioni()` non restituisce `reference`.
+
+Da qui in poi le modifiche al database vanno in `supabase/modifiche/`, **una per
+file, con la data nel nome**. `schema.sql` resta la fotografia completa per un progetto
+nuovo.
+
+**Soldi.** Il resto si calcola da solo quando c'è il deposit, e **si svuota** se il
+deposit viene tolto. Prima restava il numero vecchio, e "pagato tutto" non si poteva più
+ottenere.
+
+**Provato.** Postgres locale, in due casi: schema nuovo più modifica (la modifica non fa
+niente), e schema del 28 settembre più modifica. In tutti e due il venditore salva REF e
+"FRA / MATT", e la funzione del cliente non restituisce il REF. Playwright a 390 px col
+ticket 2213 (telefono finto):
+- salvati REF, ora 09:40, meeting point, total 63, deposit vuoto, `rest_to_pay` 0,
+  venditori "FRA / MATT", telefono `+44 07700…` → `+447700…`, niente `time_kind`;
+- nell'elenco si legge "pagato · … · FRA / MATT · REF 875171";
+- dopo il salvataggio "Venditori" torna al nome di chi è entrato;
+- 63 con deposit 30 → to pay 33; tolto il deposit → to pay vuoto e "Pagato tutto";
+- 30 + 32 su 63 → avviso;
+- il messaggio "salvato" sparisce appena si scrive il ticket successivo;
+- l'etichetta "Ora al meeting point" andava su due righe e disallineava le caselle:
+  diventata "Ora ritrovo".
+
+`hotel.js` non è più caricato da `venditori.html`: serviva solo per ritiro/partenza.
+
+`CACHE_NAME` alzato a `isla-v365`.

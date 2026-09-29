@@ -58,8 +58,17 @@
           <small class="vend-hint">Scattata da qui, di solito non finisce in galleria: resta solo su Isla.</small>
         </div>
 
-        <label for="tNumber">Ticket number</label>
-        <input id="tNumber" name="ticket_number" type="text" inputmode="numeric" autocomplete="off" required />
+        <div class="vend-row">
+          <div>
+            <label for="tNumber">Ticket number</label>
+            <input id="tNumber" name="ticket_number" type="text" inputmode="numeric" autocomplete="off" required />
+          </div>
+          <div>
+            <!-- Il REF scritto in alto: serve alle compagnie e a noi, il cliente non lo vede. -->
+            <label for="tRef">REF</label>
+            <input id="tRef" name="reference" type="text" autocomplete="off" />
+          </div>
+        </div>
 
         <label for="tExc">Escursione</label>
         <select id="tExc" name="excursion_id" required></select>
@@ -69,25 +78,22 @@
           <select id="tOption" name="option_label"></select>
         </div>
 
+        <!-- Sul ticket l'ora sta accanto al meeting point: e' l'ora in cui
+             presentarsi li', per tutte le escursioni (proprietario, 29 settembre
+             2026). Al cliente: "Presentati alle 9:40 — Puerto Colón, Gate 15". -->
+        <label for="tMeeting">Meeting point</label>
+        <input id="tMeeting" name="meeting_point" type="text" autocomplete="off" />
+
         <div class="vend-row">
           <div>
             <label for="tDate">Data</label>
             <input id="tDate" name="date" type="date" required />
           </div>
           <div>
-            <label for="tTime">Ora</label>
+            <label for="tTime">Ora ritrovo</label>
             <input id="tTime" name="time" type="time" />
           </div>
         </div>
-
-        <label for="tTimeKind">L'ora del ticket è</label>
-        <select id="tTimeKind" name="time_kind">
-          <option value="pickup">l'ora del ritiro</option>
-          <option value="departure">l'ora di partenza</option>
-        </select>
-
-        <label for="tMeeting">Meeting point</label>
-        <input id="tMeeting" name="meeting_point" type="text" autocomplete="off" />
 
         <label for="tHotel">Hotel</label>
         <input id="tHotel" name="hotel" type="text" autocomplete="off" />
@@ -134,13 +140,19 @@
             <input id="tDeposit" name="deposit" type="number" inputmode="decimal" min="0" step="0.01" />
           </div>
           <div>
-            <label for="tRest">Rest €</label>
+            <label for="tRest">To pay €</label>
             <input id="tRest" name="rest_to_pay" type="number" inputmode="decimal" min="0" step="0.01" />
           </div>
         </div>
         <p class="vend-warn" data-money-warn hidden></p>
+        <p class="vend-hint vend-money-info" data-money-info aria-live="polite">Deposit e To pay sbarrati sul ticket: lasciali vuoti, vuol dire pagato tutto.</p>
 
-        <label for="tNotes">Reference / observations</label>
+        <!-- Precompilato con chi e' entrato; si cambia quando sul ticket i
+             venditori sono due ("FRA / MATT"). -->
+        <label for="tSeller">Venditori</label>
+        <input id="tSeller" name="seller" type="text" autocomplete="off" />
+
+        <label for="tNotes">Observations</label>
         <input id="tNotes" name="notes" type="text" autocomplete="off" />
 
         <p class="vend-msg" data-ticket-msg role="alert" hidden></p>
@@ -157,7 +169,6 @@
   <script src="./vendor/supabase-2.117.2.js"></script>
   <script src="./supabase-config.js"></script>
   <script src="./esplora-catalog.js"></script>
-  <script src="./hotel.js"></script>
   <script src="./venditori.js"></script>
 </body>
 </html>

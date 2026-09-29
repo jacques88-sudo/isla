@@ -11,6 +11,11 @@
 --   5. ticket-foto → lo spazio privato per le foto dei ticket
 --
 -- Questo file non contiene nessuna chiave segreta: puo' stare nel repo.
+--
+-- Le modifiche successive, per il progetto gia' creato, stanno in
+-- supabase/modifiche/ (una per file, con la data nel nome). Chi riparte da zero
+-- lancia questo file e poi quelle che qui non sono gia' comprese: oggi solo
+-- 2026-09-30-pulizia-mensile.sql (ha bisogno di Cron attivato).
 
 
 -- 1. I VENDITORI ------------------------------------------------------------

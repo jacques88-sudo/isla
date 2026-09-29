@@ -242,8 +242,17 @@ function cardTicket(b, passata) {
             </div>
           </div>` : "";
 
+  // La striscia con la foto della scheda: fa riconoscere l'escursione a colpo
+  // d'occhio. Le foto non stanno nella cache del service worker, quindi senza
+  // rete non si caricano: in quel caso la striscia sparisce invece di
+  // mostrare l'immagine rotta. alt vuoto: il titolo e' scritto subito sotto.
+  const banner = tour && tour.image
+    ? `<img class="ticket-banner" src="./assets/${encodeURIComponent(tour.image)}" alt="" loading="lazy" onerror="this.remove()" />`
+    : "";
+
   return `
     <div class="detail-card${passata ? " is-past" : ""}">
+      ${banner}
       <div class="detail-status">
         <span>${esc(t("booking.ticketN", { code: b.ticket_number }))}</span>
         <span class="pill">${passata ? t("booking.past") : t("booking.confirmed")}</span>

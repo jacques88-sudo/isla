@@ -817,6 +817,14 @@ a { text-decoration: none; color: inherit; }
   margin: 1rem 0 0;
 }
 .detail-card.is-past { opacity: .6; }
+/* La striscia bassa con la foto dell'escursione, in cima al ticket: bassa
+   apposta, perche' ora e punto d'incontro restino visibili senza scorrere. */
+.ticket-banner {
+  display: block;
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+}
 /* (non "detail-option": e' gia' il nome dei pulsanti delle varianti in tour.html) */
 .ticket-option {
   display: block;

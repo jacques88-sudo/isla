@@ -775,6 +775,60 @@ a { text-decoration: none; color: inherit; }
 
 .install-btn { margin-bottom: 1.6rem; }
 
+/* La finestra del ticket: numero e telefono (app.js, booking.js). Stessa
+   pillola dei campi della richiesta; il prefisso e' un menu stretto accanto. */
+.lookup-input,
+.lookup-phone select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: var(--radius-pill);
+  padding: .9rem 1.2rem;
+  outline: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;              /* sotto i 16px l'iPhone ingrandisce la pagina */
+  margin-bottom: 1.1rem;
+}
+.lookup-phone select { padding-right: .6rem; }
+.lookup-input:focus,
+.lookup-phone select:focus { border-color: var(--text); }
+.lookup-phone {
+  display: grid;
+  grid-template-columns: 7.2rem 1fr;
+  gap: .5rem;
+}
+.lookup-error { color: var(--danger); margin: -.4rem 0 1rem; font-size: .9rem; }
+.lookup-error[hidden] { display: none; }
+[data-lookup-form] .btn-block { margin-bottom: .4rem; }
+
+/* I ticket veri in booking.html: una scheda per escursione, le passate in
+   fondo e spente. */
+.booking-list { display: grid; gap: 1.1rem; }
+.booking-past-title {
+  font-family: var(--font-body);
+  font-size: .72rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--muted);
+  margin: 1rem 0 0;
+}
+.detail-card.is-past { opacity: .6; }
+/* (non "detail-option": e' gia' il nome dei pulsanti delle varianti in tour.html) */
+.ticket-option {
+  display: block;
+  font-family: var(--font-body);
+  font-size: .95rem;
+  color: var(--muted);
+  margin-top: .3rem;
+}
+.booking-list .detail-title { margin-bottom: 1.2rem; }
+.booking-list .map-link { margin-top: 1.1rem; }
+p.note-box { margin: 0 0 1rem; }
+
 .lookup-row {
   position: relative;
 }
@@ -1192,7 +1246,10 @@ a { text-decoration: none; color: inherit; }
 }
 
 .detail {
-  padding: .5rem 0 2.5rem;
+  /* i lati restano quelli di .wrap: con "0" le schede toccavano i bordi del
+     telefono */
+  padding-top: .5rem;
+  padding-bottom: 2.5rem;
 }
 
 .detail-card {
@@ -1216,6 +1273,7 @@ a { text-decoration: none; color: inherit; }
   color: var(--muted);
 }
 .detail-status .pill {
+  flex: none;                  /* .pill ha flex: 1 per l'header: qui la tirava a meta' riga */
   background: var(--cream);
   color: var(--text);
   padding: .3rem .7rem;

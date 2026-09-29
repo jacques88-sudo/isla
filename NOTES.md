@@ -14831,3 +14831,83 @@ ticket 2213 (telefono finto):
 `hotel.js` non è più caricato da `venditori.html`: serviva solo per ritiro/partenza.
 
 `CACHE_NAME` alzato a `isla-v365`.
+
+## "Le mie escursioni": il cliente ritrova il suo ticket (29 settembre 2026)
+
+Passo 3 della spec. Il proprietario ha scelto di **usare la finestra che c'era già**
+(quella di "Prenota ora" e "Cerca il tuo codice"), non una pagina nuova. Per la prova
+ha scelto il ticket vero 2213: Isla legge soltanto, al cliente non manda niente.
+
+**La finestra** (è scritta uguale in sei pagine: index, escursioni, tour, pacchetti,
+pacchetto, noleggio) ora chiede **numero del ticket + telefono**, con il menu del
+prefisso. Il titolo non è più "Scan ticket" ma "Il tuo ticket". Il prefisso proposto è
+quello della lingua (it → +39, es → +34, en → +44). Un telefono che non torna si ferma
+lì, con un messaggio.
+
+**Il telefono non va nell'indirizzo**, dove resterebbe nella cronologia.
+`booking.html?code=2213` porta solo il numero. Numero, telefono e prefisso si salvano in
+`localStorage` (`isla-ticket`, funzioni in `app.js`). Quello stesso salvataggio fa
+**ricordare** il ticket: la finestra si riapre già compilata, e `booking.html` senza
+codice mostra l'ultimo ticket cercato.
+
+**`telefono.js`, nuovo.** `PAESI` e `telefonoE164(prefisso, scritto)` sono stati spostati
+da `venditori.js` in un file comune. Il telefono è la chiave che fa incontrare venditore
+e cliente, quindi deve uscire **identico** da tutte e due le parti: se uno salva
+`+447…` e l'altro cerca `+4407…`, il cliente non trova niente.
+
+**`booking.js`, due strade:**
+- **Codici di prova** (`ISLA-4521`, `TEN-7788`): la pagina finta di prima, intatta e
+  senza telefono. È il segnaposto voluto dal proprietario (CLAUDE.md).
+- **Tutto il resto**: `sb.rpc("le_mie_escursioni", { p_phone, p_ticket })`. Un ticket
+  giusto mostra **tutte** le escursioni confermate di quel telefono: prima le prossime,
+  poi "Escursioni passate", spente.
+
+**Cosa vede il cliente**, in una scheda per ticket:
+- "Ticket 2213" e "Confermata" (oppure "Già fatta");
+- il titolo del catalogo e la variante;
+- **"Presentati alle 09:40"**, il meeting point e il link alla mappa;
+- quando ("Giovedì 1 ottobre", nella lingua scelta);
+- quante persone ("1 adulto · 1 bambino");
+- il pagamento ("Pagato" oppure "Da pagare: €32,50");
+- "Vedi l'escursione", che porta alla scheda del catalogo;
+- in fondo "Scrivi all'ufficio" (WhatsApp col numero del ticket nel messaggio) e
+  "Cerca un'altra prenotazione", che fa dimenticare il ticket a quel telefono.
+
+Il testo scritto dai venditori (meeting point, variante) passa da `esc()` prima di
+entrare nell'HTML.
+
+**Senza rete.** L'ultima risposta buona si salva (`isla-ticket-risultato`) e si mostra
+subito, poi la risposta nuova la sostituisce. Senza campo resta quella, con "Senza
+connessione: è l'ultima versione salvata su questo telefono". È il caso del porto. Per
+questo `telefono.js`, `supabase-config.js` e la libreria sono entrati nella cache del
+service worker: sono 218 KB in più per tutti, ma senza di loro `booking.html` da offline
+non si aprirebbe proprio.
+
+**Corretto sulla pagina finta, di passaggio:** le schede toccavano i bordi del telefono
+(`.detail` aveva `padding: … 0 …` e annullava i lati di `.wrap`). La pillola "Confermata"
+era tirata a metà riga (`.pill` ha `flex: 1` per l'header). Tutte e due ora sono a
+posto.
+
+**Trappola trovata:** la classe `detail-option` esiste già, sono i pulsanti delle varianti
+in `tour.html`. La variante nella scheda del ticket usciva dentro un riquadro. Ora si
+chiama `ticket-option`.
+
+**Provato** con Playwright a 390 px e Supabase simulato:
+- finestra: titolo e prefisso della lingua; `12` → messaggio e nessuna partenza;
+  `+44 07700 900123` → la chiamata porta `+447700900123` e `2213`;
+- tre ticket (uno passato, uno "altro" fuori catalogo, uno con `<b>` nel meeting point
+  per provare l'escape);
+- offline con i dati salvati; lingua ES ("Jueves, 1 de octubre", "Preséntate a las");
+- `booking.html` senza codice → l'ultimo ticket; finestra riaperta già compilata;
+- telefono sbagliato → "Ticket non trovato" col modulo, e il "riprova" funziona;
+- "Cerca un'altra prenotazione" svuota il salvataggio;
+- `ISLA-4521` → pagina finta; `9999` senza telefono → "Manca il telefono";
+- sette pagine senza errori e a 390 px;
+- **service worker vero**: `isla-v366` con 35 file, compresi i tre nuovi; col telefono
+  offline `booking.html` si apre e mostra il ticket salvato;
+- pagina dei venditori dopo lo spostamento in `telefono.js`: stessi risultati di prima.
+
+**Non provato:** Supabase vero, perché da qui non si raggiunge. La prova vera la fa il
+proprietario col 2213.
+
+`CACHE_NAME` alzato a `isla-v366`.

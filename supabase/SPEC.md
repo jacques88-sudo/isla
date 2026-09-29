@@ -83,6 +83,8 @@ Altri campi: `source` (`strada`, `online`, `whatsapp`), `status` (`pending`, `co
 
 ## 5. Flusso cliente — "Le mie escursioni"
 
+- **Dove:** la finestra "Il tuo ticket", quella che c'era già ("Prenota ora", "Cerca il
+  tuo codice"), porta a `booking.html` (deciso il 29 settembre 2026).
 - Telefono (prefisso scelto da un menu) + numero del ticket.
 - Si vedono: escursione, variante, data, "Presentati alle … — meeting point", persone,
   resto da pagare (o "pagato"). Prima le escursioni future, poi quelle passate.

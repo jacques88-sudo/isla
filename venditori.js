@@ -8,29 +8,9 @@
 // chi non sta nella tabella `sellers` non legge e non scrive niente. I
 // controlli di questa pagina servono a non sbagliare, non a proteggere.
 
-// ─── I paesi: nazionalita' e prefisso del telefono ──────────────────────────
-// Stesso elenco per le due cose: scegliere la nazionalita' propone il prefisso.
-// Sono i paesi da cui arriva la gente a Tenerife; per gli altri c'e' "Altro",
-// e il numero si scrive intero, col suo +.
-const PAESI = [
-  { code: "ES", name: "Spagna",        prefix: "34" },
-  { code: "IT", name: "Italia",        prefix: "39" },
-  { code: "GB", name: "Regno Unito",   prefix: "44" },
-  { code: "DE", name: "Germania",      prefix: "49" },
-  { code: "FR", name: "Francia",       prefix: "33" },
-  { code: "NL", name: "Paesi Bassi",   prefix: "31" },
-  { code: "BE", name: "Belgio",        prefix: "32" },
-  { code: "IE", name: "Irlanda",       prefix: "353" },
-  { code: "PT", name: "Portogallo",    prefix: "351" },
-  { code: "CH", name: "Svizzera",      prefix: "41" },
-  { code: "AT", name: "Austria",       prefix: "43" },
-  { code: "PL", name: "Polonia",       prefix: "48" },
-  { code: "SE", name: "Svezia",        prefix: "46" },
-  { code: "NO", name: "Norvegia",      prefix: "47" },
-  { code: "DK", name: "Danimarca",     prefix: "45" },
-  { code: "FI", name: "Finlandia",     prefix: "358" },
-  { code: "US", name: "Stati Uniti",   prefix: "1" }
-];
+// ─── I paesi e il telefono ───────────────────────────────────────────────────
+// PAESI e telefonoE164() stanno in telefono.js: li usa anche la finestra del
+// ticket del cliente, e il numero deve uscire uguale da tutte e due le parti.
 
 // "altro" = escursione che nel catalogo non c'e': si salva lo stesso, e cosa
 // sia lo si scrive nelle note (il salvataggio lo chiede).
@@ -146,46 +126,13 @@ function riempiPaesi() {
   els.prefix.value = "34";
 }
 
-// Il numero come va salvato (E.164: +, prefisso, numero, niente spazi), oppure
-// null se cosi' non si puo' salvare.
-function telefonoE164() {
-  const scritto = els.phone.value.trim();
-  let cifre = scritto.replace(/\D/g, "");
-  if (!cifre) return null;
-
-  // Scritto gia' internazionale: "+44…" o "0044…". Il menu del prefisso non conta.
-  if (scritto.startsWith("+")) return controllaE164("+" + senzaZeroDopoPrefisso(cifre));
-  if (cifre.startsWith("00")) return controllaE164("+" + senzaZeroDopoPrefisso(cifre.slice(2)));
-
-  const prefisso = els.prefix.value;
-  if (!prefisso) return null;   // "Altro" senza il + davanti: non sappiamo il paese
-
-  // Lo 0 davanti si toglie quasi ovunque (in UK "07700…" diventa "+44 7700…"),
-  // ma non in Italia: li' lo 0 fa parte del numero dei fissi.
-  if (prefisso !== "39") cifre = cifre.replace(/^0+/, "");
-  return controllaE164("+" + prefisso + cifre);
-}
-
-// Sui ticket si trova "+44 07595…": il cliente scrive il prefisso E lo 0 che usa
-// a casa sua. Chiamando dall'estero quello 0 non va, e il numero salvato
-// sarebbe un altro. Si toglie, tranne che in Italia (li' lo 0 dei fissi resta).
-// Vale solo per i prefissi dell'elenco: per gli altri non sappiamo dove finisce
-// il prefisso, e il numero resta com'e' scritto.
-function senzaZeroDopoPrefisso(cifre) {
-  const prefisso = PAESI
-    .map(p => p.prefix)
-    .sort((a, b) => b.length - a.length)
-    .find(p => cifre.startsWith(p));
-  if (!prefisso || prefisso === "39") return cifre;
-  return prefisso + cifre.slice(prefisso.length).replace(/^0+/, "");
-}
-
-function controllaE164(numero) {
-  return /^\+[1-9][0-9]{6,14}$/.test(numero) ? numero : null;
+// Il numero scritto nel modulo, come va salvato (o null).
+function telefonoDelModulo() {
+  return telefonoE164(els.prefix.value, els.phone.value);
 }
 
 function aggiornaTelefono() {
-  const numero = telefonoE164();
+  const numero = telefonoDelModulo();
   els.phoneOut.textContent = numero
     ? `Si salva come ${numero}`
     : (els.phone.value.trim() ? "Numero non valido: controlla prefisso e cifre" : "");
@@ -305,7 +252,7 @@ async function salva(event) {
     meeting_point: valoreOVuoto("meeting_point"),
     hotel: valoreOVuoto("hotel"),
     nationality: els.nation.value || null,
-    phone: telefonoE164(),
+    phone: telefonoDelModulo(),
     adults: intero("adults"),
     kids: intero("kids"),
     babies: intero("babies"),

@@ -40,16 +40,79 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-// Wires any <form data-lookup-form> to navigate to booking.html?code=...
+// ─── Il ticket del cliente: numero + telefono ──────────────────────────────
+// Ogni <form data-lookup-form> (la finestra del ticket, e il "riprova" di
+// booking.html) porta a booking.html?code=<numero>. Il telefono NON va
+// nell'indirizzo, dove resterebbe nella cronologia: si salva nel telefono
+// (localStorage) insieme al numero, e booking.js lo legge da li'.
+//
+// Lo stesso salvataggio fa "ricordare" il ticket: la volta dopo la finestra si
+// apre gia' compilata, e booking.html senza codice mostra l'ultimo cercato.
+const TICKET_KEY = "isla-ticket";
+
+function ticketSalvato() {
+  try {
+    const v = JSON.parse(localStorage.getItem(TICKET_KEY) || "null");
+    return v && v.code ? v : null;
+  } catch (e) { return null; }
+}
+
+function salvaTicket(dati) {
+  try {
+    if (dati) localStorage.setItem(TICKET_KEY, JSON.stringify(dati));
+    else localStorage.removeItem(TICKET_KEY);
+  } catch (e) { /* incognito: si cerca lo stesso, solo non lo ricorda */ }
+}
+
+// Il prefisso proposto quando non c'e' niente di salvato: quello della lingua
+// scelta. Chi legge in inglese e' quasi sempre inglese, e cosi' via.
+function prefissoDellaLingua() {
+  return { it: "39", es: "34", en: "44" }[typeof getLang === "function" ? getLang() : "en"] || "44";
+}
+
 function initLookupForms() {
+  const salvato = ticketSalvato();
+
   document.querySelectorAll("[data-lookup-form]").forEach(form => {
-    const input = form.querySelector("input");
+    if (form.dataset.pronto) return;          // gia' collegato (booking.js lo richiama)
+    form.dataset.pronto = "1";
+
+    const code = form.elements.code;
+    const phone = form.elements.phone;
+    const prefix = form.querySelector("[data-prefix-select]");
+    const errore = form.querySelector("[data-lookup-error]");
+
+    if (prefix && typeof PAESI !== "undefined") {
+      PAESI.forEach(p => prefix.append(new Option(`${p.code} +${p.prefix}`, p.prefix)));
+      const altro = new Option(t("ticket.otherPrefix"), "");
+      prefix.append(altro);
+      prefix.value = (salvato && salvato.prefix !== undefined) ? salvato.prefix : prefissoDellaLingua();
+    }
+    if (salvato) {
+      if (code && !code.value) code.value = salvato.code;
+      if (phone && !phone.value && salvato.phoneTyped) phone.value = salvato.phoneTyped;
+    }
+
     form.addEventListener("submit", e => {
       e.preventDefault();
-      const code = input.value.trim();
-      if (!code) return;
-      window.location.href = "./booking.html?code=" + encodeURIComponent(code);
+      const numero = code.value.trim();
+      if (!numero) return;
+
+      const scritto = phone ? phone.value.trim() : "";
+      let e164 = null;
+      if (scritto) {
+        e164 = typeof telefonoE164 === "function" ? telefonoE164(prefix ? prefix.value : "", scritto) : null;
+        if (!e164) {
+          if (errore) { errore.textContent = t("ticket.phoneInvalid"); errore.hidden = false; }
+          phone.focus();
+          return;
+        }
+      }
+      salvaTicket({ code: numero, phone: e164, phoneTyped: scritto, prefix: prefix ? prefix.value : "" });
+      window.location.href = "./booking.html?code=" + encodeURIComponent(numero);
     });
+
+    if (phone && errore) phone.addEventListener("input", () => { errore.hidden = true; });
   });
 }
 

@@ -156,13 +156,22 @@
       <button class="iconbtn" type="button" data-ticket-close data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
     </div>
     <form data-lookup-form>
-      <label for="codeInput" data-i18n="ticket.codeLabel">Codice prenotazione o ticket</label>
-      <div class="lookup-row">
-        <input id="codeInput" name="code" type="text" inputmode="text" autocomplete="off"
-               data-i18n-placeholder="ticket.placeholder" placeholder="Es. ISLA-4521" required />
-        <button class="btn btn-primary" type="submit" data-i18n="common.search">Cerca</button>
+      <!-- Il cliente si fa riconoscere con due cose che ha sul ticket di carta:
+           il numero (in rosso) e il telefono. Tutti e due, perche' col solo
+           telefono chiunque ne provasse uno a caso vedrebbe dove e quando sara'
+           una famiglia. I codici finti di prova (ISLA-4521) funzionano ancora
+           senza telefono: vedi booking.js. -->
+      <label for="codeInput" data-i18n="ticket.codeLabel">Numero del ticket</label>
+      <input class="lookup-input" id="codeInput" name="code" type="text" inputmode="text" autocomplete="off"
+             data-i18n-placeholder="ticket.placeholder" placeholder="Es. 2213" required />
+      <label for="phoneInput" data-i18n="ticket.phoneLabel">Telefono scritto sul ticket</label>
+      <div class="lookup-phone">
+        <select name="prefix" data-prefix-select data-i18n-aria-label="ticket.prefix" aria-label="Prefisso"></select>
+        <input class="lookup-input" id="phoneInput" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" />
       </div>
-      <p class="hint" data-i18n="ticket.hint">Lo trovi nella email o nel messaggio di conferma della prenotazione.</p>
+      <p class="lookup-error" data-lookup-error role="alert" hidden></p>
+      <button class="btn btn-primary btn-block" type="submit" data-i18n="common.search">Cerca</button>
+      <p class="hint" data-i18n="ticket.hint">Il numero è stampato in rosso sul ticket che ti abbiamo dato.</p>
     </form>
   </div>
 
@@ -186,6 +195,7 @@
   <script src="./noleggio.js"></script>
   <script src="./lista.js"></script>
   <script src="./assistente.js"></script>
+  <script src="./telefono.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>

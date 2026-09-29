@@ -43,6 +43,10 @@ const I18N = {
   "nav.aria":           { it: "Menu principale", en: "Main menu", es: "Menú principal" },
   "nav.experiences":    { it: "Esperienze", en: "Experiences", es: "Experiencias" },
   "nav.bookNow":        { it: "Prenota ora", en: "Book now", es: "Reservar" },
+  // Il pulsante in alto a destra apre la finestra del ticket (numero + telefono):
+  // si chiamava "Prenota ora", ma prenotare si fa dalle schede (proprietario,
+  // 30 settembre 2026).
+  "nav.myTicket":       { it: "Il mio ticket", en: "My ticket", es: "Mi ticket" },
   "nav.menu":           { it: "Menu", en: "Menu", es: "Menú" },
 
   // ── titoli delle pagine ─────────────────────────────────────────────────

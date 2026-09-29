@@ -127,8 +127,10 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
 
 ## Cose decise, da non riproporre
 
-- **Il flusso "Prenota ora" con i dati finti resta**, per scelta del proprietario: è il
-  segnaposto di un sistema di prenotazioni futuro.
+- **I codici finti (`ISLA-4521`, `TEN-7788`) restano**, per scelta del proprietario: sono
+  il segnaposto di un sistema di prenotazioni futuro. Il pulsante in alto che li apriva
+  si chiamava "Prenota ora"; dal 30 settembre 2026 si chiama **"Il mio ticket"**, perché
+  apre la finestra dei ticket veri (numero + telefono). Prenotare si fa dalle schede.
 - **Il pallino della chat resta dov'è**, anche quando passa sopra un prezzo.
 - **Le fasce d'orario segnaposto restano** dove le partenze vere non le sappiamo: sono
   intervalli, il cliente li legge come una preferenza.

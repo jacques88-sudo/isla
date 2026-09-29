@@ -14911,3 +14911,22 @@ chiama `ticket-option`.
 proprietario col 2213.
 
 `CACHE_NAME` alzato a `isla-v366`.
+
+### "Prenota ora" → "Il mio ticket" (30 settembre 2026)
+
+Il proprietario ha provato "Le mie escursioni" col ticket 2213 vero: **funziona**. Poi ha
+chiesto di rinominare il pulsante in alto a destra. Si chiamava "Prenota ora" ma apriva
+la finestra del ticket, e prenotare non c'entrava niente.
+
+- Nuova chiave `nav.myTicket`: "Il mio ticket" / "My ticket" / "Mi ticket", nelle sei
+  pagine con l'header. `nav.bookNow` resta nel file (è anche l'esempio nei commenti in
+  testa a `i18n.js`) ma nessuna pagina la usa più.
+- Il "Prenota ora" del menu laterale (`menu.cta`) **resta**: porta all'elenco delle
+  escursioni, e lì prenotare è proprio quello che si fa.
+- CLAUDE.md aggiornato: la regola parlava del "flusso Prenota ora con i dati finti". I
+  codici finti restano, il nome del pulsante no.
+
+Provato a 320 e 390 px nelle tre lingue, su index, escursioni e tour: il pulsante sta su
+una riga (40 px di altezza), la pagina non sborda e la finestra si apre.
+
+`CACHE_NAME` alzato a `isla-v367`.

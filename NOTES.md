@@ -14930,3 +14930,33 @@ Provato a 320 e 390 px nelle tre lingue, su index, escursioni e tour: il pulsant
 una riga (40 px di altezza), la pagina non sborda e la finestra si apre.
 
 `CACHE_NAME` alzato a `isla-v367`.
+
+### Pulizia mensile dei ticket vecchi (30 settembre 2026)
+
+**Regola del proprietario:** una volta al mese, con un mese di stacco. **Il 1° marzo si
+cancellano i ticket delle escursioni di gennaio (e più vecchie)**; quelli di febbraio
+restano fino al 1° aprile. Ogni ticket resta quindi da 1 a 2 mesi dopo l'escursione.
+Conta la **data dell'escursione**, non quella di inserimento: un ticket venduto oggi per
+dicembre resta finché serve.
+
+**Come:** `supabase/modifiche/2026-09-30-pulizia-mensile.sql`, da lanciare una volta dopo
+aver attivato **Cron** (Supabase → Integrations → Cron):
+- `public.pulisci_ticket_vecchi()` cancella `date < primo giorno del mese scorso`,
+  più i ticket senza data (foto caricata e mai confermata) inseriti prima di quel giorno.
+  Restituisce quanti ne ha cancellati, e si può lanciare a mano per provarla.
+- Una funzione nuova in Postgres **la può chiamare chiunque**: senza il `revoke` un
+  visitatore potrebbe cancellare i ticket passando dall'indirizzo pubblico di Supabase
+  (`/rest/v1/rpc/pulisci_ticket_vecchi`). Il file la toglie a `public`, `anon` e
+  `authenticated`: la lancia solo Cron.
+- `cron.schedule('pulizia-ticket-vecchi', '0 3 1 * *', …)`: il giorno 1 alle 3:00 UTC.
+  Con lo stesso nome il lavoro viene sostituito, quindi il file si può rilanciare.
+
+**Le foto no.** Supabase non permette di togliere i file dello spazio con SQL: la riga in
+`storage.objects` sparirebbe, ma il file resterebbe e occuperebbe spazio. Servirà un
+passo a parte (una funzione sul server che chiama l'API dello spazio). Si fa prima che le
+foto diventino tante. Oggi non ce ne sono.
+
+**Provato** su Postgres locale, con un finto `cron.schedule`. Il 29/9 il limite è il 1/8:
+cancellati il ticket del 31/7 e quello senza data del 1/6; restano quelli dell'1/8, del
+15/9 e del 20/12, e quello senza data inserito oggi. Il file lanciato due volte non dà
+errori e lascia un solo lavoro. `anon` e `authenticated` → "permission denied".

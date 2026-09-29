@@ -106,8 +106,11 @@ Altri campi: `source` (`strada`, `online`, `whatsapp`), `status` (`pending`, `co
 
 ## 7. Ancora aperto
 
-- **Per quanti mesi tenere le foto** (GDPR e spazio). Dipende da quanti ticket si fanno al
-  giorno.
+- **Per quanto tenere i ticket: deciso** (30 settembre 2026). Il giorno 1 di ogni mese si
+  cancellano quelli delle escursioni di due mesi prima (il 1° marzo quelli di gennaio):
+  `modifiche/2026-09-30-pulizia-mensile.sql`, con Cron di Supabase. **Le foto invece no**:
+  con SQL non si cancellano i file. Serve un passo a parte, da fare prima che le foto
+  diventino tante.
 - **Informativa GDPR**: in app e/o stampata sul ticket.
 - **Rate limiting** sulla ricerca del cliente. Con telefono + ticket è meno urgente, ma
   si farà insieme all'edge function del passo 4.

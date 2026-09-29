@@ -71,8 +71,11 @@ create table public.bookings (
   option_label   text,
 
   date           date,
+  -- L'ora in cui presentarsi al meeting point, per tutte le escursioni
+  -- (proprietario, 29 settembre 2026): sul ticket sta accanto al meeting point.
   time           time,
-  -- 'pickup' = ora del ritiro, 'departure' = ora di partenza (schede senza ritiro).
+  -- NON PIU' USATO dal 29 settembre 2026 (vedi sopra): resta solo perche'
+  -- toglierlo da un database gia' creato e' un passo in piu' per niente.
   time_kind      text check (time_kind in ('pickup', 'departure')),
   meeting_point  text,
 
@@ -91,7 +94,8 @@ create table public.bookings (
   rest_to_pay    numeric(8,2) check (rest_to_pay >= 0),
 
   seller_id      uuid references auth.users (id) default auth.uid(),
-  seller         text,                 -- il nome scritto sul ticket
+  seller         text,                 -- i nomi scritti sul ticket (anche due: "FRA / MATT")
+  reference      text,                 -- il REF in alto sul ticket: per compagnie e ufficio, il cliente non lo vede
   notes          text,
   photo_path     text,                 -- percorso dentro ticket-foto, NON un link pubblico
 

@@ -53,7 +53,7 @@ const els = {
   optionWrap: $("[data-option-wrap]"),
   optionLabel: $("[data-option-label]"),
   option: $("#tOption"),
-  timeKind: $("#tTimeKind"),
+  seller: $("#tSeller"),
   nation: $("#tNation"),
   prefix: $("#tPrefix"),
   phone: $("#tPhone"),
@@ -63,6 +63,7 @@ const els = {
   deposit: $("#tDeposit"),
   rest: $("#tRest"),
   moneyWarn: $("[data-money-warn]"),
+  moneyInfo: $("[data-money-info]"),
   msg: $("[data-ticket-msg]"),
   save: $("[data-ticket-save]"),
   recent: $("[data-recent]")
@@ -117,7 +118,7 @@ function riempiEscursioni() {
   els.exc.append(new Option("Non è in catalogo (scrivilo nelle note)", ESCURSIONE_ALTRO));
 }
 
-// Scelta l'escursione: le sue varianti (se ne ha) e che cosa vuol dire l'ora.
+// Scelta l'escursione: le sue varianti, se ne ha.
 function aggiornaEscursione() {
   const tour = schedaDa(els.exc.value);
   const scelte = tour && tour.options && tour.options.choices;
@@ -131,11 +132,6 @@ function aggiornaEscursione() {
     // Il valore salvato e' l'etichetta italiana: le varianti non hanno un id.
     scelte.forEach(c => els.option.append(new Option(c.label.it, c.label.it)));
   }
-
-  // L'ora sul ticket e' quella del ritiro dove il ritiro c'e', e quella di
-  // partenza dove non c'e'. Le schede senza ritiro sono in PICKUP_NESSUNO
-  // (hotel.js). Il venditore la puo' cambiare, se quel ticket fa eccezione.
-  els.timeKind.value = PICKUP_NESSUNO.includes(els.exc.value) ? "departure" : "pickup";
 }
 
 // ─── Paesi e telefono ───────────────────────────────────────────────────────
@@ -215,14 +211,28 @@ function aggiornaSoldi(event) {
   const acconto = numero(els.deposit);
 
   // Il resto si calcola da solo finche' il venditore non lo scrive lui.
-  if (!restoScrittoAMano && totale !== null && acconto !== null && totale >= acconto) {
-    els.rest.value = (Math.round((totale - acconto) * 100) / 100).toString();
+  if (!restoScrittoAMano) {
+    els.rest.value = totale !== null && acconto !== null && totale >= acconto
+      ? (Math.round((totale - acconto) * 100) / 100).toString()
+      : "";
   }
 
   const resto = numero(els.rest);
   const tornano = totale === null || acconto === null || resto === null
     || Math.round(totale * 100) === Math.round(acconto * 100) + Math.round(resto * 100);
-  mostra(els.moneyWarn, tornano ? "" : "Attenzione: total ≠ deposit + rest. Controlla il ticket.");
+  mostra(els.moneyWarn, tornano ? "" : "Attenzione: total ≠ deposit + to pay. Controlla il ticket.");
+
+  els.moneyInfo.textContent = pagatoTutto()
+    ? `Pagato tutto: ${totale} €, niente da pagare dopo.`
+    : "Deposit e To pay sbarrati sul ticket: lasciali vuoti, vuol dire pagato tutto.";
+  els.moneyInfo.classList.toggle("is-ok", pagatoTutto());
+}
+
+// Sul ticket, Deposit e To pay sbarrati con "/" vogliono dire che il cliente ha
+// pagato tutto il Total (proprietario, 29 settembre 2026). Nel modulo: Total
+// scritto, gli altri due vuoti. Si salva rest_to_pay = 0.
+function pagatoTutto() {
+  return numero(els.total) !== null && numero(els.deposit) === null && numero(els.rest) === null;
 }
 
 // ─── Foto ───────────────────────────────────────────────────────────────────
@@ -292,7 +302,6 @@ async function salva(event) {
     option_label: els.optionWrap.hidden ? null : (els.option.value || null),
     date: valoreOVuoto("date"),
     time: valoreOVuoto("time"),
-    time_kind: els.timeKind.value,
     meeting_point: valoreOVuoto("meeting_point"),
     hotel: valoreOVuoto("hotel"),
     nationality: els.nation.value || null,
@@ -302,8 +311,9 @@ async function salva(event) {
     babies: intero("babies"),
     total: numero(els.total),
     deposit: numero(els.deposit),
-    rest_to_pay: numero(els.rest),
-    seller: venditore.name,
+    rest_to_pay: pagatoTutto() ? 0 : numero(els.rest),
+    reference: valoreOVuoto("reference"),
+    seller: valoreOVuoto("seller") || venditore.name,
     notes: valoreOVuoto("notes"),
     confirmed_at: new Date().toISOString()
   };
@@ -364,7 +374,8 @@ function pulisciModulo() {
   sceltaFoto();
   aggiornaEscursione();
   restoScrittoAMano = false;
-  mostra(els.moneyWarn, "");
+  aggiornaSoldi();
+  els.seller.value = venditore.name;
   els.phoneOut.textContent = "";
 }
 
@@ -379,7 +390,7 @@ function dataBreve(iso) {
 async function caricaUltimi() {
   const { data, error } = await sb
     .from("bookings")
-    .select("ticket_number, excursion_id, option_label, date, time, phone, adults, kids, babies, seller, photo_path, status")
+    .select("ticket_number, reference, excursion_id, option_label, date, time, phone, adults, kids, babies, rest_to_pay, seller, photo_path, status")
     .order("created_at", { ascending: false })
     .limit(20);
 
@@ -403,7 +414,8 @@ async function caricaUltimi() {
     const titolo = document.createElement("strong");
     titolo.textContent = `#${b.ticket_number} · ${nome}${b.option_label ? " · " + b.option_label : ""}`;
     const sotto = document.createElement("span");
-    sotto.textContent = `${dataBreve(b.date)}${b.time ? " " + b.time.slice(0, 5) : ""} · ${persone} · ${b.phone || ""} · ${b.seller || ""}`;
+    const soldi = b.rest_to_pay === null ? "" : (Number(b.rest_to_pay) === 0 ? " · pagato" : ` · resto ${b.rest_to_pay} €`);
+    sotto.textContent = `${dataBreve(b.date)}${b.time ? " " + b.time.slice(0, 5) : ""} · ${persone}${soldi} · ${b.phone || ""} · ${b.seller || ""}${b.reference ? " · REF " + b.reference : ""}`;
     testo.append(titolo, sotto);
     li.append(testo);
 
@@ -483,6 +495,7 @@ async function mostraPagina() {
     // Il segno per il link "Area venditori" nel menu di Isla (app.js).
     try { localStorage.setItem("isla-venditore", "1"); } catch (e) { /* incognito */ }
     els.sellerName.textContent = venditore.name;
+    if (!els.seller.value) els.seller.value = venditore.name;
     caricaUltimi();
   }
 }
@@ -495,6 +508,10 @@ riempiPaesi();
 els.loginForm.addEventListener("submit", entra);
 els.logout.addEventListener("click", esci);
 els.form.addEventListener("submit", salva);
+// "Ticket … salvato" resta finche' non si comincia il ticket successivo.
+els.form.addEventListener("input", () => {
+  if (els.msg.classList.contains("is-ok")) mostra(els.msg, "");
+});
 els.photo.addEventListener("change", sceltaFoto);
 els.exc.addEventListener("change", aggiornaEscursione);
 els.phone.addEventListener("input", aggiornaTelefono);

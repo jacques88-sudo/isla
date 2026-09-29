@@ -1410,6 +1410,14 @@ a { text-decoration: none; color: inherit; }
   color: var(--text);
 }
 
+/* Il link dei venditori (app.js): stessa riga delle altre, ma piu' sommesso,
+   perche' e' uno strumento di lavoro e non una sezione del sito. */
+.more-menu-nav .more-menu-seller {
+  font-family: var(--font-body);
+  font-size: .95rem;
+  color: var(--muted);
+}
+
 .more-menu-cta { margin-top: 1.4rem; }
 
 @media (min-width: 640px) {

@@ -14728,3 +14728,27 @@ correggere o annullare un ticket già salvato, e caricare più foto insieme (arr
 lettura via AI).
 
 `CACHE_NAME` alzato a `isla-v362` (toccato `styles.css`).
+
+### "Area venditori" nel menu, solo per chi è già entrato (29 settembre 2026)
+
+Il proprietario voleva arrivare alla pagina dei venditori senza ricordarsi l'indirizzo, ma
+**senza che i clienti vedano il link**. Scelta:
+- Dopo un'entrata riuscita, `venditori.js` scrive `isla-venditore = "1"` in localStorage.
+- `app.js` (`aggiungiAreaVenditori`), se trova il segno, aggiunge **"Area venditori"** in
+  fondo al menu di tutte le pagine che ce l'hanno (index, escursioni, tour, pacchetti,
+  pacchetto, noleggio). Il link è più piccolo e grigio delle voci del sito, e sempre in
+  italiano, come la pagina.
+- **Il segno resta anche dopo "Esci"**: la scorciatoia serve proprio per rientrare.
+- Su un telefono nuovo la prima volta si passa dall'indirizzo
+  (`…/isla/venditori.html`), oppure dall'icona sulla schermata Home.
+- Non è una protezione, e non serve che lo sia: la pagina chiede email e password, e il
+  database risponde solo agli account in `sellers`.
+
+Provato: senza segno il menu ha le 4 voci di sempre; dopo entrata e uscita "Area
+venditori" c'è su tutte e sei le pagine e porta a `venditori.html`. Nessun errore JS.
+
+**Da sapere per le prove con Playwright**: il service worker del sito fa lui le
+richieste, e `page.route` non le vede. Per simulare Supabase serve
+`newContext({ serviceWorkers: "block" })`, altrimenti le richieste escono davvero.
+
+`CACHE_NAME` alzato a `isla-v363`.

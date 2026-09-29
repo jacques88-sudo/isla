@@ -466,6 +466,8 @@ async function mostraPagina() {
   els.login.hidden = !!venditore;
   els.work.hidden = !venditore;
   if (venditore) {
+    // Il segno per il link "Area venditori" nel menu di Isla (app.js).
+    try { localStorage.setItem("isla-venditore", "1"); } catch (e) { /* incognito */ }
     els.sellerName.textContent = venditore.name;
     caricaUltimi();
   }

@@ -15034,3 +15034,22 @@ Totale e "to pay" non cambiano con le persone: il modulo lo ricorda.
 veri): modulo precompilato, salvataggio (una sola `update`, per `id`), riga aggiornata,
 "Manca la data" con la data vuota, Annulla, ricerca per numero, numero inesistente,
 ritorno agli ultimi. A 375 px nessuno scorrimento di lato.
+
+**Aggiunti i soldi alla modifica** (proprietario, stesso giorno): se cambiano le persone
+cambia anche il prezzo. Nel modulo "Modifica" ci sono Total, Deposit e To pay, con le
+**stesse regole del ticket nuovo** (`aggiornaSoldi()`): To pay si calcola da Total −
+Deposit finché il venditore non lo scrive lui; Deposit e To pay vuoti = pagato tutto,
+salvato come `rest_to_pay = 0`; se i tre numeri non tornano c'è l'avviso, che però non
+blocca il salvataggio (come nel ticket nuovo).
+
+Aprendo il modulo, un ticket pagato tutto (`deposit` vuoto, `rest_to_pay` 0) torna con
+To pay **vuoto**, come l'aveva scritto il venditore: altrimenti lo 0 resterebbe fisso e
+cambiando il Total la pagina segnalerebbe un conto che non torna. Un To pay già scritto
+vale come "scritto a mano" finché non si tocca Total o Deposit.
+
+Il prezzo **non si ricalcola dal catalogo**: il prezzo del ticket di strada lo fa il
+venditore e può essere diverso da quello della scheda.
+
+**Provato:** pagato tutto 60 € con 1 adulto → 2 adulti e 120 €: resta "pagato tutto", si
+salva `total 120, deposit null, rest_to_pay 0`. Con acconto 90/30/60 → Total 120: To pay
+diventa 90 da solo; scritto 50 a mano compare l'avviso.

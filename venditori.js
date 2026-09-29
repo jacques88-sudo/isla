@@ -158,8 +158,8 @@ function telefonoE164() {
   if (!cifre) return null;
 
   // Scritto gia' internazionale: "+44…" o "0044…". Il menu del prefisso non conta.
-  if (scritto.startsWith("+")) return controllaE164("+" + cifre);
-  if (cifre.startsWith("00")) return controllaE164("+" + cifre.slice(2));
+  if (scritto.startsWith("+")) return controllaE164("+" + senzaZeroDopoPrefisso(cifre));
+  if (cifre.startsWith("00")) return controllaE164("+" + senzaZeroDopoPrefisso(cifre.slice(2)));
 
   const prefisso = els.prefix.value;
   if (!prefisso) return null;   // "Altro" senza il + davanti: non sappiamo il paese
@@ -168,6 +168,20 @@ function telefonoE164() {
   // ma non in Italia: li' lo 0 fa parte del numero dei fissi.
   if (prefisso !== "39") cifre = cifre.replace(/^0+/, "");
   return controllaE164("+" + prefisso + cifre);
+}
+
+// Sui ticket si trova "+44 07595…": il cliente scrive il prefisso E lo 0 che usa
+// a casa sua. Chiamando dall'estero quello 0 non va, e il numero salvato
+// sarebbe un altro. Si toglie, tranne che in Italia (li' lo 0 dei fissi resta).
+// Vale solo per i prefissi dell'elenco: per gli altri non sappiamo dove finisce
+// il prefisso, e il numero resta com'e' scritto.
+function senzaZeroDopoPrefisso(cifre) {
+  const prefisso = PAESI
+    .map(p => p.prefix)
+    .sort((a, b) => b.length - a.length)
+    .find(p => cifre.startsWith(p));
+  if (!prefisso || prefisso === "39") return cifre;
+  return prefisso + cifre.slice(prefisso.length).replace(/^0+/, "");
 }
 
 function controllaE164(numero) {

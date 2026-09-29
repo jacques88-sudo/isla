@@ -3892,3 +3892,13 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .vend-list strong, .vend-list span { display: block; overflow-wrap: anywhere; }
 .vend-list span { color: var(--muted); font-size: .9rem; }
 .vend-list .btn { min-height: 40px; padding: 0 1rem; flex: none; }
+.vend-list li { flex-wrap: wrap; }
+.vend-list-btns { display: flex; gap: .5rem; flex: none; }
+/* Il modulo "Modifica" si apre sotto la riga, largo quanto l'elenco. */
+.vend-edit { flex-basis: 100%; padding-top: .4rem; }
+.vend-edit .vend-hint { margin: -.4rem 0 .6rem; }
+.vend-edit .vend-row .btn { min-height: 44px; }
+.vend-search { margin-bottom: .5rem; }
+.vend-search [hidden] { display: none; }   /* .btn-block vincerebbe su hidden */
+.vend-row-search { grid-template-columns: 1fr auto; align-items: start; }
+.vend-row-search .btn { min-height: 48px; }

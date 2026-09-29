@@ -159,7 +159,18 @@
         <button class="btn btn-primary btn-block" type="submit" data-ticket-save>Salva ticket</button>
       </form>
 
-      <h2 class="vend-h1">Ultimi inseriti</h2>
+      <h2 class="vend-h1" data-recent-title>Ultimi inseriti</h2>
+      <!-- Per trovare anche i ticket che non stanno fra gli ultimi 20: serve
+           a modificarli (un'escursione rinviata). Vuoto = gli ultimi 20. -->
+      <form class="vend-form vend-search" data-search-form>
+        <label for="sNumber">Cerca un ticket</label>
+        <div class="vend-row vend-row-search">
+          <input id="sNumber" name="number" type="text" inputmode="numeric" autocomplete="off" placeholder="Ticket number" />
+          <button class="btn btn-soft" type="submit">Cerca</button>
+        </div>
+        <button class="btn btn-soft btn-block" type="button" data-search-reset hidden>Torna agli ultimi inseriti</button>
+      </form>
+      <p class="vend-msg" data-recent-msg role="status" hidden></p>
       <ul class="vend-list" data-recent></ul>
     </section>
 

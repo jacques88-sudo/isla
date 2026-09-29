@@ -14999,3 +14999,9 @@ il testo bianco resterebbe sul fondo chiaro. Provato in tema chiaro e scuro.
 uno qualunque dei loro numeri: compaiono già tutti nella pagina, i prossimi in alto e i
 passati sotto. Il pulsante serve per un altro telefono (un amico, un parente): il
 telefono dimentica il ticket salvato e torna la casella di ricerca.
+
+**Tolto "Cerca un'altra prenotazione"** dalla pagina dei ticket veri (proprietario,
+29/9/2026). Sotto i ticket resta solo "Scrivi all'ufficio". Per cercare il ticket di un
+altro telefono si torna alla home e si usa la finestra "Il mio ticket": è già compilata
+con l'ultimo cercato, ma numero e telefono si cambiano. La chiave `booking.another`
+resta in `i18n.js` perché la usa ancora la pagina dei codici finti (`ISLA-…`).

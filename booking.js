@@ -306,16 +306,11 @@ function renderTicketVeri(rows, code, senzaRete) {
     </div>
     <div class="detail-actions">
       <a class="btn btn-primary" href="${wa}" target="_blank" rel="noopener noreferrer">${t("booking.whatsapp")}</a>
-      <button class="btn btn-soft" type="button" data-ticket-forget>${t("booking.another")}</button>
     </div>
   `;
-  // "Cerca un'altra prenotazione": il telefono dimentica questo ticket.
-  document.querySelector("[data-ticket-forget]").addEventListener("click", () => {
-    salvaTicket(null);
-    try { localStorage.removeItem(RISULTATO_KEY); } catch (e) { /* incognito */ }
-    history.replaceState(null, "", "./booking.html");
-    renderEmpty();
-  });
+  // Niente "Cerca un'altra prenotazione" (proprietario, 29/9/2026): i ticket
+  // dello stesso telefono ci sono gia' tutti, e per un altro telefono c'e' la
+  // finestra "Il mio ticket" della home, che accetta un numero nuovo.
 }
 
 async function cercaTicketVero(code, phone) {

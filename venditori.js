@@ -1,5 +1,6 @@
 // La pagina dei venditori: entrare, inserire un ticket di carta a mano con la
-// sua foto, vedere gli ultimi inseriti.
+// sua foto, vedere gli ultimi inseriti, cercarne uno e cambiarne data, ora e
+// persone (un'escursione rinviata).
 //
 // Solo in italiano: la usano Jack e Francesca, non i clienti.
 //
@@ -46,11 +47,16 @@ const els = {
   moneyInfo: $("[data-money-info]"),
   msg: $("[data-ticket-msg]"),
   save: $("[data-ticket-save]"),
-  recent: $("[data-recent]")
+  recent: $("[data-recent]"),
+  recentTitle: $("[data-recent-title]"),
+  searchForm: $("[data-search-form]"),
+  searchReset: $("[data-search-reset]"),
+  recentMsg: $("[data-recent-msg]")
 };
 
 let venditore = null;      // { name } dalla tabella sellers
 let fotoScelta = null;     // il File scelto, prima di rimpicciolirlo
+let ricerca = "";          // il numero cercato; vuoto = gli ultimi 20
 
 // ─── Messaggi ───────────────────────────────────────────────────────────────
 
@@ -335,19 +341,25 @@ function dataBreve(iso) {
 }
 
 async function caricaUltimi() {
-  const { data, error } = await sb
+  let domanda = sb
     .from("bookings")
-    .select("ticket_number, reference, excursion_id, option_label, date, time, phone, adults, kids, babies, rest_to_pay, seller, photo_path, status")
-    .order("created_at", { ascending: false })
-    .limit(20);
+    .select("id, ticket_number, reference, excursion_id, option_label, date, time, phone, adults, kids, babies, rest_to_pay, seller, photo_path, status");
+  domanda = ricerca
+    ? domanda.eq("ticket_number", ricerca)
+    : domanda.order("created_at", { ascending: false }).limit(20);
+  const { data, error } = await domanda;
 
+  els.recentTitle.textContent = ricerca ? `Ticket ${ricerca}` : "Ultimi inseriti";
+  els.searchReset.hidden = !ricerca;
   els.recent.replaceChildren();
   if (error) {
     els.recent.append(Object.assign(document.createElement("li"), { textContent: "Elenco non disponibile." }));
     return;
   }
   if (!data.length) {
-    els.recent.append(Object.assign(document.createElement("li"), { textContent: "Ancora nessun ticket." }));
+    els.recent.append(Object.assign(document.createElement("li"), {
+      textContent: ricerca ? `Nessun ticket con il numero ${ricerca}.` : "Ancora nessun ticket."
+    }));
     return;
   }
 
@@ -366,16 +378,133 @@ async function caricaUltimi() {
     testo.append(titolo, sotto);
     li.append(testo);
 
+    const bottoni = document.createElement("div");
+    bottoni.className = "vend-list-btns";
     if (b.photo_path) {
       const bottone = document.createElement("button");
       bottone.type = "button";
       bottone.className = "btn btn-soft";
       bottone.textContent = "Foto";
       bottone.addEventListener("click", () => apriFoto(b.photo_path));
-      li.append(bottone);
+      bottoni.append(bottone);
     }
+    const modifica = document.createElement("button");
+    modifica.type = "button";
+    modifica.className = "btn btn-soft";
+    modifica.textContent = "Modifica";
+    modifica.addEventListener("click", () => apriModifica(li, b));
+    bottoni.append(modifica);
+    li.append(bottoni);
     els.recent.append(li);
   });
+}
+
+function cerca(event) {
+  event.preventDefault();
+  mostra(els.recentMsg, "");
+  ricerca = els.searchForm.elements.number.value.trim();
+  caricaUltimi();
+}
+
+function tornaAgliUltimi() {
+  mostra(els.recentMsg, "");
+  els.searchForm.reset();
+  ricerca = "";
+  caricaUltimi();
+}
+
+// ─── Modifica: data, ora e persone ──────────────────────────────────────────
+// Quando un'escursione viene rinviata (proprietario, 29 settembre 2026). Il
+// resto del ticket non si tocca da qui. Il cliente vede la data nuova la
+// prossima volta che apre la sua pagina, senza scritte "rinviata": lo avverte
+// l'ufficio su WhatsApp.
+
+function apriModifica(li, b) {
+  mostra(els.recentMsg, "");
+  if (li.querySelector(".vend-edit")) return;   // gia' aperto
+
+  const form = document.createElement("form");
+  form.className = "vend-form vend-edit";
+  form.noValidate = true;
+  const id = "e" + b.id.slice(0, 8);
+  form.innerHTML = `
+    <div class="vend-row">
+      <div>
+        <label for="${id}Date">Data</label>
+        <input id="${id}Date" name="date" type="date" required />
+      </div>
+      <div>
+        <label for="${id}Time">Ora ritrovo</label>
+        <input id="${id}Time" name="time" type="time" />
+      </div>
+    </div>
+    <div class="vend-row vend-row-3">
+      <div>
+        <label for="${id}Adults">Adulti</label>
+        <input id="${id}Adults" name="adults" type="number" inputmode="numeric" min="0" max="99" />
+      </div>
+      <div>
+        <label for="${id}Kids">Bambini</label>
+        <input id="${id}Kids" name="kids" type="number" inputmode="numeric" min="0" max="99" />
+      </div>
+      <div>
+        <label for="${id}Babies">Neonati</label>
+        <input id="${id}Babies" name="babies" type="number" inputmode="numeric" min="0" max="99" />
+      </div>
+    </div>
+    <small class="vend-hint">Totale e pagamento restano come sono. Avvisa il cliente su WhatsApp.</small>
+    <p class="vend-msg" role="alert" hidden></p>
+    <div class="vend-row">
+      <button class="btn btn-soft" type="button" data-edit-cancel>Annulla</button>
+      <button class="btn btn-primary" type="submit">Salva</button>
+    </div>`;
+
+  // I valori si mettono qui e non nell'HTML sopra: nessun testo del database
+  // passa da innerHTML.
+  const f = form.elements;
+  f.date.value = b.date || "";
+  f.time.value = b.time ? b.time.slice(0, 5) : "";
+  f.adults.value = b.adults ?? "";
+  f.kids.value = b.kids ?? "";
+  f.babies.value = b.babies ?? "";
+
+  form.querySelector("[data-edit-cancel]").addEventListener("click", () => form.remove());
+  form.addEventListener("submit", event => salvaModifica(event, form, b));
+  li.append(form);
+  f.date.focus();
+}
+
+async function salvaModifica(event, form, b) {
+  event.preventDefault();
+  const f = form.elements;
+  const msg = form.querySelector(".vend-msg");
+  const bottone = form.querySelector('[type="submit"]');
+  const intero = input => input.value === "" ? null : Math.max(0, parseInt(input.value, 10) || 0);
+
+  const nuovo = {
+    date: f.date.value || null,
+    time: f.time.value || null,
+    adults: intero(f.adults),
+    kids: intero(f.kids),
+    babies: intero(f.babies)
+  };
+  if (!nuovo.date) { mostra(msg, "Manca la data.", "errore"); return; }
+
+  bottone.disabled = true;
+  bottone.textContent = "Salvo…";
+  try {
+    // .select() dopo l'update: se le regole del database non lasciano passare
+    // la modifica non c'e' errore, torna solo zero righe.
+    const { data, error } = await sb.from("bookings").update(nuovo).eq("id", b.id).select("id");
+    if (error || !data || !data.length) throw error || new Error("nessuna riga");
+    await caricaUltimi();
+    mostra(els.recentMsg, `Ticket ${b.ticket_number} modificato.`, "ok");
+  } catch (err) {
+    console.error(err);
+    mostra(msg, "Non sono riuscito a salvare. Controlla la connessione e riprova.", "errore");
+    bottone.disabled = false;
+    bottone.textContent = "Salva";
+  }
 }
 
 // Lo spazio delle foto e' privato: per guardarne una si chiede un link che
@@ -455,6 +584,8 @@ riempiPaesi();
 els.loginForm.addEventListener("submit", entra);
 els.logout.addEventListener("click", esci);
 els.form.addEventListener("submit", salva);
+els.searchForm.addEventListener("submit", cerca);
+els.searchReset.addEventListener("click", tornaAgliUltimi);
 // "Ticket … salvato" resta finche' non si comincia il ticket successivo.
 els.form.addEventListener("input", () => {
   if (els.msg.classList.contains("is-ok")) mostra(els.msg, "");

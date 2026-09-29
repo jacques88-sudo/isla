@@ -15005,3 +15005,32 @@ telefono dimentica il ticket salvato e torna la casella di ricerca.
 altro telefono si torna alla home e si usa la finestra "Il mio ticket": è già compilata
 con l'ultimo cercato, ma numero e telefono si cambiano. La chiave `booking.another`
 resta in `i18n.js` perché la usa ancora la pagina dei codici finti (`ISLA-…`).
+
+---
+
+## Modificare un ticket: data, ora e persone (29 settembre 2026)
+
+**Perché:** a volte un'escursione viene rinviata. Il proprietario ha scelto:
+- si cambiano **solo data, ora e persone** (adulti, bambini, neonati). Il resto del
+  ticket non si tocca da `venditori.html`;
+- **niente scritta "rinviata"** per il cliente (strada A): lo avverte l'ufficio su
+  WhatsApp. Il cliente vede la data nuova la prossima volta che apre la pagina (senza
+  rete vede la copia salvata, con la data vecchia). Il database non è cambiato;
+- ogni riga dell'elenco ha **"Modifica"**, e sopra c'è **"Cerca un ticket"** per numero,
+  così si trovano anche i ticket che non stanno fra gli ultimi 20.
+
+**Come:** `apriModifica()` apre un modulo sotto la riga; `salvaModifica()` fa `update`
+per `id`. Le regole c'erano già (`"i venditori correggono"` in `supabase/schema.sql`).
+Dopo l'update c'è `.select("id")`: se le regole bloccano la modifica Supabase **non dà
+errore**, restituisce zero righe, e senza quel controllo la pagina direbbe "modificato".
+I valori del database si mettono nei campi con `.value`, mai dentro `innerHTML`.
+Totale e "to pay" non cambiano con le persone: il modulo lo ricorda.
+
+**Errore trovato provando:** "Torna agli ultimi inseriti" restava visibile anche con
+`hidden`, perché `.btn-block` mette `display: flex` e vince sull'attributo. Serve
+`.vend-search [hidden] { display: none; }`, come già per `.vend-msg[hidden]`.
+
+**Provato** con un Supabase finto (il file `vendor/` sostituito nel browser, niente dati
+veri): modulo precompilato, salvataggio (una sola `update`, per `id`), riga aggiornata,
+"Manca la data" con la data vuota, Annulla, ricerca per numero, numero inesistente,
+ritorno agli ultimi. A 375 px nessuno scorrimento di lato.

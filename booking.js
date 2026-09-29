@@ -243,20 +243,23 @@ function cardTicket(b, passata) {
           </div>` : "";
 
   // La striscia con la foto della scheda: fa riconoscere l'escursione a colpo
-  // d'occhio. Le foto non stanno nella cache del service worker, quindi senza
-  // rete non si caricano: in quel caso la striscia sparisce invece di
-  // mostrare l'immagine rotta. alt vuoto: il titolo e' scritto subito sotto.
+  // d'occhio, e numero del ticket e "Confermata" ci stanno sopra. Le foto non
+  // stanno nella cache del service worker, quindi senza rete non si caricano:
+  // in quel caso la foto sparisce e la riga del numero torna quella normale
+  // (tolta la classe, il testo bianco non resta sul fondo chiaro).
+  // alt vuoto: il titolo e' scritto subito sotto.
   const banner = tour && tour.image
-    ? `<img class="ticket-banner" src="./assets/${encodeURIComponent(tour.image)}" alt="" loading="lazy" onerror="this.remove()" />`
+    ? `<img class="ticket-banner" src="./assets/${encodeURIComponent(tour.image)}" alt="" loading="lazy" onerror="this.parentNode.classList.remove('ticket-hero'); this.remove()" />`
     : "";
-
-  return `
-    <div class="detail-card${passata ? " is-past" : ""}">
-      ${banner}
+  const stato = `
       <div class="detail-status">
         <span>${esc(t("booking.ticketN", { code: b.ticket_number }))}</span>
         <span class="pill">${passata ? t("booking.past") : t("booking.confirmed")}</span>
-      </div>
+      </div>`;
+
+  return `
+    <div class="detail-card${passata ? " is-past" : ""}">
+      ${banner ? `<div class="ticket-hero">${banner}${stato}</div>` : stato}
       <div class="detail-body">
         <h2 class="detail-title">${esc(titolo)}${b.option_label ? `<span class="ticket-option">${esc(b.option_label)}</span>` : ""}</h2>
         <div class="info-grid">

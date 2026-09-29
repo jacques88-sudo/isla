@@ -14960,3 +14960,29 @@ foto diventino tante. Oggi non ce ne sono.
 cancellati il ticket del 31/7 e quello senza data del 1/6; restano quelli dell'1/8, del
 15/9 e del 20/12, e quello senza data inserito oggi. Il file lanciato due volte non dà
 errori e lascia un solo lavoro. `anon` e `authenticated` → "permission denied".
+
+---
+
+## La foto in cima ai ticket (29 settembre 2026)
+
+**Cosa:** in "Il mio ticket" ogni card ha in cima una striscia bassa (100 px) con la foto
+della scheda, la stessa dell'elenco. Il titolo resta sotto, fuori dalla foto: scelto dal
+proprietario, perché ora e punto d'incontro restino visibili senza scorrere.
+
+**Da dove arriva:** `cardTicket()` in `booking.js` cercava già la scheda nel catalogo
+(`excursion_id`) per il titolo; la foto è il suo campo `image`. Il database non cambia.
+
+**Quando non c'è:**
+- ticket di un'escursione che non sta nel catalogo ("Altra escursione"): nessuna scheda,
+  nessuna foto;
+- scheda senza `image`: niente striscia, non il riquadro grigio;
+- **senza rete**: i ticket si leggono dal telefono, ma le foto non stanno nella cache del
+  service worker. L'`<img>` ha `onerror="this.remove()"`: sparisce invece di mostrare
+  l'immagine rotta.
+
+`alt=""`: la foto è decorativa, il titolo è scritto subito sotto. Sui ticket passati si
+spegne con il resto della card (`.is-past`).
+
+**Provato** a 375 px con quattro ticket finti: con foto, di un'escursione fuori catalogo,
+con un file che non esiste, passato. Striscia sul primo e sull'ultimo, niente sugli altri
+due, nessun errore in console.

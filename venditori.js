@@ -1,6 +1,6 @@
 // La pagina dei venditori: entrare, inserire un ticket di carta a mano con la
-// sua foto, vedere gli ultimi inseriti, cercarne uno e cambiarne data, ora e
-// persone (un'escursione rinviata).
+// sua foto, vedere gli ultimi inseriti, cercarne uno e cambiarne data, ora,
+// persone e soldi (un'escursione rinviata).
 //
 // Solo in italiano: la usano Jack e Francesca, non i clienti.
 //
@@ -343,7 +343,7 @@ function dataBreve(iso) {
 async function caricaUltimi() {
   let domanda = sb
     .from("bookings")
-    .select("id, ticket_number, reference, excursion_id, option_label, date, time, phone, adults, kids, babies, rest_to_pay, seller, photo_path, status");
+    .select("id, ticket_number, reference, excursion_id, option_label, date, time, phone, adults, kids, babies, total, deposit, rest_to_pay, seller, photo_path, status");
   domanda = ricerca
     ? domanda.eq("ticket_number", ricerca)
     : domanda.order("created_at", { ascending: false }).limit(20);
@@ -413,9 +413,11 @@ function tornaAgliUltimi() {
   caricaUltimi();
 }
 
-// ─── Modifica: data, ora e persone ──────────────────────────────────────────
-// Quando un'escursione viene rinviata (proprietario, 29 settembre 2026). Il
-// resto del ticket non si tocca da qui. Il cliente vede la data nuova la
+// ─── Modifica: data, ora, persone e soldi ───────────────────────────────────
+// Quando un'escursione viene rinviata (proprietario, 29 settembre 2026). Se
+// cambiano le persone cambia anche il prezzo, quindi ci sono anche Total,
+// Deposit e To pay, con le stesse regole del ticket nuovo. Il resto del
+// ticket non si tocca da qui. Il cliente vede la data nuova la
 // prossima volta che apre la sua pagina, senza scritte "rinviata": lo avverte
 // l'ufficio su WhatsApp.
 
@@ -452,7 +454,23 @@ function apriModifica(li, b) {
         <input id="${id}Babies" name="babies" type="number" inputmode="numeric" min="0" max="99" />
       </div>
     </div>
-    <small class="vend-hint">Totale e pagamento restano come sono. Avvisa il cliente su WhatsApp.</small>
+    <div class="vend-row vend-row-3">
+      <div>
+        <label for="${id}Total">Total €</label>
+        <input id="${id}Total" name="total" type="number" inputmode="decimal" min="0" step="0.01" />
+      </div>
+      <div>
+        <label for="${id}Deposit">Deposit €</label>
+        <input id="${id}Deposit" name="deposit" type="number" inputmode="decimal" min="0" step="0.01" />
+      </div>
+      <div>
+        <label for="${id}Rest">To pay €</label>
+        <input id="${id}Rest" name="rest_to_pay" type="number" inputmode="decimal" min="0" step="0.01" />
+      </div>
+    </div>
+    <p class="vend-warn" data-edit-warn hidden></p>
+    <small class="vend-hint" data-edit-info></small>
+    <small class="vend-hint">Se cambiano le persone, ricontrolla il prezzo. Avvisa il cliente su WhatsApp.</small>
     <p class="vend-msg" role="alert" hidden></p>
     <div class="vend-row">
       <button class="btn btn-soft" type="button" data-edit-cancel>Annulla</button>
@@ -467,6 +485,41 @@ function apriModifica(li, b) {
   f.adults.value = b.adults ?? "";
   f.kids.value = b.kids ?? "";
   f.babies.value = b.babies ?? "";
+  f.total.value = b.total ?? "";
+  f.deposit.value = b.deposit ?? "";
+  // "Pagato tutto" si salva come rest_to_pay 0 senza deposit: nel modulo torna
+  // com'era stato scritto, con To pay vuoto.
+  const pagatoPrima = b.deposit === null && Number(b.rest_to_pay) === 0;
+  f.rest_to_pay.value = pagatoPrima ? "" : (b.rest_to_pay ?? "");
+
+  // Come aggiornaSoldi() del ticket nuovo: To pay si calcola da solo finche'
+  // non lo scrive il venditore, e si avvisa se i tre numeri non tornano.
+  // Aprendo il modulo il To pay che c'e' vale come "scritto": si ricalcola
+  // solo quando si tocca Total o Deposit.
+  let restoAMano = f.rest_to_pay.value !== "";
+  const warn = form.querySelector("[data-edit-warn]");
+  const info = form.querySelector("[data-edit-info]");
+  const soldi = event => {
+    if (event) restoAMano = event.target === f.rest_to_pay && f.rest_to_pay.value !== "";
+    const totale = numero(f.total);
+    const acconto = numero(f.deposit);
+    if (!restoAMano) {
+      f.rest_to_pay.value = totale !== null && acconto !== null && totale >= acconto
+        ? (Math.round((totale - acconto) * 100) / 100).toString()
+        : "";
+    }
+    const resto = numero(f.rest_to_pay);
+    const tornano = totale === null || acconto === null || resto === null
+      || Math.round(totale * 100) === Math.round(acconto * 100) + Math.round(resto * 100);
+    mostra(warn, tornano ? "" : "Attenzione: total ≠ deposit + to pay.");
+    const pagato = totale !== null && acconto === null && resto === null;
+    info.textContent = pagato
+      ? `Pagato tutto: ${totale} €, niente da pagare dopo.`
+      : "Deposit e To pay vuoti vogliono dire pagato tutto.";
+    info.classList.toggle("is-ok", pagato);
+  };
+  [f.total, f.deposit, f.rest_to_pay].forEach(i => i.addEventListener("input", soldi));
+  soldi();
 
   form.querySelector("[data-edit-cancel]").addEventListener("click", () => form.remove());
   form.addEventListener("submit", event => salvaModifica(event, form, b));
@@ -486,8 +539,14 @@ async function salvaModifica(event, form, b) {
     time: f.time.value || null,
     adults: intero(f.adults),
     kids: intero(f.kids),
-    babies: intero(f.babies)
+    babies: intero(f.babies),
+    total: numero(f.total),
+    deposit: numero(f.deposit),
+    rest_to_pay: numero(f.rest_to_pay)
   };
+  // Stessa regola del ticket nuovo: Total scritto e gli altri due vuoti vuol
+  // dire pagato tutto, e si salva rest_to_pay = 0.
+  if (nuovo.total !== null && nuovo.deposit === null && nuovo.rest_to_pay === null) nuovo.rest_to_pay = 0;
   if (!nuovo.date) { mostra(msg, "Manca la data.", "errore"); return; }
 
   bottone.disabled = true;

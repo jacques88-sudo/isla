@@ -14752,3 +14752,38 @@ richieste, e `page.route` non le vede. Per simulare Supabase serve
 `newContext({ serviceWorkers: "block" })`, altrimenti le richieste escono davvero.
 
 `CACHE_NAME` alzato a `isla-v363`.
+
+### Il primo ticket vero, e lo 0 dopo il +44 (29 settembre 2026)
+
+Il proprietario ha mandato la foto di un ticket vero (Freebird, ticket 2213). La foto
+**non sta nel repo**: ha il telefono di un cliente.
+
+**Bug trovato e corretto subito.** Il telefono era scritto "+44 07…", cioè col prefisso
+**e** con lo 0 che il cliente usa in patria. La pagina lo salvava come `+4407…`: il
+formato passava il controllo, ma il numero era sbagliato. Ora `senzaZeroDopoPrefisso()`
+toglie lo 0 dopo i prefissi dell'elenco `PAESI`, tranne +39 (in Italia lo 0 dei fissi
+fa parte del numero). Per i prefissi fuori elenco il numero resta com'è scritto: non
+sappiamo dove finisce il prefisso.
+
+Provati: `+44 07700…` e `0044 07700…` → `+447700…`; `+39 06…` → lo 0 resta; `+39 333…`
+intatto; `+353 087…` → `+35387…`; `+1 212…` intatto; `07700…` col menu su UK → `+447700…`;
+`+7 912…` (fuori elenco) intatto.
+
+**Com'è fatto davvero il ticket**, diverso dalla prima spec. Serve per il passo dell'AI.
+- In testa: "Admiral TRG", non "Admiral Excursions Point S.C.".
+- **Ticket number stampato in rosso** (prenumerato): conferma che è unico.
+- "REF" scritto a mano in alto: un altro numero, forse il riferimento del fornitore.
+- **Data senza anno e col giorno della settimana** ("THURS 1/10"). L'anno va dedotto,
+  e il giorno della settimana serve da controllo (l'1/10/2026 è davvero giovedì).
+- **Excursion "FREEBIRD" senza variante**: la durata non è scritta.
+- **Time accanto al Meeting Point**: è l'ora in cui presentarsi lì ("Puerto Colón, Gate
+  15, 9:40"), non l'ora in cui parte la barca.
+- **Niente nazionalità** sul ticket.
+- Nel riquadro della firma: iniziali del venditore e un nome, forse quello del cliente.
+- Deposit e To Pay con una barra "/".
+- Evidenziatore rosa sopra i campi importanti, e foto spesso ruotata di 90°.
+- Stampato in fondo: cancellazione con **48 ore** di anticipo.
+
+Le domande aperte su questi punti le ha il proprietario (vedi chat del 29 settembre).
+
+`CACHE_NAME` alzato a `isla-v364`.

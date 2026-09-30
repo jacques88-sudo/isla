@@ -14961,6 +14961,13 @@ cancellati il ticket del 31/7 e quello senza data del 1/6; restano quelli dell'1
 15/9 e del 20/12, e quello senza data inserito oggi. Il file lanciato due volte non dà
 errori e lascia un solo lavoro. `anon` e `authenticated` → "permission denied".
 
+**Installata sul progetto vero il 30 settembre 2026.** Cron attivato da Integrations
+("Install integration"; lo schema proposto è stato lasciato com'era). Il file lanciato
+dall'SQL Editor ha risposto `schedule | 1`: invece di "Success" Supabase mostra quello
+che restituisce l'ultimo comando, cioè il numero del lavoro. `cron.job` mostra
+`pulizia-ticket-vecchi · 0 3 1 * * · true`. **Primo giro il 1° novembre**: cancellerà le
+escursioni di settembre e precedenti. Il ticket 2213 (1° ottobre) sparirà il 1° dicembre.
+
 ---
 
 ## La foto in cima ai ticket (29 settembre 2026)

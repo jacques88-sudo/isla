@@ -3921,5 +3921,10 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .vend-form input.vend-dubbio:not([type="checkbox"]):not([type="file"]),
 .vend-form select.vend-dubbio {
   background: oklch(0.95 0.08 95);
+  /* Il testo scuro sempre, anche col telefono in tema scuro: li' il testo dei
+     campi e' chiaro, e su questo giallo spariva (visto sul telefono del
+     proprietario, 30 settembre 2026). */
+  color: oklch(0.24 0.012 60);
+  color-scheme: light;         /* anche le iconcine (orologio, calendario) scure */
   border-color: oklch(0.75 0.14 85);
 }

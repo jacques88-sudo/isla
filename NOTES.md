@@ -15212,3 +15212,20 @@ incollare il file nuovo → Deploy). La pagina del sito non cambia.
 Provato: `tsc` sui tipi dell'SDK; in Node testi `""` → `null`, anche con soli spazi;
 numeri `null` restano `null`; escursione `""` → `null`; tutti gli altri casi come prima;
 400 col motivo → "Anthropic ha risposto 400 (Your credit balance is too low)".
+
+### Prima lettura riuscita, e il giallo in tema scuro (30 settembre 2026)
+
+Dopo aver ripubblicato la funzione (schema con 6 campi "o null"), **la foto vera del
+ticket 2213 è stata letta bene**: numero, REF, Freebird, Puerto Colón Gate 15, 1/10/2026
+(da "THURS 1/10", senza anno), 09:40, telefono UK con lo 0 tolto, 1 adulto + 1 bambino,
+63 € "pagato tutto", FRA / MATT. In `dubbi` c'erano REF, telefono e bambini, cioè
+proprio le cifre scritte peggio.
+
+**Difetto visto sul telefono del proprietario, in tema scuro:** nei campi gialli il testo
+restava chiaro (il colore dei campi in tema scuro) sul giallo chiaro, e i campi da
+ricontrollare erano i meno leggibili della pagina. `.vend-dubbio` ora fissa il testo
+scuro e `color-scheme: light`, così anche le iconcine native (orologio, calendario)
+escono scure. **Le prove adesso girano anche con `colorScheme: 'dark'`**: prima si
+provava solo in chiaro, ed è per questo che non era emerso.
+
+`CACHE_NAME` alzato a `isla-v375`.

@@ -356,6 +356,16 @@
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
 //                come "Su richiesta" e quelle senza foto con un segnaposto.
 //                Metti false per nascondere una voce ai clienti.
+//   nomi       → facoltativo: gli altri nomi con cui i venditori scrivono
+//                questa attivita' sul ticket di carta, di solito il nome
+//                della compagnia ("COOL SAILING"). Servono solo alla lettura
+//                della foto in venditori.html: Claude li vede accanto al
+//                titolo e dal nome risale alla scheda. Il cliente non li vede
+//                mai, e non si traducono: sono nomi propri.
+//                    nomi: ["Cool Sailing"]
+//                Un nome va su una scheda sola: se due schede lo avessero,
+//                Claude non saprebbe quale scegliere. `controlla.js` lo
+//                verifica. Maiuscole e minuscole non contano.
 //
 // LE TRE LINGUE
 //   title, zone, duration e desc si scrivono così:
@@ -734,6 +744,10 @@ const ESPLORA_CATALOG = [
   {
     id: "whale-dolphin-3h",
     title: "3-Hour Whale & Dolphin Boat Trip",
+    // Il nome della compagnia, come i venditori lo scrivono sul ticket.
+    // Solo qui e non sul charter qui sotto: un ticket "Cool Sailing" con
+    // due adulti e' l'uscita a persona.
+    nomi: ["Cool Sailing"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },

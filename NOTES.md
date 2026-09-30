@@ -15060,3 +15060,89 @@ venditore e può essere diverso da quello della scheda.
 **Provato:** pagato tutto 60 € con 1 adulto → 2 adulti e 120 €: resta "pagato tutto", si
 salva `total 120, deposit null, rest_to_pay 0`. Con acconto 90/30/60 → Total 120: To pay
 diventa 90 da solo; scritto 50 a mano compare l'avviso.
+
+## La foto compila il modulo dei venditori (30 settembre 2026)
+
+Passo 4 della spec. Il venditore sceglie la foto del ticket, **Claude la legge** e il
+modulo si riempie da solo. Il venditore controlla e salva come prima: **la lettura non
+salva mai niente**.
+
+**Come è fatto:**
+
+| pezzo | dove | cosa fa |
+|---|---|---|
+| la funzione | `supabase/functions/leggi-ticket/index.ts` | gira **su Supabase** (Edge Function, Deno). Controlla che chi chiama sia in `sellers`, manda foto + istruzioni + catalogo a Claude, restituisce i campi |
+| la chiave | Supabase → Edge Functions → Secrets, `ANTHROPIC_API_KEY` | **mai** nel sito né nel repo |
+| la pagina | `venditori.js`, `leggiDallaFoto()` / `riempiDaLettura()` | foto rimpicciolita (la stessa di prima) → `sb.functions.invoke("leggi-ticket")` → campi nel modulo |
+
+**Scelte nella funzione:**
+- **Modello `claude-opus-5-5`**, effort `medium` (scritto esplicito: è il default di
+  questo modello, ma può cambiare). Legge scrittura a mano, evidenziatore e foto
+  ruotate: è il caso in cui conta la bravura.
+- **Output strutturato** (`output_config.format`, JSON schema): la risposta è sempre un
+  JSON con i 21 campi. Ogni campo può essere `null`, più l'elenco `dubbi` con i campi
+  letti ma incerti.
+- **Le istruzioni dicono di non inventare**: vuoto, sbarrato o illeggibile vale `null`.
+  Telefono, numero, data e ora finiscono in `dubbi` alla prima incertezza. La data si
+  scrive col giorno della settimana ("THURS 1/10") e senza anno: si prende la prima data
+  da oggi in poi, e se il giorno non torna finisce in `dubbi`. Deposit e To Pay sbarrati
+  → `paid_in_full: true`.
+- **Il catalogo arriva dal sito a ogni chiamata** (`catalogoPerLettura()`: id, titolo e
+  varianti delle schede pubblicate). Una fonte sola: una scheda nuova la funzione la
+  conosce subito. La funzione rimette a `null` un `excursion_id` o un'`option_label` che
+  nel catalogo non ci sono.
+- **Cache**: istruzioni e catalogo stanno nel `system` con `cache_control`. Sono uguali
+  per tutte le foto, quindi dalla seconda foto (entro 5 minuti) quella parte costa un
+  decimo. Tutto quello che cambia (la foto, la data di oggi) sta nel messaggio, dopo.
+- **`fallbacks: "default"`** (beta `server-side-fallback-2026-07-01`): se i filtri di
+  sicurezza rifiutassero la richiesta, Anthropic la ripete su un altro modello.
+- **Solo i venditori**: la funzione legge `sellers` con il login di chi chiama. Senza
+  questo controllo chiunque potrebbe far leggere foto a spese di Admiral.
+- Nei log di Supabase, per ogni lettura: numero del ticket e token usati (`usage`).
+  Servono a vedere il costo vero.
+
+**Scelte nella pagina:**
+- La lettura parte **da sola** appena si sceglie la foto. Il messaggio "Leggo il
+  ticket…" pulsa mentre aspetta.
+- **Vince il venditore**: un campo cambiato a mano durante la lettura non viene
+  sovrascritto. Si confronta il modulo con com'era al momento dello scatto.
+- **Due foto di fila**: vale l'ultima. Le risposte vecchie si buttano (`lettura`, un
+  contatore).
+- **In giallo** i campi in `dubbi` (`.vend-dubbio`). Il giallo sparisce appena il
+  venditore tocca il campo. Il primo tentativo non si vedeva: la regola generale dei
+  campi (`.vend-form input:not(...):not(...)`) era più specifica e copriva lo sfondo.
+  Ora il selettore del giallo ha la stessa forma, più la classe.
+- **La spunta "Ho ricontrollato il numero" non si mette mai da sola.**
+- Il messaggio finale dice cosa scrivere a mano: "escursione (sul ticket: "BARCA X"),
+  data".
+
+**Costo stimato** (da verificare coi primi `usage` veri nei log): foto 1600 px ≈ 2.500
+token, istruzioni + catalogo ≈ 2.500 (in cache dalla seconda foto), risposta ≈
+500–1.500 token. Circa **2–5 centesimi a foto** con Opus 5.5 ($4 / $20 per milione di
+token).
+
+**Provato:**
+- **La funzione**: controllata con `tsc` sui tipi veri di `@anthropic-ai/sdk@0.129.0`
+  (un parametro inventato viene preso, quindi il controllo è vero). Poi fatta girare in
+  Node con finti Supabase e Anthropic, in 17 casi:
+  - la richiesta porta modello, beta, `fallbacks`, effort, schema (21 campi), cache sul
+    system, immagine e catalogo;
+  - un'escursione o una variante inventata torna `null`, una variante valida resta;
+  - non venditore → 401; immagine strana o enorme, catalogo vuoto, data sbagliata → 400;
+    GET → 405; OPTIONS → CORS;
+  - rifiuto → 422; `max_tokens` → 502; chiave sbagliata → 500 con messaggio; 400 di
+    Anthropic → 502; chiave mancante → 500.
+- **La pagina**: Playwright a 390 px con la funzione simulata:
+  - la richiesta porta il login del venditore, una foto da 160 KB, 65 schede e la data;
+  - i campi si riempiono: numero, REF, escursione, meeting point, data, ora, telefono
+    (`+44 07700…` → "Si salva come +447700…"), persone, "Pagato tutto", "FRA / MATT";
+  - la spunta resta vuota; ora e telefono in giallo; il giallo dell'ora sparisce
+    correggendola;
+  - il salvataggio scrive la riga giusta;
+  - il numero scritto a mano durante la lettura resta; l'escursione non riconosciuta
+    finisce nel messaggio; l'errore della funzione viene mostrato; con due foto di fila
+    vale la seconda.
+- **Non provato con Claude e Supabase veri**: da qui non si raggiungono. La prima prova
+  vera la fa il proprietario, dopo aver messo la chiave e pubblicato la funzione.
+
+`CACHE_NAME` alzato a `isla-v373`.

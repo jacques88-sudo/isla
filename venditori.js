@@ -30,6 +30,7 @@ const els = {
   form: $("[data-ticket-form]"),
   photo: $("#tPhoto"),
   preview: $("[data-photo-preview]"),
+  aiMsg: $("[data-ai-msg]"),
   exc: $("#tExc"),
   optionWrap: $("[data-option-wrap]"),
   optionLabel: $("[data-option-label]"),
@@ -219,6 +220,149 @@ function rimpicciolisci(file) {
   });
 }
 
+// ─── La foto compila il modulo ──────────────────────────────────────────────
+// Scelta la foto, la funzione leggi-ticket (supabase/functions/) la fa leggere
+// a Claude e restituisce i campi. Qui si mettono nel modulo; salvare resta del
+// venditore, dopo averli guardati. La casella "Ho ricontrollato il numero" NON
+// si spunta mai da sola: il telefono e' la chiave del cliente.
+//
+// I campi scritti a mano mentre la lettura era in corso non si toccano: vince
+// il venditore.
+
+let lettura = 0;           // numero dell'ultima lettura: le risposte vecchie si buttano
+
+// Il catalogo come lo vuole la funzione: id, titolo, varianti. Sempre nello
+// stesso ordine e con gli stessi testi: cosi' Anthropic lo tiene in cache.
+function catalogoPerLettura() {
+  return ESPLORA_CATALOG.filter(t => t.published).map(t => {
+    const scheda = { id: t.id, title: titoloDi(t) };
+    const scelte = t.options && t.options.choices;
+    if (scelte) scheda.options = scelte.map(c => c.label.it);
+    return scheda;
+  });
+}
+
+function inBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).split(",")[1]);
+    r.onerror = () => reject(new Error("foto"));
+    r.readAsDataURL(blob);
+  });
+}
+
+function oggiISO() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+function mostraLettura(testo, tipo) {
+  mostra(els.aiMsg, testo, tipo);
+  els.aiMsg.classList.toggle("is-busy", tipo === "attesa");
+}
+
+function togliDubbi() {
+  els.form.querySelectorAll(".vend-dubbio").forEach(el => el.classList.remove("vend-dubbio"));
+}
+
+async function leggiDallaFoto() {
+  if (!fotoScelta) return;
+  const mia = ++lettura;
+  togliDubbi();
+  // Com'era il modulo al momento dello scatto: un campo diverso, alla risposta,
+  // vuol dire che il venditore l'ha scritto lui intanto.
+  const prima = {};
+  Array.from(els.form.elements).forEach(el => { if (el.name) prima[el.name] = el.value; });
+
+  mostraLettura("Leggo il ticket… (una decina di secondi)", "attesa");
+  try {
+    const image = await inBase64(await rimpicciolisci(fotoScelta));
+    const { data, error } = await sb.functions.invoke("leggi-ticket", {
+      body: { image, catalogo: catalogoPerLettura(), oggi: oggiISO() }
+    });
+    if (mia !== lettura) return;          // intanto e' arrivata un'altra foto
+    if (error) {
+      let motivo = "";
+      try { motivo = (await error.context.json()).errore || ""; } catch (e) { /* niente */ }
+      mostraLettura(`Non sono riuscito a leggere la foto${motivo ? ": " + motivo : "."} Compila a mano.`, "errore");
+      return;
+    }
+    riempiDaLettura(data.campi, prima);
+  } catch (err) {
+    console.error(err);
+    if (mia === lettura) mostraLettura("Non sono riuscito a leggere la foto. Compila a mano.", "errore");
+  }
+}
+
+function riempiDaLettura(c, prima) {
+  const dubbi = new Set(c.dubbi || []);
+  const nonLetti = [];
+
+  // Mette un valore in un campo, se la lettura l'ha trovato e il venditore
+  // intanto non ci ha scritto.
+  function metti(nome, valore, etichetta) {
+    const el = els.form.elements[nome];
+    if (valore === null || valore === undefined || valore === "") {
+      if (etichetta) nonLetti.push(etichetta);
+      return false;
+    }
+    if (el.value !== prima[nome]) return false;
+    el.value = String(valore);
+    if (dubbi.has(nome)) el.classList.add("vend-dubbio");
+    return true;
+  }
+
+  metti("ticket_number", c.ticket_number, "ticket number");
+  metti("reference", c.reference);
+
+  if (c.excursion_id && els.exc.value === prima.excursion_id) {
+    els.exc.value = c.excursion_id;
+    aggiornaEscursione();
+    if (c.option_label) els.option.value = c.option_label;
+    if (dubbi.has("excursion_id")) els.exc.classList.add("vend-dubbio");
+  } else if (!c.excursion_id) {
+    nonLetti.push(c.excursion_text ? `escursione (sul ticket: "${c.excursion_text}")` : "escursione");
+  }
+
+  metti("meeting_point", c.meeting_point);
+  metti("date", /^\d{4}-\d{2}-\d{2}$/.test(c.date || "") ? c.date : null, "data");
+  metti("time", /^\d{2}:\d{2}$/.test(c.time || "") ? c.time : null, "ora");
+  metti("hotel", c.hotel);
+
+  // Nazionalita': solo se e' nel menu. Si porta dietro il prefisso, come a mano.
+  if (c.nationality && Array.from(els.nation.options).some(o => o.value === c.nationality)
+      && els.nation.value === prima.nationality) {
+    els.nation.value = c.nationality;
+    els.nation.dispatchEvent(new Event("change"));
+  }
+  if (metti("phone", c.phone, "telefono")) aggiornaTelefono();
+
+  metti("adults", c.adults);
+  metti("kids", c.kids);
+  metti("babies", c.babies);
+
+  if (metti("total", c.total, "total")) {
+    if (c.paid_in_full) {
+      // Deposit e To pay sbarrati: vuoti, e il modulo scrive "Pagato tutto".
+      els.deposit.value = "";
+      els.rest.value = "";
+      restoScrittoAMano = false;
+    } else {
+      metti("deposit", c.deposit);
+      if (metti("rest_to_pay", c.rest_to_pay)) restoScrittoAMano = true;
+    }
+    aggiornaSoldi();
+  }
+
+  metti("seller", c.seller);
+  metti("notes", c.notes);
+
+  let testo = "Letto. Controlla ogni campo con il ticket prima di salvare.";
+  if (dubbi.size) testo += " In giallo quelli incerti.";
+  if (nonLetti.length) testo += ` Da scrivere a mano: ${nonLetti.join(", ")}.`;
+  mostraLettura(testo, "ok");
+}
+
 // ─── Salvataggio ────────────────────────────────────────────────────────────
 
 function valoreOVuoto(nome) {
@@ -330,6 +474,9 @@ function pulisciModulo() {
   aggiornaSoldi();
   els.seller.value = venditore.name;
   els.phoneOut.textContent = "";
+  lettura++;                 // una lettura ancora in corso non riempie il modulo nuovo
+  togliDubbi();
+  mostraLettura("");
 }
 
 // ─── Ultimi inseriti ────────────────────────────────────────────────────────
@@ -649,7 +796,13 @@ els.searchReset.addEventListener("click", tornaAgliUltimi);
 els.form.addEventListener("input", () => {
   if (els.msg.classList.contains("is-ok")) mostra(els.msg, "");
 });
-els.photo.addEventListener("change", sceltaFoto);
+els.photo.addEventListener("change", () => {
+  sceltaFoto();
+  leggiDallaFoto();
+});
+// Un campo in giallo, una volta toccato dal venditore, non e' piu' un dubbio.
+els.form.addEventListener("input", e => e.target.classList.remove("vend-dubbio"));
+els.form.addEventListener("change", e => e.target.classList.remove("vend-dubbio"));
 els.exc.addEventListener("change", aggiornaEscursione);
 els.phone.addEventListener("input", aggiornaTelefono);
 els.prefix.addEventListener("change", aggiornaTelefono);

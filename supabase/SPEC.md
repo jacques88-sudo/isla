@@ -99,8 +99,9 @@ Altri campi: `source` (`strada`, `online`, `whatsapp`), `status` (`pending`, `co
 1. **Supabase**: tabelle, regole di accesso e foto (`schema.sql`), poi i 2 account.
 2. **Modulo del venditore scritto a mano**, senza AI. Resta anche dopo come ripiego.
 3. **"Le mie escursioni"** lato cliente, nelle tre lingue.
-4. **Lettura della foto con l'AI**, che precompila il modulo del passo 2. La chiave
-   resta solo sul server (edge function).
+4. **Lettura della foto con l'AI**, che precompila il modulo del passo 2: **fatta il 30
+   settembre 2026**. Funzione `supabase/functions/leggi-ticket`, modello Claude Opus 5.5;
+   la chiave sta solo nei Secrets di Supabase.
 5. QR sul ticket.
 6. Prenotazioni online (`source = online`): rimandate.
 

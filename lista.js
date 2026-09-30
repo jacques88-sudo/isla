@@ -120,12 +120,14 @@ function listaSomma(voci) {
 // Il messaggio con tutte le escursioni della lista. Con una sola voce si usa
 // il messaggio normale: un elenco numerato di un elemento solo sarebbe strano
 // da leggere, e all'ufficio arriverebbero due formati per la stessa cosa.
-function listaWhatsappUrl(nome) {
+// `codice`: quello della richiesta salvata nel database (richieste.js), in
+// fondo al messaggio. Vuoto = niente riga.
+function listaWhatsappUrl(nome, codice) {
   const voci = listaLeggi();
   if (!voci.length) return "";
   const primo = listaVoceConto(voci[0]);
   if (voci.length === 1) {
-    return primo ? whatsappUrl(primo.tour, Object.assign({ name: nome }, voci[0])) : "";
+    return primo ? whatsappUrl(primo.tour, Object.assign({ name: nome, code: codice }, voci[0])) : "";
   }
 
   const blocchi = [];
@@ -143,6 +145,7 @@ function listaWhatsappUrl(nome) {
     testo += "\n\n" + (senzaPrezzo ? t("wa.totalPartial") : t("wa.total")) +
       ": €" + eur(somma);
   }
+  if (codice) testo += "\n\n" + t("wa.code", { code: codice });
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
 }
 
@@ -317,8 +320,12 @@ function initLista() {
     e.preventDefault();
     const nome = dialog.querySelector("#listaName").value.trim();
     if (!nome) return;
-    const url = listaWhatsappUrl(nome);
-    if (!url) return;
+    if (!listaWhatsappUrl(nome)) return;
+    // La richiesta si salva anche nel database (richieste.js), col codice che
+    // va nel messaggio: cosi' l'ufficio la ritrova e il cliente ne vede lo
+    // stato in "Le mie richieste". Il messaggio si rifa' col codice dentro.
+    const codice = typeof richiestaNuova === "function" ? richiestaNuova(listaLeggi()) : "";
+    const url = listaWhatsappUrl(nome, codice);
     // La lista si svuota: la richiesta e' partita, e ritrovarsela ancora li'
     // alla prossima visita farebbe rimandare due volte le stesse escursioni.
     listaSvuota();

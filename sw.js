@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v377";
+const CACHE_NAME = "isla-v378";
 const ASSETS = [
   "./",
   "./index.html",
@@ -37,6 +37,7 @@ const ASSETS = [
   "./assistente.js",
   "./esplora-catalog.js",
   "./hotel.js",
+  "./richieste.js",
   // La pagina del ticket (booking.html) parla con Supabase: senza questi tre
   // file in cache, da offline non si aprirebbe nemmeno per mostrare l'ultimo
   // ticket salvato sul telefono — che e' proprio il caso del porto senza campo.
@@ -75,6 +76,10 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("fetch", event => {
+  // Solo le letture passano dalla cache. Le richieste mandate al database
+  // (richieste.js, POST) vanno dritte in rete: una POST non si mette in cache,
+  // e da offline non deve tornare la pagina offline.html al posto dell'errore.
+  if (event.request.method !== "GET") return;
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;

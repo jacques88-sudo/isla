@@ -46,6 +46,16 @@
         <button class="btn btn-soft" type="button" data-logout>Esci</button>
       </div>
 
+      <!-- Le richieste mandate su WhatsApp dai clienti senza ticket di carta
+           (richieste.js). Il codice e' in fondo al messaggio del cliente.
+           Nascosto finche' non ce n'e' nessuna. -->
+      <section class="vend-requests" data-requests-box hidden>
+        <h2 class="vend-h1" data-requests-title>Richieste da WhatsApp</h2>
+        <small class="vend-hint">Il codice è in fondo al messaggio del cliente. Confermata o annullata, il cliente la vede cambiare nella sua pagina.</small>
+        <p class="vend-msg" data-requests-msg role="status" hidden></p>
+        <ul class="vend-list" data-requests></ul>
+      </section>
+
       <h1 class="vend-h1">Nuovo ticket</h1>
 
       <form class="vend-form" data-ticket-form novalidate>

@@ -749,6 +749,18 @@ a { text-decoration: none; color: inherit; }
   overscroll-behavior: contain;
 }
 .ticket-dialog[hidden] { display: none; }
+/* "Senza ticket? Le mie richieste (2)": sotto il modulo, solo per chi ha
+   mandato richieste su WhatsApp da questo telefono (app.js). */
+.ticket-requests-link {
+  display: block;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .ticket-dialog.is-open { transform: translate(-50%, 0); }
 
 .ticket-dialog-head {
@@ -3933,6 +3945,14 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .vend-edit { flex-basis: 100%; padding-top: .4rem; }
 .vend-edit .vend-hint { margin: -.4rem 0 .6rem; }
 .vend-edit .vend-row .btn { min-height: 44px; }
+/* Le richieste da WhatsApp: lo stato scritto e colorato come nella pagina
+   del cliente (verde, ambra, rosso). */
+.vend-requests { margin-bottom: 1.5rem; }
+.vend-req-stato { display: block; font-style: normal; font-size: .85rem; font-weight: 500; margin-top: .15rem; }
+.vend-req.is-pending .vend-req-stato { color: var(--wait); }
+.vend-req.is-confirmed .vend-req-stato { color: var(--ok); }
+.vend-req.is-cancelled .vend-req-stato { color: var(--danger); }
+.vend-req.is-cancelled strong { text-decoration: line-through; text-decoration-thickness: 1px; }
 .vend-search { margin-bottom: .5rem; }
 .vend-search [hidden] { display: none; }   /* .btn-block vincerebbe su hidden */
 .vend-row-search { grid-template-columns: 1fr auto; align-items: start; }

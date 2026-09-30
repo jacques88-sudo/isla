@@ -14,8 +14,9 @@
 --
 -- Le modifiche successive, per il progetto gia' creato, stanno in
 -- supabase/modifiche/ (una per file, con la data nel nome). Chi riparte da zero
--- lancia questo file e poi quelle che qui non sono gia' comprese: oggi solo
--- 2026-09-30-pulizia-mensile.sql (ha bisogno di Cron attivato).
+-- lancia questo file e poi quelle che qui non sono gia' comprese: oggi
+-- 2026-09-30-pulizia-mensile.sql (ha bisogno di Cron attivato) e
+-- 2026-09-30-richieste-whatsapp.sql (le richieste dei clienti senza ticket).
 
 
 -- 1. I VENDITORI ------------------------------------------------------------

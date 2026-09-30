@@ -30,6 +30,9 @@
   /* warm sand accent, used sparingly */
   --gold: oklch(0.75 0.06 68);
   --danger: oklch(0.55 0.15 30);
+  /* i tre stati di un ticket o di una richiesta (booking.html) */
+  --ok: oklch(0.52 0.11 150);
+  --wait: oklch(0.62 0.13 70);
   /* sea blue, used only for the loading splash */
   --wave-blue: oklch(0.6 0.11 235);
   --wave-blue-light: oklch(0.74 0.1 210);
@@ -850,6 +853,36 @@ a { text-decoration: none; color: inherit; }
 .booking-list .detail-title { margin-bottom: 1.2rem; }
 .booking-list .map-link { margin-top: 1.1rem; }
 p.note-box { margin: 0 0 1rem; }
+
+/* I tre stati: confermata (verde), da confermare (ambra), annullata (rosso).
+   Il colore sta in tre posti: la pillola, la riga a sinistra della scheda e la
+   nota sotto il titolo. Tre segni, cosi' si legge anche da chi i colori li
+   distingue male: la pillola dice lo stato a parole. La scritta della pillola
+   prende il fondo della pagina, quindi si gira da sola col tema scuro. */
+.booking-intro { color: var(--muted); margin: 0 0 1.1rem; }
+.detail-card.is-confirmed { --stato: var(--ok); }
+.detail-card.is-pending   { --stato: var(--wait); }
+.detail-card.is-cancelled { --stato: var(--danger); }
+.detail-card[class*="is-"]:not(.is-past) { border-left: 4px solid var(--stato); }
+.detail-card[class*="is-"]:not(.is-past) .detail-status .pill {
+  background: var(--stato);
+  color: var(--bg);
+  font-weight: 500;
+}
+/* Sull'ambra la scritta chiara non si legge: resta scura in tutti e due i temi. */
+.detail-card.is-pending:not(.is-past) .detail-status .pill { color: oklch(0.24 0.012 60); }
+.ticket-state-note {
+  margin: -.4rem 0 1.2rem;
+  padding: .7rem .9rem;
+  border-left: 3px solid var(--stato);
+  /* in srgb: in oklch il bianco non ha tinta e la miscela usciva rosa anche
+     sull'ambra */
+  background: color-mix(in srgb, var(--stato) 12%, var(--surface));
+  font-size: .95rem;
+}
+/* L'annullata resta leggibile ma si capisce che non vale piu'. */
+.detail-card.is-cancelled .detail-title { text-decoration: line-through; text-decoration-thickness: 1px; }
+.detail-card.is-cancelled .ticket-banner { filter: grayscale(1); }
 
 .lookup-row {
   position: relative;
@@ -3721,6 +3754,8 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
     --primary-foreground: oklch(0.2 0.012 60);
     --gold: oklch(0.8 0.06 68);
     --danger: oklch(0.7 0.16 30);
+    --ok: oklch(0.72 0.13 150);
+    --wait: oklch(0.8 0.13 75);
   }
 
   /* --- le cose che non si girano da sole ---------------------------------

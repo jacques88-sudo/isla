@@ -3928,3 +3928,5 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   color-scheme: light;         /* anche le iconcine (orologio, calendario) scure */
   border-color: oklch(0.75 0.14 85);
 }
+/* Scatta | Galleria, affiancati */
+.vend-photo-btns { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }

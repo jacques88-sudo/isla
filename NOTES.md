@@ -15238,3 +15238,24 @@ provava solo in chiaro, ed è per questo che non era emerso.
 - **La variante non la inventa**: sul 2213 la durata di Freebird non è scritta, e la
   lettura l'ha lasciata vuota come dicono le istruzioni. "3 ore" l'aveva scelta il
   proprietario a mano.
+
+### "Scatta" e "Galleria": due pulsanti invece di uno (30 settembre 2026)
+
+Il proprietario chiedeva se si può fotografare il ticket direttamente. Il pulsante unico
+(`accept="image/*"` senza `capture`) **in teoria** propone fotocamera e galleria, ma
+molti Android recenti aprono il selettore di foto del sistema, cioè solo la galleria.
+
+Ora sono due:
+- **📷 Scatta**: `capture="environment"`, apre subito la fotocamera posteriore.
+- **🖼 Galleria**: come prima, per le foto già fatte e per scegliere a fine turno.
+
+Tutti e due chiamano `sceltaFoto(file)`, che ora riceve il file invece di leggerlo da un
+campo fisso, e poi la lettura. Scelto uno, **l'altro si svuota**: la foto buona è una
+sola. Aprire e chiudere senza scegliere non fa niente.
+
+Provato con Playwright: `capture="environment"` c'è solo su Scatta. Una foto da Scatta
+fa partire la lettura, riempie il modulo, e al salvataggio carica la foto. Dopo il
+salvataggio l'anteprima sparisce e tutti e due i campi sono vuoti. Le prove di prima
+(galleria, due foto di fila, errori) danno gli stessi risultati.
+
+`CACHE_NAME` alzato a `isla-v376`.

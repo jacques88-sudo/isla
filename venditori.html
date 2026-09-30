@@ -51,8 +51,15 @@
       <form class="vend-form" data-ticket-form novalidate>
 
         <div class="vend-photo">
-          <label class="btn btn-soft btn-block" for="tPhoto">📷 Foto del ticket</label>
-          <!-- Senza "capture": il telefono propone sia la fotocamera sia la galleria. -->
+          <!-- Due pulsanti, non uno: senza "capture" il telefono dovrebbe proporre
+               fotocamera e galleria, ma molti Android recenti aprono solo la
+               galleria (proprietario, 30 settembre 2026). capture="environment"
+               apre subito la fotocamera posteriore. -->
+          <div class="vend-photo-btns">
+            <label class="btn btn-soft" for="tPhotoCam">📷 Scatta</label>
+            <label class="btn btn-soft" for="tPhoto">🖼 Galleria</label>
+          </div>
+          <input id="tPhotoCam" type="file" accept="image/*" capture="environment" class="vend-hidden-input" />
           <input id="tPhoto" name="photo" type="file" accept="image/*" class="vend-hidden-input" />
           <img data-photo-preview alt="Foto del ticket" hidden />
           <!-- Scelta la foto, Claude la legge e riempie il modulo

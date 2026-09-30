@@ -29,6 +29,7 @@ const els = {
   logout: $("[data-logout]"),
   form: $("[data-ticket-form]"),
   photo: $("#tPhoto"),
+  photoCam: $("#tPhotoCam"),
   preview: $("[data-photo-preview]"),
   aiMsg: $("[data-ai-msg]"),
   exc: $("#tExc"),
@@ -198,8 +199,10 @@ function pagatoTutto() {
 
 // ─── Foto ───────────────────────────────────────────────────────────────────
 
-function sceltaFoto() {
-  fotoScelta = els.photo.files[0] || null;
+// La foto arriva da uno dei due pulsanti (Scatta o Galleria); senza argomento
+// si toglie (modulo ripulito).
+function sceltaFoto(file) {
+  fotoScelta = file || null;
   if (els.preview.src) URL.revokeObjectURL(els.preview.src);
   els.preview.hidden = !fotoScelta;
   if (fotoScelta) els.preview.src = URL.createObjectURL(fotoScelta);
@@ -803,10 +806,13 @@ els.searchReset.addEventListener("click", tornaAgliUltimi);
 els.form.addEventListener("input", () => {
   if (els.msg.classList.contains("is-ok")) mostra(els.msg, "");
 });
-els.photo.addEventListener("change", () => {
-  sceltaFoto();
+[els.photoCam, els.photo].forEach(input => input.addEventListener("change", () => {
+  if (!input.files[0]) return;              // aperta e chiusa senza scegliere
+  sceltaFoto(input.files[0]);
+  // L'altro pulsante si svuota: la foto buona e' una sola, quella appena scelta.
+  (input === els.photo ? els.photoCam : els.photo).value = "";
   leggiDallaFoto();
-});
+}));
 // Un campo in giallo, una volta toccato dal venditore, non e' piu' un dubbio.
 els.form.addEventListener("input", e => e.target.classList.remove("vend-dubbio"));
 els.form.addEventListener("change", e => e.target.classList.remove("vend-dubbio"));

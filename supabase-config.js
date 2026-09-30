@@ -14,4 +14,6 @@
 const SUPABASE_URL = "https://vjotkgsjtwmtctxtfeqa.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Qjmd8qP9J_GH1WjUmBolSw_vBdM5G3L";
 
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Le pagine del catalogo caricano questo file senza la libreria: a loro
+// servono solo i due valori sopra, per mandare le richieste (richieste.js).
+const sb = typeof supabase !== "undefined" ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;

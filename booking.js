@@ -7,6 +7,10 @@
 //   - tutti gli altri: i ticket di carta veri, cercati su Supabase con la
 //     funzione le_mie_escursioni(telefono, ticket) — vedi supabase/schema.sql.
 //     Un ticket giusto mostra TUTTE le escursioni confermate di quel telefono.
+//   - booking.html?richieste=1: le richieste mandate su WhatsApp da chi non ha
+//     un ticket di carta, con le chiavi salvate nel telefono (richieste.js) e
+//     la funzione le_mie_richieste. Tre stati: da confermare, confermata,
+//     annullata.
 //
 // Anche qui i testi sono nelle tre lingue: stringa sola = uguale ovunque,
 // oggetto { it, en, es } = tradotto. tf() sceglie la lingua giusta.
@@ -50,22 +54,6 @@ const MOCK_BOOKINGS = {
     }
   }
 };
-
-// Le richieste di prova: la pagina "I miei ticket" di chi ha trovato l'app da
-// solo e ha mandato una richiesta su WhatsApp, senza ticket di carta. Oggi le
-// richieste non si salvano da nessuna parte, quindi queste servono a decidere
-// l'aspetto dei tre stati (proprietario, 30/9/2026); i dati veri arriveranno
-// dopo. Si aprono scrivendo RICHIESTE nella finestra "Il mio ticket".
-// Le date sono contate da oggi, cosi' non diventano mai "passate".
-// Stessi campi dei ticket veri (le_mie_escursioni), piu' status e sentOn.
-const MOCK_REQUESTS_CODE = "RICHIESTE";
-const MOCK_REQUESTS = [
-  { status: "confirmed", sentOn: -2, excursion_id: "whale-dolphin-3h", date: 2, time: "08:40",
-    meeting_point: "Puerto Colón, Costa Adeje", adults: 2, kids: 1 },
-  { status: "pending", sentOn: 0, excursion_id: "peter-pan", date: 4, time: "12:00", adults: 2 },
-  { status: "cancelled", sentOn: -1, excursion_id: "quad-teide-adventure", option_label: "Tramonto",
-    date: 3, adults: 2 }
-];
 
 const ICONS = {
   clock: '<svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
@@ -208,9 +196,8 @@ function salvaRisultato(code, phone, rows) {
   } catch (e) { /* incognito */ }
 }
 
-function oggiISO(giorni) {
+function oggiISO() {
   const d = new Date();
-  if (giorni) d.setDate(d.getDate() + giorni);
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
@@ -300,11 +287,11 @@ function cardTicket(b, passata) {
       </div>`;
   const nota = STATI[status].nota && !passata
     ? `<p class="ticket-state-note">${esc(t(STATI[status].nota))}</p>` : "";
-  const desiderata = !confermata && ora ? `<div class="info-field">
+  const desiderata = !confermata && b.wanted_time ? `<div class="info-field">
             ${ICONS.clock}
             <div>
               <h3>${t("booking.wantedTime")}</h3>
-              <p>${esc(ora)}</p>
+              <p>${esc(b.wanted_time)}</p>
             </div>
           </div>` : "";
 
@@ -366,27 +353,93 @@ function renderTicketVeri(rows, code, senzaRete) {
   // finestra "Il mio ticket" della home, che accetta un numero nuovo.
 }
 
-// Le richieste di prova: prima quelle ancora valide in ordine di data, le
-// annullate in fondo. In basso lo stesso "Scrivi all'ufficio" dei ticket.
-function renderRichiesteProva() {
-  const rows = MOCK_REQUESTS.map(r => Object.assign({}, r, {
-    date: oggiISO(r.date),
-    sent_on: oggiISO(r.sentOn)
-  }));
-  const valide = rows.filter(r => r.status !== "cancelled").sort((a, b) => a.date.localeCompare(b.date));
-  const annullate = rows.filter(r => r.status === "cancelled");
-  const wa = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(t("booking.waRequests"));
+// ─── Le richieste mandate su WhatsApp ─────────────────────────────────────
+// Il cliente senza ticket di carta: le chiavi delle sue richieste stanno nel
+// telefono (richieste.js), e con quelle si chiede a Supabase lo stato.
 
+// Un istante ("2026-09-28T17:05:00Z") → il giorno del calendario qui.
+function giornoDi(istante) {
+  const d = new Date(istante);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+// Le righe da disegnare, richiesta per richiesta: quelle arrivate dal database
+// se ci sono, altrimenti quelle salvate qui ("da confermare": se non e' ancora
+// arrivata nel database, l'ufficio non l'ha certo confermata).
+function righeRichieste(elenco) {
+  const righe = [];
+  elenco.forEach(r => {
+    const dalServer = Array.isArray(r.last) && r.last.length ? r.last : null;
+    (dalServer || r.items.map(v => Object.assign({ status: "pending" }, v))).forEach(v => {
+      righe.push(Object.assign({}, v, { sent_on: giornoDi(r.sentAt), request_code: r.code }));
+    });
+  });
+  return righe;
+}
+
+function renderRichieste(elenco, senzaRete) {
+  const oggi = oggiISO();
+  const righe = righeRichieste(elenco);
+  const perData = (a, b) => (a.date || "").localeCompare(b.date || "");
+  // Prima le valide, poi le annullate, in fondo le gia' fatte. Una richiesta
+  // passata e mai confermata (o annullata) non serve piu' a niente: non esce.
+  const prossime = righe.filter(b => b.date >= oggi && b.status !== "cancelled").sort(perData);
+  const annullate = righe.filter(b => b.date >= oggi && b.status === "cancelled").sort(perData);
+  const passate = righe.filter(b => b.date < oggi && b.status === "confirmed").sort(perData).reverse();
+  const codici = elenco.map(r => r.code).join(", ");
+  const wa = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(t("booking.waRequests", { code: codici }));
+
+  if (!prossime.length && !annullate.length && !passate.length) {
+    renderStato(ICONS.ticket, t("booking.noRequests"), t("booking.noRequestsText"), false);
+    return;
+  }
   document.getElementById("bookingView").innerHTML = `
+    ${senzaRete ? `<p class="note-box">${t("booking.offlineSaved")}</p>` : ""}
     <p class="booking-intro">${t("booking.requestsIntro")}</p>
     <div class="booking-list">
-      ${valide.map(r => cardTicket(r, false)).join("")}
-      ${annullate.map(r => cardTicket(r, false)).join("")}
+      ${prossime.map(b => cardTicket(b, false)).join("")}
+      ${annullate.map(b => cardTicket(b, false)).join("")}
+      ${passate.length ? `<h2 class="booking-past-title">${t("booking.pastTitle")}</h2>` : ""}
+      ${passate.map(b => cardTicket(b, true)).join("")}
     </div>
     <div class="detail-actions">
       <a class="btn btn-primary" href="${wa}" target="_blank" rel="noopener noreferrer">${t("booking.whatsapp")}</a>
     </div>
   `;
+}
+
+async function cercaRichieste() {
+  const h1 = document.querySelector("[data-i18n='booking.h1'], [data-i18n='booking.requestsH1']");
+  if (h1) { h1.dataset.i18n = "booking.requestsH1"; h1.textContent = t("booking.requestsH1"); }
+
+  if (!richiesteLeggi().length) {
+    renderStato(ICONS.ticket, t("booking.noRequests"), t("booking.noRequestsText"), false);
+    return;
+  }
+  // Subito quello che c'e' nel telefono, poi la risposta nuova.
+  renderRichieste(richiesteLeggi(), false);
+
+  // Prima si rimandano quelle che non erano arrivate, poi si legge: cosi' una
+  // richiesta partita senza campo compare gia' in questa lettura.
+  await richiesteRiprova();
+  const elenco = richiesteLeggi();
+  let rows = null;
+  try {
+    const { data, error } = await sb.rpc("le_mie_richieste", { p_tokens: elenco.map(r => r.token) });
+    if (!error) rows = data;
+  } catch (e) { /* rete: si decide sotto */ }
+
+  if (rows === null) { renderRichieste(elenco, true); return; }
+
+  // Ogni richiesta si tiene la sua risposta, per quando mancera' la rete.
+  // Una richiesta arrivata nel database e ora sparita e' stata tolta dalla
+  // pulizia mensile: esce anche dal telefono.
+  const tenute = elenco.filter(r => {
+    r.last = rows.filter(x => x.request_token === r.token);
+    return r.last.length || !r.stored;
+  });
+  richiesteScrivi(tenute);
+  renderRichieste(tenute, false);
 }
 
 async function cercaTicketVero(code, phone) {
@@ -419,12 +472,18 @@ function renderBookingPage() {
   const salvato = ticketSalvato();
   let code = getCodeFromUrl();
 
-  // booking.html senza codice: l'ultimo ticket cercato su questo telefono.
+  // booking.html?richieste=1: le richieste mandate su WhatsApp.
+  if (new URLSearchParams(window.location.search).has("richieste")) { cercaRichieste(); return; }
+
+  // booking.html senza codice: l'ultimo ticket cercato su questo telefono,
+  // oppure, se un ticket non c'e', le richieste.
   if (!code && salvato && salvato.phone) code = salvato.code.trim().toUpperCase();
+  if (!code && richiesteLeggi().length) { cercaRichieste(); return; }
   if (!code) { renderEmpty(); return; }
 
   if (MOCK_BOOKINGS[code]) { renderBooking(MOCK_BOOKINGS[code], code); return; }
-  if (code === MOCK_REQUESTS_CODE) { renderRichiesteProva(); return; }
+  // RICHIESTE era il codice della pagina di prova: porta alle richieste vere.
+  if (code === "RICHIESTE") { cercaRichieste(); return; }
 
   const phone = salvato && salvato.code.trim().toUpperCase() === code ? salvato.phone : null;
   if (!phone) {

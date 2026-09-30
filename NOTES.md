@@ -15307,3 +15307,91 @@ la scheda; `ISLA-4521` uguale a prima; un ticket vero e uno passato disegnati co
 `renderTicketVeri()` → verde il primo, spento il secondo.
 
 `CACHE_NAME` alzato a `isla-v377`.
+
+## Le richieste da WhatsApp collegate a Supabase (30 settembre 2026)
+
+Il passo dopo le richieste di prova: gli stati ora sono veri. `RICHIESTE` e
+`MOCK_REQUESTS` sono stati tolti (scrivere `RICHIESTE` nella finestra porta alla
+pagina vera).
+
+**Il giro:**
+1. Il cliente preme "manda" nella finestra della lista (`lista.js`). Prima di aprire
+   WhatsApp, `richiestaNuova()` (`richieste.js`) salva la richiesta nel telefono e la
+   manda a Supabase (`manda_richiesta`): una riga per escursione, `source = 'whatsapp'`,
+   `status = 'pending'`.
+2. In fondo al messaggio c'è **"Codice richiesta: K7PM3Q"**.
+3. L'ufficio apre `venditori.html`: in cima c'è **"Richieste da WhatsApp (2 da
+   confermare)"**. **Conferma** chiede data (già messa), ora di ritrovo e meeting point;
+   **Annulla** chiede conferma. Un'annullata si può riconfermare, una confermata
+   annullare.
+4. Il cliente apre "Il mio ticket" → **"Senza ticket? Le mie richieste (2)"** →
+   `booking.html?richieste=1`: verde con "Presentati alle… — meeting point", ambra,
+   o rossa.
+
+**Chiave e codice, perché due cose.** Il cliente non ha login né ticket, e il sito non
+conosce il suo telefono (il messaggio parte dal suo WhatsApp). Il telefono del cliente
+inventa una **chiave** (uuid, impossibile da indovinare) che resta in `localStorage`
+(`isla-richieste`) e non va mai nel messaggio: chi ce l'ha legge la richiesta. Il
+**codice** di 6 lettere va nel messaggio e serve all'ufficio a ritrovarla; da solo non
+apre niente. Conseguenza: **le richieste si vedono solo dal telefono che le ha
+mandate**. Chi cambia telefono o svuota il browser le perde dalla sua pagina; l'ufficio
+le ha comunque.
+
+**Cosa va nel database:** escursione, variante (col nome italiano, come i ticket di
+carta), data, ora chiesta (`wanted_time`, testo: può essere una fascia), persone.
+**Niente nome, hotel, note, telefono**: li legge l'ufficio su WhatsApp, e nel database
+non servono.
+
+**Chi può scrivere cosa.** Il sito pubblico non ha nessun permesso sulla tabella:
+passa solo da `manda_richiesta()`, che mette sempre `pending` e `whatsapp` (nessuno si
+conferma da solo), controlla ogni campo, al massimo 10 escursioni, e si ferma se
+nell'ultima ora sono arrivate più di 300 richieste (qualcuno che riempie il database a
+macchina). La stessa chiave mandata due volte entra una volta sola. Leggere passa da
+`le_mie_richieste(chiavi)`, al massimo 50 chiavi.
+
+**Il vincolo `confermato_completo`** chiedeva a ogni prenotazione confermata numero di
+ticket e telefono: una richiesta WhatsApp non li ha. Ora li chiede solo quando
+`source` non è `whatsapp`. Provato che un ticket di carta senza telefono è ancora
+rifiutato.
+
+**Se manca il campo.** La richiesta si salva nel telefono prima di partire. Se l'invio
+non riesce resta "da mandare" e si riprova da sola alla prossima pagina del sito
+aperta (tutte e sei quelle con la lista, e `booking.html` prima di leggere). La
+chiamata usa `fetch` con `keepalive` e non la libreria Supabase: la libreria pesa
+200 KB e servirebbe su ogni pagina solo per questo; `keepalive` fa arrivare la
+chiamata anche se intanto la pagina se ne va verso WhatsApp. Per questo
+`supabase-config.js` ora si carica anche senza la libreria (`sb` resta `null`).
+
+**Service worker:** lasciava passare dalla cache anche le `POST`. Ora le ignora (vanno
+dritte in rete), altrimenti da offline una chiamata al database riceveva
+`offline.html` al posto dell'errore.
+
+**"Ultimi inseriti"** in `venditori.html` non mostra le richieste WhatsApp: hanno il
+loro elenco, e lì sarebbero uscite come "#null".
+
+**Pulizia:** la pulizia mensile già esistente vale anche per loro (conta la data
+dell'escursione). Una richiesta che sparisce dal database sparisce anche dal telefono
+del cliente alla lettura successiva.
+
+**Provato** (Chromium, Supabase simulato **con il Postgres vero**: schema, modifiche e
+le due funzioni nuove caricate in un Postgres 16 locale, chiamate come `anon`):
+- SQL: richiesta buona → 2 righe; stessa chiave → 0; chiave inventata → niente; codice
+  sbagliato, id con `<b>`, data mancante o passata, 500 adulti, 0 o 11 escursioni →
+  rifiutate; `anon` non legge né scrive la tabella; oltre 300 in un'ora → fermo; il file
+  si può lanciare due volte;
+- sito: lista con due escursioni → messaggio con "Request code: B66KDA" → due righe
+  `pending` nel database (variante "Tramonto", ora "12:00");
+- link nella finestra solo quando ci sono richieste; pagina con due ambra;
+- `venditori.html`: conferma con 11:15 e "Puerto Colón, Muelle 3", annulla l'altra →
+  il cliente ricarica e vede verde con l'ora e il posto, rossa l'altra;
+- offline: l'ultima risposta con "Senza connessione";
+- richiesta mandata senza rete → 0 righe; torna la rete, si apre `escursioni.html` → 1;
+- dieci pagine senza errori e senza sbordi; service worker `isla-v378` con 36 file.
+
+**Non provato:** Supabase vero. **Il proprietario deve lanciare
+`supabase/modifiche/2026-09-30-richieste-whatsapp.sql`** nell'SQL Editor. Finché non
+lo fa, le richieste restano "da mandare" nei telefoni e partono da sole dopo.
+
+**Ancora solo su WhatsApp:** pacchetti e noleggio, che non passano dalla lista.
+
+`CACHE_NAME` alzato a `isla-v378`.

@@ -807,7 +807,9 @@ function righeRichiesta(tour, req) {
 function whatsappUrl(tour, req) {
   const testo = t("wa.intro", { name: req.name }) + "\n" +
     "• " + tf(tour.title) + "\n" +
-    righeRichiesta(tour, req).join("\n");
+    righeRichiesta(tour, req).join("\n") +
+    // il codice della richiesta salvata nel database (richieste.js), se c'e'
+    (req.code ? "\n\n" + t("wa.code", { code: req.code }) : "");
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
 }
 

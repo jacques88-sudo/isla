@@ -104,6 +104,11 @@ Altri campi: `source` (`strada`, `online`, `whatsapp`), `status` (`pending`, `co
    la chiave sta solo nei Secrets di Supabase.
 5. QR sul ticket.
 6. Prenotazioni online (`source = online`): rimandate.
+7. **Richieste da WhatsApp** (`source = whatsapp`): **fatte il 30 settembre 2026**. La
+   lista del sito le salva come `pending` mentre apre WhatsApp; l'ufficio le conferma
+   (data, ora, meeting point) o le annulla da `venditori.html`; il cliente le vede in
+   `booking.html?richieste=1`, verdi, ambra o rosse. Niente login e niente telefono:
+   una chiave nel telefono del cliente. `modifiche/2026-09-30-richieste-whatsapp.sql`.
 
 ## 7. Ancora aperto
 
@@ -116,4 +121,6 @@ Altri campi: `source` (`strada`, `online`, `whatsapp`), `status` (`pending`, `co
 - **Rate limiting** sulla ricerca del cliente. Con telefono + ticket è meno urgente, ma
   si farà insieme all'edge function del passo 4.
 - Come convivono "Le mie escursioni", la lista delle richieste (`lista.js`) e il
-  "Prenota ora" con i dati finti.
+  "Prenota ora" con i dati finti. In parte deciso: le richieste della lista hanno la
+  loro pagina, raggiungibile dalla finestra "Il mio ticket".
+- Le richieste di **pacchetti** e **noleggio** partono ancora solo su WhatsApp.

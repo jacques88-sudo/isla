@@ -53,7 +53,11 @@ const els = {
   recentTitle: $("[data-recent-title]"),
   searchForm: $("[data-search-form]"),
   searchReset: $("[data-search-reset]"),
-  recentMsg: $("[data-recent-msg]")
+  recentMsg: $("[data-recent-msg]"),
+  requestsBox: $("[data-requests-box]"),
+  requestsTitle: $("[data-requests-title]"),
+  requests: $("[data-requests]"),
+  requestsMsg: $("[data-requests-msg]")
 };
 
 let venditore = null;      // { name } dalla tabella sellers
@@ -500,7 +504,9 @@ function dataBreve(iso) {
 async function caricaUltimi() {
   let domanda = sb
     .from("bookings")
-    .select("id, ticket_number, reference, excursion_id, option_label, date, time, phone, adults, kids, babies, total, deposit, rest_to_pay, seller, photo_path, status");
+    .select("id, ticket_number, reference, excursion_id, option_label, date, time, phone, adults, kids, babies, total, deposit, rest_to_pay, seller, photo_path, status")
+    // le richieste da WhatsApp hanno il loro elenco, sopra
+    .neq("source", "whatsapp");
   domanda = ricerca
     ? domanda.eq("ticket_number", ricerca)
     : domanda.order("created_at", { ascending: false }).limit(20);
@@ -737,6 +743,152 @@ async function apriFoto(percorso) {
   else window.location = data.signedUrl;
 }
 
+// ─── Richieste da WhatsApp ──────────────────────────────────────────────────
+// Il cliente senza ticket di carta manda la lista su WhatsApp e le stesse
+// escursioni arrivano qui come "da confermare" (supabase/modifiche/
+// 2026-09-30-richieste-whatsapp.sql). Una riga per escursione: un messaggio
+// con tre escursioni sono tre righe con lo stesso codice.
+// Si vedono quelle di oggi in poi: prima le da confermare, poi le altre.
+
+const STATO_RICHIESTA = { pending: "Da confermare", confirmed: "Confermata", cancelled: "Annullata" };
+
+async function caricaRichieste() {
+  const { data, error } = await sb
+    .from("bookings")
+    .select("id, request_code, status, excursion_id, option_label, date, time, wanted_time, meeting_point, adults, kids, babies, created_at")
+    .eq("source", "whatsapp")
+    .gte("date", oggiISO())
+    .order("created_at", { ascending: false })
+    .limit(100);
+
+  els.requests.replaceChildren();
+  if (error) {
+    els.requestsBox.hidden = false;
+    els.requests.append(Object.assign(document.createElement("li"), { textContent: "Elenco non disponibile." }));
+    return;
+  }
+  els.requestsBox.hidden = !data.length;
+  const daFare = data.filter(r => r.status === "pending");
+  els.requestsTitle.textContent = daFare.length
+    ? `Richieste da WhatsApp (${daFare.length} da confermare)`
+    : "Richieste da WhatsApp";
+
+  daFare.concat(data.filter(r => r.status !== "pending")).forEach(r => {
+    const li = document.createElement("li");
+    li.className = "vend-req is-" + r.status;
+    const tour = schedaDa(r.excursion_id);
+    const persone = [r.adults, r.kids, r.babies].map(n => n || 0).join("+");
+
+    const testo = document.createElement("div");
+    const titolo = document.createElement("strong");
+    titolo.textContent = `${r.request_code} · ${tour ? titoloDi(tour) : r.excursion_id}${r.option_label ? " · " + r.option_label : ""}`;
+    const sotto = document.createElement("span");
+    const ora = r.status === "confirmed"
+      ? (r.time ? " · ritrovo " + r.time.slice(0, 5) : "") + (r.meeting_point ? " · " + r.meeting_point : "")
+      : (r.wanted_time ? " · chiede " + r.wanted_time : "");
+    sotto.textContent = `${dataBreve(r.date)}${ora} · ${persone}`;
+    const stato = document.createElement("em");
+    stato.className = "vend-req-stato";
+    stato.textContent = STATO_RICHIESTA[r.status] || r.status;
+    testo.append(titolo, sotto, stato);
+    li.append(testo);
+
+    // Da confermare: tutti e due. Confermata: si puo' ancora annullare.
+    // Annullata: si puo' confermare lo stesso (uno sbaglio, un posto liberato).
+    const bottoni = document.createElement("div");
+    bottoni.className = "vend-list-btns";
+    const bottone = (scritta, fa) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "btn btn-soft";
+      b.textContent = scritta;
+      b.addEventListener("click", fa);
+      bottoni.append(b);
+    };
+    if (r.status !== "confirmed") bottone("Conferma", () => apriConferma(li, r));
+    if (r.status !== "cancelled") bottone("Annulla", () => annullaRichiesta(r));
+    li.append(bottoni);
+    els.requests.append(li);
+  });
+}
+
+// Confermare vuol dire anche dire al cliente dove e quando presentarsi: e'
+// quello che vedra' nella sua pagina, come sul ticket di carta. La data si
+// puo' cambiare, se l'ufficio ha proposto un altro giorno.
+function apriConferma(li, r) {
+  mostra(els.requestsMsg, "");
+  if (li.querySelector(".vend-edit")) return;   // gia' aperto
+
+  const form = document.createElement("form");
+  form.className = "vend-form vend-edit";
+  form.noValidate = true;
+  const id = "r" + r.id.slice(0, 8);
+  form.innerHTML = `
+    <div class="vend-row">
+      <div>
+        <label for="${id}Date">Data</label>
+        <input id="${id}Date" name="date" type="date" required />
+      </div>
+      <div>
+        <label for="${id}Time">Ora ritrovo</label>
+        <input id="${id}Time" name="time" type="time" />
+      </div>
+    </div>
+    <label for="${id}Meeting">Meeting point</label>
+    <input id="${id}Meeting" name="meeting_point" type="text" autocomplete="off" />
+    <small class="vend-hint">Il cliente vedrà "Presentati alle … — meeting point". Scrivigli anche su WhatsApp.</small>
+    <p class="vend-msg" role="alert" hidden></p>
+    <div class="vend-row">
+      <button class="btn btn-soft" type="button" data-edit-cancel>Lascia stare</button>
+      <button class="btn btn-primary" type="submit">Conferma</button>
+    </div>`;
+
+  // come in apriModifica: nessun testo del database passa da innerHTML
+  const f = form.elements;
+  f.date.value = r.date || "";
+  f.time.value = r.time ? r.time.slice(0, 5) : "";
+  f.meeting_point.value = r.meeting_point || "";
+
+  form.querySelector("[data-edit-cancel]").addEventListener("click", () => form.remove());
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+    const msg = form.querySelector(".vend-msg");
+    if (!f.date.value) { mostra(msg, "Manca la data.", "errore"); return; }
+    const salvato = await cambiaRichiesta(r, {
+      status: "confirmed",
+      date: f.date.value,
+      time: f.time.value || null,
+      meeting_point: f.meeting_point.value.trim() || null,
+      confirmed_at: new Date().toISOString()
+    }, msg);
+    if (salvato) mostra(els.requestsMsg, `${r.request_code} confermata.`, "ok");
+  });
+  li.append(form);
+  f.time.focus();
+}
+
+async function annullaRichiesta(r) {
+  mostra(els.requestsMsg, "");
+  const tour = schedaDa(r.excursion_id);
+  if (!confirm(`Annullare ${r.request_code} · ${tour ? titoloDi(tour) : r.excursion_id} del ${dataBreve(r.date)}?`)) return;
+  const salvato = await cambiaRichiesta(r, { status: "cancelled" }, els.requestsMsg);
+  if (salvato) mostra(els.requestsMsg, `${r.request_code} annullata. Avvisa il cliente su WhatsApp.`, "ok");
+}
+
+async function cambiaRichiesta(r, nuovo, msg) {
+  try {
+    // .select(): se le regole non lasciano passare, non c'e' errore ma zero righe
+    const { data, error } = await sb.from("bookings").update(nuovo).eq("id", r.id).select("id");
+    if (error || !data || !data.length) throw error || new Error("nessuna riga");
+    await caricaRichieste();
+    return true;
+  } catch (err) {
+    console.error(err);
+    mostra(msg, "Non sono riuscito a salvare. Controlla la connessione e riprova.", "errore");
+    return false;
+  }
+}
+
 // ─── Entrata e uscita ───────────────────────────────────────────────────────
 
 async function entra(event) {
@@ -788,6 +940,7 @@ async function mostraPagina() {
     try { localStorage.setItem("isla-venditore", "1"); } catch (e) { /* incognito */ }
     els.sellerName.textContent = venditore.name;
     if (!els.seller.value) els.seller.value = venditore.name;
+    caricaRichieste();
     caricaUltimi();
   }
 }

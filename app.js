@@ -129,7 +129,27 @@ function initTicketDialog() {
 
   const input = dialog.querySelector("input");
 
+  // Chi non ha un ticket di carta ma ha mandato richieste su WhatsApp da
+  // questo telefono (richieste.js) trova qui la strada per vederle. Il
+  // collegamento si aggiunge da qui e non nell'HTML: la finestra e' scritta
+  // uguale in sei pagine, e compare solo a chi le richieste le ha.
+  function linkRichieste() {
+    const n = typeof richiesteLeggi === "function"
+      ? richiesteLeggi().reduce((somma, r) => somma + r.items.length, 0) : 0;
+    let link = dialog.querySelector("[data-requests-link]");
+    if (!n) { if (link) link.remove(); return; }
+    if (!link) {
+      link = document.createElement("a");
+      link.className = "ticket-requests-link";
+      link.href = "./booking.html?richieste=1";
+      link.dataset.requestsLink = "";
+      dialog.append(link);
+    }
+    link.textContent = t("ticket.requestsLink", { n });
+  }
+
   function open() {
+    linkRichieste();
     dialog.hidden = false;
     scrim.hidden = false;
     requestAnimationFrame(() => {

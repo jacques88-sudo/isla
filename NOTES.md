@@ -15179,3 +15179,36 @@ helicopter-tours e freebird mostrano i nomi. La prova della lettura dà gli stes
 risultati di prima.
 
 `CACHE_NAME` alzato a `isla-v374`.
+
+### Secondo errore vero: "Anthropic ha risposto 400" (30 settembre 2026)
+
+Con il catalogo sistemato la richiesta è arrivata ad Anthropic, che l'ha rifiutata. Nei
+log della funzione (Supabase → Edge Functions → leggi-ticket → Logs):
+
+> *Schemas contains too many parameters with union types (19 parameters with type
+> arrays or anyOf) … (limit: 16 parameters with unions).*
+
+**Regola dell'output strutturato:** in uno schema al massimo **16 campi** possono essere
+del tipo "questo O quello" (`anyOf`, oppure `type: [..., "null"]`). I nostri erano 19:
+13 testi, 3 interi e 3 importi, tutti "o null".
+
+**Rimedio:** i 13 testi sono `{ type: "string" }` e "vuoto" vale `""`. Restano "o null"
+solo i 6 numeri, perché per un numero non esiste un vuoto che non sia anche un valore (0
+bambini è un'informazione, non un vuoto). La funzione rimette a `null` i testi vuoti (o
+fatti di soli spazi) **prima** di rispondere e prima del controllo sul catalogo: la
+pagina non è cambiata.
+
+**Anche:** gli errori di Anthropic ora arrivano sul telefono **col loro motivo** ("Anthropic
+ha risposto 400 (…)"), letto da `err.error.error.message`. Il primo 400 si è potuto
+capire solo passando dai log.
+
+**Perché le prove non l'avevano preso:** il finto Anthropic accettava qualunque schema.
+Ora la prova conta i campi "o null" dello schema mandato davvero e segnala se sono più
+di 16. Risultato: 6.
+
+**La funzione va ripubblicata** su Supabase (Edge Functions → leggi-ticket → Code →
+incollare il file nuovo → Deploy). La pagina del sito non cambia.
+
+Provato: `tsc` sui tipi dell'SDK; in Node testi `""` → `null`, anche con soli spazi;
+numeri `null` restano `null`; escursione `""` → `null`; tutti gli altri casi come prima;
+400 col motivo → "Anthropic ha risposto 400 (Your credit balance is too low)".

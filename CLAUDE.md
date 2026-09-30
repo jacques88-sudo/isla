@@ -115,6 +115,7 @@ porto e capienza con le schede della stessa categoria.
 | `venditori.html/.js` | la pagina dei venditori: ticket di carta nel database (Supabase) |
 | `supabase-config.js` | URL e chiave **pubblica** di Supabase; lo schema e le regole stanno in `supabase/` |
 | `telefono.js` | prefissi e `telefonoE164()`: **uno solo** per venditori e clienti, il telefono è la chiave che li fa incontrare |
+| `supabase/functions/leggi-ticket/` | la funzione sul server che fa leggere a Claude la foto del ticket e riempie il modulo dei venditori; la chiave Anthropic sta **solo** nei Secrets di Supabase |
 | `booking.js` | "Le mie escursioni": i ticket veri da Supabase (numero + telefono); i codici `ISLA-…` restano la pagina finta |
 
 **La finestra della richiesta è scritta due volte**, in `escursioni.html` e in `tour.html`.

@@ -55,6 +55,9 @@
           <!-- Senza "capture": il telefono propone sia la fotocamera sia la galleria. -->
           <input id="tPhoto" name="photo" type="file" accept="image/*" class="vend-hidden-input" />
           <img data-photo-preview alt="Foto del ticket" hidden />
+          <!-- Scelta la foto, Claude la legge e riempie il modulo
+               (supabase/functions/leggi-ticket). Il venditore controlla e salva. -->
+          <p class="vend-ai" data-ai-msg aria-live="polite" hidden></p>
           <small class="vend-hint">Scattata da qui, di solito non finisce in galleria: resta solo su Isla.</small>
         </div>
 

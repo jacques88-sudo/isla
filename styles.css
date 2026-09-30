@@ -3902,3 +3902,24 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .vend-search [hidden] { display: none; }   /* .btn-block vincerebbe su hidden */
 .vend-row-search { grid-template-columns: 1fr auto; align-items: start; }
 .vend-row-search .btn { min-height: 48px; }
+
+/* La foto che compila il modulo (venditori.js → leggi-ticket). */
+.vend-ai {
+  margin: .75rem 0 0;
+  padding: .7rem .9rem;
+  border-radius: 10px;
+  background: var(--cream);
+  font-size: .95rem;
+}
+.vend-ai[hidden] { display: none; }
+.vend-ai.is-busy { animation: vend-pulsa 1.4s ease-in-out infinite; }
+@keyframes vend-pulsa { 50% { opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .vend-ai.is-busy { animation: none; } }
+/* Un campo letto ma incerto: il venditore lo deve guardare per primo. */
+/* (lo stesso selettore lungo della regola generale dei campi, piu' la classe:
+   con ".vend-form .vend-dubbio" da solo il giallo veniva coperto) */
+.vend-form input.vend-dubbio:not([type="checkbox"]):not([type="file"]),
+.vend-form select.vend-dubbio {
+  background: oklch(0.95 0.08 95);
+  border-color: oklch(0.75 0.14 85);
+}

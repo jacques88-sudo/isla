@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v372";
+const CACHE_NAME = "isla-v373";
 const ASSETS = [
   "./",
   "./index.html",

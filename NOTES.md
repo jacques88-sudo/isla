@@ -15229,3 +15229,12 @@ escono scure. **Le prove adesso girano anche con `colorScheme: 'dark'`**: prima 
 provava solo in chiaro, ed è per questo che non era emerso.
 
 `CACHE_NAME` alzato a `isla-v375`.
+
+**Verificato dopo la prima lettura vera (proprietario, 30 settembre 2026):**
+- **Costo reale: 4–5 centesimi a foto** (da platform.claude.com → Usage), la parte alta
+  della stima. Il proprietario lo trova accettabile: si resta su Claude Opus 5.5 con
+  effort `medium`. Se un giorno si vorrà spendere meno, le due leve sono un modello più
+  economico o un effort più basso. Si provano **sugli stessi ticket** prima di cambiare.
+- **La variante non la inventa**: sul 2213 la durata di Freebird non è scritta, e la
+  lettura l'ha lasciata vuota come dicono le istruzioni. "3 ore" l'aveva scelta il
+  proprietario a mano.

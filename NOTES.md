@@ -15395,3 +15395,26 @@ lo fa, le richieste restano "da mandare" nei telefoni e partono da sole dopo.
 **Ancora solo su WhatsApp:** pacchetti e noleggio, che non passano dalla lista.
 
 `CACHE_NAME` alzato a `isla-v378`.
+
+### I nomi delle compagnie sul ticket: il campo `nomi` (30 settembre)
+
+Sul ticket di carta i venditori scrivono spesso **il nome della compagnia**, non il titolo
+della scheda: il ticket 1627 dice "COOL SAILING". Claude, leggendo la foto, confrontava
+quella riga solo con i titoli, e un nome che nei titoli non c'è non lo trovava: la scheda
+restava da scegliere a mano.
+
+Campo nuovo **`nomi`** sulla scheda: gli altri nomi con cui la si scrive sul ticket.
+`catalogoPerLettura()` in `venditori.js` li attacca al titolo ("… (sul ticket anche: Cool
+Sailing)"), così **la funzione `leggi-ticket` non va ridistribuita**: lei mette nel prompt
+il titolo così come le arriva. Il cliente non li vede e non si traducono.
+
+Il tipo (barca, quad, moto d'acqua) **non si scrive**: lo dice già la `category` della
+scheda a cui il nome porta. Si può fare perché, detto dal proprietario, **una compagnia fa
+una cosa sola**. Se un giorno una compagnia vendesse due attività diverse, il nome da solo
+non basterebbe più e servirebbe un'altra soluzione.
+
+Primo nome: **Cool Sailing → `whale-dolphin-3h`** (la barca a vela di 3 ore, Puerto Colón).
+Solo sulla scheda a persona, non sul suo charter: un ticket con due adulti è l'uscita
+normale. `controlla.js` dà errore se lo stesso nome sta su due schede.
+
+`CACHE_NAME` alzato a `isla-v379`.

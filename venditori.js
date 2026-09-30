@@ -249,7 +249,11 @@ let lettura = 0;           // numero dell'ultima lettura: le risposte vecchie si
 // stesso ordine e con gli stessi testi: cosi' Anthropic lo tiene in cache.
 function catalogoPerLettura() {
   return ESPLORA_CATALOG.filter(t => t.published).map(t => {
-    const scheda = { id: t.id, title: titoloDi(t) };
+    // I `nomi` (la compagnia, come la scrivono i venditori) vanno attaccati
+    // al titolo: la funzione sul server mette nel prompt solo id, titolo e
+    // varianti, e cosi' non c'e' da ridistribuirla.
+    const nomi = t.nomi && t.nomi.length ? ` (sul ticket anche: ${t.nomi.join(", ")})` : "";
+    const scheda = { id: t.id, title: titoloDi(t) + nomi };
     const scelte = t.options && t.options.choices;
     if (scelte) scheda.options = scelte.map(c => italiano(c.label));
     return scheda;

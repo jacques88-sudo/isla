@@ -414,6 +414,27 @@ function controllaIdUnici() {
   });
 }
 
+// I `nomi` che i venditori scrivono sul ticket: un elenco di testi, e ogni nome
+// su una scheda sola. Lo stesso nome su due schede lascerebbe Claude a
+// scegliere fra le due, cioe' a indovinare.
+function controllaNomi() {
+  const visti = new Map();
+  ESPLORA_CATALOG.forEach(t => {
+    if (t.nomi === undefined) return;
+    if (!Array.isArray(t.nomi) || !t.nomi.every(n => typeof n === "string" && n.trim())) {
+      errore(t.id, 'nomi deve essere un elenco di nomi, es. ["Cool Sailing"].');
+      return;
+    }
+    t.nomi.forEach(n => {
+      const chiave = n.trim().toLowerCase();
+      const altra = visti.get(chiave);
+      if (altra && altra !== t.id) errore(t.id, `il nome "${n}" sta anche su "${altra}": deve stare su una scheda sola.`);
+      else if (altra) avviso(t.id, `il nome "${n}" e' scritto due volte.`);
+      visti.set(chiave, t.id);
+    });
+  });
+}
+
 // Le raccomandate devono esistere ed essere pubblicate: un id scritto male
 // sparirebbe dal filtro senza dirlo a nessuno.
 function controllaRaccomandate() {
@@ -709,6 +730,7 @@ const CONTROLLI = [controllaBase, controllaEta, controllaPrezzi, controllaMezzi,
 console.log("\nControllo del catalogo Isla\n");
 ESPLORA_CATALOG.forEach(t => CONTROLLI.forEach(c => c(t)));
 controllaIdUnici();
+controllaNomi();
 controllaRaccomandate();
 controllaI18n();
 controllaPacchetti();

@@ -148,6 +148,10 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   tastiera e la casella la scavalca di 6 px sull'iPhone SE. Il rimedio esiste (alzare la
   finestra leggendo `visualViewport`) ed è stato **scartato**: tocca quanto è alta e dove
   sta la finestra, quindi un errore lì si vedrebbe su tutte le schede. Non si ripropone.
+- **I prezzi scritti sui ticket di carta non si confrontano col catalogo**, per scelta del
+  proprietario (30 settembre 2026). Il venditore per strada può fare un prezzo diverso da
+  quello della scheda: è normale, non è un errore. Il ticket non cambia la scheda, e la
+  differenza non si segnala.
 - **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
   Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
   minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.

@@ -43,10 +43,15 @@ function risposta(corpo: unknown, stato = 200): Response {
 
 // ─── Cosa deve restituire Claude ────────────────────────────────────────────
 // Con output_config.format la risposta e' SEMPRE un JSON con questa forma: non
-// serve cercarlo in mezzo al testo. Ogni campo puo' essere null (= non c'e' o
-// non si legge), e "dubbi" elenca i campi letti ma incerti.
+// serve cercarlo in mezzo al testo. "dubbi" elenca i campi letti ma incerti.
+//
+// Un campo che non c'e' o non si legge: "" per i testi, null per i numeri.
+// Non null anche per i testi perche' Anthropic accetta al massimo 16 campi
+// "questo O null" in uno schema (errore 400 alla prima prova vera, con 19).
+// I testi vuoti tornano null qui sotto, prima di rispondere: la pagina vede
+// sempre null.
 
-const testo = { anyOf: [{ type: "string" }, { type: "null" }] };
+const testo = { type: "string" };
 const intero = { anyOf: [{ type: "integer" }, { type: "null" }] };
 const cifra = { anyOf: [{ type: "number" }, { type: "null" }] };
 
@@ -90,7 +95,7 @@ const SCHEMA = {
 const ISTRUZIONI = `Leggi la foto di un ticket di carta di Admiral Excursions (Tenerife), compilato a mano da un venditore, e trascrivi i campi.
 
 Regole generali:
-- Scrivi solo quello che leggi sul ticket. Un campo vuoto, sbarrato o illeggibile vale null. Non inventare mai un valore e non dedurlo da altri campi.
+- Scrivi solo quello che leggi sul ticket. Un campo vuoto, sbarrato o illeggibile vale "" (stringa vuota) se è un testo, null se è un numero. Non inventare mai un valore e non dedurlo da altri campi.
 - Se leggi un campo ma non sei sicuro di una cifra o di una lettera, scrivilo lo stesso e metti il nome del campo nell'elenco "dubbi". Il telefono, il numero del ticket, la data e l'ora vanno in "dubbi" appena c'è un'incertezza: sono i campi che, sbagliati, fanno più danno.
 - La foto può essere ruotata, storta o avere sopra dell'evidenziatore: leggi il ticket come se fosse dritto.
 
@@ -98,19 +103,19 @@ Campo per campo:
 - ticket_number: il numero stampato in rosso accanto a "TICKET NUMBER".
 - reference: il numero scritto a mano dopo "REF", di solito in alto. Solo il numero.
 - excursion_text: quello che è scritto accanto a "Excursion", così com'è.
-- excursion_id: l'id dell'escursione dell'elenco qui sotto che corrisponde a excursion_text (il nome della barca o del tour). null se nessuna corrisponde con sicurezza.
-- option_label: la variante (per esempio la durata) solo se il ticket la indica, scelta tra quelle elencate per quell'escursione e scritta esattamente come nell'elenco. Altrimenti null.
+- excursion_id: l'id dell'escursione dell'elenco qui sotto che corrisponde a excursion_text (il nome della barca o del tour). "" se nessuna corrisponde con sicurezza.
+- option_label: la variante (per esempio la durata) solo se il ticket la indica, scelta tra quelle elencate per quell'escursione e scritta esattamente come nell'elenco. Altrimenti "".
 - date: il ticket scrive giorno/mese all'europea (1/10 = 1 ottobre), spesso con il giorno della settimana in inglese (THURS, SAT…), quasi mai l'anno. Restituisci AAAA-MM-GG, con l'anno che rende la data uguale o successiva a oggi. Se il giorno della settimana scritto non corrisponde alla data, metti "date" in "dubbi".
 - time: l'ora accanto a "Time", in formato 24 ore HH:MM (9.40 → 09:40).
 - meeting_point: il punto di incontro, così com'è scritto (per esempio "Puerto Colón, Gate 15").
 - hotel: l'hotel e l'eventuale numero di camera, così come sono scritti.
-- nationality: il codice ISO di due lettere (GB, IT, ES, DE…) solo se sul ticket è scritta una nazionalità. Non dedurla dal telefono.
+- nationality: il codice ISO di due lettere (GB, IT, ES, DE…) solo se sul ticket è scritta una nazionalità, altrimenti "". Non dedurla dal telefono.
 - phone: il numero accanto a "Contact Number" così com'è scritto, compresi il + e il prefisso se ci sono. Solo cifre, spazi e +.
 - adults, kids, babies: numeri interi. Una casella vuota, con una barra o con un trattino vale null.
 - total, deposit, rest_to_pay ("To Pay"): importi in euro, come numeri.
 - paid_in_full: true se Deposit e To Pay sono entrambi sbarrati ("/" o "—") e il Total è scritto: vuol dire che il cliente ha pagato tutto. In quel caso deposit e rest_to_pay valgono null. Altrimenti false.
 - seller: le sigle o i nomi dei venditori, di solito nel riquadro della firma ("FRA / MATT"), così come sono scritti. Non la firma del cliente.
-- notes: eventuali osservazioni scritte a mano che non stanno in nessun altro campo. Altrimenti null.
+- notes: eventuali osservazioni scritte a mano che non stanno in nessun altro campo. Altrimenti "".
 
 Elenco delle escursioni (id — titolo — varianti):
 `;
@@ -209,7 +214,10 @@ Deno.serve(async (req) => {
       return risposta({ errore: "La chiave di Anthropic non è valida." }, 500);
     }
     if (err instanceof Anthropic.APIError) {
-      return risposta({ errore: `Anthropic ha risposto ${err.status}.` }, 502);
+      // Il motivo che scrive Anthropic, cosi' si legge sul telefono senza
+      // andare nei log (es. "credito esaurito", un parametro non accettato).
+      const motivo = (err.error as { error?: { message?: string } } | undefined)?.error?.message;
+      return risposta({ errore: `Anthropic ha risposto ${err.status}${motivo ? " (" + motivo + ")" : ""}.` }, 502);
     }
     return risposta({ errore: "Anthropic non raggiungibile." }, 502);
   }
@@ -229,7 +237,12 @@ Deno.serve(async (req) => {
     return risposta({ errore: "Risposta non leggibile. Compila a mano." }, 502);
   }
 
-  // 4. Controlli finali: l'escursione e la variante devono esistere davvero
+  // 4. I testi vuoti diventano null, come se lo schema li permettesse.
+  for (const [nome, valore] of Object.entries(campi)) {
+    if (typeof valore === "string" && valore.trim() === "") campi[nome] = null;
+  }
+
+  // 5. Controlli finali: l'escursione e la variante devono esistere davvero
   //    nel catalogo, altrimenti il menu del modulo non le troverebbe.
   const scheda = catalogo.find((s) => s.id === campi.excursion_id);
   if (!scheda) campi.excursion_id = null;

@@ -15146,3 +15146,36 @@ token).
   vera la fa il proprietario, dopo aver messo la chiave e pubblicato la funzione.
 
 `CACHE_NAME` alzato a `isla-v373`.
+
+### Prima prova vera: "Catalogo mancante" (30 settembre 2026)
+
+La prima prova del proprietario col ticket 2213 è arrivata fino alla funzione: login da
+venditore riconosciuto, funzione pubblicata, chiave presente. Poi la funzione ha
+rifiutato la richiesta con **"Catalogo mancante"**.
+
+**Causa:** nel catalogo il nome di una variante (`options.choices[].label`) è a volte
+una **stringa sola**, uguale in tutte le lingue: `"Teide Light"`, `"Banana Boat"`,
+`"Costa Adeje Tour"`, `"Grand Teide Luxury"`. Il vocabolario in testa a
+`esplora-catalog.js` mostra solo la forma `{ it, en, es }`. `venditori.js` leggeva sempre
+`c.label.it`, cioè `undefined` su quelle schede. La funzione riceveva `null` fra le
+varianti di sei schede (trekking-bici, helicopter-tours, banana-boat, immersioni,
+tuk-tuk, tuk-tuk-privato) e scartava tutta la richiesta.
+
+**Lo stesso errore c'era già nel modulo, e nessuno l'aveva visto:** per quelle schede il
+menu delle varianti mostrava righe vuote, e si sarebbe salvato `option_label` vuoto.
+
+**Rimedio:** `italiano(campo)` in `venditori.js` accetta tutte e due le forme. Usata nei
+tre punti che leggono `label`: nome del menu, voci del menu, catalogo per la lettura. La
+funzione su Supabase **non è cambiata**, quindi non va ripubblicata.
+
+**Perché le prove non l'avevano preso:** la funzione simulata nella prova della pagina
+rispondeva sempre bene, senza fare il controllo del catalogo della funzione vera. Ora la
+prova esegue nel browser **lo stesso controllo** (`catalogoValido`) sul catalogo che la
+pagina manda davvero, e controlla i menu delle schede con i nomi a stringa sola.
+
+Provato: il controllo della funzione dà `true` su tutte le 65 schede. L'elicottero manda
+5 varianti, compresa "Grand Teide Luxury". I menu di trekking-bici, banana-boat, tuk-tuk,
+helicopter-tours e freebird mostrano i nomi. La prova della lettura dà gli stessi
+risultati di prima.
+
+`CACHE_NAME` alzato a `isla-v374`.

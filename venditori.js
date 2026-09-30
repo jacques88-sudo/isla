@@ -74,6 +74,13 @@ function titoloDi(tour) {
   return typeof tour.title === "string" ? tour.title : tour.title.it;
 }
 
+// Nel catalogo un testo e' un oggetto { it, en, es } oppure, quando e' uguale in
+// tutte le lingue (un nome proprio: "Teide Light", "Grand Teide Luxury"), una
+// stringa sola. Qui serve sempre l'italiano.
+function italiano(campo) {
+  return typeof campo === "string" ? campo : (campo && campo.it) || "";
+}
+
 function schedaDa(id) {
   return ESPLORA_CATALOG.find(t => t.id === id) || null;
 }
@@ -114,10 +121,10 @@ function aggiornaEscursione() {
   els.optionWrap.hidden = !scelte;
   els.option.required = !!scelte;
   if (scelte) {
-    els.optionLabel.textContent = (tour.options.label && tour.options.label.it) || "Variante";
+    els.optionLabel.textContent = italiano(tour.options.label) || "Variante";
     els.option.append(segnaposto());
     // Il valore salvato e' l'etichetta italiana: le varianti non hanno un id.
-    scelte.forEach(c => els.option.append(new Option(c.label.it, c.label.it)));
+    scelte.forEach(c => els.option.append(new Option(italiano(c.label), italiano(c.label))));
   }
 }
 
@@ -237,7 +244,7 @@ function catalogoPerLettura() {
   return ESPLORA_CATALOG.filter(t => t.published).map(t => {
     const scheda = { id: t.id, title: titoloDi(t) };
     const scelte = t.options && t.options.choices;
-    if (scelte) scheda.options = scelte.map(c => c.label.it);
+    if (scelte) scheda.options = scelte.map(c => italiano(c.label));
     return scheda;
   });
 }

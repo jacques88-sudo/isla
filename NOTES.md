@@ -15416,3 +15416,5 @@ non basterebbe più e servirebbe un'altra soluzione.
 Primo nome: **Cool Sailing → `whale-dolphin-3h`** (la barca a vela di 3 ore, Puerto Colón).
 Solo sulla scheda a persona, non sul suo charter: un ticket con due adulti è l'uscita
 normale. `controlla.js` dà errore se lo stesso nome sta su due schede.
+
+`CACHE_NAME` alzato a `isla-v379`.

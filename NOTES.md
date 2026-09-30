@@ -15259,3 +15259,51 @@ salvataggio l'anteprima sparisce e tutti e due i campi sono vuoti. Le prove di p
 (galleria, due foto di fila, errori) danno gli stessi risultati.
 
 `CACHE_NAME` alzato a `isla-v376`.
+
+## "I miei ticket" per chi non ha il ticket: i tre stati (30 settembre 2026)
+
+**Cosa ha chiesto il proprietario:** la stessa pagina dei ticket anche per il cliente che
+trova l'app da solo e manda una richiesta su WhatsApp, senza ticket di carta, con tre
+stati — **confermata, da confermare, annullata** — e i colori.
+
+**Il problema di fondo:** oggi la richiesta parte solo su WhatsApp e non resta da nessuna
+parte, quindi nessuno può dire alla pagina che è stata confermata o annullata. Tre strade
+proposte: prima l'aspetto con dati di prova; subito Supabase (la richiesta si salva come
+`pending`, l'ufficio la conferma da `venditori.html` — lo schema ha già
+`source = 'whatsapp'` e i tre stati); oppure solo nel telefono (ma lì lo stato non
+cambierebbe mai). **Scelto: prima l'aspetto.** I dati veri sono il passo dopo.
+
+**Come si vede:** nella finestra "Il mio ticket" si scrive `RICHIESTE` (senza telefono,
+come `ISLA-4521`). Escono tre richieste di prova (`MOCK_REQUESTS` in `booking.js`), con le
+date contate da oggi così non diventano mai "passate":
+
+| stato | colore | cosa cambia nella scheda |
+|---|---|---|
+| confermata | verde (`--ok`) | "Presentati alle…", punto d'incontro, mappa: come il ticket |
+| da confermare | ambra (`--wait`) | nota "l'ufficio ti risponde su WhatsApp entro 24 ore"; l'ora è "Orario richiesto", non una risposta; niente punto d'incontro |
+| annullata | rosso (`--danger`) | nota "scrivici e cerchiamo un'altra data"; titolo barrato, foto in bianco e nero; va in fondo |
+
+Il colore sta in **tre posti**: la pillola, la riga a sinistra della scheda, la nota. La
+pillola dice lo stato a parole, così vale anche per chi distingue male i colori. Al posto
+di "Ticket 2213" la richiesta dice "Richiesta del 28 settembre".
+
+**Una sola funzione per tutte e due:** `cardTicket()` ora legge `b.status` (assente =
+confermata, perché `le_mie_escursioni` restituisce solo confermati). Quindi **anche i
+ticket di carta veri ora hanno la pillola verde e la riga verde**; i passati restano
+spenti, senza colore.
+
+**Trappole trovate:**
+- `color-mix(in oklch, ambra 12%, bianco)` usciva **rosa**: il bianco in oklch non ha una
+  tinta e la miscela prende una strada sbagliata. In `srgb` esce color crema.
+- Scritta chiara sull'ambra illeggibile: la pillola "da confermare" ha la scritta scura
+  in tutti e due i temi (le altre due prendono `--bg`, che si gira da solo).
+- "Awaiting confirmation" a 320 px usciva dalla scheda: in inglese è **"Pending"**.
+
+**Nota:** la variante (`option_label`, "Tramonto") resta in italiano anche in EN/ES, come
+già nei ticket veri: nel database sta l'etichetta italiana.
+
+**Provato** a 320 e 375 px, IT/EN/ES, tema chiaro e scuro: niente sbordi, pillole dentro
+la scheda; `ISLA-4521` uguale a prima; un ticket vero e uno passato disegnati con
+`renderTicketVeri()` → verde il primo, spento il secondo.
+
+`CACHE_NAME` alzato a `isla-v377`.

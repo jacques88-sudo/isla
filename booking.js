@@ -51,6 +51,22 @@ const MOCK_BOOKINGS = {
   }
 };
 
+// Le richieste di prova: la pagina "I miei ticket" di chi ha trovato l'app da
+// solo e ha mandato una richiesta su WhatsApp, senza ticket di carta. Oggi le
+// richieste non si salvano da nessuna parte, quindi queste servono a decidere
+// l'aspetto dei tre stati (proprietario, 30/9/2026); i dati veri arriveranno
+// dopo. Si aprono scrivendo RICHIESTE nella finestra "Il mio ticket".
+// Le date sono contate da oggi, cosi' non diventano mai "passate".
+// Stessi campi dei ticket veri (le_mie_escursioni), piu' status e sentOn.
+const MOCK_REQUESTS_CODE = "RICHIESTE";
+const MOCK_REQUESTS = [
+  { status: "confirmed", sentOn: -2, excursion_id: "whale-dolphin-3h", date: 2, time: "08:40",
+    meeting_point: "Puerto Colón, Costa Adeje", adults: 2, kids: 1 },
+  { status: "pending", sentOn: 0, excursion_id: "peter-pan", date: 4, time: "12:00", adults: 2 },
+  { status: "cancelled", sentOn: -1, excursion_id: "quad-teide-adventure", option_label: "Tramonto",
+    date: 3, adults: 2 }
+];
+
 const ICONS = {
   clock: '<svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
   pin: '<svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s7-6.5 7-11a7 7 0 1 0-14 0c0 4.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
@@ -192,8 +208,9 @@ function salvaRisultato(code, phone, rows) {
   } catch (e) { /* incognito */ }
 }
 
-function oggiISO() {
+function oggiISO(giorni) {
   const d = new Date();
+  if (giorni) d.setDate(d.getDate() + giorni);
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
@@ -205,6 +222,13 @@ function dataLunga(iso) {
   const testo = new Intl.DateTimeFormat(getLang(), { weekday: "long", day: "numeric", month: "long" })
     .format(new Date(a, m - 1, g));
   return testo.charAt(0).toUpperCase() + testo.slice(1);
+}
+
+// "2026-09-28" → "28 settembre": il giorno in cui e' partita una richiesta.
+function dataCorta(iso) {
+  if (!iso) return "";
+  const [a, m, g] = iso.split("-").map(Number);
+  return new Intl.DateTimeFormat(getLang(), { day: "numeric", month: "long" }).format(new Date(a, m - 1, g));
 }
 
 function persone(b) {
@@ -222,9 +246,20 @@ function pagamento(b) {
   return resto === 0 ? t("booking.paid") : t("booking.toPay", { n: eur(resto) });
 }
 
+// I tre stati, ognuno col suo colore (classi is-confirmed / is-pending /
+// is-cancelled in styles.css). I ticket di carta arrivano senza status: il
+// database li restituisce solo confermati.
+const STATI = {
+  confirmed: { pill: "booking.confirmed", nota: "" },
+  pending:   { pill: "booking.pending",   nota: "booking.pendingText" },
+  cancelled: { pill: "booking.cancelled", nota: "booking.cancelledText" }
+};
+
 function cardTicket(b, passata) {
   const tour = typeof ESPLORA_CATALOG !== "undefined" ? ESPLORA_CATALOG.find(x => x.id === b.excursion_id) : null;
   const titolo = tour ? tf(tour.title) : t("booking.otherExc");
+  const status = STATI[b.status] ? b.status : "confirmed";
+  const confermata = status === "confirmed";
   const ora = b.time ? b.time.slice(0, 5) : "";
   const luogo = b.meeting_point || "";
   const chi = persone(b);
@@ -232,7 +267,9 @@ function cardTicket(b, passata) {
 
   // "Presentati alle 9:40" + il posto: e' l'ora scritta sul ticket accanto al
   // meeting point, la stessa per tutte le escursioni (proprietario, 29/9/2026).
-  const ritrovo = (ora || luogo) ? `
+  // Solo una conferma dice dove e quando presentarsi. Nella richiesta ancora
+  // aperta l'ora e' quella che ha chiesto il cliente, non una risposta.
+  const ritrovo = !confermata ? "" : (ora || luogo) ? `
           <div class="info-field" style="grid-column:1/-1">
             ${ICONS.pin}
             <div>
@@ -251,17 +288,32 @@ function cardTicket(b, passata) {
   const banner = tour && tour.image
     ? `<img class="ticket-banner" src="./assets/${encodeURIComponent(tour.image)}" alt="" loading="lazy" onerror="this.parentNode.classList.remove('ticket-hero'); this.remove()" />`
     : "";
+  // Il ticket di carta ha il suo numero; la richiesta mandata su WhatsApp no,
+  // e si riconosce dal giorno in cui e' partita.
+  const etichetta = b.ticket_number
+    ? t("booking.ticketN", { code: b.ticket_number })
+    : t("booking.requestOf", { date: dataCorta(b.sent_on) });
   const stato = `
       <div class="detail-status">
-        <span>${esc(t("booking.ticketN", { code: b.ticket_number }))}</span>
-        <span class="pill">${passata ? t("booking.past") : t("booking.confirmed")}</span>
+        <span>${esc(etichetta)}</span>
+        <span class="pill">${passata ? t("booking.past") : t(STATI[status].pill)}</span>
       </div>`;
+  const nota = STATI[status].nota && !passata
+    ? `<p class="ticket-state-note">${esc(t(STATI[status].nota))}</p>` : "";
+  const desiderata = !confermata && ora ? `<div class="info-field">
+            ${ICONS.clock}
+            <div>
+              <h3>${t("booking.wantedTime")}</h3>
+              <p>${esc(ora)}</p>
+            </div>
+          </div>` : "";
 
   return `
-    <div class="detail-card${passata ? " is-past" : ""}">
+    <div class="detail-card is-${status}${passata ? " is-past" : ""}">
       ${banner ? `<div class="ticket-hero">${banner}${stato}</div>` : stato}
       <div class="detail-body">
         <h2 class="detail-title">${esc(titolo)}${b.option_label ? `<span class="ticket-option">${esc(b.option_label)}</span>` : ""}</h2>
+        ${nota}
         <div class="info-grid">
           ${ritrovo}
           <div class="info-field">
@@ -271,6 +323,7 @@ function cardTicket(b, passata) {
               <p>${esc(dataLunga(b.date))}</p>
             </div>
           </div>
+          ${desiderata}
           ${chi ? `<div class="info-field">
             ${ICONS.people}
             <div>
@@ -313,6 +366,29 @@ function renderTicketVeri(rows, code, senzaRete) {
   // finestra "Il mio ticket" della home, che accetta un numero nuovo.
 }
 
+// Le richieste di prova: prima quelle ancora valide in ordine di data, le
+// annullate in fondo. In basso lo stesso "Scrivi all'ufficio" dei ticket.
+function renderRichiesteProva() {
+  const rows = MOCK_REQUESTS.map(r => Object.assign({}, r, {
+    date: oggiISO(r.date),
+    sent_on: oggiISO(r.sentOn)
+  }));
+  const valide = rows.filter(r => r.status !== "cancelled").sort((a, b) => a.date.localeCompare(b.date));
+  const annullate = rows.filter(r => r.status === "cancelled");
+  const wa = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(t("booking.waRequests"));
+
+  document.getElementById("bookingView").innerHTML = `
+    <p class="booking-intro">${t("booking.requestsIntro")}</p>
+    <div class="booking-list">
+      ${valide.map(r => cardTicket(r, false)).join("")}
+      ${annullate.map(r => cardTicket(r, false)).join("")}
+    </div>
+    <div class="detail-actions">
+      <a class="btn btn-primary" href="${wa}" target="_blank" rel="noopener noreferrer">${t("booking.whatsapp")}</a>
+    </div>
+  `;
+}
+
 async function cercaTicketVero(code, phone) {
   const salvati = risultatoSalvato(code, phone);
   // Quello che c'e' gia' si mostra subito; la risposta nuova lo sostituisce.
@@ -348,6 +424,7 @@ function renderBookingPage() {
   if (!code) { renderEmpty(); return; }
 
   if (MOCK_BOOKINGS[code]) { renderBooking(MOCK_BOOKINGS[code], code); return; }
+  if (code === MOCK_REQUESTS_CODE) { renderRichiesteProva(); return; }
 
   const phone = salvato && salvato.code.trim().toUpperCase() === code ? salvato.phone : null;
   if (!phone) {

@@ -144,6 +144,11 @@ create policy "i venditori correggono"
 -- aggiungere, correggere. Niente 'delete', niente per 'anon'.
 grant select, insert, update on public.bookings to authenticated;
 
+-- La funzione pulisci-foto (supabase/functions/) legge photo_path di tutti i
+-- ticket con la chiave service_role: anche quella ha bisogno del permesso,
+-- con le tabelle non esposte in automatico. Solo lettura.
+grant select on public.bookings to service_role;
+
 -- Nessuna regola per 'anon' (il cliente senza login): dalla tabella non legge
 -- niente. Passa solo dalla funzione qui sotto.
 

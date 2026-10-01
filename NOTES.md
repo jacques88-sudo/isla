@@ -15488,3 +15488,19 @@ posti vanno tenuti separati. L'indirizzo della funzione risponde coi conteggi, e
 `cron.job` ha i due lavori: `pulizia-ticket-vecchi` (giorno 1, 3:00) e
 `pulizia-foto-orfane` (ogni notte, 3:30). Per sapere com'è andata una notte:
 `select created, status_code, content from net._http_response order by created desc limit 5;`
+
+## Il QR sul ticket (1° ottobre 2026)
+
+Il proprietario ha scelto **un QR uguale per tutti**, che apre la **pagina iniziale**
+di Isla. Il cliente vede tutto il catalogo, non solo quello che ha comprato, e per le
+sue escursioni passa da "Il mio ticket" con numero e telefono. Scartati per ora: il QR
+personale sullo schermo del venditore, e un QR diverso stampato su ogni ticket (serve
+una tipografia a dati variabili).
+
+Nessuna modifica al sito: solo i file da stampare in **`stampa/`** (`qr-isla.svg` per la
+tipografia, `qr-isla.png` per lo schermo) con un `LEGGIMI.md`: misura minima 2 cm,
+nero su bianco, bordo bianco intatto, e l'avviso che **un QR stampato non si cambia
+più**. Se arriva un dominio proprio, va deciso prima della ristampa dei blocchetti.
+
+Provato: tutti e due i file riletti con `jsQR`; l'SVG anche disegnato a 100, 150 e
+300 px. Porta sempre a `https://jacques88-sudo.github.io/isla/`.

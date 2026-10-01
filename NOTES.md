@@ -15536,3 +15536,30 @@ card piccola, sarebbero tre puntini su un blu.
 Provato nel browser a 375 px: otto miniature che scorrono di lato dentro la scheda, nessuno
 scroll orizzontale della pagina, nessun errore, tutte e otto caricate a 1200 px. `node
 controlla.js` → 0 errori. Alzato `sw.js` a `isla-v380`.
+
+### Buggy Tour Tenerife: tre fotogrammi dal video di King Buggy (1 ottobre 2026)
+
+Video promozionale di King Buggy, il fornitore della scheda, preso da YouTube: 58 secondi,
+**solo 480×368**, e tolte le bande nere l'immagine vera è **480×272**. Il proprietario dice che
+su YouTube non c'è una versione più grande.
+
+**Il logo King Buggy sta in un angolo per tutto il video.** Il proprietario lo accetta,
+perché è un fornitore che vendiamo. Non è servito: il ritaglio 3:2 parte da sinistra
+(408×272, x = 0–25) e l'angolo in basso a destra, dove sta lo scudo, resta fuori.
+
+**L'ingrandimento è 2,94×**, il più alto del catalogo (prima il record era 2,37× sullo
+Skyline Cruiser). Guardate a 1200 px le foto sono morbide; alla misura del telefono
+(375 px di larghezza) reggono. Per questo ho scelto **solo primi piani e scene con poco
+dettaglio fine**, e ho scartato le riprese aeree e i campi lunghi, che ingranditi diventavano
+macchie. Lanczos più una leggera maschera di contrasto, qualità 82, 58–92 KB.
+
+- `buggy-volcano-4h-guide.jpg` — le guide in arancione al belvedere, col Teide dietro (0:38)
+- `buggy-volcano-4h-guida.jpg` — due persone sedute nel buggy, dall'interno (0:13)
+- `buggy-volcano-4h-fila.jpg` — la fila di buggy fermi sulla strada (0:08)
+
+Stanno **in fondo** alla galleria, dopo le tre foto nitide che c'erano già: la principale
+non cambia. Se King Buggy manda il file originale o delle foto, queste tre sono le prime da
+sostituire.
+
+Provato a 375 px: sei miniature, tutte caricate, nessun errore, nessuno scroll orizzontale.
+`node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v381`.

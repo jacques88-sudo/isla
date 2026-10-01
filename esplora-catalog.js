@@ -2556,7 +2556,7 @@ const ESPLORA_CATALOG = [
     ],
     languages: LINGUE_TOUR,
     image: "buggy-volcano-4h.jpg",
-    gallery: ["buggy-2-3h.jpg", "buggy-volcano-sunset.jpg"],
+    gallery: ["buggy-2-3h.jpg", "buggy-volcano-sunset.jpg", "buggy-volcano-4h-guide.jpg", "buggy-volcano-4h-guida.jpg", "buggy-volcano-4h-fila.jpg"],
     published: true
   },
   {

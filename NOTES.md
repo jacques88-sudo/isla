@@ -15504,3 +15504,35 @@ più**. Se arriva un dominio proprio, va deciso prima della ristampa dei blocche
 
 Provato: tutti e due i file riletti con `jsQR`; l'SVG anche disegnato a 100, 150 e
 300 px. Porta sempre a `https://jacques88-sudo.github.io/isla/`.
+
+### 3-Hour Whale & Dolphin: tre fotogrammi da un video (1 ottobre 2026)
+
+Le compagnie hanno detto di prendere foto e video dai loro siti e da YouTube. Arrivato un
+video di 2 minuti (720p) scaricato da YouTube, nome file "Skyline boat".
+
+**Sembrava di un'altra barca, e il proprietario ha confermato che no.** Nel video c'è una
+barca a vela con scritto "SkyLine" sullo scafo e la riga blu, mentre le nostre foto sono di
+una Beneteau con lo scafo liscio (targa 6ª-TE-21-07). Prima di usarlo ho chiesto: il
+proprietario dice che il 3-Hour Whale & Dolphin **gira su più barche, con nomi diversi**, e
+che vanno bene anche le riprese col drone. Da ricordare: su questa scheda una barca a vela
+diversa dalla Beneteau **non è un errore**.
+
+**Non ho sostituito niente, ho aggiunto.** Le cinque foto che c'erano sono tutte della barca
+e a risoluzione più alta del video. Al video ho preso quello che alla galleria mancava:
+- `whale-dolphin-3h-6.jpg` — tre balene pilota (calderones) viste dal drone, secondo 1:54
+- `whale-dolphin-3h-7.jpg` — la barca ancorata sull'acqua turchese e due persone a nuoto,
+  la sosta bagno (0:52)
+- `whale-dolphin-3h-8.jpg` — il gruppo seduto a prua che saluta, nella baia (1:52)
+
+Il logo "SkyLine" sulla -8 è dipinto sullo scafo, quindi è la livrea della barca e non un
+marchio aggiunto alla foto. Ritaglio 1080×720 dal fotogramma 1280×720, portato a 1200×800
+(ingrandimento 1,11×) con qualità 82: 80-160 KB.
+
+**Ordine della galleria:** principale invariata (la Beneteau a vela davanti a Costa Adeje),
+poi subito le balene e la sosta bagno, perché sono il titolo della gita, poi le quattro della
+barca, e in fondo il gruppo. Le balene **non** vanno come foto principale: in elenco, sulla
+card piccola, sarebbero tre puntini su un blu.
+
+Provato nel browser a 375 px: otto miniature che scorrono di lato dentro la scheda, nessuno
+scroll orizzontale della pagina, nessun errore, tutte e otto caricate a 1200 px. `node
+controlla.js` → 0 errori. Alzato `sw.js` a `isla-v380`.

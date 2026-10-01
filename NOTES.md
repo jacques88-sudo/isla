@@ -15480,3 +15480,11 @@ vedere i conteggi).
    locale partendo dallo schema del 28 settembre più le modifiche, come il progetto
    vero: prima "permission denied", dopo `service_role` legge `photo_path` ma non può
    cancellare righe; `anon` resta fuori.
+
+**Installata sul progetto vero il 1° ottobre 2026.** Funzione `pulisci-foto` ripubblicata
+col nome minuscolo e Verify JWT spento. File SQL lanciato dall'**SQL Editor** in una
+query nuova: il proprietario l'aveva prima incollato nel codice della funzione, e i due
+posti vanno tenuti separati. L'indirizzo della funzione risponde coi conteggi, e
+`cron.job` ha i due lavori: `pulizia-ticket-vecchi` (giorno 1, 3:00) e
+`pulizia-foto-orfane` (ogni notte, 3:30). Per sapere com'è andata una notte:
+`select created, status_code, content from net._http_response order by created desc limit 5;`

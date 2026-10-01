@@ -15465,3 +15465,18 @@ clienti.
 **Non provato** su Supabase vero: lo fa il proprietario (pubblicare la funzione,
 spegnere Verify JWT, lanciare l'SQL, aprire l'indirizzo della funzione una volta per
 vedere i conteggi).
+
+**Prima prova vera di `pulisci-foto` (1° ottobre 2026), due inciampi:**
+1. **`NOT_FOUND`**: la funzione era stata pubblicata come `Pulisci-foto`, con la P
+   maiuscola messa dalla tastiera. Nell'elenco il nome si legge minuscolo, ma l'URL ha
+   la maiuscola, e negli indirizzi conta: `/functions/v1/pulisci-foto` non esisteva. Il
+   nome di una funzione pubblicata non si cambia: si cancella e si ripubblica. **Per le
+   funzioni si controlla la colonna URL, non NAME.**
+2. **`permission denied for table bookings`**: la chiave `service_role` scavalca le
+   regole (RLS), ma **non i permessi sulle tabelle**. Col progetto creato senza
+   "Automatically expose new tables", nessuno aveva dato `select` a `service_role`.
+   Aggiunto `grant select on public.bookings to service_role` (solo lettura) sia in
+   `modifiche/2026-10-01-pulizia-foto.sql` sia in `schema.sql`. Riprodotto su Postgres
+   locale partendo dallo schema del 28 settembre più le modifiche, come il progetto
+   vero: prima "permission denied", dopo `service_role` legge `photo_path` ma non può
+   cancellare righe; `anon` resta fuori.

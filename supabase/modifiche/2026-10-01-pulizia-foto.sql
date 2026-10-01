@@ -18,6 +18,13 @@
 -- un lavoro con lo stesso nome viene sostituito.
 
 
+-- La funzione legge photo_path di tutti i ticket con la chiave "service_role".
+-- Quella chiave scavalca le regole (RLS) ma non i permessi sulle tabelle, e il
+-- progetto e' creato con "Automatically expose new tables" spento: senza questa
+-- riga la funzione risponde "permission denied for table bookings" (successo
+-- alla prima prova vera, 1° ottobre 2026). Solo lettura.
+grant select on public.bookings to service_role;
+
 -- pg_net: l'estensione che permette al database di chiamare un indirizzo web.
 create extension if not exists pg_net with schema extensions;
 

@@ -776,7 +776,7 @@ const ESPLORA_CATALOG = [
       es: "Tres horas en velero desde Puerto Colón, con un máximo de 11 personas a bordo. Avistamiento de ballenas y delfines, parada para hacer snorkel con equipo incluido, snacks y bebidas a bordo."
     },
     image: "whale-dolphin-3h.jpg",
-    gallery: ["whale-dolphin-3h-2.jpg", "whale-dolphin-3h-3.jpg", "whale-dolphin-3h-4.jpg", "whale-dolphin-3h-5.jpg"],
+    gallery: ["whale-dolphin-3h-6.jpg", "whale-dolphin-3h-7.jpg", "whale-dolphin-3h-2.jpg", "whale-dolphin-3h-3.jpg", "whale-dolphin-3h-4.jpg", "whale-dolphin-3h-5.jpg", "whale-dolphin-3h-8.jpg"],
     published: true
   },
   {

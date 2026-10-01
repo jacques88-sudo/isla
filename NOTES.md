@@ -15418,3 +15418,50 @@ Solo sulla scheda a persona, non sul suo charter: un ticket con due adulti è l'
 normale. `controlla.js` dà errore se lo stesso nome sta su due schede.
 
 `CACHE_NAME` alzato a `isla-v379`.
+
+## Le foto dei ticket si cancellano da sole (1° ottobre 2026)
+
+La pulizia mensile cancellava i ticket ma non le loro foto: Supabase non permette di
+togliere i file con SQL. Le foto, con telefono e firma del cliente, sarebbero rimaste
+nello spazio per sempre.
+
+**Come:**
+- `supabase/functions/pulisci-foto/index.ts` usa la chiave `service_role`, che Supabase
+  mette da sé nei Secrets di ogni funzione. Legge tutti i `photo_path` dei ticket (a
+  pagine da 1000), elenca le foto dello spazio `ticket-foto` (a pagine da 1000) e
+  cancella, a blocchi da 100, quelle che **nessun ticket nomina e che hanno più di un
+  giorno**. Risponde con dei conteggi: `controllate`, `nei_ticket`, `cancellate`.
+- `supabase/modifiche/2026-10-01-pulizia-foto.sql` attiva `pg_net`, l'estensione per
+  far chiamare un indirizzo al database, e il lavoro Cron `pulizia-foto-orfane` alle
+  **3:30 UTC ogni notte**, con `net.http_post` alla funzione.
+
+**Perché "orfane" e non "dei ticket cancellati":** una foto senza ticket è inutile
+qualunque sia il motivo. Così la stessa regola copre i ticket tolti il giorno 1 del mese
+e le foto rimaste a metà (caricate, ticket mai salvato per rete caduta o doppione). Per
+lo stesso motivo gira ogni notte e non solo il giorno 1.
+
+**Perché "più di un giorno":** fra il caricamento della foto e il salvataggio del ticket
+la foto è orfana per un istante. Senza il margine, una pulizia nell'istante sbagliato
+toglierebbe la foto di un ticket appena salvato.
+
+**Perché la funzione è aperta** (Verify JWT spento): Cron la chiama senza login, e
+mettere una chiave segreta in un comando SQL (o nel Vault) sarebbe un passo in più per
+il proprietario. Chi la chiamasse da fuori otterrebbe solo quello che lei fa già ogni
+notte: togliere foto senza ticket. Non riceve parametri e non restituisce dati dei
+clienti.
+
+**Provato:**
+- `tsc` sui tipi veri di `@supabase/supabase-js@2`.
+- In Node, con finti ticket e spazio: 1504 foto, 1201 nominate da un ticket. Cancellate
+  esattamente le 302 orfane vecchie, in blocchi 100+100+100+2. Rimaste quella di un
+  ticket e l'orfana di un'ora fa; la cartella saltata. I ticket chiesti a pagine
+  (`offset=1000&limit=1000`). Secondo giro: 0 cancellate. Senza chiave → 500.
+- L'SQL su Postgres locale, con finti `pg_net` e `cron`: si carica, si rilancia senza
+  errori, il comando del lavoro gira.
+- Un inciampo nella prova, non nella funzione: il primo finto Supabase leggeva le pagine
+  da un'intestazione `Range`, mentre `supabase-js` usa `offset`/`limit`
+  nell'indirizzo. Restituiva sempre la prima pagina e il giro non finiva mai.
+
+**Non provato** su Supabase vero: lo fa il proprietario (pubblicare la funzione,
+spegnere Verify JWT, lanciare l'SQL, aprire l'indirizzo della funzione una volta per
+vedere i conteggi).

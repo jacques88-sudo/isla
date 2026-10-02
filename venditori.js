@@ -843,10 +843,12 @@ async function caricaRichieste() {
 // Confermare vuol dire anche dire al cliente dove e quando presentarsi: e'
 // quello che vedra' nella sua pagina, come sul ticket di carta. La data si
 // puo' cambiare, se l'ufficio ha proposto un altro giorno.
-// E vuol dire dargli un ticket: il numero e' obbligatorio, e col numero la
+// E vuol dire dargli un ticket: numero e telefono obbligatori, e col numero la
 // richiesta diventa un ticket (esce da qui, va in "Ultimi inseriti"). Il
-// telefono e' facoltativo: con quello il cliente ritrova il ticket anche da
-// un altro telefono, con "Il mio ticket" (numero + telefono).
+// telefono serve perche' il cliente il ticket lo cerca con "Il mio ticket"
+// (numero + telefono): il riquadro delle richieste, confermate tutte, sparisce
+// (proprietario, 2/10/2026). Il sito non lo conosce, il messaggio parte dal
+// WhatsApp del cliente: l'ufficio lo copia dalla chat.
 function apriConferma(li, r) {
   mostra(els.requestsMsg, "");
   if (li.querySelector(".vend-edit")) return;   // gia' aperto
@@ -859,8 +861,8 @@ function apriConferma(li, r) {
     <label for="${id}Ticket">Ticket number</label>
     <input id="${id}Ticket" name="ticket_number" type="text" autocomplete="off" required />
     <label for="${id}Phone">Telefono del cliente</label>
-    <input id="${id}Phone" name="phone" type="tel" inputmode="tel" autocomplete="off" placeholder="+44 7700 900123" />
-    <small class="vend-hint">Quello da cui ha scritto su WhatsApp, col + davanti. Facoltativo: con il telefono il cliente ritrova il ticket anche da un altro telefono.</small>
+    <input id="${id}Phone" name="phone" type="tel" inputmode="tel" autocomplete="off" placeholder="+44 7700 900123" required />
+    <small class="vend-hint">Quello da cui ha scritto su WhatsApp, col + davanti: con numero e telefono il cliente ritrova il ticket.</small>
     <div class="vend-row">
       <div>
         <label for="${id}Date">Data</label>
@@ -891,9 +893,14 @@ function apriConferma(li, r) {
     event.preventDefault();
     const msg = form.querySelector(".vend-msg");
     const numero = f.ticket_number.value.trim();
-    const telefono = f.phone.value.trim() ? telefonoE164("", f.phone.value) : null;
+    const telefono = telefonoE164("", f.phone.value);
     if (!numero) { mostra(msg, "Manca il ticket number.", "errore"); f.ticket_number.focus(); return; }
-    if (f.phone.value.trim() && !telefono) {
+    if (!f.phone.value.trim()) {
+      mostra(msg, "Manca il telefono del cliente: copialo dalla chat WhatsApp.", "errore");
+      f.phone.focus();
+      return;
+    }
+    if (!telefono) {
       mostra(msg, "Telefono non valido: scrivilo col + e il prefisso (+44 7700 900123).", "errore");
       f.phone.focus();
       return;

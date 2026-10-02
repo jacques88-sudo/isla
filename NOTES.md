@@ -15692,3 +15692,13 @@ tutte in attesa → (2); una e una → (1); tutte ticket → nessun riquadro.
 **Ancora aperto:** il telefono alla conferma è facoltativo, e senza telefono quel
 ticket con il modulo non si trova. Domanda fatta al proprietario.
 `CACHE_NAME` alzato a `isla-v385`.
+
+**Telefono obbligatorio alla conferma** (proprietario, subito dopo). Senza il riquadro,
+il ticket nato da WhatsApp si trova solo con numero + telefono: "Conferma" non parte
+più senza telefono ("Manca il telefono del cliente: copialo dalla chat WhatsApp"). Il
+sito non conosce quel numero, il messaggio parte dal WhatsApp del cliente: l'ufficio
+lo copia. Il vincolo del database (`confermato_completo`) resta com'era, senza obbligo
+per `whatsapp`: il controllo sta nella pagina. I ticket confermati oggi senza
+telefono restano senza: "Modifica" non tocca il telefono. Provato: vuoto → messaggio e
+nessuna scrittura; "123" → non valido; buono → salvato `+447700900123`.
+`CACHE_NAME` alzato a `isla-v386`.

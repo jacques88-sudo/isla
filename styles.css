@@ -751,16 +751,24 @@ a { text-decoration: none; color: inherit; }
 .ticket-dialog[hidden] { display: none; }
 /* "Senza ticket? Le mie richieste (2)": sotto il modulo, solo per chi ha
    mandato richieste su WhatsApp da questo telefono (app.js). */
+/* "Le mie richieste": in cima alla finestra, prima del modulo del ticket.
+   In fondo, sotto il link, la tastiera aperta lo copriva e il proprietario
+   non l'ha visto (2 ottobre 2026). */
 .ticket-requests-link {
-  display: block;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border);
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  margin: 0 0 1.2rem;
+  padding: .9rem 1rem;
+  border: 2px solid var(--gold);
+  border-radius: 14px;
   color: var(--text);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration: none;
 }
+.ticket-requests-link strong { display: block; font-weight: 600; }
+.ticket-requests-link small { display: block; color: var(--muted); font-size: .85rem; margin-top: .1rem; }
+.ticket-requests-link > span:last-child { margin-left: auto; font-size: 1.3rem; color: var(--gold); }
+.ticket-requests-or { text-align: center; color: var(--muted); font-size: .85rem; margin: 0 0 .8rem; }
 .ticket-dialog.is-open { transform: translate(-50%, 0); }
 
 .ticket-dialog-head {
@@ -3948,6 +3956,10 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 /* Le richieste da WhatsApp: lo stato scritto e colorato come nella pagina
    del cliente (verde, ambra, rosso). */
 .vend-requests { margin-bottom: 1.5rem; }
+.vend-requests-head { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: 1.4rem 0 .2rem; }
+.vend-requests-head .vend-h1 { margin: 0; }
+.vend-requests-head .btn { flex: none; }
+.vend-req-vuoto { color: var(--muted); }
 .vend-req-stato { display: block; font-style: normal; font-size: .85rem; font-weight: 500; margin-top: .15rem; }
 .vend-req.is-pending .vend-req-stato { color: var(--wait); }
 .vend-req.is-confirmed .vend-req-stato { color: var(--ok); }

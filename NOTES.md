@@ -15563,3 +15563,38 @@ sostituire.
 
 Provato a 375 px: sei miniature, tutte caricate, nessun errore, nessuno scroll orizzontale.
 `node controlla.js` → 0 errori. Alzato `sw.js` a `isla-v381`.
+
+## "Le mie richieste" più visibile, e l'elenco dei venditori sempre in vista (2 ottobre 2026)
+
+Il proprietario ha fatto la prova con il suo telefono e ha trovato due cose:
+
+1. **Il link "Senza ticket? Le mie richieste" non l'aveva visto.** Stava in fondo alla
+   finestra del ticket, sotto il suggerimento, e all'apertura il cursore andava nel
+   campo del numero: la tastiera si apriva e lo copriva. Ora (`app.js`, `linkRichieste`)
+   è un riquadro con il bordo dorato **in cima**, prima del modulo: "💬 Le mie richieste
+   (2) — Mandate su WhatsApp, anche senza ticket", e sotto "oppure cerca un ticket di
+   carta". Quando il riquadro c'è, la tastiera non si apre da sola. Senza richieste nel
+   telefono la finestra è uguale a prima (cursore nel numero). Testi nuovi:
+   `ticket.requestsSub`, `ticket.requestsOr`; `ticket.requestsLink` ha perso il
+   "Senza ticket?", che è passato nella riga sotto.
+2. **In `venditori.html` l'elenco delle richieste non si vedeva.** Era nascosto quando
+   era vuoto, quindi "nessuna richiesta" e "elenco che non c'è" sembravano la stessa
+   cosa. Ora resta sempre visibile: vuoto scrive "Nessuna richiesta da oggi in poi", un
+   errore scrive il messaggio del database così com'è (se dice `column
+   bookings.request_code does not exist`, il file SQL del 30 settembre non è stato
+   lanciato). C'è un pulsante **Aggiorna** per vedere una richiesta appena arrivata
+   senza ricaricare la pagina.
+
+**Cosa diceva lo screenshot del proprietario:** sopra "Nuovo ticket" non c'era niente.
+Con il codice di prima, un errore avrebbe mostrato "Elenco non disponibile": il
+riquadro nascosto vuol dire che il database ha risposto senza righe. Quindi la tabella
+è già pronta, ma la richiesta di prova non è arrivata. Il sospetto più probabile è il
+telefono con una versione vecchia in cache (prima di `richieste.js`): con quella la
+richiesta parte solo su WhatsApp. Da rifare con la versione nuova.
+
+**Provato** (Chromium, 375 px, Supabase simulato): riquadro in cima in italiano e
+inglese, cursore non nel campo con le richieste e nel campo senza; venditori con
+elenco vuoto, con errore e con una richiesta, Aggiorna che rilegge; niente sbordi,
+niente errori.
+
+`CACHE_NAME` alzato a `isla-v382`.

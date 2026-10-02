@@ -48,9 +48,13 @@
 
       <!-- Le richieste mandate su WhatsApp dai clienti senza ticket di carta
            (richieste.js). Il codice e' in fondo al messaggio del cliente.
-           Nascosto finche' non ce n'e' nessuna. -->
-      <section class="vend-requests" data-requests-box hidden>
-        <h2 class="vend-h1" data-requests-title>Richieste da WhatsApp</h2>
+           Sempre visibile, anche vuoto: nascosto, il venditore non distingueva
+           "nessuna richiesta" da "l'elenco non c'e'" (proprietario, 2 ottobre). -->
+      <section class="vend-requests" data-requests-box>
+        <div class="vend-requests-head">
+          <h2 class="vend-h1" data-requests-title>Richieste da WhatsApp</h2>
+          <button class="btn btn-soft" type="button" data-requests-reload>Aggiorna</button>
+        </div>
         <small class="vend-hint">Il codice è in fondo al messaggio del cliente. Confermata o annullata, il cliente la vede cambiare nella sua pagina.</small>
         <p class="vend-msg" data-requests-msg role="status" hidden></p>
         <ul class="vend-list" data-requests></ul>

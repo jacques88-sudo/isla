@@ -15655,3 +15655,28 @@ HTML e la sostituzione ha preso il primo. `node --check` passava, Playwright no.
   con "Your tickets" sopra e "Requests" sotto; nessun errore.
 
 `CACHE_NAME` alzato a `isla-v383`.
+
+### Il riquadro della finestra dice "I miei ticket" (2 ottobre, sera)
+
+Il proprietario: confermate le richieste, nella finestra "Il tuo ticket" restava
+"Le mie richieste (2)". Il riquadro contava le escursioni salvate nel telefono senza
+guardarne lo stato, e lo stato nel telefono (`r.last`) si aggiornava solo aprendo
+`booking.html`.
+
+- `richiesteConta()` (`richieste.js`) divide come la pagina: **ticket** (confermata
+  col numero), **aperte**, **annullate**; guarda `r.last`, e senza risposta conta
+  "aperta".
+- `richiesteAggiorna()` legge `le_mie_richieste` con `fetch` (niente libreria, come
+  `richiestaManda`) e salva `r.last` con le stesse regole di `booking.js`. La finestra
+  mostra subito quello che sa il telefono e, appena arriva la risposta, si riscrive.
+- Il riquadro: solo ticket → **"🎟️ I miei ticket (2) — Confermati dall'ufficio"**;
+  misto → **"I miei ticket (1) · Richieste (1)"**; solo attesa → come prima; le
+  annullate contano solo se non c'è altro.
+- `booking.html?richieste=1`: titolo **"I miei ticket"** quando sono tutte ticket
+  (`titoloPagina()`, che cambia anche `data-i18n`).
+
+**Provato** (Chromium, Supabase simulato): rete giù → "Le mie richieste (2)"; tutte in
+attesa → uguale; una e una → misto, pagina con le due sezioni; tutte ticket → "I miei
+ticket (2)", titolo della pagina "I miei ticket". Nessun errore.
+
+`CACHE_NAME` alzato a `isla-v384`.

@@ -130,6 +130,51 @@ function richiesteRiprova() {
     .map(richiestaManda));
 }
 
+// Le escursioni salvate qui, divise come le mostra booking.js: "ticket" le
+// confermate col numero (l'ufficio da' sempre un ticket), "aperte" quelle in
+// attesa, "annullate" le altre. Si guarda l'ultima risposta del database
+// (r.last), e senza risposta la richiesta e' ancora da confermare.
+function richiesteConta() {
+  const conta = { ticket: 0, aperte: 0, annullate: 0 };
+  richiesteLeggi().forEach(r => {
+    const righe = Array.isArray(r.last) && r.last.length ? r.last : r.items;
+    righe.forEach(v => {
+      if (v.status === "cancelled") conta.annullate++;
+      else if (v.status === "confirmed" && v.ticket_number) conta.ticket++;
+      else conta.aperte++;
+    });
+  });
+  return conta;
+}
+
+// Chiede al database lo stato di tutte le richieste di questo telefono e lo
+// salva in r.last, come fa booking.js. Serve alla finestra "Il mio ticket":
+// senza, una richiesta confermata dall'ufficio continuava a contare come
+// "richiesta" finche' il cliente non apriva la sua pagina. Senza rete non
+// cambia niente. Restituisce una promessa che dice se ha letto.
+function richiesteAggiorna() {
+  const elenco = richiesteLeggi();
+  if (!elenco.length || typeof SUPABASE_URL === "undefined" || typeof fetch !== "function") return Promise.resolve(false);
+  return fetch(SUPABASE_URL + "/rest/v1/rpc/le_mie_richieste", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY
+    },
+    body: JSON.stringify({ p_tokens: elenco.map(r => r.token) })
+  }).then(risposta => risposta.ok ? risposta.json() : null).then(rows => {
+    if (!Array.isArray(rows)) return false;
+    // Rilette adesso: intanto potrebbe esserne partita una nuova.
+    const tenute = richiesteLeggi().filter(r => {
+      r.last = rows.filter(x => x.request_token === r.token);
+      return r.last.length || !r.stored;   // sparita dal database: pulizia mensile
+    });
+    richiesteScrivi(tenute);
+    return true;
+  }).catch(() => false);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   // booking.js le riprova da se' e poi legge: qui non serve due volte.
   if (!document.getElementById("bookingView")) richiesteRiprova();

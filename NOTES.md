@@ -15585,12 +15585,15 @@ Il proprietario ha fatto la prova con il suo telefono e ha trovato due cose:
    lanciato). C'è un pulsante **Aggiorna** per vedere una richiesta appena arrivata
    senza ricaricare la pagina.
 
-**Cosa diceva lo screenshot del proprietario:** sopra "Nuovo ticket" non c'era niente.
-Con il codice di prima, un errore avrebbe mostrato "Elenco non disponibile": il
-riquadro nascosto vuol dire che il database ha risposto senza righe. Quindi la tabella
-è già pronta, ma la richiesta di prova non è arrivata. Il sospetto più probabile è il
-telefono con una versione vecchia in cache (prima di `richieste.js`): con quella la
-richiesta parte solo su WhatsApp. Da rifare con la versione nuova.
+**Cosa diceva lo screenshot del proprietario — e la conclusione sbagliata.** Sopra
+"Nuovo ticket" non c'era niente, e qui si era concluso che il database avesse risposto
+vuoto, quindi file SQL già lanciato. **Sbagliato:** col pulsante nuovo la pagina ha
+scritto `column bookings.request_code does not exist`. Il file
+`2026-09-30-richieste-whatsapp.sql` **non era mai stato lanciato**; il primo screenshot
+veniva da un `venditori.html` vecchio in cache. Lezione: un riquadro nascosto non dice
+perché è nascosto, e da lì non si deduce niente; si fa scrivere l'errore e si guarda.
+Fino al lancio del file le richieste dei clienti restano "da mandare" nei loro
+telefoni e partono da sole alla prima pagina aperta dopo.
 
 **Provato** (Chromium, 375 px, Supabase simulato): riquadro in cima in italiano e
 inglese, cursore non nel campo con le richieste e nel campo senza; venditori con

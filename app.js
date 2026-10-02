@@ -135,10 +135,15 @@ function initTicketDialog() {
   // uguale in sei pagine, e compare solo a chi le richieste le ha.
   // Sta in CIMA, sopra il modulo del ticket: in fondo la tastiera lo copriva.
   function linkRichieste() {
+    // Solo finche' c'e' qualcosa in attesa (proprietario, 2/10/2026): una
+    // richiesta confermata e' un ticket, e il ticket si cerca qui sotto con
+    // numero e telefono, come quelli di carta. Confermate o annullate tutte,
+    // il riquadro sparisce.
     const conta = typeof richiesteConta === "function" ? richiesteConta() : null;
+    const n = conta ? conta.aperte : 0;
     let link = dialog.querySelector("[data-requests-link]");
     let oppure = dialog.querySelector("[data-requests-or]");
-    if (!conta || !(conta.ticket + conta.aperte + conta.annullate)) {
+    if (!n) {
       if (link) link.remove();
       if (oppure) oppure.remove();
       return false;
@@ -154,24 +159,10 @@ function initTicketDialog() {
       const testa = dialog.querySelector(".ticket-dialog-head");
       testa.after(link, oppure);
     }
-    // Confermata dall'ufficio col numero, una richiesta e' un ticket: il
-    // riquadro dice "I miei ticket" e non piu' "Le mie richieste" (2/10/2026).
-    // Le annullate contano solo se non c'e' altro.
-    let titolo, sotto;
-    if (conta.ticket && conta.aperte) {
-      titolo = t("ticket.mixedLink", { t: conta.ticket, r: conta.aperte });
-      sotto = t("ticket.requestsSub");
-    } else if (conta.ticket) {
-      titolo = t("ticket.ticketsLink", { n: conta.ticket });
-      sotto = t("ticket.ticketsSub");
-    } else {
-      titolo = t("ticket.requestsLink", { n: conta.aperte || conta.annullate });
-      sotto = t("ticket.requestsSub");
-    }
-    link.innerHTML = `<span aria-hidden="true">${conta.ticket ? "🎟️" : "💬"}</span>` +
+    link.innerHTML = `<span aria-hidden="true">💬</span>` +
       `<span><strong></strong><small></small></span><span aria-hidden="true">›</span>`;
-    link.querySelector("strong").textContent = titolo;
-    link.querySelector("small").textContent = sotto;
+    link.querySelector("strong").textContent = t("ticket.requestsLink", { n });
+    link.querySelector("small").textContent = t("ticket.requestsSub");
     oppure.textContent = t("ticket.requestsOr");
     return true;
   }

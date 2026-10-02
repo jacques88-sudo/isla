@@ -15680,3 +15680,15 @@ attesa → uguale; una e una → misto, pagina con le due sezioni; tutte ticket 
 ticket (2)", titolo della pagina "I miei ticket". Nessun errore.
 
 `CACHE_NAME` alzato a `isla-v384`.
+
+**Corretto subito dopo, su richiesta del proprietario:** non voleva "I miei ticket" nel
+riquadro, voleva che **il riquadro sparisse**. Ora c'è **solo finché almeno una
+richiesta è in attesa**, e conta solo quelle ("Le mie richieste (1)"); confermate o
+annullate tutte, sparisce. Il ticket nato da WhatsApp si cerca con il modulo sotto
+(numero + telefono), come quelli di carta. Tolti `ticket.ticketsLink`,
+`ticket.ticketsSub`, `ticket.mixedLink`; restano `richiesteConta()`,
+`richiesteAggiorna()` e il titolo "I miei ticket" della pagina. Provato: rete giù e
+tutte in attesa → (2); una e una → (1); tutte ticket → nessun riquadro.
+**Ancora aperto:** il telefono alla conferma è facoltativo, e senza telefono quel
+ticket con il modulo non si trova. Domanda fatta al proprietario.
+`CACHE_NAME` alzato a `isla-v385`.

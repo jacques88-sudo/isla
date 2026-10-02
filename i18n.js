@@ -541,6 +541,8 @@ const I18N = {
   "booking.wantedTime": { it: "Orario richiesto", en: "Requested time", es: "Hora solicitada" },
   "booking.requestsIntro": { it: "Le richieste che hai mandato su WhatsApp. Lo stato lo aggiorna l'ufficio.", en: "The requests you sent on WhatsApp. The office updates their status.", es: "Las solicitudes que enviaste por WhatsApp. La oficina actualiza su estado." },
   "booking.waRequests": { it: "Ciao, ho una domanda sulle mie richieste ({code}).", en: "Hi, I have a question about my requests ({code}).", es: "Hola, tengo una pregunta sobre mis solicitudes ({code})." },
+  "booking.ticketsTitle": { it: "I tuoi ticket", en: "Your tickets", es: "Tus tickets" },
+  "booking.openRequestsTitle": { it: "Richieste", en: "Requests", es: "Solicitudes" },
   "booking.requestsH1": { it: "Le mie richieste", en: "My requests", es: "Mis solicitudes" },
   "booking.noRequests": { it: "Nessuna richiesta", en: "No requests", es: "Ninguna solicitud" },
   "booking.noRequestsText": { it: "Qui compaiono le escursioni che richiedi su WhatsApp da questo telefono.", en: "The excursions you request on WhatsApp from this phone will appear here.", es: "Aquí aparecen las excursiones que solicitas por WhatsApp desde este teléfono." },

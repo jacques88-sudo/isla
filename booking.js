@@ -399,6 +399,7 @@ function renderRichieste(elenco, senzaRete) {
   const eTicket = b => b.status === "confirmed" && !!b.ticket_number;
   const ticket = prossime.filter(eTicket);
   const aperte = prossime.filter(b => !eTicket(b)).concat(annullate);
+  titoloPagina(ticket.length && !aperte.length ? "booking.ticketsH1" : "booking.requestsH1");
   document.getElementById("bookingView").innerHTML = `
     ${senzaRete ? `<p class="note-box">${t("booking.offlineSaved")}</p>` : ""}
     <p class="booking-intro">${t("booking.requestsIntro")}</p>
@@ -416,9 +417,16 @@ function renderRichieste(elenco, senzaRete) {
   `;
 }
 
+// Il titolo in alto: "Le mie richieste", oppure "I miei ticket" quando
+// l'ufficio le ha confermate tutte. data-i18n cambia insieme, cosi' al cambio
+// di lingua resta quello giusto.
+function titoloPagina(chiave) {
+  const h1 = document.querySelector("[data-i18n='booking.h1'], [data-i18n='booking.requestsH1'], [data-i18n='booking.ticketsH1']");
+  if (h1) { h1.dataset.i18n = chiave; h1.textContent = t(chiave); }
+}
+
 async function cercaRichieste() {
-  const h1 = document.querySelector("[data-i18n='booking.h1'], [data-i18n='booking.requestsH1']");
-  if (h1) { h1.dataset.i18n = "booking.requestsH1"; h1.textContent = t("booking.requestsH1"); }
+  titoloPagina("booking.requestsH1");
 
   if (!richiesteLeggi().length) {
     renderStato(ICONS.ticket, t("booking.noRequests"), t("booking.noRequestsText"), false);

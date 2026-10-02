@@ -57,7 +57,8 @@ const els = {
   requestsBox: $("[data-requests-box]"),
   requestsTitle: $("[data-requests-title]"),
   requests: $("[data-requests]"),
-  requestsMsg: $("[data-requests-msg]")
+  requestsMsg: $("[data-requests-msg]"),
+  requestsReload: $("[data-requests-reload]")
 };
 
 let venditore = null;      // { name } dalla tabella sellers
@@ -766,12 +767,21 @@ async function caricaRichieste() {
     .limit(100);
 
   els.requests.replaceChildren();
+  // Una riga sola al posto dell'elenco: vuoto o non arrivato. L'errore si
+  // scrive com'e': "column bookings.request_code does not exist" vuol dire
+  // che il file SQL delle richieste non e' stato lanciato.
+  const riga = testo => els.requests.append(
+    Object.assign(document.createElement("li"), { className: "vend-req-vuoto", textContent: testo }));
   if (error) {
-    els.requestsBox.hidden = false;
-    els.requests.append(Object.assign(document.createElement("li"), { textContent: "Elenco non disponibile." }));
+    els.requestsTitle.textContent = "Richieste da WhatsApp";
+    riga("Elenco non disponibile: " + (error.message || "niente connessione") + ".");
     return;
   }
-  els.requestsBox.hidden = !data.length;
+  if (!data.length) {
+    els.requestsTitle.textContent = "Richieste da WhatsApp";
+    riga("Nessuna richiesta da oggi in poi.");
+    return;
+  }
   const daFare = data.filter(r => r.status === "pending");
   els.requestsTitle.textContent = daFare.length
     ? `Richieste da WhatsApp (${daFare.length} da confermare)`
@@ -959,6 +969,8 @@ els.logout.addEventListener("click", esci);
 els.form.addEventListener("submit", salva);
 els.searchForm.addEventListener("submit", cerca);
 els.searchReset.addEventListener("click", tornaAgliUltimi);
+// Una richiesta mandata mentre la pagina e' aperta: si vede senza ricaricare.
+els.requestsReload.addEventListener("click", () => { mostra(els.requestsMsg, ""); caricaRichieste(); });
 // "Ticket … salvato" resta finche' non si comincia il ticket successivo.
 els.form.addEventListener("input", () => {
   if (els.msg.classList.contains("is-ok")) mostra(els.msg, "");

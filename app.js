@@ -133,29 +133,46 @@ function initTicketDialog() {
   // questo telefono (richieste.js) trova qui la strada per vederle. Il
   // collegamento si aggiunge da qui e non nell'HTML: la finestra e' scritta
   // uguale in sei pagine, e compare solo a chi le richieste le ha.
+  // Sta in CIMA, sopra il modulo del ticket: in fondo la tastiera lo copriva.
   function linkRichieste() {
     const n = typeof richiesteLeggi === "function"
       ? richiesteLeggi().reduce((somma, r) => somma + r.items.length, 0) : 0;
     let link = dialog.querySelector("[data-requests-link]");
-    if (!n) { if (link) link.remove(); return; }
+    let oppure = dialog.querySelector("[data-requests-or]");
+    if (!n) {
+      if (link) link.remove();
+      if (oppure) oppure.remove();
+      return false;
+    }
     if (!link) {
       link = document.createElement("a");
       link.className = "ticket-requests-link";
       link.href = "./booking.html?richieste=1";
       link.dataset.requestsLink = "";
-      dialog.append(link);
+      oppure = document.createElement("p");
+      oppure.className = "ticket-requests-or";
+      oppure.dataset.requestsOr = "";
+      const testa = dialog.querySelector(".ticket-dialog-head");
+      testa.after(link, oppure);
     }
-    link.textContent = t("ticket.requestsLink", { n });
+    link.innerHTML = `<span aria-hidden="true">💬</span>` +
+      `<span><strong></strong><small></small></span><span aria-hidden="true">›</span>`;
+    link.querySelector("strong").textContent = t("ticket.requestsLink", { n });
+    link.querySelector("small").textContent = t("ticket.requestsSub");
+    oppure.textContent = t("ticket.requestsOr");
+    return true;
   }
 
   function open() {
-    linkRichieste();
+    // Con le richieste, niente tastiera subito: coprirebbe mezza finestra, e
+    // chi le ha probabilmente cerca quelle, non un ticket di carta.
+    const conRichieste = linkRichieste();
     dialog.hidden = false;
     scrim.hidden = false;
     requestAnimationFrame(() => {
       dialog.classList.add("is-open");
       scrim.classList.add("is-visible");
-      if (input) input.focus();
+      if (input && !conRichieste) input.focus();
     });
     document.body.classList.add("menu-open");
   }

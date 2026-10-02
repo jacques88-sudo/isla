@@ -15601,3 +15601,57 @@ elenco vuoto, con errore e con una richiesta, Aggiorna che rilegge; niente sbord
 niente errori.
 
 `CACHE_NAME` alzato a `isla-v382`.
+
+## La richiesta confermata diventa un ticket (2 ottobre 2026)
+
+Il proprietario: "quando dall'ufficio rispondiamo diamo comunque un ticket". Scelte sue
+(domanda fatta prima di scrivere codice): il ticket va **sia nella pagina venditori
+sia in quella del cliente**, e il **numero è obbligatorio** alla conferma.
+
+**Venditori (`venditori.js`).** "Conferma" chiede ora **Ticket number** (obbligatorio)
+e **Telefono del cliente** (facoltativo: quello di WhatsApp, col +, letto con
+`telefonoE164("", …)`). Con il numero la riga:
+- esce da "Richieste da WhatsApp" (`.is("ticket_number", null)`);
+- entra in "Ultimi inseriti" (`.or("source.neq.whatsapp,ticket_number.not.is.null")`),
+  con "WhatsApp K7PM3Q" al posto del venditore; si trova anche con "Cerca ticket".
+- Un numero già usato: il database lo rifiuta (`ticket_number` è unico, errore 23505)
+  e la pagina scrive "Il ticket … è già stato inserito".
+- Una richiesta confermata prima di oggi (senza numero) resta nell'elenco con
+  **"Dai il ticket"**, che apre lo stesso modulo.
+- Un messaggio con tre escursioni sono tre righe: **un numero per escursione**, come i
+  ticket di carta.
+- Dopo la conferma "Ultimi inseriti" ordina ancora per `created_at`: una richiesta
+  arrivata giorni prima può stare sotto le prime 20. La ricerca per numero la trova.
+
+**Il telefono, perché facoltativo.** Senza, il cliente vede il ticket solo dal telefono
+che ha mandato la richiesta (la chiave in `localStorage`). Con il telefono funziona
+anche "Il mio ticket" (numero + telefono) da qualunque telefono: `le_mie_escursioni()`
+guarda solo numero, telefono e `status`, e non chiede che la riga sia di carta.
+
+**Cliente (`booking.js`).** `le_mie_richieste` restituisce anche `ticket_number`.
+`cardTicket` già scriveva "Ticket n. …" quando il numero c'è; ora `renderRichieste`
+mette le confermate col numero in cima, sotto **"I tuoi ticket"**, e le altre sotto
+**"Richieste"** (il secondo titolo solo se sopra ci sono ticket). Testi:
+`booking.ticketsTitle`, `booking.openRequestsTitle`.
+
+**Database: `supabase/modifiche/2026-10-02-richieste-ticket.sql`, da lanciare.**
+Cambia solo `le_mie_richieste` (una colonna in più). `create or replace` non può
+cambiare le colonne restituite, quindi `drop function if exists` e poi `create`.
+Finché non è lanciato: la pagina venditori funziona già (le colonne c'erano), il
+cliente vede la sua conferma ancora come "Richiesta del …", verde.
+
+**Errore preso solo nel browser:** il blocco dei campi nuovi era finito in
+`apriModifica` invece che in `apriConferma`: i due moduli cominciano con lo stesso
+HTML e la sostituzione ha preso il primo. `node --check` passava, Playwright no.
+
+**Provato:**
+- SQL su Postgres 16 locale (schema + 30/9 + questo file, lanciato due volte):
+  conferma col numero → richieste 1, ultimi 1; stesso numero sull'altra riga →
+  rifiutato; `le_mie_richieste` col numero; `le_mie_escursioni('+447700900123',
+  '9001')` trova il ticket nato su WhatsApp; `anon` non legge la tabella.
+- Chromium 375 px, Supabase simulato: senza numero → "Manca il ticket number";
+  telefono "123" → errore; doppione → messaggio; conferma → PATCH con numero e
+  `+447700900123`, richiesta sparita, "#9001 … WhatsApp K7PM3Q" negli ultimi; cliente
+  con "Your tickets" sopra e "Requests" sotto; nessun errore.
+
+`CACHE_NAME` alzato a `isla-v383`.

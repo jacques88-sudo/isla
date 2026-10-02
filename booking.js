@@ -393,12 +393,20 @@ function renderRichieste(elenco, senzaRete) {
     renderStato(ICONS.ticket, t("booking.noRequests"), t("booking.noRequestsText"), false);
     return;
   }
+  // Confermata col numero, una richiesta e' un ticket (l'ufficio da' sempre un
+  // ticket, proprietario 2/10/2026): in cima, sotto "I tuoi ticket". Le altre
+  // restano richieste, e il titolo "Richieste" serve solo se sopra ci sono ticket.
+  const eTicket = b => b.status === "confirmed" && !!b.ticket_number;
+  const ticket = prossime.filter(eTicket);
+  const aperte = prossime.filter(b => !eTicket(b)).concat(annullate);
   document.getElementById("bookingView").innerHTML = `
     ${senzaRete ? `<p class="note-box">${t("booking.offlineSaved")}</p>` : ""}
     <p class="booking-intro">${t("booking.requestsIntro")}</p>
     <div class="booking-list">
-      ${prossime.map(b => cardTicket(b, false)).join("")}
-      ${annullate.map(b => cardTicket(b, false)).join("")}
+      ${ticket.length ? `<h2 class="booking-past-title">${t("booking.ticketsTitle")}</h2>` : ""}
+      ${ticket.map(b => cardTicket(b, false)).join("")}
+      ${ticket.length && aperte.length ? `<h2 class="booking-past-title">${t("booking.openRequestsTitle")}</h2>` : ""}
+      ${aperte.map(b => cardTicket(b, false)).join("")}
       ${passate.length ? `<h2 class="booking-past-title">${t("booking.pastTitle")}</h2>` : ""}
       ${passate.map(b => cardTicket(b, true)).join("")}
     </div>

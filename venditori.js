@@ -509,9 +509,10 @@ function dataBreve(iso) {
 async function caricaUltimi() {
   let domanda = sb
     .from("bookings")
-    .select("id, ticket_number, reference, excursion_id, option_label, date, time, phone, adults, kids, babies, total, deposit, rest_to_pay, seller, photo_path, status")
-    // le richieste da WhatsApp hanno il loro elenco, sopra
-    .neq("source", "whatsapp");
+    .select("id, ticket_number, reference, excursion_id, option_label, date, time, phone, adults, kids, babies, total, deposit, rest_to_pay, seller, photo_path, status, source, request_code")
+    // Le richieste da WhatsApp hanno il loro elenco, sopra; quando l'ufficio le
+    // conferma col numero del ticket diventano ticket e passano qui.
+    .or("source.neq.whatsapp,ticket_number.not.is.null");
   domanda = ricerca
     ? domanda.eq("ticket_number", ricerca)
     : domanda.order("created_at", { ascending: false }).limit(20);
@@ -542,7 +543,16 @@ async function caricaUltimi() {
     titolo.textContent = `#${b.ticket_number} · ${nome}${b.option_label ? " · " + b.option_label : ""}`;
     const sotto = document.createElement("span");
     const soldi = b.rest_to_pay === null ? "" : (Number(b.rest_to_pay) === 0 ? " · pagato" : ` · resto ${b.rest_to_pay} €`);
-    sotto.textContent = `${dataBreve(b.date)}${b.time ? " " + b.time.slice(0, 5) : ""} · ${persone}${soldi} · ${b.phone || ""} · ${b.seller || ""}${b.reference ? " · REF " + b.reference : ""}`;
+    // Un ticket nato da una richiesta WhatsApp non ha venditore e a volte
+    // nemmeno telefono: si dice da dove viene, col codice della richiesta.
+    const parti = [
+      `${dataBreve(b.date)}${b.time ? " " + b.time.slice(0, 5) : ""}`,
+      persone + soldi,
+      b.phone,
+      b.source === "whatsapp" ? `WhatsApp ${b.request_code || ""}`.trim() : b.seller,
+      b.reference ? "REF " + b.reference : ""
+    ];
+    sotto.textContent = parti.filter(Boolean).join(" · ");
     testo.append(titolo, sotto);
     li.append(testo);
 
@@ -754,6 +764,8 @@ async function apriFoto(percorso) {
 // 2026-09-30-richieste-whatsapp.sql). Una riga per escursione: un messaggio
 // con tre escursioni sono tre righe con lo stesso codice.
 // Si vedono quelle di oggi in poi: prima le da confermare, poi le altre.
+// Confermata col numero del ticket, una richiesta e' un ticket: esce da qui e
+// va in "Ultimi inseriti" (proprietario, 2 ottobre 2026).
 
 const STATO_RICHIESTA = { pending: "Da confermare", confirmed: "Confermata", cancelled: "Annullata" };
 
@@ -762,6 +774,7 @@ async function caricaRichieste() {
     .from("bookings")
     .select("id, request_code, status, excursion_id, option_label, date, time, wanted_time, meeting_point, adults, kids, babies, created_at")
     .eq("source", "whatsapp")
+    .is("ticket_number", null)
     .gte("date", oggiISO())
     .order("created_at", { ascending: false })
     .limit(100);
@@ -807,8 +820,9 @@ async function caricaRichieste() {
     testo.append(titolo, sotto, stato);
     li.append(testo);
 
-    // Da confermare: tutti e due. Confermata: si puo' ancora annullare.
-    // Annullata: si puo' confermare lo stesso (uno sbaglio, un posto liberato).
+    // Da confermare: tutti e due. Annullata: si puo' confermare lo stesso (uno
+    // sbaglio, un posto liberato). Confermata ma ancora qui vuol dire senza
+    // numero (confermata prima del 2 ottobre): "Dai il ticket" glielo mette.
     const bottoni = document.createElement("div");
     bottoni.className = "vend-list-btns";
     const bottone = (scritta, fa) => {
@@ -819,7 +833,7 @@ async function caricaRichieste() {
       b.addEventListener("click", fa);
       bottoni.append(b);
     };
-    if (r.status !== "confirmed") bottone("Conferma", () => apriConferma(li, r));
+    bottone(r.status === "confirmed" ? "Dai il ticket" : "Conferma", () => apriConferma(li, r));
     if (r.status !== "cancelled") bottone("Annulla", () => annullaRichiesta(r));
     li.append(bottoni);
     els.requests.append(li);
@@ -829,6 +843,10 @@ async function caricaRichieste() {
 // Confermare vuol dire anche dire al cliente dove e quando presentarsi: e'
 // quello che vedra' nella sua pagina, come sul ticket di carta. La data si
 // puo' cambiare, se l'ufficio ha proposto un altro giorno.
+// E vuol dire dargli un ticket: il numero e' obbligatorio, e col numero la
+// richiesta diventa un ticket (esce da qui, va in "Ultimi inseriti"). Il
+// telefono e' facoltativo: con quello il cliente ritrova il ticket anche da
+// un altro telefono, con "Il mio ticket" (numero + telefono).
 function apriConferma(li, r) {
   mostra(els.requestsMsg, "");
   if (li.querySelector(".vend-edit")) return;   // gia' aperto
@@ -838,6 +856,11 @@ function apriConferma(li, r) {
   form.noValidate = true;
   const id = "r" + r.id.slice(0, 8);
   form.innerHTML = `
+    <label for="${id}Ticket">Ticket number</label>
+    <input id="${id}Ticket" name="ticket_number" type="text" autocomplete="off" required />
+    <label for="${id}Phone">Telefono del cliente</label>
+    <input id="${id}Phone" name="phone" type="tel" inputmode="tel" autocomplete="off" placeholder="+44 7700 900123" />
+    <small class="vend-hint">Quello da cui ha scritto su WhatsApp, col + davanti. Facoltativo: con il telefono il cliente ritrova il ticket anche da un altro telefono.</small>
     <div class="vend-row">
       <div>
         <label for="${id}Date">Data</label>
@@ -867,18 +890,31 @@ function apriConferma(li, r) {
   form.addEventListener("submit", async event => {
     event.preventDefault();
     const msg = form.querySelector(".vend-msg");
+    const numero = f.ticket_number.value.trim();
+    const telefono = f.phone.value.trim() ? telefonoE164("", f.phone.value) : null;
+    if (!numero) { mostra(msg, "Manca il ticket number.", "errore"); f.ticket_number.focus(); return; }
+    if (f.phone.value.trim() && !telefono) {
+      mostra(msg, "Telefono non valido: scrivilo col + e il prefisso (+44 7700 900123).", "errore");
+      f.phone.focus();
+      return;
+    }
     if (!f.date.value) { mostra(msg, "Manca la data.", "errore"); return; }
     const salvato = await cambiaRichiesta(r, {
       status: "confirmed",
+      ticket_number: numero,
+      phone: telefono,
       date: f.date.value,
       time: f.time.value || null,
       meeting_point: f.meeting_point.value.trim() || null,
       confirmed_at: new Date().toISOString()
     }, msg);
-    if (salvato) mostra(els.requestsMsg, `${r.request_code} confermata.`, "ok");
+    if (salvato) {
+      mostra(els.requestsMsg, `${r.request_code} confermata: ora è il ticket ${numero}, in "Ultimi inseriti".`, "ok");
+      caricaUltimi();
+    }
   });
   li.append(form);
-  f.time.focus();
+  f.ticket_number.focus();
 }
 
 async function annullaRichiesta(r) {
@@ -898,6 +934,11 @@ async function cambiaRichiesta(r, nuovo, msg) {
     return true;
   } catch (err) {
     console.error(err);
+    // ticket_number e' unico: lo stesso numero non entra due volte
+    if (err && err.code === "23505") {
+      mostra(msg, `Il ticket ${nuovo.ticket_number} è già stato inserito: controlla il numero.`, "errore");
+      return false;
+    }
     mostra(msg, "Non sono riuscito a salvare. Controlla la connessione e riprova.", "errore");
     return false;
   }

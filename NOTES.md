@@ -15757,3 +15757,10 @@ Tolte da `styles.css` le regole morte: `.hero-pills`, `.pill-ghost`, `.pill-soli
 gli stati dei ticket in `booking.js`. Nuova chiave `nav.home` (Home / Home / Inicio).
 
 `CACHE_NAME` alzato a `isla-v387`.
+
+**Subito dopo, su richiesta del proprietario:** la voce del Menu non si chiama più "Il mio
+ticket" ma **"Le mie prenotazioni"** / "My bookings" / "Mis reservas". La chiave è
+diventata `nav.myBookings` (`nav.myTicket` non la usava più nessun altro). Apre la stessa
+finestra di prima, numero + telefono. Provato nelle tre lingue su home, scheda e
+pacchetti: scritta giusta, finestra aperta, nessun errore. `CACHE_NAME` alzato a
+`isla-v388`.

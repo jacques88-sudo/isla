@@ -134,8 +134,9 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   il segnaposto di un sistema di prenotazioni futuro. Il pulsante in alto che li apriva
   si chiamava "Prenota ora"; dal 30 settembre 2026 si chiama **"Il mio ticket"**, perché
   apre la finestra dei ticket veri (numero + telefono). Prenotare si fa dalle schede.
-  Dal 3 ottobre 2026 "Il mio ticket" sta **dentro il Menu**: il suo posto in alto l'ha
-  preso il carrello della capsula.
+  Dal 3 ottobre 2026 sta **dentro il Menu** e si chiama **"Le mie prenotazioni"** (My
+  bookings / Mis reservas, chiave `nav.myBookings`): "ticket" il cliente poteva non
+  capirlo. Il suo posto in alto l'ha preso il carrello della capsula.
 - **La striscia in alto è una capsula scura** ("isola galleggiante", 3 ottobre 2026):
   Home · Esperienze · carrello · Menu, a icone, e la scritta solo sulla voce della
   pagina in cui si è. **Il carrello è la lista delle richieste**, non un acquisto: apre

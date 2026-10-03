@@ -47,7 +47,7 @@ const I18N = {
   // Il pulsante in alto a destra apre la finestra del ticket (numero + telefono):
   // si chiamava "Prenota ora", ma prenotare si fa dalle schede (proprietario,
   // 30 settembre 2026).
-  "nav.myTicket":       { it: "Il mio ticket", en: "My ticket", es: "Mi ticket" },
+  "nav.myBookings":     { it: "Le mie prenotazioni", en: "My bookings", es: "Mis reservas" },
   "nav.menu":           { it: "Menu", en: "Menu", es: "Menú" },
 
   // ── titoli delle pagine ─────────────────────────────────────────────────

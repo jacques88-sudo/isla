@@ -15773,3 +15773,25 @@ riscrive scuro a mano ogni inchiostro della lista, ma `.lista-empty` mancava: pr
 carrello nella capsula la lista vuota non si apriva quasi mai. Aggiunta all'elenco degli
 inchiostri scuri. Provato: al buio e col tema chiaro il colore è `oklch(0.24 0.012 60)`.
 `CACHE_NAME` alzato a `isla-v389`.
+
+### Le bandiere al posto di IT · EN · ES (3 ottobre 2026)
+
+Chiesto dal proprietario. I 21 bottoni `[data-lang-set]` (la riga della home e quella
+nel menu di sei pagine) hanno una bandiera dentro invece delle due lettere.
+- **SVG nell'HTML, non emoji.** Windows non disegna le emoji delle bandiere: al loro
+  posto mette le lettere "IT", "GB", "ES", e si tornava al punto di partenza. Non in JS
+  perché la riga della home si vede appena si apre la pagina: le lettere sarebbero
+  comparse per un attimo.
+- Niente `clipPath` né `id` dentro gli SVG: la stessa bandiera c'è due volte nella home,
+  e una delle due sta nel menu nascosto, dove un `clipPath` può non funzionare. La
+  Union Jack è semplificata (le diagonali rosse non sono sfalsate), a 24 px non si vede.
+  La Spagna è senza stemma, per la stessa ragione.
+- Inglese = Union Jack, come si usa per "English" sui siti turistici europei.
+- `aria-label`, `title` e `lang` col nome della lingua scritto in quella lingua
+  (Italiano, English, Español): lo screen reader lo legge con la pronuncia giusta.
+- Quella scelta resta nella pastiglia scura di prima; le altre sono a opacità .75. A .55
+  al buio diventavano color fango.
+- Uno script ha cambiato tutti i bottoni insieme: sono copie uguali in sette posti.
+
+Provato: chiaro e scuro, home e menu; toccando la Spagna la home passa in spagnolo e
+`aria-pressed` segue. Nessun errore. `CACHE_NAME` alzato a `isla-v390`.

@@ -250,6 +250,24 @@ a { text-decoration: none; color: inherit; }
   background: var(--text);
   color: var(--primary-foreground);
 }
+/* Le bandiere al posto di IT, EN, ES (3 ottobre 2026, proprietario). Disegnate
+   in SVG e non con le emoji: Windows le emoji delle bandiere non le ha, e al
+   loro posto scrive le due lettere. Il nome della lingua sta nell'aria-label.
+   Quella scelta ha intorno la pastiglia scura di sempre; le altre sono un po'
+   spente, cosi' si vede a colpo d'occhio quale e' accesa. */
+.lang-flag {
+  display: block;
+  width: 24px;
+  height: 16px;
+  margin: 0 auto;
+  border-radius: 3px;
+  /* il bianco dell'Italia sul fondo chiaro sparirebbe: un filo di bordo */
+  box-shadow: 0 0 0 1px oklch(0.24 0.012 60 / .15);
+}
+.lang-row button .lang-flag { width: 27px; height: 18px; }
+[data-lang-set] .lang-flag { opacity: .75; transition: opacity .2s ease; }
+[data-lang-set]:hover .lang-flag,
+[data-lang-set].is-active .lang-flag { opacity: 1; }
 .pill {
   flex: 1;
   min-height: 40px;

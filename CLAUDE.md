@@ -143,6 +143,9 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   la stessa finestra della lista e porta il numerino. Sta **in alto**, al posto delle
   vecchie pillole, per scelta del proprietario: in basso c'erano già il pallino della
   chat e la barra "Prenota ora". È scritta uguale nelle sei pagine.
+- **Le lingue si scelgono con le bandiere** (3 ottobre 2026, proprietario), non con
+  IT/EN/ES. Sono **SVG scritti nell'HTML**, non emoji: Windows le emoji delle bandiere
+  non le ha e scriverebbe le due lettere. Il nome della lingua sta in `aria-label`.
 - **Il pallino della chat resta dov'è**, anche quando passa sopra un prezzo.
 - **Le fasce d'orario segnaposto restano** dove le partenze vere non le sappiamo: sono
   intervalli, il cliente li legge come una preferenza.

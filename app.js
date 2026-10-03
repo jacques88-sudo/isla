@@ -274,7 +274,7 @@ function initHeroVideo() {
 
 document.addEventListener("DOMContentLoaded", initHeroVideo);
 
-// "More" off-canvas menu (home page only)
+// Il menu laterale, aperto dalla voce "Menu" della capsula in alto
 function initMoreMenu() {
   const panel = document.getElementById("moreMenu");
   const scrim = document.querySelector("[data-menu-scrim]");
@@ -295,10 +295,13 @@ function initMoreMenu() {
     openBtns.forEach(btn => btn.setAttribute("aria-expanded", "true"));
   }
 
-  function close() {
+  // tieniBloccata: il menu si chiude perche' se ne apre un'altra finestra (il
+  // ticket), che ha gia' bloccato lo scorrimento della pagina. Togliere il
+  // blocco qui la farebbe scorrere sotto la finestra nuova.
+  function close(tieniBloccata) {
     panel.classList.remove("is-open");
     scrim.classList.remove("is-visible");
-    document.body.classList.remove("menu-open");
+    if (tieniBloccata !== true) document.body.classList.remove("menu-open");
     openBtns.forEach(btn => btn.setAttribute("aria-expanded", "false"));
     setTimeout(() => {
       panel.hidden = true;
@@ -309,6 +312,10 @@ function initMoreMenu() {
   openBtns.forEach(btn => btn.addEventListener("click", open));
   closeBtns.forEach(btn => btn.addEventListener("click", close));
   links.forEach(link => link.addEventListener("click", close));
+  // "Il mio ticket" sta nel menu da quando la capsula in alto ha il carrello:
+  // apre la finestra del ticket (initTicketDialog) e il menu le fa posto.
+  panel.querySelectorAll("[data-ticket-open]").forEach(btn =>
+    btn.addEventListener("click", () => close(true)));
   scrim.addEventListener("click", close);
   document.addEventListener("keydown", e => {
     if (e.key === "Escape" && panel.classList.contains("is-open")) close();

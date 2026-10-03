@@ -274,6 +274,32 @@ function initHeroVideo() {
 
 document.addEventListener("DOMContentLoaded", initHeroVideo);
 
+// Il numerino sul biglietto della capsula: quante escursioni il cliente ha
+// davanti (prenotazioniProssime, richieste.js). Si ridisegna quando arriva lo
+// stato nuovo dal database e quando un'altra scheda del browser cambia il
+// telefono (un ticket cercato in booking.html, una richiesta mandata).
+function initPrenotazioniCount() {
+  const numerini = document.querySelectorAll("[data-prenotazioni-count]");
+  if (!numerini.length || typeof prenotazioniProssime !== "function") return;
+  function disegna() {
+    const quante = prenotazioniProssime();
+    numerini.forEach(n => {
+      n.hidden = quante === 0;
+      n.textContent = quante;
+    });
+  }
+  document.addEventListener("islaprenotazioni", disegna);
+  window.addEventListener("storage", e => {
+    if (e.key === "isla-richieste" || e.key === "isla-ticket-risultato") disegna();
+  });
+  // Tornando indietro col browser la pagina puo' arrivare dalla memoria, col
+  // numero di prima: si ricalcola.
+  window.addEventListener("pageshow", e => { if (e.persisted) disegna(); });
+  disegna();
+}
+
+document.addEventListener("DOMContentLoaded", initPrenotazioniCount);
+
 // Il menu laterale, aperto dalla voce "Menu" della capsula in alto
 function initMoreMenu() {
   const panel = document.getElementById("moreMenu");

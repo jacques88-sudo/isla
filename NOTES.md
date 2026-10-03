@@ -15827,3 +15827,36 @@ del carrello, quindi le due icone di Isla si somigliano, e la finestra che apre 
 proprio un biglietto. Scartate: la valigia (a 21 px sembrava una borsa da lavoro), il
 segnalibro (dice "salvati", non "prenotati"), la persona (non dice "prenotazioni").
 `CACHE_NAME` alzato a `isla-v392`.
+
+### Il numerino delle prenotazioni sul biglietto (3 ottobre 2026)
+
+Chiesto dal proprietario: un segno che dica che ci sono escursioni prenotate. Proposte
+due strade (A: quante ne hai davanti; B: un pallino "l'ufficio ti ha risposto"), scelta
+la **A**. La notifica vera del telefono, a sito chiuso, non si fa ora: servirebbe un
+pezzo sul server che la manda, e sull'iPhone solo con l'app installata.
+
+**Cosa conta** `prenotazioniProssime()` (`richieste.js`): le escursioni con la data da
+oggi in poi, non annullate, da due posti del telefono:
+- le richieste WhatsApp (`isla-richieste`), con l'ultimo stato letto (`r.last`), se no
+  quello di partenza (`r.items`, "in attesa");
+- l'ultimo ticket cercato con numero e telefono (`isla-ticket-risultato`, lo salva
+  `booking.js`; il nome della chiave è riscritto lì perché `booking.js` sulle altre
+  pagine non c'è).
+Una richiesta confermata diventa un ticket e può stare in tutti e due: si conta una volta
+sola, con la chiave numero del ticket + escursione + data.
+
+**Perché si chiede al database:** se l'ufficio annulla una richiesta, il telefono lo
+scopriva solo aprendo "Le mie prenotazioni", e intanto il numerino la contava. Ora a ogni
+pagina, **solo se c'è una richiesta in attesa con la data da oggi in poi**, si chiama
+`richiesteAggiorna()` (la stessa domanda della finestra). Chi non ha richieste in attesa
+non fa nessuna chiamata; una vecchia richiesta passata e mai confermata non la fa
+ripartire a ogni pagina. `richiesteAggiorna()` alla fine manda l'evento
+`islaprenotazioni`, e `initPrenotazioniCount()` (`app.js`) ridisegna. Si ridisegna
+anche sull'evento `storage` (un'altra scheda del browser) e tornando indietro col
+browser (`pageshow`).
+
+**Provato** con Supabase simulato, sette casi: telefono vuoto → nascosto; 2 future + 1
+passata in attesa → 2; l'ufficio ne annulla una e conferma l'altra → 1; ticket di carta 2
+future + 1 passata → 2; la stessa escursione confermata e cercata col ticket → 1; tutto
+insieme → 3; solo una vecchia richiesta passata → nascosto e nessuna chiamata. Chiaro e
+scuro. Nessun errore. `CACHE_NAME` alzato a `isla-v393`.

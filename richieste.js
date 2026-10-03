@@ -171,11 +171,59 @@ function richiesteAggiorna() {
       return r.last.length || !r.stored;   // sparita dal database: pulizia mensile
     });
     richiesteScrivi(tenute);
+    // il numerino della capsula (app.js) si ricalcola con lo stato nuovo
+    document.dispatchEvent(new CustomEvent("islaprenotazioni"));
     return true;
   }).catch(() => false);
 }
 
+// Quante escursioni il cliente ha davanti: con la data da oggi in poi, in
+// attesa o confermate, non annullate. E' il numerino sul biglietto della
+// capsula. Vengono da due posti del telefono:
+//   - le richieste mandate su WhatsApp (qui sopra), con l'ultimo stato letto;
+//   - l'ultimo ticket cercato con numero e telefono, che booking.js salva in
+//     "isla-ticket-risultato" (RISULTATO_KEY: booking.js non c'e' sulle altre
+//     pagine, quindi il nome si riscrive qui).
+// Una richiesta confermata diventa un ticket e puo' stare in tutti e due:
+// numero del ticket + escursione + data la fa contare una volta sola.
+function prenotazioniProssime() {
+  const d = new Date();
+  const oggi = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const viste = new Set();
+  const conta = (chiave, data) => {
+    if (!data || String(data).slice(0, 10) < oggi || viste.has(chiave)) return;
+    viste.add(chiave);
+  };
+  richiesteLeggi().forEach(r => {
+    const righe = Array.isArray(r.last) && r.last.length ? r.last : r.items;
+    righe.forEach((v, i) => {
+      if (v.status === "cancelled") return;
+      const chiave = v.ticket_number
+        ? v.ticket_number + "|" + v.excursion_id + "|" + v.date
+        : r.token + "|" + i;
+      conta(chiave, v.date);
+    });
+  });
+  try {
+    const t = JSON.parse(localStorage.getItem("isla-ticket-risultato") || "null");
+    if (t && Array.isArray(t.rows)) {
+      t.rows.forEach(v => conta(v.ticket_number + "|" + v.excursion_id + "|" + v.date, v.date));
+    }
+  } catch (e) { /* incognito o dato rovinato: si conta quello che c'e' */ }
+  return viste.size;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   // booking.js le riprova da se' e poi legge: qui non serve due volte.
-  if (!document.getElementById("bookingView")) richiesteRiprova();
+  if (document.getElementById("bookingView")) return;
+  // Solo chi ha richieste ancora in attesa chiede lo stato al database: se
+  // l'ufficio ne ha annullata una, il numerino della capsula non la deve piu'
+  // contare. Prima si riprova a mandare quelle rimaste indietro, poi si legge.
+  // Quelle con la data gia' passata no: non contano nel numerino, e una
+  // richiesta mai confermata farebbe chiedere al database a ogni pagina.
+  const oggi = new Date().toISOString().slice(0, 10);
+  const inAttesa = richiesteLeggi().some(r =>
+    (Array.isArray(r.last) && r.last.length ? r.last : r.items)
+      .some(v => v.date >= oggi && v.status !== "cancelled" && !v.ticket_number));
+  richiesteRiprova().then(() => { if (inAttesa) richiesteAggiorna(); });
 });

@@ -15795,3 +15795,24 @@ nel menu di sei pagine) hanno una bandiera dentro invece delle due lettere.
 
 Provato: chiaro e scuro, home e menu; toccando la Spagna la home passa in spagnolo e
 `aria-pressed` segue. Nessun errore. `CACHE_NAME` alzato a `isla-v390`.
+
+### "Le mie prenotazioni" anche nella capsula (3 ottobre 2026)
+
+Chiesto dal proprietario: la quinta voce della capsula, fra il carrello e il Menu, apre
+la finestra del ticket (`data-ticket-open`, la prende già `initTicketDialog`). Resta
+anche come prima voce del Menu.
+- **Icona: calendario con la spunta.** Provato anche un biglietto con la spunta: a 21 px,
+  in fila con le altre, sembrava una busta.
+- **Tolta dalla capsula l'icona "installa l'app".** Con cinque voci più lei, a 390 px in
+  spagnolo la capsula usciva di 13 px (in inglese di 8). Il bottone "Installa l'app" nel
+  Menu c'era già e resta; `initInstallButton` lo trova da solo.
+- La scritta della voce attiva ora si accorcia coi puntini **a ogni larghezza**, non solo
+  sotto i 360 px: è l'unica cosa che lascia la capsula sempre dentro lo schermo.
+- Tolta `.isla-tab[hidden]`: serviva solo all'icona dell'installazione. Tolta anche
+  `.isla-tab-count[hidden]`: il numerino non ha un `display` suo, l'`[hidden]` del
+  browser basta.
+
+Misurato a 320, 360, 390 e 412 px, nelle tre lingue, su home ed elenco: mai fuori dallo
+schermo; solo a 320 px "Esperienze" diventa "ESPERIEN…". Su tutte e sei le pagine il
+calendario apre la finestra delle prenotazioni e il carrello la lista. Nessun errore.
+`CACHE_NAME` alzato a `isla-v391`.

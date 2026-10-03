@@ -511,18 +511,14 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: 0;
   text-align: center;
 }
-/* .isla-tab e' inline-flex e vince sull'[hidden] del browser: senza queste
-   righe l'icona dell'installazione e il numerino si vedrebbero sempre. */
-.isla-tab[hidden],
-.isla-tab-count[hidden] { display: none; }
-/* Sui telefoni piu' stretti (iPhone SE: 320 px) cinque voci, con l'icona
-   dell'installazione accesa e una scritta lunga come "Experiencias", uscivano
-   di 9 px dallo schermo: si stringe lo spazio attorno, e se ancora non basta
-   la scritta si accorcia coi puntini invece di spingere fuori la capsula. */
+/* La scritta della voce attiva si accorcia coi puntini invece di spingere la
+   capsula fuori dallo schermo: con cinque voci, a 320 px "Experiencias" non ci
+   sta intera. L'icona "installa l'app" non sta piu' nella capsula (e' nel menu):
+   con lei a 390 px in spagnolo si usciva di 13 px. */
+.isla-tab[aria-current="page"] { flex: 0 1 auto; min-width: 0; }
+.isla-tab[aria-current="page"] .isla-tab-label { overflow: hidden; text-overflow: ellipsis; }
 @media (max-width: 360px) {
   .isla-tab { min-width: 40px; padding: 0 .55rem; gap: .35rem; letter-spacing: .08em; }
-  .isla-tab[aria-current="page"] { flex: 0 1 auto; min-width: 0; }
-  .isla-tab[aria-current="page"] .isla-tab-label { overflow: hidden; text-overflow: ellipsis; }
 }
 
 /* Sull'elenco e sulle schede il nome e le lingue non ci sono: la striscia

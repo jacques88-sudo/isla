@@ -41,6 +41,7 @@ const I18N = {
 
   // ── barra in alto ───────────────────────────────────────────────────────
   "nav.aria":           { it: "Menu principale", en: "Main menu", es: "Menú principal" },
+  "nav.home":           { it: "Home", en: "Home", es: "Inicio" },
   "nav.experiences":    { it: "Esperienze", en: "Experiences", es: "Experiencias" },
   "nav.bookNow":        { it: "Prenota ora", en: "Book now", es: "Reservar" },
   // Il pulsante in alto a destra apre la finestra del ticket (numero + telefono):
@@ -263,6 +264,7 @@ const I18N = {
   // ── la lista delle richieste ────────────────────────────────────────────
   "lista.title":        { it: "La tua lista", en: "Your list", es: "Tu lista" },
   "lista.added":        { it: "Aggiunta alla tua lista", en: "Added to your list", es: "Añadida a tu lista" },
+  "lista.none":         { it: "La tua lista è vuota. Apri un'escursione e tocca «Aggiungi alla lista»: qui le ritrovi tutte, e le chiedi con un solo messaggio.", en: "Your list is empty. Open an excursion and tap “Add to list”: you'll find them all here, and ask for them in a single message.", es: "Tu lista está vacía. Abre una excursión y toca «Añadir a la lista»: aquí las encuentras todas, y las pides con un solo mensaje." },
   "lista.empty":        { it: "Non c'è più niente nella lista.", en: "There is nothing left in the list.", es: "Ya no queda nada en la lista." },
   "lista.remove":       { it: "Togli dalla lista", en: "Remove from the list", es: "Quitar de la lista" },
   "lista.clear":        { it: "Svuota la lista", en: "Empty the list", es: "Vaciar la lista" },

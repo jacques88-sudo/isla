@@ -15702,3 +15702,58 @@ per `whatsapp`: il controllo sta nella pagina. I ticket confermati oggi senza
 telefono restano senza: "Modifica" non tocca il telefono. Provato: vuoto → messaggio e
 nessuna scrittura; "123" → non valido; buono → salvato `+447700900123`.
 `CACHE_NAME` alzato a `isla-v386`.
+
+---
+
+### La capsula "isola galleggiante" al posto delle pillole (3 ottobre 2026)
+
+**Cosa:** la striscia in alto "Esperienze · Il mio ticket · Menu" è diventata una
+capsula scura con quattro icone: **Home · Esperienze · carrello · Menu** (più l'icona
+"installa l'app" quando il browser la offre). La voce della pagina in cui si è diventa
+una pastiglia chiara con la scritta; le altre hanno la scritta nascosta agli occhi ma
+letta dallo screen reader (`.isla-tab-label`).
+
+**Come si è scelto:** quattro prove sul sito vero (in basso classica, in basso
+galleggiante, in alto al posto delle pillole, in basso col ticket al centro). Il
+proprietario ha scelto la galleggiante, ma **in alto**: in basso c'erano già il pallino
+della chat, il pulsante della lista e la barra "Prenota ora" della scheda, e il pallino
+della chat sarebbe dovuto salire.
+
+**Il carrello:** "Il mio ticket" il cliente poteva non capirlo; il proprietario voleva un
+carrello "stile Amazon". Il carrello di Isla è **la lista delle richieste** (scelta del
+proprietario): apre la stessa finestra della lista, e il numerino sabbia dice quante
+escursioni ci sono. Dentro il carrello c'è un sole sull'orizzonte, come nel logo; scartati
+un sole con l'onda (troppo fitto a 21 px) e una palma (da piccola non si leggeva).
+- `lista.js`: se nella pagina c'è un `[data-lista-open]` il pulsante che galleggia in
+  basso a sinistra **non si crea più**; il numerino è `[data-lista-count]`. Senza
+  capsula il pulsante torna come prima.
+- Il carrello si tocca anche a lista vuota: lì la frase è la nuova `lista.none` ("La tua
+  lista è vuota. Apri un'escursione e tocca «Aggiungi alla lista»…"). `lista.empty`
+  ("Non c'è più niente") resta per chi la svuota con la finestra aperta.
+
+**"Il mio ticket"** è la prima voce del Menu, nelle sei pagine. Toccata, il menu si chiude
+e si apre la finestra del ticket: `close(true)` in `initMoreMenu` lascia il blocco dello
+scorrimento (`body.menu-open`), che la finestra del ticket aveva appena messo. Senza,
+la pagina sotto scorreva.
+
+**Voce attiva:** Home sulla home, Esperienze su elenco e scheda. Su pacchetti, pacchetto
+e noleggio nessuna: la capsula è di sole icone.
+
+**Colori:** fondo `--text`, icone `--bg`, quindi al buio si gira da sola (capsula chiara
+su fondo scuro). La striscia attorno è trasparente e non prende i tocchi
+(`pointer-events: none`, la capsula li riprende).
+
+**Telefono stretto:** a 320 px, in spagnolo, con l'icona "installa" accesa la capsula
+usciva di 9 px. Sotto i 360 px le voci si stringono e la scritta attiva si accorcia coi
+puntini ("EXPERIEN…") invece di spingere fuori lo schermo. Provato in it/en/es: 320 px
+pieni, niente scorrimento di lato.
+
+**Nota per le prove:** con Playwright in modalità `isMobile`, dopo uno `scrollTo` la
+foto mostra una fascia vuota in cima alla pagina. C'è identica anche sul sito di prima:
+è la foto, non la striscia. Per le schermate si usa un contesto senza `isMobile`.
+
+Tolte da `styles.css` le regole morte: `.hero-pills`, `.pill-ghost`, `.pill-solid`,
+`.pill-icon`, `.pill-install` e il `.pill-solid` del tema scuro. `.pill` resta: lo usano
+gli stati dei ticket in `booking.js`. Nuova chiave `nav.home` (Home / Home / Inicio).
+
+`CACHE_NAME` alzato a `isla-v387`.

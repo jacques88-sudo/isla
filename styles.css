@@ -250,14 +250,6 @@ a { text-decoration: none; color: inherit; }
   background: var(--text);
   color: var(--primary-foreground);
 }
-.hero-pills {
-  width: 100%;
-  max-width: var(--max);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .5rem;
-}
 .pill {
   flex: 1;
   min-height: 40px;
@@ -273,18 +265,6 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: .13em;
   white-space: nowrap;
 }
-.pill-ghost {
-  background: oklch(1 0 0 / .1);
-  border: 1px solid oklch(1 0 0 / .55);
-  color: #fff;
-  backdrop-filter: blur(6px);
-}
-.pill-solid {
-  background: var(--text);
-  color: #fff;
-  flex: 1.15;
-}
-.pill-icon { font-size: .85rem; }
 
 /* Il pulsante di pausa del video, nell'angolo in alto della fascia */
 .playbtn {
@@ -437,30 +417,95 @@ a { text-decoration: none; color: inherit; }
   display: flex;
   justify-content: center;
   margin-top: 1.4rem;
-  padding: .6rem 1.25rem;
-  background: color-mix(in oklab, var(--bg) 85%, transparent);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+  padding: .6rem 1rem;
+  /* Niente fondo ne' riga: la capsula galleggia da sola sopra la pagina, come
+     un'isola. La striscia attorno resta trasparente anche ai tocchi, cosi'
+     quello che le passa sotto ai lati si puo' ancora toccare. */
+  pointer-events: none;
 }
-/* .pill-ghost nasce bianco su trasparente, per stare sopra un video. Qui
-   sotto c'e' carta chiara: senza questo sarebbe testo bianco su bianco. */
-.home-bar .pill-ghost {
-  background: var(--surface);
-  border-color: var(--border);
+.home-bar > * { pointer-events: auto; }
+/* La capsula di Isla: un'isola scura che sta al centro della striscia. Le voci
+   sono icone; quella della pagina in cui si e' (aria-current) diventa una
+   pastiglia chiara con la scritta accanto. Le altre la scritta ce l'hanno
+   nascosta: lo screen reader la legge, l'occhio vede solo l'icona.
+   I colori vengono da --text e --bg, non da --primary: cosi' al buio si gira
+   da sola e diventa un'isola chiara su fondo scuro. */
+.isla-tabs {
+  display: flex;
+  align-items: center;
+  gap: .15rem;
+  max-width: 100%;
+  padding: .3rem;
+  border-radius: var(--radius-pill);
+  background: var(--text);
+  color: var(--bg);
+  box-shadow: 0 12px 30px -16px oklch(0.24 0.012 60 / .7);
+}
+.isla-tab {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  min-width: 46px;
+  height: 44px;
+  padding: 0 .8rem;
+  border-radius: var(--radius-pill);
+  color: color-mix(in oklab, var(--bg) 70%, transparent);
+  font-size: .6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  white-space: nowrap;
+  transition: background-color .2s ease, color .2s ease;
+}
+.isla-tab svg { width: 21px; height: 21px; flex: none; }
+.isla-tab:hover { color: var(--bg); }
+.isla-tab[aria-current="page"] {
+  background: var(--bg);
   color: var(--text);
 }
-/* Quattro pillole con la scritta non ci stanno su un telefono da 412 px (le
-   altre hanno white-space: nowrap e uscirebbero dallo schermo): questa e' solo
-   l'icona, il nome sta nell'aria-label. */
-.pill-install {
-  flex: 0 0 auto;
-  width: 40px;
-  padding: 0;
+/* la scritta delle voci non attive: c'e', ma solo per lo screen reader */
+.isla-tab:not([aria-current="page"]) .isla-tab-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
-.pill-install svg { width: 18px; height: 18px; }
-/* .pill e' inline-flex e vince sull'[hidden] del browser: senza questa riga la
-   pillola dell'installazione si vedrebbe sempre. */
-.pill[hidden] { display: none; }
+/* Il numerino sul carrello: quante escursioni ci sono nella lista. Il colore
+   sabbia e' quello di "TENERIFE" sopra il titolo, l'unico accento del sito. */
+.isla-tab-count {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: var(--radius-pill);
+  background: var(--gold);
+  color: oklch(0.24 0.012 60);
+  font-size: .62rem;
+  font-weight: 600;
+  line-height: 17px;
+  letter-spacing: 0;
+  text-align: center;
+}
+/* .isla-tab e' inline-flex e vince sull'[hidden] del browser: senza queste
+   righe l'icona dell'installazione e il numerino si vedrebbero sempre. */
+.isla-tab[hidden],
+.isla-tab-count[hidden] { display: none; }
+/* Sui telefoni piu' stretti (iPhone SE: 320 px) cinque voci, con l'icona
+   dell'installazione accesa e una scritta lunga come "Experiencias", uscivano
+   di 9 px dallo schermo: si stringe lo spazio attorno, e se ancora non basta
+   la scritta si accorcia coi puntini invece di spingere fuori la capsula. */
+@media (max-width: 360px) {
+  .isla-tab { min-width: 40px; padding: 0 .55rem; gap: .35rem; letter-spacing: .08em; }
+  .isla-tab[aria-current="page"] { flex: 0 1 auto; min-width: 0; }
+  .isla-tab[aria-current="page"] .isla-tab-label { overflow: hidden; text-overflow: ellipsis; }
+}
 
 /* Sull'elenco e sulle schede il nome e le lingue non ci sono: la striscia
    arriva subito sotto il logo tondo e le serve un po' piu' d'aria sopra. */
@@ -3780,13 +3825,7 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 
   /* --- le cose che non si girano da sole ---------------------------------
      Quasi tutti i colori scritti a mano nel foglio sono bianchi sopra una foto
-     o ombre: restano giusti anche al buio. Questi tre no. */
-
-  /* .pill-solid prende il fondo da --text e la scritta da un #fff scritto a
-     mano: al buio --text diventa chiaro e il pulsante finiva bianco su bianco.
-     Le altre tre regole che usano --text come fondo prendono la scritta da una
-     variabile, quindi si girano da sole. */
-  .pill-solid { color: var(--bg); }
+     o ombre: restano giusti anche al buio. Questi no. */
 
   /* Il riquadro a strisce ha il fondo scritto a mano, non una variabile. */
   .bento-tile.bento-tile-stripes { background: oklch(0.235 0.014 60); }

@@ -150,7 +150,9 @@ function listaWhatsappUrl(nome, codice) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// La parte che si vede: il pulsante che galleggia e la finestra della lista.
+// La parte che si vede: il carrello nella capsula in alto e la finestra della
+// lista. Il pulsante che galleggia in basso a sinistra c'e' solo sulle pagine
+// senza la capsula.
 // Sono costruiti qui invece che nell'HTML perche' servono su piu' pagine, e
 // tre copie dello stesso pezzo di HTML e' il modo sicuro per ritrovarsele
 // diverse fra loro dopo la prossima modifica.
@@ -160,12 +162,21 @@ function initLista() {
   // Serve il catalogo per sapere titoli e prezzi: dove non c'e', niente lista.
   if (typeof ESPLORA_CATALOG === "undefined") return;
 
-  const fab = document.createElement("button");
-  fab.type = "button";
-  fab.className = "lista-fab";
-  fab.setAttribute("data-lista-open", "");
-  fab.hidden = true;
-  document.body.appendChild(fab);
+  // Il carrello della capsula (nell'HTML) apre la lista; il suo numerino dice
+  // quante escursioni ci sono. Dove la capsula non c'e', torna il pulsante
+  // che galleggia in basso, creato qui.
+  const carrelli = [...document.querySelectorAll("[data-lista-open]")];
+  const numerini = [...document.querySelectorAll("[data-lista-count]")];
+  let fab = null;
+  if (!carrelli.length) {
+    fab = document.createElement("button");
+    fab.type = "button";
+    fab.className = "lista-fab";
+    fab.setAttribute("data-lista-open", "");
+    fab.hidden = true;
+    document.body.appendChild(fab);
+    carrelli.push(fab);
+  }
 
   const scrim = document.createElement("div");
   scrim.className = "ticket-scrim";
@@ -200,7 +211,13 @@ function initLista() {
   document.body.appendChild(dialog);
   applyI18n(dialog);
 
+  // Il carrello si tocca anche a lista vuota, e "non c'e' piu' niente" detto
+  // a chi non ci ha mai messo niente non ha senso: la frase giusta dipende da
+  // com'era la lista quando la finestra si e' aperta.
+  let vuotaDaSubito = false;
+
   function apri() {
+    vuotaDaSubito = listaLeggi().length === 0;
     disegna();
     dialog.hidden = false;
     scrim.hidden = false;
@@ -221,10 +238,16 @@ function initLista() {
     }, 300);
   }
 
-  // Il pulsante c'e' solo quando c'e' qualcosa dentro: a lista vuota sarebbe
-  // un bottone che non fa niente, piantato sopra il contenuto della pagina.
+  // Il numerino c'e' solo quando c'e' qualcosa dentro, come il pulsante che
+  // galleggia: a lista vuota sarebbe un bottone che non fa niente, piantato
+  // sopra il contenuto della pagina. Il carrello invece resta sempre.
   function aggiornaFab() {
     const quante = listaLeggi().length;
+    numerini.forEach(n => {
+      n.hidden = quante === 0;
+      n.textContent = quante;
+    });
+    if (!fab) return;
     fab.hidden = quante === 0;
     fab.innerHTML =
       '<span class="lista-fab-count">' + quante + '</span>' +
@@ -240,7 +263,8 @@ function initLista() {
     const nomeScritto = corpo.querySelector("#listaName");
     const nome = nomeScritto ? nomeScritto.value : "";
     if (!voci.length) {
-      corpo.innerHTML = '<p class="lista-empty" data-i18n="lista.empty"></p>';
+      const frase = vuotaDaSubito ? "lista.none" : "lista.empty";
+      corpo.innerHTML = '<p class="lista-empty" data-i18n="' + frase + '"></p>';
       applyI18n(corpo);
       return;
     }
@@ -308,7 +332,7 @@ function initLista() {
     if (nome) corpo.querySelector("#listaName").value = nome;
   }
 
-  fab.addEventListener("click", apri);
+  carrelli.forEach(c => c.addEventListener("click", apri));
   scrim.addEventListener("click", chiudi);
   dialog.addEventListener("click", e => {
     if (e.target.closest("[data-lista-close]")) { chiudi(); return; }

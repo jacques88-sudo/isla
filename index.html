@@ -104,13 +104,28 @@
     </div>
 
     <nav class="home-bar" data-i18n-aria-label="nav.aria" aria-label="Menu principale">
-      <div class="hero-pills">
-        <a class="pill pill-ghost" href="./escursioni.html" data-i18n="nav.experiences">Esperienze</a>
-        <button class="pill pill-solid" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.myTicket">Il mio ticket</button>
-        <button class="pill pill-ghost" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
-          <span class="pill-icon" aria-hidden="true">☰</span> <span data-i18n="nav.menu">Menu</span>
+      <!-- La capsula: le voci sono icone, e solo quella della pagina in cui si
+           e' ha la scritta accanto. Le altre la scritta ce l'hanno lo stesso,
+           nascosta agli occhi ma letta dallo screen reader. -->
+      <div class="isla-tabs">
+        <a class="isla-tab" href="./index.html" aria-current="page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.5 12 4l8.5 6.5"/><path d="M5.5 9v10.5h13V9"/><path d="M10 19.5v-5h4v5"/></svg>
+          <span class="isla-tab-label" data-i18n="nav.home">Home</span>
+        </a>
+        <a class="isla-tab" href="./escursioni.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 19.5 9 9l3.5 5 2.5-3.5 6.5 9z"/><circle cx="17" cy="5.5" r="2"/></svg>
+          <span class="isla-tab-label" data-i18n="nav.experiences">Esperienze</span>
+        </a>
+        <button class="isla-tab" type="button" data-lista-open aria-haspopup="dialog" aria-controls="listaDialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4h2.3l2.4 11h11.3l2-8H6"/><circle cx="9" cy="19.2" r="1.3"/><circle cx="16.5" cy="19.2" r="1.3"/><path d="M10.2 11.5a2.8 2.8 0 0 1 5.6 0"/><path d="M8.8 11.5h8.4"/></svg>
+          <span class="isla-tab-count" data-lista-count aria-hidden="true" hidden></span>
+          <span class="isla-tab-label" data-i18n="lista.title">La tua lista</span>
         </button>
-        <button class="pill pill-ghost pill-install" type="button" data-install-btn hidden
+        <button class="isla-tab" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <span class="isla-tab-label" data-i18n="nav.menu">Menu</span>
+        </button>
+        <button class="isla-tab" type="button" data-install-btn hidden
                 data-i18n-aria-label="menu.install" aria-label="Installa l'app">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 6v8m0 0-3-3m3 3 3-3"/><path d="M10.5 18.5h3"/></svg>
         </button>
@@ -335,6 +350,7 @@
     </div>
     <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn data-i18n="menu.install" hidden>Installa l'app</button>
     <nav class="more-menu-nav" data-i18n-aria-label="menu.sections" aria-label="Sezioni">
+      <button type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.myTicket">Il mio ticket</button>
       <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
       <a href="./pacchetti.html" data-menu-link data-i18n="menu.packages">Pacchetti</a>
       <a href="#secret" data-menu-link data-i18n="menu.secret">Posti segreti</a>

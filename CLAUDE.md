@@ -136,7 +136,7 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   apre la finestra dei ticket veri (numero + telefono). Prenotare si fa dalle schede.
   Dal 3 ottobre 2026 si chiama **"Le mie prenotazioni"** (My bookings / Mis reservas,
   chiave `nav.myBookings`): "ticket" il cliente poteva non capirlo. Sta nella capsula
-  in alto (icona del calendario con la spunta) **e** come prima voce del Menu.
+  in alto (icona del biglietto col sole, lo stesso sole del carrello) **e** come prima voce del Menu.
 - **La striscia in alto è una capsula scura** ("isola galleggiante", 3 ottobre 2026):
   Home · Esperienze · carrello · prenotazioni · Menu, a icone, e la scritta solo sulla voce della
   pagina in cui si è. **Il carrello è la lista delle richieste**, non un acquisto: apre

@@ -15816,3 +15816,14 @@ Misurato a 320, 360, 390 e 412 px, nelle tre lingue, su home ed elenco: mai fuor
 schermo; solo a 320 px "Esperienze" diventa "ESPERIEN…". Su tutte e sei le pagine il
 calendario apre la finestra delle prenotazioni e il carrello la lista. Nessun errore.
 `CACHE_NAME` alzato a `isla-v391`.
+
+### Icona di "Le mie prenotazioni": il biglietto col sole (3 ottobre 2026)
+
+Il calendario con la spunta non convinceva il proprietario. Gli sono state mostrate otto
+icone dentro la capsula vera, chiara e scura (calendario con spunta, biglietto col sole,
+biglietto strappabile, valigia, cartellina con spunta, segnalibro, calendario col sole,
+persona). Ha scelto il **biglietto col sole**: dentro c'è lo stesso sole sull'orizzonte
+del carrello, quindi le due icone di Isla si somigliano, e la finestra che apre cerca
+proprio un biglietto. Scartate: la valigia (a 21 px sembrava una borsa da lavoro), il
+segnalibro (dice "salvati", non "prenotati"), la persona (non dice "prenotazioni").
+`CACHE_NAME` alzato a `isla-v392`.

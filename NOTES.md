@@ -15764,3 +15764,12 @@ diventata `nav.myBookings` (`nav.myTicket` non la usava più nessun altro). Apre
 finestra di prima, numero + telefono. Provato nelle tre lingue su home, scheda e
 pacchetti: scritta giusta, finestra aperta, nessun errore. `CACHE_NAME` alzato a
 `isla-v388`.
+
+### Lista vuota illeggibile col tema scuro (3 ottobre 2026)
+
+Segnalato dal proprietario con una foto dal telefono: al buio la frase della lista vuota
+era bianca sulla carta chiara della cartolina. Il blocco "la cartolina resta di carta"
+riscrive scuro a mano ogni inchiostro della lista, ma `.lista-empty` mancava: prima del
+carrello nella capsula la lista vuota non si apriva quasi mai. Aggiunta all'elenco degli
+inchiostri scuri. Provato: al buio e col tema chiaro il colore è `oklch(0.24 0.012 60)`.
+`CACHE_NAME` alzato a `isla-v389`.

@@ -3841,6 +3841,10 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   }
   .lista-dialog .lista-voce-testo strong,
   .lista-dialog .lista-voce-prezzo,
+  /* la frase della lista vuota: prima del carrello nella capsula non si vedeva
+     quasi mai (il pulsante della lista c'era solo a lista piena), e al buio
+     era rimasta bianca su carta chiara */
+  .lista-dialog .lista-empty,
   .lista-dialog .lista-totale strong,
   .lista-dialog input[type="text"] { color: oklch(0.24 0.012 60); }
   .lista-dialog .lista-voce-testo span,

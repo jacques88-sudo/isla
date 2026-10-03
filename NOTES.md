@@ -1721,8 +1721,8 @@ Cose da ricordare, imparate sistemando la versione PC:
 - Per chi sceglie la foto nuova del team: il taglio sulla pagina è **4/5**, con un tetto
   di 520px di altezza sul PC. Uno scatto orizzontale o poco verticale rende meglio; uno
   verticale da telefono viene tagliato sopra e sotto
-- Video hero `assets/Hero-poster.mp4` pesa 3.7MB — da comprimere a ~1-1.5MB (720p, 6-10s,
-  senza audio) con uno strumento tipo HandBrake
+- ~~Video hero `assets/Hero-poster.mp4` pesa 3.7MB — da comprimere a ~1-1.5MB~~ Fatto il
+  3 ottobre 2026: video nuovo, 1,46 MB (vedi "Il video nuovo della home" in fondo)
 - Sezione recensioni volutamente omessa: quelle di isla-adventures sono inventate, non le
   abbiamo copiate
 
@@ -15860,3 +15860,35 @@ passata in attesa → 2; l'ufficio ne annulla una e conferma l'altra → 1; tick
 future + 1 passata → 2; la stessa escursione confermata e cercata col ticket → 1; tutto
 insieme → 3; solo una vecchia richiesta passata → nascosto e nessuna chiamata. Chiaro e
 scuro. Nessun errore. `CACHE_NAME` alzato a `isla-v393`.
+
+## Il video nuovo della home (3 ottobre 2026)
+
+Il proprietario ha montato in CapCut un video nuovo (9,6 s, 720p, 30 fps, senza audio)
+e l'ha messo al posto di `assets/Hero-poster.mp4`. **Stesso nome**, così `index.html` non
+cambia. Le scene sono sette: sott'acqua con la scritta "TENERIFE", delfini dall'alto,
+porto, buggy, strada di montagna, cielo stellato, Teide di notte.
+
+**Decisioni del proprietario, da non riproporre:**
+- **La scritta "TENERIFE" resta**: è il nome dell'isola, uguale in tutte e tre le lingue.
+- **Il logo "King Buggy" su due scene resta**: è un fornitore, e il permesso di usarlo c'è.
+
+**Cosa ho cambiato io, con ffmpeg:**
+- La prima scena (i primi 50 fotogrammi) aveva le **bande nere** sopra e sotto, dentro un
+  riquadro con gli angoli tondi sembravano un errore. Ritagliata la parte buona
+  (`crop=900:506:190:106`) e riportata a 1280×720: la scritta resta intera e centrata.
+- Compresso in due passate a ~1,2 Mbit/s, con `+faststart` (parte prima di essere
+  scaricato tutto): **da 3,0 MB a 1,46 MB**.
+
+**Non serve alzare `CACHE_NAME`:** il video non sta nell'elenco `ASSETS` di `sw.js`, e il
+service worker lo prende dalla rete. Chi ha già visitato il sito può vedere il video
+vecchio per qualche minuto, finché scade la cache del browser (su GitHub Pages: 10 minuti).
+
+**Cosa non chiude:** il video finisce sul Teide di notte e ricomincia sott'acqua, quindi
+a ogni giro c'è uno stacco. Il proprietario lo sa; se disturba si ammorbidisce in CapCut
+allungando l'ultima scena.
+
+**Come è stato provato:** i fotogrammi messi dentro la home vera, sul telefono (390 px) e
+sul computer (1366 px), col logo tondo sopra: la scritta si legge sopra il logo, il Teide
+resta visibile. Il video che gira **non** l'ho visto: il Chromium di questo ambiente non
+legge l'H.264. Va guardato una volta su un telefono vero dopo la pubblicazione.
+

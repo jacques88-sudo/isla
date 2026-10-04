@@ -15892,3 +15892,19 @@ sul computer (1366 px), col logo tondo sopra: la scritta si legge sopra il logo,
 resta visibile. Il video che gira **non** l'ho visto: il Chromium di questo ambiente non
 legge l'H.264. Va guardato una volta su un telefono vero dopo la pubblicazione.
 
+
+---
+
+## Tolte le tre schermate di prova (4 ottobre 2026)
+
+`richieste-it-light.png`, `richieste-en-light.png` e `richieste-es-dark.png` erano entrate
+con la PR #292: erano foto dello schermo di "Le tue richieste", con le tre richieste
+finte (confermata, da confermare, annullata), fatte per far vedere il risultato. Nessun
+file del sito le usava, nemmeno `sw.js`. Erano 749 KB nella radice, in mezzo al codice.
+
+**Le schermate non vanno nella radice.** Se servono a mostrare una prova, si allegano
+alla PR o si mandano in chat; se servono al sito, vanno in `assets/`.
+
+**Non serve alzare `CACHE_NAME`:** non è cambiato nessun `.js`, `.css` o `.html`, e le
+immagini non stavano nell'elenco `ASSETS`. Provato nel browser: tutte le pagine si
+aprono senza nessun file mancante. Se servissero ancora, si recuperano dalla PR #292.

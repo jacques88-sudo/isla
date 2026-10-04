@@ -15942,3 +15942,35 @@ prima che la foto arrivi. Lasciati così per non toccare l'HTML.
 
 Il testo accanto (`about.p1`, `about.p2`) è ancora il segnaposto: la storia vera è un
 altro punto della lista su Notion.
+
+---
+
+## L'anteprima dei link su WhatsApp (4 ottobre 2026)
+
+Prima, mandando il link di Isla su WhatsApp, si vedeva solo l'indirizzo azzurro, o al
+massimo il titolo. Ora le sette pagine pubbliche (index, escursioni, tour, pacchetti,
+pacchetto, noleggio, booking) hanno in testa le righe **Open Graph** (`og:…`) e
+`twitter:card`: foto grande, titolo, due righe di descrizione. Le leggono WhatsApp,
+Telegram, Facebook, Messenger. Fuori `offline.html` e `venditori.html`: non si mandano
+ai clienti.
+
+**La foto:** `assets/anteprima.jpg`, 1200×630 (il formato che WhatsApp mostra grande),
+184 KB, ritagliata da `catamaran-gigantes-masca.jpg` togliendo un po' di cielo
+(`-crop 1200x630+0+120`) per tenere la barca intera. Scelta fra nove candidate messe
+in fila: le scogliere di Los Gigantes sono il posto più riconoscibile dopo il Teide, e
+il blu regge anche in miniatura.
+
+**L'indirizzo dell'immagine è intero** (`https://jacques88-sudo.github.io/isla/…`):
+WhatsApp non capisce `./assets`. **Se si compra un dominio proprio, queste righe
+vanno cambiate** in tutte e sette le pagine (cerca `og:image`).
+
+**La lingua è l'italiano**, la stessa del `<title>` e della `description` che le pagine
+hanno nell'HTML: WhatsApp ne mostra una sola, e le traduzioni di `i18n.js` arrivano col
+JavaScript, che WhatsApp non esegue. Per lo stesso motivo **il link di una singola
+escursione mostra l'anteprima generica di Isla**, non la foto di quella barca:
+un'anteprima per scheda chiede un pezzo di server, che Isla non ha.
+
+**WhatsApp tiene a mente le anteprime:** un link già mandato prima di oggi può continuare
+a uscire nudo per un po'. Per provarlo, mandarlo con qualcosa in coda (`…/isla/?v=1`).
+
+`CACHE_NAME` alzato a `isla-v394` (cambiati sette `.html`).

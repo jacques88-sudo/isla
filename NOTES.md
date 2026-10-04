@@ -15908,3 +15908,30 @@ alla PR o si mandano in chat; se servono al sito, vanno in `assets/`.
 **Non serve alzare `CACHE_NAME`:** non è cambiato nessun `.js`, `.css` o `.html`, e le
 immagini non stavano nell'elenco `ASSETS`. Provato nel browser: tutte le pagine si
 aprono senza nessun file mancante. Se servissero ancora, si recuperano dalla PR #292.
+
+---
+
+## La foto di "Chi siamo" compressa (4 ottobre 2026)
+
+`assets/About-team.jpg` era la foto originale del telefono: 3456×4608, qualità 100, coi
+dati della fotocamera dentro. **4,9 MB**, più di tre volte il video della home, scaricati
+da ogni cliente che scorre fino a "Chi siamo".
+
+Ora è **1200×1600, qualità 82, 236 KB**, come le altre foto grandi del sito (larghe 1200,
+qualità 82). Fatto con ImageMagick: `-resize 1200x1600 -strip -interlace JPEG -quality 82`.
+`-strip` toglie i dati della fotocamera; quelli GPS erano già vuoti.
+
+**Perché 1200 basta:** sul computer la foto si vede larga 500 px, sul telefono 350 px; con
+uno schermo a densità 3 sono 1050 punti veri, quindi 1200 ne ha ancora d'avanzo.
+La differenza con la stessa foto ridimensionata senza comprimere è 39,5 dB (PSNR): sopra
+i 38 l'occhio non la vede. Guardata nella home vera, telefono e computer: stesso taglio,
+l'adesivo sul viso della bambina c'è ancora.
+
+**Non serve alzare `CACHE_NAME`:** il nome del file è lo stesso, non è cambiato nessun
+`.js`, `.css` o `.html`, e la foto non sta nell'elenco `ASSETS` di `sw.js`.
+
+**Gli attributi `width="1200" height="1100"` dell'`<img>` non combaciano** con la foto
+(1200×1600), ma non fanno danno: il CSS impone `aspect-ratio: 4/5` e il riquadro ha la
+misura giusta prima che la foto arrivi. Lasciati così per non toccare l'HTML.
+
+L'originale non è perso: è nella storia di git, prima di questo commit.

@@ -15908,3 +15908,37 @@ alla PR o si mandano in chat; se servono al sito, vanno in `assets/`.
 **Non serve alzare `CACHE_NAME`:** non è cambiato nessun `.js`, `.css` o `.html`, e le
 immagini non stavano nell'elenco `ASSETS`. Provato nel browser: tutte le pagine si
 aprono senza nessun file mancante. Se servissero ancora, si recuperano dalla PR #292.
+
+---
+
+## La foto di "Chi siamo": nuova e leggera (4 ottobre 2026)
+
+`assets/About-team.jpg` era la foto originale del telefono: 3456×4608, qualità 100, coi
+dati della fotocamera dentro. **4,9 MB**, più di tre volte il video della home, scaricati
+da ogni cliente che scorre fino a "Chi siamo".
+
+Prima è stata compressa (1200×1600, qualità 82, 236 KB); poi, nella stessa PR, il
+proprietario ha mandato **una foto nuova**: il selfie dei due proprietari col mare dietro,
+al posto di quella in casa con la bambina. Arriva già leggera, **1170×1424, 96 KB**, senza
+dati della fotocamera né GPS: è stata messa **così com'è**, perché ricomprimere un JPEG
+già compresso lo peggiora e basta.
+
+**Perché 1170 basta:** sul computer la foto si vede larga 500 px, sul telefono 350 px; con
+uno schermo a densità 3 sono 1050 punti veri. Guardata nella home vera, telefono e
+computer: i visi stanno al centro del taglio 4/5. Sul computer (dove il riquadro è alto
+al massimo 520 px) il taglio mangia la cima del cappello, e va bene così.
+
+**Le foto per il sito: larghe 1200 px circa, qualità 82, senza dati.** Con ImageMagick:
+`convert originale.jpg -auto-orient -resize 1200x1600 -strip -interlace JPEG -quality 82 nuova.jpg`.
+
+**Non serve alzare `CACHE_NAME`:** il nome del file è lo stesso, non è cambiato nessun
+`.js`, `.css` o `.html`, e la foto non sta nell'elenco `ASSETS` di `sw.js`. Chi ha già
+visitato il sito può vedere la foto vecchia per qualche minuto, finché scade la cache
+del browser.
+
+**Gli attributi `width="1200" height="1100"` dell'`<img>` non combaciano** con la foto,
+ma non fanno danno: il CSS impone `aspect-ratio: 4/5` e il riquadro ha la misura giusta
+prima che la foto arrivi. Lasciati così per non toccare l'HTML.
+
+Il testo accanto (`about.p1`, `about.p2`) è ancora il segnaposto: la storia vera è un
+altro punto della lista su Notion.

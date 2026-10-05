@@ -16382,6 +16382,13 @@ di Admiral. Un numero solo, così il cliente non si chiede quale chiamare. Non v
 sito il 922 716 030 degli elenchi (sede di Adeje) né il 663 949 031 del ticket (Admiral
 TRG, l'altra società).
 
-Ancora da chiedere ad Admiral prima di pubblicare: **un'email** a cui il cliente possa
-scrivere per i suoi dati.
+**Sul sito dal 5 ottobre 2026**, in fondo alle sei pagine che hanno il `<footer>`
+(index, escursioni, noleggio, pacchetti, pacchetto, tour), nel paragrafo `.footer-legal`
+sopra il copyright. Si traduce solo "Isla è un servizio di" (`footer.operator`, con
+`data-i18n-html` per il grassetto); nome della società, CIF e indirizzo restano uguali
+nelle tre lingue, come i nomi dei posti. Il telefono è un link `tel:`.
+
+**Manca l'email**, per scelta del proprietario: si aggiunge quando Isla avrà il suo
+dominio, così l'indirizzo è già quello definitivo. Va scritta nelle stesse sei pagine,
+dopo il telefono. Serve soprattutto alla privacy policy, che sul sito non c'è ancora.
 Sul sito per ora non c'è niente: né privacy policy né dati aziendali.

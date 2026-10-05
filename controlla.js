@@ -113,7 +113,14 @@ const varianti = t => (t.options && t.options.choices) || [];
 // e' l'errore opposto: i 3 anni stanno in due fasce e non si sa quale prezzo
 // paghino.
 function estremi(fascia) {
-  if (typeof fascia !== "string") return null;
+  if (typeof fascia === "string") {
+    const anni = estremiAnni(fascia);
+    if (anni) return anni;
+  }
+  return estremiMesi(fascia);
+}
+
+function estremiAnni(fascia) {
   const aperta = fascia.match(/^(\d+)\s*\+$/);          // "12+"
   if (aperta) return { da: +aperta[1], a: Infinity };
   const chiusa = fascia.match(/^(\d+)\s*-\s*(\d+)$/);   // "3-11"
@@ -121,17 +128,31 @@ function estremi(fascia) {
   return null;
 }
 
+function estremiMesi(fascia) {
+  // In mesi, come i neonati di Opera 60: { it: "0-11 mesi", en: ..., es: ... }.
+  // Si legge il testo italiano. Se finisce prima dei 12 mesi la fascia e'
+  // "prima del primo compleanno", cioe' 0 anni: la fascia dopo deve partire
+  // da 1, e il confronto si fa come con gli anni. Oltre gli 11 mesi (es.
+  // "0-18 mesi") resta illeggibile e va guardata a mano.
+  const testo = typeof fascia === "object" && fascia ? fascia.it : fascia;
+  const mesi = typeof testo === "string" && testo.match(/^0\s*-\s*(\d+)\s*mesi$/);
+  if (mesi && +mesi[1] <= 11) return { da: 0, a: 0 };
+  return null;
+}
+
 function controllaEta(t) {
   if (!t.ages) return;
   const scritte = ["infant", "child", "adult"]
     .filter(n => t.ages[n] !== undefined)
-    .map(n => ({ nome: n, testo: t.ages[n], val: estremi(t.ages[n]) }));
+    // `testo` e' quello che si scrive nei messaggi: la fascia in mesi e' un
+    // oggetto nelle tre lingue, e scritta cosi' com'e' darebbe "[object Object]".
+    .map(n => ({ nome: n, testo: tf(t.ages[n]), val: estremi(t.ages[n]) }));
 
   scritte.forEach(f => {
     if (f.val) return;
-    // Una fascia puo' essere scritta a parole invece che in anni: Opera 60 ha
-    // i neonati in **mesi** ("0-11 mesi"), che e' il dato vero dell'ufficio.
-    // Li' il confronto numerico non si puo' fare: si avvisa e si tira dritto,
+    // Una fascia puo' essere scritta a parole invece che in anni. I mesi sotto
+    // l'anno ("0-11 mesi", Opera 60) li legge estremiMesi(); per tutto il resto
+    // il confronto numerico non si puo' fare: si avvisa e si tira dritto,
     // invece di chiedere di storpiare il dato per far contento il controllo.
     const aParole = typeof f.testo === "object" || /[a-z]/i.test(String(f.testo));
     if (aParole) avviso(t.id, 'la fascia "' + f.nome + '" non e\' in anni: ' +

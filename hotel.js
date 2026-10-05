@@ -2,8 +2,9 @@
 // raccolta dove il pulmino si ferma davvero.
 //
 // Ogni riga di HOTELS e' `[nome, punto]`. Il **punto e' quasi sempre un posto
-// diverso dall'hotel**: su 418 hotel, 29 hanno il punto 0 e salgono sotto casa,
-// gli altri hanno un punto col suo nome. Ventisette punti su 66 non sono nemmeno un edificio — sono fermate
+// diverso dall'hotel**: su 433 hotel, 29 hanno il punto 0 e salgono sotto casa,
+// 15 passano porta a porta (PUNTI_PORTA_A_PORTA), gli altri hanno un punto col
+// suo nome. Ventisette punti su 66 non sono nemmeno un edificio — sono fermate
 // dell'autobus pubblico, sbarre di residence, posteggi taxi, un centro
 // commerciale, un angolo di strada. Chi sta al Cleopatra sale alla fermata del
 // Best Tenerife, e se non glielo diciamo resta davanti al suo hotel a
@@ -12,7 +13,8 @@
 // `punto: 0` vuol dire che **si sale direttamente in hotel** (confermato dal
 // proprietario), non che il dato manca.
 //
-// **Nessun hotel qui dentro e' senza il nome della fermata**, e deve restare cosi'.
+// **Nessun hotel qui dentro e' senza il nome della fermata**, e deve restare cosi',
+// con un'eccezione sola e confermata: i punti di PUNTI_PORTA_A_PORTA.
 // In due passaggi, il 24 settembre 2026, il proprietario ha fatto togliere tutti
 // quelli il cui punto era solo un numero: prima i 36 che avevano un orario ma non
 // un nome, poi i 110 rimasti. Da 562 a 416.
@@ -25,8 +27,8 @@
 // Il punto ha preso il nome dell'hotel senza un tipo, come Altamira: la pagina
 // scrive "il tuo hotel" e tiene l'ora, che col punto 0 si perderebbe.
 // Quindici hotel del sud con l'ora ma un punto condiviso (41, 53, 13, 48)
-// restano fuori finche' l'ufficio non dice dove si sale: tre hotel che passano
-// alla stessa ora dallo stesso punto di solito aspettano in un posto solo.
+// sono rientrati lo stesso giorno, dopo: il proprietario ha confermato che li'
+// il pulmino passa davanti a ogni hotel (vedi PUNTI_PORTA_A_PORTA).
 // I diciannove del nord con l'ora (10047, 10080, 10093, 10094) sono fuori per
 // sempre, insieme ai 110 senza ora.
 //
@@ -145,12 +147,15 @@ const HOTELS = [
   ["Apartamento Acantilados Gigantes", 10030],
   ["APARTAMENTO JACARANDA las americas", 27],
   ["Apartamentos Albatros (callao Salvaje)", 1],
+  ["Apartamentos Aloha Garden", 13],
   ["Apartamentos Arena", 10020],
   ["Apartamentos Bahia", 0],
+  ["Apartamentos Buenavista", 48],
   ["Apartamentos Casa Tropical", 24],
   ["Apartamentos Colonial I", 10029],
   ["Apartamentos Cosmopolitan Tenerife", 23],
   ["Apartamentos Costa Adeje Oasis", 16],
+  ["Apartamentos Dream View", 48],
   ["Apartamentos Duque", 19],
   ["Apartamentos el Ancla", 1],
   ["Apartamentos Fañabe", 22],
@@ -164,6 +169,7 @@ const HOTELS = [
   ["Apartamentos Playa Veronicas", 24],
   ["Apartamentos Poblado Marinero", 10029],
   ["Apartamentos San Eugenio Alto", 16],
+  ["Apartamentos Siam", 48],
   ["Apartamentos Tagara Beach", 10020],
   ["Apartamentos Tamay I-vii", 10029],
   ["Apartamentos Tenerife Best", 16],
@@ -175,6 +181,7 @@ const HOTELS = [
   ["Arenas del Mar", 10063],
   ["Arenas Negras", 10020],
   ["Arona Gran", 39],
+  ["Atalaya Court", 13],
   ["Atlantic Holidays", 1],
   ["Atlantic Palace", 1],
   ["Atlantida", 40],
@@ -211,6 +218,8 @@ const HOTELS = [
   ["Casa el Hierro", 6],
   ["Casa las Cupulas", 10020],
   ["Castle Harbour", 37],
+  ["Chaparral", 53],
+  ["Chayofa Club", 41],
   ["Chipeque", 37],
   ["Cleopatra", 29],
   ["Club Atlantis", 23],
@@ -263,6 +272,7 @@ const HOTELS = [
   ["Fergus P", 0],
   ["Flamingo Beach Mate", 23],
   ["Flores del Sol", 0],
+  ["Florida", 41],
   ["Florida Park", 23],
   ["Floritas", 27],
   ["Funchal", 36],
@@ -346,6 +356,7 @@ const HOTELS = [
   ["Magnolia Golf Resort Aptos", 6],
   ["Malibu Park", 14],
   ["Mar y Sol", 37],
+  ["Maravilla", 53],
   ["Marazul Aptos", 10033],
   ["Mareverde", 22],
   ["Marina Palace", 4],
@@ -360,6 +371,7 @@ const HOTELS = [
   ["Mirador del Duque Iberostar", 9],
   ["Miramar", 0],
   ["Miraverde", 22],
+  ["Montesol", 48],
   ["Muthu Royal Park Albatros", 42],
   ["MYND Adeje", 1],
   ["Neptuno", 16],
@@ -436,6 +448,7 @@ const HOTELS = [
   ["Punta del Rey (Las Caletillas)", 10038],
   ["Ramada Costa Adeje (antiguo Paradise club)", 16],
   ["Regency Club Torviscas", 14],
+  ["Regency Country Club", 41],
   ["Relax Home Tenerife", 10033],
   ["Residencial el Camison", 31],
   ["Residencial Oasis Fañabe III", 16],
@@ -466,6 +479,7 @@ const HOTELS = [
   ["Santa Amalia", 40],
   ["Santa Barbara Golf and Ocean Club", 44],
   ["Santa Maria", 22],
+  ["Santa Mónica", 13],
   ["Saphire Club", 16],
   ["Scorpio", 10009],
   ["Sendymar", 0],
@@ -526,9 +540,11 @@ const HOTELS = [
   ["Villa Natalie", 6],
   ["Villa Tagoro", 16],
   ["Villamar", 0],
+  ["Villas Canarias", 13],
   ["Villas del Duque", 19],
   ["Villas Madro", 16],
   ["Villas Nivaria", 1],
+  ["Villas San Eugenio", 48],
   ["Villas Tenerife", 6],
   ["Villas y Bahia Fañabe", 20],
   ["Villas Yucca", 16],
@@ -536,6 +552,7 @@ const HOTELS = [
   ["Vistasur", 29],
   ["Viñas del Mar", 23],
   ["Vulcano", 29],
+  ["West Haven Bay", 53],
   ["Winsor Park", 65],
   ["Winter Garden", 42],
   ["Wyndham Costa Adeje (Antiguo Monterey)", 23],
@@ -565,6 +582,24 @@ const HOTELS = [
 // che non conosciamo non si promette niente, perche' il giro copre gli
 // alloggi del sud e di un appartamento privato non sappiamo nemmeno dov'e'.
 // Resta la riga di aiuto che dice di scriverlo nelle note.
+// I punti dove il pulmino passa **davanti a ogni hotel**, anche se il
+// fornitore li scrive come un punto solo con un numero senza nome.
+//
+// Deciso dal proprietario il 5 ottobre 2026. Sono gruppi di hotel vicinissimi:
+// fra un ritiro e l'altro a volte non passa un minuto, e non sempre il pulmino
+// li fa tutti — se prenota uno solo, si ferma solo li'. Il numero del punto
+// tiene insieme l'orario, che e' uno per tutto il gruppo; per il cliente
+// l'indicazione giusta e' "il tuo hotel".
+//
+// **Non e' la regola generale.** Un punto che e' solo un numero di solito e'
+// un posto solo dove aspettano tutti, e lo si mette qui solo quando l'ufficio
+// conferma che il pulmino passa porta per porta.
+//   41  Regency Country Club, Florida, Chayofa Club (12:15 sul Teide)
+//   53  Maravilla, Chaparral, West Haven Bay
+//   13  Santa Mónica, Villas Canarias, Aloha Garden, Atalaya Court
+//   48  Apartamentos Buenavista, Dream View, Montesol, Siam, Villas San Eugenio
+const PUNTI_PORTA_A_PORTA = [13, 41, 48, 53];
+
 const PICKUP_IN_HOTEL = [
   // Le tre camminate di Canaventura, che stanno tutte nella scheda "Trekking".
   "trekking-bici",

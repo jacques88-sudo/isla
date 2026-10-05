@@ -16218,3 +16218,32 @@ Club (Tipsy Bar)** (punto 10025, la fermata dell'autobus vicina dove salgono El
 Sombrero e TUI Blue Los Gigantes): sono due punti diversi.
 
 `HOTELS` da 416 a **418**, `PICKUP_POINTS` da 64 a **66**. `CACHE_NAME` → `isla-v401`.
+
+### I 15 del sud: porta a porta (5 ottobre, più tardi)
+
+Il proprietario ha risposto alla domanda che doveva andare all'ufficio: gli hotel dei
+punti 41, 53, 13 e 48 **sono talmente vicini che fra un ritiro e l'altro a volte non
+passa un minuto**, e il pulmino non li fa sempre tutti: se ha prenotato uno solo, si
+ferma solo lì. Quindi per il cliente la risposta giusta è "il tuo hotel".
+
+Non potevano rientrare come The Harbour Club, col punto chiamato come l'hotel: qui un
+punto è di tre, quattro o cinque hotel, e il nome sarebbe stato giusto per uno solo.
+Nemmeno col punto `0`, che perde l'ora. È nata una lista nuova in `hotel.js`,
+**`PUNTI_PORTA_A_PORTA = [13, 41, 48, 53]`**, che `hotelPunto()` guarda subito dopo il
+punto `0`: "il tuo hotel", con l'ora del punto per quella escursione.
+
+**Non è la regola generale**, ed è scritto nel commento: un punto che è solo un numero
+di solito è un posto solo dove aspettano tutti. In quella lista si entra solo con la
+conferma dell'ufficio.
+
+Nomi in elenco, riscritti dallo stampatello del fornitore: Regency Country Club, Florida,
+Chayofa Club (41); Maravilla, Chaparral, West Haven Bay (53); Santa Mónica, Villas
+Canarias, Apartamentos Aloha Garden, Atalaya Court (13); Apartamentos Buenavista,
+Apartamentos Dream View, Montesol, Apartamentos Siam, Villas San Eugenio (48).
+"Florida" non è il "Florida Park", che resta alla fermata di Los Hibiscos.
+
+Provato nel browser: Regency sul Teide → "il tuo hotel", 12:15; Maravilla su Teide +
+Icod + Masca → 08:15; Santa Mónica e Montesol su Gran Canaria → 07:55; Florida Park
+invariato.
+
+`HOTELS` da 418 a **433**. `CACHE_NAME` → `isla-v402`.

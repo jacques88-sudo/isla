@@ -188,7 +188,8 @@ scrive una volta e vale per tutte le escursioni, gli orari vanno messi per ognun
 | tabella | cosa c'è | quando cambia |
 |---|---|---|
 | `PICKUP_POINTS` | 66 punti: nome e tipo | quasi mai |
-| `HOTELS` | 418 hotel, ognuno col suo punto — **nessuno senza il nome della fermata** | quando apre un hotel nuovo |
+| `HOTELS` | 433 hotel, ognuno col suo punto — **nessuno senza il nome della fermata**, salvo i punti porta a porta | quando apre un hotel nuovo |
+| `PUNTI_PORTA_A_PORTA` | 4 punti (13, 41, 48, 53) dove il pulmino passa davanti a ogni hotel del gruppo | solo se l'ufficio lo conferma |
 | `PICKUP_TIMES[scheda][punto]` | gli orari, escursione per escursione | quando il fornitore li cambia |
 | `PICKUP_IN_HOTEL` | le schede che passano **sotto l'hotel** | quando si aggiunge un fornitore che fa così |
 | `PICKUP_NESSUNO` | le schede senza ritiro: il cliente ci arriva da solo | quando una scheda cambia fornitore |
@@ -234,7 +235,7 @@ proprietario il 24 settembre 2026, in due passaggi: prima i 36 che avevano l'ora
 non il nome della fermata, poi i 110 che non avevano né l'una né l'altro. Da 562 a
 416. Gli elenchi nominativi stanno in `NOTES.md`.
 
-Il 5 ottobre 2026 il proprietario ha chiuso la questione, e oggi sono **418**:
+Il 5 ottobre 2026 il proprietario ha chiuso la questione, e oggi sono **433**:
 - **i 146 non tornano dalla tendina di Puerto de la Cruz**: sul sito del fornitore i
   punti del nord non hanno nessun nome da copiare. Quelli del nord sono fuori per
   sempre, anche i 19 che avevano un orario;
@@ -242,24 +243,26 @@ Il 5 ottobre 2026 il proprietario ha chiuso la questione, e oggi sono **418**:
   loro, che nessun altro hotel condivide. Il punto ha preso il nome dell'hotel senza
   tipo, come Altamira, così la pagina scrive "il tuo hotel" **e tiene l'ora**;
 - **15 hotel del sud** con l'ora ma un punto condiviso (punti 41, 53, 13, 48: Regency
-  Country Club, Florida, Chayofa, Maravilla…) restano fuori finché **l'ufficio** non
-  dice dove si sale. Tre hotel che passano alla stessa ora dallo stesso punto di
-  solito aspettano in un posto solo: "il tuo hotel" lì sarebbe un'indicazione falsa.
+  Country Club, Florida, Chayofa, Maravilla…) sono rientrati come "il tuo hotel":
+  il proprietario ha confermato che sono vicinissimi e il pulmino passa **porta a
+  porta**, a volte a un minuto l'uno dall'altro, e solo da chi ha prenotato. Stanno
+  in `PUNTI_PORTA_A_PORTA`, e tengono l'ora del loro punto.
 
 Si può fare senza perdere nessuno perché **il campo "dove alloggi" è una casella di
 testo, non un menu chiuso**: chi non trova il suo alloggio lo scrive a mano e arriva
 lo stesso nel messaggio, come già facevano quelli con un appartamento privato.
 Quella libertà non si toglie.
 
-Restano quindi due soli casi, e uno solo vuol dire che si sale in hotel:
+Restano quindi tre casi:
 
 | il fornitore risponde | vuol dire | la richiesta mostra |
 |---|---|---|
-| `id_punto: 0` | si sale **in hotel**, confermato dal proprietario | "il tuo hotel" |
-| un punto che sta in `PICKUP_POINTS` | la fermata, la sbarra, il posteggio taxi | il nome del posto |
+| `id_punto: 0` | si sale **in hotel**, confermato dal proprietario | "il tuo hotel", senza ora |
+| un punto di `PUNTI_PORTA_A_PORTA` | gruppo di hotel vicini, il pulmino passa da ognuno | "il tuo hotel" e l'ora |
+| un punto che sta in `PICKUP_POINTS` | la fermata, la sbarra, il posteggio taxi | il nome del posto e l'ora |
 
-**Un hotel nuovo con un punto che non sta in `PICKUP_POINTS` non si aggiunge**: un
-codice senza nome non è l'hotel, è una fermata di cui non sappiamo l'indirizzo, e
+**Un hotel nuovo con un punto che non sta in `PICKUP_POINTS` né in
+`PUNTI_PORTA_A_PORTA` non si aggiunge**: un codice senza nome di regola non è l'hotel, è una fermata di cui non sappiamo l'indirizzo, e
 undici alberghi diversi possono condividerlo. Scrivere "il tuo hotel" lì lascerebbe
 il cliente davanti alla reception mentre il pulmino aspetta due strade più in là.
 

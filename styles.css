@@ -1352,6 +1352,19 @@ p.note-box { margin: 0 0 1rem; }
   letter-spacing: .18em;
   text-align: center;
 }
+/* Chi c'è dietro Isla: i dati di Admiral (NOTES.md, "Chi c'è dietro Isla") */
+.footer-legal {
+  margin: 0;
+  padding: 1.2rem 1.25rem 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: .72rem;
+  line-height: 1.6;
+  text-align: center;
+}
+.footer-legal strong { color: var(--text); font-weight: 600; }
+.footer-legal a { color: inherit; text-decoration: underline; }
+.footer-legal + .footer-copy { border-top: 0; }
 @media (min-width: 768px) {
   .footer .wrap { max-width: var(--max-wide); }
   .footer-grid {

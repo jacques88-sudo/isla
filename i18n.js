@@ -186,6 +186,7 @@ const I18N = {
 
   // ── piè di pagina ───────────────────────────────────────────────────────
   "footer.findCode":    { it: "Cerca il tuo codice", en: "Find your code", es: "Busca tu código" },
+  "footer.operator":    { it: "Isla è un servizio di <strong>Admiral Travel Agencia de Viajes SL</strong>", en: "Isla is a service of <strong>Admiral Travel Agencia de Viajes SL</strong>", es: "Isla es un servicio de <strong>Admiral Travel Agencia de Viajes SL</strong>" },
   "footer.copy":        { it: "© Isla · Escursioni a Tenerife", en: "© Isla · Tenerife excursions", es: "© Isla · Excursiones en Tenerife" },
 
   // ── pagina catalogo ─────────────────────────────────────────────────────

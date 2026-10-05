@@ -5624,8 +5624,14 @@ const ESPLORA_CATALOG = [
     id: "masca-teide-cabrio-bus",
     title: "Masca + Teide VIP Cabrio Bus",
     category: "tour-privati",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    // Durata dalla pagina del fornitore (Island Excursions), 5 ottobre 2026:
+    // "8 horas aprox.". La zona non la scrive: "Tenerife Sud" e il filtro
+    // "Teide e nord" come le altre gite al Teide dello stesso fornitore, che
+    // raccolgono al sud — e il giro finisce "nel nostro scendere verso sud".
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
+    zoneGroups: ["teide-nord"],
+    durationGroups: ["intera"],
     priceFrom: 80,
     fixedPrice: true,
     priceAdult: 80,
@@ -5660,6 +5666,11 @@ const ESPLORA_CATALOG = [
         it: "La salita in funivia è facoltativa e non è compresa nel prezzo: il biglietto si compra sul posto.",
         en: "Going up by cable car is optional and not included in the price: you buy the ticket there.",
         es: "La subida en teleférico es opcional y no está incluida en el precio: el billete se compra allí."
+      },
+      {
+        it: "Il pranzo non è compreso nel prezzo.",
+        en: "Lunch is not included in the price.",
+        es: "La comida no está incluida en el precio."
       },
       {
         it: "Il bus è scoperto e in cima si arriva a oltre 2.000 metri: porta una felpa o una giacca, e cappellino e crema solare per il tratto al sole.",

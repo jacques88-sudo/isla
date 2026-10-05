@@ -187,8 +187,8 @@ scrive una volta e vale per tutte le escursioni, gli orari vanno messi per ognun
 
 | tabella | cosa c'è | quando cambia |
 |---|---|---|
-| `PICKUP_POINTS` | 64 punti: nome e tipo | quasi mai |
-| `HOTELS` | 416 hotel, ognuno col suo punto — **nessuno senza il nome della fermata** | quando apre un hotel nuovo |
+| `PICKUP_POINTS` | 66 punti: nome e tipo | quasi mai |
+| `HOTELS` | 418 hotel, ognuno col suo punto — **nessuno senza il nome della fermata** | quando apre un hotel nuovo |
 | `PICKUP_TIMES[scheda][punto]` | gli orari, escursione per escursione | quando il fornitore li cambia |
 | `PICKUP_IN_HOTEL` | le schede che passano **sotto l'hotel** | quando si aggiunge un fornitore che fa così |
 | `PICKUP_NESSUNO` | le schede senza ritiro: il cliente ci arriva da solo | quando una scheda cambia fornitore |
@@ -232,7 +232,19 @@ stanno in `dati-fornitore/`.
 **Se non sappiamo dire dove si sale, l'hotel non sta in elenco.** Deciso dal
 proprietario il 24 settembre 2026, in due passaggi: prima i 36 che avevano l'ora ma
 non il nome della fermata, poi i 110 che non avevano né l'una né l'altro. Da 562 a
-**416**. Gli elenchi nominativi stanno in `NOTES.md`.
+416. Gli elenchi nominativi stanno in `NOTES.md`.
+
+Il 5 ottobre 2026 il proprietario ha chiuso la questione, e oggi sono **418**:
+- **i 146 non tornano dalla tendina di Puerto de la Cruz**: sul sito del fornitore i
+  punti del nord non hanno nessun nome da copiare. Quelli del nord sono fuori per
+  sempre, anche i 19 che avevano un orario;
+- **The Harbour Club e Punta del Rey sono rientrati**: avevano l'ora e un punto tutto
+  loro, che nessun altro hotel condivide. Il punto ha preso il nome dell'hotel senza
+  tipo, come Altamira, così la pagina scrive "il tuo hotel" **e tiene l'ora**;
+- **15 hotel del sud** con l'ora ma un punto condiviso (punti 41, 53, 13, 48: Regency
+  Country Club, Florida, Chayofa, Maravilla…) restano fuori finché **l'ufficio** non
+  dice dove si sale. Tre hotel che passano alla stessa ora dallo stesso punto di
+  solito aspettano in un posto solo: "il tuo hotel" lì sarebbe un'indicazione falsa.
 
 Si può fare senza perdere nessuno perché **il campo "dove alloggi" è una casella di
 testo, non un menu chiuso**: chi non trova il suo alloggio lo scrive a mano e arriva
@@ -251,10 +263,7 @@ codice senza nome non è l'hotel, è una fermata di cui non sappiamo l'indirizzo
 undici alberghi diversi possono condividerlo. Scrivere "il tuo hotel" lì lascerebbe
 il cliente davanti alla reception mentre il pulmino aspetta due strade più in là.
 
-I nomi mancanti si recuperano copiando la tendina dei punti da un'escursione del
-fornitore che parte da Puerto de la Cruz: nessuna richiesta al loro server. Fatto
-quello, i 146 tolti si rimettono da `dati-fornitore/hotel.tsv`, che non è stato
-toccato e ha ancora tutte e 567 le righe.
+`dati-fornitore/hotel.tsv` non è stato toccato e ha ancora tutte e 567 le righe.
 
 **Prima di togliere una riga, guarda cosa fa in pagina.** Altamira stava per uscire
 perché nei dati è l'unico hotel con la fermata e senza nessun orario; nel browser

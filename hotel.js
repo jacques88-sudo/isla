@@ -2,8 +2,8 @@
 // raccolta dove il pulmino si ferma davvero.
 //
 // Ogni riga di HOTELS e' `[nome, punto]`. Il **punto e' quasi sempre un posto
-// diverso dall'hotel**: su 416 hotel, 387 salgono altrove e 29 sotto casa.
-// Ventisette punti su 64 non sono nemmeno un edificio — sono fermate
+// diverso dall'hotel**: su 418 hotel, 29 hanno il punto 0 e salgono sotto casa,
+// gli altri hanno un punto col suo nome. Ventisette punti su 66 non sono nemmeno un edificio — sono fermate
 // dell'autobus pubblico, sbarre di residence, posteggi taxi, un centro
 // commerciale, un angolo di strada. Chi sta al Cleopatra sale alla fermata del
 // Best Tenerife, e se non glielo diciamo resta davanti al suo hotel a
@@ -17,14 +17,26 @@
 // quelli il cui punto era solo un numero: prima i 36 che avevano un orario ma non
 // un nome, poi i 110 rimasti. Da 562 a 416.
 //
+// Il 5 ottobre 2026 il proprietario ha chiuso la questione: **i 146 non tornano
+// con la tendina di Puerto de la Cruz**, perche' sul sito del fornitore i punti
+// del nord non hanno nessun nome da copiare. Ne sono rientrati solo due, The
+// Harbour Club (10019) e Punta del Rey (10038): avevano l'ora e un punto tutto
+// loro, che nessun altro hotel condivide, quindi il pulmino si ferma da loro.
+// Il punto ha preso il nome dell'hotel senza un tipo, come Altamira: la pagina
+// scrive "il tuo hotel" e tiene l'ora, che col punto 0 si perderebbe.
+// Quindici hotel del sud con l'ora ma un punto condiviso (41, 53, 13, 48)
+// restano fuori finche' l'ufficio non dice dove si sale: tre hotel che passano
+// alla stessa ora dallo stesso punto di solito aspettano in un posto solo.
+// I diciannove del nord con l'ora (10047, 10080, 10093, 10094) sono fuori per
+// sempre, insieme ai 110 senza ora.
+//
 // Il criterio, in una riga: **se non sappiamo dire dove si sale, l'hotel non sta
 // in elenco**. Chi non lo trova lo scrive a mano nel campo, che accetta qualunque
 // testo e lo porta nel messaggio: "Hotel: Casa di mia zia, calle Colon 14".
 //
 // Gli elenchi nominativi stanno in NOTES.md, e i dati grezzi in
 // dati-fornitore/hotel.tsv, che non e' stato toccato e ha ancora tutte e 567 le
-// righe: se un giorno si copia la tendina dei punti da un'escursione che parte da
-// Puerto de la Cruz, questi 146 si rimettono da li' con la fermata al posto giusto.
+// righe.
 //
 // **Il punto dipende solo dall'hotel, non dall'escursione** — ma solo dentro un
 // fornitore. Verificato su due escursioni di Island Excursions, che e' da dove
@@ -89,6 +101,7 @@ const PICKUP_POINTS = {
   10016: ["Coral Compostela Beach (Zara, CC Safari)", ""],
   10017: ["Landmar Costa Los Gigantes", ""],
   10018: ["ABAMA Ritz-Carlton", "sbarra"],
+  10019: ["The Harbour Club", ""],
   10020: ["Playa la Arena (El Lajial)", "bus"],
   10023: ["Oasis Gran Resort", "taxi"],
   10024: ["Royal Garden Villas", ""],
@@ -100,6 +113,7 @@ const PICKUP_POINTS = {
   10035: ["The Salmar (Vincci Tenerife Golf)", ""],
   10036: ["Barceló Tenerife (Sandos San Blas)", ""],
   10037: ["El Médano (La Iglesia)", "bus"],
+  10038: ["Punta del Rey (Las Caletillas)", ""],
   10063: ["KN Arenas del Mar, El Médano", ""],
   10064: ["H10 Atlantic Sunset, Playa Paraíso", ""],
   10084: ["Altamira", ""],
@@ -419,6 +433,7 @@ const HOTELS = [
   ["Privado", 0],
   ["Pueblo Primavera", 44],
   ["Pueblo Torviscas", 22],
+  ["Punta del Rey (Las Caletillas)", 10038],
   ["Ramada Costa Adeje (antiguo Paradise club)", 16],
   ["Regency Club Torviscas", 14],
   ["Relax Home Tenerife", 10033],
@@ -477,6 +492,7 @@ const HOTELS = [
   ["Terraza los Gigantes", 10029],
   ["Terrazas de la Paz", 45],
   ["Terrazas del Duque", 19],
+  ["The Harbour Club", 10019],
   ["The Heights", 37],
   ["The Salmar (vinci Golf Ant)", 10035],
   ["Tigotan", 28],
@@ -884,8 +900,8 @@ const PICKUP_TIMES = {
     10155: "07:45",
   },
   // La Gomera: il giro piu' servito dei quattro, 63 punti su 104 e 384 hotel
-  // con punto e ora. Solo 4 hotel hanno l'ora ma un punto ancora senza nome
-  // (punti 53 e 10019).
+  // con punto e ora. Solo 3 hotel hanno l'ora ma un punto ancora senza nome,
+  // quelli del punto 53. Il 10019 e' The Harbour Club, rientrato il 5 ottobre.
   //
   // Dei 22 punti che condivide con Poema del Mar, **tre hanno la stessa ora**
   // (20 e 22 alle 07:55, 24 alle 08:05). Non e' un motivo per unire le due
@@ -1047,7 +1063,8 @@ const PICKUP_TIMES = {
     10155: "08:45",
   },
   // Santa Cruz + Anaga + La Laguna. 62 punti serviti, 383 hotel con punto e ora,
-  // 4 hotel con l'ora ma il punto ancora senza nome (41 e 10038).
+  // 3 hotel con l'ora ma il punto ancora senza nome (41). Il 10038 e' Punta del
+  // Rey, rientrato il 5 ottobre.
   //
   // **Le 09:30 del punto 10038 non sono un errore.** Tutti gli altri stanno fra
   // le 07:15 e le 08:35; quello e' Punta del Rey, a Las Caletillas, sulla costa

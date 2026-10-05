@@ -2018,7 +2018,7 @@ const ESPLORA_CATALOG = [
     // cammini non si scaricano e non si possono nemmeno guardare. Le deve
     // mandare l'ufficio. `trekking-bici.jpg` non e' rimasta qui: e' un
     // ciclista, ed e' passata alla scheda della bici, che e' il suo soggetto.
-    image: "",
+    image: "trekking.jpg",
     published: true
   },
   {

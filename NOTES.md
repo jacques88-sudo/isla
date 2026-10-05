@@ -16057,7 +16057,7 @@ sotto, e **Los Gigantes sta da solo**.
   campo: **spariscono appena si accende quel filtro**. Meglio che finire nel gruppo
   sbagliato. Quando l'ufficio dà il dato, si aggiunge anche il gruppo.
 
-**Le assegnazioni dubbie**, da far confermare al proprietario:
+**Le assegnazioni dubbie**, **confermate dal proprietario il 5 ottobre 2026**:
 - **Monkey Park** → "Fino a 2 ore": la scheda dà l'orario d'apertura (09:30-16:00), non
   quanto dura la visita; è un piccolo zoo.
 - **Trenino turistico** → "Fino a 2 ore": il biglietto vale tutto il giorno, ma il giro
@@ -16077,3 +16077,21 @@ ha la zona o la durata scritta ma non il gruppo.
 Costa Adeje 35, Costa Adeje + giornata intera 7, una combinazione vuota mostra "Nessuna
 attività con questi filtri", "Togli i filtri" riporta a 65, il filtro resta acceso
 cambiando lingua e i nomi si traducono. `CACHE_NAME` → `isla-v397`.
+
+---
+
+## `controlla.js` legge i mesi (5 ottobre 2026)
+
+Opera 60 ha i neonati in **mesi**: `infant: { it: "0-11 mesi", … }`, poi `child: "1-11"`.
+Il proprietario ha confermato che è giusto (i bambini di un anno pagano), ma il controllo
+leggeva solo gli anni e a ogni giro avvisava "controllala a mano".
+
+Ora `estremiMesi()` legge il testo italiano: **"0-N mesi" con N fino a 11 vale "0 anni"**,
+quindi la fascia dopo deve partire da 1, e il confronto si fa come con gli anni. Oltre
+gli 11 mesi ("0-18 mesi") resta l'avviso, perché a cavallo dell'anno il confronto non è
+pulito. Provato su una copia del progetto con `child: "2-11"`: esce l'errore "Chi ha 1
+anni non sta in nessuna fascia". Nei messaggi la fascia in mesi si legge "0-11 mesi" e
+non più "[object Object]".
+
+Gli avvisi del controllo scendono da 3 a 2 (restano le due schede senza foto).
+`CACHE_NAME` non alzato: `controlla.js` non lo scarica nessun cliente.

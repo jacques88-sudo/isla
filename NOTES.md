@@ -16264,3 +16264,16 @@ Restano "Da definire": bici, fiat-500-water-car, twin-ticket, cantine-vinicole,
 masca-teide-cabrio-bus, private-charter, e la durata di flyboard.
 
 `CACHE_NAME` → `isla-v403`.
+
+### Twin Ticket: due zone, due giorni (5 ottobre)
+
+Dal proprietario: il Twin Ticket sta **in tutti e due i filtri di zona**, perché i parchi
+sono due e in due posti diversi (Siam Park a Costa Adeje, Loro Parque a Puerto de la
+Cruz): `zoneGroups: ["costa-adeje", "teide-nord"]`, e la zona scritta è "Costa Adeje +
+Puerto de la Cruz". La durata è **due giorni, uno per parco**; nel filtro sta con le
+giornate intere, perché ognuna delle due visite lo è.
+
+Restano "Da definire": bici, fiat-500-water-car, cantine-vinicole,
+masca-teide-cabrio-bus, private-charter, e la durata di flyboard.
+
+`CACHE_NAME` → `isla-v404`.

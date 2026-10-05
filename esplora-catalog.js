@@ -4205,8 +4205,13 @@ const ESPLORA_CATALOG = [
     id: "twin-ticket",
     title: "Twin Ticket – Siam Park + Loro Parque",
     category: "parchi-spettacoli",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    // Dal proprietario, 5 ottobre 2026: due parchi in due zone, quindi la
+    // scheda sta in tutti e due i filtri di zona; due giorni, uno per parco.
+    // Nel filtro della durata sta con le giornate intere: ogni visita lo e'.
+    zone: "Costa Adeje + Puerto de la Cruz",
+    duration: { it: "2 giorni, uno per parco", en: "2 days, one per park", es: "2 días, uno por parque" },
+    zoneGroups: ["costa-adeje", "teide-nord"],
+    durationGroups: ["intera"],
     priceFrom: 78,
     priceAdult: 78,
     priceChild: 57,

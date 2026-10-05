@@ -16139,3 +16139,17 @@ di un cliente), e da lì le somme si possono rifare. Toglierlo vuol dire cambiar
 vedono i venditori: è un'altra decisione, non presa.
 
 `CACHE_NAME` → `isla-v398`.
+
+### Le due compagnie di buggy nei `nomi` (5 ottobre)
+
+**King Buggy** e **Ultimate Buggies** (anche scritto "Ultimate Buggy") vanno tutte e due
+su `buggy-volcano-4h`, l'unica scheda dei buggy: dal 14 settembre i giri di tutte e due le
+compagnie stanno lì dentro. I nomi stanno sulla scheda e non sulle varianti, perché
+Offroad e Tramonto li fanno entrambe: dal nome della compagnia si capisce che è un buggy,
+non quale giro. La variante Claude la sceglie solo se il ticket la scrive.
+
+Gli orari mandati dal proprietario (King Buggy 8:20, 14:00, tramonto 17:30; Ultimate
+11:00, 13:30, tramonto 18:00) **non sono ancora entrati**: prima va chiarito a quale giro
+va ogni ora, e se le 8:20 sono il ritiro in hotel o la partenza.
+
+`CACHE_NAME` alzato a `isla-v399`.

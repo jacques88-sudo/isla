@@ -58,7 +58,11 @@ const els = {
   requestsTitle: $("[data-requests-title]"),
   requests: $("[data-requests]"),
   requestsMsg: $("[data-requests-msg]"),
-  requestsReload: $("[data-requests-reload]")
+  requestsReload: $("[data-requests-reload]"),
+  statsBox: $("[data-stats-box]"),
+  stats: $("[data-stats]"),
+  statsMsg: $("[data-stats-msg]"),
+  statsReload: $("[data-stats-reload]")
 };
 
 let venditore = null;      // { name } dalla tabella sellers
@@ -1004,7 +1008,198 @@ async function mostraPagina() {
     if (!els.seller.value) els.seller.value = venditore.name;
     caricaRichieste();
     caricaUltimi();
+    preparaStatistiche();
+  } else {
+    // Chi esce non lascia i numeri dell'ufficio a chi entra dopo.
+    els.statsBox.hidden = true;
+    els.statsBox.open = false;
+    els.stats.replaceChildren();
   }
+}
+
+// ─── Statistiche (solo ufficio) ─────────────────────────────────────────────
+//
+// Si contano le prenotazioni INSERITE nel periodo (created_at), non quelle che
+// si fanno nel periodo: e' la domanda "quanto abbiamo venduto questo mese".
+// Le annullate non entrano in nessun numero, si dice solo quante sono.
+// I prezzi dei ticket NON si confrontano col catalogo (proprietario, 30
+// settembre): si sommano come sono scritti.
+
+let periodoStats = "questo";
+
+// Primo istante del periodo e primo istante dopo, a mezzanotte di qui.
+function limitiPeriodo(quale, oggi = new Date()) {
+  const inizioMese = (a, m) => new Date(a, m, 1);
+  const a = oggi.getFullYear(), m = oggi.getMonth();
+  return quale === "scorso"
+    ? { da: inizioMese(a, m - 1), a: inizioMese(a, m) }
+    : { da: inizioMese(a, m), a: inizioMese(a, m + 1) };
+}
+
+// Il giorno (AAAA-MM-GG) in cui e' stata inserita, all'ora di Tenerife: un
+// ticket salvato alle 00:30 e' di oggi, non di ieri come direbbe l'ora UTC.
+function giornoLocale(iso) {
+  const d = new Date(iso);
+  const due = n => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${due(d.getMonth() + 1)}-${due(d.getDate())}`;
+}
+
+// Dai ticket grezzi ai numeri. Funzione pura: niente pagina, niente database,
+// cosi' si prova da sola con dei ticket finti.
+//   venduto      = somma dei Total
+//   incassato    = Total meno To pay (un ticket "pagato tutto" ha To pay 0)
+//   da incassare = somma dei To pay
+// Un ticket senza Total (le richieste WhatsApp non ce l'hanno) conta come
+// prenotazione e come persone, non come soldi.
+function calcolaStatistiche(righe) {
+  const soldi = n => (n === null || n === undefined || n === "" ? null : Number(n));
+  const tondo = n => Math.round(n * 100) / 100;
+  const vive = righe.filter(r => r.status !== "cancelled");
+  const s = {
+    prenotazioni: vive.length,
+    strada: vive.filter(r => r.source !== "whatsapp").length,
+    whatsapp: vive.filter(r => r.source === "whatsapp").length,
+    annullate: righe.length - vive.length,
+    persone: 0, venduto: 0, incassato: 0, daIncassare: 0, senzaTotale: 0,
+    escursioni: {}, venditori: {}, giorni: {}
+  };
+  const aggiungi = (dove, chiave, r, persone, totale) => {
+    const v = dove[chiave] || (dove[chiave] = { n: 0, persone: 0, venduto: 0 });
+    v.n += 1;
+    v.persone += persone;
+    v.venduto = tondo(v.venduto + (totale || 0));
+  };
+  vive.forEach(r => {
+    const persone = (r.adults || 0) + (r.kids || 0) + (r.babies || 0);
+    const totale = soldi(r.total);
+    const resto = soldi(r.rest_to_pay);
+    s.persone += persone;
+    if (totale === null) s.senzaTotale += 1;
+    else {
+      s.venduto += totale;
+      s.incassato += totale - (resto || 0);
+    }
+    if (resto !== null) s.daIncassare += resto;
+    aggiungi(s.escursioni, r.excursion_id || "", r, persone, totale);
+    const chi = r.source === "whatsapp" ? "Richieste WhatsApp" : (r.seller || "").trim() || "Senza venditore";
+    aggiungi(s.venditori, chi, r, persone, totale);
+    aggiungi(s.giorni, giornoLocale(r.created_at), r, persone, totale);
+  });
+  s.venduto = tondo(s.venduto);
+  s.incassato = tondo(s.incassato);
+  s.daIncassare = tondo(s.daIncassare);
+  return s;
+}
+
+const euro = n => n.toLocaleString("it-IT", { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + "\u00a0€";   // spazio che non va a capo
+
+// Una tabellina: intestazioni e righe di testo. Testo e non HTML, perche' i
+// nomi dei venditori li scrive chi compila il ticket.
+function tabella(titolo, intestazioni, righe) {
+  const box = document.createElement("div");
+  box.className = "vend-stats-blocco";
+  const h = document.createElement("h3");
+  h.textContent = titolo;
+  const t = document.createElement("table");
+  t.className = "vend-stats-table";
+  const tr = document.createElement("tr");
+  intestazioni.forEach((x, i) => {
+    const th = document.createElement("th");
+    th.textContent = x;
+    if (i) th.className = "num";
+    tr.append(th);
+  });
+  const thead = document.createElement("thead");
+  thead.append(tr);
+  const tbody = document.createElement("tbody");
+  righe.forEach(r => {
+    const riga = document.createElement("tr");
+    r.forEach((x, i) => {
+      const td = document.createElement("td");
+      td.textContent = x;
+      if (i) td.className = "num";
+      riga.append(td);
+    });
+    tbody.append(riga);
+  });
+  t.append(thead, tbody);
+  box.append(h, t);
+  return box;
+}
+
+function disegnaStatistiche(s) {
+  els.stats.replaceChildren();
+  if (!s.prenotazioni && !s.annullate) {
+    els.stats.append(Object.assign(document.createElement("p"), {
+      className: "vend-req-vuoto", textContent: "Nessuna prenotazione inserita in questo periodo."
+    }));
+    return;
+  }
+
+  // In alto i quattro numeri che si guardano per primi.
+  const cifre = document.createElement("dl");
+  cifre.className = "vend-stats-cifre";
+  [
+    ["Prenotazioni", String(s.prenotazioni), `strada ${s.strada} · WhatsApp ${s.whatsapp}`],
+    ["Persone", String(s.persone), ""],
+    ["Venduto", euro(s.venduto), s.senzaTotale ? `${s.senzaTotale} senza Total` : ""],
+    ["Già incassato", euro(s.incassato), `da incassare ${euro(s.daIncassare)}`]
+  ].forEach(([nome, valore, nota]) => {
+    const d = document.createElement("div");
+    const dt = document.createElement("dt");
+    dt.textContent = nome;
+    const dd = document.createElement("dd");
+    dd.textContent = valore;
+    d.append(dt, dd);
+    if (nota) d.append(Object.assign(document.createElement("small"), { textContent: nota }));
+    cifre.append(d);
+  });
+  els.stats.append(cifre);
+  if (s.annullate) {
+    els.stats.append(Object.assign(document.createElement("p"), {
+      className: "vend-hint", textContent: `Annullate nel periodo: ${s.annullate} (non contate sopra).`
+    }));
+  }
+
+  const perN = (a, b) => b[1].n - a[1].n || b[1].venduto - a[1].venduto;
+  const nomeEscursione = id => {
+    const tour = schedaDa(id);
+    return tour ? titoloDi(tour) : (id ? id : "Fuori catalogo");
+  };
+  els.stats.append(tabella("Escursioni più vendute", ["Escursione", "Pren.", "Persone", "Venduto"],
+    Object.entries(s.escursioni).sort(perN)
+      .map(([id, v]) => [nomeEscursione(id), v.n, v.persone, euro(v.venduto)])));
+  els.stats.append(tabella("Per venditore", ["Venditore", "Pren.", "Persone", "Venduto"],
+    Object.entries(s.venditori).sort(perN)
+      .map(([chi, v]) => [chi, v.n, v.persone, euro(v.venduto)])));
+  els.stats.append(tabella("Giorno per giorno", ["Giorno", "Pren.", "Persone", "Venduto"],
+    Object.entries(s.giorni).sort((a, b) => (a[0] < b[0] ? 1 : -1))
+      .map(([g, v]) => [dataBreve(g), v.n, v.persone, euro(v.venduto)])));
+}
+
+async function caricaStatistiche() {
+  const { da, a } = limitiPeriodo(periodoStats);
+  mostra(els.statsMsg, "Un momento…");
+  const { data, error } = await sb
+    .from("bookings")
+    .select("excursion_id, source, status, adults, kids, babies, total, rest_to_pay, seller, created_at")
+    .gte("created_at", da.toISOString())
+    .lt("created_at", a.toISOString())
+    .limit(5000);
+  if (error) {
+    mostra(els.statsMsg, "Statistiche non disponibili: riprova quando c'è campo.", "errore");
+    return;
+  }
+  mostra(els.statsMsg, "");
+  disegnaStatistiche(calcolaStatistiche(data));
+}
+
+// La sezione esiste solo per l'ufficio. Se la funzione is_office() non c'e'
+// ancora nel database (SQL non lanciato) la risposta e' un errore: si tratta
+// come un "no", e la pagina resta quella di sempre.
+async function preparaStatistiche() {
+  const { data, error } = await sb.rpc("is_office");
+  els.statsBox.hidden = !!error || data !== true;
 }
 
 // ─── Avvio ──────────────────────────────────────────────────────────────────
@@ -1019,6 +1214,15 @@ els.searchForm.addEventListener("submit", cerca);
 els.searchReset.addEventListener("click", tornaAgliUltimi);
 // Una richiesta mandata mentre la pagina e' aperta: si vede senza ricaricare.
 els.requestsReload.addEventListener("click", () => { mostra(els.requestsMsg, ""); caricaRichieste(); });
+// Le statistiche si chiedono al database solo quando la tendina si apre.
+els.statsBox.addEventListener("toggle", () => { if (els.statsBox.open) caricaStatistiche(); });
+els.statsReload.addEventListener("click", caricaStatistiche);
+document.querySelectorAll("[data-stats-period]").forEach(btn => btn.addEventListener("click", () => {
+  periodoStats = btn.dataset.statsPeriod;
+  document.querySelectorAll("[data-stats-period]").forEach(b =>
+    b.setAttribute("aria-pressed", String(b === btn)));
+  caricaStatistiche();
+}));
 // "Ticket … salvato" resta finche' non si comincia il ticket successivo.
 els.form.addEventListener("input", () => {
   if (els.msg.classList.contains("is-ok")) mostra(els.msg, "");

@@ -60,6 +60,24 @@
         <ul class="vend-list" data-requests></ul>
       </section>
 
+      <!-- Statistiche: SOLO per gli account dell'ufficio (proprietario, 5 ottobre
+           2026). Resta nascosta finche' il database non risponde si' a
+           is_office() (supabase/modifiche/2026-10-05-ufficio.sql). Chiusa
+           all'inizio: i numeri si chiedono al database solo quando la si apre. -->
+      <details class="vend-stats" data-stats-box hidden>
+        <summary class="vend-h1">Statistiche</summary>
+        <div class="vend-stats-head">
+          <div class="vend-stats-periodi" role="group" aria-label="Periodo">
+            <button class="btn btn-soft" type="button" data-stats-period="questo" aria-pressed="true">Questo mese</button>
+            <button class="btn btn-soft" type="button" data-stats-period="scorso" aria-pressed="false">Mese scorso</button>
+          </div>
+          <button class="btn btn-soft" type="button" data-stats-reload>Aggiorna</button>
+        </div>
+        <small class="vend-hint">Contate dal giorno in cui la prenotazione è stata inserita, senza le annullate. I ticket più vecchi del mese scorso li cancella la pulizia automatica: più indietro non si vede.</small>
+        <p class="vend-msg" data-stats-msg role="status" hidden></p>
+        <div data-stats></div>
+      </details>
+
       <h1 class="vend-h1">Nuovo ticket</h1>
 
       <form class="vend-form" data-ticket-form novalidate>

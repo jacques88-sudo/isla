@@ -16095,3 +16095,47 @@ non più "[object Object]".
 
 Gli avvisi del controllo scendono da 3 a 2 (restano le due schede senza foto).
 `CACHE_NAME` non alzato: `controlla.js` non lo scarica nessun cliente.
+
+---
+
+## Statistiche per l'ufficio (5 ottobre 2026)
+
+In `venditori.html`, sotto "Richieste da WhatsApp", c'è una tendina **"Statistiche"**
+che vede **solo l'ufficio** (proprietario). Chiusa all'inizio; quando si apre chiede i
+ticket al database e mostra:
+- quattro numeri: **prenotazioni** (strada / WhatsApp), **persone**, **venduto**,
+  **già incassato** (con sotto quanto resta da incassare);
+- tre tabelle: **escursioni più vendute**, **per venditore**, **giorno per giorno**.
+
+Due periodi, **questo mese** e **mese scorso**: più indietro non si può, perché la
+pulizia mensile cancella i ticket più vecchi dell'inizio del mese scorso, e al
+proprietario due mesi bastano.
+
+**Come si contano:**
+- per **giorno d'inserimento** (`created_at`), all'ora di Tenerife: "quanto abbiamo
+  venduto questo mese", non "quante escursioni si fanno questo mese";
+- le **annullate** non entrano in nessun numero, si dice solo quante sono;
+- venduto = somma dei Total; **già incassato = Total − To pay** (un ticket "pagato
+  tutto" ha To pay 0); da incassare = somma dei To pay;
+- le richieste WhatsApp senza Total contano come prenotazioni e persone, non come soldi;
+- i prezzi **non** si confrontano col catalogo (decisione del 30 settembre);
+- "per venditore" usa il nome scritto sul ticket, quindi "FRA / MATT" è una riga sua.
+
+Il calcolo è una funzione pura, `calcolaStatistiche()`, provata con ticket finti
+(pagato tutto, acconto, niente pagato, WhatsApp senza Total, annullata, ticket salvato
+a mezzanotte e mezza). La pagina è stata provata nel browser con un Supabase finto:
+ufficio sì, venditore no, e niente sezione se l'SQL non è ancora stato lanciato.
+
+**Chi è l'ufficio** lo dice il database: `supabase/modifiche/2026-10-05-ufficio.sql`
+aggiunge `office` a `sellers` (falso per tutti) e la funzione `is_office()`. **Va
+lanciato a mano** nel SQL Editor di Supabase, e poi la riga `update … set office = true
+where name = '…'` col nome dell'account dell'ufficio. Finché non si fa, la sezione non
+compare a nessuno e la pagina resta quella di prima. Provato su un Postgres locale:
+due lanci senza errori, ufficio → sì, venditore → no, nessuno entrato → no.
+
+**Il limite, da sapere:** la sezione è **nascosta** ai venditori, ma i dati no. Le regole
+di oggi lasciano leggere **tutti** i ticket a ogni venditore (serve a cercare il ticket
+di un cliente), e da lì le somme si possono rifare. Toglierlo vuol dire cambiare cosa
+vedono i venditori: è un'altra decisione, non presa.
+
+`CACHE_NAME` → `isla-v398`.

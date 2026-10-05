@@ -16366,8 +16366,13 @@ Non fidarsi del riassunto IA di Google su questa società: diceva che "TRG" sta 
 "Tenerife Royal Gardens" e parlava di un bar Shakers, e nessuna fonte lo conferma.
 
 **L'indirizzo da pubblicare l'ha indicato il proprietario**: l'ufficio **Admiral
-Excursions Las Americas**, in Calle Francisco Andrade Fumero, sul lungomare di Playa de
-las Américas (Arona). Manca ancora il numero civico. Non sono gli altri uffici che
+Excursions Las Americas**, sul lungomare di Playa de las Américas. Scritto come lo
+ha dato lui, senza numero civico:
+
+> C. Francisco Andrade Fumero, 38660 Playa de las Américas, Santa Cruz de Tenerife
+
+Il CAP 38660 è quello di Adeje: il lungomare passa da Arona (38650) ad Adeje, e
+l'ufficio sta dal lato di Adeje. Non scrivere "Arona" accanto. Non sono gli altri uffici che
 compaiono negli elenchi: Edificio Bucanero e Av. Juan Alfonso Batista a Los Cristianos,
 Av. de los Pueblos ad Adeje.
 
@@ -16377,6 +16382,6 @@ di Admiral. Un numero solo, così il cliente non si chiede quale chiamare. Non v
 sito il 922 716 030 degli elenchi (sede di Adeje) né il 663 949 031 del ticket (Admiral
 TRG, l'altra società).
 
-Ancora da chiedere ad Admiral prima di pubblicare: il **numero civico** e **un'email**
-a cui il cliente possa scrivere per i suoi dati.
+Ancora da chiedere ad Admiral prima di pubblicare: **un'email** a cui il cliente possa
+scrivere per i suoi dati.
 Sul sito per ora non c'è niente: né privacy policy né dati aziendali.

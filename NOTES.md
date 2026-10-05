@@ -15974,3 +15974,23 @@ un'anteprima per scheda chiede un pezzo di server, che Isla non ha.
 a uscire nudo per un po'. Per provarlo, mandarlo con qualcosa in coda (`…/isla/?v=1`).
 
 `CACHE_NAME` alzato a `isla-v394` (cambiati sette `.html`).
+
+### Il logo al posto della foto (5 ottobre 2026)
+
+Il proprietario ha preferito una cosa più semplice: **il logo e la scritta**, invece
+della foto di Los Gigantes. `assets/anteprima.jpg` ora è fondo crema del sito, il sole
+con la palma, "ISLA" in Cormorant Garamond e "SO EASY SO TENERIFE" in Jost, come in
+testa alla home. 1200×630, **36 KB** (la foto ne pesava 184). Tutto al centro, perché
+WhatsApp a volte mostra l'anteprima come un quadratino tagliato ai lati.
+
+**Come è fatta:** una paginetta HTML fotografata con Playwright a 1200×630. Due trappole:
+- il Chromium di prova **non carica i caratteri da Google Fonts** e ripiega su Georgia
+  senza dirlo: i `.woff2` vanno scaricati con `curl` e messi in `@font-face` locali;
+  controllare con `document.fonts` che risultino `loaded`;
+- **`assets/logo-isla.png` ha un puntino viola sotto l'onda** (verso y=465 su 476).
+  Nel sito, piccolo, non si vede; ingrandito sì. Per l'anteprima il logo è stato
+  ritagliato a 476×430.
+
+Cambiato anche `og:image:alt` nelle sette pagine; `CACHE_NAME` → `isla-v395`.
+Il nome del file è rimasto `anteprima.jpg`, quindi un link già mandato può mostrare la
+foto vecchia finché WhatsApp non lo rilegge (prova con `…/isla/?v=2`).

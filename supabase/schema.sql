@@ -17,7 +17,8 @@
 -- lancia questo file e poi quelle che qui non sono gia' comprese: oggi
 -- 2026-09-30-pulizia-mensile.sql (ha bisogno di Cron attivato),
 -- 2026-09-30-richieste-whatsapp.sql (le richieste dei clienti senza ticket) e
--- 2026-10-02-richieste-ticket.sql (la richiesta confermata diventa un ticket).
+-- 2026-10-02-richieste-ticket.sql (la richiesta confermata diventa un ticket) e
+-- 2026-10-05-ufficio.sql (gli account dell'ufficio, per le statistiche).
 
 
 -- 1. I VENDITORI ------------------------------------------------------------

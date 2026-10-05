@@ -4104,6 +4104,25 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .vend-req.is-confirmed .vend-req-stato { color: var(--ok); }
 .vend-req.is-cancelled .vend-req-stato { color: var(--danger); }
 .vend-req.is-cancelled strong { text-decoration: line-through; text-decoration-thickness: 1px; }
+/* Statistiche (solo ufficio): una tendina chiusa, quattro numeri, tre tabelle. */
+.vend-stats { margin-bottom: 1.5rem; border-top: 1px solid var(--border); padding-top: .4rem; }
+.vend-stats[hidden] { display: none; }
+.vend-stats > summary { cursor: pointer; margin: 1rem 0 .2rem; list-style-position: inside; }
+.vend-stats-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; margin: .6rem 0 .2rem; }
+.vend-stats-periodi { display: flex; gap: .5rem; }
+.vend-stats-head .btn { min-height: 40px; padding: 0 1rem; }
+.vend-stats-periodi .btn[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); }
+.vend-stats-cifre { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem; margin: 1rem 0 .4rem; }
+.vend-stats-cifre div { padding: .75rem .85rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); min-width: 0; }
+.vend-stats-cifre dt { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+.vend-stats-cifre dd { margin: .15rem 0 0; font-size: 1.35rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+.vend-stats-cifre small { display: block; color: var(--muted); font-size: .8rem; }
+.vend-stats-blocco h3 { margin: 1.2rem 0 .4rem; font-size: 1rem; font-weight: 500; }
+.vend-stats-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.vend-stats-table th { text-align: left; color: var(--muted); font-weight: 400; font-size: .78rem; padding: .3rem .4rem; border-bottom: 1px solid var(--border); }
+.vend-stats-table td { padding: .45rem .4rem; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
+.vend-stats-table .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+@media (min-width: 720px) { .vend-stats-cifre { grid-template-columns: repeat(4, 1fr); } }
 .vend-search { margin-bottom: .5rem; }
 .vend-search [hidden] { display: none; }   /* .btn-block vincerebbe su hidden */
 .vend-row-search { grid-template-columns: 1fr auto; align-items: start; }

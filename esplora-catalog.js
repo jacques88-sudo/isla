@@ -5673,7 +5673,7 @@ const ESPLORA_CATALOG = [
       en: "Masca and Teide National Park aboard an open-top bus: you watch the landscape all around you, with no window in the way.",
       es: "Masca y el Parque Nacional del Teide a bordo de un bus descapotable: el paisaje se mira en 360°, sin un cristal de por medio."
     },
-    image: "",
+    image: "masca-teide-cabrio-bus.jpg",
     published: true
   },
   {

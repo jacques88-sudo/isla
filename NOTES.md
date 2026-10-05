@@ -16153,3 +16153,21 @@ Gli orari mandati dal proprietario (King Buggy 8:20, 14:00, tramonto 17:30; Ulti
 va ogni ora, e se le 8:20 sono il ritiro in hotel o la partenza.
 
 `CACHE_NAME` alzato a `isla-v399`.
+
+### Gli orari dei buggy (5 ottobre)
+
+Il proprietario ha chiarito: sono **orari di partenza**, e la compagnia la sceglie
+l'ufficio, non il cliente. Su ogni giro di `buggy-volcano-4h` ci sono solo le ore di chi
+quel giro lo fa davvero:
+
+| giro | chi lo fa | `times` |
+|---|---|---|
+| Offroad, 3 ore | King + Ultimate | 08:20, 11:00, 13:30, 14:00 |
+| Tramonto sul Teide, 3 ore | King + Ultimate | 17:30, 18:00 |
+| Completo, 4 ore | solo King | 08:20, 14:00 |
+| Montagna su strada, 3 ore | solo Ultimate | 11:00, 13:30 |
+
+Provato nel browser: la finestra della richiesta mostra quelle ore e "Da concordare"
+sparisce, come vuole `times` pieno.
+
+`CACHE_NAME` alzato a `isla-v400`.

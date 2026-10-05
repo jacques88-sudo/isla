@@ -15994,3 +15994,23 @@ WhatsApp a volte mostra l'anteprima come un quadratino tagliato ai lati.
 Cambiato anche `og:image:alt` nelle sette pagine; `CACHE_NAME` → `isla-v395`.
 Il nome del file è rimasto `anteprima.jpg`, quindi un link già mandato può mostrare la
 foto vecchia finché WhatsApp non lo rilegge (prova con `…/isla/?v=2`).
+
+---
+
+## Tolto il puntino viola dal logo (5 ottobre 2026)
+
+`logo-isla.png` e le tre icone dell'app (`icon-192`, `icon-512`, `icon-maskable-512`)
+avevano **un puntino viola sotto l'onda**, staccato dal disegno: nel logo stava nelle
+righe 472-475 (x 251-268), mentre l'onda finisce a 428. Nel sito, piccolo, non si
+notava; nell'anteprima di WhatsApp e sull'icona dell'app installata sì.
+
+Tolto **senza cambiare la misura dei file**: nel logo quel rettangolino è diventato
+trasparente, nelle icone (fondo crema, senza trasparenza) è stato coperto col colore
+del fondo `srgb(252,250,246)`. Cambiati solo 11-54 pixel per file, controllato con
+`compare -metric AE`. Le icone restano senza canale di trasparenza, come prima:
+ImageMagick ne aggiunge uno quando ci disegni sopra, va tolto con `-alpha off`.
+
+`CACHE_NAME` → `isla-v396`: logo e icone stanno in `ASSETS` di `sw.js`, e col nome
+uguale chi ha già il sito sul telefono terrebbe quelli vecchi. Chi ha **installato**
+l'app può vedere l'icona vecchia sulla schermata del telefono ancora per un po':
+quella la aggiorna il sistema quando vuole lui.

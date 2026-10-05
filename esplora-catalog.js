@@ -2502,6 +2502,10 @@ const ESPLORA_CATALOG = [
     // gia' in giro continuino a funzionare — come si era fatto per i due quad.
     id: "buggy-volcano-4h",
     title: "Buggy Tour Tenerife",
+    // Le due compagnie che portano questi giri, come i venditori le scrivono
+    // sul ticket. Tutte e due sulla scheda e non su una variante: Offroad e
+    // Tramonto li fanno entrambe, e il nome da solo non dice quale giro e'.
+    nomi: ["King Buggy", "Ultimate Buggies", "Ultimate Buggy"],
     // Anche fra Teide e natura (proprietario, 14 settembre 2026). Qui `alsoIn`
     // e' della scheda e non della variante: dei quattro giri due salgono al
     // Parco Nazionale (Tramonto sul Teide e Completo) e due no, ma la scheda

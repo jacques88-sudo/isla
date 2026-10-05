@@ -16320,3 +16320,27 @@ senza tagliare il bus.
 
 Con questa, **tutte le 65 schede pubblicate hanno una foto**: `controlla.js` non dà più
 avvisi. `CACHE_NAME` → `isla-v407`.
+
+### Cabrio Bus: durata, zona e pranzo (5 ottobre)
+
+Dalla pagina del fornitore incollata dal proprietario (Island Excursions, "Viajes Nere
+Izerdie"). Presi solo i fatti:
+
+- **durata "8 ore circa"** (`8 horas aprox.`), filtro giornata intera;
+- **il pranzo non è compreso**: nuova nota, una riga sola. Una prima versione diceva anche
+  "c'è tempo per fermarsi a mangiare lungo il giro", ma la pagina non lo dice: tolto;
+- la funivia facoltativa e non compresa c'era già;
+- prezzo 80 € e fasce 0-2 / 3-13 / 14+ già giusti.
+
+**La zona l'ho decisa io**, perché la pagina non la scrive: "Tenerife Sud" e il filtro
+"Teide e nord", **come le altre due gite al Teide dello stesso fornitore**
+(`teide-national-park`, `icod-garachico-orotava`), che raccolgono al sud; e il giro
+finisce "scendendo verso sud". Se il proprietario sa che parte da un'altra zona, si
+cambia una riga.
+
+Non preso: il menu "Idioma" della pagina (mostra solo Español, e il campo `languages` si
+mette solo dove viene segnalato), il testo descrittivo, l'indirizzo e i telefoni del
+fornitore.
+
+Restano "Da definire": bici, fiat-500-water-car, cantine-vinicole, la zona del
+private-charter, la durata di flyboard. `CACHE_NAME` → `isla-v408`.

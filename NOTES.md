@@ -16014,3 +16014,66 @@ ImageMagick ne aggiunge uno quando ci disegni sopra, va tolto con `-alpha off`.
 uguale chi ha già il sito sul telefono terrebbe quelli vecchi. Chi ha **installato**
 l'app può vedere l'icona vecchia sulla schermata del telefono ancora per un po':
 quella la aggiorna il sistema quando vuole lui.
+
+---
+
+## Filtri per zona e durata (5 ottobre 2026)
+
+Nella pagina "Esperienze", accanto alla ricerca, c'è un bottone **"Filtri"** che apre
+un pannello con due righe di pillole: **Zona** e **Durata**. Una scelta per riga;
+toccare quella accesa la spegne. Il bottone porta un numerino coi filtri accesi, così
+anche a pannello chiuso si capisce che l'elenco è filtrato.
+
+**Decisioni del proprietario:** i filtri stanno **dietro un bottone**, non sempre in
+vista (allungavano la pagina prima delle schede); i gruppi di zona sono quelli qui
+sotto, e **Los Gigantes sta da solo**.
+
+**Perché i gruppi:** nelle schede la zona è scritta in 26 modi diversi e la durata in
+35. Il testo resta quello per il cliente; per filtrare ogni scheda ha due campi in più,
+`zoneGroups` e `durationGroups`, che il cliente non vede. I nomi dei gruppi stanno in
+`ZONE_FILTRO` e `DURATE_FILTRO` in `esplora-catalog.js`, nelle tre lingue.
+
+| zona | cosa ci sta |
+|---|---|
+| Costa Adeje | Puerto Colón, Fañabé, Adeje, Playa de las Américas |
+| Los Cristianos e dintorni | Los Cristianos, Chayofa, Guargacho, Las Galletas, Las Chafiras, Marina Amarilla, San Miguel |
+| Los Gigantes | solo Flipper One |
+| Teide e nord | Teide, Chío, Puerto de la Cruz, e le gite "Tenerife Sud" col ritiro dal sud |
+| Altre isole | La Gomera, La Palma, Gran Canaria |
+
+| durata | cosa ci sta |
+|---|---|
+| Fino a 2 ore | da pochi minuti a 2 ore |
+| Mezza giornata | da 2 ore e un quarto a 5 ore |
+| Giornata intera | 6 ore e più, i parchi aperti tutto il giorno, le altre isole |
+
+**Le regole usate:**
+- una scheda che parte da due posti, anche solo in una variante, sta in **tutti e due**
+  (Royal Delfin e Shogun anche in "Teide e nord" per la partenza da Puerto de la Cruz);
+  "2 o 3 ore" sta in "Fino a 2 ore" **e** in "Mezza giornata";
+- per le gite col ritiro dal sud vale **dove si va**, non dove si sale: il Teide, Icod,
+  Santa Cruz e Anaga stanno in "Teide e nord";
+- le 7 schede con la zona "Da definire" e le 8 con la durata "Da definire" non hanno il
+  campo: **spariscono appena si accende quel filtro**. Meglio che finire nel gruppo
+  sbagliato. Quando l'ufficio dà il dato, si aggiunge anche il gruppo.
+
+**Le assegnazioni dubbie**, da far confermare al proprietario:
+- **Monkey Park** → "Fino a 2 ore": la scheda dà l'orario d'apertura (09:30-16:00), non
+  quanto dura la visita; è un piccolo zoo.
+- **Trenino turistico** → "Fino a 2 ore": il biglietto vale tutto il giorno, ma il giro
+  in sé è breve.
+- **Pesca d'altura** → solo "Mezza giornata", anche se i charter privati dicono "Da 4 ore".
+- **Castillo San Miguel** (San Miguel de Abona) → "Los Cristianos e dintorni".
+
+**Quando si sceglie una zona stando su "Raccomandate"** si passa al catalogo intero,
+come succede con la ricerca: chi sceglie "Costa Adeje" vuole tutte le attività di
+Costa Adeje, non le due raccomandate che ci stanno.
+
+**`controlla.js`** dà errore se un gruppo è scritto male (la scheda non uscirebbe mai
+sotto quel filtro, senza che nessuno se ne accorga) e un avviso se una scheda pubblicata
+ha la zona o la durata scritta ma non il gruppo.
+
+**Provato nel browser**, telefono (390 px) e computer (1366 px): Los Gigantes 1 scheda,
+Costa Adeje 35, Costa Adeje + giornata intera 7, una combinazione vuota mostra "Nessuna
+attività con questi filtri", "Togli i filtri" riporta a 65, il filtro resta acceso
+cambiando lingua e i nomi si traducono. `CACHE_NAME` → `isla-v397`.

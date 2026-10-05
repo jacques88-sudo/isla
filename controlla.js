@@ -380,6 +380,7 @@ function controllaBase(t) {
   if (!t.category) errore(t.id, "senza categoria.");
   else if (!CATEGORIE.has(t.category)) errore(t.id, 'categoria inesistente: "' + t.category + '".');
   if (t.alsoIn !== undefined) controllaAlsoIn(t);
+  controllaGruppiFiltro(t);
   if (!t.title) errore(t.id, "senza titolo.");
   if (t.published && !t.desc) avviso(t.id, "pubblicata senza descrizione.");
   if (t.privateOption && !ESPLORA_CATALOG.some(x => x.id === t.privateOption)) {
@@ -403,6 +404,33 @@ function controllaAlsoIn(t) {
     else if (viste.has(id)) errore(t.id, 'alsoIn: "' + id + '" scritta due volte.');
     viste.add(id);
   });
+}
+
+// I gruppi del bottone "Filtri" (zona e durata). Un gruppo scritto male non
+// da' errore nel sito: la scheda semplicemente non esce mai sotto quel
+// filtro, e nessuno se ne accorge. Una scheda nuova senza il campo, invece,
+// sparisce appena il cliente sceglie una zona: lo si dice, a meno che la
+// zona non sia ancora "Da definire" (allora il gruppo non si puo' sapere).
+function controllaGruppiFiltro(t) {
+  [["zoneGroups", ZONE_FILTRO, "zone", "zona"], ["durationGroups", DURATE_FILTRO, "duration", "durata"]]
+    .forEach(([campo, gruppi, testo, nome]) => {
+      const v = t[campo];
+      if (v === undefined) {
+        const scritto = tf(t[testo]);
+        if (t.published && scritto && !/da definire/i.test(scritto)) {
+          avviso(t.id, `senza ${campo}: col filtro "${nome}" acceso la scheda non esce mai.`);
+        }
+        return;
+      }
+      if (!Array.isArray(v) || !v.length) {
+        errore(t.id, `${campo} deve essere un elenco, es. ["${gruppi[0].id}"].`);
+        return;
+      }
+      v.forEach(id => {
+        if (!gruppi.some(g => g.id === id)) errore(t.id, `${campo}: gruppo inesistente "${id}".`);
+      });
+      if (new Set(v).size !== v.length) errore(t.id, `${campo}: un gruppo e' scritto due volte.`);
+    });
 }
 
 // ─── 9. Nessun id ripetuto ─────────────────────────────────────────────────

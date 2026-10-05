@@ -16371,6 +16371,12 @@ las Américas (Arona). Manca ancora il numero civico. Non sono gli altri uffici 
 compaiono negli elenchi: Edificio Bucanero e Av. Juan Alfonso Batista a Los Cristianos,
 Av. de los Pueblos ad Adeje.
 
-Ancora da chiedere ad Admiral prima di pubblicare: il **numero civico**, **quale
-telefono** e **un'email** a cui il cliente possa scrivere per i suoi dati.
+**Il telefono da pubblicare è quello di Isla, +34 662 908 073** (deciso dal
+proprietario): è lo stesso WhatsApp a cui arrivano le richieste, e risponde l'ufficio
+di Admiral. Un numero solo, così il cliente non si chiede quale chiamare. Non vanno sul
+sito il 922 716 030 degli elenchi (sede di Adeje) né il 663 949 031 del ticket (Admiral
+TRG, l'altra società).
+
+Ancora da chiedere ad Admiral prima di pubblicare: il **numero civico** e **un'email**
+a cui il cliente possa scrivere per i suoi dati.
 Sul sito per ora non c'è niente: né privacy policy né dati aziendali.

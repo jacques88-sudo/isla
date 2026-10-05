@@ -2546,11 +2546,18 @@ const ESPLORA_CATALOG = [
     // oggi sono uguali su tutte e tre: e' li' che il sito li legge per scriverli
     // accanto ai contatori, ed e' li' che andranno cambiati se un giro comincia
     // a costare piu' di un altro.
+    // Gli orari sono le PARTENZE delle due compagnie (proprietario, 5 ottobre
+    // 2026): King Buggy 8:20, 14:00 e tramonto 17:30; Ultimate 11:00, 13:30 e
+    // tramonto 18:00. Su ogni giro ci sono solo le ore di chi lo fa davvero:
+    // Offroad e Tramonto tutte e due, Completo solo King, Montagna su strada
+    // solo Ultimate. Il cliente sceglie l'ora, non la compagnia: chi lo porta
+    // lo decide l'ufficio quando conferma.
     options: {
       label: { it: "Percorso", en: "Route", es: "Recorrido" },
       choices: [
         { label: { it: "Offroad, 3 ore", en: "Off-road, 3 hours", es: "Offroad, 3 horas" },
           price: 180,
+          times: ["08:20", "11:00", "13:30", "14:00"],
           duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
@@ -2560,6 +2567,7 @@ const ESPLORA_CATALOG = [
           } },
         { label: { it: "Tramonto sul Teide, 3 ore", en: "Teide at sunset, 3 hours", es: "Atardecer en el Teide, 3 horas" },
           price: 180,
+          times: ["17:30", "18:00"],
           duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
@@ -2569,6 +2577,7 @@ const ESPLORA_CATALOG = [
           } },
         { label: { it: "Completo, 4 ore", en: "Full tour, 4 hours", es: "Completo, 4 horas" },
           price: 180,
+          times: ["08:20", "14:00"],
           duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
@@ -2586,6 +2595,7 @@ const ESPLORA_CATALOG = [
         // note, che possono dire su quali giri c'e' e su quale no.
         { label: { it: "Montagna su strada, 3 ore", en: "Mountain roads, 3 hours", es: "Montaña por carretera, 3 horas" },
           price: 180,
+          times: ["11:00", "13:30"],
           duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
           zone: "Playa de las Américas",
           unitPrices: { due: 180, quattro: 240, sei: 330 },

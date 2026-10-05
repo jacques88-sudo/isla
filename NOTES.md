@@ -16305,3 +16305,18 @@ dicono a quale durata si riferiscono, e mettere lo stesso prezzo su tutte e tre 
 falso. Quando arrivano i prezzi per durata, si fanno le tre varianti.
 
 Resta "Da definire" la **zona**: da quale porto parte. `CACHE_NAME` → `isla-v406`.
+
+### La foto del Cabrio Bus (5 ottobre)
+
+`assets/masca-teide-cabrio-bus.jpg`, dal proprietario: il bus scoperto rosso davanti al
+Teide e ai Roques de García. Originale 2479×1921, portato a 3:2 togliendo 80 px di cielo
+in alto e il resto della strada in basso, così la cima resta intera.
+
+**Sulla fiancata c'è il marchio "Sierra y González vips" e il loro sito.** Chiesto prima di
+pubblicare, per la regola delle foto con il marchio di un'altra azienda: il proprietario
+ha confermato che **Sierra y González è l'operatore** di questa escursione, quindi vale
+come la livrea delle barche, il mezzo vero è il soggetto. Il sito non si poteva tagliare
+senza tagliare il bus.
+
+Con questa, **tutte le 65 schede pubblicate hanno una foto**: `controlla.js` non dà più
+avvisi. `CACHE_NAME` → `isla-v407`.

@@ -5681,7 +5681,12 @@ const ESPLORA_CATALOG = [
     title: "Private Charter",
     category: "tour-privati",
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    // Dal proprietario, 5 ottobre 2026: 3, 6 o 9 ore. Non sono varianti con un
+    // bottone perche' manca il prezzo di ciascuna: priceTiers qui sotto non dice
+    // a quale durata si riferisce. Nel filtro: 3 ore e' mezza giornata, 6 e 9
+    // giornata intera.
+    duration: { it: "3, 6 o 9 ore", en: "3, 6 or 9 hours", es: "3, 6 o 9 horas" },
+    durationGroups: ["mezza", "intera"],
     priceFrom: 350,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
     // La barca e' tutta tua: l'ora di partenza si concorda, non si sceglie da un

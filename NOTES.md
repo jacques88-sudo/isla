@@ -16292,3 +16292,16 @@ con densità 3, nella pagina di dettaglio: un po' morbida, non sgranata. Se arri
 versione più grande, si sostituisce lo stesso file.
 
 Resta senza foto: `masca-teide-cabrio-bus`. `CACHE_NAME` → `isla-v405`.
+
+### Private Charter: 3, 6 o 9 ore (5 ottobre)
+
+Dal proprietario: il charter privato si fa da **3, 6 o 9 ore**. Scritto in `duration`
+nelle tre lingue; nel filtro sta sia con le mezze giornate (3 ore) sia con le giornate
+intere (6 e 9).
+
+**Non sono diventate varianti con un bottone**, e l'ho deciso io: manca il prezzo di
+ciascuna durata. Gli scaglioni che ci sono (7-10 persone 350 €, 11-15 persone 450 €) non
+dicono a quale durata si riferiscono, e mettere lo stesso prezzo su tutte e tre sarebbe
+falso. Quando arrivano i prezzi per durata, si fanno le tre varianti.
+
+Resta "Da definire" la **zona**: da quale porto parte. `CACHE_NAME` → `isla-v406`.

@@ -16247,3 +16247,20 @@ Icod + Masca → 08:15; Santa Mónica e Montesol su Gran Canaria → 07:55; Flor
 invariato.
 
 `HOTELS` da 418 a **433**. `CACHE_NAME` → `isla-v402`.
+
+### Siam Night e Siam Park: zona e orari (5 ottobre)
+
+Dal proprietario: **Siam Night** è il Siam Park di sera, a **Costa Adeje**, **dalle 20 a
+mezzanotte**, solo a luglio e agosto (il `season` c'era già). Zona e durata non sono più
+"Da definire"; nel filtro sta con le mezze giornate (`durationGroups: ["mezza"]`), perché
+sono quattro ore.
+
+**Siam Park**: "in estate / in inverno" è diventato con le date del cambio, 10:00-18:00
+dal 1° maggio al 29 ottobre e 10:00-17:00 dal 30 ottobre al 30 aprile. "Estate" da sola
+non dice a chi prenota per fine ottobre quale orario vale. Nell'elenco la pillola va su
+due righe: guardata a 390 px, ci sta.
+
+Restano "Da definire": bici, fiat-500-water-car, twin-ticket, cantine-vinicole,
+masca-teide-cabrio-bus, private-charter, e la durata di flyboard.
+
+`CACHE_NAME` → `isla-v403`.

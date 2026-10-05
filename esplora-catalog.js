@@ -3979,10 +3979,12 @@ const ESPLORA_CATALOG = [
     zone: "Costa Adeje",
     // Al posto di "Giornata intera" (che non dice niente) l'orario vero,
     // spostato qui da `notes`: due volte la stessa informazione confondeva.
+    // Le date del cambio dal proprietario, 5 ottobre 2026: "estate" e
+    // "inverno" da soli non dicono a chi prenota per fine ottobre quale vale.
     duration: {
-      it: "10:00-18:00 in estate, 10:00-17:00 in inverno",
-      en: "10am-6pm in summer, 10am-5pm in winter",
-      es: "10:00-18:00 en verano, 10:00-17:00 en invierno"
+      it: "10:00-18:00 dal 1° maggio al 29 ottobre, 10:00-17:00 dal 30 ottobre al 30 aprile",
+      en: "10am-6pm from 1 May to 29 October, 10am-5pm from 30 October to 30 April",
+      es: "10:00-18:00 del 1 de mayo al 29 de octubre, 10:00-17:00 del 30 de octubre al 30 de abril"
     },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["intera"],
@@ -4117,8 +4119,13 @@ const ESPLORA_CATALOG = [
     id: "siam-night",
     title: "Siam Night",
     category: "parchi-spettacoli",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    // Zona e orario dal proprietario, 5 ottobre 2026: e' il Siam Park di sera,
+    // dalle 20 a mezzanotte, solo a luglio e agosto (vedi `season`). Quattro
+    // ore: nel filtro sta con le mezze giornate.
+    zone: "Costa Adeje",
+    duration: { it: "20:00-24:00", en: "8pm-midnight", es: "20:00-24:00" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
     season: {
       it: "Solo luglio e agosto",
       en: "July and August only",

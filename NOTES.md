@@ -16344,3 +16344,28 @@ fornitore.
 
 Restano "Da definire": bici, fiat-500-water-car, cantine-vinicole, la zona del
 private-charter, la durata di flyboard. `CACHE_NAME` → `isla-v408`.
+
+## Chi c'è dietro Isla: i dati aziendali (5 ottobre 2026)
+
+**Isla non ha partita IVA, ragione sociale né NIF, e non li avrà.** È un servizio di
+Admiral: chi conferma le richieste, chi tiene i dati dei clienti e chi fattura (anche
+quando un giorno si pagherà online da Isla) è Admiral. Sul sito, e nella privacy policy
+come titolare dei dati, vanno quindi i dati di Admiral, non di Isla.
+
+La società giusta l'ha indicata il proprietario:
+
+- **Admiral Travel Agencia de Viajes SL** — CIF **B38506754**, *sociedad limitada*
+  iscritta al Registro Mercantil di Santa Cruz de Tenerife, dal 1998.
+
+**Non è quella stampata sui ticket di carta.** L'intestazione del ticket dice "Admiral
+TRG", J26750505, C.C. Villamar Local 9, Av. de los Pueblos, Costa Adeje, tel. 663 949 031.
+Una J è una *sociedad civil*, una B una SL: sono due soggetti diversi, probabilmente
+collegati (stessa strada). Sul sito non va il NIF del ticket.
+
+Non fidarsi del riassunto IA di Google su questa società: diceva che "TRG" sta per
+"Tenerife Royal Gardens" e parlava di un bar Shakers, e nessuna fonte lo conferma.
+
+Ancora da chiedere ad Admiral prima di pubblicare: **quale indirizzo** (gli elenchi
+danno Av. de los Pueblos 20 ad Adeje, Google dice Edificio Bucanero a Los Cristianos),
+**quale telefono** e **un'email** a cui il cliente possa scrivere per i suoi dati.
+Sul sito per ora non c'è niente: né privacy policy né dati aziendali.

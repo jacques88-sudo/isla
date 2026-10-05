@@ -201,6 +201,11 @@ const I18N = {
   "catalog.countSome":  { it: "{n} di {total} attività", en: "{n} of {total} activities", es: "{n} de {total} actividades" },
   "catalog.emptyTitle": { it: "Nessun risultato", en: "No results", es: "Sin resultados" },
   "catalog.emptyText":  { it: "Prova a cambiare categoria o a cercare un'altra parola.", en: "Try another category, or search for a different word.", es: "Prueba con otra categoría o busca otra palabra." },
+  "catalog.filters":    { it: "Filtri", en: "Filters", es: "Filtros" },
+  "catalog.filterZone": { it: "Zona", en: "Area", es: "Zona" },
+  "catalog.filterDuration": { it: "Durata", en: "Duration", es: "Duración" },
+  "catalog.filterReset": { it: "Togli i filtri", en: "Clear filters", es: "Quitar filtros" },
+  "catalog.emptyFilters": { it: "Nessuna attività con questi filtri. Prova a toglierne uno.", en: "No activities match these filters. Try removing one.", es: "Ninguna actividad con estos filtros. Prueba a quitar uno." },
   "catalog.prepTitle":  { it: "Catalogo in preparazione", en: "Catalogue coming soon", es: "Catálogo en preparación" },
   "catalog.prepText":   { it: "Nessuna attività è ancora pubblicata.", en: "No activity has been published yet.", es: "Todavía no hay ninguna actividad publicada." },
 

@@ -351,6 +351,17 @@
 //                direzione prudente: su un biglietto di un parco, comprato a
 //                prezzo fisso e rivenduto uguale, il 10% uscirebbe dalla
 //                tasca di Admiral.
+//   zoneGroups → facoltativo: i gruppi di zona per il filtro "Zona" dell'elenco,
+//                presi da ZONE_FILTRO qui sotto. `zone` resta il testo per il
+//                cliente; questo e' solo per filtrare, e il cliente non lo legge.
+//                Se la scheda parte da due posti (anche in una variante) ci
+//                vanno tutti e due, ed esce sotto entrambi:
+//                    zoneGroups: ["costa-adeje", "los-cristianos"]
+//                Per le gite col ritiro dal sud vale **dove si va**: il Teide
+//                sta in "teide-nord". Senza il campo (zona "Da definire") la
+//                scheda sparisce appena si sceglie una zona.
+//   durationGroups → facoltativo, come zoneGroups ma per la durata, da
+//                DURATE_FILTRO. "2 o 3 ore" sta in "breve" e in "mezza".
 //   family     → true se adatta ai bambini (serve al filtro "Con bambini").
 //   published  → la pagina catalogo mostra solo le voci a true. Ora sono tutte
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
@@ -482,6 +493,24 @@ const RACCOMANDATE = [
   "jet-ski-safari-1-2h"
 ];
 
+// I gruppi del bottone "Filtri" nell'elenco. Le zone scritte nelle schede sono
+// ventisei, ognuna a modo suo ("Puerto Colón", "Costa Adeje – Los Cristianos"):
+// un filtro con ventisei bottoni non serve a nessuno, quindi si raggruppano.
+// Gruppi decisi dal proprietario il 5 ottobre 2026; Los Gigantes sta da solo,
+// per sua scelta. Ogni scheda dice i suoi in `zoneGroups` e `durationGroups`.
+const ZONE_FILTRO = [
+  { id: "costa-adeje", name: "Costa Adeje" },
+  { id: "los-cristianos", name: { it: "Los Cristianos e dintorni", en: "Los Cristianos area", es: "Los Cristianos y alrededores" } },
+  { id: "los-gigantes", name: "Los Gigantes" },
+  { id: "teide-nord", name: { it: "Teide e nord", en: "Teide and the north", es: "Teide y el norte" } },
+  { id: "altre-isole", name: { it: "Altre isole", en: "Other islands", es: "Otras islas" } }
+];
+const DURATE_FILTRO = [
+  { id: "breve", name: { it: "Fino a 2 ore", en: "Up to 2 hours", es: "Hasta 2 horas" } },
+  { id: "mezza", name: { it: "Mezza giornata", en: "Half day", es: "Media jornada" } },
+  { id: "intera", name: { it: "Giornata intera", en: "Full day", es: "Día completo" } }
+];
+
 // Le categorie di una scheda: la sua, piu' quelle facoltative di `alsoIn`.
 // Sta qui, accanto a CATEGORIES, perche' questo file lo caricano tutte le
 // pagine — e perche' chi legge il catalogo deve vedere le stesse categorie
@@ -505,6 +534,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "Da 2 a 4 ore e mezza", en: "2 to 4.5 hours", es: "De 2 a 4,5 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["breve", "mezza"],
     priceFrom: 30,
     privateOption: "private-charter",
     priceAdult: 0,
@@ -623,6 +654,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "Da 2 a 4 ore e mezza", en: "2 to 4.5 hours", es: "De 2 a 4,5 horas" },
+    zoneGroups: ["costa-adeje", "teide-nord"],
+    durationGroups: ["breve", "mezza"],
     priceFrom: 33,
     privateOption: "private-charter",
     priceAdult: 0,
@@ -751,6 +784,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
     // Quattro partenze a tre ore l'una dall'altra. Le 18:00 ci sono solo
     // d'estate: sta in elenco come le altre e la nota qui sotto lo dice, come
     // gia' fatto per la partenza delle 9:30 di Royal Delfin.
@@ -785,6 +820,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Los Cristianos",
     duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["breve"],
     // Tre partenze tutti i giorni: nessun campo `days`, non c'e' limite da dire.
     times: ["10:00", "12:00", "14:00"],
     priceFrom: 27,
@@ -839,6 +876,8 @@ const ESPLORA_CATALOG = [
     // Puerto Colon, Los Cristianos o Marina Amarilla.
     zone: "Los Gigantes",
     duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
+    zoneGroups: ["los-gigantes"],
+    durationGroups: ["breve", "mezza"],
     priceFrom: 33,
     // I prezzi veri stanno dentro le varianti, che costano tutte diverso. Qui
     // resta quello dei neonati, zero su tutti e tre i giri: e' un prezzo, non
@@ -929,6 +968,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Marina Amarilla",
     duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["breve"],
     times: ["10:00", "13:00"],
     // tutti i giorni tranne il sabato
     days: ["lun", "mar", "mer", "gio", "ven", "dom"],
@@ -998,6 +1039,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
     times: ["09:00", "14:00"],
     priceFrom: 85,
     priceAdult: 0,
@@ -1091,6 +1134,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
     priceFrom: 75,
     privateOption: "luxury-catamaran-charter",
     priceAdult: 75,
@@ -1122,6 +1167,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza", "intera"],
     priceFrom: 60,
     priceAdult: 0,
     priceChild: 0,
@@ -1202,6 +1249,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
     times: ["12:30"],
     days: ["sab"],
     priceFrom: 75,
@@ -1301,6 +1350,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "5 ore", en: "5 hours", es: "5 horas" },
+    zoneGroups: ["costa-adeje", "teide-nord"],
+    durationGroups: ["mezza"],
     times: ["11:00"],
     days: ["lun", "mer", "gio", "ven", "dom"],
     priceFrom: 61,
@@ -1385,6 +1436,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza", "intera"],
     times: ["10:00", "13:30"],
     priceFrom: 80,
     priceAdult: 0,
@@ -1472,6 +1525,8 @@ const ESPLORA_CATALOG = [
     // uguale nelle tre lingue.
     zone: "Las Galletas",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["mezza"],
     times: ["10:00", "13:00", "16:00"],
     priceFrom: 55,
     // I due prezzi stanno anche qui, non solo dentro la variante in
@@ -1596,6 +1651,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
     times: ["09:45", "13:15", "16:20"],
     priceFrom: 65,
     privateOption: "skyline-cruiser-charter",
@@ -1667,6 +1724,8 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     zone: "Los Cristianos",
     duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["breve", "mezza"],
     priceFrom: 25,
     // I due prezzi veri stanno dentro le varianti, perche' cambiano con la
     // durata. Il neonato invece e' lo stesso su entrambe (e paga, non e'
@@ -1744,6 +1803,8 @@ const ESPLORA_CATALOG = [
     category: "teide-natura",
     zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "6-8 ore circa", en: "About 6-8 hours", es: "6-8 horas aprox." },
+    zoneGroups: ["teide-nord"],
+    durationGroups: ["intera"],
     priceFrom: 39,
     fixedPrice: true,
     // Offerta a tempo decisa dal proprietario: si vende a 39 fino al 31
@@ -1856,6 +1917,8 @@ const ESPLORA_CATALOG = [
     // la riga accanto. Adesso sono due: questa dice quanto dura la giornata,
     // `activityDuration` dentro ogni variante dice quanto dura il cammino.
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    zoneGroups: ["teide-nord"],
+    durationGroups: ["intera"],
     // Il nome della seconda riga. Sta sulla scheda e non nelle varianti perche'
     // e' lo stesso per tutti e tre: quello che cambia e' il numero.
     activityLabel: { it: "Tempo di cammino", en: "Walking time", es: "Tiempo de caminata" },
@@ -2007,6 +2070,8 @@ const ESPLORA_CATALOG = [
     // intera": vero ma vago, e per chi deve organizzarsi la giornata otto ore
     // e dodici non sono la stessa cosa.
     duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
+    zoneGroups: ["teide-nord"],
+    durationGroups: ["intera"],
     // Niente `times`: l'ora di partenza non e' una sola, la decide il punto di
     // raccolta del cliente. Sta in PICKUP_TIMES dentro hotel.js, e la finestra
     // della richiesta al posto del menu "A che ora" mostra l'ora del suo hotel
@@ -2138,6 +2203,8 @@ const ESPLORA_CATALOG = [
     // Da cinque a otto ore secondo la serata: il pullman e' il piu' lungo, il
     // minivan il piu' corto. Ogni variante scrive poi la sua.
     duration: { it: "5-8 ore", en: "5 to 8 hours", es: "5-8 horas" },
+    zoneGroups: ["teide-nord"],
+    durationGroups: ["mezza", "intera"],
     priceFrom: 75,
     // I prezzi a persona veri stanno dentro le varianti. Sono i prezzi di
     // ADMIRAL, non quelli dei fornitori: 75 EUR il gruppo grande, 79 EUR il
@@ -2278,6 +2345,8 @@ const ESPLORA_CATALOG = [
     alsoIn: ["teide-natura"],
     zone: "Adeje",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
     priceFrom: 250,
     // Il prezzo e' dell'**auto**, non della persona, e cambia con quanti si
     // sale: 250 € fino a due, 350 € da tre a quattro. Con `priceUnit` il sito
@@ -2444,6 +2513,8 @@ const ESPLORA_CATALOG = [
     alsoIn: ["teide-natura"],
     zone: "Las Chafiras",
     duration: { it: "3 o 4 ore", en: "3 or 4 hours", es: "3 o 4 horas" },
+    zoneGroups: ["los-cristianos", "costa-adeje"],
+    durationGroups: ["mezza"],
     priceFrom: 180,
     // Il prezzo e' del buggy e non della persona: 180 € il buggy da 2 posti,
     // 240 € quello da 4, 330 € quello da 6, uguali su tutti e quattro i giri
@@ -2575,6 +2646,8 @@ const ESPLORA_CATALOG = [
     alsoIn: ["teide-natura"],
     zone: "Chío",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    zoneGroups: ["teide-nord"],
+    durationGroups: ["mezza"],
     // Il quad piu' economico che si puo' davvero prenotare: il singolo del
     // mattino. Prima erano i €140 del listino CanaryVIP, un segnaposto tenuto
     // finche' non sapevamo i prezzi veri; adesso l'ufficio li ha dati (110/120
@@ -2683,6 +2756,8 @@ const ESPLORA_CATALOG = [
     category: "avventura-motori",
     zone: "Adeje",
     duration: { it: "Da 8 a 50 minuti di volo", en: "8 to 50 minutes of flight", es: "De 8 a 50 minutos de vuelo" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["breve"],
     priceFrom: 98,
     priceAdult: 98,
     // Sul volo paga lo stesso prezzo chiunque occupi un posto, l'ha confermato
@@ -2791,6 +2866,8 @@ const ESPLORA_CATALOG = [
     category: "avventura-motori",
     zone: "Adeje",
     duration: { it: "Attività di circa 2 ore, volo di 20-40 minuti", en: "About 2 hours in all, 20-40 minutes in the air", es: "Actividad de unas 2 horas, vuelo de 20-40 minutos" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["breve"],
     priceFrom: 95,
     priceAdult: 95,
     priceChild: 0,
@@ -2866,6 +2943,8 @@ const ESPLORA_CATALOG = [
     category: "avventura-motori",
     zone: "Fañabé",
     duration: { it: "10 minuti a tanda", en: "10-minute session", es: "10 minutos por tanda" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["breve"],
     priceFrom: 20,
     priceAdult: 20,
     priceChild: 15,
@@ -2976,6 +3055,8 @@ const ESPLORA_CATALOG = [
     category: "avventura-motori",
     zone: "Guargacho",
     duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["breve"],
     priceFrom: 50,
     priceAdult: 50,
     priceChild: 0,
@@ -3038,6 +3119,8 @@ const ESPLORA_CATALOG = [
     category: "sport-acquatici",
     zone: "Puerto Colón, Costa Adeje",
     duration: { it: "10 o 15 minuti", en: "10 or 15 minutes", es: "10 o 15 minutos" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["breve"],
     priceFrom: 15,
     priceAdult: 15,
     priceChild: 15,
@@ -3149,6 +3232,8 @@ const ESPLORA_CATALOG = [
     category: "sport-acquatici",
     zone: "Los Cristianos",
     duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["breve"],
     // 35 e' il prezzo che ha deciso l'ufficio, non lo sconto copiato dal
     // rivenditore: la sua pagina dava 45 barrato -> 35, e il pieno sarebbe
     // stato 45. Abbassare si puo' sempre ed e' una scelta di Admiral; e'
@@ -3210,6 +3295,8 @@ const ESPLORA_CATALOG = [
     // Scritta una sola, l'altra diventa una bugia: "40 minuti" fa credere di
     // volare mezz'ora, "10 minuti" fa tornare il cliente al porto troppo presto.
     duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["breve"],
     activityLabel: { it: "Tempo di volo", en: "Flight time", es: "Tiempo de vuelo" },
     activityDuration: { it: "Circa 10 minuti", en: "About 10 minutes", es: "Unos 10 minutos" },
     // €55 a persona, confermato dal proprietario il 13 settembre 2026: la
@@ -3268,6 +3355,8 @@ const ESPLORA_CATALOG = [
     category: "sport-acquatici",
     zone: { it: "Puerto Colón o Las Galletas", en: "Puerto Colón or Las Galletas", es: "Puerto Colón o Las Galletas" },
     duration: { it: "40 minuti, 1 o 2 ore", en: "40 minutes, 1 or 2 hours", es: "40 minutos, 1 o 2 horas" },
+    zoneGroups: ["costa-adeje", "los-cristianos"],
+    durationGroups: ["breve"],
     priceFrom: 90,
     // Il prezzo e' della moto d'acqua, che porta una o due persone: senza
     // questo campo il totale moltiplicherebbe per le persone un numero che
@@ -3378,6 +3467,8 @@ const ESPLORA_CATALOG = [
     // non un buco: "Da definire" la pagina la nasconde (vedi daDefinire()),
     // "Da concordare" invece si legge, come sul tour privato su misura.
     duration: { it: "Da concordare", en: "By arrangement", es: "A convenir" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["breve", "mezza"],
     // 45 e' lo snorkeling, la cosa piu' economica del listino. L'immersione
     // vera parte da 50.
     priceFrom: 45,
@@ -3648,6 +3739,7 @@ const ESPLORA_CATALOG = [
     category: "sport-acquatici",
     zone: "Costa Adeje",
     duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zoneGroups: ["costa-adeje"],
     priceFrom: null,
     priceAdult: 0,
     priceChild: 0,
@@ -3685,6 +3777,8 @@ const ESPLORA_CATALOG = [
     // pacchetto da 3 lezioni. Le varianti dei pacchetti hanno la loro durata
     // ("3 lezioni da 2 ore"), che dice anche quante sono.
     duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["breve"],
     priceFrom: 35,
     priceAdult: 35,
     // Dai 13 anni in su, e sopra i 13 si paga tutti uguale: non c'e' una
@@ -3876,6 +3970,8 @@ const ESPLORA_CATALOG = [
       en: "10am-6pm in summer, 10am-5pm in winter",
       es: "10:00-18:00 en verano, 10:00-17:00 en invierno"
     },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["intera"],
     priceFrom: 44,
     priceAdult: 44,
     priceChild: 32,
@@ -4033,6 +4129,8 @@ const ESPLORA_CATALOG = [
     zone: "Puerto de la Cruz",
     // Al posto di "Giornata intera" l'orario vero, spostato qui da `notes`.
     duration: { it: "09:30-17:30", en: "9:30am-5:30pm", es: "09:30-17:30" },
+    zoneGroups: ["teide-nord"],
+    durationGroups: ["intera"],
     priceFrom: 44,
     priceAdult: 44,
     priceChild: 32,
@@ -4172,6 +4270,8 @@ const ESPLORA_CATALOG = [
       en: "About 12 hours (ferry 10:00-18:00)",
       es: "Unas 12 horas (ferry 10:00-18:00)"
     },
+    zoneGroups: ["altre-isole"],
+    durationGroups: ["intera"],
     priceFrom: 135,
     priceAdult: 135,
     priceChild: 32,
@@ -4260,6 +4360,8 @@ const ESPLORA_CATALOG = [
     category: "parchi-spettacoli",
     zone: "Costa Adeje",
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["intera"],
     priceFrom: 36,
     priceAdult: 36,
     priceChild: 29,
@@ -4292,6 +4394,8 @@ const ESPLORA_CATALOG = [
     category: "parchi-spettacoli",
     zone: "Chayofa (Arona)",
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["intera"],
     priceFrom: 35,
     priceAdult: 35,
     priceChild: 29,
@@ -4328,6 +4432,8 @@ const ESPLORA_CATALOG = [
       en: "2 days, 1 per park (not necessarily consecutive)",
       es: "2 días, 1 por parque (no necesariamente consecutivos)"
     },
+    zoneGroups: ["costa-adeje", "los-cristianos"],
+    durationGroups: ["intera"],
     priceFrom: 51,
     priceAdult: 51,
     priceChild: 42,
@@ -4365,6 +4471,8 @@ const ESPLORA_CATALOG = [
     // Orario di apertura al posto di "Da definire", come su Siam Park e Loro
     // Parque. Aperto tutti i giorni, quindi niente `days`.
     duration: { it: "09:30-16:00", en: "9:30am-4pm", es: "09:30-16:00" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["breve"],
     priceFrom: 10,
     priceAdult: 10,
     priceChild: 5,
@@ -4395,6 +4503,8 @@ const ESPLORA_CATALOG = [
     zone: "Playa de las Américas",
     // 19:30 (prima alzata di sipario) - 23:00 (sipario finale).
     duration: { it: "3 ore e 30", en: "3.5 hours", es: "3 horas y media" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
     priceFrom: 49,
     priceAdult: 49,
     priceChild: 39,
@@ -4451,6 +4561,8 @@ const ESPLORA_CATALOG = [
     category: "parchi-spettacoli",
     zone: "San Miguel de Abona",
     duration: { it: "2 ore e 30", en: "2.5 hours", es: "2 horas y media" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["mezza"],
     priceFrom: 49.50,
     priceAdult: 49.50,
     priceChild: 29,
@@ -4530,6 +4642,8 @@ const ESPLORA_CATALOG = [
     // compreso): il "≈ 2h" dell'intestazione del fornitore conta dall'apertura
     // delle porte, non dall'inizio.
     duration: { it: "1 ora e 30", en: "1.5 hours", es: "1 hora y media" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["breve"],
     priceFrom: 51,
     priceAdult: 51,
     priceChild: 25.50,
@@ -4602,6 +4716,8 @@ const ESPLORA_CATALOG = [
     category: "parchi-spettacoli",
     zone: "Costa Adeje",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
     priceFrom: 94,
     priceAdult: 94,
     // Niente priceChild: si entra solo dai 16 anni in su, un prezzo bambini
@@ -4682,6 +4798,8 @@ const ESPLORA_CATALOG = [
     category: "parchi-spettacoli",
     zone: "Playa de las Américas",
     duration: { it: "2 ore e 15", en: "2 hours 15 minutes", es: "2 horas y 15 minutos" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
     priceFrom: 49,
     priceAdult: 49,
     priceChild: 25,
@@ -4724,6 +4842,8 @@ const ESPLORA_CATALOG = [
     // la variante (sud dell'isola o Puerto de la Cruz) e sta scritto li'.
     zone: { it: "Isola di La Gomera", en: "Island of La Gomera", es: "Isla de La Gomera" },
     duration: { it: "Circa 10 ore", en: "About 10 hours", es: "Unas 10 horas" },
+    zoneGroups: ["altre-isole"],
+    durationGroups: ["intera"],
     // I giorni della scheda sono l'unione delle due partenze: la domenica non
     // si fa mai. Ogni variante poi stringe sui suoi giorni, e la variante
     // vince — dal sud si parte lun mar mer ven sab, dal nord mar gio sab.
@@ -4918,6 +5038,8 @@ const ESPLORA_CATALOG = [
     // e La Laguna restano scritte nel titolo e nella descrizione.
     zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
     duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
+    zoneGroups: ["teide-nord"],
+    durationGroups: ["intera"],
     // Lunedi' e giovedi' non stavano nei dati ufficiali, erano presi dalla
     // pagina del rivenditore: confermati dal proprietario (8 settembre 2026).
     days: ["lun", "gio"],
@@ -5053,6 +5175,8 @@ const ESPLORA_CATALOG = [
     // "Duración de la excursión: 8 horas aprox" sulla pagina del fornitore.
     // Era "Giornata intera": vero ma vago, come sul giro di Icod.
     duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
+    zoneGroups: ["teide-nord"],
+    durationGroups: ["intera"],
     // Niente `times`: l'ora non e' una sola, la decide il punto di raccolta
     // del cliente. Sta in PICKUP_TIMES dentro hotel.js (raccolti il 16
     // settembre 2026), e la finestra della richiesta al posto del menu "A che
@@ -5149,6 +5273,8 @@ const ESPLORA_CATALOG = [
     // (porto di Los Cristianos) sta nell'itinerario e nelle note.
     zone: { it: "Isola di La Palma", en: "Island of La Palma", es: "Isla de La Palma" },
     duration: { it: "Circa 12 ore", en: "About 12 hours", es: "Unas 12 horas" },
+    zoneGroups: ["altre-isole"],
+    durationGroups: ["intera"],
     // Una partenza sola e fissa: il ritrovo delle 07:45 al porto. Scritta
     // qui, "Da concordare" sparisce e il cliente sa a che ora deve esserci.
     times: ["07:45"],
@@ -5346,6 +5472,8 @@ const ESPLORA_CATALOG = [
     category: "tour-isola",
     zone: "Costa Adeje",
     duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["breve"],
     // Il sito del fornitore dice quattro lingue (anche italiano e francese), ma
     // tutte e cinque le pagine di prenotazione ne scrivono due: "Disponible en
     // español, inglés", e fra le cose incluse "Spanish and English guide". Qui
@@ -5449,6 +5577,8 @@ const ESPLORA_CATALOG = [
     category: "tour-isola",
     zone: "Costa Adeje – Los Cristianos",
     duration: { it: "Tutto il giorno", en: "All day", es: "Todo el día" },
+    zoneGroups: ["costa-adeje", "los-cristianos"],
+    durationGroups: ["breve"],
     priceFrom: 9,
     fixedPrice: true,
     priceAdult: 9,
@@ -5561,6 +5691,8 @@ const ESPLORA_CATALOG = [
     category: "tour-privati",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
     times: ["09:00", "12:00", "15:00", "18:00"],
     priceFrom: 350,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
@@ -5582,6 +5714,8 @@ const ESPLORA_CATALOG = [
     category: "tour-privati",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
     priceFrom: 350,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
     priceAdult: 0,
@@ -5602,6 +5736,8 @@ const ESPLORA_CATALOG = [
     category: "tour-privati",
     zone: "Puerto Colón",
     duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza", "intera"],
     priceFrom: 350,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
     priceAdult: 0,
@@ -5622,6 +5758,8 @@ const ESPLORA_CATALOG = [
     category: "tour-privati",
     zone: "Puerto Colón",
     duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza", "intera"],
     times: ["10:00", "13:30"],
     priceFrom: 350,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
@@ -5643,6 +5781,8 @@ const ESPLORA_CATALOG = [
     category: "tour-privati",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
     times: ["09:45", "13:15", "16:20"],
     priceFrom: 350,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
@@ -5664,6 +5804,8 @@ const ESPLORA_CATALOG = [
     category: "tour-privati",
     zone: "Las Galletas",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["mezza"],
     // La barca e' tutta del gruppo: l'ora si concorda, non si sceglie fra le
     // tre partenze del giro in condivisione.
     times: [],
@@ -5705,6 +5847,8 @@ const ESPLORA_CATALOG = [
     category: "tour-privati",
     zone: "Costa Adeje",
     duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["breve"],
     languages: ["Español", "English"],
     priceFrom: 86,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },

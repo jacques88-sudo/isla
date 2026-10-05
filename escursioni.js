@@ -863,6 +863,10 @@ function initCatalog() {
   const emptyEl = document.querySelector("[data-empty]");
   const heroPhoto = document.querySelector("[data-hero-photo]");
   const titleEl = document.querySelector("[data-catalog-title]");
+  const filterToggle = document.querySelector("[data-filter-toggle]");
+  const filterPanel = document.querySelector("[data-filter-panel]");
+  const filterBadge = document.querySelector("[data-filter-badge]");
+  const filterReset = document.querySelector("[data-filter-reset]");
   if (!grid) return;
 
   const published = ESPLORA_CATALOG.filter(x => x.published);
@@ -890,7 +894,10 @@ function initCatalog() {
     categories: categorieDaLink,
     recommended: !categorieDaLink.length && !queryDaLink && params.get("family") !== "1",
     family: params.get("family") === "1",
-    query: queryDaLink.toLowerCase()
+    query: queryDaLink.toLowerCase(),
+    // Il bottone "Filtri": una zona e una durata al massimo, null = tutte.
+    zone: null,
+    duration: null
   };
   if (searchInput && queryDaLink) searchInput.value = queryDaLink;
 
@@ -917,6 +924,52 @@ function initCatalog() {
         render();
       });
       chipRow.appendChild(btn);
+    });
+  }
+
+  // Zona e durata: pillole dentro il pannello che apre il bottone "Filtri".
+  // Una sola per gruppo; toccare quella accesa la spegne. Si mostrano solo i
+  // gruppi che hanno almeno una scheda pubblicata, come per le categorie.
+  function buildFilters() {
+    [["zone", ZONE_FILTRO, "zoneGroups", "[data-filter-zone]"],
+     ["duration", DURATE_FILTRO, "durationGroups", "[data-filter-duration]"]]
+      .forEach(([chiave, gruppi, campo, dove]) => {
+        const riga = document.querySelector(dove);
+        if (!riga) return;
+        riga.innerHTML = "";
+        gruppi.filter(g => published.some(x => (x[campo] || []).includes(g.id)))
+          .forEach(g => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "chip";
+            btn.textContent = tf(g.name);
+            btn.dataset.filter = chiave;
+            btn.dataset.value = g.id;
+            btn.addEventListener("click", () => {
+              state[chiave] = state[chiave] === g.id ? null : g.id;
+              // Chi sceglie "Costa Adeje" stando sulle raccomandate vuole le
+              // attivita' di Costa Adeje, non le due raccomandate che ci stanno:
+              // come per la ricerca, si passa al catalogo intero.
+              if (state[chiave] && state.recommended) state.recommended = false;
+              render();
+            });
+            riga.appendChild(btn);
+          });
+      });
+  }
+
+  if (filterToggle && filterPanel) {
+    filterToggle.addEventListener("click", () => {
+      const apri = filterPanel.hidden;
+      filterPanel.hidden = !apri;
+      filterToggle.setAttribute("aria-expanded", String(apri));
+    });
+  }
+  if (filterReset) {
+    filterReset.addEventListener("click", () => {
+      state.zone = null;
+      state.duration = null;
+      render();
     });
   }
 
@@ -947,6 +1000,10 @@ function initCatalog() {
     if (state.categories.length &&
         !categorieDi(tour).some(id => state.categories.includes(id))) return false;
     if (state.family && !tour.family) return false;
+    // Una scheda senza il campo (zona o durata "Da definire") non esce sotto
+    // nessun gruppo: meglio che sparisca che finire nella zona sbagliata.
+    if (state.zone && !(tour.zoneGroups || []).includes(state.zone)) return false;
+    if (state.duration && !(tour.durationGroups || []).includes(state.duration)) return false;
     if (state.query) {
       // Si cerca in tutte e tre le lingue: chi scrive "boat" trova la
       // stessa attività di chi scrive "barca".
@@ -980,6 +1037,20 @@ function initCatalog() {
       btn.classList.toggle("is-active", attivo);
     });
 
+    // Le pillole del pannello, il numerino sul bottone e "Togli i filtri":
+    // il pannello chiuso deve dire lo stesso che ci sono filtri accesi, se no
+    // chi lo chiude e vede sei schede crede che il catalogo sia tutto li'.
+    document.querySelectorAll("[data-filter]").forEach(btn => {
+      btn.classList.toggle("is-active", state[btn.dataset.filter] === btn.dataset.value);
+    });
+    const accesi = (state.zone ? 1 : 0) + (state.duration ? 1 : 0);
+    if (filterBadge) {
+      filterBadge.hidden = !accesi;
+      filterBadge.textContent = accesi || "";
+    }
+    if (filterToggle) filterToggle.classList.toggle("is-active", accesi > 0);
+    if (filterReset) filterReset.hidden = !accesi;
+
     // Riepilogo in alto
     if (published.length === 0) {
       countEl.textContent = "";
@@ -1000,7 +1071,7 @@ function initCatalog() {
       emptyEl.hidden = false;
       emptyEl.innerHTML = `
         <h2>${t("catalog.emptyTitle")}</h2>
-        <p>${t("catalog.emptyText")}</p>
+        <p>${t(state.zone || state.duration ? "catalog.emptyFilters" : "catalog.emptyText")}</p>
       `;
     } else {
       emptyEl.hidden = true;
@@ -1020,12 +1091,14 @@ function initCatalog() {
   }
 
   buildChips();
+  buildFilters();
   render();
 
   // Cambio lingua: le schede e i filtri sono disegnati da JavaScript,
   // quindi vanno ricostruiti a mano (applyI18n tocca solo l'HTML fisso).
   document.addEventListener("islalang", () => {
     buildChips();
+    buildFilters();
     render();
   });
 }

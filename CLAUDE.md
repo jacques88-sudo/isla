@@ -169,6 +169,10 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   proprietario (30 settembre 2026). Il venditore per strada può fare un prezzo diverso da
   quello della scheda: è normale, non è un errore. Il ticket non cambia la scheda, e la
   differenza non si segnala.
+- **Zona e durata nell'elenco stanno dietro il bottone "Filtri"** (5 ottobre 2026,
+  proprietario), non sempre in vista. I gruppi stanno in `ZONE_FILTRO` e `DURATE_FILTRO`;
+  ogni scheda nuova dice i suoi in `zoneGroups` e `durationGroups`. **Los Gigantes è una
+  zona a sé**, per scelta del proprietario.
 - **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
   Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
   minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.

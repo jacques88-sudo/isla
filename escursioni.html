@@ -138,11 +138,31 @@
     </div>
 
     <div class="wrap catalog-tools">
-      <label class="catalog-search">
-        <span class="visually-hidden" data-i18n="catalog.searchLabel">Cerca un'escursione</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input type="search" data-search data-i18n-placeholder="catalog.searchPlaceholder" placeholder="Cerca: barca, Teide, quad…" autocomplete="off" />
-      </label>
+      <div class="catalog-searchrow">
+        <label class="catalog-search">
+          <span class="visually-hidden" data-i18n="catalog.searchLabel">Cerca un'escursione</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="search" data-search data-i18n-placeholder="catalog.searchPlaceholder" placeholder="Cerca: barca, Teide, quad…" autocomplete="off" />
+        </label>
+        <!-- Zona e durata stanno dietro un bottone, per scelta del proprietario:
+             sempre in vista allungavano la pagina prima delle schede. -->
+        <button class="filter-toggle" type="button" data-filter-toggle aria-expanded="false" aria-controls="catalogFilters">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+          <span data-i18n="catalog.filters">Filtri</span>
+          <span class="filter-badge" data-filter-badge hidden></span>
+        </button>
+      </div>
+      <div class="filter-panel" id="catalogFilters" data-filter-panel hidden>
+        <div class="filter-group" role="group" aria-labelledby="filterZoneLabel">
+          <p class="filter-label" id="filterZoneLabel" data-i18n="catalog.filterZone">Zona</p>
+          <div class="filter-chips" data-filter-zone></div>
+        </div>
+        <div class="filter-group" role="group" aria-labelledby="filterDurationLabel">
+          <p class="filter-label" id="filterDurationLabel" data-i18n="catalog.filterDuration">Durata</p>
+          <div class="filter-chips" data-filter-duration></div>
+        </div>
+        <button class="filter-reset" type="button" data-filter-reset hidden data-i18n="catalog.filterReset">Togli i filtri</button>
+      </div>
       <nav class="chip-row" data-chips data-i18n-aria-label="catalog.filterAria" aria-label="Filtra per categoria"></nav>
     </div>
 

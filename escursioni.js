@@ -462,7 +462,7 @@ function hotelChiave(s) {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
-// I 418 hotel filtrati mentre il cliente scrive.
+// I 433 hotel filtrati mentre il cliente scrive.
 //
 // **Si cerca solo dall'inizio di una parola.** La lista del browser cercava il
 // pezzo di testo ovunque dentro il nome, e scrivendo "cl" proponeva
@@ -522,6 +522,13 @@ function hotelPunto(nomeHotel, idScheda) {
     return { dove: "hotel", ora: (ore && ore[riga[1]]) || "" };
   }
   if (riga[1] === 0) return { dove: "hotel" };
+  // Gruppi di hotel vicinissimi che il fornitore scrive come un punto solo,
+  // ma dove il pulmino passa porta per porta (PUNTI_PORTA_A_PORTA in hotel.js):
+  // "il tuo hotel", con l'ora del gruppo.
+  if (typeof PUNTI_PORTA_A_PORTA !== "undefined"
+      && PUNTI_PORTA_A_PORTA.indexOf(riga[1]) !== -1) {
+    return { dove: "hotel", ora: (ore && ore[riga[1]]) || "" };
+  }
   const punto = PICKUP_POINTS[riga[1]];
   if (!punto) return null;
   // il tipo si traduce, il nome del posto no: e' un nome proprio, e chi lo

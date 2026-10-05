@@ -462,7 +462,7 @@ function hotelChiave(s) {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
-// I 562 hotel filtrati mentre il cliente scrive.
+// I 418 hotel filtrati mentre il cliente scrive.
 //
 // **Si cerca solo dall'inizio di una parola.** La lista del browser cercava il
 // pezzo di testo ovunque dentro il nome, e scrivendo "cl" proponeva

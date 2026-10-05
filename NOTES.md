@@ -16171,3 +16171,50 @@ Provato nel browser: la finestra della richiesta mostra quelle ore e "Da concord
 sparisce, come vuole `times` pieno.
 
 `CACHE_NAME` alzato a `isla-v400`.
+
+## I 146 hotel senza fermata: chiusa la questione (5 ottobre 2026)
+
+La riga di Notion diceva di rimetterli copiando la tendina dei punti da
+un'escursione che parte da Puerto de la Cruz. **Il proprietario ha guardato sul sito
+del fornitore: per gli hotel del nord non compare niente**, quindi non c'è nessun
+nome da copiare.
+
+Contandoli è uscita anche un'altra cosa: non erano "quasi tutti al nord". Circa 100 sì,
+gli altri una quarantina fra sud, ovest ed est. Dei 146, **110 non hanno né fermata né
+ora** e **36 hanno almeno un'ora** su una delle sei escursioni di `PICKUP_TIMES`.
+
+Il proprietario ha deciso così:
+
+| chi | quanti | cosa |
+|---|---|---|
+| senza fermata e senza ora | 110 | fuori per sempre |
+| del nord con l'ora (punti 10047, 10080, 10093, 10094) | 19 | fuori per sempre |
+| con l'ora e un punto **tutto loro** (10019, 10038) | 2 | **rientrati**, "il tuo hotel" |
+| del sud con l'ora e un punto **condiviso** (41, 53, 13, 48) | 15 | fuori finché l'ufficio non dice dove si sale |
+
+Per i punti condivisi era stata proposta anche la strada "in hotel per tutti" ed è
+stata scartata: tre hotel che passano alla stessa ora dallo stesso punto (Regency,
+Florida, Chayofa alle 12:15) di solito aspettano **in un posto solo**, e "il tuo hotel"
+lascerebbe due clienti su tre davanti alla reception sbagliata.
+
+I quindici da chiedere all'ufficio:
+- **punto 41**: Regency Country Club, Florida, Chayofa Club
+- **punto 53**: Maravilla, Chaparral, West Haven Bay
+- **punto 13**: Santa Monica, Villas Canarias, Apartamentos Aloha Garden, Atalaya Court
+- **punto 48**: Apartamentos Buenavista, Apartamentos Dream View, Montesol,
+  Apartamentos Siam, Villas San Eugenio
+
+**Come sono rientrati i due.** Non col punto `0`: quello scrive "il tuo hotel" ma
+perde l'ora, perché `PICKUP_TIMES` è per punto e il punto 0 non ha orari. Il punto
+è entrato in `PICKUP_POINTS` col nome dell'hotel e il tipo vuoto, come Altamira:
+`hotelPunto()` vede che si chiama come l'hotel e senza tipo, e risponde "hotel" con
+l'ora del punto. Provato nel browser: The Harbour Club su Teide + Icod + Masca →
+"il tuo hotel", 08:10; Punta del Rey su Santa Cruz + Anaga → "il tuo hotel", 09:30.
+Sul Teide mezza giornata, dove il 10019 non è servito, nessuna ora fissa: il menu
+resta quello normale.
+
+Attenzione a non confondere **The Harbour Club** (punto 10019, l'hotel) con **Harbour
+Club (Tipsy Bar)** (punto 10025, la fermata dell'autobus vicina dove salgono El
+Sombrero e TUI Blue Los Gigantes): sono due punti diversi.
+
+`HOTELS` da 416 a **418**, `PICKUP_POINTS` da 64 a **66**. `CACHE_NAME` → `isla-v401`.

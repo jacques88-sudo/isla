@@ -16365,7 +16365,12 @@ collegati (stessa strada). Sul sito non va il NIF del ticket.
 Non fidarsi del riassunto IA di Google su questa società: diceva che "TRG" sta per
 "Tenerife Royal Gardens" e parlava di un bar Shakers, e nessuna fonte lo conferma.
 
-Ancora da chiedere ad Admiral prima di pubblicare: **quale indirizzo** (gli elenchi
-danno Av. de los Pueblos 20 ad Adeje, Google dice Edificio Bucanero a Los Cristianos),
-**quale telefono** e **un'email** a cui il cliente possa scrivere per i suoi dati.
+**L'indirizzo da pubblicare l'ha indicato il proprietario**: l'ufficio **Admiral
+Excursions Las Americas**, in Calle Francisco Andrade Fumero, sul lungomare di Playa de
+las Américas (Arona). Manca ancora il numero civico. Non sono gli altri uffici che
+compaiono negli elenchi: Edificio Bucanero e Av. Juan Alfonso Batista a Los Cristianos,
+Av. de los Pueblos ad Adeje.
+
+Ancora da chiedere ad Admiral prima di pubblicare: il **numero civico**, **quale
+telefono** e **un'email** a cui il cliente possa scrivere per i suoi dati.
 Sul sito per ora non c'è niente: né privacy policy né dati aziendali.

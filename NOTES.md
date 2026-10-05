@@ -16277,3 +16277,18 @@ Restano "Da definire": bici, fiat-500-water-car, cantine-vinicole,
 masca-teide-cabrio-bus, private-charter, e la durata di flyboard.
 
 `CACHE_NAME` → `isla-v404`.
+
+### La foto del Trekking (5 ottobre)
+
+Mandata dal proprietario: due escursionisti su un sentiero fra la macchia, montagne e mare
+sullo sfondo. Nessun marchio né scritta. `assets/trekking.jpg`, sulla scheda
+`trekking-bici` (titolo "Trekking").
+
+**L'originale era piccolo, 576×318.** Ritagliata dal centro a 3:2 (477×318) e portata a
+1200×800, cioè ingrandita due volte e mezza. La regola della skill dice di scartare le
+foto troppo piccole, ma quella regola nasce per la galleria, dove una foto brutta in mezzo
+a tre buone stona. Qui l'alternativa era il riquadro grigio. Guardata nel browser a 390 px
+con densità 3, nella pagina di dettaglio: un po' morbida, non sgranata. Se arriva una
+versione più grande, si sostituisce lo stesso file.
+
+Resta senza foto: `masca-teide-cabrio-bus`. `CACHE_NAME` → `isla-v405`.

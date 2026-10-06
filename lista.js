@@ -325,6 +325,7 @@ function initLista() {
                 data-i18n="req.submit">Continua su WhatsApp</button>
         <p class="hint" data-i18n="lista.hint"></p>
         <p class="hint" data-i18n-html="req.hint"></p>
+        <p class="hint request-privacy" data-i18n-html="req.privacy"></p>
         <button class="lista-svuota" type="button" data-lista-clear
                 data-i18n="lista.clear">Svuota la lista</button>
       </form>`;

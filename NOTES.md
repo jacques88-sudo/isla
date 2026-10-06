@@ -16428,3 +16428,17 @@ punto di ritiro; per quanto Admiral tiene le chat WhatsApp. Non è stata letta d
 avvocato: prima di aprire al pubblico conviene farla guardare a chi segue Admiral.
 Quando arriva l'email (col dominio) va aggiunta nella sezione del titolare e in quella
 dei diritti, nelle tre lingue.
+
+### Il link alla privacy nella finestra della richiesta (6 ottobre 2026)
+
+Il GDPR chiede di informare il cliente **dove lascia i dati**, non solo in fondo al
+sito. Sotto il pulsante c'era già la riga piccola `req.privacy` ("Quello che scrivi
+serve solo a risponderti su WhatsApp…"): ora finisce con il link **"Come trattiamo i
+tuoi dati"** a `privacy.html`. Non è stata aggiunta una seconda riga.
+
+- La riga sta in **quattro** posti: le due finestre scritte a mano (`escursioni.html`,
+  `tour.html`, ora con `data-i18n-html`), la finestra dei pacchetti (`pacchetti.js`,
+  ora senza `esc()` perché il testo contiene il link ed è nostro, non del cliente) e
+  **la lista** (`lista.js`), dove prima mancava: è proprio lì che si scrive il nome.
+- Il link si apre **in una scheda nuova** (`target="_blank"`): nella stessa scheda il
+  cliente perderebbe quello che ha già scritto nel modulo.

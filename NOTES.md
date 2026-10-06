@@ -16929,3 +16929,35 @@ Corretti `faq.a5` nelle tre lingue, `index.html` e `CLAUDE.md`. `CACHE_NAME` →
 **La lezione:** la proposta C l'avevo scritta io, e il proprietario l'ha scelta leggendo
 il titolo. Quando una regola ha una soglia, conviene farla confermare con **due esempi
 concreti ai due lati della soglia** (25 ore, 23 ore) prima di pubblicarla.
+
+## I termini di vendita (6 ottobre 2026)
+
+**`termini.html`**, fatta come `privacy.html`: tre articoli, uno per lingua, si vede
+quello della lingua scelta. Link "Termini di vendita" in fondo alle sei pagine, accanto a
+"Privacy" (`footer.terms`), e in `sw.js` fra i file tenuti offline.
+
+**Dentro c'è solo quello che era già deciso e già scritto altrove**, riscritto in un
+posto solo:
+
+- chi è Admiral (gli stessi dati del fondo pagina e della privacy);
+- Admiral è un'agenzia che **vende attività di altri operatori**: l'escursione la svolge
+  l'operatore (CLAUDE.md, "Admiral è un rivenditore");
+- la richiesta non è una prenotazione, almeno 24 ore prima, risposta entro 24 ore
+  (`faq.a1`-`a3`, `req.hint`);
+- prezzi in euro, il totale della richiesta è una stima, charter e noleggi a gruppo o a
+  mezzo, i non compresi scritti sulla scheda;
+- non si paga nulla con la richiesta, il modo di saldare si dice alla conferma (`faq.a4`);
+- la cancellazione, uguale a `faq.a5`;
+- presentarsi al ritiro all'ora confermata (se no vale come annullamento tardivo), leggere
+  età e requisiti sulla scheda, patente per guidare, cauzione dei noleggi sulla scheda.
+
+**Lasciato fuori di proposito**, perché non spetta a noi deciderlo e non ce l'ha detto
+nessuno: entro quanti giorni si rimborsa; **chi risponde se l'escursione va male**
+(Admiral o l'operatore: è il punto più delicato, e dipende anche dagli accordi scritti
+con gli operatori, che non ci sono ancora); legge applicabile e tribunale; le **hojas de
+reclamaciones** (il foglio dei reclami delle Canarie); se i prezzi comprendono l'IGIC.
+Sono le domande per il consulente di Admiral, che deve leggere questa pagina insieme alla
+privacy prima dell'apertura al pubblico.
+
+Se cambia una delle regole qui sopra, va cambiata **anche qui**: lo dice il commento in
+testa a `termini.html`. `CACHE_NAME` → `isla-v439`.

@@ -16640,3 +16640,13 @@ una riga se il proprietario non li vuole. `pacchetti.html?tema=food-wine` mostra
 i pacchetti, come ogni tema sconosciuto. "Perfetto per 2" non cambia.
 
 `CACHE_NAME` → `isla-v423`.
+
+### Tolti i pacchetti delle degustazioni (6 ottobre 2026)
+
+"Sapori di Tenerife" e "Frutti dell'isola" tolti da `PACCHETTI`, su richiesta del
+proprietario: le degustazioni si vendono una per una dal riquadro "Food Experience". I
+pacchetti in "tutti" scendono da 18 a 16. Chi apre un vecchio link
+(`pacchetto.html?id=sapori-di-tenerife`) trova "Pacchetto non trovato" col bottone per
+tutti i pacchetti, verificato nel browser.
+
+`CACHE_NAME` → `isla-v424`.

@@ -65,7 +65,7 @@ const I18N = {
   "meta.packs.desc":    { it: "I pacchetti di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "Isla's packages in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Los paquetes de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado." },
   "meta.pack.desc":     { it: "Un pacchetto di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "An Isla package in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Un paquete de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado." },
   "meta.rent.title":    { it: "Noleggio · Isla", en: "Rentals · Isla", es: "Alquiler · Isla" },
-  "meta.rent.desc":     { it: "Noleggio auto, moto e scooter a Tenerife con Isla: i prezzi al giorno e la richiesta su WhatsApp.", en: "Car, motorbike and scooter rental in Tenerife with Isla: daily prices and your request on WhatsApp.", es: "Alquiler de coches, motos y scooters en Tenerife con Isla: los precios por día y la solicitud por WhatsApp." },
+  "meta.rent.desc":     { it: "Noleggio auto, moto, scooter e bici a Tenerife con Isla: i prezzi al giorno e la richiesta su WhatsApp.", en: "Car, motorbike, scooter and bike rental in Tenerife with Isla: daily prices and your request on WhatsApp.", es: "Alquiler de coches, motos, scooters y bicis en Tenerife con Isla: los precios por día y la solicitud por WhatsApp." },
   "meta.booking.title": { it: "La tua prenotazione · Isla", en: "Your booking · Isla", es: "Tu reserva · Isla" },
 
   // ── hero ────────────────────────────────────────────────────────────────
@@ -94,7 +94,7 @@ const I18N = {
   // ── pagina noleggio (noleggio.html) ─────────────────────────────────────
   "rent.eyebrow":       { it: "Tenerife su ruote", en: "Tenerife on wheels", es: "Tenerife sobre ruedas" },
   "rent.title":         { it: "Noleggio", en: "Rentals", es: "Alquiler" },
-  "rent.intro":         { it: "Auto, moto e scooter per girare l'isola coi tuoi tempi. Scegli il mezzo e mandaci la richiesta con le date: ti confermiamo disponibilità e ritiro entro 24 ore.", en: "Cars, motorbikes and scooters to explore the island at your own pace. Pick a vehicle and send us your request with the dates: we confirm availability and collection within 24 hours.", es: "Coches, motos y scooters para recorrer la isla a tu ritmo. Elige el vehículo y envíanos la solicitud con las fechas: te confirmamos disponibilidad y recogida en 24 horas." },
+  "rent.intro":         { it: "Auto, moto, scooter e bici per girare l'isola coi tuoi tempi. Scegli il mezzo e mandaci la richiesta con le date: ti confermiamo disponibilità e ritiro entro 24 ore.", en: "Cars, motorbikes, scooters and bikes to explore the island at your own pace. Pick a vehicle and send us your request with the dates: we confirm availability and collection within 24 hours.", es: "Coches, motos, scooters y bicis para recorrer la isla a tu ritmo. Elige el vehículo y envíanos la solicitud con las fechas: te confirmamos disponibilidad y recogida en 24 horas." },
   "rent.navAria":       { it: "Tipo di mezzo", en: "Vehicle type", es: "Tipo de vehículo" },
   "rent.cars":          { it: "Auto", en: "Cars", es: "Coches" },
   "rent.motos":         { it: "Moto e scooter", en: "Motorbikes & scooters", es: "Motos y scooters" },
@@ -105,7 +105,7 @@ const I18N = {
   "rent.d7":            { it: "7 giorni o più", en: "7 days or more", es: "7 días o más" },
   "rent.day1":          { it: "1 giorno", en: "1 day", es: "1 día" },
   "rent.dayN":          { it: "{n} giorni", en: "{n} days", es: "{n} días" },
-  "rent.dayExtra":      { it: "dal {n}° giorno, ogni giorno", en: "from day {n}, each day", es: "desde el día {n}, cada día" },
+  "rent.dayExtra":      { it: "dall'{n}° giorno, ogni giorno", en: "from day {n}, each day", es: "desde el día {n}, cada día" },
   "rent.perDayShort":   { it: "al giorno", en: "per day", es: "al día" },
   "rent.unitDay":       { it: "prezzo al giorno", en: "price per day", es: "precio por día" },
   "rent.unitTotal":     { it: "prezzo per tutto il periodo", en: "price for the whole period", es: "precio por todo el periodo" },
@@ -125,6 +125,18 @@ const I18N = {
   "rent.lic.B3":        { it: "Patente B da almeno 3 anni", en: "Car licence held for at least 3 years", es: "Carnet B con al menos 3 años de antigüedad" },
   "rent.lic.A2":        { it: "Patente A2 o A", en: "A2 or A licence", es: "Carnet A2 o A" },
   "rent.lic.A":         { it: "Patente A", en: "A licence", es: "Carnet A" },
+  "rent.bikes":         { it: "Bici", en: "Bikes", es: "Bicis" },
+  "rent.bikesNote":     { it: "La bici te la portiamo all'alloggio e la veniamo a riprendere; lucchetto e assistenza sono compresi. Nel messaggio scrivi altezza ed età di chi pedala.", en: "We bring the bike to where you're staying and pick it up again; lock and assistance are included. In your message, tell us the rider's height and age.", es: "Te llevamos la bici a tu alojamiento y pasamos a recogerla; candado y asistencia incluidos. En el mensaje indica la altura y la edad de quien va a pedalear." },
+  "rent.bike.city":     { it: "Bici da città", en: "City bike", es: "Bici urbana" },
+  "rent.bike.mtb":      { it: "Mountain bike", en: "Mountain bike", es: "Bicicleta de montaña" },
+  "rent.bike.ecity":    { it: "Bici elettrica da città", en: "Electric city bike", es: "Bici eléctrica urbana" },
+  "rent.bike.emtb":     { it: "Mountain bike elettrica", en: "Electric mountain bike", es: "Bicicleta de montaña eléctrica" },
+  "rent.kind.basket":   { it: "con cestino", en: "with basket", es: "con cesta" },
+  "rent.kind.trek":     { it: "Trek Marlin", en: "Trek Marlin", es: "Trek Marlin" },
+  "rent.kind.bosch500": { it: "motore Bosch, batteria 500 Wh", en: "Bosch motor, 500 Wh battery", es: "motor Bosch, batería de 500 Wh" },
+  "rent.kind.bosch":    { it: "motore Bosch", en: "Bosch motor", es: "motor Bosch" },
+  "rent.bike.charger":  { it: "Da 2 giorni in su c'è anche il caricabatterie, per ricaricarla la notte.", en: "From 2 days up the charger comes too, so you can recharge it overnight.", es: "A partir de 2 días también va el cargador, para recargarla por la noche." },
+  "rent.deposit":       { it: "Cauzione: €{n}", en: "Deposit: €{n}", es: "Fianza: {n} €" },
 
   // ── categorie ───────────────────────────────────────────────────────────
   "categories.eyebrow": { it: "Esplora", en: "Explore", es: "Explora" },

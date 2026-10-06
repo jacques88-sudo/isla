@@ -16670,3 +16670,40 @@ che dal centro, perché il ritaglio centrale tagliava il soggetto.
 Sul PC non c'è Python: ritaglio fatto con PowerShell e System.Drawing (qualità 82).
 Nelle foto 2 e 3 le persone si riconoscono: il proprietario ha deciso di pubblicarle.
 `image` resta quella di prima. Alzato `CACHE_NAME` a `isla-v426`.
+
+---
+
+## Le bici arrivano nel noleggio (6 ottobre 2026)
+
+Incollata la pagina di un noleggiatore di bici di Costa Adeje: quattro bici, listino da 1 a
+7 giorni più il prezzo di ogni giorno in più, e la cauzione.
+
+- **Stanno in `noleggio.js`, gruppo `bici`, non nel catalogo.** Era già scritto qui sopra
+  ("le bici non ci sono ancora, arriveranno"), e il listino a giorni è quello del noleggio.
+  Il listino è a **totali**, come lo scooter 125: si è riusato `totals` + `extraDay`.
+- **La scheda "Bici" del catalogo resta com'è.** È il segnaposto di un giro in bici *con
+  guida*: un'altra cosa rispetto al noleggio, e di quella non è arrivato niente.
+- **Prezzi uguali al listino**, senza ricarico, come per auto e moto.
+- **Nome, telefono e indirizzo del noleggiatore non si mostrano**, come per gli altri due.
+- **Non copiati**: lo sconto del 10% prenotando 10 giorni prima (è loro, non nostro),
+  "best value guaranteed" e "se trovi di meglio pedali gratis".
+- Due campi nuovi, spiegati in testa a `noleggio.js`: **`nameKey`** (le bici non hanno un
+  modello, il nome è una parola da tradurre: "Bici da città") e **`deposit`** (la cauzione:
+  50 €, 100 € la mountain bike elettrica). Più **`extra`**, una riga solo per quel mezzo:
+  il caricabatterie, che sulle due elettriche arriva da 2 giorni in su.
+- La nota del gruppo dice consegna e ritiro all'alloggio, lucchetto e assistenza compresi
+  (scritto per tutte e quattro), e chiede **altezza ed età di chi pedala**: è quello che il
+  modulo del noleggiatore chiede, così l'ufficio non deve riscrivere al cliente.
+- Il cestino solo sulla bici da città, Trek Marlin solo sulla mountain bike, batteria
+  500 Wh solo sulla elettrica da città: dove la pagina li scrive.
+- Corretto in passando "dal 8° giorno" → **"dall'8° giorno"** (`rent.dayExtra`, valeva
+  anche per lo scooter 125).
+- Intro, descrizione della pagina e chip in alto dicono adesso anche "bici".
+
+**Da confermare col proprietario:** fin dove consegnano (la pagina dice "il sud"; la nota
+dice solo "all'alloggio"), e se la cauzione si paga al noleggiatore alla consegna.
+
+Provato in Chromium a 375 px: tre gruppi, chip "Bici", righe chiuse da €24/€30/€36/€48,
+aperta la elettrica da città: 1…7 giorni, "dall'8° giorno €12", cauzione €50,
+caricabatterie, WhatsApp con "Bici elettrica da città · motore Bosch, batteria 500 Wh".
+Nessuno scroll orizzontale. `CACHE_NAME` a `isla-v427`.

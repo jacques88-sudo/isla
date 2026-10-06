@@ -16422,9 +16422,12 @@ Cosa dice, preso dal codice e non immaginato:
 **Se il sito comincia a raccogliere un dato nuovo o a mandarlo a un servizio nuovo,
 questa pagina va cambiata insieme, in tutte e tre le lingue.**
 
-Da far confermare al proprietario (scritte nella pagina come le cose stanno di
-solito, ma non verificate): che l'operatore dell'escursione riceva nome, persone e
-punto di ritiro; per quanto Admiral tiene le chat WhatsApp. Non è stata letta da un
+**L'operatore dell'escursione** (Freebird, Royal Delfin, Island Excursions,
+Canaventura…) riceve dall'ufficio **tutto quello che c'è scritto sul ticket**
+(confermato dal proprietario il 6 ottobre 2026): nome, hotel e numero di camera,
+telefono, data, ora e punto d'incontro, adulti/bambini/neonati, quanto resta da pagare.
+
+Ancora da far confermare al proprietario: per quanto Admiral tiene le chat WhatsApp. Non è stata letta da un
 avvocato: prima di aprire al pubblico conviene farla guardare a chi segue Admiral.
 Quando arriva l'email (col dominio) va aggiunta nella sezione del titolare e in quella
 dei diritti, nelle tre lingue.

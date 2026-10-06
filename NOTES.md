@@ -16910,3 +16910,22 @@ Scritta in `faq.a5` (i18n.js e il testo di partenza in index.html), nelle tre li
 con un commento accanto come quello delle 24 ore di `req.hint`; e in `CLAUDE.md`, fra le
 regole sui dati. Va ripresa così nei **termini di vendita**, da far leggere al consulente
 di Admiral insieme alla privacy. `CACHE_NAME` → `isla-v437`.
+
+### Cancellazione corretta: lo spostamento vale solo fino a 24 ore prima (6 ottobre)
+
+La prima versione (PR #365) diceva: dopo le 24 ore niente rimborso, **ma** un cambio di
+data. Sbagliato, l'ha corretta il proprietario con un esempio: **25 ore prima si può
+spostare, 23 ore prima no**. La regola giusta:
+
+- **fino a 24 ore prima**: annullare gratis **oppure** spostare la data, una volta sola,
+  se c'è posto;
+- **meno di 24 ore prima**, o se non si presenta: né annullare né spostare, nessun
+  rimborso.
+
+Il resto non cambia (operatore che annulla → altra data o rimborso completo; WhatsApp,
+conta l'ora del messaggio; charter e noleggi dentro; giorni del rimborso non decisi).
+Corretti `faq.a5` nelle tre lingue, `index.html` e `CLAUDE.md`. `CACHE_NAME` → `isla-v438`.
+
+**La lezione:** la proposta C l'avevo scritta io, e il proprietario l'ha scelta leggendo
+il titolo. Quando una regola ha una soglia, conviene farla confermare con **due esempi
+concreti ai due lati della soglia** (25 ore, 23 ore) prima di pubblicarla.

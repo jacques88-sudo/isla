@@ -738,8 +738,8 @@ const PICKUP_NESSUNO = [
   "stargazing-group",
   "trenino-turistico",
   "masca-teide-cabrio-bus",
-  // Finca Tuno Canarias: si arriva da soli, l'indirizzo e' nelle note
-  // (6 ottobre 2026).
+  // Finca Tuno Canarias: niente ritiro in hotel, si arriva da soli,
+  // confermato dal proprietario (6 ottobre 2026). L'indirizzo e' nelle note.
   "finca-tuno"
 ];
 

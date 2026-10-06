@@ -5610,9 +5610,9 @@ const ESPLORA_CATALOG = [
     id: "finca-tuno",
     title: "Finca Tuno Canarias",
     category: "tour-isola",
-    // A 8 minuti da Los Cristianos, ci si arriva da soli: la pagina non parla
-    // di ritiro, da' l'indirizzo e "come arrivare". Per questo la scheda sta in
-    // PICKUP_NESSUNO (hotel.js) e l'indirizzo e' nelle note.
+    // A 8 minuti da Los Cristianos, ci si arriva da soli: niente ritiro in
+    // hotel, confermato dal proprietario il 6 ottobre 2026. Per questo la
+    // scheda sta in PICKUP_NESSUNO (hotel.js) e l'indirizzo e' nelle note.
     zone: "Valle San Lorenzo (Arona)",
     zoneGroups: ["los-cristianos"],
     duration: { it: "1 ora e mezza circa", en: "About 1.5 hours", es: "1 hora y media aprox." },

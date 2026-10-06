@@ -16882,3 +16882,31 @@ le escursioni, senza errori.
 
 Era anche l'ultima scheda a cui mancava la durata: non serve più chiederla.
 `CACHE_NAME` → `isla-v436`.
+
+## La politica di cancellazione (6 ottobre 2026)
+
+Fino a oggi il sito non prometteva niente: "Posso annullare?" rispondeva "scrivici il
+prima possibile", per scelta (la regola la decide Admiral, non i fornitori). Proposte tre
+strade al proprietario:
+
+- **A**: gratis fino a 24 ore prima, poi niente;
+- **B**: gratis fino a 48 ore, metà fra 48 e 24, poi niente;
+- **C**: come la A, più **un cambio di data, una volta, se c'è posto**.
+
+**Scelta la C**, con charter privati e noleggi **dentro la stessa regola**. Più quattro
+punti che valgono comunque:
+
+1. se annulla l'operatore (maltempo, mare mosso, pochi partecipanti) il cliente sceglie
+   fra un'altra data e il rimborso completo;
+2. si annulla con un messaggio WhatsApp, e conta l'ora del messaggio;
+3. il rimborso torna con lo stesso mezzo con cui si è pagato;
+4. **i giorni entro cui si rimborsa non sono decisi**: proposto 14 come esempio, nessuna
+   risposta. Il testo non dice un numero.
+
+Il rischio che resta, e che il proprietario ha visto: con la A e la C, se un operatore
+fa pagare ad Admiral chi annulla entro 48 o 72 ore, quella differenza la paga Admiral.
+
+Scritta in `faq.a5` (i18n.js e il testo di partenza in index.html), nelle tre lingue,
+con un commento accanto come quello delle 24 ore di `req.hint`; e in `CLAUDE.md`, fra le
+regole sui dati. Va ripresa così nei **termini di vendita**, da far leggere al consulente
+di Admiral insieme alla privacy. `CACHE_NAME` → `isla-v437`.

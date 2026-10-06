@@ -454,6 +454,31 @@ function controllaGruppiFiltro(t) {
     });
 }
 
+// I gruppi delle varianti (`options.groups`). La pagina mette i bottoni dentro
+// i gruppi, e la finestra della richiesta ritrova la variante scelta **per
+// posizione** fra i bottoni: se le varianti di un gruppo non stanno in fila,
+// o i gruppi non sono nell'ordine di `groups`, il cliente sceglie un giro e
+// nel messaggio ne arriva un altro. Senza errori da nessuna parte.
+function controllaGruppiVarianti(t) {
+  const opz = t.options;
+  if (!opz || !Array.isArray(opz.groups)) return;
+  const chiavi = opz.groups.map(g => g.key);
+  if (new Set(chiavi).size !== chiavi.length) errore(t.id, "options.groups: una chiave e' scritta due volte.");
+  const scelte = opz.choices || [];
+  scelte.forEach(c => {
+    if (!chiavi.includes(c.group)) {
+      errore(t.id, `la variante "${tf(c.label)}" non ha un gruppo valido (group: "${c.group}"): in pagina non si vedrebbe.`);
+    }
+  });
+  const ordine = scelte.map(c => chiavi.indexOf(c.group));
+  if (ordine.some((g, i) => i && g < ordine[i - 1])) {
+    errore(t.id, "options.choices: le varianti devono stare in fila per gruppo, nell'ordine di options.groups.");
+  }
+  chiavi.forEach(k => {
+    if (!scelte.some(c => c.group === k)) avviso(t.id, `options.groups: il gruppo "${k}" e' vuoto.`);
+  });
+}
+
 // ─── 9. Nessun id ripetuto ─────────────────────────────────────────────────
 function controllaIdUnici() {
   const visti = new Map();
@@ -810,7 +835,7 @@ function controllaPacchetti() {
 // ─── Esecuzione ────────────────────────────────────────────────────────────
 const CONTROLLI = [controllaBase, controllaEta, controllaPrezzi, controllaMezzi,
                    controllaGiorni, controllaOrari, controllaIncluse, controllaFoto,
-                   controllaTraduzioni];
+                   controllaTraduzioni, controllaGruppiVarianti];
 
 console.log("\nControllo del catalogo Isla\n");
 ESPLORA_CATALOG.forEach(t => CONTROLLI.forEach(c => c(t)));

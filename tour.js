@@ -397,22 +397,17 @@ function detailOptions(tour) {
   // non ci starebbe. Senza spiegazioni la fila resta come prima.
   const conDesc = opz.choices.some(s => s.desc);
 
-  return `
-    <div class="detail-options" data-detail-options
-         role="group" aria-label="${esc(tf(opz.label))}">
-      <span class="detail-options-label">${esc(tf(opz.label))}</span>
-      <div class="detail-options-list${conDesc ? " has-desc" : ""}">
-        ${opz.choices.map((scelta, i) => {
-          // `price` e' il numero da scrivere sul bottone; `priceAdult` c'e'
-          // dove il prezzo della variante e' a persona e sappiamo anche
-          // quello dei bambini. Sul bottone vale lo stesso.
-          const prezzo = scelta.price || scelta.priceAdult;
-          // Dove i mezzi sono di piu' tipi il bottone li porta tutti
-          // ("Singola €180 · Doppia €200"): `price` da solo e' il piu' basso.
-          const testoPrezzo = prezziVarianteTesto(tour, scelta) ||
-            (prezzo ? "€" + eur(prezzo) : "");
-          const premuto = i === 0;
-          const bottone = `
+  function bottoneVariante(scelta, i) {
+    // `price` e' il numero da scrivere sul bottone; `priceAdult` c'e'
+    // dove il prezzo della variante e' a persona e sappiamo anche
+    // quello dei bambini. Sul bottone vale lo stesso.
+    const prezzo = scelta.price || scelta.priceAdult;
+    // Dove i mezzi sono di piu' tipi il bottone li porta tutti
+    // ("Singola €180 · Doppia €200"): `price` da solo e' il piu' basso.
+    const testoPrezzo = prezziVarianteTesto(tour, scelta) ||
+      (prezzo ? "€" + eur(prezzo) : "");
+    const premuto = i === 0;
+    const bottone = `
           <button type="button" class="detail-option"
                   data-option-value="${esc(tf(scelta.label))}"
                   ${prezzo ? `data-option-price="${prezzo}"` : ""}
@@ -420,15 +415,61 @@ function detailOptions(tour) {
             <span class="detail-option-name">${esc(tf(scelta.label))}</span>
             ${testoPrezzo ? `<span class="detail-option-price">${esc(testoPrezzo)}</span>` : ""}
           </button>`;
-          if (!conDesc) return bottone;
-          // Il testo nasce gia' scritto nella pagina, non arriva da un
-          // attributo: il paragrafo sta dentro la riga della sua variante, e
-          // resta nascosto finche' quella variante non e' premuta.
-          const spiegazione = scelta.desc
-            ? `<p class="detail-option-desc" data-detail-option-desc${premuto ? "" : " hidden"}>${esc(tf(scelta.desc))}</p>`
-            : "";
-          return `<div class="detail-option-row">${bottone}${spiegazione}</div>`;
-        }).join("")}
+    if (!conDesc) return bottone;
+    // Il testo nasce gia' scritto nella pagina, non arriva da un
+    // attributo: il paragrafo sta dentro la riga della sua variante, e
+    // resta nascosto finche' quella variante non e' premuta.
+    const spiegazione = scelta.desc
+      ? `<p class="detail-option-desc" data-detail-option-desc${premuto ? "" : " hidden"}>${esc(tf(scelta.desc))}</p>`
+      : "";
+    return `<div class="detail-option-row">${bottone}${spiegazione}</div>`;
+  }
+
+  // Varianti a gruppi (`options.groups`): sedici giri in bici uno sotto
+  // l'altro facevano una pagina lunghissima. Ogni gruppo e' un <details>
+  // chiuso, e si apre toccandolo; con `name` uguale aprirne uno chiude
+  // l'altro, dove il browser lo sa fare (altrove restano aperti tutti e due,
+  // e va bene lo stesso).
+  // I bottoni restano **nello stesso ordine di `choices`**: la finestra della
+  // richiesta trova la variante scelta per posizione fra i bottoni. Per
+  // questo i gruppi si scrivono in fila, senza mescolarli — `controlla.js`
+  // lo verifica.
+  // La prima variante resta premuta anche a gruppi chiusi (una richiesta non
+  // parte senza variante): la riga "Scelto: …" sul gruppo la fa vedere.
+  const gruppi = Array.isArray(opz.groups) && opz.groups.length ? opz.groups : null;
+  let elenco;
+  if (gruppi) {
+    elenco = gruppi.map(g => {
+      const dentro = opz.choices
+        .map((scelta, i) => ({ scelta, i }))
+        .filter(x => x.scelta.group === g.key);
+      const prezzi = dentro.map(x => x.scelta.priceAdult).filter(n => n > 0);
+      const da = prezzi.length ? t("tour.from", { p: eur(Math.min(...prezzi)) }) : "";
+      return `
+        <details class="detail-option-group" name="detail-option-groups" data-option-group>
+          <summary>
+            <span class="detail-option-group-head">
+              <span class="detail-option-group-name">${esc(tf(g.label))}</span>
+              ${g.desc ? `<span class="detail-option-group-desc">${esc(tf(g.desc))}</span>` : ""}
+              <span class="detail-option-group-chosen" data-option-group-chosen hidden></span>
+            </span>
+            ${da ? `<span class="detail-option-price">${esc(da)}</span>` : ""}
+          </summary>
+          <div class="detail-option-group-list">
+            ${dentro.map(x => bottoneVariante(x.scelta, x.i)).join("")}
+          </div>
+        </details>`;
+    }).join("");
+  } else {
+    elenco = opz.choices.map(bottoneVariante).join("");
+  }
+
+  return `
+    <div class="detail-options" data-detail-options
+         role="group" aria-label="${esc(tf(opz.label))}">
+      <span class="detail-options-label">${esc(tf(opz.label))}</span>
+      <div class="detail-options-list${conDesc || gruppi ? " has-desc" : ""}">
+        ${elenco}
       </div>
     </div>`;
 }
@@ -662,6 +703,17 @@ function collegaOpzioni(contenitore, tour) {
     const riga = rigaDi(bottone);
     gruppo.querySelectorAll("[data-detail-option-desc]").forEach(p => {
       p.hidden = !riga || p.closest(".detail-option-row") !== riga;
+    });
+
+    // Sui gruppi chiusi la scelta non si vede: la si scrive sul gruppo che
+    // la contiene, e si toglie dagli altri.
+    gruppo.querySelectorAll("[data-option-group]").forEach(g => {
+      const riga = g.querySelector("[data-option-group-chosen]");
+      const dentro = g.contains(bottone);
+      riga.hidden = !dentro;
+      riga.textContent = dentro
+        ? t("detail.chosen", { v: bottone.getAttribute("data-option-value") })
+        : "";
     });
 
     if (inclusoEl && inclusoListaEl) {

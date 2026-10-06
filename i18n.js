@@ -243,6 +243,7 @@ const I18N = {
   // Ripiego per la riga di `activityDuration` quando la scheda non scrive il
   // suo `activityLabel`. Generica apposta: la parola giusta ("Tempo di
   // cammino", "Tempo in acqua") la sa solo la scheda.
+  "detail.chosen":      { it: "Scelto: {v}", en: "Selected: {v}", es: "Elegido: {v}" },
   "detail.activity":    { it: "Durata dell'attività", en: "Activity time", es: "Duración de la actividad" },
   "detail.price":       { it: "Prezzo", en: "Price", es: "Precio" },
   "detail.offer":       { it: "Offerta", en: "Offer", es: "Oferta" },

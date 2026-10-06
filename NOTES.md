@@ -16844,3 +16844,28 @@ Adesso tutte e sedici le pagine scrivono le stesse cose, quindi `included` della
 Restano aperti: la zona di partenza ("Da definire", la pagina la nasconde; si parte
 dall'hotel), giorni e orari (assenti = non li sappiamo), e la foto, che è ancora il
 ciclista fra le lave di prima.
+
+## v435 — Varianti a gruppi: "Bici da strada" e "Mountain bike" si aprono (6 ottobre 2026)
+
+Richiesta del proprietario: sedici giri uno sotto l'altro facevano la pagina troppo lunga.
+Adesso i due tipi sono **due pulsanti chiusi** che, toccati, aprono i loro otto giri.
+
+**Il meccanismo è generico**, non della bici: `options.groups` (chiave, nome, una riga
+di descrizione) e `group` su ogni variante. Ogni gruppo è un `<details>`; con lo stesso
+`name` aprirne uno chiude l'altro (Chrome, Safari 17.2+; dove il browser non lo sa fare
+restano aperti tutti e due, e funziona lo stesso). Sul pulsante: nome, riga, "da €110"
+(il più basso dei prezzi a persona del gruppo) e la freccia del noleggio.
+
+**La prima variante resta premuta** anche a gruppi chiusi, come su tutte le schede: una
+richiesta non parte senza variante. Perché si veda, il gruppo che la contiene porta una
+riga **"Scelto: …"** (`detail.chosen`), che segue ogni bottone premuto e resta dopo il
+cambio lingua.
+
+**Trappola:** la finestra della richiesta ritrova la variante **per posizione** fra i
+bottoni. Se i giri di un gruppo non stessero in fila in `choices`, il cliente sceglierebbe
+un giro e nel messaggio ne arriverebbe un altro. `controlla.js` adesso lo verifica
+(`controllaGruppiVarianti`), provato rompendo l'ordine apposta.
+
+Le etichette hanno perso il prefisso "Strada ·" / "MTB ·", che adesso dice il gruppo; quelle
+uguali nelle tre lingue sono tornate stringhe semplici. Nel messaggio WhatsApp arriva il
+nome del giro del fornitore, che resta unico fra i sedici.

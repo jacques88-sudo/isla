@@ -324,10 +324,21 @@
 //                          orario, cosa si mangia, dove si fa il bagno).
 //                          Compaiono sotto i bottoni, una alla volta: quella
 //                          della variante scelta.
+//                  group → la chiave del gruppo a cui appartiene, vedi
+//                          `groups` qui sotto.
 //                  times → gli orari di partenza **di quella variante**, quando
 //                          dipendono dalla durata (il giro di 2 ore parte alle
 //                          11:00 e quello di 3 alle 10:00). Battono il campo
 //                          `times` dell'attivita'.
+//                `groups` → facoltativo, dentro `options`: dove le varianti
+//                sono tante, i gruppi in cui stanno. Ogni gruppo diventa un
+//                pulsante chiuso che toccandolo apre le sue varianti, e la
+//                pagina resta corta. Ogni variante dice il suo con `group`.
+//                    groups: [ { key: "strada", label: { it: "Bici da strada", ... },
+//                                desc: { it: "Otto giri su asfalto", ... } } ]
+//                Le varianti di un gruppo stanno **in fila** in `choices`, e i
+//                gruppi nello stesso ordine di `groups`: la richiesta ritrova
+//                la variante scelta per posizione. `controlla.js` lo verifica.
 //   category   → la categoria in cui sta la scheda, una sola. E' quella
 //                scritta sulla card e in cima alla pagina di dettaglio.
 //   alsoIn     → facoltativo: le ALTRE categorie in cui la stessa scheda deve
@@ -2070,6 +2081,18 @@ const ESPLORA_CATALOG = [
     priceAdult: 110,
     options: {
       label: { it: "Quale giro", en: "Which ride", es: "Qué recorrido" },
+      // Sedici giri uno sotto l'altro facevano una pagina lunghissima: i due
+      // tipi diventano due pulsanti che si aprono (proprietario, 6 ottobre
+      // 2026). Ogni variante dice il suo con `group`, e il nome del gruppo
+      // non si ripete piu' davanti al nome del giro.
+      groups: [
+        { key: "strada",
+          label: { it: "Bici da strada", en: "Road bike", es: "Bici de carretera" },
+          desc: { it: "Otto giri su asfalto, dal Teide alla costa", en: "Eight rides on tarmac, from Teide to the coast", es: "Ocho recorridos por asfalto, del Teide a la costa" } },
+        { key: "mtb",
+          label: { it: "Mountain bike", en: "Mountain bike", es: "Bicicleta de montaña" },
+          desc: { it: "Otto giri su sterrato, fra vulcani, pinete e mare", en: "Eight off-road rides, among volcanoes, pine forests and sea", es: "Ocho recorridos por pista, entre volcanes, pinares y mar" } }
+      ],
       // Tre giri hanno due prezzi ("110/150", "110/120"): dipendono dalla
       // lunghezza del giro, corto o lungo, e lo spiega la descrizione (pagine
       // del fornitore, 6 ottobre 2026). Il
@@ -2079,109 +2102,125 @@ const ESPLORA_CATALOG = [
       // mostrare 110 dove potrebbe essere 150. Niente `price` nemmeno: per i
       // pacchetti vorrebbe dire "prezzo del mezzo", che qui non e'.
       choices: [
-        { label: { it: "Strada · Mount Teide Challenge West Slope (110/150 €)", en: "Road · Mount Teide Challenge West Slope (€110/150)", es: "Carretera · Mount Teide Challenge West Slope (110/150 €)" },
+        { label: { it: "Mount Teide Challenge West Slope (110/150 €)", en: "Mount Teide Challenge West Slope (€110/150)", es: "Mount Teide Challenge West Slope (110/150 €)" },
+          group: "strada",
           desc: {
             it: "Dalla costa di Adeje al Teide dal versante ovest: la salita fra le piantagioni di banane verso Guía de Isora, la sosta a Chío e poi 28 km di salita costante, fra il 5 e il 7%, fino al paesaggio lunare del parco. Si torna giù fra le pinete. Due lunghezze: circa 75 km e 1.750 m di dislivello a 110 €, oppure circa 130 km e 3.000 m a 150 €; in e-bike 130 € e 190 €. Difficoltà medio-alta, tutto asfalto.",
             en: "From the Adeje coast up Teide's west side: the climb through the banana plantations towards Guía de Isora, a stop in Chío, then 28 km of steady climbing at 5 to 7% up to the park's lunar landscape. Back down through the pine forests. Two lengths: about 75 km and 1,750 m of climbing for €110, or about 130 km and 3,000 m for €150; by e-bike €130 and €190. Medium to hard, all on tarmac.",
             es: "De la costa de Adeje al Teide por la vertiente oeste: la subida entre plataneras hacia Guía de Isora, la parada en Chío y luego 28 km de subida constante, entre el 5 y el 7%, hasta el paisaje lunar del parque. Se baja entre pinares. Dos distancias: unos 75 km y 1.750 m de desnivel por 110 €, o unos 130 km y 3.000 m por 150 €; en e-bike 130 € y 190 €. Dificultad media-alta, todo asfalto."
           } },
-        { label: { it: "Strada · Mount Teide Challenge South Slope (110/120 €)", en: "Road · Mount Teide Challenge South Slope (€110/120)", es: "Carretera · Mount Teide Challenge South Slope (110/120 €)" },
+        { label: { it: "Mount Teide Challenge South Slope (110/120 €)", en: "Mount Teide Challenge South Slope (€110/120)", es: "Mount Teide Challenge South Slope (110/120 €)" },
+          group: "strada",
           desc: {
             it: "Da Adeje si sale dal versante sud: Arona, i vigneti e Vilaflor, il Pino Gordo e venti chilometri di pineta fino ai 2.270 m del belvedere di Boca Tauce, davanti al Teide. Si scende dal lato ovest, per Chío, e il giro si chiude ad anello. Due lunghezze: circa 55 km e 1.000 m di dislivello a 110 €, oppure circa 100 km e 2.500 m a 120 €; in e-bike 130 € e 140 €. Difficoltà medio-alta, tutto asfalto.",
             en: "From Adeje up Teide's south side: Arona, the vineyards and Vilaflor, the Pino Gordo and twenty kilometres of pine forest up to the 2,270 m Boca Tauce viewpoint, facing Teide. Down the west side through Chío, closing the loop. Two lengths: about 55 km and 1,000 m of climbing for €110, or about 100 km and 2,500 m for €120; by e-bike €130 and €140. Medium to hard, all on tarmac.",
             es: "Desde Adeje se sube por la vertiente sur: Arona, los viñedos y Vilaflor, el Pino Gordo y veinte kilómetros de pinar hasta los 2.270 m del mirador de Boca Tauce, frente al Teide. Se baja por el lado oeste, por Chío, cerrando el círculo. Dos distancias: unos 55 km y 1.000 m de desnivel por 110 €, o unos 100 km y 2.500 m por 120 €; en e-bike 130 € y 140 €. Dificultad media-alta, todo asfalto."
           } },
-        { label: { it: "Strada · Vilaflor Tour", en: "Road · Vilaflor Tour", es: "Carretera · Vilaflor Tour" },
+        { label: "Vilaflor Tour",
+          group: "strada",
           priceAdult: 110,
           desc: {
             it: "Da Adeje verso Los Cristianos, la salita di La Camella, il belvedere della Centinela e Granadilla; poi 14 km di salita dolce in pineta fino a Vilaflor, a 1.400 m il paese più alto di Spagna. Pausa al Pino Gordo e discesa per Arona. 67 km, 1.450 m di dislivello, difficoltà media, tutto asfalto. In e-bike 130 €.",
             en: "From Adeje towards Los Cristianos, the La Camella climb, the La Centinela viewpoint and Granadilla; then 14 km of gentle climbing through the pines to Vilaflor, at 1,400 m the highest village in Spain. A break at the Pino Gordo and down via Arona. 67 km, 1,450 m of climbing, medium difficulty, all on tarmac. By e-bike €130.",
             es: "De Adeje hacia Los Cristianos, la subida de La Camella, el mirador de La Centinela y Granadilla; luego 14 km de subida suave entre pinos hasta Vilaflor, a 1.400 m el pueblo más alto de España. Pausa en el Pino Gordo y bajada por Arona. 67 km, 1.450 m de desnivel, dificultad media, todo asfalto. En e-bike 130 €."
           } },
-        { label: { it: "Strada · Teide Downhill", en: "Road · Teide Downhill", es: "Carretera · Teide Downhill" },
+        { label: "Teide Downhill",
+          group: "strada",
           priceAdult: 110,
           desc: {
             it: "Quasi tutta discesa: il pulmino porta su a 2.200 m, sul versante ovest del Teide, e da lì si scendono circa 50 km per Chío, Guía de Isora con la pausa caffè e Los Menores, fino alla base del fornitore ad Adeje; il furgone riporta in hotel chi vuole. Facile, va bene anche per chi non pedala spesso: dai 12 anni, con un adulto. In e-bike 130 €; in mountain bike tradizionale, su richiesta, 20 € in più. Il ritiro è compreso entro 5 km dalla base di Adeje: da più lontano lo conferma l'ufficio.",
             en: "Almost all downhill: the minibus takes you up to 2,200 m on Teide's west side, and from there you ride about 50 km down through Chío, Guía de Isora with a coffee break, and Los Menores, to the operator's base in Adeje; the van takes you back to your hotel if you like. Easy, fine even if you rarely ride: from age 12, with an adult. By e-bike €130; on a traditional mountain bike, on request, €20 extra. Pick-up is included within 5 km of the Adeje base: from further away, the office will confirm.",
             es: "Casi todo bajada: la furgoneta sube hasta los 2.200 m, en la vertiente oeste del Teide, y desde allí se bajan unos 50 km por Chío, Guía de Isora con pausa para el café y Los Menores, hasta la base del proveedor en Adeje; la furgoneta lleva de vuelta al hotel a quien quiera. Fácil, apto aunque no montes a menudo: desde los 12 años, con un adulto. En e-bike 130 €; en bicicleta de montaña tradicional, bajo petición, 20 € más. La recogida está incluida a menos de 5 km de la base de Adeje: desde más lejos lo confirma la oficina."
           } },
-        { label: { it: "Strada · El Poris by San Isidro – TF 28", en: "Road · El Poris by San Isidro – TF 28", es: "Carretera · El Poris by San Isidro – TF 28" },
+        { label: "El Poris by San Isidro – TF 28",
+          group: "strada",
           priceAdult: 110,
           desc: {
             it: "Il pulmino porta ciclisti e bici a San Isidro; da lì su e giù per la vecchia TF-28 fino a Villa de Arico, pausa caffè e discesa a El Porís, villaggio di pescatori con la spiaggia nera. Poi l'unica salita del giorno, dolce (3-5%), in mezzo al parco eolico più grande dell'isola. Circa 65 km e 1.250 m di dislivello, difficoltà media per la lunghezza, tutto asfalto. In e-bike 130 €.",
             en: "The minibus takes riders and bikes to San Isidro; from there, up and down the old TF-28 to Villa de Arico, a coffee break and the descent to El Porís, a fishing village with a black-sand beach. Then the only climb of the day, a gentle one (3-5%), through the island's largest wind farm. About 65 km and 1,250 m of climbing, medium difficulty because of the distance, all on tarmac. By e-bike €130.",
             es: "La furgoneta lleva ciclistas y bicis a San Isidro; desde allí, sube y baja por la antigua TF-28 hasta Villa de Arico, pausa para el café y bajada a El Porís, pueblo de pescadores con playa de arena negra. Después la única subida del día, suave (3-5%), entre el mayor parque eólico de la isla. Unos 65 km y 1.250 m de desnivel, dificultad media por la distancia, todo asfalto. En e-bike 130 €."
           } },
-        { label: { it: "Strada · Medano via Granadilla", en: "Road · Medano via Granadilla", es: "Carretera · Medano via Granadilla" },
+        { label: "Medano via Granadilla",
+          group: "strada",
           priceAdult: 110,
           desc: {
             it: "Un anello senza salite dure: da Costa Adeje per Los Cristianos, Chayofa e La Camella, il belvedere della Centinela, San Miguel de Abona e Granadilla; poi in discesa fino a El Médano per un caffè sul mare, e ritorno lungo la costa davanti alla Montaña Roja. 65 km, 1.100 m di dislivello, facile, tutto asfalto. In e-bike 130 €.",
             en: "A loop with no hard climbs: from Costa Adeje via Los Cristianos, Chayofa and La Camella, the La Centinela viewpoint, San Miguel de Abona and Granadilla; then downhill to El Médano for a coffee by the sea, and back along the coast past Montaña Roja. 65 km, 1,100 m of climbing, easy, all on tarmac. By e-bike €130.",
             es: "Un circuito sin subidas duras: de Costa Adeje por Los Cristianos, Chayofa y La Camella, el mirador de La Centinela, San Miguel de Abona y Granadilla; luego bajando hasta El Médano para un café junto al mar, y vuelta por la costa frente a la Montaña Roja. 65 km, 1.100 m de desnivel, fácil, todo asfalto. En e-bike 130 €."
           } },
-        { label: { it: "Strada · Santiago del Teide", en: "Road · Santiago del Teide", es: "Carretera · Santiago del Teide" },
+        { label: "Santiago del Teide",
+          group: "strada",
           priceAdult: 110,
           desc: {
             it: "Da Costa Adeje lungo la costa ovest: la salita fra le piantagioni di banane fino a Guía de Isora, la discesa verso Playa San Juan e le scogliere di Los Gigantes, poi la salita a tappe per Tamaimo fino a Santiago del Teide, a 1.000 m, e le lave nere di Arguayo. Sosta a Chío e 18 km di discesa per tornare. Da 70 a 85 km e da 1.500 a 2.200 m di dislivello, secondo il livello; impegnativo, tutto asfalto. In e-bike 130 €.",
             en: "From Costa Adeje along the west coast: the climb through the banana plantations to Guía de Isora, down towards Playa San Juan and the Los Gigantes cliffs, then the stepped climb through Tamaimo to Santiago del Teide, at 1,000 m, and the black lava of Arguayo. A stop in Chío and 18 km of descent back. 70 to 85 km and 1,500 to 2,200 m of climbing, depending on your level; demanding, all on tarmac. By e-bike €130.",
             es: "De Costa Adeje por la costa oeste: la subida entre plataneras hasta Guía de Isora, la bajada hacia Playa San Juan y los acantilados de Los Gigantes, luego la subida por etapas por Tamaimo hasta Santiago del Teide, a 1.000 m, y la lava negra de Arguayo. Parada en Chío y 18 km de bajada para volver. De 70 a 85 km y de 1.500 a 2.200 m de desnivel, según el nivel; exigente, todo asfalto. En e-bike 130 €."
           } },
-        { label: { it: "Strada · Masca Tour (110/150 €)", en: "Road · Masca Tour (€110/150)", es: "Carretera · Masca Tour (110/150 €)" },
+        { label: { it: "Masca Tour (110/150 €)", en: "Masca Tour (€110/150)", es: "Masca Tour (110/150 €)" },
+          group: "strada",
           desc: {
             it: "Per ciclisti esperti. Da Costa Adeje per Guía de Isora, Los Gigantes e Santiago del Teide fino al Mirador de Cherfe; poi giù a Masca, ai piedi del Teno, e su per la salita più dura dell'isola: 4,2 km con tratti fino al 22%. Due lunghezze: circa 60 km e 1.550 m di dislivello a 110 €, oppure circa 130 km e 3.000 m, passando per Buenavista del Norte ed El Tanque, a 150 €; in e-bike 130 € e 180 €. Tutto asfalto.",
             en: "For experienced riders. From Costa Adeje via Guía de Isora, Los Gigantes and Santiago del Teide up to the Mirador de Cherfe; then down to Masca, at the foot of the Teno mountains, and up the island's hardest climb: 4.2 km with stretches of up to 22%. Two lengths: about 60 km and 1,550 m of climbing for €110, or about 130 km and 3,000 m, via Buenavista del Norte and El Tanque, for €150; by e-bike €130 and €180. All on tarmac.",
             es: "Para ciclistas expertos. De Costa Adeje por Guía de Isora, Los Gigantes y Santiago del Teide hasta el Mirador de Cherfe; luego bajada a Masca, al pie del Teno, y subida por la cuesta más dura de la isla: 4,2 km con tramos de hasta el 22%. Dos distancias: unos 60 km y 1.550 m de desnivel por 110 €, o unos 130 km y 3.000 m, pasando por Buenavista del Norte y El Tanque, por 150 €; en e-bike 130 € y 180 €. Todo asfalto."
           } },
-        { label: { it: "MTB · Santiago del Teide – El Chinyero", en: "MTB · Santiago del Teide – El Chinyero", es: "MTB · Santiago del Teide – El Chinyero" },
+        { label: "Santiago del Teide – El Chinyero",
+          group: "mtb",
           priceAdult: 110,
           desc: {
             it: "Il pulmino porta a Santiago del Teide, dove c'è il tempo per un caffè; da lì si pedala su piste sterrate larghe, con la vista sulla costa nord fino a Garachico e Puerto de la Cruz, accanto alla Montaña Negra fino al cono di lava del Chinyero, l'ultima grande eruzione dell'isola nel 1909, e al rifugio della Casa Forestal. 33 km e 600 m di dislivello, tutto sterrato. Media in mountain bike, facile in e-bike: qualche strappo breve su sabbia vulcanica, ma va bene anche per chi non è mai andato fuori strada. In e-bike 130 €.",
             en: "The minibus takes you to Santiago del Teide, with time for a coffee; from there you ride wide dirt tracks, looking out over the north coast to Garachico and Puerto de la Cruz, past Montaña Negra to the Chinyero lava cone, the island's last major eruption in 1909, and the Casa Forestal refuge. 33 km and 600 m of climbing, all off-road. Medium on a mountain bike, easy by e-bike: a few short steep bits on volcanic sand, but fine even if you have never ridden off-road. By e-bike €130.",
             es: "La furgoneta lleva a Santiago del Teide, con tiempo para un café; desde allí se pedalea por pistas anchas, con vistas a la costa norte hasta Garachico y Puerto de la Cruz, junto a la Montaña Negra hasta el cono de lava del Chinyero, la última gran erupción de la isla en 1909, y el refugio de la Casa Forestal. 33 km y 600 m de desnivel, todo pista. Media en bicicleta de montaña, fácil en e-bike: algunas rampas cortas sobre arena volcánica, pero apta aunque nunca hayas ido fuera de carretera. En e-bike 130 €."
           } },
-        { label: { it: "MTB · Izaña – El Poris, Teide Easy Downhill", en: "MTB · Izaña – El Poris, Teide Easy Downhill", es: "MTB · Izaña – El Poris, Teide Easy Downhill" },
+        { label: "Izaña – El Poris, Teide Easy Downhill",
+          group: "mtb",
           priceAdult: 140,
           desc: {
             it: "Dalla montagna al mare, quasi tutto in discesa: il pulmino porta all'osservatorio di Izaña, a 2.390 m sul versante est del Teide, e da lì si scende per piste vulcaniche larghe e pinete, la zona di El Contador, vigneti e campi di patate fino a Villa de Arico e al villaggio di pescatori di El Porís. 45 km, 70% sterrato. Facile, ma serve un po' di pratica di mountain bike su fondo smosso. Alla fine il furgone riporta in hotel.",
             en: "From the mountain to the sea, almost all downhill: the minibus takes you to the Izaña observatory, at 2,390 m on Teide's east side, and from there you ride down wide volcanic tracks and pine forests, the El Contador area, vineyards and potato fields to Villa de Arico and the fishing village of El Porís. 45 km, 70% off-road. Easy, but some mountain-biking experience on loose ground is needed. At the end the van takes you back to your hotel.",
             es: "De la montaña al mar, casi todo bajada: la furgoneta sube al observatorio de Izaña, a 2.390 m en la vertiente este del Teide, y desde allí se baja por pistas volcánicas anchas y pinares, la zona de El Contador, viñedos y campos de papas hasta Villa de Arico y el pueblo pesquero de El Porís. 45 km, 70% pista. Fácil, pero hace falta algo de práctica en bicicleta de montaña sobre terreno suelto. Al final la furgoneta lleva de vuelta al hotel."
           } },
-        { label: { it: "MTB · Teide South Off-road Downhill", en: "MTB · Teide South Off-road Downhill", es: "MTB · Teide South Off-road Downhill" },
+        { label: "Teide South Off-road Downhill",
+          group: "mtb",
           priceAdult: 110,
           desc: {
             it: "Discesa tecnica dal versante sud del Teide alla costa: il pulmino porta a 2.200 m, poi si scende fra colate di lava e pinete, con la vista su Adeje e, nei giorni limpidi, su La Gomera, fino al borgo di La Quinta; da lì i vecchi camini reales di pietra e i barrancos fino a Costa Adeje. 30 km, 90% sterrato. Difficoltà media: per chi ha già esperienza fuori strada e sa guidare la bici su roccia e ciottolato. Alla fine il furgone riporta in hotel.",
             en: "A technical descent from Teide's south side to the coast: the minibus takes you up to 2,200 m, then you ride down through lava flows and pine forests, looking out over Adeje and, on clear days, La Gomera, to the hamlet of La Quinta; from there the old stone caminos reales and the barrancos down to Costa Adeje. 30 km, 90% off-road. Medium difficulty: for riders with off-road experience who are confident on rock and cobbles. At the end the van takes you back to your hotel.",
             es: "Bajada técnica desde la vertiente sur del Teide hasta la costa: la furgoneta sube a 2.200 m y luego se baja entre coladas de lava y pinares, con vistas a Adeje y, en días claros, a La Gomera, hasta el caserío de La Quinta; desde allí los antiguos caminos reales de piedra y los barrancos hasta Costa Adeje. 30 km, 90% pista. Dificultad media: para quien ya tiene experiencia fuera de carretera y maneja la bici con soltura sobre roca y empedrado. Al final la furgoneta lleva de vuelta al hotel."
           } },
-        { label: { it: "MTB · Off-road Escape", en: "MTB · Off-road Escape", es: "MTB · Off-road Escape" },
+        { label: "Off-road Escape",
+          group: "mtb",
           priceAdult: 110,
           desc: {
             it: "Fra la lava e il mare del sud: dopo Las Américas e Los Cristianos si sale in furgone sul vulcano di Guaza, poi circa 25 km di sterrato nella riserva del Malpaís de la Rasca, fino al faro di Rasca e alle sue scogliere. Pausa con un leche leche sul lungomare di Las Galletas, la Costa del Silencio e altri 7 km di sterrato fino al vulcano della Montaña Amarilla. 35-40 km, 600 m di dislivello, 90% sterrato; difficoltà medio-alta. C'è anche una versione più facile, da Pal-Mar a Pal-Mar: 30 km e 150 m di dislivello. In e-bike 130 €.",
             en: "Between lava and the southern sea: past Las Américas and Los Cristianos the van takes you up the Guaza volcano, then about 25 km off-road through the Malpaís de la Rasca reserve to the Rasca lighthouse and its cliffs. A leche leche on the Las Galletas seafront, the Costa del Silencio and another 7 km off-road to the Montaña Amarilla volcano. 35-40 km, 600 m of climbing, 90% off-road; medium to hard. There is also an easier version, from Pal-Mar and back: 30 km and 150 m of climbing. By e-bike €130.",
             es: "Entre la lava y el mar del sur: pasados Las Américas y Los Cristianos se sube en furgoneta al volcán de Guaza, y luego unos 25 km de pista por la reserva del Malpaís de la Rasca, hasta el faro de Rasca y sus acantilados. Un leche leche en el paseo de Las Galletas, la Costa del Silencio y otros 7 km de pista hasta el volcán de la Montaña Amarilla. 35-40 km, 600 m de desnivel, 90% pista; dificultad media-alta. Hay también una versión más fácil, de Pal-Mar a Pal-Mar: 30 km y 150 m de desnivel. En e-bike 130 €."
           } },
-        { label: { it: "MTB · Costa del Silencio – El Médano – Palm Mar", en: "MTB · Costa del Silencio – El Médano – Palm Mar", es: "MTB · Costa del Silencio – El Médano – Palm Mar" },
+        { label: "Costa del Silencio – El Médano – Palm Mar",
+          group: "mtb",
           priceAdult: 110,
           desc: {
             it: "Il giro più facile, pensato per chi va in mountain bike per la prima volta. Da Costa del Silencio verso Golf del Sur e il villaggio di pescatori di Los Abrigos, poi la spiaggia della Tejita fino a El Médano, davanti alla Montaña Roja, per un frullato di frutta. Il ritorno passa per un'altra strada, fra le piantagioni di banane vicino all'aeroporto del sud, fino al faro di Punta de Rasca. 40 km, 400 m di dislivello, tutto sterrato. Esiste anche in versione più corta, adatta alle famiglie con bambini. In e-bike 130 €.",
             en: "The easiest ride, designed for first-time mountain bikers. From Costa del Silencio towards Golf del Sur and the fishing village of Los Abrigos, then along La Tejita beach to El Médano, facing Montaña Roja, for a fruit shake. The way back takes another route, through banana plantations near the south airport, to the Punta de Rasca lighthouse. 40 km, 400 m of climbing, all off-road. A shorter version is also available, suitable for families with children. By e-bike €130.",
             es: "El recorrido más fácil, pensado para quien va en bicicleta de montaña por primera vez. De Costa del Silencio hacia Golf del Sur y el pueblo pesquero de Los Abrigos, luego por la playa de La Tejita hasta El Médano, frente a la Montaña Roja, para un batido de fruta. La vuelta va por otro camino, entre plataneras cerca del aeropuerto del sur, hasta el faro de Punta de Rasca. 40 km, 400 m de desnivel, todo pista. Existe también en versión más corta, apta para familias con niños. En e-bike 130 €."
           } },
-        { label: { it: "MTB · Barbacoa – Corona Forestal", en: "MTB · Barbacoa – Corona Forestal", es: "MTB · Barbacoa – Corona Forestal" },
+        { label: "Barbacoa – Corona Forestal",
+          group: "mtb",
           priceAdult: 110,
           desc: {
             it: "Il pulmino passa da Villa de Arico e porta alla riserva di El Contador, a 1.000 m; da lì una salita lunga e costante su sterrato, circa 17 km e 1.300 m di dislivello, fino all'osservatorio di Izaña. Poi 20 km di discesa su piste larghe e qualche tratto d'asfalto verso la Valle di Güímar, con la sosta al Mirador de Pájara. 45 km, 1.400 m di dislivello, 90% sterrato. Medio-alta per la salita, non per la tecnica: la discesa va bene anche per chi ha poca esperienza. In e-bike 130 €.",
             en: "The minibus goes via Villa de Arico to the El Contador reserve, at 1,000 m; from there a long, steady climb on dirt tracks, about 17 km and 1,300 m of ascent, up to the Izaña observatory. Then 20 km of descent on wide tracks and a few stretches of tarmac towards the Güímar valley, with a stop at the Mirador de Pájara. 45 km, 1,400 m of climbing, 90% off-road. Medium to hard because of the climb, not the technique: the descent is fine even for less experienced riders. By e-bike €130.",
             es: "La furgoneta pasa por Villa de Arico y lleva a la reserva de El Contador, a 1.000 m; desde allí una subida larga y constante por pista, unos 17 km y 1.300 m de desnivel, hasta el observatorio de Izaña. Luego 20 km de bajada por pistas anchas y algún tramo de asfalto hacia el Valle de Güímar, con parada en el Mirador de Pájara. 45 km, 1.400 m de desnivel, 90% pista. Media-alta por la subida, no por la técnica: la bajada es apta también para quien tiene poca experiencia. En e-bike 130 €."
           } },
-        { label: { it: "MTB · El Médano – El Poris", en: "MTB · El Médano – El Poris", es: "MTB · El Médano – El Poris" },
+        { label: "El Médano – El Poris",
+          group: "mtb",
           priceAdult: 110,
           desc: {
             it: "Il pulmino porta a El Médano, il paese dei surfisti, e da lì si pedala sugli sterrati della costa est: il villaggio di pescatori di San Miguel de Tajao, El Porís e il suo faro, ultima sosta prima di ritrovare il furgone. 40 km, 600 m di dislivello, tutto sterrato. Difficoltà media: qualche tratto corto e roccioso fra i barrancos, che volendo si fa a piedi spingendo la bici per pochi metri. In e-bike 130 €.",
             en: "The minibus takes you to El Médano, the surfers' town, and from there you ride the dirt tracks of the east coast: the fishing village of San Miguel de Tajao, El Porís and its lighthouse, the last stop before meeting the van. 40 km, 600 m of climbing, all off-road. Medium difficulty: a few short rocky stretches between the barrancos, which you can walk, pushing the bike for a few metres, if you prefer. By e-bike €130.",
             es: "La furgoneta lleva a El Médano, el pueblo de los surfistas, y desde allí se pedalea por las pistas de la costa este: el pueblo pesquero de San Miguel de Tajao, El Porís y su faro, última parada antes de volver a la furgoneta. 40 km, 600 m de desnivel, todo pista. Dificultad media: algunos tramos cortos y rocosos entre los barrancos, que se pueden hacer a pie empujando la bici unos metros. En e-bike 130 €."
           } },
-        { label: { it: "MTB · Vilaflor – Corona Forestal", en: "MTB · Vilaflor – Corona Forestal", es: "MTB · Vilaflor – Corona Forestal" },
+        { label: "Vilaflor – Corona Forestal",
+          group: "mtb",
           priceAdult: 110,
           desc: {
             it: "Il pulmino porta a Vilaflor, a 1.400 m; pochi chilometri d'asfalto fino al Pino Gordo, il pino canario più grande dell'arcipelago, poi circa 13 km di sterrato nella pineta fino a Madre de Agua. Cinque minuti a piedi lungo il ruscello del Barranco del Río, poi in sella fino a El Salto e giù verso il mare fra asfalto e sterrati facili. 40 km, 500 m di dislivello. Difficoltà media: qualche tratto tecnico in discesa e un paio di passaggi da fare a piedi. In e-bike 130 €.",

@@ -3440,6 +3440,7 @@ body.menu-open { overflow: hidden; }
   font-size: .74rem;
   opacity: .8;
 }
+.request-privacy a { text-decoration: underline; white-space: nowrap; }
 
 /* ── Assistente di ricerca ────────────────────────────────────────────── */
 .assist-fab {

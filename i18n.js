@@ -452,7 +452,7 @@ const I18N = {
   // chiamata di rete che mandi qualcosa a qualcuno), e dove finisce l'hotel
   // (nel suo dispositivo, non da noi). Due frasi corte: quelle lunghe le ha
   // bocciate il proprietario e aveva ragione.
-  "req.privacy":        { it: "Quello che scrivi serve solo a risponderti su WhatsApp. L'hotel resta salvato su questo dispositivo, per non riscriverlo ogni volta.", en: "What you type is only used to reply to you on WhatsApp. Your hotel stays saved on this device, so you don't have to type it again.", es: "Lo que escribes solo sirve para responderte por WhatsApp. El hotel se queda guardado en este dispositivo, para no escribirlo cada vez." },
+  "req.privacy":        { it: "Quello che scrivi serve solo a risponderti su WhatsApp. L'hotel resta salvato su questo dispositivo, per non riscriverlo ogni volta. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">Come trattiamo i tuoi dati</a>", en: "What you type is only used to reply to you on WhatsApp. Your hotel stays saved on this device, so you don't have to type it again. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">How we handle your data</a>", es: "Lo que escribes solo sirve para responderte por WhatsApp. El hotel se queda guardado en este dispositivo, para no escribirlo cada vez. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">Cómo tratamos tus datos</a>" },
 
   // ── messaggio WhatsApp ──────────────────────────────────────────────────
   "wa.intro":           { it: "Ciao Isla! Sono {name}, vorrei richiedere disponibilità per:", en: "Hi Isla! I'm {name}, I'd like to check availability for:", es: "¡Hola Isla! Soy {name}, quisiera consultar disponibilidad para:" },

@@ -16532,7 +16532,14 @@ prima: nessuna scheda con fichi d'India, Higo Tinto o Valle San Lorenzo.
 - **Incluso**: guida, degustazione. Museo e video stanno nelle tappe.
 - Non copiati: il 4,9 di Google, "posti che si riempiono in fretta", il negozio.
 
-Restano in sospeso **la foto** (riquadro grigio, `controlla.js` lo avvisa) e la conferma
-che **non c'è transfer**: è la domanda da fare a ogni fornitore nuovo.
+**Le foto**, mandate dal proprietario: due verticali 1536×2048, ritagliate a 3:2 a mano
+invece che dal centro, per tenere quello che conta.
+- `finca-tuno.jpg` (principale, 197 KB): il campo di fichi d'India con la montagna,
+  ritaglio dall'alto per non tagliare la cima;
+- `finca-tuno-2.jpg` (galleria, 240 KB): il cartello d'ingresso "TUNO Canarias". Il
+  marchio è quello della finca, cioè il soggetto, come la livrea di una barca.
+Prima erano arrivate tre anteprime di Google da 225×225: scartate, troppo piccole.
 
-`CACHE_NAME` → `isla-v417`.
+Resta da confermare che **non c'è transfer**: è la domanda da fare a ogni fornitore nuovo.
+
+`CACHE_NAME` → `isla-v418`.

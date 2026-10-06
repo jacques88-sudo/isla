@@ -5662,8 +5662,13 @@ const ESPLORA_CATALOG = [
       en: "An hour and a half on a prickly pear farm in the valley above Los Cristianos. You walk among the cactus and the volcanic soil with a guide, see how the fruit is picked and peeled by hand, and at the end taste the fruit and the products of Higo Tinto, their red variety: the one that turns your tongue red. There is also a small museum of Canarian farm life.",
       es: "Una hora y media en una finca de tuneras en el valle sobre Los Cristianos. Se camina entre los cactus y la tierra volcánica con un guía, se ve cómo se recogen y se pelan los tunos a mano, y al final se prueban la fruta y los productos del Higo Tinto, su variedad roja: la que deja la lengua de color. Hay también un pequeño museo de la vida campesina canaria."
     },
-    // Foto da avere: la pagina incollata non ne porta.
-    image: "",
+    // Due foto della finca mandate dal proprietario (6 ottobre 2026), verticali
+    // 1536x2048 e ritagliate a 3:2. La principale e' il campo di fichi d'India
+    // con la montagna, presa dall'alto per tenere la cima; nella galleria il
+    // cartello d'ingresso: il marchio e' quello della finca, cioe' il soggetto.
+    // Prima erano arrivate due anteprime da 225x225, scartate.
+    image: "finca-tuno.jpg",
+    gallery: ["finca-tuno-2.jpg"],
     published: true
   },
   {

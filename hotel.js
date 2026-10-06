@@ -639,8 +639,9 @@ const PICKUP_IN_HOTEL = [
   "combo-jungle-aqualand",
   "castillo-san-miguel",
   "scandal-dinner-show",
-  // First Wine Tasting Tour: "includes transportation" (6 ottobre 2026). Era
-  // in PICKUP_NESSUNO da segnaposto, quando non se ne sapeva niente.
+  // First Wine Tasting Tour: il trasporto e' compreso e il pulmino passa sotto
+  // l'hotel, confermato dal proprietario (6 ottobre 2026). Era in
+  // PICKUP_NESSUNO da segnaposto, quando non se ne sapeva niente.
   "cantine-vinicole",
   // L'unico charter col transfer. Gli altri cinque non ce l'hanno e stanno in
   // PICKUP_NESSUNO: se un giorno si scopre che e' una svista della scheda e non

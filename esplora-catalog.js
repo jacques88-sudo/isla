@@ -5467,24 +5467,28 @@ const ESPLORA_CATALOG = [
     // "esperti" della cantina.
     title: "First Wine Tasting Tour",
     category: "tour-isola",
-    // Il campo si legge "Punto di partenza", e si parte dal sud come per tutte
-    // le escursioni col ritiro. Dove sta la cantina la pagina non lo dice: per
-    // questo manca `zoneGroups`, da chiedere al proprietario invece di
-    // indovinarlo (controlla.js lo ricorda con un avviso).
-    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    // La cantina e' a Vilaflor, ma il campo si legge "Punto di partenza": il
+    // pulmino parte da Los Cristianos e Costa Adeje, e passa sotto l'hotel
+    // (proprietario, 6 ottobre 2026). Nel filtro sta nelle due zone da cui si
+    // parte, come il Twin Ticket sta in tutte e due le sue. Vilaflor e' scritta
+    // nella descrizione e nelle tappe.
+    zone: { it: "Los Cristianos e Costa Adeje", en: "Los Cristianos and Costa Adeje", es: "Los Cristianos y Costa Adeje" },
+    zoneGroups: ["los-cristianos", "costa-adeje"],
     // Ritiro verso le 10:00, rientro verso le 15:00: cinque ore, "circa"
     // perche' il fornitore scrive "approximately" su tutte e due le ore.
     duration: { it: "5 ore circa", en: "About 5 hours", es: "5 horas aprox." },
     durationGroups: ["mezza"],
-    // Un solo prezzo, 85 € a persona. Niente prezzo bambini e niente fasce
-    // d'eta': la pagina non li scrive, e per una degustazione di vino non e'
-    // detto che i minori salgano. priceChild a 0 = "non ancora deciso", la
-    // riga non compare. `family` resta false finche' non si sa.
+    // Un solo prezzo, 85 € a persona. **I bambini non salgono** (proprietario,
+    // 6 ottobre 2026): come sull'Utopia, solo la fascia degli adulti, niente
+    // priceChild e niente priceInfant — qui non vogliono dire "non lo
+    // sappiamo", vogliono dire "non puo' venire". Con un bambino nella
+    // richiesta il totale non si fa. 18+ perche' e' una degustazione di vino.
     // `fixedPrice` c'era gia' sul segnaposto, scelto dal proprietario.
     priceFrom: 85,
     fixedPrice: true,
     priceAdult: 85,
     priceChild: 0,
+    ages: { adult: "18+" },
     family: false,
     // "Tuesday, Wednesday Thursday & Fridays only". **mar e' martedi', mer e'
     // mercoledi'.**
@@ -5493,8 +5497,8 @@ const ESPLORA_CATALOG = [
     // qui sotto dice che l'ora esatta dipende dall'hotel e la conferma
     // l'ufficio.
     times: ["10:00"],
-    // Il trasporto e' compreso (ritiro in hotel: la scheda sta in
-    // PICKUP_IN_HOTEL, hotel.js). "Experts showcase the wine making process"
+    // Il trasporto e' compreso e il pulmino passa sotto l'hotel (proprietario,
+    // 6 ottobre 2026): la scheda sta in PICKUP_IN_HOTEL, hotel.js. "Experts showcase the wine making process"
     // e' la guida; le tapas sono `fingerfood`.
     included: ["transfer", "guide", "tasting", "fingerfood"],
     itinerary: [
@@ -5502,9 +5506,9 @@ const ESPLORA_CATALOG = [
         text: { it: "Ritiro in hotel, verso le 10:00",
                 en: "Hotel pickup, around 10:00",
                 es: "Recogida en el hotel, hacia las 10:00" } },
-      { text: { it: "Giro fra le vigne e visita della bodega tradizionale",
-                en: "A walk through the vineyard and a visit to the traditional bodega",
-                es: "Paseo por el viñedo y visita a la bodega tradicional" } },
+      { text: { it: "Salita a Vilaflor, il paese più alto della Spagna: giro fra le vigne e visita della bodega tradizionale",
+                en: "Up to Vilaflor, the highest village in Spain: a walk through the vineyard and a visit to the traditional bodega",
+                es: "Subida a Vilaflor, el pueblo más alto de España: paseo por el viñedo y visita a la bodega tradicional" } },
       { text: { it: "Come nasce il vino, spiegato da chi lo fa, e la degustazione con le tapas",
                 en: "How the wine is made, explained by the people who make it, then the tasting with tapas",
                 es: "Cómo se hace el vino, contado por quien lo elabora, y la cata con tapas" } },
@@ -5519,12 +5523,15 @@ const ESPLORA_CATALOG = [
         es: "El minibús pasa hacia las 10:00 y se vuelve hacia las 15:00: la hora exacta de recogida depende del hotel y te la confirmamos con la reserva." },
       { it: "Gruppi piccoli: al massimo 8 persone per tour.",
         en: "Small groups: no more than 8 people per tour.",
-        es: "Grupos pequeños: como máximo 8 personas por tour." }
+        es: "Grupos pequeños: como máximo 8 personas por tour." },
+      { it: "Solo per adulti: i bambini non partecipano.",
+        en: "Adults only: children cannot take part.",
+        es: "Solo para adultos: los niños no participan." }
     ],
     desc: {
-      it: "Una giornata in una cantina di Tenerife, in gruppo da otto al massimo. Si cammina fra le vigne, si entra nella bodega tradizionale e chi fa il vino racconta come nasce, bicchiere dopo bicchiere, con le tapas in tavola. Il pulmino passa a prenderti in hotel e ti riporta a metà pomeriggio.",
-      en: "A day at a Tenerife winery, in a group of eight at most. You walk through the vines, step into the traditional bodega and the winemakers tell you how the wine is made, glass after glass, with tapas on the table. The minibus picks you up at your hotel and brings you back mid-afternoon.",
-      es: "Un día en una bodega de Tenerife, en grupos de ocho como máximo. Se pasea entre las viñas, se entra en la bodega tradicional y quien hace el vino cuenta cómo nace, copa tras copa, con tapas en la mesa. El minibús te recoge en el hotel y te devuelve a media tarde."
+      it: "Una giornata in una cantina di Vilaflor, sopra il sud di Tenerife, in gruppo da otto al massimo. Si cammina fra le vigne, si entra nella bodega tradizionale e chi fa il vino racconta come nasce, bicchiere dopo bicchiere, con le tapas in tavola. Il pulmino passa a prenderti in hotel e ti riporta a metà pomeriggio.",
+      en: "A day at a winery in Vilaflor, above the south of Tenerife, in a group of eight at most. You walk through the vines, step into the traditional bodega and the winemakers tell you how the wine is made, glass after glass, with tapas on the table. The minibus picks you up at your hotel and brings you back mid-afternoon.",
+      es: "Un día en una bodega de Vilaflor, sobre el sur de Tenerife, en grupos de ocho como máximo. Se pasea entre las viñas, se entra en la bodega tradicional y quien hace el vino cuenta cómo nace, copa tras copa, con tapas en la mesa. El minibús te recoge en el hotel y te devuelve a media tarde."
     },
     image: "cantine-vinicole.jpg",
     published: true

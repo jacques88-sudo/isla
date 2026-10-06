@@ -16466,13 +16466,15 @@ una scheda nuova: l'id resta, la foto resta.
 - **Ritiro**: "includes transportation", quindi da `PICKUP_NESSUNO` a `PICKUP_IN_HOTEL`,
   come vuole la regola del 24 settembre. La finestra ora chiede l'hotel.
 
-Restano da chiedere al proprietario:
-- **i bambini**: si sale? a che prezzo, da che età? Per ora `priceChild: 0` (riga
-  nascosta), niente `ages` né `priceInfant`, `family: false`;
-- **dove sta la cantina**, per il filtro di zona: senza `zoneGroups` la scheda non esce
-  col filtro "zona" acceso (`controlla.js` lo avvisa). La zona scritta è "Tenerife Sud",
-  il punto di partenza;
-- **chi passa a prendere**: il modulo di Admiral propone "Los Cristianos" con una casella
-  libera. Se il ritiro è a un punto e non sotto l'hotel, la scheda cambia gruppo.
+Le tre domande, risposte dal proprietario lo stesso giorno:
+- **i bambini non salgono**: `ages: { adult: "18+" }` e nient'altro, come l'Utopia;
+  priceChild e priceInfant assenti vogliono dire "non può venire". 18+ è una scelta mia:
+  è una degustazione di vino. Con un bambino nella richiesta il totale non si fa, e una
+  nota dice "solo per adulti";
+- **il ritiro è sotto l'hotel**: confermato `PICKUP_IN_HOTEL`;
+- **la cantina è a Vilaflor, ma si parte dal sud**: la zona scritta è "Los Cristianos e
+  Costa Adeje" (il campo si legge "Punto di partenza") e nel filtro sta in tutte e due,
+  `zoneGroups: ["los-cristianos", "costa-adeje"]`. Vilaflor sta nella descrizione e nelle
+  tappe.
 
-`CACHE_NAME` → `isla-v413`.
+`CACHE_NAME` → `isla-v414`.

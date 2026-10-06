@@ -3980,7 +3980,9 @@ const ESPLORA_CATALOG = [
       es: "Elevarse sobre el agua con la tabla a chorro, con instructor."
     },
     image: "flyboard.jpg",
-    published: true
+    // Spenta il 6 ottobre 2026: il proprietario non lo vende piu'. La scheda
+    // resta qui, con la foto, nel caso torni: basta rimettere true.
+    published: false
   },
   {
     // Franz Surf School, Playa de las Americas (dati del 13 settembre 2026,

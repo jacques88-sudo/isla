@@ -16869,3 +16869,16 @@ un giro e nel messaggio ne arriverebbe un altro. `controlla.js` adesso lo verifi
 Le etichette hanno perso il prefisso "Strada ·" / "MTB ·", che adesso dice il gruppo; quelle
 uguali nelle tre lingue sono tornate stringhe semplici. Nel messaggio WhatsApp arriva il
 nome del giro del fornitore, che resta unico fra i sedici.
+
+## Flyboard spento (6 ottobre 2026)
+
+Il proprietario non lo vende più. **`published: false`**, non cancellato: la scheda e
+`assets/flyboard.jpg` restano, se torna basta rimettere `true`. Resta anche nella lista
+del ritiro in `hotel.js`, dove una scheda spenta non fa niente.
+
+Provato nel browser: non esce più in "Sport acquatici", la ricerca "flyboard" non trova
+niente, e chi aveva salvato il link vede "Escursione non trovata" con il ritorno a tutte
+le escursioni, senza errori.
+
+Era anche l'ultima scheda a cui mancava la durata: non serve più chiederla.
+`CACHE_NAME` → `isla-v436`.

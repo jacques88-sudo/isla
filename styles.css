@@ -639,8 +639,11 @@ a { text-decoration: none; color: inherit; }
   gap: .8rem;
   grid-template-columns: repeat(2, 1fr);
 }
+/* Sei riquadri dal 6 ottobre 2026 (Food & Wine e Perfetto per 2): su schermo
+   largo stanno in tre colonne, due righe piene. Con quattro colonne la
+   seconda riga restava a meta'. */
 @media (min-width: 640px) {
-  .bento-grid { grid-template-columns: repeat(4, 1fr); }
+  .bento-grid { grid-template-columns: repeat(3, 1fr); }
 }
 .bento-tile {
   aspect-ratio: 1 / 1;

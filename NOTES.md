@@ -16545,3 +16545,53 @@ Prima erano arrivate tre anteprime di Google da 225×225: scartate, troppo picco
 resta in `PICKUP_NESSUNO`, e non resta niente in sospeso.
 
 `CACHE_NAME` → `isla-v420` (con le due conferme del proprietario: 18+ e il titolo).
+
+### Due riquadri nuovi in home: Food & Wine e Perfetto per 2 (6 ottobre 2026)
+
+Chiesti dal proprietario. Prima di costruire gli ho chiesto tre cose, e le risposte
+decidono tutto il resto:
+- **dove portano**: ai **pacchetti**, come "In famiglia", non all'elenco delle
+  escursioni;
+- **Food & Wine**: **solo le degustazioni** (cantine, Bananas & Wines, Finca Tuno). Non
+  le cene-spettacolo e non le barche col pranzo a bordo;
+- **Perfetto per 2**: **per le coppie**, le esperienze da fare in due.
+
+**Come funziona.** I pacchetti hanno un campo nuovo, `tema: "food-wine" | "per-due"`, e
+la pagina `pacchetti.html?tema=...` mostra solo quelli, vestita con le chiavi di
+`PACCHETTI_TEMI` (titolo, sopratitolo, intro, titolo della finestra). È la stessa
+pagina, come la vista di famiglia: niente seconda pagina da tenere allineata. Restano
+pacchetti, quindi escono anche in "tutti i pacchetti" (da 12 a 17). Un tema che non
+esiste nell'indirizzo mostra tutti i pacchetti; un tema scritto male in un pacchetto lo
+segnala `controlla.js`.
+
+**I cinque pacchetti**, tutti al 10%:
+
+| tema | pacchetto | dentro | a persona |
+|---|---|---|---|
+| food-wine | Sapori di Tenerife | cantine, Bananas & Wines, Finca Tuno | €162,40 (solo adulti) |
+| food-wine | Frutti dell'isola | Bananas & Wines, Finca Tuno | €77,40 |
+| per-due | Vino e stelle | cantine, stelle gruppo piccolo, Skyline Cruiser | €214,60 |
+| per-due | Mare, cielo e una sera fuori | Luxury Catamaran, elicottero 20 km, Scandal Oro | €249,70 |
+| per-due | Adrenalina in due | jet ski doppio 1 h, quad doppio al tramonto, parapendio | da €198 |
+
+Decisioni mie, da far confermare:
+- **Food & Wine ha due pacchetti** perché le degustazioni sono tre: uno con tutte e tre,
+  uno senza le cantine, che è l'unico dei tre dove i ragazzi non salgono.
+- **In "Perfetto per 2" solo prezzi a persona o mezzi da due posti.** Il numero in
+  vetrina divide ogni mezzo per i suoi posti: su un mezzo da quattro uscirebbe il
+  prezzo di quattro persone, non di una coppia. Per questo **la Mustang non c'è**, e
+  buggy e jet ski singolo nemmeno.
+- Il Teide una volta per pacchetto: lo stargazing in "Vino e stelle", il quad in
+  "Adrenalina in due".
+- Le foto dei riquadri: la vigna col Teide (dalle cantine, 375×375, non ingrandita) e il
+  telescopio al tramonto (dallo stargazing, 520×520).
+
+**La griglia dei riquadri** su schermo largo passa da **quattro a tre colonne**: con sei
+riquadri sono due righe piene, con quattro la seconda restava a metà. Sul telefono resta
+a due colonne, tre righe.
+
+Provato nel browser: le due vetrine, "tutti" (17), "famiglia" (5, invariato), un tema
+inventato (17), il dettaglio di "Adrenalina in due" col prezzo a mezzo spiegato, e la
+richiesta: 2 adulti fanno €324,80 su Sapori e €429,20 su Vino e stelle.
+
+`CACHE_NAME` → `isla-v421`.

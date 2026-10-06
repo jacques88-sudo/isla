@@ -58,6 +58,10 @@ const I18N = {
   "meta.packs.title":   { it: "I pacchetti · Isla", en: "Packages · Isla", es: "Los paquetes · Isla" },
   "meta.family.title":  { it: "In famiglia · Isla", en: "As a family · Isla", es: "En familia · Isla" },
   "meta.family.desc":   { it: "I pacchetti di Isla per chi viaggia coi bambini a Tenerife: tre escursioni insieme, col prezzo dei bambini scritto accanto a quello degli adulti.", en: "Isla's packages for families travelling with children in Tenerife: three excursions together, with the kids' price written next to the adults'.", es: "Los paquetes de Isla para quien viaja con niños en Tenerife: tres excursiones juntas, con el precio de los niños junto al de los adultos." },
+  "meta.food.title":    { it: "Food & Wine · Isla", en: "Food & Wine · Isla", es: "Food & Wine · Isla" },
+  "meta.food.desc":     { it: "I pacchetti Food & Wine di Isla a Tenerife: cantine, banane e fichi d'India, con la degustazione e lo sconto già tolto dal prezzo.", en: "Isla's Food & Wine packages in Tenerife: wineries, bananas and prickly pears, with tastings and the discount already taken off.", es: "Los paquetes Food & Wine de Isla en Tenerife: bodegas, plátanos e higos picos, con degustación y el descuento ya aplicado." },
+  "meta.two.title":     { it: "Perfetto per 2 · Isla", en: "Perfect for two · Isla", es: "Perfecto para dos · Isla" },
+  "meta.two.desc":      { it: "I pacchetti di Isla per le coppie a Tenerife: tre esperienze da fare in due, con lo sconto già tolto dal prezzo.", en: "Isla's packages for couples in Tenerife: three experiences to share, with the discount already taken off.", es: "Los paquetes de Isla para parejas en Tenerife: tres experiencias para dos, con el descuento ya aplicado." },
   "meta.days.title":    { it: "3, 5 o 7 giorni · Isla", en: "3, 5 or 7 days · Isla", es: "3, 5 o 7 días · Isla" },
   "meta.days.desc":     { it: "Gli itinerari di Isla a Tenerife da 3, 5 o 7 giorni: una escursione al giorno, con lo sconto già tolto dal prezzo.", en: "Isla's 3, 5 and 7-day itineraries in Tenerife: one excursion a day, with the discount already taken off.", es: "Los itinerarios de Isla en Tenerife de 3, 5 o 7 días: una excursión al día, con el descuento ya aplicado." },
   "meta.packs.desc":    { it: "I pacchetti di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "Isla's packages in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Los paquetes de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado." },
@@ -78,6 +82,11 @@ const I18N = {
   // di famiglia. Il nome cambiato e' una scelta del proprietario (14 settembre
   // 2026): "In famiglia" parla a chi viaggia coi bambini, non ai bambini.
   "bento.family":       { it: "In famiglia", en: "As a family", es: "En familia" },
+  // I due riquadri del 6 ottobre 2026 (proprietario): portano alle vetrine a
+  // tema dei pacchetti. "Food & Wine" resta in inglese nelle tre lingue, come
+  // "3/5/7 Days Experience".
+  "bento.foodWine":     { it: "Food & Wine", en: "Food & Wine", es: "Food & Wine" },
+  "bento.forTwo":       { it: "Perfetto per 2", en: "Perfect for two", es: "Perfecto para dos" },
   "bento.days":         { it: "3/5/7 Days Experience", en: "3/5/7 Days Experience", es: "3/5/7 Days Experience" },
   "bento.rental":       { it: "Noleggio auto, moto e bici", en: "Car, moto & bike rental", es: "Alquiler de coche, moto y bici" },
   "wa.rental":          { it: "Ciao Isla! Vorrei noleggiare un mezzo a Tenerife. Mi interessa: ", en: "Hi Isla! I'd like to rent a vehicle in Tenerife. I'm interested in: ", es: "¡Hola Isla! Quisiera alquilar un vehículo en Tenerife. Me interesa: " },
@@ -287,6 +296,12 @@ const I18N = {
   "packs.familyEyebrow": { it: "Con i bambini", en: "With the kids", es: "Con los niños" },
   "packs.familyTitle":  { it: "In famiglia", en: "As a family", es: "En familia" },
   "packs.familyIntro":  { it: "Pacchetti per chi viaggia coi bambini: tre escursioni dove i piccoli hanno il loro prezzo, con lo sconto già tolto. Si prendono interi: una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "Packages for families travelling with children: three excursions where the little ones have their own price, with the discount already taken off. You take them as a whole: one single request, and we agree the days together.", es: "Paquetes para quien viaja con niños: tres excursiones donde los pequeños tienen su propio precio, con el descuento ya aplicado. Se toman enteros: una sola solicitud, y los días los acordamos juntos." },
+  "packs.foodEyebrow":  { it: "Da assaggiare", en: "To taste", es: "Para probar" },
+  "packs.foodTitle":    { it: "Food & Wine", en: "Food & Wine", es: "Food & Wine" },
+  "packs.foodIntro":    { it: "Le degustazioni dell'isola messe insieme: le cantine, le banane e i fichi d'India, con lo sconto già tolto. Si prendono interi: una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "The island's tastings put together: wineries, bananas and prickly pears, with the discount already taken off. You take them as a whole: one single request, and we agree the days together.", es: "Las degustaciones de la isla juntas: bodegas, plátanos e higos picos, con el descuento ya aplicado. Se toman enteros: una sola solicitud, y los días los acordamos juntos." },
+  "packs.twoEyebrow":   { it: "In coppia", en: "As a couple", es: "En pareja" },
+  "packs.twoTitle":     { it: "Perfetto per 2", en: "Perfect for two", es: "Perfecto para dos" },
+  "packs.twoIntro":     { it: "Pacchetti pensati per chi viaggia in due, con lo sconto già tolto. Il prezzo è a persona. Si prendono interi: una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "Packages made for those travelling as a pair, with the discount already taken off. The price is per person. You take them as a whole: one single request, and we agree the days together.", es: "Paquetes pensados para quien viaja en pareja, con el descuento ya aplicado. El precio es por persona. Se toman enteros: una sola solicitud, y los días los acordamos juntos." },
   "packs.familyAll":    { it: "Tutte le escursioni adatte ai bambini", en: "All the kid-friendly excursions", es: "Todas las excursiones aptas para niños" },
   "pack.eyebrow":       { it: "Pacchetto", en: "Package", es: "Paquete" },
   "pack.ask":           { it: "Richiedi il pacchetto", en: "Request the package", es: "Solicitar el paquete" },

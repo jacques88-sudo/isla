@@ -16447,3 +16447,32 @@ tuoi dati"** a `privacy.html`. Non è stata aggiunta una seconda riga.
   **la lista** (`lista.js`), dove prima mancava: è proprio lì che si scrive il nome.
 - Il link si apre **in una scheda nuova** (`target="_blank"`): nella stessa scheda il
   cliente perderebbe quello che ha già scritto nel modulo.
+
+### First Wine Tasting Tour (6 ottobre 2026)
+
+Il segnaposto `cantine-vinicole` ("Cantine vinicole con sommelier", tutto "Da definire")
+è stato riempito con la pagina del negozio di Admiral, **First Wine Tasting Tour**. Non è
+una scheda nuova: l'id resta, la foto resta.
+
+- **Titolo** quello di Admiral, uguale nelle tre lingue. "Con sommelier" non lo diceva
+  nessuno: la pagina parla degli esperti della cantina, e la guida sta fra le icone.
+- **85 € a persona**, `fixedPrice` lasciato com'era (deciso dal proprietario).
+- **Giorni**: martedì, mercoledì, giovedì, venerdì (`["mar", "mer", "gio", "ven"]`).
+- **Ritiro verso le 10:00, rientro verso le 15:00**: durata "5 ore circa", nel filtro con
+  le mezze giornate; `times: ["10:00"]` e una nota che dice che l'ora esatta dipende
+  dall'hotel. Il fornitore scrive "approximately" su tutte e due.
+- **Incluso**: transfer, guida, degustazione, finger food (le tapas).
+- Massimo 8 persone per tour: in nota.
+- **Ritiro**: "includes transportation", quindi da `PICKUP_NESSUNO` a `PICKUP_IN_HOTEL`,
+  come vuole la regola del 24 settembre. La finestra ora chiede l'hotel.
+
+Restano da chiedere al proprietario:
+- **i bambini**: si sale? a che prezzo, da che età? Per ora `priceChild: 0` (riga
+  nascosta), niente `ages` né `priceInfant`, `family: false`;
+- **dove sta la cantina**, per il filtro di zona: senza `zoneGroups` la scheda non esce
+  col filtro "zona" acceso (`controlla.js` lo avvisa). La zona scritta è "Tenerife Sud",
+  il punto di partenza;
+- **chi passa a prendere**: il modulo di Admiral propone "Los Cristianos" con una casella
+  libera. Se il ritiro è a un punto e non sotto l'hotel, la scheda cambia gruppo.
+
+`CACHE_NAME` → `isla-v413`.

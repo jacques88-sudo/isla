@@ -16796,3 +16796,17 @@ Stesse icone delle altre sei (bici, ritiro, snack). Non copiati: i livelli in W/
 stelle dei tratti, il "Contador Climb" col nome del ciclista.
 
 **Mancano ancora le pagine degli otto giri MTB.**
+
+## v432 — Bici: i primi due giri MTB (6 ottobre 2026)
+
+Arrivate le pagine di **Izaña – El Poris** (140 €, 45 km, 70% sterrato, facile ma serve
+un po' di pratica) e **Teide South Off-road Downhill** (110 €, 30 km, 90% sterrato,
+tecnico). La pagina di Masca è arrivata una seconda volta, identica: niente da cambiare.
+
+Tutti e due danno **solo il prezzo della bici normale**, senza e-bike: la nota della
+scheda che diceva "il prezzo della e-bike è nella descrizione" adesso dice "su molti giri…
+dove c'è". Stesse icone degli altri (bici, ritiro, snack): le pagine le scrivono uguali.
+
+**Mancano ancora sei giri MTB:** Santiago del Teide – El Chinyero, Off-road Escape,
+Costa del Silencio – El Médano – Palm Mar, Barbacoa – Corona Forestal, El Médano –
+El Poris, Vilaflor – Corona Forestal.

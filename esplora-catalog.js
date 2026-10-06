@@ -2070,30 +2070,79 @@ const ESPLORA_CATALOG = [
     priceAdult: 110,
     options: {
       label: { it: "Quale giro", en: "Which ride", es: "Qué recorrido" },
-      // Tre giri hanno due prezzi ("110/150", "110/120") e il fornitore non
-      // dice da cosa dipende il secondo: lo spiegheranno le descrizioni che
-      // manda il proprietario. Fino ad allora il prezzo sta **nell'etichetta**
+      // Tre giri hanno due prezzi ("110/150", "110/120"): dipendono dalla
+      // lunghezza del giro, corto o lungo, e lo spiega la descrizione (pagine
+      // del fornitore, 6 ottobre 2026; Masca non e' ancora arrivata). Il
+      // prezzo resta **nell'etichetta**
       // e non in `priceAdult`, come le immersioni a pacchetto: il cliente lo
       // legge sul bottone e il totale della richiesta non si fa, invece di
       // mostrare 110 dove potrebbe essere 150. Niente `price` nemmeno: per i
       // pacchetti vorrebbe dire "prezzo del mezzo", che qui non e'.
       choices: [
         { label: { it: "Strada · Mount Teide Challenge West Slope (110/150 €)", en: "Road · Mount Teide Challenge West Slope (€110/150)", es: "Carretera · Mount Teide Challenge West Slope (110/150 €)" },
-          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+          // Descritto dalla pagina del fornitore (6 ottobre 2026). Bici con
+          // casco e kit, ritiro in hotel e acqua con frutta o snack: scritti
+          // sulle sei pagine arrivate, quindi stanno qui e non sulla scheda.
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Dalla costa di Adeje al Teide dal versante ovest: la salita fra le piantagioni di banane verso Guía de Isora, la sosta a Chío e poi 28 km di salita costante, fra il 5 e il 7%, fino al paesaggio lunare del parco. Si torna giù fra le pinete. Due lunghezze: circa 75 km e 1.750 m di dislivello a 110 €, oppure circa 130 km e 3.000 m a 150 €; in e-bike 130 € e 190 €. Difficoltà medio-alta, tutto asfalto.",
+            en: "From the Adeje coast up Teide's west side: the climb through the banana plantations towards Guía de Isora, a stop in Chío, then 28 km of steady climbing at 5 to 7% up to the park's lunar landscape. Back down through the pine forests. Two lengths: about 75 km and 1,750 m of climbing for €110, or about 130 km and 3,000 m for €150; by e-bike €130 and €190. Medium to hard, all on tarmac.",
+            es: "De la costa de Adeje al Teide por la vertiente oeste: la subida entre plataneras hacia Guía de Isora, la parada en Chío y luego 28 km de subida constante, entre el 5 y el 7%, hasta el paisaje lunar del parque. Se baja entre pinares. Dos distancias: unos 75 km y 1.750 m de desnivel por 110 €, o unos 130 km y 3.000 m por 150 €; en e-bike 130 € y 190 €. Dificultad media-alta, todo asfalto."
+          } },
         { label: { it: "Strada · Mount Teide Challenge South Slope (110/120 €)", en: "Road · Mount Teide Challenge South Slope (€110/120)", es: "Carretera · Mount Teide Challenge South Slope (110/120 €)" },
-          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+          // Descritto dalla pagina del fornitore (6 ottobre 2026). Bici con
+          // casco e kit, ritiro in hotel e acqua con frutta o snack: scritti
+          // sulle sei pagine arrivate, quindi stanno qui e non sulla scheda.
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Da Adeje si sale dal versante sud: Arona, i vigneti e Vilaflor, il Pino Gordo e venti chilometri di pineta fino ai 2.270 m del belvedere di Boca Tauce, davanti al Teide. Si scende dal lato ovest, per Chío, e il giro si chiude ad anello. Due lunghezze: circa 55 km e 1.000 m di dislivello a 110 €, oppure circa 100 km e 2.500 m a 120 €; in e-bike 130 € e 140 €. Difficoltà medio-alta, tutto asfalto.",
+            en: "From Adeje up Teide's south side: Arona, the vineyards and Vilaflor, the Pino Gordo and twenty kilometres of pine forest up to the 2,270 m Boca Tauce viewpoint, facing Teide. Down the west side through Chío, closing the loop. Two lengths: about 55 km and 1,000 m of climbing for €110, or about 100 km and 2,500 m for €120; by e-bike €130 and €140. Medium to hard, all on tarmac.",
+            es: "Desde Adeje se sube por la vertiente sur: Arona, los viñedos y Vilaflor, el Pino Gordo y veinte kilómetros de pinar hasta los 2.270 m del mirador de Boca Tauce, frente al Teide. Se baja por el lado oeste, por Chío, cerrando el círculo. Dos distancias: unos 55 km y 1.000 m de desnivel por 110 €, o unos 100 km y 2.500 m por 120 €; en e-bike 130 € y 140 €. Dificultad media-alta, todo asfalto."
+          } },
         { label: { it: "Strada · Vilaflor Tour", en: "Road · Vilaflor Tour", es: "Carretera · Vilaflor Tour" },
           priceAdult: 110,
-          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+          // Descritto dalla pagina del fornitore (6 ottobre 2026). Bici con
+          // casco e kit, ritiro in hotel e acqua con frutta o snack: scritti
+          // sulle sei pagine arrivate, quindi stanno qui e non sulla scheda.
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Da Adeje verso Los Cristianos, la salita di La Camella, il belvedere della Centinela e Granadilla; poi 14 km di salita dolce in pineta fino a Vilaflor, a 1.400 m il paese più alto di Spagna. Pausa al Pino Gordo e discesa per Arona. 67 km, 1.450 m di dislivello, difficoltà media, tutto asfalto. In e-bike 130 €.",
+            en: "From Adeje towards Los Cristianos, the La Camella climb, the La Centinela viewpoint and Granadilla; then 14 km of gentle climbing through the pines to Vilaflor, at 1,400 m the highest village in Spain. A break at the Pino Gordo and down via Arona. 67 km, 1,450 m of climbing, medium difficulty, all on tarmac. By e-bike €130.",
+            es: "De Adeje hacia Los Cristianos, la subida de La Camella, el mirador de La Centinela y Granadilla; luego 14 km de subida suave entre pinos hasta Vilaflor, a 1.400 m el pueblo más alto de España. Pausa en el Pino Gordo y bajada por Arona. 67 km, 1.450 m de desnivel, dificultad media, todo asfalto. En e-bike 130 €."
+          } },
         { label: { it: "Strada · Teide Downhill", en: "Road · Teide Downhill", es: "Carretera · Teide Downhill" },
           priceAdult: 110,
-          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+          // Descritto dalla pagina del fornitore (6 ottobre 2026). Bici con
+          // casco e kit, ritiro in hotel e acqua con frutta o snack: scritti
+          // sulle sei pagine arrivate, quindi stanno qui e non sulla scheda.
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Quasi tutta discesa: il pulmino porta su a 2.200 m, sul versante ovest del Teide, e da lì si scendono circa 50 km per Chío, Guía de Isora con la pausa caffè e Los Menores, fino alla base del fornitore ad Adeje; il furgone riporta in hotel chi vuole. Facile, va bene anche per chi non pedala spesso: dai 12 anni, con un adulto. In e-bike 130 €; in mountain bike tradizionale, su richiesta, 20 € in più. Il ritiro è compreso entro 5 km dalla base di Adeje: da più lontano lo conferma l'ufficio.",
+            en: "Almost all downhill: the minibus takes you up to 2,200 m on Teide's west side, and from there you ride about 50 km down through Chío, Guía de Isora with a coffee break, and Los Menores, to the operator's base in Adeje; the van takes you back to your hotel if you like. Easy, fine even if you rarely ride: from age 12, with an adult. By e-bike €130; on a traditional mountain bike, on request, €20 extra. Pick-up is included within 5 km of the Adeje base: from further away, the office will confirm.",
+            es: "Casi todo bajada: la furgoneta sube hasta los 2.200 m, en la vertiente oeste del Teide, y desde allí se bajan unos 50 km por Chío, Guía de Isora con pausa para el café y Los Menores, hasta la base del proveedor en Adeje; la furgoneta lleva de vuelta al hotel a quien quiera. Fácil, apto aunque no montes a menudo: desde los 12 años, con un adulto. En e-bike 130 €; en bicicleta de montaña tradicional, bajo petición, 20 € más. La recogida está incluida a menos de 5 km de la base de Adeje: desde más lejos lo confirma la oficina."
+          } },
         { label: { it: "Strada · El Poris by San Isidro – TF 28", en: "Road · El Poris by San Isidro – TF 28", es: "Carretera · El Poris by San Isidro – TF 28" },
           priceAdult: 110,
-          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+          // Descritto dalla pagina del fornitore (6 ottobre 2026). Bici con
+          // casco e kit, ritiro in hotel e acqua con frutta o snack: scritti
+          // sulle sei pagine arrivate, quindi stanno qui e non sulla scheda.
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Il pulmino porta ciclisti e bici a San Isidro; da lì su e giù per la vecchia TF-28 fino a Villa de Arico, pausa caffè e discesa a El Porís, villaggio di pescatori con la spiaggia nera. Poi l'unica salita del giorno, dolce (3-5%), in mezzo al parco eolico più grande dell'isola. Circa 65 km e 1.250 m di dislivello, difficoltà media per la lunghezza, tutto asfalto. In e-bike 130 €.",
+            en: "The minibus takes riders and bikes to San Isidro; from there, up and down the old TF-28 to Villa de Arico, a coffee break and the descent to El Porís, a fishing village with a black-sand beach. Then the only climb of the day, a gentle one (3-5%), through the island's largest wind farm. About 65 km and 1,250 m of climbing, medium difficulty because of the distance, all on tarmac. By e-bike €130.",
+            es: "La furgoneta lleva ciclistas y bicis a San Isidro; desde allí, sube y baja por la antigua TF-28 hasta Villa de Arico, pausa para el café y bajada a El Porís, pueblo de pescadores con playa de arena negra. Después la única subida del día, suave (3-5%), entre el mayor parque eólico de la isla. Unos 65 km y 1.250 m de desnivel, dificultad media por la distancia, todo asfalto. En e-bike 130 €."
+          } },
         { label: { it: "Strada · Medano via Granadilla", en: "Road · Medano via Granadilla", es: "Carretera · Medano via Granadilla" },
           priceAdult: 110,
-          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+          // Descritto dalla pagina del fornitore (6 ottobre 2026). Bici con
+          // casco e kit, ritiro in hotel e acqua con frutta o snack: scritti
+          // sulle sei pagine arrivate, quindi stanno qui e non sulla scheda.
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Un anello senza salite dure: da Costa Adeje per Los Cristianos, Chayofa e La Camella, il belvedere della Centinela, San Miguel de Abona e Granadilla; poi in discesa fino a El Médano per un caffè sul mare, e ritorno lungo la costa davanti alla Montaña Roja. 65 km, 1.100 m di dislivello, facile, tutto asfalto. In e-bike 130 €.",
+            en: "A loop with no hard climbs: from Costa Adeje via Los Cristianos, Chayofa and La Camella, the La Centinela viewpoint, San Miguel de Abona and Granadilla; then downhill to El Médano for a coffee by the sea, and back along the coast past Montaña Roja. 65 km, 1,100 m of climbing, easy, all on tarmac. By e-bike €130.",
+            es: "Un circuito sin subidas duras: de Costa Adeje por Los Cristianos, Chayofa y La Camella, el mirador de La Centinela, San Miguel de Abona y Granadilla; luego bajando hasta El Médano para un café junto al mar, y vuelta por la costa frente a la Montaña Roja. 65 km, 1.100 m de desnivel, fácil, todo asfalto. En e-bike 130 €."
+          } },
         { label: { it: "Strada · Santiago del Teide", en: "Road · Santiago del Teide", es: "Carretera · Santiago del Teide" },
           priceAdult: 110,
           desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
@@ -2125,9 +2174,24 @@ const ESPLORA_CATALOG = [
           desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } }
       ]
     },
-    // La guida c'e' su tutti i giri. La bici a noleggio no: il fornitore non
-    // scrive se e' compresa, e un'icona dice "vale sempre".
+    // La guida c'e' su tutti i giri. Bici, ritiro e snack stanno dentro le
+    // varianti gia' descritte: dei giri che mancano non abbiamo la pagina, e
+    // un'icona qui direbbe "vale sempre".
     included: ["guide"],
+    // Valgono per tutti i giri: sono scritte uguali in fondo a ognuna delle
+    // pagine del fornitore. La politica di cancellazione per il maltempo e
+    // i livelli in W/kg non sono stati copiati.
+    notes: [
+      { it: "Le guide parlano italiano, inglese e spagnolo.",
+        en: "The guides speak Italian, English and Spanish.",
+        es: "Los guías hablan italiano, inglés y español." },
+      { it: "Ogni giro dura al massimo 5 ore, compresi il ritiro e il ritorno in hotel.",
+        en: "Each ride lasts 5 hours at most, including hotel pick-up and drop-off.",
+        es: "Cada recorrido dura como máximo 5 horas, incluidas la recogida y la vuelta al hotel." },
+      { it: "Se preferisci la e-bike scrivilo nelle note della richiesta: il prezzo è nella descrizione del giro.",
+        en: "If you'd rather ride an e-bike, say so in the notes of your request: the price is in the ride's description.",
+        es: "Si prefieres la e-bike, escríbelo en las notas de la solicitud: el precio está en la descripción del recorrido." }
+    ],
     family: false,
     desc: {
       it: "Sedici giri in bicicletta con guida, otto su strada e otto in mountain bike: dalle salite del Teide alle discese verso la costa, passando per Vilaflor, Masca, la corona forestale e il sud dell'isola. Mezza giornata in sella, per chi pedala già e per chi è esperto.",

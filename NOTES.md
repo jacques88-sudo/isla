@@ -16742,3 +16742,41 @@ nessuna scheda nuova, quindi nessun doppione possibile.
 - se il fornitore passa a prendere il cliente: per ora la scheda resta in
   `PICKUP_NESSUNO`, come prima;
 - da dove si parte, se la bici è compresa, giorni e orari (assenti = non li sappiamo).
+
+## v430 — Bici: le prime sei descrizioni, e il ritiro in hotel (6 ottobre 2026)
+
+Il proprietario ha mandato le pagine di sei giri su sedici: Teide West, Teide South,
+Vilaflor, Teide Downhill, El Poris e Medano via Granadilla. Descrizioni **riscritte da
+zero** nelle tre lingue.
+
+**Il prezzo doppio adesso si sa:** è la lunghezza del giro. Teide West 110 € (circa 75 km)
+o 150 € (circa 130 km); Teide South 110 € (circa 55 km) o 120 € (circa 100 km). Resta
+nell'etichetta, come deciso, e la descrizione lo spiega. Masca, l'altro "110/150", non è
+arrivato.
+
+**La e-bike costa di più** (130 € al posto di 110 €, 190 € il Teide West lungo). Non è
+diventata una variante: sarebbero 32 bottoni. Il prezzo sta nella descrizione di ogni giro,
+e una nota dice di chiederla nelle note della richiesta. Il totale resta quello della bici
+normale.
+
+**Ritiro in hotel:** le pagine scrivono "pick-up and drop-off at your hotel". `bici` passa
+da `PICKUP_NESSUNO` a `PICKUP_IN_HOTEL`, secondo la regola del 24 settembre (chi permette il
+transfer → in hotel). Sul Teide Downhill il ritiro è compreso solo entro 5 km dalla base di
+Adeje: scritto nella sua descrizione.
+
+**Icone:** bici con casco e kit (`equipment`), ritiro (`transfer`) e acqua con frutta o
+snack (`snack`) stanno **dentro le sei varianti descritte**, non sulla scheda: dei dieci
+giri che mancano non abbiamo la pagina.
+
+**Note della scheda**, uguali su tutte le pagine: guide in italiano, inglese e spagnolo;
+al massimo 5 ore compreso il ritiro; la e-bike si chiede nelle note. Niente menu
+`languages`: le lingue sono scritte nella nota, il menu si mette solo dove lo segnala
+l'ufficio.
+
+**Non copiati:** la cancellazione per maltempo con rimborso dell'acconto, i livelli in
+W/kg, le stelle di difficoltà dei tratti, il caffè "dal nostro amico Rafael".
+
+Teide Downhill: dai 12 anni con un adulto, scritto nella descrizione (non è una fascia di
+prezzo: la scheda ha solo il prezzo adulti).
+
+**Mancano ancora le pagine di:** Santiago del Teide e Masca (strada), e tutti gli otto MTB.

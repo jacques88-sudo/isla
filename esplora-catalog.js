@@ -2039,25 +2039,102 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    // La meta' "bici" della vecchia scheda, staccata: era una promessa dentro
-    // una scheda che parlava d'altro, e adesso che il trekking ha tre cammini
-    // veri con i prezzi sarebbe sparita del tutto. Resta un segnaposto — di
-    // giri in bici non abbiamo ancora ne' prezzi ne' giorni — ma un segnaposto
-    // che si vede.
+    // La meta' "bici" della vecchia scheda, staccata nel settembre 2026. Fino
+    // al 6 ottobre 2026 era un segnaposto senza prezzi; adesso porta i 16 giri
+    // di Cycling in Tenerife, 8 su strada e 8 in mountain bike.
+    //
+    // Una scheda sola con 16 varianti, come le Immersioni che ne hanno 15:
+    // scelta del proprietario (6 ottobre 2026). Il nome del giro resta quello
+    // del fornitore, uguale nelle tre lingue come "Teide Light" sul trekking:
+    // quando la richiesta arriva su WhatsApp, l'ufficio cerca quel nome.
+    // Tradotta e' solo la parola davanti, Strada o MTB.
+    //
+    // Le descrizioni dei singoli giri le manda il proprietario: per ora ogni
+    // variante dice solo che bici si usa.
     id: "bici",
     title: { it: "Bici", en: "Biking", es: "Bici" },
     category: "teide-natura",
+    // Da dove si parte non lo sappiamo ancora: i giri vanno dal Teide alla
+    // costa del sud, e il fornitore non scrive un punto di ritrovo. "Da
+    // definire" la pagina lo nasconde.
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
+    // Dove si va: la maggior parte dei giri sale al Teide, e Masca e Santiago
+    // del Teide stanno dalla parte di Los Gigantes.
+    zoneGroups: ["teide-nord", "los-gigantes"],
+    // "4/5 hours" su tutti e sedici i giri.
+    duration: { it: "4-5 ore", en: "4-5 hours", es: "4-5 horas" },
+    durationGroups: ["mezza"],
+    priceFrom: 110,
+    // Solo il prezzo adulti, per scelta del proprietario: il fornitore non da'
+    // un prezzo bambini. Niente `ages` e niente `priceInfant`.
+    priceAdult: 110,
+    options: {
+      label: { it: "Quale giro", en: "Which ride", es: "Qué recorrido" },
+      // Tre giri hanno due prezzi ("110/150", "110/120") e il fornitore non
+      // dice da cosa dipende il secondo: lo spiegheranno le descrizioni che
+      // manda il proprietario. Fino ad allora il prezzo sta **nell'etichetta**
+      // e non in `priceAdult`, come le immersioni a pacchetto: il cliente lo
+      // legge sul bottone e il totale della richiesta non si fa, invece di
+      // mostrare 110 dove potrebbe essere 150. Niente `price` nemmeno: per i
+      // pacchetti vorrebbe dire "prezzo del mezzo", che qui non e'.
+      choices: [
+        { label: { it: "Strada · Mount Teide Challenge West Slope (110/150 €)", en: "Road · Mount Teide Challenge West Slope (€110/150)", es: "Carretera · Mount Teide Challenge West Slope (110/150 €)" },
+          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+        { label: { it: "Strada · Mount Teide Challenge South Slope (110/120 €)", en: "Road · Mount Teide Challenge South Slope (€110/120)", es: "Carretera · Mount Teide Challenge South Slope (110/120 €)" },
+          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+        { label: { it: "Strada · Vilaflor Tour", en: "Road · Vilaflor Tour", es: "Carretera · Vilaflor Tour" },
+          priceAdult: 110,
+          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+        { label: { it: "Strada · Teide Downhill", en: "Road · Teide Downhill", es: "Carretera · Teide Downhill" },
+          priceAdult: 110,
+          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+        { label: { it: "Strada · El Poris by San Isidro – TF 28", en: "Road · El Poris by San Isidro – TF 28", es: "Carretera · El Poris by San Isidro – TF 28" },
+          priceAdult: 110,
+          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+        { label: { it: "Strada · Medano via Granadilla", en: "Road · Medano via Granadilla", es: "Carretera · Medano via Granadilla" },
+          priceAdult: 110,
+          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+        { label: { it: "Strada · Santiago del Teide", en: "Road · Santiago del Teide", es: "Carretera · Santiago del Teide" },
+          priceAdult: 110,
+          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+        { label: { it: "Strada · Masca Tour (110/150 €)", en: "Road · Masca Tour (€110/150)", es: "Carretera · Masca Tour (110/150 €)" },
+          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+        { label: { it: "MTB · Santiago del Teide – El Chinyero", en: "MTB · Santiago del Teide – El Chinyero", es: "MTB · Santiago del Teide – El Chinyero" },
+          priceAdult: 110,
+          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
+        { label: { it: "MTB · Izaña – El Poris, Teide Easy Downhill", en: "MTB · Izaña – El Poris, Teide Easy Downhill", es: "MTB · Izaña – El Poris, Teide Easy Downhill" },
+          priceAdult: 140,
+          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
+        { label: { it: "MTB · Teide South Off-road Downhill", en: "MTB · Teide South Off-road Downhill", es: "MTB · Teide South Off-road Downhill" },
+          priceAdult: 110,
+          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
+        { label: { it: "MTB · Off-road Escape", en: "MTB · Off-road Escape", es: "MTB · Off-road Escape" },
+          priceAdult: 110,
+          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
+        { label: { it: "MTB · Costa del Silencio – El Médano – Palm Mar", en: "MTB · Costa del Silencio – El Médano – Palm Mar", es: "MTB · Costa del Silencio – El Médano – Palm Mar" },
+          priceAdult: 110,
+          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
+        { label: { it: "MTB · Barbacoa – Corona Forestal", en: "MTB · Barbacoa – Corona Forestal", es: "MTB · Barbacoa – Corona Forestal" },
+          priceAdult: 110,
+          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
+        { label: { it: "MTB · El Médano – El Poris", en: "MTB · El Médano – El Poris", es: "MTB · El Médano – El Poris" },
+          priceAdult: 110,
+          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
+        { label: { it: "MTB · Vilaflor – Corona Forestal", en: "MTB · Vilaflor – Corona Forestal", es: "MTB · Vilaflor – Corona Forestal" },
+          priceAdult: 110,
+          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } }
+      ]
+    },
+    // La guida c'e' su tutti i giri. La bici a noleggio no: il fornitore non
+    // scrive se e' compresa, e un'icona dice "vale sempre".
+    included: ["guide"],
     family: false,
     desc: {
-      it: "Giornata in bicicletta sui sentieri dell'isola, con guida.",
-      en: "A day on two wheels along the island's trails, with a guide.",
-      es: "Jornada en bicicleta por los senderos de la isla, con guía."
+      it: "Sedici giri in bicicletta con guida, otto su strada e otto in mountain bike: dalle salite del Teide alle discese verso la costa, passando per Vilaflor, Masca, la corona forestale e il sud dell'isola. Mezza giornata in sella, per chi pedala già e per chi è esperto.",
+      en: "Sixteen guided bike rides, eight on the road and eight by mountain bike: from the climbs up Teide to the descents towards the coast, through Vilaflor, Masca, the pine forest and the south of the island. Half a day in the saddle, for regular riders and experts alike.",
+      es: "Dieciséis recorridos en bicicleta con guía, ocho por carretera y ocho en bicicleta de montaña: de las subidas al Teide a las bajadas hacia la costa, pasando por Vilaflor, Masca, la corona forestal y el sur de la isla. Media jornada sobre la bici, para quien ya pedalea y para expertos."
     },
+    nomi: ["Cycling in Tenerife"],
     // La foto che stava sulla vecchia scheda "Trekking e bici": un ciclista in
     // mezzo alle lave. Rinominata `bici.jpg` perche' adesso il nome dice quello
     // che c'e' dentro, e il file non e' citato da nessun'altra parte (solo da

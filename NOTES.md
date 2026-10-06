@@ -16709,3 +16709,36 @@ Provato in Chromium a 375 px: tre gruppi, chip "Bici", righe chiuse da €24/€
 aperta la elettrica da città: 1…7 giorni, "dall'8° giorno €12", cauzione €50,
 caricabatterie, WhatsApp con "Bici elettrica da città · motore Bosch, batteria 500 Wh".
 Nessuno scroll orizzontale. `CACHE_NAME` a `isla-v427`.
+
+## v429 — La scheda Bici prende i 16 giri di Cycling in Tenerife (6 ottobre 2026)
+
+Il segnaposto `bici` (senza prezzi da v281) diventa una scheda vera, **con lo stesso id**:
+nessuna scheda nuova, quindi nessun doppione possibile.
+
+**Deciso dal proprietario:**
+- **una scheda, 16 varianti** (8 Strada, 8 MTB), come Immersioni che ne ha 15. Il nome
+  del giro è quello del fornitore, uguale nelle tre lingue; tradotta è solo la parola
+  davanti (Strada / Road / Carretera, MTB). "Road Teide Downhill" è diventato "Teide
+  Downhill", se no il bottone diceva "Road · Road …";
+- **solo il prezzo adulti**: niente `priceChild`, `ages` né `priceInfant`;
+- **i prezzi doppi restano così** ("110/150", "110/120"): li spiegheranno le descrizioni
+  dei giri, che manda lui.
+
+**Deciso da me:**
+- i tre giri a doppio prezzo (Teide West, Teide South, Masca) hanno il prezzo
+  **nell'etichetta** e niente `priceAdult`, come le immersioni a pacchetto: il totale della
+  richiesta non si fa invece di dire 110 dove forse è 150. Niente `price` nemmeno, perché
+  `pacchetti.js` lo leggerebbe come "prezzo del mezzo". Effetto in pagina: col primo giro
+  premuto (Teide West) la riga "Prezzo" in "In breve" dice "Su richiesta";
+- `included: ["guide"]` e basta: il fornitore non dice se la bici a noleggio è compresa;
+- `zone` resta "Da definire" (nessun punto di ritrovo scritto); `zoneGroups` teide-nord
+  e los-gigantes (dove si va); durata "4-5 ore", gruppo `mezza`;
+- `nomi: ["Cycling in Tenerife"]`, per la lettura dei ticket;
+- ogni variante ha per ora solo una riga ("Su bici da strada, con guida."), in attesa
+  delle descrizioni vere.
+
+**Resta da sapere:**
+- da cosa dipende il prezzo più alto dei tre giri doppi;
+- se il fornitore passa a prendere il cliente: per ora la scheda resta in
+  `PICKUP_NESSUNO`, come prima;
+- da dove si parte, se la bici è compresa, giorni e orari (assenti = non li sappiamo).

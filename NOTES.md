@@ -16780,3 +16780,19 @@ Teide Downhill: dai 12 anni con un adulto, scritto nella descrizione (non è una
 prezzo: la scheda ha solo il prezzo adulti).
 
 **Mancano ancora le pagine di:** Santiago del Teide e Masca (strada), e tutti gli otto MTB.
+
+## v431 — Bici: Santiago del Teide e Masca (6 ottobre 2026)
+
+Arrivate le ultime due pagine su strada: **gli otto giri su strada sono completi**.
+
+- **Santiago del Teide**: 110 € (e-bike 130 €), da 70 a 85 km secondo il livello, ma il
+  prezzo è uno solo.
+- **Masca**: il "110/150" è la lunghezza, come sul Teide West: circa 60 km a 110 €,
+  circa 130 km a 150 €; in e-bike 130 € e 180 €. La pagina del fornitore scrive "60/13 km"
+  (refuso per 60/130: il riquadro del giro lungo dice 130 km) e nella difficoltà parla di
+  135 km e 3.200 m: ho messo "circa 130 km e 3.000 m", i numeri del riquadro.
+
+Stesse icone delle altre sei (bici, ritiro, snack). Non copiati: i livelli in W/kg, le
+stelle dei tratti, il "Contador Climb" col nome del ciclista.
+
+**Mancano ancora le pagine degli otto giri MTB.**

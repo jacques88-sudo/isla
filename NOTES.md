@@ -16478,3 +16478,28 @@ Le tre domande, risposte dal proprietario lo stesso giorno:
   tappe.
 
 `CACHE_NAME` → `isla-v414`.
+
+### Bananas & Wines di Canaventura (6 ottobre 2026)
+
+Scheda nuova, `bananas-wines`, dal volantino e dalla pagina "Agroturismo – Plátanos &
+Vinos" di Canaventura. Prima controllato che non ci fosse: nessuna scheda con banane o
+gofio. **Non è un doppione del First Wine Tasting Tour**, anche se la cantina "oltre i
+1200 m" può essere la stessa di Vilaflor: qui ci sono la finca di banane e il Mirador de
+La Centinela, si parte alle 8:00 e solo il martedì, e costa 68 € invece di 85.
+
+- **Titolo** "Bananas & Wines", quello inglese del volantino, uguale nelle tre lingue.
+- **68 € adulti, 58 € bambini fino a 11 anni**: fasce 12+ e 0-11 come sul Trekking,
+  stesso fornitore, dove il proprietario le ha confermate. Niente `priceInfant`: sotto i
+  12 si paga il prezzo bambini. `family: true`, perché i bambini hanno un prezzo.
+- **Solo il martedì** (`days: ["mar"]`), partenza alle 08:00, rientro alle 13:00, 5 ore.
+- **Incluso**: transfer (bus climatizzato), guida, degustazione.
+- **Ritiro sotto l'hotel**, come sulle camminate di Canaventura: `PICKUP_IN_HOTEL`.
+  Zona "Tenerife Sud", nel filtro Los Cristianos e Costa Adeje come il wine tour.
+- Il testo del fornitore è riscritto da zero; non è stato copiato niente del resto della
+  pagina (licenze, contatti, reclami).
+
+Resta in sospeso **la foto**: le due del volantino tenuto in mano non si usano, e il sito
+di Canaventura è bloccato dal proxy. Per ora in elenco c'è il riquadro grigio
+(`controlla.js` lo avvisa).
+
+`CACHE_NAME` → `isla-v415`.

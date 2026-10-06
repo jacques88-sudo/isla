@@ -16509,3 +16509,30 @@ pagina di dettaglio il tasto dello schermo intero copre un pezzo del tondo in al
 destra, niente di importante.
 
 `CACHE_NAME` → `isla-v416`.
+
+### Finca Tuno Canarias (6 ottobre 2026)
+
+Scheda nuova, `finca-tuno`, dalla pagina del fornitore (Ledesma Global SL). Controllato
+prima: nessuna scheda con fichi d'India, Higo Tinto o Valle San Lorenzo.
+
+- **Titolo** "Finca Tuno Canarias", il nome della finca, uguale nelle tre lingue. Il
+  "tuno" è il fico d'India; **Higo Tinto** è il nome registrato della loro varietà rossa
+  e resta così in tutte e tre le lingue. La pagina italiana del fornitore scrive "fico
+  Tinto", traduzione automatica di "higo": non ripresa.
+- **18 € adulti, 9 € bambini 3-12** ("sconto del 50%"), **0-2 gratis** scritto dal
+  fornitore: `priceInfant: 0`. Fasce 0-2, 3-12, 13+.
+- **Tutti i giorni**, sette turni: 09:00, 10:30, 12:30, 14:00, 15:30, 17:00, 18:30.
+  Circa 90 minuti, nel filtro "fino a 2 ore".
+- **Zona** "Valle San Lorenzo (Arona)", nel filtro Los Cristianos (8 minuti).
+- **Niente ritiro**: la pagina dà indirizzo e "come arrivare", nessun transfer. Sta in
+  `PICKUP_NESSUNO` e la richiesta non chiede l'hotel. L'indirizzo è nelle note.
+- **Niente `languages`**: la guida parla inglese, spagnolo o francese secondo il turno, e
+  le cuffie con l'audio in 16 lingue si chiedono arrivando. Non è una scelta da fare
+  prenotando, quindi sta in una nota.
+- **Incluso**: guida, degustazione. Museo e video stanno nelle tappe.
+- Non copiati: il 4,9 di Google, "posti che si riempiono in fretta", il negozio.
+
+Restano in sospeso **la foto** (riquadro grigio, `controlla.js` lo avvisa) e la conferma
+che **non c'è transfer**: è la domanda da fare a ogni fornitore nuovo.
+
+`CACHE_NAME` → `isla-v417`.

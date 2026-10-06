@@ -737,7 +737,10 @@ const PICKUP_NESSUNO = [
   // Tour di altri fornitori senza ritiro:
   "stargazing-group",
   "trenino-turistico",
-  "masca-teide-cabrio-bus"
+  "masca-teide-cabrio-bus",
+  // Finca Tuno Canarias: si arriva da soli, l'indirizzo e' nelle note
+  // (6 ottobre 2026).
+  "finca-tuno"
 ];
 
 // Gli orari del pulmino, escursione per escursione.

@@ -16827,3 +16827,20 @@ Due cose della pagina del fornitore che non tornavano:
 
 **Manca solo:** Costa del Silencio – El Médano – Palm Mar (MTB). Ha ancora la riga
 provvisoria e niente icone.
+
+## v434 — Bici completa: sedici giri su sedici (6 ottobre 2026)
+
+Arrivata l'ultima pagina, **Costa del Silencio – El Médano – Palm Mar**: il giro più
+facile, per chi va in MTB per la prima volta; 40 km, 400 m, 110 € (e-bike 130 €). Il
+fornitore scrive che esiste una versione corta "per famiglie con bambini": sta nella
+descrizione, ma `family` resta `false` — è un giro su sedici, e la versione corta non ha
+né un prezzo né un'età.
+
+**Le icone sono passate sulla scheda.** Finché mancavano delle pagine, bici, ritiro e
+snack stavano dentro le singole varianti (un'icona sulla scheda vuol dire "vale sempre").
+Adesso tutte e sedici le pagine scrivono le stesse cose, quindi `included` della scheda è
+`guide, equipment, transfer, snack` e le varianti non ne hanno più di proprie.
+
+Restano aperti: la zona di partenza ("Da definire", la pagina la nasconde; si parte
+dall'hotel), giorni e orari (assenti = non li sappiamo), e la foto, che è ancora il
+ciclista fra le lave di prima.

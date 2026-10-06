@@ -143,6 +143,30 @@
 //   mandato la richiesta. Dove c'e' un limite, sta scritto nel testo del
 //   pacchetto.
 
+// I PACCHETTI A TEMA: FOOD & WINE, PERFETTO PER 2
+//   `tema: "food-wine" | "per-due"` marca i pacchetti dei due riquadri della
+//   home con quei nomi (proprietario, 6 ottobre 2026). Funzionano come quelli
+//   di famiglia, ma senza le loro regole sui prezzi dei bambini:
+//     - si vedono da soli su `pacchetti.html?tema=food-wine` e `?tema=per-due`,
+//       dove porta il riquadro della home;
+//     - restano pacchetti: nella pagina di tutti i pacchetti ci sono lo stesso.
+//   I temi possibili stanno in PACCHETTI_TEMI qui sotto, con le chiavi dei
+//   testi della vetrina. Un tema scritto male non da' errore nella pagina —
+//   il pacchetto non esce mai nella sua vetrina — e lo dice `controlla.js`.
+//
+//   FOOD & WINE tiene **solo le degustazioni** (scelta del proprietario):
+//   le cantine, Bananas & Wines, la Finca Tuno. Non le cene-spettacolo e non
+//   le barche col pranzo a bordo: li' il cibo c'e', ma non e' il motivo per
+//   andarci.
+//
+//   PERFETTO PER 2 e' per le coppie. Dentro ci sono solo prezzi a persona o
+//   mezzi da **due** posti al massimo (la moto d'acqua doppia, il quad
+//   doppio): il numero in vetrina divide ogni mezzo per i suoi posti (vedi
+//   "IL NUMERO IN VETRINA"), e su un mezzo da quattro o sei uscirebbe il
+//   prezzo di quattro o sei persone, non quello di una coppia. Per questo la
+//   Mustang non c'e', anche se al tramonto sarebbe il pacchetto per due per
+//   eccellenza: la sua fascia piu' grande e' da quattro.
+
 // GLI ITINERARI A GIORNI (3, 5, 7)
 //   `giorni: 3 | 5 | 7` marca gli itinerari della vetrina "3/5/7 Days
 //   Experience" — il riquadro della home che fino a oggi non portava da
@@ -184,6 +208,21 @@
 const PACCHETTI_SCONTO_DEFAULT = 10;
 
 const PACCHETTI_CATEGORIE_SENZA_SCONTO = ["parchi-spettacoli"];
+
+// I temi dei pacchetti, con le chiavi di i18n che vestono la vetrina: sopra il
+// titolo, il titolo, le due righe sotto, e il titolo e la descrizione della
+// finestra del browser. Il perche' sta in testa al file, sotto "I PACCHETTI A
+// TEMA".
+const PACCHETTI_TEMI = {
+  "food-wine": {
+    eyebrow: "packs.foodEyebrow", title: "packs.foodTitle", intro: "packs.foodIntro",
+    metaTitle: "meta.food.title", metaDesc: "meta.food.desc"
+  },
+  "per-due": {
+    eyebrow: "packs.twoEyebrow", title: "packs.twoTitle", intro: "packs.twoIntro",
+    metaTitle: "meta.two.title", metaDesc: "meta.two.desc"
+  }
+};
 
 const PACCHETTI = [
 
@@ -387,6 +426,143 @@ const PACCHETTI = [
       it: "Tre sere fuori: il drag show con la cena, la notte medievale al castello e le stelle dal Teide, con il picnic al tramonto sopra le nuvole. Per chi sta in hotel a mezza pensione e la sera esce.",
       en: "Three evenings out: the drag show with dinner, the medieval night at the castle and the stars from Teide, with a picnic at sunset above the clouds. For anyone on half board who goes out in the evening.",
       es: "Tres noches fuera: el drag show con cena, la noche medieval en el castillo y las estrellas desde el Teide, con picnic al atardecer por encima de las nubes. Para quien está en media pensión y sale por la noche."
+    }
+  },
+
+  // ─── FOOD & WINE ──────────────────────────────────────────────────────────
+  // Solo le degustazioni: le regole stanno in testa al file, sotto "I
+  // PACCHETTI A TEMA".
+
+  {
+    id: "sapori-di-tenerife",
+    // 85 + 68 + 18 = 171. Le cantine sono `fixedPrice` e non si scontano:
+    // −6,80 su Bananas & Wines e −1,80 sulla Finca Tuno → 162,40 a persona.
+    // **Solo adulti**: alle cantine si sale dai 18 anni, ed e' scritto.
+    title: {
+      it: "Sapori di Tenerife",
+      en: "Flavours of Tenerife",
+      es: "Sabores de Tenerife"
+    },
+    image: "cantine-vinicole.jpg",
+    sconto: 10,
+    tema: "food-wine",
+    voci: [
+      { id: "cantine-vinicole" },
+      { id: "bananas-wines" },
+      { id: "finca-tuno" }
+    ],
+    desc: {
+      it: "L'isola si assaggia: una giornata fra le vigne e la bodega di Vilaflor, una mattina dalla finca di banane alla cantina con cinque vini, e un'ora e mezza fra i fichi d'India rossi di Valle San Lorenzo. Per adulti: alle cantine si sale dai 18 anni.",
+      en: "The island, tasted: a day among the vines and the bodega of Vilaflor, a morning from a banana farm to a winery with five wines, and an hour and a half among the red prickly pears of Valle San Lorenzo. For adults: the winery tour is 18+.",
+      es: "La isla se saborea: un día entre las viñas y la bodega de Vilaflor, una mañana de la finca platanera a la bodega con cinco vinos, y una hora y media entre los higos picos rojos de Valle San Lorenzo. Para adultos: a la bodega se va a partir de los 18 años."
+    }
+  },
+
+  {
+    id: "frutti-dell-isola",
+    // 68 + 18 = 86, tutto scontabile: −8,60 → 77,40 a persona. Due voci sole:
+    // le degustazioni sono tre, e quella che resta fuori e' l'unica dove i
+    // ragazzi non salgono — qui i bambini hanno il loro prezzo su tutte e due.
+    title: {
+      it: "Frutti dell'isola",
+      en: "Fruits of the island",
+      es: "Frutos de la isla"
+    },
+    image: "finca-tuno.jpg",
+    sconto: 10,
+    tema: "food-wine",
+    voci: [
+      { id: "bananas-wines" },
+      { id: "finca-tuno" }
+    ],
+    desc: {
+      it: "Due mattine di frutta canaria: la finca di banane con il gofio e il miele di palma, che finisce in cantina oltre i 1200 metri, e la finca dei fichi d'India rossi sopra Los Cristianos, con la degustazione alla fine. Vengono anche i bambini.",
+      en: "Two mornings of Canarian fruit: the banana farm with gofio and palm honey, ending at a winery above 1,200 metres, and the red prickly pear farm above Los Cristianos, with a tasting at the end. Children can come too.",
+      es: "Dos mañanas de fruta canaria: la finca platanera con el gofio y la miel de palma, que termina en una bodega a más de 1200 metros, y la finca de higos picos rojos sobre Los Cristianos, con degustación al final. Los niños también pueden venir."
+    }
+  },
+
+  // ─── PERFETTO PER 2 ───────────────────────────────────────────────────────
+  // Per le coppie. Solo prezzi a persona o mezzi da due posti: il perche' sta
+  // in testa al file, sotto "I PACCHETTI A TEMA".
+
+  {
+    id: "vino-e-stelle",
+    // 85 + 79 + 65 = 229. Le cantine sono `fixedPrice`: −7,90 sulle stelle e
+    // −6,50 sulla barca → 214,60 a persona. Teide: una volta, la sera.
+    title: {
+      it: "Vino e stelle",
+      en: "Wine and stars",
+      es: "Vino y estrellas"
+    },
+    image: "stargazing-vip.jpg",
+    sconto: 10,
+    tema: "per-due",
+    voci: [
+      { id: "cantine-vinicole" },
+      // optionIndex 1 = gruppo piccolo, in minivan.
+      { id: "stargazing-group", optionIndex: 1 },
+      { id: "skyline-cruiser" }
+    ],
+    desc: {
+      it: "Tre giorni lenti in due: la degustazione in una cantina di Vilaflor, in un gruppo di otto al massimo, il tramonto sopra le nuvole e le stelle al telescopio in gruppo piccolo, e tre ore sul motoryacht a cercare delfini, con il bagno in una baia riparata.",
+      en: "Three unhurried days for two: a tasting at a winery in Vilaflor, in a group of eight at most, sunset above the clouds and the stars through the telescope in a small group, and three hours on a motor yacht looking for dolphins, with a swim in a sheltered bay.",
+      es: "Tres días tranquilos para dos: la cata en una bodega de Vilaflor, en un grupo de ocho como máximo, el atardecer sobre las nubes y las estrellas al telescopio en grupo pequeño, y tres horas en el yate buscando delfines, con baño en una bahía resguardada."
+    }
+  },
+
+  {
+    id: "cena-mare-cielo",
+    // 75 + 94 + 98 = 267. Lo Scandal e' uno spettacolo e non si sconta:
+    // −7,50 sulla barca e −9,80 sull'elicottero → 249,70 a persona.
+    title: {
+      it: "Mare, cielo e una sera fuori",
+      en: "Sea, sky and a night out",
+      es: "Mar, cielo y una noche fuera"
+    },
+    image: "luxury-catamaran-3.jpg",
+    sconto: 10,
+    tema: "per-due",
+    voci: [
+      { id: "luxury-catamaran" },
+      // optionIndex 0 = 20 km sulla costa sud, il volo piu' corto.
+      { id: "helicopter-tours", optionIndex: 0 },
+      // optionIndex 0 = ingresso Oro. Vietato ai minori di 16 anni.
+      { id: "scandal-dinner-show", optionIndex: 0 }
+    ],
+    desc: {
+      it: "Il catamarano di categoria superiore, con poche persone a bordo e le aree lounge, un volo in elicottero sopra la costa sud, e una sera a cena col cabaret dello Scandal. Per adulti: allo Scandal si entra dai 16 anni.",
+      en: "The upper-class catamaran, with few people on board and lounge areas, a helicopter flight over the south coast, and an evening of dinner and cabaret at Scandal. For adults: Scandal is 16+.",
+      es: "El catamarán de categoría superior, con poca gente a bordo y zonas lounge, un vuelo en helicóptero sobre la costa sur, y una noche de cena y cabaret en el Scandal. Para adultos: al Scandal se entra desde los 16 años."
+    }
+  },
+
+  {
+    id: "adrenalina-in-due",
+    // PREZZO MISTO, ma su mezzi da due: la moto d'acqua doppia 120 : 2 = 60, il
+    // quad doppio al tramonto 130 : 2 = 65, il parapendio 95 a persona.
+    // 60 + 65 + 95 = 220, tutto scontabile: −22,00 → da 198 a persona. Qui il
+    // "da" e' proprio il prezzo di una coppia sullo stesso mezzo.
+    title: {
+      it: "Adrenalina in due",
+      en: "Adrenaline for two",
+      es: "Adrenalina para dos"
+    },
+    image: "quad-teide-sunset.jpg",
+    sconto: 10,
+    tema: "per-due",
+    voci: [
+      // optionIndex 1 = un'ora.
+      { id: "jet-ski-safari-1-2h", optionIndex: 1 },
+      // optionIndex 1 = Tramonto. Il quad sale al Teide: e' l'unica salita.
+      { id: "quad-teide-adventure", optionIndex: 1 },
+      // optionIndex 0 = 20-25 minuti, decollo a 750 m.
+      { id: "paragliding", optionIndex: 0 }
+    ],
+    desc: {
+      it: "Tre giorni in coppia, uno per elemento: un'ora in moto d'acqua lungo la costa sud, in due sulla stessa moto, il quad doppio su fino al Teide per il tramonto, e il volo in parapendio con il pilota sopra Adeje.",
+      en: "Three days as a couple, one for each element: an hour on a jet ski along the south coast, two on the same machine, the double quad up to Teide for the sunset, and the paragliding flight with a pilot over Adeje.",
+      es: "Tres días en pareja, uno por elemento: una hora en moto de agua por la costa sur, los dos en la misma moto, el quad doble subiendo al Teide para el atardecer, y el vuelo en parapente con el piloto sobre Adeje."
     }
   },
 
@@ -845,6 +1021,13 @@ function pacchettoVocePrezzoBambino(voce) {
     ? variante.priceChild
     : tour.priceChild;
   return bambino > 0 ? bambino : null;
+}
+
+// Il tema chiesto dall'indirizzo, oppure null. Un tema che non esiste vale
+// null, come per i giorni: davanti a un parametro che non si capisce si
+// mostrano tutti i pacchetti invece di una vetrina vuota.
+function pacchettiTemaChiesto(valore) {
+  return Object.prototype.hasOwnProperty.call(PACCHETTI_TEMI, valore) ? valore : null;
 }
 
 // I pacchetti per chi viaggia coi bambini. Le regole stanno in testa al file.
@@ -1651,6 +1834,22 @@ function pacchettiVestiDaFamiglia() {
   if (typeof applyI18n === "function") applyI18n();
 }
 
+// Le viste a tema, `pacchetti.html?tema=food-wine` e `?tema=per-due`: la
+// stessa pagina vestita con le chiavi di PACCHETTI_TEMI, come quella di
+// famiglia. Il piede porta a tutti i pacchetti.
+function pacchettiVestiDaTema(tema) {
+  const chiavi = PACCHETTI_TEMI[tema];
+  pacchettiCambiaChiave("packs.eyebrow", chiavi.eyebrow);
+  pacchettiCambiaChiave("packs.title", chiavi.title);
+  pacchettiCambiaChiave("packs.intro", chiavi.intro);
+  pacchettiCambiaTesta(chiavi.metaDesc, chiavi.metaTitle);
+
+  const piede = document.querySelector("[data-tema-foot]");
+  if (piede) piede.hidden = false;
+
+  if (typeof applyI18n === "function") applyI18n();
+}
+
 // La vista "3, 5 o 7 giorni", `pacchetti.html?giorni=...`, e' la terza volta
 // che questa pagina si riveste. In piu' rispetto a quella di famiglia ha la
 // riga delle pillole: e' un filtro fatto di **link**, non di bottoni, perche'
@@ -1691,8 +1890,10 @@ function initPacchettiGriglia() {
   // giorni e' un'altra domanda, e la risposta puo' essere "tutti".
   const vistaGiorni = parametri.has("giorni");
   const quanti = vistaGiorni ? pacchettiGiorniChiesti(parametri.get("giorni")) : 0;
+  const tema = vistaGiorni ? null : pacchettiTemaChiesto(parametri.get("tema"));
 
   if (vistaGiorni) pacchettiVestiDaGiorni(quanti);
+  else if (tema) pacchettiVestiDaTema(tema);
   else if (soloFamiglia) pacchettiVestiDaFamiglia();
 
   function disegna() {
@@ -1702,6 +1903,7 @@ function initPacchettiGriglia() {
     //
     // Chi entra da dove:
     //   ?giorni=...  solo gli itinerari, tutti o quelli di una durata
+    //   ?tema=...    solo i pacchetti di quel tema, che restano pacchetti
     //   ?famiglia=1  solo i pacchetti di famiglia, che restano pacchetti
     //   niente       tutti i pacchetti, compresi quelli di famiglia
     // Gli itinerari a giorni stanno **solo** nella loro vetrina: il perche' e'
@@ -1709,7 +1911,9 @@ function initPacchettiGriglia() {
     grid.innerHTML = PACCHETTI
       .filter(p => vistaGiorni
         ? (pacchettoGiorni(p) && (!quanti || pacchettoGiorni(p) === quanti))
-        : (!pacchettoGiorni(p) && (!soloFamiglia || pacchettoDiFamiglia(p))))
+        : tema
+          ? (!pacchettoGiorni(p) && p.tema === tema)
+          : (!pacchettoGiorni(p) && (!soloFamiglia || pacchettoDiFamiglia(p))))
       .filter(p => p.voci.every(v => pacchettoVoceTour(v)))
       .map(p => pacchettoTileHTML(p))
       .join("");

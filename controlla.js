@@ -603,6 +603,13 @@ function controllaPacchetti() {
       errore(dove, "lo sconto e' " + sconto + "%: deve stare fra 1 e 99.");
     }
 
+    // Il tema dei riquadri della home. Scritto male non rompe niente: il
+    // pacchetto non esce mai nella vetrina del suo tema, e nessuno lo vede.
+    if (pack.tema !== undefined && !pacchettiTemaChiesto(pack.tema)) {
+      errore(dove, 'tema "' + pack.tema + '" sconosciuto: i temi sono ' +
+        Object.keys(PACCHETTI_TEMI).join(", ") + ".");
+    }
+
     if (!Array.isArray(pack.voci) || pack.voci.length < 2) {
       errore(dove, "un pacchetto ha almeno due escursioni dentro.");
       return;

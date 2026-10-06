@@ -1365,6 +1365,51 @@ p.note-box { margin: 0 0 1rem; }
 .footer-legal strong { color: var(--text); font-weight: 600; }
 .footer-legal a { color: inherit; text-decoration: underline; }
 .footer-legal + .footer-copy { border-top: 0; }
+
+/* La pagina della privacy: un testo lungo da leggere, in tre lingue.
+   Si vede solo l'<article> della lingua scelta (il lang di <html>). */
+html:not([lang="it"]) .pp[lang="it"],
+html:not([lang="en"]) .pp[lang="en"],
+html:not([lang="es"]) .pp[lang="es"] { display: none; }
+.privacy-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+}
+.privacy-home {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+.privacy-home img { border-radius: 8px; }
+.privacy { padding-bottom: 4rem; line-height: 1.65; }
+.privacy h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 2.2rem;
+  margin: 1rem 0 .2rem;
+}
+.privacy h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.45rem;
+  margin: 2.2rem 0 .5rem;
+}
+.privacy h3 { font-size: 1rem; font-weight: 600; margin: 1.4rem 0 .3rem; }
+.privacy p, .privacy li { color: var(--text); }
+.privacy strong { font-weight: 600; }
+.privacy ul { padding-left: 1.2rem; }
+.privacy li { margin-bottom: .45rem; }
+.privacy a { text-decoration: underline; }
+.privacy .pp-date { color: var(--muted); font-size: .85rem; margin: 0 0 1.5rem; }
+
 @media (min-width: 768px) {
   .footer .wrap { max-width: var(--max-wide); }
   .footer-grid {

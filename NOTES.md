@@ -16392,3 +16392,39 @@ nelle tre lingue, come i nomi dei posti. Il telefono è un link `tel:`.
 dominio, così l'indirizzo è già quello definitivo. Va scritta nelle stesse sei pagine,
 dopo il telefono. Serve soprattutto alla privacy policy, che sul sito non c'è ancora.
 Sul sito per ora non c'è niente: né privacy policy né dati aziendali.
+
+## La privacy policy (6 ottobre 2026)
+
+`privacy.html`, linkata da "Privacy" in fondo alle sei pagine col footer, dopo il
+telefono. Il testo è scritto **tre volte nella pagina**, un `<article class="pp"
+lang="…">` per lingua, e il CSS mostra solo quello del `lang` di `<html>` (che mette
+`i18n.js`). Non sta in `i18n.js` perché è un testo lungo da rileggere tutto insieme.
+Senza JavaScript si vede l'italiano.
+
+**Titolare: Admiral Travel Agencia de Viajes SL**, non Isla (vedi "Chi c'è dietro
+Isla"). Contatto per i diritti: il WhatsApp di Isla e l'ufficio, finché non c'è l'email.
+
+Cosa dice, preso dal codice e non immaginato:
+- **WhatsApp**: nome, escursioni, date, persone, alloggio, note viaggiano nel messaggio;
+  nel database (`richieste.js` → `bookings`, `source = 'whatsapp'`) vanno solo
+  escursione, data, ora, persone e il codice di sei lettere. Nome, hotel e note **no**.
+- **Ticket di carta**: le colonne di `bookings` in `supabase/schema.sql` (hotel,
+  nazionalità, telefono, importi, venditore, foto). La foto può passare da Anthropic
+  (`leggi-ticket`).
+- **localStorage**: `isla-lang`, `isla-lista`, `isla-hotel`, `isla-richieste`,
+  `isla-ticket-risultato` (e `isla-ticket`, `isla-venditore`). Niente cookie, niente
+  statistiche.
+- **Servizi esterni**: Supabase (regione Europa), Anthropic, WhatsApp, GitHub Pages,
+  Google Fonts.
+- **Conservazione**: la pulizia mensile (`2026-09-30-pulizia-mensile.sql`, ticket delle
+  escursioni di due mesi prima) e `pulisci-foto` ogni notte.
+
+**Se il sito comincia a raccogliere un dato nuovo o a mandarlo a un servizio nuovo,
+questa pagina va cambiata insieme, in tutte e tre le lingue.**
+
+Da far confermare al proprietario (scritte nella pagina come le cose stanno di
+solito, ma non verificate): che l'operatore dell'escursione riceva nome, persone e
+punto di ritiro; per quanto Admiral tiene le chat WhatsApp. Non è stata letta da un
+avvocato: prima di aprire al pubblico conviene farla guardare a chi segue Admiral.
+Quando arriva l'email (col dominio) va aggiunta nella sezione del titolare e in quella
+dei diritti, nelle tre lingue.

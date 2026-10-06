@@ -16498,8 +16498,14 @@ La Centinela, si parte alle 8:00 e solo il martedì, e costa 68 € invece di 85
 - Il testo del fornitore è riscritto da zero; non è stato copiato niente del resto della
   pagina (licenze, contatti, reclami).
 
-Resta in sospeso **la foto**: le due del volantino tenuto in mano non si usano, e il sito
-di Canaventura è bloccato dal proxy. Per ora in elenco c'è il riquadro grigio
-(`controlla.js` lo avvisa).
+**La foto** (`assets/bananas-wines.jpg`, 1200×800, 225 KB) è la grafica del volantino,
+mandata dal proprietario: banane, uva, la vendemmia e la scritta "Bananas & Wines". È
+l'unica del catalogo con una scritta sopra, ed è una scelta sua. Prima era arrivata una
+foto del viale dei banani da 225×225: scartata, troppo piccola per 1200×800. Le due del
+volantino tenuto in mano non si usano.
 
-`CACHE_NAME` → `isla-v415`.
+Guardata nel browser a 390 px: nella card il ritaglio tiene tutta la scritta; sulla
+pagina di dettaglio il tasto dello schermo intero copre un pezzo del tondo in alto a
+destra, niente di importante.
+
+`CACHE_NAME` → `isla-v416`.

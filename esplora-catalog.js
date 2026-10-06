@@ -5593,9 +5593,10 @@ const ESPLORA_CATALOG = [
       en: "A morning in the southern hills, from bananas to wine. First a banana farm, where you see how they are grown and taste gofio, palm honey and tropical fruit; then the viewpoint over the volcanoes of San Miguel and, above 1,200 metres, a winery with five wines to try. Air-conditioned bus and guide, and you are back at the hotel by one.",
       es: "Una mañana por las medianías del sur, del plátano al vino. Primero una finca platanera, donde se ve cómo se cultiva y se prueban gofio, miel de palma y fruta tropical; luego el mirador sobre los volcanes de San Miguel y, a más de 1200 metros, una bodega con cinco vinos para catar. Bus climatizado y guía, y a la una de vuelta en el hotel."
     },
-    // Foto da avere: il volantino fotografato in mano non si usa, e il sito
-    // del fornitore e' bloccato da qui (vedi Trekking).
-    image: "",
+    // La grafica del volantino ("Bananas & Wines", banane, uva, vendemmia),
+    // mandata dal proprietario il 6 ottobre 2026 come foto della scheda. E'
+    // l'unica del catalogo con la scritta sopra: e' una scelta sua.
+    image: "bananas-wines.jpg",
     published: true
   },
   {

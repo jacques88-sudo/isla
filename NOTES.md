@@ -16617,3 +16617,26 @@ tramonto fra i Roques (`Cat-avventura.jpg`, la stessa della scheda). Provata la
 richiesta: una Mustang per due, un buggy da due e 2 adulti fanno €522, cioè 2 × 261.
 
 `CACHE_NAME` → `isla-v422`.
+
+### "Food & Wine" diventa "Food Experience", con le escursioni singole (6 ottobre 2026)
+
+Due correzioni del proprietario sul riquadro della home:
+- **il nome**: "Food Experience", uguale nelle tre lingue (chiave `bento.food`);
+- **dove porta**: alle degustazioni **una per una**, non ai pacchetti.
+
+Le escursioni si vedono nell'elenco, `escursioni.html?sel=food`. Il meccanismo è nuovo e
+generico: **`SELEZIONI`** in `esplora-catalog.js`, accanto a `RACCOMANDATE`. Ogni
+selezione ha i suoi id, nell'ordine in cui escono, e la chiave di i18n del titolo. Non è
+un filtro della riga delle pillole: ci si arriva solo dal link, nessuna pillola è accesa,
+e toccandone una (o cercando) si torna al catalogo normale. Una chiave sconosciuta
+nell'indirizzo vale come se non ci fosse. `controlla.js` verifica id, pubblicazione e
+titolo.
+
+Dentro: First Wine Tasting Tour, Bananas & Wines, Finca Tuno, le stesse tre di prima.
+
+Il tema `food-wine` dei pacchetti è stato tolto, con i suoi testi. **I due pacchetti
+("Sapori di Tenerife", "Frutti dell'isola") restano**, fra quelli normali: si tolgono con
+una riga se il proprietario non li vuole. `pacchetti.html?tema=food-wine` mostra ora tutti
+i pacchetti, come ogni tema sconosciuto. "Perfetto per 2" non cambia.
+
+`CACHE_NAME` → `isla-v423`.

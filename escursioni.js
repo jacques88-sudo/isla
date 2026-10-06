@@ -892,6 +892,10 @@ function initCatalog() {
   const categorieDaLink = (params.get("cat") || "").split(",")
     .filter(id => CATEGORIES.some(c => c.id === id));
   const queryDaLink = (params.get("q") || "").trim();
+  // `?sel=food`: una selezione di SELEZIONI (esplora-catalog.js). Una chiave
+  // che non esiste vale come se non ci fosse, come le categorie sconosciute.
+  const selezioneDaLink = Object.prototype.hasOwnProperty.call(SELEZIONI, params.get("sel"))
+    ? params.get("sel") : null;
   // Chi arriva senza scegliere niente (il bottone "Esperienze", "Vedi tutte")
   // trova acceso il primo filtro, "Raccomandate": le schede che spingiamo.
   // Con una categoria nel link, una ricerca dalla barra della home o il
@@ -899,7 +903,8 @@ function initCatalog() {
   // precise, e rispondere con quattro schede soltanto sarebbe sbagliato.
   const state = {
     categories: categorieDaLink,
-    recommended: !categorieDaLink.length && !queryDaLink && params.get("family") !== "1",
+    recommended: !categorieDaLink.length && !queryDaLink && !selezioneDaLink && params.get("family") !== "1",
+    selezione: selezioneDaLink,
     family: params.get("family") === "1",
     query: queryDaLink.toLowerCase(),
     // Il bottone "Filtri": una zona e una durata al massimo, null = tutte.
@@ -927,6 +932,7 @@ function initCatalog() {
       btn.dataset.cat = cat.id;
       btn.addEventListener("click", () => {
         state.recommended = cat.id === "raccomandate";
+        state.selezione = null;
         state.categories = state.recommended || cat.id === "tutte" ? [] : [cat.id];
         render();
       });
@@ -996,12 +1002,14 @@ function initCatalog() {
     }
     if (titleEl) {
       titleEl.textContent = cat ? tf(cat.name)
+        : state.selezione ? t(SELEZIONI[state.selezione].title)
         : state.recommended ? t("catalog.recommendedTitle") : t("catalog.title");
     }
   }
 
   function matches(tour) {
     if (state.recommended && !RACCOMANDATE.includes(tour.id)) return false;
+    if (state.selezione && !SELEZIONI[state.selezione].ids.includes(tour.id)) return false;
     // Basta che UNA delle categorie della scheda sia fra quelle scelte: le
     // schede con `alsoIn` stanno in piu' di una, ed escono sotto ognuna.
     if (state.categories.length &&
@@ -1030,6 +1038,9 @@ function initCatalog() {
     // catalogo: la prima e' quella che si vuole far vedere per prima.
     if (state.recommended) {
       results.sort((a, b) => RACCOMANDATE.indexOf(a.id) - RACCOMANDATE.indexOf(b.id));
+    } else if (state.selezione) {
+      const ids = SELEZIONI[state.selezione].ids;
+      results.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
     }
 
     dipingiTestata();
@@ -1038,7 +1049,10 @@ function initCatalog() {
     results.forEach(tour => grid.appendChild(tourCard(tour)));
 
     chipRow.querySelectorAll(".chip").forEach(btn => {
-      const attivo = state.recommended ? btn.dataset.cat === "raccomandate"
+      // Con una selezione aperta non e' acceso nessun filtro della riga: la
+      // selezione non e' fra quelli, e "Tutte" direbbe il falso.
+      const attivo = state.selezione ? false
+        : state.recommended ? btn.dataset.cat === "raccomandate"
         : state.categories.length ? state.categories.includes(btn.dataset.cat)
         : btn.dataset.cat === "tutte";
       btn.classList.toggle("is-active", attivo);
@@ -1093,6 +1107,7 @@ function initCatalog() {
       // intero: fra quattro schede non la troverebbe, e la pagina vuota
       // direbbe che la barca non ce l'abbiamo.
       if (state.query && state.recommended) state.recommended = false;
+      if (state.query && state.selezione) state.selezione = null;
       render();
     });
   }

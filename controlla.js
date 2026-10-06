@@ -496,6 +496,23 @@ function controllaRaccomandate() {
   if (new Set(RACCOMANDATE).size !== RACCOMANDATE.length) avviso("RACCOMANDATE", "un id e' scritto due volte.");
 }
 
+// Le selezioni dei riquadri della home: stesso controllo delle raccomandate.
+function controllaSelezioni() {
+  Object.keys(SELEZIONI).forEach(chiave => {
+    const dove = "SELEZIONI." + chiave;
+    const sel = SELEZIONI[chiave];
+    if (!sel.ids || !sel.ids.length) avviso(dove, "la lista e' vuota: la pagina non mostra niente.");
+    if (!sorgenteI18n.includes('"' + sel.title + '":')) {
+      errore(dove, 'il titolo "' + sel.title + '" non e\' una chiave di i18n.js.');
+    }
+    (sel.ids || []).forEach(id => {
+      const t = ESPLORA_CATALOG.find(x => x.id === id);
+      if (!t) errore(dove, `"${id}" non e' l'id di nessuna scheda.`);
+      else if (!t.published) errore(dove, `"${id}" non e' pubblicata: nella selezione non uscirebbe.`);
+    });
+  });
+}
+
 // ─── 10. Le chiavi i18n in tutte e tre le lingue ───────────────────────────
 function controllaI18n() {
   // Fino a fine riga, non fino alla prima "}": le chiavi con segnaposto come
@@ -800,6 +817,7 @@ ESPLORA_CATALOG.forEach(t => CONTROLLI.forEach(c => c(t)));
 controllaIdUnici();
 controllaNomi();
 controllaRaccomandate();
+controllaSelezioni();
 controllaI18n();
 controllaPacchetti();
 controllaServiceWorker();

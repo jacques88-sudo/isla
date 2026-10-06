@@ -153,21 +153,22 @@
 //   mandato la richiesta. Dove c'e' un limite, sta scritto nel testo del
 //   pacchetto.
 
-// I PACCHETTI A TEMA: FOOD & WINE, PERFETTO PER 2
-//   `tema: "food-wine" | "per-due"` marca i pacchetti dei due riquadri della
-//   home con quei nomi (proprietario, 6 ottobre 2026). Funzionano come quelli
-//   di famiglia, ma senza le loro regole sui prezzi dei bambini:
-//     - si vedono da soli su `pacchetti.html?tema=food-wine` e `?tema=per-due`,
-//       dove porta il riquadro della home;
+// I PACCHETTI A TEMA: PERFETTO PER 2
+//   `tema: "per-due"` marca i pacchetti del riquadro della home con quel nome
+//   (proprietario, 6 ottobre 2026). Funzionano come quelli di famiglia, ma
+//   senza le loro regole sui prezzi dei bambini:
+//     - si vedono da soli su `pacchetti.html?tema=per-due`, dove porta il
+//       riquadro della home;
 //     - restano pacchetti: nella pagina di tutti i pacchetti ci sono lo stesso.
 //   I temi possibili stanno in PACCHETTI_TEMI qui sotto, con le chiavi dei
 //   testi della vetrina. Un tema scritto male non da' errore nella pagina —
 //   il pacchetto non esce mai nella sua vetrina — e lo dice `controlla.js`.
 //
-//   FOOD & WINE tiene **solo le degustazioni** (scelta del proprietario):
-//   le cantine, Bananas & Wines, la Finca Tuno. Non le cene-spettacolo e non
-//   le barche col pranzo a bordo: li' il cibo c'e', ma non e' il motivo per
-//   andarci.
+//   C'era anche un tema "food-wine", con i due pacchetti delle degustazioni.
+//   Lo stesso giorno il proprietario ha rinominato il riquadro "Food
+//   Experience" e l'ha fatto puntare alle escursioni **singole**
+//   (`escursioni.html?sel=food`, vedi SELEZIONI in esplora-catalog.js): il
+//   tema non c'e' piu', i due pacchetti restano fra quelli normali.
 //
 //   PERFETTO PER 2 e' per le coppie, e il numero in vetrina e' quello di
 //   **due persone**. Il conto normale divide ogni mezzo per il piu' capiente
@@ -224,10 +225,6 @@ const PACCHETTI_CATEGORIE_SENZA_SCONTO = ["parchi-spettacoli"];
 // finestra del browser. Il perche' sta in testa al file, sotto "I PACCHETTI A
 // TEMA".
 const PACCHETTI_TEMI = {
-  "food-wine": {
-    eyebrow: "packs.foodEyebrow", title: "packs.foodTitle", intro: "packs.foodIntro",
-    metaTitle: "meta.food.title", metaDesc: "meta.food.desc"
-  },
   "per-due": {
     eyebrow: "packs.twoEyebrow", title: "packs.twoTitle", intro: "packs.twoIntro",
     metaTitle: "meta.two.title", metaDesc: "meta.two.desc"
@@ -439,9 +436,9 @@ const PACCHETTI = [
     }
   },
 
-  // ─── FOOD & WINE ──────────────────────────────────────────────────────────
-  // Solo le degustazioni: le regole stanno in testa al file, sotto "I
-  // PACCHETTI A TEMA".
+  // ─── LE DEGUSTAZIONI ──────────────────────────────────────────────────────
+  // Nati per il riquadro "Food & Wine", che oggi si chiama "Food Experience"
+  // e porta alle escursioni singole: qui restano pacchetti normali.
 
   {
     id: "sapori-di-tenerife",
@@ -455,7 +452,6 @@ const PACCHETTI = [
     },
     image: "cantine-vinicole.jpg",
     sconto: 10,
-    tema: "food-wine",
     voci: [
       { id: "cantine-vinicole" },
       { id: "bananas-wines" },
@@ -480,7 +476,6 @@ const PACCHETTI = [
     },
     image: "finca-tuno.jpg",
     sconto: 10,
-    tema: "food-wine",
     voci: [
       { id: "bananas-wines" },
       { id: "finca-tuno" }
@@ -1875,7 +1870,7 @@ function pacchettiVestiDaFamiglia() {
   if (typeof applyI18n === "function") applyI18n();
 }
 
-// Le viste a tema, `pacchetti.html?tema=food-wine` e `?tema=per-due`: la
+// Le viste a tema, oggi solo `pacchetti.html?tema=per-due`: la
 // stessa pagina vestita con le chiavi di PACCHETTI_TEMI, come quella di
 // famiglia. Il piede porta a tutti i pacchetti.
 function pacchettiVestiDaTema(tema) {

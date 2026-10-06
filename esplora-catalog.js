@@ -493,6 +493,23 @@ const RACCOMANDATE = [
   "jet-ski-safari-1-2h"
 ];
 
+// Le SELEZIONI: elenchi di schede scelti a mano, a cui porta un riquadro della
+// home. Si aprono con `escursioni.html?sel=<chiave>`, che mostra solo quelle
+// schede, nell'ordine scritto qui, col titolo `title` (una chiave di i18n).
+// Come le raccomandate, ma non sono un filtro della riga: ci si arriva solo
+// dal link, e toccando una categoria si torna al catalogo normale.
+// Un id sbagliato o una scheda non pubblicata li segnala `controlla.js`.
+const SELEZIONI = {
+  // "Food Experience" (proprietario, 6 ottobre 2026): le degustazioni, una per
+  // una. Prima il riquadro portava a due pacchetti; il proprietario vuole le
+  // escursioni singole. Solo le degustazioni, non le cene-spettacolo e non le
+  // barche col pranzo a bordo: anche questa e' una sua scelta.
+  food: {
+    title: "catalog.foodTitle",
+    ids: ["cantine-vinicole", "bananas-wines", "finca-tuno"]
+  }
+};
+
 // I gruppi del bottone "Filtri" nell'elenco. Le zone scritte nelle schede sono
 // ventisei, ognuna a modo suo ("Puerto Colón", "Costa Adeje – Los Cristianos"):
 // un filtro con ventisei bottoni non serve a nessuno, quindi si raggruppano.

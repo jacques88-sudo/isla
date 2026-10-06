@@ -16540,6 +16540,7 @@ invece che dal centro, per tenere quello che conta.
   marchio è quello della finca, cioè il soggetto, come la livrea di una barca.
 Prima erano arrivate tre anteprime di Google da 225×225: scartate, troppo piccole.
 
-Resta da confermare che **non c'è transfer**: è la domanda da fare a ogni fornitore nuovo.
+**Niente ritiro in hotel**: confermato dal proprietario lo stesso giorno. La scheda
+resta in `PICKUP_NESSUNO`, e non resta niente in sospeso.
 
-`CACHE_NAME` → `isla-v418`.
+`CACHE_NAME` → `isla-v419`.

@@ -168,7 +168,8 @@
 //   Lo stesso giorno il proprietario ha rinominato il riquadro "Food
 //   Experience" e l'ha fatto puntare alle escursioni **singole**
 //   (`escursioni.html?sel=food`, vedi SELEZIONI in esplora-catalog.js): il
-//   tema non c'e' piu', i due pacchetti restano fra quelli normali.
+//   tema non c'e' piu', e nemmeno i due pacchetti ("Sapori di Tenerife",
+//   "Frutti dell'isola"): tolti dal proprietario lo stesso giorno.
 //
 //   PERFETTO PER 2 e' per le coppie, e il numero in vetrina e' quello di
 //   **due persone**. Il conto normale divide ogni mezzo per il piu' capiente
@@ -433,57 +434,6 @@ const PACCHETTI = [
       it: "Tre sere fuori: il drag show con la cena, la notte medievale al castello e le stelle dal Teide, con il picnic al tramonto sopra le nuvole. Per chi sta in hotel a mezza pensione e la sera esce.",
       en: "Three evenings out: the drag show with dinner, the medieval night at the castle and the stars from Teide, with a picnic at sunset above the clouds. For anyone on half board who goes out in the evening.",
       es: "Tres noches fuera: el drag show con cena, la noche medieval en el castillo y las estrellas desde el Teide, con picnic al atardecer por encima de las nubes. Para quien está en media pensión y sale por la noche."
-    }
-  },
-
-  // ─── LE DEGUSTAZIONI ──────────────────────────────────────────────────────
-  // Nati per il riquadro "Food & Wine", che oggi si chiama "Food Experience"
-  // e porta alle escursioni singole: qui restano pacchetti normali.
-
-  {
-    id: "sapori-di-tenerife",
-    // 85 + 68 + 18 = 171. Le cantine sono `fixedPrice` e non si scontano:
-    // −6,80 su Bananas & Wines e −1,80 sulla Finca Tuno → 162,40 a persona.
-    // **Solo adulti**: alle cantine si sale dai 18 anni, ed e' scritto.
-    title: {
-      it: "Sapori di Tenerife",
-      en: "Flavours of Tenerife",
-      es: "Sabores de Tenerife"
-    },
-    image: "cantine-vinicole.jpg",
-    sconto: 10,
-    voci: [
-      { id: "cantine-vinicole" },
-      { id: "bananas-wines" },
-      { id: "finca-tuno" }
-    ],
-    desc: {
-      it: "L'isola si assaggia: una giornata fra le vigne e la bodega di Vilaflor, una mattina dalla finca di banane alla cantina con cinque vini, e un'ora e mezza fra i fichi d'India rossi di Valle San Lorenzo. Per adulti: alle cantine si sale dai 18 anni.",
-      en: "The island, tasted: a day among the vines and the bodega of Vilaflor, a morning from a banana farm to a winery with five wines, and an hour and a half among the red prickly pears of Valle San Lorenzo. For adults: the winery tour is 18+.",
-      es: "La isla se saborea: un día entre las viñas y la bodega de Vilaflor, una mañana de la finca platanera a la bodega con cinco vinos, y una hora y media entre los higos picos rojos de Valle San Lorenzo. Para adultos: a la bodega se va a partir de los 18 años."
-    }
-  },
-
-  {
-    id: "frutti-dell-isola",
-    // 68 + 18 = 86, tutto scontabile: −8,60 → 77,40 a persona. Due voci sole:
-    // le degustazioni sono tre, e quella che resta fuori e' l'unica dove i
-    // ragazzi non salgono — qui i bambini hanno il loro prezzo su tutte e due.
-    title: {
-      it: "Frutti dell'isola",
-      en: "Fruits of the island",
-      es: "Frutos de la isla"
-    },
-    image: "finca-tuno.jpg",
-    sconto: 10,
-    voci: [
-      { id: "bananas-wines" },
-      { id: "finca-tuno" }
-    ],
-    desc: {
-      it: "Due mattine di frutta canaria: la finca di banane con il gofio e il miele di palma, che finisce in cantina oltre i 1200 metri, e la finca dei fichi d'India rossi sopra Los Cristianos, con la degustazione alla fine. Vengono anche i bambini.",
-      en: "Two mornings of Canarian fruit: the banana farm with gofio and palm honey, ending at a winery above 1,200 metres, and the red prickly pear farm above Los Cristianos, with a tasting at the end. Children can come too.",
-      es: "Dos mañanas de fruta canaria: la finca platanera con el gofio y la miel de palma, que termina en una bodega a más de 1200 metros, y la finca de higos picos rojos sobre Los Cristianos, con degustación al final. Los niños también pueden venir."
     }
   },
 

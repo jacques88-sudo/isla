@@ -5459,23 +5459,72 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "cantine-vinicole",
-    title: {
-      it: "Cantine vinicole con sommelier",
-      en: "Wineries with a sommelier",
-      es: "Bodegas con sumiller"
-    },
+    // Riempita il 6 ottobre 2026 dalla pagina del negozio di Admiral ("First
+    // Wine Tasting Tour", Tienda/Adventure Tickets). L'id resta quello del
+    // segnaposto: i codici interni non si cambiano, si romperebbero i link.
+    // Il titolo invece e' quello di Admiral, uguale nelle tre lingue: il
+    // vecchio "con sommelier" non lo diceva nessuno, la pagina parla di
+    // "esperti" della cantina.
+    title: "First Wine Tasting Tour",
     category: "tour-isola",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
+    // Il campo si legge "Punto di partenza", e si parte dal sud come per tutte
+    // le escursioni col ritiro. Dove sta la cantina la pagina non lo dice: per
+    // questo manca `zoneGroups`, da chiedere al proprietario invece di
+    // indovinarlo (controlla.js lo ricorda con un avviso).
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    // Ritiro verso le 10:00, rientro verso le 15:00: cinque ore, "circa"
+    // perche' il fornitore scrive "approximately" su tutte e due le ore.
+    duration: { it: "5 ore circa", en: "About 5 hours", es: "5 horas aprox." },
+    durationGroups: ["mezza"],
+    // Un solo prezzo, 85 € a persona. Niente prezzo bambini e niente fasce
+    // d'eta': la pagina non li scrive, e per una degustazione di vino non e'
+    // detto che i minori salgano. priceChild a 0 = "non ancora deciso", la
+    // riga non compare. `family` resta false finche' non si sa.
+    // `fixedPrice` c'era gia' sul segnaposto, scelto dal proprietario.
+    priceFrom: 85,
     fixedPrice: true,
-    priceAdult: 0,
+    priceAdult: 85,
     priceChild: 0,
     family: false,
+    // "Tuesday, Wednesday Thursday & Fridays only". **mar e' martedi', mer e'
+    // mercoledi'.**
+    days: ["mar", "mer", "gio", "ven"],
+    // L'ora del ritiro "approximately 10.00am": e' l'unica partenza, e la nota
+    // qui sotto dice che l'ora esatta dipende dall'hotel e la conferma
+    // l'ufficio.
+    times: ["10:00"],
+    // Il trasporto e' compreso (ritiro in hotel: la scheda sta in
+    // PICKUP_IN_HOTEL, hotel.js). "Experts showcase the wine making process"
+    // e' la guida; le tapas sono `fingerfood`.
+    included: ["transfer", "guide", "tasting", "fingerfood"],
+    itinerary: [
+      { time: "10:00",
+        text: { it: "Ritiro in hotel, verso le 10:00",
+                en: "Hotel pickup, around 10:00",
+                es: "Recogida en el hotel, hacia las 10:00" } },
+      { text: { it: "Giro fra le vigne e visita della bodega tradizionale",
+                en: "A walk through the vineyard and a visit to the traditional bodega",
+                es: "Paseo por el viñedo y visita a la bodega tradicional" } },
+      { text: { it: "Come nasce il vino, spiegato da chi lo fa, e la degustazione con le tapas",
+                en: "How the wine is made, explained by the people who make it, then the tasting with tapas",
+                es: "Cómo se hace el vino, contado por quien lo elabora, y la cata con tapas" } },
+      { time: "15:00",
+        text: { it: "Rientro in hotel, verso le 15:00",
+                en: "Back at the hotel, around 15:00",
+                es: "Regreso al hotel, hacia las 15:00" } }
+    ],
+    notes: [
+      { it: "Il pulmino passa verso le 10:00 e si rientra verso le 15:00: l'ora esatta del ritiro dipende dall'hotel e te la confermiamo insieme alla prenotazione.",
+        en: "The minibus comes by around 10:00 and you are back around 15:00: the exact pickup time depends on your hotel and we confirm it with your booking.",
+        es: "El minibús pasa hacia las 10:00 y se vuelve hacia las 15:00: la hora exacta de recogida depende del hotel y te la confirmamos con la reserva." },
+      { it: "Gruppi piccoli: al massimo 8 persone per tour.",
+        en: "Small groups: no more than 8 people per tour.",
+        es: "Grupos pequeños: como máximo 8 personas por tour." }
+    ],
     desc: {
-      it: "Degustazione di vini vulcanici e prodotti tipici, guidati da un sommelier.",
-      en: "Tasting of volcanic wines and local produce, led by a sommelier.",
-      es: "Cata de vinos volcánicos y productos típicos, guiada por un sumiller."
+      it: "Una giornata in una cantina di Tenerife, in gruppo da otto al massimo. Si cammina fra le vigne, si entra nella bodega tradizionale e chi fa il vino racconta come nasce, bicchiere dopo bicchiere, con le tapas in tavola. Il pulmino passa a prenderti in hotel e ti riporta a metà pomeriggio.",
+      en: "A day at a Tenerife winery, in a group of eight at most. You walk through the vines, step into the traditional bodega and the winemakers tell you how the wine is made, glass after glass, with tapas on the table. The minibus picks you up at your hotel and brings you back mid-afternoon.",
+      es: "Un día en una bodega de Tenerife, en grupos de ocho como máximo. Se pasea entre las viñas, se entra en la bodega tradicional y quien hace el vino cuenta cómo nace, copa tras copa, con tapas en la mesa. El minibús te recoge en el hotel y te devuelve a media tarde."
     },
     image: "cantine-vinicole.jpg",
     published: true

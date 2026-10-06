@@ -16657,3 +16657,16 @@ Su richiesta del proprietario. Via il blocco `<section class="steps">` da `index
 chiavi `steps.*` da `i18n.js` e gli stili `.steps`/`.step*` da `styles.css` (non li usava
 nessun'altra pagina; `.stepper` è un'altra cosa e resta). Ora dopo i riquadri della bento
 si passa subito alle Categorie. Alzato `CACHE_NAME` in `sw.js` a `isla-v425`.
+
+### Teide by Night (`stargazing-group`): quattro foto in più (6 ottobre 2026)
+
+Arrivate da WhatsApp (9 settembre), tutte verticali: ritagliate a mano a 1200×800 invece
+che dal centro, perché il ritaglio centrale tagliava il soggetto.
+- `stargazing-group-2.jpg` e `-3.jpg`: coppia e gruppo col telescopio, Las Cañadas dietro.
+  Tenuta la parte bassa (persone e telescopio), persa un po' di cielo.
+- `stargazing-group-4.jpg`: la Luna al telescopio, ritagliata dall'alto (la Luna sta lì).
+- `stargazing-group-5.jpg`: la stessa Luna più piccola; pesa 53 KB, sotto i 100 KB
+  della regola, perché è quasi tutta nera.
+Sul PC non c'è Python: ritaglio fatto con PowerShell e System.Drawing (qualità 82).
+Nelle foto 2 e 3 le persone si riconoscono: il proprietario ha deciso di pubblicarle.
+`image` resta quella di prima. Alzato `CACHE_NAME` a `isla-v426`.

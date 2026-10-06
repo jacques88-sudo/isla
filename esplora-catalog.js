@@ -5482,7 +5482,8 @@ const ESPLORA_CATALOG = [
     // 6 ottobre 2026): come sull'Utopia, solo la fascia degli adulti, niente
     // priceChild e niente priceInfant — qui non vogliono dire "non lo
     // sappiamo", vogliono dire "non puo' venire". Con un bambino nella
-    // richiesta il totale non si fa. 18+ perche' e' una degustazione di vino.
+    // richiesta il totale non si fa. 18+ perche' e' una degustazione di vino:
+    // proposto da me, confermato dal proprietario lo stesso giorno.
     // `fixedPrice` c'era gia' sul segnaposto, scelto dal proprietario.
     priceFrom: 85,
     fixedPrice: true,
@@ -5540,7 +5541,7 @@ const ESPLORA_CATALOG = [
     // Canaventura, "Agroturismo – Plátanos & Vinos" (sul volantino "Bananas &
     // Wines"), dal volantino e dalla pagina del fornitore mandati il 6 ottobre
     // 2026. Il titolo e' quello inglese del volantino, uguale nelle tre
-    // lingue come gli altri nomi dei fornitori.
+    // lingue come gli altri nomi dei fornitori: confermato dal proprietario.
     // Non e' un doppione del First Wine Tasting Tour qui sopra, anche se la
     // cantina "a piu' di 1200 m" puo' essere la stessa: qui c'e' la finca di
     // banane e il mirador, si parte alle 8 e solo il martedi', costa 68 € e

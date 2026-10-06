@@ -16468,8 +16468,8 @@ una scheda nuova: l'id resta, la foto resta.
 
 Le tre domande, risposte dal proprietario lo stesso giorno:
 - **i bambini non salgono**: `ages: { adult: "18+" }` e nient'altro, come l'Utopia;
-  priceChild e priceInfant assenti vogliono dire "non può venire". 18+ è una scelta mia:
-  è una degustazione di vino. Con un bambino nella richiesta il totale non si fa, e una
+  priceChild e priceInfant assenti vogliono dire "non può venire". 18+ l'ho proposto io,
+  perché è una degustazione di vino, e il proprietario l'ha confermato. Con un bambino nella richiesta il totale non si fa, e una
   nota dice "solo per adulti";
 - **il ritiro è sotto l'hotel**: confermato `PICKUP_IN_HOTEL`;
 - **la cantina è a Vilaflor, ma si parte dal sud**: la zona scritta è "Los Cristianos e
@@ -16487,7 +16487,8 @@ gofio. **Non è un doppione del First Wine Tasting Tour**, anche se la cantina "
 1200 m" può essere la stessa di Vilaflor: qui ci sono la finca di banane e il Mirador de
 La Centinela, si parte alle 8:00 e solo il martedì, e costa 68 € invece di 85.
 
-- **Titolo** "Bananas & Wines", quello inglese del volantino, uguale nelle tre lingue.
+- **Titolo** "Bananas & Wines", quello inglese del volantino, uguale nelle tre lingue:
+  confermato dal proprietario.
 - **68 € adulti, 58 € bambini fino a 11 anni**: fasce 12+ e 0-11 come sul Trekking,
   stesso fornitore, dove il proprietario le ha confermate. Niente `priceInfant`: sotto i
   12 si paga il prezzo bambini. `family: true`, perché i bambini hanno un prezzo.
@@ -16543,4 +16544,4 @@ Prima erano arrivate tre anteprime di Google da 225×225: scartate, troppo picco
 **Niente ritiro in hotel**: confermato dal proprietario lo stesso giorno. La scheda
 resta in `PICKUP_NESSUNO`, e non resta niente in sospeso.
 
-`CACHE_NAME` → `isla-v419`.
+`CACHE_NAME` → `isla-v420` (con le due conferme del proprietario: 18+ e il titolo).

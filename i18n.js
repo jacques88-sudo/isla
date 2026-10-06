@@ -126,17 +126,6 @@ const I18N = {
   "rent.lic.A2":        { it: "Patente A2 o A", en: "A2 or A licence", es: "Carnet A2 o A" },
   "rent.lic.A":         { it: "Patente A", en: "A licence", es: "Carnet A" },
 
-  // ── i tre passi ─────────────────────────────────────────────────────────
-  "steps.eyebrow":      { it: "The journey", en: "The journey", es: "The journey" },
-  "steps.title":        { it: "Tre passi, nessun pensiero", en: "Three steps, no worries", es: "Tres pasos, sin preocupaciones" },
-  "steps.intro":        { it: "Dalla scelta dell'esperienza alla conferma: pochi minuti, dal telefono. Il catalogo lo sfogli anche senza connessione.", en: "From choosing the experience to the confirmation: a few minutes, from your phone. You can browse the catalogue even offline.", es: "Desde elegir la experiencia hasta la confirmación: pocos minutos, desde el móvil. El catálogo lo consultas incluso sin conexión." },
-  "steps.1.title":      { it: "Scegli", en: "Choose", es: "Elige" },
-  "steps.1.desc":       { it: "Sfoglia escursioni e pacchetti selezionati.", en: "Browse hand-picked excursions and packages.", es: "Explora excursiones y paquetes seleccionados." },
-  "steps.2.title":      { it: "Richiedi", en: "Ask", es: "Solicita" },
-  "steps.2.desc":       { it: "Ci scrivi su WhatsApp con data e partecipanti.", en: "Message us on WhatsApp with your date and group.", es: "Nos escribes por WhatsApp con fecha y participantes." },
-  "steps.3.title":      { it: "Vivi", en: "Live it", es: "Vívelo" },
-  "steps.3.desc":       { it: "Confermiamo entro 24 ore e pensi solo a goderti la giornata.", en: "We confirm within 24 hours and you just enjoy the day.", es: "Confirmamos en 24 horas y tú solo disfrutas del día." },
-
   // ── categorie ───────────────────────────────────────────────────────────
   "categories.eyebrow": { it: "Esplora", en: "Explore", es: "Explora" },
   "categories.title":   { it: "Categorie", en: "Categories", es: "Categorías" },

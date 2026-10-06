@@ -1697,7 +1697,7 @@ Cose da ricordare, imparate sistemando la versione PC:
   centratura. E' successo a `.bento-grid`
 - In una griglia a colonne di pari altezza, lo spazio in piu' viene diviso fra
   le righe: senza `align-content: start` la colonna col testo piu' corto scende
-  rispetto alle altre. E' successo ai tre passi
+  rispetto alle altre. E' successo ai tre passi (sezione poi tolta)
 - Gli attributi `width`/`height` nell'HTML di un `<img>` battono `aspect-ratio`
   se il CSS non dice `height: auto`. La foto di "Chi siamo" restava alta 1100px
   su tutti gli schermi
@@ -16650,3 +16650,10 @@ pacchetti in "tutti" scendono da 18 a 16. Chi apre un vecchio link
 tutti i pacchetti, verificato nel browser.
 
 `CACHE_NAME` → `isla-v424`.
+
+### Home: tolta la sezione "Tre passi, nessun pensiero" (6 ottobre 2026)
+
+Su richiesta del proprietario. Via il blocco `<section class="steps">` da `index.html`, le
+chiavi `steps.*` da `i18n.js` e gli stili `.steps`/`.step*` da `styles.css` (non li usava
+nessun'altra pagina; `.stepper` è un'altra cosa e resta). Ora dopo i riquadri della bento
+si passa subito alle Categorie. Alzato `CACHE_NAME` in `sw.js` a `isla-v425`.

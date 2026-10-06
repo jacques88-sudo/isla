@@ -603,6 +603,18 @@ function controllaPacchetti() {
       errore(dove, "lo sconto e' " + sconto + "%: deve stare fra 1 e 99.");
     }
 
+    // `posti` su una voce: deve esserci almeno un mezzo di quella misura, se no
+    // la voce resta senza il prezzo a testa e il pacchetto senza numero.
+    (pack.voci || []).forEach(voce => {
+      if (voce.posti === undefined) return;
+      const scheda = ESPLORA_CATALOG.find(t => t.id === voce.id);
+      const tipi = (scheda && scheda.units && scheda.units.types) || [];
+      if (!tipi.some(tipo => tipo.seats === voce.posti)) {
+        errore(dove, '"' + voce.id + '" ha posti: ' + voce.posti +
+          " ma nessun mezzo di quella misura.");
+      }
+    });
+
     // Il tema dei riquadri della home. Scritto male non rompe niente: il
     // pacchetto non esce mai nella vetrina del suo tema, e nessuno lo vede.
     if (pack.tema !== undefined && !pacchettiTemaChiesto(pack.tema)) {

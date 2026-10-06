@@ -33,6 +33,16 @@
 //                 aperta e si concorda rispondendo — e' il caso del buggy,
 //                 dove i quattro percorsi costano uguale e scegliere prima non
 //                 serve a nessuno.
+//   posti       → facoltativo, solo sulle voci con un mezzo (`units`): il
+//                 numero in vetrina divide **solo** i mezzi con quei posti,
+//                 invece del mezzo piu' capiente. Nasce per "Perfetto per 2"
+//                 (proprietario, 6 ottobre 2026): li' la Mustang e il buggy si
+//                 contano da due, 250 : 2 e 180 : 2, perche' un pacchetto per
+//                 coppie che mostra il prezzo di quattro persone su una Mustang
+//                 sarebbe un "da" che nessuna coppia paga. Nella finestra della
+//                 richiesta non cambia niente: i mezzi si scelgono come sempre.
+//                 Un numero di posti che nessun mezzo della scheda ha lascia la
+//                 voce senza prezzo, e `controlla.js` lo dice.
 //
 //   Gli indici che servono qui, presi dal catalogo:
 //     buggy-volcano-4h    0 Offroad 3h · 1 Tramonto sul Teide · 2 Completo 4h
@@ -159,13 +169,13 @@
 //   le barche col pranzo a bordo: li' il cibo c'e', ma non e' il motivo per
 //   andarci.
 //
-//   PERFETTO PER 2 e' per le coppie. Dentro ci sono solo prezzi a persona o
-//   mezzi da **due** posti al massimo (la moto d'acqua doppia, il quad
-//   doppio): il numero in vetrina divide ogni mezzo per i suoi posti (vedi
-//   "IL NUMERO IN VETRINA"), e su un mezzo da quattro o sei uscirebbe il
-//   prezzo di quattro o sei persone, non quello di una coppia. Per questo la
-//   Mustang non c'e', anche se al tramonto sarebbe il pacchetto per due per
-//   eccellenza: la sua fascia piu' grande e' da quattro.
+//   PERFETTO PER 2 e' per le coppie, e il numero in vetrina e' quello di
+//   **due persone**. Il conto normale divide ogni mezzo per il piu' capiente
+//   (vedi "IL NUMERO IN VETRINA"): sul buggy da sei o sulla Mustang da quattro
+//   uscirebbe il prezzo di un gruppo, non di una coppia. Dove la scheda ha
+//   mezzi piu' grandi di due, la voce porta `posti: 2` (vedi "COME SI COMPILA
+//   UNA VOCE"). Mustang e buggy ci sono su richiesta del proprietario
+//   (6 ottobre 2026), contati cosi'.
 
 // GLI ITINERARI A GIORNI (3, 5, 7)
 //   `giorni: 3 | 5 | 7` marca gli itinerari della vetrina "3/5/7 Days
@@ -483,8 +493,36 @@ const PACCHETTI = [
   },
 
   // ─── PERFETTO PER 2 ───────────────────────────────────────────────────────
-  // Per le coppie. Solo prezzi a persona o mezzi da due posti: il perche' sta
-  // in testa al file, sotto "I PACCHETTI A TEMA".
+  // Per le coppie. Prezzi a persona, oppure mezzi contati da due posti: il
+  // perche' sta in testa al file, sotto "I PACCHETTI A TEMA".
+
+  {
+    id: "al-volante-in-due",
+    // PREZZO MISTO, contato da due (`posti: 2`): la Mustang per due 250 : 2 =
+    // 125, il buggy da due 180 : 2 = 90, il catamarano 75 a persona.
+    // 125 + 90 + 75 = 290, tutto scontabile: −29,00 → da 261 a persona.
+    // Teide: una volta, con la Mustang al tramonto. Il buggy e' l'Offroad,
+    // che al parco non sale.
+    title: {
+      it: "Al volante, in due",
+      en: "Behind the wheel, for two",
+      es: "Al volante, en pareja"
+    },
+    image: "Cat-avventura.jpg",
+    sconto: 10,
+    tema: "per-due",
+    voci: [
+      { id: "mustang-experience", posti: 2 },
+      // optionIndex 0 = "Offroad, 3 ore": non sale al Teide.
+      { id: "buggy-volcano-4h", optionIndex: 0, posti: 2 },
+      { id: "luxury-catamaran" }
+    ],
+    desc: {
+      it: "Due giorni al volante e uno in mare: la Mustang cabrio su per la strada del Teide fino al tramonto, il buggy in due sugli sterrati del sud, e il catamarano di categoria superiore, con poche persone a bordo e le aree lounge per riposarsi.",
+      en: "Two days behind the wheel and one at sea: the Mustang convertible up the Teide road for the sunset, the buggy for two on the dirt tracks of the south, and the upper-class catamaran, with few people on board and lounge areas to unwind.",
+      es: "Dos días al volante y uno en el mar: el Mustang descapotable subiendo por la carretera del Teide hasta el atardecer, el buggy para dos por las pistas del sur, y el catamarán de categoría superior, con poca gente a bordo y zonas lounge para descansar."
+    }
+  },
 
   {
     id: "vino-e-stelle",
@@ -1216,6 +1254,9 @@ function pacchettoMezzoAPersona(voce) {
     const prezzo = gruppo.prezzi[tipo.key];
     const posti = tipo.seats || 0;
     if (!prezzo || !posti) return;
+    // `posti` sulla voce: si contano solo i mezzi di quella misura (vedi
+    // "COME SI COMPILA UNA VOCE").
+    if (voce.posti && posti !== voce.posti) return;
     const aTesta = prezzo / posti;
     if (!migliore || aTesta < migliore.aPersona) {
       migliore = { aPersona: aTesta, prezzo: prezzo, tipo: tipo, posti: posti };

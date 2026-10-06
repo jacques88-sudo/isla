@@ -2160,7 +2160,12 @@ const ESPLORA_CATALOG = [
           } },
         { label: { it: "MTB · Santiago del Teide – El Chinyero", en: "MTB · Santiago del Teide – El Chinyero", es: "MTB · Santiago del Teide – El Chinyero" },
           priceAdult: 110,
-          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Il pulmino porta a Santiago del Teide, dove c'è il tempo per un caffè; da lì si pedala su piste sterrate larghe, con la vista sulla costa nord fino a Garachico e Puerto de la Cruz, accanto alla Montaña Negra fino al cono di lava del Chinyero, l'ultima grande eruzione dell'isola nel 1909, e al rifugio della Casa Forestal. 33 km e 600 m di dislivello, tutto sterrato. Media in mountain bike, facile in e-bike: qualche strappo breve su sabbia vulcanica, ma va bene anche per chi non è mai andato fuori strada. In e-bike 130 €.",
+            en: "The minibus takes you to Santiago del Teide, with time for a coffee; from there you ride wide dirt tracks, looking out over the north coast to Garachico and Puerto de la Cruz, past Montaña Negra to the Chinyero lava cone, the island's last major eruption in 1909, and the Casa Forestal refuge. 33 km and 600 m of climbing, all off-road. Medium on a mountain bike, easy by e-bike: a few short steep bits on volcanic sand, but fine even if you have never ridden off-road. By e-bike €130.",
+            es: "La furgoneta lleva a Santiago del Teide, con tiempo para un café; desde allí se pedalea por pistas anchas, con vistas a la costa norte hasta Garachico y Puerto de la Cruz, junto a la Montaña Negra hasta el cono de lava del Chinyero, la última gran erupción de la isla en 1909, y el refugio de la Casa Forestal. 33 km y 600 m de desnivel, todo pista. Media en bicicleta de montaña, fácil en e-bike: algunas rampas cortas sobre arena volcánica, pero apta aunque nunca hayas ido fuera de carretera. En e-bike 130 €."
+          } },
         { label: { it: "MTB · Izaña – El Poris, Teide Easy Downhill", en: "MTB · Izaña – El Poris, Teide Easy Downhill", es: "MTB · Izaña – El Poris, Teide Easy Downhill" },
           priceAdult: 140,
           included: ["equipment", "transfer", "snack"],
@@ -2179,19 +2184,39 @@ const ESPLORA_CATALOG = [
           } },
         { label: { it: "MTB · Off-road Escape", en: "MTB · Off-road Escape", es: "MTB · Off-road Escape" },
           priceAdult: 110,
-          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Fra la lava e il mare del sud: dopo Las Américas e Los Cristianos si sale in furgone sul vulcano di Guaza, poi circa 25 km di sterrato nella riserva del Malpaís de la Rasca, fino al faro di Rasca e alle sue scogliere. Pausa con un leche leche sul lungomare di Las Galletas, la Costa del Silencio e altri 7 km di sterrato fino al vulcano della Montaña Amarilla. 35-40 km, 600 m di dislivello, 90% sterrato; difficoltà medio-alta. C'è anche una versione più facile, da Pal-Mar a Pal-Mar: 30 km e 150 m di dislivello. In e-bike 130 €.",
+            en: "Between lava and the southern sea: past Las Américas and Los Cristianos the van takes you up the Guaza volcano, then about 25 km off-road through the Malpaís de la Rasca reserve to the Rasca lighthouse and its cliffs. A leche leche on the Las Galletas seafront, the Costa del Silencio and another 7 km off-road to the Montaña Amarilla volcano. 35-40 km, 600 m of climbing, 90% off-road; medium to hard. There is also an easier version, from Pal-Mar and back: 30 km and 150 m of climbing. By e-bike €130.",
+            es: "Entre la lava y el mar del sur: pasados Las Américas y Los Cristianos se sube en furgoneta al volcán de Guaza, y luego unos 25 km de pista por la reserva del Malpaís de la Rasca, hasta el faro de Rasca y sus acantilados. Un leche leche en el paseo de Las Galletas, la Costa del Silencio y otros 7 km de pista hasta el volcán de la Montaña Amarilla. 35-40 km, 600 m de desnivel, 90% pista; dificultad media-alta. Hay también una versión más fácil, de Pal-Mar a Pal-Mar: 30 km y 150 m de desnivel. En e-bike 130 €."
+          } },
         { label: { it: "MTB · Costa del Silencio – El Médano – Palm Mar", en: "MTB · Costa del Silencio – El Médano – Palm Mar", es: "MTB · Costa del Silencio – El Médano – Palm Mar" },
           priceAdult: 110,
           desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
         { label: { it: "MTB · Barbacoa – Corona Forestal", en: "MTB · Barbacoa – Corona Forestal", es: "MTB · Barbacoa – Corona Forestal" },
           priceAdult: 110,
-          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Il pulmino passa da Villa de Arico e porta alla riserva di El Contador, a 1.000 m; da lì una salita lunga e costante su sterrato, circa 17 km e 1.300 m di dislivello, fino all'osservatorio di Izaña. Poi 20 km di discesa su piste larghe e qualche tratto d'asfalto verso la Valle di Güímar, con la sosta al Mirador de Pájara. 45 km, 1.400 m di dislivello, 90% sterrato. Medio-alta per la salita, non per la tecnica: la discesa va bene anche per chi ha poca esperienza. In e-bike 130 €.",
+            en: "The minibus goes via Villa de Arico to the El Contador reserve, at 1,000 m; from there a long, steady climb on dirt tracks, about 17 km and 1,300 m of ascent, up to the Izaña observatory. Then 20 km of descent on wide tracks and a few stretches of tarmac towards the Güímar valley, with a stop at the Mirador de Pájara. 45 km, 1,400 m of climbing, 90% off-road. Medium to hard because of the climb, not the technique: the descent is fine even for less experienced riders. By e-bike €130.",
+            es: "La furgoneta pasa por Villa de Arico y lleva a la reserva de El Contador, a 1.000 m; desde allí una subida larga y constante por pista, unos 17 km y 1.300 m de desnivel, hasta el observatorio de Izaña. Luego 20 km de bajada por pistas anchas y algún tramo de asfalto hacia el Valle de Güímar, con parada en el Mirador de Pájara. 45 km, 1.400 m de desnivel, 90% pista. Media-alta por la subida, no por la técnica: la bajada es apta también para quien tiene poca experiencia. En e-bike 130 €."
+          } },
         { label: { it: "MTB · El Médano – El Poris", en: "MTB · El Médano – El Poris", es: "MTB · El Médano – El Poris" },
           priceAdult: 110,
-          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Il pulmino porta a El Médano, il paese dei surfisti, e da lì si pedala sugli sterrati della costa est: il villaggio di pescatori di San Miguel de Tajao, El Porís e il suo faro, ultima sosta prima di ritrovare il furgone. 40 km, 600 m di dislivello, tutto sterrato. Difficoltà media: qualche tratto corto e roccioso fra i barrancos, che volendo si fa a piedi spingendo la bici per pochi metri. In e-bike 130 €.",
+            en: "The minibus takes you to El Médano, the surfers' town, and from there you ride the dirt tracks of the east coast: the fishing village of San Miguel de Tajao, El Porís and its lighthouse, the last stop before meeting the van. 40 km, 600 m of climbing, all off-road. Medium difficulty: a few short rocky stretches between the barrancos, which you can walk, pushing the bike for a few metres, if you prefer. By e-bike €130.",
+            es: "La furgoneta lleva a El Médano, el pueblo de los surfistas, y desde allí se pedalea por las pistas de la costa este: el pueblo pesquero de San Miguel de Tajao, El Porís y su faro, última parada antes de volver a la furgoneta. 40 km, 600 m de desnivel, todo pista. Dificultad media: algunos tramos cortos y rocosos entre los barrancos, que se pueden hacer a pie empujando la bici unos metros. En e-bike 130 €."
+          } },
         { label: { it: "MTB · Vilaflor – Corona Forestal", en: "MTB · Vilaflor – Corona Forestal", es: "MTB · Vilaflor – Corona Forestal" },
           priceAdult: 110,
-          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } }
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Il pulmino porta a Vilaflor, a 1.400 m; pochi chilometri d'asfalto fino al Pino Gordo, il pino canario più grande dell'arcipelago, poi circa 13 km di sterrato nella pineta fino a Madre de Agua. Cinque minuti a piedi lungo il ruscello del Barranco del Río, poi in sella fino a El Salto e giù verso il mare fra asfalto e sterrati facili. 40 km, 500 m di dislivello. Difficoltà media: qualche tratto tecnico in discesa e un paio di passaggi da fare a piedi. In e-bike 130 €.",
+            en: "The minibus takes you to Vilaflor, at 1,400 m; a few kilometres of tarmac to the Pino Gordo, the largest Canary pine in the archipelago, then about 13 km off-road through the pine forest to Madre de Agua. A five-minute walk along the stream of the Barranco del Río, then back in the saddle to El Salto and down towards the sea on tarmac and easy tracks. 40 km, 500 m of climbing. Medium difficulty: a few technical downhill stretches and a couple of sections to walk. By e-bike €130.",
+            es: "La furgoneta lleva a Vilaflor, a 1.400 m; unos pocos kilómetros de asfalto hasta el Pino Gordo, el mayor pino canario del archipiélago, y luego unos 13 km de pista por el pinar hasta Madre de Agua. Cinco minutos a pie junto al arroyo del Barranco del Río, de nuevo en la bici hasta El Salto y bajada hacia el mar entre asfalto y pistas fáciles. 40 km, 500 m de desnivel. Dificultad media: algunos tramos técnicos de bajada y un par de pasos que hay que hacer a pie. En e-bike 130 €."
+          } }
       ]
     },
     // La guida c'e' su tutti i giri. Bici, ritiro e snack stanno dentro le

@@ -16810,3 +16810,20 @@ dove c'è". Stesse icone degli altri (bici, ritiro, snack): le pagine le scrivon
 **Mancano ancora sei giri MTB:** Santiago del Teide – El Chinyero, Off-road Escape,
 Costa del Silencio – El Médano – Palm Mar, Barbacoa – Corona Forestal, El Médano –
 El Poris, Vilaflor – Corona Forestal.
+
+## v433 — Bici: altri cinque giri MTB (6 ottobre 2026)
+
+Arrivate le pagine di Santiago del Teide – El Chinyero, Off-road Escape, Barbacoa –
+Corona Forestal, El Médano – El Poris e Vilaflor – Corona Forestal. Tutti 110 €, e-bike
+130 €; stesse icone degli altri.
+
+Due cose della pagina del fornitore che non tornavano:
+- **Off-road Escape** in alto si dice "facile", nella difficoltà "medio-alta". Ho scritto
+  medio-alta, e aggiunto la versione più facile che la pagina stessa offre (Pal-Mar–Pal-Mar,
+  30 km, 150 m).
+- **Vilaflor – Corona Forestal** ha nella sezione difficoltà il titolo di Barbacoa: un
+  copia-incolla del fornitore. Il testo sotto parla di Barranco del Río ed El Salto, quindi
+  è la sua.
+
+**Manca solo:** Costa del Silencio – El Médano – Palm Mar (MTB). Ha ancora la riga
+provvisoria e niente icone.

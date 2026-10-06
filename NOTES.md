@@ -16595,3 +16595,25 @@ inventato (17), il dettaglio di "Adrenalina in due" col prezzo a mezzo spiegato,
 richiesta: 2 adulti fanno €324,80 su Sapori e €429,20 su Vino e stelle.
 
 `CACHE_NAME` → `isla-v421`.
+
+### Perfetto per 2: Mustang e buggy (6 ottobre 2026)
+
+Il proprietario li vuole tutti e due in "Perfetto per 2". Il motivo per cui li avevo
+lasciati fuori era il numero in vetrina: si divide ogni mezzo per il **più capiente**
+(regola del 16 settembre), e su un pacchetto per coppie la Mustang sarebbe uscita a
+350 : 4 = 87,50 e il buggy a 330 : 6 = 55, prezzi che nessuna coppia paga.
+
+Soluzione: un campo nuovo sulla voce di un pacchetto, **`posti: 2`**. Quando c'è, il
+numero in vetrina divide solo i mezzi con quei posti: la Mustang 250 : 2 = 125, il buggy
+180 : 2 = 90. Gli altri pacchetti non lo hanno e restano identici (Trio buggy da €143,
+Adrenalina da €153, verificato nel browser). Nella finestra della richiesta non cambia
+niente: i mezzi si scelgono come sempre. `controlla.js` dà errore se `posti` non
+corrisponde a nessun mezzo della scheda.
+
+Pacchetto nuovo **"Al volante, in due"** (`al-volante-in-due`, tema `per-due`): Mustang
+al tramonto (l'unica salita al Teide), buggy Offroad 3 h (non sale al parco) e Luxury
+Catamaran. 125 + 90 + 75 = 290, −10% → **da €261 a persona**. Foto: la Mustang al
+tramonto fra i Roques (`Cat-avventura.jpg`, la stessa della scheda). Provata la
+richiesta: una Mustang per due, un buggy da due e 2 adulti fanno €522, cioè 2 × 261.
+
+`CACHE_NAME` → `isla-v422`.

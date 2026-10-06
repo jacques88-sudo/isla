@@ -126,7 +126,7 @@ const I18N = {
   "rent.lic.A2":        { it: "Patente A2 o A", en: "A2 or A licence", es: "Carnet A2 o A" },
   "rent.lic.A":         { it: "Patente A", en: "A licence", es: "Carnet A" },
   "rent.bikes":         { it: "Bici", en: "Bikes", es: "Bicis" },
-  "rent.bikesNote":     { it: "La bici te la portiamo all'alloggio e la veniamo a riprendere; lucchetto e assistenza sono compresi. Nel messaggio scrivi altezza ed età di chi pedala.", en: "We bring the bike to where you're staying and pick it up again; lock and assistance are included. In your message, tell us the rider's height and age.", es: "Te llevamos la bici a tu alojamiento y pasamos a recogerla; candado y asistencia incluidos. En el mensaje indica la altura y la edad de quien va a pedalear." },
+  "rent.bikesNote":     { it: "La bici te la portiamo all'alloggio, nel sud dell'isola, e la veniamo a riprendere; lucchetto e assistenza sono compresi. Nel messaggio scrivi altezza ed età di chi pedala.", en: "We bring the bike to where you're staying in the south of the island and pick it up again; lock and assistance are included. In your message, tell us the rider's height and age.", es: "Te llevamos la bici a tu alojamiento en el sur de la isla y pasamos a recogerla; candado y asistencia incluidos. En el mensaje indica la altura y la edad de quien va a pedalear." },
   "rent.bike.city":     { it: "Bici da città", en: "City bike", es: "Bici urbana" },
   "rent.bike.mtb":      { it: "Mountain bike", en: "Mountain bike", es: "Bicicleta de montaña" },
   "rent.bike.ecity":    { it: "Bici elettrica da città", en: "Electric city bike", es: "Bici eléctrica urbana" },
@@ -136,7 +136,7 @@ const I18N = {
   "rent.kind.bosch500": { it: "motore Bosch, batteria 500 Wh", en: "Bosch motor, 500 Wh battery", es: "motor Bosch, batería de 500 Wh" },
   "rent.kind.bosch":    { it: "motore Bosch", en: "Bosch motor", es: "motor Bosch" },
   "rent.bike.charger":  { it: "Da 2 giorni in su c'è anche il caricabatterie, per ricaricarla la notte.", en: "From 2 days up the charger comes too, so you can recharge it overnight.", es: "A partir de 2 días también va el cargador, para recargarla por la noche." },
-  "rent.deposit":       { it: "Cauzione: €{n}", en: "Deposit: €{n}", es: "Fianza: {n} €" },
+  "rent.deposit":       { it: "Cauzione: €{n}, si paga alla consegna della bici", en: "Deposit: €{n}, paid when the bike is delivered", es: "Fianza: {n} €, se paga al entregar la bici" },
 
   // ── categorie ───────────────────────────────────────────────────────────
   "categories.eyebrow": { it: "Esplora", en: "Explore", es: "Explora" },

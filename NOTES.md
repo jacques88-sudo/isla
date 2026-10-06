@@ -16700,8 +16700,10 @@ Incollata la pagina di un noleggiatore di bici di Costa Adeje: quattro bici, lis
   anche per lo scooter 125).
 - Intro, descrizione della pagina e chip in alto dicono adesso anche "bici".
 
-**Da confermare col proprietario:** fin dove consegnano (la pagina dice "il sud"; la nota
-dice solo "all'alloggio"), e se la cauzione si paga al noleggiatore alla consegna.
+**Confermato dal proprietario lo stesso giorno:** la bici arriva all'alloggio **nel sud
+dell'isola** (scritto nella nota del gruppo), e la **cauzione si paga al noleggiatore alla
+consegna** (scritto accanto alla cifra: "si paga alla consegna della bici"; il noleggiatore
+non si nomina, come sempre). `CACHE_NAME` a `isla-v428`.
 
 Provato in Chromium a 375 px: tre gruppi, chip "Bici", righe chiuse da €24/€30/€36/€48,
 aperta la elettrica da città: 1…7 giorni, "dall'8° giorno €12", cauzione €50,

@@ -3085,6 +3085,52 @@ body.menu-open { overflow: hidden; }
 }
 .detail-option-desc[hidden] { display: none; }
 
+/* Varianti a gruppi (options.groups): un pulsante per gruppo, chiuso, che
+   toccandolo apre i suoi giri. Stessa freccia delle schede del noleggio. */
+.detail-option-group {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.detail-option-group > summary {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  padding: .9rem 1rem;
+  cursor: pointer;
+  list-style: none;
+}
+.detail-option-group > summary::-webkit-details-marker { display: none; }
+.detail-option-group > summary::after {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid var(--muted);
+  border-bottom: 1.5px solid var(--muted);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .2s ease;
+}
+.detail-option-group[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+.detail-option-group-head {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+}
+.detail-option-group-name { font-size: 1rem; font-weight: 500; }
+.detail-option-group-desc { font-size: .8rem; color: var(--muted); }
+.detail-option-group-chosen { font-size: .8rem; color: var(--text); }
+.detail-option-group-chosen[hidden] { display: none; }
+.detail-option-group-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0 .75rem .9rem;
+}
+.detail-option-group-list .detail-option { width: 100%; }
+
 .detail-option-name { font-size: .92rem; }
 .detail-option-price {
   font-family: var(--font-display);

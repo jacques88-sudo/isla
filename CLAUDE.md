@@ -52,6 +52,13 @@ Le prenotazioni **non sono automatiche**: il cliente manda una *richiesta* su Wh
 **Le 24 ore di preavviso sono di Isla, non dei fornitori.** Se una pagina fornitore dice
 48 ore o 72, **non si copia**. Vale sempre, anche per i dati che arrivano domani.
 
+**Anche la cancellazione è di Isla** (6 ottobre 2026, proprietario): gratis fino a 24 ore
+prima; dopo, o se il cliente non si presenta, niente rimborso ma **un cambio di data, una
+volta, se c'è posto**. Vale anche per charter privati e noleggi. Se annulla l'operatore
+(maltempo, mare, pochi partecipanti) il cliente sceglie fra altra data e rimborso
+completo; si annulla con un messaggio WhatsApp e conta l'ora del messaggio. Sta in
+`faq.a5`. I giorni entro cui si rimborsa **non sono decisi**: non scriverne uno.
+
 **I prezzi barrati sono offerte del rivenditore: sul sito va il prezzo pieno.** Lo sconto
 di un altro non è nostro. Abbassare un prezzo dopo si può, alzarlo dopo che il cliente
 l'ha letto è la cosa che fa arrabbiare.

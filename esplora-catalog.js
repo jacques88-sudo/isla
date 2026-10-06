@@ -2163,10 +2163,20 @@ const ESPLORA_CATALOG = [
           desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
         { label: { it: "MTB · Izaña – El Poris, Teide Easy Downhill", en: "MTB · Izaña – El Poris, Teide Easy Downhill", es: "MTB · Izaña – El Poris, Teide Easy Downhill" },
           priceAdult: 140,
-          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Dalla montagna al mare, quasi tutto in discesa: il pulmino porta all'osservatorio di Izaña, a 2.390 m sul versante est del Teide, e da lì si scende per piste vulcaniche larghe e pinete, la zona di El Contador, vigneti e campi di patate fino a Villa de Arico e al villaggio di pescatori di El Porís. 45 km, 70% sterrato. Facile, ma serve un po' di pratica di mountain bike su fondo smosso. Alla fine il furgone riporta in hotel.",
+            en: "From the mountain to the sea, almost all downhill: the minibus takes you to the Izaña observatory, at 2,390 m on Teide's east side, and from there you ride down wide volcanic tracks and pine forests, the El Contador area, vineyards and potato fields to Villa de Arico and the fishing village of El Porís. 45 km, 70% off-road. Easy, but some mountain-biking experience on loose ground is needed. At the end the van takes you back to your hotel.",
+            es: "De la montaña al mar, casi todo bajada: la furgoneta sube al observatorio de Izaña, a 2.390 m en la vertiente este del Teide, y desde allí se baja por pistas volcánicas anchas y pinares, la zona de El Contador, viñedos y campos de papas hasta Villa de Arico y el pueblo pesquero de El Porís. 45 km, 70% pista. Fácil, pero hace falta algo de práctica en bicicleta de montaña sobre terreno suelto. Al final la furgoneta lleva de vuelta al hotel."
+          } },
         { label: { it: "MTB · Teide South Off-road Downhill", en: "MTB · Teide South Off-road Downhill", es: "MTB · Teide South Off-road Downhill" },
           priceAdult: 110,
-          desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Discesa tecnica dal versante sud del Teide alla costa: il pulmino porta a 2.200 m, poi si scende fra colate di lava e pinete, con la vista su Adeje e, nei giorni limpidi, su La Gomera, fino al borgo di La Quinta; da lì i vecchi camini reales di pietra e i barrancos fino a Costa Adeje. 30 km, 90% sterrato. Difficoltà media: per chi ha già esperienza fuori strada e sa guidare la bici su roccia e ciottolato. Alla fine il furgone riporta in hotel.",
+            en: "A technical descent from Teide's south side to the coast: the minibus takes you up to 2,200 m, then you ride down through lava flows and pine forests, looking out over Adeje and, on clear days, La Gomera, to the hamlet of La Quinta; from there the old stone caminos reales and the barrancos down to Costa Adeje. 30 km, 90% off-road. Medium difficulty: for riders with off-road experience who are confident on rock and cobbles. At the end the van takes you back to your hotel.",
+            es: "Bajada técnica desde la vertiente sur del Teide hasta la costa: la furgoneta sube a 2.200 m y luego se baja entre coladas de lava y pinares, con vistas a Adeje y, en días claros, a La Gomera, hasta el caserío de La Quinta; desde allí los antiguos caminos reales de piedra y los barrancos hasta Costa Adeje. 30 km, 90% pista. Dificultad media: para quien ya tiene experiencia fuera de carretera y maneja la bici con soltura sobre roca y empedrado. Al final la furgoneta lleva de vuelta al hotel."
+          } },
         { label: { it: "MTB · Off-road Escape", en: "MTB · Off-road Escape", es: "MTB · Off-road Escape" },
           priceAdult: 110,
           desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },
@@ -2198,9 +2208,11 @@ const ESPLORA_CATALOG = [
       { it: "Ogni giro dura al massimo 5 ore, compresi il ritiro e il ritorno in hotel.",
         en: "Each ride lasts 5 hours at most, including hotel pick-up and drop-off.",
         es: "Cada recorrido dura como máximo 5 horas, incluidas la recogida y la vuelta al hotel." },
-      { it: "Se preferisci la e-bike scrivilo nelle note della richiesta: il prezzo è nella descrizione del giro.",
-        en: "If you'd rather ride an e-bike, say so in the notes of your request: the price is in the ride's description.",
-        es: "Si prefieres la e-bike, escríbelo en las notas de la solicitud: el precio está en la descripción del recorrido." }
+      // Non tutti i giri hanno la e-bike: i due MTB arrivati il 6 ottobre
+      // danno solo il prezzo della bici normale.
+      { it: "Su molti giri si può avere la e-bike: dove c'è, il prezzo è nella descrizione del giro. Se la vuoi scrivilo nelle note della richiesta.",
+        en: "Many rides can be done by e-bike: where available, the price is in the ride's description. If you want one, say so in the notes of your request.",
+        es: "En muchos recorridos se puede ir en e-bike: donde la hay, el precio está en la descripción del recorrido. Si la quieres, escríbelo en las notas de la solicitud." }
     ],
     family: false,
     desc: {

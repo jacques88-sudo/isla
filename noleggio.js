@@ -1,4 +1,4 @@
-// La pagina dei noleggi: auto, moto e scooter.
+// La pagina dei noleggi: auto, moto, scooter e bici.
 //
 // Non sono schede del catalogo: il catalogo ragiona a persone (adulto,
 // bambino), un noleggio ragiona a giorni. Stanno qui, in un elenco loro.
@@ -9,6 +9,8 @@
 //
 // COME E' FATTO UN MEZZO
 //   name     il modello, uguale in tutte e tre le lingue (e' un nome proprio)
+//   nameKey  al posto di name, dove un modello non c'e' e il nome e' una
+//            parola da tradurre ("Bici da citta'"): chiave di i18n.js
 //   kind     che cos'e' ("Maxi scooter 300 cc"), tradotto; si puo' omettere
 //   seats    posti, solo dove il listino li scrive
 //   license  la patente che serve, chiave di i18n.js ("rent.lic.A2")
@@ -17,6 +19,8 @@
 //   totals   al posto di perDay, per l'unico listino scritto a totali (lo
 //            scooter 125): [prezzo di 1 giorno, di 2, ... di 7], poi `extraDay`
 //            e' quanto costa ogni giorno dall'ottavo in poi.
+//   deposit  la cauzione, solo dove il listino la scrive (le bici)
+//   extra    una riga in piu' che vale solo per quel mezzo, chiave di i18n.js
 //
 // Il messaggio WhatsApp porta il nome del mezzo: l'ufficio sa da chi andare.
 
@@ -61,13 +65,37 @@ const RENT_GROUPS = [
       { name: "Honda Africa Twin", license: "rent.lic.A", perDay: [155, 150, 145] },
       { name: "BMW R 1300 GS", license: "rent.lic.A", perDay: [170, 165, 160] }
     ]
+  },
+  {
+    // Listino di un terzo noleggiatore (ottobre 2026), a totali come lo
+    // scooter 125: 1 giorno ... 7 giorni, poi un prezzo per ogni giorno in
+    // piu'. La bici la portano e la riprendono all'alloggio, nel sud.
+    // Non copiati: lo sconto del 10% prenotando 10 giorni prima (e' loro, non
+    // nostro) e il "miglior prezzo garantito".
+    id: "bici",
+    title: "rent.bikes",
+    note: "rent.bikesNote",
+    items: [
+      { nameKey: "rent.bike.city", kind: "rent.kind.basket",
+        totals: [24, 44, 60, 74, 84, 92, 100], extraDay: 8, deposit: 50 },
+      { nameKey: "rent.bike.mtb", kind: "rent.kind.trek",
+        totals: [30, 55, 75, 92, 105, 115, 125], extraDay: 10, deposit: 50 },
+      { nameKey: "rent.bike.ecity", kind: "rent.kind.bosch500", extra: "rent.bike.charger",
+        totals: [36, 66, 90, 110, 126, 138, 150], extraDay: 12, deposit: 50 },
+      { nameKey: "rent.bike.emtb", kind: "rent.kind.bosch", extra: "rent.bike.charger",
+        totals: [48, 88, 120, 147, 168, 184, 200], extraDay: 16, deposit: 100 }
+    ]
   }
 ];
+
+function rentName(item) {
+  return item.nameKey ? t(item.nameKey) : item.name;
+}
 
 // Il nome del mezzo come lo legge l'ufficio nel messaggio: modello e tipo,
 // cosi' le due Polo (manuale e automatica) non si confondono.
 function rentLabel(item) {
-  return item.kind ? item.name + " · " + t(item.kind) : item.name;
+  return item.kind ? rentName(item) + " · " + t(item.kind) : rentName(item);
 }
 
 function rentWaLink(text) {
@@ -102,7 +130,7 @@ function rentCard(item) {
   const head = document.createElement("span");
   head.className = "rent-card-head";
   const name = document.createElement("strong");
-  name.textContent = item.name;
+  name.textContent = rentName(item);
   head.appendChild(name);
   const sub = [];
   if (item.kind) sub.push(t(item.kind));
@@ -143,6 +171,20 @@ function rentCard(item) {
   unit.className = "rent-unit";
   unit.textContent = t(item.perDay ? "rent.unitDay" : "rent.unitTotal");
   body.appendChild(unit);
+
+  if (item.deposit) {
+    const dep = document.createElement("p");
+    dep.className = "rent-license";
+    dep.textContent = t("rent.deposit", { n: eur(item.deposit) });
+    body.appendChild(dep);
+  }
+
+  if (item.extra) {
+    const extra = document.createElement("p");
+    extra.className = "rent-license";
+    extra.textContent = t(item.extra);
+    body.appendChild(extra);
+  }
 
   if (item.license) {
     const lic = document.createElement("p");

@@ -2332,7 +2332,7 @@ const ESPLORA_CATALOG = [
     // In fila si leggono come una sera che passa: il tramonto sopra le nuvole,
     // poi il buio con la Via Lattea. La copertina resta quella dei due
     // telescopi.
-    gallery: ["stargazing-vip.jpg", "teide-by-night.jpg"],
+    gallery: ["stargazing-vip.jpg", "teide-by-night.jpg", "stargazing-group-2.jpg", "stargazing-group-3.jpg", "stargazing-group-4.jpg", "stargazing-group-5.jpg"],
     published: true
   },
 

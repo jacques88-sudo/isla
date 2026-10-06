@@ -2072,7 +2072,7 @@ const ESPLORA_CATALOG = [
       label: { it: "Quale giro", en: "Which ride", es: "Qué recorrido" },
       // Tre giri hanno due prezzi ("110/150", "110/120"): dipendono dalla
       // lunghezza del giro, corto o lungo, e lo spiega la descrizione (pagine
-      // del fornitore, 6 ottobre 2026; Masca non e' ancora arrivata). Il
+      // del fornitore, 6 ottobre 2026). Il
       // prezzo resta **nell'etichetta**
       // e non in `priceAdult`, come le immersioni a pacchetto: il cliente lo
       // legge sul bottone e il totale della richiesta non si fa, invece di
@@ -2145,9 +2145,19 @@ const ESPLORA_CATALOG = [
           } },
         { label: { it: "Strada · Santiago del Teide", en: "Road · Santiago del Teide", es: "Carretera · Santiago del Teide" },
           priceAdult: 110,
-          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Da Costa Adeje lungo la costa ovest: la salita fra le piantagioni di banane fino a Guía de Isora, la discesa verso Playa San Juan e le scogliere di Los Gigantes, poi la salita a tappe per Tamaimo fino a Santiago del Teide, a 1.000 m, e le lave nere di Arguayo. Sosta a Chío e 18 km di discesa per tornare. Da 70 a 85 km e da 1.500 a 2.200 m di dislivello, secondo il livello; impegnativo, tutto asfalto. In e-bike 130 €.",
+            en: "From Costa Adeje along the west coast: the climb through the banana plantations to Guía de Isora, down towards Playa San Juan and the Los Gigantes cliffs, then the stepped climb through Tamaimo to Santiago del Teide, at 1,000 m, and the black lava of Arguayo. A stop in Chío and 18 km of descent back. 70 to 85 km and 1,500 to 2,200 m of climbing, depending on your level; demanding, all on tarmac. By e-bike €130.",
+            es: "De Costa Adeje por la costa oeste: la subida entre plataneras hasta Guía de Isora, la bajada hacia Playa San Juan y los acantilados de Los Gigantes, luego la subida por etapas por Tamaimo hasta Santiago del Teide, a 1.000 m, y la lava negra de Arguayo. Parada en Chío y 18 km de bajada para volver. De 70 a 85 km y de 1.500 a 2.200 m de desnivel, según el nivel; exigente, todo asfalto. En e-bike 130 €."
+          } },
         { label: { it: "Strada · Masca Tour (110/150 €)", en: "Road · Masca Tour (€110/150)", es: "Carretera · Masca Tour (110/150 €)" },
-          desc: { it: "Su bici da strada, con guida.", en: "On a road bike, with a guide.", es: "En bici de carretera, con guía." } },
+          included: ["equipment", "transfer", "snack"],
+          desc: {
+            it: "Per ciclisti esperti. Da Costa Adeje per Guía de Isora, Los Gigantes e Santiago del Teide fino al Mirador de Cherfe; poi giù a Masca, ai piedi del Teno, e su per la salita più dura dell'isola: 4,2 km con tratti fino al 22%. Due lunghezze: circa 60 km e 1.550 m di dislivello a 110 €, oppure circa 130 km e 3.000 m, passando per Buenavista del Norte ed El Tanque, a 150 €; in e-bike 130 € e 180 €. Tutto asfalto.",
+            en: "For experienced riders. From Costa Adeje via Guía de Isora, Los Gigantes and Santiago del Teide up to the Mirador de Cherfe; then down to Masca, at the foot of the Teno mountains, and up the island's hardest climb: 4.2 km with stretches of up to 22%. Two lengths: about 60 km and 1,550 m of climbing for €110, or about 130 km and 3,000 m, via Buenavista del Norte and El Tanque, for €150; by e-bike €130 and €180. All on tarmac.",
+            es: "Para ciclistas expertos. De Costa Adeje por Guía de Isora, Los Gigantes y Santiago del Teide hasta el Mirador de Cherfe; luego bajada a Masca, al pie del Teno, y subida por la cuesta más dura de la isla: 4,2 km con tramos de hasta el 22%. Dos distancias: unos 60 km y 1.550 m de desnivel por 110 €, o unos 130 km y 3.000 m, pasando por Buenavista del Norte y El Tanque, por 150 €; en e-bike 130 € y 180 €. Todo asfalto."
+          } },
         { label: { it: "MTB · Santiago del Teide – El Chinyero", en: "MTB · Santiago del Teide – El Chinyero", es: "MTB · Santiago del Teide – El Chinyero" },
           priceAdult: 110,
           desc: { it: "In mountain bike, con guida.", en: "On a mountain bike, with a guide.", es: "En bicicleta de montaña, con guía." } },

@@ -643,6 +643,9 @@ const PICKUP_IN_HOTEL = [
   // l'hotel, confermato dal proprietario (6 ottobre 2026). Era in
   // PICKUP_NESSUNO da segnaposto, quando non se ne sapeva niente.
   "cantine-vinicole",
+  // Bananas & Wines di Canaventura: bus col transfer compreso, che passa
+  // sotto l'hotel come sulle loro camminate (6 ottobre 2026).
+  "bananas-wines",
   // L'unico charter col transfer. Gli altri cinque non ce l'hanno e stanno in
   // PICKUP_NESSUNO: se un giorno si scopre che e' una svista della scheda e non
   // una differenza vera, si spostano qui.

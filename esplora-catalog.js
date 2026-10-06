@@ -5537,6 +5537,68 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    // Canaventura, "Agroturismo – Plátanos & Vinos" (sul volantino "Bananas &
+    // Wines"), dal volantino e dalla pagina del fornitore mandati il 6 ottobre
+    // 2026. Il titolo e' quello inglese del volantino, uguale nelle tre
+    // lingue come gli altri nomi dei fornitori.
+    // Non e' un doppione del First Wine Tasting Tour qui sopra, anche se la
+    // cantina "a piu' di 1200 m" puo' essere la stessa: qui c'e' la finca di
+    // banane e il mirador, si parte alle 8 e solo il martedi', costa 68 € e
+    // non 85.
+    id: "bananas-wines",
+    title: "Bananas & Wines",
+    category: "tour-isola",
+    // Si parte dal sud e il pulmino passa sotto l'hotel, come sulle camminate
+    // di Canaventura: la scheda sta in PICKUP_IN_HOTEL (hotel.js). Nel filtro
+    // sta nelle zone da cui si parte, come il First Wine Tasting Tour.
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    zoneGroups: ["los-cristianos", "costa-adeje"],
+    duration: { it: "5 ore", en: "5 hours", es: "5 horas" },
+    durationGroups: ["mezza"],
+    // "Días disponibles: martes". **mar e' martedi'.**
+    days: ["mar"],
+    times: ["08:00"],
+    // PVP del fornitore: 68 € adulti, 58 € "niños hasta 11 años". Le fasce
+    // sono le stesse del Trekking, che e' dello stesso fornitore e dove il
+    // proprietario ha confermato 12+ e 0-11: due fasce sole vogliono dire che
+    // sotto i 12 anni si paga il prezzo bambini, neonati compresi. Niente
+    // `priceInfant`.
+    priceFrom: 68,
+    priceAdult: 68,
+    priceChild: 58,
+    ages: { adult: "12+", child: "0-11" },
+    included: ["transfer", "guide", "tasting"],
+    itinerary: [
+      { time: "08:00",
+        text: { it: "Ritiro in hotel",
+                en: "Hotel pickup",
+                es: "Recogida en el hotel" } },
+      { text: { it: "Una finca di banane: come si coltivano da sempre, la storia del gofio e come si mangia, e l'assaggio di prodotti fatti con banana, gofio e miele di palma, insieme a diversi frutti tropicali",
+                en: "A banana farm: how bananas have always been grown, the story of gofio and how it is eaten, and a taste of products made with banana, gofio and palm honey, along with several tropical fruits",
+                es: "Una finca platanera: cómo se ha cultivado siempre el plátano, la historia del gofio y cómo se come, y la degustación de productos hechos con plátano, gofio y miel de palma, junto a varias frutas tropicales" } },
+      { text: { it: "Sosta al Mirador de La Centinela, a San Miguel de Abona: come si sono formati i vulcani di questa parte dell'isola",
+                en: "A stop at the Mirador de La Centinela, in San Miguel de Abona: how the volcanoes of this part of the island were formed",
+                es: "Parada en el Mirador de La Centinela, en San Miguel de Abona: cómo se formaron los volcanes de esta parte de la isla" } },
+      { text: { it: "Su, oltre i 1200 metri, fino alla cantina: la visita fra vasche e macchinari, e la degustazione di cinque vini con prodotti locali",
+                en: "Up above 1,200 metres to the winery: a tour among the tanks and machinery, then a tasting of five wines with local produce",
+                es: "Subida a más de 1200 metros hasta la bodega: la visita entre depósitos y maquinaria, y la cata de cinco vinos con productos locales" } },
+      { time: "13:00",
+        text: { it: "Rientro in hotel",
+                en: "Back to the hotel",
+                es: "Regreso al hotel" } }
+    ],
+    family: true,
+    desc: {
+      it: "Una mattina nell'entroterra del sud, dalla banana al vino. Prima una finca di banane, dove si scopre come si coltivano e si assaggiano gofio, miele di palma e frutta tropicale; poi il belvedere sui vulcani di San Miguel e, oltre i 1200 metri, una cantina con cinque vini da provare. Bus climatizzato e guida, e all'una si è di nuovo in hotel.",
+      en: "A morning in the southern hills, from bananas to wine. First a banana farm, where you see how they are grown and taste gofio, palm honey and tropical fruit; then the viewpoint over the volcanoes of San Miguel and, above 1,200 metres, a winery with five wines to try. Air-conditioned bus and guide, and you are back at the hotel by one.",
+      es: "Una mañana por las medianías del sur, del plátano al vino. Primero una finca platanera, donde se ve cómo se cultiva y se prueban gofio, miel de palma y fruta tropical; luego el mirador sobre los volcanes de San Miguel y, a más de 1200 metros, una bodega con cinco vinos para catar. Bus climatizado y guía, y a la una de vuelta en el hotel."
+    },
+    // Foto da avere: il volantino fotografato in mano non si usa, e il sito
+    // del fornitore e' bloccato da qui (vedi Trekking).
+    image: "",
+    published: true
+  },
+  {
     // Fornitore: Tuk Tuk Sweet Tours S.L. (sweettourstenerife.com), lo stesso
     // operatore della livrea in foto. Fornitore nuovo, quindi la domanda sul
     // ritiro e' stata fatta prima di pubblicare: non passano sotto l'hotel, il

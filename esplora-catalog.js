@@ -5600,6 +5600,73 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    // Finca Tuno Canarias (Ledesma Global SL), Valle San Lorenzo, Arona: dalla
+    // pagina del fornitore mandata il 6 ottobre 2026. Il "tuno" e' il fico
+    // d'India, e "Higo Tinto" e' il nome registrato della loro varieta' rossa:
+    // resta scritto cosi' nelle tre lingue, come un nome proprio. La pagina in
+    // italiano dice "fico Tinto", che e' la traduzione automatica di "higo".
+    // Non copiati: le recensioni Google, "posti che si riempiono in fretta",
+    // il negozio dei souvenir.
+    id: "finca-tuno",
+    title: "Finca Tuno Canarias",
+    category: "tour-isola",
+    // A 8 minuti da Los Cristianos, ci si arriva da soli: la pagina non parla
+    // di ritiro, da' l'indirizzo e "come arrivare". Per questo la scheda sta in
+    // PICKUP_NESSUNO (hotel.js) e l'indirizzo e' nelle note.
+    zone: "Valle San Lorenzo (Arona)",
+    zoneGroups: ["los-cristianos"],
+    duration: { it: "1 ora e mezza circa", en: "About 1.5 hours", es: "1 hora y media aprox." },
+    durationGroups: ["breve"],
+    // Visite tutti i giorni, quindi niente `days`.
+    times: ["09:00", "10:30", "12:30", "14:00", "15:30", "17:00", "18:30"],
+    // 18 € adulti; bambini 3-12 "sconto del 50%", cioe' 9 €; 0-2 gratis,
+    // scritto dal fornitore. Le fasce combaciano: 0-2, 3-12, 13+.
+    priceFrom: 18,
+    priceAdult: 18,
+    priceChild: 9,
+    priceInfant: 0,
+    ages: { adult: "13+", child: "3-12", infant: "0-2" },
+    // Niente `languages`: la lingua non si sceglie prenotando. La guida parla
+    // inglese, spagnolo o francese a seconda del turno, e le cuffie con
+    // l'audio tradotto (16 lingue) si chiedono arrivando alla finca: e' nelle
+    // note.
+    included: ["guide", "tasting"],
+    itinerary: [
+      { text: { it: "Un breve video sulla storia della finca e della famiglia che la coltiva",
+                en: "A short video on the story of the farm and the family who grows it",
+                es: "Un vídeo corto sobre la historia de la finca y de la familia que la cultiva" } },
+      { text: { it: "Il piccolo museo etnografico, con gli oggetti della vita contadina canaria di una volta",
+                en: "The small ethnographic museum, with objects from Canarian farm life of the past",
+                es: "El pequeño museo etnográfico, con objetos de la vida campesina canaria de antes" } },
+      { text: { it: "La passeggiata guidata fra i fichi d'India e il paesaggio vulcanico, con le soste ai belvedere e la raccolta e la sbucciatura a mano come si faceva un tempo",
+                en: "The guided walk among the prickly pears and the volcanic landscape, with stops at the viewpoints and a demonstration of the old way of picking and peeling by hand",
+                es: "El paseo guiado entre las tuneras y el paisaje volcánico, con paradas en los miradores y la recogida y el pelado a mano como se hacía antes" } },
+      { text: { it: "La degustazione: frutta appena tagliata e i prodotti fatti con l'Higo Tinto, poi un po' di tempo libero nel patio canario",
+                en: "The tasting: freshly cut fruit and products made with Higo Tinto, then some free time in the Canarian courtyard",
+                es: "La degustación: fruta recién cortada y productos hechos con Higo Tinto, y después un rato libre en el patio canario" } }
+    ],
+    notes: [
+      { it: "La finca è all'incrocio fra Calle Argüamul e Calle Solana, a Valle San Lorenzo (Arona), a circa 8 minuti da Los Cristianos e Las Américas. Il ritiro in hotel non c'è: ci si arriva per conto proprio.",
+        en: "The farm is at the corner of Calle Argüamul and Calle Solana, in Valle San Lorenzo (Arona), about 8 minutes from Los Cristianos and Las Américas. There is no hotel pickup: you make your own way there.",
+        es: "La finca está en el cruce de Calle Argüamul con Calle Solana, en Valle San Lorenzo (Arona), a unos 8 minutos de Los Cristianos y Las Américas. No hay recogida en el hotel: se llega por cuenta propia." },
+      { it: "La guida parla inglese, spagnolo o francese, a seconda del turno. Per seguire la visita in un'altra lingua ci sono le cuffie con l'audio tradotto, anche in italiano: si chiedono arrivando alla finca.",
+        en: "The guide speaks English, Spanish or French, depending on the time slot. To follow the visit in another language there are headphones with translated audio: ask for them when you arrive at the farm.",
+        es: "El guía habla inglés, español o francés, según el turno. Para seguir la visita en otro idioma hay auriculares con el audio traducido: se piden al llegar a la finca." },
+      { it: "Si va in piccoli gruppi.",
+        en: "Visits are in small groups.",
+        es: "Se va en grupos pequeños." }
+    ],
+    family: true,
+    desc: {
+      it: "Un'ora e mezza in una finca di fichi d'India nella valle sopra Los Cristianos. Si cammina fra i cactus e la terra vulcanica con una guida, si vede come si raccolgono e si sbucciano a mano, e alla fine si assaggiano la frutta e i prodotti dell'Higo Tinto, la loro varietà rossa: quella che lascia la lingua colorata. C'è anche un piccolo museo della vita contadina canaria.",
+      en: "An hour and a half on a prickly pear farm in the valley above Los Cristianos. You walk among the cactus and the volcanic soil with a guide, see how the fruit is picked and peeled by hand, and at the end taste the fruit and the products of Higo Tinto, their red variety: the one that turns your tongue red. There is also a small museum of Canarian farm life.",
+      es: "Una hora y media en una finca de tuneras en el valle sobre Los Cristianos. Se camina entre los cactus y la tierra volcánica con un guía, se ve cómo se recogen y se pelan los tunos a mano, y al final se prueban la fruta y los productos del Higo Tinto, su variedad roja: la que deja la lengua de color. Hay también un pequeño museo de la vida campesina canaria."
+    },
+    // Foto da avere: la pagina incollata non ne porta.
+    image: "",
+    published: true
+  },
+  {
     // Fornitore: Tuk Tuk Sweet Tours S.L. (sweettourstenerife.com), lo stesso
     // operatore della livrea in foto. Fornitore nuovo, quindi la domanda sul
     // ritiro e' stata fatta prima di pubblicare: non passano sotto l'hotel, il

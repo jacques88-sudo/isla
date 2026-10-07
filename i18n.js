@@ -106,6 +106,7 @@ const I18N = {
   "map.cat.sight":      { it: "Da vedere", en: "Must-see", es: "Imprescindibles" },
   "map.cat.food":       { it: "Ristoranti", en: "Restaurants", es: "Restaurantes" },
   "map.go":             { it: "Portami qui", en: "Take me there", es: "Llévame aquí" },
+  "map.photoBy":        { it: "Foto:", en: "Photo:", es: "Foto:" },
   "map.example":        { it: "esempio", en: "example", es: "ejemplo" },
   "rent.eyebrow":       { it: "Tenerife su ruote", en: "Tenerife on wheels", es: "Tenerife sobre ruedas" },
   "rent.title":         { it: "Noleggio", en: "Rentals", es: "Alquiler" },

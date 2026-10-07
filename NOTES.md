@@ -17033,3 +17033,32 @@ e il bottone "Scoprili sulla mappa".
   foto e' scura in tutti e due i temi.
 - `sw.js`: da offline `mappa.html?...` serve la mappa in cache ignorando il "?",
   come gia' `escursioni.html?q=`. `CACHE_NAME` → `isla-v442`.
+
+**Quarto giro: le foto.** Toccando un posto si apre un **pannello dal basso**
+(non piu' il fumetto: con le foto sarebbe stato piu' alto della mappa), con le foto
+da sfogliare col dito, i pallini sotto, poi categoria, nome, zona, testo e "Portami
+qui". Il pallino scelto si ingrandisce. Si chiude con la ✕, con Esc o toccando la
+mappa fuori dai pallini; un altro pallino o una riga dell'elenco cambia il posto
+senza chiudere. Col pannello aperto il pallino della chat sparisce (finiva sopra
+"Portami qui"). Il pannello sta a `z-index: 39`, sotto le finestre di lista e ticket.
+
+- **75 foto da Wikimedia Commons** (`assets/mappa/`, 720×480, ~68 KB l'una, 5 MB
+  in tutto), due per posto, una sola per Bollullo, Garañona, La Centinela, Charco
+  de la Laja e Charco del Viento: Commons non ne aveva altre adatte.
+- **Solo licenze libere** (CC BY, CC BY-SA, CC0): si possono usare anche su un sito
+  commerciale scrivendo autore e licenza. E' la riga in basso su ogni foto, col
+  link alla pagina originale. Autore, licenza e link stanno in `mappa-foto.js`.
+  Le foto da Google, blog e guide **non si usano**: hanno un proprietario.
+- Scelte guardandole una per una: la ricerca di Commons restituisce anche cose
+  sbagliate (per "Bollullo" un paese andaluso, per "Garañona" una pianta).
+- **Non stanno nella cache del service worker**, solo `mappa-foto.js`: 5 MB
+  scaricati alla prima visita sarebbero troppi per chi ha poco campo. Da offline
+  una foto che manca sparisce (`is-missing`) e il pannello resta in piedi.
+- Per scaricarle e' servito sbloccare `commons.wikimedia.org` e
+  `upload.wikimedia.org` nell'ambiente. Le miniature che Commons propone stanno su
+  `thumb.wikimedia.org`, che non era sbloccato: lo stesso percorso su
+  `upload.wikimedia.org`, a **960px**, funziona (le larghezze non standard danno 400).
+  Commons limita i download: piano, una richiesta per volta.
+- Da rivedere col proprietario: la seconda foto de La Orotava (il municipio col
+  presepe di Natale davanti) e La Centinela (una foto sola, tagliata da un panorama).
+- `CACHE_NAME` → `isla-v443`.

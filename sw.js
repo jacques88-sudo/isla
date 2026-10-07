@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v442";
+const CACHE_NAME = "isla-v443";
 const ASSETS = [
   "./",
   "./index.html",
@@ -42,6 +42,7 @@ const ASSETS = [
   "./hotel.js",
   "./richieste.js",
   "./mappa.js",
+  "./mappa-foto.js",
   "./vendor/leaflet-1.9.4.js",
   "./vendor/leaflet-1.9.4.css",
   // La pagina del ticket (booking.html) parla con Supabase: senza questi tre

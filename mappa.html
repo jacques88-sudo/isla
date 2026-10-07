@@ -156,6 +156,12 @@
     <div class="wrap">
       <ul class="map-list" data-map-list></ul>
     </div>
+
+    <!-- Il pannello del posto scelto: lo riempie mappa.js (openMapSheet). -->
+    <section class="map-sheet" data-map-sheet role="dialog" aria-modal="false" aria-labelledby="mapSheetTitle" hidden>
+      <button class="map-sheet-close" type="button" data-map-sheet-close data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
+      <div data-map-sheet-content></div>
+    </section>
   </main>
 
   <div class="menu-scrim" data-menu-scrim hidden></div>
@@ -232,6 +238,7 @@
   <script src="./esplora-catalog.js"></script>
   <script src="./escursioni.js"></script>
   <script src="./vendor/leaflet-1.9.4.js"></script>
+  <script src="./mappa-foto.js"></script>
   <script src="./mappa.js"></script>
   <script src="./supabase-config.js"></script>
   <script src="./richieste.js"></script>

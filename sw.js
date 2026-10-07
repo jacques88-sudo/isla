@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v439";
+const CACHE_NAME = "isla-v440";
 const ASSETS = [
   "./",
   "./index.html",
@@ -27,6 +27,7 @@ const ASSETS = [
   "./offline.html",
   "./privacy.html",
   "./termini.html",
+  "./mappa.html",
   "./styles.css",
   "./i18n.js",
   "./app.js",
@@ -40,6 +41,9 @@ const ASSETS = [
   "./esplora-catalog.js",
   "./hotel.js",
   "./richieste.js",
+  "./mappa.js",
+  "./vendor/leaflet-1.9.4.js",
+  "./vendor/leaflet-1.9.4.css",
   // La pagina del ticket (booking.html) parla con Supabase: senza questi tre
   // file in cache, da offline non si aprirebbe nemmeno per mostrare l'ultimo
   // ticket salvato sul telefono — che e' proprio il caso del porto senza campo.

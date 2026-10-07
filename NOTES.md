@@ -16961,3 +16961,32 @@ privacy prima dell'apertura al pubblico.
 
 Se cambia una delle regole qui sopra, va cambiata **anche qui**: lo dice il commento in
 testa a `termini.html`. `CACHE_NAME` → `isla-v439`.
+
+## La mappa (7 ottobre 2026) — PROVA, non ancora approvata
+
+Richiesta del proprietario: una sezione con una mappa e i punti di interesse
+(ristoranti, spiagge, punti panoramici). Fatta su un branch per fargliela vedere
+**prima** del merge.
+
+- Pagina `mappa.html` + `mappa.js`; voce "Mappa" nel Menu delle sette pagine,
+  **non** nella capsula (con cinque voci e' gia' piena).
+- **L'isola e' un disegno, non una cartina a piastrelle.** Il contorno viene da
+  `@geo-maps/earth-lands-100m` (OpenStreetMap, ODbL: da qui la scritta
+  "© OpenStreetMap" sulla mappa), 211 punti scritti in `MAP_COAST`. Perche':
+  ha i colori del sito e si gira al buio, funziona da offline come il resto,
+  e non dipende dal server delle piastrelle di OpenStreetMap (che chiede di non
+  usarlo per un sito in produzione senza accordi). Il prezzo: ingrandendo non
+  ci sono strade ne' paesi, solo la costa. Per arrivare, ogni punto ha "Portami
+  qui", che apre Google Maps con la destinazione.
+  L'alternativa — una cartina vera con le strade — si fa cambiando poche righe
+  (un `L.tileLayer`), ma serve un fornitore di piastrelle con un piano adatto.
+- Leaflet 1.9.4 sta in `vendor/`, come Supabase: solo per muovere e ingrandire.
+- Da lontano i pallini si rimpiccioliscono e i nomi delle citta' spariscono
+  (`.is-far`, sotto zoom 10.5): a Los Gigantes ce ne sono tre uno sull'altro.
+
+**Prima di pubblicare:**
+- i **ristoranti sono tre segnaposto** (`esempio: true`, bordo tratteggiato e
+  scritta "esempio"): i nomi veri li sceglie il proprietario;
+- le **coordinate** di spiagge e miradores sono indicative, vanno ricontrollate
+  una per una su Google Maps;
+- spiagge e panorami scelti da Claude: sette e sei, da confermare o cambiare.

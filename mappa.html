@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#fcfaf6" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#18130e" media="(prefers-color-scheme: dark)" />
-  <meta name="description" data-i18n-content="meta.packs.desc" content="I pacchetti di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo." />
-  <title>I pacchetti · Isla</title>
+  <meta name="description" data-i18n-content="meta.map.desc" content="La mappa di Tenerife di Isla: spiagge, punti panoramici e ristoranti consigliati, con la strada per arrivarci." />
+  <title>Mappa · Isla</title>
   <!-- Anteprima quando il link si manda su WhatsApp, Telegram, Facebook.
        L'immagine vuole l'indirizzo intero: WhatsApp non capisce ./assets. -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Isla" />
   <meta property="og:locale" content="it_IT" />
-  <meta property="og:title" content="I pacchetti · Isla" />
-  <meta property="og:description" content="I pacchetti di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo." />
+  <meta property="og:title" content="Mappa · Isla" />
+  <meta property="og:description" content="La mappa di Tenerife di Isla: spiagge, punti panoramici e ristoranti consigliati." />
   <meta property="og:image" content="https://jacques88-sudo.github.io/isla/assets/anteprima.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -24,6 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="./vendor/leaflet-1.9.4.css" />
   <link rel="stylesheet" href="./styles.css" />
   <!-- Critical splash styles, inlined so the loading screen never flashes
        unstyled while styles.css is still being fetched. -->
@@ -79,7 +80,7 @@
     }
   </style>
 </head>
-<body data-i18n-doctitle="meta.packs.title">
+<body data-i18n-doctitle="meta.map.title">
   <div class="splash" id="splash" aria-hidden="true">
     <div class="splash-mark">
       <span class="splash-ring"></span>
@@ -90,7 +91,7 @@
 
   <a class="skip" href="#main" data-i18n="common.skip">Vai al contenuto</a>
 
-  <main id="main" class="catalog-page packs-page">
+  <main id="main" class="catalog-page map-page">
     <!-- Stessa testata della home, con la foto dell'isola. -->
     <div class="home-hero">
       <img class="home-hero-media" src="./assets/hero-tenerife.webp" alt="" />
@@ -130,46 +131,28 @@
     </nav>
 
     <div class="wrap catalog-head">
-      <span class="eyebrow" data-i18n="packs.eyebrow">Scelti per te</span>
-      <h1 data-i18n="packs.title">I pacchetti</h1>
-      <p class="packs-intro" data-i18n="packs.intro"></p>
+      <span class="eyebrow" data-i18n="map.eyebrow">Tenerife da vicino</span>
+      <h1 data-i18n="map.title">Mappa</h1>
+      <p class="packs-intro" data-i18n="map.intro">Le spiagge, i punti panoramici e i ristoranti che consigliamo. Tocca un punto per leggere cos'è e farti portare lì.</p>
     </div>
 
-    <!-- Le pillole della vista "3, 5 o 7 giorni": restano nascoste nelle altre
-         due viste di questa pagina, e le accende `pacchetti.js`. Sono link e
-         non bottoni perche' ogni durata ha un indirizzo suo — si manda a un
-         cliente, e il tasto indietro del telefono ci torna. -->
-    <div class="wrap days-nav" data-days-nav hidden>
-      <nav class="chip-row" data-i18n-aria-label="days.navAria" aria-label="Quanti giorni">
-        <a class="chip" href="./pacchetti.html?giorni=tutti" data-days-link="0" data-i18n="days.all">Tutti</a>
-        <a class="chip" href="./pacchetti.html?giorni=3" data-days-link="3" data-i18n="days.d3">3 giorni</a>
-        <a class="chip" href="./pacchetti.html?giorni=5" data-days-link="5" data-i18n="days.d5">5 giorni</a>
-        <a class="chip" href="./pacchetti.html?giorni=7" data-days-link="7" data-i18n="days.d7">7 giorni</a>
-      </nav>
+    <!-- I filtri: uno alla volta, come le categorie dell'elenco. -->
+    <div class="wrap days-nav">
+      <div class="chip-row" role="group" data-i18n-aria-label="map.filterAria" aria-label="Cosa mostrare">
+        <button class="chip" type="button" data-map-cat="tutti" data-i18n="map.cat.all">Tutto</button>
+        <button class="chip" type="button" data-map-cat="spiaggia" data-i18n="map.cat.beach">Spiagge</button>
+        <button class="chip" type="button" data-map-cat="panorama" data-i18n="map.cat.view">Panorami</button>
+        <button class="chip" type="button" data-map-cat="ristorante" data-i18n="map.cat.food">Ristoranti</button>
+      </div>
+    </div>
+
+    <!-- La mappa la disegna `mappa.js`, coi punti di MAP_POINTS. -->
+    <div class="wrap">
+      <div class="map-box" id="islaMap" data-i18n-aria-label="map.aria" aria-label="Mappa di Tenerife" role="region"></div>
     </div>
 
     <div class="wrap">
-      <ul class="pack-grid" data-pack-grid></ul>
-    </div>
-
-    <!-- Si accende solo nella vista "In famiglia" (pacchetti.html?famiglia=1),
-         ed e' `pacchetti.js` ad accenderlo: sono i due modi di uscire di qui,
-         le escursioni per bambini una per una o tutti i pacchetti. -->
-    <div class="wrap packs-foot" data-pack-foot hidden>
-      <a class="btn btn-soft btn-block" href="./escursioni.html?family=1" data-i18n="packs.familyAll">Tutte le escursioni adatte ai bambini</a>
-      <a class="pack-back" href="./pacchetti.html" data-i18n="pack.seeAll">Vedi tutti i pacchetti</a>
-    </div>
-
-    <!-- Il piede della vista a giorni: da qui si esce verso i pacchetti a tema,
-         che sono l'altra proposta. Anche questo lo accende `pacchetti.js`. -->
-    <div class="wrap packs-foot" data-days-foot hidden>
-      <a class="pack-back" href="./pacchetti.html" data-i18n="pack.seeAll">Vedi tutti i pacchetti</a>
-    </div>
-
-    <!-- Il piede delle viste a tema (oggi ?tema=per-due): si torna
-         a tutti i pacchetti. Lo accende `pacchetti.js`. -->
-    <div class="wrap packs-foot" data-tema-foot hidden>
-      <a class="pack-back" href="./pacchetti.html" data-i18n="pack.seeAll">Vedi tutti i pacchetti</a>
+      <ul class="map-list" data-map-list></ul>
     </div>
   </main>
 
@@ -246,7 +229,8 @@
   <script src="./i18n.js"></script>
   <script src="./esplora-catalog.js"></script>
   <script src="./escursioni.js"></script>
-  <script src="./pacchetti.js"></script>
+  <script src="./vendor/leaflet-1.9.4.js"></script>
+  <script src="./mappa.js"></script>
   <script src="./supabase-config.js"></script>
   <script src="./richieste.js"></script>
   <script src="./lista.js"></script>

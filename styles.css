@@ -4199,3 +4199,174 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 }
 /* Scatta | Galleria, affiancati */
 .vend-photo-btns { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+
+/* ── LA MAPPA (mappa.html) ───────────────────────────────────────────────────
+   L'isola e' un disegno, non una cartina scaricata: mare e terra hanno i
+   colori del sito, e al buio si girano come il resto. I punti hanno un colore
+   per categoria, lo stesso sul pallino della mappa e su quello dell'elenco. */
+.map-page {
+  --map-sea: oklch(0.93 0.028 220);
+  --map-land: oklch(0.92 0.035 82);
+  --map-coast: oklch(0.72 0.06 70);
+  --map-beach: oklch(0.6 0.11 235);
+  --map-view: oklch(0.55 0.09 150);
+  --map-food: oklch(0.6 0.13 40);
+}
+.map-box {
+  height: clamp(300px, min(64vh, 86vw), 560px);
+  margin: .4rem 0 1.4rem;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--map-sea);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  font-family: var(--font-body);
+  z-index: 0;
+}
+.map-box .map-island {
+  fill: var(--map-land);
+  fill-opacity: 1;
+  stroke: var(--map-coast);
+}
+.map-town span {
+  display: block;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-size: .62rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  pointer-events: none;
+}
+.map-peak {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  transform: translate(-12px, -14px);
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: .9rem;
+  color: var(--text);
+  pointer-events: none;
+}
+.map-peak svg { width: 22px; height: 22px; fill: var(--map-coast); }
+
+.map-cat-spiaggia { --map-c: var(--map-beach); }
+.map-cat-panorama { --map-c: var(--map-view); }
+.map-cat-ristorante { --map-c: var(--map-food); }
+
+.map-pin {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--map-c);
+  color: #fff;
+  border: 2px solid var(--surface);
+  box-shadow: 0 2px 6px oklch(0.2 0.02 60 / .35);
+  transition: transform .15s ease;
+}
+.map-pin:hover, .map-pin:focus-visible { transform: scale(1.12); }
+.map-pin svg { width: 18px; height: 18px; }
+.map-pin.is-example { border-style: dashed; opacity: .85; }
+.map-box.is-far .map-pin { width: 24px !important; height: 24px !important; margin: -12px 0 0 -12px !important; border-width: 1.5px; }
+.map-box.is-far .map-pin svg { width: 13px; height: 13px; }
+.map-box.is-far .map-town { display: none; }
+
+/* Il fumetto: quello di Leaflet, coi colori e i caratteri del sito. */
+.map-popup .leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+.map-popup .leaflet-popup-tip { background: var(--surface); }
+.map-popup .leaflet-popup-content { margin: 1rem 1.1rem; font: inherit; }
+.map-popup a.leaflet-popup-close-button { color: var(--muted); }
+.map-pop { display: grid; gap: .3rem; }
+.map-pop-cat {
+  font-size: .62rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--map-c);
+  font-weight: 600;
+}
+.map-pop strong {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+.map-pop-zone { font-size: .78rem; color: var(--muted); }
+.map-pop p { margin: .2rem 0 .5rem; font-size: .86rem; line-height: 1.45; }
+.map-popup .map-pop a.btn { color: var(--primary-foreground); }
+
+.map-box .leaflet-control-zoom a {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+}
+.map-box .leaflet-control-attribution {
+  background: color-mix(in oklab, var(--surface) 75%, transparent);
+  color: var(--muted);
+  font-size: .6rem;
+}
+.map-box .leaflet-control-attribution a { color: inherit; }
+
+/* L'elenco sotto la mappa: tocchi una riga e la mappa ci vola sopra. */
+.map-list {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  display: grid;
+  gap: .6rem;
+}
+.map-item {
+  width: 100%;
+  display: flex;
+  gap: .8rem;
+  align-items: flex-start;
+  padding: .85rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--text);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.map-item:hover { background: var(--cream); }
+.map-dot {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--map-c);
+  color: #fff;
+}
+.map-dot svg { width: 18px; height: 18px; }
+.map-item-body { display: grid; gap: .15rem; min-width: 0; }
+.map-item-body strong { font-weight: 500; }
+.map-item-zone { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.map-item-text { font-size: .86rem; color: var(--muted); line-height: 1.4; }
+.map-tag {
+  font-style: normal;
+  font-size: .62rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .1rem .4rem;
+  border-radius: var(--radius-pill);
+  background: var(--sand);
+  color: var(--text);
+  vertical-align: middle;
+}
+
+@media (prefers-color-scheme: dark) {
+  .map-page {
+    --map-sea: oklch(0.24 0.03 235);
+    --map-land: oklch(0.33 0.02 70);
+    --map-coast: oklch(0.5 0.04 70);
+  }
+}

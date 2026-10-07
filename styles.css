@@ -1136,6 +1136,34 @@ p.note-box { margin: 0 0 1rem; }
   font-weight: 300;
   color: oklch(1 0 0 / .9);
 }
+/* I posti segreti da toccare e il bottone verso la mappa. Stanno sulla foto
+   scura in tutti e due i temi, quindi i colori sono fissi, non le variabili. */
+.secret-spots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem;
+  max-width: 34rem;
+  margin: 1.6rem auto 1.4rem;
+}
+.secret-spot {
+  padding: .45rem .9rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid oklch(1 0 0 / .45);
+  background: oklch(1 0 0 / .12);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: .8rem;
+  text-decoration: none;
+  transition: background .2s ease;
+}
+.secret-spot:hover { background: oklch(1 0 0 / .25); }
+.secret-btn {
+  background: #fff;
+  color: oklch(0.24 0.012 60);
+  border-color: #fff;
+}
 @media (min-width: 960px) {
   .secret-content { padding: 8rem 1.25rem; }
 }

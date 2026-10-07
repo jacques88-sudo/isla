@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v441";
+const CACHE_NAME = "isla-v442";
 const ASSETS = [
   "./",
   "./index.html",
@@ -93,9 +93,13 @@ self.addEventListener("fetch", event => {
       // indirizzi infiniti, non si possono mettere in elenco come quelli
       // sopra. Da offline si serve la pagina in cache senza guardare il "?"
       // — la parola la legge poi escursioni.js dall'indirizzo, che e' rimasto.
+      // Stessa cosa per la mappa: i posti segreti della home ci arrivano con
+      // mappa.html?cat=segreto&punto=<nome>, e mappa.js legge l'indirizzo.
+      const path = new URL(event.request.url).pathname;
+      const page = ["escursioni.html", "mappa.html"].find(p => path.endsWith("/" + p));
       return fetch(event.request).catch(() =>
-        new URL(event.request.url).pathname.endsWith("/escursioni.html")
-          ? caches.match("./escursioni.html", { ignoreSearch: true })
+        page
+          ? caches.match("./" + page, { ignoreSearch: true })
               .then(r => r || caches.match("./offline.html"))
           : caches.match("./offline.html"));
     })

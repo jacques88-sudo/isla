@@ -261,6 +261,12 @@ function mapIconSvg(cat) {
   return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + MAP_CATS[cat].icon + "</svg>";
 }
 
+// "Montaña Amarilla" -> "montana-amarilla": il nome nell'indirizzo, per i link
+// che arrivano dalla home (mappa.html?cat=segreto&punto=chinamada).
+function mapSlug(s) {
+  return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
 function mapPopupHtml(p) {
   const lang = getLang();
   const dir = "https://www.google.com/maps/search/?api=1&query=" +
@@ -382,7 +388,22 @@ function initMap() {
     map.once("moveend", () => mapState.markers[i].openPopup());
   });
 
+  // Si arriva gia' con un filtro o un punto scelto (i link della home).
+  const params = new URLSearchParams(location.search);
+  if (MAP_CATS[params.get("cat")]) mapState.cat = params.get("cat");
   applyMapFilter();
+  const i = MAP_POINTS.findIndex(p => mapSlug(p.name) === params.get("punto"));
+  if (i >= 0) {
+    if (mapState.cat !== "tutti" && mapState.cat !== MAP_POINTS[i].cat) {
+      mapState.cat = MAP_POINTS[i].cat;
+      applyMapFilter();
+    }
+    // Il punto va un po' sotto il centro: sopra deve starci il fumetto.
+    map.setView(MAP_POINTS[i].at, 11, { animate: false });
+    map.panBy([0, -110], { animate: false });
+    mapState.markers[i].openPopup();
+    setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "center" }), 300);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", initMap);

@@ -17017,3 +17017,19 @@ fiestas per i punti di interesse).
 - le **coordinate** di spiagge e miradores sono indicative, vanno ricontrollate
   una per una su Google Maps;
 - le quaranta schede vanno lette dal proprietario: tenere, togliere, cambiare.
+
+**Terzo giro: la sezione "Posti segreti" della home porta alla mappa.** Prima era
+solo foto e testo, senza un posto dove andare. Ora ha sei nomi da toccare (Paisaje
+Lunar, Chinamada, El Pijaral, Charco del Viento, Punta de Teno, Montaña Amarilla)
+e il bottone "Scoprili sulla mappa".
+- `mappa.html?cat=segreto` apre la mappa col filtro; `&punto=<nome>` apre anche
+  il fumetto di quel posto. Il nome nell'indirizzo e' `mapSlug(name)`: minuscole,
+  senza accenti, trattini ("Montaña Amarilla" → `montana-amarilla`). **Se cambi il
+  nome di un posto in `MAP_POINTS`, cambia anche il link in `index.html`**,
+  altrimenti si apre la mappa senza fumetto (non si rompe niente, ma non si vede).
+- All'arrivo il punto va 110 px sotto il centro: col punto al centro, il fumetto
+  usciva tagliato in alto.
+- I nomi sulla foto non si traducono (nomi propri); i colori sono fissi perche' la
+  foto e' scura in tutti e due i temi.
+- `sw.js`: da offline `mappa.html?...` serve la mappa in cache ignorando il "?",
+  come gia' `escursioni.html?q=`. `CACHE_NAME` → `isla-v442`.

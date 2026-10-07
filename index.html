@@ -283,6 +283,18 @@
         <span class="eyebrow" data-i18n="secret.eyebrow">Posti segreti</span>
         <h2 data-i18n="secret.title">Dove non arrivano i pullman</h2>
         <p data-i18n="secret.text">Cale di sabbia nera, piscine naturali e punti panoramici che i pullman turistici non raggiungono. Fanno parte di Tenerife tanto quanto le grandi attrazioni.</p>
+        <!-- Porta alla mappa: ogni nome apre il suo punto, il bottone apre
+             la mappa col filtro "Posti segreti". I nomi non si traducono:
+             sono nomi propri, e devono essere quelli di MAP_POINTS (mappa.js). -->
+        <div class="secret-spots">
+          <a class="secret-spot" href="./mappa.html?cat=segreto&amp;punto=paisaje-lunar">Paisaje Lunar</a>
+          <a class="secret-spot" href="./mappa.html?cat=segreto&amp;punto=chinamada">Chinamada</a>
+          <a class="secret-spot" href="./mappa.html?cat=segreto&amp;punto=el-pijaral">El Pijaral</a>
+          <a class="secret-spot" href="./mappa.html?cat=segreto&amp;punto=charco-del-viento">Charco del Viento</a>
+          <a class="secret-spot" href="./mappa.html?cat=segreto&amp;punto=punta-de-teno">Punta de Teno</a>
+          <a class="secret-spot" href="./mappa.html?cat=segreto&amp;punto=montana-amarilla">Montaña Amarilla</a>
+        </div>
+        <a class="btn secret-btn" href="./mappa.html?cat=segreto" data-i18n="secret.cta">Scoprili sulla mappa</a>
       </div>
     </section>
 
@@ -352,6 +364,7 @@
       <button type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.myBookings">Le mie prenotazioni</button>
       <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
       <a href="./pacchetti.html" data-menu-link data-i18n="menu.packages">Pacchetti</a>
+      <a href="./mappa.html" data-menu-link data-i18n="menu.map">Mappa</a>
       <a href="#secret" data-menu-link data-i18n="menu.secret">Posti segreti</a>
       <a href="#about" data-menu-link data-i18n="menu.about">Chi siamo</a>
     </nav>

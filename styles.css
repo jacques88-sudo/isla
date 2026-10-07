@@ -1136,6 +1136,34 @@ p.note-box { margin: 0 0 1rem; }
   font-weight: 300;
   color: oklch(1 0 0 / .9);
 }
+/* I posti segreti da toccare e il bottone verso la mappa. Stanno sulla foto
+   scura in tutti e due i temi, quindi i colori sono fissi, non le variabili. */
+.secret-spots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem;
+  max-width: 34rem;
+  margin: 1.6rem auto 1.4rem;
+}
+.secret-spot {
+  padding: .45rem .9rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid oklch(1 0 0 / .45);
+  background: oklch(1 0 0 / .12);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: .8rem;
+  text-decoration: none;
+  transition: background .2s ease;
+}
+.secret-spot:hover { background: oklch(1 0 0 / .25); }
+.secret-btn {
+  background: #fff;
+  color: oklch(0.24 0.012 60);
+  border-color: #fff;
+}
 @media (min-width: 960px) {
   .secret-content { padding: 8rem 1.25rem; }
 }
@@ -4199,3 +4227,288 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 }
 /* Scatta | Galleria, affiancati */
 .vend-photo-btns { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+
+/* ── LA MAPPA (mappa.html) ───────────────────────────────────────────────────
+   L'isola e' un disegno, non una cartina scaricata: mare e terra hanno i
+   colori del sito, e al buio si girano come il resto. I punti hanno un colore
+   per categoria, lo stesso sul pallino della mappa e su quello dell'elenco. */
+.map-page {
+  --map-sea: oklch(0.93 0.028 220);
+  --map-land: oklch(0.92 0.035 82);
+  --map-coast: oklch(0.72 0.06 70);
+  --map-beach: oklch(0.6 0.11 235);
+  --map-view: oklch(0.55 0.09 150);
+  --map-food: oklch(0.6 0.13 40);
+  --map-secret: oklch(0.5 0.12 300);
+  --map-sight: oklch(0.62 0.12 75);
+}
+.map-box {
+  height: clamp(300px, min(64vh, 86vw), 560px);
+  margin: .4rem 0 1.4rem;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--map-sea);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  font-family: var(--font-body);
+  z-index: 0;
+}
+.map-box .map-island {
+  fill: var(--map-land);
+  fill-opacity: 1;
+  stroke: var(--map-coast);
+}
+.map-town span {
+  display: block;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-size: .62rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  pointer-events: none;
+}
+.map-peak {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  transform: translate(-12px, -14px);
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: .9rem;
+  color: var(--text);
+  pointer-events: none;
+}
+.map-peak svg { width: 22px; height: 22px; fill: var(--map-coast); }
+
+.map-cat-spiaggia { --map-c: var(--map-beach); }
+.map-cat-panorama { --map-c: var(--map-view); }
+.map-cat-ristorante { --map-c: var(--map-food); }
+.map-cat-segreto { --map-c: var(--map-secret); }
+.map-cat-interesse { --map-c: var(--map-sight); }
+
+.map-pin {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--map-c);
+  color: #fff;
+  border: 2px solid var(--surface);
+  box-shadow: 0 2px 6px oklch(0.2 0.02 60 / .35);
+  transition: transform .15s ease;
+}
+.map-pin:hover, .map-pin:focus-visible { transform: scale(1.12); }
+.map-pin svg { width: 18px; height: 18px; }
+.map-pin.is-example { border-style: dashed; opacity: .85; }
+.map-box.is-far .map-pin { width: 22px !important; height: 22px !important; margin: -11px 0 0 -11px !important; border-width: 1.5px; }
+.map-box.is-far .map-pin svg { width: 13px; height: 13px; }
+.map-box.is-far .map-town { display: none; }
+
+/* Il fumetto: quello di Leaflet, coi colori e i caratteri del sito. */
+.map-popup .leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+.map-popup .leaflet-popup-tip { background: var(--surface); }
+.map-popup .leaflet-popup-content { margin: 1rem 1.1rem; font: inherit; }
+.map-popup a.leaflet-popup-close-button { color: var(--muted); }
+.map-pop { display: grid; gap: .3rem; }
+.map-pop-cat {
+  font-size: .62rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--map-c);
+  font-weight: 600;
+}
+.map-pop strong {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+.map-pop-zone { font-size: .78rem; color: var(--muted); }
+.map-pop p { margin: .2rem 0 .5rem; font-size: .86rem; line-height: 1.45; }
+.map-popup .map-pop a.btn { color: var(--primary-foreground); }
+
+.map-box .leaflet-control-zoom a {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+}
+.map-box .leaflet-control-attribution {
+  background: color-mix(in oklab, var(--surface) 75%, transparent);
+  color: var(--muted);
+  font-size: .6rem;
+}
+.map-box .leaflet-control-attribution a { color: inherit; }
+
+/* L'elenco sotto la mappa: tocchi una riga e la mappa ci vola sopra. */
+.map-list {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  display: grid;
+  gap: .6rem;
+}
+.map-item {
+  width: 100%;
+  display: flex;
+  gap: .8rem;
+  align-items: flex-start;
+  padding: .85rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--text);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.map-item:hover { background: var(--cream); }
+.map-dot {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--map-c);
+  color: #fff;
+}
+.map-dot svg { width: 18px; height: 18px; }
+.map-item-body { display: grid; gap: .15rem; min-width: 0; }
+.map-item-body strong { font-weight: 500; }
+.map-item-zone { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.map-item-text { font-size: .86rem; color: var(--muted); line-height: 1.4; }
+.map-tag {
+  font-style: normal;
+  font-size: .62rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .1rem .4rem;
+  border-radius: var(--radius-pill);
+  background: var(--sand);
+  color: var(--text);
+  vertical-align: middle;
+}
+
+@media (prefers-color-scheme: dark) {
+  .map-page {
+    --map-sea: oklch(0.24 0.03 235);
+    --map-land: oklch(0.33 0.02 70);
+    --map-coast: oklch(0.5 0.04 70);
+    --map-secret: oklch(0.6 0.13 300);
+  }
+}
+
+/* Il pannello del posto scelto (mappa.html): sale dal basso come nelle app
+   di mappe, con le foto in cima. Niente velo scuro dietro: la mappa resta
+   toccabile, e un altro pallino cambia il posto nel pannello. */
+.map-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* sotto le finestre (40 e 41), cosi' lista e ticket gli si aprono sopra */
+  z-index: 39;
+  width: min(100%, var(--max));
+  max-height: min(64vh, 560px);
+  margin: 0 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 -12px 40px -12px oklch(0.2 0.02 60 / .45);
+  animation: map-sheet-in .25s ease-out;
+}
+.map-sheet[hidden] { display: none; }
+/* Il pallino della chat finirebbe sopra "Portami qui": col pannello aperto
+   si toglie, e torna quando si chiude. */
+body.map-sheet-open .assist-fab { display: none; }
+@keyframes map-sheet-in { from { transform: translateY(40px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .map-sheet { animation: none; } }
+.map-sheet-close {
+  position: absolute;
+  top: .6rem;
+  right: .6rem;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: oklch(0.2 0.012 60 / .6);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.map-sheet-photos {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.map-sheet-photos::-webkit-scrollbar { display: none; }
+.map-sheet-photo {
+  position: relative;
+  flex: 0 0 100%;
+  margin: 0;
+  scroll-snap-align: start;
+  aspect-ratio: 3 / 2;
+  background: var(--cream);
+}
+.map-sheet-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.map-sheet-photo.is-missing { display: none; }
+.map-sheet-photo figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.2rem .8rem .45rem;
+  background: linear-gradient(transparent, oklch(0.15 0.01 60 / .7));
+  color: oklch(1 0 0 / .85);
+  font-size: .62rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.map-sheet-photo figcaption a { color: inherit; }
+.map-sheet-dots {
+  display: flex;
+  justify-content: center;
+  gap: .35rem;
+  padding: .55rem 0 0;
+}
+.map-sheet-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.map-sheet-dots span.is-on { background: var(--text); }
+.map-sheet-body {
+  display: grid;
+  gap: .3rem;
+  padding: .9rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+}
+.map-sheet-body h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+.map-sheet-body p { margin: .2rem 0 .6rem; font-size: .92rem; line-height: 1.5; }
+.map-pin.is-selected {
+  transform: scale(1.3);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--map-c) 35%, transparent), 0 2px 6px oklch(0.2 0.02 60 / .35);
+  z-index: 1000 !important;
+}

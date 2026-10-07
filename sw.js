@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v439";
+const CACHE_NAME = "isla-v444";
 const ASSETS = [
   "./",
   "./index.html",
@@ -27,6 +27,7 @@ const ASSETS = [
   "./offline.html",
   "./privacy.html",
   "./termini.html",
+  "./mappa.html",
   "./styles.css",
   "./i18n.js",
   "./app.js",
@@ -40,6 +41,10 @@ const ASSETS = [
   "./esplora-catalog.js",
   "./hotel.js",
   "./richieste.js",
+  "./mappa.js",
+  "./mappa-foto.js",
+  "./vendor/leaflet-1.9.4.js",
+  "./vendor/leaflet-1.9.4.css",
   // La pagina del ticket (booking.html) parla con Supabase: senza questi tre
   // file in cache, da offline non si aprirebbe nemmeno per mostrare l'ultimo
   // ticket salvato sul telefono — che e' proprio il caso del porto senza campo.
@@ -89,9 +94,13 @@ self.addEventListener("fetch", event => {
       // indirizzi infiniti, non si possono mettere in elenco come quelli
       // sopra. Da offline si serve la pagina in cache senza guardare il "?"
       // — la parola la legge poi escursioni.js dall'indirizzo, che e' rimasto.
+      // Stessa cosa per la mappa: i posti segreti della home ci arrivano con
+      // mappa.html?cat=segreto&punto=<nome>, e mappa.js legge l'indirizzo.
+      const path = new URL(event.request.url).pathname;
+      const page = ["escursioni.html", "mappa.html"].find(p => path.endsWith("/" + p));
       return fetch(event.request).catch(() =>
-        new URL(event.request.url).pathname.endsWith("/escursioni.html")
-          ? caches.match("./escursioni.html", { ignoreSearch: true })
+        page
+          ? caches.match("./" + page, { ignoreSearch: true })
               .then(r => r || caches.match("./offline.html"))
           : caches.match("./offline.html"));
     })

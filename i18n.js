@@ -92,6 +92,22 @@ const I18N = {
   "wa.rentItem":        { it: "Ciao Isla! Vorrei noleggiare: {mezzo}. Dal … al …", en: "Hi Isla! I'd like to rent: {mezzo}. From … to …", es: "¡Hola Isla! Quisiera alquilar: {mezzo}. Del … al …" },
 
   // ── pagina noleggio (noleggio.html) ─────────────────────────────────────
+  "meta.map.title":     { it: "Mappa · Isla", en: "Map · Isla", es: "Mapa · Isla" },
+  "meta.map.desc":      { it: "La mappa di Tenerife di Isla: spiagge, punti panoramici, posti segreti e cose da vedere, con la strada per arrivarci.", en: "Isla's map of Tenerife: beaches, viewpoints, secret spots and must-sees, with directions to get there.", es: "El mapa de Tenerife de Isla: playas, miradores, lugares secretos e imprescindibles, con la ruta para llegar." },
+  "map.eyebrow":        { it: "Tenerife da vicino", en: "Tenerife up close", es: "Tenerife de cerca" },
+  "map.title":          { it: "Mappa", en: "Map", es: "Mapa" },
+  "map.intro":          { it: "Spiagge, panorami, posti segreti e cose da vedere. Tocca un punto per leggere cos'è e farti portare lì.", en: "Beaches, viewpoints, secret spots and must-sees. Tap a spot to read about it and get directions.", es: "Playas, miradores, lugares secretos e imprescindibles. Toca un punto para leer qué es y cómo llegar." },
+  "map.aria":           { it: "Mappa di Tenerife", en: "Map of Tenerife", es: "Mapa de Tenerife" },
+  "map.filterAria":     { it: "Cosa mostrare", en: "What to show", es: "Qué mostrar" },
+  "map.cat.all":        { it: "Tutto", en: "All", es: "Todo" },
+  "map.cat.beach":      { it: "Spiagge", en: "Beaches", es: "Playas" },
+  "map.cat.view":       { it: "Panorami", en: "Viewpoints", es: "Miradores" },
+  "map.cat.secret":     { it: "Posti segreti", en: "Secret spots", es: "Lugares secretos" },
+  "map.cat.sight":      { it: "Da vedere", en: "Must-see", es: "Imprescindibles" },
+  "map.cat.food":       { it: "Ristoranti", en: "Restaurants", es: "Restaurantes" },
+  "map.go":             { it: "Portami qui", en: "Take me there", es: "Llévame aquí" },
+  "map.photoBy":        { it: "Foto:", en: "Photo:", es: "Foto:" },
+  "map.example":        { it: "esempio", en: "example", es: "ejemplo" },
   "rent.eyebrow":       { it: "Tenerife su ruote", en: "Tenerife on wheels", es: "Tenerife sobre ruedas" },
   "rent.title":         { it: "Noleggio", en: "Rentals", es: "Alquiler" },
   "rent.intro":         { it: "Auto, moto, scooter e bici per girare l'isola coi tuoi tempi. Scegli il mezzo e mandaci la richiesta con le date: ti confermiamo disponibilità e ritiro entro 24 ore.", en: "Cars, motorbikes, scooters and bikes to explore the island at your own pace. Pick a vehicle and send us your request with the dates: we confirm availability and collection within 24 hours.", es: "Coches, motos, scooters y bicis para recorrer la isla a tu ritmo. Elige el vehículo y envíanos la solicitud con las fechas: te confirmamos disponibilidad y recogida en 24 horas." },
@@ -147,6 +163,7 @@ const I18N = {
   "secret.eyebrow":     { it: "Posti segreti", en: "Secret spots", es: "Lugares secretos" },
   "secret.title":       { it: "Dove non arrivano i pullman", en: "Where the coaches don't go", es: "Donde no llegan los autobuses" },
   "secret.text":        { it: "Cale di sabbia nera, piscine naturali e punti panoramici che i pullman turistici non raggiungono. Fanno parte di Tenerife tanto quanto le grandi attrazioni.", en: "Black-sand coves, natural pools and viewpoints the tour coaches never reach. They are as much a part of Tenerife as the big attractions.", es: "Calas de arena negra, piscinas naturales y miradores a los que no llegan los autobuses turísticos. Forman parte de Tenerife tanto como las grandes atracciones." },
+  "secret.cta":         { it: "Scoprili sulla mappa", en: "Find them on the map", es: "Descúbrelos en el mapa" },
   "secret.alt":         { it: "Cala segreta a Tenerife", en: "Secret cove in Tenerife", es: "Cala secreta en Tenerife" },
 
   // ── chi siamo ───────────────────────────────────────────────────────────
@@ -186,6 +203,7 @@ const I18N = {
   "menu.install":       { it: "Installa l'app", en: "Install the app", es: "Instalar la app" },
   "menu.excursions":    { it: "Escursioni", en: "Excursions", es: "Excursiones" },
   "menu.packages":      { it: "Pacchetti", en: "Packages", es: "Paquetes" },
+  "menu.map":           { it: "Mappa", en: "Map", es: "Mapa" },
   "menu.secret":        { it: "Posti segreti", en: "Secret spots", es: "Lugares secretos" },
   "menu.about":         { it: "Chi siamo", en: "About us", es: "Quiénes somos" },
   "menu.cta":           { it: "Prenota ora", en: "Book now", es: "Reservar" },

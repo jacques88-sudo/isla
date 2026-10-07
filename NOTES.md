@@ -16961,3 +16961,112 @@ privacy prima dell'apertura al pubblico.
 
 Se cambia una delle regole qui sopra, va cambiata **anche qui**: lo dice il commento in
 testa a `termini.html`. `CACHE_NAME` → `isla-v439`.
+
+## La mappa (7 ottobre 2026) — PROVA, non ancora approvata
+
+Richiesta del proprietario: una sezione con una mappa e i punti di interesse
+(ristoranti, spiagge, punti panoramici). Fatta su un branch per fargliela vedere
+**prima** del merge.
+
+- Pagina `mappa.html` + `mappa.js`; voce "Mappa" nel Menu delle sette pagine,
+  **non** nella capsula (con cinque voci e' gia' piena).
+- **L'isola e' un disegno, non una cartina a piastrelle.** Il contorno viene da
+  `@geo-maps/earth-lands-100m` (OpenStreetMap, ODbL: da qui la scritta
+  "© OpenStreetMap" sulla mappa), 211 punti scritti in `MAP_COAST`. Perche':
+  ha i colori del sito e si gira al buio, funziona da offline come il resto,
+  e non dipende dal server delle piastrelle di OpenStreetMap (che chiede di non
+  usarlo per un sito in produzione senza accordi). Il prezzo: ingrandendo non
+  ci sono strade ne' paesi, solo la costa. Per arrivare, ogni punto ha "Portami
+  qui", che apre Google Maps con la destinazione.
+  L'alternativa — una cartina vera con le strade — si fa cambiando poche righe
+  (un `L.tileLayer`), ma serve un fornitore di piastrelle con un piano adatto.
+- Leaflet 1.9.4 sta in `vendor/`, come Supabase: solo per muovere e ingrandire.
+- Da lontano i pallini si rimpiccioliscono e i nomi delle citta' spariscono
+  (`.is-far`, sotto zoom 10.5): a Los Gigantes ce ne sono tre uno sull'altro.
+
+**Secondo giro (stesso giorno):** il proprietario ha chiesto i 10 migliori per
+quattro categorie, cercati sul web e messi in mappa: **spiagge**, **panorami**
+(miradores), **posti segreti** e **da vedere** (punti di interesse), ognuna col
+suo colore e la sua icona (chiave viola per i segreti, stella oro per i da
+vedere). Le classifiche delle guide non coincidono mai: la scelta incrocia le
+liste piu' citate (lastminute, hoteles.com, iberostar, paulinaontheroad per le
+spiagge; webtenerife, paradores, hellocanaryislands per i miradores; 22places,
+canarias-lovers, nomadotravel per i segreti; islaguru, ferryhopper, spanish-
+fiestas per i punti di interesse).
+
+- **"Portami qui" cerca il nome, non le coordinate** (`google.com/maps/search`
+  con "nome, zona, Tenerife"; campo `q` per correggerlo dove non basta). Da qui
+  Wikipedia e OpenStreetMap non si raggiungono, quindi molte coordinate sono a
+  occhio: col nome il navigatore porta comunque al posto vero.
+- Coordinate da fonti precise: Chipeque e Bollullo (Involcan), Punta de Teno
+  (Wikipedia), Paisaje Lunar (webtenerife); Ortuño, La Centinela, Humboldt,
+  Archipenque e Roque de las Bodegas convertite dalle UTM di webtenerife. Le
+  altre sono a occhio. Controllo fatto: le spiagge cadono tutte entro mezzo
+  chilometro dalla costa disegnata, gli altri dentro l'isola.
+- Dove serve un permesso o la strada si chiude lo dice la descrizione: El
+  Pijaral (permesso gratuito), Cueva del Viento (visita prenotata), barranco di
+  Masca (prenotazione), Punta de Teno (strada chiusa alle auto in certi orari).
+  L'ex sanatorio di Abades "si guarda da fuori": e' un rudere.
+- Il limite di spostamento (`maxBounds`) era troppo stretto: il fumetto di un
+  punto sulla costa nord restava tagliato in alto perche' la mappa non poteva
+  scendere. Ora e' `bounds.pad(1)`.
+
+**Prima di pubblicare:**
+- i **ristoranti sono tre segnaposto** (`esempio: true`, bordo tratteggiato e
+  scritta "esempio"): i nomi veri li sceglie il proprietario;
+- le **coordinate** di spiagge e miradores sono indicative, vanno ricontrollate
+  una per una su Google Maps;
+- le quaranta schede vanno lette dal proprietario: tenere, togliere, cambiare.
+
+**Terzo giro: la sezione "Posti segreti" della home porta alla mappa.** Prima era
+solo foto e testo, senza un posto dove andare. Ora ha sei nomi da toccare (Paisaje
+Lunar, Chinamada, El Pijaral, Charco del Viento, Punta de Teno, Montaña Amarilla)
+e il bottone "Scoprili sulla mappa".
+- `mappa.html?cat=segreto` apre la mappa col filtro; `&punto=<nome>` apre anche
+  il fumetto di quel posto. Il nome nell'indirizzo e' `mapSlug(name)`: minuscole,
+  senza accenti, trattini ("Montaña Amarilla" → `montana-amarilla`). **Se cambi il
+  nome di un posto in `MAP_POINTS`, cambia anche il link in `index.html`**,
+  altrimenti si apre la mappa senza fumetto (non si rompe niente, ma non si vede).
+- All'arrivo il punto va 110 px sotto il centro: col punto al centro, il fumetto
+  usciva tagliato in alto.
+- I nomi sulla foto non si traducono (nomi propri); i colori sono fissi perche' la
+  foto e' scura in tutti e due i temi.
+- `sw.js`: da offline `mappa.html?...` serve la mappa in cache ignorando il "?",
+  come gia' `escursioni.html?q=`. `CACHE_NAME` → `isla-v442`.
+
+**Quarto giro: le foto.** Toccando un posto si apre un **pannello dal basso**
+(non piu' il fumetto: con le foto sarebbe stato piu' alto della mappa), con le foto
+da sfogliare col dito, i pallini sotto, poi categoria, nome, zona, testo e "Portami
+qui". Il pallino scelto si ingrandisce. Si chiude con la ✕, con Esc o toccando la
+mappa fuori dai pallini; un altro pallino o una riga dell'elenco cambia il posto
+senza chiudere. Col pannello aperto il pallino della chat sparisce (finiva sopra
+"Portami qui"). Il pannello sta a `z-index: 39`, sotto le finestre di lista e ticket.
+
+- **75 foto da Wikimedia Commons** (`assets/mappa/`, 720×480, ~68 KB l'una, 5 MB
+  in tutto), due per posto, una sola per Bollullo, Garañona, La Centinela, Charco
+  de la Laja e Charco del Viento: Commons non ne aveva altre adatte.
+- **Solo licenze libere** (CC BY, CC BY-SA, CC0): si possono usare anche su un sito
+  commerciale scrivendo autore e licenza. E' la riga in basso su ogni foto, col
+  link alla pagina originale. Autore, licenza e link stanno in `mappa-foto.js`.
+  Le foto da Google, blog e guide **non si usano**: hanno un proprietario.
+- Scelte guardandole una per una: la ricerca di Commons restituisce anche cose
+  sbagliate (per "Bollullo" un paese andaluso, per "Garañona" una pianta).
+- **Non stanno nella cache del service worker**, solo `mappa-foto.js`: 5 MB
+  scaricati alla prima visita sarebbero troppi per chi ha poco campo. Da offline
+  una foto che manca sparisce (`is-missing`) e il pannello resta in piedi.
+- Per scaricarle e' servito sbloccare `commons.wikimedia.org` e
+  `upload.wikimedia.org` nell'ambiente. Le miniature che Commons propone stanno su
+  `thumb.wikimedia.org`, che non era sbloccato: lo stesso percorso su
+  `upload.wikimedia.org`, a **960px**, funziona (le larghezze non standard danno 400).
+  Commons limita i download: piano, una richiesta per volta.
+- Da rivedere col proprietario: la seconda foto de La Orotava (il municipio col
+  presepe di Natale davanti) e La Centinela (una foto sola, tagliata da un panorama).
+- `CACHE_NAME` → `isla-v443`.
+
+**Pubblicata (7 ottobre 2026, il proprietario ha chiesto il merge).** Prima del
+merge sono stati **tolti i tre ristoranti segnaposto** e il bottone "Ristoranti":
+sul sito vero avrebbero mostrato "Ristorante di esempio". La categoria resta in
+`MAP_CATS`, pronta per i nomi veri; col primo ristorante va rimesso il bottone in
+`mappa.html`. Restano da fare, senza fretta: ricontrollare le coordinate a occhio
+(la navigazione va comunque per nome) e, se ci sono, sostituire le foto con foto
+vostre. `CACHE_NAME` → `isla-v444`.

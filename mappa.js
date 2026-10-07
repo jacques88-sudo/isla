@@ -1,25 +1,32 @@
-// La mappa dei posti: spiagge, punti panoramici, ristoranti.
+// La mappa dei posti: spiagge, punti panoramici, posti segreti, punti di
+// interesse e ristoranti. Dieci per categoria (ristoranti a parte), scelti
+// incrociando le classifiche delle guide di viaggio (ottobre 2026).
 //
 // Non ci sono "piastrelle" scaricate da un server di mappe: l'isola e' un
 // disegno, il contorno della costa preso da OpenStreetMap (licenza ODbL, per
 // questo la scritta in basso a destra). Cosi' la mappa ha i colori del sito,
 // funziona anche senza campo (sta nella cache come tutto il resto) e non
 // dipende da nessun servizio esterno. Per arrivarci, ogni punto ha il bottone
-// "Portami qui" che apre il navigatore del telefono.
+// "Portami qui", che apre Google Maps e CERCA IL NOME del posto (nome, zona,
+// Tenerife): cosi' il navigatore porta al posto vero anche dove il pallino
+// sulla nostra mappa e' spostato di qualche centinaio di metri.
 // Leaflet (vendor/leaflet-1.9.4.js) serve solo a muovere e ingrandire col dito.
 //
 // COME E' FATTO UN PUNTO
-//   cat      "spiaggia", "panorama" o "ristorante": decide colore e icona
+//   cat      "spiaggia", "panorama", "segreto", "interesse" o "ristorante":
+//            decide colore e icona
 //   name     il nome del posto, uguale in tutte e tre le lingue (come i titoli
 //            delle escursioni: chi lo chiede per strada lo chiede cosi')
 //   zone     dove sta, uguale in tutte e tre le lingue
 //   text     due righe in it, en, es — scritte da noi, non copiate
-//   at       [latitudine, longitudine]: si prende da Google Maps, tasto destro
-//            (o dito premuto) sul punto, e il primo numero in alto e' questo
+//   at       [latitudine, longitudine]: dove sta il pallino. Si prende da
+//            Google Maps, tasto destro (o dito premuto) sul punto
+//   q        facoltativo: cosa cercare su Google Maps, se "nome, zona" non
+//            trova il posto giusto
 //   esempio  true = segnaposto della prova, da togliere prima di pubblicare
 //
-// Le coordinate qui sotto sono indicative: vanno ricontrollate una per una
-// prima di pubblicare (vedi NOTES.md, "La mappa").
+// Le coordinate qui sotto sono indicative (alcune da fonti ufficiali, altre a
+// occhio): vanno ricontrollate prima di pubblicare (vedi NOTES.md, "La mappa").
 
 const MAP_CATS = {
   spiaggia: {
@@ -30,6 +37,14 @@ const MAP_CATS = {
     label: "map.cat.view",
     icon: '<path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12" r="2.8"/>'
   },
+  segreto: {
+    label: "map.cat.secret",
+    icon: '<circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M15.5 12v2"/>'
+  },
+  interesse: {
+    label: "map.cat.sight",
+    icon: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>'
+  },
   ristorante: {
     label: "map.cat.food",
     icon: '<path d="M7 3v8M4.5 3v5a2.5 2.5 0 0 0 5 0V3M7 11v10"/><path d="M17 21V3c-2 1.5-3 4-3 7v3h3"/>'
@@ -37,23 +52,31 @@ const MAP_CATS = {
 };
 
 const MAP_POINTS = [
-  // ── spiagge ──
+  // ── 10 spiagge ──
   { cat: "spiaggia", name: "Playa de Las Teresitas", zone: "San Andrés", at: [28.5086, -16.1863],
-    text: { it: "Sabbia dorata, acqua calma dietro la diga e le montagne di Anaga alle spalle.",
-            en: "Golden sand, calm water behind the breakwater and the Anaga mountains behind you.",
-            es: "Arena dorada, agua tranquila tras el dique y las montañas de Anaga detrás." } },
+    text: { it: "Sabbia dorata, palme e acqua calma dietro la diga, con le montagne di Anaga alle spalle.",
+            en: "Golden sand, palm trees and calm water behind the breakwater, with the Anaga mountains behind you.",
+            es: "Arena dorada, palmeras y agua tranquila tras el dique, con las montañas de Anaga detrás." } },
   { cat: "spiaggia", name: "Playa de Benijo", zone: "Anaga", at: [28.5704, -16.1882],
-    text: { it: "Sabbia nera e scogli nel mare: selvaggia, bellissima al tramonto. Onde forti.",
+    text: { it: "Sabbia nera e scogli che escono dal mare: selvaggia, bellissima al tramonto. Onde forti.",
             en: "Black sand and rocks rising from the sea: wild, beautiful at sunset. Strong waves.",
-            es: "Arena negra y roques en el mar: salvaje, preciosa al atardecer. Olas fuertes." } },
+            es: "Arena negra y roques que salen del mar: salvaje, preciosa al atardecer. Olas fuertes." } },
+  { cat: "spiaggia", name: "Playa del Bollullo", zone: "La Orotava", at: [28.4204, -16.5093],
+    text: { it: "Sabbia nera in fondo a una scogliera, fra i bananeti. Si scende a piedi.",
+            en: "Black sand at the foot of a cliff, among banana plantations. You walk down to it.",
+            es: "Arena negra al pie de un acantilado, entre plataneras. Se baja a pie." } },
   { cat: "spiaggia", name: "Playa Jardín", zone: "Puerto de la Cruz", at: [28.4146, -16.5627],
     text: { it: "Sabbia nera fra i giardini, con il Teide che spunta dietro la città.",
             en: "Black sand among gardens, with Teide rising behind the town.",
             es: "Arena negra entre jardines, con el Teide asomando detrás de la ciudad." } },
-  { cat: "spiaggia", name: "Playa de los Guíos", zone: "Los Gigantes", at: [28.2436, -16.8410],
-    text: { it: "Piccola e nera, proprio sotto le scogliere alte seicento metri.",
-            en: "Small and black, right below the six-hundred-metre cliffs.",
-            es: "Pequeña y negra, justo debajo de los acantilados de seiscientos metros." } },
+  { cat: "spiaggia", name: "Playa de los Guíos", zone: "Los Gigantes", at: [28.2440, -16.8420],
+    text: { it: "Piccola e nera, proprio sotto le scogliere di Los Gigantes.",
+            en: "Small and black, right below the Los Gigantes cliffs.",
+            es: "Pequeña y negra, justo debajo de los acantilados de Los Gigantes." } },
+  { cat: "spiaggia", name: "Playa de la Arena", zone: "Puerto de Santiago", at: [28.2280, -16.8405],
+    text: { it: "Sabbia nera fine e tramonti sulla Gomera, con il paese tutto intorno.",
+            en: "Fine black sand and sunsets over La Gomera, with the village all around.",
+            es: "Arena negra fina y atardeceres sobre La Gomera, con el pueblo alrededor." } },
   { cat: "spiaggia", name: "Playa del Duque", zone: "Costa Adeje", at: [28.0935, -16.7405],
     text: { it: "Sabbia chiara, lettini e una passeggiata sul mare fino a Fañabé.",
             en: "Light sand, sunbeds and a seafront walk all the way to Fañabé.",
@@ -63,37 +86,141 @@ const MAP_POINTS = [
             en: "Long, sheltered and with little swell: the right one for children.",
             es: "Larga, resguardada y con poco oleaje: la ideal para los niños." } },
   { cat: "spiaggia", name: "El Médano", zone: "Granadilla", at: [28.0445, -16.5385],
-    text: { it: "Il vento c'è quasi sempre: la spiaggia del kitesurf, sotto la Montaña Roja.",
-            en: "There is almost always wind: the kitesurfing beach, below Montaña Roja.",
-            es: "Casi siempre hay viento: la playa del kitesurf, bajo la Montaña Roja." } },
+    text: { it: "Il vento c'è quasi sempre: la spiaggia del kitesurf e del windsurf.",
+            en: "There is almost always wind: the kitesurfing and windsurfing beach.",
+            es: "Casi siempre hay viento: la playa del kitesurf y el windsurf." } },
+  { cat: "spiaggia", name: "Playa de la Tejita", zone: "El Médano", at: [28.0335, -16.5560],
+    text: { it: "La spiaggia naturale più grande dell'isola, sotto la Montaña Roja. Niente palazzi.",
+            en: "The island's largest natural beach, below Montaña Roja. No buildings.",
+            es: "La playa natural más grande de la isla, bajo la Montaña Roja. Sin edificios." } },
 
-  // ── punti panoramici ──
-  { cat: "panorama", name: "Mirador de Archipenque", zone: "Los Gigantes", at: [28.2532, -16.8283],
-    text: { it: "La vista dall'alto sulle scogliere di Los Gigantes e sul porticciolo.",
-            en: "The view from above over the Los Gigantes cliffs and the little harbour.",
-            es: "La vista desde arriba de los acantilados de Los Gigantes y el puerto." } },
-  { cat: "panorama", name: "Mirador de Cherfe", zone: "Masca", at: [28.2896, -16.8333],
-    text: { it: "Sulla strada per Masca: la valle, i tornanti e nei giorni chiari La Gomera.",
-            en: "On the road to Masca: the valley, the hairpin bends and, on clear days, La Gomera.",
-            es: "En la carretera de Masca: el valle, las curvas y, en días claros, La Gomera." } },
+  // ── 10 punti panoramici ──
   { cat: "panorama", name: "Mirador Roques de García", zone: "Parque Nacional del Teide", at: [28.2228, -16.6331],
     text: { it: "Le rocce scolpite dal vento con il Teide dietro: la foto più famosa dell'isola.",
             en: "Wind-carved rocks with Teide behind them: the island's most famous photo.",
             es: "Rocas talladas por el viento con el Teide detrás: la foto más famosa de la isla." } },
-  { cat: "panorama", name: "Mirador de La Centinela", zone: "San Miguel de Abona", at: [28.0950, -16.6100],
-    text: { it: "Tutto il sud in un colpo d'occhio, fino al mare e ai vulcani spenti.",
-            en: "The whole south at a glance, down to the sea and the extinct volcanoes.",
-            es: "Todo el sur de un vistazo, hasta el mar y los volcanes apagados." } },
-  { cat: "panorama", name: "Mirador de Humboldt", zone: "La Orotava", at: [28.3890, -16.5150],
-    text: { it: "La valle dell'Orotava verde fino al mare, con il Teide in cima.",
-            en: "The Orotava valley green all the way to the sea, with Teide on top.",
-            es: "El valle de La Orotava verde hasta el mar, con el Teide en lo alto." } },
+  { cat: "panorama", name: "Mirador de Chipeque", zone: "La Esperanza", at: [28.3739, -16.4638],
+    text: { it: "A quasi 1900 metri, sopra il mare di nubi, con il Teide davanti. Il tramonto è il momento.",
+            en: "At almost 1,900 metres, above the sea of clouds, with Teide ahead. Sunset is the time.",
+            es: "A casi 1.900 metros, sobre el mar de nubes, con el Teide delante. El atardecer es el momento." } },
+  { cat: "panorama", name: "Mirador Cruz del Carmen", zone: "Anaga", at: [28.5310, -16.2800],
+    text: { it: "La porta del bosco di Anaga: la vista su La Laguna e l'inizio dei sentieri.",
+            en: "The gateway to the Anaga forest: the view over La Laguna and the start of the trails.",
+            es: "La puerta del bosque de Anaga: la vista sobre La Laguna y el inicio de los senderos." } },
   { cat: "panorama", name: "Mirador Pico del Inglés", zone: "Anaga", at: [28.5330, -16.2655],
     text: { it: "Sopra il bosco di Anaga: le creste, le nuvole basse e i due mari.",
             en: "Above the Anaga forest: the ridges, the low clouds and both coasts.",
             es: "Sobre el bosque de Anaga: las crestas, las nubes bajas y los dos mares." } },
+  { cat: "panorama", name: "Mirador de Archipenque", zone: "Santiago del Teide", at: [28.2404, -16.8371],
+    text: { it: "La vista dall'alto sulle scogliere di Los Gigantes e sul porticciolo.",
+            en: "The view from above over the Los Gigantes cliffs and the little harbour.",
+            es: "La vista desde arriba de los acantilados de Los Gigantes y el puerto." } },
+  { cat: "panorama", name: "Mirador de Cherfe", zone: "Santiago del Teide", at: [28.2930, -16.8260],
+    text: { it: "Sulla strada per Masca, a 1100 metri: la valle, i tornanti e nei giorni chiari La Gomera.",
+            en: "On the road to Masca, at 1,100 metres: the valley, the bends and, on clear days, La Gomera.",
+            es: "En la carretera de Masca, a 1.100 metros: el valle, las curvas y, en días claros, La Gomera." } },
+  { cat: "panorama", name: "Mirador de Humboldt", zone: "La Orotava", at: [28.4078, -16.5073],
+    text: { it: "La valle dell'Orotava verde fino al mare, con il Teide in cima.",
+            en: "The Orotava valley green all the way to the sea, with Teide on top.",
+            es: "El valle de La Orotava verde hasta el mar, con el Teide en lo alto." } },
+  { cat: "panorama", name: "Mirador de la Garañona", zone: "El Sauzal", at: [28.4840, -16.4280],
+    text: { it: "Una terrazza a picco sull'oceano, quasi trecento metri sopra le onde.",
+            en: "A terrace hanging over the ocean, almost three hundred metres above the waves.",
+            es: "Una terraza sobre el océano, casi trescientos metros por encima de las olas." } },
+  { cat: "panorama", name: "Mirador de Ortuño", zone: "La Victoria de Acentejo", at: [28.4056, -16.4239],
+    text: { it: "Fra i pini, sulla strada del Teide: da qui si vede il mare di nubi.",
+            en: "Among the pines, on the road to Teide: from here you see the sea of clouds.",
+            es: "Entre pinos, en la carretera del Teide: desde aquí se ve el mar de nubes." } },
+  { cat: "panorama", name: "Mirador de La Centinela", zone: "San Miguel de Abona", at: [28.0786, -16.6407],
+    text: { it: "Tutto il sud in un colpo d'occhio, fino al mare e ai vulcani spenti.",
+            en: "The whole south at a glance, down to the sea and the extinct volcanoes.",
+            es: "Todo el sur de un vistazo, hasta el mar y los volcanes apagados." } },
 
-  // ── ristoranti: SEGNAPOSTO della prova, i nomi veri li sceglie il proprietario ──
+  // ── 10 posti segreti ──
+  { cat: "segreto", name: "Paisaje Lunar", zone: "Vilaflor", at: [28.1600, -16.6370],
+    text: { it: "Torri di pietra pomice bianca in mezzo alla pineta: sembra la luna. Ci si arriva a piedi.",
+            en: "White pumice towers in the middle of the pine forest: it looks like the moon. You get there on foot.",
+            es: "Torres de piedra pómez blanca en medio del pinar: parece la luna. Se llega a pie." } },
+  { cat: "segreto", name: "Sanatorio de Abades", zone: "Arico", at: [28.1390, -16.4435],
+    text: { it: "Il villaggio fantasma sul mare, costruito e mai aperto. Si guarda da fuori.",
+            en: "The ghost village by the sea, built and never opened. Look at it from outside.",
+            es: "El pueblo fantasma junto al mar, construido y nunca abierto. Se mira desde fuera." } },
+  { cat: "segreto", name: "El Pijaral", zone: "Anaga", at: [28.5480, -16.2000],
+    text: { it: "Il bosco incantato di Anaga, alberi coperti di muschio. Serve il permesso gratuito, da chiedere prima.",
+            en: "Anaga's enchanted forest, trees covered in moss. You need a free permit, booked in advance.",
+            es: "El bosque encantado de Anaga, árboles cubiertos de musgo. Hace falta el permiso gratuito, pedido antes." } },
+  { cat: "segreto", name: "Chinamada", zone: "Anaga", at: [28.5570, -16.2950],
+    text: { it: "Il paesino dove si vive ancora nelle case scavate nella roccia.",
+            en: "The hamlet where people still live in houses dug into the rock.",
+            es: "El caserío donde todavía se vive en casas excavadas en la roca." } },
+  { cat: "segreto", name: "Playa del Roque de las Bodegas", zone: "Taganana", at: [28.5698, -16.2049],
+    text: { it: "Una caletta nera con due ristorantini di pesce, dove finisce la strada.",
+            en: "A little black cove with two small fish restaurants, where the road ends.",
+            es: "Una cala negra con dos pequeños restaurantes de pescado, donde acaba la carretera." } },
+  { cat: "segreto", name: "Charco de la Laja", zone: "San Juan de la Rambla", at: [28.3950, -16.6450],
+    text: { it: "Una piscina naturale fra le rocce nere. Solo col mare calmo.",
+            en: "A natural pool among the black rocks. Only when the sea is calm.",
+            es: "Una piscina natural entre las rocas negras. Solo con el mar en calma." } },
+  { cat: "segreto", name: "Charco del Viento", zone: "La Guancha", at: [28.3858, -16.6905],
+    text: { it: "Pozze di lava lungo la costa, poca gente e tanto silenzio. Solo col mare calmo.",
+            en: "Lava pools along the coast, few people and lots of quiet. Only when the sea is calm.",
+            es: "Charcos de lava junto a la costa, poca gente y mucho silencio. Solo con el mar en calma." } },
+  { cat: "segreto", name: "Punta de Teno", zone: "Buenavista del Norte", at: [28.3421, -16.9229],
+    text: { it: "Il faro all'estremo ovest, sotto le scogliere di Teno. In certi orari la strada è chiusa alle auto: controlla prima.",
+            en: "The lighthouse at the far west, below the Teno cliffs. At some times the road is closed to cars: check first.",
+            es: "El faro en el extremo oeste, bajo los acantilados de Teno. A ciertas horas la carretera está cerrada a los coches: compruébalo antes." } },
+  { cat: "segreto", name: "Cueva del Viento", zone: "Icod de los Vinos", at: [28.3530, -16.7050],
+    text: { it: "Una galleria di lava lunga chilometri, sotto Icod. Si entra solo con la visita prenotata.",
+            en: "A lava tunnel kilometres long, under Icod. You can only enter on a booked visit.",
+            es: "Un tubo volcánico de kilómetros, bajo Icod. Solo se entra con la visita reservada." } },
+  { cat: "segreto", name: "Montaña Amarilla", zone: "Costa del Silencio", at: [28.0080, -16.6410],
+    text: { it: "Un vulcano giallo tagliato dal mare: rocce a strati e acqua trasparente.",
+            en: "A yellow volcano cut open by the sea: layered rocks and clear water.",
+            es: "Un volcán amarillo cortado por el mar: rocas en capas y agua transparente." } },
+
+  // ── 10 punti di interesse ──
+  { cat: "interesse", name: "Teleférico del Teide", zone: "Parque Nacional del Teide", at: [28.2553, -16.6180],
+    text: { it: "La funivia che sale quasi in cima al vulcano più alto di Spagna.",
+            en: "The cable car that goes almost to the top of Spain's highest volcano.",
+            es: "El teleférico que sube casi a la cima del volcán más alto de España." } },
+  { cat: "interesse", name: "Masca", zone: "Buenavista del Norte", at: [28.3060, -16.8420],
+    text: { it: "Il paesino appeso fra le montagne di Teno. Il sentiero del barranco va prenotato.",
+            en: "The village hanging among the Teno mountains. The gorge trail must be booked.",
+            es: "El caserío colgado entre las montañas de Teno. El sendero del barranco hay que reservarlo." } },
+  { cat: "interesse", name: "Drago Milenario", zone: "Icod de los Vinos", at: [28.3667, -16.7213],
+    text: { it: "L'albero simbolo delle Canarie: un drago di centinaia di anni in un giardino.",
+            en: "The symbol of the Canary Islands: a dragon tree hundreds of years old in a garden.",
+            es: "El árbol símbolo de Canarias: un drago de cientos de años en un jardín." } },
+  { cat: "interesse", name: "Garachico", zone: "Garachico", at: [28.3735, -16.7640],
+    text: { it: "Il paese ricostruito dopo l'eruzione, con le piscine naturali nella lava.",
+            en: "The town rebuilt after the eruption, with natural pools in the lava.",
+            es: "El pueblo reconstruido tras la erupción, con piscinas naturales en la lava." } },
+  { cat: "interesse", name: "San Cristóbal de La Laguna", zone: "La Laguna", at: [28.4880, -16.3140],
+    text: { it: "Il centro storico patrimonio UNESCO: case colorate, chiese e vie a piedi.",
+            en: "The UNESCO old town: colourful houses, churches and pedestrian streets.",
+            es: "El casco histórico patrimonio de la UNESCO: casas de colores, iglesias y calles peatonales." } },
+  { cat: "interesse", name: "La Orotava", zone: "La Orotava", at: [28.3907, -16.5226],
+    text: { it: "Balconi di legno, giardini e palazzi antichi nel cuore della valle.",
+            en: "Wooden balconies, gardens and old mansions in the heart of the valley.",
+            es: "Balcones de madera, jardines y casonas antiguas en el corazón del valle." } },
+  { cat: "interesse", name: "Pirámides de Güímar", zone: "Güímar", at: [28.3205, -16.4130],
+    text: { it: "Sei piramidi a gradini di pietra lavica, in un parco con giardini e museo.",
+            en: "Six stepped pyramids of lava stone, in a park with gardens and a museum.",
+            es: "Seis pirámides escalonadas de piedra volcánica, en un parque con jardines y museo." } },
+  { cat: "interesse", name: "Loro Parque", zone: "Puerto de la Cruz", at: [28.4094, -16.5640],
+    text: { it: "Il grande parco degli animali del nord: pappagalli, pinguini, delfini e orche.",
+            en: "The big animal park in the north: parrots, penguins, dolphins and orcas.",
+            es: "El gran parque de animales del norte: loros, pingüinos, delfines y orcas." } },
+  { cat: "interesse", name: "Siam Park", zone: "Costa Adeje", at: [28.0724, -16.7262],
+    text: { it: "Il parco acquatico a tema thailandese, con scivoli e un'onda gigante.",
+            en: "The Thai-themed water park, with slides and a giant wave.",
+            es: "El parque acuático de temática tailandesa, con toboganes y una ola gigante." } },
+  { cat: "interesse", name: "Auditorio de Tenerife", zone: "Santa Cruz", at: [28.4557, -16.2524],
+    text: { it: "La vela bianca di Calatrava sul mare di Santa Cruz.",
+            en: "Calatrava's white sail by the sea in Santa Cruz.",
+            es: "La vela blanca de Calatrava junto al mar de Santa Cruz." } },
+
+  // ── ristoranti: SEGNAPOSTO, i nomi veri li sceglie il proprietario ──
   { cat: "ristorante", esempio: true, name: "Ristorante di esempio", zone: "Los Cristianos", at: [28.0505, -16.7150],
     text: { it: "Qui andrà un ristorante consigliato da Admiral.",
             en: "A restaurant recommended by Admiral will go here.",
@@ -136,7 +263,8 @@ function mapIconSvg(cat) {
 
 function mapPopupHtml(p) {
   const lang = getLang();
-  const dir = "https://www.google.com/maps/dir/?api=1&destination=" + p.at[0] + "," + p.at[1];
+  const dir = "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent(p.q || p.name + ", " + p.zone + ", Tenerife");
   return '<div class="map-pop">' +
     '<span class="map-pop-cat map-cat-' + p.cat + '">' + mapEsc(t(MAP_CATS[p.cat].label)) +
       (p.esempio ? ' · <em>' + mapEsc(t("map.example")) + "</em>" : "") + "</span>" +
@@ -188,7 +316,7 @@ function initMap() {
     zoomSnap: 0.25,
     minZoom: 9,
     maxZoom: 12.5,
-    maxBounds: bounds.pad(0.3),
+    maxBounds: bounds.pad(1),
     attributionControl: true,
     zoomControl: true
   });

@@ -16984,9 +16984,36 @@ Richiesta del proprietario: una sezione con una mappa e i punti di interesse
 - Da lontano i pallini si rimpiccioliscono e i nomi delle citta' spariscono
   (`.is-far`, sotto zoom 10.5): a Los Gigantes ce ne sono tre uno sull'altro.
 
+**Secondo giro (stesso giorno):** il proprietario ha chiesto i 10 migliori per
+quattro categorie, cercati sul web e messi in mappa: **spiagge**, **panorami**
+(miradores), **posti segreti** e **da vedere** (punti di interesse), ognuna col
+suo colore e la sua icona (chiave viola per i segreti, stella oro per i da
+vedere). Le classifiche delle guide non coincidono mai: la scelta incrocia le
+liste piu' citate (lastminute, hoteles.com, iberostar, paulinaontheroad per le
+spiagge; webtenerife, paradores, hellocanaryislands per i miradores; 22places,
+canarias-lovers, nomadotravel per i segreti; islaguru, ferryhopper, spanish-
+fiestas per i punti di interesse).
+
+- **"Portami qui" cerca il nome, non le coordinate** (`google.com/maps/search`
+  con "nome, zona, Tenerife"; campo `q` per correggerlo dove non basta). Da qui
+  Wikipedia e OpenStreetMap non si raggiungono, quindi molte coordinate sono a
+  occhio: col nome il navigatore porta comunque al posto vero.
+- Coordinate da fonti precise: Chipeque e Bollullo (Involcan), Punta de Teno
+  (Wikipedia), Paisaje Lunar (webtenerife); Ortuño, La Centinela, Humboldt,
+  Archipenque e Roque de las Bodegas convertite dalle UTM di webtenerife. Le
+  altre sono a occhio. Controllo fatto: le spiagge cadono tutte entro mezzo
+  chilometro dalla costa disegnata, gli altri dentro l'isola.
+- Dove serve un permesso o la strada si chiude lo dice la descrizione: El
+  Pijaral (permesso gratuito), Cueva del Viento (visita prenotata), barranco di
+  Masca (prenotazione), Punta de Teno (strada chiusa alle auto in certi orari).
+  L'ex sanatorio di Abades "si guarda da fuori": e' un rudere.
+- Il limite di spostamento (`maxBounds`) era troppo stretto: il fumetto di un
+  punto sulla costa nord restava tagliato in alto perche' la mappa non poteva
+  scendere. Ora e' `bounds.pad(1)`.
+
 **Prima di pubblicare:**
 - i **ristoranti sono tre segnaposto** (`esempio: true`, bordo tratteggiato e
   scritta "esempio"): i nomi veri li sceglie il proprietario;
 - le **coordinate** di spiagge e miradores sono indicative, vanno ricontrollate
   una per una su Google Maps;
-- spiagge e panorami scelti da Claude: sette e sei, da confermare o cambiare.
+- le quaranta schede vanno lette dal proprietario: tenere, togliere, cambiare.

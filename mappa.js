@@ -218,21 +218,11 @@ const MAP_POINTS = [
   { cat: "interesse", name: "Auditorio de Tenerife", zone: "Santa Cruz", at: [28.4557, -16.2524],
     text: { it: "La vela bianca di Calatrava sul mare di Santa Cruz.",
             en: "Calatrava's white sail by the sea in Santa Cruz.",
-            es: "La vela blanca de Calatrava junto al mar de Santa Cruz." } },
+            es: "La vela blanca de Calatrava junto al mar de Santa Cruz." } }
 
-  // ── ristoranti: SEGNAPOSTO, i nomi veri li sceglie il proprietario ──
-  { cat: "ristorante", esempio: true, name: "Ristorante di esempio", zone: "Los Cristianos", at: [28.0505, -16.7150],
-    text: { it: "Qui andrà un ristorante consigliato da Admiral.",
-            en: "A restaurant recommended by Admiral will go here.",
-            es: "Aquí irá un restaurante recomendado por Admiral." } },
-  { cat: "ristorante", esempio: true, name: "Ristorante di esempio", zone: "Puerto de la Cruz", at: [28.4170, -16.5480],
-    text: { it: "Qui andrà un ristorante consigliato da Admiral.",
-            en: "A restaurant recommended by Admiral will go here.",
-            es: "Aquí irá un restaurante recomendado por Admiral." } },
-  { cat: "ristorante", esempio: true, name: "Ristorante di esempio", zone: "Los Gigantes", at: [28.2470, -16.8395],
-    text: { it: "Qui andrà un ristorante consigliato da Admiral.",
-            en: "A restaurant recommended by Admiral will go here.",
-            es: "Aquí irá un restaurante recomendado por Admiral." } }
+  // ── ristoranti: la categoria e' pronta (MAP_CATS.ristorante), mancano i nomi.
+  // Li sceglie il proprietario; col primo ristorante torna anche il bottone
+  // "Ristoranti" in mappa.html (data-map-cat="ristorante").
 ];
 
 // Le citta' scritte sull'isola, solo per orientarsi: non si toccano.

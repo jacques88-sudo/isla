@@ -93,7 +93,7 @@ const I18N = {
 
   // ── pagina noleggio (noleggio.html) ─────────────────────────────────────
   "meta.map.title":     { it: "Mappa · Isla", en: "Map · Isla", es: "Mapa · Isla" },
-  "meta.map.desc":      { it: "La mappa di Tenerife di Isla: spiagge, punti panoramici e ristoranti consigliati, con la strada per arrivarci.", en: "Isla's map of Tenerife: beaches, viewpoints and recommended restaurants, with directions to get there.", es: "El mapa de Tenerife de Isla: playas, miradores y restaurantes recomendados, con la ruta para llegar." },
+  "meta.map.desc":      { it: "La mappa di Tenerife di Isla: spiagge, punti panoramici, posti segreti e cose da vedere, con la strada per arrivarci.", en: "Isla's map of Tenerife: beaches, viewpoints, secret spots and must-sees, with directions to get there.", es: "El mapa de Tenerife de Isla: playas, miradores, lugares secretos e imprescindibles, con la ruta para llegar." },
   "map.eyebrow":        { it: "Tenerife da vicino", en: "Tenerife up close", es: "Tenerife de cerca" },
   "map.title":          { it: "Mappa", en: "Map", es: "Mapa" },
   "map.intro":          { it: "Spiagge, panorami, posti segreti e cose da vedere. Tocca un punto per leggere cos'è e farti portare lì.", en: "Beaches, viewpoints, secret spots and must-sees. Tap a spot to read about it and get directions.", es: "Playas, miradores, lugares secretos e imprescindibles. Toca un punto para leer qué es y cómo llegar." },

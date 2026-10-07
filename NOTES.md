@@ -17062,3 +17062,11 @@ senza chiudere. Col pannello aperto il pallino della chat sparisce (finiva sopra
 - Da rivedere col proprietario: la seconda foto de La Orotava (il municipio col
   presepe di Natale davanti) e La Centinela (una foto sola, tagliata da un panorama).
 - `CACHE_NAME` → `isla-v443`.
+
+**Pubblicata (7 ottobre 2026, il proprietario ha chiesto il merge).** Prima del
+merge sono stati **tolti i tre ristoranti segnaposto** e il bottone "Ristoranti":
+sul sito vero avrebbero mostrato "Ristorante di esempio". La categoria resta in
+`MAP_CATS`, pronta per i nomi veri; col primo ristorante va rimesso il bottone in
+`mappa.html`. Restano da fare, senza fretta: ricontrollare le coordinate a occhio
+(la navigazione va comunque per nome) e, se ci sono, sostituire le foto con foto
+vostre. `CACHE_NAME` → `isla-v444`.

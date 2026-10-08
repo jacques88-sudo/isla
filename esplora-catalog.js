@@ -2411,6 +2411,9 @@ const ESPLORA_CATALOG = [
     // altre del Teide si legge in fila con loro. Uguale in tutte e tre le
     // lingue, come tutti i titoli.
     title: "Teide by Night",
+    // La compagnia della serata in italiano (gruppo piccolo), come i
+    // venditori la scrivono sul ticket (proprietario, 8 ottobre 2026).
+    nomi: ["Andromeda"],
     // Era la sola scheda della categoria "stelle", che infatti non c'e' piu'.
     category: "teide-natura",
     // Tutte e due le serate salgono nel Parco Nazionale: qui la riga non e'
@@ -3582,6 +3585,9 @@ const ESPLORA_CATALOG = [
   {
     id: "jet-ski-safari-1-2h",
     title: "Jet Ski Safari",
+    // La compagnia delle partenze da Las Galletas, come i venditori la
+    // scrivono sul ticket (proprietario, 8 ottobre 2026).
+    nomi: ["Agua Safari"],
     category: "sport-acquatici",
     zone: { it: "Puerto Colón o Las Galletas", en: "Puerto Colón or Las Galletas", es: "Puerto Colón o Las Galletas" },
     duration: { it: "40 minuti, 1 o 2 ore", en: "40 minutes, 1 or 2 hours", es: "40 minutos, 1 o 2 horas" },

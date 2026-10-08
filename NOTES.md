@@ -17116,3 +17116,14 @@ Provato nel browser a 375 px con un Supabase finto: caselle giuste per jet ski (
 buggy (3, su tre colonne), nascoste sulle barche, errore senza mezzi, salvataggio
 `{"doppia": 2}`, modifica e update, nessuno scroll orizzontale, nessun errore.
 `CACHE_NAME` → `isla-v445`.
+
+### Nomi sul ticket: Andromeda e Agua Safari (8 ottobre)
+
+- **Andromeda** → `stargazing-group` (Teide by Night): la compagnia piccola della serata
+  in italiano, che sta nella variante "Gruppo piccolo".
+- **Agua Safari** → `jet-ski-safari-1-2h`: le moto d'acqua che partono da Las Galletas.
+
+Solo il nome che ha scritto il proprietario: nessuna grafia "probabile" aggiunta di testa
+nostra. I netti di queste due schede e di La Gomera sono arrivati nella stessa chat e
+**non sono scritti qui**: stanno solo su Supabase (vedi `CLAUDE.md`). `CACHE_NAME` →
+`isla-v446`.

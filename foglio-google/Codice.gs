@@ -67,12 +67,47 @@ const TESTO = ["ticket_number", "id"];
 
 // Mette l'aggiornamento ogni ora e lo fa subito una prima volta. Lanciata di
 // nuovo non raddoppia niente: toglie il vecchio orario prima di mettere il nuovo.
+// Mette anche la scheda "Aggiorna", con la casella da toccare dal telefono.
 function installa() {
   ScriptApp.getProjectTriggers()
-    .filter(t => t.getHandlerFunction() === "aggiorna")
+    .filter(t => ["aggiorna", "quandoCambia"].indexOf(t.getHandlerFunction()) >= 0)
     .forEach(t => ScriptApp.deleteTrigger(t));
   ScriptApp.newTrigger("aggiorna").timeBased().everyHours(1).create();
+  ScriptApp.newTrigger("quandoCambia").forSpreadsheet(SpreadsheetApp.getActiveSpreadsheet()).onEdit().create();
+  schedaAggiorna(SpreadsheetApp.getActiveSpreadsheet());
   aggiorna();
+}
+
+// ─── La casella "Aggiorna adesso", per il telefono ──────────────────────────
+// L'app Fogli del telefono non mostra il menu "Isla" e non sa lanciare il
+// programma. Sa pero' cambiare una cella, e una cella cambiata fa partire
+// quandoCambia() (un "trigger" messo da installa(), che vale anche dal
+// telefono). Si tocca la casella, il foglio si aggiorna, la casella si toglie.
+const CASELLA = "A3";
+const STATO_AGGIORNA = "A5";
+
+function schedaAggiorna(ss) {
+  let s = ss.getSheetByName("Aggiorna");
+  if (!s) s = ss.insertSheet("Aggiorna", 0);
+  s.getRange("A1").setValue("Per aggiornare il foglio adesso, anche dal telefono: tocca la casella qui sotto.").setFontWeight("bold");
+  s.getRange(CASELLA).insertCheckboxes().setValue(false);
+  s.getRange("B3").setValue("Aggiorna adesso");
+  s.setColumnWidth(1, 60);
+  return s;
+}
+
+function quandoCambia(e) {
+  if (!e || !e.range) return;
+  const s = e.range.getSheet();
+  if (s.getName() !== "Aggiorna" || e.range.getA1Notation() !== CASELLA) return;
+  if (e.range.getValue() !== true) return;
+  s.getRange(STATO_AGGIORNA).setValue("Aggiorno… (qualche secondo)");
+  try {
+    aggiorna();
+  } catch (err) {
+    s.getRange(STATO_AGGIORNA).setValue("Non sono riuscito ad aggiornare: " + err.message);
+  }
+  e.range.setValue(false);
 }
 
 // Il menu "Isla → Aggiorna adesso" nel foglio, per non aspettare l'ora. Google
@@ -91,6 +126,21 @@ function aggiornaDalMenu() {
 // ─── Ogni ora ───────────────────────────────────────────────────────────────
 
 function aggiorna() {
+  // Uno alla volta: l'aggiornamento dell'ora e la casella toccata nello stesso
+  // momento scriverebbero le stesse righe due volte.
+  const lucchetto = LockService.getScriptLock();
+  if (!lucchetto.tryLock(120000)) return;
+  try {
+    aggiornaDavvero();
+    const s = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Aggiorna");
+    if (s) s.getRange(STATO_AGGIORNA).setValue("Ultimo aggiornamento: " +
+      Utilities.formatDate(new Date(), SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetTimeZone(), "dd/MM/yyyy HH:mm"));
+  } finally {
+    lucchetto.releaseLock();
+  }
+}
+
+function aggiornaDavvero() {
   const segreto = PropertiesService.getScriptProperties().getProperty("SEGRETO");
   if (!segreto) {
     throw new Error("Manca la parola segreta: Impostazioni del progetto → Proprietà dello script → SEGRETO.");
@@ -183,7 +233,8 @@ function scriviSettimana(ss, lunedi, arrivati, titoli, quando) {
       foglio = null;
     }
   }
-  if (!foglio) foglio = ss.insertSheet(nome, 0);
+  // La settimana nuova va davanti, ma dopo la scheda "Aggiorna" se c'e'.
+  if (!foglio) foglio = ss.insertSheet(nome, ss.getSheetByName("Aggiorna") ? 1 : 0);
   foglio.getRange(1, 1, 1, intestazioni.length).setValues([intestazioni]).setFontWeight("bold");
   foglio.setFrozenRows(1);
 
@@ -278,9 +329,15 @@ function valoreTotale(chiave, giorno, lunedi, righe) {
 
 // Il valore di una cella, da una riga di Supabase.
 function valore(t, chiave, titoli) {
+  // "Agua Safari · Doppia · 1 ora": la compagnia (o, se non c'e', il nome
+  // della scheda), i mezzi e la variante (proprietario, 8 ottobre 2026).
   if (chiave === "escursione") {
-    const nome = titoli[t.excursion_id] || t.excursion_id || "";
-    return t.option_label ? nome + " · " + t.option_label : nome;
+    const scheda = titoli[t.excursion_id] || { titolo: t.excursion_id || "", tipi: {} };
+    const mezzi = t.units ? Object.keys(t.units).map(k => {
+      const nome = scheda.tipi[k] || k;
+      return t.units[k] > 1 ? nome + " ×" + t.units[k] : nome;
+    }).join(", ") : "";
+    return [t.company || scheda.titolo, mezzi, t.option_label].filter(Boolean).join(" · ");
   }
   if (chiave === "card" || chiave === "cash") {
     return t.payment_method === chiave && t.pagato !== null && t.pagato !== undefined ? Number(t.pagato) : "";
@@ -296,22 +353,34 @@ function valore(t, chiave, titoli) {
   return v;
 }
 
-// I nomi delle schede, dal catalogo del sito. Se il sito non risponde si va
-// avanti con gli id: il riepilogo conta lo stesso.
+// Dal catalogo del sito, scheda per scheda: il nome e i nomi dei tipi di mezzo
+// ({ "jet-ski-safari-1-2h": { titolo: "Jet Ski Safari", tipi: { doppia: "Doppia" } } }).
+// I tipi si leggono dentro la loro scheda, non in tutto il catalogo: "due" e'
+// "2 posti" sui buggy e "Con 1 o 2 persone" sulle Mustang. Se il sito non
+// risponde si va avanti con gli id: il riepilogo conta lo stesso.
 function titoliDelCatalogo() {
-  const titoli = {};
+  const schede = {};
   try {
     const testo = UrlFetchApp.fetch(CATALOGO_URL, { muteHttpExceptions: true }).getContentText();
     // id: "…", poi (anche dopo qualche riga di commento) title: "…", oppure
     // title: { it: "…", … } quando il titolo cambia con la lingua: si prende
     // l'italiano.
     const cerca = /\bid:\s*"([^"]+)",\s*(?:\/\/[^\n]*\n\s*)*title:\s*(?:"([^"]+)"|\{\s*it:\s*"([^"]+)")/g;
+    const trovate = [];
     let m;
-    while ((m = cerca.exec(testo))) titoli[m[1]] = m[2] || m[3];
+    while ((m = cerca.exec(testo))) trovate.push({ id: m[1], titolo: m[2] || m[3], da: m.index });
+    trovate.forEach((x, k) => {
+      const pezzo = testo.slice(x.da, k + 1 < trovate.length ? trovate[k + 1].da : testo.length);
+      const tipi = {};
+      const tipo = /\{\s*key:\s*"([^"]+)",\s*seats:\s*\d+,\s*name:\s*(?:"([^"]+)"|\{\s*it:\s*"([^"]+)")/g;
+      let t;
+      while ((t = tipo.exec(pezzo))) tipi[t[1]] = t[2] || t[3];
+      schede[x.id] = { titolo: x.titolo, tipi: tipi };
+    });
   } catch (e) {
     console.warn("Catalogo non raggiungibile: " + e);
   }
-  return titoli;
+  return schede;
 }
 
 // Una scheda del foglio, creata se non c'e', con le intestazioni in riga 1.

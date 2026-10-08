@@ -17367,3 +17367,26 @@ quindi `leggi-ticket` non va ridistribuita. `controlla.js`: il nome di una varia
 stare anche nei `nomi` della scheda (se no non è nel menu Compagnia), e su una variante
 sola. Provato il controllo con un nome sbagliato ("Pippo" → errore) e il modulo nel
 browser in sei casi. `CACHE_NAME` → `isla-v450`.
+
+### Escursione con compagnia e mezzi, e la casella per il telefono (8 ottobre)
+
+Il proprietario: nella colonna Escursione c'era "Jet Ski Safari · 1 ora", ma non diceva
+doppia o singola; "da ora in poi compagnia doble 1 ora". Ora la colonna è **compagnia (o,
+senza compagnia, il nome della scheda) · mezzi · variante**: "Agua Safari · Doppia ·
+1 ora". I nomi dei tipi di mezzo il foglio li legge dal catalogo **scheda per scheda**:
+la stessa chiave "due" è "2 posti" sui buggy e "Con 1 o 2 persone" sulle Mustang. Un
+mezzo solo è scritto senza numero, più d'uno con "×2".
+
+Poi: "come posso aggiornare il foglio sul telefono?". L'app Fogli del telefono **non
+mostra i menu di Apps Script** e non sa lanciare una funzione. Sa però cambiare una
+cella, e un trigger "quando si modifica" installato da `installa()` parte anche dal
+telefono. Quindi una scheda **Aggiorna**, la prima, con una casella in A3: toccata,
+`quandoCambia()` aggiorna, la toglie e scrive l'ora in A5. Un `LockService` impedisce che
+l'aggiornamento dell'ora e la casella toccata nello stesso momento scrivano le stesse
+righe due volte. Le settimane nuove si mettono dopo la scheda Aggiorna.
+
+Provato in Node contro il finto Sheets: nomi giusti per jet ski, buggy (due tipi),
+Andromeda, Gomera; la casella aggiorna e si toglie; una cella toccata in un'altra scheda
+non fa niente; due trigger dopo due `installa()`, non quattro. **Il trigger dal telefono
+non l'ho potuto provare su un telefono vero**: va guardato la prima volta. Il sito non
+cambia.

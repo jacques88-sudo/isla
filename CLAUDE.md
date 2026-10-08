@@ -363,7 +363,8 @@ giorno"** (cash, al venditore, all'ufficio, commissioni dei soli confermati; id 
 `totale-AAAA-MM-GG`) e una riga vuota. Il programma rilegge la scheda **intera, colonne a
 mano comprese**, e la riscrive giorno per giorno: ogni riga si porta dietro le sue celle.
 **In ogni settimana si vedono SOLO 15 colonne**, nell'ordine del
-proprietario (8 ottobre 2026): data emissione, ticket, escursione (nome e variante),
+proprietario (8 ottobre 2026): data emissione, ticket, escursione ("Agua Safari ·
+Doppia · 1 ora": la compagnia o il nome della scheda, i mezzi, la variante),
 data escursione, adulti, bambini,
 totale, pagato, da pagare, card, cash, netto, al venditore, all'ufficio, commissioni.
 Quello che serve al programma (stato, settimana, venditore, compagnia, id) sta in colonne

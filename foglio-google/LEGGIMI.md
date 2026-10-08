@@ -19,6 +19,10 @@ Pagato · Da pagare · Card · Cash · Netto · Al venditore · All'ufficio · C
 In **Card** o **Cash** c'è quanto il cliente ha già pagato, nella colonna del suo
 metodo: il totale della colonna Cash è il contante da contare.
 
+Fra un giorno e l'altro c'è **una riga vuota**. Si mette quando arriva il primo ticket
+di un giorno nuovo: le righe già scritte non si spostano mai, così le tue colonne a mano
+restano accanto al ticket giusto. Le righe vuote non contano in nessun totale.
+
 A destra ci sono cinque colonne **nascoste** (Stato, Settimana, Venditore, Compagnia,
 ID): servono al programma per riconoscere i ticket e fare i riepiloghi. Non mostrarle
 per toccarle, e non cancellarle. I ticket **annullati** sono **barrati in grigio** e non

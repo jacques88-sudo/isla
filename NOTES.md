@@ -17301,3 +17301,22 @@ nel browser a 375 px con un database finto: rinunciare non scrive niente, annull
 `{status: "cancelled"}`, il ripristino rifiutato mostra il messaggio, quello riuscito
 rimette il ticket com'era; nessun errore, nessuno scroll orizzontale. `CACHE_NAME` →
 `isla-v449`.
+
+### Una scheda per settimana (8 ottobre)
+
+Il proprietario: "vorrei che ogni settimana inizi con un foglio nuovo". Inteso come una
+**scheda** (le linguette in basso), non un file nuovo: "Settimana 05-10-2026", col lunedì
+della data di emissione, nata dal primo ticket di quella settimana e messa **davanti**, così
+la settimana in corso è la prima. Detto al proprietario come l'ho capita.
+
+Le schede delle settimane **sono** l'archivio, non una copia di una scheda unica: ogni
+ticket sta in una sola settimana e non ne cambia mai (la data di emissione è fissa), quindi
+il programma aggiorna la riga dentro la sua scheda e le colonne scritte a mano a destra
+(dalla U, dopo le nascoste) restano. I riepiloghi leggono tutte le schede che si chiamano
+esattamente "Settimana GG-MM-AAAA": quelle messe da parte ("… (vecchio …)") e la vecchia
+scheda unica "Ticket", rinominata al primo giro, non contano due volte. `||=` evitato:
+non sono sicuro che l'Apps Script V8 lo capisca.
+
+Provato in Node contro il finto Sheets: due settimane, ordine giusto, un ticket nuovo nella
+sua settimana al secondo giro, un ticket sparito da Supabase rimasto nella sua scheda e nei
+totali. Il sito non cambia.

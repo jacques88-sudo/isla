@@ -17278,3 +17278,26 @@ titoli scritti come testo semplice (`title: "…"`) e mancava le 11 schede col t
 tre lingue (`title: { it: "Pesca d'altura", … }`), che sarebbero uscite con l'id. Ora
 prende anche l'italiano: provata contro il catalogo vero, 66 schede pubblicate su 66 col
 nome giusto. Colonne visibili 15, nascoste dalla 16.
+
+### Annulla ticket e Ripristina (8 ottobre)
+
+Il proprietario ha chiesto come si elimina un ticket. Non si elimina, da `schema.sql` in
+poi: si mette `status = 'cancelled'`, e nessuno ha il permesso di `delete`. Ma nella
+pagina dei venditori il bottone Annulla c'era solo sulle richieste WhatsApp: un ticket di
+carta sbagliato o disdetto non si poteva segnare in nessun modo. Ora, in **Modifica**:
+
+- **Annulla ticket**, con `confirm()` ("Annullare il ticket 0865? Il cliente non lo vedrà
+  più e non conta nei totali. Si può ripristinare."); su un ticket annullato
+  **Ripristina ticket**, che lo rimette `confirmed`;
+- il ripristino può essere rifiutato dal database (`confermato_completo`: un confermato
+  deve avere numero, telefono, escursione e data). L'errore `23514` ha il suo messaggio,
+  che dice cosa manca;
+- nell'elenco l'annullato ha l'etichetta rossa "Annullato" **fuori** dal titolo barrato:
+  barrata anche lei, nella prima prova, sembrava un annullamento tolto;
+- il bottone che chiude la finestra si chiamava "Annulla" e ora si chiama **Chiudi**.
+
+Il guardiano del netto non cambia niente (lo stato non è fra i campi del netto). Provato
+nel browser a 375 px con un database finto: rinunciare non scrive niente, annullare scrive
+`{status: "cancelled"}`, il ripristino rifiutato mostra il messaggio, quello riuscito
+rimette il ticket com'era; nessun errore, nessuno scroll orizzontale. `CACHE_NAME` →
+`isla-v449`.

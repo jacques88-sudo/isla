@@ -388,6 +388,14 @@
 //                Un nome va su una scheda sola: se due schede lo avessero,
 //                Claude non saprebbe quale scegliere. `controlla.js` lo
 //                verifica. Maiuscole e minuscole non contano.
+//                Si mette anche dentro una VARIANTE (options.choices[]),
+//                quando una compagnia fa proprio quella e sul ticket c'e' solo
+//                il suo nome, non la variante: "Andromeda" e' la serata del
+//                gruppo piccolo di Teide by Night. Allora il modulo dei
+//                venditori, trovata la compagnia, sceglie anche la variante.
+//                Il nome della variante deve stare anche nei `nomi` della
+//                scheda (e' da li' che nasce il menu "Compagnia"):
+//                `controlla.js` lo verifica.
 //
 // LE TRE LINGUE
 //   title, zone, duration e desc si scrivono così:
@@ -2457,6 +2465,9 @@ const ESPLORA_CATALOG = [
             en: "Small group (Italian, English, German)",
             es: "Grupo pequeño (italiano, inglés, alemán)"
           },
+          // Sul ticket c'e' solo "Andromeda", non la serata: Andromeda fa
+          // questa (proprietario, 8 ottobre 2026). Vedi `nomi` in testa.
+          nomi: ["Andromeda"],
           priceAdult: 79,
           priceChild: 69,
           duration: { it: "5-6 ore", en: "5 to 6 hours", es: "5-6 horas" },

@@ -507,6 +507,29 @@ function controllaNomi() {
       visti.set(chiave, t.id);
     });
   });
+
+  // I nomi dentro una variante: la compagnia che fa proprio quella. Devono
+  // stare anche sulla scheda, se no nel menu "Compagnia" non ci sono; e lo
+  // stesso nome su due varianti non direbbe quale scegliere.
+  ESPLORA_CATALOG.forEach(t => {
+    const scelte = (t.options && t.options.choices) || [];
+    const sullaScheda = (t.nomi || []).map(n => n.trim().toLowerCase());
+    const giaVisti = new Map();
+    scelte.forEach(c => {
+      if (c.nomi === undefined) return;
+      const variante = (c.label && (c.label.it || c.label)) || "?";
+      if (!Array.isArray(c.nomi) || !c.nomi.every(n => typeof n === "string" && n.trim())) {
+        errore(t.id, `variante "${variante}": nomi deve essere un elenco di nomi.`);
+        return;
+      }
+      c.nomi.forEach(n => {
+        const chiave = n.trim().toLowerCase();
+        if (!sullaScheda.includes(chiave)) errore(t.id, `variante "${variante}": il nome "${n}" deve stare anche nei nomi della scheda.`);
+        if (giaVisti.has(chiave)) errore(t.id, `il nome "${n}" sta su due varianti ("${giaVisti.get(chiave)}" e "${variante}").`);
+        giaVisti.set(chiave, variante);
+      });
+    });
+  });
 }
 
 // Le raccomandate devono esistere ed essere pubblicate: un id scritto male

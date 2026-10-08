@@ -19,6 +19,7 @@
 -- 2026-09-30-richieste-whatsapp.sql (le richieste dei clienti senza ticket) e
 -- 2026-10-02-richieste-ticket.sql (la richiesta confermata diventa un ticket) e
 -- 2026-10-05-ufficio.sql (gli account dell'ufficio, per le statistiche).
+-- 2026-10-08-mezzi.sql (quanti mezzi sul ticket) e' gia' compreso qui sotto.
 
 
 -- 1. I VENDITORI ------------------------------------------------------------
@@ -96,6 +97,11 @@ create table public.bookings (
   adults         integer check (adults >= 0),
   kids           integer check (kids   >= 0),
   babies         integer check (babies >= 0),
+
+  -- Quanti mezzi e di che tipo, sulle escursioni che vanno a mezzo (moto
+  -- d'acqua, buggy, quad, Mustang). Le chiavi sono quelle di units.types in
+  -- esplora-catalog.js: {"singola": 2, "doppia": 1}. Null sulle altre.
+  units          jsonb check (units is null or jsonb_typeof(units) = 'object'),
 
   total          numeric(8,2) check (total       >= 0),
   deposit        numeric(8,2) check (deposit     >= 0),

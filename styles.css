@@ -4128,6 +4128,8 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 }
 .vend-phone input,
 .vend-phone select { margin-bottom: .5rem; }
+/* I mezzi sul ticket: un gruppo senza cornice, come una riga del modulo. */
+.vend-units { border: 0; padding: 0; margin: 0; min-width: 0; }
 .vend-phone-out { margin: 0 0 .6rem; font-weight: 500; min-height: 1.3em; }
 .vend-check {
   display: flex !important;

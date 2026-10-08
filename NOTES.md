@@ -17082,3 +17082,37 @@ La lista degli orari mancanti **non è scritta a mano**: la fa `node orari-manca
 che la rifà dal catalogo a ogni lancio. In tre giorni la lista era già cambiata (Flyboard
 e Cantine avevano preso gli orari): un elenco copiato in `CLAUDE.md` sarebbe stato
 sbagliato subito. Il sito non lo carica, quindi la cache non si alza.
+
+### I netti, primo passo: i mezzi sul ticket (8 ottobre)
+
+Il proprietario vuole sapere quanto va a ogni compagnia (il **netto**) e quanto resta a
+Isla, in un riepilogo giornaliero e settimanale **su un foglio Google, non su Isla**,
+contato dal giorno in cui il ticket è inserito; e un promemoria del netto per i
+venditori, con un avviso se il totale scende sotto. I netti li manda lui in chat e li
+scrive Claude, ma **solo su Supabase**: il repository è pubblico (verificato), e un netto
+in un file lo leggerebbero tutti. Il piano a cinque passi sta in `CLAUDE.md`.
+
+Il netto può essere **a mezzo** (moto d'acqua, buggy, quad, privati), e il ticket di carta
+porta numero e tipo dei mezzi ("2 doppie", "buggy da 4 posti"), ma il database fin qui non
+li salvava. Primo passo:
+
+- colonna `units jsonb` in `bookings` (`supabase/modifiche/2026-10-08-mezzi.sql`, già
+  dentro `schema.sql`): `{"singola": 2, "doppia": 1}`, con le chiavi di `units.types`
+  del catalogo, così i tipi sono gli stessi della finestra della richiesta;
+- nel modulo, sotto la variante, una casella per tipo ("Moto d'acqua: quanti per tipo"),
+  solo sulle quattro schede con `units` (Jet Ski, Buggy, Quad, Mustang); almeno un mezzo
+  è obbligatorio, come sul ticket di carta;
+- le stesse caselle in "Modifica", e nell'elenco "Doppia × 2 · Singola × 1".
+
+Le altre schede non mandano nemmeno la colonna: un ticket di una barca si salva anche
+se l'SQL non fosse ancora stato lanciato. L'elenco invece la chiede, quindi **l'SQL va
+lanciato prima della pubblicazione**.
+
+**Non ancora** nella lettura della foto (`leggi-ticket`): i mezzi si scrivono a mano.
+Per leggerli serve cambiare lo schema della risposta e ridistribuire la funzione: è un
+passo a sé.
+
+Provato nel browser a 375 px con un Supabase finto: caselle giuste per jet ski (2) e
+buggy (3, su tre colonne), nascoste sulle barche, errore senza mezzi, salvataggio
+`{"doppia": 2}`, modifica e update, nessuno scroll orizzontale, nessun errore.
+`CACHE_NAME` → `isla-v445`.

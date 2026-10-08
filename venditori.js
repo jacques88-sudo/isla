@@ -36,6 +36,9 @@ const els = {
   optionWrap: $("[data-option-wrap]"),
   optionLabel: $("[data-option-label]"),
   option: $("#tOption"),
+  unitsWrap: $("[data-units-wrap]"),
+  unitsLabel: $("[data-units-label]"),
+  units: $("[data-units]"),
   seller: $("#tSeller"),
   nation: $("#tNation"),
   prefix: $("#tPrefix"),
@@ -136,6 +139,60 @@ function aggiornaEscursione() {
     // Il valore salvato e' l'etichetta italiana: le varianti non hanno un id.
     scelte.forEach(c => els.option.append(new Option(italiano(c.label), italiano(c.label))));
   }
+
+  const tipi = tipiMezzo(tour);
+  els.unitsWrap.hidden = !tipi.length;
+  if (tipi.length) els.unitsLabel.textContent = `${italiano(tour.units.name)}: quanti per tipo`;
+  caselleMezzi(els.units, tipi, "tUnit");
+}
+
+// ─── Mezzi ──────────────────────────────────────────────────────────────────
+// Sulle schede che vanno a mezzo (moto d'acqua, buggy, quad, Mustang) il ticket
+// dice quanti mezzi e di che tipo: "2 doppie", "1 buggy da 4 posti". I tipi
+// sono quelli del catalogo (units.types) e si salvano con la loro chiave:
+// { singola: 2, doppia: 1 }. Servono al netto, quando e' a mezzo.
+
+function tipiMezzo(tour) {
+  return (tour && tour.units && tour.units.types) || [];
+}
+
+// Una casella per tipo dentro `contenitore`, con i valori di `gia`.
+function caselleMezzi(contenitore, tipi, prefisso, gia) {
+  contenitore.replaceChildren();
+  contenitore.classList.toggle("vend-row-3", tipi.length > 2);
+  tipi.forEach(t => {
+    const box = document.createElement("div");
+    const label = document.createElement("label");
+    label.htmlFor = prefisso + t.key;
+    label.textContent = italiano(t.name);
+    const input = document.createElement("input");
+    Object.assign(input, {
+      id: prefisso + t.key, name: "unit_" + t.key, type: "number",
+      inputMode: "numeric", min: "0", max: "99",
+      value: String((gia && gia[t.key]) || 0)
+    });
+    box.append(label, input);
+    contenitore.append(box);
+  });
+}
+
+// Dalle caselle all'oggetto da salvare; null se non c'e' nessun mezzo.
+function mezziDa(form, tipi) {
+  const m = {};
+  tipi.forEach(t => {
+    const n = parseInt(form.elements["unit_" + t.key].value, 10);
+    if (n > 0) m[t.key] = Math.min(n, 99);
+  });
+  return Object.keys(m).length ? m : null;
+}
+
+// "Doppia × 2 · Singola × 1", per l'elenco dei ticket.
+function testoMezzi(tour, mezzi) {
+  if (!mezzi) return "";
+  return Object.entries(mezzi).map(([k, n]) => {
+    const tipo = tipiMezzo(tour).find(t => t.key === k);
+    return `${tipo ? italiano(tipo.name) : k} × ${n}`;
+  }).join(" · ");
 }
 
 // ─── Paesi e telefono ───────────────────────────────────────────────────────
@@ -403,6 +460,8 @@ function cosaManca(riga) {
   if (!riga.ticket_number) return "Manca il ticket number.";
   if (!riga.excursion_id) return "Scegli l'escursione.";
   if (els.option.required && !riga.option_label) return `Scegli: ${els.optionLabel.textContent}.`;
+  const tour = schedaDa(riga.excursion_id);
+  if (tipiMezzo(tour).length && !riga.units) return `Scrivi quanti mezzi (${italiano(tour.units.name)}).`;
   if (riga.excursion_id === ESCURSIONE_ALTRO && !riga.notes) return "Escursione fuori catalogo: scrivi quale nelle note.";
   if (!riga.date) return "Manca la data.";
   if (!riga.phone) return "Il telefono non è valido.";
@@ -437,6 +496,9 @@ async function salva(event) {
     notes: valoreOVuoto("notes"),
     confirmed_at: new Date().toISOString()
   };
+
+  // Solo sulle schede a mezzo: le altre non mandano nemmeno la colonna.
+  if (!els.unitsWrap.hidden) riga.units = mezziDa(els.form, tipiMezzo(schedaDa(els.exc.value)));
 
   const manca = cosaManca(riga);
   if (manca) { mostra(els.msg, manca, "errore"); return; }
@@ -513,7 +575,7 @@ function dataBreve(iso) {
 async function caricaUltimi() {
   let domanda = sb
     .from("bookings")
-    .select("id, ticket_number, reference, excursion_id, option_label, date, time, phone, adults, kids, babies, total, deposit, rest_to_pay, seller, photo_path, status, source, request_code")
+    .select("id, ticket_number, reference, excursion_id, option_label, date, time, phone, adults, kids, babies, units, total, deposit, rest_to_pay, seller, photo_path, status, source, request_code")
     // Le richieste da WhatsApp hanno il loro elenco, sopra; quando l'ufficio le
     // conferma col numero del ticket diventano ticket e passano qui.
     .or("source.neq.whatsapp,ticket_number.not.is.null");
@@ -552,6 +614,7 @@ async function caricaUltimi() {
     const parti = [
       `${dataBreve(b.date)}${b.time ? " " + b.time.slice(0, 5) : ""}`,
       persone + soldi,
+      testoMezzi(tour, b.units),
       b.phone,
       b.source === "whatsapp" ? `WhatsApp ${b.request_code || ""}`.trim() : b.seller,
       b.reference ? "REF " + b.reference : ""
@@ -595,7 +658,7 @@ function tornaAgliUltimi() {
   caricaUltimi();
 }
 
-// ─── Modifica: data, ora, persone e soldi ───────────────────────────────────
+// ─── Modifica: data, ora, persone, mezzi e soldi ────────────────────────────
 // Quando un'escursione viene rinviata (proprietario, 29 settembre 2026). Se
 // cambiano le persone cambia anche il prezzo, quindi ci sono anche Total,
 // Deposit e To pay, con le stesse regole del ticket nuovo. Il resto del
@@ -636,6 +699,10 @@ function apriModifica(li, b) {
         <input id="${id}Babies" name="babies" type="number" inputmode="numeric" min="0" max="99" />
       </div>
     </div>
+    <fieldset class="vend-units" data-edit-units hidden>
+      <legend></legend>
+      <div class="vend-row"></div>
+    </fieldset>
     <div class="vend-row vend-row-3">
       <div>
         <label for="${id}Total">Total €</label>
@@ -667,6 +734,14 @@ function apriModifica(li, b) {
   f.adults.value = b.adults ?? "";
   f.kids.value = b.kids ?? "";
   f.babies.value = b.babies ?? "";
+  const tour = schedaDa(b.excursion_id);
+  const tipi = tipiMezzo(tour);
+  if (tipi.length) {
+    const box = form.querySelector("[data-edit-units]");
+    box.hidden = false;
+    box.querySelector("legend").textContent = `${italiano(tour.units.name)}: quanti per tipo`;
+    caselleMezzi(box.querySelector(".vend-row"), tipi, id + "Unit", b.units);
+  }
   f.total.value = b.total ?? "";
   f.deposit.value = b.deposit ?? "";
   // "Pagato tutto" si salva come rest_to_pay 0 senza deposit: nel modulo torna
@@ -726,10 +801,13 @@ async function salvaModifica(event, form, b) {
     deposit: numero(f.deposit),
     rest_to_pay: numero(f.rest_to_pay)
   };
+  const tipi = tipiMezzo(schedaDa(b.excursion_id));
+  if (tipi.length) nuovo.units = mezziDa(form, tipi);
   // Stessa regola del ticket nuovo: Total scritto e gli altri due vuoti vuol
   // dire pagato tutto, e si salva rest_to_pay = 0.
   if (nuovo.total !== null && nuovo.deposit === null && nuovo.rest_to_pay === null) nuovo.rest_to_pay = 0;
   if (!nuovo.date) { mostra(msg, "Manca la data.", "errore"); return; }
+  if (tipi.length && !nuovo.units) { mostra(msg, "Scrivi quanti mezzi.", "errore"); return; }
 
   bottone.disabled = true;
   bottone.textContent = "Salvo…";

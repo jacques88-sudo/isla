@@ -17082,3 +17082,81 @@ La lista degli orari mancanti **non è scritta a mano**: la fa `node orari-manca
 che la rifà dal catalogo a ogni lancio. In tre giorni la lista era già cambiata (Flyboard
 e Cantine avevano preso gli orari): un elenco copiato in `CLAUDE.md` sarebbe stato
 sbagliato subito. Il sito non lo carica, quindi la cache non si alza.
+
+### I netti, primo passo: i mezzi sul ticket (8 ottobre)
+
+Il proprietario vuole sapere quanto va a ogni compagnia (il **netto**) e quanto resta a
+Isla, in un riepilogo giornaliero e settimanale **su un foglio Google, non su Isla**,
+contato dal giorno in cui il ticket è inserito; e un promemoria del netto per i
+venditori, con un avviso se il totale scende sotto. I netti li manda lui in chat e li
+scrive Claude, ma **solo su Supabase**: il repository è pubblico (verificato), e un netto
+in un file lo leggerebbero tutti. Il piano a cinque passi sta in `CLAUDE.md`.
+
+Il netto può essere **a mezzo** (moto d'acqua, buggy, quad, privati), e il ticket di carta
+porta numero e tipo dei mezzi ("2 doppie", "buggy da 4 posti"), ma il database fin qui non
+li salvava. Primo passo:
+
+- colonna `units jsonb` in `bookings` (`supabase/modifiche/2026-10-08-mezzi.sql`, già
+  dentro `schema.sql`): `{"singola": 2, "doppia": 1}`, con le chiavi di `units.types`
+  del catalogo, così i tipi sono gli stessi della finestra della richiesta;
+- nel modulo, sotto la variante, una casella per tipo ("Moto d'acqua: quanti per tipo"),
+  solo sulle quattro schede con `units` (Jet Ski, Buggy, Quad, Mustang); almeno un mezzo
+  è obbligatorio, come sul ticket di carta;
+- le stesse caselle in "Modifica", e nell'elenco "Doppia × 2 · Singola × 1".
+
+Le altre schede non mandano nemmeno la colonna: un ticket di una barca si salva anche
+se l'SQL non fosse ancora stato lanciato. L'elenco invece la chiede, quindi **l'SQL va
+lanciato prima della pubblicazione**.
+
+**Non ancora** nella lettura della foto (`leggi-ticket`): i mezzi si scrivono a mano.
+Per leggerli serve cambiare lo schema della risposta e ridistribuire la funzione: è un
+passo a sé.
+
+Provato nel browser a 375 px con un Supabase finto: caselle giuste per jet ski (2) e
+buggy (3, su tre colonne), nascoste sulle barche, errore senza mezzi, salvataggio
+`{"doppia": 2}`, modifica e update, nessuno scroll orizzontale, nessun errore.
+`CACHE_NAME` → `isla-v445`.
+
+### Nomi sul ticket: Andromeda e Agua Safari (8 ottobre)
+
+- **Andromeda** → `stargazing-group` (Teide by Night): la compagnia piccola della serata
+  in italiano, che sta nella variante "Gruppo piccolo".
+- **Agua Safari** → `jet-ski-safari-1-2h`: le moto d'acqua che partono da Las Galletas.
+
+Solo il nome che ha scritto il proprietario: nessuna grafia "probabile" aggiunta di testa
+nostra. I netti di queste due schede e di La Gomera sono arrivati nella stessa chat e
+**non sono scritti qui**: stanno solo su Supabase (vedi `CLAUDE.md`). `CACHE_NAME` →
+`isla-v446`.
+
+### I netti, secondo passo: la tabella e la compagnia sul ticket (8 ottobre)
+
+Arrivati i primi netti: Andromeda (Teide by Night), Agua Safari (Jet Ski), Gomera.
+**I numeri non sono qui** e non stanno in nessun file del repository: l'SQL con i valori è
+stato preparato fuori, e il proprietario lo incolla nel SQL Editor.
+
+Il proprietario ha detto che il netto di Andromeda vale **solo per Andromeda**: la
+variante "Gruppo piccolo" fa anche le serate in inglese e tedesco, che sono di un'altra
+compagnia. E Agua Safari fa le partenze da Las Galletas, non quelle da Puerto Colón. Un
+netto per scheda e variante avrebbe dato il netto di Andromeda anche alle serate in
+inglese. Quindi:
+
+- `nets` dice **scheda, variante e compagnia** (null = tutte le varianti / qualunque
+  compagnia), con un indice unico su tutte e tre: aggiornare un netto cambia la riga,
+  non ne aggiunge un'altra;
+- `bookings.company`, e nel modulo un menu "Compagnia" coi `nomi` della scheda e
+  "— non scritta —", solo sulle schede che hanno dei nomi; c'è anche in "Modifica";
+- la lettura della foto non è stata toccata: `excursion_text` c'era già, e
+  `compagniaNelTesto()` ci cerca uno dei `nomi` (anche nelle note), il più lungo per
+  primo. "GOMERA" → Gomera;
+- un ticket senza compagnia **resta senza netto**: nel riepilogo uscirà come netto
+  mancante, mai con un numero preso da un'altra compagnia.
+
+`nets` la leggono i venditori (servirà al promemoria) e non la scrive nessuno dal sito:
+si cambia solo dal SQL Editor. Il cliente non la legge.
+
+Nome aggiunto: **Gomera** → `la-gomera` (sul ticket c'è scritto solo così). Del netto
+del Jet Ski c'è solo la doppia da 1 ora: singola e altre durate non sono ancora arrivate.
+
+Provato nel browser con un Supabase finto (menu, lettura simulata, salvataggio,
+modifica) e l'SQL su un Postgres 16 vero: sul database com'è oggi e da zero, lanciato due
+volte, tre righe e non sei. `CACHE_NAME` → `isla-v447`.

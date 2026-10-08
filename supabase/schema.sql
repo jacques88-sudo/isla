@@ -19,6 +19,8 @@
 -- 2026-09-30-richieste-whatsapp.sql (le richieste dei clienti senza ticket) e
 -- 2026-10-02-richieste-ticket.sql (la richiesta confermata diventa un ticket) e
 -- 2026-10-05-ufficio.sql (gli account dell'ufficio, per le statistiche).
+-- 2026-10-08-mezzi.sql (quanti mezzi sul ticket) e 2026-10-08-netti.sql (la
+-- tabella dei netti, VUOTA, e la compagnia sul ticket) sono gia' compresi qui.
 
 
 -- 1. I VENDITORI ------------------------------------------------------------
@@ -97,12 +99,18 @@ create table public.bookings (
   kids           integer check (kids   >= 0),
   babies         integer check (babies >= 0),
 
+  -- Quanti mezzi e di che tipo, sulle escursioni che vanno a mezzo (moto
+  -- d'acqua, buggy, quad, Mustang). Le chiavi sono quelle di units.types in
+  -- esplora-catalog.js: {"singola": 2, "doppia": 1}. Null sulle altre.
+  units          jsonb check (units is null or jsonb_typeof(units) = 'object'),
+
   total          numeric(8,2) check (total       >= 0),
   deposit        numeric(8,2) check (deposit     >= 0),
   rest_to_pay    numeric(8,2) check (rest_to_pay >= 0),
 
   seller_id      uuid references auth.users (id) default auth.uid(),
   seller         text,                 -- i nomi scritti sul ticket (anche due: "FRA / MATT")
+  company        text,                 -- la compagnia, uno dei `nomi` della scheda ("Andromeda")
   reference      text,                 -- il REF in alto sul ticket: per compagnie e ufficio, il cliente non lo vede
   notes          text,
   photo_path     text,                 -- percorso dentro ticket-foto, NON un link pubblico
@@ -218,3 +226,33 @@ create policy "i venditori guardano le foto"
   on storage.objects for select
   to authenticated
   using (bucket_id = 'ticket-foto' and public.is_seller());
+
+
+-- 5. I NETTI DELLE COMPAGNIE -------------------------------------------------
+-- Quanto Isla paga alla compagnia. La tabella nasce VUOTA: i numeri non vanno
+-- mai in un file del progetto (il repository e' pubblico). Si inseriscono a
+-- parte dal SQL Editor. Spiegazione completa in modifiche/2026-10-08-netti.sql.
+
+create table public.nets (
+  id            uuid primary key default gen_random_uuid(),
+  excursion_id  text not null,
+  option_label  text,                    -- null = tutte le varianti
+  company       text,                    -- null = qualunque compagnia
+  net_adult     numeric(8,2) check (net_adult  >= 0),
+  net_child     numeric(8,2) check (net_child  >= 0),
+  net_infant    numeric(8,2) check (net_infant >= 0),
+  net_units     jsonb check (net_units is null or jsonb_typeof(net_units) = 'object'),
+  updated_at    timestamptz not null default now()
+);
+
+create unique index nets_unico
+  on public.nets (excursion_id, coalesce(option_label, ''), coalesce(company, ''));
+
+alter table public.nets enable row level security;
+
+create policy "i venditori leggono i netti"
+  on public.nets for select
+  to authenticated
+  using (public.is_seller());
+
+grant select on public.nets to authenticated;

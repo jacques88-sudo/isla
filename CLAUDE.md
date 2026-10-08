@@ -302,6 +302,34 @@ della scheda, perché **una compagnia fa una cosa sola** (proprietario, 30 sette
 schede no, e `controlla.js` dà errore. Quando il proprietario manda il nome di una
 compagnia: trova la scheda, aggiungi il nome, e se non è chiaro quale sia **chiedi**.
 
+## I netti delle compagnie — MAI nel repository
+
+Il **netto** è quanto Isla paga alla compagnia (barca da 100 €, netto 40: 40 alla
+compagnia, 60 a Isla). Il proprietario li manda in chat, scheda per scheda: netto
+adulto, netto bambino e, per moto d'acqua, buggy, quad e privati, il netto **a mezzo**.
+
+**Il repository è pubblico e il sito è su GitHub Pages**: un netto scritto in un file
+(catalogo, commento, `NOTES.md`, un `.sql` in `supabase/`) lo legge chiunque, clienti e
+compagnie compresi. I netti stanno **solo su Supabase**: si prepara l'SQL nella
+scratchpad, il proprietario lo incolla nel SQL Editor, e il file non si committa.
+
+Deciso l'8 ottobre 2026, a passi:
+1. **fatto** — i mezzi sul ticket: colonna `units` di `bookings` (`{"singola": 2}`, chiavi
+   di `units.types` del catalogo), caselle nel modulo e in "Modifica";
+2. **fatto** — tabella `nets` su Supabase (`supabase/modifiche/2026-10-08-netti.sql`,
+   nasce **vuota**): un netto dice scheda, variante **e compagnia**, perché lo stesso giro
+   può essere di compagnie diverse (Teide by Night: la serata italiana del gruppo piccolo
+   è di Andromeda, le altre no). Il ticket ha la colonna `company`, con un menu fatto dei
+   `nomi` della scheda. Un ticket senza compagnia, o di una compagnia senza netto,
+   **resta senza netto**: mai uno preso a caso. I valori si inseriscono con
+   `insert … on conflict … do update` preparato nella scratchpad;
+3. promemoria nel modulo dei venditori: il netto, e un avviso se il totale scende sotto
+   (il ticket si salva lo stesso);
+4. il netto si fissa sul ticket quando si salva: un netto cambiato non riscrive il passato;
+5. il riepilogo **non sta su Isla**: un foglio Google con uno script che ogni notte lo
+   scarica, contato dal giorno in cui il ticket è inserito, per giorno, settimana e
+   compagnia. La pulizia mensile cancella i ticket vecchi: il foglio li deve aver già presi.
+
 ## Gli orari ancora da mettere
 
 Il proprietario manda gli orari **una scheda alla volta**, quando li ha. Per sapere quali

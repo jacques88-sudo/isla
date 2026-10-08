@@ -178,12 +178,24 @@ function scriviSettimana(ss, lunedi, arrivati, titoli, quando) {
   const n = foglio.getLastRow() - 1;
   const tabella = n > 0 ? foglio.getRange(2, 1, n, COLONNE.length).getValues() : [];
   const dove = {};
-  tabella.forEach((r, i) => { dove[r[COLONNE.length - 1]] = i; });
+  tabella.forEach((r, i) => { if (r[COLONNE.length - 1]) dove[r[COLONNE.length - 1]] = i; });
 
+  // Fra un giorno e l'altro una riga vuota (proprietario, 8 ottobre 2026). Si
+  // mette solo quando arriva il primo ticket di un giorno nuovo, prima di lui:
+  // le righe gia' scritte non si spostano mai, se no le colonne scritte a mano
+  // a destra resterebbero accanto al ticket sbagliato.
+  const fuso = ss.getSpreadsheetTimeZone();
+  const giornoDi = d => (d instanceof Date ? Utilities.formatDate(d, fuso, "yyyy-MM-dd") : String(d || ""));
+  const iId = COLONNE.length - 1;
+  const iGiorno = COLONNE.findIndex(c => c[0] === "inserito");
   arrivati.forEach(t => {
     const riga = COLONNE.map(([chiave]) => valore(t, chiave, titoli));
-    if (t.id in dove) tabella[dove[t.id]] = riga;
-    else { dove[t.id] = tabella.length; tabella.push(riga); }
+    if (t.id in dove) { tabella[dove[t.id]] = riga; return; }
+    let ultima = null;
+    for (let k = tabella.length - 1; k >= 0 && !ultima; k--) if (tabella[k][iId]) ultima = tabella[k];
+    if (ultima && giornoDi(ultima[iGiorno]) !== giornoDi(t.inserito)) tabella.push(COLONNE.map(() => ""));
+    dove[t.id] = tabella.length;
+    tabella.push(riga);
   });
 
   if (tabella.length) {

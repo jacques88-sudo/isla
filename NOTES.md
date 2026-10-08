@@ -17320,3 +17320,13 @@ non sono sicuro che l'Apps Script V8 lo capisca.
 Provato in Node contro il finto Sheets: due settimane, ordine giusto, un ticket nuovo nella
 sua settimana al secondo giro, un ticket sparito da Supabase rimasto nella sua scheda e nei
 totali. Il sito non cambia.
+
+Poi: "tra un giorno e l'altro uno spazio bianco di divisione". La settimana conta dalla
+data di **emissione**, cioè quando il ticket è salvato su Isla (l'ora di Tenerife); un
+campo "data emissione" nel modulo è stato proposto e **non serve** (proprietario). La riga
+vuota si mette **solo quando arriva il primo ticket di un giorno nuovo**, prima di lui: le
+righe già scritte non si spostano mai, se no le colonne scritte a mano resterebbero
+accanto al ticket sbagliato. Le settimane già scritte prima di questa versione non hanno
+le righe vuote: si rifanno cancellando la scheda e premendo "Aggiorna adesso" (i ticket
+sono ancora tutti su Supabase finché non passa la pulizia mensile). Una riga vuota non ha
+id, quindi il programma non la scambia per un ticket e i riepiloghi la saltano.

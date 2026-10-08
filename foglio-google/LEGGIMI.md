@@ -12,8 +12,9 @@ e li scrive in cinque schede:
 | **Per venditore** | settimana per settimana, quanto spetta a ogni venditore |
 | **Per compagnia** | settimana per settimana, quanto va a ogni compagnia |
 
-Le colonne della scheda Ticket sono **solo queste quattordici**, nell'ordine scelto dal
-proprietario: Data emissione · Ticket · Data escursione · Adulti · Bambini · Totale ·
+Le colonne della scheda Ticket sono **solo queste quindici**, nell'ordine scelto dal
+proprietario: Data emissione · Ticket · Escursione (nome e variante) · Data escursione ·
+Adulti · Bambini · Totale ·
 Pagato · Da pagare · Card · Cash · Netto · Al venditore · All'ufficio · Commissioni.
 In **Card** o **Cash** c'è quanto il cliente ha già pagato, nella colonna del suo
 metodo: il totale della colonna Cash è il contante da contare.

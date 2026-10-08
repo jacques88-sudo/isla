@@ -20,8 +20,11 @@
 
 const SUPABASE_URL = "https://vjotkgsjtwmtctxtfeqa.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Qjmd8qP9J_GH1WjUmBolSw_vBdM5G3L";
+// Il catalogo del sito: serve solo a scrivere il nome dell'escursione al
+// posto del suo id ("La Gomera Island Tour" invece di "la-gomera").
+const CATALOGO_URL = "https://jacques88-sudo.github.io/isla/esplora-catalog.js";
 
-// Le colonne della scheda "Ticket", in ordine. Le prime 14 sono quelle che il
+// Le colonne della scheda "Ticket", in ordine. Le prime 15 sono quelle che il
 // proprietario vuole vedere, nel suo ordine (8 ottobre 2026), e solo quelle.
 // Le altre servono al programma e stanno NASCOSTE a destra: l'id riconosce un
 // ticket gia' scritto, lo stato barra gli annullati, settimana, venditore e
@@ -30,6 +33,8 @@ const SUPABASE_KEY = "sb_publishable_Qjmd8qP9J_GH1WjUmBolSw_vBdM5G3L";
 const COLONNE = [
   ["inserito", "Data emissione"],
   ["ticket_number", "Ticket"],
+  // Il nome dell'escursione e, se c'e', la variante: "Jet Ski Safari · 1 ora".
+  ["escursione", "Escursione"],
   ["data_gita", "Data escursione"],
   ["adults", "Adulti"],
   ["kids", "Bambini"],
@@ -51,7 +56,7 @@ const COLONNE = [
   ["company", "Compagnia"],
   ["id", "ID"]
 ];
-const VISIBILI = 14;
+const VISIBILI = 15;
 const DATE = ["inserito", "settimana", "data_gita"];
 const SOLDI = ["total", "pagato", "rest_to_pay", "card", "cash", "netto", "commissione", "al_venditore", "all_ufficio"];
 // Testo e non numero: un ticket "0123" diventerebbe 123.
@@ -107,6 +112,7 @@ function aggiorna() {
     return;
   }
 
+  const titoli = titoliDelCatalogo();
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   // Colonne cambiate (una versione vecchia di questo programma): la scheda
   // vecchia si mette da parte intera e si ricomincia. Non si perde niente:
@@ -131,7 +137,7 @@ function aggiorna() {
     // Le richieste WhatsApp ancora in attesa non sono ticket: entrano quando
     // l'ufficio le conferma.
     if (t.stato === "in attesa") return;
-    const riga = COLONNE.map(([chiave]) => valore(t, chiave));
+    const riga = COLONNE.map(([chiave]) => valore(t, chiave, titoli));
     if (t.id in dove) tabella[dove[t.id]] = riga;
     else { dove[t.id] = tabella.length; tabella.push(riga); }
   });
@@ -159,7 +165,11 @@ function aggiorna() {
 }
 
 // Il valore di una cella, da una riga di Supabase.
-function valore(t, chiave) {
+function valore(t, chiave, titoli) {
+  if (chiave === "escursione") {
+    const nome = titoli[t.excursion_id] || t.excursion_id || "";
+    return t.option_label ? nome + " · " + t.option_label : nome;
+  }
   if (chiave === "card" || chiave === "cash") {
     return t.payment_method === chiave && t.pagato !== null && t.pagato !== undefined ? Number(t.pagato) : "";
   }
@@ -172,6 +182,24 @@ function valore(t, chiave) {
   if (DATE.includes(chiave)) return String(v);
   if (SOLDI.includes(chiave)) return Number(v);
   return v;
+}
+
+// I nomi delle schede, dal catalogo del sito. Se il sito non risponde si va
+// avanti con gli id: il riepilogo conta lo stesso.
+function titoliDelCatalogo() {
+  const titoli = {};
+  try {
+    const testo = UrlFetchApp.fetch(CATALOGO_URL, { muteHttpExceptions: true }).getContentText();
+    // id: "…", poi (anche dopo qualche riga di commento) title: "…", oppure
+    // title: { it: "…", … } quando il titolo cambia con la lingua: si prende
+    // l'italiano.
+    const cerca = /\bid:\s*"([^"]+)",\s*(?:\/\/[^\n]*\n\s*)*title:\s*(?:"([^"]+)"|\{\s*it:\s*"([^"]+)")/g;
+    let m;
+    while ((m = cerca.exec(testo))) titoli[m[1]] = m[2] || m[3];
+  } catch (e) {
+    console.warn("Catalogo non raggiungibile: " + e);
+  }
+  return titoli;
 }
 
 // Una scheda del foglio, creata se non c'e', con le intestazioni in riga 1.

@@ -17269,3 +17269,12 @@ Le colonne sono cambiate di nuovo, quindi al primo giro la scheda Ticket di prim
 commissioni. Provato in Node contro il finto Sheets: "0865" resta 0865, l'annullato è
 barrato su tutte e 14 le colonne, la richiesta in attesa resta fuori, nascoste le colonne
 15-19. Il sito non cambia.
+
+Poi il proprietario ha chiesto, fra il numero del ticket e la data, **l'escursione**:
+"Escursione" è il nome della scheda e, se c'è, la variante ("Jet Ski Safari · 1 ora").
+Il nome viene dal catalogo del sito, letto dal programma del foglio con un'espressione
+regolare. **Errore trovato prima di consegnare**: la prima versione prendeva solo i
+titoli scritti come testo semplice (`title: "…"`) e mancava le 11 schede col titolo in
+tre lingue (`title: { it: "Pesca d'altura", … }`), che sarebbero uscite con l'id. Ora
+prende anche l'italiano: provata contro il catalogo vero, 66 schede pubblicate su 66 col
+nome giusto. Colonne visibili 15, nascoste dalla 16.

@@ -120,6 +120,15 @@
           <select id="tOption" name="option_label"></select>
         </div>
 
+        <!-- La compagnia, con i `nomi` della scheda: lo stesso giro puo' essere
+             di compagnie diverse con netti diversi (la serata italiana di
+             Teide by Night e' di Andromeda, le altre no). Solo sulle schede
+             che hanno dei nomi; la riempie anche la lettura della foto. -->
+        <div data-company-wrap hidden>
+          <label for="tCompany">Compagnia</label>
+          <select id="tCompany" name="company"></select>
+        </div>
+
         <!-- Quanti mezzi e di che tipo (moto d'acqua, buggy, quad, Mustang):
              solo sulle schede con `units` nel catalogo. Le caselle le crea
              venditori.js, una per tipo. Servono al netto a mezzo. -->

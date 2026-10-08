@@ -17127,3 +17127,36 @@ Solo il nome che ha scritto il proprietario: nessuna grafia "probabile" aggiunta
 nostra. I netti di queste due schede e di La Gomera sono arrivati nella stessa chat e
 **non sono scritti qui**: stanno solo su Supabase (vedi `CLAUDE.md`). `CACHE_NAME` →
 `isla-v446`.
+
+### I netti, secondo passo: la tabella e la compagnia sul ticket (8 ottobre)
+
+Arrivati i primi netti: Andromeda (Teide by Night), Agua Safari (Jet Ski), Gomera.
+**I numeri non sono qui** e non stanno in nessun file del repository: l'SQL con i valori è
+stato preparato fuori, e il proprietario lo incolla nel SQL Editor.
+
+Il proprietario ha detto che il netto di Andromeda vale **solo per Andromeda**: la
+variante "Gruppo piccolo" fa anche le serate in inglese e tedesco, che sono di un'altra
+compagnia. E Agua Safari fa le partenze da Las Galletas, non quelle da Puerto Colón. Un
+netto per scheda e variante avrebbe dato il netto di Andromeda anche alle serate in
+inglese. Quindi:
+
+- `nets` dice **scheda, variante e compagnia** (null = tutte le varianti / qualunque
+  compagnia), con un indice unico su tutte e tre: aggiornare un netto cambia la riga,
+  non ne aggiunge un'altra;
+- `bookings.company`, e nel modulo un menu "Compagnia" coi `nomi` della scheda e
+  "— non scritta —", solo sulle schede che hanno dei nomi; c'è anche in "Modifica";
+- la lettura della foto non è stata toccata: `excursion_text` c'era già, e
+  `compagniaNelTesto()` ci cerca uno dei `nomi` (anche nelle note), il più lungo per
+  primo. "GOMERA" → Gomera;
+- un ticket senza compagnia **resta senza netto**: nel riepilogo uscirà come netto
+  mancante, mai con un numero preso da un'altra compagnia.
+
+`nets` la leggono i venditori (servirà al promemoria) e non la scrive nessuno dal sito:
+si cambia solo dal SQL Editor. Il cliente non la legge.
+
+Nome aggiunto: **Gomera** → `la-gomera` (sul ticket c'è scritto solo così). Del netto
+del Jet Ski c'è solo la doppia da 1 ora: singola e altre durate non sono ancora arrivate.
+
+Provato nel browser con un Supabase finto (menu, lettura simulata, salvataggio,
+modifica) e l'SQL su un Postgres 16 vero: sul database com'è oggi e da zero, lanciato due
+volte, tre righe e non sei. `CACHE_NAME` → `isla-v447`.

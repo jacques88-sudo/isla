@@ -5087,6 +5087,8 @@ const ESPLORA_CATALOG = [
   {
     id: "la-gomera",
     title: "La Gomera Island Tour",
+    // Sul ticket i venditori scrivono solo "Gomera" (proprietario, 8 ottobre 2026).
+    nomi: ["Gomera"],
     category: "tour-isola",
     // La zona e' la destinazione, non il punto di ritiro: il ritiro cambia con
     // la variante (sud dell'isola o Puerto de la Cruz) e sta scritto li'.

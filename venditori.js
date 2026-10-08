@@ -36,6 +36,8 @@ const els = {
   optionWrap: $("[data-option-wrap]"),
   optionLabel: $("[data-option-label]"),
   option: $("#tOption"),
+  companyWrap: $("[data-company-wrap]"),
+  company: $("#tCompany"),
   unitsWrap: $("[data-units-wrap]"),
   unitsLabel: $("[data-units-label]"),
   units: $("[data-units]"),
@@ -140,10 +142,37 @@ function aggiornaEscursione() {
     scelte.forEach(c => els.option.append(new Option(italiano(c.label), italiano(c.label))));
   }
 
+  menuCompagnie(els.company, els.companyWrap, tour, "");
+
   const tipi = tipiMezzo(tour);
   els.unitsWrap.hidden = !tipi.length;
   if (tipi.length) els.unitsLabel.textContent = `${italiano(tour.units.name)}: quanti per tipo`;
   caselleMezzi(els.units, tipi, "tUnit");
+}
+
+// ─── Compagnia ──────────────────────────────────────────────────────────────
+// Le compagnie della scheda sono i suoi `nomi` nel catalogo. Il netto dipende
+// anche da chi fa il giro, quindi il ticket lo dice. "Non scritta" quando sul
+// ticket non c'e': il ticket resta senza netto, non ne prende uno a caso.
+
+function menuCompagnie(select, wrap, tour, gia) {
+  const nomi = (tour && tour.nomi) || [];
+  select.replaceChildren(new Option("— non scritta —", ""));
+  nomi.forEach(n => select.append(new Option(n, n)));
+  // Un nome salvato che il catalogo non ha piu': resta, per non perderlo.
+  if (gia && !nomi.includes(gia)) select.append(new Option(gia, gia));
+  select.value = gia || "";
+  wrap.hidden = !nomi.length && !gia;
+}
+
+// Il nome di compagnia che compare in un testo del ticket ("ANDROMEDA TOUR"
+// → "Andromeda"), o "". Il piu' lungo vince: "Ultimate Buggies" prima di
+// "Ultimate Buggy".
+function compagniaNelTesto(tour, testo) {
+  const t = (testo || "").toLowerCase();
+  return ((tour && tour.nomi) || [])
+    .filter(n => t.includes(n.toLowerCase()))
+    .sort((a, b) => b.length - a.length)[0] || "";
 }
 
 // ─── Mezzi ──────────────────────────────────────────────────────────────────
@@ -399,6 +428,8 @@ function riempiDaLettura(c, prima) {
     els.exc.value = c.excursion_id;
     aggiornaEscursione();
     if (c.option_label) els.option.value = c.option_label;
+    const chi = compagniaNelTesto(schedaDa(c.excursion_id), [c.excursion_text, c.notes].join(" "));
+    if (chi) els.company.value = chi;
     if (dubbi.has("excursion_id")) els.exc.classList.add("vend-dubbio");
   } else if (!c.excursion_id) {
     nonLetti.push(c.excursion_text ? `escursione (sul ticket: "${c.excursion_text}")` : "escursione");
@@ -497,6 +528,8 @@ async function salva(event) {
     confirmed_at: new Date().toISOString()
   };
 
+  // Solo dove c'e' il menu: le altre schede non mandano nemmeno la colonna.
+  if (!els.companyWrap.hidden) riga.company = els.company.value || null;
   // Solo sulle schede a mezzo: le altre non mandano nemmeno la colonna.
   if (!els.unitsWrap.hidden) riga.units = mezziDa(els.form, tipiMezzo(schedaDa(els.exc.value)));
 
@@ -575,7 +608,7 @@ function dataBreve(iso) {
 async function caricaUltimi() {
   let domanda = sb
     .from("bookings")
-    .select("id, ticket_number, reference, excursion_id, option_label, date, time, phone, adults, kids, babies, units, total, deposit, rest_to_pay, seller, photo_path, status, source, request_code")
+    .select("id, ticket_number, reference, excursion_id, option_label, company, date, time, phone, adults, kids, babies, units, total, deposit, rest_to_pay, seller, photo_path, status, source, request_code")
     // Le richieste da WhatsApp hanno il loro elenco, sopra; quando l'ufficio le
     // conferma col numero del ticket diventano ticket e passano qui.
     .or("source.neq.whatsapp,ticket_number.not.is.null");
@@ -606,7 +639,7 @@ async function caricaUltimi() {
 
     const testo = document.createElement("div");
     const titolo = document.createElement("strong");
-    titolo.textContent = `#${b.ticket_number} · ${nome}${b.option_label ? " · " + b.option_label : ""}`;
+    titolo.textContent = `#${b.ticket_number} · ${nome}${b.option_label ? " · " + b.option_label : ""}${b.company ? " · " + b.company : ""}`;
     const sotto = document.createElement("span");
     const soldi = b.rest_to_pay === null ? "" : (Number(b.rest_to_pay) === 0 ? " · pagato" : ` · resto ${b.rest_to_pay} €`);
     // Un ticket nato da una richiesta WhatsApp non ha venditore e a volte
@@ -658,7 +691,7 @@ function tornaAgliUltimi() {
   caricaUltimi();
 }
 
-// ─── Modifica: data, ora, persone, mezzi e soldi ────────────────────────────
+// ─── Modifica: data, ora, persone, compagnia, mezzi e soldi ─────────────────
 // Quando un'escursione viene rinviata (proprietario, 29 settembre 2026). Se
 // cambiano le persone cambia anche il prezzo, quindi ci sono anche Total,
 // Deposit e To pay, con le stesse regole del ticket nuovo. Il resto del
@@ -699,6 +732,10 @@ function apriModifica(li, b) {
         <input id="${id}Babies" name="babies" type="number" inputmode="numeric" min="0" max="99" />
       </div>
     </div>
+    <div data-edit-company hidden>
+      <label for="${id}Company">Compagnia</label>
+      <select id="${id}Company" name="company"></select>
+    </div>
     <fieldset class="vend-units" data-edit-units hidden>
       <legend></legend>
       <div class="vend-row"></div>
@@ -735,6 +772,7 @@ function apriModifica(li, b) {
   f.kids.value = b.kids ?? "";
   f.babies.value = b.babies ?? "";
   const tour = schedaDa(b.excursion_id);
+  menuCompagnie(f.company, form.querySelector("[data-edit-company]"), tour, b.company);
   const tipi = tipiMezzo(tour);
   if (tipi.length) {
     const box = form.querySelector("[data-edit-units]");
@@ -803,6 +841,7 @@ async function salvaModifica(event, form, b) {
   };
   const tipi = tipiMezzo(schedaDa(b.excursion_id));
   if (tipi.length) nuovo.units = mezziDa(form, tipi);
+  if (!form.querySelector("[data-edit-company]").hidden) nuovo.company = f.company.value || null;
   // Stessa regola del ticket nuovo: Total scritto e gli altri due vuoti vuol
   // dire pagato tutto, e si salva rest_to_pay = 0.
   if (nuovo.total !== null && nuovo.deposit === null && nuovo.rest_to_pay === null) nuovo.rest_to_pay = 0;

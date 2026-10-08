@@ -316,7 +316,13 @@ scratchpad, il proprietario lo incolla nel SQL Editor, e il file non si committa
 Deciso l'8 ottobre 2026, a passi:
 1. **fatto** — i mezzi sul ticket: colonna `units` di `bookings` (`{"singola": 2}`, chiavi
    di `units.types` del catalogo), caselle nel modulo e in "Modifica";
-2. tabella dei netti su Supabase, per scheda e variante;
+2. **fatto** — tabella `nets` su Supabase (`supabase/modifiche/2026-10-08-netti.sql`,
+   nasce **vuota**): un netto dice scheda, variante **e compagnia**, perché lo stesso giro
+   può essere di compagnie diverse (Teide by Night: la serata italiana del gruppo piccolo
+   è di Andromeda, le altre no). Il ticket ha la colonna `company`, con un menu fatto dei
+   `nomi` della scheda. Un ticket senza compagnia, o di una compagnia senza netto,
+   **resta senza netto**: mai uno preso a caso. I valori si inseriscono con
+   `insert … on conflict … do update` preparato nella scratchpad;
 3. promemoria nel modulo dei venditori: il netto, e un avviso se il totale scende sotto
    (il ticket si salva lo stesso);
 4. il netto si fissa sul ticket quando si salva: un netto cambiato non riscrive il passato;

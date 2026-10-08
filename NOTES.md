@@ -17248,3 +17248,24 @@ di oggi in ordine (pagamento due volte). Card, 110 − 79 = 31: 12,40 e 18,60; c
 parte con la scheda Ticket vecchia. Modulo nel browser a 375 px: senza pagamento non
 salva, con card salva `card`, Modifica legge e cambia, nessun errore. `CACHE_NAME` →
 `isla-v448`.
+
+### Il foglio con solo 14 colonne (8 ottobre)
+
+Il proprietario ha guardato la scheda Ticket e ha detto quali colonne gli servono,
+"solo queste": data di emissione, numero di ticket (es. 0865), data dell'escursione,
+adulti, bambini, totale, pagato, da pagare, card, cash, netto, al venditore, all'ufficio,
+commissioni. Fuori escursione, variante, neonati, mezzi, nota, origine.
+
+Al programma però cinque dati servono lo stesso: l'**id** riconosce un ticket già
+scritto (senza, ogni ora raddoppierebbe le righe), lo **stato** distingue gli annullati,
+**settimana, venditore e compagnia** fanno le schede di riepilogo. Stanno in colonne
+**nascoste** a destra (`hideColumns`). Gli annullati, senza più la colonna Stato in
+vista, sono **barrati in grigio**; le richieste WhatsApp in attesa non compaiono, perché
+non sono ancora ticket (entrano quando l'ufficio le conferma). Tolto anche il titolo
+dell'escursione preso dal catalogo del sito: non serviva più.
+
+Le colonne sono cambiate di nuovo, quindi al primo giro la scheda Ticket di prima diventa
+"Ticket (vecchio …)". I riepiloghi hanno lo stesso ordine: netto, venditore, ufficio,
+commissioni. Provato in Node contro il finto Sheets: "0865" resta 0865, l'annullato è
+barrato su tutte e 14 le colonne, la richiesta in attesa resta fuori, nascoste le colonne
+15-19. Il sito non cambia.

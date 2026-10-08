@@ -20,16 +20,15 @@
 
 const SUPABASE_URL = "https://vjotkgsjtwmtctxtfeqa.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Qjmd8qP9J_GH1WjUmBolSw_vBdM5G3L";
-// Il catalogo del sito: serve solo a scrivere il titolo dell'escursione al
-// posto del suo id ("La Gomera Island Tour" invece di "la-gomera").
-const CATALOGO_URL = "https://jacques88-sudo.github.io/isla/esplora-catalog.js";
 
-// Le colonne della scheda "Ticket", in ordine. L'ultima e' l'id del database:
-// e' il modo in cui il programma riconosce un ticket gia' scritto. Non va
-// toccata, e le colonne non vanno spostate.
+// Le colonne della scheda "Ticket", in ordine. Le prime 14 sono quelle che il
+// proprietario vuole vedere, nel suo ordine (8 ottobre 2026), e solo quelle.
+// Le altre servono al programma e stanno NASCOSTE a destra: l'id riconosce un
+// ticket gia' scritto, lo stato barra gli annullati, settimana, venditore e
+// compagnia fanno i riepiloghi. Non vanno toccate, e le colonne non vanno
+// spostate.
 const COLONNE = [
-  // Le prime, nell'ordine chiesto dal proprietario (8 ottobre 2026).
-  ["inserito", "Inserito"],
+  ["inserito", "Data emissione"],
   ["ticket_number", "Ticket"],
   ["data_gita", "Data escursione"],
   ["adults", "Adulti"],
@@ -42,22 +41,17 @@ const COLONNE = [
   ["card", "Card €"],
   ["cash", "Cash €"],
   ["netto", "Netto €"],
-  ["commissione", "Commissione €"],
   ["al_venditore", "Al venditore €"],
   ["all_ufficio", "All'ufficio €"],
-  // Poi il resto, che serve ai riepiloghi e a capire una riga.
+  ["commissione", "Commissioni €"],
+  // Nascoste.
   ["stato", "Stato"],
-  ["escursione", "Escursione"],
-  ["option_label", "Variante"],
-  ["company", "Compagnia"],
-  ["babies", "Neonati"],
-  ["mezzi", "Mezzi"],
+  ["settimana", "Settimana"],
   ["seller", "Venditore"],
-  ["nota", "Nota"],
-  ["settimana", "Settimana (lunedì)"],
-  ["origine", "Origine"],
-  ["id", "ID (non toccare)"]
+  ["company", "Compagnia"],
+  ["id", "ID"]
 ];
+const VISIBILI = 14;
 const DATE = ["inserito", "settimana", "data_gita"];
 const SOLDI = ["total", "pagato", "rest_to_pay", "card", "cash", "netto", "commissione", "al_venditore", "all_ufficio"];
 // Testo e non numero: un ticket "0123" diventerebbe 123.
@@ -113,7 +107,6 @@ function aggiorna() {
     return;
   }
 
-  const titoli = titoliDelCatalogo();
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   // Colonne cambiate (una versione vecchia di questo programma): la scheda
   // vecchia si mette da parte intera e si ricomincia. Non si perde niente:
@@ -135,7 +128,10 @@ function aggiorna() {
   tabella.forEach((r, i) => { dove[r[COLONNE.length - 1]] = i; });
 
   arrivati.forEach(t => {
-    const riga = COLONNE.map(([chiave]) => valore(t, chiave, titoli));
+    // Le richieste WhatsApp ancora in attesa non sono ticket: entrano quando
+    // l'ufficio le conferma.
+    if (t.stato === "in attesa") return;
+    const riga = COLONNE.map(([chiave]) => valore(t, chiave));
     if (t.id in dove) tabella[dove[t.id]] = riga;
     else { dove[t.id] = tabella.length; tabella.push(riga); }
   });
@@ -150,20 +146,22 @@ function aggiorna() {
       if (TESTO.includes(chiave)) colonna.setNumberFormat("@");
     });
     foglio.getRange(2, 1, tabella.length, COLONNE.length).setValues(tabella);
+    // Gli annullati barrati e in grigio: restano, ma si vede che non contano.
+    const stato = COLONNE.findIndex(c => c[0] === "stato");
+    const annullato = tabella.map(r => r[stato] === "annullato");
+    foglio.getRange(2, 1, tabella.length, VISIBILI)
+      .setFontLines(annullato.map(a => Array(VISIBILI).fill(a ? "line-through" : "none")))
+      .setFontColors(annullato.map(a => Array(VISIBILI).fill(a ? "#999999" : "#000000")));
   }
+  foglio.hideColumns(VISIBILI + 1, COLONNE.length - VISIBILI);
 
   riepiloghi(ss, tabella);
 }
 
 // Il valore di una cella, da una riga di Supabase.
-function valore(t, chiave, titoli) {
-  if (chiave === "escursione") return titoli[t.excursion_id] || t.excursion_id || "";
-  if (chiave === "origine") return { strada: "ticket di carta", whatsapp: "WhatsApp", online: "online" }[t.origine] || t.origine || "";
+function valore(t, chiave) {
   if (chiave === "card" || chiave === "cash") {
     return t.payment_method === chiave && t.pagato !== null && t.pagato !== undefined ? Number(t.pagato) : "";
-  }
-  if (chiave === "mezzi") {
-    return t.units ? Object.keys(t.units).map(k => k + " × " + t.units[k]).join(", ") : "";
   }
   const v = t[chiave];
   if (v === null || v === undefined) return "";
@@ -174,22 +172,6 @@ function valore(t, chiave, titoli) {
   if (DATE.includes(chiave)) return String(v);
   if (SOLDI.includes(chiave)) return Number(v);
   return v;
-}
-
-// I titoli delle schede, dal catalogo del sito. Se il sito non risponde si va
-// avanti con gli id: il riepilogo conta lo stesso.
-function titoliDelCatalogo() {
-  const titoli = {};
-  try {
-    const testo = UrlFetchApp.fetch(CATALOGO_URL, { muteHttpExceptions: true }).getContentText();
-    // id: "…", poi (anche dopo qualche riga di commento) title: "…"
-    const cerca = /\bid:\s*"([^"]+)",\s*(?:\/\/[^\n]*\n\s*)*title:\s*"([^"]+)"/g;
-    let m;
-    while ((m = cerca.exec(testo))) titoli[m[1]] = m[2];
-  } catch (e) {
-    console.warn("Catalogo non raggiungibile: " + e);
-  }
-  return titoli;
 }
 
 // Una scheda del foglio, creata se non c'e', con le intestazioni in riga 1.
@@ -221,7 +203,7 @@ function riepiloghi(ss, tabella) {
       if (r[i.stato] === "annullato") { g.annullati += 1; return; }
       if (r[i.stato] !== "confermato") return;
       g.ticket += 1;
-      g.persone += num(r[i.adults]) + num(r[i.kids]) + num(r[i.babies]);
+      g.persone += num(r[i.adults]) + num(r[i.kids]);
       g.venduto += num(r[i.total]);
       g.card += num(r[i.card]);
       g.cash += num(r[i.cash]);
@@ -245,10 +227,11 @@ function riepiloghi(ss, tabella) {
   // arrivata e' ancora il testo "2026-10-05". Tutte e due diventano il testo.
   const fuso = ss.getSpreadsheetTimeZone();
   const giorno = d => (d instanceof Date ? Utilities.formatDate(d, fuso, "yyyy-MM-dd") : String(d));
-  const numeri = g => [g.ticket, g.persone, g.venduto, g.card, g.cash, g.netto, g.commissione,
-                       g.venditore, g.ufficio, g.senzaNetto, g.annullati];
-  const coda = ["Ticket", "Persone", "Venduto €", "Card €", "Cash €", "Netto €", "Commissione €",
-                "Al venditore €", "All'ufficio €", "Senza netto", "Annullati"];
+  // Lo stesso ordine della scheda Ticket: netto, venditore, ufficio, commissioni.
+  const numeri = g => [g.ticket, g.persone, g.venduto, g.card, g.cash, g.netto,
+                       g.venditore, g.ufficio, g.commissione, g.senzaNetto, g.annullati];
+  const coda = ["Ticket", "Persone", "Venduto €", "Card €", "Cash €", "Netto €",
+                "Al venditore €", "All'ufficio €", "Commissioni €", "Senza netto", "Annullati"];
 
   const perGiorno = raggruppa(r => giorno(r[i.inserito]));
   scrivi(ss, "Per giorno", ["Giorno"].concat(coda),

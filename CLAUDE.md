@@ -120,6 +120,7 @@ porto e capienza con le schede della stessa categoria.
 | `lista.js` | la lista delle richieste (localStorage), costruita in JS perché serve a tre pagine |
 | `i18n.js` | tutti i testi fissi nelle tre lingue |
 | `controlla.js` | il controllo del catalogo |
+| `orari-mancanti.js` | la lista delle schede senza orari di partenza; il sito non lo carica |
 | `venditori.html/.js` | la pagina dei venditori: ticket di carta nel database (Supabase) |
 | `supabase-config.js` | URL e chiave **pubblica** di Supabase; lo schema e le regole stanno in `supabase/` |
 | `telefono.js` | prefissi e `telefonoE164()`: **uno solo** per venditori e clienti, il telefono è la chiave che li fa incontrare |
@@ -280,6 +281,48 @@ il cliente davanti alla reception mentre il pulmino aspetta due strade più in l
 perché nei dati è l'unico hotel con la fermata e senza nessun orario; nel browser
 però scrive "il tuo hotel" come i 29 col punto `0`, perché la sua fermata si chiama
 come lui e non ha un tipo. La tabella e il comportamento non dicono la stessa cosa.
+
+---
+
+## I nomi delle compagnie sul ticket (`nomi`)
+
+Sul ticket di carta i venditori scrivono spesso **il nome della compagnia** ("COOL
+SAILING"), non il titolo della scheda. Il campo `nomi` della scheda li elenca:
+
+```js
+nomi: ["King Buggy", "Ultimate Buggies", "Ultimate Buggy"],
+```
+
+`catalogoPerLettura()` in `venditori.js` li attacca al titolo che va a Claude ("… (sul
+ticket anche: …)"), e Claude dalla foto risale alla scheda: **la funzione `leggi-ticket`
+non va ridistribuita** quando si aggiunge un nome. Il cliente non li vede, non si
+traducono. Il **tipo** (barca, quad, moto d'acqua) non si scrive: lo dice la `category`
+della scheda, perché **una compagnia fa una cosa sola** (proprietario, 30 settembre
+2026). Più compagnie sulla stessa scheda vanno bene (i buggy); lo stesso nome su due
+schede no, e `controlla.js` dà errore. Quando il proprietario manda il nome di una
+compagnia: trova la scheda, aggiungi il nome, e se non è chiaro quale sia **chiedi**.
+
+## Gli orari ancora da mettere
+
+Il proprietario manda gli orari **una scheda alla volta**, quando li ha. Per sapere quali
+mancano, adesso:
+
+```bash
+node orari-mancanti.js
+```
+
+Rifà la lista dal catalogo a ogni lancio (non scriverla a mano: invecchia). Quando
+arrivano gli orari:
+
+- sono **partenze**, e vanno in `times` (sulla scheda o sulla variante giusta);
+- se due compagnie fanno lo stesso giro, sulla variante vanno **le ore di tutte e due**
+  e il cliente sceglie l'ora, **non la compagnia**: chi lo porta lo decide l'ufficio
+  (buggy, 5 ottobre 2026). Su un giro che fa una compagnia sola, solo le sue ore;
+- i parchi (Loro Parque, Siam Park, Aqualand…) sono biglietti d'ingresso: chiedi se un
+  orario serve davvero prima di metterlo.
+
+Dopo, prova la finestra della richiesta nel browser: il menu "A che ora" deve mostrare
+esattamente quelle ore, e "Da concordare" deve sparire.
 
 ---
 

@@ -17070,3 +17070,15 @@ sul sito vero avrebbero mostrato "Ristorante di esempio". La categoria resta in
 `mappa.html`. Restano da fare, senza fretta: ricontrollare le coordinate a occhio
 (la navigazione va comunque per nome) e, se ci sono, sostituire le foto con foto
 vostre. `CACHE_NAME` → `isla-v444`.
+
+### Il riassunto per le chat nuove (8 ottobre)
+
+Il proprietario ha chiesto che una chat nuova sappia cosa fare senza rileggere questa.
+Messo in `CLAUDE.md`, che ogni chat legge per prima: una sezione sul campo **`nomi`** (le
+compagnie sul ticket) e una sugli **orari ancora da mettere**, con le regole decise per i
+buggy. Una riga sui `nomi` anche nella skill `nuova-scheda`.
+
+La lista degli orari mancanti **non è scritta a mano**: la fa `node orari-mancanti.js`,
+che la rifà dal catalogo a ogni lancio. In tre giorni la lista era già cambiata (Flyboard
+e Cantine avevano preso gli orari): un elenco copiato in `CLAUDE.md` sarebbe stato
+sbagliato subito. Il sito non lo carica, quindi la cache non si alza.

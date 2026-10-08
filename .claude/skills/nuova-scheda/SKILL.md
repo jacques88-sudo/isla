@@ -79,6 +79,10 @@ Le tre trappole più frequenti:
   barca", "/ora" vuol dire che la barca è tutta del cliente.
 - **`days`** si mette solo se **non** si fa tutti i giorni. `mar` è martedì, `mer` è
   mercoledì.
+- **`nomi`**: il nome della compagnia come lo scrivono i venditori sul ticket di carta
+  ("Cool Sailing"). Se nei dati c'è e non sta già nel titolo, mettilo: è quello che fa
+  riconoscere la scheda dalla foto del ticket. Vedi "I nomi delle compagnie" in
+  `CLAUDE.md`.
 
 Se una condizione vale solo per una partenza o una variante (il transfer gratis solo alle
 12:00, il pranzo solo sul giro lungo), **non metterla fra le icone**: le icone dicono

@@ -121,6 +121,7 @@ porto e capienza con le schede della stessa categoria.
 | `i18n.js` | tutti i testi fissi nelle tre lingue |
 | `controlla.js` | il controllo del catalogo |
 | `orari-mancanti.js` | la lista delle schede senza orari di partenza; il sito non lo carica |
+| `foglio-google/` | il programma (Apps Script) del foglio Google dei netti, e come si installa; il sito non lo carica |
 | `venditori.html/.js` | la pagina dei venditori: ticket di carta nel database (Supabase) |
 | `supabase-config.js` | URL e chiave **pubblica** di Supabase; lo schema e le regole stanno in `supabase/` |
 | `telefono.js` | prefissi e `telefonoE164()`: **uno solo** per venditori e clienti, il telefono è la chiave che li fa incontrare |
@@ -323,12 +324,24 @@ Deciso l'8 ottobre 2026, a passi:
    `nomi` della scheda. Un ticket senza compagnia, o di una compagnia senza netto,
    **resta senza netto**: mai uno preso a caso. I valori si inseriscono con
    `insert … on conflict … do update` preparato nella scratchpad;
-3. promemoria nel modulo dei venditori: il netto, e un avviso se il totale scende sotto
-   (il ticket si salva lo stesso);
-4. il netto si fissa sul ticket quando si salva: un netto cambiato non riscrive il passato;
-5. il riepilogo **non sta su Isla**: un foglio Google con uno script che ogni notte lo
-   scarica, contato dal giorno in cui il ticket è inserito, per giorno, settimana e
-   compagnia. La pulizia mensile cancella i ticket vecchi: il foglio li deve aver già presi.
+3. ~~promemoria nel modulo dei venditori~~ — **scartato** dal proprietario (8 ottobre):
+   "non serve, non è importante". Non si ripropone;
+4. **fatto** — il netto si **fissa sul ticket** (`net_amount`, `net_note`, guardiano
+   `fissa_netto` in `supabase/modifiche/2026-10-08-foglio.sql`): un netto cambiato in
+   `nets` non riscrive i ticket già salvati; si ricalcola solo se cambiano scheda,
+   variante, compagnia, persone o mezzi;
+5. **fatto** — il riepilogo **non sta su Isla**: un foglio Google (`foglio-google/`) che
+   **ogni ora** legge `foglio_ticket()` con una parola segreta, aggiunge e aggiorna i
+   ticket e **non ne cancella mai**: la pulizia mensile toglie i ticket vecchi, il foglio
+   è l'archivio. Riepiloghi per giorno, settimana e compagnia, contati da quando il
+   ticket è inserito; nei totali solo i confermati, gli annullati a parte. La parola
+   segreta, come i netti, non sta nel repository.
+
+**Il netto non lo legge nessuna pagina, nemmeno i venditori**: `nets` è chiusa, e su
+`bookings` i venditori hanno il permesso **colonna per colonna**, tutte tranne
+`net_amount` e `net_note`. Quindi: **una colonna nuova in `bookings` va data anche ai
+venditori** (`grant select (nome) on public.bookings to authenticated`), altrimenti la
+pagina dei venditori non la legge. E nel sito mai `select("*")` su `bookings`.
 
 ## Gli orari ancora da mettere
 

@@ -2,17 +2,17 @@
 
 Ogni ora il foglio chiede a Supabase i ticket, col **netto** già calcolato (quanto va
 alla compagnia) e la **commissione** (totale meno netto) divisa fra venditore e ufficio,
-e li scrive in cinque schede:
+e li scrive in una scheda per settimana più quattro di riepilogo:
 
 | scheda | cosa c'è |
 |---|---|
-| **Ticket** | una riga per ticket. Si aggiunge e si aggiorna, **non si cancella mai**: la pulizia mensile di Supabase toglie i ticket vecchi, qui restano |
+| **Settimana 05-10-2026**, **Settimana 12-10-2026**… | una scheda per settimana (dal lunedì, la più nuova davanti), con i ticket **emessi** in quella settimana, una riga per ticket. La scheda nuova nasce da sola col primo ticket della settimana. Si aggiunge e si aggiorna, **non si cancella mai**: la pulizia mensile di Supabase toglie i ticket vecchi, qui restano |
 | **Per giorno** | i totali giorno per giorno, dal giorno in cui il ticket è stato **inserito** |
 | **Per settimana** | lo stesso, settimana per settimana (dal lunedì) |
 | **Per venditore** | settimana per settimana, quanto spetta a ogni venditore |
 | **Per compagnia** | settimana per settimana, quanto va a ogni compagnia |
 
-Le colonne della scheda Ticket sono **solo queste quindici**, nell'ordine scelto dal
+Le colonne di ogni settimana sono **solo queste quindici**, nell'ordine scelto dal
 proprietario: Data emissione · Ticket · Escursione (nome e variante) · Data escursione ·
 Adulti · Bambini · Totale ·
 Pagato · Da pagare · Card · Cash · Netto · Al venditore · All'ufficio · Commissioni.
@@ -74,7 +74,7 @@ delle commissioni che ti ha dato Claude.
    (non sicuro)** → **Consenti**. È normale: l'app è il programma che hai appena
    incollato tu, e i permessi servono a scrivere nel foglio, a chiamare Supabase e a
    ripetersi ogni ora.
-6. Torna al foglio: in pochi secondi compaiono le cinque schede.
+6. Torna al foglio: in pochi secondi compaiono le schede delle settimane e i riepiloghi.
 
 Da qui in poi si aggiorna da solo ogni ora. Per aggiornarlo subito, nel foglio: menu
 **Isla → Aggiorna adesso** (compare qualche secondo dopo che il foglio si apre).
@@ -85,9 +85,10 @@ Da qui in poi si aggiorna da solo ogni ora. Per aggiornarlo subito, nel foglio: 
 
 Se Claude manda una versione nuova di `Codice.gs`: Apps Script → cancella tutto →
 incolla → dischetto → funzione **`installa`** → Esegui. La parola segreta resta dov'è,
-non va riscritta. Se le colonne sono cambiate, la scheda Ticket vecchia viene rinominata
-"Ticket (vecchio …)" e ne nasce una nuova: i ticket ancora su Supabase tornano tutti.
-Le tue colonne a mano restano nella vecchia: ricopiale nella nuova se servono.
+non va riscritta. Se le colonne sono cambiate, ogni scheda di settimana viene rinominata
+"… (vecchio …)" e ne nasce una nuova: i ticket ancora su Supabase tornano tutti. Le tue
+colonne a mano restano nella vecchia: ricopiale nella nuova se servono. Le schede
+"(vecchio …)" non entrano nei riepiloghi.
 
 ---
 
@@ -102,8 +103,11 @@ Le tue colonne a mano restano nella vecchia: ricopiale nella nuova se servono.
   lancialo su Supabase e cambia la proprietà `SEGRETO`. Per spegnere quella vecchia:
   `delete from public.export_keys where name = 'Foglio Google ufficio';` prima di
   inserire la nuova.
-- **Non spostare né rinominare le colonne della scheda "Ticket"**, e non toccare la
-  colonna "ID": è così che il programma riconosce un ticket già scritto. Colonne in
-  più a destra, colori, filtri, grafici in altre schede: tutto va bene.
-- Le schede "Per giorno", "Per settimana" e "Per compagnia" si **riscrivono ogni ora**:
-  quello che scrivi lì dentro si perde. Per i tuoi conti usa una scheda nuova.
+- **Non rinominare le schede delle settimane** e non spostare le loro colonne: dalla A
+  alla O ci sono le quindici che vedi, dalla P alla T quelle nascoste (con l'"ID", che
+  è come il programma riconosce un ticket già scritto). **Colonne tue** si aggiungono
+  **dalla U in poi**, dopo le nascoste: lì restano. Colori, filtri, ordinare le righe,
+  grafici in altre schede: tutto va bene.
+- Le schede "Per giorno", "Per settimana", "Per venditore" e "Per compagnia" si
+  **riscrivono ogni ora**: quello che scrivi lì dentro si perde. Per i tuoi conti usa
+  una scheda nuova.

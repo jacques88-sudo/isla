@@ -2,8 +2,9 @@
 //
 // Ogni ora chiede a Supabase i ticket col netto e le commissioni gia' calcolati
 // (la funzione foglio_ticket, in supabase/modifiche/2026-10-08-pagamento.sql) e:
-//   - nella scheda "Ticket" aggiunge i ticket nuovi e aggiorna quelli cambiati
-//     (un rinvio, una persona in piu', un annullamento). NON CANCELLA MAI una
+//   - una scheda per settimana ("Settimana 05-10-2026", dal lunedi', la piu'
+//     nuova davanti): aggiunge i ticket nuovi e aggiorna quelli cambiati (un
+//     rinvio, una persona in piu', un annullamento). NON CANCELLA MAI una
 //     riga: la pulizia mensile di Supabase cancella i ticket vecchi, e qui
 //     devono restare. Il foglio e' l'archivio;
 //   - rifa' da capo "Per giorno", "Per settimana", "Per venditore" e "Per
@@ -24,7 +25,7 @@ const SUPABASE_KEY = "sb_publishable_Qjmd8qP9J_GH1WjUmBolSw_vBdM5G3L";
 // posto del suo id ("La Gomera Island Tour" invece di "la-gomera").
 const CATALOGO_URL = "https://jacques88-sudo.github.io/isla/esplora-catalog.js";
 
-// Le colonne della scheda "Ticket", in ordine. Le prime 15 sono quelle che il
+// Le colonne di ogni scheda della settimana, in ordine. Le prime 15 sono quelle che il
 // proprietario vuole vedere, nel suo ordine (8 ottobre 2026), e solo quelle.
 // Le altre servono al programma e stanno NASCOSTE a destra: l'id riconosce un
 // ticket gia' scritto, lo stato barra gli annullati, settimana, venditore e
@@ -114,18 +115,64 @@ function aggiorna() {
 
   const titoli = titoliDelCatalogo();
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  // Colonne cambiate (una versione vecchia di questo programma): la scheda
-  // vecchia si mette da parte intera e si ricomincia. Non si perde niente:
-  // i ticket che Supabase ha ancora tornano, e la vecchia resta li' da guardare.
-  const vecchia = ss.getSheetByName("Ticket");
-  if (vecchia && vecchia.getLastRow() > 0) {
-    const giuste = COLONNE.map(c => c[1]);
-    const ora = vecchia.getRange(1, 1, 1, giuste.length).getValues()[0];
-    if (ora.some((x, k) => x !== giuste[k])) {
-      vecchia.setName("Ticket (vecchio " + Utilities.formatDate(new Date(), ss.getSpreadsheetTimeZone(), "dd-MM HH.mm") + ")");
+  const quando = Utilities.formatDate(new Date(), ss.getSpreadsheetTimeZone(), "dd-MM HH.mm");
+
+  // La scheda unica "Ticket" delle versioni di prima: da quando c'e' una scheda
+  // per settimana (proprietario, 8 ottobre 2026) si mette da parte, una volta.
+  const unica = ss.getSheetByName("Ticket");
+  if (unica) unica.setName("Ticket (vecchio " + quando + ")");
+
+  // I ticket divisi per settimana: il lunedi' della data di emissione. Le
+  // richieste WhatsApp ancora in attesa non sono ticket: entrano quando
+  // l'ufficio le conferma.
+  const perSettimana = {};
+  arrivati.forEach(t => {
+    if (t.stato === "in attesa" || !t.settimana) return;
+    if (!perSettimana[t.settimana]) perSettimana[t.settimana] = [];
+    perSettimana[t.settimana].push(t);
+  });
+  // Dalla piu' vecchia alla piu' nuova: ogni scheda nuova va davanti, cosi'
+  // la settimana in corso e' sempre la prima.
+  Object.keys(perSettimana).sort().forEach(lunedi => {
+    scriviSettimana(ss, lunedi, perSettimana[lunedi], titoli, quando);
+  });
+
+  // I riepiloghi contano tutte le settimane del foglio, anche i ticket che
+  // Supabase ha gia' cancellato.
+  const tutte = [];
+  ss.getSheets().filter(f => NOME_SETTIMANA.test(f.getName())).forEach(f => {
+    const n = f.getLastRow() - 1;
+    if (n > 0) f.getRange(2, 1, n, COLONNE.length).getValues().forEach(r => tutte.push(r));
+  });
+  riepiloghi(ss, tutte);
+}
+
+// Il nome della scheda di una settimana: "Settimana 05-10-2026", col lunedi'.
+// Una scheda messa da parte ("… (vecchio …)") non e' una settimana e non conta.
+const NOME_SETTIMANA = /^Settimana \d{2}-\d{2}-\d{4}$/;
+
+// Scrive i ticket di una settimana nella sua scheda: aggiorna quelli che ci
+// sono gia' (li riconosce dall'id), aggiunge i nuovi in fondo, non toglie
+// niente. Un ticket non cambia mai settimana: la data di emissione e' fissa.
+function scriviSettimana(ss, lunedi, arrivati, titoli, quando) {
+  const [a, m, g] = lunedi.split("-");
+  const nome = "Settimana " + g + "-" + m + "-" + a;
+  const intestazioni = COLONNE.map(c => c[1]);
+
+  // Colonne cambiate (una versione nuova di questo programma): la scheda
+  // vecchia si mette da parte intera e la settimana ricomincia. I ticket che
+  // Supabase ha ancora tornano tutti.
+  let foglio = ss.getSheetByName(nome);
+  if (foglio && foglio.getLastRow() > 0) {
+    const ora = foglio.getRange(1, 1, 1, intestazioni.length).getValues()[0];
+    if (ora.some((x, k) => x !== intestazioni[k])) {
+      foglio.setName(nome + " (vecchio " + quando + ")");
+      foglio = null;
     }
   }
-  const foglio = scheda(ss, "Ticket", COLONNE.map(c => c[1]));
+  if (!foglio) foglio = ss.insertSheet(nome, 0);
+  foglio.getRange(1, 1, 1, intestazioni.length).setValues([intestazioni]).setFontWeight("bold");
+  foglio.setFrozenRows(1);
 
   // Le righe gia' scritte, e dove sta ognuna (per id).
   const n = foglio.getLastRow() - 1;
@@ -134,9 +181,6 @@ function aggiorna() {
   tabella.forEach((r, i) => { dove[r[COLONNE.length - 1]] = i; });
 
   arrivati.forEach(t => {
-    // Le richieste WhatsApp ancora in attesa non sono ticket: entrano quando
-    // l'ufficio le conferma.
-    if (t.stato === "in attesa") return;
     const riga = COLONNE.map(([chiave]) => valore(t, chiave, titoli));
     if (t.id in dove) tabella[dove[t.id]] = riga;
     else { dove[t.id] = tabella.length; tabella.push(riga); }
@@ -156,12 +200,10 @@ function aggiorna() {
     const stato = COLONNE.findIndex(c => c[0] === "stato");
     const annullato = tabella.map(r => r[stato] === "annullato");
     foglio.getRange(2, 1, tabella.length, VISIBILI)
-      .setFontLines(annullato.map(a => Array(VISIBILI).fill(a ? "line-through" : "none")))
-      .setFontColors(annullato.map(a => Array(VISIBILI).fill(a ? "#999999" : "#000000")));
+      .setFontLines(annullato.map(x => Array(VISIBILI).fill(x ? "line-through" : "none")))
+      .setFontColors(annullato.map(x => Array(VISIBILI).fill(x ? "#999999" : "#000000")));
   }
   foglio.hideColumns(VISIBILI + 1, COLONNE.length - VISIBILI);
-
-  riepiloghi(ss, tabella);
 }
 
 // Il valore di una cella, da una riga di Supabase.
@@ -211,7 +253,7 @@ function scheda(ss, nome, intestazioni) {
 }
 
 // ─── I riepiloghi ───────────────────────────────────────────────────────────
-// Si rifanno da capo a ogni giro, dalla scheda "Ticket" (anche dalle righe che
+// Si rifanno da capo a ogni giro, dalle schede delle settimane (anche dalle righe che
 // Supabase ha gia' cancellato). "Netto" e "Quota Isla" sommano solo i ticket
 // che il netto ce l'hanno; "Senza netto" dice quanti mancano.
 

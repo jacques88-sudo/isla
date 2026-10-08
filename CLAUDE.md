@@ -350,7 +350,9 @@ percentuali non vanno nel repository**, come i netti: stanno in `commission_rate
 Supabase (`supabase/modifiche/2026-10-08-pagamento.sql`, nasce vuota). Nel foglio: Card €
 e Cash € sono **quanto ha già pagato** il cliente, nella colonna del suo metodo.
 
-**Nella scheda Ticket del foglio si vedono SOLO 15 colonne**, nell'ordine del
+**Il foglio ha una scheda per settimana** ("Settimana 05-10-2026", dal lunedì della data
+di emissione, la più nuova davanti; proprietario, 8 ottobre 2026): ogni ticket sta per
+sempre nella scheda della sua settimana. **In ogni settimana si vedono SOLO 15 colonne**, nell'ordine del
 proprietario (8 ottobre 2026): data emissione, ticket, escursione (nome e variante),
 data escursione, adulti, bambini,
 totale, pagato, da pagare, card, cash, netto, al venditore, all'ufficio, commissioni.

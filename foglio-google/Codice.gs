@@ -151,9 +151,22 @@ function aggiorna() {
 // Una scheda messa da parte ("… (vecchio …)") non e' una settimana e non conta.
 const NOME_SETTIMANA = /^Settimana \d{2}-\d{2}-\d{4}$/;
 
-// Scrive i ticket di una settimana nella sua scheda: aggiorna quelli che ci
-// sono gia' (li riconosce dall'id), aggiunge i nuovi in fondo, non toglie
-// niente. Un ticket non cambia mai settimana: la data di emissione e' fissa.
+// Scrive i ticket di una settimana nella sua scheda, giorno per giorno:
+//
+//   ticket del giorno, uno per riga
+//   Totale del giorno      (cash, al venditore, all'ufficio, commissioni)
+//   (riga vuota)
+//   ticket del giorno dopo…
+//
+// Aggiorna i ticket che ci sono gia' (li riconosce dall'id), aggiunge i nuovi
+// in fondo al loro giorno, sopra il totale, e non toglie niente. Un ticket non
+// cambia mai giorno ne' settimana: la data di emissione e' fissa.
+//
+// La scheda si rilegge intera, ANCHE le colonne scritte a mano a destra (dalla
+// U in poi), e si riscrive: ogni riga si porta dietro le sue celle, cosi' una
+// nota scritta accanto a un ticket resta accanto a lui anche quando sopra di
+// lui entra un ticket nuovo. Si perde solo quello che si scrive nelle righe
+// vuote fra un giorno e l'altro.
 function scriviSettimana(ss, lunedi, arrivati, titoli, quando) {
   const [a, m, g] = lunedi.split("-");
   const nome = "Settimana " + g + "-" + m + "-" + a;
@@ -174,48 +187,93 @@ function scriviSettimana(ss, lunedi, arrivati, titoli, quando) {
   foglio.getRange(1, 1, 1, intestazioni.length).setValues([intestazioni]).setFontWeight("bold");
   foglio.setFrozenRows(1);
 
-  // Le righe gia' scritte, e dove sta ognuna (per id).
-  const n = foglio.getLastRow() - 1;
-  const tabella = n > 0 ? foglio.getRange(2, 1, n, COLONNE.length).getValues() : [];
-  const dove = {};
-  tabella.forEach((r, i) => { if (r[COLONNE.length - 1]) dove[r[COLONNE.length - 1]] = i; });
-
-  // Fra un giorno e l'altro una riga vuota (proprietario, 8 ottobre 2026). Si
-  // mette solo quando arriva il primo ticket di un giorno nuovo, prima di lui:
-  // le righe gia' scritte non si spostano mai, se no le colonne scritte a mano
-  // a destra resterebbero accanto al ticket sbagliato.
   const fuso = ss.getSpreadsheetTimeZone();
   const giornoDi = d => (d instanceof Date ? Utilities.formatDate(d, fuso, "yyyy-MM-dd") : String(d || ""));
-  const iId = COLONNE.length - 1;
-  const iGiorno = COLONNE.findIndex(c => c[0] === "inserito");
-  arrivati.forEach(t => {
-    const riga = COLONNE.map(([chiave]) => valore(t, chiave, titoli));
-    if (t.id in dove) { tabella[dove[t.id]] = riga; return; }
-    let ultima = null;
-    for (let k = tabella.length - 1; k >= 0 && !ultima; k--) if (tabella[k][iId]) ultima = tabella[k];
-    if (ultima && giornoDi(ultima[iGiorno]) !== giornoDi(t.inserito)) tabella.push(COLONNE.map(() => ""));
-    dove[t.id] = tabella.length;
-    tabella.push(riga);
+  const col = chiave => COLONNE.findIndex(c => c[0] === chiave);
+  const iId = col("id"), iGiorno = col("inserito"), iStato = col("stato");
+
+  // Quello che c'e' adesso, tutta la larghezza.
+  const larghezza = Math.max(COLONNE.length, foglio.getLastColumn());
+  const vuota = () => Array(larghezza).fill("");
+  const n = foglio.getLastRow() - 1;
+  const prima = n > 0 ? foglio.getRange(2, 1, n, larghezza).getValues() : [];
+
+  const giorni = {};    // "2026-10-08" → le righe dei suoi ticket, in ordine
+  const totali = {};    // "2026-10-08" → la sua riga del totale
+  const dove = {};      // id del ticket → la sua riga
+  const aggiungi = (giorno, riga) => {
+    if (!giorni[giorno]) giorni[giorno] = [];
+    giorni[giorno].push(riga);
+  };
+  prima.forEach(r => {
+    const id = String(r[iId] || "");
+    if (!id) return;                                   // una riga vuota
+    if (id.indexOf("totale-") === 0) { totali[id.slice(7)] = r; return; }
+    dove[id] = r;
+    aggiungi(giornoDi(r[iGiorno]), r);
   });
 
-  if (tabella.length) {
-    // I formati prima dei valori: il formato testo deve esserci gia' quando
-    // arriva il numero del ticket.
-    COLONNE.forEach(([chiave], i) => {
-      const colonna = foglio.getRange(2, i + 1, tabella.length, 1);
-      if (DATE.includes(chiave)) colonna.setNumberFormat("dd/mm/yyyy");
-      if (SOLDI.includes(chiave)) colonna.setNumberFormat("#,##0.00");
-      if (TESTO.includes(chiave)) colonna.setNumberFormat("@");
-    });
-    foglio.getRange(2, 1, tabella.length, COLONNE.length).setValues(tabella);
-    // Gli annullati barrati e in grigio: restano, ma si vede che non contano.
-    const stato = COLONNE.findIndex(c => c[0] === "stato");
-    const annullato = tabella.map(r => r[stato] === "annullato");
-    foglio.getRange(2, 1, tabella.length, VISIBILI)
-      .setFontLines(annullato.map(x => Array(VISIBILI).fill(x ? "line-through" : "none")))
-      .setFontColors(annullato.map(x => Array(VISIBILI).fill(x ? "#999999" : "#000000")));
+  arrivati.forEach(t => {
+    const nuova = COLONNE.map(([chiave]) => valore(t, chiave, titoli));
+    const r = dove[t.id];
+    // Gia' scritto: si cambiano solo le colonne del programma, non le tue.
+    if (r) { nuova.forEach((v, k) => { r[k] = v; }); return; }
+    const riga = vuota();
+    nuova.forEach((v, k) => { riga[k] = v; });
+    dove[t.id] = riga;
+    aggiungi(giornoDi(t.inserito), riga);
+  });
+
+  // Di nuovo in fila: giorno per giorno, col totale e la riga vuota.
+  const righe = [], tipi = [];
+  Object.keys(giorni).sort().forEach((giorno, k) => {
+    if (k) { righe.push(vuota()); tipi.push("vuota"); }
+    giorni[giorno].forEach(r => { righe.push(r); tipi.push(r[iStato] === "annullato" ? "annullato" : "ticket"); });
+    const tot = totali[giorno] || vuota();
+    COLONNE.forEach(([chiave], j) => { tot[j] = valoreTotale(chiave, giorno, lunedi, giorni[giorno]); });
+    righe.push(tot); tipi.push("totale");
+  });
+  if (!righe.length) return;
+
+  // I formati prima dei valori: il formato testo deve esserci gia' quando
+  // arriva il numero del ticket.
+  COLONNE.forEach(([chiave], i) => {
+    const colonna = foglio.getRange(2, i + 1, righe.length, 1);
+    if (DATE.includes(chiave)) colonna.setNumberFormat("dd/mm/yyyy");
+    if (SOLDI.includes(chiave)) colonna.setNumberFormat("#,##0.00");
+    if (TESTO.includes(chiave)) colonna.setNumberFormat("@");
+  });
+  foglio.getRange(2, 1, righe.length, larghezza).setValues(righe);
+  // Se prima c'erano piu' righe (righe vuote in piu'), quelle in fondo si puliscono.
+  if (prima.length > righe.length) {
+    foglio.getRange(2 + righe.length, 1, prima.length - righe.length, larghezza).clearContent();
   }
+
+  // Gli annullati barrati e in grigio; il totale in grassetto su fondo sabbia.
+  const area = foglio.getRange(2, 1, Math.max(righe.length, prima.length), VISIBILI);
+  const tutte = tipi.concat(Array(Math.max(0, prima.length - righe.length)).fill("vuota"));
+  const per = f => tutte.map(x => Array(VISIBILI).fill(f(x)));
+  area.setFontLines(per(x => (x === "annullato" ? "line-through" : "none")))
+      .setFontColors(per(x => (x === "annullato" ? "#999999" : "#000000")))
+      .setFontWeights(per(x => (x === "totale" ? "bold" : "normal")))
+      .setBackgrounds(per(x => (x === "totale" ? "#f1ece1" : null)));
   foglio.hideColumns(VISIBILI + 1, COLONNE.length - VISIBILI);
+}
+
+// Una cella della riga "Totale del giorno". Contano solo i ticket confermati:
+// gli annullati restano barrati sopra, ma non si sommano.
+function valoreTotale(chiave, giorno, lunedi, righe) {
+  if (chiave === "inserito") return giorno;
+  if (chiave === "escursione") return "Totale del giorno";
+  if (chiave === "settimana") return lunedi;
+  if (chiave === "stato") return "totale";
+  if (chiave === "id") return "totale-" + giorno;
+  if (["cash", "al_venditore", "all_ufficio", "commissione"].indexOf(chiave) < 0) return "";
+  const k = COLONNE.findIndex(c => c[0] === chiave);
+  const s = COLONNE.findIndex(c => c[0] === "stato");
+  const somma = righe.filter(r => r[s] === "confermato")
+    .reduce((t, r) => t + (typeof r[k] === "number" ? r[k] : 0), 0);
+  return Math.round(somma * 100) / 100;
 }
 
 // Il valore di una cella, da una riga di Supabase.

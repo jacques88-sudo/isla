@@ -352,8 +352,10 @@ e Cash € sono **quanto ha già pagato** il cliente, nella colonna del suo meto
 
 **Il foglio ha una scheda per settimana** ("Settimana 05-10-2026", dal lunedì della data
 di emissione, la più nuova davanti; proprietario, 8 ottobre 2026): ogni ticket sta per
-sempre nella scheda della sua settimana, e fra un giorno e l'altro c'è una riga vuota
-(messa prima del primo ticket di un giorno nuovo: le righe scritte non si spostano mai).
+sempre nella scheda della sua settimana. Ogni giorno: i ticket, la riga **"Totale del
+giorno"** (cash, al venditore, all'ufficio, commissioni dei soli confermati; id nascosto
+`totale-AAAA-MM-GG`) e una riga vuota. Il programma rilegge la scheda **intera, colonne a
+mano comprese**, e la riscrive giorno per giorno: ogni riga si porta dietro le sue celle.
 **In ogni settimana si vedono SOLO 15 colonne**, nell'ordine del
 proprietario (8 ottobre 2026): data emissione, ticket, escursione (nome e variante),
 data escursione, adulti, bambini,

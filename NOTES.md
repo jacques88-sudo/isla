@@ -17330,3 +17330,24 @@ accanto al ticket sbagliato. Le settimane già scritte prima di questa versione 
 le righe vuote: si rifanno cancellando la scheda e premendo "Aggiorna adesso" (i ticket
 sono ancora tutti su Supabase finché non passa la pulizia mensile). Una riga vuota non ha
 id, quindi il programma non la scambia per un ticket e i riepiloghi la saltano.
+
+### Il totale di ogni giorno (8 ottobre)
+
+Il proprietario: "a fine giornata il totale dei cash, di quanto va all'ufficio, di quanto
+va al venditore e delle commissioni". Una riga **"Totale del giorno"** sotto i ticket di
+ogni giorno, in grassetto su fondo sabbia, con le quattro somme nelle loro colonne; solo
+i confermati. Nelle colonne nascoste ha stato `totale` e id `totale-AAAA-MM-GG`: così il
+programma la riconosce, e i riepiloghi la saltano (contano solo confermati e annullati).
+
+Il giorno in corso ha il totale **da subito**, non "a fine giornata": un ticket nuovo
+entra sopra il totale del suo giorno. Ma così una riga si sposta, e la regola di prima
+("le righe scritte non si spostano mai", per le colonne a mano) non reggeva più. Quindi
+adesso `scriviSettimana()` **rilegge la scheda intera** (`getLastColumn()`, anche dalla U
+in poi), rimette in fila ticket per giorno e riscrive tutto: ogni riga si porta dietro le
+sue celle a mano. Si perde solo quello che uno scrivesse nelle righe vuote. Una settimana
+scritta dalla versione di prima (righe vuote, niente totali) al primo giro prende i
+totali senza perdere niente.
+
+Provato in Node contro il finto Sheets: totali giusti, ticket nuovo sopra il totale del
+suo giorno (70 → 140), "nota mia" nella colonna U rimasta accanto al suo ticket dopo il
+secondo giro, annullato fuori dal totale. Il sito non cambia.

@@ -13,11 +13,15 @@ e li scrive in una scheda per settimana più quattro di riepilogo:
 | **Per compagnia** | settimana per settimana, quanto va a ogni compagnia |
 
 Le colonne di ogni settimana sono **solo queste quindici**, nell'ordine scelto dal
-proprietario: Data emissione · Ticket · Escursione (nome e variante) · Data escursione ·
+proprietario: Data emissione · Ticket · Escursione · Data escursione ·
 Adulti · Bambini · Totale ·
 Pagato · Da pagare · Card · Cash · Netto · Al venditore · All'ufficio · Commissioni.
 In **Card** o **Cash** c'è quanto il cliente ha già pagato, nella colonna del suo
 metodo: il totale della colonna Cash è il contante da contare.
+
+**Escursione** è la compagnia (o, se non c'è, il nome della scheda), i mezzi e la
+variante: "Agua Safari · Doppia · 1 ora", "Andromeda · Gruppo piccolo (…)",
+"Buggy Tour Tenerife · 2 posti ×2, 4 posti · Offroad, 3 ore".
 
 Ogni giorno finisce con una riga **"Totale del giorno"**, in grassetto su fondo sabbia:
 il totale **Cash**, **Al venditore**, **All'ufficio** e **Commissioni** dei ticket
@@ -87,8 +91,12 @@ delle commissioni che ti ha dato Claude.
    ripetersi ogni ora.
 6. Torna al foglio: in pochi secondi compaiono le schede delle settimane e i riepiloghi.
 
-Da qui in poi si aggiorna da solo ogni ora. Per aggiornarlo subito, nel foglio: menu
-**Isla → Aggiorna adesso** (compare qualche secondo dopo che il foglio si apre).
+Da qui in poi si aggiorna da solo ogni ora. Per aggiornarlo subito:
+- **dal telefono** (l'app Fogli): la prima scheda, **Aggiorna**, ha una casella. La
+  tocchi, in qualche secondo il foglio si aggiorna, la casella si toglie da sola e sotto
+  c'è scritto "Ultimo aggiornamento: …";
+- **dal computer**: anche il menu **Isla → Aggiorna adesso** (compare qualche secondo
+  dopo che il foglio si apre). L'app del telefono questo menu non lo mostra.
 
 ---
 

@@ -17160,3 +17160,91 @@ del Jet Ski c'è solo la doppia da 1 ora: singola e altre durate non sono ancora
 Provato nel browser con un Supabase finto (menu, lettura simulata, salvataggio,
 modifica) e l'SQL su un Postgres 16 vero: sul database com'è oggi e da zero, lanciato due
 volte, tre righe e non sei. `CACHE_NAME` → `isla-v447`.
+
+### I netti su un foglio Google (8 ottobre)
+
+Il proprietario ha **scartato il promemoria** nel modulo ("non serve, non è importante") e
+ha chiesto i dati su un foglio esterno. Scelte sue: **ogni ora**, e gli annullati
+**segnati** (nella scheda Ticket, fuori dai totali).
+
+**Come arrivano.** `supabase/modifiche/2026-10-08-foglio.sql` crea una "porta",
+`foglio_ticket(p_segreto)`: sola lettura, aperta ad `anon` ma che restituisce righe solo
+con la parola segreta giusta (zero righe, non un errore, con quella sbagliata). La parola
+non sta da nessuna parte nel repository: in `export_keys` c'è la sua impronta sha256, e la
+tabella non ha permessi per nessuno. Il programma del foglio (`foglio-google/Codice.gs`,
+Apps Script) la tiene nelle Proprietà dello script.
+
+**Il foglio non cancella mai.** Riconosce i ticket dall'id del database: aggiorna quelli
+che conosce, aggiunge i nuovi, lascia stare quelli che Supabase non manda più. È voluto:
+la pulizia mensile cancella i ticket vecchi, e il foglio diventa l'archivio. Le tre
+schede di riepilogo invece si rifanno da capo ogni ora.
+
+**Il netto fissato sul ticket.** All'inizio la porta lo ricalcolava ogni ora dai netti
+di oggi: un netto alzato a novembre avrebbe cambiato i ticket di ottobre ancora nel
+database. Adesso un guardiano (`fissa_netto`, trigger `before insert or update`) lo
+scrive in `net_amount`/`net_note` quando il ticket si salva, e lo ricalcola solo se
+cambiano scheda, variante, compagnia, persone o mezzi; su ogni altra modifica rimette il
+valore di prima, così nemmeno scriverlo a mano lo cambia. **Errore trovato in prova**: il
+guardiano rimetteva il valore di prima anche ai ticket di prima di oggi, che un netto non
+l'avevano mai avuto, e l'update finale non calcolava niente. Ora protegge solo un netto
+già calcolato.
+
+**I venditori non leggono i netti.** Senza promemoria nessuna pagina ne ha bisogno: `nets`
+è chiusa, e su `bookings` il permesso di lettura è colonna per colonna, tutte tranne le due
+del netto (un `do $$ … $$` le prende da `information_schema`, così vale per le colonne che
+il database ha davvero). Il sito chiede sempre colonne precise, quindi non si rompe; ma
+**una colonna nuova va data anche ai venditori** (scritto in `CLAUDE.md`).
+
+**Provato.** L'SQL su Postgres 16, da zero e sopra un database già pieno, lanciato due
+volte: Gomera 2 adulti + 1 bambino + 1 neonato = 241,50 di netto; un ticket inserito alle
+00:30 di Tenerife conta per il giorno giusto; netto cambiato → i vecchi tengono il loro, i
+nuovi prendono il nuovo, una persona in più ricalcola; richiesta WhatsApp da `anon` e
+ticket da venditore passano dal guardiano; venditore che legge `net_amount` o `nets` →
+permesso negato. `Codice.gs` girato in Node contro un finto Google Sheets: due giri, il
+secondo con un ticket annullato e uno sparito da Supabase (aggiornato il primo, rimasto il
+secondo); date scritte come testo `AAAA-MM-GG` perché un `Date` sarebbe la mezzanotte del
+fuso dello script, e su un foglio all'ora italiana diventerebbe il giorno prima; il numero
+del ticket in formato testo, se no "0123" diventa 123. **Il foglio vero non l'ho potuto
+aprire**: la prima volta va guardato col proprietario.
+
+Il sito non cambia (nessun `.js`, `.css` o `.html` toccato): la cache non si alza.
+
+### Card o cash, e le commissioni nel foglio (8 ottobre)
+
+Il proprietario ha chiesto nel foglio: data di inserimento, numero di ticket, data
+dell'escursione, adulti, bambini, totale, pagato, da pagare, card, cash, netto, quanto
+spetta al venditore e all'ufficio, e il totale delle commissioni. Regola generale: con il
+bancomat il 40% al venditore e il 60% all'ufficio, in contanti 50 e 50. **Le percentuali
+non sono scritte nel repository**: stanno in `commission_rates` su Supabase, riempita da
+un SQL preparato fuori.
+
+Chiesto prima di scrivere, le risposte:
+- la percentuale è **sulla commissione** (totale − netto), non sul totale;
+- **un solo pagamento per ticket**, card o cash;
+- sul ticket di carta **non è scritto**: lo sceglie il venditore. Nel modulo c'è il menu
+  "Pagamento", obbligatorio sul ticket nuovo, e c'è anche in "Modifica" (dove può restare
+  "non scritto", per i ticket di prima e per quelli nati da una richiesta WhatsApp);
+- si conta **sempre sul totale**, anche se il resto il cliente lo paga dopo.
+
+`supabase/modifiche/2026-10-08-pagamento.sql`: la colonna `payment_method` (con il
+`grant select` per i venditori, perché da `foglio.sql` il permesso è colonna per colonna:
+è la regola scritta in `CLAUDE.md`, e qui è servita subito), la tabella delle percentuali
+chiusa a tutti, e la porta rifatta con pagato, commissione, al venditore, all'ufficio.
+"All'ufficio" è la commissione meno la parte del venditore arrotondata: le due fanno
+sempre la commissione, senza un centesimo perso. Card € e Cash € nel foglio sono quanto
+ha **già pagato** il cliente (totale − da pagare), nella colonna del suo metodo: la somma
+di Cash è il contante da contare. Scelta mia, detta al proprietario.
+
+Il foglio: colonne nell'ordine chiesto, poi le altre che servono ai riepiloghi; scheda
+nuova **Per venditore**; menu **Isla → Aggiorna adesso** (`onOpen`), chiesto dal
+proprietario ("posso aggiornarlo prima dell'ora?"). Le colonne sono cambiate: se la riga 1
+della scheda Ticket non è quella giusta, il programma la rinomina "Ticket (vecchio …)" e
+ricomincia; oggi non si perde niente, i ticket sono ancora tutti su Supabase.
+
+Provato: l'SQL su Postgres 16 partendo dallo schema di stamattina con tutte le modifiche
+di oggi in ordine (pagamento due volte). Card, 110 − 79 = 31: 12,40 e 18,60; cash: 15,50 e
+15,50. Senza card/cash o senza netto le due celle restano vuote con la nota; venditori e
+`anon` non leggono `commission_rates`. `Codice.gs` in Node contro un finto Sheets che
+parte con la scheda Ticket vecchia. Modulo nel browser a 375 px: senza pagamento non
+salva, con card salva `card`, Modifica legge e cambia, nessun errore. `CACHE_NAME` →
+`isla-v448`.

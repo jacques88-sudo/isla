@@ -52,6 +52,7 @@ const els = {
   rest: $("#tRest"),
   moneyWarn: $("[data-money-warn]"),
   moneyInfo: $("[data-money-info]"),
+  payment: $("#tPayment"),
   msg: $("[data-ticket-msg]"),
   save: $("[data-ticket-save]"),
   recent: $("[data-recent]"),
@@ -495,6 +496,7 @@ function cosaManca(riga) {
   if (tipiMezzo(tour).length && !riga.units) return `Scrivi quanti mezzi (${italiano(tour.units.name)}).`;
   if (riga.excursion_id === ESCURSIONE_ALTRO && !riga.notes) return "Escursione fuori catalogo: scrivi quale nelle note.";
   if (!riga.date) return "Manca la data.";
+  if (!riga.payment_method) return "Scegli il pagamento: card o cash.";
   if (!riga.phone) return "Il telefono non è valido.";
   if (!els.phoneOk.checked) return "Ricontrolla il telefono con il ticket e spunta la casella.";
   return "";
@@ -522,6 +524,7 @@ async function salva(event) {
     total: numero(els.total),
     deposit: numero(els.deposit),
     rest_to_pay: pagatoTutto() ? 0 : numero(els.rest),
+    payment_method: els.payment.value || null,
     reference: valoreOVuoto("reference"),
     seller: valoreOVuoto("seller") || venditore.name,
     notes: valoreOVuoto("notes"),
@@ -608,7 +611,7 @@ function dataBreve(iso) {
 async function caricaUltimi() {
   let domanda = sb
     .from("bookings")
-    .select("id, ticket_number, reference, excursion_id, option_label, company, date, time, phone, adults, kids, babies, units, total, deposit, rest_to_pay, seller, photo_path, status, source, request_code")
+    .select("id, ticket_number, reference, excursion_id, option_label, company, date, time, phone, adults, kids, babies, units, total, deposit, rest_to_pay, payment_method, seller, photo_path, status, source, request_code")
     // Le richieste da WhatsApp hanno il loro elenco, sopra; quando l'ufficio le
     // conferma col numero del ticket diventano ticket e passano qui.
     .or("source.neq.whatsapp,ticket_number.not.is.null");
@@ -647,6 +650,7 @@ async function caricaUltimi() {
     const parti = [
       `${dataBreve(b.date)}${b.time ? " " + b.time.slice(0, 5) : ""}`,
       persone + soldi,
+      b.payment_method,
       testoMezzi(tour, b.units),
       b.phone,
       b.source === "whatsapp" ? `WhatsApp ${b.request_code || ""}`.trim() : b.seller,
@@ -691,7 +695,7 @@ function tornaAgliUltimi() {
   caricaUltimi();
 }
 
-// ─── Modifica: data, ora, persone, compagnia, mezzi e soldi ─────────────────
+// ─── Modifica: data, ora, persone, compagnia, mezzi, soldi e pagamento ──────
 // Quando un'escursione viene rinviata (proprietario, 29 settembre 2026). Se
 // cambiano le persone cambia anche il prezzo, quindi ci sono anche Total,
 // Deposit e To pay, con le stesse regole del ticket nuovo. Il resto del
@@ -754,6 +758,12 @@ function apriModifica(li, b) {
         <input id="${id}Rest" name="rest_to_pay" type="number" inputmode="decimal" min="0" step="0.01" />
       </div>
     </div>
+    <label for="${id}Payment">Pagamento</label>
+    <select id="${id}Payment" name="payment_method">
+      <option value="">— non scritto —</option>
+      <option value="card">Card</option>
+      <option value="cash">Cash</option>
+    </select>
     <p class="vend-warn" data-edit-warn hidden></p>
     <small class="vend-hint" data-edit-info></small>
     <small class="vend-hint">Se cambiano le persone, ricontrolla il prezzo. Avvisa il cliente su WhatsApp.</small>
@@ -782,6 +792,7 @@ function apriModifica(li, b) {
   }
   f.total.value = b.total ?? "";
   f.deposit.value = b.deposit ?? "";
+  f.payment_method.value = b.payment_method || "";
   // "Pagato tutto" si salva come rest_to_pay 0 senza deposit: nel modulo torna
   // com'era stato scritto, con To pay vuoto.
   const pagatoPrima = b.deposit === null && Number(b.rest_to_pay) === 0;
@@ -837,7 +848,8 @@ async function salvaModifica(event, form, b) {
     babies: intero(f.babies),
     total: numero(f.total),
     deposit: numero(f.deposit),
-    rest_to_pay: numero(f.rest_to_pay)
+    rest_to_pay: numero(f.rest_to_pay),
+    payment_method: f.payment_method.value || null
   };
   const tipi = tipiMezzo(schedaDa(b.excursion_id));
   if (tipi.length) nuovo.units = mezziDa(form, tipi);

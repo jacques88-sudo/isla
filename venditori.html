@@ -206,6 +206,16 @@
         <p class="vend-warn" data-money-warn hidden></p>
         <p class="vend-hint vend-money-info" data-money-info aria-live="polite">Deposit e To pay sbarrati sul ticket: lasciali vuoti, vuol dire pagato tutto.</p>
 
+        <!-- Card o cash: sul ticket di carta non c'e', lo sa il venditore. Uno
+             solo per ticket, e decide la commissione del venditore
+             (supabase/modifiche/2026-10-08-pagamento.sql). -->
+        <label for="tPayment">Pagamento</label>
+        <select id="tPayment" name="payment_method">
+          <option value="" disabled selected>— scegli —</option>
+          <option value="card">Card</option>
+          <option value="cash">Cash</option>
+        </select>
+
         <!-- Precompilato con chi e' entrato; si cambia quando sul ticket i
              venditori sono due ("FRA / MATT"). -->
         <label for="tSeller">Venditori</label>

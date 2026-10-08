@@ -337,6 +337,14 @@ Deciso l'8 ottobre 2026, a passi:
    ticket è inserito; nei totali solo i confermati, gli annullati a parte. La parola
    segreta, come i netti, non sta nel repository.
 
+**Le commissioni** (proprietario, 8 ottobre 2026): commissione = **totale − netto**,
+sempre sul totale anche se il cliente paga il resto dopo. Si divide fra venditore e
+ufficio secondo **card o cash**, uno solo per ticket, scelto dal venditore nel modulo
+(`payment_method`, obbligatorio sul ticket nuovo; sul ticket di carta non c'è). **Le
+percentuali non vanno nel repository**, come i netti: stanno in `commission_rates` su
+Supabase (`supabase/modifiche/2026-10-08-pagamento.sql`, nasce vuota). Nel foglio: Card €
+e Cash € sono **quanto ha già pagato** il cliente, nella colonna del suo metodo.
+
 **Il netto non lo legge nessuna pagina, nemmeno i venditori**: `nets` è chiusa, e su
 `bookings` i venditori hanno il permesso **colonna per colonna**, tutte tranne
 `net_amount` e `net_note`. Quindi: **una colonna nuova in `bookings` va data anche ai

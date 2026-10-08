@@ -17208,3 +17208,43 @@ del ticket in formato testo, se no "0123" diventa 123. **Il foglio vero non l'ho
 aprire**: la prima volta va guardato col proprietario.
 
 Il sito non cambia (nessun `.js`, `.css` o `.html` toccato): la cache non si alza.
+
+### Card o cash, e le commissioni nel foglio (8 ottobre)
+
+Il proprietario ha chiesto nel foglio: data di inserimento, numero di ticket, data
+dell'escursione, adulti, bambini, totale, pagato, da pagare, card, cash, netto, quanto
+spetta al venditore e all'ufficio, e il totale delle commissioni. Regola generale: con il
+bancomat il 40% al venditore e il 60% all'ufficio, in contanti 50 e 50. **Le percentuali
+non sono scritte nel repository**: stanno in `commission_rates` su Supabase, riempita da
+un SQL preparato fuori.
+
+Chiesto prima di scrivere, le risposte:
+- la percentuale è **sulla commissione** (totale − netto), non sul totale;
+- **un solo pagamento per ticket**, card o cash;
+- sul ticket di carta **non è scritto**: lo sceglie il venditore. Nel modulo c'è il menu
+  "Pagamento", obbligatorio sul ticket nuovo, e c'è anche in "Modifica" (dove può restare
+  "non scritto", per i ticket di prima e per quelli nati da una richiesta WhatsApp);
+- si conta **sempre sul totale**, anche se il resto il cliente lo paga dopo.
+
+`supabase/modifiche/2026-10-08-pagamento.sql`: la colonna `payment_method` (con il
+`grant select` per i venditori, perché da `foglio.sql` il permesso è colonna per colonna:
+è la regola scritta in `CLAUDE.md`, e qui è servita subito), la tabella delle percentuali
+chiusa a tutti, e la porta rifatta con pagato, commissione, al venditore, all'ufficio.
+"All'ufficio" è la commissione meno la parte del venditore arrotondata: le due fanno
+sempre la commissione, senza un centesimo perso. Card € e Cash € nel foglio sono quanto
+ha **già pagato** il cliente (totale − da pagare), nella colonna del suo metodo: la somma
+di Cash è il contante da contare. Scelta mia, detta al proprietario.
+
+Il foglio: colonne nell'ordine chiesto, poi le altre che servono ai riepiloghi; scheda
+nuova **Per venditore**; menu **Isla → Aggiorna adesso** (`onOpen`), chiesto dal
+proprietario ("posso aggiornarlo prima dell'ora?"). Le colonne sono cambiate: se la riga 1
+della scheda Ticket non è quella giusta, il programma la rinomina "Ticket (vecchio …)" e
+ricomincia; oggi non si perde niente, i ticket sono ancora tutti su Supabase.
+
+Provato: l'SQL su Postgres 16 partendo dallo schema di stamattina con tutte le modifiche
+di oggi in ordine (pagamento due volte). Card, 110 − 79 = 31: 12,40 e 18,60; cash: 15,50 e
+15,50. Senza card/cash o senza netto le due celle restano vuote con la nota; venditori e
+`anon` non leggono `commission_rates`. `Codice.gs` in Node contro un finto Sheets che
+parte con la scheda Ticket vecchia. Modulo nel browser a 375 px: senza pagamento non
+salva, con card salva `card`, Modifica legge e cambia, nessun errore. `CACHE_NAME` →
+`isla-v448`.

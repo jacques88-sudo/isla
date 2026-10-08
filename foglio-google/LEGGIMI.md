@@ -1,14 +1,28 @@
 # Il foglio Google dei netti
 
 Ogni ora il foglio chiede a Supabase i ticket, col **netto** già calcolato (quanto va
-alla compagnia) e la **quota di Isla** (totale meno netto), e li scrive in quattro schede:
+alla compagnia) e la **commissione** (totale meno netto) divisa fra venditore e ufficio,
+e li scrive in cinque schede:
 
 | scheda | cosa c'è |
 |---|---|
 | **Ticket** | una riga per ticket. Si aggiunge e si aggiorna, **non si cancella mai**: la pulizia mensile di Supabase toglie i ticket vecchi, qui restano |
 | **Per giorno** | i totali giorno per giorno, dal giorno in cui il ticket è stato **inserito** |
 | **Per settimana** | lo stesso, settimana per settimana (dal lunedì) |
+| **Per venditore** | settimana per settimana, quanto spetta a ogni venditore |
 | **Per compagnia** | settimana per settimana, quanto va a ogni compagnia |
+
+Le colonne della scheda Ticket, nell'ordine: Inserito · Ticket · Data escursione ·
+Adulti · Bambini · Totale · Pagato · Da pagare · Card · Cash · Netto · Commissione ·
+Al venditore · All'ufficio, e poi stato, escursione, compagnia, venditore e il resto.
+In **Card** o **Cash** c'è quanto il cliente ha già pagato, nella colonna del suo
+metodo: il totale della colonna Cash è il contante da contare.
+
+**La commissione** è il totale meno il netto, e si conta sempre sul totale. Card o
+cash lo sceglie il venditore nel modulo, uno solo per ticket, e decide quanta parte va
+al venditore e quanta all'ufficio. Le percentuali **non sono scritte qui** (il progetto
+è pubblico): stanno su Supabase, nella tabella `commission_rates`. Se manca card/cash
+o il netto, "Al venditore" e "All'ufficio" restano vuote e la Nota dice perché.
 
 Nei totali entrano solo i ticket **confermati**. Gli annullati sono contati a parte
 (colonna "Annullati"); le richieste WhatsApp in attesa stanno in "Ticket" ma non nei
@@ -29,7 +43,9 @@ pubblico: la **parola segreta** e l'SQL che la registra su Supabase.
 ### 1. Su Supabase
 
 SQL Editor → New query → incolla **tutto** `supabase/modifiche/2026-10-08-foglio.sql`
-→ Run. Poi, in una query nuova, l'SQL con la parola segreta che ti ha dato Claude → Run.
+→ Run. Poi, una per volta: l'SQL con la parola segreta che ti ha dato Claude,
+**tutto** `supabase/modifiche/2026-10-08-pagamento.sql`, e l'SQL con le percentuali
+delle commissioni che ti ha dato Claude.
 
 ### 2. Il foglio
 
@@ -51,10 +67,20 @@ SQL Editor → New query → incolla **tutto** `supabase/modifiche/2026-10-08-fo
    (non sicuro)** → **Consenti**. È normale: l'app è il programma che hai appena
    incollato tu, e i permessi servono a scrivere nel foglio, a chiamare Supabase e a
    ripetersi ogni ora.
-6. Torna al foglio: in pochi secondi compaiono le quattro schede.
+6. Torna al foglio: in pochi secondi compaiono le cinque schede.
 
-Da qui in poi si aggiorna da solo ogni ora. Per aggiornarlo subito: Apps Script →
-funzione **`aggiorna`** → Esegui.
+Da qui in poi si aggiorna da solo ogni ora. Per aggiornarlo subito, nel foglio: menu
+**Isla → Aggiorna adesso** (compare qualche secondo dopo che il foglio si apre).
+
+---
+
+## Quando cambia il programma
+
+Se Claude manda una versione nuova di `Codice.gs`: Apps Script → cancella tutto →
+incolla → dischetto → funzione **`installa`** → Esegui. La parola segreta resta dov'è,
+non va riscritta. Se le colonne sono cambiate, la scheda Ticket vecchia viene rinominata
+"Ticket (vecchio …)" e ne nasce una nuova: i ticket ancora su Supabase tornano tutti.
+Le tue colonne a mano restano nella vecchia: ricopiale nella nuova se servono.
 
 ---
 

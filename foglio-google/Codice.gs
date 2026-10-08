@@ -1,14 +1,15 @@
 // Isla — il foglio Google dei netti.
 //
-// Ogni ora chiede a Supabase i ticket col netto gia' calcolato (la funzione
-// foglio_ticket, in supabase/modifiche/2026-10-08-foglio.sql) e:
+// Ogni ora chiede a Supabase i ticket col netto e le commissioni gia' calcolati
+// (la funzione foglio_ticket, in supabase/modifiche/2026-10-08-pagamento.sql) e:
 //   - nella scheda "Ticket" aggiunge i ticket nuovi e aggiorna quelli cambiati
 //     (un rinvio, una persona in piu', un annullamento). NON CANCELLA MAI una
 //     riga: la pulizia mensile di Supabase cancella i ticket vecchi, e qui
 //     devono restare. Il foglio e' l'archivio;
-//   - rifa' da capo "Per giorno", "Per settimana" e "Per compagnia", contate dal
-//     giorno in cui il ticket e' stato inserito. Nei totali entrano solo i
-//     confermati: gli annullati si contano a parte, quelli in attesa no.
+//   - rifa' da capo "Per giorno", "Per settimana", "Per venditore" e "Per
+//     compagnia", contate dal giorno in cui il ticket e' stato inserito. Nei
+//     totali entrano solo i confermati: gli annullati si contano a parte,
+//     quelli in attesa no.
 //
 // Come si installa: foglio-google/LEGGIMI.md.
 //
@@ -27,30 +28,38 @@ const CATALOGO_URL = "https://jacques88-sudo.github.io/isla/esplora-catalog.js";
 // e' il modo in cui il programma riconosce un ticket gia' scritto. Non va
 // toccata, e le colonne non vanno spostate.
 const COLONNE = [
+  // Le prime, nell'ordine chiesto dal proprietario (8 ottobre 2026).
   ["inserito", "Inserito"],
-  ["settimana", "Settimana (lunedì)"],
   ["ticket_number", "Ticket"],
+  ["data_gita", "Data escursione"],
+  ["adults", "Adulti"],
+  ["kids", "Bambini"],
+  ["total", "Totale €"],
+  ["pagato", "Pagato €"],
+  ["rest_to_pay", "Da pagare €"],
+  // Quanto ha gia' pagato il cliente, nella colonna del suo metodo: la somma
+  // della colonna Cash e' il contante da contare.
+  ["card", "Card €"],
+  ["cash", "Cash €"],
+  ["netto", "Netto €"],
+  ["commissione", "Commissione €"],
+  ["al_venditore", "Al venditore €"],
+  ["all_ufficio", "All'ufficio €"],
+  // Poi il resto, che serve ai riepiloghi e a capire una riga.
   ["stato", "Stato"],
   ["escursione", "Escursione"],
   ["option_label", "Variante"],
   ["company", "Compagnia"],
-  ["data_gita", "Data gita"],
-  ["adults", "Adulti"],
-  ["kids", "Bambini"],
   ["babies", "Neonati"],
   ["mezzi", "Mezzi"],
-  ["total", "Totale €"],
-  ["deposit", "Acconto €"],
-  ["rest_to_pay", "Da pagare €"],
   ["seller", "Venditore"],
-  ["netto", "Netto €"],
-  ["quota_isla", "Quota Isla €"],
   ["nota", "Nota"],
+  ["settimana", "Settimana (lunedì)"],
   ["origine", "Origine"],
   ["id", "ID (non toccare)"]
 ];
 const DATE = ["inserito", "settimana", "data_gita"];
-const SOLDI = ["total", "deposit", "rest_to_pay", "netto", "quota_isla"];
+const SOLDI = ["total", "pagato", "rest_to_pay", "card", "cash", "netto", "commissione", "al_venditore", "all_ufficio"];
 // Testo e non numero: un ticket "0123" diventerebbe 123.
 const TESTO = ["ticket_number", "id"];
 
@@ -64,6 +73,19 @@ function installa() {
     .forEach(t => ScriptApp.deleteTrigger(t));
   ScriptApp.newTrigger("aggiorna").timeBased().everyHours(1).create();
   aggiorna();
+}
+
+// Il menu "Isla → Aggiorna adesso" nel foglio, per non aspettare l'ora. Google
+// lo mette da solo ogni volta che il foglio si apre.
+function onOpen() {
+  SpreadsheetApp.getUi().createMenu("Isla")
+    .addItem("Aggiorna adesso", "aggiornaDalMenu")
+    .addToUi();
+}
+
+function aggiornaDalMenu() {
+  aggiorna();
+  SpreadsheetApp.getActiveSpreadsheet().toast("Aggiornato.", "Isla");
 }
 
 // ─── Ogni ora ───────────────────────────────────────────────────────────────
@@ -93,6 +115,17 @@ function aggiorna() {
 
   const titoli = titoliDelCatalogo();
   const ss = SpreadsheetApp.getActiveSpreadsheet();
+  // Colonne cambiate (una versione vecchia di questo programma): la scheda
+  // vecchia si mette da parte intera e si ricomincia. Non si perde niente:
+  // i ticket che Supabase ha ancora tornano, e la vecchia resta li' da guardare.
+  const vecchia = ss.getSheetByName("Ticket");
+  if (vecchia && vecchia.getLastRow() > 0) {
+    const giuste = COLONNE.map(c => c[1]);
+    const ora = vecchia.getRange(1, 1, 1, giuste.length).getValues()[0];
+    if (ora.some((x, k) => x !== giuste[k])) {
+      vecchia.setName("Ticket (vecchio " + Utilities.formatDate(new Date(), ss.getSpreadsheetTimeZone(), "dd-MM HH.mm") + ")");
+    }
+  }
   const foglio = scheda(ss, "Ticket", COLONNE.map(c => c[1]));
 
   // Le righe gia' scritte, e dove sta ognuna (per id).
@@ -126,6 +159,9 @@ function aggiorna() {
 function valore(t, chiave, titoli) {
   if (chiave === "escursione") return titoli[t.excursion_id] || t.excursion_id || "";
   if (chiave === "origine") return { strada: "ticket di carta", whatsapp: "WhatsApp", online: "online" }[t.origine] || t.origine || "";
+  if (chiave === "card" || chiave === "cash") {
+    return t.payment_method === chiave && t.pagato !== null && t.pagato !== undefined ? Number(t.pagato) : "";
+  }
   if (chiave === "mezzi") {
     return t.units ? Object.keys(t.units).map(k => k + " × " + t.units[k]).join(", ") : "";
   }
@@ -179,16 +215,21 @@ function riepiloghi(ss, tabella) {
     tabella.forEach(r => {
       const chiave = chiaveDi(r);
       const g = gruppi[chiave] || (gruppi[chiave] = {
-        ticket: 0, persone: 0, venduto: 0, netto: 0, quota: 0, senzaNetto: 0, annullati: 0, r: r
+        ticket: 0, persone: 0, venduto: 0, card: 0, cash: 0, netto: 0, commissione: 0,
+        venditore: 0, ufficio: 0, senzaNetto: 0, annullati: 0, r: r
       });
       if (r[i.stato] === "annullato") { g.annullati += 1; return; }
       if (r[i.stato] !== "confermato") return;
       g.ticket += 1;
       g.persone += num(r[i.adults]) + num(r[i.kids]) + num(r[i.babies]);
       g.venduto += num(r[i.total]);
+      g.card += num(r[i.card]);
+      g.cash += num(r[i.cash]);
       if (typeof r[i.netto] === "number") {
         g.netto += r[i.netto];
-        g.quota += num(r[i.quota_isla]);
+        g.commissione += num(r[i.commissione]);
+        g.venditore += num(r[i.al_venditore]);
+        g.ufficio += num(r[i.all_ufficio]);
       } else {
         g.senzaNetto += 1;
       }
@@ -204,8 +245,10 @@ function riepiloghi(ss, tabella) {
   // arrivata e' ancora il testo "2026-10-05". Tutte e due diventano il testo.
   const fuso = ss.getSpreadsheetTimeZone();
   const giorno = d => (d instanceof Date ? Utilities.formatDate(d, fuso, "yyyy-MM-dd") : String(d));
-  const numeri = g => [g.ticket, g.persone, g.venduto, g.netto, g.quota, g.senzaNetto, g.annullati];
-  const coda = ["Ticket", "Persone", "Venduto €", "Netto €", "Quota Isla €", "Senza netto", "Annullati"];
+  const numeri = g => [g.ticket, g.persone, g.venduto, g.card, g.cash, g.netto, g.commissione,
+                       g.venditore, g.ufficio, g.senzaNetto, g.annullati];
+  const coda = ["Ticket", "Persone", "Venduto €", "Card €", "Cash €", "Netto €", "Commissione €",
+                "Al venditore €", "All'ufficio €", "Senza netto", "Annullati"];
 
   const perGiorno = raggruppa(r => giorno(r[i.inserito]));
   scrivi(ss, "Per giorno", ["Giorno"].concat(coda),
@@ -214,6 +257,17 @@ function riepiloghi(ss, tabella) {
   const perSettimana = raggruppa(r => giorno(r[i.settimana]));
   scrivi(ss, "Per settimana", ["Settimana (lunedì)"].concat(coda),
     Object.keys(perSettimana).sort().reverse().map(k => [perSettimana[k].r[i.settimana]].concat(numeri(perSettimana[k]))), 1);
+
+  // Per venditore, settimana per settimana: quanto spetta a ciascuno.
+  const perVenditore = raggruppa(r => giorno(r[i.settimana]) + "|" + (r[i.seller] || ""));
+  scrivi(ss, "Per venditore", ["Settimana (lunedì)", "Venditore"].concat(coda),
+    Object.keys(perVenditore).sort((a, b) => {
+      const [sa, va] = a.split("|"), [sb, vb] = b.split("|");
+      return sa === sb ? va.localeCompare(vb) : (sa < sb ? 1 : -1);
+    }).map(k => {
+      const g = perVenditore[k];
+      return [g.r[i.settimana], g.r[i.seller] || "(non scritto)"].concat(numeri(g));
+    }), 2);
 
   // Per compagnia, settimana per settimana: e' quello che si paga.
   const perCompagnia = raggruppa(r => giorno(r[i.settimana]) + "|" + (r[i.company] || ""));
@@ -237,5 +291,5 @@ function scrivi(ss, nome, intestazioni, righe, colonneData) {
   s.getRange(2, 1, righe.length, intestazioni.length).setValues(righe);
   s.getRange(2, 1, righe.length, 1).setNumberFormat("dd/mm/yyyy");
   const primoSoldi = colonneData + 3;   // dopo "Ticket" e "Persone"
-  s.getRange(2, primoSoldi, righe.length, 3).setNumberFormat("#,##0.00");
+  s.getRange(2, primoSoldi, righe.length, 7).setNumberFormat("#,##0.00");
 }

@@ -345,6 +345,13 @@ percentuali non vanno nel repository**, come i netti: stanno in `commission_rate
 Supabase (`supabase/modifiche/2026-10-08-pagamento.sql`, nasce vuota). Nel foglio: Card €
 e Cash € sono **quanto ha già pagato** il cliente, nella colonna del suo metodo.
 
+**Nella scheda Ticket del foglio si vedono SOLO 14 colonne**, nell'ordine del
+proprietario (8 ottobre 2026): data emissione, ticket, data escursione, adulti, bambini,
+totale, pagato, da pagare, card, cash, netto, al venditore, all'ufficio, commissioni.
+Quello che serve al programma (stato, settimana, venditore, compagnia, id) sta in colonne
+**nascoste** a destra; gli annullati sono barrati in grigio, le richieste in attesa non ci
+sono. Una colonna in più da mostrare si chiede al proprietario prima.
+
 **Il netto non lo legge nessuna pagina, nemmeno i venditori**: `nets` è chiusa, e su
 `bookings` i venditori hanno il permesso **colonna per colonna**, tutte tranne
 `net_amount` e `net_note`. Quindi: **una colonna nuova in `bookings` va data anche ai

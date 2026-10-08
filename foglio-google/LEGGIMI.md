@@ -12,23 +12,29 @@ e li scrive in cinque schede:
 | **Per venditore** | settimana per settimana, quanto spetta a ogni venditore |
 | **Per compagnia** | settimana per settimana, quanto va a ogni compagnia |
 
-Le colonne della scheda Ticket, nell'ordine: Inserito · Ticket · Data escursione ·
-Adulti · Bambini · Totale · Pagato · Da pagare · Card · Cash · Netto · Commissione ·
-Al venditore · All'ufficio, e poi stato, escursione, compagnia, venditore e il resto.
+Le colonne della scheda Ticket sono **solo queste quattordici**, nell'ordine scelto dal
+proprietario: Data emissione · Ticket · Data escursione · Adulti · Bambini · Totale ·
+Pagato · Da pagare · Card · Cash · Netto · Al venditore · All'ufficio · Commissioni.
 In **Card** o **Cash** c'è quanto il cliente ha già pagato, nella colonna del suo
 metodo: il totale della colonna Cash è il contante da contare.
+
+A destra ci sono cinque colonne **nascoste** (Stato, Settimana, Venditore, Compagnia,
+ID): servono al programma per riconoscere i ticket e fare i riepiloghi. Non mostrarle
+per toccarle, e non cancellarle. I ticket **annullati** sono **barrati in grigio** e non
+entrano nei totali; le richieste WhatsApp ancora in attesa non ci sono, entrano quando
+l'ufficio le conferma.
 
 **La commissione** è il totale meno il netto, e si conta sempre sul totale. Card o
 cash lo sceglie il venditore nel modulo, uno solo per ticket, e decide quanta parte va
 al venditore e quanta all'ufficio. Le percentuali **non sono scritte qui** (il progetto
 è pubblico): stanno su Supabase, nella tabella `commission_rates`. Se manca card/cash
-o il netto, "Al venditore" e "All'ufficio" restano vuote e la Nota dice perché.
+o il netto, "Al venditore" e "All'ufficio" restano vuote.
 
-Nei totali entrano solo i ticket **confermati**. Gli annullati sono contati a parte
-(colonna "Annullati"); le richieste WhatsApp in attesa stanno in "Ticket" ma non nei
-totali. Quando il netto manca (compagnia non scritta, netto non ancora dato) la cella
-del netto resta **vuota** e la colonna "Nota" dice perché: nei riepiloghi è la colonna
-"Senza netto". Non si inventa mai un numero.
+Nei totali entrano solo i ticket **confermati**; gli annullati sono contati a parte
+(colonna "Annullati"). Quando il netto manca (compagnia non scritta, netto non ancora
+dato) la cella del netto resta **vuota**, e nei riepiloghi lo dice la colonna "Senza
+netto". Lo stesso per "Al venditore" e "All'ufficio" quando manca card o cash. Non si
+inventa mai un numero.
 
 **Attenzione:** il foglio contiene i netti e i guadagni. Chi ha il link lo vede tutto:
 condividilo solo con chi deve.

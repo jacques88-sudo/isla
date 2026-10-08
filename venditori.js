@@ -166,6 +166,19 @@ function menuCompagnie(select, wrap, tour, gia) {
   wrap.hidden = !nomi.length && !gia;
 }
 
+// Una compagnia che fa una variante sola (`nomi` dentro la variante, nel
+// catalogo): scelta lei, si sceglie anche la variante. Sul ticket di Andromeda
+// c'e' scritto solo "Andromeda", non "gruppo piccolo". Solo se la variante e'
+// ancora vuota: una scelta del venditore non si cambia.
+function varianteDellaCompagnia() {
+  const tour = schedaDa(els.exc.value);
+  const scelte = (tour && tour.options && tour.options.choices) || [];
+  if (!els.company.value || els.option.value) return;
+  const nome = els.company.value.toLowerCase();
+  const sua = scelte.find(c => (c.nomi || []).some(n => n.toLowerCase() === nome));
+  if (sua) els.option.value = italiano(sua.label);
+}
+
 // Il nome di compagnia che compare in un testo del ticket ("ANDROMEDA TOUR"
 // → "Andromeda"), o "". Il piu' lungo vince: "Ultimate Buggies" prima di
 // "Ultimate Buggy".
@@ -430,7 +443,7 @@ function riempiDaLettura(c, prima) {
     aggiornaEscursione();
     if (c.option_label) els.option.value = c.option_label;
     const chi = compagniaNelTesto(schedaDa(c.excursion_id), [c.excursion_text, c.notes].join(" "));
-    if (chi) els.company.value = chi;
+    if (chi) { els.company.value = chi; varianteDellaCompagnia(); }
     if (dubbi.has("excursion_id")) els.exc.classList.add("vend-dubbio");
   } else if (!c.excursion_id) {
     nonLetti.push(c.excursion_text ? `escursione (sul ticket: "${c.excursion_text}")` : "escursione");
@@ -1380,6 +1393,7 @@ riempiEscursioni();
 riempiPaesi();
 
 els.loginForm.addEventListener("submit", entra);
+els.company.addEventListener("change", varianteDellaCompagnia);
 els.logout.addEventListener("click", esci);
 els.form.addEventListener("submit", salva);
 els.searchForm.addEventListener("submit", cerca);

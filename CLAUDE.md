@@ -308,6 +308,12 @@ della scheda, perché **una compagnia fa una cosa sola** (proprietario, 30 sette
 schede no, e `controlla.js` dà errore. Quando il proprietario manda il nome di una
 compagnia: trova la scheda, aggiungi il nome, e se non è chiaro quale sia **chiedi**.
 
+**Se la compagnia fa una variante sola**, il nome va **anche dentro quella variante**
+(`options.choices[].nomi`): sul ticket di Andromeda c'è scritto solo "Andromeda", e senza
+questo la lettura della foto lasciava vuota la serata. Trovata la compagnia, il modulo
+sceglie la variante, ma solo se è ancora vuota. Il nome della variante deve stare anche
+nei `nomi` della scheda: `controlla.js` lo verifica.
+
 ## I netti delle compagnie — MAI nel repository
 
 Il **netto** è quanto Isla paga alla compagnia (barca da 100 €, netto 40: 40 alla

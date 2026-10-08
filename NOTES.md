@@ -17351,3 +17351,19 @@ totali senza perdere niente.
 Provato in Node contro il finto Sheets: totali giusti, ticket nuovo sopra il totale del
 suo giorno (70 → 140), "nota mia" nella colonna U rimasta accanto al suo ticket dopo il
 secondo giro, annullato fuori dal totale. Il sito non cambia.
+
+### Andromeda sceglie anche la serata (8 ottobre)
+
+Il proprietario: la foto di un ticket Andromeda non ha riempito la serata, "ho dovuto
+mettere io piccolo gruppo". Giusto così, per come era fatto: `leggi-ticket` mette la
+variante **solo se il ticket la indica**, e sul ticket c'è solo "Andromeda". Il catalogo
+non diceva da nessuna parte che Andromeda è la serata del gruppo piccolo.
+
+Ora `nomi` si mette anche **dentro una variante** (`options.choices[].nomi`): la compagnia
+che fa proprio quella. Nel modulo, `varianteDellaCompagnia()` la sceglie quando la
+compagnia è trovata, dalla foto o dal menu a mano, ma **solo se la variante è vuota**: una
+variante scritta sul ticket o scelta dal venditore non si tocca. Fatto tutto nella pagina,
+quindi `leggi-ticket` non va ridistribuita. `controlla.js`: il nome di una variante deve
+stare anche nei `nomi` della scheda (se no non è nel menu Compagnia), e su una variante
+sola. Provato il controllo con un nome sbagliato ("Pippo" → errore) e il modulo nel
+browser in sei casi. `CACHE_NAME` → `isla-v450`.

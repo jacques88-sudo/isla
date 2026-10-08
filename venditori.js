@@ -636,6 +636,7 @@ async function caricaUltimi() {
 
   data.forEach(b => {
     const li = document.createElement("li");
+    li.classList.toggle("is-cancelled", b.status === "cancelled");
     const tour = schedaDa(b.excursion_id);
     const nome = tour ? titoloDi(tour) : "Fuori catalogo";
     const persone = [b.adults, b.kids, b.babies].map(n => n || 0).join("+");
@@ -658,6 +659,11 @@ async function caricaUltimi() {
     ];
     sotto.textContent = parti.filter(Boolean).join(" · ");
     testo.append(titolo, sotto);
+    // L'etichetta sta fuori dal titolo barrato: barrata anche lei sembrerebbe
+    // un annullamento tolto.
+    if (b.status === "cancelled") {
+      testo.prepend(Object.assign(document.createElement("span"), { className: "vend-annullato", textContent: "Annullato" }));
+    }
     li.append(testo);
 
     const bottoni = document.createElement("div");
@@ -769,9 +775,10 @@ function apriModifica(li, b) {
     <small class="vend-hint">Se cambiano le persone, ricontrolla il prezzo. Avvisa il cliente su WhatsApp.</small>
     <p class="vend-msg" role="alert" hidden></p>
     <div class="vend-row">
-      <button class="btn btn-soft" type="button" data-edit-cancel>Annulla</button>
+      <button class="btn btn-soft" type="button" data-edit-cancel>Chiudi</button>
       <button class="btn btn-primary" type="submit">Salva</button>
-    </div>`;
+    </div>
+    <button class="btn btn-soft btn-block vend-stato-btn" type="button" data-edit-status></button>`;
 
   // I valori si mettono qui e non nell'HTML sopra: nessun testo del database
   // passa da innerHTML.
@@ -828,6 +835,12 @@ function apriModifica(li, b) {
   soldi();
 
   form.querySelector("[data-edit-cancel]").addEventListener("click", () => form.remove());
+  // Annulla / Ripristina: un ticket non si cancella mai, si annulla (schema.sql).
+  const statoBtn = form.querySelector("[data-edit-status]");
+  const annullato = b.status === "cancelled";
+  statoBtn.textContent = annullato ? "Ripristina ticket" : "Annulla ticket";
+  statoBtn.classList.toggle("is-danger", !annullato);
+  statoBtn.addEventListener("click", () => cambiaStatoTicket(b, form, annullato ? "confirmed" : "cancelled"));
   form.addEventListener("submit", event => salvaModifica(event, form, b));
   li.append(form);
   f.date.focus();
@@ -874,6 +887,36 @@ async function salvaModifica(event, form, b) {
     mostra(msg, "Non sono riuscito a salvare. Controlla la connessione e riprova.", "errore");
     bottone.disabled = false;
     bottone.textContent = "Salva";
+  }
+}
+
+// Annullare un ticket (il cliente ha disdetto, o e' stato inserito per sbaglio)
+// o rimetterlo com'era. Non si cancella: annullato, il cliente non lo vede piu'
+// nella sua pagina, e nel foglio Google resta barrato e fuori dai totali.
+// Ripristinato torna confermato, e il database controlla che abbia ancora
+// numero, telefono, escursione e data (confermato_completo in schema.sql).
+async function cambiaStatoTicket(b, form, stato) {
+  const msg = form.querySelector(".vend-msg");
+  const domanda = stato === "cancelled"
+    ? `Annullare il ticket ${b.ticket_number}?\n\nIl cliente non lo vedrà più e non conta nei totali. Si può ripristinare.`
+    : `Ripristinare il ticket ${b.ticket_number}?\n\nTorna confermato e il cliente lo vede di nuovo.`;
+  if (!confirm(domanda)) return;
+  const bottone = form.querySelector("[data-edit-status]");
+  bottone.disabled = true;
+  try {
+    const { data, error } = await sb.from("bookings").update({ status: stato }).eq("id", b.id).select("id");
+    if (error && error.code === "23514") {
+      mostra(msg, "Non si può ripristinare: al ticket manca il numero, il telefono, l'escursione o la data. Scrivili con Salva, poi riprova.", "errore");
+      bottone.disabled = false;
+      return;
+    }
+    if (error || !data || !data.length) throw error || new Error("nessuna riga");
+    await caricaUltimi();
+    mostra(els.recentMsg, `Ticket ${b.ticket_number} ${stato === "cancelled" ? "annullato" : "ripristinato"}.`, "ok");
+  } catch (err) {
+    console.error(err);
+    mostra(msg, "Non sono riuscito a salvare. Controlla la connessione e riprova.", "errore");
+    bottone.disabled = false;
   }
 }
 

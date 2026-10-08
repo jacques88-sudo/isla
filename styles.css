@@ -4178,6 +4178,20 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .vend-req.is-confirmed .vend-req-stato { color: var(--ok); }
 .vend-req.is-cancelled .vend-req-stato { color: var(--danger); }
 .vend-req.is-cancelled strong { text-decoration: line-through; text-decoration-thickness: 1px; }
+/* Un ticket annullato nell'elenco: barrato e piu' chiaro, ma si legge. */
+.vend-list li.is-cancelled > div:first-child strong,
+.vend-list li.is-cancelled > div:first-child > span:last-child { opacity: .6; }
+.vend-list li.is-cancelled > div:first-child strong { text-decoration: line-through; text-decoration-thickness: 1px; }
+.vend-annullato {
+  display: block;
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--danger);
+}
+/* "Annulla ticket" e "Ripristina ticket" sotto Chiudi / Salva. */
+.vend-edit .vend-stato-btn { margin-top: .75rem; min-height: 44px; }
+.vend-edit .vend-stato-btn.is-danger { color: var(--danger); border-color: color-mix(in oklab, var(--danger) 45%, transparent); }
 /* Statistiche (solo ufficio): una tendina chiusa, quattro numeri, tre tabelle. */
 .vend-stats { margin-bottom: 1.5rem; border-top: 1px solid var(--border); padding-top: .4rem; }
 .vend-stats[hidden] { display: none; }

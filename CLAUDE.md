@@ -402,8 +402,9 @@ arrivano gli orari:
 - se due compagnie fanno lo stesso giro, sulla variante vanno **le ore di tutte e due**
   e il cliente sceglie l'ora, **non la compagnia**: chi lo porta lo decide l'ufficio
   (buggy, 5 ottobre 2026). Su un giro che fa una compagnia sola, solo le sue ore;
-- i parchi (Loro Parque, Siam Park, Aqualand…) sono biglietti d'ingresso: chiedi se un
-  orario serve davvero prima di metterlo.
+- **i parchi non hanno bisogno di orari** (Loro Parque, Siam Park, Aqualand…; proprietario,
+  9 ottobre 2026): sono biglietti d'ingresso, si entra quando si vuole. Non si chiedono,
+  e `orari-mancanti.js` non li elenca.
 
 Dopo, prova la finestra della richiesta nel browser: il menu "A che ora" deve mostrare
 esattamente quelle ore, e "Da concordare" deve sparire.

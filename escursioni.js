@@ -786,8 +786,8 @@ function righeRichiesta(tour, req) {
     righe.push("• " + etichetta + ": " + t(req.transferSiam ? "wa.yes" : "wa.no"));
   }
   // Il totale va anche in chat: l'ufficio vede subito che conto ha fatto il
-  // cliente e puo' correggerlo prima di confermare. "Indicativo" ci resta
-  // attaccato: il prezzo buono e' quello della conferma, non questo.
+  // cliente. Non e' una stima: i prezzi del sito sono quelli definitivi
+  // (proprietario, 9 ottobre 2026).
   const conto = calcolaTotale(tour, req);
   if (conto) {
     righe.push("• " + t("wa.total") + ": €" + eur(conto.totale) + " (" + conto.dettaglio + ")");
@@ -1985,8 +1985,7 @@ function initRequestDialog() {
     }
     totalEl.innerHTML =
       '<strong>' + t("req.total") + ' €' + eur(conto.totale) + '</strong>' +
-      '<span>' + conto.dettaglio + '</span>' +
-      '<small>' + t("req.totalNote") + '</small>';
+      '<span>' + conto.dettaglio + '</span>';
     totalEl.hidden = false;
   }
 

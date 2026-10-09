@@ -391,7 +391,7 @@
 //                Si mette anche dentro una VARIANTE (options.choices[]),
 //                quando una compagnia fa proprio quella e sul ticket c'e' solo
 //                il suo nome, non la variante: "Andromeda" e' la serata del
-//                gruppo piccolo di Teide by Night. Allora il modulo dei
+//                gruppo piccolo di Teide Stars & Sunset. Allora il modulo dei
 //                venditori, trovata la compagnia, sceglie anche la variante.
 //                Il nome della variante deve stare anche nei `nomi` della
 //                scheda (e' da li' che nasce il menu "Compagnia"):
@@ -2434,7 +2434,12 @@ const ESPLORA_CATALOG = [
     // dove si va, non solo cosa si guarda, e adesso che la scheda sta fra le
     // altre del Teide si legge in fila con loro. Uguale in tutte e tre le
     // lingue, come tutti i titoli.
-    title: "Teide by Night",
+    //
+    // Il 9 ottobre 2026 il proprietario l'ha cambiato in **"Teide Stars &
+    // Sunset"**: "Teide by Night" e' il nome proprio dell'escursione di una
+    // compagnia, e a Isla serve un nome generico. Dice le due cose della
+    // serata, il tramonto e le stelle, e resta sul Teide.
+    title: "Teide Stars & Sunset",
     // La compagnia della serata in italiano (gruppo piccolo), come i
     // venditori la scrivono sul ticket (proprietario, 8 ottobre 2026).
     nomi: ["Andromeda"],
@@ -2558,8 +2563,8 @@ const ESPLORA_CATALOG = [
     // che non esiste piu': rinominata col nome della scheda, perche' una foto
     // qui dentro si chiama come la scheda che la usa, non come il posto da cui
     // arriva. E' il Roque Cinchado sotto l'arco della Via Lattea, cioe' la
-    // sagoma che si riconosce del Parco Nazionale: adesso che il titolo dice
-    // "Teide by Night", quella e' la foto che lo fa vedere.
+    // sagoma che si riconosce del Parco Nazionale: col titolo sul Teide,
+    // quella e' la foto che lo fa vedere.
     //
     // In fila si leggono come una sera che passa: il tramonto sopra le nuvole,
     // poi il buio con la Via Lattea. La copertina resta quella dei due

@@ -17645,3 +17645,26 @@ suoi posti, e si richiude ritoccandolo. Scritto da `renderMapList()` in `mappa.j
 - I gruppi seguono `MAP_GROUP_ORDER`; un gruppo senza posti non si mostra (i
   ristoranti, finche' non ci sono).
 - Tolta `mapVisible()`, che serviva solo alla lista vecchia. `CACHE_NAME` → `isla-v467`.
+
+## Prezzi definitivi, "Teide Stars & Sunset", "Scopri Tenerife" (9 ottobre 2026)
+
+Tre richieste del proprietario in una volta:
+
+- **I prezzi del sito sono definitivi.** Via la scritta sotto il totale nella finestra
+  della richiesta ("Totale indicativo: te lo confermiamo noi su WhatsApp", chiave
+  `req.totalNote` tolta), e nel messaggio WhatsApp e nella lista "Totale indicativo"
+  è diventato solo "Totale" (`wa.total`, `wa.totalPartial`). Anche `termini.html`,
+  nelle tre lingue: il totale della richiesta è quello che si paga. Restano i casi in
+  cui è la scheda stessa a dire che un prezzo lo conferma l'ufficio (corsi di
+  specialità, sesto posto della lezione privata, ritiro dal nord): sono prezzi che
+  sul sito non ci sono, non stime.
+- **"Teide by Night" → "Teide Stars & Sunset"** (`stargazing-group`): "Teide by Night"
+  è il nome proprio dell'escursione di una compagnia, a Isla serve un nome generico.
+  Uguale nelle tre lingue. Non è stato messo nei `nomi`: quelli sono compagnie e
+  diventano voci del menu "Compagnia" del ticket.
+- **"Mappa" → "Scopri Tenerife"** (Discover / Descubre Tenerife): titolo della pagina,
+  `<title>` e voce del Menu nelle sette pagine. L'occhiello sopra il titolo, che diceva
+  "Tenerife da vicino" e si ripeteva, ora dice "La mappa". Il file resta `mappa.html`:
+  i link della home (`?cat=segreto`) e quelli già condivisi continuano a funzionare.
+
+Cache `isla-v468`.

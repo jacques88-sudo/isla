@@ -17437,3 +17437,19 @@ prezzo. Non copiati recensioni, "Travelers Choice", "Why choose us". Resta in
 
 Provato a 375 px: "In breve" con partenza e durata, le due icone, le due note, nessun
 errore, nessuno scroll orizzontale. `CACHE_NAME` → `isla-v452`.
+
+### Fiat 500: il prezzo confermato, 130 € e 220 € (9 ottobre)
+
+Il proprietario: **1 ora 130 €, 2 ore 90 € in più**, quindi 220 €. I 190 e 280 della
+pagina di Tenerife First Excursions erano i prezzi di quel rivenditore, non i nostri.
+
+- due varianti in `options` ("Durata": 1 ora 130 €, 2 ore 220 €), coi bottoni sulla pagina;
+- `priceUnit` "a Fiat 500", **deciso da me**: il prezzo è della macchina (fino a 3 adulti
+  + 1 bambino), e senza l'unità "da 130 €" si leggeva a persona. Come la Mustang e il quad;
+- `priceAdult`/`priceChild` restano 0: il totale della richiesta non moltiplica il prezzo
+  della macchina per le persone;
+- niente `duration` dentro le varianti: quando le varianti si chiamano "Durata",
+  `tour.js` non ripete la durata in "In breve", e "1 o 2 ore" resta per la card.
+
+Provato a 375 px: bottoni "1 ora €130" e "2 ore €220", "€220 a Fiat 500" dopo il
+secondo, nessun errore. `CACHE_NAME` → `isla-v453`.

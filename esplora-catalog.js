@@ -5976,6 +5976,11 @@ const ESPLORA_CATALOG = [
     duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
+    // Partenze ogni ora dalle 9 alle 20, uguali per tutti i percorsi in tuk tuk,
+    // condivisi e privati (proprietario, 9 ottobre 2026). La pagina del
+    // fornitore segna le 9, le 19 e le 20 "Llamar para reservar": vanno bene lo
+    // stesso, perche' a chiamare e' l'ufficio quando conferma.
+    times: ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"],
     // Il sito del fornitore dice quattro lingue (anche italiano e francese), ma
     // tutte e cinque le pagine di prenotazione ne scrivono due: "Disponible en
     // español, inglés", e fra le cose incluse "Spanish and English guide". Qui
@@ -6041,10 +6046,6 @@ const ESPLORA_CATALOG = [
           label: "Secret Volcano Tour",
           priceAdult: 24,
           priceChild: 12,
-          // Dalla pagina di prenotazione incollata dal proprietario (9 ottobre
-          // 2026): partenze ogni ora dalle 10 alle 18. Le 9, le 19 e le 20 la
-          // pagina le segna "Llamar para reservar", e non sono state messe.
-          times: ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"],
           desc: {
             it: "Da Puerto Colón si sale alla Caldera del Rey, il monumento naturale sopra Costa Adeje: un vulcano spento, oggi coperto di piantagioni di banane, con La Gomera all'orizzonte. Per strada Torviscas, la marina e Las Américas, e la guida racconta com'è nata l'isola.",
             en: "From Puerto Colón you climb to the Caldera del Rey, the natural monument above Costa Adeje: an extinct volcano, now covered in banana plantations, with La Gomera on the horizon. On the way, Torviscas, the marina and Las Américas, while the guide tells you how the island was born.",
@@ -6381,6 +6382,11 @@ const ESPLORA_CATALOG = [
     duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
+    // Partenze ogni ora dalle 9 alle 20, uguali per tutti i percorsi in tuk tuk,
+    // condivisi e privati (proprietario, 9 ottobre 2026). La pagina del
+    // fornitore segna le 9, le 19 e le 20 "Llamar para reservar": vanno bene lo
+    // stesso, perche' a chiamare e' l'ufficio quando conferma.
+    times: ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"],
     languages: ["Español", "English"],
     priceFrom: 86,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },

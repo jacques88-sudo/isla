@@ -17593,3 +17593,14 @@ segnaposto finché non arrivano i suoi. Non copiati: la cancellazione del fornit
 ("24-hour cancellation notice", coincide con la nostra ma resta la nostra), "Salud y
 seguridad". Provato nel browser: Secret Volcano mostra le nove ore, Costa Adeje le
 fasce, nessun errore. `CACHE_NAME` → `isla-v463`.
+
+### Tuk tuk: dalle 9 alle 20, per tutti i percorsi (9 ottobre)
+
+Il proprietario: "mettile tutte, siamo noi che chiamiamo, e gli orari sono uguali per
+tutti i tour". Quindi le 9, le 19 e le 20 ("Llamar para reservar" sulla pagina del
+fornitore) entrano: a chiamare è l'ufficio quando conferma. Gli orari sono passati dalla
+variante Secret Volcano alla **scheda**, e valgono per tutti e due i percorsi; stessa
+cosa sul **tuk tuk privato** (`tuk-tuk-privato`), perché "tutti i tour" comprende anche
+quelli. Provato nel browser: i quattro percorsi mostrano 12 ore, dalle 09:00 alle 20:00,
+nessun errore. Il tuk tuk esce dalla lista di `orari-mancanti.js`. `CACHE_NAME` →
+`isla-v464`.

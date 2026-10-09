@@ -319,6 +319,10 @@ nei `nomi` della scheda: `controlla.js` lo verifica.
 Il **netto** è quanto Isla paga alla compagnia (barca da 100 €, netto 40: 40 alla
 compagnia, 60 a Isla). Il proprietario li manda in chat, scheda per scheda: netto
 adulto, netto bambino e, per moto d'acqua, buggy, quad e privati, il netto **a mezzo**.
+Per alcune schede il netto è una **parte del prezzo di vendita** (Twin Ticket, 9 ottobre
+2026): colonna `net_percent` di `nets` (`supabase/modifiche/2026-10-09-percentuale.sql`),
+netto = totale del ticket × quella parte. Per questo il netto si ricalcola anche quando
+cambia il **totale**.
 
 **Il repository è pubblico e il sito è su GitHub Pages**: un netto scritto in un file
 (catalogo, commento, `NOTES.md`, un `.sql` in `supabase/`) lo legge chiunque, clienti e

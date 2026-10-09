@@ -17469,3 +17469,24 @@ numeri vanno solo su Supabase (SQL nella scratchpad); qui arrivano solo i **nomi
 Provato: menu Compagnia giusto sulle due schede e assente sul charter; la foto con
 "MIZENDOHA" o "MOKKAI" sceglie la compagnia. SQL provato su Postgres locale, due
 volte di fila. `CACHE_NAME` → `isla-v454`.
+
+## 9 ottobre 2026 — Netto a percentuale (Twin Ticket)
+
+Il proprietario: sul Twin Ticket Isla tiene una parte del prezzo di vendita, adulti e
+bambini, e il resto va al parco. Non c'è un netto fisso a persona, quindi `nets` ha una
+colonna in più, `net_percent` (`supabase/modifiche/2026-10-09-percentuale.sql`): se c'è,
+netto = totale × quella parte, arrotondato al centesimo, e persone e mezzi non contano.
+Il numero sta solo su Supabase, come gli altri netti.
+
+- `calcola_netto` ha un parametro in più, il totale. La versione a sette parametri
+  resta e passa alla nuova senza totale: gli SQL già preparati in chat che la
+  chiamano funzionano ancora (un netto a percentuale lì resta vuoto, con la nota);
+- il guardiano `fissa_netto` ricalcola anche quando cambia `total`;
+- ticket senza totale: netto vuoto, nota "netto mancante: totale non scritto".
+
+**Il transfer del Twin Ticket ha un altro netto** (proprietario), ma sul ticket non c'è
+un campo che dica se il cliente l'ha preso: un ticket col transfer nel totale prende
+la percentuale anche sul transfer. Da sistemare quando arriva il netto del transfer.
+
+Provato su Postgres locale: 213 € → netto 170,40; totale cambiato a 250 → 200; senza
+totale → vuoto con la nota; la migrazione lanciata due volte; gli altri netti invariati.

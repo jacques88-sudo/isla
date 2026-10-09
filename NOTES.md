@@ -17614,3 +17614,12 @@ spettacoli della stessa categoria hanno l'ora vera e non cambiano. Scritto anche
 `CLAUDE.md`, così non si richiedono. Il sito non cambia: nella richiesta i parchi
 mostrano ancora le fasce e "Da concordare" nel menu "A che ora". Chiesto al
 proprietario se toglierlo.
+
+### Small Group Catamaran privato: le partenze del condiviso (9 ottobre)
+
+Il proprietario: il privato ha **gli stessi orari del condiviso**, cioè 9:30 e 12:30.
+Messi su `small-group-catamaran-charter`. **Non toccata** la variante "Charter privato"
+dentro `small-group-catamaran`: ha `times: []` (ora da concordare) e una descrizione che
+dice "si può fare anche al tramonto", che con solo 9:30 e 12:30 non starebbe in piedi.
+Chiesto al proprietario se il tramonto vale ancora. Provato nel browser: il menu mostra
+09:30 e 12:30. `CACHE_NAME` → `isla-v465`.

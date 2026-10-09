@@ -6271,6 +6271,8 @@ const ESPLORA_CATALOG = [
     duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza", "intera"],
+    // Stesse partenze del giro condiviso (proprietario, 9 ottobre 2026).
+    times: ["09:30", "12:30"],
     priceFrom: 350,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
     priceAdult: 0,

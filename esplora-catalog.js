@@ -3343,17 +3343,32 @@ const ESPLORA_CATALOG = [
     id: "fiat-500-water-car",
     title: "Fiat 500 Water Car",
     category: "sport-acquatici",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto Colón, Costa Adeje",
+    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["breve"],
     priceFrom: 130,
     priceAdult: 0,
     priceChild: 0,
     family: true,
     desc: {
-      it: "Una Fiat 500 galleggiante da guidare al largo della costa: la foto che tutti si portano a casa.",
-      en: "A floating Fiat 500 you drive off the coast: the photo everyone takes home.",
-      es: "Un Fiat 500 flotante para conducir frente a la costa: la foto que todos se llevan a casa."
+      it: "Una Fiat 500 galleggiante da guidare al largo della costa sud, con un capitano a bordo che vi accompagna. Si parte da Puerto Colón verso El Duque o Los Cristianos, secondo il mare, con una sosta per il bagno: la foto che tutti si portano a casa.",
+      en: "A floating Fiat 500 you drive along the south coast, with a captain on board beside you. It sets off from Puerto Colón towards El Duque or Los Cristianos, depending on the sea, with a stop for a swim: the photo everyone takes home.",
+      es: "Un Fiat 500 flotante para conducir por la costa sur, con un capitán a bordo que os acompaña. Sale de Puerto Colón hacia El Duque o Los Cristianos, según el mar, con una parada para bañarse: la foto que todos se llevan a casa."
     },
+    included: ["swimstop", "snorkel"],
+    notes: [
+      {
+        it: "Il capitano resta sempre a bordo: lo chiedono le regole del mare. Guidate voi, sotto il suo controllo. Per guidare servono 18 anni, la patente nautica no.",
+        en: "The captain stays on board the whole time: maritime rules require it. You drive, under the captain's supervision. Drivers must be 18 or over; no boating licence is needed.",
+        es: "El capitán va siempre a bordo: lo exigen las normas del mar. Conducís vosotros, bajo su supervisión. Para conducir hay que tener 18 años; no hace falta licencia de navegación."
+      },
+      {
+        it: "Al massimo 3 adulti e 1 bambino fino a 12 anni: 4 adulti non possono salire. Portate un documento d'identità.",
+        en: "Maximum 3 adults and 1 child up to 12 years old: 4 adults are not allowed. Bring an identity document.",
+        es: "Como máximo 3 adultos y 1 niño de hasta 12 años: 4 adultos no pueden subir. Traed un documento de identidad."
+      }
+    ],
     image: "fiat-500-on-water.jpg",
     published: true
   },

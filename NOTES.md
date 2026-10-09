@@ -17551,3 +17551,10 @@ sparisce. **La gemella privata (`luxury-catamaran-charter`) non è stata toccata
 gemelle hanno gli stessi orari della barca condivisa, ma su un privato l'ora può essere
 da concordare. Chiesto al proprietario. Provato nel browser, nessun errore.
 `CACHE_NAME` → `isla-v458`.
+
+### Luxury Catamaran privata: gli stessi orari (9 ottobre)
+
+Il proprietario conferma: la gemella privata (`luxury-catamaran-charter`) parte **alle
+stesse ore** della condivisa, 11, 14 e 17. Stessi `times`, come le altre gemelle private
+che ripetono gli orari della barca condivisa. Provato nel browser: tutte e due mostrano
+solo 11:00, 14:00 e 17:00. `CACHE_NAME` → `isla-v459`.

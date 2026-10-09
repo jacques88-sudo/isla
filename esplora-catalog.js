@@ -3348,8 +3348,16 @@ const ESPLORA_CATALOG = [
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
     priceFrom: 130,
+    priceUnit: { it: "a Fiat 500", en: "per Fiat 500", es: "por Fiat 500" },
     priceAdult: 0,
     priceChild: 0,
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        { label: { it: "1 ora", en: "1 hour", es: "1 hora" }, price: 130 },
+        { label: { it: "2 ore", en: "2 hours", es: "2 horas" }, price: 220 }
+      ]
+    },
     family: true,
     desc: {
       it: "Una Fiat 500 galleggiante da guidare al largo della costa sud, con un capitano a bordo che vi accompagna. Si parte da Puerto Colón verso El Duque o Los Cristianos, secondo il mare, con una sosta per il bagno: la foto che tutti si portano a casa.",

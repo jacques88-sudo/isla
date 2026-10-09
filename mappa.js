@@ -241,7 +241,7 @@ const MAP_TEIDE = [28.2724, -16.6425];
 // Viene da @geo-maps/earth-lands-100m (OpenStreetMap, precisione 100 m).
 const MAP_COAST = [[-16.5228,28.4174],[-16.5035,28.4248],[-16.4939,28.4406],[-16.4876,28.4375],[-16.4755,28.442],[-16.47,28.4486],[-16.4744,28.4535],[-16.4673,28.4554],[-16.466,28.4599],[-16.4558,28.4601],[-16.4567,28.4686],[-16.4491,28.4739],[-16.4518,28.4772],[-16.4453,28.4743],[-16.4442,28.4802],[-16.4295,28.4883],[-16.4198,28.5125],[-16.4216,28.5177],[-16.3984,28.5338],[-16.3976,28.5385],[-16.3804,28.548],[-16.3656,28.5452],[-16.3545,28.5497],[-16.3539,28.5534],[-16.334,28.5576],[-16.3341,28.5717],[-16.3296,28.5771],[-16.3193,28.579],[-16.3158,28.5712],[-16.3071,28.5744],[-16.2974,28.5691],[-16.288,28.5711],[-16.2855,28.5765],[-16.2745,28.5721],[-16.2725,28.578],[-16.257,28.5693],[-16.2432,28.5718],[-16.2237,28.5654],[-16.1933,28.5722],[-16.1721,28.5859],[-16.1684,28.584],[-16.1581,28.5891],[-16.1323,28.5812],[-16.1341,28.5739],[-16.1264,28.5713],[-16.1267,28.5637],[-16.1199,28.5593],[-16.1194,28.5536],[-16.1267,28.5481],[-16.1294,28.5368],[-16.1256,28.5321],[-16.1353,28.5338],[-16.1431,28.5214],[-16.1563,28.5228],[-16.167,28.5183],[-16.1806,28.5081],[-16.1867,28.5082],[-16.1957,28.4965],[-16.2111,28.4928],[-16.2027,28.4991],[-16.2252,28.4837],[-16.2284,28.4829],[-16.2197,28.4894],[-16.2369,28.4856],[-16.2462,28.471],[-16.2434,28.469],[-16.2356,28.4791],[-16.247,28.4557],[-16.2422,28.466],[-16.2428,28.4681],[-16.249,28.4545],[-16.2698,28.4472],[-16.3007,28.4143],[-16.3203,28.4],[-16.3337,28.4006],[-16.3472,28.3867],[-16.3604,28.3794],[-16.3609,28.3686],[-16.3694,28.3538],[-16.3593,28.3195],[-16.3616,28.3045],[-16.3835,28.2849],[-16.3873,28.2646],[-16.3946,28.2581],[-16.4096,28.2237],[-16.4247,28.2046],[-16.421,28.1985],[-16.4303,28.1737],[-16.425,28.1683],[-16.4271,28.1642],[-16.4315,28.1646],[-16.4344,28.1568],[-16.4257,28.1493],[-16.4333,28.1411],[-16.4396,28.1426],[-16.4417,28.1351],[-16.4489,28.1346],[-16.4488,28.1294],[-16.463,28.1206],[-16.4621,28.1139],[-16.4899,28.0902],[-16.4927,28.0786],[-16.5029,28.077],[-16.5066,28.0677],[-16.5145,28.0639],[-16.5154,28.0593],[-16.5207,28.0594],[-16.5253,28.0502],[-16.5317,28.0496],[-16.5341,28.0427],[-16.5413,28.0422],[-16.5413,28.0289],[-16.5469,28.0248],[-16.5576,28.0313],[-16.5955,28.0292],[-16.6132,28.0189],[-16.6109,28.0221],[-16.6255,28.0186],[-16.6309,28.0098],[-16.6383,28.0093],[-16.6436,28.0038],[-16.6612,28.0089],[-16.6788,27.9981],[-16.6939,27.9997],[-16.7076,28.0115],[-16.7045,28.0269],[-16.7112,28.0471],[-16.7183,28.05],[-16.7174,28.0459],[-16.7242,28.052],[-16.7326,28.051],[-16.7372,28.055],[-16.7326,28.0653],[-16.7378,28.0866],[-16.7498,28.0924],[-16.7625,28.1099],[-16.7694,28.1096],[-16.7682,28.1136],[-16.7726,28.1127],[-16.7794,28.1202],[-16.8043,28.1578],[-16.8069,28.1745],[-16.8197,28.1807],[-16.828,28.1998],[-16.8374,28.2075],[-16.8362,28.2174],[-16.8464,28.2392],[-16.8384,28.2526],[-16.8409,28.2643],[-16.8507,28.2687],[-16.8501,28.2728],[-16.8593,28.2748],[-16.8617,28.2879],[-16.8707,28.2995],[-16.88,28.3029],[-16.8804,28.3124],[-16.8944,28.3228],[-16.8967,28.332],[-16.9159,28.3424],[-16.9259,28.3419],[-16.9207,28.3429],[-16.9236,28.3538],[-16.9178,28.3609],[-16.905,28.3652],[-16.891,28.3633],[-16.8853,28.3689],[-16.8712,28.3712],[-16.8701,28.3756],[-16.8602,28.3756],[-16.849,28.3881],[-16.8417,28.3871],[-16.8412,28.3906],[-16.8329,28.393],[-16.8257,28.3922],[-16.8254,28.3872],[-16.8083,28.3762],[-16.8044,28.3791],[-16.7922,28.3734],[-16.774,28.3746],[-16.7683,28.3708],[-16.7649,28.3756],[-16.7551,28.375],[-16.7518,28.3707],[-16.7343,28.3824],[-16.7307,28.377],[-16.7248,28.3769],[-16.7193,28.3877],[-16.7132,28.3838],[-16.7013,28.3837],[-16.6946,28.3873],[-16.694,28.3959],[-16.6932,28.3927],[-16.6808,28.3906],[-16.6755,28.3944],[-16.6742,28.402],[-16.6708,28.399],[-16.6581,28.4015],[-16.6528,28.3958],[-16.6442,28.3986],[-16.6375,28.3942],[-16.6041,28.394],[-16.5973,28.4004],[-16.5883,28.3981],[-16.5782,28.4051],[-16.5728,28.4042],[-16.5547,28.4188],[-16.546,28.4175],[-16.5434,28.421],[-16.5395,28.4204],[-16.5401,28.4168],[-16.5228,28.4174]];
 
-let mapState = { cat: "tutti", map: null, markers: [], open: null };
+let mapState = { cat: "tutti", map: null, markers: [], open: null, groups: new Set() };
 
 function mapEsc(s) {
   return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -336,21 +336,38 @@ function showMapPoint(i, animate) {
   openMapSheet(i);
 }
 
-function mapVisible() {
-  return MAP_POINTS.map((p, i) => ({ p, i })).filter(x => mapState.cat === "tutti" || x.p.cat === mapState.cat);
-}
+// L'elenco sotto la mappa, chiuso in un pulsante per categoria: si tocca e
+// si apre l'elenco di quei posti, si ritocca e si chiude. Piu' gruppi possono
+// stare aperti insieme. Se in alto si sceglie un filtro, resta solo il suo
+// gruppo, ed e' gia' aperto.
+const MAP_GROUP_ORDER = ["spiaggia", "panorama", "segreto", "interesse", "ristorante"];
 
 function renderMapList() {
   const box = document.querySelector("[data-map-list]");
   if (!box) return;
   const lang = getLang();
-  box.innerHTML = mapVisible().map(({ p, i }) =>
-    '<li><button type="button" class="map-item" data-map-point="' + i + '">' +
-      '<span class="map-dot map-cat-' + p.cat + '">' + mapIconSvg(p.cat) + "</span>" +
-      '<span class="map-item-body"><strong>' + mapEsc(p.name) + (p.esempio ? ' <em class="map-tag">' + mapEsc(t("map.example")) + "</em>" : "") + "</strong>" +
-      '<span class="map-item-zone">' + mapEsc(p.zone) + "</span>" +
-      '<span class="map-item-text">' + mapEsc(p.text[lang] || p.text.it) + "</span></span>" +
-    "</button></li>").join("");
+  const cats = MAP_GROUP_ORDER.filter(c =>
+    MAP_POINTS.some(p => p.cat === c) && (mapState.cat === "tutti" || mapState.cat === c));
+  box.innerHTML = cats.map(c => {
+    const items = MAP_POINTS.map((p, i) => ({ p, i })).filter(x => x.p.cat === c);
+    const open = mapState.cat === c || mapState.groups.has(c);
+    return '<section class="map-group map-cat-' + c + (open ? " is-open" : "") + '">' +
+      '<button type="button" class="map-group-head" data-map-group="' + c + '" aria-expanded="' + open + '" aria-controls="mapGroup-' + c + '">' +
+        '<span class="map-dot">' + mapIconSvg(c) + "</span>" +
+        '<span class="map-group-name">' + mapEsc(t(MAP_CATS[c].label)) + "</span>" +
+        '<span class="map-group-count">' + items.length + "</span>" +
+        '<svg class="map-group-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>' +
+      "</button>" +
+      '<ul class="map-group-list" id="mapGroup-' + c + '"' + (open ? "" : " hidden") + ">" +
+      items.map(({ p, i }) =>
+        '<li><button type="button" class="map-item" data-map-point="' + i + '">' +
+          '<span class="map-dot map-cat-' + p.cat + '">' + mapIconSvg(p.cat) + "</span>" +
+          '<span class="map-item-body"><strong>' + mapEsc(p.name) + (p.esempio ? ' <em class="map-tag">' + mapEsc(t("map.example")) + "</em>" : "") + "</strong>" +
+          '<span class="map-item-zone">' + mapEsc(p.zone) + "</span>" +
+          '<span class="map-item-text">' + mapEsc(p.text[lang] || p.text.it) + "</span></span>" +
+        "</button></li>").join("") +
+      "</ul></section>";
+  }).join("");
 }
 
 function applyMapFilter() {
@@ -439,6 +456,18 @@ function initMap() {
   });
 
   document.querySelector("[data-map-list]").addEventListener("click", e => {
+    const head = e.target.closest("[data-map-group]");
+    if (head) {
+      const c = head.dataset.mapGroup;
+      const open = head.getAttribute("aria-expanded") !== "true";
+      if (open) mapState.groups.add(c); else mapState.groups.delete(c);
+      // Chiudere il gruppo del filtro scelto vuol dire tornare a "Tutto".
+      if (!open && mapState.cat === c) { mapState.cat = "tutti"; applyMapFilter(); return; }
+      head.setAttribute("aria-expanded", String(open));
+      head.parentNode.classList.toggle("is-open", open);
+      document.getElementById("mapGroup-" + c).hidden = !open;
+      return;
+    }
     const btn = e.target.closest("[data-map-point]");
     if (!btn) return;
     showMapPoint(Number(btn.dataset.mapPoint), true);

@@ -540,5 +540,63 @@ const MAP_PHOTOS = {
       "lic": "CC BY-SA 3.0",
       "url": "https://commons.wikimedia.org/wiki/File:Auditorio_de_Tenerife,_Santa_Cruz_de_Tenerife,_Espa%C3%B1a,_2012-12-15,_DD_17.jpg"
     }
+  ],
+  "playa-de-abama": [
+    {
+      "f": "playa-de-abama-1.jpg",
+      "by": "-wuppertaler",
+      "lic": "CC BY 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:ESP_Tenerife,_Gu%C3%ADa_de_Isora,_Abama,_Playa_Abama_0006.jpg"
+    },
+    {
+      "f": "playa-de-abama-2.jpg",
+      "by": "-wuppertaler",
+      "lic": "CC BY 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:ESP_Tenerife,_Gu%C3%ADa_de_Isora,_Abama,_Playa_Abama_0007.jpg"
+    }
+  ],
+  "playa-de-la-jaquita": [
+    {
+      "f": "playa-de-la-jaquita-1.jpg",
+      "by": "dronepicr",
+      "lic": "CC BY 2.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Strand_Playa_la_Jaquita_in_Alcala_auf_Teneriffa,_Spanien_(48225512512).jpg"
+    }
+  ],
+  "playa-de-almaciga": [
+    {
+      "f": "playa-de-almaciga-1.jpg",
+      "by": "Mentxuwiki",
+      "lic": "CC0",
+      "url": "https://commons.wikimedia.org/wiki/File:Playa_de_Alm%C3%A1ciga,_Santa_Cruz_de_Tenerife.jpg"
+    },
+    {
+      "f": "playa-de-almaciga-2.jpg",
+      "by": "Discasto",
+      "lic": "CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Playa_de_Alm%C3%A1ciga_(9_de_agosto_de_2011,_Anaga).JPG"
+    }
+  ],
+  "playa-de-el-socorro": [
+    {
+      "f": "playa-de-el-socorro-1.jpg",
+      "by": "Javier1989canario",
+      "lic": "CC BY-SA 3.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Playa_de_El_Socorro.JPG"
+    },
+    {
+      "f": "playa-de-el-socorro-2.jpg",
+      "by": "Javier1989canario",
+      "lic": "CC BY-SA 3.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Atardecer_Playa_El_Socorro.JPG"
+    }
+  ],
+  "playa-de-masca": [
+    {
+      "f": "playa-de-masca-1.jpg",
+      "by": "javiersanp",
+      "lic": "CC BY-SA 3.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Playa_de_Masca_desde_La_Fortaleza_-_panoramio.jpg"
+    }
   ]
 };

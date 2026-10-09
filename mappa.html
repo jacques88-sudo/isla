@@ -149,7 +149,11 @@
 
     <!-- La mappa la disegna `mappa.js`, coi punti di MAP_POINTS. -->
     <div class="wrap">
-      <div class="map-box" id="islaMap" data-i18n-aria-label="map.aria" aria-label="Mappa di Tenerife" role="region"></div>
+      <div class="map-wrap">
+        <div class="map-box" id="islaMap" data-i18n-aria-label="map.aria" aria-label="Mappa di Tenerife" role="region"></div>
+        <!-- A mappa vuota (nessuna categoria accesa) dice cosa fare. -->
+        <p class="map-empty" data-map-empty data-i18n="map.empty">Scegli cosa vedere: tocca Spiagge, Panorami, Posti segreti o Da vedere.</p>
+      </div>
     </div>
 
     <!-- L'elenco dei posti, un pulsante per categoria che si apre: lo scrive

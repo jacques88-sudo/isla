@@ -17668,3 +17668,55 @@ Tre richieste del proprietario in una volta:
   i link della home (`?cat=segreto`) e quelli già condivisi continuano a funzionare.
 
 Cache `isla-v468`.
+
+## Le spiagge migliorate (9 ottobre 2026)
+
+Il proprietario ha mandato un elenco di spiagge già strutturato (tipo, sabbia, stato,
+avvertenze) chiedendo di migliorare la sezione. **Prima di copiarlo è stato
+verificato**, e due cose erano urgenti:
+- **Benijo è chiusa dal luglio 2024** per rischio di frane (Diario de Avisos, luglio
+  2026: cento bagnanti fatti uscire dalla Policía Local, multe per chi entra, nessuna
+  data di riapertura). La mappa online la presentava come spiaggia normale, con
+  "Portami qui". Ora resta in mappa ma **segnata "Chiusa"**, pallino grigio, testo
+  "si guarda solo dall'alto" e l'avviso delle multe.
+- **Las Gaviotas**, nell'elenco "da aggiungere", è **chiusa dal 3 giugno 2026**
+  (Ayuntamiento di Santa Cruz; lavori per circa un anno). **Non aggiunta.**
+- **Los Guíos**: bagno vietato dal 2009 (frana mortale), riaperta in parte nel 2023
+  con le reti: avviso "possono cadere pietre, rispetta le transenne".
+
+Cosa è cambiato:
+- **16 spiagge** (erano 10): aggiunte Abama, La Jaquita, Almáciga, El Socorro,
+  Antequera, Playa de Masca. **La Arena resta** anche se non era nell'elenco. Le
+  piscine di Garachico non sono una scheda a sé: stanno già in "Garachico" (Da vedere).
+- Campi nuovi, per ora solo sulle spiagge: `tipo`, `sabbia`, `stato`, `avviso`
+  (spiegati in testa a `mappa.js`). Nel pannello diventano etichette (stato rosso
+  "Chiusa" o giallo "Con prenotazione", tipo, sabbia) e un riquadro col triangolo.
+  Nell'elenco lo stato sta accanto al nome. In cima al gruppo Spiagge c'è
+  l'avvertenza generale (onde e correnti del nord, bandiera).
+- Dall'elenco del proprietario non è stato copiato "La Tejita sabbia scura" senza
+  guardare: le fonti la danno fra il dorato scuro e il nero; resta "scura" come
+  diceva lui.
+- Foto: 8 nuove da Wikimedia Commons (Abama, La Jaquita, Almáciga, El Socorro,
+  Masca). **Antequera è senza foto**: Commons ha bloccato le richieste (troppe) e il
+  pannello mostra solo il testo. Si può aggiungere dopo.
+- **Gli "stato" vanno ricontrollati** prima di ogni stagione: le chiusure per frana
+  durano mesi e finiscono senza avviso. `CACHE_NAME` → `isla-v469`.
+
+## La mappa parte vuota (9 ottobre 2026)
+
+Richiesta del proprietario: all'inizio la mappa è **vuota** (solo l'isola e la scritta
+"Scegli cosa vedere…"), e si riempie solo delle categorie che si toccano: Spiagge →
+solo pallini blu; poi Panorami → si aggiungono i verdi; ritoccare spegne.
+- Lo stato è uno solo, `mapState.active` (un Set di categorie accese): i bottoni in
+  alto **e** i gruppi sotto la mappa lo accendono e lo spengono allo stesso modo, e
+  un gruppo è aperto se e solo se la sua categoria è accesa (`toggleMapCat()`).
+  Spariti `mapState.cat` e `mapState.groups`.
+- **"Tutto"** accende tutte le categorie che hanno posti; se erano già tutte accese le
+  spegne. È "acceso" solo quando lo sono tutte.
+- I gruppi sotto la mappa si vedono sempre tutti, anche a mappa vuota: sono l'altro
+  modo di scegliere.
+- Spegnere la categoria del posto aperto chiude il pannello.
+- I link della home (`?cat=segreto&punto=…`) accendono la categoria del link e
+  quella del punto.
+- La scritta sta sopra la mappa (`.map-empty`, `pointer-events: none`): la mappa
+  sotto si muove lo stesso. `CACHE_NAME` → `isla-v470`.

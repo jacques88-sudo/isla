@@ -29,7 +29,7 @@ create table if not exists public.nets (
   net_adult     numeric(8,2) check (net_adult  >= 0),
   net_child     numeric(8,2) check (net_child  >= 0),
   net_infant    numeric(8,2) check (net_infant >= 0),
-  -- A mezzo, con le chiavi di units.types del catalogo: {"doppia": 60}.
+  -- A mezzo, con le chiavi di units.types del catalogo: {"doppia": 30}.
   net_units     jsonb check (net_units is null or jsonb_typeof(net_units) = 'object'),
   updated_at    timestamptz not null default now()
 );

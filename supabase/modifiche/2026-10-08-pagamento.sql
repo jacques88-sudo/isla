@@ -25,8 +25,8 @@ alter table public.bookings
 -- la colonna nuova va data anche a loro, se no la pagina non la legge.
 grant select (payment_method) on public.bookings to authenticated;
 
--- 2. Le percentuali. seller_share e' la parte del VENDITORE, da 0 a 1 (0.40 =
---    40%); all'ufficio va il resto. Nessun permesso a nessuno: la legge solo
+-- 2. Le percentuali. seller_share e' la parte del VENDITORE, da 0 a 1 (0.25 =
+--    25%); all'ufficio va il resto. Nessun permesso a nessuno: la legge solo
 --    la porta del foglio.
 create table if not exists public.commission_rates (
   payment_method text primary key check (payment_method in ('card', 'cash')),

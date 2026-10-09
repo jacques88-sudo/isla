@@ -532,6 +532,26 @@ function controllaNomi() {
   });
 }
 
+// `pagamento: "card"`: le schede che contano sempre come pagate con carta. Lo
+// stesso elenco sta nel database (supabase/modifiche/2026-10-09-solo-card.sql):
+// se i due non sono uguali, il modulo dice una cosa e il foglio un'altra.
+function controllaPagamento() {
+  const nelCatalogo = [];
+  ESPLORA_CATALOG.forEach(t => {
+    if (t.pagamento === undefined) return;
+    if (t.pagamento !== "card") errore(t.id, 'pagamento puo\' essere solo "card".');
+    else nelCatalogo.push(t.id);
+  });
+  const file = "supabase/modifiche/2026-10-09-solo-card.sql";
+  const elenco = leggi(file).match(/excursion_id in \(([^)]*)\)/);
+  if (!elenco) { errore(file, "non trovo l'elenco \"excursion_id in (...)\"."); return; }
+  const nelDatabase = elenco[1].match(/'[^']+'/g).map(x => x.slice(1, -1));
+  nelCatalogo.filter(id => !nelDatabase.includes(id)).forEach(id =>
+    errore(id, `ha pagamento: "card" ma non sta nell'elenco di ${file}.`));
+  nelDatabase.filter(id => !nelCatalogo.includes(id)).forEach(id =>
+    errore(id, `sta nell'elenco di ${file} ma nel catalogo non ha pagamento: "card".`));
+}
+
 // Le raccomandate devono esistere ed essere pubblicate: un id scritto male
 // sparirebbe dal filtro senza dirlo a nessuno.
 function controllaRaccomandate() {
@@ -864,6 +884,7 @@ console.log("\nControllo del catalogo Isla\n");
 ESPLORA_CATALOG.forEach(t => CONTROLLI.forEach(c => c(t)));
 controllaIdUnici();
 controllaNomi();
+controllaPagamento();
 controllaRaccomandate();
 controllaSelezioni();
 controllaI18n();

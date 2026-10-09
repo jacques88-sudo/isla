@@ -396,6 +396,15 @@
 //                Il nome della variante deve stare anche nei `nomi` della
 //                scheda (e' da li' che nasce il menu "Compagnia"):
 //                `controlla.js` lo verifica.
+//   pagamento  → facoltativo: "card" quando il ticket di questa scheda conta
+//                SEMPRE come pagato con carta, comunque abbia pagato il cliente
+//                (i parchi: Loro Parque, Siam Park, Twin Ticket; proprietario,
+//                9 ottobre 2026). Nel modulo dei venditori il pagamento si
+//                sceglie da solo e Cash non si puo' scegliere. Lo stesso elenco
+//                sta su Supabase (supabase/modifiche/2026-10-09-solo-card.sql),
+//                che lo fa valere anche sui ticket gia' salvati: `controlla.js`
+//                verifica che i due elenchi siano uguali.
+//                    pagamento: "card"
 //
 // LE TRE LINGUE
 //   title, zone, duration e desc si scrivono così:
@@ -4238,6 +4247,7 @@ const ESPLORA_CATALOG = [
   {
     id: "siam-park",
     title: "Siam Park",
+    pagamento: "card",
     category: "parchi-spettacoli",
     zone: "Costa Adeje",
     // Al posto di "Giornata intera" (che non dice niente) l'orario vero,
@@ -4409,6 +4419,7 @@ const ESPLORA_CATALOG = [
   {
     id: "loro-parque",
     title: "Loro Parque",
+    pagamento: "card",
     category: "parchi-spettacoli",
     zone: "Puerto de la Cruz",
     // Al posto di "Giornata intera" l'orario vero, spostato qui da `notes`.
@@ -4467,6 +4478,7 @@ const ESPLORA_CATALOG = [
   {
     id: "twin-ticket",
     title: "Twin Ticket – Siam Park + Loro Parque",
+    pagamento: "card",
     category: "parchi-spettacoli",
     // Dal proprietario, 5 ottobre 2026: due parchi in due zone, quindi la
     // scheda sta in tutti e due i filtri di zona; due giorni, uno per parco.

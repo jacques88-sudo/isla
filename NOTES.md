@@ -17196,7 +17196,7 @@ il database ha davvero). Il sito chiede sempre colonne precise, quindi non si ro
 **una colonna nuova va data anche ai venditori** (scritto in `CLAUDE.md`).
 
 **Provato.** L'SQL su Postgres 16, da zero e sopra un database già pieno, lanciato due
-volte: Gomera 2 adulti + 1 bambino + 1 neonato = 241,50 di netto; un ticket inserito alle
+volte: un ticket con adulti, bambini e neonati prende la somma giusta dei tre netti; un ticket inserito alle
 00:30 di Tenerife conta per il giorno giusto; netto cambiato → i vecchi tengono il loro, i
 nuovi prendono il nuovo, una persona in più ricalcola; richiesta WhatsApp da `anon` e
 ticket da venditore passano dal guardiano; venditore che legge `net_amount` o `nets` →
@@ -17214,7 +17214,7 @@ Il sito non cambia (nessun `.js`, `.css` o `.html` toccato): la cache non si alz
 Il proprietario ha chiesto nel foglio: data di inserimento, numero di ticket, data
 dell'escursione, adulti, bambini, totale, pagato, da pagare, card, cash, netto, quanto
 spetta al venditore e all'ufficio, e il totale delle commissioni. Regola generale: con il
-bancomat il 40% al venditore e il 60% all'ufficio, in contanti 50 e 50. **Le percentuali
+bancomat una parte al venditore e il resto all'ufficio, in contanti un'altra. **Le percentuali
 non sono scritte nel repository**: stanno in `commission_rates` su Supabase, riempita da
 un SQL preparato fuori.
 
@@ -17242,8 +17242,8 @@ della scheda Ticket non è quella giusta, il programma la rinomina "Ticket (vecc
 ricomincia; oggi non si perde niente, i ticket sono ancora tutti su Supabase.
 
 Provato: l'SQL su Postgres 16 partendo dallo schema di stamattina con tutte le modifiche
-di oggi in ordine (pagamento due volte). Card, 110 − 79 = 31: 12,40 e 18,60; cash: 15,50 e
-15,50. Senza card/cash o senza netto le due celle restano vuote con la nota; venditori e
+di oggi in ordine (pagamento due volte). card e cash dividono la commissione con le loro parti, e le due metà
+fanno sempre la commissione intera. Senza card/cash o senza netto le due celle restano vuote con la nota; venditori e
 `anon` non leggono `commission_rates`. `Codice.gs` in Node contro un finto Sheets che
 parte con la scheda Ticket vecchia. Modulo nel browser a 375 px: senza pagamento non
 salva, con card salva `card`, Modifica legge e cambia, nessun errore. `CACHE_NAME` →
@@ -17488,5 +17488,43 @@ Il numero sta solo su Supabase, come gli altri netti.
 un campo che dica se il cliente l'ha preso: un ticket col transfer nel totale prende
 la percentuale anche sul transfer. Da sistemare quando arriva il netto del transfer.
 
-Provato su Postgres locale: 213 € → netto 170,40; totale cambiato a 250 → 200; senza
+Provato su Postgres locale con una percentuale di prova: il netto è il totale per la
+parte, arrotondato; totale cambiato → ricalcolato; senza
 totale → vuoto con la nota; la migrazione lanciata due volte; gli altri netti invariati.
+
+## 9 ottobre 2026 — I parchi contano sempre come card
+
+Il proprietario: "il Twin Ticket, e quindi anche Loro Parque e Siam Park separati, sono
+sempre da considerare pagati con carta". Comunque paghi il cliente, la commissione si
+divide con la parte della carta (che sta in `commission_rates`, non qui).
+
+- catalogo: `pagamento: "card"` su `loro-parque`, `siam-park`, `twin-ticket` (vocabolario
+  in testa al file). **Siam Night non c'è**: è un'altra serata, chiesto al proprietario;
+- modulo dei venditori: `pagamentoDellaScheda()` sceglie Card e spegne Cash, sul ticket
+  nuovo e in Modifica; cambiando scheda Cash torna sceglibile;
+- database: guardiano `sempre_card` (`supabase/modifiche/2026-10-09-solo-card.sql`),
+  prima di ogni inserimento e modifica, più l'update dei ticket già salvati. Vale anche
+  per le richieste WhatsApp confermate e per chi scrivesse "cash" a mano;
+- `controlla.js` (`controllaPagamento`) confronta l'elenco del catalogo con quello
+  dell'SQL: la regola sta in due posti, e se divergono il modulo direbbe una cosa e il
+  foglio un'altra.
+
+Provato: nel browser Twin → card con Cash spento, Whale dopo Twin → Cash di nuovo
+sceglibile, Modifica di un Siam Park salvato "cash" → card; su Postgres locale un Loro
+Parque inserito "cash" diventa card, un Whale resta cash, il file lanciato due volte.
+`CACHE_NAME` → `isla-v455`.
+
+## 9 ottobre 2026 — Tolte dal repository cifre vere di netti e commissioni
+
+Cercando i numeri prima del commit qui sopra sono saltati fuori, **scritti da me**, valori
+veri che non dovevano stare nel repository pubblico: le parti di card e cash (in questo
+file e come esempio in `2026-10-08-pagamento.sql`), il netto Gomera dentro due conti di
+prova, il netto della doppia di Agua Safari come esempio in `2026-10-08-netti.sql` e
+`2026-10-08-foglio.sql`, e un conto del Twin Ticket da cui si ricava la percentuale. Ora
+gli esempi hanno numeri inventati e i conti di prova sono scritti a parole.
+
+**Restano nella storia dei commit** (#371, #384): cancellarli anche da lì vuol dire
+riscrivere la storia di `main`, e lo decide il proprietario.
+
+La regola per non rifarlo: **un esempio non usa mai il numero vero**, e una prova si
+racconta senza cifre. Prima di ogni commit, `git grep` dei numeri appena ricevuti.

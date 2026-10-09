@@ -17632,3 +17632,16 @@ mostra solo 17:00. La nota sul ritiro diceva già che l'ora segue il tramonto; o
 "intorno alle 17" invece di "nel pomeriggio", nelle tre lingue, e resta che l'ora esatta
 la conferma l'ufficio col punto di ritiro. Provato nel browser, nessun errore.
 `CACHE_NAME` → `isla-v466`.
+
+## La mappa: l'elenco a pulsanti (9 ottobre 2026)
+
+Richiesta del proprietario: sotto la mappa, invece della lista lunga di 40 righe,
+**un pulsante per categoria** (icona, nome, quanti posti) che si apre e mostra i
+suoi posti, e si richiude ritoccandolo. Scritto da `renderMapList()` in `mappa.js`.
+- All'inizio sono tutti chiusi; se ne possono aprire piu' di uno (`mapState.groups`).
+- Il filtro in alto e i pulsanti vanno d'accordo: scegliendo "Spiagge" resta solo il
+  gruppo delle spiagge, gia' aperto; **richiudere quel gruppo riporta il filtro a
+  "Tutto"**, cosi' non resta un elenco vuoto.
+- I gruppi seguono `MAP_GROUP_ORDER`; un gruppo senza posti non si mostra (i
+  ristoranti, finche' non ci sono).
+- Tolta `mapVisible()`, che serviva solo alla lista vecchia. `CACHE_NAME` → `isla-v467`.

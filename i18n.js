@@ -118,6 +118,7 @@ const I18N = {
   "map.sabbia.nera":    { it: "Sabbia nera", en: "Black sand", es: "Arena negra" },
   "map.sabbia.ciottoli": { it: "Ciottoli", en: "Pebbles", es: "Callaos" },
   "map.beachNote":      { it: "Le spiagge del nord e le calette selvagge hanno onde e correnti forti. Guarda la bandiera e i cartelli sul posto: con mare mosso o divieto, niente bagno.", en: "North-coast beaches and wild coves have strong waves and currents. Check the flag and the signs on site: no swimming in rough sea or where it is banned.", es: "Las playas del norte y las calas salvajes tienen olas y corrientes fuertes. Mira la bandera y los carteles: con mar agitado o prohibición, no te bañes." },
+  "map.empty":          { it: "Scegli cosa vedere: tocca Spiagge, Panorami, Posti segreti o Da vedere.", en: "Choose what to see: tap Beaches, Viewpoints, Secret spots or Must-see.", es: "Elige qué ver: toca Playas, Miradores, Lugares secretos o Imprescindibles." },
   "map.example":        { it: "esempio", en: "example", es: "ejemplo" },
   "rent.eyebrow":       { it: "Tenerife su ruote", en: "Tenerife on wheels", es: "Tenerife sobre ruedas" },
   "rent.title":         { it: "Noleggio", en: "Rentals", es: "Alquiler" },

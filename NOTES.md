@@ -17701,3 +17701,22 @@ Cosa è cambiato:
   pannello mostra solo il testo. Si può aggiungere dopo.
 - **Gli "stato" vanno ricontrollati** prima di ogni stagione: le chiusure per frana
   durano mesi e finiscono senza avviso. `CACHE_NAME` → `isla-v469`.
+
+## La mappa parte vuota (9 ottobre 2026)
+
+Richiesta del proprietario: all'inizio la mappa è **vuota** (solo l'isola e la scritta
+"Scegli cosa vedere…"), e si riempie solo delle categorie che si toccano: Spiagge →
+solo pallini blu; poi Panorami → si aggiungono i verdi; ritoccare spegne.
+- Lo stato è uno solo, `mapState.active` (un Set di categorie accese): i bottoni in
+  alto **e** i gruppi sotto la mappa lo accendono e lo spengono allo stesso modo, e
+  un gruppo è aperto se e solo se la sua categoria è accesa (`toggleMapCat()`).
+  Spariti `mapState.cat` e `mapState.groups`.
+- **"Tutto"** accende tutte le categorie che hanno posti; se erano già tutte accese le
+  spegne. È "acceso" solo quando lo sono tutte.
+- I gruppi sotto la mappa si vedono sempre tutti, anche a mappa vuota: sono l'altro
+  modo di scegliere.
+- Spegnere la categoria del posto aperto chiude il pannello.
+- I link della home (`?cat=segreto&punto=…`) accendono la categoria del link e
+  quella del punto.
+- La scritta sta sopra la mappa (`.map-empty`, `pointer-events: none`): la mappa
+  sotto si muove lo stesso. `CACHE_NAME` → `isla-v470`.

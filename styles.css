@@ -4269,6 +4269,28 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   font-family: var(--font-body);
   z-index: 0;
 }
+/* La scritta in mezzo alla mappa vuota. Non prende i tocchi: sotto la mappa
+   si muove lo stesso. */
+.map-wrap { position: relative; }
+.map-empty {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 500;
+  width: min(80%, 300px);
+  margin: 0;
+  transform: translate(-50%, -50%);
+  padding: .8rem 1rem;
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  font-size: .88rem;
+  line-height: 1.45;
+  text-align: center;
+  pointer-events: none;
+}
+.map-empty[hidden] { display: none; }
 .map-box .map-island {
   fill: var(--map-land);
   fill-opacity: 1;

@@ -1183,6 +1183,8 @@ const ESPLORA_CATALOG = [
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
+    // Partenze dal proprietario, 9 ottobre 2026.
+    times: ["11:00", "14:00", "17:00"],
     priceFrom: 75,
     privateOption: "luxury-catamaran-charter",
     priceAdult: 75,

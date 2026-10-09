@@ -17541,3 +17541,13 @@ me a partire dalla risposta del proprietario.
 Era l'ultima scheda con zona "Da definire" fra le barche. Resta da sapere il **prezzo per
 ogni durata** (3, 6 o 9 ore): finché non c'è, la durata non diventa un bottone.
 Provato a 375 px in italiano e spagnolo, nessun errore. `CACHE_NAME` → `isla-v457`.
+
+## Luxury Catamaran: le partenze (9 ottobre 2026)
+
+Dal proprietario: la Luxury Catamaran Experience parte **alle 11, alle 14 e alle 17**.
+`times: ["11:00", "14:00", "17:00"]` sulla scheda condivisa (`luxury-catamaran`): nella
+finestra della richiesta il menu "A che ora" mostra solo quelle tre, e "Da concordare"
+sparisce. **La gemella privata (`luxury-catamaran-charter`) non è stata toccata**: le altre
+gemelle hanno gli stessi orari della barca condivisa, ma su un privato l'ora può essere
+da concordare. Chiesto al proprietario. Provato nel browser, nessun errore.
+`CACHE_NAME` → `isla-v458`.

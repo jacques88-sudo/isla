@@ -17604,3 +17604,13 @@ cosa sul **tuk tuk privato** (`tuk-tuk-privato`), perché "tutti i tour" compren
 quelli. Provato nel browser: i quattro percorsi mostrano 12 ore, dalle 09:00 alle 20:00,
 nessun errore. Il tuk tuk esce dalla lista di `orari-mancanti.js`. `CACHE_NAME` →
 `isla-v464`.
+
+## I parchi non hanno bisogno di orari (9 ottobre 2026)
+
+Il proprietario: "i parchi non hanno bisogno di orari". Sono biglietti d'ingresso. Da
+adesso `orari-mancanti.js` non li elenca più fra quelli da chiedere (le schede di
+"parchi-spettacoli" senza `times`: 8, contate a parte come "parchi (non servono)"); gli
+spettacoli della stessa categoria hanno l'ora vera e non cambiano. Scritto anche in
+`CLAUDE.md`, così non si richiedono. Il sito non cambia: nella richiesta i parchi
+mostrano ancora le fasce e "Da concordare" nel menu "A che ora". Chiesto al
+proprietario se toglierlo.

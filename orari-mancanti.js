@@ -14,6 +14,10 @@
 // La variante vince sulla scheda, come in pagina.
 // Le schede di PICKUP_TIMES (Island Excursions) non mancano di niente: hanno
 // l'ora di ritiro hotel per hotel, in hotel.js.
+// I parchi nemmeno: sono biglietti d'ingresso, si entra quando si vuole, e il
+// proprietario ha deciso il 9 ottobre 2026 che non hanno bisogno di orari. Sono
+// le schede di "parchi-spettacoli" senza `times`; gli spettacoli della stessa
+// categoria (cena, flamenco…) hanno l'ora vera e restano contati con gli altri.
 
 const fs = require("fs");
 const vm = require("vm");
@@ -31,10 +35,11 @@ const stato = (t, c) => {
 };
 
 const senza = [], parziali = [];
-let con = 0, concordare = 0, ritiro = 0;
+let con = 0, concordare = 0, ritiro = 0, parchi = 0;
 
 ctx.C.filter(t => t.published).forEach(t => {
   if (ctx.P[t.id]) { ritiro++; return; }
+  if (t.category === "parchi-spettacoli" && t.times === undefined) { parchi++; return; }
   const scelte = (t.options && t.options.choices) || [];
   if (!scelte.length) {
     const s = stato(t);
@@ -51,7 +56,7 @@ ctx.C.filter(t => t.published).forEach(t => {
 const riga = t => `  ${t.category.padEnd(18)} ${it(t.title)}  (${t.id})`;
 
 console.log(`\nOrari di partenza nel catalogo\n`);
-console.log(`  con gli orari veri: ${con} · da concordare (charter): ${concordare} · ritiro hotel per hotel: ${ritiro}\n`);
+console.log(`  con gli orari veri: ${con} · da concordare (charter): ${concordare} · ritiro hotel per hotel: ${ritiro} · parchi (non servono): ${parchi}\n`);
 
 console.log(`SENZA ORARI (${senza.length}) — il cliente vede le fasce e "Da concordare":`);
 senza.sort((a, b) => a.category.localeCompare(b.category) || it(a.title).localeCompare(it(b.title)))

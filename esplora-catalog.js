@@ -816,7 +816,9 @@ const ESPLORA_CATALOG = [
     // Il nome della compagnia, come i venditori lo scrivono sul ticket.
     // Solo qui e non sul charter qui sotto: un ticket "Cool Sailing" con
     // due adulti e' l'uscita a persona.
-    nomi: ["Cool Sailing"],
+    // Lina7 e Mizendoha sono altre due barche, ognuna col suo netto
+    // (proprietario, 9 ottobre 2026).
+    nomi: ["Cool Sailing", "Lina7", "Mizendoha"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
@@ -1555,6 +1557,9 @@ const ESPLORA_CATALOG = [
   {
     id: "luxury-cruiser",
     title: "Luxury Cruiser Experience",
+    // La compagnia, come la scrivono i venditori sul ticket. Solo qui e non
+    // sul charter: un ticket "Mokkai" con due adulti e' l'uscita a persona.
+    nomi: ["Mokkai"],
     category: "mare-barche",
     // Confermato dall'ufficio: si parte da Las Galletas, cioe' la Marina del
     // Sur che si legge nel cartello dietro la barca nelle foto. Nome proprio,

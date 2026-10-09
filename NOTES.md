@@ -17453,3 +17453,19 @@ pagina di Tenerife First Excursions erano i prezzi di quel rivenditore, non i no
 
 Provato a 375 px: bottoni "1 ora €130" e "2 ore €220", "€220 a Fiat 500" dopo il
 secondo, nessun errore. `CACHE_NAME` → `isla-v453`.
+
+## 9 ottobre 2026 — Compagnie nuove dalla tabella Notion dei netti
+
+Il proprietario scrive i netti nella tabella privata di Notion "Netti da inserire". I
+numeri vanno solo su Supabase (SQL nella scratchpad); qui arrivano solo i **nomi**:
+
+- `whale-dolphin-3h`: `nomi` diventa Cool Sailing, **Lina7**, **Mizendoha**. Sono tre
+  barche/compagnie diverse (proprietario): ognuna ha il suo netto, e quella di Cool
+  Sailing non c'è ancora. Quindi il netto in `nets` ha la compagnia, non `null`;
+- `luxury-cruiser`: `nomi: ["Mokkai"]`, non sul charter (come Cool Sailing). Una
+  compagnia sola: il netto ha `company` null ma la **variante** "3 ore, in
+  condivisione", perché a persona non vale per "Barca privata".
+
+Provato: menu Compagnia giusto sulle due schede e assente sul charter; la foto con
+"MIZENDOHA" o "MOKKAI" sceglie la compagnia. SQL provato su Postgres locale, due
+volte di fila. `CACHE_NAME` → `isla-v454`.

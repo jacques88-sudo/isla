@@ -17390,3 +17390,24 @@ Andromeda, Gomera; la casella aggiorna e si toglie; una cella toccata in un'altr
 non fa niente; due trigger dopo due `installa()`, non quattro. **Il trigger dal telefono
 non l'ho potuto provare su un telefono vero**: va guardato la prima volta. Il sito non
 cambia.
+
+## "Chi siamo" con la storia vera (9 ottobre 2026)
+
+Il testo segnaposto di "Chi siamo" in home ("Isolani, per scelta") è stato sostituito con
+quello scritto dal proprietario: Jack e Francesca, la famiglia, le escursioni dal 2018,
+perché nasce Isla. Tre ritocchi proposti e approvati prima di metterlo: tolto il saluto
+iniziale ("Buongiorno a tutti! Eccoci qui", da post più che da pagina), tolte le emoji
+(il sito non le usa), **"prenotate" → "chiedeteci"**, perché su Isla si manda una
+richiesta e la conferma arriva dall'ufficio. Titolo nuovo `about.title` ("Siamo Jack e
+Francesca"), tre paragrafi invece di due: aggiunta la chiave `about.p3` e il suo `<p>` in
+`index.html`. Inglese e spagnolo tradotti da Claude (spagnolo col "vosotros", come il
+testo italiano dà del voi).
+
+La lista delle cose da fare su Notion è stata rifatta lo stesso giorno: "Cose da fare
+(dal 9 ottobre 2026)", a blocchi, col dominio per ultimo; la tabella di prima è
+nell'archivio della stessa pagina. I netti il proprietario li scrive man mano in una
+tabella **privata** di Notion, "Netti da inserire", e da lì si prepara l'SQL: mai nel
+repository.
+
+Provato a 375 px nelle tre lingue: titolo e paragrafi giusti, nessun errore, nessuno
+scroll orizzontale. `CACHE_NAME` → `isla-v451`.

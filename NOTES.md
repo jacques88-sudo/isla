@@ -17623,3 +17623,12 @@ dentro `small-group-catamaran`: ha `times: []` (ora da concordare) e una descriz
 dice "si può fare anche al tramonto", che con solo 9:30 e 12:30 non starebbe in piedi.
 Chiesto al proprietario se il tramonto vale ancora. Provato nel browser: il menu mostra
 09:30 e 12:30. `CACHE_NAME` → `isla-v465`.
+
+## Teide by Night: intorno alle 17, secondo il tramonto (9 ottobre 2026)
+
+Dal proprietario: il Teide by Night parte **intorno alle 17**, e l'ora può variare col
+tramonto. `times: ["17:00"]` sulla scheda (vale per i due gruppi): il menu "A che ora"
+mostra solo 17:00. La nota sul ritiro diceva già che l'ora segue il tramonto; ora dice
+"intorno alle 17" invece di "nel pomeriggio", nelle tre lingue, e resta che l'ora esatta
+la conferma l'ufficio col punto di ritiro. Provato nel browser, nessun errore.
+`CACHE_NAME` → `isla-v466`.

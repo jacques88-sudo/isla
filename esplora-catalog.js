@@ -2448,6 +2448,9 @@ const ESPLORA_CATALOG = [
     duration: { it: "5-8 ore", en: "5 to 8 hours", es: "5-8 horas" },
     zoneGroups: ["teide-nord"],
     durationGroups: ["mezza", "intera"],
+    // Dal proprietario, 9 ottobre 2026: si parte intorno alle 17, e l'ora puo'
+    // cambiare col tramonto. Un'ora sola nel menu; che si sposti lo dice la nota.
+    times: ["17:00"],
     priceFrom: 75,
     // I prezzi a persona veri stanno dentro le varianti. Sono i prezzi di
     // ADMIRAL, non quelli dei fornitori: 75 EUR il gruppo grande, 79 EUR il
@@ -2540,9 +2543,9 @@ const ESPLORA_CATALOG = [
         es: "El idioma no es un extra que se pida: es lo que decide la velada. En italiano solo va el grupo pequeño; en español y en francés solo el grande; en inglés y alemán se puede elegir. Indica el tuyo en la solicitud y la oficina te pone en la salida correcta."
       },
       {
-        it: "Il ritiro è negli hotel del sud dell'isola, nel pomeriggio: l'ora segue il tramonto e si sposta con la stagione, quindi te la conferma l'ufficio insieme al punto di ritiro.",
-        en: "Pickup is at hotels in the south of the island, in the afternoon: the time follows the sunset and moves with the season, so the office confirms it together with the pickup point.",
-        es: "La recogida es en los hoteles del sur de la isla, por la tarde: la hora sigue al atardecer y se mueve con la temporada, así que te la confirma la oficina junto con el punto de recogida."
+        it: "Il ritiro è negli hotel del sud dell'isola, intorno alle 17: l'ora segue il tramonto e può cambiare con la stagione, quindi te la conferma l'ufficio insieme al punto di ritiro.",
+        en: "Pickup is at hotels in the south of the island, at around 5 pm: the time follows the sunset and may change with the season, so the office confirms it together with the pickup point.",
+        es: "La recogida es en los hoteles del sur de la isla, hacia las 17:00: la hora sigue al atardecer y puede cambiar con la temporada, así que te la confirma la oficina junto con el punto de recogida."
       },
       {
         it: "Si sta fermi al buio e in quota: fa freddo anche d'estate. Su qualche serata giacca e cappello li presta il fornitore, ma non su tutte: vestiti a strati e mettiti scarpe chiuse.",

@@ -4269,28 +4269,7 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   font-family: var(--font-body);
   z-index: 0;
 }
-/* La scritta in mezzo alla mappa vuota. Non prende i tocchi: sotto la mappa
-   si muove lo stesso. */
 .map-wrap { position: relative; }
-.map-empty {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 500;
-  width: min(80%, 300px);
-  margin: 0;
-  transform: translate(-50%, -50%);
-  padding: .8rem 1rem;
-  border-radius: 12px;
-  background: color-mix(in oklab, var(--surface) 88%, transparent);
-  box-shadow: var(--shadow);
-  color: var(--text);
-  font-size: .88rem;
-  line-height: 1.45;
-  text-align: center;
-  pointer-events: none;
-}
-.map-empty[hidden] { display: none; }
 .map-box .map-island {
   fill: var(--map-land);
   fill-opacity: 1;
@@ -4339,8 +4318,8 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .map-pin:hover, .map-pin:focus-visible { transform: scale(1.12); }
 .map-pin svg { width: 18px; height: 18px; }
 .map-pin.is-example { border-style: dashed; opacity: .85; }
-.map-box.is-far .map-pin { width: 22px !important; height: 22px !important; margin: -11px 0 0 -11px !important; border-width: 1.5px; }
-.map-box.is-far .map-pin svg { width: 13px; height: 13px; }
+.map-box.is-far .map-pin { width: 26px !important; height: 26px !important; margin: -13px 0 0 -13px !important; border-width: 1.5px; }
+.map-box.is-far .map-pin svg { width: 15px; height: 15px; }
 .map-box.is-far .map-town { display: none; }
 
 /* Il fumetto: quello di Leaflet, coi colori e i caratteri del sito. */

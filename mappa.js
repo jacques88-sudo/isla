@@ -305,8 +305,8 @@ const MAP_POINTS = [
             es: "La vela blanca de Calatrava junto al mar de Santa Cruz." } }
 
   // ── ristoranti: la categoria e' pronta (MAP_CATS.ristorante), mancano i nomi.
-  // Li sceglie il proprietario; col primo ristorante torna anche il bottone
-  // "Ristoranti" in mappa.html (data-map-cat="ristorante").
+  // Li sceglie il proprietario; col primo ristorante il gruppo "Ristoranti"
+  // sotto la mappa compare da solo.
 ];
 
 // Le citta' scritte sull'isola, solo per orientarsi: non si toccano.
@@ -406,10 +406,14 @@ function openMapSheet(i) {
       dots.forEach((d, j) => d.classList.toggle("is-on", j === k));
     }, { passive: true });
   }
-  // La mappa sale in cima allo schermo, cosi' il pannello non la copre.
+  // Se la mappa non si vede (il posto e' stato scelto dall'elenco, piu' in
+  // basso), la pagina sale fino alla mappa, cosi' il pannello non la copre.
+  // Se si vede gia' (si e' toccato un pallino), la pagina resta ferma.
   const el = document.getElementById("islaMap");
-  const top = el.getBoundingClientRect().top + window.scrollY - 90;
-  if (Math.abs(window.scrollY - top) > 40) window.scrollTo({ top, behavior: "smooth" });
+  const r = el.getBoundingClientRect();
+  if (r.bottom < 120 || r.top > window.innerHeight * 0.45) {
+    window.scrollTo({ top: r.top + window.scrollY - 90, behavior: "smooth" });
+  }
   sheet.querySelector("[data-map-sheet-close]").focus({ preventScroll: true });
 }
 
@@ -424,20 +428,17 @@ function closeMapSheet() {
   if (i != null && mapState.markers[i].getElement()) mapState.markers[i].getElement().focus({ preventScroll: true });
 }
 
-// Porta il punto in vista nella parte alta della mappa e apre il pannello.
-function showMapPoint(i, animate) {
-  const map = mapState.map;
-  const z = Math.max(map.getZoom(), 11);
-  if (animate) map.flyTo(MAP_POINTS[i].at, z, { duration: 0.8 });
-  else map.setView(MAP_POINTS[i].at, z, { animate: false });
+// Apre il pannello del posto. La mappa non si muove (mostra gia' tutta
+// l'isola): il pallino scelto si ingrandisce, e basta.
+function showMapPoint(i) {
   openMapSheet(i);
 }
 
 // L'elenco sotto la mappa, chiuso in un pulsante per categoria: si tocca e
 // si apre l'elenco di quei posti, si ritocca e si chiude. Piu' gruppi possono
 // stare aperti insieme. Un gruppo aperto e' una categoria accesa: aprirlo
-// accende i suoi pallini sulla mappa, chiuderlo li spegne, come i bottoni in
-// alto. I gruppi si vedono sempre tutti, anche quando la mappa e' vuota.
+// accende i suoi pallini sulla mappa, chiuderlo li spegne. Sono l'unico modo
+// di scegliere (i bottoni in alto sono stati tolti), e si vedono sempre tutti.
 const MAP_GROUP_ORDER = ["spiaggia", "panorama", "segreto", "interesse", "ristorante"];
 
 function renderMapList() {
@@ -469,19 +470,11 @@ function renderMapList() {
   }).join("");
 }
 
-// Le categorie che hanno almeno un posto (i ristoranti, finche' non ci sono, no).
-function mapCatsWithPoints() {
-  return MAP_GROUP_ORDER.filter(c => MAP_POINTS.some(p => p.cat === c));
-}
-
-// Accende o spegne una categoria; "tutti" le accende tutte, o le spegne tutte
-// se erano gia' tutte accese.
+// Accende o spegne una categoria. Lo fanno i gruppi sotto la mappa: i bottoni
+// in alto (Tutto, Spiagge...) sono stati tolti il 9 ottobre 2026, facevano la
+// stessa cosa.
 function toggleMapCat(c) {
-  const all = mapCatsWithPoints();
-  if (c === "tutti") {
-    const allOn = all.every(x => mapState.active.has(x));
-    mapState.active = new Set(allOn ? [] : all);
-  } else if (mapState.active.has(c)) mapState.active.delete(c);
+  if (mapState.active.has(c)) mapState.active.delete(c);
   else mapState.active.add(c);
   applyMapFilter();
 }
@@ -493,16 +486,6 @@ function applyMapFilter() {
     if (on && !map.hasLayer(m)) m.addTo(map);
     if (!on && map.hasLayer(m)) m.remove();
   });
-  const allOn = mapCatsWithPoints().every(c => mapState.active.has(c));
-  document.querySelectorAll("[data-map-cat]").forEach(b => {
-    const c = b.dataset.mapCat;
-    const on = c === "tutti" ? allOn : mapState.active.has(c);
-    b.classList.toggle("is-active", on);
-    b.setAttribute("aria-pressed", on ? "true" : "false");
-  });
-  // A mappa vuota, la scritta in mezzo dice cosa fare.
-  const empty = document.querySelector("[data-map-empty]");
-  if (empty) empty.hidden = mapState.active.size > 0;
   renderMapList();
   if (mapState.open != null && !mapState.active.has(MAP_POINTS[mapState.open].cat)) closeMapSheet();
 }
@@ -512,13 +495,25 @@ function initMap() {
   if (!el || typeof L === "undefined") return;
 
   const bounds = L.latLngBounds([27.95, -17.0], [28.65, -16.05]);
+  // La mappa sta ferma (proprietario, 9 ottobre 2026): mostra sempre tutta
+  // l'isola, e il dito sopra la mappa fa scorrere la pagina, non la mappa.
+  // Niente trascinamento, niente zoom (due dita, doppio tocco, rotellina,
+  // tastiera) e niente bottoni + e -: i pallini si toccano e basta. Dove due
+  // pallini si sovrappongono, il posto si apre anche dall'elenco sotto.
   const map = L.map(el, {
     zoomSnap: 0.25,
     minZoom: 9,
     maxZoom: 12.5,
     maxBounds: bounds.pad(1),
     attributionControl: true,
-    zoomControl: true
+    zoomControl: false,
+    dragging: false,
+    touchZoom: false,
+    doubleClickZoom: false,
+    scrollWheelZoom: false,
+    boxZoom: false,
+    keyboard: false,
+    tap: false
   });
   map.attributionControl.setPrefix(false);
   map.attributionControl.addAttribution('&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>');
@@ -552,7 +547,7 @@ function initMap() {
         iconAnchor: [17, 17]
       })
     });
-    m.on("click", () => showMapPoint(MAP_POINTS.indexOf(p), true));
+    m.on("click", () => showMapPoint(MAP_POINTS.indexOf(p)));
     return m.addTo(map);
   });
   // Toccare il mare o l'isola fuori dai pallini chiude il pannello.
@@ -560,7 +555,11 @@ function initMap() {
   document.querySelector("[data-map-sheet-close]").addEventListener("click", closeMapSheet);
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeMapSheet(); });
 
-  map.fitBounds(L.latLngBounds([27.99, -16.93], [28.59, -16.11]), { padding: [6, 6] });
+  // Tutta l'isola, sempre: anche quando il telefono si gira e la mappa cambia
+  // misura.
+  const fitIsland = () => map.fitBounds(L.latLngBounds([27.99, -16.93], [28.59, -16.11]), { padding: [6, 6], animate: false });
+  fitIsland();
+  map.on("resize", fitIsland);
 
   // Da lontano i punti sono tanti e vicini (a Los Gigantes ce ne sono tre):
   // si fanno piu' piccoli, e i nomi delle citta' compaiono solo ingrandendo,
@@ -568,10 +567,6 @@ function initMap() {
   const zoomClass = () => el.classList.toggle("is-far", map.getZoom() < 10.5);
   map.on("zoomend", zoomClass);
   zoomClass();
-
-  document.querySelectorAll("[data-map-cat]").forEach(b => {
-    b.addEventListener("click", () => toggleMapCat(b.dataset.mapCat));
-  });
 
   document.querySelector("[data-map-list]").addEventListener("click", e => {
     const head = e.target.closest("[data-map-group]");
@@ -584,7 +579,7 @@ function initMap() {
     }
     const btn = e.target.closest("[data-map-point]");
     if (!btn) return;
-    showMapPoint(Number(btn.dataset.mapPoint), true);
+    showMapPoint(Number(btn.dataset.mapPoint));
   });
 
   // Si arriva gia' con un filtro o un punto scelto (i link della home).
@@ -593,7 +588,7 @@ function initMap() {
   if (MAP_CATS[params.get("cat")]) mapState.active.add(params.get("cat"));
   if (i >= 0) mapState.active.add(MAP_POINTS[i].cat);
   applyMapFilter();
-  if (i >= 0) showMapPoint(i, false);
+  if (i >= 0) showMapPoint(i);
 }
 
 document.addEventListener("DOMContentLoaded", initMap);

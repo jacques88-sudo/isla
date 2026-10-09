@@ -17720,3 +17720,25 @@ solo pallini blu; poi Panorami → si aggiungono i verdi; ritoccare spegne.
   quella del punto.
 - La scritta sta sopra la mappa (`.map-empty`, `pointer-events: none`): la mappa
   sotto si muove lo stesso. `CACHE_NAME` → `isla-v470`.
+
+## La mappa ferma, senza bottoni in alto (9 ottobre 2026)
+
+Richiesta del proprietario, in due messaggi: "togliere la capsula all'inizio" e "far
+stare ferma la mappa al tocco". La "capsula" erano i **bottoni in alto** (Tutto ·
+Spiagge · Panorami · Posti segreti · Da vedere), che facevano la stessa cosa dei
+gruppi sotto la mappa; alla domanda aveva scelto anche il **riquadro "Scegli cosa
+vedere"**. Via tutti e due.
+- Si sceglie **solo coi gruppi sotto la mappa** (`toggleMapCat()`); "Tutto" non c'è
+  più. Il testo sotto il titolo dice "Scegli una categoria sotto la mappa…"
+  (`map.intro`), al posto del riquadro. Tolte le chiavi `map.cat.all`,
+  `map.filterAria`, `map.empty`.
+- **La mappa non si muove**: niente trascinamento, zoom con due dita, doppio tocco,
+  rotellina, tastiera, e niente bottoni + e −. Mostra sempre tutta l'isola, anche
+  quando il telefono si gira (`map.on("resize", fitIsland)`). Il dito sopra la mappa
+  fa scorrere la pagina.
+- Toccando un pallino si apre il pannello e **la mappa non vola più sul posto**; la
+  pagina resta ferma. Solo se il posto si sceglie dall'elenco (mappa fuori vista) la
+  pagina sale alla mappa.
+- Da lontano i pallini sono passati da 22 a 26 px: col dito sono l'unico modo di
+  scegliere sulla mappa. Dove due si sovrappongono (Los Gigantes, Anaga), il posto
+  si apre dall'elenco.

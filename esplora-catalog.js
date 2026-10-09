@@ -6161,7 +6161,15 @@ const ESPLORA_CATALOG = [
     id: "private-charter",
     title: "Private Charter",
     category: "tour-privati",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    // Dal proprietario, 9 ottobre 2026: sono le stesse barche dei giri
+    // condivisi, e partono dagli stessi porti. Quindi il porto dipende dalla
+    // barca, e i porti sono quelli delle schede di "Mare e barche".
+    zone: {
+      it: "Dipende dalla barca: Puerto Colón, Los Cristianos, Los Gigantes o Las Galletas",
+      en: "Depends on the boat: Puerto Colón, Los Cristianos, Los Gigantes or Las Galletas",
+      es: "Depende del barco: Puerto Colón, Los Cristianos, Los Gigantes o Las Galletas"
+    },
+    zoneGroups: ["costa-adeje", "los-cristianos", "los-gigantes"],
     // Dal proprietario, 5 ottobre 2026: 3, 6 o 9 ore. Non sono varianti con un
     // bottone perche' manca il prezzo di ciascuna: priceTiers qui sotto non dice
     // a quale durata si riferisce. Nel filtro: 3 ore e' mezza giornata, 6 e 9

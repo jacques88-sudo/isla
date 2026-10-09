@@ -17468,7 +17468,7 @@ numeri vanno solo su Supabase (SQL nella scratchpad); qui arrivano solo i **nomi
 
 Provato: menu Compagnia giusto sulle due schede e assente sul charter; la foto con
 "MIZENDOHA" o "MOKKAI" sceglie la compagnia. SQL provato su Postgres locale, due
-volte di fila. `CACHE_NAME` → `isla-v454`.
+volte di fila. `CACHE_NAME` → `isla-v457`.
 
 ## 9 ottobre 2026 — Netto a percentuale (Twin Ticket)
 
@@ -17528,3 +17528,16 @@ riscrivere la storia di `main`, e lo decide il proprietario.
 
 La regola per non rifarlo: **un esempio non usa mai il numero vero**, e una prova si
 racconta senza cifre. Prima di ogni commit, `git grep` dei numeri appena ricevuti.
+## Private Charter: il porto dipende dalla barca (9 ottobre 2026)
+
+Il proprietario: i charter privati sono **le stesse barche dei giri condivisi**, e partono
+**dagli stessi porti**. La scheda generica `private-charter` non dice quale barca, quindi
+il porto non è uno solo: la zona ora dice "Dipende dalla barca: Puerto Colón, Los
+Cristianos, Los Gigantes o Las Galletas", cioè i porti delle schede di "Mare e barche"
+(Marina Amarilla del Submarine Safari no: non è una barca da charter). `zoneGroups` le tre
+zone di quei porti, così la scheda compare con qualunque filtro di costa. Testo deciso da
+me a partire dalla risposta del proprietario.
+
+Era l'ultima scheda con zona "Da definire" fra le barche. Resta da sapere il **prezzo per
+ogni durata** (3, 6 o 9 ore): finché non c'è, la durata non diventa un bottone.
+Provato a 375 px in italiano e spagnolo, nessun errore. `CACHE_NAME` → `isla-v457`.

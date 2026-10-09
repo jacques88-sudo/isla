@@ -17411,3 +17411,29 @@ repository.
 
 Provato a 375 px nelle tre lingue: titolo e paragrafi giusti, nessun errore, nessuno
 scroll orizzontale. `CACHE_NAME` → `isla-v451`.
+
+## Fiat 500 Water Car: partenza, durata, capitano a bordo (9 ottobre 2026)
+
+Il proprietario ha incollato la pagina della Fiat 500 sul sito di **Tenerife First
+Excursions** (un rivenditore anche loro, con sei negozi nel sud). Presi solo i fatti:
+
+- **zona** "Puerto Colón, Costa Adeje" (`zoneGroups: ["costa-adeje"]`): da lì si parte,
+  verso El Duque e Playa Diego Hernández o verso Los Cristianos, secondo il mare;
+- **durata** "1 o 2 ore" (`durationGroups: ["breve"]`): era l'ultima scheda della
+  categoria con zona e durata "Da definire";
+- **`included`: `swimstop` e `snorkel`**: la sosta bagno e l'attrezzatura sono scritte
+  dal fornitore ("Snorkelling equipment included");
+- **due note**: il capitano resta sempre a bordo (regole del mare: non è più un noleggio
+  senza skipper) e si guida sotto il suo controllo, 18 anni per guidare, patente nautica
+  non serve; al massimo 3 adulti + 1 bambino fino a 12 anni, documento d'identità.
+- descrizione riscritta da zero nelle tre lingue.
+
+**Il prezzo NON è stato toccato** (`priceFrom: 130`, preso a suo tempo dal sito di
+Admiral). La pagina incollata dice 190 € un'ora e 280 € due ore: è un altro rivenditore,
+e alzare un prezzo dopo che il cliente l'ha letto è la cosa da evitare. Chiesto al
+proprietario quale vale; quando risponde, le due durate diventano due varianti col loro
+prezzo. Non copiati recensioni, "Travelers Choice", "Why choose us". Resta in
+`PICKUP_NESSUNO`: ci si trova al porto.
+
+Provato a 375 px: "In breve" con partenza e durata, le due icone, le due note, nessun
+errore, nessuno scroll orizzontale. `CACHE_NAME` → `isla-v452`.

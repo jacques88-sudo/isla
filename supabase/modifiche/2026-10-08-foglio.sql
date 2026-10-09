@@ -30,7 +30,7 @@ revoke all on public.export_keys from anon, authenticated;
 -- 2. Il netto si FISSA sul ticket quando si salva (net_amount, net_note).
 --
 -- Cosi' un netto cambiato domani non riscrive i ticket di oggi: Agua Safari
--- che passa da 60 a 65 vale per i ticket nuovi, non per quelli gia' venduti.
+-- che cambia il suo netto vale per i ticket nuovi, non per quelli gia' venduti.
 -- Si ricalcola solo quando cambia quello da cui dipende (scheda, variante,
 -- compagnia, persone, mezzi): un ticket rinviato con una persona in piu' prende
 -- il netto giusto per come e' adesso.

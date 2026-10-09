@@ -144,11 +144,24 @@ function aggiornaEscursione() {
   }
 
   menuCompagnie(els.company, els.companyWrap, tour, "");
+  pagamentoDellaScheda(els.payment, tour);
 
   const tipi = tipiMezzo(tour);
   els.unitsWrap.hidden = !tipi.length;
   if (tipi.length) els.unitsLabel.textContent = `${italiano(tour.units.name)}: quanti per tipo`;
   caselleMezzi(els.units, tipi, "tUnit");
+}
+
+// I parchi contano sempre come pagati con carta (`pagamento: "card"` nel
+// catalogo, proprietario 9 ottobre 2026): il pagamento si sceglie da solo e
+// l'altro non si puo' scegliere. Lo fa valere anche il database
+// (supabase/modifiche/2026-10-09-solo-card.sql).
+function pagamentoDellaScheda(select, tour) {
+  const fisso = tour && tour.pagamento;
+  Array.from(select.options).forEach(o => {
+    if (o.value) o.disabled = !!fisso && o.value !== fisso;
+  });
+  if (fisso) select.value = fisso;
 }
 
 // ─── Compagnia ──────────────────────────────────────────────────────────────
@@ -813,6 +826,7 @@ function apriModifica(li, b) {
   f.total.value = b.total ?? "";
   f.deposit.value = b.deposit ?? "";
   f.payment_method.value = b.payment_method || "";
+  pagamentoDellaScheda(f.payment_method, tour);
   // "Pagato tutto" si salva come rest_to_pay 0 senza deposit: nel modulo torna
   // com'era stato scritto, con To pay vuoto.
   const pagatoPrima = b.deposit === null && Number(b.rest_to_pay) === 0;

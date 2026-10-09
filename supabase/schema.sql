@@ -23,6 +23,8 @@
 -- tabella dei netti, VUOTA, e la compagnia sul ticket) sono gia' compresi qui.
 -- 2026-10-08-foglio.sql NO: va lanciato dopo questo file (il netto fissato sul
 -- ticket, la porta del foglio Google, e i venditori che non leggono i netti).
+-- Poi, in ordine: 2026-10-08-pagamento.sql (card o cash, commissioni) e
+-- 2026-10-09-percentuale.sql (il netto a percentuale del totale).
 
 
 -- 1. I VENDITORI ------------------------------------------------------------

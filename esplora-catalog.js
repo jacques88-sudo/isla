@@ -3363,6 +3363,8 @@ const ESPLORA_CATALOG = [
     duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
+    // Stesse partenze del Jet Ski Safari (proprietario, 9 ottobre 2026).
+    times: ["10:00", "12:00", "14:00", "16:00", "17:00"],
     priceFrom: 130,
     priceUnit: { it: "a Fiat 500", en: "per Fiat 500", es: "por Fiat 500" },
     priceAdult: 0,

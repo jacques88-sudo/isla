@@ -17558,3 +17558,10 @@ Il proprietario conferma: la gemella privata (`luxury-catamaran-charter`) parte 
 stesse ore** della condivisa, 11, 14 e 17. Stessi `times`, come le altre gemelle private
 che ripetono gli orari della barca condivisa. Provato nel browser: tutte e due mostrano
 solo 11:00, 14:00 e 17:00. `CACHE_NAME` → `isla-v459`.
+
+### Fiat 500: le partenze del Jet Ski (9 ottobre)
+
+Il proprietario: la Fiat 500 ha **gli stessi orari delle moto d'acqua**. Copiati i `times`
+del Jet Ski Safari (10:00, 12:00, 14:00, 16:00, 17:00) sulla scheda `fiat-500-water-car`,
+uguali per 1 e 2 ore. Provato nel browser: il menu "A che ora" mostra solo quelle cinque.
+`CACHE_NAME` → `isla-v460`.

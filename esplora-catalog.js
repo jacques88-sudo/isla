@@ -6041,6 +6041,10 @@ const ESPLORA_CATALOG = [
           label: "Secret Volcano Tour",
           priceAdult: 24,
           priceChild: 12,
+          // Dalla pagina di prenotazione incollata dal proprietario (9 ottobre
+          // 2026): partenze ogni ora dalle 10 alle 18. Le 9, le 19 e le 20 la
+          // pagina le segna "Llamar para reservar", e non sono state messe.
+          times: ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"],
           desc: {
             it: "Da Puerto Colón si sale alla Caldera del Rey, il monumento naturale sopra Costa Adeje: un vulcano spento, oggi coperto di piantagioni di banane, con La Gomera all'orizzonte. Per strada Torviscas, la marina e Las Américas, e la guida racconta com'è nata l'isola.",
             en: "From Puerto Colón you climb to the Caldera del Rey, the natural monument above Costa Adeje: an extinct volcano, now covered in banana plantations, with La Gomera on the horizon. On the way, Torviscas, the marina and Las Américas, while the guide tells you how the island was born.",

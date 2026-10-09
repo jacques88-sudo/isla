@@ -17565,3 +17565,9 @@ Il proprietario: la Fiat 500 ha **gli stessi orari delle moto d'acqua**. Copiati
 del Jet Ski Safari (10:00, 12:00, 14:00, 16:00, 17:00) sulla scheda `fiat-500-water-car`,
 uguali per 1 e 2 ore. Provato nel browser: il menu "A che ora" mostra solo quelle cinque.
 `CACHE_NAME` → `isla-v460`.
+
+### Lezioni di surf: le partenze (9 ottobre)
+
+Dal proprietario: surf alle **9, 11, 16 e 18**. `times` sulla scheda `surf-lesson`, quindi
+valgono per tutte e nove le varianti (di gruppo, private, pacchetti). Provato nel browser:
+il menu "A che ora" mostra solo quelle quattro. `CACHE_NAME` → `isla-v461`.

@@ -4069,6 +4069,8 @@ const ESPLORA_CATALOG = [
     duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
+    // Partenze dal proprietario, 9 ottobre 2026: valgono per tutte le lezioni.
+    times: ["09:00", "11:00", "16:00", "18:00"],
     priceFrom: 35,
     priceAdult: 35,
     // Dai 13 anni in su, e sopra i 13 si paga tutti uguale: non c'e' una

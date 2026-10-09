@@ -17571,3 +17571,12 @@ uguali per 1 e 2 ore. Provato nel browser: il menu "A che ora" mostra solo quell
 Dal proprietario: surf alle **9, 11, 16 e 18**. `times` sulla scheda `surf-lesson`, quindi
 valgono per tutte e nove le varianti (di gruppo, private, pacchetti). Provato nel browser:
 il menu "A che ora" mostra solo quelle quattro. `CACHE_NAME` → `isla-v461`.
+
+### Surf: gli orari si spostano di 30 minuti con la marea (9 ottobre)
+
+Il proprietario: "scrivi che gli orari possono cambiare di 30 minuti in base alla marea".
+La nota di prima ("gli orari seguono la marea e cambiano di giorno in giorno: si
+concordano con la scuola") contraddiceva le partenze appena messe, e l'ho **sostituita**,
+non affiancata: "Gli orari possono spostarsi di 30 minuti, prima o dopo, secondo la marea:
+l'ora esatta te la diciamo quando confermiamo la richiesta", nelle tre lingue.
+`CACHE_NAME` → `isla-v462`.

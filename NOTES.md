@@ -17580,3 +17580,16 @@ concordano con la scuola") contraddiceva le partenze appena messe, e l'ho **sost
 non affiancata: "Gli orari possono spostarsi di 30 minuti, prima o dopo, secondo la marea:
 l'ora esatta te la diciamo quando confermiamo la richiesta", nelle tre lingue.
 `CACHE_NAME` → `isla-v462`.
+
+## Tuk tuk, Secret Volcano Tour: le partenze (9 ottobre 2026)
+
+Il proprietario ha incollato la pagina di prenotazione del **Secret Volcano Tour**. Non è
+una scheda nuova: è il secondo percorso di `tuk-tuk`, e prezzi (24 / 12 / gratis),
+fasce (11+, 3-10, 0-2), punto d'incontro (Avenida de España 10) e note erano già giusti.
+Nuovi solo gli **orari**, messi **sulla variante** Secret Volcano: ogni ora dalle **10
+alle 18**. La pagina segna anche le 9, le 19 e le 20 ma come "Llamar para reservar":
+**non messe**, chiesto al proprietario. Il percorso Costa Adeje Tour resta con le fasce
+segnaposto finché non arrivano i suoi. Non copiati: la cancellazione del fornitore
+("24-hour cancellation notice", coincide con la nostra ma resta la nostra), "Salud y
+seguridad". Provato nel browser: Secret Volcano mostra le nove ore, Costa Adeje le
+fasce, nessun errore. `CACHE_NAME` → `isla-v463`.

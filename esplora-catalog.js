@@ -398,7 +398,7 @@
 //                `controlla.js` lo verifica.
 //   pagamento  → facoltativo: "card" quando il ticket di questa scheda conta
 //                SEMPRE come pagato con carta, comunque abbia pagato il cliente
-//                (i parchi: Loro Parque, Siam Park, Twin Ticket; proprietario,
+//                (i parchi: Loro Parque, Siam Park, Siam Night, Twin Ticket; proprietario,
 //                9 ottobre 2026). Nel modulo dei venditori il pagamento si
 //                sceglie da solo e Cash non si puo' scegliere. Lo stesso elenco
 //                sta su Supabase (supabase/modifiche/2026-10-09-solo-card.sql),
@@ -4391,6 +4391,7 @@ const ESPLORA_CATALOG = [
   {
     id: "siam-night",
     title: "Siam Night",
+    pagamento: "card",
     category: "parchi-spettacoli",
     // Zona e orario dal proprietario, 5 ottobre 2026: e' il Siam Park di sera,
     // dalle 20 a mezzanotte, solo a luglio e agosto (vedi `season`). Quattro

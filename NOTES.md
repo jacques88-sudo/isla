@@ -17499,7 +17499,7 @@ sempre da considerare pagati con carta". Comunque paghi il cliente, la commissio
 divide con la parte della carta (che sta in `commission_rates`, non qui).
 
 - catalogo: `pagamento: "card"` su `loro-parque`, `siam-park`, `twin-ticket` (vocabolario
-  in testa al file). **Siam Night non c'è**: è un'altra serata, chiesto al proprietario;
+  in testa al file). **Siam Night** aggiunto dopo, confermato dal proprietario;
 - modulo dei venditori: `pagamentoDellaScheda()` sceglie Card e spegne Cash, sul ticket
   nuovo e in Modifica; cambiando scheda Cash torna sceglibile;
 - database: guardiano `sempre_card` (`supabase/modifiche/2026-10-09-solo-card.sql`),

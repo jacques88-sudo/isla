@@ -1,6 +1,6 @@
 -- 9 ottobre 2026: i parchi contano SEMPRE come pagati con carta.
 --
--- Loro Parque, Siam Park e Twin Ticket: comunque paghi il cliente, il ticket
+-- Loro Parque, Siam Park, Siam Night e Twin Ticket: comunque paghi il cliente, il ticket
 -- vale come "card", e la commissione si divide fra venditore e ufficio con la
 -- parte della carta (proprietario, 9 ottobre 2026). Quanto sia quella parte
 -- non e' scritto qui: sta in commission_rates (2026-10-08-pagamento.sql).
@@ -19,7 +19,7 @@ language plpgsql
 set search_path = ''
 as $$
 begin
-  if new.excursion_id in ('loro-parque', 'siam-park', 'twin-ticket') then
+  if new.excursion_id in ('loro-parque', 'siam-park', 'siam-night', 'twin-ticket') then
     new.payment_method := 'card';
   end if;
   return new;
@@ -37,5 +37,5 @@ create trigger sempre_card
 -- cambia nessuno dei campi da cui il netto dipende.
 update public.bookings
    set payment_method = 'card'
- where excursion_id in ('loro-parque', 'siam-park', 'twin-ticket')
+ where excursion_id in ('loro-parque', 'siam-park', 'siam-night', 'twin-ticket')
    and payment_method is distinct from 'card';

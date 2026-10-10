@@ -479,6 +479,51 @@ function toggleMapCat(c) {
   applyMapFilter();
 }
 
+// I pallini troppo vicini si allontanano un poco, quel che basta perche'
+// ognuno si possa toccare col dito (proprietario, 10 ottobre 2026: "non e' una
+// mappa dettagliata"). La mappa sta ferma, quindi le distanze sullo schermo non
+// cambiano finche' non cambiano i pallini accesi o la misura della mappa: si
+// rifa' in quei due momenti. Si spostano solo i pallini, sullo schermo: le
+// coordinate vere restano in MAP_POINTS, e "Portami qui" cerca comunque il nome.
+//
+// Come: si prendono i centri dei pallini accesi, in pixel; ogni coppia piu'
+// vicina di tre quarti di pallino si spinge via, meta' per parte, lungo la
+// linea che li unisce; si ripete finche' nessuna coppia si tocca (o dopo 80
+// giri). Due pallini proprio nello stesso punto partono in una direzione fissa
+// presa dal loro numero, cosi' il risultato e' sempre lo stesso.
+function spreadMapPins() {
+  const map = mapState.map;
+  const el = map.getContainer();
+  const size = el.classList.contains("is-far") ? 26 : 34;
+  // Possono accavallarsi un poco: basta che il centro di ognuno resti
+  // scoperto. Separarli del tutto, con tutte le categorie accese, li portava
+  // lontani dal loro posto (le spiagge in mezzo all'isola).
+  const gap = Math.round(size * 0.72);
+  const w = el.clientWidth, h = el.clientHeight, pad = size / 2 + 2;
+  const on = MAP_POINTS.map((p, i) => i).filter(i => mapState.active.has(MAP_POINTS[i].cat));
+  const pts = on.map(i => map.latLngToContainerPoint(MAP_POINTS[i].at));
+  for (let round = 0; round < 80; round++) {
+    let moved = false;
+    for (let a = 0; a < pts.length; a++) {
+      for (let b = a + 1; b < pts.length; b++) {
+        let dx = pts[b].x - pts[a].x, dy = pts[b].y - pts[a].y;
+        let d = Math.hypot(dx, dy);
+        if (d >= gap) continue;
+        if (d < 0.01) { const ang = (on[a] * 2.4 + on[b]) % (2 * Math.PI); dx = Math.cos(ang); dy = Math.sin(ang); d = 1; }
+        const push = (gap - d) / 2 + 0.1;
+        const ux = dx / d, uy = dy / d;
+        pts[a].x -= ux * push; pts[a].y -= uy * push;
+        pts[b].x += ux * push; pts[b].y += uy * push;
+        moved = true;
+      }
+    }
+    // Nessun pallino esce dal riquadro della mappa.
+    pts.forEach(p => { p.x = Math.min(w - pad, Math.max(pad, p.x)); p.y = Math.min(h - pad, Math.max(pad, p.y)); });
+    if (!moved) break;
+  }
+  on.forEach((i, k) => mapState.markers[i].setLatLng(map.containerPointToLatLng(pts[k])));
+}
+
 function applyMapFilter() {
   const map = mapState.map;
   mapState.markers.forEach((m, i) => {
@@ -486,6 +531,7 @@ function applyMapFilter() {
     if (on && !map.hasLayer(m)) m.addTo(map);
     if (!on && map.hasLayer(m)) m.remove();
   });
+  spreadMapPins();
   renderMapList();
   if (mapState.open != null && !mapState.active.has(MAP_POINTS[mapState.open].cat)) closeMapSheet();
 }
@@ -559,7 +605,11 @@ function initMap() {
   // misura.
   const fitIsland = () => map.fitBounds(L.latLngBounds([27.99, -16.93], [28.59, -16.11]), { padding: [6, 6], animate: false });
   fitIsland();
-  map.on("resize", fitIsland);
+  map.on("resize", () => {
+    fitIsland();
+    el.classList.toggle("is-far", map.getZoom() < 10.5);
+    spreadMapPins();
+  });
 
   // Da lontano i punti sono tanti e vicini (a Los Gigantes ce ne sono tre):
   // si fanno piu' piccoli, e i nomi delle citta' compaiono solo ingrandendo,

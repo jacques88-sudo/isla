@@ -1110,6 +1110,16 @@ p.note-box { margin: 0 0 1rem; }
 .cat-card--half::after {
   background: linear-gradient(90deg, oklch(0.24 0.012 60 / .75) 0%, oklch(0.24 0.012 60 / .25) 55%, transparent 80%);
 }
+/* L'autore della foto, dove la licenza lo chiede: piccolo, in basso a destra. */
+.cat-credit {
+  position: absolute;
+  right: .7rem;
+  bottom: .4rem;
+  z-index: 1;
+  font-size: .58rem;
+  color: oklch(1 0 0 / .8);
+  text-shadow: 0 1px 2px oklch(0 0 0 / .5);
+}
 .cat-card--half .cat-label {
   top: 50%;
   bottom: auto;

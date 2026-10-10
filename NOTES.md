@@ -17742,3 +17742,23 @@ vedere"**. Via tutti e due.
 - Da lontano i pallini sono passati da 22 a 26 px: col dito sono l'unico modo di
   scegliere sulla mappa. Dove due si sovrappongono (Los Gigantes, Anaga), il posto
   si apre dall'elenco.
+
+## I pallini sovrapposti si allontanano (10 ottobre 2026)
+
+Con la mappa ferma e senza zoom, a Los Gigantes, sulla costa nord e in Anaga i
+pallini si coprivano: misurato con tutte le categorie accese, **16 su 46 non si
+potevano toccare** sul telefono (7 sul computer). Il proprietario: spostarli
+leggermente, "non è una mappa dettagliata".
+- `spreadMapPins()` in `mappa.js`: prende i centri dei pallini accesi in pixel e
+  spinge via, metà per parte, ogni coppia più vicina di **tre quarti di pallino**;
+  ripete finché nessuna coppia è troppo vicina (al massimo 80 giri), senza uscire
+  dal riquadro. Sposta solo il pallino sullo schermo (`setLatLng`), le coordinate
+  di `MAP_POINTS` non cambiano.
+- Si rifà quando cambiano le categorie accese (`applyMapFilter`) e quando la mappa
+  cambia misura (telefono girato): le distanze in pixel dipendono da tutte e due.
+- **Prima prova scartata**: separarli del tutto (distanza = un pallino intero).
+  Con 46 pallini su un'isola larga 340 px le spiagge finivano in mezzo all'isola o
+  in mare. Con tre quarti si accavallano un poco ma il centro di ognuno resta
+  scoperto: misurato, **0 non toccabili** su 390, 360 e 1280 px, e toccando i
+  pallini che prima erano coperti si apre il posto giusto.
+- `CACHE_NAME` → `isla-v472`.

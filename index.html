@@ -276,25 +276,35 @@
       </div>
     </section>
 
-    <section class="secret" id="secret">
-      <img class="secret-bg" src="./assets/Secret-cove.jpg" data-i18n-alt="secret.alt" alt="Cala segreta a Tenerife" loading="lazy" width="1400" height="900" />
-      <div class="secret-fade" aria-hidden="true"></div>
-      <div class="wrap secret-content">
-        <span class="eyebrow" data-i18n="secret.eyebrow">Posti segreti</span>
-        <h2 data-i18n="secret.title">Dove non arrivano i pullman</h2>
-        <p data-i18n="secret.text">Cale di sabbia nera, piscine naturali e punti panoramici che i pullman turistici non raggiungono. Fanno parte di Tenerife tanto quanto le grandi attrazioni.</p>
-        <!-- Porta alla mappa: ogni nome apre il suo punto, il bottone apre
-             la mappa col filtro "Posti segreti". I nomi non si traducono:
-             sono nomi propri, e devono essere quelli di MAP_POINTS (mappa.js). -->
-        <div class="secret-spots">
-          <a class="secret-spot" href="./mappa.html?cat=segreto&amp;punto=paisaje-lunar">Paisaje Lunar</a>
-          <a class="secret-spot" href="./mappa.html?cat=segreto&amp;punto=chinamada">Chinamada</a>
-          <a class="secret-spot" href="./mappa.html?cat=segreto&amp;punto=el-pijaral">El Pijaral</a>
-          <a class="secret-spot" href="./mappa.html?cat=segreto&amp;punto=charco-del-viento">Charco del Viento</a>
-          <a class="secret-spot" href="./mappa.html?cat=segreto&amp;punto=punta-de-teno">Punta de Teno</a>
-          <a class="secret-spot" href="./mappa.html?cat=segreto&amp;punto=montana-amarilla">Montaña Amarilla</a>
-        </div>
-        <a class="btn secret-btn" href="./mappa.html?cat=segreto" data-i18n="secret.cta">Scoprili sulla mappa</a>
+    <!-- LA MAPPA: quattro card basse, una per categoria, al posto della vecchia
+         sezione "Dove non arrivano i pullman" (proprietario, 10 ottobre 2026).
+         Ognuna apre la mappa con la sua categoria accesa (mappa.html?cat=...).
+         Le foto: due CC0 da Wikimedia (La Tejita, Charco de la Laja) e due gia'
+         del sito, cosi' sulla card non serve scrivere l'autore. L'immagine ha
+         alt vuoto: il nome della card lo dice gia'. L'id "secret" resta per i
+         vecchi link alla home. -->
+    <section class="categories map-cats" id="secret">
+      <div class="wrap">
+        <span class="eyebrow" data-i18n="map.eyebrow">La mappa</span>
+        <h2 data-i18n="map.title">Scopri Tenerife</h2>
+        <ul class="cat-grid">
+          <li class="cat-card cat-card--half">
+            <a href="./mappa.html?cat=spiaggia" class="cat-link"><img src="./assets/mappa/playa-de-la-tejita-1.jpg" alt="" loading="lazy" width="720" height="480" />
+            <span class="cat-label" data-i18n="map.cat.beach">Spiagge</span></a>
+          </li>
+          <li class="cat-card cat-card--half">
+            <a href="./mappa.html?cat=panorama" class="cat-link"><img src="./assets/teide-national-park.jpg" alt="" loading="lazy" width="720" height="480" />
+            <span class="cat-label" data-i18n="map.cat.view">Panorami</span></a>
+          </li>
+          <li class="cat-card cat-card--half">
+            <a href="./mappa.html?cat=segreto" class="cat-link"><img src="./assets/mappa/charco-de-la-laja-1.jpg" alt="" loading="lazy" width="720" height="480" />
+            <span class="cat-label" data-i18n="map.cat.secret">Posti segreti</span></a>
+          </li>
+          <li class="cat-card cat-card--half">
+            <a href="./mappa.html?cat=interesse" class="cat-link"><img src="./assets/icod-garachico-orotava.jpg" alt="" loading="lazy" width="720" height="480" />
+            <span class="cat-label" data-i18n="map.cat.sight">Da vedere</span></a>
+          </li>
+        </ul>
       </div>
     </section>
 
@@ -366,7 +376,7 @@
       <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
       <a href="./pacchetti.html" data-menu-link data-i18n="menu.packages">Pacchetti</a>
       <a href="./mappa.html" data-menu-link data-i18n="menu.map">Scopri Tenerife</a>
-      <a href="#secret" data-menu-link data-i18n="menu.secret">Posti segreti</a>
+      <a href="./mappa.html?cat=segreto" data-menu-link data-i18n="menu.secret">Posti segreti</a>
       <a href="#about" data-menu-link data-i18n="menu.about">Chi siamo</a>
     </nav>
     <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link data-i18n="menu.cta">Prenota ora</a>

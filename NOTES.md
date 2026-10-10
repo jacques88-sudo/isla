@@ -17762,3 +17762,24 @@ leggermente, "non è una mappa dettagliata".
   scoperto: misurato, **0 non toccabili** su 390, 360 e 1280 px, e toccando i
   pallini che prima erano coperti si apre il posto giusto.
 - `CACHE_NAME` → `isla-v472`.
+
+## In home, quattro card al posto di "Dove non arrivano i pullman" (10 ottobre 2026)
+
+Richiesta del proprietario: al posto della sezione a tutta pagina "Posti segreti — Dove
+non arrivano i pullman" (foto di Masca, sei nomi e un bottone), **quattro card alte la
+metà di quelle delle categorie**: Spiagge, Panorami, Posti segreti, Da vedere.
+- Stessa griglia e stesse classi delle categorie (`.cat-grid`, `.cat-card`), più
+  `.cat-card--half`: proporzioni 32/9 invece di 16/9 (misurato: 350×98 contro 350×197
+  sul telefono, 258×73 contro 258×145 sul computer). Il nome sta a sinistra a metà
+  altezza, con la sfumatura da quella parte.
+- Ognuna apre `mappa.html?cat=<categoria>`, che accende quella categoria.
+- Titolo e occhiello sono quelli della mappa (`map.eyebrow`, `map.title`), i nomi
+  quelli dei gruppi (`map.cat.*`): un testo cambiato lì cambia anche qui.
+- **Foto senza obbligo di autore**: due CC0 da Wikimedia (La Tejita per le spiagge,
+  il Charco de la Laja per i segreti) e due già del sito (`teide-national-park.jpg`,
+  `icod-garachico-orotava.jpg`). Le altre foto della mappa sono CC BY/BY-SA e
+  vorrebbero l'autore scritto sulla card.
+- La sezione nuova tiene `id="secret"`, per i vecchi link. La voce **"Posti segreti"
+  del Menu** (sette pagine) ora porta a `mappa.html?cat=segreto`, non più alla home.
+- Tolti il CSS `.secret*` e le chiavi `secret.*`. `assets/Secret-cove.jpg` non lo usa
+  più nessuno, ma è rimasto nella cartella. `CACHE_NAME` → `isla-v473`.

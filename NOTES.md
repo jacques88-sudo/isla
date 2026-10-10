@@ -17783,3 +17783,26 @@ metà di quelle delle categorie**: Spiagge, Panorami, Posti segreti, Da vedere.
   del Menu** (sette pagine) ora porta a `mappa.html?cat=segreto`, non più alla home.
 - Tolti il CSS `.secret*` e le chiavi `secret.*`. `assets/Secret-cove.jpg` non lo usa
   più nessuno, ma è rimasto nella cartella. `CACHE_NAME` → `isla-v473`.
+
+## 10 ottobre 2026 — Parascending: Ocean Wings, da Los Cristianos
+
+Il proprietario: **Ocean Wings** è una compagnia di parascending che parte da **Los
+Cristianos**, ed è **una compagnia in più** sulla scheda `parascending` (che partiva
+solo da Puerto Colón), non una scheda nuova. "Metti tutti e due i porti".
+
+- `nomi: ["Ocean Wings"]`: il ticket di carta con "OCEAN WINGS" porta al Parascending, e
+  nella pagina dei venditori il menu Compagnia lo propone;
+- `zone` "Puerto Colón o Los Cristianos" e `zoneGroups` `costa-adeje` + `los-cristianos`:
+  la scheda esce in tutti e due i filtri;
+- la nota sul ritiro dice i due porti e che **il porto lo dice l'ufficio nella conferma**
+  (deciso da me, come sul Jet Ski: il cliente sceglie l'ora, non la compagnia);
+- nella descrizione "la costa di Costa Adeje" → "la costa del sud", che vale per tutti e due.
+
+**Gli orari non sono stati toccati**: le partenze 10:00-17:00 vengono dal proprietario a
+settembre, e quelle di Ocean Wings non le sappiamo. Se sono diverse vanno aggiunte, perché
+sul giro fatto da due compagnie il menu "A che ora" deve avere le ore di tutte e due.
+
+Il netto di Ocean Wings sta nella tabella privata di Notion, mai qui.
+
+Provato a 375 px nelle tre lingue: zona e nota giuste, nessun errore, nessuno scroll
+orizzontale; il menu Compagnia dei venditori mostra Ocean Wings. `CACHE_NAME` → `isla-v474`.

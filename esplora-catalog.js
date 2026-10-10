@@ -3581,14 +3581,18 @@ const ESPLORA_CATALOG = [
   {
     id: "parascending",
     title: "Parascending",
+    // Ocean Wings vola da Los Cristianos (proprietario, 10 ottobre 2026): e'
+    // una compagnia in piu', non un'altra scheda. Si parte da uno dei due
+    // porti, e quale lo dice l'ufficio nella conferma, come sul Jet Ski.
+    nomi: ["Ocean Wings"],
     category: "sport-acquatici",
-    zone: "Puerto Colón, Costa Adeje",
+    zone: { it: "Puerto Colón o Los Cristianos", en: "Puerto Colón or Los Cristianos", es: "Puerto Colón o Los Cristianos" },
     // Due durate diverse e tutte e due vere: quaranta minuti e' quanto dura
     // l'uscita (tragitto in barca compreso), dieci e' quanto si sta in aria.
     // Scritta una sola, l'altra diventa una bugia: "40 minuti" fa credere di
     // volare mezz'ora, "10 minuti" fa tornare il cliente al porto troppo presto.
     duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
-    zoneGroups: ["costa-adeje"],
+    zoneGroups: ["costa-adeje", "los-cristianos"],
     durationGroups: ["breve"],
     activityLabel: { it: "Tempo di volo", en: "Flight time", es: "Tiempo de vuelo" },
     activityDuration: { it: "Circa 10 minuti", en: "About 10 minutes", es: "Unos 10 minutos" },
@@ -3608,9 +3612,9 @@ const ESPLORA_CATALOG = [
     // concordare" sparisce. Niente `days`: si vola tutti i giorni.
     times: ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"],
     desc: {
-      it: "Si decolla dalla barca appesi al paracadute e si sale sopra la costa di Costa Adeje: una decina di minuti in aria, con il porto, le spiagge e le montagne sotto i piedi. Fra il tragitto in barca e il volo si sta fuori circa quaranta minuti.",
-      en: "You lift off from the boat hanging under the parachute and rise above the Costa Adeje coast: some ten minutes in the air, with the marina, the beaches and the mountains under your feet. Between the boat ride and the flight you are out for about forty minutes.",
-      es: "Se despega desde el barco colgado del paracaídas y se sube sobre la costa de Costa Adeje: unos diez minutos en el aire, con el puerto, las playas y las montañas bajo los pies. Entre el trayecto en barco y el vuelo se está fuera unos cuarenta minutos."
+      it: "Si decolla dalla barca appesi al paracadute e si sale sopra la costa del sud: una decina di minuti in aria, con il porto, le spiagge e le montagne sotto i piedi. Fra il tragitto in barca e il volo si sta fuori circa quaranta minuti.",
+      en: "You lift off from the boat hanging under the parachute and rise above the southern coast: some ten minutes in the air, with the marina, the beaches and the mountains under your feet. Between the boat ride and the flight you are out for about forty minutes.",
+      es: "Se despega desde el barco colgado del paracaídas y se sube sobre la costa sur: unos diez minutos en el aire, con el puerto, las playas y las montañas bajo los pies. Entre el trayecto en barco y el vuelo se está fuera unos cuarenta minutos."
     },
     // L'attrezzatura e il giubbotto li da' il fornitore, e l'istruttore sta a
     // bordo per tutta l'uscita. Le foto **non** ci sono: si comprano sul posto,
@@ -3635,9 +3639,9 @@ const ESPLORA_CATALOG = [
       { it: "Le foto del volo non sono comprese: si comprano sul posto, lo stesso giorno.",
         en: "Photos of your flight are not included: you can buy them on the spot, on the day.",
         es: "Las fotos del vuelo no están incluidas: se compran allí mismo, el mismo día." },
-      { it: "Non c'è il ritiro in hotel: al Puerto Colón ci si arriva da soli.",
-        en: "There is no hotel pick-up: you make your own way to Puerto Colón.",
-        es: "No hay recogida en el hotel: se llega por cuenta propia a Puerto Colón." }
+      { it: "Si parte da Puerto Colón o da Los Cristianos: il porto te lo diciamo nella conferma. Non c'è il ritiro in hotel: al porto ci si arriva da soli.",
+        en: "Departures are from Puerto Colón or Los Cristianos: we tell you which one in the confirmation. There is no hotel pick-up: you make your own way to the port.",
+        es: "Se sale desde Puerto Colón o desde Los Cristianos: el puerto te lo decimos en la confirmación. No hay recogida en el hotel: se llega por cuenta propia al puerto." }
     ],
     image: "parascending.jpg",
     published: true

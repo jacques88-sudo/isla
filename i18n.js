@@ -169,11 +169,6 @@ const I18N = {
   "categories.altSuffix": { it: "a Tenerife", en: "in Tenerife", es: "en Tenerife" },
 
   // ── posti segreti ───────────────────────────────────────────────────────
-  "secret.eyebrow":     { it: "Posti segreti", en: "Secret spots", es: "Lugares secretos" },
-  "secret.title":       { it: "Dove non arrivano i pullman", en: "Where the coaches don't go", es: "Donde no llegan los autobuses" },
-  "secret.text":        { it: "Cale di sabbia nera, piscine naturali e punti panoramici che i pullman turistici non raggiungono. Fanno parte di Tenerife tanto quanto le grandi attrazioni.", en: "Black-sand coves, natural pools and viewpoints the tour coaches never reach. They are as much a part of Tenerife as the big attractions.", es: "Calas de arena negra, piscinas naturales y miradores a los que no llegan los autobuses turísticos. Forman parte de Tenerife tanto como las grandes atracciones." },
-  "secret.cta":         { it: "Scoprili sulla mappa", en: "Find them on the map", es: "Descúbrelos en el mapa" },
-  "secret.alt":         { it: "Cala segreta a Tenerife", en: "Secret cove in Tenerife", es: "Cala secreta en Tenerife" },
 
   // ── chi siamo ───────────────────────────────────────────────────────────
   "about.eyebrow":      { it: "Chi siamo", en: "About us", es: "Quiénes somos" },

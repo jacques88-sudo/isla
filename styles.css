@@ -1101,71 +1101,20 @@ p.note-box { margin: 0 0 1rem; }
   .cat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 }
 
-/* Secret places — full-bleed editorial section */
-.secret {
-  position: relative;
-  overflow: hidden;
+/* La mappa in home: card alte la meta' di quelle delle categorie (32/9 invece
+   di 16/9), nella stessa griglia. Il nome sta a sinistra, a meta' altezza, con
+   la sfumatura scura da quella parte: in una card cosi' bassa la sfumatura dal
+   basso coprirebbe tutta la foto. */
+.map-cats { padding-top: 0; }
+.cat-card--half { aspect-ratio: 32 / 9; border-radius: 16px; }
+.cat-card--half::after {
+  background: linear-gradient(90deg, oklch(0.24 0.012 60 / .75) 0%, oklch(0.24 0.012 60 / .25) 55%, transparent 80%);
 }
-.secret-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.secret-fade {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, oklch(0.24 0.012 60 / .3), oklch(0.24 0.012 60 / .78));
-}
-.secret-content {
-  position: relative;
-  padding: 5rem 1.25rem;
-  text-align: center;
-  color: #fff;
-}
-.secret-content .eyebrow { justify-content: center; color: oklch(1 0 0 / .8); }
-.secret-content h2 {
-  font-weight: 400;
-  font-size: clamp(1.9rem, 1.5rem + 1.8vw, 2.6rem);
-  margin: .8rem 0 1rem;
-}
-.secret-content p {
-  max-width: 42ch;
-  margin: 0 auto;
-  font-weight: 300;
-  color: oklch(1 0 0 / .9);
-}
-/* I posti segreti da toccare e il bottone verso la mappa. Stanno sulla foto
-   scura in tutti e due i temi, quindi i colori sono fissi, non le variabili. */
-.secret-spots {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: .5rem;
-  max-width: 34rem;
-  margin: 1.6rem auto 1.4rem;
-}
-.secret-spot {
-  padding: .45rem .9rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid oklch(1 0 0 / .45);
-  background: oklch(1 0 0 / .12);
-  -webkit-backdrop-filter: blur(6px);
-          backdrop-filter: blur(6px);
-  color: #fff;
-  font-size: .8rem;
-  text-decoration: none;
-  transition: background .2s ease;
-}
-.secret-spot:hover { background: oklch(1 0 0 / .25); }
-.secret-btn {
-  background: #fff;
-  color: oklch(0.24 0.012 60);
-  border-color: #fff;
-}
-@media (min-width: 960px) {
-  .secret-content { padding: 8rem 1.25rem; }
+.cat-card--half .cat-label {
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
+  font-size: 1.35rem;
 }
 
 /* About */

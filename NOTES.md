@@ -17806,3 +17806,11 @@ Il netto di Ocean Wings sta nella tabella privata di Notion, mai qui.
 
 Provato a 375 px nelle tre lingue: zona e nota giuste, nessun errore, nessuno scroll
 orizzontale; il menu Compagnia dei venditori mostra Ocean Wings. `CACHE_NAME` → `isla-v474`.
+
+**Panorami con il Mirador Pico del Inglés (10 ottobre 2026).** Il proprietario ha
+chiesto la foto del Pico del Inglés per la card "Panorami" (prima: il Teide, poco
+nitido). Scelta `mirador-pico-del-ingles-2.jpg` (le montagne verdi dell'Anaga col
+mare). È **CC BY-SA 4.0**: la licenza chiede l'autore accanto alla foto, quindi la
+card porta in basso a destra "Foto: Mentxuwiki · CC BY-SA 4.0" (`.cat-credit`). Non è
+un link: la card intera è già un link, e un link dentro un link non si può.
+`CACHE_NAME` → `isla-v475` (la #404 era arrivata intanto a v474).

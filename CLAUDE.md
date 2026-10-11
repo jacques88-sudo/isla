@@ -128,6 +128,7 @@ porto e capienza con le schede della stessa categoria.
 | `supabase/functions/leggi-ticket/` | la funzione sul server che fa leggere a Claude la foto del ticket e riempie il modulo dei venditori; la chiave Anthropic sta **solo** nei Secrets di Supabase |
 | `supabase/functions/pulisci-foto/` | ogni notte (Cron) cancella le foto dei ticket che nessun ticket nomina più; con SQL le foto non si cancellano |
 | `booking.js` | "Le mie escursioni": i ticket veri da Supabase (numero + telefono); i codici `ISLA-…` restano la pagina finta; con `?richieste=1` le richieste mandate su WhatsApp |
+| `portare.js` | "Cosa portare" sulle escursioni confermate, gruppo per gruppo (dalla pagina Notion "cose da portare"); lo carica solo `booking.html` |
 | `richieste.js` | le richieste della lista salvate anche su Supabase (`pending`), con la **chiave** che resta nel telefono del cliente e il **codice** che va nel messaggio; l'ufficio le conferma o annulla da `venditori.html` |
 
 **La finestra della richiesta è scritta due volte**, in `escursioni.html` e in `tour.html`.

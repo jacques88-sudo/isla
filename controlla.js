@@ -43,6 +43,9 @@ global.eur = n => String(n);
 // funzioni del prezzo, per controllare che ogni pacchetto un prezzo ce l'abbia.
 eval(leggi("pacchetti.js").replace(/^const /gm, "var "));
 
+// Cosa portare: solo dati, si valuta come il catalogo.
+eval(leggi("portare.js").replace(/^const /gm, "var "));
+
 const sorgenteTour = leggi("tour.js");
 const sorgenteI18n = leggi("i18n.js");
 const sorgenteSw = leggi("sw.js");
@@ -552,6 +555,25 @@ function controllaPagamento() {
     errore(id, `sta nell'elenco di ${file} ma nel catalogo non ha pagamento: "card".`));
 }
 
+// Cosa portare (portare.js): ogni id deve essere una scheda vera, una scheda
+// sta in un gruppo solo, e ogni voce c'e' in tutte e tre le lingue. Un id
+// scritto male farebbe sparire il riquadro senza dirlo a nessuno.
+function controllaPortare() {
+  const visti = {};
+  COSE_DA_PORTARE.forEach(g => {
+    const dove = "portare.js · " + g.gruppo;
+    if (!g.cose || !g.cose.length) errore(dove, "il gruppo non ha voci.");
+    (g.cose || []).forEach(c => LINGUE.forEach(l => {
+      if (!c[l]) errore(dove, `una voce non ha la lingua "${l}".`);
+    }));
+    g.schede.forEach(id => {
+      if (!ESPLORA_CATALOG.some(x => x.id === id)) errore(dove, `la scheda "${id}" non esiste nel catalogo.`);
+      if (visti[id]) errore(dove, `la scheda "${id}" sta anche nel gruppo "${visti[id]}".`);
+      visti[id] = g.gruppo;
+    });
+  });
+}
+
 // Le raccomandate devono esistere ed essere pubblicate: un id scritto male
 // sparirebbe dal filtro senza dirlo a nessuno.
 function controllaRaccomandate() {
@@ -887,6 +909,7 @@ controllaNomi();
 controllaPagamento();
 controllaRaccomandate();
 controllaSelezioni();
+controllaPortare();
 controllaI18n();
 controllaPacchetti();
 controllaServiceWorker();

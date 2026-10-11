@@ -399,7 +399,8 @@
 //   pagamento  → facoltativo: "card" quando il ticket di questa scheda conta
 //                SEMPRE come pagato con carta, comunque abbia pagato il cliente
 //                (i parchi: Loro Parque, Siam Park, Siam Night, Twin Ticket; proprietario,
-//                9 ottobre 2026). Nel modulo dei venditori il pagamento si
+//                9 ottobre 2026; e dall'11 ottobre le cinque escursioni di
+//                Island Excursions). Nel modulo dei venditori il pagamento si
 //                sceglie da solo e Cash non si puo' scegliere. Lo stesso elenco
 //                sta su Supabase (supabase/modifiche/2026-10-09-solo-card.sql),
 //                che lo fa valere anche sui ticket gia' salvati: `controlla.js`
@@ -1851,6 +1852,9 @@ const ESPLORA_CATALOG = [
   // ─── TEIDE E NATURA ───────────────────────────────────────────────────────
   {
     id: "teide-national-park",
+    // Conta sempre come card (proprietario, 11 ottobre 2026: le escursioni
+    // di Island Excursions).
+    pagamento: "card",
     title: "Teide National Park",
     category: "teide-natura",
     zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
@@ -2290,6 +2294,9 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "icod-garachico-orotava",
+    // Conta sempre come card (proprietario, 11 ottobre 2026: le escursioni
+    // di Island Excursions).
+    pagamento: "card",
     // L'id nomina ancora La Orotava, dove il tour non passa piu' dal 24
     // agosto: i codici interni non si cambiano, si romperebbero i link.
     title: {
@@ -5156,6 +5163,9 @@ const ESPLORA_CATALOG = [
   // ─── TOUR DELL'ISOLA ──────────────────────────────────────────────────────
   {
     id: "la-gomera",
+    // Conta sempre come card (proprietario, 11 ottobre 2026: le escursioni
+    // di Island Excursions).
+    pagamento: "card",
     title: "La Gomera Island Tour",
     // Sul ticket i venditori scrivono solo "Gomera" (proprietario, 8 ottobre 2026).
     nomi: ["Gomera"],
@@ -5335,6 +5345,9 @@ const ESPLORA_CATALOG = [
     // e le richieste ferme in localStorage. Il nome del file della foto lo
     // segue: `santa-cruz-taganana.jpg` serve anche alla griglia della home.
     id: "santa-cruz-taganana",
+    // Conta sempre come card (proprietario, 11 ottobre 2026: le escursioni
+    // di Island Excursions).
+    pagamento: "card",
     // Il titolo e' quello del fornitore ufficiale, uguale in tutte e tre le
     // lingue come tutti gli altri.
     title: "Santa Cruz + Anaga + La Laguna",
@@ -5479,6 +5492,9 @@ const ESPLORA_CATALOG = [
     // dall'ufficio il 16 settembre 2026 (Nere Izerdie / Island Excursions,
     // Costa Adeje), che la chiama "VUELTA A LA ISLA".
     id: "island-tour-completo",
+    // Conta sempre come card (proprietario, 11 ottobre 2026: le escursioni
+    // di Island Excursions).
+    pagamento: "card",
     // Il titolo resta quello scritto da Admiral, come su `la-palma`: il
     // fornitore la chiama "Vuelta a la Isla", ma il nome sul sito lo cambia
     // solo l'ufficio.

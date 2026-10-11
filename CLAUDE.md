@@ -361,7 +361,9 @@ percentuali non vanno nel repository**, come i netti: stanno in `commission_rate
 Supabase (`supabase/modifiche/2026-10-08-pagamento.sql`, nasce vuota). Nel foglio: Card €
 e Cash € sono **quanto ha già pagato** il cliente, nella colonna del suo metodo.
 **I parchi contano sempre come card** (Loro Parque, Siam Park, Siam Night, Twin Ticket;
-proprietario, 9 ottobre 2026), comunque paghi il cliente: `pagamento: "card"` nel catalogo (il modulo
+proprietario, 9 ottobre 2026), comunque paghi il cliente, e così **le cinque escursioni di
+Island Excursions** (Teide National Park, Teide-Icod-Garachico-Masca, La Gomera, Santa Cruz +
+Anaga + La Laguna, Tour completo dell'isola; proprietario, 11 ottobre 2026): `pagamento: "card"` nel catalogo (il modulo
 lo sceglie da solo e spegne Cash) e lo stesso elenco nel guardiano `sempre_card`
 (`supabase/modifiche/2026-10-09-solo-card.sql`). `controlla.js` verifica che i due
 elenchi siano uguali: una scheda nuova da aggiungere va messa in **tutti e due**.

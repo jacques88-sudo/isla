@@ -17908,3 +17908,31 @@ blocchi e "per 4 escursioni", 4 righe nel database; Tenerife Trio da solo → me
 del pacchetto col codice; itinerario da 7 + Trio = 10, il terzo pacchetto mostra
 l'avviso e non entra. Sette pagine nelle tre lingue senza errori e senza scroll
 orizzontale. `CACHE_NAME` → `isla-v478`.
+
+### I netti di Island Excursions, e sempre card (11 ottobre)
+
+Il proprietario ha mandato la foto del listino di Island Excursions ("Cliente: Mathew
+(Admiral)", PVP · comisión · neto) e ha detto: quelle che non stanno su Isla lasciale
+stare, e **tutte contano come pagate con carta**.
+
+- **Su Isla ce ne sono cinque**: Teide National Park, Teide-Icod-Garachico-Masca
+  (`icod-garachico-orotava`), La Gomera, Santa Cruz + Anaga + La Laguna, Tour completo
+  dell'isola (la "Vuelta a la Isla"). Fuori: Full Day Teide + Orotava + Icod, Puerto de
+  la Cruz, l'escursione privata con autista e la funivia (sul Teide National Park il
+  biglietto non è incluso, si compra lì).
+- **I netti stanno solo su Supabase**, come sempre: SQL preparato nella scratchpad
+  (`insert … on conflict … do update`, compagnia vuota = qualunque compagnia), non
+  committato. Sul Teide National Park il netto del neonato è 0: il listino del
+  fornitore scrive "Bebes 0€". Sulle tre schede senza prezzo neonato non c'è netto
+  neonato.
+- **I ticket già salvati senza netto** lo prendono con lo stesso SQL: il guardiano
+  `fissa_netto` si spegne per l'update e si riaccende subito, perché rimetterebbe la
+  nota "netto mancante" (la protegge come un netto già calcolato). Chi un netto
+  l'aveva già non si tocca.
+- **Sempre card**: `pagamento: "card"` sulle cinque schede e le stesse cinque
+  nell'elenco di `2026-10-09-solo-card.sql`, che si rilancia intero.
+
+Provato su Postgres 16 con lo schema e tutte le modifiche: Gomera 2 adulti + 1 bambino
++ 1 neonato → 241,50; Teide 1+1+1 → 51,50; un adulto in più ricalcola; un ticket nuovo
+in cash diventa card; l'SQL lanciato due volte non fa danni e il guardiano resta acceso.
+`CACHE_NAME` → `isla-v479`.

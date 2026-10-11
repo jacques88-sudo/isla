@@ -17922,9 +17922,8 @@ stare, e **tutte contano come pagate con carta**.
   biglietto non è incluso, si compra lì).
 - **I netti stanno solo su Supabase**, come sempre: SQL preparato nella scratchpad
   (`insert … on conflict … do update`, compagnia vuota = qualunque compagnia), non
-  committato. Sul Teide National Park il netto del neonato è 0: il listino del
-  fornitore scrive "Bebes 0€". Sulle tre schede senza prezzo neonato non c'è netto
-  neonato.
+  committato. Sulle tre schede senza prezzo neonato non c'è netto neonato: un
+  ticket con un neonato lì resta "netto neonato mancante".
 - **I ticket già salvati senza netto** lo prendono con lo stesso SQL: il guardiano
   `fissa_netto` si spegne per l'update e si riaccende subito, perché rimetterebbe la
   nota "netto mancante" (la protegge come un netto già calcolato). Chi un netto
@@ -17932,7 +17931,7 @@ stare, e **tutte contano come pagate con carta**.
 - **Sempre card**: `pagamento: "card"` sulle cinque schede e le stesse cinque
   nell'elenco di `2026-10-09-solo-card.sql`, che si rilancia intero.
 
-Provato su Postgres 16 con lo schema e tutte le modifiche: Gomera 2 adulti + 1 bambino
-+ 1 neonato → 241,50; Teide 1+1+1 → 51,50; un adulto in più ricalcola; un ticket nuovo
+Provato su Postgres 16 con lo schema e tutte le modifiche: i ticket già salvati prendono
+la somma giusta dei netti; un adulto in più ricalcola; un ticket nuovo
 in cash diventa card; l'SQL lanciato due volte non fa danni e il guardiano resta acceso.
 `CACHE_NAME` → `isla-v479`.

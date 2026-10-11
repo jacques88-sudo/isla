@@ -17814,3 +17814,37 @@ mare). È **CC BY-SA 4.0**: la licenza chiede l'autore accanto alla foto, quindi
 card porta in basso a destra "Foto: Mentxuwiki · CC BY-SA 4.0" (`.cat-credit`). Non è
 un link: la card intera è già un link, e un link dentro un link non si può.
 `CACHE_NAME` → `isla-v475` (la #404 era arrivata intanto a v474).
+
+## 11 ottobre 2026 — "Cosa portare" sulle escursioni confermate
+
+Il proprietario: quando l'escursione è confermata, nella pagina riepilogo ("Le mie
+prenotazioni", `booking.js`) ci sia un promemoria di cosa portare. La lista sta su
+Notion, pagina **"cose da portare"**, non ancora completa: "iniziamo da lì".
+
+- **`portare.js`**, file nuovo, solo dati: `COSE_DA_PORTARE` è un elenco di gruppi
+  (Barca, Tour guidati, Elicottero, Buggy, Quad, Jet ski, Loro Parque e Jungle Park),
+  ognuno con le sue schede (`schede`, gli id del catalogo) e le voci nelle tre lingue
+  (`cose`). Non sta nel catalogo perché lo carica solo `booking.html`, e perché così,
+  quando il proprietario riempie un gruppo su Notion, si tocca un file solo.
+- **Si vede solo su una conferma non ancora passata**: prima della conferma è presto,
+  dopo la data non serve. Una scheda che non sta in nessun gruppo non mostra il
+  riquadro (nessun "cosa portare" inventato).
+- I gruppi vuoti su Notion (Teide Stars, Mustang, 500, Banana boat, Kayak, Parascending,
+  Immersioni, Surf, Siam Park, Poema del Mar, Show serali) **non ci sono**.
+- `controlla.js` (`controllaPortare`): ogni id deve esistere, una scheda sta in un
+  gruppo solo, ogni voce ha it/en/es.
+
+**Scelte mie, da far confermare al proprietario:**
+- "Barca" vale per tutte le gite in barca **e i charter privati**, ma **non** per
+  Submarine Safari (si sta dentro il sottomarino, niente bagno) e Pesca d'altura
+  (si pesca, non si fa il bagno);
+- "Tour guidati" vale per Teide National Park, Teide/Icod/Garachico/Masca, Trekking,
+  La Gomera, Santa Cruz + Anaga, Tour completo, La Palma, le due degustazioni, Finca
+  Tuno e il Cabrio Bus; **non** per tuk tuk e trenino (giri brevi in città) né per la
+  Bici;
+- Twin Ticket e Combo Jungle + Aqualand restano fuori: Siam Park e Aqualand su Notion
+  sono vuoti, e mezza lista sarebbe sbagliata per l'altro parco.
+
+Provato nel browser con risposte di Supabase finte: Jet Ski confermato → Costume, Crema
+solare, Asciugamano; Submarine confermato, Buggy in attesa e Freebird passato → niente
+riquadro. Nessun errore. `CACHE_NAME` → `isla-v476`.

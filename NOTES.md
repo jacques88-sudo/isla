@@ -17873,3 +17873,38 @@ Provato con Supabase finto: Tenerife Trio (3 righe, Luxury Cruiser con "3 ore, i
 condivisione") e versione buggy (il buggy senza variante, percorso aperto); il codice
 nel messaggio è lo stesso salvato nel telefono, segnato `stored`. Nessun errore.
 Il **noleggio** resta solo su WhatsApp. `CACHE_NAME` → `isla-v477`.
+
+## 11 ottobre 2026 — Il pacchetto va nel carrello, come una voce sola
+
+Il proprietario: il pacchetto (es. Tenerife Trio) deve comparire **nel carrello**, con il
+riepilogo delle scelte (giorno, persone, mezzi) e il prezzo, **come una singola
+escursione che non si può modificare**. Prima partiva da solo su WhatsApp dalla sua
+finestra.
+
+- **La finestra del pacchetto ora fa come quella delle escursioni**: il bottone dice
+  "Aggiungi alla lista" e il nome non lo chiede più (lo chiede la lista, una volta sola).
+- **Nella lista il pacchetto è una voce `{ pack, date, adults, kids, mezzi, hotel, note }`**:
+  le scelte, mai il prezzo, come le altre voci. Il conto si rifà ogni volta con
+  `pacchettoTotale()`. Nel carrello: titolo, "Dal giorno · persone · mezzi", "Cosa c'è
+  dentro", il risparmio e il totale. Si toglie con la ✕, ma non si apre né si smonta.
+- **Il messaggio**: il pacchetto da solo manda il messaggio del pacchetto di sempre;
+  insieme ad altre voci è un blocco numerato con le stesse righe
+  (`pacchettoRigheRichiesta()`, separata da `pacchettoWhatsappUrl()`).
+- **Il tetto conta le escursioni, non le voci** (`listaPeso()` in `lista.js`): un
+  pacchetto da tre vale tre, perché nel database ogni escursione è una riga e
+  `manda_richiesta()` ne prende al massimo 10. Un pacchetto che non ci sta mostra
+  l'avviso `lista.full` nella sua finestra. "Vorrei … per N escursioni" conta anche
+  quelle dentro i pacchetti.
+- **Nel database** (`richiestaVoci()` in `richieste.js`) il pacchetto diventa una riga per
+  escursione col giorno d'inizio, come deciso stamattina.
+- **`pacchetti.js` si carica ora su tutte le sette pagine con la lista** (prima solo le
+  due dei pacchetti): il carrello deve saper disegnare un pacchetto anche da
+  `escursioni.html`. La finestra del pacchetto nasce solo dove ci sono i pacchetti
+  (`[data-pack-grid]`, `[data-pack-detail]`).
+
+Provato a 375 px: Tenerife Trio buggy (2 adulti, 1 buggy) nel carrello, poi aperto da
+`escursioni.html` con il Luxury Cruiser accanto → €349 + €110 = €459, messaggio con due
+blocchi e "per 4 escursioni", 4 righe nel database; Tenerife Trio da solo → messaggio
+del pacchetto col codice; itinerario da 7 + Trio = 10, il terzo pacchetto mostra
+l'avviso e non entra. Sette pagine nelle tre lingue senza errori e senza scroll
+orizzontale. `CACHE_NAME` → `isla-v478`.

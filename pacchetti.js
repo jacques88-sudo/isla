@@ -1386,7 +1386,10 @@ function pacchettoVociRichiesta(pack, req) {
     }));
 }
 
-function pacchettoWhatsappUrl(pack, req, codice) {
+// Le righe del messaggio per un pacchetto, senza il saluto: servono sia al
+// messaggio del pacchetto da solo (pacchettoWhatsappUrl) sia al messaggio
+// della lista, dove il pacchetto e' una voce fra le altre (lista.js).
+function pacchettoRigheRichiesta(pack, req) {
   const righe = [
     "• " + t("pack.inside") + ": " + pacchettoVociTesto(pack),
     // "Dal giorno" e non "Data": e' il primo dei tre, non una data fissa, e
@@ -1417,6 +1420,12 @@ function pacchettoWhatsappUrl(pack, req, codice) {
     // arriva una richiesta che sembra dimenticarsi il prezzo.
     righe.push("• " + t("pack.noTotal"));
   }
+  return righe;
+}
+
+// Il pacchetto da solo nella lista: il messaggio e' quello di sempre.
+function pacchettoWhatsappUrl(pack, req, codice) {
+  const righe = pacchettoRigheRichiesta(pack, req);
 
   // "il pacchetto «X»" su un itinerario da sette giorni fa arrivare in ufficio
   // una richiesta che sembra di tre: il numero dei giorni e' la prima cosa da
@@ -1447,6 +1456,9 @@ function pacchettoWhatsappUrl(pack, req, codice) {
 // sono due domande diverse con due risposte diverse.
 function initPacchettoRichiesta() {
   if (typeof WHATSAPP_NUMBER === "undefined" || !WHATSAPP_NUMBER) return;
+  // Il file si carica anche sulle altre pagine con la lista, che deve saper
+  // disegnare un pacchetto: la finestra serve solo dove i pacchetti si vedono.
+  if (!document.querySelector("[data-pack-grid], [data-pack-detail]")) return;
 
   const scrim = document.createElement("div");
   scrim.className = "ticket-scrim";
@@ -1604,18 +1616,16 @@ function initPacchettoRichiesta() {
         <input id="packNote" name="note" type="text" autocomplete="off"
                placeholder="${esc(t("req.notePlaceholder"))}" />
 
-        <!-- Come nella finestra della richiesta: il nome in fondo, perche' e'
-             l'unica domanda che non riguarda il viaggio. -->
-        <label for="packName">${esc(t("req.name"))}</label>
-        <input id="packName" name="name" type="text" autocomplete="name"
-               placeholder="${esc(t("req.namePlaceholder"))}" required />
+        <!-- Il nome non si chiede qui: il pacchetto va nella lista, e il nome
+             lo chiede la finestra della lista, una volta sola per tutto. -->
+        <p class="request-day-error" data-pack-full hidden></p>
 
         <!-- Come nella finestra della richiesta: conto e pulsante restano in
              fondo mentre il modulo scorre. -->
         <div class="request-foot">
           <p class="request-total" data-pack-total></p>
           <button class="btn btn-primary btn-block request-submit" type="submit">
-            ${esc(t("req.submit"))}</button>
+            ${esc(t("req.addToList"))}</button>
         </div>
         <p class="hint">${esc(t("pack.askHint"))}</p>
         <p class="hint request-privacy">${t("req.privacy")}</p>
@@ -1717,11 +1727,15 @@ function initPacchettoRichiesta() {
     aggiornaTotale();
   });
 
+  // Come la finestra della singola escursione: il pacchetto **va nella
+  // lista**, non parte da qui. Nella lista e' una voce sola, che si toglie ma
+  // non si smonta: dentro restano le sue escursioni, con lo sconto. Si salvano
+  // le scelte e mai il prezzo, come per le altre voci: il conto la lista lo
+  // rifa' ogni volta leggendo i prezzi di adesso.
   dialog.addEventListener("submit", e => {
     e.preventDefault();
     if (!corrente) return;
     const req = {
-      name: dialog.querySelector("#packName").value.trim(),
       date: dialog.querySelector("#packDate").value,
       adults: parseInt(dialog.querySelector("#packAdults").value, 10) || 1,
       kids: parseInt(dialog.querySelector("#packKids").value, 10) || 0,
@@ -1729,23 +1743,27 @@ function initPacchettoRichiesta() {
       note: dialog.querySelector("#packNote").value.trim(),
       mezzi: mezziScelti()
     };
-    if (!req.name || !req.date) return;
+    if (!req.date) return;
     // Senza mezzi la richiesta partirebbe senza la meta' del prezzo: l'ufficio
     // dovrebbe richiamare per chiedere quanti buggy, che e' esattamente il giro
     // di messaggi che questa finestra serve a togliere.
     if (!mezziValidi(corrente)) { aggiornaErroreMezzi(true); return; }
+    if (typeof listaAggiungi !== "function") return;
+    // Nella lista il pacchetto pesa quanto le sue escursioni: ognuna e' una
+    // riga nel database, che ne prende al massimo dieci per richiesta.
+    const peso = corrente.voci.length;
+    const piena = dialog.querySelector("[data-pack-full]");
+    if (listaEPiena(peso)) {
+      piena.textContent = t("lista.full", { n: LISTA_MAX });
+      piena.hidden = false;
+      return;
+    }
+    piena.hidden = true;
     // Come nella finestra della richiesta: l'hotel si ricorda quando la
-    // richiesta parte davvero, e solo se c'e' scritto qualcosa.
+    // richiesta va nella lista, e solo se c'e' scritto qualcosa.
     ricordaHotel(req.hotel);
-    // La richiesta si salva anche nel database (richieste.js), come quelle
-    // della lista: l'ufficio la ritrova col codice e il cliente ne vede lo
-    // stato in "Le mie prenotazioni". Una riga per escursione, tutte col
-    // giorno d'inizio: i giorni veri li fissa l'ufficio quando conferma,
-    // cambiando la data riga per riga.
-    const codice = typeof richiestaNuova === "function"
-      ? richiestaNuova(pacchettoVociRichiesta(corrente, req)) : "";
+    listaAggiungi(Object.assign({ pack: corrente.id }, req));
     chiudi();
-    window.location.href = pacchettoWhatsappUrl(corrente, req, codice);
   });
 }
 

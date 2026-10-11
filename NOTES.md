@@ -17834,7 +17834,8 @@ Notion, pagina **"cose da portare"**, non ancora completa: "iniziamo da lì".
 - `controlla.js` (`controllaPortare`): ogni id deve esistere, una scheda sta in un
   gruppo solo, ogni voce ha it/en/es.
 
-**Scelte mie, da far confermare al proprietario:**
+**Scelte mie, confermate dal proprietario l'11 ottobre 2026** ("le scelte sulle barche e
+sui tour sono giuste"):
 - "Barca" vale per tutte le gite in barca **e i charter privati**, ma **non** per
   Submarine Safari (si sta dentro il sottomarino, niente bagno) e Pesca d'altura
   (si pesca, non si fa il bagno);

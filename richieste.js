@@ -61,22 +61,30 @@ function richiestaChiave() {
 // legge l'ufficio nel messaggio WhatsApp.
 // La variante si salva col nome italiano, come fanno i venditori coi ticket
 // di carta (option_label, vedi schema.sql).
+// Un pacchetto della lista diventa una riga per ogni sua escursione, tutte
+// col giorno d'inizio: i giorni veri li fissa l'ufficio quando conferma.
 function richiestaVoci(voci) {
-  return voci.map(voce => {
-    const tour = ESPLORA_CATALOG.find(x => x.id === voce.id);
-    const scelta = tour && tour.options && Array.isArray(tour.options.choices)
-      ? tour.options.choices[voce.optionIndex] : null;
-    const etichetta = scelta ? scelta.label : voce.option;
-    return {
-      excursion_id: voce.id,
-      option_label: (etichetta && typeof etichetta === "object" ? etichetta.it : etichetta) || null,
-      date: voce.date,
-      wanted_time: voce.time || null,
-      adults: voce.adults || 0,
-      kids: voce.kids || 0,
-      babies: voce.babies || 0
-    };
-  });
+  return voci.reduce((righe, voce) => {
+    if (!voce.pack) return righe.concat(richiestaVoce(voce));
+    const pack = typeof pacchettoDi === "function" ? pacchettoDi(voce.pack) : null;
+    return pack ? righe.concat(pacchettoVociRichiesta(pack, voce).map(richiestaVoce)) : righe;
+  }, []);
+}
+
+function richiestaVoce(voce) {
+  const tour = ESPLORA_CATALOG.find(x => x.id === voce.id);
+  const scelta = tour && tour.options && Array.isArray(tour.options.choices)
+    ? tour.options.choices[voce.optionIndex] : null;
+  const etichetta = scelta ? scelta.label : voce.option;
+  return {
+    excursion_id: voce.id,
+    option_label: (etichetta && typeof etichetta === "object" ? etichetta.it : etichetta) || null,
+    date: voce.date,
+    wanted_time: voce.time || null,
+    adults: voce.adults || 0,
+    kids: voce.kids || 0,
+    babies: voce.babies || 0
+  };
 }
 
 // Chiamata diretta invece della libreria di Supabase: la libreria pesa 200 KB

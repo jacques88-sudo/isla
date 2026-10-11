@@ -53,13 +53,27 @@ function listaScrivi(voci) {
   document.dispatchEvent(new CustomEvent("islalista"));
 }
 
-function listaEPiena() {
-  return listaLeggi().length >= LISTA_MAX;
+// Quante escursioni vale una voce: una, o quelle dentro il pacchetto. Il
+// tetto conta le escursioni e non le voci, perche' nel database ognuna e' una
+// riga, e una richiesta ne prende al massimo dieci (manda_richiesta).
+function listaPeso(voce) {
+  if (!voce.pack) return 1;
+  const pack = typeof pacchettoDi === "function" ? pacchettoDi(voce.pack) : null;
+  return pack ? pack.voci.length : 1;
+}
+
+function listaEscursioni(voci) {
+  return voci.reduce((tot, voce) => tot + listaPeso(voce), 0);
+}
+
+// `peso`: quante escursioni si vogliono aggiungere (un pacchetto ne porta tre).
+function listaEPiena(peso) {
+  return listaEscursioni(listaLeggi()) + (peso || 1) > LISTA_MAX;
 }
 
 function listaAggiungi(voce) {
   const voci = listaLeggi();
-  if (voci.length >= LISTA_MAX) return;
+  if (listaEscursioni(voci) + listaPeso(voce) > LISTA_MAX) return;
   voci.push(voce);
   listaScrivi(voci);
   listaToast(t("lista.added"));
@@ -97,7 +111,14 @@ function listaToast(testo) {
 
 // Il conto di una voce della lista: l'attivita' dal catalogo e il totale, che
 // puo' non esserci (prezzo su richiesta, prezzo a barca, bambini senza prezzo).
+// Un pacchetto torna come { pack, conto }: il suo conto e' quello del
+// pacchetto, con lo sconto e i mezzi (pacchettoTotale in pacchetti.js).
 function listaVoceConto(voce) {
+  if (voce.pack) {
+    const pack = typeof pacchettoDi === "function" ? pacchettoDi(voce.pack) : null;
+    if (!pack) return null;
+    return { pack: pack, conto: pacchettoTotale(pack, voce.adults, voce.kids, voce.mezzi) };
+  }
   const tour = ESPLORA_CATALOG.find(x => x.id === voce.id);
   if (!tour) return null;
   return { tour: tour, conto: calcolaTotale(tour, voce) };
@@ -127,19 +148,26 @@ function listaWhatsappUrl(nome, codice) {
   if (!voci.length) return "";
   const primo = listaVoceConto(voci[0]);
   if (voci.length === 1) {
-    return primo ? whatsappUrl(primo.tour, Object.assign({ name: nome, code: codice }, voci[0])) : "";
+    if (!primo) return "";
+    return primo.pack
+      ? pacchettoWhatsappUrl(primo.pack, Object.assign({ name: nome }, voci[0]), codice)
+      : whatsappUrl(primo.tour, Object.assign({ name: nome, code: codice }, voci[0]));
   }
 
   const blocchi = [];
   voci.forEach((voce, i) => {
     const riga = listaVoceConto(voce);
     if (!riga) return;
-    blocchi.push((i + 1) + ") " + tf(riga.tour.title) + "\n" +
-      righeRichiesta(riga.tour, voce).join("\n"));
+    blocchi.push(riga.pack
+      ? (i + 1) + ") " + tf(riga.pack.title) + "\n" +
+        pacchettoRigheRichiesta(riga.pack, voce).join("\n")
+      : (i + 1) + ") " + tf(riga.tour.title) + "\n" +
+        righeRichiesta(riga.tour, voce).join("\n"));
   });
 
   const { somma, senzaPrezzo } = listaSomma(voci);
-  let testo = t("wa.introList", { name: nome, n: voci.length }) + "\n\n" +
+  // le escursioni vere, contando quelle dentro i pacchetti
+  let testo = t("wa.introList", { name: nome, n: listaEscursioni(voci) }) + "\n\n" +
     blocchi.join("\n\n");
   if (somma > 0) {
     testo += "\n\n" + (senzaPrezzo ? t("wa.totalPartial") : t("wa.total")) +
@@ -254,6 +282,35 @@ function initLista() {
       '<span>' + t("lista.title") + '</span>';
   }
 
+  // Il pacchetto nella lista: una voce sola, che si toglie intera e non si
+  // modifica. Sotto il titolo le scelte (dal giorno, persone, mezzi) e cosa
+  // c'e' dentro; a destra il totale col suo sconto.
+  function vocePacchetto(riga, voce, i) {
+    const pack = riga.pack;
+    const dettagli = [
+      t("wa.fromDay") + " " + formatDate(voce.date),
+      peopleText(voce.adults, voce.kids, 0)
+    ];
+    pacchettoMezziDaContare(pack).forEach(gruppo => {
+      const conto = pacchettoContoMezzi(gruppo, (voce.mezzi || {})[gruppo.indice]);
+      if (conto) dettagli.push(conto.nome + ": " + conto.righe);
+    });
+    const risparmio = riga.conto && riga.conto.risparmio > 0
+      ? `<span>${esc(t("pack.save", { n: eur(riga.conto.risparmio) }))}</span>` : "";
+    return `
+        <li class="lista-voce">
+          <div class="lista-voce-testo">
+            <strong>${esc(tf(pack.title))}</strong>
+            <span>${esc(dettagli.join(" · "))}</span>
+            <span>${esc(t("pack.inside") + ": " + pacchettoVociTesto(pack))}</span>
+            ${risparmio}
+          </div>
+          <span class="lista-voce-prezzo">${riga.conto ? "€" + eur(riga.conto.totale) : "—"}</span>
+          <button class="iconbtn lista-voce-togli" type="button" data-lista-remove="${i}"
+                  aria-label="${esc(t("lista.remove"))}">✕</button>
+        </li>`;
+  }
+
   function disegna() {
     const voci = listaLeggi();
     const corpo = dialog.querySelector("[data-lista-body]");
@@ -272,6 +329,7 @@ function initLista() {
     const righe = voci.map((voce, i) => {
       const riga = listaVoceConto(voce);
       if (!riga) return "";
+      if (riga.pack) return vocePacchetto(riga, voce, i);
       const dettagli = [formatDate(voce.date)];
       if (voce.time) dettagli.push(voce.time);
       if (voce.lang) dettagli.push(voce.lang);

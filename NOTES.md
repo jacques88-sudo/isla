@@ -15392,7 +15392,7 @@ le due funzioni nuove caricate in un Postgres 16 locale, chiamate come `anon`):
 `supabase/modifiche/2026-09-30-richieste-whatsapp.sql`** nell'SQL Editor. Finché non
 lo fa, le richieste restano "da mandare" nei telefoni e partono da sole dopo.
 
-**Ancora solo su WhatsApp:** pacchetti e noleggio, che non passano dalla lista.
+**Ancora solo su WhatsApp:** pacchetti e noleggio, che non passano dalla lista (i pacchetti si salvano dall'11 ottobre 2026).
 
 `CACHE_NAME` alzato a `isla-v378`.
 
@@ -17849,3 +17849,27 @@ sui tour sono giuste"):
 Provato nel browser con risposte di Supabase finte: Jet Ski confermato → Costume, Crema
 solare, Asciugamano; Submarine confermato, Buggy in attesa e Freebird passato → niente
 riquadro. Nessun errore. `CACHE_NAME` → `isla-v476`.
+
+## 11 ottobre 2026 — Le richieste dei pacchetti vanno anche nel database
+
+Il proprietario: le richieste dei pacchetti, che partivano **solo** su WhatsApp, si
+salvano su Supabase come quelle della lista ("salvarli come la lista"). Così l'ufficio
+le vede in `venditori.html` fra le richieste WhatsApp e il cliente le ritrova in "Le mie
+prenotazioni".
+
+- `pacchettoVociRichiesta()` in `pacchetti.js` trasforma il pacchetto nelle voci che
+  `richiestaNuova()` (`richieste.js`) sa già salvare: **una riga per escursione**, con
+  la variante solo dove il pacchetto l'ha decisa, niente ora (nel pacchetto non si
+  chiede).
+- **Tutte le righe hanno il giorno d'inizio** ("Dal giorno"): il database vuole una data
+  per riga, e i giorni veri li mette d'accordo l'ufficio. Quando conferma, cambia la data
+  riga per riga, come già si può fare.
+- Il messaggio WhatsApp finisce con "Codice richiesta: …", come quello della lista.
+- Nessun SQL nuovo: `manda_richiesta()` accetta fino a 10 escursioni, e il pacchetto più
+  lungo ne ha 7. I mezzi (quanti buggy) restano solo nel messaggio: `manda_richiesta()`
+  non li salva, come per la lista.
+
+Provato con Supabase finto: Tenerife Trio (3 righe, Luxury Cruiser con "3 ore, in
+condivisione") e versione buggy (il buggy senza variante, percorso aperto); il codice
+nel messaggio è lo stesso salvato nel telefono, segnato `stored`. Nessun errore.
+Il **noleggio** resta solo su WhatsApp. `CACHE_NAME` → `isla-v477`.

@@ -1369,7 +1369,24 @@ function pacchettoVociTesto(pack) {
   }).filter(Boolean).join(" + ");
 }
 
-function pacchettoWhatsappUrl(pack, req) {
+// Le escursioni del pacchetto nella forma delle voci della lista, quella che
+// richiestaNuova() sa salvare. Niente ora: nel pacchetto non si chiede. La
+// variante solo dove il pacchetto l'ha decisa; dove resta aperta (il percorso
+// del buggy) la sceglie l'ufficio rispondendo.
+function pacchettoVociRichiesta(pack, req) {
+  return pack.voci
+    .filter(voce => pacchettoVoceTour(voce))
+    .map(voce => ({
+      id: voce.id,
+      optionIndex: voce.optionIndex,
+      date: req.date,
+      adults: req.adults,
+      kids: req.kids,
+      babies: 0
+    }));
+}
+
+function pacchettoWhatsappUrl(pack, req, codice) {
   const righe = [
     "• " + t("pack.inside") + ": " + pacchettoVociTesto(pack),
     // "Dal giorno" e non "Data": e' il primo dei tre, non una data fissa, e
@@ -1408,7 +1425,10 @@ function pacchettoWhatsappUrl(pack, req) {
   const testo = (giorni
       ? t("wa.introDays", { name: req.name, pack: tf(pack.title), n: giorni })
       : t("wa.introPack", { name: req.name, pack: tf(pack.title) })) +
-    "\n\n" + righe.join("\n");
+    "\n\n" + righe.join("\n") +
+    // Il codice della richiesta salvata nel database, come nella lista: e'
+    // quello con cui l'ufficio la ritrova in venditori.html.
+    (codice ? "\n\n" + t("wa.code", { code: codice }) : "");
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
 }
 
@@ -1717,8 +1737,15 @@ function initPacchettoRichiesta() {
     // Come nella finestra della richiesta: l'hotel si ricorda quando la
     // richiesta parte davvero, e solo se c'e' scritto qualcosa.
     ricordaHotel(req.hotel);
+    // La richiesta si salva anche nel database (richieste.js), come quelle
+    // della lista: l'ufficio la ritrova col codice e il cliente ne vede lo
+    // stato in "Le mie prenotazioni". Una riga per escursione, tutte col
+    // giorno d'inizio: i giorni veri li fissa l'ufficio quando conferma,
+    // cambiando la data riga per riga.
+    const codice = typeof richiestaNuova === "function"
+      ? richiestaNuova(pacchettoVociRichiesta(corrente, req)) : "";
     chiudi();
-    window.location.href = pacchettoWhatsappUrl(corrente, req);
+    window.location.href = pacchettoWhatsappUrl(corrente, req, codice);
   });
 }
 

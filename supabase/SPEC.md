@@ -124,4 +124,5 @@ Altri campi: `source` (`strada`, `online`, `whatsapp`), `status` (`pending`, `co
 - Come convivono "Le mie escursioni", la lista delle richieste (`lista.js`) e il
   "Prenota ora" con i dati finti. In parte deciso: le richieste della lista hanno la
   loro pagina, raggiungibile dalla finestra "Il mio ticket".
-- Le richieste di **pacchetti** e **noleggio** partono ancora solo su WhatsApp.
+- Le richieste del **noleggio** partono ancora solo su WhatsApp. Quelle dei **pacchetti**
+  si salvano come quelle della lista dall'11 ottobre 2026.

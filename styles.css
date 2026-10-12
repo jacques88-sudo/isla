@@ -1021,6 +1021,20 @@ p.note-box { margin: 0 0 1rem; }
   color: var(--primary-foreground);
 }
 .btn-block { width: 100%; }
+/* "Aggiungi alla lista" (nella scheda e sulla barra in fondo) e' l'unico
+   bottone azzurro, perche' si noti (proprietario, 12 ottobre 2026). E'
+   l'azzurro chiaro dell'anello del caricamento (--wave-blue-light) con la
+   scritta scura: con la bianca si leggerebbe 2,2:1, con la scura 7,4:1.
+   I colori sono scritti a mano e non presi da --text o --primary, che col
+   tema scuro si girerebbero: questo bottone e' uguale di giorno e di notte. */
+.btn-primary[data-request-add] {
+  background: var(--wave-blue-light);
+  color: oklch(0.24 0.012 60);
+  font-weight: 500;
+  transition: background-color .15s ease;
+}
+.btn-primary[data-request-add]:hover { background: oklch(0.69 0.1 212); }
+.btn-primary[data-request-add]:active { background: oklch(0.64 0.1 215); }
 .btn-soft {
   background: transparent;
   color: var(--text);

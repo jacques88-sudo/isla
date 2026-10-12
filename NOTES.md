@@ -17954,3 +17954,22 @@ colori a contrasto elevato di Windows. Il bordo resta `var(--bg)`, del colore de
 pagina, così il cerchio si stacca dalla foto. Vale nelle sette pagine che hanno il
 logo tondo (sulle schede è quello piccolo nell'angolo). Provato nel browser in chiaro
 e in scuro: bianco su index, escursioni e tour. `CACHE_NAME` → `isla-v481`.
+
+## 12 ottobre 2026 — "Aggiungi alla lista" azzurro
+
+Il proprietario voleva il bottone più evidente. Era `.btn-primary`, nero caldo come
+tutti gli altri bottoni principali, e non si distingueva. Provati arancio, corallo, blu,
+verde e due azzurri; scelto l'**azzurro chiaro con la scritta scura** (opzione B):
+- il colore è `--wave-blue-light`, l'azzurro dell'anello del caricamento: nessun colore
+  nuovo nel sito;
+- la scritta è scura, 7,4:1. **Con la bianca sull'azzurro chiaro si scende a 2,2:1**:
+  un azzurro con la scritta bianca deve essere scuro (`oklch(0.55 0.12 225)`, 4,6:1);
+- colori scritti a mano, non `--text` o `--primary`: col tema scuro si girerebbero.
+  Il bottone è uguale di giorno e di notte;
+- più scuro sotto il mouse (6,2:1) e quando si preme (5,1:1);
+- scartati: il corallo somiglia al rosso degli errori (`--danger`), il verde sembra il
+  bottone di WhatsApp ma il bottone non apre WhatsApp.
+
+La regola è `.btn-primary[data-request-add]`: vale solo per il bottone nella scheda e per
+quello della barra in fondo; gli altri `.btn-primary` restano neri. Provato nel browser
+in chiaro e in scuro, e il tocco apre ancora la finestra. `CACHE_NAME` → `isla-v482`.

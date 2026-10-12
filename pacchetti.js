@@ -1624,7 +1624,7 @@ function initPacchettoRichiesta() {
              fondo mentre il modulo scorre. -->
         <div class="request-foot">
           <p class="request-total" data-pack-total></p>
-          <button class="btn btn-primary btn-block request-submit" type="submit">
+          <button class="btn btn-primary btn-lista btn-block request-submit" type="submit">
             ${esc(t("req.addToList"))}</button>
         </div>
         <p class="hint">${esc(t("pack.askHint"))}</p>

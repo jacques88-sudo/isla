@@ -589,7 +589,7 @@ function renderTour(tour) {
   // che mandava il vecchio "Richiedi disponibilita'" (lista.js lo sa fare), e
   // il nome si chiede una volta, quando la lista parte.
   const askBtn = WHATSAPP_NUMBER
-    ? `<button class="btn btn-primary btn-block" type="button" data-request-add="${esc(tour.id)}"
+    ? `<button class="btn btn-primary btn-lista btn-block" type="button" data-request-add="${esc(tour.id)}"
                aria-haspopup="dialog" aria-controls="requestDialog">${esc(t("req.addToList"))}</button>`
     : "";
 

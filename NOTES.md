@@ -17935,3 +17935,11 @@ Provato su Postgres 16 con lo schema e tutte le modifiche: i ticket già salvati
 la somma giusta dei netti; un adulto in più ricalcola; un ticket nuovo
 in cash diventa card; l'SQL lanciato due volte non fa danni e il guardiano resta acceso.
 `CACHE_NAME` → `isla-v479`.
+
+## 12 ottobre 2026 — Trenino turistico nascosto
+
+Il proprietario: "nascondi il tour con il trenino al momento". La scheda
+`trenino-turistico` resta nel catalogo con la foto e i prezzi, ma `published: false`,
+come il Flyboard: per rimetterla basta tornare a `true`. Resta anche in
+`PICKUP_NESSUNO` (`hotel.js`), così il giorno che torna non mostra fermate sbagliate.
+Schede pubblicate: da 66 a 65. `CACHE_NAME` → `isla-v480`.

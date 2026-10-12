@@ -6125,7 +6125,9 @@ const ESPLORA_CATALOG = [
       es: "Tren sobre ruedas entre Costa Adeje y Los Cristianos: subes y bajas en las paradas cuando quieras, el billete vale todo el día."
     },
     image: "trenino-turistico.jpg",
-    published: true
+    // Spento il 12 ottobre 2026 dal proprietario, "al momento". La scheda
+    // resta qui, con la foto: per rimetterla basta tornare a true.
+    published: false
   },
 
   // ─── TOUR PRIVATI ─────────────────────────────────────────────────────────

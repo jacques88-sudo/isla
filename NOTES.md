@@ -17943,3 +17943,14 @@ Il proprietario: "nascondi il tour con il trenino al momento". La scheda
 come il Flyboard: per rimetterla basta tornare a `true`. Resta anche in
 `PICKUP_NESSUNO` (`hotel.js`), così il giorno che torna non mostra fermate sbagliate.
 Schede pubblicate: da 66 a 65. `CACHE_NAME` → `isla-v480`.
+
+## 12 ottobre 2026 — Il cerchio del logo è sempre bianco
+
+Il proprietario: il cerchio dietro il logo deve vedersi bianco "con qualsiasi
+impostazione". `.home-hero-mark` aveva `background: var(--surface)`, che col tema scuro
+del telefono diventa marrone scuro. Ora è `#fff` scritto a mano (non una variabile, che
+di notte si girerebbe) più `forced-color-adjust: none`, che lo tiene bianco anche coi
+colori a contrasto elevato di Windows. Il bordo resta `var(--bg)`, del colore della
+pagina, così il cerchio si stacca dalla foto. Vale nelle sette pagine che hanno il
+logo tondo (sulle schede è quello piccolo nell'angolo). Provato nel browser in chiaro
+e in scuro: bianco su index, escursioni e tour. `CACHE_NAME` → `isla-v481`.

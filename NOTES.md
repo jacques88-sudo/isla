@@ -17986,3 +17986,30 @@ volte, `tour.html` ed `escursioni.html`: nell'HTML dice "Continua su WhatsApp", 
 aggiunge alla lista prende `btn-lista`.** Resta nero "Continua su WhatsApp" nella
 finestra della lista (`lista.js`): quello manda la richiesta, non aggiunge.
 Provato nel browser in chiaro e in scuro. `CACHE_NAME` → `isla-v483`.
+
+## 12 ottobre 2026 — L'email nella richiesta, obbligatoria
+
+Il proprietario: per certi biglietti (il Siam Park, e "sono molte di più") la compagnia
+chiede l'email del cliente. Deciso: si chiede **a tutti**, su qualsiasi richiesta, ed è
+**obbligatoria**. Niente elenco di schede "che la vogliono": sarebbe stato un campo in
+più da ricordarsi su ogni scheda nuova, e le compagnie che la chiedono sono tante.
+
+- Sta nella **finestra della lista** (`lista.js`), sotto il nome: è l'unico posto da cui
+  parte il messaggio (escursione sola, pacchetto, lista di più voci). La finestra della
+  richiesta in `escursioni.html` / `tour.html` **non è stata toccata**: lì il nome non si
+  chiede, e nemmeno l'email.
+- Nel messaggio WhatsApp è una riga `Email: …` (`wa.email`) prima del codice della
+  richiesta, nei tre messaggi: `whatsappUrl` (escursioni.js), `pacchettoWhatsappUrl`
+  (pacchetti.js) e la lista.
+- **Non va nel database**: `richieste.js` non salva né nome né hotel, e l'email nemmeno.
+  Non si ricorda nel browser.
+- `type="email"` accetta anche `mario@gmail` senza `.com`, l'errore più facile col
+  pollice: il controllo in più (un punto dopo la `@`) è nostro, con il messaggio
+  `req.emailInvalid` nelle tre lingue.
+- Sotto la casella una riga spiega perché la chiediamo (`req.emailHint`): "Molte compagnie
+  mandano il biglietto per email".
+- CSS: le regole di `.lista-dialog input[type="text"]` valgono anche per `type="email"`,
+  altrimenti la casella restava quella grezza del browser.
+
+Provato nel browser (375 px): email sbagliata e vuota bloccano l'invio, quella giusta
+arriva nel messaggio con una voce, con due voci. `CACHE_NAME` → `isla-v484`.

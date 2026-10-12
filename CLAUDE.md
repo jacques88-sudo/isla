@@ -171,6 +171,10 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
 - **Il campo "Il tuo nome" nella richiesta resta**, per scelta del proprietario. Era stata
   proposta la sua rimozione — il messaggio parte dal WhatsApp del cliente, quindi l'ufficio
   vede già chi scrive e da che numero — ed è stata respinta. Non si ripropone.
+- **L'email nella richiesta si chiede a tutti ed è obbligatoria** (proprietario, 12
+  ottobre 2026): molte compagnie (i parchi per primi) mandano il biglietto per email.
+  Sta sotto il nome nella finestra della lista (`lista.js`) e va **solo** nel messaggio
+  WhatsApp, mai nel database. Non si fa un elenco di schede che la vogliono.
 - **La tastiera dell'iPhone sul fondo della finestra si lascia com'è**, per scelta del
   proprietario. Misurato: col campo del nome a fuoco il pulsante finisce dietro la
   tastiera e la casella la scavalca di 6 px sull'iPhone SE. Il rimedio esiste (alzare la

@@ -1435,6 +1435,7 @@ function pacchettoWhatsappUrl(pack, req, codice) {
       ? t("wa.introDays", { name: req.name, pack: tf(pack.title), n: giorni })
       : t("wa.introPack", { name: req.name, pack: tf(pack.title) })) +
     "\n\n" + righe.join("\n") +
+    (req.email ? "\n\n" + t("wa.email", { email: req.email }) : "") +
     // Il codice della richiesta salvata nel database, come nella lista: e'
     // quello con cui l'ufficio la ritrova in venditori.html.
     (codice ? "\n\n" + t("wa.code", { code: codice }) : "");

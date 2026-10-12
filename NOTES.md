@@ -17973,3 +17973,16 @@ verde e due azzurri; scelto l'**azzurro chiaro con la scritta scura** (opzione B
 La regola è `.btn-primary[data-request-add]`: vale solo per il bottone nella scheda e per
 quello della barra in fondo; gli altri `.btn-primary` restano neri. Provato nel browser
 in chiaro e in scuro, e il tocco apre ancora la finestra. `CACHE_NAME` → `isla-v482`.
+
+## 12 ottobre 2026 — Tutti gli "Aggiungi alla lista" azzurri
+
+Il proprietario: "tutti i pulsanti aggiungi alla lista" di quel colore. Oltre ai due
+della scheda c'erano il pulsante in fondo alla **finestra della richiesta** (scritto due
+volte, `tour.html` ed `escursioni.html`: nell'HTML dice "Continua su WhatsApp", ma
+`open()` in `escursioni.js` lo riscrive sempre in "Aggiungi alla lista") e quello del
+**modulo dei pacchetti** (`pacchetti.js`). Adesso tutti e quattro hanno la classe
+**`.btn-lista`**, e la regola è `.btn-primary.btn-lista` (prima era
+`[data-request-add]`, che i pulsanti delle finestre non hanno). **Un pulsante nuovo che
+aggiunge alla lista prende `btn-lista`.** Resta nero "Continua su WhatsApp" nella
+finestra della lista (`lista.js`): quello manda la richiesta, non aggiunge.
+Provato nel browser in chiaro e in scuro. `CACHE_NAME` → `isla-v483`.

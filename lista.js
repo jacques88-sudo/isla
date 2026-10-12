@@ -143,15 +143,19 @@ function listaSomma(voci) {
 // da leggere, e all'ufficio arriverebbero due formati per la stessa cosa.
 // `codice`: quello della richiesta salvata nel database (richieste.js), in
 // fondo al messaggio. Vuoto = niente riga.
-function listaWhatsappUrl(nome, codice) {
+// `email`: molte compagnie (i parchi per primi) mandano il biglietto per
+// email, e senza l'ufficio deve riscrivere al cliente per chiederla. Si chiede
+// a tutti, obbligatoria (proprietario, 12 ottobre 2026), e va solo nel
+// messaggio: nel database non si salva, come il nome.
+function listaWhatsappUrl(nome, codice, email) {
   const voci = listaLeggi();
   if (!voci.length) return "";
   const primo = listaVoceConto(voci[0]);
   if (voci.length === 1) {
     if (!primo) return "";
     return primo.pack
-      ? pacchettoWhatsappUrl(primo.pack, Object.assign({ name: nome }, voci[0]), codice)
-      : whatsappUrl(primo.tour, Object.assign({ name: nome, code: codice }, voci[0]));
+      ? pacchettoWhatsappUrl(primo.pack, Object.assign({ name: nome, email: email }, voci[0]), codice)
+      : whatsappUrl(primo.tour, Object.assign({ name: nome, email: email, code: codice }, voci[0]));
   }
 
   const blocchi = [];
@@ -173,6 +177,7 @@ function listaWhatsappUrl(nome, codice) {
     testo += "\n\n" + (senzaPrezzo ? t("wa.totalPartial") : t("wa.total")) +
       ": €" + eur(somma);
   }
+  if (email) testo += "\n\n" + t("wa.email", { email: email });
   if (codice) testo += "\n\n" + t("wa.code", { code: codice });
   return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
 }
@@ -319,6 +324,8 @@ function initLista() {
     // cancellato.
     const nomeScritto = corpo.querySelector("#listaName");
     const nome = nomeScritto ? nomeScritto.value : "";
+    const emailScritta = corpo.querySelector("#listaEmail");
+    const email = emailScritta ? emailScritta.value : "";
     if (!voci.length) {
       const frase = vuotaDaSubito ? "lista.none" : "lista.empty";
       corpo.innerHTML = '<p class="lista-empty" data-i18n="' + frase + '"></p>';
@@ -379,6 +386,11 @@ function initLista() {
         <label for="listaName" data-i18n="req.name">Il tuo nome</label>
         <input id="listaName" name="name" type="text" autocomplete="name"
                data-i18n-placeholder="req.namePlaceholder" required />
+        <label for="listaEmail" data-i18n="req.email">La tua email</label>
+        <input id="listaEmail" name="email" type="email" inputmode="email" autocomplete="email"
+               autocapitalize="off" spellcheck="false"
+               data-i18n-placeholder="req.emailPlaceholder" required />
+        <p class="hint" data-i18n="req.emailHint"></p>
         <button class="btn btn-primary btn-block request-submit" type="submit"
                 data-i18n="req.submit">Continua su WhatsApp</button>
         <p class="hint" data-i18n="lista.hint"></p>
@@ -389,6 +401,7 @@ function initLista() {
       </form>`;
     applyI18n(corpo);
     if (nome) corpo.querySelector("#listaName").value = nome;
+    if (email) corpo.querySelector("#listaEmail").value = email;
   }
 
   carrelli.forEach(c => c.addEventListener("click", apri));
@@ -399,16 +412,31 @@ function initLista() {
     if (togli) { listaTogli(parseInt(togli.dataset.listaRemove, 10)); return; }
     if (e.target.closest("[data-lista-clear]")) { listaSvuota(); chiudi(); }
   });
+  // il messaggio d'errore dell'email resta finche' non lo si toglie: appena il
+  // cliente corregge, la casella torna buona
+  dialog.addEventListener("input", e => {
+    if (e.target.id === "listaEmail") e.target.setCustomValidity("");
+  });
   dialog.addEventListener("submit", e => {
     e.preventDefault();
     const nome = dialog.querySelector("#listaName").value.trim();
     if (!nome) return;
+    // Il browser con type="email" accetta anche "mario@gmail" senza ".com":
+    // e' l'errore che si fa di piu' col pollice, e un biglietto mandato li'
+    // non arriva a nessuno. Il punto dopo la chiocciola lo chiediamo noi.
+    const emailEl = dialog.querySelector("#listaEmail");
+    const email = emailEl.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) {
+      emailEl.setCustomValidity(t("req.emailInvalid"));
+      emailEl.reportValidity();
+      return;
+    }
     if (!listaWhatsappUrl(nome)) return;
     // La richiesta si salva anche nel database (richieste.js), col codice che
     // va nel messaggio: cosi' l'ufficio la ritrova e il cliente ne vede lo
     // stato in "Le mie richieste". Il messaggio si rifa' col codice dentro.
     const codice = typeof richiestaNuova === "function" ? richiestaNuova(listaLeggi()) : "";
-    const url = listaWhatsappUrl(nome, codice);
+    const url = listaWhatsappUrl(nome, codice, email);
     // La lista si svuota: la richiesta e' partita, e ritrovarsela ancora li'
     // alla prossima visita farebbe rimandare due volte le stesse escursioni.
     listaSvuota();

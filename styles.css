@@ -2653,7 +2653,8 @@ body.menu-open { overflow: hidden; }
    richiesta: senza questa riga eredita la larghezza di default del browser */
 .request-dialog input[type="date"],
 .request-dialog input[type="text"],
-.lista-dialog input[type="text"] {
+.lista-dialog input[type="text"],
+.lista-dialog input[type="email"] {
   width: 100%;
   border: 1px solid var(--border);
   background: var(--surface);
@@ -3906,7 +3907,8 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 
 /* Il nome si scrive su una riga, come sull'indirizzo di una cartolina, non
    dentro una pillola. */
-.lista-dialog input[type="text"] {
+.lista-dialog input[type="text"],
+.lista-dialog input[type="email"] {
   border: none;
   border-bottom: 1px solid var(--muted);
   border-radius: 0;
@@ -3916,8 +3918,10 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   font-size: 1.45rem;
   margin-bottom: 1.3rem;
 }
-.lista-dialog input[type="text"]:focus { border-bottom-color: var(--text); }
-.lista-dialog input[type="text"]::placeholder { font-family: var(--font-hand); }
+.lista-dialog input[type="text"]:focus,
+.lista-dialog input[type="email"]:focus { border-bottom-color: var(--text); }
+.lista-dialog input[type="text"]::placeholder,
+.lista-dialog input[type="email"]::placeholder { font-family: var(--font-hand); }
 
 /* Da 640px in su la finestra sta in mezzo allo schermo e c'e' spazio per la
    cartolina vera: messaggio a sinistra, indirizzo a destra, separati dalla
@@ -3993,14 +3997,16 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
      era rimasta bianca su carta chiara */
   .lista-dialog .lista-empty,
   .lista-dialog .lista-totale strong,
-  .lista-dialog input[type="text"] { color: oklch(0.24 0.012 60); }
+  .lista-dialog input[type="text"],
+  .lista-dialog input[type="email"] { color: oklch(0.24 0.012 60); }
   .lista-dialog .lista-voce-testo span,
   .lista-dialog .lista-luogo,
   .lista-dialog .lista-totale small,
   .lista-dialog .hint,
   .lista-dialog .lista-svuota,
   .lista-dialog label { color: oklch(0.45 0.016 65); }
-  .lista-dialog input[type="text"]::placeholder { color: oklch(0.55 0.016 65); }
+  .lista-dialog input[type="text"]::placeholder,
+  .lista-dialog input[type="email"]::placeholder { color: oklch(0.55 0.016 65); }
   /* .iconbtn e il francobollo prendono il fondo da --surface: sulla carta
      chiara diventavano due macchie scure. */
   .lista-dialog .iconbtn {

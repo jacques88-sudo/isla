@@ -112,7 +112,10 @@ function richiestaManda(r) {
 
 // La lista sta per partire su WhatsApp: si salva la richiesta e si prova a
 // mandarla. Restituisce il codice da scrivere nel messaggio.
-function richiestaNuova(voci) {
+// `iscrizione` e' l'indirizzo del telefono per gli avvisi (avvisiIscrizione),
+// o null se il cliente non li vuole: parte nello stesso momento della
+// richiesta, perche' subito dopo la pagina se ne va verso WhatsApp.
+function richiestaNuova(voci, iscrizione) {
   const r = {
     token: richiestaChiave(),
     code: richiestaCodice(),
@@ -120,22 +123,135 @@ function richiestaNuova(voci) {
     items: richiestaVoci(voci),
     stored: false
   };
+  if (iscrizione) r.avvisi = "da-mandare";
   const elenco = richiesteLeggi();
   elenco.push(r);
   richiesteScrivi(elenco);
   richiestaManda(r);
+  if (iscrizione) avvisiManda(r, iscrizione);
   return r.code;
+}
+
+// GLI AVVISI SUL TELEFONO (13 ottobre 2026)
+//
+// Chi manda la lista puo' chiedere un avviso quando l'ufficio conferma o
+// annulla, e un promemoria prima dell'escursione. Li manda la funzione
+// supabase/functions/manda-notifiche; qui il telefono si iscrive e basta.
+// Le regole stanno in supabase/modifiche/2026-10-13-notifiche.sql.
+//
+// L'iscrizione e' legata alla CHIAVE della richiesta, come la lettura dello
+// stato: niente login, niente telefono. Sull'iPhone gli avvisi esistono solo
+// con l'app installata sulla schermata Home (iOS 16.4 e dopo): in Safari
+// PushManager non c'e', e la casella non si mostra.
+
+function avvisiPossibili() {
+  return typeof VAPID_PUBLIC_KEY !== "undefined" && typeof SUPABASE_URL !== "undefined" &&
+    "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+}
+
+// iPhone o iPad in Safari, senza l'app installata: gli avvisi ci sarebbero,
+// ma solo installando. L'iPad nuovo si presenta come un Mac: lo tradisce il
+// tocco.
+function avvisiSoloConApp() {
+  if (avvisiPossibili()) return false;
+  const ios = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const installata = window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+  return ios && !installata;
+}
+
+// La chiave pubblica e' scritta in base64 "da indirizzo" (- e _ al posto di
+// + e /, senza =); il browser la vuole come byte.
+function avvisiChiave() {
+  const b64 = VAPID_PUBLIC_KEY.replace(/-/g, "+").replace(/_/g, "/");
+  const testo = atob(b64 + "=".repeat((4 - b64.length % 4) % 4));
+  return Uint8Array.from(testo, c => c.charCodeAt(0));
+}
+
+// I Safari vecchi rispondono alla domanda del permesso con una funzione da
+// richiamare invece che con una promessa: questa va bene per tutti e due.
+function avvisiPermesso() {
+  return new Promise(fatto => {
+    const p = Notification.requestPermission(fatto);
+    if (p && typeof p.then === "function") p.then(fatto, () => fatto("default"));
+  });
+}
+
+// L'indirizzo del telefono per gli avvisi, o null. Con `chiedi` il browser
+// mostra la sua domanda (solo la prima volta: dopo ricorda la risposta); senza,
+// si usa solo un permesso gia' dato, per riprovare in silenzio.
+// Il service worker non pronto entro 8 secondi vuol dire niente avvisi: il
+// cliente sta aspettando di andare su WhatsApp.
+function avvisiIscrizione(chiedi) {
+  if (!avvisiPossibili()) return Promise.resolve(null);
+  const permesso = Notification.permission === "default" && chiedi
+    ? avvisiPermesso() : Promise.resolve(Notification.permission);
+  return permesso.then(p => {
+    if (p !== "granted") return null;
+    const pronto = new Promise((fatto, errore) => {
+      navigator.serviceWorker.ready.then(fatto, errore);
+      setTimeout(() => errore(new Error("service worker non pronto")), 8000);
+    });
+    return pronto.then(reg => reg.pushManager.getSubscription().then(sub =>
+      sub || (chiedi
+        ? reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: avvisiChiave() })
+        : null)));
+  }).catch(() => null);
+}
+
+// I titoli delle escursioni della richiesta, per scriverli nell'avviso: il
+// catalogo sta nel sito, la funzione sul server non lo conosce.
+function avvisiTitoli(r) {
+  const titoli = {};
+  r.items.forEach(v => {
+    const tour = ESPLORA_CATALOG.find(x => x.id === v.excursion_id);
+    if (tour) titoli[v.excursion_id] = tf(tour.title).slice(0, 120);
+  });
+  return titoli;
+}
+
+function avvisiManda(r, iscrizione) {
+  const json = iscrizione.toJSON();
+  return fetch(SUPABASE_URL + "/rest/v1/rpc/avvisami", {
+    method: "POST",
+    keepalive: true,
+    headers: {
+      "Content-Type": "application/json",
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY
+    },
+    body: JSON.stringify({
+      p_token: r.token,
+      p_endpoint: json.endpoint,
+      p_p256dh: json.keys && json.keys.p256dh,
+      p_auth: json.keys && json.keys.auth,
+      p_lang: getLang(),
+      p_titoli: avvisiTitoli(r)
+    })
+  }).then(risposta => {
+    if (!risposta.ok) return false;
+    const elenco = richiesteLeggi();
+    const qui = elenco.find(x => x.token === r.token);
+    if (qui) { qui.avvisi = "ok"; richiesteScrivi(elenco); }
+    return true;
+  }).catch(() => false);
 }
 
 // Quelle rimaste "da mandare" si riprovano. Restituisce una promessa che si
 // chiude quando hanno finito tutte (booking.js la aspetta prima di leggere).
 // Una richiesta con le date gia' passate il database la rifiuta: non si
 // riprova all'infinito.
+// Stessa cosa per gli avvisi chiesti e non arrivati: si riprova in silenzio,
+// col permesso gia' dato. Se intanto il cliente l'ha tolto, non si chiede.
 function richiesteRiprova() {
   const ieri = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-  return Promise.all(richiesteLeggi()
-    .filter(r => !r.stored && r.items.some(v => v.date >= ieri))
-    .map(richiestaManda));
+  const vive = richiesteLeggi().filter(r => r.items.some(v => v.date >= ieri));
+  const avvisi = vive.filter(r => r.avvisi === "da-mandare");
+  return Promise.all(vive.filter(r => !r.stored).map(richiestaManda).concat(
+    avvisi.length
+      ? avvisiIscrizione(false).then(sub => sub && Promise.all(avvisi.map(r => avvisiManda(r, sub))))
+      : []));
 }
 
 // Le escursioni salvate qui, divise come le mostra booking.js: "ticket" le

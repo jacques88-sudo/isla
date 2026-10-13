@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v484";
+const CACHE_NAME = "isla-v485";
 const ASSETS = [
   "./",
   "./index.html",
@@ -104,6 +104,40 @@ self.addEventListener("fetch", event => {
           ? caches.match("./" + page, { ignoreSearch: true })
               .then(r => r || caches.match("./offline.html"))
           : caches.match("./offline.html"));
+    })
+  );
+});
+
+// GLI AVVISI SUL TELEFONO (13 ottobre 2026)
+// Li manda la funzione supabase/functions/manda-notifiche: richiesta
+// confermata, annullata, promemoria. Il testo arriva gia' scritto, nella
+// lingua del cliente; qui si mostra e basta. Il telefono li riceve anche a
+// sito chiuso: e' il service worker a svegliarsi, non la pagina.
+self.addEventListener("push", event => {
+  let dati = {};
+  try { dati = event.data ? event.data.json() : {}; } catch (e) { /* testo rovinato */ }
+  event.waitUntil(self.registration.showNotification(dati.title || "Isla", {
+    body: dati.body || "",
+    icon: "./assets/icon-192.png",
+    // lo stesso tag per la stessa escursione: l'avviso nuovo sostituisce il vecchio
+    tag: dati.tag,
+    data: { url: dati.url || "booking.html?richieste=1" }
+  }));
+});
+
+// Toccando l'avviso si apre la pagina delle richieste: se Isla e' gia' aperta
+// si usa quella finestra, se no se ne apre una.
+self.addEventListener("notificationclick", event => {
+  event.notification.close();
+  const url = new URL((event.notification.data && event.notification.data.url) || "booking.html?richieste=1",
+    self.registration.scope).href;
+  event.waitUntil(
+    self.clients.matchAll({ type: "window" }).then(finestre => {
+      const aperta = finestre[0];
+      if (!aperta) return self.clients.openWindow(url);
+      return aperta.focus()
+        .then(f => (f || aperta).navigate(url))
+        .catch(() => self.clients.openWindow(url));
     })
   );
 });

@@ -53,13 +53,27 @@ function listaScrivi(voci) {
   document.dispatchEvent(new CustomEvent("islalista"));
 }
 
-function listaEPiena() {
-  return listaLeggi().length >= LISTA_MAX;
+// Quante escursioni vale una voce: una, o quelle dentro il pacchetto. Il
+// tetto conta le escursioni e non le voci, perche' nel database ognuna e' una
+// riga, e una richiesta ne prende al massimo dieci (manda_richiesta).
+function listaPeso(voce) {
+  if (!voce.pack) return 1;
+  const pack = typeof pacchettoDi === "function" ? pacchettoDi(voce.pack) : null;
+  return pack ? pack.voci.length : 1;
+}
+
+function listaEscursioni(voci) {
+  return voci.reduce((tot, voce) => tot + listaPeso(voce), 0);
+}
+
+// `peso`: quante escursioni si vogliono aggiungere (un pacchetto ne porta tre).
+function listaEPiena(peso) {
+  return listaEscursioni(listaLeggi()) + (peso || 1) > LISTA_MAX;
 }
 
 function listaAggiungi(voce) {
   const voci = listaLeggi();
-  if (voci.length >= LISTA_MAX) return;
+  if (listaEscursioni(voci) + listaPeso(voce) > LISTA_MAX) return;
   voci.push(voce);
   listaScrivi(voci);
   listaToast(t("lista.added"));
@@ -97,7 +111,14 @@ function listaToast(testo) {
 
 // Il conto di una voce della lista: l'attivita' dal catalogo e il totale, che
 // puo' non esserci (prezzo su richiesta, prezzo a barca, bambini senza prezzo).
+// Un pacchetto torna come { pack, conto }: il suo conto e' quello del
+// pacchetto, con lo sconto e i mezzi (pacchettoTotale in pacchetti.js).
 function listaVoceConto(voce) {
+  if (voce.pack) {
+    const pack = typeof pacchettoDi === "function" ? pacchettoDi(voce.pack) : null;
+    if (!pack) return null;
+    return { pack: pack, conto: pacchettoTotale(pack, voce.adults, voce.kids, voce.mezzi) };
+  }
   const tour = ESPLORA_CATALOG.find(x => x.id === voce.id);
   if (!tour) return null;
   return { tour: tour, conto: calcolaTotale(tour, voce) };
@@ -122,37 +143,49 @@ function listaSomma(voci) {
 // da leggere, e all'ufficio arriverebbero due formati per la stessa cosa.
 // `codice`: quello della richiesta salvata nel database (richieste.js), in
 // fondo al messaggio. Vuoto = niente riga.
+// `email`: molte compagnie (i parchi per primi) mandano il biglietto per
+// email, e senza l'ufficio deve riscrivere al cliente per chiederla. Si chiede
+// a tutti, obbligatoria (proprietario, 12 ottobre 2026). Non ha una colonna
+// sua nel database: ci arriva dentro il messaggio (request_message).
 // Il testo sta a parte dall'indirizzo perche' va anche nel database
-// (richieste.js), e l'ufficio lo rilegge in venditori.html.
-function listaWhatsappTesto(nome, codice) {
+// (richieste.js, 13 ottobre 2026), e l'ufficio lo rilegge in venditori.html.
+function listaWhatsappTesto(nome, codice, email) {
   const voci = listaLeggi();
   if (!voci.length) return "";
   const primo = listaVoceConto(voci[0]);
   if (voci.length === 1) {
-    return primo ? whatsappTesto(primo.tour, Object.assign({ name: nome, code: codice }, voci[0])) : "";
+    if (!primo) return "";
+    return primo.pack
+      ? pacchettoWhatsappTesto(primo.pack, Object.assign({ name: nome, email: email }, voci[0]), codice)
+      : whatsappTesto(primo.tour, Object.assign({ name: nome, email: email, code: codice }, voci[0]));
   }
 
   const blocchi = [];
   voci.forEach((voce, i) => {
     const riga = listaVoceConto(voce);
     if (!riga) return;
-    blocchi.push((i + 1) + ") " + tf(riga.tour.title) + "\n" +
-      righeRichiesta(riga.tour, voce).join("\n"));
+    blocchi.push(riga.pack
+      ? (i + 1) + ") " + tf(riga.pack.title) + "\n" +
+        pacchettoRigheRichiesta(riga.pack, voce).join("\n")
+      : (i + 1) + ") " + tf(riga.tour.title) + "\n" +
+        righeRichiesta(riga.tour, voce).join("\n"));
   });
 
   const { somma, senzaPrezzo } = listaSomma(voci);
-  let testo = t("wa.introList", { name: nome, n: voci.length }) + "\n\n" +
+  // le escursioni vere, contando quelle dentro i pacchetti
+  let testo = t("wa.introList", { name: nome, n: listaEscursioni(voci) }) + "\n\n" +
     blocchi.join("\n\n");
   if (somma > 0) {
     testo += "\n\n" + (senzaPrezzo ? t("wa.totalPartial") : t("wa.total")) +
       ": €" + eur(somma);
   }
+  if (email) testo += "\n\n" + t("wa.email", { email: email });
   if (codice) testo += "\n\n" + t("wa.code", { code: codice });
   return testo;
 }
 
-function listaWhatsappUrl(nome, codice) {
-  const testo = listaWhatsappTesto(nome, codice);
+function listaWhatsappUrl(nome, codice, email) {
+  const testo = listaWhatsappTesto(nome, codice, email);
   return testo ? "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo) : "";
 }
 
@@ -261,6 +294,35 @@ function initLista() {
       '<span>' + t("lista.title") + '</span>';
   }
 
+  // Il pacchetto nella lista: una voce sola, che si toglie intera e non si
+  // modifica. Sotto il titolo le scelte (dal giorno, persone, mezzi) e cosa
+  // c'e' dentro; a destra il totale col suo sconto.
+  function vocePacchetto(riga, voce, i) {
+    const pack = riga.pack;
+    const dettagli = [
+      t("wa.fromDay") + " " + formatDate(voce.date),
+      peopleText(voce.adults, voce.kids, 0)
+    ];
+    pacchettoMezziDaContare(pack).forEach(gruppo => {
+      const conto = pacchettoContoMezzi(gruppo, (voce.mezzi || {})[gruppo.indice]);
+      if (conto) dettagli.push(conto.nome + ": " + conto.righe);
+    });
+    const risparmio = riga.conto && riga.conto.risparmio > 0
+      ? `<span>${esc(t("pack.save", { n: eur(riga.conto.risparmio) }))}</span>` : "";
+    return `
+        <li class="lista-voce">
+          <div class="lista-voce-testo">
+            <strong>${esc(tf(pack.title))}</strong>
+            <span>${esc(dettagli.join(" · "))}</span>
+            <span>${esc(t("pack.inside") + ": " + pacchettoVociTesto(pack))}</span>
+            ${risparmio}
+          </div>
+          <span class="lista-voce-prezzo">${riga.conto ? "€" + eur(riga.conto.totale) : "—"}</span>
+          <button class="iconbtn lista-voce-togli" type="button" data-lista-remove="${i}"
+                  aria-label="${esc(t("lista.remove"))}">✕</button>
+        </li>`;
+  }
+
   function disegna() {
     const voci = listaLeggi();
     const corpo = dialog.querySelector("[data-lista-body]");
@@ -269,6 +331,10 @@ function initLista() {
     // cancellato.
     const nomeScritto = corpo.querySelector("#listaName");
     const nome = nomeScritto ? nomeScritto.value : "";
+    const emailScritta = corpo.querySelector("#listaEmail");
+    const email = emailScritta ? emailScritta.value : "";
+    const avvisiScelti = corpo.querySelector("#listaAvvisi");
+    const avvisi = avvisiScelti ? avvisiScelti.checked : true;
     if (!voci.length) {
       const frase = vuotaDaSubito ? "lista.none" : "lista.empty";
       corpo.innerHTML = '<p class="lista-empty" data-i18n="' + frase + '"></p>';
@@ -279,6 +345,7 @@ function initLista() {
     const righe = voci.map((voce, i) => {
       const riga = listaVoceConto(voce);
       if (!riga) return "";
+      if (riga.pack) return vocePacchetto(riga, voce, i);
       const dettagli = [formatDate(voce.date)];
       if (voce.time) dettagli.push(voce.time);
       if (voce.lang) dettagli.push(voce.lang);
@@ -328,6 +395,19 @@ function initLista() {
         <label for="listaName" data-i18n="req.name">Il tuo nome</label>
         <input id="listaName" name="name" type="text" autocomplete="name"
                data-i18n-placeholder="req.namePlaceholder" required />
+        <label for="listaEmail" data-i18n="req.email">La tua email</label>
+        <input id="listaEmail" name="email" type="email" inputmode="email" autocomplete="email"
+               autocapitalize="off" spellcheck="false"
+               data-i18n-placeholder="req.emailPlaceholder" required />
+        <p class="hint" data-i18n="req.emailHint"></p>
+        <label class="request-check" data-lista-avvisi hidden>
+          <input id="listaAvvisi" name="avvisi" type="checkbox" />
+          <span>
+            <span data-i18n="lista.avvisi">Avvisami sul telefono</span>
+            <small data-i18n="lista.avvisiNota"></small>
+          </span>
+        </label>
+        <p class="hint" data-lista-avvisi-ios hidden data-i18n="lista.avvisiIos"></p>
         <button class="btn btn-primary btn-block request-submit" type="submit"
                 data-i18n="req.submit">Continua su WhatsApp</button>
         <p class="hint" data-i18n="lista.hint"></p>
@@ -338,6 +418,17 @@ function initLista() {
       </form>`;
     applyI18n(corpo);
     if (nome) corpo.querySelector("#listaName").value = nome;
+    if (email) corpo.querySelector("#listaEmail").value = email;
+    // Gli avvisi sul telefono (richieste.js): la casella c'e' solo dove il
+    // telefono li sa ricevere e il cliente non li ha gia' rifiutati (il
+    // browser non rifa' la domanda). Sull'iPhone senza l'app installata si
+    // dice come averli.
+    if (typeof avvisiPossibili === "function") {
+      const puo = avvisiPossibili() && Notification.permission !== "denied";
+      corpo.querySelector("[data-lista-avvisi]").hidden = !puo;
+      corpo.querySelector("#listaAvvisi").checked = avvisi;
+      corpo.querySelector("[data-lista-avvisi-ios]").hidden = puo || !avvisiSoloConApp();
+    }
   }
 
   carrelli.forEach(c => c.addEventListener("click", apri));
@@ -348,24 +439,49 @@ function initLista() {
     if (togli) { listaTogli(parseInt(togli.dataset.listaRemove, 10)); return; }
     if (e.target.closest("[data-lista-clear]")) { listaSvuota(); chiudi(); }
   });
+  // il messaggio d'errore dell'email resta finche' non lo si toglie: appena il
+  // cliente corregge, la casella torna buona
+  dialog.addEventListener("input", e => {
+    if (e.target.id === "listaEmail") e.target.setCustomValidity("");
+  });
   dialog.addEventListener("submit", e => {
     e.preventDefault();
     const nome = dialog.querySelector("#listaName").value.trim();
     if (!nome) return;
+    // Il browser con type="email" accetta anche "mario@gmail" senza ".com":
+    // e' l'errore che si fa di piu' col pollice, e un biglietto mandato li'
+    // non arriva a nessuno. Il punto dopo la chiocciola lo chiediamo noi.
+    const emailEl = dialog.querySelector("#listaEmail");
+    const email = emailEl.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) {
+      emailEl.setCustomValidity(t("req.emailInvalid"));
+      emailEl.reportValidity();
+      return;
+    }
     if (!listaWhatsappUrl(nome)) return;
-    // La richiesta si salva anche nel database (richieste.js), col codice che
-    // va nel messaggio: cosi' l'ufficio la ritrova e il cliente ne vede lo
-    // stato in "Le mie richieste". Il messaggio si rifa' col codice dentro.
-    // Col nome e col messaggio intero: l'ufficio, confermando, li trova gia'
-    // li' invece di ricopiarli dalla chat.
-    const codice = typeof richiestaNuova === "function"
-      ? richiestaNuova(listaLeggi(), nome, c => listaWhatsappTesto(nome, c)) : "";
-    const url = listaWhatsappUrl(nome, codice);
-    // La lista si svuota: la richiesta e' partita, e ritrovarsela ancora li'
-    // alla prossima visita farebbe rimandare due volte le stesse escursioni.
-    listaSvuota();
-    chiudi();
-    window.location.href = url;
+    // Gli avvisi si chiedono qui, PRIMA di andare su WhatsApp: dopo, la
+    // pagina non c'e' piu' e non potrebbe chiedere niente. Il browser mostra
+    // la sua domanda solo la prima volta; il pulsante si spegne intanto, se no
+    // un secondo tocco manderebbe la richiesta due volte.
+    const casella = dialog.querySelector("#listaAvvisi");
+    const vuole = casella && !casella.closest("[data-lista-avvisi]").hidden && casella.checked;
+    const bottone = dialog.querySelector(".request-submit");
+    bottone.disabled = true;
+    (vuole ? avvisiIscrizione(true) : Promise.resolve(null)).then(iscrizione => {
+      // La richiesta si salva anche nel database (richieste.js), col codice che
+      // va nel messaggio: cosi' l'ufficio la ritrova e il cliente ne vede lo
+      // stato in "Le mie richieste". Il messaggio si rifa' col codice dentro.
+      // Col nome e col messaggio intero: l'ufficio, confermando, li trova gia'
+      // li' invece di ricopiarli dalla chat.
+      const codice = typeof richiestaNuova === "function"
+        ? richiestaNuova(listaLeggi(), iscrizione, nome, c => listaWhatsappTesto(nome, c, email)) : "";
+      const url = listaWhatsappUrl(nome, codice, email);
+      // La lista si svuota: la richiesta e' partita, e ritrovarsela ancora li'
+      // alla prossima visita farebbe rimandare due volte le stesse escursioni.
+      listaSvuota();
+      chiudi();
+      window.location.href = url;
+    });
   });
   document.addEventListener("keydown", e => {
     if (e.key === "Escape" && dialog.classList.contains("is-open")) chiudi();

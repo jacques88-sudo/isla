@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v429";
+const CACHE_NAME = "isla-v487";
 const ASSETS = [
   "./",
   "./index.html",
@@ -26,10 +26,13 @@ const ASSETS = [
   "./tour.html",
   "./offline.html",
   "./privacy.html",
+  "./termini.html",
+  "./mappa.html",
   "./styles.css",
   "./i18n.js",
   "./app.js",
   "./booking.js",
+  "./portare.js",
   "./escursioni.js",
   "./tour.js",
   "./pacchetti.js",
@@ -39,6 +42,10 @@ const ASSETS = [
   "./esplora-catalog.js",
   "./hotel.js",
   "./richieste.js",
+  "./mappa.js",
+  "./mappa-foto.js",
+  "./vendor/leaflet-1.9.4.js",
+  "./vendor/leaflet-1.9.4.css",
   // La pagina del ticket (booking.html) parla con Supabase: senza questi tre
   // file in cache, da offline non si aprirebbe nemmeno per mostrare l'ultimo
   // ticket salvato sul telefono — che e' proprio il caso del porto senza campo.
@@ -88,11 +95,49 @@ self.addEventListener("fetch", event => {
       // indirizzi infiniti, non si possono mettere in elenco come quelli
       // sopra. Da offline si serve la pagina in cache senza guardare il "?"
       // — la parola la legge poi escursioni.js dall'indirizzo, che e' rimasto.
+      // Stessa cosa per la mappa: i posti segreti della home ci arrivano con
+      // mappa.html?cat=segreto&punto=<nome>, e mappa.js legge l'indirizzo.
+      const path = new URL(event.request.url).pathname;
+      const page = ["escursioni.html", "mappa.html"].find(p => path.endsWith("/" + p));
       return fetch(event.request).catch(() =>
-        new URL(event.request.url).pathname.endsWith("/escursioni.html")
-          ? caches.match("./escursioni.html", { ignoreSearch: true })
+        page
+          ? caches.match("./" + page, { ignoreSearch: true })
               .then(r => r || caches.match("./offline.html"))
           : caches.match("./offline.html"));
+    })
+  );
+});
+
+// GLI AVVISI SUL TELEFONO (13 ottobre 2026)
+// Li manda la funzione supabase/functions/manda-notifiche: richiesta
+// confermata, annullata, promemoria. Il testo arriva gia' scritto, nella
+// lingua del cliente; qui si mostra e basta. Il telefono li riceve anche a
+// sito chiuso: e' il service worker a svegliarsi, non la pagina.
+self.addEventListener("push", event => {
+  let dati = {};
+  try { dati = event.data ? event.data.json() : {}; } catch (e) { /* testo rovinato */ }
+  event.waitUntil(self.registration.showNotification(dati.title || "Isla", {
+    body: dati.body || "",
+    icon: "./assets/icon-192.png",
+    // lo stesso tag per la stessa escursione: l'avviso nuovo sostituisce il vecchio
+    tag: dati.tag,
+    data: { url: dati.url || "booking.html?richieste=1" }
+  }));
+});
+
+// Toccando l'avviso si apre la pagina delle richieste: se Isla e' gia' aperta
+// si usa quella finestra, se no se ne apre una.
+self.addEventListener("notificationclick", event => {
+  event.notification.close();
+  const url = new URL((event.notification.data && event.notification.data.url) || "booking.html?richieste=1",
+    self.registration.scope).href;
+  event.waitUntil(
+    self.clients.matchAll({ type: "window" }).then(finestre => {
+      const aperta = finestre[0];
+      if (!aperta) return self.clients.openWindow(url);
+      return aperta.focus()
+        .then(f => (f || aperta).navigate(url))
+        .catch(() => self.clients.openWindow(url));
     })
   );
 });

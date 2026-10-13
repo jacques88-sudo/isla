@@ -324,10 +324,21 @@
 //                          orario, cosa si mangia, dove si fa il bagno).
 //                          Compaiono sotto i bottoni, una alla volta: quella
 //                          della variante scelta.
+//                  group → la chiave del gruppo a cui appartiene, vedi
+//                          `groups` qui sotto.
 //                  times → gli orari di partenza **di quella variante**, quando
 //                          dipendono dalla durata (il giro di 2 ore parte alle
 //                          11:00 e quello di 3 alle 10:00). Battono il campo
 //                          `times` dell'attivita'.
+//                `groups` → facoltativo, dentro `options`: dove le varianti
+//                sono tante, i gruppi in cui stanno. Ogni gruppo diventa un
+//                pulsante chiuso che toccandolo apre le sue varianti, e la
+//                pagina resta corta. Ogni variante dice il suo con `group`.
+//                    groups: [ { key: "strada", label: { it: "Bici da strada", ... },
+//                                desc: { it: "Otto giri su asfalto", ... } } ]
+//                Le varianti di un gruppo stanno **in fila** in `choices`, e i
+//                gruppi nello stesso ordine di `groups`: la richiesta ritrova
+//                la variante scelta per posizione. `controlla.js` lo verifica.
 //   category   → la categoria in cui sta la scheda, una sola. E' quella
 //                scritta sulla card e in cima alla pagina di dettaglio.
 //   alsoIn     → facoltativo: le ALTRE categorie in cui la stessa scheda deve
@@ -377,6 +388,24 @@
 //                Un nome va su una scheda sola: se due schede lo avessero,
 //                Claude non saprebbe quale scegliere. `controlla.js` lo
 //                verifica. Maiuscole e minuscole non contano.
+//                Si mette anche dentro una VARIANTE (options.choices[]),
+//                quando una compagnia fa proprio quella e sul ticket c'e' solo
+//                il suo nome, non la variante: "Andromeda" e' la serata del
+//                gruppo piccolo di Teide Stars & Sunset. Allora il modulo dei
+//                venditori, trovata la compagnia, sceglie anche la variante.
+//                Il nome della variante deve stare anche nei `nomi` della
+//                scheda (e' da li' che nasce il menu "Compagnia"):
+//                `controlla.js` lo verifica.
+//   pagamento  → facoltativo: "card" quando il ticket di questa scheda conta
+//                SEMPRE come pagato con carta, comunque abbia pagato il cliente
+//                (i parchi: Loro Parque, Siam Park, Siam Night, Twin Ticket; proprietario,
+//                9 ottobre 2026; e dall'11 ottobre le cinque escursioni di
+//                Island Excursions). Nel modulo dei venditori il pagamento si
+//                sceglie da solo e Cash non si puo' scegliere. Lo stesso elenco
+//                sta su Supabase (supabase/modifiche/2026-10-09-solo-card.sql),
+//                che lo fa valere anche sui ticket gia' salvati: `controlla.js`
+//                verifica che i due elenchi siano uguali.
+//                    pagamento: "card"
 //
 // LE TRE LINGUE
 //   title, zone, duration e desc si scrivono così:
@@ -797,7 +826,9 @@ const ESPLORA_CATALOG = [
     // Il nome della compagnia, come i venditori lo scrivono sul ticket.
     // Solo qui e non sul charter qui sotto: un ticket "Cool Sailing" con
     // due adulti e' l'uscita a persona.
-    nomi: ["Cool Sailing"],
+    // Lina7 e Mizendoha sono altre due barche, ognuna col suo netto
+    // (proprietario, 9 ottobre 2026).
+    nomi: ["Cool Sailing", "Lina7", "Mizendoha"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
@@ -1153,6 +1184,8 @@ const ESPLORA_CATALOG = [
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
+    // Partenze dal proprietario, 9 ottobre 2026.
+    times: ["11:00", "14:00", "17:00"],
     priceFrom: 75,
     privateOption: "luxury-catamaran-charter",
     priceAdult: 75,
@@ -1536,6 +1569,9 @@ const ESPLORA_CATALOG = [
   {
     id: "luxury-cruiser",
     title: "Luxury Cruiser Experience",
+    // La compagnia, come la scrivono i venditori sul ticket. Solo qui e non
+    // sul charter: un ticket "Mokkai" con due adulti e' l'uscita a persona.
+    nomi: ["Mokkai"],
     category: "mare-barche",
     // Confermato dall'ufficio: si parte da Las Galletas, cioe' la Marina del
     // Sur che si legge nel cartello dietro la barca nelle foto. Nome proprio,
@@ -1816,6 +1852,9 @@ const ESPLORA_CATALOG = [
   // ─── TEIDE E NATURA ───────────────────────────────────────────────────────
   {
     id: "teide-national-park",
+    // Conta sempre come card (proprietario, 11 ottobre 2026: le escursioni
+    // di Island Excursions).
+    pagamento: "card",
     title: "Teide National Park",
     category: "teide-natura",
     zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
@@ -2039,25 +2078,213 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
-    // La meta' "bici" della vecchia scheda, staccata: era una promessa dentro
-    // una scheda che parlava d'altro, e adesso che il trekking ha tre cammini
-    // veri con i prezzi sarebbe sparita del tutto. Resta un segnaposto — di
-    // giri in bici non abbiamo ancora ne' prezzi ne' giorni — ma un segnaposto
-    // che si vede.
+    // La meta' "bici" della vecchia scheda, staccata nel settembre 2026. Fino
+    // al 6 ottobre 2026 era un segnaposto senza prezzi; adesso porta i 16 giri
+    // di Cycling in Tenerife, 8 su strada e 8 in mountain bike.
+    //
+    // Una scheda sola con 16 varianti, come le Immersioni che ne hanno 15:
+    // scelta del proprietario (6 ottobre 2026). Il nome del giro resta quello
+    // del fornitore, uguale nelle tre lingue come "Teide Light" sul trekking:
+    // quando la richiesta arriva su WhatsApp, l'ufficio cerca quel nome.
+    // Tradotta e' solo la parola davanti, Strada o MTB.
+    //
+    // Le descrizioni dei singoli giri sono riscritte dalle pagine del
+    // fornitore, mandate dal proprietario il 6 ottobre 2026.
     id: "bici",
     title: { it: "Bici", en: "Biking", es: "Bici" },
     category: "teide-natura",
+    // Da dove si parte non lo sappiamo ancora: i giri vanno dal Teide alla
+    // costa del sud, e il fornitore non scrive un punto di ritrovo. "Da
+    // definire" la pagina lo nasconde.
     zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    priceFrom: null,
-    priceAdult: 0,
-    priceChild: 0,
+    // Dove si va: la maggior parte dei giri sale al Teide, e Masca e Santiago
+    // del Teide stanno dalla parte di Los Gigantes.
+    zoneGroups: ["teide-nord", "los-gigantes"],
+    // "4/5 hours" su tutti e sedici i giri.
+    duration: { it: "4-5 ore", en: "4-5 hours", es: "4-5 horas" },
+    durationGroups: ["mezza"],
+    priceFrom: 110,
+    // Solo il prezzo adulti, per scelta del proprietario: il fornitore non da'
+    // un prezzo bambini. Niente `ages` e niente `priceInfant`.
+    priceAdult: 110,
+    options: {
+      label: { it: "Quale giro", en: "Which ride", es: "Qué recorrido" },
+      // Sedici giri uno sotto l'altro facevano una pagina lunghissima: i due
+      // tipi diventano due pulsanti che si aprono (proprietario, 6 ottobre
+      // 2026). Ogni variante dice il suo con `group`, e il nome del gruppo
+      // non si ripete piu' davanti al nome del giro.
+      groups: [
+        { key: "strada",
+          label: { it: "Bici da strada", en: "Road bike", es: "Bici de carretera" },
+          desc: { it: "Otto giri su asfalto, dal Teide alla costa", en: "Eight rides on tarmac, from Teide to the coast", es: "Ocho recorridos por asfalto, del Teide a la costa" } },
+        { key: "mtb",
+          label: { it: "Mountain bike", en: "Mountain bike", es: "Bicicleta de montaña" },
+          desc: { it: "Otto giri su sterrato, fra vulcani, pinete e mare", en: "Eight off-road rides, among volcanoes, pine forests and sea", es: "Ocho recorridos por pista, entre volcanes, pinares y mar" } }
+      ],
+      // Tre giri hanno due prezzi ("110/150", "110/120"): dipendono dalla
+      // lunghezza del giro, corto o lungo, e lo spiega la descrizione (pagine
+      // del fornitore, 6 ottobre 2026). Il
+      // prezzo resta **nell'etichetta**
+      // e non in `priceAdult`, come le immersioni a pacchetto: il cliente lo
+      // legge sul bottone e il totale della richiesta non si fa, invece di
+      // mostrare 110 dove potrebbe essere 150. Niente `price` nemmeno: per i
+      // pacchetti vorrebbe dire "prezzo del mezzo", che qui non e'.
+      choices: [
+        { label: { it: "Mount Teide Challenge West Slope (110/150 €)", en: "Mount Teide Challenge West Slope (€110/150)", es: "Mount Teide Challenge West Slope (110/150 €)" },
+          group: "strada",
+          desc: {
+            it: "Dalla costa di Adeje al Teide dal versante ovest: la salita fra le piantagioni di banane verso Guía de Isora, la sosta a Chío e poi 28 km di salita costante, fra il 5 e il 7%, fino al paesaggio lunare del parco. Si torna giù fra le pinete. Due lunghezze: circa 75 km e 1.750 m di dislivello a 110 €, oppure circa 130 km e 3.000 m a 150 €; in e-bike 130 € e 190 €. Difficoltà medio-alta, tutto asfalto.",
+            en: "From the Adeje coast up Teide's west side: the climb through the banana plantations towards Guía de Isora, a stop in Chío, then 28 km of steady climbing at 5 to 7% up to the park's lunar landscape. Back down through the pine forests. Two lengths: about 75 km and 1,750 m of climbing for €110, or about 130 km and 3,000 m for €150; by e-bike €130 and €190. Medium to hard, all on tarmac.",
+            es: "De la costa de Adeje al Teide por la vertiente oeste: la subida entre plataneras hacia Guía de Isora, la parada en Chío y luego 28 km de subida constante, entre el 5 y el 7%, hasta el paisaje lunar del parque. Se baja entre pinares. Dos distancias: unos 75 km y 1.750 m de desnivel por 110 €, o unos 130 km y 3.000 m por 150 €; en e-bike 130 € y 190 €. Dificultad media-alta, todo asfalto."
+          } },
+        { label: { it: "Mount Teide Challenge South Slope (110/120 €)", en: "Mount Teide Challenge South Slope (€110/120)", es: "Mount Teide Challenge South Slope (110/120 €)" },
+          group: "strada",
+          desc: {
+            it: "Da Adeje si sale dal versante sud: Arona, i vigneti e Vilaflor, il Pino Gordo e venti chilometri di pineta fino ai 2.270 m del belvedere di Boca Tauce, davanti al Teide. Si scende dal lato ovest, per Chío, e il giro si chiude ad anello. Due lunghezze: circa 55 km e 1.000 m di dislivello a 110 €, oppure circa 100 km e 2.500 m a 120 €; in e-bike 130 € e 140 €. Difficoltà medio-alta, tutto asfalto.",
+            en: "From Adeje up Teide's south side: Arona, the vineyards and Vilaflor, the Pino Gordo and twenty kilometres of pine forest up to the 2,270 m Boca Tauce viewpoint, facing Teide. Down the west side through Chío, closing the loop. Two lengths: about 55 km and 1,000 m of climbing for €110, or about 100 km and 2,500 m for €120; by e-bike €130 and €140. Medium to hard, all on tarmac.",
+            es: "Desde Adeje se sube por la vertiente sur: Arona, los viñedos y Vilaflor, el Pino Gordo y veinte kilómetros de pinar hasta los 2.270 m del mirador de Boca Tauce, frente al Teide. Se baja por el lado oeste, por Chío, cerrando el círculo. Dos distancias: unos 55 km y 1.000 m de desnivel por 110 €, o unos 100 km y 2.500 m por 120 €; en e-bike 130 € y 140 €. Dificultad media-alta, todo asfalto."
+          } },
+        { label: "Vilaflor Tour",
+          group: "strada",
+          priceAdult: 110,
+          desc: {
+            it: "Da Adeje verso Los Cristianos, la salita di La Camella, il belvedere della Centinela e Granadilla; poi 14 km di salita dolce in pineta fino a Vilaflor, a 1.400 m il paese più alto di Spagna. Pausa al Pino Gordo e discesa per Arona. 67 km, 1.450 m di dislivello, difficoltà media, tutto asfalto. In e-bike 130 €.",
+            en: "From Adeje towards Los Cristianos, the La Camella climb, the La Centinela viewpoint and Granadilla; then 14 km of gentle climbing through the pines to Vilaflor, at 1,400 m the highest village in Spain. A break at the Pino Gordo and down via Arona. 67 km, 1,450 m of climbing, medium difficulty, all on tarmac. By e-bike €130.",
+            es: "De Adeje hacia Los Cristianos, la subida de La Camella, el mirador de La Centinela y Granadilla; luego 14 km de subida suave entre pinos hasta Vilaflor, a 1.400 m el pueblo más alto de España. Pausa en el Pino Gordo y bajada por Arona. 67 km, 1.450 m de desnivel, dificultad media, todo asfalto. En e-bike 130 €."
+          } },
+        { label: "Teide Downhill",
+          group: "strada",
+          priceAdult: 110,
+          desc: {
+            it: "Quasi tutta discesa: il pulmino porta su a 2.200 m, sul versante ovest del Teide, e da lì si scendono circa 50 km per Chío, Guía de Isora con la pausa caffè e Los Menores, fino alla base del fornitore ad Adeje; il furgone riporta in hotel chi vuole. Facile, va bene anche per chi non pedala spesso: dai 12 anni, con un adulto. In e-bike 130 €; in mountain bike tradizionale, su richiesta, 20 € in più. Il ritiro è compreso entro 5 km dalla base di Adeje: da più lontano lo conferma l'ufficio.",
+            en: "Almost all downhill: the minibus takes you up to 2,200 m on Teide's west side, and from there you ride about 50 km down through Chío, Guía de Isora with a coffee break, and Los Menores, to the operator's base in Adeje; the van takes you back to your hotel if you like. Easy, fine even if you rarely ride: from age 12, with an adult. By e-bike €130; on a traditional mountain bike, on request, €20 extra. Pick-up is included within 5 km of the Adeje base: from further away, the office will confirm.",
+            es: "Casi todo bajada: la furgoneta sube hasta los 2.200 m, en la vertiente oeste del Teide, y desde allí se bajan unos 50 km por Chío, Guía de Isora con pausa para el café y Los Menores, hasta la base del proveedor en Adeje; la furgoneta lleva de vuelta al hotel a quien quiera. Fácil, apto aunque no montes a menudo: desde los 12 años, con un adulto. En e-bike 130 €; en bicicleta de montaña tradicional, bajo petición, 20 € más. La recogida está incluida a menos de 5 km de la base de Adeje: desde más lejos lo confirma la oficina."
+          } },
+        { label: "El Poris by San Isidro – TF 28",
+          group: "strada",
+          priceAdult: 110,
+          desc: {
+            it: "Il pulmino porta ciclisti e bici a San Isidro; da lì su e giù per la vecchia TF-28 fino a Villa de Arico, pausa caffè e discesa a El Porís, villaggio di pescatori con la spiaggia nera. Poi l'unica salita del giorno, dolce (3-5%), in mezzo al parco eolico più grande dell'isola. Circa 65 km e 1.250 m di dislivello, difficoltà media per la lunghezza, tutto asfalto. In e-bike 130 €.",
+            en: "The minibus takes riders and bikes to San Isidro; from there, up and down the old TF-28 to Villa de Arico, a coffee break and the descent to El Porís, a fishing village with a black-sand beach. Then the only climb of the day, a gentle one (3-5%), through the island's largest wind farm. About 65 km and 1,250 m of climbing, medium difficulty because of the distance, all on tarmac. By e-bike €130.",
+            es: "La furgoneta lleva ciclistas y bicis a San Isidro; desde allí, sube y baja por la antigua TF-28 hasta Villa de Arico, pausa para el café y bajada a El Porís, pueblo de pescadores con playa de arena negra. Después la única subida del día, suave (3-5%), entre el mayor parque eólico de la isla. Unos 65 km y 1.250 m de desnivel, dificultad media por la distancia, todo asfalto. En e-bike 130 €."
+          } },
+        { label: "Medano via Granadilla",
+          group: "strada",
+          priceAdult: 110,
+          desc: {
+            it: "Un anello senza salite dure: da Costa Adeje per Los Cristianos, Chayofa e La Camella, il belvedere della Centinela, San Miguel de Abona e Granadilla; poi in discesa fino a El Médano per un caffè sul mare, e ritorno lungo la costa davanti alla Montaña Roja. 65 km, 1.100 m di dislivello, facile, tutto asfalto. In e-bike 130 €.",
+            en: "A loop with no hard climbs: from Costa Adeje via Los Cristianos, Chayofa and La Camella, the La Centinela viewpoint, San Miguel de Abona and Granadilla; then downhill to El Médano for a coffee by the sea, and back along the coast past Montaña Roja. 65 km, 1,100 m of climbing, easy, all on tarmac. By e-bike €130.",
+            es: "Un circuito sin subidas duras: de Costa Adeje por Los Cristianos, Chayofa y La Camella, el mirador de La Centinela, San Miguel de Abona y Granadilla; luego bajando hasta El Médano para un café junto al mar, y vuelta por la costa frente a la Montaña Roja. 65 km, 1.100 m de desnivel, fácil, todo asfalto. En e-bike 130 €."
+          } },
+        { label: "Santiago del Teide",
+          group: "strada",
+          priceAdult: 110,
+          desc: {
+            it: "Da Costa Adeje lungo la costa ovest: la salita fra le piantagioni di banane fino a Guía de Isora, la discesa verso Playa San Juan e le scogliere di Los Gigantes, poi la salita a tappe per Tamaimo fino a Santiago del Teide, a 1.000 m, e le lave nere di Arguayo. Sosta a Chío e 18 km di discesa per tornare. Da 70 a 85 km e da 1.500 a 2.200 m di dislivello, secondo il livello; impegnativo, tutto asfalto. In e-bike 130 €.",
+            en: "From Costa Adeje along the west coast: the climb through the banana plantations to Guía de Isora, down towards Playa San Juan and the Los Gigantes cliffs, then the stepped climb through Tamaimo to Santiago del Teide, at 1,000 m, and the black lava of Arguayo. A stop in Chío and 18 km of descent back. 70 to 85 km and 1,500 to 2,200 m of climbing, depending on your level; demanding, all on tarmac. By e-bike €130.",
+            es: "De Costa Adeje por la costa oeste: la subida entre plataneras hasta Guía de Isora, la bajada hacia Playa San Juan y los acantilados de Los Gigantes, luego la subida por etapas por Tamaimo hasta Santiago del Teide, a 1.000 m, y la lava negra de Arguayo. Parada en Chío y 18 km de bajada para volver. De 70 a 85 km y de 1.500 a 2.200 m de desnivel, según el nivel; exigente, todo asfalto. En e-bike 130 €."
+          } },
+        { label: { it: "Masca Tour (110/150 €)", en: "Masca Tour (€110/150)", es: "Masca Tour (110/150 €)" },
+          group: "strada",
+          desc: {
+            it: "Per ciclisti esperti. Da Costa Adeje per Guía de Isora, Los Gigantes e Santiago del Teide fino al Mirador de Cherfe; poi giù a Masca, ai piedi del Teno, e su per la salita più dura dell'isola: 4,2 km con tratti fino al 22%. Due lunghezze: circa 60 km e 1.550 m di dislivello a 110 €, oppure circa 130 km e 3.000 m, passando per Buenavista del Norte ed El Tanque, a 150 €; in e-bike 130 € e 180 €. Tutto asfalto.",
+            en: "For experienced riders. From Costa Adeje via Guía de Isora, Los Gigantes and Santiago del Teide up to the Mirador de Cherfe; then down to Masca, at the foot of the Teno mountains, and up the island's hardest climb: 4.2 km with stretches of up to 22%. Two lengths: about 60 km and 1,550 m of climbing for €110, or about 130 km and 3,000 m, via Buenavista del Norte and El Tanque, for €150; by e-bike €130 and €180. All on tarmac.",
+            es: "Para ciclistas expertos. De Costa Adeje por Guía de Isora, Los Gigantes y Santiago del Teide hasta el Mirador de Cherfe; luego bajada a Masca, al pie del Teno, y subida por la cuesta más dura de la isla: 4,2 km con tramos de hasta el 22%. Dos distancias: unos 60 km y 1.550 m de desnivel por 110 €, o unos 130 km y 3.000 m, pasando por Buenavista del Norte y El Tanque, por 150 €; en e-bike 130 € y 180 €. Todo asfalto."
+          } },
+        { label: "Santiago del Teide – El Chinyero",
+          group: "mtb",
+          priceAdult: 110,
+          desc: {
+            it: "Il pulmino porta a Santiago del Teide, dove c'è il tempo per un caffè; da lì si pedala su piste sterrate larghe, con la vista sulla costa nord fino a Garachico e Puerto de la Cruz, accanto alla Montaña Negra fino al cono di lava del Chinyero, l'ultima grande eruzione dell'isola nel 1909, e al rifugio della Casa Forestal. 33 km e 600 m di dislivello, tutto sterrato. Media in mountain bike, facile in e-bike: qualche strappo breve su sabbia vulcanica, ma va bene anche per chi non è mai andato fuori strada. In e-bike 130 €.",
+            en: "The minibus takes you to Santiago del Teide, with time for a coffee; from there you ride wide dirt tracks, looking out over the north coast to Garachico and Puerto de la Cruz, past Montaña Negra to the Chinyero lava cone, the island's last major eruption in 1909, and the Casa Forestal refuge. 33 km and 600 m of climbing, all off-road. Medium on a mountain bike, easy by e-bike: a few short steep bits on volcanic sand, but fine even if you have never ridden off-road. By e-bike €130.",
+            es: "La furgoneta lleva a Santiago del Teide, con tiempo para un café; desde allí se pedalea por pistas anchas, con vistas a la costa norte hasta Garachico y Puerto de la Cruz, junto a la Montaña Negra hasta el cono de lava del Chinyero, la última gran erupción de la isla en 1909, y el refugio de la Casa Forestal. 33 km y 600 m de desnivel, todo pista. Media en bicicleta de montaña, fácil en e-bike: algunas rampas cortas sobre arena volcánica, pero apta aunque nunca hayas ido fuera de carretera. En e-bike 130 €."
+          } },
+        { label: "Izaña – El Poris, Teide Easy Downhill",
+          group: "mtb",
+          priceAdult: 140,
+          desc: {
+            it: "Dalla montagna al mare, quasi tutto in discesa: il pulmino porta all'osservatorio di Izaña, a 2.390 m sul versante est del Teide, e da lì si scende per piste vulcaniche larghe e pinete, la zona di El Contador, vigneti e campi di patate fino a Villa de Arico e al villaggio di pescatori di El Porís. 45 km, 70% sterrato. Facile, ma serve un po' di pratica di mountain bike su fondo smosso. Alla fine il furgone riporta in hotel.",
+            en: "From the mountain to the sea, almost all downhill: the minibus takes you to the Izaña observatory, at 2,390 m on Teide's east side, and from there you ride down wide volcanic tracks and pine forests, the El Contador area, vineyards and potato fields to Villa de Arico and the fishing village of El Porís. 45 km, 70% off-road. Easy, but some mountain-biking experience on loose ground is needed. At the end the van takes you back to your hotel.",
+            es: "De la montaña al mar, casi todo bajada: la furgoneta sube al observatorio de Izaña, a 2.390 m en la vertiente este del Teide, y desde allí se baja por pistas volcánicas anchas y pinares, la zona de El Contador, viñedos y campos de papas hasta Villa de Arico y el pueblo pesquero de El Porís. 45 km, 70% pista. Fácil, pero hace falta algo de práctica en bicicleta de montaña sobre terreno suelto. Al final la furgoneta lleva de vuelta al hotel."
+          } },
+        { label: "Teide South Off-road Downhill",
+          group: "mtb",
+          priceAdult: 110,
+          desc: {
+            it: "Discesa tecnica dal versante sud del Teide alla costa: il pulmino porta a 2.200 m, poi si scende fra colate di lava e pinete, con la vista su Adeje e, nei giorni limpidi, su La Gomera, fino al borgo di La Quinta; da lì i vecchi camini reales di pietra e i barrancos fino a Costa Adeje. 30 km, 90% sterrato. Difficoltà media: per chi ha già esperienza fuori strada e sa guidare la bici su roccia e ciottolato. Alla fine il furgone riporta in hotel.",
+            en: "A technical descent from Teide's south side to the coast: the minibus takes you up to 2,200 m, then you ride down through lava flows and pine forests, looking out over Adeje and, on clear days, La Gomera, to the hamlet of La Quinta; from there the old stone caminos reales and the barrancos down to Costa Adeje. 30 km, 90% off-road. Medium difficulty: for riders with off-road experience who are confident on rock and cobbles. At the end the van takes you back to your hotel.",
+            es: "Bajada técnica desde la vertiente sur del Teide hasta la costa: la furgoneta sube a 2.200 m y luego se baja entre coladas de lava y pinares, con vistas a Adeje y, en días claros, a La Gomera, hasta el caserío de La Quinta; desde allí los antiguos caminos reales de piedra y los barrancos hasta Costa Adeje. 30 km, 90% pista. Dificultad media: para quien ya tiene experiencia fuera de carretera y maneja la bici con soltura sobre roca y empedrado. Al final la furgoneta lleva de vuelta al hotel."
+          } },
+        { label: "Off-road Escape",
+          group: "mtb",
+          priceAdult: 110,
+          desc: {
+            it: "Fra la lava e il mare del sud: dopo Las Américas e Los Cristianos si sale in furgone sul vulcano di Guaza, poi circa 25 km di sterrato nella riserva del Malpaís de la Rasca, fino al faro di Rasca e alle sue scogliere. Pausa con un leche leche sul lungomare di Las Galletas, la Costa del Silencio e altri 7 km di sterrato fino al vulcano della Montaña Amarilla. 35-40 km, 600 m di dislivello, 90% sterrato; difficoltà medio-alta. C'è anche una versione più facile, da Pal-Mar a Pal-Mar: 30 km e 150 m di dislivello. In e-bike 130 €.",
+            en: "Between lava and the southern sea: past Las Américas and Los Cristianos the van takes you up the Guaza volcano, then about 25 km off-road through the Malpaís de la Rasca reserve to the Rasca lighthouse and its cliffs. A leche leche on the Las Galletas seafront, the Costa del Silencio and another 7 km off-road to the Montaña Amarilla volcano. 35-40 km, 600 m of climbing, 90% off-road; medium to hard. There is also an easier version, from Pal-Mar and back: 30 km and 150 m of climbing. By e-bike €130.",
+            es: "Entre la lava y el mar del sur: pasados Las Américas y Los Cristianos se sube en furgoneta al volcán de Guaza, y luego unos 25 km de pista por la reserva del Malpaís de la Rasca, hasta el faro de Rasca y sus acantilados. Un leche leche en el paseo de Las Galletas, la Costa del Silencio y otros 7 km de pista hasta el volcán de la Montaña Amarilla. 35-40 km, 600 m de desnivel, 90% pista; dificultad media-alta. Hay también una versión más fácil, de Pal-Mar a Pal-Mar: 30 km y 150 m de desnivel. En e-bike 130 €."
+          } },
+        { label: "Costa del Silencio – El Médano – Palm Mar",
+          group: "mtb",
+          priceAdult: 110,
+          desc: {
+            it: "Il giro più facile, pensato per chi va in mountain bike per la prima volta. Da Costa del Silencio verso Golf del Sur e il villaggio di pescatori di Los Abrigos, poi la spiaggia della Tejita fino a El Médano, davanti alla Montaña Roja, per un frullato di frutta. Il ritorno passa per un'altra strada, fra le piantagioni di banane vicino all'aeroporto del sud, fino al faro di Punta de Rasca. 40 km, 400 m di dislivello, tutto sterrato. Esiste anche in versione più corta, adatta alle famiglie con bambini. In e-bike 130 €.",
+            en: "The easiest ride, designed for first-time mountain bikers. From Costa del Silencio towards Golf del Sur and the fishing village of Los Abrigos, then along La Tejita beach to El Médano, facing Montaña Roja, for a fruit shake. The way back takes another route, through banana plantations near the south airport, to the Punta de Rasca lighthouse. 40 km, 400 m of climbing, all off-road. A shorter version is also available, suitable for families with children. By e-bike €130.",
+            es: "El recorrido más fácil, pensado para quien va en bicicleta de montaña por primera vez. De Costa del Silencio hacia Golf del Sur y el pueblo pesquero de Los Abrigos, luego por la playa de La Tejita hasta El Médano, frente a la Montaña Roja, para un batido de fruta. La vuelta va por otro camino, entre plataneras cerca del aeropuerto del sur, hasta el faro de Punta de Rasca. 40 km, 400 m de desnivel, todo pista. Existe también en versión más corta, apta para familias con niños. En e-bike 130 €."
+          } },
+        { label: "Barbacoa – Corona Forestal",
+          group: "mtb",
+          priceAdult: 110,
+          desc: {
+            it: "Il pulmino passa da Villa de Arico e porta alla riserva di El Contador, a 1.000 m; da lì una salita lunga e costante su sterrato, circa 17 km e 1.300 m di dislivello, fino all'osservatorio di Izaña. Poi 20 km di discesa su piste larghe e qualche tratto d'asfalto verso la Valle di Güímar, con la sosta al Mirador de Pájara. 45 km, 1.400 m di dislivello, 90% sterrato. Medio-alta per la salita, non per la tecnica: la discesa va bene anche per chi ha poca esperienza. In e-bike 130 €.",
+            en: "The minibus goes via Villa de Arico to the El Contador reserve, at 1,000 m; from there a long, steady climb on dirt tracks, about 17 km and 1,300 m of ascent, up to the Izaña observatory. Then 20 km of descent on wide tracks and a few stretches of tarmac towards the Güímar valley, with a stop at the Mirador de Pájara. 45 km, 1,400 m of climbing, 90% off-road. Medium to hard because of the climb, not the technique: the descent is fine even for less experienced riders. By e-bike €130.",
+            es: "La furgoneta pasa por Villa de Arico y lleva a la reserva de El Contador, a 1.000 m; desde allí una subida larga y constante por pista, unos 17 km y 1.300 m de desnivel, hasta el observatorio de Izaña. Luego 20 km de bajada por pistas anchas y algún tramo de asfalto hacia el Valle de Güímar, con parada en el Mirador de Pájara. 45 km, 1.400 m de desnivel, 90% pista. Media-alta por la subida, no por la técnica: la bajada es apta también para quien tiene poca experiencia. En e-bike 130 €."
+          } },
+        { label: "El Médano – El Poris",
+          group: "mtb",
+          priceAdult: 110,
+          desc: {
+            it: "Il pulmino porta a El Médano, il paese dei surfisti, e da lì si pedala sugli sterrati della costa est: il villaggio di pescatori di San Miguel de Tajao, El Porís e il suo faro, ultima sosta prima di ritrovare il furgone. 40 km, 600 m di dislivello, tutto sterrato. Difficoltà media: qualche tratto corto e roccioso fra i barrancos, che volendo si fa a piedi spingendo la bici per pochi metri. In e-bike 130 €.",
+            en: "The minibus takes you to El Médano, the surfers' town, and from there you ride the dirt tracks of the east coast: the fishing village of San Miguel de Tajao, El Porís and its lighthouse, the last stop before meeting the van. 40 km, 600 m of climbing, all off-road. Medium difficulty: a few short rocky stretches between the barrancos, which you can walk, pushing the bike for a few metres, if you prefer. By e-bike €130.",
+            es: "La furgoneta lleva a El Médano, el pueblo de los surfistas, y desde allí se pedalea por las pistas de la costa este: el pueblo pesquero de San Miguel de Tajao, El Porís y su faro, última parada antes de volver a la furgoneta. 40 km, 600 m de desnivel, todo pista. Dificultad media: algunos tramos cortos y rocosos entre los barrancos, que se pueden hacer a pie empujando la bici unos metros. En e-bike 130 €."
+          } },
+        { label: "Vilaflor – Corona Forestal",
+          group: "mtb",
+          priceAdult: 110,
+          desc: {
+            it: "Il pulmino porta a Vilaflor, a 1.400 m; pochi chilometri d'asfalto fino al Pino Gordo, il pino canario più grande dell'arcipelago, poi circa 13 km di sterrato nella pineta fino a Madre de Agua. Cinque minuti a piedi lungo il ruscello del Barranco del Río, poi in sella fino a El Salto e giù verso il mare fra asfalto e sterrati facili. 40 km, 500 m di dislivello. Difficoltà media: qualche tratto tecnico in discesa e un paio di passaggi da fare a piedi. In e-bike 130 €.",
+            en: "The minibus takes you to Vilaflor, at 1,400 m; a few kilometres of tarmac to the Pino Gordo, the largest Canary pine in the archipelago, then about 13 km off-road through the pine forest to Madre de Agua. A five-minute walk along the stream of the Barranco del Río, then back in the saddle to El Salto and down towards the sea on tarmac and easy tracks. 40 km, 500 m of climbing. Medium difficulty: a few technical downhill stretches and a couple of sections to walk. By e-bike €130.",
+            es: "La furgoneta lleva a Vilaflor, a 1.400 m; unos pocos kilómetros de asfalto hasta el Pino Gordo, el mayor pino canario del archipiélago, y luego unos 13 km de pista por el pinar hasta Madre de Agua. Cinco minutos a pie junto al arroyo del Barranco del Río, de nuevo en la bici hasta El Salto y bajada hacia el mar entre asfalto y pistas fáciles. 40 km, 500 m de desnivel. Dificultad media: algunos tramos técnicos de bajada y un par de pasos que hay que hacer a pie. En e-bike 130 €."
+          } }
+      ]
+    },
+    // Valgono per tutti e sedici i giri: ogni pagina del fornitore scrive
+    // le stesse cose (bici con casco e kit, guida, ritiro e riconsegna in
+    // hotel, acqua con frutta o snack). Finche' mancavano delle pagine
+    // stavano dentro le varianti; dal 6 ottobre 2026 ci sono tutte.
+    included: ["guide", "equipment", "transfer", "snack"],
+    // Valgono per tutti i giri: sono scritte uguali in fondo a ognuna delle
+    // pagine del fornitore. La politica di cancellazione per il maltempo e
+    // i livelli in W/kg non sono stati copiati.
+    notes: [
+      { it: "Le guide parlano italiano, inglese e spagnolo.",
+        en: "The guides speak Italian, English and Spanish.",
+        es: "Los guías hablan italiano, inglés y español." },
+      { it: "Ogni giro dura al massimo 5 ore, compresi il ritiro e il ritorno in hotel.",
+        en: "Each ride lasts 5 hours at most, including hotel pick-up and drop-off.",
+        es: "Cada recorrido dura como máximo 5 horas, incluidas la recogida y la vuelta al hotel." },
+      // Non tutti i giri hanno la e-bike: i due MTB arrivati il 6 ottobre
+      // danno solo il prezzo della bici normale.
+      { it: "Su molti giri si può avere la e-bike: dove c'è, il prezzo è nella descrizione del giro. Se la vuoi scrivilo nelle note della richiesta.",
+        en: "Many rides can be done by e-bike: where available, the price is in the ride's description. If you want one, say so in the notes of your request.",
+        es: "En muchos recorridos se puede ir en e-bike: donde la hay, el precio está en la descripción del recorrido. Si la quieres, escríbelo en las notas de la solicitud." }
+    ],
     family: false,
     desc: {
-      it: "Giornata in bicicletta sui sentieri dell'isola, con guida.",
-      en: "A day on two wheels along the island's trails, with a guide.",
-      es: "Jornada en bicicleta por los senderos de la isla, con guía."
+      it: "Sedici giri in bicicletta con guida, otto su strada e otto in mountain bike: dalle salite del Teide alle discese verso la costa, passando per Vilaflor, Masca, la corona forestale e il sud dell'isola. Mezza giornata in sella, per chi pedala già e per chi è esperto.",
+      en: "Sixteen guided bike rides, eight on the road and eight by mountain bike: from the climbs up Teide to the descents towards the coast, through Vilaflor, Masca, the pine forest and the south of the island. Half a day in the saddle, for regular riders and experts alike.",
+      es: "Dieciséis recorridos en bicicleta con guía, ocho por carretera y ocho en bicicleta de montaña: de las subidas al Teide a las bajadas hacia la costa, pasando por Vilaflor, Masca, la corona forestal y el sur de la isla. Media jornada sobre la bici, para quien ya pedalea y para expertos."
     },
+    nomi: ["Cycling in Tenerife"],
     // La foto che stava sulla vecchia scheda "Trekking e bici": un ciclista in
     // mezzo alle lave. Rinominata `bici.jpg` perche' adesso il nome dice quello
     // che c'e' dentro, e il file non e' citato da nessun'altra parte (solo da
@@ -2067,6 +2294,9 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "icod-garachico-orotava",
+    // Conta sempre come card (proprietario, 11 ottobre 2026: le escursioni
+    // di Island Excursions).
+    pagamento: "card",
     // L'id nomina ancora La Orotava, dove il tour non passa piu' dal 24
     // agosto: i codici interni non si cambiano, si romperebbero i link.
     title: {
@@ -2211,7 +2441,15 @@ const ESPLORA_CATALOG = [
     // dove si va, non solo cosa si guarda, e adesso che la scheda sta fra le
     // altre del Teide si legge in fila con loro. Uguale in tutte e tre le
     // lingue, come tutti i titoli.
-    title: "Teide by Night",
+    //
+    // Il 9 ottobre 2026 il proprietario l'ha cambiato in **"Teide Stars &
+    // Sunset"**: "Teide by Night" e' il nome proprio dell'escursione di una
+    // compagnia, e a Isla serve un nome generico. Dice le due cose della
+    // serata, il tramonto e le stelle, e resta sul Teide.
+    title: "Teide Stars & Sunset",
+    // La compagnia della serata in italiano (gruppo piccolo), come i
+    // venditori la scrivono sul ticket (proprietario, 8 ottobre 2026).
+    nomi: ["Andromeda"],
     // Era la sola scheda della categoria "stelle", che infatti non c'e' piu'.
     category: "teide-natura",
     // Tutte e due le serate salgono nel Parco Nazionale: qui la riga non e'
@@ -2222,6 +2460,9 @@ const ESPLORA_CATALOG = [
     duration: { it: "5-8 ore", en: "5 to 8 hours", es: "5-8 horas" },
     zoneGroups: ["teide-nord"],
     durationGroups: ["mezza", "intera"],
+    // Dal proprietario, 9 ottobre 2026: si parte intorno alle 17, e l'ora puo'
+    // cambiare col tramonto. Un'ora sola nel menu; che si sposti lo dice la nota.
+    times: ["17:00"],
     priceFrom: 75,
     // I prezzi a persona veri stanno dentro le varianti. Sono i prezzi di
     // ADMIRAL, non quelli dei fornitori: 75 EUR il gruppo grande, 79 EUR il
@@ -2255,6 +2496,9 @@ const ESPLORA_CATALOG = [
             en: "Small group (Italian, English, German)",
             es: "Grupo pequeño (italiano, inglés, alemán)"
           },
+          // Sul ticket c'e' solo "Andromeda", non la serata: Andromeda fa
+          // questa (proprietario, 8 ottobre 2026). Vedi `nomi` in testa.
+          nomi: ["Andromeda"],
           priceAdult: 79,
           priceChild: 69,
           duration: { it: "5-6 ore", en: "5 to 6 hours", es: "5-6 horas" },
@@ -2311,9 +2555,9 @@ const ESPLORA_CATALOG = [
         es: "El idioma no es un extra que se pida: es lo que decide la velada. En italiano solo va el grupo pequeño; en español y en francés solo el grande; en inglés y alemán se puede elegir. Indica el tuyo en la solicitud y la oficina te pone en la salida correcta."
       },
       {
-        it: "Il ritiro è negli hotel del sud dell'isola, nel pomeriggio: l'ora segue il tramonto e si sposta con la stagione, quindi te la conferma l'ufficio insieme al punto di ritiro.",
-        en: "Pickup is at hotels in the south of the island, in the afternoon: the time follows the sunset and moves with the season, so the office confirms it together with the pickup point.",
-        es: "La recogida es en los hoteles del sur de la isla, por la tarde: la hora sigue al atardecer y se mueve con la temporada, así que te la confirma la oficina junto con el punto de recogida."
+        it: "Il ritiro è negli hotel del sud dell'isola, intorno alle 17: l'ora segue il tramonto e può cambiare con la stagione, quindi te la conferma l'ufficio insieme al punto di ritiro.",
+        en: "Pickup is at hotels in the south of the island, at around 5 pm: the time follows the sunset and may change with the season, so the office confirms it together with the pickup point.",
+        es: "La recogida es en los hoteles del sur de la isla, hacia las 17:00: la hora sigue al atardecer y puede cambiar con la temporada, así que te la confirma la oficina junto con el punto de recogida."
       },
       {
         it: "Si sta fermi al buio e in quota: fa freddo anche d'estate. Su qualche serata giacca e cappello li presta il fornitore, ma non su tutte: vestiti a strati e mettiti scarpe chiuse.",
@@ -2326,8 +2570,8 @@ const ESPLORA_CATALOG = [
     // che non esiste piu': rinominata col nome della scheda, perche' una foto
     // qui dentro si chiama come la scheda che la usa, non come il posto da cui
     // arriva. E' il Roque Cinchado sotto l'arco della Via Lattea, cioe' la
-    // sagoma che si riconosce del Parco Nazionale: adesso che il titolo dice
-    // "Teide by Night", quella e' la foto che lo fa vedere.
+    // sagoma che si riconosce del Parco Nazionale: col titolo sul Teide,
+    // quella e' la foto che lo fa vedere.
     //
     // In fila si leggono come una sera che passa: il tramonto sopra le nuvole,
     // poi il buio con la Via Lattea. La copertina resta quella dei due
@@ -2782,6 +3026,95 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    // Moto elettriche Talaria fuoristrada a Guargacho (pagina del fornitore
+    // incollata in chat, 13 ottobre 2026). Nessuna scheda simile in catalogo:
+    // il quad e il buggy sono a mezzo e vanno al Teide, questa e' a persona e
+    // resta sulle piste del sud.
+    // Il prezzo e' a pilota, una moto a testa: niente `units`, si contano le
+    // persone. Niente `priceChild` e niente `ages`: la pagina non dice da che
+    // eta' si guida, e senza il prezzo bambini il totale con dei bambini non
+    // si fa invece di contarli come adulti.
+    // `times` non c'e': le partenze stanno nel calendario del fornitore e non
+    // le sappiamo. Restano le fasce segnaposto.
+    id: "talaria-off-road",
+    title: "Talaria Electric Off-Road",
+    nomi: ["eBike Adventure Tenerife"],
+    category: "avventura-motori",
+    zone: "Guargacho",
+    duration: { it: "Da 40 minuti a 2 ore", en: "40 minutes to 2 hours", es: "De 40 minutos a 2 horas" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["breve"],
+    priceFrom: 59,
+    priceAdult: 59,
+    priceChild: 0,
+    family: false,
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        {
+          label: { it: "Pista sterrata · 40 minuti", en: "Dirt track · 40 minutes", es: "Pista de tierra · 40 minutos" },
+          duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
+          priceAdult: 59,
+          desc: {
+            it: "Quaranta minuti sulla pista in terra battuta. È la sola formula per cui non serve la patente.",
+            en: "Forty minutes on the dirt track. It is the only option that needs no driving licence.",
+            es: "Cuarenta minutos en la pista de tierra. Es la única opción que no necesita carné de conducir."
+          }
+        },
+        {
+          label: { it: "Giro guidato · 1 ora", en: "Guided ride · 1 hour", es: "Ruta guiada · 1 hora" },
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+          priceAdult: 99,
+          desc: {
+            it: "Un'ora fuori dalla pista, dietro la guida, fra sterrati e tratti di roccia attorno a Guargacho e Playa El Barranco.",
+            en: "One hour off the track, behind the guide, on dirt roads and rocky stretches around Guargacho and Playa El Barranco.",
+            es: "Una hora fuera de la pista, detrás del guía, entre caminos de tierra y tramos de roca alrededor de Guargacho y Playa El Barranco."
+          }
+        },
+        {
+          label: { it: "Giro guidato · 2 ore", en: "Guided ride · 2 hours", es: "Ruta guiada · 2 horas" },
+          duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          priceAdult: 189,
+          desc: {
+            it: "Lo stesso giro, il doppio del tempo: si arriva più lontano nel paesaggio vulcanico del sud.",
+            en: "The same ride, twice as long: you get further into the volcanic landscape of the south.",
+            es: "La misma ruta, el doble de tiempo: se llega más lejos en el paisaje volcánico del sur."
+          }
+        }
+      ]
+    },
+    desc: {
+      it: "Moto elettriche Talaria in fuoristrada nel sud di Tenerife: sterrati compatti, tratti di roccia e paesaggi di deserto vulcanico attorno a Guargacho e Playa El Barranco. Silenziose e senza gas di scarico. Si sceglie fra la pista sterrata, senza patente, e il giro guidato di una o due ore.",
+      en: "Electric Talaria bikes off-road in the south of Tenerife: compact dirt tracks, rocky stretches and volcanic desert scenery around Guargacho and Playa El Barranco. Quiet and with no exhaust fumes. Choose between the dirt track, no licence needed, and a guided ride of one or two hours.",
+      es: "Motos eléctricas Talaria todoterreno en el sur de Tenerife: pistas de tierra compacta, tramos de roca y paisajes de desierto volcánico alrededor de Guargacho y Playa El Barranco. Silenciosas y sin gases de escape. Se elige entre la pista de tierra, sin carné, y la ruta guiada de una o dos horas."
+    },
+    included: ["guide", "equipment"],
+    notes: [
+      {
+        it: "Il prezzo è a persona: ogni pilota guida la sua moto. Al massimo 4 piloti per uscita.",
+        en: "The price is per person: each rider has their own bike. Up to 4 riders per departure.",
+        es: "El precio es por persona: cada piloto lleva su moto. Como máximo 4 pilotos por salida."
+      },
+      {
+        it: "Prima di partire la guida spiega la moto e le regole, e dà l'attrezzatura. Percorso e andatura li sceglie lei, secondo il terreno e il gruppo.",
+        en: "Before setting off the guide explains the bike and the rules and hands out the gear. The guide picks the route and the pace to suit the terrain and the group.",
+        es: "Antes de salir el guía explica la moto y las normas y entrega el equipo. El recorrido y el ritmo los elige el guía, según el terreno y el grupo."
+      },
+      {
+        it: "Per il giro di 1 o 2 ore i requisiti (patente, età, esperienza) li verifica il fornitore prima della partenza: scrivi nelle note se hai la patente e se sei già andato in moto.",
+        en: "For the 1 or 2-hour ride the requirements (licence, age, experience) are checked by the operator before departure: say in the notes whether you hold a licence and have ridden before.",
+        es: "Para la ruta de 1 o 2 horas los requisitos (carné, edad, experiencia) los comprueba el proveedor antes de salir: indica en las notas si tienes carné y si ya has ido en moto."
+      },
+      {
+        it: "Non c'è il ritiro in hotel: a Guargacho si arriva da soli. Prima dell'uscita il fornitore manda un link per fare il check-in.",
+        en: "There is no hotel pick-up: you make your own way to Guargacho. Before the ride the operator sends a link to check in.",
+        es: "No hay recogida en el hotel: a Guargacho se llega por cuenta propia. Antes de la salida el proveedor envía un enlace para hacer el check-in."
+      }
+    ],
+    image: "",
+    published: true
+  },
+  {
     id: "helicopter-tours",
     title: "Helicopter Tours",
     category: "avventura-motori",
@@ -3130,17 +3463,42 @@ const ESPLORA_CATALOG = [
     id: "fiat-500-water-car",
     title: "Fiat 500 Water Car",
     category: "sport-acquatici",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: "Puerto Colón, Costa Adeje",
+    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["breve"],
+    // Stesse partenze del Jet Ski Safari (proprietario, 9 ottobre 2026).
+    times: ["10:00", "12:00", "14:00", "16:00", "17:00"],
     priceFrom: 130,
+    priceUnit: { it: "a Fiat 500", en: "per Fiat 500", es: "por Fiat 500" },
     priceAdult: 0,
     priceChild: 0,
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        { label: { it: "1 ora", en: "1 hour", es: "1 hora" }, price: 130 },
+        { label: { it: "2 ore", en: "2 hours", es: "2 horas" }, price: 220 }
+      ]
+    },
     family: true,
     desc: {
-      it: "Una Fiat 500 galleggiante da guidare al largo della costa: la foto che tutti si portano a casa.",
-      en: "A floating Fiat 500 you drive off the coast: the photo everyone takes home.",
-      es: "Un Fiat 500 flotante para conducir frente a la costa: la foto que todos se llevan a casa."
+      it: "Una Fiat 500 galleggiante da guidare al largo della costa sud, con un capitano a bordo che vi accompagna. Si parte da Puerto Colón verso El Duque o Los Cristianos, secondo il mare, con una sosta per il bagno: la foto che tutti si portano a casa.",
+      en: "A floating Fiat 500 you drive along the south coast, with a captain on board beside you. It sets off from Puerto Colón towards El Duque or Los Cristianos, depending on the sea, with a stop for a swim: the photo everyone takes home.",
+      es: "Un Fiat 500 flotante para conducir por la costa sur, con un capitán a bordo que os acompaña. Sale de Puerto Colón hacia El Duque o Los Cristianos, según el mar, con una parada para bañarse: la foto que todos se llevan a casa."
     },
+    included: ["swimstop", "snorkel"],
+    notes: [
+      {
+        it: "Il capitano resta sempre a bordo: lo chiedono le regole del mare. Guidate voi, sotto il suo controllo. Per guidare servono 18 anni, la patente nautica no.",
+        en: "The captain stays on board the whole time: maritime rules require it. You drive, under the captain's supervision. Drivers must be 18 or over; no boating licence is needed.",
+        es: "El capitán va siempre a bordo: lo exigen las normas del mar. Conducís vosotros, bajo su supervisión. Para conducir hay que tener 18 años; no hace falta licencia de navegación."
+      },
+      {
+        it: "Al massimo 3 adulti e 1 bambino fino a 12 anni: 4 adulti non possono salire. Portate un documento d'identità.",
+        en: "Maximum 3 adults and 1 child up to 12 years old: 4 adults are not allowed. Bring an identity document.",
+        es: "Como máximo 3 adultos y 1 niño de hasta 12 años: 4 adultos no pueden subir. Traed un documento de identidad."
+      }
+    ],
     image: "fiat-500-on-water.jpg",
     published: true
   },
@@ -3319,14 +3677,18 @@ const ESPLORA_CATALOG = [
   {
     id: "parascending",
     title: "Parascending",
+    // Ocean Wings vola da Los Cristianos (proprietario, 10 ottobre 2026): e'
+    // una compagnia in piu', non un'altra scheda. Si parte da uno dei due
+    // porti, e quale lo dice l'ufficio nella conferma, come sul Jet Ski.
+    nomi: ["Ocean Wings"],
     category: "sport-acquatici",
-    zone: "Puerto Colón, Costa Adeje",
+    zone: { it: "Puerto Colón o Los Cristianos", en: "Puerto Colón or Los Cristianos", es: "Puerto Colón o Los Cristianos" },
     // Due durate diverse e tutte e due vere: quaranta minuti e' quanto dura
     // l'uscita (tragitto in barca compreso), dieci e' quanto si sta in aria.
     // Scritta una sola, l'altra diventa una bugia: "40 minuti" fa credere di
     // volare mezz'ora, "10 minuti" fa tornare il cliente al porto troppo presto.
     duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
-    zoneGroups: ["costa-adeje"],
+    zoneGroups: ["costa-adeje", "los-cristianos"],
     durationGroups: ["breve"],
     activityLabel: { it: "Tempo di volo", en: "Flight time", es: "Tiempo de vuelo" },
     activityDuration: { it: "Circa 10 minuti", en: "About 10 minutes", es: "Unos 10 minutos" },
@@ -3346,9 +3708,9 @@ const ESPLORA_CATALOG = [
     // concordare" sparisce. Niente `days`: si vola tutti i giorni.
     times: ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"],
     desc: {
-      it: "Si decolla dalla barca appesi al paracadute e si sale sopra la costa di Costa Adeje: una decina di minuti in aria, con il porto, le spiagge e le montagne sotto i piedi. Fra il tragitto in barca e il volo si sta fuori circa quaranta minuti.",
-      en: "You lift off from the boat hanging under the parachute and rise above the Costa Adeje coast: some ten minutes in the air, with the marina, the beaches and the mountains under your feet. Between the boat ride and the flight you are out for about forty minutes.",
-      es: "Se despega desde el barco colgado del paracaídas y se sube sobre la costa de Costa Adeje: unos diez minutos en el aire, con el puerto, las playas y las montañas bajo los pies. Entre el trayecto en barco y el vuelo se está fuera unos cuarenta minutos."
+      it: "Si decolla dalla barca appesi al paracadute e si sale sopra la costa del sud: una decina di minuti in aria, con il porto, le spiagge e le montagne sotto i piedi. Fra il tragitto in barca e il volo si sta fuori circa quaranta minuti.",
+      en: "You lift off from the boat hanging under the parachute and rise above the southern coast: some ten minutes in the air, with the marina, the beaches and the mountains under your feet. Between the boat ride and the flight you are out for about forty minutes.",
+      es: "Se despega desde el barco colgado del paracaídas y se sube sobre la costa sur: unos diez minutos en el aire, con el puerto, las playas y las montañas bajo los pies. Entre el trayecto en barco y el vuelo se está fuera unos cuarenta minutos."
     },
     // L'attrezzatura e il giubbotto li da' il fornitore, e l'istruttore sta a
     // bordo per tutta l'uscita. Le foto **non** ci sono: si comprano sul posto,
@@ -3373,9 +3735,9 @@ const ESPLORA_CATALOG = [
       { it: "Le foto del volo non sono comprese: si comprano sul posto, lo stesso giorno.",
         en: "Photos of your flight are not included: you can buy them on the spot, on the day.",
         es: "Las fotos del vuelo no están incluidas: se compran allí mismo, el mismo día." },
-      { it: "Non c'è il ritiro in hotel: al Puerto Colón ci si arriva da soli.",
-        en: "There is no hotel pick-up: you make your own way to Puerto Colón.",
-        es: "No hay recogida en el hotel: se llega por cuenta propia a Puerto Colón." }
+      { it: "Si parte da Puerto Colón o da Los Cristianos: il porto te lo diciamo nella conferma. Non c'è il ritiro in hotel: al porto ci si arriva da soli.",
+        en: "Departures are from Puerto Colón or Los Cristianos: we tell you which one in the confirmation. There is no hotel pick-up: you make your own way to the port.",
+        es: "Se sale desde Puerto Colón o desde Los Cristianos: el puerto te lo decimos en la confirmación. No hay recogida en el hotel: se llega por cuenta propia al puerto." }
     ],
     image: "parascending.jpg",
     published: true
@@ -3383,6 +3745,9 @@ const ESPLORA_CATALOG = [
   {
     id: "jet-ski-safari-1-2h",
     title: "Jet Ski Safari",
+    // La compagnia delle partenze da Las Galletas, come i venditori la
+    // scrivono sul ticket (proprietario, 8 ottobre 2026).
+    nomi: ["Agua Safari"],
     category: "sport-acquatici",
     zone: { it: "Puerto Colón o Las Galletas", en: "Puerto Colón or Las Galletas", es: "Puerto Colón o Las Galletas" },
     duration: { it: "40 minuti, 1 o 2 ore", en: "40 minutes, 1 or 2 hours", es: "40 minutos, 1 o 2 horas" },
@@ -3781,7 +4146,9 @@ const ESPLORA_CATALOG = [
       es: "Elevarse sobre el agua con la tabla a chorro, con instructor."
     },
     image: "flyboard.jpg",
-    published: true
+    // Spenta il 6 ottobre 2026: il proprietario non lo vende piu'. La scheda
+    // resta qui, con la foto, nel caso torni: basta rimettere true.
+    published: false
   },
   {
     // Franz Surf School, Playa de las Americas (dati del 13 settembre 2026,
@@ -3810,6 +4177,8 @@ const ESPLORA_CATALOG = [
     duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
+    // Partenze dal proprietario, 9 ottobre 2026: valgono per tutte le lezioni.
+    times: ["09:00", "11:00", "16:00", "18:00"],
     priceFrom: 35,
     priceAdult: 35,
     // Dai 13 anni in su, e sopra i 13 si paga tutti uguale: non c'e' una
@@ -3971,9 +4340,9 @@ const ESPLORA_CATALOG = [
       { it: "Ogni lezione dura due ore, anche quelle dentro un pacchetto.",
         en: "Every lesson lasts two hours, the ones inside a package included.",
         es: "Cada clase dura dos horas, también las que van dentro de un pack." },
-      { it: "Gli orari delle lezioni seguono la marea e cambiano di giorno in giorno: si concordano con la scuola quando la richiesta viene confermata.",
-        en: "Lesson times follow the tide and change from day to day: they are agreed with the school when your request is confirmed.",
-        es: "Los horarios de las clases siguen la marea y cambian de un día a otro: se acuerdan con la escuela cuando se confirma la solicitud." },
+      { it: "Gli orari possono spostarsi di 30 minuti, prima o dopo, secondo la marea: l'ora esatta te la diciamo quando confermiamo la richiesta.",
+        en: "Times may move by 30 minutes, earlier or later, depending on the tide: we give you the exact time when we confirm your request.",
+        es: "Los horarios pueden moverse 30 minutos, antes o después, según la marea: la hora exacta te la decimos cuando confirmamos la solicitud." },
       { it: "Muta, tavola e scarpette in neoprene le dà la scuola, in tutte le lezioni e in tutti i pacchetti.",
         en: "Wetsuit, board and neoprene boots are provided by the school, in every lesson and every package.",
         es: "Neopreno, tabla y escarpines los pone la escuela, en todas las clases y en todos los packs." },
@@ -3992,6 +4361,7 @@ const ESPLORA_CATALOG = [
   {
     id: "siam-park",
     title: "Siam Park",
+    pagamento: "card",
     category: "parchi-spettacoli",
     zone: "Costa Adeje",
     // Al posto di "Giornata intera" (che non dice niente) l'orario vero,
@@ -4135,6 +4505,7 @@ const ESPLORA_CATALOG = [
   {
     id: "siam-night",
     title: "Siam Night",
+    pagamento: "card",
     category: "parchi-spettacoli",
     // Zona e orario dal proprietario, 5 ottobre 2026: e' il Siam Park di sera,
     // dalle 20 a mezzanotte, solo a luglio e agosto (vedi `season`). Quattro
@@ -4163,6 +4534,7 @@ const ESPLORA_CATALOG = [
   {
     id: "loro-parque",
     title: "Loro Parque",
+    pagamento: "card",
     category: "parchi-spettacoli",
     zone: "Puerto de la Cruz",
     // Al posto di "Giornata intera" l'orario vero, spostato qui da `notes`.
@@ -4221,6 +4593,7 @@ const ESPLORA_CATALOG = [
   {
     id: "twin-ticket",
     title: "Twin Ticket – Siam Park + Loro Parque",
+    pagamento: "card",
     category: "parchi-spettacoli",
     // Dal proprietario, 5 ottobre 2026: due parchi in due zone, quindi la
     // scheda sta in tutti e due i filtri di zona; due giorni, uno per parco.
@@ -4879,7 +5252,12 @@ const ESPLORA_CATALOG = [
   // ─── TOUR DELL'ISOLA ──────────────────────────────────────────────────────
   {
     id: "la-gomera",
+    // Conta sempre come card (proprietario, 11 ottobre 2026: le escursioni
+    // di Island Excursions).
+    pagamento: "card",
     title: "La Gomera Island Tour",
+    // Sul ticket i venditori scrivono solo "Gomera" (proprietario, 8 ottobre 2026).
+    nomi: ["Gomera"],
     category: "tour-isola",
     // La zona e' la destinazione, non il punto di ritiro: il ritiro cambia con
     // la variante (sud dell'isola o Puerto de la Cruz) e sta scritto li'.
@@ -5056,6 +5434,9 @@ const ESPLORA_CATALOG = [
     // e le richieste ferme in localStorage. Il nome del file della foto lo
     // segue: `santa-cruz-taganana.jpg` serve anche alla griglia della home.
     id: "santa-cruz-taganana",
+    // Conta sempre come card (proprietario, 11 ottobre 2026: le escursioni
+    // di Island Excursions).
+    pagamento: "card",
     // Il titolo e' quello del fornitore ufficiale, uguale in tutte e tre le
     // lingue come tutti gli altri.
     title: "Santa Cruz + Anaga + La Laguna",
@@ -5200,6 +5581,9 @@ const ESPLORA_CATALOG = [
     // dall'ufficio il 16 settembre 2026 (Nere Izerdie / Island Excursions,
     // Costa Adeje), che la chiama "VUELTA A LA ISLA".
     id: "island-tour-completo",
+    // Conta sempre come card (proprietario, 11 ottobre 2026: le escursioni
+    // di Island Excursions).
+    pagamento: "card",
     // Il titolo resta quello scritto da Admiral, come su `la-palma`: il
     // fornitore la chiama "Vuelta a la Isla", ma il nome sul sito lo cambia
     // solo l'ufficio.
@@ -5709,6 +6093,11 @@ const ESPLORA_CATALOG = [
     duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
+    // Partenze ogni ora dalle 9 alle 20, uguali per tutti i percorsi in tuk tuk,
+    // condivisi e privati (proprietario, 9 ottobre 2026). La pagina del
+    // fornitore segna le 9, le 19 e le 20 "Llamar para reservar": vanno bene lo
+    // stesso, perche' a chiamare e' l'ufficio quando conferma.
+    times: ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"],
     // Il sito del fornitore dice quattro lingue (anche italiano e francese), ma
     // tutte e cinque le pagine di prenotazione ne scrivono due: "Disponible en
     // español, inglés", e fra le cose incluse "Spanish and English guide". Qui
@@ -5825,7 +6214,9 @@ const ESPLORA_CATALOG = [
       es: "Tren sobre ruedas entre Costa Adeje y Los Cristianos: subes y bajas en las paradas cuando quieras, el billete vale todo el día."
     },
     image: "trenino-turistico.jpg",
-    published: true
+    // Spento il 12 ottobre 2026 dal proprietario, "al momento". La scheda
+    // resta qui, con la foto: per rimetterla basta tornare a true.
+    published: false
   },
 
   // ─── TOUR PRIVATI ─────────────────────────────────────────────────────────
@@ -5900,7 +6291,15 @@ const ESPLORA_CATALOG = [
     id: "private-charter",
     title: "Private Charter",
     category: "tour-privati",
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    // Dal proprietario, 9 ottobre 2026: sono le stesse barche dei giri
+    // condivisi, e partono dagli stessi porti. Quindi il porto dipende dalla
+    // barca, e i porti sono quelli delle schede di "Mare e barche".
+    zone: {
+      it: "Dipende dalla barca: Puerto Colón, Los Cristianos, Los Gigantes o Las Galletas",
+      en: "Depends on the boat: Puerto Colón, Los Cristianos, Los Gigantes or Las Galletas",
+      es: "Depende del barco: Puerto Colón, Los Cristianos, Los Gigantes o Las Galletas"
+    },
+    zoneGroups: ["costa-adeje", "los-cristianos", "los-gigantes"],
     // Dal proprietario, 5 ottobre 2026: 3, 6 o 9 ore. Non sono varianti con un
     // bottone perche' manca il prezzo di ciascuna: priceTiers qui sotto non dice
     // a quale durata si riferisce. Nel filtro: 3 ore e' mezza giornata, 6 e 9
@@ -5967,6 +6366,8 @@ const ESPLORA_CATALOG = [
     duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
+    // Stessa barca e stesse partenze della condivisa (proprietario, 9 ottobre 2026).
+    times: ["11:00", "14:00", "17:00"],
     priceFrom: 350,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
     priceAdult: 0,
@@ -5989,6 +6390,8 @@ const ESPLORA_CATALOG = [
     duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza", "intera"],
+    // Stesse partenze del giro condiviso (proprietario, 9 ottobre 2026).
+    times: ["09:30", "12:30"],
     priceFrom: 350,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
     priceAdult: 0,
@@ -6100,6 +6503,11 @@ const ESPLORA_CATALOG = [
     duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
+    // Partenze ogni ora dalle 9 alle 20, uguali per tutti i percorsi in tuk tuk,
+    // condivisi e privati (proprietario, 9 ottobre 2026). La pagina del
+    // fornitore segna le 9, le 19 e le 20 "Llamar para reservar": vanno bene lo
+    // stesso, perche' a chiamare e' l'ufficio quando conferma.
+    times: ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"],
     languages: ["Español", "English"],
     priceFrom: 86,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },

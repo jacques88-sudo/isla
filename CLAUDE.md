@@ -52,6 +52,14 @@ Le prenotazioni **non sono automatiche**: il cliente manda una *richiesta* su Wh
 **Le 24 ore di preavviso sono di Isla, non dei fornitori.** Se una pagina fornitore dice
 48 ore o 72, **non si copia**. Vale sempre, anche per i dati che arrivano domani.
 
+**Anche la cancellazione è di Isla** (6 ottobre 2026, proprietario): **fino a 24 ore
+prima** il cliente può annullare gratis **oppure** spostare la data, una volta sola e se
+c'è posto; **meno di 24 ore prima**, o se non si presenta, non si annulla né si sposta, e
+non si rimborsa. Vale anche per charter privati e noleggi. Se annulla l'operatore
+(maltempo, mare, pochi partecipanti) il cliente sceglie fra altra data e rimborso
+completo; si annulla con un messaggio WhatsApp e conta l'ora del messaggio. Sta in
+`faq.a5`. I giorni entro cui si rimborsa **non sono decisi**: non scriverne uno.
+
 **I prezzi barrati sono offerte del rivenditore: sul sito va il prezzo pieno.** Lo sconto
 di un altro non è nostro. Abbassare un prezzo dopo si può, alzarlo dopo che il cliente
 l'ha letto è la cosa che fa arrabbiare.
@@ -112,12 +120,16 @@ porto e capienza con le schede della stessa categoria.
 | `lista.js` | la lista delle richieste (localStorage), costruita in JS perché serve a tre pagine |
 | `i18n.js` | tutti i testi fissi nelle tre lingue |
 | `controlla.js` | il controllo del catalogo |
+| `orari-mancanti.js` | la lista delle schede senza orari di partenza; il sito non lo carica |
+| `foglio-google/` | il programma (Apps Script) del foglio Google dei netti, e come si installa; il sito non lo carica |
 | `venditori.html/.js` | la pagina dei venditori: ticket di carta nel database (Supabase) |
 | `supabase-config.js` | URL e chiave **pubblica** di Supabase; lo schema e le regole stanno in `supabase/` |
 | `telefono.js` | prefissi e `telefonoE164()`: **uno solo** per venditori e clienti, il telefono è la chiave che li fa incontrare |
 | `supabase/functions/leggi-ticket/` | la funzione sul server che fa leggere a Claude la foto del ticket e riempie il modulo dei venditori; la chiave Anthropic sta **solo** nei Secrets di Supabase |
+| `supabase/functions/manda-notifiche/` | gli avvisi sul telefono (confermata, annullata, promemoria): la chiamano Cron ogni 10 minuti e `venditori.html` dopo Conferma/Annulla; la chiave privata VAPID sta **solo** nei Secrets |
 | `supabase/functions/pulisci-foto/` | ogni notte (Cron) cancella le foto dei ticket che nessun ticket nomina più; con SQL le foto non si cancellano |
 | `booking.js` | "Le mie escursioni": i ticket veri da Supabase (numero + telefono); i codici `ISLA-…` restano la pagina finta; con `?richieste=1` le richieste mandate su WhatsApp |
+| `portare.js` | "Cosa portare" sulle escursioni confermate, gruppo per gruppo (dalla pagina Notion "cose da portare"); lo carica solo `booking.html` |
 | `richieste.js` | le richieste della lista salvate anche su Supabase (`pending`), con la **chiave** che resta nel telefono del cliente e il **codice** che va nel messaggio; l'ufficio le conferma o annulla da `venditori.html` |
 
 **La finestra della richiesta è scritta due volte**, in `escursioni.html` e in `tour.html`.
@@ -160,6 +172,10 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
 - **Il campo "Il tuo nome" nella richiesta resta**, per scelta del proprietario. Era stata
   proposta la sua rimozione — il messaggio parte dal WhatsApp del cliente, quindi l'ufficio
   vede già chi scrive e da che numero — ed è stata respinta. Non si ripropone.
+- **L'email nella richiesta si chiede a tutti ed è obbligatoria** (proprietario, 12
+  ottobre 2026): molte compagnie (i parchi per primi) mandano il biglietto per email.
+  Sta sotto il nome nella finestra della lista (`lista.js`) e va **solo** nel messaggio
+  WhatsApp, mai nel database. Non si fa un elenco di schede che la vogliono.
 - **La tastiera dell'iPhone sul fondo della finestra si lascia com'è**, per scelta del
   proprietario. Misurato: col campo del nome a fuoco il pulsante finisce dietro la
   tastiera e la casella la scavalca di 6 px sull'iPhone SE. Il rimedio esiste (alzare la
@@ -173,6 +189,11 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   proprietario), non sempre in vista. I gruppi stanno in `ZONE_FILTRO` e `DURATE_FILTRO`;
   ogni scheda nuova dice i suoi in `zoneGroups` e `durationGroups`. **Los Gigantes è una
   zona a sé**, per scelta del proprietario.
+- **Un ticket non si cancella, si annulla** (proprietario, 8 ottobre 2026): nella
+  pagina dei venditori, Modifica → **Annulla ticket** (con conferma) e, su un annullato,
+  **Ripristina ticket**. Annullato, il cliente non lo vede più e il foglio Google lo
+  tiene barrato fuori dai totali. Il bottone che chiude la finestra si chiama **Chiudi**,
+  non "Annulla": accanto ad "Annulla ticket" si confondevano.
 - **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
   Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
   minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.
@@ -272,6 +293,129 @@ il cliente davanti alla reception mentre il pulmino aspetta due strade più in l
 perché nei dati è l'unico hotel con la fermata e senza nessun orario; nel browser
 però scrive "il tuo hotel" come i 29 col punto `0`, perché la sua fermata si chiama
 come lui e non ha un tipo. La tabella e il comportamento non dicono la stessa cosa.
+
+---
+
+## I nomi delle compagnie sul ticket (`nomi`)
+
+Sul ticket di carta i venditori scrivono spesso **il nome della compagnia** ("COOL
+SAILING"), non il titolo della scheda. Il campo `nomi` della scheda li elenca:
+
+```js
+nomi: ["King Buggy", "Ultimate Buggies", "Ultimate Buggy"],
+```
+
+`catalogoPerLettura()` in `venditori.js` li attacca al titolo che va a Claude ("… (sul
+ticket anche: …)"), e Claude dalla foto risale alla scheda: **la funzione `leggi-ticket`
+non va ridistribuita** quando si aggiunge un nome. Il cliente non li vede, non si
+traducono. Il **tipo** (barca, quad, moto d'acqua) non si scrive: lo dice la `category`
+della scheda, perché **una compagnia fa una cosa sola** (proprietario, 30 settembre
+2026). Più compagnie sulla stessa scheda vanno bene (i buggy); lo stesso nome su due
+schede no, e `controlla.js` dà errore. Quando il proprietario manda il nome di una
+compagnia: trova la scheda, aggiungi il nome, e se non è chiaro quale sia **chiedi**.
+
+**Se la compagnia fa una variante sola**, il nome va **anche dentro quella variante**
+(`options.choices[].nomi`): sul ticket di Andromeda c'è scritto solo "Andromeda", e senza
+questo la lettura della foto lasciava vuota la serata. Trovata la compagnia, il modulo
+sceglie la variante, ma solo se è ancora vuota. Il nome della variante deve stare anche
+nei `nomi` della scheda: `controlla.js` lo verifica.
+
+## I netti delle compagnie — MAI nel repository
+
+Il **netto** è quanto Isla paga alla compagnia (barca da 100 €, netto 40: 40 alla
+compagnia, 60 a Isla). Il proprietario li manda in chat, scheda per scheda: netto
+adulto, netto bambino e, per moto d'acqua, buggy, quad e privati, il netto **a mezzo**.
+Per alcune schede il netto è una **parte del prezzo di vendita** (Twin Ticket, 9 ottobre
+2026): colonna `net_percent` di `nets` (`supabase/modifiche/2026-10-09-percentuale.sql`),
+netto = totale del ticket × quella parte. Per questo il netto si ricalcola anche quando
+cambia il **totale**.
+
+**Il repository è pubblico e il sito è su GitHub Pages**: un netto scritto in un file
+(catalogo, commento, `NOTES.md`, un `.sql` in `supabase/`) lo legge chiunque, clienti e
+compagnie compresi. I netti stanno **solo su Supabase**: si prepara l'SQL nella
+scratchpad, il proprietario lo incolla nel SQL Editor, e il file non si committa.
+
+Deciso l'8 ottobre 2026, a passi:
+1. **fatto** — i mezzi sul ticket: colonna `units` di `bookings` (`{"singola": 2}`, chiavi
+   di `units.types` del catalogo), caselle nel modulo e in "Modifica";
+2. **fatto** — tabella `nets` su Supabase (`supabase/modifiche/2026-10-08-netti.sql`,
+   nasce **vuota**): un netto dice scheda, variante **e compagnia**, perché lo stesso giro
+   può essere di compagnie diverse (Teide by Night: la serata italiana del gruppo piccolo
+   è di Andromeda, le altre no). Il ticket ha la colonna `company`, con un menu fatto dei
+   `nomi` della scheda. Un ticket senza compagnia, o di una compagnia senza netto,
+   **resta senza netto**: mai uno preso a caso. I valori si inseriscono con
+   `insert … on conflict … do update` preparato nella scratchpad;
+3. ~~promemoria nel modulo dei venditori~~ — **scartato** dal proprietario (8 ottobre):
+   "non serve, non è importante". Non si ripropone;
+4. **fatto** — il netto si **fissa sul ticket** (`net_amount`, `net_note`, guardiano
+   `fissa_netto` in `supabase/modifiche/2026-10-08-foglio.sql`): un netto cambiato in
+   `nets` non riscrive i ticket già salvati; si ricalcola solo se cambiano scheda,
+   variante, compagnia, persone o mezzi;
+5. **fatto** — il riepilogo **non sta su Isla**: un foglio Google (`foglio-google/`) che
+   **ogni ora** legge `foglio_ticket()` con una parola segreta, aggiunge e aggiorna i
+   ticket e **non ne cancella mai**: la pulizia mensile toglie i ticket vecchi, il foglio
+   è l'archivio. Riepiloghi per giorno, settimana e compagnia, contati da quando il
+   ticket è inserito; nei totali solo i confermati, gli annullati a parte. La parola
+   segreta, come i netti, non sta nel repository.
+
+**Le commissioni** (proprietario, 8 ottobre 2026): commissione = **totale − netto**,
+sempre sul totale anche se il cliente paga il resto dopo. Si divide fra venditore e
+ufficio secondo **card o cash**, uno solo per ticket, scelto dal venditore nel modulo
+(`payment_method`, obbligatorio sul ticket nuovo; sul ticket di carta non c'è). **Le
+percentuali non vanno nel repository**, come i netti: stanno in `commission_rates` su
+Supabase (`supabase/modifiche/2026-10-08-pagamento.sql`, nasce vuota). Nel foglio: Card €
+e Cash € sono **quanto ha già pagato** il cliente, nella colonna del suo metodo.
+**I parchi contano sempre come card** (Loro Parque, Siam Park, Siam Night, Twin Ticket;
+proprietario, 9 ottobre 2026), comunque paghi il cliente, e così **le cinque escursioni di
+Island Excursions** (Teide National Park, Teide-Icod-Garachico-Masca, La Gomera, Santa Cruz +
+Anaga + La Laguna, Tour completo dell'isola; proprietario, 11 ottobre 2026): `pagamento: "card"` nel catalogo (il modulo
+lo sceglie da solo e spegne Cash) e lo stesso elenco nel guardiano `sempre_card`
+(`supabase/modifiche/2026-10-09-solo-card.sql`). `controlla.js` verifica che i due
+elenchi siano uguali: una scheda nuova da aggiungere va messa in **tutti e due**.
+
+**Il foglio ha una scheda per settimana** ("Settimana 05-10-2026", dal lunedì della data
+di emissione, la più nuova davanti; proprietario, 8 ottobre 2026): ogni ticket sta per
+sempre nella scheda della sua settimana. Ogni giorno: i ticket, la riga **"Totale del
+giorno"** (cash, al venditore, all'ufficio, commissioni dei soli confermati; id nascosto
+`totale-AAAA-MM-GG`) e una riga vuota. Il programma rilegge la scheda **intera, colonne a
+mano comprese**, e la riscrive giorno per giorno: ogni riga si porta dietro le sue celle.
+**In ogni settimana si vedono SOLO 15 colonne**, nell'ordine del
+proprietario (8 ottobre 2026): data emissione, ticket, escursione ("Agua Safari ·
+Doppia · 1 ora": la compagnia o il nome della scheda, i mezzi, la variante),
+data escursione, adulti, bambini,
+totale, pagato, da pagare, card, cash, netto, al venditore, all'ufficio, commissioni.
+Quello che serve al programma (stato, settimana, venditore, compagnia, id) sta in colonne
+**nascoste** a destra; gli annullati sono barrati in grigio, le richieste in attesa non ci
+sono. Una colonna in più da mostrare si chiede al proprietario prima.
+
+**Il netto non lo legge nessuna pagina, nemmeno i venditori**: `nets` è chiusa, e su
+`bookings` i venditori hanno il permesso **colonna per colonna**, tutte tranne
+`net_amount` e `net_note`. Quindi: **una colonna nuova in `bookings` va data anche ai
+venditori** (`grant select (nome) on public.bookings to authenticated`), altrimenti la
+pagina dei venditori non la legge. E nel sito mai `select("*")` su `bookings`.
+
+## Gli orari ancora da mettere
+
+Il proprietario manda gli orari **una scheda alla volta**, quando li ha. Per sapere quali
+mancano, adesso:
+
+```bash
+node orari-mancanti.js
+```
+
+Rifà la lista dal catalogo a ogni lancio (non scriverla a mano: invecchia). Quando
+arrivano gli orari:
+
+- sono **partenze**, e vanno in `times` (sulla scheda o sulla variante giusta);
+- se due compagnie fanno lo stesso giro, sulla variante vanno **le ore di tutte e due**
+  e il cliente sceglie l'ora, **non la compagnia**: chi lo porta lo decide l'ufficio
+  (buggy, 5 ottobre 2026). Su un giro che fa una compagnia sola, solo le sue ore;
+- **i parchi non hanno bisogno di orari** (Loro Parque, Siam Park, Aqualand…; proprietario,
+  9 ottobre 2026): sono biglietti d'ingresso, si entra quando si vuole. Non si chiedono,
+  e `orari-mancanti.js` non li elenca.
+
+Dopo, prova la finestra della richiesta nel browser: il menu "A che ora" deve mostrare
+esattamente quelle ore, e "Da concordare" deve sparire.
 
 ---
 

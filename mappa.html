@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#fcfaf6" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#18130e" media="(prefers-color-scheme: dark)" />
+  <meta name="description" data-i18n-content="meta.map.desc" content="La mappa di Tenerife di Isla: spiagge, punti panoramici, posti segreti e cose da vedere, con la strada per arrivarci." />
+  <title>Scopri Tenerife · Isla</title>
+  <!-- Anteprima quando il link si manda su WhatsApp, Telegram, Facebook.
+       L'immagine vuole l'indirizzo intero: WhatsApp non capisce ./assets. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Isla" />
+  <meta property="og:locale" content="it_IT" />
+  <meta property="og:title" content="Scopri Tenerife · Isla" />
+  <meta property="og:description" content="La mappa di Tenerife di Isla: spiagge, punti panoramici, posti segreti e cose da vedere." />
+  <meta property="og:image" content="https://jacques88-sudo.github.io/isla/assets/anteprima.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Il logo di Isla, il sole con la palma, e la scritta so easy so tenerife" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./assets/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="./vendor/leaflet-1.9.4.css" />
+  <link rel="stylesheet" href="./styles.css" />
+  <!-- Critical splash styles, inlined so the loading screen never flashes
+       unstyled while styles.css is still being fetched. -->
+  <style>
+    .splash {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.4rem;
+      background: oklch(0.985 0.006 85);
+    }
+    .splash-mark {
+      position: relative;
+      width: 108px;
+      height: 108px;
+      display: grid;
+      place-items: center;
+    }
+    .splash-logo {
+      width: 58%;
+      height: 58%;
+      object-fit: contain;
+      border: 0;
+    }
+    .splash-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg,
+        transparent 0%,
+        oklch(0.74 0.1 210) 20%,
+        oklch(0.6 0.11 235) 45%,
+        transparent 55%,
+        transparent 100%);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
+              mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 4px));
+      animation: splash-spin 1.6s linear infinite;
+    }
+    .splash-brand {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 500;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: .3em;
+      color: oklch(0.24 0.012 60);
+    }
+    @keyframes splash-spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body data-i18n-doctitle="meta.map.title">
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="splash-mark">
+      <span class="splash-ring"></span>
+      <img src="./assets/logo-isla.png" alt="" class="splash-logo" />
+    </div>
+    <span class="splash-brand">Isla</span>
+  </div>
+
+  <a class="skip" href="#main" data-i18n="common.skip">Vai al contenuto</a>
+
+  <main id="main" class="catalog-page map-page">
+    <!-- Stessa testata della home, con la foto dell'isola. -->
+    <div class="home-hero">
+      <img class="home-hero-media" src="./assets/hero-tenerife.webp" alt="" />
+      <a class="home-hero-mark" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
+        <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
+      </a>
+    </div>
+
+    <nav class="home-bar" data-i18n-aria-label="nav.aria" aria-label="Menu principale">
+      <!-- La capsula: le voci sono icone, e solo quella della pagina in cui si
+           e' ha la scritta accanto. Le altre la scritta ce l'hanno lo stesso,
+           nascosta agli occhi ma letta dallo screen reader. -->
+      <div class="isla-tabs">
+        <a class="isla-tab" href="./index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.5 12 4l8.5 6.5"/><path d="M5.5 9v10.5h13V9"/><path d="M10 19.5v-5h4v5"/></svg>
+          <span class="isla-tab-label" data-i18n="nav.home">Home</span>
+        </a>
+        <a class="isla-tab" href="./escursioni.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 19.5 9 9l3.5 5 2.5-3.5 6.5 9z"/><circle cx="17" cy="5.5" r="2"/></svg>
+          <span class="isla-tab-label" data-i18n="nav.experiences">Esperienze</span>
+        </a>
+        <button class="isla-tab" type="button" data-lista-open aria-haspopup="dialog" aria-controls="listaDialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4h2.3l2.4 11h11.3l2-8H6"/><circle cx="9" cy="19.2" r="1.3"/><circle cx="16.5" cy="19.2" r="1.3"/><path d="M10.2 11.5a2.8 2.8 0 0 1 5.6 0"/><path d="M8.8 11.5h8.4"/></svg>
+          <span class="isla-tab-count" data-lista-count aria-hidden="true" hidden></span>
+          <span class="isla-tab-label" data-i18n="lista.title">La tua lista</span>
+        </button>
+        <button class="isla-tab" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z"/><path d="M9.3 13.2a2.7 2.7 0 0 1 5.4 0"/><path d="M8 13.2h8"/></svg>
+          <span class="isla-tab-count" data-prenotazioni-count aria-hidden="true" hidden></span>
+          <span class="isla-tab-label" data-i18n="nav.myBookings">Le mie prenotazioni</span>
+        </button>
+        <button class="isla-tab" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <span class="isla-tab-label" data-i18n="nav.menu">Menu</span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="wrap catalog-head">
+      <span class="eyebrow" data-i18n="map.eyebrow">La mappa</span>
+      <h1 data-i18n="map.title">Scopri Tenerife</h1>
+      <p class="packs-intro" data-i18n="map.intro">Spiagge, panorami, posti segreti e cose da vedere. Scegli una categoria sotto la mappa e tocca un punto per leggere cos'è e farti portare lì.</p>
+    </div>
+
+    <!-- La mappa la disegna `mappa.js`, coi punti di MAP_POINTS. -->
+    <div class="wrap">
+      <div class="map-wrap">
+        <div class="map-box" id="islaMap" data-i18n-aria-label="map.aria" aria-label="Mappa di Tenerife" role="region"></div>
+      </div>
+    </div>
+
+    <!-- L'elenco dei posti, un pulsante per categoria che si apre: lo scrive
+         mappa.js (renderMapList). -->
+    <div class="wrap map-list" data-map-list></div>
+
+    <!-- Il pannello del posto scelto: lo riempie mappa.js (openMapSheet). -->
+    <section class="map-sheet" data-map-sheet role="dialog" aria-modal="false" aria-labelledby="mapSheetTitle" hidden>
+      <button class="map-sheet-close" type="button" data-map-sheet-close data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
+      <div data-map-sheet-content></div>
+    </section>
+  </main>
+
+  <div class="menu-scrim" data-menu-scrim hidden></div>
+  <aside class="more-menu" id="moreMenu" role="dialog" aria-modal="true" data-i18n-aria-label="menu.aria" aria-label="Menu" hidden>
+    <div class="more-menu-head">
+      <span class="more-menu-brand">Isla</span>
+      <button class="iconbtn" type="button" data-menu-close data-i18n-aria-label="menu.close" aria-label="Chiudi menu">✕</button>
+    </div>
+    <div class="more-menu-lang">
+      <span class="more-menu-lang-label" data-i18n="lang.label">Lingua</span>
+      <div class="lang-seg">
+        <button type="button" data-lang-set="it" lang="it" aria-label="Italiano" title="Italiano"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#009246" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#ce2b37" d="M2 0h1v2H2z"/></svg></button>
+        <button type="button" data-lang-set="en" lang="en" aria-label="English" title="English"><svg class="lang-flag" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path fill="#012169" d="M0 0h60v30H0z"/><path stroke="#fff" stroke-width="6" d="M0 0l60 30M60 0L0 30"/><path stroke="#c8102e" stroke-width="2" d="M0 0l60 30M60 0L0 30"/><path stroke="#fff" stroke-width="10" d="M30 0v30M0 15h60"/><path stroke="#c8102e" stroke-width="6" d="M30 0v30M0 15h60"/></svg></button>
+        <button type="button" data-lang-set="es" lang="es" aria-label="Español" title="Español"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#aa151b" d="M0 0h3v2H0z"/><path fill="#f1bf00" d="M0 .5h3v1H0z"/></svg></button>
+      </div>
+    </div>
+    <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn data-i18n="menu.install" hidden>Installa l'app</button>
+    <nav class="more-menu-nav" data-i18n-aria-label="menu.sections" aria-label="Sezioni">
+      <button type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.myBookings">Le mie prenotazioni</button>
+      <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
+      <a href="./pacchetti.html" data-menu-link data-i18n="menu.packages">Pacchetti</a>
+      <a href="./mappa.html" data-menu-link data-i18n="menu.map">Scopri Tenerife</a>
+      <a href="./mappa.html?cat=segreto" data-menu-link data-i18n="menu.secret">Posti segreti</a>
+      <a href="./index.html#about" data-menu-link data-i18n="menu.about">Chi siamo</a>
+    </nav>
+    <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link data-i18n="menu.cta">Prenota ora</a>
+  </aside>
+
+  <div class="ticket-scrim" data-ticket-scrim hidden></div>
+  <div class="ticket-dialog" id="ticketDialog" role="dialog" aria-modal="true" aria-labelledby="ticketDialogTitle" hidden>
+    <div class="ticket-dialog-head">
+      <h2 id="ticketDialogTitle" data-i18n="ticket.title">Scan ticket</h2>
+      <button class="iconbtn" type="button" data-ticket-close data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
+    </div>
+    <form data-lookup-form>
+      <!-- Il cliente si fa riconoscere con due cose che ha sul ticket di carta:
+           il numero (in rosso) e il telefono. Tutti e due, perche' col solo
+           telefono chiunque ne provasse uno a caso vedrebbe dove e quando sara'
+           una famiglia. I codici finti di prova (ISLA-4521) funzionano ancora
+           senza telefono: vedi booking.js. -->
+      <label for="codeInput" data-i18n="ticket.codeLabel">Numero del ticket</label>
+      <input class="lookup-input" id="codeInput" name="code" type="text" inputmode="text" autocomplete="off"
+             data-i18n-placeholder="ticket.placeholder" placeholder="Es. 2213" required />
+      <label for="phoneInput" data-i18n="ticket.phoneLabel">Telefono scritto sul ticket</label>
+      <div class="lookup-phone">
+        <select name="prefix" data-prefix-select data-i18n-aria-label="ticket.prefix" aria-label="Prefisso"></select>
+        <input class="lookup-input" id="phoneInput" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" />
+      </div>
+      <p class="lookup-error" data-lookup-error role="alert" hidden></p>
+      <button class="btn btn-primary btn-block" type="submit" data-i18n="common.search">Cerca</button>
+      <p class="hint" data-i18n="ticket.hint">Il numero è stampato in rosso sul ticket che ti abbiamo dato.</p>
+    </form>
+  </div>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
+        <div>
+          <strong>Isla</strong>
+          <span>so easy so tenerife</span>
+        </div>
+      </div>
+      <button class="footer-link" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="footer.findCode">Cerca il tuo codice</button>
+    </div>
+    <p class="footer-legal">
+      <span data-i18n-html="footer.operator">Isla è un servizio di <strong>Admiral Travel Agencia de Viajes SL</strong></span> · CIF B38506754<br />
+      C. Francisco Andrade Fumero, 38660 Playa de las Américas, Santa Cruz de Tenerife · <a href="tel:+34662908073">+34 662 908 073</a> · <a href="./privacy.html" data-i18n="footer.privacy">Privacy</a> · <a href="./termini.html" data-i18n="footer.terms">Termini di vendita</a>
+    </p>
+    <p class="footer-copy" data-i18n="footer.copy">© Isla · Escursioni a Tenerife</p>
+  </footer>
+
+  <script src="./i18n.js"></script>
+  <script src="./esplora-catalog.js"></script>
+  <script src="./escursioni.js"></script>
+  <script src="./vendor/leaflet-1.9.4.js"></script>
+  <script src="./mappa-foto.js"></script>
+  <script src="./mappa.js"></script>
+  <!-- la lista deve saper disegnare un pacchetto -->
+  <script src="./pacchetti.js"></script>
+  <script src="./supabase-config.js"></script>
+  <script src="./richieste.js"></script>
+  <script src="./lista.js"></script>
+  <script src="./assistente.js"></script>
+  <script src="./telefono.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

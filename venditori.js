@@ -36,6 +36,11 @@ const els = {
   optionWrap: $("[data-option-wrap]"),
   optionLabel: $("[data-option-label]"),
   option: $("#tOption"),
+  companyWrap: $("[data-company-wrap]"),
+  company: $("#tCompany"),
+  unitsWrap: $("[data-units-wrap]"),
+  unitsLabel: $("[data-units-label]"),
+  units: $("[data-units]"),
   seller: $("#tSeller"),
   nation: $("#tNation"),
   prefix: $("#tPrefix"),
@@ -47,6 +52,7 @@ const els = {
   rest: $("#tRest"),
   moneyWarn: $("[data-money-warn]"),
   moneyInfo: $("[data-money-info]"),
+  payment: $("#tPayment"),
   msg: $("[data-ticket-msg]"),
   save: $("[data-ticket-save]"),
   recent: $("[data-recent]"),
@@ -136,6 +142,113 @@ function aggiornaEscursione() {
     // Il valore salvato e' l'etichetta italiana: le varianti non hanno un id.
     scelte.forEach(c => els.option.append(new Option(italiano(c.label), italiano(c.label))));
   }
+
+  menuCompagnie(els.company, els.companyWrap, tour, "");
+  pagamentoDellaScheda(els.payment, tour);
+
+  const tipi = tipiMezzo(tour);
+  els.unitsWrap.hidden = !tipi.length;
+  if (tipi.length) els.unitsLabel.textContent = `${italiano(tour.units.name)}: quanti per tipo`;
+  caselleMezzi(els.units, tipi, "tUnit");
+}
+
+// I parchi contano sempre come pagati con carta (`pagamento: "card"` nel
+// catalogo, proprietario 9 ottobre 2026): il pagamento si sceglie da solo e
+// l'altro non si puo' scegliere. Lo fa valere anche il database
+// (supabase/modifiche/2026-10-09-solo-card.sql).
+function pagamentoDellaScheda(select, tour) {
+  const fisso = tour && tour.pagamento;
+  Array.from(select.options).forEach(o => {
+    if (o.value) o.disabled = !!fisso && o.value !== fisso;
+  });
+  if (fisso) select.value = fisso;
+}
+
+// ─── Compagnia ──────────────────────────────────────────────────────────────
+// Le compagnie della scheda sono i suoi `nomi` nel catalogo. Il netto dipende
+// anche da chi fa il giro, quindi il ticket lo dice. "Non scritta" quando sul
+// ticket non c'e': il ticket resta senza netto, non ne prende uno a caso.
+
+function menuCompagnie(select, wrap, tour, gia) {
+  const nomi = (tour && tour.nomi) || [];
+  select.replaceChildren(new Option("— non scritta —", ""));
+  nomi.forEach(n => select.append(new Option(n, n)));
+  // Un nome salvato che il catalogo non ha piu': resta, per non perderlo.
+  if (gia && !nomi.includes(gia)) select.append(new Option(gia, gia));
+  select.value = gia || "";
+  wrap.hidden = !nomi.length && !gia;
+}
+
+// Una compagnia che fa una variante sola (`nomi` dentro la variante, nel
+// catalogo): scelta lei, si sceglie anche la variante. Sul ticket di Andromeda
+// c'e' scritto solo "Andromeda", non "gruppo piccolo". Solo se la variante e'
+// ancora vuota: una scelta del venditore non si cambia.
+function varianteDellaCompagnia() {
+  const tour = schedaDa(els.exc.value);
+  const scelte = (tour && tour.options && tour.options.choices) || [];
+  if (!els.company.value || els.option.value) return;
+  const nome = els.company.value.toLowerCase();
+  const sua = scelte.find(c => (c.nomi || []).some(n => n.toLowerCase() === nome));
+  if (sua) els.option.value = italiano(sua.label);
+}
+
+// Il nome di compagnia che compare in un testo del ticket ("ANDROMEDA TOUR"
+// → "Andromeda"), o "". Il piu' lungo vince: "Ultimate Buggies" prima di
+// "Ultimate Buggy".
+function compagniaNelTesto(tour, testo) {
+  const t = (testo || "").toLowerCase();
+  return ((tour && tour.nomi) || [])
+    .filter(n => t.includes(n.toLowerCase()))
+    .sort((a, b) => b.length - a.length)[0] || "";
+}
+
+// ─── Mezzi ──────────────────────────────────────────────────────────────────
+// Sulle schede che vanno a mezzo (moto d'acqua, buggy, quad, Mustang) il ticket
+// dice quanti mezzi e di che tipo: "2 doppie", "1 buggy da 4 posti". I tipi
+// sono quelli del catalogo (units.types) e si salvano con la loro chiave:
+// { singola: 2, doppia: 1 }. Servono al netto, quando e' a mezzo.
+
+function tipiMezzo(tour) {
+  return (tour && tour.units && tour.units.types) || [];
+}
+
+// Una casella per tipo dentro `contenitore`, con i valori di `gia`.
+function caselleMezzi(contenitore, tipi, prefisso, gia) {
+  contenitore.replaceChildren();
+  contenitore.classList.toggle("vend-row-3", tipi.length > 2);
+  tipi.forEach(t => {
+    const box = document.createElement("div");
+    const label = document.createElement("label");
+    label.htmlFor = prefisso + t.key;
+    label.textContent = italiano(t.name);
+    const input = document.createElement("input");
+    Object.assign(input, {
+      id: prefisso + t.key, name: "unit_" + t.key, type: "number",
+      inputMode: "numeric", min: "0", max: "99",
+      value: String((gia && gia[t.key]) || 0)
+    });
+    box.append(label, input);
+    contenitore.append(box);
+  });
+}
+
+// Dalle caselle all'oggetto da salvare; null se non c'e' nessun mezzo.
+function mezziDa(form, tipi) {
+  const m = {};
+  tipi.forEach(t => {
+    const n = parseInt(form.elements["unit_" + t.key].value, 10);
+    if (n > 0) m[t.key] = Math.min(n, 99);
+  });
+  return Object.keys(m).length ? m : null;
+}
+
+// "Doppia × 2 · Singola × 1", per l'elenco dei ticket.
+function testoMezzi(tour, mezzi) {
+  if (!mezzi) return "";
+  return Object.entries(mezzi).map(([k, n]) => {
+    const tipo = tipiMezzo(tour).find(t => t.key === k);
+    return `${tipo ? italiano(tipo.name) : k} × ${n}`;
+  }).join(" · ");
 }
 
 // ─── Paesi e telefono ───────────────────────────────────────────────────────
@@ -342,6 +455,8 @@ function riempiDaLettura(c, prima) {
     els.exc.value = c.excursion_id;
     aggiornaEscursione();
     if (c.option_label) els.option.value = c.option_label;
+    const chi = compagniaNelTesto(schedaDa(c.excursion_id), [c.excursion_text, c.notes].join(" "));
+    if (chi) { els.company.value = chi; varianteDellaCompagnia(); }
     if (dubbi.has("excursion_id")) els.exc.classList.add("vend-dubbio");
   } else if (!c.excursion_id) {
     nonLetti.push(c.excursion_text ? `escursione (sul ticket: "${c.excursion_text}")` : "escursione");
@@ -403,8 +518,11 @@ function cosaManca(riga) {
   if (!riga.ticket_number) return "Manca il ticket number.";
   if (!riga.excursion_id) return "Scegli l'escursione.";
   if (els.option.required && !riga.option_label) return `Scegli: ${els.optionLabel.textContent}.`;
+  const tour = schedaDa(riga.excursion_id);
+  if (tipiMezzo(tour).length && !riga.units) return `Scrivi quanti mezzi (${italiano(tour.units.name)}).`;
   if (riga.excursion_id === ESCURSIONE_ALTRO && !riga.notes) return "Escursione fuori catalogo: scrivi quale nelle note.";
   if (!riga.date) return "Manca la data.";
+  if (!riga.payment_method) return "Scegli il pagamento: card o cash.";
   if (!riga.phone) return "Il telefono non è valido.";
   if (!els.phoneOk.checked) return "Ricontrolla il telefono con il ticket e spunta la casella.";
   return "";
@@ -432,11 +550,17 @@ async function salva(event) {
     total: numero(els.total),
     deposit: numero(els.deposit),
     rest_to_pay: pagatoTutto() ? 0 : numero(els.rest),
+    payment_method: els.payment.value || null,
     reference: valoreOVuoto("reference"),
     seller: valoreOVuoto("seller") || venditore.name,
     notes: valoreOVuoto("notes"),
     confirmed_at: new Date().toISOString()
   };
+
+  // Solo dove c'e' il menu: le altre schede non mandano nemmeno la colonna.
+  if (!els.companyWrap.hidden) riga.company = els.company.value || null;
+  // Solo sulle schede a mezzo: le altre non mandano nemmeno la colonna.
+  if (!els.unitsWrap.hidden) riga.units = mezziDa(els.form, tipiMezzo(schedaDa(els.exc.value)));
 
   const manca = cosaManca(riga);
   if (manca) { mostra(els.msg, manca, "errore"); return; }
@@ -513,7 +637,7 @@ function dataBreve(iso) {
 async function caricaUltimi() {
   let domanda = sb
     .from("bookings")
-    .select("id, ticket_number, reference, excursion_id, option_label, date, time, phone, adults, kids, babies, total, deposit, rest_to_pay, seller, photo_path, status, source, request_code")
+    .select("id, ticket_number, reference, excursion_id, option_label, company, date, time, phone, adults, kids, babies, units, total, deposit, rest_to_pay, payment_method, seller, photo_path, status, source, request_code")
     // Le richieste da WhatsApp hanno il loro elenco, sopra; quando l'ufficio le
     // conferma col numero del ticket diventano ticket e passano qui.
     .or("source.neq.whatsapp,ticket_number.not.is.null");
@@ -538,13 +662,14 @@ async function caricaUltimi() {
 
   data.forEach(b => {
     const li = document.createElement("li");
+    li.classList.toggle("is-cancelled", b.status === "cancelled");
     const tour = schedaDa(b.excursion_id);
     const nome = tour ? titoloDi(tour) : "Fuori catalogo";
     const persone = [b.adults, b.kids, b.babies].map(n => n || 0).join("+");
 
     const testo = document.createElement("div");
     const titolo = document.createElement("strong");
-    titolo.textContent = `#${b.ticket_number} · ${nome}${b.option_label ? " · " + b.option_label : ""}`;
+    titolo.textContent = `#${b.ticket_number} · ${nome}${b.option_label ? " · " + b.option_label : ""}${b.company ? " · " + b.company : ""}`;
     const sotto = document.createElement("span");
     const soldi = b.rest_to_pay === null ? "" : (Number(b.rest_to_pay) === 0 ? " · pagato" : ` · resto ${b.rest_to_pay} €`);
     // Un ticket nato da una richiesta WhatsApp non ha venditore e a volte
@@ -552,12 +677,19 @@ async function caricaUltimi() {
     const parti = [
       `${dataBreve(b.date)}${b.time ? " " + b.time.slice(0, 5) : ""}`,
       persone + soldi,
+      b.payment_method,
+      testoMezzi(tour, b.units),
       b.phone,
       b.source === "whatsapp" ? `WhatsApp ${b.request_code || ""}`.trim() : b.seller,
       b.reference ? "REF " + b.reference : ""
     ];
     sotto.textContent = parti.filter(Boolean).join(" · ");
     testo.append(titolo, sotto);
+    // L'etichetta sta fuori dal titolo barrato: barrata anche lei sembrerebbe
+    // un annullamento tolto.
+    if (b.status === "cancelled") {
+      testo.prepend(Object.assign(document.createElement("span"), { className: "vend-annullato", textContent: "Annullato" }));
+    }
     li.append(testo);
 
     const bottoni = document.createElement("div");
@@ -595,7 +727,7 @@ function tornaAgliUltimi() {
   caricaUltimi();
 }
 
-// ─── Modifica: data, ora, persone e soldi ───────────────────────────────────
+// ─── Modifica: data, ora, persone, compagnia, mezzi, soldi e pagamento ──────
 // Quando un'escursione viene rinviata (proprietario, 29 settembre 2026). Se
 // cambiano le persone cambia anche il prezzo, quindi ci sono anche Total,
 // Deposit e To pay, con le stesse regole del ticket nuovo. Il resto del
@@ -636,6 +768,14 @@ function apriModifica(li, b) {
         <input id="${id}Babies" name="babies" type="number" inputmode="numeric" min="0" max="99" />
       </div>
     </div>
+    <div data-edit-company hidden>
+      <label for="${id}Company">Compagnia</label>
+      <select id="${id}Company" name="company"></select>
+    </div>
+    <fieldset class="vend-units" data-edit-units hidden>
+      <legend></legend>
+      <div class="vend-row"></div>
+    </fieldset>
     <div class="vend-row vend-row-3">
       <div>
         <label for="${id}Total">Total €</label>
@@ -650,14 +790,21 @@ function apriModifica(li, b) {
         <input id="${id}Rest" name="rest_to_pay" type="number" inputmode="decimal" min="0" step="0.01" />
       </div>
     </div>
+    <label for="${id}Payment">Pagamento</label>
+    <select id="${id}Payment" name="payment_method">
+      <option value="">— non scritto —</option>
+      <option value="card">Card</option>
+      <option value="cash">Cash</option>
+    </select>
     <p class="vend-warn" data-edit-warn hidden></p>
     <small class="vend-hint" data-edit-info></small>
     <small class="vend-hint">Se cambiano le persone, ricontrolla il prezzo. Avvisa il cliente su WhatsApp.</small>
     <p class="vend-msg" role="alert" hidden></p>
     <div class="vend-row">
-      <button class="btn btn-soft" type="button" data-edit-cancel>Annulla</button>
+      <button class="btn btn-soft" type="button" data-edit-cancel>Chiudi</button>
       <button class="btn btn-primary" type="submit">Salva</button>
-    </div>`;
+    </div>
+    <button class="btn btn-soft btn-block vend-stato-btn" type="button" data-edit-status></button>`;
 
   // I valori si mettono qui e non nell'HTML sopra: nessun testo del database
   // passa da innerHTML.
@@ -667,8 +814,19 @@ function apriModifica(li, b) {
   f.adults.value = b.adults ?? "";
   f.kids.value = b.kids ?? "";
   f.babies.value = b.babies ?? "";
+  const tour = schedaDa(b.excursion_id);
+  menuCompagnie(f.company, form.querySelector("[data-edit-company]"), tour, b.company);
+  const tipi = tipiMezzo(tour);
+  if (tipi.length) {
+    const box = form.querySelector("[data-edit-units]");
+    box.hidden = false;
+    box.querySelector("legend").textContent = `${italiano(tour.units.name)}: quanti per tipo`;
+    caselleMezzi(box.querySelector(".vend-row"), tipi, id + "Unit", b.units);
+  }
   f.total.value = b.total ?? "";
   f.deposit.value = b.deposit ?? "";
+  f.payment_method.value = b.payment_method || "";
+  pagamentoDellaScheda(f.payment_method, tour);
   // "Pagato tutto" si salva come rest_to_pay 0 senza deposit: nel modulo torna
   // com'era stato scritto, con To pay vuoto.
   const pagatoPrima = b.deposit === null && Number(b.rest_to_pay) === 0;
@@ -704,6 +862,12 @@ function apriModifica(li, b) {
   soldi();
 
   form.querySelector("[data-edit-cancel]").addEventListener("click", () => form.remove());
+  // Annulla / Ripristina: un ticket non si cancella mai, si annulla (schema.sql).
+  const statoBtn = form.querySelector("[data-edit-status]");
+  const annullato = b.status === "cancelled";
+  statoBtn.textContent = annullato ? "Ripristina ticket" : "Annulla ticket";
+  statoBtn.classList.toggle("is-danger", !annullato);
+  statoBtn.addEventListener("click", () => cambiaStatoTicket(b, form, annullato ? "confirmed" : "cancelled"));
   form.addEventListener("submit", event => salvaModifica(event, form, b));
   li.append(form);
   f.date.focus();
@@ -724,12 +888,17 @@ async function salvaModifica(event, form, b) {
     babies: intero(f.babies),
     total: numero(f.total),
     deposit: numero(f.deposit),
-    rest_to_pay: numero(f.rest_to_pay)
+    rest_to_pay: numero(f.rest_to_pay),
+    payment_method: f.payment_method.value || null
   };
+  const tipi = tipiMezzo(schedaDa(b.excursion_id));
+  if (tipi.length) nuovo.units = mezziDa(form, tipi);
+  if (!form.querySelector("[data-edit-company]").hidden) nuovo.company = f.company.value || null;
   // Stessa regola del ticket nuovo: Total scritto e gli altri due vuoti vuol
   // dire pagato tutto, e si salva rest_to_pay = 0.
   if (nuovo.total !== null && nuovo.deposit === null && nuovo.rest_to_pay === null) nuovo.rest_to_pay = 0;
   if (!nuovo.date) { mostra(msg, "Manca la data.", "errore"); return; }
+  if (tipi.length && !nuovo.units) { mostra(msg, "Scrivi quanti mezzi.", "errore"); return; }
 
   bottone.disabled = true;
   bottone.textContent = "Salvo…";
@@ -745,6 +914,38 @@ async function salvaModifica(event, form, b) {
     mostra(msg, "Non sono riuscito a salvare. Controlla la connessione e riprova.", "errore");
     bottone.disabled = false;
     bottone.textContent = "Salva";
+  }
+}
+
+// Annullare un ticket (il cliente ha disdetto, o e' stato inserito per sbaglio)
+// o rimetterlo com'era. Non si cancella: annullato, il cliente non lo vede piu'
+// nella sua pagina, e nel foglio Google resta barrato e fuori dai totali.
+// Ripristinato torna confermato, e il database controlla che abbia ancora
+// numero, telefono, escursione e data (confermato_completo in schema.sql).
+async function cambiaStatoTicket(b, form, stato) {
+  const msg = form.querySelector(".vend-msg");
+  const domanda = stato === "cancelled"
+    ? `Annullare il ticket ${b.ticket_number}?\n\nIl cliente non lo vedrà più e non conta nei totali. Si può ripristinare.`
+    : `Ripristinare il ticket ${b.ticket_number}?\n\nTorna confermato e il cliente lo vede di nuovo.`;
+  if (!confirm(domanda)) return;
+  const bottone = form.querySelector("[data-edit-status]");
+  bottone.disabled = true;
+  try {
+    const { data, error } = await sb.from("bookings").update({ status: stato }).eq("id", b.id).select("id");
+    if (error && error.code === "23514") {
+      mostra(msg, "Non si può ripristinare: al ticket manca il numero, il telefono, l'escursione o la data. Scrivili con Salva, poi riprova.", "errore");
+      bottone.disabled = false;
+      return;
+    }
+    if (error || !data || !data.length) throw error || new Error("nessuna riga");
+    // un ticket nato da una richiesta WhatsApp, annullato dagli "Ultimi inseriti"
+    if (b.source === "whatsapp") mandaAvvisi();
+    await caricaUltimi();
+    mostra(els.recentMsg, `Ticket ${b.ticket_number} ${stato === "cancelled" ? "annullato" : "ripristinato"}.`, "ok");
+  } catch (err) {
+    console.error(err);
+    mostra(msg, "Non sono riuscito a salvare. Controlla la connessione e riprova.", "errore");
+    bottone.disabled = false;
   }
 }
 
@@ -966,11 +1167,22 @@ async function annullaRichiesta(r) {
   if (salvato) mostra(els.requestsMsg, `${r.request_code} annullata. Avvisa il cliente su WhatsApp.`, "ok");
 }
 
+// Il cliente che ha chiesto gli avvisi sul telefono li riceve subito dopo
+// Conferma o Annulla, invece di aspettare l'orologio (ogni 10 minuti). La
+// funzione manda solo quello che il database dice di mandare, e mai due volte:
+// se questa chiamata non arriva, ci pensa l'orologio.
+// Vedi supabase/modifiche/2026-10-13-notifiche.sql.
+function mandaAvvisi() {
+  fetch(SUPABASE_URL + "/functions/v1/manda-notifiche", { method: "POST", keepalive: true })
+    .catch(() => {});
+}
+
 async function cambiaRichiesta(r, nuovo, msg) {
   try {
     // .select(): se le regole non lasciano passare, non c'e' errore ma zero righe
     const { data, error } = await sb.from("bookings").update(nuovo).eq("id", r.id).select("id");
     if (error || !data || !data.length) throw error || new Error("nessuna riga");
+    mandaAvvisi();
     await caricaRichieste();
     return true;
   } catch (err) {
@@ -1238,6 +1450,7 @@ riempiEscursioni();
 riempiPaesi();
 
 els.loginForm.addEventListener("submit", entra);
+els.company.addEventListener("change", varianteDellaCompagnia);
 els.logout.addEventListener("click", esci);
 els.form.addEventListener("submit", salva);
 els.searchForm.addEventListener("submit", cerca);

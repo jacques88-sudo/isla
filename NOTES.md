@@ -15392,7 +15392,7 @@ le due funzioni nuove caricate in un Postgres 16 locale, chiamate come `anon`):
 `supabase/modifiche/2026-09-30-richieste-whatsapp.sql`** nell'SQL Editor. Finché non
 lo fa, le richieste restano "da mandare" nei telefoni e partono da sole dopo.
 
-**Ancora solo su WhatsApp:** pacchetti e noleggio, che non passano dalla lista.
+**Ancora solo su WhatsApp:** pacchetti e noleggio, che non passano dalla lista (i pacchetti si salvano dall'11 ottobre 2026).
 
 `CACHE_NAME` alzato a `isla-v378`.
 
@@ -16710,6 +16710,1404 @@ aperta la elettrica da città: 1…7 giorni, "dall'8° giorno €12", cauzione �
 caricabatterie, WhatsApp con "Bici elettrica da città · motore Bosch, batteria 500 Wh".
 Nessuno scroll orizzontale. `CACHE_NAME` a `isla-v427`.
 
+## v429 — La scheda Bici prende i 16 giri di Cycling in Tenerife (6 ottobre 2026)
+
+Il segnaposto `bici` (senza prezzi da v281) diventa una scheda vera, **con lo stesso id**:
+nessuna scheda nuova, quindi nessun doppione possibile.
+
+**Deciso dal proprietario:**
+- **una scheda, 16 varianti** (8 Strada, 8 MTB), come Immersioni che ne ha 15. Il nome
+  del giro è quello del fornitore, uguale nelle tre lingue; tradotta è solo la parola
+  davanti (Strada / Road / Carretera, MTB). "Road Teide Downhill" è diventato "Teide
+  Downhill", se no il bottone diceva "Road · Road …";
+- **solo il prezzo adulti**: niente `priceChild`, `ages` né `priceInfant`;
+- **i prezzi doppi restano così** ("110/150", "110/120"): li spiegheranno le descrizioni
+  dei giri, che manda lui.
+
+**Deciso da me:**
+- i tre giri a doppio prezzo (Teide West, Teide South, Masca) hanno il prezzo
+  **nell'etichetta** e niente `priceAdult`, come le immersioni a pacchetto: il totale della
+  richiesta non si fa invece di dire 110 dove forse è 150. Niente `price` nemmeno, perché
+  `pacchetti.js` lo leggerebbe come "prezzo del mezzo". Effetto in pagina: col primo giro
+  premuto (Teide West) la riga "Prezzo" in "In breve" dice "Su richiesta";
+- `included: ["guide"]` e basta: il fornitore non dice se la bici a noleggio è compresa;
+- `zone` resta "Da definire" (nessun punto di ritrovo scritto); `zoneGroups` teide-nord
+  e los-gigantes (dove si va); durata "4-5 ore", gruppo `mezza`;
+- `nomi: ["Cycling in Tenerife"]`, per la lettura dei ticket;
+- ogni variante ha per ora solo una riga ("Su bici da strada, con guida."), in attesa
+  delle descrizioni vere.
+
+**Resta da sapere:**
+- da cosa dipende il prezzo più alto dei tre giri doppi;
+- se il fornitore passa a prendere il cliente: per ora la scheda resta in
+  `PICKUP_NESSUNO`, come prima;
+- da dove si parte, se la bici è compresa, giorni e orari (assenti = non li sappiamo).
+
+## v430 — Bici: le prime sei descrizioni, e il ritiro in hotel (6 ottobre 2026)
+
+Il proprietario ha mandato le pagine di sei giri su sedici: Teide West, Teide South,
+Vilaflor, Teide Downhill, El Poris e Medano via Granadilla. Descrizioni **riscritte da
+zero** nelle tre lingue.
+
+**Il prezzo doppio adesso si sa:** è la lunghezza del giro. Teide West 110 € (circa 75 km)
+o 150 € (circa 130 km); Teide South 110 € (circa 55 km) o 120 € (circa 100 km). Resta
+nell'etichetta, come deciso, e la descrizione lo spiega. Masca, l'altro "110/150", non è
+arrivato.
+
+**La e-bike costa di più** (130 € al posto di 110 €, 190 € il Teide West lungo). Non è
+diventata una variante: sarebbero 32 bottoni. Il prezzo sta nella descrizione di ogni giro,
+e una nota dice di chiederla nelle note della richiesta. Il totale resta quello della bici
+normale.
+
+**Ritiro in hotel:** le pagine scrivono "pick-up and drop-off at your hotel". `bici` passa
+da `PICKUP_NESSUNO` a `PICKUP_IN_HOTEL`, secondo la regola del 24 settembre (chi permette il
+transfer → in hotel). Sul Teide Downhill il ritiro è compreso solo entro 5 km dalla base di
+Adeje: scritto nella sua descrizione.
+
+**Icone:** bici con casco e kit (`equipment`), ritiro (`transfer`) e acqua con frutta o
+snack (`snack`) stanno **dentro le sei varianti descritte**, non sulla scheda: dei dieci
+giri che mancano non abbiamo la pagina.
+
+**Note della scheda**, uguali su tutte le pagine: guide in italiano, inglese e spagnolo;
+al massimo 5 ore compreso il ritiro; la e-bike si chiede nelle note. Niente menu
+`languages`: le lingue sono scritte nella nota, il menu si mette solo dove lo segnala
+l'ufficio.
+
+**Non copiati:** la cancellazione per maltempo con rimborso dell'acconto, i livelli in
+W/kg, le stelle di difficoltà dei tratti, il caffè "dal nostro amico Rafael".
+
+Teide Downhill: dai 12 anni con un adulto, scritto nella descrizione (non è una fascia di
+prezzo: la scheda ha solo il prezzo adulti).
+
+**Mancano ancora le pagine di:** Santiago del Teide e Masca (strada), e tutti gli otto MTB.
+
+## v431 — Bici: Santiago del Teide e Masca (6 ottobre 2026)
+
+Arrivate le ultime due pagine su strada: **gli otto giri su strada sono completi**.
+
+- **Santiago del Teide**: 110 € (e-bike 130 €), da 70 a 85 km secondo il livello, ma il
+  prezzo è uno solo.
+- **Masca**: il "110/150" è la lunghezza, come sul Teide West: circa 60 km a 110 €,
+  circa 130 km a 150 €; in e-bike 130 € e 180 €. La pagina del fornitore scrive "60/13 km"
+  (refuso per 60/130: il riquadro del giro lungo dice 130 km) e nella difficoltà parla di
+  135 km e 3.200 m: ho messo "circa 130 km e 3.000 m", i numeri del riquadro.
+
+Stesse icone delle altre sei (bici, ritiro, snack). Non copiati: i livelli in W/kg, le
+stelle dei tratti, il "Contador Climb" col nome del ciclista.
+
+**Mancano ancora le pagine degli otto giri MTB.**
+
+## v432 — Bici: i primi due giri MTB (6 ottobre 2026)
+
+Arrivate le pagine di **Izaña – El Poris** (140 €, 45 km, 70% sterrato, facile ma serve
+un po' di pratica) e **Teide South Off-road Downhill** (110 €, 30 km, 90% sterrato,
+tecnico). La pagina di Masca è arrivata una seconda volta, identica: niente da cambiare.
+
+Tutti e due danno **solo il prezzo della bici normale**, senza e-bike: la nota della
+scheda che diceva "il prezzo della e-bike è nella descrizione" adesso dice "su molti giri…
+dove c'è". Stesse icone degli altri (bici, ritiro, snack): le pagine le scrivono uguali.
+
+**Mancano ancora sei giri MTB:** Santiago del Teide – El Chinyero, Off-road Escape,
+Costa del Silencio – El Médano – Palm Mar, Barbacoa – Corona Forestal, El Médano –
+El Poris, Vilaflor – Corona Forestal.
+
+## v433 — Bici: altri cinque giri MTB (6 ottobre 2026)
+
+Arrivate le pagine di Santiago del Teide – El Chinyero, Off-road Escape, Barbacoa –
+Corona Forestal, El Médano – El Poris e Vilaflor – Corona Forestal. Tutti 110 €, e-bike
+130 €; stesse icone degli altri.
+
+Due cose della pagina del fornitore che non tornavano:
+- **Off-road Escape** in alto si dice "facile", nella difficoltà "medio-alta". Ho scritto
+  medio-alta, e aggiunto la versione più facile che la pagina stessa offre (Pal-Mar–Pal-Mar,
+  30 km, 150 m).
+- **Vilaflor – Corona Forestal** ha nella sezione difficoltà il titolo di Barbacoa: un
+  copia-incolla del fornitore. Il testo sotto parla di Barranco del Río ed El Salto, quindi
+  è la sua.
+
+**Manca solo:** Costa del Silencio – El Médano – Palm Mar (MTB). Ha ancora la riga
+provvisoria e niente icone.
+
+## v434 — Bici completa: sedici giri su sedici (6 ottobre 2026)
+
+Arrivata l'ultima pagina, **Costa del Silencio – El Médano – Palm Mar**: il giro più
+facile, per chi va in MTB per la prima volta; 40 km, 400 m, 110 € (e-bike 130 €). Il
+fornitore scrive che esiste una versione corta "per famiglie con bambini": sta nella
+descrizione, ma `family` resta `false` — è un giro su sedici, e la versione corta non ha
+né un prezzo né un'età.
+
+**Le icone sono passate sulla scheda.** Finché mancavano delle pagine, bici, ritiro e
+snack stavano dentro le singole varianti (un'icona sulla scheda vuol dire "vale sempre").
+Adesso tutte e sedici le pagine scrivono le stesse cose, quindi `included` della scheda è
+`guide, equipment, transfer, snack` e le varianti non ne hanno più di proprie.
+
+Restano aperti: la zona di partenza ("Da definire", la pagina la nasconde; si parte
+dall'hotel), giorni e orari (assenti = non li sappiamo), e la foto, che è ancora il
+ciclista fra le lave di prima.
+
+## v435 — Varianti a gruppi: "Bici da strada" e "Mountain bike" si aprono (6 ottobre 2026)
+
+Richiesta del proprietario: sedici giri uno sotto l'altro facevano la pagina troppo lunga.
+Adesso i due tipi sono **due pulsanti chiusi** che, toccati, aprono i loro otto giri.
+
+**Il meccanismo è generico**, non della bici: `options.groups` (chiave, nome, una riga
+di descrizione) e `group` su ogni variante. Ogni gruppo è un `<details>`; con lo stesso
+`name` aprirne uno chiude l'altro (Chrome, Safari 17.2+; dove il browser non lo sa fare
+restano aperti tutti e due, e funziona lo stesso). Sul pulsante: nome, riga, "da €110"
+(il più basso dei prezzi a persona del gruppo) e la freccia del noleggio.
+
+**La prima variante resta premuta** anche a gruppi chiusi, come su tutte le schede: una
+richiesta non parte senza variante. Perché si veda, il gruppo che la contiene porta una
+riga **"Scelto: …"** (`detail.chosen`), che segue ogni bottone premuto e resta dopo il
+cambio lingua.
+
+**Trappola:** la finestra della richiesta ritrova la variante **per posizione** fra i
+bottoni. Se i giri di un gruppo non stessero in fila in `choices`, il cliente sceglierebbe
+un giro e nel messaggio ne arriverebbe un altro. `controlla.js` adesso lo verifica
+(`controllaGruppiVarianti`), provato rompendo l'ordine apposta.
+
+Le etichette hanno perso il prefisso "Strada ·" / "MTB ·", che adesso dice il gruppo; quelle
+uguali nelle tre lingue sono tornate stringhe semplici. Nel messaggio WhatsApp arriva il
+nome del giro del fornitore, che resta unico fra i sedici.
+
+## Flyboard spento (6 ottobre 2026)
+
+Il proprietario non lo vende più. **`published: false`**, non cancellato: la scheda e
+`assets/flyboard.jpg` restano, se torna basta rimettere `true`. Resta anche nella lista
+del ritiro in `hotel.js`, dove una scheda spenta non fa niente.
+
+Provato nel browser: non esce più in "Sport acquatici", la ricerca "flyboard" non trova
+niente, e chi aveva salvato il link vede "Escursione non trovata" con il ritorno a tutte
+le escursioni, senza errori.
+
+Era anche l'ultima scheda a cui mancava la durata: non serve più chiederla.
+`CACHE_NAME` → `isla-v436`.
+
+## La politica di cancellazione (6 ottobre 2026)
+
+Fino a oggi il sito non prometteva niente: "Posso annullare?" rispondeva "scrivici il
+prima possibile", per scelta (la regola la decide Admiral, non i fornitori). Proposte tre
+strade al proprietario:
+
+- **A**: gratis fino a 24 ore prima, poi niente;
+- **B**: gratis fino a 48 ore, metà fra 48 e 24, poi niente;
+- **C**: come la A, più **un cambio di data, una volta, se c'è posto**.
+
+**Scelta la C**, con charter privati e noleggi **dentro la stessa regola**. Più quattro
+punti che valgono comunque:
+
+1. se annulla l'operatore (maltempo, mare mosso, pochi partecipanti) il cliente sceglie
+   fra un'altra data e il rimborso completo;
+2. si annulla con un messaggio WhatsApp, e conta l'ora del messaggio;
+3. il rimborso torna con lo stesso mezzo con cui si è pagato;
+4. **i giorni entro cui si rimborsa non sono decisi**: proposto 14 come esempio, nessuna
+   risposta. Il testo non dice un numero.
+
+Il rischio che resta, e che il proprietario ha visto: con la A e la C, se un operatore
+fa pagare ad Admiral chi annulla entro 48 o 72 ore, quella differenza la paga Admiral.
+
+Scritta in `faq.a5` (i18n.js e il testo di partenza in index.html), nelle tre lingue,
+con un commento accanto come quello delle 24 ore di `req.hint`; e in `CLAUDE.md`, fra le
+regole sui dati. Va ripresa così nei **termini di vendita**, da far leggere al consulente
+di Admiral insieme alla privacy. `CACHE_NAME` → `isla-v437`.
+
+### Cancellazione corretta: lo spostamento vale solo fino a 24 ore prima (6 ottobre)
+
+La prima versione (PR #365) diceva: dopo le 24 ore niente rimborso, **ma** un cambio di
+data. Sbagliato, l'ha corretta il proprietario con un esempio: **25 ore prima si può
+spostare, 23 ore prima no**. La regola giusta:
+
+- **fino a 24 ore prima**: annullare gratis **oppure** spostare la data, una volta sola,
+  se c'è posto;
+- **meno di 24 ore prima**, o se non si presenta: né annullare né spostare, nessun
+  rimborso.
+
+Il resto non cambia (operatore che annulla → altra data o rimborso completo; WhatsApp,
+conta l'ora del messaggio; charter e noleggi dentro; giorni del rimborso non decisi).
+Corretti `faq.a5` nelle tre lingue, `index.html` e `CLAUDE.md`. `CACHE_NAME` → `isla-v438`.
+
+**La lezione:** la proposta C l'avevo scritta io, e il proprietario l'ha scelta leggendo
+il titolo. Quando una regola ha una soglia, conviene farla confermare con **due esempi
+concreti ai due lati della soglia** (25 ore, 23 ore) prima di pubblicarla.
+
+## I termini di vendita (6 ottobre 2026)
+
+**`termini.html`**, fatta come `privacy.html`: tre articoli, uno per lingua, si vede
+quello della lingua scelta. Link "Termini di vendita" in fondo alle sei pagine, accanto a
+"Privacy" (`footer.terms`), e in `sw.js` fra i file tenuti offline.
+
+**Dentro c'è solo quello che era già deciso e già scritto altrove**, riscritto in un
+posto solo:
+
+- chi è Admiral (gli stessi dati del fondo pagina e della privacy);
+- Admiral è un'agenzia che **vende attività di altri operatori**: l'escursione la svolge
+  l'operatore (CLAUDE.md, "Admiral è un rivenditore");
+- la richiesta non è una prenotazione, almeno 24 ore prima, risposta entro 24 ore
+  (`faq.a1`-`a3`, `req.hint`);
+- prezzi in euro, il totale della richiesta è una stima, charter e noleggi a gruppo o a
+  mezzo, i non compresi scritti sulla scheda;
+- non si paga nulla con la richiesta, il modo di saldare si dice alla conferma (`faq.a4`);
+- la cancellazione, uguale a `faq.a5`;
+- presentarsi al ritiro all'ora confermata (se no vale come annullamento tardivo), leggere
+  età e requisiti sulla scheda, patente per guidare, cauzione dei noleggi sulla scheda.
+
+**Lasciato fuori di proposito**, perché non spetta a noi deciderlo e non ce l'ha detto
+nessuno: entro quanti giorni si rimborsa; **chi risponde se l'escursione va male**
+(Admiral o l'operatore: è il punto più delicato, e dipende anche dagli accordi scritti
+con gli operatori, che non ci sono ancora); legge applicabile e tribunale; le **hojas de
+reclamaciones** (il foglio dei reclami delle Canarie); se i prezzi comprendono l'IGIC.
+Sono le domande per il consulente di Admiral, che deve leggere questa pagina insieme alla
+privacy prima dell'apertura al pubblico.
+
+Se cambia una delle regole qui sopra, va cambiata **anche qui**: lo dice il commento in
+testa a `termini.html`. `CACHE_NAME` → `isla-v439`.
+
+## La mappa (7 ottobre 2026) — PROVA, non ancora approvata
+
+Richiesta del proprietario: una sezione con una mappa e i punti di interesse
+(ristoranti, spiagge, punti panoramici). Fatta su un branch per fargliela vedere
+**prima** del merge.
+
+- Pagina `mappa.html` + `mappa.js`; voce "Mappa" nel Menu delle sette pagine,
+  **non** nella capsula (con cinque voci e' gia' piena).
+- **L'isola e' un disegno, non una cartina a piastrelle.** Il contorno viene da
+  `@geo-maps/earth-lands-100m` (OpenStreetMap, ODbL: da qui la scritta
+  "© OpenStreetMap" sulla mappa), 211 punti scritti in `MAP_COAST`. Perche':
+  ha i colori del sito e si gira al buio, funziona da offline come il resto,
+  e non dipende dal server delle piastrelle di OpenStreetMap (che chiede di non
+  usarlo per un sito in produzione senza accordi). Il prezzo: ingrandendo non
+  ci sono strade ne' paesi, solo la costa. Per arrivare, ogni punto ha "Portami
+  qui", che apre Google Maps con la destinazione.
+  L'alternativa — una cartina vera con le strade — si fa cambiando poche righe
+  (un `L.tileLayer`), ma serve un fornitore di piastrelle con un piano adatto.
+- Leaflet 1.9.4 sta in `vendor/`, come Supabase: solo per muovere e ingrandire.
+- Da lontano i pallini si rimpiccioliscono e i nomi delle citta' spariscono
+  (`.is-far`, sotto zoom 10.5): a Los Gigantes ce ne sono tre uno sull'altro.
+
+**Secondo giro (stesso giorno):** il proprietario ha chiesto i 10 migliori per
+quattro categorie, cercati sul web e messi in mappa: **spiagge**, **panorami**
+(miradores), **posti segreti** e **da vedere** (punti di interesse), ognuna col
+suo colore e la sua icona (chiave viola per i segreti, stella oro per i da
+vedere). Le classifiche delle guide non coincidono mai: la scelta incrocia le
+liste piu' citate (lastminute, hoteles.com, iberostar, paulinaontheroad per le
+spiagge; webtenerife, paradores, hellocanaryislands per i miradores; 22places,
+canarias-lovers, nomadotravel per i segreti; islaguru, ferryhopper, spanish-
+fiestas per i punti di interesse).
+
+- **"Portami qui" cerca il nome, non le coordinate** (`google.com/maps/search`
+  con "nome, zona, Tenerife"; campo `q` per correggerlo dove non basta). Da qui
+  Wikipedia e OpenStreetMap non si raggiungono, quindi molte coordinate sono a
+  occhio: col nome il navigatore porta comunque al posto vero.
+- Coordinate da fonti precise: Chipeque e Bollullo (Involcan), Punta de Teno
+  (Wikipedia), Paisaje Lunar (webtenerife); Ortuño, La Centinela, Humboldt,
+  Archipenque e Roque de las Bodegas convertite dalle UTM di webtenerife. Le
+  altre sono a occhio. Controllo fatto: le spiagge cadono tutte entro mezzo
+  chilometro dalla costa disegnata, gli altri dentro l'isola.
+- Dove serve un permesso o la strada si chiude lo dice la descrizione: El
+  Pijaral (permesso gratuito), Cueva del Viento (visita prenotata), barranco di
+  Masca (prenotazione), Punta de Teno (strada chiusa alle auto in certi orari).
+  L'ex sanatorio di Abades "si guarda da fuori": e' un rudere.
+- Il limite di spostamento (`maxBounds`) era troppo stretto: il fumetto di un
+  punto sulla costa nord restava tagliato in alto perche' la mappa non poteva
+  scendere. Ora e' `bounds.pad(1)`.
+
+**Prima di pubblicare:**
+- i **ristoranti sono tre segnaposto** (`esempio: true`, bordo tratteggiato e
+  scritta "esempio"): i nomi veri li sceglie il proprietario;
+- le **coordinate** di spiagge e miradores sono indicative, vanno ricontrollate
+  una per una su Google Maps;
+- le quaranta schede vanno lette dal proprietario: tenere, togliere, cambiare.
+
+**Terzo giro: la sezione "Posti segreti" della home porta alla mappa.** Prima era
+solo foto e testo, senza un posto dove andare. Ora ha sei nomi da toccare (Paisaje
+Lunar, Chinamada, El Pijaral, Charco del Viento, Punta de Teno, Montaña Amarilla)
+e il bottone "Scoprili sulla mappa".
+- `mappa.html?cat=segreto` apre la mappa col filtro; `&punto=<nome>` apre anche
+  il fumetto di quel posto. Il nome nell'indirizzo e' `mapSlug(name)`: minuscole,
+  senza accenti, trattini ("Montaña Amarilla" → `montana-amarilla`). **Se cambi il
+  nome di un posto in `MAP_POINTS`, cambia anche il link in `index.html`**,
+  altrimenti si apre la mappa senza fumetto (non si rompe niente, ma non si vede).
+- All'arrivo il punto va 110 px sotto il centro: col punto al centro, il fumetto
+  usciva tagliato in alto.
+- I nomi sulla foto non si traducono (nomi propri); i colori sono fissi perche' la
+  foto e' scura in tutti e due i temi.
+- `sw.js`: da offline `mappa.html?...` serve la mappa in cache ignorando il "?",
+  come gia' `escursioni.html?q=`. `CACHE_NAME` → `isla-v442`.
+
+**Quarto giro: le foto.** Toccando un posto si apre un **pannello dal basso**
+(non piu' il fumetto: con le foto sarebbe stato piu' alto della mappa), con le foto
+da sfogliare col dito, i pallini sotto, poi categoria, nome, zona, testo e "Portami
+qui". Il pallino scelto si ingrandisce. Si chiude con la ✕, con Esc o toccando la
+mappa fuori dai pallini; un altro pallino o una riga dell'elenco cambia il posto
+senza chiudere. Col pannello aperto il pallino della chat sparisce (finiva sopra
+"Portami qui"). Il pannello sta a `z-index: 39`, sotto le finestre di lista e ticket.
+
+- **75 foto da Wikimedia Commons** (`assets/mappa/`, 720×480, ~68 KB l'una, 5 MB
+  in tutto), due per posto, una sola per Bollullo, Garañona, La Centinela, Charco
+  de la Laja e Charco del Viento: Commons non ne aveva altre adatte.
+- **Solo licenze libere** (CC BY, CC BY-SA, CC0): si possono usare anche su un sito
+  commerciale scrivendo autore e licenza. E' la riga in basso su ogni foto, col
+  link alla pagina originale. Autore, licenza e link stanno in `mappa-foto.js`.
+  Le foto da Google, blog e guide **non si usano**: hanno un proprietario.
+- Scelte guardandole una per una: la ricerca di Commons restituisce anche cose
+  sbagliate (per "Bollullo" un paese andaluso, per "Garañona" una pianta).
+- **Non stanno nella cache del service worker**, solo `mappa-foto.js`: 5 MB
+  scaricati alla prima visita sarebbero troppi per chi ha poco campo. Da offline
+  una foto che manca sparisce (`is-missing`) e il pannello resta in piedi.
+- Per scaricarle e' servito sbloccare `commons.wikimedia.org` e
+  `upload.wikimedia.org` nell'ambiente. Le miniature che Commons propone stanno su
+  `thumb.wikimedia.org`, che non era sbloccato: lo stesso percorso su
+  `upload.wikimedia.org`, a **960px**, funziona (le larghezze non standard danno 400).
+  Commons limita i download: piano, una richiesta per volta.
+- Da rivedere col proprietario: la seconda foto de La Orotava (il municipio col
+  presepe di Natale davanti) e La Centinela (una foto sola, tagliata da un panorama).
+- `CACHE_NAME` → `isla-v443`.
+
+**Pubblicata (7 ottobre 2026, il proprietario ha chiesto il merge).** Prima del
+merge sono stati **tolti i tre ristoranti segnaposto** e il bottone "Ristoranti":
+sul sito vero avrebbero mostrato "Ristorante di esempio". La categoria resta in
+`MAP_CATS`, pronta per i nomi veri; col primo ristorante va rimesso il bottone in
+`mappa.html`. Restano da fare, senza fretta: ricontrollare le coordinate a occhio
+(la navigazione va comunque per nome) e, se ci sono, sostituire le foto con foto
+vostre. `CACHE_NAME` → `isla-v444`.
+
+### Il riassunto per le chat nuove (8 ottobre)
+
+Il proprietario ha chiesto che una chat nuova sappia cosa fare senza rileggere questa.
+Messo in `CLAUDE.md`, che ogni chat legge per prima: una sezione sul campo **`nomi`** (le
+compagnie sul ticket) e una sugli **orari ancora da mettere**, con le regole decise per i
+buggy. Una riga sui `nomi` anche nella skill `nuova-scheda`.
+
+La lista degli orari mancanti **non è scritta a mano**: la fa `node orari-mancanti.js`,
+che la rifà dal catalogo a ogni lancio. In tre giorni la lista era già cambiata (Flyboard
+e Cantine avevano preso gli orari): un elenco copiato in `CLAUDE.md` sarebbe stato
+sbagliato subito. Il sito non lo carica, quindi la cache non si alza.
+
+### I netti, primo passo: i mezzi sul ticket (8 ottobre)
+
+Il proprietario vuole sapere quanto va a ogni compagnia (il **netto**) e quanto resta a
+Isla, in un riepilogo giornaliero e settimanale **su un foglio Google, non su Isla**,
+contato dal giorno in cui il ticket è inserito; e un promemoria del netto per i
+venditori, con un avviso se il totale scende sotto. I netti li manda lui in chat e li
+scrive Claude, ma **solo su Supabase**: il repository è pubblico (verificato), e un netto
+in un file lo leggerebbero tutti. Il piano a cinque passi sta in `CLAUDE.md`.
+
+Il netto può essere **a mezzo** (moto d'acqua, buggy, quad, privati), e il ticket di carta
+porta numero e tipo dei mezzi ("2 doppie", "buggy da 4 posti"), ma il database fin qui non
+li salvava. Primo passo:
+
+- colonna `units jsonb` in `bookings` (`supabase/modifiche/2026-10-08-mezzi.sql`, già
+  dentro `schema.sql`): `{"singola": 2, "doppia": 1}`, con le chiavi di `units.types`
+  del catalogo, così i tipi sono gli stessi della finestra della richiesta;
+- nel modulo, sotto la variante, una casella per tipo ("Moto d'acqua: quanti per tipo"),
+  solo sulle quattro schede con `units` (Jet Ski, Buggy, Quad, Mustang); almeno un mezzo
+  è obbligatorio, come sul ticket di carta;
+- le stesse caselle in "Modifica", e nell'elenco "Doppia × 2 · Singola × 1".
+
+Le altre schede non mandano nemmeno la colonna: un ticket di una barca si salva anche
+se l'SQL non fosse ancora stato lanciato. L'elenco invece la chiede, quindi **l'SQL va
+lanciato prima della pubblicazione**.
+
+**Non ancora** nella lettura della foto (`leggi-ticket`): i mezzi si scrivono a mano.
+Per leggerli serve cambiare lo schema della risposta e ridistribuire la funzione: è un
+passo a sé.
+
+Provato nel browser a 375 px con un Supabase finto: caselle giuste per jet ski (2) e
+buggy (3, su tre colonne), nascoste sulle barche, errore senza mezzi, salvataggio
+`{"doppia": 2}`, modifica e update, nessuno scroll orizzontale, nessun errore.
+`CACHE_NAME` → `isla-v445`.
+
+### Nomi sul ticket: Andromeda e Agua Safari (8 ottobre)
+
+- **Andromeda** → `stargazing-group` (Teide by Night): la compagnia piccola della serata
+  in italiano, che sta nella variante "Gruppo piccolo".
+- **Agua Safari** → `jet-ski-safari-1-2h`: le moto d'acqua che partono da Las Galletas.
+
+Solo il nome che ha scritto il proprietario: nessuna grafia "probabile" aggiunta di testa
+nostra. I netti di queste due schede e di La Gomera sono arrivati nella stessa chat e
+**non sono scritti qui**: stanno solo su Supabase (vedi `CLAUDE.md`). `CACHE_NAME` →
+`isla-v446`.
+
+### I netti, secondo passo: la tabella e la compagnia sul ticket (8 ottobre)
+
+Arrivati i primi netti: Andromeda (Teide by Night), Agua Safari (Jet Ski), Gomera.
+**I numeri non sono qui** e non stanno in nessun file del repository: l'SQL con i valori è
+stato preparato fuori, e il proprietario lo incolla nel SQL Editor.
+
+Il proprietario ha detto che il netto di Andromeda vale **solo per Andromeda**: la
+variante "Gruppo piccolo" fa anche le serate in inglese e tedesco, che sono di un'altra
+compagnia. E Agua Safari fa le partenze da Las Galletas, non quelle da Puerto Colón. Un
+netto per scheda e variante avrebbe dato il netto di Andromeda anche alle serate in
+inglese. Quindi:
+
+- `nets` dice **scheda, variante e compagnia** (null = tutte le varianti / qualunque
+  compagnia), con un indice unico su tutte e tre: aggiornare un netto cambia la riga,
+  non ne aggiunge un'altra;
+- `bookings.company`, e nel modulo un menu "Compagnia" coi `nomi` della scheda e
+  "— non scritta —", solo sulle schede che hanno dei nomi; c'è anche in "Modifica";
+- la lettura della foto non è stata toccata: `excursion_text` c'era già, e
+  `compagniaNelTesto()` ci cerca uno dei `nomi` (anche nelle note), il più lungo per
+  primo. "GOMERA" → Gomera;
+- un ticket senza compagnia **resta senza netto**: nel riepilogo uscirà come netto
+  mancante, mai con un numero preso da un'altra compagnia.
+
+`nets` la leggono i venditori (servirà al promemoria) e non la scrive nessuno dal sito:
+si cambia solo dal SQL Editor. Il cliente non la legge.
+
+Nome aggiunto: **Gomera** → `la-gomera` (sul ticket c'è scritto solo così). Del netto
+del Jet Ski c'è solo la doppia da 1 ora: singola e altre durate non sono ancora arrivate.
+
+Provato nel browser con un Supabase finto (menu, lettura simulata, salvataggio,
+modifica) e l'SQL su un Postgres 16 vero: sul database com'è oggi e da zero, lanciato due
+volte, tre righe e non sei. `CACHE_NAME` → `isla-v447`.
+
+### I netti su un foglio Google (8 ottobre)
+
+Il proprietario ha **scartato il promemoria** nel modulo ("non serve, non è importante") e
+ha chiesto i dati su un foglio esterno. Scelte sue: **ogni ora**, e gli annullati
+**segnati** (nella scheda Ticket, fuori dai totali).
+
+**Come arrivano.** `supabase/modifiche/2026-10-08-foglio.sql` crea una "porta",
+`foglio_ticket(p_segreto)`: sola lettura, aperta ad `anon` ma che restituisce righe solo
+con la parola segreta giusta (zero righe, non un errore, con quella sbagliata). La parola
+non sta da nessuna parte nel repository: in `export_keys` c'è la sua impronta sha256, e la
+tabella non ha permessi per nessuno. Il programma del foglio (`foglio-google/Codice.gs`,
+Apps Script) la tiene nelle Proprietà dello script.
+
+**Il foglio non cancella mai.** Riconosce i ticket dall'id del database: aggiorna quelli
+che conosce, aggiunge i nuovi, lascia stare quelli che Supabase non manda più. È voluto:
+la pulizia mensile cancella i ticket vecchi, e il foglio diventa l'archivio. Le tre
+schede di riepilogo invece si rifanno da capo ogni ora.
+
+**Il netto fissato sul ticket.** All'inizio la porta lo ricalcolava ogni ora dai netti
+di oggi: un netto alzato a novembre avrebbe cambiato i ticket di ottobre ancora nel
+database. Adesso un guardiano (`fissa_netto`, trigger `before insert or update`) lo
+scrive in `net_amount`/`net_note` quando il ticket si salva, e lo ricalcola solo se
+cambiano scheda, variante, compagnia, persone o mezzi; su ogni altra modifica rimette il
+valore di prima, così nemmeno scriverlo a mano lo cambia. **Errore trovato in prova**: il
+guardiano rimetteva il valore di prima anche ai ticket di prima di oggi, che un netto non
+l'avevano mai avuto, e l'update finale non calcolava niente. Ora protegge solo un netto
+già calcolato.
+
+**I venditori non leggono i netti.** Senza promemoria nessuna pagina ne ha bisogno: `nets`
+è chiusa, e su `bookings` il permesso di lettura è colonna per colonna, tutte tranne le due
+del netto (un `do $$ … $$` le prende da `information_schema`, così vale per le colonne che
+il database ha davvero). Il sito chiede sempre colonne precise, quindi non si rompe; ma
+**una colonna nuova va data anche ai venditori** (scritto in `CLAUDE.md`).
+
+**Provato.** L'SQL su Postgres 16, da zero e sopra un database già pieno, lanciato due
+volte: un ticket con adulti, bambini e neonati prende la somma giusta dei tre netti; un ticket inserito alle
+00:30 di Tenerife conta per il giorno giusto; netto cambiato → i vecchi tengono il loro, i
+nuovi prendono il nuovo, una persona in più ricalcola; richiesta WhatsApp da `anon` e
+ticket da venditore passano dal guardiano; venditore che legge `net_amount` o `nets` →
+permesso negato. `Codice.gs` girato in Node contro un finto Google Sheets: due giri, il
+secondo con un ticket annullato e uno sparito da Supabase (aggiornato il primo, rimasto il
+secondo); date scritte come testo `AAAA-MM-GG` perché un `Date` sarebbe la mezzanotte del
+fuso dello script, e su un foglio all'ora italiana diventerebbe il giorno prima; il numero
+del ticket in formato testo, se no "0123" diventa 123. **Il foglio vero non l'ho potuto
+aprire**: la prima volta va guardato col proprietario.
+
+Il sito non cambia (nessun `.js`, `.css` o `.html` toccato): la cache non si alza.
+
+### Card o cash, e le commissioni nel foglio (8 ottobre)
+
+Il proprietario ha chiesto nel foglio: data di inserimento, numero di ticket, data
+dell'escursione, adulti, bambini, totale, pagato, da pagare, card, cash, netto, quanto
+spetta al venditore e all'ufficio, e il totale delle commissioni. Regola generale: con il
+bancomat una parte al venditore e il resto all'ufficio, in contanti un'altra. **Le percentuali
+non sono scritte nel repository**: stanno in `commission_rates` su Supabase, riempita da
+un SQL preparato fuori.
+
+Chiesto prima di scrivere, le risposte:
+- la percentuale è **sulla commissione** (totale − netto), non sul totale;
+- **un solo pagamento per ticket**, card o cash;
+- sul ticket di carta **non è scritto**: lo sceglie il venditore. Nel modulo c'è il menu
+  "Pagamento", obbligatorio sul ticket nuovo, e c'è anche in "Modifica" (dove può restare
+  "non scritto", per i ticket di prima e per quelli nati da una richiesta WhatsApp);
+- si conta **sempre sul totale**, anche se il resto il cliente lo paga dopo.
+
+`supabase/modifiche/2026-10-08-pagamento.sql`: la colonna `payment_method` (con il
+`grant select` per i venditori, perché da `foglio.sql` il permesso è colonna per colonna:
+è la regola scritta in `CLAUDE.md`, e qui è servita subito), la tabella delle percentuali
+chiusa a tutti, e la porta rifatta con pagato, commissione, al venditore, all'ufficio.
+"All'ufficio" è la commissione meno la parte del venditore arrotondata: le due fanno
+sempre la commissione, senza un centesimo perso. Card € e Cash € nel foglio sono quanto
+ha **già pagato** il cliente (totale − da pagare), nella colonna del suo metodo: la somma
+di Cash è il contante da contare. Scelta mia, detta al proprietario.
+
+Il foglio: colonne nell'ordine chiesto, poi le altre che servono ai riepiloghi; scheda
+nuova **Per venditore**; menu **Isla → Aggiorna adesso** (`onOpen`), chiesto dal
+proprietario ("posso aggiornarlo prima dell'ora?"). Le colonne sono cambiate: se la riga 1
+della scheda Ticket non è quella giusta, il programma la rinomina "Ticket (vecchio …)" e
+ricomincia; oggi non si perde niente, i ticket sono ancora tutti su Supabase.
+
+Provato: l'SQL su Postgres 16 partendo dallo schema di stamattina con tutte le modifiche
+di oggi in ordine (pagamento due volte). card e cash dividono la commissione con le loro parti, e le due metà
+fanno sempre la commissione intera. Senza card/cash o senza netto le due celle restano vuote con la nota; venditori e
+`anon` non leggono `commission_rates`. `Codice.gs` in Node contro un finto Sheets che
+parte con la scheda Ticket vecchia. Modulo nel browser a 375 px: senza pagamento non
+salva, con card salva `card`, Modifica legge e cambia, nessun errore. `CACHE_NAME` →
+`isla-v448`.
+
+### Il foglio con solo 14 colonne (8 ottobre)
+
+Il proprietario ha guardato la scheda Ticket e ha detto quali colonne gli servono,
+"solo queste": data di emissione, numero di ticket (es. 0865), data dell'escursione,
+adulti, bambini, totale, pagato, da pagare, card, cash, netto, al venditore, all'ufficio,
+commissioni. Fuori escursione, variante, neonati, mezzi, nota, origine.
+
+Al programma però cinque dati servono lo stesso: l'**id** riconosce un ticket già
+scritto (senza, ogni ora raddoppierebbe le righe), lo **stato** distingue gli annullati,
+**settimana, venditore e compagnia** fanno le schede di riepilogo. Stanno in colonne
+**nascoste** a destra (`hideColumns`). Gli annullati, senza più la colonna Stato in
+vista, sono **barrati in grigio**; le richieste WhatsApp in attesa non compaiono, perché
+non sono ancora ticket (entrano quando l'ufficio le conferma). Tolto anche il titolo
+dell'escursione preso dal catalogo del sito: non serviva più.
+
+Le colonne sono cambiate di nuovo, quindi al primo giro la scheda Ticket di prima diventa
+"Ticket (vecchio …)". I riepiloghi hanno lo stesso ordine: netto, venditore, ufficio,
+commissioni. Provato in Node contro il finto Sheets: "0865" resta 0865, l'annullato è
+barrato su tutte e 14 le colonne, la richiesta in attesa resta fuori, nascoste le colonne
+15-19. Il sito non cambia.
+
+Poi il proprietario ha chiesto, fra il numero del ticket e la data, **l'escursione**:
+"Escursione" è il nome della scheda e, se c'è, la variante ("Jet Ski Safari · 1 ora").
+Il nome viene dal catalogo del sito, letto dal programma del foglio con un'espressione
+regolare. **Errore trovato prima di consegnare**: la prima versione prendeva solo i
+titoli scritti come testo semplice (`title: "…"`) e mancava le 11 schede col titolo in
+tre lingue (`title: { it: "Pesca d'altura", … }`), che sarebbero uscite con l'id. Ora
+prende anche l'italiano: provata contro il catalogo vero, 66 schede pubblicate su 66 col
+nome giusto. Colonne visibili 15, nascoste dalla 16.
+
+### Annulla ticket e Ripristina (8 ottobre)
+
+Il proprietario ha chiesto come si elimina un ticket. Non si elimina, da `schema.sql` in
+poi: si mette `status = 'cancelled'`, e nessuno ha il permesso di `delete`. Ma nella
+pagina dei venditori il bottone Annulla c'era solo sulle richieste WhatsApp: un ticket di
+carta sbagliato o disdetto non si poteva segnare in nessun modo. Ora, in **Modifica**:
+
+- **Annulla ticket**, con `confirm()` ("Annullare il ticket 0865? Il cliente non lo vedrà
+  più e non conta nei totali. Si può ripristinare."); su un ticket annullato
+  **Ripristina ticket**, che lo rimette `confirmed`;
+- il ripristino può essere rifiutato dal database (`confermato_completo`: un confermato
+  deve avere numero, telefono, escursione e data). L'errore `23514` ha il suo messaggio,
+  che dice cosa manca;
+- nell'elenco l'annullato ha l'etichetta rossa "Annullato" **fuori** dal titolo barrato:
+  barrata anche lei, nella prima prova, sembrava un annullamento tolto;
+- il bottone che chiude la finestra si chiamava "Annulla" e ora si chiama **Chiudi**.
+
+Il guardiano del netto non cambia niente (lo stato non è fra i campi del netto). Provato
+nel browser a 375 px con un database finto: rinunciare non scrive niente, annullare scrive
+`{status: "cancelled"}`, il ripristino rifiutato mostra il messaggio, quello riuscito
+rimette il ticket com'era; nessun errore, nessuno scroll orizzontale. `CACHE_NAME` →
+`isla-v449`.
+
+### Una scheda per settimana (8 ottobre)
+
+Il proprietario: "vorrei che ogni settimana inizi con un foglio nuovo". Inteso come una
+**scheda** (le linguette in basso), non un file nuovo: "Settimana 05-10-2026", col lunedì
+della data di emissione, nata dal primo ticket di quella settimana e messa **davanti**, così
+la settimana in corso è la prima. Detto al proprietario come l'ho capita.
+
+Le schede delle settimane **sono** l'archivio, non una copia di una scheda unica: ogni
+ticket sta in una sola settimana e non ne cambia mai (la data di emissione è fissa), quindi
+il programma aggiorna la riga dentro la sua scheda e le colonne scritte a mano a destra
+(dalla U, dopo le nascoste) restano. I riepiloghi leggono tutte le schede che si chiamano
+esattamente "Settimana GG-MM-AAAA": quelle messe da parte ("… (vecchio …)") e la vecchia
+scheda unica "Ticket", rinominata al primo giro, non contano due volte. `||=` evitato:
+non sono sicuro che l'Apps Script V8 lo capisca.
+
+Provato in Node contro il finto Sheets: due settimane, ordine giusto, un ticket nuovo nella
+sua settimana al secondo giro, un ticket sparito da Supabase rimasto nella sua scheda e nei
+totali. Il sito non cambia.
+
+Poi: "tra un giorno e l'altro uno spazio bianco di divisione". La settimana conta dalla
+data di **emissione**, cioè quando il ticket è salvato su Isla (l'ora di Tenerife); un
+campo "data emissione" nel modulo è stato proposto e **non serve** (proprietario). La riga
+vuota si mette **solo quando arriva il primo ticket di un giorno nuovo**, prima di lui: le
+righe già scritte non si spostano mai, se no le colonne scritte a mano resterebbero
+accanto al ticket sbagliato. Le settimane già scritte prima di questa versione non hanno
+le righe vuote: si rifanno cancellando la scheda e premendo "Aggiorna adesso" (i ticket
+sono ancora tutti su Supabase finché non passa la pulizia mensile). Una riga vuota non ha
+id, quindi il programma non la scambia per un ticket e i riepiloghi la saltano.
+
+### Il totale di ogni giorno (8 ottobre)
+
+Il proprietario: "a fine giornata il totale dei cash, di quanto va all'ufficio, di quanto
+va al venditore e delle commissioni". Una riga **"Totale del giorno"** sotto i ticket di
+ogni giorno, in grassetto su fondo sabbia, con le quattro somme nelle loro colonne; solo
+i confermati. Nelle colonne nascoste ha stato `totale` e id `totale-AAAA-MM-GG`: così il
+programma la riconosce, e i riepiloghi la saltano (contano solo confermati e annullati).
+
+Il giorno in corso ha il totale **da subito**, non "a fine giornata": un ticket nuovo
+entra sopra il totale del suo giorno. Ma così una riga si sposta, e la regola di prima
+("le righe scritte non si spostano mai", per le colonne a mano) non reggeva più. Quindi
+adesso `scriviSettimana()` **rilegge la scheda intera** (`getLastColumn()`, anche dalla U
+in poi), rimette in fila ticket per giorno e riscrive tutto: ogni riga si porta dietro le
+sue celle a mano. Si perde solo quello che uno scrivesse nelle righe vuote. Una settimana
+scritta dalla versione di prima (righe vuote, niente totali) al primo giro prende i
+totali senza perdere niente.
+
+Provato in Node contro il finto Sheets: totali giusti, ticket nuovo sopra il totale del
+suo giorno (70 → 140), "nota mia" nella colonna U rimasta accanto al suo ticket dopo il
+secondo giro, annullato fuori dal totale. Il sito non cambia.
+
+### Andromeda sceglie anche la serata (8 ottobre)
+
+Il proprietario: la foto di un ticket Andromeda non ha riempito la serata, "ho dovuto
+mettere io piccolo gruppo". Giusto così, per come era fatto: `leggi-ticket` mette la
+variante **solo se il ticket la indica**, e sul ticket c'è solo "Andromeda". Il catalogo
+non diceva da nessuna parte che Andromeda è la serata del gruppo piccolo.
+
+Ora `nomi` si mette anche **dentro una variante** (`options.choices[].nomi`): la compagnia
+che fa proprio quella. Nel modulo, `varianteDellaCompagnia()` la sceglie quando la
+compagnia è trovata, dalla foto o dal menu a mano, ma **solo se la variante è vuota**: una
+variante scritta sul ticket o scelta dal venditore non si tocca. Fatto tutto nella pagina,
+quindi `leggi-ticket` non va ridistribuita. `controlla.js`: il nome di una variante deve
+stare anche nei `nomi` della scheda (se no non è nel menu Compagnia), e su una variante
+sola. Provato il controllo con un nome sbagliato ("Pippo" → errore) e il modulo nel
+browser in sei casi. `CACHE_NAME` → `isla-v450`.
+
+### Escursione con compagnia e mezzi, e la casella per il telefono (8 ottobre)
+
+Il proprietario: nella colonna Escursione c'era "Jet Ski Safari · 1 ora", ma non diceva
+doppia o singola; "da ora in poi compagnia doble 1 ora". Ora la colonna è **compagnia (o,
+senza compagnia, il nome della scheda) · mezzi · variante**: "Agua Safari · Doppia ·
+1 ora". I nomi dei tipi di mezzo il foglio li legge dal catalogo **scheda per scheda**:
+la stessa chiave "due" è "2 posti" sui buggy e "Con 1 o 2 persone" sulle Mustang. Un
+mezzo solo è scritto senza numero, più d'uno con "×2".
+
+Poi: "come posso aggiornare il foglio sul telefono?". L'app Fogli del telefono **non
+mostra i menu di Apps Script** e non sa lanciare una funzione. Sa però cambiare una
+cella, e un trigger "quando si modifica" installato da `installa()` parte anche dal
+telefono. Quindi una scheda **Aggiorna**, la prima, con una casella in A3: toccata,
+`quandoCambia()` aggiorna, la toglie e scrive l'ora in A5. Un `LockService` impedisce che
+l'aggiornamento dell'ora e la casella toccata nello stesso momento scrivano le stesse
+righe due volte. Le settimane nuove si mettono dopo la scheda Aggiorna.
+
+Provato in Node contro il finto Sheets: nomi giusti per jet ski, buggy (due tipi),
+Andromeda, Gomera; la casella aggiorna e si toglie; una cella toccata in un'altra scheda
+non fa niente; due trigger dopo due `installa()`, non quattro. **Il trigger dal telefono
+non l'ho potuto provare su un telefono vero**: va guardato la prima volta. Il sito non
+cambia.
+
+## "Chi siamo" con la storia vera (9 ottobre 2026)
+
+Il testo segnaposto di "Chi siamo" in home ("Isolani, per scelta") è stato sostituito con
+quello scritto dal proprietario: Jack e Francesca, la famiglia, le escursioni dal 2018,
+perché nasce Isla. Tre ritocchi proposti e approvati prima di metterlo: tolto il saluto
+iniziale ("Buongiorno a tutti! Eccoci qui", da post più che da pagina), tolte le emoji
+(il sito non le usa), **"prenotate" → "chiedeteci"**, perché su Isla si manda una
+richiesta e la conferma arriva dall'ufficio. Titolo nuovo `about.title` ("Siamo Jack e
+Francesca"), tre paragrafi invece di due: aggiunta la chiave `about.p3` e il suo `<p>` in
+`index.html`. Inglese e spagnolo tradotti da Claude (spagnolo col "vosotros", come il
+testo italiano dà del voi).
+
+La lista delle cose da fare su Notion è stata rifatta lo stesso giorno: "Cose da fare
+(dal 9 ottobre 2026)", a blocchi, col dominio per ultimo; la tabella di prima è
+nell'archivio della stessa pagina. I netti il proprietario li scrive man mano in una
+tabella **privata** di Notion, "Netti da inserire", e da lì si prepara l'SQL: mai nel
+repository.
+
+Provato a 375 px nelle tre lingue: titolo e paragrafi giusti, nessun errore, nessuno
+scroll orizzontale. `CACHE_NAME` → `isla-v451`.
+
+## Fiat 500 Water Car: partenza, durata, capitano a bordo (9 ottobre 2026)
+
+Il proprietario ha incollato la pagina della Fiat 500 sul sito di **Tenerife First
+Excursions** (un rivenditore anche loro, con sei negozi nel sud). Presi solo i fatti:
+
+- **zona** "Puerto Colón, Costa Adeje" (`zoneGroups: ["costa-adeje"]`): da lì si parte,
+  verso El Duque e Playa Diego Hernández o verso Los Cristianos, secondo il mare;
+- **durata** "1 o 2 ore" (`durationGroups: ["breve"]`): era l'ultima scheda della
+  categoria con zona e durata "Da definire";
+- **`included`: `swimstop` e `snorkel`**: la sosta bagno e l'attrezzatura sono scritte
+  dal fornitore ("Snorkelling equipment included");
+- **due note**: il capitano resta sempre a bordo (regole del mare: non è più un noleggio
+  senza skipper) e si guida sotto il suo controllo, 18 anni per guidare, patente nautica
+  non serve; al massimo 3 adulti + 1 bambino fino a 12 anni, documento d'identità.
+- descrizione riscritta da zero nelle tre lingue.
+
+**Il prezzo NON è stato toccato** (`priceFrom: 130`, preso a suo tempo dal sito di
+Admiral). La pagina incollata dice 190 € un'ora e 280 € due ore: è un altro rivenditore,
+e alzare un prezzo dopo che il cliente l'ha letto è la cosa da evitare. Chiesto al
+proprietario quale vale; quando risponde, le due durate diventano due varianti col loro
+prezzo. Non copiati recensioni, "Travelers Choice", "Why choose us". Resta in
+`PICKUP_NESSUNO`: ci si trova al porto.
+
+Provato a 375 px: "In breve" con partenza e durata, le due icone, le due note, nessun
+errore, nessuno scroll orizzontale. `CACHE_NAME` → `isla-v452`.
+
+### Fiat 500: il prezzo confermato, 130 € e 220 € (9 ottobre)
+
+Il proprietario: **1 ora 130 €, 2 ore 90 € in più**, quindi 220 €. I 190 e 280 della
+pagina di Tenerife First Excursions erano i prezzi di quel rivenditore, non i nostri.
+
+- due varianti in `options` ("Durata": 1 ora 130 €, 2 ore 220 €), coi bottoni sulla pagina;
+- `priceUnit` "a Fiat 500", **deciso da me**: il prezzo è della macchina (fino a 3 adulti
+  + 1 bambino), e senza l'unità "da 130 €" si leggeva a persona. Come la Mustang e il quad;
+- `priceAdult`/`priceChild` restano 0: il totale della richiesta non moltiplica il prezzo
+  della macchina per le persone;
+- niente `duration` dentro le varianti: quando le varianti si chiamano "Durata",
+  `tour.js` non ripete la durata in "In breve", e "1 o 2 ore" resta per la card.
+
+Provato a 375 px: bottoni "1 ora €130" e "2 ore €220", "€220 a Fiat 500" dopo il
+secondo, nessun errore. `CACHE_NAME` → `isla-v453`.
+
+## 9 ottobre 2026 — Compagnie nuove dalla tabella Notion dei netti
+
+Il proprietario scrive i netti nella tabella privata di Notion "Netti da inserire". I
+numeri vanno solo su Supabase (SQL nella scratchpad); qui arrivano solo i **nomi**:
+
+- `whale-dolphin-3h`: `nomi` diventa Cool Sailing, **Lina7**, **Mizendoha**. Sono tre
+  barche/compagnie diverse (proprietario): ognuna ha il suo netto, e quella di Cool
+  Sailing non c'è ancora. Quindi il netto in `nets` ha la compagnia, non `null`;
+- `luxury-cruiser`: `nomi: ["Mokkai"]`, non sul charter (come Cool Sailing). Una
+  compagnia sola: il netto ha `company` null ma la **variante** "3 ore, in
+  condivisione", perché a persona non vale per "Barca privata".
+
+Provato: menu Compagnia giusto sulle due schede e assente sul charter; la foto con
+"MIZENDOHA" o "MOKKAI" sceglie la compagnia. SQL provato su Postgres locale, due
+volte di fila. `CACHE_NAME` → `isla-v457`.
+
+## 9 ottobre 2026 — Netto a percentuale (Twin Ticket)
+
+Il proprietario: sul Twin Ticket Isla tiene una parte del prezzo di vendita, adulti e
+bambini, e il resto va al parco. Non c'è un netto fisso a persona, quindi `nets` ha una
+colonna in più, `net_percent` (`supabase/modifiche/2026-10-09-percentuale.sql`): se c'è,
+netto = totale × quella parte, arrotondato al centesimo, e persone e mezzi non contano.
+Il numero sta solo su Supabase, come gli altri netti.
+
+- `calcola_netto` ha un parametro in più, il totale. La versione a sette parametri
+  resta e passa alla nuova senza totale: gli SQL già preparati in chat che la
+  chiamano funzionano ancora (un netto a percentuale lì resta vuoto, con la nota);
+- il guardiano `fissa_netto` ricalcola anche quando cambia `total`;
+- ticket senza totale: netto vuoto, nota "netto mancante: totale non scritto".
+
+**Il transfer del Twin Ticket ha un altro netto** (proprietario), ma sul ticket non c'è
+un campo che dica se il cliente l'ha preso: un ticket col transfer nel totale prende
+la percentuale anche sul transfer. Da sistemare quando arriva il netto del transfer.
+
+Provato su Postgres locale con una percentuale di prova: il netto è il totale per la
+parte, arrotondato; totale cambiato → ricalcolato; senza
+totale → vuoto con la nota; la migrazione lanciata due volte; gli altri netti invariati.
+
+## 9 ottobre 2026 — I parchi contano sempre come card
+
+Il proprietario: "il Twin Ticket, e quindi anche Loro Parque e Siam Park separati, sono
+sempre da considerare pagati con carta". Comunque paghi il cliente, la commissione si
+divide con la parte della carta (che sta in `commission_rates`, non qui).
+
+- catalogo: `pagamento: "card"` su `loro-parque`, `siam-park`, `twin-ticket` (vocabolario
+  in testa al file). **Siam Night** aggiunto dopo, confermato dal proprietario;
+- modulo dei venditori: `pagamentoDellaScheda()` sceglie Card e spegne Cash, sul ticket
+  nuovo e in Modifica; cambiando scheda Cash torna sceglibile;
+- database: guardiano `sempre_card` (`supabase/modifiche/2026-10-09-solo-card.sql`),
+  prima di ogni inserimento e modifica, più l'update dei ticket già salvati. Vale anche
+  per le richieste WhatsApp confermate e per chi scrivesse "cash" a mano;
+- `controlla.js` (`controllaPagamento`) confronta l'elenco del catalogo con quello
+  dell'SQL: la regola sta in due posti, e se divergono il modulo direbbe una cosa e il
+  foglio un'altra.
+
+Provato: nel browser Twin → card con Cash spento, Whale dopo Twin → Cash di nuovo
+sceglibile, Modifica di un Siam Park salvato "cash" → card; su Postgres locale un Loro
+Parque inserito "cash" diventa card, un Whale resta cash, il file lanciato due volte.
+`CACHE_NAME` → `isla-v455`.
+
+## 9 ottobre 2026 — Tolte dal repository cifre vere di netti e commissioni
+
+Cercando i numeri prima del commit qui sopra sono saltati fuori, **scritti da me**, valori
+veri che non dovevano stare nel repository pubblico: le parti di card e cash (in questo
+file e come esempio in `2026-10-08-pagamento.sql`), il netto Gomera dentro due conti di
+prova, il netto della doppia di Agua Safari come esempio in `2026-10-08-netti.sql` e
+`2026-10-08-foglio.sql`, e un conto del Twin Ticket da cui si ricava la percentuale. Ora
+gli esempi hanno numeri inventati e i conti di prova sono scritti a parole.
+
+**Restano nella storia dei commit** (#371, #384): cancellarli anche da lì vuol dire
+riscrivere la storia di `main`, e lo decide il proprietario.
+
+La regola per non rifarlo: **un esempio non usa mai il numero vero**, e una prova si
+racconta senza cifre. Prima di ogni commit, `git grep` dei numeri appena ricevuti.
+## Private Charter: il porto dipende dalla barca (9 ottobre 2026)
+
+Il proprietario: i charter privati sono **le stesse barche dei giri condivisi**, e partono
+**dagli stessi porti**. La scheda generica `private-charter` non dice quale barca, quindi
+il porto non è uno solo: la zona ora dice "Dipende dalla barca: Puerto Colón, Los
+Cristianos, Los Gigantes o Las Galletas", cioè i porti delle schede di "Mare e barche"
+(Marina Amarilla del Submarine Safari no: non è una barca da charter). `zoneGroups` le tre
+zone di quei porti, così la scheda compare con qualunque filtro di costa. Testo deciso da
+me a partire dalla risposta del proprietario.
+
+Era l'ultima scheda con zona "Da definire" fra le barche. Resta da sapere il **prezzo per
+ogni durata** (3, 6 o 9 ore): finché non c'è, la durata non diventa un bottone.
+Provato a 375 px in italiano e spagnolo, nessun errore. `CACHE_NAME` → `isla-v457`.
+
+## Luxury Catamaran: le partenze (9 ottobre 2026)
+
+Dal proprietario: la Luxury Catamaran Experience parte **alle 11, alle 14 e alle 17**.
+`times: ["11:00", "14:00", "17:00"]` sulla scheda condivisa (`luxury-catamaran`): nella
+finestra della richiesta il menu "A che ora" mostra solo quelle tre, e "Da concordare"
+sparisce. **La gemella privata (`luxury-catamaran-charter`) non è stata toccata**: le altre
+gemelle hanno gli stessi orari della barca condivisa, ma su un privato l'ora può essere
+da concordare. Chiesto al proprietario. Provato nel browser, nessun errore.
+`CACHE_NAME` → `isla-v458`.
+
+### Luxury Catamaran privata: gli stessi orari (9 ottobre)
+
+Il proprietario conferma: la gemella privata (`luxury-catamaran-charter`) parte **alle
+stesse ore** della condivisa, 11, 14 e 17. Stessi `times`, come le altre gemelle private
+che ripetono gli orari della barca condivisa. Provato nel browser: tutte e due mostrano
+solo 11:00, 14:00 e 17:00. `CACHE_NAME` → `isla-v459`.
+
+### Fiat 500: le partenze del Jet Ski (9 ottobre)
+
+Il proprietario: la Fiat 500 ha **gli stessi orari delle moto d'acqua**. Copiati i `times`
+del Jet Ski Safari (10:00, 12:00, 14:00, 16:00, 17:00) sulla scheda `fiat-500-water-car`,
+uguali per 1 e 2 ore. Provato nel browser: il menu "A che ora" mostra solo quelle cinque.
+`CACHE_NAME` → `isla-v460`.
+
+### Lezioni di surf: le partenze (9 ottobre)
+
+Dal proprietario: surf alle **9, 11, 16 e 18**. `times` sulla scheda `surf-lesson`, quindi
+valgono per tutte e nove le varianti (di gruppo, private, pacchetti). Provato nel browser:
+il menu "A che ora" mostra solo quelle quattro. `CACHE_NAME` → `isla-v461`.
+
+### Surf: gli orari si spostano di 30 minuti con la marea (9 ottobre)
+
+Il proprietario: "scrivi che gli orari possono cambiare di 30 minuti in base alla marea".
+La nota di prima ("gli orari seguono la marea e cambiano di giorno in giorno: si
+concordano con la scuola") contraddiceva le partenze appena messe, e l'ho **sostituita**,
+non affiancata: "Gli orari possono spostarsi di 30 minuti, prima o dopo, secondo la marea:
+l'ora esatta te la diciamo quando confermiamo la richiesta", nelle tre lingue.
+`CACHE_NAME` → `isla-v462`.
+
+## Tuk tuk, Secret Volcano Tour: le partenze (9 ottobre 2026)
+
+Il proprietario ha incollato la pagina di prenotazione del **Secret Volcano Tour**. Non è
+una scheda nuova: è il secondo percorso di `tuk-tuk`, e prezzi (24 / 12 / gratis),
+fasce (11+, 3-10, 0-2), punto d'incontro (Avenida de España 10) e note erano già giusti.
+Nuovi solo gli **orari**, messi **sulla variante** Secret Volcano: ogni ora dalle **10
+alle 18**. La pagina segna anche le 9, le 19 e le 20 ma come "Llamar para reservar":
+**non messe**, chiesto al proprietario. Il percorso Costa Adeje Tour resta con le fasce
+segnaposto finché non arrivano i suoi. Non copiati: la cancellazione del fornitore
+("24-hour cancellation notice", coincide con la nostra ma resta la nostra), "Salud y
+seguridad". Provato nel browser: Secret Volcano mostra le nove ore, Costa Adeje le
+fasce, nessun errore. `CACHE_NAME` → `isla-v463`.
+
+### Tuk tuk: dalle 9 alle 20, per tutti i percorsi (9 ottobre)
+
+Il proprietario: "mettile tutte, siamo noi che chiamiamo, e gli orari sono uguali per
+tutti i tour". Quindi le 9, le 19 e le 20 ("Llamar para reservar" sulla pagina del
+fornitore) entrano: a chiamare è l'ufficio quando conferma. Gli orari sono passati dalla
+variante Secret Volcano alla **scheda**, e valgono per tutti e due i percorsi; stessa
+cosa sul **tuk tuk privato** (`tuk-tuk-privato`), perché "tutti i tour" comprende anche
+quelli. Provato nel browser: i quattro percorsi mostrano 12 ore, dalle 09:00 alle 20:00,
+nessun errore. Il tuk tuk esce dalla lista di `orari-mancanti.js`. `CACHE_NAME` →
+`isla-v464`.
+
+## I parchi non hanno bisogno di orari (9 ottobre 2026)
+
+Il proprietario: "i parchi non hanno bisogno di orari". Sono biglietti d'ingresso. Da
+adesso `orari-mancanti.js` non li elenca più fra quelli da chiedere (le schede di
+"parchi-spettacoli" senza `times`: 8, contate a parte come "parchi (non servono)"); gli
+spettacoli della stessa categoria hanno l'ora vera e non cambiano. Scritto anche in
+`CLAUDE.md`, così non si richiedono. Il sito non cambia: nella richiesta i parchi
+mostrano ancora le fasce e "Da concordare" nel menu "A che ora". Chiesto al
+proprietario se toglierlo.
+
+### Small Group Catamaran privato: le partenze del condiviso (9 ottobre)
+
+Il proprietario: il privato ha **gli stessi orari del condiviso**, cioè 9:30 e 12:30.
+Messi su `small-group-catamaran-charter`. **Non toccata** la variante "Charter privato"
+dentro `small-group-catamaran`: ha `times: []` (ora da concordare) e una descrizione che
+dice "si può fare anche al tramonto", che con solo 9:30 e 12:30 non starebbe in piedi.
+Chiesto al proprietario se il tramonto vale ancora. Provato nel browser: il menu mostra
+09:30 e 12:30. `CACHE_NAME` → `isla-v465`.
+
+## Teide by Night: intorno alle 17, secondo il tramonto (9 ottobre 2026)
+
+Dal proprietario: il Teide by Night parte **intorno alle 17**, e l'ora può variare col
+tramonto. `times: ["17:00"]` sulla scheda (vale per i due gruppi): il menu "A che ora"
+mostra solo 17:00. La nota sul ritiro diceva già che l'ora segue il tramonto; ora dice
+"intorno alle 17" invece di "nel pomeriggio", nelle tre lingue, e resta che l'ora esatta
+la conferma l'ufficio col punto di ritiro. Provato nel browser, nessun errore.
+`CACHE_NAME` → `isla-v466`.
+
+## La mappa: l'elenco a pulsanti (9 ottobre 2026)
+
+Richiesta del proprietario: sotto la mappa, invece della lista lunga di 40 righe,
+**un pulsante per categoria** (icona, nome, quanti posti) che si apre e mostra i
+suoi posti, e si richiude ritoccandolo. Scritto da `renderMapList()` in `mappa.js`.
+- All'inizio sono tutti chiusi; se ne possono aprire piu' di uno (`mapState.groups`).
+- Il filtro in alto e i pulsanti vanno d'accordo: scegliendo "Spiagge" resta solo il
+  gruppo delle spiagge, gia' aperto; **richiudere quel gruppo riporta il filtro a
+  "Tutto"**, cosi' non resta un elenco vuoto.
+- I gruppi seguono `MAP_GROUP_ORDER`; un gruppo senza posti non si mostra (i
+  ristoranti, finche' non ci sono).
+- Tolta `mapVisible()`, che serviva solo alla lista vecchia. `CACHE_NAME` → `isla-v467`.
+
+## Prezzi definitivi, "Teide Stars & Sunset", "Scopri Tenerife" (9 ottobre 2026)
+
+Tre richieste del proprietario in una volta:
+
+- **I prezzi del sito sono definitivi.** Via la scritta sotto il totale nella finestra
+  della richiesta ("Totale indicativo: te lo confermiamo noi su WhatsApp", chiave
+  `req.totalNote` tolta), e nel messaggio WhatsApp e nella lista "Totale indicativo"
+  è diventato solo "Totale" (`wa.total`, `wa.totalPartial`). Anche `termini.html`,
+  nelle tre lingue: il totale della richiesta è quello che si paga. Restano i casi in
+  cui è la scheda stessa a dire che un prezzo lo conferma l'ufficio (corsi di
+  specialità, sesto posto della lezione privata, ritiro dal nord): sono prezzi che
+  sul sito non ci sono, non stime.
+- **"Teide by Night" → "Teide Stars & Sunset"** (`stargazing-group`): "Teide by Night"
+  è il nome proprio dell'escursione di una compagnia, a Isla serve un nome generico.
+  Uguale nelle tre lingue. Non è stato messo nei `nomi`: quelli sono compagnie e
+  diventano voci del menu "Compagnia" del ticket.
+- **"Mappa" → "Scopri Tenerife"** (Discover / Descubre Tenerife): titolo della pagina,
+  `<title>` e voce del Menu nelle sette pagine. L'occhiello sopra il titolo, che diceva
+  "Tenerife da vicino" e si ripeteva, ora dice "La mappa". Il file resta `mappa.html`:
+  i link della home (`?cat=segreto`) e quelli già condivisi continuano a funzionare.
+
+Cache `isla-v468`.
+
+## Le spiagge migliorate (9 ottobre 2026)
+
+Il proprietario ha mandato un elenco di spiagge già strutturato (tipo, sabbia, stato,
+avvertenze) chiedendo di migliorare la sezione. **Prima di copiarlo è stato
+verificato**, e due cose erano urgenti:
+- **Benijo è chiusa dal luglio 2024** per rischio di frane (Diario de Avisos, luglio
+  2026: cento bagnanti fatti uscire dalla Policía Local, multe per chi entra, nessuna
+  data di riapertura). La mappa online la presentava come spiaggia normale, con
+  "Portami qui". Ora resta in mappa ma **segnata "Chiusa"**, pallino grigio, testo
+  "si guarda solo dall'alto" e l'avviso delle multe.
+- **Las Gaviotas**, nell'elenco "da aggiungere", è **chiusa dal 3 giugno 2026**
+  (Ayuntamiento di Santa Cruz; lavori per circa un anno). **Non aggiunta.**
+- **Los Guíos**: bagno vietato dal 2009 (frana mortale), riaperta in parte nel 2023
+  con le reti: avviso "possono cadere pietre, rispetta le transenne".
+
+Cosa è cambiato:
+- **16 spiagge** (erano 10): aggiunte Abama, La Jaquita, Almáciga, El Socorro,
+  Antequera, Playa de Masca. **La Arena resta** anche se non era nell'elenco. Le
+  piscine di Garachico non sono una scheda a sé: stanno già in "Garachico" (Da vedere).
+- Campi nuovi, per ora solo sulle spiagge: `tipo`, `sabbia`, `stato`, `avviso`
+  (spiegati in testa a `mappa.js`). Nel pannello diventano etichette (stato rosso
+  "Chiusa" o giallo "Con prenotazione", tipo, sabbia) e un riquadro col triangolo.
+  Nell'elenco lo stato sta accanto al nome. In cima al gruppo Spiagge c'è
+  l'avvertenza generale (onde e correnti del nord, bandiera).
+- Dall'elenco del proprietario non è stato copiato "La Tejita sabbia scura" senza
+  guardare: le fonti la danno fra il dorato scuro e il nero; resta "scura" come
+  diceva lui.
+- Foto: 8 nuove da Wikimedia Commons (Abama, La Jaquita, Almáciga, El Socorro,
+  Masca). **Antequera è senza foto**: Commons ha bloccato le richieste (troppe) e il
+  pannello mostra solo il testo. Si può aggiungere dopo.
+- **Gli "stato" vanno ricontrollati** prima di ogni stagione: le chiusure per frana
+  durano mesi e finiscono senza avviso. `CACHE_NAME` → `isla-v469`.
+
+## La mappa parte vuota (9 ottobre 2026)
+
+Richiesta del proprietario: all'inizio la mappa è **vuota** (solo l'isola e la scritta
+"Scegli cosa vedere…"), e si riempie solo delle categorie che si toccano: Spiagge →
+solo pallini blu; poi Panorami → si aggiungono i verdi; ritoccare spegne.
+- Lo stato è uno solo, `mapState.active` (un Set di categorie accese): i bottoni in
+  alto **e** i gruppi sotto la mappa lo accendono e lo spengono allo stesso modo, e
+  un gruppo è aperto se e solo se la sua categoria è accesa (`toggleMapCat()`).
+  Spariti `mapState.cat` e `mapState.groups`.
+- **"Tutto"** accende tutte le categorie che hanno posti; se erano già tutte accese le
+  spegne. È "acceso" solo quando lo sono tutte.
+- I gruppi sotto la mappa si vedono sempre tutti, anche a mappa vuota: sono l'altro
+  modo di scegliere.
+- Spegnere la categoria del posto aperto chiude il pannello.
+- I link della home (`?cat=segreto&punto=…`) accendono la categoria del link e
+  quella del punto.
+- La scritta sta sopra la mappa (`.map-empty`, `pointer-events: none`): la mappa
+  sotto si muove lo stesso. `CACHE_NAME` → `isla-v470`.
+
+## La mappa ferma, senza bottoni in alto (9 ottobre 2026)
+
+Richiesta del proprietario, in due messaggi: "togliere la capsula all'inizio" e "far
+stare ferma la mappa al tocco". La "capsula" erano i **bottoni in alto** (Tutto ·
+Spiagge · Panorami · Posti segreti · Da vedere), che facevano la stessa cosa dei
+gruppi sotto la mappa; alla domanda aveva scelto anche il **riquadro "Scegli cosa
+vedere"**. Via tutti e due.
+- Si sceglie **solo coi gruppi sotto la mappa** (`toggleMapCat()`); "Tutto" non c'è
+  più. Il testo sotto il titolo dice "Scegli una categoria sotto la mappa…"
+  (`map.intro`), al posto del riquadro. Tolte le chiavi `map.cat.all`,
+  `map.filterAria`, `map.empty`.
+- **La mappa non si muove**: niente trascinamento, zoom con due dita, doppio tocco,
+  rotellina, tastiera, e niente bottoni + e −. Mostra sempre tutta l'isola, anche
+  quando il telefono si gira (`map.on("resize", fitIsland)`). Il dito sopra la mappa
+  fa scorrere la pagina.
+- Toccando un pallino si apre il pannello e **la mappa non vola più sul posto**; la
+  pagina resta ferma. Solo se il posto si sceglie dall'elenco (mappa fuori vista) la
+  pagina sale alla mappa.
+- Da lontano i pallini sono passati da 22 a 26 px: col dito sono l'unico modo di
+  scegliere sulla mappa. Dove due si sovrappongono (Los Gigantes, Anaga), il posto
+  si apre dall'elenco.
+
+## I pallini sovrapposti si allontanano (10 ottobre 2026)
+
+Con la mappa ferma e senza zoom, a Los Gigantes, sulla costa nord e in Anaga i
+pallini si coprivano: misurato con tutte le categorie accese, **16 su 46 non si
+potevano toccare** sul telefono (7 sul computer). Il proprietario: spostarli
+leggermente, "non è una mappa dettagliata".
+- `spreadMapPins()` in `mappa.js`: prende i centri dei pallini accesi in pixel e
+  spinge via, metà per parte, ogni coppia più vicina di **tre quarti di pallino**;
+  ripete finché nessuna coppia è troppo vicina (al massimo 80 giri), senza uscire
+  dal riquadro. Sposta solo il pallino sullo schermo (`setLatLng`), le coordinate
+  di `MAP_POINTS` non cambiano.
+- Si rifà quando cambiano le categorie accese (`applyMapFilter`) e quando la mappa
+  cambia misura (telefono girato): le distanze in pixel dipendono da tutte e due.
+- **Prima prova scartata**: separarli del tutto (distanza = un pallino intero).
+  Con 46 pallini su un'isola larga 340 px le spiagge finivano in mezzo all'isola o
+  in mare. Con tre quarti si accavallano un poco ma il centro di ognuno resta
+  scoperto: misurato, **0 non toccabili** su 390, 360 e 1280 px, e toccando i
+  pallini che prima erano coperti si apre il posto giusto.
+- `CACHE_NAME` → `isla-v472`.
+
+## In home, quattro card al posto di "Dove non arrivano i pullman" (10 ottobre 2026)
+
+Richiesta del proprietario: al posto della sezione a tutta pagina "Posti segreti — Dove
+non arrivano i pullman" (foto di Masca, sei nomi e un bottone), **quattro card alte la
+metà di quelle delle categorie**: Spiagge, Panorami, Posti segreti, Da vedere.
+- Stessa griglia e stesse classi delle categorie (`.cat-grid`, `.cat-card`), più
+  `.cat-card--half`: proporzioni 32/9 invece di 16/9 (misurato: 350×98 contro 350×197
+  sul telefono, 258×73 contro 258×145 sul computer). Il nome sta a sinistra a metà
+  altezza, con la sfumatura da quella parte.
+- Ognuna apre `mappa.html?cat=<categoria>`, che accende quella categoria.
+- Titolo e occhiello sono quelli della mappa (`map.eyebrow`, `map.title`), i nomi
+  quelli dei gruppi (`map.cat.*`): un testo cambiato lì cambia anche qui.
+- **Foto senza obbligo di autore**: due CC0 da Wikimedia (La Tejita per le spiagge,
+  il Charco de la Laja per i segreti) e due già del sito (`teide-national-park.jpg`,
+  `icod-garachico-orotava.jpg`). Le altre foto della mappa sono CC BY/BY-SA e
+  vorrebbero l'autore scritto sulla card.
+- La sezione nuova tiene `id="secret"`, per i vecchi link. La voce **"Posti segreti"
+  del Menu** (sette pagine) ora porta a `mappa.html?cat=segreto`, non più alla home.
+- Tolti il CSS `.secret*` e le chiavi `secret.*`. `assets/Secret-cove.jpg` non lo usa
+  più nessuno, ma è rimasto nella cartella. `CACHE_NAME` → `isla-v473`.
+
+## 10 ottobre 2026 — Parascending: Ocean Wings, da Los Cristianos
+
+Il proprietario: **Ocean Wings** è una compagnia di parascending che parte da **Los
+Cristianos**, ed è **una compagnia in più** sulla scheda `parascending` (che partiva
+solo da Puerto Colón), non una scheda nuova. "Metti tutti e due i porti".
+
+- `nomi: ["Ocean Wings"]`: il ticket di carta con "OCEAN WINGS" porta al Parascending, e
+  nella pagina dei venditori il menu Compagnia lo propone;
+- `zone` "Puerto Colón o Los Cristianos" e `zoneGroups` `costa-adeje` + `los-cristianos`:
+  la scheda esce in tutti e due i filtri;
+- la nota sul ritiro dice i due porti e che **il porto lo dice l'ufficio nella conferma**
+  (deciso da me, come sul Jet Ski: il cliente sceglie l'ora, non la compagnia);
+- nella descrizione "la costa di Costa Adeje" → "la costa del sud", che vale per tutti e due.
+
+**Gli orari non sono stati toccati**: le partenze 10:00-17:00 vengono dal proprietario a
+settembre, e quelle di Ocean Wings non le sappiamo. Se sono diverse vanno aggiunte, perché
+sul giro fatto da due compagnie il menu "A che ora" deve avere le ore di tutte e due.
+
+Il netto di Ocean Wings sta nella tabella privata di Notion, mai qui.
+
+Provato a 375 px nelle tre lingue: zona e nota giuste, nessun errore, nessuno scroll
+orizzontale; il menu Compagnia dei venditori mostra Ocean Wings. `CACHE_NAME` → `isla-v474`.
+
+**Panorami con il Mirador Pico del Inglés (10 ottobre 2026).** Il proprietario ha
+chiesto la foto del Pico del Inglés per la card "Panorami" (prima: il Teide, poco
+nitido). Scelta `mirador-pico-del-ingles-2.jpg` (le montagne verdi dell'Anaga col
+mare). È **CC BY-SA 4.0**: la licenza chiede l'autore accanto alla foto, quindi la
+card porta in basso a destra "Foto: Mentxuwiki · CC BY-SA 4.0" (`.cat-credit`). Non è
+un link: la card intera è già un link, e un link dentro un link non si può.
+`CACHE_NAME` → `isla-v475` (la #404 era arrivata intanto a v474).
+
+## 11 ottobre 2026 — "Cosa portare" sulle escursioni confermate
+
+Il proprietario: quando l'escursione è confermata, nella pagina riepilogo ("Le mie
+prenotazioni", `booking.js`) ci sia un promemoria di cosa portare. La lista sta su
+Notion, pagina **"cose da portare"**, non ancora completa: "iniziamo da lì".
+
+- **`portare.js`**, file nuovo, solo dati: `COSE_DA_PORTARE` è un elenco di gruppi
+  (Barca, Tour guidati, Elicottero, Buggy, Quad, Jet ski, Loro Parque e Jungle Park),
+  ognuno con le sue schede (`schede`, gli id del catalogo) e le voci nelle tre lingue
+  (`cose`). Non sta nel catalogo perché lo carica solo `booking.html`, e perché così,
+  quando il proprietario riempie un gruppo su Notion, si tocca un file solo.
+- **Si vede solo su una conferma non ancora passata**: prima della conferma è presto,
+  dopo la data non serve. Una scheda che non sta in nessun gruppo non mostra il
+  riquadro (nessun "cosa portare" inventato).
+- I gruppi vuoti su Notion (Teide Stars, Mustang, 500, Banana boat, Kayak, Parascending,
+  Immersioni, Surf, Siam Park, Poema del Mar, Show serali) **non ci sono**.
+- `controlla.js` (`controllaPortare`): ogni id deve esistere, una scheda sta in un
+  gruppo solo, ogni voce ha it/en/es.
+
+**Scelte mie, confermate dal proprietario l'11 ottobre 2026** ("le scelte sulle barche e
+sui tour sono giuste"):
+- "Barca" vale per tutte le gite in barca **e i charter privati**, ma **non** per
+  Submarine Safari (si sta dentro il sottomarino, niente bagno) e Pesca d'altura
+  (si pesca, non si fa il bagno);
+- "Tour guidati" vale per Teide National Park, Teide/Icod/Garachico/Masca, Trekking,
+  La Gomera, Santa Cruz + Anaga, Tour completo, La Palma, le due degustazioni, Finca
+  Tuno e il Cabrio Bus; **non** per tuk tuk e trenino (giri brevi in città) né per la
+  Bici;
+- Twin Ticket e Combo Jungle + Aqualand restano fuori: Siam Park e Aqualand su Notion
+  sono vuoti, e mezza lista sarebbe sbagliata per l'altro parco.
+
+Provato nel browser con risposte di Supabase finte: Jet Ski confermato → Costume, Crema
+solare, Asciugamano; Submarine confermato, Buggy in attesa e Freebird passato → niente
+riquadro. Nessun errore. `CACHE_NAME` → `isla-v476`.
+
+## 11 ottobre 2026 — Le richieste dei pacchetti vanno anche nel database
+
+Il proprietario: le richieste dei pacchetti, che partivano **solo** su WhatsApp, si
+salvano su Supabase come quelle della lista ("salvarli come la lista"). Così l'ufficio
+le vede in `venditori.html` fra le richieste WhatsApp e il cliente le ritrova in "Le mie
+prenotazioni".
+
+- `pacchettoVociRichiesta()` in `pacchetti.js` trasforma il pacchetto nelle voci che
+  `richiestaNuova()` (`richieste.js`) sa già salvare: **una riga per escursione**, con
+  la variante solo dove il pacchetto l'ha decisa, niente ora (nel pacchetto non si
+  chiede).
+- **Tutte le righe hanno il giorno d'inizio** ("Dal giorno"): il database vuole una data
+  per riga, e i giorni veri li mette d'accordo l'ufficio. Quando conferma, cambia la data
+  riga per riga, come già si può fare.
+- Il messaggio WhatsApp finisce con "Codice richiesta: …", come quello della lista.
+- Nessun SQL nuovo: `manda_richiesta()` accetta fino a 10 escursioni, e il pacchetto più
+  lungo ne ha 7. I mezzi (quanti buggy) restano solo nel messaggio: `manda_richiesta()`
+  non li salva, come per la lista.
+
+Provato con Supabase finto: Tenerife Trio (3 righe, Luxury Cruiser con "3 ore, in
+condivisione") e versione buggy (il buggy senza variante, percorso aperto); il codice
+nel messaggio è lo stesso salvato nel telefono, segnato `stored`. Nessun errore.
+Il **noleggio** resta solo su WhatsApp. `CACHE_NAME` → `isla-v477`.
+
+## 11 ottobre 2026 — Il pacchetto va nel carrello, come una voce sola
+
+Il proprietario: il pacchetto (es. Tenerife Trio) deve comparire **nel carrello**, con il
+riepilogo delle scelte (giorno, persone, mezzi) e il prezzo, **come una singola
+escursione che non si può modificare**. Prima partiva da solo su WhatsApp dalla sua
+finestra.
+
+- **La finestra del pacchetto ora fa come quella delle escursioni**: il bottone dice
+  "Aggiungi alla lista" e il nome non lo chiede più (lo chiede la lista, una volta sola).
+- **Nella lista il pacchetto è una voce `{ pack, date, adults, kids, mezzi, hotel, note }`**:
+  le scelte, mai il prezzo, come le altre voci. Il conto si rifà ogni volta con
+  `pacchettoTotale()`. Nel carrello: titolo, "Dal giorno · persone · mezzi", "Cosa c'è
+  dentro", il risparmio e il totale. Si toglie con la ✕, ma non si apre né si smonta.
+- **Il messaggio**: il pacchetto da solo manda il messaggio del pacchetto di sempre;
+  insieme ad altre voci è un blocco numerato con le stesse righe
+  (`pacchettoRigheRichiesta()`, separata da `pacchettoWhatsappUrl()`).
+- **Il tetto conta le escursioni, non le voci** (`listaPeso()` in `lista.js`): un
+  pacchetto da tre vale tre, perché nel database ogni escursione è una riga e
+  `manda_richiesta()` ne prende al massimo 10. Un pacchetto che non ci sta mostra
+  l'avviso `lista.full` nella sua finestra. "Vorrei … per N escursioni" conta anche
+  quelle dentro i pacchetti.
+- **Nel database** (`richiestaVoci()` in `richieste.js`) il pacchetto diventa una riga per
+  escursione col giorno d'inizio, come deciso stamattina.
+- **`pacchetti.js` si carica ora su tutte le sette pagine con la lista** (prima solo le
+  due dei pacchetti): il carrello deve saper disegnare un pacchetto anche da
+  `escursioni.html`. La finestra del pacchetto nasce solo dove ci sono i pacchetti
+  (`[data-pack-grid]`, `[data-pack-detail]`).
+
+Provato a 375 px: Tenerife Trio buggy (2 adulti, 1 buggy) nel carrello, poi aperto da
+`escursioni.html` con il Luxury Cruiser accanto → €349 + €110 = €459, messaggio con due
+blocchi e "per 4 escursioni", 4 righe nel database; Tenerife Trio da solo → messaggio
+del pacchetto col codice; itinerario da 7 + Trio = 10, il terzo pacchetto mostra
+l'avviso e non entra. Sette pagine nelle tre lingue senza errori e senza scroll
+orizzontale. `CACHE_NAME` → `isla-v478`.
+
+### I netti di Island Excursions, e sempre card (11 ottobre)
+
+Il proprietario ha mandato la foto del listino di Island Excursions ("Cliente: Mathew
+(Admiral)", PVP · comisión · neto) e ha detto: quelle che non stanno su Isla lasciale
+stare, e **tutte contano come pagate con carta**.
+
+- **Su Isla ce ne sono cinque**: Teide National Park, Teide-Icod-Garachico-Masca
+  (`icod-garachico-orotava`), La Gomera, Santa Cruz + Anaga + La Laguna, Tour completo
+  dell'isola (la "Vuelta a la Isla"). Fuori: Full Day Teide + Orotava + Icod, Puerto de
+  la Cruz, l'escursione privata con autista e la funivia (sul Teide National Park il
+  biglietto non è incluso, si compra lì).
+- **I netti stanno solo su Supabase**, come sempre: SQL preparato nella scratchpad
+  (`insert … on conflict … do update`, compagnia vuota = qualunque compagnia), non
+  committato. Sulle tre schede senza prezzo neonato non c'è netto neonato: un
+  ticket con un neonato lì resta "netto neonato mancante".
+- **I ticket già salvati senza netto** lo prendono con lo stesso SQL: il guardiano
+  `fissa_netto` si spegne per l'update e si riaccende subito, perché rimetterebbe la
+  nota "netto mancante" (la protegge come un netto già calcolato). Chi un netto
+  l'aveva già non si tocca.
+- **Sempre card**: `pagamento: "card"` sulle cinque schede e le stesse cinque
+  nell'elenco di `2026-10-09-solo-card.sql`, che si rilancia intero.
+
+Provato su Postgres 16 con lo schema e tutte le modifiche: i ticket già salvati prendono
+la somma giusta dei netti; un adulto in più ricalcola; un ticket nuovo
+in cash diventa card; l'SQL lanciato due volte non fa danni e il guardiano resta acceso.
+`CACHE_NAME` → `isla-v479`.
+
+## 12 ottobre 2026 — Trenino turistico nascosto
+
+Il proprietario: "nascondi il tour con il trenino al momento". La scheda
+`trenino-turistico` resta nel catalogo con la foto e i prezzi, ma `published: false`,
+come il Flyboard: per rimetterla basta tornare a `true`. Resta anche in
+`PICKUP_NESSUNO` (`hotel.js`), così il giorno che torna non mostra fermate sbagliate.
+Schede pubblicate: da 66 a 65. `CACHE_NAME` → `isla-v480`.
+
+## 12 ottobre 2026 — Il cerchio del logo è sempre bianco
+
+Il proprietario: il cerchio dietro il logo deve vedersi bianco "con qualsiasi
+impostazione". `.home-hero-mark` aveva `background: var(--surface)`, che col tema scuro
+del telefono diventa marrone scuro. Ora è `#fff` scritto a mano (non una variabile, che
+di notte si girerebbe) più `forced-color-adjust: none`, che lo tiene bianco anche coi
+colori a contrasto elevato di Windows. Il bordo resta `var(--bg)`, del colore della
+pagina, così il cerchio si stacca dalla foto. Vale nelle sette pagine che hanno il
+logo tondo (sulle schede è quello piccolo nell'angolo). Provato nel browser in chiaro
+e in scuro: bianco su index, escursioni e tour. `CACHE_NAME` → `isla-v481`.
+
+## 12 ottobre 2026 — "Aggiungi alla lista" azzurro
+
+Il proprietario voleva il bottone più evidente. Era `.btn-primary`, nero caldo come
+tutti gli altri bottoni principali, e non si distingueva. Provati arancio, corallo, blu,
+verde e due azzurri; scelto l'**azzurro chiaro con la scritta scura** (opzione B):
+- il colore è `--wave-blue-light`, l'azzurro dell'anello del caricamento: nessun colore
+  nuovo nel sito;
+- la scritta è scura, 7,4:1. **Con la bianca sull'azzurro chiaro si scende a 2,2:1**:
+  un azzurro con la scritta bianca deve essere scuro (`oklch(0.55 0.12 225)`, 4,6:1);
+- colori scritti a mano, non `--text` o `--primary`: col tema scuro si girerebbero.
+  Il bottone è uguale di giorno e di notte;
+- più scuro sotto il mouse (6,2:1) e quando si preme (5,1:1);
+- scartati: il corallo somiglia al rosso degli errori (`--danger`), il verde sembra il
+  bottone di WhatsApp ma il bottone non apre WhatsApp.
+
+La regola è `.btn-primary[data-request-add]`: vale solo per il bottone nella scheda e per
+quello della barra in fondo; gli altri `.btn-primary` restano neri. Provato nel browser
+in chiaro e in scuro, e il tocco apre ancora la finestra. `CACHE_NAME` → `isla-v482`.
+
+## 12 ottobre 2026 — Tutti gli "Aggiungi alla lista" azzurri
+
+Il proprietario: "tutti i pulsanti aggiungi alla lista" di quel colore. Oltre ai due
+della scheda c'erano il pulsante in fondo alla **finestra della richiesta** (scritto due
+volte, `tour.html` ed `escursioni.html`: nell'HTML dice "Continua su WhatsApp", ma
+`open()` in `escursioni.js` lo riscrive sempre in "Aggiungi alla lista") e quello del
+**modulo dei pacchetti** (`pacchetti.js`). Adesso tutti e quattro hanno la classe
+**`.btn-lista`**, e la regola è `.btn-primary.btn-lista` (prima era
+`[data-request-add]`, che i pulsanti delle finestre non hanno). **Un pulsante nuovo che
+aggiunge alla lista prende `btn-lista`.** Resta nero "Continua su WhatsApp" nella
+finestra della lista (`lista.js`): quello manda la richiesta, non aggiunge.
+Provato nel browser in chiaro e in scuro. `CACHE_NAME` → `isla-v483`.
+
+## 12 ottobre 2026 — L'email nella richiesta, obbligatoria
+
+Il proprietario: per certi biglietti (il Siam Park, e "sono molte di più") la compagnia
+chiede l'email del cliente. Deciso: si chiede **a tutti**, su qualsiasi richiesta, ed è
+**obbligatoria**. Niente elenco di schede "che la vogliono": sarebbe stato un campo in
+più da ricordarsi su ogni scheda nuova, e le compagnie che la chiedono sono tante.
+
+- Sta nella **finestra della lista** (`lista.js`), sotto il nome: è l'unico posto da cui
+  parte il messaggio (escursione sola, pacchetto, lista di più voci). La finestra della
+  richiesta in `escursioni.html` / `tour.html` **non è stata toccata**: lì il nome non si
+  chiede, e nemmeno l'email.
+- Nel messaggio WhatsApp è una riga `Email: …` (`wa.email`) prima del codice della
+  richiesta, nei tre messaggi: `whatsappUrl` (escursioni.js), `pacchettoWhatsappUrl`
+  (pacchetti.js) e la lista.
+- **Non va nel database**: `richieste.js` non salva né nome né hotel, e l'email nemmeno.
+  Non si ricorda nel browser.
+- `type="email"` accetta anche `mario@gmail` senza `.com`, l'errore più facile col
+  pollice: il controllo in più (un punto dopo la `@`) è nostro, con il messaggio
+  `req.emailInvalid` nelle tre lingue.
+- Sotto la casella una riga spiega perché la chiediamo (`req.emailHint`): "Molte compagnie
+  mandano il biglietto per email".
+- CSS: le regole di `.lista-dialog input[type="text"]` valgono anche per `type="email"`,
+  altrimenti la casella restava quella grezza del browser.
+
+Provato nel browser (375 px): email sbagliata e vuota bloccano l'invio, quella giusta
+arriva nel messaggio con una voce, con due voci. `CACHE_NAME` → `isla-v484`.
+
+## 13 ottobre 2026 — Gli avvisi sul telefono (notifiche push)
+
+Chiesto dal proprietario il 6 ottobre (il 3 era stata rimandata: serviva il pezzo sul
+server). Decisioni sue:
+- **tre avvisi**: richiesta **confermata**, **annullata**, e un **promemoria**;
+- il promemoria: se l'escursione parte **prima delle 9:00** arriva **la sera prima**
+  (scelte le **20:00**); **dalle 9:00 in poi**, **due ore prima**;
+- il permesso si chiede **all'invio della richiesta**.
+
+**Perché una casella e non una domanda dopo l'invio.** Dopo l'invio la pagina va su
+WhatsApp e non c'è più: non può chiedere niente. Così nella finestra della lista, sopra
+"Continua su WhatsApp", c'è la casella **"Avvisami sul telefono"**, già spuntata. La
+domanda vera la fa il browser al tocco del pulsante (solo la prima volta), poi parte
+WhatsApp. Se il cliente non risponde o dice no, la richiesta parte lo stesso.
+
+**I pezzi:**
+| pezzo | cosa fa |
+|---|---|
+| `richieste.js` (`avvisi…`) | chiede il permesso, prende l'indirizzo del telefono, lo manda con `avvisami()` legato alla **chiave** della richiesta |
+| `supabase/modifiche/2026-10-13-notifiche.sql` | tabelle `push_iscrizioni` e `notifiche_mandate`, `avvisami()`, `notifiche_da_mandare()` (decide **quando**), l'orologio ogni 10 minuti |
+| `supabase/functions/manda-notifiche/` | scrive il testo nelle tre lingue e lo manda (`npm:web-push`) |
+| `sw.js` | mostra l'avviso e, toccandolo, apre `booking.html?richieste=1` |
+| `venditori.js` (`mandaAvvisi`) | dopo Conferma o Annulla chiama subito la funzione, senza aspettare l'orologio |
+| `supabase-config.js` | `VAPID_PUBLIC_KEY`: la chiave **pubblica**; la privata sta **solo** nei Secrets |
+
+**Le cose che si sbagliano:**
+- L'**ora** del promemoria è quella del **ritrovo** messa dall'ufficio confermando; se
+  manca, l'inizio di quella chiesta dal cliente (`"09:00 - 12:00"` → 09:00); se manca
+  anche quella, la sera prima. Le ore sono di Tenerife (`Atlantic/Canary`).
+- Ogni avviso parte **una volta sola**: si segna in `notifiche_mandate` **prima** di
+  mandarlo, e se l'orologio e venditori.html chiamano insieme solo uno riesce a segnarlo.
+- Una richiesta confermata tardi (conferma e promemoria dovuti insieme) riceve **solo la
+  conferma**: il promemoria si segna come fatto. Due avvisi di fila sembravano un errore.
+- `avvisami()` **non controlla che la richiesta esista già**: richiesta e iscrizione
+  partono nello stesso istante mentre la pagina se ne va, e l'iscrizione può arrivare
+  prima. Un'iscrizione senza richiesta non riceve niente e si toglie dopo due giorni.
+- Accetta solo indirizzi dei servizi veri (Google, Mozilla, Apple, Microsoft): la
+  funzione non deve poter chiamare un sito qualunque.
+- I **titoli** delle escursioni viaggiano con l'iscrizione (`titoli`): il catalogo sta
+  nel sito e la funzione non lo conosce.
+- **iPhone**: gli avvisi esistono solo con l'app sulla schermata Home (iOS 16.4+). In
+  Safari la casella non c'è, e al suo posto una riga dice come installarla.
+- Il ticket di carta **non** riceve avvisi: nasce già confermato e non ha una chiave.
+
+**Provato:**
+- il file SQL su un Postgres 16 vero (lanciato due volte; i promemoria a 19:30,
+  20:00, 08:59 e 09:00 di Tenerife; partenze 07:00, 08:30, 11:00, 21:00, 22:00, senza
+  ora, ora illeggibile, già iniziata, senza iscrizione, di ieri);
+- la funzione in Deno con PostgREST vero davanti e un finto servizio push: 4 avvisi
+  partiti e **decifrati** (italiano e inglese), il telefono che risponde 410 tolto, il
+  secondo giro non manda niente;
+- nel browser (Chromium e iPhone 13 simulato): la casella, il permesso negato, la
+  domanda senza risposta, la casella tolta, la ripresa alla pagina dopo, l'avviso
+  consegnato al service worker come lo consegna Google. Nessun errore.
+- **Non provato**: un telefono vero. Lo deve fare il proprietario dopo aver pubblicato.
+
+`CACHE_NAME` → `isla-v485`.
+
+---
+
+## Talaria Electric Off-Road (13 ottobre 2026)
+
+Scheda nuova `talaria-off-road` in Avventura e motori, dalla pagina del fornitore
+incollata in chat (eBike Adventure Tenerife, moto elettriche Talaria a Guargacho).
+Nessun doppione: quad e buggy si pagano a mezzo e vanno al Teide.
+
+- Tre varianti a persona: pista sterrata 40 minuti 59 €, giro guidato 1 ora 99 €,
+  2 ore 189 €. Prezzi pieni della pagina, nessun barrato.
+- **Deciso da solo:** zona filtro "Los Cristianos e dintorni" (Guargacho è in Arona);
+  `PICKUP_NESSUNO`, perché la pagina dice "How to get here" e non parla di transfer;
+  `nomi: ["eBike Adventure Tenerife"]`, preso dall'indirizzo email del fornitore.
+- **In sospeso:** l'età minima e il prezzo bambini (la pagina non li dice: niente
+  `ages`, niente `priceChild`, il totale con bambini non si fa); gli orari (nel
+  calendario del fornitore: restano le fasce); la foto (esce il riquadro grigio);
+  conferma del ritiro.
+- Non copiati: pagamento con carta al checkout, condizioni del fornitore, listino danni.
+
+`CACHE_NAME` → `isla-v486`.
+
+### Gli avvisi messi in funzione (13 ottobre 2026)
+
+Il proprietario ha pubblicato `manda-notifiche`, i Secrets e il file SQL.
+- **Primo errore**: l'indirizzo della funzione rispondeva "Internal Server Error". Nei
+  Logs: `Vapid public key must be a URL safe Base 64 (without "=")`. Nel Secret
+  `VAPID_PUBLIC_KEY` era finito qualcosa in più (spazio, a capo o virgolette). Rimesso
+  pulito, risponde `{"mandati":0,"iscrizioniTolte":0}`. **Se ricapita, guardare i Logs
+  della funzione**: l'errore lì è scritto in chiaro.
+- L'orologio gira: nei Logs arriva una POST ogni pochi minuti.
+- Su un iPhone con iOS più vecchio di 16.4 la casella "Avvisami" non compare: giusto,
+  lì gli avvisi non esistono. **Deciso dal proprietario di lasciarlo così**: anche la
+  riga "arrivano solo con l'app installata", che su un iPhone vecchio aperto da Safari
+  compare lo stesso (installare non servirebbe), resta com'è. Non si ripropone.
+- Manca ancora la prova su un telefono che li riceve (iPhone 16.4+ o Android).
+
 ## Le richieste WhatsApp arrivano col messaggio, e la conferma parte già riempita (13 ottobre 2026)
 
 Chiesto dal proprietario: confermando una richiesta in `venditori.html` si ricopiavano a
@@ -16717,7 +18115,7 @@ mano ora e meeting point, che il cliente aveva già scritto nel messaggio. Prima
 database entravano solo escursione, data, ora chiesta e persone ("niente nome, hotel,
 note": li leggeva l'ufficio in chat). Da oggi ogni riga porta anche:
 
-- `customer_name` e `request_message` (il messaggio WhatsApp intero col codice, uguale
+- `customer_name` e `request_message` (il messaggio WhatsApp intero col codice e l'email, uguale
   su tutte le righe della stessa richiesta);
 - `hotel` (la colonna c'era già, dei ticket di carta), `pickup_point` e `pickup_time`,
   ricavati con `hotelPunto()` come nel messaggio. "Il tuo hotel" si salva come nome
@@ -16747,4 +18145,4 @@ dei venditori dice "column … does not exist".
 Provato in Chromium: con l'invio a Supabase fermato, due escursioni con l'ABAMA danno
 `pickup_point` "ABAMA Ritz-Carlton, alla sbarra" e `pickup_time` 08:55 sul Teide, niente
 punto sulle balene; in `venditori.html` con righe finte il modulo si riempie (08:55 + la
-sbarra; 10:00; vuoto per la fascia). `CACHE_NAME` a `isla-v429`.
+sbarra; 10:00; vuoto per la fascia). `CACHE_NAME` a `isla-v487`.

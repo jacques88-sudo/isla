@@ -43,6 +43,9 @@ global.eur = n => String(n);
 // funzioni del prezzo, per controllare che ogni pacchetto un prezzo ce l'abbia.
 eval(leggi("pacchetti.js").replace(/^const /gm, "var "));
 
+// Cosa portare: solo dati, si valuta come il catalogo.
+eval(leggi("portare.js").replace(/^const /gm, "var "));
+
 const sorgenteTour = leggi("tour.js");
 const sorgenteI18n = leggi("i18n.js");
 const sorgenteSw = leggi("sw.js");
@@ -454,6 +457,31 @@ function controllaGruppiFiltro(t) {
     });
 }
 
+// I gruppi delle varianti (`options.groups`). La pagina mette i bottoni dentro
+// i gruppi, e la finestra della richiesta ritrova la variante scelta **per
+// posizione** fra i bottoni: se le varianti di un gruppo non stanno in fila,
+// o i gruppi non sono nell'ordine di `groups`, il cliente sceglie un giro e
+// nel messaggio ne arriva un altro. Senza errori da nessuna parte.
+function controllaGruppiVarianti(t) {
+  const opz = t.options;
+  if (!opz || !Array.isArray(opz.groups)) return;
+  const chiavi = opz.groups.map(g => g.key);
+  if (new Set(chiavi).size !== chiavi.length) errore(t.id, "options.groups: una chiave e' scritta due volte.");
+  const scelte = opz.choices || [];
+  scelte.forEach(c => {
+    if (!chiavi.includes(c.group)) {
+      errore(t.id, `la variante "${tf(c.label)}" non ha un gruppo valido (group: "${c.group}"): in pagina non si vedrebbe.`);
+    }
+  });
+  const ordine = scelte.map(c => chiavi.indexOf(c.group));
+  if (ordine.some((g, i) => i && g < ordine[i - 1])) {
+    errore(t.id, "options.choices: le varianti devono stare in fila per gruppo, nell'ordine di options.groups.");
+  }
+  chiavi.forEach(k => {
+    if (!scelte.some(c => c.group === k)) avviso(t.id, `options.groups: il gruppo "${k}" e' vuoto.`);
+  });
+}
+
 // ─── 9. Nessun id ripetuto ─────────────────────────────────────────────────
 function controllaIdUnici() {
   const visti = new Map();
@@ -480,6 +508,68 @@ function controllaNomi() {
       if (altra && altra !== t.id) errore(t.id, `il nome "${n}" sta anche su "${altra}": deve stare su una scheda sola.`);
       else if (altra) avviso(t.id, `il nome "${n}" e' scritto due volte.`);
       visti.set(chiave, t.id);
+    });
+  });
+
+  // I nomi dentro una variante: la compagnia che fa proprio quella. Devono
+  // stare anche sulla scheda, se no nel menu "Compagnia" non ci sono; e lo
+  // stesso nome su due varianti non direbbe quale scegliere.
+  ESPLORA_CATALOG.forEach(t => {
+    const scelte = (t.options && t.options.choices) || [];
+    const sullaScheda = (t.nomi || []).map(n => n.trim().toLowerCase());
+    const giaVisti = new Map();
+    scelte.forEach(c => {
+      if (c.nomi === undefined) return;
+      const variante = (c.label && (c.label.it || c.label)) || "?";
+      if (!Array.isArray(c.nomi) || !c.nomi.every(n => typeof n === "string" && n.trim())) {
+        errore(t.id, `variante "${variante}": nomi deve essere un elenco di nomi.`);
+        return;
+      }
+      c.nomi.forEach(n => {
+        const chiave = n.trim().toLowerCase();
+        if (!sullaScheda.includes(chiave)) errore(t.id, `variante "${variante}": il nome "${n}" deve stare anche nei nomi della scheda.`);
+        if (giaVisti.has(chiave)) errore(t.id, `il nome "${n}" sta su due varianti ("${giaVisti.get(chiave)}" e "${variante}").`);
+        giaVisti.set(chiave, variante);
+      });
+    });
+  });
+}
+
+// `pagamento: "card"`: le schede che contano sempre come pagate con carta. Lo
+// stesso elenco sta nel database (supabase/modifiche/2026-10-09-solo-card.sql):
+// se i due non sono uguali, il modulo dice una cosa e il foglio un'altra.
+function controllaPagamento() {
+  const nelCatalogo = [];
+  ESPLORA_CATALOG.forEach(t => {
+    if (t.pagamento === undefined) return;
+    if (t.pagamento !== "card") errore(t.id, 'pagamento puo\' essere solo "card".');
+    else nelCatalogo.push(t.id);
+  });
+  const file = "supabase/modifiche/2026-10-09-solo-card.sql";
+  const elenco = leggi(file).match(/excursion_id in \(([^)]*)\)/);
+  if (!elenco) { errore(file, "non trovo l'elenco \"excursion_id in (...)\"."); return; }
+  const nelDatabase = elenco[1].match(/'[^']+'/g).map(x => x.slice(1, -1));
+  nelCatalogo.filter(id => !nelDatabase.includes(id)).forEach(id =>
+    errore(id, `ha pagamento: "card" ma non sta nell'elenco di ${file}.`));
+  nelDatabase.filter(id => !nelCatalogo.includes(id)).forEach(id =>
+    errore(id, `sta nell'elenco di ${file} ma nel catalogo non ha pagamento: "card".`));
+}
+
+// Cosa portare (portare.js): ogni id deve essere una scheda vera, una scheda
+// sta in un gruppo solo, e ogni voce c'e' in tutte e tre le lingue. Un id
+// scritto male farebbe sparire il riquadro senza dirlo a nessuno.
+function controllaPortare() {
+  const visti = {};
+  COSE_DA_PORTARE.forEach(g => {
+    const dove = "portare.js · " + g.gruppo;
+    if (!g.cose || !g.cose.length) errore(dove, "il gruppo non ha voci.");
+    (g.cose || []).forEach(c => LINGUE.forEach(l => {
+      if (!c[l]) errore(dove, `una voce non ha la lingua "${l}".`);
+    }));
+    g.schede.forEach(id => {
+      if (!ESPLORA_CATALOG.some(x => x.id === id)) errore(dove, `la scheda "${id}" non esiste nel catalogo.`);
+      if (visti[id]) errore(dove, `la scheda "${id}" sta anche nel gruppo "${visti[id]}".`);
+      visti[id] = g.gruppo;
     });
   });
 }
@@ -810,14 +900,16 @@ function controllaPacchetti() {
 // ─── Esecuzione ────────────────────────────────────────────────────────────
 const CONTROLLI = [controllaBase, controllaEta, controllaPrezzi, controllaMezzi,
                    controllaGiorni, controllaOrari, controllaIncluse, controllaFoto,
-                   controllaTraduzioni];
+                   controllaTraduzioni, controllaGruppiVarianti];
 
 console.log("\nControllo del catalogo Isla\n");
 ESPLORA_CATALOG.forEach(t => CONTROLLI.forEach(c => c(t)));
 controllaIdUnici();
 controllaNomi();
+controllaPagamento();
 controllaRaccomandate();
 controllaSelezioni();
+controllaPortare();
 controllaI18n();
 controllaPacchetti();
 controllaServiceWorker();

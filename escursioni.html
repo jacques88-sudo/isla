@@ -191,7 +191,8 @@
       <button type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.myBookings">Le mie prenotazioni</button>
       <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
       <a href="./pacchetti.html" data-menu-link data-i18n="menu.packages">Pacchetti</a>
-      <a href="./index.html#secret" data-menu-link data-i18n="menu.secret">Posti segreti</a>
+      <a href="./mappa.html" data-menu-link data-i18n="menu.map">Scopri Tenerife</a>
+      <a href="./mappa.html?cat=segreto" data-menu-link data-i18n="menu.secret">Posti segreti</a>
       <a href="./index.html#about" data-menu-link data-i18n="menu.about">Chi siamo</a>
     </nav>
     <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link data-i18n="menu.cta">Prenota ora</a>
@@ -308,7 +309,7 @@
            che e' quello che tiene in piedi il `position: sticky`. -->
       <div class="request-foot">
         <p class="request-total" data-request-total hidden></p>
-        <button class="btn btn-primary btn-block request-submit" type="submit" data-i18n="req.submit">Continua su WhatsApp</button>
+        <button class="btn btn-primary btn-lista btn-block request-submit" type="submit" data-i18n="req.submit">Continua su WhatsApp</button>
       </div>
 
       <p class="hint" data-i18n-html="req.hint">Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.</p>
@@ -355,7 +356,7 @@
     </div>
     <p class="footer-legal">
       <span data-i18n-html="footer.operator">Isla è un servizio di <strong>Admiral Travel Agencia de Viajes SL</strong></span> · CIF B38506754<br />
-      C. Francisco Andrade Fumero, 38660 Playa de las Américas, Santa Cruz de Tenerife · <a href="tel:+34662908073">+34 662 908 073</a> · <a href="./privacy.html" data-i18n="footer.privacy">Privacy</a>
+      C. Francisco Andrade Fumero, 38660 Playa de las Américas, Santa Cruz de Tenerife · <a href="tel:+34662908073">+34 662 908 073</a> · <a href="./privacy.html" data-i18n="footer.privacy">Privacy</a> · <a href="./termini.html" data-i18n="footer.terms">Termini di vendita</a>
     </p>
     <p class="footer-copy" data-i18n="footer.copy">© Isla · Escursioni a Tenerife</p>
   </footer>
@@ -364,6 +365,8 @@
   <script src="./esplora-catalog.js"></script>
   <script src="./hotel.js"></script>
   <script src="./escursioni.js"></script>
+  <!-- la lista deve saper disegnare un pacchetto -->
+  <script src="./pacchetti.js"></script>
   <script src="./supabase-config.js"></script>
   <script src="./richieste.js"></script>
   <script src="./lista.js"></script>

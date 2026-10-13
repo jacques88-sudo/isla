@@ -92,6 +92,31 @@ const I18N = {
   "wa.rentItem":        { it: "Ciao Isla! Vorrei noleggiare: {mezzo}. Dal … al …", en: "Hi Isla! I'd like to rent: {mezzo}. From … to …", es: "¡Hola Isla! Quisiera alquilar: {mezzo}. Del … al …" },
 
   // ── pagina noleggio (noleggio.html) ─────────────────────────────────────
+  "meta.map.title":     { it: "Scopri Tenerife · Isla", en: "Discover Tenerife · Isla", es: "Descubre Tenerife · Isla" },
+  "meta.map.desc":      { it: "La mappa di Tenerife di Isla: spiagge, punti panoramici, posti segreti e cose da vedere, con la strada per arrivarci.", en: "Isla's map of Tenerife: beaches, viewpoints, secret spots and must-sees, with directions to get there.", es: "El mapa de Tenerife de Isla: playas, miradores, lugares secretos e imprescindibles, con la ruta para llegar." },
+  "map.eyebrow":        { it: "La mappa", en: "The map", es: "El mapa" },
+  "map.title":          { it: "Scopri Tenerife", en: "Discover Tenerife", es: "Descubre Tenerife" },
+  "map.intro":          { it: "Spiagge, panorami, posti segreti e cose da vedere. Scegli una categoria sotto la mappa e tocca un punto per leggere cos'è e farti portare lì.", en: "Beaches, viewpoints, secret spots and must-sees. Pick a category below the map and tap a spot to read about it and get directions.", es: "Playas, miradores, lugares secretos e imprescindibles. Elige una categoría debajo del mapa y toca un punto para leer qué es y cómo llegar." },
+  "map.aria":           { it: "Mappa di Tenerife", en: "Map of Tenerife", es: "Mapa de Tenerife" },
+  "map.cat.beach":      { it: "Spiagge", en: "Beaches", es: "Playas" },
+  "map.cat.view":       { it: "Panorami", en: "Viewpoints", es: "Miradores" },
+  "map.cat.secret":     { it: "Posti segreti", en: "Secret spots", es: "Lugares secretos" },
+  "map.cat.sight":      { it: "Da vedere", en: "Must-see", es: "Imprescindibles" },
+  "map.cat.food":       { it: "Ristoranti", en: "Restaurants", es: "Restaurantes" },
+  "map.go":             { it: "Portami qui", en: "Take me there", es: "Llévame aquí" },
+  "map.photoBy":        { it: "Foto:", en: "Photo:", es: "Foto:" },
+  "map.stato.chiusa":   { it: "Chiusa", en: "Closed", es: "Cerrada" },
+  "map.stato.regolamentata": { it: "Con prenotazione", en: "Booking needed", es: "Con reserva" },
+  "map.tipo.scenografica": { it: "Da foto", en: "Picture-perfect", es: "De postal" },
+  "map.tipo.comoda":    { it: "Comoda", en: "Easy", es: "Cómoda" },
+  "map.tipo.selvaggia": { it: "Selvaggia", en: "Wild", es: "Salvaje" },
+  "map.sabbia.dorata":  { it: "Sabbia dorata", en: "Golden sand", es: "Arena dorada" },
+  "map.sabbia.chiara":  { it: "Sabbia chiara", en: "Light sand", es: "Arena clara" },
+  "map.sabbia.scura":   { it: "Sabbia scura", en: "Dark sand", es: "Arena oscura" },
+  "map.sabbia.nera":    { it: "Sabbia nera", en: "Black sand", es: "Arena negra" },
+  "map.sabbia.ciottoli": { it: "Ciottoli", en: "Pebbles", es: "Callaos" },
+  "map.beachNote":      { it: "Le spiagge del nord e le calette selvagge hanno onde e correnti forti. Guarda la bandiera e i cartelli sul posto: con mare mosso o divieto, niente bagno.", en: "North-coast beaches and wild coves have strong waves and currents. Check the flag and the signs on site: no swimming in rough sea or where it is banned.", es: "Las playas del norte y las calas salvajes tienen olas y corrientes fuertes. Mira la bandera y los carteles: con mar agitado o prohibición, no te bañes." },
+  "map.example":        { it: "esempio", en: "example", es: "ejemplo" },
   "rent.eyebrow":       { it: "Tenerife su ruote", en: "Tenerife on wheels", es: "Tenerife sobre ruedas" },
   "rent.title":         { it: "Noleggio", en: "Rentals", es: "Alquiler" },
   "rent.intro":         { it: "Auto, moto, scooter e bici per girare l'isola coi tuoi tempi. Scegli il mezzo e mandaci la richiesta con le date: ti confermiamo disponibilità e ritiro entro 24 ore.", en: "Cars, motorbikes, scooters and bikes to explore the island at your own pace. Pick a vehicle and send us your request with the dates: we confirm availability and collection within 24 hours.", es: "Coches, motos, scooters y bicis para recorrer la isla a tu ritmo. Elige el vehículo y envíanos la solicitud con las fechas: te confirmamos disponibilidad y recogida en 24 horas." },
@@ -144,16 +169,13 @@ const I18N = {
   "categories.altSuffix": { it: "a Tenerife", en: "in Tenerife", es: "en Tenerife" },
 
   // ── posti segreti ───────────────────────────────────────────────────────
-  "secret.eyebrow":     { it: "Posti segreti", en: "Secret spots", es: "Lugares secretos" },
-  "secret.title":       { it: "Dove non arrivano i pullman", en: "Where the coaches don't go", es: "Donde no llegan los autobuses" },
-  "secret.text":        { it: "Cale di sabbia nera, piscine naturali e punti panoramici che i pullman turistici non raggiungono. Fanno parte di Tenerife tanto quanto le grandi attrazioni.", en: "Black-sand coves, natural pools and viewpoints the tour coaches never reach. They are as much a part of Tenerife as the big attractions.", es: "Calas de arena negra, piscinas naturales y miradores a los que no llegan los autobuses turísticos. Forman parte de Tenerife tanto como las grandes atracciones." },
-  "secret.alt":         { it: "Cala segreta a Tenerife", en: "Secret cove in Tenerife", es: "Cala secreta en Tenerife" },
 
   // ── chi siamo ───────────────────────────────────────────────────────────
   "about.eyebrow":      { it: "Chi siamo", en: "About us", es: "Quiénes somos" },
-  "about.title":        { it: "Isolani, per scelta", en: "Islanders, by choice", es: "Isleños, por elección" },
-  "about.p1":           { it: "Isla nasce dalla voglia di rendere più semplice la vacanza a Tenerife: un unico posto dove trovare subito le informazioni della propria escursione, senza perdersi tra email, PDF e messaggi.", en: "Isla was born to make a holiday in Tenerife simpler: one single place to find your excursion details straight away, without digging through emails, PDFs and messages.", es: "Isla nace de las ganas de hacer más sencillas las vacaciones en Tenerife: un único lugar donde encontrar al instante la información de tu excursión, sin perderte entre correos, PDF y mensajes." },
-  "about.p2":           { it: "Il nostro obiettivo è uno solo: farti godere l'isola, senza pensieri organizzativi.", en: "We have one goal only: to let you enjoy the island, with no organising to worry about.", es: "Nuestro objetivo es uno solo: que disfrutes de la isla, sin preocuparte por la organización." },
+  "about.title":        { it: "Siamo Jack e Francesca", en: "We are Jack and Francesca", es: "Somos Jack y Francesca" },
+  "about.p1":           { it: "Una coppia, due genitori, una famiglia. Da poco la nostra vita si è arricchita con l'arrivo della nostra bambina, il nostro piccolo grande motivo per guardare avanti e costruire qualcosa di nostro.", en: "A couple, two parents, a family. Our life has recently grown richer with the arrival of our baby girl, our little big reason to look ahead and build something of our own.", es: "Una pareja, dos padres, una familia. Hace poco nuestra vida se ha llenado con la llegada de nuestra niña, nuestro pequeño gran motivo para mirar hacia delante y construir algo nuestro." },
+  "about.p2":           { it: "Dal 2018 lavoriamo nel mondo delle escursioni a Tenerife. In questi anni abbiamo imparato che le vacanze più belle nascono dai consigli giusti, dati da persone di cui ti fidi. Da qui nasce Isla.", en: "Since 2018 we have worked in the world of excursions in Tenerife. Over these years we have learned that the best holidays come from the right advice, given by people you trust. That is how Isla was born.", es: "Desde 2018 trabajamos en el mundo de las excursiones en Tenerife. En estos años hemos aprendido que las mejores vacaciones nacen de los consejos adecuados, dados por personas en las que confías. Así nace Isla." },
+  "about.p3":           { it: "Isla è la vostra guida per vivere Tenerife davvero: escursioni, attività e spettacoli serali in un'unica app, sempre a portata di mano. Niente ricerche infinite: scegliete, chiedeteci e pensate solo a godervi la vacanza.", en: "Isla is your guide to truly living Tenerife: excursions, activities and evening shows in one app, always at hand. No endless searching: choose, ask us and just think about enjoying your holiday.", es: "Isla es vuestra guía para vivir Tenerife de verdad: excursiones, actividades y espectáculos nocturnos en una sola app, siempre a mano. Nada de búsquedas interminables: elegid, preguntadnos y pensad solo en disfrutar de las vacaciones." },
   "about.alt":          { it: "Il team di Isla a Tenerife", en: "The Isla team in Tenerife", es: "El equipo de Isla en Tenerife" },
 
   // ── FAQ ─────────────────────────────────────────────────────────────────
@@ -168,7 +190,14 @@ const I18N = {
   "faq.q4":             { it: "Come si paga?", en: "How do I pay?", es: "¿Cómo se paga?" },
   "faq.a4":             { it: "Al momento della conferma ti indichiamo come saldare. Non ti viene chiesto nulla al momento della richiesta.", en: "When we confirm, we tell you how to pay. Nothing is asked of you when you send the request.", es: "En el momento de la confirmación te indicamos cómo pagar. No se te pide nada al enviar la solicitud." },
   "faq.q5":             { it: "Posso annullare?", en: "Can I cancel?", es: "¿Puedo cancelar?" },
-  "faq.a5":             { it: "Scrivici su WhatsApp il prima possibile: ti diciamo subito cosa è previsto per quell'escursione.", en: "Message us on WhatsApp as soon as you can: we'll tell you right away what applies to that excursion.", es: "Escríbenos por WhatsApp cuanto antes: te decimos enseguida qué condiciones tiene esa excursión." },
+  // Politica di cancellazione decisa dal proprietario il 6 ottobre 2026 e
+  // corretta lo stesso giorno: fino a 24 ore prima si annulla gratis oppure si
+  // sposta la data (una volta sola, se c'e' posto); meno di 24 ore prima non si
+  // annulla e non si sposta piu'. Vale anche per charter e noleggi.
+  // Come le 24 ore di req.hint, e' la regola di Isla: non si cambia dopo aver
+  // letto quella di un fornitore. I giorni entro cui si rimborsa non sono
+  // ancora decisi, per questo il testo non li dice.
+  "faq.a5":             { it: "Sì: fino a 24 ore prima dell'escursione puoi annullare gratis oppure spostarla a un'altra data, una volta sola e se c'è posto. Basta un messaggio su WhatsApp, e conta l'ora del messaggio. Meno di 24 ore prima, o se non ti presenti, non si può più annullare né spostare, e il prezzo non si rimborsa. Vale anche per i charter privati e i noleggi. Se invece ad annullare è l'operatore, per il maltempo, il mare mosso o troppo pochi partecipanti, scegli tu: un'altra data o il rimborso completo. Il rimborso arriva con lo stesso mezzo con cui hai pagato.", en: "Yes: up to 24 hours before the excursion you can cancel free of charge or move it to another date, once only and if there is space. Just send us a WhatsApp message, and the time of the message is what counts. Less than 24 hours before, or if you don't show up, it can no longer be cancelled or moved, and the price is not refunded. This also applies to private charters and rentals. If it's the operator who cancels, because of bad weather, rough sea or too few participants, you choose: another date or a full refund. Refunds are made the same way you paid.", es: "Sí: hasta 24 horas antes de la excursión puedes cancelar gratis o cambiarla a otra fecha, una sola vez y si hay plazas. Basta un mensaje por WhatsApp, y cuenta la hora del mensaje. Con menos de 24 horas, o si no te presentas, ya no se puede cancelar ni cambiar, y el precio no se reembolsa. Vale también para los chárter privados y los alquileres. Si quien cancela es el operador, por mal tiempo, mar agitado o pocos participantes, eliges tú: otra fecha o el reembolso completo. El reembolso se hace con el mismo medio con el que pagaste." },
   "faq.q6":             { it: "Funziona anche senza connessione?", en: "Does it work without a connection?", es: "¿Funciona sin conexión?" },
   "faq.a6":             { it: "Sì. Isla è un'app installabile: una volta aperta la prima volta, le informazioni restano disponibili anche offline, utile quando sei in giro per l'isola.", en: "Yes. Isla is an installable app: once you've opened it the first time, the information stays available offline — handy while you're out around the island.", es: "Sí. Isla es una app instalable: una vez abierta la primera vez, la información sigue disponible sin conexión, útil cuando estás recorriendo la isla." },
 
@@ -179,6 +208,7 @@ const I18N = {
   "menu.install":       { it: "Installa l'app", en: "Install the app", es: "Instalar la app" },
   "menu.excursions":    { it: "Escursioni", en: "Excursions", es: "Excursiones" },
   "menu.packages":      { it: "Pacchetti", en: "Packages", es: "Paquetes" },
+  "menu.map":           { it: "Scopri Tenerife", en: "Discover Tenerife", es: "Descubre Tenerife" },
   "menu.secret":        { it: "Posti segreti", en: "Secret spots", es: "Lugares secretos" },
   "menu.about":         { it: "Chi siamo", en: "About us", es: "Quiénes somos" },
   "menu.cta":           { it: "Prenota ora", en: "Book now", es: "Reservar" },
@@ -197,6 +227,9 @@ const I18N = {
   "footer.findCode":    { it: "Cerca il tuo codice", en: "Find your code", es: "Busca tu código" },
   "footer.operator":    { it: "Isla è un servizio di <strong>Admiral Travel Agencia de Viajes SL</strong>", en: "Isla is a service of <strong>Admiral Travel Agencia de Viajes SL</strong>", es: "Isla es un servicio de <strong>Admiral Travel Agencia de Viajes SL</strong>" },
   "footer.privacy":     { it: "Privacy", en: "Privacy", es: "Privacidad" },
+  "footer.terms":       { it: "Termini di vendita", en: "Terms of sale", es: "Condiciones de venta" },
+  "terms.title":        { it: "Termini di vendita · Isla", en: "Terms of sale · Isla", es: "Condiciones de venta · Isla" },
+  "terms.desc":         { it: "Come si richiede, si paga, si annulla e si sposta un'escursione con Isla.", en: "How to request, pay for, cancel and change an excursion with Isla.", es: "Cómo se solicita, se paga, se cancela y se cambia una excursión con Isla." },
   "privacy.title":      { it: "Privacy · Isla", en: "Privacy · Isla", es: "Privacidad · Isla" },
   "privacy.desc":       { it: "Come Isla e Admiral Travel trattano i tuoi dati.", en: "How Isla and Admiral Travel handle your data.", es: "Cómo tratan tus datos Isla y Admiral Travel." },
   "footer.copy":        { it: "© Isla · Escursioni a Tenerife", en: "© Isla · Tenerife excursions", es: "© Isla · Excursiones en Tenerife" },
@@ -243,6 +276,7 @@ const I18N = {
   // Ripiego per la riga di `activityDuration` quando la scheda non scrive il
   // suo `activityLabel`. Generica apposta: la parola giusta ("Tempo di
   // cammino", "Tempo in acqua") la sa solo la scheda.
+  "detail.chosen":      { it: "Scelto: {v}", en: "Selected: {v}", es: "Elegido: {v}" },
   "detail.activity":    { it: "Durata dell'attività", en: "Activity time", es: "Duración de la actividad" },
   "detail.price":       { it: "Prezzo", en: "Price", es: "Precio" },
   "detail.offer":       { it: "Offerta", en: "Offer", es: "Oferta" },
@@ -288,6 +322,9 @@ const I18N = {
   "lista.remove":       { it: "Togli dalla lista", en: "Remove from the list", es: "Quitar de la lista" },
   "lista.clear":        { it: "Svuota la lista", en: "Empty the list", es: "Vaciar la lista" },
   "lista.full":         { it: "Nella lista ci stanno al massimo {n} escursioni. Mandaci questa richiesta e poi ne inizi un'altra.", en: "The list holds at most {n} excursions. Send this request and then start another one.", es: "En la lista caben como máximo {n} excursiones. Envíanos esta solicitud y luego empiezas otra." },
+  "lista.avvisi":       { it: "Avvisami sul telefono", en: "Notify me on my phone", es: "Avísame en el móvil" },
+  "lista.avvisiNota":   { it: "Quando l'ufficio conferma o annulla, e prima dell'escursione.", en: "When the office confirms or cancels, and before the excursion.", es: "Cuando la oficina confirme o cancele, y antes de la excursión." },
+  "lista.avvisiIos":    { it: "Sull'iPhone gli avvisi arrivano solo con l'app installata: Condividi → «Aggiungi alla schermata Home».", en: "On iPhone, notifications only arrive with the app installed: Share → “Add to Home Screen”.", es: "En el iPhone, los avisos solo llegan con la app instalada: Compartir → «Añadir a pantalla de inicio»." },
   "lista.hint":         { it: "Parte un solo messaggio con tutte le escursioni della lista.", en: "One single message goes out with every excursion in the list.", es: "Se envía un solo mensaje con todas las excursiones de la lista." },
 
   // ── i pacchetti ─────────────────────────────────────────────────────────
@@ -385,6 +422,10 @@ const I18N = {
   "req.title":          { it: "Richiedi disponibilità", en: "Check availability", es: "Consultar disponibilidad" },
   "req.name":           { it: "Il tuo nome", en: "Your name", es: "Tu nombre" },
   "req.namePlaceholder":{ it: "Nome e cognome", en: "First and last name", es: "Nombre y apellidos" },
+  "req.email":          { it: "La tua email", en: "Your email", es: "Tu email" },
+  "req.emailPlaceholder":{ it: "nome@esempio.com", en: "name@example.com", es: "nombre@ejemplo.com" },
+  "req.emailHint":      { it: "Molte compagnie mandano il biglietto per email.", en: "Many operators send the ticket by email.", es: "Muchas compañías envían la entrada por email." },
+  "req.emailInvalid":   { it: "Controlla l'email: manca qualcosa dopo la @ (per esempio .com).", en: "Check your email: something is missing after the @ (for example .com).", es: "Revisa el email: falta algo después de la @ (por ejemplo .com)." },
   "req.date":           { it: "Quando vorresti andare", en: "When would you like to go", es: "Cuándo quieres ir" },
   "req.time":           { it: "A che ora", en: "What time", es: "A qué hora" },
   "req.timeAny":        { it: "Da concordare", en: "To be agreed", es: "Por concretar" },
@@ -413,7 +454,6 @@ const I18N = {
   "day.sat":            { it: "Sab", en: "Sat", es: "Sáb" },
   "req.people":         { it: "Quante persone", en: "How many people", es: "Cuántas personas" },
   "req.total":          { it: "Totale", en: "Total", es: "Total" },
-  "req.totalNote":      { it: "Totale indicativo: te lo confermiamo noi su WhatsApp.", en: "Estimated total: we confirm it on WhatsApp.", es: "Total orientativo: te lo confirmamos por WhatsApp." },
   "req.adults":         { it: "Adulti", en: "Adults", es: "Adultos" },
   "req.kids":           { it: "Bambini", en: "Children", es: "Niños" },
   "req.babies":         { it: "Neonati", en: "Infants", es: "Bebés" },
@@ -480,13 +520,14 @@ const I18N = {
   "wa.notes":           { it: "Note", en: "Notes", es: "Notas" },
   "wa.transfer":        { it: "Transfer", en: "Transfer", es: "Traslado" },
   "wa.transferSiam":    { it: "Transfer Siam Park", en: "Siam Park transfer", es: "Traslado Siam Park" },
-  "wa.total":           { it: "Totale indicativo", en: "Estimated total", es: "Total orientativo" },
+  "wa.total":           { it: "Totale", en: "Total", es: "Total" },
+  "wa.email":           { it: "Email: {email}", en: "Email: {email}", es: "Email: {email}" },
   "wa.code":            { it: "Codice richiesta: {code}", en: "Request code: {code}", es: "Código de solicitud: {code}" },
   "wa.introList":       { it: "Ciao Isla! Sono {name}, vorrei richiedere disponibilità per {n} escursioni:", en: "Hi Isla! I'm {name}, I'd like to check availability for {n} excursions:", es: "¡Hola Isla! Soy {name}, quisiera consultar disponibilidad para {n} excursiones:" },
   "wa.fromDay":         { it: "Dal giorno", en: "From", es: "Desde el día" },
   "wa.introPack":       { it: "Ciao Isla! Sono {name}, vorrei richiedere il pacchetto «{pack}»:", en: "Hi Isla! I'm {name}, I'd like to request the «{pack}» package:", es: "¡Hola Isla! Soy {name}, quisiera solicitar el paquete «{pack}»:" },
   "wa.introDays":       { it: "Ciao Isla! Sono {name}, vorrei richiedere l'itinerario «{pack}», {n} giorni:", en: "Hi Isla! I'm {name}, I'd like to request the «{pack}» itinerary, {n} days:", es: "¡Hola Isla! Soy {name}, quisiera solicitar el itinerario «{pack}», {n} días:" },
-  "wa.totalPartial":    { it: "Totale indicativo (solo le escursioni con il prezzo)", en: "Estimated total (priced excursions only)", es: "Total orientativo (solo las excursiones con precio)" },
+  "wa.totalPartial":    { it: "Totale (solo le escursioni con il prezzo)", en: "Total (priced excursions only)", es: "Total (solo las excursiones con precio)" },
   "wa.yes":             { it: "sì", en: "yes", es: "sí" },
   "wa.no":              { it: "no", en: "no", es: "no" },
   "wa.adult":           { it: "adulto", en: "adult", es: "adulto" },

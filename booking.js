@@ -287,6 +287,18 @@ function cardTicket(b, passata) {
       </div>`;
   const nota = STATI[status].nota && !passata
     ? `<p class="ticket-state-note">${esc(t(STATI[status].nota))}</p>` : "";
+  // Cosa portare (portare.js): solo su una conferma ancora davanti. Prima
+  // della conferma e' presto, dopo la data non serve piu'.
+  const cose = confermata && !passata && tour && typeof coseDaPortare === "function"
+    ? coseDaPortare(tour.id) : null;
+  const portare = cose ? `
+          <div class="info-field" style="grid-column:1/-1">
+            ${ICONS.bag}
+            <div>
+              <h3>${t("booking.bring")}</h3>
+              <ul>${cose.map(c => `<li>${esc(tf(c))}</li>`).join("")}</ul>
+            </div>
+          </div>` : "";
   const desiderata = !confermata && b.wanted_time ? `<div class="info-field">
             ${ICONS.clock}
             <div>
@@ -325,6 +337,7 @@ function cardTicket(b, passata) {
               <p>${esc(soldi)}</p>
             </div>
           </div>` : ""}
+          ${portare}
         </div>
         ${tour ? `<a class="map-link" href="./tour.html?id=${encodeURIComponent(tour.id)}">${t("booking.seeTour")} →</a>` : ""}
       </div>

@@ -276,13 +276,38 @@
       </div>
     </section>
 
-    <section class="secret" id="secret">
-      <img class="secret-bg" src="./assets/Secret-cove.jpg" data-i18n-alt="secret.alt" alt="Cala segreta a Tenerife" loading="lazy" width="1400" height="900" />
-      <div class="secret-fade" aria-hidden="true"></div>
-      <div class="wrap secret-content">
-        <span class="eyebrow" data-i18n="secret.eyebrow">Posti segreti</span>
-        <h2 data-i18n="secret.title">Dove non arrivano i pullman</h2>
-        <p data-i18n="secret.text">Cale di sabbia nera, piscine naturali e punti panoramici che i pullman turistici non raggiungono. Fanno parte di Tenerife tanto quanto le grandi attrazioni.</p>
+    <!-- LA MAPPA: quattro card basse, una per categoria, al posto della vecchia
+         sezione "Dove non arrivano i pullman" (proprietario, 10 ottobre 2026).
+         Ognuna apre la mappa con la sua categoria accesa (mappa.html?cat=...).
+         Le foto: tre da Wikimedia (La Tejita e Charco de la Laja CC0; il Mirador
+         Pico del Ingles CC BY-SA, con l'autore scritto sulla card) e una gia'
+         del sito (Garachico). L'immagine ha
+         alt vuoto: il nome della card lo dice gia'. L'id "secret" resta per i
+         vecchi link alla home. -->
+    <section class="categories map-cats" id="secret">
+      <div class="wrap">
+        <span class="eyebrow" data-i18n="map.eyebrow">La mappa</span>
+        <h2 data-i18n="map.title">Scopri Tenerife</h2>
+        <ul class="cat-grid">
+          <li class="cat-card cat-card--half">
+            <a href="./mappa.html?cat=spiaggia" class="cat-link"><img src="./assets/mappa/playa-de-la-tejita-1.jpg" alt="" loading="lazy" width="720" height="480" />
+            <span class="cat-label" data-i18n="map.cat.beach">Spiagge</span></a>
+          </li>
+          <li class="cat-card cat-card--half">
+            <a href="./mappa.html?cat=panorama" class="cat-link"><img src="./assets/mappa/mirador-pico-del-ingles-2.jpg" alt="" loading="lazy" width="720" height="480" />
+            <span class="cat-label" data-i18n="map.cat.view">Panorami</span>
+            <!-- Foto CC BY-SA 4.0: la licenza chiede l'autore accanto alla foto. -->
+            <span class="cat-credit">Foto: Mentxuwiki · CC BY-SA 4.0</span></a>
+          </li>
+          <li class="cat-card cat-card--half">
+            <a href="./mappa.html?cat=segreto" class="cat-link"><img src="./assets/mappa/charco-de-la-laja-1.jpg" alt="" loading="lazy" width="720" height="480" />
+            <span class="cat-label" data-i18n="map.cat.secret">Posti segreti</span></a>
+          </li>
+          <li class="cat-card cat-card--half">
+            <a href="./mappa.html?cat=interesse" class="cat-link"><img src="./assets/icod-garachico-orotava.jpg" alt="" loading="lazy" width="720" height="480" />
+            <span class="cat-label" data-i18n="map.cat.sight">Da vedere</span></a>
+          </li>
+        </ul>
       </div>
     </section>
 
@@ -291,9 +316,10 @@
         <img src="./assets/About-team.jpg" data-i18n-alt="about.alt" alt="Il team di Isla a Tenerife" loading="lazy" width="1200" height="1100" />
         <div>
           <span class="eyebrow" data-i18n="about.eyebrow">Chi siamo</span>
-          <h2 data-i18n="about.title">Isolani, per scelta</h2>
-          <p data-i18n="about.p1">Isla nasce dalla voglia di rendere più semplice la vacanza a Tenerife: un unico posto dove trovare subito le informazioni della propria escursione, senza perdersi tra email, PDF e messaggi.</p>
-          <p data-i18n="about.p2">Il nostro obiettivo è uno solo: farti godere l'isola, senza pensieri organizzativi.</p>
+          <h2 data-i18n="about.title">Siamo Jack e Francesca</h2>
+          <p data-i18n="about.p1">Una coppia, due genitori, una famiglia. Da poco la nostra vita si è arricchita con l'arrivo della nostra bambina, il nostro piccolo grande motivo per guardare avanti e costruire qualcosa di nostro.</p>
+          <p data-i18n="about.p2">Dal 2018 lavoriamo nel mondo delle escursioni a Tenerife. In questi anni abbiamo imparato che le vacanze più belle nascono dai consigli giusti, dati da persone di cui ti fidi. Da qui nasce Isla.</p>
+          <p data-i18n="about.p3">Isla è la vostra guida per vivere Tenerife davvero: escursioni, attività e spettacoli serali in un'unica app, sempre a portata di mano. Niente ricerche infinite: scegliete, chiedeteci e pensate solo a godervi la vacanza.</p>
         </div>
       </div>
     </section>
@@ -321,7 +347,7 @@
           </details>
           <details class="faq-item">
             <summary data-i18n="faq.q5">Posso annullare?</summary>
-            <p data-i18n="faq.a5">Scrivici su WhatsApp il prima possibile: ti diciamo subito cosa è previsto per quell'escursione.</p>
+            <p data-i18n="faq.a5">Sì: fino a 24 ore prima dell'escursione puoi annullare gratis oppure spostarla a un'altra data, una volta sola e se c'è posto. Basta un messaggio su WhatsApp, e conta l'ora del messaggio. Meno di 24 ore prima, o se non ti presenti, non si può più annullare né spostare, e il prezzo non si rimborsa. Vale anche per i charter privati e i noleggi. Se invece ad annullare è l'operatore, per il maltempo, il mare mosso o troppo pochi partecipanti, scegli tu: un'altra data o il rimborso completo. Il rimborso arriva con lo stesso mezzo con cui hai pagato.</p>
           </details>
           <details class="faq-item">
             <summary data-i18n="faq.q6">Funziona anche senza connessione?</summary>
@@ -352,7 +378,8 @@
       <button type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.myBookings">Le mie prenotazioni</button>
       <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
       <a href="./pacchetti.html" data-menu-link data-i18n="menu.packages">Pacchetti</a>
-      <a href="#secret" data-menu-link data-i18n="menu.secret">Posti segreti</a>
+      <a href="./mappa.html" data-menu-link data-i18n="menu.map">Scopri Tenerife</a>
+      <a href="./mappa.html?cat=segreto" data-menu-link data-i18n="menu.secret">Posti segreti</a>
       <a href="#about" data-menu-link data-i18n="menu.about">Chi siamo</a>
     </nav>
     <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link data-i18n="menu.cta">Prenota ora</a>
@@ -397,7 +424,7 @@
     </div>
     <p class="footer-legal">
       <span data-i18n-html="footer.operator">Isla è un servizio di <strong>Admiral Travel Agencia de Viajes SL</strong></span> · CIF B38506754<br />
-      C. Francisco Andrade Fumero, 38660 Playa de las Américas, Santa Cruz de Tenerife · <a href="tel:+34662908073">+34 662 908 073</a> · <a href="./privacy.html" data-i18n="footer.privacy">Privacy</a>
+      C. Francisco Andrade Fumero, 38660 Playa de las Américas, Santa Cruz de Tenerife · <a href="tel:+34662908073">+34 662 908 073</a> · <a href="./privacy.html" data-i18n="footer.privacy">Privacy</a> · <a href="./termini.html" data-i18n="footer.terms">Termini di vendita</a>
     </p>
     <p class="footer-copy" data-i18n="footer.copy">© Isla · Escursioni a Tenerife</p>
   </footer>
@@ -405,6 +432,8 @@
   <script src="./i18n.js"></script>
   <script src="./esplora-catalog.js"></script>
   <script src="./escursioni.js"></script>
+  <!-- la lista deve saper disegnare un pacchetto -->
+  <script src="./pacchetti.js"></script>
   <script src="./supabase-config.js"></script>
   <script src="./richieste.js"></script>
   <script src="./lista.js"></script>

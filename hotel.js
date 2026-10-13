@@ -611,6 +611,10 @@ const PICKUP_IN_HOTEL = [
   // Per gli hotel che non stanno in HOTELS non si promette niente lo stesso,
   // ci pensa hotelPunto(): la scheda dice di scriverlo nelle note.
   "mustang-experience",
+  // I giri in bici di Cycling in Tenerife: le pagine del fornitore scrivono
+  // "pick-up and drop-off at your hotel" (6 ottobre 2026). Stava in
+  // PICKUP_NESSUNO finche' non lo sapevamo.
+  "bici",
 
   // --- Tutte le schede che offrono il transfer (proprietario, 24 settembre 2026) ---
   //
@@ -718,11 +722,13 @@ const PICKUP_NESSUNO = [
   "opera-60-charter",
   "skyline-cruiser-charter",
   // Sport, motori e attivita' con sede propria:
-  "bici",
   "buggy-volcano-4h",
   "helicopter-tours",
   "karting",
   "cavallo",
+  // Talaria a Guargacho: la pagina del fornitore ha "How to get here" e
+  // nessun transfer (13 ottobre 2026). Da confermare col proprietario.
+  "talaria-off-road",
   "fiat-500-water-car",
   "banana-boat",
   "parascending",

@@ -18156,3 +18156,8 @@ venditori, che dall'8 ottobre leggono `bookings` **colonna per colonna** (per te
 fuori i netti). La regola stava già in CLAUDE.md e nel file del foglio, ed è stata
 dimenticata lo stesso: il file ora ha la riga `grant select (…) on public.bookings to
 authenticated`. **Ogni `add column` su `bookings` va seguito dal suo `grant select`.**
+
+**Talaria, gli orari (13 ottobre 2026, proprietario):** partenze alle 10:00, 13:00,
+16:00 e 18:00, le stesse per tutte e tre le durate: `times` sulla scheda, non sulle
+varianti. Provato nella finestra della richiesta: le quattro ore su ogni variante,
+"Da concordare" sparito. `CACHE_NAME` → `isla-v488`.

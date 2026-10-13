@@ -18176,3 +18176,12 @@ ROUTES" del fornitore), in galleria il logo `talaria-off-road-2.jpg` (arrivato g
 tagliato in alto e in basso). Gruppo "Talaria" in `portare.js` e lo stesso sulla pagina
 Notion "cose da portare": documento, patente se c'è, scarpe chiuse e pantaloni lunghi,
 acqua e crema solare. `CACHE_NAME` → `isla-v490`.
+
+**Pacchetti, niente ripetizioni fra i riquadri (13 ottobre 2026, proprietario):** il
+riquadro "Pacchetti" della home (`pacchetti.html` senza filtro) non mostra più i
+pacchetti di "In famiglia" (`famiglia: true`) e di "Perfetto per 2" (`tema`); gli
+itinerari a giorni già non c'erano. Ogni pacchetto sta in una vetrina sola: restano 7.
+Il link "indietro" della pagina del pacchetto porta alla vetrina in cui il pacchetto
+sta (`?famiglia=1`, `?tema=per-due`), altrimenti si tornava in una pagina dove non
+c'era. I piedi delle vetrine filtrate dicono "Vedi gli altri pacchetti"
+(`pack.seeOthers`) invece di "tutti". `CACHE_NAME` → `isla-v491`.

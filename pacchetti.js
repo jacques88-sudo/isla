@@ -117,8 +117,10 @@
 //   `famiglia: true` marca i pacchetti fatti per chi viaggia coi bambini. Non
 //   e' un'etichetta grafica: cambia tre cose.
 //     1. Si vedono da soli su `pacchetti.html?famiglia=1`, che e' dove porta il
-//        riquadro "In famiglia" della home. Nella pagina di tutti i pacchetti
-//        ci sono lo stesso: un pacchetto di famiglia resta un pacchetto.
+//        riquadro "In famiglia" della home. Nella pagina dei pacchetti senza
+//        filtro (il riquadro "Pacchetti") **non** ci sono: ognuno sta in un
+//        riquadro solo della home, e ritrovarlo in due vetrine sembrava una
+//        ripetizione (proprietario, 13 ottobre 2026).
 //     2. Ogni voce mostra **due** prezzi, adulti e bambini, con la fascia
 //        d'eta' accanto. Su un pacchetto di famiglia il prezzo che conta e'
 //        quello dei bambini, e farlo cercare scheda per scheda non ha senso.
@@ -159,7 +161,8 @@
 //   senza le loro regole sui prezzi dei bambini:
 //     - si vedono da soli su `pacchetti.html?tema=per-due`, dove porta il
 //       riquadro della home;
-//     - restano pacchetti: nella pagina di tutti i pacchetti ci sono lo stesso.
+//     - come quelli di famiglia, non si ripetono nella pagina dei pacchetti
+//       senza filtro (proprietario, 13 ottobre 2026).
 //   I temi possibili stanno in PACCHETTI_TEMI qui sotto, con le chiavi dei
 //   testi della vetrina. Un tema scritto male non da' errore nella pagina —
 //   il pacchetto non esce mai nella sua vetrina — e lo dice `controlla.js`.
@@ -1942,17 +1945,20 @@ function initPacchettiGriglia() {
     //
     // Chi entra da dove:
     //   ?giorni=...  solo gli itinerari, tutti o quelli di una durata
-    //   ?tema=...    solo i pacchetti di quel tema, che restano pacchetti
-    //   ?famiglia=1  solo i pacchetti di famiglia, che restano pacchetti
-    //   niente       tutti i pacchetti, compresi quelli di famiglia
-    // Gli itinerari a giorni stanno **solo** nella loro vetrina: il perche' e'
-    // in testa al file, sotto "GLI ITINERARI A GIORNI".
+    //   ?tema=...    solo i pacchetti di quel tema
+    //   ?famiglia=1  solo i pacchetti di famiglia
+    //   niente       i pacchetti che non stanno in nessun'altra vetrina
+    // Ogni pacchetto sta in una vetrina sola, quella del suo riquadro della
+    // home: il riquadro "Pacchetti" non ripete quelli di "In famiglia",
+    // "Perfetto per 2" e "3/5/7 Days" (proprietario, 13 ottobre 2026).
     grid.innerHTML = PACCHETTI
       .filter(p => vistaGiorni
         ? (pacchettoGiorni(p) && (!quanti || pacchettoGiorni(p) === quanti))
         : tema
           ? (!pacchettoGiorni(p) && p.tema === tema)
-          : (!pacchettoGiorni(p) && (!soloFamiglia || pacchettoDiFamiglia(p))))
+          : soloFamiglia
+            ? (!pacchettoGiorni(p) && pacchettoDiFamiglia(p))
+            : (!pacchettoGiorni(p) && !pacchettoDiFamiglia(p) && !p.tema))
       .filter(p => p.voci.every(v => pacchettoVoceTour(v)))
       .map(p => pacchettoTileHTML(p))
       .join("");
@@ -2061,9 +2067,15 @@ function initPacchetto() {
     const righe = pack.voci
       .map((voce, i) => pacchettoVoceHTML(voce, i + 1, famiglia))
       .join("");
+    // Si torna alla vetrina in cui il pacchetto sta: quella senza filtro non
+    // mostra quelli di famiglia ne' quelli a tema.
     const indietro = giorni
       ? "./pacchetti.html?giorni=" + giorni
-      : "./pacchetti.html";
+      : famiglia
+        ? "./pacchetti.html?famiglia=1"
+        : pack.tema
+          ? "./pacchetti.html?tema=" + encodeURIComponent(pack.tema)
+          : "./pacchetti.html";
 
     contenitore.innerHTML = `
       <article class="pack-detail">

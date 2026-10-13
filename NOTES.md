@@ -18168,3 +18168,11 @@ tutti, niente `priceChild`. Partenze **10, 13 e 16**: le 18:00 messe poco prima 
 state tolte, la pagina del fornitore non le ha (proprietario). Nuove note: patente e
 requisiti, scarpe chiuse, pantaloni lunghi, documento, acqua e crema solare.
 `CACHE_NAME` → `isla-v489`.
+
+**Talaria, foto, ritiro e cosa portare (13 ottobre 2026):** il proprietario conferma che
+**non c'è ritiro** (resta in `PICKUP_NESSUNO`, tolto il "da confermare"). Foto
+principale `talaria-off-road.jpg` (le moto sulla spiaggia, con la scritta "OFF ROAD
+ROUTES" del fornitore), in galleria il logo `talaria-off-road-2.jpg` (arrivato già
+tagliato in alto e in basso). Gruppo "Talaria" in `portare.js` e lo stesso sulla pagina
+Notion "cose da portare": documento, patente se c'è, scarpe chiuse e pantaloni lunghi,
+acqua e crema solare. `CACHE_NAME` → `isla-v490`.

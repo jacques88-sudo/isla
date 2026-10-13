@@ -3124,7 +3124,10 @@ const ESPLORA_CATALOG = [
         es: "No hay recogida en el hotel: a Guargacho se llega por cuenta propia. Antes de la salida el proveedor envía un enlace para hacer el check-in."
       }
     ],
-    image: "",
+    // Le due immagini del proprietario (13 ottobre 2026): le moto sulla
+    // spiaggia di ciottoli e, in galleria, il logo del fornitore.
+    image: "talaria-off-road.jpg",
+    gallery: ["talaria-off-road-2.jpg"],
     published: true
   },
   {

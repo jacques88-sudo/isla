@@ -12,7 +12,7 @@
 //     la funzione le_mie_richieste. Tre stati: da confermare, confermata,
 //     annullata.
 //
-// Anche qui i testi sono nelle tre lingue: stringa sola = uguale ovunque,
+// Anche qui i testi sono nelle quattro lingue: stringa sola = uguale ovunque,
 // oggetto { it, en, es } = tradotto. tf() sceglie la lingua giusta.
 
 const MOCK_BOOKINGS = {
@@ -20,37 +20,40 @@ const MOCK_BOOKINGS = {
     title: {
       it: "Whale & Dolphin Watching in barca a vela",
       en: "Whale & Dolphin Watching by sailing boat",
-      es: "Whale & Dolphin Watching en velero"
+      es: "Whale & Dolphin Watching en velero",
+      fr: "Observation des baleines et des dauphins en voilier"
     },
-    date: { it: "Domani, 09:30", en: "Tomorrow, 09:30", es: "Mañana, 09:30" },
+    date: { it: "Domani, 09:30", en: "Tomorrow, 09:30", es: "Mañana, 09:30", fr: "Demain, 09:30" },
     meetingPoint: "Puerto Colón, Muelle 3 — Costa Adeje",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     bring: [
-      { it: "Costume da bagno", en: "Swimsuit", es: "Bañador" },
-      { it: "Asciugamano", en: "Towel", es: "Toalla" },
-      { it: "Crema solare", en: "Sun cream", es: "Crema solar" },
-      { it: "Documento d'identità", en: "ID document", es: "Documento de identidad" }
+      { it: "Costume da bagno", en: "Swimsuit", es: "Bañador", fr: "Maillot de bain" },
+      { it: "Asciugamano", en: "Towel", es: "Toalla", fr: "Serviette" },
+      { it: "Crema solare", en: "Sun cream", es: "Crema solar", fr: "Crème solaire" },
+      { it: "Documento d'identità", en: "ID document", es: "Documento de identidad", fr: "Pièce d'identité" }
     ],
     notes: {
       it: "Presentati 15 minuti prima dell'orario. Cancellazione gratuita fino a 24 ore prima della partenza.",
       en: "Arrive 15 minutes before the departure time. Free cancellation up to 24 hours before departure.",
-      es: "Preséntate 15 minutos antes de la hora. Cancelación gratuita hasta 24 horas antes de la salida."
+      es: "Preséntate 15 minutos antes de la hora. Cancelación gratuita hasta 24 horas antes de la salida.",
+      fr: "Arrivez 15 minutes avant l'heure de départ. Annulation gratuite jusqu'à 24 heures avant le départ."
     }
   },
   "TEN-7788": {
     title: "Teide Sunset Quad Trip",
-    date: { it: "Oggi, 16:00", en: "Today, 16:00", es: "Hoy, 16:00" },
+    date: { it: "Oggi, 16:00", en: "Today, 16:00", es: "Hoy, 16:00", fr: "Aujourd'hui, 16:00" },
     meetingPoint: "Quad Center, Vilaflor",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     bring: [
-      { it: "Scarpe chiuse", en: "Closed shoes", es: "Zapato cerrado" },
-      { it: "Giacca leggera (di sera fa fresco)", en: "Light jacket (it gets cool in the evening)", es: "Chaqueta ligera (por la noche refresca)" },
-      { it: "Patente di guida", en: "Driving licence", es: "Carné de conducir" }
+      { it: "Scarpe chiuse", en: "Closed shoes", es: "Zapato cerrado", fr: "Chaussures fermées" },
+      { it: "Giacca leggera (di sera fa fresco)", en: "Light jacket (it gets cool in the evening)", es: "Chaqueta ligera (por la noche refresca)", fr: "Veste légère (il fait frais le soir)" },
+      { it: "Patente di guida", en: "Driving licence", es: "Carné de conducir", fr: "Permis de conduire" }
     ],
     notes: {
       it: "Il tour è vietato alle donne in gravidanza. Età minima 18 anni per guidare il quad.",
       en: "The tour is not suitable for pregnant women. Minimum age to drive the quad is 18.",
-      es: "El tour no está permitido a mujeres embarazadas. Edad mínima para conducir el quad: 18 años."
+      es: "El tour no está permitido a mujeres embarazadas. Edad mínima para conducir el quad: 18 años.",
+      fr: "L'excursion ne convient pas aux femmes enceintes. L'âge minimum pour conduire le quad est de 18 ans."
     }
   }
 };
@@ -348,7 +351,7 @@ function renderTicketVeri(rows, code, senzaRete) {
   const oggi = oggiISO();
   const prossime = rows.filter(b => !b.date || b.date >= oggi);
   const passate = rows.filter(b => b.date && b.date < oggi).reverse();
-  const wa = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(t("booking.waText", { code }));
+  const wa = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(perUfficio(() => t("booking.waText", { code })));
 
   document.getElementById("bookingView").innerHTML = `
     ${senzaRete ? `<p class="note-box">${t("booking.offlineSaved")}</p>` : ""}
@@ -400,7 +403,7 @@ function renderRichieste(elenco, senzaRete) {
   const annullate = righe.filter(b => b.date >= oggi && b.status === "cancelled").sort(perData);
   const passate = righe.filter(b => b.date < oggi && b.status === "confirmed").sort(perData).reverse();
   const codici = elenco.map(r => r.code).join(", ");
-  const wa = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(t("booking.waRequests", { code: codici }));
+  const wa = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(perUfficio(() => t("booking.waRequests", { code: codici })));
 
   if (!prossime.length && !annullate.length && !passate.length) {
     renderStato(ICONS.ticket, t("booking.noRequests"), t("booking.noRequestsText"), false);

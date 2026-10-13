@@ -18210,3 +18210,57 @@ schede senza errori e senza scroll orizzontale a 375 px. SQL dei netti provato s
 Postgres 16 con schema e modifiche: i netti dei ticket del foglio tornano uguali, un
 jet ski senza compagnia resta "compagnia non scritta", un bambino su Peter Pan resta
 "netto bambino mancante", lanciato due volte non fa danni. `CACHE_NAME` → `isla-v492`.
+
+## Il francese, quarta lingua (13 ottobre 2026)
+
+Richiesta del proprietario: aggiungere il francese a Isla. Fatto tutto in una volta,
+perché una lingua a metà (menu in francese, schede in inglese) si nota più di una
+lingua che non c'è.
+
+**Come.** Uno script nella scratchpad ha trovato ogni `es: "…"` del sito (i18n,
+catalogo, mappa, pacchetti, "Cosa portare", booking: 1.498 testi, 1.317 diversi) e ci
+ha messo accanto `fr: "…"`, sulla stessa riga negli oggetti scritti in riga, sulla
+riga sotto con lo stesso rientro in quelli a più righe. Le traduzioni sono state
+scritte a mano partendo da inglese e italiano, non copiate da nessun fornitore. Scelte:
+- **"vous"**, non "tu": è il registro normale di un sito che vende;
+- il prezzo resta **"€49"** con l'euro davanti, come nelle altre tre lingue (in
+  francese si scriverebbe "49 €"), perché molti prezzi li scrive il codice
+  (`"€" + eur(n)`) e i due modi mescolati sulla stessa pagina sembrerebbero errori;
+  `eur()` mette già la virgola dei centesimi per tutto quello che non è inglese;
+- gli orari restano **"10:30"**, come sui bottoni della richiesta;
+- titoli e nomi propri restano uguali, come sempre.
+
+**Il resto:** `I18N_LANGS`, `LINGUE` in `controlla.js` (che quindi pretende il
+francese su ogni testo nuovo), la bandiera in tutte le pagine che hanno le bandiere
+(`booking.html` e `offline.html` non le hanno), `fr-FR` per le date in
+`dataLeggibile()`, il prefisso `+33` proposto a chi legge in francese, gli articoli
+francesi di `privacy.html` e `termini.html` (più la riga CSS che li nasconde nelle
+altre lingue).
+
+**Il messaggio all'ufficio resta in italiano** (proprietario, stesso giorno): chi usa
+il sito in francese scrive all'ufficio in italiano. `perUfficio(scrivi)` in `i18n.js`
+mette per un momento la lingua a `it`, fa scrivere il testo e la rimette com'era.
+Avvolge **tutto** il messaggio, non solo le etichette, perché date (`formatDate`),
+persone, titoli e varianti passano anche loro da `t()` e `tf()`: messaggio
+dell'escursione (`whatsappTesto`), della lista (`listaWhatsappTesto`), del pacchetto
+(`pacchettoWhatsappTesto`), noleggio, assistente e le due domande sul ticket in
+`booking.js`. Lo stesso testo va anche nel database (`request_message`): l'ufficio lo
+rilegge in italiano anche in `venditori.html`.
+
+**Quattro bandiere su uno schermo stretto.** Con i bottoni da 54 px la riga usciva di
+9 px da privacy e termini a 320 px, e nel menu laterale la bandiera francese era
+tagliata a metà. Sotto i 375 px i bottoni sono da 44 px e nel menu la riga va sotto la
+scritta "Lingua". Misurato a 320, 360, 375 e 390 px: niente scroll orizzontale, niente
+bandiere fuori.
+
+**Da fare su Supabase** (il proprietario): incollare
+`supabase/modifiche/2026-10-13-francese.sql` nel SQL Editor e ripubblicare la funzione
+`manda-notifiche` (ha i testi degli avvisi in francese). Prima di farlo, chi usa il sito
+in francese si vede rifiutare l'iscrizione agli avvisi; il telefono la riprova da solo,
+quindi dopo non si perde niente. Ordine indifferente.
+
+Provato nel browser con `locale: "fr-FR"`: le undici pagine si aprono in francese
+(titolo, `lang`), nessun errore in console; il clic sulla bandiera nel menu cambia
+lingua e la ricorda; la finestra della richiesta è tutta in francese; il messaggio
+dell'escursione e quello del pacchetto escono in italiano e il sito resta in francese.
+`node controlla.js` passa. `CACHE_NAME` → `isla-v493`.

@@ -247,7 +247,8 @@ const PACCHETTI = [
     title: {
       it: "Tenerife Trio",
       en: "Tenerife Trio",
-      es: "Tenerife Trio"
+      es: "Tenerife Trio",
+      fr: "Tenerife Trio"
     },
     image: "teide-national-park.jpg",
     sconto: 10,
@@ -262,7 +263,8 @@ const PACCHETTI = [
     desc: {
       it: "La montagna, il mare e il parco: tre giorni che coprono l'isola senza ripetersi. Il Teide in pullman con la guida, una giornata in barca da Las Galletas e il Siam Park.",
       en: "The mountain, the sea and the park: three days that cover the island without repeating themselves. Teide by coach with a guide, a day on the water from Las Galletas and Siam Park.",
-      es: "La montaña, el mar y el parque: tres días que recorren la isla sin repetirse. El Teide en autocar con guía, un día en barco desde Las Galletas y el Siam Park."
+      es: "La montaña, el mar y el parque: tres días que recorren la isla sin repetirse. El Teide en autocar con guía, un día en barco desde Las Galletas y el Siam Park.",
+      fr: "La montagne, la mer et le parc : trois jours qui couvrent l'île sans se répéter. Le Teide en car avec un guide, une journée sur l'eau depuis Las Galletas et le Siam Park."
     }
   },
 
@@ -275,7 +277,8 @@ const PACCHETTI = [
     title: {
       it: "Tenerife Trio, versione buggy",
       en: "Tenerife Trio, buggy version",
-      es: "Tenerife Trio, versión buggy"
+      es: "Tenerife Trio, versión buggy",
+      fr: "Tenerife Trio, version buggy"
     },
     image: "buggy-volcano-4h.jpg",
     sconto: 10,
@@ -292,7 +295,8 @@ const PACCHETTI = [
     desc: {
       it: "Lo stesso trio, ma al volante: il buggy al posto del pullman, la giornata in barca da Las Galletas e il Siam Park. Il percorso del buggy lo scegliamo insieme quando rispondiamo.",
       en: "The same trio, but behind the wheel: a buggy instead of the coach, the day on the water from Las Galletas and Siam Park. We agree on the buggy route when we reply.",
-      es: "El mismo trío, pero al volante: el buggy en lugar del autocar, el día en barco desde Las Galletas y el Siam Park. El recorrido del buggy lo elegimos juntos al responder."
+      es: "El mismo trío, pero al volante: el buggy en lugar del autocar, el día en barco desde Las Galletas y el Siam Park. El recorrido del buggy lo elegimos juntos al responder.",
+      fr: "Le même trio, mais au volant : un buggy au lieu du car, la journée sur l'eau depuis Las Galletas et le Siam Park. Nous fixons le parcours en buggy en vous répondant."
     }
   },
 
@@ -308,7 +312,8 @@ const PACCHETTI = [
     title: {
       it: "Terra, mare e stelle",
       en: "Land, sea and stars",
-      es: "Tierra, mar y estrellas"
+      es: "Tierra, mar y estrellas",
+      fr: "Terre, mer et étoiles"
     },
     image: "teide-by-night.jpg",
     sconto: 10,
@@ -324,7 +329,8 @@ const PACCHETTI = [
     desc: {
       it: "Tre giorni, tre modi di stare sull'isola: lo sterrato nel sud al volante del buggy, la costa vista dal mare con la barca da Las Galletas e la notte in quota col telescopio, in gruppo piccolo. Al Teide si sale una volta sola, e al buio.",
       en: "Three days, three ways to be on the island: the dirt tracks in the south at the wheel of a buggy, the coast seen from the water on the boat from Las Galletas, and the night up high with the telescope, in a small group. You go up to Teide once, and in the dark.",
-      es: "Tres días, tres formas de vivir la isla: las pistas de tierra del sur al volante del buggy, la costa vista desde el mar en el barco de Las Galletas y la noche en altura con el telescopio, en grupo pequeño. Al Teide se sube una sola vez, y de noche."
+      es: "Tres días, tres formas de vivir la isla: las pistas de tierra del sur al volante del buggy, la costa vista desde el mar en el barco de Las Galletas y la noche en altura con el telescopio, en grupo pequeño. Al Teide se sube una sola vez, y de noche.",
+      fr: "Trois jours, trois façons de vivre l'île : les pistes du sud au volant d'un buggy, la côte vue de la mer sur le bateau de Las Galletas, et la nuit en altitude avec le télescope, en petit groupe. On monte au Teide une seule fois, et de nuit."
     }
   },
 
@@ -337,7 +343,8 @@ const PACCHETTI = [
     title: {
       it: "Adrenalina",
       en: "Adrenaline",
-      es: "Adrenalina"
+      es: "Adrenalina",
+      fr: "Adrénaline"
     },
     image: "parascending.jpg",
     sconto: 10,
@@ -353,7 +360,8 @@ const PACCHETTI = [
     desc: {
       it: "Terra, acqua e aria in tre giorni: il buggy sul percorso lungo, un'ora di safari in moto d'acqua e il volo col paracadute trainato dalla barca.",
       en: "Land, water and air in three days: the buggy on the long route, an hour of jet ski safari and the parachute flight towed by the boat.",
-      es: "Tierra, agua y aire en tres días: el buggy en el recorrido largo, una hora de safari en moto de agua y el vuelo en paracaídas remolcado por la lancha."
+      es: "Tierra, agua y aire en tres días: el buggy en el recorrido largo, una hora de safari en moto de agua y el vuelo en paracaídas remolcado por la lancha.",
+      fr: "Terre, eau et air en trois jours : le buggy sur le grand parcours, une heure de safari en jet-ski et le vol en parachute tracté par le bateau."
     }
   },
 
@@ -365,7 +373,8 @@ const PACCHETTI = [
     title: {
       it: "Mare a tutto gas",
       en: "Sea, full throttle",
-      es: "Mar a todo gas"
+      es: "Mar a todo gas",
+      fr: "La mer, plein gaz"
     },
     image: "jet-ski-safari-1-2h.jpg",
     sconto: 10,
@@ -377,7 +386,8 @@ const PACCHETTI = [
     desc: {
       it: "Il mare con calma e il mare di corsa: la giornata in barca da Las Galletas, un'ora di moto d'acqua lungo la costa e dieci minuti di banana con le risate.",
       en: "The sea slow and the sea fast: the day on the water from Las Galletas, an hour on a jet ski along the coast and ten minutes on the banana boat.",
-      es: "El mar con calma y el mar a toda velocidad: el día en barco desde Las Galletas, una hora de moto de agua por la costa y diez minutos de banana entre risas."
+      es: "El mar con calma y el mar a toda velocidad: el día en barco desde Las Galletas, una hora de moto de agua por la costa y diez minutos de banana entre risas.",
+      fr: "La mer lente et la mer rapide : la journée sur l'eau depuis Las Galletas, une heure de jet-ski le long de la côte et dix minutes sur la bouée banane."
     }
   },
 
@@ -386,7 +396,8 @@ const PACCHETTI = [
     title: {
       it: "Cielo e mare",
       en: "Sky and sea",
-      es: "Cielo y mar"
+      es: "Cielo y mar",
+      fr: "Ciel et mer"
     },
     image: "luxury-cruiser-2.jpg",
     sconto: 10,
@@ -402,7 +413,8 @@ const PACCHETTI = [
       // cose che si fanno tardi — e vale per chiunque, non per una coppia.
       it: "Tre appuntamenti lenti, tutti nella seconda metà della giornata: le stelle dal Teide in gruppo piccolo, il pomeriggio in barca da Las Galletas e il flamenco. Niente sveglie presto, niente code.",
       en: "Three unhurried outings, all in the second half of the day: the stars from Teide in a small group, an afternoon on the water from Las Galletas and a flamenco show. No early starts, no queues.",
-      es: "Tres citas tranquilas, todas en la segunda mitad del día: las estrellas desde el Teide en grupo pequeño, la tarde en barco desde Las Galletas y el flamenco. Sin madrugones y sin colas."
+      es: "Tres citas tranquilas, todas en la segunda mitad del día: las estrellas desde el Teide en grupo pequeño, la tarde en barco desde Las Galletas y el flamenco. Sin madrugones y sin colas.",
+      fr: "Trois sorties sans se presser, toutes dans la deuxième moitié de la journée : les étoiles du Teide en petit groupe, un après-midi sur l'eau depuis Las Galletas et un spectacle de flamenco. Pas de réveil aux aurores, pas de files d'attente."
     }
   },
 
@@ -411,7 +423,8 @@ const PACCHETTI = [
     title: {
       it: "Tre sere a Tenerife",
       en: "Three nights in Tenerife",
-      es: "Tres noches en Tenerife"
+      es: "Tres noches en Tenerife",
+      fr: "Trois nuits à Tenerife"
     },
     image: "castillo-san-miguel.jpg",
     sconto: 10,
@@ -436,7 +449,8 @@ const PACCHETTI = [
       // lettere non essere una cena a tavola. Scritto come e'.
       it: "Tre sere fuori: il drag show con la cena, la notte medievale al castello e le stelle dal Teide, con il picnic al tramonto sopra le nuvole. Per chi sta in hotel a mezza pensione e la sera esce.",
       en: "Three evenings out: the drag show with dinner, the medieval night at the castle and the stars from Teide, with a picnic at sunset above the clouds. For anyone on half board who goes out in the evening.",
-      es: "Tres noches fuera: el drag show con cena, la noche medieval en el castillo y las estrellas desde el Teide, con picnic al atardecer por encima de las nubes. Para quien está en media pensión y sale por la noche."
+      es: "Tres noches fuera: el drag show con cena, la noche medieval en el castillo y las estrellas desde el Teide, con picnic al atardecer por encima de las nubes. Para quien está en media pensión y sale por la noche.",
+      fr: "Trois soirées dehors : le spectacle drag avec dîner, la nuit médiévale au château et les étoiles du Teide, avec un pique-nique au coucher du soleil au-dessus des nuages. Pour ceux qui sont en demi-pension et sortent le soir."
     }
   },
 
@@ -454,7 +468,8 @@ const PACCHETTI = [
     title: {
       it: "Al volante, in due",
       en: "Behind the wheel, for two",
-      es: "Al volante, en pareja"
+      es: "Al volante, en pareja",
+      fr: "Au volant, à deux"
     },
     image: "Cat-avventura.jpg",
     sconto: 10,
@@ -468,7 +483,8 @@ const PACCHETTI = [
     desc: {
       it: "Due giorni al volante e uno in mare: la Mustang cabrio su per la strada del Teide fino al tramonto, il buggy in due sugli sterrati del sud, e il catamarano di categoria superiore, con poche persone a bordo e le aree lounge per riposarsi.",
       en: "Two days behind the wheel and one at sea: the Mustang convertible up the Teide road for the sunset, the buggy for two on the dirt tracks of the south, and the upper-class catamaran, with few people on board and lounge areas to unwind.",
-      es: "Dos días al volante y uno en el mar: el Mustang descapotable subiendo por la carretera del Teide hasta el atardecer, el buggy para dos por las pistas del sur, y el catamarán de categoría superior, con poca gente a bordo y zonas lounge para descansar."
+      es: "Dos días al volante y uno en el mar: el Mustang descapotable subiendo por la carretera del Teide hasta el atardecer, el buggy para dos por las pistas del sur, y el catamarán de categoría superior, con poca gente a bordo y zonas lounge para descansar.",
+      fr: "Deux jours au volant et un en mer : la Mustang décapotable sur la route du Teide pour le coucher du soleil, le buggy à deux sur les pistes du sud, et le catamaran haut de gamme, avec peu de monde à bord et des espaces pour se détendre."
     }
   },
 
@@ -479,7 +495,8 @@ const PACCHETTI = [
     title: {
       it: "Vino e stelle",
       en: "Wine and stars",
-      es: "Vino y estrellas"
+      es: "Vino y estrellas",
+      fr: "Vin et étoiles"
     },
     image: "stargazing-vip.jpg",
     sconto: 10,
@@ -493,7 +510,8 @@ const PACCHETTI = [
     desc: {
       it: "Tre giorni lenti in due: la degustazione in una cantina di Vilaflor, in un gruppo di otto al massimo, il tramonto sopra le nuvole e le stelle al telescopio in gruppo piccolo, e tre ore sul motoryacht a cercare delfini, con il bagno in una baia riparata.",
       en: "Three unhurried days for two: a tasting at a winery in Vilaflor, in a group of eight at most, sunset above the clouds and the stars through the telescope in a small group, and three hours on a motor yacht looking for dolphins, with a swim in a sheltered bay.",
-      es: "Tres días tranquilos para dos: la cata en una bodega de Vilaflor, en un grupo de ocho como máximo, el atardecer sobre las nubes y las estrellas al telescopio en grupo pequeño, y tres horas en el yate buscando delfines, con baño en una bahía resguardada."
+      es: "Tres días tranquilos para dos: la cata en una bodega de Vilaflor, en un grupo de ocho como máximo, el atardecer sobre las nubes y las estrellas al telescopio en grupo pequeño, y tres horas en el yate buscando delfines, con baño en una bahía resguardada.",
+      fr: "Trois jours sans se presser, à deux : une dégustation dans un domaine viticole à Vilaflor, en groupe de huit au maximum, le coucher du soleil au-dessus des nuages et les étoiles au télescope en petit groupe, et trois heures sur un yacht à moteur à la recherche des dauphins, avec une baignade dans une baie abritée."
     }
   },
 
@@ -504,7 +522,8 @@ const PACCHETTI = [
     title: {
       it: "Mare, cielo e una sera fuori",
       en: "Sea, sky and a night out",
-      es: "Mar, cielo y una noche fuera"
+      es: "Mar, cielo y una noche fuera",
+      fr: "Mer, ciel et une soirée"
     },
     image: "luxury-catamaran-3.jpg",
     sconto: 10,
@@ -519,7 +538,8 @@ const PACCHETTI = [
     desc: {
       it: "Il catamarano di categoria superiore, con poche persone a bordo e le aree lounge, un volo in elicottero sopra la costa sud, e una sera a cena col cabaret dello Scandal. Per adulti: allo Scandal si entra dai 16 anni.",
       en: "The upper-class catamaran, with few people on board and lounge areas, a helicopter flight over the south coast, and an evening of dinner and cabaret at Scandal. For adults: Scandal is 16+.",
-      es: "El catamarán de categoría superior, con poca gente a bordo y zonas lounge, un vuelo en helicóptero sobre la costa sur, y una noche de cena y cabaret en el Scandal. Para adultos: al Scandal se entra desde los 16 años."
+      es: "El catamarán de categoría superior, con poca gente a bordo y zonas lounge, un vuelo en helicóptero sobre la costa sur, y una noche de cena y cabaret en el Scandal. Para adultos: al Scandal se entra desde los 16 años.",
+      fr: "Le catamaran haut de gamme, avec peu de monde à bord et des espaces de détente, un vol en hélicoptère au-dessus de la côte sud, et une soirée dîner-cabaret au Scandal. Pour adultes : le Scandal est réservé aux plus de 16 ans."
     }
   },
 
@@ -532,7 +552,8 @@ const PACCHETTI = [
     title: {
       it: "Adrenalina in due",
       en: "Adrenaline for two",
-      es: "Adrenalina para dos"
+      es: "Adrenalina para dos",
+      fr: "Adrénaline à deux"
     },
     image: "quad-teide-sunset.jpg",
     sconto: 10,
@@ -548,7 +569,8 @@ const PACCHETTI = [
     desc: {
       it: "Tre giorni in coppia, uno per elemento: un'ora in moto d'acqua lungo la costa sud, in due sulla stessa moto, il quad doppio su fino al Teide per il tramonto, e il volo in parapendio con il pilota sopra Adeje.",
       en: "Three days as a couple, one for each element: an hour on a jet ski along the south coast, two on the same machine, the double quad up to Teide for the sunset, and the paragliding flight with a pilot over Adeje.",
-      es: "Tres días en pareja, uno por elemento: una hora en moto de agua por la costa sur, los dos en la misma moto, el quad doble subiendo al Teide para el atardecer, y el vuelo en parapente con el piloto sobre Adeje."
+      es: "Tres días en pareja, uno por elemento: una hora en moto de agua por la costa sur, los dos en la misma moto, el quad doble subiendo al Teide para el atardecer, y el vuelo en parapente con el piloto sobre Adeje.",
+      fr: "Trois jours en couple, un pour chaque élément : une heure de jet-ski le long de la côte sud, à deux sur le même engin, le quad double jusqu'au Teide pour le coucher du soleil, et le vol en parapente avec un pilote au-dessus d'Adeje."
     }
   },
 
@@ -565,7 +587,8 @@ const PACCHETTI = [
     title: {
       it: "Il mare dei bambini",
       en: "The sea for kids",
-      es: "El mar de los niños"
+      es: "El mar de los niños",
+      fr: "La mer pour les enfants"
     },
     image: "submarine-safari.jpg",
     sconto: 10,
@@ -578,7 +601,8 @@ const PACCHETTI = [
     desc: {
       it: "Il mare guardato da sopra, da sotto e a tutta velocità: due ore sulla goletta di legno da Los Cristianos a cercare delfini e globicefali, un'ora nel sottomarino giallo dove ogni posto ha il suo oblò, e una giornata di scivoli all'Aqualand.",
       en: "The sea seen from above, from below and at full speed: two hours on the wooden schooner out of Los Cristianos looking for dolphins and pilot whales, an hour in the yellow submarine where every seat has its own porthole, and a day of slides at Aqualand.",
-      es: "El mar visto desde arriba, desde abajo y a toda velocidad: dos horas en la goleta de madera desde Los Cristianos buscando delfines y calderones, una hora en el submarino amarillo donde cada asiento tiene su ojo de buey, y un día de toboganes en Aqualand."
+      es: "El mar visto desde arriba, desde abajo y a toda velocidad: dos horas en la goleta de madera desde Los Cristianos buscando delfines y calderones, una hora en el submarino amarillo donde cada asiento tiene su ojo de buey, y un día de toboganes en Aqualand.",
+      fr: "La mer vue d'en haut, d'en bas et à toute vitesse : deux heures sur la goélette en bois au départ de Los Cristianos à la recherche des dauphins et des globicéphales, une heure dans le sous-marin jaune où chaque siège a son hublot, et une journée de toboggans à Aqualand."
     }
   },
 
@@ -589,7 +613,8 @@ const PACCHETTI = [
     title: {
       it: "Animali da vicino",
       en: "Animals up close",
-      es: "Animales de cerca"
+      es: "Animales de cerca",
+      fr: "Les animaux de près"
     },
     image: "loro-parque.jpg",
     sconto: 10,
@@ -602,7 +627,8 @@ const PACCHETTI = [
     desc: {
       it: "Gli animali dove vivono e gli animali da toccare: tre ore in barca a vela da Puerto Colón in cerca di balene e delfini, una giornata al Loro Parque e il Monkey Park, il piccolo zoo dove si entra nei recinti e si dà da mangiare a lemuri, iguane e pappagalli.",
       en: "Animals where they live and animals you can touch: three hours on a sailing boat from Puerto Colón looking for whales and dolphins, a day at Loro Parque and Monkey Park, the little zoo where you walk into the enclosures and feed lemurs, iguanas and parrots.",
-      es: "Los animales donde viven y los animales que se tocan: tres horas en velero desde Puerto Colón buscando ballenas y delfines, un día en el Loro Parque y el Monkey Park, el pequeño zoo donde se entra en los recintos y se da de comer a lémures, iguanas y loros."
+      es: "Los animales donde viven y los animales que se tocan: tres horas en velero desde Puerto Colón buscando ballenas y delfines, un día en el Loro Parque y el Monkey Park, el pequeño zoo donde se entra en los recintos y se da de comer a lémures, iguanas y loros.",
+      fr: "Des animaux là où ils vivent et des animaux qu'on peut toucher : trois heures en voilier depuis Puerto Colón à la recherche des baleines et des dauphins, une journée au Loro Parque et le Monkey Park, le petit zoo où l'on entre dans les enclos pour nourrir lémuriens, iguanes et perroquets."
     }
   },
 
@@ -613,7 +639,8 @@ const PACCHETTI = [
     title: {
       it: "Piccoli esploratori",
       en: "Little explorers",
-      es: "Pequeños exploradores"
+      es: "Pequeños exploradores",
+      fr: "Petits explorateurs"
     },
     image: "tuk-tuk.jpg",
     sconto: 10,
@@ -626,7 +653,8 @@ const PACCHETTI = [
     desc: {
       it: "Tre uscite tranquille, per chi ha bambini piccoli: un'ora in tuk tuk elettrico sulla costa di Adeje con la guida che racconta, tre ore in barca a vela da Puerto Colón in cerca di balene e delfini, con la sosta per il bagno, e una giornata al Jungle Park fra i rapaci in volo libero e le scimmie.",
       en: "Three unhurried outings, for families with small children: an hour in an electric tuk tuk along the Adeje coast with a guide, three hours under sail from Puerto Colón looking for whales and dolphins, with a stop for a swim, and a day at Jungle Park among free-flying birds of prey and monkeys.",
-      es: "Tres salidas tranquilas, para quien viaja con niños pequeños: una hora en tuk tuk eléctrico por la costa de Adeje con un guía que cuenta, tres horas en velero desde Puerto Colón buscando ballenas y delfines, con parada de baño, y un día en el Jungle Park entre rapaces en vuelo libre y monos."
+      es: "Tres salidas tranquilas, para quien viaja con niños pequeños: una hora en tuk tuk eléctrico por la costa de Adeje con un guía que cuenta, tres horas en velero desde Puerto Colón buscando ballenas y delfines, con parada de baño, y un día en el Jungle Park entre rapaces en vuelo libre y monos.",
+      fr: "Trois sorties sans se presser, pour les familles avec de jeunes enfants : une heure en tuk-tuk électrique le long de la côte d'Adeje avec un guide, trois heures à la voile depuis Puerto Colón à la recherche des baleines et des dauphins, avec un arrêt baignade, et une journée au Jungle Park parmi les rapaces en vol libre et les singes."
     }
   },
 
@@ -640,7 +668,8 @@ const PACCHETTI = [
     title: {
       it: "Per i ragazzi grandi",
       en: "For the big kids",
-      es: "Para los mayores"
+      es: "Para los mayores",
+      fr: "Pour les grands"
     },
     image: "karting.jpg",
     sconto: 10,
@@ -653,7 +682,8 @@ const PACCHETTI = [
     desc: {
       it: "Per chi in famiglia non è più un bambino piccolo: dieci minuti di kart sulla pista di Fañabé, una corsa sul gonfiabile trainato dal motoscafo davanti a Puerto Colón e una giornata al Siam Park. Sul kart dei ragazzi si sale dai 7 anni, sul gonfiabile dai 10.",
       en: "For the ones in the family who aren't little any more: ten minutes of karting on the Fañabé track, a ride on the inflatable towed by the speedboat off Puerto Colón and a day at Siam Park. The kids' kart starts at 7, the inflatable at 10.",
-      es: "Para quien en la familia ya no es un niño pequeño: diez minutos de kart en el circuito de Fañabé, una vuelta en el hinchable remolcado por la lancha frente a Puerto Colón y un día en el Siam Park. En el kart de los chicos se sube desde los 7 años; en el hinchable, desde los 10."
+      es: "Para quien en la familia ya no es un niño pequeño: diez minutos de kart en el circuito de Fañabé, una vuelta en el hinchable remolcado por la lancha frente a Puerto Colón y un día en el Siam Park. En el kart de los chicos se sube desde los 7 años; en el hinchable, desde los 10.",
+      fr: "Pour ceux de la famille qui ne sont plus tout petits : dix minutes de karting sur la piste de Fañabé, un tour sur la bouée tractée par le hors-bord au large de Puerto Colón et une journée au Siam Park. Le kart enfant commence à 7 ans, la bouée à 10."
     }
   },
 
@@ -665,7 +695,8 @@ const PACCHETTI = [
     title: {
       it: "Stelle in famiglia",
       en: "Stars as a family",
-      es: "Estrellas en familia"
+      es: "Estrellas en familia",
+      fr: "Les étoiles en famille"
     },
     image: "stargazing-group.jpg",
     sconto: 10,
@@ -679,7 +710,8 @@ const PACCHETTI = [
     desc: {
       it: "Una serata grande e due giornate con calma: il tramonto sopra le nuvole col picnic e il telescopio, in gruppo piccolo, poi tre ore in barca da Las Galletas con la sosta per il bagno e una giornata al Siam Park. Dal Teide si torna tardi: il giorno dopo, sveglia con comodo.",
       en: "One big evening and two easy days: sunset above the clouds with a picnic and the telescope, in a small group, then three hours on the water from Las Galletas with a swim stop and a day at Siam Park. You get back from Teide late, so take the next morning slowly.",
-      es: "Una noche grande y dos días con calma: el atardecer por encima de las nubes con picnic y telescopio, en grupo pequeño, luego tres horas en barco desde Las Galletas con parada de baño y un día en el Siam Park. Del Teide se vuelve tarde: al día siguiente, sin madrugar."
+      es: "Una noche grande y dos días con calma: el atardecer por encima de las nubes con picnic y telescopio, en grupo pequeño, luego tres horas en barco desde Las Galletas con parada de baño y un día en el Siam Park. Del Teide se vuelve tarde: al día siguiente, sin madrugar.",
+      fr: "Une grande soirée et deux journées faciles : le coucher du soleil au-dessus des nuages avec pique-nique et télescope, en petit groupe, puis trois heures sur l'eau depuis Las Galletas avec arrêt baignade et une journée au Siam Park. On rentre tard du Teide, alors prenez le lendemain matin tranquillement."
     }
   },
 
@@ -702,7 +734,8 @@ const PACCHETTI = [
     title: {
       it: "Tre giorni a Tenerife",
       en: "Three days in Tenerife",
-      es: "Tres días en Tenerife"
+      es: "Tres días en Tenerife",
+      fr: "Trois jours à Tenerife"
     },
     image: "teide-masca.jpg",
     giorni: 3,
@@ -719,7 +752,8 @@ const PACCHETTI = [
     desc: {
       it: "Un giorno in montagna, uno in mare e uno sulla costa: il Parco Nazionale del Teide in pullman con la guida, tre ore di barca lungo le scogliere del sud con la sosta per il bagno, e l'uscita in kayak da Los Cristianos, con mezz'ora in acqua dove passano le tartarughe. Una escursione al giorno: il resto della giornata resta tuo.",
       en: "One day in the mountains, one at sea and one along the coast: Teide National Park by coach with a guide, three hours on the water along the southern cliffs with a swim stop, and the kayak outing from Los Cristianos, with half an hour in the water where the turtles pass. One excursion a day: the rest of the day stays yours.",
-      es: "Un día en la montaña, uno en el mar y uno en la costa: el Parque Nacional del Teide en autocar con guía, tres horas en barco por los acantilados del sur con parada de baño, y la salida en kayak desde Los Cristianos, con media hora en el agua por donde pasan las tortugas. Una excursión al día: el resto del día sigue siendo tuyo."
+      es: "Un día en la montaña, uno en el mar y uno en la costa: el Parque Nacional del Teide en autocar con guía, tres horas en barco por los acantilados del sur con parada de baño, y la salida en kayak desde Los Cristianos, con media hora en el agua por donde pasan las tortugas. Una excursión al día: el resto del día sigue siendo tuyo.",
+      fr: "Un jour en montagne, un en mer et un le long de la côte : le parc national du Teide en car avec un guide, trois heures sur l'eau le long des falaises du sud avec arrêt baignade, et la sortie en kayak depuis Los Cristianos, avec une demi-heure dans l'eau là où passent les tortues. Une excursion par jour : le reste de la journée est à vous."
     }
   },
 
@@ -728,7 +762,8 @@ const PACCHETTI = [
     title: {
       it: "Tre giorni in famiglia",
       en: "Three days as a family",
-      es: "Tres días en familia"
+      es: "Tres días en familia",
+      fr: "Trois jours en famille"
     },
     image: "peter-pan.jpg",
     giorni: 3,
@@ -746,7 +781,8 @@ const PACCHETTI = [
     desc: {
       it: "Tre giorni misurati sui bambini: due ore sulla goletta di legno da Los Cristianos a cercare delfini e globicefali, una giornata di scivoli all'Aqualand con lo spettacolo dei delfini compreso, e un'ora in tuk tuk elettrico sulla costa di Adeje con la guida che racconta.",
       en: "Three days measured on the children: two hours on the wooden schooner out of Los Cristianos looking for dolphins and pilot whales, a day of slides at Aqualand with the dolphin show included, and an hour in an electric tuk tuk along the Adeje coast with a guide.",
-      es: "Tres días pensados para los niños: dos horas en la goleta de madera desde Los Cristianos buscando delfines y calderones, un día de toboganes en Aqualand con el espectáculo de delfines incluido, y una hora en tuk tuk eléctrico por la costa de Adeje con un guía que cuenta."
+      es: "Tres días pensados para los niños: dos horas en la goleta de madera desde Los Cristianos buscando delfines y calderones, un día de toboganes en Aqualand con el espectáculo de delfines incluido, y una hora en tuk tuk eléctrico por la costa de Adeje con un guía que cuenta.",
+      fr: "Trois jours à la mesure des enfants : deux heures sur la goélette en bois au départ de Los Cristianos à la recherche des dauphins et des globicéphales, une journée de toboggans à Aqualand avec le spectacle des dauphins compris, et une heure en tuk-tuk électrique le long de la côte d'Adeje avec un guide."
     }
   },
 
@@ -755,7 +791,8 @@ const PACCHETTI = [
     title: {
       it: "Cinque giorni a Tenerife",
       en: "Five days in Tenerife",
-      es: "Cinco días en Tenerife"
+      es: "Cinco días en Tenerife",
+      fr: "Cinq jours à Tenerife"
     },
     image: "luxury-cruiser-3.jpg",
     giorni: 5,
@@ -773,7 +810,8 @@ const PACCHETTI = [
     desc: {
       it: "Gli stessi tre giorni, con dentro altri due: il volo col paracadute trainato dalla barca sopra Costa Adeje, una decina di minuti in aria, e una giornata dall'altra parte dell'isola — Santa Cruz, La Laguna Patrimonio UNESCO e il bosco di allori del Parco Rurale di Anaga, in pullman con la guida.",
       en: "The same three days, with two more inside: the parachute flight towed by the boat above Costa Adeje, about ten minutes in the air, and a day on the other side of the island — Santa Cruz, La Laguna (a UNESCO site) and the laurel forest of the Anaga Rural Park, by coach with a guide.",
-      es: "Los mismos tres días, con otros dos dentro: el vuelo en paracaídas remolcado por la lancha sobre Costa Adeje, unos diez minutos en el aire, y un día al otro lado de la isla — Santa Cruz, La Laguna Patrimonio UNESCO y la laurisilva del Parque Rural de Anaga, en autocar con guía."
+      es: "Los mismos tres días, con otros dos dentro: el vuelo en paracaídas remolcado por la lancha sobre Costa Adeje, unos diez minutos en el aire, y un día al otro lado de la isla — Santa Cruz, La Laguna Patrimonio UNESCO y la laurisilva del Parque Rural de Anaga, en autocar con guía.",
+      fr: "Les trois mêmes jours, avec deux de plus : le vol en parachute tracté par le bateau au-dessus de Costa Adeje, une dizaine de minutes en l'air, et une journée de l'autre côté de l'île — Santa Cruz, La Laguna (site UNESCO) et la forêt de lauriers du parc rural d'Anaga, en car avec un guide."
     }
   },
 
@@ -782,7 +820,8 @@ const PACCHETTI = [
     title: {
       it: "Cinque giorni in famiglia",
       en: "Five days as a family",
-      es: "Cinco días en familia"
+      es: "Cinco días en familia",
+      fr: "Cinq jours en famille"
     },
     image: "submarine-safari.jpg",
     giorni: 5,
@@ -801,7 +840,8 @@ const PACCHETTI = [
     desc: {
       it: "Gli stessi tre giorni, con dentro altri due: l'ora nel sottomarino giallo, dove ogni posto ha il suo oblò e si scende fra i 30 e i 60 metri restando all'asciutto, e una giornata intera al Siam Park.",
       en: "The same three days, with two more inside: the hour in the yellow submarine, where every seat has its own porthole and you go down between 30 and 60 metres without getting wet, and a full day at Siam Park.",
-      es: "Los mismos tres días, con otros dos dentro: la hora en el submarino amarillo, donde cada asiento tiene su ojo de buey y se baja entre 30 y 60 metros sin mojarse, y un día entero en el Siam Park."
+      es: "Los mismos tres días, con otros dos dentro: la hora en el submarino amarillo, donde cada asiento tiene su ojo de buey y se baja entre 30 y 60 metros sin mojarse, y un día entero en el Siam Park.",
+      fr: "Les trois mêmes jours, avec deux de plus : l'heure dans le sous-marin jaune, où chaque siège a son hublot et où l'on descend entre 30 et 60 mètres sans se mouiller, et une journée entière au Siam Park."
     }
   },
 
@@ -810,7 +850,8 @@ const PACCHETTI = [
     title: {
       it: "Sette giorni a Tenerife",
       en: "Seven days in Tenerife",
-      es: "Siete días en Tenerife"
+      es: "Siete días en Tenerife",
+      fr: "Sept jours à Tenerife"
     },
     image: "kayak-snorkelling.jpg",
     giorni: 7,
@@ -834,7 +875,8 @@ const PACCHETTI = [
     desc: {
       it: "La settimana intera, una uscita al giorno: il Teide, la barca lungo le scogliere, il kayak, il volo col paracadute e la giornata nel nord-est, più due giorni che ci sono solo qui — la prima lezione di surf, due ore in gruppo con l'istruttore, e il flamenco dal vivo, con cante, chitarra e ballo.",
       en: "The whole week, one outing a day: Teide, the boat along the cliffs, the kayak, the parachute flight and the day in the north-east, plus two days you only get here — a first surf lesson, two hours in a group with the instructor, and live flamenco, with singing, guitar and dance.",
-      es: "La semana entera, una salida al día: el Teide, el barco por los acantilados, el kayak, el vuelo en paracaídas y el día en el noreste, más dos días que solo están aquí — la primera clase de surf, dos horas en grupo con el monitor, y el flamenco en directo, con cante, guitarra y baile."
+      es: "La semana entera, una salida al día: el Teide, el barco por los acantilados, el kayak, el vuelo en paracaídas y el día en el noreste, más dos días que solo están aquí — la primera clase de surf, dos horas en grupo con el monitor, y el flamenco en directo, con cante, guitarra y baile.",
+      fr: "Toute la semaine, une sortie par jour : le Teide, le bateau le long des falaises, le kayak, le vol en parachute et la journée dans le nord-est, plus deux jours qu'on ne trouve qu'ici — un premier cours de surf, deux heures en groupe avec le moniteur, et le flamenco en direct, avec chant, guitare et danse."
     }
   },
 
@@ -843,7 +885,8 @@ const PACCHETTI = [
     title: {
       it: "Sette giorni in famiglia",
       en: "Seven days as a family",
-      es: "Siete días en familia"
+      es: "Siete días en familia",
+      fr: "Sept jours en famille"
     },
     image: "whale-dolphin-3h.jpg",
     giorni: 7,
@@ -864,7 +907,8 @@ const PACCHETTI = [
     desc: {
       it: "La settimana intera, una uscita al giorno: la goletta, l'Aqualand, il tuk tuk, il sottomarino e il Siam Park, più due giorni che ci sono solo qui — il Monkey Park, dove si entra nei recinti a dare da mangiare a lemuri, iguane e pappagalli, e le tre ore in barca a vela da Puerto Colón, che finiscono con la sosta bagno e lo snorkeling.",
       en: "The whole week, one outing a day: the schooner, Aqualand, the tuk tuk, the submarine and Siam Park, plus two days you only get here — Monkey Park, where you walk into the enclosures to feed lemurs, iguanas and parrots, and three hours under sail from Puerto Colón, which end with a swim and a snorkel.",
-      es: "La semana entera, una salida al día: la goleta, Aqualand, el tuk tuk, el submarino y el Siam Park, más dos días que solo están aquí — el Monkey Park, donde se entra en los recintos a dar de comer a lémures, iguanas y loros, y las tres horas en velero desde Puerto Colón, que terminan con parada de baño y snorkel."
+      es: "La semana entera, una salida al día: la goleta, Aqualand, el tuk tuk, el submarino y el Siam Park, más dos días que solo están aquí — el Monkey Park, donde se entra en los recintos a dar de comer a lémures, iguanas y loros, y las tres horas en velero desde Puerto Colón, que terminan con parada de baño y snorkel.",
+      fr: "Toute la semaine, une sortie par jour : la goélette, Aqualand, le tuk-tuk, le sous-marin et le Siam Park, plus deux jours qu'on ne trouve qu'ici — le Monkey Park, où l'on entre dans les enclos pour nourrir lémuriens, iguanes et perroquets, et trois heures à la voile depuis Puerto Colón, qui finissent par une baignade et du snorkeling."
     }
   }
 
@@ -1430,6 +1474,11 @@ function pacchettoRigheRichiesta(pack, req) {
 // Il testo sta a parte dall'indirizzo perche' va anche nel database
 // (richieste.js), e l'ufficio lo rilegge in venditori.html.
 function pacchettoWhatsappTesto(pack, req, codice) {
+  // in italiano se il cliente legge in francese: vedi perUfficio in i18n.js
+  return perUfficio(() => pacchettoWhatsappScrivi(pack, req, codice));
+}
+
+function pacchettoWhatsappScrivi(pack, req, codice) {
   const righe = pacchettoRigheRichiesta(pack, req);
 
   // "il pacchetto «X»" su un itinerario da sette giorni fa arrivare in ufficio
@@ -1799,7 +1848,7 @@ function pacchettoHref(pack) {
 // numero e' la combinazione piu' bassa possibile e in meno persone sale. Dove
 // sono tutti prezzi a persona il numero e' quello e basta, e un "da" lo
 // farebbe sembrare un minimo che puo' crescere. E' la stessa chiave `tour.from`
-// delle schede, non una seconda scritta da tenere allineata in tre lingue.
+// delle schede, non una seconda scritta da tenere allineata in quattro lingue.
 function pacchettoPrezzoHTML(conto) {
   if (!conto) {
     return `<span class="pack-price"><strong>${esc(t("pack.noPrice"))}</strong></span>`;

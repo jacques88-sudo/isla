@@ -401,7 +401,7 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: .22em;
 }
 
-/* Le tre lingue tutte in vista, invece del bottone tondo che apre l'elenco.
+/* Le quattro lingue tutte in vista, invece del bottone tondo che apre l'elenco.
    paintLangButtons() in i18n.js accende quella attiva con .is-active. */
 .lang-row {
   display: inline-flex;
@@ -424,6 +424,14 @@ a { text-decoration: none; color: inherit; }
 .lang-row button.is-active {
   background: var(--primary);
   color: var(--primary-foreground);
+}
+/* Con la quarta bandiera (il francese, 13 ottobre 2026) la riga a 54 px per
+   bottone usciva di 9 px da privacy e termini sui telefoni da 320 px, e dal
+   menu laterale anche di piu'. Sugli schermi stretti i bottoni si stringono
+   e nel menu la riga va sotto la scritta "Lingua". */
+@media (max-width: 374px) {
+  .lang-row button { min-width: 44px; }
+  .more-menu-lang { flex-wrap: wrap; }
 }
 
 /* "sticky" vuol dire: scorre con la pagina finche' arriva in cima, poi si
@@ -1316,7 +1324,8 @@ p.note-box { margin: 0 0 1rem; }
    Si vede solo l'<article> della lingua scelta (il lang di <html>). */
 html:not([lang="it"]) .pp[lang="it"],
 html:not([lang="en"]) .pp[lang="en"],
-html:not([lang="es"]) .pp[lang="es"] { display: none; }
+html:not([lang="es"]) .pp[lang="es"],
+html:not([lang="fr"]) .pp[lang="fr"] { display: none; }
 .privacy-head {
   display: flex;
   align-items: center;

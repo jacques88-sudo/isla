@@ -13,8 +13,8 @@
 //                    gallery: ["nome-2.jpg", "nome-3.jpg"]
 //   priceFrom  → numero in euro, oppure null se il prezzo non è ancora definito.
 //   priceUnit  → facoltativo: si aggiunge dopo il prezzo quando non è "a persona"
-//                ma a ore o a gruppo, es. { it: "/ora", en: "/hr", es: "/h" }
-//                oppure { it: "a barca", en: "per boat", es: "por barco" }.
+//                ma a ore o a gruppo, es. { it: "/ora", en: "/hr", es: "/h", fr: "/h" }
+//                oppure { it: "a barca", en: "per boat", es: "por barco", fr: "par bateau" }.
 //                Quello che inizia con "/" si attacca al prezzo, il resto va
 //                staccato: ci pensa il sito.
 //   units      → facoltativo, e va insieme a priceUnit: dove il prezzo e' del
@@ -24,8 +24,8 @@
 //                quattro amici sono "due doppie e due singole", e un "4 adulti"
 //                accanto sarebbe un secondo numero da far tornare.
 //                    units: {
-//                      label: { it: "Quante moto d'acqua", en: "...", es: "..." },
-//                      name:  { it: "Moto d'acqua", en: "Jet skis", es: "..." },
+//                      label: { it: "Quante moto d'acqua", en: "...", es: "...", fr: "..." },
+//                      name:  { it: "Moto d'acqua", en: "Jet skis", es: "...", fr: "Jet-skis" },
 //                      types: [
 //                        { key: "singola", seats: 1, name: { it: "Singola", ... } },
 //                        { key: "doppia",  seats: 2, name: { it: "Doppia",  ... } }
@@ -33,7 +33,7 @@
 //                    }
 //                `label` e' la domanda nella finestra, `name` il nome che va
 //                nel messaggio ("Moto d'acqua: Singola × 2 · Doppia × 1"): in
-//                tre lingue non si ricavano l'uno dall'altro.
+//                quattro lingue non si ricavano l'uno dall'altro.
 //                `seats` e' **quante persone ci salgono**, e serve al conto dei
 //                pacchetti: li' si contano i mezzi e le persone insieme (il
 //                buggy a mezzo, il parascending a testa), e senza i posti il
@@ -126,13 +126,13 @@
 //   ages       → facoltativo: le fasce d'eta', scritte come le scrive il fornitore.
 //                Di solito bastano dei numeri ("12+", "4-11"), uguali in tutte
 //                le lingue. Quando invece c'e' una parola dentro si scrivono
-//                nelle tre lingue come tutto il resto:
-//                    infant: { it: "0-11 mesi", en: "0-11 months", es: "0-11 meses" }
+//                nelle quattro lingue come tutto il resto:
+//                    infant: { it: "0-11 mesi", en: "0-11 months", es: "0-11 meses", fr: "0-11 mois" }
 //                Finiscono fra parentesi accanto alle righe del prezzo:
 //                "Adulti (12+)", "Bambini (3-11)", "Neonati (0-2)".
 //                    ages: { adult: "12+", child: "3-11", infant: "0-2" }
 //   included   → facoltativo: cosa comprende il prezzo. Si scrivono delle parole
-//                chiave, non del testo: l'icona e la traduzione nelle tre lingue
+//                chiave, non del testo: l'icona e la traduzione nelle quattro lingue
 //                le mette il sito. Sulla pagina di dettaglio diventano un
 //                riquadro "Cosa e' incluso".
 //                    included: ["snorkel", "snack", "drinks"]
@@ -154,7 +154,7 @@
 //                libero** e non parole chiave come `included`: "arriva 15 minuti
 //                prima", "porta il costume" cambiano troppo da attivita' a
 //                attivita' per stare in un vocabolario.
-//                    notes: [ { it: "...", en: "...", es: "..." } ]
+//                    notes: [ { it: "...", en: "...", es: "...", fr: "..." } ]
 //   activityDuration, activityLabel → facoltativi, e vanno insieme: quanto dura
 //                l'**attivita'** dentro la giornata, che non e' quanto dura
 //                l'escursione. Sulle camminate si sta in giro tutto il giorno e
@@ -169,9 +169,9 @@
 //                perche' e' lo stesso per tutte le varianti. Senza, si ripiega
 //                su `detail.activity` ("Durata dell'attivita'"), che e' generico
 //                apposta: la parola giusta la sa la scheda.
-//                    activityLabel: { it: "Tempo di cammino", en: "Walking time", es: "..." }
+//                    activityLabel: { it: "Tempo di cammino", en: "Walking time", es: "...", fr: "Temps de marche" }
 //                    // e dentro ogni variante:
-//                    activityDuration: { it: "2 ore", en: "2 hours", es: "2 horas" }
+//                    activityDuration: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" }
 //                Si vede solo sulla pagina di dettaglio: fra le pillole
 //                dell'elenco sarebbe una terza riga senza la variante scelta.
 //   privateOption → facoltativo: id dell'escursione in versione privata. Sulla
@@ -181,7 +181,7 @@
 //                sostituiscono quelle due frasi fisse, che parlano di barche
 //                perche' li' sono nate. Servono dove la versione privata non e'
 //                una barca — sul tuk tuk "vuoi la barca" sarebbe la frase
-//                sbagliata — e si scrivono nelle tre lingue come tutto il resto.
+//                sbagliata — e si scrivono nelle quattro lingue come tutto il resto.
 //                Senza questi campi resta il testo di sempre, quindi le schede
 //                delle barche non si toccano.
 //                    privateTitle: { it: "Vuoi il tuk tuk solo per il tuo gruppo?", ... }
@@ -191,12 +191,12 @@
 //                come avviso nella finestra della richiesta, cioe' prima che il
 //                cliente scelga una data impossibile. Esempio:
 //                    season: { it: "Solo luglio e agosto", en: "July and August only",
-//                              es: "Solo julio y agosto" }
+//                              es: "Solo julio y agosto", fr: "Juillet et août seulement" }
 //   transfer   → facoltativo: quando l'attivita' si puo' avere col trasporto incluso.
 //                Sulla scheda compare la pillola "Transfer disponibile", sulla pagina
 //                di dettaglio questo testo per esteso, che e' il posto dove spiegare
 //                i limiti (per il Twin Ticket il transfer vale solo per Loro Parque).
-//                    transfer: { it: "Disponibile su richiesta", en: "...", es: "..." }
+//                    transfer: { it: "Disponibile su richiesta", en: "...", es: "...", fr: "..." }
 //   transferPrice → facoltativo: quanto costa la stessa attivita' col transfer
 //                incluso, in euro. { adult, child, baby }. `baby` e' il solo posto
 //                sul pullman per i neonati, che senza transfer non esiste. Compare
@@ -248,8 +248,8 @@
 //                finisce nel messaggio WhatsApp. Come `languages`: si mette solo
 //                dove il fornitore lo dice, non ovunque ci sia una cena.
 //                A differenza di `languages` queste sono parole normali, quindi
-//                si scrivono nelle tre lingue:
-//                    menus: [ { it: "Vegetariano", en: "Vegetarian", es: "Vegetariano" } ]
+//                si scrivono nelle quattro lingue:
+//                    menus: [ { it: "Vegetariano", en: "Vegetarian", es: "Vegetariano", fr: "Végétarien" } ]
 //                La voce "Menu standard" non si scrive: la mette il sito come
 //                prima scelta, e chi la lascia li' non fa comparire nessuna riga
 //                nel messaggio — all'ufficio interessa solo l'esigenza vera.
@@ -293,7 +293,7 @@
 //                nella finestra della richiesta diventano un menu a tendina, e la
 //                scelta finisce nel messaggio WhatsApp.
 //                    options: {
-//                      label: { it: "Durata", en: "Duration", es: "Duración" },
+//                      label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée" },
 //                      choices: [
 //                        { label: { it: "1 ora", ... }, price: 150 },
 //                        { label: { it: "2 ore", ... }, price: 180 }
@@ -409,8 +409,8 @@
 //
 // LE TRE LINGUE
 //   title, zone, duration e desc si scrivono così:
-//       title: { it: "...", en: "...", es: "..." }
-//   Se un testo è uguale in tutte e tre le lingue (i nomi propri, per esempio
+//       title: { it: "...", en: "...", es: "...", fr: "..." }
+//   Se un testo è uguale in tutte e quattro le lingue (i nomi propri, per esempio
 //   "Siam Park" o "Costa Adeje") basta scrivere la stringa da sola:
 //       zone: "Costa Adeje"
 //
@@ -430,7 +430,7 @@ const WHATSAPP_NUMBER = "34662908073";
 //
 // Ogni attività può avere i suoi: si scrive `times: ["09:30 - 12:30", ...]`
 // nella sua scheda e quella lista prende il posto di questa. Sono orari, quindi
-// si scrivono uguali in tutte e tre le lingue: niente { it, en, es }.
+// si scrivono uguali in tutte e quattro le lingue: niente { it, en, es, fr }.
 //
 // In ogni caso il cliente parte sempre da "Da concordare": il sito non sceglie
 // mai un orario al posto suo, e se lui non ne sceglie uno la riga dell'orario
@@ -471,7 +471,7 @@ const ORARI_PREDEFINITI = [
 const CATEGORIES = [
   {
     id: "mare-barche",
-    name: { it: "Mare e barche", en: "Sea and boats", es: "Mar y barcos" },
+    name: { it: "Mare e barche", en: "Sea and boats", es: "Mar y barcos", fr: "Mer et bateaux" },
     image: "Cat-mare.jpg"
   },
   // La categoria "stelle" non c'e' piu': aveva una scheda sola, e una categoria
@@ -479,32 +479,32 @@ const CATEGORIES = [
   // La serata al Teide e' passata di qua, e il nome lo dice.
   {
     id: "teide-natura",
-    name: { it: "Natura, Teide e stelle", en: "Nature, Teide and stars", es: "Naturaleza, Teide y estrellas" },
+    name: { it: "Natura, Teide e stelle", en: "Nature, Teide and stars", es: "Naturaleza, Teide y estrellas", fr: "Nature, Teide et étoiles" },
     image: "Cat-teide.jpg"
   },
   {
     id: "avventura-motori",
-    name: { it: "Avventura", en: "Adventure", es: "Aventura" },
+    name: { it: "Avventura", en: "Adventure", es: "Aventura", fr: "Aventure" },
     image: "Cat-avventura.jpg"
   },
   {
     id: "sport-acquatici",
-    name: { it: "Sport acquatici", en: "Water sports", es: "Deportes acuáticos" },
+    name: { it: "Sport acquatici", en: "Water sports", es: "Deportes acuáticos", fr: "Sports nautiques" },
     image: "Cat-sport.jpg"
   },
   {
     id: "parchi-spettacoli",
-    name: { it: "Parchi e spettacoli", en: "Parks and shows", es: "Parques y espectáculos" },
+    name: { it: "Parchi e spettacoli", en: "Parks and shows", es: "Parques y espectáculos", fr: "Parcs et spectacles" },
     image: "Cat-parchi.jpg"
   },
   {
     id: "tour-isola",
-    name: { it: "Tour e visite", en: "Tours & sightseeing", es: "Tours y visitas" },
+    name: { it: "Tour e visite", en: "Tours & sightseeing", es: "Tours y visitas", fr: "Visites et découvertes" },
     image: "santa-cruz-taganana.jpg"
   },
   {
     id: "tour-privati",
-    name: { it: "Tour privati", en: "Private tours", es: "Tours privados" },
+    name: { it: "Tour privati", en: "Private tours", es: "Tours privados", fr: "Visites privées" },
     image: "Cat-privati.jpg"
   }
 ];
@@ -546,15 +546,15 @@ const SELEZIONI = {
 // per sua scelta. Ogni scheda dice i suoi in `zoneGroups` e `durationGroups`.
 const ZONE_FILTRO = [
   { id: "costa-adeje", name: "Costa Adeje" },
-  { id: "los-cristianos", name: { it: "Los Cristianos e dintorni", en: "Los Cristianos area", es: "Los Cristianos y alrededores" } },
+  { id: "los-cristianos", name: { it: "Los Cristianos e dintorni", en: "Los Cristianos area", es: "Los Cristianos y alrededores", fr: "Los Cristianos et alentours" } },
   { id: "los-gigantes", name: "Los Gigantes" },
-  { id: "teide-nord", name: { it: "Teide e nord", en: "Teide and the north", es: "Teide y el norte" } },
-  { id: "altre-isole", name: { it: "Altre isole", en: "Other islands", es: "Otras islas" } }
+  { id: "teide-nord", name: { it: "Teide e nord", en: "Teide and the north", es: "Teide y el norte", fr: "Teide et le nord" } },
+  { id: "altre-isole", name: { it: "Altre isole", en: "Other islands", es: "Otras islas", fr: "Autres îles" } }
 ];
 const DURATE_FILTRO = [
-  { id: "breve", name: { it: "Fino a 2 ore", en: "Up to 2 hours", es: "Hasta 2 horas" } },
-  { id: "mezza", name: { it: "Mezza giornata", en: "Half day", es: "Media jornada" } },
-  { id: "intera", name: { it: "Giornata intera", en: "Full day", es: "Día completo" } }
+  { id: "breve", name: { it: "Fino a 2 ore", en: "Up to 2 hours", es: "Hasta 2 horas", fr: "Jusqu'à 2 heures" } },
+  { id: "mezza", name: { it: "Mezza giornata", en: "Half day", es: "Media jornada", fr: "Demi-journée" } },
+  { id: "intera", name: { it: "Giornata intera", en: "Full day", es: "Día completo", fr: "Journée entière" } }
 ];
 
 // Le categorie di una scheda: la sua, piu' quelle facoltative di `alsoIn`.
@@ -579,7 +579,7 @@ const ESPLORA_CATALOG = [
     title: "Freebird Catamaran Trip",
     category: "mare-barche",
     zone: "Puerto Colón",
-    duration: { it: "Da 2 a 4 ore e mezza", en: "2 to 4.5 hours", es: "De 2 a 4,5 horas" },
+    duration: { it: "Da 2 a 4 ore e mezza", en: "2 to 4.5 hours", es: "De 2 a 4,5 horas", fr: "De 2 à 4 heures et demie" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve", "mezza"],
     priceFrom: 30,
@@ -594,10 +594,10 @@ const ESPLORA_CATALOG = [
     // finiscono a 11 e sopra non c'e' nient'altro, a 12 si paga come un grande.
     ages: { adult: "12+", child: "4-11", infant: "0-3" },
     options: {
-      label: { it: "Durata", en: "Duration", es: "Duración" },
+      label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée" },
       choices: [
         {
-          label: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          label: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" },
           priceAdult: 30,
           priceChild: 15,
           days: ["lun", "mer", "ven"],
@@ -605,11 +605,12 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Balene e delfini, con sosta bagno davanti a Bahía del Duque. A bordo bevande illimitate, ma niente da mangiare e niente transfer: al porto ci si arriva da soli. Lunedì, mercoledì e venerdì, partenza alle 11:00.",
             en: "Whales and dolphins, with a swim stop off Bahía del Duque. Unlimited drinks on board, but no food and no transfer: you make your own way to the harbour. Mondays, Wednesdays and Fridays, leaving at 11:00.",
-            es: "Ballenas y delfines, con parada de baño frente a Bahía del Duque. A bordo bebidas ilimitadas, pero sin comida y sin traslado: al puerto se llega por cuenta propia. Lunes, miércoles y viernes, salida a las 11:00."
+            es: "Ballenas y delfines, con parada de baño frente a Bahía del Duque. A bordo bebidas ilimitadas, pero sin comida y sin traslado: al puerto se llega por cuenta propia. Lunes, miércoles y viernes, salida a las 11:00.",
+            fr: "Baleines et dauphins, avec un arrêt baignade devant Bahía del Duque. À bord, boissons à volonté, mais rien à manger et pas de transfert : on se rend au port par ses propres moyens. Lundi, mercredi et vendredi, départ à 11:00."
           }
         },
         {
-          label: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          label: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
           priceAdult: 47,
           priceChild: 23,
           included: ["snack", "transfer"],
@@ -617,11 +618,12 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Balene e delfini, con sosta bagno a Diego Hernández e tempo per stare al sole. A bordo un panino e bevande illimitate. Transfer dall'hotel compreso. Tutti i giorni, partenza alle 10:00.",
             en: "Whales and dolphins, with a swim stop at Diego Hernández and time to sit in the sun. A sandwich and unlimited drinks on board. Hotel transfer included. Every day, leaving at 10:00.",
-            es: "Ballenas y delfines, con parada de baño en Diego Hernández y tiempo para tomar el sol. A bordo un bocadillo y bebidas ilimitadas. Traslado desde el hotel incluido. Todos los días, salida a las 10:00."
+            es: "Ballenas y delfines, con parada de baño en Diego Hernández y tiempo para tomar el sol. A bordo un bocadillo y bebidas ilimitadas. Traslado desde el hotel incluido. Todos los días, salida a las 10:00.",
+            fr: "Baleines et dauphins, avec un arrêt baignade à Diego Hernández et du temps pour profiter du soleil. À bord, un sandwich et des boissons à volonté. Transfert depuis l'hôtel compris. Tous les jours, départ à 10:00."
           }
         },
         {
-          label: { it: "4 ore e mezza", en: "4.5 hours", es: "4,5 horas" },
+          label: { it: "4 ore e mezza", en: "4.5 hours", es: "4,5 horas", fr: "4 heures et demie" },
           priceAdult: 62,
           priceChild: 31,
           included: ["lunch", "transfer"],
@@ -629,14 +631,16 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il giro lungo: balene e delfini, le scogliere di Los Gigantes e bagno nella baia di Masca. A bordo si pranza, con bevande illimitate. Transfer dall'hotel compreso. Tutti i giorni, partenza alle 13:00.",
             en: "The long trip: whales and dolphins, the cliffs of Los Gigantes and a swim in Masca bay. Lunch on board, with unlimited drinks. Hotel transfer included. Every day, leaving at 13:00.",
-            es: "La salida larga: ballenas y delfines, los acantilados de Los Gigantes y baño en la bahía de Masca. Se come a bordo, con bebidas ilimitadas. Traslado desde el hotel incluido. Todos los días, salida a las 13:00."
+            es: "La salida larga: ballenas y delfines, los acantilados de Los Gigantes y baño en la bahía de Masca. Se come a bordo, con bebidas ilimitadas. Traslado desde el hotel incluido. Todos los días, salida a las 13:00.",
+            fr: "La grande sortie : baleines et dauphins, les falaises de Los Gigantes et baignade dans la baie de Masca. Déjeuner à bord, avec boissons à volonté. Transfert depuis l'hôtel compris. Tous les jours, départ à 13:00."
           }
         },
         {
           label: {
             it: "4 ore e mezza, partenza dal nord",
             en: "4.5 hours, pickup in the north",
-            es: "4,5 horas, salida desde el norte"
+            es: "4,5 horas, salida desde el norte",
+            fr: "4 heures et demie, départ du nord"
           },
           priceAdult: 69,
           priceChild: 34,
@@ -646,7 +650,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Lo stesso giro lungo, Los Gigantes e Masca comprese, per chi alloggia nel nord dell'isola: la navetta ti prende e ti riporta a casa. La barca parte alle 13:00, la navetta passa prima. Martedì, giovedì, venerdì e domenica.",
             en: "The same long trip, for anyone staying in the north of the island: the shuttle picks you up and brings you back. The boat leaves at 13:00, the shuttle comes earlier. Tuesdays, Thursdays, Fridays and Sundays.",
-            es: "La misma salida larga, para quien se aloja en el norte de la isla: la lanzadera te recoge y te devuelve. El barco sale a las 13:00, la lanzadera pasa antes. Martes, jueves, viernes y domingos."
+            es: "La misma salida larga, para quien se aloja en el norte de la isla: la lanzadera te recoge y te devuelve. El barco sale a las 13:00, la lanzadera pasa antes. Martes, jueves, viernes y domingos.",
+            fr: "La même grande sortie, Los Gigantes et Masca comprises, pour ceux qui logent dans le nord de l'île : la navette vous prend et vous ramène. Le bateau part à 13:00, la navette passe avant. Mardi, jeudi, vendredi et dimanche."
           }
         }
       ]
@@ -656,39 +661,46 @@ const ESPLORA_CATALOG = [
       {
         it: "Il transfer dall'hotel è compreso sul giro di 3 ore e su quello di 4 ore e mezza, dalle zone del sud. Sul giro di 2 ore non c'è: al porto ci si arriva da soli.",
         en: "The hotel transfer is included on the 3-hour and 4.5-hour trips, from the southern areas. It is not included on the 2-hour trip: you make your own way to the harbour.",
-        es: "El traslado desde el hotel está incluido en la salida de 3 horas y en la de 4,5 horas, desde las zonas del sur. En la de 2 horas no: al puerto se llega por cuenta propia."
+        es: "El traslado desde el hotel está incluido en la salida de 3 horas y en la de 4,5 horas, desde las zonas del sur. En la de 2 horas no: al puerto se llega por cuenta propia.",
+        fr: "Le transfert depuis l'hôtel est compris sur la sortie de 3 heures et sur celle de 4 heures et demie, depuis les zones du sud. Il n'est pas compris sur la sortie de 2 heures : on se rend au port par ses propres moyens."
       },
       {
         it: "Puoi anche andare direttamente al porto: Puerto Colón, molo 10. Arriva almeno 10 minuti prima della partenza.",
         en: "You can also go straight to the harbour: Puerto Colón, dock 10. Get there at least 10 minutes before departure.",
-        es: "También puedes ir directamente al puerto: Puerto Colón, muelle 10. Llega al menos 10 minutos antes de la salida."
+        es: "También puedes ir directamente al puerto: Puerto Colón, muelle 10. Llega al menos 10 minutos antes de la salida.",
+        fr: "Vous pouvez aussi aller directement au port : Puerto Colón, quai 10. Arrivez au moins 10 minutes avant le départ."
       },
       {
         it: "Le bevande sono illimitate per tutto il giro: acqua, analcoliche, birra e sangria.",
         en: "Drinks are unlimited for the whole trip: water, soft drinks, beer and sangria.",
-        es: "Las bebidas son ilimitadas durante toda la salida: agua, refrescos, cerveza y sangría."
+        es: "Las bebidas son ilimitadas durante toda la salida: agua, refrescos, cerveza y sangría.",
+        fr: "Les boissons sont à volonté pendant toute la sortie : eau, sodas, bière et sangria."
       },
       {
         it: "Da mangiare ci sono dei panini, anche vegetariani se lo chiedi quando prenoti. Sul giro di 2 ore ci sono solo le bevande.",
         en: "There are sandwiches to eat, vegetarian ones too if you ask when you book. On the 2-hour trip there are drinks only.",
-        es: "Para comer hay bocadillos, también vegetarianos si lo pides al reservar. En la salida de 2 horas solo hay bebidas."
+        es: "Para comer hay bocadillos, también vegetarianos si lo pides al reservar. En la salida de 2 horas solo hay bebidas.",
+        fr: "Pour manger, il y a des sandwichs, végétariens aussi si vous le demandez en réservant. Sur la sortie de 2 heures, il n'y a que les boissons."
       },
       {
         it: "Si possono aggiungere i lettini balinesi a €25 l'uno, fino a esaurimento.",
         en: "Balinese day beds can be added for €25 each, while they last.",
-        es: "Se pueden añadir camas balinesas por 25 € cada una, hasta agotar existencias."
+        es: "Se pueden añadir camas balinesas por 25 € cada una, hasta agotar existencias.",
+        fr: "On peut ajouter des lits balinais à €25 chacun, dans la limite des disponibilités."
       },
       {
         it: "Se soffri il mal di mare, prendi le tue precauzioni prima di salire a bordo.",
         en: "If you get seasick, take your precautions before boarding.",
-        es: "Si te mareas en el mar, toma tus precauciones antes de embarcar."
+        es: "Si te mareas en el mar, toma tus precauciones antes de embarcar.",
+        fr: "Si vous avez le mal de mer, prenez vos précautions avant de monter à bord."
       }
     ],
     family: true,
     desc: {
       it: "Un catamarano grande che parte da Puerto Colón, con tre giri fra cui scegliere: due ore, tre ore o quello lungo fino alle scogliere di Los Gigantes e alla baia di Masca. Balene e delfini, sosta bagno e bevande illimitate a bordo. L'equipaggio parla più lingue e racconta quello che si vede, e la barca segue le regole per avvicinare gli animali senza disturbarli.",
       en: "A big catamaran out of Puerto Colón, with three trips to choose from: two hours, three hours, or the long one out to the cliffs of Los Gigantes and Masca bay. Whales and dolphins, a swim stop and unlimited drinks on board. The crew speaks several languages and tells you what you are looking at, and the boat follows the rules for approaching the animals without disturbing them.",
-      es: "Un catamarán grande que sale de Puerto Colón, con tres salidas a elegir: dos horas, tres horas o la larga hasta los acantilados de Los Gigantes y la bahía de Masca. Ballenas y delfines, parada de baño y bebidas ilimitadas a bordo. La tripulación habla varios idiomas y te cuenta lo que estás viendo, y el barco sigue las normas para acercarse a los animales sin molestarlos."
+      es: "Un catamarán grande que sale de Puerto Colón, con tres salidas a elegir: dos horas, tres horas o la larga hasta los acantilados de Los Gigantes y la bahía de Masca. Ballenas y delfines, parada de baño y bebidas ilimitadas a bordo. La tripulación habla varios idiomas y te cuenta lo que estás viendo, y el barco sigue las normas para acercarse a los animales sin molestarlos.",
+      fr: "Un grand catamaran qui part de Puerto Colón, avec trois sorties au choix : deux heures, trois heures ou la grande jusqu'aux falaises de Los Gigantes et à la baie de Masca. Baleines et dauphins, arrêt baignade et boissons à volonté à bord. L'équipage parle plusieurs langues et raconte ce que l'on voit, et le bateau suit les règles pour approcher les animaux sans les déranger."
     },
     image: "catamaran-gigantes-masca.jpg",
     gallery: ["freebird-2.jpg", "freebird-3.jpg", "freebird-4.jpg"],
@@ -699,7 +711,7 @@ const ESPLORA_CATALOG = [
     title: "Royal Delfin Boat Tour",
     category: "mare-barche",
     zone: "Puerto Colón",
-    duration: { it: "Da 2 a 4 ore e mezza", en: "2 to 4.5 hours", es: "De 2 a 4,5 horas" },
+    duration: { it: "Da 2 a 4 ore e mezza", en: "2 to 4.5 hours", es: "De 2 a 4,5 horas", fr: "De 2 à 4 heures et demie" },
     zoneGroups: ["costa-adeje", "teide-nord"],
     durationGroups: ["breve", "mezza"],
     priceFrom: 33,
@@ -712,10 +724,10 @@ const ESPLORA_CATALOG = [
     // 12+ discende dai bambini 4-11: sopra gli 11 non c'e' altra fascia.
     ages: { adult: "12+", child: "4-11", infant: "0-3" },
     options: {
-      label: { it: "Durata", en: "Duration", es: "Duración" },
+      label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée" },
       choices: [
         {
-          label: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          label: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" },
           priceAdult: 33,
           priceChild: 20,
           days: ["mar", "gio", "dom"],
@@ -723,11 +735,12 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il giro corto, per vedere balene e delfini senza starci mezza giornata. Non c'è la sosta bagno e il pranzo non è compreso: a bordo c'è il bar, dove si paga. Martedì, giovedì e domenica, partenza alle 10:30.",
             en: "The short trip, to see whales and dolphins without giving up half a day. There is no swim stop and lunch is not included: there is a bar on board, where you pay. Tuesdays, Thursdays and Sundays, leaving at 10:30.",
-            es: "La salida corta, para ver ballenas y delfines sin dedicarle media jornada. No hay parada de baño y la comida no está incluida: a bordo hay bar, donde se paga. Martes, jueves y domingos, salida a las 10:30."
+            es: "La salida corta, para ver ballenas y delfines sin dedicarle media jornada. No hay parada de baño y la comida no está incluida: a bordo hay bar, donde se paga. Martes, jueves y domingos, salida a las 10:30.",
+            fr: "La sortie courte, pour voir baleines et dauphins sans y passer une demi-journée. Il n'y a pas d'arrêt baignade et le déjeuner n'est pas compris : il y a un bar à bord, payant. Mardi, jeudi et dimanche, départ à 10:30."
           }
         },
         {
-          label: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          label: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
           priceAdult: 50,
           priceChild: 30,
           days: ["mer", "sab"],
@@ -736,11 +749,12 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Balene e delfini, con sosta bagno e pranzo nella baia di Diego Hernández. Bevande illimitate a bordo. Mercoledì e sabato, partenza alle 10:30.",
             en: "Whales and dolphins, with a swim stop and lunch in Diego Hernández bay. Unlimited drinks on board. Wednesdays and Saturdays, leaving at 10:30.",
-            es: "Ballenas y delfines, con parada de baño y comida en la bahía de Diego Hernández. Bebidas ilimitadas a bordo. Miércoles y sábados, salida a las 10:30."
+            es: "Ballenas y delfines, con parada de baño y comida en la bahía de Diego Hernández. Bebidas ilimitadas a bordo. Miércoles y sábados, salida a las 10:30.",
+            fr: "Baleines et dauphins, avec arrêt baignade et déjeuner dans la baie de Diego Hernández. Boissons à volonté à bord. Mercredi et samedi, départ à 10:30."
           }
         },
         {
-          label: { it: "4 ore e mezza", en: "4.5 hours", es: "4,5 horas" },
+          label: { it: "4 ore e mezza", en: "4.5 hours", es: "4,5 horas", fr: "4 heures et demie" },
           priceAdult: 63,
           priceChild: 40,
           times: ["14:00", "09:30"],
@@ -748,14 +762,16 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il giro lungo: balene e delfini e bagno nella baia di Masca. Si comincia con la frutta di stagione e si pranza con riso e pollo, bevande comprese. Tutti i giorni alle 14:00; dall'11 luglio al 5 settembre c'è anche la partenza delle 9:30, con un menù diverso.",
             en: "The long trip: whales and dolphins, and a swim in Masca bay. It starts with seasonal fruit and lunch is rice and chicken, drinks included. Every day at 14:00; from 11 July to 5 September there is also a 9:30 departure, with a different menu.",
-            es: "La salida larga: ballenas y delfines y baño en la bahía de Masca. Se empieza con fruta de temporada y se come arroz con pollo, bebidas incluidas. Todos los días a las 14:00; del 11 de julio al 5 de septiembre hay también la salida de las 9:30, con un menú distinto."
+            es: "La salida larga: ballenas y delfines y baño en la bahía de Masca. Se empieza con fruta de temporada y se come arroz con pollo, bebidas incluidas. Todos los días a las 14:00; del 11 de julio al 5 de septiembre hay también la salida de las 9:30, con un menú distinto.",
+            fr: "La grande sortie : baleines et dauphins et baignade dans la baie de Masca. On commence par des fruits de saison et on déjeune de riz et poulet, boissons comprises. Tous les jours à 14:00 ; du 11 juillet au 5 septembre, il y a aussi un départ à 9:30, avec un menu différent."
           }
         },
         {
           label: {
             it: "4 ore e mezza, partenza dal nord",
             en: "4.5 hours, pickup in the north",
-            es: "4,5 horas, salida desde el norte"
+            es: "4,5 horas, salida desde el norte",
+            fr: "4 heures et demie, départ du nord"
           },
           priceAdult: 68,
           priceChild: 45,
@@ -767,7 +783,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Lo stesso giro lungo, con bagno a Masca e pranzo a bordo, per chi alloggia nel nord: la navetta parte da Puerto de la Cruz. Tutti i giorni, la barca parte alle 14:00.",
             en: "The same long trip, with the Masca swim and lunch on board, for anyone staying in the north: the shuttle leaves from Puerto de la Cruz. Every day, the boat leaves at 14:00.",
-            es: "La misma salida larga, con baño en Masca y comida a bordo, para quien se aloja en el norte: la lanzadera sale desde Puerto de la Cruz. Todos los días, el barco sale a las 14:00."
+            es: "La misma salida larga, con baño en Masca y comida a bordo, para quien se aloja en el norte: la lanzadera sale desde Puerto de la Cruz. Todos los días, el barco sale a las 14:00.",
+            fr: "La même grande sortie, avec baignade à Masca et déjeuner à bord, pour ceux qui logent dans le nord : la navette part de Puerto de la Cruz. Tous les jours, le bateau part à 14:00."
           }
         }
       ]
@@ -777,37 +794,44 @@ const ESPLORA_CATALOG = [
       {
         it: "La presa e la riconsegna in hotel sono gratis dai principali alberghi del sud: Los Cristianos, Playa de las Américas, Costa Adeje e La Caleta. Dicci dove stai e ti confermiamo l'orario del passaggio.",
         en: "Hotel pick-up and drop-off are free from the main hotels in the south: Los Cristianos, Playa de las Américas, Costa Adeje and La Caleta. Tell us where you are staying and we'll confirm the pick-up time.",
-        es: "La recogida y la vuelta al hotel son gratis desde los principales hoteles del sur: Los Cristianos, Playa de las Américas, Costa Adeje y La Caleta. Dinos dónde te alojas y te confirmamos la hora de recogida."
+        es: "La recogida y la vuelta al hotel son gratis desde los principales hoteles del sur: Los Cristianos, Playa de las Américas, Costa Adeje y La Caleta. Dinos dónde te alojas y te confirmamos la hora de recogida.",
+        fr: "La prise en charge et le retour à l'hôtel sont gratuits depuis les principaux hôtels du sud : Los Cristianos, Playa de las Américas, Costa Adeje et La Caleta. Dites-nous où vous logez et nous vous confirmons l'heure de passage."
       },
       {
         it: "Se vieni con la tua macchina: Puerto Colón, pantalán 12. Arriva 20 minuti prima, la guida ti aspetta al cancello 12. Vicino al porto c'è un parcheggio pubblico a pagamento.",
         en: "If you come by car: Puerto Colón, pantalán 12. Get there 20 minutes early — the guide will meet you at gate 12. There is paid public parking near the harbour.",
-        es: "Si vienes en coche: Puerto Colón, pantalán 12. Llega 20 minutos antes, el guía te espera en la puerta 12. Cerca del puerto hay aparcamiento público de pago."
+        es: "Si vienes en coche: Puerto Colón, pantalán 12. Llega 20 minutos antes, el guía te espera en la puerta 12. Cerca del puerto hay aparcamiento público de pago.",
+        fr: "Si vous venez en voiture : Puerto Colón, pantalán 12. Arrivez 20 minutes avant, le guide vous attend au portail 12. Près du port, il y a un parking public payant."
       },
       {
         it: "Sul giro di 3 ore e su quelli di 4 ore e mezza il pranzo è compreso, con opzioni senza glutine e vegetariane: chiedile quando prenoti e l'equipaggio le prepara.",
         en: "Lunch is included on the 3-hour and the 4.5-hour trips, with gluten-free and vegetarian options: ask for them when you book and the crew will prepare them.",
-        es: "En la salida de 3 horas y en las de 4,5 horas la comida está incluida, con opciones sin gluten y vegetarianas: pídelas al reservar y la tripulación las prepara."
+        es: "En la salida de 3 horas y en las de 4,5 horas la comida está incluida, con opciones sin gluten y vegetarianas: pídelas al reservar y la tripulación las prepara.",
+        fr: "Sur la sortie de 3 heures et sur celles de 4 heures et demie, le déjeuner est compris, avec des options sans gluten et végétariennes : demandez-les en réservant et l'équipage les prépare."
       },
       {
         it: "A bordo c'è il Wi-Fi gratuito, ma in mare la copertura può mancare.",
         en: "There is free Wi-Fi on board, but out at sea the signal can drop.",
-        es: "A bordo hay Wi-Fi gratuito, pero en el mar la cobertura puede fallar."
+        es: "A bordo hay Wi-Fi gratuito, pero en el mar la cobertura puede fallar.",
+        fr: "Il y a le Wi-Fi gratuit à bord, mais en mer la couverture peut manquer."
       },
       {
         it: "Il catamarano è per non fumatori ed è attrezzato per chi ha difficoltà motorie.",
         en: "The catamaran is non-smoking and equipped for guests with reduced mobility.",
-        es: "El catamarán es para no fumadores y está equipado para personas con movilidad reducida."
+        es: "El catamarán es para no fumadores y está equipado para personas con movilidad reducida.",
+        fr: "Le catamaran est non-fumeur et équipé pour les personnes à mobilité réduite."
       },
       {
         it: "Porta costume e crema solare.",
         en: "Bring swimwear and sunscreen.",
-        es: "Trae bañador y crema solar."
+        es: "Trae bañador y crema solar.",
+        fr: "Apportez maillot de bain et crème solaire."
       },
       {
         it: "Se soffri il mal di mare, prendi le tue precauzioni prima di salire a bordo.",
         en: "If you get seasick, take your precautions before boarding.",
-        es: "Si te mareas en el mar, toma tus precauciones antes de embarcar."
+        es: "Si te mareas en el mar, toma tus precauciones antes de embarcar.",
+        fr: "Si vous avez le mal de mer, prenez vos précautions avant de monter à bord."
       }
     ],
     family: true,
@@ -816,7 +840,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Un catamarano grande, fino a 200 persone, con finestre panoramiche sotto la linea di galleggiamento: balene e delfini si guardano anche da sotto, non solo dal ponte. Si sceglie fra due ore, tre ore o il giro lungo fino alla baia di Masca. La barca segue la carta per la tutela dei cetacei e le guide parlano più lingue.",
       en: "A big catamaran, up to 200 people, with panoramic windows below the waterline: you watch whales and dolphins from underneath as well as from the deck. Choose between two hours, three hours or the long trip out to Masca bay. The boat follows the whale conservation charter and the guides speak several languages.",
-      es: "Un catamarán grande, hasta 200 personas, con ventanas panorámicas bajo la línea de flotación: las ballenas y los delfines se ven también desde abajo, no solo desde cubierta. Se elige entre dos horas, tres horas o la salida larga hasta la bahía de Masca. El barco sigue la carta para la protección de los cetáceos y los guías hablan varios idiomas."
+      es: "Un catamarán grande, hasta 200 personas, con ventanas panorámicas bajo la línea de flotación: las ballenas y los delfines se ven también desde abajo, no solo desde cubierta. Se elige entre dos horas, tres horas o la salida larga hasta la bahía de Masca. El barco sigue la carta para la protección de los cetáceos y los guías hablan varios idiomas.",
+      fr: "Un grand catamaran, jusqu'à 200 personnes, avec des hublots panoramiques sous la ligne de flottaison : baleines et dauphins se regardent aussi par en dessous, pas seulement depuis le pont. On choisit entre deux heures, trois heures ou la grande sortie jusqu'à la baie de Masca. Le bateau suit la charte de protection des cétacés et les guides parlent plusieurs langues."
     },
     published: true
   },
@@ -831,7 +856,7 @@ const ESPLORA_CATALOG = [
     nomi: ["Cool Sailing", "Lina7", "Mizendoha"],
     category: "mare-barche",
     zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
     // Quattro partenze a tre ore l'una dall'altra. Le 18:00 ci sono solo
@@ -849,14 +874,16 @@ const ESPLORA_CATALOG = [
       {
         it: "Le partenze sono ogni tre ore. Quella delle 18:00 si fa solo d'estate.",
         en: "Departures are every three hours. The 18:00 one runs in summer only.",
-        es: "Las salidas son cada tres horas. La de las 18:00 solo se hace en verano."
+        es: "Las salidas son cada tres horas. La de las 18:00 solo se hace en verano.",
+        fr: "Les départs ont lieu toutes les trois heures. Celui de 18:00 ne se fait qu'en été."
       }
     ],
     family: true,
     desc: {
       it: "Tre ore in barca a vela da Puerto Colón, con un massimo di 11 persone a bordo. Avvistamento di balene e delfini, sosta per lo snorkeling con attrezzatura inclusa, snack e bevande a bordo.",
       en: "Three hours under sail from Puerto Colón, with a maximum of 11 guests on board. Whale and dolphin watching, a snorkelling stop with gear included, snacks and drinks on board.",
-      es: "Tres horas en velero desde Puerto Colón, con un máximo de 11 personas a bordo. Avistamiento de ballenas y delfines, parada para hacer snorkel con equipo incluido, snacks y bebidas a bordo."
+      es: "Tres horas en velero desde Puerto Colón, con un máximo de 11 personas a bordo. Avistamiento de ballenas y delfines, parada para hacer snorkel con equipo incluido, snacks y bebidas a bordo.",
+      fr: "Trois heures à la voile depuis Puerto Colón, avec 11 passagers au maximum à bord. Observation des baleines et des dauphins, arrêt snorkeling avec matériel compris, en-cas et boissons à bord."
     },
     image: "whale-dolphin-3h.jpg",
     gallery: ["whale-dolphin-3h-6.jpg", "whale-dolphin-3h-7.jpg", "whale-dolphin-3h-2.jpg", "whale-dolphin-3h-3.jpg", "whale-dolphin-3h-4.jpg", "whale-dolphin-3h-5.jpg", "whale-dolphin-3h-8.jpg"],
@@ -867,7 +894,7 @@ const ESPLORA_CATALOG = [
     title: "Peter Pan Pirate Ship",
     category: "mare-barche",
     zone: "Los Cristianos",
-    duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+    duration: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["breve"],
     // Tre partenze tutti i giorni: nessun campo `days`, non c'e' limite da dire.
@@ -891,28 +918,33 @@ const ESPLORA_CATALOG = [
     transfer: {
       it: "Il passaggio dagli hotel del sud è gratis, ma solo per la partenza delle 12:00.",
       en: "Pick-up from the southern hotels is free, but only for the 12:00 departure.",
-      es: "La recogida en los hoteles del sur es gratis, pero solo para la salida de las 12:00."
+      es: "La recogida en los hoteles del sur es gratis, pero solo para la salida de las 12:00.",
+      fr: "La prise en charge depuis les hôtels du sud est gratuite, mais seulement pour le départ de 12:00."
     },
     desc: {
       it: "Una goletta portoghese in legno, a due alberi, che parte da Los Cristianos: due ore al largo per vedere delfini e globicefali. A bordo ci sono l'ombra, un ponte superiore per stare al sole e i bagni.",
       en: "A wooden two-masted Portuguese schooner leaving from Los Cristianos: two hours offshore to see dolphins and pilot whales. On board there is shade, an upper deck for sunbathing and toilets.",
-      es: "Una goleta portuguesa de madera, de dos palos, que sale de Los Cristianos: dos horas mar adentro para ver delfines y calderones. A bordo hay sombra, una cubierta superior para tomar el sol y aseos."
+      es: "Una goleta portuguesa de madera, de dos palos, que sale de Los Cristianos: dos horas mar adentro para ver delfines y calderones. A bordo hay sombra, una cubierta superior para tomar el sol y aseos.",
+      fr: "Une goélette portugaise en bois à deux mâts qui part de Los Cristianos : deux heures au large pour voir dauphins et globicéphales. À bord, il y a de l'ombre, un pont supérieur pour bronzer et des toilettes."
     },
     notes: [
       {
         it: "Si parte dal porto di Los Cristianos. Arriva almeno 30 minuti prima dell'orario, così l'imbarco si fa con calma.",
         en: "You leave from Los Cristianos harbour. Get there at least 30 minutes before your departure time so boarding is unhurried.",
-        es: "Se sale del puerto de Los Cristianos. Llega al menos 30 minutos antes de la hora para embarcar con calma."
+        es: "Se sale del puerto de Los Cristianos. Llega al menos 30 minutos antes de la hora para embarcar con calma.",
+        fr: "On part du port de Los Cristianos. Arrivez au moins 30 minutes avant l'heure de départ, pour embarquer sans vous presser."
       },
       {
         it: "Da mangiare e da bere non sono compresi, ma si comprano a bordo.",
         en: "Food and drinks are not included, but you can buy them on board.",
-        es: "La comida y las bebidas no están incluidas, pero se compran a bordo."
+        es: "La comida y las bebidas no están incluidas, pero se compran a bordo.",
+        fr: "Nourriture et boissons ne sont pas comprises, mais on peut les acheter à bord."
       },
       {
         it: "A bordo si sta fino a 60 persone: c'è una zona all'ombra con un tavolone, il ponte superiore per il sole e due bagni.",
         en: "The ship takes up to 60 people: there is a shaded area with a big table, the upper deck for the sun and two toilets.",
-        es: "A bordo caben hasta 60 personas: hay una zona a la sombra con una mesa grande, la cubierta superior para el sol y dos aseos."
+        es: "A bordo caben hasta 60 personas: hay una zona a la sombra con una mesa grande, la cubierta superior para el sol y dos aseos.",
+        fr: "Le bateau accueille jusqu'à 60 personnes : il y a un espace ombragé avec une grande table, le pont supérieur pour le soleil et deux toilettes."
       }
     ],
     image: "peter-pan.jpg",
@@ -926,7 +958,7 @@ const ESPLORA_CATALOG = [
     // L'unica scheda che parte da Los Gigantes: tutte le altre barche sono a
     // Puerto Colon, Los Cristianos o Marina Amarilla.
     zone: "Los Gigantes",
-    duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
+    duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas", fr: "2 ou 3 heures" },
     zoneGroups: ["los-gigantes"],
     durationGroups: ["breve", "mezza"],
     priceFrom: 33,
@@ -939,21 +971,22 @@ const ESPLORA_CATALOG = [
     // 12+ discende dai bambini 2-11: sopra gli 11 non c'e' altra fascia.
     ages: { adult: "12+", child: "2-11", infant: "0-1" },
     options: {
-      label: { it: "Durata", en: "Duration", es: "Duración" },
+      label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée" },
       choices: [
         {
-          label: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          label: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" },
           priceAdult: 33,
           priceChild: 23,
           times: ["17:30"],
           desc: {
             it: "Il giro corto, per vedere balene e delfini senza starci mezza giornata. Non c'è la sosta bagno e non si mangia, ma le bevande sono comprese. Partenza alle 17:30.",
             en: "The short trip, to see whales and dolphins without giving up half a day. There is no swim stop and no meal, but drinks are included. Leaving at 17:30.",
-            es: "La salida corta, para ver ballenas y delfines sin dedicarle media jornada. No hay parada de baño ni comida, pero las bebidas están incluidas. Salida a las 17:30."
+            es: "La salida corta, para ver ballenas y delfines sin dedicarle media jornada. No hay parada de baño ni comida, pero las bebidas están incluidas. Salida a las 17:30.",
+            fr: "La sortie courte, pour voir baleines et dauphins sans y passer une demi-journée. Il n'y a ni arrêt baignade ni repas, mais les boissons sont comprises. Départ à 17:30."
           }
         },
         {
-          label: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          label: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
           priceAdult: 40,
           priceChild: 25,
           times: ["11:30"],
@@ -961,11 +994,12 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Balene e delfini, poi le scogliere di Masca e Los Gigantes e la sosta bagno nella baia di Diego Hernández, dove c'è anche una teleferica per tuffarsi. Pranzo con paella di pollo e frutta, bevande comprese. Partenza alle 11:30.",
             en: "Whales and dolphins, then the cliffs of Masca and Los Gigantes and a swim stop in Diego Hernández bay, where there is also a zip line to dive from. Lunch of chicken paella and fruit, drinks included. Leaving at 11:30.",
-            es: "Ballenas y delfines, luego los acantilados de Masca y Los Gigantes y la parada de baño en la bahía de Diego Hernández, donde hay también una tirolina para tirarse al agua. Comida de paella de pollo y fruta, bebidas incluidas. Salida a las 11:30."
+            es: "Ballenas y delfines, luego los acantilados de Masca y Los Gigantes y la parada de baño en la bahía de Diego Hernández, donde hay también una tirolina para tirarse al agua. Comida de paella de pollo y fruta, bebidas incluidas. Salida a las 11:30.",
+            fr: "Baleines et dauphins, puis les falaises de Masca et de Los Gigantes et un arrêt baignade dans la baie de Diego Hernández, où il y a aussi une tyrolienne d'où plonger. Déjeuner de paella au poulet et fruits, boissons comprises. Départ à 11:30."
           }
         },
         {
-          label: { it: "3 ore con navetta", en: "3 hours with shuttle", es: "3 horas con lanzadera" },
+          label: { it: "3 ore con navetta", en: "3 hours with shuttle", es: "3 horas con lanzadera", fr: "3 heures avec navette" },
           priceAdult: 44,
           priceChild: 29,
           times: ["11:30"],
@@ -973,7 +1007,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Lo stesso giro di tre ore, con il passaggio per andare e tornare dal porto: utile perché Los Gigantes è lontano dagli alberghi del sud. Partenza alle 11:30.",
             en: "The same three-hour trip, with a ride to and from the harbour: useful because Los Gigantes is a long way from the southern hotels. Leaving at 11:30.",
-            es: "La misma salida de tres horas, con el traslado de ida y vuelta al puerto: útil porque Los Gigantes queda lejos de los hoteles del sur. Salida a las 11:30."
+            es: "La misma salida de tres horas, con el traslado de ida y vuelta al puerto: útil porque Los Gigantes queda lejos de los hoteles del sur. Salida a las 11:30.",
+            fr: "La même sortie de trois heures, avec l'aller-retour jusqu'au port : utile, car Los Gigantes est loin des hôtels du sud. Départ à 11:30."
           }
         }
       ]
@@ -985,28 +1020,33 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Una goletta di legno costruita a mano a Tenerife, la prima di questa misura: ci sono voluti diciotto mesi a quattro fratelli falegnami di Alcalá, polena a forma di delfino compresa. Parte da Los Gigantes per andare a cercare balene e delfini sotto le scogliere.",
       en: "A wooden schooner built by hand in Tenerife, the first of this size: it took four carpenter brothers from Alcalá eighteen months, dolphin figurehead included. It leaves from Los Gigantes to look for whales and dolphins below the cliffs.",
-      es: "Una goleta de madera construida a mano en Tenerife, la primera de este tamaño: cuatro hermanos carpinteros de Alcalá tardaron dieciocho meses, mascarón de delfín incluido. Sale de Los Gigantes a buscar ballenas y delfines bajo los acantilados."
+      es: "Una goleta de madera construida a mano en Tenerife, la primera de este tamaño: cuatro hermanos carpinteros de Alcalá tardaron dieciocho meses, mascarón de delfín incluido. Sale de Los Gigantes a buscar ballenas y delfines bajo los acantilados.",
+      fr: "Une goélette en bois construite à la main à Tenerife, la première de cette taille : il a fallu dix-huit mois à quatre frères charpentiers d'Alcalá, figure de proue en dauphin comprise. Elle part de Los Gigantes à la recherche des baleines et des dauphins au pied des falaises."
     },
     notes: [
       {
         it: "Si parte dal porto di Los Gigantes, dove c'è il parcheggio. Arriva 10 minuti prima della partenza.",
         en: "You leave from Los Gigantes harbour, where there is parking. Get there 10 minutes before departure.",
-        es: "Se sale del puerto de Los Gigantes, donde hay aparcamiento. Llega 10 minutos antes de la salida."
+        es: "Se sale del puerto de Los Gigantes, donde hay aparcamiento. Llega 10 minutos antes de la salida.",
+        fr: "On part du port de Los Gigantes, où il y a un parking. Arrivez 10 minutes avant le départ."
       },
       {
         it: "Si va quasi tutti i giorni, ma non proprio tutti: quando mandi la richiesta ti confermiamo se quel giorno si parte.",
         en: "It runs almost every day, but not quite every day: when you send your request we will confirm whether it sails that day.",
-        es: "Se hace casi todos los días, pero no todos: cuando mandes la solicitud te confirmamos si ese día sale."
+        es: "Se hace casi todos los días, pero no todos: cuando mandes la solicitud te confirmamos si ese día sale.",
+        fr: "Elle sort presque tous les jours, mais pas vraiment tous : quand vous envoyez la demande, nous vous confirmons si elle part ce jour-là."
       },
       {
         it: "A bordo si sta fino a 91 persone, e c'è una guida che racconta cosa si sta vedendo.",
         en: "The boat takes up to 91 people, and there is a guide who explains what you are looking at.",
-        es: "A bordo caben hasta 91 personas, y hay un guía que cuenta lo que se está viendo."
+        es: "A bordo caben hasta 91 personas, y hay un guía que cuenta lo que se está viendo.",
+        fr: "Le bateau accueille jusqu'à 91 personnes, et un guide explique ce que l'on voit."
       },
       {
         it: "Sul giro di tre ore portati costume e crema solare: la sosta bagno è la parte migliore.",
         en: "On the three-hour trip bring swimwear and sun cream: the swim stop is the best part.",
-        es: "En la salida de tres horas lleva bañador y crema solar: la parada de baño es lo mejor."
+        es: "En la salida de tres horas lleva bañador y crema solar: la parada de baño es lo mejor.",
+        fr: "Pour la sortie de trois heures, apportez maillot de bain et crème solaire : l'arrêt baignade est le meilleur moment."
       }
     ],
     image: "flipper-one.jpg",
@@ -1018,7 +1058,7 @@ const ESPLORA_CATALOG = [
     title: "Submarine Safari",
     category: "mare-barche",
     zone: "Marina Amarilla",
-    duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+    duration: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["breve"],
     times: ["10:00", "13:00"],
@@ -1038,7 +1078,8 @@ const ESPLORA_CATALOG = [
     transfer: {
       it: "Dal sud incluso nel prezzo, dal nord €13 a adulto e €8 a bambino.",
       en: "Included in the price from the south; from the north €13 per adult and €8 per child.",
-      es: "Desde el sur incluido en el precio; desde el norte 13 € por adulto y 8 € por niño."
+      es: "Desde el sur incluido en el precio; desde el norte 13 € por adulto y 8 € por niño.",
+      fr: "Compris dans le prix depuis le sud ; depuis le nord, €13 par adulte et €8 par enfant."
     },
     transferPrice: { adult: 74, child: 45 },
     // I due prezzi qui sopra servono al **totale**, non da leggere: quanto costa
@@ -1051,34 +1092,40 @@ const ESPLORA_CATALOG = [
       {
         it: "Si scende tutti i giorni tranne il sabato.",
         en: "It runs every day except Saturday.",
-        es: "Se hace todos los días excepto el sábado."
+        es: "Se hace todos los días excepto el sábado.",
+        fr: "Il fonctionne tous les jours sauf le samedi."
       },
       {
         it: "Si parte dal porto di Marina Amarilla, a San Miguel de Abona, zona Amarilla Golf. Arriva almeno 15 minuti prima.",
         en: "You leave from Marina Amarilla harbour, in San Miguel de Abona, the Amarilla Golf area. Get there at least 15 minutes early.",
-        es: "Se sale del puerto de Marina Amarilla, en San Miguel de Abona, zona Amarilla Golf. Llega al menos 15 minutos antes."
+        es: "Se sale del puerto de Marina Amarilla, en San Miguel de Abona, zona Amarilla Golf. Llega al menos 15 minutos antes.",
+        fr: "On part du port de Marina Amarilla, à San Miguel de Abona, dans la zone d'Amarilla Golf. Arrivez au moins 15 minutes en avance."
       },
       {
         it: "Si sale dai 2 anni in su, e sotto i 16 bisogna essere accompagnati da un adulto.",
         en: "Children can board from age 2, and under-16s must be with an adult.",
-        es: "Se puede subir a partir de los 2 años, y los menores de 16 deben ir acompañados por un adulto."
+        es: "Se puede subir a partir de los 2 años, y los menores de 16 deben ir acompañados por un adulto.",
+        fr: "Les enfants peuvent monter dès 2 ans, et les moins de 16 ans doivent être accompagnés d'un adulte."
       },
       {
         it: "Prima di salire si fa una spiegazione sulla sicurezza, poi si prende posto.",
         en: "Before boarding there is a safety briefing, then you take your seat.",
-        es: "Antes de embarcar se hace una explicación de seguridad y luego se toma asiento."
+        es: "Antes de embarcar se hace una explicación de seguridad y luego se toma asiento.",
+        fr: "Avant d'embarquer, il y a un briefing de sécurité, puis on prend place."
       },
       {
         it: "Se soffri il mal di mare, prendi le tue precauzioni prima di salire a bordo.",
         en: "If you get seasick, take your precautions before boarding.",
-        es: "Si te mareas en el mar, toma tus precauciones antes de embarcar."
+        es: "Si te mareas en el mar, toma tus precauciones antes de embarcar.",
+        fr: "Si vous avez le mal de mer, prenez vos précautions avant de monter à bord."
       }
     ],
     family: true,
     desc: {
       it: "Il sottomarino giallo scende fra i 30 e i 60 metri, e si guarda il fondale restando all'asciutto. Ogni posto ha il suo oblò e uno schermo che dice a che profondità si è e che temperatura fa fuori. Sotto passano pesci e razze, e ogni tanto anche i delfini. Dura circa un'ora.",
       en: "The yellow submarine goes down between 30 and 60 metres, and you watch the seabed while staying dry. Every seat has its own porthole and a screen telling you how deep you are and the temperature outside. Fish and stingrays go past, and now and then dolphins too. It lasts about an hour.",
-      es: "El submarino amarillo baja entre 30 y 60 metros, y se mira el fondo sin mojarse. Cada asiento tiene su ojo de buey y una pantalla que dice a qué profundidad estás y qué temperatura hace fuera. Abajo pasan peces y rayas, y de vez en cuando también delfines. Dura alrededor de una hora."
+      es: "El submarino amarillo baja entre 30 y 60 metros, y se mira el fondo sin mojarse. Cada asiento tiene su ojo de buey y una pantalla que dice a qué profundidad estás y qué temperatura hace fuera. Abajo pasan peces y rayas, y de vez en cuando también delfines. Dura alrededor de una hora.",
+      fr: "Le sous-marin jaune descend entre 30 et 60 mètres, et on regarde les fonds marins en restant au sec. Chaque siège a son hublot et un écran qui indique la profondeur et la température extérieure. Poissons et raies passent devant, et parfois aussi des dauphins. Cela dure environ une heure."
     },
     image: "submarine-safari.jpg",
     gallery: ["submarine-safari-2.jpg", "submarine-safari-3.jpg"],
@@ -1086,10 +1133,10 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "pesca-altura",
-    title: { it: "Pesca d'altura", en: "Deep sea fishing", es: "Pesca de altura" },
+    title: { it: "Pesca d'altura", en: "Deep sea fishing", es: "Pesca de altura", fr: "Pêche en haute mer" },
     category: "mare-barche",
     zone: "Puerto Colón",
-    duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
+    duration: { it: "4 ore", en: "4 hours", es: "4 horas", fr: "4 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
     times: ["09:00", "14:00"],
@@ -1102,37 +1149,40 @@ const ESPLORA_CATALOG = [
     // guardare). Vedi i consigli.
     ages: { child: "8-10" },
     options: {
-      label: { it: "Formula", en: "Option", es: "Fórmula" },
+      label: { it: "Formula", en: "Option", es: "Fórmula", fr: "Option" },
       choices: [
         {
-          label: { it: "4 ore, in condivisione", en: "4 hours, shared", es: "4 horas, compartido" },
+          label: { it: "4 ore, in condivisione", en: "4 hours, shared", es: "4 horas, compartido", fr: "4 heures, partagée" },
           priceAdult: 85,
           priceChild: 69,
-          duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
+          duration: { it: "4 ore", en: "4 hours", es: "4 horas", fr: "4 heures" },
           desc: {
             it: "Si esce insieme ad altri, fino a 10 persone in tutto, e ognuno che vuole pescare ha la sua canna. Quattro ore al largo, partenza alle 9:00 o alle 14:00.",
             en: "You go out with others, up to 10 people in all, and everyone who wants to fish gets their own rod. Four hours offshore, leaving at 9:00 or 14:00.",
-            es: "Se sale junto a otras personas, hasta 10 en total, y cada uno que quiera pescar tiene su caña. Cuatro horas mar adentro, salida a las 9:00 o a las 14:00."
+            es: "Se sale junto a otras personas, hasta 10 en total, y cada uno que quiera pescar tiene su caña. Cuatro horas mar adentro, salida a las 9:00 o a las 14:00.",
+            fr: "Vous sortez avec d'autres personnes, 10 au maximum en tout, et chacun de ceux qui veulent pêcher a sa propre canne. Quatre heures au large, départ à 9:00 ou à 14:00."
           }
         },
         {
-          label: { it: "Charter privato, fino a 7", en: "Private charter, up to 7", es: "Chárter privado, hasta 7" },
+          label: { it: "Charter privato, fino a 7", en: "Private charter, up to 7", es: "Chárter privado, hasta 7", fr: "Charter privé, jusqu'à 7" },
           price: 525,
-          duration: { it: "Da 4 ore", en: "From 4 hours", es: "Desde 4 horas" },
+          duration: { it: "Da 4 ore", en: "From 4 hours", es: "Desde 4 horas", fr: "À partir de 4 heures" },
           desc: {
             it: "La barca solo per il tuo gruppo, fino a 7 persone: da €525. Da sei ore in su sono compresi anche panini e stuzzichini. Il prezzo è della barca intera, non a persona.",
             en: "The boat just for your group, up to 7 people: from €525. From six hours upwards sandwiches and snacks are included too. The price is for the whole boat, not per person.",
-            es: "El barco solo para tu grupo, hasta 7 personas: desde 525 €. A partir de seis horas se incluyen también bocadillos y aperitivos. El precio es del barco entero, no por persona."
+            es: "El barco solo para tu grupo, hasta 7 personas: desde 525 €. A partir de seis horas se incluyen también bocadillos y aperitivos. El precio es del barco entero, no por persona.",
+            fr: "Le bateau rien que pour votre groupe, jusqu'à 7 personnes : à partir de €525. À partir de six heures, sandwichs et en-cas sont compris aussi. Le prix est pour tout le bateau, pas par personne."
           }
         },
         {
-          label: { it: "Charter privato, fino a 10", en: "Private charter, up to 10", es: "Chárter privado, hasta 10" },
+          label: { it: "Charter privato, fino a 10", en: "Private charter, up to 10", es: "Chárter privado, hasta 10", fr: "Charter privé, jusqu'à 10" },
           price: 700,
-          duration: { it: "Da 4 ore", en: "From 4 hours", es: "Desde 4 horas" },
+          duration: { it: "Da 4 ore", en: "From 4 hours", es: "Desde 4 horas", fr: "À partir de 4 heures" },
           desc: {
             it: "Come sopra ma con più posto: fino a 10 persone, da €700. Da sei ore in su sono compresi anche panini e stuzzichini. Il prezzo è della barca intera, non a persona.",
             en: "As above but with more room: up to 10 people, from €700. From six hours upwards sandwiches and snacks are included too. The price is for the whole boat, not per person.",
-            es: "Como arriba pero con más sitio: hasta 10 personas, desde 700 €. A partir de seis horas se incluyen también bocadillos y aperitivos. El precio es del barco entero, no por persona."
+            es: "Como arriba pero con más sitio: hasta 10 personas, desde 700 €. A partir de seis horas se incluyen también bocadillos y aperitivos. El precio es del barco entero, no por persona.",
+            fr: "Comme ci-dessus mais avec plus de place : jusqu'à 10 personnes, à partir de €700. À partir de six heures, sandwichs et en-cas sont compris aussi. Le prix est pour tout le bateau, pas par personne."
           }
         }
       ]
@@ -1142,39 +1192,46 @@ const ESPLORA_CATALOG = [
       {
         it: "Il pesce preso non si può portare a casa: si pesca e si rimette in mare, oppure resta alla barca.",
         en: "You cannot take your catch home: you fish and release, or the catch stays with the boat.",
-        es: "El pescado que se captura no se puede llevar a casa: se pesca y se devuelve al mar, o se queda en el barco."
+        es: "El pescado que se captura no se puede llevar a casa: se pesca y se devuelve al mar, o se queda en el barco.",
+        fr: "On ne peut pas emporter le poisson pêché : on pêche et on relâche, ou la prise reste au bateau."
       },
       {
         it: "Chi viene solo a guardare paga €69, anche da adulto: a bordo ci sono i lettini e una zona d'ombra per chi non pesca. Dillo nelle note della richiesta.",
         en: "Anyone coming just to watch pays €69, adults included: there are sunbeds and a shaded area on board for those not fishing. Say so in the notes of your request.",
-        es: "Quien viene solo a mirar paga 69 €, también los adultos: a bordo hay tumbonas y una zona de sombra para quien no pesca. Dilo en las notas de la solicitud."
+        es: "Quien viene solo a mirar paga 69 €, también los adultos: a bordo hay tumbonas y una zona de sombra para quien no pesca. Dilo en las notas de la solicitud.",
+        fr: "Ceux qui viennent seulement pour regarder paient €69, adultes compris : à bord, il y a des transats et un espace à l'ombre pour ceux qui ne pêchent pas. Indiquez-le dans les notes de la demande."
       },
       {
         it: "I bambini dagli 8 ai 10 anni che pescano pagano €69. Per i più piccoli chiedici: dipende dall'uscita.",
         en: "Children aged 8 to 10 who fish pay €69. For younger ones ask us: it depends on the trip.",
-        es: "Los niños de 8 a 10 años que pescan pagan 69 €. Para los más pequeños pregúntanos: depende de la salida."
+        es: "Los niños de 8 a 10 años que pescan pagan 69 €. Para los más pequeños pregúntanos: depende de la salida.",
+        fr: "Les enfants de 8 à 10 ans qui pêchent paient €69. Pour les plus petits, demandez-nous : cela dépend de la sortie."
       },
       {
         it: "Le canne ci sono per tutti quelli che pescano, e l'attrezzatura la mette la barca: esche e terminali compresi. Si va di traina e di jigging, secondo la stagione.",
         en: "There are rods for everyone who fishes, and the boat provides the tackle: bait and rigs included. You troll and jig, depending on the season.",
-        es: "Hay cañas para todos los que pescan, y el barco pone el equipo: cebos y aparejos incluidos. Se va al curricán y al jigging, según la temporada."
+        es: "Hay cañas para todos los que pescan, y el barco pone el equipo: cebos y aparejos incluidos. Se va al curricán y al jigging, según la temporada.",
+        fr: "Il y a des cannes pour tous ceux qui pêchent, et le bateau fournit le matériel : appâts et montages compris. On pêche à la traîne et au jig, selon la saison."
       },
       {
         it: "A bordo c'è la toilette e un frigo con le bevande fredde, che si prendono da soli.",
         en: "There is a toilet on board and a fridge with cold drinks, which you help yourself to.",
-        es: "A bordo hay aseo y una nevera con bebidas frías, que se cogen uno mismo."
+        es: "A bordo hay aseo y una nevera con bebidas frías, que se cogen uno mismo.",
+        fr: "Il y a des toilettes à bord et un frigo avec des boissons fraîches, en libre-service."
       },
       {
         it: "Si parte da Puerto Colón: arriva almeno 10 minuti prima. Al porto c'è parcheggio.",
         en: "You leave from Puerto Colón: get there at least 10 minutes early. There is parking at the marina.",
-        es: "Se sale de Puerto Colón: llega al menos 10 minutos antes. En el puerto hay aparcamiento."
+        es: "Se sale de Puerto Colón: llega al menos 10 minutos antes. En el puerto hay aparcamiento.",
+        fr: "On part de Puerto Colón : arrivez au moins 10 minutes en avance. Il y a un parking à la marina."
       }
     ],
     family: true,
     desc: {
       it: "Quattro ore a pesca al largo di Puerto Colón, a bordo della No Limits. Si cercano tonni, marlin e lampughe, e la canna ce l'ha chiunque voglia provare, anche chi non ha mai pescato: l'equipaggio lavora in queste acque da più di vent'anni. Chi non pesca ha i lettini e la zona d'ombra. Si sceglie fra l'uscita in condivisione e la barca tutta per sé.",
       en: "Four hours fishing offshore from Puerto Colón, aboard the No Limits. You go after tuna, marlin and dorado, and anyone who wants to try gets a rod, first-timers included: the crew has been working these waters for over twenty years. Those not fishing have sunbeds and a shaded area. Choose between the shared trip and having the boat to yourselves.",
-      es: "Cuatro horas de pesca mar adentro desde Puerto Colón, a bordo del No Limits. Se buscan atunes, marlines y dorados, y tiene caña cualquiera que quiera probar, también quien no ha pescado nunca: la tripulación lleva más de veinte años en estas aguas. Quien no pesca tiene tumbonas y zona de sombra. Se elige entre la salida compartida y el barco entero para ti."
+      es: "Cuatro horas de pesca mar adentro desde Puerto Colón, a bordo del No Limits. Se buscan atunes, marlines y dorados, y tiene caña cualquiera que quiera probar, también quien no ha pescado nunca: la tripulación lleva más de veinte años en estas aguas. Quien no pesca tiene tumbonas y zona de sombra. Se elige entre la salida compartida y el barco entero para ti.",
+      fr: "Quatre heures de pêche au large de Puerto Colón, à bord du No Limits. On cherche le thon, le marlin et la dorade coryphène, et quiconque veut essayer a une canne, débutants compris : l'équipage connaît ces eaux depuis plus de vingt ans. Ceux qui ne pêchent pas ont des transats et un espace à l'ombre. On choisit entre la sortie partagée et le bateau rien que pour vous."
     },
     image: "pesca-altura.jpg",
     published: true
@@ -1184,7 +1241,7 @@ const ESPLORA_CATALOG = [
     title: "Luxury Catamaran Experience",
     category: "mare-barche",
     zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
     // Partenze dal proprietario, 9 ottobre 2026.
@@ -1199,16 +1256,19 @@ const ESPLORA_CATALOG = [
     notes: [
       { it: "Presentati 15 minuti prima della partenza.",
         en: "Please arrive 15 minutes before departure.",
-        es: "Preséntate 15 minutos antes de la salida." },
+        es: "Preséntate 15 minutos antes de la salida.",
+        fr: "Merci d'arriver 15 minutes avant le départ." },
       { it: "Porta asciugamano, costume e protezione solare.",
         en: "Bring a towel, swimwear and sun protection.",
-        es: "Trae toalla, bañador y protección solar." }
+        es: "Trae toalla, bañador y protección solar.",
+        fr: "Apportez une serviette, un maillot de bain et une protection solaire." }
     ],
     family: true,
     desc: {
       it: "Catamarano di categoria superiore, con un massimo di 22 persone a bordo: atmosfera rilassata, avvistamento di delfini e balene e aree lounge per stare comodi.",
       en: "An upscale catamaran with a maximum of 22 guests on board: a relaxed atmosphere, dolphin and whale watching, and plush lounging areas.",
-      es: "Catamarán de categoría superior, con un máximo de 22 personas a bordo: ambiente relajado, avistamiento de delfines y ballenas y zonas lounge para estar cómodos."
+      es: "Catamarán de categoría superior, con un máximo de 22 personas a bordo: ambiente relajado, avistamiento de delfines y ballenas y zonas lounge para estar cómodos.",
+      fr: "Un catamaran haut de gamme avec 22 passagers au maximum à bord : ambiance détendue, observation des dauphins et des baleines, et des espaces de détente confortables."
     },
     image: "luxury-catamaran.jpg",
     gallery: ["luxury-catamaran-2.jpg", "luxury-catamaran-3.jpg", "luxury-catamaran-4.jpg", "luxury-catamaran-5.jpg"],
@@ -1219,7 +1279,7 @@ const ESPLORA_CATALOG = [
     title: "Small Group Catamaran",
     category: "mare-barche",
     zone: "Puerto Colón",
-    duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas" },
+    duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas", fr: "3 ou 6 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza", "intera"],
     priceFrom: 60,
@@ -1228,24 +1288,25 @@ const ESPLORA_CATALOG = [
     priceInfant: 0,
     ages: { adult: "12+", child: "3-11", infant: "0-2" },
     options: {
-      label: { it: "Formula", en: "Option", es: "Fórmula" },
+      label: { it: "Formula", en: "Option", es: "Fórmula", fr: "Option" },
       choices: [
         {
-          label: { it: "3 ore, in condivisione", en: "3 hours, shared", es: "3 horas, compartido" },
+          label: { it: "3 ore, in condivisione", en: "3 hours, shared", es: "3 horas, compartido", fr: "3 heures, partagée" },
           priceAdult: 60,
           priceChild: 30,
-          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
           times: ["09:30", "12:30"],
           desc: {
             it: "Si sale insieme ad altri e si fa lo stesso giro del charter privato, spendendo meno. Tre ore lungo la costa, con sosta bagno, snorkeling e paella di pollo a bordo. Tutti i giorni alle 9:30 e alle 12:30.",
             en: "You share the boat with others and do the same route as the private charter, for less. Three hours along the coast, with a swim stop, snorkelling and chicken paella on board. Every day at 9:30 and 12:30.",
-            es: "Se sube junto a otras personas y se hace la misma ruta que el chárter privado, gastando menos. Tres horas por la costa, con parada de baño, snorkel y paella de pollo a bordo. Todos los días a las 9:30 y a las 12:30."
+            es: "Se sube junto a otras personas y se hace la misma ruta que el chárter privado, gastando menos. Tres horas por la costa, con parada de baño, snorkel y paella de pollo a bordo. Todos los días a las 9:30 y a las 12:30.",
+            fr: "Vous partagez le bateau avec d'autres personnes et faites le même parcours que le charter privé, pour moins cher. Trois heures le long de la côte, avec arrêt baignade, snorkeling et paella au poulet à bord. Tous les jours à 9:30 et 12:30."
           }
         },
         {
-          label: { it: "Charter privato", en: "Private charter", es: "Chárter privado" },
+          label: { it: "Charter privato", en: "Private charter", es: "Chárter privado", fr: "Charter privé" },
           price: 800,
-          duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas" },
+          duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas", fr: "3 ou 6 heures" },
           // Lista vuota, non campo mancante: il charter privato non ha orari
           // fissi, l'ora si concorda. Senza questa riga sarebbero comparse le
           // fasce segnaposto, cioe' degli orari inventati.
@@ -1253,7 +1314,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "La barca solo per il tuo gruppo: da €800, tre ore oppure sei. Con sei ore si gira più in largo, si vedono più cale e si sta più tempo in acqua. Si può fare anche al tramonto. Il prezzo è della barca intera, non a persona: scrivici quante siete e quante ore vuoi.",
             en: "The boat just for your group: from €800, three hours or six. With six hours you range further, see more coves and stay longer in the water. It can also be done at sunset. The price is for the whole boat, not per person: tell us how many you are and how many hours you want.",
-            es: "El barco solo para tu grupo: desde 800 €, tres horas o seis. Con seis horas se va más lejos, se ven más calas y se está más tiempo en el agua. También se puede hacer al atardecer. El precio es del barco entero, no por persona: escríbenos cuántos sois y cuántas horas quieres."
+            es: "El barco solo para tu grupo: desde 800 €, tres horas o seis. Con seis horas se va más lejos, se ven más calas y se está más tiempo en el agua. También se puede hacer al atardecer. El precio es del barco entero, no por persona: escríbenos cuántos sois y cuántas horas quieres.",
+            fr: "Le bateau rien que pour votre groupe : à partir de €800, trois heures ou six. Avec six heures, on va plus loin, on voit plus de criques et on reste plus longtemps dans l'eau. On peut aussi le faire au coucher du soleil. Le prix est pour tout le bateau, pas par personne : dites-nous combien vous êtes et combien d'heures vous voulez."
           }
         }
       ]
@@ -1263,34 +1325,40 @@ const ESPLORA_CATALOG = [
       {
         it: "Le bevande comprese sono analcoliche, birra e acqua.",
         en: "The drinks included are soft drinks, beer and water.",
-        es: "Las bebidas incluidas son refrescos, cerveza y agua."
+        es: "Las bebidas incluidas son refrescos, cerveza y agua.",
+        fr: "Les boissons comprises sont sodas, bière et eau."
       },
       {
         it: "A bordo c'è la toilette, che su una barca di questo tipo non è scontato.",
         en: "There is a toilet on board, which is not a given on a boat like this.",
-        es: "A bordo hay aseo, que en un barco de este tipo no se da por hecho."
+        es: "A bordo hay aseo, que en un barco de este tipo no se da por hecho.",
+        fr: "Il y a des toilettes à bord, ce qui n'est pas évident sur un bateau comme celui-ci."
       },
       {
         it: "Nel prezzo ci sono anche l'equipaggio e l'assicurazione.",
         en: "The crew and the insurance are included in the price as well.",
-        es: "En el precio están también la tripulación y el seguro."
+        es: "En el precio están también la tripulación y el seguro.",
+        fr: "L'équipage et l'assurance sont aussi compris dans le prix."
       },
       {
         it: "Presentati 15 minuti prima della partenza.",
         en: "Please arrive 15 minutes before departure.",
-        es: "Preséntate 15 minutos antes de la salida."
+        es: "Preséntate 15 minutos antes de la salida.",
+        fr: "Merci d'arriver 15 minutes avant le départ."
       },
       {
         it: "Porta asciugamano, costume e protezione solare.",
         en: "Bring a towel, swimwear and sun protection.",
-        es: "Trae toalla, bañador y protección solar."
+        es: "Trae toalla, bañador y protección solar.",
+        fr: "Apportez une serviette, un maillot de bain et une protection solaire."
       }
     ],
     family: true,
     desc: {
       it: "Un catamarano che porta fino a 23 persone: quasi nessuna barca privata a Tenerife ne porta più di 12. Si parte da Puerto Colón, si cercano delfini e balene e ci si ferma nelle cale per il bagno e lo snorkeling, con la paella di pollo a bordo. Si sceglie fra il giro di tre ore in condivisione e la barca tutta per sé, per tre o sei ore.",
       en: "A catamaran that takes up to 23 people: hardly any private boat in Tenerife takes more than 12. You leave Puerto Colón, look for dolphins and whales and stop in the coves to swim and snorkel, with chicken paella on board. Choose between the shared three-hour trip and having the boat to yourselves, for three hours or six.",
-      es: "Un catamarán que lleva hasta 23 personas: casi ningún barco privado en Tenerife lleva más de 12. Se sale de Puerto Colón, se buscan delfines y ballenas y se para en las calas para bañarse y hacer snorkel, con paella de pollo a bordo. Se elige entre la salida de tres horas compartida y el barco entero para ti, tres horas o seis."
+      es: "Un catamarán que lleva hasta 23 personas: casi ningún barco privado en Tenerife lleva más de 12. Se sale de Puerto Colón, se buscan delfines y ballenas y se para en las calas para bañarse y hacer snorkel, con paella de pollo a bordo. Se elige entre la salida de tres horas compartida y el barco entero para ti, tres horas o seis.",
+      fr: "Un catamaran qui accueille jusqu'à 23 personnes : à Tenerife, presque aucun bateau privé n'en prend plus de 12. On part de Puerto Colón, on cherche dauphins et baleines et on s'arrête dans les criques pour se baigner et faire du snorkeling, avec paella au poulet à bord. On choisit entre la sortie partagée de trois heures et le bateau rien que pour vous, trois heures ou six."
     },
     image: "small-group-catamaran.jpg",
     gallery: ["small-group-catamaran-2.jpg", "small-group-catamaran-3.jpg", "small-group-catamaran-4.jpg"],
@@ -1301,7 +1369,7 @@ const ESPLORA_CATALOG = [
     title: "Utopia Boat Party",
     category: "mare-barche",
     zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
     times: ["12:30"],
@@ -1314,42 +1382,46 @@ const ESPLORA_CATALOG = [
     // vogliono dire "non lo sappiamo", vogliono dire "non puo' venire".
     ages: { adult: "18+" },
     options: {
-      label: { it: "Biglietto", en: "Ticket", es: "Entrada" },
+      label: { it: "Biglietto", en: "Ticket", es: "Entrada", fr: "Billet" },
       choices: [
         {
-          label: { it: "Basic", en: "Basic", es: "Basic" },
+          label: { it: "Basic", en: "Basic", es: "Basic", fr: "Basic" },
           priceAdult: 75,
           desc: {
             it: "Quattro consumazioni a scelta: superalcolici locali, birra Victoria Málaga o analcoliche.",
             en: "Four drinks of your choice: local spirits, Victoria Málaga beer or soft drinks.",
-            es: "Cuatro consumiciones a elegir: licores locales, cerveza Victoria Málaga o refrescos."
+            es: "Cuatro consumiciones a elegir: licores locales, cerveza Victoria Málaga o refrescos.",
+            fr: "Quatre boissons au choix : alcools locaux, bière Victoria Málaga ou sodas."
           }
         },
         {
-          label: { it: "Standard", en: "Standard", es: "Standard" },
+          label: { it: "Standard", en: "Standard", es: "Standard", fr: "Standard" },
           priceAdult: 90,
           desc: {
             it: "Open bar per tutte e tre le ore: birra locale, superalcolici locali e mixer, senza limite.",
             en: "Open bar for the whole three hours: local beer, local spirits and mixers, no limit.",
-            es: "Barra libre durante las tres horas: cerveza local, licores locales y refrescos, sin límite."
+            es: "Barra libre durante las tres horas: cerveza local, licores locales y refrescos, sin límite.",
+            fr: "Open bar pendant les trois heures : bière locale, alcools locaux et softs, sans limite."
           }
         },
         {
-          label: { it: "Premium", en: "Premium", es: "Premium" },
+          label: { it: "Premium", en: "Premium", es: "Premium", fr: "Premium" },
           priceAdult: 110,
           desc: {
             it: "Open bar con le marche: Absolut, Bacardi, Havana, Beefeater, Disaronno, Malibu, Jim Beam e Ballantine's, più Red Bull e mixer premium.",
             en: "Open bar with the brands: Absolut, Bacardi, Havana, Beefeater, Disaronno, Malibu, Jim Beam and Ballantine's, plus Red Bull and premium mixers.",
-            es: "Barra libre con las marcas: Absolut, Bacardi, Havana, Beefeater, Disaronno, Malibu, Jim Beam y Ballantine's, además de Red Bull y refrescos premium."
+            es: "Barra libre con las marcas: Absolut, Bacardi, Havana, Beefeater, Disaronno, Malibu, Jim Beam y Ballantine's, además de Red Bull y refrescos premium.",
+            fr: "Open bar avec les marques : Absolut, Bacardi, Havana, Beefeater, Disaronno, Malibu, Jim Beam et Ballantine's, plus Red Bull et softs premium."
           }
         },
         {
-          label: { it: "VIP", en: "VIP", es: "VIP" },
+          label: { it: "VIP", en: "VIP", es: "VIP", fr: "VIP" },
           priceAdult: 130,
           desc: {
             it: "Tutto quello del Premium, più l'imbarco prioritario e l'accesso all'area VIP, che ha il suo bar.",
             en: "Everything in Premium, plus priority boarding and access to the VIP area, which has its own bar.",
-            es: "Todo lo del Premium, más embarque prioritario y acceso a la zona VIP, que tiene su propia barra."
+            es: "Todo lo del Premium, más embarque prioritario y acceso a la zona VIP, que tiene su propia barra.",
+            fr: "Tout ce qu'il y a dans Premium, plus l'embarquement prioritaire et l'accès à l'espace VIP, qui a son propre bar."
           }
         }
       ]
@@ -1359,39 +1431,46 @@ const ESPLORA_CATALOG = [
       {
         it: "Si fa il sabato.",
         en: "It runs on Saturdays.",
-        es: "Se hace los sábados."
+        es: "Se hace los sábados.",
+        fr: "Elle a lieu le samedi."
       },
       {
         it: "Solo maggiorenni: sotto i 18 anni non si sale.",
         en: "Over-18s only: under 18 you cannot board.",
-        es: "Solo mayores de edad: por debajo de los 18 años no se sube."
+        es: "Solo mayores de edad: por debajo de los 18 años no se sube.",
+        fr: "Réservée aux plus de 18 ans : en dessous de 18 ans, on ne monte pas à bord."
       },
       {
         it: "Il ritrovo è al Black Pearl Bar di Puerto Colón, dove si beve qualcosa insieme prima di salire e dove si torna dopo per l'after. Arriva almeno 15 minuti prima. Al porto c'è parcheggio.",
         en: "You meet at the Black Pearl Bar in Puerto Colón, where everyone has a drink together before boarding and where the after-party is afterwards. Get there at least 15 minutes early. There is parking at the marina.",
-        es: "El punto de encuentro es el Black Pearl Bar de Puerto Colón, donde se toma algo juntos antes de subir y donde se vuelve después para el after. Llega al menos 15 minutos antes. En el puerto hay aparcamiento."
+        es: "El punto de encuentro es el Black Pearl Bar de Puerto Colón, donde se toma algo juntos antes de subir y donde se vuelve después para el after. Llega al menos 15 minutos antes. En el puerto hay aparcamiento.",
+        fr: "Rendez-vous au Black Pearl Bar de Puerto Colón, où l'on boit un verre tous ensemble avant d'embarquer et où a lieu l'after ensuite. Arrivez au moins 15 minutes en avance. Il y a un parking à la marina."
       },
       {
         it: "Le foto fatte a bordo dai fotografi si scaricano dopo, gratis.",
         en: "The photos taken on board by the photographers can be downloaded afterwards, free.",
-        es: "Las fotos hechas a bordo por los fotógrafos se descargan después, gratis."
+        es: "Las fotos hechas a bordo por los fotógrafos se descargan después, gratis.",
+        fr: "Les photos prises à bord par les photographes se téléchargent ensuite, gratuitement."
       },
       {
         it: "Mangia qualcosa prima di salire e vacci piano con l'alcol prima della partenza: aiuta parecchio col mal di mare.",
         en: "Eat something before boarding and go easy on the alcohol beforehand: it helps a lot with seasickness.",
-        es: "Come algo antes de subir y ve con calma con el alcohol antes de salir: ayuda bastante con el mareo."
+        es: "Come algo antes de subir y ve con calma con el alcohol antes de salir: ayuda bastante con el mareo.",
+        fr: "Mangez quelque chose avant d'embarquer et allez-y doucement sur l'alcool avant : cela aide beaucoup contre le mal de mer."
       },
       {
         it: "Porta costume e crema solare.",
         en: "Bring swimwear and sunscreen.",
-        es: "Trae bañador y crema solar."
+        es: "Trae bañador y crema solar.",
+        fr: "Apportez maillot de bain et crème solaire."
       }
     ],
     family: false,
     desc: {
       it: "Tre ore di festa in barca da Puerto Colón, con DJ dal vivo, un impianto da 15.000 watt e musica house, reggaeton, hip hop e drum and bass. Si comincia con un bicchiere al Black Pearl e si finisce lì con l'after. Solo maggiorenni. Il biglietto si sceglie in base a quanto si beve: quattro consumazioni, oppure open bar per tutte e tre le ore.",
       en: "Three hours of boat party out of Puerto Colón, with live DJs, a 15,000-watt sound system and house, reggaeton, hip hop and drum and bass. It starts with a drink at the Black Pearl and ends there with the after-party. Over-18s only. You pick your ticket by how much you plan to drink: four drinks, or an open bar for the whole three hours.",
-      es: "Tres horas de fiesta en barco desde Puerto Colón, con DJ en directo, un equipo de 15.000 vatios y música house, reggaetón, hip hop y drum and bass. Se empieza con una copa en el Black Pearl y se termina allí con el after. Solo mayores de 18 años. La entrada se elige según cuánto se va a beber: cuatro consumiciones, o barra libre durante las tres horas."
+      es: "Tres horas de fiesta en barco desde Puerto Colón, con DJ en directo, un equipo de 15.000 vatios y música house, reggaetón, hip hop y drum and bass. Se empieza con una copa en el Black Pearl y se termina allí con el after. Solo mayores de 18 años. La entrada se elige según cuánto se va a beber: cuatro consumiciones, o barra libre durante las tres horas.",
+      fr: "Trois heures de boat party au départ de Puerto Colón, avec DJ en live, une sono de 15 000 watts et de la house, du reggaeton, du hip-hop et de la drum and bass. On commence par un verre au Black Pearl et on y finit avec l'after. Réservée aux plus de 18 ans. On choisit son billet selon ce qu'on compte boire : quatre boissons, ou l'open bar pendant les trois heures."
     },
     image: "party-boat.jpg",
     gallery: ["party-boat-2.jpg"],
@@ -1402,7 +1481,7 @@ const ESPLORA_CATALOG = [
     title: "Shogun",
     category: "mare-barche",
     zone: "Puerto Colón",
-    duration: { it: "5 ore", en: "5 hours", es: "5 horas" },
+    duration: { it: "5 ore", en: "5 hours", es: "5 horas", fr: "5 heures" },
     zoneGroups: ["costa-adeje", "teide-nord"],
     durationGroups: ["mezza"],
     times: ["11:00"],
@@ -1415,27 +1494,29 @@ const ESPLORA_CATALOG = [
     // 12+ discende dai bambini 3-11, e 0-2 tocca il 3 senza buchi.
     ages: { adult: "12+", child: "3-11", infant: "0-2" },
     options: {
-      label: { it: "Partenza", en: "Departure", es: "Salida" },
+      label: { it: "Partenza", en: "Departure", es: "Salida", fr: "Départ" },
       choices: [
         {
-          label: { it: "Dal sud", en: "From the south", es: "Desde el sur" },
+          label: { it: "Dal sud", en: "From the south", es: "Desde el sur", fr: "Depuis le sud" },
           priceAdult: 61,
           priceChild: 30,
           desc: {
             it: "La navetta ti prende in hotel nel sud dell'isola e ti riporta indietro, compresa nel prezzo. La barca parte alle 11:00 da Puerto Colón.",
             en: "The shuttle picks you up at your hotel in the south of the island and brings you back, included in the price. The boat leaves at 11:00 from Puerto Colón.",
-            es: "La lanzadera te recoge en el hotel en el sur de la isla y te devuelve, incluida en el precio. El barco sale a las 11:00 desde Puerto Colón."
+            es: "La lanzadera te recoge en el hotel en el sur de la isla y te devuelve, incluida en el precio. El barco sale a las 11:00 desde Puerto Colón.",
+            fr: "La navette vous prend à votre hôtel dans le sud de l'île et vous ramène, compris dans le prix. Le bateau part à 11:00 de Puerto Colón."
           }
         },
         {
-          label: { it: "Dal nord", en: "From the north", es: "Desde el norte" },
+          label: { it: "Dal nord", en: "From the north", es: "Desde el norte", fr: "Depuis le nord" },
           priceAdult: 65,
           priceChild: 32,
           zone: "Puerto de la Cruz",
           desc: {
             it: "Per chi alloggia nel nord: la navetta parte da Puerto de la Cruz e ti riporta indietro. Stessa gita, la barca parte alle 11:00 da Puerto Colón.",
             en: "For anyone staying in the north: the shuttle leaves from Puerto de la Cruz and brings you back. Same trip, the boat leaves at 11:00 from Puerto Colón.",
-            es: "Para quien se aloja en el norte: la lanzadera sale de Puerto de la Cruz y te devuelve. La misma salida, el barco parte a las 11:00 desde Puerto Colón."
+            es: "Para quien se aloja en el norte: la lanzadera sale de Puerto de la Cruz y te devuelve. La misma salida, el barco parte a las 11:00 desde Puerto Colón.",
+            fr: "Pour ceux qui logent dans le nord : la navette part de Puerto de la Cruz et vous ramène. Même sortie, le bateau part à 11:00 de Puerto Colón."
           }
         }
       ]
@@ -1445,39 +1526,46 @@ const ESPLORA_CATALOG = [
       {
         it: "Si fa il lunedì, il mercoledì, il giovedì, il venerdì e la domenica.",
         en: "It runs on Mondays, Wednesdays, Thursdays, Fridays and Sundays.",
-        es: "Se hace los lunes, miércoles, jueves, viernes y domingos."
+        es: "Se hace los lunes, miércoles, jueves, viernes y domingos.",
+        fr: "Elle a lieu le lundi, mercredi, jeudi, vendredi et dimanche."
       },
       {
         it: "La barca parte da Puerto Colón, pontile 14: arriva almeno 30 minuti prima.",
         en: "The boat leaves from Puerto Colón, pontoon 14: get there at least 30 minutes early.",
-        es: "El barco sale de Puerto Colón, pantalán 14: llega al menos 30 minutos antes."
+        es: "El barco sale de Puerto Colón, pantalán 14: llega al menos 30 minutos antes.",
+        fr: "Le bateau part de Puerto Colón, ponton 14 : arrivez au moins 30 minutes en avance."
       },
       {
         it: "A pranzo: riso con verdure, coscia di pollo arrosto, insalata, pane e frutta fresca. Fra le bevande comprese ci sono acqua, analcoliche, birra e vino, e le analcoliche sono a volontà.",
         en: "For lunch: rice with vegetables, a roast chicken drumstick, salad, bread and fresh fruit. The drinks included are water, soft drinks, beer and wine, and the soft drinks are unlimited.",
-        es: "Para comer: arroz con verduras, muslo de pollo asado, ensalada, pan y fruta fresca. Entre las bebidas incluidas hay agua, refrescos, cerveza y vino, y los refrescos son ilimitados."
+        es: "Para comer: arroz con verduras, muslo de pollo asado, ensalada, pan y fruta fresca. Entre las bebidas incluidas hay agua, refrescos, cerveza y vino, y los refrescos son ilimitados.",
+        fr: "Pour le déjeuner : riz aux légumes, cuisse de poulet rôti, salade, pain et fruits frais. Les boissons comprises sont eau, sodas, bière et vin, et les sodas sont à volonté."
       },
       {
         it: "A bordo ci sono tre bagni, uno attrezzato per chi ha difficoltà motorie: la barca è accessibile.",
         en: "There are three toilets on board, one fitted for guests with reduced mobility: the boat is accessible.",
-        es: "A bordo hay tres aseos, uno equipado para personas con movilidad reducida: el barco es accesible."
+        es: "A bordo hay tres aseos, uno equipado para personas con movilidad reducida: el barco es accesible.",
+        fr: "Il y a trois toilettes à bord, dont une adaptée aux personnes à mobilité réduite : le bateau est accessible."
       },
       {
         it: "Si fuma solo nelle zone apposite.",
         en: "Smoking is allowed only in the designated areas.",
-        es: "Solo se puede fumar en las zonas habilitadas."
+        es: "Solo se puede fumar en las zonas habilitadas.",
+        fr: "On ne peut fumer que dans les zones prévues."
       },
       {
         it: "Porta costume, asciugamano, crema solare e la macchina fotografica. E vacci piano con l'alcol prima di salire: aiuta col mal di mare.",
         en: "Bring swimwear, a towel, sunscreen and a camera. And go easy on the alcohol before boarding: it helps with seasickness.",
-        es: "Trae bañador, toalla, crema solar y la cámara. Y ve con calma con el alcohol antes de subir: ayuda con el mareo."
+        es: "Trae bañador, toalla, crema solar y la cámara. Y ve con calma con el alcohol antes de subir: ayuda con el mareo.",
+        fr: "Apportez maillot de bain, serviette, crème solaire et appareil photo. Et allez-y doucement sur l'alcool avant d'embarquer : cela aide contre le mal de mer."
       }
     ],
     family: true,
     desc: {
       it: "Una goletta orientale di 26 metri, tutta in teak, costruita per uno sceicco: è la barca più particolare che parte da Puerto Colón. Cinque ore, con mezz'ora passata accanto a delfini e balene, poi le scogliere di Los Gigantes e il bagno nella baia di Masca, con il pranzo servito a bordo. Su due ponti c'è posto per 135 persone e tanta ombra dove ripararsi. Ha la bandiera blu che si dà alle barche che si avvicinano ai cetacei rispettando le regole.",
       en: "A 26-metre oriental schooner, all teak, built for a sheikh: it is the most unusual boat leaving Puerto Colón. Five hours, with half an hour spent alongside dolphins and whales, then the cliffs of Los Gigantes and a swim in Masca bay, with lunch served on board. Across two decks there is room for 135 people and plenty of shade. It flies the blue flag given to boats that approach cetaceans by the rules.",
-      es: "Una goleta oriental de 26 metros, toda de teca, construida para un jeque: es el barco más singular que sale de Puerto Colón. Cinco horas, con media hora junto a delfines y ballenas, luego los acantilados de Los Gigantes y el baño en la bahía de Masca, con la comida servida a bordo. En dos cubiertas hay sitio para 135 personas y mucha sombra donde resguardarse. Lleva la bandera azul que se da a los barcos que se acercan a los cetáceos respetando las normas."
+      es: "Una goleta oriental de 26 metros, toda de teca, construida para un jeque: es el barco más singular que sale de Puerto Colón. Cinco horas, con media hora junto a delfines y ballenas, luego los acantilados de Los Gigantes y el baño en la bahía de Masca, con la comida servida a bordo. En dos cubiertas hay sitio para 135 personas y mucha sombra donde resguardarse. Lleva la bandera azul que se da a los barcos que se acercan a los cetáceos respetando las normas.",
+      fr: "Une goélette orientale de 26 mètres, tout en teck, construite pour un cheikh : c'est le bateau le plus insolite qui part de Puerto Colón. Cinq heures, dont une demi-heure aux côtés des dauphins et des baleines, puis les falaises de Los Gigantes et une baignade dans la baie de Masca, avec le déjeuner servi à bord. Sur deux ponts, il y a de la place pour 135 personnes et beaucoup d'ombre. Elle arbore le pavillon bleu donné aux bateaux qui approchent les cétacés dans les règles."
     },
     image: "shogun.jpg",
     gallery: ["shogun-2.jpg", "shogun-3.jpg"],
@@ -1488,7 +1576,7 @@ const ESPLORA_CATALOG = [
     title: "Opera 60",
     category: "mare-barche",
     zone: "Puerto Colón",
-    duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas" },
+    duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas", fr: "De 3 à 9 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza", "intera"],
     times: ["10:00", "13:30"],
@@ -1496,37 +1584,39 @@ const ESPLORA_CATALOG = [
     priceAdult: 0,
     priceChild: 0,
     // 12+ discende dai bambini 1-11. La fascia dei bebe' e' in mesi, quindi va
-    // scritta nelle tre lingue: "0-11" da solo si leggerebbe come anni.
+    // scritta nelle quattro lingue: "0-11" da solo si leggerebbe come anni.
     ages: {
       adult: "12+",
       child: "1-11",
-      infant: { it: "0-11 mesi", en: "0-11 months", es: "0-11 meses" }
+      infant: { it: "0-11 mesi", en: "0-11 months", es: "0-11 meses", fr: "0-11 mois" }
     },
     priceInfant: 0,
     options: {
-      label: { it: "Formula", en: "Option", es: "Fórmula" },
+      label: { it: "Formula", en: "Option", es: "Fórmula", fr: "Option" },
       choices: [
         {
-          label: { it: "3 ore, in condivisione", en: "3 hours, shared", es: "3 horas, compartido" },
+          label: { it: "3 ore, in condivisione", en: "3 hours, shared", es: "3 horas, compartido", fr: "3 heures, partagée" },
           priceAdult: 80,
           priceChild: 50,
-          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
           included: ["snack"],
           desc: {
             it: "Si sale insieme ad altri, fino a 12 persone in tutto. Tre ore lungo la costa sud-ovest, con sosta bagno, qualcosa da mangiare e da bere a bordo, e buone possibilità di vedere delfini e globicefali.",
             en: "You share the boat with others, up to 12 people in all. Three hours along the south-west coast, with a swim stop, something to eat and drink on board, and a good chance of spotting dolphins and pilot whales.",
-            es: "Se sube junto a otras personas, hasta 12 en total. Tres horas por la costa suroeste, con parada de baño, algo de comer y beber a bordo, y buenas posibilidades de ver delfines y calderones."
+            es: "Se sube junto a otras personas, hasta 12 en total. Tres horas por la costa suroeste, con parada de baño, algo de comer y beber a bordo, y buenas posibilidades de ver delfines y calderones.",
+            fr: "Vous partagez le bateau avec d'autres personnes, 12 au maximum en tout. Trois heures le long de la côte sud-ouest, avec arrêt baignade, de quoi manger et boire à bord, et de bonnes chances de voir dauphins et globicéphales."
           }
         },
         {
-          label: { it: "Charter privato", en: "Private charter", es: "Chárter privado" },
+          label: { it: "Charter privato", en: "Private charter", es: "Chárter privado", fr: "Charter privé" },
           price: 545,
-          duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas" },
+          duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas", fr: "De 3 à 9 heures" },
           included: ["lunch"],
           desc: {
             it: "La barca solo per il tuo gruppo, fino a 12 persone: da €545 per tre ore, e si può allungare fino a nove. Pranzo a bordo e bar aperto compresi. Il prezzo è della barca intera, non a persona: scrivici quante siete e quante ore vuoi e ti facciamo il conto.",
             en: "The boat just for your group, up to 12 people: from €545 for three hours, and you can stretch it to nine. Lunch on board and open bar included. The price is for the whole boat, not per person: tell us how many you are and how many hours you want and we'll work it out.",
-            es: "El barco solo para tu grupo, hasta 12 personas: desde 545 € por tres horas, y se puede alargar hasta nueve. Comida a bordo y barra libre incluidas. El precio es del barco entero, no por persona: escríbenos cuántos sois y cuántas horas quieres y te hacemos las cuentas."
+            es: "El barco solo para tu grupo, hasta 12 personas: desde 545 € por tres horas, y se puede alargar hasta nueve. Comida a bordo y barra libre incluidas. El precio es del barco entero, no por persona: escríbenos cuántos sois y cuántas horas quieres y te hacemos las cuentas.",
+            fr: "Le bateau rien que pour votre groupe, jusqu'à 12 personnes : à partir de €545 pour trois heures, et on peut aller jusqu'à neuf. Déjeuner à bord et open bar compris. Le prix est pour tout le bateau, pas par personne : dites-nous combien vous êtes et combien d'heures vous voulez, et nous faisons le calcul."
           }
         }
       ]
@@ -1536,34 +1626,40 @@ const ESPLORA_CATALOG = [
       {
         it: "È un gommone rigido di grandi dimensioni, con motori potenti: si va veloci e si arriva lontano, ma con il mare mosso si sente più che su un catamarano.",
         en: "It is a large rigid inflatable with powerful engines: you go fast and get far, but in rough seas you feel it more than on a catamaran.",
-        es: "Es una neumática rígida de gran tamaño, con motores potentes: se va rápido y se llega lejos, pero con mar movido se nota más que en un catamarán."
+        es: "Es una neumática rígida de gran tamaño, con motores potentes: se va rápido y se llega lejos, pero con mar movido se nota más que en un catamarán.",
+        fr: "C'est un grand semi-rigide aux moteurs puissants : on va vite et loin, mais par mer agitée on le sent plus que sur un catamaran."
       },
       {
         it: "A bordo ci sono zone al sole e zone all'ombra, e una piattaforma da cui si scende in acqua.",
         en: "On board there are areas in the sun and areas in the shade, and a platform to get into the water from.",
-        es: "A bordo hay zonas al sol y zonas a la sombra, y una plataforma para bajar al agua."
+        es: "A bordo hay zonas al sol y zonas a la sombra, y una plataforma para bajar al agua.",
+        fr: "À bord, il y a des espaces au soleil et à l'ombre, et une plateforme pour entrer dans l'eau."
       },
       {
         it: "Fra le bevande comprese ci sono birra, vino e analcoliche, e non manca lo spumante.",
         en: "The drinks included are beer, wine and soft drinks, and there is sparkling wine too.",
-        es: "Entre las bebidas incluidas hay cerveza, vino y refrescos, y no falta el espumoso."
+        es: "Entre las bebidas incluidas hay cerveza, vino y refrescos, y no falta el espumoso.",
+        fr: "Les boissons comprises sont bière, vin et sodas, et il y a aussi du vin pétillant."
       },
       {
         it: "La barca ha la certificazione \"Blue Boat\", che si dà a chi rispetta le regole per avvicinare i cetacei senza disturbarli.",
         en: "The boat holds the \"Blue Boat\" certification, given to those who follow the rules for approaching cetaceans without disturbing them.",
-        es: "El barco tiene la certificación \"Blue Boat\", que se da a quien respeta las normas para acercarse a los cetáceos sin molestarlos."
+        es: "El barco tiene la certificación \"Blue Boat\", que se da a quien respeta las normas para acercarse a los cetáceos sin molestarlos.",
+        fr: "Le bateau a la certification « Blue Boat », donnée à ceux qui suivent les règles pour approcher les cétacés sans les déranger."
       },
       {
         it: "Vicino a Puerto Colón c'è un parcheggio a pagamento, se vieni con la tua macchina.",
         en: "There is a paid car park near Puerto Colón, if you come by car.",
-        es: "Cerca de Puerto Colón hay un aparcamiento de pago, si vienes en coche."
+        es: "Cerca de Puerto Colón hay un aparcamiento de pago, si vienes en coche.",
+        fr: "Il y a un parking payant près de Puerto Colón, si vous venez en voiture."
       }
     ],
     family: true,
     desc: {
       it: "Un gommone rigido da diciotto metri che corre lungo la costa sud-ovest: zone per prendere il sole, ombra dove ripararsi e una piattaforma per scendere in acqua. Attrezzatura da snorkeling a bordo, da mangiare e da bere compresi, e un equipaggio che parla più lingue e racconta quello che si vede. Si sceglie fra il giro di tre ore in condivisione e la barca tutta per sé.",
       en: "An eighteen-metre rigid inflatable that runs along the south-west coast: areas to sunbathe, shade to retreat to and a platform to get into the water from. Snorkelling gear on board, food and drinks included, and a crew that speaks several languages and tells you what you are looking at. Choose between the shared three-hour trip and having the boat to yourselves.",
-      es: "Una neumática rígida de dieciocho metros que recorre la costa suroeste: zonas para tomar el sol, sombra donde resguardarse y una plataforma para bajar al agua. Equipo de snorkel a bordo, comida y bebida incluidas, y una tripulación que habla varios idiomas y te cuenta lo que estás viendo. Se elige entre la salida de tres horas compartida y el barco entero para ti."
+      es: "Una neumática rígida de dieciocho metros que recorre la costa suroeste: zonas para tomar el sol, sombra donde resguardarse y una plataforma para bajar al agua. Equipo de snorkel a bordo, comida y bebida incluidas, y una tripulación que habla varios idiomas y te cuenta lo que estás viendo. Se elige entre la salida de tres horas compartida y el barco entero para ti.",
+      fr: "Un semi-rigide de dix-huit mètres qui longe la côte sud-ouest : des espaces pour bronzer, de l'ombre où se réfugier et une plateforme pour entrer dans l'eau. Matériel de snorkeling à bord, nourriture et boissons comprises, et un équipage qui parle plusieurs langues et raconte ce que l'on voit. On choisit entre la sortie partagée de trois heures et le bateau rien que pour vous."
     },
     image: "opera-60.jpg",
     gallery: ["opera-60-2.jpg", "opera-60-3.jpg"],
@@ -1578,9 +1674,9 @@ const ESPLORA_CATALOG = [
     category: "mare-barche",
     // Confermato dall'ufficio: si parte da Las Galletas, cioe' la Marina del
     // Sur che si legge nel cartello dietro la barca nelle foto. Nome proprio,
-    // uguale nelle tre lingue.
+    // uguale nelle quattro lingue.
     zone: "Las Galletas",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["mezza"],
     times: ["10:00", "13:00", "16:00"],
@@ -1612,28 +1708,30 @@ const ESPLORA_CATALOG = [
     transfer: {
       it: "Ti veniamo a prendere negli hotel del sud dell'isola, circa 30 minuti prima della partenza: €60 a adulto e €40 a bambino invece di €55 e €35. Sulla barca privata sono €500 invece di €450.",
       en: "We pick you up at hotels in the south of the island, about 30 minutes before departure: €60 per adult and €40 per child instead of €55 and €35. On the private boat it is €500 instead of €450.",
-      es: "Te recogemos en los hoteles del sur de la isla, unos 30 minutos antes de la salida: 60 € por adulto y 40 € por niño en lugar de 55 € y 35 €. En el barco privado son 500 € en lugar de 450 €."
+      es: "Te recogemos en los hoteles del sur de la isla, unos 30 minutos antes de la salida: 60 € por adulto y 40 € por niño en lugar de 55 € y 35 €. En el barco privado son 500 € en lugar de 450 €.",
+      fr: "Nous passons vous prendre aux hôtels du sud de l'île, environ 30 minutes avant le départ : €60 par adulte et €40 par enfant au lieu de €55 et €35. Sur le bateau privé, c'est €500 au lieu de €450."
     },
     // Prezzo **completo** col ritiro, non il supplemento: €55 diventano €60 e
     // €35 diventano €40. Serve al totale, non si stampa (vedi sopra).
     transferPrice: { adult: 60, child: 40 },
     transferPriceHidden: true,
     options: {
-      label: { it: "Formula", en: "Option", es: "Fórmula" },
+      label: { it: "Formula", en: "Option", es: "Fórmula", fr: "Option" },
       choices: [
         {
-          label: { it: "3 ore, in condivisione", en: "3 hours, shared", es: "3 horas, compartido" },
+          label: { it: "3 ore, in condivisione", en: "3 hours, shared", es: "3 horas, compartido", fr: "3 heures, partagée" },
           priceAdult: 55,
           priceChild: 35,
           times: ["10:00", "13:00", "16:00"],
           desc: {
             it: "Si sale insieme ad altri: tre ore lungo la costa sud, con la sosta bagno a metà giro e uno spuntino a bordo. Partenze alle 10:00, alle 13:00 e alle 16:00.",
             en: "You share the boat with others: three hours along the south coast, with the swim stop halfway and a snack on board. Departures at 10:00, 13:00 and 16:00.",
-            es: "Se sube junto a otras personas: tres horas por la costa sur, con la parada de baño a mitad de recorrido y un tentempié a bordo. Salidas a las 10:00, 13:00 y 16:00."
+            es: "Se sube junto a otras personas: tres horas por la costa sur, con la parada de baño a mitad de recorrido y un tentempié a bordo. Salidas a las 10:00, 13:00 y 16:00.",
+            fr: "Vous partagez le bateau avec d'autres personnes : trois heures le long de la côte sud, avec l'arrêt baignade à mi-parcours et un en-cas à bord. Départs à 10:00, 13:00 et 16:00."
           }
         },
         {
-          label: { it: "Barca privata", en: "Private boat", es: "Barco privado" },
+          label: { it: "Barca privata", en: "Private boat", es: "Barco privado", fr: "Bateau privé" },
           price: 450,
           // Lista vuota, non campo mancante: con la barca tutta per se' l'ora
           // si concorda. Senza questa riga sarebbero comparse le fasce
@@ -1642,7 +1740,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "La barca solo per il tuo gruppo: €450 per le tre ore, €500 con il ritiro compreso. Il prezzo è della barca intera, non a persona: scrivici quante siete e a che ora vorreste partire.",
             en: "The boat just for your group: €450 for the three hours, €500 with pick-up included. The price is for the whole boat, not per person: tell us how many you are and what time you would like to leave.",
-            es: "El barco solo para tu grupo: 450 € por las tres horas, 500 € con la recogida incluida. El precio es del barco entero, no por persona: escríbenos cuántos sois y a qué hora queréis salir."
+            es: "El barco solo para tu grupo: 450 € por las tres horas, 500 € con la recogida incluida. El precio es del barco entero, no por persona: escríbenos cuántos sois y a qué hora queréis salir.",
+            fr: "Le bateau rien que pour votre groupe : €450 pour les trois heures, €500 avec la prise en charge comprise. Le prix est pour tout le bateau, pas par personne : dites-nous combien vous êtes et à quelle heure vous voudriez partir."
           }
         }
       ]
@@ -1652,21 +1751,24 @@ const ESPLORA_CATALOG = [
         text: {
           it: "Navigazione lungo la costa sud, con le scogliere e le grotte che si vedono solo dal mare, in cerca di delfini e balene.",
           en: "Sailing along the south coast, past cliffs and caves you can only see from the water, looking for dolphins and whales.",
-          es: "Navegación por la costa sur, con los acantilados y las cuevas que solo se ven desde el mar, buscando delfines y ballenas."
+          es: "Navegación por la costa sur, con los acantilados y las cuevas que solo se ven desde el mar, buscando delfines y ballenas.",
+          fr: "Navigation le long de la côte sud, entre falaises et grottes que l'on ne voit que depuis la mer, à la recherche des dauphins et des baleines."
         }
       },
       {
         text: {
           it: "A metà giro la sosta in una baia riparata, dove si fa il bagno; a bordo lo spuntino e le bevande.",
           en: "Halfway through, a stop in a sheltered bay for a swim; snack and drinks on board.",
-          es: "A mitad de recorrido, parada en una bahía resguardada para bañarse; tentempié y bebidas a bordo."
+          es: "A mitad de recorrido, parada en una bahía resguardada para bañarse; tentempié y bebidas a bordo.",
+          fr: "À mi-parcours, un arrêt dans une baie abritée pour se baigner ; en-cas et boissons à bord."
         }
       },
       {
         text: {
           it: "Rientro breve e tranquillo verso il porto.",
           en: "A short, relaxed return to the harbour.",
-          es: "Vuelta corta y tranquila al puerto."
+          es: "Vuelta corta y tranquila al puerto.",
+          fr: "Un retour au port court et tranquille."
         }
       }
     ],
@@ -1674,28 +1776,33 @@ const ESPLORA_CATALOG = [
       {
         it: "Con il ritiro il pulmino passa circa 30 minuti prima della partenza: l'orario esatto te lo confermiamo insieme alla prenotazione.",
         en: "With pick-up, the minibus comes by about 30 minutes before departure: we confirm the exact time along with the booking.",
-        es: "Con la recogida, la furgoneta pasa unos 30 minutos antes de la salida: la hora exacta te la confirmamos junto con la reserva."
+        es: "Con la recogida, la furgoneta pasa unos 30 minutos antes de la salida: la hora exacta te la confirmamos junto con la reserva.",
+        fr: "Avec la prise en charge, le minibus passe environ 30 minutes avant le départ : nous confirmons l'heure exacte avec la réservation."
       },
       {
         it: "La barca ha due ponti, più posti dove stare all'ombra o al sole, e la toilette a bordo.",
         en: "The boat has two decks, several places to sit in the shade or in the sun, and a toilet on board.",
-        es: "El barco tiene dos cubiertas, varios sitios para estar a la sombra o al sol, y aseo a bordo."
+        es: "El barco tiene dos cubiertas, varios sitios para estar a la sombra o al sol, y aseo a bordo.",
+        fr: "Le bateau a deux ponts, plusieurs endroits pour s'asseoir à l'ombre ou au soleil, et des toilettes à bord."
       },
       {
         it: "Delfini e balene si incontrano spesso lungo questa costa, ma sono animali liberi: nessuno può prometterteli.",
         en: "Dolphins and whales are often met along this coast, but they are wild animals: nobody can promise them.",
-        es: "Delfines y ballenas se encuentran a menudo en esta costa, pero son animales libres: nadie puede prometértelos."
+        es: "Delfines y ballenas se encuentran a menudo en esta costa, pero son animales libres: nadie puede prometértelos.",
+        fr: "On croise souvent dauphins et baleines le long de cette côte, mais ce sont des animaux sauvages : personne ne peut les promettre."
       },
       {
         it: "Porta costume, asciugamano e crema solare.",
         en: "Bring swimwear, a towel and sun cream.",
-        es: "Trae bañador, toalla y crema solar."
+        es: "Trae bañador, toalla y crema solar.",
+        fr: "Apportez maillot de bain, serviette et crème solaire."
       }
     ],
     desc: {
       it: "Tre ore lungo la costa sud di Tenerife su un cruiser a due ponti, senza fretta. Si costeggiano scogliere e grotte che dalla strada non si vedono, si cercano delfini e balene, e a metà giro ci si ferma in una baia riparata per il bagno, con uno spuntino e le bevande a bordo. L'equipaggio spiega tutto e risponde alle domande in spagnolo, inglese e italiano. Se ti serve, veniamo a prenderti in hotel nel sud dell'isola.",
       en: "Three hours along the south coast of Tenerife on a two-deck cruiser, with no rush. You follow cliffs and caves you cannot see from the road, look for dolphins and whales, and halfway through you stop in a sheltered bay for a swim, with a snack and drinks on board. The crew explains everything and answers questions in Spanish, English and Italian. If you need it, we pick you up at your hotel in the south of the island.",
-      es: "Tres horas por la costa sur de Tenerife en un crucero de dos cubiertas, sin prisa. Se bordean acantilados y cuevas que desde la carretera no se ven, se buscan delfines y ballenas, y a mitad de recorrido se para en una bahía resguardada para bañarse, con un tentempié y bebidas a bordo. La tripulación lo explica todo y responde a las preguntas en español, inglés e italiano. Si lo necesitas, te recogemos en tu hotel del sur de la isla."
+      es: "Tres horas por la costa sur de Tenerife en un crucero de dos cubiertas, sin prisa. Se bordean acantilados y cuevas que desde la carretera no se ven, se buscan delfines y ballenas, y a mitad de recorrido se para en una bahía resguardada para bañarse, con un tentempié y bebidas a bordo. La tripulación lo explica todo y responde a las preguntas en español, inglés e italiano. Si lo necesitas, te recogemos en tu hotel del sur de la isla.",
+      fr: "Trois heures le long de la côte sud de Tenerife sur un bateau à deux ponts, sans se presser. On longe des falaises et des grottes invisibles depuis la route, on cherche dauphins et baleines, et à mi-parcours on s'arrête dans une baie abritée pour se baigner, avec un en-cas et des boissons à bord. L'équipage explique tout et répond aux questions en espagnol, anglais et italien. Si besoin, nous passons vous prendre à votre hôtel dans le sud de l'île."
     },
     image: "luxury-cruiser.jpg",
     gallery: ["luxury-cruiser-2.jpg", "luxury-cruiser-3.jpg", "luxury-cruiser-4.jpg"],
@@ -1706,7 +1813,7 @@ const ESPLORA_CATALOG = [
     title: "Skyline Cruiser",
     category: "mare-barche",
     zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
     times: ["09:45", "13:15", "16:20"],
@@ -1725,21 +1832,24 @@ const ESPLORA_CATALOG = [
         text: {
           it: "Navigazione al largo, fino a tre miglia dalla costa, in cerca di delfini e balene.",
           en: "Sailing offshore, up to three miles from the coast, looking for dolphins and whales.",
-          es: "Navegación mar adentro, hasta tres millas de la costa, buscando delfines y ballenas."
+          es: "Navegación mar adentro, hasta tres millas de la costa, buscando delfines y ballenas.",
+          fr: "Navigation au large, jusqu'à trois milles de la côte, à la recherche des dauphins et des baleines."
         }
       },
       {
         text: {
           it: "Sosta bagno in una baia riparata, con l'attrezzatura da snorkeling a bordo.",
           en: "A swim stop in a sheltered bay, with snorkelling gear on board.",
-          es: "Parada de baño en una bahía resguardada, con equipo de snorkel a bordo."
+          es: "Parada de baño en una bahía resguardada, con equipo de snorkel a bordo.",
+          fr: "Un arrêt baignade dans une baie abritée, avec matériel de snorkeling à bord."
         }
       },
       {
         text: {
           it: "Rientro costiero, con vista sulle grotte hippie e le scogliere vulcaniche.",
           en: "A coastal return, passing the hippie caves and volcanic cliffs.",
-          es: "Vuelta bordeando la costa, con vistas a las cuevas hippies y los acantilados volcánicos."
+          es: "Vuelta bordeando la costa, con vistas a las cuevas hippies y los acantilados volcánicos.",
+          fr: "Un retour le long de la côte, devant les grottes des hippies et les falaises volcaniques."
         }
       }
     ],
@@ -1747,28 +1857,33 @@ const ESPLORA_CATALOG = [
       {
         it: "Presentati al porto almeno 30 minuti prima della partenza.",
         en: "Get to the harbour at least 30 minutes before departure.",
-        es: "Llega al puerto al menos 30 minutos antes de la salida."
+        es: "Llega al puerto al menos 30 minutos antes de la salida.",
+        fr: "Arrivez au port au moins 30 minutes avant le départ."
       },
       {
         it: "A bordo: tortilla, pizza, salsicce, formaggio, pomodorini conditi, frutta secca e frutta fresca; da bere acqua, bibite, birra, vino e cava.",
         en: "On board: tortilla, pizza, sausages, cheese, dressed cherry tomatoes, dried fruit and fresh fruit; to drink, water, soft drinks, beer, wine and cava.",
-        es: "A bordo: tortilla, pizza, salchichas, queso, tomates cherry aliñados, frutos secos y fruta fresca; para beber, agua, refrescos, cerveza, vino y cava."
+        es: "A bordo: tortilla, pizza, salchichas, queso, tomates cherry aliñados, frutos secos y fruta fresca; para beber, agua, refrescos, cerveza, vino y cava.",
+        fr: "À bord : tortilla, pizza, saucisses, fromage, tomates cerises assaisonnées, fruits secs et fruits frais ; à boire, eau, sodas, bière, vin et cava."
       },
       {
         it: "Su richiesta, con un po' di preavviso, ci sono menu alternativi.",
         en: "Alternative menus are available on request, with a little notice.",
-        es: "Bajo petición, con un poco de antelación, hay menús alternativos."
+        es: "Bajo petición, con un poco de antelación, hay menús alternativos.",
+        fr: "Des menus différents sont possibles sur demande, en prévenant un peu à l'avance."
       },
       {
         it: "Porta costume, asciugamano, crema solare, occhiali da sole e una giacca leggera.",
         en: "Bring swimwear, a towel, sunscreen, sunglasses and a light jacket.",
-        es: "Trae bañador, toalla, crema solar, gafas de sol y una chaqueta ligera."
+        es: "Trae bañador, toalla, crema solar, gafas de sol y una chaqueta ligera.",
+        fr: "Apportez maillot de bain, serviette, crème solaire, lunettes de soleil et une veste légère."
       }
     ],
     desc: {
       it: "Tre ore a bordo dello Skyline Cruiser, un motoryacht Fairline di quasi 13 metri, fino a 12 persone. Si esce al largo in cerca di delfini e balene, poi la sosta bagno con lo snorkeling in una baia riparata, e il rientro costeggiando le grotte hippie e le scogliere vulcaniche. A bordo capitano ed equipaggio, snack e bevande comprese.",
       en: "Three hours aboard the Skyline Cruiser, a Fairline motor yacht just under 13 metres long, up to 12 people. You head offshore looking for dolphins and whales, then a swim stop with snorkelling in a sheltered bay, and a coastal return past the hippie caves and volcanic cliffs. On board: captain and crew, with snacks and drinks included.",
-      es: "Tres horas a bordo del Skyline Cruiser, un yate a motor Fairline de casi 13 metros, hasta 12 personas. Se navega mar adentro buscando delfines y ballenas, luego la parada de baño con snorkel en una bahía resguardada, y la vuelta bordeando la costa junto a las cuevas hippies y los acantilados volcánicos. A bordo: capitán y tripulación, con aperitivos y bebidas incluidas."
+      es: "Tres horas a bordo del Skyline Cruiser, un yate a motor Fairline de casi 13 metros, hasta 12 personas. Se navega mar adentro buscando delfines y ballenas, luego la parada de baño con snorkel en una bahía resguardada, y la vuelta bordeando la costa junto a las cuevas hippies y los acantilados volcánicos. A bordo: capitán y tripulación, con aperitivos y bebidas incluidas.",
+      fr: "Trois heures à bord du Skyline Cruiser, un yacht à moteur Fairline d'un peu moins de 13 mètres, jusqu'à 12 personnes. On part au large à la recherche des dauphins et des baleines, puis un arrêt baignade avec snorkeling dans une baie abritée, et un retour le long de la côte devant les grottes des hippies et les falaises volcaniques. À bord : capitaine et équipage, en-cas et boissons compris."
     },
     image: "skyline-cruiser.jpg",
     gallery: ["skyline-cruiser-2.jpg", "skyline-cruiser-3.jpg", "skyline-cruiser-4.jpg"],
@@ -1779,7 +1894,7 @@ const ESPLORA_CATALOG = [
     title: "Ragnarok Viking Boat Tour",
     category: "mare-barche",
     zone: "Los Cristianos",
-    duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas" },
+    duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas", fr: "2 ou 3 heures" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["breve", "mezza"],
     priceFrom: 25,
@@ -1796,10 +1911,10 @@ const ESPLORA_CATALOG = [
     // lungo solo martedi'/giovedi'/sabato. Niente `days` sulla scheda,
     // ciascuna variante ha il suo.
     options: {
-      label: { it: "Durata", en: "Duration", es: "Duración" },
+      label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée" },
       choices: [
         {
-          label: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          label: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" },
           priceAdult: 25,
           priceChild: 20,
           days: ["lun"],
@@ -1807,11 +1922,12 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il giro corto, in cerca di balene pilota e tursiopi al largo di Los Cristianos. Lunedì, partenze alle 10:30, 12:30 e 14:30.",
             en: "The short trip, looking for pilot whales and bottlenose dolphins off Los Cristianos. Mondays, leaving at 10:30, 12:30 and 14:30.",
-            es: "La salida corta, en busca de calderones y delfines mulares frente a Los Cristianos. Lunes, salidas a las 10:30, 12:30 y 14:30."
+            es: "La salida corta, en busca de calderones y delfines mulares frente a Los Cristianos. Lunes, salidas a las 10:30, 12:30 y 14:30.",
+            fr: "La sortie courte, à la recherche des globicéphales et des grands dauphins au large de Los Cristianos. Le lundi, départs à 10:30, 12:30 et 14:30."
           }
         },
         {
-          label: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          label: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
           priceAdult: 38,
           priceChild: 25,
           days: ["mar", "gio", "sab"],
@@ -1819,7 +1935,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Lo stesso giro con più tempo al largo, in cerca di balene pilota e tursiopi. Martedì, giovedì e sabato, partenza alle 13:00.",
             en: "The same trip with more time offshore, looking for pilot whales and bottlenose dolphins. Tuesdays, Thursdays and Saturdays, leaving at 13:00.",
-            es: "La misma salida con más tiempo mar adentro, en busca de calderones y delfines mulares. Martes, jueves y sábado, salida a las 13:00."
+            es: "La misma salida con más tiempo mar adentro, en busca de calderones y delfines mulares. Martes, jueves y sábado, salida a las 13:00.",
+            fr: "La même sortie avec plus de temps au large, à la recherche des globicéphales et des grands dauphins. Mardi, jeudi et samedi, départ à 13:00."
           }
         }
       ]
@@ -1828,23 +1945,27 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Una barca a tema vichingo che parte da Los Cristianos per andare a cercare balene pilota e tursiopi al largo. L'equipaggio veste i panni dei vichinghi, fra spettacoli a tema, giochi a bordo e la possibilità di provare l'armatura vichinga: un giro pensato anche per chi viaggia con bambini.",
       en: "A Viking-themed boat leaving from Los Cristianos to look for pilot whales and bottlenose dolphins offshore. The crew dresses up as Vikings, with themed shows, games on board and the chance to try on Viking gear: a trip built with families in mind too.",
-      es: "Un barco de temática vikinga que sale de Los Cristianos para buscar calderones y delfines mulares mar adentro. La tripulación se viste de vikingos, con espectáculos temáticos, juegos a bordo y la posibilidad de probarse el equipo vikingo: una salida pensada también para quien viaja con niños."
+      es: "Un barco de temática vikinga que sale de Los Cristianos para buscar calderones y delfines mulares mar adentro. La tripulación se viste de vikingos, con espectáculos temáticos, juegos a bordo y la posibilidad de probarse el equipo vikingo: una salida pensada también para quien viaja con niños.",
+      fr: "Un bateau sur le thème des Vikings qui part de Los Cristianos à la recherche des globicéphales et des grands dauphins au large. L'équipage se déguise en Vikings, avec des animations à thème, des jeux à bord et la possibilité d'essayer l'équipement viking : une sortie pensée aussi pour les familles."
     },
     notes: [
       {
         it: "Ritrovo nella Zona Excursiones A del porto di Los Cristianos, dove c'è anche un parcheggio pubblico a pagamento. Arriva tra i 10 e i 20 minuti prima della partenza.",
         en: "Meeting point in the Zona Excursiones A at Los Cristianos harbour, where there is also paid public parking. Get there 10 to 20 minutes before departure.",
-        es: "Punto de encuentro en la Zona Excursiones A del puerto de Los Cristianos, donde también hay aparcamiento público de pago. Llega entre 10 y 20 minutos antes de la salida."
+        es: "Punto de encuentro en la Zona Excursiones A del puerto de Los Cristianos, donde también hay aparcamiento público de pago. Llega entre 10 y 20 minutos antes de la salida.",
+        fr: "Rendez-vous dans la Zona Excursiones A du port de Los Cristianos, où il y a aussi un parking public payant. Arrivez de 10 à 20 minutes avant le départ."
       },
       {
         it: "A bordo ci sono un bar-ristorante, i servizi igienici, posti a sedere in diverse zone e aree accessibili.",
         en: "On board there is a bar-restaurant, toilets, seating spread across different areas and accessible spaces.",
-        es: "A bordo hay un bar-restaurante, aseos, asientos repartidos en distintas zonas y espacios accesibles."
+        es: "A bordo hay un bar-restaurante, aseos, asientos repartidos en distintas zonas y espacios accesibles.",
+        fr: "À bord, il y a un bar-restaurant, des toilettes, des places assises réparties dans plusieurs espaces et des zones accessibles."
       },
       {
         it: "Con mare mosso o maltempo l'operatore organizza un piano alternativo.",
         en: "In rough seas or bad weather the operator arranges an alternative plan.",
-        es: "Con mar agitado o mal tiempo el operador organiza un plan alternativo."
+        es: "Con mar agitado o mal tiempo el operador organiza un plan alternativo.",
+        fr: "Par mer agitée ou mauvais temps, l'opérateur organise un plan alternatif."
       }
     ],
     image: "ragnarok.jpg",
@@ -1860,8 +1981,8 @@ const ESPLORA_CATALOG = [
     pagamento: "card",
     title: "Teide National Park",
     category: "teide-natura",
-    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
-    duration: { it: "6-8 ore circa", en: "About 6-8 hours", es: "6-8 horas aprox." },
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur", fr: "Sud de Tenerife" },
+    duration: { it: "6-8 ore circa", en: "About 6-8 hours", es: "6-8 horas aprox.", fr: "Environ 6-8 heures" },
     zoneGroups: ["teide-nord"],
     durationGroups: ["intera"],
     priceFrom: 39,
@@ -1900,30 +2021,38 @@ const ESPLORA_CATALOG = [
     itinerary: [
       { text: { it: "Ritiro in hotel e salita verso il parco",
                 en: "Hotel pickup and the climb up towards the park",
-                es: "Recogida en el hotel y subida hacia el parque" } },
+                es: "Recogida en el hotel y subida hacia el parque",
+                fr: "Prise en charge à l'hôtel et montée vers le parc" } },
       { text: { it: "Sosta a Vilaflor, il paese più alto della Spagna, in mezzo ai pini",
                 en: "Stop at Vilaflor, the highest village in Spain, in the middle of the pine woods",
-                es: "Parada en Vilaflor, el pueblo más alto de España, entre los pinos" } },
+                es: "Parada en Vilaflor, el pueblo más alto de España, entre los pinos",
+                fr: "Arrêt à Vilaflor, le village le plus haut d'Espagne, au milieu des pinèdes" } },
       { text: { it: "Roques de García: si cammina fra le rocce e le colate di lava, dentro la caldera delle Cañadas",
                 en: "Roques de García: a walk among the rocks and the lava flows, inside the Cañadas caldera",
-                es: "Roques de García: se camina entre las rocas y las coladas de lava, dentro de la caldera de Las Cañadas" } },
+                es: "Roques de García: se camina entre las rocas y las coladas de lava, dentro de la caldera de Las Cañadas",
+                fr: "Roques de García : promenade entre les rochers et les coulées de lave, dans la caldeira de Las Cañadas" } },
       { text: { it: "Sosta alla funivia del Teide, con il tempo per salire in cima a chi vuole",
                 en: "Stop at the Teide cable car, with time to go up to the top for those who want to",
-                es: "Parada en el teleférico del Teide, con tiempo para subir a la cumbre a quien quiera" } },
+                es: "Parada en el teleférico del Teide, con tiempo para subir a la cumbre a quien quiera",
+                fr: "Arrêt au téléphérique du Teide, avec du temps pour monter au sommet pour ceux qui le souhaitent" } },
       { text: { it: "Rientro in hotel scendendo per il paese di Chío",
                 en: "Back to the hotel, coming down through the village of Chío",
-                es: "Vuelta al hotel bajando por el pueblo de Chío" } }
+                es: "Vuelta al hotel bajando por el pueblo de Chío",
+                fr: "Retour à l'hôtel, en redescendant par le village de Chío" } }
     ],
     notes: [
       { it: "La salita in funivia è facoltativa e non è compresa nel prezzo: il biglietto si compra sul posto.",
         en: "Going up by cable car is optional and not included in the price: you buy the ticket there.",
-        es: "La subida en teleférico es opcional y no está incluida en el precio: el billete se compra allí." },
+        es: "La subida en teleférico es opcional y no está incluida en el precio: el billete se compra allí.",
+        fr: "La montée en téléphérique est facultative et n'est pas comprise dans le prix : le billet s'achète sur place." },
       { it: "A 2.000 metri fa freddo anche in piena estate: porta una felpa o una giacca. E la macchina fotografica.",
         en: "At 2,000 metres it's cold even in high summer: bring a sweatshirt or a jacket. And your camera.",
-        es: "A 2.000 metros hace frío incluso en pleno verano: lleva una sudadera o una chaqueta. Y la cámara." },
+        es: "A 2.000 metros hace frío incluso en pleno verano: lleva una sudadera o una chaqueta. Y la cámara.",
+        fr: "À 2 000 mètres, il fait froid même en plein été : apportez un sweat ou une veste. Et votre appareil photo." },
       { it: "Il pranzo non è incluso.",
         en: "Lunch is not included.",
-        es: "El almuerzo no está incluido." },
+        es: "El almuerzo no está incluido.",
+        fr: "Le déjeuner n'est pas compris." },
       // I giorni sono un blocco: la finestra non lascia mandare una richiesta
       // per un giorno in cui non si parte. Questa nota fa il mestiere che il
       // blocco non puo fare — dire che quei giorni non sono incisi nella
@@ -1931,13 +2060,15 @@ const ESPLORA_CATALOG = [
       // riquadro dei consigli una nota lunga si legge come un paragrafo.
       { it: "I giorni possono cambiare secondo la lingua della guida.",
         en: "The days can change depending on the language of the guide.",
-        es: "Los días pueden cambiar según el idioma del guía." }
+        es: "Los días pueden cambiar según el idioma del guía.",
+        fr: "Les jours peuvent changer selon la langue du guide." }
     ],
     family: true,
     desc: {
       it: "Giornata nel Parco Nazionale del Teide: Vilaflor, i Roques de García e la sosta alla funivia, con ritiro in hotel.",
       en: "A day in Teide National Park: Vilaflor, the Roques de García and the cable car stop, with hotel pickup.",
-      es: "Un día en el Parque Nacional del Teide: Vilaflor, los Roques de García y la parada del teleférico, con recogida en el hotel."
+      es: "Un día en el Parque Nacional del Teide: Vilaflor, los Roques de García y la parada del teleférico, con recogida en el hotel.",
+      fr: "Une journée dans le parc national du Teide : Vilaflor, les Roques de García et l'arrêt au téléphérique, avec prise en charge à l'hôtel."
     },
     image: "teide-national-park.jpg",
     published: true
@@ -1961,7 +2092,7 @@ const ESPLORA_CATALOG = [
   // ferme in localStorage. Stessa regola di `santa-cruz-taganana`.
   {
     id: "trekking-bici",
-    title: { it: "Trekking", en: "Hiking", es: "Senderismo" },
+    title: { it: "Trekking", en: "Hiking", es: "Senderismo", fr: "Randonnée" },
     category: "teide-natura",
     // Il bus passa a prendere il cliente dagli alloggi del sud: la partenza e'
     // il sud su tutti e tre i cammini, anche su Camino Real che si cammina a
@@ -1969,18 +2100,18 @@ const ESPLORA_CATALOG = [
     // campo in pagina si legge "Punto di partenza" — e' lo stesso inciampo
     // gia' fatto sul giro di Icod, dove diceva "Tenerife nord" e dal nord non
     // partiva niente. Dove si cammina sta nelle varianti.
-    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur", fr: "Sud de Tenerife" },
     // "Giornata intera" e' giusta, e la domanda era un'altra: in giro si sta
     // tutto il giorno, ma **si cammina** due ore (proprietario, 11 settembre
     // 2026). In v284 avevo tolto la durata credendola falsa; era vera, mancava
     // la riga accanto. Adesso sono due: questa dice quanto dura la giornata,
     // `activityDuration` dentro ogni variante dice quanto dura il cammino.
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo", fr: "Journée entière" },
     zoneGroups: ["teide-nord"],
     durationGroups: ["intera"],
     // Il nome della seconda riga. Sta sulla scheda e non nelle varianti perche'
     // e' lo stesso per tutti e tre: quello che cambia e' il numero.
-    activityLabel: { it: "Tempo di cammino", en: "Walking time", es: "Tiempo de caminata" },
+    activityLabel: { it: "Tempo di cammino", en: "Walking time", es: "Tiempo de caminata", fr: "Temps de marche" },
     priceFrom: 59,
     // I prezzi stanno **sia qui sia dentro ogni variante**, ed e' voluto: qui
     // perche' tutti e tre i cammini costano uguale e le righe "Adulti €59" e
@@ -2010,23 +2141,24 @@ const ESPLORA_CATALOG = [
     // stanno nelle note, perche' "Cosa e' incluso" dice quello che c'e'.
     included: ["guide", "transfer"],
     options: {
-      label: { it: "Quale cammino", en: "Which walk", es: "Qué recorrido" },
+      label: { it: "Quale cammino", en: "Which walk", es: "Qué recorrido", fr: "Quelle randonnée" },
       choices: [
         // I nomi dei percorsi sono quelli del fornitore e restano uguali in
-        // tutte e tre le lingue, come i titoli: quando la richiesta arriva su
+        // tutte e quattro le lingue, come i titoli: quando la richiesta arriva su
         // WhatsApp, in ufficio si ritrova il nome esatto da cercare.
         { label: "Teide Light",
           priceAdult: 59,
           priceChild: 29.5,
           days: ["gio"],
-          // Notazione compatta, uguale in tutte e tre le lingue: "h" si legge
+          // Notazione compatta, uguale in tutte e quattro le lingue: "h" si legge
           // ovunque, e in forma distesa ("3 ore e mezza – 4 ore") il valore
           // finiva sotto il pallino della chat, che non si sposta.
           activityDuration: "2h",
           desc: {
             it: "Il giovedì, nel Parco Nazionale del Teide: si cammina in quota fra i paesaggi vulcanici, con 175 metri di dislivello e difficoltà 2 su 6. È il più facile dei tre.",
             en: "Thursdays, in Teide National Park: walking at altitude through the volcanic landscapes, with 175 metres of ascent and difficulty 2 out of 6. The easiest of the three.",
-            es: "Los jueves, en el Parque Nacional del Teide: se camina en altura entre los paisajes volcánicos, con 175 metros de desnivel y dificultad 2 sobre 6. El más fácil de los tres."
+            es: "Los jueves, en el Parque Nacional del Teide: se camina en altura entre los paisajes volcánicos, con 175 metros de desnivel y dificultad 2 sobre 6. El más fácil de los tres.",
+            fr: "Le jeudi, dans le parc national du Teide : marche en altitude à travers les paysages volcaniques, avec 175 mètres de dénivelé et une difficulté de 2 sur 6. La plus facile des trois."
           } },
         { label: "Camino Real",
           priceAdult: 59,
@@ -2036,7 +2168,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il mercoledì, sull'antico camino real che parte da Santiago del Teide, dove arriva il bus: 350 metri di dislivello e difficoltà 3 su 6. È il più impegnativo dei tre.",
             en: "Wednesdays, on the old royal path out of Santiago del Teide, where the bus drops you off: 350 metres of ascent and difficulty 3 out of 6. The most demanding of the three.",
-            es: "Los miércoles, por el antiguo camino real que sale de Santiago del Teide, adonde llega el autobús: 350 metros de desnivel y dificultad 3 sobre 6. El más exigente de los tres."
+            es: "Los miércoles, por el antiguo camino real que sale de Santiago del Teide, adonde llega el autobús: 350 metros de desnivel y dificultad 3 sobre 6. El más exigente de los tres.",
+            fr: "Le mercredi, sur l'ancien chemin royal au départ de Santiago del Teide, où le bus vous dépose : 350 mètres de dénivelé et une difficulté de 3 sur 6. La plus exigeante des trois."
           } },
         { label: "La Laguna & Anaga",
           priceAdult: 59,
@@ -2046,20 +2179,24 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il lunedì, fra La Laguna — città Patrimonio UNESCO — e il Parco Rurale di Anaga, Riserva della Biosfera: 300 metri di dislivello e difficoltà 2 su 6. È il più corto dei tre.",
             en: "Mondays, between UNESCO-listed La Laguna and the Anaga Rural Park, a Biosphere Reserve: 300 metres of ascent and difficulty 2 out of 6. The shortest of the three.",
-            es: "Los lunes, entre La Laguna — ciudad Patrimonio de la UNESCO — y el Parque Rural de Anaga, Reserva de la Biosfera: 300 metros de desnivel y dificultad 2 sobre 6. El más corto de los tres."
+            es: "Los lunes, entre La Laguna — ciudad Patrimonio de la UNESCO — y el Parque Rural de Anaga, Reserva de la Biosfera: 300 metros de desnivel y dificultad 2 sobre 6. El más corto de los tres.",
+            fr: "Le lundi, entre La Laguna, classée par l'UNESCO, et le parc rural d'Anaga, réserve de biosphère : 300 mètres de dénivelé et une difficulté de 2 sur 6. La plus courte des trois."
           } }
       ]
     },
     notes: [
       { it: "Acqua e pranzo al sacco non sono compresi: portali con te.",
         en: "Water and a packed lunch are not included: bring them with you.",
-        es: "El agua y el picnic no están incluidos: llévalos contigo." },
+        es: "El agua y el picnic no están incluidos: llévalos contigo.",
+        fr: "L'eau et le pique-nique ne sont pas compris : apportez-les." },
       { it: "Scarpe chiuse da camminata. In quota fa più fresco che sulla costa e il tempo cambia in fretta, anche quando al sud c'è il sole: porta una felpa o una giacca leggera.",
         en: "Closed walking shoes. It is cooler up there than on the coast and the weather changes quickly, even when it is sunny in the south: bring a sweatshirt or a light jacket.",
-        es: "Calzado cerrado de montaña. En altura hace más fresco que en la costa y el tiempo cambia rápido, aunque en el sur haga sol: lleva una sudadera o una chaqueta ligera." },
+        es: "Calzado cerrado de montaña. En altura hace más fresco que en la costa y el tiempo cambia rápido, aunque en el sur haga sol: lleva una sudadera o una chaqueta ligera.",
+        fr: "Chaussures de marche fermées. Là-haut, il fait plus frais que sur la côte et le temps change vite, même quand il fait soleil dans le sud : apportez un sweat ou une veste légère." },
       { it: "Ogni cammino si fa in un giorno solo della settimana: scegli il percorso qui sopra e la data si regola da sola.",
         en: "Each walk runs on one day of the week only: pick the route above and the date adjusts to it.",
-        es: "Cada recorrido se hace un solo día de la semana: elige el itinerario arriba y la fecha se ajusta sola." }
+        es: "Cada recorrido se hace un solo día de la semana: elige el itinerario arriba y la fecha se ajusta sola.",
+        fr: "Chaque randonnée n'a lieu qu'un jour par semaine : choisissez le parcours ci-dessus et la date s'adapte." }
     ],
     // `family: true` con una riserva scritta nelle varianti. Due cammini su
     // tre sono corti e facili; il Camino Real con le sue tre ore e mezza-quattro lo
@@ -2070,7 +2207,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Tre cammini con guida di montagna, uno per giorno della settimana: il Parco Nazionale del Teide, l'antico camino real di Santiago del Teide e la laurisilva di Anaga con La Laguna. Bus andata e ritorno dagli alloggi del sud.",
       en: "Three guided walks with a mountain guide, one for each day of the week: Teide National Park, the old royal path out of Santiago del Teide, and the Anaga laurel forest with La Laguna. Return bus from accommodation in the south.",
-      es: "Tres recorridos con guía de montaña, uno por día de la semana: el Parque Nacional del Teide, el antiguo camino real de Santiago del Teide y la laurisilva de Anaga con La Laguna. Autobús de ida y vuelta desde los alojamientos del sur."
+      es: "Tres recorridos con guía de montaña, uno por día de la semana: el Parque Nacional del Teide, el antiguo camino real de Santiago del Teide y la laurisilva de Anaga con La Laguna. Autobús de ida y vuelta desde los alojamientos del sur.",
+      fr: "Trois randonnées avec un guide de montagne, une pour chaque jour de la semaine : le parc national du Teide, l'ancien chemin royal au départ de Santiago del Teide, et la forêt de lauriers d'Anaga avec La Laguna. Bus aller-retour depuis les logements du sud."
     },
     // Foto ancora da caricare: canaventura.es e il suo CDN sono bloccati dal
     // proxy di rete, come gia' kartingamericas.com, quindi le foto dei tre
@@ -2087,42 +2225,42 @@ const ESPLORA_CATALOG = [
     //
     // Una scheda sola con 16 varianti, come le Immersioni che ne hanno 15:
     // scelta del proprietario (6 ottobre 2026). Il nome del giro resta quello
-    // del fornitore, uguale nelle tre lingue come "Teide Light" sul trekking:
+    // del fornitore, uguale nelle quattro lingue come "Teide Light" sul trekking:
     // quando la richiesta arriva su WhatsApp, l'ufficio cerca quel nome.
     // Tradotta e' solo la parola davanti, Strada o MTB.
     //
     // Le descrizioni dei singoli giri sono riscritte dalle pagine del
     // fornitore, mandate dal proprietario il 6 ottobre 2026.
     id: "bici",
-    title: { it: "Bici", en: "Biking", es: "Bici" },
+    title: { it: "Bici", en: "Biking", es: "Bici", fr: "Vélo" },
     category: "teide-natura",
     // Da dove si parte non lo sappiamo ancora: i giri vanno dal Teide alla
     // costa del sud, e il fornitore non scrive un punto di ritrovo. "Da
     // definire" la pagina lo nasconde.
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar", fr: "À confirmer" },
     // Dove si va: la maggior parte dei giri sale al Teide, e Masca e Santiago
     // del Teide stanno dalla parte di Los Gigantes.
     zoneGroups: ["teide-nord", "los-gigantes"],
     // "4/5 hours" su tutti e sedici i giri.
-    duration: { it: "4-5 ore", en: "4-5 hours", es: "4-5 horas" },
+    duration: { it: "4-5 ore", en: "4-5 hours", es: "4-5 horas", fr: "4-5 heures" },
     durationGroups: ["mezza"],
     priceFrom: 110,
     // Solo il prezzo adulti, per scelta del proprietario: il fornitore non da'
     // un prezzo bambini. Niente `ages` e niente `priceInfant`.
     priceAdult: 110,
     options: {
-      label: { it: "Quale giro", en: "Which ride", es: "Qué recorrido" },
+      label: { it: "Quale giro", en: "Which ride", es: "Qué recorrido", fr: "Quelle sortie" },
       // Sedici giri uno sotto l'altro facevano una pagina lunghissima: i due
       // tipi diventano due pulsanti che si aprono (proprietario, 6 ottobre
       // 2026). Ogni variante dice il suo con `group`, e il nome del gruppo
       // non si ripete piu' davanti al nome del giro.
       groups: [
         { key: "strada",
-          label: { it: "Bici da strada", en: "Road bike", es: "Bici de carretera" },
-          desc: { it: "Otto giri su asfalto, dal Teide alla costa", en: "Eight rides on tarmac, from Teide to the coast", es: "Ocho recorridos por asfalto, del Teide a la costa" } },
+          label: { it: "Bici da strada", en: "Road bike", es: "Bici de carretera", fr: "Vélo de route" },
+          desc: { it: "Otto giri su asfalto, dal Teide alla costa", en: "Eight rides on tarmac, from Teide to the coast", es: "Ocho recorridos por asfalto, del Teide a la costa", fr: "Huit sorties sur route, du Teide à la côte" } },
         { key: "mtb",
-          label: { it: "Mountain bike", en: "Mountain bike", es: "Bicicleta de montaña" },
-          desc: { it: "Otto giri su sterrato, fra vulcani, pinete e mare", en: "Eight off-road rides, among volcanoes, pine forests and sea", es: "Ocho recorridos por pista, entre volcanes, pinares y mar" } }
+          label: { it: "Mountain bike", en: "Mountain bike", es: "Bicicleta de montaña", fr: "VTT" },
+          desc: { it: "Otto giri su sterrato, fra vulcani, pinete e mare", en: "Eight off-road rides, among volcanoes, pine forests and sea", es: "Ocho recorridos por pista, entre volcanes, pinares y mar", fr: "Huit sorties tout-terrain, entre volcans, pinèdes et mer" } }
       ],
       // Tre giri hanno due prezzi ("110/150", "110/120"): dipendono dalla
       // lunghezza del giro, corto o lungo, e lo spiega la descrizione (pagine
@@ -2133,19 +2271,21 @@ const ESPLORA_CATALOG = [
       // mostrare 110 dove potrebbe essere 150. Niente `price` nemmeno: per i
       // pacchetti vorrebbe dire "prezzo del mezzo", che qui non e'.
       choices: [
-        { label: { it: "Mount Teide Challenge West Slope (110/150 €)", en: "Mount Teide Challenge West Slope (€110/150)", es: "Mount Teide Challenge West Slope (110/150 €)" },
+        { label: { it: "Mount Teide Challenge West Slope (110/150 €)", en: "Mount Teide Challenge West Slope (€110/150)", es: "Mount Teide Challenge West Slope (110/150 €)", fr: "Mount Teide Challenge versant ouest (€110/150)" },
           group: "strada",
           desc: {
             it: "Dalla costa di Adeje al Teide dal versante ovest: la salita fra le piantagioni di banane verso Guía de Isora, la sosta a Chío e poi 28 km di salita costante, fra il 5 e il 7%, fino al paesaggio lunare del parco. Si torna giù fra le pinete. Due lunghezze: circa 75 km e 1.750 m di dislivello a 110 €, oppure circa 130 km e 3.000 m a 150 €; in e-bike 130 € e 190 €. Difficoltà medio-alta, tutto asfalto.",
             en: "From the Adeje coast up Teide's west side: the climb through the banana plantations towards Guía de Isora, a stop in Chío, then 28 km of steady climbing at 5 to 7% up to the park's lunar landscape. Back down through the pine forests. Two lengths: about 75 km and 1,750 m of climbing for €110, or about 130 km and 3,000 m for €150; by e-bike €130 and €190. Medium to hard, all on tarmac.",
-            es: "De la costa de Adeje al Teide por la vertiente oeste: la subida entre plataneras hacia Guía de Isora, la parada en Chío y luego 28 km de subida constante, entre el 5 y el 7%, hasta el paisaje lunar del parque. Se baja entre pinares. Dos distancias: unos 75 km y 1.750 m de desnivel por 110 €, o unos 130 km y 3.000 m por 150 €; en e-bike 130 € y 190 €. Dificultad media-alta, todo asfalto."
+            es: "De la costa de Adeje al Teide por la vertiente oeste: la subida entre plataneras hacia Guía de Isora, la parada en Chío y luego 28 km de subida constante, entre el 5 y el 7%, hasta el paisaje lunar del parque. Se baja entre pinares. Dos distancias: unos 75 km y 1.750 m de desnivel por 110 €, o unos 130 km y 3.000 m por 150 €; en e-bike 130 € y 190 €. Dificultad media-alta, todo asfalto.",
+            fr: "De la côte d'Adeje jusqu'au versant ouest du Teide : la montée à travers les bananeraies vers Guía de Isora, un arrêt à Chío, puis 28 km de montée régulière à 5-7 % jusqu'au paysage lunaire du parc. Descente à travers les pinèdes. Deux longueurs : environ 75 km et 1 750 m de dénivelé pour €110, ou environ 130 km et 3 000 m pour €150 ; en vélo électrique €130 et €190. Moyen à difficile, tout sur route."
           } },
-        { label: { it: "Mount Teide Challenge South Slope (110/120 €)", en: "Mount Teide Challenge South Slope (€110/120)", es: "Mount Teide Challenge South Slope (110/120 €)" },
+        { label: { it: "Mount Teide Challenge South Slope (110/120 €)", en: "Mount Teide Challenge South Slope (€110/120)", es: "Mount Teide Challenge South Slope (110/120 €)", fr: "Mount Teide Challenge versant sud (€110/120)" },
           group: "strada",
           desc: {
             it: "Da Adeje si sale dal versante sud: Arona, i vigneti e Vilaflor, il Pino Gordo e venti chilometri di pineta fino ai 2.270 m del belvedere di Boca Tauce, davanti al Teide. Si scende dal lato ovest, per Chío, e il giro si chiude ad anello. Due lunghezze: circa 55 km e 1.000 m di dislivello a 110 €, oppure circa 100 km e 2.500 m a 120 €; in e-bike 130 € e 140 €. Difficoltà medio-alta, tutto asfalto.",
             en: "From Adeje up Teide's south side: Arona, the vineyards and Vilaflor, the Pino Gordo and twenty kilometres of pine forest up to the 2,270 m Boca Tauce viewpoint, facing Teide. Down the west side through Chío, closing the loop. Two lengths: about 55 km and 1,000 m of climbing for €110, or about 100 km and 2,500 m for €120; by e-bike €130 and €140. Medium to hard, all on tarmac.",
-            es: "Desde Adeje se sube por la vertiente sur: Arona, los viñedos y Vilaflor, el Pino Gordo y veinte kilómetros de pinar hasta los 2.270 m del mirador de Boca Tauce, frente al Teide. Se baja por el lado oeste, por Chío, cerrando el círculo. Dos distancias: unos 55 km y 1.000 m de desnivel por 110 €, o unos 100 km y 2.500 m por 120 €; en e-bike 130 € y 140 €. Dificultad media-alta, todo asfalto."
+            es: "Desde Adeje se sube por la vertiente sur: Arona, los viñedos y Vilaflor, el Pino Gordo y veinte kilómetros de pinar hasta los 2.270 m del mirador de Boca Tauce, frente al Teide. Se baja por el lado oeste, por Chío, cerrando el círculo. Dos distancias: unos 55 km y 1.000 m de desnivel por 110 €, o unos 100 km y 2.500 m por 120 €; en e-bike 130 € y 140 €. Dificultad media-alta, todo asfalto.",
+            fr: "D'Adeje jusqu'au versant sud du Teide : Arona, les vignes et Vilaflor, le Pino Gordo et vingt kilomètres de pinède jusqu'au belvédère de Boca Tauce, à 2 270 m, face au Teide. Descente par le versant ouest via Chío, pour boucler la boucle. Deux longueurs : environ 55 km et 1 000 m de dénivelé pour €110, ou environ 100 km et 2 500 m pour €120 ; en vélo électrique €130 et €140. Moyen à difficile, tout sur route."
           } },
         { label: "Vilaflor Tour",
           group: "strada",
@@ -2153,7 +2293,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Da Adeje verso Los Cristianos, la salita di La Camella, il belvedere della Centinela e Granadilla; poi 14 km di salita dolce in pineta fino a Vilaflor, a 1.400 m il paese più alto di Spagna. Pausa al Pino Gordo e discesa per Arona. 67 km, 1.450 m di dislivello, difficoltà media, tutto asfalto. In e-bike 130 €.",
             en: "From Adeje towards Los Cristianos, the La Camella climb, the La Centinela viewpoint and Granadilla; then 14 km of gentle climbing through the pines to Vilaflor, at 1,400 m the highest village in Spain. A break at the Pino Gordo and down via Arona. 67 km, 1,450 m of climbing, medium difficulty, all on tarmac. By e-bike €130.",
-            es: "De Adeje hacia Los Cristianos, la subida de La Camella, el mirador de La Centinela y Granadilla; luego 14 km de subida suave entre pinos hasta Vilaflor, a 1.400 m el pueblo más alto de España. Pausa en el Pino Gordo y bajada por Arona. 67 km, 1.450 m de desnivel, dificultad media, todo asfalto. En e-bike 130 €."
+            es: "De Adeje hacia Los Cristianos, la subida de La Camella, el mirador de La Centinela y Granadilla; luego 14 km de subida suave entre pinos hasta Vilaflor, a 1.400 m el pueblo más alto de España. Pausa en el Pino Gordo y bajada por Arona. 67 km, 1.450 m de desnivel, dificultad media, todo asfalto. En e-bike 130 €.",
+            fr: "D'Adeje vers Los Cristianos, la montée de La Camella, le belvédère de La Centinela et Granadilla ; puis 14 km de montée douce à travers les pins jusqu'à Vilaflor, à 1 400 m, le village le plus haut d'Espagne. Une pause au Pino Gordo et descente par Arona. 67 km, 1 450 m de dénivelé, difficulté moyenne, tout sur route. En vélo électrique €130."
           } },
         { label: "Teide Downhill",
           group: "strada",
@@ -2161,7 +2302,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Quasi tutta discesa: il pulmino porta su a 2.200 m, sul versante ovest del Teide, e da lì si scendono circa 50 km per Chío, Guía de Isora con la pausa caffè e Los Menores, fino alla base del fornitore ad Adeje; il furgone riporta in hotel chi vuole. Facile, va bene anche per chi non pedala spesso: dai 12 anni, con un adulto. In e-bike 130 €; in mountain bike tradizionale, su richiesta, 20 € in più. Il ritiro è compreso entro 5 km dalla base di Adeje: da più lontano lo conferma l'ufficio.",
             en: "Almost all downhill: the minibus takes you up to 2,200 m on Teide's west side, and from there you ride about 50 km down through Chío, Guía de Isora with a coffee break, and Los Menores, to the operator's base in Adeje; the van takes you back to your hotel if you like. Easy, fine even if you rarely ride: from age 12, with an adult. By e-bike €130; on a traditional mountain bike, on request, €20 extra. Pick-up is included within 5 km of the Adeje base: from further away, the office will confirm.",
-            es: "Casi todo bajada: la furgoneta sube hasta los 2.200 m, en la vertiente oeste del Teide, y desde allí se bajan unos 50 km por Chío, Guía de Isora con pausa para el café y Los Menores, hasta la base del proveedor en Adeje; la furgoneta lleva de vuelta al hotel a quien quiera. Fácil, apto aunque no montes a menudo: desde los 12 años, con un adulto. En e-bike 130 €; en bicicleta de montaña tradicional, bajo petición, 20 € más. La recogida está incluida a menos de 5 km de la base de Adeje: desde más lejos lo confirma la oficina."
+            es: "Casi todo bajada: la furgoneta sube hasta los 2.200 m, en la vertiente oeste del Teide, y desde allí se bajan unos 50 km por Chío, Guía de Isora con pausa para el café y Los Menores, hasta la base del proveedor en Adeje; la furgoneta lleva de vuelta al hotel a quien quiera. Fácil, apto aunque no montes a menudo: desde los 12 años, con un adulto. En e-bike 130 €; en bicicleta de montaña tradicional, bajo petición, 20 € más. La recogida está incluida a menos de 5 km de la base de Adeje: desde más lejos lo confirma la oficina.",
+            fr: "Presque tout en descente : le minibus vous monte à 2 200 m sur le versant ouest du Teide, et de là vous descendez environ 50 km par Chío, Guía de Isora avec une pause café, et Los Menores, jusqu'à la base de l'opérateur à Adeje ; le van vous ramène à l'hôtel si vous le souhaitez. Facile, convient même si vous roulez rarement : dès 12 ans, avec un adulte. En vélo électrique €130 ; en VTT classique, sur demande, €20 de plus. La prise en charge est comprise dans un rayon de 5 km de la base d'Adeje : au-delà, le bureau vous confirmera."
           } },
         { label: "El Poris by San Isidro – TF 28",
           group: "strada",
@@ -2169,7 +2311,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il pulmino porta ciclisti e bici a San Isidro; da lì su e giù per la vecchia TF-28 fino a Villa de Arico, pausa caffè e discesa a El Porís, villaggio di pescatori con la spiaggia nera. Poi l'unica salita del giorno, dolce (3-5%), in mezzo al parco eolico più grande dell'isola. Circa 65 km e 1.250 m di dislivello, difficoltà media per la lunghezza, tutto asfalto. In e-bike 130 €.",
             en: "The minibus takes riders and bikes to San Isidro; from there, up and down the old TF-28 to Villa de Arico, a coffee break and the descent to El Porís, a fishing village with a black-sand beach. Then the only climb of the day, a gentle one (3-5%), through the island's largest wind farm. About 65 km and 1,250 m of climbing, medium difficulty because of the distance, all on tarmac. By e-bike €130.",
-            es: "La furgoneta lleva ciclistas y bicis a San Isidro; desde allí, sube y baja por la antigua TF-28 hasta Villa de Arico, pausa para el café y bajada a El Porís, pueblo de pescadores con playa de arena negra. Después la única subida del día, suave (3-5%), entre el mayor parque eólico de la isla. Unos 65 km y 1.250 m de desnivel, dificultad media por la distancia, todo asfalto. En e-bike 130 €."
+            es: "La furgoneta lleva ciclistas y bicis a San Isidro; desde allí, sube y baja por la antigua TF-28 hasta Villa de Arico, pausa para el café y bajada a El Porís, pueblo de pescadores con playa de arena negra. Después la única subida del día, suave (3-5%), entre el mayor parque eólico de la isla. Unos 65 km y 1.250 m de desnivel, dificultad media por la distancia, todo asfalto. En e-bike 130 €.",
+            fr: "Le minibus emmène cyclistes et vélos à San Isidro ; de là, montées et descentes sur l'ancienne TF-28 jusqu'à Villa de Arico, une pause café et la descente vers El Porís, village de pêcheurs avec une plage de sable noir. Puis la seule montée de la journée, douce (3-5 %), à travers le plus grand parc éolien de l'île. Environ 65 km et 1 250 m de dénivelé, difficulté moyenne à cause de la distance, tout sur route. En vélo électrique €130."
           } },
         { label: "Medano via Granadilla",
           group: "strada",
@@ -2177,7 +2320,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Un anello senza salite dure: da Costa Adeje per Los Cristianos, Chayofa e La Camella, il belvedere della Centinela, San Miguel de Abona e Granadilla; poi in discesa fino a El Médano per un caffè sul mare, e ritorno lungo la costa davanti alla Montaña Roja. 65 km, 1.100 m di dislivello, facile, tutto asfalto. In e-bike 130 €.",
             en: "A loop with no hard climbs: from Costa Adeje via Los Cristianos, Chayofa and La Camella, the La Centinela viewpoint, San Miguel de Abona and Granadilla; then downhill to El Médano for a coffee by the sea, and back along the coast past Montaña Roja. 65 km, 1,100 m of climbing, easy, all on tarmac. By e-bike €130.",
-            es: "Un circuito sin subidas duras: de Costa Adeje por Los Cristianos, Chayofa y La Camella, el mirador de La Centinela, San Miguel de Abona y Granadilla; luego bajando hasta El Médano para un café junto al mar, y vuelta por la costa frente a la Montaña Roja. 65 km, 1.100 m de desnivel, fácil, todo asfalto. En e-bike 130 €."
+            es: "Un circuito sin subidas duras: de Costa Adeje por Los Cristianos, Chayofa y La Camella, el mirador de La Centinela, San Miguel de Abona y Granadilla; luego bajando hasta El Médano para un café junto al mar, y vuelta por la costa frente a la Montaña Roja. 65 km, 1.100 m de desnivel, fácil, todo asfalto. En e-bike 130 €.",
+            fr: "Une boucle sans montées difficiles : de Costa Adeje par Los Cristianos, Chayofa et La Camella, le belvédère de La Centinela, San Miguel de Abona et Granadilla ; puis descente vers El Médano pour un café au bord de la mer, et retour le long de la côte devant la Montaña Roja. 65 km, 1 100 m de dénivelé, facile, tout sur route. En vélo électrique €130."
           } },
         { label: "Santiago del Teide",
           group: "strada",
@@ -2185,14 +2329,16 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Da Costa Adeje lungo la costa ovest: la salita fra le piantagioni di banane fino a Guía de Isora, la discesa verso Playa San Juan e le scogliere di Los Gigantes, poi la salita a tappe per Tamaimo fino a Santiago del Teide, a 1.000 m, e le lave nere di Arguayo. Sosta a Chío e 18 km di discesa per tornare. Da 70 a 85 km e da 1.500 a 2.200 m di dislivello, secondo il livello; impegnativo, tutto asfalto. In e-bike 130 €.",
             en: "From Costa Adeje along the west coast: the climb through the banana plantations to Guía de Isora, down towards Playa San Juan and the Los Gigantes cliffs, then the stepped climb through Tamaimo to Santiago del Teide, at 1,000 m, and the black lava of Arguayo. A stop in Chío and 18 km of descent back. 70 to 85 km and 1,500 to 2,200 m of climbing, depending on your level; demanding, all on tarmac. By e-bike €130.",
-            es: "De Costa Adeje por la costa oeste: la subida entre plataneras hasta Guía de Isora, la bajada hacia Playa San Juan y los acantilados de Los Gigantes, luego la subida por etapas por Tamaimo hasta Santiago del Teide, a 1.000 m, y la lava negra de Arguayo. Parada en Chío y 18 km de bajada para volver. De 70 a 85 km y de 1.500 a 2.200 m de desnivel, según el nivel; exigente, todo asfalto. En e-bike 130 €."
+            es: "De Costa Adeje por la costa oeste: la subida entre plataneras hasta Guía de Isora, la bajada hacia Playa San Juan y los acantilados de Los Gigantes, luego la subida por etapas por Tamaimo hasta Santiago del Teide, a 1.000 m, y la lava negra de Arguayo. Parada en Chío y 18 km de bajada para volver. De 70 a 85 km y de 1.500 a 2.200 m de desnivel, según el nivel; exigente, todo asfalto. En e-bike 130 €.",
+            fr: "De Costa Adeje le long de la côte ouest : la montée à travers les bananeraies jusqu'à Guía de Isora, la descente vers Playa San Juan et les falaises de Los Gigantes, puis la montée en escalier par Tamaimo jusqu'à Santiago del Teide, à 1 000 m, et la lave noire d'Arguayo. Un arrêt à Chío et 18 km de descente pour rentrer. De 70 à 85 km et de 1 500 à 2 200 m de dénivelé, selon votre niveau ; exigeant, tout sur route. En vélo électrique €130."
           } },
-        { label: { it: "Masca Tour (110/150 €)", en: "Masca Tour (€110/150)", es: "Masca Tour (110/150 €)" },
+        { label: { it: "Masca Tour (110/150 €)", en: "Masca Tour (€110/150)", es: "Masca Tour (110/150 €)", fr: "Masca Tour (€110/150)" },
           group: "strada",
           desc: {
             it: "Per ciclisti esperti. Da Costa Adeje per Guía de Isora, Los Gigantes e Santiago del Teide fino al Mirador de Cherfe; poi giù a Masca, ai piedi del Teno, e su per la salita più dura dell'isola: 4,2 km con tratti fino al 22%. Due lunghezze: circa 60 km e 1.550 m di dislivello a 110 €, oppure circa 130 km e 3.000 m, passando per Buenavista del Norte ed El Tanque, a 150 €; in e-bike 130 € e 180 €. Tutto asfalto.",
             en: "For experienced riders. From Costa Adeje via Guía de Isora, Los Gigantes and Santiago del Teide up to the Mirador de Cherfe; then down to Masca, at the foot of the Teno mountains, and up the island's hardest climb: 4.2 km with stretches of up to 22%. Two lengths: about 60 km and 1,550 m of climbing for €110, or about 130 km and 3,000 m, via Buenavista del Norte and El Tanque, for €150; by e-bike €130 and €180. All on tarmac.",
-            es: "Para ciclistas expertos. De Costa Adeje por Guía de Isora, Los Gigantes y Santiago del Teide hasta el Mirador de Cherfe; luego bajada a Masca, al pie del Teno, y subida por la cuesta más dura de la isla: 4,2 km con tramos de hasta el 22%. Dos distancias: unos 60 km y 1.550 m de desnivel por 110 €, o unos 130 km y 3.000 m, pasando por Buenavista del Norte y El Tanque, por 150 €; en e-bike 130 € y 180 €. Todo asfalto."
+            es: "Para ciclistas expertos. De Costa Adeje por Guía de Isora, Los Gigantes y Santiago del Teide hasta el Mirador de Cherfe; luego bajada a Masca, al pie del Teno, y subida por la cuesta más dura de la isla: 4,2 km con tramos de hasta el 22%. Dos distancias: unos 60 km y 1.550 m de desnivel por 110 €, o unos 130 km y 3.000 m, pasando por Buenavista del Norte y El Tanque, por 150 €; en e-bike 130 € y 180 €. Todo asfalto.",
+            fr: "Pour cyclistes expérimentés. De Costa Adeje par Guía de Isora, Los Gigantes et Santiago del Teide jusqu'au Mirador de Cherfe ; puis descente vers Masca, au pied des montagnes de Teno, et la montée la plus dure de l'île : 4,2 km avec des passages jusqu'à 22 %. Deux longueurs : environ 60 km et 1 550 m de dénivelé pour €110, ou environ 130 km et 3 000 m, par Buenavista del Norte et El Tanque, pour €150 ; en vélo électrique €130 et €180. Tout sur route."
           } },
         { label: "Santiago del Teide – El Chinyero",
           group: "mtb",
@@ -2200,7 +2346,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il pulmino porta a Santiago del Teide, dove c'è il tempo per un caffè; da lì si pedala su piste sterrate larghe, con la vista sulla costa nord fino a Garachico e Puerto de la Cruz, accanto alla Montaña Negra fino al cono di lava del Chinyero, l'ultima grande eruzione dell'isola nel 1909, e al rifugio della Casa Forestal. 33 km e 600 m di dislivello, tutto sterrato. Media in mountain bike, facile in e-bike: qualche strappo breve su sabbia vulcanica, ma va bene anche per chi non è mai andato fuori strada. In e-bike 130 €.",
             en: "The minibus takes you to Santiago del Teide, with time for a coffee; from there you ride wide dirt tracks, looking out over the north coast to Garachico and Puerto de la Cruz, past Montaña Negra to the Chinyero lava cone, the island's last major eruption in 1909, and the Casa Forestal refuge. 33 km and 600 m of climbing, all off-road. Medium on a mountain bike, easy by e-bike: a few short steep bits on volcanic sand, but fine even if you have never ridden off-road. By e-bike €130.",
-            es: "La furgoneta lleva a Santiago del Teide, con tiempo para un café; desde allí se pedalea por pistas anchas, con vistas a la costa norte hasta Garachico y Puerto de la Cruz, junto a la Montaña Negra hasta el cono de lava del Chinyero, la última gran erupción de la isla en 1909, y el refugio de la Casa Forestal. 33 km y 600 m de desnivel, todo pista. Media en bicicleta de montaña, fácil en e-bike: algunas rampas cortas sobre arena volcánica, pero apta aunque nunca hayas ido fuera de carretera. En e-bike 130 €."
+            es: "La furgoneta lleva a Santiago del Teide, con tiempo para un café; desde allí se pedalea por pistas anchas, con vistas a la costa norte hasta Garachico y Puerto de la Cruz, junto a la Montaña Negra hasta el cono de lava del Chinyero, la última gran erupción de la isla en 1909, y el refugio de la Casa Forestal. 33 km y 600 m de desnivel, todo pista. Media en bicicleta de montaña, fácil en e-bike: algunas rampas cortas sobre arena volcánica, pero apta aunque nunca hayas ido fuera de carretera. En e-bike 130 €.",
+            fr: "Le minibus vous emmène à Santiago del Teide, avec le temps d'un café ; de là, vous roulez sur de larges pistes en terre, avec vue sur la côte nord jusqu'à Garachico et Puerto de la Cruz, devant la Montaña Negra jusqu'au cône de lave du Chinyero, la dernière grande éruption de l'île en 1909, et le refuge de la Casa Forestal. 33 km et 600 m de dénivelé, tout en tout-terrain. Moyen en VTT, facile en vélo électrique : quelques courts passages raides sur sable volcanique, mais ça va même si vous n'avez jamais fait de tout-terrain. En vélo électrique €130."
           } },
         { label: "Izaña – El Poris, Teide Easy Downhill",
           group: "mtb",
@@ -2208,7 +2355,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Dalla montagna al mare, quasi tutto in discesa: il pulmino porta all'osservatorio di Izaña, a 2.390 m sul versante est del Teide, e da lì si scende per piste vulcaniche larghe e pinete, la zona di El Contador, vigneti e campi di patate fino a Villa de Arico e al villaggio di pescatori di El Porís. 45 km, 70% sterrato. Facile, ma serve un po' di pratica di mountain bike su fondo smosso. Alla fine il furgone riporta in hotel.",
             en: "From the mountain to the sea, almost all downhill: the minibus takes you to the Izaña observatory, at 2,390 m on Teide's east side, and from there you ride down wide volcanic tracks and pine forests, the El Contador area, vineyards and potato fields to Villa de Arico and the fishing village of El Porís. 45 km, 70% off-road. Easy, but some mountain-biking experience on loose ground is needed. At the end the van takes you back to your hotel.",
-            es: "De la montaña al mar, casi todo bajada: la furgoneta sube al observatorio de Izaña, a 2.390 m en la vertiente este del Teide, y desde allí se baja por pistas volcánicas anchas y pinares, la zona de El Contador, viñedos y campos de papas hasta Villa de Arico y el pueblo pesquero de El Porís. 45 km, 70% pista. Fácil, pero hace falta algo de práctica en bicicleta de montaña sobre terreno suelto. Al final la furgoneta lleva de vuelta al hotel."
+            es: "De la montaña al mar, casi todo bajada: la furgoneta sube al observatorio de Izaña, a 2.390 m en la vertiente este del Teide, y desde allí se baja por pistas volcánicas anchas y pinares, la zona de El Contador, viñedos y campos de papas hasta Villa de Arico y el pueblo pesquero de El Porís. 45 km, 70% pista. Fácil, pero hace falta algo de práctica en bicicleta de montaña sobre terreno suelto. Al final la furgoneta lleva de vuelta al hotel.",
+            fr: "De la montagne à la mer, presque tout en descente : le minibus vous emmène à l'observatoire d'Izaña, à 2 390 m sur le versant est du Teide, et de là vous descendez par de larges pistes volcaniques et des pinèdes, la zone d'El Contador, les vignes et les champs de pommes de terre jusqu'à Villa de Arico et au village de pêcheurs d'El Porís. 45 km, dont 70 % en tout-terrain. Facile, mais il faut un peu d'expérience du VTT sur terrain meuble. À la fin, le van vous ramène à l'hôtel."
           } },
         { label: "Teide South Off-road Downhill",
           group: "mtb",
@@ -2216,7 +2364,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Discesa tecnica dal versante sud del Teide alla costa: il pulmino porta a 2.200 m, poi si scende fra colate di lava e pinete, con la vista su Adeje e, nei giorni limpidi, su La Gomera, fino al borgo di La Quinta; da lì i vecchi camini reales di pietra e i barrancos fino a Costa Adeje. 30 km, 90% sterrato. Difficoltà media: per chi ha già esperienza fuori strada e sa guidare la bici su roccia e ciottolato. Alla fine il furgone riporta in hotel.",
             en: "A technical descent from Teide's south side to the coast: the minibus takes you up to 2,200 m, then you ride down through lava flows and pine forests, looking out over Adeje and, on clear days, La Gomera, to the hamlet of La Quinta; from there the old stone caminos reales and the barrancos down to Costa Adeje. 30 km, 90% off-road. Medium difficulty: for riders with off-road experience who are confident on rock and cobbles. At the end the van takes you back to your hotel.",
-            es: "Bajada técnica desde la vertiente sur del Teide hasta la costa: la furgoneta sube a 2.200 m y luego se baja entre coladas de lava y pinares, con vistas a Adeje y, en días claros, a La Gomera, hasta el caserío de La Quinta; desde allí los antiguos caminos reales de piedra y los barrancos hasta Costa Adeje. 30 km, 90% pista. Dificultad media: para quien ya tiene experiencia fuera de carretera y maneja la bici con soltura sobre roca y empedrado. Al final la furgoneta lleva de vuelta al hotel."
+            es: "Bajada técnica desde la vertiente sur del Teide hasta la costa: la furgoneta sube a 2.200 m y luego se baja entre coladas de lava y pinares, con vistas a Adeje y, en días claros, a La Gomera, hasta el caserío de La Quinta; desde allí los antiguos caminos reales de piedra y los barrancos hasta Costa Adeje. 30 km, 90% pista. Dificultad media: para quien ya tiene experiencia fuera de carretera y maneja la bici con soltura sobre roca y empedrado. Al final la furgoneta lleva de vuelta al hotel.",
+            fr: "Une descente technique du versant sud du Teide jusqu'à la côte : le minibus vous monte à 2 200 m, puis vous descendez à travers coulées de lave et pinèdes, avec vue sur Adeje et, par temps clair, La Gomera, jusqu'au hameau de La Quinta ; de là, les anciens caminos reales en pierre et les barrancos jusqu'à Costa Adeje. 30 km, dont 90 % en tout-terrain. Difficulté moyenne : pour cyclistes ayant l'expérience du tout-terrain et à l'aise sur la roche et les pavés. À la fin, le van vous ramène à l'hôtel."
           } },
         { label: "Off-road Escape",
           group: "mtb",
@@ -2224,7 +2373,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Fra la lava e il mare del sud: dopo Las Américas e Los Cristianos si sale in furgone sul vulcano di Guaza, poi circa 25 km di sterrato nella riserva del Malpaís de la Rasca, fino al faro di Rasca e alle sue scogliere. Pausa con un leche leche sul lungomare di Las Galletas, la Costa del Silencio e altri 7 km di sterrato fino al vulcano della Montaña Amarilla. 35-40 km, 600 m di dislivello, 90% sterrato; difficoltà medio-alta. C'è anche una versione più facile, da Pal-Mar a Pal-Mar: 30 km e 150 m di dislivello. In e-bike 130 €.",
             en: "Between lava and the southern sea: past Las Américas and Los Cristianos the van takes you up the Guaza volcano, then about 25 km off-road through the Malpaís de la Rasca reserve to the Rasca lighthouse and its cliffs. A leche leche on the Las Galletas seafront, the Costa del Silencio and another 7 km off-road to the Montaña Amarilla volcano. 35-40 km, 600 m of climbing, 90% off-road; medium to hard. There is also an easier version, from Pal-Mar and back: 30 km and 150 m of climbing. By e-bike €130.",
-            es: "Entre la lava y el mar del sur: pasados Las Américas y Los Cristianos se sube en furgoneta al volcán de Guaza, y luego unos 25 km de pista por la reserva del Malpaís de la Rasca, hasta el faro de Rasca y sus acantilados. Un leche leche en el paseo de Las Galletas, la Costa del Silencio y otros 7 km de pista hasta el volcán de la Montaña Amarilla. 35-40 km, 600 m de desnivel, 90% pista; dificultad media-alta. Hay también una versión más fácil, de Pal-Mar a Pal-Mar: 30 km y 150 m de desnivel. En e-bike 130 €."
+            es: "Entre la lava y el mar del sur: pasados Las Américas y Los Cristianos se sube en furgoneta al volcán de Guaza, y luego unos 25 km de pista por la reserva del Malpaís de la Rasca, hasta el faro de Rasca y sus acantilados. Un leche leche en el paseo de Las Galletas, la Costa del Silencio y otros 7 km de pista hasta el volcán de la Montaña Amarilla. 35-40 km, 600 m de desnivel, 90% pista; dificultad media-alta. Hay también una versión más fácil, de Pal-Mar a Pal-Mar: 30 km y 150 m de desnivel. En e-bike 130 €.",
+            fr: "Entre lave et mer du sud : après Las Américas et Los Cristianos, le van vous monte sur le volcan de Guaza, puis environ 25 km en tout-terrain à travers la réserve du Malpaís de la Rasca jusqu'au phare de Rasca et ses falaises. Un leche leche sur le front de mer de Las Galletas, la Costa del Silencio et encore 7 km de tout-terrain jusqu'au volcan de la Montaña Amarilla. 35-40 km, 600 m de dénivelé, 90 % en tout-terrain ; moyen à difficile. Il existe aussi une version plus facile, aller-retour depuis Pal-Mar : 30 km et 150 m de dénivelé. En vélo électrique €130."
           } },
         { label: "Costa del Silencio – El Médano – Palm Mar",
           group: "mtb",
@@ -2232,7 +2382,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il giro più facile, pensato per chi va in mountain bike per la prima volta. Da Costa del Silencio verso Golf del Sur e il villaggio di pescatori di Los Abrigos, poi la spiaggia della Tejita fino a El Médano, davanti alla Montaña Roja, per un frullato di frutta. Il ritorno passa per un'altra strada, fra le piantagioni di banane vicino all'aeroporto del sud, fino al faro di Punta de Rasca. 40 km, 400 m di dislivello, tutto sterrato. Esiste anche in versione più corta, adatta alle famiglie con bambini. In e-bike 130 €.",
             en: "The easiest ride, designed for first-time mountain bikers. From Costa del Silencio towards Golf del Sur and the fishing village of Los Abrigos, then along La Tejita beach to El Médano, facing Montaña Roja, for a fruit shake. The way back takes another route, through banana plantations near the south airport, to the Punta de Rasca lighthouse. 40 km, 400 m of climbing, all off-road. A shorter version is also available, suitable for families with children. By e-bike €130.",
-            es: "El recorrido más fácil, pensado para quien va en bicicleta de montaña por primera vez. De Costa del Silencio hacia Golf del Sur y el pueblo pesquero de Los Abrigos, luego por la playa de La Tejita hasta El Médano, frente a la Montaña Roja, para un batido de fruta. La vuelta va por otro camino, entre plataneras cerca del aeropuerto del sur, hasta el faro de Punta de Rasca. 40 km, 400 m de desnivel, todo pista. Existe también en versión más corta, apta para familias con niños. En e-bike 130 €."
+            es: "El recorrido más fácil, pensado para quien va en bicicleta de montaña por primera vez. De Costa del Silencio hacia Golf del Sur y el pueblo pesquero de Los Abrigos, luego por la playa de La Tejita hasta El Médano, frente a la Montaña Roja, para un batido de fruta. La vuelta va por otro camino, entre plataneras cerca del aeropuerto del sur, hasta el faro de Punta de Rasca. 40 km, 400 m de desnivel, todo pista. Existe también en versión más corta, apta para familias con niños. En e-bike 130 €.",
+            fr: "La sortie la plus facile, pensée pour ceux qui découvrent le VTT. De Costa del Silencio vers Golf del Sur et le village de pêcheurs de Los Abrigos, puis le long de la plage de La Tejita jusqu'à El Médano, face à la Montaña Roja, pour un smoothie aux fruits. Le retour prend un autre chemin, à travers les bananeraies près de l'aéroport sud, jusqu'au phare de la Punta de Rasca. 40 km, 400 m de dénivelé, tout en tout-terrain. Une version plus courte existe aussi, adaptée aux familles avec enfants. En vélo électrique €130."
           } },
         { label: "Barbacoa – Corona Forestal",
           group: "mtb",
@@ -2240,7 +2391,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il pulmino passa da Villa de Arico e porta alla riserva di El Contador, a 1.000 m; da lì una salita lunga e costante su sterrato, circa 17 km e 1.300 m di dislivello, fino all'osservatorio di Izaña. Poi 20 km di discesa su piste larghe e qualche tratto d'asfalto verso la Valle di Güímar, con la sosta al Mirador de Pájara. 45 km, 1.400 m di dislivello, 90% sterrato. Medio-alta per la salita, non per la tecnica: la discesa va bene anche per chi ha poca esperienza. In e-bike 130 €.",
             en: "The minibus goes via Villa de Arico to the El Contador reserve, at 1,000 m; from there a long, steady climb on dirt tracks, about 17 km and 1,300 m of ascent, up to the Izaña observatory. Then 20 km of descent on wide tracks and a few stretches of tarmac towards the Güímar valley, with a stop at the Mirador de Pájara. 45 km, 1,400 m of climbing, 90% off-road. Medium to hard because of the climb, not the technique: the descent is fine even for less experienced riders. By e-bike €130.",
-            es: "La furgoneta pasa por Villa de Arico y lleva a la reserva de El Contador, a 1.000 m; desde allí una subida larga y constante por pista, unos 17 km y 1.300 m de desnivel, hasta el observatorio de Izaña. Luego 20 km de bajada por pistas anchas y algún tramo de asfalto hacia el Valle de Güímar, con parada en el Mirador de Pájara. 45 km, 1.400 m de desnivel, 90% pista. Media-alta por la subida, no por la técnica: la bajada es apta también para quien tiene poca experiencia. En e-bike 130 €."
+            es: "La furgoneta pasa por Villa de Arico y lleva a la reserva de El Contador, a 1.000 m; desde allí una subida larga y constante por pista, unos 17 km y 1.300 m de desnivel, hasta el observatorio de Izaña. Luego 20 km de bajada por pistas anchas y algún tramo de asfalto hacia el Valle de Güímar, con parada en el Mirador de Pájara. 45 km, 1.400 m de desnivel, 90% pista. Media-alta por la subida, no por la técnica: la bajada es apta también para quien tiene poca experiencia. En e-bike 130 €.",
+            fr: "Le minibus passe par Villa de Arico jusqu'à la réserve d'El Contador, à 1 000 m ; de là, une longue montée régulière sur pistes en terre, environ 17 km et 1 300 m de dénivelé, jusqu'à l'observatoire d'Izaña. Puis 20 km de descente sur de larges pistes et quelques tronçons de route vers la vallée de Güímar, avec un arrêt au Mirador de Pájara. 45 km, 1 400 m de dénivelé, 90 % en tout-terrain. Moyen à difficile à cause de la montée, pas de la technique : la descente convient même aux cyclistes moins expérimentés. En vélo électrique €130."
           } },
         { label: "El Médano – El Poris",
           group: "mtb",
@@ -2248,7 +2400,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il pulmino porta a El Médano, il paese dei surfisti, e da lì si pedala sugli sterrati della costa est: il villaggio di pescatori di San Miguel de Tajao, El Porís e il suo faro, ultima sosta prima di ritrovare il furgone. 40 km, 600 m di dislivello, tutto sterrato. Difficoltà media: qualche tratto corto e roccioso fra i barrancos, che volendo si fa a piedi spingendo la bici per pochi metri. In e-bike 130 €.",
             en: "The minibus takes you to El Médano, the surfers' town, and from there you ride the dirt tracks of the east coast: the fishing village of San Miguel de Tajao, El Porís and its lighthouse, the last stop before meeting the van. 40 km, 600 m of climbing, all off-road. Medium difficulty: a few short rocky stretches between the barrancos, which you can walk, pushing the bike for a few metres, if you prefer. By e-bike €130.",
-            es: "La furgoneta lleva a El Médano, el pueblo de los surfistas, y desde allí se pedalea por las pistas de la costa este: el pueblo pesquero de San Miguel de Tajao, El Porís y su faro, última parada antes de volver a la furgoneta. 40 km, 600 m de desnivel, todo pista. Dificultad media: algunos tramos cortos y rocosos entre los barrancos, que se pueden hacer a pie empujando la bici unos metros. En e-bike 130 €."
+            es: "La furgoneta lleva a El Médano, el pueblo de los surfistas, y desde allí se pedalea por las pistas de la costa este: el pueblo pesquero de San Miguel de Tajao, El Porís y su faro, última parada antes de volver a la furgoneta. 40 km, 600 m de desnivel, todo pista. Dificultad media: algunos tramos cortos y rocosos entre los barrancos, que se pueden hacer a pie empujando la bici unos metros. En e-bike 130 €.",
+            fr: "Le minibus vous emmène à El Médano, la ville des surfeurs, et de là vous roulez sur les pistes en terre de la côte est : le village de pêcheurs de San Miguel de Tajao, El Porís et son phare, dernier arrêt avant de retrouver le van. 40 km, 600 m de dénivelé, tout en tout-terrain. Difficulté moyenne : quelques courts passages rocheux entre les barrancos, que l'on peut faire à pied, en poussant le vélo sur quelques mètres, si on préfère. En vélo électrique €130."
           } },
         { label: "Vilaflor – Corona Forestal",
           group: "mtb",
@@ -2256,7 +2409,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il pulmino porta a Vilaflor, a 1.400 m; pochi chilometri d'asfalto fino al Pino Gordo, il pino canario più grande dell'arcipelago, poi circa 13 km di sterrato nella pineta fino a Madre de Agua. Cinque minuti a piedi lungo il ruscello del Barranco del Río, poi in sella fino a El Salto e giù verso il mare fra asfalto e sterrati facili. 40 km, 500 m di dislivello. Difficoltà media: qualche tratto tecnico in discesa e un paio di passaggi da fare a piedi. In e-bike 130 €.",
             en: "The minibus takes you to Vilaflor, at 1,400 m; a few kilometres of tarmac to the Pino Gordo, the largest Canary pine in the archipelago, then about 13 km off-road through the pine forest to Madre de Agua. A five-minute walk along the stream of the Barranco del Río, then back in the saddle to El Salto and down towards the sea on tarmac and easy tracks. 40 km, 500 m of climbing. Medium difficulty: a few technical downhill stretches and a couple of sections to walk. By e-bike €130.",
-            es: "La furgoneta lleva a Vilaflor, a 1.400 m; unos pocos kilómetros de asfalto hasta el Pino Gordo, el mayor pino canario del archipiélago, y luego unos 13 km de pista por el pinar hasta Madre de Agua. Cinco minutos a pie junto al arroyo del Barranco del Río, de nuevo en la bici hasta El Salto y bajada hacia el mar entre asfalto y pistas fáciles. 40 km, 500 m de desnivel. Dificultad media: algunos tramos técnicos de bajada y un par de pasos que hay que hacer a pie. En e-bike 130 €."
+            es: "La furgoneta lleva a Vilaflor, a 1.400 m; unos pocos kilómetros de asfalto hasta el Pino Gordo, el mayor pino canario del archipiélago, y luego unos 13 km de pista por el pinar hasta Madre de Agua. Cinco minutos a pie junto al arroyo del Barranco del Río, de nuevo en la bici hasta El Salto y bajada hacia el mar entre asfalto y pistas fáciles. 40 km, 500 m de desnivel. Dificultad media: algunos tramos técnicos de bajada y un par de pasos que hay que hacer a pie. En e-bike 130 €.",
+            fr: "Le minibus vous emmène à Vilaflor, à 1 400 m ; quelques kilomètres de route jusqu'au Pino Gordo, le plus grand pin des Canaries de l'archipel, puis environ 13 km en tout-terrain à travers la pinède jusqu'à Madre de Agua. Cinq minutes à pied le long du ruisseau du Barranco del Río, puis de nouveau en selle jusqu'à El Salto et la descente vers la mer sur route et pistes faciles. 40 km, 500 m de dénivelé. Difficulté moyenne : quelques passages techniques en descente et deux tronçons à faire à pied. En vélo électrique €130."
           } }
       ]
     },
@@ -2271,21 +2425,25 @@ const ESPLORA_CATALOG = [
     notes: [
       { it: "Le guide parlano italiano, inglese e spagnolo.",
         en: "The guides speak Italian, English and Spanish.",
-        es: "Los guías hablan italiano, inglés y español." },
+        es: "Los guías hablan italiano, inglés y español.",
+        fr: "Les guides parlent italien, anglais et espagnol." },
       { it: "Ogni giro dura al massimo 5 ore, compresi il ritiro e il ritorno in hotel.",
         en: "Each ride lasts 5 hours at most, including hotel pick-up and drop-off.",
-        es: "Cada recorrido dura como máximo 5 horas, incluidas la recogida y la vuelta al hotel." },
+        es: "Cada recorrido dura como máximo 5 horas, incluidas la recogida y la vuelta al hotel.",
+        fr: "Chaque sortie dure 5 heures au maximum, prise en charge et retour à l'hôtel compris." },
       // Non tutti i giri hanno la e-bike: i due MTB arrivati il 6 ottobre
       // danno solo il prezzo della bici normale.
       { it: "Su molti giri si può avere la e-bike: dove c'è, il prezzo è nella descrizione del giro. Se la vuoi scrivilo nelle note della richiesta.",
         en: "Many rides can be done by e-bike: where available, the price is in the ride's description. If you want one, say so in the notes of your request.",
-        es: "En muchos recorridos se puede ir en e-bike: donde la hay, el precio está en la descripción del recorrido. Si la quieres, escríbelo en las notas de la solicitud." }
+        es: "En muchos recorridos se puede ir en e-bike: donde la hay, el precio está en la descripción del recorrido. Si la quieres, escríbelo en las notas de la solicitud.",
+        fr: "Beaucoup de sorties peuvent se faire en vélo électrique : quand c'est possible, le prix est dans la description de la sortie. Si vous en voulez un, indiquez-le dans les notes de la demande." }
     ],
     family: false,
     desc: {
       it: "Sedici giri in bicicletta con guida, otto su strada e otto in mountain bike: dalle salite del Teide alle discese verso la costa, passando per Vilaflor, Masca, la corona forestale e il sud dell'isola. Mezza giornata in sella, per chi pedala già e per chi è esperto.",
       en: "Sixteen guided bike rides, eight on the road and eight by mountain bike: from the climbs up Teide to the descents towards the coast, through Vilaflor, Masca, the pine forest and the south of the island. Half a day in the saddle, for regular riders and experts alike.",
-      es: "Dieciséis recorridos en bicicleta con guía, ocho por carretera y ocho en bicicleta de montaña: de las subidas al Teide a las bajadas hacia la costa, pasando por Vilaflor, Masca, la corona forestal y el sur de la isla. Media jornada sobre la bici, para quien ya pedalea y para expertos."
+      es: "Dieciséis recorridos en bicicleta con guía, ocho por carretera y ocho en bicicleta de montaña: de las subidas al Teide a las bajadas hacia la costa, pasando por Vilaflor, Masca, la corona forestal y el sur de la isla. Media jornada sobre la bici, para quien ya pedalea y para expertos.",
+      fr: "Seize sorties guidées à vélo, huit sur route et huit en VTT : des montées vers le Teide aux descentes vers la côte, en passant par Vilaflor, Masca, la pinède et le sud de l'île. Une demi-journée en selle, pour cyclistes réguliers comme pour experts."
     },
     nomi: ["Cycling in Tenerife"],
     // La foto che stava sulla vecchia scheda "Trekking e bici": un ciclista in
@@ -2305,7 +2463,8 @@ const ESPLORA_CATALOG = [
     title: {
       it: "Teide, Icod, Garachico e Masca",
       en: "Teide, Icod, Garachico & Masca",
-      es: "Teide, Icod, Garachico y Masca"
+      es: "Teide, Icod, Garachico y Masca",
+      fr: "Teide, Icod, Garachico et Masca"
     },
     // Categoria decisa dal proprietario l'8 settembre 2026: sta con il Teide,
     // non con i tour dell'isola.
@@ -2315,11 +2474,11 @@ const ESPLORA_CATALOG = [
     // "Punto di partenza", e dal nord non parte niente. Il proprietario l'8
     // settembre 2026: la partenza e' **una sola**, il sud, e vale per tutte
     // le escursioni. Il nord qui e' dove si va, non da dove si parte.
-    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur", fr: "Sud de Tenerife" },
     // "Circa 8 ore", detto dal proprietario l'8 settembre 2026. Era "Giornata
     // intera": vero ma vago, e per chi deve organizzarsi la giornata otto ore
     // e dodici non sono la stessa cosa.
-    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
+    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox.", fr: "Environ 8 heures" },
     zoneGroups: ["teide-nord"],
     durationGroups: ["intera"],
     // Niente `times`: l'ora di partenza non e' una sola, la decide il punto di
@@ -2358,33 +2517,42 @@ const ESPLORA_CATALOG = [
     itinerary: [
       { text: { it: "Ritiro alla fermata concordata e salita verso il Parco Nazionale delle Cañadas del Teide",
                 en: "Pickup at your agreed stop and the climb up towards Las Cañadas del Teide National Park",
-                es: "Recogida en su parada y subida hacia el Parque Nacional de Las Cañadas del Teide" } },
+                es: "Recogida en su parada y subida hacia el Parque Nacional de Las Cañadas del Teide",
+                fr: "Prise en charge à l'arrêt convenu et montée vers le parc national de Las Cañadas del Teide" } },
       { text: { it: "Breve sosta a Vilaflor, il paese più alto della Spagna",
                 en: "A short stop at Vilaflor, the highest village in Spain",
-                es: "Breve parada en Vilaflor, el pueblo más alto de España" } },
+                es: "Breve parada en Vilaflor, el pueblo más alto de España",
+                fr: "Un court arrêt à Vilaflor, le village le plus haut d'Espagne" } },
       { text: { it: "Seconda sosta dentro il Parco Nazionale, fra le colate di lava e i roques",
                 en: "A second stop inside the National Park, among the lava flows and the roques",
-                es: "Segunda parada dentro del Parque Nacional, entre las coladas de lava y los roques" } },
+                es: "Segunda parada dentro del Parque Nacional, entre las coladas de lava y los roques",
+                fr: "Un deuxième arrêt dans le parc national, entre les coulées de lave et les roques" } },
       { text: { it: "Icod de los Vinos, dove c'è il Drago Millenario, l'albero simbolo delle Canarie",
                 en: "Icod de los Vinos, home of the thousand-year-old dragon tree, the symbol of the Canaries",
-                es: "Icod de los Vinos, donde está el Drago Milenario, el árbol símbolo de Canarias" } },
+                es: "Icod de los Vinos, donde está el Drago Milenario, el árbol símbolo de Canarias",
+                fr: "Icod de los Vinos, où se trouve le dragonnier millénaire, symbole des Canaries" } },
       { text: { it: "Si prosegue lungo la costa nord fino alla villa storica di Garachico",
                 en: "On along the north coast to the historic town of Garachico",
-                es: "Se sigue por la costa norte hasta la histórica Villa de Garachico" } },
+                es: "Se sigue por la costa norte hasta la histórica Villa de Garachico",
+                fr: "On continue le long de la côte nord jusqu'à la ville historique de Garachico" } },
       { text: { it: "Ultima tappa a Masca, il borgo in fondo al barranco, fra pareti di roccia e vegetazione",
                 en: "Last stop at Masca, the hamlet at the bottom of the ravine, among rock walls and greenery",
-                es: "Última parada en Masca, el caserío en el fondo del barranco, entre paredes de roca y vegetación" } },
+                es: "Última parada en Masca, el caserío en el fondo del barranco, entre paredes de roca y vegetación",
+                fr: "Dernier arrêt à Masca, le hameau au fond du ravin, entre parois rocheuses et verdure" } },
       { text: { it: "Rientro in hotel",
                 en: "Back to the hotel",
-                es: "Vuelta al hotel" } }
+                es: "Vuelta al hotel",
+                fr: "Retour à l'hôtel" } }
     ],
     notes: [
       { it: "Il pranzo non è incluso: la sosta per mangiare si fa a Icod o a Garachico.",
         en: "Lunch is not included: the meal stop is either in Icod or in Garachico.",
-        es: "El almuerzo no está incluido: la parada para comer se hace en Icod o en Garachico." },
+        es: "El almuerzo no está incluido: la parada para comer se hace en Icod o en Garachico.",
+        fr: "Le déjeuner n'est pas compris : l'arrêt repas se fait à Icod ou à Garachico." },
       { it: "Nel parco si sta sopra i 2.000 metri e fa freddo anche d'estate: porta una felpa o una giacca.",
         en: "Up in the park you are above 2,000 metres and it is cold even in summer: bring a sweatshirt or a jacket.",
-        es: "En el parque se está por encima de los 2.000 metros y hace frío incluso en verano: lleva una sudadera o una chaqueta." },
+        es: "En el parque se está por encima de los 2.000 metros y hace frío incluso en verano: lleva una sudadera o una chaqueta.",
+        fr: "Dans le parc, on est au-dessus de 2 000 mètres et il fait froid même en été : apportez un sweat ou une veste." },
       // I giorni sono un blocco: la finestra non lascia mandare una richiesta
       // per un giorno in cui non si parte. Questa nota fa il mestiere che il
       // blocco non puo fare — dire che quei giorni non sono incisi nella
@@ -2392,13 +2560,15 @@ const ESPLORA_CATALOG = [
       // riquadro dei consigli una nota lunga si legge come un paragrafo.
       { it: "I giorni possono cambiare secondo la lingua della guida.",
         en: "The days can change depending on the language of the guide.",
-        es: "Los días pueden cambiar según el idioma del guía." }
+        es: "Los días pueden cambiar según el idioma del guía.",
+        fr: "Les jours peuvent changer selon la langue du guide." }
     ],
     family: true,
     desc: {
       it: "Una giornata sola per il Parco Nazionale del Teide, il Drago Millenario di Icod, la villa storica di Garachico e il borgo di Masca, con ritiro alla fermata concordata.",
       en: "A single day for Teide National Park, the thousand-year-old dragon tree of Icod, the historic town of Garachico and the hamlet of Masca, with pickup at your agreed stop.",
-      es: "Un solo día para el Parque Nacional del Teide, el Drago Milenario de Icod, la histórica Villa de Garachico y el pueblo de Masca, con recogida en su parada."
+      es: "Un solo día para el Parque Nacional del Teide, el Drago Milenario de Icod, la histórica Villa de Garachico y el pueblo de Masca, con recogida en su parada.",
+      fr: "Une seule journée pour le parc national du Teide, le dragonnier millénaire d'Icod, la ville historique de Garachico et le hameau de Masca, avec prise en charge à l'arrêt convenu."
     },
     image: "icod-garachico-orotava.jpg",
     published: true
@@ -2442,7 +2612,7 @@ const ESPLORA_CATALOG = [
     // e in che lingua — si leggono in un colpo d'occhio. Da "Stargazing
     // Experience" a **"Teide by Night"** e' una scelta del proprietario: dice
     // dove si va, non solo cosa si guarda, e adesso che la scheda sta fra le
-    // altre del Teide si legge in fila con loro. Uguale in tutte e tre le
+    // altre del Teide si legge in fila con loro. Uguale in tutte e quattro le
     // lingue, come tutti i titoli.
     //
     // Il 9 ottobre 2026 il proprietario l'ha cambiato in **"Teide Stars &
@@ -2457,10 +2627,10 @@ const ESPLORA_CATALOG = [
     category: "teide-natura",
     // Tutte e due le serate salgono nel Parco Nazionale: qui la riga non e'
     // piu' "Da definire" come quando del gruppo grande non sapevamo niente.
-    zone: { it: "Parco Nazionale del Teide", en: "Teide National Park", es: "Parque Nacional del Teide" },
+    zone: { it: "Parco Nazionale del Teide", en: "Teide National Park", es: "Parque Nacional del Teide", fr: "Parc national du Teide" },
     // Da cinque a otto ore secondo la serata: il pullman e' il piu' lungo, il
     // minivan il piu' corto. Ogni variante scrive poi la sua.
-    duration: { it: "5-8 ore", en: "5 to 8 hours", es: "5-8 horas" },
+    duration: { it: "5-8 ore", en: "5 to 8 hours", es: "5-8 horas", fr: "De 5 à 8 heures" },
     zoneGroups: ["teide-nord"],
     durationGroups: ["mezza", "intera"],
     // Dal proprietario, 9 ottobre 2026: si parte intorno alle 17, e l'ora puo'
@@ -2478,45 +2648,50 @@ const ESPLORA_CATALOG = [
     ages: { adult: "12+", child: "2-11" },
     family: true,
     options: {
-      label: { it: "Serata", en: "Evening", es: "Velada" },
+      label: { it: "Serata", en: "Evening", es: "Velada", fr: "Soirée" },
       choices: [
         { label: {
             it: "Gruppo grande (inglese, spagnolo, tedesco, francese)",
             en: "Big group (English, Spanish, German, French)",
-            es: "Grupo grande (inglés, español, alemán, francés)"
+            es: "Grupo grande (inglés, español, alemán, francés)",
+            fr: "Grand groupe (anglais, espagnol, allemand, français)"
           },
           priceAdult: 75,
           priceChild: 65,
-          duration: { it: "6-8 ore", en: "6 to 8 hours", es: "6-8 horas" },
+          duration: { it: "6-8 ore", en: "6 to 8 hours", es: "6-8 horas", fr: "De 6 à 8 heures" },
           included: ["transfer", "equipment"],
           desc: {
             it: "La serata in pullman, con ritiro in hotel nel sud dell'isola: si sale nel Parco Nazionale, si guarda il tramonto sopra le nuvole e poi si osserva col telescopio, con l'astronomo che racconta il cielo. Si mangia, ma non allo stesso modo: sulla serata in inglese, spagnolo e tedesco c'è una cena in quota, su quella in francese un panino alla sosta lungo la strada.",
             en: "The coach evening, with hotel pickup in the south of the island: you climb into the National Park, watch the sunset above the clouds and then observe through the telescope, with an astronomer telling the story of the sky. You eat, but not in the same way: the English, Spanish and German evening has dinner up there, the French one a sandwich at the stop along the way.",
-            es: "La velada en autobús, con recogida en el hotel en el sur de la isla: se sube al Parque Nacional, se mira el atardecer por encima de las nubes y después se observa con el telescopio, con el astrónomo contando el cielo. Se come, pero no de la misma manera: la velada en inglés, español y alemán incluye una cena en altura, la de francés un bocadillo en la parada del camino."
+            es: "La velada en autobús, con recogida en el hotel en el sur de la isla: se sube al Parque Nacional, se mira el atardecer por encima de las nubes y después se observa con el telescopio, con el astrónomo contando el cielo. Se come, pero no de la misma manera: la velada en inglés, español y alemán incluye una cena en altura, la de francés un bocadillo en la parada del camino.",
+            fr: "La soirée en car, avec prise en charge à l'hôtel dans le sud de l'île : on monte dans le parc national, on regarde le coucher du soleil au-dessus des nuages, puis on observe au télescope, avec un astronome qui raconte le ciel. On mange, mais pas de la même façon : la soirée en anglais, espagnol et allemand dîne là-haut, la soirée en français a un sandwich à l'arrêt en chemin."
           } },
         { label: {
             it: "Gruppo piccolo (italiano, inglese, tedesco)",
             en: "Small group (Italian, English, German)",
-            es: "Grupo pequeño (italiano, inglés, alemán)"
+            es: "Grupo pequeño (italiano, inglés, alemán)",
+            fr: "Petit groupe (italien, anglais, allemand)"
           },
           // Sul ticket c'e' solo "Andromeda", non la serata: Andromeda fa
           // questa (proprietario, 8 ottobre 2026). Vedi `nomi` in testa.
           nomi: ["Andromeda"],
           priceAdult: 79,
           priceChild: 69,
-          duration: { it: "5-6 ore", en: "5 to 6 hours", es: "5-6 horas" },
+          duration: { it: "5-6 ore", en: "5 to 6 hours", es: "5-6 horas", fr: "De 5 à 6 heures" },
           included: ["transfer", "equipment", "fingerfood", "drinks", "photos"],
           desc: {
             it: "La serata in minivan, in gruppo ridotto: ritiro in hotel, tramonto sopra le nuvole con un picnic preparato dal fornitore e compreso nel prezzo — da mangiare e da bere all'aperto, non una cena a tavola — e poi il telescopio col buio. Sulla serata in inglese e tedesco si è al massimo in otto; quella in italiano è un gruppo un po' più largo, con l'astrofotografia e la foto della galassia da portare a casa.",
             en: "The minivan evening, in a small group: hotel pickup, sunset above the clouds with a picnic laid on by the operator and included in the price — food and drink outdoors, not a sit-down dinner — then the telescope once it is dark. The English and German evening is eight people at most; the Italian one is a slightly larger group, with live astrophotography and a photo of the galaxy to take home.",
-            es: "La velada en minivan, en grupo reducido: recogida en el hotel, atardecer por encima de las nubes con un picnic preparado por el proveedor e incluido en el precio — de comer y beber al aire libre, no una cena de mesa — y después el telescopio ya de noche. La velada en inglés y alemán es de ocho personas como máximo; la de italiano es un grupo algo más amplio, con astrofotografía en directo y una foto de la galaxia para llevarse a casa."
+            es: "La velada en minivan, en grupo reducido: recogida en el hotel, atardecer por encima de las nubes con un picnic preparado por el proveedor e incluido en el precio — de comer y beber al aire libre, no una cena de mesa — y después el telescopio ya de noche. La velada en inglés y alemán es de ocho personas como máximo; la de italiano es un grupo algo más amplio, con astrofotografía en directo y una foto de la galaxia para llevarse a casa.",
+            fr: "La soirée en minivan, en petit groupe : prise en charge à l'hôtel, coucher du soleil au-dessus des nuages avec un pique-nique offert par l'opérateur et compris dans le prix — à manger et à boire en plein air, pas un dîner assis — puis le télescope une fois la nuit tombée. La soirée en anglais et allemand, c'est huit personnes au maximum ; celle en italien, un groupe un peu plus grand, avec astrophotographie en direct et une photo de la galaxie à emporter."
           } }
       ]
     },
     desc: {
       it: "Una sera in quota, sopra le nuvole: prima il tramonto, poi il buio vero, quello in cui le stelle si vedono a occhio nudo prima ancora di guardare nel telescopio. Due serate fra cui scegliere, e cambia anche la lingua: il gruppo grande sale in pullman e si fa in inglese, spagnolo, tedesco e francese; il gruppo piccolo va in minivan e al tramonto ti offre un picnic, compreso nel prezzo, in italiano, inglese e tedesco.",
       en: "An evening high up, above the clouds: first the sunset, then real darkness, the kind where you see the stars with the naked eye before you even look through the telescope. Two evenings to choose from, and the language changes too: the big group goes up by coach and runs in English, Spanish, German and French; the small group travels by minivan and lays on a picnic at sunset, included in the price, in Italian, English and German.",
-      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir, y el idioma también cambia: el grupo grande sube en autobús y se hace en inglés, español, alemán y francés; el grupo pequeño va en minivan y al atardecer te ofrece un picnic, incluido en el precio, en italiano, inglés y alemán."
+      es: "Una tarde en altura, por encima de las nubes: primero el atardecer y después la oscuridad de verdad, esa en la que se ven las estrellas a simple vista antes incluso de mirar por el telescopio. Dos veladas a elegir, y el idioma también cambia: el grupo grande sube en autobús y se hace en inglés, español, alemán y francés; el grupo pequeño va en minivan y al atardecer te ofrece un picnic, incluido en el precio, en italiano, inglés y alemán.",
+      fr: "Une soirée en altitude, au-dessus des nuages : d'abord le coucher du soleil, puis la vraie nuit, celle où l'on voit les étoiles à l'œil nu avant même de regarder dans le télescope. Deux soirées au choix, et la langue change aussi : le grand groupe monte en car et se fait en anglais, espagnol, allemand et français ; le petit groupe part en minivan et vous offre un pique-nique au coucher du soleil, compris dans le prix, en italien, anglais et allemand."
     },
     included: ["guide"],
     // Le tappe stanno sulla scheda e non sulla variante, perche' `itinerary`
@@ -2528,44 +2703,52 @@ const ESPLORA_CATALOG = [
       { text: {
           it: "Il ritiro in hotel, nel pomeriggio: si parte dagli hotel del sud dell'isola.",
           en: "Hotel pickup in the afternoon: you set off from the hotels in the south of the island.",
-          es: "La recogida en el hotel, por la tarde: se sale desde los hoteles del sur de la isla."
+          es: "La recogida en el hotel, por la tarde: se sale desde los hoteles del sur de la isla.",
+          fr: "Prise en charge à l'hôtel l'après-midi : on part des hôtels du sud de l'île."
         } },
       { text: {
           it: "Si sale verso il Parco Nazionale, con la sosta per mangiare: una cena, un panino o un picnic secondo la serata scelta. Lo porta il fornitore, non c'è niente da preparare a casa.",
           en: "Up towards the National Park, with a stop to eat: dinner, a sandwich or a picnic depending on the evening you choose. The operator brings it — there is nothing to pack at home.",
-          es: "Se sube hacia el Parque Nacional, con la parada para comer: una cena, un bocadillo o un picnic según la velada elegida. Lo pone el proveedor, no hay nada que preparar en casa."
+          es: "Se sube hacia el Parque Nacional, con la parada para comer: una cena, un bocadillo o un picnic según la velada elegida. Lo pone el proveedor, no hay nada que preparar en casa.",
+          fr: "Montée vers le parc national, avec un arrêt pour manger : dîner, sandwich ou pique-nique selon la soirée choisie. C'est l'opérateur qui l'apporte — rien à préparer à la maison."
         } },
       { text: {
           it: "Il tramonto visto dall'alto, sopra il mare di nuvole.",
           en: "The sunset seen from up there, above the sea of clouds.",
-          es: "El atardecer visto desde arriba, por encima del mar de nubes."
+          es: "El atardecer visto desde arriba, por encima del mar de nubes.",
+          fr: "Le coucher du soleil vu de là-haut, au-dessus de la mer de nuages."
         } },
       { text: {
           it: "Col buio l'osservazione col telescopio: pianeti, costellazioni e la guida che racconta cosa si sta guardando.",
           en: "Once it is dark, the telescope session: planets, constellations and the guide talking you through what you are looking at.",
-          es: "Ya de noche, la observación con telescopio: planetas, constelaciones y el guía contando lo que se está viendo."
+          es: "Ya de noche, la observación con telescopio: planetas, constelaciones y el guía contando lo que se está viendo.",
+          fr: "Une fois la nuit tombée, la séance au télescope : planètes, constellations et le guide qui vous explique ce que vous regardez."
         } },
       { text: {
           it: "Rientro in hotel a sera.",
           en: "Back at the hotel in the evening.",
-          es: "Regreso al hotel por la noche."
+          es: "Regreso al hotel por la noche.",
+          fr: "Retour à l'hôtel dans la soirée."
         } }
     ],
     notes: [
       {
         it: "La lingua non è un extra da chiedere: è quello che decide la serata. In italiano si va solo col gruppo piccolo; in spagnolo e in francese solo col grande; in inglese e tedesco si può scegliere. Scrivi la tua nella richiesta e l'ufficio ti mette sulla partenza giusta.",
         en: "The language is not an extra to ask for: it is what decides the evening. In Italian only the small group runs; in Spanish and French only the big one; in English and German you can choose. Say yours in the request and the office puts you on the right departure.",
-        es: "El idioma no es un extra que se pida: es lo que decide la velada. En italiano solo va el grupo pequeño; en español y en francés solo el grande; en inglés y alemán se puede elegir. Indica el tuyo en la solicitud y la oficina te pone en la salida correcta."
+        es: "El idioma no es un extra que se pida: es lo que decide la velada. En italiano solo va el grupo pequeño; en español y en francés solo el grande; en inglés y alemán se puede elegir. Indica el tuyo en la solicitud y la oficina te pone en la salida correcta.",
+        fr: "La langue n'est pas une option à demander : c'est elle qui décide la soirée. En italien, seul le petit groupe part ; en espagnol et en français, seulement le grand ; en anglais et en allemand, on peut choisir. Indiquez la vôtre dans la demande et le bureau vous place sur le bon départ."
       },
       {
         it: "Il ritiro è negli hotel del sud dell'isola, intorno alle 17: l'ora segue il tramonto e può cambiare con la stagione, quindi te la conferma l'ufficio insieme al punto di ritiro.",
         en: "Pickup is at hotels in the south of the island, at around 5 pm: the time follows the sunset and may change with the season, so the office confirms it together with the pickup point.",
-        es: "La recogida es en los hoteles del sur de la isla, hacia las 17:00: la hora sigue al atardecer y puede cambiar con la temporada, así que te la confirma la oficina junto con el punto de recogida."
+        es: "La recogida es en los hoteles del sur de la isla, hacia las 17:00: la hora sigue al atardecer y puede cambiar con la temporada, así que te la confirma la oficina junto con el punto de recogida.",
+        fr: "La prise en charge se fait aux hôtels du sud de l'île, vers 17 heures : l'heure suit le coucher du soleil et peut changer avec la saison, donc le bureau la confirme avec le point de prise en charge."
       },
       {
         it: "Si sta fermi al buio e in quota: fa freddo anche d'estate. Su qualche serata giacca e cappello li presta il fornitore, ma non su tutte: vestiti a strati e mettiti scarpe chiuse.",
         en: "You stand still in the dark, high up: it gets cold even in summer. On some evenings the operator lends a jacket and hat, but not on all of them: dress in layers and wear closed shoes.",
-        es: "Se está quieto a oscuras y en altura: hace frío incluso en verano. En algunas veladas el proveedor presta chaqueta y gorro, pero no en todas: vístete por capas y ponte zapatos cerrados."
+        es: "Se está quieto a oscuras y en altura: hace frío incluso en verano. En algunas veladas el proveedor presta chaqueta y gorro, pero no en todas: vístete por capas y ponte zapatos cerrados.",
+        fr: "On reste immobile dans le noir, en altitude : il fait froid même en été. Certains soirs, l'opérateur prête veste et bonnet, mais pas tous : habillez-vous en couches et portez des chaussures fermées."
       }
     ],
     image: "stargazing-group.jpg",
@@ -2608,7 +2791,7 @@ const ESPLORA_CATALOG = [
     category: "avventura-motori",
     alsoIn: ["teide-natura"],
     zone: "Adeje",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
     priceFrom: 250,
@@ -2616,7 +2799,7 @@ const ESPLORA_CATALOG = [
     // sale: 250 € fino a due, 350 € da tre a quattro. Con `priceUnit` il sito
     // smette di moltiplicare per le persone (prezziAPersona() torna null) e
     // scrive "da €250 a Mustang" invece di un totale falso.
-    priceUnit: { it: "a Mustang", en: "per Mustang", es: "por Mustang" },
+    priceUnit: { it: "a Mustang", en: "per Mustang", es: "por Mustang", fr: "par Mustang" },
     // Le due fasce restano scritte anche in "In breve": `units` piu' sotto e'
     // la finestra della richiesta, qui e' il listino che si legge prima di
     // arrivarci. Non si ripetono a vicenda, stanno in due posti diversi.
@@ -2637,15 +2820,16 @@ const ESPLORA_CATALOG = [
       label: {
         it: "Quante Mustang — il prezzo è dell'auto e cambia con quanti ci salgono",
         en: "How many Mustangs — the price is per car and changes with how many get in",
-        es: "¿Cuántos Mustang? — el precio es del coche y cambia según cuántos suban"
+        es: "¿Cuántos Mustang? — el precio es del coche y cambia según cuántos suban",
+        fr: "Combien de Mustang — le prix est par voiture et change selon le nombre de passagers"
       },
-      name: { it: "Mustang", en: "Mustangs", es: "Mustang" },
+      name: { it: "Mustang", en: "Mustangs", es: "Mustang", fr: "Mustang" },
       // `seats` e' il massimo della fascia, non un numero fisso: la fascia
       // "Con 1 o 2 persone" porta fino a due. E' quello che serve al conto —
       // quanti ce ne stanno — e il prezzo e' lo stesso che ci salga uno o due.
       types: [
-        { key: "due", seats: 2, name: { it: "Con 1 o 2 persone", en: "With 1 or 2 people", es: "Con 1 o 2 personas" } },
-        { key: "quattro", seats: 4, name: { it: "Con 3 o 4 persone", en: "With 3 or 4 people", es: "Con 3 o 4 personas" } }
+        { key: "due", seats: 2, name: { it: "Con 1 o 2 persone", en: "With 1 or 2 people", es: "Con 1 o 2 personas", fr: "Avec 1 ou 2 personnes" } },
+        { key: "quattro", seats: 4, name: { it: "Con 3 o 4 persone", en: "With 3 or 4 people", es: "Con 3 o 4 personas", fr: "Avec 3 ou 4 personnes" } }
       ]
       // Niente `transferPrice` perche' qui non c'e' nessuna casella del
       // ritiro: e' **compreso nel prezzo** (proprietario, 12 settembre 2026) e
@@ -2685,7 +2869,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Una Ford Mustang decappottabile solo per te, su per la strada del Parco Nazionale del Teide con la luce della sera: si sale fra le colate di lava fino alla Cañada Blanca e si torna che è già buio. Guidi tu, se hai la patente; se preferisci non guidare, l'auto la porta una guida dell'agenzia. Il prezzo è dell'auto e non a persona, e il ritiro in hotel è compreso.",
       en: "A Ford Mustang convertible just for you, up the road into Teide National Park in the evening light: you climb between the lava flows as far as Cañada Blanca and come back down after dark. You drive, if you hold a licence; if you would rather not, one of the agency's guides takes the wheel. The price is for the car and not per person, and hotel pickup is included.",
-      es: "Un Ford Mustang descapotable solo para ti, subiendo por la carretera del Parque Nacional del Teide con la luz de la tarde: se sube entre las coladas de lava hasta la Cañada Blanca y se vuelve ya de noche. Conduces tú, si tienes carné; si prefieres no conducir, el coche lo lleva un guía de la agencia. El precio es del coche y no por persona, y la recogida en el hotel está incluida."
+      es: "Un Ford Mustang descapotable solo para ti, subiendo por la carretera del Parque Nacional del Teide con la luz de la tarde: se sube entre las coladas de lava hasta la Cañada Blanca y se vuelve ya de noche. Conduces tú, si tienes carné; si prefieres no conducir, el coche lo lleva un guía de la agencia. El precio es del coche y no por persona, y la recogida en el hotel está incluida.",
+      fr: "Une Ford Mustang décapotable rien que pour vous, sur la route du parc national du Teide dans la lumière du soir : on monte entre les coulées de lave jusqu'à Cañada Blanca et on redescend à la nuit tombée. Vous conduisez, si vous avez le permis ; si vous préférez ne pas conduire, un des guides de l'agence prend le volant. Le prix est pour la voiture et non par personne, et la prise en charge à l'hôtel est comprise."
     },
     // `transfer` sta qui fra le icone, e **non** nel campo `transfer` della
     // scheda, che quello vuol dire un'altra cosa: "si puo' avere col trasporto
@@ -2699,46 +2884,55 @@ const ESPLORA_CATALOG = [
       { text: {
           it: "Il ritiro in hotel, nel tardo pomeriggio, e la partenza da Adeje con la capote abbassata.",
           en: "Hotel pickup in the late afternoon, then off from Adeje with the roof down.",
-          es: "La recogida en el hotel, a última hora de la tarde, y la salida desde Adeje con la capota bajada."
+          es: "La recogida en el hotel, a última hora de la tarde, y la salida desde Adeje con la capota bajada.",
+          fr: "Prise en charge à l'hôtel en fin d'après-midi, puis départ d'Adeje, capote baissée."
         } },
       { text: {
           it: "La salita al Parco Nazionale del Teide: la strada che sale fra i pini e poi esce sull'altopiano.",
           en: "The climb into Teide National Park: the road up through the pines, then out onto the plateau.",
-          es: "La subida al Parque Nacional del Teide: la carretera que sube entre los pinos y sale a la llanura."
+          es: "La subida al Parque Nacional del Teide: la carretera que sube entre los pinos y sale a la llanura.",
+          fr: "La montée dans le parc national du Teide : la route à travers les pins, puis l'arrivée sur le plateau."
         } },
       { text: {
           it: "Cañada Blanca, con la sosta per le foto mentre il sole va giù dietro le colate di lava.",
           en: "Cañada Blanca, with a photo stop while the sun drops behind the lava flows.",
-          es: "Cañada Blanca, con la parada para las fotos mientras el sol baja detrás de las coladas de lava."
+          es: "Cañada Blanca, con la parada para las fotos mientras el sol baja detrás de las coladas de lava.",
+          fr: "Cañada Blanca, avec un arrêt photo pendant que le soleil descend derrière les coulées de lave."
         } },
       { text: {
           it: "Il ritorno verso la costa, col buio.",
           en: "The drive back down to the coast, in the dark.",
-          es: "La vuelta hacia la costa, ya de noche."
+          es: "La vuelta hacia la costa, ya de noche.",
+          fr: "La redescente vers la côte, dans le noir."
         } }
     ],
     notes: [
       { it: "Per guidare serve la patente di guida in corso di validità. Se preferisci non guidare tu, l'auto la porta una guida dell'agenzia: scrivilo nella richiesta.",
         en: "To drive you need a valid driving licence. If you would rather not drive, one of the agency's guides takes the wheel: say so in your request.",
-        es: "Para conducir hace falta un carné de conducir en vigor. Si prefieres no conducir, el coche lo lleva un guía de la agencia: escríbelo en la solicitud." },
+        es: "Para conducir hace falta un carné de conducir en vigor. Si prefieres no conducir, el coche lo lleva un guía de la agencia: escríbelo en la solicitud.",
+        fr: "Pour conduire, il faut un permis de conduire valide. Si vous préférez ne pas conduire, un des guides de l'agence prend le volant : indiquez-le dans la demande." },
       { it: "Si parte nel tardo pomeriggio, non prima delle 17:00: l'ora esatta segue il tramonto e si muove con la stagione, quindi te la conferma l'ufficio.",
         en: "You set off in the late afternoon, not before 17:00: the exact time follows the sunset and moves with the season, so the office confirms it with you.",
-        es: "Se sale a última hora de la tarde, no antes de las 17:00: la hora exacta sigue al atardecer y se mueve con la temporada, así que te la confirma la oficina." },
+        es: "Se sale a última hora de la tarde, no antes de las 17:00: la hora exacta sigue al atardecer y se mueve con la temporada, así que te la confirma la oficina.",
+        fr: "On part en fin d'après-midi, pas avant 17:00 : l'heure exacte suit le coucher du soleil et change avec la saison, donc le bureau vous la confirme." },
       // Il ritiro e' compreso, quindi non e' una domanda ma un fatto: sta
       // fra le icone e detto per esteso qui, non nel campo `transfer`.
       { it: "Il ritiro in hotel è compreso nel prezzo: passano a prenderti sotto il tuo albergo, senza supplemento. Scrivi dove alloggi nella richiesta; se non trovi il tuo hotel nell'elenco, mettilo nelle note.",
         en: "Hotel pickup is included in the price: they come for you at your own hotel, with no supplement. Put where you are staying in the request; if you cannot find your hotel in the list, write it in the notes.",
-        es: "La recogida en el hotel está incluida en el precio: te recogen en tu propio hotel, sin suplemento. Escribe dónde te alojas en la solicitud; si no encuentras tu hotel en la lista, ponlo en las notas." },
+        es: "La recogida en el hotel está incluida en el precio: te recogen en tu propio hotel, sin suplemento. Escribe dónde te alojas en la solicitud; si no encuentras tu hotel en la lista, ponlo en las notas.",
+        fr: "La prise en charge à l'hôtel est comprise dans le prix : on vient vous chercher à votre hôtel, sans supplément. Indiquez où vous logez dans la demande ; si vous ne trouvez pas votre hôtel dans la liste, écrivez-le dans les notes." },
       // I due numeri non si ripetono qui: li dicono gia' le righe di "In
       // breve" e i contatori della richiesta. Quello che resta e' il
       // principio, piu' la capienza — che era dentro le vecchie varianti e
       // senza questa riga andava persa.
       { it: "Il prezzo è dell'auto e non della persona: a cambiare è quanti ci salgono, non quanto paga ognuno. In Mustang si sta in quattro al massimo, autista compreso; se siete di più si prendono due auto, e nella richiesta le conti tu.",
         en: "The price is for the car, not per person: what changes is how many of you get in, not what each one pays. The Mustang seats four at most, driver included; if there are more of you, you take two cars — you count them yourself in the request.",
-        es: "El precio es del coche y no por persona: lo que cambia es cuántos subís, no lo que paga cada uno. En el Mustang caben cuatro como máximo, conductor incluido; si sois más se cogen dos coches, y en la solicitud los cuentas tú." },
+        es: "El precio es del coche y no por persona: lo que cambia es cuántos subís, no lo que paga cada uno. En el Mustang caben cuatro como máximo, conductor incluido; si sois más se cogen dos coches, y en la solicitud los cuentas tú.",
+        fr: "Le prix est pour la voiture, pas par personne : ce qui change, c'est combien vous êtes à bord, pas ce que chacun paie. La Mustang a quatre places au maximum, conducteur compris ; si vous êtes plus nombreux, vous prenez deux voitures — vous les comptez vous-même dans la demande." },
       { it: "Si va con la capote abbassata e lassù si passano i 2.000 metri: al tramonto fa fresco anche d'estate. Porta una felpa o una giacca.",
         en: "You travel with the roof down and up there you go above 2,000 metres: at sunset it is chilly even in summer. Bring a sweatshirt or a jacket.",
-        es: "Se va con la capota bajada y allí arriba se pasan los 2.000 metros: al atardecer refresca incluso en verano. Lleva una sudadera o una chaqueta." }
+        es: "Se va con la capota bajada y allí arriba se pasan los 2.000 metros: al atardecer refresca incluso en verano. Lleva una sudadera o una chaqueta.",
+        fr: "On roule capote baissée et là-haut on dépasse les 2 000 mètres : au coucher du soleil, il fait frais même en été. Apportez un sweat ou une veste." }
     ],
     // Niente campo `transfer`: il ritiro e' compreso, e sta fra le icone di
     // `included` piu' sopra. Passano sotto l'hotel (proprietario, 12
@@ -2780,7 +2974,7 @@ const ESPLORA_CATALOG = [
     category: "avventura-motori",
     alsoIn: ["teide-natura"],
     zone: "Las Chafiras",
-    duration: { it: "3 o 4 ore", en: "3 or 4 hours", es: "3 o 4 horas" },
+    duration: { it: "3 o 4 ore", en: "3 or 4 hours", es: "3 o 4 horas", fr: "3 ou 4 heures" },
     zoneGroups: ["los-cristianos", "costa-adeje"],
     durationGroups: ["mezza"],
     priceFrom: 180,
@@ -2789,18 +2983,19 @@ const ESPLORA_CATALOG = [
     // (prezzi Admiral, 9 settembre). Senza questo campo il totale
     // moltiplicherebbe per le persone un numero che il mezzo lo comprende
     // gia' tutto.
-    priceUnit: { it: "/buggy", en: "/buggy", es: "/buggy" },
+    priceUnit: { it: "/buggy", en: "/buggy", es: "/buggy", fr: "/buggy" },
     units: {
       label: {
         it: "Quanti buggy — il prezzo è del mezzo e cambia con i posti",
         en: "How many buggies — the price is per buggy and changes with the seats",
-        es: "¿Cuántos buggies? — el precio es por buggy y cambia con las plazas"
+        es: "¿Cuántos buggies? — el precio es por buggy y cambia con las plazas",
+        fr: "Combien de buggys — le prix est par buggy et change selon les places"
       },
-      name: { it: "Buggy", en: "Buggies", es: "Buggies" },
+      name: { it: "Buggy", en: "Buggies", es: "Buggies", fr: "Buggys" },
       types: [
-        { key: "due", seats: 2, name: { it: "2 posti", en: "2 seats", es: "2 plazas" } },
-        { key: "quattro", seats: 4, name: { it: "4 posti", en: "4 seats", es: "4 plazas" } },
-        { key: "sei", seats: 6, name: { it: "6 posti", en: "6 seats", es: "6 plazas" } }
+        { key: "due", seats: 2, name: { it: "2 posti", en: "2 seats", es: "2 plazas", fr: "2 places" } },
+        { key: "quattro", seats: 4, name: { it: "4 posti", en: "4 seats", es: "4 plazas", fr: "4 places" } },
+        { key: "sei", seats: 6, name: { it: "6 posti", en: "6 seats", es: "6 plazas", fr: "6 places" } }
       ]
     },
     priceAdult: 0,
@@ -2817,37 +3012,40 @@ const ESPLORA_CATALOG = [
     // solo Ultimate. Il cliente sceglie l'ora, non la compagnia: chi lo porta
     // lo decide l'ufficio quando conferma.
     options: {
-      label: { it: "Percorso", en: "Route", es: "Recorrido" },
+      label: { it: "Percorso", en: "Route", es: "Recorrido", fr: "Parcours" },
       choices: [
-        { label: { it: "Offroad, 3 ore", en: "Off-road, 3 hours", es: "Offroad, 3 horas" },
+        { label: { it: "Offroad, 3 ore", en: "Off-road, 3 hours", es: "Offroad, 3 horas", fr: "Tout-terrain, 3 heures" },
           price: 180,
           times: ["08:20", "11:00", "13:30", "14:00"],
-          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Il giro vicino alla costa, con la parte fuori dall'asfalto: sterrato, polvere e saliscendi nel sud dell'isola.",
             en: "The route close to the coast, with the off-road part: dirt tracks, dust and climbs in the south of the island.",
-            es: "El recorrido cerca de la costa, con la parte fuera del asfalto: pistas de tierra, polvo y subidas en el sur de la isla."
+            es: "El recorrido cerca de la costa, con la parte fuera del asfalto: pistas de tierra, polvo y subidas en el sur de la isla.",
+            fr: "Le parcours près de la côte, avec la partie tout-terrain : pistes en terre, poussière et montées dans le sud de l'île."
           } },
-        { label: { it: "Tramonto sul Teide, 3 ore", en: "Teide at sunset, 3 hours", es: "Atardecer en el Teide, 3 horas" },
+        { label: { it: "Tramonto sul Teide, 3 ore", en: "Teide at sunset, 3 hours", es: "Atardecer en el Teide, 3 horas", fr: "Le Teide au coucher du soleil, 3 heures" },
           price: 180,
           times: ["17:30", "18:00"],
-          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Su verso il Teide con la luce della sera, tutto su strada: le soste per le foto quando il sole è basso.",
             en: "Up towards Teide in the evening light, all on paved roads: photo stops while the sun is low.",
-            es: "Subida hacia el Teide con la luz de la tarde, todo por carretera: las paradas para fotos cuando el sol está bajo."
+            es: "Subida hacia el Teide con la luz de la tarde, todo por carretera: las paradas para fotos cuando el sol está bajo.",
+            fr: "Montée vers le Teide dans la lumière du soir, tout sur routes goudronnées : arrêts photo pendant que le soleil est bas."
           } },
-        { label: { it: "Completo, 4 ore", en: "Full tour, 4 hours", es: "Completo, 4 horas" },
+        { label: { it: "Completo, 4 ore", en: "Full tour, 4 hours", es: "Completo, 4 horas", fr: "Tour complet, 4 heures" },
           price: 180,
           times: ["08:20", "14:00"],
-          duration: { it: "4 ore", en: "4 hours", es: "4 horas" },
+          duration: { it: "4 ore", en: "4 hours", es: "4 horas", fr: "4 heures" },
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Il giro lungo: il Parco Nazionale del Teide, un tratto vicino alla costa e la parte fuoristrada.",
             en: "The long tour: Teide National Park, a stretch near the coast and the off-road part.",
-            es: "El tour largo: el Parque Nacional del Teide, un tramo cerca de la costa y la parte todoterreno."
+            es: "El tour largo: el Parque Nacional del Teide, un tramo cerca de la costa y la parte todoterreno.",
+            fr: "Le grand tour : le parc national du Teide, un tronçon près de la côte et la partie tout-terrain."
           } },
         // Il quarto giro non e' di King Buggy ma di Ultimate Buggies: parte da
         // un altro posto, non ha il ritiro in hotel e vuole 21 anni per
@@ -2857,50 +3055,57 @@ const ESPLORA_CATALOG = [
         // invece non e' fra le icone di nessuno dei quattro giri: ce l'hanno
         // solo i tre di King Buggy, e un'icona dice "vale sempre". Sta nelle
         // note, che possono dire su quali giri c'e' e su quale no.
-        { label: { it: "Montagna su strada, 3 ore", en: "Mountain roads, 3 hours", es: "Montaña por carretera, 3 horas" },
+        { label: { it: "Montagna su strada, 3 ore", en: "Mountain roads, 3 hours", es: "Montaña por carretera, 3 horas", fr: "Routes de montagne, 3 heures" },
           price: 180,
           times: ["11:00", "13:30"],
-          duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+          duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
           zone: "Playa de las Américas",
           unitPrices: { due: 180, quattro: 240, sei: 330 },
           desc: {
             it: "Tutto su asfalto, senza fuoristrada: strade di montagna, villaggi canari e i punti panoramici del Parco Nazionale. Ritrovo a Playa de las Américas, senza ritiro in hotel, e si guida da 21 anni.",
             en: "All on paved roads, no off-road: mountain roads, Canarian villages and the viewpoints of the National Park. Meeting point in Playa de las Américas, no hotel pickup, and drivers from 21.",
-            es: "Todo por asfalto, sin todoterreno: carreteras de montaña, pueblos canarios y los miradores del Parque Nacional. Punto de encuentro en Playa de las Américas, sin recogida en el hotel, y se conduce desde los 21 años."
+            es: "Todo por asfalto, sin todoterreno: carreteras de montaña, pueblos canarios y los miradores del Parque Nacional. Punto de encuentro en Playa de las Américas, sin recogida en el hotel, y se conduce desde los 21 años.",
+            fr: "Tout sur routes goudronnées, sans tout-terrain : routes de montagne, villages canariens et belvédères du parc national. Rendez-vous à Playa de las Américas, sans prise en charge à l'hôtel, et conducteurs dès 21 ans."
           } }
       ]
     },
     desc: {
       it: "Al volante di un buggy fra i paesaggi del sud di Tenerife: quattro giri fra cui scegliere — il fuoristrada, il Teide al tramonto, il giro lungo che li mette insieme e la montagna di giorno, tutta su strada. Buggy da 2, 4 e 6 posti, e si guida con la patente.",
       en: "At the wheel of a buggy through the landscapes of southern Tenerife: four routes to choose from — the off-road ride, Teide at sunset, the long tour that puts the two together, and the mountains by day, all on paved roads. Buggies with 2, 4 and 6 seats; a driving licence is required.",
-      es: "Al volante de un buggy por los paisajes del sur de Tenerife: cuatro recorridos a elegir — el todoterreno, el Teide al atardecer, el tour largo que junta los dos y la montaña de día, todo por carretera. Buggies de 2, 4 y 6 plazas, y se conduce con el carné."
+      es: "Al volante de un buggy por los paisajes del sur de Tenerife: cuatro recorridos a elegir — el todoterreno, el Teide al atardecer, el tour largo que junta los dos y la montaña de día, todo por carretera. Buggies de 2, 4 y 6 plazas, y se conduce con el carné.",
+      fr: "Au volant d'un buggy à travers les paysages du sud de Tenerife : quatre parcours au choix — la sortie tout-terrain, le Teide au coucher du soleil, le grand tour qui réunit les deux, et la montagne de jour, tout sur routes goudronnées. Buggys de 2, 4 et 6 places ; le permis de conduire est obligatoire."
     },
     included: ["guide", "fuel", "equipment", "insurance"],
     notes: [
       {
         it: "Il prezzo è del buggy e non a persona: 180 € il buggy da 2 posti, 240 € quello da 4 e 330 € quello da 6, uguali su tutti e quattro i giri. Nella richiesta si contano i buggy, non le persone.",
         en: "The price is per buggy, not per person: €180 for the 2-seat buggy, €240 for the 4-seat and €330 for the 6-seat, the same on all four routes. In the request you count buggies, not people.",
-        es: "El precio es por buggy y no por persona: 180 € el buggy de 2 plazas, 240 € el de 4 y 330 € el de 6, iguales en los cuatro recorridos. En la solicitud se cuentan los buggies, no las personas."
+        es: "El precio es por buggy y no por persona: 180 € el buggy de 2 plazas, 240 € el de 4 y 330 € el de 6, iguales en los cuatro recorridos. En la solicitud se cuentan los buggies, no las personas.",
+        fr: "Le prix est par buggy, pas par personne : €180 pour le buggy 2 places, €240 pour le 4 places et €330 pour le 6 places, le même sur les quatre parcours. Dans la demande, vous comptez des buggys, pas des personnes."
       },
       {
         it: "Ritiro in hotel gratuito su Offroad, Tramonto sul Teide e Completo; Montagna su strada parte da Playa de las Américas, senza ritiro. Il punto e l'ora te li conferma l'ufficio.",
         en: "Free hotel pickup on the Off-road, Teide at sunset and Full tours; Mountain roads starts from Playa de las Américas, with no pickup. The office confirms the point and the time.",
-        es: "Recogida en el hotel gratuita en Offroad, Atardecer en el Teide y Completo; Montaña por carretera sale desde Playa de las Américas, sin recogida. El punto y la hora te los confirma la oficina."
+        es: "Recogida en el hotel gratuita en Offroad, Atardecer en el Teide y Completo; Montaña por carretera sale desde Playa de las Américas, sin recogida. El punto y la hora te los confirma la oficina.",
+        fr: "Prise en charge gratuite à l'hôtel pour les parcours Tout-terrain, Teide au coucher du soleil et Tour complet ; Routes de montagne part de Playa de las Américas, sans prise en charge. Le bureau confirme le point et l'heure."
       },
       {
         it: "Buggy automatici da 2, 4 e 6 posti. Chi guida porta con sé la patente valida, l'originale e non una fotocopia; su Montagna su strada servono 21 anni e la patente da un anno.",
         en: "Automatic buggies with 2, 4 and 6 seats. Drivers carry a valid licence, the original and not a photocopy; Mountain roads asks for 21 years of age and a licence held for a year.",
-        es: "Buggies automáticos de 2, 4 y 6 plazas. Quien conduce lleva consigo el carné válido, el original y no una fotocopia; en Montaña por carretera hacen falta 21 años y el carné desde hace un año."
+        es: "Buggies automáticos de 2, 4 y 6 plazas. Quien conduce lleva consigo el carné válido, el original y no una fotocopia; en Montaña por carretera hacen falta 21 años y el carné desde hace un año.",
+        fr: "Buggys automatiques de 2, 4 et 6 places. Les conducteurs ont sur eux un permis valide, l'original et non une photocopie ; Routes de montagne demande 21 ans et un an de permis."
       },
       {
         it: "I passeggeri salgono dai 3 anni.",
         en: "Passengers from age 3.",
-        es: "Los pasajeros suben desde los 3 años."
+        es: "Los pasajeros suben desde los 3 años.",
+        fr: "Passagers dès 3 ans."
       },
       {
         it: "Casco, guanti, giacca e occhiali forniti. Non consigliato in gravidanza. Pacchetto foto professionale disponibile a pagamento.",
         en: "Helmet, gloves, jacket and goggles provided. Not recommended during pregnancy. Professional photo package available for an extra fee.",
-        es: "Casco, guantes, chaqueta y gafas incluidos. No recomendado durante el embarazo. Paquete de fotos profesionales disponible con coste adicional."
+        es: "Casco, guantes, chaqueta y gafas incluidos. No recomendado durante el embarazo. Paquete de fotos profesionales disponible con coste adicional.",
+        fr: "Casque, gants, veste et lunettes fournis. Déconseillé pendant la grossesse. Pack photo professionnel disponible en supplément."
       }
     ],
     languages: LINGUE_TOUR,
@@ -2923,7 +3128,7 @@ const ESPLORA_CATALOG = [
     category: "avventura-motori",
     alsoIn: ["teide-natura"],
     zone: "Chío",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     zoneGroups: ["teide-nord"],
     durationGroups: ["mezza"],
     // Il quad piu' economico che si puo' davvero prenotare: il singolo del
@@ -2936,7 +3141,7 @@ const ESPLORA_CATALOG = [
     // Il prezzo e' del quad e non della persona: il modulo del fornitore fa
     // contare quanti quad singoli e quanti doppi, non quante persone. E' la
     // risposta al dubbio lasciato aperto il 2 settembre.
-    priceUnit: { it: "a quad", en: "per quad", es: "por quad" },
+    priceUnit: { it: "a quad", en: "per quad", es: "por quad", fr: "par quad" },
     units: {
       // Quanti persone porta ognuno sta nella domanda e non nel nome del tipo:
       // il nome finisce anche nel messaggio all'ufficio e nel riepilogo della
@@ -2945,12 +3150,13 @@ const ESPLORA_CATALOG = [
       label: {
         it: "Quanti quad — il singolo porta 1 persona, il doppio 2",
         en: "How many quads — a single carries 1 person, a double 2",
-        es: "¿Cuántos quads? — el individual lleva 1 persona, el doble 2"
+        es: "¿Cuántos quads? — el individual lleva 1 persona, el doble 2",
+        fr: "Combien de quads — un simple porte 1 personne, un double 2"
       },
-      name: { it: "Quad", en: "Quads", es: "Quads" },
+      name: { it: "Quad", en: "Quads", es: "Quads", fr: "Quads" },
       types: [
-        { key: "singolo", seats: 1, name: { it: "Singolo", en: "Single", es: "Individual" } },
-        { key: "doppio", seats: 2, name: { it: "Doppio", en: "Double", es: "Doble" } }
+        { key: "singolo", seats: 1, name: { it: "Singolo", en: "Single", es: "Individual", fr: "Simple" } },
+        { key: "doppio", seats: 2, name: { it: "Doppio", en: "Double", es: "Doble", fr: "Double" } }
       ]
     },
     // I prezzi dei due tipi stanno nelle varianti (`unitPrices`): cambiano con
@@ -2960,10 +3166,10 @@ const ESPLORA_CATALOG = [
     priceChild: 0,
     family: false,
     options: {
-      label: { it: "Quando", en: "When", es: "Cuándo" },
+      label: { it: "Quando", en: "When", es: "Cuándo", fr: "Quand" },
       choices: [
         {
-          label: { it: "Mattina", en: "Morning", es: "Mañana" },
+          label: { it: "Mattina", en: "Morning", es: "Mañana", fr: "Matin" },
           // `price` e' quello che si scrive sul bottone: il piu' basso dei due
           // tipi, cioe' il singolo. Il doppio costa 10 in piu' solo la mattina.
           price: 110,
@@ -2972,11 +3178,12 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Partenza alle 10:00 o alle 11:00, con la luce piena sul cratere e sulle colate laviche.",
             en: "Departure at 10:00 or 11:00, with full daylight over the crater and the lava fields.",
-            es: "Salida a las 10:00 o a las 11:00, con luz plena sobre el cráter y las coladas de lava."
+            es: "Salida a las 10:00 o a las 11:00, con luz plena sobre el cráter y las coladas de lava.",
+            fr: "Départ à 10:00 ou 11:00, en pleine lumière sur le cratère et les champs de lave."
           }
         },
         {
-          label: { it: "Tramonto", en: "Sunset", es: "Atardecer" },
+          label: { it: "Tramonto", en: "Sunset", es: "Atardecer", fr: "Coucher du soleil" },
           // Al tramonto singolo e doppio costano uguale: 130 e 130, confermati
           // dall'ufficio. Non e' un errore di copiatura.
           price: 130,
@@ -2985,7 +3192,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Partenza alle 16:00 o alle 17:00: stesso percorso, con le soste nel momento in cui il sole scende dietro il Teide.",
             en: "Departure at 16:00 or 17:00: the same route, with the stops timed for the sun going down behind Teide.",
-            es: "Salida a las 16:00 o a las 17:00: el mismo recorrido, con las paradas justo cuando el sol baja tras el Teide."
+            es: "Salida a las 16:00 o a las 17:00: el mismo recorrido, con las paradas justo cuando el sol baja tras el Teide.",
+            fr: "Départ à 16:00 ou 17:00 : le même parcours, avec les arrêts calés sur le soleil qui descend derrière le Teide."
           }
         }
       ]
@@ -2993,34 +3201,40 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Safari guidato in quad automatico da Chío verso il Parco Nazionale del Teide, fra pinete, villaggi di montagna e colate laviche, con soste ai punti panoramici. Si sceglie fra la partenza del mattino e quella del tramonto.",
       en: "A guided automatic quad safari from Chío towards Teide National Park, through pine woods, mountain villages and lava fields, with stops at the viewpoints. Choose between the morning and the sunset departure.",
-      es: "Safari guiado en quad automático desde Chío hacia el Parque Nacional del Teide, entre pinares, pueblos de montaña y coladas de lava, con paradas en los miradores. Se elige entre la salida de la mañana y la del atardecer."
+      es: "Safari guiado en quad automático desde Chío hacia el Parque Nacional del Teide, entre pinares, pueblos de montaña y coladas de lava, con paradas en los miradores. Se elige entre la salida de la mañana y la del atardecer.",
+      fr: "Un safari guidé en quad automatique de Chío vers le parc national du Teide, à travers pinèdes, villages de montagne et champs de lave, avec des arrêts aux belvédères. On choisit entre le départ du matin et celui du coucher du soleil."
     },
     included: ["guide", "transfer", "equipment"],
     notes: [
       {
         it: "Il prezzo è per quad e non a persona: il singolo porta una persona, il doppio due. Si va in gruppi piccoli, dietro alla guida.",
         en: "The price is per quad, not per person: a single carries one person, a double carries two. You ride in small groups, behind the guide.",
-        es: "El precio es por quad y no por persona: el individual lleva a una persona, el doble a dos. Se va en grupos pequeños, detrás del guía."
+        es: "El precio es por quad y no por persona: el individual lleva a una persona, el doble a dos. Se va en grupos pequeños, detrás del guía.",
+        fr: "Le prix est par quad, pas par personne : un simple porte une personne, un double en porte deux. On roule en petits groupes, derrière le guide."
       },
       {
         it: "Prelievo e riconsegna in hotel inclusi a Tenerife Sud. Chi guida deve avere almeno 18 anni e la patente con sé: senza, non si può guidare. I passeggeri salgono da 7 anni.",
         en: "Hotel pickup and drop-off included in Tenerife South. Drivers must be at least 18 and have their licence with them: without it, they cannot ride. Passengers from age 7.",
-        es: "Recogida y regreso en el hotel incluidos en Tenerife Sur. Quien conduce debe tener al menos 18 años y llevar el carné encima: sin él, no puede conducir. Los pasajeros suben desde los 7 años."
+        es: "Recogida y regreso en el hotel incluidos en Tenerife Sur. Quien conduce debe tener al menos 18 años y llevar el carné encima: sin él, no puede conducir. Los pasajeros suben desde los 7 años.",
+        fr: "Prise en charge et retour à l'hôtel compris dans le sud de Tenerife. Les conducteurs doivent avoir au moins 18 ans et leur permis sur eux : sans permis, ils ne peuvent pas conduire. Passagers dès 7 ans."
       },
       {
         it: "Quad automatici, senza marce da cambiare: non serve esperienza, le istruzioni si danno prima di partire. Si resta sempre sull'asfalto, il fuoristrada non è previsto.",
         en: "Automatic quads, no gears to change: no experience needed, instructions are given before setting off. You stay on paved roads throughout; off-roading is not part of this tour.",
-        es: "Quads automáticos, sin marchas que cambiar: no hace falta experiencia, las instrucciones se dan antes de salir. Se va siempre por asfalto; el todoterreno no forma parte de este tour."
+        es: "Quads automáticos, sin marchas que cambiar: no hace falta experiencia, las instrucciones se dan antes de salir. Se va siempre por asfalto; el todoterreno no forma parte de este tour.",
+        fr: "Quads automatiques, pas de vitesses à passer : aucune expérience nécessaire, les instructions sont données avant le départ. On reste sur routes goudronnées tout du long ; le tout-terrain ne fait pas partie de cette sortie."
       },
       {
         it: "Casco e guanti forniti, scarpe chiuse obbligatorie (niente sandali o infradito) e una giacca nei mesi freddi; per la partenza del mattino anche crema solare, occhiali da sole e cappello. Assicurazione di base inclusa, copertura completa a pagamento.",
         en: "Helmet and gloves provided, closed shoes required (no sandals or flip-flops) and a jacket in the colder months; for the morning departure also sun cream, sunglasses and a hat. Basic insurance included, full cover for an extra fee.",
-        es: "Casco y guantes incluidos, calzado cerrado obligatorio (nada de sandalias ni chanclas) y una chaqueta en los meses fríos; para la salida de la mañana también crema solar, gafas de sol y gorra. Seguro básico incluido, cobertura completa con coste adicional."
+        es: "Casco y guantes incluidos, calzado cerrado obligatorio (nada de sandalias ni chanclas) y una chaqueta en los meses fríos; para la salida de la mañana también crema solar, gafas de sol y gorra. Seguro básico incluido, cobertura completa con coste adicional.",
+        fr: "Casque et gants fournis, chaussures fermées obligatoires (pas de sandales ni de tongs) et une veste pendant les mois plus frais ; pour le départ du matin, aussi crème solaire, lunettes de soleil et chapeau. Assurance de base comprise, couverture complète en supplément."
       },
       {
         it: "Non adatto in gravidanza o in presenza di certe condizioni mediche: se hai un dubbio, scrivilo nelle note e l'ufficio ti risponde prima di confermare. Il pacchetto foto professionale è a pagamento e si paga sul posto.",
         en: "Not suitable during pregnancy or with certain medical conditions: if in doubt, add it in the notes and the office will get back to you before confirming. The professional photo package costs extra and is paid on site.",
-        es: "No apto durante el embarazo ni con ciertas condiciones médicas: si tienes dudas, escríbelo en las notas y la oficina te responde antes de confirmar. El paquete de fotos profesionales tiene coste adicional y se paga allí mismo."
+        es: "No apto durante el embarazo ni con ciertas condiciones médicas: si tienes dudas, escríbelo en las notas y la oficina te responde antes de confirmar. El paquete de fotos profesionales tiene coste adicional y se paga allí mismo.",
+        fr: "Ne convient pas pendant la grossesse ni avec certains problèmes de santé : en cas de doute, indiquez-le dans les notes et le bureau vous recontacte avant de confirmer. Le pack photo professionnel est en supplément et se paie sur place."
       }
     ],
     languages: LINGUE_TOUR,
@@ -3046,7 +3260,7 @@ const ESPLORA_CATALOG = [
     category: "avventura-motori",
     zone: "Guargacho",
     times: ["10:00", "13:00", "16:00"],
-    duration: { it: "Da 40 minuti a 2 ore", en: "40 minutes to 2 hours", es: "De 40 minutos a 2 horas" },
+    duration: { it: "Da 40 minuti a 2 ore", en: "40 minutes to 2 hours", es: "De 40 minutos a 2 horas", fr: "De 40 minutes à 2 heures" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["breve"],
     priceFrom: 59,
@@ -3055,36 +3269,39 @@ const ESPLORA_CATALOG = [
     ages: { adult: "14+" },
     family: false,
     options: {
-      label: { it: "Durata", en: "Duration", es: "Duración" },
+      label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée" },
       choices: [
         {
-          label: { it: "Pista sterrata · 40 minuti", en: "Dirt track · 40 minutes", es: "Pista de tierra · 40 minutos" },
-          duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
+          label: { it: "Pista sterrata · 40 minuti", en: "Dirt track · 40 minutes", es: "Pista de tierra · 40 minutos", fr: "Piste en terre · 40 minutes" },
+          duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos", fr: "40 minutes" },
           priceAdult: 59,
           desc: {
             it: "Quaranta minuti sulla pista in terra battuta. È la sola formula per cui non serve la patente.",
             en: "Forty minutes on the dirt track. It is the only option that needs no driving licence.",
-            es: "Cuarenta minutos en la pista de tierra. Es la única opción que no necesita carné de conducir."
+            es: "Cuarenta minutos en la pista de tierra. Es la única opción que no necesita carné de conducir.",
+            fr: "Quarante minutes sur la piste en terre. C'est la seule option qui ne demande pas de permis de conduire."
           }
         },
         {
-          label: { it: "Giro guidato · 1 ora", en: "Guided ride · 1 hour", es: "Ruta guiada · 1 hora" },
-          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+          label: { it: "Giro guidato · 1 ora", en: "Guided ride · 1 hour", es: "Ruta guiada · 1 hora", fr: "Sortie guidée · 1 heure" },
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure" },
           priceAdult: 99,
           desc: {
             it: "Un'ora fuori dalla pista, dietro la guida, fra sterrati e tratti di roccia attorno a Guargacho e Playa El Barranco.",
             en: "One hour off the track, behind the guide, on dirt roads and rocky stretches around Guargacho and Playa El Barranco.",
-            es: "Una hora fuera de la pista, detrás del guía, entre caminos de tierra y tramos de roca alrededor de Guargacho y Playa El Barranco."
+            es: "Una hora fuera de la pista, detrás del guía, entre caminos de tierra y tramos de roca alrededor de Guargacho y Playa El Barranco.",
+            fr: "Une heure hors piste, derrière le guide, sur chemins de terre et passages rocheux autour de Guargacho et de Playa El Barranco."
           }
         },
         {
-          label: { it: "Giro guidato · 2 ore", en: "Guided ride · 2 hours", es: "Ruta guiada · 2 horas" },
-          duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          label: { it: "Giro guidato · 2 ore", en: "Guided ride · 2 hours", es: "Ruta guiada · 2 horas", fr: "Sortie guidée · 2 heures" },
+          duration: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" },
           priceAdult: 189,
           desc: {
             it: "Lo stesso giro, il doppio del tempo: si arriva più lontano nel paesaggio vulcanico del sud.",
             en: "The same ride, twice as long: you get further into the volcanic landscape of the south.",
-            es: "La misma ruta, el doble de tiempo: se llega más lejos en el paisaje volcánico del sur."
+            es: "La misma ruta, el doble de tiempo: se llega más lejos en el paisaje volcánico del sur.",
+            fr: "La même sortie, deux fois plus longue : on va plus loin dans le paysage volcanique du sud."
           }
         }
       ]
@@ -3092,39 +3309,46 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Moto elettriche Talaria in fuoristrada nel sud di Tenerife: sterrati compatti, tratti di roccia e paesaggi di deserto vulcanico attorno a Guargacho e Playa El Barranco. Silenziose e senza gas di scarico. Si sceglie fra la pista sterrata, senza patente, e il giro guidato di una o due ore.",
       en: "Electric Talaria bikes off-road in the south of Tenerife: compact dirt tracks, rocky stretches and volcanic desert scenery around Guargacho and Playa El Barranco. Quiet and with no exhaust fumes. Choose between the dirt track, no licence needed, and a guided ride of one or two hours.",
-      es: "Motos eléctricas Talaria todoterreno en el sur de Tenerife: pistas de tierra compacta, tramos de roca y paisajes de desierto volcánico alrededor de Guargacho y Playa El Barranco. Silenciosas y sin gases de escape. Se elige entre la pista de tierra, sin carné, y la ruta guiada de una o dos horas."
+      es: "Motos eléctricas Talaria todoterreno en el sur de Tenerife: pistas de tierra compacta, tramos de roca y paisajes de desierto volcánico alrededor de Guargacho y Playa El Barranco. Silenciosas y sin gases de escape. Se elige entre la pista de tierra, sin carné, y la ruta guiada de una o dos horas.",
+      fr: "Motos électriques Talaria en tout-terrain dans le sud de Tenerife : pistes en terre compacte, passages rocheux et paysages de désert volcanique autour de Guargacho et de Playa El Barranco. Silencieuses et sans gaz d'échappement. On choisit entre la piste en terre, sans permis, et une sortie guidée d'une ou deux heures."
     },
     included: ["guide", "equipment"],
     notes: [
       {
         it: "Il prezzo è a persona: ogni pilota guida la sua moto. Al massimo 4 piloti per uscita.",
         en: "The price is per person: each rider has their own bike. Up to 4 riders per departure.",
-        es: "El precio es por persona: cada piloto lleva su moto. Como máximo 4 pilotos por salida."
+        es: "El precio es por persona: cada piloto lleva su moto. Como máximo 4 pilotos por salida.",
+        fr: "Le prix est par personne : chaque pilote a sa moto. Jusqu'à 4 pilotes par départ."
       },
       {
         it: "Prima di partire la guida spiega la moto e le regole, e dà l'attrezzatura. Percorso e andatura li sceglie lei, secondo il terreno e il gruppo.",
         en: "Before setting off the guide explains the bike and the rules and hands out the gear. The guide picks the route and the pace to suit the terrain and the group.",
-        es: "Antes de salir el guía explica la moto y las normas y entrega el equipo. El recorrido y el ritmo los elige el guía, según el terreno y el grupo."
+        es: "Antes de salir el guía explica la moto y las normas y entrega el equipo. El recorrido y el ritmo los elige el guía, según el terreno y el grupo.",
+        fr: "Avant de partir, le guide explique la moto et les règles et distribue l'équipement. Le guide choisit le parcours et le rythme selon le terrain et le groupe."
       },
       {
         it: "Si guida dai 14 anni. Sotto i 18 serve l'autorizzazione di un genitore o di chi ne fa le veci.",
         en: "Riders must be at least 14. Under 18s need permission from a parent or legal guardian.",
-        es: "Se conduce a partir de los 14 años. Los menores de 18 necesitan la autorización de un padre, una madre o su tutor legal."
+        es: "Se conduce a partir de los 14 años. Los menores de 18 necesitan la autorización de un padre, una madre o su tutor legal.",
+        fr: "Les pilotes doivent avoir au moins 14 ans. Les moins de 18 ans ont besoin de l'autorisation d'un parent ou du tuteur légal."
       },
       {
         it: "Chi non ha la patente fa solo l'attività fuoristrada che il fornitore accetta. I requisiti cambiano col percorso e li verifica il fornitore prima della partenza: scrivi nelle note se hai la patente.",
         en: "Without a driving licence you can only do the off-road activity the operator accepts. Requirements depend on the route and are checked by the operator before departure: say in the notes whether you hold a licence.",
-        es: "Quien no tiene carné solo puede hacer la actividad todoterreno que acepte el proveedor. Los requisitos dependen del recorrido y los comprueba el proveedor antes de salir: indica en las notas si tienes carné."
+        es: "Quien no tiene carné solo puede hacer la actividad todoterreno que acepte el proveedor. Los requisitos dependen del recorrido y los comprueba el proveedor antes de salir: indica en las notas si tienes carné.",
+        fr: "Sans permis de conduire, on ne peut faire que l'activité tout-terrain que l'opérateur accepte. Les conditions dépendent du parcours et sont vérifiées par l'opérateur avant le départ : indiquez dans les notes si vous avez le permis."
       },
       {
         it: "Scarpe chiuse e pantaloni lunghi. Porta un documento d'identità e la patente, se ce l'hai; consigliate acqua e crema solare. Arriva con un po' di anticipo: prima di partire c'è la spiegazione e la preparazione.",
         en: "Closed shoes and long trousers. Bring ID and your driving licence if you have one; water and sun cream are recommended. Arrive a little early: there is a briefing and preparation before setting off.",
-        es: "Calzado cerrado y pantalón largo. Lleva un documento de identidad y el carné si lo tienes; se recomiendan agua y crema solar. Llega con algo de antelación: antes de salir hay explicación y preparación."
+        es: "Calzado cerrado y pantalón largo. Lleva un documento de identidad y el carné si lo tienes; se recomiendan agua y crema solar. Llega con algo de antelación: antes de salir hay explicación y preparación.",
+        fr: "Chaussures fermées et pantalon long. Apportez une pièce d'identité et votre permis de conduire si vous en avez un ; eau et crème solaire conseillées. Arrivez un peu en avance : il y a un briefing et une préparation avant le départ."
       },
       {
         it: "Non c'è il ritiro in hotel: a Guargacho si arriva da soli. Prima dell'uscita il fornitore manda un link per fare il check-in.",
         en: "There is no hotel pick-up: you make your own way to Guargacho. Before the ride the operator sends a link to check in.",
-        es: "No hay recogida en el hotel: a Guargacho se llega por cuenta propia. Antes de la salida el proveedor envía un enlace para hacer el check-in."
+        es: "No hay recogida en el hotel: a Guargacho se llega por cuenta propia. Antes de la salida el proveedor envía un enlace para hacer el check-in.",
+        fr: "Il n'y a pas de prise en charge à l'hôtel : on se rend à Guargacho par ses propres moyens. Avant la sortie, l'opérateur envoie un lien pour l'enregistrement."
       }
     ],
     // Le due immagini del proprietario (13 ottobre 2026): le moto sulla
@@ -3138,7 +3362,7 @@ const ESPLORA_CATALOG = [
     title: "Helicopter Tours",
     category: "avventura-motori",
     zone: "Adeje",
-    duration: { it: "Da 8 a 50 minuti di volo", en: "8 to 50 minutes of flight", es: "De 8 a 50 minutos de vuelo" },
+    duration: { it: "Da 8 a 50 minuti di volo", en: "8 to 50 minutes of flight", es: "De 8 a 50 minutos de vuelo", fr: "De 8 à 50 minutes de vol" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
     priceFrom: 98,
@@ -3158,61 +3382,66 @@ const ESPLORA_CATALOG = [
     family: true,
     times: [],
     options: {
-      label: { it: "Percorso", en: "Route", es: "Recorrido" },
+      label: { it: "Percorso", en: "Route", es: "Recorrido", fr: "Parcours" },
       choices: [
         {
-          label: { it: "20 km - Costa sud", en: "20 km - South Coast", es: "20 km - Costa sur" },
+          label: { it: "20 km - Costa sud", en: "20 km - South Coast", es: "20 km - Costa sur", fr: "20 km - Côte sud" },
           priceAdult: 98,
           priceChild: 98,
-          duration: { it: "8-9 minuti di volo", en: "8-9 minutes of flight", es: "8-9 minutos de vuelo" },
+          duration: { it: "8-9 minuti di volo", en: "8-9 minutes of flight", es: "8-9 minutos de vuelo", fr: "8-9 minutes de vol" },
           desc: {
             it: "Il giro più breve: si decolla da Adeje e si segue la costa sud, sopra spiagge, porticcioli e la roccia vulcanica che scende in mare. In aria si sta 8-9 minuti.",
             en: "The shortest ride: you lift off from Adeje and follow the south coast, over beaches, small harbours and the volcanic rock running down to the sea. You stay up 8-9 minutes.",
-            es: "El recorrido más corto: se despega en Adeje y se sigue la costa sur, sobre playas, puertos deportivos y la roca volcánica que baja hasta el mar. En el aire se está 8-9 minutos."
+            es: "El recorrido más corto: se despega en Adeje y se sigue la costa sur, sobre playas, puertos deportivos y la roca volcánica que baja hasta el mar. En el aire se está 8-9 minutos.",
+            fr: "Le vol le plus court : on décolle d'Adeje et on suit la côte sud, au-dessus des plages, des petits ports et de la roche volcanique qui descend vers la mer. On reste en l'air 8-9 minutes."
           }
         },
         {
-          label: { it: "30 km - Spiagge e barrancos", en: "30 km - Beaches and ravines", es: "30 km - Playas y barrancos" },
+          label: { it: "30 km - Spiagge e barrancos", en: "30 km - Beaches and ravines", es: "30 km - Playas y barrancos", fr: "30 km - Plages et ravins" },
           priceAdult: 145,
           priceChild: 145,
-          duration: { it: "12-15 minuti di volo", en: "12-15 minutes of flight", es: "12-15 minutos de vuelo" },
+          duration: { it: "12-15 minuti di volo", en: "12-15 minutes of flight", es: "12-15 minutos de vuelo", fr: "12-15 minutes de vol" },
           desc: {
             it: "Il giro si allarga sulle spiagge e sui barrancos, i valloni scavati nella roccia che dall'interno scendono verso la costa. In aria si sta 12-15 minuti.",
             en: "A wider loop over the beaches and the barrancos, the ravines cut into the rock that run down from inland to the coast. You stay up 12-15 minutes.",
-            es: "El recorrido se amplía sobre las playas y los barrancos, las gargantas excavadas en la roca que bajan del interior hacia la costa. En el aire se está 12-15 minutos."
+            es: "El recorrido se amplía sobre las playas y los barrancos, las gargantas excavadas en la roca que bajan del interior hacia la costa. En el aire se está 12-15 minutos.",
+            fr: "Une boucle plus large au-dessus des plages et des barrancos, les ravins creusés dans la roche qui descendent de l'intérieur vers la côte. On reste en l'air 12-15 minutes."
           }
         },
         {
-          label: { it: "50 km - Scogliere di Los Gigantes", en: "50 km - Los Gigantes cliffs", es: "50 km - Acantilados de Los Gigantes" },
+          label: { it: "50 km - Scogliere di Los Gigantes", en: "50 km - Los Gigantes cliffs", es: "50 km - Acantilados de Los Gigantes", fr: "50 km - Falaises de Los Gigantes" },
           priceAdult: 279,
           priceChild: 279,
-          duration: { it: "20-22 minuti di volo", en: "20-22 minutes of flight", es: "20-22 minutos de vuelo" },
+          duration: { it: "20-22 minuti di volo", en: "20-22 minutes of flight", es: "20-22 minutos de vuelo", fr: "20-22 minutes de vol" },
           desc: {
             it: "Si risale la costa fino alle scogliere di Los Gigantes, che cadono a picco sull'oceano per centinaia di metri, con La Gomera all'orizzonte. In aria si sta 20-22 minuti.",
             en: "Up along the coast to the Los Gigantes cliffs, dropping sheer into the ocean for hundreds of metres, with La Gomera on the horizon. You stay up 20-22 minutes.",
-            es: "Se remonta la costa hasta los acantilados de Los Gigantes, que caen a pico sobre el océano cientos de metros, con La Gomera en el horizonte. En el aire se está 20-22 minutos."
+            es: "Se remonta la costa hasta los acantilados de Los Gigantes, que caen a pico sobre el océano cientos de metros, con La Gomera en el horizonte. En el aire se está 20-22 minutos.",
+            fr: "On remonte la côte jusqu'aux falaises de Los Gigantes, qui tombent à pic dans l'océan sur des centaines de mètres, avec La Gomera à l'horizon. On reste en l'air 20-22 minutes."
           }
         },
         {
-          label: { it: "85 km - Il giro lungo dell'isola", en: "85 km - The long island loop", es: "85 km - La vuelta larga a la isla" },
+          label: { it: "85 km - Il giro lungo dell'isola", en: "85 km - The long island loop", es: "85 km - La vuelta larga a la isla", fr: "85 km - Le grand tour de l'île" },
           priceAdult: 390,
           priceChild: 390,
-          duration: { it: "35-40 minuti di volo", en: "35-40 minutes of flight", es: "35-40 minutos de vuelo" },
+          duration: { it: "35-40 minuti di volo", en: "35-40 minutes of flight", es: "35-40 minutos de vuelo", fr: "35-40 minutes de vol" },
           desc: {
             it: "Il giro lungo: coste, valli e coni vulcanici dell'interno, per vedere in un volo solo i paesaggi diversi dell'isola. In aria si sta 35-40 minuti.",
             en: "The long loop: coastline, valleys and the volcanic cones inland, the island's different landscapes in a single flight. You stay up 35-40 minutes.",
-            es: "La vuelta larga: costa, valles y conos volcánicos del interior, los distintos paisajes de la isla en un solo vuelo. En el aire se está 35-40 minutos."
+            es: "La vuelta larga: costa, valles y conos volcánicos del interior, los distintos paisajes de la isla en un solo vuelo. En el aire se está 35-40 minutos.",
+            fr: "La grande boucle : littoral, vallées et cônes volcaniques de l'intérieur, les différents paysages de l'île en un seul vol. On reste en l'air 35-40 minutes."
           }
         },
         {
           label: "Grand Teide Luxury",
           priceAdult: 495,
           priceChild: 495,
-          duration: { it: "45-50 minuti di volo", en: "45-50 minutes of flight", es: "45-50 minutos de vuelo" },
+          duration: { it: "45-50 minuti di volo", en: "45-50 minutes of flight", es: "45-50 minutos de vuelo", fr: "45-50 minutes de vol" },
           desc: {
             it: "Il volo più lungo, fin sopra il Teide: i 3.715 metri della vetta più alta di Spagna e il cratere delle Cañadas, con l'isola intera intorno. In aria si sta 45-50 minuti.",
             en: "The longest flight, all the way over Teide: the 3,715 metres of Spain's highest peak and the Cañadas crater, with the whole island around it. You stay up 45-50 minutes.",
-            es: "El vuelo más largo, hasta sobrevolar el Teide: los 3.715 metros de la cima más alta de España y el circo de Las Cañadas, con la isla entera alrededor. En el aire se está 45-50 minutos."
+            es: "El vuelo más largo, hasta sobrevolar el Teide: los 3.715 metros de la cima más alta de España y el circo de Las Cañadas, con la isla entera alrededor. En el aire se está 45-50 minutos.",
+            fr: "Le vol le plus long, jusqu'au-dessus du Teide : les 3 715 mètres du plus haut sommet d'Espagne et le cratère de Las Cañadas, avec toute l'île autour. On reste en l'air 45-50 minutes."
           }
         }
       ]
@@ -3220,23 +3449,27 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Tenerife vista dall'alto: sorvolo in elicottero dall'elisuperficie di Adeje, con cinque percorsi fra la costa sud e il Teide e il commento del pilota durante il volo.",
       en: "Tenerife seen from above: a helicopter flight from the Adeje helipad, with five routes between the south coast and Teide and the pilot's commentary along the way.",
-      es: "Tenerife vista desde el aire: sobrevuelo en helicóptero desde el helipuerto de Adeje, con cinco recorridos entre la costa sur y el Teide y los comentarios del piloto durante el vuelo."
+      es: "Tenerife vista desde el aire: sobrevuelo en helicóptero desde el helipuerto de Adeje, con cinco recorridos entre la costa sur y el Teide y los comentarios del piloto durante el vuelo.",
+      fr: "Tenerife vue d'en haut : un vol en hélicoptère depuis l'héliport d'Adeje, avec cinq parcours entre la côte sud et le Teide et les commentaires du pilote en chemin."
     },
     notes: [
       {
         it: "Nessun servizio di prelievo: il punto d'incontro è l'elisuperficie di Adeje, raggiungibile in autonomia. Serve il passaporto per ogni passeggero.",
         en: "No pickup service: the meeting point is the Adeje helipad, reached independently. A passport is required for every passenger.",
-        es: "Sin servicio de recogida: el punto de encuentro es el helipuerto de Adeje, al que se llega por cuenta propia. Se requiere pasaporte para cada pasajero."
+        es: "Sin servicio de recogida: el punto de encuentro es el helipuerto de Adeje, al que se llega por cuenta propia. Se requiere pasaporte para cada pasajero.",
+        fr: "Pas de prise en charge : le rendez-vous est à l'héliport d'Adeje, où l'on se rend par ses propres moyens. Un passeport est obligatoire pour chaque passager."
       },
       {
         it: "Limite di peso 110 kg a passeggero (oltre puo' servire un posto aggiuntivo), massimo 4 passeggeri a volo. Pacchetto foto/video opzionale a pagamento.",
         en: "Weight limit 110 kg per passenger (an extra seat may be needed above that), maximum 4 passengers per flight. Optional photo/video package available for an extra fee.",
-        es: "Límite de peso 110 kg por pasajero (por encima puede requerir un asiento adicional), máximo 4 pasajeros por vuelo. Paquete de foto/vídeo opcional con coste adicional."
+        es: "Límite de peso 110 kg por pasajero (por encima puede requerir un asiento adicional), máximo 4 pasajeros por vuelo. Paquete de foto/vídeo opcional con coste adicional.",
+        fr: "Poids maximum 110 kg par passager (au-delà, un siège supplémentaire peut être nécessaire), 4 passagers au maximum par vol. Pack photo/vidéo facultatif disponible en supplément."
       },
       {
         it: "Il prezzo è uguale per tutti, bambini e neonati compresi: ogni passeggero occupa un posto e non c'è un prezzo ridotto. Nella richiesta contali tutti fra i passeggeri. L'orario del volo si concorda con l'ufficio.",
         en: "The price is the same for everyone, children and infants included: every passenger takes a seat and there is no reduced price. Count them all as passengers in your request. The time of the flight is arranged with the office.",
-        es: "El precio es el mismo para todos, niños y bebés incluidos: cada pasajero ocupa una plaza y no hay precio reducido. En la solicitud cuéntalos a todos como pasajeros. La hora del vuelo se acuerda con la oficina."
+        es: "El precio es el mismo para todos, niños y bebés incluidos: cada pasajero ocupa una plaza y no hay precio reducido. En la solicitud cuéntalos a todos como pasajeros. La hora del vuelo se acuerda con la oficina.",
+        fr: "Le prix est le même pour tous, enfants et bébés compris : chaque passager occupe un siège et il n'y a pas de tarif réduit. Comptez-les tous comme passagers dans la demande. L'heure du vol se fixe avec le bureau."
       }
     ],
     languages: ["English", "Español"],
@@ -3248,7 +3481,7 @@ const ESPLORA_CATALOG = [
     title: "Paragliding",
     category: "avventura-motori",
     zone: "Adeje",
-    duration: { it: "Attività di circa 2 ore, volo di 20-40 minuti", en: "About 2 hours in all, 20-40 minutes in the air", es: "Actividad de unas 2 horas, vuelo de 20-40 minutos" },
+    duration: { it: "Attività di circa 2 ore, volo di 20-40 minuti", en: "About 2 hours in all, 20-40 minutes in the air", es: "Actividad de unas 2 horas, vuelo de 20-40 minutos", fr: "Environ 2 heures en tout, 20-40 minutes en l'air" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
     priceFrom: 95,
@@ -3257,33 +3490,36 @@ const ESPLORA_CATALOG = [
     family: false,
     times: ["10:00", "12:00", "14:00", "16:00"],
     options: {
-      label: { it: "Volo", en: "Flight", es: "Vuelo" },
+      label: { it: "Volo", en: "Flight", es: "Vuelo", fr: "Vol" },
       choices: [
         {
-          label: { it: "20-25 minuti, decollo a 750 m", en: "20-25 minutes, takeoff at 750 m", es: "20-25 minutos, despegue a 750 m" },
+          label: { it: "20-25 minuti, decollo a 750 m", en: "20-25 minutes, takeoff at 750 m", es: "20-25 minutos, despegue a 750 m", fr: "20-25 minutes, décollage à 750 m" },
           priceAdult: 95,
           desc: {
             it: "Il volo classico: si sorvolano le valli e i costoni sopra Adeje, con tutto il sud dell'isola davanti. In aria si sta 20-25 minuti, secondo il vento della giornata.",
             en: "The classic flight: over the valleys and ridges above Adeje, with the whole south of the island in front of you. You stay up 20-25 minutes, depending on the day's wind.",
-            es: "El vuelo clásico: se sobrevuelan los valles y las laderas sobre Adeje, con todo el sur de la isla enfrente. En el aire se está 20-25 minutos, según el viento del día."
+            es: "El vuelo clásico: se sobrevuelan los valles y las laderas sobre Adeje, con todo el sur de la isla enfrente. En el aire se está 20-25 minutos, según el viento del día.",
+            fr: "Le vol classique : au-dessus des vallées et des crêtes qui dominent Adeje, avec tout le sud de l'île devant vous. On reste en l'air 20-25 minutes, selon le vent du jour."
           }
         },
         {
-          label: { it: "30-40 minuti, decollo a 1.000 m", en: "30-40 minutes, takeoff at 1,000 m", es: "30-40 minutos, despegue a 1.000 m" },
+          label: { it: "30-40 minuti, decollo a 1.000 m", en: "30-40 minutes, takeoff at 1,000 m", es: "30-40 minutos, despegue a 1.000 m", fr: "30-40 minutes, décollage à 1 000 m" },
           priceAdult: 115,
           desc: {
             it: "Il volo più lungo e più tranquillo, quello buono per la prima volta: si decolla sopra Adeje, con la Costa Adeje sotto e La Gomera all'orizzonte. In aria si sta 30-40 minuti, secondo il vento della giornata.",
             en: "The longest and calmest flight, the good one for a first time: takeoff above Adeje, with Costa Adeje below and La Gomera on the horizon. You stay up 30-40 minutes, depending on the day's wind.",
-            es: "El vuelo más largo y más tranquilo, el bueno para la primera vez: se despega sobre Adeje, con Costa Adeje abajo y La Gomera en el horizonte. En el aire se está 30-40 minutos, según el viento del día."
+            es: "El vuelo más largo y más tranquilo, el bueno para la primera vez: se despega sobre Adeje, con Costa Adeje abajo y La Gomera en el horizonte. En el aire se está 30-40 minutos, según el viento del día.",
+            fr: "Le vol le plus long et le plus tranquille, le bon pour une première fois : décollage au-dessus d'Adeje, avec Costa Adeje en dessous et La Gomera à l'horizon. On reste en l'air 30-40 minutes, selon le vent du jour."
           }
         },
         {
-          label: { it: "25-30 minuti, decollo a 1.000 m, alte prestazioni", en: "25-30 minutes, takeoff at 1,000 m, high performance", es: "25-30 minutos, despegue a 1.000 m, altas prestaciones" },
+          label: { it: "25-30 minuti, decollo a 1.000 m, alte prestazioni", en: "25-30 minutes, takeoff at 1,000 m, high performance", es: "25-30 minutos, despegue a 1.000 m, altas prestaciones", fr: "25-30 minutes, décollage à 1 000 m, haute performance" },
           priceAdult: 130,
           desc: {
             it: "Il volo sportivo: si cercano le correnti termiche per salire di quota e, se te la senti, il pilota ti fa provare i comandi della vela. In aria si sta 25-30 minuti, secondo il vento della giornata.",
             en: "The sporty flight: you chase thermals to gain height and, if you feel up to it, the pilot lets you try the glider's controls. You stay up 25-30 minutes, depending on the day's wind.",
-            es: "El vuelo deportivo: se buscan las térmicas para ganar altura y, si te apetece, el piloto te deja probar los mandos de la vela. En el aire se está 25-30 minutos, según el viento del día."
+            es: "El vuelo deportivo: se buscan las térmicas para ganar altura y, si te apetece, el piloto te deja probar los mandos de la vela. En el aire se está 25-30 minutos, según el viento del día.",
+            fr: "Le vol sportif : on cherche les thermiques pour prendre de la hauteur et, si vous vous sentez prêt, le pilote vous laisse essayer les commandes de la voile. On reste en l'air 25-30 minutes, selon le vent du jour."
           }
         }
       ]
@@ -3291,29 +3527,34 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Volo in tandem con istruttore esperto: decollo in quota sopra Adeje, dove porta il vento, e atterraggio in spiaggia. Prelievo e riconsegna gratuiti.",
       en: "A tandem flight with an experienced instructor: takeoff up above Adeje, wherever the wind takes you, landing on the beach. Free pickup and drop-off.",
-      es: "Vuelo en tándem con instructor experimentado: despegue en altura sobre Adeje, allí donde lleve el viento, y aterrizaje en la playa. Recogida y regreso gratuitos."
+      es: "Vuelo en tándem con instructor experimentado: despegue en altura sobre Adeje, allí donde lleve el viento, y aterrizaje en la playa. Recogida y regreso gratuitos.",
+      fr: "Un vol en tandem avec un moniteur expérimenté : décollage au-dessus d'Adeje, là où le vent vous porte, atterrissage sur la plage. Prise en charge et retour gratuits."
     },
     included: ["guide", "transfer"],
     notes: [
       {
         it: "Il ritiro in hotel a Tenerife Sud è compreso: il pulmino passa mezz'ora prima dell'orario scelto, e alla fine ti riporta indietro.",
         en: "Hotel pickup in the south of Tenerife is included: the van comes half an hour before the time you pick, and brings you back at the end.",
-        es: "La recogida en el hotel en el sur de Tenerife está incluida: la furgoneta pasa media hora antes de la hora elegida y al final te lleva de vuelta."
+        es: "La recogida en el hotel en el sur de Tenerife está incluida: la furgoneta pasa media hora antes de la hora elegida y al final te lleva de vuelta.",
+        fr: "La prise en charge à l'hôtel dans le sud de Tenerife est comprise : le van passe une demi-heure avant l'heure choisie, et vous ramène à la fin."
       },
       {
         it: "Età 8-80 anni secondo il fornitore, ma la pagina segnala altrove un minimo di 14 anni: da confermare prima di prenotare per un bambino.",
         en: "Ages 8-80 according to the operator, though the page states a minimum of 14 elsewhere: to be confirmed before booking for a child.",
-        es: "Edad 8-80 años según el proveedor, aunque la página indica en otra parte un mínimo de 14 años: a confirmar antes de reservar para un menor."
+        es: "Edad 8-80 años según el proveedor, aunque la página indica en otra parte un mínimo de 14 años: a confirmar antes de reservar para un menor.",
+        fr: "De 8 à 80 ans selon l'opérateur, mais ailleurs sa page indique un minimum de 14 ans : à confirmer avant de réserver pour un enfant."
       },
       {
         it: "Peso da 40 kg in su; sul massimo il fornitore dà due numeri diversi, 100 e 120 kg, da confermare. Non consigliato in gravidanza o con determinate condizioni mediche. Scarpe comode e abbigliamento a strati.",
         en: "Weight from 40 kg up; on the maximum the operator gives two different figures, 100 and 120 kg, to be confirmed. Not recommended during pregnancy or with certain medical conditions. Comfortable shoes and layered clothing.",
-        es: "Peso a partir de 40 kg; sobre el máximo el proveedor da dos cifras distintas, 100 y 120 kg, a confirmar. No recomendado durante el embarazo o con determinadas condiciones médicas. Calzado cómodo y ropa por capas."
+        es: "Peso a partir de 40 kg; sobre el máximo el proveedor da dos cifras distintas, 100 y 120 kg, a confirmar. No recomendado durante el embarazo o con determinadas condiciones médicas. Calzado cómodo y ropa por capas.",
+        fr: "Poids à partir de 40 kg ; pour le maximum, l'opérateur donne deux chiffres différents, 100 et 120 kg, à confirmer. Déconseillé pendant la grossesse ou avec certains problèmes de santé. Chaussures confortables et vêtements en couches."
       },
       {
         it: "L'atterraggio è di solito sulla Playa de la Enramada, a La Caleta, quando il vento lo permette.",
         en: "Landing is usually on La Enramada beach, in La Caleta, when the wind allows it.",
-        es: "El aterrizaje suele ser en la playa de La Enramada, en La Caleta, cuando el viento lo permite."
+        es: "El aterrizaje suele ser en la playa de La Enramada, en La Caleta, cuando el viento lo permite.",
+        fr: "L'atterrissage se fait d'habitude sur la plage de La Enramada, à La Caleta, quand le vent le permet."
       }
     ],
     languages: LINGUE_TOUR,
@@ -3325,7 +3566,7 @@ const ESPLORA_CATALOG = [
     title: "Karting",
     category: "avventura-motori",
     zone: "Fañabé",
-    duration: { it: "10 minuti a tanda", en: "10-minute session", es: "10 minutos por tanda" },
+    duration: { it: "10 minuti a tanda", en: "10-minute session", es: "10 minutos por tanda", fr: "Session de 10 minutes" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
     priceFrom: 20,
@@ -3346,53 +3587,57 @@ const ESPLORA_CATALOG = [
     // kart** e non a persona: moltiplicato per le persone darebbe il doppio.
     // Sta in nota, col suo prezzo.
     options: {
-      label: { it: "Formula", en: "Format", es: "Fórmula" },
+      label: { it: "Formula", en: "Format", es: "Fórmula", fr: "Formule" },
       choices: [
         {
-          label: { it: "Tanda da 10 minuti", en: "10-minute session", es: "Tanda de 10 minutos" },
-          duration: { it: "10 minuti", en: "10 minutes", es: "10 minutos" },
+          label: { it: "Tanda da 10 minuti", en: "10-minute session", es: "Tanda de 10 minutos", fr: "Session de 10 minutes" },
+          duration: { it: "10 minuti", en: "10 minutes", es: "10 minutos", fr: "10 minutes" },
           priceAdult: 20,
           priceChild: 15,
           desc: {
             it: "Una tanda da 10 minuti.",
             en: "One 10-minute session.",
-            es: "Una tanda de 10 minutos."
+            es: "Una tanda de 10 minutos.",
+            fr: "Une session de 10 minutes."
           }
         },
         {
           // Per i junior i venti minuti non esistono (ufficio, 15 settembre
           // 2026): senza `priceChild` il totale con dei bambini non si fa,
           // invece di farli passare gratis.
-          label: { it: "Tanda da 20 minuti", en: "20-minute session", es: "Tanda de 20 minutos" },
-          duration: { it: "20 minuti", en: "20 minutes", es: "20 minutos" },
+          label: { it: "Tanda da 20 minuti", en: "20-minute session", es: "Tanda de 20 minutos", fr: "Session de 20 minutes" },
+          duration: { it: "20 minuti", en: "20 minutes", es: "20 minutos", fr: "20 minutes" },
           priceAdult: 35,
           desc: {
             it: "Venti minuti di pista. Esiste solo per gli adulti: i bambini fanno la tanda da 10 minuti.",
             en: "Twenty minutes on track. It exists for adults only: children do the 10-minute session.",
-            es: "Veinte minutos en pista. Existe solo para adultos: los niños hacen la tanda de 10 minutos."
+            es: "Veinte minutos en pista. Existe solo para adultos: los niños hacen la tanda de 10 minutos.",
+            fr: "Vingt minutes sur la piste. Elle existe seulement pour les adultes : les enfants font la session de 10 minutes."
           }
         },
         {
-          label: { it: "Mini Prix", en: "Mini Prix", es: "Mini Prix" },
-          duration: { it: "20 minuti", en: "20 minutes", es: "20 minutos" },
+          label: { it: "Mini Prix", en: "Mini Prix", es: "Mini Prix", fr: "Mini Prix" },
+          duration: { it: "20 minuti", en: "20 minutes", es: "20 minutos", fr: "20 minutes" },
           // Solo adulti (ufficio, 15 settembre 2026): niente `priceChild`, cosi'
           // con dei bambini il totale non si fa invece di contarli a 40 euro.
           priceAdult: 40,
           desc: {
             it: "Dieci minuti di qualifica, dieci di gara e la coppa al primo. Da 5 a 15 persone, e solo adulti: alle gare i bambini non partecipano.",
             en: "Ten minutes of qualifying, ten of racing and a trophy for the winner. From 5 to 15 people, and adults only: children do not take part in the races.",
-            es: "Diez minutos de clasificación, diez de carrera y el trofeo para el primero. De 5 a 15 personas, y solo adultos: los niños no participan en las carreras."
+            es: "Diez minutos de clasificación, diez de carrera y el trofeo para el primero. De 5 a 15 personas, y solo adultos: los niños no participan en las carreras.",
+            fr: "Dix minutes de qualifications, dix de course et un trophée pour le gagnant. De 5 à 15 personnes, et seulement des adultes : les enfants ne participent pas aux courses."
           }
         },
         {
-          label: { it: "Grand Prix", en: "Grand Prix", es: "Grand Prix" },
-          duration: { it: "30 minuti", en: "30 minutes", es: "30 minutos" },
+          label: { it: "Grand Prix", en: "Grand Prix", es: "Grand Prix", fr: "Grand Prix" },
+          duration: { it: "30 minuti", en: "30 minutes", es: "30 minutos", fr: "30 minutes" },
           // Solo adulti, come il Mini Prix.
           priceAdult: 60,
           desc: {
             it: "Dieci minuti di prove, dieci di qualifica e dieci di gara, poi la coppa e il brindisi. Da 5 a 15 persone, e solo adulti.",
             en: "Ten minutes of practice, ten of qualifying and ten of racing, then the trophy and a toast. From 5 to 15 people, and adults only.",
-            es: "Diez minutos de entrenamientos, diez de clasificación y diez de carrera, después el trofeo y el brindis. De 5 a 15 personas, y solo adultos."
+            es: "Diez minutos de entrenamientos, diez de clasificación y diez de carrera, después el trofeo y el brindis. De 5 a 15 personas, y solo adultos.",
+            fr: "Dix minutes d'essais, dix de qualifications et dix de course, puis le trophée et un toast. De 5 à 15 personnes, et seulement des adultes."
           }
         }
       ]
@@ -3400,33 +3645,39 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Pista all'aperto di 857 metri a Fañabé, otto curve e impianto di illuminazione per girare anche dopo il tramonto. Si guida a tande da 10 minuti: kart da adulto dai 14 anni, kart junior dai 7, e un biposto per chi è ancora troppo piccolo per guidare da solo.",
       en: "An 857-metre outdoor track in Fañabé, eight corners and floodlights for driving after sunset too. You drive in 10-minute sessions: adult karts from 14, junior karts from 7, and a two-seater for anyone still too small to drive alone.",
-      es: "Circuito al aire libre de 857 metros en Fañabé, ocho curvas e iluminación para rodar también después del atardecer. Se conduce en tandas de 10 minutos: karts de adulto desde los 14 años, karts junior desde los 7 y un biplaza para quien todavía es pequeño para conducir solo."
+      es: "Circuito al aire libre de 857 metros en Fañabé, ocho curvas e iluminación para rodar también después del atardecer. Se conduce en tandas de 10 minutos: karts de adulto desde los 14 años, karts junior desde los 7 y un biplaza para quien todavía es pequeño para conducir solo.",
+      fr: "Une piste en plein air de 857 mètres à Fañabé, huit virages et un éclairage pour rouler aussi après le coucher du soleil. On roule par sessions de 10 minutes : karts adultes dès 14 ans, karts juniors dès 7 ans, et un biplace pour ceux qui sont encore trop petits pour conduire seuls."
     },
     notes: [
       {
         it: "Kart da adulto dai 14 anni in su. Kart junior dai 7 ai 13 anni, con almeno 1,30 m di altezza. Chi non è maggiorenne deve essere accompagnato da un adulto.",
         en: "Adult karts from age 14 up. Junior karts from 7 to 13, with a minimum height of 1.30 m. Anyone under 18 must be accompanied by an adult.",
-        es: "Karts de adulto a partir de los 14 años. Karts junior de 7 a 13 años, con al menos 1,30 m de altura. Los menores de 18 años deben ir acompañados de un adulto."
+        es: "Karts de adulto a partir de los 14 años. Karts junior de 7 a 13 años, con al menos 1,30 m de altura. Los menores de 18 años deben ir acompañados de un adulto.",
+        fr: "Karts adultes à partir de 14 ans. Karts juniors de 7 à 13 ans, avec une taille minimum de 1,30 m. Les moins de 18 ans doivent être accompagnés d'un adulte."
       },
       {
         it: "Chi è troppo piccolo per guidare sale sul kart biposto come passeggero: si può dai 3 anni, con un adulto maggiorenne al volante. Costa 25 € a kart, non a persona.",
         en: "Anyone too small to drive rides in the two-seater kart as a passenger: from age 3, with an adult over 18 at the wheel. It costs €25 per kart, not per person.",
-        es: "Quien es demasiado pequeño para conducir sube al kart biplaza como pasajero: se puede desde los 3 años, con un adulto mayor de 18 al volante. Cuesta 25 € por kart, no por persona."
+        es: "Quien es demasiado pequeño para conducir sube al kart biplaza como pasajero: se puede desde los 3 años, con un adulto mayor de 18 al volante. Cuesta 25 € por kart, no por persona.",
+        fr: "Ceux qui sont trop petits pour conduire montent dans le kart biplace comme passagers : dès 3 ans, avec un adulte de plus de 18 ans au volant. Cela coûte €25 par kart, pas par personne."
       },
       {
         it: "Nel fine settimana i kart junior girano solo in due fasce, dalle 10:00 alle 11:00 e dalle 15:00 alle 16:00. Negli altri giorni non ci sono fasce riservate.",
         en: "At weekends the junior karts run in two slots only, from 10:00 to 11:00 and from 15:00 to 16:00. On other days there are no set slots.",
-        es: "Los fines de semana los karts junior ruedan solo en dos franjas, de 10:00 a 11:00 y de 15:00 a 16:00. El resto de días no hay franjas reservadas."
+        es: "Los fines de semana los karts junior ruedan solo en dos franjas, de 10:00 a 11:00 y de 15:00 a 16:00. El resto de días no hay franjas reservadas.",
+        fr: "Le week-end, les karts juniors roulent seulement sur deux créneaux, de 10:00 à 11:00 et de 15:00 à 16:00. Les autres jours, il n'y a pas de créneaux fixes."
       },
       {
         it: "Il circuito è aperto tutti i giorni dalle 10:00 alle 20:30. Il casco lo dà il circuito; chi preferisce il suo può portarlo, purché sia un integrale da moto.",
         en: "The track is open every day from 10:00 to 20:30. The helmet is provided; if you prefer your own you may bring it, as long as it is a full-face motorcycle helmet.",
-        es: "El circuito abre todos los días de 10:00 a 20:30. El casco lo da el circuito; quien prefiera el suyo puede traerlo, siempre que sea un integral de moto."
+        es: "El circuito abre todos los días de 10:00 a 20:30. El casco lo da el circuito; quien prefiera el suyo puede traerlo, siempre que sea un integral de moto.",
+        fr: "La piste est ouverte tous les jours de 10:00 à 20:30. Le casque est fourni ; si vous préférez le vôtre, vous pouvez l'apporter, à condition que ce soit un casque de moto intégral."
       },
       {
         it: "Il Mini Prix e il Grand Prix sono solo per adulti, si prenotano prima e vogliono un gruppo da 5 a 15 persone. Per i bambini, e per chi è in pochi, c'è la tanda da 10 minuti: quella non ha minimi.",
         en: "The Mini Prix and the Grand Prix are for adults only, are booked in advance and need a group of 5 to 15 people. For children, and for small parties, there is the 10-minute session: that one has no minimum.",
-        es: "El Mini Prix y el Grand Prix son solo para adultos, se reservan antes y necesitan un grupo de 5 a 15 personas. Para los niños, y para quien va en pocos, está la tanda de 10 minutos: esa no tiene mínimo."
+        es: "El Mini Prix y el Grand Prix son solo para adultos, se reservan antes y necesitan un grupo de 5 a 15 personas. Para los niños, y para quien va en pocos, está la tanda de 10 minutos: esa no tiene mínimo.",
+        fr: "Le Mini Prix et le Grand Prix sont réservés aux adultes, se réservent à l'avance et demandent un groupe de 5 à 15 personnes. Pour les enfants, et pour les petits groupes, il y a la session de 10 minutes : celle-là n'a pas de minimum."
       }
     ],
     image: "karting.jpg",
@@ -3434,10 +3685,10 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "cavallo",
-    title: { it: "Passeggiata a cavallo", en: "Horseback riding", es: "Paseo a caballo" },
+    title: { it: "Passeggiata a cavallo", en: "Horseback riding", es: "Paseo a caballo", fr: "Balade à cheval" },
     category: "avventura-motori",
     zone: "Guargacho",
-    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
+    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas", fr: "1 ou 2 heures" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["breve"],
     priceFrom: 50,
@@ -3445,31 +3696,34 @@ const ESPLORA_CATALOG = [
     priceChild: 0,
     family: true,
     options: {
-      label: { it: "Durata", en: "Duration", es: "Duración" },
+      label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée" },
       choices: [
-        { label: { it: "1 ora", en: "1 hour", es: "1 hora" }, price: 50 },
+        { label: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure" }, price: 50 },
         {
-          label: { it: "2 ore (percorso costiero o al tramonto)", en: "2 hours (coastal or sunset route)", es: "2 horas (ruta costera o al atardecer)" },
-          duration: { it: "2 ore", en: "2 hours", es: "2 horas" }
+          label: { it: "2 ore (percorso costiero o al tramonto)", en: "2 hours (coastal or sunset route)", es: "2 horas (ruta costera o al atardecer)", fr: "2 heures (parcours côtier ou coucher du soleil)" },
+          duration: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" }
         }
       ]
     },
     desc: {
       it: "Passeggiata a cavallo con guida da Guargacho, in gruppo o privata, lungo sentieri adatti anche a chi non ha mai cavalcato.",
       en: "A guided horseback ride from Guargacho, in a group or private, along trails suitable even for first-time riders.",
-      es: "Paseo a caballo con guía desde Guargacho, en grupo o privado, por senderos aptos incluso para quien nunca ha montado."
+      es: "Paseo a caballo con guía desde Guargacho, en grupo o privado, por senderos aptos incluso para quien nunca ha montado.",
+      fr: "Une balade à cheval guidée depuis Guargacho, en groupe ou en privé, sur des sentiers adaptés même à ceux qui montent pour la première fois."
     },
     included: ["guide", "equipment"],
     notes: [
       {
         it: "Età minima 10 anni. Gruppo di massimo 6 persone. Consigliati pantaloni lunghi e scarpe robuste.",
         en: "Minimum age 10. Groups of up to 6 people. Long trousers and sturdy shoes recommended.",
-        es: "Edad mínima 10 años. Grupos de hasta 6 personas. Se recomiendan pantalones largos y calzado resistente."
+        es: "Edad mínima 10 años. Grupos de hasta 6 personas. Se recomiendan pantalones largos y calzado resistente.",
+        fr: "Âge minimum 10 ans. Groupes de 6 personnes au maximum. Pantalon long et chaussures solides conseillés."
       },
       {
         it: "Casco di sicurezza e armadietti per gli effetti personali inclusi.",
         en: "Safety helmet and lockers for personal belongings included.",
-        es: "Casco de seguridad y taquillas para los objetos personales incluidos."
+        es: "Casco de seguridad y taquillas para los objetos personales incluidos.",
+        fr: "Casque de sécurité et casiers pour les affaires personnelles compris."
       }
     ],
     languages: ["English", "Español"],
@@ -3483,39 +3737,42 @@ const ESPLORA_CATALOG = [
     title: "Fiat 500 Water Car",
     category: "sport-acquatici",
     zone: "Puerto Colón, Costa Adeje",
-    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
+    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas", fr: "1 ou 2 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
     // Stesse partenze del Jet Ski Safari (proprietario, 9 ottobre 2026).
     times: ["10:00", "12:00", "14:00", "16:00", "17:00"],
     priceFrom: 130,
-    priceUnit: { it: "a Fiat 500", en: "per Fiat 500", es: "por Fiat 500" },
+    priceUnit: { it: "a Fiat 500", en: "per Fiat 500", es: "por Fiat 500", fr: "par Fiat 500" },
     priceAdult: 0,
     priceChild: 0,
     options: {
-      label: { it: "Durata", en: "Duration", es: "Duración" },
+      label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée" },
       choices: [
-        { label: { it: "1 ora", en: "1 hour", es: "1 hora" }, price: 130 },
-        { label: { it: "2 ore", en: "2 hours", es: "2 horas" }, price: 220 }
+        { label: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure" }, price: 130 },
+        { label: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" }, price: 220 }
       ]
     },
     family: true,
     desc: {
       it: "Una Fiat 500 galleggiante da guidare al largo della costa sud, con un capitano a bordo che vi accompagna. Si parte da Puerto Colón verso El Duque o Los Cristianos, secondo il mare, con una sosta per il bagno: la foto che tutti si portano a casa.",
       en: "A floating Fiat 500 you drive along the south coast, with a captain on board beside you. It sets off from Puerto Colón towards El Duque or Los Cristianos, depending on the sea, with a stop for a swim: the photo everyone takes home.",
-      es: "Un Fiat 500 flotante para conducir por la costa sur, con un capitán a bordo que os acompaña. Sale de Puerto Colón hacia El Duque o Los Cristianos, según el mar, con una parada para bañarse: la foto que todos se llevan a casa."
+      es: "Un Fiat 500 flotante para conducir por la costa sur, con un capitán a bordo que os acompaña. Sale de Puerto Colón hacia El Duque o Los Cristianos, según el mar, con una parada para bañarse: la foto que todos se llevan a casa.",
+      fr: "Une Fiat 500 flottante que vous conduisez le long de la côte sud, avec un capitaine à bord à côté de vous. Elle part de Puerto Colón vers El Duque ou Los Cristianos, selon la mer, avec un arrêt baignade : la photo que tout le monde rapporte."
     },
     included: ["swimstop", "snorkel"],
     notes: [
       {
         it: "Il capitano resta sempre a bordo: lo chiedono le regole del mare. Guidate voi, sotto il suo controllo. Per guidare servono 18 anni, la patente nautica no.",
         en: "The captain stays on board the whole time: maritime rules require it. You drive, under the captain's supervision. Drivers must be 18 or over; no boating licence is needed.",
-        es: "El capitán va siempre a bordo: lo exigen las normas del mar. Conducís vosotros, bajo su supervisión. Para conducir hay que tener 18 años; no hace falta licencia de navegación."
+        es: "El capitán va siempre a bordo: lo exigen las normas del mar. Conducís vosotros, bajo su supervisión. Para conducir hay que tener 18 años; no hace falta licencia de navegación.",
+        fr: "Le capitaine reste à bord tout le temps : les règles maritimes l'exigent. Vous conduisez, sous la surveillance du capitaine. Les conducteurs doivent avoir 18 ans ou plus ; aucun permis bateau n'est nécessaire."
       },
       {
         it: "Al massimo 3 adulti e 1 bambino fino a 12 anni: 4 adulti non possono salire. Portate un documento d'identità.",
         en: "Maximum 3 adults and 1 child up to 12 years old: 4 adults are not allowed. Bring an identity document.",
-        es: "Como máximo 3 adultos y 1 niño de hasta 12 años: 4 adultos no pueden subir. Traed un documento de identidad."
+        es: "Como máximo 3 adultos y 1 niño de hasta 12 años: 4 adultos no pueden subir. Traed un documento de identidad.",
+        fr: "Au maximum 3 adultes et 1 enfant jusqu'à 12 ans : 4 adultes ne sont pas acceptés. Apportez une pièce d'identité."
       }
     ],
     image: "fiat-500-on-water.jpg",
@@ -3526,7 +3783,7 @@ const ESPLORA_CATALOG = [
     title: "Banana Boat, Fly Fish or Crazy UFO Ride",
     category: "sport-acquatici",
     zone: "Puerto Colón, Costa Adeje",
-    duration: { it: "10 o 15 minuti", en: "10 or 15 minutes", es: "10 o 15 minutos" },
+    duration: { it: "10 o 15 minuti", en: "10 or 15 minutes", es: "10 o 15 minutos", fr: "10 ou 15 minutes" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
     priceFrom: 15,
@@ -3547,39 +3804,42 @@ const ESPLORA_CATALOG = [
     // dal proprietario: la fonte dava il Pantalán 4 solo per il Crazy UFO, e
     // quella distinzione è stata tolta.
     options: {
-      label: { it: "Quale gonfiabile", en: "Which inflatable", es: "Qué hinchable" },
+      label: { it: "Quale gonfiabile", en: "Which inflatable", es: "Qué hinchable", fr: "Quelle bouée" },
       choices: [
         {
           label: "Banana Boat",
-          duration: { it: "10 minuti", en: "10 minutes", es: "10 minutos" },
+          duration: { it: "10 minuti", en: "10 minutes", es: "10 minutos", fr: "10 minutes" },
           priceAdult: 15,
           priceChild: 15,
           desc: {
             it: "La banana classica trainata dal motoscafo, fino a dodici persone per corsa: ci si tiene forte e si finisce quasi sempre in acqua. Non serve saper nuotare.",
             en: "The classic banana towed by the speedboat, up to twelve people per ride: you hold on tight and almost always end up in the water. You do not need to know how to swim.",
-            es: "La banana clásica remolcada por la lancha, hasta doce personas por salida: hay que agarrarse fuerte y casi siempre se acaba en el agua. No hace falta saber nadar."
+            es: "La banana clásica remolcada por la lancha, hasta doce personas por salida: hay que agarrarse fuerte y casi siempre se acaba en el agua. No hace falta saber nadar.",
+            fr: "La bouée banane classique tirée par le hors-bord, jusqu'à douze personnes par tour : on se tient bien et on finit presque toujours à l'eau. Pas besoin de savoir nager."
           }
         },
         {
           label: "Fly Fish",
-          duration: { it: "Circa 10 minuti", en: "About 10 minutes", es: "Unos 10 minutos" },
+          duration: { it: "Circa 10 minuti", en: "About 10 minutes", es: "Unos 10 minutos", fr: "Environ 10 minutes" },
           priceAdult: 15,
           priceChild: 15,
           desc: {
             it: "La zattera che con la velocità si stacca dall'acqua e si alza come un'ala, fino a sei persone per corsa. Su questa bisogna saper nuotare.",
             en: "The raft that lifts off the water like a wing as the boat picks up speed, up to six people per ride. For this one you need to be able to swim.",
-            es: "La balsa que con la velocidad se despega del agua y se eleva como un ala, hasta seis personas por salida. En esta hay que saber nadar."
+            es: "La balsa que con la velocidad se despega del agua y se eleva como un ala, hasta seis personas por salida. En esta hay que saber nadar.",
+            fr: "La bouée qui décolle de l'eau comme une aile quand le bateau prend de la vitesse, jusqu'à six personnes par tour. Pour celle-ci, il faut savoir nager."
           }
         },
         {
           label: "Crazy UFO & Twister",
-          duration: { it: "15 minuti", en: "15 minutes", es: "15 minutos" },
+          duration: { it: "15 minuti", en: "15 minutes", es: "15 minutos", fr: "15 minutes" },
           priceAdult: 15,
           priceChild: 15,
           desc: {
             it: "Il gonfiabile rotondo che gira e sbanda dietro al motoscafo, fino a otto persone per corsa: è la più lunga delle tre.",
             en: "The round inflatable that spins and slides behind the speedboat, up to eight people per ride: it is the longest of the three.",
-            es: "El hinchable redondo que gira y derrapa detrás de la lancha, hasta ocho personas por salida: es la más larga de las tres."
+            es: "El hinchable redondo que gira y derrapa detrás de la lancha, hasta ocho personas por salida: es la más larga de las tres.",
+            fr: "La bouée ronde qui tourne et glisse derrière le hors-bord, jusqu'à huit personnes par tour : c'est la plus longue des trois."
           }
         }
       ]
@@ -3587,48 +3847,57 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Una corsa breve sul gonfiabile trainato dal motoscafo, davanti a Puerto Colón: la banana classica, il Fly Fish che si alza sull'acqua o il Crazy UFO che gira su se stesso. Dieci o quindici minuti, giubbotto e briefing compresi, con il personale del motoscafo che segue la corsa dall'inizio alla fine. Al porto ci si arriva da soli.",
       en: "A short ride on an inflatable towed by a speedboat, just off Puerto Colón: the classic banana, the Fly Fish that lifts off the water or the Crazy UFO that spins on itself. Ten or fifteen minutes, life jacket and briefing included, with the speedboat crew watching the ride from start to finish. You make your own way to the marina.",
-      es: "Una salida corta en el hinchable remolcado por la lancha, frente a Puerto Colón: la banana clásica, el Fly Fish que se eleva sobre el agua o el Crazy UFO que gira sobre sí mismo. Diez o quince minutos, chaleco y briefing incluidos, con el personal de la lancha siguiendo la salida de principio a fin. Al puerto se llega por cuenta propia."
+      es: "Una salida corta en el hinchable remolcado por la lancha, frente a Puerto Colón: la banana clásica, el Fly Fish que se eleva sobre el agua o el Crazy UFO que gira sobre sí mismo. Diez o quince minutos, chaleco y briefing incluidos, con el personal de la lancha siguiendo la salida de principio a fin. Al puerto se llega por cuenta propia.",
+      fr: "Un court tour sur une bouée tractée par un hors-bord, juste au large de Puerto Colón : la banane classique, le Fly Fish qui décolle de l'eau ou le Crazy UFO qui tourne sur lui-même. Dix ou quinze minutes, gilet de sauvetage et briefing compris, avec l'équipage du hors-bord qui surveille le tour du début à la fin. On se rend à la marina par ses propres moyens."
     },
     notes: [
       {
         it: "Si sale dai 10 anni compiuti. Chi non ha ancora 16 anni deve essere accompagnato da un adulto.",
         en: "Minimum age 10. Anyone under 16 must be accompanied by an adult.",
-        es: "Se sube a partir de los 10 años cumplidos. Los menores de 16 deben ir acompañados de un adulto."
+        es: "Se sube a partir de los 10 años cumplidos. Los menores de 16 deben ir acompañados de un adulto.",
+        fr: "Âge minimum 10 ans. Les moins de 16 ans doivent être accompagnés d'un adulte."
       },
       {
         it: "Sul Fly Fish bisogna saper nuotare. Sulla banana e sul Crazy UFO no: basta il giubbotto, che è compreso.",
         en: "On the Fly Fish you need to be able to swim. On the banana and the Crazy UFO you do not: the life jacket is enough, and it is included.",
-        es: "En el Fly Fish hay que saber nadar. En la banana y en el Crazy UFO no: basta el chaleco, que está incluido."
+        es: "En el Fly Fish hay que saber nadar. En la banana y en el Crazy UFO no: basta el chaleco, que está incluido.",
+        fr: "Sur le Fly Fish, il faut savoir nager. Sur la banane et le Crazy UFO, non : le gilet de sauvetage suffit, et il est compris."
       },
       {
         it: "Sconsigliato a chi ha problemi di schiena o di cuore, in gravidanza, e a chi in acqua non si sente a proprio agio: è una corsa fisica e si finisce in mare.",
         en: "Not advisable if you have back or heart problems, during pregnancy, or if you are not comfortable in the water: it is a physical ride and you end up in the sea.",
-        es: "No se recomienda a quien tiene problemas de espalda o de corazón, durante el embarazo, ni a quien no se siente cómodo en el agua: es una salida física y se acaba en el mar."
+        es: "No se recomienda a quien tiene problemas de espalda o de corazón, durante el embarazo, ni a quien no se siente cómodo en el agua: es una salida física y se acaba en el mar.",
+        fr: "Déconseillé en cas de problèmes de dos ou de cœur, pendant la grossesse, ou si vous n'êtes pas à l'aise dans l'eau : c'est un tour physique et on finit à la mer."
       },
       {
         it: "Non c'è il ritiro in hotel: al Puerto Colón ci si arriva da soli. Tutti e tre i gonfiabili partono da lì.",
         en: "There is no hotel pick-up: you make your own way to Puerto Colón. All three inflatables leave from there.",
-        es: "No hay recogida en el hotel: se llega por cuenta propia a Puerto Colón. Los tres hinchables salen de allí."
+        es: "No hay recogida en el hotel: se llega por cuenta propia a Puerto Colón. Los tres hinchables salen de allí.",
+        fr: "Il n'y a pas de prise en charge à l'hôtel : on se rend à Puerto Colón par ses propres moyens. Les trois bouées partent de là."
       },
       {
         it: "Porta il costume da bagno, un asciugamano e la crema solare. Al porto ci sono le cassette dove lasciare scarpe, telefono e chiavi.",
         en: "Bring a swimsuit, a towel and sun cream. There are lockers at the marina for shoes, phone and keys.",
-        es: "Lleva bañador, una toalla y crema solar. En el puerto hay taquillas para dejar zapatos, móvil y llaves."
+        es: "Lleva bañador, una toalla y crema solar. En el puerto hay taquillas para dejar zapatos, móvil y llaves.",
+        fr: "Apportez maillot de bain, serviette et crème solaire. Il y a des casiers à la marina pour les chaussures, le téléphone et les clés."
       },
       {
         it: "Le foto e i video della corsa non sono compresi: si comprano sul posto, lo stesso giorno.",
         en: "Photos and videos of the ride are not included: you can buy them on the spot, on the day.",
-        es: "Las fotos y los vídeos de la salida no están incluidos: se compran allí mismo, el mismo día."
+        es: "Las fotos y los vídeos de la salida no están incluidos: se compran allí mismo, el mismo día.",
+        fr: "Les photos et vidéos du tour ne sont pas comprises : on peut les acheter sur place, le jour même."
       },
       {
         it: "Si va dalle 10:00 alle 18:00, tutti i giorni: le corse sono continue, non ci sono partenze fisse.",
         en: "It runs from 10:00 to 18:00, every day: the rides are continuous, there are no set departure times.",
-        es: "Se sale de 10:00 a 18:00, todos los días: las salidas son continuas, no hay horarios fijos."
+        es: "Se sale de 10:00 a 18:00, todos los días: las salidas son continuas, no hay horarios fijos.",
+        fr: "Elle fonctionne de 10:00 à 18:00, tous les jours : les tours sont continus, il n'y a pas d'horaires de départ fixes."
       },
       {
         it: "Il prezzo è a persona, per una corsa, ed è lo stesso per tutti: adulti, ragazzi e gruppi.",
         en: "The price is per person, for one ride, and it is the same for everyone: adults, teenagers and groups.",
-        es: "El precio es por persona, por una salida, y es el mismo para todos: adultos, jóvenes y grupos."
+        es: "El precio es por persona, por una salida, y es el mismo para todos: adultos, jóvenes y grupos.",
+        fr: "Le prix est par personne, pour un tour, et il est le même pour tous : adultes, ados et groupes."
       }
     ],
     image: "banana-boat.jpg",
@@ -3642,7 +3911,7 @@ const ESPLORA_CATALOG = [
     nomi: ["Shaka Kayak"],
     category: "sport-acquatici",
     zone: "Los Cristianos",
-    duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+    duration: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["breve"],
     // 35 e' il prezzo che ha deciso l'ufficio, non lo sconto copiato dal
@@ -3661,7 +3930,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Un'ora e mezza di pagaiata lungo la costa di Los Cristianos, poi mezz'ora in acqua con maschera e boccaglio dove passano le tartarughe. Delfini e razze capita di vederli, ma dipende dal mare e non sono promessi.",
       en: "An hour and a half of paddling along the Los Cristianos coast, then half an hour in the water with mask and snorkel where the turtles go by. Dolphins and rays do turn up, but that depends on the sea and is not promised.",
-      es: "Hora y media remando por la costa de Los Cristianos y luego media hora en el agua con máscara y tubo, por donde pasan las tortugas. Delfines y rayas se ven algunos días, pero depende del mar y no están garantizados."
+      es: "Hora y media remando por la costa de Los Cristianos y luego media hora en el agua con máscara y tubo, por donde pasan las tortugas. Delfines y rayas se ven algunos días, pero depende del mar y no están garantizados.",
+      fr: "Une heure et demie de pagaie le long de la côte de Los Cristianos, puis une demi-heure dans l'eau avec masque et tuba là où passent les tortues. Dauphins et raies se montrent parfois, mais cela dépend de la mer et n'est pas promis."
     },
     included: ["snorkel", "lifejacket", "guide", "swimstop"],
     // Quattro supplementi diversi, e due sono a macchina invece che a persona:
@@ -3671,27 +3941,34 @@ const ESPLORA_CATALOG = [
     transfer: {
       it: "Ritiro dall'hotel su richiesta, con un supplemento da pagare all'arrivo: €2 a persona nel sud di Tenerife, €4 a persona da Callao Salvaje e Palm-Mar, €10 a macchina dal Golf del Sur e €15 a macchina da El Médano. Scrivi nelle note l'indirizzo o il nome dell'hotel.",
       en: "Hotel pick-up on request, with a supplement paid on arrival: €2 per person in the south of Tenerife, €4 per person from Callao Salvaje and Palm-Mar, €10 per car from Golf del Sur and €15 per car from El Médano. Add your address or hotel name in the notes.",
-      es: "Recogida en el hotel bajo petición, con un suplemento a pagar al llegar: €2 por persona en el sur de Tenerife, €4 por persona desde Callao Salvaje y Palm-Mar, €10 por coche desde Golf del Sur y €15 por coche desde El Médano. Escribe en las notas la dirección o el nombre del hotel."
+      es: "Recogida en el hotel bajo petición, con un suplemento a pagar al llegar: €2 por persona en el sur de Tenerife, €4 por persona desde Callao Salvaje y Palm-Mar, €10 por coche desde Golf del Sur y €15 por coche desde El Médano. Escribe en las notas la dirección o el nombre del hotel.",
+      fr: "Prise en charge à l'hôtel sur demande, avec un supplément payé à l'arrivée : €2 par personne dans le sud de Tenerife, €4 par personne depuis Callao Salvaje et Palm-Mar, €10 par voiture depuis Golf del Sur et €15 par voiture depuis El Médano. Indiquez votre adresse ou le nom de l'hôtel dans les notes."
     },
     notes: [
       { it: "Bisogna saper nuotare: mezz'ora dell'uscita si passa in acqua con maschera e boccaglio.",
         en: "You need to be able to swim: half an hour of the trip is spent in the water with mask and snorkel.",
-        es: "Hay que saber nadar: media hora de la salida se pasa en el agua con máscara y tubo." },
+        es: "Hay que saber nadar: media hora de la salida se pasa en el agua con máscara y tubo.",
+        fr: "Il faut savoir nager : une demi-heure de la sortie se passe dans l'eau avec masque et tuba." },
       { it: "Si sale dai 6 anni compiuti, e i più piccoli vanno in kayak insieme a un adulto.",
         en: "Minimum age 6, and the youngest paddlers share a kayak with an adult.",
-        es: "Se sube a partir de los 6 años cumplidos, y los más pequeños van en el kayak con un adulto." },
+        es: "Se sube a partir de los 6 años cumplidos, y los más pequeños van en el kayak con un adulto.",
+        fr: "Âge minimum 6 ans, et les plus jeunes partagent un kayak avec un adulte." },
       { it: "Il kayak si può fare da soli, in due o in tre: il prezzo non cambia.",
         en: "You can paddle alone, in a pair or in a three: the price is the same.",
-        es: "Puedes ir solo, en pareja o de tres en el kayak: el precio no cambia." },
+        es: "Puedes ir solo, en pareja o de tres en el kayak: el precio no cambia.",
+        fr: "Vous pouvez pagayer seul, à deux ou à trois : le prix est le même." },
       { it: "Costume sotto i vestiti, scarpe chiuse (le infradito non tengono), crema solare, cappello e un asciugamano per dopo.",
         en: "Swimsuit under your clothes, closed shoes (flip-flops do not hold), sun cream, a hat and a towel for afterwards.",
-        es: "Bañador debajo de la ropa, zapato cerrado (las chanclas no sujetan), crema solar, gorra y una toalla para después." },
+        es: "Bañador debajo de la ropa, zapato cerrado (las chanclas no sujetan), crema solar, gorra y una toalla para después.",
+        fr: "Maillot de bain sous les vêtements, chaussures fermées (les tongs ne tiennent pas), crème solaire, un chapeau et une serviette pour après." },
       { it: "Ci sono gli armadietti per lasciare le tue cose mentre sei in acqua.",
         en: "There are lockers to leave your things in while you are in the water.",
-        es: "Hay taquillas para dejar tus cosas mientras estás en el agua." },
+        es: "Hay taquillas para dejar tus cosas mientras estás en el agua.",
+        fr: "Il y a des casiers pour laisser vos affaires pendant que vous êtes dans l'eau." },
       { it: "Sconsigliata in gravidanza oltre il quinto mese.",
         en: "Not recommended in pregnancy beyond the fifth month.",
-        es: "No se recomienda en embarazos de más de cinco meses." }
+        es: "No se recomienda en embarazos de más de cinco meses.",
+        fr: "Déconseillé pendant la grossesse au-delà du cinquième mois." }
     ],
     image: "kayak-snorkelling.jpg",
     published: true
@@ -3704,16 +3981,16 @@ const ESPLORA_CATALOG = [
     // porti, e quale lo dice l'ufficio nella conferma, come sul Jet Ski.
     nomi: ["Ocean Wings"],
     category: "sport-acquatici",
-    zone: { it: "Puerto Colón o Los Cristianos", en: "Puerto Colón or Los Cristianos", es: "Puerto Colón o Los Cristianos" },
+    zone: { it: "Puerto Colón o Los Cristianos", en: "Puerto Colón or Los Cristianos", es: "Puerto Colón o Los Cristianos", fr: "Puerto Colón ou Los Cristianos" },
     // Due durate diverse e tutte e due vere: quaranta minuti e' quanto dura
     // l'uscita (tragitto in barca compreso), dieci e' quanto si sta in aria.
     // Scritta una sola, l'altra diventa una bugia: "40 minuti" fa credere di
     // volare mezz'ora, "10 minuti" fa tornare il cliente al porto troppo presto.
-    duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
+    duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos", fr: "40 minutes" },
     zoneGroups: ["costa-adeje", "los-cristianos"],
     durationGroups: ["breve"],
-    activityLabel: { it: "Tempo di volo", en: "Flight time", es: "Tiempo de vuelo" },
-    activityDuration: { it: "Circa 10 minuti", en: "About 10 minutes", es: "Unos 10 minutos" },
+    activityLabel: { it: "Tempo di volo", en: "Flight time", es: "Tiempo de vuelo", fr: "Temps de vol" },
+    activityDuration: { it: "Circa 10 minuti", en: "About 10 minutes", es: "Unos 10 minutos", fr: "Environ 10 minutes" },
     // €55 a persona, confermato dal proprietario il 13 settembre 2026: la
     // scheda portava €60 da prima ed e' **sceso**, che e' la direzione
     // permessa. Sul volo paga lo stesso prezzo chiunque occupi un posto,
@@ -3732,7 +4009,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Si decolla dalla barca appesi al paracadute e si sale sopra la costa del sud: una decina di minuti in aria, con il porto, le spiagge e le montagne sotto i piedi. Fra il tragitto in barca e il volo si sta fuori circa quaranta minuti.",
       en: "You lift off from the boat hanging under the parachute and rise above the southern coast: some ten minutes in the air, with the marina, the beaches and the mountains under your feet. Between the boat ride and the flight you are out for about forty minutes.",
-      es: "Se despega desde el barco colgado del paracaídas y se sube sobre la costa sur: unos diez minutos en el aire, con el puerto, las playas y las montañas bajo los pies. Entre el trayecto en barco y el vuelo se está fuera unos cuarenta minutos."
+      es: "Se despega desde el barco colgado del paracaídas y se sube sobre la costa sur: unos diez minutos en el aire, con el puerto, las playas y las montañas bajo los pies. Entre el trayecto en barco y el vuelo se está fuera unos cuarenta minutos.",
+      fr: "Vous décollez du bateau, suspendu sous le parachute, et vous montez au-dessus de la côte sud : une dizaine de minutes en l'air, avec la marina, les plages et les montagnes sous vos pieds. Entre le bateau et le vol, vous êtes dehors environ quarante minutes."
     },
     // L'attrezzatura e il giubbotto li da' il fornitore, e l'istruttore sta a
     // bordo per tutta l'uscita. Le foto **non** ci sono: si comprano sul posto,
@@ -3741,25 +4019,32 @@ const ESPLORA_CATALOG = [
     notes: [
       { it: "Si vola da soli, in due o in tre: il paracadute porta fino a tre persone per volo.",
         en: "You fly alone, in a pair or in a three: the parachute carries up to three people per flight.",
-        es: "Se vuela solo, en pareja o de tres: el paracaídas lleva hasta tres personas por vuelo." },
+        es: "Se vuela solo, en pareja o de tres: el paracaídas lleva hasta tres personas por vuelo.",
+        fr: "Vous volez seul, à deux ou à trois : le parachute porte jusqu'à trois personnes par vol." },
       { it: "Si vola dai 3 anni compiuti; sotto quell'età non si sale.",
         en: "Minimum age 3; below that children cannot fly.",
-        es: "Se vuela a partir de los 3 años cumplidos; por debajo de esa edad no se sube." },
+        es: "Se vuela a partir de los 3 años cumplidos; por debajo de esa edad no se sube.",
+        fr: "Âge minimum 3 ans ; en dessous, les enfants ne peuvent pas voler." },
       { it: "Non serve saper nuotare, e prima di partire c'è un briefing sulla sicurezza con l'istruttore.",
         en: "You do not need to know how to swim, and there is a safety briefing with the instructor before you set off.",
-        es: "No hace falta saber nadar, y antes de salir hay un briefing de seguridad con el instructor." },
+        es: "No hace falta saber nadar, y antes de salir hay un briefing de seguridad con el instructor.",
+        fr: "Pas besoin de savoir nager, et il y a un briefing de sécurité avec le moniteur avant de partir." },
       { it: "Sconsigliato in gravidanza.",
         en: "Not recommended during pregnancy.",
-        es: "No se recomienda durante el embarazo." },
+        es: "No se recomienda durante el embarazo.",
+        fr: "Déconseillé pendant la grossesse." },
       { it: "Porta il costume da bagno, un asciugamano e la crema solare.",
         en: "Bring a swimsuit, a towel and sun cream.",
-        es: "Lleva bañador, una toalla y crema solar." },
+        es: "Lleva bañador, una toalla y crema solar.",
+        fr: "Apportez maillot de bain, serviette et crème solaire." },
       { it: "Le foto del volo non sono comprese: si comprano sul posto, lo stesso giorno.",
         en: "Photos of your flight are not included: you can buy them on the spot, on the day.",
-        es: "Las fotos del vuelo no están incluidas: se compran allí mismo, el mismo día." },
+        es: "Las fotos del vuelo no están incluidas: se compran allí mismo, el mismo día.",
+        fr: "Les photos de votre vol ne sont pas comprises : on peut les acheter sur place, le jour même." },
       { it: "Si parte da Puerto Colón o da Los Cristianos: il porto te lo diciamo nella conferma. Non c'è il ritiro in hotel: al porto ci si arriva da soli.",
         en: "Departures are from Puerto Colón or Los Cristianos: we tell you which one in the confirmation. There is no hotel pick-up: you make your own way to the port.",
-        es: "Se sale desde Puerto Colón o desde Los Cristianos: el puerto te lo decimos en la confirmación. No hay recogida en el hotel: se llega por cuenta propia al puerto." }
+        es: "Se sale desde Puerto Colón o desde Los Cristianos: el puerto te lo decimos en la confirmación. No hay recogida en el hotel: se llega por cuenta propia al puerto.",
+        fr: "Les départs se font de Puerto Colón ou de Los Cristianos : nous vous disons lequel dans la confirmation. Il n'y a pas de prise en charge à l'hôtel : on se rend au port par ses propres moyens." }
     ],
     image: "parascending.jpg",
     published: true
@@ -3773,8 +4058,8 @@ const ESPLORA_CATALOG = [
     // suo netto, quindi sul ticket la compagnia va scelta.
     nomi: ["Agua Safari", "Flash Jetski", "Jetski Island"],
     category: "sport-acquatici",
-    zone: { it: "Puerto Colón o Las Galletas", en: "Puerto Colón or Las Galletas", es: "Puerto Colón o Las Galletas" },
-    duration: { it: "40 minuti, 1 o 2 ore", en: "40 minutes, 1 or 2 hours", es: "40 minutos, 1 o 2 horas" },
+    zone: { it: "Puerto Colón o Las Galletas", en: "Puerto Colón or Las Galletas", es: "Puerto Colón o Las Galletas", fr: "Puerto Colón ou Las Galletas" },
+    duration: { it: "40 minuti, 1 o 2 ore", en: "40 minutes, 1 or 2 hours", es: "40 minutos, 1 o 2 horas", fr: "40 minutes, 1 ou 2 heures" },
     zoneGroups: ["costa-adeje", "los-cristianos"],
     durationGroups: ["breve"],
     priceFrom: 90,
@@ -3782,14 +4067,14 @@ const ESPLORA_CATALOG = [
     // questo campo il totale moltiplicherebbe per le persone un numero che
     // non e' a persona. Per lo stesso motivo le varianti hanno `price` e non
     // `priceAdult`.
-    priceUnit: { it: "a moto d'acqua", en: "per jet ski", es: "por moto de agua" },
+    priceUnit: { it: "a moto d'acqua", en: "per jet ski", es: "por moto de agua", fr: "par jet-ski" },
     units: {
-      label: { it: "Quante moto d'acqua", en: "How many jet skis", es: "¿Cuántas motos de agua?" },
-      name: { it: "Moto d'acqua", en: "Jet skis", es: "Motos de agua" },
+      label: { it: "Quante moto d'acqua", en: "How many jet skis", es: "¿Cuántas motos de agua?", fr: "Combien de jet-skis" },
+      name: { it: "Moto d'acqua", en: "Jet skis", es: "Motos de agua", fr: "Jet-skis" },
       transferPrice: 0,
       types: [
-        { key: "singola", seats: 1, name: { it: "Singola", en: "Single", es: "Individual" } },
-        { key: "doppia", seats: 2, name: { it: "Doppia", en: "Double", es: "Doble" } }
+        { key: "singola", seats: 1, name: { it: "Singola", en: "Single", es: "Individual", fr: "Simple" } },
+        { key: "doppia", seats: 2, name: { it: "Doppia", en: "Double", es: "Doble", fr: "Double" } }
       ]
     },
     priceAdult: 0,
@@ -3802,19 +4087,19 @@ const ESPLORA_CATALOG = [
     // che serviva solo a spiegare gli orari "forse" di quella pagina.
     times: ["10:00", "12:00", "14:00", "16:00", "17:00"],
     options: {
-      label: { it: "Durata", en: "Duration", es: "Duración" },
+      label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée" },
       choices: [
-        { label: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
+        { label: { it: "40 minuti", en: "40 minutes", es: "40 minutos", fr: "40 minutes" },
           price: 90,
-          duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
+          duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos", fr: "40 minutes" },
           unitPrices: { singola: 90, doppia: 110 } },
-        { label: { it: "1 ora", en: "1 hour", es: "1 hora" },
+        { label: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure" },
           price: 100,
-          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure" },
           unitPrices: { singola: 100, doppia: 120 } },
-        { label: { it: "2 ore", en: "2 hours", es: "2 horas" },
+        { label: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" },
           price: 180,
-          duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          duration: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" },
           unitPrices: { singola: 180, doppia: 200 } }
       ]
     },
@@ -3822,7 +4107,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Giro guidato in moto d'acqua lungo la costa sud, con istruttore e barca d'appoggio. Si sceglie fra 40 minuti, un'ora e due ore; il prezzo è per moto d'acqua, con una o due persone a bordo.",
       en: "A guided jet ski ride along the south coast, with an instructor and a support boat. Choose between 40 minutes, one hour and two hours; the price is per jet ski, with one or two people on board.",
-      es: "Paseo guiado en moto de agua por la costa sur, con instructor y lancha de apoyo. Se elige entre 40 minutos, una hora y dos horas; el precio es por moto de agua, con una o dos personas a bordo."
+      es: "Paseo guiado en moto de agua por la costa sur, con instructor y lancha de apoyo. Se elige entre 40 minutos, una hora y dos horas; el precio es por moto de agua, con una o dos personas a bordo.",
+      fr: "Une sortie guidée en jet-ski le long de la côte sud, avec un moniteur et un bateau d'assistance. On choisit entre 40 minutes, une heure et deux heures ; le prix est par jet-ski, avec une ou deux personnes à bord."
     },
     included: ["guide"],
     // Il ritiro e' **compreso** (`transferPrice: 0`, proprietario 12 settembre
@@ -3840,33 +4126,38 @@ const ESPLORA_CATALOG = [
     transfer: {
       it: "Ritiro in hotel senza supplemento sulle partenze da Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). Chiedilo nella richiesta: te lo confermiamo nella risposta.",
       en: "Free hotel pickup on departures from Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). Ask for it in your request: we confirm it in our reply.",
-      es: "Recogida en el hotel sin suplemento en las salidas desde Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). Pídela en la solicitud: te lo confirmamos en la respuesta."
+      es: "Recogida en el hotel sin suplemento en las salidas desde Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). Pídela en la solicitud: te lo confirmamos en la respuesta.",
+      fr: "Prise en charge gratuite à l'hôtel pour les départs de Las Galletas (Palm-Mar, Guaza, Los Cristianos, Las Américas, Costa Adeje). Demandez-la dans votre demande : nous la confirmons dans notre réponse."
     },
     // "Vuoi il transfer?" fa pensare a un pullman che porta all'escursione, e
     // qui la domanda vera e' un'altra. Vale sia per la casella nella finestra
     // sia per la riga del messaggio ("Ritiro in hotel: sì"), che e' quello che
     // l'ufficio legge per sapere da quale porto farlo partire.
-    transferLabel: { it: "Ritiro in hotel", en: "Hotel pickup", es: "Recogida en el hotel" },
+    transferLabel: { it: "Ritiro in hotel", en: "Hotel pickup", es: "Recogida en el hotel", fr: "Prise en charge à l'hôtel" },
     notes: [
       {
         it: "Il prezzo è per moto d'acqua e non a persona: la singola porta una persona, la doppia due. Un istruttore accompagna il gruppo in motoscafo.",
         en: "The price is per jet ski, not per person: a single carries one person, a double carries two. An instructor follows the group on a speedboat.",
-        es: "El precio es por moto de agua, no por persona: la individual lleva a una persona, la doble a dos. Un instructor acompaña al grupo en lancha."
+        es: "El precio es por moto de agua, no por persona: la individual lleva a una persona, la doble a dos. Un instructor acompaña al grupo en lancha.",
+        fr: "Le prix est par jet-ski, pas par personne : un simple porte une personne, un double en porte deux. Un moniteur suit le groupe en hors-bord."
       },
       {
         it: "Si parte da Puerto Colón o da Las Galletas: il porto te lo diciamo nella conferma. Se ti serve il ritiro in hotel chiedilo nella richiesta: si fa dalle partenze di Las Galletas.",
         en: "Departures are from Puerto Colón or Las Galletas: we tell you which one in the confirmation. If you need hotel pickup, ask for it in your request: it runs from the Las Galletas departures.",
-        es: "Se sale desde Puerto Colón o desde Las Galletas: el puerto te lo decimos en la confirmación. Si necesitas recogida en el hotel, pídela en la solicitud: se hace desde las salidas de Las Galletas."
+        es: "Se sale desde Puerto Colón o desde Las Galletas: el puerto te lo decimos en la confirmación. Si necesitas recogida en el hotel, pídela en la solicitud: se hace desde las salidas de Las Galletas.",
+        fr: "Les départs se font de Puerto Colón ou de Las Galletas : nous vous disons lequel dans la confirmation. Si vous avez besoin de la prise en charge à l'hôtel, demandez-la dans votre demande : elle se fait pour les départs de Las Galletas."
       },
       {
         it: "Passeggeri dai 7 anni, sempre insieme a un adulto. Si guida da 16 anni: a 16 e 17 serve l'autorizzazione firmata di un genitore, o il genitore presente alla partenza, e non si può portare un altro minorenne sulla stessa moto d'acqua.",
         en: "Passengers from age 7, always with an adult. Riding is allowed from 16: at 16 and 17 a signed parental authorisation is required, or the parent present at departure, and they cannot carry another minor on the same jet ski.",
-        es: "Pasajeros a partir de 7 años, siempre con un adulto. Se conduce desde los 16: a los 16 y 17 hace falta la autorización firmada de un progenitor, o su presencia en la salida, y no se puede llevar a otro menor en la misma moto de agua."
+        es: "Pasajeros a partir de 7 años, siempre con un adulto. Se conduce desde los 16: a los 16 y 17 hace falta la autorización firmada de un progenitor, o su presencia en la salida, y no se puede llevar a otro menor en la misma moto de agua.",
+        fr: "Passagers dès 7 ans, toujours avec un adulte. On peut piloter dès 16 ans : à 16 et 17 ans, il faut une autorisation parentale signée, ou le parent présent au départ, et on ne peut pas emmener un autre mineur sur le même jet-ski."
       },
       {
         it: "Porta costume, asciugamano e crema solare; le scarpe restano custodite a terra. Non adatta in gravidanza. Le foto in acqua le fanno gli operatori sul posto e si pagano a loro il giorno stesso: non sono comprese nel prezzo.",
         en: "Bring swimwear, a towel and sunscreen; shoes are kept safe on land. Not suitable during pregnancy. Photos in the water are taken by the operators on site and paid to them on the day: they are not included in the price.",
-        es: "Trae bañador, toalla y crema solar; el calzado queda guardado en tierra. No apta durante el embarazo. Las fotos en el agua las hacen los operadores allí mismo y se pagan el día de la actividad: no están incluidas en el precio."
+        es: "Trae bañador, toalla y crema solar; el calzado queda guardado en tierra. No apta durante el embarazo. Las fotos en el agua las hacen los operadores allí mismo y se pagan el día de la actividad: no están incluidas en el precio.",
+        fr: "Apportez maillot de bain, serviette et crème solaire ; les chaussures restent en sécurité à terre. Ne convient pas pendant la grossesse. Les photos dans l'eau sont prises par les opérateurs sur place et se paient à eux le jour même : elles ne sont pas comprises dans le prix."
       }
     ],
     image: "jet-ski-safari-1-2h.jpg",
@@ -3877,7 +4168,8 @@ const ESPLORA_CATALOG = [
     title: {
       it: "Immersioni: battesimo e corso",
       en: "Diving: taster dive and course",
-      es: "Buceo: bautizo y curso"
+      es: "Buceo: bautizo y curso",
+      fr: "Plongée : baptême et cours"
     },
     category: "sport-acquatici",
     zone: "Los Cristianos",
@@ -3886,7 +4178,7 @@ const ESPLORA_CATALOG = [
     // corsi — l'ufficio ha detto che si concordano, e questa e' una risposta,
     // non un buco: "Da definire" la pagina la nasconde (vedi daDefinire()),
     // "Da concordare" invece si legge, come sul tour privato su misura.
-    duration: { it: "Da concordare", en: "By arrangement", es: "A convenir" },
+    duration: { it: "Da concordare", en: "By arrangement", es: "A convenir", fr: "Sur rendez-vous" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["breve", "mezza"],
     // 45 e' lo snorkeling, la cosa piu' economica del listino. L'immersione
@@ -3905,7 +4197,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Il centro Big Fish di Los Cristianos porta sott'acqua sia chi non si è mai immerso sia chi ha già il brevetto: il battesimo con l'istruttore accanto, le immersioni singole o a pacchetto, quella notturna e i corsi PADI fino al livello Rescue.",
       en: "The Big Fish centre in Los Cristianos takes both first-timers and certified divers underwater: the taster dive with an instructor beside you, single dives or dive packages, the night dive, and PADI courses up to Rescue level.",
-      es: "El centro Big Fish de Los Cristianos lleva bajo el agua tanto a quien no se ha sumergido nunca como a quien ya tiene el título: el bautizo con el instructor al lado, inmersiones sueltas o en paquete, la nocturna y los cursos PADI hasta el nivel Rescue."
+      es: "El centro Big Fish de Los Cristianos lleva bajo el agua tanto a quien no se ha sumergido nunca como a quien ya tiene el título: el bautizo con el instructor al lado, inmersiones sueltas o en paquete, la nocturna y los cursos PADI hasta el nivel Rescue.",
+      fr: "Le centre Big Fish de Los Cristianos emmène sous l'eau débutants comme plongeurs certifiés : le baptême avec un moniteur à vos côtés, plongées à l'unité ou en forfait, la plongée de nuit, et les cours PADI jusqu'au niveau Rescue."
     },
     // Attrezzatura e istruttore valgono per tutto. Il ritiro **no**: lo
     // snorkeling delle 10:30 e' senza, l'ha detto l'ufficio. Le icone della
@@ -3916,10 +4209,11 @@ const ESPLORA_CATALOG = [
     transfer: {
       it: "Ritiro e riconsegna in hotel compresi nel prezzo delle immersioni e dei corsi. Per il battesimo il pulmino passa 20 minuti prima dell'orario scelto. Lo snorkeling delle 10:30 è invece senza ritiro: a Los Cristianos ci si arriva da soli. Scrivi nelle note l'indirizzo o il nome dell'hotel.",
       en: "Hotel pick-up and drop-off are included in the price of the dives and the courses. For the taster dive the minibus comes 20 minutes before the time you choose. The 10:30 snorkelling has no pick-up: you make your own way to Los Cristianos. Add your address or hotel name in the notes.",
-      es: "Recogida y regreso al hotel incluidos en el precio de las inmersiones y de los cursos. Para el bautizo la furgoneta pasa 20 minutos antes de la hora elegida. El snorkel de las 10:30 va sin recogida: a Los Cristianos se llega por cuenta propia. Escribe en las notas la dirección o el nombre del hotel."
+      es: "Recogida y regreso al hotel incluidos en el precio de las inmersiones y de los cursos. Para el bautizo la furgoneta pasa 20 minutos antes de la hora elegida. El snorkel de las 10:30 va sin recogida: a Los Cristianos se llega por cuenta propia. Escribe en las notas la dirección o el nombre del hotel.",
+      fr: "La prise en charge et le retour à l'hôtel sont compris dans le prix des plongées et des cours. Pour le baptême, le minibus passe 20 minutes avant l'heure choisie. Le snorkeling de 10:30 n'a pas de prise en charge : on se rend à Los Cristianos par ses propres moyens. Indiquez votre adresse ou le nom de l'hôtel dans les notes."
     },
     options: {
-      label: { it: "Cosa vuoi fare", en: "What you want to do", es: "Qué quieres hacer" },
+      label: { it: "Cosa vuoi fare", en: "What you want to do", es: "Qué quieres hacer", fr: "Ce que vous voulez faire" },
       // Due modi di scrivere il prezzo, e la differenza conta.
       // Dove una variante si paga **a testa** e il numero e' uno solo, c'e'
       // `priceAdult`: il totale della richiesta si fa e viene giusto.
@@ -3931,14 +4225,15 @@ const ESPLORA_CATALOG = [
       // mostrare una cifra verosimile e sbagliata.
       choices: [
         {
-          label: { it: "Snorkeling", en: "Snorkelling", es: "Snorkel" },
+          label: { it: "Snorkeling", en: "Snorkelling", es: "Snorkel", fr: "Snorkeling" },
           priceAdult: 45,
           priceChild: 45,
           // L'ora e mezza e' quella dell'uscita, l'ora e' il tempo in acqua.
           duration: {
             it: "1 ora e mezza, di cui 1 ora in acqua",
             en: "1 hour 30, an hour of it in the water",
-            es: "1 hora y media, de ellas 1 hora en el agua"
+            es: "1 hora y media, de ellas 1 hora en el agua",
+            fr: "1 heure 30, dont une heure dans l'eau"
           },
           times: ["10:30"],
           // Niente "transfer": e' l'unica variante senza ritiro.
@@ -3946,14 +4241,15 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Uscita in superficie con maschera, boccaglio e pinne, accompagnati. Per chi non vuole scendere con le bombole o accompagna chi si immerge.",
             en: "A guided outing on the surface with mask, snorkel and fins. For anyone who would rather not go down with tanks, or who is coming along with someone who is diving.",
-            es: "Salida en superficie con máscara, tubo y aletas, acompañados. Para quien no quiere bajar con botellas o acompaña a quien se sumerge."
+            es: "Salida en superficie con máscara, tubo y aletas, acompañados. Para quien no quiere bajar con botellas o acompaña a quien se sumerge.",
+            fr: "Une sortie guidée en surface avec masque, tuba et palmes. Pour ceux qui préfèrent ne pas descendre avec des bouteilles, ou qui accompagnent quelqu'un qui plonge."
           }
         },
         {
           // Il centro lo tiene a 90; 70 e' il prezzo che ha deciso l'ufficio.
           // Come per il kayak: abbassare si puo' sempre ed e' una scelta di
           // Admiral, e' alzarlo dopo che il cliente l'ha letto che non si fa.
-          label: { it: "Battesimo subacqueo", en: "Try dive", es: "Bautizo de buceo" },
+          label: { it: "Battesimo subacqueo", en: "Try dive", es: "Bautizo de buceo", fr: "Baptême de plongée" },
           priceAdult: 70,
           priceChild: 70,
           included: ["transfer"],
@@ -3962,76 +4258,85 @@ const ESPLORA_CATALOG = [
           duration: {
             it: "2 ore e mezza: 1 di scuola, 1 di immersione, mezz'ora di ritiro e riconsegna",
             en: "2 hours 30: 1 of lessons, 1 of diving, half an hour of pick-up and drop-off",
-            es: "2 horas y media: 1 de clase, 1 de inmersión, media hora de recogida y regreso"
+            es: "2 horas y media: 1 de clase, 1 de inmersión, media hora de recogida y regreso",
+            fr: "2 heures 30 : 1 de cours, 1 de plongée, une demi-heure de prise en charge et de retour"
           },
           times: ["09:00", "11:00", "13:00", "15:00"],
           desc: {
             it: "La prima immersione, senza brevetto e senza esperienza: si scende con l'istruttore accanto per tutto il tempo. Bisogna saper nuotare.",
             en: "A first dive, no certification and no experience needed: you go down with the instructor beside you the whole time. You do need to be able to swim.",
-            es: "La primera inmersión, sin título ni experiencia: se baja con el instructor al lado todo el rato. Hay que saber nadar."
+            es: "La primera inmersión, sin título ni experiencia: se baja con el instructor al lado todo el rato. Hay que saber nadar.",
+            fr: "Une première plongée, sans certification ni expérience : vous descendez avec le moniteur à vos côtés tout le temps. Il faut en revanche savoir nager."
           }
         },
         {
-          label: { it: "1 immersione con brevetto", en: "1 dive, certified", es: "1 inmersión con título" },
+          label: { it: "1 immersione con brevetto", en: "1 dive, certified", es: "1 inmersión con título", fr: "1 plongée, certifiés" },
           priceAdult: 50,
           priceChild: 50,
           included: ["transfer"],
           desc: {
             it: "Una singola immersione per chi ha già il brevetto.",
             en: "A single dive for divers who already hold a certification.",
-            es: "Una inmersión suelta para quien ya tiene el título."
+            es: "Una inmersión suelta para quien ya tiene el título.",
+            fr: "Une seule plongée pour les plongeurs déjà certifiés."
           }
         },
         {
-          label: { it: "2 immersioni con brevetto", en: "2 dives, certified", es: "2 inmersiones con título" },
+          label: { it: "2 immersioni con brevetto", en: "2 dives, certified", es: "2 inmersiones con título", fr: "2 plongées, certifiés" },
           priceAdult: 90,
           priceChild: 90,
           included: ["transfer"],
           desc: {
             it: "Due immersioni a 45 € l'una: 90 € a persona.",
             en: "Two dives at €45 each: €90 per person.",
-            es: "Dos inmersiones a 45 € cada una: 90 € por persona."
+            es: "Dos inmersiones a 45 € cada una: 90 € por persona.",
+            fr: "Deux plongées à €45 chacune : €90 par personne."
           }
         },
         {
           label: {
             it: "3-4 immersioni con brevetto (40 € l'una)",
             en: "3-4 dives, certified (€40 each)",
-            es: "3-4 inmersiones con título (40 € cada una)"
+            es: "3-4 inmersiones con título (40 € cada una)",
+            fr: "3-4 plongées, certifiés (€40 chacune)"
           },
           included: ["transfer"],
           desc: {
             it: "Quaranta euro a immersione: 120 € per tre, 160 € per quattro.",
             en: "Forty euros per dive: €120 for three, €160 for four.",
-            es: "Cuarenta euros por inmersión: 120 € por tres, 160 € por cuatro."
+            es: "Cuarenta euros por inmersión: 120 € por tres, 160 € por cuatro.",
+            fr: "Quarante euros par plongée : €120 pour trois, €160 pour quatre."
           }
         },
         {
           label: {
             it: "5-9 immersioni con brevetto (35 € l'una)",
             en: "5-9 dives, certified (€35 each)",
-            es: "5-9 inmersiones con título (35 € cada una)"
+            es: "5-9 inmersiones con título (35 € cada una)",
+            fr: "5-9 plongées, certifiés (€35 chacune)"
           },
           included: ["transfer"],
           desc: {
             it: "Trentacinque euro a immersione: da 175 € per cinque a 315 € per nove.",
             en: "Thirty-five euros per dive: from €175 for five to €315 for nine.",
-            es: "Treinta y cinco euros por inmersión: desde 175 € por cinco hasta 315 € por nueve."
+            es: "Treinta y cinco euros por inmersión: desde 175 € por cinco hasta 315 € por nueve.",
+            fr: "Trente-cinq euros par plongée : de €175 pour cinq à €315 pour neuf."
           }
         },
         {
-          label: { it: "10 immersioni con brevetto", en: "10 dives, certified", es: "10 inmersiones con título" },
+          label: { it: "10 immersioni con brevetto", en: "10 dives, certified", es: "10 inmersiones con título", fr: "10 plongées, certifiés" },
           priceAdult: 300,
           priceChild: 300,
           included: ["transfer"],
           desc: {
             it: "Dieci immersioni a 30 € l'una: 300 € a persona.",
             en: "Ten dives at €30 each: €300 per person.",
-            es: "Diez inmersiones a 30 € cada una: 300 € por persona."
+            es: "Diez inmersiones a 30 € cada una: 300 € por persona.",
+            fr: "Dix plongées à €30 chacune : €300 par personne."
           }
         },
         {
-          label: { it: "Immersione notturna", en: "Night dive", es: "Inmersión nocturna" },
+          label: { it: "Immersione notturna", en: "Night dive", es: "Inmersión nocturna", fr: "Plongée de nuit" },
           priceAdult: 65,
           priceChild: 65,
           included: ["transfer"],
@@ -4043,7 +4348,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Un'immersione dopo il tramonto, per chi ha già il brevetto.",
             en: "A dive after sunset, for certified divers.",
-            es: "Una inmersión después del atardecer, para quien ya tiene el título."
+            es: "Una inmersión después del atardecer, para quien ya tiene el título.",
+            fr: "Une plongée après le coucher du soleil, pour plongeurs certifiés."
           }
         },
         {
@@ -4054,7 +4360,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il primo passo verso il brevetto: la teoria di base e due immersioni, una da riva e una dalla barca.",
             en: "The first step towards certification: the basic theory plus two dives, one from the shore and one from the boat.",
-            es: "El primer paso hacia el título: la teoría básica y dos inmersiones, una desde la orilla y otra desde el barco."
+            es: "El primer paso hacia el título: la teoría básica y dos inmersiones, una desde la orilla y otra desde el barco.",
+            fr: "Le premier pas vers la certification : la théorie de base plus deux plongées, une du bord et une du bateau."
           }
         },
         {
@@ -4065,7 +4372,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Brevetto limitato, per chi vuole cominciare con calma: permette di scendere fino a 12 metri accompagnati da un istruttore.",
             en: "A limited certification, for anyone who would rather start gradually: it allows dives to 12 metres alongside an instructor.",
-            es: "Título limitado, para quien quiere empezar con calma: permite bajar hasta 12 metros acompañado de un instructor."
+            es: "Título limitado, para quien quiere empezar con calma: permite bajar hasta 12 metros acompañado de un instructor.",
+            fr: "Une certification limitée, pour ceux qui préfèrent commencer progressivement : elle permet de plonger jusqu'à 12 mètres avec un moniteur."
           }
         },
         {
@@ -4076,7 +4384,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il primo livello PADI vero e proprio: si scende fino a 18 metri in tutto il mondo, con compagni di pari livello o superiore. Non serve aver fatto prima lo Scuba Diver.",
             en: "The first full PADI level: dives to 18 metres anywhere in the world, with buddies of the same level or higher. The Scuba Diver course is not a prerequisite.",
-            es: "El primer nivel PADI de verdad: se baja hasta 18 metros en todo el mundo, con compañeros del mismo nivel o superior. No hace falta haber hecho antes el Scuba Diver."
+            es: "El primer nivel PADI de verdad: se baja hasta 18 metros en todo el mundo, con compañeros del mismo nivel o superior. No hace falta haber hecho antes el Scuba Diver.",
+            fr: "Le premier niveau PADI complet : plongées jusqu'à 18 mètres partout dans le monde, avec des binômes de même niveau ou plus. Le cours Scuba Diver n'est pas obligatoire avant."
           }
         },
         {
@@ -4087,7 +4396,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Per chi ha già l'Open Water e vuole andare avanti: si arriva a 30 metri e si provano ambienti nuovi.",
             en: "For divers who already hold the Open Water and want to go further: down to 30 metres, and new environments to try.",
-            es: "Para quien ya tiene el Open Water y quiere seguir: se llega a 30 metros y se prueban ambientes nuevos."
+            es: "Para quien ya tiene el Open Water y quiere seguir: se llega a 30 metros y se prueban ambientes nuevos.",
+            fr: "Pour les plongeurs qui ont déjà l'Open Water et veulent aller plus loin : jusqu'à 30 mètres, et de nouveaux environnements à essayer."
           }
         },
         {
@@ -4098,7 +4408,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Un'immersione di ripasso per chi ha il brevetto ma è fermo da un po', da fare prima di ripartire.",
             en: "A refresher dive for certified divers who have been out of the water for a while, to do before starting again.",
-            es: "Una inmersión de repaso para quien tiene el título pero lleva tiempo parado, para hacer antes de volver a empezar."
+            es: "Una inmersión de repaso para quien tiene el título pero lleva tiempo parado, para hacer antes de volver a empezar.",
+            fr: "Une plongée de remise à niveau pour les plongeurs certifiés qui ne sont pas allés sous l'eau depuis un moment, à faire avant de recommencer."
           }
         },
         {
@@ -4109,20 +4420,23 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Corso di soccorso subacqueo per subacquei esperti: come si prevengono gli incidenti e cosa si fa quando succedono.",
             en: "An underwater rescue course for experienced divers: how accidents are prevented, and what to do when they happen.",
-            es: "Curso de rescate subacuático para buceadores con experiencia: cómo se previenen los accidentes y qué hacer cuando ocurren."
+            es: "Curso de rescate subacuático para buceadores con experiencia: cómo se previenen los accidentes y qué hacer cuando ocurren.",
+            fr: "Un cours de sauvetage sous l'eau pour plongeurs expérimentés : comment on prévient les accidents, et que faire quand ils arrivent."
           }
         },
         {
           label: {
             it: "Specialità PADI (da 99 €)",
             en: "PADI specialties (from €99)",
-            es: "Especialidades PADI (desde 99 €)"
+            es: "Especialidades PADI (desde 99 €)",
+            fr: "Spécialités PADI (dès €99)"
           },
           included: ["transfer"],
           desc: {
             it: "Corsi brevi per chi ha già il brevetto e vuole aggiungere una specialità. Il prezzo cambia con la specialità scelta: lo conferma l'ufficio.",
             en: "Short courses for certified divers who want to add a specialty. The price depends on which one: the office confirms it.",
-            es: "Cursos cortos para quien ya tiene el título y quiere añadir una especialidad. El precio cambia según cuál: lo confirma la oficina."
+            es: "Cursos cortos para quien ya tiene el título y quiere añadir una especialidad. El precio cambia según cuál: lo confirma la oficina.",
+            fr: "Des cours courts pour plongeurs certifiés qui veulent ajouter une spécialité. Le prix dépend de laquelle : le bureau le confirme."
           }
         }
       ]
@@ -4130,25 +4444,32 @@ const ESPLORA_CATALOG = [
     notes: [
       { it: "Bisogna saper nuotare, anche per il battesimo: l'esperienza subacquea non serve, il saper stare in acqua sì.",
         en: "You need to be able to swim, the taster dive included: no diving experience is required, but being at ease in the water is.",
-        es: "Hay que saber nadar, también para el bautizo: la experiencia de buceo no hace falta, estar a gusto en el agua sí." },
+        es: "Hay que saber nadar, también para el bautizo: la experiencia de buceo no hace falta, estar a gusto en el agua sí.",
+        fr: "Il faut savoir nager, baptême compris : aucune expérience de plongée n'est demandée, mais il faut être à l'aise dans l'eau." },
       { it: "Si scende dagli 8 anni compiuti, e dagli 8 agli 11 sempre insieme a un adulto. I ragazzi pagano come gli adulti.",
         en: "Minimum age 8, and between 8 and 11 always together with an adult. Children pay the same as adults.",
-        es: "Se baja a partir de los 8 años cumplidos, y de los 8 a los 11 siempre con un adulto. Los niños pagan como los adultos." },
+        es: "Se baja a partir de los 8 años cumplidos, y de los 8 a los 11 siempre con un adulto. Los niños pagan como los adultos.",
+        fr: "Âge minimum 8 ans, et entre 8 et 11 ans toujours avec un adulte. Les enfants paient comme les adultes." },
       { it: "Attrezzatura completa e istruttore sono compresi in tutto. Il ritiro in hotel è compreso nelle immersioni e nei corsi, ma non nello snorkeling. Se hai la tua attrezzatura puoi portarla.",
         en: "Full equipment and instructor are included in everything. Hotel pick-up is included in the dives and the courses, but not in the snorkelling. If you have your own kit you can bring it.",
-        es: "Equipo completo e instructor están incluidos en todo. La recogida en el hotel está incluida en las inmersiones y los cursos, pero no en el snorkel. Si tienes tu propio equipo puedes traerlo." },
+        es: "Equipo completo e instructor están incluidos en todo. La recogida en el hotel está incluida en las inmersiones y los cursos, pero no en el snorkel. Si tienes tu propio equipo puedes traerlo.",
+        fr: "L'équipement complet et le moniteur sont compris partout. La prise en charge à l'hôtel est comprise pour les plongées et les cours, mais pas pour le snorkeling. Si vous avez votre propre matériel, vous pouvez l'apporter." },
       { it: "L'acqua sta fra i 18 e i 25 °C tutto l'anno e la visibilità va dai 15 ai 30 metri. Sotto capita di incontrare razze, tartarughe, polpi, murene e barracuda: dipende dal giorno, non sono promessi.",
         en: "The water stays between 18 and 25°C all year and visibility runs from 15 to 30 metres. Down there you may meet rays, turtles, octopus, moray eels and barracuda: it depends on the day, and none of it is promised.",
-        es: "El agua está entre 18 y 25 °C todo el año y la visibilidad va de 15 a 30 metros. Abajo se pueden encontrar rayas, tortugas, pulpos, morenas y barracudas: depende del día, no están garantizados." },
+        es: "El agua está entre 18 y 25 °C todo el año y la visibilidad va de 15 a 30 metros. Abajo se pueden encontrar rayas, tortugas, pulpos, morenas y barracudas: depende del día, no están garantizados.",
+        fr: "L'eau reste entre 18 et 25 °C toute l'année et la visibilité va de 15 à 30 mètres. En bas, vous pouvez croiser raies, tortues, poulpes, murènes et barracudas : cela dépend du jour, et rien n'est promis." },
       { it: "Porta il costume, un asciugamano e le infradito. La macchina fotografica subacquea puoi portarla, a tuo rischio.",
         en: "Bring a swimsuit, a towel and flip-flops. You can bring an underwater camera, at your own risk.",
-        es: "Trae bañador, una toalla y chanclas. Puedes traer una cámara subacuática, bajo tu responsabilidad." },
+        es: "Trae bañador, una toalla y chanclas. Puedes traer una cámara subacuática, bajo tu responsabilidad.",
+        fr: "Apportez maillot de bain, serviette et tongs. Vous pouvez apporter un appareil photo étanche, à vos risques." },
       { it: "Sconsigliata in gravidanza oltre il quinto mese.",
         en: "Not recommended in pregnancy beyond the fifth month.",
-        es: "No se recomienda en embarazos de más de cinco meses." },
+        es: "No se recomienda en embarazos de más de cinco meses.",
+        fr: "Déconseillé pendant la grossesse au-delà du cinquième mois." },
       { it: "Il centro fa anche i livelli professionali: se ti interessano, chiedi in ufficio.",
         en: "The centre also runs the professional levels: ask the office if you are interested.",
-        es: "El centro también imparte los niveles profesionales: pregunta en la oficina si te interesan." }
+        es: "El centro también imparte los niveles profesionales: pregunta en la oficina si te interesan.",
+        fr: "Le centre propose aussi les niveaux professionnels : demandez au bureau si cela vous intéresse." }
     ],
     image: "immersioni.jpg",
     published: true
@@ -4158,7 +4479,7 @@ const ESPLORA_CATALOG = [
     title: "Flyboard",
     category: "sport-acquatici",
     zone: "Costa Adeje",
-    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar" },
+    duration: { it: "Da definire", en: "To be confirmed", es: "Por confirmar", fr: "À confirmer" },
     zoneGroups: ["costa-adeje"],
     priceFrom: null,
     priceAdult: 0,
@@ -4167,7 +4488,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Sollevarsi sull'acqua con la tavola a getto, con istruttore.",
       en: "Rising above the water on a jet-powered board, with an instructor.",
-      es: "Elevarse sobre el agua con la tabla a chorro, con instructor."
+      es: "Elevarse sobre el agua con la tabla a chorro, con instructor.",
+      fr: "S'élever au-dessus de l'eau sur une planche propulsée par jet, avec un moniteur."
     },
     image: "flyboard.jpg",
     // Spenta il 6 ottobre 2026: il proprietario non lo vende piu'. La scheda
@@ -4191,14 +4513,14 @@ const ESPLORA_CATALOG = [
     // prezzo nell'etichetta ("da 15 € al giorno") perche' il fornitore
     // pubblica solo il primo giorno.
     id: "surf-lesson",
-    title: { it: "Lezioni di surf", en: "Surf lessons", es: "Clases de surf" },
+    title: { it: "Lezioni di surf", en: "Surf lessons", es: "Clases de surf", fr: "Cours de surf" },
     category: "sport-acquatici",
     zone: "Playa de las Américas",
     // Due ore, tutte: in gruppo, private e dentro i pacchetti (proprietario,
     // 13 settembre 2026). Il sito del fornitore la dichiarava solo sul
     // pacchetto da 3 lezioni. Le varianti dei pacchetti hanno la loro durata
     // ("3 lezioni da 2 ore"), che dice anche quante sono.
-    duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+    duration: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
     // Partenze dal proprietario, 9 ottobre 2026: valgono per tutte le lezioni.
@@ -4218,7 +4540,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Una scuola di surf sulla spiaggia di Playa de las Américas: lezioni da due ore in gruppi di sei persone al massimo, lezioni private con l'istruttore solo per te, lezioni riservate a una famiglia o a un gruppo di amici, e pacchetti da tre, cinque o sette lezioni per chi vuole andare avanti per tutto il soggiorno. Muta, tavola e scarpette in neoprene sono comprese.",
       en: "A surf school on the beach at Playa de las Américas: two-hour lessons in groups of no more than six, private lessons with the instructor all to yourself, lessons kept for one family or group of friends, and packages of three, five or seven lessons for anyone who wants to keep going through the whole stay. Wetsuit, board and neoprene boots are included.",
-      es: "Una escuela de surf en la playa de Playa de las Américas: clases de dos horas en grupos de seis personas como máximo, clases privadas con el instructor solo para ti, clases reservadas a una familia o a un grupo de amigos, y packs de tres, cinco o siete clases para quien quiere seguir durante toda la estancia. Neopreno, tabla y escarpines están incluidos."
+      es: "Una escuela de surf en la playa de Playa de las Américas: clases de dos horas en grupos de seis personas como máximo, clases privadas con el instructor solo para ti, clases reservadas a una familia o a un grupo de amigos, y packs de tres, cinco o siete clases para quien quiere seguir durante toda la estancia. Neopreno, tabla y escarpines están incluidos.",
+      fr: "Une école de surf sur la plage de Playa de las Américas : cours de deux heures en groupes de six au maximum, cours particuliers avec le moniteur rien que pour vous, cours réservés à une famille ou à un groupe d'amis, et forfaits de trois, cinq ou sept cours pour ceux qui veulent continuer pendant tout le séjour. Combinaison, planche et chaussons en néoprène sont compris."
     },
     // Vale per tutte e nove le varianti, quindi sta sulla scheda: muta,
     // tavola e scarpette in neoprene sono comprese in ogni lezione e in ogni
@@ -4226,7 +4549,7 @@ const ESPLORA_CATALOG = [
     // parola loro nel vocabolario: stanno nella descrizione e in nota.
     included: ["board", "wetsuit", "guide"],
     options: {
-      label: { it: "Cosa vuoi fare", en: "What you want to do", es: "Qué quieres hacer" },
+      label: { it: "Cosa vuoi fare", en: "What you want to do", es: "Qué quieres hacer", fr: "Ce que vous voulez faire" },
       // Due modi di scrivere il prezzo, come sulle immersioni.
       // Le lezioni e i pacchetti si pagano **a testa** e hanno un numero
       // solo: `priceAdult`, e il totale della richiesta si fa.
@@ -4236,21 +4559,23 @@ const ESPLORA_CATALOG = [
       // invece di moltiplicare 120 € per le teste.
       choices: [
         {
-          label: { it: "Lezione di gruppo", en: "Group lesson", es: "Clase en grupo" },
+          label: { it: "Lezione di gruppo", en: "Group lesson", es: "Clase en grupo", fr: "Cours en groupe" },
           priceAdult: 35,
           desc: {
             it: "Due ore in gruppo di massimo sei persone, con l'istruttore in acqua. Si parte da zero: come stare sulla tavola, come remare, come alzarsi in piedi.",
             en: "Two hours in a group of no more than six, with the instructor in the water with you. It starts from scratch: how to lie on the board, how to paddle, how to stand up.",
-            es: "Dos horas en grupo de un máximo de seis personas, con el instructor en el agua. Se empieza de cero: cómo colocarse en la tabla, cómo remar, cómo ponerse de pie."
+            es: "Dos horas en grupo de un máximo de seis personas, con el instructor en el agua. Se empieza de cero: cómo colocarse en la tabla, cómo remar, cómo ponerse de pie.",
+            fr: "Deux heures en groupe de six au maximum, avec le moniteur dans l'eau avec vous. On part de zéro : comment s'allonger sur la planche, comment ramer, comment se lever."
           }
         },
         {
-          label: { it: "Lezione privata", en: "Private lesson", es: "Clase privada" },
+          label: { it: "Lezione privata", en: "Private lesson", es: "Clase privada", fr: "Cours particulier" },
           priceAdult: 80,
           desc: {
             it: "Un istruttore per un allievo solo: il ritmo e gli esercizi sono decisi su di te. Il prezzo è di una lezione.",
             en: "One instructor for one student: the pace and the exercises are set around you. The price is for one lesson.",
-            es: "Un instructor para un solo alumno: el ritmo y los ejercicios se deciden sobre ti. El precio es de una clase."
+            es: "Un instructor para un solo alumno: el ritmo y los ejercicios se deciden sobre ti. El precio es de una clase.",
+            fr: "Un moniteur pour un élève : le rythme et les exercices sont adaptés à vous. Le prix est pour un cours."
           }
         },
         {
@@ -4259,97 +4584,111 @@ const ESPLORA_CATALOG = [
           label: {
             it: "Lezione privata per famiglie o amici (da 2 a 6 persone)",
             en: "Private lesson for family or friends (2 to 6 people)",
-            es: "Clase privada para familias o amigos (de 2 a 6 personas)"
+            es: "Clase privada para familias o amigos (de 2 a 6 personas)",
+            fr: "Cours privé pour famille ou amis (de 2 à 6 personnes)"
           },
           price: 120,
           desc: {
             it: "Lezione riservata al tuo gruppo, con l'istruttore solo per voi: si può essere di livelli diversi, principianti compresi. Il prezzo è del gruppo intero e non a testa, e si parte da due persone: 120 € in due, 165 € in tre, 200 € in quattro, 225 € in cinque. In sei si può, e il prezzo del sesto posto te lo confermiamo noi.",
             en: "A lesson kept for your own group, with the instructor only for you: you can be at different levels, complete beginners included. The price is for the whole group and not per person, and it starts at two people: €120 for two, €165 for three, €200 for four, €225 for five. Six is possible too, and we confirm the price for the sixth place.",
-            es: "Clase reservada a tu grupo, con el instructor solo para vosotros: podéis ser de niveles distintos, principiantes incluidos. El precio es del grupo entero y no por persona, y se empieza desde dos personas: 120 € en dos, 165 € en tres, 200 € en cuatro, 225 € en cinco. En seis también se puede, y el precio de la sexta plaza te lo confirmamos nosotros."
+            es: "Clase reservada a tu grupo, con el instructor solo para vosotros: podéis ser de niveles distintos, principiantes incluidos. El precio es del grupo entero y no por persona, y se empieza desde dos personas: 120 € en dos, 165 € en tres, 200 € en cuatro, 225 € en cinco. En seis también se puede, y el precio de la sexta plaza te lo confirmamos nosotros.",
+            fr: "Un cours réservé à votre groupe, avec le moniteur rien que pour vous : vous pouvez avoir des niveaux différents, débutants complets compris. Le prix est pour tout le groupe et non par personne, et il commence à deux personnes : €120 pour deux, €165 pour trois, €200 pour quatre, €225 pour cinq. Six, c'est possible aussi, et nous confirmons le prix de la sixième place."
           }
         },
         {
           label: {
             it: "Pacchetto 3 lezioni di gruppo",
             en: "Package of 3 group lessons",
-            es: "Pack de 3 clases en grupo"
+            es: "Pack de 3 clases en grupo",
+            fr: "Forfait de 3 cours en groupe"
           },
           priceAdult: 95,
-          duration: { it: "3 lezioni da 2 ore", en: "3 lessons of 2 hours", es: "3 clases de 2 horas" },
+          duration: { it: "3 lezioni da 2 ore", en: "3 lessons of 2 hours", es: "3 clases de 2 horas", fr: "3 cours de 2 heures" },
           desc: {
             it: "Tre lezioni di gruppo, da usare nei giorni che vuoi durante il soggiorno. Il pacchetto è intestato a una persona e non si può passare a un'altra.",
             en: "Three group lessons, to use on whichever days you like during your stay. The package is in one person's name and cannot be passed on to someone else.",
-            es: "Tres clases en grupo, para usar los días que quieras durante la estancia. El pack va a nombre de una persona y no se puede ceder a otra."
+            es: "Tres clases en grupo, para usar los días que quieras durante la estancia. El pack va a nombre de una persona y no se puede ceder a otra.",
+            fr: "Trois cours en groupe, à utiliser les jours que vous voulez pendant votre séjour. Le forfait est au nom d'une personne et ne peut pas être cédé à quelqu'un d'autre."
           }
         },
         {
           label: {
             it: "Pacchetto 5 lezioni di gruppo",
             en: "Package of 5 group lessons",
-            es: "Pack de 5 clases en grupo"
+            es: "Pack de 5 clases en grupo",
+            fr: "Forfait de 5 cours en groupe"
           },
           priceAdult: 140,
-          duration: { it: "5 lezioni da 2 ore", en: "5 lessons of 2 hours", es: "5 clases de 2 horas" },
+          duration: { it: "5 lezioni da 2 ore", en: "5 lessons of 2 hours", es: "5 clases de 2 horas", fr: "5 cours de 2 heures" },
           desc: {
             it: "Cinque lezioni di gruppo, da usare nei giorni che vuoi durante il soggiorno.",
             en: "Five group lessons, to use on whichever days you like during your stay.",
-            es: "Cinco clases en grupo, para usar los días que quieras durante la estancia."
+            es: "Cinco clases en grupo, para usar los días que quieras durante la estancia.",
+            fr: "Cinq cours en groupe, à utiliser les jours que vous voulez pendant votre séjour."
           }
         },
         {
           label: {
             it: "Pacchetto 7 lezioni di gruppo",
             en: "Package of 7 group lessons",
-            es: "Pack de 7 clases en grupo"
+            es: "Pack de 7 clases en grupo",
+            fr: "Forfait de 7 cours en groupe"
           },
           priceAdult: 175,
-          duration: { it: "7 lezioni da 2 ore", en: "7 lessons of 2 hours", es: "7 clases de 2 horas" },
+          duration: { it: "7 lezioni da 2 ore", en: "7 lessons of 2 hours", es: "7 clases de 2 horas", fr: "7 cours de 2 heures" },
           desc: {
             it: "Sette lezioni di gruppo: è la formula che costa meno a lezione, per i soggiorni lunghi.",
             en: "Seven group lessons: the cheapest formula per lesson, for longer stays.",
-            es: "Siete clases en grupo: es la fórmula que menos cuesta por clase, para estancias largas."
+            es: "Siete clases en grupo: es la fórmula que menos cuesta por clase, para estancias largas.",
+            fr: "Sept cours en groupe : la formule la moins chère par cours, pour les séjours plus longs."
           }
         },
         {
           label: {
             it: "Pacchetto 3 lezioni private",
             en: "Package of 3 private lessons",
-            es: "Pack de 3 clases privadas"
+            es: "Pack de 3 clases privadas",
+            fr: "Forfait de 3 cours particuliers"
           },
           priceAdult: 230,
-          duration: { it: "3 lezioni da 2 ore", en: "3 lessons of 2 hours", es: "3 clases de 2 horas" },
+          duration: { it: "3 lezioni da 2 ore", en: "3 lessons of 2 hours", es: "3 clases de 2 horas", fr: "3 cours de 2 heures" },
           desc: {
             it: "Tre lezioni individuali con l'istruttore dedicato. Il pacchetto è intestato a una persona e non si può passare a un'altra.",
             en: "Three one-to-one lessons with your own instructor. The package is in one person's name and cannot be passed on to someone else.",
-            es: "Tres clases individuales con el instructor dedicado. El pack va a nombre de una persona y no se puede ceder a otra."
+            es: "Tres clases individuales con el instructor dedicado. El pack va a nombre de una persona y no se puede ceder a otra.",
+            fr: "Trois cours individuels avec votre moniteur. Le forfait est au nom d'une personne et ne peut pas être cédé à quelqu'un d'autre."
           }
         },
         {
           label: {
             it: "Pacchetto 5 lezioni private",
             en: "Package of 5 private lessons",
-            es: "Pack de 5 clases privadas"
+            es: "Pack de 5 clases privadas",
+            fr: "Forfait de 5 cours particuliers"
           },
           priceAdult: 370,
-          duration: { it: "5 lezioni da 2 ore", en: "5 lessons of 2 hours", es: "5 clases de 2 horas" },
+          duration: { it: "5 lezioni da 2 ore", en: "5 lessons of 2 hours", es: "5 clases de 2 horas", fr: "5 cours de 2 heures" },
           desc: {
             it: "Cinque lezioni individuali con l'istruttore dedicato.",
             en: "Five one-to-one lessons with your own instructor.",
-            es: "Cinco clases individuales con el instructor dedicado."
+            es: "Cinco clases individuales con el instructor dedicado.",
+            fr: "Cinq cours individuels avec votre moniteur."
           }
         },
         {
           label: {
             it: "Pacchetto 7 lezioni private",
             en: "Package of 7 private lessons",
-            es: "Pack de 7 clases privadas"
+            es: "Pack de 7 clases privadas",
+            fr: "Forfait de 7 cours particuliers"
           },
           priceAdult: 490,
-          duration: { it: "7 lezioni da 2 ore", en: "7 lessons of 2 hours", es: "7 clases de 2 horas" },
+          duration: { it: "7 lezioni da 2 ore", en: "7 lessons of 2 hours", es: "7 clases de 2 horas", fr: "7 cours de 2 heures" },
           desc: {
             it: "Sette lezioni individuali con l'istruttore dedicato.",
             en: "Seven one-to-one lessons with your own instructor.",
-            es: "Siete clases individuales con el instructor dedicado."
+            es: "Siete clases individuales con el instructor dedicado.",
+            fr: "Sept cours individuels avec votre moniteur."
           }
         }
       ]
@@ -4357,25 +4696,32 @@ const ESPLORA_CATALOG = [
     notes: [
       { it: "Si va dai 13 anni in su, ed è lo stesso per tutte le lezioni: in gruppo, private o riservate alla famiglia. Il prezzo è uguale per tutti, quindi nella richiesta conta anche i ragazzi fra gli adulti.",
         en: "From 13 years old, and it is the same for every lesson: group, private or kept for the family. Everyone pays the same, so count teenagers among the adults when you send the request.",
-        es: "A partir de los 13 años, y es igual para todas las clases: en grupo, privadas o reservadas a la familia. El precio es igual para todos, así que en la solicitud cuenta también a los chavales entre los adultos." },
+        es: "A partir de los 13 años, y es igual para todas las clases: en grupo, privadas o reservadas a la familia. El precio es igual para todos, así que en la solicitud cuenta también a los chavales entre los adultos.",
+        fr: "Dès 13 ans, et c'est pareil pour tous les cours : en groupe, particuliers ou réservés à la famille. Tout le monde paie pareil, donc comptez les ados parmi les adultes quand vous envoyez la demande." },
       { it: "In acqua non si è mai più di sei per istruttore: vale per le lezioni di gruppo, per i pacchetti e per quelle riservate a una famiglia o a un gruppo di amici.",
         en: "There are never more than six of you in the water per instructor: that goes for the group lessons, for the packages and for the ones kept for a family or a group of friends.",
-        es: "En el agua nunca se está más de seis por instructor: vale para las clases en grupo, para los packs y para las reservadas a una familia o a un grupo de amigos." },
+        es: "En el agua nunca se está más de seis por instructor: vale para las clases en grupo, para los packs y para las reservadas a una familia o a un grupo de amigos.",
+        fr: "Vous n'êtes jamais plus de six dans l'eau par moniteur : cela vaut pour les cours en groupe, pour les forfaits et pour ceux réservés à une famille ou à un groupe d'amis." },
       { it: "Ogni lezione dura due ore, anche quelle dentro un pacchetto.",
         en: "Every lesson lasts two hours, the ones inside a package included.",
-        es: "Cada clase dura dos horas, también las que van dentro de un pack." },
+        es: "Cada clase dura dos horas, también las que van dentro de un pack.",
+        fr: "Chaque cours dure deux heures, y compris ceux d'un forfait." },
       { it: "Gli orari possono spostarsi di 30 minuti, prima o dopo, secondo la marea: l'ora esatta te la diciamo quando confermiamo la richiesta.",
         en: "Times may move by 30 minutes, earlier or later, depending on the tide: we give you the exact time when we confirm your request.",
-        es: "Los horarios pueden moverse 30 minutos, antes o después, según la marea: la hora exacta te la decimos cuando confirmamos la solicitud." },
+        es: "Los horarios pueden moverse 30 minutos, antes o después, según la marea: la hora exacta te la decimos cuando confirmamos la solicitud.",
+        fr: "Les horaires peuvent bouger de 30 minutes, avant ou après, selon la marée : nous vous donnons l'heure exacte quand nous confirmons votre demande." },
       { it: "Muta, tavola e scarpette in neoprene le dà la scuola, in tutte le lezioni e in tutti i pacchetti.",
         en: "Wetsuit, board and neoprene boots are provided by the school, in every lesson and every package.",
-        es: "Neopreno, tabla y escarpines los pone la escuela, en todas las clases y en todos los packs." },
+        es: "Neopreno, tabla y escarpines los pone la escuela, en todas las clases y en todos los packs.",
+        fr: "Combinaison, planche et chaussons en néoprène sont fournis par l'école, à chaque cours et dans chaque forfait." },
       { it: "Il ritrovo è a Playa de las Américas: ci si arriva da soli, la scuola non passa a prendere in hotel. Il punto esatto te lo diciamo insieme all'ora, quando confermiamo la richiesta.",
         en: "You meet in Playa de las Américas: you make your own way there, the school does not pick you up at your hotel. We give you the exact spot along with the time, when we confirm your request.",
-        es: "El punto de encuentro está en Playa de las Américas: se llega por cuenta propia, la escuela no recoge en el hotel. El sitio exacto te lo decimos junto con la hora, cuando confirmamos la solicitud." },
+        es: "El punto de encuentro está en Playa de las Américas: se llega por cuenta propia, la escuela no recoge en el hotel. El sitio exacto te lo decimos junto con la hora, cuando confirmamos la solicitud.",
+        fr: "Le rendez-vous est à Playa de las Américas : on s'y rend par ses propres moyens, l'école ne passe pas vous prendre à l'hôtel. Nous vous donnons l'endroit exact avec l'heure, quand nous confirmons votre demande." },
       { it: "Porta il costume, un asciugamano, la crema solare e qualcosa da bere: il resto lo dà la scuola.",
         en: "Bring a swimsuit, a towel, sun cream and something to drink: the school provides the rest.",
-        es: "Trae bañador, una toalla, crema solar y algo de beber: el resto lo pone la escuela." }
+        es: "Trae bañador, una toalla, crema solar y algo de beber: el resto lo pone la escuela.",
+        fr: "Apportez maillot de bain, serviette, crème solaire et de quoi boire : l'école fournit le reste." }
     ],
     image: "surf-lesson.jpg",
     published: true
@@ -4395,7 +4741,8 @@ const ESPLORA_CATALOG = [
     duration: {
       it: "10:00-18:00 dal 1° maggio al 29 ottobre, 10:00-17:00 dal 30 ottobre al 30 aprile",
       en: "10am-6pm from 1 May to 29 October, 10am-5pm from 30 October to 30 April",
-      es: "10:00-18:00 del 1 de mayo al 29 de octubre, 10:00-17:00 del 30 de octubre al 30 de abril"
+      es: "10:00-18:00 del 1 de mayo al 29 de octubre, 10:00-17:00 del 30 de octubre al 30 de abril",
+      fr: "10:00-18:00 du 1er mai au 29 octobre, 10:00-17:00 du 30 octobre au 30 avril"
     },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["intera"],
@@ -4409,29 +4756,31 @@ const ESPLORA_CATALOG = [
     // prezzo estivo (luglio/agosto) non ha un campo suo nel catalogo, quindi
     // resta scritto nella descrizione di ciascuna variante e in `notes`.
     options: {
-      label: { it: "Tipo di biglietto", en: "Ticket type", es: "Tipo de entrada" },
+      label: { it: "Tipo di biglietto", en: "Ticket type", es: "Tipo de entrada", fr: "Type de billet" },
       choices: [
         {
-          label: { it: "Biglietti normali", en: "Regular tickets", es: "Entradas normales" },
+          label: { it: "Biglietti normali", en: "Regular tickets", es: "Entradas normales", fr: "Billets normaux" },
           priceAdult: 44,
           priceChild: 32,
           desc: {
             it: "Biglietti d'ingresso regolari.",
             en: "Regular admission tickets.",
-            es: "Entradas regulares."
+            es: "Entradas regulares.",
+            fr: "Billets d'entrée normaux."
           }
         },
         {
           // Bambini e neonati: il fornitore non ha ancora dato i due prezzi
           // per questa variante, solo quello dell'adulto. Niente priceChild
           // finche' non arriva: un numero inventato sarebbe peggio di niente.
-          label: { it: "Biglietti tutto compreso", en: "All-inclusive tickets", es: "Entradas todo incluido" },
+          label: { it: "Biglietti tutto compreso", en: "All-inclusive tickets", es: "Entradas todo incluido", fr: "Billets tout compris" },
           priceAdult: 165,
           included: ["towels"],
           desc: {
             it: "Ingresso, Fast Pass illimitato per tutte le attrazioni (tranne Power of Tower e Lazy River), armadietto, asciugamano e servizio All Inclusive illimitato ai bar e ristoranti, bevande alcoliche comprese.",
             en: "Admission, unlimited Fast Pass for all attractions (except Power of Tower and Lazy River), locker, towel and unlimited All Inclusive service at bars and restaurants, alcoholic drinks included.",
-            es: "Entrada, Fast Pass ilimitado para todas las atracciones (excepto Power of Tower y Lazy River), taquilla, toalla y servicio All Inclusive ilimitado en bares y restaurantes, con bebidas alcohólicas incluidas."
+            es: "Entrada, Fast Pass ilimitado para todas las atracciones (excepto Power of Tower y Lazy River), taquilla, toalla y servicio All Inclusive ilimitado en bares y restaurantes, con bebidas alcohólicas incluidas.",
+            fr: "Entrée, Fast Pass illimité pour toutes les attractions (sauf Power of Tower et Lazy River), casier, serviette et service All Inclusive illimité dans les bars et restaurants, boissons alcoolisées comprises."
           }
         },
         // Le tre VIP sono un prezzo forfettario per lo spazio (cabina, casa,
@@ -4446,33 +4795,36 @@ const ESPLORA_CATALOG = [
         // collegare uno scaglione a scaglioni (`priceTiers`) a una singola
         // variante, solo alla scheda intera.
         {
-          label: { it: "Cabina VIP (fino a 4 persone)", en: "VIP Cabin (up to 4 people)", es: "Cabaña VIP (hasta 4 personas)" },
+          label: { it: "Cabina VIP (fino a 4 persone)", en: "VIP Cabin (up to 4 people)", es: "Cabaña VIP (hasta 4 personas)", fr: "Cabane VIP (jusqu'à 4 personnes)" },
           price: 660,
           included: ["towels"],
           desc: {
             it: "Prezzo forfettario per l'uso esclusivo della cabina, fino a 4 persone incluse (fino a 6, con 151€ a persona per ciascuna oltre le 4). Doccia privata e lettini in terrazza, minibar, cassetta di sicurezza, TV, cibo e bevande illimitati nei ristoranti del parco, bus navetta gratuito. Stesso prezzo anche a luglio e agosto.",
             en: "Flat price for exclusive use of the cabin, up to 4 people included (up to 6, with €151 per extra person beyond 4). Private shower and sun loungers on the terrace, minibar, safe, TV, unlimited food and drinks at the park's restaurants, free shuttle bus. Same price in July and August too.",
-            es: "Precio fijo por el uso exclusivo de la cabaña, hasta 4 personas incluidas (hasta 6, con 151€ por persona extra a partir de la 4ª). Ducha privada y tumbonas en la terraza, minibar, caja fuerte, TV, comida y bebida ilimitadas en los restaurantes del parque, autobús lanzadera gratuito. Mismo precio también en julio y agosto."
+            es: "Precio fijo por el uso exclusivo de la cabaña, hasta 4 personas incluidas (hasta 6, con 151€ por persona extra a partir de la 4ª). Ducha privada y tumbonas en la terraza, minibar, caja fuerte, TV, comida y bebida ilimitadas en los restaurantes del parque, autobús lanzadera gratuito. Mismo precio también en julio y agosto.",
+            fr: "Prix forfaitaire pour l'usage exclusif de la cabane, jusqu'à 4 personnes comprises (jusqu'à 6, avec €151 par personne en plus au-delà de 4). Douche privée et transats sur la terrasse, minibar, coffre-fort, TV, nourriture et boissons à volonté dans les restaurants du parc, navette gratuite. Même prix aussi en juillet et août."
           }
         },
         {
-          label: { it: "Casa VIP (fino a 6 persone)", en: "VIP House (up to 6 people)", es: "Casa VIP (hasta 6 personas)" },
+          label: { it: "Casa VIP (fino a 6 persone)", en: "VIP House (up to 6 people)", es: "Casa VIP (hasta 6 personas)", fr: "Maison VIP (jusqu'à 6 personnes)" },
           price: 990,
           included: ["towels"],
           desc: {
             it: "Prezzo forfettario per l'uso esclusivo della casa, fino a 6 persone incluse (fino a 10, con 151€ a persona per ciascuna oltre le 6). Jacuzzi privata e doccia privata in terrazza, lettini, minibar, cassetta di sicurezza, TV, cibo e bevande illimitati nei ristoranti del parco, bus navetta gratuito.",
             en: "Flat price for exclusive use of the house, up to 6 people included (up to 10, with €151 per extra person beyond 6). Private jacuzzi and private shower on the terrace, sun loungers, minibar, safe, TV, unlimited food and drinks at the park's restaurants, free shuttle bus.",
-            es: "Precio fijo por el uso exclusivo de la casa, hasta 6 personas incluidas (hasta 10, con 151€ por persona extra a partir de la 6ª). Jacuzzi privada y ducha privada en la terraza, tumbonas, minibar, caja fuerte, TV, comida y bebida ilimitadas en los restaurantes del parque, autobús lanzadera gratuito."
+            es: "Precio fijo por el uso exclusivo de la casa, hasta 6 personas incluidas (hasta 10, con 151€ por persona extra a partir de la 6ª). Jacuzzi privada y ducha privada en la terraza, tumbonas, minibar, caja fuerte, TV, comida y bebida ilimitadas en los restaurantes del parque, autobús lanzadera gratuito.",
+            fr: "Prix forfaitaire pour l'usage exclusif de la maison, jusqu'à 6 personnes comprises (jusqu'à 10, avec €151 par personne en plus au-delà de 6). Jacuzzi privé et douche privée sur la terrasse, transats, minibar, coffre-fort, TV, nourriture et boissons à volonté dans les restaurants du parc, navette gratuite."
           }
         },
         {
-          label: { it: "Villa VIP (fino a 8 persone)", en: "VIP Villa (up to 8 people)", es: "Villa VIP (hasta 8 personas)" },
+          label: { it: "Villa VIP (fino a 8 persone)", en: "VIP Villa (up to 8 people)", es: "Villa VIP (hasta 8 personas)", fr: "Villa VIP (jusqu'à 8 personnes)" },
           price: 1320,
           included: ["towels"],
           desc: {
             it: "Prezzo forfettario per l'uso esclusivo della villa, fino a 8 persone incluse (fino a 12, con 151€ a persona per ciascuna oltre le 8). Jacuzzi privata e doccia privata in terrazza, lettini, minibar, cassetta di sicurezza, TV, area lounge, cibo e bevande illimitati nei ristoranti premium del parco, bus navetta gratuito.",
             en: "Flat price for exclusive use of the villa, up to 8 people included (up to 12, with €151 per extra person beyond 8). Private jacuzzi and private shower on the terrace, sun loungers, minibar, safe, TV, lounge area, unlimited food and drinks at the park's premium restaurants, free shuttle bus.",
-            es: "Precio fijo por el uso exclusivo de la villa, hasta 8 personas incluidas (hasta 12, con 151€ por persona extra a partir de la 8ª). Jacuzzi privada y ducha privada en la terraza, tumbonas, minibar, caja fuerte, TV, zona lounge, comida y bebida ilimitadas en los restaurantes premium del parque, autobús lanzadera gratuito."
+            es: "Precio fijo por el uso exclusivo de la villa, hasta 8 personas incluidas (hasta 12, con 151€ por persona extra a partir de la 8ª). Jacuzzi privada y ducha privada en la terraza, tumbonas, minibar, caja fuerte, TV, zona lounge, comida y bebida ilimitadas en los restaurantes premium del parque, autobús lanzadera gratuito.",
+            fr: "Prix forfaitaire pour l'usage exclusif de la villa, jusqu'à 8 personnes comprises (jusqu'à 12, avec €151 par personne en plus au-delà de 8). Jacuzzi privé et douche privée sur la terrasse, transats, minibar, coffre-fort, TV, coin salon, nourriture et boissons à volonté dans les restaurants premium du parc, navette gratuite."
           }
         }
       ]
@@ -4480,48 +4832,57 @@ const ESPLORA_CATALOG = [
     transfer: {
       it: "Disponibile su richiesta, da Tenerife Nord (Puerto de la Cruz e dintorni). Basta indicare l'hotel o l'indirizzo di ritiro.",
       en: "Available on request, from Tenerife North (Puerto de la Cruz and the surrounding area). Just give the hotel or pickup address.",
-      es: "Disponible bajo petición, desde Tenerife Norte (Puerto de la Cruz y alrededores). Basta con indicar el hotel o la dirección de recogida."
+      es: "Disponible bajo petición, desde Tenerife Norte (Puerto de la Cruz y alrededores). Basta con indicar el hotel o la dirección de recogida.",
+      fr: "Disponible sur demande, depuis Tenerife Nord (Puerto de la Cruz et alentours). Il suffit d'indiquer l'hôtel ou l'adresse de prise en charge."
     },
     transferPrice: { adult: 69, child: 53 },
     transferPriceLabel: {
       it: "Transfer da Tenerife Nord",
       en: "Transfer from Tenerife North",
-      es: "Traslado desde Tenerife Norte"
+      es: "Traslado desde Tenerife Norte",
+      fr: "Transfert depuis Tenerife Nord"
     },
     transferLabel: {
       it: "Vuoi il transfer da Tenerife Nord?",
       en: "Would you like the transfer from Tenerife North?",
-      es: "¿Quieres el traslado desde Tenerife Norte?"
+      es: "¿Quieres el traslado desde Tenerife Norte?",
+      fr: "Voulez-vous le transfert depuis Tenerife Nord ?"
     },
     transferSiam: {
       it: "Disponibile su richiesta, da Los Gigantes, Callao Salvaje o Playa Paraíso. Basta indicare l'hotel o l'indirizzo di ritiro.",
       en: "Available on request, from Los Gigantes, Callao Salvaje or Playa Paraíso. Just give the hotel or pickup address.",
-      es: "Disponible bajo petición, desde Los Gigantes, Callao Salvaje o Playa Paraíso. Basta con indicar el hotel o la dirección de recogida."
+      es: "Disponible bajo petición, desde Los Gigantes, Callao Salvaje o Playa Paraíso. Basta con indicar el hotel o la dirección de recogida.",
+      fr: "Disponible sur demande, depuis Los Gigantes, Callao Salvaje ou Playa Paraíso. Il suffit d'indiquer l'hôtel ou l'adresse de prise en charge."
     },
     transferSiamPrice: { adult: 59, child: 42 },
     transferSiamPriceLabel: {
       it: "Transfer da Los Gigantes / Callao Salvaje / Playa Paraíso",
       en: "Transfer from Los Gigantes / Callao Salvaje / Playa Paraíso",
-      es: "Traslado desde Los Gigantes / Callao Salvaje / Playa Paraíso"
+      es: "Traslado desde Los Gigantes / Callao Salvaje / Playa Paraíso",
+      fr: "Transfert depuis Los Gigantes / Callao Salvaje / Playa Paraíso"
     },
     transferSiamLabel: {
       it: "Vuoi il transfer da Los Gigantes, Callao Salvaje o Playa Paraíso?",
       en: "Would you like the transfer from Los Gigantes, Callao Salvaje or Playa Paraíso?",
-      es: "¿Quieres el traslado desde Los Gigantes, Callao Salvaje o Playa Paraíso?"
+      es: "¿Quieres el traslado desde Los Gigantes, Callao Salvaje o Playa Paraíso?",
+      fr: "Voulez-vous le transfert depuis Los Gigantes, Callao Salvaje ou Playa Paraíso ?"
     },
     notes: [
       { it: "In luglio e agosto il biglietto normale costa 48€ per adulto invece di 44€.",
         en: "In July and August the regular ticket costs €48 per adult instead of €44.",
-        es: "En julio y agosto la entrada normal cuesta 48 € por adulto en lugar de 44 €." },
+        es: "En julio y agosto la entrada normal cuesta 48 € por adulto en lugar de 44 €.",
+        fr: "En juillet et août, le billet normal coûte €48 par adulte au lieu de €44." },
       { it: "In luglio e agosto il biglietto tutto compreso costa 169€ per adulto invece di 165€.",
         en: "In July and August the all-inclusive ticket costs €169 per adult instead of €165.",
-        es: "En julio y agosto la entrada todo incluido cuesta 169 € por adulto en lugar de 165 €." }
+        es: "En julio y agosto la entrada todo incluido cuesta 169 € por adulto en lugar de 165 €.",
+        fr: "En juillet et août, le billet tout compris coûte €169 par adulte au lieu de €165." }
     ],
     family: true,
     desc: {
       it: "Parco acquatico a tema thailandese, fra i più premiati al mondo.",
       en: "Thai-themed water park, one of the most awarded in the world.",
-      es: "Parque acuático de temática tailandesa, uno de los más premiados del mundo."
+      es: "Parque acuático de temática tailandesa, uno de los más premiados del mundo.",
+      fr: "Parc aquatique sur le thème de la Thaïlande, l'un des plus primés au monde."
     },
     image: "siam-park.jpg",
     published: true
@@ -4535,13 +4896,14 @@ const ESPLORA_CATALOG = [
     // dalle 20 a mezzanotte, solo a luglio e agosto (vedi `season`). Quattro
     // ore: nel filtro sta con le mezze giornate.
     zone: "Costa Adeje",
-    duration: { it: "20:00-24:00", en: "8pm-midnight", es: "20:00-24:00" },
+    duration: { it: "20:00-24:00", en: "8pm-midnight", es: "20:00-24:00", fr: "20:00-minuit" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
     season: {
       it: "Solo luglio e agosto",
       en: "July and August only",
-      es: "Solo julio y agosto"
+      es: "Solo julio y agosto",
+      fr: "Juillet et août seulement"
     },
     priceFrom: 48,
     priceAdult: 0,
@@ -4550,7 +4912,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Il Siam Park dopo il tramonto, nella sua versione serale.",
       en: "Siam Park after dark, in its evening version.",
-      es: "El Siam Park después del atardecer, en su versión nocturna."
+      es: "El Siam Park después del atardecer, en su versión nocturna.",
+      fr: "Le Siam Park à la nuit tombée, dans sa version du soir."
     },
     image: "siam-night.jpg",
     published: true
@@ -4562,7 +4925,7 @@ const ESPLORA_CATALOG = [
     category: "parchi-spettacoli",
     zone: "Puerto de la Cruz",
     // Al posto di "Giornata intera" l'orario vero, spostato qui da `notes`.
-    duration: { it: "09:30-17:30", en: "9:30am-5:30pm", es: "09:30-17:30" },
+    duration: { it: "09:30-17:30", en: "9:30am-5:30pm", es: "09:30-17:30", fr: "9:30-17:30" },
     zoneGroups: ["teide-nord"],
     durationGroups: ["intera"],
     priceFrom: 44,
@@ -4574,27 +4937,29 @@ const ESPLORA_CATALOG = [
     // persona, il tutto compreso ha lo stesso prezzo per adulti e bambini
     // (dato cosi' dall'ufficio, non e' un errore).
     options: {
-      label: { it: "Tipo di biglietto", en: "Ticket type", es: "Tipo de entrada" },
+      label: { it: "Tipo di biglietto", en: "Ticket type", es: "Tipo de entrada", fr: "Type de billet" },
       choices: [
         {
-          label: { it: "Biglietti normali", en: "Regular tickets", es: "Entradas normales" },
+          label: { it: "Biglietti normali", en: "Regular tickets", es: "Entradas normales", fr: "Billets normaux" },
           priceAdult: 44,
           priceChild: 32,
           desc: {
             it: "Biglietti d'ingresso regolari.",
             en: "Regular admission tickets.",
-            es: "Entradas regulares."
+            es: "Entradas regulares.",
+            fr: "Billets d'entrée normaux."
           }
         },
         {
-          label: { it: "Biglietti tutto compreso", en: "All-inclusive tickets", es: "Entradas todo incluido" },
+          label: { it: "Biglietti tutto compreso", en: "All-inclusive tickets", es: "Entradas todo incluido", fr: "Billets tout compris" },
           priceAdult: 132,
           priceChild: 132,
           included: ["drinks", "lunch"],
           desc: {
             it: "Ingresso VIP con accesso all-inclusive: cappellino Loro Parque, esperienza Loro Explore, posti riservati VIP agli spettacoli e cibo e bevande illimitati nei ristoranti (escluso il Mercato del Gambia, negozi e bazar). Stesso prezzo per adulti e bambini.",
             en: "VIP admission with all-inclusive access: Loro Parque cap, Loro Explore experience, VIP reserved seats at the shows and unlimited food and drinks at the restaurants (not including the Gambia Market, shops and bazaar). Same price for adults and children.",
-            es: "Entrada VIP con acceso todo incluido: gorra de Loro Parque, experiencia Loro Explore, asientos VIP reservados en los espectáculos y comida y bebida ilimitadas en los restaurantes (no incluye el Mercado de Gambia, tiendas y bazar). Mismo precio para adultos y niños."
+            es: "Entrada VIP con acceso todo incluido: gorra de Loro Parque, experiencia Loro Explore, asientos VIP reservados en los espectáculos y comida y bebida ilimitadas en los restaurantes (no incluye el Mercado de Gambia, tiendas y bazar). Mismo precio para adultos y niños.",
+            fr: "Entrée VIP avec accès tout compris : casquette Loro Parque, expérience Loro Explore, places VIP réservées aux spectacles et nourriture et boissons à volonté dans les restaurants (sauf le Gambia Market, les boutiques et le bazar). Même prix pour adultes et enfants."
           }
         }
       ]
@@ -4602,14 +4967,16 @@ const ESPLORA_CATALOG = [
     transfer: {
       it: "Disponibile su richiesta, da Tenerife Sud. Tutti i giorni da Costa Adeje e Los Cristianos; lunedì, mercoledì, giovedì e sabato da Alcalá, Abama e Los Gigantes; martedì e venerdì da Golf del Sur. Basta indicare l'hotel o l'indirizzo di ritiro.",
       en: "Available on request, from Tenerife South. Every day from Costa Adeje and Los Cristianos; Mondays, Wednesdays, Thursdays and Saturdays from Alcalá, Abama and Los Gigantes; Tuesdays and Fridays from Golf del Sur. Just give the hotel or pickup address.",
-      es: "Disponible bajo petición, desde Tenerife Sur. Todos los días desde Costa Adeje y Los Cristianos; lunes, miércoles, jueves y sábado desde Alcalá, Abama y Los Gigantes; martes y viernes desde Golf del Sur. Basta con indicar el hotel o la dirección de recogida."
+      es: "Disponible bajo petición, desde Tenerife Sur. Todos los días desde Costa Adeje y Los Cristianos; lunes, miércoles, jueves y sábado desde Alcalá, Abama y Los Gigantes; martes y viernes desde Golf del Sur. Basta con indicar el hotel o la dirección de recogida.",
+      fr: "Disponible sur demande, depuis Tenerife Sud. Tous les jours depuis Costa Adeje et Los Cristianos ; lundi, mercredi, jeudi et samedi depuis Alcalá, Abama et Los Gigantes ; mardi et vendredi depuis Golf del Sur. Il suffit d'indiquer l'hôtel ou l'adresse de prise en charge."
     },
     transferPrice: { adult: 65, child: 49 },
     family: true,
     desc: {
       it: "Zoo e giardino tropicale, conosciuto in tutto il mondo per i suoi animali.",
       en: "Zoo and tropical garden, known worldwide for its animals.",
-      es: "Zoo y jardín tropical, conocido en todo el mundo por sus animales."
+      es: "Zoo y jardín tropical, conocido en todo el mundo por sus animales.",
+      fr: "Zoo et jardin tropical, connu dans le monde entier pour ses animaux."
     },
     image: "loro-parque.jpg",
     published: true
@@ -4623,7 +4990,7 @@ const ESPLORA_CATALOG = [
     // scheda sta in tutti e due i filtri di zona; due giorni, uno per parco.
     // Nel filtro della durata sta con le giornate intere: ogni visita lo e'.
     zone: "Costa Adeje + Puerto de la Cruz",
-    duration: { it: "2 giorni, uno per parco", en: "2 days, one per park", es: "2 días, uno por parque" },
+    duration: { it: "2 giorni, uno per parco", en: "2 days, one per park", es: "2 días, uno por parque", fr: "2 jours, un par parc" },
     zoneGroups: ["costa-adeje", "teide-nord"],
     durationGroups: ["intera"],
     priceFrom: 78,
@@ -4634,13 +5001,15 @@ const ESPLORA_CATALOG = [
     transfer: {
       it: "Disponibile su richiesta, solo per la giornata a Loro Parque",
       en: "Available on request, for the Loro Parque day only",
-      es: "Disponible bajo petición, solo para el día en Loro Parque"
+      es: "Disponible bajo petición, solo para el día en Loro Parque",
+      fr: "Disponible sur demande, seulement pour la journée au Loro Parque"
     },
     transferPrice: { adult: 99, child: 74 },
     transferPriceLabel: {
       it: "Transfer Loro Parque (da sud)",
       en: "Loro Parque transfer (from the south)",
-      es: "Traslado a Loro Parque (desde el sur)"
+      es: "Traslado a Loro Parque (desde el sur)",
+      fr: "Transfert Loro Parque (depuis le sud)"
     },
     // Senza queste due, la finestra della richiesta chiede "Vuoi il
     // transfer?" e poi "Vuoi il transfer per il Siam Park?": la prima non
@@ -4650,29 +5019,34 @@ const ESPLORA_CATALOG = [
     transferLabel: {
       it: "Vuoi il transfer da sud per Loro Parque?",
       en: "Would you like the transfer from the south, to Loro Parque?",
-      es: "¿Quieres el traslado desde el sur, a Loro Parque?"
+      es: "¿Quieres el traslado desde el sur, a Loro Parque?",
+      fr: "Voulez-vous le transfert depuis le sud, pour le Loro Parque ?"
     },
     transferSiam: {
       it: "Disponibile su richiesta, solo per la giornata al Siam Park",
       en: "Available on request, for the Siam Park day only",
-      es: "Disponible bajo petición, solo para el día en Siam Park"
+      es: "Disponible bajo petición, solo para el día en Siam Park",
+      fr: "Disponible sur demande, seulement pour la journée au Siam Park"
     },
     transferSiamPrice: { adult: 103, child: 78 },
     transferSiamPriceLabel: {
       it: "Transfer Siam Park (da nord)",
       en: "Siam Park transfer (from the north)",
-      es: "Traslado a Siam Park (desde el norte)"
+      es: "Traslado a Siam Park (desde el norte)",
+      fr: "Transfert Siam Park (depuis le nord)"
     },
     transferSiamLabel: {
       it: "Vuoi il transfer da nord per Siam Park?",
       en: "Would you like the transfer from the north, to Siam Park?",
-      es: "¿Quieres el traslado desde el norte, a Siam Park?"
+      es: "¿Quieres el traslado desde el norte, a Siam Park?",
+      fr: "Voulez-vous le transfert depuis le nord, pour le Siam Park ?"
     },
     family: true,
     desc: {
       it: "Biglietto combinato per i due parchi più conosciuti dell'isola.",
       en: "Combined ticket for the two best-known parks on the island.",
-      es: "Entrada combinada para los dos parques más conocidos de la isla."
+      es: "Entrada combinada para los dos parques más conocidos de la isla.",
+      fr: "Billet combiné pour les deux parcs les plus connus de l'île."
     },
     image: "Cat-parchi.jpg",
     published: true
@@ -4698,7 +5072,8 @@ const ESPLORA_CATALOG = [
     zone: {
       it: "Ritiro dal sud, imbarco a Santa Cruz",
       en: "Pickup in the south, boarding at Santa Cruz",
-      es: "Recogida en el sur, embarque en Santa Cruz"
+      es: "Recogida en el sur, embarque en Santa Cruz",
+      fr: "Prise en charge dans le sud, embarquement à Santa Cruz"
     },
     // "Circa 12 ore" viene dalla pagina del rivenditore, che e' l'unica a dire
     // quanto dura in tutto; l'ufficiale da' solo gli orari della nave, che
@@ -4708,7 +5083,8 @@ const ESPLORA_CATALOG = [
     duration: {
       it: "Circa 12 ore (traghetto 10:00-18:00)",
       en: "About 12 hours (ferry 10:00-18:00)",
-      es: "Unas 12 horas (ferry 10:00-18:00)"
+      es: "Unas 12 horas (ferry 10:00-18:00)",
+      fr: "Environ 12 heures (ferry 10:00-18:00)"
     },
     zoneGroups: ["altre-isole"],
     durationGroups: ["intera"],
@@ -4740,42 +5116,53 @@ const ESPLORA_CATALOG = [
     itinerary: [
       { time: "10:00", text: { it: "Nave da Santa Cruz verso Agaete",
                                en: "Ferry from Santa Cruz to Agaete",
-                               es: "Barco desde Santa Cruz hacia Agaete" } },
+                               es: "Barco desde Santa Cruz hacia Agaete",
+                               fr: "Ferry de Santa Cruz à Agaete" } },
       { time: "11:30", text: { it: "Arrivo ad Agaete, a Gran Canaria",
                                en: "Arrival at Agaete, on Gran Canaria",
-                               es: "Llegada a Agaete, en Gran Canaria" } },
+                               es: "Llegada a Agaete, en Gran Canaria",
+                               fr: "Arrivée à Agaete, à Gran Canaria" } },
       { text: { it: "Ingresso all'acquario Poema del Mar",
                 en: "Entry to the Poema del Mar aquarium",
-                es: "Entrada al acuario Poema del Mar" } },
+                es: "Entrada al acuario Poema del Mar",
+                fr: "Entrée à l'aquarium Poema del Mar" } },
       { text: { it: "Visita al quartiere antico di Vegueta",
                 en: "A walk through the old quarter of Vegueta",
-                es: "Visita al barrio antiguo de Vegueta" } },
+                es: "Visita al barrio antiguo de Vegueta",
+                fr: "Promenade dans le vieux quartier de Vegueta" } },
       { text: { it: "Visita guidata alle distillerie Arehucas, con degustazione",
                 en: "Guided visit to the Arehucas distillery, with a tasting",
-                es: "Visita guiada a las destilerías Arehucas, con degustación" } },
+                es: "Visita guiada a las destilerías Arehucas, con degustación",
+                fr: "Visite guidée de la distillerie Arehucas, avec dégustation" } },
       { time: "17:00", text: { it: "Partenza da Arucas verso Agaete",
                                en: "Departure from Arucas towards Agaete",
-                               es: "Salida desde Arucas hacia Agaete" } },
+                               es: "Salida desde Arucas hacia Agaete",
+                               fr: "Départ d'Arucas vers Agaete" } },
       { time: "18:00", text: { it: "Nave da Agaete verso Santa Cruz",
                                en: "Ferry from Agaete back to Santa Cruz",
-                               es: "Barco desde Agaete hacia Santa Cruz" } }
+                               es: "Barco desde Agaete hacia Santa Cruz",
+                               fr: "Ferry d'Agaete pour revenir à Santa Cruz" } }
     ],
     notes: [
       { it: "Serve il documento d'identità o il passaporto originale, in corso di validità: senza non si sale sulla nave.",
         en: "You need your original ID card or passport, still valid: without it you can't board the ferry.",
-        es: "Hace falta el DNI o el pasaporte original, en vigor: sin él no se puede embarcar." },
+        es: "Hace falta el DNI o el pasaporte original, en vigor: sin él no se puede embarcar.",
+        fr: "Il faut votre carte d'identité ou votre passeport originaux, en cours de validité : sans eux, on ne monte pas sur le ferry." },
       { it: "Il pranzo non è incluso. Si può mangiare al ristorante dentro il Poema del Mar, che affaccia sulla vasca grande.",
         en: "Lunch is not included. You can eat at the restaurant inside Poema del Mar, which looks onto the big tank.",
-        es: "El almuerzo no está incluido. Se puede comer en el restaurante dentro del Poema del Mar, con vistas al tanque grande." },
+        es: "El almuerzo no está incluido. Se puede comer en el restaurante dentro del Poema del Mar, con vistas al tanque grande.",
+        fr: "Le déjeuner n'est pas compris. Vous pouvez manger au restaurant à l'intérieur du Poema del Mar, qui donne sur le grand bassin." },
       { it: "Il transfer dal sud fino al porto di Santa Cruz è compreso, andata e ritorno: l'ora del ritiro in hotel si conferma con la prenotazione.",
         en: "The transfer from the south to Santa Cruz harbour is included, both ways: the hotel pickup time is confirmed with the booking.",
-        es: "El traslado desde el sur hasta el puerto de Santa Cruz está incluido, ida y vuelta: la hora de recogida en el hotel se confirma con la reserva." },
+        es: "El traslado desde el sur hasta el puerto de Santa Cruz está incluido, ida y vuelta: la hora de recogida en el hotel se confirma con la reserva.",
+        fr: "Le transfert du sud au port de Santa Cruz est compris, aller et retour : l'heure de prise en charge à l'hôtel est confirmée avec la réservation." },
       // Le due ore approssimate vengono dalla pagina del rivenditore. Stanno in
       // una nota, con "intorno a" davanti, e non in `times` o in PICKUP_TIMES:
       // li' sarebbero un orario preciso che nessuno ci ha dato.
       { it: "È una giornata lunga: si parte dall'hotel intorno alle 8:00 e si rientra intorno alle 20:30, con qualche minuto di differenza secondo l'hotel.",
         en: "It is a long day: you leave the hotel around 8:00 and get back around 20:30, give or take a few minutes depending on your hotel.",
-        es: "Es un día largo: se sale del hotel sobre las 8:00 y se vuelve sobre las 20:30, con algunos minutos de diferencia según el hotel." },
+        es: "Es un día largo: se sale del hotel sobre las 8:00 y se vuelve sobre las 20:30, con algunos minutos de diferencia según el hotel.",
+        fr: "C'est une longue journée : on quitte l'hôtel vers 8:00 et on rentre vers 20:30, à quelques minutes près selon votre hôtel." },
       // I giorni sono un blocco: la finestra non lascia mandare una richiesta
       // per un giorno in cui non si parte. Questa nota fa il mestiere che il
       // blocco non puo fare — dire che quei giorni non sono incisi nella
@@ -4783,13 +5170,15 @@ const ESPLORA_CATALOG = [
       // riquadro dei consigli una nota lunga si legge come un paragrafo.
       { it: "I giorni possono cambiare secondo la lingua della guida.",
         en: "The days can change depending on the language of the guide.",
-        es: "Los días pueden cambiar según el idioma del guía." }
+        es: "Los días pueden cambiar según el idioma del guía.",
+        fr: "Les jours peuvent changer selon la langue du guide." }
     ],
     family: true,
     desc: {
       it: "Giornata a Gran Canaria in nave: l'acquario Poema del Mar, il quartiere antico di Vegueta e le distillerie Arehucas.",
       en: "A day on Gran Canaria by ferry: the Poema del Mar aquarium, the old quarter of Vegueta and the Arehucas distillery.",
-      es: "Un día en Gran Canaria en barco: el acuario Poema del Mar, el barrio antiguo de Vegueta y las destilerías Arehucas."
+      es: "Un día en Gran Canaria en barco: el acuario Poema del Mar, el barrio antiguo de Vegueta y las destilerías Arehucas.",
+      fr: "Une journée à Gran Canaria en ferry : l'aquarium Poema del Mar, le vieux quartier de Vegueta et la distillerie Arehucas."
     },
     image: "gran-canaria.jpg",
     published: true
@@ -4799,7 +5188,7 @@ const ESPLORA_CATALOG = [
     title: "Aqualand",
     category: "parchi-spettacoli",
     zone: "Costa Adeje",
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo", fr: "Journée entière" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["intera"],
     priceFrom: 36,
@@ -4811,19 +5200,23 @@ const ESPLORA_CATALOG = [
     notes: [
       { it: "Aperto tutti i giorni, 10:00-17:00. Spettacolo dei delfini alle 15:30, incluso nel biglietto.",
         en: "Open every day, 10am-5pm. Dolphin show at 3:30pm, included in the ticket.",
-        es: "Abierto todos los días, 10:00-17:00. Espectáculo de delfines a las 15:30, incluido en la entrada." },
+        es: "Abierto todos los días, 10:00-17:00. Espectáculo de delfines a las 15:30, incluido en la entrada.",
+        fr: "Ouvert tous les jours, 10:00-17:00. Spectacle de dauphins à 15:30, compris dans le billet." },
       { it: "Navetta gratuita Aqualand: Centro Commerciale Pasarela (Los Cristianos) alle 9:30, 10:30 e 11:30; Hotel Sol Arona alle 9:35, 10:35 e 11:35; Hotel Best Tenerife alle 9:40, 10:40 e 11:40; Bar Leonardo alle 9:45, 10:45 e 11:45; Via Llanos de Troya alle 9:50, 10:50 e 11:50; H. Suite Labranda e C.C. Duke Shops (Costa Adeje) alle 10:05, 11:05 e 12:05; Hotel Sunwing Fañabé alle 10:10, 11:10 e 12:10. Ritorno da Aqualand alle 16:30 e alle 17:15.",
         en: "Free Aqualand shuttle: Pasarela shopping centre (Los Cristianos) at 9:30, 10:30 and 11:30; Hotel Sol Arona at 9:35, 10:35 and 11:35; Hotel Best Tenerife at 9:40, 10:40 and 11:40; Bar Leonardo at 9:45, 10:45 and 11:45; Via Llanos de Troya at 9:50, 10:50 and 11:50; H. Suite Labranda and Duke Shops mall (Costa Adeje) at 10:05, 11:05 and 12:05; Hotel Sunwing Fañabé at 10:10, 11:10 and 12:10. Return from Aqualand at 16:30 and 17:15.",
-        es: "Lanzadera gratuita a Aqualand: C.C. Pasarela (Los Cristianos) a las 9:30, 10:30 y 11:30; Hotel Sol Arona a las 9:35, 10:35 y 11:35; Hotel Best Tenerife a las 9:40, 10:40 y 11:40; Bar Leonardo a las 9:45, 10:45 y 11:45; Via Llanos de Troya a las 9:50, 10:50 y 11:50; H. Suite Labranda y C.C. Duke Shops (Costa Adeje) a las 10:05, 11:05 y 12:05; Hotel Sunwing Fañabé a las 10:10, 11:10 y 12:10. Regreso desde Aqualand a las 16:30 y a las 17:15." },
+        es: "Lanzadera gratuita a Aqualand: C.C. Pasarela (Los Cristianos) a las 9:30, 10:30 y 11:30; Hotel Sol Arona a las 9:35, 10:35 y 11:35; Hotel Best Tenerife a las 9:40, 10:40 y 11:40; Bar Leonardo a las 9:45, 10:45 y 11:45; Via Llanos de Troya a las 9:50, 10:50 y 11:50; H. Suite Labranda y C.C. Duke Shops (Costa Adeje) a las 10:05, 11:05 y 12:05; Hotel Sunwing Fañabé a las 10:10, 11:10 y 12:10. Regreso desde Aqualand a las 16:30 y a las 17:15.",
+        fr: "Navette gratuite Aqualand : centre commercial Pasarela (Los Cristianos) à 9:30, 10:30 et 11:30 ; Hotel Sol Arona à 9:35, 10:35 et 11:35 ; Hotel Best Tenerife à 9:40, 10:40 et 11:40 ; Bar Leonardo à 9:45, 10:45 et 11:45 ; Via Llanos de Troya à 9:50, 10:50 et 11:50 ; H. Suite Labranda et centre commercial Duke Shops (Costa Adeje) à 10:05, 11:05 et 12:05 ; Hotel Sunwing Fañabé à 10:10, 11:10 et 12:10. Retour depuis Aqualand à 16:30 et 17:15." },
       { it: "I posti in navetta si assegnano in ordine di arrivo, senza prenotazione: presentarsi al punto di ritiro con un po' di anticipo.",
         en: "Shuttle seats are given on a first-come, first-served basis, no booking: arrive at the pickup point a little early.",
-        es: "Las plazas en la lanzadera se asignan por orden de llegada, sin reserva: preséntese en el punto de recogida con algo de antelación." }
+        es: "Las plazas en la lanzadera se asignan por orden de llegada, sin reserva: preséntese en el punto de recogida con algo de antelación.",
+        fr: "Les places dans la navette sont attribuées dans l'ordre d'arrivée, sans réservation : arrivez au point de prise en charge un peu en avance." }
     ],
     family: true,
     desc: {
       it: "Parco acquatico a Costa Adeje con scivoli per tutte le età, spettacolo dei delfini incluso nel biglietto e navetta gratuita da diverse zone del sud dell'isola.",
       en: "Water park in Costa Adeje with slides for every age, a dolphin show included in the ticket and a free shuttle from several areas in the south of the island.",
-      es: "Parque acuático en Costa Adeje con toboganes para todas las edades, espectáculo de delfines incluido en la entrada y lanzadera gratuita desde varias zonas del sur de la isla."
+      es: "Parque acuático en Costa Adeje con toboganes para todas las edades, espectáculo de delfines incluido en la entrada y lanzadera gratuita desde varias zonas del sur de la isla.",
+      fr: "Parc aquatique à Costa Adeje avec des toboggans pour tous les âges, un spectacle de dauphins compris dans le billet et une navette gratuite depuis plusieurs zones du sud de l'île."
     },
     image: "aqualand.jpg",
     published: true
@@ -4833,7 +5226,7 @@ const ESPLORA_CATALOG = [
     title: "Jungle Park",
     category: "parchi-spettacoli",
     zone: "Chayofa (Arona)",
-    duration: { it: "Giornata intera", en: "Full day", es: "Día completo" },
+    duration: { it: "Giornata intera", en: "Full day", es: "Día completo", fr: "Journée entière" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["intera"],
     priceFrom: 35,
@@ -4845,19 +5238,23 @@ const ESPLORA_CATALOG = [
     notes: [
       { it: "Aperto tutti i giorni, 10:00-17:30. Spettacolo dei leoni marini alle 13:30, spettacolo dei rapaci alle 12:30: entrambi inclusi nel biglietto.",
         en: "Open every day, 10am-5:30pm. Sea lion show at 1:30pm, birds of prey show at 12:30pm: both included in the ticket.",
-        es: "Abierto todos los días, 10:00-17:30. Espectáculo de leones marinos a las 13:30, espectáculo de aves rapaces a las 12:30: ambos incluidos en la entrada." },
+        es: "Abierto todos los días, 10:00-17:30. Espectáculo de leones marinos a las 13:30, espectáculo de aves rapaces a las 12:30: ambos incluidos en la entrada.",
+        fr: "Ouvert tous les jours, 10:00-17:30. Spectacle d'otaries à 13:30, spectacle de rapaces à 12:30 : tous deux compris dans le billet." },
       { it: "Navetta gratuita Jungle Park: Aqualand Costa Adeje alle 9:30 e 10:45; H. Suite Labranda Costa Adeje alle 9:35 e 10:50; C.C. Duke Shops alle 9:35 e 10:55; Hotel Sunwing Fañabé alle 9:40 e 11:00; Hotel Allsun Hibiscos alle 9:45 e 11:05; Calle Llanos de Troya alle 9:50 e 11:35; Bar Leonardo alle 9:55 e 11:40; Hotel Best Tenerife alle 10:00 e 11:45; C.C. Pasarela \"La Pepa\" (Los Cristianos) alle 10:10 e 11:50; Hotel Sol Arona alle 10:15 e 11:55. Ritorno da Jungle Park alle 16:30 e alle 17:30.",
         en: "Free Jungle Park shuttle: Aqualand Costa Adeje at 9:30 and 10:45; H. Suite Labranda Costa Adeje at 9:35 and 10:50; Duke Shops mall at 9:35 and 10:55; Hotel Sunwing Fañabé at 9:40 and 11:00; Hotel Allsun Hibiscos at 9:45 and 11:05; Calle Llanos de Troya at 9:50 and 11:35; Bar Leonardo at 9:55 and 11:40; Hotel Best Tenerife at 10:00 and 11:45; Pasarela \"La Pepa\" shopping centre (Los Cristianos) at 10:10 and 11:50; Hotel Sol Arona at 10:15 and 11:55. Return from Jungle Park at 16:30 and 17:30.",
-        es: "Lanzadera gratuita a Jungle Park: Aqualand Costa Adeje a las 9:30 y 10:45; H. Suite Labranda Costa Adeje a las 9:35 y 10:50; C.C. Duke Shops a las 9:35 y 10:55; Hotel Sunwing Fañabé a las 9:40 y 11:00; Hotel Allsun Hibiscos a las 9:45 y 11:05; Calle Llanos de Troya a las 9:50 y 11:35; Bar Leonardo a las 9:55 y 11:40; Hotel Best Tenerife a las 10:00 y 11:45; C.C. Pasarela \"La Pepa\" (Los Cristianos) a las 10:10 y 11:50; Hotel Sol Arona a las 10:15 y 11:55. Regreso desde Jungle Park a las 16:30 y a las 17:30." },
+        es: "Lanzadera gratuita a Jungle Park: Aqualand Costa Adeje a las 9:30 y 10:45; H. Suite Labranda Costa Adeje a las 9:35 y 10:50; C.C. Duke Shops a las 9:35 y 10:55; Hotel Sunwing Fañabé a las 9:40 y 11:00; Hotel Allsun Hibiscos a las 9:45 y 11:05; Calle Llanos de Troya a las 9:50 y 11:35; Bar Leonardo a las 9:55 y 11:40; Hotel Best Tenerife a las 10:00 y 11:45; C.C. Pasarela \"La Pepa\" (Los Cristianos) a las 10:10 y 11:50; Hotel Sol Arona a las 10:15 y 11:55. Regreso desde Jungle Park a las 16:30 y a las 17:30.",
+        fr: "Navette gratuite Jungle Park : Aqualand Costa Adeje à 9:30 et 10:45 ; H. Suite Labranda Costa Adeje à 9:35 et 10:50 ; centre commercial Duke Shops à 9:35 et 10:55 ; Hotel Sunwing Fañabé à 9:40 et 11:00 ; Hotel Allsun Hibiscos à 9:45 et 11:05 ; Calle Llanos de Troya à 9:50 et 11:35 ; Bar Leonardo à 9:55 et 11:40 ; Hotel Best Tenerife à 10:00 et 11:45 ; centre commercial Pasarela « La Pepa » (Los Cristianos) à 10:10 et 11:50 ; Hotel Sol Arona à 10:15 et 11:55. Retour depuis Jungle Park à 16:30 et 17:30." },
       { it: "I posti in navetta si assegnano in ordine di arrivo, senza prenotazione: presentarsi al punto di ritiro con un po' di anticipo.",
         en: "Shuttle seats are given on a first-come, first-served basis, no booking: arrive at the pickup point a little early.",
-        es: "Las plazas en la lanzadera se asignan por orden de llegada, sin reserva: preséntese en el punto de recogida con algo de antelación." }
+        es: "Las plazas en la lanzadera se asignan por orden de llegada, sin reserva: preséntese en el punto de recogida con algo de antelación.",
+        fr: "Les places dans la navette sont attribuées dans l'ordre d'arrivée, sans réservation : arrivez au point de prise en charge un peu en avance." }
     ],
     family: true,
     desc: {
       it: "Parco naturale a Chayofa fra zoo e giardino botanico, con animali esotici e rapaci in volo libero, spettacoli inclusi nel biglietto e navetta gratuita da diverse zone del sud dell'isola.",
       en: "Nature park in Chayofa, part zoo and part botanical garden, with exotic animals and free-flying birds of prey, shows included in the ticket and a free shuttle from several areas in the south of the island.",
-      es: "Parque natural en Chayofa a medio camino entre zoo y jardín botánico, con animales exóticos y aves rapaces en vuelo libre, espectáculos incluidos en la entrada y lanzadera gratuita desde varias zonas del sur de la isla."
+      es: "Parque natural en Chayofa a medio camino entre zoo y jardín botánico, con animales exóticos y aves rapaces en vuelo libre, espectáculos incluidos en la entrada y lanzadera gratuita desde varias zonas del sur de la isla.",
+      fr: "Parc naturel à Chayofa, mi-zoo mi-jardin botanique, avec des animaux exotiques et des rapaces en vol libre, des spectacles compris dans le billet et une navette gratuite depuis plusieurs zones du sud de l'île."
     },
     image: "jungle-park.jpg",
     published: true
@@ -4870,7 +5267,8 @@ const ESPLORA_CATALOG = [
     duration: {
       it: "2 giorni, 1 per parco (non necessariamente consecutivi)",
       en: "2 days, 1 per park (not necessarily consecutive)",
-      es: "2 días, 1 por parque (no necesariamente consecutivos)"
+      es: "2 días, 1 por parque (no necesariamente consecutivos)",
+      fr: "2 jours, 1 par parc (pas forcément consécutifs)"
     },
     zoneGroups: ["costa-adeje", "los-cristianos"],
     durationGroups: ["intera"],
@@ -4883,22 +5281,27 @@ const ESPLORA_CATALOG = [
     notes: [
       { it: "Aqualand 10:00-17:00, Jungle Park 10:00-17:30.",
         en: "Aqualand 10am-5pm, Jungle Park 10am-5:30pm.",
-        es: "Aqualand 10:00-17:00, Jungle Park 10:00-17:30." },
+        es: "Aqualand 10:00-17:00, Jungle Park 10:00-17:30.",
+        fr: "Aqualand 10:00-17:00, Jungle Park 10:00-17:30." },
       { it: "Navetta per Aqualand: da Los Cristianos (C.C. Pasarela) alle 9:30, 10:30 e 11:30; da Playa de las Américas (Hotel Sol Arona) alle 9:35, 10:35 e 11:35 e (Hotel Best Tenerife / Bar Leonardo's) alle 9:40, 10:40 e 11:40; da Costa Adeje (H. Labranda Suites / The Duke Shops) alle 10:05, 11:05 e 12:05 e (Hotel Sunwing Fañabé) alle 10:10, 11:10 e 12:10. Ritorno da Aqualand alle 16:30 e alle 17:15.",
         en: "Shuttle to Aqualand: from Los Cristianos (Pasarela shopping centre) at 9:30, 10:30 and 11:30; from Playa de las Américas (Hotel Sol Arona) at 9:35, 10:35 and 11:35 and (Hotel Best Tenerife / Bar Leonardo's) at 9:40, 10:40 and 11:40; from Costa Adeje (H. Labranda Suites / The Duke Shops) at 10:05, 11:05 and 12:05 and (Hotel Sunwing Fañabé) at 10:10, 11:10 and 12:10. Return from Aqualand at 16:30 and 17:15.",
-        es: "Lanzadera a Aqualand: desde Los Cristianos (C.C. Pasarela) a las 9:30, 10:30 y 11:30; desde Playa de las Américas (Hotel Sol Arona) a las 9:35, 10:35 y 11:35 y (Hotel Best Tenerife / Bar Leonardo's) a las 9:40, 10:40 y 11:40; desde Costa Adeje (H. Labranda Suites / The Duke Shops) a las 10:05, 11:05 y 12:05 y (Hotel Sunwing Fañabé) a las 10:10, 11:10 y 12:10. Regreso desde Aqualand a las 16:30 y a las 17:15." },
+        es: "Lanzadera a Aqualand: desde Los Cristianos (C.C. Pasarela) a las 9:30, 10:30 y 11:30; desde Playa de las Américas (Hotel Sol Arona) a las 9:35, 10:35 y 11:35 y (Hotel Best Tenerife / Bar Leonardo's) a las 9:40, 10:40 y 11:40; desde Costa Adeje (H. Labranda Suites / The Duke Shops) a las 10:05, 11:05 y 12:05 y (Hotel Sunwing Fañabé) a las 10:10, 11:10 y 12:10. Regreso desde Aqualand a las 16:30 y a las 17:15.",
+        fr: "Navette pour Aqualand : depuis Los Cristianos (centre commercial Pasarela) à 9:30, 10:30 et 11:30 ; depuis Playa de las Américas (Hotel Sol Arona) à 9:35, 10:35 et 11:35 et (Hotel Best Tenerife / Bar Leonardo's) à 9:40, 10:40 et 11:40 ; depuis Costa Adeje (H. Labranda Suites / The Duke Shops) à 10:05, 11:05 et 12:05 et (Hotel Sunwing Fañabé) à 10:10, 11:10 et 12:10. Retour depuis Aqualand à 16:30 et 17:15." },
       { it: "Navetta per Jungle Park: collegamento diretto da Aqualand Costa Adeje alle 9:30 e alle 10:45, oppure dagli stessi punti di ritiro di Aqualand con orario leggermente anticipato. Ritorno da Jungle Park alle 16:30 e alle 17:30.",
         en: "Shuttle to Jungle Park: direct connection from Aqualand Costa Adeje at 9:30 and 10:45, or from the same Aqualand pickup points a little earlier. Return from Jungle Park at 16:30 and 17:30.",
-        es: "Lanzadera a Jungle Park: conexión directa desde Aqualand Costa Adeje a las 9:30 y a las 10:45, o desde los mismos puntos de recogida de Aqualand con horario ligeramente anticipado. Regreso desde Jungle Park a las 16:30 y a las 17:30." },
+        es: "Lanzadera a Jungle Park: conexión directa desde Aqualand Costa Adeje a las 9:30 y a las 10:45, o desde los mismos puntos de recogida de Aqualand con horario ligeramente anticipado. Regreso desde Jungle Park a las 16:30 y a las 17:30.",
+        fr: "Navette pour Jungle Park : liaison directe depuis Aqualand Costa Adeje à 9:30 et 10:45, ou depuis les mêmes points de prise en charge d'Aqualand un peu plus tôt. Retour depuis Jungle Park à 16:30 et 17:30." },
       { it: "I posti in navetta si assegnano in ordine di arrivo: presentarsi al punto di ritiro almeno 15 minuti prima dell'orario.",
         en: "Shuttle seats are given on a first-come, first-served basis: arrive at the pickup point at least 15 minutes before the scheduled time.",
-        es: "Las plazas en la lanzadera se asignan por orden de llegada: preséntese en el punto de recogida al menos 15 minutos antes de la hora prevista." }
+        es: "Las plazas en la lanzadera se asignan por orden de llegada: preséntese en el punto de recogida al menos 15 minutos antes de la hora prevista.",
+        fr: "Les places dans la navette sont attribuées dans l'ordre d'arrivée : arrivez au point de prise en charge au moins 15 minutes avant l'heure prévue." }
     ],
     family: true,
     desc: {
       it: "Biglietto combinato per i due parchi del sud: un giorno all'Aqualand e uno al Jungle Park, con navetta gratuita da diverse zone del sud dell'isola.",
       en: "Combined ticket for the two parks in the south: one day at Aqualand and one at Jungle Park, with a free shuttle from several areas in the south of the island.",
-      es: "Entrada combinada para los dos parques del sur: un día en Aqualand y otro en Jungle Park, con lanzadera gratuita desde varias zonas del sur de la isla."
+      es: "Entrada combinada para los dos parques del sur: un día en Aqualand y otro en Jungle Park, con lanzadera gratuita desde varias zonas del sur de la isla.",
+      fr: "Billet combiné pour les deux parcs du sud : une journée à Aqualand et une au Jungle Park, avec une navette gratuite depuis plusieurs zones du sud de l'île."
     },
     image: "combo-jungle-aqualand.jpg",
     published: true
@@ -4907,10 +5310,10 @@ const ESPLORA_CATALOG = [
     id: "monkey-park",
     title: "Monkey Park",
     category: "parchi-spettacoli",
-    zone: { it: "Vicino a Los Cristianos", en: "Near Los Cristianos", es: "Cerca de Los Cristianos" },
+    zone: { it: "Vicino a Los Cristianos", en: "Near Los Cristianos", es: "Cerca de Los Cristianos", fr: "Près de Los Cristianos" },
     // Orario di apertura al posto di "Da definire", come su Siam Park e Loro
     // Parque. Aperto tutti i giorni, quindi niente `days`.
-    duration: { it: "09:30-16:00", en: "9:30am-4pm", es: "09:30-16:00" },
+    duration: { it: "09:30-16:00", en: "9:30am-4pm", es: "09:30-16:00", fr: "9:30-16:00" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["breve"],
     priceFrom: 10,
@@ -4926,12 +5329,14 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Piccolo zoo dove si entra nei recinti per vedere da vicino e dare da mangiare agli animali: lemuri, scimmiette, iguane, tartarughe e pappagalli, e qualche specie a rischio come il coccodrillo cubano.",
       en: "A small zoo where you go inside the enclosures to get close to the animals and feed them: lemurs, squirrel monkeys, iguanas, tortoises and parrots, plus a few endangered species such as the Cuban crocodile.",
-      es: "Pequeño zoo donde se entra en los recintos para ver de cerca y dar de comer a los animales: lémures, monos ardilla, iguanas, tortugas y papagayos, y alguna especie amenazada como el cocodrilo cubano."
+      es: "Pequeño zoo donde se entra en los recintos para ver de cerca y dar de comer a los animales: lémures, monos ardilla, iguanas, tortugas y papagayos, y alguna especie amenazada como el cocodrilo cubano.",
+      fr: "Un petit zoo où l'on entre dans les enclos pour s'approcher des animaux et les nourrir : lémuriens, singes-écureuils, iguanes, tortues et perroquets, plus quelques espèces menacées comme le crocodile de Cuba."
     },
     notes: [
       { it: "A circa 5 minuti da Los Cristianos e 10 da Playa de las Américas. Aperto tutti i giorni.",
         en: "About 5 minutes from Los Cristianos and 10 from Playa de las Américas. Open every day.",
-        es: "A unos 5 minutos de Los Cristianos y 10 de Playa de las Américas. Abierto todos los días." }
+        es: "A unos 5 minutos de Los Cristianos y 10 de Playa de las Américas. Abierto todos los días.",
+        fr: "À environ 5 minutes de Los Cristianos et 10 de Playa de las Américas. Ouvert tous les jours." }
     ],
     image: "monkey-park.jpg",
     published: true
@@ -4942,7 +5347,7 @@ const ESPLORA_CATALOG = [
     category: "parchi-spettacoli",
     zone: "Playa de las Américas",
     // 19:30 (prima alzata di sipario) - 23:00 (sipario finale).
-    duration: { it: "3 ore e 30", en: "3.5 hours", es: "3 horas y media" },
+    duration: { it: "3 ore e 30", en: "3.5 hours", es: "3 horas y media", fr: "3 heures et demie" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
     priceFrom: 49,
@@ -4969,28 +5374,33 @@ const ESPLORA_CATALOG = [
     // **no**: la pagina parla di un "drinks menu", cioe' un bar dove si paga.
     included: ["lunch", "photos"],
     menus: [
-      { it: "Vegetariano", en: "Vegetarian", es: "Vegetariano" },
-      { it: "Vegano", en: "Vegan", es: "Vegano" },
-      { it: "Menu bambini (pizza)", en: "Children's menu (pizza)", es: "Menú infantil (pizza)" }
+      { it: "Vegetariano", en: "Vegetarian", es: "Vegetariano", fr: "Végétarien" },
+      { it: "Vegano", en: "Vegan", es: "Vegano", fr: "Végan" },
+      { it: "Menu bambini (pizza)", en: "Children's menu (pizza)", es: "Menú infantil (pizza)", fr: "Menu enfant (pizza)" }
     ],
     desc: {
       it: "Cena e spettacolo drag al Music Hall Tavern: commedia, musica dal vivo e una cena di tre portate servita mentre lo spettacolo va avanti.",
       en: "Dinner and drag show at the Music Hall Tavern: comedy, live music and a three-course dinner served while the show goes on.",
-      es: "Cena y espectáculo drag en el Music Hall Tavern: comedia, música en directo y una cena de tres platos servida mientras el espectáculo continúa."
+      es: "Cena y espectáculo drag en el Music Hall Tavern: comedia, música en directo y una cena de tres platos servida mientras el espectáculo continúa.",
+      fr: "Dîner et spectacle drag au Music Hall Tavern : comédie, musique live et un dîner de trois plats servi pendant le spectacle."
     },
     notes: [
       { it: "Le porte aprono alle 19:00, si comincia alle 19:30 e si finisce alle 23:00. La cena arriva alle 19:45, lo spettacolo vero comincia alle 20:45 e c'è un intervallo verso le 22:00.",
         en: "Doors open at 19:00, it starts at 19:30 and ends at 23:00. Dinner is served at 19:45, the main show starts at 20:45 and there is an interval at around 22:00.",
-        es: "Las puertas abren a las 19:00, empieza a las 19:30 y termina a las 23:00. La cena se sirve a las 19:45, el espectáculo principal empieza a las 20:45 y hay un intervalo sobre las 22:00." },
+        es: "Las puertas abren a las 19:00, empieza a las 19:30 y termina a las 23:00. La cena se sirve a las 19:45, el espectáculo principal empieza a las 20:45 y hay un intervalo sobre las 22:00.",
+        fr: "Les portes ouvrent à 19:00, cela commence à 19:30 et se termine à 23:00. Le dîner est servi à 19:45, le spectacle principal commence à 20:45 et il y a un entracte vers 22:00." },
       { it: "I bambini sotto i 4 anni non pagano, ma vanno segnalati lo stesso nella richiesta: servono a chi prepara i posti a sedere.",
         en: "Children under 4 don't pay, but still need to be mentioned in the request: whoever arranges the seating needs to know.",
-        es: "Los menores de 4 años no pagan, pero hay que indicarlos igualmente en la solicitud: quien prepara los asientos necesita saberlo." },
+        es: "Los menores de 4 años no pagan, pero hay que indicarlos igualmente en la solicitud: quien prepara los asientos necesita saberlo.",
+        fr: "Les enfants de moins de 4 ans ne paient pas, mais il faut quand même les indiquer dans la demande : ceux qui organisent le placement doivent le savoir." },
       { it: "La cena si può avere vegetariana o vegana, e per i bambini c'è un menu con la pizza: si sceglie nella richiesta. Qualsiasi allergia o intolleranza va segnalata lì, così la cucina la sa in anticipo.",
         en: "Dinner can be vegetarian or vegan, and there is a children's menu with pizza: you choose in the request. Any allergy or intolerance should be flagged there, so the kitchen knows in advance.",
-        es: "La cena puede ser vegetariana o vegana, y para los niños hay un menú con pizza: se elige en la solicitud. Cualquier alergia o intolerancia hay que indicarla ahí, para que la cocina lo sepa con antelación." },
+        es: "La cena puede ser vegetariana o vegana, y para los niños hay un menú con pizza: se elige en la solicitud. Cualquier alergia o intolerancia hay que indicarla ahí, para que la cocina lo sepa con antelación.",
+        fr: "Le dîner peut être végétarien ou végan, et il y a un menu enfant avec pizza : vous choisissez dans la demande. Toute allergie ou intolérance doit être signalée là, pour que la cuisine la connaisse à l'avance." },
       { it: "Si tiene al Vivo Show Bar, in Avenida Rafael Puig Lluvina 7, a due passi dal centro di Playa de las Américas. L'operatore non offre nessun servizio di trasporto: ci si arriva a piedi o in taxi.",
         en: "Held at the Vivo Show Bar, Avenida Rafael Puig Lluvina 7, a short walk from the centre of Playa de las Américas. The operator offers no transport service: you get there on foot or by taxi.",
-        es: "Se celebra en el Vivo Show Bar, Avenida Rafael Puig Lluvina 7, a dos pasos del centro de Playa de las Américas. El operador no ofrece ningún servicio de transporte: se llega a pie o en taxi." }
+        es: "Se celebra en el Vivo Show Bar, Avenida Rafael Puig Lluvina 7, a dos pasos del centro de Playa de las Américas. El operador no ofrece ningún servicio de transporte: se llega a pie o en taxi.",
+        fr: "Ça se passe au Vivo Show Bar, Avenida Rafael Puig Lluvina 7, à quelques pas du centre de Playa de las Américas. L'opérateur ne propose pas de transport : on y va à pied ou en taxi." }
     ],
     image: "mht-drag-show.jpg",
     published: true
@@ -5000,7 +5410,7 @@ const ESPLORA_CATALOG = [
     title: "Castillo San Miguel – Medieval Night",
     category: "parchi-spettacoli",
     zone: "San Miguel de Abona",
-    duration: { it: "2 ore e 30", en: "2.5 hours", es: "2 horas y media" },
+    duration: { it: "2 ore e 30", en: "2.5 hours", es: "2 horas y media", fr: "2 heures et demie" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["mezza"],
     priceFrom: 49.50,
@@ -5013,34 +5423,36 @@ const ESPLORA_CATALOG = [
     // Il menu bambini qui resta senza piatto: su MHT e' la pizza, al castello
     // no — chiesto e confermato dal proprietario, non e' un dato mancante.
     menus: [
-      { it: "Vegetariano", en: "Vegetarian", es: "Vegetariano" },
-      { it: "Vegano", en: "Vegan", es: "Vegano" },
-      { it: "Menu bambini", en: "Children's menu", es: "Menú infantil" }
+      { it: "Vegetariano", en: "Vegetarian", es: "Vegetariano", fr: "Végétarien" },
+      { it: "Vegano", en: "Vegan", es: "Vegano", fr: "Végan" },
+      { it: "Menu bambini", en: "Children's menu", es: "Menú infantil", fr: "Menu enfant" }
     ],
     // I due tipi di biglietto del modulo di prenotazione del fornitore. Il
     // normale ripete il prezzo della scheda: cosi' il cliente che sceglie
     // "VIP" vede cambiare il totale, invece di dover indovinare.
     options: {
-      label: { it: "Tipo di biglietto", en: "Ticket type", es: "Tipo de entrada" },
+      label: { it: "Tipo di biglietto", en: "Ticket type", es: "Tipo de entrada", fr: "Type de billet" },
       choices: [
         {
-          label: { it: "Ingresso normale", en: "Standard entry", es: "Entrada normal" },
+          label: { it: "Ingresso normale", en: "Standard entry", es: "Entrada normal", fr: "Entrée standard" },
           priceAdult: 49.50,
           priceChild: 29,
           desc: {
             it: "Spettacolo, cena di tre portate e bevande incluse.",
             en: "Show, three-course dinner and drinks included.",
-            es: "Espectáculo, cena de tres platos y bebidas incluidas."
+            es: "Espectáculo, cena de tres platos y bebidas incluidas.",
+            fr: "Spectacle, dîner de trois plats et boissons compris."
           }
         },
         {
-          label: { it: "Ingresso VIP", en: "VIP entry", es: "Entrada VIP" },
+          label: { it: "Ingresso VIP", en: "VIP entry", es: "Entrada VIP", fr: "Entrée VIP" },
           priceAdult: 59.50,
           priceChild: 35,
           desc: {
             it: "Tutto quello dell'ingresso normale, più ingresso prioritario, un bicchiere di cava di benvenuto e posti nelle file migliori.",
             en: "Everything in the standard entry, plus priority entry, a glass of welcome cava and seats in the best rows.",
-            es: "Todo lo de la entrada normal, más entrada prioritaria, una copa de cava de bienvenida y asientos en las mejores filas."
+            es: "Todo lo de la entrada normal, más entrada prioritaria, una copa de cava de bienvenida y asientos en las mejores filas.",
+            fr: "Tout ce qu'il y a dans l'entrée standard, plus l'entrée prioritaire, une coupe de cava de bienvenue et des places dans les meilleurs rangs."
           }
         }
       ]
@@ -5048,27 +5460,33 @@ const ESPLORA_CATALOG = [
     transfer: {
       it: "Ritiro dal tuo hotel nel sud di Tenerife, a pagamento: basta indicare l'hotel nella richiesta.",
       en: "Pickup from your hotel in the south of Tenerife, at extra cost: just give the hotel in the request.",
-      es: "Recogida en tu hotel en el sur de Tenerife, con suplemento: basta con indicar el hotel en la solicitud."
+      es: "Recogida en tu hotel en el sur de Tenerife, con suplemento: basta con indicar el hotel en la solicitud.",
+      fr: "Prise en charge à votre hôtel dans le sud de Tenerife, en supplément : il suffit d'indiquer l'hôtel dans la demande."
     },
     transferPrice: { adult: 64.50, child: 39 },
     desc: {
       it: "Serata medievale al castello: cavalieri, cavalli e torneo, con cena servita durante lo spettacolo.",
       en: "A medieval night at the castle: knights, horses and a tournament, with dinner served during the show.",
-      es: "Noche medieval en el castillo: caballeros, caballos y torneo, con cena servida durante el espectáculo."
+      es: "Noche medieval en el castillo: caballeros, caballos y torneo, con cena servida durante el espectáculo.",
+      fr: "Une nuit médiévale au château : chevaliers, chevaux et tournoi, avec le dîner servi pendant le spectacle."
     },
     notes: [
       { it: "A circa 20 minuti da Costa Adeje e da Playa de las Américas. Apertura porte alle 18:30. Parcheggio gratuito in loco.",
         en: "About 20 minutes from Costa Adeje and Playa de las Américas. Doors open at 18:30. Free on-site parking.",
-        es: "A unos 20 minutos de Costa Adeje y de Playa de las Américas. Apertura de puertas a las 18:30. Aparcamiento gratuito en el recinto." },
+        es: "A unos 20 minutos de Costa Adeje y de Playa de las Américas. Apertura de puertas a las 18:30. Aparcamiento gratuito en el recinto.",
+        fr: "À environ 20 minutes de Costa Adeje et de Playa de las Américas. Les portes ouvrent à 18:30. Parking gratuit sur place." },
       { it: "La cena è di tre portate: zuppa di verdure, filetto di pollo in salsa di funghi e torta gelato. Vino, succo e acqua compresi.",
         en: "Dinner is three courses: vegetable soup, chicken fillet in mushroom sauce and ice cream cake. Wine, juice and water included.",
-        es: "La cena es de tres platos: sopa de verduras, filete de pollo en salsa de setas y tarta helada. Vino, zumo y agua incluidos." },
+        es: "La cena es de tres platos: sopa de verduras, filete de pollo en salsa de setas y tarta helada. Vino, zumo y agua incluidos.",
+        fr: "Le dîner a trois plats : soupe de légumes, filet de poulet sauce aux champignons et gâteau glacé. Vin, jus et eau compris." },
       { it: "La cena si può avere vegetariana o vegana, e per i bambini c'è un menu apposta: si sceglie nella richiesta. Qualsiasi allergia o intolleranza va segnalata lì, così la cucina la sa in anticipo.",
         en: "Dinner can be vegetarian or vegan, and there is a dedicated children's menu: you choose in the request. Any allergy or intolerance should be flagged there, so the kitchen knows in advance.",
-        es: "La cena puede ser vegetariana o vegana, y para los niños hay un menú aparte: se elige en la solicitud. Cualquier alergia o intolerancia hay que indicarla ahí, para que la cocina lo sepa con antelación." },
+        es: "La cena puede ser vegetariana o vegana, y para los niños hay un menú aparte: se elige en la solicitud. Cualquier alergia o intolerancia hay que indicarla ahí, para que la cocina lo sepa con antelación.",
+        fr: "Le dîner peut être végétarien ou végan, et il y a un menu enfant dédié : vous choisissez dans la demande. Toute allergie ou intolérance doit être signalée là, pour que la cuisine la connaisse à l'avance." },
       { it: "Lo spettacolo è in inglese: otto cavalieri a cavallo, giostre e duelli di spada.",
         en: "The show is in English: eight knights on horseback, jousting and sword duels.",
-        es: "El espectáculo es en inglés: ocho caballeros a caballo, justas y duelos de espada." }
+        es: "El espectáculo es en inglés: ocho caballeros a caballo, justas y duelos de espada.",
+        fr: "Le spectacle est en anglais : huit chevaliers à cheval, joutes et duels à l'épée." }
     ],
     image: "castillo-san-miguel.jpg",
     published: true
@@ -5081,7 +5499,7 @@ const ESPLORA_CATALOG = [
     // Lo spettacolo vero dura 90 minuti (21:00-22:30, intervallo di 15 minuti
     // compreso): il "≈ 2h" dell'intestazione del fornitore conta dall'apertura
     // delle porte, non dall'inizio.
-    duration: { it: "1 ora e 30", en: "1.5 hours", es: "1 hora y media" },
+    duration: { it: "1 ora e 30", en: "1.5 hours", es: "1 hora y media", fr: "1 heure et demie" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
     priceFrom: 51,
@@ -5103,27 +5521,29 @@ const ESPLORA_CATALOG = [
     // davvero e' il modulo. Cosi' torna anche il "da 51 €" dell'intestazione,
     // che sembrava incoerente coi prezzi vecchi.
     options: {
-      label: { it: "Categoria posto", en: "Seating category", es: "Categoría de asiento" },
+      label: { it: "Categoria posto", en: "Seating category", es: "Categoría de asiento", fr: "Catégorie de places" },
       choices: [
         {
-          label: { it: "Gold", en: "Gold", es: "Gold" },
+          label: { it: "Gold", en: "Gold", es: "Gold", fr: "Gold" },
           priceAdult: 51,
           priceChild: 25.50,
           desc: {
             it: "140 posti, buona vista sul palco.",
             en: "140 seats, good view of the stage.",
-            es: "140 asientos, buena vista del escenario."
+            es: "140 asientos, buena vista del escenario.",
+            fr: "140 places, bonne vue sur la scène."
           }
         },
         {
-          label: { it: "Platinum", en: "Platinum", es: "Platinum" },
+          label: { it: "Platinum", en: "Platinum", es: "Platinum", fr: "Platinum" },
           priceAdult: 61,
           priceChild: 30.50,
           included: ["drinks", "snack"],
           desc: {
             it: "80 posti vicino al palco; include un bicchiere di vino e snack leggeri.",
             en: "80 seats near the stage; includes a glass of wine and light snacks.",
-            es: "80 asientos cerca del escenario; incluye una copa de vino y snacks ligeros."
+            es: "80 asientos cerca del escenario; incluye una copa de vino y snacks ligeros.",
+            fr: "80 places près de la scène ; comprend un verre de vin et quelques amuse-bouches."
           }
         }
       ]
@@ -5131,21 +5551,26 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Spettacolo di flamenco dal vivo, con cante, chitarra e ballo. Sotto i 3 anni non si entra.",
       en: "A live flamenco show, with singing, guitar and dance. Under 3s are not admitted.",
-      es: "Espectáculo de flamenco en directo, con cante, guitarra y baile. Menores de 3 años no entran."
+      es: "Espectáculo de flamenco en directo, con cante, guitarra y baile. Menores de 3 años no entran.",
+      fr: "Un spectacle de flamenco en direct, avec chant, guitare et danse. Les moins de 3 ans ne sont pas admis."
     },
     notes: [
       { it: "Apertura porte alle 20:15, lo spettacolo comincia alle 21:00 e finisce alle 22:30, con un intervallo di 15 minuti.",
         en: "Doors open at 20:15, the show starts at 21:00 and ends at 22:30, with a 15-minute interval.",
-        es: "Apertura de puertas a las 20:15, el espectáculo empieza a las 21:00 y termina a las 22:30, con un intervalo de 15 minutos." },
+        es: "Apertura de puertas a las 20:15, el espectáculo empieza a las 21:00 y termina a las 22:30, con un intervalo de 15 minutos.",
+        fr: "Les portes ouvrent à 20:15, le spectacle commence à 21:00 et se termine à 22:30, avec un entracte de 15 minutes." },
       { it: "Si tiene nella sala Las Olas dell'hotel GF Victoria: si entra dalla porta sul lato sinistro dell'ingresso principale dell'hotel.",
         en: "Held in the Las Olas showroom of the GF Victoria hotel: use the door on the left-hand side of the hotel's main entrance.",
-        es: "Se celebra en la sala Las Olas del hotel GF Victoria: se entra por la puerta del lado izquierdo de la entrada principal del hotel." },
+        es: "Se celebra en la sala Las Olas del hotel GF Victoria: se entra por la puerta del lado izquierdo de la entrada principal del hotel.",
+        fr: "Ça se passe dans la salle Las Olas de l'hôtel GF Victoria : prenez la porte à gauche de l'entrée principale de l'hôtel." },
       { it: "Dress code smart casual (jeans ok): niente abbigliamento sportivo o pantaloncini.",
         en: "Smart casual dress code (jeans OK): no sportswear or shorts.",
-        es: "Código de vestimenta smart casual (vaqueros permitidos): nada de ropa deportiva ni pantalones cortos." },
+        es: "Código de vestimenta smart casual (vaqueros permitidos): nada de ropa deportiva ni pantalones cortos.",
+        fr: "Tenue smart casual (jean accepté) : pas de tenue de sport ni de short." },
       { it: "Parcheggio al CC Plaza del Duque, a pochi passi dall'ingresso.",
         en: "Parking at CC Plaza del Duque, a short walk from the entrance.",
-        es: "Aparcamiento en el CC Plaza del Duque, a pocos pasos de la entrada." }
+        es: "Aparcamiento en el CC Plaza del Duque, a pocos pasos de la entrada.",
+        fr: "Parking au CC Plaza del Duque, à quelques pas de l'entrée." }
     ],
     image: "flamenco-show.jpg",
     published: true
@@ -5155,7 +5580,7 @@ const ESPLORA_CATALOG = [
     title: "Scandal Dinner Show",
     category: "parchi-spettacoli",
     zone: "Costa Adeje",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
     priceFrom: 94,
@@ -5177,24 +5602,26 @@ const ESPLORA_CATALOG = [
     // domanda frequente, ma nel modulo lo Standard non si puo' comprare: ci
     // sono solo Oro e Platinum. Vale il modulo, come per il flamenco.
     options: {
-      label: { it: "Tipo di biglietto", en: "Ticket type", es: "Tipo de entrada" },
+      label: { it: "Tipo di biglietto", en: "Ticket type", es: "Tipo de entrada", fr: "Type de billet" },
       choices: [
         {
-          label: { it: "Ingresso Oro", en: "Gold entry", es: "Entrada Oro" },
+          label: { it: "Ingresso Oro", en: "Gold entry", es: "Entrada Oro", fr: "Entrée Gold" },
           priceAdult: 94,
           desc: {
             it: "Posti vicini al palco, a tavoli condivisi con altri ospiti.",
             en: "Seats close to the stage, at tables shared with other guests.",
-            es: "Asientos cerca del escenario, en mesas compartidas con otros huéspedes."
+            es: "Asientos cerca del escenario, en mesas compartidas con otros huéspedes.",
+            fr: "Places près de la scène, à des tables partagées avec d'autres clients."
           }
         },
         {
-          label: { it: "Ingresso Platinum", en: "Platinum entry", es: "Entrada Platinum" },
+          label: { it: "Ingresso Platinum", en: "Platinum entry", es: "Entrada Platinum", fr: "Entrée Platinum" },
           priceAdult: 114,
           desc: {
             it: "I posti migliori, in prima fila, con tavolo privato da 2 a 8 persone solo per il tuo gruppo. Stesso menu e stesse bevande.",
             en: "The best seats, front row, with a private table for 2 to 8 people just for your group. Same menu and same drinks.",
-            es: "Los mejores asientos, en primera fila, con mesa privada de 2 a 8 personas solo para tu grupo. Mismo menú y mismas bebidas."
+            es: "Los mejores asientos, en primera fila, con mesa privada de 2 a 8 personas solo para tu grupo. Mismo menú y mismas bebidas.",
+            fr: "Les meilleures places, au premier rang, avec une table privée de 2 à 8 personnes rien que pour votre groupe. Même menu et mêmes boissons."
           }
         }
       ]
@@ -5202,32 +5629,40 @@ const ESPLORA_CATALOG = [
     transfer: {
       it: "Trasferimento opzionale da Los Gigantes, Playa Paraíso, Puerto de la Cruz e Caletillas, da richiedere in fase di prenotazione; prezzo su richiesta.",
       en: "Optional transfer from Los Gigantes, Playa Paraíso, Puerto de la Cruz and Caletillas, to request when booking; price on request.",
-      es: "Traslado opcional desde Los Gigantes, Playa Paraíso, Puerto de la Cruz y Caletillas, a solicitar al reservar; precio a consultar."
+      es: "Traslado opcional desde Los Gigantes, Playa Paraíso, Puerto de la Cruz y Caletillas, a solicitar al reservar; precio a consultar.",
+      fr: "Transfert facultatif depuis Los Gigantes, Playa Paraíso, Puerto de la Cruz et Caletillas, à demander en réservant ; prix sur demande."
     },
     desc: {
       it: "Cena e cabaret in una serata pensata per adulti: vietata ai minori di 16 anni.",
       en: "Dinner and cabaret in an evening made for adults: no under-16s.",
-      es: "Cena y cabaret en una velada pensada para adultos: prohibida a menores de 16 años."
+      es: "Cena y cabaret en una velada pensada para adultos: prohibida a menores de 16 años.",
+      fr: "Dîner et cabaret dans une soirée pensée pour les adultes : pas de moins de 16 ans."
     },
     notes: [
       { it: "Le porte aprono alle 20:00 col drink di benvenuto e chiudono alle 20:30, quando comincia lo spettacolo: chi arriva dopo perde la prima portata. Si finisce verso le 23:30.",
         en: "Doors open at 20:00 with a welcome drink and close at 20:30, when the show starts: anyone arriving later misses the first course. It ends around 23:30.",
-        es: "Las puertas abren a las 20:00 con la copa de bienvenida y cierran a las 20:30, cuando empieza el espectáculo: quien llegue después se pierde el primer plato. Termina sobre las 23:30." },
+        es: "Las puertas abren a las 20:00 con la copa de bienvenida y cierran a las 20:30, cuando empieza el espectáculo: quien llegue después se pierde el primer plato. Termina sobre las 23:30.",
+        fr: "Les portes ouvrent à 20:00 avec un verre de bienvenue et ferment à 20:30, quand le spectacle commence : qui arrive plus tard rate le premier plat. Cela se termine vers 23:30." },
       { it: "Le portate arrivano fra un numero e l'altro: si cena e si guarda lo spettacolo insieme, non uno dopo l'altro. Spettacolo in inglese e spagnolo.",
         en: "The courses come between the acts: you have dinner and watch the show at the same time, not one after the other. The show is in English and Spanish.",
-        es: "Los platos llegan entre número y número: se cena y se ve el espectáculo a la vez, no uno después del otro. El espectáculo es en inglés y español." },
+        es: "Los platos llegan entre número y número: se cena y se ve el espectáculo a la vez, no uno después del otro. El espectáculo es en inglés y español.",
+        fr: "Les plats arrivent entre les numéros : on dîne et on regarde le spectacle en même temps, pas l'un après l'autre. Le spectacle est en anglais et en espagnol." },
       { it: "Menu degustazione di cinque portate, cucina fusion asiatico-mediterranea; cambia di tanto in tanto. Compresi vino della casa, birra, acqua e bibite: superalcolici, cava e champagne si pagano a parte.",
         en: "Five-course tasting menu, Asian-Mediterranean fusion; it changes from time to time. House wine, beer, water and soft drinks are included: spirits, cava and champagne are paid separately.",
-        es: "Menú degustación de cinco platos, cocina fusión asiático-mediterránea; cambia de vez en cuando. Incluye vino de la casa, cerveza, agua y refrescos: licores, cava y champán se pagan aparte." },
+        es: "Menú degustación de cinco platos, cocina fusión asiático-mediterránea; cambia de vez en cuando. Incluye vino de la casa, cerveza, agua y refrescos: licores, cava y champán se pagan aparte.",
+        fr: "Menu dégustation de cinq plats, fusion asiatique-méditerranéenne ; il change de temps en temps. Vin de la maison, bière, eau et sodas sont compris : alcools forts, cava et champagne se paient à part." },
       { it: "Dress code smart/elegant casual: pantaloni lunghi per uomo, vietati costume da bagno, sandali, infradito e abbigliamento sportivo, controllato all'ingresso.",
         en: "Smart/elegant casual dress code: long trousers for men, no swimwear, sandals, flip-flops or sportswear, checked at the door.",
-        es: "Código de vestimenta smart/elegante: pantalón largo para hombres, prohibido bañador, sandalias, chanclas y ropa deportiva, se comprueba en la entrada." },
+        es: "Código de vestimenta smart/elegante: pantalón largo para hombres, prohibido bañador, sandalias, chanclas y ropa deportiva, se comprueba en la entrada.",
+        fr: "Tenue smart/élégante décontractée : pantalon long pour les hommes, pas de maillot de bain, sandales, tongs ni tenue de sport, contrôle à l'entrée." },
       { it: "Menu vegetariano, vegano e senza glutine su richiesta; per allergie avvisare almeno 24 ore prima.",
         en: "Vegetarian, vegan and gluten-free menus on request; notify allergies at least 24 hours in advance.",
-        es: "Menú vegetariano, vegano y sin gluten bajo petición; para alergias avisar con al menos 24 horas de antelación." },
+        es: "Menú vegetariano, vegano y sin gluten bajo petición; para alergias avisar con al menos 24 horas de antelación.",
+        fr: "Menus végétariens, végans et sans gluten sur demande ; signalez les allergies au moins 24 heures à l'avance." },
       { it: "Si tiene nella sala Las Olas dell'hotel GF Victoria, a Costa Adeje: l'ingresso allo spettacolo è segnalato dalla hall. Parcheggio pubblico gratuito al CC Plaza del Duque, a circa 5 minuti a piedi; parcheggio sotterraneo dell'hotel a pagamento.",
         en: "Held in the Las Olas showroom of the GF Victoria hotel, in Costa Adeje: the way in to the show is signposted from the lobby. Free public parking at CC Plaza del Duque, about a 5-minute walk; paid underground parking at the hotel.",
-        es: "Se celebra en la sala Las Olas del hotel GF Victoria, en Costa Adeje: la entrada al espectáculo está señalizada desde el hall. Aparcamiento público gratuito en el CC Plaza del Duque, a unos 5 minutos a pie; aparcamiento subterráneo del hotel de pago." }
+        es: "Se celebra en la sala Las Olas del hotel GF Victoria, en Costa Adeje: la entrada al espectáculo está señalizada desde el hall. Aparcamiento público gratuito en el CC Plaza del Duque, a unos 5 minutos a pie; aparcamiento subterráneo del hotel de pago.",
+        fr: "Ça se passe dans la salle Las Olas de l'hôtel GF Victoria, à Costa Adeje : l'accès au spectacle est indiqué depuis le hall. Parking public gratuit au CC Plaza del Duque, à environ 5 minutes à pied ; parking souterrain payant à l'hôtel." }
     ],
     image: "scandal-dinner-show.jpg",
     published: true
@@ -5237,7 +5672,7 @@ const ESPLORA_CATALOG = [
     title: "History – The Evolution of Music",
     category: "parchi-spettacoli",
     zone: "Playa de las Américas",
-    duration: { it: "2 ore e 15", en: "2 hours 15 minutes", es: "2 horas y 15 minutos" },
+    duration: { it: "2 ore e 15", en: "2 hours 15 minutes", es: "2 horas y 15 minutos", fr: "2 heures 15 minutes" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
     priceFrom: 49,
@@ -5256,18 +5691,22 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Spettacolo musicale dal vivo con più di trenta artisti, fra musica, danza, teatro e acrobazie: dalla musica classica a Elvis, Beatles, Queen, ABBA e Michael Jackson.",
       en: "A live music show with more than thirty performers, mixing music, dance, theatre and acrobatics: from classical music to Elvis, the Beatles, Queen, ABBA and Michael Jackson.",
-      es: "Espectáculo musical en directo con más de treinta artistas, entre música, danza, teatro y acrobacias: desde la música clásica hasta Elvis, los Beatles, Queen, ABBA y Michael Jackson."
+      es: "Espectáculo musical en directo con más de treinta artistas, entre música, danza, teatro y acrobacias: desde la música clásica hasta Elvis, los Beatles, Queen, ABBA y Michael Jackson.",
+      fr: "Un spectacle de musique en direct avec plus de trente artistes, qui mêle musique, danse, théâtre et acrobaties : de la musique classique à Elvis, aux Beatles, à Queen, à ABBA et à Michael Jackson."
     },
     notes: [
       { it: "Si tiene all'Auditorio Pirámide de Arona. Apertura porte alle 20:00, posti non assegnati (ordine di arrivo). Parcheggio sotterraneo al CC Oasis, di fronte alla sede.",
         en: "Held at the Auditorio Pirámide de Arona. Doors open at 20:00, unassigned seating (first come, first served). Underground parking at CC Oasis, opposite the venue.",
-        es: "Se celebra en el Auditorio Pirámide de Arona. Apertura de puertas a las 20:00, asientos no numerados (por orden de llegada). Aparcamiento subterráneo en el CC Oasis, enfrente del recinto." },
+        es: "Se celebra en el Auditorio Pirámide de Arona. Apertura de puertas a las 20:00, asientos no numerados (por orden de llegada). Aparcamiento subterráneo en el CC Oasis, enfrente del recinto.",
+        fr: "Ça se passe à l'Auditorio Pirámide de Arona. Les portes ouvrent à 20:00, places non numérotées (premiers arrivés, premiers servis). Parking souterrain au CC Oasis, en face de la salle." },
       { it: "Due ore di spettacolo più un intervallo di 15 minuti. Presentato in inglese.",
         en: "Two hours of show plus a 15-minute interval. Presented in English.",
-        es: "Dos horas de espectáculo más un intervalo de 15 minutos. Presentado en inglés." },
+        es: "Dos horas de espectáculo más un intervalo de 15 minutos. Presentado en inglés.",
+        fr: "Deux heures de spectacle plus un entracte de 15 minutes. Présenté en anglais." },
       { it: "Dress code smart casual (jeans ok): niente abbigliamento sportivo o pantaloncini.",
         en: "Smart casual dress code (jeans OK): no sportswear or shorts.",
-        es: "Código de vestimenta smart casual (vaqueros permitidos): nada de ropa deportiva ni pantalones cortos." }
+        es: "Código de vestimenta smart casual (vaqueros permitidos): nada de ropa deportiva ni pantalones cortos.",
+        fr: "Tenue smart casual (jean accepté) : pas de tenue de sport ni de short." }
     ],
     image: "history-music-show.jpg",
     published: true
@@ -5285,8 +5724,8 @@ const ESPLORA_CATALOG = [
     category: "tour-isola",
     // La zona e' la destinazione, non il punto di ritiro: il ritiro cambia con
     // la variante (sud dell'isola o Puerto de la Cruz) e sta scritto li'.
-    zone: { it: "Isola di La Gomera", en: "Island of La Gomera", es: "Isla de La Gomera" },
-    duration: { it: "Circa 10 ore", en: "About 10 hours", es: "Unas 10 horas" },
+    zone: { it: "Isola di La Gomera", en: "Island of La Gomera", es: "Isla de La Gomera", fr: "Île de La Gomera" },
+    duration: { it: "Circa 10 ore", en: "About 10 hours", es: "Unas 10 horas", fr: "Environ 10 heures" },
     zoneGroups: ["altre-isole"],
     durationGroups: ["intera"],
     // I giorni della scheda sono l'unione delle due partenze: la domenica non
@@ -5321,24 +5760,26 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Una giornata sull'isola accanto: traghetto Fred Olsen, il Roque de Agando, la foresta di Garajonay e il pranzo gomero.",
       en: "A day on the island next door: the Fred Olsen ferry, Roque de Agando, the Garajonay forest and a Gomeran lunch.",
-      es: "Un día en la isla de al lado: ferry Fred Olsen, el Roque de Agando, el bosque de Garajonay y el almuerzo gomero."
+      es: "Un día en la isla de al lado: ferry Fred Olsen, el Roque de Agando, el bosque de Garajonay y el almuerzo gomero.",
+      fr: "Une journée sur l'île voisine : le ferry Fred Olsen, le Roque de Agando, la forêt de Garajonay et un déjeuner gomérien."
     },
     options: {
-      label: { it: "Da dove ti veniamo a prendere", en: "Where we pick you up", es: "Dónde te recogemos" },
+      label: { it: "Da dove ti veniamo a prendere", en: "Where we pick you up", es: "Dónde te recogemos", fr: "Où nous passons vous prendre" },
       choices: [
         {
-          label: { it: "Tenerife sud", en: "South Tenerife", es: "Tenerife sur" },
+          label: { it: "Tenerife sud", en: "South Tenerife", es: "Tenerife sur", fr: "Sud de Tenerife" },
           priceAdult: 110,
           priceChild: 75,
           days: ["lun", "mar", "mer", "ven", "sab"],
           desc: {
             it: "Ritiro negli hotel del sud dell'isola e imbarco a Los Cristianos. Si parte lunedì, martedì, mercoledì, venerdì e sabato.",
             en: "Pick-up at hotels in the south of the island and boarding at Los Cristianos. It runs Monday, Tuesday, Wednesday, Friday and Saturday.",
-            es: "Recogida en los hoteles del sur de la isla y embarque en Los Cristianos. Sale lunes, martes, miércoles, viernes y sábado."
+            es: "Recogida en los hoteles del sur de la isla y embarque en Los Cristianos. Sale lunes, martes, miércoles, viernes y sábado.",
+            fr: "Prise en charge aux hôtels du sud de l'île et embarquement à Los Cristianos. Elle a lieu lundi, mardi, mercredi, vendredi et samedi."
           }
         },
         {
-          label: { it: "Puerto de la Cruz", en: "Puerto de la Cruz", es: "Puerto de la Cruz" },
+          label: { it: "Puerto de la Cruz", en: "Puerto de la Cruz", es: "Puerto de la Cruz", fr: "Puerto de la Cruz" },
           // Solo `price`, senza `priceAdult`: 115 € e' il prezzo adulti che il
           // fornitore scrive per il nord, ma per bambini e neonati da li' non
           // ci ha dato niente. Con `priceAdult` il totale si sarebbe fatto
@@ -5350,7 +5791,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Ritiro dal nord, a Puerto de la Cruz: €115 a adulto, martedì, giovedì e sabato. Il prezzo per bambini e neonati da qui te lo confermiamo in ufficio.",
             en: "Pick-up from the north, in Puerto de la Cruz: €115 per adult, on Tuesday, Thursday and Saturday. We confirm the price for children and babies from here with the office.",
-            es: "Recogida desde el norte, en Puerto de la Cruz: 115 € por adulto, martes, jueves y sábado. El precio para niños y bebés desde aquí te lo confirmamos en la oficina."
+            es: "Recogida desde el norte, en Puerto de la Cruz: 115 € por adulto, martes, jueves y sábado. El precio para niños y bebés desde aquí te lo confirmamos en la oficina.",
+            fr: "Prise en charge dans le nord, à Puerto de la Cruz : €115 par adulte, mardi, jeudi et samedi. Le prix pour les enfants et les bébés depuis là-bas, nous le confirmons avec le bureau."
           }
         }
       ]
@@ -5360,56 +5802,64 @@ const ESPLORA_CATALOG = [
         text: {
           it: "Ritiro in hotel e trasferimento al porto di Los Cristianos, dove si prende il traghetto Fred Olsen per San Sebastián de La Gomera.",
           en: "Hotel pick-up and transfer to the port of Los Cristianos, where you board the Fred Olsen ferry to San Sebastián de La Gomera.",
-          es: "Recogida en el hotel y traslado al puerto de Los Cristianos, donde se toma el ferry de Fred Olsen hasta San Sebastián de La Gomera."
+          es: "Recogida en el hotel y traslado al puerto de Los Cristianos, donde se toma el ferry de Fred Olsen hasta San Sebastián de La Gomera.",
+          fr: "Prise en charge à l'hôtel et transfert au port de Los Cristianos, où l'on embarque sur le ferry Fred Olsen pour San Sebastián de La Gomera."
         }
       },
       {
         text: {
           it: "Sbarcati sull'isola si prende la strada del sud, con una sosta ai piedi del Roque de Agando: è il camino di un vulcano rimasto in piedi dopo che il resto si è consumato.",
           en: "Once ashore you take the southern road, with a stop at the foot of Roque de Agando: the plug of a volcano still standing after the rest wore away.",
-          es: "Ya en la isla se toma la carretera del sur, con una parada al pie del Roque de Agando: la chimenea de un volcán que quedó en pie después de que el resto se desgastara."
+          es: "Ya en la isla se toma la carretera del sur, con una parada al pie del Roque de Agando: la chimenea de un volcán que quedó en pie después de que el resto se desgastara.",
+          fr: "Une fois à terre, on prend la route du sud, avec un arrêt au pied du Roque de Agando : la cheminée d'un volcan encore debout après l'érosion de tout le reste."
         }
       },
       {
         text: {
           it: "Passeggiata dentro il Parco Nazionale di Garajonay, la foresta di laurisilva che l'UNESCO ha dichiarato patrimonio dell'umanità nel 1986: alberi sempre verdi e nebbia bassa a pochi chilometri dal versante arido dell'isola.",
           en: "A walk inside Garajonay National Park, the laurel forest UNESCO listed as a World Heritage site in 1986: evergreen trees and low mist a few kilometres from the dry side of the island.",
-          es: "Paseo por el Parque Nacional de Garajonay, el bosque de laurisilva que la UNESCO declaró Patrimonio de la Humanidad en 1986: árboles siempre verdes y niebla baja a pocos kilómetros de la vertiente árida de la isla."
+          es: "Paseo por el Parque Nacional de Garajonay, el bosque de laurisilva que la UNESCO declaró Patrimonio de la Humanidad en 1986: árboles siempre verdes y niebla baja a pocos kilómetros de la vertiente árida de la isla.",
+          fr: "Une promenade dans le parc national de Garajonay, la forêt de lauriers inscrite au patrimoine mondial de l'UNESCO en 1986 : arbres toujours verts et brume basse à quelques kilomètres du côté sec de l'île."
         }
       },
       {
         text: {
           it: "Pranzo al Restaurante Las Rosas, cucina gomera, compreso nel prezzo.",
           en: "Lunch at Restaurante Las Rosas, Gomeran cooking, included in the price.",
-          es: "Almuerzo en el Restaurante Las Rosas, cocina gomera, incluido en el precio."
+          es: "Almuerzo en el Restaurante Las Rosas, cocina gomera, incluido en el precio.",
+          fr: "Déjeuner au Restaurante Las Rosas, cuisine gomérienne, compris dans le prix."
         }
       },
       {
         text: {
           it: "Dopo mangiato, la dimostrazione del silbo gomero: la lingua fischiata con cui sull'isola ci si parla da una valle all'altra, insegnata di maestro in allievo e ancora usata da più di ventimila persone.",
           en: "After lunch, a demonstration of the silbo gomero: the whistled language islanders use to speak across valleys, passed from master to pupil and still used by more than twenty thousand people.",
-          es: "Después de comer, la demostración del silbo gomero: la lengua silbada con la que en la isla se habla de un valle a otro, transmitida de maestro a discípulo y usada todavía por más de veinte mil personas."
+          es: "Después de comer, la demostración del silbo gomero: la lengua silbada con la que en la isla se habla de un valle a otro, transmitida de maestro a discípulo y usada todavía por más de veinte mil personas.",
+          fr: "Après le déjeuner, une démonstration du silbo gomero : la langue sifflée avec laquelle on se parle d'une vallée à l'autre sur l'île, transmise de maître à élève et encore utilisée par plus de vingt mille personnes."
         }
       },
       {
         text: {
           it: "Sosta ad Agulo, paese del nord affacciato sull'oceano, con le sue strade lastricate e il Teide di fronte, dall'altra parte del mare.",
           en: "A stop in Agulo, a northern village facing the ocean, with its cobbled streets and Teide across the water.",
-          es: "Parada en Agulo, pueblo del norte asomado al océano, con sus calles empedradas y el Teide enfrente, al otro lado del mar."
+          es: "Parada en Agulo, pueblo del norte asomado al océano, con sus calles empedradas y el Teide enfrente, al otro lado del mar.",
+          fr: "Un arrêt à Agulo, village du nord face à l'océan, avec ses rues pavées et le Teide de l'autre côté de la mer."
         }
       },
       {
         text: {
           it: "Rientro a San Sebastián, la capitale: cinquecento anni di storia in poche strade, la Torre del Conde, la chiesa dell'Asunción e il pozzo della Casa de la Aguada, quello da cui — si racconta — Colombo prese l'acqua prima di partire per le Americhe.",
           en: "Back to San Sebastián, the capital: five hundred years of history in a few streets, the Torre del Conde, the church of la Asunción and the well of the Casa de la Aguada, the one Columbus is said to have drawn water from before sailing for the Americas.",
-          es: "Vuelta a San Sebastián, la capital: quinientos años de historia en pocas calles, la Torre del Conde, la iglesia de la Asunción y el pozo de la Casa de la Aguada, aquel del que —se cuenta— Colón tomó el agua antes de partir hacia América."
+          es: "Vuelta a San Sebastián, la capital: quinientos años de historia en pocas calles, la Torre del Conde, la iglesia de la Asunción y el pozo de la Casa de la Aguada, aquel del que —se cuenta— Colón tomó el agua antes de partir hacia América.",
+          fr: "Retour à San Sebastián, la capitale : cinq cents ans d'histoire en quelques rues, la Torre del Conde, l'église de l'Asunción et le puits de la Casa de la Aguada, celui où Colomb aurait puisé de l'eau avant de partir pour les Amériques."
         }
       },
       {
         text: {
           it: "Imbarco per il ritorno a Los Cristianos e rientro in hotel. Nel canale fra le due isole capita spesso di incrociare globicefali e delfini.",
           en: "Boarding for the return to Los Cristianos and back to the hotel. Pilot whales and dolphins are often met in the channel between the two islands.",
-          es: "Embarque de vuelta a Los Cristianos y regreso al hotel. En el canal entre las dos islas es frecuente cruzarse con calderones y delfines."
+          es: "Embarque de vuelta a Los Cristianos y regreso al hotel. En el canal entre las dos islas es frecuente cruzarse con calderones y delfines.",
+          fr: "Embarquement pour le retour à Los Cristianos et retour à l'hôtel. Dans le canal entre les deux îles, on croise souvent globicéphales et dauphins."
         }
       }
     ],
@@ -5417,27 +5867,32 @@ const ESPLORA_CATALOG = [
       {
         it: "Serve un documento d'identità valido il giorno dell'escursione — il fornitore chiede il passaporto. Senza, la compagnia non fa salire sul traghetto e la giornata è persa.",
         en: "You need a valid ID document on the day of the trip — the operator asks for a passport. Without it the ferry company will not let you board and the day is lost.",
-        es: "Hace falta un documento de identidad válido el día de la excursión: el proveedor pide el pasaporte. Sin él, la naviera no deja embarcar y el día se pierde."
+        es: "Hace falta un documento de identidad válido el día de la excursión: el proveedor pide el pasaporte. Sin él, la naviera no deja embarcar y el día se pierde.",
+        fr: "Il faut une pièce d'identité valide le jour de l'excursion — l'opérateur demande le passeport. Sans elle, la compagnie de ferry ne vous laisse pas monter et la journée est perdue."
       },
       {
         it: "È una giornata intera, circa dieci ore fra ritiro e rientro: il ritiro in hotel è presto la mattina e l'orario esatto te lo confermiamo insieme alla prenotazione.",
         en: "It is a full day, about ten hours from pick-up to drop-off: the hotel pick-up is early in the morning and we confirm the exact time along with the booking.",
-        es: "Es un día entero, unas diez horas entre la recogida y la vuelta: la recogida en el hotel es temprano por la mañana y la hora exacta te la confirmamos junto con la reserva."
+        es: "Es un día entero, unas diez horas entre la recogida y la vuelta: la recogida en el hotel es temprano por la mañana y la hora exacta te la confirmamos junto con la reserva.",
+        fr: "C'est une journée entière, environ dix heures entre la prise en charge et le retour : la prise en charge à l'hôtel se fait tôt le matin et nous confirmons l'heure exacte avec la réservation."
       },
       {
         it: "A Garajonay si sta in quota e spesso c'è nebbia: fa più fresco che sulla costa, porta una giacca leggera e scarpe comode.",
         en: "Garajonay is up in the hills and often misty: it is cooler than on the coast, so bring a light jacket and comfortable shoes.",
-        es: "En Garajonay se está en altura y a menudo hay niebla: hace más fresco que en la costa, lleva una chaqueta ligera y calzado cómodo."
+        es: "En Garajonay se está en altura y a menudo hay niebla: hace más fresco que en la costa, lleva una chaqueta ligera y calzado cómodo.",
+        fr: "Garajonay est en altitude et souvent dans la brume : il fait plus frais que sur la côte, donc apportez une veste légère et des chaussures confortables."
       },
       {
         it: "Balene e delfini durante la traversata si vedono spesso, ma sono animali liberi: nessuno può prometterteli.",
         en: "Whales and dolphins are often seen during the crossing, but they are wild animals: nobody can promise them.",
-        es: "Ballenas y delfines se ven a menudo durante la travesía, pero son animales libres: nadie puede prometértelos."
+        es: "Ballenas y delfines se ven a menudo durante la travesía, pero son animales libres: nadie puede prometértelos.",
+        fr: "On voit souvent baleines et dauphins pendant la traversée, mais ce sont des animaux sauvages : personne ne peut les promettre."
       },
       {
         it: "Se hai un'allergia o un'esigenza alimentare per il pranzo, scrivicelo nella richiesta: lo giriamo al ristorante.",
         en: "If you have an allergy or a dietary requirement for lunch, tell us in your request: we pass it on to the restaurant.",
-        es: "Si tienes una alergia o una necesidad alimentaria para el almuerzo, escríbenoslo en la solicitud: se lo pasamos al restaurante."
+        es: "Si tienes una alergia o una necesidad alimentaria para el almuerzo, escríbenoslo en la solicitud: se lo pasamos al restaurante.",
+        fr: "Si vous avez une allergie ou un régime particulier pour le déjeuner, dites-le-nous dans la demande : nous le transmettons au restaurant."
       },
       // I giorni sono un blocco: la finestra non lascia mandare una richiesta
       // per un giorno in cui non si parte. Questa nota fa il mestiere che il
@@ -5446,7 +5901,8 @@ const ESPLORA_CATALOG = [
       // riquadro dei consigli una nota lunga si legge come un paragrafo.
       { it: "I giorni possono cambiare secondo la lingua della guida.",
         en: "The days can change depending on the language of the guide.",
-        es: "Los días pueden cambiar según el idioma del guía." }
+        es: "Los días pueden cambiar según el idioma del guía.",
+        fr: "Les jours peuvent changer selon la langue du guide." }
     ],
     image: "la-gomera.jpg",
     published: true
@@ -5461,7 +5917,7 @@ const ESPLORA_CATALOG = [
     // Conta sempre come card (proprietario, 11 ottobre 2026: le escursioni
     // di Island Excursions).
     pagamento: "card",
-    // Il titolo e' quello del fornitore ufficiale, uguale in tutte e tre le
+    // Il titolo e' quello del fornitore ufficiale, uguale in tutte e quattro le
     // lingue come tutti gli altri.
     title: "Santa Cruz + Anaga + La Laguna",
     // E' tornata in "Tour e visite" per scelta del proprietario (14 settembre
@@ -5484,8 +5940,8 @@ const ESPLORA_CATALOG = [
     // Icod, quel campo in pagina si legge "Punto di partenza", e la partenza
     // e' una sola, il sud (proprietario, 8 settembre 2026). Santa Cruz, Anaga
     // e La Laguna restano scritte nel titolo e nella descrizione.
-    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
-    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur", fr: "Sud de Tenerife" },
+    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox.", fr: "Environ 8 heures" },
     zoneGroups: ["teide-nord"],
     durationGroups: ["intera"],
     // Lunedi' e giovedi' non stavano nei dati ufficiali, erano presi dalla
@@ -5520,42 +5976,48 @@ const ESPLORA_CATALOG = [
         text: {
           it: "Ritiro alla fermata concordata e salita verso la capitale per l'autostrada del sud",
           en: "Pickup at your agreed stop and the drive up to the capital along the southern motorway",
-          es: "Recogida en su parada y subida hacia la capital por la autopista del sur"
+          es: "Recogida en su parada y subida hacia la capital por la autopista del sur",
+          fr: "Prise en charge à l'arrêt convenu et route vers la capitale par l'autoroute du sud"
         }
       },
       {
         text: {
           it: "Santa Cruz: tempo libero fra i luoghi simbolo della capitale e i negozi",
           en: "Santa Cruz: free time among the capital's landmarks and its shops",
-          es: "Santa Cruz: tiempo libre entre los lugares emblemáticos de la capital y las tiendas"
+          es: "Santa Cruz: tiempo libre entre los lugares emblemáticos de la capital y las tiendas",
+          fr: "Santa Cruz : temps libre entre les monuments de la capitale et ses boutiques"
         }
       },
       {
         text: {
           it: "Si prosegue verso Anaga passando davanti alla Playa de las Teresitas, senza sosta",
           en: "On towards Anaga, passing Playa de las Teresitas without stopping",
-          es: "Se sigue hacia Anaga pasando por la Playa de las Teresitas, sin parada"
+          es: "Se sigue hacia Anaga pasando por la Playa de las Teresitas, sin parada",
+          fr: "On continue vers Anaga, en passant devant la Playa de las Teresitas sans s'arrêter"
         }
       },
       {
         text: {
           it: "Cruz del Carmen, dentro il Parco Rurale di Anaga, Riserva della Biosfera: le vedute sul massiccio e la sosta per il pranzo",
           en: "Cruz del Carmen, inside the Anaga Rural Park, a Biosphere Reserve: the views over the massif and the lunch stop",
-          es: "Cruz del Carmen, dentro del Parque Rural de Anaga, Reserva de la Biosfera: las vistas del macizo y la parada para almorzar"
+          es: "Cruz del Carmen, dentro del Parque Rural de Anaga, Reserva de la Biosfera: las vistas del macizo y la parada para almorzar",
+          fr: "Cruz del Carmen, dans le parc rural d'Anaga, réserve de biosphère : les vues sur le massif et l'arrêt déjeuner"
         }
       },
       {
         text: {
           it: "La Laguna, città storica e universitaria, Patrimonio dell'Umanità UNESCO dal 1999",
           en: "La Laguna, the historic university city, a UNESCO World Heritage Site since 1999",
-          es: "La Laguna, ciudad histórica y universitaria, Patrimonio de la Humanidad por la UNESCO desde 1999"
+          es: "La Laguna, ciudad histórica y universitaria, Patrimonio de la Humanidad por la UNESCO desde 1999",
+          fr: "La Laguna, la ville universitaire historique, inscrite au patrimoine mondial de l'UNESCO depuis 1999"
         }
       },
       {
         text: {
           it: "Rientro in hotel",
           en: "Back to the hotel",
-          es: "Vuelta al hotel"
+          es: "Vuelta al hotel",
+          fr: "Retour à l'hôtel"
         }
       }
     ],
@@ -5563,22 +6025,26 @@ const ESPLORA_CATALOG = [
       {
         it: "Il pranzo non è incluso: la sosta per mangiare si fa a Cruz del Carmen.",
         en: "Lunch is not included: the meal stop is at Cruz del Carmen.",
-        es: "El almuerzo no está incluido: la parada para comer se hace en Cruz del Carmen."
+        es: "El almuerzo no está incluido: la parada para comer se hace en Cruz del Carmen.",
+        fr: "Le déjeuner n'est pas compris : l'arrêt repas se fait à Cruz del Carmen."
       },
       {
         it: "Alla Playa de las Teresitas si passa davanti ma non ci si ferma: non è una tappa del giro.",
         en: "Playa de las Teresitas is only driven past, there is no stop: it is not one of the stages.",
-        es: "Por la Playa de las Teresitas solo se pasa, no hay parada: no es una etapa del recorrido."
+        es: "Por la Playa de las Teresitas solo se pasa, no hay parada: no es una etapa del recorrido.",
+        fr: "On passe seulement devant la Playa de las Teresitas, sans s'arrêter : ce n'est pas une étape."
       },
       {
         it: "Ad Anaga si sta in quota e il tempo cambia in fretta, anche quando al sud c'è il sole: porta una felpa o una giacca leggera.",
         en: "Anaga is up in the hills and the weather changes quickly, even when it is sunny in the south: bring a sweatshirt or a light jacket.",
-        es: "En Anaga se está en altura y el tiempo cambia rápido, aunque en el sur haga sol: lleva una sudadera o una chaqueta ligera."
+        es: "En Anaga se está en altura y el tiempo cambia rápido, aunque en el sur haga sol: lleva una sudadera o una chaqueta ligera.",
+        fr: "Anaga est en altitude et le temps change vite, même quand il fait soleil dans le sud : apportez un sweat ou une veste légère."
       },
       {
         it: "L'ora del ritiro dipende dall'hotel e si conferma con la prenotazione.",
         en: "The pickup time depends on your hotel and is confirmed with the booking.",
-        es: "La hora de recogida depende del hotel y se confirma con la reserva."
+        es: "La hora de recogida depende del hotel y se confirma con la reserva.",
+        fr: "L'heure de prise en charge dépend de votre hôtel et est confirmée avec la réservation."
       },
       // I giorni sono un blocco: la finestra non lascia mandare una richiesta
       // per un giorno in cui non si parte. Questa nota fa il mestiere che il
@@ -5587,13 +6053,15 @@ const ESPLORA_CATALOG = [
       // riquadro dei consigli una nota lunga si legge come un paragrafo.
       { it: "I giorni possono cambiare secondo la lingua della guida.",
         en: "The days can change depending on the language of the guide.",
-        es: "Los días pueden cambiar según el idioma del guía." }
+        es: "Los días pueden cambiar según el idioma del guía.",
+        fr: "Les jours peuvent changer selon la langue du guide." }
     ],
     family: true,
     desc: {
       it: "La capitale Santa Cruz, il Parco Rurale di Anaga a Cruz del Carmen e La Laguna, Patrimonio UNESCO: il nord-est dell'isola in una giornata, con ritiro alla fermata concordata.",
       en: "The capital Santa Cruz, the Anaga Rural Park at Cruz del Carmen and UNESCO-listed La Laguna: the north-east of the island in a day, with pickup at your agreed stop.",
-      es: "La capital, Santa Cruz, el Parque Rural de Anaga en Cruz del Carmen y La Laguna, Patrimonio de la UNESCO: el noreste de la isla en un día, con recogida en su parada."
+      es: "La capital, Santa Cruz, el Parque Rural de Anaga en Cruz del Carmen y La Laguna, Patrimonio de la UNESCO: el noreste de la isla en un día, con recogida en su parada.",
+      fr: "La capitale Santa Cruz, le parc rural d'Anaga à Cruz del Carmen et La Laguna, classée par l'UNESCO : le nord-est de l'île en une journée, avec prise en charge à l'arrêt convenu."
     },
     image: "santa-cruz-taganana.jpg",
     published: true
@@ -5614,7 +6082,8 @@ const ESPLORA_CATALOG = [
     title: {
       it: "Tour completo dell'isola",
       en: "Full island tour",
-      es: "Tour completo de la isla"
+      es: "Tour completo de la isla",
+      fr: "Tour complet de l'île"
     },
     category: "tour-isola",
     // Era "Tutta l'isola", e diceva il falso: quel campo in pagina si legge
@@ -5622,10 +6091,10 @@ const ESPLORA_CATALOG = [
     // dell'8 settembre 2026 presa su `icod-garachico-orotava` e su
     // `santa-cruz-taganana` — la partenza e' **una sola**, il sud. Dove si va
     // lo dicono il titolo, la descrizione e le tappe.
-    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur", fr: "Sud de Tenerife" },
     // "Duración de la excursión: 8 horas aprox" sulla pagina del fornitore.
     // Era "Giornata intera": vero ma vago, come sul giro di Icod.
-    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
+    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox.", fr: "Environ 8 heures" },
     zoneGroups: ["teide-nord"],
     durationGroups: ["intera"],
     // Niente `times`: l'ora non e' una sola, la decide il punto di raccolta
@@ -5674,33 +6143,42 @@ const ESPLORA_CATALOG = [
     itinerary: [
       { text: { it: "Ritiro alla fermata concordata e viaggio verso gli Acantilados de Los Gigantes",
                 en: "Pickup at your agreed stop and the drive to the Los Gigantes cliffs",
-                es: "Recogida en su parada y viaje hacia los Acantilados de Los Gigantes" } },
+                es: "Recogida en su parada y viaje hacia los Acantilados de Los Gigantes",
+                fr: "Prise en charge à l'arrêt convenu et route vers les falaises de Los Gigantes" } },
       { text: { it: "Sosta al Mirador de Garachico, affacciato sulla villa e sulla costa nord",
                 en: "A stop at the Mirador de Garachico, looking down over the town and the north coast",
-                es: "Parada en el Mirador de Garachico, asomado a la villa y a la costa norte" } },
+                es: "Parada en el Mirador de Garachico, asomado a la villa y a la costa norte",
+                fr: "Un arrêt au Mirador de Garachico, qui domine la ville et la côte nord" } },
       { text: { it: "Icod de los Vinos, dove c'è il Drago Millenario, l'albero simbolo delle Canarie",
                 en: "Icod de los Vinos, home of the thousand-year-old dragon tree, the symbol of the Canaries",
-                es: "Icod de los Vinos, donde está el Drago Milenario, el árbol símbolo de Canarias" } },
+                es: "Icod de los Vinos, donde está el Drago Milenario, el árbol símbolo de Canarias",
+                fr: "Icod de los Vinos, où se trouve le dragonnier millénaire, symbole des Canaries" } },
       { text: { it: "La Orotava, paese canario tipico, con la famosa Casa de los Balcones",
                 en: "La Orotava, a typical Canarian town, with the famous Casa de los Balcones",
-                es: "La Orotava, pueblo típico canario, con la famosa Casa de los Balcones" } },
+                es: "La Orotava, pueblo típico canario, con la famosa Casa de los Balcones",
+                fr: "La Orotava, ville canarienne typique, avec la célèbre Casa de los Balcones" } },
       { text: { it: "Puerto de la Cruz: tempo libero per il pranzo, i negozi e una passeggiata",
                 en: "Puerto de la Cruz: free time for lunch, the shops and a walk around",
-                es: "Puerto de la Cruz: tiempo libre para almorzar, las tiendas y un paseo" } },
+                es: "Puerto de la Cruz: tiempo libre para almorzar, las tiendas y un paseo",
+                fr: "Puerto de la Cruz : temps libre pour déjeuner, faire les boutiques et se promener" } },
       { text: { it: "Ultima sosta a Candelaria, dalla Patrona dell'arcipelago",
                 en: "A last stop at Candelaria, at the patron saint of the archipelago",
-                es: "Última parada en Candelaria, ante la Patrona del Archipiélago" } },
+                es: "Última parada en Candelaria, ante la Patrona del Archipiélago",
+                fr: "Un dernier arrêt à Candelaria, chez la patronne de l'archipel" } },
       { text: { it: "Rientro in hotel per l'autostrada del sud",
                 en: "Back to the hotel along the southern motorway",
-                es: "Vuelta al hotel por la autopista del sur" } }
+                es: "Vuelta al hotel por la autopista del sur",
+                fr: "Retour à l'hôtel par l'autoroute du sud" } }
     ],
     notes: [
       { it: "Il pranzo non è incluso: la sosta per mangiare si fa a Puerto de la Cruz.",
         en: "Lunch is not included: the meal stop is in Puerto de la Cruz.",
-        es: "El almuerzo no está incluido: la parada para comer se hace en Puerto de la Cruz." },
+        es: "El almuerzo no está incluido: la parada para comer se hace en Puerto de la Cruz.",
+        fr: "Le déjeuner n'est pas compris : l'arrêt repas se fait à Puerto de la Cruz." },
       { it: "Quasi tutta la giornata si passa al nord, dove fa più fresco e nuvoloso che al sud: porta una felpa o una giacca leggera.",
         en: "Most of the day is spent in the north, which is cooler and cloudier than the south: bring a sweatshirt or a light jacket.",
-        es: "Casi todo el día se pasa en el norte, donde hace más fresco y nublado que en el sur: lleva una sudadera o una chaqueta ligera." }
+        es: "Casi todo el día se pasa en el norte, donde hace más fresco y nublado que en el sur: lleva una sudadera o una chaqueta ligera.",
+        fr: "La plus grande partie de la journée se passe dans le nord, plus frais et plus nuageux que le sud : apportez un sweat ou une veste légère." }
     ],
     family: true,
     // Riscritta da zero nelle tre lingue sulle tappe vere. Prima era generica
@@ -5709,7 +6187,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Il giro dell'isola in una giornata: le scogliere di Los Gigantes, Garachico dal mirador, il Drago Millenario di Icod, La Orotava e la Casa de los Balcones, Puerto de la Cruz e la Patrona di Candelaria, con ritiro alla fermata concordata.",
       en: "The island in a single day: the Los Gigantes cliffs, Garachico from the viewpoint, the thousand-year-old dragon tree of Icod, La Orotava and its Casa de los Balcones, Puerto de la Cruz and the patron saint at Candelaria, with pickup at your agreed stop.",
-      es: "La vuelta a la isla en un día: los acantilados de Los Gigantes, Garachico desde el mirador, el Drago Milenario de Icod, La Orotava y la Casa de los Balcones, Puerto de la Cruz y la Patrona de Candelaria, con recogida en su parada."
+      es: "La vuelta a la isla en un día: los acantilados de Los Gigantes, Garachico desde el mirador, el Drago Milenario de Icod, La Orotava y la Casa de los Balcones, Puerto de la Cruz y la Patrona de Candelaria, con recogida en su parada.",
+      fr: "L'île en une seule journée : les falaises de Los Gigantes, Garachico depuis le belvédère, le dragonnier millénaire d'Icod, La Orotava et sa Casa de los Balcones, Puerto de la Cruz et la patronne à Candelaria, avec prise en charge à l'arrêt convenu."
     },
     image: "island-tour-completo.jpg",
     published: true
@@ -5722,8 +6201,8 @@ const ESPLORA_CATALOG = [
     category: "tour-isola",
     // Come su La Gomera, la zona e' la destinazione: il punto di ritrovo
     // (porto di Los Cristianos) sta nell'itinerario e nelle note.
-    zone: { it: "Isola di La Palma", en: "Island of La Palma", es: "Isla de La Palma" },
-    duration: { it: "Circa 12 ore", en: "About 12 hours", es: "Unas 12 horas" },
+    zone: { it: "Isola di La Palma", en: "Island of La Palma", es: "Isla de La Palma", fr: "Île de La Palma" },
+    duration: { it: "Circa 12 ore", en: "About 12 hours", es: "Unas 12 horas", fr: "Environ 12 heures" },
     zoneGroups: ["altre-isole"],
     durationGroups: ["intera"],
     // Una partenza sola e fissa: il ritrovo delle 07:45 al porto. Scritta
@@ -5756,7 +6235,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Una giornata sull'isola del vulcano: traghetto da Los Cristianos, il Mirador de la Concepción sopra il cratere della Caldereta e le colate del Cumbre Vieja, le più giovani di Spagna.",
       en: "A day on the volcano island: the ferry from Los Cristianos, the Mirador de la Concepción above the Caldereta crater and the Cumbre Vieja lava flows, the youngest in Spain.",
-      es: "Un día en la isla del volcán: ferry desde Los Cristianos, el Mirador de la Concepción sobre el cráter de la Caldereta y las coladas del Cumbre Vieja, las más jóvenes de España."
+      es: "Un día en la isla del volcán: ferry desde Los Cristianos, el Mirador de la Concepción sobre el cráter de la Caldereta y las coladas del Cumbre Vieja, las más jóvenes de España.",
+      fr: "Une journée sur l'île des volcans : le ferry depuis Los Cristianos, le Mirador de la Concepción au-dessus du cratère de la Caldereta et les coulées de lave de la Cumbre Vieja, les plus jeunes d'Espagne."
     },
     itinerary: [
       {
@@ -5764,7 +6244,8 @@ const ESPLORA_CATALOG = [
         text: {
           it: "Ritrovo al porto di Los Cristianos, davanti all'ufficio Fred Olsen. Al porto ci si arriva da soli: su questa partenza il ritiro in hotel non c'è.",
           en: "Meeting at the port of Los Cristianos, in front of the Fred Olsen office. You make your own way to the port: this departure has no hotel pick-up.",
-          es: "Encuentro en el puerto de Los Cristianos, delante de la oficina de Fred Olsen. Al puerto se llega por cuenta propia: esta salida no lleva recogida en el hotel."
+          es: "Encuentro en el puerto de Los Cristianos, delante de la oficina de Fred Olsen. Al puerto se llega por cuenta propia: esta salida no lleva recogida en el hotel.",
+          fr: "Rendez-vous au port de Los Cristianos, devant le bureau Fred Olsen. On se rend au port par ses propres moyens : ce départ n'a pas de prise en charge à l'hôtel."
         }
       },
       {
@@ -5772,7 +6253,8 @@ const ESPLORA_CATALOG = [
         text: {
           it: "Partenza del traghetto per Santa Cruz de La Palma. La traversata dura circa due ore e un quarto.",
           en: "The ferry leaves for Santa Cruz de La Palma. The crossing takes about two and a quarter hours.",
-          es: "Salida del ferry hacia Santa Cruz de La Palma. La travesía dura unas dos horas y cuarto."
+          es: "Salida del ferry hacia Santa Cruz de La Palma. La travesía dura unas dos horas y cuarto.",
+          fr: "Le ferry part pour Santa Cruz de La Palma. La traversée dure environ deux heures et quart."
         }
       },
       {
@@ -5780,49 +6262,56 @@ const ESPLORA_CATALOG = [
         text: {
           it: "Sbarco nella capitale e tempo libero in centro: il Barco de la Virgen, il Castillo de Santa Catalina e la via dei balconi di legno, fra i più belli rimasti nelle Canarie.",
           en: "Landing in the capital and free time in the centre: the Barco de la Virgen, the Castillo de Santa Catalina and the street of wooden balconies, among the finest left in the Canaries.",
-          es: "Desembarque en la capital y tiempo libre por el centro: el Barco de la Virgen, el Castillo de Santa Catalina y la calle de los balcones de madera, de los mejores que se conservan en Canarias."
+          es: "Desembarque en la capital y tiempo libre por el centro: el Barco de la Virgen, el Castillo de Santa Catalina y la calle de los balcones de madera, de los mejores que se conservan en Canarias.",
+          fr: "Débarquement dans la capitale et temps libre dans le centre : le Barco de la Virgen, le Castillo de Santa Catalina et la rue des balcons en bois, parmi les plus beaux qui restent aux Canaries."
         }
       },
       {
         text: {
           it: "Si sale al Mirador de la Concepción, in cima al vulcano della Caldereta, dichiarato Spazio Naturale: da lassù si vedono insieme il cratere e la capitale.",
           en: "Up to the Mirador de la Concepción, on top of the Caldereta volcano, a protected natural area: from there you see the crater and the capital in one view.",
-          es: "Se sube al Mirador de la Concepción, en lo alto del volcán de la Caldereta, declarado Espacio Natural: desde allí se ven a la vez el cráter y la capital."
+          es: "Se sube al Mirador de la Concepción, en lo alto del volcán de la Caldereta, declarado Espacio Natural: desde allí se ven a la vez el cráter y la capital.",
+          fr: "Montée au Mirador de la Concepción, au sommet du volcan de la Caldereta, espace naturel protégé : de là, on voit le cratère et la capitale d'un seul regard."
         }
       },
       {
         text: {
           it: "Si riprende la strada verso il Túnel del Tiempo: attraversando l'isola la vegetazione cambia sotto gli occhi, fino ad arrivare a sud-ovest, nella zona toccata dall'eruzione del Cumbre Vieja.",
           en: "Back on the road towards the Túnel del Tiempo: crossing the island the vegetation changes before your eyes, until you reach the south-west and the area hit by the Cumbre Vieja eruption.",
-          es: "Se retoma el camino hacia el Túnel del Tiempo: al cruzar la isla la vegetación cambia a la vista, hasta llegar al suroeste, a la zona afectada por la erupción del Cumbre Vieja."
+          es: "Se retoma el camino hacia el Túnel del Tiempo: al cruzar la isla la vegetación cambia a la vista, hasta llegar al suroeste, a la zona afectada por la erupción del Cumbre Vieja.",
+          fr: "On reprend la route vers le Túnel del Tiempo : en traversant l'île, la végétation change sous vos yeux, jusqu'à arriver au sud-ouest et à la zone touchée par l'éruption de la Cumbre Vieja."
         }
       },
       {
         text: {
           it: "Prima sosta nella zona di esclusione del quartiere di Tacande, con la prima vista sul vulcano. Poi si scende verso Tazacorte, costeggiando le colate laviche più giovani di Spagna.",
           en: "First stop in the exclusion zone of the Tacande district, with the first view of the volcano. Then down towards Tazacorte, alongside the youngest lava flows in Spain.",
-          es: "Primera parada en la zona de exclusión del barrio de Tacande, con la primera vista del volcán. Después se baja hacia Tazacorte, bordeando las coladas lávicas más jóvenes de España."
+          es: "Primera parada en la zona de exclusión del barrio de Tacande, con la primera vista del volcán. Después se baja hacia Tazacorte, bordeando las coladas lávicas más jóvenes de España.",
+          fr: "Premier arrêt dans la zone d'exclusion du quartier de Tacande, avec la première vue sur le volcan. Puis descente vers Tazacorte, le long des coulées de lave les plus jeunes d'Espagne."
         }
       },
       {
         text: {
           it: "Pranzo in un ristorante tipico della zona, compreso nel prezzo.",
           en: "Lunch at a local restaurant in the area, included in the price.",
-          es: "Almuerzo en un restaurante típico de la zona, incluido en el precio."
+          es: "Almuerzo en un restaurante típico de la zona, incluido en el precio.",
+          fr: "Déjeuner dans un restaurant local de la zone, compris dans le prix."
         }
       },
       {
         text: {
           it: "Dopo mangiato si va al porto di Tazacorte a vedere la fajana: il delta di lava che l'eruzione ha costruito entrando in mare.",
           en: "After lunch, on to the port of Tazacorte to see the fajana: the lava delta the eruption built as it reached the sea.",
-          es: "Después de comer se va al puerto de Tazacorte a ver la fajana: el delta lávico que la erupción formó al entrar en el mar."
+          es: "Después de comer se va al puerto de Tazacorte a ver la fajana: el delta lávico que la erupción formó al entrar en el mar.",
+          fr: "Après le déjeuner, on continue vers le port de Tazacorte pour voir la fajana : le delta de lave que l'éruption a construit en atteignant la mer."
         }
       },
       {
         text: {
           it: "Ultima tappa al mirador della chiesa della Sagrada Familia, nel quartiere di Tajuya: l'ultimo vulcano delle Canarie è lì davanti, a circa due chilometri.",
           en: "Last stop at the viewpoint by the church of the Sagrada Familia, in the Tajuya district: the most recent volcano in the Canaries stands right there, about two kilometres away.",
-          es: "Última parada en el mirador de la iglesia de la Sagrada Familia, en el barrio de Tajuya: el último volcán de Canarias está justo enfrente, a unos dos kilómetros."
+          es: "Última parada en el mirador de la iglesia de la Sagrada Familia, en el barrio de Tajuya: el último volcán de Canarias está justo enfrente, a unos dos kilómetros.",
+          fr: "Dernier arrêt au belvédère près de l'église de la Sagrada Familia, dans le quartier de Tajuya : le volcan le plus récent des Canaries est juste là, à environ deux kilomètres."
         }
       },
       {
@@ -5830,7 +6319,8 @@ const ESPLORA_CATALOG = [
         text: {
           it: "Rientro al porto di Santa Cruz de La Palma; il traghetto riparte alle 17:00.",
           en: "Back at the port of Santa Cruz de La Palma; the ferry leaves again at 17:00.",
-          es: "Regreso al puerto de Santa Cruz de La Palma; el ferry sale de nuevo a las 17:00."
+          es: "Regreso al puerto de Santa Cruz de La Palma; el ferry sale de nuevo a las 17:00.",
+          fr: "Retour au port de Santa Cruz de La Palma ; le ferry repart à 17:00."
         }
       },
       {
@@ -5838,7 +6328,8 @@ const ESPLORA_CATALOG = [
         text: {
           it: "Arrivo al porto di Los Cristianos.",
           en: "Arrival at the port of Los Cristianos.",
-          es: "Llegada al puerto de Los Cristianos."
+          es: "Llegada al puerto de Los Cristianos.",
+          fr: "Arrivée au port de Los Cristianos."
         }
       }
     ],
@@ -5846,37 +6337,44 @@ const ESPLORA_CATALOG = [
       {
         it: "Serve un documento d'identità o il passaporto in corso di validità: la compagnia lo chiede all'imbarco e senza non si sale sul traghetto.",
         en: "You need a valid ID card or passport: the ferry company asks for it at boarding and without it you cannot get on.",
-        es: "Hace falta el documento de identidad o el pasaporte en vigor: la naviera lo pide al embarcar y sin él no se sube al ferry."
+        es: "Hace falta el documento de identidad o el pasaporte en vigor: la naviera lo pide al embarcar y sin él no se sube al ferry.",
+        fr: "Il faut une carte d'identité ou un passeport valides : la compagnie de ferry les demande à l'embarquement et sans eux on ne monte pas."
       },
       {
         it: "Su questa partenza non c'è il ritiro in hotel: il ritrovo è alle 07:45 al porto di Los Cristianos, davanti all'ufficio Fred Olsen. Calcola il tempo per arrivarci.",
         en: "This departure has no hotel pick-up: you meet at 07:45 at the port of Los Cristianos, in front of the Fred Olsen office. Allow time to get there.",
-        es: "Esta salida no lleva recogida en el hotel: el encuentro es a las 07:45 en el puerto de Los Cristianos, delante de la oficina de Fred Olsen. Calcula el tiempo para llegar."
+        es: "Esta salida no lleva recogida en el hotel: el encuentro es a las 07:45 en el puerto de Los Cristianos, delante de la oficina de Fred Olsen. Calcula el tiempo para llegar.",
+        fr: "Ce départ n'a pas de prise en charge à l'hôtel : rendez-vous à 07:45 au port de Los Cristianos, devant le bureau Fred Olsen. Prévoyez le temps pour y arriver."
       },
       {
         it: "È una giornata intera, circa dodici ore: si torna a Los Cristianos verso le 19:30.",
         en: "It is a full day, about twelve hours: you are back in Los Cristianos around 19:30.",
-        es: "Es un día entero, unas doce horas: se vuelve a Los Cristianos sobre las 19:30."
+        es: "Es un día entero, unas doce horas: se vuelve a Los Cristianos sobre las 19:30.",
+        fr: "C'est une journée entière, environ douze heures : on est de retour à Los Cristianos vers 19:30."
       },
       {
         it: "La traversata dura più di due ore per parte. Se soffri il mare, il fornitore consiglia di prendere qualcosa contro il mal di mare prima di imbarcarti.",
         en: "The crossing takes more than two hours each way. If you get seasick, the operator suggests taking something for it before boarding.",
-        es: "La travesía dura más de dos horas por trayecto. Si te mareas, el proveedor recomienda tomar algo para el mareo antes de embarcar."
+        es: "La travesía dura más de dos horas por trayecto. Si te mareas, el proveedor recomienda tomar algo para el mareo antes de embarcar.",
+        fr: "La traversée dure plus de deux heures dans chaque sens. Si vous avez le mal de mer, l'opérateur conseille de prendre quelque chose avant d'embarquer."
       },
       {
         it: "Ai miradores si sta in quota e fa più fresco che sulla costa: porta scarpe comode e qualcosa di caldo.",
         en: "The viewpoints are up in the hills and cooler than the coast: bring comfortable shoes and something warm.",
-        es: "Los miradores están en altura y hace más fresco que en la costa: lleva calzado cómodo y algo de abrigo."
+        es: "Los miradores están en altura y hace más fresco que en la costa: lleva calzado cómodo y algo de abrigo.",
+        fr: "Les belvédères sont en altitude et plus frais que la côte : apportez des chaussures confortables et quelque chose de chaud."
       },
       {
         it: "L'escursione si svolge in spagnolo.",
         en: "The excursion is run in Spanish.",
-        es: "La excursión se realiza en español."
+        es: "La excursión se realiza en español.",
+        fr: "L'excursion se fait en espagnol."
       },
       {
         it: "Se hai un'allergia o un'esigenza alimentare per il pranzo, scrivicelo nella richiesta: lo giriamo al ristorante.",
         en: "If you have an allergy or a dietary requirement for lunch, tell us in your request: we pass it on to the restaurant.",
-        es: "Si tienes una alergia o una necesidad alimentaria para el almuerzo, escríbenoslo en la solicitud: se lo pasamos al restaurante."
+        es: "Si tienes una alergia o una necesidad alimentaria para el almuerzo, escríbenoslo en la solicitud: se lo pasamos al restaurante.",
+        fr: "Si vous avez une allergie ou un régime particulier pour le déjeuner, dites-le-nous dans la demande : nous le transmettons au restaurant."
       }
     ],
     image: "la-palma.jpg",
@@ -5887,7 +6385,7 @@ const ESPLORA_CATALOG = [
     // Riempita il 6 ottobre 2026 dalla pagina del negozio di Admiral ("First
     // Wine Tasting Tour", Tienda/Adventure Tickets). L'id resta quello del
     // segnaposto: i codici interni non si cambiano, si romperebbero i link.
-    // Il titolo invece e' quello di Admiral, uguale nelle tre lingue: il
+    // Il titolo invece e' quello di Admiral, uguale in tutte le lingue: il
     // vecchio "con sommelier" non lo diceva nessuno, la pagina parla di
     // "esperti" della cantina.
     title: "First Wine Tasting Tour",
@@ -5897,11 +6395,11 @@ const ESPLORA_CATALOG = [
     // (proprietario, 6 ottobre 2026). Nel filtro sta nelle due zone da cui si
     // parte, come il Twin Ticket sta in tutte e due le sue. Vilaflor e' scritta
     // nella descrizione e nelle tappe.
-    zone: { it: "Los Cristianos e Costa Adeje", en: "Los Cristianos and Costa Adeje", es: "Los Cristianos y Costa Adeje" },
+    zone: { it: "Los Cristianos e Costa Adeje", en: "Los Cristianos and Costa Adeje", es: "Los Cristianos y Costa Adeje", fr: "Los Cristianos et Costa Adeje" },
     zoneGroups: ["los-cristianos", "costa-adeje"],
     // Ritiro verso le 10:00, rientro verso le 15:00: cinque ore, "circa"
     // perche' il fornitore scrive "approximately" su tutte e due le ore.
-    duration: { it: "5 ore circa", en: "About 5 hours", es: "5 horas aprox." },
+    duration: { it: "5 ore circa", en: "About 5 hours", es: "5 horas aprox.", fr: "Environ 5 heures" },
     durationGroups: ["mezza"],
     // Un solo prezzo, 85 € a persona. **I bambini non salgono** (proprietario,
     // 6 ottobre 2026): come sull'Utopia, solo la fascia degli adulti, niente
@@ -5931,33 +6429,41 @@ const ESPLORA_CATALOG = [
       { time: "10:00",
         text: { it: "Ritiro in hotel, verso le 10:00",
                 en: "Hotel pickup, around 10:00",
-                es: "Recogida en el hotel, hacia las 10:00" } },
+                es: "Recogida en el hotel, hacia las 10:00",
+                fr: "Prise en charge à l'hôtel, vers 10:00" } },
       { text: { it: "Salita a Vilaflor, il paese più alto della Spagna: giro fra le vigne e visita della bodega tradizionale",
                 en: "Up to Vilaflor, the highest village in Spain: a walk through the vineyard and a visit to the traditional bodega",
-                es: "Subida a Vilaflor, el pueblo más alto de España: paseo por el viñedo y visita a la bodega tradicional" } },
+                es: "Subida a Vilaflor, el pueblo más alto de España: paseo por el viñedo y visita a la bodega tradicional",
+                fr: "Montée à Vilaflor, le village le plus haut d'Espagne : promenade dans le vignoble et visite de la bodega traditionnelle" } },
       { text: { it: "Come nasce il vino, spiegato da chi lo fa, e la degustazione con le tapas",
                 en: "How the wine is made, explained by the people who make it, then the tasting with tapas",
-                es: "Cómo se hace el vino, contado por quien lo elabora, y la cata con tapas" } },
+                es: "Cómo se hace el vino, contado por quien lo elabora, y la cata con tapas",
+                fr: "Comment on fait le vin, expliqué par ceux qui le font, puis la dégustation avec des tapas" } },
       { time: "15:00",
         text: { it: "Rientro in hotel, verso le 15:00",
                 en: "Back at the hotel, around 15:00",
-                es: "Regreso al hotel, hacia las 15:00" } }
+                es: "Regreso al hotel, hacia las 15:00",
+                fr: "Retour à l'hôtel, vers 15:00" } }
     ],
     notes: [
       { it: "Il pulmino passa verso le 10:00 e si rientra verso le 15:00: l'ora esatta del ritiro dipende dall'hotel e te la confermiamo insieme alla prenotazione.",
         en: "The minibus comes by around 10:00 and you are back around 15:00: the exact pickup time depends on your hotel and we confirm it with your booking.",
-        es: "El minibús pasa hacia las 10:00 y se vuelve hacia las 15:00: la hora exacta de recogida depende del hotel y te la confirmamos con la reserva." },
+        es: "El minibús pasa hacia las 10:00 y se vuelve hacia las 15:00: la hora exacta de recogida depende del hotel y te la confirmamos con la reserva.",
+        fr: "Le minibus passe vers 10:00 et vous êtes de retour vers 15:00 : l'heure exacte de prise en charge dépend de votre hôtel et nous la confirmons avec la réservation." },
       { it: "Gruppi piccoli: al massimo 8 persone per tour.",
         en: "Small groups: no more than 8 people per tour.",
-        es: "Grupos pequeños: como máximo 8 personas por tour." },
+        es: "Grupos pequeños: como máximo 8 personas por tour.",
+        fr: "Petits groupes : 8 personnes au maximum par sortie." },
       { it: "Solo per adulti: i bambini non partecipano.",
         en: "Adults only: children cannot take part.",
-        es: "Solo para adultos: los niños no participan." }
+        es: "Solo para adultos: los niños no participan.",
+        fr: "Adultes seulement : les enfants ne peuvent pas participer." }
     ],
     desc: {
       it: "Una giornata in una cantina di Vilaflor, sopra il sud di Tenerife, in gruppo da otto al massimo. Si cammina fra le vigne, si entra nella bodega tradizionale e chi fa il vino racconta come nasce, bicchiere dopo bicchiere, con le tapas in tavola. Il pulmino passa a prenderti in hotel e ti riporta a metà pomeriggio.",
       en: "A day at a winery in Vilaflor, above the south of Tenerife, in a group of eight at most. You walk through the vines, step into the traditional bodega and the winemakers tell you how the wine is made, glass after glass, with tapas on the table. The minibus picks you up at your hotel and brings you back mid-afternoon.",
-      es: "Un día en una bodega de Vilaflor, sobre el sur de Tenerife, en grupos de ocho como máximo. Se pasea entre las viñas, se entra en la bodega tradicional y quien hace el vino cuenta cómo nace, copa tras copa, con tapas en la mesa. El minibús te recoge en el hotel y te devuelve a media tarde."
+      es: "Un día en una bodega de Vilaflor, sobre el sur de Tenerife, en grupos de ocho como máximo. Se pasea entre las viñas, se entra en la bodega tradicional y quien hace el vino cuenta cómo nace, copa tras copa, con tapas en la mesa. El minibús te recoge en el hotel y te devuelve a media tarde.",
+      fr: "Une journée dans un domaine viticole à Vilaflor, au-dessus du sud de Tenerife, en groupe de huit au maximum. On marche entre les vignes, on entre dans la bodega traditionnelle et les vignerons racontent comment on fait le vin, verre après verre, avec des tapas sur la table. Le minibus passe vous prendre à l'hôtel et vous ramène en milieu d'après-midi."
     },
     image: "cantine-vinicole.jpg",
     published: true
@@ -5977,9 +6483,9 @@ const ESPLORA_CATALOG = [
     // Si parte dal sud e il pulmino passa sotto l'hotel, come sulle camminate
     // di Canaventura: la scheda sta in PICKUP_IN_HOTEL (hotel.js). Nel filtro
     // sta nelle zone da cui si parte, come il First Wine Tasting Tour.
-    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur", fr: "Sud de Tenerife" },
     zoneGroups: ["los-cristianos", "costa-adeje"],
-    duration: { it: "5 ore", en: "5 hours", es: "5 horas" },
+    duration: { it: "5 ore", en: "5 hours", es: "5 horas", fr: "5 heures" },
     durationGroups: ["mezza"],
     // "Días disponibles: martes". **mar e' martedi'.**
     days: ["mar"],
@@ -5998,26 +6504,32 @@ const ESPLORA_CATALOG = [
       { time: "08:00",
         text: { it: "Ritiro in hotel",
                 en: "Hotel pickup",
-                es: "Recogida en el hotel" } },
+                es: "Recogida en el hotel",
+                fr: "Prise en charge à l'hôtel" } },
       { text: { it: "Una finca di banane: come si coltivano da sempre, la storia del gofio e come si mangia, e l'assaggio di prodotti fatti con banana, gofio e miele di palma, insieme a diversi frutti tropicali",
                 en: "A banana farm: how bananas have always been grown, the story of gofio and how it is eaten, and a taste of products made with banana, gofio and palm honey, along with several tropical fruits",
-                es: "Una finca platanera: cómo se ha cultivado siempre el plátano, la historia del gofio y cómo se come, y la degustación de productos hechos con plátano, gofio y miel de palma, junto a varias frutas tropicales" } },
+                es: "Una finca platanera: cómo se ha cultivado siempre el plátano, la historia del gofio y cómo se come, y la degustación de productos hechos con plátano, gofio y miel de palma, junto a varias frutas tropicales",
+                fr: "Une plantation de bananes : comment on les cultive depuis toujours, l'histoire du gofio et la façon de le manger, et une dégustation de produits à base de banane, de gofio et de miel de palme, avec plusieurs fruits tropicaux" } },
       { text: { it: "Sosta al Mirador de La Centinela, a San Miguel de Abona: come si sono formati i vulcani di questa parte dell'isola",
                 en: "A stop at the Mirador de La Centinela, in San Miguel de Abona: how the volcanoes of this part of the island were formed",
-                es: "Parada en el Mirador de La Centinela, en San Miguel de Abona: cómo se formaron los volcanes de esta parte de la isla" } },
+                es: "Parada en el Mirador de La Centinela, en San Miguel de Abona: cómo se formaron los volcanes de esta parte de la isla",
+                fr: "Un arrêt au Mirador de La Centinela, à San Miguel de Abona : comment se sont formés les volcans de cette partie de l'île" } },
       { text: { it: "Su, oltre i 1200 metri, fino alla cantina: la visita fra vasche e macchinari, e la degustazione di cinque vini con prodotti locali",
                 en: "Up above 1,200 metres to the winery: a tour among the tanks and machinery, then a tasting of five wines with local produce",
-                es: "Subida a más de 1200 metros hasta la bodega: la visita entre depósitos y maquinaria, y la cata de cinco vinos con productos locales" } },
+                es: "Subida a más de 1200 metros hasta la bodega: la visita entre depósitos y maquinaria, y la cata de cinco vinos con productos locales",
+                fr: "Montée au-dessus de 1 200 mètres jusqu'au domaine viticole : visite entre les cuves et les machines, puis dégustation de cinq vins avec des produits locaux" } },
       { time: "13:00",
         text: { it: "Rientro in hotel",
                 en: "Back to the hotel",
-                es: "Regreso al hotel" } }
+                es: "Regreso al hotel",
+                fr: "Retour à l'hôtel" } }
     ],
     family: true,
     desc: {
       it: "Una mattina nell'entroterra del sud, dalla banana al vino. Prima una finca di banane, dove si scopre come si coltivano e si assaggiano gofio, miele di palma e frutta tropicale; poi il belvedere sui vulcani di San Miguel e, oltre i 1200 metri, una cantina con cinque vini da provare. Bus climatizzato e guida, e all'una si è di nuovo in hotel.",
       en: "A morning in the southern hills, from bananas to wine. First a banana farm, where you see how they are grown and taste gofio, palm honey and tropical fruit; then the viewpoint over the volcanoes of San Miguel and, above 1,200 metres, a winery with five wines to try. Air-conditioned bus and guide, and you are back at the hotel by one.",
-      es: "Una mañana por las medianías del sur, del plátano al vino. Primero una finca platanera, donde se ve cómo se cultiva y se prueban gofio, miel de palma y fruta tropical; luego el mirador sobre los volcanes de San Miguel y, a más de 1200 metros, una bodega con cinco vinos para catar. Bus climatizado y guía, y a la una de vuelta en el hotel."
+      es: "Una mañana por las medianías del sur, del plátano al vino. Primero una finca platanera, donde se ve cómo se cultiva y se prueban gofio, miel de palma y fruta tropical; luego el mirador sobre los volcanes de San Miguel y, a más de 1200 metros, una bodega con cinco vinos para catar. Bus climatizado y guía, y a la una de vuelta en el hotel.",
+      fr: "Une matinée sur les hauteurs du sud, de la banane au vin. D'abord une plantation de bananes, où l'on voit comment on les cultive et où l'on goûte gofio, miel de palme et fruits tropicaux ; puis le belvédère sur les volcans de San Miguel et, au-dessus de 1 200 mètres, un domaine avec cinq vins à goûter. Bus climatisé et guide, et vous êtes de retour à l'hôtel pour une heure."
     },
     // La grafica del volantino ("Bananas & Wines", banane, uva, vendemmia),
     // mandata dal proprietario il 6 ottobre 2026 come foto della scheda. E'
@@ -6029,7 +6541,7 @@ const ESPLORA_CATALOG = [
     // Finca Tuno Canarias (Ledesma Global SL), Valle San Lorenzo, Arona: dalla
     // pagina del fornitore mandata il 6 ottobre 2026. Il "tuno" e' il fico
     // d'India, e "Higo Tinto" e' il nome registrato della loro varieta' rossa:
-    // resta scritto cosi' nelle tre lingue, come un nome proprio. La pagina in
+    // resta scritto cosi' in tutte le lingue, come un nome proprio. La pagina in
     // italiano dice "fico Tinto", che e' la traduzione automatica di "higo".
     // Non copiati: le recensioni Google, "posti che si riempiono in fretta",
     // il negozio dei souvenir.
@@ -6041,7 +6553,7 @@ const ESPLORA_CATALOG = [
     // scheda sta in PICKUP_NESSUNO (hotel.js) e l'indirizzo e' nelle note.
     zone: "Valle San Lorenzo (Arona)",
     zoneGroups: ["los-cristianos"],
-    duration: { it: "1 ora e mezza circa", en: "About 1.5 hours", es: "1 hora y media aprox." },
+    duration: { it: "1 ora e mezza circa", en: "About 1.5 hours", es: "1 hora y media aprox.", fr: "Environ 1 heure et demie" },
     durationGroups: ["breve"],
     // Visite tutti i giorni, quindi niente `days`.
     times: ["09:00", "10:30", "12:30", "14:00", "15:30", "17:00", "18:30"],
@@ -6060,33 +6572,41 @@ const ESPLORA_CATALOG = [
     itinerary: [
       { text: { it: "Un breve video sulla storia della finca e della famiglia che la coltiva",
                 en: "A short video on the story of the farm and the family who grows it",
-                es: "Un vídeo corto sobre la historia de la finca y de la familia que la cultiva" } },
+                es: "Un vídeo corto sobre la historia de la finca y de la familia que la cultiva",
+                fr: "Une courte vidéo sur l'histoire de la ferme et de la famille qui la cultive" } },
       { text: { it: "Il piccolo museo etnografico, con gli oggetti della vita contadina canaria di una volta",
                 en: "The small ethnographic museum, with objects from Canarian farm life of the past",
-                es: "El pequeño museo etnográfico, con objetos de la vida campesina canaria de antes" } },
+                es: "El pequeño museo etnográfico, con objetos de la vida campesina canaria de antes",
+                fr: "Le petit musée ethnographique, avec des objets de la vie paysanne canarienne d'autrefois" } },
       { text: { it: "La passeggiata guidata fra i fichi d'India e il paesaggio vulcanico, con le soste ai belvedere e la raccolta e la sbucciatura a mano come si faceva un tempo",
                 en: "The guided walk among the prickly pears and the volcanic landscape, with stops at the viewpoints and a demonstration of the old way of picking and peeling by hand",
-                es: "El paseo guiado entre las tuneras y el paisaje volcánico, con paradas en los miradores y la recogida y el pelado a mano como se hacía antes" } },
+                es: "El paseo guiado entre las tuneras y el paisaje volcánico, con paradas en los miradores y la recogida y el pelado a mano como se hacía antes",
+                fr: "La promenade guidée entre les figuiers de Barbarie et le paysage volcanique, avec des arrêts aux belvédères et une démonstration de l'ancienne façon de cueillir et d'éplucher à la main" } },
       { text: { it: "La degustazione: frutta appena tagliata e i prodotti fatti con l'Higo Tinto, poi un po' di tempo libero nel patio canario",
                 en: "The tasting: freshly cut fruit and products made with Higo Tinto, then some free time in the Canarian courtyard",
-                es: "La degustación: fruta recién cortada y productos hechos con Higo Tinto, y después un rato libre en el patio canario" } }
+                es: "La degustación: fruta recién cortada y productos hechos con Higo Tinto, y después un rato libre en el patio canario",
+                fr: "La dégustation : fruits fraîchement coupés et produits à base de Higo Tinto, puis un peu de temps libre dans la cour canarienne" } }
     ],
     notes: [
       { it: "La finca è all'incrocio fra Calle Argüamul e Calle Solana, a Valle San Lorenzo (Arona), a circa 8 minuti da Los Cristianos e Las Américas. Il ritiro in hotel non c'è: ci si arriva per conto proprio.",
         en: "The farm is at the corner of Calle Argüamul and Calle Solana, in Valle San Lorenzo (Arona), about 8 minutes from Los Cristianos and Las Américas. There is no hotel pickup: you make your own way there.",
-        es: "La finca está en el cruce de Calle Argüamul con Calle Solana, en Valle San Lorenzo (Arona), a unos 8 minutos de Los Cristianos y Las Américas. No hay recogida en el hotel: se llega por cuenta propia." },
+        es: "La finca está en el cruce de Calle Argüamul con Calle Solana, en Valle San Lorenzo (Arona), a unos 8 minutos de Los Cristianos y Las Américas. No hay recogida en el hotel: se llega por cuenta propia.",
+        fr: "La ferme est à l'angle de la Calle Argüamul et de la Calle Solana, à Valle San Lorenzo (Arona), à environ 8 minutes de Los Cristianos et de Las Américas. Il n'y a pas de prise en charge à l'hôtel : on s'y rend par ses propres moyens." },
       { it: "La guida parla inglese, spagnolo o francese, a seconda del turno. Per seguire la visita in un'altra lingua ci sono le cuffie con l'audio tradotto, anche in italiano: si chiedono arrivando alla finca.",
         en: "The guide speaks English, Spanish or French, depending on the time slot. To follow the visit in another language there are headphones with translated audio: ask for them when you arrive at the farm.",
-        es: "El guía habla inglés, español o francés, según el turno. Para seguir la visita en otro idioma hay auriculares con el audio traducido: se piden al llegar a la finca." },
+        es: "El guía habla inglés, español o francés, según el turno. Para seguir la visita en otro idioma hay auriculares con el audio traducido: se piden al llegar a la finca.",
+        fr: "Le guide parle anglais, espagnol ou français, selon le créneau. Pour suivre la visite dans une autre langue, il y a des écouteurs avec l'audio traduit : demandez-les en arrivant à la ferme." },
       { it: "Si va in piccoli gruppi.",
         en: "Visits are in small groups.",
-        es: "Se va en grupos pequeños." }
+        es: "Se va en grupos pequeños.",
+        fr: "Les visites se font en petits groupes." }
     ],
     family: true,
     desc: {
       it: "Un'ora e mezza in una finca di fichi d'India nella valle sopra Los Cristianos. Si cammina fra i cactus e la terra vulcanica con una guida, si vede come si raccolgono e si sbucciano a mano, e alla fine si assaggiano la frutta e i prodotti dell'Higo Tinto, la loro varietà rossa: quella che lascia la lingua colorata. C'è anche un piccolo museo della vita contadina canaria.",
       en: "An hour and a half on a prickly pear farm in the valley above Los Cristianos. You walk among the cactus and the volcanic soil with a guide, see how the fruit is picked and peeled by hand, and at the end taste the fruit and the products of Higo Tinto, their red variety: the one that turns your tongue red. There is also a small museum of Canarian farm life.",
-      es: "Una hora y media en una finca de tuneras en el valle sobre Los Cristianos. Se camina entre los cactus y la tierra volcánica con un guía, se ve cómo se recogen y se pelan los tunos a mano, y al final se prueban la fruta y los productos del Higo Tinto, su variedad roja: la que deja la lengua de color. Hay también un pequeño museo de la vida campesina canaria."
+      es: "Una hora y media en una finca de tuneras en el valle sobre Los Cristianos. Se camina entre los cactus y la tierra volcánica con un guía, se ve cómo se recogen y se pelan los tunos a mano, y al final se prueban la fruta y los productos del Higo Tinto, su variedad roja: la que deja la lengua de color. Hay también un pequeño museo de la vida campesina canaria.",
+      fr: "Une heure et demie dans une ferme de figues de Barbarie dans la vallée au-dessus de Los Cristianos. On marche entre les cactus et la terre volcanique avec un guide, on voit comment le fruit se cueille et s'épluche à la main, et à la fin on goûte le fruit et les produits de Higo Tinto, leur variété rouge : celle qui vous rougit la langue. Il y a aussi un petit musée de la vie paysanne canarienne."
     },
     // Due foto della finca mandate dal proprietario (6 ottobre 2026), verticali
     // 1536x2048 e ritagliate a 3:2. La principale e' il campo di fichi d'India
@@ -6111,10 +6631,10 @@ const ESPLORA_CATALOG = [
     // file: due modi di pagare diversi sulla stessa scheda avrebbero messo
     // "da €24" e "da €86 a gruppo" nella stessa riga di prezzo.
     id: "tuk-tuk",
-    title: { it: "Tour in tuk tuk", en: "Tuk Tuk Tour", es: "Tour en tuk tuk" },
+    title: { it: "Tour in tuk tuk", en: "Tuk Tuk Tour", es: "Tour en tuk tuk", fr: "Tuk Tuk Tour" },
     category: "tour-isola",
     zone: "Costa Adeje",
-    duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+    duration: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
     // Partenze ogni ora dalle 9 alle 20, uguali per tutti i percorsi in tuk tuk,
@@ -6149,29 +6669,33 @@ const ESPLORA_CATALOG = [
       {
         it: "Il ritrovo è davanti al ristorante Wakanda Origen, in Avenida de España 10, a Costa Adeje. Il ritiro in hotel non è compreso: al punto di partenza ci si arriva per conto proprio, 10-15 minuti prima della partenza.",
         en: "The meeting point is in front of the Wakanda Origen restaurant, Avenida de España 10, Costa Adeje. Hotel pickup is not included: you reach the departure point on your own, 10-15 minutes before the start.",
-        es: "El punto de encuentro es frente al restaurante Wakanda Origen, en Avenida de España 10, Costa Adeje. La recogida en el hotel no está incluida: al punto de salida se llega por cuenta propia, 10-15 minutos antes de la salida."
+        es: "El punto de encuentro es frente al restaurante Wakanda Origen, en Avenida de España 10, Costa Adeje. La recogida en el hotel no está incluida: al punto de salida se llega por cuenta propia, 10-15 minutos antes de la salida.",
+        fr: "Le rendez-vous est devant le restaurant Wakanda Origen, Avenida de España 10, Costa Adeje. La prise en charge à l'hôtel n'est pas comprise : on se rend au point de départ par ses propres moyens, 10-15 minutes avant le début."
       },
       {
         it: "Su ogni tuk tuk salgono al massimo 6 persone, sedute vicine e una di fronte all'altra. I bambini fino a 2 anni non pagano, ma viaggiano in braccio a un adulto con la cintura allacciata: è la regola del fornitore.",
         en: "Each tuk tuk takes up to 6 people, seated close together and facing each other. Children up to 2 years old travel free, but on an adult's lap with the seatbelt fastened: that is the supplier's rule.",
-        es: "En cada tuk tuk suben como máximo 6 personas, sentadas juntas y unas frente a otras. Los niños de hasta 2 años no pagan, pero viajan en el regazo de un adulto con el cinturón abrochado: es la norma del proveedor."
+        es: "En cada tuk tuk suben como máximo 6 personas, sentadas juntas y unas frente a otras. Los niños de hasta 2 años no pagan, pero viajan en el regazo de un adulto con el cinturón abrochado: es la norma del proveedor.",
+        fr: "Chaque tuk-tuk prend jusqu'à 6 personnes, assises serrées et face à face. Les enfants jusqu'à 2 ans voyagent gratuitement, mais sur les genoux d'un adulte avec la ceinture attachée : c'est la règle du fournisseur."
       },
       {
         it: "Il fornitore consiglia il tuk tuk in privato a chi ha difficoltà a muoversi o ha bisogno di più spazio: i posti restano gli stessi, ma il mezzo è solo del gruppo.",
         en: "The supplier recommends the private tuk tuk for anyone with reduced mobility or who needs more room: the seats are the same, but the vehicle is your group's alone.",
-        es: "El proveedor recomienda el tuk tuk en privado a quien tiene dificultades de movilidad o necesita más espacio: las plazas son las mismas, pero el vehículo es solo del grupo."
+        es: "El proveedor recomienda el tuk tuk en privado a quien tiene dificultades de movilidad o necesita más espacio: las plazas son las mismas, pero el vehículo es solo del grupo.",
+        fr: "Le fournisseur conseille le tuk-tuk privé aux personnes à mobilité réduite ou qui ont besoin de plus de place : les sièges sont les mêmes, mais le véhicule est seulement pour votre groupe."
       },
       {
         it: "Porta crema solare e una bottiglia d'acqua.",
         en: "Bring sunscreen and a bottle of water.",
-        es: "Lleva crema solar y una botella de agua."
+        es: "Lleva crema solar y una botella de agua.",
+        fr: "Apportez de la crème solaire et une bouteille d'eau."
       }
     ],
     // I nomi sono quelli del sito del fornitore e restano uguali nelle tre
     // lingue, come i nomi delle barche: sono quelli che l'ufficio cerca nel
     // sistema quando conferma, e arrivano su WhatsApp scritti cosi'.
     options: {
-      label: { it: "Percorso", en: "Route", es: "Ruta" },
+      label: { it: "Percorso", en: "Route", es: "Ruta", fr: "Parcours" },
       choices: [
         {
           label: "Costa Adeje Tour",
@@ -6180,7 +6704,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Il giro dei paesi e delle spiagge del sud: Fañabé, la zona del Duque, la spiaggia della Enramada, La Caleta e Torviscas. Lungo la strada la guida racconta dove si mangia davvero e cosa vale la pena vedere nei giorni che restano.",
             en: "The tour of the southern villages and beaches: Fañabé, the Duque area, La Enramada beach, La Caleta and Torviscas. Along the way the guide tells you where people really eat and what is worth seeing in the days you have left.",
-            es: "El recorrido por los pueblos y las playas del sur: Fañabé, la zona del Duque, la playa de La Enramada, La Caleta y Torviscas. Por el camino el guía cuenta dónde se come de verdad y qué merece la pena ver en los días que quedan."
+            es: "El recorrido por los pueblos y las playas del sur: Fañabé, la zona del Duque, la playa de La Enramada, La Caleta y Torviscas. Por el camino el guía cuenta dónde se come de verdad y qué merece la pena ver en los días que quedan.",
+            fr: "Le tour des villages et des plages du sud : Fañabé, la zone du Duque, la plage de La Enramada, La Caleta et Torviscas. En chemin, le guide vous dit où les gens mangent vraiment et ce qui vaut la peine d'être vu pendant les jours qui vous restent."
           }
         },
         {
@@ -6190,7 +6715,8 @@ const ESPLORA_CATALOG = [
           desc: {
             it: "Da Puerto Colón si sale alla Caldera del Rey, il monumento naturale sopra Costa Adeje: un vulcano spento, oggi coperto di piantagioni di banane, con La Gomera all'orizzonte. Per strada Torviscas, la marina e Las Américas, e la guida racconta com'è nata l'isola.",
             en: "From Puerto Colón you climb to the Caldera del Rey, the natural monument above Costa Adeje: an extinct volcano, now covered in banana plantations, with La Gomera on the horizon. On the way, Torviscas, the marina and Las Américas, while the guide tells you how the island was born.",
-            es: "Desde Puerto Colón se sube a la Caldera del Rey, el monumento natural sobre Costa Adeje: un volcán apagado, hoy cubierto de plataneras, con La Gomera en el horizonte. Por el camino, Torviscas, la marina y Las Américas, mientras el guía cuenta cómo nació la isla."
+            es: "Desde Puerto Colón se sube a la Caldera del Rey, el monumento natural sobre Costa Adeje: un volcán apagado, hoy cubierto de plataneras, con La Gomera en el horizonte. Por el camino, Torviscas, la marina y Las Américas, mientras el guía cuenta cómo nació la isla.",
+            fr: "De Puerto Colón, on monte à la Caldera del Rey, le monument naturel au-dessus de Costa Adeje : un volcan éteint, aujourd'hui couvert de bananeraies, avec La Gomera à l'horizon. En chemin, Torviscas, la marina et Las Américas, pendant que le guide raconte comment l'île est née."
           }
         }
       ]
@@ -6199,7 +6725,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Un'ora in tuk tuk elettrico sulla costa di Adeje, con una guida che racconta. Due percorsi: quello dei paesi e delle spiagge del sud e quello che sale alla Caldera del Rey, il vulcano spento sopra Costa Adeje. Si va in sei, e c'è anche la versione privata.",
       en: "An hour in an electric tuk tuk along the Adeje coast, with a guide who tells you about it. Two routes: the southern villages and beaches, and the climb to the Caldera del Rey, the extinct volcano above Costa Adeje. Six people go at a time, and there is a private version too.",
-      es: "Una hora en tuk tuk eléctrico por la costa de Adeje, con un guía que lo cuenta. Dos recorridos: el de los pueblos y las playas del sur y el que sube a la Caldera del Rey, el volcán apagado sobre Costa Adeje. Se va de seis en seis, y también existe la versión privada."
+      es: "Una hora en tuk tuk eléctrico por la costa de Adeje, con un guía que lo cuenta. Dos recorridos: el de los pueblos y las playas del sur y el que sube a la Caldera del Rey, el volcán apagado sobre Costa Adeje. Se va de seis en seis, y también existe la versión privada.",
+      fr: "Une heure en tuk-tuk électrique le long de la côte d'Adeje, avec un guide qui la raconte. Deux parcours : les villages et les plages du sud, et la montée à la Caldera del Rey, le volcan éteint au-dessus de Costa Adeje. On part à six à la fois, et il existe aussi une version privée."
     },
     // Il rimando alla scheda privata, come sulle barche. Le due frasi sono
     // scritte qui e non prese da i18n.js perche' quelle fisse dicono "vuoi la
@@ -6209,22 +6736,24 @@ const ESPLORA_CATALOG = [
     privateTitle: {
       it: "Vuoi il tuk tuk solo per il tuo gruppo?",
       en: "Want the tuk tuk just for your group?",
-      es: "¿Quieres el tuk tuk solo para tu grupo?"
+      es: "¿Quieres el tuk tuk solo para tu grupo?",
+      fr: "Vous voulez le tuk-tuk rien que pour votre groupe ?"
     },
     privateLink: {
       it: "Vedi i giri privati",
       en: "See the private tours",
-      es: "Ver los tours privados"
+      es: "Ver los tours privados",
+      fr: "Voir les visites privées"
     },
     image: "tuk-tuk.jpg",
     published: true
   },
   {
     id: "trenino-turistico",
-    title: { it: "Trenino turistico", en: "Tourist Train", es: "Tren turístico" },
+    title: { it: "Trenino turistico", en: "Tourist Train", es: "Tren turístico", fr: "Petit train touristique" },
     category: "tour-isola",
     zone: "Costa Adeje – Los Cristianos",
-    duration: { it: "Tutto il giorno", en: "All day", es: "Todo el día" },
+    duration: { it: "Tutto il giorno", en: "All day", es: "Todo el día", fr: "Toute la journée" },
     zoneGroups: ["costa-adeje", "los-cristianos"],
     durationGroups: ["breve"],
     priceFrom: 9,
@@ -6235,7 +6764,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Trenino su gomma fra Costa Adeje e Los Cristianos: si sale e si scende alle fermate quando si vuole, il biglietto vale tutta la giornata.",
       en: "A road train between Costa Adeje and Los Cristianos: hop on and off at the stops as you like, the ticket lasts all day.",
-      es: "Tren sobre ruedas entre Costa Adeje y Los Cristianos: subes y bajas en las paradas cuando quieras, el billete vale todo el día."
+      es: "Tren sobre ruedas entre Costa Adeje y Los Cristianos: subes y bajas en las paradas cuando quieras, el billete vale todo el día.",
+      fr: "Un petit train routier entre Costa Adeje et Los Cristianos : on monte et on descend aux arrêts comme on veut, le billet vaut toute la journée."
     },
     image: "trenino-turistico.jpg",
     // Spento il 12 ottobre 2026 dal proprietario, "al momento". La scheda
@@ -6252,8 +6782,8 @@ const ESPLORA_CATALOG = [
     // "8 horas aprox.". La zona non la scrive: "Tenerife Sud" e il filtro
     // "Teide e nord" come le altre gite al Teide dello stesso fornitore, che
     // raccolgono al sud — e il giro finisce "nel nostro scendere verso sud".
-    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur" },
-    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox." },
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur", fr: "Sud de Tenerife" },
+    duration: { it: "8 ore circa", en: "About 8 hours", es: "8 horas aprox.", fr: "Environ 8 heures" },
     zoneGroups: ["teide-nord"],
     durationGroups: ["intera"],
     priceFrom: 80,
@@ -6267,21 +6797,24 @@ const ESPLORA_CATALOG = [
         text: {
           it: "Discesa verso Masca: il borgo in fondo al barranco, fra le palme e le pareti di roccia che scendono fino al mare",
           en: "The road down to Masca: the hamlet at the bottom of the ravine, among the palms and the rock walls that drop to the sea",
-          es: "Bajada hacia Masca: el caserío en el fondo del barranco, entre las palmeras y las paredes de roca que caen al mar"
+          es: "Bajada hacia Masca: el caserío en el fondo del barranco, entre las palmeras y las paredes de roca que caen al mar",
+          fr: "La route qui descend à Masca : le hameau au fond du ravin, entre les palmiers et les parois rocheuses qui tombent dans la mer"
         }
       },
       {
         text: {
           it: "Parco Nazionale delle Cañadas del Teide, patrimonio Unesco: colate di lava, piante che crescono solo qui e il vulcano più alto della Spagna, 3.718 metri",
           en: "Las Cañadas del Teide National Park, a Unesco site: lava flows, plants that grow nowhere else and the highest volcano in Spain, 3,718 metres",
-          es: "Parque Nacional de Las Cañadas del Teide, patrimonio de la Unesco: coladas de lava, plantas que solo crecen aquí y el volcán más alto de España, 3.718 metros"
+          es: "Parque Nacional de Las Cañadas del Teide, patrimonio de la Unesco: coladas de lava, plantas que solo crecen aquí y el volcán más alto de España, 3.718 metros",
+          fr: "Le parc national de Las Cañadas del Teide, site Unesco : coulées de lave, plantes qui ne poussent nulle part ailleurs et le plus haut volcan d'Espagne, 3 718 mètres"
         }
       },
       {
         text: {
           it: "Nella discesa verso sud, sosta al mirador di Pino Gordo, a Vilaflor, il paese più alto della Spagna",
           en: "On the way back south, a stop at the Pino Gordo viewpoint, in Vilaflor, the highest village in Spain",
-          es: "En la bajada hacia el sur, parada en el mirador de Pino Gordo, en Vilaflor, el pueblo más alto de España"
+          es: "En la bajada hacia el sur, parada en el mirador de Pino Gordo, en Vilaflor, el pueblo más alto de España",
+          fr: "Au retour vers le sud, un arrêt au belvédère du Pino Gordo, à Vilaflor, le village le plus haut d'Espagne"
         }
       }
     ],
@@ -6289,24 +6822,28 @@ const ESPLORA_CATALOG = [
       {
         it: "La salita in funivia è facoltativa e non è compresa nel prezzo: il biglietto si compra sul posto.",
         en: "Going up by cable car is optional and not included in the price: you buy the ticket there.",
-        es: "La subida en teleférico es opcional y no está incluida en el precio: el billete se compra allí."
+        es: "La subida en teleférico es opcional y no está incluida en el precio: el billete se compra allí.",
+        fr: "La montée en téléphérique est facultative et n'est pas comprise dans le prix : le billet s'achète sur place."
       },
       {
         it: "Il pranzo non è compreso nel prezzo.",
         en: "Lunch is not included in the price.",
-        es: "La comida no está incluida en el precio."
+        es: "La comida no está incluida en el precio.",
+        fr: "Le déjeuner n'est pas compris dans le prix."
       },
       {
         it: "Il bus è scoperto e in cima si arriva a oltre 2.000 metri: porta una felpa o una giacca, e cappellino e crema solare per il tratto al sole.",
         en: "The bus is open-top and you get above 2,000 metres up there: bring a sweatshirt or a jacket, plus a hat and sunscreen for the sunny stretch.",
-        es: "El bus es descapotable y arriba se pasa de los 2.000 metros: lleva una sudadera o una chaqueta, y gorra y crema solar para el tramo al sol."
+        es: "El bus es descapotable y arriba se pasa de los 2.000 metros: lleva una sudadera o una chaqueta, y gorra y crema solar para el tramo al sol.",
+        fr: "Le bus est découvert et là-haut on dépasse les 2 000 mètres : apportez un sweat ou une veste, plus un chapeau et de la crème solaire pour les passages au soleil."
       }
     ],
     family: true,
     desc: {
       it: "Masca e il Parco Nazionale del Teide a bordo di un bus scoperto: il paesaggio si guarda a 360°, senza un vetro di mezzo.",
       en: "Masca and Teide National Park aboard an open-top bus: you watch the landscape all around you, with no window in the way.",
-      es: "Masca y el Parque Nacional del Teide a bordo de un bus descapotable: el paisaje se mira en 360°, sin un cristal de por medio."
+      es: "Masca y el Parque Nacional del Teide a bordo de un bus descapotable: el paisaje se mira en 360°, sin un cristal de por medio.",
+      fr: "Masca et le parc national du Teide à bord d'un bus découvert : vous regardez le paysage tout autour de vous, sans vitre entre les deux."
     },
     image: "masca-teide-cabrio-bus.jpg",
     published: true
@@ -6321,17 +6858,18 @@ const ESPLORA_CATALOG = [
     zone: {
       it: "Dipende dalla barca: Puerto Colón, Los Cristianos, Los Gigantes o Las Galletas",
       en: "Depends on the boat: Puerto Colón, Los Cristianos, Los Gigantes or Las Galletas",
-      es: "Depende del barco: Puerto Colón, Los Cristianos, Los Gigantes o Las Galletas"
+      es: "Depende del barco: Puerto Colón, Los Cristianos, Los Gigantes o Las Galletas",
+      fr: "Selon le bateau : Puerto Colón, Los Cristianos, Los Gigantes ou Las Galletas"
     },
     zoneGroups: ["costa-adeje", "los-cristianos", "los-gigantes"],
     // Dal proprietario, 5 ottobre 2026: 3, 6 o 9 ore. Non sono varianti con un
     // bottone perche' manca il prezzo di ciascuna: priceTiers qui sotto non dice
     // a quale durata si riferisce. Nel filtro: 3 ore e' mezza giornata, 6 e 9
     // giornata intera.
-    duration: { it: "3, 6 o 9 ore", en: "3, 6 or 9 hours", es: "3, 6 o 9 horas" },
+    duration: { it: "3, 6 o 9 ore", en: "3, 6 or 9 hours", es: "3, 6 o 9 horas", fr: "3, 6 ou 9 heures" },
     durationGroups: ["mezza", "intera"],
     priceFrom: 350,
-    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo", fr: " par groupe" },
     // La barca e' tutta tua: l'ora di partenza si concorda, non si sceglie da un
     // elenco. `times: []` lascia "Da concordare" come unica voce, invece delle
     // fasce segnaposto che qui sarebbero inventate.
@@ -6347,7 +6885,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Barca riservata solo al tuo gruppo, con percorso e orari concordati. Il prezzo è per l'intera barca, non a persona.",
       en: "A boat reserved for your group alone, with the route and times agreed with you. The price is for the whole boat, not per person.",
-      es: "Barco reservado solo para tu grupo, con ruta y horarios acordados. El precio es por el barco entero, no por persona."
+      es: "Barco reservado solo para tu grupo, con ruta y horarios acordados. El precio es por el barco entero, no por persona.",
+      fr: "Un bateau réservé à votre seul groupe, avec le parcours et les horaires convenus avec vous. Le prix est pour tout le bateau, pas par personne."
     },
     image: "private-charter.jpg",
     published: true
@@ -6364,12 +6903,12 @@ const ESPLORA_CATALOG = [
     title: "3-Hour Whale & Dolphin Boat Trip",
     category: "tour-privati",
     zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
     times: ["09:00", "12:00", "15:00", "18:00"],
     priceFrom: 350,
-    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo", fr: " par groupe" },
     priceAdult: 0,
     priceChild: 0,
     family: true,
@@ -6377,7 +6916,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "La stessa barca a vela per l'avvistamento di balene e delfini, riservata solo al tuo gruppo, con sosta per lo snorkeling. Il prezzo è per l'intera barca, non a persona.",
       en: "The same sailing boat for whale and dolphin watching, reserved for your group alone, with a snorkelling stop. The price is for the whole boat, not per person.",
-      es: "El mismo velero para avistar ballenas y delfines, reservado solo para tu grupo, con parada para hacer snorkel. El precio es por el barco entero, no por persona."
+      es: "El mismo velero para avistar ballenas y delfines, reservado solo para tu grupo, con parada para hacer snorkel. El precio es por el barco entero, no por persona.",
+      fr: "Le même voilier pour l'observation des baleines et des dauphins, réservé à votre seul groupe, avec un arrêt snorkeling. Le prix est pour tout le bateau, pas par personne."
     },
     image: "whale-dolphin-3h.jpg",
     published: true
@@ -6387,13 +6927,13 @@ const ESPLORA_CATALOG = [
     title: "Luxury Catamaran Experience",
     category: "tour-privati",
     zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
     // Stessa barca e stesse partenze della condivisa (proprietario, 9 ottobre 2026).
     times: ["11:00", "14:00", "17:00"],
     priceFrom: 350,
-    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo", fr: " par groupe" },
     priceAdult: 0,
     priceChild: 0,
     family: true,
@@ -6401,7 +6941,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Lo stesso catamarano di categoria superiore, riservato solo al tuo gruppo, con aree lounge e avvistamento di delfini e balene. Il prezzo è per l'intera barca, non a persona.",
       en: "The same upscale catamaran, reserved for your group alone, with lounge areas and dolphin and whale watching. The price is for the whole boat, not per person.",
-      es: "El mismo catamarán de categoría superior, reservado solo para tu grupo, con zonas lounge y avistamiento de delfines y ballenas. El precio es por el barco entero, no por persona."
+      es: "El mismo catamarán de categoría superior, reservado solo para tu grupo, con zonas lounge y avistamiento de delfines y ballenas. El precio es por el barco entero, no por persona.",
+      fr: "Le même catamaran haut de gamme, réservé à votre seul groupe, avec espaces de détente et observation des dauphins et des baleines. Le prix est pour tout le bateau, pas par personne."
     },
     image: "luxury-catamaran.jpg",
     published: true
@@ -6411,13 +6952,13 @@ const ESPLORA_CATALOG = [
     title: "Small Group Catamaran",
     category: "tour-privati",
     zone: "Puerto Colón",
-    duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas" },
+    duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas", fr: "3 ou 6 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza", "intera"],
     // Stesse partenze del giro condiviso (proprietario, 9 ottobre 2026).
     times: ["09:30", "12:30"],
     priceFrom: 350,
-    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo", fr: " par groupe" },
     priceAdult: 0,
     priceChild: 0,
     family: true,
@@ -6425,7 +6966,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Lo stesso catamarano fino a 23 persone, tutto per il tuo gruppo, per tre o sei ore lungo la costa con sosta bagno, snorkeling e paella di pollo a bordo. Il prezzo è per l'intera barca, non a persona.",
       en: "The same catamaran that takes up to 23 people, all to yourselves, for three or six hours along the coast with a swim stop, snorkelling and chicken paella on board. The price is for the whole boat, not per person.",
-      es: "El mismo catamarán que lleva hasta 23 personas, todo para tu grupo, durante tres o seis horas por la costa con parada de baño, snorkel y paella de pollo a bordo. El precio es por el barco entero, no por persona."
+      es: "El mismo catamarán que lleva hasta 23 personas, todo para tu grupo, durante tres o seis horas por la costa con parada de baño, snorkel y paella de pollo a bordo. El precio es por el barco entero, no por persona.",
+      fr: "Le même catamaran qui accueille jusqu'à 23 personnes, rien que pour vous, pendant trois ou six heures le long de la côte avec arrêt baignade, snorkeling et paella au poulet à bord. Le prix est pour tout le bateau, pas par personne."
     },
     image: "small-group-catamaran.jpg",
     published: true
@@ -6435,12 +6977,12 @@ const ESPLORA_CATALOG = [
     title: "Opera 60",
     category: "tour-privati",
     zone: "Puerto Colón",
-    duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas" },
+    duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas", fr: "De 3 à 9 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza", "intera"],
     times: ["10:00", "13:30"],
     priceFrom: 350,
-    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo", fr: " par groupe" },
     priceAdult: 0,
     priceChild: 0,
     family: true,
@@ -6448,7 +6990,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Lo stesso gommone rigido di diciotto metri, riservato al tuo gruppo, da tre a nove ore lungo la costa sud-ovest, con snorkeling, cibo e bevande a bordo. Il prezzo è per l'intera barca, non a persona.",
       en: "The same eighteen-metre rigid inflatable, reserved for your group, from three to nine hours along the south-west coast, with snorkelling, food and drinks on board. The price is for the whole boat, not per person.",
-      es: "La misma neumática rígida de dieciocho metros, reservada para tu grupo, de tres a nueve horas por la costa suroeste, con snorkel, comida y bebida a bordo. El precio es por el barco entero, no por persona."
+      es: "La misma neumática rígida de dieciocho metros, reservada para tu grupo, de tres a nueve horas por la costa suroeste, con snorkel, comida y bebida a bordo. El precio es por el barco entero, no por persona.",
+      fr: "Le même semi-rigide de dix-huit mètres, réservé à votre groupe, de trois à neuf heures le long de la côte sud-ouest, avec snorkeling, nourriture et boissons à bord. Le prix est pour tout le bateau, pas par personne."
     },
     image: "opera-60.jpg",
     published: true
@@ -6458,12 +7001,12 @@ const ESPLORA_CATALOG = [
     title: "Skyline Cruiser",
     category: "tour-privati",
     zone: "Puerto Colón",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["mezza"],
     times: ["09:45", "13:15", "16:20"],
     priceFrom: 350,
-    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo", fr: " par groupe" },
     priceAdult: 0,
     priceChild: 0,
     family: true,
@@ -6471,7 +7014,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Lo stesso motoryacht Fairline di quasi 13 metri, riservato al tuo gruppo, con capitano ed equipaggio, snack e bevande comprese. Il prezzo è per l'intera barca, non a persona.",
       en: "The same Fairline motor yacht, just under 13 metres, reserved for your group, with captain and crew, snacks and drinks included. The price is for the whole boat, not per person.",
-      es: "El mismo yate a motor Fairline, de casi 13 metros, reservado para tu grupo, con capitán y tripulación, aperitivos y bebidas incluidas. El precio es por el barco entero, no por persona."
+      es: "El mismo yate a motor Fairline, de casi 13 metros, reservado para tu grupo, con capitán y tripulación, aperitivos y bebidas incluidas. El precio es por el barco entero, no por persona.",
+      fr: "Le même yacht à moteur Fairline, d'un peu moins de 13 mètres, réservé à votre groupe, avec capitaine et équipage, en-cas et boissons compris. Le prix est pour tout le bateau, pas par personne."
     },
     image: "skyline-cruiser.jpg",
     published: true
@@ -6481,7 +7025,7 @@ const ESPLORA_CATALOG = [
     title: "Luxury Cruiser Experience",
     category: "tour-privati",
     zone: "Las Galletas",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["mezza"],
     // La barca e' tutta del gruppo: l'ora si concorda, non si sceglie fra le
@@ -6493,7 +7037,7 @@ const ESPLORA_CATALOG = [
     // "da €350" letto dal cliente e poi corretto a €450 dall'ufficio sarebbe
     // un prezzo alzato dopo, che e' la cosa da non fare mai.
     priceFrom: 450,
-    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo", fr: " par groupe" },
     priceAdult: 0,
     priceChild: 0,
     family: true,
@@ -6501,12 +7045,14 @@ const ESPLORA_CATALOG = [
     transfer: {
       it: "Ritiro dagli hotel del sud dell'isola, circa 30 minuti prima della partenza: €500 invece di €450.",
       en: "Pick-up from hotels in the south of the island, about 30 minutes before departure: €500 instead of €450.",
-      es: "Recogida en los hoteles del sur de la isla, unos 30 minutos antes de la salida: 500 € en lugar de 450 €."
+      es: "Recogida en los hoteles del sur de la isla, unos 30 minutos antes de la salida: 500 € en lugar de 450 €.",
+      fr: "Prise en charge aux hôtels du sud de l'île, environ 30 minutes avant le départ : €500 au lieu de €450."
     },
     desc: {
       it: "Lo stesso cruiser a due ponti, riservato solo al tuo gruppo per tre ore sulla costa sud, con sosta bagno, spuntino e bevande a bordo. Il prezzo è per l'intera barca, non a persona.",
       en: "The same two-deck cruiser, reserved for your group alone for three hours on the south coast, with a swim stop, a snack and drinks on board. The price is for the whole boat, not per person.",
-      es: "El mismo crucero de dos cubiertas, reservado solo para tu grupo durante tres horas por la costa sur, con parada de baño, tentempié y bebidas a bordo. El precio es por el barco entero, no por persona."
+      es: "El mismo crucero de dos cubiertas, reservado solo para tu grupo durante tres horas por la costa sur, con parada de baño, tentempié y bebidas a bordo. El precio es por el barco entero, no por persona.",
+      fr: "Le même bateau à deux ponts, réservé à votre seul groupe pendant trois heures sur la côte sud, avec arrêt baignade, en-cas et boissons à bord. Le prix est pour tout le bateau, pas par personne."
     },
     image: "luxury-cruiser.jpg",
     gallery: ["luxury-cruiser-2.jpg", "luxury-cruiser-3.jpg", "luxury-cruiser-4.jpg"],
@@ -6521,10 +7067,10 @@ const ESPLORA_CATALOG = [
   // gruppo", non tutti e due, e `priceUnit` vale per la scheda intera.
   {
     id: "tuk-tuk-privato",
-    title: { it: "Tuk tuk privato", en: "Private Tuk Tuk Tour", es: "Tuk tuk privado" },
+    title: { it: "Tuk tuk privato", en: "Private Tuk Tuk Tour", es: "Tuk tuk privado", fr: "Tuk Tuk Tour privé" },
     category: "tour-privati",
     zone: "Costa Adeje",
-    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas" },
+    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas", fr: "1 ou 2 heures" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
     // Partenze ogni ora dalle 9 alle 20, uguali per tutti i percorsi in tuk tuk,
@@ -6534,7 +7080,7 @@ const ESPLORA_CATALOG = [
     times: ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"],
     languages: ["Español", "English"],
     priceFrom: 86,
-    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo" },
+    priceUnit: { it: " a gruppo", en: " per group", es: " por grupo", fr: " par groupe" },
     // A gruppo, quindi niente prezzi a persona: il totale automatico non si fa,
     // che e' giusto — il prezzo cambia con quanti sono, e moltiplicarlo per le
     // persone darebbe un numero falso (vedi prezziAPersona() in escursioni.js).
@@ -6546,17 +7092,20 @@ const ESPLORA_CATALOG = [
       {
         it: "Il ritrovo è davanti al ristorante Wakanda Origen, in Avenida de España 10, a Costa Adeje. Il ritiro in hotel non è compreso: al punto di partenza ci si arriva per conto proprio, 10-15 minuti prima della partenza.",
         en: "The meeting point is in front of the Wakanda Origen restaurant, Avenida de España 10, Costa Adeje. Hotel pickup is not included: you reach the departure point on your own, 10-15 minutes before the start.",
-        es: "El punto de encuentro es frente al restaurante Wakanda Origen, en Avenida de España 10, Costa Adeje. La recogida en el hotel no está incluida: al punto de salida se llega por cuenta propia, 10-15 minutos antes de la salida."
+        es: "El punto de encuentro es frente al restaurante Wakanda Origen, en Avenida de España 10, Costa Adeje. La recogida en el hotel no está incluida: al punto de salida se llega por cuenta propia, 10-15 minutos antes de la salida.",
+        fr: "Le rendez-vous est devant le restaurant Wakanda Origen, Avenida de España 10, Costa Adeje. La prise en charge à l'hôtel n'est pas comprise : on se rend au point de départ par ses propres moyens, 10-15 minutes avant le début."
       },
       {
         it: "Il tuk tuk ha 6 posti, vicini e uno di fronte all'altro: il prezzo vale per tutto il mezzo, fino a 6 persone. I bambini fino a 2 anni viaggiano in braccio a un adulto con la cintura allacciata.",
         en: "The tuk tuk has 6 seats, close together and facing each other: the price is for the whole vehicle, up to 6 people. Children up to 2 years old travel on an adult's lap with the seatbelt fastened.",
-        es: "El tuk tuk tiene 6 plazas, juntas y unas frente a otras: el precio es por el vehículo entero, hasta 6 personas. Los niños de hasta 2 años viajan en el regazo de un adulto con el cinturón abrochado."
+        es: "El tuk tuk tiene 6 plazas, juntas y unas frente a otras: el precio es por el vehículo entero, hasta 6 personas. Los niños de hasta 2 años viajan en el regazo de un adulto con el cinturón abrochado.",
+        fr: "Le tuk-tuk a 6 places, serrées et face à face : le prix est pour tout le véhicule, jusqu'à 6 personnes. Les enfants jusqu'à 2 ans voyagent sur les genoux d'un adulte avec la ceinture attachée."
       },
       {
         it: "Porta crema solare e una bottiglia d'acqua.",
         en: "Bring sunscreen and a bottle of water.",
-        es: "Lleva crema solar y una botella de agua."
+        es: "Lleva crema solar y una botella de agua.",
+        fr: "Apportez de la crème solaire et une bouteille d'eau."
       }
     ],
     // I due scaglioni (fino a 3 e fino a 6 persone) stanno nella descrizione
@@ -6567,36 +7116,39 @@ const ESPLORA_CATALOG = [
     // sono il cliente lo scrive gia' nella richiesta: un secondo numero,
     // scelto a parte, potrebbe contraddire il primo.
     options: {
-      label: { it: "Percorso", en: "Route", es: "Ruta" },
+      label: { it: "Percorso", en: "Route", es: "Ruta", fr: "Parcours" },
       choices: [
         {
           label: "Costa Adeje Private Tour",
           price: 86,
-          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure" },
           desc: {
             it: "86 € per un gruppo fino a 3 persone, 128 € fino a 6. Il giro dei paesi e delle spiagge del sud — Fañabé, la zona del Duque, la Enramada, La Caleta, Torviscas — con il tuk tuk solo per voi.",
             en: "€86 for a group of up to 3, €128 up to 6. The tour of the southern villages and beaches — Fañabé, the Duque area, La Enramada, La Caleta, Torviscas — with the tuk tuk to yourselves.",
-            es: "86 € para un grupo de hasta 3 personas, 128 € hasta 6. El recorrido por los pueblos y las playas del sur — Fañabé, la zona del Duque, La Enramada, La Caleta, Torviscas — con el tuk tuk solo para vosotros."
+            es: "86 € para un grupo de hasta 3 personas, 128 € hasta 6. El recorrido por los pueblos y las playas del sur — Fañabé, la zona del Duque, La Enramada, La Caleta, Torviscas — con el tuk tuk solo para vosotros.",
+            fr: "€86 pour un groupe jusqu'à 3, €128 jusqu'à 6. Le tour des villages et des plages du sud — Fañabé, la zone du Duque, La Enramada, La Caleta, Torviscas — avec le tuk-tuk rien que pour vous."
           }
         },
         {
           label: "Secret Volcano Private Tour",
           price: 86,
-          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure" },
           desc: {
             it: "86 € per un gruppo fino a 3 persone, 128 € fino a 6. La salita alla Caldera del Rey, il vulcano spento coperto di piantagioni di banane sopra Costa Adeje, con il tuk tuk solo per voi.",
             en: "€86 for a group of up to 3, €128 up to 6. The climb to the Caldera del Rey, the extinct volcano covered in banana plantations above Costa Adeje, with the tuk tuk to yourselves.",
-            es: "86 € para un grupo de hasta 3 personas, 128 € hasta 6. La subida a la Caldera del Rey, el volcán apagado cubierto de plataneras sobre Costa Adeje, con el tuk tuk solo para vosotros."
+            es: "86 € para un grupo de hasta 3 personas, 128 € hasta 6. La subida a la Caldera del Rey, el volcán apagado cubierto de plataneras sobre Costa Adeje, con el tuk tuk solo para vosotros.",
+            fr: "€86 pour un groupe jusqu'à 3, €128 jusqu'à 6. La montée à la Caldera del Rey, le volcan éteint couvert de bananeraies au-dessus de Costa Adeje, avec le tuk-tuk rien que pour vous."
           }
         },
         {
           label: "Double Private Tour",
           price: 136,
-          duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          duration: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures" },
           desc: {
             it: "136 € per un gruppo fino a 3 persone, 198 € fino a 6. Due ore, i due percorsi in uno: prima la salita alla Caldera del Rey, poi tutta la costa fino a La Caleta.",
             en: "€136 for a group of up to 3, €198 up to 6. Two hours, the two routes in one: first the climb to the Caldera del Rey, then the whole coast down to La Caleta.",
-            es: "136 € para un grupo de hasta 3 personas, 198 € hasta 6. Dos horas, los dos recorridos en uno: primero la subida a la Caldera del Rey, después toda la costa hasta La Caleta."
+            es: "136 € para un grupo de hasta 3 personas, 198 € hasta 6. Dos horas, los dos recorridos en uno: primero la subida a la Caldera del Rey, después toda la costa hasta La Caleta.",
+            fr: "€136 pour un groupe jusqu'à 3, €198 jusqu'à 6. Deux heures, les deux parcours en un : d'abord la montée à la Caldera del Rey, puis toute la côte jusqu'à La Caleta."
           }
         }
       ]
@@ -6604,7 +7156,8 @@ const ESPLORA_CATALOG = [
     desc: {
       it: "Il tuk tuk elettrico solo per il tuo gruppo, fino a 6 persone: gli stessi due percorsi del giro in condivisione, oppure i due insieme in due ore. Il prezzo è del mezzo e non a persona, e cambia con quanti siete.",
       en: "The electric tuk tuk for your group alone, up to 6 people: the same two routes as the shared ride, or both together over two hours. The price is for the vehicle and not per person, and it changes with how many you are.",
-      es: "El tuk tuk eléctrico solo para tu grupo, hasta 6 personas: los mismos dos recorridos que la salida compartida, o los dos juntos en dos horas. El precio es del vehículo y no por persona, y cambia según cuántos seáis."
+      es: "El tuk tuk eléctrico solo para tu grupo, hasta 6 personas: los mismos dos recorridos que la salida compartida, o los dos juntos en dos horas. El precio es del vehículo y no por persona, y cambia según cuántos seáis.",
+      fr: "Le tuk-tuk électrique pour votre seul groupe, jusqu'à 6 personnes : les deux mêmes parcours que la sortie partagée, ou les deux ensemble en deux heures. Le prix est pour le véhicule et non par personne, et il change selon votre nombre."
     },
     image: "tuk-tuk.jpg",
     published: true

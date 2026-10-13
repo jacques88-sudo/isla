@@ -38,7 +38,7 @@ const ASSIST_MAX_RISULTATI = 5;
 // comunque procurare, quindi conviene farselo chiedere invece di perdere il
 // cliente.
 function assistWhatsappUrl() {
-  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(t("assist.customWa"));
+  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(perUfficio(() => t("assist.customWa")));
 }
 
 // Come tourPrice() in escursioni.js, che qui non e' caricato: l'unita' che

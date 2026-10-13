@@ -11,9 +11,9 @@
 //   schede → gli id delle schede di esplora-catalog.js che usano questa lista.
 //            Una scheda sta in un gruppo solo; una scheda che non sta in
 //            nessun gruppo non mostra il riquadro, e va benissimo così.
-//   cose   → le voci, ognuna nelle tre lingue.
+//   cose   → le voci, ognuna nelle quattro lingue.
 // controlla.js verifica che ogni id esista, che nessuna scheda stia in due
-// gruppi e che ogni voce abbia it, en ed es.
+// gruppi e che ogni voce abbia it, en, es e fr.
 
 const COSE_DA_PORTARE = [
   {
@@ -28,10 +28,10 @@ const COSE_DA_PORTARE = [
       "skyline-cruiser-charter", "luxury-cruiser-charter"
     ],
     cose: [
-      { it: "Costume", en: "Swimsuit", es: "Bañador" },
-      { it: "Crema solare", en: "Sun cream", es: "Crema solar" },
-      { it: "Asciugamano", en: "Towel", es: "Toalla" },
-      { it: "Giacca leggera", en: "Light jacket", es: "Chaqueta ligera" }
+      { it: "Costume", en: "Swimsuit", es: "Bañador", fr: "Maillot de bain" },
+      { it: "Crema solare", en: "Sun cream", es: "Crema solar", fr: "Crème solaire" },
+      { it: "Asciugamano", en: "Towel", es: "Toalla", fr: "Serviette" },
+      { it: "Giacca leggera", en: "Light jacket", es: "Chaqueta ligera", fr: "Veste légère" }
     ]
   },
   {
@@ -43,68 +43,68 @@ const COSE_DA_PORTARE = [
       "masca-teide-cabrio-bus"
     ],
     cose: [
-      { it: "Felpa o giacca", en: "Sweatshirt or jacket", es: "Sudadera o chaqueta" },
-      { it: "Scarpe comode", en: "Comfortable shoes", es: "Calzado cómodo" },
-      { it: "Protezione solare", en: "Sun protection", es: "Protección solar" },
-      { it: "Pranzo, se non è previsto dal tour", en: "Lunch, if the tour doesn't include it", es: "Comida, si el tour no la incluye" }
+      { it: "Felpa o giacca", en: "Sweatshirt or jacket", es: "Sudadera o chaqueta", fr: "Sweat ou veste" },
+      { it: "Scarpe comode", en: "Comfortable shoes", es: "Calzado cómodo", fr: "Chaussures confortables" },
+      { it: "Protezione solare", en: "Sun protection", es: "Protección solar", fr: "Protection solaire" },
+      { it: "Pranzo, se non è previsto dal tour", en: "Lunch, if the tour doesn't include it", es: "Comida, si el tour no la incluye", fr: "Le déjeuner, si l'excursion ne le comprend pas" }
     ]
   },
   {
     gruppo: "Giro in elicottero",
     schede: ["helicopter-tours"],
     cose: [
-      { it: "Documento d'identità valido con foto", en: "Valid photo ID", es: "Documento de identidad válido con foto" },
-      { it: "Abbigliamento comodo", en: "Comfortable clothes", es: "Ropa cómoda" },
-      { it: "Scarpe chiuse", en: "Closed shoes", es: "Calzado cerrado" },
-      { it: "Occhiali da sole", en: "Sunglasses", es: "Gafas de sol" }
+      { it: "Documento d'identità valido con foto", en: "Valid photo ID", es: "Documento de identidad válido con foto", fr: "Pièce d'identité avec photo valide" },
+      { it: "Abbigliamento comodo", en: "Comfortable clothes", es: "Ropa cómoda", fr: "Vêtements confortables" },
+      { it: "Scarpe chiuse", en: "Closed shoes", es: "Calzado cerrado", fr: "Chaussures fermées" },
+      { it: "Occhiali da sole", en: "Sunglasses", es: "Gafas de sol", fr: "Lunettes de soleil" }
     ]
   },
   {
     gruppo: "Buggy",
     schede: ["buggy-volcano-4h"],
     cose: [
-      { it: "Patente di guida valida", en: "Valid driving licence", es: "Carné de conducir válido" },
-      { it: "Abbigliamento comodo e scarpe chiuse", en: "Comfortable clothes and closed shoes", es: "Ropa cómoda y calzado cerrado" },
-      { it: "Una giacca nei mesi più freschi", en: "A jacket in the cooler months", es: "Una chaqueta en los meses más frescos" },
-      { it: "Crema solare, occhiali da sole e cappello per i tour di giorno", en: "Sun cream, sunglasses and a hat for daytime tours", es: "Crema solar, gafas de sol y gorra para los tours de día" }
+      { it: "Patente di guida valida", en: "Valid driving licence", es: "Carné de conducir válido", fr: "Permis de conduire valide" },
+      { it: "Abbigliamento comodo e scarpe chiuse", en: "Comfortable clothes and closed shoes", es: "Ropa cómoda y calzado cerrado", fr: "Vêtements confortables et chaussures fermées" },
+      { it: "Una giacca nei mesi più freschi", en: "A jacket in the cooler months", es: "Una chaqueta en los meses más frescos", fr: "Une veste pendant les mois plus frais" },
+      { it: "Crema solare, occhiali da sole e cappello per i tour di giorno", en: "Sun cream, sunglasses and a hat for daytime tours", es: "Crema solar, gafas de sol y gorra para los tours de día", fr: "Crème solaire, lunettes de soleil et chapeau pour les sorties de jour" }
     ]
   },
   {
     gruppo: "Quad",
     schede: ["quad-teide-adventure"],
     cose: [
-      { it: "Patente di guida valida", en: "Valid driving licence", es: "Carné de conducir válido" },
-      { it: "Abbigliamento comodo e scarpe chiuse (niente sandali)", en: "Comfortable clothes and closed shoes (no sandals)", es: "Ropa cómoda y calzado cerrado (nada de sandalias)" },
-      { it: "Una giacca", en: "A jacket", es: "Una chaqueta" },
-      { it: "Crema solare e occhiali da sole", en: "Sun cream and sunglasses", es: "Crema solar y gafas de sol" }
+      { it: "Patente di guida valida", en: "Valid driving licence", es: "Carné de conducir válido", fr: "Permis de conduire valide" },
+      { it: "Abbigliamento comodo e scarpe chiuse (niente sandali)", en: "Comfortable clothes and closed shoes (no sandals)", es: "Ropa cómoda y calzado cerrado (nada de sandalias)", fr: "Vêtements confortables et chaussures fermées (pas de sandales)" },
+      { it: "Una giacca", en: "A jacket", es: "Una chaqueta", fr: "Une veste" },
+      { it: "Crema solare e occhiali da sole", en: "Sun cream and sunglasses", es: "Crema solar y gafas de sol", fr: "Crème solaire et lunettes de soleil" }
     ]
   },
   {
     gruppo: "Talaria",
     schede: ["talaria-off-road"],
     cose: [
-      { it: "Documento d'identità", en: "ID", es: "Documento de identidad" },
-      { it: "Patente di guida, se ce l'hai", en: "Driving licence, if you have one", es: "Carné de conducir, si lo tienes" },
-      { it: "Scarpe chiuse e pantaloni lunghi", en: "Closed shoes and long trousers", es: "Calzado cerrado y pantalón largo" },
-      { it: "Acqua e crema solare", en: "Water and sun cream", es: "Agua y crema solar" }
+      { it: "Documento d'identità", en: "ID", es: "Documento de identidad", fr: "Pièce d'identité" },
+      { it: "Patente di guida, se ce l'hai", en: "Driving licence, if you have one", es: "Carné de conducir, si lo tienes", fr: "Permis de conduire, si vous en avez un" },
+      { it: "Scarpe chiuse e pantaloni lunghi", en: "Closed shoes and long trousers", es: "Calzado cerrado y pantalón largo", fr: "Chaussures fermées et pantalon long" },
+      { it: "Acqua e crema solare", en: "Water and sun cream", es: "Agua y crema solar", fr: "Eau et crème solaire" }
     ]
   },
   {
     gruppo: "Jet ski",
     schede: ["jet-ski-safari-1-2h"],
     cose: [
-      { it: "Costume", en: "Swimsuit", es: "Bañador" },
-      { it: "Crema solare", en: "Sun cream", es: "Crema solar" },
-      { it: "Asciugamano", en: "Towel", es: "Toalla" }
+      { it: "Costume", en: "Swimsuit", es: "Bañador", fr: "Maillot de bain" },
+      { it: "Crema solare", en: "Sun cream", es: "Crema solar", fr: "Crème solaire" },
+      { it: "Asciugamano", en: "Towel", es: "Toalla", fr: "Serviette" }
     ]
   },
   {
     gruppo: "Loro Parque e Jungle Park",
     schede: ["loro-parque", "jungle-park"],
     cose: [
-      { it: "Crema solare", en: "Sun cream", es: "Crema solar" },
-      { it: "Scarpe comode", en: "Comfortable shoes", es: "Calzado cómodo" },
-      { it: "Acqua", en: "Water", es: "Agua" }
+      { it: "Crema solare", en: "Sun cream", es: "Crema solar", fr: "Crème solaire" },
+      { it: "Scarpe comode", en: "Comfortable shoes", es: "Calzado cómodo", fr: "Chaussures confortables" },
+      { it: "Acqua", en: "Water", es: "Agua", fr: "Eau" }
     ]
   }
 ];

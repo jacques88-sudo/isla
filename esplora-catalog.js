@@ -3034,13 +3034,14 @@ const ESPLORA_CATALOG = [
     // persone. Niente `priceChild` e niente `ages`: la pagina non dice da che
     // eta' si guida, e senza il prezzo bambini il totale con dei bambini non
     // si fa invece di contarli come adulti.
-    // `times` non c'e': le partenze stanno nel calendario del fornitore e non
-    // le sappiamo. Restano le fasce segnaposto.
+    // Le partenze le ha mandate il proprietario (13 ottobre 2026): 10, 13, 16
+    // e 18, le stesse per tutte e tre le durate.
     id: "talaria-off-road",
     title: "Talaria Electric Off-Road",
     nomi: ["eBike Adventure Tenerife"],
     category: "avventura-motori",
     zone: "Guargacho",
+    times: ["10:00", "13:00", "16:00", "18:00"],
     duration: { it: "Da 40 minuti a 2 ore", en: "40 minutes to 2 hours", es: "De 40 minutos a 2 horas" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["breve"],

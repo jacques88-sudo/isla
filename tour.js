@@ -150,7 +150,7 @@ function detailRows(tour, variante) {
   // "Adulti (12+)": la fascia d'eta' fra parentesi, quando il fornitore l'ha
   // detta. Senza, resta solo "Adulti".
   const eta = tour.ages || {};
-  // tf() perche' una fascia puo' avere bisogno delle quattro lingue: "0-3" si
+  // tf() perche' una fascia puo' avere bisogno delle cinque lingue: "0-3" si
   // scrive uguale dappertutto, "0-11 mesi" no.
   const conEta = (etichetta, fascia) => fascia ? etichetta + " (" + tf(fascia) + ")" : etichetta;
   if (adulto > 0) {

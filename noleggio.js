@@ -8,7 +8,7 @@
 // dei noleggiatori non si mostrano: sul sito ci sono solo i modelli.
 //
 // COME E' FATTO UN MEZZO
-//   name     il modello, uguale in tutte e quattro le lingue (e' un nome proprio)
+//   name     il modello, uguale in tutte e cinque le lingue (e' un nome proprio)
 //   nameKey  al posto di name, dove un modello non c'e' e il nome e' una
 //            parola da tradurre ("Bici da citta'"): chiave di i18n.js
 //   kind     che cos'e' ("Maxi scooter 300 cc"), tradotto; si puo' omettere

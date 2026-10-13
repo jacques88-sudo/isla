@@ -41,11 +41,11 @@ type Iscrizione = {
   endpoint: string;
   p256dh: string;
   auth: string;
-  lang: "it" | "en" | "es" | "fr";
+  lang: "it" | "en" | "es" | "fr" | "de";
   titoli: Record<string, string>;
 };
 
-// I testi, nelle quattro lingue del sito. {t} il titolo, {d} il giorno, {o} l'ora.
+// I testi, nelle cinque lingue del sito. {t} il titolo, {d} il giorno, {o} l'ora.
 const TESTI = {
   it: {
     confirmed: "{t}: confermata",
@@ -91,6 +91,17 @@ const TESTI = {
     annullata: "{d}. Ouvrez l'app pour voir quoi faire.",
     escursione: "Votre excursion",
   },
+  de: {
+    confirmed: "{t}: bestätigt",
+    cancelled: "{t}: abgesagt",
+    reminder: "Erinnerung: {t}",
+    ora: "{d}, Treffpunkt um {o}",
+    oggi: "Heute",
+    domani: "Morgen",
+    luogo: "Treffpunkt: ",
+    annullata: "{d}. Öffnen Sie die App, um zu sehen, was zu tun ist.",
+    escursione: "Ihr Ausflug",
+  },
 };
 
 function riempi(testo: string, valori: Record<string, string>): string {
@@ -109,7 +120,7 @@ function giornoDopo(giorno: string): string {
 }
 
 // "mercoledì 14 ottobre", oppure "Oggi" / "Domani" nel promemoria.
-function giornoScritto(a: Avviso, lang: "it" | "en" | "es" | "fr"): string {
+function giornoScritto(a: Avviso, lang: "it" | "en" | "es" | "fr" | "de"): string {
   const T = TESTI[lang];
   if (a.tipo === "reminder") {
     const oggi = oggiTenerife();

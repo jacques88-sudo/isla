@@ -215,14 +215,19 @@ a { text-decoration: none; color: inherit; }
   color: var(--text);
 }
 
-/* Stesso selettore, in forma larga, dentro il menu laterale */
+/* Stesso selettore, in forma larga, dentro il menu laterale. Con cinque
+   bandiere (tedesco, 13 ottobre 2026) accanto alla scritta "Lingua" non ci
+   stavano a nessuna larghezza: la scritta sta sopra e le bandiere sotto, su
+   tutta la larghezza del menu, divise in parti uguali. */
 .more-menu-lang {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: .8rem;
+  gap: .5rem;
   margin-bottom: 1.2rem;
 }
+.more-menu-lang .lang-seg { width: 100%; }
+.more-menu-lang .lang-seg button { flex: 1; min-width: 0; }
 .more-menu-lang-label {
   font-size: .65rem;
   text-transform: uppercase;
@@ -401,7 +406,7 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: .22em;
 }
 
-/* Le quattro lingue tutte in vista, invece del bottone tondo che apre l'elenco.
+/* Le cinque lingue tutte in vista, invece del bottone tondo che apre l'elenco.
    paintLangButtons() in i18n.js accende quella attiva con .is-active. */
 .lang-row {
   display: inline-flex;
@@ -425,13 +430,12 @@ a { text-decoration: none; color: inherit; }
   background: var(--primary);
   color: var(--primary-foreground);
 }
-/* Con la quarta bandiera (il francese, 13 ottobre 2026) la riga a 54 px per
-   bottone usciva di 9 px da privacy e termini sui telefoni da 320 px, e dal
-   menu laterale anche di piu'. Sugli schermi stretti i bottoni si stringono
-   e nel menu la riga va sotto la scritta "Lingua". */
+/* Con la quarta e la quinta bandiera (francese e tedesco, 13 ottobre 2026)
+   la riga a 54 px per bottone usciva dallo schermo sui telefoni piccoli:
+   sotto i 375 px i bottoni si stringono. In privacy e termini, quando accanto
+   al logo non c'e' posto, la riga va sotto (.privacy-head). */
 @media (max-width: 374px) {
   .lang-row button { min-width: 44px; }
-  .more-menu-lang { flex-wrap: wrap; }
 }
 
 /* "sticky" vuol dire: scorre con la pagina finche' arriva in cima, poi si
@@ -1325,9 +1329,11 @@ p.note-box { margin: 0 0 1rem; }
 html:not([lang="it"]) .pp[lang="it"],
 html:not([lang="en"]) .pp[lang="en"],
 html:not([lang="es"]) .pp[lang="es"],
-html:not([lang="fr"]) .pp[lang="fr"] { display: none; }
+html:not([lang="fr"]) .pp[lang="fr"],
+html:not([lang="de"]) .pp[lang="de"] { display: none; }
 .privacy-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;

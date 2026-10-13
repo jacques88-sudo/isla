@@ -66,7 +66,7 @@ l'ha letto è la cosa che fa arrabbiare.
 
 **Non si copiano** dai fornitori: policy di cancellazione, "best price guarantee",
 "official tickets", punteggi e numero di recensioni, testi promozionali. Le descrizioni si
-**riscrivono da zero** nelle quattro lingue (it, en, es, fr).
+**riscrivono da zero** nelle cinque lingue (it, en, es, fr, de).
 
 **Le fasce d'età devono combaciare**: `0-2`, `3-11`, `12+`. Un buco (`0-2` e `4-11`)
 lascia i bambini di 3 anni senza prezzo; una sovrapposizione (`0-3` e `3-11`) non dice
@@ -118,7 +118,7 @@ porto e capienza con le schede della stessa categoria.
 | `escursioni.js` | elenco + finestra della richiesta; le sue funzioni servono anche a `tour.js` e `lista.js` |
 | `tour.js` | pagina di dettaglio, e le icone `INCLUDED_ICONS` |
 | `lista.js` | la lista delle richieste (localStorage), costruita in JS perché serve a tre pagine |
-| `i18n.js` | tutti i testi fissi nelle quattro lingue, e `perUfficio()` per il messaggio WhatsApp |
+| `i18n.js` | tutti i testi fissi nelle cinque lingue, e `perUfficio()` per il messaggio WhatsApp |
 | `controlla.js` | il controllo del catalogo |
 | `orari-mancanti.js` | la lista delle schede senza orari di partenza; il sito non lo carica |
 | `foglio-google/` | il programma (Apps Script) del foglio Google dei netti, e come si installa; il sito non lo carica |
@@ -162,12 +162,13 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
 - **Le lingue si scelgono con le bandiere** (3 ottobre 2026, proprietario), non con
   IT/EN/ES. Sono **SVG scritti nell'HTML**, non emoji: Windows le emoji delle bandiere
   non le ha e scriverebbe le due lettere. Il nome della lingua sta in `aria-label`.
-- **Il francese è la quarta lingua** (13 ottobre 2026, proprietario): bandiera, testi,
-  catalogo, privacy e termini. **Il messaggio WhatsApp di chi usa il sito in francese
-  arriva all'ufficio in italiano**: l'ufficio il francese non lo legge. Lo fa
-  `perUfficio()` in `i18n.js`, che va intorno a **tutto** il testo del messaggio
-  (anche date, titoli e varianti). Un messaggio WhatsApp nuovo va scritto dentro
-  `perUfficio()`. Le altre tre lingue scrivono all'ufficio nella loro.
+- **Francese e tedesco sono la quarta e la quinta lingua** (13 ottobre 2026,
+  proprietario): bandiera, testi, catalogo, privacy e termini. **Il messaggio WhatsApp
+  di chi usa il sito in francese o tedesco arriva all'ufficio in italiano**: l'ufficio
+  quelle due lingue non le legge. Lo fa `perUfficio()` in `i18n.js` (l'elenco è
+  `I18N_UFFICIO`), che va intorno a **tutto** il testo del messaggio (anche date,
+  titoli e varianti). Un messaggio WhatsApp nuovo va scritto dentro `perUfficio()`.
+  Italiano, inglese e spagnolo scrivono all'ufficio nella loro lingua.
 - **Il pallino della chat resta dov'è**, anche quando passa sopra un prezzo.
 - **Le fasce d'orario segnaposto restano** dove le partenze vere non le sappiamo: sono
   intervalli, il cliente li legge come una preferenza.

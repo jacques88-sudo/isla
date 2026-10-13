@@ -50,7 +50,7 @@
 //
 // I nomi vengono dai dati in dati-fornitore/, riscritti: gli originali sono
 // note per gli autisti, in stampatello e con spagnolo e inglese mescolati.
-// Il nome del posto resta uguale in tutte e quattro le lingue, come i titoli delle
+// Il nome del posto resta uguale in tutte e cinque le lingue, come i titoli delle
 // escursioni; a tradursi e' il **tipo** di posto, la seconda voce, che diventa
 // "fermata dell'autobus", "bus stop", "parada de guagua" (vedi pickup.* in
 // i18n.js). Tipo vuoto = il posto si chiama gia' come si vede.

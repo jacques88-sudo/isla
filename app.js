@@ -67,7 +67,7 @@ function salvaTicket(dati) {
 // Il prefisso proposto quando non c'e' niente di salvato: quello della lingua
 // scelta. Chi legge in inglese e' quasi sempre inglese, e cosi' via.
 function prefissoDellaLingua() {
-  return { it: "39", es: "34", en: "44" }[typeof getLang === "function" ? getLang() : "en"] || "44";
+  return { it: "39", es: "34", fr: "33", en: "44" }[typeof getLang === "function" ? getLang() : "en"] || "44";
 }
 
 function initLookupForms() {

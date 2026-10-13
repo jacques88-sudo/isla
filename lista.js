@@ -122,12 +122,14 @@ function listaSomma(voci) {
 // da leggere, e all'ufficio arriverebbero due formati per la stessa cosa.
 // `codice`: quello della richiesta salvata nel database (richieste.js), in
 // fondo al messaggio. Vuoto = niente riga.
-function listaWhatsappUrl(nome, codice) {
+// Il testo sta a parte dall'indirizzo perche' va anche nel database
+// (richieste.js), e l'ufficio lo rilegge in venditori.html.
+function listaWhatsappTesto(nome, codice) {
   const voci = listaLeggi();
   if (!voci.length) return "";
   const primo = listaVoceConto(voci[0]);
   if (voci.length === 1) {
-    return primo ? whatsappUrl(primo.tour, Object.assign({ name: nome, code: codice }, voci[0])) : "";
+    return primo ? whatsappTesto(primo.tour, Object.assign({ name: nome, code: codice }, voci[0])) : "";
   }
 
   const blocchi = [];
@@ -146,7 +148,12 @@ function listaWhatsappUrl(nome, codice) {
       ": €" + eur(somma);
   }
   if (codice) testo += "\n\n" + t("wa.code", { code: codice });
-  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
+  return testo;
+}
+
+function listaWhatsappUrl(nome, codice) {
+  const testo = listaWhatsappTesto(nome, codice);
+  return testo ? "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo) : "";
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -349,7 +356,10 @@ function initLista() {
     // La richiesta si salva anche nel database (richieste.js), col codice che
     // va nel messaggio: cosi' l'ufficio la ritrova e il cliente ne vede lo
     // stato in "Le mie richieste". Il messaggio si rifa' col codice dentro.
-    const codice = typeof richiestaNuova === "function" ? richiestaNuova(listaLeggi()) : "";
+    // Col nome e col messaggio intero: l'ufficio, confermando, li trova gia'
+    // li' invece di ricopiarli dalla chat.
+    const codice = typeof richiestaNuova === "function"
+      ? richiestaNuova(listaLeggi(), nome, c => listaWhatsappTesto(nome, c)) : "";
     const url = listaWhatsappUrl(nome, codice);
     // La lista si svuota: la richiesta e' partita, e ritrovarsela ancora li'
     // alla prossima visita farebbe rimandare due volte le stesse escursioni.

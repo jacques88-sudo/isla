@@ -811,13 +811,18 @@ function righeRichiesta(tour, req) {
 
 // Messaggio WhatsApp per una sola escursione, con data e persone già compilate.
 // È scritto nella lingua che il cliente sta usando sul sito.
-function whatsappUrl(tour, req) {
-  const testo = t("wa.intro", { name: req.name }) + "\n" +
+// Il testo sta a parte dall'indirizzo perche' va anche nel database
+// (richieste.js): l'ufficio lo rilegge in venditori.html accanto alla richiesta.
+function whatsappTesto(tour, req) {
+  return t("wa.intro", { name: req.name }) + "\n" +
     "• " + tf(tour.title) + "\n" +
     righeRichiesta(tour, req).join("\n") +
     // il codice della richiesta salvata nel database (richieste.js), se c'e'
     (req.code ? "\n\n" + t("wa.code", { code: req.code }) : "");
-  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
+}
+
+function whatsappUrl(tour, req) {
+  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(whatsappTesto(tour, req));
 }
 
 function tourCard(tour) {

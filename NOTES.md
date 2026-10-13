@@ -16709,3 +16709,42 @@ Provato in Chromium a 375 px: tre gruppi, chip "Bici", righe chiuse da €24/€
 aperta la elettrica da città: 1…7 giorni, "dall'8° giorno €12", cauzione €50,
 caricabatterie, WhatsApp con "Bici elettrica da città · motore Bosch, batteria 500 Wh".
 Nessuno scroll orizzontale. `CACHE_NAME` a `isla-v427`.
+
+## Le richieste WhatsApp arrivano col messaggio, e la conferma parte già riempita (13 ottobre 2026)
+
+Chiesto dal proprietario: confermando una richiesta in `venditori.html` si ricopiavano a
+mano ora e meeting point, che il cliente aveva già scritto nel messaggio. Prima nel
+database entravano solo escursione, data, ora chiesta e persone ("niente nome, hotel,
+note": li leggeva l'ufficio in chat). Da oggi ogni riga porta anche:
+
+- `customer_name` e `request_message` (il messaggio WhatsApp intero col codice, uguale
+  su tutte le righe della stessa richiesta);
+- `hotel` (la colonna c'era già, dei ticket di carta), `pickup_point` e `pickup_time`,
+  ricavati con `hotelPunto()` come nel messaggio. "Il tuo hotel" si salva come nome
+  dell'hotel, perché è quello che il cliente leggerà sul ticket.
+
+Il cliente **non li rilegge**: `le_mie_richieste` non è cambiata.
+
+In `venditori.html` la riga mostra nome e hotel, e sotto una tendina chiusa "Messaggio
+WhatsApp". Il modulo "Conferma" parte con: ora = ora del pulmino, oppure la partenza
+scelta dal cliente **se è un'ora sola** (`oraSola()`); una fascia "09:00 - 12:00" lascia
+il campo vuoto, perché un'ora inventata è peggio di nessuna. Meeting point = punto di
+raccolta. **Telefono e ticket number restano a mano**: il sito il telefono non lo
+conosce (il messaggio parte dal WhatsApp del cliente), e il numero lo dà l'ufficio.
+
+Nel codice il testo del messaggio è uscito dalle funzioni che fanno l'indirizzo:
+`whatsappTesto()` (escursioni.js) e `listaWhatsappTesto()` (lista.js).
+`richiestaNuova(voci, nome, scriviTesto)` riceve una funzione e non il testo, perché il
+codice nasce lì dentro e il messaggio lo deve contenere.
+
+**Va lanciato prima** `supabase/modifiche/2026-10-13-richieste-messaggio.sql`: la
+`manda_richiesta` nuova ha due parametri in più con un valore di partenza, e quella
+vecchia si toglie (due funzioni con lo stesso nome Supabase non sa quale chiamare). Se
+il sito nuovo va online prima del file SQL, le richieste non entrano nel database
+finché il file non è lanciato (restano nel telefono e si riprovano da sole), e l'elenco
+dei venditori dice "column … does not exist".
+
+Provato in Chromium: con l'invio a Supabase fermato, due escursioni con l'ABAMA danno
+`pickup_point` "ABAMA Ritz-Carlton, alla sbarra" e `pickup_time` 08:55 sul Teide, niente
+punto sulle balene; in `venditori.html` con righe finte il modulo si riempie (08:55 + la
+sbarra; 10:00; vuoto per la fascia). `CACHE_NAME` a `isla-v429`.

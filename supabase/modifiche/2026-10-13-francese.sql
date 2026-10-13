@@ -1,5 +1,8 @@
 -- 13 ottobre 2026: il francese, quarta lingua del sito.
 --
+-- SUPERATO da 2026-10-13-tedesco.sql, che fa le stesse cose e accetta anche
+-- il tedesco: lanciare quello. Questo resta per la storia.
+--
 -- Gli avvisi sul telefono (2026-10-13-notifiche.sql) arrivano nella lingua in
 -- cui il cliente usava il sito, e il database accettava solo it, en ed es: chi
 -- usa il sito in francese si vedeva rifiutare l'iscrizione. Il telefono la

@@ -12,7 +12,7 @@
 //     la funzione le_mie_richieste. Tre stati: da confermare, confermata,
 //     annullata.
 //
-// Anche qui i testi sono nelle quattro lingue: stringa sola = uguale ovunque,
+// Anche qui i testi sono nelle cinque lingue: stringa sola = uguale ovunque,
 // oggetto { it, en, es } = tradotto. tf() sceglie la lingua giusta.
 
 const MOCK_BOOKINGS = {
@@ -21,39 +21,42 @@ const MOCK_BOOKINGS = {
       it: "Whale & Dolphin Watching in barca a vela",
       en: "Whale & Dolphin Watching by sailing boat",
       es: "Whale & Dolphin Watching en velero",
-      fr: "Observation des baleines et des dauphins en voilier"
+      fr: "Observation des baleines et des dauphins en voilier",
+      de: "Wal- und Delfinbeobachtung mit dem Segelboot"
     },
-    date: { it: "Domani, 09:30", en: "Tomorrow, 09:30", es: "Mañana, 09:30", fr: "Demain, 09:30" },
+    date: { it: "Domani, 09:30", en: "Tomorrow, 09:30", es: "Mañana, 09:30", fr: "Demain, 09:30", de: "Morgen, 09:30" },
     meetingPoint: "Puerto Colón, Muelle 3 — Costa Adeje",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
     bring: [
-      { it: "Costume da bagno", en: "Swimsuit", es: "Bañador", fr: "Maillot de bain" },
-      { it: "Asciugamano", en: "Towel", es: "Toalla", fr: "Serviette" },
-      { it: "Crema solare", en: "Sun cream", es: "Crema solar", fr: "Crème solaire" },
-      { it: "Documento d'identità", en: "ID document", es: "Documento de identidad", fr: "Pièce d'identité" }
+      { it: "Costume da bagno", en: "Swimsuit", es: "Bañador", fr: "Maillot de bain", de: "Badesachen" },
+      { it: "Asciugamano", en: "Towel", es: "Toalla", fr: "Serviette", de: "Handtuch" },
+      { it: "Crema solare", en: "Sun cream", es: "Crema solar", fr: "Crème solaire", de: "Sonnencreme" },
+      { it: "Documento d'identità", en: "ID document", es: "Documento de identidad", fr: "Pièce d'identité", de: "Ausweisdokument" }
     ],
     notes: {
       it: "Presentati 15 minuti prima dell'orario. Cancellazione gratuita fino a 24 ore prima della partenza.",
       en: "Arrive 15 minutes before the departure time. Free cancellation up to 24 hours before departure.",
       es: "Preséntate 15 minutos antes de la hora. Cancelación gratuita hasta 24 horas antes de la salida.",
-      fr: "Arrivez 15 minutes avant l'heure de départ. Annulation gratuite jusqu'à 24 heures avant le départ."
+      fr: "Arrivez 15 minutes avant l'heure de départ. Annulation gratuite jusqu'à 24 heures avant le départ.",
+      de: "Seien Sie 15 Minuten vor der Abfahrtszeit da. Kostenlose Stornierung bis 24 Stunden vor der Abfahrt."
     }
   },
   "TEN-7788": {
     title: "Teide Sunset Quad Trip",
-    date: { it: "Oggi, 16:00", en: "Today, 16:00", es: "Hoy, 16:00", fr: "Aujourd'hui, 16:00" },
+    date: { it: "Oggi, 16:00", en: "Today, 16:00", es: "Hoy, 16:00", fr: "Aujourd'hui, 16:00", de: "Heute, 16:00" },
     meetingPoint: "Quad Center, Vilaflor",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
     bring: [
-      { it: "Scarpe chiuse", en: "Closed shoes", es: "Zapato cerrado", fr: "Chaussures fermées" },
-      { it: "Giacca leggera (di sera fa fresco)", en: "Light jacket (it gets cool in the evening)", es: "Chaqueta ligera (por la noche refresca)", fr: "Veste légère (il fait frais le soir)" },
-      { it: "Patente di guida", en: "Driving licence", es: "Carné de conducir", fr: "Permis de conduire" }
+      { it: "Scarpe chiuse", en: "Closed shoes", es: "Zapato cerrado", fr: "Chaussures fermées", de: "Geschlossene Schuhe" },
+      { it: "Giacca leggera (di sera fa fresco)", en: "Light jacket (it gets cool in the evening)", es: "Chaqueta ligera (por la noche refresca)", fr: "Veste légère (il fait frais le soir)", de: "Leichte Jacke (abends wird es kühl)" },
+      { it: "Patente di guida", en: "Driving licence", es: "Carné de conducir", fr: "Permis de conduire", de: "Führerschein" }
     ],
     notes: {
       it: "Il tour è vietato alle donne in gravidanza. Età minima 18 anni per guidare il quad.",
       en: "The tour is not suitable for pregnant women. Minimum age to drive the quad is 18.",
       es: "El tour no está permitido a mujeres embarazadas. Edad mínima para conducir el quad: 18 años.",
-      fr: "L'excursion ne convient pas aux femmes enceintes. L'âge minimum pour conduire le quad est de 18 ans."
+      fr: "L'excursion ne convient pas aux femmes enceintes. L'âge minimum pour conduire le quad est de 18 ans.",
+      de: "Die Tour ist für Schwangere nicht geeignet. Mindestalter zum Fahren des Quads ist 18."
     }
   }
 };

@@ -150,7 +150,7 @@ function listaSomma(voci) {
 // Il testo sta a parte dall'indirizzo perche' va anche nel database
 // (richieste.js, 13 ottobre 2026), e l'ufficio lo rilegge in venditori.html.
 function listaWhatsappTesto(nome, codice, email) {
-  // in italiano se il cliente legge in francese: vedi perUfficio in i18n.js
+  // in italiano se il cliente legge in francese o tedesco: vedi perUfficio in i18n.js
   return perUfficio(() => listaWhatsappScrivi(nome, codice, email));
 }
 

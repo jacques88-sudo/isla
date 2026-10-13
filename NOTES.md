@@ -18264,3 +18264,34 @@ Provato nel browser con `locale: "fr-FR"`: le undici pagine si aprono in frances
 lingua e la ricorda; la finestra della richiesta è tutta in francese; il messaggio
 dell'escursione e quello del pacchetto escono in italiano e il sito resta in francese.
 `node controlla.js` passa. `CACHE_NAME` → `isla-v493`.
+
+## Il tedesco, quinta lingua (13 ottobre 2026)
+
+Subito dopo il francese il proprietario ha chiesto anche il tedesco. Stesso metodo: lo
+script nella scratchpad ha trovato ogni `fr: "…"` e ci ha messo accanto `de: "…"`
+(1.499 testi: i 1.498 del francese più `I18N_UFFICIO`). Traduzioni scritte a mano
+da inglese e italiano, con **"Sie"**, prezzi **"€49"** e orari **"10:30"**, per le
+stesse ragioni del francese. Bandiera tedesca in tutte le pagine con le bandiere,
+`de-DE` per le date, prefisso `+49` proposto, `LINGUE` in `controlla.js`, articoli
+tedeschi in `privacy.html` e `termini.html`.
+
+**Anche il tedesco scrive all'ufficio in italiano**: `I18N_UFFICIO = { fr: "it", de:
+"it" }`. Non l'ha chiesto il proprietario esplicitamente: è la stessa ragione del
+francese (l'ufficio non lo legge). Se l'ufficio preferisce riceverlo in tedesco, o in
+inglese, basta cambiare quella riga.
+
+**Cinque bandiere non stavano accanto alla scritta "Lingua" nel menu**, a nessuna
+larghezza (la quinta finiva fuori anche a 430 px). Ora nel menu la scritta sta sopra
+e le bandiere sotto, su tutta la larghezza, in parti uguali. In privacy e termini la
+riga va sotto il logo quando non c'è posto (`.privacy-head` con `flex-wrap`); sotto
+i 375 px i bottoni restano da 44 px. Misurato a 320, 360, 375, 390 e 430 px: niente
+fuori schermo, niente scroll orizzontale.
+
+**Da fare su Supabase**: `supabase/modifiche/2026-10-13-tedesco.sql` (contiene anche il
+francese: basta questo, `2026-10-13-francese.sql` è segnato come superato) e
+ripubblicare `manda-notifiche`, che ha i testi degli avvisi anche in tedesco.
+
+Provato nel browser con `locale: "de-DE"`: le undici pagine in tedesco, nessun errore;
+il clic sulla bandiera tedesca nel menu cambia lingua e la ricorda; il messaggio del
+pacchetto esce in italiano e il sito resta in tedesco. `node controlla.js` passa.
+`CACHE_NAME` → `isla-v494`.

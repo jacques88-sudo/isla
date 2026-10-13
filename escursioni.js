@@ -2,7 +2,7 @@
 // esplora-catalog.js, filtra per categoria/testo e disegna le schede.
 //
 // I testi passano da i18n.js: t() per quelli fissi, tf() per i campi del
-// catalogo che possono essere scritti nelle quattro lingue.
+// catalogo che possono essere scritti nelle cinque lingue.
 //
 // WHATSAPP_NUMBER sta in esplora-catalog.js: serve anche all'assistente, che
 // gira sulla home dove questo file non e' caricato.
@@ -67,7 +67,7 @@ function dataLeggibile(iso) {
   // ISO viene letta come mezzanotte UTC, e per un cliente a ovest di
   // Greenwich diventerebbe il giorno prima. Coi pezzi separati e' locale.
   const d = new Date(anno, mese - 1, giorno);
-  const locali = { it: "it-IT", en: "en-GB", es: "es-ES", fr: "fr-FR" };
+  const locali = { it: "it-IT", en: "en-GB", es: "es-ES", fr: "fr-FR", de: "de-DE" };
   try {
     return d.toLocaleDateString(locali[getLang()] || "en-GB",
       { day: "numeric", month: "long", year: "numeric" });
@@ -166,7 +166,7 @@ function peopleText(adults, kids, babies) {
 
 // "Singola × 3 · Doppia × 1": quanti mezzi, di che tipo. Solo dove il prezzo e'
 // del mezzo e non della persona (`units`). Il "×" e il punto in mezzo sono gli
-// stessi dei menu, e per lo stesso motivo: evitano i plurali, che in quattro lingue
+// stessi dei menu, e per lo stesso motivo: evitano i plurali, che in cinque lingue
 // non si fanno allo stesso modo.
 //
 // Dalla finestra arrivano i numeri (`units` come elenco), dalla lista il
@@ -298,7 +298,7 @@ function menuTesto(req) {
   if (!scelti.length) return "";
   // "Vegetariano × 2" e non "2 Vegetariano": il "×" e' gia' il modo in cui il
   // sito scrive le quantita' nel totale, e soprattutto evita i plurali. Le
-  // etichette dei menu le scrive il catalogo in quattro lingue, e nessuna delle
+  // etichette dei menu le scrive il catalogo in cinque lingue, e nessuna delle
   // tre fa il plurale allo stesso modo: "2 Vegetariano" sarebbe sbagliato in
   // italiano, e inventare una regola per pluralizzarle sarebbe peggio.
   const parti = scelti.map(m => m.label + " × " + m.n);
@@ -810,8 +810,8 @@ function righeRichiesta(tour, req) {
 }
 
 // Messaggio WhatsApp per una sola escursione, con data e persone già compilate.
-// È scritto nella lingua che il cliente sta usando sul sito, salvo il
-// francese, che va in italiano (perUfficio in i18n.js).
+// È scritto nella lingua che il cliente sta usando sul sito, salvo
+// francese e tedesco, che vanno in italiano (perUfficio in i18n.js).
 // Il testo sta a parte dall'indirizzo perche' va anche nel database
 // (richieste.js): l'ufficio lo rilegge in venditori.html accanto alla richiesta.
 function whatsappTesto(tour, req) {
@@ -1027,7 +1027,7 @@ function initCatalog() {
     if (state.zone && !(tour.zoneGroups || []).includes(state.zone)) return false;
     if (state.duration && !(tour.durationGroups || []).includes(state.duration)) return false;
     if (state.query) {
-      // Si cerca in tutte e quattro le lingue: chi scrive "boat" trova la
+      // Si cerca in tutte e cinque le lingue: chi scrive "boat" trova la
       // stessa attività di chi scrive "barca".
       const haystack = [tour.title, tour.desc, tour.zone]
         .map(campo => typeof campo === "string" ? campo : Object.values(campo).join(" "))
@@ -1549,9 +1549,9 @@ function initRequestDialog() {
       testa.className = "date-cal-head";
       const indietro = freccia(-1, "req.prevMonth", mese > min);
       const titolo = document.createElement("strong");
-      // I nomi dei mesi li da' il browser, giusti nelle quattro lingue: dodici nomi
-      // per quattro lingue sarebbero quarantotto righe di vocabolario per niente.
-      const locali = { it: "it-IT", en: "en-GB", es: "es-ES", fr: "fr-FR" };
+      // I nomi dei mesi li da' il browser, giusti nelle cinque lingue: dodici nomi
+      // per cinque lingue sarebbero sessanta righe di vocabolario per niente.
+      const locali = { it: "it-IT", en: "en-GB", es: "es-ES", fr: "fr-FR", de: "de-DE" };
       try {
         titolo.textContent = mese.toLocaleDateString(locali[getLang()] || "en-GB",
           { month: "long", year: "numeric" });

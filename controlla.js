@@ -62,7 +62,7 @@ const ICONE = new Set(
 
 const FOTO = new Set(fs.readdirSync(path.join(RADICE, "assets")));
 const CATEGORIE = new Set(CATEGORIES.map(c => c.id));
-const LINGUE = ["it", "en", "es", "fr"];
+const LINGUE = ["it", "en", "es", "fr", "de"];
 
 // I file .js/.css/.html che il service worker mette in cache: sono letti da
 // ASSETS in sw.js, non riscritti a mano qui. Un elenco duplicato a mano
@@ -148,7 +148,7 @@ function controllaEta(t) {
   const scritte = ["infant", "child", "adult"]
     .filter(n => t.ages[n] !== undefined)
     // `testo` e' quello che si scrive nei messaggi: la fascia in mesi e' un
-    // oggetto nelle quattro lingue, e scritta cosi' com'e' darebbe "[object Object]".
+    // oggetto nelle cinque lingue, e scritta cosi' com'e' darebbe "[object Object]".
     .map(n => ({ nome: n, testo: tf(t.ages[n]), val: estremi(t.ages[n]) }));
 
   scritte.forEach(f => {
@@ -369,9 +369,9 @@ function controllaFoto(t) {
   }
 }
 
-// ─── 7. I testi tradotti devono avere tutte e quattro le lingue ────────────────
+// ─── 7. I testi tradotti devono avere tutte e cinque le lingue ────────────────
 // Una stringa da sola va bene: vuol dire "uguale in tutte le lingue" (i nomi
-// propri). Ma se e' un oggetto, le quattro lingue ci devono essere tutte, se no il
+// propri). Ma se e' un oggetto, le cinque lingue ci devono essere tutte, se no il
 // cliente spagnolo si trova una riga vuota.
 function controllaTraduzioni(t) {
   const guarda = (valore, dove) => {
@@ -556,7 +556,7 @@ function controllaPagamento() {
 }
 
 // Cosa portare (portare.js): ogni id deve essere una scheda vera, una scheda
-// sta in un gruppo solo, e ogni voce c'e' in tutte e quattro le lingue. Un id
+// sta in un gruppo solo, e ogni voce c'e' in tutte e cinque le lingue. Un id
 // scritto male farebbe sparire il riquadro senza dirlo a nessuno.
 function controllaPortare() {
   const visti = {};
@@ -603,7 +603,7 @@ function controllaSelezioni() {
   });
 }
 
-// ─── 10. Le chiavi i18n in tutte e quattro le lingue ───────────────────────────
+// ─── 10. Le chiavi i18n in tutte e cinque le lingue ───────────────────────────
 function controllaI18n() {
   // Fino a fine riga, non fino alla prima "}": le chiavi con segnaposto come
   // "da €{p}" chiudono una graffa a meta' valore e troncherebbero il confronto.

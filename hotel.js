@@ -726,6 +726,9 @@ const PICKUP_NESSUNO = [
   "helicopter-tours",
   "karting",
   "cavallo",
+  // Talaria a Guargacho: la pagina del fornitore ha "How to get here" e
+  // nessun transfer (13 ottobre 2026). Da confermare col proprietario.
+  "talaria-off-road",
   "fiat-500-water-car",
   "banana-boat",
   "parascending",

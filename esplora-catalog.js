@@ -3026,6 +3026,95 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    // Moto elettriche Talaria fuoristrada a Guargacho (pagina del fornitore
+    // incollata in chat, 13 ottobre 2026). Nessuna scheda simile in catalogo:
+    // il quad e il buggy sono a mezzo e vanno al Teide, questa e' a persona e
+    // resta sulle piste del sud.
+    // Il prezzo e' a pilota, una moto a testa: niente `units`, si contano le
+    // persone. Niente `priceChild` e niente `ages`: la pagina non dice da che
+    // eta' si guida, e senza il prezzo bambini il totale con dei bambini non
+    // si fa invece di contarli come adulti.
+    // `times` non c'e': le partenze stanno nel calendario del fornitore e non
+    // le sappiamo. Restano le fasce segnaposto.
+    id: "talaria-off-road",
+    title: "Talaria Electric Off-Road",
+    nomi: ["eBike Adventure Tenerife"],
+    category: "avventura-motori",
+    zone: "Guargacho",
+    duration: { it: "Da 40 minuti a 2 ore", en: "40 minutes to 2 hours", es: "De 40 minutos a 2 horas" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["breve"],
+    priceFrom: 59,
+    priceAdult: 59,
+    priceChild: 0,
+    family: false,
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración" },
+      choices: [
+        {
+          label: { it: "Pista sterrata · 40 minuti", en: "Dirt track · 40 minutes", es: "Pista de tierra · 40 minutos" },
+          duration: { it: "40 minuti", en: "40 minutes", es: "40 minutos" },
+          priceAdult: 59,
+          desc: {
+            it: "Quaranta minuti sulla pista in terra battuta. È la sola formula per cui non serve la patente.",
+            en: "Forty minutes on the dirt track. It is the only option that needs no driving licence.",
+            es: "Cuarenta minutos en la pista de tierra. Es la única opción que no necesita carné de conducir."
+          }
+        },
+        {
+          label: { it: "Giro guidato · 1 ora", en: "Guided ride · 1 hour", es: "Ruta guiada · 1 hora" },
+          duration: { it: "1 ora", en: "1 hour", es: "1 hora" },
+          priceAdult: 99,
+          desc: {
+            it: "Un'ora fuori dalla pista, dietro la guida, fra sterrati e tratti di roccia attorno a Guargacho e Playa El Barranco.",
+            en: "One hour off the track, behind the guide, on dirt roads and rocky stretches around Guargacho and Playa El Barranco.",
+            es: "Una hora fuera de la pista, detrás del guía, entre caminos de tierra y tramos de roca alrededor de Guargacho y Playa El Barranco."
+          }
+        },
+        {
+          label: { it: "Giro guidato · 2 ore", en: "Guided ride · 2 hours", es: "Ruta guiada · 2 horas" },
+          duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
+          priceAdult: 189,
+          desc: {
+            it: "Lo stesso giro, il doppio del tempo: si arriva più lontano nel paesaggio vulcanico del sud.",
+            en: "The same ride, twice as long: you get further into the volcanic landscape of the south.",
+            es: "La misma ruta, el doble de tiempo: se llega más lejos en el paisaje volcánico del sur."
+          }
+        }
+      ]
+    },
+    desc: {
+      it: "Moto elettriche Talaria in fuoristrada nel sud di Tenerife: sterrati compatti, tratti di roccia e paesaggi di deserto vulcanico attorno a Guargacho e Playa El Barranco. Silenziose e senza gas di scarico. Si sceglie fra la pista sterrata, senza patente, e il giro guidato di una o due ore.",
+      en: "Electric Talaria bikes off-road in the south of Tenerife: compact dirt tracks, rocky stretches and volcanic desert scenery around Guargacho and Playa El Barranco. Quiet and with no exhaust fumes. Choose between the dirt track, no licence needed, and a guided ride of one or two hours.",
+      es: "Motos eléctricas Talaria todoterreno en el sur de Tenerife: pistas de tierra compacta, tramos de roca y paisajes de desierto volcánico alrededor de Guargacho y Playa El Barranco. Silenciosas y sin gases de escape. Se elige entre la pista de tierra, sin carné, y la ruta guiada de una o dos horas."
+    },
+    included: ["guide", "equipment"],
+    notes: [
+      {
+        it: "Il prezzo è a persona: ogni pilota guida la sua moto. Al massimo 4 piloti per uscita.",
+        en: "The price is per person: each rider has their own bike. Up to 4 riders per departure.",
+        es: "El precio es por persona: cada piloto lleva su moto. Como máximo 4 pilotos por salida."
+      },
+      {
+        it: "Prima di partire la guida spiega la moto e le regole, e dà l'attrezzatura. Percorso e andatura li sceglie lei, secondo il terreno e il gruppo.",
+        en: "Before setting off the guide explains the bike and the rules and hands out the gear. The guide picks the route and the pace to suit the terrain and the group.",
+        es: "Antes de salir el guía explica la moto y las normas y entrega el equipo. El recorrido y el ritmo los elige el guía, según el terreno y el grupo."
+      },
+      {
+        it: "Per il giro di 1 o 2 ore i requisiti (patente, età, esperienza) li verifica il fornitore prima della partenza: scrivi nelle note se hai la patente e se sei già andato in moto.",
+        en: "For the 1 or 2-hour ride the requirements (licence, age, experience) are checked by the operator before departure: say in the notes whether you hold a licence and have ridden before.",
+        es: "Para la ruta de 1 o 2 horas los requisitos (carné, edad, experiencia) los comprueba el proveedor antes de salir: indica en las notas si tienes carné y si ya has ido en moto."
+      },
+      {
+        it: "Non c'è il ritiro in hotel: a Guargacho si arriva da soli. Prima dell'uscita il fornitore manda un link per fare il check-in.",
+        en: "There is no hotel pick-up: you make your own way to Guargacho. Before the ride the operator sends a link to check in.",
+        es: "No hay recogida en el hotel: a Guargacho se llega por cuenta propia. Antes de la salida el proveedor envía un enlace para hacer el check-in."
+      }
+    ],
+    image: "",
+    published: true
+  },
+  {
     id: "helicopter-tours",
     title: "Helicopter Tours",
     category: "avventura-motori",

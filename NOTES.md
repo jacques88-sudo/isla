@@ -18071,3 +18071,24 @@ WhatsApp. Se il cliente non risponde o dice no, la richiesta parte lo stesso.
 - **Non provato**: un telefono vero. Lo deve fare il proprietario dopo aver pubblicato.
 
 `CACHE_NAME` → `isla-v485`.
+
+---
+
+## Talaria Electric Off-Road (13 ottobre 2026)
+
+Scheda nuova `talaria-off-road` in Avventura e motori, dalla pagina del fornitore
+incollata in chat (eBike Adventure Tenerife, moto elettriche Talaria a Guargacho).
+Nessun doppione: quad e buggy si pagano a mezzo e vanno al Teide.
+
+- Tre varianti a persona: pista sterrata 40 minuti 59 €, giro guidato 1 ora 99 €,
+  2 ore 189 €. Prezzi pieni della pagina, nessun barrato.
+- **Deciso da solo:** zona filtro "Los Cristianos e dintorni" (Guargacho è in Arona);
+  `PICKUP_NESSUNO`, perché la pagina dice "How to get here" e non parla di transfer;
+  `nomi: ["eBike Adventure Tenerife"]`, preso dall'indirizzo email del fornitore.
+- **In sospeso:** l'età minima e il prezzo bambini (la pagina non li dice: niente
+  `ages`, niente `priceChild`, il totale con bambini non si fa); gli orari (nel
+  calendario del fornitore: restano le fasce); la foto (esce il riquadro grigio);
+  conferma del ritiro.
+- Non copiati: pagamento con carta al checkout, condizioni del fornitore, listino danni.
+
+`CACHE_NAME` → `isla-v486`.

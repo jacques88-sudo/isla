@@ -18161,3 +18161,10 @@ authenticated`. **Ogni `add column` su `bookings` va seguito dal suo `grant sele
 16:00 e 18:00, le stesse per tutte e tre le durate: `times` sulla scheda, non sulle
 varianti. Provato nella finestra della richiesta: le quattro ore su ogni variante,
 "Da concordare" sparito. `CACHE_NAME` → `isla-v488`.
+
+**Talaria, altre info dal fornitore (13 ottobre 2026):** età minima 14 anni (sotto i
+18 con l'autorizzazione di un genitore): `ages: { adult: "14+" }`, stesso prezzo per
+tutti, niente `priceChild`. Partenze **10, 13 e 16**: le 18:00 messe poco prima sono
+state tolte, la pagina del fornitore non le ha (proprietario). Nuove note: patente e
+requisiti, scarpe chiuse, pantaloni lunghi, documento, acqua e crema solare.
+`CACHE_NAME` → `isla-v489`.

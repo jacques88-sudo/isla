@@ -3031,23 +3031,25 @@ const ESPLORA_CATALOG = [
     // il quad e il buggy sono a mezzo e vanno al Teide, questa e' a persona e
     // resta sulle piste del sud.
     // Il prezzo e' a pilota, una moto a testa: niente `units`, si contano le
-    // persone. Niente `priceChild` e niente `ages`: la pagina non dice da che
-    // eta' si guida, e senza il prezzo bambini il totale con dei bambini non
-    // si fa invece di contarli come adulti.
-    // Le partenze le ha mandate il proprietario (13 ottobre 2026): 10, 13, 16
-    // e 18, le stesse per tutte e tre le durate.
+    // persone. Si guida dai 14 anni e il prezzo e' lo stesso per tutti: per
+    // questo `ages` dice solo "14+" e non c'e' `priceChild`. Con dei bambini
+    // sotto i 14 il totale non si fa, perche' non possono salire.
+    // Partenze 10, 13 e 16, le stesse per tutte e tre le durate: le 18 erano
+    // state messe e poi tolte, la pagina del fornitore non le ha (proprietario,
+    // 13 ottobre 2026).
     id: "talaria-off-road",
     title: "Talaria Electric Off-Road",
     nomi: ["eBike Adventure Tenerife"],
     category: "avventura-motori",
     zone: "Guargacho",
-    times: ["10:00", "13:00", "16:00", "18:00"],
+    times: ["10:00", "13:00", "16:00"],
     duration: { it: "Da 40 minuti a 2 ore", en: "40 minutes to 2 hours", es: "De 40 minutos a 2 horas" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["breve"],
     priceFrom: 59,
     priceAdult: 59,
     priceChild: 0,
+    ages: { adult: "14+" },
     family: false,
     options: {
       label: { it: "Durata", en: "Duration", es: "Duración" },
@@ -3102,9 +3104,19 @@ const ESPLORA_CATALOG = [
         es: "Antes de salir el guía explica la moto y las normas y entrega el equipo. El recorrido y el ritmo los elige el guía, según el terreno y el grupo."
       },
       {
-        it: "Per il giro di 1 o 2 ore i requisiti (patente, età, esperienza) li verifica il fornitore prima della partenza: scrivi nelle note se hai la patente e se sei già andato in moto.",
-        en: "For the 1 or 2-hour ride the requirements (licence, age, experience) are checked by the operator before departure: say in the notes whether you hold a licence and have ridden before.",
-        es: "Para la ruta de 1 o 2 horas los requisitos (carné, edad, experiencia) los comprueba el proveedor antes de salir: indica en las notas si tienes carné y si ya has ido en moto."
+        it: "Si guida dai 14 anni. Sotto i 18 serve l'autorizzazione di un genitore o di chi ne fa le veci.",
+        en: "Riders must be at least 14. Under 18s need permission from a parent or legal guardian.",
+        es: "Se conduce a partir de los 14 años. Los menores de 18 necesitan la autorización de un padre, una madre o su tutor legal."
+      },
+      {
+        it: "Chi non ha la patente fa solo l'attività fuoristrada che il fornitore accetta. I requisiti cambiano col percorso e li verifica il fornitore prima della partenza: scrivi nelle note se hai la patente.",
+        en: "Without a driving licence you can only do the off-road activity the operator accepts. Requirements depend on the route and are checked by the operator before departure: say in the notes whether you hold a licence.",
+        es: "Quien no tiene carné solo puede hacer la actividad todoterreno que acepte el proveedor. Los requisitos dependen del recorrido y los comprueba el proveedor antes de salir: indica en las notas si tienes carné."
+      },
+      {
+        it: "Scarpe chiuse e pantaloni lunghi. Porta un documento d'identità e la patente, se ce l'hai; consigliate acqua e crema solare. Arriva con un po' di anticipo: prima di partire c'è la spiegazione e la preparazione.",
+        en: "Closed shoes and long trousers. Bring ID and your driving licence if you have one; water and sun cream are recommended. Arrive a little early: there is a briefing and preparation before setting off.",
+        es: "Calzado cerrado y pantalón largo. Lleva un documento de identidad y el carné si lo tienes; se recomiendan agua y crema solar. Llega con algo de antelación: antes de salir hay explicación y preparación."
       },
       {
         it: "Non c'è il ritiro in hotel: a Guargacho si arriva da soli. Prima dell'uscita il fornitore manda un link per fare il check-in.",

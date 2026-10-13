@@ -18146,3 +18146,13 @@ Provato in Chromium: con l'invio a Supabase fermato, due escursioni con l'ABAMA 
 `pickup_point` "ABAMA Ritz-Carlton, alla sbarra" e `pickup_time` 08:55 sul Teide, niente
 punto sulle balene; in `venditori.html` con righe finte il modulo si riempie (08:55 + la
 sbarra; 10:00; vuoto per la fascia). `CACHE_NAME` a `isla-v487`.
+
+### Lo stesso giorno: "permission denied for table bookings"
+
+Lanciato il file SQL, `venditori.html` scriveva "Elenco non disponibile: permission
+denied for table bookings". Le quattro colonne nuove (`customer_name`,
+`request_message`, `pickup_point`, `pickup_time`) erano nate senza il permesso per i
+venditori, che dall'8 ottobre leggono `bookings` **colonna per colonna** (per tenere
+fuori i netti). La regola stava già in CLAUDE.md e nel file del foglio, ed è stata
+dimenticata lo stesso: il file ora ha la riga `grant select (…) on public.bookings to
+authenticated`. **Ogni `add column` su `bookings` va seguito dal suo `grant select`.**

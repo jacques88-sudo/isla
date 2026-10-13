@@ -326,6 +326,8 @@ function initLista() {
     const nome = nomeScritto ? nomeScritto.value : "";
     const emailScritta = corpo.querySelector("#listaEmail");
     const email = emailScritta ? emailScritta.value : "";
+    const avvisiScelti = corpo.querySelector("#listaAvvisi");
+    const avvisi = avvisiScelti ? avvisiScelti.checked : true;
     if (!voci.length) {
       const frase = vuotaDaSubito ? "lista.none" : "lista.empty";
       corpo.innerHTML = '<p class="lista-empty" data-i18n="' + frase + '"></p>';
@@ -391,6 +393,14 @@ function initLista() {
                autocapitalize="off" spellcheck="false"
                data-i18n-placeholder="req.emailPlaceholder" required />
         <p class="hint" data-i18n="req.emailHint"></p>
+        <label class="request-check" data-lista-avvisi hidden>
+          <input id="listaAvvisi" name="avvisi" type="checkbox" />
+          <span>
+            <span data-i18n="lista.avvisi">Avvisami sul telefono</span>
+            <small data-i18n="lista.avvisiNota"></small>
+          </span>
+        </label>
+        <p class="hint" data-lista-avvisi-ios hidden data-i18n="lista.avvisiIos"></p>
         <button class="btn btn-primary btn-block request-submit" type="submit"
                 data-i18n="req.submit">Continua su WhatsApp</button>
         <p class="hint" data-i18n="lista.hint"></p>
@@ -402,6 +412,16 @@ function initLista() {
     applyI18n(corpo);
     if (nome) corpo.querySelector("#listaName").value = nome;
     if (email) corpo.querySelector("#listaEmail").value = email;
+    // Gli avvisi sul telefono (richieste.js): la casella c'e' solo dove il
+    // telefono li sa ricevere e il cliente non li ha gia' rifiutati (il
+    // browser non rifa' la domanda). Sull'iPhone senza l'app installata si
+    // dice come averli.
+    if (typeof avvisiPossibili === "function") {
+      const puo = avvisiPossibili() && Notification.permission !== "denied";
+      corpo.querySelector("[data-lista-avvisi]").hidden = !puo;
+      corpo.querySelector("#listaAvvisi").checked = avvisi;
+      corpo.querySelector("[data-lista-avvisi-ios]").hidden = puo || !avvisiSoloConApp();
+    }
   }
 
   carrelli.forEach(c => c.addEventListener("click", apri));
@@ -432,16 +452,26 @@ function initLista() {
       return;
     }
     if (!listaWhatsappUrl(nome)) return;
-    // La richiesta si salva anche nel database (richieste.js), col codice che
-    // va nel messaggio: cosi' l'ufficio la ritrova e il cliente ne vede lo
-    // stato in "Le mie richieste". Il messaggio si rifa' col codice dentro.
-    const codice = typeof richiestaNuova === "function" ? richiestaNuova(listaLeggi()) : "";
-    const url = listaWhatsappUrl(nome, codice, email);
-    // La lista si svuota: la richiesta e' partita, e ritrovarsela ancora li'
-    // alla prossima visita farebbe rimandare due volte le stesse escursioni.
-    listaSvuota();
-    chiudi();
-    window.location.href = url;
+    // Gli avvisi si chiedono qui, PRIMA di andare su WhatsApp: dopo, la
+    // pagina non c'e' piu' e non potrebbe chiedere niente. Il browser mostra
+    // la sua domanda solo la prima volta; il pulsante si spegne intanto, se no
+    // un secondo tocco manderebbe la richiesta due volte.
+    const casella = dialog.querySelector("#listaAvvisi");
+    const vuole = casella && !casella.closest("[data-lista-avvisi]").hidden && casella.checked;
+    const bottone = dialog.querySelector(".request-submit");
+    bottone.disabled = true;
+    (vuole ? avvisiIscrizione(true) : Promise.resolve(null)).then(iscrizione => {
+      // La richiesta si salva anche nel database (richieste.js), col codice che
+      // va nel messaggio: cosi' l'ufficio la ritrova e il cliente ne vede lo
+      // stato in "Le mie richieste". Il messaggio si rifa' col codice dentro.
+      const codice = typeof richiestaNuova === "function" ? richiestaNuova(listaLeggi(), iscrizione) : "";
+      const url = listaWhatsappUrl(nome, codice, email);
+      // La lista si svuota: la richiesta e' partita, e ritrovarsela ancora li'
+      // alla prossima visita farebbe rimandare due volte le stesse escursioni.
+      listaSvuota();
+      chiudi();
+      window.location.href = url;
+    });
   });
   document.addEventListener("keydown", e => {
     if (e.key === "Escape" && dialog.classList.contains("is-open")) chiudi();

@@ -938,6 +938,8 @@ async function cambiaStatoTicket(b, form, stato) {
       return;
     }
     if (error || !data || !data.length) throw error || new Error("nessuna riga");
+    // un ticket nato da una richiesta WhatsApp, annullato dagli "Ultimi inseriti"
+    if (b.source === "whatsapp") mandaAvvisi();
     await caricaUltimi();
     mostra(els.recentMsg, `Ticket ${b.ticket_number} ${stato === "cancelled" ? "annullato" : "ripristinato"}.`, "ok");
   } catch (err) {
@@ -1135,11 +1137,22 @@ async function annullaRichiesta(r) {
   if (salvato) mostra(els.requestsMsg, `${r.request_code} annullata. Avvisa il cliente su WhatsApp.`, "ok");
 }
 
+// Il cliente che ha chiesto gli avvisi sul telefono li riceve subito dopo
+// Conferma o Annulla, invece di aspettare l'orologio (ogni 10 minuti). La
+// funzione manda solo quello che il database dice di mandare, e mai due volte:
+// se questa chiamata non arriva, ci pensa l'orologio.
+// Vedi supabase/modifiche/2026-10-13-notifiche.sql.
+function mandaAvvisi() {
+  fetch(SUPABASE_URL + "/functions/v1/manda-notifiche", { method: "POST", keepalive: true })
+    .catch(() => {});
+}
+
 async function cambiaRichiesta(r, nuovo, msg) {
   try {
     // .select(): se le regole non lasciano passare, non c'e' errore ma zero righe
     const { data, error } = await sb.from("bookings").update(nuovo).eq("id", r.id).select("id");
     if (error || !data || !data.length) throw error || new Error("nessuna riga");
+    mandaAvvisi();
     await caricaRichieste();
     return true;
   } catch (err) {

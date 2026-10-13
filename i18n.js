@@ -322,6 +322,9 @@ const I18N = {
   "lista.remove":       { it: "Togli dalla lista", en: "Remove from the list", es: "Quitar de la lista" },
   "lista.clear":        { it: "Svuota la lista", en: "Empty the list", es: "Vaciar la lista" },
   "lista.full":         { it: "Nella lista ci stanno al massimo {n} escursioni. Mandaci questa richiesta e poi ne inizi un'altra.", en: "The list holds at most {n} excursions. Send this request and then start another one.", es: "En la lista caben como máximo {n} excursiones. Envíanos esta solicitud y luego empiezas otra." },
+  "lista.avvisi":       { it: "Avvisami sul telefono", en: "Notify me on my phone", es: "Avísame en el móvil" },
+  "lista.avvisiNota":   { it: "Quando l'ufficio conferma o annulla, e prima dell'escursione.", en: "When the office confirms or cancels, and before the excursion.", es: "Cuando la oficina confirme o cancele, y antes de la excursión." },
+  "lista.avvisiIos":    { it: "Sull'iPhone gli avvisi arrivano solo con l'app installata: Condividi → «Aggiungi alla schermata Home».", en: "On iPhone, notifications only arrive with the app installed: Share → “Add to Home Screen”.", es: "En el iPhone, los avisos solo llegan con la app instalada: Compartir → «Añadir a pantalla de inicio»." },
   "lista.hint":         { it: "Parte un solo messaggio con tutte le escursioni della lista.", en: "One single message goes out with every excursion in the list.", es: "Se envía un solo mensaje con todas las excursiones de la lista." },
 
   // ── i pacchetti ─────────────────────────────────────────────────────────

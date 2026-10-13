@@ -18013,3 +18013,61 @@ più da ricordarsi su ogni scheda nuova, e le compagnie che la chiedono sono tan
 
 Provato nel browser (375 px): email sbagliata e vuota bloccano l'invio, quella giusta
 arriva nel messaggio con una voce, con due voci. `CACHE_NAME` → `isla-v484`.
+
+## 13 ottobre 2026 — Gli avvisi sul telefono (notifiche push)
+
+Chiesto dal proprietario il 6 ottobre (il 3 era stata rimandata: serviva il pezzo sul
+server). Decisioni sue:
+- **tre avvisi**: richiesta **confermata**, **annullata**, e un **promemoria**;
+- il promemoria: se l'escursione parte **prima delle 9:00** arriva **la sera prima**
+  (scelte le **20:00**); **dalle 9:00 in poi**, **due ore prima**;
+- il permesso si chiede **all'invio della richiesta**.
+
+**Perché una casella e non una domanda dopo l'invio.** Dopo l'invio la pagina va su
+WhatsApp e non c'è più: non può chiedere niente. Così nella finestra della lista, sopra
+"Continua su WhatsApp", c'è la casella **"Avvisami sul telefono"**, già spuntata. La
+domanda vera la fa il browser al tocco del pulsante (solo la prima volta), poi parte
+WhatsApp. Se il cliente non risponde o dice no, la richiesta parte lo stesso.
+
+**I pezzi:**
+| pezzo | cosa fa |
+|---|---|
+| `richieste.js` (`avvisi…`) | chiede il permesso, prende l'indirizzo del telefono, lo manda con `avvisami()` legato alla **chiave** della richiesta |
+| `supabase/modifiche/2026-10-13-notifiche.sql` | tabelle `push_iscrizioni` e `notifiche_mandate`, `avvisami()`, `notifiche_da_mandare()` (decide **quando**), l'orologio ogni 10 minuti |
+| `supabase/functions/manda-notifiche/` | scrive il testo nelle tre lingue e lo manda (`npm:web-push`) |
+| `sw.js` | mostra l'avviso e, toccandolo, apre `booking.html?richieste=1` |
+| `venditori.js` (`mandaAvvisi`) | dopo Conferma o Annulla chiama subito la funzione, senza aspettare l'orologio |
+| `supabase-config.js` | `VAPID_PUBLIC_KEY`: la chiave **pubblica**; la privata sta **solo** nei Secrets |
+
+**Le cose che si sbagliano:**
+- L'**ora** del promemoria è quella del **ritrovo** messa dall'ufficio confermando; se
+  manca, l'inizio di quella chiesta dal cliente (`"09:00 - 12:00"` → 09:00); se manca
+  anche quella, la sera prima. Le ore sono di Tenerife (`Atlantic/Canary`).
+- Ogni avviso parte **una volta sola**: si segna in `notifiche_mandate` **prima** di
+  mandarlo, e se l'orologio e venditori.html chiamano insieme solo uno riesce a segnarlo.
+- Una richiesta confermata tardi (conferma e promemoria dovuti insieme) riceve **solo la
+  conferma**: il promemoria si segna come fatto. Due avvisi di fila sembravano un errore.
+- `avvisami()` **non controlla che la richiesta esista già**: richiesta e iscrizione
+  partono nello stesso istante mentre la pagina se ne va, e l'iscrizione può arrivare
+  prima. Un'iscrizione senza richiesta non riceve niente e si toglie dopo due giorni.
+- Accetta solo indirizzi dei servizi veri (Google, Mozilla, Apple, Microsoft): la
+  funzione non deve poter chiamare un sito qualunque.
+- I **titoli** delle escursioni viaggiano con l'iscrizione (`titoli`): il catalogo sta
+  nel sito e la funzione non lo conosce.
+- **iPhone**: gli avvisi esistono solo con l'app sulla schermata Home (iOS 16.4+). In
+  Safari la casella non c'è, e al suo posto una riga dice come installarla.
+- Il ticket di carta **non** riceve avvisi: nasce già confermato e non ha una chiave.
+
+**Provato:**
+- il file SQL su un Postgres 16 vero (lanciato due volte; i promemoria a 19:30,
+  20:00, 08:59 e 09:00 di Tenerife; partenze 07:00, 08:30, 11:00, 21:00, 22:00, senza
+  ora, ora illeggibile, già iniziata, senza iscrizione, di ieri);
+- la funzione in Deno con PostgREST vero davanti e un finto servizio push: 4 avvisi
+  partiti e **decifrati** (italiano e inglese), il telefono che risponde 410 tolto, il
+  secondo giro non manda niente;
+- nel browser (Chromium e iPhone 13 simulato): la casella, il permesso negato, la
+  domanda senza risposta, la casella tolta, la ripresa alla pagina dopo, l'avviso
+  consegnato al service worker come lo consegna Google. Nessun errore.
+- **Non provato**: un telefono vero. Lo deve fare il proprietario dopo aver pubblicato.
+
+`CACHE_NAME` → `isla-v485`.

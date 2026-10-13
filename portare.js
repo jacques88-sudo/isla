@@ -80,6 +80,16 @@ const COSE_DA_PORTARE = [
     ]
   },
   {
+    gruppo: "Talaria",
+    schede: ["talaria-off-road"],
+    cose: [
+      { it: "Documento d'identità", en: "ID", es: "Documento de identidad" },
+      { it: "Patente di guida, se ce l'hai", en: "Driving licence, if you have one", es: "Carné de conducir, si lo tienes" },
+      { it: "Scarpe chiuse e pantaloni lunghi", en: "Closed shoes and long trousers", es: "Calzado cerrado y pantalón largo" },
+      { it: "Acqua e crema solare", en: "Water and sun cream", es: "Agua y crema solar" }
+    ]
+  },
+  {
     gruppo: "Jet ski",
     schede: ["jet-ski-safari-1-2h"],
     cose: [

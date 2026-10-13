@@ -18185,3 +18185,28 @@ Il link "indietro" della pagina del pacchetto porta alla vetrina in cui il pacch
 sta (`?famiglia=1`, `?tema=per-due`), altrimenti si tornava in una pagina dove non
 c'era. I piedi delle vetrine filtrate dicono "Vedi gli altri pacchetti"
 (`pack.seeOthers`) invece di "tutti". `CACHE_NAME` → `isla-v491`.
+
+**Netti dal foglio di un venditore (13 ottobre 2026):** il proprietario ha mandato la
+foto del riepilogo settimanale di Agustin (5-11 ottobre: ticket, totale, netto,
+commissioni). Ricavati i netti come totale − commissione e confermati dal proprietario
+uno per uno: Aqualand, Siam Park, Loro Parque, Peter Pan, Crazy UFO (banana-boat),
+Flash Jetski e Jetski Island (jet ski), Opera 60, Shaka Kayak. **I numeri non sono qui**:
+stanno nella tabella Notion "Netti da inserire" e su Supabase (SQL preparato nella
+scratchpad, non committato). Sul Freebird 3 ore il foglio aveva un netto corretto a
+penna diverso da Notion: **vale Notion** (proprietario, regola generale). La colonna
+"COMPANY" del foglio non dice la compagnia: POINT e TIKTOK sono i punti vendita.
+
+- `nomi` del jet ski: **Flash Jetski** e **Jetski Island** accanto ad Agua Safari. Le
+  due nuove partono da **Puerto Colón**, Agua Safari da Las Galletas (proprietario):
+  chiusa la riga Notion "Jet Ski da Puerto Colón". Ognuna ha il suo netto, quindi un
+  ticket jet ski senza compagnia resta senza netto;
+- `nomi: ["Shaka Kayak"]` su `kayak-snorkelling`;
+- **Peter Pan conta sempre come card** (proprietario): `pagamento: "card"` nel catalogo
+  e `'peter-pan'` in `2026-10-09-solo-card.sql`, da rilanciare intero.
+
+Provato: nel modulo dei venditori il menu Compagnia del jet ski ha le tre compagnie,
+"FLASH JETSKI" nel testo del ticket la sceglie, Peter Pan sceglie Card e spegne Cash;
+schede senza errori e senza scroll orizzontale a 375 px. SQL dei netti provato su
+Postgres 16 con schema e modifiche: i netti dei ticket del foglio tornano uguali, un
+jet ski senza compagnia resta "compagnia non scritta", un bambino su Peter Pan resta
+"netto bambino mancante", lanciato due volte non fa danni. `CACHE_NAME` → `isla-v492`.

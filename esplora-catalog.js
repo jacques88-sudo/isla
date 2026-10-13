@@ -400,7 +400,7 @@
 //                SEMPRE come pagato con carta, comunque abbia pagato il cliente
 //                (i parchi: Loro Parque, Siam Park, Siam Night, Twin Ticket; proprietario,
 //                9 ottobre 2026; e dall'11 ottobre le cinque escursioni di
-//                Island Excursions). Nel modulo dei venditori il pagamento si
+//                Island Excursions; dal 13 ottobre Peter Pan). Nel modulo dei venditori il pagamento si
 //                sceglie da solo e Cash non si puo' scegliere. Lo stesso elenco
 //                sta su Supabase (supabase/modifiche/2026-10-09-solo-card.sql),
 //                che lo fa valere anche sui ticket gia' salvati: `controlla.js`
@@ -878,6 +878,9 @@ const ESPLORA_CATALOG = [
     priceInfant: 0,
     ages: { adult: "12+", child: "3-11", infant: "0-2" },
     family: true,
+    // Il ticket conta sempre come pagato con carta (proprietario, 13 ottobre
+    // 2026): stessa regola dei parchi, e stesso elenco in sempre_card.
+    pagamento: "card",
     // Solo la guida. Sul giro di due ore da mangiare e da bere **non** sono
     // compresi (si comprano a bordo) e il bagno non c'e': la sosta per nuotare
     // il fornitore la mette sul giro di tre ore, non su questo.
@@ -3634,6 +3637,9 @@ const ESPLORA_CATALOG = [
   {
     id: "kayak-snorkelling",
     title: "Kayaking & Snorkelling Combo",
+    // La compagnia come la scrivono i venditori sul ticket (proprietario,
+    // 13 ottobre 2026).
+    nomi: ["Shaka Kayak"],
     category: "sport-acquatici",
     zone: "Los Cristianos",
     duration: { it: "2 ore", en: "2 hours", es: "2 horas" },
@@ -3761,9 +3767,11 @@ const ESPLORA_CATALOG = [
   {
     id: "jet-ski-safari-1-2h",
     title: "Jet Ski Safari",
-    // La compagnia delle partenze da Las Galletas, come i venditori la
-    // scrivono sul ticket (proprietario, 8 ottobre 2026).
-    nomi: ["Agua Safari"],
+    // Le compagnie come i venditori le scrivono sul ticket: Agua Safari parte
+    // da Las Galletas (proprietario, 8 ottobre 2026), Flash Jetski e Jetski
+    // Island da Puerto Colón (proprietario, 13 ottobre 2026). Ognuna ha il
+    // suo netto, quindi sul ticket la compagnia va scelta.
+    nomi: ["Agua Safari", "Flash Jetski", "Jetski Island"],
     category: "sport-acquatici",
     zone: { it: "Puerto Colón o Las Galletas", en: "Puerto Colón or Las Galletas", es: "Puerto Colón o Las Galletas" },
     duration: { it: "40 minuti, 1 o 2 ore", en: "40 minutes, 1 or 2 hours", es: "40 minutos, 1 o 2 horas" },

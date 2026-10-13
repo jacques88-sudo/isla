@@ -4163,6 +4163,10 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .vend-req.is-confirmed .vend-req-stato { color: var(--ok); }
 .vend-req.is-cancelled .vend-req-stato { color: var(--danger); }
 .vend-req.is-cancelled strong { text-decoration: line-through; text-decoration-thickness: 1px; }
+/* Il messaggio WhatsApp della richiesta: chiuso, sotto la riga, a capo come in chat. */
+.vend-req-msg { flex-basis: 100%; font-size: .9rem; }
+.vend-req-msg summary { cursor: pointer; color: var(--muted); min-height: 32px; display: flex; align-items: center; }
+.vend-req-msg pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; margin: .3rem 0 0; padding: .6rem .75rem; background: var(--surface-2, rgba(127,127,127,.08)); border-radius: 10px; }
 /* Un ticket annullato nell'elenco: barrato e piu' chiaro, ma si legge. */
 .vend-list li.is-cancelled > div:first-child strong,
 .vend-list li.is-cancelled > div:first-child > span:last-child { opacity: .6; }

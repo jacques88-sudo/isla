@@ -145,17 +145,19 @@ function listaSomma(voci) {
 // fondo al messaggio. Vuoto = niente riga.
 // `email`: molte compagnie (i parchi per primi) mandano il biglietto per
 // email, e senza l'ufficio deve riscrivere al cliente per chiederla. Si chiede
-// a tutti, obbligatoria (proprietario, 12 ottobre 2026), e va solo nel
-// messaggio: nel database non si salva, come il nome.
-function listaWhatsappUrl(nome, codice, email) {
+// a tutti, obbligatoria (proprietario, 12 ottobre 2026). Non ha una colonna
+// sua nel database: ci arriva dentro il messaggio (request_message).
+// Il testo sta a parte dall'indirizzo perche' va anche nel database
+// (richieste.js, 13 ottobre 2026), e l'ufficio lo rilegge in venditori.html.
+function listaWhatsappTesto(nome, codice, email) {
   const voci = listaLeggi();
   if (!voci.length) return "";
   const primo = listaVoceConto(voci[0]);
   if (voci.length === 1) {
     if (!primo) return "";
     return primo.pack
-      ? pacchettoWhatsappUrl(primo.pack, Object.assign({ name: nome, email: email }, voci[0]), codice)
-      : whatsappUrl(primo.tour, Object.assign({ name: nome, email: email, code: codice }, voci[0]));
+      ? pacchettoWhatsappTesto(primo.pack, Object.assign({ name: nome, email: email }, voci[0]), codice)
+      : whatsappTesto(primo.tour, Object.assign({ name: nome, email: email, code: codice }, voci[0]));
   }
 
   const blocchi = [];
@@ -179,7 +181,12 @@ function listaWhatsappUrl(nome, codice, email) {
   }
   if (email) testo += "\n\n" + t("wa.email", { email: email });
   if (codice) testo += "\n\n" + t("wa.code", { code: codice });
-  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
+  return testo;
+}
+
+function listaWhatsappUrl(nome, codice, email) {
+  const testo = listaWhatsappTesto(nome, codice, email);
+  return testo ? "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo) : "";
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -464,7 +471,10 @@ function initLista() {
       // La richiesta si salva anche nel database (richieste.js), col codice che
       // va nel messaggio: cosi' l'ufficio la ritrova e il cliente ne vede lo
       // stato in "Le mie richieste". Il messaggio si rifa' col codice dentro.
-      const codice = typeof richiestaNuova === "function" ? richiestaNuova(listaLeggi(), iscrizione) : "";
+      // Col nome e col messaggio intero: l'ufficio, confermando, li trova gia'
+      // li' invece di ricopiarli dalla chat.
+      const codice = typeof richiestaNuova === "function"
+        ? richiestaNuova(listaLeggi(), iscrizione, nome, c => listaWhatsappTesto(nome, c, email)) : "";
       const url = listaWhatsappUrl(nome, codice, email);
       // La lista si svuota: la richiesta e' partita, e ritrovarsela ancora li'
       // alla prossima visita farebbe rimandare due volte le stesse escursioni.

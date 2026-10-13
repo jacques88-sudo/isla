@@ -977,7 +977,7 @@ const STATO_RICHIESTA = { pending: "Da confermare", confirmed: "Confermata", can
 async function caricaRichieste() {
   const { data, error } = await sb
     .from("bookings")
-    .select("id, request_code, status, excursion_id, option_label, date, time, wanted_time, meeting_point, adults, kids, babies, created_at")
+    .select("id, request_code, status, excursion_id, option_label, date, time, wanted_time, meeting_point, adults, kids, babies, created_at, customer_name, hotel, pickup_point, pickup_time, request_message")
     .eq("source", "whatsapp")
     .is("ticket_number", null)
     .gte("date", oggiISO())
@@ -1019,11 +1019,28 @@ async function caricaRichieste() {
       ? (r.time ? " · ritrovo " + r.time.slice(0, 5) : "") + (r.meeting_point ? " · " + r.meeting_point : "")
       : (r.wanted_time ? " · chiede " + r.wanted_time : "");
     sotto.textContent = `${dataBreve(r.date)}${ora} · ${persone}`;
+    // chi e dove alloggia, se la richiesta li porta (dal 13 ottobre 2026)
+    const chi = [r.customer_name, r.hotel].filter(Boolean).join(" · ");
     const stato = document.createElement("em");
     stato.className = "vend-req-stato";
     stato.textContent = STATO_RICHIESTA[r.status] || r.status;
-    testo.append(titolo, sotto, stato);
+    testo.append(titolo, sotto);
+    if (chi) testo.append(Object.assign(document.createElement("span"), { className: "vend-req-chi", textContent: chi }));
+    testo.append(stato);
     li.append(testo);
+    // Il messaggio WhatsApp com'e' partito, chiuso finche' non serve: e' lo
+    // stesso che l'ufficio ha in chat, qui per non dover cambiare finestra.
+    // Va sotto, largo quanto la riga: si aggiunge dopo i bottoni.
+    let messaggio = null;
+    if (r.request_message) {
+      messaggio = document.createElement("details");
+      messaggio.className = "vend-req-msg";
+      const apri = document.createElement("summary");
+      apri.textContent = "Messaggio WhatsApp";
+      const corpo = document.createElement("pre");
+      corpo.textContent = r.request_message;
+      messaggio.append(apri, corpo);
+    }
 
     // Da confermare: tutti e due. Annullata: si puo' confermare lo stesso (uno
     // sbaglio, un posto liberato). Confermata ma ancora qui vuol dire senza
@@ -1041,6 +1058,7 @@ async function caricaRichieste() {
     bottone(r.status === "confirmed" ? "Dai il ticket" : "Conferma", () => apriConferma(li, r));
     if (r.status !== "cancelled") bottone("Annulla", () => annullaRichiesta(r));
     li.append(bottoni);
+    if (messaggio) li.append(messaggio);
     els.requests.append(li);
   });
 }
@@ -1088,10 +1106,15 @@ function apriConferma(li, r) {
     </div>`;
 
   // come in apriModifica: nessun testo del database passa da innerHTML
+  // Ora e meeting point partono da quello che sappiamo gia' (13 ottobre 2026):
+  // l'ora del pulmino ricavata dall'hotel, o la partenza scelta dal cliente
+  // se e' un'ora sola; il punto di raccolta, o l'hotel. Una fascia ("09:00 -
+  // 12:00") non diventa un'ora: il campo resta vuoto, meglio che inventata.
+  // L'ufficio li cambia se serve.
   const f = form.elements;
   f.date.value = r.date || "";
-  f.time.value = r.time ? r.time.slice(0, 5) : "";
-  f.meeting_point.value = r.meeting_point || "";
+  f.time.value = r.time ? r.time.slice(0, 5) : (oraSola(r.pickup_time) || oraSola(r.wanted_time));
+  f.meeting_point.value = r.meeting_point || r.pickup_point || "";
 
   form.querySelector("[data-edit-cancel]").addEventListener("click", () => form.remove());
   form.addEventListener("submit", async event => {
@@ -1127,6 +1150,13 @@ function apriConferma(li, r) {
   });
   li.append(form);
   f.ticket_number.focus();
+}
+
+// "9:30" o "09:30" diventa "09:30", quello che vuole il campo dell'ora;
+// tutto il resto (una fascia, una parola) diventa "".
+function oraSola(testo) {
+  const m = /^\s*(\d{1,2}):(\d{2})\s*$/.exec(testo || "");
+  return m && +m[1] < 24 && +m[2] < 60 ? m[1].padStart(2, "0") + ":" + m[2] : "";
 }
 
 async function annullaRichiesta(r) {

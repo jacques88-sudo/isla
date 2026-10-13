@@ -56,9 +56,7 @@ function richiestaChiave() {
   return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
 }
 
-// Dalle voci della lista a quello che va nel database: solo quello che il
-// cliente rivedra' nella sua pagina. Niente nome, hotel, note: quelli li
-// legge l'ufficio nel messaggio WhatsApp.
+// Dalle voci della lista a quello che va nel database.
 // La variante si salva col nome italiano, come fanno i venditori coi ticket
 // di carta (option_label, vedi schema.sql).
 // Un pacchetto della lista diventa una riga per ogni sua escursione, tutte
@@ -76,6 +74,9 @@ function richiestaVoce(voce) {
   const scelta = tour && tour.options && Array.isArray(tour.options.choices)
     ? tour.options.choices[voce.optionIndex] : null;
   const etichetta = scelta ? scelta.label : voce.option;
+  const hotel = (voce.hotel || "").trim();
+  // hotelPunto sta in escursioni.js, che c'e' su tutte le pagine della lista
+  const punto = hotel && typeof hotelPunto === "function" ? hotelPunto(hotel, voce.id) : null;
   return {
     excursion_id: voce.id,
     option_label: (etichetta && typeof etichetta === "object" ? etichetta.it : etichetta) || null,
@@ -83,7 +84,15 @@ function richiestaVoce(voce) {
     wanted_time: voce.time || null,
     adults: voce.adults || 0,
     kids: voce.kids || 0,
-    babies: voce.babies || 0
+    babies: voce.babies || 0,
+    // Dal 13 ottobre 2026 (proprietario) anche l'hotel e il punto di raccolta
+    // che ne esce, gli stessi del messaggio: in venditori.html il modulo
+    // "Conferma" parte gia' riempito. Il cliente non li rilegge.
+    hotel: hotel || null,
+    // "il tuo hotel" diventa il nome dell'hotel: e' quello che leggera' il
+    // cliente sul ticket, accanto all'ora
+    pickup_point: punto ? (punto.dove === "hotel" ? hotel : punto.nome) : null,
+    pickup_time: (punto && punto.ora) || null
   };
 }
 
@@ -100,7 +109,12 @@ function richiestaManda(r) {
       apikey: SUPABASE_KEY,
       Authorization: "Bearer " + SUPABASE_KEY
     },
-    body: JSON.stringify({ p_token: r.token, p_code: r.code, p_items: r.items })
+    // nome e messaggio solo se ci sono: una richiesta rimasta nel telefono da
+    // prima del 13 ottobre non li ha
+    body: JSON.stringify(Object.assign(
+      { p_token: r.token, p_code: r.code, p_items: r.items },
+      r.name ? { p_name: r.name } : {},
+      r.message ? { p_message: r.message } : {}))
   }).then(risposta => {
     if (!risposta.ok) return false;
     const elenco = richiesteLeggi();
@@ -115,12 +129,17 @@ function richiestaManda(r) {
 // `iscrizione` e' l'indirizzo del telefono per gli avvisi (avvisiIscrizione),
 // o null se il cliente non li vuole: parte nello stesso momento della
 // richiesta, perche' subito dopo la pagina se ne va verso WhatsApp.
-function richiestaNuova(voci, iscrizione) {
+// `scriviTesto(codice)` rifa' il messaggio WhatsApp col codice dentro: il
+// codice nasce qui, quindi il messaggio si puo' scrivere solo dopo.
+function richiestaNuova(voci, iscrizione, nome, scriviTesto) {
+  const code = richiestaCodice();
   const r = {
     token: richiestaChiave(),
-    code: richiestaCodice(),
+    code: code,
     sentAt: new Date().toISOString(),
     items: richiestaVoci(voci),
+    name: nome || "",
+    message: typeof scriviTesto === "function" ? scriviTesto(code) : "",
     stored: false
   };
   if (iscrizione) r.avvisi = "da-mandare";

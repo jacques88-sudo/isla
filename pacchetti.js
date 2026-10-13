@@ -1424,7 +1424,9 @@ function pacchettoRigheRichiesta(pack, req) {
 }
 
 // Il pacchetto da solo nella lista: il messaggio e' quello di sempre.
-function pacchettoWhatsappUrl(pack, req, codice) {
+// Il testo sta a parte dall'indirizzo perche' va anche nel database
+// (richieste.js), e l'ufficio lo rilegge in venditori.html.
+function pacchettoWhatsappTesto(pack, req, codice) {
   const righe = pacchettoRigheRichiesta(pack, req);
 
   // "il pacchetto «X»" su un itinerario da sette giorni fa arrivare in ufficio
@@ -1439,7 +1441,12 @@ function pacchettoWhatsappUrl(pack, req, codice) {
     // Il codice della richiesta salvata nel database, come nella lista: e'
     // quello con cui l'ufficio la ritrova in venditori.html.
     (codice ? "\n\n" + t("wa.code", { code: codice }) : "");
-  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(testo);
+  return testo;
+}
+
+function pacchettoWhatsappUrl(pack, req, codice) {
+  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" +
+    encodeURIComponent(pacchettoWhatsappTesto(pack, req, codice));
 }
 
 // La finestra della richiesta del pacchetto. Costruita qui in JavaScript e non

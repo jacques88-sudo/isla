@@ -18092,3 +18092,18 @@ Nessun doppione: quad e buggy si pagano a mezzo e vanno al Teide.
 - Non copiati: pagamento con carta al checkout, condizioni del fornitore, listino danni.
 
 `CACHE_NAME` → `isla-v486`.
+
+### Gli avvisi messi in funzione (13 ottobre 2026)
+
+Il proprietario ha pubblicato `manda-notifiche`, i Secrets e il file SQL.
+- **Primo errore**: l'indirizzo della funzione rispondeva "Internal Server Error". Nei
+  Logs: `Vapid public key must be a URL safe Base 64 (without "=")`. Nel Secret
+  `VAPID_PUBLIC_KEY` era finito qualcosa in più (spazio, a capo o virgolette). Rimesso
+  pulito, risponde `{"mandati":0,"iscrizioniTolte":0}`. **Se ricapita, guardare i Logs
+  della funzione**: l'errore lì è scritto in chiaro.
+- L'orologio gira: nei Logs arriva una POST ogni pochi minuti.
+- Su un iPhone con iOS più vecchio di 16.4 la casella "Avvisami" non compare: giusto,
+  lì gli avvisi non esistono. **Deciso dal proprietario di lasciarlo così**: anche la
+  riga "arrivano solo con l'app installata", che su un iPhone vecchio aperto da Safari
+  compare lo stesso (installare non servirebbe), resta com'è. Non si ripropone.
+- Manca ancora la prova su un telefono che li riceve (iPhone 16.4+ o Android).

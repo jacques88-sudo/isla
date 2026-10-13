@@ -366,6 +366,7 @@ const I18N = {
   "pack.notFound":      { it: "Pacchetto non trovato", en: "Package not found", es: "Paquete no encontrado" },
   "pack.notFoundText":  { it: "Questo indirizzo non corrisponde a nessun pacchetto. Forse è stato tolto.", en: "This address doesn't match any package. It may have been removed.", es: "Esta dirección no corresponde a ningún paquete. Puede que se haya retirado." },
   "pack.seeAll":        { it: "Vedi tutti i pacchetti", en: "See all the packages", es: "Ver todos los paquetes" },
+  "pack.seeOthers":     { it: "Vedi gli altri pacchetti", en: "See the other packages", es: "Ver los otros paquetes" },
   "pack.perPerson":     { it: "a persona", en: "per person", es: "por persona" },
   "pack.save":          { it: "Risparmi €{n}", en: "You save €{n}", es: "Ahorras €{n}" },
   "pack.noPrice":       { it: "Prezzo su richiesta", en: "Price on request", es: "Precio a consultar" },

@@ -378,6 +378,11 @@
 //                pubblicate per averle sott'occhio: quelle senza prezzo appaiono
 //                come "Su richiesta" e quelle senza foto con un segnaposto.
 //                Metti false per nascondere una voce ai clienti.
+//   venditori  → facoltativo: true su una voce con published: false che deve
+//                stare SOLO nel menu del modulo dei venditori (i noleggi,
+//                proprietario 14 ottobre 2026): il cliente non la vede in
+//                nessuna pagina, ma un ticket di carta la puo' scegliere e
+//                averne compagnia e netto.
 //   nomi       → facoltativo: gli altri nomi con cui i venditori scrivono
 //                questa attivita' sul ticket di carta, di solito il nome
 //                della compagnia ("COOL SAILING"). Servono solo alla lettura
@@ -506,6 +511,14 @@ const CATEGORIES = [
     id: "tour-privati",
     name: { it: "Tour privati", en: "Private tours", es: "Tours privados", fr: "Visites privées", de: "Private Touren" },
     image: "Cat-privati.jpg"
+  },
+  // I noleggi non sono escursioni: per il cliente stanno nella pagina
+  // Noleggio (noleggio.js). Questa categoria serve solo a raggrupparli nel
+  // menu dei venditori; le sue voci non sono pubblicate, quindi nell'elenco
+  // delle esperienze non compare mai (14 ottobre 2026).
+  {
+    id: "noleggi",
+    name: { it: "Noleggi", en: "Rentals", es: "Alquileres", fr: "Locations", de: "Vermietungen" }
   }
 ];
 
@@ -4344,8 +4357,9 @@ const ESPLORA_CATALOG = [
     // Le compagnie come i venditori le scrivono sul ticket: Agua Safari parte
     // da Las Galletas (proprietario, 8 ottobre 2026), Flash Jetski e Jetski
     // Island da Puerto Colón (proprietario, 13 ottobre 2026). Ognuna ha il
-    // suo netto, quindi sul ticket la compagnia va scelta.
-    nomi: ["Agua Safari", "Flash Jetski", "Jetski Island"],
+    // suo netto, quindi sul ticket la compagnia va scelta. Extreme e' la
+    // quarta (proprietario, 14 ottobre 2026).
+    nomi: ["Agua Safari", "Flash Jetski", "Jetski Island", "Extreme"],
     category: "sport-acquatici",
     zone: { it: "Puerto Colón o Las Galletas", en: "Puerto Colón or Las Galletas", es: "Puerto Colón o Las Galletas", fr: "Puerto Colón ou Las Galletas", de: "Puerto Colón oder Las Galletas" },
     duration: { it: "40 minuti, 1 o 2 ore", en: "40 minutes, 1 or 2 hours", es: "40 minutos, 1 o 2 horas", fr: "40 minutes, 1 ou 2 heures", de: "40 Minuten, 1 oder 2 Stunden" },
@@ -7721,6 +7735,29 @@ const ESPLORA_CATALOG = [
     },
     image: "tuk-tuk.jpg",
     published: true
+  },
+  // ─── I noleggi, solo per i venditori ───────────────────────────────────────
+  // Il cliente i noleggi li vede nella pagina Noleggio (noleggio.js), non qui.
+  // Queste due voci servono al ticket di carta: il venditore sceglie
+  // "Noleggio auto", la compagnia (Alis…) e il ticket prende il suo netto.
+  // Non pubblicate, con `venditori: true` (proprietario, 14 ottobre 2026).
+  // Il titolo ha tutte le lingue perche' il cliente lo legge in "Le mie
+  // prenotazioni", quando cerca il suo ticket.
+  {
+    id: "noleggio-auto",
+    title: { it: "Noleggio auto", en: "Car rental", es: "Alquiler de coches", fr: "Location de voiture", de: "Mietwagen" },
+    // Il rent a car come lo scrivono i venditori sul ticket.
+    nomi: ["Alis"],
+    category: "noleggi",
+    venditori: true,
+    published: false
+  },
+  {
+    id: "noleggio-moto",
+    title: { it: "Noleggio moto e scooter", en: "Motorbike and scooter rental", es: "Alquiler de motos y scooters", fr: "Location de motos et scooters", de: "Motorrad- und Rollervermietung" },
+    category: "noleggi",
+    venditori: true,
+    published: false
   },
 ];
 

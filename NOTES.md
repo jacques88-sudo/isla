@@ -18310,3 +18310,29 @@ menu. `CACHE_NAME` → `isla-v495`.
 `2026-10-09-solo-card.sql`, da rilanciare intero. Il Combo Jungle Park + Aqualand non è
 stato toccato: non è stato nominato. Provato: Aqualand sceglie Card e spegne Cash, il
 Combo resta libero. `CACHE_NAME` → `isla-v496`.
+
+**Dal foglio "Admiral TRG SC" (fine settembre 2026), 14 ottobre:** netti ricavati e
+confermati dal proprietario (i numeri in Notion e su Supabase, non qui): King Buggy e
+Ultimate Buggies a mezzo ("D" sul foglio = doppio, buggy da 2 posti), Cool Sailing solo
+adulto, MHT a percentuale, la doppia da 1 ora di Jetski Island, Extreme. Pirat, il
+bambino di Cool Sailing e Sea Trek (un'altra compagnia) restano in sospeso.
+
+- **Extreme** è una moto d'acqua: quarta compagnia del jet ski (`nomi`), sul ticket si
+  scrive "Extreme", la doppia del foglio era da 1 ora;
+- **i noleggi nel modulo dei venditori.** Alis è un rent a car, e il proprietario lo
+  vuole come compagnia col suo netto. Ma il menu "Escursione" mostrava solo le schede
+  pubblicate, e i noleggi stanno in `noleggio.js`, fuori dal catalogo: un ticket di
+  noleggio non si poteva registrare. Scelta del proprietario: due voci nel catalogo,
+  `noleggio-auto` (`nomi: ["Alis"]`) e `noleggio-moto` (ancora senza compagnie), con
+  `published: false` e il campo nuovo **`venditori: true`**, in una categoria nuova
+  `noleggi`. `nelModulo()` in `venditori.js` le fa entrare nel menu (gruppo "Noleggi") e
+  nell'elenco per la lettura della foto; tutte le pagine del cliente filtrano
+  `published`, quindi lì non compaiono, e la categoria senza voci pubblicate non esce
+  fra i filtri. Il titolo ha cinque lingue perché il cliente lo legge in "Le mie
+  prenotazioni". Il foglio Google prende il titolo col suo solito regex (provato).
+  Niente varianti né mezzi: il netto di Alis è una parte del totale (commissione 30%).
+
+Provato a 375 px: gruppo "Noleggi" con le due voci, menu Compagnia con Alis, niente
+varianti né mezzi; jet ski con le quattro compagnie; "ALIS" ed "EXTREME" nel testo
+scelgono la compagnia; elenco, home e pagina Noleggio senza le voci nuove e senza
+errori. `CACHE_NAME` → `isla-v497`.

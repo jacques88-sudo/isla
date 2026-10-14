@@ -327,6 +327,12 @@ questo la lettura della foto lasciava vuota la serata. Trovata la compagnia, il 
 sceglie la variante, ma solo se è ancora vuota. Il nome della variante deve stare anche
 nei `nomi` della scheda: `controlla.js` lo verifica.
 
+**I noleggi stanno nel catalogo solo per i venditori** (proprietario, 14 ottobre 2026):
+`noleggio-auto` e `noleggio-moto`, categoria `noleggi`, `published: false` e
+`venditori: true`. Il cliente li vede nella pagina Noleggio (`noleggio.js`), non fra le
+esperienze; nel modulo dei venditori stanno nel gruppo "Noleggi" e hanno i `nomi` dei rent
+a car (Alis), per la compagnia e il netto. Una voce nuova solo per i venditori si fa così.
+
 ## I netti delle compagnie — MAI nel repository
 
 Il **netto** è quanto Isla paga alla compagnia (barca da 100 €, netto 40: 40 alla

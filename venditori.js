@@ -97,6 +97,12 @@ function italiano(campo) {
   return typeof campo === "string" ? campo : (campo && campo.it) || "";
 }
 
+// Le voci che il venditore puo' scegliere: quelle pubblicate e quelle solo
+// per i venditori (i noleggi, `venditori: true` nel catalogo).
+function nelModulo(t) {
+  return t.published || t.venditori === true;
+}
+
 function schedaDa(id) {
   return ESPLORA_CATALOG.find(t => t.id === id) || null;
 }
@@ -117,7 +123,7 @@ function riempiEscursioni() {
   // un elenco unico si cerca male.
   CATEGORIES.forEach(cat => {
     const schede = ESPLORA_CATALOG
-      .filter(t => t.published && t.category === cat.id)
+      .filter(t => nelModulo(t) && t.category === cat.id)
       .sort((a, b) => titoloDi(a).localeCompare(titoloDi(b)));
     if (!schede.length) return;
     const gruppo = document.createElement("optgroup");
@@ -366,7 +372,7 @@ let lettura = 0;           // numero dell'ultima lettura: le risposte vecchie si
 // Il catalogo come lo vuole la funzione: id, titolo, varianti. Sempre nello
 // stesso ordine e con gli stessi testi: cosi' Anthropic lo tiene in cache.
 function catalogoPerLettura() {
-  return ESPLORA_CATALOG.filter(t => t.published).map(t => {
+  return ESPLORA_CATALOG.filter(nelModulo).map(t => {
     // I `nomi` (la compagnia, come la scrivono i venditori) vanno attaccati
     // al titolo: la funzione sul server mette nel prompt solo id, titolo e
     // varianti, e cosi' non c'e' da ridistribuirla.

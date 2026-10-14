@@ -4147,6 +4147,9 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .vend-warn { color: var(--danger); margin: -.4rem 0 1rem; }
 .vend .is-error { color: var(--danger); }
 .vend-msg.is-ok { color: oklch(0.5 0.12 150); font-weight: 500; }
+/* "Rispondi su WhatsApp" dopo la conferma: lingua e bottone, sotto il messaggio */
+.vend-risposta { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: .5rem; font-weight: 400; }
+.vend-risposta select { min-height: 44px; }
 .vend-list { list-style: none; margin: 0; padding: 0; }
 .vend-list li {
   display: flex;

@@ -444,15 +444,21 @@ function titoloPagina(chiave) {
   if (h1) { h1.dataset.i18n = chiave; h1.textContent = t(chiave); }
 }
 
-async function cercaRichieste() {
+// `codice`: il numero di un ticket arrivato col link della risposta WhatsApp
+// (booking.html?code=2213, vedi rispostaTesto in venditori.js). Se e' fra le
+// richieste di questo telefono si mostrano quelle; se no si chiede il
+// telefono, come per un ticket di carta.
+async function cercaRichieste(codice) {
   titoloPagina("booking.requestsH1");
 
   if (!richiesteLeggi().length) {
     renderStato(ICONS.ticket, t("booking.noRequests"), t("booking.noRequestsText"), false);
     return;
   }
-  // Subito quello che c'e' nel telefono, poi la risposta nuova.
-  renderRichieste(richiesteLeggi(), false);
+  // Subito quello che c'e' nel telefono, poi la risposta nuova. Col codice si
+  // aspetta la risposta: le richieste salvate qui il numero non lo sanno.
+  if (codice) renderStato(ICONS.ticket, t("booking.loading"), "", false);
+  else renderRichieste(richiesteLeggi(), false);
 
   // Prima si rimandano quelle che non erano arrivate, poi si legge: cosi' una
   // richiesta partita senza campo compare gia' in questa lettura.
@@ -464,7 +470,11 @@ async function cercaRichieste() {
     if (!error) rows = data;
   } catch (e) { /* rete: si decide sotto */ }
 
-  if (rows === null) { renderRichieste(elenco, true); return; }
+  if (rows === null) {
+    if (codice) chiediTelefono(codice);
+    else renderRichieste(elenco, true);
+    return;
+  }
 
   // Ogni richiesta si tiene la sua risposta, per quando mancera' la rete.
   // Una richiesta arrivata nel database e ora sparita e' stata tolta dalla
@@ -474,7 +484,19 @@ async function cercaRichieste() {
     return r.last.length || !r.stored;
   });
   richiesteScrivi(tenute);
+  if (codice && !rows.some(x => String(x.ticket_number || "").trim().toUpperCase() === codice)) {
+    chiediTelefono(codice);
+    return;
+  }
   renderRichieste(tenute, false);
+}
+
+// Il ticket col numero ma senza telefono: si chiede, col numero gia' scritto.
+function chiediTelefono(code) {
+  titoloPagina("booking.h1");
+  renderStato(ICONS.ticket, t("booking.needPhone"), t("booking.needPhoneText", { code }), true);
+  const campo = document.getElementById("retryCode");
+  if (campo) campo.value = code;
 }
 
 async function cercaTicketVero(code, phone) {
@@ -522,7 +544,10 @@ function renderBookingPage() {
 
   const phone = salvato && salvato.code.trim().toUpperCase() === code ? salvato.phone : null;
   if (!phone) {
-    renderStato(ICONS.ticket, t("booking.needPhone"), t("booking.needPhoneText", { code }), true);
+    // Il link della conferma su WhatsApp: il telefono che ha mandato la
+    // richiesta il ticket lo trova da solo, senza chiedere niente.
+    if (richiesteLeggi().length) cercaRichieste(code);
+    else chiediTelefono(code);
     return;
   }
   // Il numero si cerca come l'ha scritto il cliente (maiuscole a parte, i

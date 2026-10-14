@@ -595,7 +595,7 @@ const I18N = {
   "booking.notFoundText": { it: "Non troviamo un ticket con il numero \"{code}\" e questo telefono. Controlla tutti e due sul ticket: il telefono è quello che hai dato al venditore.", en: "We can't find a ticket with the number \"{code}\" and this phone number. Check both on your ticket: the phone is the one you gave the seller.", es: "No encontramos ningún ticket con el número \"{code}\" y este teléfono. Revisa los dos en el ticket: el teléfono es el que diste al vendedor.", fr: "Nous ne trouvons pas de ticket avec le numéro « {code} » et ce téléphone. Vérifiez les deux sur le ticket : le téléphone est celui que vous avez donné au vendeur.", de: "Wir finden kein Ticket mit der Nummer „{code}“ und dieser Telefonnummer. Prüfen Sie beides auf dem Ticket: Die Telefonnummer ist die, die Sie dem Verkäufer gegeben haben." },
   "booking.retry":      { it: "Riprova", en: "Try again", es: "Inténtalo de nuevo", fr: "Réessayer", de: "Erneut versuchen" },
   "booking.needPhone":  { it: "Manca il telefono", en: "Phone number missing", es: "Falta el teléfono", fr: "Il manque le téléphone", de: "Telefonnummer fehlt" },
-  "booking.needPhoneText": { it: "Per vedere il ticket {code} scrivi anche il telefono che hai dato al venditore.", en: "To see ticket {code}, also enter the phone number you gave the seller.", es: "Para ver el ticket {code}, escribe también el teléfono que diste al vendedor.", fr: "Pour voir le ticket {code}, indiquez aussi le téléphone que vous avez donné au vendeur.", de: "Um das Ticket {code} zu sehen, geben Sie auch die Telefonnummer ein, die Sie dem Verkäufer gegeben haben." },
+  "booking.needPhoneText": { it: "Per vedere il ticket {code} scrivi anche il tuo telefono: quello che hai dato al venditore, o da cui ci hai scritto su WhatsApp.", en: "To see ticket {code}, also enter your phone number: the one you gave the seller, or the one you used to message us on WhatsApp.", es: "Para ver el ticket {code}, escribe también tu teléfono: el que diste al vendedor, o desde el que nos escribiste por WhatsApp.", fr: "Pour voir le ticket {code}, indiquez aussi votre téléphone : celui que vous avez donné au vendeur, ou celui avec lequel vous nous avez écrit sur WhatsApp.", de: "Um das Ticket {code} zu sehen, geben Sie auch Ihre Telefonnummer ein: die, die Sie dem Verkäufer gegeben haben, oder die, mit der Sie uns auf WhatsApp geschrieben haben." },
   "booking.loading":    { it: "Cerco il tuo ticket…", en: "Looking up your ticket…", es: "Buscando tu ticket…", fr: "Je cherche votre ticket…", de: "Ich suche Ihr Ticket…" },
   "booking.offline":    { it: "Niente connessione", en: "No connection", es: "Sin conexión", fr: "Pas de connexion", de: "Keine Verbindung" },
   "booking.offlineText":{ it: "Adesso non riusciamo a cercare il ticket. Riprova quando hai campo.", en: "We can't look up your ticket right now. Try again when you have signal.", es: "Ahora no podemos buscar tu ticket. Inténtalo de nuevo cuando tengas cobertura.", fr: "Nous ne pouvons pas chercher le ticket pour l'instant. Réessayez quand vous avez du réseau.", de: "Wir können das Ticket gerade nicht suchen. Versuchen Sie es erneut, wenn Sie Empfang haben." },
@@ -705,11 +705,18 @@ function eur(n) {
 // titoli e varianti passano anche loro da t() e tf().
 const I18N_UFFICIO = { fr: "it", de: "it" };
 
+// In fondo una riga dice in che lingua legge il cliente: l'ufficio sa come
+// rispondergli, e la risposta già scritta di venditori.html (rispostaLingua in
+// venditori.js) la cerca lì. In italiano, come il resto del messaggio.
+const I18N_UFFICIO_NOMI = { fr: "francese", de: "tedesco" };
+
 function perUfficio(scrivi) {
   const prima = I18N_CURRENT;
   if (!I18N_UFFICIO[prima]) return scrivi();
   I18N_CURRENT = I18N_UFFICIO[prima];
-  try { return scrivi(); } finally { I18N_CURRENT = prima; }
+  let testo;
+  try { testo = scrivi(); } finally { I18N_CURRENT = prima; }
+  return testo ? testo + "\n\nLingua del cliente: " + I18N_UFFICIO_NOMI[prima] : testo;
 }
 
 // Campo del catalogo che può essere una stringa uguale in tutte le lingue

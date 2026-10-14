@@ -18336,3 +18336,43 @@ Provato a 375 px: gruppo "Noleggi" con le due voci, menu Compagnia con Alis, nie
 varianti né mezzi; jet ski con le quattro compagnie; "ALIS" ed "EXTREME" nel testo
 scelgono la compagnia; elenco, home e pagina Noleggio senza le voci nuove e senza
 errori. `CACHE_NAME` → `isla-v497`.
+
+## 14 ottobre 2026 — "Rispondi su WhatsApp": la conferma arriva al cliente col link all'app
+
+Il proprietario: chi manda la richiesta su WhatsApp difficilmente torna sull'app. Gli
+avvisi sul telefono non bastano (su iPhone solo con l'app sulla Home). Quindi l'app va
+**dove il cliente già sta**: nella risposta dell'ufficio. "Il messaggio di risposta è
+automatico e lo scrivi tu" (proprietario).
+
+**Venditori (`venditori.js`, `rispostaBottone`).** Dopo **Conferma** (o "Dai il
+ticket"), sotto "… confermata: ora è il ticket …" compaiono un menu della lingua e il
+bottone **"Rispondi su WhatsApp"**: apre `wa.me/<telefono del cliente>` col messaggio
+già scritto (saluto col nome, escursione e variante, giorno, ritrovo, meeting point,
+numero del ticket, link). L'ufficio preme solo Invia: **WhatsApp non lascia a un sito
+mandare un messaggio da solo** (servirebbe la WhatsApp Business API, a pagamento).
+Il telefono c'è sempre: alla conferma è già obbligatorio. I testi stanno in `RISPOSTA`
+dentro `venditori.js`, perché `venditori.html` non carica `i18n.js`. Il meeting point
+va com'è scritto dall'ufficio (di solito in italiano).
+
+**La lingua.** `rispostaLingua()` la ricava dal messaggio del cliente
+(`request_message`): "Codice richiesta"/"Ciao Isla!" → it, "Código de solicitud"/
+"¡Hola Isla!" → es, altrimenti en. Francese e tedesco arrivano all'ufficio in italiano,
+quindi **`perUfficio()` aggiunge in fondo "Lingua del cliente: francese/tedesco"**:
+serve all'ufficio per sapere come rispondere, e alla pagina per scegliere la lingua.
+Le richieste di prima di questa riga sembrano italiane: il menu la cambia.
+
+**Il link** è `booking.html?code=<numero>`. Il telefono **non** va nell'indirizzo
+(regola di `app.js`). Su `booking.html`:
+- se il telefono ha delle richieste salvate, `cercaRichieste(code)` le legge e, se fra
+  quelle c'è il ticket col numero, le mostra: il cliente non scrive niente;
+- altrimenti (altro telefono, app installata su iPhone che non vede i dati di Safari)
+  `chiediTelefono()` chiede il telefono col numero **già scritto**. Il testo
+  `booking.needPhoneText` ora dice anche "o da cui ci hai scritto su WhatsApp".
+
+Provato in Chromium (Supabase finto): messaggio in francese e tedesco con variante
+tradotta, il link `wa.me/33612345678`, la riga in fondo al messaggio francese e non a
+quello italiano; `booking.html?code=2213` col telefono della richiesta mostra il
+ticket, con un numero non suo e senza richieste chiede il telefono col numero già
+scritto. Nessun errore, niente scroll orizzontale a 375 px. Annulla resta senza
+risposta automatica: una richiesta in attesa il telefono del cliente non ce l'ha.
+`CACHE_NAME` → `isla-v498`.

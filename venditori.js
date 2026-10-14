@@ -1104,7 +1104,7 @@ function apriConferma(li, r) {
     </div>
     <label for="${id}Meeting">Meeting point</label>
     <input id="${id}Meeting" name="meeting_point" type="text" autocomplete="off" />
-    <small class="vend-hint">Il cliente vedrà "Presentati alle … — meeting point". Scrivigli anche su WhatsApp.</small>
+    <small class="vend-hint">Il cliente vedrà "Presentati alle … — meeting point". Dopo la conferma, "Rispondi su WhatsApp" gli prepara il messaggio.</small>
     <p class="vend-msg" role="alert" hidden></p>
     <div class="vend-row">
       <button class="btn btn-soft" type="button" data-edit-cancel>Lascia stare</button>
@@ -1151,11 +1151,101 @@ function apriConferma(li, r) {
     }, msg);
     if (salvato) {
       mostra(els.requestsMsg, `${r.request_code} confermata: ora è il ticket ${numero}, in "Ultimi inseriti".`, "ok");
+      els.requestsMsg.append(rispostaBottone(r, {
+        numero,
+        telefono,
+        date: f.date.value,
+        time: f.time.value,
+        meeting: f.meeting_point.value.trim()
+      }));
       caricaUltimi();
     }
   });
   li.append(form);
   f.ticket_number.focus();
+}
+
+// ─── La risposta al cliente su WhatsApp ─────────────────────────────────────
+// Confermata la richiesta, il cliente lo deve sapere dove sta: su WhatsApp,
+// non sul sito (proprietario, 14 ottobre 2026: chi manda la richiesta
+// difficilmente torna sull'app). Il bottone apre la chat col suo numero e il
+// messaggio gia' scritto nella sua lingua, col link che riapre l'app sul suo
+// ticket: all'ufficio resta solo da premere Invia. WhatsApp non lascia
+// mandare un messaggio da solo a un sito: l'ultimo tocco e' dell'ufficio.
+// I testi stanno qui e non in i18n.js perche' questa pagina e' in italiano e
+// i18n.js non lo carica.
+const RISPOSTA = {
+  it: { ciao: "Ciao {nome}!", ok: "La tua escursione è confermata ✅", ritrovo: "Ritrovo alle {ora}", ticket: "Ticket n. {n}", link: "Qui trovi il ticket, cosa portare e i dettagli:", fine: "Per qualsiasi cosa rispondi pure a questo messaggio. A presto!", locale: "it-IT", nome: "italiano" },
+  en: { ciao: "Hi {nome}!", ok: "Your excursion is confirmed ✅", ritrovo: "Meeting time {ora}", ticket: "Ticket no. {n}", link: "Your ticket, what to bring and all the details:", fine: "If you need anything, just reply to this message. See you soon!", locale: "en-GB", nome: "inglese" },
+  es: { ciao: "¡Hola {nome}!", ok: "Tu excursión está confirmada ✅", ritrovo: "Encuentro a las {ora}", ticket: "Ticket n.º {n}", link: "Aquí tienes el ticket, qué llevar y todos los detalles:", fine: "Para cualquier cosa, responde a este mensaje. ¡Hasta pronto!", locale: "es-ES", nome: "spagnolo" },
+  fr: { ciao: "Bonjour {nome} !", ok: "Votre excursion est confirmée ✅", ritrovo: "Rendez-vous à {ora}", ticket: "Ticket n° {n}", link: "Votre ticket, quoi apporter et tous les détails :", fine: "Pour toute question, répondez simplement à ce message. À bientôt !", locale: "fr-FR", nome: "francese" },
+  de: { ciao: "Hallo {nome}!", ok: "Ihr Ausflug ist bestätigt ✅", ritrovo: "Treffpunkt um {ora} Uhr", ticket: "Ticket Nr. {n}", link: "Ihr Ticket, was Sie mitbringen sollten und alle Details:", fine: "Bei Fragen antworten Sie einfach auf diese Nachricht. Bis bald!", locale: "de-DE", nome: "tedesco" }
+};
+
+// La lingua del cliente, dal messaggio che ha mandato. Francese e tedesco
+// arrivano in italiano, con la riga "Lingua del cliente" in fondo (perUfficio
+// in i18n.js); le richieste di prima di quella riga sembrano italiane, e
+// l'ufficio cambia lingua dal menu accanto al bottone.
+function rispostaLingua(messaggio) {
+  const m = messaggio || "";
+  const scritta = /Lingua del cliente: (francese|tedesco)/.exec(m);
+  if (scritta) return scritta[1] === "francese" ? "fr" : "de";
+  if (/Codice richiesta:|Ciao Isla!/.test(m)) return "it";
+  if (/Código de solicitud:|¡Hola Isla!/.test(m)) return "es";
+  return "en";
+}
+
+// La variante nella lingua del cliente: nel database c'e' il nome italiano.
+function rispostaVariante(tour, etichetta, lingua) {
+  if (!etichetta) return "";
+  const scelte = (tour && tour.options && tour.options.choices) || [];
+  const scelta = scelte.find(c => italiano(c.label) === etichetta);
+  if (!scelta) return lingua === "it" ? etichetta : "";
+  return typeof scelta.label === "string" ? scelta.label : (scelta.label[lingua] || scelta.label.en || etichetta);
+}
+
+function rispostaTesto(r, c, lingua) {
+  const T = RISPOSTA[lingua];
+  const metti = (testo, valori) => testo.replace(/\{(\w+)\}/g, (_, k) => valori[k]);
+  const tour = schedaDa(r.excursion_id);
+  const variante = rispostaVariante(tour, r.option_label, lingua);
+  // a mezzogiorno: la data non scivola al giorno prima con il fuso
+  const giorno = new Date(c.date + "T12:00:00").toLocaleDateString(T.locale, { weekday: "long", day: "numeric", month: "long" });
+  const link = new URL("booking.html?code=" + encodeURIComponent(c.numero), window.location.href).href;
+  // solo il nome, non il cognome: e' un messaggio fra persone
+  const nome = (r.customer_name || "").trim().split(/\s+/)[0];
+  const righe = [
+    (nome ? metti(T.ciao, { nome }) + " " : "") + T.ok,
+    "",
+    "*" + (tour ? titoloDi(tour) : r.excursion_id) + (variante ? " · " + variante : "") + "*",
+    "📅 " + giorno
+  ];
+  if (c.time) righe.push("🕗 " + metti(T.ritrovo, { ora: c.time }));
+  if (c.meeting) righe.push("📍 " + c.meeting);
+  righe.push("🎫 " + metti(T.ticket, { n: c.numero }), "", T.link, link, "", T.fine);
+  return righe.join("\n");
+}
+
+// Il menu della lingua e il bottone verde, sotto il messaggio "confermata".
+function rispostaBottone(r, c) {
+  const box = document.createElement("span");
+  box.className = "vend-risposta";
+  const lingua = document.createElement("select");
+  lingua.setAttribute("aria-label", "Lingua del messaggio");
+  Object.keys(RISPOSTA).forEach(k => lingua.append(new Option(RISPOSTA[k].nome, k)));
+  lingua.value = rispostaLingua(r.request_message);
+  const vai = document.createElement("a");
+  vai.className = "btn btn-primary";
+  vai.target = "_blank";
+  vai.rel = "noopener noreferrer";
+  vai.textContent = "Rispondi su WhatsApp";
+  const aggiorna = () => {
+    vai.href = "https://wa.me/" + c.telefono.replace(/\D/g, "") + "?text=" + encodeURIComponent(rispostaTesto(r, c, lingua.value));
+  };
+  lingua.addEventListener("change", aggiorna);
+  aggiorna();
+  box.append(lingua, vai);
+  return box;
 }
 
 // "9:30" o "09:30" diventa "09:30", quello che vuole il campo dell'ora;

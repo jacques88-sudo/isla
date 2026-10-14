@@ -877,8 +877,9 @@ const ESPLORA_CATALOG = [
     // Solo qui e non sul charter qui sotto: un ticket "Cool Sailing" con
     // due adulti e' l'uscita a persona.
     // Lina7 e Mizendoha sono altre due barche, ognuna col suo netto
-    // (proprietario, 9 ottobre 2026).
-    nomi: ["Cool Sailing", "Lina7", "Mizendoha"],
+    // (proprietario, 9 ottobre 2026). Atlantic Star e' un'altra ancora
+    // (proprietario, 14 ottobre 2026).
+    nomi: ["Cool Sailing", "Lina7", "Mizendoha", "Atlantic Star"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
@@ -4038,6 +4039,9 @@ const ESPLORA_CATALOG = [
   {
     id: "banana-boat",
     title: "Banana Boat, Fly Fish or Crazy UFO Ride",
+    // La compagnia dei tre gonfiabili, come la scrivono i venditori sul
+    // ticket ("Wow crazy ufo"; proprietario, 14 ottobre 2026).
+    nomi: ["WoW"],
     category: "sport-acquatici",
     zone: "Puerto Colón, Costa Adeje",
     duration: { it: "10 o 15 minuti", en: "10 or 15 minutes", es: "10 o 15 minutos", fr: "10 ou 15 minutes", de: "10 oder 15 Minuten" },

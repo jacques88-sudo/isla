@@ -18376,3 +18376,11 @@ ticket, con un numero non suo e senza richieste chiede il telefono col numero gi
 scritto. Nessun errore, niente scroll orizzontale a 375 px. Annulla resta senza
 risposta automatica: una richiesta in attesa il telefono del cliente non ce l'ha.
 `CACHE_NAME` → `isla-v498`.
+
+**Arriro (14 ottobre 2026, proprietario):** barca a vela della scheda `whale-dolphin-3h`,
+accanto a Cool Sailing, Lina7, Mizendoha e Atlantic Star; solo sull'uscita a persona,
+non sul charter. Il suo netto, ricavato dal foglio "Admiral TRG SC" del 14 ottobre, sta
+in Notion da confermare: sul foglio mancano adulti e bambini. Dallo stesso foglio: la
+riga TMIG (Teide, Icod, Garachico e Masca) aveva venditore e ufficio invertiti, conferma
+che quella scheda conta come card. Provato: il menu Compagnia delle 3 ore ha Arriro,
+"ARRIRO" nel testo del ticket la sceglie, il charter no. `CACHE_NAME` → `isla-v499`.

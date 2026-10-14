@@ -891,8 +891,9 @@ const ESPLORA_CATALOG = [
     // due adulti e' l'uscita a persona.
     // Lina7 e Mizendoha sono altre due barche, ognuna col suo netto
     // (proprietario, 9 ottobre 2026). Atlantic Star e' un'altra ancora
-    // (proprietario, 14 ottobre 2026).
-    nomi: ["Cool Sailing", "Lina7", "Mizendoha", "Atlantic Star"],
+    // (proprietario, 14 ottobre 2026). Arriro e' una barca a vela, anche lei
+    // solo sull'uscita a persona (proprietario, 14 ottobre 2026).
+    nomi: ["Cool Sailing", "Lina7", "Mizendoha", "Atlantic Star", "Arriro"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },

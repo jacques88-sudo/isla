@@ -18295,3 +18295,12 @@ Provato nel browser con `locale: "de-DE"`: le undici pagine in tedesco, nessun e
 il clic sulla bandiera tedesca nel menu cambia lingua e la ricorda; il messaggio del
 pacchetto esce in italiano e il sito resta in tedesco. `node controlla.js` passa.
 `CACHE_NAME` → `isla-v494`.
+
+**WoW e Atlantic Star (14 ottobre 2026, proprietario):** `nomi: ["WoW"]` su `banana-boat`:
+è la compagnia di tutti e tre i gonfiabili ("Wow crazy ufo" sul foglio di Agustin), quindi
+il nome sta sulla scheda e non dentro la variante Crazy UFO. **Atlantic Star** è una barca
+della scheda `whale-dolphin-3h`, accanto a Cool Sailing, Lina7 e Mizendoha (non sul
+charter). Ognuna ha il suo netto: quello di Atlantic Star, ricavato dal foglio, sta in
+Notion da confermare. Provato: i due menu Compagnia, il testo "WOW CRAZY UFO / ATLANTIC
+STAR" sceglie la compagnia giusta su ognuna delle due schede, il charter resta senza
+menu. `CACHE_NAME` → `isla-v495`.

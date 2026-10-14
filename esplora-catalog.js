@@ -400,7 +400,7 @@
 //                SEMPRE come pagato con carta, comunque abbia pagato il cliente
 //                (i parchi: Loro Parque, Siam Park, Siam Night, Twin Ticket; proprietario,
 //                9 ottobre 2026; e dall'11 ottobre le cinque escursioni di
-//                Island Excursions; dal 13 ottobre Peter Pan). Nel modulo dei venditori il pagamento si
+//                Island Excursions; dal 13 ottobre Peter Pan, dal 14 Aqualand). Nel modulo dei venditori il pagamento si
 //                sceglie da solo e Cash non si puo' scegliere. Lo stesso elenco
 //                sta su Supabase (supabase/modifiche/2026-10-09-solo-card.sql),
 //                che lo fa valere anche sui ticket gia' salvati: `controlla.js`
@@ -5590,6 +5590,9 @@ const ESPLORA_CATALOG = [
     priceInfant: 16,
     ages: { adult: "12+", child: "4-11", infant: "0-3" },
     included: ["transfer"],
+    // Il ticket conta sempre come pagato con carta, come gli altri parchi
+    // (proprietario, 14 ottobre 2026): stesso elenco in sempre_card.
+    pagamento: "card",
     notes: [
       { it: "Aperto tutti i giorni, 10:00-17:00. Spettacolo dei delfini alle 15:30, incluso nel biglietto.",
         en: "Open every day, 10am-5pm. Dolphin show at 3:30pm, included in the ticket.",

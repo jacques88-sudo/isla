@@ -18304,3 +18304,9 @@ charter). Ognuna ha il suo netto: quello di Atlantic Star, ricavato dal foglio, 
 Notion da confermare. Provato: i due menu Compagnia, il testo "WOW CRAZY UFO / ATLANTIC
 STAR" sceglie la compagnia giusta su ognuna delle due schede, il charter resta senza
 menu. `CACHE_NAME` → `isla-v495`.
+
+**Aqualand sempre card (14 ottobre 2026, proprietario):** come gli altri parchi,
+`pagamento: "card"` su `aqualand` e `'aqualand'` nell'elenco di
+`2026-10-09-solo-card.sql`, da rilanciare intero. Il Combo Jungle Park + Aqualand non è
+stato toccato: non è stato nominato. Provato: Aqualand sceglie Card e spegne Cash, il
+Combo resta libero. `CACHE_NAME` → `isla-v496`.

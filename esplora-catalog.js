@@ -2438,10 +2438,11 @@ const ESPLORA_CATALOG = [
     id: "bici",
     title: { it: "Bici", en: "Biking", es: "Bici", fr: "Vélo", de: "Radfahren" },
     category: "teide-natura",
-    // Da dove si parte non lo sappiamo ancora: i giri vanno dal Teide alla
-    // costa del sud, e il fornitore non scrive un punto di ritrovo. "Da
-    // definire" la pagina lo nasconde.
-    zone: { it: "Da definire", en: "To be confirmed", es: "Por confirmar", fr: "À confirmer", de: "Wird bestätigt" },
+    // "Tenerife Sud" dal proprietario (15 ottobre 2026): si passa a prendere in
+    // hotel, al sud, come per le gite al Teide. Le ore si concordano con
+    // l'ufficio, per sua scelta: times: [] lascia solo "Da concordare".
+    zone: { it: "Tenerife Sud", en: "South Tenerife", es: "Tenerife sur", fr: "Sud de Tenerife", de: "Süden von Teneriffa" },
+    times: [],
     // Dove si va: la maggior parte dei giri sale al Teide, e Masca e Santiago
     // del Teide stanno dalla parte di Los Gigantes.
     zoneGroups: ["teide-nord", "los-gigantes"],

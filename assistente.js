@@ -214,10 +214,12 @@ function initAssistente() {
 
     const lista = document.createElement("ul");
     lista.className = "assist-results";
+    // Ogni risultato apre la sua scheda, come nell'elenco: portarlo
+    // all'elenco filtrato per categoria gli faceva ritrovare la barca da solo.
     trovate.slice(0, ASSIST_MAX_RISULTATI).forEach(tour => {
       const li = document.createElement("li");
       li.innerHTML = `
-        <a href="${assistLinkCatalogo([tour.category], soloFamiglia)}">
+        <a href="./tour.html?id=${encodeURIComponent(tour.id)}">
           <span class="assist-res-cat">${assistNomeCategoria(tour.category)}</span>
           <span class="assist-res-title">${tf(tour.title)}</span>
           <span class="assist-res-price">${assistPrezzo(tour)}</span>

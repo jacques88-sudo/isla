@@ -18753,3 +18753,19 @@ capsula), ma se torna è già del colore giusto. `CACHE_NAME` → `isla-v514`.
 
 Il proprietario lo vuole azzurro come il carrello: tolta la riga che lo teneva sabbia.
 Ora tutti i numerini della capsula hanno lo stesso colore. `CACHE_NAME` → `isla-v515`.
+
+### L'assistente apre la scheda, non l'elenco (15 ottobre 2026)
+
+Parlando di come migliorare la chat senza AI (proprietario: "aspettiamo, per vedere com'è
+il flusso delle persone") è venuto fuori un difetto: i cinque risultati dell'assistente
+portavano all'elenco filtrato per categoria (`escursioni.html?cat=mare-barche`), e lì il
+cliente doveva ritrovare la barca che aveva appena toccato. Ora ogni risultato apre la
+sua scheda (`tour.html?id=…`), come nell'elenco. "Vedi tutto il catalogo" in fondo resta
+l'elenco filtrato. Provato nel browser: mare → sì → budget basso, il primo risultato apre
+Flipper One. `CACHE_NAME` → `isla-v516`.
+
+Prossimi passi decisi: **domande frequenti a bottoni** (risposte già in `faq.a1`, `a4`,
+`a5`) e una **domanda sul giorno** (filtro su `days`). Restano in sospeso la domanda su
+zona o durata, la casella di ricerca e un contatore: il sito oggi non conta niente, quindi
+"vedere il flusso" senza un contatore non dà numeri (scelta del proprietario, tocca la
+privacy).

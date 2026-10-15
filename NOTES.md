@@ -18798,3 +18798,10 @@ per il ritiro, e per il giorno **le pastiglie con la data** ("Domani · Sab 17 �
 Provato in Chromium a 375 px, in italiano e francese: Utopia esce il sabato e non il
 mercoledì, Ragnarok il lunedì sì e il mercoledì no, Freebird tutti i giorni (ha varianti
 senza giorni). Nessun errore. `CACHE_NAME` → `isla-v517`.
+
+### Niente "quattro domande" (15 ottobre 2026)
+
+Il proprietario: "ti faccio quattro domande veloci" sembrava un interrogatorio. Ora
+`assist.helloPick` dice **"Oppure ti aiuto a trovare l'escursione giusta."**, nelle cinque
+lingue: non conta le domande e non promette quante saranno. Le domande restano le stesse.
+`CACHE_NAME` → `isla-v518`.

@@ -549,7 +549,7 @@ const I18N = {
   "assist.title":       { it: "Assistente Isla", en: "Isla Assistant", es: "Asistente Isla", fr: "Assistant Isla", de: "Isla-Assistent" },
   "assist.sub":         { it: "Ti aiuto a scegliere", en: "I'll help you choose", es: "Te ayudo a elegir", fr: "Je vous aide à choisir", de: "Ich helfe Ihnen bei der Wahl" },
   "assist.hello":       { it: "Ciao! Hai una domanda? Ecco le più frequenti:", en: "Hi! Got a question? Here are the most common ones:", es: "¡Hola! ¿Tienes una pregunta? Aquí van las más frecuentes:", fr: "Bonjour ! Une question ? Voici les plus fréquentes :", de: "Hallo! Haben Sie eine Frage? Hier die häufigsten:" },
-  "assist.helloPick":   { it: "Oppure ti faccio quattro domande veloci e ti propongo qualcosa.", en: "Or answer four quick questions and I'll suggest something.", es: "O te hago cuatro preguntas rápidas y te propongo algo.", fr: "Ou bien quatre questions rapides et je vous propose quelque chose.", de: "Oder vier kurze Fragen, und ich schlage Ihnen etwas vor." },
+  "assist.helloPick":   { it: "Oppure ti aiuto a trovare l'escursione giusta.", en: "Or I can help you find the right excursion.", es: "O te ayudo a encontrar la excursión adecuada.", fr: "Ou je vous aide à trouver la bonne excursion.", de: "Oder ich helfe Ihnen, den passenden Ausflug zu finden." },
   // Il ritiro non ha una domanda fra le FAQ della home: dove si sale dipende
   // dalla scheda e dall'hotel, quindi qui si dice solo dove guardarlo.
   "assist.faq.pickupQ": { it: "Dove mi vengono a prendere?", en: "Where do you pick me up?", es: "¿Dónde me recogen?", fr: "Où vient-on me chercher ?", de: "Wo werde ich abgeholt?" },

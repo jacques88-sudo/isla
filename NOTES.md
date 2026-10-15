@@ -18732,3 +18732,9 @@ via**, "per il resto lascia così".
   recensioni, il giro in carrozza.
 
 `CACHE_NAME` → `isla-v512`.
+
+### Cavallo: età minima 6 anni (15 ottobre 2026)
+
+Confermato dal proprietario: vale quella di Xanadú, **6 anni** (la scheda diceva 10, dal
+rivenditore di settembre). Cambiata nella nota, nelle cinque lingue. Il prezzo dei
+bambini resta non scritto: Xanadú non lo dà. `CACHE_NAME` → `isla-v513`.

@@ -241,6 +241,13 @@ compreso o a pagamento che sia; se **non lo permette** non c'è nessun ritiro
 serve solo a dire dove si sale. **Ogni scheda pubblicata sta in uno dei tre gruppi**: se ne
 aggiungi una senza metterla da nessuna parte, mostrerà la fermata di un altro fornitore.
 
+**Dove non si passa a prendere nessuno, la scheda dice dove ci si presenta** (`ritrovo`,
+15 ottobre 2026): compare nella richiesta, nel messaggio WhatsApp e nella conferma dei
+venditori. **Il transfer può stare sulla variante** (Freebird: sì su 3 e 4 ore e mezza,
+no su 2; buggy: no su Montagna su strada) e la variante vince: spuntato chiede l'hotel
+anche su una scheda di `PICKUP_NESSUNO`, non spuntato mostra il `ritrovo`. Il `ritrovo`
+si mette solo dove il posto è scritto davvero.
+
 **Il nome del posto non si traduce, il tipo sì.** "Best Tenerife" è un nome proprio e
 resta uguale in tutte e tre le lingue, come i titoli delle escursioni: chi lo deve
 chiedere per strada lo chiede così. A tradursi è il tipo (`pickup.bus`, `pickup.taxi`…).

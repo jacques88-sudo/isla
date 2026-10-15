@@ -18458,3 +18458,39 @@ non fa niente. Al 15 ottobre 2026 si sposta solo il 2025. **Non provato su Googl
 lo si vede il 1° gennaio. Per metterlo: Apps Script → incolla il `Codice.gs` nuovo →
 `installa` → Esegui (se Google chiede di nuovo il permesso, Consenti).
 **Installato dal proprietario il 15 ottobre 2026**: il foglio si aggiorna con la versione nuova.
+
+## Il transfer sulla variante e il punto di ritrovo (15 ottobre 2026)
+
+Il proprietario: prima di aggiungere alla lista non c'era modo di chiedere il transfer
+su Freebird e buggy, e dove il transfer non c'è il cliente non leggeva da nessuna parte
+dove presentarsi, né nella richiesta né nella nostra conferma. "Come Peter Pan":
+la casella "Vuoi il transfer?", perché il cliente potrebbe non volerlo. Sul Freebird
+di 2 ore l'unica possibilità è il porto, su quello di 3 si sceglie.
+
+**Due campi del catalogo:**
+- `transfer` **anche sulla variante** (`options.choices[].transfer`), e la variante
+  vince. Freebird: 3 ore, 4 ore e mezza e la variante del nord; buggy: Offroad,
+  Tramonto sul Teide e Completo. Le due schede restano in `PICKUP_NESSUNO`: il
+  ritiro c'è solo se il cliente spunta la casella.
+- `ritrovo` (scheda o variante): dove ci si presenta senza ritiro. Messo dove il posto
+  era già scritto nei consigli: Freebird (Puerto Colón, molo 10), buggy Montagna su
+  strada (Playa de las Américas), Flipper One, Pesca d'altura, Utopia, Ragnarok,
+  elicottero, MHT Drag Show, La Palma, i due tuk tuk. **Le altre schede senza ritiro
+  non ce l'hanno ancora**: il proprietario li manda quando li ha, come gli orari.
+
+**Nel codice (`escursioni.js`):** `transferDi()`, `ritrovoDi()`, `conRitiro()`,
+`ritrovoDaMostrare()`; `hotelPunto()` ha un terzo argomento `conTransfer`, e con quello
+una scheda di `PICKUP_NESSUNO` vale come `PICKUP_IN_HOTEL`. La variante della finestra
+sta in `VARIANTE_APERTA` (letta all'apertura dai bottoni della pagina). Spuntare o
+togliere il transfer manda l'evento `islatransfer`: il campo dell'hotel compare (e
+scorre in vista, perché sta più in alto) o sparisce, e il punto di ritrovo fa il
+contrario. La riga "Punto di ritrovo" sta in `tour.html` **e** in `escursioni.html`.
+Il messaggio WhatsApp ha la riga "• Punto di ritrovo: …"; `richiestaVoce()`
+(`richieste.js`) mette il ritrovo, in italiano, in `pickup_point`, e "Conferma" in
+`venditori.html` parte con quello nel Meeting point.
+
+Provato in Chromium: Freebird 2 ore (niente casella, ritrovo), 3 ore (casella;
+spuntata chiede l'hotel e toglie il ritrovo, tolta il contrario), buggy Offroad
+(casella, nessun ritrovo: il posto non lo sappiamo) e Montagna (ritrovo), Ragnarok
+(ritrovo), Peter Pan e Royal Delfin come prima; messaggi e righe del database giusti;
+nessun errore, niente scroll orizzontale a 390 px. `CACHE_NAME` → `isla-v501`.

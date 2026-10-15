@@ -646,11 +646,11 @@ const ESPLORA_CATALOG = [
           priceChild: 23,
           included: ["snack", "transfer"],
           transfer: {
-            it: "Compreso, dagli hotel del sud. Se non lo vuoi, ci vediamo al porto: Puerto Colón, molo 10.",
-            en: "Included, from the southern hotels. If you don't need it, meet us at the harbour: Puerto Colón, dock 10.",
-            es: "Incluido, desde los hoteles del sur. Si no lo necesitas, nos vemos en el puerto: Puerto Colón, muelle 10.",
-            fr: "Compris, depuis les hôtels du sud. Si vous n'en avez pas besoin, rendez-vous au port : Puerto Colón, quai 10.",
-            de: "Inklusive, von den Hotels im Süden. Wenn Sie ihn nicht brauchen, treffen wir uns am Hafen: Puerto Colón, Steg 10."
+            it: "Compreso, dalle zone del sud. Se preferisci raggiungerci, ti aspettiamo al porto: Puerto Colón, molo 10.",
+            en: "Included, from the southern areas. If you'd rather come on your own, we'll be waiting for you at the harbour: Puerto Colón, dock 10.",
+            es: "Incluido, desde las zonas del sur. Si prefieres venir por tu cuenta, te esperamos en el puerto: Puerto Colón, muelle 10.",
+            fr: "Compris, depuis les zones du sud. Si vous préférez venir par vos propres moyens, nous vous attendons au port : Puerto Colón, quai 10.",
+            de: "Inklusive, aus dem Süden der Insel. Wenn Sie lieber selbst kommen, erwarten wir Sie am Hafen: Puerto Colón, Steg 10."
           },
           times: ["10:00"],
           desc: {
@@ -667,11 +667,11 @@ const ESPLORA_CATALOG = [
           priceChild: 31,
           included: ["lunch", "transfer"],
           transfer: {
-            it: "Compreso, dagli hotel del sud. Se non lo vuoi, ci vediamo al porto: Puerto Colón, molo 10.",
-            en: "Included, from the southern hotels. If you don't need it, meet us at the harbour: Puerto Colón, dock 10.",
-            es: "Incluido, desde los hoteles del sur. Si no lo necesitas, nos vemos en el puerto: Puerto Colón, muelle 10.",
-            fr: "Compris, depuis les hôtels du sud. Si vous n'en avez pas besoin, rendez-vous au port : Puerto Colón, quai 10.",
-            de: "Inklusive, von den Hotels im Süden. Wenn Sie ihn nicht brauchen, treffen wir uns am Hafen: Puerto Colón, Steg 10."
+            it: "Compreso, dalle zone del sud. Se preferisci raggiungerci, ti aspettiamo al porto: Puerto Colón, molo 10.",
+            en: "Included, from the southern areas. If you'd rather come on your own, we'll be waiting for you at the harbour: Puerto Colón, dock 10.",
+            es: "Incluido, desde las zonas del sur. Si prefieres venir por tu cuenta, te esperamos en el puerto: Puerto Colón, muelle 10.",
+            fr: "Compris, depuis les zones du sud. Si vous préférez venir par vos propres moyens, nous vous attendons au port : Puerto Colón, quai 10.",
+            de: "Inklusive, aus dem Süden der Insel. Wenn Sie lieber selbst kommen, erwarten wir Sie am Hafen: Puerto Colón, Steg 10."
           },
           times: ["13:00"],
           desc: {
@@ -697,11 +697,11 @@ const ESPLORA_CATALOG = [
           // la variante del nord e' fatta per la navetta: la si chiede lo stesso,
           // chi alloggia al nord e vuole andare al porto da solo puo' farlo
           transfer: {
-            it: "Compreso, dagli hotel del nord. Se non lo vuoi, ci vediamo al porto: Puerto Colón, molo 10.",
-            en: "Included, from the northern hotels. If you don't need it, meet us at the harbour: Puerto Colón, dock 10.",
-            es: "Incluido, desde los hoteles del norte. Si no lo necesitas, nos vemos en el puerto: Puerto Colón, muelle 10.",
-            fr: "Compris, depuis les hôtels du nord. Si vous n'en avez pas besoin, rendez-vous au port : Puerto Colón, quai 10.",
-            de: "Inklusive, von den Hotels im Norden. Wenn Sie ihn nicht brauchen, treffen wir uns am Hafen: Puerto Colón, Steg 10."
+            it: "Compreso, dalle zone del nord. Se preferisci raggiungerci, ti aspettiamo al porto: Puerto Colón, molo 10.",
+            en: "Included, from the northern areas. If you'd rather come on your own, we'll be waiting for you at the harbour: Puerto Colón, dock 10.",
+            es: "Incluido, desde las zonas del norte. Si prefieres venir por tu cuenta, te esperamos en el puerto: Puerto Colón, muelle 10.",
+            fr: "Compris, depuis les zones du nord. Si vous préférez venir par vos propres moyens, nous vous attendons au port : Puerto Colón, quai 10.",
+            de: "Inklusive, aus dem Norden der Insel. Wenn Sie lieber selbst kommen, erwarten wir Sie am Hafen: Puerto Colón, Steg 10."
           },
           times: ["13:00"],
           desc: {
@@ -3278,11 +3278,11 @@ const ESPLORA_CATALOG = [
         { label: { it: "Offroad, 3 ore", en: "Off-road, 3 hours", es: "Offroad, 3 horas", fr: "Tout-terrain, 3 heures", de: "Offroad, 3 Stunden" },
           price: 180,
           transfer: {
-            it: "Gratis: passiamo a prenderti in hotel.",
-            en: "Free: we pick you up at your hotel.",
-            es: "Gratis: te recogemos en tu hotel.",
-            fr: "Gratuit : nous venons vous chercher à votre hôtel.",
-            de: "Kostenlos: Wir holen Sie im Hotel ab."
+            it: "Passiamo a prenderti.",
+            en: "We'll pick you up.",
+            es: "Pasamos a recogerte.",
+            fr: "Nous venons vous chercher.",
+            de: "Wir holen Sie ab."
           },
           times: ["08:20", "11:00", "13:30", "14:00"],
           duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
@@ -3297,11 +3297,11 @@ const ESPLORA_CATALOG = [
         { label: { it: "Tramonto sul Teide, 3 ore", en: "Teide at sunset, 3 hours", es: "Atardecer en el Teide, 3 horas", fr: "Le Teide au coucher du soleil, 3 heures", de: "Teide bei Sonnenuntergang, 3 Stunden" },
           price: 180,
           transfer: {
-            it: "Gratis: passiamo a prenderti in hotel.",
-            en: "Free: we pick you up at your hotel.",
-            es: "Gratis: te recogemos en tu hotel.",
-            fr: "Gratuit : nous venons vous chercher à votre hôtel.",
-            de: "Kostenlos: Wir holen Sie im Hotel ab."
+            it: "Passiamo a prenderti.",
+            en: "We'll pick you up.",
+            es: "Pasamos a recogerte.",
+            fr: "Nous venons vous chercher.",
+            de: "Wir holen Sie ab."
           },
           times: ["17:30", "18:00"],
           duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
@@ -3316,11 +3316,11 @@ const ESPLORA_CATALOG = [
         { label: { it: "Completo, 4 ore", en: "Full tour, 4 hours", es: "Completo, 4 horas", fr: "Tour complet, 4 heures", de: "Komplette Tour, 4 Stunden" },
           price: 180,
           transfer: {
-            it: "Gratis: passiamo a prenderti in hotel.",
-            en: "Free: we pick you up at your hotel.",
-            es: "Gratis: te recogemos en tu hotel.",
-            fr: "Gratuit : nous venons vous chercher à votre hôtel.",
-            de: "Kostenlos: Wir holen Sie im Hotel ab."
+            it: "Passiamo a prenderti.",
+            en: "We'll pick you up.",
+            es: "Pasamos a recogerte.",
+            fr: "Nous venons vous chercher.",
+            de: "Wir holen Sie ab."
           },
           times: ["08:20", "14:00"],
           duration: { it: "4 ore", en: "4 hours", es: "4 horas", fr: "4 heures", de: "4 Stunden" },

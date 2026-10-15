@@ -18535,3 +18535,9 @@ fasce segnaposto) e, se servono, i giorni.
 Provato in Chromium a 390 px: pagina senza errori, finestra della richiesta col punto
 di ritrovo e senza la domanda dell'hotel, 2 adulti + 1 bambino = 240 €. `CACHE_NAME` →
 `isla-v503`.
+
+**Lo stesso giorno, dal proprietario:** bambini 8-11 confermati; partenze 10:00, 11:30,
+13:00 e 14:00 (`times`); la compagnia si chiama **Seatrek** (non "Diving on the Moon",
+come scrivevano i rivenditori), e sta in `nomi` per la lettura dei ticket di carta.
+Provato in Chromium: il menu "A che ora" mostra solo le quattro partenze. Resta da
+mettere la foto. `CACHE_NAME` → `isla-v504`.

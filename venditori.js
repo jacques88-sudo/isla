@@ -380,6 +380,11 @@ function catalogoPerLettura() {
     const scheda = { id: t.id, title: titoloDi(t) + nomi };
     const scelte = t.options && t.options.choices;
     if (scelte) scheda.options = scelte.map(c => italiano(c.label));
+    // Le schede a mezzo dicono anche i tipi, con la chiave che salva il modulo:
+    // la lettura risponde { doppia: 2 } e le caselle si riempiono da sole.
+    if (tipiMezzo(t).length) {
+      scheda.units = tipiMezzo(t).map(u => ({ key: u.key, name: `${italiano(t.units.name)} ${italiano(u.name)}` }));
+    }
     return scheda;
   });
 }
@@ -466,6 +471,25 @@ function riempiDaLettura(c, prima) {
     if (dubbi.has("excursion_id")) els.exc.classList.add("vend-dubbio");
   } else if (!c.excursion_id) {
     nonLetti.push(c.excursion_text ? `escursione (sul ticket: "${c.excursion_text}")` : "escursione");
+  }
+
+  // I mezzi, nelle caselle che aggiornaEscursione() ha appena creato. Solo dove
+  // il venditore non ha gia' scritto un numero; la funzione sul server manda
+  // solo tipi della scheda, da 1 a 99.
+  const tipi = tipiMezzo(schedaDa(els.exc.value));
+  if (tipi.length) {
+    let letti = 0;
+    if (c.units && typeof c.units === "object") {
+      tipi.forEach(t => {
+        const el = els.form.elements["unit_" + t.key];
+        const n = c.units[t.key];
+        if (!el || !(n > 0) || (el.value !== "" && el.value !== "0")) return;
+        el.value = String(Math.min(n, 99));
+        if (dubbi.has("units")) el.classList.add("vend-dubbio");
+        letti++;
+      });
+    }
+    if (!letti && !mezziDa(els.form, tipi)) nonLetti.push("mezzi");
   }
 
   metti("meeting_point", c.meeting_point);

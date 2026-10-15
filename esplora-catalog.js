@@ -5180,24 +5180,26 @@ const ESPLORA_CATALOG = [
     //     PICKUP_NESSUNO.
     // E' una scheda a se' e non una variante di "immersioni": e' un'altra
     // compagnia e un'altra cosa, niente bombola e niente brevetto
-    // (proprietario, 15 ottobre). Gli orari non li sappiamo: `times` assente.
-    // I rivenditori nominano l'operatore "Diving on the Moon": non e' nella
-    // pagina del fornitore, quindi in `nomi` non c'e' finche' non lo conferma
-    // l'ufficio.
+    // (proprietario, 15 ottobre).
+    // I rivenditori nominano l'operatore "Diving on the Moon", ma la compagnia
+    // si chiama Seatrek (proprietario, 15 ottobre 2026): sul ticket di carta
+    // la scrivono cosi', tutta attaccata.
     id: "sea-trek",
     title: "Sea Trek Tenerife",
+    nomi: ["Seatrek"],
     category: "sport-acquatici",
     zone: "Los Cristianos",
     duration: { it: "1 ora e mezza - 2 ore", en: "1.5 - 2 hours", es: "1 hora y media - 2 horas", fr: "1 h 30 - 2 heures", de: "1,5 - 2 Stunden" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["breve"],
+    // Partenze dal proprietario, 15 ottobre 2026.
+    times: ["10:00", "11:30", "13:00", "14:00"],
     priceFrom: 85,
     priceAdult: 85,
     priceChild: 70,
     // Sotto gli 8 anni non si scende: niente fascia neonati e niente
-    // priceInfant (assente non vuol dire gratis). La fascia bambini 8-11 e'
-    // una scelta nostra da confermare: il proprietario ha dato il prezzo
-    // bambini senza dire fino a che eta'.
+    // priceInfant (assente non vuol dire gratis). Bambini 8-11, confermato
+    // dal proprietario (15 ottobre 2026).
     ages: { adult: "12+", child: "8-11" },
     family: true,
     desc: {

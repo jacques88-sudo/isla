@@ -75,8 +75,15 @@ function richiestaVoce(voce) {
     ? tour.options.choices[voce.optionIndex] : null;
   const etichetta = scelta ? scelta.label : voce.option;
   const hotel = (voce.hotel || "").trim();
-  // hotelPunto sta in escursioni.js, che c'e' su tutte le pagine della lista
-  const punto = hotel && typeof hotelPunto === "function" ? hotelPunto(hotel, voce.id) : null;
+  // hotelPunto e transferDi stanno in escursioni.js, che c'e' su tutte le
+  // pagine della lista
+  const conTransfer = !!(voce.transfer && typeof transferDi === "function" && transferDi(tour, scelta));
+  const punto = hotel && typeof hotelPunto === "function" ? hotelPunto(hotel, voce.id, conTransfer) : null;
+  // Chi non viene preso in hotel si presenta al punto di ritrovo della scheda
+  // (15 ottobre 2026): va nella stessa colonna, cosi' la conferma dei
+  // venditori parte gia' col posto scritto. In italiano, come la variante.
+  const ritrovo = !punto && tour && typeof ritrovoDaMostrare === "function"
+    ? ritrovoDaMostrare(tour, scelta, voce.transfer) : null;
   return {
     excursion_id: voce.id,
     option_label: (etichetta && typeof etichetta === "object" ? etichetta.it : etichetta) || null,
@@ -91,7 +98,8 @@ function richiestaVoce(voce) {
     hotel: hotel || null,
     // "il tuo hotel" diventa il nome dell'hotel: e' quello che leggera' il
     // cliente sul ticket, accanto all'ora
-    pickup_point: punto ? (punto.dove === "hotel" ? hotel : punto.nome) : null,
+    pickup_point: punto ? (punto.dove === "hotel" ? hotel : punto.nome)
+      : ritrovo ? (typeof ritrovo === "object" ? ritrovo.it : ritrovo) : null,
     pickup_time: (punto && punto.ora) || null
   };
 }

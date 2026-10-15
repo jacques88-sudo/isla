@@ -367,7 +367,7 @@ function initLista() {
       const mezzi = unitaTesto(riga.tour, voce);
       if (mezzi) dettagli.push(tf(riga.tour.units.name) + ": " + mezzi);
       if (voce.menu) dettagli.push(voce.menu);
-      if (riga.tour.transfer && voce.transfer) {
+      if (transferDi(riga.tour, variante) && voce.transfer) {
         dettagli.push(riga.tour.transferLabel ? tf(riga.tour.transferLabel) : t("wa.transfer"));
       }
       if (riga.tour.transferSiam && voce.transferSiam) {

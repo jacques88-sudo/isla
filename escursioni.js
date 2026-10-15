@@ -212,6 +212,40 @@ function varianteScelta(tour, req) {
   return varianteDi(tour, req.option);
 }
 
+// Il transfer e il punto di ritrovo della variante scelta, se la variante li
+// dice, altrimenti quelli della scheda: come `days` e `times`, la variante
+// vince (Freebird: il transfer c'e' sui giri di 3 e 4 ore e mezza, non su
+// quello di 2; 15 ottobre 2026). `variante` puo' essere null.
+function transferDi(tour, variante) {
+  if (!tour) return null;
+  return variante && Object.prototype.hasOwnProperty.call(variante, "transfer")
+    ? variante.transfer : (tour.transfer || null);
+}
+
+function ritrovoDi(tour, variante) {
+  if (!tour) return null;
+  return variante && Object.prototype.hasOwnProperty.call(variante, "ritrovo")
+    ? variante.ritrovo : (tour.ritrovo || null);
+}
+
+// Il cliente sara' preso in hotel? Su una scheda di PICKUP_NESSUNO solo se la
+// variante ha il transfer e lui l'ha chiesto; su tutte le altre si'.
+function conRitiro(tour, variante, transferChiesto) {
+  if (!tour) return false;
+  const nessuno = typeof PICKUP_NESSUNO !== "undefined" && PICKUP_NESSUNO.indexOf(tour.id) !== -1;
+  return !nessuno || !!(transferDi(tour, variante) && transferChiesto);
+}
+
+// Il punto di ritrovo da mostrare, o null: c'e' solo dove nessuno passa a
+// prendere il cliente, cioe' senza transfer o col transfer non spuntato.
+function ritrovoDaMostrare(tour, variante, transferChiesto) {
+  const r = ritrovoDi(tour, variante);
+  if (!r) return null;
+  if (transferDi(tour, variante) && transferChiesto) return null;
+  if (!transferDi(tour, variante) && conRitiro(tour, variante, false)) return null;
+  return r;
+}
+
 function prezziAPersona(tour, req) {
   if (tour.priceUnit) return null;
   if (Array.isArray(tour.priceTiers) && tour.priceTiers.length) return null;
@@ -495,7 +529,7 @@ function hotelCerca(testo, quanti) {
 //   null     → l'hotel non e' nell'elenco, oppure del suo punto non sappiamo il
 //              nome (sono quelli del nord). Non si mostra niente: meglio il
 //              silenzio di un'indicazione a meta'.
-function hotelPunto(nomeHotel, idScheda) {
+function hotelPunto(nomeHotel, idScheda, conTransfer) {
   if (typeof HOTELS === "undefined" || typeof PICKUP_POINTS === "undefined") return null;
   // Dove il ritiro non esiste non c'e' nessun punto da mostrare: le tabelle
   // sono di un altro fornitore e la fermata che ne uscirebbe manderebbe il
@@ -503,8 +537,12 @@ function hotelPunto(nomeHotel, idScheda) {
   // Sta qui in cima e non solo nella finestra perche' la stessa funzione scrive
   // anche la riga del messaggio WhatsApp, e una richiesta rimasta nella lista
   // da ieri porta ancora scritto l'hotel.
-  if (idScheda && typeof PICKUP_NESSUNO !== "undefined"
-      && PICKUP_NESSUNO.indexOf(idScheda) !== -1) return null;
+  // `conTransfer`: il cliente ha spuntato "Vuoi il transfer?" su una variante
+  // che ce l'ha (Freebird, buggy): li' il pulmino passa sotto l'hotel anche se
+  // la scheda sta in PICKUP_NESSUNO.
+  const nessuno = idScheda && typeof PICKUP_NESSUNO !== "undefined"
+      && PICKUP_NESSUNO.indexOf(idScheda) !== -1;
+  if (nessuno && !conTransfer) return null;
   const k = hotelChiave(nomeHotel.trim());
   if (!k) return null;
   const riga = HOTELS.find(h => hotelChiave(h[0]) === k);
@@ -517,8 +555,8 @@ function hotelPunto(nomeHotel, idScheda) {
   // in hotel.js). Va guardato **prima** del punto, se no il cliente andrebbe a
   // una fermata dove quel giorno non si ferma nessuno. Solo per gli hotel che
   // conosciamo: per questo sta dopo il controllo qui sopra.
-  if (idScheda && typeof PICKUP_IN_HOTEL !== "undefined"
-      && PICKUP_IN_HOTEL.indexOf(idScheda) !== -1) {
+  if (nessuno || (idScheda && typeof PICKUP_IN_HOTEL !== "undefined"
+      && PICKUP_IN_HOTEL.indexOf(idScheda) !== -1)) {
     return { dove: "hotel", ora: (ore && ore[riga[1]]) || "" };
   }
   if (riga[1] === 0) return { dove: "hotel" };
@@ -563,6 +601,9 @@ const HOTEL_QUANTI = 8;
 // quale escursione mostrare l'orario, e vive qui fuori perche' initHotelField()
 // e initRequestDialog() sono due funzioni separate.
 let SCHEDA_APERTA = null;
+// La variante premuta sulla pagina quando la finestra si e' aperta: il
+// transfer e il punto di ritrovo possono cambiare da una all'altra.
+let VARIANTE_APERTA = null;
 
 function initHotelField() {
   const campo = document.querySelector("[data-hotel-field]");
@@ -621,9 +662,14 @@ function initHotelField() {
   // posto solo, scritto nelle note. Chiederlo lo stesso vorrebbe dire promettere
   // un ritiro che non c'e' — la riga di aiuto dice "dove passiamo a prenderti" —
   // e far scrivere al cliente un dato che nessuno usera'.
+  // Su Freebird e buggy la domanda compare solo col transfer spuntato.
+  function transferSpuntato() {
+    const casella = document.getElementById("reqTransfer");
+    return !!(casella && casella.checked && transferDi(SCHEDA_APERTA, VARIANTE_APERTA));
+  }
+
   function senzaRitiro() {
-    return !!(typeof PICKUP_NESSUNO !== "undefined" && SCHEDA_APERTA
-      && PICKUP_NESSUNO.indexOf(SCHEDA_APERTA.id) !== -1);
+    return !!SCHEDA_APERTA && !conRitiro(SCHEDA_APERTA, VARIANTE_APERTA, transferSpuntato());
   }
 
   function mostraPunto() {
@@ -635,7 +681,7 @@ function initHotelField() {
     // attivita', e l'hotel scritto per l'escursione di prima finirebbe nel
     // messaggio di questa, sotto una domanda che qui non e' stata fatta.
     if (spento && input.value) { input.value = ""; chiudi(); }
-    const p = spento ? null : hotelPunto(input.value, SCHEDA_APERTA && SCHEDA_APERTA.id);
+    const p = spento ? null : hotelPunto(input.value, SCHEDA_APERTA && SCHEDA_APERTA.id, transferSpuntato());
     // Un'etichetta e un posto, niente di piu': il cliente ha appena scritto il
     // nome del suo hotel e vede da solo se il punto e' un altro. Le frasi
     // lunghe che c'erano prima ("non e' il tuo hotel", "l'ora te la
@@ -693,6 +739,16 @@ function initHotelField() {
   }
 
   input.addEventListener("input", () => { apri(); mostraPunto(); });
+  // "Vuoi il transfer?" spuntato o tolto: la domanda sull'hotel compare o
+  // sparisce. Spuntato, torna l'hotel dell'ultima volta, come all'apertura.
+  document.addEventListener("islatransfer", () => {
+    const primaNascosto = campo.hidden;
+    if (!senzaRitiro() && !input.value) input.value = hotelRicordato();
+    mostraPunto();
+    // La casella del transfer sta in fondo e la domanda sull'hotel piu' su:
+    // comparsa, la si porta in vista, se no il cliente non la vede.
+    if (primaNascosto && !campo.hidden) campo.scrollIntoView({ block: "center", behavior: "smooth" });
+  });
   // "dove passiamo a prenderti" oppure "dove e a che ora", secondo la scheda
   document.addEventListener("islarequestopen", () => {
     if (aiutoEl) {
@@ -741,7 +797,9 @@ function righeRichiesta(tour, req) {
   // Dove e quando passa il pulmino, ricavati dall'hotel. Si calcolano qui in
   // cima perche' l'ora va nella riga dell'orario, insieme alle altre, e non in
   // fondo attaccata al punto.
-  const punto = req.hotel ? hotelPunto(req.hotel, tour && tour.id) : null;
+  const variante = varianteScelta(tour, req);
+  const transfer = transferDi(tour, variante);
+  const punto = req.hotel ? hotelPunto(req.hotel, tour && tour.id, !!(transfer && req.transfer)) : null;
   // L'orario si scrive solo se il cliente ne ha scelto uno. "Da concordare" e'
   // l'assenza della riga, non una riga che dice "da concordare": all'ufficio
   // non serve leggere che il cliente non ha deciso.
@@ -761,7 +819,6 @@ function righeRichiesta(tour, req) {
   }
   // La variante scelta sta in alto: e' la prima cosa che l'ufficio deve sapere
   // per rispondere col prezzo giusto.
-  const variante = varianteScelta(tour, req);
   const etichettaVariante = variante ? tf(variante.label) : req.option;
   if (tour.options && etichettaVariante) {
     righe.push("• " + tf(tour.options.label) + ": " + etichettaVariante);
@@ -777,10 +834,14 @@ function righeRichiesta(tour, req) {
   if (menu) righe.push("• " + t("wa.menu") + ": " + menu);
   // La risposta si scrive sempre, anche quando e' "no": cosi' l'ufficio sa che
   // la domanda e' stata fatta, invece di doverla rifare in chat.
-  if (tour.transfer) {
+  if (transfer) {
     const etichetta = tour.transferLabel ? tf(tour.transferLabel) : t("wa.transfer");
     righe.push("• " + etichetta + ": " + t(req.transfer ? "wa.yes" : "wa.no"));
   }
+  // Dove si presenta chi non viene preso in hotel: l'ufficio lo legge e la
+  // conferma lo riporta (15 ottobre 2026).
+  const ritrovo = ritrovoDaMostrare(tour, variante, req.transfer);
+  if (ritrovo) righe.push("• " + t("wa.meetingPoint") + ": " + tf(ritrovo));
   if (tour.transferSiam) {
     const etichetta = tour.transferSiamLabel ? tf(tour.transferSiamLabel) : t("wa.transferSiam");
     righe.push("• " + etichetta + ": " + t(req.transferSiam ? "wa.yes" : "wa.no"));
@@ -1235,6 +1296,8 @@ function initRequestDialog() {
   const transferLabelEl = document.querySelector("[data-request-transfer-label]");
   const transferNoteEl = document.querySelector("[data-request-transfer-note]");
   const transferInput = document.getElementById("reqTransfer");
+  const ritrovoEl = document.querySelector("[data-request-ritrovo]");
+  const ritrovoValoreEl = document.querySelector("[data-request-ritrovo-value]");
   const transferSiamEl = document.querySelector("[data-request-transfer-siam]");
   const transferSiamLabelEl = document.querySelector("[data-request-transfer-siam-label]");
   const transferSiamNoteEl = document.querySelector("[data-request-transfer-siam-note]");
@@ -1293,9 +1356,23 @@ function initRequestDialog() {
   // disponibilita'": all'ufficio non cambia niente.
   //
   // Il nome non si chiede qui ma nella finestra della lista, una volta sola.
+  // "Punto di ritrovo: Puerto Colón, molo 10 — ci arrivi da solo": dove non
+  // passa nessuno, o il cliente il transfer non lo vuole (15 ottobre 2026).
+  function aggiornaRitrovo() {
+    if (!ritrovoEl) return;
+    const r = current ? ritrovoDaMostrare(current, VARIANTE_APERTA, !!(transferInput && transferInput.checked)) : null;
+    if (ritrovoValoreEl) ritrovoValoreEl.textContent = r ? tf(r) : "";
+    ritrovoEl.hidden = !r;
+  }
+
   function open(tour) {
     current = tour;
     SCHEDA_APERTA = tour;
+    VARIANTE_APERTA = sceltaCorrente(tour);
+    // la casella del transfer riparte da non spuntata **prima** che il campo
+    // dell'hotel guardi se deve comparire: e' la stessa finestra per tutte le
+    // schede, e la spunta di quella di prima chiederebbe l'hotel anche qui
+    if (transferInput) transferInput.checked = false;
     // il campo dell'hotel vive in un'altra funzione e deve sapere che scheda e'
     document.dispatchEvent(new CustomEvent("islarequestopen"));
     // `required` su un campo nascosto blocca l'invio senza dire perche': il
@@ -1318,12 +1395,13 @@ function initRequestDialog() {
     // la domanda sul transfer compare solo dove il transfer esiste davvero, e
     // riparte sempre da non spuntata: la finestra e' la stessa per tutte le
     // attivita' e si riapre com'era rimasta
+    // Il transfer della variante, se la variante lo dice (Freebird, buggy).
+    const transfer = transferDi(tour, VARIANTE_APERTA);
     if (transferEl) {
-      transferEl.hidden = !tour.transfer;
-      if (transferInput) transferInput.checked = false;
+      transferEl.hidden = !transfer;
       // il testo per esteso dice i limiti (per il Twin Ticket vale solo per
       // la giornata a Loro Parque) prima che il cliente spunti
-      if (transferNoteEl) transferNoteEl.textContent = tour.transfer ? tf(tour.transfer) : "";
+      if (transferNoteEl) transferNoteEl.textContent = transfer ? tf(transfer) : "";
       // La domanda e' quella di sempre, a meno che la scheda non ne dia una
       // sua: serve dove "Vuoi il transfer?" da solo non basta a distinguerlo
       // dal secondo transfer (due zone di partenza diverse sulla stessa scheda).
@@ -1337,6 +1415,7 @@ function initRequestDialog() {
       if (transferSiamNoteEl) transferSiamNoteEl.textContent = tour.transferSiam ? tf(tour.transferSiam) : "";
       if (transferSiamLabelEl) transferSiamLabelEl.textContent = tour.transferSiamLabel ? tf(tour.transferSiamLabel) : t("req.transferSiam");
     }
+    aggiornaRitrovo();
     // Gli orari: la finestra e' una sola per tutte le attivita', quindi si
     // riparte sempre da "Da concordare" invece di tenere la scelta di prima.
     if (timeEl) timeEl.value = "";
@@ -2039,6 +2118,17 @@ function initRequestDialog() {
     });
   }
 
+  // Il transfer spuntato o tolto cambia due cose: la domanda sull'hotel
+  // (initHotelField, che ascolta "islatransfer") e il punto di ritrovo, che si
+  // mostra solo a chi al porto ci va da solo.
+  [transferInput, transferSiamInput].forEach(campo => {
+    if (!campo) return;
+    campo.addEventListener("change", () => {
+      aggiornaRitrovo();
+      document.dispatchEvent(new CustomEvent("islatransfer"));
+    });
+  });
+
   // Il totale segue i numeri mentre il cliente li cambia, e la spunta dei
   // transfer perche' col transfer il prezzo e' un altro.
   [adultsInput, kidsInput, babiesInput, transferInput, transferSiamInput].forEach(campo => {
@@ -2072,7 +2162,9 @@ function initRequestDialog() {
     if (!current) return;
     aggiornaAttivita(current);
     if (seasonEl && current.season) seasonEl.textContent = tf(current.season);
-    if (transferNoteEl && current.transfer) transferNoteEl.textContent = tf(current.transfer);
+    const transfer = transferDi(current, VARIANTE_APERTA);
+    if (transferNoteEl && transfer) transferNoteEl.textContent = tf(transfer);
+    aggiornaRitrovo();
     if (transferLabelEl) transferLabelEl.textContent = current.transferLabel ? tf(current.transferLabel) : t("req.transfer");
     if (transferSiamNoteEl && current.transferSiam) transferSiamNoteEl.textContent = tf(current.transferSiam);
     if (transferSiamLabelEl) transferSiamLabelEl.textContent = current.transferSiamLabel ? tf(current.transferSiamLabel) : t("req.transferSiam");

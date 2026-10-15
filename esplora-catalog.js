@@ -197,6 +197,23 @@
 //                di dettaglio questo testo per esteso, che e' il posto dove spiegare
 //                i limiti (per il Twin Ticket il transfer vale solo per Loro Parque).
 //                    transfer: { it: "Disponibile su richiesta", en: "...", es: "...", fr: "...", de: "..." }
+//                Vale anche dentro una variante (`options.choices[].transfer`), e la
+//                variante vince: sul Freebird il transfer c'e' sui giri di 3 e 4 ore
+//                e mezza, non su quello di 2 (15 ottobre 2026). Nella finestra della
+//                richiesta diventa la casella "Vuoi il transfer?": spuntata, chiede
+//                l'hotel anche su una scheda di PICKUP_NESSUNO (hotel.js); non
+//                spuntata, mostra il `ritrovo`.
+//   ritrovo    → facoltativo: dove ci si presenta quando non si passa a prendere
+//                il cliente (la scheda sta in PICKUP_NESSUNO) o lui il transfer non
+//                lo vuole. Compare nella finestra della richiesta ("Punto di
+//                ritrovo: … ci arrivi da solo"), va nel messaggio WhatsApp e nel
+//                database (pickup_point), e la conferma dei venditori parte gia'
+//                scritta con quello. Il nome del posto non si traduce, il resto si':
+//                    ritrovo: "Black Pearl Bar, Puerto Colón"
+//                    ritrovo: { it: "Puerto Colón, molo 10", en: "Puerto Colón, dock 10", ... }
+//                Vale anche dentro una variante, e la variante vince. Solo dove il
+//                posto e' scritto davvero: senza, la finestra non dice niente e il
+//                punto lo scrive l'ufficio confermando.
 //   transferPrice → facoltativo: quanto costa la stessa attivita' col transfer
 //                incluso, in euro. { adult, child, baby }. `baby` e' il solo posto
 //                sul pullman per i neonati, che senza transfer non esiste. Compare
@@ -628,6 +645,13 @@ const ESPLORA_CATALOG = [
           priceAdult: 47,
           priceChild: 23,
           included: ["snack", "transfer"],
+          transfer: {
+            it: "Compreso, dagli hotel del sud. Se non lo vuoi, ci vediamo al porto: Puerto Colón, molo 10.",
+            en: "Included, from the southern hotels. If you don't need it, meet us at the harbour: Puerto Colón, dock 10.",
+            es: "Incluido, desde los hoteles del sur. Si no lo necesitas, nos vemos en el puerto: Puerto Colón, muelle 10.",
+            fr: "Compris, depuis les hôtels du sud. Si vous n'en avez pas besoin, rendez-vous au port : Puerto Colón, quai 10.",
+            de: "Inklusive, von den Hotels im Süden. Wenn Sie ihn nicht brauchen, treffen wir uns am Hafen: Puerto Colón, Steg 10."
+          },
           times: ["10:00"],
           desc: {
             it: "Balene e delfini, con sosta bagno a Diego Hernández e tempo per stare al sole. A bordo un panino e bevande illimitate. Transfer dall'hotel compreso. Tutti i giorni, partenza alle 10:00.",
@@ -642,6 +666,13 @@ const ESPLORA_CATALOG = [
           priceAdult: 62,
           priceChild: 31,
           included: ["lunch", "transfer"],
+          transfer: {
+            it: "Compreso, dagli hotel del sud. Se non lo vuoi, ci vediamo al porto: Puerto Colón, molo 10.",
+            en: "Included, from the southern hotels. If you don't need it, meet us at the harbour: Puerto Colón, dock 10.",
+            es: "Incluido, desde los hoteles del sur. Si no lo necesitas, nos vemos en el puerto: Puerto Colón, muelle 10.",
+            fr: "Compris, depuis les hôtels du sud. Si vous n'en avez pas besoin, rendez-vous au port : Puerto Colón, quai 10.",
+            de: "Inklusive, von den Hotels im Süden. Wenn Sie ihn nicht brauchen, treffen wir uns am Hafen: Puerto Colón, Steg 10."
+          },
           times: ["13:00"],
           desc: {
             it: "Il giro lungo: balene e delfini, le scogliere di Los Gigantes e bagno nella baia di Masca. A bordo si pranza, con bevande illimitate. Transfer dall'hotel compreso. Tutti i giorni, partenza alle 13:00.",
@@ -663,6 +694,15 @@ const ESPLORA_CATALOG = [
           priceChild: 34,
           days: ["mar", "gio", "ven", "dom"],
           included: ["lunch", "transfer"],
+          // la variante del nord e' fatta per la navetta: la si chiede lo stesso,
+          // chi alloggia al nord e vuole andare al porto da solo puo' farlo
+          transfer: {
+            it: "Compreso, dagli hotel del nord. Se non lo vuoi, ci vediamo al porto: Puerto Colón, molo 10.",
+            en: "Included, from the northern hotels. If you don't need it, meet us at the harbour: Puerto Colón, dock 10.",
+            es: "Incluido, desde los hoteles del norte. Si no lo necesitas, nos vemos en el puerto: Puerto Colón, muelle 10.",
+            fr: "Compris, depuis les hôtels du nord. Si vous n'en avez pas besoin, rendez-vous au port : Puerto Colón, quai 10.",
+            de: "Inklusive, von den Hotels im Norden. Wenn Sie ihn nicht brauchen, treffen wir uns am Hafen: Puerto Colón, Steg 10."
+          },
           times: ["13:00"],
           desc: {
             it: "Lo stesso giro lungo, Los Gigantes e Masca comprese, per chi alloggia nel nord dell'isola: la navetta ti prende e ti riporta a casa. La barca parte alle 13:00, la navetta passa prima. Martedì, giovedì, venerdì e domenica.",
@@ -675,6 +715,9 @@ const ESPLORA_CATALOG = [
       ]
     },
     included: ["swimstop", "drinks", "guide"],
+    // Dove ci si presenta senza transfer: sul giro di 2 ore sempre, sugli
+    // altri se il cliente non lo vuole (proprietario, 15 ottobre 2026).
+    ritrovo: { it: "Puerto Colón, molo 10", en: "Puerto Colón, dock 10", es: "Puerto Colón, muelle 10", fr: "Puerto Colón, quai 10", de: "Puerto Colón, Steg 10" },
     notes: [
       {
         it: "Il transfer dall'hotel è compreso sul giro di 3 ore e su quello di 4 ore e mezza, dalle zone del sud. Sul giro di 2 ore non c'è: al porto ci si arriva da soli.",
@@ -1106,6 +1149,8 @@ const ESPLORA_CATALOG = [
     ],
     image: "flipper-one.jpg",
     gallery: ["flipper-one-2.jpg", "flipper-one-3.jpg", "flipper-one-4.jpg"],
+    // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
+    ritrovo: "Puerto de Los Gigantes",
     published: true
   },
   {
@@ -1306,6 +1351,8 @@ const ESPLORA_CATALOG = [
       de: "Vier Stunden Hochseeangeln vor Puerto Colón, an Bord der No Limits. Es geht auf Thunfisch, Marlin und Goldmakrele, und wer es versuchen will, bekommt eine Rute, auch Anfänger: Die Crew kennt diese Gewässer seit über zwanzig Jahren. Wer nicht angelt, hat Liegen und einen Schattenbereich. Zur Wahl stehen die geteilte Fahrt oder das Boot ganz für Sie."
     },
     image: "pesca-altura.jpg",
+    // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
+    ritrovo: "Puerto Colón",
     published: true
   },
   {
@@ -1568,6 +1615,8 @@ const ESPLORA_CATALOG = [
     },
     image: "party-boat.jpg",
     gallery: ["party-boat-2.jpg"],
+    // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
+    ritrovo: "Black Pearl Bar, Puerto Colón",
     published: true
   },
   {
@@ -2106,6 +2155,8 @@ const ESPLORA_CATALOG = [
     ],
     image: "ragnarok.jpg",
     gallery: ["ragnarok-2.jpg", "ragnarok-3.jpg", "ragnarok-4.jpg", "ragnarok-5.jpg"],
+    // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
+    ritrovo: { it: "Porto di Los Cristianos, Zona Excursiones A", en: "Los Cristianos harbour, Zona Excursiones A", es: "Puerto de Los Cristianos, Zona Excursiones A", fr: "Port de Los Cristianos, Zona Excursiones A", de: "Hafen Los Cristianos, Zona Excursiones A" },
     published: true
   },
 
@@ -3226,6 +3277,13 @@ const ESPLORA_CATALOG = [
       choices: [
         { label: { it: "Offroad, 3 ore", en: "Off-road, 3 hours", es: "Offroad, 3 horas", fr: "Tout-terrain, 3 heures", de: "Offroad, 3 Stunden" },
           price: 180,
+          transfer: {
+            it: "Gratis: passiamo a prenderti in hotel.",
+            en: "Free: we pick you up at your hotel.",
+            es: "Gratis: te recogemos en tu hotel.",
+            fr: "Gratuit : nous venons vous chercher à votre hôtel.",
+            de: "Kostenlos: Wir holen Sie im Hotel ab."
+          },
           times: ["08:20", "11:00", "13:30", "14:00"],
           duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
           unitPrices: { due: 180, quattro: 240, sei: 330 },
@@ -3238,6 +3296,13 @@ const ESPLORA_CATALOG = [
           } },
         { label: { it: "Tramonto sul Teide, 3 ore", en: "Teide at sunset, 3 hours", es: "Atardecer en el Teide, 3 horas", fr: "Le Teide au coucher du soleil, 3 heures", de: "Teide bei Sonnenuntergang, 3 Stunden" },
           price: 180,
+          transfer: {
+            it: "Gratis: passiamo a prenderti in hotel.",
+            en: "Free: we pick you up at your hotel.",
+            es: "Gratis: te recogemos en tu hotel.",
+            fr: "Gratuit : nous venons vous chercher à votre hôtel.",
+            de: "Kostenlos: Wir holen Sie im Hotel ab."
+          },
           times: ["17:30", "18:00"],
           duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
           unitPrices: { due: 180, quattro: 240, sei: 330 },
@@ -3250,6 +3315,13 @@ const ESPLORA_CATALOG = [
           } },
         { label: { it: "Completo, 4 ore", en: "Full tour, 4 hours", es: "Completo, 4 horas", fr: "Tour complet, 4 heures", de: "Komplette Tour, 4 Stunden" },
           price: 180,
+          transfer: {
+            it: "Gratis: passiamo a prenderti in hotel.",
+            en: "Free: we pick you up at your hotel.",
+            es: "Gratis: te recogemos en tu hotel.",
+            fr: "Gratuit : nous venons vous chercher à votre hôtel.",
+            de: "Kostenlos: Wir holen Sie im Hotel ab."
+          },
           times: ["08:20", "14:00"],
           duration: { it: "4 ore", en: "4 hours", es: "4 horas", fr: "4 heures", de: "4 Stunden" },
           unitPrices: { due: 180, quattro: 240, sei: 330 },
@@ -3270,6 +3342,9 @@ const ESPLORA_CATALOG = [
         // note, che possono dire su quali giri c'e' e su quale no.
         { label: { it: "Montagna su strada, 3 ore", en: "Mountain roads, 3 hours", es: "Montaña por carretera, 3 horas", fr: "Routes de montagne, 3 heures", de: "Bergstraßen, 3 Stunden" },
           price: 180,
+          // senza ritiro: si parte da Playa de las Américas, il punto esatto lo
+          // dice l'ufficio confermando
+          ritrovo: "Playa de las Américas",
           times: ["11:00", "13:30"],
           duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
           zone: "Playa de las Américas",
@@ -3722,6 +3797,8 @@ const ESPLORA_CATALOG = [
     ],
     languages: ["English", "Español"],
     image: "helicopter-tours.jpg",
+    // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
+    ritrovo: { it: "Elisuperficie di Adeje", en: "Adeje heliport", es: "Helipuerto de Adeje", fr: "Héliport d'Adeje", de: "Hubschrauberlandeplatz Adeje" },
     published: true
   },
   {
@@ -5835,6 +5912,8 @@ const ESPLORA_CATALOG = [
         de: "Im Vivo Show Bar, Avenida Rafael Puig Lluvina 7, ein paar Schritte vom Zentrum von Playa de las Américas. Der Anbieter bietet keinen Transport an: Man kommt zu Fuß oder mit dem Taxi." }
     ],
     image: "mht-drag-show.jpg",
+    // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
+    ritrovo: "Vivo Show Bar, Avenida Rafael Puig Lluvina 7, Playa de las Américas",
     published: true
   },
   {
@@ -6898,6 +6977,8 @@ const ESPLORA_CATALOG = [
       }
     ],
     image: "la-palma.jpg",
+    // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
+    ritrovo: { it: "Porto di Los Cristianos, davanti all'ufficio Fred Olsen", en: "Los Cristianos harbour, in front of the Fred Olsen office", es: "Puerto de Los Cristianos, delante de la oficina de Fred Olsen", fr: "Port de Los Cristianos, devant le bureau Fred Olsen", de: "Hafen Los Cristianos, vor dem Fred-Olsen-Büro" },
     published: true
   },
   {
@@ -7297,6 +7378,8 @@ const ESPLORA_CATALOG = [
       de: "Die privaten Touren ansehen"
     },
     image: "tuk-tuk.jpg",
+    // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
+    ritrovo: "Wakanda Origen, Avenida de España 10, Costa Adeje",
     published: true
   },
   {
@@ -7735,6 +7818,8 @@ const ESPLORA_CATALOG = [
       de: "Das elektrische Tuk-Tuk nur für Ihre Gruppe, bis zu 6 Personen: dieselben zwei Routen wie die geteilte Fahrt, oder beide zusammen in zwei Stunden. Der Preis gilt für das Fahrzeug und nicht pro Person und ändert sich damit, wie viele Sie sind."
     },
     image: "tuk-tuk.jpg",
+    // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
+    ritrovo: "Wakanda Origen, Avenida de España 10, Costa Adeje",
     published: true
   },
   // ─── I noleggi, solo per i venditori ───────────────────────────────────────

@@ -18426,3 +18426,34 @@ Il giorno dell'apertura si riparte da zero, **in quest'ordine**:
 4. **I telefoni usati per le prove**: le richieste finte restano salvate nel browser
    (`isla-richieste`, `isla-ticket`) e il numerino delle prenotazioni le conta. Si
    tolgono svuotando i dati del sito nel browser di quel telefono.
+
+## L'archivio di fine anno del foglio Google (15 ottobre 2026)
+
+Il proprietario voleva il foglio pulito ogni 1° gennaio. Gli è stata proposta la scelta
+fra **archiviare** (l'anno finito in un file a parte) e **cancellare**: ha scelto
+**archiviare**. Il foglio è l'unico posto dove i ticket restano dopo la pulizia
+mensile di Supabase, e i conti di un'attività vanno tenuti qualche anno.
+
+**Come funziona (`archiviaAnniFiniti` in `foglio-google/Codice.gs`).** Niente orologio
+a parte: a ogni giro dell'ora il programma guarda se ci sono schede "Settimana …" di un
+anno finito. Se ci sono, crea (una volta per anno) il file **"Isla — archivio 2026"**
+nel Drive di chi ha installato il programma, ci **copia** le settimane una alla volta,
+le **toglie** dal foglio di lavoro e rifà nell'archivio i quattro riepiloghi. L'id
+dell'archivio sta nelle Proprietà dello script (`ARCHIVIO_2026`), il link nella scheda
+"Aggiorna". Un giro fermato a metà riprende al giro dopo, senza doppioni.
+
+**Le cose che si sbagliano:**
+- una settimana è dell'anno della sua **domenica**: quella dal 28 dicembre 2026 al 3
+  gennaio 2027 è del 2027 e resta nel foglio di lavoro (il 1° gennaio è ancora in uso);
+- dopo l'archivio le settimane vecchie **non si riscrivono**: Supabase tiene i ticket
+  ancora un paio di mesi, e senza il controllo (`t.settimana < inizioAnno`) al giro
+  dopo le schede di dicembre tornerebbero nel foglio di lavoro;
+- l'archivio è la fotografia del 31 dicembre: un ticket dell'anno vecchio cambiato a
+  gennaio lì non cambia.
+
+Provato con un finto Google Sheets in Node: al 1° gennaio 2027, con settimane dal 15
+dicembre 2025 al 4 gennaio 2027, nel foglio restano 28-12-2026 e 04-01-2027, il 2025 e il
+2026 vanno nei loro due archivi (le più nuove davanti, coi riepiloghi), il secondo giro
+non fa niente. Al 15 ottobre 2026 si sposta solo il 2025. **Non provato su Google vero**:
+lo si vede il 1° gennaio. Per metterlo: Apps Script → incolla il `Codice.gs` nuovo →
+`installa` → Esegui (se Google chiede di nuovo il permesso, Consenti).

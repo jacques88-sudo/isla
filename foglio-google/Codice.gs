@@ -10,7 +10,9 @@
 //   - rifa' da capo "Per giorno", "Per settimana", "Per venditore" e "Per
 //     compagnia", contate dal giorno in cui il ticket e' stato inserito. Nei
 //     totali entrano solo i confermati: gli annullati si contano a parte,
-//     quelli in attesa no.
+//     quelli in attesa no;
+//   - finito l'anno, sposta le sue settimane in un file a parte ("Isla —
+//     archivio 2026", vedi archiviaAnniFiniti) e qui si riparte pulito.
 //
 // Come si installa: foglio-google/LEGGIMI.md.
 //
@@ -172,12 +174,18 @@ function aggiornaDavvero() {
   const unica = ss.getSheetByName("Ticket");
   if (unica) unica.setName("Ticket (vecchio " + quando + ")");
 
+  // Prima si mettono da parte gli anni finiti, poi si scrive.
+  const inizioAnno = archiviaAnniFiniti(ss);
+
   // I ticket divisi per settimana: il lunedi' della data di emissione. Le
   // richieste WhatsApp ancora in attesa non sono ticket: entrano quando
-  // l'ufficio le conferma.
+  // l'ufficio le conferma. Le settimane di un anno gia' archiviato non si
+  // riscrivono qui: Supabase tiene i ticket ancora un paio di mesi, e
+  // ritornerebbero ogni ora.
   const perSettimana = {};
   arrivati.forEach(t => {
     if (t.stato === "in attesa" || !t.settimana) return;
+    if (String(t.settimana) < inizioAnno) return;
     if (!perSettimana[t.settimana]) perSettimana[t.settimana] = [];
     perSettimana[t.settimana].push(t);
   });
@@ -200,6 +208,121 @@ function aggiornaDavvero() {
 // Il nome della scheda di una settimana: "Settimana 05-10-2026", col lunedi'.
 // Una scheda messa da parte ("… (vecchio …)") non e' una settimana e non conta.
 const NOME_SETTIMANA = /^Settimana \d{2}-\d{2}-\d{4}$/;
+
+// ─── L'archivio di fine anno ────────────────────────────────────────────────
+// Proprietario, 15 ottobre 2026: il 1° gennaio il foglio riparte pulito, ma
+// l'anno finito non si cancella. Le sue settimane vanno in un file nuovo,
+// "Isla — archivio 2026", nello stesso Google Drive, coi suoi riepiloghi. I
+// conti di un'attivita' vanno tenuti qualche anno, e questo e' l'unico posto
+// dove i ticket restano dopo la pulizia mensile di Supabase.
+//
+// Una settimana appartiene all'anno della sua DOMENICA: quella dal 29
+// dicembre 2025 al 4 gennaio 2026 e' del 2026, e il 1° gennaio non si toglie
+// una scheda ancora in uso.
+//
+// Non serve un orologio a parte: lo controlla ogni giro dell'ora. Se un giro
+// si ferma a meta', quello dopo riprende da dove era rimasto. L'indirizzo
+// dell'archivio sta nelle Proprieta' dello script (ARCHIVIO_2026) e si legge
+// anche nella scheda "Aggiorna".
+//
+// Un ticket dell'anno vecchio cambiato dopo il 1° gennaio (un annullamento
+// tardivo) nell'archivio non cambia piu': l'archivio e' la fotografia del 31
+// dicembre.
+
+// "2026-10-05" (un lunedi') → l'anno della sua domenica.
+function annoDellaSettimana(lunedi) {
+  const [a, m, g] = lunedi.split("-").map(Number);
+  return new Date(Date.UTC(a, m - 1, g + 6)).getUTCFullYear();
+}
+
+// Il lunedi' della prima settimana dell'anno: quella col 1° gennaio.
+function primoLunedi(anno) {
+  const d = new Date(Date.UTC(anno, 0, 1));
+  d.setUTCDate(d.getUTCDate() - (d.getUTCDay() + 6) % 7);
+  return d.toISOString().slice(0, 10);
+}
+
+// "Settimana 05-10-2026" → "2026-10-05".
+function lunediDelNome(nome) {
+  const [g, m, a] = nome.slice(10).split("-");
+  return a + "-" + m + "-" + g;
+}
+
+// Sposta nell'archivio le settimane degli anni finiti. Restituisce il lunedi'
+// da cui comincia l'anno in corso: prima di quello qui non si scrive.
+function archiviaAnniFiniti(ss) {
+  const fuso = ss.getSpreadsheetTimeZone();
+  const inizio = primoLunedi(Number(Utilities.formatDate(new Date(), fuso, "yyyy")));
+  const vecchie = ss.getSheets().filter(f =>
+    NOME_SETTIMANA.test(f.getName()) && lunediDelNome(f.getName()) < inizio);
+  if (!vecchie.length) return inizio;
+
+  const perAnno = {};
+  vecchie.forEach(f => {
+    const anno = annoDellaSettimana(lunediDelNome(f.getName()));
+    (perAnno[anno] = perAnno[anno] || []).push(f);
+  });
+  // Ogni settimana si copia e poi si toglie, una alla volta: se il giro si
+  // ferma, quelle copiate sono gia' al sicuro e quelle rimaste si rifanno.
+  // Dalla piu' vecchia alla piu' nuova, come nel foglio: la nuova va davanti.
+  Object.keys(perAnno).sort().forEach(anno => {
+    const archivio = archivioDellAnno(ss, anno);
+    perAnno[anno]
+      .sort((x, y) => (lunediDelNome(x.getName()) < lunediDelNome(y.getName()) ? -1 : 1))
+      .forEach(f => {
+        const nome = f.getName();
+        const doppia = archivio.getSheetByName(nome);   // un giro fermato a meta'
+        if (doppia) archivio.deleteSheet(doppia);
+        const copia = f.copyTo(archivio).setName(nome);
+        archivio.setActiveSheet(copia);
+        archivio.moveActiveSheet(2);                     // dopo "Leggimi"
+        copia.hideColumns(VISIBILI + 1, COLONNE.length - VISIBILI);
+        ss.deleteSheet(f);
+      });
+    const righe = [];
+    archivio.getSheets().filter(f => NOME_SETTIMANA.test(f.getName())).forEach(f => {
+      const n = f.getLastRow() - 1;
+      if (n > 0) f.getRange(2, 1, n, COLONNE.length).getValues().forEach(r => righe.push(r));
+    });
+    riepiloghi(archivio, righe);
+  });
+  linkAgliArchivi(ss);
+  return inizio;
+}
+
+// Il file dell'archivio di un anno: quello gia' fatto, o uno nuovo.
+function archivioDellAnno(ss, anno) {
+  const proprieta = PropertiesService.getScriptProperties();
+  const id = proprieta.getProperty("ARCHIVIO_" + anno);
+  if (id) {
+    try { return SpreadsheetApp.openById(id); } catch (e) { /* cancellato: se ne fa uno nuovo */ }
+  }
+  const nuovo = SpreadsheetApp.create("Isla — archivio " + anno);
+  nuovo.setSpreadsheetTimeZone(ss.getSpreadsheetTimeZone());
+  const leggimi = nuovo.getSheets()[0].setName("Leggimi");
+  leggimi.getRange("A1:A3").setValues([
+    ["Archivio dei ticket del " + anno + ", copiati dal foglio \"" + ss.getName() + "\" a fine anno."],
+    ["Non si aggiorna più: è la fotografia del 31 dicembre. Una settimana è dell'anno della sua domenica."],
+    ["I riepiloghi (Per giorno, Per settimana, Per venditore, Per compagnia) contano solo quest'anno."]
+  ]);
+  leggimi.getRange("A1").setFontWeight("bold");
+  proprieta.setProperty("ARCHIVIO_" + anno, nuovo.getId());
+  return nuovo;
+}
+
+// Nella scheda "Aggiorna", sotto la casella: un link per ogni archivio.
+function linkAgliArchivi(ss) {
+  const s = ss.getSheetByName("Aggiorna");
+  if (!s) return;
+  const proprieta = PropertiesService.getScriptProperties().getProperties();
+  const anni = Object.keys(proprieta).filter(k => /^ARCHIVIO_\d{4}$/.test(k)).map(k => k.slice(9)).sort().reverse();
+  s.getRange("A7:B30").clearContent();
+  if (!anni.length) return;
+  s.getRange("A7").setValue("Gli anni finiti:").setFontWeight("bold");
+  anni.forEach((anno, k) => {
+    s.getRange(8 + k, 2).setValue("Archivio " + anno + ": https://docs.google.com/spreadsheets/d/" + proprieta["ARCHIVIO_" + anno]);
+  });
+}
 
 // Scrive i ticket di una settimana nella sua scheda, giorno per giorno:
 //

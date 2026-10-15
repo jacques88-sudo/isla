@@ -4042,9 +4042,15 @@ const ESPLORA_CATALOG = [
     options: {
       label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée", de: "Dauer" },
       choices: [
-        { label: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure", de: "1 Stunde" }, price: 50 },
+        // Orari e prezzo delle 2 ore dal proprietario e dalla pagina di Xanadú
+        // (15 ottobre 2026): partenza ogni giorno, 1 ora alle 12:00 e 2 ore
+        // alle 9:30. A persona: priceAdult e non price, cosi' si fa il totale.
+        // Il giro al tramonto tolto dal proprietario: Xanadú non lo fa.
+        { label: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure", de: "1 Stunde" }, priceAdult: 50, times: ["12:00"] },
         {
-          label: { it: "2 ore (percorso costiero o al tramonto)", en: "2 hours (coastal or sunset route)", es: "2 horas (ruta costera o al atardecer)", fr: "2 heures (parcours côtier ou coucher du soleil)", de: "2 Stunden (Küsten- oder Sonnenuntergangsroute)" },
+          label: { it: "2 ore (percorso costiero)", en: "2 hours (coastal route)", es: "2 horas (ruta costera)", fr: "2 heures (parcours côtier)", de: "2 Stunden (Küstenroute)" },
+          priceAdult: 85,
+          times: ["09:30"],
           duration: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures", de: "2 Stunden" }
         }
       ]
@@ -4056,14 +4062,27 @@ const ESPLORA_CATALOG = [
       fr: "Une balade à cheval guidée depuis Guargacho, en groupe ou en privé, sur des sentiers adaptés même à ceux qui montent pour la première fois.",
       de: "Ein geführter Ausritt ab Guargacho, in der Gruppe oder privat, auf Wegen, die auch für Anfänger geeignet sind."
     },
+    // La compagnia, come si scrive sul ticket di carta (15 ottobre 2026).
+    nomi: ["Xanadú", "Xanadu"],
+    // Il ritiro c'e' ma si paga a famiglia, non a persona: niente
+    // transferPrice (il totale lo farebbe a testa) e niente icona. La scheda
+    // resta in PICKUP_NESSUNO: nella richiesta compare "Vuoi il transfer?", e
+    // l'hotel si chiede solo a chi lo spunta, come sul Freebird.
+    transfer: {
+      it: "Il ritiro in hotel costa 10 € a famiglia, solo nel sud: da Callao Salvaje a El Médano.",
+      en: "Hotel pick-up costs €10 per family, only in the south: from Callao Salvaje to El Médano.",
+      es: "La recogida en el hotel cuesta 10 € por familia, solo en el sur: de Callao Salvaje a El Médano.",
+      fr: "La prise en charge à l'hôtel coûte 10 € par famille, seulement dans le sud : de Callao Salvaje à El Médano.",
+      de: "Die Abholung vom Hotel kostet 10 € pro Familie, nur im Süden: von Callao Salvaje bis El Médano."
+    },
     included: ["guide", "equipment"],
     notes: [
       {
-        it: "Età minima 10 anni. Gruppo di massimo 6 persone. Consigliati pantaloni lunghi e scarpe robuste.",
-        en: "Minimum age 10. Groups of up to 6 people. Long trousers and sturdy shoes recommended.",
-        es: "Edad mínima 10 años. Grupos de hasta 6 personas. Se recomiendan pantalones largos y calzado resistente.",
-        fr: "Âge minimum 10 ans. Groupes de 6 personnes au maximum. Pantalon long et chaussures solides conseillés.",
-        de: "Mindestalter 10 Jahre. Gruppen von höchstens 6 Personen. Lange Hose und feste Schuhe empfohlen."
+        it: "Età minima 10 anni, peso massimo 95 kg. Gruppo di massimo 6 persone. Consigliati pantaloni lunghi, scarpe chiuse e robuste, crema solare e acqua.",
+        en: "Minimum age 10, maximum weight 95 kg. Groups of up to 6 people. Long trousers, sturdy closed shoes, sun cream and water recommended.",
+        es: "Edad mínima 10 años, peso máximo 95 kg. Grupos de hasta 6 personas. Se recomiendan pantalones largos, calzado cerrado y resistente, crema solar y agua.",
+        fr: "Âge minimum 10 ans, poids maximum 95 kg. Groupes de 6 personnes au maximum. Pantalon long, chaussures fermées et solides, crème solaire et eau conseillés.",
+        de: "Mindestalter 10 Jahre, Höchstgewicht 95 kg. Gruppen von höchstens 6 Personen. Lange Hose, feste geschlossene Schuhe, Sonnencreme und Wasser empfohlen."
       },
       {
         it: "Casco di sicurezza e armadietti per gli effetti personali inclusi.",

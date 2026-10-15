@@ -18705,3 +18705,30 @@ prendere al sud, come per le gite al Teide; i filtri restano "Teide e nord" e "L
 Gigantes", dove si pedala) e **ore da concordare**: `times: []`, così nella richiesta
 c'è solo "Da concordare" invece delle fasce. Provato nel browser. Ora senza orari ne
 restano 3: cavallo, Trekking, Cabrio Bus. `CACHE_NAME` → `isla-v511`.
+
+## Passeggiata a cavallo: Xanadú, orari, 2 ore a 85 €, ritiro a famiglia (15 ottobre 2026)
+
+Il proprietario ha incollato la pagina di **Xanadú Tenerife**, la compagnia dei cavalli.
+La scheda era di settembre, dai dati di un rivenditore (CanaryVIP). Messe davanti le
+differenze, il proprietario ha deciso: **2 ore a 85 €**, **il ritiro sì**, **il tramonto
+via**, "per il resto lascia così".
+
+- **Orari** sulla variante: 1 ora alle **12:00**, 2 ore alle **9:30**, tutti i giorni
+  (niente `days`). Ora senza orari restano Trekking e Cabrio Bus.
+- **Prezzi a persona**: `priceAdult` 50 e 85 sulle varianti. Prima l'ora singola aveva
+  `price: 50`, che non fa il totale: ora 2 adulti fanno 100 € e 170 €, provato.
+- **Il ritiro**: 10 € **a famiglia**, solo da Callao Salvaje a El Médano. Niente
+  `transferPrice`, che il totale moltiplicherebbe per le persone; niente icona. Solo la
+  riga `transfer`, e la scheda **resta in `PICKUP_NESSUNO`**: nella richiesta compare
+  "Vuoi il transfer?" con la riga dei 10 €, e l'hotel si chiede solo a chi la spunta,
+  come sul Freebird. Il totale non comprende i 10 €: li aggiunge l'ufficio confermando.
+- **Note**: aggiunti peso massimo 95 kg, scarpe chiuse, crema solare e acqua.
+- **`nomi`**: "Xanadú", "Xanadu", per la foto del ticket.
+- **Lasciati com'erano**, per "lascia così": età minima **10 anni** (Xanadú scrive 6),
+  gruppo di massimo 6 persone, Guargacho, armadietti "inclusi" (Xanadú chiede 3 € di
+  cauzione, restituiti con la chiave). L'età è da confermare: con 6 anni potrebbero
+  venire anche i bambini dai 6 ai 9.
+- **Non preso**: la regola sul maltempo (vale la nostra), lo sconto residenti, le
+  recensioni, il giro in carrozza.
+
+`CACHE_NAME` → `isla-v512`.

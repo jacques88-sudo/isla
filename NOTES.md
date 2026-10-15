@@ -18641,3 +18641,24 @@ copia mandata a `manda_richiesta` no (ha nome, escursione, hotel e codice), e ne
 conferma") e `faq.a4` ("al momento della conferma"). Dal 15 ottobre si paga **prima** della
 conferma, col link Redsys, quasi sempre il totale e per alcune compagnie un acconto.
 Corretti tutti e due nelle cinque lingue. `CACHE_NAME` → `isla-v508`.
+
+### Quanto si tengono i dati: due numeri (15 ottobre 2026)
+
+La privacy diceva "per il tempo necessario" per due cose. Il proprietario ha portato la
+regola spagnola (limitazione della conservazione, GDPR): **non basta "finché necessario",
+serve un tempo per ogni tipo di dato e per ogni scopo**. Riferimenti comuni in Spagna:
+6 anni per i documenti commerciali, 4 per il fisco. Messi a confronto con Isla, tutto il
+resto aveva già un tempo preciso (database ogni mese, foto la notte dopo, avvisi due
+giorni dopo l'escursione, dati nel telefono del cliente). Mancavano due numeri, e il
+proprietario li ha decisi:
+
+- **foglio dei conti: 6 anni**, come i documenti commerciali (lì non ci sono nome,
+  telefono, email né hotel);
+- **chat WhatsApp: 12 mesi** dalla data dell'escursione, o dalla richiesta se non è
+  diventata una prenotazione (assistenza e reclami). Le prove dei pagamenti restano da
+  Redsys e nella contabilità di Admiral.
+
+**Sono promesse da mantenere a mano**: ogni gennaio si cancella il file "Isla — archivio"
+di 6 anni prima (il primo, l'archivio 2026, a gennaio 2033), e una volta l'anno in ufficio
+si cancellano dal telefono le chat più vecchie di 12 mesi. Promemoria su Notion. La
+conferma finale resta al consulente. `CACHE_NAME` → `isla-v509`.

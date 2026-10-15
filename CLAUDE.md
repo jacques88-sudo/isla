@@ -212,6 +212,12 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   vede "Da pagare" e "Paga ora". Pagato, l'ufficio preme Conferma. Le colonne stanno in
   `supabase/modifiche/2026-10-15-link-pagamento.sql`.
   Lo dicono anche `faq.a4`, i termini e la privacy: se cambia, vanno cambiati tutti e tre.
+- **Quanto si tengono i dati** (proprietario, 15 ottobre 2026), scritto in `privacy.html`
+  per ogni tipo di dato: database cancellato ogni mese, foto la notte dopo, avvisi due
+  giorni dopo l'escursione, **foglio dei conti 6 anni** (documenti commerciali), **chat
+  WhatsApp 12 mesi** dall'escursione o dalla richiesta mai confermata. Sono **promesse**:
+  ogni gennaio si cancella l'archivio del foglio di 6 anni prima, e una volta l'anno le
+  chat più vecchie di 12 mesi. Un tempo nuovo si scrive in privacy **e** si rispetta.
 - **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
   Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
   minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.

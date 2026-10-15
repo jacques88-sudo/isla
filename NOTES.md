@@ -18738,3 +18738,13 @@ via**, "per il resto lascia così".
 Confermato dal proprietario: vale quella di Xanadú, **6 anni** (la scheda diceva 10, dal
 rivenditore di settembre). Cambiata nella nota, nelle cinque lingue. Il prezzo dei
 bambini resta non scritto: Xanadú non lo dà. `CACHE_NAME` → `isla-v513`.
+
+### Numerini della lista azzurri (15 ottobre 2026)
+
+Il proprietario: i numeri del carrello e della lista dello stesso colore del bottone
+"Aggiungi alla lista". Il numerino del carrello nella capsula (`.isla-tab-count` con
+`data-lista-count`) e quello del pulsante che galleggia (`.lista-fab-count`) sono ora
+`--wave-blue-light` con la scritta scura, come `.btn-lista`: uguali di giorno e di notte.
+Il numerino delle **prenotazioni** usa la stessa classe ma **resta sabbia**: non conta la
+lista. Oggi il pulsante che galleggia non compare su nessuna pagina (tutte hanno la
+capsula), ma se torna è già del colore giusto. `CACHE_NAME` → `isla-v514`.

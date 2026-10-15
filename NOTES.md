@@ -18748,3 +18748,8 @@ Il proprietario: i numeri del carrello e della lista dello stesso colore del bot
 Il numerino delle **prenotazioni** usa la stessa classe ma **resta sabbia**: non conta la
 lista. Oggi il pulsante che galleggia non compare su nessuna pagina (tutte hanno la
 capsula), ma se torna è già del colore giusto. `CACHE_NAME` → `isla-v514`.
+
+### Anche il numerino delle prenotazioni azzurro (15 ottobre 2026)
+
+Il proprietario lo vuole azzurro come il carrello: tolta la riga che lo teneva sabbia.
+Ora tutti i numerini della capsula hanno lo stesso colore. `CACHE_NAME` → `isla-v515`.

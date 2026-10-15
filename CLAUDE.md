@@ -149,7 +149,7 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   Dal 3 ottobre 2026 si chiama **"Le mie prenotazioni"** (My bookings / Mis reservas,
   chiave `nav.myBookings`): "ticket" il cliente poteva non capirlo. Sta nella capsula
   in alto (icona del biglietto col sole, lo stesso sole del carrello) **e** come prima voce del Menu.
-  Il biglietto porta un **numerino sabbia** (`prenotazioniProssime()` in `richieste.js`):
+  Il biglietto porta un **numerino azzurro** (come il carrello e "Aggiungi alla lista", 15 ottobre 2026) (`prenotazioniProssime()` in `richieste.js`):
   quante escursioni il cliente ha davanti, da oggi in poi, in attesa o confermate, dalle
   richieste WhatsApp e dall'ultimo ticket cercato, senza contarne nessuna due volte.
 - **La striscia in alto è una capsula scura** ("isola galleggiante", 3 ottobre 2026):

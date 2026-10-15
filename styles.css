@@ -512,8 +512,7 @@ a { text-decoration: none; color: inherit; }
 /* Il numerino sul carrello: quante escursioni ci sono nella lista. E' azzurro
    come i pulsanti "Aggiungi alla lista" (.btn-lista), con la scritta scura
    (proprietario, 15 ottobre 2026): si vede che il numero cresce col bottone.
-   Il numerino delle prenotazioni ha la stessa classe ma resta sabbia, qui sotto:
-   non conta la lista, conta le escursioni che il cliente ha davanti. */
+   Lo prende anche il numerino delle prenotazioni, che ha la stessa classe. */
 .isla-tab-count {
   position: absolute;
   top: 3px;
@@ -530,7 +529,6 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: 0;
   text-align: center;
 }
-.isla-tab-count[data-prenotazioni-count] { background: var(--gold); }
 /* La scritta della voce attiva si accorcia coi puntini invece di spingere la
    capsula fuori dallo schermo: con cinque voci, a 320 px "Experiencias" non ci
    sta intera. L'icona "installa l'app" non sta piu' nella capsula (e' nel menu):

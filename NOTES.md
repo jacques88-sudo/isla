@@ -18769,3 +18769,32 @@ Prossimi passi decisi: **domande frequenti a bottoni** (risposte già in `faq.a1
 zona o durata, la casella di ricerca e un contatore: il sito oggi non conta niente, quindi
 "vedere il flusso" senza un contatore non dà numeri (scelta del proprietario, tocca la
 privacy).
+
+### L'assistente: domande frequenti in cima e "Quando?" (15 ottobre 2026)
+
+Scelte del proprietario: le domande frequenti **sopra la prima domanda**, un testo nuovo
+per il ritiro, e per il giorno **le pastiglie con la data** ("Domani · Sab 17 · …").
+
+- **Domande frequenti**: cinque bottoni (`ASSIST_FAQ`). Quattro usano le domande e
+  risposte della home (`faq.q1/a1`, `q2/a2`, `q4/a4`, `q5/a5`): se cambia una regola, si
+  cambia in `faq.*` e vale anche qui. La quinta, **"Dove mi vengono a prendere?"**, ha
+  testi suoi (`assist.faq.pickupQ/A`), generici di proposito: dove si sale dipende dalla
+  scheda e dall'hotel, e il testo dice solo che lo si vede nella finestra della
+  richiesta. Non nomina fermate né orari, e dice che il transfer a volte si paga.
+  Toccata una domanda, compaiono domanda e risposta e i bottoni tornano sotto senza
+  quella già fatta; scelta la prima risposta della ricerca, spariscono.
+- **"Quando vorresti andare?"**, fra i bambini e il budget: domani e i sei giorni dopo,
+  più "Non lo so ancora". **Oggi no**: le 24 ore di preavviso. Filtra con
+  `assistParteIl()`: basta **una variante** che parta quel giorno (la variante coi suoi
+  `days` vince su quelli della scheda, vuoto = tutti i giorni), come `giorniDi()` in
+  `escursioni.js`, che sulla home non è caricato. Le pastiglie bocciate in `CLAUDE.md`
+  erano nel calendario della richiesta, dove serve una data esatta: qui la data serve
+  solo a filtrare, e la si sceglie di nuovo nella richiesta.
+- Il saluto ora dice "quattro domande" (`assist.hello` cambiato, `assist.helloPick`
+  nuovo).
+- La chat si apre **dall'alto**: `opzioni()` scorre in fondo, e su un iPhone SE il
+  saluto e la prima domanda frequente restavano nascosti sopra.
+
+Provato in Chromium a 375 px, in italiano e francese: Utopia esce il sabato e non il
+mercoledì, Ragnarok il lunedì sì e il mercoledì no, Freebird tutti i giorni (ha varianti
+senza giorni). Nessun errore. `CACHE_NAME` → `isla-v517`.

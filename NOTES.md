@@ -18546,3 +18546,8 @@ mettere la foto. `CACHE_NAME` → `isla-v504`.
 (1078×1185) ritagliata a 3:2 tenendo il casco e i pesci, 1200×800, 163 KB. La scritta
 sul casco è il marchio Sea Trek, cioè la compagnia stessa: va bene. La seconda foto
 arrivata (179×150) è scartata: troppo piccola per 1200×800. `CACHE_NAME` → `isla-v505`.
+
+**Poi la seconda foto, grande:** il proprietario ha mandato la versione da 768×576 della
+foto scartata (il gruppo coi caschi e l'istruttore). Ritagliata a 3:2 dal centro,
+1200×800, 124 KB, ingrandita di 1,56 volte e ancora nitida: `sea-trek-2.jpg` in
+`gallery`. `CACHE_NAME` → `isla-v506`.

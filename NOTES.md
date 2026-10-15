@@ -18397,3 +18397,32 @@ National Park in Notion) resta in sospeso: il proprietario deve ancora capire ch
 escursione è. Provato: nel modulo il gruppo Noleggi ha le tre voci e il gruppo del Teide
 ha la funivia, "MRB SCOOTER" sceglie MRB; home, elenco, Noleggio e categoria Teide senza
 le voci nuove, senza errori e senza scroll a 375 px. `CACHE_NAME` → `isla-v500`.
+
+## Da fare prima dell'apertura (15 ottobre 2026)
+
+Il proprietario: **Isla non è ancora aperta ai clienti**. Tutto quello che c'è oggi su
+Supabase e nel foglio Google è **prova e preparazione**. Fino all'apertura le righe di
+prova si cancellano a mano senza problemi; da quando aprirà vale la regola "un ticket
+non si cancella, si annulla".
+
+Il giorno dell'apertura si riparte da zero, **in quest'ordine**:
+
+1. **Supabase, tabella `bookings`**: cancellare tutte le righe di prova (Table Editor →
+   `bookings` → seleziona → Delete). Con loro spariscono da sole anche le righe di
+   `notifiche_mandate` (`on delete cascade`). Le iscrizioni agli avvisi in
+   `push_iscrizioni` rimaste senza richiesta si tolgono da sole dopo due giorni.
+   **Non toccare `nets` né `commission_rates`**: sono i netti e le percentuali veri.
+2. **Le foto dei ticket di prova**: niente da fare. `pulisci-foto` di notte cancella le
+   foto che nessun ticket nomina più.
+3. **Il foglio Google**: **dopo** il punto 1 (se no, al giro dell'ora dopo il programma
+   le riscrive), cancellare a mano **solo le schede "Settimana …"**. Il programma non
+   cancella mai niente, quindi lo deve fare una persona. Le schede "Aggiorna", "Per
+   giorno", "Per settimana", "Per venditore" e "Per compagnia" restano: i riepiloghi il
+   programma li rifà da capo a ogni giro.
+   **I netti non stanno nel foglio**: stanno in `nets` su Supabase (e nella tabella
+   Notion "Netti da inserire"). Il foglio mostra soltanto il netto già calcolato di ogni
+   ticket. Cancellare le schede non tocca né i netti, né la parola segreta (nelle
+   proprietà dello script), né il programma.
+4. **I telefoni usati per le prove**: le richieste finte restano salvate nel browser
+   (`isla-richieste`, `isla-ticket`) e il numerino delle prenotazioni le conta. Si
+   tolgono svuotando i dati del sito nel browser di quel telefono.

@@ -18457,3 +18457,4 @@ dicembre 2025 al 4 gennaio 2027, nel foglio restano 28-12-2026 e 04-01-2027, il 
 non fa niente. Al 15 ottobre 2026 si sposta solo il 2025. **Non provato su Google vero**:
 lo si vede il 1° gennaio. Per metterlo: Apps Script → incolla il `Codice.gs` nuovo →
 `installa` → Esegui (se Google chiede di nuovo il permesso, Consenti).
+**Installato dal proprietario il 15 ottobre 2026**: il foglio si aggiorna con la versione nuova.

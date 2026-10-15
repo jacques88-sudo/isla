@@ -18693,3 +18693,15 @@ serve la funzione ripubblicata e un ticket con dei mezzi.
 
 **La funzione va ripubblicata** su Supabase (Edge Functions → leggi-ticket → Code →
 incollare `supabase/functions/leggi-ticket/index.ts` → Deploy). `CACHE_NAME` → `isla-v510`.
+
+### Bici: Tenerife Sud, ore da concordare (15 ottobre 2026)
+
+La riga di Notion "Bici: ritiro, punto di partenza, bici compresa, prezzo dei giri doppi"
+era rimasta al 9 ottobre: controllata sulla scheda, tre risposte c'erano già (ritiro e
+ritorno in hotel, scheda in `PICKUP_IN_HOTEL`; bici, casco, guida e snack compresi; i
+due prezzi sono **due lunghezze** dello stesso giro, scritte nella descrizione).
+Restavano zona e orari, e il proprietario ha deciso: **zona "Tenerife Sud"** (si passa a
+prendere al sud, come per le gite al Teide; i filtri restano "Teide e nord" e "Los
+Gigantes", dove si pedala) e **ore da concordare**: `times: []`, così nella richiesta
+c'è solo "Da concordare" invece delle fasce. Provato nel browser. Ora senza orari ne
+restano 3: cavallo, Trekking, Cabrio Bus. `CACHE_NAME` → `isla-v511`.

@@ -18662,3 +18662,34 @@ proprietario li ha decisi:
 di 6 anni prima (il primo, l'archivio 2026, a gennaio 2033), e una volta l'anno in ufficio
 si cancellano dal telefono le chat più vecchie di 12 mesi. Promemoria su Notion. La
 conferma finale resta al consulente. `CACHE_NAME` → `isla-v509`.
+
+## La foto del ticket legge anche i mezzi (15 ottobre 2026)
+
+Sulle quattro schede a mezzo (moto d'acqua, buggy, quad, Mustang) il venditore scriveva
+a mano "2 doppie" anche quando la foto lo diceva già, e dal numero di mezzi dipende il
+netto. Ora la lettura li riempie.
+
+- **`leggi-ticket`**: nello schema un campo nuovo `units`, un **elenco di righe**
+  `{tipo, quanti}`. Non un campo per tipo: ogni campo "numero O null" conta verso il
+  limite di 16 che ha già dato un 400, e un elenco va bene per qualunque scheda.
+  Elenco vuoto = non letti. Nelle istruzioni: solo se l'escursione ha "mezzi", la chiave
+  scritta come nell'elenco, mai dedotti dalle persone, "units" in `dubbi` se incerti.
+  Dopo la risposta la funzione tiene solo i tipi della scheda scelta, da 1 a 99, e
+  risponde nella forma del modulo (`{ doppia: 2 }`), o `null`.
+- **`venditori.js`**: `catalogoPerLettura()` manda per le schede a mezzo anche
+  `units: [{ key, name }]` ("Moto d'acqua Doppia"); `riempiDaLettura()` riempie le
+  caselle solo dove il venditore non ha già scritto, in giallo se incerte, e se non legge
+  niente mette "mezzi" fra le cose da scrivere a mano.
+- **L'ordine non conta**: una pagina vecchia con la funzione nuova non manda `units` e
+  la funzione risponde `null`; la pagina nuova con la funzione vecchia manda un campo che
+  quella ignora. Niente si rompe mentre una delle due non è ancora aggiornata.
+
+Provato: la funzione con Supabase e Claude finti (Deno qui non c'è; TypeScript
+compilato senza errori), sette casi (2 doppie + 1 singola, tipo inventato, zero,
+nessun mezzo, scheda senza mezzi, 150 → 99, pagina vecchia, chiave sbagliata → 400);
+la pagina dei venditori nel browser con una lettura finta (2 doppie, singola incerta in
+giallo, nessun mezzo → "mezzi" da scrivere a mano). **Non provato con una foto vera**:
+serve la funzione ripubblicata e un ticket con dei mezzi.
+
+**La funzione va ripubblicata** su Supabase (Edge Functions → leggi-ticket → Code →
+incollare `supabase/functions/leggi-ticket/index.ts` → Deploy). `CACHE_NAME` → `isla-v510`.

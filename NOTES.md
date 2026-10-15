@@ -18551,3 +18551,51 @@ arrivata (179×150) è scartata: troppo piccola per 1200×800. `CACHE_NAME` → 
 foto scartata (il gruppo coi caschi e l'istruttore). Ritagliata a 3:2 dal centro,
 1200×800, 124 KB, ingrandita di 1,56 volte e ancora nitida: `sea-trek-2.jpg` in
 `gallery`. `CACHE_NAME` → `isla-v506`.
+
+## Il link di pagamento fra la richiesta e la conferma (15 ottobre 2026)
+
+Il proprietario: fra la richiesta e la conferma l'ufficio manda il link di pagamento.
+Decisioni sue: **si paga sempre prima della conferma**; quasi sempre il **totale**,
+alcune compagnie vogliono solo un **acconto** (il netto) e il resto si paga sul posto;
+il link lo crea l'ufficio **a mano sul portale Redsys** ("lo facciamo noi e lo inviamo
+al cliente"). Il link al portale che il proprietario ha incollato in chat portava il
+codice della sessione aperta: gli è stato detto di non mandarlo in giro e di uscire e
+rientrare. Non sta da nessuna parte nel progetto.
+
+**Il giro:**
+1. richiesta del cliente (come prima, `pending`);
+2. in `venditori.html`, sulla richiesta, **"Manda il pagamento"**: telefono, Totale €,
+   Da pagare adesso € (parte uguale al totale; meno del totale = acconto), link Redsys
+   (solo `https://`). Salva su **tutte le righe dello stesso codice** ancora `pending`:
+   un link vale per tutta la richiesta. Poi **"Manda il link su WhatsApp"** apre la
+   chat col messaggio nella lingua del cliente (`pagamentoTesto()`): le escursioni coi
+   giorni, il link, quanto si paga, e se è un acconto quanto resta da pagare sul posto;
+3. la riga mostra "In attesa di pagamento" e "Link mandato il …";
+4. il cliente, in "Le mie prenotazioni", vede la pillola **"Da pagare"**, la frase con
+   l'importo e il bottone **"Paga ora"** (`booking.js`, testi `booking.awaitingPay`,
+   `booking.payText`, `booking.payRest`, `booking.payNow`). `booking.toPay` esisteva
+   già ("Da pagare: €{n}") ed è un'altra cosa: il primo nome scelto lo ripeteva e la
+   pillola scriveva "€{n}";
+5. pagato, **Conferma** come prima: il telefono è già scritto, il pagamento è `card`,
+   e se la richiesta ha **una sola** escursione totale, acconto e resto vanno sul
+   ticket (il foglio Google ha i soldi giusti). Con più escursioni non si sa come
+   dividerli: si scrivono con Modifica. La risposta di conferma, se c'era un acconto,
+   dice "Il resto, 120 €, lo paghi sul posto".
+
+**Niente stato nuovo**: resta `pending` con `payment_sent_at`, così foglio, avvisi e
+pulizia non cambiano. **Database: `supabase/modifiche/2026-10-15-link-pagamento.sql`,
+da lanciare prima di pubblicare**: quattro colonne (`payment_link`, `payment_amount`,
+`payment_total`, `payment_sent_at`) col loro `grant select` ai venditori, e
+`le_mie_richieste` che le restituisce. Senza, l'elenco delle richieste in
+`venditori.html` dice "column … does not exist".
+
+**Non c'è ancora:** la conferma automatica al pagamento (Redsys può avvisare il sito
+quando il cliente paga, ma serve una funzione su Supabase e la chiave segreta del
+commercio); l'avviso sul telefono "c'è posto, paga"; il rimborso.
+
+Provato: SQL su Postgres 16 (lanciato due volte, `le_mie_richieste` da `anon` rende
+link e importi); in Chromium il messaggio in italiano e francese con due escursioni e
+acconto, il modulo (totale ricopiato in "adesso", `javascript:` rifiutato), la
+conferma col resto, la pagina del cliente con "Da pagare" e "Paga ora" (un link non
+https non diventa bottone). Nessun errore, 390 px senza scroll. `CACHE_NAME` →
+`isla-v507`.

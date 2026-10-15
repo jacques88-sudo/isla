@@ -978,6 +978,9 @@ p.note-box { margin: 0 0 1rem; }
   background: color-mix(in srgb, var(--stato) 12%, var(--surface));
   font-size: .95rem;
 }
+/* Il link di pagamento: la frase e sotto il bottone, largo quanto la nota. */
+.ticket-pay p { margin: 0 0 .7rem; }
+.ticket-pay .btn { display: block; width: 100%; text-align: center; }
 /* L'annullata resta leggibile ma si capisce che non vale piu'. */
 .detail-card.is-cancelled .detail-title { text-decoration: line-through; text-decoration-thickness: 1px; }
 .detail-card.is-cancelled .ticket-banner { filter: grayscale(1); }

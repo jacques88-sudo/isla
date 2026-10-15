@@ -248,6 +248,12 @@ const STATI = {
   cancelled: { pill: "booking.cancelled", nota: "booking.cancelledText" }
 };
 
+// "94 €" come lo scrive la lingua scelta
+function soldiTesto(n) {
+  const locale = { it: "it-IT", en: "en-GB", es: "es-ES", fr: "fr-FR", de: "de-DE" }[typeof getLang === "function" ? getLang() : "it"] || "it-IT";
+  return Number(n).toLocaleString(locale, { style: "currency", currency: "EUR", minimumFractionDigits: n % 1 ? 2 : 0 });
+}
+
 function cardTicket(b, passata) {
   const tour = typeof ESPLORA_CATALOG !== "undefined" ? ESPLORA_CATALOG.find(x => x.id === b.excursion_id) : null;
   const titolo = tour ? tf(tour.title) : t("booking.otherExc");
@@ -286,12 +292,24 @@ function cardTicket(b, passata) {
   const etichetta = b.ticket_number
     ? t("booking.ticketN", { code: b.ticket_number })
     : t("booking.requestOf", { date: dataCorta(b.sent_on) });
+  // L'ufficio ha mandato il link di pagamento (15 ottobre 2026): la richiesta
+  // aspetta solo quello, e il cliente lo ritrova qui. Solo un indirizzo https:
+  // lo incolla l'ufficio, ma finisce in un link che il cliente tocca.
+  const daPagare = status === "pending" && !passata && b.payment_link
+    && /^https:\/\/\S+$/.test(b.payment_link) && b.payment_amount > 0;
+  const pill = passata ? t("booking.past") : t(daPagare ? "booking.awaitingPay" : STATI[status].pill);
   const stato = `
       <div class="detail-status">
         <span>${esc(etichetta)}</span>
-        <span class="pill">${passata ? t("booking.past") : t(STATI[status].pill)}</span>
+        <span class="pill">${pill}</span>
       </div>`;
-  const nota = STATI[status].nota && !passata
+  const resto = daPagare && b.payment_total > b.payment_amount ? b.payment_total - b.payment_amount : 0;
+  const nota = daPagare ? `
+        <div class="ticket-state-note ticket-pay">
+          <p>${esc(t("booking.payText", { amount: soldiTesto(b.payment_amount) }))}${resto ? " " + esc(t("booking.payRest", { rest: soldiTesto(resto) })) : ""}</p>
+          <a class="btn btn-primary" href="${esc(b.payment_link)}" target="_blank" rel="noopener noreferrer">${t("booking.payNow")}</a>
+        </div>`
+    : STATI[status].nota && !passata
     ? `<p class="ticket-state-note">${esc(t(STATI[status].nota))}</p>` : "";
   // Cosa portare (portare.js): solo su una conferma ancora davanti. Prima
   // della conferma e' presto, dopo la data non serve piu'.

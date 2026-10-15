@@ -18384,3 +18384,16 @@ in Notion da confermare: sul foglio mancano adulti e bambini. Dallo stesso fogli
 riga TMIG (Teide, Icod, Garachico e Masca) aveva venditore e ufficio invertiti, conferma
 che quella scheda conta come card. Provato: il menu Compagnia delle 3 ore ha Arriro,
 "ARRIRO" nel testo del ticket la sceglie, il charter no. `CACHE_NAME` → `isla-v499`.
+
+**Scooter elettrico MRB e funivia del Teide, solo per i venditori (15 ottobre 2026,
+proprietario):** dal foglio "Admiral TRG SC" del 14 ottobre (ticket 0978 "MRB SCOOTER" e
+0982 "CABLE"). Due voci nuove con `published: false` e `venditori: true`, come i noleggi:
+`noleggio-scooter-elettrico` (categoria `noleggi`, `nomi: ["MRB"]`), a parte da
+`noleggio-moto` perché il proprietario l'ha chiesto come scooter elettrico; e
+`funivia-teide` (categoria `teide-natura`, senza `nomi`: sul ticket c'è scritto
+"CABLE"), che per il cliente non è una scheda. I netti, ricavati dal foglio, stanno in
+Notion da confermare. Il "TEIDE" del ticket 0981 (netto 23,40, contro il 30 di Teide
+National Park in Notion) resta in sospeso: il proprietario deve ancora capire che
+escursione è. Provato: nel modulo il gruppo Noleggi ha le tre voci e il gruppo del Teide
+ha la funivia, "MRB SCOOTER" sceglie MRB; home, elenco, Noleggio e categoria Teide senza
+le voci nuove, senza errori e senza scroll a 375 px. `CACHE_NAME` → `isla-v500`.

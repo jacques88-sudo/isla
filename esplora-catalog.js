@@ -7760,6 +7760,27 @@ const ESPLORA_CATALOG = [
     venditori: true,
     published: false
   },
+  {
+    // Gli scooter elettrici di MRB, a parte da moto e scooter a benzina
+    // (proprietario, 15 ottobre 2026). Sul ticket "MRB SCOOTER".
+    id: "noleggio-scooter-elettrico",
+    title: { it: "Noleggio scooter elettrico", en: "Electric scooter rental", es: "Alquiler de patinete eléctrico", fr: "Location de trottinette électrique", de: "E-Scooter-Verleih" },
+    nomi: ["MRB"],
+    category: "noleggi",
+    venditori: true,
+    published: false
+  },
+  // ─── La funivia del Teide, solo per i venditori ────────────────────────────
+  // Un biglietto che i venditori vendono (sul ticket "CABLE"), ma non una
+  // scheda per il cliente: per ora solo nel modulo (proprietario, 15 ottobre
+  // 2026). Il netto sta su Supabase, come gli altri.
+  {
+    id: "funivia-teide",
+    title: { it: "Funivia del Teide", en: "Teide Cable Car", es: "Teleférico del Teide", fr: "Téléphérique du Teide", de: "Teide-Seilbahn" },
+    category: "teide-natura",
+    venditori: true,
+    published: false
+  },
 ];
 
 // La data di oggi come "2026-09-07". Si confrontano le stringhe, non due

@@ -18599,3 +18599,45 @@ acconto, il modulo (totale ricopiato in "adesso", `javascript:` rifiutato), la
 conferma col resto, la pagina del cliente con "Da pagare" e "Paga ora" (un link non
 https non diventa bottone). Nessun errore, 390 px senza scroll. `CACHE_NAME` →
 `isla-v507`.
+
+## La privacy rimessa in pari, e l'email fuori dal database (15 ottobre 2026)
+
+Controllando Notion dopo una settimana, la privacy (6 ottobre) **diceva una cosa falsa**:
+"il nome, l'alloggio e le note nel database non ci vanno". Dal 13 ottobre (PR #419) la
+richiesta arriva su Supabase col nome, l'hotel, il punto di ritiro e il messaggio intero.
+E non parlava di quattro cose nuove: l'email obbligatoria (#415), gli avvisi sul telefono
+(#416), il foglio Google dei conti (#371 e seguenti), il pagamento col link Redsys (#443).
+
+**L'email nel database.** Il 12 ottobre il proprietario aveva deciso: email solo su
+WhatsApp, mai nel database (in `CLAUDE.md`). Il 13 si è cominciato a salvare il messaggio
+intero, e il messaggio ha la riga "Email: …": quindi l'email ci finiva lo stesso. Era
+scritto nelle note del 13 ma non nella regola. Messe davanti le due strade (togliere l'email
+dalla copia salvata, oppure tenerla e dirlo), il proprietario ha scelto di **toglierla**,
+"per il momento". `lista.js` ora salva il messaggio scritto con l'email vuota; quello che
+parte su WhatsApp resta uguale. Nient'altro leggeva l'email dal database (controllato:
+`venditori.js` mostra il messaggio e ne ricava la lingua, il foglio e gli avvisi non lo
+usano). Le righe di prova già salvate con l'email spariscono col ripulisti dell'apertura.
+
+Provato nel browser con le chiamate intercettate: il link WhatsApp contiene l'email, la
+copia mandata a `manda_richiesta` no (ha nome, escursione, hotel e codice), e nemmeno
+`isla-richieste` nel telefono.
+
+**La privacy, nelle cinque lingue**, ora dice:
+- cosa va nel database con la richiesta (nome, hotel, punto di ritiro, testo del messaggio,
+  codice) e che **l'email no**;
+- perché chiediamo l'email (le compagnie mandano il biglietto per email);
+- gli **avvisi**: l'indirizzo che dà il browser (non il numero), legato alla richiesta con
+  lingua e nomi delle escursioni, il servizio di notifiche (Google, Apple, Mozilla), base
+  giuridica il consenso, si cancellano due giorni dopo l'ultima escursione;
+- il **pagamento**: pagina di Redsys, la carta la vede solo Redsys, nel database link,
+  importo e giorno;
+- fra i destinatari **Google** (il foglio: numero del ticket, escursione, compagnia, data,
+  persone, importi, venditore, mai nome, telefono, email o hotel — controllato su
+  `foglio_ticket()`), **Redsys** e il servizio di notifiche;
+- nella conservazione: il foglio tiene le righe **come archivio contabile** anche dopo la
+  pulizia mensile. **Per quanto tempo non è scritto**: lo deve dire il consulente.
+
+**Anche il pagamento era superato** in due posti: termini ("ti diciamo come saldare alla
+conferma") e `faq.a4` ("al momento della conferma"). Dal 15 ottobre si paga **prima** della
+conferma, col link Redsys, quasi sempre il totale e per alcune compagnie un acconto.
+Corretti tutti e due nelle cinque lingue. `CACHE_NAME` → `isla-v508`.

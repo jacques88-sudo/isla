@@ -478,8 +478,12 @@ function initLista() {
       // stato in "Le mie richieste". Il messaggio si rifa' col codice dentro.
       // Col nome e col messaggio intero: l'ufficio, confermando, li trova gia'
       // li' invece di ricopiarli dalla chat.
+      // Il messaggio salvato e' quello SENZA l'email (proprietario, 15 ottobre
+      // 2026): l'email va solo su WhatsApp, mai nel database. Per salvarla
+      // anche li' basta passare `email` qui al posto di "", e aggiornare la
+      // privacy (privacy.html, cinque lingue) e CLAUDE.md.
       const codice = typeof richiestaNuova === "function"
-        ? richiestaNuova(listaLeggi(), iscrizione, nome, c => listaWhatsappTesto(nome, c, email)) : "";
+        ? richiestaNuova(listaLeggi(), iscrizione, nome, c => listaWhatsappTesto(nome, c, "")) : "";
       const url = listaWhatsappUrl(nome, codice, email);
       // La lista si svuota: la richiesta e' partita, e ritrovarsela ancora li'
       // alla prossima visita farebbe rimandare due volte le stesse escursioni.

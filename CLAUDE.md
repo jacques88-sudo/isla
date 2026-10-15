@@ -201,6 +201,12 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   **Ripristina ticket**. Annullato, il cliente non lo vede più e il foglio Google lo
   tiene barrato fuori dai totali. Il bottone che chiude la finestra si chiama **Chiudi**,
   non "Annulla": accanto ad "Annulla ticket" si confondevano.
+- **Si paga sempre prima della conferma** (proprietario, 15 ottobre 2026): quasi sempre
+  il totale, per alcune compagnie un acconto (il netto) e il resto sul posto. Il link
+  lo crea l'ufficio **a mano sul portale Redsys** e lo incolla in `venditori.html`
+  ("Manda il pagamento"): la richiesta resta `pending` con `payment_sent_at`, il cliente
+  vede "Da pagare" e "Paga ora". Pagato, l'ufficio preme Conferma. Le colonne stanno in
+  `supabase/modifiche/2026-10-15-link-pagamento.sql`.
 - **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
   Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
   minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.

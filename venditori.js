@@ -983,7 +983,7 @@ const STATO_RICHIESTA = { pending: "Da confermare", confirmed: "Confermata", can
 async function caricaRichieste() {
   const { data, error } = await sb
     .from("bookings")
-    .select("id, request_code, status, excursion_id, option_label, date, time, wanted_time, meeting_point, adults, kids, babies, created_at, customer_name, hotel, pickup_point, pickup_time, request_message")
+    .select("id, request_code, status, excursion_id, option_label, date, time, wanted_time, meeting_point, adults, kids, babies, created_at, customer_name, hotel, pickup_point, pickup_time, request_message, phone, payment_link, payment_amount, payment_total, payment_sent_at")
     .eq("source", "whatsapp")
     .is("ticket_number", null)
     .gte("date", oggiISO())
@@ -1007,6 +1007,9 @@ async function caricaRichieste() {
     return;
   }
   const daFare = data.filter(r => r.status === "pending");
+  // tutte le righe di ogni richiesta: un link di pagamento vale per tutte
+  const perCodice = {};
+  data.forEach(r => { (perCodice[r.request_code] = perCodice[r.request_code] || []).push(r); });
   els.requestsTitle.textContent = daFare.length
     ? `Richieste da WhatsApp (${daFare.length} da confermare)`
     : "Richieste da WhatsApp";
@@ -1029,9 +1032,18 @@ async function caricaRichieste() {
     const chi = [r.customer_name, r.hotel].filter(Boolean).join(" · ");
     const stato = document.createElement("em");
     stato.className = "vend-req-stato";
-    stato.textContent = STATO_RICHIESTA[r.status] || r.status;
+    // Mandato il link, la richiesta aspetta il pagamento (15 ottobre 2026).
+    const daPagare = r.status === "pending" && r.payment_sent_at;
+    stato.textContent = daPagare ? "In attesa di pagamento" : (STATO_RICHIESTA[r.status] || r.status);
     testo.append(titolo, sotto);
     if (chi) testo.append(Object.assign(document.createElement("span"), { className: "vend-req-chi", textContent: chi }));
+    if (daPagare) {
+      testo.append(Object.assign(document.createElement("span"), {
+        className: "vend-req-chi",
+        textContent: `Link mandato il ${dataBreve(r.payment_sent_at.slice(0, 10))}: ${euro(r.payment_amount)}` +
+          (r.payment_total > r.payment_amount ? ` di ${euro(r.payment_total)} (acconto)` : "")
+      }));
+    }
     testo.append(stato);
     li.append(testo);
     // Il messaggio WhatsApp com'e' partito, chiuso finche' non serve: e' lo
@@ -1061,6 +1073,11 @@ async function caricaRichieste() {
       b.addEventListener("click", fa);
       bottoni.append(b);
     };
+    // Si paga sempre prima della conferma (proprietario, 15 ottobre 2026).
+    if (r.status === "pending") {
+      bottone(r.payment_sent_at ? "Rimanda il pagamento" : "Manda il pagamento",
+        () => apriPagamento(li, r, perCodice[r.request_code]));
+    }
     bottone(r.status === "confirmed" ? "Dai il ticket" : "Conferma", () => apriConferma(li, r));
     if (r.status !== "cancelled") bottone("Annulla", () => annullaRichiesta(r));
     li.append(bottoni);
@@ -1121,6 +1138,8 @@ function apriConferma(li, r) {
   f.date.value = r.date || "";
   f.time.value = r.time ? r.time.slice(0, 5) : (oraSola(r.pickup_time) || oraSola(r.wanted_time));
   f.meeting_point.value = r.meeting_point || r.pickup_point || "";
+  // il telefono c'e' gia' se l'ufficio ha mandato il link di pagamento
+  f.phone.value = r.phone || "";
 
   form.querySelector("[data-edit-cancel]").addEventListener("click", () => form.remove());
   form.addEventListener("submit", async event => {
@@ -1140,7 +1159,22 @@ function apriConferma(li, r) {
       return;
     }
     if (!f.date.value) { mostra(msg, "Manca la data.", "errore"); return; }
-    const salvato = await cambiaRichiesta(r, {
+    // Pagata col link Redsys: e' carta, e con un'escursione sola gli importi
+    // della richiesta sono quelli del ticket, che cosi' entra nel foglio coi
+    // suoi soldi. Con piu' escursioni non si sa come dividerli: totale e
+    // pagato si scrivono con Modifica, in "Ultimi inseriti".
+    const pagamento = {};
+    if (r.payment_sent_at) {
+      pagamento.payment_method = "card";
+      const { data: stesse } = await sb.from("bookings").select("id")
+        .eq("source", "whatsapp").eq("request_code", r.request_code);
+      if (stesse && stesse.length === 1) {
+        pagamento.total = r.payment_total;
+        pagamento.deposit = r.payment_amount;
+        pagamento.rest_to_pay = Math.round((r.payment_total - r.payment_amount) * 100) / 100;
+      }
+    }
+    const salvato = await cambiaRichiesta(r, Object.assign(pagamento, {
       status: "confirmed",
       ticket_number: numero,
       phone: telefono,
@@ -1148,7 +1182,7 @@ function apriConferma(li, r) {
       time: f.time.value || null,
       meeting_point: f.meeting_point.value.trim() || null,
       confirmed_at: new Date().toISOString()
-    }, msg);
+    }), msg);
     if (salvato) {
       mostra(els.requestsMsg, `${r.request_code} confermata: ora è il ticket ${numero}, in "Ultimi inseriti".`, "ok");
       els.requestsMsg.append(rispostaBottone(r, {
@@ -1175,11 +1209,11 @@ function apriConferma(li, r) {
 // I testi stanno qui e non in i18n.js perche' questa pagina e' in italiano e
 // i18n.js non lo carica.
 const RISPOSTA = {
-  it: { ciao: "Ciao {nome}!", ok: "La tua escursione è confermata ✅", ritrovo: "Ritrovo alle {ora}", ticket: "Ticket n. {n}", link: "Qui trovi il ticket, cosa portare e i dettagli:", fine: "Per qualsiasi cosa rispondi pure a questo messaggio. A presto!", locale: "it-IT", nome: "italiano" },
-  en: { ciao: "Hi {nome}!", ok: "Your excursion is confirmed ✅", ritrovo: "Meeting time {ora}", ticket: "Ticket no. {n}", link: "Your ticket, what to bring and all the details:", fine: "If you need anything, just reply to this message. See you soon!", locale: "en-GB", nome: "inglese" },
-  es: { ciao: "¡Hola {nome}!", ok: "Tu excursión está confirmada ✅", ritrovo: "Encuentro a las {ora}", ticket: "Ticket n.º {n}", link: "Aquí tienes el ticket, qué llevar y todos los detalles:", fine: "Para cualquier cosa, responde a este mensaje. ¡Hasta pronto!", locale: "es-ES", nome: "spagnolo" },
-  fr: { ciao: "Bonjour {nome} !", ok: "Votre excursion est confirmée ✅", ritrovo: "Rendez-vous à {ora}", ticket: "Ticket n° {n}", link: "Votre ticket, quoi apporter et tous les détails :", fine: "Pour toute question, répondez simplement à ce message. À bientôt !", locale: "fr-FR", nome: "francese" },
-  de: { ciao: "Hallo {nome}!", ok: "Ihr Ausflug ist bestätigt ✅", ritrovo: "Treffpunkt um {ora} Uhr", ticket: "Ticket Nr. {n}", link: "Ihr Ticket, was Sie mitbringen sollten und alle Details:", fine: "Bei Fragen antworten Sie einfach auf diese Nachricht. Bis bald!", locale: "de-DE", nome: "tedesco" }
+  it: { posto: "Buone notizie: c'è posto ✅", paga: "Per confermare la prenotazione puoi pagare qui:", importo: "Da pagare: {n}", acconto: "È un acconto: il resto, {n}, lo paghi sul posto.", dopo: "Appena arriva il pagamento ti mandiamo la conferma con il ticket.", resto: "Il resto, {n}, lo paghi sul posto.", ciao: "Ciao {nome}!", ok: "La tua escursione è confermata ✅", ritrovo: "Ritrovo alle {ora}", ticket: "Ticket n. {n}", link: "Qui trovi il ticket, cosa portare e i dettagli:", fine: "Per qualsiasi cosa rispondi pure a questo messaggio. A presto!", locale: "it-IT", nome: "italiano" },
+  en: { posto: "Good news: there's availability ✅", paga: "To confirm your booking, you can pay here:", importo: "Amount due: {n}", acconto: "This is a deposit: you pay the remaining {n} on the day.", dopo: "As soon as the payment arrives, we'll send you the confirmation with your ticket.", resto: "You pay the remaining {n} on the day.", ciao: "Hi {nome}!", ok: "Your excursion is confirmed ✅", ritrovo: "Meeting time {ora}", ticket: "Ticket no. {n}", link: "Your ticket, what to bring and all the details:", fine: "If you need anything, just reply to this message. See you soon!", locale: "en-GB", nome: "inglese" },
+  es: { posto: "Buenas noticias: hay plazas ✅", paga: "Para confirmar la reserva puedes pagar aquí:", importo: "A pagar: {n}", acconto: "Es una señal: el resto, {n}, lo pagas allí.", dopo: "En cuanto llegue el pago te mandamos la confirmación con el ticket.", resto: "El resto, {n}, lo pagas allí.", ciao: "¡Hola {nome}!", ok: "Tu excursión está confirmada ✅", ritrovo: "Encuentro a las {ora}", ticket: "Ticket n.º {n}", link: "Aquí tienes el ticket, qué llevar y todos los detalles:", fine: "Para cualquier cosa, responde a este mensaje. ¡Hasta pronto!", locale: "es-ES", nome: "spagnolo" },
+  fr: { posto: "Bonne nouvelle : il y a de la place ✅", paga: "Pour confirmer la réservation, vous pouvez payer ici :", importo: "À payer : {n}", acconto: "C'est un acompte : le reste, {n}, se paie sur place.", dopo: "Dès réception du paiement, nous vous envoyons la confirmation avec le ticket.", resto: "Le reste, {n}, se paie sur place.", ciao: "Bonjour {nome} !", ok: "Votre excursion est confirmée ✅", ritrovo: "Rendez-vous à {ora}", ticket: "Ticket n° {n}", link: "Votre ticket, quoi apporter et tous les détails :", fine: "Pour toute question, répondez simplement à ce message. À bientôt !", locale: "fr-FR", nome: "francese" },
+  de: { posto: "Gute Nachrichten: Es sind Plätze frei ✅", paga: "Um die Buchung zu bestätigen, können Sie hier bezahlen:", importo: "Zu zahlen: {n}", acconto: "Das ist eine Anzahlung: Den Rest von {n} zahlen Sie vor Ort.", dopo: "Sobald die Zahlung eingegangen ist, schicken wir Ihnen die Bestätigung mit dem Ticket.", resto: "Den Rest von {n} zahlen Sie vor Ort.", ciao: "Hallo {nome}!", ok: "Ihr Ausflug ist bestätigt ✅", ritrovo: "Treffpunkt um {ora} Uhr", ticket: "Ticket Nr. {n}", link: "Ihr Ticket, was Sie mitbringen sollten und alle Details:", fine: "Bei Fragen antworten Sie einfach auf diese Nachricht. Bis bald!", locale: "de-DE", nome: "tedesco" }
 };
 
 // La lingua del cliente, dal messaggio che ha mandato. Francese e tedesco
@@ -1222,7 +1256,10 @@ function rispostaTesto(r, c, lingua) {
   ];
   if (c.time) righe.push("🕗 " + metti(T.ritrovo, { ora: c.time }));
   if (c.meeting) righe.push("📍 " + c.meeting);
-  righe.push("🎫 " + metti(T.ticket, { n: c.numero }), "", T.link, link, "", T.fine);
+  righe.push("🎫 " + metti(T.ticket, { n: c.numero }));
+  // pagato un acconto: il resto si paga sul posto, e il cliente lo rilegge qui
+  if (r.payment_total > r.payment_amount) righe.push("💶 " + metti(T.resto, { n: soldiIn(r.payment_total - r.payment_amount, T.locale) }));
+  righe.push("", T.link, link, "", T.fine);
   return righe.join("\n");
 }
 
@@ -1241,6 +1278,143 @@ function rispostaBottone(r, c) {
   vai.textContent = "Rispondi su WhatsApp";
   const aggiorna = () => {
     vai.href = "https://wa.me/" + c.telefono.replace(/\D/g, "") + "?text=" + encodeURIComponent(rispostaTesto(r, c, lingua.value));
+  };
+  lingua.addEventListener("change", aggiorna);
+  aggiorna();
+  box.append(lingua, vai);
+  return box;
+}
+
+// "94 €" nella lingua del cliente: "94,50 €", "€94.50".
+function soldiIn(n, locale) {
+  return Number(n).toLocaleString(locale, { style: "currency", currency: "EUR", minimumFractionDigits: n % 1 ? 2 : 0 });
+}
+
+// ─── Il link di pagamento ───────────────────────────────────────────────────
+// Si paga sempre prima della conferma, il totale o un acconto (proprietario,
+// 15 ottobre 2026). L'ufficio crea il link sul portale Redsys, lo incolla qui
+// con gli importi e il telefono del cliente, e il bottone apre WhatsApp col
+// messaggio gia' scritto nella sua lingua. Un link vale per tutta la richiesta:
+// si scrive uguale su tutte le sue righe ancora da confermare. La richiesta
+// resta 'pending' (supabase/modifiche/2026-10-15-link-pagamento.sql).
+function apriPagamento(li, r, righe) {
+  mostra(els.requestsMsg, "");
+  if (li.querySelector(".vend-edit")) return;   // gia' aperto
+
+  const form = document.createElement("form");
+  form.className = "vend-form vend-edit";
+  form.noValidate = true;
+  const id = "p" + r.id.slice(0, 8);
+  form.innerHTML = `
+    <label for="${id}Phone">Telefono del cliente</label>
+    <input id="${id}Phone" name="phone" type="tel" inputmode="tel" autocomplete="off" placeholder="+44 7700 900123" required />
+    <small class="vend-hint">Quello da cui ha scritto su WhatsApp, col + davanti.</small>
+    <div class="vend-row">
+      <div>
+        <label for="${id}Total">Totale €</label>
+        <input id="${id}Total" name="total" type="number" inputmode="decimal" min="0" step="0.01" required />
+      </div>
+      <div>
+        <label for="${id}Now">Da pagare adesso €</label>
+        <input id="${id}Now" name="now" type="number" inputmode="decimal" min="0" step="0.01" required />
+      </div>
+    </div>
+    <small class="vend-hint">Di tutta la richiesta${righe.length > 1 ? ` (${righe.length} escursioni)` : ""}. Se adesso paga meno del totale è un acconto: il resto lo paga sul posto.</small>
+    <label for="${id}Link">Link di pagamento (Redsys)</label>
+    <input id="${id}Link" name="link" type="url" inputmode="url" autocomplete="off" placeholder="https://…" required />
+    <p class="vend-msg" role="alert" hidden></p>
+    <div class="vend-row">
+      <button class="btn btn-soft" type="button" data-edit-cancel>Lascia stare</button>
+      <button class="btn btn-primary" type="submit">Salva</button>
+    </div>`;
+
+  // come in apriModifica: nessun testo del database passa da innerHTML
+  const f = form.elements;
+  f.phone.value = r.phone || "";
+  f.total.value = r.payment_total != null ? r.payment_total : "";
+  f.now.value = r.payment_amount != null ? r.payment_amount : "";
+  f.link.value = r.payment_link || "";
+  // il totale ricopiato in "adesso" finche' l'ufficio non lo cambia: quasi
+  // sempre si paga tutto
+  let adessoToccato = !!f.now.value;
+  f.now.addEventListener("input", () => { adessoToccato = true; });
+  f.total.addEventListener("input", () => { if (!adessoToccato) f.now.value = f.total.value; });
+
+  form.querySelector("[data-edit-cancel]").addEventListener("click", () => form.remove());
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+    const msg = form.querySelector(".vend-msg");
+    const telefono = telefonoE164("", f.phone.value);
+    const totale = parseFloat(f.total.value);
+    const adesso = parseFloat(f.now.value);
+    const link = f.link.value.trim();
+    if (!telefono) { mostra(msg, "Telefono non valido: scrivilo col + e il prefisso (+44 7700 900123).", "errore"); f.phone.focus(); return; }
+    if (!(totale > 0)) { mostra(msg, "Manca il totale.", "errore"); f.total.focus(); return; }
+    if (!(adesso > 0) || adesso > totale) { mostra(msg, "Da pagare adesso: più di zero e non più del totale.", "errore"); f.now.focus(); return; }
+    // solo un indirizzo vero: va in un link che il cliente tocca
+    if (!/^https:\/\/\S+$/.test(link)) { mostra(msg, "Il link deve cominciare con https://", "errore"); f.link.focus(); return; }
+    const nuovo = {
+      phone: telefono,
+      payment_link: link,
+      payment_total: totale,
+      payment_amount: adesso,
+      payment_sent_at: new Date().toISOString()
+    };
+    try {
+      const { data, error } = await sb.from("bookings").update(nuovo)
+        .eq("source", "whatsapp").eq("request_code", r.request_code).eq("status", "pending")
+        .select("id");
+      if (error || !data || !data.length) throw error || new Error("nessuna riga");
+    } catch (err) {
+      console.error(err);
+      mostra(msg, "Non sono riuscito a salvare. Controlla la connessione e riprova.", "errore");
+      return;
+    }
+    await caricaRichieste();
+    mostra(els.requestsMsg, `${r.request_code}: link salvato. Ora mandalo al cliente.`, "ok");
+    els.requestsMsg.append(pagamentoBottone(righe, Object.assign({}, r, nuovo)));
+  });
+  li.append(form);
+  f.phone.focus();
+}
+
+// Il messaggio col link, nella lingua del cliente: ogni escursione della
+// richiesta col suo giorno, il link, quanto si paga e, se e' un acconto, che
+// il resto si paga sul posto.
+function pagamentoTesto(righe, r, lingua) {
+  const T = RISPOSTA[lingua];
+  const metti = (testo, valori) => testo.replace(/\{(\w+)\}/g, (_, k) => valori[k]);
+  const nome = (r.customer_name || "").trim().split(/\s+/)[0];
+  const testo = [(nome ? metti(T.ciao, { nome }) + " " : "") + T.posto, ""];
+  righe.forEach(x => {
+    const tour = schedaDa(x.excursion_id);
+    const variante = rispostaVariante(tour, x.option_label, lingua);
+    const giorno = new Date(x.date + "T12:00:00").toLocaleDateString(T.locale, { weekday: "long", day: "numeric", month: "long" });
+    testo.push("*" + (tour ? titoloDi(tour) : x.excursion_id) + (variante ? " · " + variante : "") + "*", "📅 " + giorno, "");
+  });
+  testo.push(T.paga, r.payment_link, "", "💶 " + metti(T.importo, { n: soldiIn(r.payment_amount, T.locale) }));
+  if (r.payment_total > r.payment_amount) {
+    testo.push(metti(T.acconto, { n: soldiIn(r.payment_total - r.payment_amount, T.locale) }));
+  }
+  testo.push("", T.dopo);
+  return testo.join("\n");
+}
+
+// Come rispostaBottone: il menu della lingua e il bottone verde.
+function pagamentoBottone(righe, r) {
+  const box = document.createElement("span");
+  box.className = "vend-risposta";
+  const lingua = document.createElement("select");
+  lingua.setAttribute("aria-label", "Lingua del messaggio");
+  Object.keys(RISPOSTA).forEach(k => lingua.append(new Option(RISPOSTA[k].nome, k)));
+  lingua.value = rispostaLingua(r.request_message);
+  const vai = document.createElement("a");
+  vai.className = "btn btn-primary";
+  vai.target = "_blank";
+  vai.rel = "noopener noreferrer";
+  vai.textContent = "Manda il link su WhatsApp";
+  const aggiorna = () => {
+    vai.href = "https://wa.me/" + r.phone.replace(/\D/g, "") + "?text=" + encodeURIComponent(pagamentoTesto(righe, r, lingua.value));
   };
   lingua.addEventListener("change", aggiorna);
   aggiorna();

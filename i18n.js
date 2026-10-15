@@ -481,7 +481,7 @@ const I18N = {
   "req.hotelPlaceholder": { it: "Scrivi le prime lettere dell'hotel", en: "Type the first letters of your hotel", es: "Escribe las primeras letras del hotel", fr: "Tapez les premières lettres de l'hôtel", de: "Tippen Sie die ersten Buchstaben des Hotels" },
   "req.pickup":         { it: "Punto di raccolta", en: "Pick-up point", es: "Punto de recogida", fr: "Point de prise en charge", de: "Abholpunkt" },
   "req.meetingPoint":   { it: "Punto di ritrovo", en: "Meeting point", es: "Punto de encuentro", fr: "Point de rendez-vous", de: "Treffpunkt" },
-  "req.meetingSelf":    { it: "— ci arrivi per conto tuo", en: "— you make your own way there", es: "— llegas por tu cuenta", fr: "— vous vous y rendez par vos propres moyens", de: "— Sie kommen selbst dorthin" },
+  "req.meetingSelf":    { it: "· ti aspettiamo lì", en: "· we'll meet you there", es: "· te esperamos allí", fr: "· nous vous y attendons", de: "· wir erwarten Sie dort" },
   "req.pickupHotel":    { it: "il tuo hotel", en: "your hotel", es: "tu hotel", fr: "votre hôtel", de: "Ihr Hotel" },
   "pickup.bus":         { it: "alla fermata dell'autobus", en: "at the bus stop", es: "en la parada de guagua", fr: "à l'arrêt de bus", de: "an der Bushaltestelle" },
   "pickup.taxi":        { it: "al posteggio dei taxi", en: "at the taxi rank", es: "en la parada de taxis", fr: "à la station de taxis", de: "am Taxistand" },

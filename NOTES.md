@@ -18494,3 +18494,13 @@ spuntata chiede l'hotel e toglie il ritrovo, tolta il contrario), buggy Offroad
 (casella, nessun ritrovo: il posto non lo sappiamo) e Montagna (ritrovo), Ragnarok
 (ritrovo), Peter Pan e Royal Delfin come prima; messaggi e righe del database giusti;
 nessun errore, niente scroll orizzontale a 390 px. `CACHE_NAME` → `isla-v501`.
+
+**Lo stesso giorno, i testi (proprietario):** sul buggy la casella dice solo "Passiamo a
+prenderti", senza "gratis" e senza "hotel", perché il cliente può stare anche in una
+casa privata. Sul Freebird "dalle zone del sud/nord" invece di "dagli hotel", e "Se
+preferisci raggiungerci, ti aspettiamo al porto". Sotto il punto di ritrovo "ti
+aspettiamo lì" (`req.meetingSelf`) invece di "ci arrivi per conto tuo", che suonava
+brusco. Il punto di ritrovo dei buggy senza transfer (Offroad, Tramonto, Completo) lo
+manda l'ufficio con la conferma; il proprietario lo conferma poi anche qui. Gli altri
+punti di ritrovo li aggiunge il proprietario un po' alla volta. `CACHE_NAME` →
+`isla-v502`.

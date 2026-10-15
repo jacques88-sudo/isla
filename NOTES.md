@@ -18504,3 +18504,34 @@ brusco. Il punto di ritrovo dei buggy senza transfer (Offroad, Tramonto, Complet
 manda l'ufficio con la conferma; il proprietario lo conferma poi anche qui. Gli altri
 punti di ritrovo li aggiunge il proprietario un po' alla volta. `CACHE_NAME` →
 `isla-v502`.
+
+## Sea Trek Tenerife, scheda nuova (15 ottobre 2026)
+
+Il proprietario ha incollato la pagina di Sea Trek Tenerife (la camminata sul fondo del
+mare col casco, a Los Cristianos). La pagina era solo marketing: niente prezzi, età,
+durata, orari né indirizzo. Scheda `sea-trek` in `sport-acquatici`, dopo il surf.
+
+**Dal proprietario:** adulti 85 €, bambini 70 €; nessun ritiro in hotel (la scheda sta
+in `PICKUP_NESSUNO`); scheda a sé e non variante di `immersioni`, perché è un'altra
+compagnia e un'altra cosa (niente bombola, niente brevetto).
+
+**Dalle schede dei rivenditori** (Musement, TUI, easyJet, che dicono tutte la stessa
+cosa; non dalla pagina del fornitore): età minima 8 anni, 1 ora e mezza - 2 ore in
+tutto, ritrovo in Paseo Aquilino 10 (primo piano) e poi a piedi alla spiaggia di Las
+Vistas, gruppi da 6, casco, muta, istruttore e armadietti compresi, foto a parte, non
+in gravidanza né nel giorno di un volo. Il loro prezzo (circa 75 £) non è stato usato.
+
+**Deciso da me, da confermare:**
+- fasce `8-11` bambini e `12+` adulti: il prezzo bambini è arrivato senza l'età;
+- niente `priceInfant`: sotto gli 8 anni non si scende (assente ≠ gratis);
+- `priceFrom: 85` (l'adulto), come tutte le altre schede con il prezzo bambini più basso;
+- titolo "Sea Trek Tenerife", uguale nelle cinque lingue: è il nome della compagnia;
+- `nomi` vuoto: i rivenditori chiamano l'operatore "Diving on the Moon", ma la pagina
+  del fornitore no. Se l'ufficio lo conferma, va in `nomi`.
+
+**In sospeso:** la foto (esce il segnaposto grigio), gli orari di partenza (per ora le
+fasce segnaposto) e, se servono, i giorni.
+
+Provato in Chromium a 390 px: pagina senza errori, finestra della richiesta col punto
+di ritrovo e senza la domanda dell'hotel, 2 adulti + 1 bambino = 240 €. `CACHE_NAME` →
+`isla-v503`.

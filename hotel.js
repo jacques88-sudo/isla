@@ -734,6 +734,8 @@ const PICKUP_NESSUNO = [
   "parascending",
   "flyboard",
   "surf-lesson",
+  // Sea Trek a Los Cristianos: niente ritiro (proprietario, 15 ottobre 2026).
+  "sea-trek",
   // Parchi e spettacoli dove il biglietto e' solo il biglietto:
   "siam-night",
   "monkey-park",

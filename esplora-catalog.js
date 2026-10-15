@@ -5168,6 +5168,75 @@ const ESPLORA_CATALOG = [
     image: "surf-lesson.jpg",
     published: true
   },
+  {
+    // Sea Trek Tenerife: la camminata sul fondo del mare col casco, a Los
+    // Cristianos (pagina del fornitore incollata dal proprietario, 15 ottobre
+    // 2026). La pagina non dava prezzi, eta', durata ne' indirizzo:
+    //   - i prezzi (85 adulti, 70 bambini) sono del proprietario, 15 ottobre;
+    //   - eta' minima 8 anni, durata 1 ora e mezza - 2 ore, ritrovo in Paseo
+    //     Aquilino 10 e gruppi da 6 vengono dalle schede dei rivenditori
+    //     (Musement, TUI, easyJet), che dicono tutte la stessa cosa;
+    //   - niente ritiro in hotel (proprietario, 15 ottobre): sta in
+    //     PICKUP_NESSUNO.
+    // E' una scheda a se' e non una variante di "immersioni": e' un'altra
+    // compagnia e un'altra cosa, niente bombola e niente brevetto
+    // (proprietario, 15 ottobre). Gli orari non li sappiamo: `times` assente.
+    // I rivenditori nominano l'operatore "Diving on the Moon": non e' nella
+    // pagina del fornitore, quindi in `nomi` non c'e' finche' non lo conferma
+    // l'ufficio.
+    id: "sea-trek",
+    title: "Sea Trek Tenerife",
+    category: "sport-acquatici",
+    zone: "Los Cristianos",
+    duration: { it: "1 ora e mezza - 2 ore", en: "1.5 - 2 hours", es: "1 hora y media - 2 horas", fr: "1 h 30 - 2 heures", de: "1,5 - 2 Stunden" },
+    zoneGroups: ["los-cristianos"],
+    durationGroups: ["breve"],
+    priceFrom: 85,
+    priceAdult: 85,
+    priceChild: 70,
+    // Sotto gli 8 anni non si scende: niente fascia neonati e niente
+    // priceInfant (assente non vuol dire gratis). La fascia bambini 8-11 e'
+    // una scelta nostra da confermare: il proprietario ha dato il prezzo
+    // bambini senza dire fino a che eta'.
+    ages: { adult: "12+", child: "8-11" },
+    family: true,
+    desc: {
+      it: "Si cammina sul fondo del mare con un casco che ti porta aria di continuo: la testa resta asciutta e si respira normalmente, come fuori dall'acqua. Non serve saper nuotare né aver mai fatto immersioni. Dopo le spiegazioni, con l'istruttore si entra in acqua dalla spiaggia di Las Vistas, a Los Cristianos, e si passeggia fra i pesci. Gruppi piccoli, al massimo sei persone, dagli 8 anni in su.",
+      en: "You walk on the sea floor wearing a helmet that keeps feeding you air: your head stays dry and you breathe normally, just as you do out of the water. You don't need to swim or to have ever dived. After the briefing you go in with the instructor from Las Vistas beach, in Los Cristianos, and stroll among the fish. Small groups of six at most, from age 8 up.",
+      es: "Se camina por el fondo del mar con un casco que te da aire sin parar: la cabeza se queda seca y se respira con normalidad, como fuera del agua. No hace falta saber nadar ni haber buceado nunca. Después de la explicación se entra al agua con el instructor desde la playa de Las Vistas, en Los Cristianos, y se pasea entre los peces. Grupos pequeños, de seis personas como máximo, a partir de 8 años.",
+      fr: "On marche au fond de la mer avec un casque qui vous apporte de l'air en continu : la tête reste au sec et on respire normalement, comme hors de l'eau. Pas besoin de savoir nager ni d'avoir déjà plongé. Après les explications, on entre dans l'eau avec le moniteur depuis la plage de Las Vistas, à Los Cristianos, et on se promène au milieu des poissons. Petits groupes de six au maximum, à partir de 8 ans.",
+      de: "Man geht auf dem Meeresboden, mit einem Helm, der ständig Luft zuführt: Der Kopf bleibt trocken und man atmet ganz normal, wie außerhalb des Wassers. Man muss weder schwimmen können noch je getaucht sein. Nach der Einweisung geht es mit dem Lehrer vom Strand Las Vistas in Los Cristianos ins Wasser, und man spaziert zwischen den Fischen. Kleine Gruppen mit höchstens sechs Personen, ab 8 Jahren."
+    },
+    // Il casco e' l'attrezzatura: `equipment`. Le foto si pagano a parte sul
+    // posto, quindi `photos` no.
+    included: ["equipment", "wetsuit", "guide"],
+    ritrovo: {
+      it: "Paseo Aquilino 10, Los Cristianos (primo piano)",
+      en: "Paseo Aquilino 10, Los Cristianos (first floor)",
+      es: "Paseo Aquilino 10, Los Cristianos (primera planta)",
+      fr: "Paseo Aquilino 10, Los Cristianos (premier étage)",
+      de: "Paseo Aquilino 10, Los Cristianos (erster Stock)"
+    },
+    notes: [
+      { it: "Ci si arriva da soli: non c'è ritiro in hotel. Dal punto di ritrovo si va a piedi fino alla spiaggia di Las Vistas.",
+        en: "You make your own way there: there is no hotel pick-up. From the meeting point you walk to Las Vistas beach.",
+        es: "Se llega por cuenta propia: no hay recogida en el hotel. Desde el punto de encuentro se va a pie hasta la playa de Las Vistas.",
+        fr: "On s'y rend par ses propres moyens : il n'y a pas de prise en charge à l'hôtel. Du point de rendez-vous, on va à pied jusqu'à la plage de Las Vistas.",
+        de: "Sie kommen selbst dorthin: Es gibt keine Abholung am Hotel. Vom Treffpunkt geht es zu Fuß zum Strand Las Vistas." },
+      { it: "Non si può fare in gravidanza né nello stesso giorno di un volo. Bisogna riuscire a camminare per un breve tratto e stare tranquilli in acqua.",
+        en: "Not possible during pregnancy or on the same day as a flight. You need to be able to walk a short distance and feel at ease in the water.",
+        es: "No se puede hacer durante el embarazo ni el mismo día de un vuelo. Hay que poder caminar un tramo corto y estar tranquilo en el agua.",
+        fr: "Impossible pendant la grossesse ou le jour d'un vol. Il faut pouvoir marcher sur une courte distance et être à l'aise dans l'eau.",
+        de: "Nicht möglich während der Schwangerschaft oder am Tag eines Fluges. Man muss eine kurze Strecke gehen können und sich im Wasser wohlfühlen." },
+      { it: "Porta il costume e un asciugamano. Ci sono gli armadietti per le tue cose. Le foto ricordo si possono comprare sul posto, a parte.",
+        en: "Bring a swimsuit and a towel. There are lockers for your belongings. Souvenir photos can be bought on site, separately.",
+        es: "Trae bañador y una toalla. Hay taquillas para tus cosas. Las fotos de recuerdo se pueden comprar allí, aparte.",
+        fr: "Apportez un maillot de bain et une serviette. Il y a des casiers pour vos affaires. Les photos souvenir s'achètent sur place, en plus.",
+        de: "Bringen Sie Badesachen und ein Handtuch mit. Für Ihre Sachen gibt es Schließfächer. Erinnerungsfotos kann man vor Ort extra kaufen." }
+    ],
+    image: "",
+    published: true
+  },
 
   // ─── PARCHI E SPETTACOLI ──────────────────────────────────────────────────
   {

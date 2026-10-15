@@ -183,6 +183,10 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   ottobre 2026): molte compagnie (i parchi per primi) mandano il biglietto per email.
   Sta sotto il nome nella finestra della lista (`lista.js`) e va **solo** nel messaggio
   WhatsApp, mai nel database. Non si fa un elenco di schede che la vogliono.
+  Attenzione: dal 13 ottobre nel database si salva **una copia del messaggio**
+  (`request_message`), e il 15 ottobre si è scoperto che conteneva anche l'email. Ora
+  `lista.js` salva la copia scritta **senza** email (proprietario, 15 ottobre 2026: "per il
+  momento"). Per salvarla anche lì basta una riga, ma va cambiata insieme a `privacy.html`.
 - **La tastiera dell'iPhone sul fondo della finestra si lascia com'è**, per scelta del
   proprietario. Misurato: col campo del nome a fuoco il pulsante finisce dietro la
   tastiera e la casella la scavalca di 6 px sull'iPhone SE. Il rimedio esiste (alzare la
@@ -207,6 +211,7 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   ("Manda il pagamento"): la richiesta resta `pending` con `payment_sent_at`, il cliente
   vede "Da pagare" e "Paga ora". Pagato, l'ufficio preme Conferma. Le colonne stanno in
   `supabase/modifiche/2026-10-15-link-pagamento.sql`.
+  Lo dicono anche `faq.a4`, i termini e la privacy: se cambia, vanno cambiati tutti e tre.
 - **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
   Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
   minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.

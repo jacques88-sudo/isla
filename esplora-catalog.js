@@ -5236,7 +5236,7 @@ const ESPLORA_CATALOG = [
         fr: "Apportez un maillot de bain et une serviette. Il y a des casiers pour vos affaires. Les photos souvenir s'achètent sur place, en plus.",
         de: "Bringen Sie Badesachen und ein Handtuch mit. Für Ihre Sachen gibt es Schließfächer. Erinnerungsfotos kann man vor Ort extra kaufen." }
     ],
-    image: "",
+    image: "sea-trek.jpg",
     published: true
   },
 

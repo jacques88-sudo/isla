@@ -18541,3 +18541,8 @@ di ritrovo e senza la domanda dell'hotel, 2 adulti + 1 bambino = 240 €. `CACHE
 come scrivevano i rivenditori), e sta in `nomi` per la lettura dei ticket di carta.
 Provato in Chromium: il menu "A che ora" mostra solo le quattro partenze. Resta da
 mettere la foto. `CACHE_NAME` → `isla-v504`.
+
+**Lo stesso giorno, la foto:** `sea-trek.jpg`, dalla foto verticale del proprietario
+(1078×1185) ritagliata a 3:2 tenendo il casco e i pesci, 1200×800, 163 KB. La scritta
+sul casco è il marchio Sea Trek, cioè la compagnia stessa: va bene. La seconda foto
+arrivata (179×150) è scartata: troppo piccola per 1200×800. `CACHE_NAME` → `isla-v505`.

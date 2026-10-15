@@ -5237,6 +5237,8 @@ const ESPLORA_CATALOG = [
         de: "Bringen Sie Badesachen und ein Handtuch mit. Für Ihre Sachen gibt es Schließfächer. Erinnerungsfotos kann man vor Ort extra kaufen." }
     ],
     image: "sea-trek.jpg",
+    // Il gruppo coi caschi e l'istruttore (proprietario, 15 ottobre 2026).
+    gallery: ["sea-trek-2.jpg"],
     published: true
   },
 

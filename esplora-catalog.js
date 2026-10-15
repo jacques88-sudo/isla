@@ -4078,11 +4078,11 @@ const ESPLORA_CATALOG = [
     included: ["guide", "equipment"],
     notes: [
       {
-        it: "Età minima 10 anni, peso massimo 95 kg. Gruppo di massimo 6 persone. Consigliati pantaloni lunghi, scarpe chiuse e robuste, crema solare e acqua.",
-        en: "Minimum age 10, maximum weight 95 kg. Groups of up to 6 people. Long trousers, sturdy closed shoes, sun cream and water recommended.",
-        es: "Edad mínima 10 años, peso máximo 95 kg. Grupos de hasta 6 personas. Se recomiendan pantalones largos, calzado cerrado y resistente, crema solar y agua.",
-        fr: "Âge minimum 10 ans, poids maximum 95 kg. Groupes de 6 personnes au maximum. Pantalon long, chaussures fermées et solides, crème solaire et eau conseillés.",
-        de: "Mindestalter 10 Jahre, Höchstgewicht 95 kg. Gruppen von höchstens 6 Personen. Lange Hose, feste geschlossene Schuhe, Sonnencreme und Wasser empfohlen."
+        it: "Età minima 6 anni, peso massimo 95 kg. Gruppo di massimo 6 persone. Consigliati pantaloni lunghi, scarpe chiuse e robuste, crema solare e acqua.",
+        en: "Minimum age 6, maximum weight 95 kg. Groups of up to 6 people. Long trousers, sturdy closed shoes, sun cream and water recommended.",
+        es: "Edad mínima 6 años, peso máximo 95 kg. Grupos de hasta 6 personas. Se recomiendan pantalones largos, calzado cerrado y resistente, crema solar y agua.",
+        fr: "Âge minimum 6 ans, poids maximum 95 kg. Groupes de 6 personnes au maximum. Pantalon long, chaussures fermées et solides, crème solaire et eau conseillés.",
+        de: "Mindestalter 6 Jahre, Höchstgewicht 95 kg. Gruppen von höchstens 6 Personen. Lange Hose, feste geschlossene Schuhe, Sonnencreme und Wasser empfohlen."
       },
       {
         it: "Casco di sicurezza e armadietti per gli effetti personali inclusi.",

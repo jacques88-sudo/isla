@@ -509,8 +509,11 @@ a { text-decoration: none; color: inherit; }
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
-/* Il numerino sul carrello: quante escursioni ci sono nella lista. Il colore
-   sabbia e' quello di "TENERIFE" sopra il titolo, l'unico accento del sito. */
+/* Il numerino sul carrello: quante escursioni ci sono nella lista. E' azzurro
+   come i pulsanti "Aggiungi alla lista" (.btn-lista), con la scritta scura
+   (proprietario, 15 ottobre 2026): si vede che il numero cresce col bottone.
+   Il numerino delle prenotazioni ha la stessa classe ma resta sabbia, qui sotto:
+   non conta la lista, conta le escursioni che il cliente ha davanti. */
 .isla-tab-count {
   position: absolute;
   top: 3px;
@@ -519,7 +522,7 @@ a { text-decoration: none; color: inherit; }
   height: 17px;
   padding: 0 4px;
   border-radius: var(--radius-pill);
-  background: var(--gold);
+  background: var(--wave-blue-light);
   color: oklch(0.24 0.012 60);
   font-size: .62rem;
   font-weight: 600;
@@ -527,6 +530,7 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: 0;
   text-align: center;
 }
+.isla-tab-count[data-prenotazioni-count] { background: var(--gold); }
 /* La scritta della voce attiva si accorcia coi puntini invece di spingere la
    capsula fuori dallo schermo: con cinque voci, a 320 px "Experiencias" non ci
    sta intera. L'icona "installa l'app" non sta piu' nella capsula (e' nel menu):
@@ -3332,8 +3336,9 @@ body.menu-open { overflow: hidden; }
   height: 28px;
   padding: 0 .4rem;
   border-radius: var(--radius-pill);
-  background: var(--primary-foreground);
-  color: var(--primary);
+  /* azzurro come "Aggiungi alla lista" e il numerino del carrello */
+  background: var(--wave-blue-light);
+  color: oklch(0.24 0.012 60);
   font-size: .85rem;
   letter-spacing: 0;
 }

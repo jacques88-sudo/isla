@@ -8,8 +8,13 @@
 // Chi la chiama:
 //   - Cron di Supabase, ogni 10 minuti (promemoria, e quello che e' rimasto);
 //   - venditori.html subito dopo Conferma o Annulla, per non far aspettare.
-// E' aperta (Verify JWT spento): chi la chiamasse otterrebbe solo quello che
-// fa gia' lei ogni 10 minuti. Non riceve niente e restituisce solo conteggi.
+// Solo loro due (16 ottobre 2026; prima era aperta a chiunque):
+//   - Cron manda la parola segreta nell'intestazione "x-orologio": la stessa
+//     sta nei Secrets della funzione (OROLOGIO_SEGRETO) e nel lavoro di Cron
+//     (supabase/modifiche/2026-10-16-notifiche-chiuse.sql). MAI nel repository;
+//   - venditori.html manda il login del venditore, come per leggi-ticket.
+// "Verify JWT" resta spento: Cron un login non ce l'ha. Il controllo lo fa
+// questa funzione, qui sotto.
 //
 // Le chiavi VAPID: la pubblica sta anche nel sito (supabase-config.js), la
 // privata SOLO nei Secrets di Supabase. Con la privata si firma ogni avviso:
@@ -19,6 +24,10 @@
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 import webpush from "npm:web-push@3.6.7";
+
+// La chiave pubblica del sito, la stessa di supabase-config.js: serve solo a
+// chiedere a Supabase "chi e' questo utente" (come in leggi-ticket).
+const CHIAVE_PUBBLICA = "sb_publishable_Qjmd8qP9J_GH1WjUmBolSw_vBdM5G3L";
 
 // L'indirizzo che Google, Apple e Mozilla usano se qualcosa non va.
 const CONTATTO = "mailto:info@islatenerife.com";
@@ -175,7 +184,7 @@ function risposta(corpo: unknown, stato = 200): Response {
       "Content-Type": "application/json",
       // venditori.html la chiama dal browser, da un altro indirizzo
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "content-type, authorization, apikey, x-client-info",
+      "Access-Control-Allow-Headers": "content-type, authorization, apikey, x-client-info, x-orologio",
     },
   });
 }
@@ -199,8 +208,38 @@ async function pulisci(db: any): Promise<number> {
   return finite.length;
 }
 
+// Due testi uguali, confrontati tutti fino in fondo: un confronto che si ferma
+// alla prima lettera diversa dice, col tempo che ci mette, quante ne hai
+// indovinate.
+function uguali(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diversi = 0;
+  for (let i = 0; i < a.length; i++) diversi |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diversi === 0;
+}
+
+// Chi chiama: Cron con la parola segreta, o un venditore col suo login.
+async function autorizzato(req: Request): Promise<boolean> {
+  const segreto = Deno.env.get("OROLOGIO_SEGRETO");
+  const parola = req.headers.get("x-orologio");
+  if (segreto && parola && uguali(parola, segreto)) return true;
+
+  const login = req.headers.get("Authorization") ?? "";
+  if (!login.startsWith("Bearer ")) return false;
+  const sb = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_ANON_KEY") ?? CHIAVE_PUBBLICA,
+    { global: { headers: { Authorization: login } }, auth: { persistSession: false } },
+  );
+  // Le regole dello schema danno la riga di sellers solo a un venditore: con
+  // la chiave pubblica al posto del login la risposta e' vuota.
+  const { data, error } = await sb.from("sellers").select("name").limit(1);
+  return !error && !!data && data.length > 0;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return risposta({});
+  if (!(await autorizzato(req))) return risposta({ errore: "non autorizzato" }, 401);
 
   const pubblica = Deno.env.get("VAPID_PUBLIC_KEY");
   const privata = Deno.env.get("VAPID_PRIVATE_KEY");

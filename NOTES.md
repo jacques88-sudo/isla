@@ -18976,3 +18976,27 @@ Il proprietario, dopo il controllo generale: "sistema il 2 e il 3".
     barrato torna (c'è posto).
   Rimisurato: nessuna lettera sotto il bollino, nessun testo fuori dal riquadro, a 320,
   360, 375 e 414 px nelle cinque lingue. `CACHE_NAME` → `isla-v528`.
+
+## 16 ottobre 2026 — `manda-notifiche` non risponde più a chiunque
+
+Il proprietario: "chiudi anche il punto 1". Era aperta per scelta (13 ottobre): chi
+chiamava l'indirizzo otteneva solo gli avvisi già dovuti, mai due volte. Ma la faceva
+lavorare chiunque. Ora risponde solo a due:
+
+- **l'orologio di Cron**, con la parola segreta nell'intestazione `x-orologio`. La
+  parola sta nei Secrets della funzione (`OROLOGIO_SEGRETO`) e nel lavoro di Cron,
+  **mai nel repository**: `supabase/modifiche/2026-10-16-notifiche-chiuse.sql` ha un
+  segnaposto, e la copia con la parola vera è stata preparata nella scratchpad;
+- **`venditori.html`**, col login del venditore: `mandaAvvisi()` ora usa
+  `sb.functions.invoke`, che il login lo mette da solo. La funzione chiede a Supabase la
+  riga di `sellers`, come fa `leggi-ticket`.
+
+Tutti gli altri: 401. "Verify JWT" resta spento, perché l'orologio un login non ce l'ha.
+Il confronto della parola va fino all'ultima lettera (`uguali()`), per non dire col tempo
+quante lettere sono giuste. Provato facendo girare la funzione con un Supabase finto:
+nessuno, parola sbagliata e chiave pubblica → 401; parola giusta e venditore → 200.
+
+**L'ordine conta**: prima il Secret, poi l'SQL (l'orologio con la parola), poi la
+funzione nuova. Al contrario, per qualche minuto i promemoria si fermerebbero.
+Il sito si può pubblicare prima: la funzione vecchia ignora il login che riceve.
+`CACHE_NAME` → `isla-v529`.

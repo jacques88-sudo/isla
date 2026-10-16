@@ -1470,9 +1470,10 @@ async function annullaRichiesta(r) {
 // funzione manda solo quello che il database dice di mandare, e mai due volte:
 // se questa chiamata non arriva, ci pensa l'orologio.
 // Vedi supabase/modifiche/2026-10-13-notifiche.sql.
+// Col login del venditore (functions.invoke lo mette da solo): dal 16 ottobre
+// 2026 la funzione risponde solo ai venditori e all'orologio.
 function mandaAvvisi() {
-  fetch(SUPABASE_URL + "/functions/v1/manda-notifiche", { method: "POST", keepalive: true })
-    .catch(() => {});
+  sb.functions.invoke("manda-notifiche", { body: {} }).catch(() => {});
 }
 
 async function cambiaRichiesta(r, nuovo, msg) {

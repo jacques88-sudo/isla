@@ -920,6 +920,13 @@ a { text-decoration: none; color: inherit; }
   margin: 1rem 0 0;
 }
 .detail-card.is-past { opacity: .6; }
+/* L'escursione di cui parla l'avviso toccato (booking.js, mostraDallAvviso):
+   un anello del colore del suo stato, e sotto la capsula in alto, non dietro. */
+.detail-card.is-avviso {
+  outline: 3px solid var(--stato, var(--primary));
+  outline-offset: 3px;
+  scroll-margin-top: 6rem;
+}
 /* La striscia bassa con la foto dell'escursione, in cima al ticket: bassa
    apposta, perche' ora e punto d'incontro restino visibili senza scorrere.
    Numero del ticket e "Confermata" stanno sopra la foto, in fondo, su una

@@ -153,8 +153,19 @@ function messaggio(a: Avviso, isc: Iscrizione) {
     // Lo stesso tag per la stessa escursione: l'avviso nuovo prende il posto
     // del vecchio invece di accumularsi (confermata → promemoria).
     tag: "isla-" + a.booking_id,
-    url: "booking.html?richieste=1",
+    url: indirizzo(a),
   };
+}
+
+// Toccato l'avviso, la pagina delle richieste si apre sull'escursione di cui
+// parla (16 ottobre 2026): prima si apriva la lista intera, e con piu'
+// escursioni non si capiva di quale fosse il promemoria. L'escursione si
+// riconosce da richiesta, scheda e giorno: booking.js non conosce l'id del
+// ticket, e cosi' non serve cambiare le_mie_richieste.
+function indirizzo(a: Avviso): string {
+  const q = new URLSearchParams({ richieste: "1", r: a.request_token, d: a.date });
+  if (a.excursion_id) q.set("e", a.excursion_id);
+  return "booking.html?" + q.toString();
 }
 
 function risposta(corpo: unknown, stato = 200): Response {

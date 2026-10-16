@@ -332,7 +332,7 @@ function cardTicket(b, passata) {
           </div>` : "";
 
   return `
-    <div class="detail-card is-${status}${passata ? " is-past" : ""}">
+    <div class="detail-card is-${status}${passata ? " is-past" : ""}"${b.request_token ? ` data-richiesta="${esc(b.request_token)}" data-scheda="${esc(b.excursion_id || "")}" data-giorno="${esc(b.date || "")}"` : ""}>
       ${banner ? `<div class="ticket-hero">${banner}${stato}</div>` : stato}
       <div class="detail-body">
         <h2 class="detail-title">${esc(titolo)}${b.option_label ? `<span class="ticket-option">${esc(b.option_label)}</span>` : ""}</h2>
@@ -408,7 +408,7 @@ function righeRichieste(elenco) {
   elenco.forEach(r => {
     const dalServer = Array.isArray(r.last) && r.last.length ? r.last : null;
     (dalServer || r.items.map(v => Object.assign({ status: "pending" }, v))).forEach(v => {
-      righe.push(Object.assign({}, v, { sent_on: giornoDi(r.sentAt), request_code: r.code }));
+      righe.push(Object.assign({}, v, { sent_on: giornoDi(r.sentAt), request_code: r.code, request_token: r.token }));
     });
   });
   return righe;
@@ -452,6 +452,26 @@ function renderRichieste(elenco, senzaRete) {
       <a class="btn btn-primary" href="${wa}" target="_blank" rel="noopener noreferrer">${t("booking.whatsapp")}</a>
     </div>
   `;
+  mostraDallAvviso();
+}
+
+// Arrivati toccando un avviso sul telefono (manda-notifiche): l'indirizzo dice
+// richiesta, scheda e giorno (booking.html?richieste=1&r=…&e=…&d=…). Quella
+// escursione si fa vedere subito, col bordo, invece di lasciare il cliente a
+// cercarla nella lista. Se non c'e' (gia' passata, tolta) resta la lista.
+function mostraDallAvviso() {
+  const q = new URLSearchParams(window.location.search);
+  const richiesta = q.get("r");
+  if (!richiesta) return;
+  const scheda = q.get("e");
+  const giorno = q.get("d");
+  const carta = Array.from(document.querySelectorAll(".detail-card[data-richiesta]")).find(c =>
+    c.dataset.richiesta === richiesta
+    && (!scheda || c.dataset.scheda === scheda)
+    && (!giorno || c.dataset.giorno === giorno));
+  if (!carta) return;
+  carta.classList.add("is-avviso");
+  carta.scrollIntoView({ block: "start" });
 }
 
 // Il titolo in alto: "Le mie richieste", oppure "I miei ticket" quando

@@ -18805,3 +18805,24 @@ Il proprietario: "ti faccio quattro domande veloci" sembrava un interrogatorio. 
 `assist.helloPick` dice **"Oppure ti aiuto a trovare l'escursione giusta."**, nelle cinque
 lingue: non conta le domande e non promette quante saranno. Le domande restano le stesse.
 `CACHE_NAME` → `isla-v518`.
+
+## L'avviso apre l'escursione giusta (16 ottobre 2026)
+
+Il proprietario: toccando un promemoria si arrivava alla lista intera delle
+richieste, non all'escursione dell'avviso — con più escursioni, confonde.
+
+- `manda-notifiche` ora mette nell'avviso l'indirizzo
+  `booking.html?richieste=1&r=<request_token>&e=<scheda>&d=<giorno>`
+  (funzione `indirizzo()`). Vale per tutti e tre gli avvisi: confermata,
+  annullata, promemoria.
+- `booking.js`, `mostraDallAvviso()`: trova la carta con quella richiesta,
+  scheda e giorno (attributi `data-richiesta`, `data-scheda`, `data-giorno`
+  messi da `cardTicket`), la scorre in cima e le mette un anello del colore del
+  suo stato (`.is-avviso` in `styles.css`). Se non c'è, resta la lista.
+- Perché non l'id del ticket: `le_mie_richieste` non lo restituisce, e così
+  non serve nessun SQL nuovo. Due voci della stessa richiesta con la stessa
+  scheda e lo stesso giorno (varianti diverse) sono rarissime: si evidenzia la
+  prima.
+- **Va ripubblicata `manda-notifiche`** su Supabase: finché non la si
+  ripubblica gli avvisi portano ancora alla lista intera. Gli avvisi già
+  arrivati sul telefono tengono l'indirizzo vecchio.

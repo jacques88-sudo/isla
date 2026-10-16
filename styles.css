@@ -909,6 +909,50 @@ a { text-decoration: none; color: inherit; }
 }
 .ios-install-ico svg { width: 1.5rem; height: 1.5rem; }
 
+/* L'avviso in basso sull'iPhone (app.js, avvisoInstallaIos). Copre per un
+   momento il pallino della chat e la barra "Prenota ora" (39 e 38): ha la ✕.
+   Le finestre (40 e 41) gli passano sopra. */
+.install-hint {
+  position: fixed;
+  left: .75rem;
+  right: .75rem;
+  bottom: calc(.75rem + env(safe-area-inset-bottom, 0px));
+  z-index: 39;
+  max-width: 520px;
+  margin: 0 auto;
+  /* icona, testo e ✕ sulla prima riga, "Come si fa" sotto: tutti sulla
+     stessa riga a 320 px il testo andava a capo parola per parola */
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: .6rem .7rem;
+  padding: .8rem .7rem .8rem .8rem;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: 0 18px 40px -18px oklch(0.24 0.012 60 / .55);
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity .3s ease, transform .3s ease;
+}
+.install-hint.is-visible { opacity: 1; transform: none; }
+.install-hint-ico {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 12px;
+  background: var(--cream);
+  color: #0a84ff;
+}
+.install-hint-ico svg { width: 1.4rem; height: 1.4rem; }
+.install-hint-text { min-width: 0; line-height: 1.25; }
+.install-hint-text strong { display: block; font-weight: 600; font-size: .92rem; }
+.install-hint-text small { display: block; color: var(--muted); font-size: .8rem; }
+.install-hint-how { grid-column: 1 / -1; grid-row: 2; width: 100%; }
+.install-hint-close { width: 32px; height: 32px; font-size: .8rem; }
+
 /* La finestra del ticket: numero e telefono (app.js, booking.js). Stessa
    pillola dei campi della richiesta; il prefisso e' un menu stretto accanto. */
 .lookup-input,

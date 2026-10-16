@@ -19022,3 +19022,16 @@ chiude e le fa posto. La finestra si costruisce in JS: il bottone sta in sette p
   passo in più, "apri in Safari".
 - Già installata (`display-mode: standalone`), il bottone resta spento come prima.
 - Su Android non cambia niente: il bottone resta legato a `beforeinstallprompt`.
+
+**L'avviso in basso** (proprietario, stesso giorno: "facciamo la 2"). Il bottone nel Menu
+non lo cerca nessuno, quindi sull'iPhone, 4 secondi dopo l'apertura di una pagina,
+compare un riquadro in basso: "Isla sul tuo iPhone", con "Come si fa" (apre la stessa
+finestra dei passi) e la ✕ (`avvisoInstallaIos` in `app.js`, testi `install.hint.*`).
+- Torna a ogni visita finché il cliente non tocca **la ✕ o "Come si fa"**; poi mai più
+  (`isla-installa-visto` in localStorage). Senza localStorage (navigazione privata)
+  non si mostra proprio: tornerebbe a ogni pagina.
+- Copre per un momento il pallino della chat e la barra "Prenota ora" (z-index 39): ha
+  la ✕, e le finestre gli passano sopra.
+- A 320 px, con icona, testo, bottone e ✕ sulla stessa riga, il testo andava a capo
+  parola per parola: il bottone sta su una riga sua, sotto.
+- Su Android e con l'app già installata non compare.

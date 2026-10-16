@@ -18888,3 +18888,11 @@ manda pubblicità non chiesta.
 **Limite noto**: senza una email di conferma ("doppio sì") chiunque potrebbe scrivere
 l'email di un altro. Quando ci sarà l'email di Isla, la prima email all'iscritto deve
 dire come uscire; ogni email di offerte deve dirlo comunque. `CACHE_NAME` → `isla-v522`.
+
+**Aggiornamento, stesso giorno: in sospeso.** Il proprietario ha deciso di non lanciare
+ancora l'SQL ("ricordamelo tra qualche mese, non è importante ora"). La casella è
+**spenta** (`PROMOZIONI_ATTIVE = false` in `lista.js`) e il testo delle offerte è
+uscito dalla privacy, perché il cliente non legga una promessa che non funziona. Tutto
+il resto (SQL, funzione, testi in `i18n.js`) resta pronto; i tre passi per riaccendere
+stanno nel commento su `PROMOZIONI_ATTIVE`. Il promemoria è su Notion.
+`CACHE_NAME` → `isla-v523`.

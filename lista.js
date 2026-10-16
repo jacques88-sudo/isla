@@ -24,6 +24,14 @@
 //   messaggio finale.
 
 const LISTA_KEY = "isla-lista";
+// La casella delle offerte per email (16 ottobre 2026) e' pronta ma SPENTA:
+// il proprietario l'ha messa in sospeso. Per accenderla, in quest'ordine:
+//   1. lanciare supabase/modifiche/2026-10-16-promozioni.sql nel SQL Editor;
+//   2. rimettere in privacy.html il testo delle offerte:
+//        git diff d516570^ d516570 -- privacy.html | git apply
+//   3. qui sotto true, e alzare CACHE_NAME.
+// Senza il punto 1 la casella prometterebbe un elenco che non si salva.
+const PROMOZIONI_ATTIVE = false;
 
 // Un tetto serve: dopo una decina di escursioni il messaggio WhatsApp diventa
 // illeggibile e la richiesta non e' piu' una richiesta, e' un preventivo.
@@ -407,7 +415,7 @@ function initLista() {
                autocapitalize="off" spellcheck="false"
                data-i18n-placeholder="req.emailPlaceholder" required />
         <p class="hint" data-i18n="req.emailHint"></p>
-        <label class="request-check">
+        <label class="request-check" data-lista-promo${PROMOZIONI_ATTIVE ? "" : " hidden"}>
           <input id="listaPromo" name="promo" type="checkbox" />
           <span>
             <span data-i18n="lista.promo">Voglio ricevere le offerte di Admiral per email</span>
@@ -476,7 +484,7 @@ function initLista() {
     if (!listaWhatsappUrl(nome)) return;
     // Le promozioni: solo se il cliente ha spuntato la casella. L'email va
     // nell'elenco "promozioni" e da nessun'altra parte del database.
-    if (dialog.querySelector("#listaPromo").checked) promozioniIscrivi(email);
+    if (PROMOZIONI_ATTIVE && dialog.querySelector("#listaPromo").checked) promozioniIscrivi(email);
     // Gli avvisi si chiedono qui, PRIMA di andare su WhatsApp: dopo, la
     // pagina non c'e' piu' e non potrebbe chiedere niente. Il browser mostra
     // la sua domanda solo la prima volta; il pulsante si spegne intanto, se no

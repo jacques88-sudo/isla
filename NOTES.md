@@ -18911,3 +18911,10 @@ Group Catamaran, Opera 60, Luxury Cruiser, Skyline Cruiser). Nel modulo si disti
 per il gruppo, ma alla lettura della foto arrivavano due titoli identici.
 `catalogoPerLettura()` ora attacca **"[tour privato]"** alle schede di `tour-privati`; la
 funzione `leggi-ticket` non va ridistribuita. `CACHE_NAME` → `isla-v524`.
+
+## Trekking: l'ora si concorda (16 ottobre 2026)
+
+Il proprietario: per il trekking non c'è un orario preciso, si decide insieme al
+cliente. `times: []` sulla scheda `trekking-bici`: il menu "A che ora" mostra solo "Da
+concordare", senza le fasce segnaposto. `orari-mancanti.js` ora elenca una sola scheda
+senza orari, il Cabrio Bus. `CACHE_NAME` → `isla-v525`.

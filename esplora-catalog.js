@@ -2306,6 +2306,9 @@ const ESPLORA_CATALOG = [
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo", fr: "Journée entière", de: "Ganztags" },
     zoneGroups: ["teide-nord"],
     durationGroups: ["intera"],
+    // Nessun orario fisso: l'ora si decide insieme al cliente (proprietario,
+    // 16 ottobre 2026). [] = solo "Da concordare", senza fasce segnaposto.
+    times: [],
     // Il nome della seconda riga. Sta sulla scheda e non nelle varianti perche'
     // e' lo stesso per tutti e tre: quello che cambia e' il numero.
     activityLabel: { it: "Tempo di cammino", en: "Walking time", es: "Tiempo de caminata", fr: "Temps de marche", de: "Gehzeit" },

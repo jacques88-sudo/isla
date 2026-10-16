@@ -878,6 +878,37 @@ a { text-decoration: none; color: inherit; }
 
 .install-btn { margin-bottom: 1.6rem; }
 
+/* I passi per installare sull'iPhone (app.js, apriIstruzioniIos). Sopra il
+   menu laterale, che sta a 40/41. */
+.ios-install-scrim { z-index: 50; }
+.ios-install { z-index: 51; }
+.ios-install-intro { margin: 0 0 1rem; color: var(--muted); }
+.ios-install-steps {
+  list-style: none;
+  margin: 0 0 1.4rem;
+  padding: 0;
+}
+.ios-install-steps li {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: .7rem 0;
+  border-top: 1px solid var(--border);
+}
+.ios-install-steps li:first-child { border-top: 0; }
+.ios-install-ico {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 12px;
+  background: var(--cream);
+  color: #0a84ff;
+  font-size: 1.2rem;
+}
+.ios-install-ico svg { width: 1.5rem; height: 1.5rem; }
+
 /* La finestra del ticket: numero e telefono (app.js, booking.js). Stessa
    pillola dei campi della richiesta; il prefisso e' un menu stretto accanto. */
 .lookup-input,

@@ -19047,3 +19047,8 @@ del bottone nel Menu.
 **Il titolo della finestra** è "Isla fra le tue app" (`install.ios.title`), non più
 "Installa l'app": il bottone nel Menu resta "Installa l'app". La frase sotto è diventata
 "Bastano tre tocchi in Safari:", per non ripetere "fra le tue app" due righe di fila.
+
+**L'avviso arriva prima** (proprietario, stesso giorno: "si può ridurre il tempo?"). Non
+più 4 secondi dall'apertura, ma **un secondo e mezzo dopo che la pagina è caricata**
+(evento `load`). Non si scende a zero: con la rete lenta la schermata del logo
+(`initSplash`) resta fino a 4 secondi, e l'avviso le sarebbe finito sotto.

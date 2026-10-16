@@ -188,7 +188,8 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   finestra della lista una casella **non spuntata**; solo chi la spunta finisce nella
   tabella `promozioni` (`supabase/modifiche/2026-10-16-promozioni.sql`), con lingua,
   data e frase del consenso. Non si svuota ogni mese: si toglie quando il cliente lo
-  chiede. Lo dice `privacy.html`.
+  chiede. **Oggi è spenta** (proprietario, 16 ottobre: "in sospeso"): come si accende
+  lo dice il commento su `PROMOZIONI_ATTIVE` in `lista.js`.
   Attenzione: dal 13 ottobre nel database si salva **una copia del messaggio**
   (`request_message`), e il 15 ottobre si è scoperto che conteneva anche l'email. Ora
   `lista.js` salva la copia scritta **senza** email (proprietario, 15 ottobre 2026: "per il

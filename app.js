@@ -238,6 +238,7 @@ function initInstallButton() {
       b.hidden = false;
       b.addEventListener("click", apriIstruzioniIos);
     });
+    setTimeout(avvisoInstallaIos, 4000);
     return;
   }
 
@@ -256,6 +257,53 @@ document.addEventListener("DOMContentLoaded", initInstallButton);
 function soloAMano() {
   return /iPhone|iPad|iPod/.test(navigator.userAgent) ||
     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+}
+
+// L'avviso in basso che invita a installare, sull'iPhone (proprietario, 16
+// ottobre 2026): il bottone nel Menu non lo trova nessuno. Torna a ogni
+// visita finche' il cliente non tocca la ✕ o "Come si fa"; poi mai piu'.
+// Senza localStorage (navigazione privata) tornerebbe sempre: meglio non
+// mostrarlo affatto.
+const INSTALLA_VISTO_KEY = "isla-installa-visto";
+
+function avvisoInstallaIos() {
+  try {
+    if (localStorage.getItem(INSTALLA_VISTO_KEY)) return;
+    localStorage.setItem(INSTALLA_VISTO_KEY + "-prova", "1");
+    localStorage.removeItem(INSTALLA_VISTO_KEY + "-prova");
+  } catch (e) { return; }
+
+  const avviso = document.createElement("div");
+  avviso.className = "install-hint";
+  avviso.setAttribute("role", "region");
+  avviso.innerHTML =
+    `<span class="install-hint-ico" aria-hidden="true">${ICONA_AGGIUNGI}</span>` +
+    `<span class="install-hint-text"><strong></strong><small></small></span>` +
+    `<button class="btn btn-primary install-hint-how" type="button"></button>` +
+    `<button class="iconbtn install-hint-close" type="button">✕</button>`;
+  const scrivi = () => {
+    avviso.setAttribute("aria-label", t("install.hint.title"));
+    avviso.querySelector("strong").textContent = t("install.hint.title");
+    avviso.querySelector("small").textContent = t("install.hint.text");
+    avviso.querySelector(".install-hint-how").textContent = t("install.hint.how");
+    avviso.querySelector(".install-hint-close").setAttribute("aria-label", t("menu.close"));
+  };
+  scrivi();
+  document.addEventListener("islalang", scrivi);
+
+  const via = () => {
+    try { localStorage.setItem(INSTALLA_VISTO_KEY, "1"); } catch (e) {}
+    avviso.classList.remove("is-visible");
+    setTimeout(() => avviso.remove(), 300);
+  };
+  avviso.querySelector(".install-hint-close").addEventListener("click", via);
+  avviso.querySelector(".install-hint-how").addEventListener("click", () => {
+    via();
+    apriIstruzioniIos();
+  });
+
+  document.body.append(avviso);
+  requestAnimationFrame(() => avviso.classList.add("is-visible"));
 }
 
 // Le icone sono quelle che il cliente vede sul suo telefono: il quadrato con

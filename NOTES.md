@@ -19052,3 +19052,36 @@ del bottone nel Menu.
 più 4 secondi dall'apertura, ma **un secondo e mezzo dopo che la pagina è caricata**
 (evento `load`). Non si scende a zero: con la rete lenta la schermata del logo
 (`initSplash`) resta fino a 4 secondi, e l'avviso le sarebbe finito sotto.
+
+## 16 ottobre 2026 — Manifest: scorciatoie e schermate
+
+`manifest.json` riscritto (proprietario: "manca una scorciatoia"). Cosa c'è di nuovo:
+
+- **`id`: `/isla/index.html`.** Prima non c'era, e Chrome usava lo `start_url` come
+  identità dell'app, cioè `https://jacques88-sudo.github.io/isla/index.html`. Va lasciato
+  **così**: se un giorno l'`id` cambia, per Chrome è un'altra app e chi l'ha già
+  installata se la ritrova doppia.
+  **Attenzione: l'`id` si legge dal dominio, non dalla cartella del manifest.** La prima
+  versione di questa PR aveva `"./index.html"`, che Chrome trasforma in
+  `…github.io/index.html`, senza `isla`: un'app nuova. Provandolo con il sito alla radice
+  di `localhost` non si vede, perché lì i due indirizzi coincidono; va provato con il
+  sito sotto `/isla/`, come su GitHub Pages (`Page.getAppId` deve dare `/isla/index.html`).
+- **Tre scorciatoie** (tenendo premuta l'icona su Android, tasto destro sul computer):
+  "Le mie prenotazioni" (`index.html?ticket=1`), "Tutte le escursioni", "La mappa".
+  Per la prima, `initTicketDialog` in `app.js` apre la finestra del ticket quando
+  l'indirizzo ha `?ticket`; e `sw.js` mette in cache `./index.html?ticket=1`, perché con
+  il "?" per la cache è un altro indirizzo (vedi le righe di `?famiglia=1`).
+- **Le scorciatoie sono in inglese per tutti** (proprietario, stesso giorno: "meglio
+  inglese per tutti"): il manifest non sa cambiare lingua, e il telefono di un cliente
+  tedesco mostrerebbe le stesse scritte. Sono le parole inglesi che Isla usa già
+  (`nav.myBookings`, `nav.experiences`, `menu.map`), così menu e scorciatoie coincidono.
+  In inglese anche le didascalie delle schermate. Le icone delle scorciatoie per ora
+  sono l'icona dell'app.
+- **Tre schermate** (`assets/schermate/`: home, escursioni, ticket), 780×1688, scattate
+  con playwright dalle pagine vere a 390×844 per 2. Android le mostra nella finestra di
+  installazione, più grande di quella senza. **Non sono nella cache del service worker**:
+  servono solo a chi installa. Se l'aspetto delle pagine cambia molto, vanno rifatte.
+- `description`, `lang`, `dir`, `categories: ["travel"]` e il nome lungo
+  "Isla · La tua escursione a Tenerife" (uguale al `<title>` della home); sotto l'icona
+  resta `short_name`, "Isla".
+- Verificato con Chrome (`Page.getAppManifest`): nessun errore.

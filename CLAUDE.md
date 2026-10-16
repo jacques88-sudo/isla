@@ -476,17 +476,40 @@ scoperti solo mettendole vicino alle altre.
 
 ---
 
-## Notifiche e offline avanzato: la skill "Pwa Expert"
+## Skill da proporre al momento giusto
+
+Skill di someclaudeskills.com che il proprietario ha valutato e **non ha installato**:
+vanno proposte solo quando arriva il lavoro giusto. Sono basi generiche, non conoscono
+Isla: **le regole di questo file e di `NOTES.md` vincono sempre.** Si installano in
+Claude Code con `/plugin marketplace add erichowens/some_claude_skills` (una volta sola)
+e poi il `/plugin install` scritto sotto.
+
+### Notifiche e offline avanzato: "Pwa Expert"
 
 Prima di lavorare alle **notifiche push** (`manda-notifiche`, service worker) o a un
 offline più spinto (Background Sync, aggiornamenti dell'app), proponi al proprietario di
 installare la skill **Pwa Expert** di someclaudeskills.com (16 ottobre 2026, proprietario):
 
 ```
-/plugin marketplace add erichowens/some_claude_skills
 /plugin install pwa-expert@some-claude-skills
 ```
 
-È una base generica, non conosce Isla: **le regole di questo file e di `NOTES.md` vincono
-sempre.** Due limiti noti: gli esempi sono in React (qui niente framework) ed è debole
+Due limiti noti: gli esempi sono in React (qui niente framework) ed è debole
 su iPhone, dove `beforeinstallprompt` e Background Sync non esistono.
+
+### Database grande o clienti con account: "Supabase Admin"
+
+Proponila **solo** in uno di questi due casi (16 ottobre 2026, proprietario):
+- anche i **clienti** avranno un vero account con login (oggi ce l'hanno solo i venditori);
+- le tabelle (`bookings`, richieste) sono cresciute e le ricerche sono **lente**: lì
+  servono gli indici.
+
+```
+/plugin install supabase-admin@some-claude-skills
+```
+
+Oggi non serve: le regole di sicurezza di Isla sono già fatte bene (`anon` non legge
+`bookings`, il cliente passa da `le_mie_escursioni()`, le funzioni `security definer`
+hanno già `set search_path = ''`). La skill **non copre** le funzioni (`manda-notifiche`,
+`leggi-ticket`, `pulisci-foto`) né le foto, e i suoi esempi danno per scontato che ogni
+utente abbia un account (`auth.uid()`): da noi il cliente non ce l'ha.

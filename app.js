@@ -361,7 +361,7 @@ function apriIstruzioniIos() {
     `<button class="iconbtn" type="button" data-ios-close aria-label="${t("menu.close")}">✕</button></div>` +
     `<p class="ios-install-intro"></p><ol class="ios-install-steps">${passi.join("")}</ol>` +
     `<button class="btn btn-primary btn-block" type="button" data-ios-close></button>`;
-  dialog.querySelector("h2").textContent = t("menu.install");
+  dialog.querySelector("h2").textContent = t("install.ios.title");
   dialog.querySelector(".ios-install-intro").textContent = t("install.ios.intro");
   dialog.querySelector(".btn-primary").textContent = t("install.ios.ok");
 

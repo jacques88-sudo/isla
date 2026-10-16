@@ -19057,9 +19057,15 @@ più 4 secondi dall'apertura, ma **un secondo e mezzo dopo che la pagina è cari
 
 `manifest.json` riscritto (proprietario: "manca una scorciatoia"). Cosa c'è di nuovo:
 
-- **`id` uguale allo `start_url` (`./index.html`).** Prima non c'era, e Chrome usava lo
-  `start_url` come identità dell'app. Va lasciato **così**: se un giorno l'`id` cambia,
-  per Chrome è un'altra app e chi l'ha già installata se la ritrova doppia.
+- **`id`: `/isla/index.html`.** Prima non c'era, e Chrome usava lo `start_url` come
+  identità dell'app, cioè `https://jacques88-sudo.github.io/isla/index.html`. Va lasciato
+  **così**: se un giorno l'`id` cambia, per Chrome è un'altra app e chi l'ha già
+  installata se la ritrova doppia.
+  **Attenzione: l'`id` si legge dal dominio, non dalla cartella del manifest.** La prima
+  versione di questa PR aveva `"./index.html"`, che Chrome trasforma in
+  `…github.io/index.html`, senza `isla`: un'app nuova. Provandolo con il sito alla radice
+  di `localhost` non si vede, perché lì i due indirizzi coincidono; va provato con il
+  sito sotto `/isla/`, come su GitHub Pages (`Page.getAppId` deve dare `/isla/index.html`).
 - **Tre scorciatoie** (tenendo premuta l'icona su Android, tasto destro sul computer):
   "Le mie prenotazioni" (`index.html?ticket=1`), "Tutte le escursioni", "La mappa".
   Per la prima, `initTicketDialog` in `app.js` apre la finestra del ticket quando

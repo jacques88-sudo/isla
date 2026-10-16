@@ -184,6 +184,11 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   ottobre 2026): molte compagnie (i parchi per primi) mandano il biglietto per email.
   Sta sotto il nome nella finestra della lista (`lista.js`) e va **solo** nel messaggio
   WhatsApp, mai nel database. Non si fa un elenco di schede che la vogliono.
+  **Unica eccezione, le promozioni** (proprietario, 16 ottobre 2026, solo email): nella
+  finestra della lista una casella **non spuntata**; solo chi la spunta finisce nella
+  tabella `promozioni` (`supabase/modifiche/2026-10-16-promozioni.sql`), con lingua,
+  data e frase del consenso. Non si svuota ogni mese: si toglie quando il cliente lo
+  chiede. Lo dice `privacy.html`.
   Attenzione: dal 13 ottobre nel database si salva **una copia del messaggio**
   (`request_message`), e il 15 ottobre si è scoperto che conteneva anche l'email. Ora
   `lista.js` salva la copia scritta **senza** email (proprietario, 15 ottobre 2026: "per il

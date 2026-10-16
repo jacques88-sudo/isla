@@ -18861,3 +18861,30 @@ i nostri servizi acconsenti": per il GDPR il consenso così non vale.
 la chiede fra i dati di chi gestisce il sito) e il **numero di registro dell'agenzia di
 viaggi** delle Canarie (I-AV-…). Vanno nei termini ("Chi siamo") e nella privacy
 ("Chi è il titolare"), nelle cinque lingue. `CACHE_NAME` → `isla-v521`.
+
+## Le offerte per email (16 ottobre 2026)
+
+Deciso dal proprietario: **strada B, solo email** (le altre erano A, niente promozioni,
+e C, i soli clienti che hanno pagato con l'eccezione del "soft opt-in"). WhatsApp no:
+i messaggi a tanti arrivano solo a chi ha salvato il numero, e WhatsApp blocca chi
+manda pubblicità non chiesta.
+
+- Nella finestra della lista (`lista.js`), sotto l'email, una casella **non spuntata**:
+  "Voglio ricevere le offerte di Admiral per email" (`lista.promo`, `lista.promoNota`).
+  Spuntata, all'invio parte `iscrivi_promozioni()` con email, lingua e la frase
+  spuntata nella lingua del cliente (la prova del consenso). Se non arriva, la
+  richiesta su WhatsApp parte lo stesso.
+- Tabella `promozioni` (`supabase/modifiche/2026-10-16-promozioni.sql`, la lancia il
+  proprietario): una riga per email, **non** si svuota ogni mese. RLS: dal sito si
+  scrive solo dalla funzione, la leggono e la cancellano solo gli account dell'ufficio
+  (`is_office()`). L'elenco si scarica dal Table Editor (Export to CSV); per togliere
+  qualcuno, la riga "delete" in fondo al file.
+- La regola "l'email mai nel database" resta per tutto il resto: il messaggio salvato
+  è ancora senza email. CLAUDE.md lo dice.
+- `privacy.html`, cinque lingue: sezione "Le offerte per email", tempi (fino a quando
+  il cliente chiede di uscire), ritiro del consenso, e "non li usiamo per pubblicità"
+  ora ha l'eccezione delle offerte chieste.
+
+**Limite noto**: senza una email di conferma ("doppio sì") chiunque potrebbe scrivere
+l'email di un altro. Quando ci sarà l'email di Isla, la prima email all'iscritto deve
+dire come uscire; ogni email di offerte deve dirlo comunque. `CACHE_NAME` → `isla-v522`.

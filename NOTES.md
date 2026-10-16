@@ -18918,3 +18918,27 @@ Il proprietario: per il trekking non c'è un orario preciso, si decide insieme a
 cliente. `times: []` sulla scheda `trekking-bici`: il menu "A che ora" mostra solo "Da
 concordare", senza le fasce segnaposto. `orari-mancanti.js` ora elenca una sola scheda
 senza orari, il Cabrio Bus. `CACHE_NAME` → `isla-v525`.
+
+## 16 ottobre 2026 — Controllo generale: date scadute nella lista, pulizia
+
+Il proprietario: "Isla è finita, controlla se tutto va bene". Fatto un giro di tutte le
+pagine nel browser (ogni scheda, ogni pacchetto, cinque lingue, 375 px): nessun errore
+JavaScript, nessuna chiave non tradotta, nessun file mancante.
+
+- **Bug: una voce rimasta nella lista per giorni partiva con la data scaduta.** La data
+  si controlla quando si aggiunge (da domani in poi), ma la lista sta nel telefono: chi
+  tornava dopo una settimana mandava "Data: 10/10" il 16. Il database rifiuta le date di
+  più di un giorno fa (`manda_richiesta`), quindi la richiesta non entrava e l'ufficio
+  riceveva su WhatsApp un codice che in `venditori.html` non trovava. Ora
+  `listaVoceScaduta()` in `lista.js`: la voce con un giorno prima di domani (le 24 ore)
+  è segnata in rosso (`lista.pastDate`), sopra il pulsante c'è l'avviso
+  (`lista.pastBlock`) e il pulsante resta spento finché non la si toglie. Per un
+  pacchetto conta il giorno d'inizio. Nel tema scuro la cartolina resta di carta, quindi
+  dentro `.lista-dialog` `--danger` torna il rosso del giorno.
+- `richieste.js` calcolava "oggi" e "ieri" con `toISOString()` (UTC): fra mezzanotte e
+  l'una, d'estate, diceva ancora ieri. Ora `richiesteGiorno()`, con la data locale.
+- Tolti: `whatsappUrl()` in `escursioni.js` (nessuno la chiamava, e non passava da
+  `perUfficio()`: usata un giorno avrebbe mandato all'ufficio un messaggio in francese),
+  `I18N_LANG_NAMES`, le chiavi `tour.ask` e `booking.retry`, il CSS di `.lookup-row`,
+  `.detail-add`, `.map-popup` e `.map-pop` (rimasti dopo vecchie modifiche), e
+  `assets/Secret-cove.jpg`. `CACHE_NAME` → `isla-v526`.

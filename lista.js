@@ -117,6 +117,15 @@ function listaToast(testo) {
   listaToastTimer = setTimeout(() => el.classList.remove("is-visible"), 2600);
 }
 
+// Una voce rimasta nella lista per giorni puo' avere un giorno che non si puo'
+// piu' chiedere: oggi, o gia' passato. Le 24 ore di preavviso valgono anche
+// qui, e una data di piu' di un giorno fa il database la rifiuta del tutto
+// (manda_richiesta): l'ufficio riceverebbe su WhatsApp un codice che
+// nell'elenco non trova. Per un pacchetto conta il giorno d'inizio.
+function listaVoceScaduta(voce) {
+  return !voce.date || voce.date < minRequestDate();
+}
+
 // Il conto di una voce della lista: l'attivita' dal catalogo e il totale, che
 // puo' non esserci (prezzo su richiesta, prezzo a barca, bambini senza prezzo).
 // Un pacchetto torna come { pack, conto }: il suo conto e' quello del
@@ -329,6 +338,7 @@ function initLista() {
             <span>${esc(dettagli.join(" · "))}</span>
             <span>${esc(t("pack.inside") + ": " + pacchettoVociTesto(pack))}</span>
             ${risparmio}
+            ${listaVoceScaduta(voce) ? `<span class="lista-voce-scaduta">${esc(t("lista.pastDate"))}</span>` : ""}
           </div>
           <span class="lista-voce-prezzo">${riga.conto ? "€" + eur(riga.conto.totale) : "—"}</span>
           <button class="iconbtn lista-voce-togli" type="button" data-lista-remove="${i}"
@@ -388,6 +398,7 @@ function initLista() {
           <div class="lista-voce-testo">
             <strong>${esc(tf(riga.tour.title))}</strong>
             <span>${esc(dettagli.join(" · "))}</span>
+            ${listaVoceScaduta(voce) ? `<span class="lista-voce-scaduta">${esc(t("lista.pastDate"))}</span>` : ""}
           </div>
           <span class="lista-voce-prezzo">${riga.conto ? "€" + eur(riga.conto.totale) : esc(tourPrice(riga.tour))}</span>
           <button class="iconbtn lista-voce-togli" type="button" data-lista-remove="${i}"
@@ -396,6 +407,9 @@ function initLista() {
     }).join("");
 
     const { somma, senzaPrezzo } = listaSomma(voci);
+    // Con una data scaduta la richiesta non parte: il cliente toglie la voce
+    // e la rimette con un altro giorno.
+    const scadute = voci.some(listaVoceScaduta);
     const totale = somma > 0
       ? `<p class="lista-totale">
            <strong>€${eur(somma)}</strong>
@@ -430,8 +444,9 @@ function initLista() {
           </span>
         </label>
         <p class="hint" data-lista-avvisi-ios hidden data-i18n="lista.avvisiIos"></p>
+        ${scadute ? '<p class="request-day-error" data-i18n="lista.pastBlock"></p>' : ""}
         <button class="btn btn-primary btn-block request-submit" type="submit"
-                data-i18n="req.submit">Continua su WhatsApp</button>
+                data-i18n="req.submit"${scadute ? " disabled" : ""}>Continua su WhatsApp</button>
         <p class="hint" data-i18n="lista.hint"></p>
         <p class="hint" data-i18n-html="req.hint"></p>
         <p class="hint request-privacy" data-i18n-html="req.privacy"></p>
@@ -471,6 +486,8 @@ function initLista() {
     e.preventDefault();
     const nome = dialog.querySelector("#listaName").value.trim();
     if (!nome) return;
+    // la finestra puo' essere rimasta aperta oltre la mezzanotte
+    if (listaLeggi().some(listaVoceScaduta)) { disegna(); return; }
     // Il browser con type="email" accetta anche "mario@gmail" senza ".com":
     // e' l'errore che si fa di piu' col pollice, e un biglietto mandato li'
     // non arriva a nessuno. Il punto dopo la chiocciola lo chiediamo noi.

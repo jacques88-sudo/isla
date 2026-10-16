@@ -18826,6 +18826,8 @@ richieste, non all'escursione dell'avviso — con più escursioni, confonde.
 - **Va ripubblicata `manda-notifiche`** su Supabase: finché non la si
   ripubblica gli avvisi portano ancora alla lista intera. Gli avvisi già
   arrivati sul telefono tengono l'indirizzo vecchio.
+- **Ripubblicata** dal proprietario il 16 ottobre 2026. Da guardare col primo
+  avviso vero: deve aprire la sua escursione, col bordo.
 
 ## I prezzi comprendono l'IGIC (16 ottobre 2026)
 

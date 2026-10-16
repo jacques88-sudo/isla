@@ -473,3 +473,20 @@ testo `inc.<parola>` in `i18n.js`. Una parola senza icona **viene saltata in sil
 Le icone si guardano **tutte in fila**, mai una alla volta: da sole sembrano giuste. Un
 asciugamano appeso sembrava un bicchiere e una pompa di benzina sembrava una caraffa,
 scoperti solo mettendole vicino alle altre.
+
+---
+
+## Notifiche e offline avanzato: la skill "Pwa Expert"
+
+Prima di lavorare alle **notifiche push** (`manda-notifiche`, service worker) o a un
+offline più spinto (Background Sync, aggiornamenti dell'app), proponi al proprietario di
+installare la skill **Pwa Expert** di someclaudeskills.com (16 ottobre 2026, proprietario):
+
+```
+/plugin marketplace add erichowens/some_claude_skills
+/plugin install pwa-expert@some-claude-skills
+```
+
+È una base generica, non conosce Isla: **le regole di questo file e di `NOTES.md` vincono
+sempre.** Due limiti noti: gli esempi sono in React (qui niente framework) ed è debole
+su iPhone, dove `beforeinstallprompt` e Background Sync non esistono.

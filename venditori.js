@@ -377,7 +377,11 @@ function catalogoPerLettura() {
     // al titolo: la funzione sul server mette nel prompt solo id, titolo e
     // varianti, e cosi' non c'e' da ridistribuirla.
     const nomi = t.nomi && t.nomi.length ? ` (sul ticket anche: ${t.nomi.join(", ")})` : "";
-    const scheda = { id: t.id, title: titoloDi(t) + nomi };
+    // Sei barche stanno due volte, col titolo uguale: il giro condiviso e il
+    // charter privato (tour-privati). Senza questo segno la lettura della foto
+    // non avrebbe niente per sceglierne una.
+    const privato = t.category === "tour-privati" ? " [tour privato]" : "";
+    const scheda = { id: t.id, title: titoloDi(t) + privato + nomi };
     const scelte = t.options && t.options.choices;
     if (scelte) scheda.options = scelte.map(c => italiano(c.label));
     // Le schede a mezzo dicono anche i tipi, con la chiave che salva il modulo:

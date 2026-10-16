@@ -238,7 +238,12 @@ function initInstallButton() {
       b.hidden = false;
       b.addEventListener("click", apriIstruzioniIos);
     });
-    setTimeout(avvisoInstallaIos, 4000);
+    // Un secondo e mezzo dopo che la pagina e' caricata, non un tempo fisso
+    // dall'apertura: con la rete lenta la schermata del logo (initSplash)
+    // resta fino a 4 secondi, e l'avviso le finiva sotto.
+    const dopo = () => setTimeout(avvisoInstallaIos, 1500);
+    if (document.readyState === "complete") dopo();
+    else window.addEventListener("load", dopo, { once: true });
     return;
   }
 

@@ -18896,3 +18896,18 @@ uscito dalla privacy, perché il cliente non legga una promessa che non funziona
 il resto (SQL, funzione, testi in `i18n.js`) resta pronto; i tre passi per riaccendere
 stanno nel commento su `PROMOZIONI_ATTIVE`. Il promemoria è su Notion.
 `CACHE_NAME` → `isla-v523`.
+
+## I nomi sul ticket: bastano i titoli (16 ottobre 2026)
+
+Il proprietario ha confermato che sui ticket di carta, per le 54 schede senza `nomi`
+(tour del Teide e dell'isola, catamarani e cruiser, elicottero, karting, parapendio,
+quad, Mustang, pesca, immersioni, surf, Water Car, tuk tuk, vini, trekking, Cabrio,
+spettacoli), **c'è scritto il titolo della scheda**: non serve aggiungere niente. I
+`nomi` restano solo per le compagnie che scrivono un nome diverso dal titolo.
+
+Il controllo ha trovato un buco: **sei barche stanno due volte con lo stesso titolo**,
+il giro condiviso e il charter privato (Whale & Dolphin 3 ore, Luxury Catamaran, Small
+Group Catamaran, Opera 60, Luxury Cruiser, Skyline Cruiser). Nel modulo si distinguono
+per il gruppo, ma alla lettura della foto arrivavano due titoli identici.
+`catalogoPerLettura()` ora attacca **"[tour privato]"** alle schede di `tour-privati`; la
+funzione `leggi-ticket` non va ridistribuita. `CACHE_NAME` → `isla-v524`.

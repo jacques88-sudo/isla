@@ -18953,3 +18953,24 @@ famiglia", e "Verkaufsbedingungen" in testa ai termini in tedesco. Tutti i `.btn
 su una riga, perché stanno accanto a qualcosa), e `.privacy h1` spezza la parola.
 Gli altri "fuori schermo" della prima lista erano momentanei, durante il caricamento.
 `CACHE_NAME` → `isla-v527`.
+
+## 16 ottobre 2026 — Il suggerimento dell'hotel e il bollino dei pacchetti
+
+Il proprietario, dopo il controllo generale: "sistema il 2 e il 3".
+
+- **"Dove alloggi"**: il suggerimento diceva "se non trovi il tuo, scrivilo nelle note".
+  Ma il campo è una casella di testo, e il nome scritto lì arriva nel messaggio e serve
+  al pick-up: ora dice "scrivi qui il nome o l'indirizzo" (`req.hotelHint` e
+  `req.hotelHintTime`, cinque lingue, e il testo di riserva nelle due finestre).
+- **Il bollino "Risparmi €…" sui riquadri piccoli dei pacchetti copriva il titolo.**
+  Misurato con le lettere vere (non con il riquadro del titolo, largo tutta la riga): a
+  320 e 360 px in tutte e cinque le lingue, a 375 in francese, e sui riquadri dei giorni
+  anche "3 giorni" sopra il titolo. A 320 px poi il testo era più alto del riquadro e il
+  titolo usciva dal bordo in alto, bollino o no.
+  - Il bollino ha due testi (`.pack-badge-lungo` / `.pack-badge-corto`): fra 360 e 639 px
+    i riquadri piccoli mostrano "−€5,50", su una riga, più in alto nell'angolo. Il corto
+    non si traduce. Il riquadro grande e quelli allargati restano col testo intero.
+  - Sotto i 360 px i riquadri sono uno per riga, larghi 16:10 come il primo, e il prezzo
+    barrato torna (c'è posto).
+  Rimisurato: nessuna lettera sotto il bollino, nessun testo fuori dal riquadro, a 320,
+  360, 375 e 414 px nelle cinque lingue. `CACHE_NAME` → `isla-v528`.

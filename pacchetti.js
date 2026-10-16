@@ -1907,6 +1907,9 @@ function pacchettoPrezzoHTML(conto) {
       <small>${esc(t("pack.perPerson"))}</small></span>`;
 }
 
+// Il bollino ha due testi: "Risparmi €5,50" e "−€5,50". Sui riquadri piccoli
+// del telefono quello lungo andava su due righe e copriva tutto il titolo
+// (16 ottobre 2026): li' si vede il corto, che non si traduce (styles.css).
 // Il riquadro della vetrina: foto, titolo e prezzo, e si tocca tutto. Sugli
 // itinerari sopra il titolo c'e' quanti giorni sono: nella vetrina "tutti" i
 // sei riquadri si somigliano, e "Tre giorni" e "Sette giorni" scritti nel
@@ -1924,7 +1927,7 @@ function pacchettoTileHTML(pack) {
           <span class="pack-tile-prezzo">${pacchettoPrezzoHTML(conto)}</span>
         </span>
         ${conto && conto.risparmio > 0
-          ? `<span class="pack-badge">${esc(t("pack.save", { n: eur(conto.risparmio) }))}</span>`
+          ? `<span class="pack-badge"><span class="pack-badge-lungo">${esc(t("pack.save", { n: eur(conto.risparmio) }))}</span><span class="pack-badge-corto">−€${esc(eur(conto.risparmio))}</span></span>`
           : ""}
       </a>
     </li>`;

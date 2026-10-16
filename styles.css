@@ -1012,6 +1012,17 @@ p.note-box { margin: 0 0 1rem; }
   color: var(--primary-foreground);
 }
 .btn-block { width: 100%; }
+/* Su un telefono stretto (320 px) un testo lungo tradotto non ci sta su una
+   riga: "Toutes les excursions adaptées aux enfants", "Ver todas las
+   excursiones". Questi pulsanti vanno a capo invece di uscire dallo schermo;
+   gli altri restano su una riga, accanto a qualcosa. */
+.btn-block,
+.state .btn {
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+  padding-block: .6rem;
+}
 /* Tutti i pulsanti "Aggiungi alla lista" sono azzurri, perche' si notino
    (proprietario, 12 ottobre 2026): nella scheda, sulla barra in fondo, in
    fondo alla finestra della richiesta e nel modulo dei pacchetti. Hanno la
@@ -1331,6 +1342,9 @@ html:not([lang="de"]) .pp[lang="de"] { display: none; }
 .privacy-home img { border-radius: 8px; }
 .privacy { padding-bottom: 4rem; line-height: 1.65; }
 .privacy h1 {
+  /* "Verkaufsbedingungen" e' una parola sola, piu' larga di un telefono da 320 px */
+  overflow-wrap: break-word;
+  hyphens: auto;
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 2.2rem;

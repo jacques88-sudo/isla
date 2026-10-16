@@ -18942,3 +18942,14 @@ JavaScript, nessuna chiave non tradotta, nessun file mancante.
   `I18N_LANG_NAMES`, le chiavi `tour.ask` e `booking.retry`, il CSS di `.lookup-row`,
   `.detail-add`, `.map-popup` e `.map-pop` (rimasti dopo vecchie modifiche), e
   `assets/Secret-cove.jpg`. `CACHE_NAME` → `isla-v526`.
+
+### Lo stesso giro a 320 px
+
+Rifatto a 320 px (il telefono più stretto ancora in giro). Usciti dallo schermo, a pagina
+ferma, tre casi: il pulsante "Ver todas las excursiones" / "Voir toutes les excursions"
+della scheda non trovata, "Toutes les excursions adaptées aux enfants" in fondo a "In
+famiglia", e "Verkaufsbedingungen" in testa ai termini in tedesco. Tutti i `.btn` hanno
+`white-space: nowrap`: ora `.btn-block` e `.state .btn` vanno a capo (gli altri restano
+su una riga, perché stanno accanto a qualcosa), e `.privacy h1` spezza la parola.
+Gli altri "fuori schermo" della prima lista erano momentanei, durante il caricamento.
+`CACHE_NAME` → `isla-v527`.

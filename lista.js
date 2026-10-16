@@ -340,6 +340,8 @@ function initLista() {
     const email = emailScritta ? emailScritta.value : "";
     const avvisiScelti = corpo.querySelector("#listaAvvisi");
     const avvisi = avvisiScelti ? avvisiScelti.checked : true;
+    const promoScelta = corpo.querySelector("#listaPromo");
+    const promo = promoScelta ? promoScelta.checked : false;
     if (!voci.length) {
       const frase = vuotaDaSubito ? "lista.none" : "lista.empty";
       corpo.innerHTML = '<p class="lista-empty" data-i18n="' + frase + '"></p>';
@@ -405,6 +407,13 @@ function initLista() {
                autocapitalize="off" spellcheck="false"
                data-i18n-placeholder="req.emailPlaceholder" required />
         <p class="hint" data-i18n="req.emailHint"></p>
+        <label class="request-check">
+          <input id="listaPromo" name="promo" type="checkbox" />
+          <span>
+            <span data-i18n="lista.promo">Voglio ricevere le offerte di Admiral per email</span>
+            <small data-i18n="lista.promoNota"></small>
+          </span>
+        </label>
         <label class="request-check" data-lista-avvisi hidden>
           <input id="listaAvvisi" name="avvisi" type="checkbox" />
           <span>
@@ -424,6 +433,7 @@ function initLista() {
     applyI18n(corpo);
     if (nome) corpo.querySelector("#listaName").value = nome;
     if (email) corpo.querySelector("#listaEmail").value = email;
+    corpo.querySelector("#listaPromo").checked = promo;
     // Gli avvisi sul telefono (richieste.js): la casella c'e' solo dove il
     // telefono li sa ricevere e il cliente non li ha gia' rifiutati (il
     // browser non rifa' la domanda). Sull'iPhone senza l'app installata si
@@ -464,6 +474,9 @@ function initLista() {
       return;
     }
     if (!listaWhatsappUrl(nome)) return;
+    // Le promozioni: solo se il cliente ha spuntato la casella. L'email va
+    // nell'elenco "promozioni" e da nessun'altra parte del database.
+    if (dialog.querySelector("#listaPromo").checked) promozioniIscrivi(email);
     // Gli avvisi si chiedono qui, PRIMA di andare su WhatsApp: dopo, la
     // pagina non c'e' piu' e non potrebbe chiedere niente. Il browser mostra
     // la sua domanda solo la prima volta; il pulsante si spegne intanto, se no
@@ -508,6 +521,26 @@ function initLista() {
   });
 
   aggiornaFab();
+}
+
+// L'email di chi ha detto si' alle offerte (supabase/modifiche/
+// 2026-10-16-promozioni.sql). keepalive: la pagina sta per andare su WhatsApp,
+// e senza la richiesta verrebbe interrotta. Se non arriva, pazienza: la
+// richiesta su WhatsApp parte lo stesso.
+function promozioniIscrivi(email) {
+  if (typeof SUPABASE_URL === "undefined" || !SUPABASE_URL) return;
+  try {
+    fetch(SUPABASE_URL + "/rest/v1/rpc/iscrivi_promozioni", {
+      method: "POST",
+      keepalive: true,
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY
+      },
+      body: JSON.stringify({ p_email: email, p_lang: getLang(), p_testo: t("lista.promo") })
+    }).catch(() => {});
+  } catch (e) { /* niente rete: la richiesta parte lo stesso */ }
 }
 
 document.addEventListener("DOMContentLoaded", initLista);

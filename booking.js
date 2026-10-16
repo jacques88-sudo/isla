@@ -544,11 +544,20 @@ async function cercaTicketVero(code, phone) {
   else renderStato(ICONS.ticket, t("booking.loading"), "", false);
 
   let rows = null;
+  let troppi = false;
   try {
     const { data, error } = await sb.rpc("le_mie_escursioni", { p_phone: phone, p_ticket: code });
     if (!error) rows = data;
+    // Dieci ricerche l'ora per telefono (supabase/modifiche/2026-10-16-tentativi-ticket.sql):
+    // all'undicesima il database risponde con questo errore.
+    else troppi = /troppi tentativi/.test(error.message || "");
   } catch (e) { /* rete: si decide sotto */ }
 
+  if (troppi) {
+    // Il ticket gia' salvato su questo telefono resta com'e': e' suo.
+    if (!salvati) renderStato(ICONS.info, t("booking.tooMany"), t("booking.tooManyText"), true);
+    return;
+  }
   if (rows === null) {
     if (salvati) renderTicketVeri(salvati, code, true);
     else renderStato(ICONS.info, t("booking.offline"), t("booking.offlineText"), false);

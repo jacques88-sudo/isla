@@ -19085,3 +19085,42 @@ più 4 secondi dall'apertura, ma **un secondo e mezzo dopo che la pagina è cari
   "Isla · La tua escursione a Tenerife" (uguale al `<title>` della home); sotto l'icona
   resta `short_name`, "Isla".
 - Verificato con Chrome (`Page.getAppManifest`): nessun errore.
+
+## 16 ottobre 2026 — freno alla ricerca del ticket, link di pagamento solo https
+
+Dal controllo di sicurezza del 16 ottobre (punti 1 e 2). File da lanciare nel SQL
+Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
+
+- **Dieci ricerche l'ora per telefono** (proprietario, 16 ottobre 2026: "10 l'ora").
+  "Telefono + numero" protegge da chi prova telefoni a caso, **non** da chi conosce già
+  un telefono e prova i numeri del ticket: sono corti e prenumerati in ordine. Ora
+  `le_mie_escursioni` scrive ogni ricerca in `tentativi_ticket` (RLS attiva, nessun
+  permesso a nessuno) e all'undicesima nell'ora risponde
+  `troppi tentativi, riprova fra un'ora` invece di cercare. Il limite vale per ogni
+  telefono, **esista o no** nel database, così l'errore non rivela niente.
+- Per scrivere, la funzione è passata da `language sql stable` a **`plpgsql`**
+  (volatile: una funzione `stable` PostgREST la fa girare in sola lettura). Le colonne
+  restituite sono le stesse; `supabase/schema.sql` ha ancora la versione vecchia, come
+  per le altre funzioni cambiate in `modifiche/`.
+- **I tentativi restano un'ora**: li cancella la funzione stessa a ogni chiamata, non la
+  pulizia mensile come proposto nel controllo. La tabella resta minuscola e il telefono
+  non resta in giro un mese. È un tempo nuovo, quindi sta in `privacy.html` (cinque
+  lingue, nel paragrafo dei tempi di conservazione).
+- `booking.js` (`cercaTicketVero`): con quell'errore mostra "Troppi tentativi" (chiavi
+  `booking.tooMany` / `booking.tooManyText`) col modulo di ricerca sotto, perché chi ha
+  sbagliato telefono con un altro numero non è bloccato. **Se sul telefono c'è già il
+  risultato salvato, resta quello**, senza errore: ogni apertura di "Le mie
+  prenotazioni" e ogni cambio di lingua è una ricerca, e un cliente vero che la apre
+  spesso non deve vedersi bloccato.
+- Il rovescio: chi conosce un telefono e consuma i dieci tentativi blocca per un'ora
+  anche il cliente vero (che però vede il risultato salvato). Accettabile.
+- **Link di pagamento**: vincolo `payment_link_https` su `bookings`
+  (`payment_link ~ '^https://\S+$'`), la stessa regola di `venditori.js`. Prima la
+  controllava solo la pagina, e un account venditore può scrivere in `bookings` anche
+  senza. Il controllo in `cardTicket` (`booking.js`) c'era già dal 15 ottobre.
+- Provato su un Postgres 16 locale: dieci ricerche passano, l'undicesima dà l'errore,
+  un altro telefono no; passate due ore si riparte; `javascript:alert(1)` rifiutato,
+  `https://…` accettato; il file lanciato due volte non dà errori. Nel browser (it, de,
+  e col risultato salvato) con la risposta del database finta.
+- Punti 3 (tetti globali di `manda_richiesta` e `avvisami`) e 4 (doppio opt-in delle
+  promozioni) restano da fare quando servono.

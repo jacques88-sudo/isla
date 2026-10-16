@@ -2017,6 +2017,14 @@ body.menu-open { overflow: hidden; }
     aspect-ratio: 16 / 10;
   }
 }
+/* Sotto i 360 px (il telefono piu' stretto, 320) due riquadri per riga sono
+   quadrati da 134 px: titolo su tre righe, prezzo e "a persona" non ci stanno,
+   e il titolo usciva dal bordo in alto. Uno per riga, tutti come il primo. */
+@media (max-width: 359px) {
+  .pack-grid { grid-template-columns: 1fr; }
+  .pack-tile { aspect-ratio: 16 / 10; }
+  .pack-tile:not(:first-child) .price-before { display: inline; }
+}
 @media (min-width: 640px) {
   .pack-grid { grid-template-columns: repeat(3, 1fr); }
   .pack-tile:first-child { grid-column: span 2; aspect-ratio: auto; }
@@ -2223,6 +2231,21 @@ body.menu-open { overflow: hidden; }
   padding: .3rem .75rem;
   font-size: .7rem;
   letter-spacing: .06em;
+}
+.pack-badge-corto { display: none; }
+/* I riquadri piccoli del telefono (vedi .pack-grid): largo 150-170 px, il
+   bollino "Vous économisez €5,50" andava su due righe e copriva il titolo.
+   Li' si mostra "−€5,50", su una riga, piu' in alto nell'angolo. Sotto i
+   360 px i riquadri sono uno per riga e larghi: il bollino lungo ci sta. */
+@media (min-width: 360px) and (max-width: 639px) {
+  .pack-tile:not(:first-child):not(:nth-child(even):last-child) .pack-badge {
+    top: .55rem;
+    right: .55rem;
+    padding: .2rem .55rem;
+    white-space: nowrap;
+  }
+  .pack-tile:not(:first-child):not(:nth-child(even):last-child) .pack-badge-lungo { display: none; }
+  .pack-tile:not(:first-child):not(:nth-child(even):last-child) .pack-badge-corto { display: inline; }
 }
 
 /* ── Il pacchetto aperto ──────────────────────────────────────────────── */

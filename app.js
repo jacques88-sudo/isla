@@ -230,6 +230,17 @@ function initInstallButton() {
     btns.forEach(b => { b.hidden = true; });
   });
 
+  // iPhone e iPad: Safari non manda mai beforeinstallprompt, e il bottone
+  // restava spento. Li' l'app si installa solo a mano dal menu Condividi:
+  // il bottone si accende sempre e apre i tre passi da fare.
+  if (soloAMano()) {
+    btns.forEach(b => {
+      b.hidden = false;
+      b.addEventListener("click", apriIstruzioniIos);
+    });
+    return;
+  }
+
   btns.forEach(btn => btn.addEventListener("click", async () => {
     if (!deferred) return;
     deferred.prompt();
@@ -240,6 +251,85 @@ function initInstallButton() {
 }
 
 document.addEventListener("DOMContentLoaded", initInstallButton);
+
+// iPhone o iPad. L'iPad nuovo si presenta come un Mac: lo tradisce il tocco.
+function soloAMano() {
+  return /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+}
+
+// Le icone sono quelle che il cliente vede sul suo telefono: il quadrato con
+// la freccia di Condividi, i tre puntini (iOS 26 nasconde Condividi li'
+// dietro) e il quadrato col + di "Aggiungi alla schermata Home".
+const ICONA_CONDIVIDI = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4M7 11H5v10h14V11h-2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ICONA_PUNTINI = `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="19" cy="12" r="1.8" fill="currentColor"/></svg>`;
+const ICONA_AGGIUNGI = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8.5v7M8.5 12h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+
+// La finestra si costruisce qui e non nell'HTML: il bottone sta in sette
+// pagine, e la finestra serve solo sull'iPhone.
+function apriIstruzioniIos() {
+  // Dentro WhatsApp, Instagram o Facebook la pagina gira nel loro browser,
+  // che "Aggiungi alla schermata Home" non ce l'ha: prima va aperta in
+  // Safari. Safari, Chrome ed Edge scrivono "Safari" nel nome; quei browser no.
+  const dentroApp = !/Safari\//.test(navigator.userAgent);
+
+  let dialog = document.getElementById("iosInstall");
+  if (!dialog) {
+    const scrim = document.createElement("div");
+    scrim.className = "ticket-scrim ios-install-scrim";
+    scrim.hidden = true;
+    dialog = document.createElement("div");
+    dialog.className = "ticket-dialog ios-install";
+    dialog.id = "iosInstall";
+    dialog.setAttribute("role", "dialog");
+    dialog.setAttribute("aria-modal", "true");
+    dialog.setAttribute("aria-labelledby", "iosInstallTitle");
+    dialog.hidden = true;
+    document.body.append(scrim, dialog);
+
+    const chiudi = () => {
+      dialog.classList.remove("is-open");
+      scrim.classList.remove("is-visible");
+      document.body.classList.remove("menu-open");
+      setTimeout(() => { dialog.hidden = true; scrim.hidden = true; }, 300);
+    };
+    dialog._chiudi = chiudi;
+    scrim.addEventListener("click", chiudi);
+    dialog.addEventListener("click", e => { if (e.target.closest("[data-ios-close]")) chiudi(); });
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && dialog.classList.contains("is-open")) chiudi();
+    });
+  }
+
+  const passi = [];
+  if (dentroApp) passi.push(`<li><span class="ios-install-ico">${ICONA_PUNTINI}</span><span>${t("install.ios.inApp")}</span></li>`);
+  passi.push(
+    `<li><span class="ios-install-ico">${ICONA_CONDIVIDI}</span><span>${t("install.ios.share")}</span></li>`,
+    `<li><span class="ios-install-ico">${ICONA_AGGIUNGI}</span><span>${t("install.ios.add")}</span></li>`,
+    `<li><span class="ios-install-ico ios-install-ok">✓</span><span>${t("install.ios.confirm")}</span></li>`
+  );
+  dialog.innerHTML =
+    `<div class="ticket-dialog-head"><h2 id="iosInstallTitle"></h2>` +
+    `<button class="iconbtn" type="button" data-ios-close aria-label="${t("menu.close")}">✕</button></div>` +
+    `<p class="ios-install-intro"></p><ol class="ios-install-steps">${passi.join("")}</ol>` +
+    `<button class="btn btn-primary btn-block" type="button" data-ios-close></button>`;
+  dialog.querySelector("h2").textContent = t("menu.install");
+  dialog.querySelector(".ios-install-intro").textContent = t("install.ios.intro");
+  dialog.querySelector(".btn-primary").textContent = t("install.ios.ok");
+
+  // Il bottone sta nel menu laterale: il menu si chiude e fa posto.
+  const menuAperto = document.querySelector(".more-menu.is-open [data-menu-close]");
+  if (menuAperto) menuAperto.click();
+
+  const scrim = document.querySelector(".ios-install-scrim");
+  dialog.hidden = false;
+  scrim.hidden = false;
+  requestAnimationFrame(() => {
+    dialog.classList.add("is-open");
+    scrim.classList.add("is-visible");
+  });
+  document.body.classList.add("menu-open");
+}
 
 // Hero video play/pause toggle (home page only)
 function initHeroVideo() {

@@ -19000,3 +19000,25 @@ nessuno, parola sbagliata e chiave pubblica → 401; parola giusta e venditore �
 funzione nuova. Al contrario, per qualche minuto i promemoria si fermerebbero.
 Il sito si può pubblicare prima: la funzione vecchia ignora il login che riceve.
 `CACHE_NAME` → `isla-v529`.
+
+### "Installa l'app" sull'iPhone (16 ottobre 2026)
+
+Mandato il link a una persona con l'iPhone: il bottone nel menu non faceva niente.
+Il motivo: `initInstallButton` accendeva i bottoni solo su `beforeinstallprompt`, e
+Safari quell'evento **non lo manda mai**. Sull'iPhone un'app web si installa solo a mano:
+Condividi → "Aggiungi alla schermata Home" → "Aggiungi". Nessun sito può farlo al posto
+del cliente, quindi il massimo è spiegarglielo bene.
+
+Ora su iPhone e iPad (anche l'iPad che si presenta come Mac) il bottone è **sempre
+acceso** e apre una finestra coi passi, con le icone che il cliente vede sul telefono
+(`apriIstruzioniIos` in `app.js`, testi `install.ios.*` in `i18n.js`). Il menu si
+chiude e le fa posto. La finestra si costruisce in JS: il bottone sta in sette pagine.
+
+- **iOS 26** in Safari nasconde Condividi dietro i tre puntini in basso: il primo passo
+  lo dice ("Non lo vedi? Tocca prima •••").
+- **Dentro WhatsApp, Instagram, Facebook** la pagina gira nel loro browser, che
+  "Aggiungi alla schermata Home" non ce l'ha. Si riconosce perché il nome del browser
+  non contiene `Safari/` (Safari, Chrome ed Edge per iPhone sì): lì la finestra ha un
+  passo in più, "apri in Safari".
+- Già installata (`display-mode: standalone`), il bottone resta spento come prima.
+- Su Android non cambia niente: il bottone resta legato a `beforeinstallprompt`.

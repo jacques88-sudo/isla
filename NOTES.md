@@ -18826,3 +18826,14 @@ richieste, non all'escursione dell'avviso — con più escursioni, confonde.
 - **Va ripubblicata `manda-notifiche`** su Supabase: finché non la si
   ripubblica gli avvisi portano ancora alla lista intera. Gli avvisi già
   arrivati sul telefono tengono l'indirizzo vecchio.
+
+## I prezzi comprendono l'IGIC (16 ottobre 2026)
+
+Admiral **non ha un consulente** (proprietario, 16 ottobre 2026): le domande lasciate
+aperte nei termini le decide il proprietario. La prima: il cliente paga **esattamente**
+il prezzo della scheda, senza niente sopra. Quindi per il cliente il prezzo è già "IGIC
+incluso" (la legge dei consumatori chiede il prezzo finale con le imposte), e nei termini,
+alla voce Prezzi, c'è scritto nelle cinque lingue. Come Admiral paga l'IGIC (di solito le
+agenzie col *régimen especial de agencias de viajes*, sul margine) è cosa della gestoría,
+non del sito. **Se un giorno si aggiunge qualcosa sopra il prezzo, vanno alzati i prezzi
+delle schede, non aggiunta l'imposta dopo.** `CACHE_NAME` → `isla-v520`.

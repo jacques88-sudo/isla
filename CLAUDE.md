@@ -58,7 +58,8 @@ c'è posto; **meno di 24 ore prima**, o se non si presenta, non si annulla né s
 non si rimborsa. Vale anche per charter privati e noleggi. Se annulla l'operatore
 (maltempo, mare, pochi partecipanti) il cliente sceglie fra altra data e rimborso
 completo; si annulla con un messaggio WhatsApp e conta l'ora del messaggio. Sta in
-`faq.a5`. I giorni entro cui si rimborsa **non sono decisi**: non scriverne uno.
+`faq.a5`. Il rimborso arriva **entro 15 giorni** (proprietario, 16 ottobre 2026), con
+lo stesso mezzo del pagamento: lo dicono `faq.a5` e i termini.
 
 **I prezzi barrati sono offerte del rivenditore: sul sito va il prezzo pieno.** Lo sconto
 di un altro non è nostro. Abbassare un prezzo dopo si può, alzarlo dopo che il cliente

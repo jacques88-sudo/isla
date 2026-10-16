@@ -201,6 +201,11 @@ function initTicketDialog() {
   document.addEventListener("keydown", e => {
     if (e.key === "Escape" && dialog.classList.contains("is-open")) close();
   });
+
+  // La scorciatoia "Le mie prenotazioni" del manifest (tenendo premuta l'icona
+  // dell'app su Android) arriva con `?ticket=1`: si apre subito la finestra,
+  // come se il cliente avesse toccato il biglietto in alto.
+  if (new URLSearchParams(location.search).has("ticket")) open();
 }
 
 document.addEventListener("DOMContentLoaded", initTicketDialog);

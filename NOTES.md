@@ -18837,3 +18837,27 @@ alla voce Prezzi, c'è scritto nelle cinque lingue. Come Admiral paga l'IGIC (di
 agenzie col *régimen especial de agencias de viajes*, sul margine) è cosa della gestoría,
 non del sito. **Se un giorno si aggiunge qualcosa sopra il prezzo, vanno alzati i prezzi
 delle schede, non aggiunta l'imposta dopo.** `CACHE_NAME` → `isla-v520`.
+
+## Termini e privacy senza consulente (16 ottobre 2026)
+
+Admiral non ha un consulente: le domande lasciate aperte le ha decise il proprietario,
+usando come confronto la privacy di CanaryVIP (un'agenzia di Costa Adeje). Da lì si è
+preso **l'elenco delle cose da dire**, non il testo. Non si prende la loro frase "usando
+i nostri servizi acconsenti": per il GDPR il consenso così non vale.
+
+- **Rimborso entro 15 giorni**, con lo stesso mezzo del pagamento: `faq.a5` (e il testo
+  fisso in `index.html`) e i termini.
+- **Chi risponde** (termini, "Chi fa l'escursione"): Admiral della gestione della
+  prenotazione (richiesta, conferma, pagamento, dati passati all'operatore), l'operatore
+  dello svolgimento (mezzi, sicurezza, guide, orari); restano i diritti del consumatore.
+- **Hojas de reclamaciones**: Admiral le ha in ufficio, e i termini lo dicono.
+- **Privacy, quattro punti nuovi**: la base giuridica dei tempi (foglio: obbligo di legge,
+  6.1.c; chat: interesse legittimo, 6.1.f, con diritto di opporsi); "Come proteggiamo i
+  dati" (HTTPS, la chiave della richiesta resta nel telefono, ticket con numero e
+  telefono, area venditori con password); il consenso agli avvisi si ritira
+  spegnendoli; "Se questa pagina cambia".
+
+**Mancano ancora, e arriveranno dal proprietario**: l'**email** da pubblicare (la LSSI
+la chiede fra i dati di chi gestisce il sito) e il **numero di registro dell'agenzia di
+viaggi** delle Canarie (I-AV-…). Vanno nei termini ("Chi siamo") e nella privacy
+("Chi è il titolare"), nelle cinque lingue. `CACHE_NAME` → `isla-v521`.

@@ -19043,3 +19043,7 @@ dove guardare: "Il pulsante **Condividi**…", "Poi «Aggiungi alla schermata Ho
 "Mostrami come". I passi contengono `<strong>`: entrano con innerHTML, e i testi sono
 nostri, non del cliente. Il titolo resta "Installa l'app" (`menu.install`), lo stesso
 del bottone nel Menu.
+
+**Il titolo della finestra** è "Isla fra le tue app" (`install.ios.title`), non più
+"Installa l'app": il bottone nel Menu resta "Installa l'app". La frase sotto è diventata
+"Bastano tre tocchi in Safari:", per non ripetere "fra le tue app" due righe di fila.

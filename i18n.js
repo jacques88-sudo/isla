@@ -24,14 +24,6 @@ const I18N_LANGS = ["it", "en", "es", "fr", "de"];
 const I18N_DEFAULT = "en";           // lingua usata se il browser non è it/es/fr/de
 const I18N_STORAGE_KEY = "isla-lang";
 
-const I18N_LANG_NAMES = {
-  it: "Italiano",
-  en: "English",
-  es: "Español",
-  fr: "Français",
-  de: "Deutsch"
-};
-
 const I18N = {
   // ── generali ────────────────────────────────────────────────────────────
   "common.skip":        { it: "Vai al contenuto", en: "Skip to content", es: "Ir al contenido", fr: "Aller au contenu", de: "Zum Inhalt springen" },
@@ -264,7 +256,6 @@ const I18N = {
   "tour.offer":         { it: "Offerta", en: "Offer", es: "Oferta", fr: "Offre", de: "Angebot" },
   "tour.family":        { it: "Adatta ai bambini", en: "Kid-friendly", es: "Apta para niños", fr: "Adaptée aux enfants", de: "Für Kinder geeignet" },
   "tour.transfer":      { it: "Transfer disponibile", en: "Transfer available", es: "Traslado disponible", fr: "Transfert disponible", de: "Transfer möglich" },
-  "tour.ask":           { it: "Richiedi disponibilità", en: "Check availability", es: "Consultar disponibilidad", fr: "Vérifier la disponibilité", de: "Verfügbarkeit anfragen" },
   "tour.details":       { it: "Scopri di più", en: "See details", es: "Ver detalles", fr: "En savoir plus", de: "Mehr erfahren" },
   "tour.photoSoon":     { it: "Foto in arrivo", en: "Photo coming soon", es: "Foto próximamente", fr: "Photo à venir", de: "Foto folgt" },
 
@@ -333,6 +324,10 @@ const I18N = {
   "lista.promoNota":    { it: "Facoltativo. Puoi dire basta quando vuoi.", en: "Optional. You can stop them whenever you like.", es: "Opcional. Puedes darte de baja cuando quieras.", fr: "Facultatif. Vous pouvez arrêter quand vous voulez.", de: "Freiwillig. Sie können sich jederzeit abmelden." },
   "lista.avvisiNota":   { it: "Quando l'ufficio conferma o annulla, e prima dell'escursione.", en: "When the office confirms or cancels, and before the excursion.", es: "Cuando la oficina confirme o cancele, y antes de la excursión.", fr: "Quand le bureau confirme ou annule, et avant l'excursion.", de: "Wenn das Büro bestätigt oder absagt, und vor dem Ausflug." },
   "lista.avvisiIos":    { it: "Sull'iPhone gli avvisi arrivano solo con l'app installata: Condividi → «Aggiungi alla schermata Home».", en: "On iPhone, notifications only arrive with the app installed: Share → “Add to Home Screen”.", es: "En el iPhone, los avisos solo llegan con la app instalada: Compartir → «Añadir a pantalla de inicio».", fr: "Sur iPhone, les notifications n'arrivent qu'avec l'app installée : Partager → « Sur l'écran d'accueil ».", de: "Auf dem iPhone kommen Benachrichtigungen nur mit installierter App: Teilen → „Zum Home-Bildschirm“." },
+  // Una voce rimasta nella lista con un giorno che non si puo' piu' chiedere
+  // (listaVoceScaduta in lista.js): stesse 24 ore di faq.a2.
+  "lista.pastDate":     { it: "Questa data non si può più richiedere", en: "This date can no longer be requested", es: "Esta fecha ya no se puede solicitar", fr: "Cette date ne peut plus être demandée", de: "Dieser Termin kann nicht mehr angefragt werden" },
+  "lista.pastBlock":    { it: "Le escursioni si richiedono almeno 24 ore prima. Togli le voci con la data scaduta e rimettile con un altro giorno.", en: "Excursions must be requested at least 24 hours in advance. Remove the items with an expired date and add them again with another day.", es: "Las excursiones se solicitan con al menos 24 horas de antelación. Quita las actividades con la fecha caducada y vuelve a añadirlas con otro día.", fr: "Les excursions se demandent au moins 24 heures à l'avance. Retirez les activités dont la date est dépassée et ajoutez-les de nouveau avec un autre jour.", de: "Ausflüge müssen mindestens 24 Stunden vorher angefragt werden. Entfernen Sie die Einträge mit abgelaufenem Datum und fügen Sie sie mit einem anderen Tag erneut hinzu." },
   "lista.hint":         { it: "Parte un solo messaggio con tutte le escursioni della lista.", en: "One single message goes out with every excursion in the list.", es: "Se envía un solo mensaje con todas las excursiones de la lista.", fr: "Un seul message part avec toutes les excursions de la liste.", de: "Es geht eine einzige Nachricht mit allen Ausflügen der Liste raus." },
 
   // ── i pacchetti ─────────────────────────────────────────────────────────
@@ -609,7 +604,6 @@ const I18N = {
   "booking.helpSubject":{ it: "Assistenza prenotazione", en: "Booking support", es: "Asistencia con la reserva", fr: "Assistance réservation", de: "Hilfe zur Buchung" },
   "booking.notFound":   { it: "Ticket non trovato", en: "Ticket not found", es: "Ticket no encontrado", fr: "Ticket introuvable", de: "Ticket nicht gefunden" },
   "booking.notFoundText": { it: "Non troviamo un ticket con il numero \"{code}\" e questo telefono. Controlla tutti e due sul ticket: il telefono è quello che hai dato al venditore.", en: "We can't find a ticket with the number \"{code}\" and this phone number. Check both on your ticket: the phone is the one you gave the seller.", es: "No encontramos ningún ticket con el número \"{code}\" y este teléfono. Revisa los dos en el ticket: el teléfono es el que diste al vendedor.", fr: "Nous ne trouvons pas de ticket avec le numéro « {code} » et ce téléphone. Vérifiez les deux sur le ticket : le téléphone est celui que vous avez donné au vendeur.", de: "Wir finden kein Ticket mit der Nummer „{code}“ und dieser Telefonnummer. Prüfen Sie beides auf dem Ticket: Die Telefonnummer ist die, die Sie dem Verkäufer gegeben haben." },
-  "booking.retry":      { it: "Riprova", en: "Try again", es: "Inténtalo de nuevo", fr: "Réessayer", de: "Erneut versuchen" },
   "booking.needPhone":  { it: "Manca il telefono", en: "Phone number missing", es: "Falta el teléfono", fr: "Il manque le téléphone", de: "Telefonnummer fehlt" },
   "booking.needPhoneText": { it: "Per vedere il ticket {code} scrivi anche il tuo telefono: quello che hai dato al venditore, o da cui ci hai scritto su WhatsApp.", en: "To see ticket {code}, also enter your phone number: the one you gave the seller, or the one you used to message us on WhatsApp.", es: "Para ver el ticket {code}, escribe también tu teléfono: el que diste al vendedor, o desde el que nos escribiste por WhatsApp.", fr: "Pour voir le ticket {code}, indiquez aussi votre téléphone : celui que vous avez donné au vendeur, ou celui avec lequel vous nous avez écrit sur WhatsApp.", de: "Um das Ticket {code} zu sehen, geben Sie auch Ihre Telefonnummer ein: die, die Sie dem Verkäufer gegeben haben, oder die, mit der Sie uns auf WhatsApp geschrieben haben." },
   "booking.loading":    { it: "Cerco il tuo ticket…", en: "Looking up your ticket…", es: "Buscando tu ticket…", fr: "Je cherche votre ticket…", de: "Ich suche Ihr Ticket…" },

@@ -884,10 +884,6 @@ function whatsappTesto(tour, req) {
     (req.code ? "\n\n" + t("wa.code", { code: req.code }) : ""));
 }
 
-function whatsappUrl(tour, req) {
-  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(whatsappTesto(tour, req));
-}
-
 function tourCard(tour) {
   const li = document.createElement("li");
   li.className = "tour-card";

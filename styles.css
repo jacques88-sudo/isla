@@ -994,39 +994,6 @@ p.note-box { margin: 0 0 1rem; }
 .detail-card.is-cancelled .detail-title { text-decoration: line-through; text-decoration-thickness: 1px; }
 .detail-card.is-cancelled .ticket-banner { filter: grayscale(1); }
 
-.lookup-row {
-  position: relative;
-}
-
-.lookup-row input {
-  width: 100%;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  border-radius: var(--radius-pill);
-  padding: .95rem 6.5rem .95rem 1.3rem;
-  outline: none;
-  color: var(--text);
-  font-size: .95rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-.lookup-row input::placeholder {
-  text-transform: none;
-  letter-spacing: normal;
-  color: var(--muted);
-}
-.lookup-row input:focus {
-  border-color: var(--text);
-}
-
-.lookup-row .btn {
-  position: absolute;
-  top: .35rem;
-  right: .35rem;
-  bottom: .35rem;
-  height: auto;
-}
-
 .btn {
   min-height: 48px;
   padding: 0 1.4rem;
@@ -1045,6 +1012,17 @@ p.note-box { margin: 0 0 1rem; }
   color: var(--primary-foreground);
 }
 .btn-block { width: 100%; }
+/* Su un telefono stretto (320 px) un testo lungo tradotto non ci sta su una
+   riga: "Toutes les excursions adaptées aux enfants", "Ver todas las
+   excursiones". Questi pulsanti vanno a capo invece di uscire dallo schermo;
+   gli altri restano su una riga, accanto a qualcosa. */
+.btn-block,
+.state .btn {
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+  padding-block: .6rem;
+}
 /* Tutti i pulsanti "Aggiungi alla lista" sono azzurri, perche' si notino
    (proprietario, 12 ottobre 2026): nella scheda, sulla barra in fondo, in
    fondo alla finestra della richiesta e nel modulo dei pacchetti. Hanno la
@@ -1364,6 +1342,9 @@ html:not([lang="de"]) .pp[lang="de"] { display: none; }
 .privacy-home img { border-radius: 8px; }
 .privacy { padding-bottom: 4rem; line-height: 1.65; }
 .privacy h1 {
+  /* "Verkaufsbedingungen" e' una parola sola, piu' larga di un telefono da 320 px */
+  overflow-wrap: break-word;
+  hyphens: auto;
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 2.2rem;
@@ -2950,6 +2931,11 @@ body.menu-open { overflow: hidden; }
   color: var(--danger);
 }
 .request-day-error[hidden] { display: none; }
+/* Nella finestra della lista: la voce con la data scaduta, e l'avviso sopra
+   il pulsante, che resta spento finche' non la si toglie (lista.js). */
+.lista-dialog .lista-voce-testo .lista-voce-scaduta { color: var(--danger); font-weight: 600; }
+.lista-dialog .request-day-error { margin: 0 0 1rem; }
+.lista-dialog .request-submit:disabled { opacity: .4; cursor: not-allowed; }
 
 .request-optional {
   text-transform: none;
@@ -3306,8 +3292,6 @@ body.menu-open { overflow: hidden; }
 /* ── La lista delle richieste ─────────────────────────────────────────────
    Il secondo pulsante sulla pagina di dettaglio, il pulsante che galleggia in
    basso, la finestra della lista e il messaggio "aggiunta". */
-
-.detail-add { margin-top: .6rem; }
 
 /* Galleggia in basso a destra e c'e' solo quando la lista ha qualcosa dentro.
    Sta sopra tutto tranne le finestre, che hanno z-index 40 e 41. */
@@ -4017,6 +4001,8 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   .lista-dialog {
     background-color: #f0e7d5;
     color: oklch(0.24 0.012 60);
+    /* il rosso del giorno: quello della notte e' troppo chiaro sulla carta */
+    --danger: oklch(0.55 0.15 30);
   }
   .lista-dialog .lista-voce-testo strong,
   .lista-dialog .lista-voce-prezzo,
@@ -4342,17 +4328,7 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .map-box.is-far .map-pin svg { width: 15px; height: 15px; }
 .map-box.is-far .map-town { display: none; }
 
-/* Il fumetto: quello di Leaflet, coi colori e i caratteri del sito. */
-.map-popup .leaflet-popup-content-wrapper {
-  border-radius: 12px;
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: var(--shadow);
-}
-.map-popup .leaflet-popup-tip { background: var(--surface); }
-.map-popup .leaflet-popup-content { margin: 1rem 1.1rem; font: inherit; }
-.map-popup a.leaflet-popup-close-button { color: var(--muted); }
-.map-pop { display: grid; gap: .3rem; }
+/* La categoria e la zona sopra il nome del posto, nella scheda che sale dal basso. */
 .map-pop-cat {
   font-size: .62rem;
   letter-spacing: .14em;
@@ -4360,15 +4336,7 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   color: var(--map-c);
   font-weight: 600;
 }
-.map-pop strong {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 1.1;
-}
 .map-pop-zone { font-size: .78rem; color: var(--muted); }
-.map-pop p { margin: .2rem 0 .5rem; font-size: .86rem; line-height: 1.45; }
-.map-popup .map-pop a.btn { color: var(--primary-foreground); }
 
 .map-box .leaflet-control-zoom a {
   background: var(--surface);

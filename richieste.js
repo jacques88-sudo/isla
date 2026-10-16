@@ -265,6 +265,16 @@ function avvisiManda(r, iscrizione) {
   }).catch(() => false);
 }
 
+// Il giorno del calendario qui ("2026-10-16"), spostato di `quanti` giorni.
+// Non toISOString(): passa per UTC, e a Tenerife d'estate fra mezzanotte e
+// l'una darebbe ancora ieri (vedi minRequestDate in escursioni.js). Qui serve
+// la propria copia: booking.html carica questo file senza escursioni.js.
+function richiesteGiorno(quanti) {
+  const d = new Date();
+  d.setDate(d.getDate() + quanti);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 // Quelle rimaste "da mandare" si riprovano. Restituisce una promessa che si
 // chiude quando hanno finito tutte (booking.js la aspetta prima di leggere).
 // Una richiesta con le date gia' passate il database la rifiuta: non si
@@ -272,7 +282,7 @@ function avvisiManda(r, iscrizione) {
 // Stessa cosa per gli avvisi chiesti e non arrivati: si riprova in silenzio,
 // col permesso gia' dato. Se intanto il cliente l'ha tolto, non si chiede.
 function richiesteRiprova() {
-  const ieri = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const ieri = richiesteGiorno(-1);
   const vive = richiesteLeggi().filter(r => r.items.some(v => v.date >= ieri));
   const avvisi = vive.filter(r => r.avvisi === "da-mandare");
   return Promise.all(vive.filter(r => !r.stored).map(richiestaManda).concat(
@@ -338,8 +348,7 @@ function richiesteAggiorna() {
 // Una richiesta confermata diventa un ticket e puo' stare in tutti e due:
 // numero del ticket + escursione + data la fa contare una volta sola.
 function prenotazioniProssime() {
-  const d = new Date();
-  const oggi = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const oggi = richiesteGiorno(0);
   const viste = new Set();
   const conta = (chiave, data) => {
     if (!data || String(data).slice(0, 10) < oggi || viste.has(chiave)) return;
@@ -372,7 +381,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // contare. Prima si riprova a mandare quelle rimaste indietro, poi si legge.
   // Quelle con la data gia' passata no: non contano nel numerino, e una
   // richiesta mai confermata farebbe chiedere al database a ogni pagina.
-  const oggi = new Date().toISOString().slice(0, 10);
+  const oggi = richiesteGiorno(0);
   const inAttesa = richiesteLeggi().some(r =>
     (Array.isArray(r.last) && r.last.length ? r.last : r.items)
       .some(v => v.date >= oggi && v.status !== "cancelled" && !v.ticket_number));

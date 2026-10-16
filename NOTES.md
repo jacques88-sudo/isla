@@ -19035,3 +19035,11 @@ finestra dei passi) e la ✕ (`avvisoInstallaIos` in `app.js`, testi `install.hi
 - A 320 px, con icona, testo, bottone e ✕ sulla stessa riga, il testo andava a capo
   parola per parola: il bottone sta su una riga sua, sotto.
 - Su Android e con l'app già installata non compare.
+
+**Testi più gentili** (proprietario, stesso giorno: "qualcosa di meno imperativo?", poi
+"proposta va benissimo"). I passi non danno più ordini ("Tocca…", "Scorri…") ma indicano
+dove guardare: "Il pulsante **Condividi**…", "Poi «Aggiungi alla schermata Home»…",
+"Infine «Aggiungi»…, ed è fatta". Il bottone in fondo è "Grazie", quello dell'avviso
+"Mostrami come". I passi contengono `<strong>`: entrano con innerHTML, e i testi sono
+nostri, non del cliente. Il titolo resta "Installa l'app" (`menu.install`), lo stesso
+del bottone nel Menu.

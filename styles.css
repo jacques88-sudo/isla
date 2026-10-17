@@ -1650,9 +1650,14 @@ html:not([lang="de"]) .pp[lang="de"] { display: none; }
   width: min(82vw, 380px);
   background: var(--bg);
   box-shadow: -20px 0 50px -30px oklch(0.24 0.012 60 / .5);
-  padding: 1.4rem 1.5rem 1.6rem;
+  padding: 1.4rem 1.5rem calc(1.6rem + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
+  /* Su un telefono basso (o con la barra "Installa l'app" in vista) le voci
+     non ci stanno tutte: il pannello scorre, altrimenti "Prenota ora" resta
+     fuori dallo schermo. contain: lo scorrimento non passa alla pagina sotto. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
   transform: translateX(100%);
   transition: transform .3s ease;
 }

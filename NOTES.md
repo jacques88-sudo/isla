@@ -19124,3 +19124,14 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
   e col risultato salvato) con la risposta del database finta.
 - Punti 3 (tetti globali di `manda_richiesta` e `avvisami`) e 4 (doppio opt-in delle
   promozioni) restano da fare quando servono.
+
+## Il menu laterale scorre (17 ottobre 2026)
+
+- Il proprietario, dal telefono: il pannello del Menu era fermo e "Prenota ora" in fondo
+  restava tagliato fuori dallo schermo. Con "Installa l'app" in vista e sette voci il
+  pannello è più alto di un telefono normale, e `.more-menu` non aveva scorrimento.
+- `.more-menu` ora ha `overflow-y: auto` e `overscroll-behavior: contain` (lo
+  scorrimento non passa alla pagina sotto), e in fondo lascia lo spazio della barra dei
+  gesti (`env(safe-area-inset-bottom)`).
+- Provato a 412×700 con "Installa l'app" visibile: il pannello è alto 772 px, scorrendo
+  "Prenota ora" arriva tutto in vista. Lo stile è uno solo per le sei pagine.

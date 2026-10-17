@@ -1429,22 +1429,37 @@ const ESPLORA_CATALOG = [
             de: "Sie teilen das Boot mit anderen und fahren dieselbe Route wie der Privatcharter, für weniger Geld. Drei Stunden entlang der Küste, mit Badestopp, Schnorcheln und Hähnchen-Paella an Bord. Täglich um 9:30 und 12:30."
           }
         },
+        // Tre ore e sei ore sono due varianti e non una sola: il netto della
+        // compagnia e' diverso (il doppio, come il prezzo), e il ticket deve dire
+        // quale delle due (proprietario, 17 ottobre 2026). Prezzi ufficiali del
+        // foglio dei venditori.
         {
-          label: { it: "Charter privato", en: "Private charter", es: "Chárter privado", fr: "Charter privé", de: "Privatcharter" },
-          // Il prezzo ufficiale del foglio dei venditori, per tre ore; sei ore
-          // costano il doppio (proprietario, 17 ottobre 2026).
+          label: { it: "Charter privato, 3 ore", en: "Private charter, 3 hours", es: "Chárter privado, 3 horas", fr: "Charter privé, 3 heures", de: "Privatcharter, 3 Stunden" },
           price: 690,
-          duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas", fr: "3 ou 6 heures", de: "3 oder 6 Stunden" },
+          duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
           // Lista vuota, non campo mancante: il charter privato non ha orari
           // fissi, l'ora si concorda. Senza questa riga sarebbero comparse le
           // fasce segnaposto, cioe' degli orari inventati.
           times: [],
           desc: {
-            it: "La barca solo per il tuo gruppo: €690 per tre ore, €1.380 per sei. Con sei ore si gira più in largo, si vedono più cale e si sta più tempo in acqua. Si può fare anche al tramonto. Il prezzo è della barca intera, non a persona: scrivici quante siete e quante ore vuoi.",
-            en: "The boat just for your group: €690 for three hours, €1,380 for six. With six hours you range further, see more coves and stay longer in the water. It can also be done at sunset. The price is for the whole boat, not per person: tell us how many you are and how many hours you want.",
-            es: "El barco solo para tu grupo: 690 € por tres horas, 1.380 € por seis. Con seis horas se va más lejos, se ven más calas y se está más tiempo en el agua. También se puede hacer al atardecer. El precio es del barco entero, no por persona: escríbenos cuántos sois y cuántas horas quieres.",
-            fr: "Le bateau rien que pour votre groupe : €690 pour trois heures, €1 380 pour six. Avec six heures, on va plus loin, on voit plus de criques et on reste plus longtemps dans l'eau. On peut aussi le faire au coucher du soleil. Le prix est pour tout le bateau, pas par personne : dites-nous combien vous êtes et combien d'heures vous voulez.",
-            de: "Das Boot nur für Ihre Gruppe: €690 für drei Stunden, €1.380 für sechs. Mit sechs Stunden fährt man weiter, sieht mehr Buchten und bleibt länger im Wasser. Es geht auch zum Sonnenuntergang. Der Preis gilt für das ganze Boot, nicht pro Person: Sagen Sie uns, wie viele Sie sind und wie viele Stunden Sie möchten."
+            it: "La barca solo per il tuo gruppo, per tre ore: €690. Si può fare anche al tramonto. Il prezzo è della barca intera, non a persona: scrivici quante siete.",
+            en: "The boat just for your group, for three hours: €690. It can also be done at sunset. The price is for the whole boat, not per person: tell us how many you are.",
+            es: "El barco solo para tu grupo, durante tres horas: 690 €. También se puede hacer al atardecer. El precio es del barco entero, no por persona: escríbenos cuántos sois.",
+            fr: "Le bateau rien que pour votre groupe, pendant trois heures : €690. On peut aussi le faire au coucher du soleil. Le prix est pour tout le bateau, pas par personne : dites-nous combien vous êtes.",
+            de: "Das Boot nur für Ihre Gruppe, drei Stunden lang: €690. Es geht auch zum Sonnenuntergang. Der Preis gilt für das ganze Boot, nicht pro Person: Sagen Sie uns, wie viele Sie sind."
+          }
+        },
+        {
+          label: { it: "Charter privato, 6 ore", en: "Private charter, 6 hours", es: "Chárter privado, 6 horas", fr: "Charter privé, 6 heures", de: "Privatcharter, 6 Stunden" },
+          price: 1380,
+          duration: { it: "6 ore", en: "6 hours", es: "6 horas", fr: "6 heures", de: "6 Stunden" },
+          times: [],
+          desc: {
+            it: "La barca solo per il tuo gruppo, per sei ore: €1.380. Si gira più in largo, si vedono più cale e si sta più tempo in acqua. Il prezzo è della barca intera, non a persona: scrivici quante siete.",
+            en: "The boat just for your group, for six hours: €1,380. You range further, see more coves and stay longer in the water. The price is for the whole boat, not per person: tell us how many you are.",
+            es: "El barco solo para tu grupo, durante seis horas: 1.380 €. Se va más lejos, se ven más calas y se está más tiempo en el agua. El precio es del barco entero, no por persona: escríbenos cuántos sois.",
+            fr: "Le bateau rien que pour votre groupe, pendant six heures : €1 380. On va plus loin, on voit plus de criques et on reste plus longtemps dans l'eau. Le prix est pour tout le bateau, pas par personne : dites-nous combien vous êtes.",
+            de: "Das Boot nur für Ihre Gruppe, sechs Stunden lang: €1.380. Man fährt weiter, sieht mehr Buchten und bleibt länger im Wasser. Der Preis gilt für das ganze Boot, nicht pro Person: Sagen Sie uns, wie viele Sie sind."
           }
         }
       ]
@@ -7715,6 +7730,23 @@ const ESPLORA_CATALOG = [
     priceAdult: 0,
     priceChild: 0,
     family: true,
+    // Due varianti come sulla scheda condivisa: tre e sei ore hanno prezzo e
+    // netto diversi, e il ticket deve dire quale (17 ottobre 2026).
+    options: {
+      label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée", de: "Dauer" },
+      choices: [
+        {
+          label: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
+          price: 690,
+          duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" }
+        },
+        {
+          label: { it: "6 ore", en: "6 hours", es: "6 horas", fr: "6 heures", de: "6 Stunden" },
+          price: 1380,
+          duration: { it: "6 ore", en: "6 hours", es: "6 horas", fr: "6 heures", de: "6 Stunden" }
+        }
+      ]
+    },
     included: ["lunch", "drinks", "swimstop", "snorkel", "guide"],
     desc: {
       it: "Lo stesso catamarano fino a 23 persone, tutto per il tuo gruppo, per tre o sei ore lungo la costa con sosta bagno, snorkeling e paella di pollo a bordo. Il prezzo è per l'intera barca, non a persona.",

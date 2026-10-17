@@ -19186,3 +19186,7 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
 - **Noleggi**: regola generale, la commissione è l'acconto. Auto e moto prendono
   `net_from_deposit` come bici e scooter elettrico (SQL nella scratchpad, non qui).
 - L'incentive resta in sospeso, lo vediamo dopo (proprietario).
+- **Small Group Catamaran privato, 3 e 6 ore diventano due varianti** (anche sulla
+  gemella, che prima non ne aveva): il netto delle sei ore è il doppio, come il prezzo,
+  e il ticket deve dire quale delle due. Le righe di netto vecchie ("Charter privato" e
+  la gemella senza variante) restano per i ticket già salvati.

@@ -34,6 +34,12 @@
 
   <main id="main" class="wrap vend-main">
 
+    <!-- "Installa Isla Ticket": lo accende installa.js solo quando serve. -->
+    <div class="vend-installa" data-installa hidden>
+      <p data-installa-testo></p>
+      <button class="btn btn-primary" type="button" data-installa-btn hidden></button>
+    </div>
+
     <!-- 1. Entrata: email e password del venditore -->
     <section data-vend-login hidden>
       <h1 class="vend-h1">Entra</h1>
@@ -259,5 +265,6 @@
   <script src="../esplora-catalog.js"></script>
   <script src="../telefono.js"></script>
   <script src="../venditori.js"></script>
+  <script src="./installa.js"></script>
 </body>
 </html>

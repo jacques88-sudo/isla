@@ -2,6 +2,9 @@
 // sua foto, vedere gli ultimi inseriti, cercarne uno e cambiarne data, ora,
 // persone e soldi (un'escursione rinviata).
 //
+// La pagina e' ticket/index.html, l'app "Isla Ticket" (17 ottobre 2026): i
+// link verso il sito di Isla partono da li', un livello sotto ("../").
+//
 // Solo in italiano: la usano Jack e Francesca, non i clienti.
 //
 // Il database e le sue regole stanno in supabase/schema.sql. Qui non c'e'
@@ -70,11 +73,6 @@ const els = {
   statsMsg: $("[data-stats-msg]"),
   statsReload: $("[data-stats-reload]")
 };
-
-// La stessa pagina gira anche come app a parte, "Isla Ticket" (ticket/index.html,
-// 17 ottobre 2026): li' ci sono solo l'entrata e il modulo del ticket. Senza
-// l'elenco degli ultimi inseriti, richieste e statistiche non si caricano.
-const PAGINA_INTERA = !!els.recent;
 
 let venditore = null;      // { name } dalla tabella sellers
 let fotoScelta = null;     // il File scelto, prima di rimpicciolirlo
@@ -674,7 +672,6 @@ function dataBreve(iso) {
 }
 
 async function caricaUltimi() {
-  if (!PAGINA_INTERA) return;
   let domanda = sb
     .from("bookings")
     .select("id, ticket_number, reference, excursion_id, option_label, company, date, time, phone, adults, kids, babies, units, total, deposit, rest_to_pay, payment_method, seller, photo_path, status, source, request_code")
@@ -1015,7 +1012,6 @@ async function apriFoto(percorso) {
 const STATO_RICHIESTA = { pending: "Da confermare", confirmed: "Confermata", cancelled: "Annullata" };
 
 async function caricaRichieste() {
-  if (!PAGINA_INTERA) return;
   const { data, error } = await sb
     .from("bookings")
     .select("id, request_code, status, excursion_id, option_label, date, time, wanted_time, meeting_point, adults, kids, babies, created_at, customer_name, hotel, pickup_point, pickup_time, request_message, phone, payment_link, payment_amount, payment_total, payment_sent_at")
@@ -1280,7 +1276,7 @@ function rispostaTesto(r, c, lingua) {
   const variante = rispostaVariante(tour, r.option_label, lingua);
   // a mezzogiorno: la data non scivola al giorno prima con il fuso
   const giorno = new Date(c.date + "T12:00:00").toLocaleDateString(T.locale, { weekday: "long", day: "numeric", month: "long" });
-  const link = new URL("booking.html?code=" + encodeURIComponent(c.numero), window.location.href).href;
+  const link = new URL("../booking.html?code=" + encodeURIComponent(c.numero), window.location.href).href;
   // solo il nome, non il cognome: e' un messaggio fra persone
   const nome = (r.customer_name || "").trim().split(/\s+/)[0];
   const righe = [
@@ -1550,14 +1546,12 @@ async function mostraPagina() {
   els.login.hidden = !!venditore;
   els.work.hidden = !venditore;
   if (venditore) {
-    // Il segno per il link "Area venditori" nel menu di Isla (app.js).
-    try { localStorage.setItem("isla-venditore", "1"); } catch (e) { /* incognito */ }
     els.sellerName.textContent = venditore.name;
     if (!els.seller.value) els.seller.value = venditore.name;
     caricaRichieste();
     caricaUltimi();
     preparaStatistiche();
-  } else if (PAGINA_INTERA) {
+  } else {
     // Chi esce non lascia i numeri dell'ufficio a chi entra dopo.
     els.statsBox.hidden = true;
     els.statsBox.open = false;
@@ -1746,7 +1740,6 @@ async function caricaStatistiche() {
 // ancora nel database (SQL non lanciato) la risposta e' un errore: si tratta
 // come un "no", e la pagina resta quella di sempre.
 async function preparaStatistiche() {
-  if (!PAGINA_INTERA) return;
   const { data, error } = await sb.rpc("is_office");
   els.statsBox.hidden = !!error || data !== true;
 }
@@ -1760,15 +1753,13 @@ els.loginForm.addEventListener("submit", entra);
 els.company.addEventListener("change", varianteDellaCompagnia);
 els.logout.addEventListener("click", esci);
 els.form.addEventListener("submit", salva);
-if (PAGINA_INTERA) {
-  els.searchForm.addEventListener("submit", cerca);
-  els.searchReset.addEventListener("click", tornaAgliUltimi);
-  // Una richiesta mandata mentre la pagina e' aperta: si vede senza ricaricare.
-  els.requestsReload.addEventListener("click", () => { mostra(els.requestsMsg, ""); caricaRichieste(); });
-  // Le statistiche si chiedono al database solo quando la tendina si apre.
-  els.statsBox.addEventListener("toggle", () => { if (els.statsBox.open) caricaStatistiche(); });
-  els.statsReload.addEventListener("click", caricaStatistiche);
-}
+els.searchForm.addEventListener("submit", cerca);
+els.searchReset.addEventListener("click", tornaAgliUltimi);
+// Una richiesta mandata mentre la pagina e' aperta: si vede senza ricaricare.
+els.requestsReload.addEventListener("click", () => { mostra(els.requestsMsg, ""); caricaRichieste(); });
+// Le statistiche si chiedono al database solo quando la tendina si apre.
+els.statsBox.addEventListener("toggle", () => { if (els.statsBox.open) caricaStatistiche(); });
+els.statsReload.addEventListener("click", caricaStatistiche);
 document.querySelectorAll("[data-stats-period]").forEach(btn => btn.addEventListener("click", () => {
   periodoStats = btn.dataset.statsPeriod;
   document.querySelectorAll("[data-stats-period]").forEach(b =>

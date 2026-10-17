@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- "Isla Ticket": solo la foto del ticket e il modulo di venditori.html,
-       come app a parte sul telefono, con la sua icona (proprietario, 17
-       ottobre 2026). Il codice e' lo stesso: ../venditori.js, che qui non
-       trova richieste, statistiche e ultimi inseriti e li salta.
-       Il manifest e' suo, con lo "scope" di questa cartella: e' quello che la
-       fa installare come un'app diversa da Isla. -->
+  <!-- Pagina di lavoro dei venditori: non deve comparire su Google. -->
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#890869" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="Isla Ticket" />
   <title>Isla Ticket</title>
+  <!-- "Isla Ticket": la pagina dei venditori come app a parte sul telefono,
+       con la sua icona (proprietario, 17 ottobre 2026). Prima stava in
+       venditori.html, che adesso rimanda qui. Il manifest e' suo, con lo
+       "scope" di questa cartella: e' quello che la fa installare come
+       un'app diversa da Isla. -->
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./icon-192.png" />
   <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
@@ -25,10 +25,10 @@
 <body class="vend">
   <header class="top">
     <div class="wrap nav">
-      <a class="brand" href="../venditori.html" aria-label="Tutta la pagina dei venditori">
+      <span class="brand">
         <img src="../assets/logo-isla.png" alt="Logo Isla" />
         <span class="brand-text"><strong>Isla</strong><span>ticket</span></span>
-      </a>
+      </span>
     </div>
   </header>
 
@@ -47,11 +47,44 @@
       </form>
     </section>
 
+    <!-- 2. Il lavoro: nuovo ticket + ultimi inseriti -->
     <section data-vend-work hidden>
       <div class="vend-who">
         <span>Sei <strong data-seller-name></strong></span>
         <button class="btn btn-soft" type="button" data-logout>Esci</button>
       </div>
+
+      <!-- Le richieste mandate su WhatsApp dai clienti senza ticket di carta
+           (richieste.js). Il codice e' in fondo al messaggio del cliente.
+           Sempre visibile, anche vuoto: nascosto, il venditore non distingueva
+           "nessuna richiesta" da "l'elenco non c'e'" (proprietario, 2 ottobre). -->
+      <section class="vend-requests" data-requests-box>
+        <div class="vend-requests-head">
+          <h2 class="vend-h1" data-requests-title>Richieste da WhatsApp</h2>
+          <button class="btn btn-soft" type="button" data-requests-reload>Aggiorna</button>
+        </div>
+        <small class="vend-hint">Il codice è in fondo al messaggio del cliente. Confermata o annullata, il cliente la vede cambiare nella sua pagina.</small>
+        <p class="vend-msg" data-requests-msg role="status" hidden></p>
+        <ul class="vend-list" data-requests></ul>
+      </section>
+
+      <!-- Statistiche: SOLO per gli account dell'ufficio (proprietario, 5 ottobre
+           2026). Resta nascosta finche' il database non risponde si' a
+           is_office() (supabase/modifiche/2026-10-05-ufficio.sql). Chiusa
+           all'inizio: i numeri si chiedono al database solo quando la si apre. -->
+      <details class="vend-stats" data-stats-box hidden>
+        <summary class="vend-h1">Statistiche</summary>
+        <div class="vend-stats-head">
+          <div class="vend-stats-periodi" role="group" aria-label="Periodo">
+            <button class="btn btn-soft" type="button" data-stats-period="questo" aria-pressed="true">Questo mese</button>
+            <button class="btn btn-soft" type="button" data-stats-period="scorso" aria-pressed="false">Mese scorso</button>
+          </div>
+          <button class="btn btn-soft" type="button" data-stats-reload>Aggiorna</button>
+        </div>
+        <small class="vend-hint">Contate dal giorno in cui la prenotazione è stata inserita, senza le annullate. I ticket più vecchi del mese scorso li cancella la pulizia automatica: più indietro non si vede.</small>
+        <p class="vend-msg" data-stats-msg role="status" hidden></p>
+        <div data-stats></div>
+      </details>
 
       <h1 class="vend-h1">Nuovo ticket</h1>
 
@@ -203,8 +236,19 @@
         <button class="btn btn-primary btn-block" type="submit" data-ticket-save>Salva ticket</button>
       </form>
 
-      <!-- Richieste, statistiche e modifiche restano nella pagina intera. -->
-      <p class="vend-hint"><a href="../venditori.html">Richieste, ultimi inseriti e modifiche: pagina dei venditori</a></p>
+      <h2 class="vend-h1" data-recent-title>Ultimi inseriti</h2>
+      <!-- Per trovare anche i ticket che non stanno fra gli ultimi 20: serve
+           a modificarli (un'escursione rinviata). Vuoto = gli ultimi 20. -->
+      <form class="vend-form vend-search" data-search-form>
+        <label for="sNumber">Cerca un ticket</label>
+        <div class="vend-row vend-row-search">
+          <input id="sNumber" name="number" type="text" inputmode="numeric" autocomplete="off" placeholder="Ticket number" />
+          <button class="btn btn-soft" type="submit">Cerca</button>
+        </div>
+        <button class="btn btn-soft btn-block" type="button" data-search-reset hidden>Torna agli ultimi inseriti</button>
+      </form>
+      <p class="vend-msg" data-recent-msg role="status" hidden></p>
+      <ul class="vend-list" data-recent></ul>
     </section>
 
     <p class="vend-msg" data-vend-loading>Un momento…</p>

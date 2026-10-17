@@ -2,7 +2,7 @@
   "id": "/isla/ticket/",
   "name": "Isla Ticket · venditori",
   "short_name": "Isla Ticket",
-  "description": "Foto del ticket di carta: Claude lo legge e riempie il modulo. Solo per i venditori.",
+  "description": "La pagina dei venditori: ticket di carta letti dalla foto, richieste WhatsApp, modifiche. Solo per i venditori.",
   "lang": "it",
   "dir": "ltr",
   "start_url": "./",

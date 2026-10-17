@@ -123,8 +123,7 @@ porto e capienza con le schede della stessa categoria.
 | `controlla.js` | il controllo del catalogo |
 | `orari-mancanti.js` | la lista delle schede senza orari di partenza; il sito non lo carica |
 | `foglio-google/` | il programma (Apps Script) del foglio Google dei netti, e come si installa; il sito non lo carica |
-| `venditori.html/.js` | la pagina dei venditori: ticket di carta nel database (Supabase) |
-| `ticket/` | **Isla Ticket**: solo entrata + modulo del ticket di `venditori.html`, come app a parte con manifest e icona sue; usa lo stesso `venditori.js`. Il modulo HTML è scritto due volte: tocca tutti e due |
+| `ticket/` + `venditori.js` | **Isla Ticket**, la pagina dei venditori (17 ottobre 2026): ticket di carta nel database (Supabase), richieste, statistiche. È un'app a parte, con manifest e icona sue; Isla non ha più il link "Area venditori". `venditori.html` resta solo come rimando. Dove le regole dicono "`venditori.html`" si intende questa pagina |
 | `supabase-config.js` | URL e chiave **pubblica** di Supabase; lo schema e le regole stanno in `supabase/` |
 | `telefono.js` | prefissi e `telefonoE164()`: **uno solo** per venditori e clienti, il telefono è la chiave che li fa incontrare |
 | `supabase/functions/leggi-ticket/` | la funzione sul server che fa leggere a Claude la foto del ticket e riempie il modulo dei venditori; la chiave Anthropic sta **solo** nei Secrets di Supabase |

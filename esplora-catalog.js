@@ -1402,6 +1402,10 @@ const ESPLORA_CATALOG = [
   {
     id: "small-group-catamaran",
     title: "Small Group Catamaran",
+    // La barca e' il Kalima Kat: sul ticket i venditori scrivono "KALIMAKA"
+    // (proprietario, 17 ottobre 2026). Solo qui e non sulla gemella dei Tour
+    // privati: lo stesso nome su due schede controlla.js non lo accetta.
+    nomi: ["Kalima Kat", "Kalimaka"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas", fr: "3 ou 6 heures", de: "3 oder 6 Stunden" },

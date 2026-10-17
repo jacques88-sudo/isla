@@ -19190,3 +19190,7 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
   gemella, che prima non ne aveva): il netto delle sei ore è il doppio, come il prezzo,
   e il ticket deve dire quale delle due. Le righe di netto vecchie ("Charter privato" e
   la gemella senza variante) restano per i ticket già salvati.
+- **Kalima Kat nei `nomi`** del Small Group Catamaran ("Kalima Kat", "Kalimaka" come
+  sul foglio dei venditori): la lettura della foto risale alla scheda. Solo sulla scheda
+  in condivisione, non sulla gemella (stesso nome su due schede = errore di
+  `controlla.js`). I netti delle varianti private valgono per qualunque compagnia.

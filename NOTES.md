@@ -19242,3 +19242,10 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
   - **`ticket/sw.js`**: un service worker solo per `ticket/`, che non mette niente in
     cache. Chrome su Android propone di installare solo se ce n'è uno. Controllato con
     `Page.getInstallabilityErrors`: nessun errore.
+- **Quarto passo** — dalla foto del proprietario: il riquadro "Installa" era in vista ma
+  **vuoto**, con un bottone tondo senza scritta. `display: flex` (e quello di `.btn`)
+  batteva l'attributo `hidden`: ora `.vend-installa[hidden]` ha `display: none`. Lezione:
+  **un elemento con `display` nel CSS e `hidden` nell'HTML va provato nascosto**, non
+  solo acceso. Il riquadro vuoto diceva anche che Chrome non aveva mandato
+  `beforeinstallprompt` (alla prima visita spesso non lo manda): su Android ora i passi
+  dal menu ⋮ si scrivono subito, e il bottone "Installa" arriva quando Chrome lo permette.

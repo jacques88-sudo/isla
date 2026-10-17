@@ -1,7 +1,8 @@
 // Il riquadro "Installa Isla Ticket" (17 ottobre 2026).
 //
 // Tre casi, perche' su Android il menu di Chrome non sempre c'e':
-//   - in Chrome: il bottone "Installa" apre la finestra di Android;
+//   - in Chrome: i passi dal menu (sempre), e il bottone "Installa" quando
+//     Chrome dice che si puo' (alla prima visita spesso non lo dice ancora);
 //   - dentro la finestra di Isla gia' installata: Isla si prende tutti i link
 //     che cominciano con .../isla/, anche questo, e li' non c'e' menu. Il
 //     bottone "Apri in Chrome" porta la pagina nel browser, e da li' si installa;
@@ -66,8 +67,12 @@ if ("serviceWorker" in navigator) {
     return;
   }
 
-  // Chrome (Android o computer): il bottone compare solo quando Chrome dice
-  // che si puo' installare.
+  // Chrome su Android: il menu c'e' sempre, i passi si scrivono subito.
+  if (android) {
+    mostra("Per averla sul telefono: tocca ⋮ in alto a destra, poi «Installa app» (o «Aggiungi a schermata Home» → «Installa»).");
+  }
+
+  // Il bottone compare solo quando Chrome dice che si puo' installare.
   let richiesta = null;
   window.addEventListener("beforeinstallprompt", e => {
     e.preventDefault();

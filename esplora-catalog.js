@@ -422,7 +422,7 @@
 //                SEMPRE come pagato con carta, comunque abbia pagato il cliente
 //                (i parchi: Loro Parque, Siam Park, Siam Night, Twin Ticket; proprietario,
 //                9 ottobre 2026; e dall'11 ottobre le cinque escursioni di
-//                Island Excursions; dal 13 ottobre Peter Pan, dal 14 Aqualand). Nel modulo dei venditori il pagamento si
+//                Island Excursions; dal 13 ottobre Peter Pan, dal 14 Aqualand, dal 17 Freebird). Nel modulo dei venditori il pagamento si
 //                sceglie da solo e Cash non si puo' scegliere. Lo stesso elenco
 //                sta su Supabase (supabase/modifiche/2026-10-09-solo-card.sql),
 //                che lo fa valere anche sui ticket gia' salvati: `controlla.js`
@@ -623,6 +623,9 @@ const ESPLORA_CATALOG = [
     // 12+ non l'ha detto nessuno, ma discende dalle altre due: se i bambini
     // finiscono a 11 e sopra non c'e' nient'altro, a 12 si paga come un grande.
     ages: { adult: "12+", child: "4-11", infant: "0-3" },
+    // Il ticket conta sempre come pagato con carta (proprietario, 17 ottobre
+    // 2026): stessa regola dei parchi, e stesso elenco in sempre_card.
+    pagamento: "card",
     options: {
       label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée", de: "Dauer" },
       choices: [

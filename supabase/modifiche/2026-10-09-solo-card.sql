@@ -12,6 +12,7 @@
 --
 -- 13 ottobre 2026: anche Peter Pan (proprietario).
 -- 14 ottobre 2026: anche Aqualand (proprietario).
+-- 17 ottobre 2026: anche Freebird (proprietario).
 --
 -- Il modulo dei venditori lo sceglie gia' da solo (campo `pagamento: "card"`
 -- nel catalogo); qui lo fa valere il database, anche sui ticket salvati prima
@@ -30,7 +31,7 @@ begin
   if new.excursion_id in ('loro-parque', 'siam-park', 'siam-night', 'twin-ticket',
                           'teide-national-park', 'icod-garachico-orotava', 'la-gomera',
                           'santa-cruz-taganana', 'island-tour-completo',
-                          'peter-pan', 'aqualand') then
+                          'peter-pan', 'aqualand', 'freebird-catamaran') then
     new.payment_method := 'card';
   end if;
   return new;
@@ -51,5 +52,5 @@ update public.bookings
  where excursion_id in ('loro-parque', 'siam-park', 'siam-night', 'twin-ticket',
                         'teide-national-park', 'icod-garachico-orotava', 'la-gomera',
                         'santa-cruz-taganana', 'island-tour-completo',
-                        'peter-pan', 'aqualand')
+                        'peter-pan', 'aqualand', 'freebird-catamaran')
    and payment_method is distinct from 'card';

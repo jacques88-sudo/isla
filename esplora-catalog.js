@@ -1833,7 +1833,9 @@ const ESPLORA_CATALOG = [
     title: "Luxury Cruiser Experience",
     // La compagnia, come la scrivono i venditori sul ticket. Solo qui e non
     // sul charter: un ticket "Mokkai" con due adulti e' l'uscita a persona.
-    nomi: ["Mokkai"],
+    // Anche White Dream fa l'uscita a persona (proprietario, 17 ottobre 2026);
+    // sul ticket la scrivono anche "White Dr".
+    nomi: ["Mokkai", "White Dream", "White Dr"],
     category: "mare-barche",
     // Confermato dall'ufficio: si parte da Las Galletas, cioe' la Marina del
     // Sur che si legge nel cartello dietro la barca nelle foto. Nome proprio,
@@ -7950,6 +7952,17 @@ const ESPLORA_CATALOG = [
     id: "noleggio-scooter-elettrico",
     title: { it: "Noleggio scooter elettrico", en: "Electric scooter rental", es: "Alquiler de patinete eléctrico", fr: "Location de trottinette électrique", de: "E-Scooter-Verleih" },
     nomi: ["MRB"],
+    category: "noleggi",
+    venditori: true,
+    published: false
+  },
+  {
+    // Le bici a noleggio di Fevi (proprietario, 17 ottobre 2026). Isla tiene
+    // l'acconto, il resto il cliente lo paga a Fevi: il netto e' il totale
+    // meno l'acconto (net_from_deposit su Supabase).
+    id: "noleggio-bici",
+    title: { it: "Noleggio bici", en: "Bike rental", es: "Alquiler de bicicletas", fr: "Location de vélos", de: "Fahrradverleih" },
+    nomi: ["Fevi"],
     category: "noleggi",
     venditori: true,
     published: false

@@ -19146,3 +19146,28 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
   salvati). Il file va rilanciato intero nel SQL Editor.
 - Dallo stesso foglio sono usciti netti e percentuali: come sempre stanno **solo** su
   Supabase, preparati nella scratchpad. Qui non si scrive nessun numero.
+
+## Netto fisso, commissione = acconto, Fevi e White Dream (17 ottobre 2026)
+
+- Dallo stesso foglio di carta, le risposte del proprietario:
+  - **barche private** (Mokkai, Kalima Kat): alla compagnia una cifra per tutta la barca.
+    Il proprietario proponeva anche di trattarla come un mezzo; scelta la colonna,
+    perché coi mezzi il modulo avrebbe chiesto "quante barche" anche sull'uscita a
+    persona della stessa scheda;
+  - **Fevi** (rent bike) e **MRB**: Isla tiene l'acconto, il resto si paga sul posto.
+    Per MRB l'acconto è il 40% del prezzo ufficiale (il listino arriva nei prossimi
+    giorni): finché il venditore incassa quello, netto = totale − acconto torna;
+  - **White Dream** (sul ticket anche "White Dr") fa la Luxury Cruiser a persona,
+    accanto a Mokkai: due nomi nei `nomi`, due righe di netto;
+  - "TMIG" sul foglio era Teide, Icod, Garachico e Masca.
+- `supabase/modifiche/2026-10-17-netto-fisso.sql`: colonne `net_fixed` e
+  `net_from_deposit` in `nets`, `calcola_netto` con l'acconto (quella di prima passa
+  a questa), il guardiano ricalcola anche se cambia l'acconto. Ordine nel calcolo:
+  fisso, acconto, percentuale, mezzi, persone.
+- Voce nuova solo per i venditori: `noleggio-bici` ("Noleggio bici", `nomi: ["Fevi"]`).
+- Provato su Postgres 16 con lo schema e le modifiche: i ticket del foglio danno gli
+  stessi netti (0991 → 550, 0992 → 350, 0988 → 140, 0985 → totale − acconto, 0980 →
+  64); un ticket salvato prima senza netto lo prende; acconto cambiato → ricalcolato;
+  l'SQL dei numeri lanciato due volte non fa danni e il guardiano resta acceso.
+- Da fare: l'incentive (premio di una compagnia, ticket con sola commissione) non si
+  può ancora inserire: il modulo e il database vogliono telefono e data del cliente.

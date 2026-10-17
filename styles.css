@@ -4155,6 +4155,20 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   color: var(--muted);
 }
 .vend-who .btn { min-height: 40px; }
+/* "Installa Isla Ticket" (ticket/installa.js): in cima, finche' non e' installata. */
+.vend-installa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .6rem 1rem;
+  margin-bottom: 1.2rem;
+  padding: .9rem 1rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 12px;
+}
+.vend-installa p { margin: 0; flex: 1 1 14rem; }
+.vend-installa .btn { min-height: 40px; }
 .vend-form label,
 .vend-form legend {
   display: block;
@@ -4258,7 +4272,9 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .vend-list span { color: var(--muted); font-size: .9rem; }
 .vend-list .btn { min-height: 40px; padding: 0 1rem; flex: none; }
 .vend-list li { flex-wrap: wrap; }
-.vend-list-btns { display: flex; gap: .5rem; flex: none; }
+/* Con quattro bottoni (Conferma, Annulla, pagamento, risposta) la fila era
+   piu' larga del telefono e allargava tutta la pagina: va a capo. */
+.vend-list-btns { display: flex; flex-wrap: wrap; gap: .5rem; flex: none; max-width: 100%; }
 /* Il modulo "Modifica" si apre sotto la riga, largo quanto l'elenco. */
 .vend-edit { flex-basis: 100%; padding-top: .4rem; }
 .vend-edit .vend-hint { margin: -.4rem 0 .6rem; }

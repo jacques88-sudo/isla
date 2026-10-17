@@ -19225,3 +19225,20 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
     `../`: la pagina sta un livello sotto, e senza quel `../` il cliente riceveva
     `…/ticket/booking.html`, una pagina che non esiste. Provato nel browser.
   - Chi l'ha già installata la vede cambiare da sola: stesso indirizzo, stesso manifest.
+- **Stesso giorno, terzo passo** — il proprietario dal telefono: "più larga dello schermo"
+  e "non riesco a installarla su Android, non c'è menu".
+  - **Larga**: la fila dei bottoni sotto una richiesta WhatsApp (Manda il pagamento,
+    Conferma, Annulla…) non andava a capo: 96 px oltre lo schermo su 360 px. Da vuota la
+    pagina era giusta, per questo non si era visto: **le misure vanno fatte con dei
+    dati**. Ora `.vend-list-btns` va a capo. Misurato con un venditore finto (sessione
+    finta nel localStorage e risposte di Supabase finte in Playwright).
+  - **Installare**: chi ha Isla installata apre `…/isla/ticket/` **dentro la finestra
+    di Isla** (lo scope di Isla è `./`, e contiene anche `ticket/`): lì non c'è il menu
+    di Chrome. Il riquadro in cima (`ticket/installa.js`) dice cosa fare: in Chrome
+    "Installa" (`beforeinstallprompt`), dentro Isla "Apri in Chrome" (indirizzo
+    `intent:` con `package=com.android.chrome`), su iPhone i passi di Condividi.
+    L'app si riconosce perché parte da `./?app=1` (`start_url`), segnato in
+    `sessionStorage`: "standalone" da solo non basta, anche Isla lo è.
+  - **`ticket/sw.js`**: un service worker solo per `ticket/`, che non mette niente in
+    cache. Chrome su Android propone di installare solo se ce n'è uno. Controllato con
+    `Page.getInstallabilityErrors`: nessun errore.

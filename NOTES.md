@@ -19171,3 +19171,18 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
   l'SQL dei numeri lanciato due volte non fa danni e il guardiano resta acceso.
 - Da fare: l'incentive (premio di una compagnia, ticket con sola commissione) non si
   può ancora inserire: il modulo e il database vogliono telefono e data del cliente.
+
+## Prezzi delle barche private dal foglio dei venditori (17 ottobre 2026)
+
+- Il proprietario: i prezzi del foglio di carta sono quelli ufficiali, **solo per le
+  barche private**.
+  - **Luxury Cruiser privata** (variante e scheda gemella dei Tour privati): €550
+    invece di €450. Il ritiro costa **€5 a persona** in più (prima "€500 col ritiro",
+    cioè €50 per la barca intera). L'uscita a persona resta €55/€35, col ritiro €60/€40.
+  - **Small Group Catamaran privato** (Kalima Kat), variante e gemella: **€690 per tre
+    ore**, il doppio per sei (€1.380). Prima "da €800" la variante e "da €350" la
+    gemella; il proprietario ha chiesto il prezzo vero anche sulla gemella.
+  - Testi riscritti nelle cinque lingue.
+- **Noleggi**: regola generale, la commissione è l'acconto. Auto e moto prendono
+  `net_from_deposit` come bici e scooter elettrico (SQL nella scratchpad, non qui).
+- L'incentive resta in sospeso, lo vediamo dopo (proprietario).

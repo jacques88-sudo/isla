@@ -1431,18 +1431,20 @@ const ESPLORA_CATALOG = [
         },
         {
           label: { it: "Charter privato", en: "Private charter", es: "Chárter privado", fr: "Charter privé", de: "Privatcharter" },
-          price: 800,
+          // Il prezzo ufficiale del foglio dei venditori, per tre ore; sei ore
+          // costano il doppio (proprietario, 17 ottobre 2026).
+          price: 690,
           duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas", fr: "3 ou 6 heures", de: "3 oder 6 Stunden" },
           // Lista vuota, non campo mancante: il charter privato non ha orari
           // fissi, l'ora si concorda. Senza questa riga sarebbero comparse le
           // fasce segnaposto, cioe' degli orari inventati.
           times: [],
           desc: {
-            it: "La barca solo per il tuo gruppo: da €800, tre ore oppure sei. Con sei ore si gira più in largo, si vedono più cale e si sta più tempo in acqua. Si può fare anche al tramonto. Il prezzo è della barca intera, non a persona: scrivici quante siete e quante ore vuoi.",
-            en: "The boat just for your group: from €800, three hours or six. With six hours you range further, see more coves and stay longer in the water. It can also be done at sunset. The price is for the whole boat, not per person: tell us how many you are and how many hours you want.",
-            es: "El barco solo para tu grupo: desde 800 €, tres horas o seis. Con seis horas se va más lejos, se ven más calas y se está más tiempo en el agua. También se puede hacer al atardecer. El precio es del barco entero, no por persona: escríbenos cuántos sois y cuántas horas quieres.",
-            fr: "Le bateau rien que pour votre groupe : à partir de €800, trois heures ou six. Avec six heures, on va plus loin, on voit plus de criques et on reste plus longtemps dans l'eau. On peut aussi le faire au coucher du soleil. Le prix est pour tout le bateau, pas par personne : dites-nous combien vous êtes et combien d'heures vous voulez.",
-            de: "Das Boot nur für Ihre Gruppe: ab €800, drei oder sechs Stunden. Mit sechs Stunden fährt man weiter, sieht mehr Buchten und bleibt länger im Wasser. Es geht auch zum Sonnenuntergang. Der Preis gilt für das ganze Boot, nicht pro Person: Sagen Sie uns, wie viele Sie sind und wie viele Stunden Sie möchten."
+            it: "La barca solo per il tuo gruppo: €690 per tre ore, €1.380 per sei. Con sei ore si gira più in largo, si vedono più cale e si sta più tempo in acqua. Si può fare anche al tramonto. Il prezzo è della barca intera, non a persona: scrivici quante siete e quante ore vuoi.",
+            en: "The boat just for your group: €690 for three hours, €1,380 for six. With six hours you range further, see more coves and stay longer in the water. It can also be done at sunset. The price is for the whole boat, not per person: tell us how many you are and how many hours you want.",
+            es: "El barco solo para tu grupo: 690 € por tres horas, 1.380 € por seis. Con seis horas se va más lejos, se ven más calas y se está más tiempo en el agua. También se puede hacer al atardecer. El precio es del barco entero, no por persona: escríbenos cuántos sois y cuántas horas quieres.",
+            fr: "Le bateau rien que pour votre groupe : €690 pour trois heures, €1 380 pour six. Avec six heures, on va plus loin, on voit plus de criques et on reste plus longtemps dans l'eau. On peut aussi le faire au coucher du soleil. Le prix est pour tout le bateau, pas par personne : dites-nous combien vous êtes et combien d'heures vous voulez.",
+            de: "Das Boot nur für Ihre Gruppe: €690 für drei Stunden, €1.380 für sechs. Mit sechs Stunden fährt man weiter, sieht mehr Buchten und bleibt länger im Wasser. Es geht auch zum Sonnenuntergang. Der Preis gilt für das ganze Boot, nicht pro Person: Sagen Sie uns, wie viele Sie sind und wie viele Stunden Sie möchten."
           }
         }
       ]
@@ -1868,14 +1870,15 @@ const ESPLORA_CATALOG = [
     // I prezzi stanno dentro il testo, e la riga automatica sotto e' spenta
     // (`transferPriceHidden`), perche' quella riga e' una sola per tutta la
     // scheda e non segue la variante: sulla barca privata avrebbe continuato a
-    // dire "€60 a adulto · €40 a bambino", che li' non vuol dire niente — il
-    // ritiro costa €50 per la barca intera, non a testa.
+    // dire "€60 a adulto · €40 a bambino", che li' non vuol dire niente — li'
+    // il ritiro costa €5 a persona sopra il prezzo della barca (proprietario,
+    // 17 ottobre 2026).
     transfer: {
-      it: "Ti veniamo a prendere negli hotel del sud dell'isola, circa 30 minuti prima della partenza: €60 a adulto e €40 a bambino invece di €55 e €35. Sulla barca privata sono €500 invece di €450.",
-      en: "We pick you up at hotels in the south of the island, about 30 minutes before departure: €60 per adult and €40 per child instead of €55 and €35. On the private boat it is €500 instead of €450.",
-      es: "Te recogemos en los hoteles del sur de la isla, unos 30 minutos antes de la salida: 60 € por adulto y 40 € por niño en lugar de 55 € y 35 €. En el barco privado son 500 € en lugar de 450 €.",
-      fr: "Nous passons vous prendre aux hôtels du sud de l'île, environ 30 minutes avant le départ : €60 par adulte et €40 par enfant au lieu de €55 et €35. Sur le bateau privé, c'est €500 au lieu de €450.",
-      de: "Wir holen Sie an den Hotels im Süden der Insel ab, etwa 30 Minuten vor der Abfahrt: €60 pro Erwachsenem und €40 pro Kind statt €55 und €35. Beim privaten Boot sind es €500 statt €450."
+      it: "Ti veniamo a prendere negli hotel del sud dell'isola, circa 30 minuti prima della partenza: €60 a adulto e €40 a bambino invece di €55 e €35. Sulla barca privata sono €5 in più a persona.",
+      en: "We pick you up at hotels in the south of the island, about 30 minutes before departure: €60 per adult and €40 per child instead of €55 and €35. On the private boat it is €5 extra per person.",
+      es: "Te recogemos en los hoteles del sur de la isla, unos 30 minutos antes de la salida: 60 € por adulto y 40 € por niño en lugar de 55 € y 35 €. En el barco privado son 5 € más por persona.",
+      fr: "Nous passons vous prendre aux hôtels du sud de l'île, environ 30 minutes avant le départ : €60 par adulte et €40 par enfant au lieu de €55 et €35. Sur le bateau privé, c'est €5 de plus par personne.",
+      de: "Wir holen Sie an den Hotels im Süden der Insel ab, etwa 30 Minuten vor der Abfahrt: €60 pro Erwachsenem und €40 pro Kind statt €55 und €35. Beim privaten Boot sind es €5 mehr pro Person."
     },
     // Prezzo **completo** col ritiro, non il supplemento: €55 diventano €60 e
     // €35 diventano €40. Serve al totale, non si stampa (vedi sopra).
@@ -1899,17 +1902,18 @@ const ESPLORA_CATALOG = [
         },
         {
           label: { it: "Barca privata", en: "Private boat", es: "Barco privado", fr: "Bateau privé", de: "Privates Boot" },
-          price: 450,
+          // Il prezzo ufficiale del foglio dei venditori (proprietario, 17 ottobre 2026).
+          price: 550,
           // Lista vuota, non campo mancante: con la barca tutta per se' l'ora
           // si concorda. Senza questa riga sarebbero comparse le fasce
           // segnaposto, cioe' degli orari inventati.
           times: [],
           desc: {
-            it: "La barca solo per il tuo gruppo: €450 per le tre ore, €500 con il ritiro compreso. Il prezzo è della barca intera, non a persona: scrivici quante siete e a che ora vorreste partire.",
-            en: "The boat just for your group: €450 for the three hours, €500 with pick-up included. The price is for the whole boat, not per person: tell us how many you are and what time you would like to leave.",
-            es: "El barco solo para tu grupo: 450 € por las tres horas, 500 € con la recogida incluida. El precio es del barco entero, no por persona: escríbenos cuántos sois y a qué hora queréis salir.",
-            fr: "Le bateau rien que pour votre groupe : €450 pour les trois heures, €500 avec la prise en charge comprise. Le prix est pour tout le bateau, pas par personne : dites-nous combien vous êtes et à quelle heure vous voudriez partir.",
-            de: "Das Boot nur für Ihre Gruppe: €450 für die drei Stunden, €500 mit Abholung. Der Preis gilt für das ganze Boot, nicht pro Person: Sagen Sie uns, wie viele Sie sind und wann Sie losfahren möchten."
+            it: "La barca solo per il tuo gruppo: €550 per le tre ore; il ritiro costa €5 in più a persona. Il prezzo è della barca intera, non a persona: scrivici quante siete e a che ora vorreste partire.",
+            en: "The boat just for your group: €550 for the three hours; pick-up is €5 extra per person. The price is for the whole boat, not per person: tell us how many you are and what time you would like to leave.",
+            es: "El barco solo para tu grupo: 550 € por las tres horas; la recogida cuesta 5 € más por persona. El precio es del barco entero, no por persona: escríbenos cuántos sois y a qué hora queréis salir.",
+            fr: "Le bateau rien que pour votre groupe : €550 pour les trois heures ; la prise en charge coûte €5 de plus par personne. Le prix est pour tout le bateau, pas par personne : dites-nous combien vous êtes et à quelle heure vous voudriez partir.",
+            de: "Das Boot nur für Ihre Gruppe: €550 für die drei Stunden; die Abholung kostet €5 mehr pro Person. Der Preis gilt für das ganze Boot, nicht pro Person: Sagen Sie uns, wie viele Sie sind und wann Sie losfahren möchten."
           }
         }
       ]
@@ -7704,7 +7708,9 @@ const ESPLORA_CATALOG = [
     durationGroups: ["mezza", "intera"],
     // Stesse partenze del giro condiviso (proprietario, 9 ottobre 2026).
     times: ["09:30", "12:30"],
-    priceFrom: 350,
+    // Il prezzo vero, come la Luxury Cruiser gemella (proprietario, 17 ottobre
+    // 2026): €690 per tre ore, il doppio per sei.
+    priceFrom: 690,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo", fr: " par groupe", de: " pro Gruppe" },
     priceAdult: 0,
     priceChild: 0,
@@ -7782,22 +7788,22 @@ const ESPLORA_CATALOG = [
     // tre partenze del giro in condivisione.
     times: [],
     // Qui il prezzo e' quello vero, non i €350 uguali per tutte le altre schede
-    // gemelle: il proprietario ha chiesto apposta di scrivere €450 (e €500 col
-    // ritiro, nella riga del transfer), perche' il prezzo lo sappiamo. Un
+    // gemelle: il proprietario ha chiesto apposta di scrivere il prezzo vero,
+    // perche' lo sappiamo. Dal 17 ottobre 2026 €550, il ritiro €5 a persona. Un
     // "da €350" letto dal cliente e poi corretto a €450 dall'ufficio sarebbe
     // un prezzo alzato dopo, che e' la cosa da non fare mai.
-    priceFrom: 450,
+    priceFrom: 550,
     priceUnit: { it: " a gruppo", en: " per group", es: " por grupo", fr: " par groupe", de: " pro Gruppe" },
     priceAdult: 0,
     priceChild: 0,
     family: true,
     included: ["swimstop", "snack", "drinks", "guide"],
     transfer: {
-      it: "Ritiro dagli hotel del sud dell'isola, circa 30 minuti prima della partenza: €500 invece di €450.",
-      en: "Pick-up from hotels in the south of the island, about 30 minutes before departure: €500 instead of €450.",
-      es: "Recogida en los hoteles del sur de la isla, unos 30 minutos antes de la salida: 500 € en lugar de 450 €.",
-      fr: "Prise en charge aux hôtels du sud de l'île, environ 30 minutes avant le départ : €500 au lieu de €450.",
-      de: "Abholung an den Hotels im Süden der Insel, etwa 30 Minuten vor der Abfahrt: €500 statt €450."
+      it: "Ritiro dagli hotel del sud dell'isola, circa 30 minuti prima della partenza: €5 in più a persona.",
+      en: "Pick-up from hotels in the south of the island, about 30 minutes before departure: €5 extra per person.",
+      es: "Recogida en los hoteles del sur de la isla, unos 30 minutos antes de la salida: 5 € más por persona.",
+      fr: "Prise en charge aux hôtels du sud de l'île, environ 30 minutes avant le départ : €5 de plus par personne.",
+      de: "Abholung an den Hotels im Süden der Insel, etwa 30 Minuten vor der Abfahrt: €5 mehr pro Person."
     },
     desc: {
       it: "Lo stesso cruiser a due ponti, riservato solo al tuo gruppo per tre ore sulla costa sud, con sosta bagno, spuntino e bevande a bordo. Il prezzo è per l'intera barca, non a persona.",

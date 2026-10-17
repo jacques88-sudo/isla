@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="it" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- "Isla Ticket": solo la foto del ticket e il modulo di venditori.html,
+       come app a parte sul telefono, con la sua icona (proprietario, 17
+       ottobre 2026). Il codice e' lo stesso: ../venditori.js, che qui non
+       trova richieste, statistiche e ultimi inseriti e li salta.
+       Il manifest e' suo, con lo "scope" di questa cartella: e' quello che la
+       fa installare come un'app diversa da Isla. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#890869" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Isla Ticket" />
+  <title>Isla Ticket</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icon-192.png" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body class="vend">
+  <header class="top">
+    <div class="wrap nav">
+      <a class="brand" href="../venditori.html" aria-label="Tutta la pagina dei venditori">
+        <img src="../assets/logo-isla.png" alt="Logo Isla" />
+        <span class="brand-text"><strong>Isla</strong><span>ticket</span></span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main" class="wrap vend-main">
+
+    <!-- 1. Entrata: email e password del venditore -->
+    <section data-vend-login hidden>
+      <h1 class="vend-h1">Entra</h1>
+      <form class="vend-form" data-login-form>
+        <label for="loginEmail">Email</label>
+        <input id="loginEmail" name="email" type="email" autocomplete="username" required />
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" name="password" type="password" autocomplete="current-password" required />
+        <p class="vend-msg" data-login-msg role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit">Entra</button>
+      </form>
+    </section>
+
+    <section data-vend-work hidden>
+      <div class="vend-who">
+        <span>Sei <strong data-seller-name></strong></span>
+        <button class="btn btn-soft" type="button" data-logout>Esci</button>
+      </div>
+
+      <h1 class="vend-h1">Nuovo ticket</h1>
+
+      <form class="vend-form" data-ticket-form novalidate>
+
+        <div class="vend-photo">
+          <!-- Due pulsanti, non uno: senza "capture" il telefono dovrebbe proporre
+               fotocamera e galleria, ma molti Android recenti aprono solo la
+               galleria (proprietario, 30 settembre 2026). capture="environment"
+               apre subito la fotocamera posteriore. -->
+          <div class="vend-photo-btns">
+            <label class="btn btn-soft" for="tPhotoCam">📷 Scatta</label>
+            <label class="btn btn-soft" for="tPhoto">🖼 Galleria</label>
+          </div>
+          <input id="tPhotoCam" type="file" accept="image/*" capture="environment" class="vend-hidden-input" />
+          <input id="tPhoto" name="photo" type="file" accept="image/*" class="vend-hidden-input" />
+          <img data-photo-preview alt="Foto del ticket" hidden />
+          <!-- Scelta la foto, Claude la legge e riempie il modulo
+               (supabase/functions/leggi-ticket). Il venditore controlla e salva. -->
+          <p class="vend-ai" data-ai-msg aria-live="polite" hidden></p>
+          <small class="vend-hint">Scattata da qui, di solito non finisce in galleria: resta solo su Isla.</small>
+        </div>
+
+        <div class="vend-row">
+          <div>
+            <label for="tNumber">Ticket number</label>
+            <input id="tNumber" name="ticket_number" type="text" inputmode="numeric" autocomplete="off" required />
+          </div>
+          <div>
+            <!-- Il REF scritto in alto: serve alle compagnie e a noi, il cliente non lo vede. -->
+            <label for="tRef">REF</label>
+            <input id="tRef" name="reference" type="text" autocomplete="off" />
+          </div>
+        </div>
+
+        <label for="tExc">Escursione</label>
+        <select id="tExc" name="excursion_id" required></select>
+
+        <div data-option-wrap hidden>
+          <label for="tOption" data-option-label>Variante</label>
+          <select id="tOption" name="option_label"></select>
+        </div>
+
+        <!-- La compagnia, con i `nomi` della scheda: lo stesso giro puo' essere
+             di compagnie diverse con netti diversi (la serata italiana di
+             Teide Stars &amp; Sunset e' di Andromeda, le altre no). Solo sulle schede
+             che hanno dei nomi; la riempie anche la lettura della foto. -->
+        <div data-company-wrap hidden>
+          <label for="tCompany">Compagnia</label>
+          <select id="tCompany" name="company"></select>
+        </div>
+
+        <!-- Quanti mezzi e di che tipo (moto d'acqua, buggy, quad, Mustang):
+             solo sulle schede con `units` nel catalogo. Le caselle le crea
+             venditori.js, una per tipo. Servono al netto a mezzo. -->
+        <fieldset class="vend-units" data-units-wrap hidden>
+          <legend data-units-label>Mezzi</legend>
+          <div class="vend-row" data-units></div>
+        </fieldset>
+
+        <!-- Sul ticket l'ora sta accanto al meeting point: e' l'ora in cui
+             presentarsi li', per tutte le escursioni (proprietario, 29 settembre
+             2026). Al cliente: "Presentati alle 9:40 — Puerto Colón, Gate 15". -->
+        <label for="tMeeting">Meeting point</label>
+        <input id="tMeeting" name="meeting_point" type="text" autocomplete="off" />
+
+        <div class="vend-row">
+          <div>
+            <label for="tDate">Data</label>
+            <input id="tDate" name="date" type="date" required />
+          </div>
+          <div>
+            <label for="tTime">Ora ritrovo</label>
+            <input id="tTime" name="time" type="time" />
+          </div>
+        </div>
+
+        <label for="tHotel">Hotel</label>
+        <input id="tHotel" name="hotel" type="text" autocomplete="off" />
+
+        <label for="tNation">Nazionalità</label>
+        <select id="tNation" name="nationality"></select>
+
+        <fieldset class="vend-phone">
+          <legend>Telefono del cliente</legend>
+          <div class="vend-row vend-row-phone">
+            <select id="tPrefix" name="prefix" aria-label="Prefisso"></select>
+            <input id="tPhone" name="phone" type="tel" inputmode="tel" autocomplete="off"
+                   aria-label="Numero" placeholder="333 123 4567" required />
+          </div>
+          <p class="vend-phone-out" data-phone-out aria-live="polite"></p>
+          <label class="vend-check">
+            <input type="checkbox" data-phone-ok />
+            <span>Ho ricontrollato il numero con il ticket</span>
+          </label>
+        </fieldset>
+
+        <div class="vend-row vend-row-3">
+          <div>
+            <label for="tAdults">Adulti</label>
+            <input id="tAdults" name="adults" type="number" inputmode="numeric" min="0" max="99" value="1" />
+          </div>
+          <div>
+            <label for="tKids">Bambini</label>
+            <input id="tKids" name="kids" type="number" inputmode="numeric" min="0" max="99" value="0" />
+          </div>
+          <div>
+            <label for="tBabies">Neonati</label>
+            <input id="tBabies" name="babies" type="number" inputmode="numeric" min="0" max="99" value="0" />
+          </div>
+        </div>
+
+        <div class="vend-row vend-row-3">
+          <div>
+            <label for="tTotal">Total €</label>
+            <input id="tTotal" name="total" type="number" inputmode="decimal" min="0" step="0.01" />
+          </div>
+          <div>
+            <label for="tDeposit">Deposit €</label>
+            <input id="tDeposit" name="deposit" type="number" inputmode="decimal" min="0" step="0.01" />
+          </div>
+          <div>
+            <label for="tRest">To pay €</label>
+            <input id="tRest" name="rest_to_pay" type="number" inputmode="decimal" min="0" step="0.01" />
+          </div>
+        </div>
+        <p class="vend-warn" data-money-warn hidden></p>
+        <p class="vend-hint vend-money-info" data-money-info aria-live="polite">Deposit e To pay sbarrati sul ticket: lasciali vuoti, vuol dire pagato tutto.</p>
+
+        <!-- Card o cash: sul ticket di carta non c'e', lo sa il venditore. Uno
+             solo per ticket, e decide la commissione del venditore
+             (supabase/modifiche/2026-10-08-pagamento.sql). -->
+        <label for="tPayment">Pagamento</label>
+        <select id="tPayment" name="payment_method">
+          <option value="" disabled selected>— scegli —</option>
+          <option value="card">Card</option>
+          <option value="cash">Cash</option>
+        </select>
+
+        <!-- Precompilato con chi e' entrato; si cambia quando sul ticket i
+             venditori sono due ("FRA / MATT"). -->
+        <label for="tSeller">Venditori</label>
+        <input id="tSeller" name="seller" type="text" autocomplete="off" />
+
+        <label for="tNotes">Observations</label>
+        <input id="tNotes" name="notes" type="text" autocomplete="off" />
+
+        <p class="vend-msg" data-ticket-msg role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit" data-ticket-save>Salva ticket</button>
+      </form>
+
+      <!-- Richieste, statistiche e modifiche restano nella pagina intera. -->
+      <p class="vend-hint"><a href="../venditori.html">Richieste, ultimi inseriti e modifiche: pagina dei venditori</a></p>
+    </section>
+
+    <p class="vend-msg" data-vend-loading>Un momento…</p>
+  </main>
+
+  <script src="../vendor/supabase-2.117.2.js"></script>
+  <script src="../supabase-config.js"></script>
+  <script src="../esplora-catalog.js"></script>
+  <script src="../telefono.js"></script>
+  <script src="../venditori.js"></script>
+</body>
+</html>

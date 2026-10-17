@@ -19214,3 +19214,14 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
 - Senza service worker suo: leggere la foto vuole comunque la rete.
 - Si installa aprendo `…/isla/ticket/` nel telefono: Android "Installa app" dal menu
   di Chrome, iPhone Safari → Condividi → "Aggiungi alla schermata Home".
+- **Stesso giorno, secondo passo** (proprietario): in "Isla Ticket" va **tutta** la pagina
+  dei venditori, e Isla non ha più "Area venditori". Quindi:
+  - `ticket/index.html` è la pagina intera (prima solo entrata e modulo); il modulo
+    non è più scritto due volte e `PAGINA_INTERA` in `venditori.js` è sparito;
+  - `venditori.html` è solo un rimando a `ticket/`, per chi l'aveva salvato;
+  - via il link del menu in `app.js` (e il suo stile), e via il segno
+    `isla-venditore` che `venditori.js` lasciava nel telefono;
+  - **il link `booking.html?code=…`** nella risposta WhatsApp al cliente ora parte da
+    `../`: la pagina sta un livello sotto, e senza quel `../` il cliente riceveva
+    `…/ticket/booking.html`, una pagina che non esiste. Provato nel browser.
+  - Chi l'ha già installata la vede cambiare da sola: stesso indirizzo, stesso manifest.

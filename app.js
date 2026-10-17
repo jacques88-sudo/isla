@@ -455,7 +455,6 @@ function initMoreMenu() {
   const openBtns = document.querySelectorAll("[data-menu-open]");
   const closeBtns = document.querySelectorAll("[data-menu-close]");
   if (!panel || !scrim || !openBtns.length) return;
-  aggiungiAreaVenditori(panel);
   const links = document.querySelectorAll("[data-menu-link]");
 
   function open() {
@@ -494,27 +493,6 @@ function initMoreMenu() {
   document.addEventListener("keydown", e => {
     if (e.key === "Escape" && panel.classList.contains("is-open")) close();
   });
-}
-
-// "Area venditori" in fondo al menu, ma solo sul telefono dove un venditore e'
-// gia' entrato almeno una volta: il segno lo lascia venditori.js dopo
-// l'entrata, e resta anche dopo "Esci" (la scorciatoia serve proprio per
-// rientrare). I clienti non la vedono mai. Non e' una protezione: la pagina
-// chiede comunque email e password, e il database risponde solo ai venditori.
-// Solo in italiano, come la pagina a cui porta.
-const VENDITORE_KEY = "isla-venditore";
-
-function aggiungiAreaVenditori(panel) {
-  let venditore = false;
-  try { venditore = localStorage.getItem(VENDITORE_KEY) === "1"; } catch (e) { /* incognito */ }
-  const nav = panel.querySelector(".more-menu-nav");
-  if (!venditore || !nav) return;
-  const link = document.createElement("a");
-  link.href = "./venditori.html";
-  link.textContent = "Area venditori";
-  link.className = "more-menu-seller";
-  link.setAttribute("data-menu-link", "");
-  nav.append(link);
 }
 
 document.addEventListener("DOMContentLoaded", initMoreMenu);

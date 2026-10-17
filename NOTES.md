@@ -19266,3 +19266,16 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
   - Provato in locale con le due cartelle affiancate: rimandi giusti, 74 escursioni,
     link al cliente `…/isla/booking.html`, `Page.getInstallabilityErrors` vuoto e
     `beforeinstallprompt` arrivato, niente fuori schermo a 360 px.
+
+## Due nomi dai ticket 0993 e 0994 (17 ottobre 2026)
+
+- **"JET SKI ISLAND"** (ticket 0993) è **Jetski Island**, già nei `nomi` del Jet Ski
+  Safari. La scheda Claude la trovava, ma la compagnia restava vuota:
+  `compagniaNelTesto()` in `venditori.js` cercava "jetski island" dentro "jet ski
+  island" e non lo trovava per uno spazio. Ora spazi e trattini non contano. Non si è
+  aggiunto "Jet Ski Island" come secondo nome: sarebbe una seconda compagnia nel menu,
+  e il netto in `nets` sta sotto un nome solo.
+- **"Ben Stargazing"** (ticket 0994): una piccola compagnia di stelle in inglese
+  (proprietario). Sta nei `nomi` di Teide Stars & Sunset, **non** dentro una variante:
+  il ticket dice 150 € per 2 adulti, 75 a testa, che è il prezzo del gruppo grande e
+  non del piccolo. Se il proprietario dice quale serata fa, il nome va anche lì.

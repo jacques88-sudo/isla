@@ -208,11 +208,13 @@ function varianteDellaCompagnia() {
 
 // Il nome di compagnia che compare in un testo del ticket ("ANDROMEDA TOUR"
 // → "Andromeda"), o "". Il piu' lungo vince: "Ultimate Buggies" prima di
-// "Ultimate Buggy".
+// "Ultimate Buggy". Spazi e trattini non contano: "JET SKI ISLAND" e'
+// "Jetski Island" (ticket 0993).
 function compagniaNelTesto(tour, testo) {
-  const t = (testo || "").toLowerCase();
+  const soloLettere = x => (x || "").toLowerCase().replace(/[\s\-]+/g, "");
+  const t = soloLettere(testo);
   return ((tour && tour.nomi) || [])
-    .filter(n => t.includes(n.toLowerCase()))
+    .filter(n => t.includes(soloLettere(n)))
     .sort((a, b) => b.length - a.length)[0] || "";
 }
 

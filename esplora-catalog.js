@@ -2890,10 +2890,8 @@ const ESPLORA_CATALOG = [
     title: "Teide Stars & Sunset",
     // La compagnia della serata in italiano (gruppo piccolo), come i
     // venditori la scrivono sul ticket (proprietario, 8 ottobre 2026).
-    // "Ben Stargazing": una piccola compagnia in inglese (proprietario,
-    // 17 ottobre 2026). Non sta dentro una variante: il primo ticket (0994)
-    // ha 75 EUR a persona, il prezzo del gruppo grande, quindi non e' detto
-    // che faccia solo il piccolo.
+    // "Ben Stargazing": una piccola compagnia in inglese, da trattare come
+    // Andromeda (proprietario, 17 ottobre 2026): fa il gruppo piccolo.
     nomi: ["Andromeda", "Ben Stargazing"],
     // Era la sola scheda della categoria "stelle", che infatti non c'e' piu'.
     category: "teide-natura",
@@ -2949,7 +2947,8 @@ const ESPLORA_CATALOG = [
           },
           // Sul ticket c'e' solo "Andromeda", non la serata: Andromeda fa
           // questa (proprietario, 8 ottobre 2026). Vedi `nomi` in testa.
-          nomi: ["Andromeda"],
+          // Ben Stargazing come Andromeda (proprietario, 17 ottobre 2026).
+          nomi: ["Andromeda", "Ben Stargazing"],
           priceAdult: 79,
           priceChild: 69,
           duration: { it: "5-6 ore", en: "5 to 6 hours", es: "5-6 horas", fr: "De 5 à 6 heures", de: "5 bis 6 Stunden" },

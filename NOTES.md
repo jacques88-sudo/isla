@@ -19279,3 +19279,6 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
   (proprietario). Sta nei `nomi` di Teide Stars & Sunset, **non** dentro una variante:
   il ticket dice 150 € per 2 adulti, 75 a testa, che è il prezzo del gruppo grande e
   non del piccolo. Se il proprietario dice quale serata fa, il nome va anche lì.
+  Poi il proprietario: **"considera Ben come Andromeda"**. Ora il nome sta anche nel
+  gruppo piccolo, e dalla foto si sceglie da sola la serata. I 75 € del ticket non
+  cambiano niente: il prezzo del ticket non si confronta col catalogo.

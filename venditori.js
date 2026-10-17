@@ -71,6 +71,11 @@ const els = {
   statsReload: $("[data-stats-reload]")
 };
 
+// La stessa pagina gira anche come app a parte, "Isla Ticket" (ticket/index.html,
+// 17 ottobre 2026): li' ci sono solo l'entrata e il modulo del ticket. Senza
+// l'elenco degli ultimi inseriti, richieste e statistiche non si caricano.
+const PAGINA_INTERA = !!els.recent;
+
 let venditore = null;      // { name } dalla tabella sellers
 let fotoScelta = null;     // il File scelto, prima di rimpicciolirlo
 let ricerca = "";          // il numero cercato; vuoto = gli ultimi 20
@@ -669,6 +674,7 @@ function dataBreve(iso) {
 }
 
 async function caricaUltimi() {
+  if (!PAGINA_INTERA) return;
   let domanda = sb
     .from("bookings")
     .select("id, ticket_number, reference, excursion_id, option_label, company, date, time, phone, adults, kids, babies, units, total, deposit, rest_to_pay, payment_method, seller, photo_path, status, source, request_code")
@@ -1009,6 +1015,7 @@ async function apriFoto(percorso) {
 const STATO_RICHIESTA = { pending: "Da confermare", confirmed: "Confermata", cancelled: "Annullata" };
 
 async function caricaRichieste() {
+  if (!PAGINA_INTERA) return;
   const { data, error } = await sb
     .from("bookings")
     .select("id, request_code, status, excursion_id, option_label, date, time, wanted_time, meeting_point, adults, kids, babies, created_at, customer_name, hotel, pickup_point, pickup_time, request_message, phone, payment_link, payment_amount, payment_total, payment_sent_at")
@@ -1550,7 +1557,7 @@ async function mostraPagina() {
     caricaRichieste();
     caricaUltimi();
     preparaStatistiche();
-  } else {
+  } else if (PAGINA_INTERA) {
     // Chi esce non lascia i numeri dell'ufficio a chi entra dopo.
     els.statsBox.hidden = true;
     els.statsBox.open = false;
@@ -1739,6 +1746,7 @@ async function caricaStatistiche() {
 // ancora nel database (SQL non lanciato) la risposta e' un errore: si tratta
 // come un "no", e la pagina resta quella di sempre.
 async function preparaStatistiche() {
+  if (!PAGINA_INTERA) return;
   const { data, error } = await sb.rpc("is_office");
   els.statsBox.hidden = !!error || data !== true;
 }
@@ -1752,13 +1760,15 @@ els.loginForm.addEventListener("submit", entra);
 els.company.addEventListener("change", varianteDellaCompagnia);
 els.logout.addEventListener("click", esci);
 els.form.addEventListener("submit", salva);
-els.searchForm.addEventListener("submit", cerca);
-els.searchReset.addEventListener("click", tornaAgliUltimi);
-// Una richiesta mandata mentre la pagina e' aperta: si vede senza ricaricare.
-els.requestsReload.addEventListener("click", () => { mostra(els.requestsMsg, ""); caricaRichieste(); });
-// Le statistiche si chiedono al database solo quando la tendina si apre.
-els.statsBox.addEventListener("toggle", () => { if (els.statsBox.open) caricaStatistiche(); });
-els.statsReload.addEventListener("click", caricaStatistiche);
+if (PAGINA_INTERA) {
+  els.searchForm.addEventListener("submit", cerca);
+  els.searchReset.addEventListener("click", tornaAgliUltimi);
+  // Una richiesta mandata mentre la pagina e' aperta: si vede senza ricaricare.
+  els.requestsReload.addEventListener("click", () => { mostra(els.requestsMsg, ""); caricaRichieste(); });
+  // Le statistiche si chiedono al database solo quando la tendina si apre.
+  els.statsBox.addEventListener("toggle", () => { if (els.statsBox.open) caricaStatistiche(); });
+  els.statsReload.addEventListener("click", caricaStatistiche);
+}
 document.querySelectorAll("[data-stats-period]").forEach(btn => btn.addEventListener("click", () => {
   periodoStats = btn.dataset.statsPeriod;
   document.querySelectorAll("[data-stats-period]").forEach(b =>

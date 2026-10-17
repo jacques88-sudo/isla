@@ -19194,3 +19194,23 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
   sul foglio dei venditori): la lettura della foto risale alla scheda. Solo sulla scheda
   in condivisione, non sulla gemella (stesso nome su due schede = errore di
   `controlla.js`). I netti delle varianti private valgono per qualunque compagnia.
+
+## "Isla Ticket", la lettura del ticket come app a parte (17 ottobre 2026)
+
+- Il proprietario: solo la parte che riconosce il ticket, con la sua icona sul
+  telefono, dietro il login dei venditori, e che faccia lo stesso lavoro di Isla.
+- **`ticket/index.html`**: l'entrata e il modulo "Nuovo ticket" di `venditori.html`,
+  copiati, e **lo stesso `../venditori.js`**, non una copia: una correzione al modulo
+  vale per tutte e due. Il modulo HTML invece è scritto due volte, come la finestra
+  della richiesta: **se tocchi il modulo in `venditori.html`, tocca anche
+  `ticket/index.html`**.
+- `venditori.js` capisce dove si trova con `PAGINA_INTERA` (c'è l'elenco degli ultimi
+  inseriti?): nell'app non carica richieste, ultimi inseriti e statistiche.
+- **Il manifest è suo** (`ticket/manifest.json`, `id` e `scope` della cartella): è
+  quello che la fa installare come un'app diversa da Isla. Icona: il sole di Isla su
+  un biglietto bianco, sfondo viola (`ticket/icon-*.png`, `apple-touch-icon.png`).
+- Il login è lo stesso di `venditori.html` e si ricorda: chi è entrato in una delle
+  due è entrato anche nell'altra (stessa origine, stessa sessione Supabase).
+- Senza service worker suo: leggere la foto vuole comunque la rete.
+- Si installa aprendo `…/isla/ticket/` nel telefono: Android "Installa app" dal menu
+  di Chrome, iPhone Safari → Condividi → "Aggiungi alla schermata Home".

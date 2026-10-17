@@ -4169,6 +4169,9 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 }
 .vend-installa p { margin: 0; flex: 1 1 14rem; }
 .vend-installa .btn { min-height: 40px; }
+/* "display: flex" e quello di .btn battono l'attributo hidden: senza questa
+   riga il riquadro restava sempre in vista, vuoto, con un bottone senza scritta. */
+.vend-installa[hidden], .vend-installa .btn[hidden] { display: none; }
 .vend-form label,
 .vend-form legend {
   display: block;

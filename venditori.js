@@ -2,8 +2,10 @@
 // sua foto, vedere gli ultimi inseriti, cercarne uno e cambiarne data, ora,
 // persone e soldi (un'escursione rinviata).
 //
-// La pagina e' ticket/index.html, l'app "Isla Ticket" (17 ottobre 2026): i
-// link verso il sito di Isla partono da li', un livello sotto ("../").
+// La pagina e' l'app "Isla Ticket", in un repository suo (isla-ticket, 17
+// ottobre 2026): sta a .../isla-ticket/ e carica questo file da ../isla/.
+// I link verso il sito di Isla partono quindi da dove sta QUESTO file
+// (SITO), non dalla pagina.
 //
 // Solo in italiano: la usano Jack e Francesca, non i clienti.
 //
@@ -21,6 +23,9 @@
 const ESCURSIONE_ALTRO = "altro";
 
 const $ = sel => document.querySelector(sel);
+
+// La cartella di Isla, ricavata dall'indirizzo di questo file.
+const SITO = new URL(".", document.currentScript.src);
 
 const els = {
   loading: $("[data-vend-loading]"),
@@ -1276,7 +1281,7 @@ function rispostaTesto(r, c, lingua) {
   const variante = rispostaVariante(tour, r.option_label, lingua);
   // a mezzogiorno: la data non scivola al giorno prima con il fuso
   const giorno = new Date(c.date + "T12:00:00").toLocaleDateString(T.locale, { weekday: "long", day: "numeric", month: "long" });
-  const link = new URL("../booking.html?code=" + encodeURIComponent(c.numero), window.location.href).href;
+  const link = new URL("booking.html?code=" + encodeURIComponent(c.numero), SITO).href;
   // solo il nome, non il cognome: e' un messaggio fra persone
   const nome = (r.customer_name || "").trim().split(/\s+/)[0];
   const righe = [

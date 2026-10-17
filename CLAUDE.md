@@ -373,6 +373,10 @@ Per alcune schede il netto è una **parte del prezzo di vendita** (Twin Ticket, 
 2026): colonna `net_percent` di `nets` (`supabase/modifiche/2026-10-09-percentuale.sql`),
 netto = totale del ticket × quella parte. Per questo il netto si ricalcola anche quando
 cambia il **totale**.
+Dal 17 ottobre 2026 (`supabase/modifiche/2026-10-17-netto-fisso.sql`) altri due modi:
+`net_fixed`, una cifra per tutto il ticket (barche private), e `net_from_deposit`,
+**la commissione è l'acconto** (Fevi, MRB): netto = totale − acconto, e si ricalcola
+anche quando cambia l'acconto.
 
 **Il repository è pubblico e il sito è su GitHub Pages**: un netto scritto in un file
 (catalogo, commento, `NOTES.md`, un `.sql` in `supabase/`) lo legge chiunque, clienti e

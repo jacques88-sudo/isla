@@ -19249,3 +19249,20 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
   solo acceso. Il riquadro vuoto diceva anche che Chrome non aveva mandato
   `beforeinstallprompt` (alla prima visita spesso non lo manda): su Android ora i passi
   dal menu ⋮ si scrivono subito, e il bottone "Installa" arriva quando Chrome lo permette.
+- **Quinto passo: un repository suo.** Dal telefono, il menu di Chrome diceva "Questa
+  app è già installata" e apriva **Isla**. Su Android un'app installata si prende
+  tutti gli indirizzi che cominciano come il suo (`/isla/`), e un'app "dentro"
+  un'altra non si può installare: nessun ritocco della pagina poteva bastare, e i passi
+  tre e quattro erano rimedi sbagliati. Ora la pagina sta in **`isla-ticket`**
+  (`jacques88-sudo.github.io/isla-ticket/`), che **non** comincia con `/isla/`.
+  - Là ci sono solo `index.html`, `manifest.json`, icone, `sw.js` e `installa.js`; il
+    codice arriva da `../isla/` (stessa origine, quindi stesso login Supabase).
+  - Il link per il cliente in `venditori.js` parte da `SITO`, la cartella del file
+    `venditori.js` stesso (`document.currentScript.src`), non dalla pagina.
+  - `venditori.html` e `ticket/` sono rimandi; `ticket/sw.js` si toglie da solo dai
+    telefoni che l'avevano.
+  - Il repository l'ha creato il proprietario: il collegamento GitHub di Claude non
+    può crearne (403).
+  - Provato in locale con le due cartelle affiancate: rimandi giusti, 74 escursioni,
+    link al cliente `…/isla/booking.html`, `Page.getInstallabilityErrors` vuoto e
+    `beforeinstallprompt` arrivato, niente fuori schermo a 360 px.

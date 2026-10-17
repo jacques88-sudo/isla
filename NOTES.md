@@ -19135,3 +19135,14 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
   gesti (`env(safe-area-inset-bottom)`).
 - Provato a 412×700 con "Installa l'app" visibile: il pannello è alto 772 px, scorrendo
   "Prenota ora" arriva tutto in vista. Lo stile è uno solo per le sei pagine.
+
+## Freebird conta sempre come carta (17 ottobre 2026)
+
+- Il proprietario, rileggendo un foglio di carta dei venditori: la commissione di
+  Freebird si divide **sempre** con la parte della carta, anche se il cliente paga
+  cash o metà e metà. Stessa regola dei parchi e di Peter Pan.
+- `pagamento: "card"` su `freebird-catamaran` e `'freebird-catamaran'` nei due elenchi
+  di `supabase/modifiche/2026-10-09-solo-card.sql` (il guardiano e i ticket già
+  salvati). Il file va rilanciato intero nel SQL Editor.
+- Dallo stesso foglio sono usciti netti e percentuali: come sempre stanno **solo** su
+  Supabase, preparati nella scratchpad. Qui non si scrive nessun numero.

@@ -19282,3 +19282,47 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
   Poi il proprietario: **"considera Ben come Andromeda"**. Ora il nome sta anche nel
   gruppo piccolo, e dalla foto si sceglie da sola la serata. I 75 € del ticket non
   cambiano niente: il prezzo del ticket non si confronta col catalogo.
+
+## 18 ottobre 2026 — Il transfer sul ticket, e il netto con o senza
+
+Dal foglio TRG del 12-13 ottobre: su alcune schede il netto cambia se il cliente prende
+il transfer (proprietario). Mokkai in condivisione: adulto **35 col trasporto, 30
+senza**, bambino 25 sempre. Il Castillo col transfer ha un netto suo, e "il transfer è
+uguale anche per i VIP". Fino a oggi il ticket non diceva se il transfer c'era, e il
+netto non poteva saperlo. **I numeri non sono qui**: stanno su Notion ("Netti da
+inserire") e su Supabase.
+
+- **`supabase/modifiche/2026-10-18-transfer.sql`**: `bookings.transfer` (true, false o
+  vuoto = non si sa / la scheda non lo offre) e `nets.transfer` (vuoto = uguale nei due
+  casi, come tutte le righe di prima). `calcola_netto` ha un parametro in più e, come
+  per variante e compagnia, vince la riga che lo dice; il guardiano ricalcola anche
+  quando cambia il transfer. **Cambia la chiave di `nets`**: un netto nuovo si scrive
+  con `on conflict (excursion_id, coalesce(option_label, ''), coalesce(company, ''),
+  coalesce(transfer::text, ''))`; i testi con tre colonne non vanno più.
+- **Venditori** (`venditori.js`, e la casella in `index.html` di `isla-ticket`): la
+  casella "Con transfer (ritiro in hotel)" compare solo dove il catalogo ha `transfer`
+  (sulla scheda o sulla variante, la variante vince: `transferOfferto()`, la gemella di
+  `transferDi()` di `escursioni.js`, che la pagina non carica). Anche in "Modifica";
+  nell'elenco il ticket dice "transfer", la richiesta "con transfer". Dove la casella non
+  c'è la colonna non si manda nemmeno.
+- **Clienti**: `richiestaVoce()` (`richieste.js`) manda `transfer` dalla casella "Vuoi il
+  transfer?" che c'era già, solo dove il transfer si può scegliere; `manda_richiesta`
+  lo salva.
+- **Trovato provando**: `.vend-check` ha `display: flex !important`, che batte
+  l'attributo `hidden`: la casella si vedeva anche sul Karting. Ora
+  `.vend-check[hidden]` ha `display: none !important` (la lezione del riquadro
+  "Installa", di nuovo).
+- **L'ordine conta**: prima l'SQL su Supabase, poi il sito. Il modulo manda e legge la
+  colonna `transfer`: senza, il salvataggio e l'elenco si rompono. `venditori.js`
+  regge invece la pagina vecchia di `isla-ticket` senza la casella.
+
+Provato su Postgres 16 con lo schema e tutte le modifiche (lanciato due volte): Mokkai
+senza transfer 2 adulti → 60, col transfer 2 adulti + 1 bambino → 95, spuntare il
+transfer dopo ricalcola, transfer vuoto → "netto mancante"; Gomera (riga senza transfer)
+uguale a prima; `manda_richiesta` salva true, lascia vuoto chi non lo manda e rifiuta un
+valore strano. Nel browser a 375 px con un Supabase finto: casella su Mokkai e Castillo,
+non su Karting e Gomera, salvataggio con `transfer: true`, Modifica, nessuno scroll
+orizzontale, nessun errore. `CACHE_NAME` → `isla-v550`.
+
+Ancora da fare: il **pranzo** del Teide-Masca-Icod-Garachico (+20 € al cliente, +18 di
+netto), anche per i clienti; i netti del Castillo senza transfer e VIP.

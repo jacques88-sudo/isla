@@ -19355,3 +19355,13 @@ confermare una richiesta annullata per sbaglio.
 Dentro il riquadro le righe restano grigie e barrate come prima. Provato con righe
 finte a 390 px: chiuso una riga sola, aperto le tre righe con "Conferma", niente
 scroll orizzontale. La pagina vera (col login) non l'ho potuta aprire.
+
+### "TRANSFER" sul ticket spunta la casella
+
+Il proprietario: se sul ticket di carta c'è scritto transfer, la casella si spunta da
+sola. Lo fa `transferNelTesto()` in `venditori.js`, sui testi che la lettura della foto
+manda già (escursione, meeting point, hotel, note), come `compagniaNelTesto()` per la
+compagnia: **`leggi-ticket` non va ridistribuita**. Prende anche le grafie storte
+("trasfer", "tranfer", "transf."). Solo dove la casella c'è: sul Karting non succede
+niente. Provato nel browser con una lettura finta: Mokkai con "TRANSFER" nelle note →
+spuntata, senza → no, Karting → nessuna casella. `CACHE_NAME` → `isla-v553`.

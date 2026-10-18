@@ -186,6 +186,12 @@ function transferOfferto(tour, etichetta) {
     ? scelta.transfer : tour.transfer);
 }
 
+// "TRANSFER" scritto sul ticket, anche storto ("trasfer", "tranfer"): la
+// lettura della foto spunta la casella da sola (proprietario, 18 ottobre 2026).
+function transferNelTesto(testo) {
+  return /tr[ae]n?s*f(?:[ea]r|\b)/i.test(testo || "");
+}
+
 function aggiornaTransfer() {
   if (!els.transferWrap) return;
   const offerto = transferOfferto(schedaDa(els.exc.value), els.option.value);
@@ -510,6 +516,10 @@ function riempiDaLettura(c, prima) {
     const chi = compagniaNelTesto(schedaDa(c.excursion_id), [c.excursion_text, c.notes].join(" "));
     if (chi) { els.company.value = chi; varianteDellaCompagnia(); }
     aggiornaTransfer();
+    if (els.transferWrap && !els.transferWrap.hidden
+        && transferNelTesto([c.excursion_text, c.meeting_point, c.hotel, c.notes].join(" "))) {
+      els.transfer.checked = true;
+    }
     if (dubbi.has("excursion_id")) els.exc.classList.add("vend-dubbio");
   } else if (!c.excursion_id) {
     nonLetti.push(c.excursion_text ? `escursione (sul ticket: "${c.excursion_text}")` : "escursione");

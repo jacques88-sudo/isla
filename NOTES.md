@@ -19325,5 +19325,14 @@ valore strano. Nel browser a 375 px con un Supabase finto: casella su Mokkai e C
 non su Karting e Gomera, salvataggio con `transfer: true`, Modifica, nessuno scroll
 orizzontale, nessun errore. `CACHE_NAME` → `isla-v550`.
 
-Ancora da fare: il **pranzo** del Teide-Masca-Icod-Garachico (+20 € al cliente, +18 di
-netto), anche per i clienti.
+### Il pranzo sul Teide, Icod, Garachico e Masca
+
+Il proprietario: col pranzo sono 20 € in più e 18 di netto in più, **uguali per adulti e
+bambini**, e la scelta la vedono anche i clienti. Sulla scheda ora ci sono due formule,
+**"Senza pranzo"** (58 / 37,50) e **"Con pranzo"** (78 / 57,50, con "Pasto incluso"), e la
+nota dice che il pranzo è compreso solo nella seconda. Due varianti e non una casella
+perché il netto si trova già dalla variante: "Con pranzo" ha su Supabase una riga sua,
+"Senza pranzo" prende quella di sempre della scheda, senza toccare lo schema. Nel
+modulo dei venditori la formula ora va scelta. Provato nella pagina, in italiano e
+inglese: due bottoni, 58 e 78, "Pasto incluso" solo col pranzo, nessuno scroll
+orizzontale.

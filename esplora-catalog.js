@@ -2748,6 +2748,36 @@ const ESPLORA_CATALOG = [
     fixedPrice: true,
     priceAdult: 58,
     priceChild: 37.5,
+    // Il pranzo si puo' aggiungere (proprietario, 18 ottobre 2026): 20 EUR in
+    // piu', uguale per adulti e bambini. Due formule e non una casella perche'
+    // il netto lo trova dalla variante: "Con pranzo" ha su Supabase una riga
+    // sua, "Senza pranzo" prende quella di sempre della scheda.
+    options: {
+      label: { it: "Pranzo", en: "Lunch", es: "Almuerzo", fr: "Déjeuner", de: "Mittagessen" },
+      choices: [
+        { label: { it: "Senza pranzo", en: "Without lunch", es: "Sin almuerzo", fr: "Sans déjeuner", de: "Ohne Mittagessen" },
+          priceAdult: 58,
+          priceChild: 37.5,
+          desc: {
+            it: "Il giro completo; alla sosta per mangiare, a Icod o a Garachico, il pranzo lo scegli e lo paghi tu.",
+            en: "The full tour; at the meal stop, in Icod or Garachico, you choose and pay for your own lunch.",
+            es: "La excursión completa; en la parada para comer, en Icod o en Garachico, el almuerzo lo eliges y lo pagas tú.",
+            fr: "L'excursion complète ; à l'arrêt repas, à Icod ou à Garachico, vous choisissez et payez votre déjeuner.",
+            de: "Die ganze Tour; beim Essensstopp in Icod oder Garachico wählen und bezahlen Sie Ihr Mittagessen selbst."
+          } },
+        { label: { it: "Con pranzo", en: "With lunch", es: "Con almuerzo", fr: "Avec déjeuner", de: "Mit Mittagessen" },
+          priceAdult: 78,
+          priceChild: 57.5,
+          included: ["lunch"],
+          desc: {
+            it: "Il giro completo, con il pranzo già compreso alla sosta di Icod o di Garachico.",
+            en: "The full tour, with lunch already included at the stop in Icod or Garachico.",
+            es: "La excursión completa, con el almuerzo ya incluido en la parada de Icod o de Garachico.",
+            fr: "L'excursion complète, avec le déjeuner déjà compris à l'arrêt d'Icod ou de Garachico.",
+            de: "Die ganze Tour, mit dem Mittagessen bereits inklusive beim Stopp in Icod oder Garachico."
+          } }
+      ]
+    },
     // Il fornitore da' solo "Ninos (2-11)", quindi gli adulti sono 12+.
     // La riga dei bebe' l'ufficio ha scritto di NON metterla: niente
     // `ages.infant` e niente `priceInfant`. Campo assente = "non lo
@@ -2809,11 +2839,11 @@ const ESPLORA_CATALOG = [
                 de: "Rückfahrt zum Hotel" } }
     ],
     notes: [
-      { it: "Il pranzo non è incluso: la sosta per mangiare si fa a Icod o a Garachico.",
-        en: "Lunch is not included: the meal stop is either in Icod or in Garachico.",
-        es: "El almuerzo no está incluido: la parada para comer se hace en Icod o en Garachico.",
-        fr: "Le déjeuner n'est pas compris : l'arrêt repas se fait à Icod ou à Garachico.",
-        de: "Das Mittagessen ist nicht inklusive: Die Essenspause ist in Icod oder in Garachico." },
+      { it: "Il pranzo è compreso solo nella formula con pranzo: la sosta per mangiare si fa a Icod o a Garachico.",
+        en: "Lunch is only included in the option with lunch: the meal stop is either in Icod or in Garachico.",
+        es: "El almuerzo solo está incluido en la opción con almuerzo: la parada para comer se hace en Icod o en Garachico.",
+        fr: "Le déjeuner n'est compris que dans la formule avec déjeuner : l'arrêt repas se fait à Icod ou à Garachico.",
+        de: "Das Mittagessen ist nur in der Variante mit Mittagessen inklusive: Die Essenspause ist in Icod oder in Garachico." },
       { it: "Nel parco si sta sopra i 2.000 metri e fa freddo anche d'estate: porta una felpa o una giacca.",
         en: "Up in the park you are above 2,000 metres and it is cold even in summer: bring a sweatshirt or a jacket.",
         es: "En el parque se está por encima de los 2.000 metros y hace frío incluso en verano: lleva una sudadera o una chaqueta.",

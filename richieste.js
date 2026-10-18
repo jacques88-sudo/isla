@@ -100,7 +100,12 @@ function richiestaVoce(voce) {
     // cliente sul ticket, accanto all'ora
     pickup_point: punto ? (punto.dove === "hotel" ? hotel : punto.nome)
       : ritrovo ? (typeof ritrovo === "object" ? ritrovo.it : ritrovo) : null,
-    pickup_time: (punto && punto.ora) || null
+    pickup_time: (punto && punto.ora) || null,
+    // Dove il transfer si puo' scegliere, se il cliente l'ha chiesto: su
+    // alcune schede cambia il netto (18 ottobre 2026). Altrove resta
+    // undefined, e JSON.stringify non lo manda nemmeno.
+    transfer: tour && typeof transferDi === "function" && transferDi(tour, scelta)
+      ? !!voce.transfer : undefined
   };
 }
 

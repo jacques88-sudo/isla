@@ -4253,6 +4253,11 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   margin: 0 !important;
 }
 .vend-check input { width: 1.3rem; height: 1.3rem; flex: none; }
+/* display: flex !important vince sull'attributo hidden: la casella del
+   transfer, nascosta sulle schede che non lo hanno, si vedrebbe lo stesso. */
+.vend-check[hidden] { display: none !important; }
+/* La casella del transfer sta fra due campi: le serve l'aria che hanno loro. */
+[data-transfer-wrap].vend-check, [data-edit-transfer].vend-check { margin: 0 0 1rem !important; }
 .vend-msg { margin: .5rem 0; }
 .vend-msg[hidden], .vend-warn[hidden] { display: none; }
 .vend-warn { color: var(--danger); margin: -.4rem 0 1rem; }

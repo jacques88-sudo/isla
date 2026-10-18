@@ -380,6 +380,11 @@ Dal 17 ottobre 2026 (`supabase/modifiche/2026-10-17-netto-fisso.sql`) altri due 
 `net_fixed`, una cifra per tutto il ticket (barche private), e `net_from_deposit`,
 **la commissione è l'acconto** (Fevi, MRB): netto = totale − acconto, e si ricalcola
 anche quando cambia l'acconto.
+Dal 18 ottobre 2026 (`supabase/modifiche/2026-10-18-transfer.sql`) il netto può
+dipendere anche dal **transfer** (Mokkai: col trasporto e senza): `nets.transfer` e
+`bookings.transfer`, che il venditore spunta dove il catalogo ha `transfer`. La chiave di
+`nets` ha quattro colonne: `on conflict (excursion_id, coalesce(option_label, ''),
+coalesce(company, ''), coalesce(transfer::text, ''))`.
 
 **Il repository è pubblico e il sito è su GitHub Pages**: un netto scritto in un file
 (catalogo, commento, `NOTES.md`, un `.sql` in `supabase/`) lo legge chiunque, clienti e

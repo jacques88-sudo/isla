@@ -49,6 +49,10 @@ const els = {
   unitsWrap: $("[data-units-wrap]"),
   unitsLabel: $("[data-units-label]"),
   units: $("[data-units]"),
+  // La casella del transfer sta nella pagina di isla-ticket: finche' quella
+  // vecchia e' in cache puo' mancare, e il modulo deve funzionare lo stesso.
+  transferWrap: $("[data-transfer-wrap]"),
+  transfer: $("#tTransfer"),
   seller: $("#tSeller"),
   nation: $("#tNation"),
   prefix: $("#tPrefix"),
@@ -164,6 +168,29 @@ function aggiornaEscursione() {
   els.unitsWrap.hidden = !tipi.length;
   if (tipi.length) els.unitsLabel.textContent = `${italiano(tour.units.name)}: quanti per tipo`;
   caselleMezzi(els.units, tipi, "tUnit");
+  aggiornaTransfer();
+}
+
+// ─── Transfer ───────────────────────────────────────────────────────────────
+// Dove il cliente puo' scegliere il transfer (`transfer` nel catalogo, sulla
+// scheda o sulla variante, e la variante vince, come transferDi() di
+// escursioni.js, che questa pagina non carica), il ticket dice se l'ha preso:
+// su alcune schede cambia il netto (Mokkai in condivisione; proprietario,
+// 18 ottobre 2026). Si salva true o false; sulle altre schede la colonna resta vuota.
+
+function transferOfferto(tour, etichetta) {
+  if (!tour) return false;
+  const scelte = (tour.options && tour.options.choices) || [];
+  const scelta = scelte.find(c => italiano(c.label) === etichetta);
+  return !!(scelta && Object.prototype.hasOwnProperty.call(scelta, "transfer")
+    ? scelta.transfer : tour.transfer);
+}
+
+function aggiornaTransfer() {
+  if (!els.transferWrap) return;
+  const offerto = transferOfferto(schedaDa(els.exc.value), els.option.value);
+  els.transferWrap.hidden = !offerto;
+  if (!offerto) els.transfer.checked = false;
 }
 
 // I parchi contano sempre come pagati con carta (`pagamento: "card"` nel
@@ -203,7 +230,7 @@ function varianteDellaCompagnia() {
   if (!els.company.value || els.option.value) return;
   const nome = els.company.value.toLowerCase();
   const sua = scelte.find(c => (c.nomi || []).some(n => n.toLowerCase() === nome));
-  if (sua) els.option.value = italiano(sua.label);
+  if (sua) { els.option.value = italiano(sua.label); aggiornaTransfer(); }
 }
 
 // Il nome di compagnia che compare in un testo del ticket ("ANDROMEDA TOUR"
@@ -482,6 +509,7 @@ function riempiDaLettura(c, prima) {
     if (c.option_label) els.option.value = c.option_label;
     const chi = compagniaNelTesto(schedaDa(c.excursion_id), [c.excursion_text, c.notes].join(" "));
     if (chi) { els.company.value = chi; varianteDellaCompagnia(); }
+    aggiornaTransfer();
     if (dubbi.has("excursion_id")) els.exc.classList.add("vend-dubbio");
   } else if (!c.excursion_id) {
     nonLetti.push(c.excursion_text ? `escursione (sul ticket: "${c.excursion_text}")` : "escursione");
@@ -605,6 +633,8 @@ async function salva(event) {
   if (!els.companyWrap.hidden) riga.company = els.company.value || null;
   // Solo sulle schede a mezzo: le altre non mandano nemmeno la colonna.
   if (!els.unitsWrap.hidden) riga.units = mezziDa(els.form, tipiMezzo(schedaDa(els.exc.value)));
+  // Solo dove il transfer si puo' scegliere.
+  if (els.transferWrap && !els.transferWrap.hidden) riga.transfer = els.transfer.checked;
 
   const manca = cosaManca(riga);
   if (manca) { mostra(els.msg, manca, "errore"); return; }
@@ -681,7 +711,7 @@ function dataBreve(iso) {
 async function caricaUltimi() {
   let domanda = sb
     .from("bookings")
-    .select("id, ticket_number, reference, excursion_id, option_label, company, date, time, phone, adults, kids, babies, units, total, deposit, rest_to_pay, payment_method, seller, photo_path, status, source, request_code")
+    .select("id, ticket_number, reference, excursion_id, option_label, company, transfer, date, time, phone, adults, kids, babies, units, total, deposit, rest_to_pay, payment_method, seller, photo_path, status, source, request_code")
     // Le richieste da WhatsApp hanno il loro elenco, sopra; quando l'ufficio le
     // conferma col numero del ticket diventano ticket e passano qui.
     .or("source.neq.whatsapp,ticket_number.not.is.null");
@@ -723,6 +753,7 @@ async function caricaUltimi() {
       persone + soldi,
       b.payment_method,
       testoMezzi(tour, b.units),
+      b.transfer ? "transfer" : "",
       b.phone,
       b.source === "whatsapp" ? `WhatsApp ${b.request_code || ""}`.trim() : b.seller,
       b.reference ? "REF " + b.reference : ""
@@ -820,6 +851,10 @@ function apriModifica(li, b) {
       <legend></legend>
       <div class="vend-row"></div>
     </fieldset>
+    <label class="vend-check" data-edit-transfer hidden>
+      <input type="checkbox" name="transfer" />
+      <span>Con transfer (ritiro in hotel)</span>
+    </label>
     <div class="vend-row vend-row-3">
       <div>
         <label for="${id}Total">Total €</label>
@@ -867,6 +902,8 @@ function apriModifica(li, b) {
     box.querySelector("legend").textContent = `${italiano(tour.units.name)}: quanti per tipo`;
     caselleMezzi(box.querySelector(".vend-row"), tipi, id + "Unit", b.units);
   }
+  form.querySelector("[data-edit-transfer]").hidden = !transferOfferto(tour, b.option_label);
+  f.transfer.checked = !!b.transfer;
   f.total.value = b.total ?? "";
   f.deposit.value = b.deposit ?? "";
   f.payment_method.value = b.payment_method || "";
@@ -938,6 +975,7 @@ async function salvaModifica(event, form, b) {
   const tipi = tipiMezzo(schedaDa(b.excursion_id));
   if (tipi.length) nuovo.units = mezziDa(form, tipi);
   if (!form.querySelector("[data-edit-company]").hidden) nuovo.company = f.company.value || null;
+  if (!form.querySelector("[data-edit-transfer]").hidden) nuovo.transfer = f.transfer.checked;
   // Stessa regola del ticket nuovo: Total scritto e gli altri due vuoti vuol
   // dire pagato tutto, e si salva rest_to_pay = 0.
   if (nuovo.total !== null && nuovo.deposit === null && nuovo.rest_to_pay === null) nuovo.rest_to_pay = 0;
@@ -1021,7 +1059,7 @@ const STATO_RICHIESTA = { pending: "Da confermare", confirmed: "Confermata", can
 async function caricaRichieste() {
   const { data, error } = await sb
     .from("bookings")
-    .select("id, request_code, status, excursion_id, option_label, date, time, wanted_time, meeting_point, adults, kids, babies, created_at, customer_name, hotel, pickup_point, pickup_time, request_message, phone, payment_link, payment_amount, payment_total, payment_sent_at")
+    .select("id, request_code, status, excursion_id, option_label, transfer, date, time, wanted_time, meeting_point, adults, kids, babies, created_at, customer_name, hotel, pickup_point, pickup_time, request_message, phone, payment_link, payment_amount, payment_total, payment_sent_at")
     .eq("source", "whatsapp")
     .is("ticket_number", null)
     .gte("date", oggiISO())
@@ -1065,7 +1103,7 @@ async function caricaRichieste() {
     const ora = r.status === "confirmed"
       ? (r.time ? " · ritrovo " + r.time.slice(0, 5) : "") + (r.meeting_point ? " · " + r.meeting_point : "")
       : (r.wanted_time ? " · chiede " + r.wanted_time : "");
-    sotto.textContent = `${dataBreve(r.date)}${ora} · ${persone}`;
+    sotto.textContent = `${dataBreve(r.date)}${ora} · ${persone}${r.transfer ? " · con transfer" : ""}`;
     // chi e dove alloggia, se la richiesta li porta (dal 13 ottobre 2026)
     const chi = [r.customer_name, r.hotel].filter(Boolean).join(" · ");
     const stato = document.createElement("em");
@@ -1788,6 +1826,7 @@ els.form.addEventListener("input", () => {
 els.form.addEventListener("input", e => e.target.classList.remove("vend-dubbio"));
 els.form.addEventListener("change", e => e.target.classList.remove("vend-dubbio"));
 els.exc.addEventListener("change", aggiornaEscursione);
+els.option.addEventListener("change", aggiornaTransfer);
 els.phone.addEventListener("input", aggiornaTelefono);
 els.prefix.addEventListener("change", aggiornaTelefono);
 [els.total, els.deposit, els.rest].forEach(i => i.addEventListener("input", aggiornaSoldi));

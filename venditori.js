@@ -175,8 +175,8 @@ function aggiornaEscursione() {
 // Dove il cliente puo' scegliere il transfer (`transfer` nel catalogo, sulla
 // scheda o sulla variante, e la variante vince, come transferDi() di
 // escursioni.js, che questa pagina non carica), il ticket dice se l'ha preso:
-// su alcune schede cambia il netto (Mokkai, Castillo; proprietario, 18 ottobre
-// 2026). Si salva true o false; sulle altre schede la colonna resta vuota.
+// su alcune schede cambia il netto (Mokkai in condivisione; proprietario,
+// 18 ottobre 2026). Si salva true o false; sulle altre schede la colonna resta vuota.
 
 function transferOfferto(tour, etichetta) {
   if (!tour) return false;

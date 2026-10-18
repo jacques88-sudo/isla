@@ -2,8 +2,8 @@
 --
 -- Su alcune schede il netto cambia se il cliente prende il transfer
 -- (proprietario, 18 ottobre 2026): Mokkai in condivisione, adulto 35 col
--- trasporto e 30 senza; il Castillo col transfer ha un netto suo. Fino a oggi
--- il ticket non diceva se il transfer c'era, e il netto non poteva saperlo.
+-- trasporto e 30 senza. Fino a oggi il ticket non diceva se il transfer
+-- c'era, e il netto non poteva saperlo.
 --
 --   - bookings.transfer  true = col transfer, false = senza, vuoto = non si
 --                        sa o la scheda non lo offre. Lo scrive il venditore

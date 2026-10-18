@@ -19287,8 +19287,9 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
 
 Dal foglio TRG del 12-13 ottobre: su alcune schede il netto cambia se il cliente prende
 il transfer (proprietario). Mokkai in condivisione: adulto **35 col trasporto, 30
-senza**, bambino 25 sempre. Il Castillo col transfer ha un netto suo, e "il transfer è
-uguale anche per i VIP". Fino a oggi il ticket non diceva se il transfer c'era, e il
+senza**, bambino 25 sempre. Il Castillo invece **non ha netto né commissioni**, normale
+e VIP: è solo per i clienti (proprietario, 18 ottobre 2026), e il ticket 0972 del foglio
+resta senza netto. Fino a oggi il ticket non diceva se il transfer c'era, e il
 netto non poteva saperlo. **I numeri non sono qui**: stanno su Notion ("Netti da
 inserire") e su Supabase.
 
@@ -19325,4 +19326,4 @@ non su Karting e Gomera, salvataggio con `transfer: true`, Modifica, nessuno scr
 orizzontale, nessun errore. `CACHE_NAME` → `isla-v550`.
 
 Ancora da fare: il **pranzo** del Teide-Masca-Icod-Garachico (+20 € al cliente, +18 di
-netto), anche per i clienti; i netti del Castillo senza transfer e VIP.
+netto), anche per i clienti.

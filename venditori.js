@@ -734,9 +734,12 @@ async function caricaUltimi() {
     return;
   }
 
-  data.forEach(b => {
+  // Gli annullati in fondo (proprietario, 18 ottobre 2026): restano per
+  // "Ripristina ticket", ma non in mezzo a quelli che contano.
+  const annullato = b => b.status === "cancelled";
+  data.filter(b => !annullato(b)).concat(data.filter(annullato)).forEach(b => {
     const li = document.createElement("li");
-    li.classList.toggle("is-cancelled", b.status === "cancelled");
+    li.classList.toggle("is-cancelled", annullato(b));
     const tour = schedaDa(b.excursion_id);
     const nome = tour ? titoloDi(tour) : "Fuori catalogo";
     const persone = [b.adults, b.kids, b.babies].map(n => n || 0).join("+");
@@ -1090,7 +1093,9 @@ async function caricaRichieste() {
     ? `Richieste da WhatsApp (${daFare.length} da confermare)`
     : "Richieste da WhatsApp";
 
-  daFare.concat(data.filter(r => r.status !== "pending")).forEach(r => {
+  // prima da confermare, poi confermate, le annullate in fondo (18 ottobre 2026)
+  daFare.concat(data.filter(r => r.status === "confirmed"),
+    data.filter(r => r.status !== "pending" && r.status !== "confirmed")).forEach(r => {
     const li = document.createElement("li");
     li.className = "vend-req is-" + r.status;
     const tour = schedaDa(r.excursion_id);

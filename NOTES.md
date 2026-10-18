@@ -19336,3 +19336,17 @@ perché il netto si trova già dalla variante: "Con pranzo" ha su Supabase una r
 modulo dei venditori la formula ora va scelta. Provato nella pagina, in italiano e
 inglese: due bottoni, 58 e 78, "Pasto incluso" solo col pranzo, nessuno scroll
 orizzontale.
+
+## Isla Ticket: gli annullati in fondo (18 ottobre 2026)
+
+Il proprietario: "vorrei che i ticket / escursioni annullate sparissero o andassero in
+fondo". Scelto **in fondo**, non sparire: un annullato deve restare raggiungibile per
+**Ripristina ticket** (o per confermare una richiesta annullata per sbaglio).
+
+- **Ultimi inseriti** (`caricaUltimi()`): prima i ticket vivi, nell'ordine di sempre (il
+  più nuovo in alto), poi gli annullati. Sono sempre i 20 più recenti: un annullato
+  conta ancora fra i 20, si sposta solo di posto.
+- **Richieste da WhatsApp** (`caricaRichieste()`): da confermare, poi confermate, poi
+  annullate. Prima confermate e annullate erano mescolate.
+
+Restano barrati/grigi come prima (`is-cancelled`, `is-cancelled` delle richieste).

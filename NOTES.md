@@ -19336,3 +19336,22 @@ perché il netto si trova già dalla variante: "Con pranzo" ha su Supabase una r
 modulo dei venditori la formula ora va scelta. Provato nella pagina, in italiano e
 inglese: due bottoni, 58 e 78, "Pasto incluso" solo col pranzo, nessuno scroll
 orizzontale.
+
+## Isla Ticket: gli annullati in fondo, chiusi (18 ottobre 2026)
+
+Il proprietario: "vorrei che i ticket / escursioni annullate sparissero o andassero in
+fondo", con la foto di tre richieste annullate che prendevano tutto lo schermo. Fatte
+**tutte e due le cose**: in fondo, dentro un riquadro **chiuso** "Annullate (N)" /
+"Annullati (N)" (`riquadroAnnullati()` in `venditori.js`). Non sparire del tutto,
+perché un annullato deve restare raggiungibile per **Ripristina ticket** o per
+confermare una richiesta annullata per sbaglio.
+
+- **Richieste da WhatsApp** (`caricaRichieste()`): da confermare, poi confermate, poi il
+  riquadro. Prima confermate e annullate erano mescolate.
+- **Ultimi inseriti** (`caricaUltimi()`): i ticket vivi come sempre (il più nuovo in
+  alto), poi il riquadro. Sono sempre i 20 più recenti: un annullato conta ancora fra i
+  20. **Cercando un numero** il riquadro non c'è: chi cerca quel ticket lo vuole vedere.
+
+Dentro il riquadro le righe restano grigie e barrate come prima. Provato con righe
+finte a 390 px: chiuso una riga sola, aperto le tre righe con "Conferma", niente
+scroll orizzontale. La pagina vera (col login) non l'ho potuta aprire.

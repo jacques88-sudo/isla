@@ -4276,6 +4276,10 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   border-bottom: 1px solid var(--border);
 }
 .vend-list li div { min-width: 0; }
+/* il riquadro chiuso degli annullati, in fondo agli elenchi (18 ottobre 2026) */
+.vend-list li.vend-annullati { display: block; padding: 0; border-bottom: 0; }
+.vend-annullati summary { cursor: pointer; color: var(--muted); min-height: 44px; display: flex; align-items: center; }
+.vend-annullati li:last-child { border-bottom: 0; }
 .vend-list strong, .vend-list span { display: block; overflow-wrap: anywhere; }
 .vend-list span { color: var(--muted); font-size: .9rem; }
 .vend-list .btn { min-height: 40px; padding: 0 1rem; flex: none; }

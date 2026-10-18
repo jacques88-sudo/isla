@@ -1136,14 +1136,20 @@ function pacchettiGiorniChiesti(valore) {
 // quello che una categoria non sa dire: i giri in pullman con guida stanno in
 // tre categorie diverse, e nella stessa categoria dello stargazing, che invece
 // si sconta. La variante vince sulla scheda, come per `days` e `times`.
+//
+// La stessa regola vale per il codice sconto dei venditori sulle escursioni
+// singole (lista.js, 18 ottobre 2026): per questo sta in scontoPossibile().
 function pacchettoVoceScontabile(voce) {
   const tour = pacchettoVoceTour(voce);
+  return scontoPossibile(tour, pacchettoVoceVariante(voce, tour));
+}
+
+function scontoPossibile(tour, variante) {
   if (!tour) return false;
   // Basta una categoria sola fra quelle senza sconto: una scheda che sta nei
   // parchi e anche nei tour resta comunque un biglietto comprato a prezzo
-  // fisso, e scontarlo toglierebbe il 10% al margine di Admiral.
+  // fisso, e scontarlo toglierebbe lo sconto dal margine di Admiral.
   if (categorieDi(tour).some(id => PACCHETTI_CATEGORIE_SENZA_SCONTO.indexOf(id) >= 0)) return false;
-  const variante = pacchettoVoceVariante(voce, tour);
   if (variante && variante.fixedPrice !== undefined) return !variante.fixedPrice;
   return !tour.fixedPrice;
 }

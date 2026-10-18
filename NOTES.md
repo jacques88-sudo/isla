@@ -19365,3 +19365,48 @@ compagnia: **`leggi-ticket` non va ridistribuita**. Prende anche le grafie stort
 ("trasfer", "tranfer", "transf."). Solo dove la casella c'è: sul Karting non succede
 niente. Provato nel browser con una lettura finta: Mokkai con "TRANSFER" nelle note →
 spuntata, senza → no, Karting → nessuna casella. `CACHE_NAME` → `isla-v553`.
+
+## Il codice sconto dei venditori (18 ottobre 2026)
+
+Il proprietario: "un codice al momento della prenotazione, con uno sconto del 5% anche
+sulle escursioni singole". Le scelte, sue: **i codici su Supabase**, **uno per
+venditore**, **niente sconto dove non c'è quello dei pacchetti**, e **sui pacchetti
+resta il loro** (il 5% non si somma).
+
+- **Dove:** nella finestra della lista (`lista.js`), sotto l'email, campo "Codice
+  sconto (facoltativo)" e bottone **Applica** (anche Invio). È l'unico posto da cui parte
+  un messaggio, quindi vale anche per l'escursione singola: è una lista di una voce.
+- **I codici non stanno nel repository**: è pubblico. Tabella `codici_sconto` (codice,
+  venditore, percento, attivo) e funzione `codice_sconto()` in
+  `supabase/modifiche/2026-10-18-codici-sconto.sql`: il sito chiede "vale?" e riceve la
+  percentuale o niente, mai il nome del venditore. Un codice si **spegne**
+  (`attivo = false`), non si cancella: i messaggi vecchi lo nominano.
+- **Su cosa:** `scontoPossibile(tour, variante)` in `pacchetti.js`, tirata fuori da
+  `pacchettoVoceScontabile` perché la regola è la stessa: niente su
+  `parchi-spettacoli` e `fixedPrice` (la variante vince). Arrotondato al centesimo voce
+  per voce.
+- **Nel messaggio** (e quindi nella copia `request_message`), in fondo, prima
+  dell'email: "Codice sconto: MARCO", "Sconto 5%: −€4,50", "Totale con lo sconto:
+  €85,50". Il codice si scrive **anche quando non toglie niente** (una lista di soli
+  parchi): l'ufficio deve sapere lo stesso da quale venditore arriva il cliente. Per chi
+  scrive in francese o tedesco va in italiano, come tutto il resto (`perUfficio`).
+- **Un codice scritto e non controllato non parte**: "Continua su WhatsApp" prima lo
+  controlla e mostra il totale nuovo, poi si preme di nuovo. Un codice sbagliato, o la
+  rete che manca, ferma la richiesta finché il cliente non lo corregge o lo cancella: lo
+  dice il messaggio sotto il campo. Altrimenti il cliente leggerebbe nel messaggio un
+  totale diverso da quello che ha visto.
+- **Non è una protezione**: chi indovina un codice (MARCO) ha il 5%. Va bene così perché
+  il link di pagamento lo fa l'ufficio a mano, leggendo il messaggio.
+
+**Prima che funzioni** il proprietario lancia l'SQL e aggiunge i codici (righe in fondo
+al file). Senza, il campo risponde "non riesco a controllare il codice": la richiesta
+senza codice parte come prima.
+
+Non fatto, da proporre se servirà: una colonna col codice sulla richiesta (oggi sta solo
+nel testo del messaggio) per contare le richieste per venditore; il link
+`?codice=MARCO` che riempie il campo da solo, da mettere in un QR del venditore.
+
+Provato nel browser con Supabase finto: Freebird + Loro Parque col codice → −€3 solo sul
+Freebird; solo Loro Parque → "il codice è valido, ma non si applica"; codice sbagliato →
+"questo codice non esiste"; in tedesco il messaggio arriva in italiano, e la copia nel
+database resta senza email. 390 e 1100 px. `CACHE_NAME` → `isla-v554`.

@@ -19336,3 +19336,13 @@ perché il netto si trova già dalla variante: "Con pranzo" ha su Supabase una r
 modulo dei venditori la formula ora va scelta. Provato nella pagina, in italiano e
 inglese: due bottoni, 58 e 78, "Pasto incluso" solo col pranzo, nessuno scroll
 orizzontale.
+
+### "TRANSFER" sul ticket spunta la casella
+
+Il proprietario: se sul ticket di carta c'è scritto transfer, la casella si spunta da
+sola. Lo fa `transferNelTesto()` in `venditori.js`, sui testi che la lettura della foto
+manda già (escursione, meeting point, hotel, note), come `compagniaNelTesto()` per la
+compagnia: **`leggi-ticket` non va ridistribuita**. Prende anche le grafie storte
+("trasfer", "tranfer", "transf."). Solo dove la casella c'è: sul Karting non succede
+niente. Provato nel browser con una lettura finta: Mokkai con "TRANSFER" nelle note →
+spuntata, senza → no, Karting → nessuna casella. `CACHE_NAME` → `isla-v551`.

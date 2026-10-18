@@ -702,6 +702,24 @@ function pulisciModulo() {
 
 // ─── Ultimi inseriti ────────────────────────────────────────────────────────
 
+// Gli annullati in fondo, in un riquadro chiuso "Annullate (N)" (proprietario,
+// 18 ottobre 2026): non ingombrano, ma restano a un tocco per "Ripristina
+// ticket" o per confermare una richiesta annullata per sbaglio. Ritorna
+// l'elenco dentro il riquadro, dove vanno le righe annullate.
+function riquadroAnnullati(lista, quante, parola) {
+  const li = document.createElement("li");
+  li.className = "vend-annullati";
+  const apri = document.createElement("details");
+  const titolo = document.createElement("summary");
+  titolo.textContent = `${parola} (${quante})`;
+  const dentro = document.createElement("ul");
+  dentro.className = "vend-list";
+  apri.append(titolo, dentro);
+  li.append(apri);
+  lista.append(li);
+  return dentro;
+}
+
 function dataBreve(iso) {
   if (!iso) return "";
   const [a, m, g] = iso.split("-");
@@ -734,9 +752,10 @@ async function caricaUltimi() {
     return;
   }
 
-  // Gli annullati in fondo (proprietario, 18 ottobre 2026): restano per
-  // "Ripristina ticket", ma non in mezzo a quelli che contano.
+  // gli annullati in fondo, chiusi (riquadroAnnullati)
   const annullato = b => b.status === "cancelled";
+  const quanti = data.filter(annullato).length;
+  let inFondo = null;
   data.filter(b => !annullato(b)).concat(data.filter(annullato)).forEach(b => {
     const li = document.createElement("li");
     li.classList.toggle("is-cancelled", annullato(b));
@@ -787,7 +806,12 @@ async function caricaUltimi() {
     modifica.addEventListener("click", () => apriModifica(li, b));
     bottoni.append(modifica);
     li.append(bottoni);
-    els.recent.append(li);
+    if (annullato(b) && !ricerca) {
+      inFondo = inFondo || riquadroAnnullati(els.recent, quanti, "Annullati");
+      inFondo.append(li);
+    } else {
+      els.recent.append(li);
+    }
   });
 }
 
@@ -1093,9 +1117,11 @@ async function caricaRichieste() {
     ? `Richieste da WhatsApp (${daFare.length} da confermare)`
     : "Richieste da WhatsApp";
 
-  // prima da confermare, poi confermate, le annullate in fondo (18 ottobre 2026)
-  daFare.concat(data.filter(r => r.status === "confirmed"),
-    data.filter(r => r.status !== "pending" && r.status !== "confirmed")).forEach(r => {
+  // prima da confermare, poi confermate, le annullate in fondo e chiuse
+  // (riquadroAnnullati)
+  const annullate = data.filter(r => r.status !== "pending" && r.status !== "confirmed");
+  let inFondo = null;
+  daFare.concat(data.filter(r => r.status === "confirmed"), annullate).forEach(r => {
     const li = document.createElement("li");
     li.className = "vend-req is-" + r.status;
     const tour = schedaDa(r.excursion_id);
@@ -1163,7 +1189,12 @@ async function caricaRichieste() {
     if (r.status !== "cancelled") bottone("Annulla", () => annullaRichiesta(r));
     li.append(bottoni);
     if (messaggio) li.append(messaggio);
-    els.requests.append(li);
+    if (annullate.includes(r)) {
+      inFondo = inFondo || riquadroAnnullati(els.requests, annullate.length, "Annullate");
+      inFondo.append(li);
+    } else {
+      els.requests.append(li);
+    }
   });
 }
 

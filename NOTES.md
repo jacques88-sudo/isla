@@ -19349,4 +19349,4 @@ fondo". Scelto **in fondo**, non sparire: un annullato deve restare raggiungibil
 - **Richieste da WhatsApp** (`caricaRichieste()`): da confermare, poi confermate, poi
   annullate. Prima confermate e annullate erano mescolate.
 
-Restano barrati/grigi come prima (`is-cancelled`, `is-cancelled` delle richieste).
+Restano grigi e barrati come prima (classe `is-cancelled` in tutti e due gli elenchi).

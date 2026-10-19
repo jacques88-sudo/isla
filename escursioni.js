@@ -395,7 +395,11 @@ function totaleMezzi(tour, req) {
     // Prima il tipo, poi quanti: "4 posti: 1 × €240". Col numero davanti
     // usciva "1 4 posti × €240", due numeri attaccati (seconda prova da
     // cliente, 19 ottobre 2026), e sulla Mustang "1 Con 1 o 2 persone".
-    pezzi.push(scelto.label + ": " + scelto.n + " × €" + eur(prezzo));
+    // Il nome si rilegge dal catalogo per posizione, come in unitaTesto(): una
+    // voce entrata nella lista in italiano scrive "4 seats" se il cliente poi
+    // passa all'inglese. Quello salvato nella voce resta come ripiego.
+    const nome = tipi[i] ? tf(tipi[i].name) : scelto.label;
+    pezzi.push(nome + ": " + scelto.n + " × €" + eur(prezzo));
   });
   if (manca || !quanti) return null;
 

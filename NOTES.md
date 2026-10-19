@@ -19820,3 +19820,17 @@ solo il prezzo. La finestra della richiesta nasconde il campo (e lo azzera) con
 anche nel vocabolario di `ages` in testa al catalogo. Provato: le cinque schede senza il
 campo, Freebird e Teide col campo, Scandal dopo il passaggio all'inglese, il messaggio
 "Persone: 2 adulti". `CACHE_NAME` → `isla-v578`.
+
+### Le nove schede col transfer facoltativo: solo col transfer (19 ottobre 2026)
+
+Il proprietario: "metti col transfer". Le nove schede trovate con la terza prova (Peter Pan,
+Submarine Safari, Luxury Cruiser e il suo charter, kayak, moto d'acqua, immersioni,
+Castillo San Miguel, Scandal Dinner Show) passano da `PICKUP_IN_HOTEL` a `PICKUP_NESSUNO`,
+come Siam Park, Loro Parque e Twin Ticket: l'hotel si chiede e il ritiro si promette solo
+col transfer spuntato, anche dove dal sud è compreso. Ora in `PICKUP_IN_HOTEL` non resta
+nessuna scheda con la casella del transfer, e la regola è scritta in CLAUDE.md ("Se il
+transfer è una scelta del cliente, la scheda sta in `PICKUP_NESSUNO`"). Il Luxury Cruiser
+charter era l'ultima voce di `PICKUP_IN_HOTEL`, senza virgola: tolta col suo commento.
+Provato nel browser: tutte e nove senza transfer (niente hotel, niente punto) e col
+transfer (hotel, "il tuo hotel"); Royal Delfin, ritiro compreso senza casella, come prima;
+messaggio WhatsApp senza e col transfer. `CACHE_NAME` → `isla-v579`.

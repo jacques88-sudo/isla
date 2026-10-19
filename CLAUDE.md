@@ -272,6 +272,14 @@ compreso o a pagamento che sia; se **non lo permette** non c'è nessun ritiro
 serve solo a dire dove si sale. **Ogni scheda pubblicata sta in uno dei tre gruppi**: se ne
 aggiungi una senza metterla da nessuna parte, mostrerà la fermata di un altro fornitore.
 
+**Se il transfer è una scelta del cliente, la scheda sta in `PICKUP_NESSUNO`** (proprietario,
+19 ottobre 2026). `PICKUP_IN_HOTEL` è solo per chi il ritiro ce l'ha sempre, senza nessuna
+casella (Royal Delfin, le camminate di Canaventura). Dove c'è la casella "Vuoi il transfer?"
+(`transfer` sulla scheda o sulla variante, anche `transferSiam`), l'hotel si chiede e il
+ritiro si promette **solo col transfer spuntato**, anche dove dal sud è compreso: nei parchi,
+nelle barche, negli spettacoli si può anche arrivare da soli. Prima stavano in
+`PICKUP_IN_HOTEL`, e il messaggio diceva insieme "transfer: no" e "ritiro in hotel".
+
 **Dove non si passa a prendere nessuno, la scheda dice dove ci si presenta** (`ritrovo`,
 15 ottobre 2026): compare nella richiesta, nel messaggio WhatsApp e nella conferma dei
 venditori. **Il transfer può stare sulla variante** (Freebird: sì su 3 e 4 ore e mezza,

@@ -635,8 +635,6 @@ const PICKUP_IN_HOTEL = [
   "kayak-snorkelling",
   "jet-ski-safari-1-2h",
   "immersioni",
-  "loro-parque",
-  "twin-ticket",
   "aqualand",
   "jungle-park",
   "combo-jungle-aqualand",
@@ -679,6 +677,11 @@ const PICKUP_NESSUNO = [
   // chiedere l'hotel, vedi transferChiesto() in escursioni.js. Prima stava in
   // PICKUP_IN_HOTEL e il messaggio diceva "transfer: no" e "ritiro in hotel".
   "siam-park",
+  // Loro Parque e Twin Ticket: lo stesso (proprietario, 19 ottobre 2026), ci
+  // si va da soli; il transfer c'e' su richiesta e a pagamento, da sud per
+  // Loro Parque e, sul Twin Ticket, anche da nord per la giornata al Siam Park.
+  "loro-parque",
+  "twin-ticket",
   // Tuk Tuk Sweet Tours: il ritrovo e' davanti al Wakanda Origen, e il
   // fornitore scrive "Hotel pick up" fra le cose NON incluse. Il transfer non
   // e' compreso, quindi il punto di raccolta non si mostra (proprietario,

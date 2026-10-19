@@ -2295,7 +2295,7 @@ const ESPLORA_CATALOG = [
       fr: "Une journée dans le parc national du Teide : Vilaflor, les Roques de García et l'arrêt au téléphérique, avec prise en charge à l'hôtel.",
       de: "Ein Tag im Teide-Nationalpark: Vilaflor, die Roques de García und der Stopp an der Seilbahn, mit Abholung am Hotel."
     },
-    image: "teide-national-park.jpg",
+    image: "teide-national-park.webp",
     published: true
   },
   // ─── Trekking e bici: due schede, non piu' una ────────────────────────────
@@ -2450,7 +2450,7 @@ const ESPLORA_CATALOG = [
     // cammini non si scaricano e non si possono nemmeno guardare. Le deve
     // mandare l'ufficio. `trekking-bici.jpg` non e' rimasta qui: e' un
     // ciclista, ed e' passata alla scheda della bici, che e' il suo soggetto.
-    image: "trekking.jpg",
+    image: "trekking.webp",
     published: true
   },
   {
@@ -2703,10 +2703,10 @@ const ESPLORA_CATALOG = [
     },
     nomi: ["Cycling in Tenerife"],
     // La foto che stava sulla vecchia scheda "Trekking e bici": un ciclista in
-    // mezzo alle lave. Rinominata `bici.jpg` perche' adesso il nome dice quello
+    // mezzo alle lave. Rinominata `bici.webp` perche' adesso il nome dice quello
     // che c'e' dentro, e il file non e' citato da nessun'altra parte (solo da
     // qui: sw.js precarica solo le icone).
-    image: "bici.jpg",
+    image: "bici.webp",
     published: true
   },
   {
@@ -3065,7 +3065,7 @@ const ESPLORA_CATALOG = [
         de: "Man steht in der Höhe still im Dunkeln: Es wird selbst im Sommer kalt. An manchen Abenden leiht der Anbieter Jacke und Mütze, aber nicht an allen: Ziehen Sie sich in Schichten an und tragen Sie geschlossene Schuhe."
       }
     ],
-    image: "stargazing-group.jpg",
+    image: "stargazing-group.webp",
     // La terza foto era `Cat-stelle.jpg`, il riquadro della categoria "stelle"
     // che non esiste piu': rinominata col nome della scheda, perche' una foto
     // qui dentro si chiama come la scheda che la usa, non come il posto da cui
@@ -3076,7 +3076,7 @@ const ESPLORA_CATALOG = [
     // In fila si leggono come una sera che passa: il tramonto sopra le nuvole,
     // poi il buio con la Via Lattea. La copertina resta quella dei due
     // telescopi.
-    gallery: ["stargazing-vip.jpg", "teide-by-night.jpg", "stargazing-group-2.jpg", "stargazing-group-3.jpg", "stargazing-group-4.jpg", "stargazing-group-5.jpg"],
+    gallery: ["stargazing-vip.webp", "teide-by-night.webp", "stargazing-group-2.webp", "stargazing-group-3.webp", "stargazing-group-4.webp", "stargazing-group-5.webp"],
     published: true
   },
 

@@ -251,7 +251,7 @@ const PACCHETTI = [
       fr: "Tenerife Trio",
       de: "Tenerife Trio"
     },
-    image: "teide-national-park.jpg",
+    image: "teide-national-park.webp",
     sconto: 10,
     // 39 + 55 + 44 = 138. Si sconta solo la barca: il Siam Park e' un
     // biglietto, il Teide in pullman e' `fixedPrice`. −5,50 → 132,50 a persona
@@ -320,7 +320,7 @@ const PACCHETTI = [
       fr: "Terre, mer et étoiles",
       de: "Land, Meer und Sterne"
     },
-    image: "teide-by-night.jpg",
+    image: "teide-by-night.webp",
     sconto: 10,
     voci: [
       // optionIndex 0 = "Offroad, 3 ore". Fissato apposta: e' un percorso che
@@ -515,7 +515,7 @@ const PACCHETTI = [
       fr: "Vin et étoiles",
       de: "Wein und Sterne"
     },
-    image: "stargazing-vip.jpg",
+    image: "stargazing-vip.webp",
     sconto: 10,
     tema: "per-due",
     voci: [
@@ -729,7 +729,7 @@ const PACCHETTI = [
       fr: "Les étoiles en famille",
       de: "Sterne mit der Familie"
     },
-    image: "stargazing-group.jpg",
+    image: "stargazing-group.webp",
     sconto: 10,
     famiglia: true,
     voci: [

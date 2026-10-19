@@ -236,6 +236,14 @@ function conRitiro(tour, variante, transferChiesto) {
   return !nessuno || !!(transferDi(tour, variante) && transferChiesto);
 }
 
+// Il cliente ha chiesto un transfer? Il Siam Park ne ha due, da Nord
+// (`transfer`) e da Los Gigantes (`transferSiam`), e tutti e due portano il
+// pulmino sotto l'hotel (19 ottobre 2026). Vale per una richiesta o una voce
+// della lista, che hanno tutte e due i campi.
+function transferChiesto(req) {
+  return !!(req && (req.transfer || req.transferSiam));
+}
+
 // Il punto di ritrovo da mostrare, o null: c'e' solo dove nessuno passa a
 // prendere il cliente, cioe' senza transfer o col transfer non spuntato.
 function ritrovoDaMostrare(tour, variante, transferChiesto) {
@@ -664,7 +672,10 @@ function initHotelField() {
   // Su Freebird e buggy la domanda compare solo col transfer spuntato.
   function transferSpuntato() {
     const casella = document.getElementById("reqTransfer");
-    return !!(casella && casella.checked && transferDi(SCHEDA_APERTA, VARIANTE_APERTA));
+    const seconda = document.getElementById("reqTransferSiam");
+    const spuntato = (casella && casella.checked) ||
+      (seconda && seconda.checked && SCHEDA_APERTA && SCHEDA_APERTA.transferSiam);
+    return !!(spuntato && transferDi(SCHEDA_APERTA, VARIANTE_APERTA));
   }
 
   function senzaRitiro() {
@@ -806,7 +817,7 @@ function righeRichiesta(tour, req) {
   // fondo attaccata al punto.
   const variante = varianteScelta(tour, req);
   const transfer = transferDi(tour, variante);
-  const punto = req.hotel ? hotelPunto(req.hotel, tour && tour.id, !!(transfer && req.transfer)) : null;
+  const punto = req.hotel ? hotelPunto(req.hotel, tour && tour.id, !!(transfer && transferChiesto(req))) : null;
   // L'orario si scrive solo se il cliente ne ha scelto uno. "Da concordare" e'
   // l'assenza della riga, non una riga che dice "da concordare": all'ufficio
   // non serve leggere che il cliente non ha deciso.
@@ -847,7 +858,7 @@ function righeRichiesta(tour, req) {
   }
   // Dove si presenta chi non viene preso in hotel: l'ufficio lo legge e la
   // conferma lo riporta (15 ottobre 2026).
-  const ritrovo = ritrovoDaMostrare(tour, variante, req.transfer);
+  const ritrovo = ritrovoDaMostrare(tour, variante, transferChiesto(req));
   if (ritrovo) righe.push("• " + t("wa.meetingPoint") + ": " + tf(ritrovo));
   if (tour.transferSiam) {
     const etichetta = tour.transferSiamLabel ? tf(tour.transferSiamLabel) : t("wa.transferSiam");
@@ -1363,7 +1374,8 @@ function initRequestDialog() {
   // passa nessuno, o il cliente il transfer non lo vuole (15 ottobre 2026).
   function aggiornaRitrovo() {
     if (!ritrovoEl) return;
-    const r = current ? ritrovoDaMostrare(current, VARIANTE_APERTA, !!(transferInput && transferInput.checked)) : null;
+    const r = current ? ritrovoDaMostrare(current, VARIANTE_APERTA,
+      !!((transferInput && transferInput.checked) || (transferSiamInput && transferSiamInput.checked))) : null;
     if (ritrovoValoreEl) ritrovoValoreEl.textContent = r ? tf(r) : "";
     ritrovoEl.hidden = !r;
   }

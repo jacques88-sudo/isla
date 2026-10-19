@@ -635,7 +635,6 @@ const PICKUP_IN_HOTEL = [
   "kayak-snorkelling",
   "jet-ski-safari-1-2h",
   "immersioni",
-  "siam-park",
   "loro-parque",
   "twin-ticket",
   "aqualand",
@@ -673,6 +672,13 @@ const PICKUP_IN_HOTEL = [
 // ritiro ce l'ha e sono gli **orari** a mancare, quindi il punto si mostra
 // lo stesso.
 const PICKUP_NESSUNO = [
+  // Siam Park: chi sta al sud ci va da solo o col bus gratuito del parco, che
+  // ferma alle sue fermate, non sotto gli hotel (proprietario, 19 ottobre
+  // 2026). Il ritiro in hotel c'e' solo col transfer su richiesta, da Nord o da
+  // Los Gigantes: tutte e due le caselle (`transfer` e `transferSiam`) fanno
+  // chiedere l'hotel, vedi transferChiesto() in escursioni.js. Prima stava in
+  // PICKUP_IN_HOTEL e il messaggio diceva "transfer: no" e "ritiro in hotel".
+  "siam-park",
   // Tuk Tuk Sweet Tours: il ritrovo e' davanti al Wakanda Origen, e il
   // fornitore scrive "Hotel pick up" fra le cose NON incluse. Il transfer non
   // e' compreso, quindi il punto di raccolta non si mostra (proprietario,

@@ -77,13 +77,13 @@ function richiestaVoce(voce) {
   const hotel = (voce.hotel || "").trim();
   // hotelPunto e transferDi stanno in escursioni.js, che c'e' su tutte le
   // pagine della lista
-  const conTransfer = !!(voce.transfer && typeof transferDi === "function" && transferDi(tour, scelta));
+  const conTransfer = !!((voce.transfer || voce.transferSiam) && typeof transferDi === "function" && transferDi(tour, scelta));
   const punto = hotel && typeof hotelPunto === "function" ? hotelPunto(hotel, voce.id, conTransfer) : null;
   // Chi non viene preso in hotel si presenta al punto di ritrovo della scheda
   // (15 ottobre 2026): va nella stessa colonna, cosi' la conferma dei
   // venditori parte gia' col posto scritto. In italiano, come la variante.
   const ritrovo = !punto && tour && typeof ritrovoDaMostrare === "function"
-    ? ritrovoDaMostrare(tour, scelta, voce.transfer) : null;
+    ? ritrovoDaMostrare(tour, scelta, voce.transfer || voce.transferSiam) : null;
   return {
     excursion_id: voce.id,
     option_label: (etichetta && typeof etichetta === "object" ? etichetta.it : etichetta) || null,

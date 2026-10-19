@@ -225,6 +225,13 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   WhatsApp 12 mesi** dall'escursione o dalla richiesta mai confermata. Sono **promesse**:
   ogni gennaio si cancella l'archivio del foglio di 6 anni prima, e una volta l'anno le
   chat più vecchie di 12 mesi. Un tempo nuovo si scrive in privacy **e** si rispetta.
+- **Il codice sconto è dei venditori, uno a testa** (proprietario, 18 ottobre 2026):
+  campo nella finestra della lista, 5% sulle escursioni singole, **non** su parchi,
+  spettacoli, `fixedPrice` e pacchetti (stessa regola dello sconto dei pacchetti,
+  `scontoPossibile()` in `pacchetti.js`). I codici stanno **solo su Supabase**
+  (`codici_sconto`, `supabase/modifiche/2026-10-18-codici-sconto.sql`), mai in un file:
+  il repository è pubblico. Il codice va nel messaggio WhatsApp anche quando non toglie
+  niente.
 - **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
   Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
   minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.

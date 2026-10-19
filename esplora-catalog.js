@@ -131,6 +131,10 @@
 //                Finiscono fra parentesi accanto alle righe del prezzo:
 //                "Adulti (12+)", "Bambini (3-11)", "Neonati (0-2)".
 //                    ages: { adult: "12+", child: "3-11", infant: "0-2" }
+//                **Solo per adulti**: la sola fascia `adult` che parte da 13 anni
+//                o piu' ("16+", "18+"), senza `child` ne' `infant`, toglie il
+//                campo dei bambini dalla richiesta (soloAdulti in escursioni.js).
+//                    ages: { adult: "18+" }
 //   included   → facoltativo: cosa comprende il prezzo. Si scrivono delle parole
 //                chiave, non del testo: l'icona e la traduzione nelle cinque lingue
 //                le mette il sito. Sulla pagina di dettaglio diventano un

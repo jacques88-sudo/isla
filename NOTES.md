@@ -19807,3 +19807,16 @@ catalogo nella lingua del momento: nella lista e nel messaggio, che per francese
 Castillo con un vegetariano e un vegano aggiunto in francese → lista in francese e poi in
 inglese, messaggio "Vegetariano × 1 · Vegano × 1 · Menu standard × 1"; una voce del formato
 vecchio. `CACHE_NAME` → `isla-v577`.
+
+### Niente campo bambini sulle schede solo per adulti (19 ottobre 2026)
+
+Il proprietario: "togli il campo bambini sugli spettacoli per adulti". La regola sta nei
+dati, non in un elenco: `soloAdulti(tour)` in `escursioni.js` è vera quando `ages` ha solo
+la fascia `adult`, scritta "N+" con N da 13 in su, senza `child` né `infant`. Oggi prende
+Utopia Boat Party (18+), Talaria (14+), surf (13+), Scandal Dinner Show (16+) e cantine
+(18+). Una scheda "12+" senza bambini **non** conta: lì di solito i bambini salgono e manca
+solo il prezzo. La finestra della richiesta nasconde il campo (e lo azzera) con
+`mostraBambini()`, accanto a `mostraNeonati()`, all'apertura e al cambio lingua. Scritto
+anche nel vocabolario di `ages` in testa al catalogo. Provato: le cinque schede senza il
+campo, Freebird e Teide col campo, Scandal dopo il passaggio all'inglese, il messaggio
+"Persone: 2 adulti". `CACHE_NAME` → `isla-v578`.

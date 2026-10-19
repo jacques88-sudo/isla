@@ -19736,7 +19736,7 @@ come prima. **Loro Parque e Twin Ticket**: fatti subito dopo (#513), sotto. `CAC
 "4 posti: 1 × €240", "Singola: 2 × €95", "Con 1 o 2 persone: 1 × €250", e il transfer a
 pagamento "Transfer: 2 × €12". Prima era "1 4 posti × €240" e sulla Mustang "1 Con 1 o 2
 persone × €250". È la stessa funzione per la finestra, la lista e il messaggio WhatsApp.
-Resta com'era: il nome del mezzo è nella lingua in cui la voce è entrata nella lista.
+Il nome del mezzo nella lingua giusta: fatto subito dopo (#514), sotto.
 
 **La ricerca**: sulle schede con `family: true` si cerca anche in `PAROLE_FAMIGLIA`
 (`escursioni.js`), le parole di un genitore nelle cinque lingue (famiglia, bambini,
@@ -19755,3 +19755,13 @@ chiede solo col transfer spuntato. Le due caselle del Twin Ticket le conta già
 `transferChiesto()` (#511). Provato nel browser: senza transfer niente hotel né punto e il
 prezzo senza transfer; con ciascun transfer l'hotel, "il tuo hotel" e il prezzo col
 transfer; messaggio WhatsApp e database coerenti. `CACHE_NAME` → `isla-v575`.
+
+### I nomi dei mezzi nella lingua del momento (19 ottobre 2026)
+
+Il conto del totale (`totaleMezzi()`) usava il nome del mezzo salvato nella voce della
+lista, cioè nella lingua di quando la voce era entrata: aggiunto in italiano e mandato
+in inglese, il messaggio diceva "Total: €240 (4 posti: 1 × €240)". Ora rilegge il nome dal
+catalogo per posizione, come già faceva `unitaTesto()` per la riga "Buggy: …"; il nome
+salvato resta come ripiego. Provato: aggiunti buggy e moto d'acqua in italiano, poi
+inglese ("4 seats", "Single"), spagnolo ("4 plazas") e tedesco (lista in tedesco,
+messaggio all'ufficio in italiano per `perUfficio()`). `CACHE_NAME` → `isla-v576`.

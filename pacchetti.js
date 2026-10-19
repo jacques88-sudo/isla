@@ -770,7 +770,7 @@ const PACCHETTI = [
       fr: "Trois jours à Tenerife",
       de: "Drei Tage auf Teneriffa"
     },
-    image: "teide-masca.jpg",
+    image: "teide-masca.webp",
     giorni: 3,
     sconto: 10,
     // 39 + 55 + 35 = 129. Il Teide in pullman e' `fixedPrice` e non si sconta:

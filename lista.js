@@ -123,7 +123,10 @@ function listaToast(testo) {
 // (manda_richiesta): l'ufficio riceverebbe su WhatsApp un codice che
 // nell'elenco non trova. Per un pacchetto conta il giorno d'inizio.
 function listaVoceScaduta(voce) {
-  return !voce.date || voce.date < minRequestDate();
+  // Anche le 24 ore vere: una voce entrata stamattina per domani alle 8:20,
+  // stasera non si puo' piu' mandare (partenzaPossibile in escursioni.js).
+  return !voce.date || voce.date < minRequestDate() ||
+    (typeof partenzaPossibile === "function" && !partenzaPossibile(voce.date, voce.time));
 }
 
 // Il conto di una voce della lista: l'attivita' dal catalogo e il totale, che

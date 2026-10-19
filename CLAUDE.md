@@ -50,7 +50,12 @@ Le prenotazioni **non sono automatiche**: il cliente manda una *richiesta* su Wh
 ## Regole sui dati — quelle che si sbagliano
 
 **Le 24 ore di preavviso sono di Isla, non dei fornitori.** Se una pagina fornitore dice
-48 ore o 72, **non si copia**. Vale sempre, anche per i dati che arrivano domani.
+48 ore o 72, **non si copia**. Vale sempre, anche per i dati che arrivano domani. Sono
+**24 ore vere** (proprietario, 19 ottobre 2026), non "da domani": la richiesta si fa solo
+per le partenze fra 24 ore o più (`partenzaPossibile()` in `escursioni.js`). Il calendario
+spegne il giorno se nessuna sua partenza ci arriva, il menu "A che ora" spegne le ore
+troppo vicine, la lista segna come scadute le voci rimaste indietro. Senza un'ora (charter,
+"Da concordare") si conta fino alla fine di quel giorno.
 
 **Anche la cancellazione è di Isla** (6 ottobre 2026, proprietario): **fino a 24 ore
 prima** il cliente può annullare gratis **oppure** spostare la data, una volta sola e se

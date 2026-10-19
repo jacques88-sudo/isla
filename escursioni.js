@@ -140,6 +140,34 @@ function minRequestDate() {
   return dataLocale(d);
 }
 
+// Le 24 ore vere (proprietario, 19 ottobre 2026): una partenza si puo'
+// chiedere solo se mancano almeno 24 ore. Prima bastava che fosse domani, e
+// alle 22:30 si chiedeva il buggy delle 8:20 del mattino dopo. L'ora e' la
+// prima scritta ("08:20", o l'inizio della fascia "09:00 - 10:00"); senza ora
+// (charter, "Da concordare") si conta fino alla fine di quel giorno.
+function partenzaPossibile(iso, ora) {
+  if (!iso) return false;
+  const [a, m, g] = iso.split("-").map(Number);
+  const hm = /(\d{1,2}):(\d{2})/.exec(ora || "");
+  const quando = hm ? new Date(a, m - 1, g, Number(hm[1]), Number(hm[2]))
+                    : new Date(a, m - 1, g, 23, 59);
+  return quando.getTime() - Date.now() >= 24 * 60 * 60 * 1000;
+}
+
+// Le ore fra cui si sceglie su una scheda (o sulla sua variante): quelle vere,
+// le fasce segnaposto se non le sappiamo, nessuna sul charter (`times: []`).
+function orariDi(tour, scelta) {
+  const veri = (scelta && scelta.times) || (tour && tour.times);
+  return veri || (typeof ORARI_PREDEFINITI !== "undefined" ? ORARI_PREDEFINITI : []);
+}
+
+// Un giorno si puo' chiedere se almeno una sua partenza e' fra 24 ore o piu'.
+function giornoPossibile(tour, scelta, iso) {
+  const orari = orariDi(tour, scelta);
+  if (!orari.length) return partenzaPossibile(iso, "");
+  return orari.some(ora => partenzaPossibile(iso, ora));
+}
+
 // Oltre un anno avanti è quasi sempre un errore di digitazione
 function maxRequestDate() {
   const d = new Date();
@@ -1632,6 +1660,8 @@ function initRequestDialog() {
     // preavviso), oltre un anno, e i giorni in cui non si parte.
     function utile(iso) {
       if (iso < minRequestDate() || iso > maxRequestDate()) return false;
+      // domani si', ma solo se c'e' ancora una partenza fra 24 ore o piu'
+      if (current && !giornoPossibile(current, sceltaCorrente(current), iso)) return false;
       const giorni = giorniBuoni();
       if (!giorni.length) return true;       // vuoto = tutti i giorni
       const [a, m, g] = iso.split("-").map(Number);
@@ -2107,18 +2137,25 @@ function initRequestDialog() {
       qualunque.textContent = t("req.timeAny");
       timeEl.appendChild(qualunque);
     }
+    // Con la data gia' scelta, le partenze a meno di 24 ore si spengono: si
+    // vedono, ma non si possono prendere.
+    const giorno = dateInput && dateInput.value;
     orari.forEach(ora => {
       const voce = document.createElement("option");
       voce.value = ora;
       voce.textContent = ora;
+      if (giorno && !partenzaPossibile(giorno, ora)) voce.disabled = true;
       timeEl.appendChild(voce);
     });
     // al cambio lingua si ricostruisce: la scelta del cliente non si perde
     timeEl.value = scelto;
     // Cambiando variante l'orario di prima puo' non esistere piu' (dal charter
-    // al giro condiviso): se il ripristino non attacca, il menu resterebbe
-    // vuoto. Si riparte dalla prima voce.
-    if (timeEl.selectedIndex < 0) timeEl.selectedIndex = 0;
+    // al giro condiviso), o cambiando giorno puo' essersi spento: si riparte
+    // dalla prima voce che si puo' prendere.
+    if (timeEl.selectedIndex < 0 || (timeEl.selectedOptions[0] && timeEl.selectedOptions[0].disabled)) {
+      const prima = [...timeEl.options].findIndex(o => !o.disabled);
+      timeEl.selectedIndex = prima < 0 ? 0 : prima;
+    }
   }
 
   // "2 adulti × €55 + 1 bambino × €30" e sopra, grosso, "Totale €140". Si
@@ -2180,6 +2217,9 @@ function initRequestDialog() {
 
   dateInput.addEventListener("input", aggiornaGiorno);
   dateInput.addEventListener("change", aggiornaGiorno);
+  // Scelto il giorno, il menu delle ore si rifa': domani le partenze a meno di
+  // 24 ore si spengono (riempiOrari).
+  dateInput.addEventListener("input", () => { if (current) riempiOrari(current); });
 
   // I due transfer si escludono a vicenda: un cliente sta o al nord o al sud,
   // non in tutti e due i posti. Spuntarne uno toglie la spunta all'altro.

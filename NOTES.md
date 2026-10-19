@@ -19883,3 +19883,15 @@ prima, quindi niente casella, niente hotel, niente righe di transfer nel messagg
 `ritrovo` non l'ho messo: si sa solo "Los Cristianos", non il posto preciso. Provato:
 Snorkeling senza casella, Battesimo e 1 immersione con la casella come prima, messaggio
 delle due richieste. `CACHE_NAME` → `isla-v582`.
+
+### Immersioni: il punto di ritrovo è il centro Big Fish (19 ottobre 2026)
+
+Il proprietario ha mandato l'indirizzo: "C. Jesus Dominguez Grillo, 19, loc 2, 38650 Los
+Cristianos" (Plus Code 372H+4R). Sta come `ritrovo` **sulla scheda** delle immersioni, non
+solo sullo snorkeling: lo vede chiunque non abbia il ritiro, cioè lo snorkeling (che il
+transfer non ce l'ha) e chi non spunta la casella sulle altre varianti. Scritto come
+l'ha mandato, senza tradurlo; il Plus Code sta solo nel commento, perché per il cliente
+è illeggibile e l'indirizzo basta alla mappa. Provato: snorkeling e battesimo senza
+transfer "Punto di ritrovo: Big Fish, …", col transfer sparisce e si chiede l'hotel; il
+messaggio e il database (`pickup_point`) col posto; la richiesta confermata in "Le mie
+prenotazioni" con "Apri nella mappa" che cerca l'indirizzo. `CACHE_NAME` → `isla-v583`.

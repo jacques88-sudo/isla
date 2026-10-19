@@ -4681,6 +4681,10 @@ const ESPLORA_CATALOG = [
     },
     category: "sport-acquatici",
     zone: "Los Cristianos",
+    // Il centro Big Fish (proprietario, 19 ottobre 2026; su Google Maps anche
+    // "372H+4R Los Cristianos"). Lo vede chi non chiede il transfer: lo
+    // snorkeling, che il ritiro non ce l'ha, e chi non spunta la casella.
+    ritrovo: "Big Fish, C. Jesus Dominguez Grillo 19, loc. 2, Los Cristianos",
     // Le uniche due durate certe sono quelle di snorkeling e battesimo, e stanno
     // sulle loro varianti. Per tutto il resto — le immersioni con brevetto e i
     // corsi — l'ufficio ha detto che si concordano, e questa e' una risposta,
@@ -4747,8 +4751,8 @@ const ESPLORA_CATALOG = [
             de: "1 Stunde 30, davon eine Stunde im Wasser"
           },
           times: ["10:30"],
-          // L'unica variante senza ritiro: a Los Cristianos ci si arriva da
-          // soli. `null` e non l'assenza del campo, perche' il transfer sta
+          // L'unica variante senza ritiro: al centro, il `ritrovo` della
+          // scheda, ci si arriva da soli. `null` e non l'assenza del campo, perche' il transfer sta
           // sulla scheda e la variante lo ereditava: la finestra mostrava la
           // casella e chiedeva l'hotel (proprietario, 19 ottobre 2026).
           transfer: null,

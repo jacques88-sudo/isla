@@ -4208,7 +4208,7 @@ const ESPLORA_CATALOG = [
         de: "Höchstens 3 Erwachsene und 1 Kind bis 12 Jahre: 4 Erwachsene sind nicht erlaubt. Bringen Sie einen Ausweis mit."
       }
     ],
-    image: "fiat-500-on-water.jpg",
+    image: "fiat-500-on-water.webp",
     published: true
   },
   {
@@ -4348,7 +4348,7 @@ const ESPLORA_CATALOG = [
         de: "Der Preis gilt pro Person, für eine Fahrt, und ist für alle gleich: Erwachsene, Jugendliche und Gruppen."
       }
     ],
-    image: "banana-boat.jpg",
+    image: "banana-boat.webp",
     published: true
   },
   {
@@ -4426,7 +4426,7 @@ const ESPLORA_CATALOG = [
         fr: "Déconseillé pendant la grossesse au-delà du cinquième mois.",
         de: "Nicht empfohlen in der Schwangerschaft ab dem fünften Monat." }
     ],
-    image: "kayak-snorkelling.jpg",
+    image: "kayak-snorkelling.webp",
     published: true
   },
   {
@@ -4510,7 +4510,7 @@ const ESPLORA_CATALOG = [
         fr: "Les départs se font de Puerto Colón ou de Los Cristianos : nous vous disons lequel dans la confirmation. Il n'y a pas de prise en charge à l'hôtel : on se rend au port par ses propres moyens.",
         de: "Abfahrt ist in Puerto Colón oder Los Cristianos: Welcher Hafen, sagen wir Ihnen in der Bestätigung. Es gibt keine Abholung am Hotel: Zum Hafen kommt man selbst." }
     ],
-    image: "parascending.jpg",
+    image: "parascending.webp",
     published: true
   },
   {
@@ -4631,7 +4631,7 @@ const ESPLORA_CATALOG = [
         de: "Bringen Sie Badesachen, Handtuch und Sonnencreme mit; die Schuhe bleiben sicher an Land. Nicht geeignet in der Schwangerschaft. Die Fotos im Wasser machen die Anbieter vor Ort und werden am selben Tag bei ihnen bezahlt: Sie sind nicht im Preis inbegriffen."
       }
     ],
-    image: "jet-ski-safari-1-2h.jpg",
+    image: "jet-ski-safari-1-2h.webp",
     published: true
   },
   {
@@ -4972,7 +4972,7 @@ const ESPLORA_CATALOG = [
         fr: "Le centre propose aussi les niveaux professionnels : demandez au bureau si cela vous intéresse.",
         de: "Das Zentrum bietet auch die Profi-Level an: Fragen Sie das Büro, wenn Sie Interesse haben." }
     ],
-    image: "immersioni.jpg",
+    image: "immersioni.webp",
     published: true
   },
   {
@@ -4993,7 +4993,7 @@ const ESPLORA_CATALOG = [
       fr: "S'élever au-dessus de l'eau sur une planche propulsée par jet, avec un moniteur.",
       de: "Auf einem Board mit Wasserstrahlantrieb über das Wasser steigen, mit einem Lehrer."
     },
-    image: "flyboard.jpg",
+    image: "flyboard.webp",
     // Spenta il 6 ottobre 2026: il proprietario non lo vende piu'. La scheda
     // resta qui, con la foto, nel caso torni: basta rimettere true.
     published: false
@@ -5249,7 +5249,7 @@ const ESPLORA_CATALOG = [
         fr: "Apportez maillot de bain, serviette, crème solaire et de quoi boire : l'école fournit le reste.",
         de: "Bringen Sie Badesachen, Handtuch, Sonnencreme und etwas zu trinken mit: Den Rest stellt die Schule." }
     ],
-    image: "surf-lesson.jpg",
+    image: "surf-lesson.webp",
     published: true
   },
   {
@@ -5320,9 +5320,9 @@ const ESPLORA_CATALOG = [
         fr: "Apportez un maillot de bain et une serviette. Il y a des casiers pour vos affaires. Les photos souvenir s'achètent sur place, en plus.",
         de: "Bringen Sie Badesachen und ein Handtuch mit. Für Ihre Sachen gibt es Schließfächer. Erinnerungsfotos kann man vor Ort extra kaufen." }
     ],
-    image: "sea-trek.jpg",
+    image: "sea-trek.webp",
     // Il gruppo coi caschi e l'istruttore (proprietario, 15 ottobre 2026).
-    gallery: ["sea-trek-2.jpg"],
+    gallery: ["sea-trek-2.webp"],
     published: true
   },
 

@@ -19597,3 +19597,7 @@ che non sempre leggono il WebP) e le schermate del `manifest.json`.
   anche quanto ogni WebP è diverso dalla sua JPG (PSNR) e le due più diverse si guardano
   ingrandite: qui i due buggy (34,7 e 34,8 dB), identici a occhio. Browser: 8 schede,
   elenco, home, 7 pacchetti, 64 foto WebP, nessuna rotta. `CACHE_NAME` → `isla-v563`.
+- **Sport acquatici (`sport-acquatici`)**: 10 foto, 1,3 MB → 851 KB (−35%), nessuna
+  lasciata JPG. Le due più diverse (banana boat 35,5 dB, kayak 35,9) guardate ingrandite:
+  identiche. Browser: 8 schede pubblicate, elenco, home, 7 pacchetti, 69 foto WebP,
+  nessuna rotta. `CACHE_NAME` → `isla-v564`.

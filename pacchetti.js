@@ -353,7 +353,7 @@ const PACCHETTI = [
       fr: "Adrénaline",
       de: "Adrenalin"
     },
-    image: "parascending.jpg",
+    image: "parascending.webp",
     sconto: 10,
     voci: [
       // optionIndex 2 = "Completo, 4 ore", il percorso lungo. Dentro c'e' il
@@ -385,7 +385,7 @@ const PACCHETTI = [
       fr: "La mer, plein gaz",
       de: "Meer mit Vollgas"
     },
-    image: "jet-ski-safari-1-2h.jpg",
+    image: "jet-ski-safari-1-2h.webp",
     sconto: 10,
     voci: [
       { id: "luxury-cruiser", optionIndex: 0 },
@@ -894,7 +894,7 @@ const PACCHETTI = [
       fr: "Sept jours à Tenerife",
       de: "Sieben Tage auf Teneriffa"
     },
-    image: "kayak-snorkelling.jpg",
+    image: "kayak-snorkelling.webp",
     giorni: 7,
     sconto: 15,
     // I cinque di "giorni-5" piu' due. 234 + 35 + 51 = 320. Il flamenco e' uno

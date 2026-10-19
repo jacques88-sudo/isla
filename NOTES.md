@@ -19692,9 +19692,9 @@ JavaScript. Trovati:
    solo "su richiesta da Tenerife Nord / da Los Gigantes". Il messaggio dice insieme
    "transfer: no, no" e "Punto di ritiro: in hotel". **Da chiedere al proprietario** come
    arriva al parco chi sta al sud; forse vale anche per Loro Parque e Twin Ticket.
-3. Il conto dei mezzi si legge male: "1 2 posti × €180" (`totaleMezzi()` in
+3. **Corretto (#512)** — il conto dei mezzi si leggeva male: "1 2 posti × €180" (`totaleMezzi()` in
    `escursioni.js`, `scelto.n + " " + scelto.label`), anche nel messaggio WhatsApp.
-4. La ricerca non trova le schede per famiglie con "kids", "children", "family" (0, 0,
+4. **Corretto (#512)** — la ricerca non trovava le schede per famiglie con "kids", "children", "family" (0, 0,
    1 risultato): cerca solo in titolo, descrizione, zona e categoria, non in `family`.
 5. Il Siam Park chiede "A che ora" con le fasce, ma i parchi non hanno orari: dipende
    dal punto 2.
@@ -19730,3 +19730,18 @@ Nord e da Los Gigantes (hotel e "il tuo hotel"), spuntato e tolto (sparisce), e 
 messaggio WhatsApp e il database delle due richieste. Twin Ticket, Loro Parque e Freebird
 come prima. **Loro Parque e Twin Ticket** stanno ancora in `PICKUP_IN_HOTEL`: se anche lì
 si va da soli senza transfer, va chiesto al proprietario. `CACHE_NAME` → `isla-v573`.
+
+### Il conto dei mezzi e la ricerca per le famiglie (19 ottobre 2026)
+
+**Il conto dei mezzi** (`totaleMezzi()` in `escursioni.js`): prima il tipo, poi quanti.
+"4 posti: 1 × €240", "Singola: 2 × €95", "Con 1 o 2 persone: 1 × €250", e il transfer a
+pagamento "Transfer: 2 × €12". Prima era "1 4 posti × €240" e sulla Mustang "1 Con 1 o 2
+persone × €250". È la stessa funzione per la finestra, la lista e il messaggio WhatsApp.
+Resta com'era: il nome del mezzo è nella lingua in cui la voce è entrata nella lista.
+
+**La ricerca**: sulle schede con `family: true` si cerca anche in `PAROLE_FAMIGLIA`
+(`escursioni.js`), le parole di un genitore nelle cinque lingue (famiglia, bambini,
+kids, children, niños, enfants, Kinder…). "kids", "children", "bambini", "niños",
+"enfants" ora trovano 56 schede, le stesse del filtro "Con la famiglia"; prima 0.
+"dolphin" e "xyz" come prima. Una scheda nuova adatta ai bambini la si trova così solo
+se ha `family: true`. `CACHE_NAME` → `isla-v574`.

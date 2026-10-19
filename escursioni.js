@@ -392,7 +392,10 @@ function totaleMezzi(tour, req) {
     if (!prezzo) { manca = true; return; }
     totale += prezzo * scelto.n;
     quanti += scelto.n;
-    pezzi.push(scelto.n + " " + scelto.label + " × €" + eur(prezzo));
+    // Prima il tipo, poi quanti: "4 posti: 1 × €240". Col numero davanti
+    // usciva "1 4 posti × €240", due numeri attaccati (seconda prova da
+    // cliente, 19 ottobre 2026), e sulla Mustang "1 Con 1 o 2 persone".
+    pezzi.push(scelto.label + ": " + scelto.n + " × €" + eur(prezzo));
   });
   if (manca || !quanti) return null;
 
@@ -407,7 +410,7 @@ function totaleMezzi(tour, req) {
       // stesso nome della casella e della riga del messaggio: nel dettaglio del
       // conto "Transfer" accanto a "Ritiro in hotel" sembrerebbero due cose
       pezzi.push((tour.transferLabel ? tf(tour.transferLabel) : t("wa.transfer")) +
-        " " + quanti + " × €" + eur(mezzi.transferPrice));
+        ": " + quanti + " × €" + eur(mezzi.transferPrice));
     }
   }
   return { totale: totale, dettaglio: pezzi.join(" + ") };
@@ -944,6 +947,18 @@ function tourCard(tour) {
   return li;
 }
 
+// Le parole con cui un genitore cerca, nelle cinque lingue: si aggiungono al
+// testo in cui si cerca solo sulle schede con `family: true`. Senza, "kids" e
+// "children" non trovavano niente e "family" una scheda sola (seconda prova da
+// cliente, 19 ottobre 2026). Minuscole, come la ricerca.
+const PAROLE_FAMIGLIA = [
+  "famiglia", "famiglie", "bambini", "bambino", "bimbi", "ragazzi",
+  "family", "families", "kids", "children", "child",
+  "familia", "familias", "niños", "niño", "ninos",
+  "famille", "familles", "enfants", "enfant",
+  "familie", "familien", "kinder"
+];
+
 function initCatalog() {
   const grid = document.querySelector("[data-grid]");
   const chipRow = document.querySelector("[data-chips]");
@@ -1107,6 +1122,7 @@ function initCatalog() {
       const haystack = [tour.title, tour.desc, tour.zone]
         .map(campo => typeof campo === "string" ? campo : Object.values(campo).join(" "))
         .concat(categorieDi(tour).map(categoryName))
+        .concat(tour.family ? PAROLE_FAMIGLIA : [])
         .join(" ")
         .toLowerCase();
       if (!haystack.includes(state.query)) return false;

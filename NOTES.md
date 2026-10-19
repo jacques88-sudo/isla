@@ -19728,8 +19728,7 @@ non le abbiamo.
 Provato nel browser: Siam senza transfer (niente hotel, niente punto), col transfer da
 Nord e da Los Gigantes (hotel e "il tuo hotel"), spuntato e tolto (sparisce), e il
 messaggio WhatsApp e il database delle due richieste. Twin Ticket, Loro Parque e Freebird
-come prima. **Loro Parque e Twin Ticket** stanno ancora in `PICKUP_IN_HOTEL`: se anche lì
-si va da soli senza transfer, va chiesto al proprietario. `CACHE_NAME` → `isla-v573`.
+come prima. **Loro Parque e Twin Ticket**: fatti subito dopo (#513), sotto. `CACHE_NAME` → `isla-v573`.
 
 ### Il conto dei mezzi e la ricerca per le famiglie (19 ottobre 2026)
 
@@ -19745,3 +19744,14 @@ kids, children, niños, enfants, Kinder…). "kids", "children", "bambini", "ni�
 "enfants" ora trovano 56 schede, le stesse del filtro "Con la famiglia"; prima 0.
 "dolphin" e "xyz" come prima. Una scheda nuova adatta ai bambini la si trova così solo
 se ha `family: true`. `CACHE_NAME` → `isla-v574`.
+
+### Loro Parque e Twin Ticket come il Siam Park (19 ottobre 2026)
+
+Il proprietario: anche a Loro Parque e col Twin Ticket "ci possono andare anche da soli",
+e il transfer c'è su richiesta, a pagamento (Loro Parque da sud: 65 €/49 € invece di
+44 €/32 €; Twin Ticket da sud per Loro Parque 99 €/74 €, da nord per il Siam Park 103 €/78 €,
+invece di 78 €/57 €). Tutti e due passano da `PICKUP_IN_HOTEL` a `PICKUP_NESSUNO`: l'hotel si
+chiede solo col transfer spuntato. Le due caselle del Twin Ticket le conta già
+`transferChiesto()` (#511). Provato nel browser: senza transfer niente hotel né punto e il
+prezzo senza transfer; con ciascun transfer l'hotel, "il tuo hotel" e il prezzo col
+transfer; messaggio WhatsApp e database coerenti. `CACHE_NAME` → `isla-v575`.

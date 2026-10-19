@@ -19537,3 +19537,26 @@ Sie". Cambiati `install.ios.title` ("Isla bei Ihren Apps"), `install.ios.share`
 si fa?"), che non dà né del tu né del Lei. Controllati tutti i testi `de:` di tutti i
 file: nessun du rimasto. Il francese dà già del "vous" ovunque. Provato nel browser con
 un iPhone simulato in tedesco: riquadro e istruzioni. `CACHE_NAME` → `isla-v559`.
+
+### Le foto più leggere, primo passo (19 ottobre 2026)
+
+Il proprietario: "puoi alleggerire tu le foto?". Le foto avevano già la misura giusta
+(quasi tutte 1200 px di lato) e quasi tutte (103 su 136) erano già salvate a qualità
+82: ricomprimerle tutte in JPG avrebbe tolto solo il 6–14%, rovinandole un po' a ogni
+passaggio. Fatto solo quello che conveniva, **senza cambiare nessun nome di file** (nessun
+codice toccato):
+
+- `logo-isla.png`: 108 → 13 KB, a 256 colori. Identico a occhio, sta in tutte le pagine;
+- `hero-tenerife.webp`: 399 → 334 KB (WebP qualità 75);
+- le JPG salvate a qualità 85–92, ricompresse a 82 come le altre, **solo dove si
+  risparmiava almeno il 10%**: Cat-avventura, Cat-sport, anteprima, buggy-volcano-sunset,
+  fiat-500-on-water, opera-60-2, small-group-catamaran. Lasciate About-team, bento-noleggio
+  e royal-delfin.
+
+In tutto 517 KB in meno. Confrontate a occhio, ingrandite, le sfumature del tramonto e del
+cielo: nessuna differenza. Nel browser nessuna immagine rotta. `CACHE_NAME` → `isla-v560`.
+
+**Il passo grande, se servirà, è il WebP**: tutte le JPG in WebP pesano il 34% in meno
+(19,7 → 13,1 MB, misurato), ma cambia il nome di 136 file e va cambiato ovunque li si
+nomina (catalogo, `pacchetti.js`, `mappa-foto.js`, le pagine HTML, il service worker).
+Le anteprime per WhatsApp (`og:image`, `anteprima.jpg`) devono restare JPG.

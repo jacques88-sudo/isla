@@ -19765,3 +19765,45 @@ catalogo per posizione, come già faceva `unitaTesto()` per la riga "Buggy: …"
 salvato resta come ripiego. Provato: aggiunti buggy e moto d'acqua in italiano, poi
 inglese ("4 seats", "Single"), spagnolo ("4 plazas") e tedesco (lista in tedesco,
 messaggio all'ufficio in italiano per `perUfficio()`). `CACHE_NAME` → `isla-v576`.
+
+## La terza prova da cliente (19 ottobre 2026)
+
+Coppia francese, sul computer (1280 px) e sul telefono: Scandal Dinner Show, charter del
+Luxury Catamaran, Castillo San Miguel col menu, codice sconto, il pacchetto "Au volant, à
+deux", il noleggio, "Le mie prenotazioni" con una richiesta da pagare, una confermata e una
+annullata, il sito senza rete. Nessun errore JavaScript. Funzionano: il calendario (Scandal
+solo di sabato: 24 e 31), il charter (prezzo a gruppo, niente totale a persona), i menu, il
+codice sconto sbagliato (messaggio chiaro, la richiesta non parte finché non si toglie),
+il pacchetto (580 € − 10% = 522 €, messaggio in italiano), "Le mie prenotazioni" (Payer
+maintenant, ticket con ora e luogo, l'annullata con la spiegazione), offline (tutte le
+pagine dalla cache). Trovati:
+
+1. **Il menu restava nella lingua del cliente nel messaggio all'ufficio** ("Menu: Végétarien
+   × 1" in un messaggio in italiano) — corretto, sotto.
+2. **Nove schede in `PICKUP_IN_HOTEL` hanno il transfer facoltativo** (la casella "Vuoi il
+   transfer?"), come il Siam Park prima del #511: senza la spunta la finestra chiede
+   l'hotel "per dirti dove passiamo a prenderti". peter-pan (gratis dal sud solo alle
+   12:00), submarine-safari (dal sud compreso, dal nord 13 €), luxury-cruiser (60 €/40 €),
+   kayak-snorkelling (2 €/4 € sul posto), jet-ski-safari-1-2h (gratis dalle partenze di Las
+   Galletas), immersioni (compreso), castillo-san-miguel (a pagamento), scandal-dinner-show
+   (da Los Gigantes, Playa Paraíso, Puerto de la Cruz, Caletillas, prezzo su richiesta),
+   luxury-cruiser-charter (5 € a persona). **Da decidere col proprietario, scheda per
+   scheda.**
+3. **Le schede solo per adulti lasciano mettere i bambini**: Scandal (16+) accetta "2 adulti
+   e 1 bambino", il totale sparisce e la richiesta parte. Stessa cosa possibile su Utopia
+   (18+), cantine (18+), Talaria (14+), surf (13+). **Da decidere col proprietario.**
+4. Minori: nel pacchetto il conto dei mezzi è ancora "Mustang: 1 × Con 1 o 2 persone €250"
+   (non il formato del #512); la nota del pacchetto parla di "buggy o moto d'acqua" anche
+   quando il mezzo è la Mustang. Il noleggio è un link diretto a WhatsApp ("Vorrei
+   noleggiare: Fiat Panda. Dal … al …"): non passa dalla lista né dal database, è voluto.
+
+### Il menu nella lingua giusta
+
+La lista salvava il menu solo come frase già scritta ("Végétarien × 1 · Menu standard ×
+1"), quindi nella lingua di quando la voce era entrata. Ora salva anche i numeri
+(`menuN`, per posizione in `tour.menus`) e `menuTesto(req, tour)` riscrive la frase dal
+catalogo nella lingua del momento: nella lista e nel messaggio, che per francese e tedesco
+è in italiano. Le voci vecchie, con la sola frase, la mostrano come prima. Provato:
+Castillo con un vegetariano e un vegano aggiunto in francese → lista in francese e poi in
+inglese, messaggio "Vegetariano × 1 · Vegano × 1 · Menu standard × 1"; una voce del formato
+vecchio. `CACHE_NAME` → `isla-v577`.

@@ -329,13 +329,23 @@ function prezziAPersona(tour, req) {
 // si porta dietro anche il resto del gruppo scritto come standard: cosi'
 // l'ufficio legge "1 vegetariano e 1 standard" invece di dover sottrarre da
 // solo il numero di persone.
-function menuTesto(req) {
-  // Dalla lista il riepilogo arriva gia' scritto (`menu`), non come numeri:
-  // senza questa riga la richiesta partita dalla lista perdeva per strada
-  // "1 Vegetariano", che nella lista si vedeva. Le allergie stanno nelle note,
-  // ma un vegano che sparisce e' comunque un vegano che l'ufficio non legge.
-  if (typeof req.menu === "string") return req.menu;
-  const scelti = (req.menus || []).filter(m => m.n > 0);
+function menuTesto(req, tour) {
+  // Dalla lista arrivano i numeri di ogni menu (`menuN`, per posizione): i
+  // nomi si rileggono dal catalogo nella lingua di adesso, come per i mezzi.
+  // Prima la lista salvava solo la frase gia' scritta, e un cliente francese
+  // mandava all'ufficio "Menu: Végétarien × 1" in un messaggio in italiano
+  // (terza prova da cliente, 19 ottobre 2026).
+  let menus = req.menus;
+  if (Array.isArray(req.menuN) && tour && Array.isArray(tour.menus)) {
+    menus = req.menuN.map((n, i) => ({ label: tf(tour.menus[i] || ""), n: n }));
+  } else if (typeof req.menu === "string") {
+    // Le voci salvate prima, con la sola frase: senza questa riga la
+    // richiesta partita dalla lista perdeva per strada "1 Vegetariano", che
+    // nella lista si vedeva. Un vegano che sparisce e' un vegano che l'ufficio
+    // non legge.
+    return req.menu;
+  }
+  const scelti = (menus || []).filter(m => m.n > 0);
   if (!scelti.length) return "";
   // "Vegetariano × 2" e non "2 Vegetariano": il "×" e' gia' il modo in cui il
   // sito scrive le quantita' nel totale, e soprattutto evita i plurali. Le
@@ -855,7 +865,7 @@ function righeRichiesta(tour, req) {
   // Come l'orario e la lingua: la riga compare solo se qualcuno del gruppo ha
   // un'esigenza. Un "tutti standard" scritto in chat sarebbe una riga in piu'
   // da leggere che non dice niente; "1 vegetariano e 1 standard" no.
-  const menu = menuTesto(req);
+  const menu = menuTesto(req, tour);
   if (menu) righe.push("• " + t("wa.menu") + ": " + menu);
   // La risposta si scrive sempre, anche quando e' "no": cosi' l'ufficio sa che
   // la domanda e' stata fatta, invece di doverla rifare in chat.
@@ -2289,6 +2299,8 @@ function initRequestDialog() {
       // nella lista si salva il riepilogo gia' scritto ("1 Vegetariano · 1
       // Menu standard"), come si fa gia' per la variante e per la lingua
       menu: menuTesto(req),
+      // e i numeri, per riscriverla nella lingua giusta (menuTesto)
+      menuN: (req.menus || []).map(m => m.n),
       adults: req.adults,
       kids: req.kids,
       babies: req.babies,

@@ -507,7 +507,7 @@ const CATEGORIES = [
   {
     id: "avventura-motori",
     name: { it: "Avventura", en: "Adventure", es: "Aventura", fr: "Aventure", de: "Abenteuer" },
-    image: "Cat-avventura.jpg"
+    image: "Cat-avventura.webp"
   },
   {
     id: "sport-acquatici",
@@ -3265,13 +3265,13 @@ const ESPLORA_CATALOG = [
     // in hotel.js: se no il cliente leggerebbe una fermata delle tabelle di
     // Island Excursions, che e' un altro fornitore e un altro giro.
     // Stessa foto della card "Avventura e motori" in home: `mustang-experience.jpg`
-    // era un doppione byte per byte di `Cat-avventura.jpg`, cioe' 202 KB che il
+    // era un doppione byte per byte di `Cat-avventura.webp`, cioe' 202 KB che il
     // telefono scaricava due volte. Tolto il doppione e puntata questa, come si
     // fa col Twin Ticket su `Cat-parchi.jpg`.
     // ⚠ Adesso le due immagini sono LEGATE: cambiare la foto del Mustang
     // cambia anche quella della categoria in home. Se un giorno devono essere
     // diverse, si rimette un file suo.
-    image: "Cat-avventura.jpg",
+    image: "Cat-avventura.webp",
     published: true
   },
   {
@@ -3469,8 +3469,8 @@ const ESPLORA_CATALOG = [
       }
     ],
     languages: LINGUE_TOUR,
-    image: "buggy-volcano-4h.jpg",
-    gallery: ["buggy-2-3h.jpg", "buggy-volcano-sunset.jpg", "buggy-volcano-4h-guide.jpg", "buggy-volcano-4h-guida.jpg", "buggy-volcano-4h-fila.jpg"],
+    image: "buggy-volcano-4h.webp",
+    gallery: ["buggy-2-3h.webp", "buggy-volcano-sunset.webp", "buggy-volcano-4h-guide.webp", "buggy-volcano-4h-guida.webp", "buggy-volcano-4h-fila.webp"],
     published: true
   },
   {
@@ -3607,8 +3607,8 @@ const ESPLORA_CATALOG = [
       }
     ],
     languages: LINGUE_TOUR,
-    image: "quad-teide-adventure.jpg",
-    gallery: ["quad-teide-sunset.jpg"],
+    image: "quad-teide-adventure.webp",
+    gallery: ["quad-teide-sunset.webp"],
     published: true
   },
   {
@@ -3732,8 +3732,8 @@ const ESPLORA_CATALOG = [
     ],
     // Le due immagini del proprietario (13 ottobre 2026): le moto sulla
     // spiaggia di ciottoli e, in galleria, il logo del fornitore.
-    image: "talaria-off-road.jpg",
-    gallery: ["talaria-off-road-2.jpg"],
+    image: "talaria-off-road.webp",
+    gallery: ["talaria-off-road-2.webp"],
     published: true
   },
   {
@@ -3861,7 +3861,7 @@ const ESPLORA_CATALOG = [
       }
     ],
     languages: ["English", "Español"],
-    image: "helicopter-tours.jpg",
+    image: "helicopter-tours.webp",
     // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
     ritrovo: { it: "Elisuperficie di Adeje", en: "Adeje heliport", es: "Helipuerto de Adeje", fr: "Héliport d'Adeje", de: "Hubschrauberlandeplatz Adeje" },
     published: true
@@ -4088,7 +4088,7 @@ const ESPLORA_CATALOG = [
         de: "Mini Prix und Grand Prix sind nur für Erwachsene, werden im Voraus gebucht und brauchen eine Gruppe von 5 bis 15 Personen. Für Kinder und kleine Gruppen gibt es die 10-Minuten-Session: Die hat kein Minimum."
       }
     ],
-    image: "karting.jpg",
+    image: "karting.webp",
     published: true
   },
   {
@@ -4157,7 +4157,7 @@ const ESPLORA_CATALOG = [
       }
     ],
     languages: ["English", "Español"],
-    image: "cavallo.jpg",
+    image: "cavallo.webp",
     published: true
   },
 

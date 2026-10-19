@@ -19591,3 +19591,9 @@ che non sempre leggono il WebP) e le schermate del `manifest.json`.
   notturne, dove la compressione cancella per prime le stelle piccole: ci sono tutte,
   Via Lattea compresa. Browser: 5 schede pubblicate, elenco, home, 7 pacchetti, nessuna
   foto rotta. `CACHE_NAME` → `isla-v562`.
+- **Avventura e motori (`avventura-motori`)**: 14 foto, 1,9 → 1,3 MB (−34%). Resta JPG
+  `paragliding.jpg` (si risparmiava meno del 10%). C'era anche `Cat-avventura.jpg`, la
+  copertina della categoria: nome cambiato anche in `index.html`. Da qui lo script misura
+  anche quanto ogni WebP è diverso dalla sua JPG (PSNR) e le due più diverse si guardano
+  ingrandite: qui i due buggy (34,7 e 34,8 dB), identici a occhio. Browser: 8 schede,
+  elenco, home, 7 pacchetti, 64 foto WebP, nessuna rotta. `CACHE_NAME` → `isla-v563`.

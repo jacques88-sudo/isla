@@ -19642,3 +19642,27 @@ una JPG va bene lo stesso, `controlla.js` accetta tutte e due.
 **Non controllato**: il repository `isla-ticket`, che carica catalogo e stili da
 `../isla/`. Prende i nomi delle foto dal catalogo, quindi segue da solo; se avesse un nome
 di foto scritto a mano nel suo HTML, va cambiato là.
+
+## La riga della privacy non parla più dell'hotel dove non si chiede (19 ottobre 2026)
+
+Trovato con la prova da cliente: sotto la richiesta la riga `req.privacy` dice "L'hotel
+resta salvato su questo dispositivo" anche dove l'hotel non si chiede. Ora c'è
+`req.privacyNoHotel`, la stessa riga senza quella frase, nelle cinque lingue:
+
+- **finestra della richiesta** (`tour.html` ed `escursioni.html`): la sceglie
+  `mostraPunto()` in `escursioni.js`, che gira all'apertura, quando si spunta o si toglie
+  il transfer e al cambio lingua. Senza ritiro (Freebird 2 ore, Freebird 3 ore senza
+  transfer) la riga senza hotel; col ritiro, o col transfer spuntato, quella con l'hotel;
+- **finestra della lista** (`lista.js`): sempre senza hotel, perché lì si chiedono solo
+  nome ed email. L'hotel si scrive nella finestra di ogni escursione, dove la frase c'è;
+- **pacchetti**: invariata, la finestra del pacchetto chiede sempre l'hotel.
+
+Provato nel browser: i cinque casi della finestra, il ritorno senza hotel togliendo il
+transfer, il tedesco e lo spagnolo dopo il cambio lingua, la lista.
+
+**Aperto, da decidere col proprietario**: la frase "Quello che scrivi serve solo a
+risponderti su WhatsApp" non dice che dal 13 ottobre una copia della richiesta (nome,
+hotel, persone) va anche nel database. `privacy.html` lo dice in modo corretto; anche il
+commento sopra `req.privacy` in `i18n.js` ("nel sito non c'è una sola chiamata di rete")
+è di prima di `richieste.js`. È un testo legale: non toccato senza il proprietario.
+`CACHE_NAME` → `isla-v570`.

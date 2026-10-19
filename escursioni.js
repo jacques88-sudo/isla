@@ -694,6 +694,14 @@ function initHotelField() {
     }
     puntoEl.hidden = !p;
     if (aiutoEl) aiutoEl.hidden = spento || !!p;
+    // La riga della privacy dice che l'hotel resta salvato: dove l'hotel non
+    // si chiede, quella frase parlava di una domanda che non c'era.
+    const privacyEl = document.querySelector("#requestDialog .request-privacy");
+    if (privacyEl) {
+      const chiave = spento ? "req.privacyNoHotel" : "req.privacy";
+      privacyEl.dataset.i18nHtml = chiave;
+      privacyEl.innerHTML = t(chiave);
+    }
     mostraOraHotel(p);
   }
 

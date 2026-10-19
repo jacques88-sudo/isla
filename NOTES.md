@@ -19930,3 +19930,17 @@ indicativo, lo fissa l'ufficio) e i giorni proposti dalla **chat**, che servono 
 filtrare le schede. Provato con l'orologio finto: buggy alle 22:30 (domani spento) e alle
 10:00 (8:20 spenta), Masca + Teide con le fasce alle 12:00 e alle 17:30, i due charter
 alle 23:00, la lista. La regola è scritta anche in CLAUDE.md. `CACHE_NAME` → `isla-v584`.
+
+### La stessa escursione due volte nella lista (19 ottobre 2026)
+
+`listaAggiungi()` in `lista.js`: se nella lista c'è già una voce uguale
+(`listaStessaVoce()`: stessa scheda, stessa variante per posizione, stesso giorno e stessa
+ora; per i pacchetti stesso pacchetto e stesso giorno), la voce di prima prende i dati
+nuovi e il cliente legge "Era già nella tua lista: l'ho aggiornata" (`lista.updated`,
+cinque lingue). Le persone non contano nel confronto: sono proprio quello che il cliente
+corregge aggiungendola di nuovo. Avevo proposto "è già nella tua lista, cambia le persone
+lì", ma la lista non ha un modo di cambiarle (solo la ✕): aggiornare fa la stessa cosa
+senza un passo in più. Provato: Royal Delfin due volte uguale (una voce), poi con 9 adulti
+(una voce, 9 adulti); Freebird 2 ore e 3 ore (due voci); buggy alle 11:00 e alle 13:30 (due
+voci); il pacchetto due volte (una voce, adulti aggiornati), col messaggio giusto.
+`CACHE_NAME` → `isla-v585`.

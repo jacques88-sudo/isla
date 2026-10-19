@@ -517,7 +517,7 @@ const CATEGORIES = [
   {
     id: "parchi-spettacoli",
     name: { it: "Parchi e spettacoli", en: "Parks and shows", es: "Parques y espectáculos", fr: "Parcs et spectacles", de: "Parks und Shows" },
-    image: "Cat-parchi.jpg"
+    image: "Cat-parchi.webp"
   },
   {
     id: "tour-isola",
@@ -3267,7 +3267,7 @@ const ESPLORA_CATALOG = [
     // Stessa foto della card "Avventura e motori" in home: `mustang-experience.jpg`
     // era un doppione byte per byte di `Cat-avventura.webp`, cioe' 202 KB che il
     // telefono scaricava due volte. Tolto il doppione e puntata questa, come si
-    // fa col Twin Ticket su `Cat-parchi.jpg`.
+    // fa col Twin Ticket su `Cat-parchi.webp`.
     // ⚠ Adesso le due immagini sono LEGATE: cambiare la foto del Mustang
     // cambia anche quella della categoria in home. Se un giorno devono essere
     // diverse, si rimette un file suo.
@@ -5531,7 +5531,7 @@ const ESPLORA_CATALOG = [
       fr: "Le Siam Park à la nuit tombée, dans sa version du soir.",
       de: "Der Siam Park nach Einbruch der Dunkelheit, in seiner Abendversion."
     },
-    image: "siam-night.jpg",
+    image: "siam-night.webp",
     published: true
   },
   {
@@ -5598,7 +5598,7 @@ const ESPLORA_CATALOG = [
       fr: "Zoo et jardin tropical, connu dans le monde entier pour ses animaux.",
       de: "Zoo und tropischer Garten, weltweit bekannt für seine Tiere."
     },
-    image: "loro-parque.jpg",
+    image: "loro-parque.webp",
     published: true
   },
   {
@@ -5675,7 +5675,7 @@ const ESPLORA_CATALOG = [
       fr: "Billet combiné pour les deux parcs les plus connus de l'île.",
       de: "Kombiticket für die zwei bekanntesten Parks der Insel."
     },
-    image: "Cat-parchi.jpg",
+    image: "Cat-parchi.webp",
     published: true
   },
   {
@@ -5822,7 +5822,7 @@ const ESPLORA_CATALOG = [
       fr: "Une journée à Gran Canaria en ferry : l'aquarium Poema del Mar, le vieux quartier de Vegueta et la distillerie Arehucas.",
       de: "Ein Tag auf Gran Canaria mit der Fähre: das Aquarium Poema del Mar, die Altstadt Vegueta und die Destillerie Arehucas."
     },
-    image: "gran-canaria.jpg",
+    image: "gran-canaria.webp",
     published: true
   },
   {
@@ -5867,7 +5867,7 @@ const ESPLORA_CATALOG = [
       fr: "Parc aquatique à Costa Adeje avec des toboggans pour tous les âges, un spectacle de dauphins compris dans le billet et une navette gratuite depuis plusieurs zones du sud de l'île.",
       de: "Wasserpark in Costa Adeje mit Rutschen für jedes Alter, einer Delfinshow im Ticket und einem kostenlosen Shuttle aus mehreren Orten im Süden der Insel."
     },
-    image: "aqualand.jpg",
+    image: "aqualand.webp",
     published: true
   },
   {
@@ -5909,7 +5909,7 @@ const ESPLORA_CATALOG = [
       fr: "Parc naturel à Chayofa, mi-zoo mi-jardin botanique, avec des animaux exotiques et des rapaces en vol libre, des spectacles compris dans le billet et une navette gratuite depuis plusieurs zones du sud de l'île.",
       de: "Naturpark in Chayofa, halb Zoo, halb botanischer Garten, mit exotischen Tieren und frei fliegenden Greifvögeln, Shows im Ticket und einem kostenlosen Shuttle aus mehreren Orten im Süden der Insel."
     },
-    image: "jungle-park.jpg",
+    image: "jungle-park.webp",
     published: true
   },
   {
@@ -5962,7 +5962,7 @@ const ESPLORA_CATALOG = [
       fr: "Billet combiné pour les deux parcs du sud : une journée à Aqualand et une au Jungle Park, avec une navette gratuite depuis plusieurs zones du sud de l'île.",
       de: "Kombiticket für die zwei Parks im Süden: ein Tag im Aqualand und einer im Jungle Park, mit kostenlosem Shuttle aus mehreren Orten im Süden der Insel."
     },
-    image: "combo-jungle-aqualand.jpg",
+    image: "combo-jungle-aqualand.webp",
     published: true
   },
   {
@@ -5999,7 +5999,7 @@ const ESPLORA_CATALOG = [
         fr: "À environ 5 minutes de Los Cristianos et 10 de Playa de las Américas. Ouvert tous les jours.",
         de: "Etwa 5 Minuten von Los Cristianos und 10 von Playa de las Américas. Täglich geöffnet." }
     ],
-    image: "monkey-park.jpg",
+    image: "monkey-park.webp",
     published: true
   },
   {
@@ -6068,7 +6068,7 @@ const ESPLORA_CATALOG = [
         fr: "Ça se passe au Vivo Show Bar, Avenida Rafael Puig Lluvina 7, à quelques pas du centre de Playa de las Américas. L'opérateur ne propose pas de transport : on y va à pied ou en taxi.",
         de: "Im Vivo Show Bar, Avenida Rafael Puig Lluvina 7, ein paar Schritte vom Zentrum von Playa de las Américas. Der Anbieter bietet keinen Transport an: Man kommt zu Fuß oder mit dem Taxi." }
     ],
-    image: "mht-drag-show.jpg",
+    image: "mht-drag-show.webp",
     // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
     ritrovo: "Vivo Show Bar, Avenida Rafael Puig Lluvina 7, Playa de las Américas",
     published: true
@@ -6170,7 +6170,7 @@ const ESPLORA_CATALOG = [
         fr: "Le spectacle est en anglais : huit chevaliers à cheval, joutes et duels à l'épée.",
         de: "Die Show ist auf Englisch: acht Ritter zu Pferd, Lanzenstechen und Schwertkämpfe." }
     ],
-    image: "castillo-san-miguel.jpg",
+    image: "castillo-san-miguel.webp",
     published: true
   },
   {
@@ -6261,7 +6261,7 @@ const ESPLORA_CATALOG = [
         fr: "Parking au CC Plaza del Duque, à quelques pas de l'entrée.",
         de: "Parken im CC Plaza del Duque, ein paar Schritte vom Eingang." }
     ],
-    image: "flamenco-show.jpg",
+    image: "flamenco-show.webp",
     published: true
   },
   {
@@ -6363,7 +6363,7 @@ const ESPLORA_CATALOG = [
         fr: "Ça se passe dans la salle Las Olas de l'hôtel GF Victoria, à Costa Adeje : l'accès au spectacle est indiqué depuis le hall. Parking public gratuit au CC Plaza del Duque, à environ 5 minutes à pied ; parking souterrain payant à l'hôtel.",
         de: "Im Saal Las Olas des Hotels GF Victoria in Costa Adeje: Der Weg zur Show ist von der Lobby aus ausgeschildert. Kostenloser öffentlicher Parkplatz im CC Plaza del Duque, etwa 5 Minuten zu Fuß; gebührenpflichtige Tiefgarage im Hotel." }
     ],
-    image: "scandal-dinner-show.jpg",
+    image: "scandal-dinner-show.webp",
     published: true
   },
   {
@@ -6411,7 +6411,7 @@ const ESPLORA_CATALOG = [
         fr: "Tenue smart casual (jean accepté) : pas de tenue de sport ni de short.",
         de: "Dresscode smart casual (Jeans in Ordnung): keine Sportkleidung, keine kurzen Hosen." }
     ],
-    image: "history-music-show.jpg",
+    image: "history-music-show.webp",
     published: true
   },
 

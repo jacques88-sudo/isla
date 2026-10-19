@@ -19601,3 +19601,8 @@ che non sempre leggono il WebP) e le schermate del `manifest.json`.
   lasciata JPG. Le due più diverse (banana boat 35,5 dB, kayak 35,9) guardate ingrandite:
   identiche. Browser: 8 schede pubblicate, elenco, home, 7 pacchetti, 69 foto WebP,
   nessuna rotta. `CACHE_NAME` → `isla-v564`.
+- **Parchi e spettacoli (`parchi-spettacoli`)**: 13 foto, 1,9 → 1,3 MB (−29%). Resta JPG
+  `siam-park.jpg` (353 → 323 KB, meno del 10%). Con loro `Cat-parchi.jpg`, nome cambiato
+  anche in `index.html`. Le due più diverse (Loro Parque 35,5 dB, Aqualand 35,6) guardate
+  ingrandite, anche le gocce d'acqua sull'orca: identiche. Browser: 14 schede, elenco,
+  home, 7 pacchetti, 93 foto WebP, nessuna rotta. `CACHE_NAME` → `isla-v565`.

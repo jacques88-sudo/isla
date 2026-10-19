@@ -439,7 +439,7 @@ const PACCHETTI = [
       fr: "Trois nuits à Tenerife",
       de: "Drei Nächte auf Teneriffa"
     },
-    image: "castillo-san-miguel.jpg",
+    image: "castillo-san-miguel.webp",
     sconto: 10,
     // 49 + 52 + 79 = 180, ma si sconta solo lo stargazing (i due show
     // sono a prezzo fisso): −7,90 → 172,10 a persona.
@@ -641,7 +641,7 @@ const PACCHETTI = [
       fr: "Les animaux de près",
       de: "Tiere aus der Nähe"
     },
-    image: "loro-parque.jpg",
+    image: "loro-parque.webp",
     sconto: 10,
     famiglia: true,
     voci: [

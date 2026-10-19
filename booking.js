@@ -224,6 +224,16 @@ function dataCorta(iso) {
   return new Intl.DateTimeFormat(getLang(), { day: "numeric", month: "long" }).format(new Date(a, m - 1, g));
 }
 
+// La variante sta nel database in italiano, la lingua dell'ufficio ("2 ore"):
+// qui la si ritrova nel catalogo e la si scrive nella lingua del cliente
+// ("2 Stunden"). Se il catalogo non la conosce piu' (una variante tolta o
+// rinominata), resta il testo salvato: meglio in italiano che niente.
+function varianteTesto(tour, etichetta) {
+  const scelte = (tour && tour.options && tour.options.choices) || [];
+  const scelta = scelte.find(c => (typeof c.label === "string" ? c.label : c.label.it) === etichetta);
+  return scelta ? tf(scelta.label) : etichetta;
+}
+
 function persone(b) {
   const parti = [];
   const conta = (n, uno, tanti) => { if (n > 0) parti.push(n === 1 ? t(uno) : t(tanti, { n })); };
@@ -335,7 +345,7 @@ function cardTicket(b, passata) {
     <div class="detail-card is-${status}${passata ? " is-past" : ""}"${b.request_token ? ` data-richiesta="${esc(b.request_token)}" data-scheda="${esc(b.excursion_id || "")}" data-giorno="${esc(b.date || "")}"` : ""}>
       ${banner ? `<div class="ticket-hero">${banner}${stato}</div>` : stato}
       <div class="detail-body">
-        <h2 class="detail-title">${esc(titolo)}${b.option_label ? `<span class="ticket-option">${esc(b.option_label)}</span>` : ""}</h2>
+        <h2 class="detail-title">${esc(titolo)}${b.option_label ? `<span class="ticket-option">${esc(varianteTesto(tour, b.option_label))}</span>` : ""}</h2>
         ${nota}
         <div class="info-grid">
           ${ritrovo}

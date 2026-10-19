@@ -19660,9 +19660,21 @@ resta salvato su questo dispositivo" anche dove l'hotel non si chiede. Ora c'è
 Provato nel browser: i cinque casi della finestra, il ritorno senza hotel togliendo il
 transfer, il tedesco e lo spagnolo dopo il cambio lingua, la lista.
 
-**Aperto, da decidere col proprietario**: la frase "Quello che scrivi serve solo a
+**Risolto subito dopo (#509)** — era aperto: la frase "Quello che scrivi serve solo a
 risponderti su WhatsApp" non dice che dal 13 ottobre una copia della richiesta (nome,
 hotel, persone) va anche nel database. `privacy.html` lo dice in modo corretto; anche il
 commento sopra `req.privacy` in `i18n.js` ("nel sito non c'è una sola chiamata di rete")
 è di prima di `richieste.js`. È un testo legale: non toccato senza il proprietario.
 `CACHE_NAME` → `isla-v570`.
+
+### "Serve solo a gestire la tua richiesta e a risponderti" (19 ottobre 2026)
+
+Il proprietario ha approvato la frase nuova all'inizio della riga della privacy, in
+`req.privacy` e in `req.privacyNoHotel`, nelle cinque lingue, e nel testo di riserva di
+`tour.html` ed `escursioni.html`: "Quello che scrivi serve solo a **gestire la tua
+richiesta e** a risponderti su WhatsApp" (en "to handle your request and reply", es
+"gestionar tu solicitud y responderte", fr "traiter votre demande et vous répondre", de
+"Ihre Anfrage zu bearbeiten und Ihnen … zu antworten"). Prima non diceva che una copia
+della richiesta va anche nel database. Rifatto anche il commento sopra `req.privacy`,
+che diceva che il sito non manda niente a nessuno. Provato nel browser: le cinque lingue
+con l'hotel, la riga senza hotel, la finestra di un pacchetto. `CACHE_NAME` → `isla-v571`.

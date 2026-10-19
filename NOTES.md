@@ -19606,3 +19606,8 @@ che non sempre leggono il WebP) e le schermate del `manifest.json`.
   anche in `index.html`. Le due più diverse (Loro Parque 35,5 dB, Aqualand 35,6) guardate
   ingrandite, anche le gocce d'acqua sull'orca: identiche. Browser: 14 schede, elenco,
   home, 7 pacchetti, 93 foto WebP, nessuna rotta. `CACHE_NAME` → `isla-v565`.
+- **Tour dell'isola (`tour-isola`)**: 10 foto, 1,6 → 1,3 MB (−21%), nessuna lasciata JPG.
+  Nome cambiato anche in `index.html` (la copertina della categoria è
+  `santa-cruz-taganana`). Le due più diverse (La Gomera 34,1 dB, tuk tuk 34,3) guardate
+  ingrandite: identiche. Browser: 8 schede pubblicate, elenco, home, 7 pacchetti, 74 foto
+  WebP, nessuna rotta. `CACHE_NAME` → `isla-v566`.

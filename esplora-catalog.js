@@ -522,7 +522,7 @@ const CATEGORIES = [
   {
     id: "tour-isola",
     name: { it: "Tour e visite", en: "Tours & sightseeing", es: "Tours y visitas", fr: "Visites et découvertes", de: "Touren und Besichtigungen" },
-    image: "santa-cruz-taganana.jpg"
+    image: "santa-cruz-taganana.webp"
   },
   {
     id: "tour-privati",
@@ -6624,7 +6624,7 @@ const ESPLORA_CATALOG = [
         fr: "Les jours peuvent changer selon la langue du guide.",
         de: "Die Tage können sich je nach Sprache des Guides ändern." }
     ],
-    image: "la-gomera.jpg",
+    image: "la-gomera.webp",
     published: true
   },
   {
@@ -6632,7 +6632,7 @@ const ESPLORA_CATALOG = [
     // Taganana: gli id non si cambiano (stessa regola delle tre categorie
     // rinominate ad agosto), e cambiarlo qui butterebbe via i link gia' salvati
     // e le richieste ferme in localStorage. Il nome del file della foto lo
-    // segue: `santa-cruz-taganana.jpg` serve anche alla griglia della home.
+    // segue: `santa-cruz-taganana.webp` serve anche alla griglia della home.
     id: "santa-cruz-taganana",
     // Conta sempre come card (proprietario, 11 ottobre 2026: le escursioni
     // di Island Excursions).
@@ -6652,7 +6652,7 @@ const ESPLORA_CATALOG = [
     // una gita a Gran Canaria); qui la natura e' un pezzo del giro, non il
     // giro. Se un giorno si ricambia idea, la riga da aggiungere e'
     // `alsoIn: ["teide-natura"]`.
-    // La foto `santa-cruz-taganana.jpg` e' anche il riquadro di "Tour e
+    // La foto `santa-cruz-taganana.webp` e' anche il riquadro di "Tour e
     // visite" in home: adesso la categoria del riquadro e la categoria della
     // scheda tornano a essere la stessa.
     category: "tour-isola",
@@ -6795,7 +6795,7 @@ const ESPLORA_CATALOG = [
       fr: "La capitale Santa Cruz, le parc rural d'Anaga à Cruz del Carmen et La Laguna, classée par l'UNESCO : le nord-est de l'île en une journée, avec prise en charge à l'arrêt convenu.",
       de: "Die Hauptstadt Santa Cruz, der Landschaftspark Anaga bei Cruz del Carmen und das UNESCO-Welterbe La Laguna: der Nordosten der Insel an einem Tag, mit Abholung an der vereinbarten Haltestelle."
     },
-    image: "santa-cruz-taganana.jpg",
+    image: "santa-cruz-taganana.webp",
     published: true
   },
   {
@@ -6933,7 +6933,7 @@ const ESPLORA_CATALOG = [
       fr: "L'île en une seule journée : les falaises de Los Gigantes, Garachico depuis le belvédère, le dragonnier millénaire d'Icod, La Orotava et sa Casa de los Balcones, Puerto de la Cruz et la patronne à Candelaria, avec prise en charge à l'arrêt convenu.",
       de: "Die Insel an einem einzigen Tag: die Klippen von Los Gigantes, Garachico vom Aussichtspunkt, der tausendjährige Drachenbaum von Icod, La Orotava und die Casa de los Balcones, Puerto de la Cruz und die Schutzpatronin in Candelaria, mit Abholung an der vereinbarten Haltestelle."
     },
-    image: "island-tour-completo.jpg",
+    image: "island-tour-completo.webp",
     published: true
   },
   {
@@ -7139,7 +7139,7 @@ const ESPLORA_CATALOG = [
         de: "Wenn Sie eine Allergie oder einen besonderen Ernährungswunsch fürs Mittagessen haben, schreiben Sie es in die Anfrage: Wir geben es ans Restaurant weiter."
       }
     ],
-    image: "la-palma.jpg",
+    image: "la-palma.webp",
     // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
     ritrovo: { it: "Porto di Los Cristianos, davanti all'ufficio Fred Olsen", en: "Los Cristianos harbour, in front of the Fred Olsen office", es: "Puerto de Los Cristianos, delante de la oficina de Fred Olsen", fr: "Port de Los Cristianos, devant le bureau Fred Olsen", de: "Hafen Los Cristianos, vor dem Fred-Olsen-Büro" },
     published: true
@@ -7237,7 +7237,7 @@ const ESPLORA_CATALOG = [
       fr: "Une journée dans un domaine viticole à Vilaflor, au-dessus du sud de Tenerife, en groupe de huit au maximum. On marche entre les vignes, on entre dans la bodega traditionnelle et les vignerons racontent comment on fait le vin, verre après verre, avec des tapas sur la table. Le minibus passe vous prendre à l'hôtel et vous ramène en milieu d'après-midi.",
       de: "Ein Tag auf einem Weingut in Vilaflor, oberhalb des Südens von Teneriffa, in einer Gruppe von höchstens acht. Man geht durch die Reben, betritt die traditionelle Bodega, und die Winzer erzählen, wie der Wein entsteht, Glas für Glas, mit Tapas auf dem Tisch. Der Minibus holt Sie am Hotel ab und bringt Sie am Nachmittag zurück."
     },
-    image: "cantine-vinicole.jpg",
+    image: "cantine-vinicole.webp",
     published: true
   },
   {
@@ -7312,7 +7312,7 @@ const ESPLORA_CATALOG = [
     // La grafica del volantino ("Bananas & Wines", banane, uva, vendemmia),
     // mandata dal proprietario il 6 ottobre 2026 come foto della scheda. E'
     // l'unica del catalogo con la scritta sopra: e' una scelta sua.
-    image: "bananas-wines.jpg",
+    image: "bananas-wines.webp",
     published: true
   },
   {
@@ -7399,8 +7399,8 @@ const ESPLORA_CATALOG = [
     // con la montagna, presa dall'alto per tenere la cima; nella galleria il
     // cartello d'ingresso: il marchio e' quello della finca, cioe' il soggetto.
     // Prima erano arrivate due anteprime da 225x225, scartate.
-    image: "finca-tuno.jpg",
-    gallery: ["finca-tuno-2.jpg"],
+    image: "finca-tuno.webp",
+    gallery: ["finca-tuno-2.webp"],
     published: true
   },
   {
@@ -7540,7 +7540,7 @@ const ESPLORA_CATALOG = [
       fr: "Voir les visites privées",
       de: "Die privaten Touren ansehen"
     },
-    image: "tuk-tuk.jpg",
+    image: "tuk-tuk.webp",
     // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
     ritrovo: "Wakanda Origen, Avenida de España 10, Costa Adeje",
     published: true
@@ -7565,7 +7565,7 @@ const ESPLORA_CATALOG = [
       fr: "Un petit train routier entre Costa Adeje et Los Cristianos : on monte et on descend aux arrêts comme on veut, le billet vaut toute la journée.",
       de: "Eine Straßenbahn zwischen Costa Adeje und Los Cristianos: Ein- und Aussteigen an den Haltestellen nach Belieben, das Ticket gilt den ganzen Tag."
     },
-    image: "trenino-turistico.jpg",
+    image: "trenino-turistico.webp",
     // Spento il 12 ottobre 2026 dal proprietario, "al momento". La scheda
     // resta qui, con la foto: per rimetterla basta tornare a true.
     published: false
@@ -7999,7 +7999,7 @@ const ESPLORA_CATALOG = [
       fr: "Le tuk-tuk électrique pour votre seul groupe, jusqu'à 6 personnes : les deux mêmes parcours que la sortie partagée, ou les deux ensemble en deux heures. Le prix est pour le véhicule et non par personne, et il change selon votre nombre.",
       de: "Das elektrische Tuk-Tuk nur für Ihre Gruppe, bis zu 6 Personen: dieselben zwei Routen wie die geteilte Fahrt, oder beide zusammen in zwei Stunden. Der Preis gilt für das Fahrzeug und nicht pro Person und ändert sich damit, wie viele Sie sind."
     },
-    image: "tuk-tuk.jpg",
+    image: "tuk-tuk.webp",
     // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
     ritrovo: "Wakanda Origen, Avenida de España 10, Costa Adeje",
     published: true

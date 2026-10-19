@@ -19488,10 +19488,12 @@ CanaryVIP (1 settembre). Quelli veri, dal proprietario:
   solo: ora 49 + 52 + 79 = 180, −7,90 → 172,10 a persona. Corretto solo il commento.
 
 **Il netto**: il bus va **tutto** alla compagnia, normale e VIP (proprietario). La
-commissione sullo show è il **30%**, ricavato dal foglio: 104,80 = 2 × 52 × 0,70 + 2 × 16.
-**Ricavato, non detto**: se il proprietario dice un'altra cifra, si rifanno le quattro
-righe. Su Supabase quattro righe di `nets` (variante × transfer), netti a persona; il
-ticket senza transfer segnato resta "netto mancante", come Mokkai. Preparato nella
+commissione sullo show è il **30%** (ricavato dal foglio, 104,80 = 2 × 52 × 0,70 + 2 × 16,
+e confermato dal proprietario lo stesso giorno). Su Supabase quattro righe di `nets`
+(variante × transfer), netti a persona. **La casella "Con transfer" non spuntata vuol
+dire senza bus**: il netto viene più basso del vero (0972: 72,80 invece di 104,80) e si
+corregge da Modifica. Resta "netto mancante" solo un ticket salvato prima del 18
+ottobre, quando la casella non c'era. Preparato nella
 scratchpad, **non committato**, con l'`update` del ticket 0972 (`transfer = true`, che
 fa ricalcolare il guardiano). Provato su Postgres 16 con schema e modifiche: 0972 →
 104,80; VIP senza bus 2+1+1 a 163 → 114,10; VIP col bus 2+1+1 a 217 → 168,10 (commissione

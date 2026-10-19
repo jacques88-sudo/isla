@@ -441,8 +441,8 @@ const PACCHETTI = [
     },
     image: "castillo-san-miguel.jpg",
     sconto: 10,
-    // 49 + 49,50 + 79 = 177,50, ma si sconta solo lo stargazing (i due show
-    // sono a prezzo fisso): −7,90 → 169,60 a persona.
+    // 49 + 52 + 79 = 180, ma si sconta solo lo stargazing (i due show
+    // sono a prezzo fisso): −7,90 → 172,10 a persona.
     //
     // Il terzo era "history-music-show", e i tre show insieme facevano un
     // pacchetto che **non risparmiava niente**: tre biglietti a prezzo fisso

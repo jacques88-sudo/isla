@@ -19287,9 +19287,9 @@ Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
 
 Dal foglio TRG del 12-13 ottobre: su alcune schede il netto cambia se il cliente prende
 il transfer (proprietario). Mokkai in condivisione: adulto **35 col trasporto, 30
-senza**, bambino 25 sempre. Il Castillo invece **non ha netto né commissioni**, normale
-e VIP: è solo per i clienti (proprietario, 18 ottobre 2026), e il ticket 0972 del foglio
-resta senza netto. Fino a oggi il ticket non diceva se il transfer c'era, e il
+senza**, bambino 25 sempre. ~~Il Castillo invece non ha netto né commissioni~~:
+**sbagliato**, corretto il 19 ottobre (vedi "Castillo San Miguel: i prezzi veri" più
+sotto): la commissione c'è sullo show, non sul bus. Fino a oggi il ticket non diceva se il transfer c'era, e il
 netto non poteva saperlo. **I numeri non sono qui**: stanno su Notion ("Netti da
 inserire") e su Supabase.
 
@@ -19461,6 +19461,50 @@ scheda. La lista (`lista.js`) lo faceva già con `varianteScelta()`. Provato nel
 browser col percorso vero (lista → WhatsApp → `booking.html?richieste=1`): "2 Stunden",
 "2 heures", "2 horas", "2 ore". `CACHE_NAME` → `isla-v556`.
 
+## Castillo San Miguel: i prezzi veri, e il netto solo sullo show (19 ottobre 2026)
+
+Il proprietario, guardando il foglio TRG: il ticket **0972** (2 adulti, 136 €, netto
+104,80) è il Castillo **col bus**, e la commissione c'è **sullo show, non sul bus**. Il
+18 ottobre si era scritto (qui e su Notion) "nessun netto né commissioni": era sbagliato.
+E poi: "è sbagliato tutto dall'inizio". I prezzi della scheda erano quelli di
+CanaryVIP (1 settembre). Quelli veri, dal proprietario:
+
+| | senza bus | col bus |
+|---|---|---|
+| Normale | 52 adulto · 31 bambino · neonato gratis | 68 · 42 · 11 |
+| VIP | 63 · 37 · neonato gratis | 79 · 48 · 11 |
+
+- **Il bus costa uguale sui due biglietti**: +16 adulto, +11 bambino. Per questo basta
+  `transferPrice: { adult: 68, child: 42, baby: 11 }` sulla scheda: il VIP col bus lo
+  rifà `conVariante()` (tour.js) e `prezziAPersona()` (escursioni.js), 63 + 16 = 79.
+- **Il neonato paga solo il bus** (11 €): `priceInfant: 0` e `transferPrice.baby: 11`. È
+  la prima scheda con `baby` nel transfer; il codice c'era già e ha funzionato da solo.
+- **Le età**: `0-2`, `3-13`, `14+`. Il proprietario aveva detto "bambino da 3 a 13,
+  neonato da 0 a 3": i 3 anni stavano in due fasce, e ha confermato che il neonato è
+  fino a 3 anni non compiuti.
+- **Il VIP resta com'era scritto** (ingresso prioritario, cava, file migliori): il
+  proprietario ha detto "va bene quello che dice la scheda".
+- Il pacchetto "Tre sere a Tenerife" (`pacchetti.js`) usa il prezzo della scheda da
+  solo: ora 49 + 52 + 79 = 180, −7,90 → 172,10 a persona. Corretto solo il commento.
+
+**Il netto**: il bus va **tutto** alla compagnia, normale e VIP (proprietario). La
+commissione sullo show è il **30%** (ricavato dal foglio, 104,80 = 2 × 52 × 0,70 + 2 × 16,
+e confermato dal proprietario lo stesso giorno). Su Supabase quattro righe di `nets`
+(variante × transfer), netti a persona. **La casella "Con transfer" non spuntata vuol
+dire senza bus**: il netto viene più basso del vero (0972: 72,80 invece di 104,80) e si
+corregge da Modifica. Resta "netto mancante" solo un ticket salvato prima del 18
+ottobre, quando la casella non c'era. Preparato nella
+scratchpad, **non committato**, con l'`update` del ticket 0972 (`transfer = true`, che
+fa ricalcolare il guardiano). Provato su Postgres 16 con schema e modifiche: 0972 →
+104,80; VIP senza bus 2+1+1 a 163 → 114,10; VIP col bus 2+1+1 a 217 → 168,10 (commissione
+48,90 = 30% di 163); rilanciato due volte senza errori.
+
+Nel browser a 375 px: "Adulti (14+) €52 · Bambini (3-13) €31 · Neonati (0-2) Gratis",
+"Con il transfer €68 · €42 · €11 neonati (posto sul pullman)", col VIP €63 · €37 e
+€79 · €48 · €11. Totali: 2 adulti col bus 136 (= il ticket 0972); 2+1+1 col bus 189,
+senza 135; VIP col bus 2+1+1 217. Nessuno scroll orizzontale, nessun errore.
+`CACHE_NAME` → `isla-v557`.
+
 ### Il riquadro "Installa" torna a ogni visita (19 ottobre 2026)
 
 Il proprietario: il riquadro deve comparire **ogni volta che si apre Isla**, finché non
@@ -19480,4 +19524,4 @@ riquadro copre ancora "Aggiungi alla lista" finché non si chiude.
 
 Provato nel browser con l'iPhone simulato: prima apertura sì; altra pagina senza
 chiudere sì; dopo la ✕ no (scheda e home); dopo 31 minuti sì; dopo "Come si fa" no; chi
-aveva la chiave vecchia sì; app installata no. `CACHE_NAME` → `isla-v557`.
+aveva la chiave vecchia sì; app installata no. `CACHE_NAME` → `isla-v558`.

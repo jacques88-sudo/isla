@@ -270,17 +270,27 @@ function soloAMano() {
 }
 
 // L'avviso in basso che invita a installare, sull'iPhone (proprietario, 16
-// ottobre 2026): il bottone nel Menu non lo trova nessuno. Torna a ogni
-// visita finche' il cliente non tocca la ✕ o "Come si fa"; poi mai piu'.
-// Senza localStorage (navigazione privata) tornerebbe sempre: meglio non
-// mostrarlo affatto.
-const INSTALLA_VISTO_KEY = "isla-installa-visto";
+// ottobre 2026): il bottone nel Menu non lo trova nessuno. Torna **a ogni
+// visita** finche' Isla non e' installata (proprietario, 19 ottobre 2026;
+// prima, toccata la ✕, non tornava mai piu'). La ✕ o "Come si fa" lo
+// chiudono per il resto della visita, non a ogni pagina. La visita finisce
+// dopo 30 minuti senza aprire pagine di Isla: su Safari la scheda resta
+// aperta per giorni, la sessione del browser non basta a dirlo.
+// Senza localStorage (navigazione privata) tornerebbe a ogni pagina: meglio
+// non mostrarlo affatto.
+const INSTALLA_CHIUSO_KEY = "isla-installa-chiuso";
+const INSTALLA_VISITA_MS = 30 * 60 * 1000;
 
 function avvisoInstallaIos() {
   try {
-    if (localStorage.getItem(INSTALLA_VISTO_KEY)) return;
-    localStorage.setItem(INSTALLA_VISTO_KEY + "-prova", "1");
-    localStorage.removeItem(INSTALLA_VISTO_KEY + "-prova");
+    localStorage.removeItem("isla-installa-visto");   // la vecchia regola del "mai piu'"
+    const chiuso = Number(localStorage.getItem(INSTALLA_CHIUSO_KEY)) || 0;
+    if (Date.now() - chiuso < INSTALLA_VISITA_MS) {
+      // stessa visita: niente avviso, e la visita si allunga
+      localStorage.setItem(INSTALLA_CHIUSO_KEY, String(Date.now()));
+      return;
+    }
+    localStorage.removeItem(INSTALLA_CHIUSO_KEY);
   } catch (e) { return; }
 
   const avviso = document.createElement("div");
@@ -302,7 +312,7 @@ function avvisoInstallaIos() {
   document.addEventListener("islalang", scrivi);
 
   const via = () => {
-    try { localStorage.setItem(INSTALLA_VISTO_KEY, "1"); } catch (e) {}
+    try { localStorage.setItem(INSTALLA_CHIUSO_KEY, String(Date.now())); } catch (e) {}
     avviso.classList.remove("is-visible");
     setTimeout(() => avviso.remove(), 300);
   };

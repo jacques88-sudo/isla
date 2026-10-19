@@ -19617,3 +19617,9 @@ che non sempre leggono il WebP) e le schermate del `manifest.json`.
   (più alta delle categorie già guardate a occhio). Browser: 9 schede, elenco, home, 7
   pacchetti, 81 foto WebP, nessuna rotta. `CACHE_NAME` → `isla-v567`.
 - **Noleggi (`noleggi`)**: nessuna foto nelle schede, niente da fare.
+- **Le foto della home** (copertine `Cat-*`, riquadri `bento-*`, `About-team`) e
+  `teide-masca` dei pacchetti: 15 foto, 1,1 MB → 801 KB (−28%). Resta JPG
+  `Cat-privati.jpg` (meno del 10%). Nomi cambiati in `index.html`, `esplora-catalog.js`
+  e `pacchetti.js`. Le due più diverse (teide-masca 34,1 dB, bento-giorni-parco 34,2)
+  guardate ingrandite: identiche. Browser: home, elenco, schede, 7 pacchetti, 95 foto
+  WebP, nessuna rotta. `CACHE_NAME` → `isla-v568`.

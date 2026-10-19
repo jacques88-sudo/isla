@@ -494,7 +494,7 @@ const CATEGORIES = [
   {
     id: "mare-barche",
     name: { it: "Mare e barche", en: "Sea and boats", es: "Mar y barcos", fr: "Mer et bateaux", de: "Meer und Boote" },
-    image: "Cat-mare.jpg"
+    image: "Cat-mare.webp"
   },
   // La categoria "stelle" non c'e' piu': aveva una scheda sola, e una categoria
   // con dentro un'unica voce fa fare un giro in piu' per arrivare a una cosa.
@@ -502,7 +502,7 @@ const CATEGORIES = [
   {
     id: "teide-natura",
     name: { it: "Natura, Teide e stelle", en: "Nature, Teide and stars", es: "Naturaleza, Teide y estrellas", fr: "Nature, Teide et étoiles", de: "Natur, Teide und Sterne" },
-    image: "Cat-teide.jpg"
+    image: "Cat-teide.webp"
   },
   {
     id: "avventura-motori",
@@ -512,7 +512,7 @@ const CATEGORIES = [
   {
     id: "sport-acquatici",
     name: { it: "Sport acquatici", en: "Water sports", es: "Deportes acuáticos", fr: "Sports nautiques", de: "Wassersport" },
-    image: "Cat-sport.jpg"
+    image: "Cat-sport.webp"
   },
   {
     id: "parchi-spettacoli",

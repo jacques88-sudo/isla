@@ -3318,6 +3318,10 @@ const ESPLORA_CATALOG = [
         de: "Wie viele Buggys — der Preis gilt pro Buggy und ändert sich mit den Plätzen"
       },
       name: { it: "Buggy", en: "Buggies", es: "Buggies", fr: "Buggys", de: "Buggys" },
+      // Il transfer dei giri di King Buggy e' gratis (proprietario, 19 ottobre
+      // 2026): 0 vuol dire "compreso". Senza il campo, col transfer spuntato
+      // il totale spariva e il buggy usciva dal totale della lista.
+      transferPrice: 0,
       types: [
         { key: "due", seats: 2, name: { it: "2 posti", en: "2 seats", es: "2 plazas", fr: "2 places", de: "2 Plätze" } },
         { key: "quattro", seats: 4, name: { it: "4 posti", en: "4 seats", es: "4 plazas", fr: "4 places", de: "4 Plätze" } },

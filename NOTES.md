@@ -19678,3 +19678,35 @@ richiesta e** a risponderti su WhatsApp" (en "to handle your request and reply",
 della richiesta va anche nel database. Rifatto anche il commento sopra `req.privacy`,
 che diceva che il sito non manda niente a nessuno. Provato nel browser: le cinque lingue
 con l'hotel, la riga senza hotel, la finestra di un pacchetto. `CACHE_NAME` → `isla-v571`.
+
+## La seconda prova da cliente, e il transfer dei buggy (19 ottobre 2026)
+
+Seconda prova da cliente, diversa dalla prima: famiglia inglese su Android (2 adulti, 2
+bambini, 1 neonato) con Teide National Park (ritiro), Siam Park e un buggy nella lista,
+poi ricerca, filtri, un pacchetto, un ticket sbagliato, mappa, noleggi. Nessun errore
+JavaScript. Trovati:
+
+1. **Il buggy col transfer perdeva il prezzo** — corretto, sotto.
+2. **Siam Park: "ritiro in hotel" anche col transfer rifiutato.** Sta in `PICKUP_IN_HOTEL`
+   (regola del 24 settembre: la scheda permette il transfer → hotel), ma il transfer è
+   solo "su richiesta da Tenerife Nord / da Los Gigantes". Il messaggio dice insieme
+   "transfer: no, no" e "Punto di ritiro: in hotel". **Da chiedere al proprietario** come
+   arriva al parco chi sta al sud; forse vale anche per Loro Parque e Twin Ticket.
+3. Il conto dei mezzi si legge male: "1 2 posti × €180" (`totaleMezzi()` in
+   `escursioni.js`, `scelto.n + " " + scelto.label`), anche nel messaggio WhatsApp.
+4. La ricerca non trova le schede per famiglie con "kids", "children", "family" (0, 0,
+   1 risultato): cerca solo in titolo, descrizione, zona e categoria, non in `family`.
+5. Il Siam Park chiede "A che ora" con le fasce, ma i parchi non hanno orari: dipende
+   dal punto 2.
+
+### Il transfer dei buggy è gratis
+
+Il proprietario: "il transfer dei buggy è gratis". In `units` della scheda
+`buggy-volcano-4h` mancava `transferPrice`, che **assente** vuol dire "non sappiamo quanto
+costa": col transfer spuntato il totale spariva, la lista scriveva "da €180/buggy" anche
+col buggy da 4 posti e il buggy usciva dal totale (284 € invece di 524 € nella prova).
+Ora `transferPrice: 0`, "compreso". È l'unica scheda a mezzi che aveva il problema
+(Mustang e quad il transfer non ce l'hanno, la moto d'acqua aveva già 0). Provato:
+1×4 posti 240 € con e senza transfer, 2×2 + 1×6 col transfer 690 €, Montagna su strada
+180 € (lì la casella non c'è), lista 930 €, messaggio WhatsApp coi totali.
+`CACHE_NAME` → `isla-v572`.

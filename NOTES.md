@@ -19792,7 +19792,7 @@ pagine dalla cache). Trovati:
 3. **Le schede solo per adulti lasciano mettere i bambini**: Scandal (16+) accetta "2 adulti
    e 1 bambino", il totale sparisce e la richiesta parte. Stessa cosa possibile su Utopia
    (18+), cantine (18+), Talaria (14+), surf (13+). **Da decidere col proprietario.**
-4. Minori: nel pacchetto il conto dei mezzi è ancora "Mustang: 1 × Con 1 o 2 persone €250"
+4. **Corretti (#518)** — minori: nel pacchetto il conto dei mezzi era ancora "Mustang: 1 × Con 1 o 2 persone €250"
    (non il formato del #512); la nota del pacchetto parla di "buggy o moto d'acqua" anche
    quando il mezzo è la Mustang. Il noleggio è un link diretto a WhatsApp ("Vorrei
    noleggiare: Fiat Panda. Dal … al …"): non passa dalla lista né dal database, è voluto.
@@ -19834,3 +19834,13 @@ charter era l'ultima voce di `PICKUP_IN_HOTEL`, senza virgola: tolta col suo com
 Provato nel browser: tutte e nove senza transfer (niente hotel, niente punto) e col
 transfer (hotel, "il tuo hotel"); Royal Delfin, ritiro compreso senza casella, come prima;
 messaggio WhatsApp senza e col transfer. `CACHE_NAME` → `isla-v579`.
+
+### Il pacchetto: conto dei mezzi e nota (19 ottobre 2026)
+
+Il conto dei mezzi del pacchetto (`pacchettoContoMezzi()` in `pacchetti.js`) ora si legge
+come quello delle schede, col prezzo fra parentesi: "Mustang: Con 1 o 2 persone × 1
+(€250) · Buggy: 2 posti × 1 (€180)", nella finestra, nella lista e nel messaggio. Prima era
+"Mustang 1 × Con 1 o 2 persone €250". La nota `pack.unitNote` non dice più "si paga a
+buggy o a moto d'acqua" (falso sul pacchetto con la Mustang) ma "un mezzo che si paga
+intero, non a testa", nelle cinque lingue. Provato in italiano e in tedesco sul pacchetto
+"Al volante, in due". `CACHE_NAME` → `isla-v580`.

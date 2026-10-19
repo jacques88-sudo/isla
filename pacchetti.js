@@ -410,7 +410,7 @@ const PACCHETTI = [
       fr: "Ciel et mer",
       de: "Himmel und Meer"
     },
-    image: "luxury-cruiser-2.jpg",
+    image: "luxury-cruiser-2.webp",
     sconto: 10,
     // 79 + 55 + 51 = 185, ma il flamenco non si sconta: −13,40 → 171,60 a persona
     voci: [
@@ -544,7 +544,7 @@ const PACCHETTI = [
       fr: "Mer, ciel et une soirée",
       de: "Meer, Himmel und ein Abend"
     },
-    image: "luxury-catamaran-3.jpg",
+    image: "luxury-catamaran-3.webp",
     sconto: 10,
     tema: "per-due",
     voci: [
@@ -613,7 +613,7 @@ const PACCHETTI = [
       fr: "La mer pour les enfants",
       de: "Das Meer für Kinder"
     },
-    image: "submarine-safari.jpg",
+    image: "submarine-safari.webp",
     sconto: 10,
     famiglia: true,
     voci: [
@@ -800,7 +800,7 @@ const PACCHETTI = [
       fr: "Trois jours en famille",
       de: "Drei Tage mit der Familie"
     },
-    image: "peter-pan.jpg",
+    image: "peter-pan.webp",
     giorni: 3,
     sconto: 10,
     famiglia: true,
@@ -831,7 +831,7 @@ const PACCHETTI = [
       fr: "Cinq jours à Tenerife",
       de: "Fünf Tage auf Teneriffa"
     },
-    image: "luxury-cruiser-3.jpg",
+    image: "luxury-cruiser-3.webp",
     giorni: 5,
     sconto: 12,
     // I tre di "giorni-3" piu' due. 129 + 55 + 50 = 234. Santa Cruz e' in
@@ -862,7 +862,7 @@ const PACCHETTI = [
       fr: "Cinq jours en famille",
       de: "Fünf Tage mit der Familie"
     },
-    image: "submarine-safari.jpg",
+    image: "submarine-safari.webp",
     giorni: 5,
     sconto: 12,
     famiglia: true,
@@ -931,7 +931,7 @@ const PACCHETTI = [
       fr: "Sept jours en famille",
       de: "Sieben Tage mit der Familie"
     },
-    image: "whale-dolphin-3h.jpg",
+    image: "whale-dolphin-3h.webp",
     giorni: 7,
     sconto: 15,
     famiglia: true,

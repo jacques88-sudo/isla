@@ -773,8 +773,8 @@ const ESPLORA_CATALOG = [
       fr: "Un grand catamaran qui part de Puerto Colón, avec trois sorties au choix : deux heures, trois heures ou la grande jusqu'aux falaises de Los Gigantes et à la baie de Masca. Baleines et dauphins, arrêt baignade et boissons à volonté à bord. L'équipage parle plusieurs langues et raconte ce que l'on voit, et le bateau suit les règles pour approcher les animaux sans les déranger.",
       de: "Ein großer Katamaran ab Puerto Colón, mit drei Touren zur Wahl: zwei Stunden, drei Stunden oder die lange bis zu den Klippen von Los Gigantes und der Bucht von Masca. Wale und Delfine, Badestopp und unbegrenzt Getränke an Bord. Die Crew spricht mehrere Sprachen und erklärt, was man sieht, und das Boot hält sich an die Regeln, um sich den Tieren zu nähern, ohne sie zu stören."
     },
-    image: "catamaran-gigantes-masca.jpg",
-    gallery: ["freebird-2.jpg", "freebird-3.jpg", "freebird-4.jpg"],
+    image: "catamaran-gigantes-masca.webp",
+    gallery: ["freebird-2.webp", "freebird-3.jpg", "freebird-4.webp"],
     published: true
   },
   {
@@ -918,8 +918,8 @@ const ESPLORA_CATALOG = [
       }
     ],
     family: true,
-    image: "royal-delfin.jpg",
-    gallery: ["royal-delfin-2.jpg", "royal-delfin-3.jpg", "royal-delfin-4.jpg"],
+    image: "royal-delfin.webp",
+    gallery: ["royal-delfin-2.webp", "royal-delfin-3.webp", "royal-delfin-4.webp"],
     desc: {
       it: "Un catamarano grande, fino a 200 persone, con finestre panoramiche sotto la linea di galleggiamento: balene e delfini si guardano anche da sotto, non solo dal ponte. Si sceglie fra due ore, tre ore o il giro lungo fino alla baia di Masca. La barca segue la carta per la tutela dei cetacei e le guide parlano più lingue.",
       en: "A big catamaran, up to 200 people, with panoramic windows below the waterline: you watch whales and dolphins from underneath as well as from the deck. Choose between two hours, three hours or the long trip out to Masca bay. The boat follows the whale conservation charter and the guides speak several languages.",
@@ -973,8 +973,8 @@ const ESPLORA_CATALOG = [
       fr: "Trois heures à la voile depuis Puerto Colón, avec 11 passagers au maximum à bord. Observation des baleines et des dauphins, arrêt snorkeling avec matériel compris, en-cas et boissons à bord.",
       de: "Drei Stunden unter Segeln ab Puerto Colón, mit höchstens 11 Gästen an Bord. Wal- und Delfinbeobachtung, ein Schnorchelstopp mit Ausrüstung inklusive, Snacks und Getränke an Bord."
     },
-    image: "whale-dolphin-3h.jpg",
-    gallery: ["whale-dolphin-3h-6.jpg", "whale-dolphin-3h-7.jpg", "whale-dolphin-3h-2.jpg", "whale-dolphin-3h-3.jpg", "whale-dolphin-3h-4.jpg", "whale-dolphin-3h-5.jpg", "whale-dolphin-3h-8.jpg"],
+    image: "whale-dolphin-3h.webp",
+    gallery: ["whale-dolphin-3h-6.webp", "whale-dolphin-3h-7.webp", "whale-dolphin-3h-2.webp", "whale-dolphin-3h-3.webp", "whale-dolphin-3h-4.webp", "whale-dolphin-3h-5.webp", "whale-dolphin-3h-8.webp"],
     published: true
   },
   {
@@ -1040,8 +1040,8 @@ const ESPLORA_CATALOG = [
         de: "Das Schiff fasst bis zu 60 Personen: Es gibt einen schattigen Bereich mit einem großen Tisch, das Oberdeck für die Sonne und zwei Toiletten."
       }
     ],
-    image: "peter-pan.jpg",
-    gallery: ["peter-pan-2.jpg", "peter-pan-3.jpg"],
+    image: "peter-pan.webp",
+    gallery: ["peter-pan-2.webp", "peter-pan-3.webp"],
     published: true
   },
   {
@@ -1150,8 +1150,8 @@ const ESPLORA_CATALOG = [
         de: "Bringen Sie für die Drei-Stunden-Tour Badesachen und Sonnencreme mit: Der Badestopp ist das Beste daran."
       }
     ],
-    image: "flipper-one.jpg",
-    gallery: ["flipper-one-2.jpg", "flipper-one-3.jpg", "flipper-one-4.jpg"],
+    image: "flipper-one.webp",
+    gallery: ["flipper-one-2.webp", "flipper-one-3.webp", "flipper-one-4.webp"],
     // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
     ritrovo: "Puerto de Los Gigantes",
     published: true
@@ -1237,8 +1237,8 @@ const ESPLORA_CATALOG = [
       fr: "Le sous-marin jaune descend entre 30 et 60 mètres, et on regarde les fonds marins en restant au sec. Chaque siège a son hublot et un écran qui indique la profondeur et la température extérieure. Poissons et raies passent devant, et parfois aussi des dauphins. Cela dure environ une heure.",
       de: "Das gelbe U-Boot taucht zwischen 30 und 60 Meter tief, und man sieht den Meeresgrund, ohne nass zu werden. Jeder Sitz hat sein eigenes Bullauge und einen Bildschirm, der die Tiefe und die Wassertemperatur anzeigt. Fische und Rochen ziehen vorbei, und ab und zu auch Delfine. Es dauert etwa eine Stunde."
     },
-    image: "submarine-safari.jpg",
-    gallery: ["submarine-safari-2.jpg", "submarine-safari-3.jpg"],
+    image: "submarine-safari.webp",
+    gallery: ["submarine-safari-2.webp", "submarine-safari-3.webp"],
     published: true
   },
   {
@@ -1353,7 +1353,7 @@ const ESPLORA_CATALOG = [
       fr: "Quatre heures de pêche au large de Puerto Colón, à bord du No Limits. On cherche le thon, le marlin et la dorade coryphène, et quiconque veut essayer a une canne, débutants compris : l'équipage connaît ces eaux depuis plus de vingt ans. Ceux qui ne pêchent pas ont des transats et un espace à l'ombre. On choisit entre la sortie partagée et le bateau rien que pour vous.",
       de: "Vier Stunden Hochseeangeln vor Puerto Colón, an Bord der No Limits. Es geht auf Thunfisch, Marlin und Goldmakrele, und wer es versuchen will, bekommt eine Rute, auch Anfänger: Die Crew kennt diese Gewässer seit über zwanzig Jahren. Wer nicht angelt, hat Liegen und einen Schattenbereich. Zur Wahl stehen die geteilte Fahrt oder das Boot ganz für Sie."
     },
-    image: "pesca-altura.jpg",
+    image: "pesca-altura.webp",
     // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
     ritrovo: "Puerto Colón",
     published: true
@@ -1395,8 +1395,8 @@ const ESPLORA_CATALOG = [
       fr: "Un catamaran haut de gamme avec 22 passagers au maximum à bord : ambiance détendue, observation des dauphins et des baleines, et des espaces de détente confortables.",
       de: "Ein gehobener Katamaran mit höchstens 22 Gästen an Bord: entspannte Atmosphäre, Delfin- und Walbeobachtung und bequeme Liegebereiche."
     },
-    image: "luxury-catamaran.jpg",
-    gallery: ["luxury-catamaran-2.jpg", "luxury-catamaran-3.jpg", "luxury-catamaran-4.jpg", "luxury-catamaran-5.jpg"],
+    image: "luxury-catamaran.webp",
+    gallery: ["luxury-catamaran-2.webp", "luxury-catamaran-3.webp", "luxury-catamaran-4.webp", "luxury-catamaran-5.webp"],
     published: true
   },
   {
@@ -1514,8 +1514,8 @@ const ESPLORA_CATALOG = [
       fr: "Un catamaran qui accueille jusqu'à 23 personnes : à Tenerife, presque aucun bateau privé n'en prend plus de 12. On part de Puerto Colón, on cherche dauphins et baleines et on s'arrête dans les criques pour se baigner et faire du snorkeling, avec paella au poulet à bord. On choisit entre la sortie partagée de trois heures et le bateau rien que pour vous, trois heures ou six.",
       de: "Ein Katamaran für bis zu 23 Personen: Kaum ein Privatboot auf Teneriffa nimmt mehr als 12. Sie legen in Puerto Colón ab, suchen Delfine und Wale und halten in den Buchten zum Baden und Schnorcheln, mit Hähnchen-Paella an Bord. Zur Wahl stehen die geteilte Drei-Stunden-Fahrt oder das Boot ganz für Sie, drei oder sechs Stunden."
     },
-    image: "small-group-catamaran.jpg",
-    gallery: ["small-group-catamaran-2.jpg", "small-group-catamaran-3.jpg", "small-group-catamaran-4.jpg"],
+    image: "small-group-catamaran.webp",
+    gallery: ["small-group-catamaran-2.webp", "small-group-catamaran-3.webp", "small-group-catamaran-4.webp"],
     published: true
   },
   {
@@ -1637,8 +1637,8 @@ const ESPLORA_CATALOG = [
       fr: "Trois heures de boat party au départ de Puerto Colón, avec DJ en live, une sono de 15 000 watts et de la house, du reggaeton, du hip-hop et de la drum and bass. On commence par un verre au Black Pearl et on y finit avec l'after. Réservée aux plus de 18 ans. On choisit son billet selon ce qu'on compte boire : quatre boissons, ou l'open bar pendant les trois heures.",
       de: "Drei Stunden Bootsparty ab Puerto Colón, mit Live-DJs, einer 15.000-Watt-Anlage und House, Reggaeton, Hip-Hop und Drum and Bass. Es beginnt mit einem Drink im Black Pearl und endet dort mit der Afterparty. Nur ab 18. Das Ticket wählt man danach, wie viel man trinken will: vier Getränke oder Open Bar die ganzen drei Stunden."
     },
-    image: "party-boat.jpg",
-    gallery: ["party-boat-2.jpg"],
+    image: "party-boat.webp",
+    gallery: ["party-boat-2.webp"],
     // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
     ritrovo: "Black Pearl Bar, Puerto Colón",
     published: true
@@ -1743,8 +1743,8 @@ const ESPLORA_CATALOG = [
       fr: "Une goélette orientale de 26 mètres, tout en teck, construite pour un cheikh : c'est le bateau le plus insolite qui part de Puerto Colón. Cinq heures, dont une demi-heure aux côtés des dauphins et des baleines, puis les falaises de Los Gigantes et une baignade dans la baie de Masca, avec le déjeuner servi à bord. Sur deux ponts, il y a de la place pour 135 personnes et beaucoup d'ombre. Elle arbore le pavillon bleu donné aux bateaux qui approchent les cétacés dans les règles.",
       de: "Ein 26 Meter langer orientalischer Schoner, ganz aus Teakholz, gebaut für einen Scheich: das ungewöhnlichste Boot ab Puerto Colón. Fünf Stunden, davon eine halbe Stunde bei Delfinen und Walen, dann die Klippen von Los Gigantes und Baden in der Bucht von Masca, mit Mittagessen an Bord. Auf zwei Decks ist Platz für 135 Personen und viel Schatten. Er führt die blaue Flagge, die Booten verliehen wird, die sich den Walen nach den Regeln nähern."
     },
-    image: "shogun.jpg",
-    gallery: ["shogun-2.jpg", "shogun-3.jpg"],
+    image: "shogun.webp",
+    gallery: ["shogun-2.webp", "shogun-3.webp"],
     published: true
   },
   {
@@ -1845,8 +1845,8 @@ const ESPLORA_CATALOG = [
       fr: "Un semi-rigide de dix-huit mètres qui longe la côte sud-ouest : des espaces pour bronzer, de l'ombre où se réfugier et une plateforme pour entrer dans l'eau. Matériel de snorkeling à bord, nourriture et boissons comprises, et un équipage qui parle plusieurs langues et raconte ce que l'on voit. On choisit entre la sortie partagée de trois heures et le bateau rien que pour vous.",
       de: "Ein achtzehn Meter langes Festrumpfschlauchboot, das die Südwestküste entlangfährt: Bereiche zum Sonnen, Schatten zum Zurückziehen und eine Plattform, um ins Wasser zu gehen. Schnorchelausrüstung an Bord, Essen und Getränke inklusive, und eine Crew, die mehrere Sprachen spricht und erklärt, was man sieht. Zur Wahl stehen die geteilte Drei-Stunden-Fahrt oder das Boot ganz für Sie."
     },
-    image: "opera-60.jpg",
-    gallery: ["opera-60-2.jpg", "opera-60-3.jpg"],
+    image: "opera-60.webp",
+    gallery: ["opera-60-2.webp", "opera-60-3.webp"],
     published: true
   },
   {
@@ -2003,8 +2003,8 @@ const ESPLORA_CATALOG = [
       fr: "Trois heures le long de la côte sud de Tenerife sur un bateau à deux ponts, sans se presser. On longe des falaises et des grottes invisibles depuis la route, on cherche dauphins et baleines, et à mi-parcours on s'arrête dans une baie abritée pour se baigner, avec un en-cas et des boissons à bord. L'équipage explique tout et répond aux questions en espagnol, anglais et italien. Si besoin, nous passons vous prendre à votre hôtel dans le sud de l'île.",
       de: "Drei Stunden entlang der Südküste Teneriffas auf einem Boot mit zwei Decks, ganz ohne Eile. Sie folgen Klippen und Höhlen, die man von der Straße aus nicht sieht, suchen Delfine und Wale und halten auf halber Strecke in einer geschützten Bucht zum Baden, mit Snack und Getränken an Bord. Die Crew erklärt alles und beantwortet Fragen auf Spanisch, Englisch und Italienisch. Wenn nötig, holen wir Sie im Süden der Insel am Hotel ab."
     },
-    image: "luxury-cruiser.jpg",
-    gallery: ["luxury-cruiser-2.jpg", "luxury-cruiser-3.jpg", "luxury-cruiser-4.jpg"],
+    image: "luxury-cruiser.webp",
+    gallery: ["luxury-cruiser-2.webp", "luxury-cruiser-3.webp", "luxury-cruiser-4.webp"],
     published: true
   },
   {
@@ -2093,7 +2093,7 @@ const ESPLORA_CATALOG = [
       de: "Drei Stunden an Bord der Skyline Cruiser, einer knapp 13 Meter langen Fairline-Motorjacht, bis zu 12 Personen. Es geht aufs offene Meer auf der Suche nach Delfinen und Walen, dann ein Badestopp mit Schnorcheln in einer geschützten Bucht und die Rückfahrt entlang der Küste, vorbei an den Hippie-Höhlen und Vulkanklippen. An Bord: Kapitän und Crew, Snacks und Getränke inklusive."
     },
     image: "skyline-cruiser.jpg",
-    gallery: ["skyline-cruiser-2.jpg", "skyline-cruiser-3.jpg", "skyline-cruiser-4.jpg"],
+    gallery: ["skyline-cruiser-2.webp", "skyline-cruiser-3.webp", "skyline-cruiser-4.webp"],
     published: true
   },
   {
@@ -2181,8 +2181,8 @@ const ESPLORA_CATALOG = [
         de: "Bei rauer See oder schlechtem Wetter organisiert der Anbieter eine Alternative."
       }
     ],
-    image: "ragnarok.jpg",
-    gallery: ["ragnarok-2.jpg", "ragnarok-3.jpg", "ragnarok-4.jpg", "ragnarok-5.jpg"],
+    image: "ragnarok.webp",
+    gallery: ["ragnarok-2.webp", "ragnarok-3.webp", "ragnarok-4.webp", "ragnarok-5.webp"],
     // dove ci si presenta: era gia' scritto nei consigli (15 ottobre 2026)
     ritrovo: { it: "Porto di Los Cristianos, Zona Excursiones A", en: "Los Cristianos harbour, Zona Excursiones A", es: "Puerto de Los Cristianos, Zona Excursiones A", fr: "Port de Los Cristianos, Zona Excursiones A", de: "Hafen Los Cristianos, Zona Excursiones A" },
     published: true
@@ -7727,7 +7727,7 @@ const ESPLORA_CATALOG = [
       fr: "Le même voilier pour l'observation des baleines et des dauphins, réservé à votre seul groupe, avec un arrêt snorkeling. Le prix est pour tout le bateau, pas par personne.",
       de: "Dasselbe Segelboot zur Wal- und Delfinbeobachtung, nur für Ihre Gruppe, mit einem Schnorchelstopp. Der Preis gilt für das ganze Boot, nicht pro Person."
     },
-    image: "whale-dolphin-3h.jpg",
+    image: "whale-dolphin-3h.webp",
     published: true
   },
   {
@@ -7753,7 +7753,7 @@ const ESPLORA_CATALOG = [
       fr: "Le même catamaran haut de gamme, réservé à votre seul groupe, avec espaces de détente et observation des dauphins et des baleines. Le prix est pour tout le bateau, pas par personne.",
       de: "Derselbe gehobene Katamaran, nur für Ihre Gruppe, mit Lounge-Bereichen und Delfin- und Walbeobachtung. Der Preis gilt für das ganze Boot, nicht pro Person."
     },
-    image: "luxury-catamaran.jpg",
+    image: "luxury-catamaran.webp",
     published: true
   },
   {
@@ -7798,7 +7798,7 @@ const ESPLORA_CATALOG = [
       fr: "Le même catamaran qui accueille jusqu'à 23 personnes, rien que pour vous, pendant trois ou six heures le long de la côte avec arrêt baignade, snorkeling et paella au poulet à bord. Le prix est pour tout le bateau, pas par personne.",
       de: "Derselbe Katamaran für bis zu 23 Personen, ganz für Sie, drei oder sechs Stunden entlang der Küste mit Badestopp, Schnorcheln und Hähnchen-Paella an Bord. Der Preis gilt für das ganze Boot, nicht pro Person."
     },
-    image: "small-group-catamaran.jpg",
+    image: "small-group-catamaran.webp",
     published: true
   },
   {
@@ -7823,7 +7823,7 @@ const ESPLORA_CATALOG = [
       fr: "Le même semi-rigide de dix-huit mètres, réservé à votre groupe, de trois à neuf heures le long de la côte sud-ouest, avec snorkeling, nourriture et boissons à bord. Le prix est pour tout le bateau, pas par personne.",
       de: "Dasselbe achtzehn Meter lange Festrumpfschlauchboot, nur für Ihre Gruppe, drei bis neun Stunden entlang der Südwestküste, mit Schnorcheln, Essen und Getränken an Bord. Der Preis gilt für das ganze Boot, nicht pro Person."
     },
-    image: "opera-60.jpg",
+    image: "opera-60.webp",
     published: true
   },
   {
@@ -7887,8 +7887,8 @@ const ESPLORA_CATALOG = [
       fr: "Le même bateau à deux ponts, réservé à votre seul groupe pendant trois heures sur la côte sud, avec arrêt baignade, en-cas et boissons à bord. Le prix est pour tout le bateau, pas par personne.",
       de: "Dasselbe Boot mit zwei Decks, nur für Ihre Gruppe, drei Stunden an der Südküste, mit Badestopp, Snack und Getränken an Bord. Der Preis gilt für das ganze Boot, nicht pro Person."
     },
-    image: "luxury-cruiser.jpg",
-    gallery: ["luxury-cruiser-2.jpg", "luxury-cruiser-3.jpg", "luxury-cruiser-4.jpg"],
+    image: "luxury-cruiser.webp",
+    gallery: ["luxury-cruiser-2.webp", "luxury-cruiser-3.webp", "luxury-cruiser-4.webp"],
     published: true
   },
 

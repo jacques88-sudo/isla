@@ -19560,3 +19560,28 @@ cielo: nessuna differenza. Nel browser nessuna immagine rotta. `CACHE_NAME` → 
 (19,7 → 13,1 MB, misurato), ma cambia il nome di 136 file e va cambiato ovunque li si
 nomina (catalogo, `pacchetti.js`, `mappa-foto.js`, le pagine HTML, il service worker).
 Le anteprime per WhatsApp (`og:image`, `anteprima.jpg`) devono restare JPG.
+
+## Le foto in WebP, una categoria alla volta (19 ottobre 2026)
+
+Il proprietario: "fai il WebP una categoria alla volta". WebP è il formato d'immagine
+di Google per il web: a occhio la stessa foto, un terzo più leggera. Lo leggono Safari da
+iOS 14, Chrome, Android, Firefox; la foto grande della home era già WebP.
+
+**Come si fa** (gli script stanno nella scratchpad della sessione, non nel repository):
+per ogni foto della categoria (`image` e `gallery` delle schede con quella `category`)
+si salva un `.webp` a **qualità 78** (`method=6`, profilo colore tenuto), **solo se pesa
+almeno il 10% in meno** (se no resta la JPG). La JPG si toglie con `git rm` e il nome si
+cambia **in tutti i file del sito** che lo nominano (catalogo, `pacchetti.js`, pagine):
+anche i charter e i pacchetti che usano la stessa foto. Poi un controllo che ogni nome di
+foto scritto nel sito esista in `assets/` (`controlla.js` guarda solo la foto principale,
+non la galleria) e il browser su ogni scheda della categoria, galleria compresa, l'elenco,
+la home e tutti i pacchetti.
+
+**Restano JPG per scelta**: `anteprima.jpg` (l'anteprima dei link su WhatsApp e Facebook,
+che non sempre leggono il WebP) e le schermate del `manifest.json`.
+
+- **Barche (`mare-barche`)**: 55 foto, 8,6 → 5,5 MB (−37%). Restano JPG `freebird-3.jpg`
+  e `skyline-cruiser.jpg` (si risparmiava meno del 10%). Nomi cambiati in
+  `esplora-catalog.js` e `pacchetti.js`. Confrontate a occhio, ingrandite: identiche.
+  Browser: 15 schede, elenco, home, 7 pacchetti, 124 foto WebP, nessuna rotta.
+  `CACHE_NAME` → `isla-v561`.

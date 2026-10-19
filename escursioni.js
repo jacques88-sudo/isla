@@ -293,9 +293,8 @@ function prezziAPersona(tour, req) {
   // Il posto sul pullman per i neonati, quando il fornitore lo fa pagare. A
   // differenza di adulti e bambini `tp.baby` e' gia' il prezzo **completo** del
   // neonato col transfer (senza transfer quel posto non esiste), quindi
-  // sostituisce `priceInfant` invece di sommarcisi. Oggi nessuna scheda ce
-  // l'ha: sta qui perche' il campo esiste nel vocabolario e il giorno che
-  // arriva deve tornare da solo.
+  // sostituisce `priceInfant` invece di sommarcisi. La prima scheda che ce
+  // l'ha e' Castillo San Miguel (11 €, ottobre 2026).
   const neonatoColTransfer = tp => (tp && tp.baby !== undefined) ? tp.baby : undefined;
   // Il secondo transfer, una seconda zona di partenza: stessa logica, listino
   // diverso. I due checkbox si escludono a vicenda nella finestra, quindi qui

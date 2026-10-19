@@ -6081,9 +6081,13 @@ const ESPLORA_CATALOG = [
     duration: { it: "2 ore e 30", en: "2.5 hours", es: "2 horas y media", fr: "2 heures et demie", de: "2,5 Stunden" },
     zoneGroups: ["los-cristianos"],
     durationGroups: ["mezza"],
-    priceFrom: 49.50,
-    priceAdult: 49.50,
-    priceChild: 29,
+    priceFrom: 52,
+    priceAdult: 52,
+    priceChild: 31,
+    // Il neonato non paga lo spettacolo: paga solo il posto sul bus (11 €,
+    // `transferPrice.baby`). Proprietario, 19 ottobre 2026.
+    priceInfant: 0,
+    ages: { adult: "14+", child: "3-13", infant: "0-2" },
     family: true,
     days: ["mar", "gio", "sab"],
     times: ["19:00"],
@@ -6103,8 +6107,8 @@ const ESPLORA_CATALOG = [
       choices: [
         {
           label: { it: "Ingresso normale", en: "Standard entry", es: "Entrada normal", fr: "Entrée standard", de: "Standard-Eintritt" },
-          priceAdult: 49.50,
-          priceChild: 29,
+          priceAdult: 52,
+          priceChild: 31,
           desc: {
             it: "Spettacolo, cena di tre portate e bevande incluse.",
             en: "Show, three-course dinner and drinks included.",
@@ -6115,8 +6119,8 @@ const ESPLORA_CATALOG = [
         },
         {
           label: { it: "Ingresso VIP", en: "VIP entry", es: "Entrada VIP", fr: "Entrée VIP", de: "VIP-Eintritt" },
-          priceAdult: 59.50,
-          priceChild: 35,
+          priceAdult: 63,
+          priceChild: 37,
           desc: {
             it: "Tutto quello dell'ingresso normale, più ingresso prioritario, un bicchiere di cava di benvenuto e posti nelle file migliori.",
             en: "Everything in the standard entry, plus priority entry, a glass of welcome cava and seats in the best rows.",
@@ -6134,7 +6138,9 @@ const ESPLORA_CATALOG = [
       fr: "Prise en charge à votre hôtel dans le sud de Tenerife, en supplément : il suffit d'indiquer l'hôtel dans la demande.",
       de: "Abholung an Ihrem Hotel im Süden Teneriffas, gegen Aufpreis: einfach das Hotel in der Anfrage angeben."
     },
-    transferPrice: { adult: 64.50, child: 39 },
+    // Col bus 68 / 42 / 11 (VIP 79 / 48 / 11): +16 adulto e +11 bambino su
+    // tutti e due i biglietti, e il VIP lo rifa' conVariante() in tour.js.
+    transferPrice: { adult: 68, child: 42, baby: 11 },
     desc: {
       it: "Serata medievale al castello: cavalieri, cavalli e torneo, con cena servita durante lo spettacolo.",
       en: "A medieval night at the castle: knights, horses and a tournament, with dinner served during the show.",

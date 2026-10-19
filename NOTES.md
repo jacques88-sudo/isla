@@ -19525,3 +19525,15 @@ riquadro copre ancora "Aggiungi alla lista" finché non si chiude.
 Provato nel browser con l'iPhone simulato: prima apertura sì; altra pagina senza
 chiudere sì; dopo la ✕ no (scheda e home); dopo 31 minuti sì; dopo "Come si fa" no; chi
 aveva la chiave vecchia sì; app installata no. `CACHE_NAME` → `isla-v558`.
+
+### Il tedesco dà del Sie anche nel riquadro "Installa" (19 ottobre 2026)
+
+Il sito in tedesco dà del **Sie** (il nostro "Lei") ovunque. Gli unici testi col **du**
+(il "tu") erano quelli del riquadro per installare l'app. Il proprietario: "mettili col
+Sie". Cambiati `install.ios.title` ("Isla bei Ihren Apps"), `install.ios.share`
+("Falls Sie sie nicht sehen…"), `install.hint.title` ("Isla auf Ihrem iPhone") e
+`install.hint.text` ("Wenn Sie möchten, können Sie…"). Anche il pulsante
+`install.hint.how` era col du ("Zeig mir wie", "mostrami"): ora è "Wie geht das?" ("come
+si fa?"), che non dà né del tu né del Lei. Controllati tutti i testi `de:` di tutti i
+file: nessun du rimasto. Il francese dà già del "vous" ovunque. Provato nel browser con
+un iPhone simulato in tedesco: riquadro e istruzioni. `CACHE_NAME` → `isla-v559`.

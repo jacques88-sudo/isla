@@ -20005,3 +20005,40 @@ codice cambiato.**
   (I-AV-…) in "Chi siamo" dei termini e "Chi è il titolare" della privacy, nelle cinque
   lingue (li chiede la LSSI). Piccola cosa: `faq.a2` dice "almeno 24 ore prima della
   **data** dell'escursione"; dal #522 le 24 ore si contano dall'ora di partenza.
+
+## 19 ottobre 2026 — Compagnie nuove dai fogli dei venditori del 14-18 ottobre
+
+Il proprietario ha mandato le foto dei fogli di carta di Karien, Agustin, Fab, Francy e
+Joao. Ricavati i netti ticket per ticket (totale − commissione) e confrontati con la
+tabella Notion "Netti da inserire". **I numeri non sono qui**: stanno su Notion e
+nell'SQL preparato nella scratchpad, non committato. Nomi aggiunti ai `nomi`, con le
+risposte del proprietario:
+
+- **Tenerife Stars** ("TNF Stars" sul ticket) fa il **gruppo grande** del Teide Stars:
+  nei `nomi` della scheda e dentro la variante, come Andromeda sul gruppo piccolo;
+- **Top Buggy**: compagnia di buggy (il ticket era un 4 posti);
+- **Ace**: compagnia di jet ski. Il netto resta da chiarire (doppia o due singole);
+- **Roberto Paragliding**: "è la stessa attività" del Paragliding;
+- **Rydhere** e **Sol Mobility** sul Noleggio scooter elettrico, accanto a MRB (la
+  commissione è l'acconto, come tutti i noleggi). "Rydhere" è letto da una scrittura a
+  mano: da ricontrollare sul prossimo ticket;
+- **AJ Fly** sul Parascending, **Big Fish** sulle Immersioni (il "Try dive" è il
+  battesimo), **Roca** sul Noleggio auto;
+- **Maxicat**: compagnia nuova, la scheda la aggiunge il proprietario dopo. Il netto sta
+  solo su Notion finché la scheda non c'è.
+
+Attenzione a "Ace": `compagniaNelTesto()` cerca il nome dentro il testo, e "ace" sta
+anche dentro parole come "place". Su un ticket di jet ski senza altra compagnia scritta
+potrebbe sceglierla da sola; il venditore la vede nel menu e la cambia.
+
+Restano domande aperte al proprietario (Aqualand 15% o 20%, Freebird 4 ore e mezza,
+bambino di Teide National Park e funivia, Kalima Kat privata con 18 persone, link di
+pagamento card o cash, Jungle Park e Sottomarino sempre card): segnate su Notion.
+
+Provato: `compagniaNelTesto()` in Node trova ogni nome nuovo nel testo del foglio
+("TNF STARS", "Aj Fly Parascending", "Roca auto class c"…), e scegliere Tenerife Stars
+porta alla variante gruppo grande. Otto pagine del cliente a 375 px senza errori e
+senza scroll, nessun nome visibile al cliente. SQL provato su Postgres 16 con schema e
+modifiche: i ticket dei fogli prendono il netto scritto sulla carta, uno con un netto
+già fissato non si tocca, lanciato due volte non fa danni, il guardiano resta acceso.
+`CACHE_NAME` → `isla-v587`.

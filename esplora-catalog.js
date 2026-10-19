@@ -2954,7 +2954,9 @@ const ESPLORA_CATALOG = [
     // venditori la scrivono sul ticket (proprietario, 8 ottobre 2026).
     // "Ben Stargazing": una piccola compagnia in inglese, da trattare come
     // Andromeda (proprietario, 17 ottobre 2026): fa il gruppo piccolo.
-    nomi: ["Andromeda", "Ben Stargazing"],
+    // Tenerife Stars ("TNF Stars" sul ticket) fa il gruppo grande
+    // (proprietario, 19 ottobre 2026).
+    nomi: ["Andromeda", "Ben Stargazing", "Tenerife Stars", "TNF Stars"],
     // Era la sola scheda della categoria "stelle", che infatti non c'e' piu'.
     category: "teide-natura",
     // Tutte e due le serate salgono nel Parco Nazionale: qui la riga non e'
@@ -2989,6 +2991,8 @@ const ESPLORA_CATALOG = [
             fr: "Grand groupe (anglais, espagnol, allemand, français)",
             de: "Große Gruppe (Englisch, Spanisch, Deutsch, Französisch)"
           },
+          // Tenerife Stars fa questa (proprietario, 19 ottobre 2026).
+          nomi: ["Tenerife Stars", "TNF Stars"],
           priceAdult: 75,
           priceChild: 65,
           duration: { it: "6-8 ore", en: "6 to 8 hours", es: "6-8 horas", fr: "De 6 à 8 heures", de: "6 bis 8 Stunden" },
@@ -3320,7 +3324,8 @@ const ESPLORA_CATALOG = [
     // Le due compagnie che portano questi giri, come i venditori le scrivono
     // sul ticket. Tutte e due sulla scheda e non su una variante: Offroad e
     // Tramonto li fanno entrambe, e il nome da solo non dice quale giro e'.
-    nomi: ["King Buggy", "Ultimate Buggies", "Ultimate Buggy"],
+    // Top Buggy e' una compagnia in piu' (proprietario, 19 ottobre 2026).
+    nomi: ["King Buggy", "Ultimate Buggies", "Ultimate Buggy", "Top Buggy"],
     // Anche fra Teide e natura (proprietario, 14 settembre 2026). Qui `alsoIn`
     // e' della scheda e non della variante: dei quattro giri due salgono al
     // Parco Nazionale (Tramonto sul Teide e Completo) e due no, ma la scheda
@@ -3905,6 +3910,9 @@ const ESPLORA_CATALOG = [
   {
     id: "paragliding",
     title: "Paragliding",
+    // "Roberto paragliding" sul foglio dei venditori: stessa attivita'
+    // (proprietario, 19 ottobre 2026).
+    nomi: ["Roberto Paragliding"],
     category: "avventura-motori",
     zone: "Adeje",
     duration: { it: "Attività di circa 2 ore, volo di 20-40 minuti", en: "About 2 hours in all, 20-40 minutes in the air", es: "Actividad de unas 2 horas, vuelo de 20-40 minutos", fr: "Environ 2 heures en tout, 20-40 minutes en l'air", de: "Etwa 2 Stunden insgesamt, 20-40 Minuten in der Luft" },
@@ -4471,7 +4479,8 @@ const ESPLORA_CATALOG = [
     // Ocean Wings vola da Los Cristianos (proprietario, 10 ottobre 2026): e'
     // una compagnia in piu', non un'altra scheda. Si parte da uno dei due
     // porti, e quale lo dice l'ufficio nella conferma, come sul Jet Ski.
-    nomi: ["Ocean Wings"],
+    // AJ Fly ("Aj Fly Parascending" sul foglio dei venditori), 19 ottobre 2026.
+    nomi: ["Ocean Wings", "AJ Fly"],
     category: "sport-acquatici",
     zone: { it: "Puerto Colón o Los Cristianos", en: "Puerto Colón or Los Cristianos", es: "Puerto Colón o Los Cristianos", fr: "Puerto Colón ou Los Cristianos", de: "Puerto Colón oder Los Cristianos" },
     // Due durate diverse e tutte e due vere: quaranta minuti e' quanto dura
@@ -4556,8 +4565,8 @@ const ESPLORA_CATALOG = [
     // da Las Galletas (proprietario, 8 ottobre 2026), Flash Jetski e Jetski
     // Island da Puerto Colón (proprietario, 13 ottobre 2026). Ognuna ha il
     // suo netto, quindi sul ticket la compagnia va scelta. Extreme e' la
-    // quarta (proprietario, 14 ottobre 2026).
-    nomi: ["Agua Safari", "Flash Jetski", "Jetski Island", "Extreme"],
+    // quarta (proprietario, 14 ottobre 2026), Ace la quinta (19 ottobre).
+    nomi: ["Agua Safari", "Flash Jetski", "Jetski Island", "Extreme", "Ace"],
     category: "sport-acquatici",
     zone: { it: "Puerto Colón o Las Galletas", en: "Puerto Colón or Las Galletas", es: "Puerto Colón o Las Galletas", fr: "Puerto Colón ou Las Galletas", de: "Puerto Colón oder Las Galletas" },
     duration: { it: "40 minuti, 1 o 2 ore", en: "40 minutes, 1 or 2 hours", es: "40 minutos, 1 o 2 horas", fr: "40 minutes, 1 ou 2 heures", de: "40 Minuten, 1 oder 2 Stunden" },
@@ -4672,6 +4681,9 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "immersioni",
+    // Il centro e' il Big Fish; sul ticket "Try dive" e' il battesimo
+    // (foglio dei venditori, 16 ottobre 2026).
+    nomi: ["Big Fish"],
     title: {
       it: "Immersioni: battesimo e corso",
       en: "Diving: taster dive and course",
@@ -8062,8 +8074,9 @@ const ESPLORA_CATALOG = [
   {
     id: "noleggio-auto",
     title: { it: "Noleggio auto", en: "Car rental", es: "Alquiler de coches", fr: "Location de voiture", de: "Mietwagen" },
-    // Il rent a car come lo scrivono i venditori sul ticket.
-    nomi: ["Alis"],
+    // Il rent a car come lo scrivono i venditori sul ticket. Roca ("Roca
+    // auto") dai fogli dei venditori del 14-18 ottobre 2026.
+    nomi: ["Alis", "Roca"],
     category: "noleggi",
     venditori: true,
     published: false
@@ -8077,10 +8090,11 @@ const ESPLORA_CATALOG = [
   },
   {
     // Gli scooter elettrici di MRB, a parte da moto e scooter a benzina
-    // (proprietario, 15 ottobre 2026). Sul ticket "MRB SCOOTER".
+    // (proprietario, 15 ottobre 2026). Sul ticket "MRB SCOOTER". Rydhere e
+    // Sol Mobility vanno qui (proprietario, 19 ottobre 2026).
     id: "noleggio-scooter-elettrico",
     title: { it: "Noleggio scooter elettrico", en: "Electric scooter rental", es: "Alquiler de patinete eléctrico", fr: "Location de trottinette électrique", de: "E-Scooter-Verleih" },
-    nomi: ["MRB"],
+    nomi: ["MRB", "Rydhere", "Sol Mobility"],
     category: "noleggi",
     venditori: true,
     published: false

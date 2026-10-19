@@ -19687,7 +19687,7 @@ poi ricerca, filtri, un pacchetto, un ticket sbagliato, mappa, noleggi. Nessun e
 JavaScript. Trovati:
 
 1. **Il buggy col transfer perdeva il prezzo** — corretto, sotto.
-2. **Siam Park: "ritiro in hotel" anche col transfer rifiutato.** Sta in `PICKUP_IN_HOTEL`
+2. **Siam Park: "ritiro in hotel" anche col transfer rifiutato** — corretto, sotto (#511). Sta in `PICKUP_IN_HOTEL`
    (regola del 24 settembre: la scheda permette il transfer → hotel), ma il transfer è
    solo "su richiesta da Tenerife Nord / da Los Gigantes". Il messaggio dice insieme
    "transfer: no, no" e "Punto di ritiro: in hotel". **Da chiedere al proprietario** come
@@ -19710,3 +19710,23 @@ Ora `transferPrice: 0`, "compreso". È l'unica scheda a mezzi che aveva il probl
 1×4 posti 240 € con e senza transfer, 2×2 + 1×6 col transfer 690 €, Montagna su strada
 180 € (lì la casella non c'è), lista 930 €, messaggio WhatsApp coi totali.
 `CACHE_NAME` → `isla-v572`.
+
+### Siam Park: senza transfer nessuno passa a prenderti (19 ottobre 2026)
+
+Il proprietario: al Siam Park "ci possono andare da soli oppure ci sono le fermate, il bus
+dal sud è gratuito". Quindi il ritiro in hotel c'è **solo** col transfer su richiesta
+(da Nord, o da Los Gigantes / Callao Salvaje / Playa Paraíso). `siam-park` passa da
+`PICKUP_IN_HOTEL` a `PICKUP_NESSUNO`: senza transfer la finestra non chiede l'hotel (e
+svuota quello ricordato da ieri), non mostra nessun punto, e il messaggio non ha né hotel
+né ritiro. **Il Siam Park ha due caselle del transfer** (`transfer` e `transferSiam`), e
+fino a oggi "transfer spuntato → chiedi l'hotel" guardava solo la prima: ora
+`transferChiesto()` in `escursioni.js` le conta tutte e due, e così `transferSpuntato()`
+della finestra, la riga dell'hotel e del ritrovo nel messaggio, `aggiornaRitrovo()` e
+`richiestaVoce()` in `richieste.js`. Le fermate del bus gratuito **non** si scrivono:
+non le abbiamo.
+
+Provato nel browser: Siam senza transfer (niente hotel, niente punto), col transfer da
+Nord e da Los Gigantes (hotel e "il tuo hotel"), spuntato e tolto (sparisce), e il
+messaggio WhatsApp e il database delle due richieste. Twin Ticket, Loro Parque e Freebird
+come prima. **Loro Parque e Twin Ticket** stanno ancora in `PICKUP_IN_HOTEL`: se anche lì
+si va da soli senza transfer, va chiesto al proprietario. `CACHE_NAME` → `isla-v573`.

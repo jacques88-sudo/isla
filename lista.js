@@ -79,8 +79,28 @@ function listaEPiena(peso) {
   return listaEscursioni(listaLeggi()) + (peso || 1) > LISTA_MAX;
 }
 
+// La stessa voce, gia' nella lista? Stessa scheda (o stesso pacchetto),
+// stessa variante, stesso giorno e stessa ora. Le persone no: sono proprio
+// quello che il cliente puo' voler correggere aggiungendola di nuovo.
+function listaStessaVoce(a, b) {
+  if (a.pack || b.pack) return !!a.pack && a.pack === b.pack && a.date === b.date;
+  return a.id === b.id && a.date === b.date && (a.time || "") === (b.time || "") &&
+    (a.optionIndex === undefined ? null : a.optionIndex) === (b.optionIndex === undefined ? null : b.optionIndex);
+}
+
 function listaAggiungi(voce) {
   const voci = listaLeggi();
+  // Aggiunta due volte uguale (quarta prova da cliente, 19 ottobre 2026):
+  // finiva due volte nel messaggio, e l'ufficio non sapeva se erano 16
+  // persone o un doppio tocco. Ora la voce di prima prende i dati nuovi, e il
+  // cliente lo legge.
+  const gia = voci.findIndex(v => listaStessaVoce(v, voce));
+  if (gia >= 0) {
+    voci[gia] = voce;
+    listaScrivi(voci);
+    listaToast(t("lista.updated"));
+    return;
+  }
   if (listaEscursioni(voci) + listaPeso(voce) > LISTA_MAX) return;
   voci.push(voce);
   listaScrivi(voci);

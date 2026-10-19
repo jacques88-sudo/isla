@@ -228,6 +228,12 @@
 //                sopra continuano a servire al **totale**, ma non si stampano
 //                una seconda volta: due righe che dicono la stessa cosa con
 //                parole diverse confondono.
+//   transferPriceUnknown → facoltativo: metti true quando il transfer si paga
+//                ma il prezzo si sa solo su richiesta (Scandal Dinner Show). Col
+//                transfer spuntato il totale non si fa. Senza questo campo, su una
+//                scheda a persona un `transferPrice` assente vuol dire che il
+//                transfer non cambia il prezzo (compreso, gratis o pagato sul
+//                posto): e' il caso di Peter Pan, immersioni, kayak.
 //   transferSiam, transferSiamPrice → facoltativi: un **secondo** transfer,
 //                indipendente dal primo. Nasce sul Twin Ticket (quello sopra e'
 //                per chi sta al sud e va a Loro Parque, questo per chi sta al
@@ -1179,22 +1185,44 @@ const ESPLORA_CATALOG = [
     // 2 anni invece non c'e' nessuna fascia perche' non si sale proprio: non e'
     // "gratis", quindi niente priceInfant.
     ages: { adult: "15+", child: "2-14" },
-    // La navetta dal sud e' compresa; dal nord costa in piu'. `transferPrice`
-    // sono i prezzi **completi** con la navetta dal nord, non il supplemento:
-    // 61 + 13 e 37 + 8.
+    // Due caselle, una per zona (proprietario, 19 ottobre 2026): la navetta dal
+    // sud e' compresa, quella dal nord costa in piu'. Prima la casella era una
+    // sola col prezzo del nord, e chi stava al sud la spuntava e vedeva 74 €
+    // invece di 61. Dal sud: niente `transferPrice`, il prezzo non cambia. Dal
+    // nord: `transferSiamPrice`, i prezzi **completi** (61 + 13 e 37 + 8).
     transfer: {
-      it: "Dal sud incluso nel prezzo, dal nord €13 a adulto e €8 a bambino.",
-      en: "Included in the price from the south; from the north €13 per adult and €8 per child.",
-      es: "Desde el sur incluido en el precio; desde el norte 13 € por adulto y 8 € por niño.",
-      fr: "Compris dans le prix depuis le sud ; depuis le nord, €13 par adulte et €8 par enfant.",
-      de: "Aus dem Süden im Preis inbegriffen; aus dem Norden €13 pro Erwachsenem und €8 pro Kind."
+      it: "Compreso nel prezzo.",
+      en: "Included in the price.",
+      es: "Incluido en el precio.",
+      fr: "Compris dans le prix.",
+      de: "Im Preis inbegriffen."
     },
-    transferPrice: { adult: 74, child: 45 },
-    // I due prezzi qui sopra servono al **totale**, non da leggere: quanto costa
-    // la navetta e' gia' scritto per esteso nella riga `transfer`, e stamparlo
-    // una seconda volta come "Con il transfer" era proprio la confusione che
-    // l'ufficio ha segnalato.
-    transferPriceHidden: true,
+    transferLabel: {
+      it: "Transfer dal sud",
+      en: "Transfer from the south",
+      es: "Traslado desde el sur",
+      fr: "Transfert depuis le sud",
+      de: "Transfer aus dem Süden"
+    },
+    transferSiam: {
+      it: "€13 in più a adulto e €8 a bambino.",
+      en: "€13 extra per adult and €8 per child.",
+      es: "13 € más por adulto y 8 € por niño.",
+      fr: "€13 de plus par adulte et €8 par enfant.",
+      de: "€13 mehr pro Erwachsenem und €8 pro Kind."
+    },
+    transferSiamLabel: {
+      it: "Transfer dal nord",
+      en: "Transfer from the north",
+      es: "Traslado desde el norte",
+      fr: "Transfert depuis le nord",
+      de: "Transfer aus dem Norden"
+    },
+    transferSiamPrice: { adult: 74, child: 45 },
+    // I prezzi del nord servono al **totale**, non da leggere: il supplemento
+    // e' gia' scritto per esteso nella riga `transferSiam`, e stamparlo una
+    // seconda volta era proprio la confusione che l'ufficio aveva segnalato.
+    transferSiamPriceHidden: true,
     included: ["transfer", "guide"],
     notes: [
       {
@@ -6332,6 +6360,10 @@ const ESPLORA_CATALOG = [
       fr: "Transfert facultatif depuis Los Gigantes, Playa Paraíso, Puerto de la Cruz et Caletillas, à demander en réservant ; prix sur demande.",
       de: "Optionaler Transfer ab Los Gigantes, Playa Paraíso, Puerto de la Cruz und Caletillas, bei der Buchung anzufragen; Preis auf Anfrage."
     },
+    // Il prezzo del transfer si sa solo su richiesta: col transfer spuntato il
+    // totale non si fa (proprietario, 19 ottobre 2026). Senza questo campo il
+    // sito lo trattava come gratis e mostrava un totale piu' basso del vero.
+    transferPriceUnknown: true,
     desc: {
       it: "Cena e cabaret in una serata pensata per adulti: vietata ai minori di 16 anni.",
       en: "Dinner and cabaret in an evening made for adults: no under-16s.",

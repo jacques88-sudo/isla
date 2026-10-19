@@ -319,6 +319,10 @@ function prezziAPersona(tour, req) {
   // Il secondo transfer, una seconda zona di partenza: stessa logica, listino
   // diverso. I due checkbox si escludono a vicenda nella finestra, quindi qui
   // non serve gestire il caso in cui sono spuntati tutti e due.
+  // Col transfer ma senza il suo prezzo (Scandal: "prezzo su richiesta") il
+  // totale non si fa: senza questa riga il transfer risultava gratis e il
+  // totale piu' basso del vero.
+  if (req.transfer && tour.transferPriceUnknown) return null;
   const tp = req.transfer ? tour.transferPrice
     : req.transferSiam ? tour.transferSiamPrice
     : null;

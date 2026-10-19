@@ -236,7 +236,12 @@ function detailRows(tour, variante) {
     const prezzo = prezzoTransfer(supplemento(tour.transferSiamPrice));
     if (prezzo) righe.push([tf(tour.transferSiamPriceLabel), prezzo]);
   } else {
-    if (tour.transferSiam) righe.push([t("detail.transferSiam"), tf(tour.transferSiam)]);
+    // Come il primo: l'etichetta della scheda vince. Sul Submarine il secondo
+    // transfer e' "dal nord", e il titolo fisso "Transfer Siam Park" era sbagliato.
+    if (tour.transferSiam) {
+      righe.push([tour.transferSiamLabel ? tf(tour.transferSiamLabel) : t("detail.transferSiam"),
+        tf(tour.transferSiam)]);
+    }
     if (tour.transferSiamPrice && !tour.transferSiamPriceHidden) {
       const prezzo = prezzoTransfer(conVariante(tour.transferSiamPrice));
       if (prezzo) righe.push([t("detail.withTransferSiam"), prezzo]);

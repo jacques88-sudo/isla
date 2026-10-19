@@ -669,7 +669,7 @@ const PACCHETTI = [
       fr: "Petits explorateurs",
       de: "Kleine Entdecker"
     },
-    image: "tuk-tuk.jpg",
+    image: "tuk-tuk.webp",
     sconto: 10,
     famiglia: true,
     voci: [

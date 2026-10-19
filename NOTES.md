@@ -19504,3 +19504,24 @@ Nel browser a 375 px: "Adulti (14+) €52 · Bambini (3-13) €31 · Neonati (0-
 €79 · €48 · €11. Totali: 2 adulti col bus 136 (= il ticket 0972); 2+1+1 col bus 189,
 senza 135; VIP col bus 2+1+1 217. Nessuno scroll orizzontale, nessun errore.
 `CACHE_NAME` → `isla-v557`.
+
+### Il riquadro "Installa" torna a ogni visita (19 ottobre 2026)
+
+Il proprietario: il riquadro deve comparire **ogni volta che si apre Isla**, finché non
+è installata. Prima, toccata la ✕ o "Come si fa", non tornava **mai più**; e finché il
+cliente non lo toccava tornava a **ogni pagina**.
+
+Ora (`avvisoInstallaIos()` in `app.js`): la ✕ o "Come si fa" lo chiudono **per il resto
+della visita** (`isla-installa-chiuso`, l'ora della chiusura). Una visita finisce dopo
+**30 minuti senza aprire pagine di Isla**: ogni pagina aperta in quel tempo sposta
+l'orologio in avanti. Non si usa `sessionStorage` perché su Safari la scheda resta aperta
+per giorni e la "sessione" con lei. La vecchia chiave `isla-installa-visto` si cancella,
+così torna anche a chi l'aveva chiuso con la regola vecchia. Resta com'era: solo
+iPhone/iPad, non con l'app installata, non senza `localStorage`.
+
+Resta aperto il punto 1 della prova da cliente: alla prima apertura di una scheda il
+riquadro copre ancora "Aggiungi alla lista" finché non si chiude.
+
+Provato nel browser con l'iPhone simulato: prima apertura sì; altra pagina senza
+chiudere sì; dopo la ✕ no (scheda e home); dopo 31 minuti sì; dopo "Come si fa" no; chi
+aveva la chiave vecchia sì; app installata no. `CACHE_NAME` → `isla-v558`.

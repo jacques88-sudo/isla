@@ -19426,3 +19426,37 @@ Provato nel browser con Supabase finto: Freebird + Loro Parque col codice → �
 Freebird; solo Loro Parque → "il codice è valido, ma non si applica"; codice sbagliato →
 "questo codice non esiste"; in tedesco il messaggio arriva in italiano, e la copia nel
 database resta senza email. 390 e 1100 px. `CACHE_NAME` → `isla-v554`.
+
+## La prova da cliente (19 ottobre 2026)
+
+Il proprietario ha chiesto cosa migliorare dalla parte del cliente. Prima di proporre
+cose nuove, un giro completo **come un turista**: tedesco, iPhone SE (375 px), 4G
+lento, dalla scheda del Freebird fino al messaggio WhatsApp e a "Le mie richieste".
+Funziona dall'inizio alla fine. Trovati, in ordine:
+
+1. **Il riquadro "Installa l'app" copre "Aggiungi alla lista"** alla prima visita di
+   una scheda (chi arriva da un link): la barra col prezzo sta sotto il riquadro.
+   **Da decidere col proprietario** quando proporre l'installazione.
+2. **La variante in italiano nella pagina delle richieste** — corretto, sotto.
+3. Il tedesco dà del "Sie" ovunque (88 testi) tranne i 4 testi del riquadro
+   "Installa" (`install.hint.*`, `install.ios.share`), che danno del "du".
+4. La nota privacy della richiesta parla dell'hotel anche sulle schede col solo punto
+   di ritrovo.
+5. Prima apertura in 4G lento: la home si vede dopo ~4 s; pesano il catalogo (~200 KB
+   compresso), `hero-tenerife.webp` (400 KB), `logo-isla.png` (108 KB, 476×476) e i
+   2,3 MB che il service worker scarica per l'offline.
+
+Dodici pagine in tedesco, francese e spagnolo, anche a 320 px: nessun errore, niente che
+esce dallo schermo, nessuna parola italiana rimasta.
+
+### La variante nella lingua del cliente
+
+Nel database `option_label` è **sempre in italiano**, la lingua dell'ufficio: lo
+scrivono `richieste.js` (`etichetta.it`) e la pagina dei venditori. `booking.js` lo
+mostrava così com'era, e il cliente tedesco leggeva "Freebird Catamaran Trip · 2 ore".
+Ora `varianteTesto()` ritrova la variante nel catalogo per l'etichetta italiana e la
+scrive con `tf()`; se il catalogo non la conosce più (variante tolta o rinominata)
+resta il testo salvato. Vale per le richieste e per i ticket, che usano la stessa
+scheda. La lista (`lista.js`) lo faceva già con `varianteScelta()`. Provato nel
+browser col percorso vero (lista → WhatsApp → `booking.html?richieste=1`): "2 Stunden",
+"2 heures", "2 horas", "2 ore". `CACHE_NAME` → `isla-v556`.

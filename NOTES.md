@@ -19844,3 +19844,30 @@ come quello delle schede, col prezzo fra parentesi: "Mustang: Con 1 o 2 persone 
 buggy o a moto d'acqua" (falso sul pacchetto con la Mustang) ma "un mezzo che si paga
 intero, non a testa", nelle cinque lingue. Provato in italiano e in tedesco sul pacchetto
 "Al volante, in due". `CACHE_NAME` → `isla-v580`.
+
+### Submarine con due transfer, Scandal senza totale col transfer (19 ottobre 2026)
+
+Rileggendo le nove schede col transfer facoltativo erano venuti fuori due prezzi sbagliati.
+Il proprietario: "metti due caselle sul Submarine e togli il totale allo Scandal".
+
+**Submarine Safari.** La casella era una sola, col prezzo del nord (74 €/45 €), e chi stava al
+sud spuntandola vedeva 74 € anche se dal sud la navetta è compresa. Ora due caselle, come il
+Twin Ticket: **Transfer dal sud** (`transfer`, "Compreso nel prezzo", niente `transferPrice`:
+il prezzo resta 61 €/37 €) e **Transfer dal nord** (`transferSiam`, "€13 in più a adulto e €8 a
+bambino", `transferSiamPrice` 74/45, `transferSiamPriceHidden`). Le etichette sono
+"Transfer dal sud" / "Transfer dal nord" e non domande, perché valgono anche come titolo
+della riga nella pagina della scheda. Lì la riga del secondo transfer aveva il titolo fisso
+"Transfer Siam Park": ora `tour.js` usa `transferSiamLabel` quando c'è, come già faceva
+`transferLabel` per il primo.
+
+**Scandal Dinner Show.** Il transfer ha "prezzo su richiesta". Su una scheda a persona un
+`transferPrice` assente vuol dire "il transfer non cambia il prezzo" (compreso, gratis o
+pagato sul posto: Peter Pan, immersioni, kayak), quindi lo Scandal col transfer mostrava
+il totale senza transfer, più basso del vero. Campo nuovo `transferPriceUnknown: true`
+(scritto nel vocabolario): col transfer spuntato `prezziAPersona()` torna null e il totale
+non si fa; nella lista lo Scandal resta "da €94" e non entra nel totale.
+
+Provato nel browser: Submarine senza transfer e dal sud 159 € (2 adulti e 1 bambino), dal
+nord 193 €, le due caselle si escludono; Scandal 188 € senza transfer e niente totale col
+transfer; Castillo e Peter Pan come prima; pagina della scheda di Submarine, Siam Park e
+Twin Ticket; lista e messaggio. `CACHE_NAME` → `isla-v581`.

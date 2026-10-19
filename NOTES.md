@@ -19585,3 +19585,9 @@ che non sempre leggono il WebP) e le schermate del `manifest.json`.
   `esplora-catalog.js` e `pacchetti.js`. Confrontate a occhio, ingrandite: identiche.
   Browser: 15 schede, elenco, home, 7 pacchetti, 124 foto WebP, nessuna rotta.
   `CACHE_NAME` → `isla-v561`.
+- **Natura, Teide e stelle (`teide-natura`)**: 10 foto, 1,1 MB → 653 KB (−41%). Resta JPG
+  `icod-garachico-orotava.jpg` (in WebP pesava di più). Nomi cambiati in
+  `esplora-catalog.js` e `pacchetti.js`. Guardate ingrandite soprattutto le foto
+  notturne, dove la compressione cancella per prime le stelle piccole: ci sono tutte,
+  Via Lattea compresa. Browser: 5 schede pubblicate, elenco, home, 7 pacchetti, nessuna
+  foto rotta. `CACHE_NAME` → `isla-v562`.

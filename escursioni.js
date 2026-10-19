@@ -236,6 +236,18 @@ function conRitiro(tour, variante, transferChiesto) {
   return !nessuno || !!(transferDi(tour, variante) && transferChiesto);
 }
 
+// Solo per adulti: la scheda ha solo la fascia degli adulti e parte da 13 anni
+// o piu' ("16+", "18+"), senza nessuna fascia per bambini o neonati. Una scheda
+// con "12+" e senza bambini non conta: lì i bambini di solito ci sono e il
+// prezzo manca, non e' vietato. Lo legge la finestra della richiesta per
+// togliere il campo dei bambini.
+function soloAdulti(tour) {
+  const eta = tour && tour.ages;
+  if (!eta || eta.child || eta.infant || typeof eta.adult !== "string") return false;
+  const m = eta.adult.match(/^(\d+)\+$/);
+  return !!m && Number(m[1]) >= 13;
+}
+
 // Il cliente ha chiesto un transfer? Il Siam Park ne ha due, da Nord
 // (`transfer`) e da Los Gigantes (`transferSiam`), e tutti e due portano il
 // pulmino sotto l'hotel (19 ottobre 2026). Vale per una richiesta o una voce
@@ -1469,6 +1481,7 @@ function initRequestDialog() {
     riempiLingue(tour);
     riempiMenu(tour);
     mostraNeonati(tour);
+    mostraBambini(tour);
     mostraPersone(tour);
     riempiUnita(tour);
     // La data scelta per un'altra scheda puo' non andare bene per questa: i
@@ -1870,6 +1883,18 @@ function initRequestDialog() {
     if (!haNeonati) babiesInput.value = "0";
   }
 
+  // Il campo dei bambini sparisce sulle schede solo per adulti (proprietario,
+  // 19 ottobre 2026): Scandal Dinner Show dai 16 anni accettava "2 adulti e 1
+  // bambino", il totale spariva e la richiesta partiva lo stesso. Nascosto, si
+  // azzera, come quello dei neonati.
+  function mostraBambini(tour) {
+    const box = kidsInput && kidsInput.closest("label");
+    if (!box) return;
+    const spento = soloAdulti(tour);
+    box.hidden = spento;
+    if (spento) kidsInput.value = "0";
+  }
+
   // Quanti mezzi prenotare, uno per tipo. Compare solo dove la scheda ha
   // `units`, cioe' dove il prezzo e' del mezzo: sul jet ski un gruppo prende
   // quattro moto, magari due doppie e due singole, e sono quattro prezzi.
@@ -2221,6 +2246,7 @@ function initRequestDialog() {
     riempiLingue(current);
     riempiMenu(current);
     mostraNeonati(current);
+    mostraBambini(current);
     mostraPersone(current);
     riempiUnita(current);
     aggiornaTotale();

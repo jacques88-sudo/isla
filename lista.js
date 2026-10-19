@@ -513,7 +513,8 @@ function initLista() {
       else if (voce.option) dettagli.push(voce.option);
       const mezzi = unitaTesto(riga.tour, voce);
       if (mezzi) dettagli.push(tf(riga.tour.units.name) + ": " + mezzi);
-      if (voce.menu) dettagli.push(voce.menu);
+      const menu = menuTesto(voce, riga.tour);
+      if (menu) dettagli.push(menu);
       if (transferDi(riga.tour, variante) && voce.transfer) {
         dettagli.push(riga.tour.transferLabel ? tf(riga.tour.transferLabel) : t("wa.transfer"));
       }

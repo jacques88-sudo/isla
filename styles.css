@@ -4030,6 +4030,45 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .lista-dialog input[type="text"]::placeholder,
 .lista-dialog input[type="email"]::placeholder { font-family: var(--font-hand); }
 
+/* Il codice sconto dei venditori (lista.js): la riga come quella del nome,
+   col bottone "Applica" accanto. Il codice si scrive in maiuscolo e in
+   caratteri normali: la scrittura a mano confonde 0 e O, 1 e I. */
+.lista-codice {
+  display: flex;
+  align-items: flex-end;
+  gap: .6rem;
+  margin-bottom: 1.3rem;
+}
+.lista-codice input { flex: 1; min-width: 0; }
+.lista-dialog .lista-codice input[type="text"] {
+  font-family: inherit;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 0;
+}
+.lista-dialog .lista-codice input[type="text"]::placeholder {
+  font-family: inherit;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.lista-codice .btn { flex: none; }
+.lista-codice-esito { margin: -.9rem 0 1.3rem; }
+/* staccato dalla nota dell'email che gli sta sopra */
+.lista-dialog label[for="listaCodice"] { margin-top: 1.2rem; }
+.lista-codice-esito.is-ok { color: var(--ok); }
+
+/* Lo sconto del codice, sopra il totale: la riga del conto con quanto si toglie. */
+.lista-sconto {
+  display: flex;
+  justify-content: space-between;
+  gap: .8rem;
+  margin: 0 0 .4rem;
+  font-size: .9rem;
+  color: var(--ok);
+  font-variant-numeric: tabular-nums;
+}
+
 /* Da 640px in su la finestra sta in mezzo allo schermo e c'e' spazio per la
    cartolina vera: messaggio a sinistra, indirizzo a destra, separati dalla
    riga verticale stampata. Sul telefono no — due colonne da 160px sarebbero
@@ -4043,7 +4082,7 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
     align-items: start;
   }
   .lista-dialog .lista-voci,
-  .lista-dialog .lista-totale { grid-column: 1; }
+  .lista-dialog .lista-conto { grid-column: 1; }
   .lista-dialog [data-lista-form] {
     grid-column: 2;
     grid-row: 1 / span 2;

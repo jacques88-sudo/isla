@@ -127,7 +127,10 @@ function richiestaManda(r) {
     body: JSON.stringify(Object.assign(
       { p_token: r.token, p_code: r.code, p_items: r.items },
       r.name ? { p_name: r.name } : {},
-      r.message ? { p_message: r.message } : {}))
+      r.message ? { p_message: r.message } : {},
+      // il codice sconto del venditore (lista.js, 19 ottobre 2026): il
+      // database lo tiene solo se esiste ed e' acceso
+      r.discountCode ? { p_discount_code: r.discountCode } : {}))
   }).then(risposta => {
     if (!risposta.ok) return false;
     const elenco = richiesteLeggi();
@@ -144,7 +147,8 @@ function richiestaManda(r) {
 // richiesta, perche' subito dopo la pagina se ne va verso WhatsApp.
 // `scriviTesto(codice)` rifa' il messaggio WhatsApp col codice dentro: il
 // codice nasce qui, quindi il messaggio si puo' scrivere solo dopo.
-function richiestaNuova(voci, iscrizione, nome, scriviTesto) {
+// `codiceSconto`: quello del venditore, gia' controllato, o "".
+function richiestaNuova(voci, iscrizione, nome, scriviTesto, codiceSconto) {
   const code = richiestaCodice();
   const r = {
     token: richiestaChiave(),
@@ -153,6 +157,7 @@ function richiestaNuova(voci, iscrizione, nome, scriviTesto) {
     items: richiestaVoci(voci),
     name: nome || "",
     message: typeof scriviTesto === "function" ? scriviTesto(code) : "",
+    discountCode: codiceSconto || "",
     stored: false
   };
   if (iscrizione) r.avvisi = "da-mandare";

@@ -155,6 +155,114 @@ function listaSomma(voci) {
   return { somma: somma, senzaPrezzo: senzaPrezzo };
 }
 
+// IL CODICE SCONTO DEI VENDITORI (proprietario, 18 ottobre 2026)
+//
+// Ogni venditore ha il suo codice. Il cliente lo scrive nella finestra della
+// lista e il totale scende (5%). Lo sconto si fa sulle escursioni singole, con
+// la stessa regola dello sconto dei pacchetti (scontoPossibile in
+// pacchetti.js): niente sconto su parchi, spettacoli e schede `fixedPrice`.
+// Sui pacchetti nemmeno: hanno gia' il loro sconto.
+//
+// I codici NON stanno qui: il repository e' pubblico e chiunque li leggerebbe.
+// Stanno su Supabase (supabase/modifiche/2026-10-18-codici-sconto.sql), e il
+// sito chiede solo "questo codice vale?". La risposta e' la percentuale, o
+// niente. Il codice va nel messaggio WhatsApp (e quindi anche nella copia
+// salvata nel database), cosi' l'ufficio sa da quale venditore arriva il
+// cliente e con che totale fare il link di pagamento.
+
+// Il codice controllato nella finestra aperta: { codice, percento }, o null.
+let listaCodice = null;
+
+// IL CODICE NELL'INDIRIZZO (19 ottobre 2026)
+// Il QR del venditore porta a un indirizzo con ?codice=MARCO. Il codice si
+// ricorda nel telefono (solo il codice, mai lo sconto: quello si richiede a
+// Supabase ogni volta) e la finestra della lista lo mette nel campo e lo
+// controlla da sola. Il cliente puo' guardare il sito per giorni prima di
+// mandare la richiesta, e il venditore deve restare quello del QR.
+// Resta anche dopo una richiesta mandata: la seconda arriva dallo stesso
+// venditore. Si toglie quando il cliente cancella il codice dal campo, o se
+// il codice non esiste (piu').
+const CODICE_KEY = "isla-codice";
+
+function codiceRicordato() {
+  try { return localStorage.getItem(CODICE_KEY) || ""; } catch (e) { return ""; }
+}
+
+function codiceRicorda(codice) {
+  try {
+    if (codice) localStorage.setItem(CODICE_KEY, codice);
+    else localStorage.removeItem(CODICE_KEY);
+  } catch (e) { /* incognito: il codice resta solo finche' la pagina e' aperta */ }
+}
+
+// ?codice=MARCO nell'indirizzo: si ricorda e si toglie dall'indirizzo, cosi'
+// chi lo condivide non si porta dietro il codice di un venditore.
+function codiceDallIndirizzo() {
+  try {
+    const url = new URL(window.location.href);
+    const codice = codiceNormale(url.searchParams.get("codice"));
+    if (!url.searchParams.has("codice")) return;
+    if (codice) codiceRicorda(codice);
+    url.searchParams.delete("codice");
+    history.replaceState(history.state, "", url.pathname + url.search + url.hash);
+  } catch (e) { /* browser vecchio: il codice si scrive a mano */ }
+}
+
+// Quello che il cliente scrive: maiuscole, senza spazi. "marco 5" e "MARCO5"
+// sono lo stesso codice (la funzione sul database fa lo stesso).
+function codiceNormale(testo) {
+  return String(testo || "").replace(/\s+/g, "").toUpperCase();
+}
+
+// Chiede a Supabase se il codice vale. Torna la percentuale, o null se il
+// codice non c'e' o e' spento; la promessa fallisce se non si riesce a chiedere.
+function codiceScontoControlla(codice) {
+  if (typeof SUPABASE_URL === "undefined" || !SUPABASE_URL) return Promise.reject(new Error("no supabase"));
+  return fetch(SUPABASE_URL + "/rest/v1/rpc/codice_sconto", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY
+    },
+    body: JSON.stringify({ p_codice: codice })
+  }).then(risposta => {
+    if (!risposta.ok) throw new Error("codice_sconto " + risposta.status);
+    return risposta.json();
+  }).then(n => (typeof n === "number" && n > 0 && n < 100) ? n : null);
+}
+
+// Quanto si toglie col codice: la percentuale di ogni escursione singola che
+// lo sconto lo permette, arrotondata al centesimo voce per voce. Le voci senza
+// prezzo restano fuori, come dal totale.
+function listaSconto(voci) {
+  if (!listaCodice) return 0;
+  let sconto = 0;
+  voci.forEach(voce => {
+    const riga = listaVoceConto(voce);
+    if (!riga || riga.pack || !riga.conto) return;
+    if (!scontoPossibile(riga.tour, varianteScelta(riga.tour, voce))) return;
+    sconto += Math.round(riga.conto.totale * listaCodice.percento) / 100;
+  });
+  return Math.round(sconto * 100) / 100;
+}
+
+// Le righe del codice in fondo al messaggio. Il codice si scrive anche quando
+// sulle escursioni della lista non toglie niente (un parco): l'ufficio deve
+// sapere lo stesso da quale venditore arriva il cliente.
+function listaScontoTesto(voci) {
+  if (!listaCodice) return "";
+  let testo = "\n\n" + t("wa.discountCode", { code: listaCodice.codice });
+  const sconto = listaSconto(voci);
+  if (sconto > 0) {
+    const { somma, senzaPrezzo } = listaSomma(voci);
+    testo += "\n" + t("wa.discount", { n: listaCodice.percento }) + ": −€" + eur(sconto) +
+      "\n" + (senzaPrezzo ? t("wa.totalPartial") : t("wa.total")) + " " +
+      t("wa.afterDiscount") + ": €" + eur(somma - sconto);
+  }
+  return testo;
+}
+
 // Il messaggio con tutte le escursioni della lista. Con una sola voce si usa
 // il messaggio normale: un elenco numerato di un elemento solo sarebbe strano
 // da leggere, e all'ufficio arriverebbero due formati per la stessa cosa.
@@ -174,12 +282,18 @@ function listaWhatsappTesto(nome, codice, email) {
 function listaWhatsappScrivi(nome, codice, email) {
   const voci = listaLeggi();
   if (!voci.length) return "";
+  // Il codice sconto, l'email e il codice della richiesta vanno in fondo, in
+  // quest'ordine, sia con una voce sola sia con tante: per questo i messaggi
+  // della voce sola si scrivono qui senza.
+  const coda = listaScontoTesto(voci) +
+    (email ? "\n\n" + t("wa.email", { email: email }) : "") +
+    (codice ? "\n\n" + t("wa.code", { code: codice }) : "");
   const primo = listaVoceConto(voci[0]);
   if (voci.length === 1) {
     if (!primo) return "";
-    return primo.pack
-      ? pacchettoWhatsappTesto(primo.pack, Object.assign({ name: nome, email: email }, voci[0]), codice)
-      : whatsappTesto(primo.tour, Object.assign({ name: nome, email: email, code: codice }, voci[0]));
+    return (primo.pack
+      ? pacchettoWhatsappTesto(primo.pack, Object.assign({ name: nome }, voci[0]), "")
+      : whatsappTesto(primo.tour, Object.assign({ name: nome }, voci[0]))) + coda;
   }
 
   const blocchi = [];
@@ -201,9 +315,7 @@ function listaWhatsappScrivi(nome, codice, email) {
     testo += "\n\n" + (senzaPrezzo ? t("wa.totalPartial") : t("wa.total")) +
       ": €" + eur(somma);
   }
-  if (email) testo += "\n\n" + t("wa.email", { email: email });
-  if (codice) testo += "\n\n" + t("wa.code", { code: codice });
-  return testo;
+  return testo + coda;
 }
 
 function listaWhatsappUrl(nome, codice, email) {
@@ -221,6 +333,8 @@ function listaWhatsappUrl(nome, codice, email) {
 // ─────────────────────────────────────────────────────────────────────────
 
 function initLista() {
+  // Il codice del QR si legge su ogni pagina, prima di tutto il resto.
+  codiceDallIndirizzo();
   // Serve il catalogo per sapere titoli e prezzi: dove non c'e', niente lista.
   if (typeof ESPLORA_CATALOG === "undefined") return;
 
@@ -277,10 +391,21 @@ function initLista() {
   // a chi non ci ha mai messo niente non ha senso: la frase giusta dipende da
   // com'era la lista quando la finestra si e' aperta.
   let vuotaDaSubito = false;
+  // Cosa dire sotto il campo del codice sconto: "" (niente), "checking",
+  // "ok", "none" (vale, ma non su queste escursioni), "bad", "error".
+  let codiceEsito = "";
 
   function apri() {
     vuotaDaSubito = listaLeggi().length === 0;
     disegna();
+    // Il codice del QR (codiceDallIndirizzo) si mette nel campo e si controlla
+    // da solo, la prima volta che la finestra si apre con qualcosa dentro.
+    const ricordato = codiceRicordato();
+    const campo = dialog.querySelector("#listaCodice");
+    if (ricordato && campo && !listaCodice && !codiceEsito) {
+      campo.value = ricordato;
+      applicaCodice();
+    }
     dialog.hidden = false;
     scrim.hidden = false;
     requestAnimationFrame(() => {
@@ -360,6 +485,8 @@ function initLista() {
     const avvisi = avvisiScelti ? avvisiScelti.checked : true;
     const promoScelta = corpo.querySelector("#listaPromo");
     const promo = promoScelta ? promoScelta.checked : false;
+    const codiceScritto = corpo.querySelector("#listaCodice");
+    const codiceTesto = codiceScritto ? codiceScritto.value : (listaCodice ? listaCodice.codice : "");
     if (!voci.length) {
       const frase = vuotaDaSubito ? "lista.none" : "lista.empty";
       corpo.innerHTML = '<p class="lista-empty" data-i18n="' + frase + '"></p>';
@@ -410,12 +537,23 @@ function initLista() {
     // Con una data scaduta la richiesta non parte: il cliente toglie la voce
     // e la rimette con un altro giorno.
     const scadute = voci.some(listaVoceScaduta);
+    // Col codice sconto il totale e' quello gia' scontato, e sopra c'e' la
+    // riga di quanto si e' tolto: il cliente vede da dove arriva il numero.
+    const sconto = listaSconto(voci);
     const totale = somma > 0
-      ? `<p class="lista-totale">
-           <strong>€${eur(somma)}</strong>
-           <small>${esc(senzaPrezzo ? t("wa.totalPartial") : t("wa.total"))}</small>
-         </p>`
+      ? '<div class="lista-conto">' + (sconto > 0
+          ? `<p class="lista-sconto">
+               <span>${esc(t("wa.discount", { n: listaCodice.percento }) + " · " + listaCodice.codice)}</span>
+               <span>−€${eur(sconto)}</span>
+             </p>`
+          : "") +
+        `<p class="lista-totale">
+           <strong>€${eur(somma - sconto)}</strong>
+           <small>${esc((senzaPrezzo ? t("wa.totalPartial") : t("wa.total")) +
+             (sconto > 0 ? " " + t("wa.afterDiscount") : ""))}</small>
+         </p></div>`
       : "";
+    const esitoCodice = codiceEsito === "ok" && sconto === 0 ? "none" : codiceEsito;
 
     corpo.innerHTML = `
       <ul class="lista-voci">${righe}</ul>
@@ -429,6 +567,16 @@ function initLista() {
                autocapitalize="off" spellcheck="false"
                data-i18n-placeholder="req.emailPlaceholder" required />
         <p class="hint" data-i18n="req.emailHint"></p>
+        <label for="listaCodice" data-i18n="lista.code">Codice sconto</label>
+        <div class="lista-codice">
+          <input id="listaCodice" name="codice" type="text" autocomplete="off"
+                 autocapitalize="characters" spellcheck="false" maxlength="30"
+                 data-i18n-placeholder="lista.codePlaceholder" />
+          <button class="btn btn-soft" type="button" data-lista-codice
+                  data-i18n="lista.codeApply"${codiceEsito === "checking" ? " disabled" : ""}>Applica</button>
+        </div>
+        <p class="hint lista-codice-esito${esitoCodice === "ok" ? " is-ok" : ""}" role="status"
+           ${esitoCodice ? 'data-i18n="lista.code' + esitoCodice.charAt(0).toUpperCase() + esitoCodice.slice(1) + '"' : "hidden"}></p>
         <label class="request-check" data-lista-promo${PROMOZIONI_ATTIVE ? "" : " hidden"}>
           <input id="listaPromo" name="promo" type="checkbox" />
           <span>
@@ -456,6 +604,7 @@ function initLista() {
     applyI18n(corpo);
     if (nome) corpo.querySelector("#listaName").value = nome;
     if (email) corpo.querySelector("#listaEmail").value = email;
+    corpo.querySelector("#listaCodice").value = codiceTesto;
     corpo.querySelector("#listaPromo").checked = promo;
     // Gli avvisi sul telefono (richieste.js): la casella c'e' solo dove il
     // telefono li sa ricevere e il cliente non li ha gia' rifiutati (il
@@ -475,7 +624,48 @@ function initLista() {
     if (e.target.closest("[data-lista-close]")) { chiudi(); return; }
     const togli = e.target.closest("[data-lista-remove]");
     if (togli) { listaTogli(parseInt(togli.dataset.listaRemove, 10)); return; }
-    if (e.target.closest("[data-lista-clear]")) { listaSvuota(); chiudi(); }
+    if (e.target.closest("[data-lista-clear]")) { listaSvuota(); chiudi(); return; }
+    if (e.target.closest("[data-lista-codice]")) applicaCodice();
+  });
+
+  // Il codice si controlla su Supabase. Un codice cancellato dal campo toglie
+  // lo sconto; uno sbagliato toglie anche quello di prima, cosi' quello che si
+  // vede scritto e lo sconto applicato sono sempre la stessa cosa.
+  // Torna una promessa, che il bottone "Continua" aspetta.
+  function applicaCodice() {
+    const campo = dialog.querySelector("#listaCodice");
+    const codice = codiceNormale(campo ? campo.value : "");
+    if (!codice) {
+      listaCodice = null;
+      codiceEsito = "";
+      codiceRicorda("");
+      disegna();
+      return Promise.resolve();
+    }
+    listaCodice = null;
+    codiceEsito = "checking";
+    disegna();
+    return codiceScontoControlla(codice).then(percento => {
+      listaCodice = percento ? { codice: codice, percento: percento } : null;
+      codiceEsito = percento ? "ok" : "bad";
+      // il codice buono si ricorda, quello che non esiste si dimentica; se
+      // la rete manca non si cambia niente
+      codiceRicorda(percento ? codice : "");
+    }, () => {
+      codiceEsito = "error";
+    }).then(() => {
+      disegna();
+      const c = dialog.querySelector("#listaCodice");
+      if (c) c.value = codice;
+    });
+  }
+
+  // Invio nel campo del codice applica il codice, non manda la richiesta.
+  dialog.addEventListener("keydown", e => {
+    if (e.key === "Enter" && e.target.id === "listaCodice") {
+      e.preventDefault();
+      applicaCodice();
+    }
   });
   // il messaggio d'errore dell'email resta finche' non lo si toglie: appena il
   // cliente corregge, la casella torna buona
@@ -499,6 +689,17 @@ function initLista() {
       return;
     }
     if (!listaWhatsappUrl(nome)) return;
+    // Un codice scritto ma non ancora controllato (o cambiato dopo): prima si
+    // controlla e si mostra il totale giusto, poi il cliente preme di nuovo.
+    // Mandare la richiesta col codice non controllato vorrebbe dire un totale
+    // nel messaggio diverso da quello che ha visto.
+    const codiceCampo = codiceNormale(dialog.querySelector("#listaCodice").value);
+    if (codiceCampo !== (listaCodice ? listaCodice.codice : "")) {
+      applicaCodice();
+      return;
+    }
+    // anche un campo svuotato e mai riapplicato: il cliente il codice non lo vuole
+    if (!codiceCampo) codiceRicorda("");
     // Le promozioni: solo se il cliente ha spuntato la casella. L'email va
     // nell'elenco "promozioni" e da nessun'altra parte del database.
     if (PROMOZIONI_ATTIVE && dialog.querySelector("#listaPromo").checked) promozioniIscrivi(email);
@@ -521,10 +722,13 @@ function initLista() {
       // anche li' basta passare `email` qui al posto di "", e aggiornare la
       // privacy (privacy.html, cinque lingue) e CLAUDE.md.
       const codice = typeof richiestaNuova === "function"
-        ? richiestaNuova(listaLeggi(), iscrizione, nome, c => listaWhatsappTesto(nome, c, "")) : "";
+        ? richiestaNuova(listaLeggi(), iscrizione, nome, c => listaWhatsappTesto(nome, c, ""),
+            listaCodice ? listaCodice.codice : "") : "";
       const url = listaWhatsappUrl(nome, codice, email);
       // La lista si svuota: la richiesta e' partita, e ritrovarsela ancora li'
       // alla prossima visita farebbe rimandare due volte le stesse escursioni.
+      listaCodice = null;
+      codiceEsito = "";
       listaSvuota();
       chiudi();
       window.location.href = url;

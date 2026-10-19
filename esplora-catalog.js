@@ -4747,7 +4747,11 @@ const ESPLORA_CATALOG = [
             de: "1 Stunde 30, davon eine Stunde im Wasser"
           },
           times: ["10:30"],
-          // Niente "transfer": e' l'unica variante senza ritiro.
+          // L'unica variante senza ritiro: a Los Cristianos ci si arriva da
+          // soli. `null` e non l'assenza del campo, perche' il transfer sta
+          // sulla scheda e la variante lo ereditava: la finestra mostrava la
+          // casella e chiedeva l'hotel (proprietario, 19 ottobre 2026).
+          transfer: null,
           included: ["snorkel"],
           desc: {
             it: "Uscita in superficie con maschera, boccaglio e pinne, accompagnati. Per chi non vuole scendere con le bombole o accompagna chi si immerge.",

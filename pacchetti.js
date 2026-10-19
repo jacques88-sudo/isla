@@ -283,7 +283,7 @@ const PACCHETTI = [
       fr: "Tenerife Trio, version buggy",
       de: "Tenerife Trio, Buggy-Version"
     },
-    image: "buggy-volcano-4h.jpg",
+    image: "buggy-volcano-4h.webp",
     sconto: 10,
     // Il percorso resta aperto: i quattro costano uguale e si concorda
     // rispondendo. Qui si puo' fare perche' nel pacchetto non c'e' nient'altro
@@ -486,7 +486,7 @@ const PACCHETTI = [
       fr: "Au volant, à deux",
       de: "Am Steuer, zu zweit"
     },
-    image: "Cat-avventura.jpg",
+    image: "Cat-avventura.webp",
     sconto: 10,
     tema: "per-due",
     voci: [
@@ -576,7 +576,7 @@ const PACCHETTI = [
       fr: "Adrénaline à deux",
       de: "Adrenalin zu zweit"
     },
-    image: "quad-teide-sunset.jpg",
+    image: "quad-teide-sunset.webp",
     sconto: 10,
     tema: "per-due",
     voci: [
@@ -700,7 +700,7 @@ const PACCHETTI = [
       fr: "Pour les grands",
       de: "Für die Großen"
     },
-    image: "karting.jpg",
+    image: "karting.webp",
     sconto: 10,
     famiglia: true,
     voci: [

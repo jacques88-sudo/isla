@@ -19982,3 +19982,26 @@ mentre parte la richiesta. Poi un **controllo a tappeto** di tutte le schede pub
   scheda bici le varianti stanno in gruppi chiusi (`<details>`): il programma di prova
   deve aprirli prima di toccare il pulsante. Lo script sta nella scratchpad della sessione
   (`i3.js`); rifarlo dopo una modifica grossa al catalogo o alla finestra vale la pena.
+
+## La sesta prova da cliente: il cliente pignolo (19 ottobre 2026)
+
+Un cliente che prima di prenotare legge tutto e confronta. **Nessun errore trovato, nessun
+codice cambiato.**
+
+- **Prezzi "da €…"** (`priceFrom`) confrontati col prezzo vero più basso di ogni scheda
+  pubblicata (variante più economica, o mezzo più economico): nessuno è più basso, nessuno
+  più alto. Le schede a mezzi con `priceUnit` (Mustang, buggy…) sono escluse dal "più
+  basso": lì il "da" è il prezzo a testa col mezzo pieno, per scelta.
+- **Testi in cinque lingue**: 390 pagine (le pagine del sito, due pacchetti e le 67 schede,
+  per it/en/es/fr/de) cercando "undefined", "NaN", "null", "[object", segnaposti `{n}`,
+  chiavi di `i18n.js` rimaste scoperte, parole italiane nelle altre lingue e `<html lang>`
+  sbagliato. Una sola segnalazione, falsa: in tedesco "bei null anfangen" (da zero).
+- **Link e numero**: un solo numero (+34 662 908 073, 64 volte nel sito), nessun link
+  interno verso un file che non c'è.
+- **Termini e domande frequenti** dicono le regole che il sito applica: 24 ore,
+  pagamento col link prima della conferma, annullamento gratis fino a 24 ore prima,
+  rimborso entro 15 giorni, "quello che non è compreso è scritto sulla scheda".
+- **Ancora da fare, dal proprietario**: l'email e il numero di registro dell'agenzia
+  (I-AV-…) in "Chi siamo" dei termini e "Chi è il titolare" della privacy, nelle cinque
+  lingue (li chiede la LSSI). Piccola cosa: `faq.a2` dice "almeno 24 ore prima della
+  **data** dell'escursione"; dal #522 le 24 ore si contano dall'ora di partenza.

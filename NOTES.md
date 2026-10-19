@@ -19959,3 +19959,26 @@ non è toccata: lì la pagina dietro resta usabile. Provato con la tastiera sull
 finestre principali: apertura con Invio, 30 Tab e 30 Maiuscolo+Tab tutti dentro, Esc
 chiude e il fuoco torna sul pulsante; poi i giri col dito (richiesta fino a WhatsApp).
 `CACHE_NAME` → `isla-v586`.
+
+## La quinta prova da cliente (19 ottobre 2026)
+
+Coppia italiana più anziana: modalità scura, testo ingrandito del 30% (come "carattere
+grande" su Android), cognome con l'apostrofo, e il database che non risponde proprio
+mentre parte la richiesta. Poi un **controllo a tappeto** di tutte le schede pubblicate.
+**Nessun errore trovato, nessun codice cambiato.**
+
+- **Database guasto o appeso** al momento dell'invio: WhatsApp si apre lo stesso dopo
+  circa 2 secondi, col codice nel messaggio. La richiesta resta nel telefono "da mandare"
+  e `richiesteRiprova()` la manda alla visita dopo, **con lo stesso codice** che l'ufficio
+  ha già ricevuto su WhatsApp (provato: guasto, poi riapertura con la rete buona).
+- "Giuseppe D'Angelo" arriva intatto nel messaggio.
+- Modalità scura: si legge tutto, finestra della richiesta compresa.
+- Testo ingrandito: nella capsula la voce attiva "Esperienze" diventa "ESP…". È voluto
+  (`text-overflow: ellipsis` su `.isla-tab[aria-current="page"]`): la capsula non deve
+  uscire dallo schermo.
+- **Tutte le 67 schede pubblicate, 161 varianti**, una per una nel browser: la finestra
+  si apre, il calendario ha almeno un giorno prenotabile, il totale per 1 adulto (o 1
+  mezzo del primo tipo) è uguale al prezzo del catalogo, nessun errore JavaScript. Sulla
+  scheda bici le varianti stanno in gruppi chiusi (`<details>`): il programma di prova
+  deve aprirli prima di toccare il pulsante. Lo script sta nella scratchpad della sessione
+  (`i3.js`); rifarlo dopo una modifica grossa al catalogo o alla finestra vale la pena.

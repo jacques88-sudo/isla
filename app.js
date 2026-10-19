@@ -506,3 +506,67 @@ function initMoreMenu() {
 }
 
 document.addEventListener("DOMContentLoaded", initMoreMenu);
+
+// La tastiera resta dentro la finestra aperta (quarta prova da cliente,
+// proprietario 19 ottobre 2026). Con la richiesta aperta il tasto Tab finiva
+// sulla pagina dietro 15 volte su 25, e chiudendo con Esc il cursore non
+// tornava sul pulsante da cui si era partiti: chi usa la tastiera o un lettore
+// di schermo si perdeva. Le finestre modali sono sette (menu, richiesta,
+// ticket, lista, pacchetto, chat, istruzioni per installare), costruite in
+// modi diversi: invece di sette pezzi di codice, una regola sola che le
+// guarda tutte, cioe' ogni [role=dialog][aria-modal=true] che si vede.
+// Per chi usa le dita non cambia niente.
+(function () {
+  const TOCCABILI = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), ' +
+    'select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  const aperte = [];          // le finestre aperte, l'ultima e' quella in cima
+  const daDove = new Map();   // finestra -> l'elemento da cui si e' partiti
+  let ultimoFuori = null;     // l'ultimo elemento col fuoco fuori da ogni finestra
+
+  const siVede = el => !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+  const finestre = () => [...document.querySelectorAll('[role="dialog"][aria-modal="true"]')];
+  const toccabili = d => [...d.querySelectorAll(TOCCABILI)].filter(siVede);
+
+  document.addEventListener("focusin", e => {
+    if (!e.target.closest('[role="dialog"][aria-modal="true"]')) ultimoFuori = e.target;
+  });
+
+  function guarda() {
+    finestre().forEach(d => {
+      const aperta = !d.hidden && siVede(d);
+      const i = aperte.indexOf(d);
+      if (aperta && i < 0) {
+        aperte.push(d);
+        daDove.set(d, ultimoFuori);
+        // Se il codice della finestra non ha gia' messo il cursore dentro
+        // (lo fa solo dove serve, per non aprire la tastiera del telefono),
+        // va sul primo elemento: di solito la ✕.
+        if (!d.contains(document.activeElement)) {
+          const primo = toccabili(d)[0];
+          if (primo) primo.focus({ preventScroll: true });
+        }
+      } else if (!aperta && i >= 0) {
+        aperte.splice(i, 1);
+        const torna = daDove.get(d);
+        daDove.delete(d);
+        const perso = !document.activeElement || document.activeElement === document.body || d.contains(document.activeElement);
+        if (perso && torna && document.contains(torna) && siVede(torna)) torna.focus({ preventScroll: true });
+      }
+    });
+  }
+
+  new MutationObserver(guarda).observe(document.documentElement, {
+    subtree: true, childList: true, attributes: true, attributeFilter: ["hidden", "class", "style"]
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Tab" || !aperte.length) return;
+    const d = aperte[aperte.length - 1];
+    const lista = toccabili(d);
+    if (!lista.length) { e.preventDefault(); return; }
+    const primo = lista[0], ultimo = lista[lista.length - 1];
+    const dentro = d.contains(document.activeElement);
+    if (e.shiftKey && (!dentro || document.activeElement === primo)) { e.preventDefault(); ultimo.focus(); }
+    else if (!e.shiftKey && (!dentro || document.activeElement === ultimo)) { e.preventDefault(); primo.focus(); }
+  });
+})();

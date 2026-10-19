@@ -19944,3 +19944,18 @@ senza un passo in più. Provato: Royal Delfin due volte uguale (una voce), poi c
 (una voce, 9 adulti); Freebird 2 ore e 3 ore (due voci); buggy alle 11:00 e alle 13:30 (due
 voci); il pacchetto due volte (una voce, adulti aggiornati), col messaggio giusto.
 `CACHE_NAME` → `isla-v585`.
+
+### La tastiera resta dentro le finestre (19 ottobre 2026)
+
+Una regola sola in fondo ad `app.js`, che tutte le pagine del sito caricano, per tutte le
+finestre `[role=dialog][aria-modal=true]` (menu, richiesta, ticket, lista, pacchetto, chat,
+istruzioni per installare): un `MutationObserver` si accorge quando una si apre o si
+chiude. Aprendosi, ricorda l'ultimo elemento col fuoco fuori dalle finestre e, se il
+codice della finestra non ha già messo il cursore dentro (lo fa solo dove serve, per non
+aprire la tastiera del telefono), lo porta sul primo elemento toccabile, di solito la ✕.
+Tab e Maiuscolo+Tab girano solo dentro la finestra in cima. Chiudendosi, il cursore torna
+dove si era partiti. Per chi usa le dita non cambia niente. La mappa (`aria-modal="false"`)
+non è toccata: lì la pagina dietro resta usabile. Provato con la tastiera sulle sei
+finestre principali: apertura con Invio, 30 Tab e 30 Maiuscolo+Tab tutti dentro, Esc
+chiude e il fuoco torna sul pulsante; poi i giri col dito (richiesta fino a WhatsApp).
+`CACHE_NAME` → `isla-v586`.

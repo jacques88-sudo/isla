@@ -19402,9 +19402,25 @@ resta il loro** (il 5% non si somma).
 al file). Senza, il campo risponde "non riesco a controllare il codice": la richiesta
 senza codice parte come prima.
 
-Non fatto, da proporre se servirà: una colonna col codice sulla richiesta (oggi sta solo
-nel testo del messaggio) per contare le richieste per venditore; il link
-`?codice=MARCO` che riempie il campo da solo, da mettere in un QR del venditore.
+### Il codice sulla richiesta e il link del QR (19 ottobre 2026)
+
+- **`bookings.discount_code`**: `manda_richiesta` ha un argomento in più,
+  `p_discount_code`, e salva il codice **solo se esiste ed è acceso**. La versione a
+  cinque argomenti si toglie (`drop function`), se no il database non saprebbe quale
+  usare; un telefono col sito vecchio la chiama per nome e la richiesta entra lo stesso.
+  Sta nello **stesso file** `2026-10-18-codici-sconto.sql` (una query sola), con in
+  fondo la query che conta le richieste per venditore. La pulizia mensile le cancella:
+  si conta prima di fine mese.
+- **`?codice=MARCO`** su qualsiasi pagina con la lista (`codiceDallIndirizzo()` in
+  `lista.js`): il codice si ricorda nel telefono (`isla-codice`, solo il codice, mai lo
+  sconto) e si toglie dall'indirizzo. Aprendo la lista va nel campo e si controlla da
+  solo. Resta dopo una richiesta mandata; si dimentica se il cliente svuota il campo o
+  se il codice non esiste più.
+
+Provato l'SQL su un Postgres 16 di prova (due volte di fila, codice spento, codice
+inventato, chiamata senza codice, `anon` che non legge la tabella) e nel browser:
+QR → scheda → lista col codice già applicato → `p_discount_code: "MARCO"`.
+`CACHE_NAME` → `isla-v555`.
 
 Provato nel browser con Supabase finto: Freebird + Loro Parque col codice → −€3 solo sul
 Freebird; solo Loro Parque → "il codice è valido, ma non si applica"; codice sbagliato →

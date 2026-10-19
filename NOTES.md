@@ -19623,3 +19623,22 @@ che non sempre leggono il WebP) e le schermate del `manifest.json`.
   e `pacchetti.js`. Le due più diverse (teide-masca 34,1 dB, bento-giorni-parco 34,2)
   guardate ingrandite: identiche. Browser: home, elenco, schede, 7 pacchetti, 95 foto
   WebP, nessuna rotta. `CACHE_NAME` → `isla-v568`.
+- **Le foto della mappa (`assets/mappa/`)**: erano già piccole (720×480) e compresse
+  molto, e in WebP spesso pesavano **di più**: passano solo 15 su 83, 606 → 499 KB.
+  Le altre 68 restano JPG, e nella cartella i due formati convivono senza problemi
+  (`mappa.js` usa il nome scritto in `MAP_PHOTOS`). Nomi cambiati in `mappa-foto.js` e in
+  `index.html`, dove due riquadri di "Scopri Tenerife" usano foto della mappa. Browser:
+  tutte le 83 foto di `MAP_PHOTOS` si caricano, e i tre riquadri della home. La più
+  diversa (montana-amarilla-2, 35,8 dB) guardata intera: identica.
+  `CACHE_NAME` → `isla-v569`.
+
+**Il totale del passaggio a WebP**: 144 foto convertite in 9 PR (#499–#507), da 18,5 a
+12,3 MB, **6 MB in meno (−33%)**. Restano JPG, oltre ad `anteprima.jpg` e alle schermate del
+manifest, le foto dove il WebP non toglieva almeno il 10%: `freebird-3`,
+`skyline-cruiser`, `icod-garachico-orotava`, `paragliding`, `siam-park`, `Cat-privati` e
+68 foto della mappa. **Le foto nuove**: meglio salvarle già in WebP (qualità circa 78);
+una JPG va bene lo stesso, `controlla.js` accetta tutte e due.
+
+**Non controllato**: il repository `isla-ticket`, che carica catalogo e stili da
+`../isla/`. Prende i nomi delle foto dal catalogo, quindi segue da solo; se avesse un nome
+di foto scritto a mano nel suo HTML, va cambiato là.

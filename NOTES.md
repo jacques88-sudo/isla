@@ -19895,3 +19895,38 @@ l'ha mandato, senza tradurlo; il Plus Code sta solo nel commento, perché per il
 transfer "Punto di ritrovo: Big Fish, …", col transfer sparisce e si chiede l'hotel; il
 messaggio e il database (`pickup_point`) col posto; la richiesta confermata in "Le mie
 prenotazioni" con "Apri nella mappa" che cerca l'indirizzo. `CACHE_NAME` → `isla-v583`.
+
+## La quarta prova da cliente, e le 24 ore vere (19 ottobre 2026)
+
+Gruppo di 8 amici spagnoli, sul telefono, di sera: il pallino della chat, il calendario
+all'ultimo momento, la lista (doppione, data passata, togliere una voce), gli avvisi
+rifiutati, la mappa, la tastiera. Nessun errore JavaScript. Funzionano: la chat (domande
+frequenti, poi cosa / bambini / quando / budget e le schede giuste), la voce con la data
+passata (avviso, pulsante spento finché non si toglie), la ✕ della lista, gli avvisi
+rifiutati (la richiesta parte lo stesso), la mappa (elenco, scheda del posto con foto e
+"Portami qui"), tutte le immagini con `alt` e tutti i pulsanti con un nome. Trovati, e
+decisi dal proprietario:
+
+1. **Le 24 ore valevano per il giorno, non per l'ora**: alle 22:30 si chiedeva il buggy
+   delle 8:20 del mattino dopo. Il proprietario: "24 ore vere". Fatto, sotto.
+2. **La stessa escursione aggiunta due volte** (stessa scheda, variante, giorno e ora)
+   finiva due volte nella lista e nel messaggio. Il proprietario: sì alla proposta, non
+   duplicarla e dire "è già nella tua lista".
+3. **Il tasto Tab usciva dalla finestra della richiesta** (15 volte su 25), e chiudendo
+   con Esc il fuoco non tornava sul pulsante. Il proprietario: sì alla correzione.
+
+### Le 24 ore vere
+
+`partenzaPossibile(giorno, ora)` in `escursioni.js`: una partenza si chiede solo se
+mancano almeno 24 ore. L'ora è la prima scritta ("08:20", o l'inizio della fascia
+"09:00 - 10:00"); senza ora (charter con `times: []`, "Da concordare") si conta fino alle
+23:59 di quel giorno. `giornoPossibile()`: un giorno si può toccare nel calendario se
+almeno una sua partenza (vere, fasce segnaposto o nessuna) ci arriva. `riempiOrari()`
+spegne le ore troppo vicine del giorno scelto e, se quella scelta si è spenta, passa alla
+prima buona; il menu si rifà appena cambia la data. `listaVoceScaduta()` in `lista.js`
+usa la stessa regola, quindi una voce entrata per domani alle 11:00 stasera è scaduta.
+Restano "da domani": il calendario nativo del **pacchetto** (il primo dei tre giorni è
+indicativo, lo fissa l'ufficio) e i giorni proposti dalla **chat**, che servono solo a
+filtrare le schede. Provato con l'orologio finto: buggy alle 22:30 (domani spento) e alle
+10:00 (8:20 spenta), Masca + Teide con le fasce alle 12:00 e alle 17:30, i due charter
+alle 23:00, la lista. La regola è scritta anche in CLAUDE.md. `CACHE_NAME` → `isla-v584`.

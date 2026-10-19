@@ -7650,7 +7650,7 @@ const ESPLORA_CATALOG = [
       fr: "Masca et le parc national du Teide à bord d'un bus découvert : vous regardez le paysage tout autour de vous, sans vitre entre les deux.",
       de: "Masca und der Teide-Nationalpark in einem offenen Bus: Sie sehen die Landschaft rundherum, ohne Fensterscheibe dazwischen."
     },
-    image: "masca-teide-cabrio-bus.jpg",
+    image: "masca-teide-cabrio-bus.webp",
     published: true
   },
   {
@@ -7695,7 +7695,7 @@ const ESPLORA_CATALOG = [
       fr: "Un bateau réservé à votre seul groupe, avec le parcours et les horaires convenus avec vous. Le prix est pour tout le bateau, pas par personne.",
       de: "Ein Boot nur für Ihre Gruppe, mit Route und Zeiten nach Absprache. Der Preis gilt für das ganze Boot, nicht pro Person."
     },
-    image: "private-charter.jpg",
+    image: "private-charter.webp",
     published: true
   },
 

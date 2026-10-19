@@ -19871,3 +19871,15 @@ Provato nel browser: Submarine senza transfer e dal sud 159 € (2 adulti e 1 ba
 nord 193 €, le due caselle si escludono; Scandal 188 € senza transfer e niente totale col
 transfer; Castillo e Peter Pan come prima; pagina della scheda di Submarine, Siam Park e
 Twin Ticket; lista e messaggio. `CACHE_NAME` → `isla-v581`.
+
+### Immersioni: lo snorkeling senza la casella del transfer (19 ottobre 2026)
+
+Sulle immersioni il transfer sta sulla scheda (ritiro compreso), e la variante Snorkeling lo
+ereditava, anche se la spiegazione stessa dice che lo snorkeling delle 10:30 è senza ritiro:
+la finestra mostrava la casella e chiedeva l'hotel. C'era già un commento "Niente transfer",
+ma non bastava, perché l'assenza del campo vuol dire "come la scheda". Ora la variante ha
+`transfer: null`: `transferDi()` (e `transferOfferto()` dei venditori) leggono la variante per
+prima, quindi niente casella, niente hotel, niente righe di transfer nel messaggio. Il
+`ritrovo` non l'ho messo: si sa solo "Los Cristianos", non il posto preciso. Provato:
+Snorkeling senza casella, Battesimo e 1 immersione con la casella come prima, messaggio
+delle due richieste. `CACHE_NAME` → `isla-v582`.

@@ -19611,3 +19611,9 @@ che non sempre leggono il WebP) e le schermate del `manifest.json`.
   `santa-cruz-taganana`). Le due più diverse (La Gomera 34,1 dB, tuk tuk 34,3) guardate
   ingrandite: identiche. Browser: 8 schede pubblicate, elenco, home, 7 pacchetti, 74 foto
   WebP, nessuna rotta. `CACHE_NAME` → `isla-v566`.
+- **Tour privati (`tour-privati`)**: 2 foto, 341 → 191 KB (−44%): `private-charter` e
+  `masca-teide-cabrio-bus`. Le altre schede usano foto già convertite con le barche e i
+  tour; resta JPG `skyline-cruiser.jpg`, come con le barche. Differenza più alta 37,1 dB
+  (più alta delle categorie già guardate a occhio). Browser: 9 schede, elenco, home, 7
+  pacchetti, 81 foto WebP, nessuna rotta. `CACHE_NAME` → `isla-v567`.
+- **Noleggi (`noleggi`)**: nessuna foto nelle schede, niente da fare.

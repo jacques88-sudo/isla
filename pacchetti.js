@@ -1335,7 +1335,7 @@ function pacchettoPrezziMezziUguali(tour) {
 //   costo     quanto costano in tutto — non si moltiplica per le persone
 //   posti     quante persone ci stanno sopra, per il controllo dei posti
 //   nome      "Buggy", "Moto d'acqua": il nome del gruppo, dal catalogo
-//   righe     "1 × 4 posti €240", per il conto sotto il totale e per il messaggio
+//   righe     "4 posti × 1 (€240)", per il conto sotto il totale e per il messaggio
 // Torna null se non si e' scelto niente o se un tipo contato non ha prezzo:
 // e' la stessa regola di sempre, meglio nessun totale che uno inventato.
 function pacchettoContoMezzi(gruppo, numeri) {
@@ -1353,11 +1353,11 @@ function pacchettoContoMezzi(gruppo, numeri) {
     costo += prezzo * n;
     posti += (tipo.seats || 0) * n;
     quanti += n;
-    // "1 × 4 posti €240" e non "4 posti × 1": davanti il numero dei mezzi,
-    // che e' quello che il cliente ha appena battuto, e dietro il tipo col suo
-    // prezzo. Il "×" e il punto in mezzo sono gli stessi del riepilogo dei
-    // mezzi in escursioni.js, cosi' le due finestre si leggono uguali.
-    righe.push(n + " × " + tf(tipo.name) + " €" + eur(prezzo));
+    // "4 posti × 1 (€240)": come la riga dei mezzi delle schede ("Buggy: 4
+    // posti × 1"), col prezzo fra parentesi. Prima era "1 × 4 posti €240", e
+    // con la Mustang "1 × Con 1 o 2 persone €250" (terza prova da cliente,
+    // 19 ottobre 2026).
+    righe.push(tf(tipo.name) + " × " + n + " (€" + eur(prezzo) + ")");
   });
   if (manca || !quanti) return null;
 
@@ -1411,7 +1411,7 @@ function pacchettoTotale(pack, adulti, bambini, mezzi) {
       if (!conto) { possibile = false; return; }
       fisso += conto.costo;
       if (pacchettoVoceScontabile(voce)) scontabileFisso += conto.costo;
-      pezzi.push(conto.nome + " " + conto.righe);
+      pezzi.push(conto.nome + ": " + conto.righe);
       return;
     }
 
@@ -1495,7 +1495,7 @@ function pacchettoRigheRichiesta(pack, req) {
     "• " + t("wa.people") + ": " + peopleText(req.adults, req.kids, 0)
   ];
 
-  // I mezzi scelti, un rigo per gruppo ("Buggy: 1 × 4 posti €240"). Sta sopra
+  // I mezzi scelti, un rigo per gruppo ("Buggy: 4 posti × 1 (€240)"). Sta sopra
   // l'hotel e sotto le persone perche' e' la seconda cosa che l'ufficio guarda
   // per rispondere: quanti sono e su cosa salgono. Col prezzo dentro, che e'
   // lo stesso che il cliente ha visto nella finestra: se i due numeri non

@@ -20591,3 +20591,42 @@ Al cliente si manda il numero scritto (`1234`): `le_mie_escursioni()` con numero
 telefono mostra **tutte** le sue confermate. Il database non cambia.
 Provate le due funzioni in Node con un finto Supabase; la pagina vera (Isla Ticket) vuole
 il login e non si è provata nel browser. `CACHE_NAME` → `isla-v603`.
+
+## Il meteo anche sul Teide (20 ottobre 2026)
+
+Il proprietario: "per l'escursione del Teide non c'è il meteo". Era voluto: le previsioni
+delle spiagge non dicono niente a 3700 m. Ma AEMET fa un **bollettino di montagna per il
+Teide** (dal 2021), ogni giorno verso le 18, **solo in PDF**
+(`…/boletin_montana/BM_Teide.pdf`, non sta in OpenData e non vuole la chiave). Ha il
+cielo, la pioggia e il vento **in frasi spagnole**, e una tabella di numeri **solo per il
+giorno dopo**: minima, massima e percepita su Teide (3715 m), Izaña (2371 m) e
+Teleférico (2356 m).
+
+Il proprietario ha scelto **solo le temperature** (i numeri si leggono in cinque lingue,
+le frasi no). Sulla card: "Teide (3715 m): da -1° a 2°, percepita fino a -3°" e la
+stessa riga per il Teleférico (Izaña è quasi alla stessa quota), con "Previsione AEMET di
+montagna per il Teide".
+
+- `meteo-aemet` scarica il PDF, ne legge il testo con `unpdf` e `leggiTeide()` prende la
+  tabella di ogni "Pronóstico para el día N". Il giorno è solo il numero: se è più piccolo
+  di quello del bollettino è del mese dopo. Se non riconosce niente non salva niente.
+  Salva con `spiaggia = 'teide'`, quindi serve `2026-10-20-meteo-teide.sql`, che allarga
+  il controllo della colonna. La riga di oggi resta quella del bollettino di ieri;
+  dopodomani di solito non c'è ancora, e la card resta nascosta.
+- `meteo.js`: la zona "Teide e nord" non basta (ci sono Loro Parque e Santa Cruz).
+  Decide `METEO_TEIDE`: Teide National Park, Teide-Icod-Garachico-Masca, il giro
+  dell'isola, Masca + Teide cabrio bus, lo stargazing e il quad; per trekking e bici
+  solo le varianti che salgono (Teide Light; Mount Teide Challenge, le discese del Teide,
+  Izaña – El Poris), con l'etichetta italiana di `option_label`.
+
+**Provato**: `leggiTeide()` in Node sul PDF vero di oggi (domani Teide da -1° a 2°,
+percepita -3°; Teleférico da 7° a 11°), il cambio di mese (31 ottobre → 1 novembre) e un
+testo che non c'entra (nessuna riga). Nel browser, con un finto ticket e un finto meteo: Teide
+National Park e bici "Teide Downhill" lo mostrano, "Vilaflor Tour" e Loro Parque no,
+lo stargazing di oggi senza riga resta nascosto, Freebird tiene la spiaggia; italiano e
+tedesco, 375 px. **Non provata** la funzione su Supabase (Deno + `unpdf`).
+`CACHE_NAME` → `isla-v604`.
+
+**Da fare (proprietario)**: incollare `2026-10-20-meteo-teide.sql` nel SQL Editor, poi
+ridistribuire `meteo-aemet` e aprire una volta a mano l'indirizzo della funzione. Nella
+risposta `errori` non deve comparire "Teide".

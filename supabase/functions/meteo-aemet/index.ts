@@ -4,9 +4,10 @@
 //
 // Le spiagge: quelle delle zone del catalogo, per le prenotazioni (meteo.js,
 // METEO_ZONE), e quelle della mappa (mappa.js, campo meteo). Una spiaggia nuova
-// si aggiunge QUI e la' dove si mostra. Per "Teide e nord" niente: AEMET da'
-// solo la previsione dei paesi, e quella di La Orotava (300 m) non dice niente
-// del Teide (3700 m); meglio niente che un dato sbagliato.
+// si aggiunge QUI e la' dove si mostra. Per "Teide e nord" le spiagge no:
+// AEMET da' solo la previsione dei paesi, e quella di La Orotava (300 m) non
+// dice niente del Teide (3700 m). Per il Teide c'e' il bollettino di montagna
+// (20 ottobre 2026): vedi TEIDE piu' sotto.
 //
 // Chi la chiama: Cron di Supabase, ogni 3 ore. La funzione e' aperta (Verify
 // JWT spento), come pulisci-foto: prende solo previsioni pubbliche e non
@@ -19,6 +20,7 @@
 // dati, in ISO-8859-15 (non UTF-8).
 
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { extractText, getDocumentProxy } from "npm:unpdf@0.12.1";
 
 // I codici delle spiagge: Playas_codigos.csv di AEMET (20 ottobre 2026).
 // Nove spiagge, due chiamate ciascuna, ogni 3 ore: lontanissimi dai limiti.
@@ -92,6 +94,65 @@ function riga(spiaggia: string, g: Giorno, elaborato: string | null) {
   };
 }
 
+// IL TEIDE (20 ottobre 2026, proprietario). AEMET fa ogni giorno, verso le 18,
+// un bollettino di montagna per il Teide, ma solo in PDF (non sta in
+// OpenData, quindi niente chiave). Si legge il testo e si prendono solo le
+// temperature del giorno dopo, l'unico che ha la tabella:
+//   "Pronóstico para el día 21 (miércoles) ... Teide (3715 m) -1 ( -3) 2 ( -2)"
+// cioe' minima, (percepita), massima, (percepita). Cielo e pioggia sono frasi
+// in spagnolo: non si prendono, il sito parla cinque lingue. Si salva sotto
+// spiaggia "teide" (supabase/modifiche/2026-10-20-meteo-teide.sql). La riga
+// di oggi resta quella del bollettino di ieri.
+const TEIDE = "https://www.aemet.es/documentos/es/eltiempo/prediccion/montana/boletin_montana/BM_Teide.pdf";
+const MESI = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
+  "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+// Il testo del PDF → le righe della tabella meteo. Se il formato cambia e non
+// si riconosce niente, nessuna riga: meglio niente che un numero sbagliato.
+export function leggiTeide(testo: string) {
+  const t = testo.replace(/\s+/g, " ");
+  const fatto = t.match(/Día (\d{1,2}) de ([a-zé]+) de (\d{4}) a las (\d{1,2}:\d{2})/i);
+  if (!fatto) return [];
+  const mese = MESI.indexOf(fatto[2].toLowerCase());
+  if (mese < 0) return [];
+  const anno = Number(fatto[3]), giornoFatto = Number(fatto[1]);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const elaborato = `${anno}-${pad(mese + 1)}-${pad(giornoFatto)}T${fatto[4].padStart(5, "0")}:00`;
+  const righe = [];
+  const pezzi = t.split(/Pronóstico para el día /i).slice(1);
+  for (const pezzo of pezzi) {
+    const g = Number((pezzo.match(/^(\d{1,2})/) || [])[1]);
+    if (!g) continue;
+    // il giorno e' solo il numero: se e' piu' piccolo di quello del
+    // bollettino, e' del mese dopo (31 ottobre → 1 novembre)
+    const d = new Date(Date.UTC(anno, mese + (g < giornoFatto ? 1 : 0), g));
+    const punti = [];
+    const re = /([A-ZÁÉÍÓÚÑ][\wáéíóúñ ]*?) \((\d{3,4}) m\) (-?\d+) \( ?(-?\d+)\) (-?\d+) \( ?(-?\d+)\)/g;
+    for (const m of pezzo.matchAll(re)) {
+      punti.push({ nome: m[1].trim(), quota: Number(m[2]), min: Number(m[3]), stMin: Number(m[4]), max: Number(m[5]), stMax: Number(m[6]) });
+    }
+    if (!punti.length) continue;
+    righe.push({
+      spiaggia: "teide",
+      giorno: `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`,
+      dati: { punti },
+      elaborato,
+      aggiornato: new Date().toISOString(),
+    });
+  }
+  return righe;
+}
+
+async function teide() {
+  const risposta = await fetch(TEIDE);
+  if (!risposta.ok) throw new Error(`Teide: ${risposta.status}`);
+  const pdf = await getDocumentProxy(new Uint8Array(await risposta.arrayBuffer()));
+  const { text } = await extractText(pdf, { mergePages: true });
+  const righe = leggiTeide(Array.isArray(text) ? text.join(" ") : text);
+  if (!righe.length) throw new Error("Teide: bollettino non riconosciuto");
+  return righe;
+}
+
 async function previsione(chiave: string, codice: string): Promise<{ elaborato: string | null; giorni: Giorno[] }> {
   const primo = await fetch(AEMET + codice, { headers: { api_key: chiave } });
   const passo = await primo.json();
@@ -129,6 +190,12 @@ Deno.serve(async () => {
       // resta finche' il giorno non passa
       errori.push((err as Error).message);
     }
+  }
+
+  try {
+    righe.push(...await teide());
+  } catch (err) {
+    errori.push((err as Error).message);
   }
 
   if (righe.length) {

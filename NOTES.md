@@ -20556,7 +20556,9 @@ Il punto 6 delle proposte. Chi apriva un'escursione per domani mattina vedeva il
 spento nel calendario e poteva pensare che fosse pieno: le 24 ore vere
 (`partenzaPossibile()`) non le diceva nessuno lì. Ora sotto il calendario, sempre in
 vista, `req.dateHint`: "Si può chiedere fino a 24 ore prima della partenza: i giorni e gli
-orari più vicini sono spenti", nelle cinque lingue. Messa nelle **due** finestre della
+orari più vicini sono spenti", nelle cinque lingue. Lo stesso giorno il proprietario ha tolto la seconda
+parte ("i giorni e gli orari più vicini sono spenti"): resta solo "Si può chiedere fino a
+24 ore prima della partenza" (`isla-v602`). Messa nelle **due** finestre della
 richiesta (`tour.html` e `escursioni.html`), con `[data-request-date-hint]` per lo spazio
 sotto, come `[data-hotel-hint]`. Il pacchetto no: lì il primo giorno è indicativo e lo
 fissa l'ufficio. Provato su Freebird da `tour.html` ed `escursioni.html`, 375 px, cinque

@@ -126,6 +126,7 @@ porto e capienza con le schede della stessa categoria.
 | `lista.js` | la lista delle richieste (localStorage), costruita in JS perché serve a tre pagine |
 | `i18n.js` | tutti i testi fissi nelle cinque lingue, e `perUfficio()` per il messaggio WhatsApp |
 | `controlla.js` | il controllo del catalogo |
+| `foto-piccole.py` | fa le copie piccole delle foto in `assets/piccole/` (720 px), che usano elenco, home, miniature e "altre esperienze" (`fotoPiccola()` in `escursioni.js`). **Si lancia dopo ogni foto nuova** in `assets/`: senza copia la foto in elenco esce rotta, e `controlla.js` dà errore; il sito non lo carica |
 | `orari-mancanti.js` | la lista delle schede senza orari di partenza; il sito non lo carica |
 | `foglio-google/` | il programma (Apps Script) del foglio Google dei netti, e come si installa; il sito non lo carica |
 | `venditori.js` | **Isla Ticket**, la pagina dei venditori: ticket di carta nel database (Supabase), richieste, statistiche. **La pagina sta in un altro repository, `isla-ticket`** (`jacques88-sudo.github.io/isla-ticket/`: pagina, manifest, icone, service worker, riquadro "Installa") e carica questo file, gli stili e il catalogo da `../isla/`. Su Android un'app non può stare dentro l'indirizzo di Isla. `venditori.html` e `ticket/` sono solo rimandi; Isla non ha il link "Area venditori". **Il modulo HTML sta là**: un campo nuovo nel modulo va messo in tutti e due i repository. Dove le regole dicono "`venditori.html`" si intende questa pagina |

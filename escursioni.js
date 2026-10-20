@@ -53,6 +53,15 @@ function esc(testo) {
     .replace(/"/g, "&quot;");
 }
 
+// La copia piccola di una foto (larga al massimo 720 px, in assets/piccole/,
+// la fa foto-piccole.py): per le foto che in pagina restano larghe al massimo
+// 350 px, le schede dell'elenco, le miniature, le "altre esperienze". La foto
+// intera pesa due o tre volte tanto e li' non si vedrebbe la differenza.
+// La usa anche tour.js.
+function fotoPiccola(nome) {
+  return "./assets/piccole/" + encodeURIComponent(nome);
+}
+
 function tourPrice(tour) {
   if (tour.priceFrom === null) return t("tour.onRequest");
   return t("tour.from", { p: eur(tour.priceFrom) }) + priceUnitSuffix(tour);
@@ -970,7 +979,7 @@ function tourCard(tour) {
   // encodeURIComponent: se un nome file contiene spazi o accenti,
   // l'indirizzo resta valido invece di rompersi a metà
   const media = tour.image
-    ? `<img src="./assets/${encodeURIComponent(tour.image)}" alt="${tf(tour.title)}" loading="lazy" />`
+    ? `<img src="${fotoPiccola(tour.image)}" alt="${tf(tour.title)}" loading="lazy" />`
     : `<span class="tour-media-empty" aria-hidden="true">${t("tour.photoSoon")}</span>`;
 
   // Foto, titolo e pulsante portano tutti alla pagina di dettaglio.

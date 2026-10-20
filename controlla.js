@@ -369,6 +369,20 @@ function controllaFoto(t) {
   }
 }
 
+// ─── 6-bis. Ogni foto ha la sua copia piccola ─────────────────────────────
+// Le schede dell'elenco, le miniature e la home usano assets/piccole/ (la
+// funzione fotoPiccola() in escursioni.js): una foto senza copia li' esce
+// rotta. Le copie le fa foto-piccole.py, con gli stessi nomi.
+function controllaFotoPiccole() {
+  const cartella = path.join(RADICE, "assets", "piccole");
+  const piccole = new Set(fs.existsSync(cartella) ? fs.readdirSync(cartella) : []);
+  [...FOTO]
+    .filter(nome => /\.(webp|jpe?g)$/i.test(nome) && nome !== "anteprima.jpg")
+    .filter(nome => !piccole.has(nome))
+    .forEach(nome => errore("assets/" + nome,
+      "manca la copia piccola in assets/piccole/: lancia python3 foto-piccole.py"));
+}
+
 // ─── 7. I testi tradotti devono avere tutte e cinque le lingue ────────────────
 // Una stringa da sola va bene: vuol dire "uguale in tutte le lingue" (i nomi
 // propri). Ma se e' un oggetto, le cinque lingue ci devono essere tutte, se no il
@@ -913,6 +927,7 @@ controllaPortare();
 controllaI18n();
 controllaPacchetti();
 controllaServiceWorker();
+controllaFotoPiccole();
 
 const pubblicate = ESPLORA_CATALOG.filter(t => t.published).length;
 console.log("  schede: " + ESPLORA_CATALOG.length + ", di cui pubblicate " + pubblicate);

@@ -20083,3 +20083,40 @@ Proposto insieme a "Condividi": un file `.ics` sulle escursioni confermate, con 
 ora e punto di ritrovo. Il proprietario l'ha scartato: il promemoria sul telefono
 lo manda già `manda-notifiche`, e due promemoria per la stessa cosa non servono.
 Sta anche fra le "Cose decise" di `CLAUDE.md`.
+
+## Le copie piccole delle foto (20 ottobre 2026)
+
+Il proprietario: "facciamo le foto più leggere". Il WebP era già fatto (19 ottobre). Il
+peso che restava era un altro: le schede dell'elenco, le copertine della home, le
+miniature della galleria e le "altre esperienze" mostrano le foto **larghe al massimo
+350 px** (misurato da 320 a 1920 px di schermo), ma scaricavano la foto intera da 1200
+px, a volte 1920.
+
+Ora **ogni foto di `assets/` ha una copia larga 720 px, con lo stesso nome, in
+`assets/piccole/`**. La fa `foto-piccole.py` (WebP qualità 78, JPG qualità 82, profilo
+colore tenuto; le foto già piccole si copiano com'erano). La usano:
+- `tourCard()` in `escursioni.js` (l'elenco), con la funzione `fotoPiccola()`;
+- in `tour.js` le miniature della galleria e le "altre esperienze"; la foto grande in
+  cima resta quella intera, anche quando la cambia una miniatura;
+- in `index.html` le copertine delle categorie, i riquadri `bento-*` e
+  `icod-garachico-orotava` (le foto della mappa erano già 720 px e restano dove sono).
+
+**Non le usano**, perché lì la foto si vede grande: la foto in cima alle schede, la testata
+dell'elenco, `About-team` (fino a 500 px), le tessere dei pacchetti (fino a 530 px sul
+computer) e la pagina del pacchetto.
+
+**Perché 720 e non `srcset`**: con `srcset` il browser sceglie per la densità dello
+schermo, e un iPhone (3×) su una scheda larga 348 px vorrebbe 1044 px: avrebbe preso
+sempre la foto grande, cioè nessun risparmio proprio sui telefoni. 720 px su 348 sono
+già il doppio. Confrontate ingrandite due volte, a 3×: la piccola è appena più morbida,
+alla misura vera uguale.
+
+Misurato (iPhone 390 px, 3×, pagina scorsa fino in fondo, foto scaricate):
+home 1344 → 930 KB, elenco 551 → 421 KB, le 67 schede insieme 28,0 → 17,3 MB (−38%).
+Il video della home (1,4 MB) è già compresso bene: ricompresso toglieva 15–30% ma si
+vedeva peggio, lasciato così.
+
+**Una foto nuova**: si mette in `assets/` e si lancia `python3 foto-piccole.py`.
+`controlla.js` dà errore se una foto non ha la sua copia (sezione 6-bis).
+Browser: 71 pagine (home, elenco, pacchetti, mappa, tutte le schede), nessuna foto rotta,
+nessun errore. `CACHE_NAME` → `isla-v590`.

@@ -4,6 +4,8 @@
 //     domani e dopodomani, la previsione della spiaggia della zona, della
 //     mattina o del pomeriggio;
 //   - la mappa (mappa.js): toccando una spiaggia, oggi e domani.
+// E sulle escursioni che salgono sul Teide (20 ottobre 2026, proprietario) il
+// bollettino di montagna di AEMET: solo le temperature, vedi METEO_TEIDE.
 // Solo i dati, nessun giudizio ("buona giornata per la barca" no): se si esce
 // lo decide l'operatore. E si scrive sempre che la previsione e' di AEMET.
 //
@@ -39,6 +41,27 @@ const METEO_ZONE = {
   "los-cristianos": "3800603",
   "los-gigantes": "3804004"
 };
+// IL TEIDE (20 ottobre 2026, proprietario). Le spiagge per il Teide non
+// dicono niente, ma AEMET fa un bollettino di montagna apposta (BM_Teide.pdf):
+// meteo-aemet lo legge e salva le temperature sotto "teide". Solo i numeri:
+// cielo e pioggia AEMET li scrive in spagnolo, e qui si parla cinque lingue.
+// La zona "Teide e nord" non basta (ci stanno Loro Parque e Santa Cruz): qui
+// le schede che salgono davvero, e dove sale solo qualche variante, quelle
+// (l'etichetta italiana, come in option_label).
+const METEO_TEIDE = {
+  "teide-national-park": true,
+  "icod-garachico-orotava": true,
+  "island-tour-completo": true,
+  "masca-teide-cabrio-bus": true,
+  "stargazing-group": true,
+  "quad-teide-adventure": true,
+  "trekking-bici": ["Teide Light"],
+  "bici": ["Mount Teide Challenge West Slope (110/150 €)", "Mount Teide Challenge South Slope (110/120 €)",
+    "Teide Downhill", "Izaña – El Poris, Teide Easy Downhill", "Teide South Off-road Downhill"]
+};
+// I punti del bollettino che si mostrano: la vetta e la base della funivia
+// (Las Cañadas, dove arrivano i pullman). Izaña è quasi alla stessa quota.
+const METEO_TEIDE_PUNTI = ["Teide", "Teleférico"];
 const METEO_GIORNI = 3;   // AEMET dà oggi, domani e dopodomani
 const METEO_KEY = "isla-meteo";
 
@@ -75,7 +98,9 @@ function meteoNumeri(dati) {
 // nord" e poi "Los Gigantes", e il meteo della spiaggia di La Arena per un giro
 // in montagna sarebbe sbagliato. Royal Delfin e Shogun cominciano con Costa
 // Adeje, e il meteo ce l'hanno.
-function meteoSpiaggiaDi(tour) {
+function meteoSpiaggiaDi(tour, b) {
+  const teide = tour && METEO_TEIDE[tour.id];
+  if (teide === true || (teide && b && teide.includes(b.option_label))) return "teide";
   const prima = tour && tour.zoneGroups && tour.zoneGroups[0];
   return (prima && METEO_ZONE[prima]) || null;
 }
@@ -89,7 +114,7 @@ function meteoMetaGiornata(b) {
 
 // Il posto vuoto nella card (cardTicket): solo dove ci sarà una previsione.
 function meteoSegnaposto(b, tour) {
-  const spiaggia = meteoSpiaggiaDi(tour);
+  const spiaggia = meteoSpiaggiaDi(tour, b);
   if (!spiaggia || !b.date) return "";
   const giorni = Array.from({ length: METEO_GIORNI }, (_, i) => meteoGiorno(i));
   if (!giorni.includes(b.date)) return "";
@@ -97,7 +122,27 @@ function meteoSegnaposto(b, tour) {
           <div class="info-field meteo" style="grid-column:1/-1" data-meteo="card|${spiaggia}|${meteoEsc(b.date)}|${meteoMetaGiornata(b)}" hidden></div>`;
 }
 
+// Il Teide: tutto il giorno, una riga per punto. "Teide (3715 m): da -1° a
+// 2°, percepita fino a -3°". Il bollettino copre solo il giorno dopo: oggi
+// resta quello di ieri, dopodomani di solito non c'è ancora.
+function meteoCardTeide(giorno) {
+  const r = meteoRiga("teide", giorno);
+  const punti = ((r && r.dati && r.dati.punti) || [])
+    .filter(p => METEO_TEIDE_PUNTI.includes(p.nome) && p.min != null && p.max != null);
+  if (!punti.length) return null;
+  const righe = punti.map(p => t("meteo.mountain", { posto: p.nome, quota: p.quota, min: p.min, max: p.max }) +
+    (p.stMin != null && p.stMin < p.min ? t("meteo.feels", { n: p.stMin }) : ""));
+  return `
+            ${METEO_ICONA}
+            <div>
+              <h3>${meteoEsc(t("meteo.title"))}</h3>
+              ${righe.map(x => `<p>${meteoEsc(x)}</p>`).join("")}
+              <p class="meteo-fonte">${meteoEsc(t("meteo.sourceTeide"))}</p>
+            </div>`;
+}
+
 function meteoCard(spiaggia, giorno, meta) {
+  if (spiaggia === "teide") return meteoCardTeide(giorno);
   const r = meteoRiga(spiaggia, giorno);
   const d = r && r.dati;
   const cielo = d && d.cielo && d.cielo[meta];

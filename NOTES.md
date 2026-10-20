@@ -20266,7 +20266,7 @@ vecchie di Tripadvisor e Facebook nel database; 4. l'avviso sul telefono il gior
 In Isla Ticket, sotto le statistiche, la tendina **"Recensioni (N da leggere)"**. Decisioni
 del proprietario, 20 ottobre 2026:
 - la vede e la usa **solo l'ufficio** (`is_office()`, come le statistiche). Non basta
-  nasconderla: `supabase/modifiche/2026-10-20-recensioni-ufficio.sql` rifà le tre regole
+  nasconderla: `supabase/modifiche/2026-10-20-recensioni2-ufficio.sql` rifà le tre regole
   della tabella da `is_seller()` a `is_office()`, e così il database rifiuta anche a un
   venditore che provasse dalla console;
 - le **pubblicate** stanno in fondo, chiuse ("Pubblicate (N)", lo stesso riquadro degli
@@ -20291,9 +20291,54 @@ Pubblica manda `PATCH` con stato e data, Scarta e Togli `DELETE`; il conto "da l
 scende; un testo con HTML esce come testo; a 390 px niente esce dallo schermo.
 `CACHE_NAME` → `isla-v593`.
 
-**Da fare:** il proprietario lancia `2026-10-20-recensioni-ufficio.sql`. Senza, la
+**Da fare:** il proprietario lancia `2026-10-20-recensioni2-ufficio.sql`. Senza, la
 pagina funziona lo stesso (la sezione la vede comunque solo l'ufficio), ma il database
 lascerebbe fare a ogni venditore.
 
 Passi che restano: le vecchie di Tripadvisor e Facebook sono entrate col passo 1; 4.
 l'avviso sul telefono il giorno dopo ("Com'è andata?").
+
+## Le recensioni, passo 4: l'avviso "Com'è andata?" il giorno dopo (20 ottobre 2026)
+
+Il quarto avviso di `manda-notifiche`, tipo `review` (proprietario: "procedi senza
+skill", la Pwa Expert non serve: il service worker non cambia, è un tipo in più nella
+funzione che c'è già).
+
+**Quando e a chi** (lo decide `notifiche_da_mandare()`, rifatta in
+`supabase/modifiche/2026-10-20-recensioni3-avviso.sql`):
+- il **giorno dopo** l'escursione, dalle **18:00 di Tenerife** a mezzanotte; se in
+  quelle ore non parte, non parte più (e due giorni dopo gli indirizzi si cancellano);
+- solo richieste **WhatsApp confermate**: i ticket di carta non hanno avvisi;
+- **una volta per cliente**, come la recensione: con più escursioni ieri, la più
+  recente; niente se la richiesta l'ha già avuto o se la recensione c'è già;
+- solo ai telefoni **iscritti dal 21 ottobre 2026**: chi ha detto sì prima ha letto
+  "quando l'ufficio conferma o annulla, e prima dell'escursione", e a questo non ha
+  detto sì. Da oggi la frase (`lista.avvisiNota`) e la privacy, nelle cinque lingue,
+  dicono anche "il giorno dopo, per chiederti com'è andata".
+`vive` ora guarda anche le escursioni di ieri; conferme e annullamenti restano solo da
+oggi in poi, come prima. `notifiche_mandate.tipo` accetta `review`.
+
+Provato sul Postgres vero con l'orologio finto (`now()` sostituito in una copia di
+prova): alle 17:00 niente; alle 19:00 un avviso solo, per l'escursione più recente
+(15:00 contro 10:00); niente al telefono iscritto il 15 ottobre, a chi l'ha già
+scritta, alla richiesta in attesa, all'escursione di due giorni prima; mandato una
+volta, non riparte; un'escursione di ieri non riceve una "confermata". Il file si
+rilancia.
+
+**Il testo** ("Freebird: com'è andata?" — "Ci farebbe piacere leggere la tua recensione:
+bastano due righe.") nelle cinque lingue, provato in Node staccando `messaggio()` dalla
+funzione (Deno qui non c'è); gli altri avvisi escono come prima. Toccato, apre
+`booking.html?richieste=1&r=…&d=…&e=…&recensione=1`: `mostraDallAvviso()` apre subito il
+modulo in cima (o mostra il grazie, se è già partita). Provato nel browser.
+
+I file delle recensioni si chiamano `recensioni.sql`, `recensioni2-ufficio.sql`,
+`recensioni3-avviso.sql`: in ordine alfabetico è anche l'ordine in cui si lanciano (prima
+`recensioni-ufficio.sql` sarebbe venuto prima di `recensioni.sql`). Rinominato il 20
+ottobre, lo stesso giorno: il proprietario l'aveva lanciato con l'errore di incollare il
+nome del file invece del contenuto (nel SQL Editor va il **contenuto**).
+
+**Da fare:** lanciare `recensioni3-avviso.sql`, poi **ripubblicare la funzione**:
+Supabase → Edge Functions → manda-notifiche → Code → incollare
+`supabase/functions/manda-notifiche/index.ts` → Deploy. Senza la funzione nuova il
+database dà gli avvisi `review` e la funzione li manderebbe con il titolo vuoto: va fatta
+**prima o subito dopo** il file SQL, prima delle 18:00. `CACHE_NAME` → `isla-v594`.

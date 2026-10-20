@@ -1,9 +1,11 @@
 // manda-notifiche: manda gli avvisi sul telefono del cliente.
 //
 // Tre avvisi (proprietario, 6 ottobre 2026): richiesta CONFERMATA, richiesta
-// ANNULLATA, PROMEMORIA prima dell'escursione. Quando parte il promemoria lo
-// decide il database, in notifiche_da_mandare()
-// (supabase/modifiche/2026-10-13-notifiche.sql): qui si scrive e si manda.
+// ANNULLATA, PROMEMORIA prima dell'escursione. Dal 20 ottobre 2026 un quarto,
+// RECENSIONE: il giorno dopo l'escursione, "com'e' andata?", una volta sola per
+// cliente. Quando parte ogni avviso lo decide il database, in
+// notifiche_da_mandare() (supabase/modifiche/2026-10-13-notifiche.sql, rifatta
+// in 2026-10-20-recensioni3-avviso.sql): qui si scrive e si manda.
 //
 // Chi la chiama:
 //   - Cron di Supabase, ogni 10 minuti (promemoria, e quello che e' rimasto);
@@ -37,7 +39,7 @@ const DURATA = 12 * 60 * 60;
 
 type Avviso = {
   booking_id: string;
-  tipo: "confirmed" | "cancelled" | "reminder";
+  tipo: "confirmed" | "cancelled" | "reminder" | "review";
   request_token: string;
   excursion_id: string | null;
   date: string;              // "2026-10-14"
@@ -66,6 +68,8 @@ const TESTI = {
     luogo: "Ritrovo: ",
     annullata: "{d}. Apri l'app per vedere cosa fare.",
     escursione: "La tua escursione",
+    review: "{t}: com'è andata?",
+    recensione: "Ci farebbe piacere leggere la tua recensione: bastano due righe.",
   },
   en: {
     confirmed: "{t}: confirmed",
@@ -77,6 +81,8 @@ const TESTI = {
     luogo: "Meeting point: ",
     annullata: "{d}. Open the app to see your options.",
     escursione: "Your excursion",
+    review: "{t}: how did it go?",
+    recensione: "We'd love to read your review: two lines are enough.",
   },
   es: {
     confirmed: "{t}: confirmada",
@@ -88,6 +94,8 @@ const TESTI = {
     luogo: "Punto de encuentro: ",
     annullata: "{d}. Abre la app para ver qué hacer.",
     escursione: "Tu excursión",
+    review: "{t}: ¿qué tal fue?",
+    recensione: "Nos encantaría leer tu reseña: bastan dos líneas.",
   },
   fr: {
     confirmed: "{t} : confirmée",
@@ -99,6 +107,8 @@ const TESTI = {
     luogo: "Point de rendez-vous : ",
     annullata: "{d}. Ouvrez l'app pour voir quoi faire.",
     escursione: "Votre excursion",
+    review: "{t} : comment ça s'est passé ?",
+    recensione: "Nous aimerions beaucoup lire votre avis : deux lignes suffisent.",
   },
   de: {
     confirmed: "{t}: bestätigt",
@@ -110,6 +120,8 @@ const TESTI = {
     luogo: "Treffpunkt: ",
     annullata: "{d}. Öffnen Sie die App, um zu sehen, was zu tun ist.",
     escursione: "Ihr Ausflug",
+    review: "{t}: Wie war es?",
+    recensione: "Wir würden uns über Ihre Bewertung freuen: zwei Zeilen genügen.",
   },
 };
 
@@ -148,7 +160,9 @@ function messaggio(a: Avviso, isc: Iscrizione) {
   const titolo = (a.excursion_id && isc.titoli && isc.titoli[a.excursion_id]) || T.escursione;
   const d = giornoScritto(a, lang);
   let corpo: string;
-  if (a.tipo === "cancelled") {
+  if (a.tipo === "review") {
+    corpo = T.recensione;
+  } else if (a.tipo === "cancelled") {
     corpo = riempi(T.annullata, { d });
   } else {
     corpo = a.time ? riempi(T.ora, { d, o: a.time.slice(0, 5) }) : d;
@@ -171,9 +185,11 @@ function messaggio(a: Avviso, isc: Iscrizione) {
 // escursioni non si capiva di quale fosse il promemoria. L'escursione si
 // riconosce da richiesta, scheda e giorno: booking.js non conosce l'id del
 // ticket, e cosi' non serve cambiare le_mie_richieste.
+// Quello della recensione apre anche il modulo ("recensione=1", booking.js).
 function indirizzo(a: Avviso): string {
   const q = new URLSearchParams({ richieste: "1", r: a.request_token, d: a.date });
   if (a.excursion_id) q.set("e", a.excursion_id);
+  if (a.tipo === "review") q.set("recensione", "1");
   return "booking.html?" + q.toString();
 }
 

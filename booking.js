@@ -481,6 +481,16 @@ function mostraDallAvviso() {
     c.dataset.richiesta === richiesta
     && (!scheda || c.dataset.scheda === scheda)
     && (!giorno || c.dataset.giorno === giorno));
+  // L'avviso "com'e' andata?" (recensioni.js): si apre gia' il modulo, in
+  // cima. Se la recensione e' gia' partita, si vede il grazie.
+  if (q.get("recensione") && typeof recensioneModulo === "function") {
+    const riquadro = document.querySelector(".recensione");
+    if (riquadro) {
+      if (riquadro.querySelector("[data-recensione-apri]")) recensioneModulo(riquadro);
+      riquadro.scrollIntoView({ block: "start" });
+      return;
+    }
+  }
   if (!carta) return;
   carta.classList.add("is-avviso");
   carta.scrollIntoView({ block: "start" });

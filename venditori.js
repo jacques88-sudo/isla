@@ -1849,7 +1849,7 @@ async function preparaStatistiche() {
 // (si cancella) quando il cliente lo chiede (proprietario, 20 ottobre 2026).
 // Il testo non si cambia: o si pubblica com'e', o si scarta.
 // Solo l'ufficio (is_office), come le statistiche, e lo dice anche il database
-// (supabase/modifiche/2026-10-20-recensioni-ufficio.sql).
+// (supabase/modifiche/2026-10-20-recensioni2-ufficio.sql).
 // La pagina sta in isla-ticket: la sezione si costruisce qui, cosi' non serve
 // toccare due repository.
 

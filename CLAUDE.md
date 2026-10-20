@@ -133,7 +133,7 @@ porto e capienza con le schede della stessa categoria.
 | `supabase-config.js` | URL e chiave **pubblica** di Supabase; lo schema e le regole stanno in `supabase/` |
 | `telefono.js` | prefissi e `telefonoE164()`: **uno solo** per venditori e clienti, il telefono è la chiave che li fa incontrare |
 | `supabase/functions/leggi-ticket/` | la funzione sul server che fa leggere a Claude la foto del ticket e riempie il modulo dei venditori; la chiave Anthropic sta **solo** nei Secrets di Supabase |
-| `supabase/functions/manda-notifiche/` | gli avvisi sul telefono (confermata, annullata, promemoria): la chiamano **solo** Cron ogni 10 minuti (con la parola segreta `OROLOGIO_SEGRETO` nell'intestazione `x-orologio`) e `venditori.html` dopo Conferma/Annulla (col login del venditore); la chiave privata VAPID e la parola stanno **solo** nei Secrets |
+| `supabase/functions/manda-notifiche/` | gli avvisi sul telefono (confermata, annullata, promemoria, e il giorno dopo "com'è andata?" per la recensione): la chiamano **solo** Cron ogni 10 minuti (con la parola segreta `OROLOGIO_SEGRETO` nell'intestazione `x-orologio`) e `venditori.html` dopo Conferma/Annulla (col login del venditore); la chiave privata VAPID e la parola stanno **solo** nei Secrets |
 | `supabase/functions/pulisci-foto/` | ogni notte (Cron) cancella le foto dei ticket che nessun ticket nomina più; con SQL le foto non si cancellano |
 | `booking.js` | "Le mie escursioni": i ticket veri da Supabase (numero + telefono); i codici `ISLA-…` restano la pagina finta; con `?richieste=1` le richieste mandate su WhatsApp |
 | `portare.js` | "Cosa portare" sulle escursioni confermate, gruppo per gruppo (dalla pagina Notion "cose da portare"); lo carica solo `booking.html` |

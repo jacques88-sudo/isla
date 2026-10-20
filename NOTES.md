@@ -20630,3 +20630,35 @@ tedesco, 375 px. **Non provata** la funzione su Supabase (Deno + `unpdf`).
 **Da fare (proprietario)**: incollare `2026-10-20-meteo-teide.sql` nel SQL Editor, poi
 ridistribuire `meteo-aemet` e aprire una volta a mano l'indirizzo della funzione. Nella
 risposta `errori` non deve comparire "Teide".
+
+## Il cielo a icone, sul Teide e sulle spiagge (20 ottobre 2026)
+
+Il proprietario: invece delle scritte, icone di sole, nuvole e pioggia, accanto alle
+temperature del Teide **e al posto delle scritte delle spiagge**. Cinque disegni a mano
+in `METEO_DISEGNI` (`meteo.js`), guardati in fila: sole, sole e nuvole, nuvola, pioggia
+(nuvola con tre gocce), neve. Codici → disegno in `METEO_CIELO`: 100 sole, 105 sole e
+nuvole (solo Teide, "poco nuboso"), 110 e 120 nuvola ("nuboso" è sempre la nuvola),
+130 e 140 pioggia. La scritta resta in `aria-label` e `title`. Vento, onde e numeri
+restano a parole. Sulla mappa: "Oggi ☁ → ☀" se mattina e pomeriggio sono diversi.
+
+**Teide.** AEMET il cielo lo scrive a frasi, e `cieloTeide()` in `meteo-aemet` lo
+trasforma in codice con la regola approvata dal proprietario:
+- conta solo la parte prima di "en cotas altas" (le cime, dove salgono le escursioni),
+  se no la prima frase; vince la **prima** parola riconosciuta: despejado 100, poco
+  nuboso / intervalos 105, nuboso / muy nuboso / cubierto 110. Niente di riconosciuto,
+  niente icona;
+- pioggia solo con "se esperan" lluvias / chubascos / lloviznas ("no se descartan"
+  **non** basta), neve con nieve / nevadas, "no se esperan" spegne tutto. **Pioggia e
+  sole possono stare insieme** (proprietario: va bene così): AEMET non dice dove piove,
+  spesso è sotto le nuvole.
+I giorni senza tabella delle temperature (il terzo, il quarto e il quinto del bollettino) ora si
+salvano lo stesso, col solo cielo: la card mostra le icone senza temperature.
+
+**Provato**: sul PDF vero di oggi (21: nuvola + pioggia, con le temperature; 22-24:
+sole e nuvole + pioggia), "Despejado / No se esperan" → sole e niente,
+"Cubierto… nevadas" → nuvola e neve, una frase sconosciuta → niente. Nel browser con
+dati finti, italiano e francese, 375 px: card del Teide, card della spiaggia, mappa di
+Las Teresitas. `CACHE_NAME` → `isla-v605`.
+
+**Da fare (proprietario)**: ridistribuire `meteo-aemet` (anche se il passo del Teide
+di prima non era ancora fatto: basta una volta, dopo l'SQL `2026-10-20-meteo-teide.sql`).

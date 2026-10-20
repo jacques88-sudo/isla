@@ -20120,3 +20120,143 @@ vedeva peggio, lasciato così.
 `controlla.js` dà errore se una foto non ha la sua copia (sezione 6-bis).
 Browser: 71 pagine (home, elenco, pacchetti, mappa, tutte le schede), nessuna foto rotta,
 nessun errore. `CACHE_NAME` → `isla-v590`.
+
+## Le recensioni, primo passo: il database e il modulo (20 ottobre 2026)
+
+Il proprietario: "vada per le recensioni". Le recensioni dei fornitori non si copiano
+(regola di sempre); queste sono **di Isla**, scritte dai nostri clienti. Decisioni del
+proprietario, 20 ottobre 2026:
+- le scrive **solo chi c'è stato**: niente modulo aperto sulla scheda, perché lì
+  arriverebbero anche le recensioni finte e quelle dei concorrenti;
+- escono **solo dopo che l'ufficio le ha lette e approvate**; scartata, una recensione
+  si cancella subito;
+- si vedono **nome e iniziale** ("Marco R."), la lingua, il mese dell'escursione;
+- si vedono **sulla scheda**, e nell'elenco le stelle solo da 3 recensioni in su;
+- una pubblicata **resta finché il cliente non chiede di toglierla** (su WhatsApp).
+
+Quattro passi, uno alla volta:
+1. **fatto** — il database e il modulo per il cliente (questo);
+2. l'ufficio approva o scarta, nella pagina dei venditori;
+3. le recensioni sulla scheda, e le stelle nell'elenco;
+4. l'avviso sul telefono il giorno dopo ("Com'è andata?").
+
+**Il database** (`supabase/modifiche/2026-10-20-recensioni.sql`, si incolla una volta
+nel SQL Editor). La tabella `recensioni` ha solo quello che si mostra (stelle, testo,
+nome, lingua, mese, scheda) più `booking_id`, il legame col ticket: serve a non riceverne
+due per la stessa escursione. Telefono, numero del ticket e chiave **non ci sono**.
+Quando la pulizia mensile cancella il ticket, `booking_id` diventa vuoto e la recensione
+resta. Le porte:
+- `lascia_recensione()`: l'unica da cui il cliente scrive. Due modi di dimostrare che
+  c'era, gli stessi con cui ritrova le escursioni: numero + telefono (ticket di carta) o
+  chiave + scheda + giorno (richiesta WhatsApp). Controlla che l'escursione sia
+  **confermata, già passata e non più vecchia di 30 giorni** (dopo, la pulizia mensile
+  può averla già tolta: tolta prima, ce ne sono almeno 32). Scheda e mese li prende dal
+  ticket, non da quello che manda il telefono. Risponde `ok`, `gia` o `no`;
+- `recensioni_della_scheda()` e `recensioni_medie()`: le pubblicate, per il passo 3;
+- l'ufficio (login dei venditori) legge, pubblica e cancella, ma **il testo non lo può
+  cambiare**: o si pubblica com'è, o si scarta. Il legame col ticket non lo legge.
+
+**Il freno.** Senza, `lascia_recensione()` sarebbe servita a provare i numeri dei ticket
+scavalcando le dieci ricerche l'ora di `le_mie_escursioni()` (16 ottobre). La strada del
+ticket conta nella stessa tabella `tentativi_ticket`, quindi le dieci l'ora valgono per
+le due funzioni insieme. Per questo "non trovato" risponde `no` e non un errore: in
+Postgres un errore annulla tutto quello che la funzione ha scritto, anche il tentativo
+appena contato, e il freno non avrebbe contato niente. In più, un tetto di 100
+recensioni l'ora per tutti.
+
+**Provato su un Postgres vero** (il 16 della macchina, con lo schema rifatto dai file di
+`supabase/`): ticket passato `ok`, la seconda volta `gia`; futuro, di 40 giorni prima,
+non confermato, telefono sbagliato, chiave sbagliata, richiesta non confermata: tutti
+`no`; 6 stelle: errore; all'undicesimo tentativo dello stesso telefono "troppi
+tentativi"; `anon` non legge la tabella; un venditore pubblica e cancella ma non cambia
+il testo e non legge `booking_id`; la non pubblicata non esce, la pubblicata sì; dopo la
+cancellazione del ticket la recensione resta. Il file si può lanciare due volte.
+
+**Il modulo** (`recensioni.js`, lo carica `booking.html`). Sotto ogni escursione passata
+di "Le mie prenotazioni", se è confermata e di non più di 30 giorni fa: "Com'è andata?
+Lascia una recensione". Si apre dentro la card: cinque stelle, il testo (facoltativo,
+1000 caratteri), il nome. Il nome lo trasforma `nomeDaMostrare()` ("marco rossi" →
+"Marco R.") e sotto il campo si legge come uscirà. Mandata, nel telefono resta segnata
+(`isla-recensioni-fatte`) e al posto del pulsante c'è il grazie. Le card passate erano
+sbiadite (`opacity: .6`): ora si sbiadisce tutto **tranne** la recensione, che è
+l'unica cosa che lì si può ancora fare. Per il ticket di carta serve il telefono:
+`cercaTicketVero()` in `booking.js` lo mette in `RECENSIONE_TELEFONO`.
+
+Provato nel browser con le risposte di Supabase finte: un pulsante solo (non sulla
+passata di 45 giorni, non sulla futura), senza stelle chiede le stelle, l'anteprima del
+nome, cosa parte (telefono + numero, oppure chiave + scheda + giorno, e la lingua), il
+grazie, il grazie anche dopo aver ricaricato; in tedesco le risposte `no`, senza rete e
+"troppi tentativi"; "Chiudi" rimette il pulsante. A 320 px niente esce dallo schermo.
+
+**Privacy** aggiornata nelle cinque lingue (data 20 ottobre): una parte "Le recensioni"
+(cosa si salva, cosa no, il legame col ticket, base giuridica il consenso), la
+recensione già lasciata fra le cose che restano nel telefono, e quanto si tiene.
+`CACHE_NAME` → `isla-v591`.
+
+**Da fare prima di pubblicare:** il proprietario incolla il file SQL nel SQL Editor.
+Senza, il cliente vede il pulsante, scrive la recensione e riceve "Non è partita".
+
+## Le recensioni cambiano: si recensisce il servizio, non la barca (20 ottobre 2026)
+
+Il proprietario, rileggendo le recensioni che avevano già su Tripadvisor e Facebook
+(come "Fran.escursioni tenerife", che sono loro; Francesca è sua moglie): "la gente non
+recensisce la singola escursione ma il servizio". Nelle nove che ha mandato in foto
+nessuno parla della barca: parlano di Francesca, dei consigli, dei prezzi, "abbiamo
+prenotato diverse escursioni". Prima che lo SQL fosse lanciato, quindi senza dati da
+spostare. Decisioni del proprietario, 20 ottobre 2026:
+- **una recensione per cliente**, non una per escursione: in "Le mie prenotazioni" un
+  solo "Com'è andata la vacanza con noi?", **in cima**, per la passata più recente
+  (non più dentro le card, che tornano sbiadite tutte intere);
+- si leggono **nella home**, "Dicono di noi", subito dopo "Siamo Jack e Francesca";
+  il passo 3 di prima (sulla scheda, stelle nell'elenco) **non si fa più**;
+- sotto, **in piccolo, l'escursione che ha fatto**, presa dal ticket: a chi legge dice
+  che la recensione è vera;
+- **le vecchie di Tripadvisor e Facebook ci vanno**, inserite a mano con SQL, con
+  scritto da dove vengono (`fonte`). Quelle di Facebook sono "consiglia", senza stelle:
+  `stelle` resta vuoto, in pagina "Ci consiglia", e nella media non contano.
+
+**Il database.** Stesso file. Una per cliente: prima di scrivere, `lascia_recensione()`
+guarda se un'altra recensione è legata a un ticket dello **stesso telefono** o della
+**stessa chiave**; se sì, `gia`. Funziona perché i ticket restano almeno 32 giorni e si
+scrive solo nei primi 30: chi torna l'anno dopo ne può lasciare un'altra. Colonne:
+`fonte` (`isla`, `tripadvisor`, `facebook`, `google`), `excursion_id` e `stelle` ora
+possono restare vuote (le copiate), ma su Isla le stelle ci sono sempre (vincolo
+`recensioni_stelle_isla`). Al posto di `recensioni_della_scheda()` e `recensioni_medie()`
+una sola `recensioni_pubblicate()`: al massimo 200, la media la fa la pagina. Tre righe
+`alter table` per chi avesse già lanciato la prima versione.
+
+Provato di nuovo sul Postgres vero: secondo ticket dello stesso telefono `gia`, seconda
+escursione della stessa richiesta `gia`, un altro cliente `ok`; le copiate entrano,
+Facebook senza stelle sì, Isla senza stelle no; `anon` legge solo dalla funzione. Il
+file lanciato sopra la prima versione (con dentro una recensione) e poi ancora una
+volta: nessun errore.
+
+**I nomi dei clienti di Tripadvisor e Facebook non vanno nel repository**: l'SQL per
+inserirle si prepara nella scratchpad e lo incolla il proprietario, come i netti. Non
+sono segreti (stanno già su Tripadvisor), ma un nome nella storia di git non si toglie
+più, e la privacy promette di toglierlo a chi lo chiede.
+
+**La home** (`recensioni.js`, ora lo carica anche `index.html`). La home non ha la
+libreria di Supabase: chiede `recensioni_pubblicate` con `fetch`, come `richieste.js`.
+Nascosta finché non arriva almeno una recensione, e senza rete. Sei card, poi "Mostra
+altre"; la media con una cifra decimale nella lingua della pagina, **solo da 3
+recensioni con le stelle in su**. Sotto ogni card: mese, la lingua se diversa da quella
+della pagina (`Intl.DisplayNames`, niente testi da tradurre), "da Tripadvisor"; poi
+"Escursione: …" col link alla scheda se è pubblicata. I nomi delle fonti non si
+traducono. Cambiando lingua si ridisegna (`islalang`).
+
+Provato nel browser: un riquadro solo, prima della lista, per l'escursione più recente
+anche se le righe arrivano in un altro ordine (era il primo errore: si fidava
+dell'ordine); quello che parte; il grazie dopo aver ricaricato. Nella home sei card, poi
+otto; media "4,5 von 5 · 8 Bewertungen" in tedesco; un testo con dentro HTML esce come
+testo; senza rete e senza recensioni la sezione non c'è; a 390 px niente esce dallo
+schermo. Secondo errore: "Mostra altre" con `hidden` restava visibile, perché `.btn`
+mette `display`: serve `.rev-altre[hidden] { display: none; }`.
+
+**Privacy** nelle cinque lingue: "due dalla stessa persona", la home al posto della
+scheda, e un paragrafo per le copiate da Tripadvisor e Facebook (base giuridica
+l'interesse legittimo, art. 6.1.f; chi vuole la sua tolta lo chiede su WhatsApp).
+`CACHE_NAME` → `isla-v592`.
+
+Passi che restano: 2. l'ufficio approva o scarta nella pagina dei venditori; 3. le
+vecchie di Tripadvisor e Facebook nel database; 4. l'avviso sul telefono il giorno dopo.

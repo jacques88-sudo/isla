@@ -386,6 +386,7 @@ function renderTicketVeri(rows, code, senzaRete) {
 
   document.getElementById("bookingView").innerHTML = `
     ${senzaRete ? `<p class="note-box">${t("booking.offlineSaved")}</p>` : ""}
+    ${typeof recensioneRiquadro === "function" ? recensioneRiquadro(passate) : ""}
     <div class="booking-list">
       ${prossime.map(b => cardTicket(b, false)).join("")}
       ${passate.length ? `<h2 class="booking-past-title">${t("booking.pastTitle")}</h2>` : ""}
@@ -450,6 +451,7 @@ function renderRichieste(elenco, senzaRete) {
   document.getElementById("bookingView").innerHTML = `
     ${senzaRete ? `<p class="note-box">${t("booking.offlineSaved")}</p>` : ""}
     <p class="booking-intro">${t("booking.requestsIntro")}</p>
+    ${typeof recensioneRiquadro === "function" ? recensioneRiquadro(passate) : ""}
     <div class="booking-list">
       ${ticket.length ? `<h2 class="booking-past-title">${t("booking.ticketsTitle")}</h2>` : ""}
       ${ticket.map(b => cardTicket(b, false)).join("")}
@@ -548,6 +550,8 @@ function chiediTelefono(code) {
 }
 
 async function cercaTicketVero(code, phone) {
+  // per la recensione (recensioni.js): il ticket di carta si dimostra cosi'
+  if (typeof RECENSIONE_TELEFONO !== "undefined") RECENSIONE_TELEFONO = phone;
   const salvati = risultatoSalvato(code, phone);
   // Quello che c'e' gia' si mostra subito; la risposta nuova lo sostituisce.
   if (salvati) renderTicketVeri(salvati, code, false);

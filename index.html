@@ -326,6 +326,18 @@
       </div>
     </section>
 
+    <!-- "Dicono di noi" (recensioni.js): nascosta finche' non arrivano le
+         recensioni pubblicate; senza rete resta nascosta. -->
+    <section class="reviews" id="recensioni" hidden>
+      <div class="wrap">
+        <span class="eyebrow" data-i18n="rev.eyebrow">Recensioni</span>
+        <h2 data-i18n="rev.homeTitle">Dicono di noi</h2>
+        <p class="rev-media" data-rev-media></p>
+        <div class="rev-lista" data-rev-lista></div>
+        <button class="btn btn-ghost rev-altre" type="button" data-rev-altre data-i18n="rev.more" hidden>Mostra altre</button>
+      </div>
+    </section>
+
     <section class="faq">
       <div class="wrap">
         <span class="eyebrow" data-i18n="faq.eyebrow">FAQ</span>
@@ -439,6 +451,7 @@
   <!-- la lista deve saper disegnare un pacchetto -->
   <script src="./pacchetti.js"></script>
   <script src="./supabase-config.js"></script>
+  <script src="./recensioni.js"></script>
   <script src="./richieste.js"></script>
   <script src="./lista.js"></script>
   <script src="./assistente.js"></script>

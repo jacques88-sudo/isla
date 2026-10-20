@@ -604,7 +604,13 @@ function renderTour(tour) {
         ${detailGallery(tour)}
       </div>
       <div class="detail-main">
-        <span class="tour-cat">${esc(categoryName(tour.category))}</span>
+        <div class="detail-cat-row">
+          <span class="tour-cat">${esc(categoryName(tour.category))}</span>
+          <button class="detail-share" type="button" data-share>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3.5"/><path d="M7.5 8 12 3.5 16.5 8"/><path d="M8 11H5.5v9.5h13V11H16"/></svg>
+            <span data-share-label>${esc(t("detail.share"))}</span>
+          </button>
+        </div>
         <h1 class="detail-h1">${esc(tf(tour.title))}</h1>
         <p class="detail-lead">${esc(tf(tour.desc))}</p>
 
@@ -627,7 +633,40 @@ function renderTour(tour) {
   applyI18n(contenitore);
   collegaOpzioni(contenitore, tour);
   collegaGalleria(contenitore);
+  collegaCondividi(contenitore, tour);
   mostraBarraPrenota(tour);
+}
+
+// "Condividi": spesso a scegliere e' uno solo, e la barca la manda agli altri
+// su WhatsApp. Sul telefono si apre il menu di condivisione del telefono
+// (navigator.share); dove non c'e' (quasi tutti i computer) il link si copia
+// e il pulsante dice "Link copiato" per due secondi. Se anche la copia non si
+// puo', si apre WhatsApp col link gia' scritto.
+// Il link e' quello pulito della scheda, senza altro dopo l'id: chi lo apre
+// vede il sito nella sua lingua, non in quella di chi l'ha mandato.
+function collegaCondividi(contenitore, tour) {
+  const btn = contenitore.querySelector("[data-share]");
+  if (!btn) return;
+  btn.addEventListener("click", async () => {
+    const url = new URL("tour.html?id=" + encodeURIComponent(tour.id), location.href).href;
+    const titolo = tf(tour.title);
+    const testo = t("detail.shareText", { title: titolo });
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: titolo, text: testo, url });
+      } catch (e) { /* il cliente ha chiuso il menu: niente da fare */ }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      const scritta = btn.querySelector("[data-share-label]");
+      scritta.textContent = t("detail.shareCopied");
+      clearTimeout(btn._torna);
+      btn._torna = setTimeout(() => { scritta.textContent = t("detail.share"); }, 2000);
+    } catch (e) {
+      window.open("https://wa.me/?text=" + encodeURIComponent(testo + " " + url), "_blank", "noopener");
+    }
+  });
 }
 
 // La barra in fondo allo schermo. Il prezzo e' lo stesso "da €39" delle schede

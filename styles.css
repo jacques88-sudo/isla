@@ -2543,6 +2543,30 @@ body.menu-open { overflow: hidden; }
   gap: .7rem;
   padding: 1.4rem 1.3rem 1.5rem;
 }
+/* La categoria a sinistra e "Condividi" a destra, sopra il titolo: il
+   pulsante non sta nella foto perche' la foto e' gia' un bottone (ingrandisce). */
+.detail-cat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .8rem;
+}
+.detail-share {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 36px;
+  padding: .35rem .8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: .8rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.detail-share svg { width: 16px; height: 16px; }
 .detail-h1 {
   margin: 0;
   font-size: 1.7rem;

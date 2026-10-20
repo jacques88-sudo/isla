@@ -20053,3 +20053,26 @@ il ticket 0817 di Karien (Freebird 4 ore e mezza) aveva il netto sbagliato. I nu
 stanno su Notion e nell'SQL della scratchpad. Provato su Postgres 16: un Jungle Park e
 un Submarine salvati cash diventano card, un Whale resta cash; nel browser le due
 schede senza errori a 375 px. `CACHE_NAME` → `isla-v588`.
+
+## Il pulsante "Condividi" sulla scheda (20 ottobre 2026)
+
+Spesso a scegliere l'escursione è una persona sola, che poi la manda agli altri
+su WhatsApp. Ora ogni scheda ha **"Condividi"**: sta a destra della categoria,
+sopra il titolo. Nella foto non ci può stare, perché la foto è già un bottone
+(quello che la ingrandisce) e un bottone dentro un altro non si può mettere.
+
+Cosa fa (`collegaCondividi()` in `tour.js`):
+- **sul telefono** apre il menu di condivisione del telefono (`navigator.share`),
+  con titolo, una frase ("Guarda questa escursione a Tenerife: …") e il link;
+- **dove `navigator.share` non c'è** (quasi tutti i computer) copia il link, e per
+  due secondi il pulsante dice "Link copiato";
+- **se anche la copia non riesce** apre WhatsApp col link già scritto.
+
+Il link è quello pulito, `tour.html?id=…`, senza nient'altro dietro. Chi lo apre
+vede il sito nella sua lingua, non in quella di chi glielo ha mandato. I testi
+sono `detail.share`, `detail.shareCopied` e `detail.shareText`, nelle cinque
+lingue; il tedesco dà del "Sie", il francese del "vous", come il resto del sito.
+
+Provato nel browser: a 320 px la pagina non esce dallo schermo, il menu del
+telefono riceve il link giusto, sul computer il link si copia e la scritta
+torna come prima.

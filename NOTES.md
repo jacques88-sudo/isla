@@ -20563,3 +20563,13 @@ richiesta (`tour.html` e `escursioni.html`), con `[data-request-date-hint]` per 
 sotto, come `[data-hotel-hint]`. Il pacchetto no: lì il primo giorno è indicativo e lo
 fissa l'ufficio. Provato su Freebird da `tour.html` ed `escursioni.html`, 375 px, cinque
 lingue, nessun errore. `CACHE_NAME` → `isla-v601`.
+
+## Il riquadro "Installa" resta com'è (20 ottobre 2026)
+
+Il punto 1 della prova da cliente del 19 ottobre: alla prima apertura di una scheda il
+riquadro "Installa l'app" copre "Aggiungi alla lista" finché non si chiude. Proposte due
+strade: (a) mostrarlo solo nella home e nell'elenco, (b) solo dopo la prima richiesta
+mandata. Il proprietario: "lasciamolo stare così". Scritto anche fra le "Cose decise" di
+`CLAUDE.md`. Con questo le proposte del 20 ottobre per il cliente sono chiuse: fatte la 2
+(`faq.a2`), la 4 (− / + nella lista), la 5 (home col 4G) e la 6 (frase delle 24 ore);
+scartate la 3 (avviso del link di pagamento, "non importa") e la 1.

@@ -3831,6 +3831,8 @@ body.menu-open { overflow: hidden; }
 /* sotto la data, subito prima di "A che ora": senza il margine sotto la riga
    si incolla all'etichetta che segue */
 [data-hotel-hint] { margin-bottom: 1.1rem; }
+/* la frase delle 24 ore sotto il calendario: senza, si attaccava al campo dopo */
+[data-request-date-hint] { margin-bottom: 1.1rem; }
 .hotel-punto {
   margin: .8rem 0 1.1rem;
   background: var(--cream);

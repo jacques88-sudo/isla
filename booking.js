@@ -333,6 +333,10 @@ function cardTicket(b, passata) {
               <ul>${cose.map(c => `<li>${esc(tf(c))}</li>`).join("")}</ul>
             </div>
           </div>` : "";
+  // Il meteo (meteo.js): il posto vuoto, lo riempie meteoRiempi() quando
+  // arrivano le previsioni. Solo su una conferma ancora davanti.
+  const meteo = confermata && !passata && tour && typeof meteoSegnaposto === "function"
+    ? meteoSegnaposto(b, tour) : "";
   const desiderata = !confermata && b.wanted_time ? `<div class="info-field">
             ${ICONS.clock}
             <div>
@@ -371,6 +375,7 @@ function cardTicket(b, passata) {
               <p>${esc(soldi)}</p>
             </div>
           </div>` : ""}
+          ${meteo}
           ${portare}
         </div>
         ${tour ? `<a class="map-link" href="./tour.html?id=${encodeURIComponent(tour.id)}">${t("booking.seeTour")} →</a>` : ""}
@@ -396,6 +401,7 @@ function renderTicketVeri(rows, code, senzaRete) {
       <a class="btn btn-primary" href="${wa}" target="_blank" rel="noopener noreferrer">${t("booking.whatsapp")}</a>
     </div>
   `;
+  if (typeof meteoRiempi === "function") meteoRiempi();
   // Niente "Cerca un'altra prenotazione" (proprietario, 29/9/2026): i ticket
   // dello stesso telefono ci sono gia' tutti, e per un altro telefono c'e' la
   // finestra "Il mio ticket" della home, che accetta un numero nuovo.
@@ -464,6 +470,7 @@ function renderRichieste(elenco, senzaRete) {
       <a class="btn btn-primary" href="${wa}" target="_blank" rel="noopener noreferrer">${t("booking.whatsapp")}</a>
     </div>
   `;
+  if (typeof meteoRiempi === "function") meteoRiempi();
   mostraDallAvviso();
 }
 

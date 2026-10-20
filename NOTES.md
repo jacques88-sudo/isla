@@ -20342,3 +20342,56 @@ Supabase → Edge Functions → manda-notifiche → Code → incollare
 `supabase/functions/manda-notifiche/index.ts` → Deploy. Senza la funzione nuova il
 database dà gli avvisi `review` e la funzione li manderebbe con il titolo vuoto: va fatta
 **prima o subito dopo** il file SQL, prima delle 18:00. `CACHE_NAME` → `isla-v594`.
+
+## Il meteo sulle escursioni confermate (20 ottobre 2026)
+
+Il proprietario: "Meteo". Decisioni, 20 ottobre 2026:
+- **dove**: in "Le mie prenotazioni", sulle escursioni **confermate** di oggi, domani e
+  dopodomani (AEMET ne dà tre). Non sulla scheda;
+- **fonte**: **AEMET**, gratis. Open-Meteo era il più semplice ma è gratis solo per uso
+  **non commerciale** (Isla lo è: servirebbe l'abbonamento);
+- **solo i dati**, nessun giudizio: "giornata buona per la barca" è una promessa che non
+  è nostra, se si esce lo decide l'operatore.
+
+**AEMET, previsione delle spiagge** (`/api/prediccion/especifica/playa/{codice}`, con la
+chiave nell'intestazione `api_key`). Risponde in due passi: il primo dà l'indirizzo dei
+dati, il secondo i dati, **in ISO-8859-15**. Tre giorni, ognuno con mattina e pomeriggio:
+cielo (100 sereno, 110 nuvoloso, 120 molto nuvoloso, 130 rovesci, 140 nuvoloso con
+pioggia), vento (210-230), onde (310-330), massima, acqua, UV. Licenza: "Autorizado el uso
+de la información y su reproducción citando a AEMET como autora": in pagina c'è sempre
+"Previsione AEMET". **Sorpresa vista coi dati veri**: a La Arena il cielo del mattino era
+`-116` e `-126`, fuori elenco, con le descrizioni di 140 e 130. Per questo
+`meteo-aemet` usa il codice solo se è documentato, se no la descrizione, se no niente.
+
+**Una spiaggia per zona** (`Playas_codigos.csv` di AEMET): Costa Adeje → Fañabe
+(3800112), Los Cristianos → Las Vistas (3800603), Los Gigantes → La Arena (3804004,
+Puerto Santiago). **Teide e nord e Altre isole non hanno meteo**: per il Teide AEMET dà
+solo i paesi (La Orotava, 300 m), e non dice niente dei 3700 m. Conta solo la **prima**
+zona della scheda (`zoneGroups[0]`): la bici comincia con Teide e il meteo di La Arena
+per un giro in montagna sarebbe sbagliato; Royal Delfin e Shogun cominciano con Costa
+Adeje e ce l'hanno. Mattina o pomeriggio dall'ora del ritrovo (o chiesta): dalle 14 è
+pomeriggio, senza ora la mattina.
+
+**Come gira:**
+- `supabase/functions/meteo-aemet/` ogni 3 ore (Cron, minuto 7) chiede le tre spiagge e
+  salva in `meteo` (zona, giorno, `dati` coi codici). La chiave sta **solo** nei Secrets
+  (`AEMET_API_KEY`). È **aperta** come `pulisci-foto` (prende solo previsioni pubbliche),
+  ma con un freno: se l'ultimo giro ha meno di un'ora non chiama AEMET, così nessuno
+  consuma la chiave chiamandola di continuo. `elaborato` (l'ora di AEMET) è testo: arriva
+  senza fuso orario;
+- `meteo_prossimi()` dà al sito le righe da oggi in poi; la tabella dal sito non si legge;
+- `meteo.js` (lo carica `booking.html`): `cardTicket()` mette un posto vuoto e nascosto
+  (`meteoSegnaposto()`), `meteoRiempi()` lo scrive quando arrivano i dati. L'ultima
+  risposta resta nel telefono (`isla-meteo`): senza rete si vede quella. Niente dati dei
+  clienti: la privacy non cambia.
+
+**Provato**: la funzione in Node con la chiave e i dati **veri** di AEMET (9 righe, il
+freno al secondo giro, i codici `-116`/`-126` diventati 140/130); il file SQL su Postgres
+(il sito legge solo da oggi, `anon` non scrive, una zona sbagliata è rifiutata); nel
+browser coi dati veri di oggi: mattina e pomeriggio giusti, niente meteo a 4 giorni, al
+Teide e sulla bici, in tedesco, senza rete dall'ultima risposta; a 390 px niente esce.
+`CACHE_NAME` → `isla-v595`.
+
+**Da fare (proprietario), in quest'ordine**: Secret `AEMET_API_KEY`; funzione
+`meteo-aemet` con **Verify JWT spento**; il file `2026-10-20-meteo.sql`. Poi aprire una
+volta a mano l'indirizzo della funzione, per non aspettare il primo giro dell'orologio.

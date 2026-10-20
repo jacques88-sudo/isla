@@ -20005,6 +20005,7 @@ codice cambiato.**
   (I-AV-…) in "Chi siamo" dei termini e "Chi è il titolare" della privacy, nelle cinque
   lingue (li chiede la LSSI). Piccola cosa: `faq.a2` dice "almeno 24 ore prima della
   **data** dell'escursione"; dal #522 le 24 ore si contano dall'ora di partenza.
+  Corretto il 20 ottobre, sotto.
 
 ## 19 ottobre 2026 — Compagnie nuove dai fogli dei venditori del 14-18 ottobre
 
@@ -20464,3 +20465,14 @@ della pagina dell'escursione è d'accordo con l'elenco; dal Menu con zero prefer
 messaggio vuoto; un link mandato con un id inesistente mostra le due vere, "Salvale
 tutte" le salva e poi "Sono tutte nei tuoi preferiti"; in tedesco; a 360 px niente esce.
 `CACHE_NAME` → `isla-v597`.
+
+## La domanda frequente sul preavviso (20 ottobre 2026)
+
+`faq.a2` diceva "almeno 24 ore prima della **data** dell'escursione", ma dal #522 il
+sito conta le 24 ore dall'**ora di partenza**. Ora: "Almeno 24 ore prima dell'ora di
+partenza: per un'escursione che parte sabato alle 10, entro venerdì alle 10", nelle cinque
+lingue, e uguale il testo di riserva in `index.html`. L'esempio c'è perché "24 ore prima
+della partenza" da solo si legge ancora come "il giorno prima". La stessa risposta la usa
+la chat (`assistente.js`). I termini dicevano già "24 ore di anticipo" e non sono toccati.
+Provato nella home a 375 px in tutte e cinque le lingue, senza errori. `CACHE_NAME` →
+`isla-v598`.

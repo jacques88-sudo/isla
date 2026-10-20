@@ -20042,3 +20042,14 @@ senza scroll, nessun nome visibile al cliente. SQL provato su Postgres 16 con sc
 modifiche: i ticket dei fogli prendono il netto scritto sulla carta, uno con un netto
 già fissato non si tocca, lanciato due volte non fa danni, il guardiano resta acceso.
 `CACHE_NAME` → `isla-v587`.
+
+**Jungle Park e Submarine Safari contano sempre come card (20 ottobre 2026,
+proprietario):** sui fogli dei venditori la commissione era già divisa con la parte
+della carta anche quando il cliente pagava in contanti. `pagamento: "card"` sulle due
+schede e le due voci nei due elenchi di `supabase/modifiche/2026-10-09-solo-card.sql`,
+da rilanciare intero. Dagli stessi fogli, risposte del proprietario: Aqualand ha la
+commissione del 20% (non 15%), Extreme singola è da 1 ora, Ace è una doppia da 1 ora,
+il ticket 0817 di Karien (Freebird 4 ore e mezza) aveva il netto sbagliato. I numeri
+stanno su Notion e nell'SQL della scratchpad. Provato su Postgres 16: un Jungle Park e
+un Submarine salvati cash diventano card, un Whale resta cash; nel browser le due
+schede senza errori a 375 px. `CACHE_NAME` → `isla-v588`.

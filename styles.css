@@ -4962,3 +4962,8 @@ body.map-sheet-open .assist-fab { display: none; }
 /* ─── Recensioni nella pagina dei venditori (venditori.js, solo ufficio) ─── */
 .vend-rec-nota { margin: 0; color: var(--muted); font-size: .9rem; flex: 1 1 14rem; }
 .vend-rec-testo { margin: .4rem 0 0; white-space: pre-line; overflow-wrap: anywhere; }
+
+/* ─── Il meteo sulle escursioni confermate (meteo.js) ──────────────────── */
+.info-field.meteo[hidden] { display: none; }
+.info-field.meteo p { margin: 0; }
+.info-field.meteo .meteo-fonte { margin-top: .3rem; font-size: .78rem; color: var(--muted); }

@@ -113,6 +113,76 @@ function listaTogli(indice) {
   listaScrivi(voci);
 }
 
+// CAMBIARE LE PERSONE E I MEZZI NELLA LISTA (20 ottobre 2026)
+//
+// Prima una voce si poteva solo togliere: chi si accorgeva di aver messo due
+// adulti invece di tre tornava sulla scheda e la aggiungeva di nuovo. Ora ogni
+// voce ha i suoi − / +, con le stesse regole della finestra della richiesta.
+// Il pacchetto no: i suoi mezzi dipendono da quante persone salgono, e
+// cambiando le persone il conto dei mezzi puo' non tornare piu'.
+//
+// I contatori di una voce: cosa si conta, quanti sono, fin dove si puo' andare.
+// Vuoto quando la voce non si cambia da qui.
+function listaContatori(tour, voce) {
+  if (!tour || voce.pack) return [];
+  if (tour.units) {
+    // le voci vecchie hanno i mezzi come frase gia' scritta: da li' i numeri
+    // non si ritrovano
+    if (!Array.isArray(voce.units)) return [];
+    const tipi = Array.isArray(tour.units.types) ? tour.units.types : [];
+    const n = i => (voce.units[i] && voce.units[i].n) || 0;
+    const tutti = tipi.reduce((tot, tipo, i) => tot + n(i), 0);
+    return tipi.map((tipo, i) => ({
+      campo: "u" + i,
+      nome: tf(tipo.name),
+      n: n(i),
+      // zero mezzi non e' una richiesta: l'ultimo rimasto non scende a zero
+      min: tutti - n(i) > 0 ? 0 : 1,
+      max: 20
+    }));
+  }
+  // Una voce vecchia coi menu salvati solo come frase ("Menu standard × 2"):
+  // cambiando le persone quella frase resterebbe sbagliata.
+  if (voce.menu && !Array.isArray(voce.menuN)) return [];
+  // I menu speciali sono per persone vere: non si scende sotto quanti sono.
+  const menu = (voce.menuN || []).reduce((tot, n) => tot + (n || 0), 0);
+  const adulti = voce.adults || 0;
+  const bambini = voce.kids || 0;
+  const neonati = voce.babies || 0;
+  const conta = [{ campo: "adults", nome: t("req.adults"), n: adulti,
+    min: Math.max(1, menu - bambini), max: 30 }];
+  // Come nella finestra: niente bambini sulle schede solo per adulti, niente
+  // neonati dove non sappiamo se pagano. Se la voce ne ha gia', il contatore
+  // resta, se no il cliente non potrebbe toglierli.
+  if (!(typeof soloAdulti === "function" && soloAdulti(tour)) || bambini > 0) {
+    conta.push({ campo: "kids", nome: t("req.kids"), n: bambini,
+      min: Math.max(0, menu - adulti), max: 30 });
+  }
+  if (tour.priceInfant !== undefined || neonati > 0) {
+    conta.push({ campo: "babies", nome: t("req.babies"), n: neonati, min: 0, max: 30 });
+  }
+  return conta;
+}
+
+// Uno in piu' o uno in meno su una voce. Fuori dai limiti non cambia niente.
+function listaCambia(indice, campo, passo) {
+  const voci = listaLeggi();
+  const voce = voci[indice];
+  const tour = voce && ESPLORA_CATALOG.find(x => x.id === voce.id);
+  const conta = listaContatori(tour, voce || {}).find(c => c.campo === campo);
+  if (!conta) return;
+  const nuovo = conta.n + passo;
+  if (nuovo < conta.min || nuovo > conta.max) return;
+  if (campo.charAt(0) === "u") {
+    const i = Number(campo.slice(1));
+    const vecchio = voce.units[i] || { label: tf(tour.units.types[i].name), n: 0 };
+    voce.units[i] = Object.assign({}, vecchio, { n: nuovo });
+  } else {
+    voce[campo] = nuovo;
+  }
+  listaScrivi(voci);
+}
+
 function listaSvuota() {
   listaScrivi([]);
 }
@@ -494,6 +564,21 @@ function initLista() {
         </li>`;
   }
 
+  // Un contatore della voce: il nome, − numero +. I bottoni sono quelli della
+  // finestra della richiesta (stepper-btn), spenti ai limiti come la'.
+  function contatore(c, i) {
+    const bottone = (passo, segno, chiave, spento) =>
+      `<button class="stepper-btn" type="button" data-lista-voce="${i}" data-lista-campo="${c.campo}"
+               data-lista-passo="${passo}" aria-label="${esc(c.nome + ": " + t(chiave))}"${spento ? " disabled" : ""}>${segno}</button>`;
+    return `
+      <div class="lista-conta-riga" role="group" aria-label="${esc(c.nome)}">
+        <span class="lista-conta-nome">${esc(c.nome)}</span>
+        ${bottone(-1, "−", "req.minus", c.n <= c.min)}
+        <span class="lista-conta-n">${c.n}</span>
+        ${bottone(1, "+", "req.plus", c.n >= c.max)}
+      </div>`;
+  }
+
   function disegna() {
     const voci = listaLeggi();
     const corpo = dialog.querySelector("[data-lista-body]");
@@ -526,7 +611,10 @@ function initLista() {
       if (voce.lang) dettagli.push(voce.lang);
       // Dove si contano i mezzi le persone non si chiedono, quindi non si
       // scrivono nemmeno qui: sarebbe un "2 adulti" che nessuno ha detto.
-      if (!riga.tour.units) {
+      // Dove ci sono i − / + il numero si legge li', e scriverlo anche qui
+      // sarebbe dirlo due volte.
+      const contatori = listaContatori(riga.tour, voce);
+      if (!riga.tour.units && !contatori.length) {
         dettagli.push(peopleText(voce.adults, voce.kids, voce.babies));
       }
       // l'etichetta della variante si rilegge dal catalogo quando si riesce a
@@ -535,7 +623,7 @@ function initLista() {
       if (variante) dettagli.push(tf(variante.label));
       else if (voce.option) dettagli.push(voce.option);
       const mezzi = unitaTesto(riga.tour, voce);
-      if (mezzi) dettagli.push(tf(riga.tour.units.name) + ": " + mezzi);
+      if (mezzi && !contatori.length) dettagli.push(tf(riga.tour.units.name) + ": " + mezzi);
       const menu = menuTesto(voce, riga.tour);
       if (menu) dettagli.push(menu);
       if (transferDi(riga.tour, variante) && voce.transfer) {
@@ -549,6 +637,7 @@ function initLista() {
           <div class="lista-voce-testo">
             <strong>${esc(tf(riga.tour.title))}</strong>
             <span>${esc(dettagli.join(" · "))}</span>
+            ${contatori.length ? `<div class="lista-conta">${contatori.map(c => contatore(c, i)).join("")}</div>` : ""}
             ${listaVoceScaduta(voce) ? `<span class="lista-voce-scaduta">${esc(t("lista.pastDate"))}</span>` : ""}
           </div>
           <span class="lista-voce-prezzo">${riga.conto ? "€" + eur(riga.conto.totale) : esc(tourPrice(riga.tour))}</span>
@@ -648,6 +737,18 @@ function initLista() {
     if (e.target.closest("[data-lista-close]")) { chiudi(); return; }
     const togli = e.target.closest("[data-lista-remove]");
     if (togli) { listaTogli(parseInt(togli.dataset.listaRemove, 10)); return; }
+    const passo = e.target.closest("[data-lista-passo]");
+    if (passo) {
+      const { listaVoce, listaCampo, listaPasso } = passo.dataset;
+      listaCambia(parseInt(listaVoce, 10), listaCampo, parseInt(listaPasso, 10));
+      // La finestra si e' ridisegnata da capo: il fuoco torna sullo stesso
+      // bottone, o sull'altro del contatore se questo si e' spento al limite.
+      const stesso = '[data-lista-voce="' + listaVoce + '"][data-lista-campo="' + listaCampo + '"]';
+      const prossimo = dialog.querySelector(stesso + '[data-lista-passo="' + listaPasso + '"]:not(:disabled)') ||
+        dialog.querySelector(stesso + ":not(:disabled)");
+      if (prossimo) prossimo.focus();
+      return;
+    }
     if (e.target.closest("[data-lista-clear]")) { listaSvuota(); chiudi(); return; }
     if (e.target.closest("[data-lista-codice]")) applicaCodice();
   });

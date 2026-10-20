@@ -3495,6 +3495,40 @@ body.menu-open { overflow: hidden; }
   color: var(--muted);
 }
 
+/* I − / + delle persone e dei mezzi nella lista (20 ottobre 2026): un
+   contatore per riga di testo, che va a capo se non ci sta. Bottoni piu'
+   piccoli di quelli della finestra della richiesta (38 px): qui stanno sotto
+   il titolo, accanto al prezzo e alla ✕, e lo spazio e' meno. */
+.lista-conta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem 1rem;
+  margin-top: .35rem;
+}
+.lista-conta-riga {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.lista-voce-testo .lista-conta-nome {
+  /* larga uguale per tutti, cosi' i − / + stanno in colonna; "Erwachsene"
+     e' la piu' lunga delle cinque lingue */
+  min-width: 5.6em;
+  font-size: .8rem;
+}
+.lista-voce-testo .lista-conta-n {
+  min-width: 1.4em;
+  text-align: center;
+  font-size: .95rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.lista-conta .stepper-btn {
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
+}
+
 .lista-totale {
   display: flex;
   flex-direction: column;
@@ -4186,6 +4220,12 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
     border-color: oklch(0.78 0.02 75);
     color: oklch(0.24 0.012 60);
   }
+  .lista-dialog .stepper-btn {
+    background: #fbf7ee;
+    border-color: oklch(0.78 0.02 75);
+    color: oklch(0.24 0.012 60);
+  }
+  .lista-dialog .lista-voce-testo .lista-conta-n { color: oklch(0.24 0.012 60); }
   .lista-dialog .lista-francobollo { background: #fffdf7; }
   .lista-dialog .btn-primary {
     background: oklch(0.26 0.014 60);

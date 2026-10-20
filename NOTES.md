@@ -20476,3 +20476,36 @@ della partenza" da solo si legge ancora come "il giorno prima". La stessa rispos
 la chat (`assistente.js`). I termini dicevano già "24 ore di anticipo" e non sono toccati.
 Provato nella home a 375 px in tutte e cinque le lingue, senza errori. `CACHE_NAME` →
 `isla-v598`.
+
+## Cambiare persone e mezzi nella lista (20 ottobre 2026)
+
+Prima una voce della lista si poteva solo togliere con la ✕: chi si accorgeva di aver
+messo 2 adulti invece di 3 tornava sulla scheda e la aggiungeva di nuovo. Ora ogni voce
+ha i suoi **− / +** (proprietario: "persone e mezzi"), con le regole della finestra della
+richiesta, in `listaContatori()` di `lista.js`:
+
+- **adulti** da 1 a 30; **bambini** da 0 a 30, ma non sulle schede solo per adulti
+  (`soloAdulti()`); **neonati** solo dove la scheda ha `priceInfant`. Se la voce ne ha
+  già, il contatore resta lo stesso, se no il cliente non potrebbe toglierli;
+- **i menu speciali** sono per persone vere: adulti + bambini non scendono sotto quanti
+  sono (Castillo con 1 vegetariano: l'adulto non va a zero). "Menu standard × N" si
+  riscrive da solo, perché `menuTesto()` lo rifà da `menuN`;
+- **i mezzi** (schede con `units`), da 0 a 20 per tipo, ma l'ultimo rimasto non scende a
+  zero: zero mezzi non è una richiesta;
+- **il pacchetto no**, resta con la sola ✕: i suoi mezzi dipendono da quante persone
+  salgono, e cambiando le persone il conto dei mezzi può non tornare più;
+- nemmeno le **voci vecchie** salvate con i mezzi o i menu come frase già scritta: da lì
+  i numeri non si ritrovano.
+
+Dove ci sono i contatori, "2 adulti" e "Moto d'acqua: Singola × 1" non si scrivono più
+nella riga dei dettagli: sarebbe dirlo due volte. Il totale, il messaggio WhatsApp e la
+copia nel database si rifanno già dalla voce, quindi non è cambiato niente lì. Dopo un
+tocco la finestra si ridisegna e il fuoco torna sullo stesso bottone (o sull'altro, se
+questo si è spento al limite). I bottoni sono quelli della finestra (`stepper-btn`), più
+piccoli (32 px); al buio presi di carta come la ✕.
+
+Provato nel browser con Royal Delfin, Jet Ski Safari, Castillo col menu vegetariano,
+Scandal (solo adulti: niente bambini né neonati) e un pacchetto: i limiti si spengono
+dove devono, i totali tornano (Royal Delfin 3 adulti + 1 bambino + 1 neonato = 119),
+il messaggio dice i numeri nuovi. Italiano e tedesco, chiaro e scuro, 375 e 320 px, nessun
+errore e niente che esce dallo schermo. `CACHE_NAME` → `isla-v599`.

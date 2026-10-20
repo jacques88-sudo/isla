@@ -267,6 +267,10 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   `robots.txt`, `<link rel="canonical">`, `hreflang` delle cinque lingue, schema.org
   `TravelAgency`/`TouristTrip` e le stelle di "Dicono di noi", `og:url` e `og:image` col
   dominio nuovo). Prima di allora non si fa.
+- **Il riquadro "Installa l'app" resta com'è** (proprietario, 20 ottobre 2026): compare
+  a ogni visita finché l'app non è installata, anche se alla prima apertura di una scheda
+  copre "Aggiungi alla lista" finché non si chiude. Proposti "solo in home ed elenco" e
+  "solo dopo la prima richiesta": scartati. Non si ripropone.
 - **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
   Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
   minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.

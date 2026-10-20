@@ -242,7 +242,8 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
 - **Le recensioni sono di Isla, e le scrive solo chi c'è stato** (proprietario, 20 ottobre
   2026): escursione confermata, già passata da non più di 30 giorni, ritrovata in "Le mie
   prenotazioni" (ticket: numero + telefono; richiesta: la chiave nel telefono). Escono
-  **solo dopo che l'ufficio le ha approvate**; scartate si cancellano. **Si recensisce il
+  **solo dopo che l'ufficio le ha approvate** (Isla Ticket, tendina "Recensioni", **solo
+  l'ufficio**: Pubblica, Scarta, e Togli sulle pubblicate); scartate si cancellano. **Si recensisce il
   servizio, non la barca**: i clienti parlano di noi e di Francesca, quindi **una per
   cliente** e si leggono **nella home** ("Dicono di noi"), non sulle schede né con le
   stelle nell'elenco. Si vedono nome e iniziale ("Marco R."), stelle, testo, mese, la

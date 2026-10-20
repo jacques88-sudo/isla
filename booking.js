@@ -375,6 +375,7 @@ function cardTicket(b, passata) {
         </div>
         ${tour ? `<a class="map-link" href="./tour.html?id=${encodeURIComponent(tour.id)}">${t("booking.seeTour")} →</a>` : ""}
       </div>
+      ${passata && typeof recensioneRiquadro === "function" ? recensioneRiquadro(b) : ""}
     </div>`;
 }
 
@@ -548,6 +549,8 @@ function chiediTelefono(code) {
 }
 
 async function cercaTicketVero(code, phone) {
+  // per la recensione (recensioni.js): il ticket di carta si dimostra cosi'
+  if (typeof RECENSIONE_TELEFONO !== "undefined") RECENSIONE_TELEFONO = phone;
   const salvati = risultatoSalvato(code, phone);
   // Quello che c'e' gia' si mostra subito; la risposta nuova lo sostituisce.
   if (salvati) renderTicketVeri(salvati, code, false);

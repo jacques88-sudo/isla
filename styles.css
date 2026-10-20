@@ -994,7 +994,9 @@ a { text-decoration: none; color: inherit; }
   color: var(--muted);
   margin: 1rem 0 0;
 }
-.detail-card.is-past { opacity: .6; }
+/* Passata, la card si spegne; la recensione no: e' l'unica cosa che li' si
+   puo' ancora fare, e un modulo sbiadito sembra spento. */
+.detail-card.is-past > :not(.recensione) { opacity: .6; }
 /* L'escursione di cui parla l'avviso toccato (booking.js, mostraDallAvviso):
    un anello del colore del suo stato, e sotto la capsula in alto, non dietro. */
 .detail-card.is-avviso {
@@ -4787,3 +4789,93 @@ body.map-sheet-open .assist-fab { display: none; }
   box-shadow: 0 0 0 4px color-mix(in oklab, var(--map-c) 35%, transparent), 0 2px 6px oklch(0.2 0.02 60 / .35);
   z-index: 1000 !important;
 }
+
+/* ─── Le recensioni in "Le mie prenotazioni" (recensioni.js) ───────────── */
+.recensione {
+  padding: 0 1.3rem 1.3rem;
+}
+.recensione-apri {
+  gap: .5rem;
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  white-space: normal;
+  text-align: center;
+  padding-block: .6rem;
+}
+.recensione-apri svg { width: 18px; height: 18px; fill: var(--gold); flex: none; }
+.recensione-grazie {
+  margin: 0;
+  color: var(--muted);
+  font-size: .9rem;
+}
+.recensione-modulo {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.recensione-modulo h3 {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: .72rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--muted);
+}
+.recensione-modulo > label { font-size: .85rem; margin-top: .4rem; }
+.recensione-modulo textarea,
+.recensione-modulo input[type="text"] {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: .95rem;
+  padding: .75rem 1rem;
+  border-radius: 14px;
+  outline: none;
+}
+.recensione-modulo input[type="text"] { border-radius: var(--radius-pill); padding-inline: 1.2rem; }
+.recensione-modulo textarea { resize: vertical; min-height: 6rem; }
+.recensione-modulo textarea:focus,
+.recensione-modulo input[type="text"]:focus { border-color: var(--text); }
+.recensione-modulo .hint { margin: 0; font-size: .8rem; color: var(--muted); }
+.recensione-stelle {
+  display: flex;
+  gap: .25rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.recensione-stelle legend { font-size: .85rem; padding: 0; margin-bottom: .3rem; }
+.recensione-stella {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+}
+.recensione-stella input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.recensione-stella svg {
+  width: 34px;
+  height: 34px;
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+.recensione-stella.is-on svg { fill: var(--gold); }
+.recensione-stella:has(input:focus-visible) { outline: 2px solid var(--text); border-radius: 50%; }
+.recensione-errore { margin: 0; color: var(--danger); font-size: .85rem; }
+.recensione-azioni { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .4rem; }
+.recensione-azioni .btn-ghost { border: 1px solid var(--border); background: transparent; color: var(--text); }
+.recensione-modulo .hint a { color: inherit; text-decoration: underline; }

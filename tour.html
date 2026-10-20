@@ -217,6 +217,10 @@
       <input id="reqDate" name="date" type="hidden" />
       <div data-date-field></div>
       <p class="request-day-error" data-request-day-error hidden></p>
+      <!-- Le 24 ore vere (partenzaPossibile in escursioni.js): senza questa riga
+           chi apriva l'escursione di domani mattina vedeva il giorno spento e
+           pensava che fosse pieno. -->
+      <p class="hint" data-request-date-hint data-i18n="req.dateHint">Si può chiedere fino a 24 ore prima della partenza: i giorni e gli orari più vicini sono spenti.</p>
 
       <label for="reqHotel"><span data-i18n="req.hotel">Dove alloggi</span> <span class="request-optional" data-i18n="req.hotelWhy">(utile per il pick-up)</span></label>
       <div class="hotel-field" data-hotel-field>

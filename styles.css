@@ -4974,3 +4974,39 @@ body.map-sheet-open .assist-fab { display: none; }
 .map-meteo h3 svg { width: 18px; height: 18px; }
 .map-meteo p { margin: .15rem 0; font-size: .9rem; }
 .map-meteo .meteo-fonte { margin-top: .35rem; font-size: .78rem; color: var(--muted); }
+
+/* ─── I preferiti (preferiti.js) ───────────────────────────────────────── */
+.tour-card { position: relative; }
+.fav-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  flex: none;
+}
+.fav-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round; }
+.fav-btn.is-on svg { fill: oklch(0.62 0.2 25); stroke: oklch(0.62 0.2 25); }
+.fav-btn:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+/* sulla foto della scheda, in alto a destra */
+.fav-on-photo {
+  position: absolute;
+  top: .6rem;
+  right: .6rem;
+  z-index: 2;
+  background: oklch(1 0 0 / .9);
+  color: oklch(0.25 0.02 60);
+  box-shadow: 0 2px 8px oklch(0 0 0 / .18);
+}
+/* nella pagina dell'escursione, accanto a Condividi */
+.detail-cat-row .fav-in-row { margin-left: auto; border: 1px solid var(--border); width: 40px; height: 40px; }
+.chip.chip-fav:not(.is-active) { color: oklch(0.55 0.18 25); }
+.fav-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem; margin: 0 0 1rem; }
+.fav-bar[hidden] { display: none; }
+.fav-bar p { margin: 0; color: var(--muted); font-size: .9rem; }
+.fav-bar .btn-ghost { border: 1px solid var(--border); background: transparent; color: var(--text); }

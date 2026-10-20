@@ -20435,3 +20435,32 @@ strutturati, e `jacques88-sudo.github.io` sembra un progetto personale. Il nome 
 (con "tenerife" dentro o no) conta poco; conta averne uno e non cambiarlo. Decisione:
 "ricordamelo quando avrò il dominio". Scritto in `CLAUDE.md`, fra le cose decise, con la
 lista di cosa fare. Oggi non ci sono `CNAME`, `robots.txt` né `sitemap.xml`.
+
+## I preferiti (20 ottobre 2026)
+
+Il proprietario: "facciamolo". Decisioni, 20 ottobre 2026:
+- **il cuore** sulla foto di ogni scheda dell'elenco (`tourCard`, in alto a destra,
+  fuori dal link della foto: un bottone dentro un `<a>` non si mette) e accanto a
+  "Condividi" nella pagina dell'escursione;
+- **si ritrovano** in Esperienze con la pillola **"♥ Preferiti (n)"**, davanti a
+  "Raccomandate", che compare solo se ce n'è almeno uno (o se la vista è aperta: togliendo
+  l'ultimo non sparisce sotto il dito), e con **"I miei preferiti" nel Menu**
+  (`escursioni.html?preferiti=1`), aggiunto nelle sette pagine col Menu;
+- **"Condividi i preferiti"**: un link `escursioni.html?pref=id,id`; chi lo apre vede
+  "Le escursioni che ti hanno mandato", le salva col cuore o con "Salvale tutte". Lo
+  stesso giro di Condividi della scheda: menu del telefono, se no appunti, se no WhatsApp.
+
+`preferiti.js` (caricato dove c'è `escursioni.js`): solo **localStorage**
+(`isla-preferiti`, al massimo 100), nessun account, niente al database; scritto in
+privacy nelle cinque lingue. L'evento `islapreferiti` tiene d'accordo cuori, pillola e
+vista. Nell'elenco i preferiti sono uno stato come le selezioni (`state.preferiti`,
+`state.condivisi`), in ordine di salvataggio; la ricerca ne esce. Gli id sconosciuti nel
+link si buttano via, come le categorie. Diverso dalla **lista** (il carrello): la lista è
+"le voglio chiedere", i preferiti "mi piacciono".
+
+Provato nel browser: il cuore non apre la scheda; la pillola conta; la vista mostra solo
+i salvati e "Condividi i preferiti"; togliendo un cuore la scheda sparisce; il cuore
+della pagina dell'escursione è d'accordo con l'elenco; dal Menu con zero preferiti il
+messaggio vuoto; un link mandato con un id inesistente mostra le due vere, "Salvale
+tutte" le salva e poi "Sono tutte nei tuoi preferiti"; in tedesco; a 360 px niente esce.
+`CACHE_NAME` → `isla-v597`.

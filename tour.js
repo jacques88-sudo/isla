@@ -606,6 +606,7 @@ function renderTour(tour) {
       <div class="detail-main">
         <div class="detail-cat-row">
           <span class="tour-cat">${esc(categoryName(tour.category))}</span>
+          ${typeof cuorePreferito === "function" ? cuorePreferito(tour.id, "fav-in-row") : ""}
           <button class="detail-share" type="button" data-share>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3.5"/><path d="M7.5 8 12 3.5 16.5 8"/><path d="M8 11H5.5v9.5h13V11H16"/></svg>
             <span data-share-label>${esc(t("detail.share"))}</span>

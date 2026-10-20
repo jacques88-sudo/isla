@@ -991,7 +991,12 @@ function tourCard(tour) {
   // dettaglio, dopo itinerario, cosa e' incluso e consigli.
   const askBtn = `<a class="btn btn-primary tour-ask" href="${href}">${t("tour.details")}</a>`;
 
+  // Il cuore dei preferiti (preferiti.js), sopra la foto. Fuori dal link:
+  // un bottone dentro un <a> non si puo' mettere.
+  const cuore = typeof cuorePreferito === "function" ? cuorePreferito(tour.id, "fav-on-photo") : "";
+
   li.innerHTML = `
+    ${cuore}
     <a class="tour-media" href="${href}" tabindex="-1" aria-hidden="true">${media}</a>
     <div class="tour-body">
       <span class="tour-cat">${categoryName(tour.category)}</span>
@@ -1065,9 +1070,20 @@ function initCatalog() {
   // Con una categoria nel link, una ricerca dalla barra della home o il
   // filtro famiglia si parte invece da tutto il catalogo: sono domande
   // precise, e rispondere con quattro schede soltanto sarebbe sbagliato.
+  // I preferiti (preferiti.js): "?preferiti=1" i miei (dal Menu), "?pref=a,b"
+  // quelli che qualcuno mi ha mandato. Gli id che non esistono si buttano via,
+  // come per le categorie.
+  const conPreferiti = typeof preferiti === "function";
+  const condivisiDaLink = conPreferiti && params.get("pref")
+    ? params.get("pref").split(",").filter(id => published.some(x => x.id === id)).slice(0, 50)
+    : null;
+  const preferitiDaLink = conPreferiti && params.get("preferiti") === "1";
   const state = {
+    preferiti: preferitiDaLink && !condivisiDaLink,
+    condivisi: condivisiDaLink && condivisiDaLink.length ? condivisiDaLink : null,
     categories: categorieDaLink,
-    recommended: !categorieDaLink.length && !queryDaLink && !selezioneDaLink && params.get("family") !== "1",
+    recommended: !categorieDaLink.length && !queryDaLink && !selezioneDaLink && params.get("family") !== "1"
+      && !preferitiDaLink && !condivisiDaLink,
     selezione: selezioneDaLink,
     family: params.get("family") === "1",
     query: queryDaLink.toLowerCase(),
@@ -1085,19 +1101,26 @@ function initCatalog() {
   // Raccomandate in testa, "Tutte" in fondo: prima le proposte, poi le
   // categorie, e per ultimo l'elenco intero.
   function buildChips() {
-    const all = [{ id: "raccomandate", name: t("catalog.recommended") }]
+    // "♥ Preferiti (3)" davanti a tutto, solo se ce n'e' almeno uno (o se
+    // la vista dei preferiti e' aperta: togliendo l'ultimo non sparisce
+    // sotto il dito).
+    const quanti = conPreferiti ? preferiti().length : 0;
+    const all = (quanti || state.preferiti ? [{ id: "preferiti", name: t("fav.chip", { n: quanti }) }] : [])
+      .concat([{ id: "raccomandate", name: t("catalog.recommended") }])
       .concat(usedCategories, [{ id: "tutte", name: t("catalog.all") }]);
     chipRow.innerHTML = "";
     all.forEach(cat => {
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "chip";
+      btn.className = "chip" + (cat.id === "preferiti" ? " chip-fav" : "");
       btn.textContent = tf(cat.name);
       btn.dataset.cat = cat.id;
       btn.addEventListener("click", () => {
+        state.preferiti = cat.id === "preferiti";
+        state.condivisi = null;
         state.recommended = cat.id === "raccomandate";
         state.selezione = null;
-        state.categories = state.recommended || cat.id === "tutte" ? [] : [cat.id];
+        state.categories = state.recommended || state.preferiti || cat.id === "tutte" ? [] : [cat.id];
         render();
       });
       chipRow.appendChild(btn);
@@ -1166,12 +1189,16 @@ function initCatalog() {
     }
     if (titleEl) {
       titleEl.textContent = cat ? tf(cat.name)
+        : state.preferiti ? t("fav.title")
+        : state.condivisi ? t("fav.sharedTitle")
         : state.selezione ? t(SELEZIONI[state.selezione].title)
         : state.recommended ? t("catalog.recommendedTitle") : t("catalog.title");
     }
   }
 
   function matches(tour) {
+    if (state.preferiti && !preferiti().includes(tour.id)) return false;
+    if (state.condivisi && !state.condivisi.includes(tour.id)) return false;
     if (state.recommended && !RACCOMANDATE.includes(tour.id)) return false;
     if (state.selezione && !SELEZIONI[state.selezione].ids.includes(tour.id)) return false;
     // Basta che UNA delle categorie della scheda sia fra quelle scelte: le
@@ -1206,9 +1233,14 @@ function initCatalog() {
     } else if (state.selezione) {
       const ids = SELEZIONI[state.selezione].ids;
       results.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
+    } else if (state.preferiti || state.condivisi) {
+      // nell'ordine in cui sono stati salvati (o mandati)
+      const ids = state.condivisi || preferiti();
+      results.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
     }
 
     dipingiTestata();
+    barraPreferiti(results);
 
     grid.innerHTML = "";
     results.forEach(tour => grid.appendChild(tourCard(tour)));
@@ -1216,7 +1248,9 @@ function initCatalog() {
     chipRow.querySelectorAll(".chip").forEach(btn => {
       // Con una selezione aperta non e' acceso nessun filtro della riga: la
       // selezione non e' fra quelli, e "Tutte" direbbe il falso.
-      const attivo = state.selezione ? false
+      const attivo = state.condivisi ? false
+        : state.preferiti ? btn.dataset.cat === "preferiti"
+        : state.selezione ? false
         : state.recommended ? btn.dataset.cat === "raccomandate"
         : state.categories.length ? state.categories.includes(btn.dataset.cat)
         : btn.dataset.cat === "tutte";
@@ -1253,6 +1287,12 @@ function initCatalog() {
         <h2>${t("catalog.prepTitle")}</h2>
         <p>${t("catalog.prepText")}</p>
       `;
+    } else if (results.length === 0 && state.preferiti) {
+      emptyEl.hidden = false;
+      emptyEl.innerHTML = `
+        <h2>${t("fav.emptyTitle")}</h2>
+        <p>${t("fav.emptyText")}</p>
+      `;
     } else if (results.length === 0) {
       emptyEl.hidden = false;
       emptyEl.innerHTML = `
@@ -1265,6 +1305,41 @@ function initCatalog() {
     }
   }
 
+  // Sopra le schede, nella vista dei preferiti: "Condividi i preferiti"; in
+  // quella dei preferiti mandati da qualcuno: "Salva tutte nei preferiti".
+  function barraPreferiti(results) {
+    let barra = document.querySelector("[data-fav-bar]");
+    const serve = (state.preferiti || state.condivisi) && results.length;
+    if (!serve) { if (barra) barra.hidden = true; return; }
+    if (!barra) {
+      barra = document.createElement("div");
+      barra.className = "fav-bar";
+      barra.dataset.favBar = "";
+      grid.parentNode.insertBefore(barra, grid);
+    }
+    const ids = results.map(x => x.id);
+    const mancano = state.condivisi ? ids.filter(id => !preferiti().includes(id)) : [];
+    barra.innerHTML = state.preferiti
+      ? `<button class="btn btn-ghost" type="button" data-fav-share>${esc(t("fav.share"))}</button>`
+      : mancano.length
+      ? `<p>${esc(t("fav.sharedText"))}</p><button class="btn btn-ghost" type="button" data-fav-saveall>${esc(t("fav.saveAll"))}</button>`
+      : `<p>${esc(t("fav.allSaved"))}</p>`;
+    barra.hidden = false;
+    const condividi = barra.querySelector("[data-fav-share]");
+    if (condividi) condividi.addEventListener("click", () => condividiPreferiti(condividi, ids));
+    const tutte = barra.querySelector("[data-fav-saveall]");
+    if (tutte) tutte.addEventListener("click", () => mancano.forEach(id => cambiaPreferito(id)));
+  }
+
+  // Un cuore toccato: la pillola cambia numero; nella vista dei preferiti
+  // la scheda tolta sparisce; in quella dei condivisi cambia la barra.
+  if (conPreferiti) {
+    document.addEventListener("islapreferiti", () => {
+      buildChips();
+      render();
+    });
+  }
+
   if (searchInput) {
     searchInput.addEventListener("input", () => {
       state.query = searchInput.value.trim().toLowerCase();
@@ -1273,6 +1348,7 @@ function initCatalog() {
       // direbbe che la barca non ce l'abbiamo.
       if (state.query && state.recommended) state.recommended = false;
       if (state.query && state.selezione) state.selezione = null;
+      if (state.query) { state.preferiti = false; state.condivisi = null; }
       render();
     });
   }

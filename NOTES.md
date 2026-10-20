@@ -20662,3 +20662,52 @@ Las Teresitas. `CACHE_NAME` → `isla-v605`.
 
 **Da fare (proprietario)**: ridistribuire `meteo-aemet` (anche se il passo del Teide
 di prima non era ancora fatto: basta una volta, dopo l'SQL `2026-10-20-meteo-teide.sql`).
+
+## Crea il tuo pacchetto (20 ottobre 2026)
+
+Il proprietario: «in ogni bento un'opzione per farsi il proprio pacchetto», un riquadro
+in tutte e quattro le vetrine (Pacchetti, In famiglia, Perfetto per 2, 3/5/7 giorni), e
+**le regole di quella vetrina valgono anche per il pacchetto su misura**.
+
+**Le regole**, in `PACCHETTI_SU_MISURA` (`pacchetti.js`):
+- Pacchetti: 3 escursioni, 10%, i mezzi (buggy, moto d'acqua) ci stanno, col "da €";
+- In famiglia: 3, 10%, solo `family: true` col prezzo bambini vero, niente mezzi;
+- Perfetto per 2: 3, 10%, i mezzi contati da due posti (`posti: 2`);
+- 3/5/7 giorni: 3, 5 o 7, 10%, 12% o 15%, niente mezzi. Da "Tutti" si parte da 3 e
+  dentro la pagina ci sono le pillole 3/5/7, che si portano dietro le scelte.
+
+Per tutte: una scheda una volta sola, **il Teide una volta sola**, e solo le voci con un
+prezzo a persona (le barche private e i charter no: il prezzo è di tutta la barca). Dove
+la scheda ha varianti il cliente sceglie la variante, perché il prezzo cambia. Lo sconto
+si toglie dove si toglie sempre (`scontoPossibile()`): parchi, spettacoli e `fixedPrice`
+restano pieni, e la pagina non lo scrive, come negli altri pacchetti. La percentuale non
+si scrive da nessuna parte, come prima.
+
+**Il Teide**: l'elenco che stava in un commento è diventato `PACCHETTI_TEIDE`, e ci ho
+aggiunto le schede che ci salgono e mancavano: Teide-Icod-Garachico-Masca, il bus cabrio
+Masca + Teide, la Mustang (sale alla Cañada Blanca) e cinque giri in bici (West e South
+Slope, Teide Downhill, Izaña–El Poris, Teide South Off-road). `controlla.js` dà un avviso
+se un pacchetto dell'ufficio sale al Teide due volte (oggi nessuno), un errore se
+l'elenco nomina una scheda o una variante che non c'è, e un avviso se una vetrina ha
+meno del doppio delle schede che servono.
+
+**Dove sta**: la pagina è `pacchetto.html?crea=<vetrina>` (base, famiglia, per-due, g3,
+g5, g7), non un file nuovo. In cima le scelte, sotto le schede per categoria con
+"Aggiungi", in fondo una barra ferma col prezzo e "Richiedi il pacchetto", che apre la
+finestra di sempre. Le scelte stanno nell'indirizzo (`&voci=…`): si ricarica e restano.
+
+**Il pacchetto non si salva da nessuna parte: è tutto nel suo id**,
+`su-misura:base:buggy-volcano-4h~2,parascending,luxury-cruiser~0` (la tilde è la
+variante). `pacchettoDi()` lo riconosce e lo ricostruisce, quindi lista, Supabase
+(`richieste.js`, una riga per escursione) e WhatsApp lo trattano come un pacchetto
+qualunque. Nel messaggio arriva come «Pacchetto su misura» (o «Itinerario su misura»)
+con «Cosa c'è dentro» e le varianti fra parentesi. Un id che rompe le regole (due volte
+il Teide, una scheda tolta) dà "Pacchetto non trovato".
+
+**Provato nel browser**: le cinque vetrine col riquadro giusto; buggy Completo + Teide
+rifiutato con l'avviso; pacchetto pieno che dice di toglierne una; la finestra col
+totale e i buggy (2 adulti, buggy da 2 e da 6: €657, risparmio €73); la lista; il
+messaggio; la pagina `?id=su-misura:…` (Teide a prezzo fisso: risparmio solo sulle altre
+due, €149 → €138); famiglia senza buggy; per-due col buggy "da €90"; itinerario da 5 a
+3 giorni; italiano, inglese, tedesco; 1280, 390 e 320 px, chiaro e scuro, nessuno
+scorrimento orizzontale, nessun errore in console. `CACHE_NAME` → `isla-v606`.

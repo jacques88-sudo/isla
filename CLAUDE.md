@@ -271,6 +271,12 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   a ogni visita finché l'app non è installata, anche se alla prima apertura di una scheda
   copre "Aggiungi alla lista" finché non si chiude. Proposti "solo in home ed elenco" e
   "solo dopo la prima richiesta": scartati. Non si ripropone.
+- **Ogni vetrina dei pacchetti finisce con "Crea il tuo pacchetto"** (proprietario, 20
+  ottobre 2026): il cliente sceglie le escursioni con **le regole di quella vetrina**
+  (quante, sconto, famiglia senza mezzi, Perfetto per 2 a due posti), più il Teide una
+  volta sola (`PACCHETTI_TEIDE` in `pacchetti.js`: **una scheda nuova che sale al Teide
+  va messa lì**). È `pacchetto.html?crea=…`, e il pacchetto vive solo nel suo id
+  (`su-misura:…`), che `pacchettoDi()` ricostruisce.
 - **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
   Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
   minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.

@@ -911,6 +911,42 @@ function controllaPacchetti() {
   });
 }
 
+// Il Teide una volta sola (vedi "IL TEIDE UNA VOLTA SOLA" in pacchetti.js), e
+// le pagine "Crea il tuo pacchetto": ogni vetrina deve avere abbastanza schede
+// da scegliere, e PACCHETTI_TEIDE deve nominare schede che ci sono.
+function controllaSuMisura() {
+  PACCHETTI.forEach(pack => {
+    const teide = pack.voci.filter(pacchettoVoceSaleAlTeide).map(v => v.id);
+    if (teide.length > 1) {
+      avviso("pacchetto " + pack.id, "sale al Teide piu' di una volta (" + teide.join(", ") +
+        "): vedi PACCHETTI_TEIDE.");
+    }
+  });
+
+  PACCHETTI_TEIDE.forEach(voce => {
+    const tour = ESPLORA_CATALOG.find(t => t.id === voce.id);
+    if (!tour) {
+      errore("PACCHETTI_TEIDE", '"' + voce.id + '" non c\'e\' nel catalogo.');
+    } else if (voce.optionIndex !== undefined &&
+               !(tour.options && tour.options.choices && tour.options.choices[voce.optionIndex])) {
+      errore("PACCHETTI_TEIDE", '"' + voce.id + '" non ha la variante ' + voce.optionIndex + ".");
+    }
+  });
+
+  Object.keys(PACCHETTI_SU_MISURA).forEach(chiave => {
+    const regole = PACCHETTI_SU_MISURA[chiave];
+    const schede = ESPLORA_CATALOG.filter(t => t.published).filter(t => {
+      const scelte = (t.options && t.options.choices) || [];
+      return (scelte.length ? scelte.map((_, i) => i) : [undefined])
+        .some(i => pacchettoSuMisuraAmmessa(regole, pacchettoSuMisuraVoce(regole, t.id, i)));
+    });
+    if (schede.length < regole.voci * 2) {
+      avviso("Crea il tuo pacchetto (" + chiave + ")", "si possono scegliere solo " +
+        schede.length + " schede per " + regole.voci + " posti.");
+    }
+  });
+}
+
 // ─── Esecuzione ────────────────────────────────────────────────────────────
 const CONTROLLI = [controllaBase, controllaEta, controllaPrezzi, controllaMezzi,
                    controllaGiorni, controllaOrari, controllaIncluse, controllaFoto,
@@ -926,6 +962,7 @@ controllaSelezioni();
 controllaPortare();
 controllaI18n();
 controllaPacchetti();
+controllaSuMisura();
 controllaServiceWorker();
 controllaFotoPiccole();
 

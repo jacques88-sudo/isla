@@ -31,6 +31,12 @@
 //   sabbia   "dorata", "chiara", "scura", "nera" o "ciottoli"
 //   stato    assente = aperta; "chiusa" (il pallino diventa grigio e la scritta
 //            rossa) o "regolamentata" (serve prenotare o un permesso)
+//   meteo    { spiaggia: codice AEMET, km: distanza } — di quale spiaggia di
+//            AEMET si mostra la previsione (meteo.js). "km" solo se e' un'altra
+//            spiaggia vicina (entro 3 km): la scritta dice quale e a quanti km.
+//            Senza (Benijo, Almaciga, Antequera, Masca: la piu' vicina e' a 6-7
+//            km, oltre la montagna) niente meteo. Il codice deve stare anche in
+//            SPIAGGE di supabase/functions/meteo-aemet/
 //   avviso   una riga it/en/es/fr/de col triangolo: frane, onde, vento, accessi.
 //            Vale anche per gli altri posti, ma per ora ce l'hanno le spiagge.
 //            Uno "stato" si ricontrolla prima di ogni stagione: le chiusure
@@ -69,6 +75,7 @@ const MAP_POINTS = [
   // Cruz, RTVC): Benijo chiusa dal 2024; Las Gaviotas chiusa da giugno 2026 e
   // per questo NON in elenco. Vedi NOTES.md, "Le spiagge migliorate".
   { cat: "spiaggia", name: "Playa de Las Teresitas", zone: "San Andrés", at: [28.5086, -16.1863],
+    meteo: { spiaggia: "3803806" },
     tipo: "scenografica", sabbia: "dorata",
     text: { it: "Sabbia dorata, palme e acqua calma dietro la diga, con le montagne di Anaga alle spalle.",
             en: "Golden sand, palm trees and calm water behind the breakwater, with the Anaga mountains behind you.",
@@ -76,6 +83,7 @@ const MAP_POINTS = [
             fr: "Sable doré, palmiers et eau calme derrière la digue, avec les montagnes d'Anaga dans le dos.",
             de: "Goldener Sand, Palmen und ruhiges Wasser hinter dem Wellenbrecher, mit den Anaga-Bergen im Rücken." } },
   { cat: "spiaggia", name: "Playa de Abama", zone: "Guía de Isora", at: [28.1719, -16.8055],
+    meteo: { spiaggia: "3801905", km: 1.2 },
     tipo: "scenografica", sabbia: "dorata",
     text: { it: "Sabbia chiara e acqua calma in fondo alla scogliera: sembra il Caribe. È pubblica e gratuita.",
             en: "Light sand and calm water at the foot of the cliff: it looks like the Caribbean. It is public and free.",
@@ -88,6 +96,7 @@ const MAP_POINTS = [
               fr: "On descend à pied depuis le parking public, une dizaine de minutes avec des marches. Apportez de l'eau et des chaussures confortables.",
               de: "Man geht vom öffentlichen Parkplatz hinunter, etwa zehn Minuten mit Stufen. Bringen Sie Wasser und bequeme Schuhe mit." } },
   { cat: "spiaggia", name: "Playa de la Tejita", zone: "El Médano", at: [28.0335, -16.5560],
+    meteo: { spiaggia: "3801705", km: 1.6 },
     tipo: "scenografica", sabbia: "scura",
     text: { it: "La spiaggia naturale più grande dell'isola, sotto il cono rosso della Montaña Roja. Niente palazzi.",
             en: "The island's largest natural beach, below the red cone of Montaña Roja. No buildings.",
@@ -96,6 +105,7 @@ const MAP_POINTS = [
             de: "Der größte Naturstrand der Insel, unter dem roten Kegel der Montaña Roja. Keine Bebauung." },
     avviso: { it: "Spesso c'è vento forte.", en: "It is often very windy.", es: "Suele haber mucho viento.", fr: "Il y a souvent beaucoup de vent.", de: "Es ist oft sehr windig." } },
   { cat: "spiaggia", name: "Playa del Bollullo", zone: "La Orotava", at: [28.4204, -16.5093],
+    meteo: { spiaggia: "3802601" },
     tipo: "scenografica", sabbia: "nera",
     text: { it: "Sabbia nera in fondo a una scogliera, fra i bananeti. Si scende a piedi.",
             en: "Black sand at the foot of a cliff, among banana plantations. You walk down to it.",
@@ -108,6 +118,7 @@ const MAP_POINTS = [
               fr: "Mer de la côte nord : vagues et courants forts. Par mer agitée, la baignade est interdite, regardez le drapeau.",
               de: "Meer der Nordküste: starke Wellen und Strömungen. Bei rauer See ist Baden verboten, achten Sie auf die Flagge." } },
   { cat: "spiaggia", name: "Playa Jardín", zone: "Puerto de la Cruz", at: [28.4146, -16.5627],
+    meteo: { spiaggia: "3802801" },
     tipo: "scenografica", sabbia: "nera",
     text: { it: "Sabbia nera fra i giardini, con il Teide che spunta dietro la città.",
             en: "Black sand among gardens, with Teide rising behind the town.",
@@ -120,6 +131,7 @@ const MAP_POINTS = [
               fr: "Mer de la côte nord : regardez le drapeau avant de vous baigner.",
               de: "Meer der Nordküste: Achten Sie vor dem Baden auf die Flagge." } },
   { cat: "spiaggia", name: "Playa de los Guíos", zone: "Los Gigantes", at: [28.2440, -16.8420],
+    meteo: { spiaggia: "3804004", km: 1.6 },
     tipo: "scenografica", sabbia: "nera",
     text: { it: "Piccola e nera, proprio sotto le scogliere di Los Gigantes.",
             en: "Small and black, right below the Los Gigantes cliffs.",
@@ -144,6 +156,7 @@ const MAP_POINTS = [
               fr: "Fermée depuis 2024 à cause du risque d'éboulements : on ne peut pas descendre à la plage, et ceux qui entrent peuvent être verbalisés.",
               de: "Seit 2024 wegen Steinschlaggefahr gesperrt: Man darf nicht an den Strand hinunter, und wer hineingeht, kann ein Bußgeld bekommen." } },
   { cat: "spiaggia", name: "Playa del Duque", zone: "Costa Adeje", at: [28.0935, -16.7405],
+    meteo: { spiaggia: "3800112", km: 1 },
     tipo: "comoda", sabbia: "dorata",
     text: { it: "Sabbia chiara, lettini e una passeggiata sul mare fino a Fañabé.",
             en: "Light sand, sunbeds and a seafront walk all the way to Fañabé.",
@@ -151,6 +164,7 @@ const MAP_POINTS = [
             fr: "Sable clair, transats et une promenade en bord de mer jusqu'à Fañabé.",
             de: "Heller Sand, Liegen und eine Strandpromenade bis Fañabé." } },
   { cat: "spiaggia", name: "Playa de Las Vistas", zone: "Los Cristianos", at: [28.0485, -16.7195],
+    meteo: { spiaggia: "3800603" },
     tipo: "comoda", sabbia: "chiara",
     text: { it: "Lunga, riparata e con poca onda: quella giusta per i bambini.",
             en: "Long, sheltered and with little swell: the right one for children.",
@@ -158,6 +172,7 @@ const MAP_POINTS = [
             fr: "Longue, abritée et avec peu de houle : celle qu'il faut pour les enfants.",
             de: "Lang, geschützt und mit wenig Wellen: der richtige für Kinder." } },
   { cat: "spiaggia", name: "El Médano", zone: "Granadilla", at: [28.0445, -16.5385],
+    meteo: { spiaggia: "3801705" },
     tipo: "comoda", sabbia: "dorata",
     text: { it: "La spiaggia del kitesurf e del windsurf, con il paese e i bar a due passi.",
             en: "The kitesurfing and windsurfing beach, with the village and bars a few steps away.",
@@ -166,6 +181,7 @@ const MAP_POINTS = [
             de: "Der Strand für Kitesurfen und Windsurfen, mit Ort und Bars ein paar Schritte entfernt." },
     avviso: { it: "Il vento c'è quasi sempre.", en: "There is almost always wind.", es: "Casi siempre hay viento.", fr: "Il y a presque toujours du vent.", de: "Es weht fast immer Wind." } },
   { cat: "spiaggia", name: "Playa de la Arena", zone: "Puerto de Santiago", at: [28.2280, -16.8405],
+    meteo: { spiaggia: "3804004" },
     tipo: "comoda", sabbia: "nera",
     text: { it: "Sabbia nera fine e tramonti sulla Gomera, con il paese tutto intorno.",
             en: "Fine black sand and sunsets over La Gomera, with the village all around.",
@@ -173,6 +189,7 @@ const MAP_POINTS = [
             fr: "Sable noir fin et couchers de soleil sur La Gomera, avec le village tout autour.",
             de: "Feiner schwarzer Sand und Sonnenuntergänge über La Gomera, mit dem Dorf rundherum." } },
   { cat: "spiaggia", name: "Playa de La Jaquita", zone: "Alcalá", at: [28.2065, -16.8350],
+    meteo: { spiaggia: "3804004", km: 2.7 },
     tipo: "comoda", sabbia: "scura",
     text: { it: "Una spiaggia scura e tranquilla accanto alle piscine naturali di Alcalá. Bella al tramonto.",
             en: "A quiet dark beach next to the natural pools of Alcalá. Lovely at sunset.",
@@ -192,6 +209,7 @@ const MAP_POINTS = [
               fr: "Vagues et courants forts : ce n'est pas une plage sûre pour se baigner.",
               de: "Starke Wellen und Strömungen: kein sicherer Badestrand." } },
   { cat: "spiaggia", name: "Playa de El Socorro", zone: "Los Realejos", at: [28.3945, -16.6033],
+    meteo: { spiaggia: "3803101" },
     tipo: "selvaggia", sabbia: "scura",
     text: { it: "Spiaggia nera del nord fra le scogliere: ci si viene per il surf e per il tramonto.",
             en: "A black north-coast beach between cliffs: people come for the surf and the sunset.",
@@ -490,6 +508,7 @@ function mapSheetHtml(p) {
       '<span class="map-pop-zone">' + mapEsc(p.zone) + "</span>" +
       mapTagsHtml(p) +
       "<p>" + mapEsc(p.text[lang] || p.text.it) + "</p>" +
+      (typeof meteoMappaSegnaposto === "function" ? meteoMappaSegnaposto(p) : "") +
       (p.avviso ? '<p class="map-warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5M12 17.2v.1"/></svg><span>' + mapEsc(p.avviso[lang] || p.avviso.it) + "</span></p>" : "") +
       '<a class="btn btn-primary btn-block" href="' + dir + '" target="_blank" rel="noopener noreferrer">' + mapEsc(t("map.go")) + "</a>" +
     "</div>";
@@ -502,6 +521,7 @@ function openMapSheet(i) {
   sheet.querySelector("[data-map-sheet-content]").innerHTML = mapSheetHtml(MAP_POINTS[i]);
   sheet.hidden = false;
   sheet.scrollTop = 0;
+  if (typeof meteoRiempi === "function") meteoRiempi();
   document.body.classList.add("map-sheet-open");
   mapState.markers.forEach((m, k) => {
     const node = m.getElement();

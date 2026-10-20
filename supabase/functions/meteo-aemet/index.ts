@@ -2,10 +2,11 @@
 // tabella meteo (supabase/modifiche/2026-10-20-meteo.sql). Il sito le legge
 // in "Le mie prenotazioni", sulle escursioni confermate (meteo.js).
 //
-// Una spiaggia per zona del catalogo (zoneGroups). Le altre zone non hanno
-// meteo: per "Teide e nord" AEMET da' solo la previsione dei paesi, e quella
-// di La Orotava (300 m) non dice niente del Teide (3700 m); meglio niente che
-// un dato sbagliato.
+// Le spiagge: quelle delle zone del catalogo, per le prenotazioni (meteo.js,
+// METEO_ZONE), e quelle della mappa (mappa.js, campo meteo). Una spiaggia nuova
+// si aggiunge QUI e la' dove si mostra. Per "Teide e nord" niente: AEMET da'
+// solo la previsione dei paesi, e quella di La Orotava (300 m) non dice niente
+// del Teide (3700 m); meglio niente che un dato sbagliato.
 //
 // Chi la chiama: Cron di Supabase, ogni 3 ore. La funzione e' aperta (Verify
 // JWT spento), come pulisci-foto: prende solo previsioni pubbliche e non
@@ -20,11 +21,18 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 // I codici delle spiagge: Playas_codigos.csv di AEMET (20 ottobre 2026).
-const SPIAGGE: Record<string, string> = {
-  "costa-adeje": "3800112",     // Fañabe, Adeje
-  "los-cristianos": "3800603",  // Las Vistas, Arona
-  "los-gigantes": "3804004",    // La Arena, Puerto Santiago (Santiago del Teide)
-};
+// Nove spiagge, due chiamate ciascuna, ogni 3 ore: lontanissimi dai limiti.
+const SPIAGGE = [
+  "3800112",  // Fañabe, Adeje: zona Costa Adeje, e Playa del Duque sulla mappa
+  "3800603",  // Las Vistas, Arona: zona Los Cristianos, e sulla mappa
+  "3804004",  // La Arena, Puerto Santiago: zona Los Gigantes; mappa: La Arena, Los Guíos, La Jaquita
+  "3801905",  // San Juan, Guía de Isora: mappa, Abama
+  "3801705",  // El Médano, Granadilla: mappa, El Médano e La Tejita
+  "3803806",  // Las Teresitas, Santa Cruz: mappa
+  "3802601",  // El Bollullo, La Orotava: mappa
+  "3802801",  // Jardín, Puerto de la Cruz: mappa
+  "3803101",  // El Socorro, Los Realejos: mappa
+];
 
 const AEMET = "https://opendata.aemet.es/opendata/api/prediccion/especifica/playa/";
 const UN_ORA = 60 * 60 * 1000;
@@ -61,14 +69,14 @@ function codice(tipo: string, numero: unknown, descrizione: unknown): number | n
 
 // Un giorno di AEMET → la riga della tabella. Solo numeri: i testi li scrive
 // la pagina, nelle cinque lingue. Un giorno senza cielo o senza data si salta.
-function riga(zona: string, g: Giorno, elaborato: string | null) {
+function riga(spiaggia: string, g: Giorno, elaborato: string | null) {
   const n = (x: unknown) => (x === undefined || x === null || x === "" ? null : Number(x));
   const coppia = (tipo: string, campo: Giorno) =>
     [codice(tipo, campo?.f1, campo?.descripcion1), codice(tipo, campo?.f2, campo?.descripcion2)];
   const f = String(g?.fecha ?? "");
   if (!/^\d{8}$/.test(f) || !g?.estadoCielo) return null;
   return {
-    zona,
+    spiaggia,
     giorno: `${f.slice(0, 4)}-${f.slice(4, 6)}-${f.slice(6, 8)}`,
     dati: {
       cielo: coppia("cielo", g.estadoCielo),
@@ -109,11 +117,11 @@ Deno.serve(async () => {
 
   const righe = [];
   const errori: string[] = [];
-  for (const [zona, codice] of Object.entries(SPIAGGE)) {
+  for (const codice of SPIAGGE) {
     try {
       const { elaborato, giorni } = await previsione(chiave, codice);
       for (const g of giorni) {
-        const r = riga(zona, g, elaborato);
+        const r = riga(codice, g, elaborato);
         if (r) righe.push(r);
       }
     } catch (err) {
@@ -124,7 +132,7 @@ Deno.serve(async () => {
   }
 
   if (righe.length) {
-    const { error } = await db.from("meteo").upsert(righe, { onConflict: "zona,giorno" });
+    const { error } = await db.from("meteo").upsert(righe, {  onConflict: "spiaggia,giorno" });
     if (error) return risposta({ errore: error.message }, 500);
   }
   // i giorni passati non servono piu'

@@ -495,7 +495,7 @@ const I18N = {
   // I nomi dei giorni invece si', e sono quelli di sopra (`day.mon`...): sono
   // gli stessi che compaiono nell'avviso "si fa solo il...".
   "req.datePick":       { it: "Scegli la data", en: "Choose the date", es: "Elige la fecha", fr: "Choisir la date", de: "Datum wählen" },
-  "req.dateHint":       { it: "Si può chiedere fino a 24 ore prima della partenza: i giorni e gli orari più vicini sono spenti.", en: "You can ask up to 24 hours before departure: closer days and times are greyed out.", es: "Se puede solicitar hasta 24 horas antes de la salida: los días y horarios más cercanos aparecen desactivados.", fr: "Vous pouvez demander jusqu'à 24 heures avant le départ : les jours et horaires plus proches sont grisés.", de: "Anfragen sind bis 24 Stunden vor der Abfahrt möglich: Nähere Tage und Uhrzeiten sind ausgegraut." },
+  "req.dateHint":       { it: "Si può chiedere fino a 24 ore prima della partenza.", en: "You can ask up to 24 hours before departure.", es: "Se puede solicitar hasta 24 horas antes de la salida.", fr: "Vous pouvez demander jusqu'à 24 heures avant le départ.", de: "Anfragen sind bis 24 Stunden vor der Abfahrt möglich." },
   "req.dateMissing":    { it: "Scegli la data dell'escursione.", en: "Choose the date of the excursion.", es: "Elige la fecha de la excursión.", fr: "Choisissez la date de l'excursion.", de: "Wählen Sie das Datum des Ausflugs." },
   "req.prevMonth":      { it: "Mese precedente", en: "Previous month", es: "Mes anterior", fr: "Mois précédent", de: "Voriger Monat" },
   "req.nextMonth":      { it: "Mese successivo", en: "Next month", es: "Mes siguiente", fr: "Mois suivant", de: "Nächster Monat" },

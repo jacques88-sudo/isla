@@ -20573,3 +20573,21 @@ mandata. Il proprietario: "lasciamolo stare così". Scritto anche fra le "Cose d
 `CLAUDE.md`. Con questo le proposte del 20 ottobre per il cliente sono chiuse: fatte la 2
 (`faq.a2`), la 4 (− / + nella lista), la 5 (home col 4G) e la 6 (frase delle 24 ore);
 scartate la 3 (avviso del link di pagamento, "non importa") e la 1.
+
+## Una richiesta con due escursioni: la seconda non si confermava (20 ottobre 2026)
+
+Il proprietario manda due escursioni in una richiesta, conferma la prima col ticket
+number, e la seconda viene rifiutata: "il ticket … è già stato inserito". Ogni escursione
+della richiesta è una riga a sé in `bookings`, e `ticket_number` è **unico** (è il
+controllo che impedisce di inserire due volte lo stesso ticket di carta).
+
+Proposte tre strade (numerazione automatica, un "Conferma tutte", un numero diverso a
+mano); il proprietario ha scelto la prima. In `venditori.js`, `apriConferma()`: l'ufficio
+scrive un numero solo, la prima escursione prende `1234`, le altre `1234-2`, `1234-3`
+(`numeroLibero()`, guardando i numeri già dati alla stessa richiesta con
+`numeriDellaRichiesta()`). Sulla seconda la finestra ripropone già numero e telefono.
+Un numero di **un altro** cliente non si numera: il database lo rifiuta, ed è giusto.
+Al cliente si manda il numero scritto (`1234`): `le_mie_escursioni()` con numero e
+telefono mostra **tutte** le sue confermate. Il database non cambia.
+Provate le due funzioni in Node con un finto Supabase; la pagina vera (Isla Ticket) vuole
+il login e non si è provata nel browser. `CACHE_NAME` → `isla-v603`.

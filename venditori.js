@@ -1262,6 +1262,13 @@ function apriConferma(li, r) {
   f.meeting_point.value = r.meeting_point || r.pickup_point || "";
   // il telefono c'e' gia' se l'ufficio ha mandato il link di pagamento
   f.phone.value = r.phone || "";
+  // Un'altra escursione della stessa richiesta gia' confermata: numero e
+  // telefono si ripropongono, l'ufficio preme solo Conferma.
+  numeriDellaRichiesta(r).then(numeri => {
+    if (!numeri.length) return;
+    if (!f.ticket_number.value) f.ticket_number.value = numeri[0].replace(/-\d+$/, "");
+    if (!f.phone.value) f.phone.value = numeri.telefono || "";
+  });
 
   form.querySelector("[data-edit-cancel]").addEventListener("click", () => form.remove());
   form.addEventListener("submit", async event => {
@@ -1298,7 +1305,7 @@ function apriConferma(li, r) {
     }
     const salvato = await cambiaRichiesta(r, Object.assign(pagamento, {
       status: "confirmed",
-      ticket_number: numero,
+      ticket_number: numeroLibero(numero, await numeriDellaRichiesta(r)),
       phone: telefono,
       date: f.date.value,
       time: f.time.value || null,
@@ -1306,7 +1313,7 @@ function apriConferma(li, r) {
       confirmed_at: new Date().toISOString()
     }), msg);
     if (salvato) {
-      mostra(els.requestsMsg, `${r.request_code} confermata: ora è il ticket ${numero}, in "Ultimi inseriti".`, "ok");
+      mostra(els.requestsMsg, `${r.request_code} confermata: ora è il ticket ${salvato}, in "Ultimi inseriti".`, "ok");
       els.requestsMsg.append(rispostaBottone(r, {
         numero,
         telefono,
@@ -1319,6 +1326,37 @@ function apriConferma(li, r) {
   });
   li.append(form);
   f.ticket_number.focus();
+}
+
+// UNA RICHIESTA, PIU' ESCURSIONI (20 ottobre 2026)
+// Ogni escursione della richiesta e' una riga a se', e ticket_number nel
+// database e' unico: col numero della prima, la seconda veniva rifiutata
+// ("gia' inserito"). Il proprietario ha scelto: l'ufficio scrive un numero
+// solo, la prima prende 1234, le altre 1234-2, 1234-3. Al cliente basta 1234:
+// "Le mie prenotazioni" con numero e telefono mostra tutte le sue confermate.
+
+// I ticket number gia' dati alle altre escursioni della stessa richiesta
+// (in `.telefono` il telefono gia' scritto). Se non si leggono, nessuno:
+// resta il controllo del database.
+async function numeriDellaRichiesta(r) {
+  const { data } = await sb.from("bookings").select("ticket_number, phone")
+    .eq("source", "whatsapp").eq("request_code", r.request_code)
+    .neq("id", r.id).not("ticket_number", "is", null);
+  const righe = data || [];
+  const numeri = righe.map(x => x.ticket_number);
+  numeri.telefono = (righe.find(x => x.phone) || {}).phone || "";
+  return numeri;
+}
+
+// Il numero scritto, o il primo "-2", "-3"... che la richiesta non ha ancora
+// dato, se quel numero e' gia' di un'altra sua escursione. Un numero di un
+// altro cliente invece resta com'e': il database lo rifiuta, ed e' giusto.
+function numeroLibero(numero, numeri) {
+  if (!numeri.includes(numero)) return numero;
+  const base = numero.replace(/-\d+$/, "");
+  let n = 2;
+  while (numeri.includes(`${base}-${n}`)) n++;
+  return `${base}-${n}`;
 }
 
 // ─── La risposta al cliente su WhatsApp ─────────────────────────────────────
@@ -1577,7 +1615,8 @@ async function cambiaRichiesta(r, nuovo, msg) {
     if (error || !data || !data.length) throw error || new Error("nessuna riga");
     mandaAvvisi();
     await caricaRichieste();
-    return true;
+    // chi conferma vuole il numero davvero salvato (1234-2, vedi numeroLibero)
+    return nuovo.ticket_number || true;
   } catch (err) {
     console.error(err);
     // ticket_number e' unico: lo stesso numero non entra due volte

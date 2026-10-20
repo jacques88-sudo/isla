@@ -20076,3 +20076,10 @@ lingue; il tedesco dà del "Sie", il francese del "vous", come il resto del sito
 Provato nel browser: a 320 px la pagina non esce dallo schermo, il menu del
 telefono riceve il link giusto, sul computer il link si copia e la scritta
 torna come prima.
+
+### Niente "Aggiungi al calendario" (20 ottobre 2026)
+
+Proposto insieme a "Condividi": un file `.ics` sulle escursioni confermate, con data,
+ora e punto di ritrovo. Il proprietario l'ha scartato: il promemoria sul telefono
+lo manda già `manda-notifiche`, e due promemoria per la stessa cosa non servono.
+Sta anche fra le "Cose decise" di `CLAUDE.md`.

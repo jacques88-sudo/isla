@@ -56,13 +56,9 @@
 //   Nazionale ci puo' stare una volta. Tre salite allo stesso posto sono lo
 //   stesso posto venduto tre volte, e il cliente se ne accorge il secondo
 //   giorno. Le voci che ci salgono non sono solo quelle col Teide nel nome:
-//     teide-national-park                il parco di giorno
-//     stargazing-group                   ci si sale la sera, tutte e due le varianti
-//     buggy-volcano-4h  optionIndex 1    "Tramonto sul Teide"
-//     buggy-volcano-4h  optionIndex 2    "Completo": dentro c'e' il parco
-//     quad-teide-adventure               tutte e due le varianti
-//     trekking-bici     optionIndex 0    "Teide Light"
-//     helicopter-tours  optionIndex 4    "Grand Teide Luxury"
+//   l'elenco sta in PACCHETTI_TEIDE, sotto i pacchetti, e lo usano sia
+//   `controlla.js` sia la pagina "Crea il tuo pacchetto", dove a scrivere il
+//   pacchetto e' il cliente.
 //   Il buggy lasciato senza `optionIndex` puo' finire su un percorso del
 //   Teide: dove succede, nel pacchetto non ci deve stare nient'altro che ci
 //   salga.
@@ -958,6 +954,81 @@ const PACCHETTI = [
 
 ];
 
+// Le voci che salgono al Teide (vedi "IL TEIDE UNA VOLTA SOLA" in testa al
+// file). Senza `optionIndex` vuol dire **tutte** le varianti della scheda;
+// con, solo quella. Una scheda nuova che ci sale va aggiunta qui, o il
+// cliente se la puo' mettere nel suo pacchetto accanto al Parco Nazionale.
+const PACCHETTI_TEIDE = [
+  { id: "teide-national-park" },                // il parco di giorno
+  { id: "icod-garachico-orotava" },             // il parco, poi Icod, Garachico e Masca
+  { id: "masca-teide-cabrio-bus" },             // il parco col bus scoperto
+  { id: "stargazing-group" },                   // ci si sale la sera
+  { id: "mustang-experience" },                 // su fino alla Cañada Blanca
+  { id: "buggy-volcano-4h", optionIndex: 1 },   // "Tramonto sul Teide"
+  { id: "buggy-volcano-4h", optionIndex: 2 },   // "Completo": dentro c'e' il parco
+  { id: "quad-teide-adventure" },               // tutte e due le varianti
+  { id: "trekking-bici", optionIndex: 0 },      // "Teide Light"
+  { id: "bici", optionIndex: 0 },               // Mount Teide Challenge West Slope
+  { id: "bici", optionIndex: 1 },               // Mount Teide Challenge South Slope
+  { id: "bici", optionIndex: 3 },               // Teide Downhill
+  { id: "bici", optionIndex: 9 },               // Izaña – El Poris, Teide Easy Downhill
+  { id: "bici", optionIndex: 10 },              // Teide South Off-road Downhill
+  { id: "helicopter-tours", optionIndex: 4 }    // "Grand Teide Luxury"
+];
+
+// ─────────────────────────────────────────────────────────────────────────
+// CREA IL TUO PACCHETTO
+//
+// In fondo a ogni vetrina c'e' un riquadro in piu', "Crea il tuo pacchetto"
+// (proprietario, 20 ottobre 2026): il cliente sceglie lui le escursioni, e
+// **valgono le regole della vetrina da cui arriva**. Quante escursioni, quanto
+// sconto, e quali schede si possono scegliere:
+//
+//   base      i pacchetti      3 escursioni, 10%, mezzi compresi
+//   famiglia  In famiglia      3 escursioni, 10%, solo le schede `family: true`
+//                              col prezzo bambini vero, niente mezzi
+//   per-due   Perfetto per 2   3 escursioni, 10%, i mezzi contati da due posti
+//                              (`posti: 2`, come nei pacchetti di quel tema)
+//   g3 g5 g7  3/5/7 giorni     3, 5 o 7 escursioni, 10%, 12% o 15%, niente mezzi
+//
+// E per tutte: il Teide una volta sola (PACCHETTI_TEIDE), una scheda una volta
+// sola, e solo le voci che hanno un prezzo a persona da far vedere. Le barche
+// private e i charter non ci sono: il loro prezzo e' di tutta la barca, e un
+// pacchetto deve poter dire quanto costa a testa — come quelli dell'ufficio.
+// Lo sconto si fa dove si fa sempre (scontoPossibile): sui parchi e sugli
+// spettacoli no, e la pagina non lo scrive, come negli altri pacchetti.
+//
+// IL PACCHETTO NON SI SALVA DA NESSUNA PARTE: e' scritto tutto nel suo id,
+//   su-misura:famiglia:peter-pan,submarine-safari,aqualand
+//   su-misura:base:buggy-volcano-4h~2,luxury-cruiser~0,parascending
+// (la tilde e' la variante, `optionIndex`). pacchettoDi() lo riconosce e lo
+// ricostruisce, quindi la lista, la richiesta su Supabase e il messaggio
+// WhatsApp lo trattano come un pacchetto qualunque, e l'indirizzo
+// `pacchetto.html?id=su-misura:...` si puo' mandare a qualcuno.
+// Un id che non rispetta le regole non e' un pacchetto: pacchettoDi() torna
+// null, come per un pacchetto tolto.
+// ─────────────────────────────────────────────────────────────────────────
+
+const PACCHETTI_SU_MISURA = {
+  base:      { voci: 3, sconto: 10, indietro: "./pacchetti.html" },
+  famiglia:  { voci: 3, sconto: 10, famiglia: true, indietro: "./pacchetti.html?famiglia=1" },
+  "per-due": { voci: 3, sconto: 10, tema: "per-due", posti: 2, indietro: "./pacchetti.html?tema=per-due" },
+  g3:        { voci: 3, sconto: 10, giorni: 3, indietro: "./pacchetti.html?giorni=3" },
+  g5:        { voci: 5, sconto: 12, giorni: 5, indietro: "./pacchetti.html?giorni=5" },
+  g7:        { voci: 7, sconto: 15, giorni: 7, indietro: "./pacchetti.html?giorni=7" }
+};
+
+// Il titolo che va nella lista e nel messaggio all'ufficio: "vorrei richiedere
+// il pacchetto «Pacchetto su misura»", e sotto le escursioni una per una.
+const PACCHETTI_SU_MISURA_TITOLO = {
+  it: "Pacchetto su misura", en: "Custom package", es: "Paquete a medida",
+  fr: "Forfait sur mesure", de: "Paket nach Wunsch"
+};
+const PACCHETTI_SU_MISURA_TITOLO_GIORNI = {
+  it: "Itinerario su misura", en: "Custom itinerary", es: "Itinerario a medida",
+  fr: "Itinéraire sur mesure", de: "Reiseroute nach Wunsch"
+};
+
 // ─────────────────────────────────────────────────────────────────────────
 // IL CONTO
 //
@@ -1009,6 +1080,7 @@ function pacchettoArrotonda(n) {
 }
 
 function pacchettoDi(id) {
+  if (String(id).indexOf("su-misura:") === 0) return pacchettoSuMisuraDaId(id);
   return PACCHETTI.find(p => p.id === id) || null;
 }
 
@@ -1197,6 +1269,120 @@ function pacchettoConto(pack) {
     sconto: sconto,
     misto: misto
   };
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// IL PACCHETTO SU MISURA: LE REGOLE
+// Il perche' sta sopra PACCHETTI_SU_MISURA.
+// ─────────────────────────────────────────────────────────────────────────
+
+// La voce sale al Teide? Una voce di PACCHETTI_TEIDE senza variante vale per
+// tutte le varianti della scheda.
+function pacchettoVoceSaleAlTeide(voce) {
+  return PACCHETTI_TEIDE.some(v => v.id === voce.id &&
+    (v.optionIndex === undefined || v.optionIndex === voce.optionIndex));
+}
+
+// Questa voce si puo' scegliere nella vetrina con queste regole?
+function pacchettoSuMisuraAmmessa(regole, voce) {
+  const tour = pacchettoVoceTour(voce);
+  if (!tour) return false;
+  // Dove la scheda ha delle varianti, la variante si sceglie: il prezzo
+  // cambia da una all'altra, e senza non si sa che cosa si sta sommando.
+  const scelte = (tour.options && tour.options.choices) || [];
+  if (scelte.length ? !pacchettoVoceVariante(voce, tour) : voce.optionIndex !== undefined) return false;
+
+  const prezzo = pacchettoVocePrezzo(voce);
+  if (!prezzo) return false;
+  if (prezzo.tipo === "mezzo") {
+    // Famiglia e itinerari: niente mezzi, come i pacchetti di quelle vetrine.
+    if (regole.famiglia || regole.giorni) return false;
+    // Un mezzo che non si sa dividere a testa (la barca privata) non ha un
+    // prezzo da far vedere.
+    if (!prezzo.aPersona) return false;
+  }
+  if (regole.famiglia && (!tour.family || !pacchettoVocePrezzoBambino(voce))) return false;
+  return true;
+}
+
+// La voce come la vuole la vetrina: su "Perfetto per 2" i mezzi si contano da
+// due posti, come nei pacchetti di quel tema.
+function pacchettoSuMisuraVoce(regole, id, optionIndex) {
+  const voce = { id: id };
+  if (optionIndex !== undefined) voce.optionIndex = optionIndex;
+  const tour = pacchettoVoceTour(voce);
+  if (regole.posti && tour && tour.units) voce.posti = regole.posti;
+  return voce;
+}
+
+// Che cosa non va in questa scelta, o null se e' un pacchetto:
+//   "manca"   ne servono di piu' (o ce ne sono troppe)
+//   "doppia"  la stessa scheda due volte
+//   "teide"   due voci che salgono al Teide
+//   "no"      una voce che in questa vetrina non si puo' scegliere
+function pacchettoSuMisuraProblema(regole, voci) {
+  if (voci.some(v => !pacchettoSuMisuraAmmessa(regole, v))) return "no";
+  const ids = voci.map(v => v.id);
+  if (ids.some((id, i) => ids.indexOf(id) !== i)) return "doppia";
+  if (voci.filter(pacchettoVoceSaleAlTeide).length > 1) return "teide";
+  if (voci.length !== regole.voci) return "manca";
+  return null;
+}
+
+// "buggy-volcano-4h~2": la voce come sta nell'id e nell'indirizzo.
+function pacchettoSuMisuraVoceTesto(voce) {
+  return voce.id + (voce.optionIndex !== undefined ? "~" + voce.optionIndex : "");
+}
+
+function pacchettoSuMisuraVoceDaTesto(regole, testo) {
+  const [id, indice] = String(testo).split("~");
+  const n = indice === undefined ? undefined : parseInt(indice, 10);
+  if (!id || (indice !== undefined && !(n >= 0))) return null;
+  return pacchettoSuMisuraVoce(regole, id, n);
+}
+
+function pacchettoSuMisuraId(chiave, voci) {
+  return "su-misura:" + chiave + ":" + voci.map(pacchettoSuMisuraVoceTesto).join(",");
+}
+
+// Il pacchetto ricostruito dal suo id, con gli stessi campi di quelli di
+// PACCHETTI, oppure null se l'id non rispetta le regole della sua vetrina.
+function pacchettoSuMisuraDaId(id) {
+  const pezzi = String(id).split(":");
+  if (pezzi.length !== 3 || pezzi[0] !== "su-misura") return null;
+  const chiave = pezzi[1];
+  if (!Object.prototype.hasOwnProperty.call(PACCHETTI_SU_MISURA, chiave)) return null;
+  const regole = PACCHETTI_SU_MISURA[chiave];
+  const voci = pezzi[2].split(",").map(s => pacchettoSuMisuraVoceDaTesto(regole, s));
+  if (voci.some(v => !v) || pacchettoSuMisuraProblema(regole, voci)) return null;
+
+  const primo = pacchettoVoceTour(voci[0]);
+  const pack = {
+    id: pacchettoSuMisuraId(chiave, voci),
+    suMisura: chiave,
+    title: regole.giorni ? PACCHETTI_SU_MISURA_TITOLO_GIORNI : PACCHETTI_SU_MISURA_TITOLO,
+    image: primo.image,
+    sconto: regole.sconto,
+    voci: voci
+  };
+  if (regole.famiglia) pack.famiglia = true;
+  if (regole.tema) pack.tema = regole.tema;
+  if (regole.giorni) pack.giorni = regole.giorni;
+  return pack;
+}
+
+// La vetrina dell'indirizzo di pacchetti.html, come chiave di
+// PACCHETTI_SU_MISURA. Nella vista "Tutti" degli itinerari si parte da tre
+// giorni: dentro la pagina si passa a cinque o sette.
+function pacchettoSuMisuraChiave(vistaGiorni, quanti, tema, famiglia) {
+  if (vistaGiorni) return "g" + (quanti || 3);
+  if (tema === "per-due") return "per-due";
+  return famiglia ? "famiglia" : "base";
+}
+
+function pacchettoSuMisuraHref(chiave, voci) {
+  return "./pacchetto.html?crea=" + encodeURIComponent(chiave) +
+    (voci && voci.length ? "&voci=" + encodeURIComponent(voci.map(pacchettoSuMisuraVoceTesto).join(",")) : "");
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -1939,6 +2125,23 @@ function pacchettoTileHTML(pack) {
     </li>`;
 }
 
+// L'ultimo riquadro di ogni vetrina: "Crea il tuo pacchetto". Senza foto, e
+// voluto: e' l'unico che non e' un pacchetto gia' pronto, e deve sembrare un
+// posto vuoto da riempire, non un pacchetto in piu'.
+function pacchettoSuMisuraTileHTML(chiave) {
+  const regole = PACCHETTI_SU_MISURA[chiave];
+  return `
+    <li class="pack-tile pack-tile-crea">
+      <a class="pack-tile-link" href="${pacchettoSuMisuraHref(chiave)}">
+        <span class="pack-tile-testo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+          <strong>${esc(t(regole.giorni ? "build.tileDays" : "build.tile"))}</strong>
+          <span>${esc(t("build.tileText", { n: regole.voci }))}</span>
+        </span>
+      </a>
+    </li>`;
+}
+
 // Le due viste di questa pagina — "In famiglia" e "3/5/7 giorni" — si vestono
 // spostando le **chiavi** di i18n, non scrivendo il testo: cosi' il cambio
 // lingua continua a funzionare da solo, che e' il lavoro di `applyI18n`. Si fa
@@ -2063,7 +2266,8 @@ function initPacchettiGriglia() {
             : (!pacchettoGiorni(p) && !pacchettoDiFamiglia(p) && !p.tema))
       .filter(p => p.voci.every(v => pacchettoVoceTour(v)))
       .map(p => pacchettoTileHTML(p))
-      .join("");
+      .join("") +
+      pacchettoSuMisuraTileHTML(pacchettoSuMisuraChiave(vistaGiorni, quanti, tema, soloFamiglia));
   }
 
   disegna();
@@ -2136,9 +2340,244 @@ function pacchettoFamigliaHTML(pack) {
         <p class="pack-note">${esc(t("pack.familyAges"))}</p>`;
 }
 
+// ─────────────────────────────────────────────────────────────────────────
+// LA PAGINA "CREA IL TUO PACCHETTO", `pacchetto.html?crea=<vetrina>`
+//
+// La stessa pagina del pacchetto aperto, come le vetrine sono la stessa
+// pagina: cambia cosa c'e' dentro, non i file da tenere allineati. In cima le
+// escursioni gia' scelte, sotto tutte quelle che si possono scegliere divise
+// per categoria, e in fondo, ferma mentre si scorre, la barra col conto e il
+// bottone. Il bottone apre la finestra di sempre (`data-pack-ask`), perche'
+// da li' in poi e' un pacchetto come gli altri.
+//
+// Le scelte stanno nell'indirizzo (`&voci=...`), non in localStorage: si
+// ricarica la pagina e ci sono ancora, e il link si puo' mandare.
+// ─────────────────────────────────────────────────────────────────────────
+
+// Le voci che il cliente puo' scegliere in questa vetrina, scheda per scheda:
+// [{ tour, voci: [voce, ...] }], una voce per ogni variante ammessa. Nell'ordine
+// del catalogo, che e' gia' quello delle categorie.
+function pacchettoSuMisuraScelte(regole) {
+  return ESPLORA_CATALOG
+    .filter(tour => tour.published)
+    .map(tour => {
+      const scelte = (tour.options && tour.options.choices) || [];
+      const voci = (scelte.length ? scelte.map((_, i) => i) : [undefined])
+        .map(i => pacchettoSuMisuraVoce(regole, tour.id, i))
+        .filter(v => pacchettoSuMisuraAmmessa(regole, v));
+      return { tour: tour, voci: voci };
+    })
+    .filter(s => s.voci.length);
+}
+
+// Il prezzo di una voce come si legge nella riga: a persona, "da" sui mezzi, e
+// nella vetrina di famiglia anche quello dei bambini.
+function pacchettoSuMisuraPrezzoTesto(regole, voce) {
+  const prezzo = pacchettoVocePrezzo(voce);
+  if (!prezzo) return "";
+  if (prezzo.tipo === "mezzo") {
+    return t("tour.from", { p: eur(prezzo.aPersona) }) + " " + t("pack.perPerson");
+  }
+  if (regole.famiglia) {
+    return t("pack.priceAdults", { n: eur(prezzo.prezzo) }) + " · " +
+      t("pack.priceChildren", { n: eur(pacchettoVocePrezzoBambino(voce)) });
+  }
+  return "€" + eur(prezzo.prezzo) + " " + t("pack.perPerson");
+}
+
+function initPacchettoSuMisura(contenitore, chiave) {
+  const regole = PACCHETTI_SU_MISURA[chiave];
+  const parametri = new URLSearchParams(location.search);
+
+  // Le scelte gia' nell'indirizzo, tenendo solo quelle che stanno nelle regole:
+  // un link vecchio con una scheda tolta perde quella, non tutto il resto.
+  let scelte = [];
+  String(parametri.get("voci") || "").split(",").filter(Boolean).forEach(testo => {
+    const voce = pacchettoSuMisuraVoceDaTesto(regole, testo);
+    if (!voce || scelte.length >= regole.voci) return;
+    const prova = scelte.concat(voce);
+    const problema = pacchettoSuMisuraProblema(regole, prova);
+    if (!problema || problema === "manca") scelte = prova;
+  });
+
+  // La variante scelta nel menu di ogni riga, finche' la riga non si aggiunge.
+  const varianti = {};
+  // L'avviso sotto il riepilogo ("Il Teide c'e' gia'"): si spegne alla mossa
+  // dopo.
+  let avviso = "";
+
+  const elenco = pacchettoSuMisuraScelte(regole);
+
+  function salvaIndirizzo() {
+    const url = pacchettoSuMisuraHref(chiave, scelte);
+    try { history.replaceState(null, "", url); } catch (e) { /* file:// */ }
+  }
+
+  function sceltaDi(id) {
+    return scelte.find(v => v.id === id) || null;
+  }
+
+  function rigaHTML(gruppo) {
+    const tour = gruppo.tour;
+    const presa = sceltaDi(tour.id);
+    const indice = presa ? presa.optionIndex
+      : (varianti[tour.id] !== undefined ? varianti[tour.id] : gruppo.voci[0].optionIndex);
+    const voce = gruppo.voci.find(v => v.optionIndex === indice) || gruppo.voci[0];
+
+    // Il menu delle varianti solo dove ce n'e' piu' d'una da scegliere; preso
+    // il pacchetto, la variante resta quella (si toglie e si riprende).
+    const menu = gruppo.voci.length > 1
+      ? `<select data-build-variant="${esc(tour.id)}" aria-label="${esc(t("build.variant", { name: tf(tour.title) }))}"${presa ? " disabled" : ""}>
+          ${gruppo.voci.map(v => `<option value="${v.optionIndex}"${v.optionIndex === voce.optionIndex ? " selected" : ""}>${esc(tf(tour.options.choices[v.optionIndex].label))}</option>`).join("")}
+        </select>`
+      : (voce.optionIndex !== undefined
+        ? `<span class="build-riga-variante">${esc(tf(tour.options.choices[voce.optionIndex].label))}</span>`
+        : "");
+
+    return `
+      <li class="build-riga${presa ? " is-presa" : ""}">
+        <img src="${fotoPiccola(tour.image)}" alt="" loading="lazy" />
+        <div class="build-riga-testo">
+          <strong>${esc(tf(tour.title))}</strong>
+          ${menu}
+          <span class="build-riga-prezzo">${esc(pacchettoSuMisuraPrezzoTesto(regole, voce))}</span>
+        </div>
+        <button class="btn ${presa ? "btn-soft" : "btn-primary"} build-riga-btn" type="button"
+                data-build-${presa ? "remove" : "add"}="${esc(tour.id)}"
+                aria-label="${esc(t(presa ? "build.removeAria" : "build.addAria", { name: tf(tour.title) }))}">
+          ${esc(t(presa ? "build.remove" : "build.add"))}</button>
+      </li>`;
+  }
+
+  function sceltaHTML(voce, n) {
+    const tour = pacchettoVoceTour(voce);
+    const variante = pacchettoVoceVariante(voce, tour);
+    return `
+      <li class="pack-voce">
+        <span class="pack-voce-n" aria-hidden="true">${n}</span>
+        <div class="pack-voce-testo">
+          <strong>${esc(tf(tour.title))}</strong>
+          <span class="pack-voce-meta">${esc([variante ? tf(variante.label) : "", pacchettoSuMisuraPrezzoTesto(regole, voce)].filter(Boolean).join(" · "))}</span>
+        </div>
+        <button class="iconbtn" type="button" data-build-remove="${esc(voce.id)}"
+                aria-label="${esc(t("build.removeAria", { name: tf(tour.title) }))}">✕</button>
+      </li>`;
+  }
+
+  function disegna() {
+    document.title = t(regole.giorni ? "build.titleDays" : "build.title") + " · Isla";
+    const pronto = !pacchettoSuMisuraProblema(regole, scelte);
+    const pack = pronto ? pacchettoDi(pacchettoSuMisuraId(chiave, scelte)) : null;
+    const conto = pack ? pacchettoConto(pack) : null;
+
+    // Le categorie nell'ordine di CATEGORIES, ognuna con le sue schede. Una
+    // scheda con `alsoIn` sta solo nella sua categoria: due righe per la stessa
+    // scheda farebbero sembrare che se ne possono prendere due.
+    const gruppi = CATEGORIES.map(cat => ({
+      cat: cat,
+      righe: elenco.filter(g => g.tour.category === cat.id)
+    })).filter(g => g.righe.length);
+
+    // Gli itinerari: le tre durate, come le pillole della loro vetrina.
+    // Cambiando durata le scelte restano, fin dove ci stanno.
+    const durate = regole.giorni ? `
+      <nav class="chip-row build-durate" aria-label="${esc(t("days.navAria"))}">
+        ${[3, 5, 7].map(n => `<a class="chip${n === regole.giorni ? " is-active" : ""}"
+            href="${pacchettoSuMisuraHref("g" + n, scelte.slice(0, n))}"${n === regole.giorni ? ' aria-current="page"' : ""}>${esc(t("days.d" + n))}</a>`).join("")}
+      </nav>` : "";
+
+    contenitore.innerHTML = `
+      <div class="build${scelte.length >= regole.voci ? " is-pieno" : ""}">
+        <div class="catalog-head">
+          <span class="eyebrow">${esc(t("build.eyebrow"))}</span>
+          <h1>${esc(t(regole.giorni ? "build.titleDays" : "build.title"))}</h1>
+          <p class="packs-intro">${esc(t(regole.giorni ? "build.introDays" : "build.intro", { n: regole.voci }))}</p>
+        </div>
+        ${durate}
+        <span class="pack-inside">${esc(t("build.chosen", { k: scelte.length, n: regole.voci }))}</span>
+        ${scelte.length
+          ? `<ol class="pack-voci build-scelte">${scelte.map((v, i) => sceltaHTML(v, i + 1)).join("")}</ol>`
+          : `<p class="pack-note build-vuoto">${esc(t("build.empty", { n: regole.voci }))}</p>`}
+        ${gruppi.map(g => `
+          <h2 class="build-cat">${esc(tf(g.cat.name))}</h2>
+          <ul class="build-elenco">${g.righe.map(rigaHTML).join("")}</ul>`).join("")}
+        <div class="build-barra">
+          ${pronto
+            ? `<div class="pack-foot">${pacchettoPrezzoHTML(conto)}${conto && conto.risparmio > 0
+                ? `<span class="build-risparmio">${esc(t("pack.save", { n: eur(conto.risparmio) }))}</span>` : ""}</div>`
+            : `<p class="build-conta">${esc(t("build.chosen", { k: scelte.length, n: regole.voci }))}</p>`}
+          <p class="request-day-error build-avviso" role="status"${avviso ? "" : " hidden"}>${esc(avviso)}</p>
+          <button class="btn btn-primary btn-block" type="button"
+                  ${pack ? `data-pack-ask="${esc(pack.id)}" aria-haspopup="dialog" aria-controls="packDialog"` : "disabled"}>
+            ${esc(t(regole.giorni ? "days.ask" : "pack.ask"))}</button>
+        </div>
+        <a class="pack-back" href="${regole.indietro}">${esc(t(regole.giorni ? "days.seeAll" : "pack.seeAll"))}</a>
+      </div>`;
+  }
+
+  // Dopo un ridisegno il bottone toccato non c'e' piu': si rimette il fuoco su
+  // quello nuovo della stessa riga, o chi usa la tastiera ricomincia da capo.
+  function ridisegnaTenendoFuoco(selettore) {
+    disegna();
+    const el = selettore && contenitore.querySelector(selettore);
+    if (el) el.focus({ preventScroll: true });
+  }
+
+  function aggiungi(id) {
+    if (scelte.length >= regole.voci) {
+      avviso = t("build.full", { n: regole.voci });
+      return;
+    }
+    const gruppo = elenco.find(g => g.tour.id === id);
+    if (!gruppo) return;
+    const indice = varianti[id] !== undefined ? varianti[id] : gruppo.voci[0].optionIndex;
+    const voce = gruppo.voci.find(v => v.optionIndex === indice) || gruppo.voci[0];
+    const prova = scelte.concat(voce);
+    const problema = pacchettoSuMisuraProblema(regole, prova);
+    if (problema === "teide") { avviso = t("build.teide"); return; }
+    if (problema && problema !== "manca") return;
+    scelte = prova;
+    salvaIndirizzo();
+  }
+
+  contenitore.addEventListener("click", e => {
+    const add = e.target.closest("[data-build-add]");
+    const rem = e.target.closest("[data-build-remove]");
+    if (!add && !rem) return;
+    avviso = "";
+    if (add) {
+      const id = add.dataset.buildAdd;
+      aggiungi(id);
+      ridisegnaTenendoFuoco(`[data-build-remove="${CSS.escape(id)}"], [data-build-add="${CSS.escape(id)}"]`);
+    } else {
+      const id = rem.dataset.buildRemove;
+      scelte = scelte.filter(v => v.id !== id);
+      salvaIndirizzo();
+      ridisegnaTenendoFuoco(`[data-build-add="${CSS.escape(id)}"]`);
+    }
+  });
+
+  contenitore.addEventListener("change", e => {
+    const menu = e.target.closest("[data-build-variant]");
+    if (!menu) return;
+    varianti[menu.dataset.buildVariant] = parseInt(menu.value, 10);
+    ridisegnaTenendoFuoco(`[data-build-variant="${CSS.escape(menu.dataset.buildVariant)}"]`);
+  });
+
+  disegna();
+  document.addEventListener("islalang", disegna);
+}
+
 function initPacchetto() {
   const contenitore = document.querySelector("[data-pack-detail]");
   if (!contenitore || typeof ESPLORA_CATALOG === "undefined") return;
+
+  const crea = new URLSearchParams(location.search).get("crea");
+  if (crea !== null) {
+    initPacchettoSuMisura(contenitore,
+      Object.prototype.hasOwnProperty.call(PACCHETTI_SU_MISURA, crea) ? crea : "base");
+    return;
+  }
 
   function disegna() {
     const id = new URLSearchParams(location.search).get("id");
@@ -2171,7 +2610,11 @@ function initPacchetto() {
       .join("");
     // Si torna alla vetrina in cui il pacchetto sta: quella senza filtro non
     // mostra quelli di famiglia ne' quelli a tema.
-    const indietro = giorni
+    // Il pacchetto su misura torna alla pagina dove si e' fatto, con le sue
+    // escursioni gia' scelte: e' li' che si cambiano.
+    const indietro = pack.suMisura
+      ? pacchettoSuMisuraHref(pack.suMisura, pack.voci)
+      : giorni
       ? "./pacchetti.html?giorni=" + giorni
       : famiglia
         ? "./pacchetti.html?famiglia=1"
@@ -2189,7 +2632,7 @@ function initPacchetto() {
         </div>
         <span class="eyebrow">${esc(giorni ? t("days.detailEyebrow", { n: giorni }) : t("pack.eyebrow"))}</span>
         <h1 class="pack-detail-title">${esc(tf(pack.title))}</h1>
-        <p class="pack-detail-lead">${esc(tf(pack.desc))}</p>
+        <p class="pack-detail-lead">${esc(pack.suMisura ? t("build.detailLead") : tf(pack.desc))}</p>
         <div class="pack-foot">${pacchettoPrezzoHTML(conto)}</div>
         ${conto && conto.misto ? `<p class="pack-note">${esc(t("pack.unitNote"))}</p>` : ""}
         ${pacchettoFamigliaHTML(pack)}
@@ -2198,7 +2641,7 @@ function initPacchetto() {
         <button class="btn btn-primary btn-block" type="button" data-pack-ask="${esc(pack.id)}"
                 aria-haspopup="dialog" aria-controls="packDialog">${esc(giorni ? t("days.ask") : t("pack.ask"))}</button>
         <p class="hint">${esc(giorni ? t("days.oneRequest", { n: giorni }) : t("pack.oneRequest"))}</p>
-        <a class="pack-back" href="${indietro}">${esc(giorni ? t("days.seeAll") : t("pack.seeAll"))}</a>
+        <a class="pack-back" href="${indietro}">${esc(pack.suMisura ? t("build.change") : giorni ? t("days.seeAll") : t("pack.seeAll"))}</a>
       </article>`;
   }
 

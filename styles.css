@@ -2320,6 +2320,110 @@ body.menu-open { overflow: hidden; }
   .pack-tile:not(:first-child):not(:nth-child(even):last-child) .pack-badge-corto { display: inline; }
 }
 
+/* "Crea il tuo pacchetto", l'ultimo riquadro di ogni vetrina: senza foto e col
+   bordo tratteggiato, un posto vuoto da riempire e non un pacchetto in piu'.
+   Niente sfumatura (::after): e' li' per leggere il bianco sulla foto. */
+.pack-tile-crea {
+  background: var(--cream);
+  border: 1.5px dashed color-mix(in oklab, var(--text) 30%, transparent);
+  box-shadow: none;
+}
+.pack-tile-crea::after { content: none; }
+.pack-tile-crea .pack-tile-link { color: var(--text); }
+.pack-tile-crea .pack-tile-testo { top: 1rem; justify-content: center; }
+.pack-tile-crea svg { width: 30px; height: 30px; color: var(--gold); }
+.pack-tile-crea .pack-tile-testo > span {
+  color: var(--muted);
+  font-size: .8rem;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* ── La pagina "Crea il tuo pacchetto" (pacchetto.html?crea=...) ─────── */
+.build { display: flex; flex-direction: column; gap: .7rem; }
+.build .catalog-head { padding-inline: 0; }
+.build-durate { justify-content: center; }
+.build-vuoto { margin-bottom: .6rem; }
+.build-scelte { margin-bottom: .6rem; }
+.build-scelte .iconbtn { flex: none; }
+.build-cat {
+  margin: 1.2rem 0 0;
+  font-weight: 400;
+  font-size: 1.35rem;
+}
+.build-elenco {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* Una riga per scheda: la foto piccola, titolo, variante e prezzo, e il
+   bottone a destra. min-width: 0 sul testo o un titolo lungo allarga la riga. */
+.build-riga {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  padding: .7rem 0;
+  border-top: 1px solid var(--border);
+}
+.build-riga img {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: var(--cream);
+}
+.build-riga-testo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+.build-riga-testo strong { font-weight: 500; font-size: .92rem; line-height: 1.25; }
+.build-riga-testo select {
+  max-width: 100%;
+  padding: .3rem .5rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;              /* sotto i 16px l'iPhone ingrandisce la pagina */
+}
+.build-riga-testo select:focus { outline: none; border-color: var(--text); }
+.build-riga-testo select:disabled { opacity: .6; }
+.build-riga-variante,
+.build-riga-prezzo { color: var(--muted); font-size: .78rem; }
+.build-riga-btn {
+  flex: none;
+  min-height: 38px;
+  padding-inline: .9rem;
+  font-size: .68rem;
+}
+/* Pacchetto pieno: "Aggiungi" resta toccabile (dice perche' non si puo'),
+   ma si spegne, cosi' l'occhio va al bottone in fondo. */
+.build.is-pieno .build-riga-btn.btn-primary { opacity: .35; }
+.build-riga.is-presa img { outline: 2px solid var(--gold); outline-offset: 2px; }
+/* La barra in fondo: resta ferma mentre si scorre l'elenco, come il piede
+   della finestra della richiesta. */
+.build-barra {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  margin: 1rem -1.25rem 0;
+  padding: .8rem 1.25rem 1rem;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+.build-barra .pack-foot { margin: 0 0 .6rem; }
+.build-barra .pack-price { font-size: 1.35rem; }
+.build-risparmio { color: var(--gold); font-size: .82rem; }
+.build-conta { margin: 0 0 .6rem; color: var(--muted); font-size: .9rem; }
+.build-avviso { margin: 0 0 .6rem; }
+.build-avviso[hidden] { display: none; }
+.build-barra .btn:disabled { opacity: .45; cursor: not-allowed; }
+
 /* ── Il pacchetto aperto ──────────────────────────────────────────────── */
 .pack-detail {
   display: flex;

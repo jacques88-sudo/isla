@@ -100,12 +100,48 @@ function riga(spiaggia: string, g: Giorno, elaborato: string | null) {
 // temperature del giorno dopo, l'unico che ha la tabella:
 //   "Pronóstico para el día 21 (miércoles) ... Teide (3715 m) -1 ( -3) 2 ( -2)"
 // cioe' minima, (percepita), massima, (percepita). Cielo e pioggia sono frasi
-// in spagnolo: non si prendono, il sito parla cinque lingue. Si salva sotto
+// in spagnolo: diventano un codice (cieloTeide), la pagina mostra un'icona
+// (proprietario, 20 ottobre 2026). Si salva sotto
 // spiaggia "teide" (supabase/modifiche/2026-10-20-meteo-teide.sql). La riga
 // di oggi resta quella del bollettino di ieri.
 const TEIDE = "https://www.aemet.es/documentos/es/eltiempo/prediccion/montana/boletin_montana/BM_Teide.pdf";
 const MESI = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
   "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+// "Estado del cielo: Poco nuboso o despejado en cotas altas, salvo… nuboso
+// en el resto" → conta solo la parte delle cime ("cotas altas", dove salgono
+// le escursioni), se no la prima frase; e la prima parola che si riconosce:
+// despejado 100 (sole), poco nuboso / intervalos 105 (sole e nuvole),
+// nuboso / cubierto 110 (nuvola). Se non si riconosce niente, null: niente
+// icona, meglio che una sbagliata.
+// "Precipitaciones": pioggia solo con "se esperan" lluvias / chubascos /
+// lloviznas, neve con nieve / nevadas; "no se esperan" vuol dire niente.
+export function cieloTeide(pezzo: string) {
+  const tra = (da: RegExp, a: RegExp) => {
+    const i = pezzo.search(da);
+    if (i < 0) return "";
+    const resto = pezzo.slice(i).replace(da, "");
+    const j = resto.search(a);
+    return j < 0 ? resto : resto.slice(0, j);
+  };
+  const fine = /Precipitaciones:|Tormentas:|Viento:|Temperaturas:|\d\.- /;
+  let cielo = tra(/Estado del cielo:/i, fine);
+  const alto = cielo.search(/en cotas altas/i);
+  cielo = alto >= 0 ? cielo.slice(0, alto) : cielo.split(".")[0];
+  const parola = cielo.toLowerCase()
+    .match(/poco nuboso|intervalos nubosos|intervalos de nubes|despejado|muy nuboso|nuboso|cubierto/);
+  const codici: Record<string, number> = {
+    "despejado": 100, "poco nuboso": 105, "intervalos nubosos": 105, "intervalos de nubes": 105,
+    "muy nuboso": 110, "nuboso": 110, "cubierto": 110,
+  };
+  const pioggiaTesto = tra(/Precipitaciones:/i, fine).toLowerCase();
+  const niente = /no se esperan|sin precipitaci/.test(pioggiaTesto);
+  return {
+    cielo: parola ? codici[parola[0]] : null,
+    pioggia: !niente && /se esperan[^.]*(lluvia|chubasco|llovizna)/.test(pioggiaTesto),
+    neve: !niente && /nieve|nevada/.test(pioggiaTesto),
+  };
+}
 
 // Il testo del PDF → le righe della tabella meteo. Se il formato cambia e non
 // si riconosce niente, nessuna riga: meglio niente che un numero sbagliato.
@@ -131,11 +167,14 @@ export function leggiTeide(testo: string) {
     for (const m of pezzo.matchAll(re)) {
       punti.push({ nome: m[1].trim(), quota: Number(m[2]), min: Number(m[3]), stMin: Number(m[4]), max: Number(m[5]), stMax: Number(m[6]) });
     }
-    if (!punti.length) continue;
+    // i giorni dopo il primo non hanno la tabella, ma il cielo si': vale anche
+    // da solo
+    const cielo = cieloTeide(pezzo);
+    if (!punti.length && !cielo.cielo) continue;
     righe.push({
       spiaggia: "teide",
       giorno: `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`,
-      dati: { punti },
+      dati: { punti, ...cielo },
       elaborato,
       aggiornato: new Date().toISOString(),
     });

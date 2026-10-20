@@ -69,6 +69,30 @@ let METEO = null;         // le righe di meteo_prossimi(), o null finche' non ci
 
 const METEO_ICONA = '<svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>';
 
+// IL CIELO A ICONE (20 ottobre 2026, proprietario): al posto di "Sereno",
+// "Nuvoloso"… un disegno, uguale in tutte le lingue. La scritta resta per chi
+// legge con lo screen reader (aria-label) e col dito sopra (title).
+// Codici di AEMET per le spiagge (100-140) e di meteo-aemet per il Teide
+// (100, 105, 110): "nuboso" e' sempre la nuvola.
+const METEO_NUVOLA = "M7 19h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.3 11.2 3.9 3.9 0 0 0 7 19z";
+const METEO_DISEGNI = {
+  sole: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>',
+  soleNuvola: '<path d="M6.2 10.2a3.6 3.6 0 0 1 5.9-3.4M8.8 2.5v1.8M3 8.2h1.8M4.6 4.4l1.2 1.2M13 4.4l-1.2 1.2"/><path d="M9 20h9a3.5 3.5 0 0 0 .5-6.96A5.2 5.2 0 0 0 8.6 13.1 3.45 3.45 0 0 0 9 20z"/>',
+  nuvola: '<path d="' + METEO_NUVOLA + '"/>',
+  pioggia: '<path transform="translate(0 -3.5)" d="' + METEO_NUVOLA + '"/><path d="M8.5 18.5l-1 2.5M12.5 18.5l-1 2.5M16.5 18.5l-1 2.5"/>',
+  neve: '<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M10 4.5l2 1.5 2-1.5M10 19.5l2-1.5 2 1.5M4.7 10l2.2-1-.3-2.5M19.3 14l-2.2 1 .3 2.5M4.7 14l2.2 1-.3 2.5M19.3 10l-2.2-1 .3-2.5"/>'
+};
+const METEO_CIELO = { 100: "sole", 105: "soleNuvola", 110: "nuvola", 120: "nuvola", 130: "pioggia", 140: "pioggia" };
+
+function meteoIcona(disegno, scritta) {
+  if (!METEO_DISEGNI[disegno]) return "";
+  return `<svg class="meteo-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="${meteoEsc(scritta)}"><title>${meteoEsc(scritta)}</title>${METEO_DISEGNI[disegno]}</svg>`;
+}
+
+function meteoCielo(codice) {
+  return codice ? meteoIcona(METEO_CIELO[codice], t("meteo.c" + codice)) : "";
+}
+
 function meteoEsc(s) {
   return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
@@ -125,17 +149,24 @@ function meteoSegnaposto(b, tour) {
 // Il Teide: tutto il giorno, una riga per punto. "Teide (3715 m): da -1° a
 // 2°, percepita fino a -3°". Il bollettino copre solo il giorno dopo: oggi
 // resta quello di ieri, dopodomani di solito non c'è ancora.
+// Sopra, le icone: il cielo delle cime, e la pioggia o la neve se AEMET le
+// aspetta (anche col sole: piove in basso, sotto le nuvole).
 function meteoCardTeide(giorno) {
   const r = meteoRiga("teide", giorno);
-  const punti = ((r && r.dati && r.dati.punti) || [])
+  const d = (r && r.dati) || {};
+  const punti = (d.punti || [])
     .filter(p => METEO_TEIDE_PUNTI.includes(p.nome) && p.min != null && p.max != null);
-  if (!punti.length) return null;
+  const icone = meteoCielo(d.cielo) +
+    (d.pioggia ? meteoIcona("pioggia", t("meteo.rain")) : "") +
+    (d.neve ? meteoIcona("neve", t("meteo.snow")) : "");
+  if (!punti.length && !icone) return null;
   const righe = punti.map(p => t("meteo.mountain", { posto: p.nome, quota: p.quota, min: p.min, max: p.max }) +
     (p.stMin != null && p.stMin < p.min ? t("meteo.feels", { n: p.stMin }) : ""));
   return `
             ${METEO_ICONA}
             <div>
               <h3>${meteoEsc(t("meteo.title"))}</h3>
+              ${icone ? `<p class="meteo-icone">${icone}</p>` : ""}
               ${righe.map(x => `<p>${meteoEsc(x)}</p>`).join("")}
               <p class="meteo-fonte">${meteoEsc(t("meteo.sourceTeide"))}</p>
             </div>`;
@@ -149,14 +180,14 @@ function meteoCard(spiaggia, giorno, meta) {
   if (!cielo) return null;     // senza cielo non si scrive niente
   const vento = d.vento && d.vento[meta];
   const onde = d.onde && d.onde[meta];
-  const riga1 = [t("meteo.c" + cielo), vento ? t("meteo.v" + vento) : "", onde ? t("meteo.o" + onde) : ""]
+  const riga1 = [vento ? t("meteo.v" + vento) : "", onde ? t("meteo.o" + onde) : ""]
     .filter(Boolean).join(" · ");
   const riga2 = meteoNumeri(d);
   return `
             ${METEO_ICONA}
             <div>
               <h3>${meteoEsc(t("meteo.title"))} · ${meteoEsc(t(meta ? "meteo.afternoon" : "meteo.morning"))}</h3>
-              <p>${meteoEsc(riga1)}</p>
+              <p class="meteo-icone">${meteoCielo(cielo)}${riga1 ? `<span>${meteoEsc(riga1)}</span>` : ""}</p>
               ${riga2 ? `<p>${meteoEsc(riga2)}</p>` : ""}
               <p class="meteo-fonte">${meteoEsc(t("meteo.source", { posto: METEO_SPIAGGE[spiaggia] }))}</p>
             </div>`;
@@ -171,26 +202,29 @@ function meteoMappaSegnaposto(p) {
   return `<div class="map-meteo" data-meteo="mappa|${p.meteo.spiaggia}|${p.meteo.km || ""}" hidden></div>`;
 }
 
-// Mattina e pomeriggio in una riga: "Nuvoloso → sereno", o uno solo se uguali
-// (la seconda in minuscolo, tranne in tedesco: "Bewölkt → Stark bewölkt").
-// Vento e onde: il più forte dei due.
+// Mattina e pomeriggio: il cielo a icone, "nuvola → sole", o una sola se
+// uguali (HTML). Vento e onde a parole: il più forte dei due.
 function meteoGiornata(d) {
   const due = (campo, prefisso) => {
     const [m, p] = d[campo] || [];
     if (!m && !p) return "";
-    if (!m || !p || m === p) return t(prefisso + (m || p));
-    return prefisso === "meteo.c" ? t(prefisso + m) + " → " + (getLang() === "de" ? t(prefisso + p) : t(prefisso + p).toLowerCase()) : t(prefisso + Math.max(m, p));
+    return t(prefisso + (!m || !p ? (m || p) : Math.max(m, p)));
   };
-  return [due("cielo", "meteo.c"), due("vento", "meteo.v"), due("onde", "meteo.o"),
+  const [cm, cp] = d.cielo || [];
+  const cielo = !cm || !cp || METEO_CIELO[cm] === METEO_CIELO[cp]
+    ? meteoCielo(cm || cp)
+    : meteoCielo(cm) + '<span aria-hidden="true">→</span>' + meteoCielo(cp);
+  const resto = [due("vento", "meteo.v"), due("onde", "meteo.o"),
     d.acqua != null ? t("meteo.water", { n: d.acqua }) : "", d.tmax != null ? t("meteo.max", { n: d.tmax }) : ""]
     .filter(Boolean).join(" · ");
+  return cielo + (resto ? `<span>${meteoEsc(resto)}</span>` : "");
 }
 
 function meteoMappa(spiaggia, km) {
   const righe = [0, 1].map(i => {
     const r = meteoRiga(spiaggia, meteoGiorno(i));
     if (!r || !r.dati || !r.dati.cielo || !(r.dati.cielo[0] || r.dati.cielo[1])) return "";
-    return `<p><strong>${meteoEsc(t(i ? "meteo.tomorrow" : "meteo.today"))}</strong> ${meteoEsc(meteoGiornata(r.dati))}</p>`;
+    return `<p class="meteo-icone"><strong>${meteoEsc(t(i ? "meteo.tomorrow" : "meteo.today"))}</strong> ${meteoGiornata(r.dati)}</p>`;
   }).filter(Boolean);
   if (!righe.length) return null;
   const fonte = km

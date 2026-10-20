@@ -5016,6 +5016,9 @@ body.map-sheet-open .assist-fab { display: none; }
 .map-meteo h3 svg { width: 18px; height: 18px; }
 .map-meteo p { margin: .15rem 0; font-size: .9rem; }
 .map-meteo .meteo-fonte { margin-top: .35rem; font-size: .78rem; color: var(--muted); }
+/* il cielo a icone (meteo.js, METEO_DISEGNI): icone e scritte sulla stessa riga */
+.meteo-icone { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .45rem; }
+.meteo-ico { width: 1.6em; height: 1.6em; flex: none; }
 
 /* ─── I preferiti (preferiti.js) ───────────────────────────────────────── */
 .tour-card { position: relative; }

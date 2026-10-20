@@ -32,7 +32,7 @@ function detailGallery(tour) {
   const miniature = foto.map((nome, i) => `
     <button type="button" class="gallery-thumb${i === 0 ? " is-active" : ""}"
             data-gallery-src="${esc(nome)}" aria-label="${esc(t("detail.photo", { n: i + 1 }))}">
-      <img src="./assets/${encodeURIComponent(nome)}" alt="" loading="lazy" />
+      <img src="${fotoPiccola(nome)}" alt="" loading="lazy" />
     </button>`).join("");
   return `<div class="detail-gallery" data-detail-gallery>${miniature}</div>`;
 }
@@ -518,7 +518,7 @@ function detailRelated(tour) {
             <a href="./tour.html?id=${encodeURIComponent(x.id)}">
               <span class="detail-related-media">
                 ${x.image
-                  ? `<img src="./assets/${encodeURIComponent(x.image)}" alt="" loading="lazy" />`
+                  ? `<img src="${fotoPiccola(x.image)}" alt="" loading="lazy" />`
                   : `<span class="tour-media-empty" aria-hidden="true">${t("tour.photoSoon")}</span>`}
               </span>
               <span class="detail-related-body">

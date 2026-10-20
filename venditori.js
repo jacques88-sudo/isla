@@ -1647,6 +1647,9 @@ async function mostraPagina() {
     els.statsBox.hidden = true;
     els.statsBox.open = false;
     els.stats.replaceChildren();
+    rec.box.hidden = true;
+    rec.box.open = false;
+    rec.list.replaceChildren();
   }
 }
 
@@ -1832,7 +1835,148 @@ async function caricaStatistiche() {
 // come un "no", e la pagina resta quella di sempre.
 async function preparaStatistiche() {
   const { data, error } = await sb.rpc("is_office");
-  els.statsBox.hidden = !!error || data !== true;
+  const ufficio = !error && data === true;
+  els.statsBox.hidden = !ufficio;
+  // le recensioni si caricano subito: il titolo dice quante ce n'e' da leggere
+  rec.box.hidden = !ufficio;
+  if (ufficio) caricaRecensioni();
+}
+
+// ─── Recensioni (solo ufficio) ──────────────────────────────────────────────
+//
+// Le recensioni dei clienti (recensioni.js) arrivano "in attesa": escono nella
+// home solo dopo "Pubblica". "Scarta" le cancella; una pubblicata si "Toglie"
+// (si cancella) quando il cliente lo chiede (proprietario, 20 ottobre 2026).
+// Il testo non si cambia: o si pubblica com'e', o si scarta.
+// Solo l'ufficio (is_office), come le statistiche, e lo dice anche il database
+// (supabase/modifiche/2026-10-20-recensioni-ufficio.sql).
+// La pagina sta in isla-ticket: la sezione si costruisce qui, cosi' non serve
+// toccare due repository.
+
+const FONTE_RECENSIONE = { isla: "Isla", tripadvisor: "Tripadvisor", facebook: "Facebook", google: "Google" };
+
+const rec = (() => {
+  const box = document.createElement("details");
+  box.className = "vend-stats vend-rec";
+  box.hidden = true;
+  box.innerHTML = `
+    <summary data-rec-title>Recensioni</summary>
+    <div class="vend-stats-head">
+      <p class="vend-rec-nota">Escono nella home ("Dicono di noi") solo dopo <strong>Pubblica</strong>. Il testo non si può cambiare: o si pubblica com'è, o si scarta.</p>
+      <button type="button" class="btn btn-soft" data-rec-reload>Aggiorna</button>
+    </div>
+    <p class="vend-msg" data-rec-msg hidden></p>
+    <ul class="vend-list" data-rec-list></ul>`;
+  // sotto le statistiche; con una pagina vecchia senza statistiche, in fondo
+  if (els.statsBox) els.statsBox.after(box);
+  else els.work.append(box);
+  return {
+    box,
+    title: box.querySelector("[data-rec-title]"),
+    msg: box.querySelector("[data-rec-msg]"),
+    list: box.querySelector("[data-rec-list]"),
+    reload: box.querySelector("[data-rec-reload]")
+  };
+})();
+
+function meseBreve(iso) {
+  const [a, m] = iso.split("-").map(Number);
+  return new Date(a, m - 1, 1).toLocaleDateString("it-IT", { month: "long", year: "numeric" });
+}
+
+async function caricaRecensioni() {
+  const { data, error } = await sb
+    .from("recensioni")
+    .select("id, excursion_id, stelle, testo, nome, lingua, mese, fonte, stato, created_at")
+    .order("created_at", { ascending: false })
+    .limit(300);
+
+  rec.list.replaceChildren();
+  const riga = testo => rec.list.append(
+    Object.assign(document.createElement("li"), { className: "vend-req-vuoto", textContent: testo }));
+  if (error) {
+    rec.title.textContent = "Recensioni";
+    riga("Elenco non disponibile: " + (error.message || "niente connessione") + ".");
+    return;
+  }
+  const daLeggere = data.filter(r => r.stato === "in_attesa");
+  const pubblicate = data.filter(r => r.stato === "pubblicata");
+  rec.title.textContent = daLeggere.length ? `Recensioni (${daLeggere.length} da leggere)` : "Recensioni";
+  if (!daLeggere.length) riga("Nessuna recensione da leggere.");
+
+  const voce = r => {
+    const li = document.createElement("li");
+    li.className = "vend-rec-voce";
+    const testo = document.createElement("div");
+    const titolo = document.createElement("strong");
+    titolo.textContent = `${r.stelle ? "★".repeat(r.stelle) + "☆".repeat(5 - r.stelle) : "Consiglia"} · ${r.nome}`;
+    const tour = r.excursion_id ? schedaDa(r.excursion_id) : null;
+    const sotto = document.createElement("span");
+    sotto.textContent = [
+      meseBreve(r.mese),
+      tour ? titoloDi(tour) : r.excursion_id,
+      r.lingua.toUpperCase(),
+      r.fonte !== "isla" ? "da " + (FONTE_RECENSIONE[r.fonte] || r.fonte) : ""
+    ].filter(Boolean).join(" · ");
+    testo.append(titolo, sotto);
+    if (r.testo) {
+      const corpo = document.createElement("p");
+      corpo.className = "vend-rec-testo";
+      corpo.textContent = r.testo;
+      testo.append(corpo);
+    }
+    li.append(testo);
+    const bottoni = document.createElement("div");
+    bottoni.className = "vend-list-btns";
+    const bottone = (scritta, fa) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "btn btn-soft";
+      b.textContent = scritta;
+      b.addEventListener("click", fa);
+      bottoni.append(b);
+    };
+    if (r.stato === "in_attesa") {
+      bottone("Pubblica", () => pubblicaRecensione(r));
+      bottone("Scarta", () => togliRecensione(r, `Scartare la recensione di ${r.nome}? Si cancella e non si recupera.`, "scartata"));
+    } else {
+      bottone("Togli", () => togliRecensione(r, `Togliere dal sito la recensione di ${r.nome}? Si cancella e non si recupera.`, "tolta"));
+    }
+    li.append(bottoni);
+    return li;
+  };
+
+  daLeggere.forEach(r => rec.list.append(voce(r)));
+  if (pubblicate.length) {
+    const dentro = riquadroAnnullati(rec.list, pubblicate.length, "Pubblicate");
+    pubblicate.forEach(r => dentro.append(voce(r)));
+  }
+}
+
+async function pubblicaRecensione(r) {
+  mostra(rec.msg, "");
+  // .select(): se le regole non lasciano passare, non c'e' errore ma zero righe
+  const { data, error } = await sb.from("recensioni")
+    .update({ stato: "pubblicata", pubblicata_at: new Date().toISOString() })
+    .eq("id", r.id).select("id");
+  if (error || !data || !data.length) {
+    mostra(rec.msg, "Non sono riuscito a pubblicarla. Controlla la connessione e riprova.", "errore");
+    return;
+  }
+  mostra(rec.msg, `La recensione di ${r.nome} è pubblicata: ora si vede nella home.`, "ok");
+  caricaRecensioni();
+}
+
+async function togliRecensione(r, domanda, fatto) {
+  mostra(rec.msg, "");
+  if (!confirm(domanda)) return;
+  const { data, error } = await sb.from("recensioni").delete().eq("id", r.id).select("id");
+  if (error || !data || !data.length) {
+    mostra(rec.msg, "Non sono riuscito a cancellarla. Controlla la connessione e riprova.", "errore");
+    return;
+  }
+  mostra(rec.msg, `La recensione di ${r.nome} è ${fatto}.`, "ok");
+  caricaRecensioni();
 }
 
 // ─── Avvio ──────────────────────────────────────────────────────────────────
@@ -1851,6 +1995,7 @@ els.requestsReload.addEventListener("click", () => { mostra(els.requestsMsg, "")
 // Le statistiche si chiedono al database solo quando la tendina si apre.
 els.statsBox.addEventListener("toggle", () => { if (els.statsBox.open) caricaStatistiche(); });
 els.statsReload.addEventListener("click", caricaStatistiche);
+rec.reload.addEventListener("click", () => { mostra(rec.msg, ""); caricaRecensioni(); });
 document.querySelectorAll("[data-stats-period]").forEach(btn => btn.addEventListener("click", () => {
   periodoStats = btn.dataset.statsPeriod;
   document.querySelectorAll("[data-stats-period]").forEach(b =>

@@ -20260,3 +20260,40 @@ l'interesse legittimo, art. 6.1.f; chi vuole la sua tolta lo chiede su WhatsApp)
 
 Passi che restano: 2. l'ufficio approva o scarta nella pagina dei venditori; 3. le
 vecchie di Tripadvisor e Facebook nel database; 4. l'avviso sul telefono il giorno dopo.
+
+## Le recensioni, passo 2: l'ufficio pubblica, scarta, toglie (20 ottobre 2026)
+
+In Isla Ticket, sotto le statistiche, la tendina **"Recensioni (N da leggere)"**. Decisioni
+del proprietario, 20 ottobre 2026:
+- la vede e la usa **solo l'ufficio** (`is_office()`, come le statistiche). Non basta
+  nasconderla: `supabase/modifiche/2026-10-20-recensioni-ufficio.sql` rifà le tre regole
+  della tabella da `is_seller()` a `is_office()`, e così il database rifiuta anche a un
+  venditore che provasse dalla console;
+- le **pubblicate** stanno in fondo, chiuse ("Pubblicate (N)", lo stesso riquadro degli
+  annullati), ognuna con **Togli**: quando un cliente chiede di toglierla non serve il
+  SQL Editor.
+
+Ogni voce: stelle (o "Consiglia" per Facebook), nome, mese, escursione, lingua, "da
+Tripadvisor" per le copiate, il testo. **Pubblica** mette `stato` e `pubblicata_at`;
+**Scarta** e **Togli** cancellano, con una conferma ("si cancella e non si recupera"). Il
+testo non si tocca: o com'è, o niente. Le scritture chiedono `.select("id")` indietro,
+come `cambiaRichiesta()`: se le regole non lasciano passare non c'è errore ma zero righe,
+e senza quel controllo la pagina direbbe "pubblicata" senza aver fatto niente.
+
+**La sezione si costruisce in `venditori.js`** (`rec`), non nell'HTML di `isla-ticket`:
+così si cambia un repository solo, e la pagina vecchia in cache la mostra lo stesso. Si
+mette dopo `[data-stats-box]`, o in fondo se non c'è. Il titolo con il conto si carica
+subito all'entrata; uscendo si svuota, come le statistiche.
+
+Provato nel browser con la pagina vera di `isla-ticket` (copiata nella scratchpad
+accanto a `isla/`) e login e risposte finte: l'ufficio la vede, un venditore no;
+Pubblica manda `PATCH` con stato e data, Scarta e Togli `DELETE`; il conto "da leggere"
+scende; un testo con HTML esce come testo; a 390 px niente esce dallo schermo.
+`CACHE_NAME` → `isla-v593`.
+
+**Da fare:** il proprietario lancia `2026-10-20-recensioni-ufficio.sql`. Senza, la
+pagina funziona lo stesso (la sezione la vede comunque solo l'ufficio), ma il database
+lascerebbe fare a ogni venditore.
+
+Passi che restano: le vecchie di Tripadvisor e Facebook sono entrate col passo 1; 4.
+l'avviso sul telefono il giorno dopo ("Com'è andata?").

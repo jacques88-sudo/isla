@@ -271,6 +271,9 @@ const I18N = {
 
   // ── pagina di dettaglio di una singola escursione ───────────────────────
   "detail.back":        { it: "Tutte le escursioni", en: "All excursions", es: "Todas las excursiones", fr: "Toutes les excursions", de: "Alle Ausflüge" },
+  "detail.share":       { it: "Condividi", en: "Share", es: "Compartir", fr: "Partager", de: "Teilen" },
+  "detail.shareCopied": { it: "Link copiato", en: "Link copied", es: "Enlace copiado", fr: "Lien copié", de: "Link kopiert" },
+  "detail.shareText":   { it: "Guarda questa escursione a Tenerife: {title}", en: "Have a look at this excursion in Tenerife: {title}", es: "Mira esta excursión en Tenerife: {title}", fr: "Regardez cette excursion à Tenerife : {title}", de: "Sehen Sie sich diesen Ausflug auf Teneriffa an: {title}" },
   "detail.zoom":        { it: "Ingrandisci la foto", en: "Enlarge the photo", es: "Ampliar la foto", fr: "Agrandir la photo", de: "Foto vergrößern" },
   "detail.photo":       { it: "Foto {n}", en: "Photo {n}", es: "Foto {n}", fr: "Photo {n}", de: "Foto {n}" },
   "detail.summary":     { it: "In breve", en: "At a glance", es: "En resumen", fr: "En bref", de: "Kurz gesagt" },

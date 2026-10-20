@@ -257,6 +257,15 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
 - **Niente "Aggiungi al calendario" (`.ics`) sulle escursioni confermate** (proprietario,
   20 ottobre 2026): il promemoria sul telefono lo manda già `manda-notifiche`. Non si
   ripropone.
+- **Il SEO si fa DOPO il dominio** (proprietario, 20 ottobre 2026): oggi Isla sta su
+  `jacques88-sudo.github.io/isla/`, e il SEO scrive l'indirizzo dappertutto (sitemap,
+  indirizzo "canonico" di ogni pagina, dati strutturati delle recensioni). **Quando il
+  proprietario dice di avere il dominio** (forse `islatenerife.com`: c'è già
+  `info@islatenerife.com` in `manda-notifiche`), proponi subito: 1. collegarlo a GitHub
+  Pages (file `CNAME` + DNS dal venditore, passo per passo); 2. il SEO (`sitemap.xml`,
+  `robots.txt`, `<link rel="canonical">`, `hreflang` delle cinque lingue, schema.org
+  `TravelAgency`/`TouristTrip` e le stelle di "Dicono di noi", `og:url` e `og:image` col
+  dominio nuovo). Prima di allora non si fa.
 - **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
   Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
   minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.

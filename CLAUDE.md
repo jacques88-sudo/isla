@@ -237,6 +237,9 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   (`codici_sconto`, `supabase/modifiche/2026-10-18-codici-sconto.sql`), mai in un file:
   il repository è pubblico. Il codice va nel messaggio WhatsApp anche quando non toglie
   niente.
+- **Niente "Aggiungi al calendario" (`.ics`) sulle escursioni confermate** (proprietario,
+  20 ottobre 2026): il promemoria sul telefono lo manda già `manda-notifiche`. Non si
+  ripropone.
 - **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
   Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
   minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.

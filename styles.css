@@ -4967,3 +4967,10 @@ body.map-sheet-open .assist-fab { display: none; }
 .info-field.meteo[hidden] { display: none; }
 .info-field.meteo p { margin: 0; }
 .info-field.meteo .meteo-fonte { margin-top: .3rem; font-size: .78rem; color: var(--muted); }
+/* sulla mappa, nel riquadro della spiaggia */
+.map-meteo[hidden] { display: none; }
+.map-meteo { margin: .2rem 0 1rem; padding: .7rem .9rem; border: 1px solid var(--border); border-radius: 14px; }
+.map-meteo h3 { display: flex; align-items: center; gap: .4rem; margin: 0 0 .3rem; font-family: var(--font-body); font-size: .72rem; font-weight: 400; text-transform: uppercase; letter-spacing: .2em; color: var(--muted); }
+.map-meteo h3 svg { width: 18px; height: 18px; }
+.map-meteo p { margin: .15rem 0; font-size: .9rem; }
+.map-meteo .meteo-fonte { margin-top: .35rem; font-size: .78rem; color: var(--muted); }

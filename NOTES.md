@@ -20395,3 +20395,34 @@ Teide e sulla bici, in tedesco, senza rete dall'ultima risposta; a 390 px niente
 **Da fare (proprietario), in quest'ordine**: Secret `AEMET_API_KEY`; funzione
 `meteo-aemet` con **Verify JWT spento**; il file `2026-10-20-meteo.sql`. Poi aprire una
 volta a mano l'indirizzo della funzione, per non aspettare il primo giro dell'orologio.
+
+### Il meteo anche sulla mappa, e Las Galletas (20 ottobre 2026)
+
+Il proprietario, prima di mettere tutto su Supabase: "aggiungere anche la spiaggia di Las
+Galletas e le 16 spiagge della mappa". Decisioni:
+- **sulla mappa**, toccando una spiaggia: **oggi e domani**, mattina e pomeriggio in una
+  riga ("Nuvoloso → molto nuvoloso · vento moderato · onde deboli · acqua 25° · max 27°";
+  vento e onde il più forte dei due), e "Previsione AEMET per questa spiaggia";
+- le spiagge **senza una previsione loro** mostrano quella **vicina, col nome e i km**.
+
+Confronto fatto con le coordinate di `Playas_codigos.csv` e quelle della mappa:
+- **7 sue**: Las Teresitas, El Bollullo, Playa Jardín, Las Vistas, El Médano, La Arena,
+  El Socorro;
+- **5 vicine (entro 3 km)**: Playa del Duque → Fañabe 1 km, Abama → San Juan 1,2 km, La
+  Tejita → El Médano 1,6 km, Los Guíos → La Arena 1,6 km, La Jaquita → La Arena 2,7 km;
+- **4 niente**: Benijo, Almáciga, Antequera (Anaga) e Masca: la più vicina è a 6-7 km,
+  oltre la montagna;
+- **Las Galletas** AEMET **non ce l'ha**. Le sue barche (Mokkai, White Dream) stanno nella
+  zona Los Cristianos e mostrano Las Vistas (7,7 km), con il nome scritto.
+
+La tabella `meteo` ora è **per spiaggia** (il codice di AEMET), non per zona: nove
+spiagge (`SPIAGGE` in `meteo-aemet`, 27 righe a giro). Le zone delle prenotazioni stanno in
+`METEO_ZONE` di `meteo.js`; le spiagge della mappa hanno il campo `meteo` in `mappa.js`
+(`{ spiaggia, km }`). **Una spiaggia nuova va in tutti e due i posti**: la funzione e dove
+si mostra. Cambiato prima che il proprietario lanciasse lo SQL, quindi nessun dato da
+spostare.
+
+Provato: la funzione coi dati **veri** di AEMET (27 righe; al nord oggi "onde forti" a
+Playa Jardín e El Socorro); lo SQL su Postgres; nel browser tutte e 16 le spiagge della
+mappa, in italiano e in tedesco ("1,2 km entfernt"), e le prenotazioni come prima.
+`CACHE_NAME` → `isla-v596`.

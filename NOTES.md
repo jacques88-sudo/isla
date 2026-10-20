@@ -20426,3 +20426,12 @@ Provato: la funzione coi dati **veri** di AEMET (27 righe; al nord oggi "onde fo
 Playa Jardín e El Socorro); lo SQL su Postgres; nel browser tutte e 16 le spiagge della
 mappa, in italiano e in tedesco ("1,2 km entfernt"), e le prenotazioni come prima.
 `CACHE_NAME` → `isla-v596`.
+
+## Il SEO aspetta il dominio (20 ottobre 2026)
+
+Il proprietario ha chiesto se per il SEO conta il dominio. Sì: Google accumula le
+posizioni su un indirizzo preciso, il SEO scrive l'indirizzo in sitemap, canonical e dati
+strutturati, e `jacques88-sudo.github.io` sembra un progetto personale. Il nome in sé
+(con "tenerife" dentro o no) conta poco; conta averne uno e non cambiarlo. Decisione:
+"ricordamelo quando avrò il dominio". Scritto in `CLAUDE.md`, fra le cose decise, con la
+lista di cosa fare. Oggi non ci sono `CNAME`, `robots.txt` né `sitemap.xml`.

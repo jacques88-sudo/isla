@@ -375,7 +375,6 @@ function cardTicket(b, passata) {
         </div>
         ${tour ? `<a class="map-link" href="./tour.html?id=${encodeURIComponent(tour.id)}">${t("booking.seeTour")} →</a>` : ""}
       </div>
-      ${passata && typeof recensioneRiquadro === "function" ? recensioneRiquadro(b) : ""}
     </div>`;
 }
 
@@ -387,6 +386,7 @@ function renderTicketVeri(rows, code, senzaRete) {
 
   document.getElementById("bookingView").innerHTML = `
     ${senzaRete ? `<p class="note-box">${t("booking.offlineSaved")}</p>` : ""}
+    ${typeof recensioneRiquadro === "function" ? recensioneRiquadro(passate) : ""}
     <div class="booking-list">
       ${prossime.map(b => cardTicket(b, false)).join("")}
       ${passate.length ? `<h2 class="booking-past-title">${t("booking.pastTitle")}</h2>` : ""}
@@ -451,6 +451,7 @@ function renderRichieste(elenco, senzaRete) {
   document.getElementById("bookingView").innerHTML = `
     ${senzaRete ? `<p class="note-box">${t("booking.offlineSaved")}</p>` : ""}
     <p class="booking-intro">${t("booking.requestsIntro")}</p>
+    ${typeof recensioneRiquadro === "function" ? recensioneRiquadro(passate) : ""}
     <div class="booking-list">
       ${ticket.length ? `<h2 class="booking-past-title">${t("booking.ticketsTitle")}</h2>` : ""}
       ${ticket.map(b => cardTicket(b, false)).join("")}

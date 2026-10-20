@@ -20195,3 +20195,68 @@ recensione già lasciata fra le cose che restano nel telefono, e quanto si tiene
 
 **Da fare prima di pubblicare:** il proprietario incolla il file SQL nel SQL Editor.
 Senza, il cliente vede il pulsante, scrive la recensione e riceve "Non è partita".
+
+## Le recensioni cambiano: si recensisce il servizio, non la barca (20 ottobre 2026)
+
+Il proprietario, rileggendo le recensioni che avevano già su Tripadvisor e Facebook
+(come "Fran.escursioni tenerife", che sono loro; Francesca è sua moglie): "la gente non
+recensisce la singola escursione ma il servizio". Nelle nove che ha mandato in foto
+nessuno parla della barca: parlano di Francesca, dei consigli, dei prezzi, "abbiamo
+prenotato diverse escursioni". Prima che lo SQL fosse lanciato, quindi senza dati da
+spostare. Decisioni del proprietario, 20 ottobre 2026:
+- **una recensione per cliente**, non una per escursione: in "Le mie prenotazioni" un
+  solo "Com'è andata la vacanza con noi?", **in cima**, per la passata più recente
+  (non più dentro le card, che tornano sbiadite tutte intere);
+- si leggono **nella home**, "Dicono di noi", subito dopo "Siamo Jack e Francesca";
+  il passo 3 di prima (sulla scheda, stelle nell'elenco) **non si fa più**;
+- sotto, **in piccolo, l'escursione che ha fatto**, presa dal ticket: a chi legge dice
+  che la recensione è vera;
+- **le vecchie di Tripadvisor e Facebook ci vanno**, inserite a mano con SQL, con
+  scritto da dove vengono (`fonte`). Quelle di Facebook sono "consiglia", senza stelle:
+  `stelle` resta vuoto, in pagina "Ci consiglia", e nella media non contano.
+
+**Il database.** Stesso file. Una per cliente: prima di scrivere, `lascia_recensione()`
+guarda se un'altra recensione è legata a un ticket dello **stesso telefono** o della
+**stessa chiave**; se sì, `gia`. Funziona perché i ticket restano almeno 32 giorni e si
+scrive solo nei primi 30: chi torna l'anno dopo ne può lasciare un'altra. Colonne:
+`fonte` (`isla`, `tripadvisor`, `facebook`, `google`), `excursion_id` e `stelle` ora
+possono restare vuote (le copiate), ma su Isla le stelle ci sono sempre (vincolo
+`recensioni_stelle_isla`). Al posto di `recensioni_della_scheda()` e `recensioni_medie()`
+una sola `recensioni_pubblicate()`: al massimo 200, la media la fa la pagina. Tre righe
+`alter table` per chi avesse già lanciato la prima versione.
+
+Provato di nuovo sul Postgres vero: secondo ticket dello stesso telefono `gia`, seconda
+escursione della stessa richiesta `gia`, un altro cliente `ok`; le copiate entrano,
+Facebook senza stelle sì, Isla senza stelle no; `anon` legge solo dalla funzione. Il
+file lanciato sopra la prima versione (con dentro una recensione) e poi ancora una
+volta: nessun errore.
+
+**I nomi dei clienti di Tripadvisor e Facebook non vanno nel repository**: l'SQL per
+inserirle si prepara nella scratchpad e lo incolla il proprietario, come i netti. Non
+sono segreti (stanno già su Tripadvisor), ma un nome nella storia di git non si toglie
+più, e la privacy promette di toglierlo a chi lo chiede.
+
+**La home** (`recensioni.js`, ora lo carica anche `index.html`). La home non ha la
+libreria di Supabase: chiede `recensioni_pubblicate` con `fetch`, come `richieste.js`.
+Nascosta finché non arriva almeno una recensione, e senza rete. Sei card, poi "Mostra
+altre"; la media con una cifra decimale nella lingua della pagina, **solo da 3
+recensioni con le stelle in su**. Sotto ogni card: mese, la lingua se diversa da quella
+della pagina (`Intl.DisplayNames`, niente testi da tradurre), "da Tripadvisor"; poi
+"Escursione: …" col link alla scheda se è pubblicata. I nomi delle fonti non si
+traducono. Cambiando lingua si ridisegna (`islalang`).
+
+Provato nel browser: un riquadro solo, prima della lista, per l'escursione più recente
+anche se le righe arrivano in un altro ordine (era il primo errore: si fidava
+dell'ordine); quello che parte; il grazie dopo aver ricaricato. Nella home sei card, poi
+otto; media "4,5 von 5 · 8 Bewertungen" in tedesco; un testo con dentro HTML esce come
+testo; senza rete e senza recensioni la sezione non c'è; a 390 px niente esce dallo
+schermo. Secondo errore: "Mostra altre" con `hidden` restava visibile, perché `.btn`
+mette `display`: serve `.rev-altre[hidden] { display: none; }`.
+
+**Privacy** nelle cinque lingue: "due dalla stessa persona", la home al posto della
+scheda, e un paragrafo per le copiate da Tripadvisor e Facebook (base giuridica
+l'interesse legittimo, art. 6.1.f; chi vuole la sua tolta lo chiede su WhatsApp).
+`CACHE_NAME` → `isla-v592`.
+
+Passi che restano: 2. l'ufficio approva o scarta nella pagina dei venditori; 3. le
+vecchie di Tripadvisor e Facebook nel database; 4. l'avviso sul telefono il giorno dopo.

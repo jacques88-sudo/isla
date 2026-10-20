@@ -1,18 +1,26 @@
 -- 20 ottobre 2026: le recensioni dei clienti.
 --
 -- Decisioni del proprietario (20 ottobre 2026):
+--   - si recensisce IL SERVIZIO, non la singola escursione: i clienti parlano
+--     di noi, dei consigli, di Francesca (cosi' sono le recensioni che avevamo
+--     gia' su Tripadvisor e Facebook, come "Fran.escursioni"). UNA per cliente;
 --   - la scrive SOLO chi c'e' stato: un'escursione confermata e gia' passata,
 --     ritrovata in "Le mie prenotazioni" (ticket di carta: numero + telefono;
 --     richiesta WhatsApp: la chiave che sta nel telefono);
 --   - esce sul sito solo dopo che l'ufficio l'ha approvata (venditori.html);
 --     scartata, si cancella subito;
---   - si vede il nome con l'iniziale ("Marco R."), la lingua e il mese;
+--   - si vede nella home ("Dicono di noi"): nome con l'iniziale ("Marco R."),
+--     stelle, testo, mese e, in piccolo, quale escursione ha fatto;
+--   - ci vanno anche le recensioni vecchie di Tripadvisor e Facebook, inserite
+--     a mano dall'ufficio, con scritto da dove vengono (colonna fonte). Quelle
+--     di Facebook non hanno stelle ("consiglia"): stelle resta vuoto e nella
+--     media non contano;
 --   - una pubblicata resta finche' il cliente non chiede di toglierla.
 --
 -- Nella tabella NON ci sono telefono, numero del ticket, chiave, email: solo
 -- quello che si mostra, piu' il legame col ticket (booking_id) che serve a non
--- farne scrivere due per la stessa escursione. Quando la pulizia mensile
--- cancella il ticket, il legame diventa vuoto e la recensione resta.
+-- farne scrivere due allo stesso cliente. Quando la pulizia mensile cancella il
+-- ticket, il legame diventa vuoto e la recensione resta.
 --
 -- Come si usa, UNA volta sola:
 --   SQL Editor → New query → incollare TUTTO questo file → Run.
@@ -24,20 +32,39 @@
 create table if not exists public.recensioni (
   id            uuid primary key default gen_random_uuid(),
   booking_id    uuid unique references public.bookings (id) on delete set null,
-  excursion_id  text not null check (excursion_id ~ '^[a-z0-9-]{1,60}$'),
-  stelle        smallint not null check (stelle between 1 and 5),
+  -- vuota nelle recensioni copiate da Tripadvisor e Facebook
+  excursion_id  text check (excursion_id ~ '^[a-z0-9-]{1,60}$'),
+  -- vuota solo in quelle di Facebook, che non hanno stelle
+  stelle        smallint check (stelle between 1 and 5),
   testo         text check (length(testo) <= 1000),
   nome          text not null check (length(nome) between 1 and 40),
   lingua        text not null check (lingua in ('it', 'en', 'es', 'fr', 'de')),
   -- il primo giorno del mese dell'escursione: in pagina "ottobre 2026"
   mese          date not null,
+  -- da dove viene: scritta su Isla, oppure copiata dall'ufficio
+  fonte         text not null default 'isla'
+                check (fonte in ('isla', 'tripadvisor', 'facebook', 'google')),
   stato         text not null default 'in_attesa'
                 check (stato in ('in_attesa', 'pubblicata')),
   created_at    timestamptz not null default now(),
   pubblicata_at timestamptz
 );
 
-create index if not exists recensioni_scheda_idx on public.recensioni (excursion_id, stato);
+-- Per chi aveva gia' lanciato la prima versione di questo file (una
+-- recensione per escursione): le colonne nuove, e i due campi che adesso
+-- possono restare vuoti. Su un database nuovo non fanno niente.
+alter table public.recensioni add column if not exists fonte text not null default 'isla'
+  check (fonte in ('isla', 'tripadvisor', 'facebook', 'google'));
+alter table public.recensioni alter column excursion_id drop not null;
+alter table public.recensioni alter column stelle drop not null;
+
+-- Su Isla le stelle ci sono sempre
+alter table public.recensioni drop constraint if exists recensioni_stelle_isla;
+alter table public.recensioni add constraint recensioni_stelle_isla
+  check (fonte <> 'isla' or stelle is not null);
+
+drop index if exists public.recensioni_scheda_idx;
+create index if not exists recensioni_stato_idx on public.recensioni (stato, mese);
 
 alter table public.recensioni enable row level security;
 
@@ -56,7 +83,7 @@ create policy "i venditori scartano le recensioni"
 
 -- Leggere tutto tranne il legame col ticket; correggere solo lo stato.
 -- Il testo non lo cambia nessuno: o si pubblica com'e', o si scarta.
-grant select (id, excursion_id, stelle, testo, nome, lingua, mese, stato, created_at, pubblicata_at)
+grant select (id, excursion_id, stelle, testo, nome, lingua, mese, fonte, stato, created_at, pubblicata_at)
   on public.recensioni to authenticated;
 grant update (stato, pubblicata_at) on public.recensioni to authenticated;
 grant delete on public.recensioni to authenticated;
@@ -72,7 +99,11 @@ grant delete on public.recensioni to authenticated;
 --     telefono, come le_mie_richieste).
 -- L'escursione deve essere confermata, gia' passata, e non piu' vecchia di 30
 -- giorni (dopo, il ticket puo' essere gia' stato tolto dalla pulizia mensile).
--- Risponde 'ok', 'gia' se per quell'escursione una recensione c'e' gia', 'no'
+-- Una per cliente: se un altro suo ticket (stesso telefono) o un'altra sua
+-- escursione della stessa richiesta (stessa chiave) ha gia' la recensione,
+-- non se ne scrive un'altra. I ticket restano nel database almeno 32 giorni,
+-- piu' dei 30 in cui si puo' scrivere, quindi il controllo li trova sempre.
+-- Risponde 'ok', 'gia' se questo cliente l'ha gia' scritta, 'no'
 -- per tutto il resto (ticket che non c'e', non confermato, data futura o
 -- troppo vecchia): sempre la stessa parola, chi prova a caso non scopre niente.
 --
@@ -113,7 +144,6 @@ begin
      where x.request_token = p_token and x.source = 'whatsapp'
        and x.excursion_id = p_excursion_id and x.date = p_date
        and x.status = 'confirmed'
-     order by (exists (select 1 from public.recensioni r where r.booking_id = x.id)), x.created_at
      limit 1;
   elsif p_phone is not null and p_ticket is not null then
     delete from public.tentativi_ticket where at < now() - interval '1 hour';
@@ -131,7 +161,10 @@ begin
     return 'no';
   end if;
 
-  if exists (select 1 from public.recensioni where booking_id = b.id) then
+  if exists (select 1 from public.recensioni r
+               join public.bookings x on x.id = r.booking_id
+              where x.phone = b.phone
+                 or (b.request_token is not null and x.request_token = b.request_token)) then
     return 'gia';
   end if;
 
@@ -147,41 +180,29 @@ grant execute on function public.lascia_recensione(text, text, uuid, text, date,
 
 
 -- 3. IL SITO LEGGE LE RECENSIONI PUBBLICATE ---------------------------------
--- Solo le pubblicate, e solo quello che si mostra.
+-- Solo le pubblicate, e solo quello che si mostra: la home ("Dicono di noi")
+-- le prende tutte insieme (al massimo 200) e fa da sola la media delle stelle.
 
-create or replace function public.recensioni_della_scheda(p_excursion_id text)
-returns table (nome text, stelle smallint, testo text, lingua text, mese date)
+drop function if exists public.recensioni_della_scheda(text);
+drop function if exists public.recensioni_medie();
+
+create or replace function public.recensioni_pubblicate()
+returns table (nome text, stelle smallint, testo text, lingua text, mese date,
+               excursion_id text, fonte text)
 language sql
 stable
 security definer
 set search_path = ''
 as $$
-  select r.nome, r.stelle, r.testo, r.lingua, r.mese
-    from public.recensioni r
-   where r.excursion_id = p_excursion_id and r.stato = 'pubblicata'
-   order by r.pubblicata_at desc
-   limit 50;
-$$;
-
-revoke all on function public.recensioni_della_scheda(text) from public;
-grant execute on function public.recensioni_della_scheda(text) to anon, authenticated;
-
--- La media e quante sono, scheda per scheda: per le stelle nell'elenco.
-create or replace function public.recensioni_medie()
-returns table (excursion_id text, media numeric, quante integer)
-language sql
-stable
-security definer
-set search_path = ''
-as $$
-  select r.excursion_id, round(avg(r.stelle), 1), count(*)::integer
+  select r.nome, r.stelle, r.testo, r.lingua, r.mese, r.excursion_id, r.fonte
     from public.recensioni r
    where r.stato = 'pubblicata'
-   group by r.excursion_id;
+   order by r.mese desc, r.pubblicata_at desc nulls last
+   limit 200;
 $$;
 
-revoke all on function public.recensioni_medie() from public;
-grant execute on function public.recensioni_medie() to anon, authenticated;
+revoke all on function public.recensioni_pubblicate() from public;
+grant execute on function public.recensioni_pubblicate() to anon, authenticated;
 
 
 -- Per controllare, in seguito (una query alla volta):
@@ -189,6 +210,11 @@ grant execute on function public.recensioni_medie() to anon, authenticated;
 --   le recensioni in attesa:
 --     select created_at, excursion_id, stelle, nome, testo from public.recensioni
 --      where stato = 'in_attesa' order by created_at;
+--
+--   inserire una recensione copiata da Tripadvisor o Facebook (gia' pubblicata;
+--   stelle null per Facebook, che non le ha):
+--     insert into public.recensioni (nome, stelle, testo, lingua, mese, fonte, stato, pubblicata_at)
+--     values ('Elisa C.', 5, '...', 'it', '2025-08-01', 'tripadvisor', 'pubblicata', now());
 --
 --   togliere una recensione pubblicata (il cliente lo ha chiesto):
 --     delete from public.recensioni where id = '...';

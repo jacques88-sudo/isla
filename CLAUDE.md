@@ -137,7 +137,7 @@ porto e capienza con le schede della stessa categoria.
 | `supabase/functions/pulisci-foto/` | ogni notte (Cron) cancella le foto dei ticket che nessun ticket nomina più; con SQL le foto non si cancellano |
 | `booking.js` | "Le mie escursioni": i ticket veri da Supabase (numero + telefono); i codici `ISLA-…` restano la pagina finta; con `?richieste=1` le richieste mandate su WhatsApp |
 | `portare.js` | "Cosa portare" sulle escursioni confermate, gruppo per gruppo (dalla pagina Notion "cose da portare"); lo carica solo `booking.html` |
-| `recensioni.js` | le recensioni: il modulo "Com'è andata?" sulle escursioni passate di "Le mie prenotazioni" (lo carica `booking.html`). Database e regole in `supabase/modifiche/2026-10-20-recensioni.sql` |
+| `recensioni.js` | le recensioni: il riquadro "Com'è andata la vacanza con noi?" in cima a "Le mie prenotazioni" (`booking.html`) e la sezione "Dicono di noi" della home (`index.html`). Database e regole in `supabase/modifiche/2026-10-20-recensioni.sql` |
 | `richieste.js` | le richieste della lista salvate anche su Supabase (`pending`), con la **chiave** che resta nel telefono del cliente e il **codice** che va nel messaggio; l'ufficio le conferma o annulla da `venditori.html` |
 
 **La finestra della richiesta è scritta due volte**, in `escursioni.html` e in `tour.html`.
@@ -242,11 +242,16 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
 - **Le recensioni sono di Isla, e le scrive solo chi c'è stato** (proprietario, 20 ottobre
   2026): escursione confermata, già passata da non più di 30 giorni, ritrovata in "Le mie
   prenotazioni" (ticket: numero + telefono; richiesta: la chiave nel telefono). Escono
-  **solo dopo che l'ufficio le ha approvate**; scartate si cancellano. Si vedono nome e
-  iniziale ("Marco R."), stelle, testo, lingua e mese; sulla scheda, e nell'elenco solo
-  da 3 recensioni in su. Una pubblicata resta finché il cliente non chiede di toglierla.
+  **solo dopo che l'ufficio le ha approvate**; scartate si cancellano. **Si recensisce il
+  servizio, non la barca**: i clienti parlano di noi e di Francesca, quindi **una per
+  cliente** e si leggono **nella home** ("Dicono di noi"), non sulle schede né con le
+  stelle nell'elenco. Si vedono nome e iniziale ("Marco R."), stelle, testo, mese, la
+  lingua se diversa, e in piccolo l'escursione fatta. Ci stanno anche **le nostre vecchie
+  di Tripadvisor e Facebook** (come "Fran.escursioni", che siamo noi), inserite a mano
+  con scritto da dove vengono; i loro nomi **non** vanno nel repository (SQL nella
+  scratchpad). Una pubblicata resta finché il cliente non chiede di toglierla.
   Telefono e numero del ticket **non** stanno nella recensione. Le recensioni dei
-  fornitori restano da non copiare.
+  **fornitori** restano da non copiare.
 - **Niente "Aggiungi al calendario" (`.ics`) sulle escursioni confermate** (proprietario,
   20 ottobre 2026): il promemoria sul telefono lo manda già `manda-notifiche`. Non si
   ripropone.

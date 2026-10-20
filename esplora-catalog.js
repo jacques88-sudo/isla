@@ -1170,6 +1170,9 @@ const ESPLORA_CATALOG = [
     id: "submarine-safari",
     title: "Submarine Safari",
     category: "mare-barche",
+    // Il ticket conta sempre come pagato con carta, come i parchi
+    // (proprietario, 20 ottobre 2026): stesso elenco in sempre_card.
+    pagamento: "card",
     zone: "Marina Amarilla",
     duration: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure", de: "1 Stunde" },
     zoneGroups: ["los-cristianos"],
@@ -5930,6 +5933,9 @@ const ESPLORA_CATALOG = [
     id: "jungle-park",
     title: "Jungle Park",
     category: "parchi-spettacoli",
+    // Il ticket conta sempre come pagato con carta, come gli altri parchi
+    // (proprietario, 20 ottobre 2026): stesso elenco in sempre_card.
+    pagamento: "card",
     zone: "Chayofa (Arona)",
     duration: { it: "Giornata intera", en: "Full day", es: "Día completo", fr: "Journée entière", de: "Ganztags" },
     zoneGroups: ["los-cristianos"],

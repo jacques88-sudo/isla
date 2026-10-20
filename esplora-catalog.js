@@ -3526,6 +3526,9 @@ const ESPLORA_CATALOG = [
     // una variante, e la foto del tramonto e' finita nella galleria.
     id: "quad-teide-adventure",
     title: "Teide Quad Adventure",
+    // La compagnia come i venditori la scrivono sul ticket (proprietario, 20
+    // ottobre 2026; foglio di Maarten, ticket 0229 "Prime Quads 1D").
+    nomi: ["Prime Quads"],
     // Anche fra Teide e natura (proprietario, 14 settembre 2026): il Teide sta
     // gia' nel titolo, e restare fuori da quella categoria era la cosa che
     // stonava di piu' di tutte.

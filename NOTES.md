@@ -20711,3 +20711,27 @@ messaggio; la pagina `?id=su-misura:…` (Teide a prezzo fisso: risparmio solo s
 due, €149 → €138); famiglia senza buggy; per-due col buggy "da €90"; itinerario da 5 a
 3 giorni; italiano, inglese, tedesco; 1280, 390 e 320 px, chiaro e scuro, nessuno
 scorrimento orizzontale, nessun errore in console. `CACHE_NAME` → `isla-v606`.
+
+## Prime Quads, dai fogli di Nancy, Maarten e Kristine (20 ottobre 2026)
+
+Il proprietario ha mandato altri sei fogli di carta dei venditori (Nancy, Nan, Maarten,
+Kristine, 12-18 ottobre). Netti ricavati ticket per ticket e confrontati con Notion:
+quasi tutti tornano. **I numeri non sono qui**: stanno su Notion e nell'SQL della
+scratchpad, non committato. Risposte del proprietario:
+
+- **Prime Quads** (ticket 0229 "Prime Quads 1D") è la compagnia del **Teide Quad
+  Adventure** da Chío: `nomi: ["Prime Quads"]`. Il netto è a mezzo, sul quad doppio; il
+  singolo manca;
+- il **Twin Ticket col bus** ha la stessa percentuale del resto: la riga Notion "il
+  transfer ha un netto diverso" è chiusa, su Supabase non cambia niente;
+- il bambino di **Maxicat** (la scheda non c'è ancora): solo su Notion;
+- il **Royal Delfin** del foglio (2 adulti a 40 €, nessuna variante costa così) era uno
+  sconto del venditore per strada: non si tocca niente (vale la regola dei prezzi dei
+  ticket, che non si confrontano col catalogo);
+- la **Fiat 500 da 40 minuti** esiste e va anche sul sito: aspetta il prezzo.
+
+Provato: `compagniaNelTesto()` in Node trova Prime Quads in "0229 PRIME QUADS 1D";
+scheda ed elenco a 375 px senza errori, senza scroll, il nome non si vede. SQL provato su
+Postgres 16 con schema e modifiche: un quad doppio di Prime Quads prende il netto, un
+singolo resta "netto mancante per singolo", senza compagnia "compagnia non scritta";
+lanciato due volte non fa danni. `CACHE_NAME` → `isla-v607`.

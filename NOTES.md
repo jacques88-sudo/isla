@@ -20509,3 +20509,43 @@ Scandal (solo adulti: niente bambini né neonati) e un pacchetto: i limiti si sp
 dove devono, i totali tornano (Royal Delfin 3 adulti + 1 bambino + 1 neonato = 119),
 il messaggio dice i numeri nuovi. Italiano e tedesco, chiaro e scuro, 375 e 320 px, nessun
 errore e niente che esce dallo schermo. `CACHE_NAME` → `isla-v599`.
+
+## La home più veloce col 4G lento (20 ottobre 2026)
+
+Il punto 5 della prova da cliente del 19 ottobre. Misurato prima di toccare: home su un
+telefono simulato (390 px, schermo 2×), 4G lento (1,6 Mbit/s, 150 ms), file compressi e
+HTTP/2 come su GitHub Pages. Serve un server di prova apposta: `python3 -m http.server`
+non comprime e parla HTTP/1.1, e con quello i numeri escono sbagliati. Il Chromium di
+prova non legge l'H.264, quindi il video si serve convertito in WebM, con lo stesso peso.
+Gli script stanno nella scratchpad della sessione, non nel repository.
+
+Cosa pesava: il **video** (1,4 MB, più di tutto il resto della home) partiva subito con
+`autoplay` e si prendeva la rete insieme al catalogo e alle foto; la **foto ferma** era
+quella intera, 1920 px e 335 KB, più grande del video stesso (1280 × 720).
+
+Cosa è cambiato:
+- il video non ha più `autoplay` e ha `preload="none"`: lo fa partire `initHeroVideo()`
+  in `app.js` **a pagina caricata** (`load`);
+- **col risparmio dati o su una rete da 3G in giù** (`navigator.connection`) non parte
+  proprio: resta la foto, e il bottone ▶ lo fa partire. Sull'iPhone
+  `navigator.connection` non c'è, e lì parte sempre, a pagina caricata;
+- il bottone ▶/❚❚ segue lo stato vero del video (eventi `play` e `pause`): parte da ▶, e
+  resta ▶ anche se il telefono si rifiuta di farlo partire (iPhone col risparmio energetico);
+- la foto ferma è la **copia piccola** che c'era già, `assets/piccole/hero-tenerife.webp`
+  (720 px, 60 KB), chiesta subito con `<link rel="preload" fetchpriority="high">`. Sul
+  telefono a 3× è appena più morbida, sul computer un po' di più, ma lì il video la
+  copre subito. Provata prima una copia da 1280 px (166 KB): arrivava a 6,1 s, troppo tardi.
+
+| | prima | dopo |
+|---|---|---|
+| la foto in cima (LCP) | 9,0 s | 3,5 s |
+| pagina pronta (`DOMContentLoaded`) | 7,6 s | 5,8 s |
+| pagina caricata (`load`) | 8,9 s | 5,8 s |
+
+Le altre pagine con `hero-tenerife.webp` (elenco, mappa, pacchetti, noleggio) non sono
+toccate. Il movimento ridotto (`prefers-reduced-motion`) non spegne il video: era così
+anche prima.
+
+Provato: rete normale (il video parte a pagina caricata), 4G lento, risparmio dati e 3G
+(non parte, ▶, al tocco parte), senza `navigator.connection` (parte), tocco su ❚❚ (si
+ferma, l'etichetta dice "Riproduci"), cambio lingua. Nessun errore. `CACHE_NAME` → `isla-v600`.

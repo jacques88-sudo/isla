@@ -399,7 +399,15 @@ function apriIstruzioniIos() {
   document.body.classList.add("menu-open");
 }
 
-// Hero video play/pause toggle (home page only)
+// Il video in cima alla home: parte da solo, ma solo a pagina caricata.
+//
+// Pesa 1,4 MB, piu' di tutto il resto della home. Con l'autoplay il telefono
+// lo scaricava insieme al catalogo e alle foto, e col 4G lento la home si
+// vedeva dopo secondi (prova da cliente, 19 ottobre 2026). Ora prima arriva la
+// pagina, con la foto ferma, e il video dopo. Col risparmio dati o su una rete
+// da 3G in giu' non parte proprio: resta la foto, e il cliente lo puo' far
+// partire col bottone. `navigator.connection` sull'iPhone non c'e': li' il
+// video parte sempre, a pagina caricata.
 function initHeroVideo() {
   const video = document.getElementById("heroVideo");
   const toggle = document.getElementById("videoToggle");
@@ -408,26 +416,38 @@ function initHeroVideo() {
   const iconPause = document.getElementById("iconPause");
   const iconPlay = document.getElementById("iconPlay");
 
-  function paintLabel() {
+  // Il bottone dice sempre lo stato vero del video: fermo finche' non parte,
+  // e fermo anche se il telefono si rifiuta di farlo partire (sull'iPhone,
+  // col risparmio energetico).
+  function paint() {
+    iconPause.hidden = video.paused;
+    iconPlay.hidden = !video.paused;
     toggle.setAttribute("aria-label", t(video.paused ? "hero.play" : "hero.pause"));
+  }
+  video.addEventListener("play", paint);
+  video.addEventListener("pause", paint);
+
+  function parti() {
+    const p = video.play();
+    if (p && p.catch) p.catch(paint);
   }
 
   toggle.addEventListener("click", () => {
-    if (video.paused) {
-      video.play();
-      iconPause.hidden = false;
-      iconPlay.hidden = true;
-    } else {
-      video.pause();
-      iconPause.hidden = true;
-      iconPlay.hidden = false;
-    }
-    paintLabel();
+    if (video.paused) parti();
+    else video.pause();
   });
 
-  // applyI18n rimette sempre "metti in pausa": qui si corregge se il video
-  // in quel momento è fermo.
-  document.addEventListener("islalang", paintLabel);
+  const rete = navigator.connection;
+  const lenta = rete && (rete.saveData || /2g|3g/.test(rete.effectiveType || ""));
+  if (!lenta) {
+    if (document.readyState === "complete") parti();
+    else window.addEventListener("load", parti, { once: true });
+  }
+
+  // applyI18n rimette l'etichetta scritta nell'HTML ("riproduci"): qui si
+  // corregge se il video in quel momento va.
+  document.addEventListener("islalang", paint);
+  paint();
 }
 
 document.addEventListener("DOMContentLoaded", initHeroVideo);

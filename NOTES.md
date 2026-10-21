@@ -20735,3 +20735,18 @@ scheda ed elenco a 375 px senza errori, senza scroll, il nome non si vede. SQL p
 Postgres 16 con schema e modifiche: un quad doppio di Prime Quads prende il netto, un
 singolo resta "netto mancante per singolo", senza compagnia "compagnia non scritta";
 lanciato due volte non fa danni. `CACHE_NAME` → `isla-v607`.
+
+## Il README: cos'è Isla (21 ottobre 2026)
+
+Il proprietario ha chiesto un file che spieghi cos'è Isla. Sta in tre posti con lo
+stesso testo: un documento Claude Docs (suo, privato), `README.md` qui (GitHub lo mostra
+in prima pagina del repository) e `documenti/cos-e-isla.pdf`. Il disegno di come sono
+collegati i pezzi è `documenti/schema.png`.
+
+Il PDF è fatto dal README con Chromium, **non** esportato dal documento: l'esportazione
+portava il nome del proprietario sotto il titolo, e il repository è pubblico. Nel README
+non ci sono la versione di `CACHE_NAME` né altri numeri che cambiano ogni giorno, tranne
+le schede (74, 67 pubblicate) con scritto "a ottobre 2026". Se il README cambia, il PDF
+va rifatto.
+
+Nessun `.js`, `.css` o `.html` del sito toccato: `CACHE_NAME` resta `isla-v607`.

@@ -140,6 +140,7 @@ porto e capienza con le schede della stessa categoria.
 | `preferiti.js` | i preferiti: il cuore sulle schede (`tourCard`) e nella pagina dell'escursione, la pillola "♥ Preferiti" in Esperienze, "I miei preferiti" nel Menu (`escursioni.html?preferiti=1`, nelle sette pagine col Menu) e "Condividi i preferiti" (`?pref=id,id`). **Solo nel telefono** (localStorage), niente al database. Non è la lista delle richieste: quella è "le voglio chiedere" |
 | `portare.js` | "Cosa portare" sulle escursioni confermate, gruppo per gruppo (dalla pagina Notion "cose da portare"); lo carica solo `booking.html` |
 | `recensioni.js` | le recensioni: il riquadro "Com'è andata la vacanza con noi?" in cima a "Le mie prenotazioni" (`booking.html`) e la sezione "Dicono di noi" della home (`index.html`). Database e regole in `supabase/modifiche/2026-10-20-recensioni.sql` |
+| `trasloco.js` | il passaggio da `jacques88-sudo.github.io/isla/` a `islaexcursionstenerife.com`: porta il cliente al nuovo coi suoi dati di localStorage; va caricato **prima** di tutti gli altri script, in ogni pagina. Con `trasloco.txt` (dice `isla`), che dice al vecchio indirizzo che il nuovo è acceso |
 | `richieste.js` | le richieste della lista salvate anche su Supabase (`pending`), con la **chiave** che resta nel telefono del cliente e il **codice** che va nel messaggio; l'ufficio le conferma o annulla da `venditori.html` |
 
 **La finestra della richiesta è scritta due volte**, in `escursioni.html` e in `tour.html`.
@@ -264,12 +265,18 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   soltanto** e inoltra all'Outlook del proprietario; per scrivere da quell'indirizzo serve
   un servizio a parte, non c'è. Sta in `booking.js` (Aiuto), `manda-notifiche`, privacy e
   termini. Il sito **non è ancora collegato**: oggi sta su `jacques88-sudo.github.io/isla/`.
-  **Prima del `CNAME` va fatto il trasloco**: il service worker serve tutto dalla cache,
-  quindi chi ha già aperto Isla resterebbe per sempre sulla versione vecchia del vecchio
-  indirizzo (GitHub manda al nuovo anche `sw.js`, e un service worker che arriva da un
-  rimando non si aggiorna). Serve prima un'ultima versione sul vecchio indirizzo che
-  svuota la cache e porta al nuovo; e localStorage (lista, preferiti, chiavi delle
-  richieste) non passa da sé al dominio nuovo: il proprietario deve dire se portarlo.
+  **Il trasloco è pronto** (`trasloco.js`, 21 ottobre 2026, il proprietario ha scelto di
+  portare tutto): il service worker serve tutto dalla cache, quindi chi ha già aperto
+  Isla resterebbe per sempre sulla versione vecchia del vecchio indirizzo. `trasloco.js`,
+  sul vecchio indirizzo, guarda se il nuovo risponde `isla` da `trasloco.txt` e ci va
+  portando localStorage dopo il `#`. **Il `CNAME` si mette non prima del 4 novembre
+  2026**: due settimane perché chi torna sul sito riceva il service worker con
+  `trasloco.js`. Chi non torna in quel tempo resta sulla versione vecchia: si accetta.
+  Al momento del `CNAME`: `venditori.html` e `ticket/` vanno a `../isla-ticket/`, che sul
+  dominio nuovo non c'è (scrivere l'indirizzo intero); `og:image`, `id` del manifest,
+  `CATALOGO_URL` di `foglio-google`, il QR di `stampa/`; in `isla-ticket` il `../isla/`.
+  `trasloco.js` e `trasloco.txt` **non si tolgono** mai: il vecchio service worker resta
+  acceso e porta al nuovo chi tocca un avviso o apre la vecchia icona.
   Poi: 1. collegarlo a GitHub Pages (file `CNAME` + DNS su Cloudflare, nuvola grigia);
   2. il SEO (`sitemap.xml`, `robots.txt`, `<link rel="canonical">`, `hreflang` delle
   cinque lingue, schema.org `TravelAgency`/`TouristTrip` e le stelle di "Dicono di noi",

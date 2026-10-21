@@ -20922,3 +20922,37 @@ Il README diceva ancora `jacques88-sudo.github.io/isla/` e "il SEO si fa dopo il
 Ora dice `islaexcursionstenerife.com`, che il vecchio indirizzo porta lì da solo, e che
 dominio e SEO sono fatti. PDF rifatto dal README (`documenti/cos-e-isla.pdf`), come dice
 la sezione sopra. Nessun file del sito toccato: `CACHE_NAME` non cambia.
+
+### Kasamui, Castillo sempre card, e un file con tutti i netti (21 ottobre 2026)
+
+Risposte del proprietario sui fogli di Nancy, Maarten e Kristine:
+
+- **Kasamui** è una barca delle **3 ore**: `nomi` di `whale-dolphin-3h`, accanto alle
+  altre cinque. Fa anche il **charter privato**, con un netto fisso per tutta la barca
+  (`net_fixed` su `whale-dolphin-3h-charter`). Il nome sta solo sull'uscita a persona
+  (stesso nome su due schede = errore di `controlla.js`), quindi il netto del charter
+  vale **per qualunque compagnia**, come quello di Kalima Kat: se un'altra barca fa il
+  charter delle 3 ore con un netto diverso, va riaperta la questione;
+- **Castillo San Miguel conta sempre come card**: `pagamento: "card"` e la voce nei due
+  elenchi di `supabase/modifiche/2026-10-09-solo-card.sql`. Anche **Maxicat**, ma la
+  scheda non c'è ancora: quando arriva, va messa in tutti e due gli elenchi;
+- ticket 0222 di Flash Jetski: erano **2 doppie** a un netto diverso da quello di
+  Notion. Il netto resta quello di Notion; se ricapita, va chiesto di nuovo
+  (promemoria su Notion);
+- Loro + Bus 0456, Siam 0224 e il jet ski 0213: lasciati com'erano.
+
+**Un file solo per Supabase.** Il proprietario non aveva ancora incollato su Supabase
+gli SQL preparati negli ultimi giorni. Ora nella scratchpad c'è un file unico,
+`tutti-i-netti-21-ottobre.sql` (**non committato**): le percentuali card/cash, tutte le
+73 righe di `nets` ricostruite dalla tabella Notion e l'elenco "sempre card". Ogni riga
+è un `insert … on conflict … do update` che scrive **tutte** le colonne del netto, così
+un valore vecchio rimasto su Supabase si cancella. In testa un controllo che si ferma e
+dice quale modifica del database manca (percentuale, netto fisso, transfer). I ticket
+già salvati non si ricalcolano: sono prove, si cancellano all'apertura.
+
+Provato su Postgres 16 con schema e modifiche: senza le modifiche del 17-18 ottobre si
+ferma col nome dei file; dopo, lanciato due volte senza errori; i ticket dei fogli
+tornano col netto scritto sulla carta (Kasamui 2 adulti → 50, charter → 350, Castillo
+col bus → 104,80, Twin col bus 346 → 276,80, Freebird 4+1+neonato → 94,50, Teide + Masca
+2+1 → 94,40, Prime Quads doppio → 75). Nel browser a 375 px Castillo, barche delle 3 ore
+ed elenco senza errori, il nome Kasamui non si vede. `CACHE_NAME` → `isla-v612`.

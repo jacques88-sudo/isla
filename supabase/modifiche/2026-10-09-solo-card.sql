@@ -14,6 +14,7 @@
 -- 14 ottobre 2026: anche Aqualand (proprietario).
 -- 17 ottobre 2026: anche Freebird (proprietario).
 -- 20 ottobre 2026: anche Jungle Park e Submarine Safari (proprietario).
+-- 21 ottobre 2026: anche Castillo San Miguel (proprietario).
 --
 -- Il modulo dei venditori lo sceglie gia' da solo (campo `pagamento: "card"`
 -- nel catalogo); qui lo fa valere il database, anche sui ticket salvati prima
@@ -33,7 +34,8 @@ begin
                           'teide-national-park', 'icod-garachico-orotava', 'la-gomera',
                           'santa-cruz-taganana', 'island-tour-completo',
                           'peter-pan', 'aqualand', 'freebird-catamaran',
-                          'jungle-park', 'submarine-safari') then
+                          'jungle-park', 'submarine-safari',
+                          'castillo-san-miguel') then
     new.payment_method := 'card';
   end if;
   return new;
@@ -55,5 +57,6 @@ update public.bookings
                         'teide-national-park', 'icod-garachico-orotava', 'la-gomera',
                         'santa-cruz-taganana', 'island-tour-completo',
                         'peter-pan', 'aqualand', 'freebird-catamaran',
-                        'jungle-park', 'submarine-safari')
+                        'jungle-park', 'submarine-safari',
+                        'castillo-san-miguel')
    and payment_method is distinct from 'card';

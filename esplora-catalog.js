@@ -948,8 +948,10 @@ const ESPLORA_CATALOG = [
     // Lina7 e Mizendoha sono altre due barche, ognuna col suo netto
     // (proprietario, 9 ottobre 2026). Atlantic Star e' un'altra ancora
     // (proprietario, 14 ottobre 2026). Arriro e' una barca a vela, anche lei
-    // solo sull'uscita a persona (proprietario, 14 ottobre 2026).
-    nomi: ["Cool Sailing", "Lina7", "Mizendoha", "Atlantic Star", "Arriro"],
+    // solo sull'uscita a persona (proprietario, 14 ottobre 2026). Kasamui fa
+    // anche il charter privato, ma il nome sta qui sola: lo stesso nome su
+    // due schede e' un errore (proprietario, 21 ottobre 2026).
+    nomi: ["Cool Sailing", "Lina7", "Mizendoha", "Atlantic Star", "Arriro", "Kasamui"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
@@ -6141,6 +6143,9 @@ const ESPLORA_CATALOG = [
   {
     id: "castillo-san-miguel",
     title: "Castillo San Miguel – Medieval Night",
+    // Il ticket conta sempre come pagato con carta (proprietario, 21 ottobre
+    // 2026): stessa regola dei parchi, e stesso elenco in sempre_card.
+    pagamento: "card",
     category: "parchi-spettacoli",
     zone: "San Miguel de Abona",
     duration: { it: "2 ore e 30", en: "2.5 hours", es: "2 horas y media", fr: "2 heures et demie", de: "2,5 Stunden" },

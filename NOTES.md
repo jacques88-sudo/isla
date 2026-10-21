@@ -20783,3 +20783,41 @@ Il QR stampato invece continua a funzionare: GitHub manda il vecchio indirizzo a
 Provato: privacy e termini a 375 px senza scroll, i link `mailto:` ci sono; il bottone
 Aiuto di `booking.html?code=ISLA-4521` scrive al nuovo indirizzo; nessun errore.
 `CACHE_NAME` → `isla-v608`.
+
+## Il trasloco al dominio nuovo (21 ottobre 2026)
+
+Il proprietario ha scelto di **portare tutto** nel dominio nuovo (lista, preferiti, le
+chiavi delle richieste, la lingua, l'ultimo ticket, le recensioni fatte), invece di
+lasciarlo sul vecchio indirizzo. Lo fa `trasloco.js`, il primo script di ogni pagina.
+
+Come funziona. Sul vecchio indirizzo chiede `https://islaexcursionstenerife.com/trasloco.txt`
+(`no-store`). Finché il dominio non è collegato risponde 404, o niente, e non succede
+nulla. Col `CNAME` risponde `isla`: allora prende le chiavi `isla-*` di localStorage e va
+alla stessa pagina sul nuovo, con i dati dopo `#trasloco=` (quello che sta dopo il `#`
+non arriva a nessun server). Sul nuovo li rimette e toglie il `#`. Se il nuovo ha già
+la stessa chiave vince il nuovo, ma due elenchi si uniscono: le richieste per `token`,
+il resto per com'è scritto. Non si portano `isla-meteo` (si riscarica) e i due di
+"Installa l'app": sul dominio nuovo l'app non è installata, il riquadro deve tornare.
+
+Perché il controllo è sul testo e non solo su `ok`: col vecchio service worker una
+`fetch` fallita torna `offline.html` con stato 200.
+
+**Il vecchio service worker resta acceso**, apposta: gli avvisi delle richieste già
+mandate sono iscritti a lui (un'iscrizione vale per un indirizzo solo). Toccando
+l'avviso si apre il vecchio indirizzo dalla sua cache, `trasloco.js` porta al nuovo, e
+lo stato `avvisi: "ok"` della richiesta arriva col resto, così il nuovo non iscrive il
+telefono una seconda volta. Chi aveva installato l'app la deve rimettere dal dominio
+nuovo: la vecchia icona apre il vecchio indirizzo, che porta al nuovo.
+
+**Il `CNAME` non prima del 4 novembre 2026.** `trasloco.js` funziona solo per chi ha il
+service worker `isla-v609` o dopo, e lo riceve tornando sul sito. Chi resta col v608 e
+non torna in queste due settimane rimane sulla versione vecchia del vecchio indirizzo:
+`sw.js` risponde con un rimando, e un service worker non si aggiorna da un rimando.
+Si accetta: i turisti tornano a casa in una settimana.
+
+Provato in Chromium, senza service worker (Playwright fa da GitHub per i due indirizzi):
+spento il nuovo resta sul vecchio; acceso porta `tour.html?id=…` a `/tour.html?id=…`
+senza `#`, preferiti uniti, `isla-meteo` e `isla-installa-chiuso` lasciati, una chiave
+non `isla-` lasciata; la radice `/isla/` va a `/`. Con il service worker vero (copia del
+sito, due server locali al posto dei due indirizzi): la pagina servita dalla cache porta
+al nuovo con la lista. Nessun errore. `CACHE_NAME` → `isla-v609`.

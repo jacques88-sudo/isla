@@ -783,8 +783,19 @@ const I18N = {
   "offline.text":       { it: "La PWA è installata, ma questa pagina non è disponibile senza connessione.", en: "The app is installed, but this page isn't available without a connection.", es: "La app está instalada, pero esta página no está disponible sin conexión.", fr: "L'app est installée, mais cette page n'est pas disponible sans connexion.", de: "Die App ist installiert, aber diese Seite ist ohne Verbindung nicht verfügbar." }
 };
 
-// Lingua attiva. Ordine: scelta salvata → lingua del browser → I18N_DEFAULT.
+// Lingua attiva. Ordine: `?lang=` nell'indirizzo → scelta salvata → lingua
+// del browser → I18N_DEFAULT.
+// `?lang=` c'e' per Google (21 ottobre 2026): Google legge le pagine con un
+// browser in inglese, e senza la lingua nell'indirizzo vedrebbe solo quella.
+// Cosi' ogni pagina ha cinque indirizzi, uno per lingua, e sitemap.xml li
+// elenca tutti. Vale per la pagina che si apre e non si salva: chi arriva da
+// una ricerca in tedesco non si ritrova il sito in tedesco per sempre.
+const I18N_DA_INDIRIZZO = (function () {
+  try { return new URLSearchParams(location.search).get("lang"); } catch (e) { return null; }
+})();
+
 let I18N_CURRENT = (function () {
+  if (I18N_LANGS.includes(I18N_DA_INDIRIZZO)) return I18N_DA_INDIRIZZO;
   let salvata = null;
   try { salvata = localStorage.getItem(I18N_STORAGE_KEY); } catch (e) { /* modalità privata */ }
   if (I18N_LANGS.includes(salvata)) return salvata;
@@ -911,6 +922,14 @@ function setLang(lang) {
   if (!I18N_LANGS.includes(lang) || lang === I18N_CURRENT) return;
   I18N_CURRENT = lang;
   try { localStorage.setItem(I18N_STORAGE_KEY, lang); } catch (e) { /* modalità privata */ }
+  // Una bandiera scelta vince su `?lang=`: lo si toglie dall'indirizzo,
+  // altrimenti ricaricando la pagina tornerebbe la lingua di prima.
+  if (I18N_DA_INDIRIZZO) {
+    const u = new URL(location.href);
+    u.searchParams.delete("lang");
+    history.replaceState(history.state, "", u.pathname + u.search + u.hash);
+    indirizzoUfficiale();
+  }
   applyI18n();
   paintLangButtons();
   document.dispatchEvent(new CustomEvent("islalang", { detail: { lang } }));
@@ -934,7 +953,41 @@ function initLangSwitch() {
   });
 }
 
+// L'INDIRIZZO UFFICIALE DELLA PAGINA, PER GOOGLE (21 ottobre 2026)
+// `<link rel="canonical">`: dice a Google quale indirizzo tenere quando la
+// stessa pagina si apre con indirizzi diversi (index.html e /, ?ticket=1,
+// ?q=barca…). Si tengono solo i pezzi che cambiano il contenuto (l'id della
+// scheda o del pacchetto, la vetrina) e `lang`. Le cinque lingue di ogni pagina
+// le elenca sitemap.xml (si rifa' con `node sitemap.js`).
+// Si scrive qui e non nell'HTML perche' dipende da `?id=` e da `?lang=`.
+// Le pagine personali (booking, offline) non lo hanno: hanno `noindex`.
+const ISLA_SITO = "https://islaexcursionstenerife.com";
+const ISLA_PEZZI_UFFICIALI = {
+  "tour.html": ["id"],
+  "pacchetto.html": ["id"],
+  "pacchetti.html": ["giorni", "famiglia"]
+};
+
+function indirizzoUfficiale() {
+  if (document.querySelector('meta[name="robots"][content*="noindex"]')) return;
+  const pagina = location.pathname.split("/").pop() || "index.html";
+  const qui = new URLSearchParams(location.search);
+  const tieni = new URLSearchParams();
+  (ISLA_PEZZI_UFFICIALI[pagina] || []).concat("lang").forEach(k => {
+    if (qui.get(k) && (k !== "lang" || I18N_LANGS.includes(qui.get(k)))) tieni.set(k, qui.get(k));
+  });
+  const resto = tieni.toString();
+  let link = document.querySelector('link[rel="canonical"]');
+  if (!link) {
+    link = document.createElement("link");
+    link.rel = "canonical";
+    document.head.appendChild(link);
+  }
+  link.href = ISLA_SITO + "/" + (pagina === "index.html" ? "" : pagina) + (resto ? "?" + resto : "");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  indirizzoUfficiale();
   applyI18n();
   initLangSwitch();
   paintLangButtons();

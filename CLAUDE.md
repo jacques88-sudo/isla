@@ -264,23 +264,19 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   **`info@islaexcursionstenerife.com`** è attiva con Email Routing di Cloudflare: **riceve
   soltanto** e inoltra all'Outlook del proprietario; per scrivere da quell'indirizzo serve
   un servizio a parte, non c'è. Sta in `booking.js` (Aiuto), `manda-notifiche`, privacy e
-  termini. Il sito **non è ancora collegato**: oggi sta su `jacques88-sudo.github.io/isla/`.
-  **Il trasloco è pronto** (`trasloco.js`, 21 ottobre 2026, il proprietario ha scelto di
-  portare tutto): il service worker serve tutto dalla cache, quindi chi ha già aperto
-  Isla resterebbe per sempre sulla versione vecchia del vecchio indirizzo. `trasloco.js`,
-  sul vecchio indirizzo, guarda se il nuovo risponde `isla` da `trasloco.txt` e ci va
-  portando localStorage dopo il `#`. **Il `CNAME` si mette non prima del 4 novembre
-  2026**: due settimane perché chi torna sul sito riceva il service worker con
-  `trasloco.js`. Chi non torna in quel tempo resta sulla versione vecchia: si accetta.
-  Al momento del `CNAME`: `venditori.html` e `ticket/` vanno a `../isla-ticket/`, che sul
-  dominio nuovo non c'è (scrivere l'indirizzo intero); `og:image`, `id` del manifest,
-  `CATALOGO_URL` di `foglio-google`, il QR di `stampa/`; in `isla-ticket` il `../isla/`.
-  `trasloco.js` e `trasloco.txt` **non si tolgono** mai: il vecchio service worker resta
-  acceso e porta al nuovo chi tocca un avviso o apre la vecchia icona.
-  Poi: 1. collegarlo a GitHub Pages (file `CNAME` + DNS su Cloudflare, nuvola grigia);
-  2. il SEO (`sitemap.xml`, `robots.txt`, `<link rel="canonical">`, `hreflang` delle
+  termini. **Collegato a GitHub Pages il 21 ottobre 2026** (file `CNAME`, DNS su
+  Cloudflare con la nuvola grigia): il vecchio `jacques88-sudo.github.io/isla/` manda al
+  nuovo. Non c'era da aspettare: il sito lo usavano solo il proprietario e la moglie.
+  `trasloco.js` porta dal vecchio indirizzo al nuovo anche chi ha l'app nella cache del
+  service worker, coi suoi dati di localStorage (`trasloco.txt` dice `isla`): **non si
+  toglie**, il vecchio service worker resta acceso e porta al nuovo chi tocca un avviso o
+  apre la vecchia icona. Isla Ticket resta su `jacques88-sudo.github.io/isla-ticket/`:
+  `venditori.html` e `ticket/` ci mandano con l'indirizzo intero, e il suo `../isla/`
+  arriva qui col rimando di GitHub. Il QR stampato apre il vecchio indirizzo e funziona
+  col rimando.
+  Da fare: il SEO (`sitemap.xml`, `robots.txt`, `<link rel="canonical">`, `hreflang` delle
   cinque lingue, schema.org `TravelAgency`/`TouristTrip` e le stelle di "Dicono di noi",
-  `og:url` e `og:image` col dominio nuovo). **Il SEO si fa dopo il collegamento**, non prima.
+  `og:url`; l'`og:image` è già sul dominio nuovo).
 - **Il riquadro "Installa l'app" resta com'è** (proprietario, 20 ottobre 2026): compare
   a ogni visita finché l'app non è installata, anche se alla prima apertura di una scheda
   copre "Aggiungi alla lista" finché non si chiude. Proposti "solo in home ed elenco" e

@@ -21003,3 +21003,30 @@ escursione e compra di nuovo da solo, col codice sconto del venditore).
 Per questo **niente scheda Google Business Profile per Isla o per i venditori**: non hanno
 un ufficio, e Google la rifiuterebbe. La scheda, se c'è, è di **Admiral**: si chiede ad
 Admiral di aggiungerci il sito `islaexcursionstenerife.com`. Non si ripropone.
+
+## Le richieste online per codice del venditore (21 ottobre 2026)
+
+Primo passo del piano "strada + online" (proprietario: Isla è di Admiral, lui e la
+moglie la vendono per strada e vogliono vedere quanto la strada porta vendite online).
+Nelle **Statistiche** di Isla Ticket (solo ufficio):
+
+- in alto, accanto a "WhatsApp 4", "(3 col codice)";
+- la tabella **"Richieste online, per codice"**: per ogni codice sconto il venditore
+  ("Marco (MARCO)", da `codici_sconto`, che l'ufficio può leggere), quante richieste,
+  quante **confermate**, quanto venduto; "Senza codice" sempre in fondo. Un codice che
+  non si trova in `codici_sconto` esce da solo. Le annullate non contano, come nel resto.
+
+Il QR personale (`?codice=MARCO`, 19 ottobre) mette il codice da solo: chi arriva da
+quel QR finisce nella riga del suo venditore. Il QR generico no.
+
+`caricaStatistiche()` chiede anche `discount_code`; se il database non ha la colonna
+(SQL `2026-10-18-codici-sconto.sql` non lanciato) rilegge senza, e la tabella non
+compare (`leggeCodici`): meglio niente che "Senza codice" su tutte.
+
+**Limite da sapere:** la pulizia mensile cancella le righe di `bookings`, quindi le
+statistiche vedono al massimo il mese in corso. Per i conti dell'anno servirà salvare il
+codice anche nel foglio Google (passo da proporre, non fatto).
+
+Provato: `calcolaStatistiche()` in Node con richieste finte (annullata esclusa, codice
+senza nome, senza colonna → `leggeCodici` falso) e la tabella nel browser a 390 px,
+nessun errore. `CACHE_NAME` → `isla-v615`.

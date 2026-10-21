@@ -32,7 +32,7 @@ import webpush from "npm:web-push@3.6.7";
 const CHIAVE_PUBBLICA = "sb_publishable_Qjmd8qP9J_GH1WjUmBolSw_vBdM5G3L";
 
 // L'indirizzo che Google, Apple e Mozilla usano se qualcosa non va.
-const CONTATTO = "mailto:info@islatenerife.com";
+const CONTATTO = "mailto:info@islaexcursionstenerife.com";
 // Un avviso che il telefono non riceve entro 12 ore (spento, senza rete) non
 // arriva piu': un promemoria del giorno prima letto il giorno dopo confonde.
 const DURATA = 12 * 60 * 60;

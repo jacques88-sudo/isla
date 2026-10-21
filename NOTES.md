@@ -20750,3 +20750,36 @@ le schede (74, 67 pubblicate) con scritto "a ottobre 2026". Se il README cambia,
 va rifatto.
 
 Nessun `.js`, `.css` o `.html` del sito toccato: `CACHE_NAME` resta `isla-v607`.
+
+## Il dominio e l'email (21 ottobre 2026)
+
+Il proprietario ha comprato **`islaexcursionstenerife.com`** su Cloudflare (Registrar,
+10,46 $ l'anno, rinnovo automatico acceso, dati WHOIS nascosti). Era partito da
+"islaexcursiontenerife": il plurale l'ha scelto lui dopo che l'avevamo fatto notare,
+perché è come lo scrive un cliente. I domini simili che Cloudflare propone (`.net`,
+coi trattini) non servono.
+
+**L'email** è `info@islaexcursionstenerife.com` con **Email Routing** di Cloudflare,
+gratis: tre MX `routeN.mx.cloudflare.net` e il TXT SPF li ha messi Cloudflare da solo,
+una regola `info` → Outlook del proprietario, catch-all **spento** (con acceso arriva lo
+spam di qualunque indirizzo inventato). Provato: mandata da Outlook a se stessa, arrivata.
+**Riceve soltanto.** Scrivere da quell'indirizzo vuole un servizio a parte (Zoho Mail
+gratis, Google Workspace a pagamento): non deciso.
+
+Prima il sito usava `info@islatenerife.com`, un dominio **non nostro**: le email del
+bottone "Aiuto" di "Le mie prenotazioni" non arrivavano a nessuno. Cambiato in
+`booking.js` e in `manda-notifiche` (il contatto VAPID: **la funzione va ridistribuita**,
+finché non lo si fa resta il vecchio, e agli avvisi non cambia niente). In privacy e
+termini l'email è entrata sotto il titolare, nelle cinque lingue, e nella privacy anche
+fra i modi di esercitare i diritti (lo chiedeva la nota del 6 ottobre). **Annullare e
+spostare resta solo su WhatsApp**: nei termini quella riga non si tocca.
+
+**Il collegamento al sito aspetta** il trasloco: vedi la voce in `CLAUDE.md`. Il punto
+che si dimentica è il service worker, cache-first su tutto `ASSETS`: col `CNAME` messo
+di colpo, chi ha l'app aperta almeno una volta continua a vedere il vecchio indirizzo
+dalla cache, e l'aggiornamento non arriva più perché `sw.js` risponde con un rimando.
+Il QR stampato invece continua a funzionare: GitHub manda il vecchio indirizzo al nuovo.
+
+Provato: privacy e termini a 375 px senza scroll, i link `mailto:` ci sono; il bottone
+Aiuto di `booking.html?code=ISLA-4521` scrive al nuovo indirizzo; nessun errore.
+`CACHE_NAME` → `isla-v608`.

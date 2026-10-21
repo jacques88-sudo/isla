@@ -263,7 +263,10 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   il 21 ottobre 2026, rinnovo automatico; DNS su Cloudflare). L'email
   **`info@islaexcursionstenerife.com`** è attiva con Email Routing di Cloudflare: **riceve
   soltanto** e inoltra all'Outlook del proprietario; per scrivere da quell'indirizzo serve
-  un servizio a parte, non c'è. Sta in `booking.js` (Aiuto), `manda-notifiche`, privacy e
+  un servizio a parte, non c'è. **DMARC `p=reject`** (TXT `_dmarc`, 21 ottobre 2026): il
+  dominio non manda email, quindi chi finge di scrivere da lì viene rifiutato. **Se un giorno
+  si vuole scrivere da `info@`** (Zoho, Google), prima vanno messi SPF e DKIM di quel
+  servizio, altrimenti le sue email vengono rifiutate. Sta in `booking.js` (Aiuto), `manda-notifiche`, privacy e
   termini. **Collegato a GitHub Pages il 21 ottobre 2026** (file `CNAME`, DNS su
   Cloudflare con la nuvola grigia): il vecchio `jacques88-sudo.github.io/isla/` manda al
   nuovo. Non c'era da aspettare: il sito lo usavano solo il proprietario e la moglie.

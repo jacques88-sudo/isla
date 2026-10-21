@@ -4219,18 +4219,20 @@ const ESPLORA_CATALOG = [
     title: "Fiat 500 Water Car",
     category: "sport-acquatici",
     zone: "Puerto Colón, Costa Adeje",
-    duration: { it: "1 o 2 ore", en: "1 or 2 hours", es: "1 o 2 horas", fr: "1 ou 2 heures", de: "1 oder 2 Stunden" },
+    duration: { it: "40 minuti, 1 o 2 ore", en: "40 minutes, 1 or 2 hours", es: "40 minutos, 1 o 2 horas", fr: "40 minutes, 1 ou 2 heures", de: "40 Minuten, 1 oder 2 Stunden" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
     // Stesse partenze del Jet Ski Safari (proprietario, 9 ottobre 2026).
     times: ["10:00", "12:00", "14:00", "16:00", "17:00"],
-    priceFrom: 130,
+    priceFrom: 120,
     priceUnit: { it: "a Fiat 500", en: "per Fiat 500", es: "por Fiat 500", fr: "par Fiat 500", de: "pro Fiat 500" },
     priceAdult: 0,
     priceChild: 0,
     options: {
       label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée", de: "Dauer" },
       choices: [
+        // Il giro corto (proprietario, 21 ottobre 2026; ticket 0599 di Kristine).
+        { label: { it: "40 minuti", en: "40 minutes", es: "40 minutos", fr: "40 minutes", de: "40 Minuten" }, price: 120 },
         { label: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure", de: "1 Stunde" }, price: 130 },
         { label: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures", de: "2 Stunden" }, price: 220 }
       ]

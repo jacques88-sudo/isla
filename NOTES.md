@@ -20915,6 +20915,8 @@ descrizione e `TouristTrip` in tedesco col `canonical` giusto; `?ticket=1` → `
 **Tocca al proprietario**: Google Search Console (proprietà di dominio, verificata con
 un TXT su Cloudflare) e lì "Sitemap" → `sitemap.xml`. Senza, Google trova il sito da
 solo, ma in settimane invece che in giorni.
+**Fatto il 21 ottobre 2026**: proprietà verificata, `sitemap.xml` inviata, stato "Riuscito".
+Google la rilegge da solo: dopo `node sitemap.js` non serve inviarla di nuovo.
 
 ## Il README col dominio nuovo (21 ottobre 2026)
 

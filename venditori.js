@@ -1726,7 +1726,11 @@ function giornoLocale(iso) {
 //   da incassare = somma dei To pay
 // Un ticket senza Total (le richieste WhatsApp non ce l'hanno) conta come
 // prenotazione e come persone, non come soldi.
-function calcolaStatistiche(righe) {
+// `codici`: { "MARCO": "Marco", … } da codici_sconto, per dire di chi e' il
+// codice sconto di una richiesta online (21 ottobre 2026: si misura quanto la
+// vendita online arriva dai clienti incontrati per strada). Senza, il codice
+// resta da solo.
+function calcolaStatistiche(righe, codici = {}) {
   const soldi = n => (n === null || n === undefined || n === "" ? null : Number(n));
   const tondo = n => Math.round(n * 100) / 100;
   const vive = righe.filter(r => r.status !== "cancelled");
@@ -1736,7 +1740,9 @@ function calcolaStatistiche(righe) {
     whatsapp: vive.filter(r => r.source === "whatsapp").length,
     annullate: righe.length - vive.length,
     persone: 0, venduto: 0, incassato: 0, daIncassare: 0, senzaTotale: 0,
-    escursioni: {}, venditori: {}, giorni: {}
+    escursioni: {}, venditori: {}, giorni: {}, codici: {}, colCodice: 0,
+    // false se il database non ha ancora la colonna: niente tabella dei codici
+    leggeCodici: righe.some(r => "discount_code" in r)
   };
   const aggiungi = (dove, chiave, r, persone, totale) => {
     const v = dove[chiave] || (dove[chiave] = { n: 0, persone: 0, venduto: 0 });
@@ -1759,6 +1765,15 @@ function calcolaStatistiche(righe) {
     const chi = r.source === "whatsapp" ? "Richieste WhatsApp" : (r.seller || "").trim() || "Senza venditore";
     aggiungi(s.venditori, chi, r, persone, totale);
     aggiungi(s.giorni, giornoLocale(r.created_at), r, persone, totale);
+    if (r.source === "whatsapp") {
+      const codice = (r.discount_code || "").trim();
+      if (codice) s.colCodice += 1;
+      const nome = !codice ? "Senza codice"
+        : codici[codice] ? `${codici[codice]} (${codice})` : codice;
+      aggiungi(s.codici, nome, r, persone, totale);
+      const v = s.codici[nome];
+      v.confermate = (v.confermate || 0) + (r.status === "confirmed" ? 1 : 0);
+    }
   });
   s.venduto = tondo(s.venduto);
   s.incassato = tondo(s.incassato);
@@ -1815,7 +1830,8 @@ function disegnaStatistiche(s) {
   const cifre = document.createElement("dl");
   cifre.className = "vend-stats-cifre";
   [
-    ["Prenotazioni", String(s.prenotazioni), `strada ${s.strada} · WhatsApp ${s.whatsapp}`],
+    ["Prenotazioni", String(s.prenotazioni),
+      `strada ${s.strada} · WhatsApp ${s.whatsapp}` + (s.colCodice ? ` (${s.colCodice} col codice)` : "")],
     ["Persone", String(s.persone), ""],
     ["Venduto", euro(s.venduto), s.senzaTotale ? `${s.senzaTotale} senza Total` : ""],
     ["Già incassato", euro(s.incassato), `da incassare ${euro(s.daIncassare)}`]
@@ -1847,6 +1863,14 @@ function disegnaStatistiche(s) {
   els.stats.append(tabella("Per venditore", ["Venditore", "Pren.", "Persone", "Venduto"],
     Object.entries(s.venditori).sort(perN)
       .map(([chi, v]) => [chi, v.n, v.persone, euro(v.venduto)])));
+  // Le richieste online col codice di un venditore: i clienti incontrati per
+  // strada che poi comprano da soli. "Senza codice" sempre in fondo.
+  if (s.whatsapp && s.leggeCodici) {
+    els.stats.append(tabella("Richieste online, per codice", ["Codice", "Pren.", "Confermate", "Venduto"],
+      Object.entries(s.codici)
+        .sort((a, b) => (a[0] === "Senza codice") - (b[0] === "Senza codice") || perN(a, b))
+        .map(([chi, v]) => [chi, v.n, v.confermate, euro(v.venduto)])));
+  }
   els.stats.append(tabella("Giorno per giorno", ["Giorno", "Pren.", "Persone", "Venduto"],
     Object.entries(s.giorni).sort((a, b) => (a[0] < b[0] ? 1 : -1))
       .map(([g, v]) => [dataBreve(g), v.n, v.persone, euro(v.venduto)])));
@@ -1855,18 +1879,24 @@ function disegnaStatistiche(s) {
 async function caricaStatistiche() {
   const { da, a } = limitiPeriodo(periodoStats);
   mostra(els.statsMsg, "Un momento…");
-  const { data, error } = await sb
-    .from("bookings")
-    .select("excursion_id, source, status, adults, kids, babies, total, rest_to_pay, seller, created_at")
+  const colonne = "excursion_id, source, status, adults, kids, babies, total, rest_to_pay, seller, created_at";
+  const leggi = quali => sb.from("bookings").select(quali)
     .gte("created_at", da.toISOString())
     .lt("created_at", a.toISOString())
     .limit(5000);
+  // discount_code esiste solo dopo 2026-10-18-codici-sconto.sql: se il
+  // database non ce l'ha, le statistiche escono lo stesso, senza codici
+  let { data, error } = await leggi(colonne + ", discount_code");
+  if (error) ({ data, error } = await leggi(colonne));
   if (error) {
     mostra(els.statsMsg, "Statistiche non disponibili: riprova quando c'è campo.", "errore");
     return;
   }
+  // di chi e' ogni codice sconto; se non si legge, la tabella mostra il codice
+  const { data: elenco } = await sb.from("codici_sconto").select("codice, venditore");
+  const codici = Object.fromEntries((elenco || []).map(c => [c.codice, c.venditore]));
   mostra(els.statsMsg, "");
-  disegnaStatistiche(calcolaStatistiche(data));
+  disegnaStatistiche(calcolaStatistiche(data, codici));
 }
 
 // La sezione esiste solo per l'ufficio. Se la funzione is_office() non c'e'

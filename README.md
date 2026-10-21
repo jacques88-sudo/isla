@@ -86,5 +86,5 @@ Queste sono le scelte del proprietario che valgono per tutto il sito; il resto s
 - **I titoli restano come li scrive Admiral**, uguali in tutte le lingue.
 - **Le recensioni sono di Isla**: le scrive solo chi è stato in escursione con noi, escono dopo l'approvazione dell'ufficio e si leggono nella home.
 - **Netti, commissioni e codici sconto mai nei file**, solo su Supabase.
-- **Il SEO si fa dopo il dominio** (forse `islatenerife.com`).
+- **Il dominio è `islaexcursionstenerife.com`** (email `info@islaexcursionstenerife.com`); il SEO si fa dopo averlo collegato al sito.
 - **Prima di ogni consegna**: `node controlla.js`, alzare `CACHE_NAME` in `sw.js`, provare nel browser vero.

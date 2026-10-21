@@ -132,7 +132,7 @@ function renderBooking(booking, code) {
 
         <div class="detail-actions">
           <a class="btn btn-soft" href="./index.html">${t("booking.another")}</a>
-          <a class="btn btn-primary" href="mailto:info@islatenerife.com?subject=${encodeURIComponent(t("booking.helpSubject") + " " + code)}">${t("booking.help")}</a>
+          <a class="btn btn-primary" href="mailto:info@islaexcursionstenerife.com?subject=${encodeURIComponent(t("booking.helpSubject") + " " + code)}">${t("booking.help")}</a>
         </div>
       </div>
     </div>

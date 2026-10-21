@@ -258,15 +258,22 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
 - **Niente "Aggiungi al calendario" (`.ics`) sulle escursioni confermate** (proprietario,
   20 ottobre 2026): il promemoria sul telefono lo manda già `manda-notifiche`. Non si
   ripropone.
-- **Il SEO si fa DOPO il dominio** (proprietario, 20 ottobre 2026): oggi Isla sta su
-  `jacques88-sudo.github.io/isla/`, e il SEO scrive l'indirizzo dappertutto (sitemap,
-  indirizzo "canonico" di ogni pagina, dati strutturati delle recensioni). **Quando il
-  proprietario dice di avere il dominio** (forse `islatenerife.com`: c'è già
-  `info@islatenerife.com` in `manda-notifiche`), proponi subito: 1. collegarlo a GitHub
-  Pages (file `CNAME` + DNS dal venditore, passo per passo); 2. il SEO (`sitemap.xml`,
-  `robots.txt`, `<link rel="canonical">`, `hreflang` delle cinque lingue, schema.org
-  `TravelAgency`/`TouristTrip` e le stelle di "Dicono di noi", `og:url` e `og:image` col
-  dominio nuovo). Prima di allora non si fa.
+- **Il dominio è `islaexcursionstenerife.com`** (comprato dal proprietario su Cloudflare
+  il 21 ottobre 2026, rinnovo automatico; DNS su Cloudflare). L'email
+  **`info@islaexcursionstenerife.com`** è attiva con Email Routing di Cloudflare: **riceve
+  soltanto** e inoltra all'Outlook del proprietario; per scrivere da quell'indirizzo serve
+  un servizio a parte, non c'è. Sta in `booking.js` (Aiuto), `manda-notifiche`, privacy e
+  termini. Il sito **non è ancora collegato**: oggi sta su `jacques88-sudo.github.io/isla/`.
+  **Prima del `CNAME` va fatto il trasloco**: il service worker serve tutto dalla cache,
+  quindi chi ha già aperto Isla resterebbe per sempre sulla versione vecchia del vecchio
+  indirizzo (GitHub manda al nuovo anche `sw.js`, e un service worker che arriva da un
+  rimando non si aggiorna). Serve prima un'ultima versione sul vecchio indirizzo che
+  svuota la cache e porta al nuovo; e localStorage (lista, preferiti, chiavi delle
+  richieste) non passa da sé al dominio nuovo: il proprietario deve dire se portarlo.
+  Poi: 1. collegarlo a GitHub Pages (file `CNAME` + DNS su Cloudflare, nuvola grigia);
+  2. il SEO (`sitemap.xml`, `robots.txt`, `<link rel="canonical">`, `hreflang` delle
+  cinque lingue, schema.org `TravelAgency`/`TouristTrip` e le stelle di "Dicono di noi",
+  `og:url` e `og:image` col dominio nuovo). **Il SEO si fa dopo il collegamento**, non prima.
 - **Il riquadro "Installa l'app" resta com'è** (proprietario, 20 ottobre 2026): compare
   a ogni visita finché l'app non è installata, anche se alla prima apertura di una scheda
   copre "Aggiungi alla lista" finché non si chiude. Proposti "solo in home ed elenco" e

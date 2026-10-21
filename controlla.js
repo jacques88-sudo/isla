@@ -947,6 +947,17 @@ function controllaSuMisura() {
   });
 }
 
+// La mappa del sito per Google (sitemap.js) va rifatta quando cambiano le
+// schede pubblicate o i pacchetti: una scheda nuova che non c'e' Google non la
+// trova, una tolta gli fa cercare una pagina vuota.
+function controllaSitemap() {
+  const { sitemapTesto } = require("./sitemap.js");
+  let scritta = "";
+  try { scritta = leggi("sitemap.xml"); } catch (e) { /* manca: sotto lo dice */ }
+  if (scritta !== sitemapTesto())
+    errore("sitemap.xml", "non corrisponde al catalogo: lancia `node sitemap.js`.");
+}
+
 // ─── Esecuzione ────────────────────────────────────────────────────────────
 const CONTROLLI = [controllaBase, controllaEta, controllaPrezzi, controllaMezzi,
                    controllaGiorni, controllaOrari, controllaIncluse, controllaFoto,
@@ -965,6 +976,7 @@ controllaPacchetti();
 controllaSuMisura();
 controllaServiceWorker();
 controllaFotoPiccole();
+controllaSitemap();
 
 const pubblicate = ESPLORA_CATALOG.filter(t => t.published).length;
 console.log("  schede: " + ESPLORA_CATALOG.length + ", di cui pubblicate " + pubblicate);

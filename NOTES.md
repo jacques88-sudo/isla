@@ -20869,3 +20869,49 @@ Il sito, il giorno stesso: collegato, lucchetto, app installata dal proprietario
 dominio nuovo. Sul telefono il proprietario aveva scritto `islaesxcursiontenerife.com`
 e Chrome diceva NXDOMAIN: il nome è lungo e si sbaglia facilmente, conviene darlo
 copiato o col QR.
+
+## Il SEO (21 ottobre 2026)
+
+Fatto subito dopo il collegamento del dominio, come deciso il 20 ottobre.
+
+**La lingua nell'indirizzo.** Prima la lingua veniva solo dalla scelta salvata o dal
+browser. Google legge le pagine con un browser in inglese, quindi avrebbe visto Isla
+solo in inglese, e a chi cerca "Teide Ausflug" non avrebbe mai mostrato la pagina in
+tedesco. Ora `?lang=it|en|es|fr|de` vince (`I18N_DA_INDIRIZZO` in `i18n.js`) ma **non si
+salva**: chi arriva da una ricerca in tedesco e poi apre un'altra pagina torna alla sua
+lingua. Una bandiera toglie `?lang=` dall'indirizzo, se no ricaricando tornava quella di
+prima. I link interni non portano `lang`: non serve, Google li trova tutti da sitemap.xml.
+
+**`canonical`** (`indirizzoUfficiale()`): scritto da JavaScript e non nell'HTML, perché
+dipende da `?id=` e `?lang=`. Tiene solo `id` (tour, pacchetto), `giorni` e `famiglia`
+(pacchetti) e `lang`; `index.html` diventa `/`. Così `?ticket=1`, `?q=barca`, `?pref=…`
+non diventano pagine doppie. Non c'è sulle pagine con `noindex`.
+
+**`sitemap.xml`** lo fa `sitemap.js`: 100 pagine (11 fisse, 67 schede pubblicate, 22
+pacchetti) × 6 indirizzi = 600, ognuno con i suoi `hreflang` e `x-default` (senza
+lingua). 530 KB, il limite di Google è 50 MB. Niente pacchetti su misura (infiniti),
+niente "Le mie prenotazioni". `controlla.js` la rifà in memoria e la confronta.
+
+**`robots.txt`**: tutto aperto, tranne i file del lavoro che GitHub Pages pubblica
+comunque perché stanno nel repository (`NOTES.md`, `dati-fornitore/`, `supabase/`…).
+Non è un lucchetto: chi conosce l'indirizzo li legge lo stesso, come prima.
+
+**schema.org**: `TravelAgency` in `index.html` con gli stessi dati del titolare della
+privacy; `TouristTrip` sulle schede con nome, descrizione, foto e prezzo (l'adulto,
+oppure il "da"; mai `price` da solo). La descrizione per Google (`meta description`)
+della scheda è la sua `desc`, tagliata a 155 caratteri.
+
+**Le stelle di "Dicono di noi" no**, anche se erano nell'elenco del 20 ottobre: dal 2019
+Google non mostra le stelle delle recensioni che un'azienda pubblica su se stessa
+("self-serving"), e marcarle per farle uscire è il caso che punisce. Le recensioni
+restano nella home per i clienti. Detto al proprietario.
+
+Provato in Chromium con browser in inglese: `?lang=de` su una scheda dà pagina, titolo,
+descrizione e `TouristTrip` in tedesco col `canonical` giusto; `?ticket=1` → `/`;
+`?giorni=5&x=1` → `?giorni=5`; `booking.html` senza `canonical`; la bandiera toglie
+`lang` e ricaricando resta la lingua scelta. Le undici pagine senza errori.
+`CACHE_NAME` → `isla-v611`.
+
+**Tocca al proprietario**: Google Search Console (proprietà di dominio, verificata con
+un TXT su Cloudflare) e lì "Sitemap" → `sitemap.xml`. Senza, Google trova il sito da
+solo, ma in settimane invece che in giorni.

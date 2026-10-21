@@ -20956,3 +20956,13 @@ tornano col netto scritto sulla carta (Kasamui 2 adulti → 50, charter → 350,
 col bus → 104,80, Twin col bus 346 → 276,80, Freebird 4+1+neonato → 94,50, Teide + Masca
 2+1 → 94,40, Prime Quads doppio → 75). Nel browser a 375 px Castillo, barche delle 3 ore
 ed elenco senza errori, il nome Kasamui non si vede. `CACHE_NAME` → `isla-v612`.
+
+### Fiat 500: anche 40 minuti, 120 € (21 ottobre 2026)
+
+Dal foglio di Kristine (ticket 0599 "Fiat 500 40m"): il giro da **40 minuti** esiste e
+va anche sul sito (proprietario). Prezzo **120 € a Fiat 500** (proprietario): variante
+nuova davanti a 1 ora (130) e 2 ore (220), `priceFrom` 120, durata "40 minuti, 1 o 2 ore"
+nelle cinque lingue, come il Jet Ski. Il ticket diceva 130: sconto o prezzo del
+venditore, non si confronta col catalogo. Provato in italiano e inglese a 375 px: tre
+bottoni "40 minuti €120 · 1 ora €130 · 2 ore €220", niente scroll, nessun errore.
+`CACHE_NAME` → `isla-v613`.

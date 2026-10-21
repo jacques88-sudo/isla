@@ -20992,3 +20992,14 @@ Il service worker non tocca lo script: viene da un altro indirizzo e le POST del
 non passano dalla cache. Provato nel browser: le dieci pagine chiedono lo script, nessun
 errore. I numeri si leggono su Cloudflare → Analytics → Web analytics. `CACHE_NAME` →
 `isla-v614`.
+
+## Chi è chi: Isla è di Admiral, il proprietario e la moglie sono venditori (21 ottobre 2026)
+
+Il proprietario lo ha chiarito: **Isla è un prodotto di Admiral Excursions**, e lui e sua
+moglie sono **venditori** di Admiral, per strada. Isla non sostituisce la vendita in strada:
+la affianca con quella online (il cliente incontrato per strada ritrova su Isla la sua
+escursione e compra di nuovo da solo, col codice sconto del venditore).
+
+Per questo **niente scheda Google Business Profile per Isla o per i venditori**: non hanno
+un ufficio, e Google la rifiuterebbe. La scheda, se c'è, è di **Admiral**: si chiede ad
+Admiral di aggiungerci il sito `islaexcursionstenerife.com`. Non si ripropone.

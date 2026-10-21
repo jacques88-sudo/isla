@@ -10,7 +10,7 @@ Admiral è un **rivenditore**: le escursioni le fanno altre compagnie (Freebird,
 
 Le prenotazioni non sono automatiche: il cliente manda una **richiesta su WhatsApp** (+34 662 908 073), l'ufficio la conferma entro 24 ore e il pagamento si concorda dopo.
 
-A ottobre 2026 il catalogo ha **74 schede, 67 pubblicate**, in cinque lingue: italiano, inglese, spagnolo, francese e tedesco. Il sito sta su [jacques88-sudo.github.io/isla](https://jacques88-sudo.github.io/isla/).
+A ottobre 2026 il catalogo ha **74 schede, 67 pubblicate**, in cinque lingue: italiano, inglese, spagnolo, francese e tedesco. Il sito sta su [islaexcursionstenerife.com](https://islaexcursionstenerife.com/); il vecchio indirizzo `jacques88-sudo.github.io/isla/` porta lì da solo, anche dai QR già stampati.
 
 ## Cosa vede il cliente
 
@@ -86,5 +86,5 @@ Queste sono le scelte del proprietario che valgono per tutto il sito; il resto s
 - **I titoli restano come li scrive Admiral**, uguali in tutte le lingue.
 - **Le recensioni sono di Isla**: le scrive solo chi è stato in escursione con noi, escono dopo l'approvazione dell'ufficio e si leggono nella home.
 - **Netti, commissioni e codici sconto mai nei file**, solo su Supabase.
-- **Il dominio è `islaexcursionstenerife.com`** (email `info@islaexcursionstenerife.com`); il SEO si fa dopo averlo collegato al sito.
+- **Il dominio è `islaexcursionstenerife.com`** (email `info@islaexcursionstenerife.com`), collegato al sito il 21 ottobre 2026 insieme al SEO: sitemap nelle cinque lingue e i dati per Google.
 - **Prima di ogni consegna**: `node controlla.js`, alzare `CACHE_NAME` in `sw.js`, provare nel browser vero.

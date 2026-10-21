@@ -20915,3 +20915,10 @@ descrizione e `TouristTrip` in tedesco col `canonical` giusto; `?ticket=1` → `
 **Tocca al proprietario**: Google Search Console (proprietà di dominio, verificata con
 un TXT su Cloudflare) e lì "Sitemap" → `sitemap.xml`. Senza, Google trova il sito da
 solo, ma in settimane invece che in giorni.
+
+## Il README col dominio nuovo (21 ottobre 2026)
+
+Il README diceva ancora `jacques88-sudo.github.io/isla/` e "il SEO si fa dopo il dominio".
+Ora dice `islaexcursionstenerife.com`, che il vecchio indirizzo porta lì da solo, e che
+dominio e SEO sono fatti. PDF rifatto dal README (`documenti/cos-e-isla.pdf`), come dice
+la sezione sopra. Nessun file del sito toccato: `CACHE_NAME` non cambia.

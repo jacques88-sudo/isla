@@ -20850,3 +20850,22 @@ Isla Ticket carica `../isla/…` da `jacques88-sudo.github.io/isla-ticket/`: arr
 dominio nuovo col rimando di GitHub, i `<script>` e i fogli di stile lo seguono. Il
 giorno che si tocca quel repository conviene scrivere lì l'indirizzo nuovo.
 `CACHE_NAME` → `isla-v610`.
+
+## Il DMARC (21 ottobre 2026)
+
+Messo su Cloudflare un TXT `_dmarc` con `v=DMARC1; p=reject; adkim=s; aspf=s`. Il
+dominio **non manda email** (Email Routing riceve e basta), quindi la regola più severa
+non toglie niente e impedisce le truffe "da" `@islaexcursionstenerife.com` ("paga qui
+la tua escursione"). Le email ricevute su `info@` arrivano uguali: il DMARC guarda solo
+chi dice di partire dal dominio. Niente indirizzo `rua` per i rapporti: nessuno li
+leggerebbe.
+
+**Il giorno che si vuole scrivere da `info@`** (Zoho Mail, Google Workspace) vanno
+aggiunti prima il suo `include:` nel TXT SPF che c'è già (non un secondo SPF: due SPF
+invalidano tutti e due) e il suo DKIM. Senza, con `p=reject` e allineamento stretto, le
+sue email vengono rifiutate.
+
+Il sito, il giorno stesso: collegato, lucchetto, app installata dal proprietario dal
+dominio nuovo. Sul telefono il proprietario aveva scritto `islaesxcursiontenerife.com`
+e Chrome diceva NXDOMAIN: il nome è lungo e si sbaglia facilmente, conviene darlo
+copiato o col QR.

@@ -25,7 +25,7 @@ const SUPABASE_URL = "https://vjotkgsjtwmtctxtfeqa.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Qjmd8qP9J_GH1WjUmBolSw_vBdM5G3L";
 // Il catalogo del sito: serve solo a scrivere il nome dell'escursione al
 // posto del suo id ("La Gomera Island Tour" invece di "la-gomera").
-const CATALOGO_URL = "https://jacques88-sudo.github.io/isla/esplora-catalog.js";
+const CATALOGO_URL = "https://islaexcursionstenerife.com/esplora-catalog.js";
 
 // Le colonne di ogni scheda della settimana, in ordine. Le prime 15 sono quelle che il
 // proprietario vuole vedere, nel suo ordine (8 ottobre 2026), e solo quelle.

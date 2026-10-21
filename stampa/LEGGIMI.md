@@ -1,7 +1,10 @@
 # Il QR di Isla
 
 `qr-isla.svg` e `qr-isla.png` aprono **https://jacques88-sudo.github.io/isla/**, cioè
-la pagina iniziale dell'app. È **uguale per tutti i ticket**: il cliente vede il catalogo e,
+la pagina iniziale dell'app. Dal 21 ottobre 2026 Isla sta su
+**https://islaexcursionstenerife.com/**: il QR stampato funziona lo stesso, perché GitHub
+manda il vecchio indirizzo al nuovo. Per la prossima ristampa conviene rifarlo col
+dominio nuovo (il comando è in fondo), ed è il proprietario a decidere quando. È **uguale per tutti i ticket**: il cliente vede il catalogo e,
 da "Il mio ticket", entra con numero del ticket e telefono (deciso dal proprietario, 1°
 ottobre 2026).
 

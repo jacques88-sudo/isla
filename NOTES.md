@@ -20821,3 +20821,32 @@ senza `#`, preferiti uniti, `isla-meteo` e `isla-installa-chiuso` lasciati, una 
 non `isla-` lasciata; la radice `/isla/` va a `/`. Con il service worker vero (copia del
 sito, due server locali al posto dei due indirizzi): la pagina servita dalla cache porta
 al nuovo con la lista. Nessun errore. `CACHE_NAME` → `isla-v609`.
+
+## Il dominio collegato, lo stesso giorno (21 ottobre 2026)
+
+Il 4 novembre non serviva: il proprietario ha detto che il sito **non lo usa ancora
+nessun cliente**, solo lui e la moglie. Le due settimane servivano a far arrivare
+`trasloco.js` ai telefoni dei clienti; senza clienti, basta che loro due aprano Isla
+una volta prima del collegamento (ma anche senza, `trasloco.js` è nel v609 e il
+vecchio service worker lo prende alla prima apertura, prima del `CNAME`).
+
+Fatto col collegamento:
+- `CNAME` con `islaexcursionstenerife.com`; DNS su Cloudflare (quattro A di GitHub e
+  `www` → `jacques88-sudo.github.io`, nuvola grigia: con l'arancione GitHub non
+  riesce a fare il certificato), dominio verificato prima su GitHub con il TXT
+  `_github-pages-challenge-jacques88-sudo`: senza, chi punta un dominio a GitHub
+  lascia la porta aperta a un altro account che lo rivendichi;
+- `venditori.html` e `ticket/index.html` mandavano a `../isla-ticket/`: sul dominio
+  nuovo vorrebbe dire `islaexcursionstenerife.com/isla-ticket/`, che non c'è. Ora
+  l'indirizzo intero di Isla Ticket, che resta su `github.io`;
+- `og:image` delle otto pagine col dominio nuovo (l'anteprima di WhatsApp);
+- `id` del manifest `/index.html`: sul dominio nuovo l'app è comunque un'altra;
+- `CATALOGO_URL` di `foglio-google/Codice.gs`: la copia dentro Apps Script ha ancora
+  il vecchio e funziona col rimando (UrlFetchApp segue i rimandi), non va ricopiata
+  apposta;
+- il QR di `stampa/`: non rifatto, il vecchio funziona col rimando.
+
+Isla Ticket carica `../isla/…` da `jacques88-sudo.github.io/isla-ticket/`: arriva al
+dominio nuovo col rimando di GitHub, i `<script>` e i fogli di stile lo seguono. Il
+giorno che si tocca quel repository conviene scrivere lì l'indirizzo nuovo.
+`CACHE_NAME` → `isla-v610`.

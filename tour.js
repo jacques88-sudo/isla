@@ -22,6 +22,39 @@ function detailMedia(tour) {
     : `<span class="tour-media-empty" aria-hidden="true">${t("tour.photoSoon")}</span>`;
 }
 
+// PER GOOGLE (21 ottobre 2026): la descrizione sotto il titolo nei risultati
+// e la scheda scritta come la legge Google (schema.org TouristTrip). Il prezzo
+// e' quello dell'adulto, o il "da" della scheda: mai `price` da solo, che puo'
+// essere la barca intera. Senza prezzo, niente offerta: meglio che uno zero.
+function descriviPerGoogle(tour) {
+  const testo = tf(tour.desc).replace(/\s+/g, " ").trim();
+  const breve = testo.length > 155 ? testo.slice(0, 154).replace(/\s+\S*$/, "") + "…" : testo;
+  const meta = document.querySelector('meta[name="description"]');
+  if (meta && breve) meta.setAttribute("content", breve);
+
+  const prezzo = tour.priceAdult > 0 ? tour.priceAdult : (tour.priceFrom > 0 ? tour.priceFrom : null);
+  const link = document.querySelector('link[rel="canonical"]');
+  const dati = {
+    "@context": "https://schema.org",
+    "@type": "TouristTrip",
+    name: tf(tour.title),
+    description: testo,
+    url: link ? link.href : location.href,
+    provider: { "@type": "TravelAgency", name: "Isla", url: ISLA_SITO + "/" }
+  };
+  if (tour.image) dati.image = ISLA_SITO + "/assets/" + encodeURIComponent(tour.image);
+  if (prezzo) dati.offers = { "@type": "Offer", price: prezzo, priceCurrency: "EUR", url: dati.url };
+
+  let script = document.getElementById("dati-scheda");
+  if (!script) {
+    script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "dati-scheda";
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(dati);
+}
+
 // La mini galleria sotto la foto grande: solo dove c'e' sia `image` che
 // `gallery`, altrimenti niente striscia di miniature da mostrare. Cliccando
 // una miniatura cambia la foto grande, non apre un'altra pagina: e' un tocco
@@ -578,6 +611,7 @@ function renderTour(tour) {
   }
 
   document.title = tf(tour.title) + " · Isla";
+  descriviPerGoogle(tour);
 
   // La foto grande sta nella fascia in cima, sopra la scheda: la scheda tiene
   // solo la striscia delle miniature. Si riempie qui e non nell'HTML perche'

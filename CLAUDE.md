@@ -140,6 +140,8 @@ porto e capienza con le schede della stessa categoria.
 | `preferiti.js` | i preferiti: il cuore sulle schede (`tourCard`) e nella pagina dell'escursione, la pillola "♥ Preferiti" in Esperienze, "I miei preferiti" nel Menu (`escursioni.html?preferiti=1`, nelle sette pagine col Menu) e "Condividi i preferiti" (`?pref=id,id`). **Solo nel telefono** (localStorage), niente al database. Non è la lista delle richieste: quella è "le voglio chiedere" |
 | `portare.js` | "Cosa portare" sulle escursioni confermate, gruppo per gruppo (dalla pagina Notion "cose da portare"); lo carica solo `booking.html` |
 | `recensioni.js` | le recensioni: il riquadro "Com'è andata la vacanza con noi?" in cima a "Le mie prenotazioni" (`booking.html`) e la sezione "Dicono di noi" della home (`index.html`). Database e regole in `supabase/modifiche/2026-10-20-recensioni.sql` |
+| `trasloco.js` | il passaggio da `jacques88-sudo.github.io/isla/` a `islaexcursionstenerife.com`: porta il cliente al nuovo coi suoi dati di localStorage; va caricato **prima** di tutti gli altri script, in ogni pagina. Con `trasloco.txt` (dice `isla`), che dice al vecchio indirizzo che il nuovo è acceso |
+| `sitemap.js` | rifà `sitemap.xml` (la mappa del sito per Google) dal catalogo e dai pacchetti: `node sitemap.js` dopo ogni scheda o pacchetto nuovo; il sito non lo carica |
 | `richieste.js` | le richieste della lista salvate anche su Supabase (`pending`), con la **chiave** che resta nel telefono del cliente e il **codice** che va nel messaggio; l'ufficio le conferma o annulla da `venditori.html` |
 
 **La finestra della richiesta è scritta due volte**, in `escursioni.html` e in `tour.html`.
@@ -258,15 +260,35 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
 - **Niente "Aggiungi al calendario" (`.ics`) sulle escursioni confermate** (proprietario,
   20 ottobre 2026): il promemoria sul telefono lo manda già `manda-notifiche`. Non si
   ripropone.
-- **Il SEO si fa DOPO il dominio** (proprietario, 20 ottobre 2026): oggi Isla sta su
-  `jacques88-sudo.github.io/isla/`, e il SEO scrive l'indirizzo dappertutto (sitemap,
-  indirizzo "canonico" di ogni pagina, dati strutturati delle recensioni). **Quando il
-  proprietario dice di avere il dominio** (forse `islatenerife.com`: c'è già
-  `info@islatenerife.com` in `manda-notifiche`), proponi subito: 1. collegarlo a GitHub
-  Pages (file `CNAME` + DNS dal venditore, passo per passo); 2. il SEO (`sitemap.xml`,
-  `robots.txt`, `<link rel="canonical">`, `hreflang` delle cinque lingue, schema.org
-  `TravelAgency`/`TouristTrip` e le stelle di "Dicono di noi", `og:url` e `og:image` col
-  dominio nuovo). Prima di allora non si fa.
+- **Il dominio è `islaexcursionstenerife.com`** (comprato dal proprietario su Cloudflare
+  il 21 ottobre 2026, rinnovo automatico; DNS su Cloudflare). L'email
+  **`info@islaexcursionstenerife.com`** è attiva con Email Routing di Cloudflare: **riceve
+  soltanto** e inoltra all'Outlook del proprietario; per scrivere da quell'indirizzo serve
+  un servizio a parte, non c'è. **DMARC `p=reject`** (TXT `_dmarc`, 21 ottobre 2026): il
+  dominio non manda email, quindi chi finge di scrivere da lì viene rifiutato. **Se un giorno
+  si vuole scrivere da `info@`** (Zoho, Google), prima vanno messi SPF e DKIM di quel
+  servizio, altrimenti le sue email vengono rifiutate. Sta in `booking.js` (Aiuto), `manda-notifiche`, privacy e
+  termini. **Collegato a GitHub Pages il 21 ottobre 2026** (file `CNAME`, DNS su
+  Cloudflare con la nuvola grigia): il vecchio `jacques88-sudo.github.io/isla/` manda al
+  nuovo. Non c'era da aspettare: il sito lo usavano solo il proprietario e la moglie.
+  `trasloco.js` porta dal vecchio indirizzo al nuovo anche chi ha l'app nella cache del
+  service worker, coi suoi dati di localStorage (`trasloco.txt` dice `isla`): **non si
+  toglie**, il vecchio service worker resta acceso e porta al nuovo chi tocca un avviso o
+  apre la vecchia icona. Isla Ticket resta su `jacques88-sudo.github.io/isla-ticket/`:
+  `venditori.html` e `ticket/` ci mandano con l'indirizzo intero, e il suo `../isla/`
+  arriva qui col rimando di GitHub. Il QR stampato apre il vecchio indirizzo e funziona
+  col rimando.
+  **Il SEO** (21 ottobre 2026): la lingua sta anche nell'indirizzo (`?lang=de`, vince
+  sulla scelta salvata ma non si salva; una bandiera lo toglie), perché Google legge in
+  inglese; `indirizzoUfficiale()` in `i18n.js` scrive il `canonical`; `sitemap.xml` elenca
+  ogni pagina nelle cinque lingue più quella senza lingua, con gli `hreflang`;
+  `robots.txt`; `noindex` su `booking.html` e `offline.html`; schema.org `TravelAgency`
+  in `index.html` e `TouristTrip` sulle schede (`descriviPerGoogle()` in `tour.js`, che
+  scrive anche la descrizione). **Dopo una scheda o un pacchetto nuovo: `node
+  sitemap.js`** (`controlla.js` dà errore se è rimasta indietro). **Niente stelle di
+  "Dicono di noi" per Google**: Google non mostra le stelle delle recensioni che
+  un'azienda pubblica su se stessa, e marcarle si rischia la penalità. Niente `og:url`:
+  scritto fisso, tutte le schede condivise avrebbero l'anteprima della stessa pagina.
 - **Il riquadro "Installa l'app" resta com'è** (proprietario, 20 ottobre 2026): compare
   a ogni visita finché l'app non è installata, anche se alla prima apertura di una scheda
   copre "Aggiungi alla lista" finché non si chiude. Proposti "solo in home ed elenco" e

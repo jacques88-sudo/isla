@@ -1,0 +1,14 @@
+# Isla: Google puo' leggere tutto il sito. Le pagine personali ("Le mie
+# prenotazioni", offline) hanno noindex dentro la pagina.
+# Fuori: i file del lavoro che stanno nel repository ma non sono il sito.
+User-agent: *
+Disallow: /dati-fornitore/
+Disallow: /documenti/
+Disallow: /foglio-google/
+Disallow: /supabase/
+Disallow: /stampa/
+Disallow: /NOTES.md
+Disallow: /CLAUDE.md
+Disallow: /README.md
+
+Sitemap: https://islaexcursionstenerife.com/sitemap.xml

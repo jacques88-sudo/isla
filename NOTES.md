@@ -20736,6 +20736,193 @@ Postgres 16 con schema e modifiche: un quad doppio di Prime Quads prende il nett
 singolo resta "netto mancante per singolo", senza compagnia "compagnia non scritta";
 lanciato due volte non fa danni. `CACHE_NAME` → `isla-v607`.
 
+## Il README: cos'è Isla (21 ottobre 2026)
+
+Il proprietario ha chiesto un file che spieghi cos'è Isla. Sta in tre posti con lo
+stesso testo: un documento Claude Docs (suo, privato), `README.md` qui (GitHub lo mostra
+in prima pagina del repository) e `documenti/cos-e-isla.pdf`. Il disegno di come sono
+collegati i pezzi è `documenti/schema.png`.
+
+Il PDF è fatto dal README con Chromium, **non** esportato dal documento: l'esportazione
+portava il nome del proprietario sotto il titolo, e il repository è pubblico. Nel README
+non ci sono la versione di `CACHE_NAME` né altri numeri che cambiano ogni giorno, tranne
+le schede (74, 67 pubblicate) con scritto "a ottobre 2026". Se il README cambia, il PDF
+va rifatto.
+
+Nessun `.js`, `.css` o `.html` del sito toccato: `CACHE_NAME` resta `isla-v607`.
+
+## Il dominio e l'email (21 ottobre 2026)
+
+Il proprietario ha comprato **`islaexcursionstenerife.com`** su Cloudflare (Registrar,
+10,46 $ l'anno, rinnovo automatico acceso, dati WHOIS nascosti). Era partito da
+"islaexcursiontenerife": il plurale l'ha scelto lui dopo che l'avevamo fatto notare,
+perché è come lo scrive un cliente. I domini simili che Cloudflare propone (`.net`,
+coi trattini) non servono.
+
+**L'email** è `info@islaexcursionstenerife.com` con **Email Routing** di Cloudflare,
+gratis: tre MX `routeN.mx.cloudflare.net` e il TXT SPF li ha messi Cloudflare da solo,
+una regola `info` → Outlook del proprietario, catch-all **spento** (con acceso arriva lo
+spam di qualunque indirizzo inventato). Provato: mandata da Outlook a se stessa, arrivata.
+**Riceve soltanto.** Scrivere da quell'indirizzo vuole un servizio a parte (Zoho Mail
+gratis, Google Workspace a pagamento): non deciso.
+
+Prima il sito usava `info@islatenerife.com`, un dominio **non nostro**: le email del
+bottone "Aiuto" di "Le mie prenotazioni" non arrivavano a nessuno. Cambiato in
+`booking.js` e in `manda-notifiche` (il contatto VAPID: **la funzione va ridistribuita**,
+finché non lo si fa resta il vecchio, e agli avvisi non cambia niente). In privacy e
+termini l'email è entrata sotto il titolare, nelle cinque lingue, e nella privacy anche
+fra i modi di esercitare i diritti (lo chiedeva la nota del 6 ottobre). **Annullare e
+spostare resta solo su WhatsApp**: nei termini quella riga non si tocca.
+
+**Il collegamento al sito aspetta** il trasloco: vedi la voce in `CLAUDE.md`. Il punto
+che si dimentica è il service worker, cache-first su tutto `ASSETS`: col `CNAME` messo
+di colpo, chi ha l'app aperta almeno una volta continua a vedere il vecchio indirizzo
+dalla cache, e l'aggiornamento non arriva più perché `sw.js` risponde con un rimando.
+Il QR stampato invece continua a funzionare: GitHub manda il vecchio indirizzo al nuovo.
+
+Provato: privacy e termini a 375 px senza scroll, i link `mailto:` ci sono; il bottone
+Aiuto di `booking.html?code=ISLA-4521` scrive al nuovo indirizzo; nessun errore.
+`CACHE_NAME` → `isla-v608`.
+
+## Il trasloco al dominio nuovo (21 ottobre 2026)
+
+Il proprietario ha scelto di **portare tutto** nel dominio nuovo (lista, preferiti, le
+chiavi delle richieste, la lingua, l'ultimo ticket, le recensioni fatte), invece di
+lasciarlo sul vecchio indirizzo. Lo fa `trasloco.js`, il primo script di ogni pagina.
+
+Come funziona. Sul vecchio indirizzo chiede `https://islaexcursionstenerife.com/trasloco.txt`
+(`no-store`). Finché il dominio non è collegato risponde 404, o niente, e non succede
+nulla. Col `CNAME` risponde `isla`: allora prende le chiavi `isla-*` di localStorage e va
+alla stessa pagina sul nuovo, con i dati dopo `#trasloco=` (quello che sta dopo il `#`
+non arriva a nessun server). Sul nuovo li rimette e toglie il `#`. Se il nuovo ha già
+la stessa chiave vince il nuovo, ma due elenchi si uniscono: le richieste per `token`,
+il resto per com'è scritto. Non si portano `isla-meteo` (si riscarica) e i due di
+"Installa l'app": sul dominio nuovo l'app non è installata, il riquadro deve tornare.
+
+Perché il controllo è sul testo e non solo su `ok`: col vecchio service worker una
+`fetch` fallita torna `offline.html` con stato 200.
+
+**Il vecchio service worker resta acceso**, apposta: gli avvisi delle richieste già
+mandate sono iscritti a lui (un'iscrizione vale per un indirizzo solo). Toccando
+l'avviso si apre il vecchio indirizzo dalla sua cache, `trasloco.js` porta al nuovo, e
+lo stato `avvisi: "ok"` della richiesta arriva col resto, così il nuovo non iscrive il
+telefono una seconda volta. Chi aveva installato l'app la deve rimettere dal dominio
+nuovo: la vecchia icona apre il vecchio indirizzo, che porta al nuovo.
+
+**Il `CNAME` non prima del 4 novembre 2026.** `trasloco.js` funziona solo per chi ha il
+service worker `isla-v609` o dopo, e lo riceve tornando sul sito. Chi resta col v608 e
+non torna in queste due settimane rimane sulla versione vecchia del vecchio indirizzo:
+`sw.js` risponde con un rimando, e un service worker non si aggiorna da un rimando.
+Si accetta: i turisti tornano a casa in una settimana.
+
+Provato in Chromium, senza service worker (Playwright fa da GitHub per i due indirizzi):
+spento il nuovo resta sul vecchio; acceso porta `tour.html?id=…` a `/tour.html?id=…`
+senza `#`, preferiti uniti, `isla-meteo` e `isla-installa-chiuso` lasciati, una chiave
+non `isla-` lasciata; la radice `/isla/` va a `/`. Con il service worker vero (copia del
+sito, due server locali al posto dei due indirizzi): la pagina servita dalla cache porta
+al nuovo con la lista. Nessun errore. `CACHE_NAME` → `isla-v609`.
+
+## Il dominio collegato, lo stesso giorno (21 ottobre 2026)
+
+Il 4 novembre non serviva: il proprietario ha detto che il sito **non lo usa ancora
+nessun cliente**, solo lui e la moglie. Le due settimane servivano a far arrivare
+`trasloco.js` ai telefoni dei clienti; senza clienti, basta che loro due aprano Isla
+una volta prima del collegamento (ma anche senza, `trasloco.js` è nel v609 e il
+vecchio service worker lo prende alla prima apertura, prima del `CNAME`).
+
+Fatto col collegamento:
+- `CNAME` con `islaexcursionstenerife.com`; DNS su Cloudflare (quattro A di GitHub e
+  `www` → `jacques88-sudo.github.io`, nuvola grigia: con l'arancione GitHub non
+  riesce a fare il certificato), dominio verificato prima su GitHub con il TXT
+  `_github-pages-challenge-jacques88-sudo`: senza, chi punta un dominio a GitHub
+  lascia la porta aperta a un altro account che lo rivendichi;
+- `venditori.html` e `ticket/index.html` mandavano a `../isla-ticket/`: sul dominio
+  nuovo vorrebbe dire `islaexcursionstenerife.com/isla-ticket/`, che non c'è. Ora
+  l'indirizzo intero di Isla Ticket, che resta su `github.io`;
+- `og:image` delle otto pagine col dominio nuovo (l'anteprima di WhatsApp);
+- `id` del manifest `/index.html`: sul dominio nuovo l'app è comunque un'altra;
+- `CATALOGO_URL` di `foglio-google/Codice.gs`: la copia dentro Apps Script ha ancora
+  il vecchio e funziona col rimando (UrlFetchApp segue i rimandi), non va ricopiata
+  apposta;
+- il QR di `stampa/`: non rifatto, il vecchio funziona col rimando.
+
+Isla Ticket carica `../isla/…` da `jacques88-sudo.github.io/isla-ticket/`: arriva al
+dominio nuovo col rimando di GitHub, i `<script>` e i fogli di stile lo seguono. Il
+giorno che si tocca quel repository conviene scrivere lì l'indirizzo nuovo.
+`CACHE_NAME` → `isla-v610`.
+
+## Il DMARC (21 ottobre 2026)
+
+Messo su Cloudflare un TXT `_dmarc` con `v=DMARC1; p=reject; adkim=s; aspf=s`. Il
+dominio **non manda email** (Email Routing riceve e basta), quindi la regola più severa
+non toglie niente e impedisce le truffe "da" `@islaexcursionstenerife.com` ("paga qui
+la tua escursione"). Le email ricevute su `info@` arrivano uguali: il DMARC guarda solo
+chi dice di partire dal dominio. Niente indirizzo `rua` per i rapporti: nessuno li
+leggerebbe.
+
+**Il giorno che si vuole scrivere da `info@`** (Zoho Mail, Google Workspace) vanno
+aggiunti prima il suo `include:` nel TXT SPF che c'è già (non un secondo SPF: due SPF
+invalidano tutti e due) e il suo DKIM. Senza, con `p=reject` e allineamento stretto, le
+sue email vengono rifiutate.
+
+Il sito, il giorno stesso: collegato, lucchetto, app installata dal proprietario dal
+dominio nuovo. Sul telefono il proprietario aveva scritto `islaesxcursiontenerife.com`
+e Chrome diceva NXDOMAIN: il nome è lungo e si sbaglia facilmente, conviene darlo
+copiato o col QR.
+
+## Il SEO (21 ottobre 2026)
+
+Fatto subito dopo il collegamento del dominio, come deciso il 20 ottobre.
+
+**La lingua nell'indirizzo.** Prima la lingua veniva solo dalla scelta salvata o dal
+browser. Google legge le pagine con un browser in inglese, quindi avrebbe visto Isla
+solo in inglese, e a chi cerca "Teide Ausflug" non avrebbe mai mostrato la pagina in
+tedesco. Ora `?lang=it|en|es|fr|de` vince (`I18N_DA_INDIRIZZO` in `i18n.js`) ma **non si
+salva**: chi arriva da una ricerca in tedesco e poi apre un'altra pagina torna alla sua
+lingua. Una bandiera toglie `?lang=` dall'indirizzo, se no ricaricando tornava quella di
+prima. I link interni non portano `lang`: non serve, Google li trova tutti da sitemap.xml.
+
+**`canonical`** (`indirizzoUfficiale()`): scritto da JavaScript e non nell'HTML, perché
+dipende da `?id=` e `?lang=`. Tiene solo `id` (tour, pacchetto), `giorni` e `famiglia`
+(pacchetti) e `lang`; `index.html` diventa `/`. Così `?ticket=1`, `?q=barca`, `?pref=…`
+non diventano pagine doppie. Non c'è sulle pagine con `noindex`.
+
+**`sitemap.xml`** lo fa `sitemap.js`: 100 pagine (11 fisse, 67 schede pubblicate, 22
+pacchetti) × 6 indirizzi = 600, ognuno con i suoi `hreflang` e `x-default` (senza
+lingua). 530 KB, il limite di Google è 50 MB. Niente pacchetti su misura (infiniti),
+niente "Le mie prenotazioni". `controlla.js` la rifà in memoria e la confronta.
+
+**`robots.txt`**: tutto aperto, tranne i file del lavoro che GitHub Pages pubblica
+comunque perché stanno nel repository (`NOTES.md`, `dati-fornitore/`, `supabase/`…).
+Non è un lucchetto: chi conosce l'indirizzo li legge lo stesso, come prima.
+
+**schema.org**: `TravelAgency` in `index.html` con gli stessi dati del titolare della
+privacy; `TouristTrip` sulle schede con nome, descrizione, foto e prezzo (l'adulto,
+oppure il "da"; mai `price` da solo). La descrizione per Google (`meta description`)
+della scheda è la sua `desc`, tagliata a 155 caratteri.
+
+**Le stelle di "Dicono di noi" no**, anche se erano nell'elenco del 20 ottobre: dal 2019
+Google non mostra le stelle delle recensioni che un'azienda pubblica su se stessa
+("self-serving"), e marcarle per farle uscire è il caso che punisce. Le recensioni
+restano nella home per i clienti. Detto al proprietario.
+
+Provato in Chromium con browser in inglese: `?lang=de` su una scheda dà pagina, titolo,
+descrizione e `TouristTrip` in tedesco col `canonical` giusto; `?ticket=1` → `/`;
+`?giorni=5&x=1` → `?giorni=5`; `booking.html` senza `canonical`; la bandiera toglie
+`lang` e ricaricando resta la lingua scelta. Le undici pagine senza errori.
+`CACHE_NAME` → `isla-v611`.
+
+**Tocca al proprietario**: Google Search Console (proprietà di dominio, verificata con
+un TXT su Cloudflare) e lì "Sitemap" → `sitemap.xml`. Senza, Google trova il sito da
+solo, ma in settimane invece che in giorni.
+
+## Il README col dominio nuovo (21 ottobre 2026)
+
+Il README diceva ancora `jacques88-sudo.github.io/isla/` e "il SEO si fa dopo il dominio".
+Ora dice `islaexcursionstenerife.com`, che il vecchio indirizzo porta lì da solo, e che
+dominio e SEO sono fatti. PDF rifatto dal README (`documenti/cos-e-isla.pdf`), come dice
+la sezione sopra. Nessun file del sito toccato: `CACHE_NAME` non cambia.
+
 ### Kasamui, Castillo sempre card, e un file con tutti i netti (21 ottobre 2026)
 
 Risposte del proprietario sui fogli di Nancy, Maarten e Kristine:
@@ -20768,4 +20955,4 @@ ferma col nome dei file; dopo, lanciato due volte senza errori; i ticket dei fog
 tornano col netto scritto sulla carta (Kasamui 2 adulti → 50, charter → 350, Castillo
 col bus → 104,80, Twin col bus 346 → 276,80, Freebird 4+1+neonato → 94,50, Teide + Masca
 2+1 → 94,40, Prime Quads doppio → 75). Nel browser a 375 px Castillo, barche delle 3 ore
-ed elenco senza errori, il nome Kasamui non si vede. `CACHE_NAME` → `isla-v608`.
+ed elenco senza errori, il nome Kasamui non si vede. `CACHE_NAME` → `isla-v612`.

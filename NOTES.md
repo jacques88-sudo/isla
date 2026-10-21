@@ -20968,3 +20968,27 @@ nelle cinque lingue, come il Jet Ski. Il ticket diceva 130: sconto o prezzo del
 venditore, non si confronta col catalogo. Provato in italiano e inglese a 375 px: tre
 bottoni "40 minuti €120 · 1 ora €130 · 2 ore €220", niente scroll, nessun errore.
 `CACHE_NAME` → `isla-v613`.
+
+### Le visite: Cloudflare Web Analytics (21 ottobre 2026)
+
+Il proprietario voleva sapere quanta gente visita Isla. Prima non lo diceva niente:
+Insights → Traffic di GitHub conta il repository, non il sito, e Cloudflare con la
+**nuvola grigia** il traffico non lo vede. Scelto **Cloudflare Web Analytics**: gratis,
+**senza cookie** (quindi niente banner del consenso), funziona anche con la nuvola grigia.
+Google Analytics scartato: cookie, e in Europa servirebbe il banner.
+
+**L'installazione è a mano, non "Automatic"**: l'automatica mette lo script solo nel
+traffico che passa da Cloudflare (nuvola arancione), e da noi sarebbe rimasta a zero per
+sempre. Nel pannello: Web analytics → Manage site → "Enable with JS Snippet installation".
+La nuvola **non** si accende per questo: cambierebbe il collegamento con GitHub Pages.
+
+Lo script sta prima di `</body>` in dieci pagine (home, esperienze, scheda, prenotazioni,
+mappa, noleggio, pacchetti, pacchetto, privacy, termini). **Una pagina nuova lo deve
+avere anche lei.** Non ci sono `offline.html` (da offline non parte comunque) e i rimandi
+`venditori.html` e `ticket/`. Il token nello script è **pubblico**, non è un segreto: lo
+vede chiunque apra il sito. La privacy prima diceva "niente statistiche di visita": ora
+ha "Quante persone visitano Isla" e Cloudflare fra chi riceve i dati, nelle cinque lingue.
+Il service worker non tocca lo script: viene da un altro indirizzo e le POST del conteggio
+non passano dalla cache. Provato nel browser: le dieci pagine chiedono lo script, nessun
+errore. I numeri si leggono su Cloudflare → Analytics → Web analytics. `CACHE_NAME` →
+`isla-v614`.

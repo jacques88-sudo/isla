@@ -142,6 +142,7 @@ porto e capienza con le schede della stessa categoria.
 | `recensioni.js` | le recensioni: il riquadro "Com'è andata la vacanza con noi?" in cima a "Le mie prenotazioni" (`booking.html`) e la sezione "Dicono di noi" della home (`index.html`). Database e regole in `supabase/modifiche/2026-10-20-recensioni.sql` |
 | `trasloco.js` | il passaggio da `jacques88-sudo.github.io/isla/` a `islaexcursionstenerife.com`: porta il cliente al nuovo coi suoi dati di localStorage; va caricato **prima** di tutti gli altri script, in ogni pagina. Con `trasloco.txt` (dice `isla`), che dice al vecchio indirizzo che il nuovo è acceso |
 | `sitemap.js` | rifà `sitemap.xml` (la mappa del sito per Google) dal catalogo e dai pacchetti: `node sitemap.js` dopo ogni scheda o pacchetto nuovo; il sito non lo carica |
+| Cloudflare Web Analytics | conta le visite, senza cookie: lo script sta prima di `</body>` in ogni pagina vera (non `offline.html` né i rimandi). **Una pagina nuova lo deve avere.** Installazione a mano, non "Automatic": con la nuvola grigia l'automatica non conta niente. I numeri su Cloudflare → Web analytics |
 | `richieste.js` | le richieste della lista salvate anche su Supabase (`pending`), con la **chiave** che resta nel telefono del cliente e il **codice** che va nel messaggio; l'ufficio le conferma o annulla da `venditori.html` |
 
 **La finestra della richiesta è scritta due volte**, in `escursioni.html` e in `tour.html`.

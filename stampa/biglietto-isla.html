@@ -41,10 +41,12 @@
   /* RETRO */
   .retro { background: var(--scuro); color: var(--crema); padding: 5mm 5mm 5mm 6mm;
            display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: center; }
-  .retro .marchio { display: flex; align-items: center; gap: 2mm; margin-bottom: 3.5mm; }
+  .retro .marchio { display: flex; align-items: center; gap: 2mm; margin-bottom: 1mm; }
   .retro .marchio img { width: 7mm; height: 7mm; }
   .retro .marchio strong { font-family: "Cormorant Garamond", serif; font-weight: 500;
                            font-size: 11pt; letter-spacing: .28em; text-transform: uppercase; }
+  .retro .nomi { font-family: "Caveat", cursive; font-size: 12pt; color: var(--oro);
+                 line-height: 1; margin-bottom: 2mm; }
   .retro ul { list-style: none; padding: 0; font-size: 6.6pt; line-height: 1.75; font-weight: 300; }
   .retro li { white-space: nowrap; }
   .retro li b { font-weight: 500; color: var(--oro); display: inline-block; width: 14mm;
@@ -73,6 +75,7 @@
 <section class="card retro">
   <div>
     <div class="marchio"><img src="../assets/logo-isla.png" alt=""><strong>Isla</strong></div>
+    <p class="nomi">Francesca &amp; Jack</p>
     <ul>
       <li><b>WhatsApp</b>+34 657 772 032</li>
       <li><b>Email</b>info@islaexcursionstenerife.com</li>

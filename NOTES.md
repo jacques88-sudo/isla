@@ -21124,5 +21124,8 @@ e retro 85 × 55 mm) e `biglietto-isla-anteprima.png`. Come si rifà, in
   500 dpi). I **colori** sono i token di `styles.css` convertiti da `oklch` a esadecimale,
   perché le tipografie vogliono quello. Prima prova: email e indirizzo andavano a capo e
   "WHATSAPP" toccava il numero; sistemati prima di consegnare.
+- **"Francesca & Jack"** sul retro (proprietario, stesso giorno: "vicino al numero o
+  dove torna meglio"): sotto il logo, sopra WhatsApp, scritto a mano come il motto del
+  fronte (Caveat) e nell'oro delle etichette.
 - Niente margine di taglio: si aggiunge se la tipografia lo chiede.
 - `stampa/` non sta nella cache del service worker: `CACHE_NAME` resta com'è.

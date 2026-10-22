@@ -43,7 +43,7 @@ Non gestisce le escursioni: vende attività di altri operatori. Per questo le sc
 portano il nome della barca vera (Freebird, Royal Delfin, Shogun, Peter Pan).
 
 Le prenotazioni **non sono automatiche**: il cliente manda una *richiesta* su WhatsApp
-(`+34662908073`), l'ufficio conferma entro 24 ore e il pagamento si concorda dopo.
+(`+34657772032`, il numero della moglie del proprietario dal 22 ottobre 2026; prima `+34662908073`, che resta come contatto in privacy, termini e piè di pagina), l'ufficio conferma entro 24 ore e il pagamento si concorda dopo.
 
 ---
 

@@ -21042,3 +21042,20 @@ al sito (`stampa/` non sta nella cache del service worker): `CACHE_NAME` resta c
 
 Provato: il PNG riletto con `jsQR`, l'SVG disegnato in Chromium a 100, 150 e 300 px e
 riletto: porta sempre a `https://islaexcursionstenerife.com/`.
+
+### Pulizia dei ticket di prova (22 ottobre 2026)
+
+Il proprietario ha cancellato dal database tutti i ticket e le richieste WhatsApp di
+prova (`bookings`), con gli avvisi mandati, le iscrizioni agli avvisi, i tentativi e
+le recensioni di Isla ancora in attesa; restano le pubblicate e quelle copiate da
+Tripadvisor/Facebook. L'SQL stava nella scratchpad, non nel repository: era una
+volta sola. Risultato: `ticket_rimasti = 0`. Le foto le toglie `pulisci-foto` la
+notte dopo; il foglio Google va ripulito a mano (schede "Settimana …" e riepiloghi,
+non "Aggiorna"), perché con zero ticket il programma non lo tocca.
+
+**Scoperto facendolo**: nel database mancava `tentativi_ticket`, quindi
+`2026-10-16-tentativi-ticket.sql` non era mai stato lanciato (niente freno di 10
+tentativi l'ora, niente controllo `https://` sul link di pagamento, e la recensione
+da un ticket di carta andava in errore). Un SQL di pulizia che tocca tabelle
+facoltative va scritto con `to_regclass(...) is not null`: in Supabase un errore
+annulla tutto il blocco.

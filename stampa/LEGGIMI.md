@@ -1,10 +1,9 @@
 # Il QR di Isla
 
-`qr-isla.svg` e `qr-isla.png` aprono **https://jacques88-sudo.github.io/isla/**, cioè
-la pagina iniziale dell'app. Dal 21 ottobre 2026 Isla sta su
-**https://islaexcursionstenerife.com/**: il QR stampato funziona lo stesso, perché GitHub
-manda il vecchio indirizzo al nuovo. Per la prossima ristampa conviene rifarlo col
-dominio nuovo (il comando è in fondo), ed è il proprietario a decidere quando. È **uguale per tutti i ticket**: il cliente vede il catalogo e,
+`qr-isla.svg` e `qr-isla.png` aprono **https://islaexcursionstenerife.com/**, cioè
+la pagina iniziale dell'app (rifatti col dominio nuovo il 22 ottobre 2026). I ticket
+già stampati col QR vecchio, che apre `jacques88-sudo.github.io/isla/`, funzionano
+lo stesso: GitHub manda il vecchio indirizzo al nuovo. È **uguale per tutti i ticket**: il cliente vede il catalogo e,
 da "Il mio ticket", entra con numero del ticket e telefono (deciso dal proprietario, 1°
 ottobre 2026).
 
@@ -27,10 +26,10 @@ ottobre 2026).
 
 ## Prima di stampare tanti ticket
 
-**Un QR stampato non si può più cambiare.** Se un giorno Isla passa a un dominio suo
-(per esempio `isla-tenerife.com`), questi QR continueranno a portare all'indirizzo di
-GitHub. Funzionano finché quell'indirizzo esiste. Se il dominio nuovo è in programma,
-conviene deciderlo **prima** della ristampa dei blocchetti.
+**Un QR stampato non si può più cambiare.** Questo porta al dominio di Isla,
+`islaexcursionstenerife.com`: funziona finché il dominio resta pagato (il rinnovo è
+automatico, su Cloudflare). Se un giorno il dominio scade, i QR stampati non portano
+più da nessuna parte.
 
 ## Provato
 
@@ -45,5 +44,5 @@ Con Node, in una cartella qualsiasi:
 
 ```bash
 npm i qrcode
-node -e 'const Q=require("qrcode");const u="https://jacques88-sudo.github.io/isla/";const o={errorCorrectionLevel:"M",margin:4};Q.toString(u,{...o,type:"svg"}).then(s=>require("fs").writeFileSync("qr-isla.svg",s));Q.toFile("qr-isla.png",u,{...o,width:1200})'
+node -e 'const Q=require("qrcode");const u="https://islaexcursionstenerife.com/";const o={errorCorrectionLevel:"M",margin:4};Q.toString(u,{...o,type:"svg"}).then(s=>require("fs").writeFileSync("qr-isla.svg",s));Q.toFile("qr-isla.png",u,{...o,width:1200})'
 ```

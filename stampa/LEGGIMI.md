@@ -55,7 +55,8 @@ tipografia chiede 3 mm in più per lato, va rifatto. `biglietto-isla-anteprima.p
 la prova a schermo, da mandare su WhatsApp.
 
 - **Fronte**: fondo crema, logo, "ISLA" e "so easy so tenerife", l'onda nei due blu del sito.
-- **Retro**: fondo scuro, WhatsApp (+34 657 772 032), email, sito, Admiral, e il QR di
+- **Retro**: fondo scuro, "Francesca & Jack" scritto a mano (Caveat, oro) sotto il
+  logo, WhatsApp (+34 657 772 032), email, sito, Admiral, e il QR di
   questa cartella. **Il +34 662 908 073 non c'è**, per scelta del proprietario (22
   ottobre 2026): sul sito resta.
 

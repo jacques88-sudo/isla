@@ -66,8 +66,9 @@ testa a `biglietto-isla.html`): crema `#F7F1E5`, scuro `#241E1A`, grigio `#70675
 oro `#C8A785`, blu `#2D8AB8`, azzurro `#51BCCE`. Caratteri: Cormorant Garamond, Jost,
 Caveat (Google Fonts, come il sito).
 
-Il QR sul biglietto è largo circa 19 mm, poco sotto i 2 cm detti sopra: **prima di
-stamparne tanti, provarlo col telefono su una copia stampata**.
+Il QR sta su un riquadro bianco di 23 mm, **senza scritta sotto** (proprietario, 22
+ottobre 2026: la frase era solo in italiano e non serviva). Riletto con `jsQR` dal PDF
+a 300 dpi. Prima di stamparne tanti, provarlo col telefono su una copia stampata.
 
 ## Rifarlo
 

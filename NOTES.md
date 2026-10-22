@@ -21134,4 +21134,7 @@ e retro 85 × 55 mm) e `biglietto-isla-anteprima.png`. Come si rifà, in
   fermava a 86 mm (un elemento "sostituito" come `svg` non si allarga da solo fra
   `left` e `right`); ora sta dentro un `div` con `width: 100%`, e il blu sotto l'onda è
   lo sfondo del `div`. Controllato rasterizzando il PDF con il rettangolo del taglio sopra.
+- **Niente scritta sotto il QR** (proprietario, stesso giorno): "Inquadra: le escursioni
+  di Tenerife su Isla" era solo in italiano. Tolta, il riquadro bianco è passato da 21 a
+  23 mm; il QR si rilegge dal PDF (`jsQR`, 300 dpi).
 - `stampa/` non sta nella cache del service worker: `CACHE_NAME` resta com'è.

@@ -681,6 +681,8 @@ async function salva(event) {
     }
 
     mostra(els.msg, `Ticket ${riga.ticket_number} salvato.`, "ok");
+    // l'avviso "ticket nuovo" all'ufficio parte subito, senza aspettare l'orologio
+    mandaAvvisi();
     pulisciModulo();
     caricaUltimi();
   } catch (err) {
@@ -1689,6 +1691,8 @@ async function mostraPagina() {
     rec.box.hidden = true;
     rec.box.open = false;
     rec.list.replaceChildren();
+    avv.box.hidden = true;
+    avv.box.open = false;
   }
 }
 
@@ -1908,7 +1912,8 @@ async function preparaStatistiche() {
   els.statsBox.hidden = !ufficio;
   // le recensioni si caricano subito: il titolo dice quante ce n'e' da leggere
   rec.box.hidden = !ufficio;
-  if (ufficio) caricaRecensioni();
+  avv.box.hidden = !ufficio;
+  if (ufficio) { caricaRecensioni(); avvisiPrepara(); }
 }
 
 // ─── Recensioni (solo ufficio) ──────────────────────────────────────────────
@@ -1947,6 +1952,142 @@ const rec = (() => {
     reload: box.querySelector("[data-rec-reload]")
   };
 })();
+
+// ─── Avvisi sul telefono (solo ufficio) ─────────────────────────────────────
+//
+// Richiesta nuova, ticket nuovo, recensione da approvare (proprietario, 22
+// ottobre 2026: "per avere piu' controllo se qualcosa non va"). Si accendono
+// telefono per telefono, qui. Li manda manda-notifiche, li mostra il service
+// worker di Isla Ticket (isla-ticket/sw.js). Database:
+// supabase/modifiche/2026-10-22-avvisi-ufficio.sql.
+// Su iPhone solo con Isla Ticket installata sulla schermata Home: in Safari
+// PushManager non c'e'.
+
+const avv = (() => {
+  const box = document.createElement("details");
+  box.className = "vend-stats vend-avvisi";
+  box.hidden = true;
+  box.innerHTML = `
+    <summary data-avv-title>Avvisi su questo telefono</summary>
+    <div class="vend-stats-head">
+      <p class="vend-rec-nota" data-avv-stato></p>
+      <button type="button" class="btn btn-soft" data-avv-bottone hidden></button>
+    </div>
+    <p class="vend-msg" data-avv-msg hidden></p>`;
+  rec.box.after(box);
+  return {
+    box,
+    title: box.querySelector("[data-avv-title]"),
+    stato: box.querySelector("[data-avv-stato]"),
+    bottone: box.querySelector("[data-avv-bottone]"),
+    msg: box.querySelector("[data-avv-msg]")
+  };
+})();
+
+function avvisiPossibili() {
+  return "serviceWorker" in navigator && "PushManager" in window && "Notification" in window &&
+    typeof VAPID_PUBLIC_KEY !== "undefined";
+}
+
+// La chiave pubblica VAPID, da testo a byte (come vuole pushManager.subscribe).
+function avvisiChiaveUfficio() {
+  const b64 = VAPID_PUBLIC_KEY.replace(/-/g, "+").replace(/_/g, "/");
+  const pieno = b64 + "=".repeat((4 - b64.length % 4) % 4);
+  return Uint8Array.from(atob(pieno), c => c.charCodeAt(0));
+}
+
+async function avvisiIscrizione() {
+  // ready aspetta per sempre se il service worker non c'e': dopo 8 secondi si
+  // smette e si dice che non va
+  const reg = await Promise.race([
+    navigator.serviceWorker.ready,
+    new Promise((_, no) => setTimeout(() => no(new Error("service worker non pronto")), 8000))
+  ]);
+  return { reg, sub: await reg.pushManager.getSubscription() };
+}
+
+// Manda (o rimanda) l'indirizzo di questo telefono al database.
+async function avvisiRegistra(sub) {
+  const k = sub.toJSON().keys || {};
+  const { error } = await sb.rpc("avvisami_ufficio", {
+    p_endpoint: sub.endpoint, p_p256dh: k.p256dh, p_auth: k.auth
+  });
+  if (error) throw error;
+}
+
+function avvisiMostra(acceso) {
+  avv.title.textContent = acceso ? "Avvisi su questo telefono: accesi" : "Avvisi su questo telefono";
+  avv.bottone.hidden = false;
+  avv.bottone.textContent = acceso ? "Spegni" : "Accendi";
+  avv.bottone.dataset.acceso = acceso ? "1" : "";
+  avv.stato.textContent = acceso
+    ? "Arriva un avviso per ogni richiesta nuova, ticket nuovo e recensione da approvare. Le richieste dei clienti arrivano entro 10 minuti."
+    : "Accendili per ricevere un avviso per ogni richiesta nuova, ticket nuovo e recensione da approvare.";
+}
+
+async function avvisiPrepara() {
+  mostra(avv.msg, "");
+  if (!avvisiPossibili()) {
+    avv.bottone.hidden = true;
+    avv.stato.textContent = /iPhone|iPad/.test(navigator.userAgent)
+      ? "Su iPhone gli avvisi arrivano solo con Isla Ticket installata: in Safari tocca Condividi → Aggiungi alla schermata Home, poi apri Isla Ticket da lì."
+      : "Questo browser non sa ricevere avvisi. Prova con Chrome.";
+    return;
+  }
+  if (Notification.permission === "denied") {
+    avv.bottone.hidden = true;
+    avv.stato.textContent = "Gli avvisi sono bloccati per Isla Ticket: si riaccendono dalle impostazioni del telefono (Notifiche).";
+    return;
+  }
+  try {
+    const { sub } = await avvisiIscrizione();
+    avvisiMostra(!!sub);
+    // Gia' acceso: si rimanda l'indirizzo, cosi' il database ha sempre quello
+    // giusto (il telefono a volte lo cambia da solo).
+    if (sub) avvisiRegistra(sub).catch(() => {});
+  } catch (err) {
+    console.error(err);
+    avvisiMostra(false);
+  }
+}
+
+async function avvisiCambia() {
+  const acceso = avv.bottone.dataset.acceso === "1";
+  avv.bottone.disabled = true;
+  mostra(avv.msg, "");
+  try {
+    if (acceso) {
+      const { sub } = await avvisiIscrizione();
+      if (sub) {
+        await sb.rpc("smetti_avvisi_ufficio", { p_endpoint: sub.endpoint });
+        await sub.unsubscribe();
+      }
+      avvisiMostra(false);
+      mostra(avv.msg, "Avvisi spenti su questo telefono.", "ok");
+      return;
+    }
+    // Il permesso si chiede per primo, appena toccato il bottone: l'iPhone lo
+    // concede solo se la domanda parte dal tocco, non dopo un'attesa.
+    if (await Notification.requestPermission() !== "granted") {
+      avvisiPrepara();
+      return;
+    }
+    const { reg, sub } = await avvisiIscrizione();
+    const nuova = sub || await reg.pushManager.subscribe({
+      userVisibleOnly: true, applicationServerKey: avvisiChiaveUfficio()
+    });
+    await avvisiRegistra(nuova);
+    avvisiMostra(true);
+    mostra(avv.msg, "Avvisi accesi su questo telefono.", "ok");
+  } catch (err) {
+    console.error(err);
+    mostra(avv.msg, "Non sono riuscito a cambiare gli avvisi: " + (err.message || "controlla la connessione") + ".", "errore");
+  } finally {
+    avv.bottone.disabled = false;
+  }
+}
+
+avv.bottone.addEventListener("click", avvisiCambia);
 
 function meseBreve(iso) {
   const [a, m] = iso.split("-").map(Number);

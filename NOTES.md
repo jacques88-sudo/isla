@@ -21072,3 +21072,40 @@ spostare ("al +34 657 772 032 o al +34 662 908 073"). Lo schema.org `telephone` 
 `index.html` resta il vecchio: ne vuole uno solo. Provato nel browser: lista e
 assistente aprono `wa.me/34657772032`, privacy e termini a 375 px senza scorrere di
 lato. `CACHE_NAME` → `isla-v616`.
+
+### Gli avvisi dell'ufficio (22 ottobre 2026)
+
+Il proprietario vuole un avviso sul telefono "per avere più controllo se qualcosa non
+va": **richiesta nuova** (la lista mandata su WhatsApp), **ticket nuovo** (un
+venditore salva un ticket di carta), **recensione da approvare**. Solo l'ufficio
+(`is_office`), mai i venditori. Telefoni: il proprietario Android, la moglie iPhone.
+
+- **Database** (`supabase/modifiche/2026-10-22-avvisi-ufficio.sql`): due trigger su
+  `bookings` e `recensioni` lasciano un segno in `avvisi_ufficio` (anche quando la
+  richiesta arriva da `manda_richiesta`, perché il trigger è `security definer`);
+  `avvisi_ufficio_da_mandare()` li prende e li segna come mandati **nello stesso
+  passo** (`update … returning`), così Cron e venditore insieme non li mandano due
+  volte. Più vecchi di un giorno non partono, dopo 7 giorni si cancellano. I telefoni
+  stanno in `ufficio_iscrizioni`, scritti solo da `avvisami_ufficio()` (rifiuta chi
+  non è ufficio e gli indirizzi che non sono di Google/Apple/Mozilla/Microsoft).
+- **`manda-notifiche`**: `mandaAllUfficio()` prima degli avvisi dei clienti. Se l'SQL
+  non c'è, salta e i clienti ricevono lo stesso. Una richiesta con più escursioni è un
+  avviso solo (per `request_code`). I titoli li legge dal catalogo del sito, come il
+  foglio Google. Solo italiano.
+- **Quando arrivano**: il ticket **subito** (Isla Ticket chiama la funzione dopo
+  "Salva ticket"); richieste e recensioni li porta l'orologio, **entro 10 minuti**: le
+  manda il cliente, che la funzione non la può chiamare.
+- **Isla Ticket**: "Avvisi su questo telefono" (solo ufficio, sotto Recensioni),
+  costruito in `venditori.js` come le recensioni, quindi l'HTML di `isla-ticket` non
+  cambia; cambia `isla-ticket/sw.js`, che mostra l'avviso e al tocco apre l'app. Il
+  permesso si chiede **appena toccato** il bottone: l'iPhone non lo concede dopo
+  un'attesa. Su iPhone solo con Isla Ticket sulla schermata Home (in Safari
+  `PushManager` non c'è, e la pagina lo dice).
+
+Provato: l'SQL su Postgres 16 (due volte di fila, venditore rifiutato, indirizzo finto
+rifiutato, `anon` senza permesso, i tre tipi, la seconda chiamata che non ripete
+niente, i segni vecchi, la pulizia dei ticket che si porta via i segni); i testi
+dell'avviso con la funzione compilata (richiesta di due escursioni → un avviso); nel
+browser Isla Ticket con Supabase finto: Accendi → `avvisami_ufficio` con l'indirizzo
+del telefono, e un avviso mandato al service worker con `deliverPushMessage` compare
+col titolo, il testo e l'icona. `CACHE_NAME` → `isla-v617`.

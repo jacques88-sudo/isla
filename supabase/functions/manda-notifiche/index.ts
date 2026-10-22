@@ -7,9 +7,13 @@
 // notifiche_da_mandare() (supabase/modifiche/2026-10-13-notifiche.sql, rifatta
 // in 2026-10-20-recensioni3-avviso.sql): qui si scrive e si manda.
 //
+// Dal 22 ottobre 2026 manda anche gli avvisi dell'UFFICIO (richiesta nuova,
+// ticket nuovo, recensione da approvare): vedi mandaAllUfficio() qui sotto.
+//
 // Chi la chiama:
 //   - Cron di Supabase, ogni 10 minuti (promemoria, e quello che e' rimasto);
-//   - venditori.html subito dopo Conferma o Annulla, per non far aspettare.
+//   - venditori.html subito dopo Conferma o Annulla, e dopo un ticket nuovo,
+//     per non far aspettare.
 // Solo loro due (16 ottobre 2026; prima era aperta a chiunque):
 //   - Cron manda la parola segreta nell'intestazione "x-orologio": la stessa
 //     sta nei Secrets della funzione (OROLOGIO_SEGRETO) e nel lavoro di Cron
@@ -253,6 +257,155 @@ async function autorizzato(req: Request): Promise<boolean> {
   return !error && !!data && data.length > 0;
 }
 
+// ─── Gli avvisi dell'ufficio (22 ottobre 2026) ─────────────────────────────
+// Richiesta nuova, ticket nuovo, recensione da approvare: sui telefoni
+// dell'ufficio iscritti da Isla Ticket (ufficio_iscrizioni), solo in italiano.
+// Cosa mandare lo dice avvisi_ufficio_da_mandare()
+// (supabase/modifiche/2026-10-22-avvisi-ufficio.sql). Se quel file non e'
+// ancora stato lanciato, qui si salta e gli avvisi dei clienti partono lo stesso.
+
+type AvvisoUfficio = {
+  id: number;
+  tipo: "richiesta" | "ticket" | "recensione";
+  request_code: string | null;
+  customer_name: string | null;
+  ticket_number: string | null;
+  seller: string | null;
+  excursion_id: string | null;
+  option_label: string | null;
+  date: string | null;
+  adults: number | null;
+  kids: number | null;
+  babies: number | null;
+  total: number | string | null;
+  nome: string | null;
+  stelle: number | null;
+  testo: string | null;
+};
+
+type Messaggio = { title: string; body: string; tag: string; url: string };
+
+// Il catalogo sta nel sito, non nel database: i titoli si leggono da li', come
+// fa il foglio Google (titoliDelCatalogo in foglio-google/Codice.gs). Se il sito
+// non risponde, l'avviso scrive l'id della scheda.
+const CATALOGO_URL = "https://islaexcursionstenerife.com/esplora-catalog.js";
+
+async function titoliDelCatalogo(): Promise<Record<string, string>> {
+  const titoli: Record<string, string> = {};
+  try {
+    const testo = await (await fetch(CATALOGO_URL)).text();
+    const cerca = /\bid:\s*"([^"]+)",\s*(?:\/\/[^\n]*\n\s*)*title:\s*(?:"([^"]+)"|\{\s*it:\s*"([^"]+)")/g;
+    let m;
+    while ((m = cerca.exec(testo))) titoli[m[1]] = m[2] || m[3];
+  } catch (err) {
+    console.warn("catalogo non raggiungibile", (err as Error).message);
+  }
+  return titoli;
+}
+
+// "2 adulti, 1 bambino"
+function persone(a: AvvisoUfficio): string {
+  const parti: string[] = [];
+  const n = (x: number | null, uno: string, tanti: string) => {
+    if (x && x > 0) parti.push(x + " " + (x === 1 ? uno : tanti));
+  };
+  n(a.adults, "adulto", "adulti");
+  n(a.kids, "bambino", "bambini");
+  n(a.babies, "neonato", "neonati");
+  return parti.join(", ");
+}
+
+// "ven 25 ott"
+function giornoBreve(giorno: string | null): string {
+  if (!giorno) return "";
+  return new Intl.DateTimeFormat("it", {
+    weekday: "short", day: "numeric", month: "short", timeZone: "UTC",
+  }).format(new Date(giorno + "T12:00:00Z"));
+}
+
+function escursione(a: AvvisoUfficio, titoli: Record<string, string>): string {
+  const titolo = a.excursion_id ? (titoli[a.excursion_id] || a.excursion_id) : "Escursione";
+  return titolo + (a.option_label ? " · " + a.option_label : "");
+}
+
+function messaggiUfficio(elenco: AvvisoUfficio[], titoli: Record<string, string>): Messaggio[] {
+  const fuori: Messaggio[] = [];
+  // Una richiesta con tre escursioni sono tre righe: un avviso solo.
+  const richieste = new Map<string, AvvisoUfficio[]>();
+  for (const a of elenco) {
+    if (a.tipo === "richiesta") {
+      const chiave = a.request_code || String(a.id);
+      richieste.set(chiave, [...(richieste.get(chiave) ?? []), a]);
+    } else if (a.tipo === "ticket") {
+      const totale = a.total == null ? "" : "€" + Number(a.total).toLocaleString("it", { maximumFractionDigits: 2 });
+      fuori.push({
+        title: "Nuovo ticket" + (a.ticket_number ? " " + a.ticket_number : ""),
+        body: [escursione(a, titoli), giornoBreve(a.date), persone(a), totale,
+               a.seller ? "venditore: " + a.seller : ""].filter(Boolean).join(" · "),
+        tag: "ufficio-ticket-" + a.id,
+        url: "./",
+      });
+    } else if (a.tipo === "recensione") {
+      const testo = (a.testo || "").trim();
+      fuori.push({
+        title: "Nuova recensione da approvare",
+        body: (a.stelle ? "★".repeat(a.stelle) + " " : "") + (a.nome || "") +
+              (testo ? ": " + (testo.length > 100 ? testo.slice(0, 100) + "…" : testo) : ""),
+        tag: "ufficio-recensione-" + a.id,
+        url: "./",
+      });
+    }
+  }
+  for (const [codice, righe] of richieste) {
+    const nome = righe[0].customer_name;
+    fuori.push({
+      title: "Nuova richiesta" + (righe[0].request_code ? " " + codice : ""),
+      body: (nome ? nome + "\n" : "") + righe.map(a =>
+        [escursione(a, titoli), giornoBreve(a.date), persone(a)].filter(Boolean).join(" · ")).join("\n"),
+      tag: "ufficio-richiesta-" + codice,
+      url: "./",
+    });
+  }
+  return fuori;
+}
+
+// deno-lint-ignore no-explicit-any
+async function mandaAllUfficio(db: any) {
+  const { data, error } = await db.rpc("avvisi_ufficio_da_mandare");
+  if (error) return { errore: error.message };
+  const elenco = (data ?? []) as AvvisoUfficio[];
+  if (!elenco.length) return { mandati: 0 };
+
+  const { data: telefoni, error: errTel } = await db
+    .from("ufficio_iscrizioni").select("endpoint, p256dh, auth");
+  if (errTel) return { errore: errTel.message };
+  if (!telefoni?.length) return { mandati: 0, senzaTelefoni: elenco.length };
+
+  const messaggi = messaggiUfficio(elenco, await titoliDelCatalogo());
+  let mandati = 0, falliti = 0;
+  const morti = new Set<string>();
+  for (const m of messaggi) {
+    for (const tel of telefoni as { endpoint: string; p256dh: string; auth: string }[]) {
+      if (morti.has(tel.endpoint)) continue;
+      try {
+        await webpush.sendNotification(
+          { endpoint: tel.endpoint, keys: { p256dh: tel.p256dh, auth: tel.auth } },
+          JSON.stringify(m),
+          { TTL: DURATA, urgency: "high" },
+        );
+        mandati++;
+      } catch (err) {
+        falliti++;
+        const stato = (err as { statusCode?: number }).statusCode;
+        if (stato === 404 || stato === 410) morti.add(tel.endpoint);
+        else console.error("avviso all'ufficio non partito", stato, (err as Error).message);
+      }
+    }
+  }
+  if (morti.size) await db.from("ufficio_iscrizioni").delete().in("endpoint", [...morti]);
+  return { mandati, falliti };
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return risposta({});
   if (!(await autorizzato(req))) return risposta({ errore: "non autorizzato" }, 401);
@@ -269,10 +422,12 @@ Deno.serve(async (req) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
 
+  const ufficio = await mandaAllUfficio(db);
+
   const { data: avvisi, error } = await db.rpc("notifiche_da_mandare");
-  if (error) return risposta({ errore: error.message }, 500);
+  if (error) return risposta({ errore: error.message, ufficio }, 500);
   const elenco = (avvisi ?? []) as Avviso[];
-  if (!elenco.length) return risposta({ mandati: 0, iscrizioniTolte: await pulisci(db) });
+  if (!elenco.length) return risposta({ mandati: 0, iscrizioniTolte: await pulisci(db), ufficio });
 
   // Una escursione confermata tardi puo' avere conferma e promemoria nello
   // stesso giro: parte solo la conferma, che dice gia' giorno e ora, e il
@@ -326,5 +481,5 @@ Deno.serve(async (req) => {
     await db.from("push_iscrizioni").delete().in("endpoint", [...morti]);
   }
 
-  return risposta({ mandati, falliti, promemoriaAssorbiti: assorbiti.length, iscrizioniTolte: await pulisci(db) });
+  return risposta({ mandati, falliti, promemoriaAssorbiti: assorbiti.length, iscrizioniTolte: await pulisci(db), ufficio });
 });

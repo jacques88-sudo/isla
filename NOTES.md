@@ -21138,3 +21138,11 @@ e retro 85 × 55 mm) e `biglietto-isla-anteprima.png`. Come si rifà, in
   di Tenerife su Isla" era solo in italiano. Tolta, il riquadro bianco è passato da 21 a
   23 mm; il QR si rilegge dal PDF (`jsQR`, 300 dpi).
 - `stampa/` non sta nella cache del service worker: `CACHE_NAME` resta com'è.
+
+## "Consigliate" al posto di "Raccomandate" (22 ottobre 2026)
+
+- **Il filtro si chiama "Consigliate"** (proprietario): in italiano la pillola in
+  Esperienze diceva "Raccomandate" e il titolo "Le nostre raccomandate"; ora
+  "Consigliate" e "Le nostre consigliate" (`catalog.recommended`,
+  `catalog.recommendedTitle` in `i18n.js`). Le altre quattro lingue restano com'erano.
+  Nel codice la lista resta `RACCOMANDATE`: è un nome interno, il cliente non lo vede.

@@ -20844,7 +20844,8 @@ Fatto col collegamento:
 - `CATALOGO_URL` di `foglio-google/Codice.gs`: la copia dentro Apps Script ha ancora
   il vecchio e funziona col rimando (UrlFetchApp segue i rimandi), non va ricopiata
   apposta;
-- il QR di `stampa/`: non rifatto, il vecchio funziona col rimando.
+- il QR di `stampa/`: non rifatto, il vecchio funziona col rimando (rifatto il 22
+  ottobre, sotto).
 
 Isla Ticket carica `../isla/…` da `jacques88-sudo.github.io/isla-ticket/`: arriva al
 dominio nuovo col rimando di GitHub, i `<script>` e i fogli di stile lo seguono. Il
@@ -21030,3 +21031,14 @@ codice anche nel foglio Google (passo da proporre, non fatto).
 Provato: `calcolaStatistiche()` in Node con richieste finte (annullata esclusa, codice
 senza nome, senza colonna → `leggeCodici` falso) e la tabella nel browser a 390 px,
 nessun errore. `CACHE_NAME` → `isla-v615`.
+
+### Il QR col dominio nuovo (22 ottobre 2026)
+
+Il proprietario ha chiesto il QR nuovo: `stampa/qr-isla.svg` e `qr-isla.png` aprono ora
+**https://islaexcursionstenerife.com/**, la pagina iniziale. Stesse regole di prima:
+uguale per tutti, correzione M, margine 4, versione 3 (29 × 29), PNG 1200 px. I ticket
+stampati col QR vecchio continuano a funzionare col rimando di GitHub. Nessuna modifica
+al sito (`stampa/` non sta nella cache del service worker): `CACHE_NAME` resta com'è.
+
+Provato: il PNG riletto con `jsQR`, l'SVG disegnato in Chromium a 100, 150 e 300 px e
+riletto: porta sempre a `https://islaexcursionstenerife.com/`.

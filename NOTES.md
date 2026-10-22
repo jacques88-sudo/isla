@@ -21127,5 +21127,11 @@ e retro 85 × 55 mm) e `biglietto-isla-anteprima.png`. Come si rifà, in
 - **"Francesca & Jack"** sul retro (proprietario, stesso giorno: "vicino al numero o
   dove torna meglio"): sotto il logo, sopra WhatsApp, scritto a mano come il motto del
   fronte (Caveat) e nell'oro delle etichette.
-- Niente margine di taglio: si aggiunge se la tipografia lo chiede.
+- **Margine di taglio di 3 mm** (proprietario, stesso giorno): il PDF è 91 × 61 mm.
+  `biglietto-isla.html?taglio=1` allarga i fondi di 3 mm per lato e lascia le scritte
+  dove sono; senza `?taglio` è il biglietto com'è dopo il taglio (l'anteprima).
+  Trovato provando: l'onda come `<svg>` assoluto con `left: 0; right: 0` nel PDF si
+  fermava a 86 mm (un elemento "sostituito" come `svg` non si allarga da solo fra
+  `left` e `right`); ora sta dentro un `div` con `width: 100%`, e il blu sotto l'onda è
+  lo sfondo del `div`. Controllato rasterizzando il PDF con il rettangolo del taglio sopra.
 - `stampa/` non sta nella cache del service worker: `CACHE_NAME` resta com'è.

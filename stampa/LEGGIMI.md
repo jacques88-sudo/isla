@@ -50,8 +50,9 @@ node -e 'const Q=require("qrcode");const u="https://islaexcursionstenerife.com/"
 # Il biglietto da visita
 
 `biglietto-isla.pdf` è il file da dare alla **tipografia**: due pagine, fronte e retro,
-**85 × 55 mm** (misura europea), a misura esatta, **senza margine di taglio**: se la
-tipografia chiede 3 mm in più per lato, va rifatto. `biglietto-isla-anteprima.png` è
+**91 × 61 mm**, cioè 85 × 55 (misura europea) **più 3 mm di margine di taglio per lato**:
+i fondi escono oltre il taglio, le scritte restano almeno 5 mm dentro. Senza segni di
+taglio: se la tipografia li vuole, li mette lei. `biglietto-isla-anteprima.png` è
 la prova a schermo, da mandare su WhatsApp.
 
 - **Fronte**: fondo crema, logo, "ISLA" e "so easy so tenerife", l'onda nei due blu del sito.
@@ -79,10 +80,11 @@ const { chromium } = require("playwright");
 (async () => {
   const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
   const p = await b.newPage({ viewport: { width: 1280, height: 300 }, deviceScaleFactor: 3 });
-  await p.goto("file://" + process.cwd() + "/biglietto-isla.html");
-  await p.waitForTimeout(2500);
-  await p.screenshot({ path: "biglietto-isla-anteprima.png" });
-  await p.pdf({ path: "biglietto-isla.pdf", width: "85mm", height: "55mm", printBackground: true });
+  const u = "file://" + process.cwd() + "/biglietto-isla.html";
+  await p.goto(u); await p.waitForTimeout(2500);
+  await p.screenshot({ path: "biglietto-isla-anteprima.png" });   // com'è dopo il taglio
+  await p.goto(u + "?taglio=1"); await p.waitForTimeout(2500);    // coi 3 mm in più
+  await p.pdf({ path: "biglietto-isla.pdf", width: "91mm", height: "61mm", printBackground: true });
   await b.close();
 })();'
 ```

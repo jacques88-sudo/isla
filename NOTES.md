@@ -21059,3 +21059,16 @@ tentativi l'ora, niente controllo `https://` sul link di pagamento, e la recensi
 da un ticket di carta andava in errore). Un SQL di pulizia che tocca tabelle
 facoltative va scritto con `to_regclass(...) is not null`: in Supabase un errore
 annulla tutto il blocco.
+
+### Le richieste al numero della moglie (22 ottobre 2026)
+
+Il proprietario: le richieste WhatsApp vanno al **+34 657 772 032** (sua moglie).
+`WHATSAPP_NUMBER` in `esplora-catalog.js` è uno solo per tutto il sito, quindi ci
+vanno **tutti** i messaggi WhatsApp che partono da Isla (lista, scheda, pacchetti,
+noleggio, assistente, "Le mie prenotazioni"). Il **+34 662 908 073** resta come
+contatto: in privacy, termini e piè di pagina ci sono tutti e due (scelta "tutti e
+due" del proprietario), il nuovo per primo; nei termini anche per annullare o
+spostare ("al +34 657 772 032 o al +34 662 908 073"). Lo schema.org `telephone` di
+`index.html` resta il vecchio: ne vuole uno solo. Provato nel browser: lista e
+assistente aprono `wa.me/34657772032`, privacy e termini a 375 px senza scorrere di
+lato. `CACHE_NAME` → `isla-v616`.

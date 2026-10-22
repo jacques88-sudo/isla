@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biglietto da visita Isla</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap">
+<style>
+  /* I colori di Isla, gli stessi di styles.css (in esadecimale per la tipografia) */
+  :root {
+    --crema:  #F7F1E5;  /* --cream  */
+    --sabbia: #E9DCC7;  /* --sand   */
+    --scuro:  #241E1A;  /* --text / --primary */
+    --grigio: #70675E;  /* --muted  */
+    --oro:    #C8A785;  /* --gold   */
+    --blu:    #2D8AB8;  /* --wave-blue */
+    --azzurro:#51BCCE;  /* --wave-blue-light */
+    --viola:  #8A1D6E;  /* la palma del logo */
+  }
+  /* Misura europea: 85 × 55 mm. Per la tipografia 3 mm di abbondanza (bleed) per lato */
+  @page { size: 85mm 55mm; margin: 0; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #d9d4cc; font-family: "Jost", sans-serif; color: var(--scuro);
+         display: flex; flex-wrap: wrap; gap: 10mm; justify-content: center; padding: 10mm; }
+  .card { width: 85mm; height: 55mm; position: relative; overflow: hidden;
+          box-shadow: 0 2mm 6mm rgba(0,0,0,.18); }
+  @media print {
+    body { background: none; padding: 0; gap: 0; display: block; }
+    .card { box-shadow: none; page-break-after: always; break-after: page; }
+  }
+
+  /* FRONTE */
+  .fronte { background: var(--crema); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center; }
+  .fronte img { width: 22mm; height: 22mm; }
+  .fronte h1 { font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: 17pt;
+               letter-spacing: .32em; text-transform: uppercase; margin: 1.5mm 0 0 .32em; }
+  .fronte p { font-family: "Caveat", cursive; font-size: 13pt; color: var(--grigio); margin-top: -.5mm; }
+  .onda { position: absolute; left: 0; right: 0; bottom: 0; height: 7mm; }
+
+  /* RETRO */
+  .retro { background: var(--scuro); color: var(--crema); padding: 5mm 5mm 5mm 6mm;
+           display: grid; grid-template-columns: 1fr auto; gap: 3mm; align-items: center; }
+  .retro .marchio { display: flex; align-items: center; gap: 2mm; margin-bottom: 3.5mm; }
+  .retro .marchio img { width: 7mm; height: 7mm; }
+  .retro .marchio strong { font-family: "Cormorant Garamond", serif; font-weight: 500;
+                           font-size: 11pt; letter-spacing: .28em; text-transform: uppercase; }
+  .retro ul { list-style: none; padding: 0; font-size: 6.6pt; line-height: 1.75; font-weight: 300; }
+  .retro li { white-space: nowrap; }
+  .retro li b { font-weight: 500; color: var(--oro); display: inline-block; width: 14mm;
+                text-transform: uppercase; letter-spacing: .08em; font-size: 5.6pt; }
+  .retro .legale { font-size: 5pt; color: var(--sabbia); opacity: .75; margin-top: 3mm; line-height: 1.4; }
+  .qr { background: #fff; padding: 1.2mm; border-radius: 1.5mm; width: 21mm; }
+  .qr img { width: 100%; display: block; }
+  .qr span { display: block; color: var(--scuro); font-size: 4.6pt; text-align: center;
+             margin-top: .6mm; line-height: 1.25; }
+</style>
+</head>
+<body>
+
+<!-- FRONTE -->
+<section class="card fronte">
+  <img src="../assets/logo-isla.png" alt="Logo Isla">
+  <h1>Isla</h1>
+  <p>so easy so tenerife</p>
+  <svg class="onda" viewBox="0 0 340 28" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 14 C60 2 110 26 170 14 S280 2 340 14 V28 H0Z" fill="var(--azzurro)" opacity=".45"/>
+    <path d="M0 19 C70 9 120 29 180 19 S290 9 340 19 V28 H0Z" fill="var(--blu)"/>
+  </svg>
+</section>
+
+<!-- RETRO -->
+<section class="card retro">
+  <div>
+    <div class="marchio"><img src="../assets/logo-isla.png" alt=""><strong>Isla</strong></div>
+    <ul>
+      <li><b>WhatsApp</b>+34 657 772 032</li>
+      <li><b>Email</b>info@islaexcursionstenerife.com</li>
+      <li><b>Web</b>islaexcursionstenerife.com</li>
+    </ul>
+    <p class="legale">Admiral Travel Agencia de Viajes SL<br>Playa de las Américas · Tenerife</p>
+  </div>
+  <div class="qr"><img src="qr-isla.svg" alt="QR di Isla"><span>Inquadra: le escursioni<br>di Tenerife su Isla</span></div>
+</section>
+
+</body>
+</html>

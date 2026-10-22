@@ -21109,3 +21109,20 @@ dell'avviso con la funzione compilata (richiesta di due escursioni → un avviso
 browser Isla Ticket con Supabase finto: Accendi → `avvisami_ufficio` con l'indirizzo
 del telefono, e un avviso mandato al service worker con `deliverPushMessage` compare
 col titolo, il testo e l'icona. `CACHE_NAME` → `isla-v617`.
+
+## Il biglietto da visita (22 ottobre 2026)
+
+Chiesto dal proprietario "con i logo e i colori di Isla". Sta in `stampa/` accanto al
+QR: `biglietto-isla.html` (il codice), `biglietto-isla.pdf` (per la tipografia, fronte
+e retro 85 × 55 mm) e `biglietto-isla-anteprima.png`. Come si rifà, in
+`stampa/LEGGIMI.md`.
+
+- **Solo il numero nuovo** (+34 657 772 032, come WhatsApp): il +34 662 908 073 l'ha
+  tolto il proprietario **solo dal biglietto**; sul sito (piè di pagina, privacy,
+  termini) resta.
+- Il **logo** viene da `assets/logo-isla.png` (476 px, trasparente: a 22 mm sono più di
+  500 dpi). I **colori** sono i token di `styles.css` convertiti da `oklch` a esadecimale,
+  perché le tipografie vogliono quello. Prima prova: email e indirizzo andavano a capo e
+  "WHATSAPP" toccava il numero; sistemati prima di consegnare.
+- Niente margine di taglio: si aggiunge se la tipografia lo chiede.
+- `stampa/` non sta nella cache del service worker: `CACHE_NAME` resta com'è.

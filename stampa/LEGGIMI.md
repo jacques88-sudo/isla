@@ -46,3 +46,42 @@ Con Node, in una cartella qualsiasi:
 npm i qrcode
 node -e 'const Q=require("qrcode");const u="https://islaexcursionstenerife.com/";const o={errorCorrectionLevel:"M",margin:4};Q.toString(u,{...o,type:"svg"}).then(s=>require("fs").writeFileSync("qr-isla.svg",s));Q.toFile("qr-isla.png",u,{...o,width:1200})'
 ```
+
+# Il biglietto da visita
+
+`biglietto-isla.pdf` è il file da dare alla **tipografia**: due pagine, fronte e retro,
+**85 × 55 mm** (misura europea), a misura esatta, **senza margine di taglio**: se la
+tipografia chiede 3 mm in più per lato, va rifatto. `biglietto-isla-anteprima.png` è
+la prova a schermo, da mandare su WhatsApp.
+
+- **Fronte**: fondo crema, logo, "ISLA" e "so easy so tenerife", l'onda nei due blu del sito.
+- **Retro**: fondo scuro, WhatsApp (+34 657 772 032), email, sito, Admiral, e il QR di
+  questa cartella. **Il +34 662 908 073 non c'è**, per scelta del proprietario (22
+  ottobre 2026): sul sito resta.
+
+I colori sono quelli di `styles.css`, scritti in esadecimale per la tipografia (in
+testa a `biglietto-isla.html`): crema `#F7F1E5`, scuro `#241E1A`, grigio `#70675E`,
+oro `#C8A785`, blu `#2D8AB8`, azzurro `#51BCCE`. Caratteri: Cormorant Garamond, Jost,
+Caveat (Google Fonts, come il sito).
+
+Il QR sul biglietto è largo circa 19 mm, poco sotto i 2 cm detti sopra: **prima di
+stamparne tanti, provarlo col telefono su una copia stampata**.
+
+## Rifarlo
+
+Si cambia `biglietto-isla.html` (prende `../assets/logo-isla.png` e `qr-isla.svg`), poi
+si rifanno PDF e anteprima con Playwright, da `stampa/`:
+
+```bash
+NODE_PATH=$(npm root -g) node -e '
+const { chromium } = require("playwright");
+(async () => {
+  const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
+  const p = await b.newPage({ viewport: { width: 1280, height: 300 }, deviceScaleFactor: 3 });
+  await p.goto("file://" + process.cwd() + "/biglietto-isla.html");
+  await p.waitForTimeout(2500);
+  await p.screenshot({ path: "biglietto-isla-anteprima.png" });
+  await p.pdf({ path: "biglietto-isla.pdf", width: "85mm", height: "55mm", printBackground: true });
+  await b.close();
+})();'
+```

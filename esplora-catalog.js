@@ -990,6 +990,98 @@ const ESPLORA_CATALOG = [
     published: true
   },
   {
+    // Maxicat (23 ottobre 2026): due catamarani, Maxicat 1 da 104 posti e
+    // Maxicat 2 da 70, dal pantalán 9 di Puerto Colón. Non e' un doppione:
+    // nessun'altra barca delle 3 ore ha il menu canario a bordo.
+    id: "maxicat",
+    title: "Maxicat Whale Watching",
+    // Il nome sta gia' nel titolo, ma serve al menu della compagnia nel
+    // modulo dei venditori: il netto di Maxicat e' per compagnia.
+    nomi: ["Maxicat"],
+    category: "mare-barche",
+    zone: "Puerto Colón",
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
+    zoneGroups: ["costa-adeje"],
+    durationGroups: ["mezza"],
+    // Le tre partenze del fornitore. Il pulmino passa prima, a un'ora che
+    // dipende dalla zona e che l'ufficio conferma.
+    times: ["10:00", "13:15", "16:00"],
+    // La pagina del fornitore dice solo "desde 46 €": i prezzi adulti e
+    // bambini e le fasce d'eta' restano da chiedere, e a 0 le righe non si
+    // vedono e il totale non si fa.
+    priceFrom: 46,
+    priceAdult: 0,
+    priceChild: 0,
+    family: true,
+    // Conta sempre come card (proprietario, 21 ottobre 2026): stesso elenco
+    // in sempre_card.
+    pagamento: "card",
+    // Niente `snorkel`: la maschera il fornitore la mette fra le cose NON
+    // incluse ("consigliamo di portare la tua"). Il bagno c'e'.
+    included: ["lunch", "drinks", "swimstop", "guide"],
+    menus: [
+      { it: "Vegano / vegetariano", en: "Vegan / vegetarian", es: "Vegano / vegetariano", fr: "Végan / végétarien", de: "Vegan / vegetarisch" }
+    ],
+    // Il ritiro e' gratis ma e' una scelta: si puo' anche arrivare da soli al
+    // pontile. Per questo la scheda sta in PICKUP_NESSUNO (hotel.js), con la
+    // casella "Vuoi il transfer?" e il `ritrovo`. Niente `transferPrice`: il
+    // transfer non cambia il prezzo.
+    transfer: {
+      it: "Gratis dalle zone di Callao Salvaje, Las Américas, Los Cristianos e Golf del Sur, fino al porto. L'ora e il punto di raccolta più vicino al tuo hotel te li diciamo quando confermiamo.",
+      en: "Free from the Callao Salvaje, Las Américas, Los Cristianos and Golf del Sur areas, to the harbour. We tell you the time and the pick-up point closest to your hotel when we confirm.",
+      es: "Gratis desde las zonas de Callao Salvaje, Las Américas, Los Cristianos y Golf del Sur, hasta el puerto. La hora y el punto de recogida más cercano a tu hotel te los decimos al confirmar.",
+      fr: "Gratuit depuis les zones de Callao Salvaje, Las Américas, Los Cristianos et Golf del Sur, jusqu'au port. L'heure et le point de prise en charge le plus proche de votre hôtel, nous vous les donnons à la confirmation.",
+      de: "Kostenlos aus den Gebieten Callao Salvaje, Las Américas, Los Cristianos und Golf del Sur bis zum Hafen. Uhrzeit und den Abholpunkt in der Nähe Ihres Hotels nennen wir Ihnen bei der Bestätigung."
+    },
+    ritrovo: { it: "Puerto Colón, pontile 9", en: "Puerto Colón, pontoon 9", es: "Puerto Colón, pantalán 9", fr: "Puerto Colón, ponton 9", de: "Puerto Colón, Steg 9" },
+    notes: [
+      {
+        it: "Chi arriva da solo si presenta al pontile 9 di Puerto Colón 15 minuti prima della partenza.",
+        en: "If you come on your own, be at pontoon 9 in Puerto Colón 15 minutes before departure.",
+        es: "Si vienes por tu cuenta, preséntate en el pantalán 9 de Puerto Colón 15 minutos antes de la salida.",
+        fr: "Si vous venez par vos propres moyens, présentez-vous au ponton 9 de Puerto Colón 15 minutes avant le départ.",
+        de: "Wer selbst anreist, ist 15 Minuten vor der Abfahrt an Steg 9 in Puerto Colón."
+      },
+      {
+        it: "Col transfer, il pulmino passa fra un'ora e mezza e dieci minuti prima della partenza, secondo la zona. Aspetta al punto di raccolta un quarto d'ora prima dell'ora che ti diamo: col traffico può cambiare.",
+        en: "With the transfer, the minibus comes between an hour and a half and ten minutes before departure, depending on the area. Wait at the pick-up point a quarter of an hour before the time we give you: traffic can change it.",
+        es: "Con el traslado, el microbús pasa entre una hora y media y diez minutos antes de la salida, según la zona. Espera en el punto de recogida un cuarto de hora antes de la hora que te damos: con el tráfico puede cambiar.",
+        fr: "Avec le transfert, le minibus passe entre une heure et demie et dix minutes avant le départ, selon la zone. Attendez au point de prise en charge un quart d'heure avant l'heure indiquée : avec la circulation, elle peut varier.",
+        de: "Mit Transfer kommt der Kleinbus je nach Gebiet zwischen anderthalb Stunden und zehn Minuten vor der Abfahrt. Warten Sie eine Viertelstunde vor der genannten Uhrzeit am Abholpunkt: Der Verkehr kann sie verschieben."
+      },
+      {
+        it: "A bordo si mangia un riso alla canaria con i mojos, senza glutine e senza lattosio, e un dolce canario; per i bambini nuggets e patatine. Chi vuole il menu vegano o vegetariano lo dice nella richiesta.",
+        en: "On board you eat Canarian-style rice with mojo sauces, gluten-free and lactose-free, and a Canarian dessert; for children, nuggets and chips. If you want the vegan or vegetarian menu, say so in your request.",
+        es: "A bordo se come un arroz al estilo canario con mojos, sin gluten y sin lactosa, y un postre canario; para los niños, nuggets con papas fritas. Quien quiera el menú vegano o vegetariano lo indica en la solicitud.",
+        fr: "À bord, on mange un riz à la canarienne avec des mojos, sans gluten et sans lactose, et un dessert canarien ; pour les enfants, nuggets et frites. Si vous voulez le menu végan ou végétarien, indiquez-le dans la demande.",
+        de: "An Bord gibt es Reis nach kanarischer Art mit Mojo-Soßen, gluten- und laktosefrei, und ein kanarisches Dessert; für Kinder Nuggets mit Pommes. Wer das vegane oder vegetarische Menü möchte, gibt es in der Anfrage an."
+      },
+      {
+        it: "La maschera da snorkeling non c'è: se vuoi guardare sott'acqua, porta la tua. I gelati si comprano a bordo.",
+        en: "Snorkel masks are not provided: if you want to look underwater, bring your own. Ice creams can be bought on board.",
+        es: "No hay gafas de snorkel: si quieres mirar bajo el agua, trae las tuyas. Los helados se compran a bordo.",
+        fr: "Les masques de snorkeling ne sont pas fournis : si vous voulez regarder sous l'eau, apportez le vôtre. Les glaces s'achètent à bord.",
+        de: "Schnorchelmasken gibt es nicht: Wer unter Wasser schauen will, bringt seine eigene mit. Eis kann man an Bord kaufen."
+      },
+      {
+        it: "Porta crema solare, cappello, asciugamano e, fuori dall'estate, una felpa. Se soffri il mal di mare, prendi la pastiglia prima di salire.",
+        en: "Bring sun cream, a hat, a towel and, outside summer, a jumper. If you get seasick, take a tablet before boarding.",
+        es: "Trae crema solar, sombrero, toalla y, fuera del verano, una sudadera. Si te mareas, tómate la pastilla antes de subir.",
+        fr: "Apportez crème solaire, chapeau, serviette et, hors saison d'été, un pull. Si vous avez le mal de mer, prenez un comprimé avant d'embarquer.",
+        de: "Bringen Sie Sonnencreme, Hut, Handtuch und außerhalb des Sommers einen Pullover mit. Wer seekrank wird, nimmt die Tablette vor dem Einsteigen."
+      }
+    ],
+    desc: {
+      it: "Tre ore in catamarano da Puerto Colón, lungo la costa sud, dove i globicefali e i delfini vivono tutto l'anno. Dopo l'avvistamento si pranza a bordo alla canaria e ci si ferma a fare il bagno a Playa Diego Hernández, se il mare lo permette. I catamarani sono due, da 104 e da 70 posti, con zone d'ombra e spazio per stare comodi.",
+      en: "Three hours by catamaran from Puerto Colón, along the south coast, where pilot whales and dolphins live all year round. After the watching you have a Canarian lunch on board and stop for a swim at Playa Diego Hernández, sea permitting. There are two catamarans, with 104 and 70 seats, shaded areas and room to relax.",
+      es: "Tres horas en catamarán desde Puerto Colón, por la costa sur, donde los calderones y los delfines viven todo el año. Después del avistamiento se come a bordo al estilo canario y se para a darse un baño en Playa Diego Hernández, si el mar lo permite. Los catamaranes son dos, de 104 y de 70 plazas, con zonas de sombra y espacio para estar cómodos.",
+      fr: "Trois heures en catamaran depuis Puerto Colón, le long de la côte sud, où globicéphales et dauphins vivent toute l'année. Après l'observation, on déjeune à bord à la canarienne et on s'arrête pour se baigner à Playa Diego Hernández, si la mer le permet. Il y a deux catamarans, de 104 et de 70 places, avec des zones d'ombre et de l'espace pour être à l'aise.",
+      de: "Drei Stunden im Katamaran ab Puerto Colón entlang der Südküste, wo Grindwale und Delfine das ganze Jahr leben. Nach der Beobachtung gibt es an Bord ein kanarisches Mittagessen und einen Badestopp an der Playa Diego Hernández, wenn das Meer es zulässt. Es gibt zwei Katamarane mit 104 und 70 Plätzen, Schattenbereichen und Platz zum Entspannen."
+    },
+    image: "",
+    published: true
+  },
+  {
     id: "peter-pan",
     title: "Peter Pan Pirate Ship",
     category: "mare-barche",

@@ -35,7 +35,7 @@ begin
                           'santa-cruz-taganana', 'island-tour-completo',
                           'peter-pan', 'aqualand', 'freebird-catamaran',
                           'jungle-park', 'submarine-safari',
-                          'castillo-san-miguel') then
+                          'castillo-san-miguel', 'maxicat') then
     new.payment_method := 'card';
   end if;
   return new;
@@ -58,5 +58,5 @@ update public.bookings
                         'santa-cruz-taganana', 'island-tour-completo',
                         'peter-pan', 'aqualand', 'freebird-catamaran',
                         'jungle-park', 'submarine-safari',
-                        'castillo-san-miguel')
+                        'castillo-san-miguel', 'maxicat')
    and payment_method is distinct from 'card';

@@ -21146,3 +21146,32 @@ e retro 85 × 55 mm) e `biglietto-isla-anteprima.png`. Come si rifà, in
   "Consigliate" e "Le nostre consigliate" (`catalog.recommended`,
   `catalog.recommendedTitle` in `i18n.js`). Le altre quattro lingue restano com'erano.
   Nel codice la lista resta `RACCOMANDATE`: è un nome interno, il cliente non lo vede.
+
+---
+
+## Maxicat (23 ottobre 2026)
+
+Scheda nuova `maxicat`, "Maxicat Whale Watching", dai dati della pagina del fornitore
+incollati dal proprietario. Non è un doppione: fra le barche delle 3 ore da Puerto
+Colón nessuna ha il menu canario a bordo né due catamarani da 104 e 70 posti.
+
+Messo:
+- partenze **10:00, 13:15, 16:00** tutti i giorni; ritrovo **Puerto Colón, pontile 9**;
+- `included`: pasto, bevande, sosta bagno, guida. **Niente `snorkel`**: il fornitore
+  mette l'attrezzatura fra le cose non incluse ("porta la tua"), lo dice una nota;
+- `menus`: vegano / vegetariano (il menu bambini è quello di tutti i bambini);
+- **`PICKUP_NESSUNO` con la casella del transfer**: il pulmino è gratis da Callao Salvaje,
+  Las Américas, Los Cristianos e Golf del Sur, ma porta a dei punti di raccolta, non sotto
+  l'hotel, e al pontile si può arrivare da soli (regola del 19 ottobre). Niente
+  `transferPrice`: col transfer il prezzo non cambia;
+- `pagamento: "card"` e la voce in `2026-10-09-solo-card.sql` (proprietario, 21 ottobre):
+  **l'SQL va rilanciato su Supabase**;
+- `nomi: ["Maxicat"]`, per il menu della compagnia nel modulo dei venditori: il netto
+  (su Notion) va inserito in `nets` con `company = 'Maxicat'`.
+
+Non copiato: la loro cancellazione (vale la nostra), la tariffa residenti, il "desde".
+
+**In sospeso**: i prezzi. La pagina dice solo "desde 46 €": `priceFrom: 46`, adulti e
+bambini a 0 (righe nascoste, totale non fatto), niente fasce d'età e niente
+`priceInfant`. Manca anche la foto (riquadro "Foto in arrivo"). Il titolo l'ho scelto io:
+da confermare.

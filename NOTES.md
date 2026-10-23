@@ -21171,7 +21171,12 @@ Messo:
 
 Non copiato: la loro cancellazione (vale la nostra), la tariffa residenti, il "desde".
 
-**In sospeso**: i prezzi. La pagina dice solo "desde 46 €": `priceFrom: 46`, adulti e
-bambini a 0 (righe nascoste, totale non fatto), niente fasce d'età e niente
-`priceInfant`. Manca anche la foto (riquadro "Foto in arrivo"). Il titolo l'ho scelto io:
-da confermare.
+**Prezzi** (stesso giorno, dalla pagina di prenotazione del fornitore): adulti **46 €**
+(12+), bambini **23 €** (6-11), neonati **gratis** (0-5): le fasce combaciano. Non
+copiati: le tariffe per i residenti canari (25 € e 12,50 €), il 42 € del 31 ottobre (è
+un'offerta loro, sul sito va il prezzo pieno) e le 48 ore di cancellazione (vale la
+nostra). La pagina dice "Offered in English, Spanish", ma `languages` non si mette: la
+domanda sulla lingua non è stata chiesta. Totale provato nel browser: 2 adulti + 1
+bambino = 115 €.
+
+**In sospeso**: la foto (riquadro "Foto in arrivo") e il titolo, che ho scelto io.

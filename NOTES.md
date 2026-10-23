@@ -21180,3 +21180,18 @@ domanda sulla lingua non è stata chiesta. Totale provato nel browser: 2 adulti 
 bambino = 115 €.
 
 **In sospeso**: la foto (riquadro "Foto in arrivo") e il titolo, che ho scelto io.
+
+---
+
+## Adrenalina in due rifatto dal post Instagram (23 ottobre 2026)
+
+Il proprietario ha mandato lo screenshot del post "Pacchetto per coppie" di
+`isla_tenerife` (4 settembre): barca per i cetacei, parascending, quad al Teide 3 ore,
+"solo 139 € pp", e ha chiesto di mettere quelle tre in **Adrenalina in due** al posto di
+moto d'acqua, quad al tramonto e parapendio.
+
+Scelte fatte con lui: la barca è **Flipper One, 3 ore** (`optionIndex: 1`, con sosta
+bagno e pranzo) e il quad è **la mattina** (`optionIndex: 0`, `posti: 2`). Il prezzo non
+si scrive: 40 + 120 : 2 + 55 = 155, meno il 10% = **da 139,50 a persona**, il 139 del
+post. Il Teide resta una salita sola (il quad). Foto della vetrina:
+`quad-teide-adventure.webp`, perché quella del tramonto non era più vera.

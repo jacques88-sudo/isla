@@ -21195,3 +21195,8 @@ bagno e pranzo) e il quad è **la mattina** (`optionIndex: 0`, `posti: 2`). Il p
 si scrive: 40 + 120 : 2 + 55 = 155, meno il 10% = **da 139,50 a persona**, il 139 del
 post. Il Teide resta una salita sola (il quad). Foto della vetrina:
 `quad-teide-adventure.webp`, perché quella del tramonto non era più vera.
+
+**Lo stesso giorno, la barca cambia**: il proprietario ha chiesto il **Freebird, 3 ore**
+(`optionIndex: 1`: sosta bagno a Diego Hernández, panino, transfer dal sud compreso) al
+posto di Flipper One. 47 + 60 + 55 = 162, meno il 10% = **da 145,80 a persona**.
+Descrizione riscritta nelle cinque lingue (catamarano da Puerto Colón).

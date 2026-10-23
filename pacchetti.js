@@ -563,10 +563,12 @@ const PACCHETTI = [
     id: "adrenalina-in-due",
     // Le tre escursioni del post Instagram "Pacchetto per coppie" (proprietario,
     // 23 ottobre 2026): barca per balene e delfini, parascending, quad al Teide.
+    // La barca e' il Freebird da 3 ore (proprietario, 23 ottobre 2026: prima
+    // era Flipper One, 3 ore).
     // PREZZO MISTO, ma su un mezzo da due: il quad doppio del mattino 120 : 2 =
-    // 60, la barca 40 e il parascending 55 a persona. 40 + 60 + 55 = 155, tutto
-    // scontabile: −15,50 → da 139,50 a persona, il "139 €" del post. Qui il "da"
-    // e' proprio il prezzo di una coppia sullo stesso quad.
+    // 60, la barca 47 e il parascending 55 a persona. 47 + 60 + 55 = 162, tutto
+    // scontabile: −16,20 → da 145,80 a persona. Qui il "da" e' proprio il
+    // prezzo di una coppia sullo stesso quad.
     title: {
       it: "Adrenalina in due",
       en: "Adrenaline for two",
@@ -578,18 +580,18 @@ const PACCHETTI = [
     sconto: 10,
     tema: "per-due",
     voci: [
-      // optionIndex 1 = 3 ore, con la sosta bagno e il pranzo.
-      { id: "flipper-one", optionIndex: 1 },
+      // optionIndex 1 = 3 ore, con la sosta bagno e il transfer dal sud.
+      { id: "freebird-catamaran", optionIndex: 1 },
       { id: "parascending" },
       // optionIndex 0 = Mattina. Il quad sale al Teide: e' l'unica salita.
       { id: "quad-teide-adventure", optionIndex: 0, posti: 2 }
     ],
     desc: {
-      it: "Tre giorni in coppia, fra mare, cielo e vulcano: tre ore in goletta da Los Gigantes a cercare balene e delfini, con il bagno e il pranzo a bordo, il volo in parascending trainati dalla barca sopra la costa sud, e il quad doppio su fino al Teide, tre ore fra pinete e colate laviche.",
-      en: "Three days as a couple, between sea, sky and volcano: three hours on a schooner from Los Gigantes looking for whales and dolphins, with a swim and lunch on board, the parascending flight towed by the boat over the south coast, and the double quad up to Teide, three hours through pine woods and lava fields.",
-      es: "Tres días en pareja, entre mar, cielo y volcán: tres horas en goleta desde Los Gigantes buscando ballenas y delfines, con baño y comida a bordo, el vuelo en parascending remolcados por el barco sobre la costa sur, y el quad doble subiendo al Teide, tres horas entre pinares y coladas de lava.",
-      fr: "Trois jours en couple, entre mer, ciel et volcan : trois heures en goélette depuis Los Gigantes à la recherche des baleines et des dauphins, avec baignade et déjeuner à bord, le vol en parachute ascensionnel tracté par le bateau au-dessus de la côte sud, et le quad double jusqu'au Teide, trois heures entre pinèdes et champs de lave.",
-      de: "Drei Tage als Paar, zwischen Meer, Himmel und Vulkan: drei Stunden auf einem Schoner ab Los Gigantes auf der Suche nach Walen und Delfinen, mit Baden und Mittagessen an Bord, der Parasailing-Flug, vom Boot gezogen, über der Südküste, und das Doppel-Quad hinauf zum Teide, drei Stunden durch Kiefernwälder und Lavafelder."
+      it: "Tre giorni in coppia, fra mare, cielo e vulcano: tre ore in catamarano da Puerto Colón a cercare balene e delfini, con il bagno a Diego Hernández, il volo in parascending trainati dalla barca sopra la costa sud, e il quad doppio su fino al Teide, tre ore fra pinete e colate laviche.",
+      en: "Three days as a couple, between sea, sky and volcano: three hours on a catamaran from Puerto Colón looking for whales and dolphins, with a swim at Diego Hernández, the parascending flight towed by the boat over the south coast, and the double quad up to Teide, three hours through pine woods and lava fields.",
+      es: "Tres días en pareja, entre mar, cielo y volcán: tres horas en catamarán desde Puerto Colón buscando ballenas y delfines, con baño en Diego Hernández, el vuelo en parascending remolcados por el barco sobre la costa sur, y el quad doble subiendo al Teide, tres horas entre pinares y coladas de lava.",
+      fr: "Trois jours en couple, entre mer, ciel et volcan : trois heures en catamaran depuis Puerto Colón à la recherche des baleines et des dauphins, avec baignade à Diego Hernández, le vol en parachute ascensionnel tracté par le bateau au-dessus de la côte sud, et le quad double jusqu'au Teide, trois heures entre pinèdes et champs de lave.",
+      de: "Drei Tage als Paar, zwischen Meer, Himmel und Vulkan: drei Stunden im Katamaran ab Puerto Colón auf der Suche nach Walen und Delfinen, mit Baden in Diego Hernández, der Parasailing-Flug, vom Boot gezogen, über der Südküste, und das Doppel-Quad hinauf zum Teide, drei Stunden durch Kiefernwälder und Lavafelder."
     }
   },
 

@@ -687,6 +687,9 @@ const PICKUP_NESSUNO = [
   "immersioni",
   "castillo-san-miguel",
   "scandal-dinner-show",
+  // Maxicat: il pulmino e' gratis dal sud ma si puo' arrivare da soli al
+  // pontile 9 (23 ottobre 2026): stessa casella delle nove qui sopra.
+  "maxicat",
   // Tuk Tuk Sweet Tours: il ritrovo e' davanti al Wakanda Origen, e il
   // fornitore scrive "Hotel pick up" fra le cose NON incluse. Il transfer non
   // e' compreso, quindi il punto di raccolta non si mostra (proprietario,

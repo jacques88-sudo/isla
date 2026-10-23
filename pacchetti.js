@@ -561,10 +561,12 @@ const PACCHETTI = [
 
   {
     id: "adrenalina-in-due",
-    // PREZZO MISTO, ma su mezzi da due: la moto d'acqua doppia 120 : 2 = 60, il
-    // quad doppio al tramonto 130 : 2 = 65, il parapendio 95 a persona.
-    // 60 + 65 + 95 = 220, tutto scontabile: −22,00 → da 198 a persona. Qui il
-    // "da" e' proprio il prezzo di una coppia sullo stesso mezzo.
+    // Le tre escursioni del post Instagram "Pacchetto per coppie" (proprietario,
+    // 23 ottobre 2026): barca per balene e delfini, parascending, quad al Teide.
+    // PREZZO MISTO, ma su un mezzo da due: il quad doppio del mattino 120 : 2 =
+    // 60, la barca 40 e il parascending 55 a persona. 40 + 60 + 55 = 155, tutto
+    // scontabile: −15,50 → da 139,50 a persona, il "139 €" del post. Qui il "da"
+    // e' proprio il prezzo di una coppia sullo stesso quad.
     title: {
       it: "Adrenalina in due",
       en: "Adrenaline for two",
@@ -572,23 +574,22 @@ const PACCHETTI = [
       fr: "Adrénaline à deux",
       de: "Adrenalin zu zweit"
     },
-    image: "quad-teide-sunset.webp",
+    image: "quad-teide-adventure.webp",
     sconto: 10,
     tema: "per-due",
     voci: [
-      // optionIndex 1 = un'ora.
-      { id: "jet-ski-safari-1-2h", optionIndex: 1 },
-      // optionIndex 1 = Tramonto. Il quad sale al Teide: e' l'unica salita.
-      { id: "quad-teide-adventure", optionIndex: 1 },
-      // optionIndex 0 = 20-25 minuti, decollo a 750 m.
-      { id: "paragliding", optionIndex: 0 }
+      // optionIndex 1 = 3 ore, con la sosta bagno e il pranzo.
+      { id: "flipper-one", optionIndex: 1 },
+      { id: "parascending" },
+      // optionIndex 0 = Mattina. Il quad sale al Teide: e' l'unica salita.
+      { id: "quad-teide-adventure", optionIndex: 0, posti: 2 }
     ],
     desc: {
-      it: "Tre giorni in coppia, uno per elemento: un'ora in moto d'acqua lungo la costa sud, in due sulla stessa moto, il quad doppio su fino al Teide per il tramonto, e il volo in parapendio con il pilota sopra Adeje.",
-      en: "Three days as a couple, one for each element: an hour on a jet ski along the south coast, two on the same machine, the double quad up to Teide for the sunset, and the paragliding flight with a pilot over Adeje.",
-      es: "Tres días en pareja, uno por elemento: una hora en moto de agua por la costa sur, los dos en la misma moto, el quad doble subiendo al Teide para el atardecer, y el vuelo en parapente con el piloto sobre Adeje.",
-      fr: "Trois jours en couple, un pour chaque élément : une heure de jet-ski le long de la côte sud, à deux sur le même engin, le quad double jusqu'au Teide pour le coucher du soleil, et le vol en parapente avec un pilote au-dessus d'Adeje.",
-      de: "Drei Tage als Paar, einer für jedes Element: eine Stunde Jetski an der Südküste, zu zweit auf derselben Maschine, das Doppel-Quad hinauf zum Teide zum Sonnenuntergang und der Gleitschirmflug mit Pilot über Adeje."
+      it: "Tre giorni in coppia, fra mare, cielo e vulcano: tre ore in goletta da Los Gigantes a cercare balene e delfini, con il bagno e il pranzo a bordo, il volo in parascending trainati dalla barca sopra la costa sud, e il quad doppio su fino al Teide, tre ore fra pinete e colate laviche.",
+      en: "Three days as a couple, between sea, sky and volcano: three hours on a schooner from Los Gigantes looking for whales and dolphins, with a swim and lunch on board, the parascending flight towed by the boat over the south coast, and the double quad up to Teide, three hours through pine woods and lava fields.",
+      es: "Tres días en pareja, entre mar, cielo y volcán: tres horas en goleta desde Los Gigantes buscando ballenas y delfines, con baño y comida a bordo, el vuelo en parascending remolcados por el barco sobre la costa sur, y el quad doble subiendo al Teide, tres horas entre pinares y coladas de lava.",
+      fr: "Trois jours en couple, entre mer, ciel et volcan : trois heures en goélette depuis Los Gigantes à la recherche des baleines et des dauphins, avec baignade et déjeuner à bord, le vol en parachute ascensionnel tracté par le bateau au-dessus de la côte sud, et le quad double jusqu'au Teide, trois heures entre pinèdes et champs de lave.",
+      de: "Drei Tage als Paar, zwischen Meer, Himmel und Vulkan: drei Stunden auf einem Schoner ab Los Gigantes auf der Suche nach Walen und Delfinen, mit Baden und Mittagessen an Bord, der Parasailing-Flug, vom Boot gezogen, über der Südküste, und das Doppel-Quad hinauf zum Teide, drei Stunden durch Kiefernwälder und Lavafelder."
     }
   },
 

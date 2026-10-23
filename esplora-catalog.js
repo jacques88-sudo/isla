@@ -1006,12 +1006,14 @@ const ESPLORA_CATALOG = [
     // Le tre partenze del fornitore. Il pulmino passa prima, a un'ora che
     // dipende dalla zona e che l'ufficio conferma.
     times: ["10:00", "13:15", "16:00"],
-    // La pagina del fornitore dice solo "desde 46 €": i prezzi adulti e
-    // bambini e le fasce d'eta' restano da chiedere, e a 0 le righe non si
-    // vedono e il totale non si fa.
+    // Prezzi e fasce dalla pagina di prenotazione del fornitore (23 ottobre
+    // 2026). Non copiati: le tariffe per i residenti canari e il 42 € di un
+    // giorno solo, che e' un'offerta loro.
     priceFrom: 46,
-    priceAdult: 0,
-    priceChild: 0,
+    priceAdult: 46,
+    priceChild: 23,
+    priceInfant: 0,
+    ages: { adult: "12+", child: "6-11", infant: "0-5" },
     family: true,
     // Conta sempre come card (proprietario, 21 ottobre 2026): stesso elenco
     // in sempre_card.

@@ -21200,3 +21200,27 @@ post. Il Teide resta una salita sola (il quad). Foto della vetrina:
 (`optionIndex: 1`: sosta bagno a Diego Hernández, panino, transfer dal sud compreso) al
 posto di Flipper One. 47 + 60 + 55 = 162, meno il 10% = **da 145,80 a persona**.
 Descrizione riscritta nelle cinque lingue (catamarano da Puerto Colón).
+
+---
+
+## Il tema di Halloween della home (24 ottobre 2026)
+
+Il proprietario ha chiesto "qualche decorazione e colori tema Halloween, **solo nella
+home**". Due file nuovi, caricati solo da `index.html`:
+
+- `halloween.js` mette la classe `halloween` su `<html>` **dal 24 al 31 ottobre**, e
+  aggiunge le decorazioni: ragnatela e ragnetto nell'angolo della foto, quattro
+  pipistrelli che volano, una zucca per parte accanto a "Isla", tre zucche sotto il
+  titolo. Sono solo disegni (`aria-hidden`, `pointer-events: none`): non coprono niente
+  che si tocchi. Col "meno movimento" del telefono stanno fermi.
+- `halloween.css` gira le variabili dei colori (`--bg`, `--text`, `--primary`, `--gold`…)
+  su viola della notte e arancio delle zucche, di giorno e al buio; la voce attiva della
+  capsula diventa arancio e il logo tondo ha un alone arancio. Tutto sotto
+  `html.halloween`: senza la classe il file non fa niente.
+
+**Si spegne da solo il 1° novembre** e si riaccende il 24 ottobre dell'anno dopo. Per
+toglierlo per sempre: i due file, le loro due righe in `index.html` e in `sw.js`.
+Per vederlo in un altro giorno `index.html?halloween=1`; `?halloween=0` lo spegne.
+
+Provato nel browser a 390 px, chiaro e scuro: nessuno scorrimento di lato, lista e Menu
+si leggono, il 24 ottobre acceso e il 1° novembre spento con la data finta.

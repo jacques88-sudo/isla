@@ -1,0 +1,143 @@
+/* Il tema di Halloween della home (proprietario, 24 ottobre 2026): lo accende
+   halloween.js dal 24 al 31 ottobre, mettendo la classe "halloween" su <html>.
+   Senza quella classe niente di questo file vale, quindi la pagina resta quella
+   di sempre. Lo carica solo index.html: le altre pagine non cambiano.
+
+   I colori non si inventano da capo: sono le stesse variabili di styles.css,
+   girate sul viola della notte e sull'arancio delle zucche. "html.halloween"
+   vince su ":root" perche' pesa di piu' (classe + elemento). */
+html.halloween {
+  --bg: oklch(0.975 0.018 70);
+  --surface: oklch(1 0 0);
+  --cream: oklch(0.945 0.035 65);
+  --sand: oklch(0.89 0.06 60);
+  --border: oklch(0.88 0.035 60);
+  --text: oklch(0.23 0.045 300);
+  --muted: oklch(0.5 0.05 300);
+  --primary: oklch(0.3 0.09 300);
+  --primary-foreground: oklch(0.98 0.01 70);
+  --gold: oklch(0.66 0.17 50);
+  /* l'arancio delle decorazioni, uguale di giorno e di notte */
+  --hw-arancio: oklch(0.72 0.17 52);
+}
+
+@media (prefers-color-scheme: dark) {
+  html.halloween {
+    --bg: oklch(0.18 0.035 300);
+    --surface: oklch(0.23 0.04 300);
+    --cream: oklch(0.27 0.045 300);
+    --sand: oklch(0.33 0.05 300);
+    --border: oklch(0.36 0.045 300);
+    --text: oklch(0.95 0.015 70);
+    --muted: oklch(0.76 0.03 70);
+    --primary: oklch(0.76 0.15 55);
+    --primary-foreground: oklch(0.2 0.04 300);
+    --gold: oklch(0.78 0.15 60);
+  }
+  html.halloween .bento-tile.bento-tile-stripes { background: var(--surface); }
+}
+
+/* La capsula in alto: la voce della pagina diventa una zucca accesa. */
+html.halloween .isla-tab[aria-current="page"] {
+  background: var(--hw-arancio);
+  color: oklch(0.2 0.04 300);
+}
+
+/* "Tenerife" sopra il titolo, in arancio. */
+html.halloween .intro .eyebrow { color: var(--gold); }
+
+/* Il logo tondo: un alone arancio intorno, come una lanterna. */
+html.halloween .home-hero-mark {
+  box-shadow: 0 0 0 3px var(--hw-arancio), 0 0 26px 4px oklch(0.72 0.17 52 / .45);
+}
+
+/* --- le zucche --------------------------------------------------------- */
+html.halloween .home-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+}
+.hw-zucca { display: inline-flex; flex: none; }
+.hw-zucca svg { width: 1.6rem; height: 1.6rem; }
+/* la zucca di destra si specchia, cosi' le due si guardano */
+.home-name .hw-zucca:last-child svg { transform: scaleX(-1); }
+
+.hw-fila {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: .6rem;
+  margin-top: .9rem;
+}
+.hw-fila .hw-zucca svg { width: 2.2rem; height: 2.2rem; }
+.hw-fila .hw-piccola svg { width: 1.6rem; height: 1.6rem; }
+
+/* --- il cielo sopra la foto: ragnatela, ragno e pipistrelli ------------- */
+.hw-cielo {
+  position: absolute;
+  /* stessa misura della foto: la fascia ha 1.25rem ai lati e 3.4rem sotto */
+  top: 0;
+  left: 1.25rem;
+  right: 1.25rem;
+  bottom: 3.4rem;
+  border-radius: 18px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hw-ragnatela {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 34%;
+  max-width: 200px;
+  color: oklch(1 0 0 / .75);
+  filter: drop-shadow(0 1px 1px oklch(0 0 0 / .35));
+}
+.hw-ragnatela svg { display: block; width: 100%; height: auto; }
+.hw-ragno {
+  position: absolute;
+  top: 0;
+  left: 22%;
+  width: 18px;
+  color: oklch(1 0 0 / .8);
+  transform-origin: top center;
+  animation: hw-ragno 4s ease-in-out infinite;
+}
+.hw-ragno svg { display: block; width: 100%; height: auto; }
+
+.hw-bat {
+  position: absolute;
+  color: oklch(0.16 0.03 300);
+  filter: drop-shadow(0 2px 3px oklch(0 0 0 / .3));
+  animation: hw-volo 9s ease-in-out infinite;
+}
+.hw-bat svg { display: block; width: 100%; height: auto; animation: hw-ali .35s ease-in-out infinite alternate; }
+.hw-bat-1 { top: 12%; right: 14%; width: 52px; }
+.hw-bat-2 { top: 30%; right: 30%; width: 34px; animation-delay: -3s; animation-duration: 11s; }
+.hw-bat-3 { top: 8%;  right: 42%; width: 26px; animation-delay: -6s; animation-duration: 8s; }
+.hw-bat-4 { top: 44%; right: 8%;  width: 30px; animation-delay: -1.5s; animation-duration: 10s; }
+.hw-bat-2 svg { animation-delay: -.1s; }
+.hw-bat-3 svg { animation-delay: -.2s; }
+.hw-bat-4 svg { animation-delay: -.15s; }
+
+@keyframes hw-volo {
+  0%, 100% { transform: translate(0, 0) rotate(-4deg); }
+  25%      { transform: translate(-18px, -8px) rotate(3deg); }
+  50%      { transform: translate(-6px, 10px) rotate(-2deg); }
+  75%      { transform: translate(14px, -4px) rotate(5deg); }
+}
+/* le ali che sbattono: il pipistrello si schiaccia e si allarga */
+@keyframes hw-ali {
+  from { transform: scaleY(1); }
+  to   { transform: scaleY(.55); }
+}
+@keyframes hw-ragno {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(22px); }
+}
+
+/* Chi ha chiesto al telefono meno movimento vede tutto fermo. */
+@media (prefers-reduced-motion: reduce) {
+  .hw-bat, .hw-bat svg, .hw-ragno { animation: none; }
+}

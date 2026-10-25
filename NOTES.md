@@ -21179,7 +21179,13 @@ nostra). La pagina dice "Offered in English, Spanish", ma `languages` non si met
 domanda sulla lingua non è stata chiesta. Totale provato nel browser: 2 adulti + 1
 bambino = 115 €.
 
-**In sospeso**: la foto (riquadro "Foto in arrivo") e il titolo, che ho scelto io.
+**Foto** (25 ottobre 2026, dal proprietario): `maxicat.webp` (il catamarano dall'alto,
+1200×800) e in `gallery` `maxicat-2.webp` e `maxicat-3.webp`, che arrivavano a 800 e 768
+px di larghezza: lasciate alla loro misura e non ingrandite, come `luxury-catamaran.webp`
+(768×512). La terza era quadrata: il ritaglio al centro tagliava via le barche, quindi è
+ritagliata **dal basso**. Copie piccole fatte con `foto-piccole.py`.
+
+**In sospeso**: il titolo, che ho scelto io.
 
 ---
 

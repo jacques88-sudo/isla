@@ -2557,6 +2557,22 @@ body.menu-open { overflow: hidden; }
   letter-spacing: .1em;
   color: var(--muted);
 }
+/* "Offerta" davanti al prezzo, dove il pacchetto ha `prezzoOfferta`
+   (pacchetti.js). Il rosa del tramonto del logo, testo bianco: si legge
+   uguale di giorno e al buio. */
+.pack-offerta {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: var(--font-body);
+  font-size: .62rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: #fff;
+  background: oklch(0.58 0.2 355);
+  border-radius: var(--radius-pill);
+  padding: .15rem .55rem;
+}
 .pack-note {
   margin: 0;
   color: var(--muted);

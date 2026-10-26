@@ -21253,5 +21253,10 @@ Cinque pulsanti: esperienze (il primo, pieno), pacchetti, WhatsApp
 mie prenotazioni". Niente capsula né Menu: deve stare in uno schermo. Non sta in
 `sitemap.xml`: è una porta d'ingresso dai social, non una pagina da cercare.
 
-**In sospeso**: i pulsanti dei social (Instagram, TikTok, Facebook) aspettano che
-TikTok e Facebook abbiano il nome nuovo e l'indirizzo della pagina Facebook.
+**I social in fondo** (26 ottobre 2026): tre tondi con le icone, disegnate a tratto.
+TikTok è diventato `isla_tenerife` come Instagram. Su Facebook il trattino basso non
+si può usare e `isla.tenerife` e `islatenerife` erano presi: il nome utente è
+**`isla.tenerife.excursions`**, il nome della pagina "Isla Tenerife" (la vecchia
+"Fran.escursioni" rinominata, con le sue recensioni). Bio di Instagram e TikTok e
+presentazione di Facebook in italiano e inglese, col sito `…/link` e il pulsante
+WhatsApp.

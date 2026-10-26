@@ -21303,3 +21303,13 @@ ora anche i piccoli: intestazione di "Le mie prenotazioni" (`.brand`), piè di p
 Una regola sola in `styles.css`, bianco fisso anche al buio. Il margine interno è in px:
 scritto in % il logo spariva, perché il padding in % si conta sulla larghezza del
 contenitore, non dell'immagine. Fuori la schermata di caricamento (`.splash-logo`).
+
+### Il riquadro in cima alla pagina dei link porta al pacchetto coppia (26 ottobre 2026)
+
+Il post del pacchetto coppia esce stasera, e chi tocca il link in bio deve trovare in
+cima l'offerta da 139, non il Freebird. `ULTIMO_VIDEO` in `link.js` ora accetta anche
+un pacchetto, scritto `"pacchetto:adrenalina-in-due"`: titolo, foto e prezzo vengono da
+`pacchetti.js` ("Offerta · da €139 a persona"). Per questo `link.html` carica anche
+`escursioni.js` e `pacchetti.js`, che qui non trovano i loro elementi e non disegnano
+niente. La scritta è diventata "Dal nostro ultimo post": il post di stasera è un
+carosello di foto, non un video. `/freebird` resta.

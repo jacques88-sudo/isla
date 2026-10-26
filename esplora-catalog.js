@@ -1080,7 +1080,10 @@ const ESPLORA_CATALOG = [
       fr: "Trois heures en catamaran depuis Puerto Colón, le long de la côte sud, où globicéphales et dauphins vivent toute l'année. Après l'observation, on déjeune à bord à la canarienne et on s'arrête pour se baigner à Playa Diego Hernández, si la mer le permet. Il y a deux catamarans, de 104 et de 70 places, avec des zones d'ombre et de l'espace pour être à l'aise.",
       de: "Drei Stunden im Katamaran ab Puerto Colón entlang der Südküste, wo Grindwale und Delfine das ganze Jahr leben. Nach der Beobachtung gibt es an Bord ein kanarisches Mittagessen und einen Badestopp an der Playa Diego Hernández, wenn das Meer es zulässt. Es gibt zwei Katamarane mit 104 und 70 Plätzen, Schattenbereichen und Platz zum Entspannen."
     },
-    image: "",
+    image: "maxicat.webp",
+    // Le altre due arrivano a 800 e 768 di larghezza: lasciate come sono,
+    // senza ingrandirle, come luxury-catamaran.webp.
+    gallery: ["maxicat-2.webp", "maxicat-3.webp"],
     published: true
   },
   {

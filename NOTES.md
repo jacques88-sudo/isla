@@ -21280,3 +21280,15 @@ ha detto di farle **tutte e due**:
   canonical sulla scheda. Lo script toglie da solo le cartelle che escono
   dall'elenco, ma solo quelle col suo segno. Per ora c'è **solo `freebird`**: gli
   altri si aggiungono quando si fa il video, una riga ciascuno.
+
+### Adrenalina in due a 139, "Offerta" (26 ottobre 2026)
+
+Il proprietario ha deciso: sul sito **da 139 a persona**, come il post Instagram,
+"anche se non torna con il 10%", con scritto **Offerta**. Nuovo campo del pacchetto,
+`prezzoOfferta` (spiegato in testa a `pacchetti.js`, "IL PREZZO D'OFFERTA"): fissa il
+numero in vetrina e lo sconto diventa quello che serve per arrivarci, qui 23 su 162
+(circa 14,2%). Essendo una percentuale, finestra, lista e messaggio fanno i conti come
+sempre: una coppia con un quad doppio paga 278 (139 × 2), tre persone con un quad
+singolo e uno doppio 459,90. Accanto al prezzo la pillola rosa "Offerta" (`pack.offer`),
+in vetrina e sulla pagina del pacchetto. Gli altri pacchetti restano al loro sconto.
+`sconto: 10` resta scritto: togliendo `prezzoOfferta` torna 145,80.

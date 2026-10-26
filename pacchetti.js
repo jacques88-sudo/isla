@@ -84,6 +84,17 @@
 //   sulle persone — il buggy sconta come la barca — ma **non su tutto**:
 //   vedi qui sotto.
 //
+// IL PREZZO D'OFFERTA (proprietario, 26 ottobre 2026)
+//   `prezzoOfferta: 139` fissa il numero in vetrina, quello a persona, al
+//   posto di "somma meno `sconto`": e' l'unica eccezione a "il prezzo non si
+//   scrive qui", e si usa per un'offerta lanciata sui social. Accanto al prezzo
+//   esce "Offerta". Lo sconto diventa quello che serve per arrivarci
+//   (pacchettoSconto), su tutte le voci scontabili, e vale anche nella
+//   finestra: con altre persone o altri mezzi il totale si rifa' con quella
+//   percentuale. `sconto` resta scritto: torna buono il giorno che l'offerta
+//   si toglie. Se un'escursione dentro cambia prezzo, il numero in vetrina
+//   resta quello, e cambia lo sconto: e' l'offerta che si e' promessa.
+//
 // SU COSA LO SCONTO NON SI PUO' FARE
 //   Su quello che si compra a prezzo fisso e si rivende uguale: un 10% in meno
 //   uscirebbe dalla tasca di Admiral, non dal margine. Sono due elenchi, e
@@ -569,6 +580,9 @@ const PACCHETTI = [
     // 60, la barca 47 e il parascending 55 a persona. 47 + 60 + 55 = 162, tutto
     // scontabile: −16,20 → da 145,80 a persona. Qui il "da" e' proprio il
     // prezzo di una coppia sullo stesso quad.
+    // OFFERTA (proprietario, 26 ottobre 2026): in vetrina da 139 a persona,
+    // il prezzo del post Instagram, anche se col 10% non torna: lo sconto
+    // diventa 23 su 162, circa il 14%. Togliendo la riga torna 145,80.
     title: {
       it: "Adrenalina in due",
       en: "Adrenaline for two",
@@ -578,6 +592,7 @@ const PACCHETTI = [
     },
     image: "quad-teide-adventure.webp",
     sconto: 10,
+    prezzoOfferta: 139,
     tema: "per-due",
     voci: [
       // optionIndex 1 = 3 ore, con la sosta bagno e il transfer dal sud.
@@ -1087,7 +1102,17 @@ function pacchettoDi(id) {
   return PACCHETTI.find(p => p.id === id) || null;
 }
 
+// Con `prezzoOfferta` (vedi "IL PREZZO D'OFFERTA" in testa al file) lo sconto
+// non e' scritto: e' quello che serve per arrivare a quel numero in vetrina.
+// Tornando una percentuale, tutto il resto (vetrina, finestra, lista,
+// messaggio) fa i conti come sempre e torna con lo stesso numero.
 function pacchettoSconto(pack) {
+  if (pack.prezzoOfferta) {
+    const base = pacchettoConto(Object.assign({}, pack, { prezzoOfferta: undefined, sconto: 0 }));
+    if (base && base.scontabile > 0) {
+      return (base.pieno - pack.prezzoOfferta) / base.scontabile * 100;
+    }
+  }
   return pack.sconto === undefined ? PACCHETTI_SCONTO_DEFAULT : pack.sconto;
 }
 
@@ -1270,7 +1295,8 @@ function pacchettoConto(pack) {
     risparmio: risparmio,
     scontato: pacchettoArrotonda(pieno - risparmio),
     sconto: sconto,
-    misto: misto
+    misto: misto,
+    offerta: !!pack.prezzoOfferta
   };
 }
 
@@ -2098,7 +2124,10 @@ function pacchettoPrezzoHTML(conto) {
   const numero = conto.misto
     ? t("tour.from", { p: eur(conto.scontato) })
     : "€" + eur(conto.scontato);
-  return `<span class="pack-price">${barrato}<strong>${esc(numero)}</strong>
+  const offerta = conto.offerta
+    ? `<span class="pack-offerta">${esc(t("pack.offer"))}</span> `
+    : "";
+  return `<span class="pack-price">${offerta}${barrato}<strong>${esc(numero)}</strong>
       <small>${esc(t("pack.perPerson"))}</small></span>`;
 }
 

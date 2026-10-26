@@ -1,4 +1,4 @@
-// GLI INDIRIZZI CORTI DELLE ESCURSIONI: islaexcursionstenerife.com/freebird
+// GLI INDIRIZZI CORTI DELLE ESCURSIONI E DEI PACCHETTI: islaexcursionstenerife.com/freebird
 //
 // Si rifanno con
 //
@@ -24,9 +24,12 @@ const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 
-// nome corto → id della scheda (quello di tour.html?id=…)
+// nome corto → id della scheda (quello di tour.html?id=…), oppure "pacchetto:"
+// e l'id del pacchetto (quello di pacchetto.html?id=…), come ULTIMO_VIDEO in link.js
 const INDIRIZZI_CORTI = {
-  freebird: "freebird-catamaran"
+  freebird: "freebird-catamaran",
+  // il pacchetto del post Instagram dell'offerta da 139 (26 ottobre 2026)
+  coppia: "pacchetto:adrenalina-in-due"
 };
 
 const SITO = "https://islaexcursionstenerife.com";
@@ -39,7 +42,25 @@ function catalogo() {
   const ctx = { t: k => k, tf: c => (typeof c === "string" ? c : (c && c.it) || ""), eur: String };
   vm.createContext(ctx);
   vm.runInContext(fs.readFileSync(path.join(__dirname, "esplora-catalog.js"), "utf8") + ";this.C = ESPLORA_CATALOG;", ctx);
-  return { schede: ctx.C, tf: ctx.tf };
+  vm.runInContext(fs.readFileSync(path.join(__dirname, "pacchetti.js"), "utf8") + ";this.P = PACCHETTI;", ctx);
+  return { schede: ctx.C, pacchetti: ctx.P, tf: ctx.tf };
+}
+
+// Dove porta un nome corto: { indirizzo, titolo, desc, foto } oppure un errore
+// (testo). Le schede devono essere pubblicate; i pacchetti esistono o no.
+function destinazione(valore, dati) {
+  if (valore.indexOf("pacchetto:") === 0) {
+    const id = valore.slice("pacchetto:".length);
+    const pack = dati.pacchetti.find(p => p.id === id);
+    if (!pack) return `nei pacchetti non c'e' "${id}"`;
+    return { indirizzo: "pacchetto.html?id=" + encodeURIComponent(id),
+      titolo: dati.tf(pack.title), desc: dati.tf(pack.desc), foto: pack.image };
+  }
+  const tour = dati.schede.find(t => t.id === valore);
+  if (!tour) return `nel catalogo non c'e' la scheda "${valore}"`;
+  if (!tour.published) return `la scheda "${valore}" non e' pubblicata`;
+  return { indirizzo: "tour.html?id=" + encodeURIComponent(tour.id),
+    titolo: dati.tf(tour.title), desc: dati.tf(tour.desc), foto: tour.image };
 }
 
 const attr = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
@@ -50,9 +71,9 @@ function primaFrase(testo) {
   return (m ? m[0] : String(testo || "")).trim();
 }
 
-function pagina(corto, tour, tf) {
-  const scheda = "tour.html?id=" + encodeURIComponent(tour.id);
-  const titolo = tf(tour.title) + " · Isla Tenerife";
+function pagina(dove) {
+  const scheda = dove.indirizzo;
+  const titolo = dove.titolo + " · Isla Tenerife";
   return `<!doctype html>
 ${SEGNO}
 <html lang="it">
@@ -63,8 +84,8 @@ ${SEGNO}
   <title>${attr(titolo)}</title>
   <link rel="canonical" href="${SITO}/${scheda}" />
   <meta property="og:title" content="${attr(titolo)}" />
-  <meta property="og:description" content="${attr(primaFrase(tf(tour.desc)))}" />
-  <meta property="og:image" content="${SITO}/assets/${encodeURIComponent(tour.image)}" />
+  <meta property="og:description" content="${attr(primaFrase(dove.desc))}" />
+  <meta property="og:image" content="${SITO}/assets/${encodeURIComponent(dove.foto)}" />
   <meta property="og:type" content="website" />
   <meta http-equiv="refresh" content="0; url=../${scheda}" />
   <script>
@@ -73,23 +94,22 @@ ${SEGNO}
   </script>
 </head>
 <body>
-  <p><a href="../${scheda}">${attr(tf(tour.title))}</a></p>
+  <p><a href="../${scheda}">${attr(dove.titolo)}</a></p>
 </body>
 </html>
 `;
 }
 
 function main() {
-  const { schede, tf } = catalogo();
+  const dati = catalogo();
   let errori = 0;
   const errore = msg => { console.error("ERRORE: " + msg); errori++; };
 
   for (const [corto, id] of Object.entries(INDIRIZZI_CORTI)) {
     if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(corto)) errore(`"${corto}": solo minuscole, numeri e trattini`);
     if (RISERVATI.includes(corto)) errore(`"${corto}" e' gia' una cartella del sito`);
-    const tour = schede.find(t => t.id === id);
-    if (!tour) errore(`"${corto}": nel catalogo non c'e' la scheda "${id}"`);
-    else if (!tour.published) errore(`"${corto}": la scheda "${id}" non e' pubblicata`);
+    const dove = destinazione(id, dati);
+    if (typeof dove === "string") errore(`"${corto}": ${dove}`);
   }
   if (errori) process.exit(1);
 
@@ -105,7 +125,7 @@ function main() {
   }
 
   for (const [corto, id] of Object.entries(INDIRIZZI_CORTI)) {
-    const tour = schede.find(t => t.id === id);
+    const dove = destinazione(id, dati);
     const cartella = path.join(__dirname, corto);
     const file = path.join(cartella, "index.html");
     if (fs.existsSync(file) && !fs.readFileSync(file, "utf8").includes(SEGNO)) {
@@ -113,8 +133,8 @@ function main() {
       process.exit(1);
     }
     fs.mkdirSync(cartella, { recursive: true });
-    fs.writeFileSync(file, pagina(corto, tour, tf));
-    console.log(`${SITO}/${corto}  →  ${tf(tour.title)}`);
+    fs.writeFileSync(file, pagina(dove));
+    console.log(`${SITO}/${corto}  →  ${dove.titolo}`);
   }
 }
 

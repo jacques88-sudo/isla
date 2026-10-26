@@ -21313,3 +21313,11 @@ un pacchetto, scritto `"pacchetto:adrenalina-in-due"`: titolo, foto e prezzo ven
 `escursioni.js` e `pacchetti.js`, che qui non trovano i loro elementi e non disegnano
 niente. La scritta è diventata "Dal nostro ultimo post": il post di stasera è un
 carosello di foto, non un video. `/freebird` resta.
+
+### `/coppia`: gli indirizzi corti anche per i pacchetti (26 ottobre 2026)
+
+Per la storia di Instagram (adesivo Link) e il testo di Facebook del post dell'offerta:
+`islaexcursionstenerife.com/coppia` porta a `pacchetto.html?id=adrenalina-in-due`.
+`indirizzi-corti.js` accetta ora anche `"pacchetto:<id>"`, come `ULTIMO_VIDEO` in
+`link.js`; l'anteprima prende titolo, prima frase della descrizione e foto del
+pacchetto. Il pacchetto non ha `published`: c'è o non c'è.

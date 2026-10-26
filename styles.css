@@ -1488,6 +1488,8 @@ html:not([lang="de"]) .pp[lang="de"] { display: none; }
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+/* La "f" di Facebook e' un taglio nel tondo pieno: ha il colore del fondo. */
+.link-social .link-social-cut { stroke: var(--surface); stroke-width: 2.2; stroke-linecap: butt; }
 
 @media (min-width: 768px) {
   .footer .wrap { max-width: var(--max-wide); }

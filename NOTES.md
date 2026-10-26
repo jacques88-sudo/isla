@@ -21254,7 +21254,7 @@ mie prenotazioni". Niente capsula né Menu: deve stare in uno schermo. Non sta i
 `sitemap.xml`: è una porta d'ingresso dai social, non una pagina da cercare.
 
 **I social in fondo** (26 ottobre 2026): tre tondi con le icone, disegnate a tratto.
-TikTok è diventato `isla_tenerife` come Instagram. Su Facebook il trattino basso non
+TikTok è diventato `isla_tenerife` come Instagram. Facebook è un tondo pieno con la "f" del colore del fondo, come il logo vero: a tratto non si riconosceva (proprietario). Su Facebook il trattino basso non
 si può usare e `isla.tenerife` e `islatenerife` erano presi: il nome utente è
 **`isla.tenerife.excursions`**, il nome della pagina "Isla Tenerife" (la vecchia
 "Fran.escursioni" rinominata, con le sue recensioni). Bio di Instagram e TikTok e

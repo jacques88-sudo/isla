@@ -174,6 +174,11 @@ sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
   vecchie pillole, per scelta del proprietario: in basso c'erano già il pallino della
   chat e la barra "Prenota ora". È scritta uguale nelle sei pagine. **"Installa l'app"
   non ci sta**: con cinque voci la capsula usciva dallo schermo, resta nel Menu.
+- **Il logo sta sempre nel cerchio a sfondo bianco** (proprietario, 26 ottobre 2026):
+  sul sito, nelle grafiche dei social, nei post, nelle stampe. Bianco fisso, anche col
+  tema scuro (`#fff`, non una variabile). Sul sito lo fanno `.home-hero-mark` e la regola
+  "IL LOGO STA SEMPRE NEL CERCHIO BIANCO" in `styles.css`: un logo nuovo in pagina va
+  messo lì. Unica eccezione la schermata di caricamento (`.splash-logo`).
 - **Le lingue si scelgono con le bandiere** (3 ottobre 2026, proprietario), non con
   IT/EN/ES. Sono **SVG scritti nell'HTML**, non emoji: Windows le emoji delle bandiere
   non le ha e scriverebbe le due lettere. Il nome della lingua sta in `aria-label`.

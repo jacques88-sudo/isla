@@ -1467,6 +1467,32 @@ html:not([lang="de"]) .pp[lang="de"] { display: none; }
 .link-item-main span,
 .link-item-main small { color: var(--primary-foreground); }
 .link-item-main small { opacity: .8; }
+/* "Dal nostro ultimo video" (link.js): sopra tutti, coi colori del tramonto del
+   logo, perche' e' quello che cerca chi arriva da un reel. Testo bianco: il
+   fondo e' scuro abbastanza sia di giorno sia al buio. */
+.link-video {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: .6rem;
+  border-radius: 16px;
+  text-align: left;
+  color: #fff;
+  background: linear-gradient(135deg, oklch(0.62 0.16 40), oklch(0.55 0.2 355));
+}
+.link-video[hidden] { display: none; }
+.link-video img { flex: none; border-radius: 12px; object-fit: cover; }
+.link-video em {
+  display: block;
+  font-style: normal;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.link-video em::before { content: "▶ "; }
+.link-video strong { display: block; font-weight: 600; font-size: 1.05rem; line-height: 1.3; }
+.link-video small { display: block; font-size: .85rem; }
+
 /* I social in fondo: tre tondi da 48 px, la misura minima di un tocco. */
 .link-social { display: flex; justify-content: center; gap: 1rem; margin-top: 1.6rem; }
 .link-social a {

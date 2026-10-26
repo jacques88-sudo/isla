@@ -21260,3 +21260,23 @@ si può usare e `isla.tenerife` e `islatenerife` erano presi: il nome utente è
 "Fran.escursioni" rinominata, con le sue recensioni). Bio di Instagram e TikTok e
 presentazione di Facebook in italiano e inglese, col sito `…/link` e il pulsante
 WhatsApp.
+
+### "Dal nostro ultimo video" e gli indirizzi corti (26 ottobre 2026)
+
+Il proprietario ha chiesto che ogni video porti alla sua escursione (Freebird →
+la scheda del Freebird). Su Instagram e TikTok un link nella didascalia non si
+tocca; su Facebook, nelle storie di Instagram e su WhatsApp sì. Viste le due prove,
+ha detto di farle **tutte e due**:
+
+- **"Dal nostro ultimo video"** in cima a `link.html`: lo riempie `link.js` dal
+  catalogo (foto piccola, titolo, zona, "da €30") nella lingua del telefono. A ogni
+  video si cambia `ULTIMO_VIDEO`, una riga. Colori del tramonto del logo, testo
+  bianco, uguale di giorno e al buio.
+- **Gli indirizzi corti**: `islaexcursionstenerife.com/freebird`. GitHub Pages non
+  fa rimandi del server, quindi ognuno è una cartella con un `index.html` che porta
+  alla scheda (anche con `?lang=`). Scritto da `indirizzi-corti.js`, come
+  `sitemap.js`; tiene `og:title`, `og:description` (la prima frase in italiano) e
+  `og:image`, così incollato su WhatsApp o Facebook esce con la foto. `noindex` e
+  canonical sulla scheda. Lo script toglie da solo le cartelle che escono
+  dall'elenco, ma solo quelle col suo segno. Per ora c'è **solo `freebird`**: gli
+  altri si aggiungono quando si fa il video, una riga ciascuno.

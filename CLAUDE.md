@@ -143,6 +143,8 @@ porto e capienza con le schede della stessa categoria.
 | `trasloco.js` | il passaggio da `jacques88-sudo.github.io/isla/` a `islaexcursionstenerife.com`: porta il cliente al nuovo coi suoi dati di localStorage; va caricato **prima** di tutti gli altri script, in ogni pagina. Con `trasloco.txt` (dice `isla`), che dice al vecchio indirizzo che il nuovo è acceso |
 | `sitemap.js` | rifà `sitemap.xml` (la mappa del sito per Google) dal catalogo e dai pacchetti: `node sitemap.js` dopo ogni scheda o pacchetto nuovo; il sito non lo carica |
 | Cloudflare Web Analytics | conta le visite, senza cookie: lo script sta prima di `</body>` in ogni pagina vera (non `offline.html` né i rimandi). **Una pagina nuova lo deve avere.** Installazione a mano, non "Automatic": con la nuvola grigia l'automatica non conta niente. I numeri su Cloudflare → Web analytics |
+| `link.js` | la pagina dei link dei social (`link.html`, `islaexcursionstenerife.com/link`, il "link in bio"): il pulsante **"Dal nostro ultimo video"** in cima. **A ogni video nuovo si cambia solo `ULTIMO_VIDEO`** (l'id della scheda), poi `CACHE_NAME` |
+| `indirizzi-corti.js` | gli indirizzi corti delle escursioni (`islaexcursionstenerife.com/freebird`): l'elenco sta in `INDIRIZZI_CORTI`, e `node indirizzi-corti.js` scrive una cartella per ognuno, con la foto per l'anteprima di WhatsApp e Facebook. Le cartelle non si correggono a mano; il sito non carica lo script |
 | `richieste.js` | le richieste della lista salvate anche su Supabase (`pending`), con la **chiave** che resta nel telefono del cliente e il **codice** che va nel messaggio; l'ufficio le conferma o annulla da `venditori.html` |
 
 **La finestra della richiesta è scritta due volte**, in `escursioni.html` e in `tour.html`.

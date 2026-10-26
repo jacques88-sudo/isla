@@ -42,6 +42,16 @@
     <p class="link-tagline" data-i18n="link.tagline">Escursioni a Tenerife: mandi la richiesta su WhatsApp, l'ufficio conferma entro 24 ore.</p>
 
     <nav class="link-list" data-i18n-aria-label="link.aria" aria-label="Link">
+      <!-- L'escursione dell'ultimo video: la sceglie ULTIMO_VIDEO in link.js,
+           che riempie foto, titolo, zona e prezzo dal catalogo. -->
+      <a class="link-video" id="ultimoVideo" href="./escursioni.html" hidden>
+        <img src="" alt="" width="72" height="72" />
+        <span>
+          <em data-i18n="link.lastVideo">Dal nostro ultimo video</em>
+          <strong></strong>
+          <small></small>
+        </span>
+      </a>
       <a class="link-item link-item-main" href="./escursioni.html">
         <span data-i18n="link.experiences">Tutte le esperienze</span>
         <small data-i18n="link.experiencesSub">Barche, Teide, quad, parchi e altro</small>
@@ -85,6 +95,8 @@
 
   <script src="./trasloco.js"></script>
   <script src="./i18n.js"></script>
+  <script src="./esplora-catalog.js"></script>
+  <script src="./link.js"></script>
   <!-- Cloudflare Web Analytics: conta le visite, senza cookie (vedi NOTES.md) --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a352d8c5d0e744fbb696ae4294a2c023"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

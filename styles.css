@@ -1439,6 +1439,35 @@ html:not([lang="de"]) .pp[lang="de"] { display: none; }
 .privacy a { text-decoration: underline; }
 .privacy .pp-date { color: var(--muted); font-size: .85rem; margin: 0 0 1.5rem; }
 
+/* La pagina dei link (link.html), il "link nella bio" dei social: una colonna
+   di pulsanti grandi, larghi quanto il telefono, che si toccano col pollice.
+   Il primo e' pieno (e' quello che si vuole far toccare), gli altri sono
+   carte chiare: con sei pulsanti tutti neri non se ne vedeva nessuno. */
+.link-page { text-align: center; padding-bottom: 3rem; }
+.link-logo { border-radius: 20px; display: block; margin: .5rem auto 0; }
+.link-page h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 2rem;
+  margin: .8rem 0 .3rem;
+}
+.link-tagline { color: var(--muted); margin: 0 auto 1.6rem; max-width: 26rem; }
+.link-list { display: flex; flex-direction: column; gap: .7rem; }
+.link-item {
+  display: block;
+  padding: .85rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+}
+.link-item span { display: block; font-weight: 500; font-size: 1.02rem; }
+.link-item small { display: block; color: var(--muted); font-size: .85rem; }
+.link-item-main { background: var(--primary); border-color: var(--primary); }
+.link-item-main span,
+.link-item-main small { color: var(--primary-foreground); }
+.link-item-main small { opacity: .8; }
+
 @media (min-width: 768px) {
   .footer .wrap { max-width: var(--max-wide); }
   .footer-grid {

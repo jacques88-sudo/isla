@@ -21230,3 +21230,28 @@ Per vederlo in un altro giorno `index.html?halloween=1`; `?halloween=0` lo spegn
 
 Provato nel browser a 390 px, chiaro e scuro: nessuno scorrimento di lato, lista e Menu
 si leggono, il 24 ottobre acceso e il 1° novembre spento con la data finta.
+
+---
+
+## La pagina dei link per i social (26 ottobre 2026)
+
+Prima di rifare il post "Pacchetto coppia" il proprietario vuole sistemare
+Instagram, Facebook e TikTok, con un "link nella bio". Scelte fatte con lui:
+
+- **un nome solo, `isla_tenerife`**, su tutti e tre: TikTok si chiamava
+  `fran.escursionitenerife` e la pagina Facebook "Fran.escursioni". La pagina
+  Facebook si **rinomina**, non se ne apre una nuova: le recensioni vecchie restano;
+- **al posto di Linktree, una pagina nostra**: `link.html`, che si apre anche come
+  `islaexcursionstenerife.com/link` (GitHub Pages trova da solo il `.html`). Gratis,
+  senza il marchio di un altro, nello stile di Isla, e Cloudflare la conta come le
+  altre pagine;
+- **bio in italiano e inglese**; la pagina segue la lingua del telefono come il resto
+  del sito, con le bandiere.
+
+Cinque pulsanti: esperienze (il primo, pieno), pacchetti, WhatsApp
+(`+34657772032`, senza testo già scritto: non serve `perUfficio()`), noleggio, "Le
+mie prenotazioni". Niente capsula né Menu: deve stare in uno schermo. Non sta in
+`sitemap.xml`: è una porta d'ingresso dai social, non una pagina da cercare.
+
+**In sospeso**: i pulsanti dei social (Instagram, TikTok, Facebook) aspettano che
+TikTok e Facebook abbiano il nome nuovo e l'indirizzo della pagina Facebook.

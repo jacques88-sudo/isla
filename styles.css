@@ -1467,6 +1467,27 @@ html:not([lang="de"]) .pp[lang="de"] { display: none; }
 .link-item-main span,
 .link-item-main small { color: var(--primary-foreground); }
 .link-item-main small { opacity: .8; }
+/* I social in fondo: tre tondi da 48 px, la misura minima di un tocco. */
+.link-social { display: flex; justify-content: center; gap: 1rem; margin-top: 1.6rem; }
+.link-social a {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+}
+.link-social svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
 @media (min-width: 768px) {
   .footer .wrap { max-width: var(--max-wide); }

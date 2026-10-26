@@ -182,9 +182,25 @@ a { text-decoration: none; color: inherit; }
 .brand img {
   width: 34px;
   height: 34px;
-  border-radius: 8px;
-  object-fit: cover;
 }
+/* IL LOGO STA SEMPRE NEL CERCHIO BIANCO (proprietario, 26 ottobre 2026): sul
+   sito, sui social, nelle grafiche. Come quello grande della home
+   (.home-hero-mark): bianco fisso e non una variabile, che al buio si
+   girerebbe. Il disegno sta dentro il cerchio col suo margine (padding), in
+   px e non in %: il % del padding si conta sulla larghezza della pagina, e il
+   logo spariva. */
+.brand img,
+.footer-brand img,
+.privacy-home img,
+.link-logo {
+  border-radius: 50%;
+  background: #fff;
+  forced-color-adjust: none;
+  padding: 4px;
+  object-fit: contain;
+  box-sizing: border-box;
+}
+.link-logo { padding: 13px; }
 .brand-text {
   display: flex;
   flex-direction: column;
@@ -1335,8 +1351,6 @@ p.note-box { margin: 0 0 1rem; }
 .footer-brand img {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
-  object-fit: cover;
 }
 .footer-brand div {
   display: flex;
@@ -1414,7 +1428,6 @@ html:not([lang="de"]) .pp[lang="de"] { display: none; }
   text-transform: uppercase;
   letter-spacing: .12em;
 }
-.privacy-home img { border-radius: 8px; }
 .privacy { padding-bottom: 4rem; line-height: 1.65; }
 .privacy h1 {
   /* "Verkaufsbedingungen" e' una parola sola, piu' larga di un telefono da 320 px */
@@ -1444,7 +1457,7 @@ html:not([lang="de"]) .pp[lang="de"] { display: none; }
    Il primo e' pieno (e' quello che si vuole far toccare), gli altri sono
    carte chiare: con sei pulsanti tutti neri non se ne vedeva nessuno. */
 .link-page { text-align: center; padding-bottom: 3rem; }
-.link-logo { border-radius: 20px; display: block; margin: .5rem auto 0; }
+.link-logo { display: block; margin: .5rem auto 0; box-shadow: var(--shadow); }
 .link-page h1 {
   font-family: var(--font-display);
   font-weight: 500;

@@ -21292,3 +21292,14 @@ sempre: una coppia con un quad doppio paga 278 (139 × 2), tre persone con un qu
 singolo e uno doppio 459,90. Accanto al prezzo la pillola rosa "Offerta" (`pack.offer`),
 in vetrina e sulla pagina del pacchetto. Gli altri pacchetti restano al loro sconto.
 `sconto: 10` resta scritto: togliendo `prezzoOfferta` torna 145,80.
+
+### Il logo sempre nel cerchio bianco (26 ottobre 2026)
+
+Il proprietario: "il logo lo vorrei sempre con il cerchio a sfondo bianco", da tenere a
+mente per tutto (sito, social, grafiche). È in `CLAUDE.md`, fra le cose decise. Sul sito
+lo aveva già il logo grande della home e delle schede (`.home-hero-mark`, 12 ottobre);
+ora anche i piccoli: intestazione di "Le mie prenotazioni" (`.brand`), piè di pagina
+(`.footer-brand`), privacy, termini e pagina dei link (`.privacy-home`, `.link-logo`).
+Una regola sola in `styles.css`, bianco fisso anche al buio. Il margine interno è in px:
+scritto in % il logo spariva, perché il padding in % si conta sulla larghezza del
+contenitore, non dell'immagine. Fuori la schermata di caricamento (`.splash-logo`).

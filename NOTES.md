@@ -21321,3 +21321,15 @@ Per la storia di Instagram (adesivo Link) e il testo di Facebook del post dell'o
 `indirizzi-corti.js` accetta ora anche `"pacchetto:<id>"`, come `ULTIMO_VIDEO` in
 `link.js`; l'anteprima prende titolo, prima frase della descrizione e foto del
 pacchetto. Il pacchetto non ha `published`: c'è o non c'è.
+
+### I modelli delle grafiche salvati in `social/` (27 ottobre 2026)
+
+Il proprietario ha chiesto di salvare "i momenti importanti" per riprendere i social in
+un'altra chat. Le grafiche del pacchetto coppia stavano solo nella scratchpad, che sparisce
+con la sessione: ora i modelli sono in `social/` (`carosello.html`, `verticali.html`,
+`fai-grafiche.js`, la foto del parascending senza il logo di Tripadvisor in `foto/`) e le
+regole in `social/LEGGIMI.md`. Lo script rifà le stesse immagini al pixel e il video di 12
+secondi; le immagini finite non si committano. `social/` è in `robots.txt` come `stampa/`.
+Su Notion, nella pagina "Social — video, clip e cose imparate", ci sono il piano di 12
+settimane (database) e le decisioni: nomi dei profili, link in bio, Meta Business Suite,
+Metricool più avanti.

@@ -21333,22 +21333,3 @@ secondi; le immagini finite non si committano. `social/` è in `robots.txt` come
 Su Notion, nella pagina "Social — video, clip e cose imparate", ci sono il piano di 12
 settimane (database) e le decisioni: nomi dei profili, link in bio, Meta Business Suite,
 Metricool più avanti.
-
-### Adrenalina si conta da due (28 ottobre 2026)
-
-Il proprietario: nelle spiegazioni del pacchetto Adrenalina "una persona sola pagherebbe
-55 euro un buggy e 60 la moto d'acqua", sotto il prezzo di vendita e, guardando i netti
-su Notion, sotto o uguale a quello che si paga alla compagnia. Il numero veniva dalla
-regola del 16 settembre ("il mezzo diviso fra tutti i suoi posti"): il buggy da 6 posti
-330 : 6 = 55, e in vetrina "da €153". Chi viene da solo o in due lo legge come il suo.
-
-Scelto dal proprietario fra "contato per due" e "persona da sola": **contato per due**,
-come in "Perfetto per 2". Le due voci a mezzo hanno `posti: 2`: buggy da 2 posti
-180 : 2 = 90, moto doppia 120 : 2 = 60, parascending 55 → 205, col 10% **da €184,50**.
-Nella finestra non cambia niente: il totale si fa coi mezzi scelti (1 persona, buggy da
-2 e moto singola: €301,50; 2 persone: €369; 4 persone, buggy da 4 e due doppie: €630,
-cioè €157,50 a testa). Più posti vuol dire totale più alto e quota a testa più bassa.
-
-Gli altri pacchetti col buggy diviso per sei o la moto doppia (Tenerife Trio versione
-buggy, quello con buggy barca e stelle, Mare a tutto gas) per ora restano come sono:
-domanda aperta al proprietario.

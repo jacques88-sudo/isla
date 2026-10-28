@@ -279,10 +279,10 @@ const PACCHETTI = [
 
   {
     id: "tenerife-buggy",
-    // PREZZO MISTO: il buggy si paga a mezzo, le altre due a persona. In
-    // vetrina il buggy entra diviso per i posti del piu' capiente: 330 : 6 =
-    // 55. 55 + 55 + 44 = 154, e il Siam Park non si sconta: −11,00 → da 143
-    // a persona.
+    // PREZZO MISTO, contato da due (`posti: 2`, proprietario, 28 ottobre
+    // 2026): il buggy da 2 posti 180 : 2 = 90, le altre due a persona.
+    // 90 + 55 + 44 = 189, e il Siam Park non si sconta: −14,50 → da 174,50
+    // a persona. Prima il buggy era diviso per 6 (330 : 6 = 55, da 143).
     title: {
       it: "Tenerife Trio, versione buggy",
       en: "Tenerife Trio, buggy version",
@@ -298,7 +298,7 @@ const PACCHETTI = [
     // percorso va fissato su `optionIndex: 0` (Offroad) o `3` (Montagna su
     // strada), gli unici due che al parco non ci vanno.
     voci: [
-      { id: "buggy-volcano-4h" },
+      { id: "buggy-volcano-4h", posti: 2 },
       { id: "luxury-cruiser", optionIndex: 0 },
       { id: "siam-park" }
     ],
@@ -315,9 +315,10 @@ const PACCHETTI = [
 
   {
     id: "terra-mare-stelle",
-    // PREZZO MISTO: il buggy si paga a mezzo, barca e stelle a persona.
-    // Il buggy in vetrina e' 330 : 6 = 55. 55 + 55 + 79 = 189, tutto
-    // scontabile: −18,90 → da 170,10 a persona. E' il pacchetto con dentro
+    // PREZZO MISTO, contato da due (`posti: 2`, proprietario, 28 ottobre
+    // 2026): il buggy da 2 posti 180 : 2 = 90, barca e stelle a persona.
+    // 90 + 55 + 79 = 224, tutto scontabile: −22,40 → da 201,60 a persona
+    // (prima, col buggy diviso per 6, da 170,10). E' il pacchetto con dentro
     // tre dei quattro prodotti da spingere e nessun biglietto a prezzo fisso:
     // lo sconto si vede tutto.
     title: {
@@ -333,7 +334,7 @@ const PACCHETTI = [
       // optionIndex 0 = "Offroad, 3 ore". Fissato apposta: e' un percorso che
       // al Parco Nazionale non sale, e la salita al Teide in questo pacchetto
       // e' gia' quella della sera.
-      { id: "buggy-volcano-4h", optionIndex: 0 },
+      { id: "buggy-volcano-4h", optionIndex: 0, posti: 2 },
       { id: "luxury-cruiser", optionIndex: 0 },
       // optionIndex 1 = gruppo piccolo, in minivan.
       { id: "stargazing-group", optionIndex: 1 }
@@ -385,9 +386,10 @@ const PACCHETTI = [
 
   {
     id: "mare-a-tutto-gas",
-    // PREZZO MISTO: il jet ski si paga a mezzo, le altre due a persona. La
-    // moto d'acqua in vetrina e' la doppia, 120 : 2 = 60. 55 + 60 + 15 = 130,
-    // tutto scontabile: −13,00 → da 117 a persona.
+    // PREZZO MISTO, contato da due (`posti: 2`, proprietario, 28 ottobre
+    // 2026): la moto d'acqua doppia 120 : 2 = 60, le altre due a persona.
+    // 55 + 60 + 15 = 130, tutto scontabile: −13,00 → da 117 a persona. Il
+    // numero non cambia: la doppia era gia' il mezzo diviso per due.
     title: {
       it: "Mare a tutto gas",
       en: "Sea, full throttle",
@@ -399,7 +401,7 @@ const PACCHETTI = [
     sconto: 10,
     voci: [
       { id: "luxury-cruiser", optionIndex: 0 },
-      { id: "jet-ski-safari-1-2h", optionIndex: 1 },
+      { id: "jet-ski-safari-1-2h", optionIndex: 1, posti: 2 },
       { id: "banana-boat" }
     ],
     desc: {
@@ -1071,15 +1073,20 @@ const PACCHETTI_SU_MISURA_TITOLO_GIORNI = {
 //
 //   Dove c'e' un mezzo il numero e' la **combinazione piu' bassa possibile a
 //   persona** (scelta del proprietario, 16 settembre 2026): ogni mezzo diviso
-//   fra tutti i posti che ha, e le escursioni a persona a testa. Su "Tenerife
-//   Trio, versione buggy" e' il buggy da 6 posti (330 : 6 = 55). Adrenalina
-//   invece si conta da due (`posti: 2`, proprietario, 28 ottobre 2026): col
-//   buggy diviso per sei il "da €55 a persona" stava sotto il prezzo di
-//   vendita e sotto i netti, e chi viene da solo o in due lo leggeva come il
-//   suo prezzo.
+//   fra tutti i posti che ha, e le escursioni a persona a testa.
 //
-//   **Si scrive "da €153", mai "€153".** Il "da" e' la differenza fra un
-//   minimo e una bugia: chi e' in due sul buggy paga 90 a testa e non 55, e un
+//   **Ma oggi i pacchetti dell'ufficio con un mezzo si contano da due** (`posti: 2`
+//   sulla voce, proprietario, 28 ottobre 2026): col buggy diviso per sei il
+//   "da €55 a persona" stava sotto il prezzo di vendita e sotto i netti, e
+//   chi viene da solo o in due lo leggeva come il suo prezzo. Su Adrenalina:
+//   buggy da 2 posti 180 : 2 = 90, moto doppia 120 : 2 = 60, parascending
+//   55 → da €184,50. Un pacchetto nuovo con un mezzo prende `posti: 2`.
+//   "Crea il tuo pacchetto" invece conta da due solo nella vetrina "per-due"
+//   (PACCHETTI_SU_MISURA): nelle altre il mezzo si divide ancora per tutti i
+//   suoi posti.
+//
+//   **Si scrive "da €184,50", mai "€184,50".** Il "da" e' la differenza fra
+//   un minimo e una bugia: chi e' da solo sul buggy paga 180 e non 90, e un
 //   numero secco gli **salirebbe** in faccia al momento della richiesta — la
 //   cosa che `CLAUDE.md` dice di non fare mai. Col "da" davanti e la nota
 //   sotto (`pack.unitNote`, che dice che in meno persone il mezzo costa di

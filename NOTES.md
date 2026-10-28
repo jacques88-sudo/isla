@@ -21333,3 +21333,23 @@ secondi; le immagini finite non si committano. `social/` è in `robots.txt` come
 Su Notion, nella pagina "Social — video, clip e cose imparate", ci sono il piano di 12
 settimane (database) e le decisioni: nomi dei profili, link in bio, Meta Business Suite,
 Metricool più avanti.
+
+### Le righe dei pacchetti: il prezzo dei mezzi, non "da €55 a persona" (28 ottobre 2026)
+
+Il proprietario: nelle spiegazioni delle singole escursioni dentro Adrenalina "una
+persona sola pagherebbe 55 euro un buggy e 60 la moto d'acqua", sotto il prezzo di
+vendita e sotto i netti. La riga diceva "Completo, 4 ore · da €55 a persona · 6 posti
+€330/buggy".
+
+Prima ho capito male e ho cambiato il numero in vetrina, due volte (contato per due, poi
+per una persona sola: PR #587, #588, #589). Il proprietario: **"le cose 'da' erano
+corrette per la vetrina"**, lo sbagliato era la riga. Le tre PR sono state annullate (la
+vetrina è di nuovo "da €153", la regola del 16 settembre resta) e la riga è cambiata:
+
+- ogni voce a mezzo mostra **il prezzo di ogni mezzo**, uno per misura e senza prezzo a
+  testa: "Buggy: 2 posti €180 · 4 posti €240 · 6 posti €330", "Moto d'acqua: Singola
+  €100 · Doppia €120" (pacchettoMezziTesto);
+- con `posti` sulla voce (Perfetto per 2) solo quella misura: "Buggy: 2 posti €180";
+- lo stesso nelle righe di "Crea il tuo pacchetto".
+
+Il "da €… a persona" resta **solo in vetrina**, con la nota `pack.unitNote` sotto.

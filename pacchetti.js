@@ -2306,6 +2306,19 @@ function initPacchettiGriglia() {
   document.addEventListener("islalang", disegna);
 }
 
+// I prezzi dei mezzi di una voce, uno per misura: "Buggy: 2 posti €180 ·
+// 4 posti €240 · 6 posti €330". Con `posti` sulla voce (Perfetto per 2) solo
+// quella misura, che e' quella contata in vetrina. Un mezzo senza prezzo
+// non si scrive.
+function pacchettoMezziTesto(voce) {
+  const gruppo = pacchettoVoceMezzi(voce);
+  if (!gruppo) return "";
+  const prezzi = gruppo.tipi
+    .filter(tipo => gruppo.prezzi[tipo.key] && (!voce.posti || tipo.seats === voce.posti))
+    .map(tipo => tf(tipo.name) + " €" + eur(gruppo.prezzi[tipo.key]));
+  return prezzi.length ? tf(gruppo.mezzi.name) + ": " + prezzi.join(" · ") : "";
+}
+
 // La riga di un'escursione dentro il pacchetto: titolo, due righe di cosa e',
 // e il prezzo. **Non e' un link**: dal pacchetto non si esce per andare a
 // prendere una escursione da sola — si chiede il pacchetto intero. La
@@ -2332,13 +2345,12 @@ function pacchettoVoceHTML(voce, n, famiglia) {
     const fascia = (tour.ages && tour.ages.child) ? " (" + tf(tour.ages.child) + ")" : "";
     dettagli.push(t("pack.priceChildren", { n: eur(bambino) }) + fascia);
   } else if (prezzo && prezzo.tipo === "mezzo" && prezzo.aPersona) {
-    // Due numeri, e servono tutti e due: il "da €55 a persona" e' quello che
-    // entra nel conto in cima alla pagina, e "6 posti €330/buggy" e' da dove
-    // esce. Senza il secondo il cliente legge un prezzo a testa su una cosa
-    // che a testa non si paga, e nella finestra della richiesta si trova
-    // davanti i contatori dei mezzi senza sapere perche'.
-    dettagli.push(t("tour.from", { p: eur(prezzo.aPersona) }) + " " + t("pack.perPerson"));
-    dettagli.push(tf(prezzo.mezzo.name) + " €" + eur(prezzo.prezzoMezzo) + priceUnitSuffix(tour));
+    // Il prezzo di ogni mezzo, non un prezzo a testa (proprietario, 28 ottobre
+    // 2026). Prima la riga diceva "da €55 a persona · 6 posti €330/buggy", e
+    // si leggeva come il prezzo di uno che viene da solo, che invece il mezzo
+    // lo paga intero: sotto il prezzo di vendita, e sotto i netti. Il "da" a
+    // persona resta solo in vetrina, dove la nota spiega da dove viene.
+    dettagli.push(pacchettoMezziTesto(voce));
   } else if (prezzo) {
     dettagli.push("€" + eur(prezzo.prezzo) + priceUnitSuffix(tour));
   }
@@ -2402,14 +2414,12 @@ function pacchettoSuMisuraScelte(regole) {
     .filter(s => s.voci.length);
 }
 
-// Il prezzo di una voce come si legge nella riga: a persona, "da" sui mezzi, e
+// Il prezzo di una voce come si legge nella riga: a persona, i mezzi uno per uno, e
 // nella vetrina di famiglia anche quello dei bambini.
 function pacchettoSuMisuraPrezzoTesto(regole, voce) {
   const prezzo = pacchettoVocePrezzo(voce);
   if (!prezzo) return "";
-  if (prezzo.tipo === "mezzo") {
-    return t("tour.from", { p: eur(prezzo.aPersona) }) + " " + t("pack.perPerson");
-  }
+  if (prezzo.tipo === "mezzo") return pacchettoMezziTesto(voce);
   if (regole.famiglia) {
     return t("pack.priceAdults", { n: eur(prezzo.prezzo) }) + " · " +
       t("pack.priceChildren", { n: eur(pacchettoVocePrezzoBambino(voce)) });

@@ -21349,8 +21349,6 @@ Nella finestra non cambia niente: il totale si fa coi mezzi scelti (1 persona, b
 2 e moto singola: €301,50; 2 persone: €369; 4 persone, buggy da 4 e due doppie: €630,
 cioè €157,50 a testa). Più posti vuol dire totale più alto e quota a testa più bassa.
 
-Lo stesso giorno il proprietario ha detto sì anche per gli altri tre: `posti: 2` su ogni
-voce a mezzo. Tenerife Trio versione buggy **da €174,50** (era 143), Terra mare e stelle
-**da €201,60** (era 170,10), Mare a tutto gas resta **da €117** (la doppia era già divisa
-per due). "Crea il tuo pacchetto" conta da due solo nella vetrina per-due: nelle altre
-(base, 3, 5, 7 giorni) il buggy si divide ancora per sei. Domanda aperta al proprietario.
+Gli altri pacchetti col buggy diviso per sei o la moto doppia (Tenerife Trio versione
+buggy, quello con buggy barca e stelle, Mare a tutto gas) per ora restano come sono:
+domanda aperta al proprietario.

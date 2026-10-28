@@ -617,8 +617,9 @@ const ESPLORA_CATALOG = [
   {
     id: "freebird-catamaran",
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
-    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
-    title: "Whale & Dolphin Catamaran Cruise",
+    // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
+    // venditori e i ticket.
+    title: { it: "Crociera in catamarano con balene e delfini", en: "Whale & Dolphin Catamaran Cruise", es: "Crucero en catamarán con ballenas y delfines", fr: "Croisière en catamaran baleines et dauphins", de: "Wal- und Delfin-Katamarantour" },
     nomi: ["Freebird"],
     category: "mare-barche",
     zone: "Puerto Colón",
@@ -793,8 +794,9 @@ const ESPLORA_CATALOG = [
   {
     id: "royal-delfin",
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
-    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
-    title: "Underwater View Catamaran",
+    // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
+    // venditori e i ticket.
+    title: { it: "Catamarano con vista sottomarina", en: "Underwater View Catamaran", es: "Catamarán con vista submarina", fr: "Catamaran à vision sous-marine", de: "Katamaran mit Unterwassersicht" },
     nomi: ["Royal Delfin"],
     category: "mare-barche",
     zone: "Puerto Colón",
@@ -1001,8 +1003,9 @@ const ESPLORA_CATALOG = [
     // nessun'altra barca delle 3 ore ha il menu canario a bordo.
     id: "maxicat",
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
-    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
-    title: "Whale Watching & Canarian Lunch",
+    // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
+    // venditori e i ticket.
+    title: { it: "Balene e delfini con pranzo canario", en: "Whale Watching & Canarian Lunch", es: "Avistamiento de cetáceos con almuerzo canario", fr: "Baleines et dauphins avec déjeuner canarien", de: "Walbeobachtung mit kanarischem Mittagessen" },
     // Serve anche al menu della compagnia nel modulo dei venditori: il netto
     // di Maxicat e' per compagnia.
     nomi: ["Maxicat"],
@@ -1097,8 +1100,9 @@ const ESPLORA_CATALOG = [
   {
     id: "peter-pan",
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
-    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
-    title: "Pirate Ship Dolphin Trip",
+    // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
+    // venditori e i ticket.
+    title: { it: "Nave pirata con i delfini", en: "Pirate Ship Dolphin Trip", es: "Barco pirata con delfines", fr: "Bateau pirate à la rencontre des dauphins", de: "Piratenschiff-Delfintour" },
     nomi: ["Peter Pan"],
     category: "mare-barche",
     zone: "Los Cristianos",
@@ -1167,8 +1171,9 @@ const ESPLORA_CATALOG = [
   {
     id: "flipper-one",
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
-    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
-    title: "Wooden Schooner from Los Gigantes",
+    // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
+    // venditori e i ticket.
+    title: { it: "Goletta di legno da Los Gigantes", en: "Wooden Schooner from Los Gigantes", es: "Goleta de madera desde Los Gigantes", fr: "Goélette en bois depuis Los Gigantes", de: "Holzschoner ab Los Gigantes" },
     nomi: ["Flipper One"],
     category: "mare-barche",
     // L'unica scheda che parte da Los Gigantes: tutte le altre barche sono a
@@ -1669,8 +1674,9 @@ const ESPLORA_CATALOG = [
   {
     id: "utopia-boat-party",
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
-    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
-    title: "Boat Party",
+    // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
+    // venditori e i ticket.
+    title: { it: "Festa in barca", en: "Boat Party", es: "Fiesta en barco", fr: "Soirée en bateau", de: "Bootsparty" },
     nomi: ["Utopia"],
     category: "mare-barche",
     zone: "Puerto Colón",
@@ -1797,8 +1803,9 @@ const ESPLORA_CATALOG = [
   {
     id: "shogun",
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
-    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
-    title: "Oriental Schooner to Masca Bay",
+    // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
+    // venditori e i ticket.
+    title: { it: "Goletta orientale alla baia di Masca", en: "Oriental Schooner to Masca Bay", es: "Goleta oriental a la bahía de Masca", fr: "Goélette orientale vers la baie de Masca", de: "Orientalischer Schoner zur Bucht von Masca" },
     nomi: ["Shogun"],
     category: "mare-barche",
     zone: "Puerto Colón",
@@ -1904,8 +1911,9 @@ const ESPLORA_CATALOG = [
   {
     id: "opera-60",
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
-    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
-    title: "Speedboat & Snorkel Trip",
+    // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
+    // venditori e i ticket.
+    title: { it: "Gommone veloce e snorkeling", en: "Speedboat & Snorkel Trip", es: "Lancha rápida y snorkel", fr: "Bateau rapide et snorkeling", de: "Schnellboot- und Schnorcheltour" },
     nomi: ["Opera 60"],
     category: "mare-barche",
     zone: "Puerto Colón",
@@ -2167,8 +2175,9 @@ const ESPLORA_CATALOG = [
   {
     id: "skyline-cruiser",
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
-    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
-    title: "Motor Yacht Dolphin Trip",
+    // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
+    // venditori e i ticket.
+    title: { it: "Motoryacht con i delfini", en: "Motor Yacht Dolphin Trip", es: "Yate a motor con delfines", fr: "Yacht à moteur à la rencontre des dauphins", de: "Motorjacht-Delfintour" },
     nomi: ["Skyline Cruiser", "Skyline"],
     category: "mare-barche",
     zone: "Puerto Colón",
@@ -2259,8 +2268,9 @@ const ESPLORA_CATALOG = [
   {
     id: "ragnarok",
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
-    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
-    title: "Viking Boat Tour",
+    // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
+    // venditori e i ticket.
+    title: { it: "Barca vichinga", en: "Viking Boat Tour", es: "Barco vikingo", fr: "Bateau viking", de: "Wikingerboot-Tour" },
     nomi: ["Ragnarok"],
     category: "mare-barche",
     zone: "Los Cristianos",
@@ -8006,8 +8016,9 @@ const ESPLORA_CATALOG = [
   {
     id: "opera-60-charter",
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
-    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
-    title: "Speedboat & Snorkel Trip",
+    // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
+    // venditori e i ticket.
+    title: { it: "Gommone veloce e snorkeling", en: "Speedboat & Snorkel Trip", es: "Lancha rápida y snorkel", fr: "Bateau rapide et snorkeling", de: "Schnellboot- und Schnorcheltour" },
     category: "tour-privati",
     zone: "Puerto Colón",
     duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas", fr: "De 3 à 9 heures", de: "3 bis 9 Stunden" },
@@ -8033,8 +8044,9 @@ const ESPLORA_CATALOG = [
   {
     id: "skyline-cruiser-charter",
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
-    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
-    title: "Motor Yacht Dolphin Trip",
+    // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
+    // venditori e i ticket.
+    title: { it: "Motoryacht con i delfini", en: "Motor Yacht Dolphin Trip", es: "Yate a motor con delfines", fr: "Yacht à moteur à la rencontre des dauphins", de: "Motorjacht-Delfintour" },
     category: "tour-privati",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },

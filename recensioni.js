@@ -238,8 +238,8 @@ function cardRecensione(r) {
   const tour = r.excursion_id ? ESPLORA_CATALOG.find(x => x.id === r.excursion_id) : null;
   const fatta = tour
     ? `<p class="rev-tour">${esc(t("rev.did"))} ${tour.published
-        ? `<a href="./tour.html?id=${encodeURIComponent(tour.id)}">${esc(tour.title)}</a>`
-        : esc(tour.title)}</p>`
+        ? `<a href="./tour.html?id=${encodeURIComponent(tour.id)}">${esc(tf(tour.title))}</a>`
+        : esc(tf(tour.title))}</p>`
     : "";
   const sotto = [meseDi(r.mese), linguaDi(r.lingua), FONTI[r.fonte] ? t("rev.from", { fonte: FONTI[r.fonte] }) : ""]
     .filter(Boolean).map(esc).join(" · ");

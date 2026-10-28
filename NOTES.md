@@ -21334,54 +21334,22 @@ Su Notion, nella pagina "Social — video, clip e cose imparate", ci sono il pia
 settimane (database) e le decisioni: nomi dei profili, link in bio, Meta Business Suite,
 Metricool più avanti.
 
-### Adrenalina si conta da due (28 ottobre 2026)
+### Le righe dei pacchetti: il prezzo dei mezzi, non "da €55 a persona" (28 ottobre 2026)
 
-Il proprietario: nelle spiegazioni del pacchetto Adrenalina "una persona sola pagherebbe
-55 euro un buggy e 60 la moto d'acqua", sotto il prezzo di vendita e, guardando i netti
-su Notion, sotto o uguale a quello che si paga alla compagnia. Il numero veniva dalla
-regola del 16 settembre ("il mezzo diviso fra tutti i suoi posti"): il buggy da 6 posti
-330 : 6 = 55, e in vetrina "da €153". Chi viene da solo o in due lo legge come il suo.
+Il proprietario: nelle spiegazioni delle singole escursioni dentro Adrenalina "una
+persona sola pagherebbe 55 euro un buggy e 60 la moto d'acqua", sotto il prezzo di
+vendita e sotto i netti. La riga diceva "Completo, 4 ore · da €55 a persona · 6 posti
+€330/buggy".
 
-Scelto dal proprietario fra "contato per due" e "persona da sola": **contato per due**,
-come in "Perfetto per 2". Le due voci a mezzo hanno `posti: 2`: buggy da 2 posti
-180 : 2 = 90, moto doppia 120 : 2 = 60, parascending 55 → 205, col 10% **da €184,50**.
-Nella finestra non cambia niente: il totale si fa coi mezzi scelti (1 persona, buggy da
-2 e moto singola: €301,50; 2 persone: €369; 4 persone, buggy da 4 e due doppie: €630,
-cioè €157,50 a testa). Più posti vuol dire totale più alto e quota a testa più bassa.
+Prima ho capito male e ho cambiato il numero in vetrina, due volte (contato per due, poi
+per una persona sola: PR #587, #588, #589). Il proprietario: **"le cose 'da' erano
+corrette per la vetrina"**, lo sbagliato era la riga. Le tre PR sono state annullate (la
+vetrina è di nuovo "da €153", la regola del 16 settembre resta) e la riga è cambiata:
 
-Lo stesso giorno il proprietario ha detto sì anche per gli altri tre: `posti: 2` su ogni
-voce a mezzo. Tenerife Trio versione buggy **da €174,50** (era 143), Terra mare e stelle
-**da €201,60** (era 170,10), Mare a tutto gas resta **da €117** (la doppia era già divisa
-per due). "Crea il tuo pacchetto" conta da due solo nella vetrina per-due: nelle altre
-(base, 3, 5, 7 giorni) il buggy si divide ancora per sei. Domanda aperta al proprietario.
+- ogni voce a mezzo mostra **il prezzo di ogni mezzo**, uno per misura e senza prezzo a
+  testa: "Buggy: 2 posti €180 · 4 posti €240 · 6 posti €330", "Moto d'acqua: Singola
+  €100 · Doppia €120" (pacchettoMezziTesto);
+- con `posti` sulla voce (Perfetto per 2) solo quella misura: "Buggy: 2 posti €180";
+- lo stesso nelle righe di "Crea il tuo pacchetto".
 
-### I pacchetti con un mezzo: il prezzo di una persona sola (28 ottobre 2026)
-
-Contare da due non bastava. Il proprietario: "il pacchetto deve andare bene anche per
-una persona, e se una persona sola vuole Adrenalina il mezzo lo paga intero, sia la moto
-d'acqua sia il buggy, non 60 per la moto e 90 per il buggy".
-
-Quindi sulle voci a mezzo dei quattro pacchetti c'è `posti: 1`, che vuol dire **una
-persona sola**: il mezzo entra intero, il più economico (pacchettoMezzoAPersona). Buggy
-da 2 posti 180, moto singola 100.
-
-| pacchetto | prima (mezzo diviso per tutti i posti) | per due | adesso |
-|---|---|---|---|
-| Adrenalina | da €153 | da €184,50 | **€301,50** |
-| Tenerife Trio, versione buggy | da €143 | da €174,50 | **€255,50** |
-| Terra, mare e stelle | da €170,10 | da €201,60 | **€282,60** |
-| Mare a tutto gas | da €117 | da €117 | **€153** |
-
-**Senza "da"**: è il numero più alto, in più persone si paga di meno. Lo decide il campo
-nuovo `minimo` di pacchettoConto (c'è un mezzo diviso fra più persone): la vetrina,
-`link.js` e la nota sotto il prezzo lo leggono. La nota nuova è `pack.soloNote`
-("questo è il prezzo per una persona sola. In due o più il mezzo si divide e a testa si
-paga di meno"), nelle cinque lingue. Nelle righe delle voci con `posti: 1` resta solo il
-mezzo ("2 posti €180/buggy", "Singola €100 a moto d'acqua"), senza il "da €… a persona".
-
-Anche "Crea il tuo pacchetto", vetrina base: `posti: 1` in PACCHETTI_SU_MISURA. **Perfetto
-per 2 resta contato da due** (`posti: 2`, "da €…"): è per coppie. `controlla.js` accetta
-`posti: 1` anche dove nessun mezzo ha un posto solo (il buggy).
-
-La finestra della richiesta non cambia: 1 persona su Adrenalina €301,50, 2 persone €369,
-4 persone €630.
+Il "da €… a persona" resta **solo in vetrina**, con la nota `pack.unitNote` sotto.

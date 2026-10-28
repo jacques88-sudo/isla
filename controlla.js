@@ -727,9 +727,7 @@ function controllaPacchetti() {
     // `posti` su una voce: deve esserci almeno un mezzo di quella misura, se no
     // la voce resta senza il prezzo a testa e il pacchetto senza numero.
     (pack.voci || []).forEach(voce => {
-      // `posti: 1` e' una persona sola, che il mezzo lo paga intero: vale
-      // con qualunque misura.
-      if (voce.posti === undefined || voce.posti === 1) return;
+      if (voce.posti === undefined) return;
       const scheda = ESPLORA_CATALOG.find(t => t.id === voce.id);
       const tipi = (scheda && scheda.units && scheda.units.types) || [];
       if (!tipi.some(tipo => tipo.seats === voce.posti)) {

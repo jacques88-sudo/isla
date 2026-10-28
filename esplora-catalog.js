@@ -616,7 +616,10 @@ const ESPLORA_CATALOG = [
   // arriva su WhatsApp, in ufficio si ritrova il nome esatto da cercare.
   {
     id: "freebird-catamaran",
-    title: "Freebird Catamaran Trip",
+    // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
+    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
+    title: "Open Bar Catamaran Trip",
+    nomi: ["Freebird"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "Da 2 a 4 ore e mezza", en: "2 to 4.5 hours", es: "De 2 a 4,5 horas", fr: "De 2 à 4 heures et demie", de: "2 bis 4,5 Stunden" },
@@ -789,7 +792,10 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "royal-delfin",
-    title: "Royal Delfin Boat Tour",
+    // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
+    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
+    title: "Underwater View Catamaran",
+    nomi: ["Royal Delfin"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "Da 2 a 4 ore e mezza", en: "2 to 4.5 hours", es: "De 2 a 4,5 horas", fr: "De 2 à 4 heures et demie", de: "2 bis 4,5 Stunden" },
@@ -994,9 +1000,11 @@ const ESPLORA_CATALOG = [
     // Maxicat 2 da 70, dal pantalán 9 di Puerto Colón. Non e' un doppione:
     // nessun'altra barca delle 3 ore ha il menu canario a bordo.
     id: "maxicat",
-    title: "Maxicat Whale Watching",
-    // Il nome sta gia' nel titolo, ma serve al menu della compagnia nel
-    // modulo dei venditori: il netto di Maxicat e' per compagnia.
+    // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
+    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
+    title: "Whale Watching & Canarian Lunch",
+    // Serve anche al menu della compagnia nel modulo dei venditori: il netto
+    // di Maxicat e' per compagnia.
     nomi: ["Maxicat"],
     category: "mare-barche",
     zone: "Puerto Colón",
@@ -1088,7 +1096,10 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "peter-pan",
-    title: "Peter Pan Pirate Ship",
+    // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
+    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
+    title: "Pirate Ship Dolphin Trip",
+    nomi: ["Peter Pan"],
     category: "mare-barche",
     zone: "Los Cristianos",
     duration: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures", de: "2 Stunden" },
@@ -1155,7 +1166,10 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "flipper-one",
-    title: "Flipper One Boat Tour",
+    // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
+    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
+    title: "Wooden Schooner from Los Gigantes",
+    nomi: ["Flipper One"],
     category: "mare-barche",
     // L'unica scheda che parte da Los Gigantes: tutte le altre barche sono a
     // Puerto Colon, Los Cristianos o Marina Amarilla.
@@ -1654,7 +1668,10 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "utopia-boat-party",
-    title: "Utopia Boat Party",
+    // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
+    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
+    title: "Boat Party",
+    nomi: ["Utopia"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
@@ -1779,7 +1796,10 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "shogun",
-    title: "Shogun",
+    // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
+    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
+    title: "Oriental Schooner to Masca Bay",
+    nomi: ["Shogun"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "5 ore", en: "5 hours", es: "5 horas", fr: "5 heures", de: "5 Stunden" },
@@ -1883,7 +1903,10 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "opera-60",
-    title: "Opera 60",
+    // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
+    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
+    title: "Speedboat & Snorkel Trip",
+    nomi: ["Opera 60"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas", fr: "De 3 à 9 heures", de: "3 bis 9 Stunden" },
@@ -2143,7 +2166,10 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "skyline-cruiser",
-    title: "Skyline Cruiser",
+    // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
+    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
+    title: "Motor Yacht Dolphin Trip",
+    nomi: ["Skyline Cruiser", "Skyline"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
@@ -2220,11 +2246,11 @@ const ESPLORA_CATALOG = [
       }
     ],
     desc: {
-      it: "Tre ore a bordo dello Skyline Cruiser, un motoryacht Fairline di quasi 13 metri, fino a 12 persone. Si esce al largo in cerca di delfini e balene, poi la sosta bagno con lo snorkeling in una baia riparata, e il rientro costeggiando le grotte hippie e le scogliere vulcaniche. A bordo capitano ed equipaggio, snack e bevande comprese.",
-      en: "Three hours aboard the Skyline Cruiser, a Fairline motor yacht just under 13 metres long, up to 12 people. You head offshore looking for dolphins and whales, then a swim stop with snorkelling in a sheltered bay, and a coastal return past the hippie caves and volcanic cliffs. On board: captain and crew, with snacks and drinks included.",
-      es: "Tres horas a bordo del Skyline Cruiser, un yate a motor Fairline de casi 13 metros, hasta 12 personas. Se navega mar adentro buscando delfines y ballenas, luego la parada de baño con snorkel en una bahía resguardada, y la vuelta bordeando la costa junto a las cuevas hippies y los acantilados volcánicos. A bordo: capitán y tripulación, con aperitivos y bebidas incluidas.",
-      fr: "Trois heures à bord du Skyline Cruiser, un yacht à moteur Fairline d'un peu moins de 13 mètres, jusqu'à 12 personnes. On part au large à la recherche des dauphins et des baleines, puis un arrêt baignade avec snorkeling dans une baie abritée, et un retour le long de la côte devant les grottes des hippies et les falaises volcaniques. À bord : capitaine et équipage, en-cas et boissons compris.",
-      de: "Drei Stunden an Bord der Skyline Cruiser, einer knapp 13 Meter langen Fairline-Motorjacht, bis zu 12 Personen. Es geht aufs offene Meer auf der Suche nach Delfinen und Walen, dann ein Badestopp mit Schnorcheln in einer geschützten Bucht und die Rückfahrt entlang der Küste, vorbei an den Hippie-Höhlen und Vulkanklippen. An Bord: Kapitän und Crew, Snacks und Getränke inklusive."
+      it: "Tre ore a bordo di un motoryacht Fairline di quasi 13 metri, fino a 12 persone. Si esce al largo in cerca di delfini e balene, poi la sosta bagno con lo snorkeling in una baia riparata, e il rientro costeggiando le grotte hippie e le scogliere vulcaniche. A bordo capitano ed equipaggio, snack e bevande comprese.",
+      en: "Three hours aboard a Fairline motor yacht just under 13 metres long, up to 12 people. You head offshore looking for dolphins and whales, then a swim stop with snorkelling in a sheltered bay, and a coastal return past the hippie caves and volcanic cliffs. On board: captain and crew, with snacks and drinks included.",
+      es: "Tres horas a bordo de un yate a motor Fairline de casi 13 metros, hasta 12 personas. Se navega mar adentro buscando delfines y ballenas, luego la parada de baño con snorkel en una bahía resguardada, y la vuelta bordeando la costa junto a las cuevas hippies y los acantilados volcánicos. A bordo: capitán y tripulación, con aperitivos y bebidas incluidas.",
+      fr: "Trois heures à bord d'un yacht à moteur Fairline d'un peu moins de 13 mètres, jusqu'à 12 personnes. On part au large à la recherche des dauphins et des baleines, puis un arrêt baignade avec snorkeling dans une baie abritée, et un retour le long de la côte devant les grottes des hippies et les falaises volcaniques. À bord : capitaine et équipage, en-cas et boissons compris.",
+      de: "Drei Stunden an Bord einer knapp 13 Meter langen Fairline-Motorjacht, bis zu 12 Personen. Es geht aufs offene Meer auf der Suche nach Delfinen und Walen, dann ein Badestopp mit Schnorcheln in einer geschützten Bucht und die Rückfahrt entlang der Küste, vorbei an den Hippie-Höhlen und Vulkanklippen. An Bord: Kapitän und Crew, Snacks und Getränke inklusive."
     },
     image: "skyline-cruiser.jpg",
     gallery: ["skyline-cruiser-2.webp", "skyline-cruiser-3.webp", "skyline-cruiser-4.webp"],
@@ -2232,7 +2258,10 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "ragnarok",
-    title: "Ragnarok Viking Boat Tour",
+    // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
+    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
+    title: "Viking Boat Tour",
+    nomi: ["Ragnarok"],
     category: "mare-barche",
     zone: "Los Cristianos",
     duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas", fr: "2 ou 3 heures", de: "2 oder 3 Stunden" },
@@ -5168,8 +5197,8 @@ const ESPLORA_CATALOG = [
     // ⚠ Il nome della scuola **non va sul sito** (proprietario, 13 settembre
     // 2026): in descrizione si dice "una scuola di surf". Qui nel commento
     // resta, perche' serve a ritrovare il fornitore fra sei mesi. Attenzione:
-    // e' il contrario delle barche, dove il nome vero (Freebird, Shogun) e'
-    // proprio quello che il cliente deve leggere.
+    // dal 28 ottobre 2026 vale anche per le barche: il nome vero (Freebird,
+    // Shogun) sta in `nomi`, non nel titolo.
     //
     // Il fornitore vende anche il noleggio delle tavole (softboard, fibra,
     // longboard): **non e' in catalogo per scelta del proprietario** (13
@@ -7976,7 +8005,9 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "opera-60-charter",
-    title: "Opera 60",
+    // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
+    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
+    title: "Speedboat & Snorkel Trip",
     category: "tour-privati",
     zone: "Puerto Colón",
     duration: { it: "Da 3 a 9 ore", en: "3 to 9 hours", es: "De 3 a 9 horas", fr: "De 3 à 9 heures", de: "3 bis 9 Stunden" },
@@ -8001,7 +8032,9 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "skyline-cruiser-charter",
-    title: "Skyline Cruiser",
+    // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
+    // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
+    title: "Motor Yacht Dolphin Trip",
     category: "tour-privati",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },

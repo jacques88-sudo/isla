@@ -41,7 +41,7 @@ branch (`git checkout -B <branch> origin/main`).
 
 Non gestisce le escursioni: vende attività di altri operatori. **Il nome della barca o
 della compagnia non va sul sito** (proprietario, 28 ottobre 2026): il titolo dice che giro
-è, come "3-Hour Whale & Dolphin Boat Trip" ("Open Bar Catamaran Trip" era Freebird,
+è, come "3-Hour Whale & Dolphin Boat Trip" ("Whale & Dolphin Catamaran Cruise" era Freebird,
 "Underwater View Catamaran" era Royal Delfin), e il nome vero sta in `nomi`, che il
 cliente non vede. Niente nome nemmeno nelle descrizioni e negli indirizzi corti; gli `id`
 (`freebird-catamaran`) restano, perché li usano richieste, ticket e netti.

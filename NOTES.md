@@ -21387,3 +21387,6 @@ giro). Scelte sue: **tutte le barche**, Freebird e Royal Delfin **restano due sc
   i link già pubblicati con /freebird non funzionano più, per scelta del proprietario. Al
   suo posto `/catamarano`.
 - Regola nuova in `CLAUDE.md` e nella skill `nuova-scheda`.
+
+Lo stesso giorno il proprietario ha chiesto un'alternativa a "Open Bar": la scheda Freebird
+si chiama **Whale & Dolphin Catamaran Cruise**.

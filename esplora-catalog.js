@@ -618,7 +618,7 @@ const ESPLORA_CATALOG = [
     id: "freebird-catamaran",
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
     // il cliente legge che giro e'. Sta in `nomi`, per i venditori e i ticket.
-    title: "Open Bar Catamaran Trip",
+    title: "Whale & Dolphin Catamaran Cruise",
     nomi: ["Freebird"],
     category: "mare-barche",
     zone: "Puerto Colón",

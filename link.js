@@ -28,7 +28,7 @@ function ultimoVideoDati() {
     const conto = pacchettoConto(pack);
     let prezzo = "";
     if (conto) {
-      prezzo = conto.minimo ? t("tour.from", { p: eur(conto.scontato) }) : "€" + eur(conto.scontato);
+      prezzo = conto.misto ? t("tour.from", { p: eur(conto.scontato) }) : "€" + eur(conto.scontato);
       prezzo += " " + t("pack.perPerson");
     }
     return {

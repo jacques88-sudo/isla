@@ -43,10 +43,6 @@
 //                 richiesta non cambia niente: i mezzi si scelgono come sempre.
 //                 Un numero di posti che nessun mezzo della scheda ha lascia la
 //                 voce senza prezzo, e `controlla.js` lo dice.
-//                 `posti: 1` e' un caso a parte: **una persona sola**, che il
-//                 mezzo lo paga intero qualunque misura sia (il buggy da 2
-//                 posti 180, la moto singola 100). Vale su tutti i pacchetti
-//                 che non sono per coppie: vedi "IL NUMERO IN VETRINA".
 //
 //   Gli indici che servono qui, presi dal catalogo:
 //     buggy-volcano-4h    0 Offroad 3h · 1 Tramonto sul Teide · 2 Completo 4h
@@ -186,10 +182,9 @@
 //   "Frutti dell'isola"): tolti dal proprietario lo stesso giorno.
 //
 //   PERFETTO PER 2 e' per le coppie, e il numero in vetrina e' quello di
-//   **due persone**. Gli altri pacchetti contano una persona sola (vedi "IL
-//   NUMERO IN VETRINA"); senza `posti` il conto dividerebbe ogni mezzo per il
-//   piu' capiente: sul buggy da sei o sulla Mustang da quattro uscirebbe il
-//   prezzo di un gruppo, non di una coppia. Dove la scheda ha
+//   **due persone**. Il conto normale divide ogni mezzo per il piu' capiente
+//   (vedi "IL NUMERO IN VETRINA"): sul buggy da sei o sulla Mustang da quattro
+//   uscirebbe il prezzo di un gruppo, non di una coppia. Dove la scheda ha
 //   mezzi piu' grandi di due, la voce porta `posti: 2` (vedi "COME SI COMPILA
 //   UNA VOCE"). Mustang e buggy ci sono su richiesta del proprietario
 //   (6 ottobre 2026), contati cosi'.
@@ -284,10 +279,10 @@ const PACCHETTI = [
 
   {
     id: "tenerife-buggy",
-    // PREZZO MISTO, contato da una persona sola (`posti: 1`, proprietario,
-    // 28 ottobre 2026): il buggy da 2 posti intero, 180, le altre due a
-    // persona. 180 + 55 + 44 = 279, e il Siam Park non si sconta: −23,50 →
-    // 255,50 a persona, senza "da": in piu' persone si paga di meno.
+    // PREZZO MISTO, contato da due (`posti: 2`, proprietario, 28 ottobre
+    // 2026): il buggy da 2 posti 180 : 2 = 90, le altre due a persona.
+    // 90 + 55 + 44 = 189, e il Siam Park non si sconta: −14,50 → da 174,50
+    // a persona. Prima il buggy era diviso per 6 (330 : 6 = 55, da 143).
     title: {
       it: "Tenerife Trio, versione buggy",
       en: "Tenerife Trio, buggy version",
@@ -303,7 +298,7 @@ const PACCHETTI = [
     // percorso va fissato su `optionIndex: 0` (Offroad) o `3` (Montagna su
     // strada), gli unici due che al parco non ci vanno.
     voci: [
-      { id: "buggy-volcano-4h", posti: 1 },
+      { id: "buggy-volcano-4h", posti: 2 },
       { id: "luxury-cruiser", optionIndex: 0 },
       { id: "siam-park" }
     ],
@@ -320,9 +315,10 @@ const PACCHETTI = [
 
   {
     id: "terra-mare-stelle",
-    // PREZZO MISTO, contato da una persona sola (`posti: 1`, proprietario,
-    // 28 ottobre 2026): il buggy da 2 posti intero, 180, barca e stelle a
-    // persona. 180 + 55 + 79 = 314, tutto scontabile: −31,40 → 282,60. E' il pacchetto con dentro
+    // PREZZO MISTO, contato da due (`posti: 2`, proprietario, 28 ottobre
+    // 2026): il buggy da 2 posti 180 : 2 = 90, barca e stelle a persona.
+    // 90 + 55 + 79 = 224, tutto scontabile: −22,40 → da 201,60 a persona
+    // (prima, col buggy diviso per 6, da 170,10). E' il pacchetto con dentro
     // tre dei quattro prodotti da spingere e nessun biglietto a prezzo fisso:
     // lo sconto si vede tutto.
     title: {
@@ -338,7 +334,7 @@ const PACCHETTI = [
       // optionIndex 0 = "Offroad, 3 ore". Fissato apposta: e' un percorso che
       // al Parco Nazionale non sale, e la salita al Teide in questo pacchetto
       // e' gia' quella della sera.
-      { id: "buggy-volcano-4h", optionIndex: 0, posti: 1 },
+      { id: "buggy-volcano-4h", optionIndex: 0, posti: 2 },
       { id: "luxury-cruiser", optionIndex: 0 },
       // optionIndex 1 = gruppo piccolo, in minivan.
       { id: "stargazing-group", optionIndex: 1 }
@@ -354,13 +350,13 @@ const PACCHETTI = [
 
   {
     id: "adrenalina",
-    // PREZZO MISTO, contato da una persona sola (`posti: 1`, proprietario,
-    // 28 ottobre 2026): il buggy da 2 posti intero 180, la moto singola 100,
-    // il parascending 55. 180 + 100 + 55 = 335, tutto scontabile: −33,50 →
-    // 301,50 a persona, senza "da".
-    // Prima il buggy entrava diviso per 6 (330 : 6 = 55, "da €153"), poi per
-    // 2 (90, "da €184,50"): tutti e due numeri che chi viene da solo non paga,
-    // e il primo stava sotto il prezzo di vendita e sotto i netti.
+    // PREZZO MISTO, contato da due (`posti: 2`, proprietario, 28 ottobre
+    // 2026): il buggy da 2 posti 180 : 2 = 90, la moto d'acqua doppia
+    // 120 : 2 = 60, il parascending 55 a persona. 90 + 60 + 55 = 205, tutto
+    // scontabile: −20,50 → da 184,50 a persona.
+    // Prima il buggy entrava diviso per 6 (330 : 6 = 55): "da €55 a persona"
+    // sul buggy e "da €153" in vetrina, che chi viene da solo o in due legge
+    // come il suo prezzo, ed era sotto il prezzo di vendita e sotto i netti.
     title: {
       it: "Adrenalina",
       en: "Adrenaline",
@@ -373,10 +369,10 @@ const PACCHETTI = [
     voci: [
       // optionIndex 2 = "Completo, 4 ore", il percorso lungo. Dentro c'e' il
       // Parco Nazionale: e' l'unica salita al Teide di questo pacchetto.
-      { id: "buggy-volcano-4h", optionIndex: 2, posti: 1 },
+      { id: "buggy-volcano-4h", optionIndex: 2, posti: 2 },
       // optionIndex 1 = un'ora. I quaranta minuti sono un assaggio, le due ore
       // sono un'altra spesa: l'ora e' quella che si vende.
-      { id: "jet-ski-safari-1-2h", optionIndex: 1, posti: 1 },
+      { id: "jet-ski-safari-1-2h", optionIndex: 1, posti: 2 },
       { id: "parascending" }
     ],
     desc: {
@@ -390,9 +386,10 @@ const PACCHETTI = [
 
   {
     id: "mare-a-tutto-gas",
-    // PREZZO MISTO, contato da una persona sola (`posti: 1`, proprietario,
-    // 28 ottobre 2026): la moto singola 100, le altre due a persona.
-    // 55 + 100 + 15 = 170, tutto scontabile: −17,00 → 153 a persona.
+    // PREZZO MISTO, contato da due (`posti: 2`, proprietario, 28 ottobre
+    // 2026): la moto d'acqua doppia 120 : 2 = 60, le altre due a persona.
+    // 55 + 60 + 15 = 130, tutto scontabile: −13,00 → da 117 a persona. Il
+    // numero non cambia: la doppia era gia' il mezzo diviso per due.
     title: {
       it: "Mare a tutto gas",
       en: "Sea, full throttle",
@@ -404,7 +401,7 @@ const PACCHETTI = [
     sconto: 10,
     voci: [
       { id: "luxury-cruiser", optionIndex: 0 },
-      { id: "jet-ski-safari-1-2h", optionIndex: 1, posti: 1 },
+      { id: "jet-ski-safari-1-2h", optionIndex: 1, posti: 2 },
       { id: "banana-boat" }
     ],
     desc: {
@@ -1010,8 +1007,7 @@ const PACCHETTI_TEIDE = [
 // **valgono le regole della vetrina da cui arriva**. Quante escursioni, quanto
 // sconto, e quali schede si possono scegliere:
 //
-//   base      i pacchetti      3 escursioni, 10%, mezzi compresi, contati da
-//                              una persona sola (`posti: 1`)
+//   base      i pacchetti      3 escursioni, 10%, mezzi compresi
 //   famiglia  In famiglia      3 escursioni, 10%, solo le schede `family: true`
 //                              col prezzo bambini vero, niente mezzi
 //   per-due   Perfetto per 2   3 escursioni, 10%, i mezzi contati da due posti
@@ -1037,7 +1033,7 @@ const PACCHETTI_TEIDE = [
 // ─────────────────────────────────────────────────────────────────────────
 
 const PACCHETTI_SU_MISURA = {
-  base:      { voci: 3, sconto: 10, posti: 1, indietro: "./pacchetti.html" },
+  base:      { voci: 3, sconto: 10, indietro: "./pacchetti.html" },
   famiglia:  { voci: 3, sconto: 10, famiglia: true, indietro: "./pacchetti.html?famiglia=1" },
   "per-due": { voci: 3, sconto: 10, tema: "per-due", posti: 2, indietro: "./pacchetti.html?tema=per-due" },
   g3:        { voci: 3, sconto: 10, giorni: 3, indietro: "./pacchetti.html?giorni=3" },
@@ -1075,29 +1071,31 @@ const PACCHETTI_SU_MISURA_TITOLO_GIORNI = {
 //   Dove sono tutti prezzi a persona il numero e' esatto e si scrive senza
 //   "da": "€124,20 a persona". Uno solo si puo' fare, uno solo si paga.
 //
-//   Dove c'e' un mezzo il numero e' **quello di una persona sola**
-//   (proprietario, 28 ottobre 2026): `posti: 1` su ogni voce a mezzo, e il
-//   mezzo entra intero, il piu' economico (buggy da 2 posti 180, moto singola
-//   100). "Il pacchetto deve andare bene anche per una persona": chi viene da
-//   solo paga il mezzo intero, e un prezzo a testa diviso per i posti era un
-//   numero che lui non paga mai. Su Adrenalina 180 + 100 + 55 = 335, −10% →
-//   €301,50. **Senza "da"**: e' il numero piu' alto, in piu' persone il mezzo
-//   si divide e a testa si paga di meno — lo dice la nota sotto il prezzo
-//   (`pack.soloNote`). Vale anche in "Crea il tuo pacchetto", vetrina base.
-//   Un pacchetto nuovo con un mezzo prende `posti: 1`.
+//   Dove c'e' un mezzo il numero e' la **combinazione piu' bassa possibile a
+//   persona** (scelta del proprietario, 16 settembre 2026): ogni mezzo diviso
+//   fra tutti i posti che ha, e le escursioni a persona a testa.
 //
-//   Fa eccezione **Perfetto per 2** (`posti: 2`): un pacchetto per coppie si
-//   conta da due, il mezzo da due posti diviso per due. Li' il numero e' un
-//   minimo e si scrive **"da €X"**, con `pack.unitNote` sotto: chi ci va da
-//   solo paga di piu'. Lo decide il conto (`minimo` in pacchettoConto).
+//   **Ma oggi i pacchetti dell'ufficio con un mezzo si contano da due** (`posti: 2`
+//   sulla voce, proprietario, 28 ottobre 2026): col buggy diviso per sei il
+//   "da €55 a persona" stava sotto il prezzo di vendita e sotto i netti, e
+//   chi viene da solo o in due lo leggeva come il suo prezzo. Su Adrenalina:
+//   buggy da 2 posti 180 : 2 = 90, moto doppia 120 : 2 = 60, parascending
+//   55 → da €184,50. Un pacchetto nuovo con un mezzo prende `posti: 2`.
+//   "Crea il tuo pacchetto" invece conta da due solo nella vetrina "per-due"
+//   (PACCHETTI_SU_MISURA): nelle altre il mezzo si divide ancora per tutti i
+//   suoi posti.
 //
-//   La storia, per non rifarla: fino al 16 settembre 2026 il numero era gia'
-//   quello di una persona sola; poi il proprietario ha scelto "la combinazione
-//   piu' bassa", ogni mezzo diviso per tutti i suoi posti (buggy da 6, 330 : 6
-//   = 55, Adrenalina "da €153"); il 28 ottobre si e' visto che 55 a persona
-//   stava sotto il prezzo di vendita e sotto i netti, si e' provato a contare
-//   da due ("da €184,50") e il proprietario ha detto che non basta: una persona
-//   sola il mezzo lo paga intero.
+//   **Si scrive "da €184,50", mai "€184,50".** Il "da" e' la differenza fra
+//   un minimo e una bugia: chi e' da solo sul buggy paga 180 e non 90, e un
+//   numero secco gli **salirebbe** in faccia al momento della richiesta — la
+//   cosa che `CLAUDE.md` dice di non fare mai. Col "da" davanti e la nota
+//   sotto (`pack.unitNote`, che dice che in meno persone il mezzo costa di
+//   piu' a testa) il numero resta vero e non sorprende nessuno.
+//
+//   Fino al 16 settembre 2026 qui c'era il numero opposto — quello di una
+//   persona da sola, il piu' alto — per la ragione contraria: e' l'unico che
+//   puo' solo scendere. E' stato cambiato dal proprietario. Non si torna
+//   indietro senza che lo chieda lui.
 //
 // IL CONTO VERO
 //   Lo fa la finestra della richiesta, una escursione alla volta, e poi la
@@ -1274,12 +1272,8 @@ function scontoPossibile(tour, variante) {
 //   scontabile la parte su cui lo sconto si puo' fare
 //   risparmio  quanto si toglie davvero — il numero che il cliente guarda
 //   scontato   quello che paga: pieno meno risparmio
-//   misto      c'e' dentro almeno un prezzo a mezzo, e il numero porta la
-//              sua nota
-//   minimo     almeno un mezzo e' diviso fra piu' persone (`posti` diverso
-//              da 1): il numero e' un minimo e si scrive "da €X". Coi mezzi
-//              contati da una persona sola (`posti: 1`) il numero e' il piu'
-//              alto, e il "da" non ci va
+//   misto      c'e' dentro almeno un prezzo a mezzo: il numero e' un minimo
+//              e si scrive "da €X", con la sua nota
 // Torna null se anche una sola voce non ha un prezzo leggibile — e, su una
 // voce a mezzo, se non si riesce a dividerla per i posti: li' un numero ci
 // sarebbe (il prezzo del mezzo intero) ma non sarebbe un prezzo a persona, e
@@ -1288,7 +1282,6 @@ function pacchettoConto(pack) {
   let pieno = 0;
   let scontabile = 0;
   let misto = false;
-  let minimo = false;
   let completo = true;
 
   pack.voci.forEach(voce => {
@@ -1300,7 +1293,6 @@ function pacchettoConto(pack) {
     if (p.tipo === "mezzo") {
       if (!p.aPersona) { completo = false; return; }
       misto = true;
-      if (voce.posti !== 1) minimo = true;
       quanto = p.aPersona;
     }
     pieno += quanto;
@@ -1317,7 +1309,6 @@ function pacchettoConto(pack) {
     scontato: pacchettoArrotonda(pieno - risparmio),
     sconto: sconto,
     misto: misto,
-    minimo: minimo,
     offerta: !!pack.prezzoOfferta
   };
 }
@@ -1533,15 +1524,6 @@ function pacchettoMezzoAPersona(voce) {
     const prezzo = gruppo.prezzi[tipo.key];
     const posti = tipo.seats || 0;
     if (!prezzo || !posti) return;
-    // `posti: 1` e' una persona sola: il mezzo si paga intero, qualunque
-    // misura sia, e il piu' basso e' il mezzo che costa meno (il buggy da 2
-    // posti, la moto singola). Vedi "IL NUMERO IN VETRINA".
-    if (voce.posti === 1) {
-      if (!migliore || prezzo < migliore.aPersona) {
-        migliore = { aPersona: prezzo, prezzo: prezzo, tipo: tipo, posti: posti };
-      }
-      return;
-    }
     // `posti` sulla voce: si contano solo i mezzi di quella misura (vedi
     // "COME SI COMPILA UNA VOCE").
     if (voce.posti && posti !== voce.posti) return;
@@ -2140,10 +2122,8 @@ function pacchettoHref(pack) {
 // sconto, il numero solo dove non c'e' niente da togliere (barrare un numero e
 // riscrivere lo stesso numero e' una finta offerta).
 //
-// Il "da" davanti va **solo** dove dentro c'e' un mezzo diviso fra piu'
-// persone (`minimo`): li' il numero e' il piu' basso e in meno persone sale.
-// Coi mezzi contati da una persona sola (`posti: 1`) il numero e' il piu'
-// alto, e un "da" lo farebbe sembrare un minimo che puo' crescere. Dove
+// Il "da" davanti va **solo** dove dentro c'e' un mezzo (`misto`): li' il
+// numero e' la combinazione piu' bassa possibile e in meno persone sale. Dove
 // sono tutti prezzi a persona il numero e' quello e basta, e un "da" lo
 // farebbe sembrare un minimo che puo' crescere. E' la stessa chiave `tour.from`
 // delle schede, non una seconda scritta da tenere allineata in cinque lingue.
@@ -2154,7 +2134,7 @@ function pacchettoPrezzoHTML(conto) {
   const barrato = conto.risparmio > 0
     ? `<s class="price-before">€${esc(eur(conto.pieno))}</s> `
     : "";
-  const numero = conto.minimo
+  const numero = conto.misto
     ? t("tour.from", { p: eur(conto.scontato) })
     : "€" + eur(conto.scontato);
   const offerta = conto.offerta
@@ -2370,8 +2350,7 @@ function pacchettoVoceHTML(voce, n, famiglia) {
     // esce. Senza il secondo il cliente legge un prezzo a testa su una cosa
     // che a testa non si paga, e nella finestra della richiesta si trova
     // davanti i contatori dei mezzi senza sapere perche'.
-    // Con `posti: 1` il prezzo a testa e' il mezzo intero: basta il secondo.
-    if (voce.posti !== 1) dettagli.push(t("tour.from", { p: eur(prezzo.aPersona) }) + " " + t("pack.perPerson"));
+    dettagli.push(t("tour.from", { p: eur(prezzo.aPersona) }) + " " + t("pack.perPerson"));
     dettagli.push(tf(prezzo.mezzo.name) + " €" + eur(prezzo.prezzoMezzo) + priceUnitSuffix(tour));
   } else if (prezzo) {
     dettagli.push("€" + eur(prezzo.prezzo) + priceUnitSuffix(tour));
@@ -2442,9 +2421,6 @@ function pacchettoSuMisuraPrezzoTesto(regole, voce) {
   const prezzo = pacchettoVocePrezzo(voce);
   if (!prezzo) return "";
   if (prezzo.tipo === "mezzo") {
-    if (voce.posti === 1 && prezzo.mezzo) {
-      return tf(prezzo.mezzo.name) + " €" + eur(prezzo.prezzoMezzo) + priceUnitSuffix(pacchettoVoceTour(voce));
-    }
     return t("tour.from", { p: eur(prezzo.aPersona) }) + " " + t("pack.perPerson");
   }
   if (regole.famiglia) {
@@ -2703,7 +2679,7 @@ function initPacchetto() {
         <h1 class="pack-detail-title">${esc(tf(pack.title))}</h1>
         <p class="pack-detail-lead">${esc(pack.suMisura ? t("build.detailLead") : tf(pack.desc))}</p>
         <div class="pack-foot">${pacchettoPrezzoHTML(conto)}</div>
-        ${conto && conto.misto ? `<p class="pack-note">${esc(t(conto.minimo ? "pack.unitNote" : "pack.soloNote"))}</p>` : ""}
+        ${conto && conto.misto ? `<p class="pack-note">${esc(t("pack.unitNote"))}</p>` : ""}
         ${pacchettoFamigliaHTML(pack)}
         <span class="pack-inside">${esc(giorni ? t("days.inside") : t("pack.inside"))}</span>
         <ol class="pack-voci">${righe}</ol>

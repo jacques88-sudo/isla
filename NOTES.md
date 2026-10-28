@@ -21354,34 +21354,3 @@ voce a mezzo. Tenerife Trio versione buggy **da €174,50** (era 143), Terra mar
 **da €201,60** (era 170,10), Mare a tutto gas resta **da €117** (la doppia era già divisa
 per due). "Crea il tuo pacchetto" conta da due solo nella vetrina per-due: nelle altre
 (base, 3, 5, 7 giorni) il buggy si divide ancora per sei. Domanda aperta al proprietario.
-
-### I pacchetti con un mezzo: il prezzo di una persona sola (28 ottobre 2026)
-
-Contare da due non bastava. Il proprietario: "il pacchetto deve andare bene anche per
-una persona, e se una persona sola vuole Adrenalina il mezzo lo paga intero, sia la moto
-d'acqua sia il buggy, non 60 per la moto e 90 per il buggy".
-
-Quindi sulle voci a mezzo dei quattro pacchetti c'è `posti: 1`, che vuol dire **una
-persona sola**: il mezzo entra intero, il più economico (pacchettoMezzoAPersona). Buggy
-da 2 posti 180, moto singola 100.
-
-| pacchetto | prima (mezzo diviso per tutti i posti) | per due | adesso |
-|---|---|---|---|
-| Adrenalina | da €153 | da €184,50 | **€301,50** |
-| Tenerife Trio, versione buggy | da €143 | da €174,50 | **€255,50** |
-| Terra, mare e stelle | da €170,10 | da €201,60 | **€282,60** |
-| Mare a tutto gas | da €117 | da €117 | **€153** |
-
-**Senza "da"**: è il numero più alto, in più persone si paga di meno. Lo decide il campo
-nuovo `minimo` di pacchettoConto (c'è un mezzo diviso fra più persone): la vetrina,
-`link.js` e la nota sotto il prezzo lo leggono. La nota nuova è `pack.soloNote`
-("questo è il prezzo per una persona sola. In due o più il mezzo si divide e a testa si
-paga di meno"), nelle cinque lingue. Nelle righe delle voci con `posti: 1` resta solo il
-mezzo ("2 posti €180/buggy", "Singola €100 a moto d'acqua"), senza il "da €… a persona".
-
-Anche "Crea il tuo pacchetto", vetrina base: `posti: 1` in PACCHETTI_SU_MISURA. **Perfetto
-per 2 resta contato da due** (`posti: 2`, "da €…"): è per coppie. `controlla.js` accetta
-`posti: 1` anche dove nessun mezzo ha un posto solo (il buggy).
-
-La finestra della richiesta non cambia: 1 persona su Adrenalina €301,50, 2 persone €369,
-4 persone €630.

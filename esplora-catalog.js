@@ -949,7 +949,7 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "whale-dolphin-3h",
-    title: "3-Hour Whale & Dolphin Boat Trip",
+    title: { it: "Balene e delfini in barca a vela, 3 ore", en: "3-Hour Whale & Dolphin Boat Trip", es: "Ballenas y delfines en velero, 3 horas", fr: "Baleines et dauphins en voilier, 3 heures", de: "Wale und Delfine im Segelboot, 3 Stunden" },
     // Il nome della compagnia, come i venditori lo scrivono sul ticket.
     // Solo qui e non sul charter qui sotto: un ticket "Cool Sailing" con
     // due adulti e' l'uscita a persona.
@@ -1173,7 +1173,7 @@ const ESPLORA_CATALOG = [
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
     // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
     // venditori e i ticket.
-    title: { it: "Goletta di legno da Los Gigantes", en: "Wooden Schooner from Los Gigantes", es: "Goleta de madera desde Los Gigantes", fr: "Goélette en bois depuis Los Gigantes", de: "Holzschoner ab Los Gigantes" },
+    title: { it: "Veliero di legno da Los Gigantes", en: "Wooden Schooner from Los Gigantes", es: "Goleta de madera desde Los Gigantes", fr: "Goélette en bois depuis Los Gigantes", de: "Holzschoner ab Los Gigantes" },
     nomi: ["Flipper One"],
     category: "mare-barche",
     // L'unica scheda che parte da Los Gigantes: tutte le altre barche sono a
@@ -1286,7 +1286,7 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "submarine-safari",
-    title: "Submarine Safari",
+    title: { it: "Safari in sottomarino", en: "Submarine Safari", es: "Safari en submarino", fr: "Safari en sous-marin", de: "U-Boot-Safari" },
     category: "mare-barche",
     // Il ticket conta sempre come pagato con carta, come i parchi
     // (proprietario, 20 ottobre 2026): stesso elenco in sempre_card.
@@ -1513,7 +1513,7 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "luxury-catamaran",
-    title: "Luxury Catamaran Experience",
+    title: { it: "Catamarano di lusso", en: "Luxury Catamaran Experience", es: "Catamarán de lujo", fr: "Catamaran de luxe", de: "Luxus-Katamaran" },
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
@@ -1554,7 +1554,7 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "small-group-catamaran",
-    title: "Small Group Catamaran",
+    title: { it: "Catamarano per piccoli gruppi", en: "Small Group Catamaran", es: "Catamarán para grupos pequeños", fr: "Catamaran en petit groupe", de: "Katamaran für kleine Gruppen" },
     // La barca e' il Kalima Kat: sul ticket i venditori scrivono "KALIMAKA"
     // (proprietario, 17 ottobre 2026). Solo qui e non sulla gemella dei Tour
     // privati: lo stesso nome su due schede controlla.js non lo accetta.
@@ -1805,7 +1805,7 @@ const ESPLORA_CATALOG = [
     // Il nome della barca non sta nel titolo (proprietario, 28 ottobre 2026):
     // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
     // venditori e i ticket.
-    title: { it: "Goletta orientale alla baia di Masca", en: "Oriental Schooner to Masca Bay", es: "Goleta oriental a la bahía de Masca", fr: "Goélette orientale vers la baie de Masca", de: "Orientalischer Schoner zur Bucht von Masca" },
+    title: { it: "Veliero orientale alla baia di Masca", en: "Oriental Schooner to Masca Bay", es: "Goleta oriental a la bahía de Masca", fr: "Goélette orientale vers la baie de Masca", de: "Orientalischer Schoner zur Bucht von Masca" },
     nomi: ["Shogun"],
     category: "mare-barche",
     zone: "Puerto Colón",
@@ -2016,7 +2016,7 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "luxury-cruiser",
-    title: "Luxury Cruiser Experience",
+    title: { it: "Yacht di lusso", en: "Luxury Cruiser Experience", es: "Yate de lujo", fr: "Yacht de luxe", de: "Luxusyacht" },
     // La compagnia, come la scrivono i venditori sul ticket. Solo qui e non
     // sul charter: un ticket "Mokkai" con due adulti e' l'uscita a persona.
     // Anche White Dream fa l'uscita a persona (proprietario, 17 ottobre 2026);
@@ -7919,7 +7919,7 @@ const ESPLORA_CATALOG = [
   // del proprietario, il prezzo vero resta sulla scheda della barca.
   {
     id: "whale-dolphin-3h-charter",
-    title: "3-Hour Whale & Dolphin Boat Trip",
+    title: { it: "Balene e delfini in barca a vela, 3 ore", en: "3-Hour Whale & Dolphin Boat Trip", es: "Ballenas y delfines en velero, 3 horas", fr: "Baleines et dauphins en voilier, 3 heures", de: "Wale und Delfine im Segelboot, 3 Stunden" },
     category: "tour-privati",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
@@ -7944,7 +7944,7 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "luxury-catamaran-charter",
-    title: "Luxury Catamaran Experience",
+    title: { it: "Catamarano di lusso", en: "Luxury Catamaran Experience", es: "Catamarán de lujo", fr: "Catamaran de luxe", de: "Luxus-Katamaran" },
     category: "tour-privati",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
@@ -7970,7 +7970,7 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "small-group-catamaran-charter",
-    title: "Small Group Catamaran",
+    title: { it: "Catamarano per piccoli gruppi", en: "Small Group Catamaran", es: "Catamarán para grupos pequeños", fr: "Catamaran en petit groupe", de: "Katamaran für kleine Gruppen" },
     category: "tour-privati",
     zone: "Puerto Colón",
     duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas", fr: "3 ou 6 heures", de: "3 oder 6 Stunden" },
@@ -8071,7 +8071,7 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "luxury-cruiser-charter",
-    title: "Luxury Cruiser Experience",
+    title: { it: "Yacht di lusso", en: "Luxury Cruiser Experience", es: "Yate de lujo", fr: "Yacht de luxe", de: "Luxusyacht" },
     category: "tour-privati",
     zone: "Las Galletas",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },

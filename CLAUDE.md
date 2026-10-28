@@ -95,9 +95,9 @@ l'attrezzatura prestata, e si mette **solo** dove il fornitore lo scrive.
 appaia "multilingual guides".
 
 **I titoli si traducono** nelle cinque lingue (`title: { it, en, es, fr, de }`), senza il
-nome della barca (vedi sopra; proprietario, 28 ottobre 2026, per le barche). Restano in
-inglese, uguali ovunque, i nomi propri e quelli che Admiral scrive così ("3-Hour Whale &
-Dolphin Boat Trip", "Siam Park"). Tradotte sono anche descrizione, zona e durata.
+nome della barca (vedi sopra; proprietario, 28 ottobre 2026: tutte le barche, anche
+"3-Hour Whale & Dolphin Boat Trip"; la goletta in italiano è "veliero"). Restano uguali
+ovunque i nomi propri ("Siam Park"). Tradotte sono anche descrizione, zona e durata.
 
 **Prima di creare una scheda nuova, controlla che non esista già.** È già successo di
 duplicare una barca (Kalima Kat era il Small Group Catamaran). Confronta prezzo, durata,

@@ -21407,3 +21407,11 @@ tradotto sarebbe uscito "[object Object]". Corretto in `recensioni.js`.
 Restano in inglese le barche che portano un nome di Admiral: 3-Hour Whale & Dolphin Boat
 Trip, Submarine Safari, Luxury Catamaran Experience, Small Group Catamaran, Luxury Cruiser
 Experience.
+
+Poi anche le ultime cinque (proprietario, "traduci anche quelle"), coi loro charter:
+3-Hour Whale & Dolphin Boat Trip ("Balene e delfini in barca a vela, 3 ore"), Submarine
+Safari ("Safari in sottomarino"), Luxury Catamaran Experience ("Catamarano di lusso"),
+Small Group Catamaran ("Catamarano per piccoli gruppi"), Luxury Cruiser Experience ("Yacht
+di lusso"); l'inglese resta il titolo di prima. E in italiano **la goletta è "veliero"**:
+"Veliero di legno da Los Gigantes", "Veliero orientale alla baia di Masca". Nelle altre
+lingue la parola non cambia (Schooner, Goleta, Goélette, Schoner).

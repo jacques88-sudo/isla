@@ -42,7 +42,7 @@ branch (`git checkout -B <branch> origin/main`).
 Non gestisce le escursioni: vende attività di altri operatori. **Il nome della barca o
 della compagnia non va sul sito** (proprietario, 28 ottobre 2026): il titolo dice che giro
 è, come "3-Hour Whale & Dolphin Boat Trip" ("Whale & Dolphin Catamaran Cruise" era Freebird,
-"Underwater View Catamaran" era Royal Delfin), e il nome vero sta in `nomi`, che il
+"Underwater View Catamaran" era Royal Delfin, e si traducono), e il nome vero sta in `nomi`, che il
 cliente non vede. Niente nome nemmeno nelle descrizioni e negli indirizzi corti; gli `id`
 (`freebird-catamaran`) restano, perché li usano richieste, ticket e netti.
 
@@ -94,8 +94,10 @@ l'attrezzatura prestata, e si mette **solo** dove il fornitore lo scrive.
 **Il menu delle lingue (`languages`) si mette solo dove viene segnalato**, non ovunque
 appaia "multilingual guides".
 
-**I titoli sono in inglese e uguali in tutte le lingue**, senza il nome della barca (vedi
-sopra). Tradotte sono descrizione, zona e durata.
+**I titoli si traducono** nelle cinque lingue (`title: { it, en, es, fr, de }`), senza il
+nome della barca (vedi sopra; proprietario, 28 ottobre 2026, per le barche). Restano in
+inglese, uguali ovunque, i nomi propri e quelli che Admiral scrive così ("3-Hour Whale &
+Dolphin Boat Trip", "Siam Park"). Tradotte sono anche descrizione, zona e durata.
 
 **Prima di creare una scheda nuova, controlla che non esista già.** È già successo di
 duplicare una barca (Kalima Kat era il Small Group Catamaran). Confronta prezzo, durata,

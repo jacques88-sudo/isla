@@ -21390,3 +21390,20 @@ giro). Scelte sue: **tutte le barche**, Freebird e Royal Delfin **restano due sc
 
 Lo stesso giorno il proprietario ha chiesto un'alternativa a "Open Bar": la scheda Freebird
 si chiama **Whale & Dolphin Catamaran Cruise**.
+
+### I titoli delle barche tradotti (28 ottobre 2026)
+
+Il proprietario: "puoi tradurre i titoli delle varie barche nelle lingue". Le dodici schede
+rinominate oggi (le dieci barche e i due charter) hanno `title: { it, en, es, fr, de }`:
+"Catamarano con vista sottomarina", "Catamarán con vista submarina", "Katamaran mit
+Unterwassersicht"… L'inglese resta quello scelto prima. Il messaggio WhatsApp di chi usa
+il sito in francese o tedesco porta il titolo **italiano** all'ufficio (perUfficio), i
+venditori lo vedono in italiano (`titoloDi()`), e la funzione `manda-notifiche` legge già
+il titolo `{ it: … }` dal catalogo.
+
+Trovato provando: le recensioni scrivevano `tour.title` senza `tf()`, quindi con un titolo
+tradotto sarebbe uscito "[object Object]". Corretto in `recensioni.js`.
+
+Restano in inglese le barche che portano un nome di Admiral: 3-Hour Whale & Dolphin Boat
+Trip, Submarine Safari, Luxury Catamaran Experience, Small Group Catamaran, Luxury Cruiser
+Experience.

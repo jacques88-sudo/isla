@@ -21353,3 +21353,37 @@ vetrina è di nuovo "da €153", la regola del 16 settembre resta) e la riga è 
 - lo stesso nelle righe di "Crea il tuo pacchetto".
 
 Il "da €… a persona" resta **solo in vetrina**, con la nota `pack.unitNote` sotto.
+
+### Il nome della barca esce dal sito (28 ottobre 2026)
+
+Il proprietario: "sulla PWA non vorrei mettere i nomi delle compagnie come Freebird",
+con la 3-Hour Whale & Dolphin Boat Trip come modello (tante barche, un titolo che dice il
+giro). Scelte sue: **tutte le barche**, Freebird e Royal Delfin **restano due schede**
+(prezzi, ritiro e netti diversi), e **/freebird si sostituisce** con /catamarano.
+
+| id (non cambia) | prima | adesso | `nomi` |
+|---|---|---|---|
+| freebird-catamaran | Freebird Catamaran Trip | Open Bar Catamaran Trip | Freebird |
+| royal-delfin | Royal Delfin Boat Tour | Underwater View Catamaran | Royal Delfin |
+| maxicat | Maxicat Whale Watching | Whale Watching & Canarian Lunch | Maxicat (c'era già) |
+| peter-pan | Peter Pan Pirate Ship | Pirate Ship Dolphin Trip | Peter Pan |
+| flipper-one | Flipper One Boat Tour | Wooden Schooner from Los Gigantes | Flipper One |
+| utopia-boat-party | Utopia Boat Party | Boat Party | Utopia |
+| shogun | Shogun | Oriental Schooner to Masca Bay | Shogun |
+| opera-60 (+ charter) | Opera 60 | Speedboat & Snorkel Trip | Opera 60 |
+| skyline-cruiser (+ charter) | Skyline Cruiser | Motor Yacht Dolphin Trip | Skyline Cruiser, Skyline |
+| ragnarok | Ragnarok Viking Boat Tour | Viking Boat Tour | Ragnarok |
+
+- I nomi vanno in `nomi` solo sulla scheda in condivisione, non sui charter: lo stesso nome
+  su due schede `controlla.js` non lo vuole. Un netto con `company` vuota vale per ogni
+  compagnia (`x.company is null or x.company = p_company`), quindi i `nomi` nuovi non
+  tolgono il netto a nessun ticket.
+- La descrizione dello Skyline diceva "a bordo dello Skyline Cruiser": ora "di un
+  motoryacht Fairline". Le altre descrizioni il nome non lo avevano.
+- Gli `id` restano: li usano le liste nei telefoni, le richieste e i ticket su Supabase,
+  i netti. Restano quindi anche negli indirizzi (`tour.html?id=freebird-catamaran`) e nei
+  nomi delle foto.
+- `/freebird` è stato tolto da `indirizzi-corti.js` (lo script ha cancellato la cartella):
+  i link già pubblicati con /freebird non funzionano più, per scelta del proprietario. Al
+  suo posto `/catamarano`.
+- Regola nuova in `CLAUDE.md` e nella skill `nuova-scheda`.

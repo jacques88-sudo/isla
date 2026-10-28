@@ -1,4 +1,4 @@
-// GLI INDIRIZZI CORTI DELLE ESCURSIONI E DEI PACCHETTI: islaexcursionstenerife.com/freebird
+// GLI INDIRIZZI CORTI DELLE ESCURSIONI E DEI PACCHETTI: islaexcursionstenerife.com/catamarano
 //
 // Si rifanno con
 //
@@ -27,7 +27,9 @@ const vm = require("vm");
 // nome corto → id della scheda (quello di tour.html?id=…), oppure "pacchetto:"
 // e l'id del pacchetto (quello di pacchetto.html?id=…), come ULTIMO_VIDEO in link.js
 const INDIRIZZI_CORTI = {
-  freebird: "freebird-catamaran",
+  // era "freebird" fino al 28 ottobre 2026: il nome della barca non va sul
+  // sito, nemmeno nell'indirizzo (proprietario)
+  catamarano: "freebird-catamaran",
   // il pacchetto del post Instagram dell'offerta da 139 (26 ottobre 2026)
   coppia: "pacchetto:adrenalina-in-due"
 };

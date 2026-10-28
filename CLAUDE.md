@@ -39,8 +39,12 @@ branch (`git checkout -B <branch> origin/main`).
 
 ## Admiral è un rivenditore
 
-Non gestisce le escursioni: vende attività di altri operatori. Per questo le schede
-portano il nome della barca vera (Freebird, Royal Delfin, Shogun, Peter Pan).
+Non gestisce le escursioni: vende attività di altri operatori. **Il nome della barca o
+della compagnia non va sul sito** (proprietario, 28 ottobre 2026): il titolo dice che giro
+è, come "3-Hour Whale & Dolphin Boat Trip" ("Open Bar Catamaran Trip" era Freebird,
+"Underwater View Catamaran" era Royal Delfin), e il nome vero sta in `nomi`, che il
+cliente non vede. Niente nome nemmeno nelle descrizioni e negli indirizzi corti; gli `id`
+(`freebird-catamaran`) restano, perché li usano richieste, ticket e netti.
 
 Le prenotazioni **non sono automatiche**: il cliente manda una *richiesta* su WhatsApp
 (`+34657772032`, il numero della moglie del proprietario dal 22 ottobre 2026; prima `+34662908073`, che resta come contatto in privacy, termini e piè di pagina), l'ufficio conferma entro 24 ore e il pagamento si concorda dopo.
@@ -90,8 +94,8 @@ l'attrezzatura prestata, e si mette **solo** dove il fornitore lo scrive.
 **Il menu delle lingue (`languages`) si mette solo dove viene segnalato**, non ovunque
 appaia "multilingual guides".
 
-**I titoli restano come li scrive Admiral**, uguali in tutte e tre le lingue. Tradotte
-sono descrizione, zona e durata.
+**I titoli sono in inglese e uguali in tutte le lingue**, senza il nome della barca (vedi
+sopra). Tradotte sono descrizione, zona e durata.
 
 **Prima di creare una scheda nuova, controlla che non esista già.** È già successo di
 duplicare una barca (Kalima Kat era il Small Group Catamaran). Confronta prezzo, durata,
@@ -144,7 +148,7 @@ porto e capienza con le schede della stessa categoria.
 | `sitemap.js` | rifà `sitemap.xml` (la mappa del sito per Google) dal catalogo e dai pacchetti: `node sitemap.js` dopo ogni scheda o pacchetto nuovo; il sito non lo carica |
 | Cloudflare Web Analytics | conta le visite, senza cookie: lo script sta prima di `</body>` in ogni pagina vera (non `offline.html` né i rimandi). **Una pagina nuova lo deve avere.** Installazione a mano, non "Automatic": con la nuvola grigia l'automatica non conta niente. I numeri su Cloudflare → Web analytics |
 | `link.js` | la pagina dei link dei social (`link.html`, `islaexcursionstenerife.com/link`, il "link in bio"): il pulsante **"Dal nostro ultimo video"** in cima. **A ogni video nuovo si cambia solo `ULTIMO_VIDEO`** (l'id della scheda, o `"pacchetto:<id>"` per un pacchetto), poi `CACHE_NAME` |
-| `indirizzi-corti.js` | gli indirizzi corti delle escursioni e dei pacchetti (`islaexcursionstenerife.com/freebird`, `/coppia`): l'elenco sta in `INDIRIZZI_CORTI` (un pacchetto si scrive `"pacchetto:<id>"`), e `node indirizzi-corti.js` scrive una cartella per ognuno, con la foto per l'anteprima di WhatsApp e Facebook. Le cartelle non si correggono a mano; il sito non carica lo script |
+| `indirizzi-corti.js` | gli indirizzi corti delle escursioni e dei pacchetti (`islaexcursionstenerife.com/catamarano`, `/coppia`): l'elenco sta in `INDIRIZZI_CORTI` (un pacchetto si scrive `"pacchetto:<id>"`), e `node indirizzi-corti.js` scrive una cartella per ognuno, con la foto per l'anteprima di WhatsApp e Facebook. Le cartelle non si correggono a mano; il sito non carica lo script |
 | `social/` | i modelli delle grafiche dei social (carosello 4:5, verticali e storie 9:16, video di 12 secondi) e le loro regole in `social/LEGGIMI.md`: `node social/fai-grafiche.js <cartella>` le rifà. Il piano dei contenuti sta su Notion ("Piano social Isla — 12 settimane"); il sito non carica niente di qui |
 | `richieste.js` | le richieste della lista salvate anche su Supabase (`pending`), con la **chiave** che resta nel telefono del cliente e il **codice** che va nel messaggio; l'ufficio le conferma o annulla da `venditori.html` |
 

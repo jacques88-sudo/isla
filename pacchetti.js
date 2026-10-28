@@ -349,10 +349,13 @@ const PACCHETTI = [
 
   {
     id: "adrenalina",
-    // PREZZO MISTO: buggy e jet ski si pagano a mezzo, il parascending a
-    // persona. In vetrina i due mezzi entrano divisi per i loro posti: il
-    // buggy da 6 posti 330 : 6 = 55, la moto d'acqua doppia 120 : 2 = 60.
-    // 55 + 60 + 55 = 170, tutto scontabile: −17,00 → da 153 a persona.
+    // PREZZO MISTO, contato da due (`posti: 2`, proprietario, 28 ottobre
+    // 2026): il buggy da 2 posti 180 : 2 = 90, la moto d'acqua doppia
+    // 120 : 2 = 60, il parascending 55 a persona. 90 + 60 + 55 = 205, tutto
+    // scontabile: −20,50 → da 184,50 a persona.
+    // Prima il buggy entrava diviso per 6 (330 : 6 = 55): "da €55 a persona"
+    // sul buggy e "da €153" in vetrina, che chi viene da solo o in due legge
+    // come il suo prezzo, ed era sotto il prezzo di vendita e sotto i netti.
     title: {
       it: "Adrenalina",
       en: "Adrenaline",
@@ -365,10 +368,10 @@ const PACCHETTI = [
     voci: [
       // optionIndex 2 = "Completo, 4 ore", il percorso lungo. Dentro c'e' il
       // Parco Nazionale: e' l'unica salita al Teide di questo pacchetto.
-      { id: "buggy-volcano-4h", optionIndex: 2 },
+      { id: "buggy-volcano-4h", optionIndex: 2, posti: 2 },
       // optionIndex 1 = un'ora. I quaranta minuti sono un assaggio, le due ore
       // sono un'altra spesa: l'ora e' quella che si vende.
-      { id: "jet-ski-safari-1-2h", optionIndex: 1 },
+      { id: "jet-ski-safari-1-2h", optionIndex: 1, posti: 2 },
       { id: "parascending" }
     ],
     desc: {
@@ -1068,9 +1071,12 @@ const PACCHETTI_SU_MISURA_TITOLO_GIORNI = {
 //
 //   Dove c'e' un mezzo il numero e' la **combinazione piu' bassa possibile a
 //   persona** (scelta del proprietario, 16 settembre 2026): ogni mezzo diviso
-//   fra tutti i posti che ha, e le escursioni a persona a testa. Su Adrenalina
-//   e' il buggy da 6 posti (330 : 6 = 55), la moto d'acqua doppia (120 : 2 =
-//   60) e il parascending (55): da €153 scontato.
+//   fra tutti i posti che ha, e le escursioni a persona a testa. Su "Tenerife
+//   Trio, versione buggy" e' il buggy da 6 posti (330 : 6 = 55). Adrenalina
+//   invece si conta da due (`posti: 2`, proprietario, 28 ottobre 2026): col
+//   buggy diviso per sei il "da €55 a persona" stava sotto il prezzo di
+//   vendita e sotto i netti, e chi viene da solo o in due lo leggeva come il
+//   suo prezzo.
 //
 //   **Si scrive "da €153", mai "€153".** Il "da" e' la differenza fra un
 //   minimo e una bugia: chi e' in due sul buggy paga 90 a testa e non 55, e un

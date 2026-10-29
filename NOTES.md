@@ -21482,3 +21482,17 @@ tutti subito (scooter 0906, Mateo Bello 0490), dove "netto = totale − acconto"
 Provato: `compagniaNelTesto()` trova i sette nomi nei testi dei fogli ("Dolce Vila",
 come l'ha scritto Nancy, no: lì lo trova Claude dalla foto); le cinque schede e l'elenco
 a 375 px senza scroll e senza errori, nessun nome in pagina. `CACHE_NAME` → `isla-v644`.
+
+### Samba sul charter, come Galatea (29 ottobre 2026)
+
+Il proprietario: anche **Samba** ha un netto del charter tutto suo. Il nome è passato da
+`whale-dolphin-3h` a `whale-dolphin-3h-charter`, accanto a Galatea, per la stessa ragione
+(il ticket privato prende la riga della sua compagnia). Se Samba fa anche l'uscita a
+persona va chiesto: il nome non può stare su tutte e due le schede. Ocean Blue resta
+sull'uscita a persona: il suo privato torna col netto "qualunque compagnia".
+
+Due risposte che stanno solo su Notion (sono netti): la Fiat 500 di Nancy 0470 era una
+macchina sola; la barca vichinga ha il netto in percentuale. **I noleggi pagati tutti
+subito**: alla compagnia va quello che il venditore scrive in NETT sul foglio, non
+"totale − acconto" (che lì darebbe 0). Su Supabase oggi non c'è un modo di scriverlo a
+mano: aperta la domanda al proprietario. `CACHE_NAME` → `isla-v645`.

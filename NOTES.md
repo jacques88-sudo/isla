@@ -21422,3 +21422,27 @@ Il proprietario: "invertire il bento del noleggio con quello perfetto per 2". Ne
 griglia della home Perfetto per 2 è ora il secondo riquadro (accanto a Pacchetti) e il
 noleggio l'ultimo (accanto a Food Experience). Cambia solo l'ordine in `index.html`:
 nessuna regola di `styles.css` dipende dalla posizione dei riquadri.
+
+### Black & Blue, Paradise e Monster: tre compagnie dai fogli del 19-25 ottobre (29 ottobre 2026)
+
+Il proprietario ha mandato quindici fogli di carta dei venditori (19-25 ottobre).
+Netti ricavati ticket per ticket e confrontati con la tabella Notion "Netti da
+inserire". **I numeri non sono qui**: stanno su Notion. Il proprietario ha corretto sei
+netti (Mokkai privata, che ora dipende dal transfer; Flash; Maxicat bambino; paragliding;
+Andromeda bambino; il charter delle 3 ore). Le compagnie che non si sapevano stanno in
+una riga "Da sapere" su Notion, coi numeri dei ticket. **Su Supabase va ancora
+aggiornato tutto**: le righe cambiate non hanno più la spunta "Inserito".
+
+Tre compagnie nuove, nei `nomi` (proprietario):
+- **Black & Blue** è **pesca**: `pesca-altura`, `nomi: ["Black & Blue", "Black and Blue"]`;
+- **Paradise** è **buggy** ("Buggy Paradise", "Paradise Bug" sul ticket): un nome in più
+  in `buggy-volcano-4h`. Il tipo non si scrive, quindi "Paradise" e non "Buggy Paradise";
+  `compagniaNelTesto()` lo trova in tutti e due i modi. Sul foglio il giro è "da 2 ore",
+  che sulla scheda non c'è;
+- **Monster** è **quad** ("Monster quad"): un nome in più in `quad-teide-adventure`,
+  l'unica scheda di quad, accanto a Prime Quads.
+
+Provato: `compagniaNelTesto()` in Node trova Black & Blue in "0908 BLACK & BLUE",
+Paradise in "Paradise Bug 1D" e in "Buggy Paradise 2H", Monster in "monster quad" e in
+"MONSTER". Le tre schede a 375 px senza scroll e senza errori, il nome non si vede.
+`CACHE_NAME` → `isla-v642`.

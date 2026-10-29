@@ -1396,6 +1396,9 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "pesca-altura",
+    // La compagnia come i venditori la scrivono sul ticket (proprietario, 29
+    // ottobre 2026; fogli del 19-25 ottobre, "BLACK & BLUE").
+    nomi: ["Black & Blue", "Black and Blue"],
     title: { it: "Pesca d'altura", en: "Deep sea fishing", es: "Pesca de altura", fr: "Pêche en haute mer", de: "Hochseeangeln" },
     category: "mare-barche",
     zone: "Puerto Colón",
@@ -3465,8 +3468,9 @@ const ESPLORA_CATALOG = [
     // Le due compagnie che portano questi giri, come i venditori le scrivono
     // sul ticket. Tutte e due sulla scheda e non su una variante: Offroad e
     // Tramonto li fanno entrambe, e il nome da solo non dice quale giro e'.
-    // Top Buggy e' una compagnia in piu' (proprietario, 19 ottobre 2026).
-    nomi: ["King Buggy", "Ultimate Buggies", "Ultimate Buggy", "Top Buggy"],
+    // Top Buggy e' una compagnia in piu' (proprietario, 19 ottobre 2026), e
+    // Paradise ("Buggy Paradise", "Paradise Bug") anche (29 ottobre 2026).
+    nomi: ["King Buggy", "Ultimate Buggies", "Ultimate Buggy", "Top Buggy", "Paradise"],
     // Anche fra Teide e natura (proprietario, 14 settembre 2026). Qui `alsoIn`
     // e' della scheda e non della variante: dei quattro giri due salgono al
     // Parco Nazionale (Tramonto sul Teide e Completo) e due no, ma la scheda
@@ -3666,7 +3670,8 @@ const ESPLORA_CATALOG = [
     title: "Teide Quad Adventure",
     // La compagnia come i venditori la scrivono sul ticket (proprietario, 20
     // ottobre 2026; foglio di Maarten, ticket 0229 "Prime Quads 1D").
-    nomi: ["Prime Quads"],
+    // Anche Monster ("Monster quad"; proprietario, 29 ottobre 2026).
+    nomi: ["Prime Quads", "Monster"],
     // Anche fra Teide e natura (proprietario, 14 settembre 2026): il Teide sta
     // gia' nel titolo, e restare fuori da quella categoria era la cosa che
     // stonava di piu' di tutte.

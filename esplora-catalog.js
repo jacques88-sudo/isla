@@ -972,9 +972,10 @@ const ESPLORA_CATALOG = [
     // (proprietario, 14 ottobre 2026). Arriro e' una barca a vela, anche lei
     // solo sull'uscita a persona (proprietario, 14 ottobre 2026). Kasamui fa
     // anche il charter privato, ma il nome sta qui sola: lo stesso nome su
-    // due schede e' un errore (proprietario, 21 ottobre 2026). Samba e Ocean
-    // Blue sono altre due barche delle 3 ore (proprietario, 29 ottobre 2026).
-    nomi: ["Cool Sailing", "Lina7", "Mizendoha", "Atlantic Star", "Arriro", "Kasamui", "Samba", "Ocean Blue"],
+    // due schede e' un errore (proprietario, 21 ottobre 2026). Ocean Blue e'
+    // un'altra barca delle 3 ore (proprietario, 29 ottobre 2026); Samba anche,
+    // ma col charter a un netto suo: il suo nome sta sulla scheda del charter.
+    nomi: ["Cool Sailing", "Lina7", "Mizendoha", "Atlantic Star", "Arriro", "Kasamui", "Ocean Blue"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
@@ -7945,11 +7946,12 @@ const ESPLORA_CATALOG = [
   // del proprietario, il prezzo vero resta sulla scheda della barca.
   {
     id: "whale-dolphin-3h-charter",
-    // Galatea e' una barca delle 3 ore piccola, 7 persone al massimo, con un
-    // netto del charter tutto suo (proprietario, 29 ottobre 2026): il nome sta
-    // qui, cosi' il ticket privato porta la compagnia e prende il suo netto;
-    // le altre barche restano col netto del charter "qualunque compagnia".
-    nomi: ["Galatea"],
+    // Galatea (barca piccola, 7 persone al massimo) e Samba sono barche delle
+    // 3 ore con un netto del charter tutto loro (proprietario, 29 ottobre
+    // 2026): il nome sta qui, cosi' il ticket privato porta la compagnia e
+    // prende il suo netto; le altre barche restano col netto del charter
+    // "qualunque compagnia".
+    nomi: ["Galatea", "Samba"],
     title: { it: "Balene e delfini in barca a vela, 3 ore", en: "3-Hour Whale & Dolphin Boat Trip", es: "Ballenas y delfines en velero, 3 horas", fr: "Baleines et dauphins en voilier, 3 heures", de: "Wale und Delfine im Segelboot, 3 Stunden" },
     category: "tour-privati",
     zone: "Puerto Colón",

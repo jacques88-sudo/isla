@@ -21415,3 +21415,10 @@ Small Group Catamaran ("Catamarano per piccoli gruppi"), Luxury Cruiser Experien
 di lusso"); l'inglese resta il titolo di prima. E in italiano **la goletta è "veliero"**:
 "Veliero di legno da Los Gigantes", "Veliero orientale alla baia di Masca". Nelle altre
 lingue la parola non cambia (Schooner, Goleta, Goélette, Schoner).
+
+### Home: Perfetto per 2 e il noleggio si scambiano di posto (29 ottobre 2026)
+
+Il proprietario: "invertire il bento del noleggio con quello perfetto per 2". Nella
+griglia della home Perfetto per 2 è ora il secondo riquadro (accanto a Pacchetti) e il
+noleggio l'ultimo (accanto a Food Experience). Cambia solo l'ordine in `index.html`:
+nessuna regola di `styles.css` dipende dalla posizione dei riquadri.

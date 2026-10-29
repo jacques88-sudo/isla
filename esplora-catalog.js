@@ -973,9 +973,10 @@ const ESPLORA_CATALOG = [
     // solo sull'uscita a persona (proprietario, 14 ottobre 2026). Kasamui fa
     // anche il charter privato, ma il nome sta qui sola: lo stesso nome su
     // due schede e' un errore (proprietario, 21 ottobre 2026). Ocean Blue e'
-    // un'altra barca delle 3 ore (proprietario, 29 ottobre 2026); Samba anche,
-    // ma col charter a un netto suo: il suo nome sta sulla scheda del charter.
-    nomi: ["Cool Sailing", "Lina7", "Mizendoha", "Atlantic Star", "Arriro", "Kasamui", "Ocean Blue"],
+    // un'altra barca delle 3 ore, sul ticket anche "Xixaron", e Nomada
+    // un'altra ancora (proprietario, 29 ottobre 2026); Samba anche, ma col
+    // charter a un netto suo: il suo nome sta sulla scheda del charter.
+    nomi: ["Cool Sailing", "Lina7", "Mizendoha", "Atlantic Star", "Arriro", "Kasamui", "Ocean Blue", "Xixaron", "Nomada", "Nómada"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
@@ -4387,7 +4388,7 @@ const ESPLORA_CATALOG = [
     durationGroups: ["breve"],
     // Stesse partenze del Jet Ski Safari (proprietario, 9 ottobre 2026).
     times: ["10:00", "12:00", "14:00", "16:00", "17:00"],
-    priceFrom: 120,
+    priceFrom: 130,
     priceUnit: { it: "a Fiat 500", en: "per Fiat 500", es: "por Fiat 500", fr: "par Fiat 500", de: "pro Fiat 500" },
     priceAdult: 0,
     priceChild: 0,
@@ -4395,8 +4396,8 @@ const ESPLORA_CATALOG = [
       label: { it: "Durata", en: "Duration", es: "Duración", fr: "Durée", de: "Dauer" },
       choices: [
         // Il giro corto (proprietario, 21 ottobre 2026; ticket 0599 di Kristine).
-        { label: { it: "40 minuti", en: "40 minutes", es: "40 minutos", fr: "40 minutes", de: "40 Minuten" }, price: 120 },
-        { label: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure", de: "1 Stunde" }, price: 130 },
+        { label: { it: "40 minuti", en: "40 minutes", es: "40 minutos", fr: "40 minutes", de: "40 Minuten" }, price: 130 },
+        { label: { it: "1 ora", en: "1 hour", es: "1 hora", fr: "1 heure", de: "1 Stunde" }, price: 170 },
         { label: { it: "2 ore", en: "2 hours", es: "2 horas", fr: "2 heures", de: "2 Stunden" }, price: 220 }
       ]
     },

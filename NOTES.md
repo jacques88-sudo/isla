@@ -21496,3 +21496,19 @@ macchina sola; la barca vichinga ha il netto in percentuale. **I noleggi pagati 
 subito**: alla compagnia va quello che il venditore scrive in NETT sul foglio, non
 "totale − acconto" (che lì darebbe 0). Su Supabase oggi non c'è un modo di scriverlo a
 mano: aperta la domanda al proprietario. `CACHE_NAME` → `isla-v645`.
+
+### Xixaron, Nomada e i prezzi della Fiat 500 (29 ottobre 2026)
+
+Correzioni del proprietario:
+- **Xixaron** è la stessa barca di **Ocean Blue**, scritta nei due modi: tutti e due nei
+  `nomi` di `whale-dolphin-3h`. Sul foglio di Nancy (0468) l'avevo letto "Titaron";
+- **Nomada** è una barca delle 3 ore che fa anche le 2 ore: `"Nomada"` e `"Nómada"`
+  (`compagniaNelTesto()` non toglie gli accenti, quindi servono tutti e due). Il netto
+  delle 3 ore non c'è: sui fogli c'era solo un ticket da 2 ore, e il giro da 2 ore sul
+  sito non c'è;
+- **Fiat 500**: 40 minuti **130** (era 120), 1 ora **170** (era 130), 2 ore 220 come
+  prima; `priceFrom` 130. Si alza un prezzo già pubblicato, per scelta del proprietario.
+
+Provato: i quattro nomi trovati da `compagniaNelTesto()`; la scheda della Fiat a 375 px
+mostra "40 minuti €130 · 1 ora €170 · 2 ore €220", l'elenco "da €130 a Fiat 500";
+nessun errore. `CACHE_NAME` → `isla-v646`.

@@ -196,6 +196,12 @@
 //                cliente scelga una data impossibile. Esempio:
 //                    season: { it: "Solo luglio e agosto", en: "July and August only",
 //                              es: "Solo julio y agosto", fr: "Juillet et août seulement", de: "Nur Juli und August" }
+//   pochiPosti → facoltativo: l'avvertimento che i posti finiscono presto, dove
+//                il proprietario lo chiede (Freebird, 29 ottobre 2026). Nella
+//                pagina di dettaglio e' un riquadro sotto la descrizione, col
+//                testo per intero; nell'elenco la scheda porta l'etichetta
+//                "Posti limitati" (tour.fewSeats in i18n.js).
+//                    pochiPosti: { it: "I posti si esauriscono in fretta: ...", ... }
 //   transfer   → facoltativo: quando l'attivita' si puo' avere col trasporto incluso.
 //                Sulla scheda compare la pillola "Transfer disponibile", sulla pagina
 //                di dettaglio questo testo per esteso, che e' il posto dove spiegare
@@ -621,6 +627,14 @@ const ESPLORA_CATALOG = [
     // venditori e i ticket.
     title: { it: "Crociera in catamarano con balene e delfini", en: "Whale & Dolphin Catamaran Cruise", es: "Crucero en catamarán con ballenas y delfines", fr: "Croisière en catamaran baleines et dauphins", de: "Wal- und Delfin-Katamarantour" },
     nomi: ["Freebird"],
+    // Proprietario, 29 ottobre 2026: si riempie presto.
+    pochiPosti: {
+      it: "I posti si esauriscono in fretta: meglio chiederlo con qualche giorno di anticipo.",
+      en: "Seats sell out fast: it's best to request it a few days in advance.",
+      es: "Las plazas se agotan rápido: mejor solicitarlo con unos días de antelación.",
+      fr: "Les places partent vite : mieux vaut faire la demande quelques jours à l'avance.",
+      de: "Die Plätze sind schnell vergeben: am besten ein paar Tage vorher anfragen."
+    },
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "Da 2 a 4 ore e mezza", en: "2 to 4.5 hours", es: "De 2 a 4,5 horas", fr: "De 2 à 4 heures et demie", de: "2 bis 4,5 Stunden" },

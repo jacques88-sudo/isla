@@ -21447,6 +21447,19 @@ Paradise in "Paradise Bug 1D" e in "Buggy Paradise 2H", Monster in "monster quad
 "MONSTER". Le tre schede a 375 px senza scroll e senza errori, il nome non si vede.
 `CACHE_NAME` → `isla-v642`.
 
+### Freebird: "i posti si esauriscono in fretta" (29 ottobre 2026)
+
+Il proprietario: un avvertimento sul Freebird, perché i posti finiscono presto. Scelte
+sue: nella pagina **e** nell'elenco, col testo "I posti si esauriscono in fretta: meglio
+chiederlo con qualche giorno di anticipo" (tradotto nelle altre quattro lingue).
+
+Campo nuovo del catalogo, **`pochiPosti`** (nel vocabolario in testa a
+`esplora-catalog.js`), così si può mettere anche su altre schede:
+- pagina di dettaglio: riquadro sabbia sotto la descrizione (`.detail-few-seats`);
+- elenco: l'etichetta **"Posti limitati"** (`tour.fewSeats`), con lo stesso colore
+  dell'etichetta di stagione;
+- `controlla.js` verifica che ci siano tutte e cinque le lingue.
+
 ### Galatea, Samba, Ocean Blue, Dolce Vita, Eden, Ragnarock, Mateo Bello (29 ottobre 2026)
 
 Altre compagnie dei fogli del 19-25 ottobre, nei `nomi` (proprietario):
@@ -21468,4 +21481,4 @@ tutti subito (scooter 0906, Mateo Bello 0490), dove "netto = totale − acconto"
 
 Provato: `compagniaNelTesto()` trova i sette nomi nei testi dei fogli ("Dolce Vila",
 come l'ha scritto Nancy, no: lì lo trova Claude dalla foto); le cinque schede e l'elenco
-a 375 px senza scroll e senza errori, nessun nome in pagina. `CACHE_NAME` → `isla-v643`.
+a 375 px senza scroll e senza errori, nessun nome in pagina. `CACHE_NAME` → `isla-v644`.

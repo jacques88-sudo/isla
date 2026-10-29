@@ -963,7 +963,7 @@ const ESPLORA_CATALOG = [
   },
   {
     id: "whale-dolphin-3h",
-    title: { it: "Balene e delfini in barca a vela, 3 ore", en: "3-Hour Whale & Dolphin Boat Trip", es: "Ballenas y delfines en velero, 3 horas", fr: "Baleines et dauphins en voilier, 3 heures", de: "Wale und Delfine im Segelboot, 3 Stunden" },
+    title: { it: "Balene e delfini in barca a vela", en: "Whale & Dolphin Boat Trip", es: "Ballenas y delfines en velero", fr: "Baleines et dauphins en voilier", de: "Wale und Delfine im Segelboot" },
     // Il nome della compagnia, come i venditori lo scrivono sul ticket.
     // Solo qui e non sul charter qui sotto: un ticket "Cool Sailing" con
     // due adulti e' l'uscita a persona.
@@ -7953,7 +7953,7 @@ const ESPLORA_CATALOG = [
     // prende il suo netto; le altre barche restano col netto del charter
     // "qualunque compagnia".
     nomi: ["Galatea", "Samba"],
-    title: { it: "Balene e delfini in barca a vela, 3 ore", en: "3-Hour Whale & Dolphin Boat Trip", es: "Ballenas y delfines en velero, 3 horas", fr: "Baleines et dauphins en voilier, 3 heures", de: "Wale und Delfine im Segelboot, 3 Stunden" },
+    title: { it: "Balene e delfini in barca a vela", en: "Whale & Dolphin Boat Trip", es: "Ballenas y delfines en velero", fr: "Baleines et dauphins en voilier", de: "Wale und Delfine im Segelboot" },
     category: "tour-privati",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },

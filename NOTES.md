@@ -21512,3 +21512,18 @@ Correzioni del proprietario:
 Provato: i quattro nomi trovati da `compagniaNelTesto()`; la scheda della Fiat a 375 px
 mostra "40 minuti €130 · 1 ora €170 · 2 ore €220", l'elenco "da €130 a Fiat 500";
 nessun errore. `CACHE_NAME` → `isla-v646`.
+
+### Via "3 ore" dal titolo delle barche delle 3 ore (29 ottobre 2026)
+
+Il proprietario: dal titolo di `whale-dolphin-3h` (e della gemella
+`whale-dolphin-3h-charter`) si toglie "3 ore", nelle cinque lingue: "Balene e delfini in
+barca a vela", "Whale & Dolphin Boat Trip", "Ballenas y delfines en velero", "Baleines et
+dauphins en voilier", "Wale und Delfine im Segelboot". La durata resta nel suo campo e
+in pagina. Viene dopo Xixaron e Nomada, che fanno anche le 2 ore. Gli `id` restano
+(`-3h`): li usano richieste, ticket e netti. Aggiornata la tabella dei nomi in `CLAUDE.md`
+(con Ocean Blue/Xixaron, Nomada, Galatea e Samba). La riga Notion dei netti chiama ancora
+la scheda "3-Hour Whale & Dolphin Boat Trip": è solo un'etichetta interna.
+
+Provato in italiano, inglese e tedesco a 375 px: titolo e scheda della pagina nuovi, la
+durata "3 ore" si legge ancora, nessun errore. `sitemap.xml` non cambia (non porta i
+titoli). `CACHE_NAME` → `isla-v647`.

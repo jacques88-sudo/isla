@@ -449,6 +449,26 @@ della scheda, perché **una compagnia fa una cosa sola** (proprietario, 30 sette
 schede no, e `controlla.js` dà errore. Quando il proprietario manda il nome di una
 compagnia: trova la scheda, aggiungi il nome, e se non è chiaro quale sia **chiedi**.
 
+**Le barche col nome tolto dal titolo** (28 ottobre 2026): sul ticket e quando ne parla
+il proprietario si chiamano ancora col nome originale. Il nome sta in `nomi`; questa è la
+tabella per ritrovarle in fretta:
+
+| nome originale (ticket) | `id` | titolo in inglese |
+|---|---|---|
+| Freebird | `freebird-catamaran` | Whale & Dolphin Catamaran Cruise |
+| Royal Delfin | `royal-delfin` | Underwater View Catamaran |
+| Maxicat | `maxicat` | Whale Watching & Canarian Lunch |
+| Peter Pan | `peter-pan` | Pirate Ship Dolphin Trip |
+| Flipper One | `flipper-one` | Wooden Schooner from Los Gigantes |
+| Utopia | `utopia-boat-party` | Boat Party |
+| Shogun | `shogun` | Oriental Schooner to Masca Bay |
+| Opera 60 | `opera-60` (+ `opera-60-charter`) | Speedboat & Snorkel Trip |
+| Skyline Cruiser | `skyline-cruiser` (+ `skyline-cruiser-charter`) | Motor Yacht Dolphin Trip |
+| Ragnarok | `ragnarok` | Viking Boat Tour |
+| Cool Sailing, Lina7, Mizendoha, Atlantic Star, Arriro, Kasamui | `whale-dolphin-3h` | 3-Hour Whale & Dolphin Boat Trip |
+| Kalima Kat | `small-group-catamaran` | Small Group Catamaran |
+| Mokkai, White Dream | `luxury-cruiser` | Luxury Cruiser Experience |
+
 **Se la compagnia fa una variante sola**, il nome va **anche dentro quella variante**
 (`options.choices[].nomi`): sul ticket di Andromeda c'è scritto solo "Andromeda", e senza
 questo la lettura della foto lasciava vuota la serata. Trovata la compagnia, il modulo

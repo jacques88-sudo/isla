@@ -2096,6 +2096,18 @@ body.menu-open { overflow: hidden; }
 }
 .request-season[hidden] { display: none; }
 
+/* "I posti si esauriscono in fretta" (pochiPosti nel catalogo), sotto la
+   descrizione della pagina di dettaglio: stesso colore sabbia dell'etichetta
+   "Posti limitati" nell'elenco e degli avvisi di stagione. */
+.detail-few-seats {
+  margin: 0 0 1.2rem;
+  padding: .7rem .9rem;
+  background: var(--sand);
+  color: var(--text);
+  border-radius: 10px;
+  font-size: .9rem;
+}
+
 .tour-foot {
   margin-top: auto;
   padding-top: .9rem;

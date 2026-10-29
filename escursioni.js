@@ -1008,6 +1008,7 @@ function tourCard(tour) {
         ${tour.family ? "<li>" + t("tour.family") + "</li>" : ""}
         ${(tour.transfer || tour.transferSiam) ? "<li>" + t("tour.transfer") + "</li>" : ""}
         ${tour.season ? `<li class="tour-meta-season">${tf(tour.season)}</li>` : ""}
+        ${tour.pochiPosti ? `<li class="tour-meta-season">${t("tour.fewSeats")}</li>` : ""}
         ${offertaAttiva(tour) ? `<li class="tour-meta-offer">${t("tour.offer")}</li>` : ""}
       </ul>
       <div class="tour-foot">

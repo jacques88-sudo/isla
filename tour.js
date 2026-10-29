@@ -648,6 +648,7 @@ function renderTour(tour) {
         </div>
         <h1 class="detail-h1">${esc(tf(tour.title))}</h1>
         <p class="detail-lead">${esc(tf(tour.desc))}</p>
+        ${tour.pochiPosti ? `<p class="detail-few-seats">${esc(tf(tour.pochiPosti))}</p>` : ""}
 
         ${detailOptions(tour)}
 

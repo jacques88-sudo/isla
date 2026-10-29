@@ -266,6 +266,7 @@ const I18N = {
   "tour.from":          { it: "da €{p}", en: "from €{p}", es: "desde €{p}", fr: "dès €{p}", de: "ab €{p}" },
   "tour.offer":         { it: "Offerta", en: "Offer", es: "Oferta", fr: "Offre", de: "Angebot" },
   "tour.family":        { it: "Adatta ai bambini", en: "Kid-friendly", es: "Apta para niños", fr: "Adaptée aux enfants", de: "Für Kinder geeignet" },
+  "tour.fewSeats":      { it: "Posti limitati", en: "Limited seats", es: "Plazas limitadas", fr: "Places limitées", de: "Begrenzte Plätze" },
   "tour.transfer":      { it: "Transfer disponibile", en: "Transfer available", es: "Traslado disponible", fr: "Transfert disponible", de: "Transfer möglich" },
   "tour.details":       { it: "Scopri di più", en: "See details", es: "Ver detalles", fr: "En savoir plus", de: "Mehr erfahren" },
   "tour.photoSoon":     { it: "Foto in arrivo", en: "Photo coming soon", es: "Foto próximamente", fr: "Photo à venir", de: "Foto folgt" },

@@ -21446,3 +21446,16 @@ Provato: `compagniaNelTesto()` in Node trova Black & Blue in "0908 BLACK & BLUE"
 Paradise in "Paradise Bug 1D" e in "Buggy Paradise 2H", Monster in "monster quad" e in
 "MONSTER". Le tre schede a 375 px senza scroll e senza errori, il nome non si vede.
 `CACHE_NAME` → `isla-v642`.
+
+### Freebird: "i posti si esauriscono in fretta" (29 ottobre 2026)
+
+Il proprietario: un avvertimento sul Freebird, perché i posti finiscono presto. Scelte
+sue: nella pagina **e** nell'elenco, col testo "I posti si esauriscono in fretta: meglio
+chiederlo con qualche giorno di anticipo" (tradotto nelle altre quattro lingue).
+
+Campo nuovo del catalogo, **`pochiPosti`** (nel vocabolario in testa a
+`esplora-catalog.js`), così si può mettere anche su altre schede:
+- pagina di dettaglio: riquadro sabbia sotto la descrizione (`.detail-few-seats`);
+- elenco: l'etichetta **"Posti limitati"** (`tour.fewSeats`), con lo stesso colore
+  dell'etichetta di stagione;
+- `controlla.js` verifica che ci siano tutte e cinque le lingue.

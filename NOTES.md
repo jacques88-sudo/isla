@@ -18146,3 +18146,13 @@ Provato in Chromium: con l'invio a Supabase fermato, due escursioni con l'ABAMA 
 `pickup_point` "ABAMA Ritz-Carlton, alla sbarra" e `pickup_time` 08:55 sul Teide, niente
 punto sulle balene; in `venditori.html` con righe finte il modulo si riempie (08:55 + la
 sbarra; 10:00; vuoto per la fascia). `CACHE_NAME` a `isla-v487`.
+
+## Le skill di Matt Pocock: issue su GitHub (29 ottobre 2026)
+
+Configurate con `/setup-matt-pocock-skills`. Le issue stanno su GitHub Issues
+(`jacques88-sudo/isla`), gestite con `gh`; le cinque etichette di triage sono quelle
+standard (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`,
+che c'era già). Le regole stanno in `docs/agents/`; in `docs/agents/domain.md` c'è una
+riga in più rispetto al modello: le skill leggono anche questo `NOTES.md`, perché qui non
+ci sono `GLOSSARY.md` né `docs/adr/`. Il sito non carica niente di questo, quindi
+`CACHE_NAME` non cambia.

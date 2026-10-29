@@ -429,3 +429,19 @@ testo `inc.<parola>` in `i18n.js`. Una parola senza icona **viene saltata in sil
 Le icone si guardano **tutte in fila**, mai una alla volta: da sole sembrano giuste. Un
 asciugamano appeso sembrava un bicchiere e una pompa di benzina sembrava una caraffa,
 scoperti solo mettendole vicino alle altre.
+
+---
+
+## Agent skills
+
+### Issue tracker
+
+Le issue stanno su GitHub Issues (`jacques88-sudo/isla`), gestite con `gh`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Le cinque etichette standard: needs-triage, needs-info, ready-for-agent, ready-for-human, wontfix. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: un `GLOSSARY.md` e `docs/adr/` nella cartella principale, più `NOTES.md`. See `docs/agents/domain.md`.

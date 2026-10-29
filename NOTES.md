@@ -21446,3 +21446,26 @@ Provato: `compagniaNelTesto()` in Node trova Black & Blue in "0908 BLACK & BLUE"
 Paradise in "Paradise Bug 1D" e in "Buggy Paradise 2H", Monster in "monster quad" e in
 "MONSTER". Le tre schede a 375 px senza scroll e senza errori, il nome non si vede.
 `CACHE_NAME` → `isla-v642`.
+
+### Galatea, Samba, Ocean Blue, Dolce Vita, Eden, Ragnarock, Mateo Bello (29 ottobre 2026)
+
+Altre compagnie dei fogli del 19-25 ottobre, nei `nomi` (proprietario):
+- **Samba** e **Ocean Blue**: barche delle 3 ore, in `whale-dolphin-3h` accanto alle altre;
+- **Galatea**: barca delle 3 ore piccola (7 persone al massimo, le altre 11-12) con un
+  **netto del charter tutto suo**. Per questo il nome sta in `whale-dolphin-3h-charter`,
+  non sull'uscita a persona: il ticket privato porta la compagnia e `calcola_netto()`
+  prende la sua riga, che vince su quella "qualunque compagnia" (`order by (x.company is
+  not null) desc`). È la questione che la nota del 21 ottobre su Kasamui diceva di
+  riaprire. Se un giorno Galatea fa anche l'uscita a persona, il nome non può stare su
+  tutte e due le schede: va chiesto;
+- **Dolce Vita**: la Fiat 500 (`fiat-500-water-car`); il netto non è ancora deciso;
+- **Eden**: catamarani piccoli, in `small-group-catamaran` accanto a Kalima Kat;
+- **Ragnarock**: come scrivono sul ticket la barca vichinga, accanto a "Ragnarok";
+- **Mateo Bello**: rent a car, in `noleggio-auto`.
+
+Due dubbi su Notion: Samba privata col netto più alto del charter, e i noleggi pagati
+tutti subito (scooter 0906, Mateo Bello 0490), dove "netto = totale − acconto" darebbe 0.
+
+Provato: `compagniaNelTesto()` trova i sette nomi nei testi dei fogli ("Dolce Vila",
+come l'ha scritto Nancy, no: lì lo trova Claude dalla foto); le cinque schede e l'elenco
+a 375 px senza scroll e senza errori, nessun nome in pagina. `CACHE_NAME` → `isla-v643`.

@@ -958,8 +958,9 @@ const ESPLORA_CATALOG = [
     // (proprietario, 14 ottobre 2026). Arriro e' una barca a vela, anche lei
     // solo sull'uscita a persona (proprietario, 14 ottobre 2026). Kasamui fa
     // anche il charter privato, ma il nome sta qui sola: lo stesso nome su
-    // due schede e' un errore (proprietario, 21 ottobre 2026).
-    nomi: ["Cool Sailing", "Lina7", "Mizendoha", "Atlantic Star", "Arriro", "Kasamui"],
+    // due schede e' un errore (proprietario, 21 ottobre 2026). Samba e Ocean
+    // Blue sono altre due barche delle 3 ore (proprietario, 29 ottobre 2026).
+    nomi: ["Cool Sailing", "Lina7", "Mizendoha", "Atlantic Star", "Arriro", "Kasamui", "Samba", "Ocean Blue"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
@@ -1561,7 +1562,9 @@ const ESPLORA_CATALOG = [
     // La barca e' il Kalima Kat: sul ticket i venditori scrivono "KALIMAKA"
     // (proprietario, 17 ottobre 2026). Solo qui e non sulla gemella dei Tour
     // privati: lo stesso nome su due schede controlla.js non lo accetta.
-    nomi: ["Kalima Kat", "Kalimaka"],
+    // Eden e' un'altra compagnia di catamarani piccoli (proprietario, 29
+    // ottobre 2026).
+    nomi: ["Kalima Kat", "Kalimaka", "Eden"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 o 6 ore", en: "3 or 6 hours", es: "3 o 6 horas", fr: "3 ou 6 heures", de: "3 oder 6 Stunden" },
@@ -2274,7 +2277,8 @@ const ESPLORA_CATALOG = [
     // il cliente legge che giro e', nella sua lingua. Sta in `nomi`, per i
     // venditori e i ticket.
     title: { it: "Barca vichinga", en: "Viking Boat Tour", es: "Barco vikingo", fr: "Bateau viking", de: "Wikingerboot-Tour" },
-    nomi: ["Ragnarok"],
+    // Anche "Ragnarock", come lo scrivono sul ticket (Pat, 1595).
+    nomi: ["Ragnarok", "Ragnarock"],
     category: "mare-barche",
     zone: "Los Cristianos",
     duration: { it: "2 o 3 ore", en: "2 or 3 hours", es: "2 o 3 horas", fr: "2 ou 3 heures", de: "2 oder 3 Stunden" },
@@ -4358,6 +4362,9 @@ const ESPLORA_CATALOG = [
   {
     id: "fiat-500-water-car",
     title: "Fiat 500 Water Car",
+    // La compagnia come i venditori la scrivono sul ticket (proprietario, 29
+    // ottobre 2026; foglio di Nancy, ticket 0470 "Dolce Vita 1h").
+    nomi: ["Dolce Vita"],
     category: "sport-acquatici",
     zone: "Puerto Colón, Costa Adeje",
     duration: { it: "40 minuti, 1 o 2 ore", en: "40 minutes, 1 or 2 hours", es: "40 minutos, 1 o 2 horas", fr: "40 minutes, 1 ou 2 heures", de: "40 Minuten, 1 oder 2 Stunden" },
@@ -7924,6 +7931,11 @@ const ESPLORA_CATALOG = [
   // del proprietario, il prezzo vero resta sulla scheda della barca.
   {
     id: "whale-dolphin-3h-charter",
+    // Galatea e' una barca delle 3 ore piccola, 7 persone al massimo, con un
+    // netto del charter tutto suo (proprietario, 29 ottobre 2026): il nome sta
+    // qui, cosi' il ticket privato porta la compagnia e prende il suo netto;
+    // le altre barche restano col netto del charter "qualunque compagnia".
+    nomi: ["Galatea"],
     title: { it: "Balene e delfini in barca a vela, 3 ore", en: "3-Hour Whale & Dolphin Boat Trip", es: "Ballenas y delfines en velero, 3 horas", fr: "Baleines et dauphins en voilier, 3 heures", de: "Wale und Delfine im Segelboot, 3 Stunden" },
     category: "tour-privati",
     zone: "Puerto Colón",
@@ -8239,7 +8251,8 @@ const ESPLORA_CATALOG = [
     title: { it: "Noleggio auto", en: "Car rental", es: "Alquiler de coches", fr: "Location de voiture", de: "Mietwagen" },
     // Il rent a car come lo scrivono i venditori sul ticket. Roca ("Roca
     // auto") dai fogli dei venditori del 14-18 ottobre 2026.
-    nomi: ["Alis", "Roca"],
+    // Mateo Bello e' un rent a car anche lui (proprietario, 29 ottobre 2026).
+    nomi: ["Alis", "Roca", "Mateo Bello"],
     category: "noleggi",
     venditori: true,
     published: false

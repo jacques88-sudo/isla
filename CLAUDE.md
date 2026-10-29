@@ -41,7 +41,7 @@ branch (`git checkout -B <branch> origin/main`).
 
 Non gestisce le escursioni: vende attività di altri operatori. **Il nome della barca o
 della compagnia non va sul sito** (proprietario, 28 ottobre 2026): il titolo dice che giro
-è, come "3-Hour Whale & Dolphin Boat Trip" ("Whale & Dolphin Catamaran Cruise" era Freebird,
+è, come "Whale & Dolphin Boat Trip" ("Whale & Dolphin Catamaran Cruise" era Freebird,
 "Underwater View Catamaran" era Royal Delfin, e si traducono), e il nome vero sta in `nomi`, che il
 cliente non vede. Niente nome nemmeno nelle descrizioni e negli indirizzi corti; gli `id`
 (`freebird-catamaran`) restano, perché li usano richieste, ticket e netti.
@@ -96,7 +96,7 @@ appaia "multilingual guides".
 
 **I titoli si traducono** nelle cinque lingue (`title: { it, en, es, fr, de }`), senza il
 nome della barca (vedi sopra; proprietario, 28 ottobre 2026: tutte le barche, anche
-"3-Hour Whale & Dolphin Boat Trip"; la goletta in italiano è "veliero"). Restano uguali
+"Whale & Dolphin Boat Trip"; la goletta in italiano è "veliero"). Restano uguali
 ovunque i nomi propri ("Siam Park"). Tradotte sono anche descrizione, zona e durata.
 
 **Prima di creare una scheda nuova, controlla che non esista già.** È già successo di
@@ -465,7 +465,8 @@ tabella per ritrovarle in fretta:
 | Opera 60 | `opera-60` (+ `opera-60-charter`) | Speedboat & Snorkel Trip |
 | Skyline Cruiser | `skyline-cruiser` (+ `skyline-cruiser-charter`) | Motor Yacht Dolphin Trip |
 | Ragnarok | `ragnarok` | Viking Boat Tour |
-| Cool Sailing, Lina7, Mizendoha, Atlantic Star, Arriro, Kasamui | `whale-dolphin-3h` | 3-Hour Whale & Dolphin Boat Trip |
+| Cool Sailing, Lina7, Mizendoha, Atlantic Star, Arriro, Kasamui, Ocean Blue (Xixaron), Nomada | `whale-dolphin-3h` | Whale & Dolphin Boat Trip |
+| Galatea, Samba | `whale-dolphin-3h-charter` | Whale & Dolphin Boat Trip (charter) |
 | Kalima Kat | `small-group-catamaran` | Small Group Catamaran |
 | Mokkai, White Dream | `luxury-cruiser` | Luxury Cruiser Experience |
 

@@ -710,11 +710,19 @@ function collegaCondividi(contenitore, tour) {
   });
 }
 
-// La barra in fondo allo schermo. Il prezzo e' lo stesso "da €39" delle schede
-// in elenco (tourPriceHTML tiene anche il barrato dell'offerta): e' il prezzo
-// di partenza, non quello della variante scelta, percio' resta buono comunque
-// si giri la scheda. Il pulsante fa la stessa cosa di quello dentro la scheda —
-// mette l'escursione nella lista — e l'ascoltatore sta su document
+// Il prezzo nella barra: quello della variante scelta, come sul suo bottone.
+// Con "da €33" fisso e la variante da €63 premuta, il totale sembrava un rincaro.
+// Resta il "da" delle schede in elenco dove la variante non ha un numero solo
+// (i mezzi di piu' tipi, il prezzo da chiedere) o c'e' un'offerta: il barrato e'
+// il listino del prezzo di partenza, e accanto a un'altra variante sarebbe falso.
+function prezzoBarra(tour, variante) {
+  const prezzo = variante && !tour.priceList && !prezziVarianteTesto(tour, variante) &&
+    (variante.price || variante.priceAdult);
+  return prezzo ? esc("€" + eur(prezzo) + priceUnitSuffix(tour)) : tourPriceHTML(tour);
+}
+
+// La barra in fondo allo schermo. Il pulsante fa la stessa cosa di quello dentro
+// la scheda — mette l'escursione nella lista — e l'ascoltatore sta su document
 // (escursioni.js), quindi funziona anche qui fuori dal contenitore.
 function mostraBarraPrenota(tour) {
   const barra = document.querySelector("[data-book-bar]");
@@ -730,7 +738,7 @@ function mostraBarraPrenota(tour) {
 
   const prezzo = barra.querySelector("[data-book-price]");
   const cta = barra.querySelector("[data-request-add]");
-  if (prezzo) prezzo.innerHTML = tourPriceHTML(tour);
+  if (prezzo) prezzo.innerHTML = prezzoBarra(tour, primaVariante(tour));
   if (cta) cta.dataset.requestAdd = tour.id;
   barraTour = tour;
   aggiornaBarraPrenota();
@@ -791,7 +799,8 @@ function collegaOpzioni(contenitore, tour) {
     return bottone.closest(".detail-option-row");
   }
 
-  // Tre pezzi di pagina seguono la variante scelta, e si aggiornano insieme:
+  // Quattro pezzi di pagina seguono la variante scelta, e si aggiornano insieme:
+  //   - il prezzo nella barra in fondo (prezzoBarra)
   //   - "In breve", dove i prezzi per fascia d'eta' sono quelli della variante
   //   - le due righe che spiegano la variante, sotto il suo bottone
   //   - "Cosa e' incluso": sul giro di 2 ore non c'e' ne' il pranzo ne' il
@@ -800,6 +809,9 @@ function collegaOpzioni(contenitore, tour) {
     const variante = varianteDi(tour, bottone.getAttribute("data-option-value"));
 
     if (righeEl) righeEl.innerHTML = detailRows(tour, variante);
+
+    const prezzoEl = document.querySelector("[data-book-price]");
+    if (prezzoEl) prezzoEl.innerHTML = prezzoBarra(tour, variante);
 
     const riga = rigaDi(bottone);
     gruppo.querySelectorAll("[data-detail-option-desc]").forEach(p => {

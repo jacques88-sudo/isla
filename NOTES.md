@@ -21614,3 +21614,8 @@ potevano chiedere anche a novembre. Nuovo campo `timesSeason` accanto a `times`
 (`orarioInStagione()` in `escursioni.js`): fuori periodo l'ora sparisce dal menu, e "In breve"
 scrive il periodo accanto. Il campo non ha l'anno: se il fornitore cambia le date, si cambia lì.
 `CACHE_NAME` → `isla-v652`.
+
+**Il prezzo nella barra segue la variante** (stessa revisione): con la variante da €63 premuta la
+barra diceva ancora "da €33", e il totale nella finestra sembrava un rincaro. Ora c'è il prezzo del
+bottone premuto (`prezzoBarra` in `tour.js`). Resta il "da" dove la variante non ha un numero solo
+(mezzi di più tipi, prezzo da chiedere) o c'è un'offerta. `CACHE_NAME` → `isla-v653`.

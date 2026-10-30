@@ -264,6 +264,11 @@ function disegnaRecensioniHome() {
     ${STELLA_SVG}
     <strong>${esc(media.toLocaleString(getLang(), { minimumFractionDigits: 1, maximumFractionDigits: 1 }))}</strong>
     <span>${esc(t("rev.average", { n: RECENSIONI_HOME.length }))}</span>`;
+  const fiducia = document.querySelector("[data-fiducia]");
+  if (fiducia) {
+    fiducia.innerHTML = sezione.querySelector("[data-rev-media]").innerHTML;
+    fiducia.hidden = media === null;
+  }
   sezione.querySelector("[data-rev-lista]").innerHTML = visibili.map(cardRecensione).join("");
   const altre = sezione.querySelector("[data-rev-altre]");
   altre.hidden = RECENSIONI_TUTTE || RECENSIONI_HOME.length <= RECENSIONI_SUBITO;

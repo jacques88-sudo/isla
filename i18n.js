@@ -68,7 +68,7 @@ const I18N = {
 
   // ── intro e bento ───────────────────────────────────────────────────────
   "intro.eyebrow":      { it: "Tenerife", en: "Tenerife", es: "Tenerife", fr: "Tenerife", de: "Teneriffa" },
-  "intro.title":        { it: "Inizia la tua avventura con…", en: "Start your adventure with…", es: "Empieza tu aventura con…", fr: "Commencez votre aventure avec…", de: "Beginnen Sie Ihr Abenteuer mit…" },
+  "intro.title":        { it: "Inizia la tua avventura a Tenerife con…", en: "Start your Tenerife adventure with…", es: "Empieza tu aventura en Tenerife con…", fr: "Commencez votre aventure à Tenerife avec…", de: "Beginnen Sie Ihr Teneriffa-Abenteuer mit…" },
   "bento.packages":     { it: "Pacchetti", en: "Packages", es: "Paquetes", fr: "Forfaits", de: "Pakete" },
   // Era "Con bambini" e portava all'elenco filtrato: adesso porta ai pacchetti
   // di famiglia. Il nome cambiato e' una scelta del proprietario (14 settembre

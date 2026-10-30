@@ -21546,12 +21546,11 @@ correzioni, con quello che è stato trovato:
 
 - **Il falso "Paga ora".** `trasloco.js` accettava `#trasloco=` da qualunque link: un
   truffatore poteva mettere nel telefono del cliente una richiesta finta col suo link, sul
-  dominio vero. Ora solo se `document.referrer` è il vecchio indirizzo. Provato nel browser
-  in locale; da provare ancora con la vecchia app su un telefono vero.
+  dominio vero. Ora solo se `document.referrer` è il vecchio indirizzo.
 - **Offline.** `sw.js` riconosceva col "?" solo `escursioni.html` e `mappa.html`: i link di
   WhatsApp (`booking.html?code=…`) senza rete davano "sei offline". Ora ogni pagina aperta
   si cerca in cache senza guardare il "?". Il browser integrato di Claude non registra i
-  service worker: provato in `prove.js` con una cache finta, non su un telefono.
+  service worker: `prove.js` lo prova con una cache finta.
 - **La pulizia mensile** si ferma se il foglio Google non legge da più di 3 giorni
   (`foglio_letto`, `supabase/modifiche/2026-10-30-audit.sql`): il foglio è l'unico archivio.
 - **Limite per indirizzo di rete** su `manda_richiesta`, 30 righe l'ora: prima 30 chiamate
@@ -21572,8 +21571,13 @@ correzioni, con quello che è stato trovato:
   varianti, che nella finestra non c'era più.
 - Via `stampa/undefined/` (creata per errore), e il README rimesso in pari.
 
-`2026-10-30-audit.sql` è stato provato su un Postgres temporaneo in memoria (PGlite), mai su
-quello vero. `CACHE_NAME` → `isla-v648`.
+`2026-10-30-audit.sql` è stato provato su un Postgres temporaneo in memoria (PGlite), poi
+lanciato su quello vero. `CACHE_NAME` → `isla-v648`.
+
+Verificato dal proprietario il 30 ottobre 2026, dopo la pubblicazione: le funzioni, l'offline
+e il trasloco sui telefoni veri. Il limite per indirizzo di rete l'abbiamo guardato insieme in
+`tentativi_richieste`: telefono coi dati mobili e computer sul Wi-Fi hanno impronte diverse,
+quindi Supabase passa l'indirizzo del cliente e non uno interno uguale per tutti.
 
 Non si è toccato chi può vedere le richieste: ogni account venditore le legge e le modifica
 tutte, link di pagamento compreso. Il proprietario: "i venditori siamo io e mia moglie",

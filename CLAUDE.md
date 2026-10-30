@@ -321,6 +321,9 @@ Le due pagine hanno al suo posto `<div data-finestra-richiesta>`.
   esterno, prima di dargli l'account** le richieste WhatsApp vanno chiuse all'ufficio
   (`is_office()`, regole di `bookings`): oggi vedrebbe nome e hotel dei clienti e potrebbe
   cambiare il link di pagamento.
+- **I nomi delle barche non si cercano** (proprietario, 30 ottobre 2026): "freebird" nella
+  ricerca dell'elenco non trova niente, perché i `nomi` non entrano in `matches()`. Proposto, e
+  lasciato così. Non si ripropone.
 - **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
   Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
   minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.

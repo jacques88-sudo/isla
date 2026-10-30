@@ -658,6 +658,13 @@ a { text-decoration: none; color: inherit; }
 @media (min-width: 960px) {
   .intro { padding: 6rem 0 3.5rem; }
 }
+.intro .intro-fiducia {
+  justify-content: center;
+  margin: .7rem 0 0;
+  color: var(--text);
+  text-decoration: none;
+}
+.intro-fiducia[hidden] { display: none; }
 
 /* Bento — quick links below the intro */
 .bento { padding: 0 0 2.5rem; }

@@ -21637,3 +21637,10 @@ all'assistente". I `nomi` delle barche non entrano nella ricerca: deciso dal pro
 di pagina, e "Tutte" è l'ultima pillola, fuori schermo, per scelta del proprietario. Sotto le Consigliate
 ora c'è "Vedi tutte le N attività" (`data-see-all`), scuro perché l'azzurro è di "Aggiungi alla lista".
 Il proprietario l'ha visto in foto prima della pubblicazione. `CACHE_NAME` → `isla-v656`.
+
+**La home: il titolo e le stelle in cima** (stessa revisione): il titolo ora dice dove, "Inizia la tua
+avventura a Tenerife con…", e sopra c'è la media delle recensioni (`data-fiducia`), un link a "Dicono di
+noi" che recensioni.js accende solo se c'è una media. Provate e **scartate dal proprietario**: la frase
+"scelte da Jack e Francesca", la frase su WhatsApp ("potrebbe far desistere il cliente") e le consigliate
+in home, sia in griglia 2×2 sia nella fila che scorre con le frecce ("non mi piacciono"). I riquadri
+restano subito sotto il titolo. `CACHE_NAME` → `isla-v657`.

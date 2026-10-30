@@ -21644,3 +21644,10 @@ noi" che recensioni.js accende solo se c'è una media. Provate e **scartate dal 
 "scelte da Jack e Francesca", la frase su WhatsApp ("potrebbe far desistere il cliente") e le consigliate
 in home, sia in griglia 2×2 sia nella fila che scorre con le frecce ("non mi piacciono"). I riquadri
 restano subito sotto il titolo. `CACHE_NAME` → `isla-v657`.
+
+**I filtri si perdevano tornando da una scheda** (stessa revisione): lo stato dell'elenco stava solo in
+memoria. Se il browser teneva la pagina (bfcache) i filtri restavano, se la rifaceva da capo si tornava
+alle consigliate: per questo sembrava capitare a caso. Ora `render` li scrive in `history.state` e
+`initCatalog` li riprende solo se `performance.getEntriesByType("navigation")` dice `back_forward`:
+"Esperienze" e il ricaricare ripartono puliti. Provato in Chrome a misura di telefono, non su Android e
+iPhone veri. `CACHE_NAME` → `isla-v658`.

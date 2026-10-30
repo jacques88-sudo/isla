@@ -1132,6 +1132,21 @@ function initCatalog() {
   };
   if (searchInput && queryDaLink) searchInput.value = queryDaLink;
 
+  // Tornando indietro da una scheda il browser a volte tiene la pagina in
+  // memoria e a volte la rifa' da capo, e allora i filtri si perdevano. Stanno
+  // in history.state (li scrive render) e si riprendono solo tornando indietro:
+  // chi tocca "Esperienze" o ricarica la pagina riparte pulito.
+  const navigazione = performance.getEntriesByType("navigation")[0];
+  const salvato = navigazione && navigazione.type === "back_forward" && history.state && history.state.catalogo;
+  if (salvato) {
+    Object.assign(state, salvato, {
+      // l'app puo' essersi aggiornata nel frattempo: come per i link, cio' che non esiste piu' si butta
+      categories: salvato.categories.filter(id => CATEGORIES.some(c => c.id === id)),
+      selezione: Object.prototype.hasOwnProperty.call(SELEZIONI, salvato.selezione) ? salvato.selezione : null
+    });
+    if (searchInput) searchInput.value = salvato.query;
+  }
+
   // Solo le categorie che hanno almeno un'attività pubblicata
   const usedCategories = CATEGORIES.filter(c =>
     published.some(x => categorieDi(x).includes(c.id))
@@ -1279,6 +1294,7 @@ function initCatalog() {
   }
 
   function render() {
+    history.replaceState({ ...history.state, catalogo: state }, "");
     const results = published.filter(matches);
     // Le raccomandate escono nell'ordine della lista, non in quello del
     // catalogo: la prima e' quella che si vuole far vedere per prima.

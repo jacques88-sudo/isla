@@ -4127,6 +4127,7 @@ body.menu-open { overflow: hidden; }
   flex: 1;
   min-height: 48px;
 }
+.book-bar-cta[hidden] { display: none; }
 
 /* La barra copre l'angolo dei due pallini: quando c'e', salgono sopra di lei.
    Stessa cosa per il messaggio della lista, che spunta da li' sotto. */

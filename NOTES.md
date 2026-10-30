@@ -21589,3 +21589,10 @@ stato lanciato. Prima di lanciarlo, provati tutti i file di `ORDINE.md` su PGlit
 `service_role` mancava il permesso su `ufficio_iscrizioni`, come c'era su `push_iscrizioni`.
 Senza, `avvisi_ufficio_da_mandare()` segnava gli avvisi come mandati e poi la funzione si
 fermava leggendo i telefoni: avvisi persi. Aggiunto il `grant` al file.
+
+**Dopo "Aggiungi alla lista" sembrava tutto finito** (revisione con `impeccable`, 30 ottobre
+2026): chi capiva "fatto" se ne andava, e la richiesta non era mai partita. Ora il messaggio
+dice "ma non ancora inviata" e, con questa escursione nella lista, la barra in fondo alla
+scheda diventa "Manda la richiesta (N) →" e apre la lista (`aggiornaBarraPrenota` in `tour.js`).
+Il pulsante dentro la scheda resta "Aggiungi", per chiederla anche con un altro giorno; su
+un'altra scheda la barra aggiunge quella. `CACHE_NAME` → `isla-v649`.

@@ -727,10 +727,26 @@ function mostraBarraPrenota(tour) {
   const cta = barra.querySelector("[data-request-add]");
   if (prezzo) prezzo.innerHTML = tourPriceHTML(tour);
   if (cta) cta.dataset.requestAdd = tour.id;
+  barraTour = tour;
+  aggiornaBarraPrenota();
   barra.hidden = false;
   // alza i due pallini in basso: senza, la barra ci finisce sopra
   document.body.classList.add("has-book-bar");
 }
+
+// Aggiunta alla lista, la richiesta non e' ancora partita: chi capiva "fatto" se
+// ne andava e aspettava una risposta che non poteva arrivare. Quindi, con questa
+// escursione nella lista, la barra manda la richiesta; per aggiungerla di nuovo
+// con un altro giorno resta il pulsante dentro la scheda.
+let barraTour = null;
+function aggiornaBarraPrenota() {
+  const barra = document.querySelector("[data-book-bar]");
+  if (!barra || !barraTour || typeof listaLeggi !== "function") return;
+  const nellaLista = listaLeggi().some(voce => voce.id === barraTour.id);
+  barra.querySelector("[data-request-add]").hidden = nellaLista;
+  barra.querySelector("[data-lista-open]").hidden = !nellaLista;
+}
+document.addEventListener("islalista", aggiornaBarraPrenota);
 
 // Le miniature sotto la foto grande cambiano solo `src` dell'immagine
 // principale: niente pagina nuova, niente libreria di lightbox.

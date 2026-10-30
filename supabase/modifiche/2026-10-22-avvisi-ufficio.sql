@@ -36,6 +36,8 @@ create table if not exists public.ufficio_iscrizioni (
 );
 
 alter table public.ufficio_iscrizioni enable row level security;
+-- manda-notifiche legge i telefoni e toglie quelli che non esistono piu'
+grant select, delete on public.ufficio_iscrizioni to service_role;
 
 
 -- 2. ISCRIVERSI E TOGLIERSI ---------------------------------------------------

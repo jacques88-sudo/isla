@@ -21583,3 +21583,9 @@ Non si è toccato chi può vedere le richieste: ogni account venditore le legge 
 tutte, link di pagamento compreso. Il proprietario: "i venditori siamo io e mia moglie",
 quindi sono anche l'ufficio e non c'è nessuno da cui proteggerle. Va rivisto se arriva un
 venditore esterno: la regola sta fra le cose decise in `CLAUDE.md`.
+
+**Gli avvisi dell'ufficio non erano mai stati accesi**: `2026-10-22-avvisi-ufficio.sql` non era
+stato lanciato. Prima di lanciarlo, provati tutti i file di `ORDINE.md` su PGlite: a
+`service_role` mancava il permesso su `ufficio_iscrizioni`, come c'era su `push_iscrizioni`.
+Senza, `avvisi_ufficio_da_mandare()` segnava gli avvisi come mandati e poi la funzione si
+fermava leggendo i telefoni: avvisi persi. Aggiunto il `grant` al file.

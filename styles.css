@@ -4334,6 +4334,13 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .lista-dialog input[type="email"]:focus { border-bottom-color: var(--text); }
 .lista-dialog input[type="text"]::placeholder,
 .lista-dialog input[type="email"]::placeholder { font-family: var(--font-hand); }
+/* L'email no: e' il campo da cui dipende il biglietto, e a mano "l", "1" e "i"
+   si confondono. Stessa ragione del codice sconto. */
+.lista-dialog input[type="email"],
+.lista-dialog input[type="email"]::placeholder {
+  font-family: inherit;
+  font-size: 1rem;
+}
 
 /* Il codice sconto dei venditori (lista.js): la riga come quella del nome,
    col bottone "Applica" accanto. Il codice si scrive in maiuscolo e in

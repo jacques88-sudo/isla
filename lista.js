@@ -149,17 +149,18 @@ function listaContatori(tour, voce) {
   const adulti = voce.adults || 0;
   const bambini = voce.kids || 0;
   const neonati = voce.babies || 0;
-  const conta = [{ campo: "adults", nome: t("req.adults"), n: adulti,
+  const eta = tour.ages || {};
+  const conta = [{ campo: "adults", nome: conEta(t("req.adults"), eta.adult), n: adulti,
     min: Math.max(1, menu - bambini), max: 30 }];
   // Come nella finestra: niente bambini sulle schede solo per adulti, niente
   // neonati dove non sappiamo se pagano. Se la voce ne ha gia', il contatore
   // resta, se no il cliente non potrebbe toglierli.
   if (!(typeof soloAdulti === "function" && soloAdulti(tour)) || bambini > 0) {
-    conta.push({ campo: "kids", nome: t("req.kids"), n: bambini,
+    conta.push({ campo: "kids", nome: conEta(t("req.kids"), eta.child), n: bambini,
       min: Math.max(0, menu - adulti), max: 30 });
   }
   if (tour.priceInfant !== undefined || neonati > 0) {
-    conta.push({ campo: "babies", nome: t("req.babies"), n: neonati, min: 0, max: 30 });
+    conta.push({ campo: "babies", nome: conEta(t("req.babies"), eta.infant), n: neonati, min: 0, max: 30 });
   }
   return conta;
 }

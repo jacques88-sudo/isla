@@ -301,6 +301,12 @@ function conRitiro(tour, variante, transferChiesto) {
 // con "12+" e senza bambini non conta: lì i bambini di solito ci sono e il
 // prezzo manca, non e' vietato. Lo legge la finestra della richiesta per
 // togliere il campo dei bambini.
+// "Bambini (4-11)": la fascia d'eta' fra parentesi, quando il fornitore l'ha
+// detta. tf() perche' "0-3" si scrive uguale dappertutto, "0-11 mesi" no.
+function conEta(etichetta, fascia) {
+  return fascia ? etichetta + " (" + tf(fascia) + ")" : etichetta;
+}
+
 function soloAdulti(tour) {
   const eta = tour && tour.ages;
   if (!eta || eta.child || eta.infant || typeof eta.adult !== "string") return false;
@@ -1531,13 +1537,13 @@ const FINESTRA_RICHIESTA = `  <div class="ticket-dialog request-dialog" id="requ
 
       <span class="request-people-label" data-request-people-label data-i18n="req.people">Quante persone</span>
       <div class="request-people" data-request-people>
-        <label for="reqAdults"><span data-i18n="req.adults">Adulti</span>
+        <label for="reqAdults"><span><span data-i18n="req.adults">Adulti</span> <span data-request-age="adult"></span></span>
           <input id="reqAdults" name="adults" type="number" inputmode="numeric" min="1" max="30" value="1" required />
         </label>
-        <label for="reqKids"><span data-i18n="req.kids">Bambini</span>
+        <label for="reqKids"><span><span data-i18n="req.kids">Bambini</span> <span data-request-age="child"></span></span>
           <input id="reqKids" name="kids" type="number" inputmode="numeric" min="0" max="30" value="0" />
         </label>
-        <label for="reqBabies" data-request-babies hidden><span data-i18n="req.babies">Neonati</span>
+        <label for="reqBabies" data-request-babies hidden><span><span data-i18n="req.babies">Neonati</span> <span data-request-age="infant"></span></span>
           <input id="reqBabies" name="babies" type="number" inputmode="numeric" min="0" max="30" value="0" />
         </label>
       </div>
@@ -1751,6 +1757,7 @@ function initRequestDialog() {
     riempiOrari(tour);
     riempiLingue(tour);
     riempiMenu(tour);
+    mostraEta(tour);
     mostraNeonati(tour);
     mostraBambini(tour);
     mostraPersone(tour);
@@ -2168,6 +2175,15 @@ function initRequestDialog() {
     if (spento) kidsInput.value = "0";
   }
 
+  // Le fasce d'eta' accanto ai numeri: su Royal Delfin un bimbo di 3 anni non
+  // paga e uno di 4 si', e prima si leggeva solo nella pagina dietro la finestra.
+  function mostraEta(tour) {
+    document.querySelectorAll("[data-request-age]").forEach(el => {
+      const fascia = tour && tour.ages && tour.ages[el.dataset.requestAge];
+      el.textContent = fascia ? "(" + tf(fascia) + ")" : "";
+    });
+  }
+
   // Quanti mezzi prenotare, uno per tipo. Compare solo dove la scheda ha
   // `units`, cioe' dove il prezzo e' del mezzo: sul jet ski un gruppo prende
   // quattro moto, magari due doppie e due singole, e sono quattro prezzi.
@@ -2516,6 +2532,7 @@ function initRequestDialog() {
   document.addEventListener("islalang", () => {
     if (!current) return;
     aggiornaAttivita(current);
+    mostraEta(current);
     if (seasonEl && current.season) seasonEl.textContent = tf(current.season);
     const transfer = transferDi(current, VARIANTE_APERTA);
     if (transferNoteEl && transfer) transferNoteEl.textContent = tf(transfer);

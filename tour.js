@@ -188,9 +188,6 @@ function detailRows(tour, variante) {
   // "Adulti (12+)": la fascia d'eta' fra parentesi, quando il fornitore l'ha
   // detta. Senza, resta solo "Adulti".
   const eta = tour.ages || {};
-  // tf() perche' una fascia puo' avere bisogno delle cinque lingue: "0-3" si
-  // scrive uguale dappertutto, "0-11 mesi" no.
-  const conEta = (etichetta, fascia) => fascia ? etichetta + " (" + tf(fascia) + ")" : etichetta;
   if (adulto > 0) {
     // Il barrato va solo sul prezzo della scheda: se il cliente ha scelto una
     // variante, il numero mostrato e' quello della variante e il listino di

@@ -21527,3 +21527,13 @@ la scheda "3-Hour Whale & Dolphin Boat Trip": è solo un'etichetta interna.
 Provato in italiano, inglese e tedesco a 375 px: titolo e scheda della pagina nuovi, la
 durata "3 ore" si legge ancora, nessun errore. `sitemap.xml` non cambia (non porta i
 titoli). `CACHE_NAME` → `isla-v647`.
+
+## Le skill di Matt Pocock: issue su GitHub (29 ottobre 2026)
+
+Configurate con `/setup-matt-pocock-skills`. Le issue stanno su GitHub Issues
+(`jacques88-sudo/isla`), gestite con `gh`; le cinque etichette di triage sono quelle
+standard (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`,
+che c'era già). Le regole stanno in `docs/agents/`; in `docs/agents/domain.md` c'è una
+riga in più rispetto al modello: le skill leggono anche questo `NOTES.md`, perché qui non
+ci sono `GLOSSARY.md` né `docs/adr/`. Il sito non carica niente di questo, quindi
+`CACHE_NAME` non cambia.

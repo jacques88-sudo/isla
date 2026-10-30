@@ -643,3 +643,19 @@ Oggi non serve: le regole di sicurezza di Isla sono già fatte bene (`anon` non 
 hanno già `set search_path = ''`). La skill **non copre** le funzioni (`manda-notifiche`,
 `leggi-ticket`, `pulisci-foto`) né le foto, e i suoi esempi danno per scontato che ogni
 utente abbia un account (`auth.uid()`): da noi il cliente non ce l'ha.
+
+---
+
+## Agent skills
+
+### Issue tracker
+
+Le issue stanno su GitHub Issues (`jacques88-sudo/isla`), gestite con `gh`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Le cinque etichette standard: needs-triage, needs-info, ready-for-agent, ready-for-human, wontfix. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: un `GLOSSARY.md` e `docs/adr/` nella cartella principale, più `NOTES.md`. See `docs/agents/domain.md`.

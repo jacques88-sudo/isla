@@ -1,0 +1,23 @@
+# A ogni PR verso main: il controllo del catalogo e le prove dei calcoli.
+# Se uno dei due esce con errore, la PR si segna in rosso.
+name: Controlli
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  controlli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node controlla.js
+      - run: node prove.js

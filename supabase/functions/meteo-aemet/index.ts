@@ -9,11 +9,11 @@
 // dice niente del Teide (3700 m). Per il Teide c'e' il bollettino di montagna
 // (20 ottobre 2026): vedi TEIDE piu' sotto.
 //
-// Chi la chiama: Cron di Supabase, ogni 3 ore. La funzione e' aperta (Verify
-// JWT spento), come pulisci-foto: prende solo previsioni pubbliche e non
-// restituisce niente dei clienti. Per non far consumare la chiave a chi la
-// chiamasse di continuo, se l'ultimo aggiornamento ha meno di un'ora non chiede
-// niente ad AEMET.
+// Chi la chiama: Cron di Supabase, ogni 3 ore, solo lui (30 ottobre 2026):
+// "Verify JWT" resta spento perche' un login non ce l'ha, e manda la parola
+// segreta nell'intestazione "x-orologio", la stessa di manda-notifiche
+// (OROLOGIO_SEGRETO nei Secrets, mai nel repository). Se l'ultimo aggiornamento
+// ha meno di un'ora non chiede niente ad AEMET.
 //
 // La chiave AEMET sta SOLO nei Secrets (AEMET_API_KEY), mai nel repository.
 // AEMET risponde in due passi: il primo da' l'indirizzo dei dati, il secondo i
@@ -202,7 +202,19 @@ async function previsione(chiave: string, codice: string): Promise<{ elaborato: 
   return { elaborato: dati?.elaborado ?? null, giorni: dati?.prediccion?.dia ?? [] };
 }
 
-Deno.serve(async () => {
+// Due testi uguali, confrontati tutti fino in fondo (come in manda-notifiche).
+function uguali(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diversi = 0;
+  for (let i = 0; i < a.length; i++) diversi |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diversi === 0;
+}
+
+Deno.serve(async (req) => {
+  const segreto = Deno.env.get("OROLOGIO_SEGRETO");
+  const parola = req.headers.get("x-orologio");
+  if (!segreto || !parola || !uguali(parola, segreto)) return risposta({ errore: "non autorizzato" }, 401);
+
   const chiave = Deno.env.get("AEMET_API_KEY");
   if (!chiave) return risposta({ errore: "manca AEMET_API_KEY nei Secrets" }, 500);
 

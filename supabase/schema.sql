@@ -14,17 +14,8 @@
 --
 -- Le modifiche successive, per il progetto gia' creato, stanno in
 -- supabase/modifiche/ (una per file, con la data nel nome). Chi riparte da zero
--- lancia questo file e poi quelle che qui non sono gia' comprese: oggi
--- 2026-09-30-pulizia-mensile.sql (ha bisogno di Cron attivato),
--- 2026-09-30-richieste-whatsapp.sql (le richieste dei clienti senza ticket) e
--- 2026-10-02-richieste-ticket.sql (la richiesta confermata diventa un ticket) e
--- 2026-10-05-ufficio.sql (gli account dell'ufficio, per le statistiche).
--- 2026-10-08-mezzi.sql (quanti mezzi sul ticket) e 2026-10-08-netti.sql (la
--- tabella dei netti, VUOTA, e la compagnia sul ticket) sono gia' compresi qui.
--- 2026-10-08-foglio.sql NO: va lanciato dopo questo file (il netto fissato sul
--- ticket, la porta del foglio Google, e i venditori che non leggono i netti).
--- Poi, in ordine: 2026-10-08-pagamento.sql (card o cash, commissioni) e
--- 2026-10-09-percentuale.sql (il netto a percentuale del totale).
+-- lancia questo file e poi quelle elencate in supabase/ORDINE.md, nell'ordine
+-- scritto li'.
 
 
 -- 1. I VENDITORI ------------------------------------------------------------

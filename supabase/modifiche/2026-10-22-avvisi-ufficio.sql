@@ -4,9 +4,9 @@
 --   - RICHIESTA nuova: un cliente ha mandato la lista su WhatsApp;
 --   - TICKET nuovo: un venditore ha inserito un ticket di carta;
 --   - RECENSIONE nuova da approvare.
--- Solo l'ufficio (is_office), mai i venditori: un venditore non deve vedere le
--- richieste di tutti. Arrivano su Isla Ticket, col suo service worker
--- (isla-ticket/sw.js), non su Isla.
+-- Solo l'ufficio (is_office). Arrivano su Isla Ticket, col suo service worker
+-- (isla-ticket/sw.js), non su Isla. Le richieste in se' le legge ogni venditore:
+-- vedi "Venditori e ufficio sono le stesse due persone" in CLAUDE.md.
 --
 -- Come funziona:
 --   1. ogni riga nuova in bookings o recensioni lascia un segno in
@@ -109,6 +109,8 @@ create table if not exists public.avvisi_ufficio (
 );
 
 alter table public.avvisi_ufficio enable row level security;
+-- manda-notifiche toglie il segno a un avviso non partito, per riprovarlo
+grant select, update (sent_at) on public.avvisi_ufficio to service_role;
 
 create or replace function public.segna_avviso_ticket()
 returns trigger

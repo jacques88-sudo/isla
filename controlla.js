@@ -954,7 +954,8 @@ function controllaSitemap() {
   const { sitemapTesto } = require("./sitemap.js");
   let scritta = "";
   try { scritta = leggi("sitemap.xml"); } catch (e) { /* manca: sotto lo dice */ }
-  if (scritta !== sitemapTesto())
+  // Su Windows git scrive i file con gli a capo \r\n: non e' una differenza vera.
+  if (scritta.replace(/\r\n/g, "\n") !== sitemapTesto())
     errore("sitemap.xml", "non corrisponde al catalogo: lancia `node sitemap.js`.");
 }
 

@@ -1,16 +1,16 @@
 # Cos'è Isla
 
-Aggiornato al 21 ottobre 2026 · [versione PDF](documenti/cos-e-isla.pdf)
+Aggiornato al 30 ottobre 2026 · [versione PDF](documenti/cos-e-isla.pdf) (del 21 ottobre)
 
 ## In breve
 
 Isla è il sito-app di **Admiral Excursions** per vendere escursioni a Tenerife: barche, delfini e balene, Teide, parchi acquatici, buggy, quad, spettacoli, giri delle isole. Si apre dal telefono e si può installare come un'app (PWA).
 
-Admiral è un **rivenditore**: le escursioni le fanno altre compagnie (Freebird, Royal Delfin, Shogun, Peter Pan…), e Isla le vende. Per questo le schede portano il nome della barca vera.
+Admiral è un **rivenditore**: le escursioni le fanno altre compagnie (Freebird, Royal Delfin, Shogun, Peter Pan…), e Isla le vende. Sul sito il nome della barca o della compagnia non compare (dal 28 ottobre 2026): il titolo dice che giro è.
 
-Le prenotazioni non sono automatiche: il cliente manda una **richiesta su WhatsApp** (+34 662 908 073), l'ufficio la conferma entro 24 ore e il pagamento si concorda dopo.
+Le prenotazioni non sono automatiche: il cliente manda una **richiesta su WhatsApp** (+34 657 772 032), l'ufficio la conferma entro 24 ore e il pagamento si concorda dopo.
 
-A ottobre 2026 il catalogo ha **74 schede, 67 pubblicate**, in cinque lingue: italiano, inglese, spagnolo, francese e tedesco. Il sito sta su [islaexcursionstenerife.com](https://islaexcursionstenerife.com/); il vecchio indirizzo `jacques88-sudo.github.io/isla/` porta lì da solo, anche dai QR già stampati.
+A ottobre 2026 il catalogo ha **75 schede, 68 pubblicate**, in cinque lingue: italiano, inglese, spagnolo, francese e tedesco. Il sito sta su [islaexcursionstenerife.com](https://islaexcursionstenerife.com/); il vecchio indirizzo `jacques88-sudo.github.io/isla/` porta lì da solo, anche dai QR già stampati.
 
 ## Cosa vede il cliente
 
@@ -74,6 +74,7 @@ Il cliente apre il sito e manda la richiesta su WhatsApp; ticket, richieste e re
 | `venditori.js` | Isla Ticket |
 | `sw.js` | il service worker: fa funzionare l'app anche offline |
 | `controlla.js` | il controllo del catalogo prima di ogni consegna |
+| `prove.js` | le prove di totali, sconto, 24 ore, offline e trasloco |
 | `NOTES.md` | la memoria lunga: il perché di ogni scelta |
 
 ## Le regole che contano
@@ -87,4 +88,4 @@ Queste sono le scelte del proprietario che valgono per tutto il sito; il resto s
 - **Le recensioni sono di Isla**: le scrive solo chi è stato in escursione con noi, escono dopo l'approvazione dell'ufficio e si leggono nella home.
 - **Netti, commissioni e codici sconto mai nei file**, solo su Supabase.
 - **Il dominio è `islaexcursionstenerife.com`** (email `info@islaexcursionstenerife.com`), collegato al sito il 21 ottobre 2026 insieme al SEO: sitemap nelle cinque lingue e i dati per Google.
-- **Prima di ogni consegna**: `node controlla.js`, alzare `CACHE_NAME` in `sw.js`, provare nel browser vero.
+- **Prima di ogni consegna**: `node controlla.js`, `node prove.js`, alzare `CACHE_NAME` in `sw.js`, provare nel browser vero.

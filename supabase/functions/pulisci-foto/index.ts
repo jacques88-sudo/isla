@@ -7,8 +7,8 @@
 // pagina dei venditori quando carica.
 //
 // Chi la chiama: Cron di Supabase, ogni notte alle 3:30
-// (supabase/modifiche/2026-10-01-pulizia-foto.sql). Si puo' anche aprire a mano
-// l'indirizzo della funzione per provarla.
+// (supabase/modifiche/2026-10-01-pulizia-foto.sql, parola segreta in
+// 2026-10-30-audit.sql).
 //
 // Una foto e' "orfana" quando nessuna riga di bookings la nomina in photo_path:
 //   - il ticket e' stato tolto dalla pulizia mensile (pulisci_ticket_vecchi);
@@ -17,9 +17,10 @@
 // Si cancellano solo le orfane con PIU' DI UN GIORNO: una foto appena caricata
 // e' orfana per un secondo, fra il caricamento e il salvataggio del ticket.
 //
-// La funzione e' aperta (Verify JWT spento): chi la chiamasse otterrebbe solo
-// quello che fa gia' lei ogni notte, cioe' togliere foto senza ticket. Non
-// riceve niente e non restituisce dati dei clienti, solo dei conteggi.
+// Risponde solo a Cron (30 ottobre 2026): "Verify JWT" resta spento perche' un
+// login non ce l'ha, e manda la parola segreta nell'intestazione "x-orologio",
+// la stessa di manda-notifiche (OROLOGIO_SEGRETO nei Secrets, mai nel repository).
+// Non riceve niente e non restituisce dati dei clienti, solo dei conteggi.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 
@@ -35,7 +36,19 @@ function risposta(corpo: unknown, stato = 200): Response {
   });
 }
 
-Deno.serve(async () => {
+// Due testi uguali, confrontati tutti fino in fondo (come in manda-notifiche).
+function uguali(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diversi = 0;
+  for (let i = 0; i < a.length; i++) diversi |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diversi === 0;
+}
+
+Deno.serve(async (req) => {
+  const segreto = Deno.env.get("OROLOGIO_SEGRETO");
+  const parola = req.headers.get("x-orologio");
+  if (!segreto || !parola || !uguali(parola, segreto)) return risposta({ errore: "non autorizzato" }, 401);
+
   // La chiave "service_role" c'e' gia' nei Secrets di ogni funzione, la mette
   // Supabase: scavalca le regole, e qui serve per vedere tutti i ticket e tutte
   // le foto. Resta sul server; il sito non la vede mai.

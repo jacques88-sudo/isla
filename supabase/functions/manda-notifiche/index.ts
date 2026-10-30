@@ -283,7 +283,8 @@ type AvvisoUfficio = {
   testo: string | null;
 };
 
-type Messaggio = { title: string; body: string; tag: string; url: string };
+// ids: i segni di avvisi_ufficio di questo messaggio, per riprovarlo se non parte.
+type Messaggio = { title: string; body: string; tag: string; url: string; ids: number[] };
 
 // Il catalogo sta nel sito, non nel database: i titoli si leggono da li', come
 // fa il foglio Google (titoliDelCatalogo in foglio-google/Codice.gs). Se il sito
@@ -344,6 +345,7 @@ function messaggiUfficio(elenco: AvvisoUfficio[], titoli: Record<string, string>
                a.seller ? "venditore: " + a.seller : ""].filter(Boolean).join(" · "),
         tag: "ufficio-ticket-" + a.id,
         url: "./",
+        ids: [a.id],
       });
     } else if (a.tipo === "recensione") {
       const testo = (a.testo || "").trim();
@@ -353,6 +355,7 @@ function messaggiUfficio(elenco: AvvisoUfficio[], titoli: Record<string, string>
               (testo ? ": " + (testo.length > 100 ? testo.slice(0, 100) + "…" : testo) : ""),
         tag: "ufficio-recensione-" + a.id,
         url: "./",
+        ids: [a.id],
       });
     }
   }
@@ -364,6 +367,7 @@ function messaggiUfficio(elenco: AvvisoUfficio[], titoli: Record<string, string>
         [escursione(a, titoli), giornoBreve(a.date), persone(a)].filter(Boolean).join(" · ")).join("\n"),
       tag: "ufficio-richiesta-" + codice,
       url: "./",
+      ids: righe.map(a => a.id),
     });
   }
   return fuori;
@@ -384,13 +388,15 @@ async function mandaAllUfficio(db: any) {
   const messaggi = messaggiUfficio(elenco, await titoliDelCatalogo());
   let mandati = 0, falliti = 0;
   const morti = new Set<string>();
-  for (const m of messaggi) {
+  const daRifare: number[] = [];
+  for (const { ids, ...testo } of messaggi) {
+    let rifare = false;
     for (const tel of telefoni as { endpoint: string; p256dh: string; auth: string }[]) {
       if (morti.has(tel.endpoint)) continue;
       try {
         await webpush.sendNotification(
           { endpoint: tel.endpoint, keys: { p256dh: tel.p256dh, auth: tel.auth } },
-          JSON.stringify(m),
+          JSON.stringify(testo),
           { TTL: DURATA, urgency: "high" },
         );
         mandati++;
@@ -398,11 +404,18 @@ async function mandaAllUfficio(db: any) {
         falliti++;
         const stato = (err as { statusCode?: number }).statusCode;
         if (stato === 404 || stato === 410) morti.add(tel.endpoint);
-        else console.error("avviso all'ufficio non partito", stato, (err as Error).message);
+        else {
+          rifare = true;
+          console.error("avviso all'ufficio non partito", stato, (err as Error).message);
+        }
       }
     }
+    if (rifare) daRifare.push(...ids);
   }
   if (morti.size) await db.from("ufficio_iscrizioni").delete().in("endpoint", [...morti]);
+  // Errore passeggero: riparte al prossimo giro. Chi l'ha gia' ricevuto non ne
+  // vede due: lo stesso tag prende il posto del vecchio.
+  if (daRifare.length) await db.from("avvisi_ufficio").update({ sent_at: null }).in("id", daRifare);
   return { mandati, falliti };
 }
 
@@ -457,6 +470,7 @@ Deno.serve(async (req) => {
   const morti = new Set<string>();
   for (const a of daMandare) {
     if (!nostri.has(a.booking_id + "|" + a.tipo)) continue;
+    let arrivato = false, rifare = false;
     for (const isc of (iscrizioni ?? []) as Iscrizione[]) {
       if (isc.request_token !== a.request_token || morti.has(isc.endpoint)) continue;
       try {
@@ -466,14 +480,23 @@ Deno.serve(async (req) => {
           { TTL: DURATA, urgency: "high" },
         );
         mandati++;
+        arrivato = true;
       } catch (err) {
         falliti++;
         // 404 e 410: il telefono ha tolto il permesso o cancellato il sito.
         // Quell'indirizzo non servira' piu' a nessuna richiesta.
         const stato = (err as { statusCode?: number }).statusCode;
         if (stato === 404 || stato === 410) morti.add(isc.endpoint);
-        else console.error("avviso non partito", stato, (err as Error).message);
+        else {
+          rifare = true;
+          console.error("avviso non partito", stato, (err as Error).message);
+        }
       }
+    }
+    // Errore passeggero e nessun telefono raggiunto: si toglie il segno, e
+    // l'avviso riparte al prossimo giro.
+    if (rifare && !arrivato) {
+      await db.from("notifiche_mandate").delete().eq("booking_id", a.booking_id).eq("tipo", a.tipo);
     }
   }
 

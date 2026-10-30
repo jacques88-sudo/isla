@@ -320,6 +320,10 @@
 //                sostituire attivita' per attivita' appena l'ufficio le manda.
 //                Vale anche dentro una variante, quando le partenze cambiano da
 //                una all'altra.
+//   timesSeason → facoltativo, accanto a `times`: le partenze che ci sono solo in
+//                un periodo dell'anno, primo e ultimo giorno compresi, in "MM-GG".
+//                Fuori da quel periodo l'ora sparisce dal menu "A che ora".
+//                    timesSeason: { "09:30": ["07-11", "09-05"] }
 //   options    → facoltativo: le varianti della stessa attivita' fra cui il cliente
 //                sceglie (1 o 2 ore, quale percorso, quale spettacolo). Sulla pagina
 //                di dettaglio diventano una riga ciascuna, con il prezzo se c'e';
@@ -863,6 +867,7 @@ const ESPLORA_CATALOG = [
           priceAdult: 63,
           priceChild: 40,
           times: ["14:00", "09:30"],
+          timesSeason: { "09:30": ["07-11", "09-05"] },
           included: ["swimstop", "lunch", "drinks"],
           desc: {
             it: "Il giro lungo: balene e delfini e bagno nella baia di Masca. Si comincia con la frutta di stagione e si pranza con riso e pollo, bevande comprese. Tutti i giorni alle 14:00; dall'11 luglio al 5 settembre c'è anche la partenza delle 9:30, con un menù diverso.",

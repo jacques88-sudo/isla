@@ -181,11 +181,23 @@ function orariDi(tour, scelta) {
   return veri || (typeof ORARI_PREDEFINITI !== "undefined" ? ORARI_PREDEFINITI : []);
 }
 
-// Un giorno si puo' chiedere se almeno una sua partenza e' fra 24 ore o piu'.
+// Una partenza che c'e' solo in un periodo dell'anno (`timesSeason`). Senza un
+// giorno scelto non si puo' ancora dire, e si lascia. Il periodo puo' scavalcare
+// Capodanno: ["12-01", "02-28"].
+function orarioInStagione(tour, scelta, ora, iso) {
+  const stagioni = (scelta && scelta.timesSeason) || (tour && tour.timesSeason);
+  const periodo = stagioni && stagioni[ora];
+  if (!periodo || !iso) return true;
+  const giorno = iso.slice(5);
+  const [da, a] = periodo;
+  return da <= a ? giorno >= da && giorno <= a : giorno >= da || giorno <= a;
+}
+
+// Un giorno si puo' chiedere se almeno una sua partenza c'e', ed e' fra 24 ore o piu'.
 function giornoPossibile(tour, scelta, iso) {
   const orari = orariDi(tour, scelta);
   if (!orari.length) return partenzaPossibile(iso, "");
-  return orari.some(ora => partenzaPossibile(iso, ora));
+  return orari.some(ora => orarioInStagione(tour, scelta, ora, iso) && partenzaPossibile(iso, ora));
 }
 
 // Oltre un anno avanti è quasi sempre un errore di digitazione
@@ -2368,6 +2380,8 @@ function initRequestDialog() {
     // vedono, ma non si possono prendere.
     const giorno = dateInput && dateInput.value;
     orari.forEach(ora => {
+      // fuori stagione quella partenza non esiste: non si spegne, sparisce
+      if (!orarioInStagione(tour, scelta, ora, giorno)) return;
       const voce = document.createElement("option");
       voce.value = ora;
       voce.textContent = ora;

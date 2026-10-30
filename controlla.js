@@ -334,8 +334,25 @@ function controllaOrari(t) {
     const doppi = orari.filter((o, i) => orari.indexOf(o) !== i);
     if (doppi.length) errore(t.id, dove + ": orario ripetuto (" + doppi.join(", ") + ").");
   };
+  // `timesSeason`: ogni ora deve stare in `times`, e il periodo deve esistere.
+  const guardaStagioni = (fonte, dove) => {
+    if (fonte.timesSeason === undefined) return;
+    Object.entries(fonte.timesSeason).forEach(([ora, periodo]) => {
+      if (!(fonte.times || []).includes(ora)) errore(t.id, dove + ': `timesSeason` nomina "' + ora + '", che non sta in `times`.');
+      const giusto = Array.isArray(periodo) && periodo.length === 2 && periodo.every(mg => {
+        const m = /^(\d{2})-(\d{2})$/.exec(mg);
+        const d = m && new Date(Date.UTC(2024, Number(m[1]) - 1, Number(m[2])));
+        return m && d.getUTCMonth() === Number(m[1]) - 1 && d.getUTCDate() === Number(m[2]);
+      });
+      if (!giusto) errore(t.id, dove + ': `timesSeason` di "' + ora + '" scritto male (atteso ["07-11", "09-05"]).');
+    });
+  };
   guarda(t.times, "scheda");
-  varianti(t).forEach((v, i) => guarda(v.times, "variante " + (i + 1)));
+  guardaStagioni(t, "scheda");
+  varianti(t).forEach((v, i) => {
+    guarda(v.times, "variante " + (i + 1));
+    guardaStagioni(v, "variante " + (i + 1));
+  });
 }
 
 // ─── 5. Ogni parola in `included` deve avere la sua icona ──────────────────

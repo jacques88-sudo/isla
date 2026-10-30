@@ -21607,3 +21607,10 @@ WhatsApp si apre la lista con `lista.tornato` e "riapri WhatsApp": la lista è g
 non aveva premuto Invia prima restava senza niente. L'indirizzo del messaggio, che contiene
 l'email, sta in `sessionStorage` finché il cliente torna, e niente va al database.
 `CACHE_NAME` → `isla-v651`.
+
+**Le partenze di stagione** (stessa revisione; proprietario, 30 ottobre 2026: "date per ogni
+orario"): su Royal Delfin 4 ore e mezza le 9:30 esistono dall'11 luglio al 5 settembre, ma si
+potevano chiedere anche a novembre. Nuovo campo `timesSeason` accanto a `times`
+(`orarioInStagione()` in `escursioni.js`): fuori periodo l'ora sparisce dal menu, e "In breve"
+scrive il periodo accanto. Il campo non ha l'anno: se il fornitore cambia le date, si cambia lì.
+`CACHE_NAME` → `isla-v652`.

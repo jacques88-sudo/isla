@@ -315,6 +315,12 @@ Le due pagine hanno al suo posto `<div data-finestra-richiesta>`.
   volta sola (`PACCHETTI_TEIDE` in `pacchetti.js`: **una scheda nuova che sale al Teide
   va messa lì**). È `pacchetto.html?crea=…`, e il pacchetto vive solo nel suo id
   (`su-misura:…`), che `pacchettoDi()` ricostruisce.
+- **Venditori e ufficio sono le stesse due persone** (il proprietario e la moglie;
+  proprietario, 30 ottobre 2026): per questo ogni account venditore legge e modifica tutte
+  le richieste, compreso il link di pagamento, e non si restringe. **Se arriva un venditore
+  esterno, prima di dargli l'account** le richieste WhatsApp vanno chiuse all'ufficio
+  (`is_office()`, regole di `bookings`): oggi vedrebbe nome e hotel dei clienti e potrebbe
+  cambiare il link di pagamento.
 - **Il calendario della data è scritto a mano, e non si torna a `<input type="date">`.**
   Il campo nativo non sa spegnere i giorni in cui l'escursione non parte: accetta solo un
   minimo e un massimo. Prima delle pastiglie "Domani / Sab 19", provate e bocciate.

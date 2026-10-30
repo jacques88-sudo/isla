@@ -21573,5 +21573,9 @@ correzioni, con quello che è stato trovato:
 - Via `stampa/undefined/` (creata per errore), e il README rimesso in pari.
 
 `2026-10-30-audit.sql` è stato provato su un Postgres temporaneo in memoria (PGlite), mai su
-quello vero. Non si è toccato: chi può vedere le richieste fra venditori e ufficio, in attesa
-della scelta del proprietario. `CACHE_NAME` → `isla-v648`.
+quello vero. `CACHE_NAME` → `isla-v648`.
+
+Non si è toccato chi può vedere le richieste: ogni account venditore le legge e le modifica
+tutte, link di pagamento compreso. Il proprietario: "i venditori siamo io e mia moglie",
+quindi sono anche l'ufficio e non c'è nessuno da cui proteggerle. Va rivisto se arriva un
+venditore esterno: la regola sta fra le cose decise in `CLAUDE.md`.

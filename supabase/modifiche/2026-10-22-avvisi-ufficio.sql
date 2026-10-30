@@ -4,9 +4,9 @@
 --   - RICHIESTA nuova: un cliente ha mandato la lista su WhatsApp;
 --   - TICKET nuovo: un venditore ha inserito un ticket di carta;
 --   - RECENSIONE nuova da approvare.
--- Solo l'ufficio (is_office), mai i venditori: un venditore non deve vedere le
--- richieste di tutti. Arrivano su Isla Ticket, col suo service worker
--- (isla-ticket/sw.js), non su Isla.
+-- Solo l'ufficio (is_office). Arrivano su Isla Ticket, col suo service worker
+-- (isla-ticket/sw.js), non su Isla. Le richieste in se' le legge ogni venditore:
+-- vedi "Venditori e ufficio sono le stesse due persone" in CLAUDE.md.
 --
 -- Come funziona:
 --   1. ogni riga nuova in bookings o recensioni lascia un segno in

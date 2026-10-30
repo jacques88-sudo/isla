@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500;600&display=swap">
+<style>
+:root{ --notte:#211a15; --carta:#f6efe4; --sole:linear-gradient(90deg,#f7a531,#f0457a 55%,#9b2c8f); }
+*{box-sizing:border-box;margin:0}
+body{background:#555;font-family:Jost,sans-serif}
+.s{width:1080px;height:1350px;position:relative;overflow:hidden;background:var(--notte);color:var(--carta);margin-bottom:40px}
+.foto{width:1080px;height:720px;background-size:cover;background-position:center;position:relative}
+.foto::after{content:"";position:absolute;inset:auto 0 0 0;height:120px;background:linear-gradient(transparent,var(--notte))}
+.pannello{padding:30px 80px 0}
+.num{font-size:30px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;background:var(--sole);-webkit-background-clip:text;color:transparent}
+h1,h2{font-family:"Cormorant Garamond",serif;font-weight:600;line-height:1.02;font-variant-numeric:lining-nums}
+h2{font-size:96px;margin:14px 0 30px}
+ul{list-style:none;padding:0;font-size:36px;font-weight:300;line-height:1.45}
+li{padding-left:44px;position:relative;margin-bottom:12px}
+li::before{content:"";position:absolute;left:0;top:.55em;width:18px;height:18px;border-radius:50%;background:var(--sole)}
+.firma{position:absolute;left:80px;right:80px;bottom:56px;display:flex;align-items:center;gap:18px;font-size:28px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+.firma img{width:64px;height:64px;padding:8px;border-radius:50%;background:#fff;object-fit:contain}
+.firma span:last-child{margin-left:auto;letter-spacing:.04em;text-transform:none;font-size:26px}
+/* copertina */
+.strisce{display:grid;grid-template-rows:repeat(3,1fr);height:780px;gap:6px}
+.strisce div{background-size:cover;background-position:center}
+.cop .pannello{padding-top:44px}
+.cop .eyebrow{font-size:30px;letter-spacing:.22em;text-transform:uppercase;font-weight:500}
+.cop h1{font-size:118px;margin:6px 0 18px}
+.prezzo{display:inline-block;background:var(--sole);color:#fff;font-size:40px;font-weight:500;padding:14px 34px;border-radius:999px}
+.prezzo b{font-size:52px;font-weight:600}
+/* finale */
+.fine{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;padding:0 80px}
+.fine img.logo{width:220px;height:220px;padding:30px;border-radius:50%;background:#fff;object-fit:contain;margin-bottom:40px}
+.fine h2{font-size:100px;margin:0 0 20px}
+.fine .offerta{display:inline-block;background:var(--sole);color:#fff;font-size:34px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:10px 34px;border-radius:999px;margin-bottom:18px}
+.fine .barrato{font-size:44px;opacity:.7;text-decoration:line-through}
+.fine .grande{font-family:Jost,sans-serif;font-weight:500;font-size:140px;line-height:1;background:var(--sole);-webkit-background-clip:text;color:transparent;margin:6px 0}
+.fine .nota{margin-top:14px;font-size:32px;font-weight:300;opacity:.85;margin-bottom:56px}
+.fine .cta{font-size:44px;font-weight:500;border:3px solid var(--carta);border-radius:999px;padding:20px 50px;margin-bottom:34px}
+.fine .wa{font-size:36px;font-weight:300}
+</style></head><body>
+
+<section class="s cop" id="s1">
+  <div class="strisce">
+    <div style="background-image:url(../assets/freebird-2.webp);background-position:center 82%"></div>
+    <div style="background-image:url(foto/parascending-senza-logo.jpg);background-position:center 30%"></div>
+    <div style="background-image:url(../assets/quad-teide-adventure.webp);background-position:center 70%"></div>
+  </div>
+  <div class="pannello">
+    <div class="eyebrow num">Pacchetto per coppie</div>
+    <h1>Mare, cielo<br>e vulcano</h1>
+    <div class="prezzo">Offerta · 3 esperienze da <b>139 €</b> a persona</div>
+  </div>
+</section>
+
+<section class="s" id="s2">
+  <div class="foto" style="background-image:url(../assets/freebird-2.webp)"></div>
+  <div class="pannello">
+    <div class="num">1 · Il mare</div>
+    <h2>Catamarano Freebird</h2>
+    <ul>
+      <li>3 ore da Puerto Colón, fra balene e delfini</li>
+      <li>Bagno a Diego Hernández, panino e bevande</li>
+      <li>Transfer dall'hotel compreso</li>
+    </ul>
+  </div>
+  <div class="firma"><img src="../assets/logo-isla.png" alt=""><span>Isla Tenerife</span><span>1/3</span></div>
+</section>
+
+<section class="s" id="s3">
+  <div class="foto" style="background-image:url(foto/parascending-senza-logo.jpg)"></div>
+  <div class="pannello">
+    <div class="num">2 · Il cielo</div>
+    <h2>Parascending</h2>
+    <ul>
+      <li>Si decolla dalla barca, appesi al paracadute</li>
+      <li>Una decina di minuti in volo sulla costa sud</li>
+      <li>Si vola anche in due, insieme</li>
+    </ul>
+  </div>
+  <div class="firma"><img src="../assets/logo-isla.png" alt=""><span>Isla Tenerife</span><span>2/3</span></div>
+</section>
+
+<section class="s" id="s4">
+  <div class="foto" style="background-image:url(../assets/quad-teide-adventure.webp)"></div>
+  <div class="pannello">
+    <div class="num">3 · Il vulcano</div>
+    <h2>Quad al Teide</h2>
+    <ul>
+      <li>3 ore la mattina, fra pinete e colate di lava</li>
+      <li>Un quad in due: uno guida, l'altro si gode il panorama</li>
+    </ul>
+  </div>
+  <div class="firma"><img src="../assets/logo-isla.png" alt=""><span>Isla Tenerife</span><span>3/3</span></div>
+</section>
+
+<section class="s" id="s5">
+  <div class="fine">
+    <img class="logo" src="../assets/logo-isla.png" alt="">
+    <h2>Adrenalina in due</h2>
+    <div class="offerta">Offerta</div>
+    <div class="barrato">162 €</div>
+    <div class="grande">139 €</div>
+    <div class="nota">a persona, in coppia sullo stesso quad</div>
+    <div class="cta">Prenota dal link in bio</div>
+    <div class="wa">WhatsApp +34 657 772 032</div>
+  </div>
+</section>
+</body></html>

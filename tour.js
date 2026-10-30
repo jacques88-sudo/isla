@@ -22,6 +22,39 @@ function detailMedia(tour) {
     : `<span class="tour-media-empty" aria-hidden="true">${t("tour.photoSoon")}</span>`;
 }
 
+// PER GOOGLE (21 ottobre 2026): la descrizione sotto il titolo nei risultati
+// e la scheda scritta come la legge Google (schema.org TouristTrip). Il prezzo
+// e' quello dell'adulto, o il "da" della scheda: mai `price` da solo, che puo'
+// essere la barca intera. Senza prezzo, niente offerta: meglio che uno zero.
+function descriviPerGoogle(tour) {
+  const testo = tf(tour.desc).replace(/\s+/g, " ").trim();
+  const breve = testo.length > 155 ? testo.slice(0, 154).replace(/\s+\S*$/, "") + "…" : testo;
+  const meta = document.querySelector('meta[name="description"]');
+  if (meta && breve) meta.setAttribute("content", breve);
+
+  const prezzo = tour.priceAdult > 0 ? tour.priceAdult : (tour.priceFrom > 0 ? tour.priceFrom : null);
+  const link = document.querySelector('link[rel="canonical"]');
+  const dati = {
+    "@context": "https://schema.org",
+    "@type": "TouristTrip",
+    name: tf(tour.title),
+    description: testo,
+    url: link ? link.href : location.href,
+    provider: { "@type": "TravelAgency", name: "Isla", url: ISLA_SITO + "/" }
+  };
+  if (tour.image) dati.image = ISLA_SITO + "/assets/" + encodeURIComponent(tour.image);
+  if (prezzo) dati.offers = { "@type": "Offer", price: prezzo, priceCurrency: "EUR", url: dati.url };
+
+  let script = document.getElementById("dati-scheda");
+  if (!script) {
+    script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "dati-scheda";
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(dati);
+}
+
 // La mini galleria sotto la foto grande: solo dove c'e' sia `image` che
 // `gallery`, altrimenti niente striscia di miniature da mostrare. Cliccando
 // una miniatura cambia la foto grande, non apre un'altra pagina: e' un tocco
@@ -32,7 +65,7 @@ function detailGallery(tour) {
   const miniature = foto.map((nome, i) => `
     <button type="button" class="gallery-thumb${i === 0 ? " is-active" : ""}"
             data-gallery-src="${esc(nome)}" aria-label="${esc(t("detail.photo", { n: i + 1 }))}">
-      <img src="./assets/${encodeURIComponent(nome)}" alt="" loading="lazy" />
+      <img src="${fotoPiccola(nome)}" alt="" loading="lazy" />
     </button>`).join("");
   return `<div class="detail-gallery" data-detail-gallery>${miniature}</div>`;
 }
@@ -150,7 +183,7 @@ function detailRows(tour, variante) {
   // "Adulti (12+)": la fascia d'eta' fra parentesi, quando il fornitore l'ha
   // detta. Senza, resta solo "Adulti".
   const eta = tour.ages || {};
-  // tf() perche' una fascia puo' avere bisogno delle tre lingue: "0-3" si
+  // tf() perche' una fascia puo' avere bisogno delle cinque lingue: "0-3" si
   // scrive uguale dappertutto, "0-11 mesi" no.
   const conEta = (etichetta, fascia) => fascia ? etichetta + " (" + tf(fascia) + ")" : etichetta;
   if (adulto > 0) {
@@ -236,7 +269,12 @@ function detailRows(tour, variante) {
     const prezzo = prezzoTransfer(supplemento(tour.transferSiamPrice));
     if (prezzo) righe.push([tf(tour.transferSiamPriceLabel), prezzo]);
   } else {
-    if (tour.transferSiam) righe.push([t("detail.transferSiam"), tf(tour.transferSiam)]);
+    // Come il primo: l'etichetta della scheda vince. Sul Submarine il secondo
+    // transfer e' "dal nord", e il titolo fisso "Transfer Siam Park" era sbagliato.
+    if (tour.transferSiam) {
+      righe.push([tour.transferSiamLabel ? tf(tour.transferSiamLabel) : t("detail.transferSiam"),
+        tf(tour.transferSiam)]);
+    }
     if (tour.transferSiamPrice && !tour.transferSiamPriceHidden) {
       const prezzo = prezzoTransfer(conVariante(tour.transferSiamPrice));
       if (prezzo) righe.push([t("detail.withTransferSiam"), prezzo]);
@@ -513,7 +551,7 @@ function detailRelated(tour) {
             <a href="./tour.html?id=${encodeURIComponent(x.id)}">
               <span class="detail-related-media">
                 ${x.image
-                  ? `<img src="./assets/${encodeURIComponent(x.image)}" alt="" loading="lazy" />`
+                  ? `<img src="${fotoPiccola(x.image)}" alt="" loading="lazy" />`
                   : `<span class="tour-media-empty" aria-hidden="true">${t("tour.photoSoon")}</span>`}
               </span>
               <span class="detail-related-body">
@@ -573,6 +611,7 @@ function renderTour(tour) {
   }
 
   document.title = tf(tour.title) + " · Isla";
+  descriviPerGoogle(tour);
 
   // La foto grande sta nella fascia in cima, sopra la scheda: la scheda tiene
   // solo la striscia delle miniature. Si riempie qui e non nell'HTML perche'
@@ -599,9 +638,17 @@ function renderTour(tour) {
         ${detailGallery(tour)}
       </div>
       <div class="detail-main">
-        <span class="tour-cat">${esc(categoryName(tour.category))}</span>
+        <div class="detail-cat-row">
+          <span class="tour-cat">${esc(categoryName(tour.category))}</span>
+          ${typeof cuorePreferito === "function" ? cuorePreferito(tour.id, "fav-in-row") : ""}
+          <button class="detail-share" type="button" data-share>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3.5"/><path d="M7.5 8 12 3.5 16.5 8"/><path d="M8 11H5.5v9.5h13V11H16"/></svg>
+            <span data-share-label>${esc(t("detail.share"))}</span>
+          </button>
+        </div>
         <h1 class="detail-h1">${esc(tf(tour.title))}</h1>
         <p class="detail-lead">${esc(tf(tour.desc))}</p>
+        ${tour.pochiPosti ? `<p class="detail-few-seats">${esc(tf(tour.pochiPosti))}</p>` : ""}
 
         ${detailOptions(tour)}
 
@@ -622,7 +669,40 @@ function renderTour(tour) {
   applyI18n(contenitore);
   collegaOpzioni(contenitore, tour);
   collegaGalleria(contenitore);
+  collegaCondividi(contenitore, tour);
   mostraBarraPrenota(tour);
+}
+
+// "Condividi": spesso a scegliere e' uno solo, e la barca la manda agli altri
+// su WhatsApp. Sul telefono si apre il menu di condivisione del telefono
+// (navigator.share); dove non c'e' (quasi tutti i computer) il link si copia
+// e il pulsante dice "Link copiato" per due secondi. Se anche la copia non si
+// puo', si apre WhatsApp col link gia' scritto.
+// Il link e' quello pulito della scheda, senza altro dopo l'id: chi lo apre
+// vede il sito nella sua lingua, non in quella di chi l'ha mandato.
+function collegaCondividi(contenitore, tour) {
+  const btn = contenitore.querySelector("[data-share]");
+  if (!btn) return;
+  btn.addEventListener("click", async () => {
+    const url = new URL("tour.html?id=" + encodeURIComponent(tour.id), location.href).href;
+    const titolo = tf(tour.title);
+    const testo = t("detail.shareText", { title: titolo });
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: titolo, text: testo, url });
+      } catch (e) { /* il cliente ha chiuso il menu: niente da fare */ }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      const scritta = btn.querySelector("[data-share-label]");
+      scritta.textContent = t("detail.shareCopied");
+      clearTimeout(btn._torna);
+      btn._torna = setTimeout(() => { scritta.textContent = t("detail.share"); }, 2000);
+    } catch (e) {
+      window.open("https://wa.me/?text=" + encodeURIComponent(testo + " " + url), "_blank", "noopener");
+    }
+  });
 }
 
 // La barra in fondo allo schermo. Il prezzo e' lo stesso "da €39" delle schede

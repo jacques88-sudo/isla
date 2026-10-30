@@ -10,6 +10,12 @@
 -- Anaga + La Laguna; Tour completo dell'isola), proprietario. Il file si
 -- rilancia intero: sostituisce il guardiano e sistema i ticket gia' salvati.
 --
+-- 13 ottobre 2026: anche Peter Pan (proprietario).
+-- 14 ottobre 2026: anche Aqualand (proprietario).
+-- 17 ottobre 2026: anche Freebird (proprietario).
+-- 20 ottobre 2026: anche Jungle Park e Submarine Safari (proprietario).
+-- 21 ottobre 2026: anche Castillo San Miguel (proprietario).
+--
 -- Il modulo dei venditori lo sceglie gia' da solo (campo `pagamento: "card"`
 -- nel catalogo); qui lo fa valere il database, anche sui ticket salvati prima
 -- e su quelli che arrivano da una richiesta WhatsApp confermata.
@@ -26,7 +32,10 @@ as $$
 begin
   if new.excursion_id in ('loro-parque', 'siam-park', 'siam-night', 'twin-ticket',
                           'teide-national-park', 'icod-garachico-orotava', 'la-gomera',
-                          'santa-cruz-taganana', 'island-tour-completo') then
+                          'santa-cruz-taganana', 'island-tour-completo',
+                          'peter-pan', 'aqualand', 'freebird-catamaran',
+                          'jungle-park', 'submarine-safari',
+                          'castillo-san-miguel', 'maxicat') then
     new.payment_method := 'card';
   end if;
   return new;
@@ -46,5 +55,8 @@ update public.bookings
    set payment_method = 'card'
  where excursion_id in ('loro-parque', 'siam-park', 'siam-night', 'twin-ticket',
                         'teide-national-park', 'icod-garachico-orotava', 'la-gomera',
-                        'santa-cruz-taganana', 'island-tour-completo')
+                        'santa-cruz-taganana', 'island-tour-completo',
+                        'peter-pan', 'aqualand', 'freebird-catamaran',
+                        'jungle-park', 'submarine-safari',
+                        'castillo-san-miguel', 'maxicat')
    and payment_method is distinct from 'card';

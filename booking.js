@@ -12,7 +12,7 @@
 //     la funzione le_mie_richieste. Tre stati: da confermare, confermata,
 //     annullata.
 //
-// Anche qui i testi sono nelle tre lingue: stringa sola = uguale ovunque,
+// Anche qui i testi sono nelle cinque lingue: stringa sola = uguale ovunque,
 // oggetto { it, en, es } = tradotto. tf() sceglie la lingua giusta.
 
 const MOCK_BOOKINGS = {
@@ -20,37 +20,43 @@ const MOCK_BOOKINGS = {
     title: {
       it: "Whale & Dolphin Watching in barca a vela",
       en: "Whale & Dolphin Watching by sailing boat",
-      es: "Whale & Dolphin Watching en velero"
+      es: "Whale & Dolphin Watching en velero",
+      fr: "Observation des baleines et des dauphins en voilier",
+      de: "Wal- und Delfinbeobachtung mit dem Segelboot"
     },
-    date: { it: "Domani, 09:30", en: "Tomorrow, 09:30", es: "Mañana, 09:30" },
+    date: { it: "Domani, 09:30", en: "Tomorrow, 09:30", es: "Mañana, 09:30", fr: "Demain, 09:30", de: "Morgen, 09:30" },
     meetingPoint: "Puerto Colón, Muelle 3 — Costa Adeje",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
     bring: [
-      { it: "Costume da bagno", en: "Swimsuit", es: "Bañador" },
-      { it: "Asciugamano", en: "Towel", es: "Toalla" },
-      { it: "Crema solare", en: "Sun cream", es: "Crema solar" },
-      { it: "Documento d'identità", en: "ID document", es: "Documento de identidad" }
+      { it: "Costume da bagno", en: "Swimsuit", es: "Bañador", fr: "Maillot de bain", de: "Badesachen" },
+      { it: "Asciugamano", en: "Towel", es: "Toalla", fr: "Serviette", de: "Handtuch" },
+      { it: "Crema solare", en: "Sun cream", es: "Crema solar", fr: "Crème solaire", de: "Sonnencreme" },
+      { it: "Documento d'identità", en: "ID document", es: "Documento de identidad", fr: "Pièce d'identité", de: "Ausweisdokument" }
     ],
     notes: {
       it: "Presentati 15 minuti prima dell'orario. Cancellazione gratuita fino a 24 ore prima della partenza.",
       en: "Arrive 15 minutes before the departure time. Free cancellation up to 24 hours before departure.",
-      es: "Preséntate 15 minutos antes de la hora. Cancelación gratuita hasta 24 horas antes de la salida."
+      es: "Preséntate 15 minutos antes de la hora. Cancelación gratuita hasta 24 horas antes de la salida.",
+      fr: "Arrivez 15 minutes avant l'heure de départ. Annulation gratuite jusqu'à 24 heures avant le départ.",
+      de: "Seien Sie 15 Minuten vor der Abfahrtszeit da. Kostenlose Stornierung bis 24 Stunden vor der Abfahrt."
     }
   },
   "TEN-7788": {
     title: "Teide Sunset Quad Trip",
-    date: { it: "Oggi, 16:00", en: "Today, 16:00", es: "Hoy, 16:00" },
+    date: { it: "Oggi, 16:00", en: "Today, 16:00", es: "Hoy, 16:00", fr: "Aujourd'hui, 16:00", de: "Heute, 16:00" },
     meetingPoint: "Quad Center, Vilaflor",
-    duration: { it: "3 ore", en: "3 hours", es: "3 horas" },
+    duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
     bring: [
-      { it: "Scarpe chiuse", en: "Closed shoes", es: "Zapato cerrado" },
-      { it: "Giacca leggera (di sera fa fresco)", en: "Light jacket (it gets cool in the evening)", es: "Chaqueta ligera (por la noche refresca)" },
-      { it: "Patente di guida", en: "Driving licence", es: "Carné de conducir" }
+      { it: "Scarpe chiuse", en: "Closed shoes", es: "Zapato cerrado", fr: "Chaussures fermées", de: "Geschlossene Schuhe" },
+      { it: "Giacca leggera (di sera fa fresco)", en: "Light jacket (it gets cool in the evening)", es: "Chaqueta ligera (por la noche refresca)", fr: "Veste légère (il fait frais le soir)", de: "Leichte Jacke (abends wird es kühl)" },
+      { it: "Patente di guida", en: "Driving licence", es: "Carné de conducir", fr: "Permis de conduire", de: "Führerschein" }
     ],
     notes: {
       it: "Il tour è vietato alle donne in gravidanza. Età minima 18 anni per guidare il quad.",
       en: "The tour is not suitable for pregnant women. Minimum age to drive the quad is 18.",
-      es: "El tour no está permitido a mujeres embarazadas. Edad mínima para conducir el quad: 18 años."
+      es: "El tour no está permitido a mujeres embarazadas. Edad mínima para conducir el quad: 18 años.",
+      fr: "L'excursion ne convient pas aux femmes enceintes. L'âge minimum pour conduire le quad est de 18 ans.",
+      de: "Die Tour ist für Schwangere nicht geeignet. Mindestalter zum Fahren des Quads ist 18."
     }
   }
 };
@@ -126,7 +132,7 @@ function renderBooking(booking, code) {
 
         <div class="detail-actions">
           <a class="btn btn-soft" href="./index.html">${t("booking.another")}</a>
-          <a class="btn btn-primary" href="mailto:info@islatenerife.com?subject=${encodeURIComponent(t("booking.helpSubject") + " " + code)}">${t("booking.help")}</a>
+          <a class="btn btn-primary" href="mailto:info@islaexcursionstenerife.com?subject=${encodeURIComponent(t("booking.helpSubject") + " " + code)}">${t("booking.help")}</a>
         </div>
       </div>
     </div>
@@ -218,6 +224,16 @@ function dataCorta(iso) {
   return new Intl.DateTimeFormat(getLang(), { day: "numeric", month: "long" }).format(new Date(a, m - 1, g));
 }
 
+// La variante sta nel database in italiano, la lingua dell'ufficio ("2 ore"):
+// qui la si ritrova nel catalogo e la si scrive nella lingua del cliente
+// ("2 Stunden"). Se il catalogo non la conosce piu' (una variante tolta o
+// rinominata), resta il testo salvato: meglio in italiano che niente.
+function varianteTesto(tour, etichetta) {
+  const scelte = (tour && tour.options && tour.options.choices) || [];
+  const scelta = scelte.find(c => (typeof c.label === "string" ? c.label : c.label.it) === etichetta);
+  return scelta ? tf(scelta.label) : etichetta;
+}
+
 function persone(b) {
   const parti = [];
   const conta = (n, uno, tanti) => { if (n > 0) parti.push(n === 1 ? t(uno) : t(tanti, { n })); };
@@ -241,6 +257,12 @@ const STATI = {
   pending:   { pill: "booking.pending",   nota: "booking.pendingText" },
   cancelled: { pill: "booking.cancelled", nota: "booking.cancelledText" }
 };
+
+// "94 €" come lo scrive la lingua scelta
+function soldiTesto(n) {
+  const locale = { it: "it-IT", en: "en-GB", es: "es-ES", fr: "fr-FR", de: "de-DE" }[typeof getLang === "function" ? getLang() : "it"] || "it-IT";
+  return Number(n).toLocaleString(locale, { style: "currency", currency: "EUR", minimumFractionDigits: n % 1 ? 2 : 0 });
+}
 
 function cardTicket(b, passata) {
   const tour = typeof ESPLORA_CATALOG !== "undefined" ? ESPLORA_CATALOG.find(x => x.id === b.excursion_id) : null;
@@ -280,12 +302,24 @@ function cardTicket(b, passata) {
   const etichetta = b.ticket_number
     ? t("booking.ticketN", { code: b.ticket_number })
     : t("booking.requestOf", { date: dataCorta(b.sent_on) });
+  // L'ufficio ha mandato il link di pagamento (15 ottobre 2026): la richiesta
+  // aspetta solo quello, e il cliente lo ritrova qui. Solo un indirizzo https:
+  // lo incolla l'ufficio, ma finisce in un link che il cliente tocca.
+  const daPagare = status === "pending" && !passata && b.payment_link
+    && /^https:\/\/\S+$/.test(b.payment_link) && b.payment_amount > 0;
+  const pill = passata ? t("booking.past") : t(daPagare ? "booking.awaitingPay" : STATI[status].pill);
   const stato = `
       <div class="detail-status">
         <span>${esc(etichetta)}</span>
-        <span class="pill">${passata ? t("booking.past") : t(STATI[status].pill)}</span>
+        <span class="pill">${pill}</span>
       </div>`;
-  const nota = STATI[status].nota && !passata
+  const resto = daPagare && b.payment_total > b.payment_amount ? b.payment_total - b.payment_amount : 0;
+  const nota = daPagare ? `
+        <div class="ticket-state-note ticket-pay">
+          <p>${esc(t("booking.payText", { amount: soldiTesto(b.payment_amount) }))}${resto ? " " + esc(t("booking.payRest", { rest: soldiTesto(resto) })) : ""}</p>
+          <a class="btn btn-primary" href="${esc(b.payment_link)}" target="_blank" rel="noopener noreferrer">${t("booking.payNow")}</a>
+        </div>`
+    : STATI[status].nota && !passata
     ? `<p class="ticket-state-note">${esc(t(STATI[status].nota))}</p>` : "";
   // Cosa portare (portare.js): solo su una conferma ancora davanti. Prima
   // della conferma e' presto, dopo la data non serve piu'.
@@ -299,6 +333,10 @@ function cardTicket(b, passata) {
               <ul>${cose.map(c => `<li>${esc(tf(c))}</li>`).join("")}</ul>
             </div>
           </div>` : "";
+  // Il meteo (meteo.js): il posto vuoto, lo riempie meteoRiempi() quando
+  // arrivano le previsioni. Solo su una conferma ancora davanti.
+  const meteo = confermata && !passata && tour && typeof meteoSegnaposto === "function"
+    ? meteoSegnaposto(b, tour) : "";
   const desiderata = !confermata && b.wanted_time ? `<div class="info-field">
             ${ICONS.clock}
             <div>
@@ -308,10 +346,10 @@ function cardTicket(b, passata) {
           </div>` : "";
 
   return `
-    <div class="detail-card is-${status}${passata ? " is-past" : ""}">
+    <div class="detail-card is-${status}${passata ? " is-past" : ""}"${b.request_token ? ` data-richiesta="${esc(b.request_token)}" data-scheda="${esc(b.excursion_id || "")}" data-giorno="${esc(b.date || "")}"` : ""}>
       ${banner ? `<div class="ticket-hero">${banner}${stato}</div>` : stato}
       <div class="detail-body">
-        <h2 class="detail-title">${esc(titolo)}${b.option_label ? `<span class="ticket-option">${esc(b.option_label)}</span>` : ""}</h2>
+        <h2 class="detail-title">${esc(titolo)}${b.option_label ? `<span class="ticket-option">${esc(varianteTesto(tour, b.option_label))}</span>` : ""}</h2>
         ${nota}
         <div class="info-grid">
           ${ritrovo}
@@ -337,6 +375,7 @@ function cardTicket(b, passata) {
               <p>${esc(soldi)}</p>
             </div>
           </div>` : ""}
+          ${meteo}
           ${portare}
         </div>
         ${tour ? `<a class="map-link" href="./tour.html?id=${encodeURIComponent(tour.id)}">${t("booking.seeTour")} →</a>` : ""}
@@ -348,10 +387,11 @@ function renderTicketVeri(rows, code, senzaRete) {
   const oggi = oggiISO();
   const prossime = rows.filter(b => !b.date || b.date >= oggi);
   const passate = rows.filter(b => b.date && b.date < oggi).reverse();
-  const wa = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(t("booking.waText", { code }));
+  const wa = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(perUfficio(() => t("booking.waText", { code })));
 
   document.getElementById("bookingView").innerHTML = `
     ${senzaRete ? `<p class="note-box">${t("booking.offlineSaved")}</p>` : ""}
+    ${typeof recensioneRiquadro === "function" ? recensioneRiquadro(passate) : ""}
     <div class="booking-list">
       ${prossime.map(b => cardTicket(b, false)).join("")}
       ${passate.length ? `<h2 class="booking-past-title">${t("booking.pastTitle")}</h2>` : ""}
@@ -361,6 +401,7 @@ function renderTicketVeri(rows, code, senzaRete) {
       <a class="btn btn-primary" href="${wa}" target="_blank" rel="noopener noreferrer">${t("booking.whatsapp")}</a>
     </div>
   `;
+  if (typeof meteoRiempi === "function") meteoRiempi();
   // Niente "Cerca un'altra prenotazione" (proprietario, 29/9/2026): i ticket
   // dello stesso telefono ci sono gia' tutti, e per un altro telefono c'e' la
   // finestra "Il mio ticket" della home, che accetta un numero nuovo.
@@ -384,7 +425,7 @@ function righeRichieste(elenco) {
   elenco.forEach(r => {
     const dalServer = Array.isArray(r.last) && r.last.length ? r.last : null;
     (dalServer || r.items.map(v => Object.assign({ status: "pending" }, v))).forEach(v => {
-      righe.push(Object.assign({}, v, { sent_on: giornoDi(r.sentAt), request_code: r.code }));
+      righe.push(Object.assign({}, v, { sent_on: giornoDi(r.sentAt), request_code: r.code, request_token: r.token }));
     });
   });
   return righe;
@@ -400,7 +441,7 @@ function renderRichieste(elenco, senzaRete) {
   const annullate = righe.filter(b => b.date >= oggi && b.status === "cancelled").sort(perData);
   const passate = righe.filter(b => b.date < oggi && b.status === "confirmed").sort(perData).reverse();
   const codici = elenco.map(r => r.code).join(", ");
-  const wa = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(t("booking.waRequests", { code: codici }));
+  const wa = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(perUfficio(() => t("booking.waRequests", { code: codici })));
 
   if (!prossime.length && !annullate.length && !passate.length) {
     renderStato(ICONS.ticket, t("booking.noRequests"), t("booking.noRequestsText"), false);
@@ -416,6 +457,7 @@ function renderRichieste(elenco, senzaRete) {
   document.getElementById("bookingView").innerHTML = `
     ${senzaRete ? `<p class="note-box">${t("booking.offlineSaved")}</p>` : ""}
     <p class="booking-intro">${t("booking.requestsIntro")}</p>
+    ${typeof recensioneRiquadro === "function" ? recensioneRiquadro(passate) : ""}
     <div class="booking-list">
       ${ticket.length ? `<h2 class="booking-past-title">${t("booking.ticketsTitle")}</h2>` : ""}
       ${ticket.map(b => cardTicket(b, false)).join("")}
@@ -428,6 +470,37 @@ function renderRichieste(elenco, senzaRete) {
       <a class="btn btn-primary" href="${wa}" target="_blank" rel="noopener noreferrer">${t("booking.whatsapp")}</a>
     </div>
   `;
+  if (typeof meteoRiempi === "function") meteoRiempi();
+  mostraDallAvviso();
+}
+
+// Arrivati toccando un avviso sul telefono (manda-notifiche): l'indirizzo dice
+// richiesta, scheda e giorno (booking.html?richieste=1&r=…&e=…&d=…). Quella
+// escursione si fa vedere subito, col bordo, invece di lasciare il cliente a
+// cercarla nella lista. Se non c'e' (gia' passata, tolta) resta la lista.
+function mostraDallAvviso() {
+  const q = new URLSearchParams(window.location.search);
+  const richiesta = q.get("r");
+  if (!richiesta) return;
+  const scheda = q.get("e");
+  const giorno = q.get("d");
+  const carta = Array.from(document.querySelectorAll(".detail-card[data-richiesta]")).find(c =>
+    c.dataset.richiesta === richiesta
+    && (!scheda || c.dataset.scheda === scheda)
+    && (!giorno || c.dataset.giorno === giorno));
+  // L'avviso "com'e' andata?" (recensioni.js): si apre gia' il modulo, in
+  // cima. Se la recensione e' gia' partita, si vede il grazie.
+  if (q.get("recensione") && typeof recensioneModulo === "function") {
+    const riquadro = document.querySelector(".recensione");
+    if (riquadro) {
+      if (riquadro.querySelector("[data-recensione-apri]")) recensioneModulo(riquadro);
+      riquadro.scrollIntoView({ block: "start" });
+      return;
+    }
+  }
+  if (!carta) return;
+  carta.classList.add("is-avviso");
+  carta.scrollIntoView({ block: "start" });
 }
 
 // Il titolo in alto: "Le mie richieste", oppure "I miei ticket" quando
@@ -438,15 +511,21 @@ function titoloPagina(chiave) {
   if (h1) { h1.dataset.i18n = chiave; h1.textContent = t(chiave); }
 }
 
-async function cercaRichieste() {
+// `codice`: il numero di un ticket arrivato col link della risposta WhatsApp
+// (booking.html?code=2213, vedi rispostaTesto in venditori.js). Se e' fra le
+// richieste di questo telefono si mostrano quelle; se no si chiede il
+// telefono, come per un ticket di carta.
+async function cercaRichieste(codice) {
   titoloPagina("booking.requestsH1");
 
   if (!richiesteLeggi().length) {
     renderStato(ICONS.ticket, t("booking.noRequests"), t("booking.noRequestsText"), false);
     return;
   }
-  // Subito quello che c'e' nel telefono, poi la risposta nuova.
-  renderRichieste(richiesteLeggi(), false);
+  // Subito quello che c'e' nel telefono, poi la risposta nuova. Col codice si
+  // aspetta la risposta: le richieste salvate qui il numero non lo sanno.
+  if (codice) renderStato(ICONS.ticket, t("booking.loading"), "", false);
+  else renderRichieste(richiesteLeggi(), false);
 
   // Prima si rimandano quelle che non erano arrivate, poi si legge: cosi' una
   // richiesta partita senza campo compare gia' in questa lettura.
@@ -458,7 +537,11 @@ async function cercaRichieste() {
     if (!error) rows = data;
   } catch (e) { /* rete: si decide sotto */ }
 
-  if (rows === null) { renderRichieste(elenco, true); return; }
+  if (rows === null) {
+    if (codice) chiediTelefono(codice);
+    else renderRichieste(elenco, true);
+    return;
+  }
 
   // Ogni richiesta si tiene la sua risposta, per quando mancera' la rete.
   // Una richiesta arrivata nel database e ora sparita e' stata tolta dalla
@@ -468,21 +551,44 @@ async function cercaRichieste() {
     return r.last.length || !r.stored;
   });
   richiesteScrivi(tenute);
+  if (codice && !rows.some(x => String(x.ticket_number || "").trim().toUpperCase() === codice)) {
+    chiediTelefono(codice);
+    return;
+  }
   renderRichieste(tenute, false);
 }
 
+// Il ticket col numero ma senza telefono: si chiede, col numero gia' scritto.
+function chiediTelefono(code) {
+  titoloPagina("booking.h1");
+  renderStato(ICONS.ticket, t("booking.needPhone"), t("booking.needPhoneText", { code }), true);
+  const campo = document.getElementById("retryCode");
+  if (campo) campo.value = code;
+}
+
 async function cercaTicketVero(code, phone) {
+  // per la recensione (recensioni.js): il ticket di carta si dimostra cosi'
+  if (typeof RECENSIONE_TELEFONO !== "undefined") RECENSIONE_TELEFONO = phone;
   const salvati = risultatoSalvato(code, phone);
   // Quello che c'e' gia' si mostra subito; la risposta nuova lo sostituisce.
   if (salvati) renderTicketVeri(salvati, code, false);
   else renderStato(ICONS.ticket, t("booking.loading"), "", false);
 
   let rows = null;
+  let troppi = false;
   try {
     const { data, error } = await sb.rpc("le_mie_escursioni", { p_phone: phone, p_ticket: code });
     if (!error) rows = data;
+    // Dieci ricerche l'ora per telefono (supabase/modifiche/2026-10-16-tentativi-ticket.sql):
+    // all'undicesima il database risponde con questo errore.
+    else troppi = /troppi tentativi/.test(error.message || "");
   } catch (e) { /* rete: si decide sotto */ }
 
+  if (troppi) {
+    // Il ticket gia' salvato su questo telefono resta com'e': e' suo.
+    if (!salvati) renderStato(ICONS.info, t("booking.tooMany"), t("booking.tooManyText"), true);
+    return;
+  }
   if (rows === null) {
     if (salvati) renderTicketVeri(salvati, code, true);
     else renderStato(ICONS.info, t("booking.offline"), t("booking.offlineText"), false);
@@ -516,7 +622,10 @@ function renderBookingPage() {
 
   const phone = salvato && salvato.code.trim().toUpperCase() === code ? salvato.phone : null;
   if (!phone) {
-    renderStato(ICONS.ticket, t("booking.needPhone"), t("booking.needPhoneText", { code }), true);
+    // Il link della conferma su WhatsApp: il telefono che ha mandato la
+    // richiesta il ticket lo trova da solo, senza chiedere niente.
+    if (richiesteLeggi().length) cercaRichieste(code);
+    else chiediTelefono(code);
     return;
   }
   // Il numero si cerca come l'ha scritto il cliente (maiuscole a parte, i

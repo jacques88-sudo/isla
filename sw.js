@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v487";
+const CACHE_NAME = "isla-v647";
 const ASSETS = [
   "./",
   "./index.html",
@@ -12,6 +12,9 @@ const ASSETS = [
   // delle escursioni per bambini. Il server manda lo stesso file, e' il
   // browser a doverselo ritrovare con l'indirizzo giusto.
   "./pacchetti.html?famiglia=1",
+  // La scorciatoia "Le mie prenotazioni" del manifest: stessa home, con
+  // `?ticket=1` che apre la finestra del ticket. Deve aprirsi anche offline.
+  "./index.html?ticket=1",
   "./escursioni.html?family=1",
   // Stessa storia per la vetrina degli itinerari: quattro indirizzi, uno per
   // pillola. "tutti" e' quello del riquadro in home, gli altri tre sono quelli
@@ -28,11 +31,19 @@ const ASSETS = [
   "./privacy.html",
   "./termini.html",
   "./mappa.html",
+  "./link.html",
+  "./link.js",
   "./styles.css",
+  "./halloween.css",
+  "./halloween.js",
+  "./trasloco.js",
   "./i18n.js",
   "./app.js",
   "./booking.js",
   "./portare.js",
+  "./meteo.js",
+  "./preferiti.js",
+  "./recensioni.js",
   "./escursioni.js",
   "./tour.js",
   "./pacchetti.js",

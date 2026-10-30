@@ -67,7 +67,7 @@ function salvaTicket(dati) {
 // Il prefisso proposto quando non c'e' niente di salvato: quello della lingua
 // scelta. Chi legge in inglese e' quasi sempre inglese, e cosi' via.
 function prefissoDellaLingua() {
-  return { it: "39", es: "34", en: "44" }[typeof getLang === "function" ? getLang() : "en"] || "44";
+  return { it: "39", es: "34", fr: "33", de: "49", en: "44" }[typeof getLang === "function" ? getLang() : "en"] || "44";
 }
 
 function initLookupForms() {
@@ -201,6 +201,11 @@ function initTicketDialog() {
   document.addEventListener("keydown", e => {
     if (e.key === "Escape" && dialog.classList.contains("is-open")) close();
   });
+
+  // La scorciatoia "Le mie prenotazioni" del manifest (tenendo premuta l'icona
+  // dell'app su Android) arriva con `?ticket=1`: si apre subito la finestra,
+  // come se il cliente avesse toccato il biglietto in alto.
+  if (new URLSearchParams(location.search).has("ticket")) open();
 }
 
 document.addEventListener("DOMContentLoaded", initTicketDialog);
@@ -230,6 +235,23 @@ function initInstallButton() {
     btns.forEach(b => { b.hidden = true; });
   });
 
+  // iPhone e iPad: Safari non manda mai beforeinstallprompt, e il bottone
+  // restava spento. Li' l'app si installa solo a mano dal menu Condividi:
+  // il bottone si accende sempre e apre i tre passi da fare.
+  if (soloAMano()) {
+    btns.forEach(b => {
+      b.hidden = false;
+      b.addEventListener("click", apriIstruzioniIos);
+    });
+    // Un secondo e mezzo dopo che la pagina e' caricata, non un tempo fisso
+    // dall'apertura: con la rete lenta la schermata del logo (initSplash)
+    // resta fino a 4 secondi, e l'avviso le finiva sotto.
+    const dopo = () => setTimeout(avvisoInstallaIos, 1500);
+    if (document.readyState === "complete") dopo();
+    else window.addEventListener("load", dopo, { once: true });
+    return;
+  }
+
   btns.forEach(btn => btn.addEventListener("click", async () => {
     if (!deferred) return;
     deferred.prompt();
@@ -241,7 +263,151 @@ function initInstallButton() {
 
 document.addEventListener("DOMContentLoaded", initInstallButton);
 
-// Hero video play/pause toggle (home page only)
+// iPhone o iPad. L'iPad nuovo si presenta come un Mac: lo tradisce il tocco.
+function soloAMano() {
+  return /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+}
+
+// L'avviso in basso che invita a installare, sull'iPhone (proprietario, 16
+// ottobre 2026): il bottone nel Menu non lo trova nessuno. Torna **a ogni
+// visita** finche' Isla non e' installata (proprietario, 19 ottobre 2026;
+// prima, toccata la ✕, non tornava mai piu'). La ✕ o "Come si fa" lo
+// chiudono per il resto della visita, non a ogni pagina. La visita finisce
+// dopo 30 minuti senza aprire pagine di Isla: su Safari la scheda resta
+// aperta per giorni, la sessione del browser non basta a dirlo.
+// Senza localStorage (navigazione privata) tornerebbe a ogni pagina: meglio
+// non mostrarlo affatto.
+const INSTALLA_CHIUSO_KEY = "isla-installa-chiuso";
+const INSTALLA_VISITA_MS = 30 * 60 * 1000;
+
+function avvisoInstallaIos() {
+  try {
+    localStorage.removeItem("isla-installa-visto");   // la vecchia regola del "mai piu'"
+    const chiuso = Number(localStorage.getItem(INSTALLA_CHIUSO_KEY)) || 0;
+    if (Date.now() - chiuso < INSTALLA_VISITA_MS) {
+      // stessa visita: niente avviso, e la visita si allunga
+      localStorage.setItem(INSTALLA_CHIUSO_KEY, String(Date.now()));
+      return;
+    }
+    localStorage.removeItem(INSTALLA_CHIUSO_KEY);
+  } catch (e) { return; }
+
+  const avviso = document.createElement("div");
+  avviso.className = "install-hint";
+  avviso.setAttribute("role", "region");
+  avviso.innerHTML =
+    `<span class="install-hint-ico" aria-hidden="true">${ICONA_AGGIUNGI}</span>` +
+    `<span class="install-hint-text"><strong></strong><small></small></span>` +
+    `<button class="btn btn-primary install-hint-how" type="button"></button>` +
+    `<button class="iconbtn install-hint-close" type="button">✕</button>`;
+  const scrivi = () => {
+    avviso.setAttribute("aria-label", t("install.hint.title"));
+    avviso.querySelector("strong").textContent = t("install.hint.title");
+    avviso.querySelector("small").textContent = t("install.hint.text");
+    avviso.querySelector(".install-hint-how").textContent = t("install.hint.how");
+    avviso.querySelector(".install-hint-close").setAttribute("aria-label", t("menu.close"));
+  };
+  scrivi();
+  document.addEventListener("islalang", scrivi);
+
+  const via = () => {
+    try { localStorage.setItem(INSTALLA_CHIUSO_KEY, String(Date.now())); } catch (e) {}
+    avviso.classList.remove("is-visible");
+    setTimeout(() => avviso.remove(), 300);
+  };
+  avviso.querySelector(".install-hint-close").addEventListener("click", via);
+  avviso.querySelector(".install-hint-how").addEventListener("click", () => {
+    via();
+    apriIstruzioniIos();
+  });
+
+  document.body.append(avviso);
+  requestAnimationFrame(() => avviso.classList.add("is-visible"));
+}
+
+// Le icone sono quelle che il cliente vede sul suo telefono: il quadrato con
+// la freccia di Condividi, i tre puntini (iOS 26 nasconde Condividi li'
+// dietro) e il quadrato col + di "Aggiungi alla schermata Home".
+const ICONA_CONDIVIDI = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4M7 11H5v10h14V11h-2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ICONA_PUNTINI = `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="19" cy="12" r="1.8" fill="currentColor"/></svg>`;
+const ICONA_AGGIUNGI = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8.5v7M8.5 12h7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+
+// La finestra si costruisce qui e non nell'HTML: il bottone sta in sette
+// pagine, e la finestra serve solo sull'iPhone.
+function apriIstruzioniIos() {
+  // Dentro WhatsApp, Instagram o Facebook la pagina gira nel loro browser,
+  // che "Aggiungi alla schermata Home" non ce l'ha: prima va aperta in
+  // Safari. Safari, Chrome ed Edge scrivono "Safari" nel nome; quei browser no.
+  const dentroApp = !/Safari\//.test(navigator.userAgent);
+
+  let dialog = document.getElementById("iosInstall");
+  if (!dialog) {
+    const scrim = document.createElement("div");
+    scrim.className = "ticket-scrim ios-install-scrim";
+    scrim.hidden = true;
+    dialog = document.createElement("div");
+    dialog.className = "ticket-dialog ios-install";
+    dialog.id = "iosInstall";
+    dialog.setAttribute("role", "dialog");
+    dialog.setAttribute("aria-modal", "true");
+    dialog.setAttribute("aria-labelledby", "iosInstallTitle");
+    dialog.hidden = true;
+    document.body.append(scrim, dialog);
+
+    const chiudi = () => {
+      dialog.classList.remove("is-open");
+      scrim.classList.remove("is-visible");
+      document.body.classList.remove("menu-open");
+      setTimeout(() => { dialog.hidden = true; scrim.hidden = true; }, 300);
+    };
+    dialog._chiudi = chiudi;
+    scrim.addEventListener("click", chiudi);
+    dialog.addEventListener("click", e => { if (e.target.closest("[data-ios-close]")) chiudi(); });
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && dialog.classList.contains("is-open")) chiudi();
+    });
+  }
+
+  const passi = [];
+  if (dentroApp) passi.push(`<li><span class="ios-install-ico">${ICONA_PUNTINI}</span><span>${t("install.ios.inApp")}</span></li>`);
+  passi.push(
+    `<li><span class="ios-install-ico">${ICONA_CONDIVIDI}</span><span>${t("install.ios.share")}</span></li>`,
+    `<li><span class="ios-install-ico">${ICONA_AGGIUNGI}</span><span>${t("install.ios.add")}</span></li>`,
+    `<li><span class="ios-install-ico ios-install-ok">✓</span><span>${t("install.ios.confirm")}</span></li>`
+  );
+  dialog.innerHTML =
+    `<div class="ticket-dialog-head"><h2 id="iosInstallTitle"></h2>` +
+    `<button class="iconbtn" type="button" data-ios-close aria-label="${t("menu.close")}">✕</button></div>` +
+    `<p class="ios-install-intro"></p><ol class="ios-install-steps">${passi.join("")}</ol>` +
+    `<button class="btn btn-primary btn-block" type="button" data-ios-close></button>`;
+  dialog.querySelector("h2").textContent = t("install.ios.title");
+  dialog.querySelector(".ios-install-intro").textContent = t("install.ios.intro");
+  dialog.querySelector(".btn-primary").textContent = t("install.ios.ok");
+
+  // Il bottone sta nel menu laterale: il menu si chiude e fa posto.
+  const menuAperto = document.querySelector(".more-menu.is-open [data-menu-close]");
+  if (menuAperto) menuAperto.click();
+
+  const scrim = document.querySelector(".ios-install-scrim");
+  dialog.hidden = false;
+  scrim.hidden = false;
+  requestAnimationFrame(() => {
+    dialog.classList.add("is-open");
+    scrim.classList.add("is-visible");
+  });
+  document.body.classList.add("menu-open");
+}
+
+// Il video in cima alla home: parte da solo, ma solo a pagina caricata.
+//
+// Pesa 1,4 MB, piu' di tutto il resto della home. Con l'autoplay il telefono
+// lo scaricava insieme al catalogo e alle foto, e col 4G lento la home si
+// vedeva dopo secondi (prova da cliente, 19 ottobre 2026). Ora prima arriva la
+// pagina, con la foto ferma, e il video dopo. Col risparmio dati o su una rete
+// da 3G in giu' non parte proprio: resta la foto, e il cliente lo puo' far
+// partire col bottone. `navigator.connection` sull'iPhone non c'e': li' il
+// video parte sempre, a pagina caricata.
 function initHeroVideo() {
   const video = document.getElementById("heroVideo");
   const toggle = document.getElementById("videoToggle");
@@ -250,26 +416,38 @@ function initHeroVideo() {
   const iconPause = document.getElementById("iconPause");
   const iconPlay = document.getElementById("iconPlay");
 
-  function paintLabel() {
+  // Il bottone dice sempre lo stato vero del video: fermo finche' non parte,
+  // e fermo anche se il telefono si rifiuta di farlo partire (sull'iPhone,
+  // col risparmio energetico).
+  function paint() {
+    iconPause.hidden = video.paused;
+    iconPlay.hidden = !video.paused;
     toggle.setAttribute("aria-label", t(video.paused ? "hero.play" : "hero.pause"));
+  }
+  video.addEventListener("play", paint);
+  video.addEventListener("pause", paint);
+
+  function parti() {
+    const p = video.play();
+    if (p && p.catch) p.catch(paint);
   }
 
   toggle.addEventListener("click", () => {
-    if (video.paused) {
-      video.play();
-      iconPause.hidden = false;
-      iconPlay.hidden = true;
-    } else {
-      video.pause();
-      iconPause.hidden = true;
-      iconPlay.hidden = false;
-    }
-    paintLabel();
+    if (video.paused) parti();
+    else video.pause();
   });
 
-  // applyI18n rimette sempre "metti in pausa": qui si corregge se il video
-  // in quel momento è fermo.
-  document.addEventListener("islalang", paintLabel);
+  const rete = navigator.connection;
+  const lenta = rete && (rete.saveData || /2g|3g/.test(rete.effectiveType || ""));
+  if (!lenta) {
+    if (document.readyState === "complete") parti();
+    else window.addEventListener("load", parti, { once: true });
+  }
+
+  // applyI18n rimette l'etichetta scritta nell'HTML ("riproduci"): qui si
+  // corregge se il video in quel momento va.
+  document.addEventListener("islalang", paint);
+  paint();
 }
 
 document.addEventListener("DOMContentLoaded", initHeroVideo);
@@ -307,7 +485,6 @@ function initMoreMenu() {
   const openBtns = document.querySelectorAll("[data-menu-open]");
   const closeBtns = document.querySelectorAll("[data-menu-close]");
   if (!panel || !scrim || !openBtns.length) return;
-  aggiungiAreaVenditori(panel);
   const links = document.querySelectorAll("[data-menu-link]");
 
   function open() {
@@ -348,25 +525,68 @@ function initMoreMenu() {
   });
 }
 
-// "Area venditori" in fondo al menu, ma solo sul telefono dove un venditore e'
-// gia' entrato almeno una volta: il segno lo lascia venditori.js dopo
-// l'entrata, e resta anche dopo "Esci" (la scorciatoia serve proprio per
-// rientrare). I clienti non la vedono mai. Non e' una protezione: la pagina
-// chiede comunque email e password, e il database risponde solo ai venditori.
-// Solo in italiano, come la pagina a cui porta.
-const VENDITORE_KEY = "isla-venditore";
-
-function aggiungiAreaVenditori(panel) {
-  let venditore = false;
-  try { venditore = localStorage.getItem(VENDITORE_KEY) === "1"; } catch (e) { /* incognito */ }
-  const nav = panel.querySelector(".more-menu-nav");
-  if (!venditore || !nav) return;
-  const link = document.createElement("a");
-  link.href = "./venditori.html";
-  link.textContent = "Area venditori";
-  link.className = "more-menu-seller";
-  link.setAttribute("data-menu-link", "");
-  nav.append(link);
-}
-
 document.addEventListener("DOMContentLoaded", initMoreMenu);
+
+// La tastiera resta dentro la finestra aperta (quarta prova da cliente,
+// proprietario 19 ottobre 2026). Con la richiesta aperta il tasto Tab finiva
+// sulla pagina dietro 15 volte su 25, e chiudendo con Esc il cursore non
+// tornava sul pulsante da cui si era partiti: chi usa la tastiera o un lettore
+// di schermo si perdeva. Le finestre modali sono sette (menu, richiesta,
+// ticket, lista, pacchetto, chat, istruzioni per installare), costruite in
+// modi diversi: invece di sette pezzi di codice, una regola sola che le
+// guarda tutte, cioe' ogni [role=dialog][aria-modal=true] che si vede.
+// Per chi usa le dita non cambia niente.
+(function () {
+  const TOCCABILI = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), ' +
+    'select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  const aperte = [];          // le finestre aperte, l'ultima e' quella in cima
+  const daDove = new Map();   // finestra -> l'elemento da cui si e' partiti
+  let ultimoFuori = null;     // l'ultimo elemento col fuoco fuori da ogni finestra
+
+  const siVede = el => !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+  const finestre = () => [...document.querySelectorAll('[role="dialog"][aria-modal="true"]')];
+  const toccabili = d => [...d.querySelectorAll(TOCCABILI)].filter(siVede);
+
+  document.addEventListener("focusin", e => {
+    if (!e.target.closest('[role="dialog"][aria-modal="true"]')) ultimoFuori = e.target;
+  });
+
+  function guarda() {
+    finestre().forEach(d => {
+      const aperta = !d.hidden && siVede(d);
+      const i = aperte.indexOf(d);
+      if (aperta && i < 0) {
+        aperte.push(d);
+        daDove.set(d, ultimoFuori);
+        // Se il codice della finestra non ha gia' messo il cursore dentro
+        // (lo fa solo dove serve, per non aprire la tastiera del telefono),
+        // va sul primo elemento: di solito la ✕.
+        if (!d.contains(document.activeElement)) {
+          const primo = toccabili(d)[0];
+          if (primo) primo.focus({ preventScroll: true });
+        }
+      } else if (!aperta && i >= 0) {
+        aperte.splice(i, 1);
+        const torna = daDove.get(d);
+        daDove.delete(d);
+        const perso = !document.activeElement || document.activeElement === document.body || d.contains(document.activeElement);
+        if (perso && torna && document.contains(torna) && siVede(torna)) torna.focus({ preventScroll: true });
+      }
+    });
+  }
+
+  new MutationObserver(guarda).observe(document.documentElement, {
+    subtree: true, childList: true, attributes: true, attributeFilter: ["hidden", "class", "style"]
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Tab" || !aperte.length) return;
+    const d = aperte[aperte.length - 1];
+    const lista = toccabili(d);
+    if (!lista.length) { e.preventDefault(); return; }
+    const primo = lista[0], ultimo = lista[lista.length - 1];
+    const dentro = d.contains(document.activeElement);
+    if (e.shiftKey && (!dentro || document.activeElement === primo)) { e.preventDefault(); ultimo.focus(); }
+    else if (!e.shiftKey && (!dentro || document.activeElement === ultimo)) { e.preventDefault(); primo.focus(); }
+  });
+})();

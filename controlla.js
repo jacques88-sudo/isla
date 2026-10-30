@@ -62,7 +62,7 @@ const ICONE = new Set(
 
 const FOTO = new Set(fs.readdirSync(path.join(RADICE, "assets")));
 const CATEGORIE = new Set(CATEGORIES.map(c => c.id));
-const LINGUE = ["it", "en", "es"];
+const LINGUE = ["it", "en", "es", "fr", "de"];
 
 // I file .js/.css/.html che il service worker mette in cache: sono letti da
 // ASSETS in sw.js, non riscritti a mano qui. Un elenco duplicato a mano
@@ -148,7 +148,7 @@ function controllaEta(t) {
   const scritte = ["infant", "child", "adult"]
     .filter(n => t.ages[n] !== undefined)
     // `testo` e' quello che si scrive nei messaggi: la fascia in mesi e' un
-    // oggetto nelle tre lingue, e scritta cosi' com'e' darebbe "[object Object]".
+    // oggetto nelle cinque lingue, e scritta cosi' com'e' darebbe "[object Object]".
     .map(n => ({ nome: n, testo: tf(t.ages[n]), val: estremi(t.ages[n]) }));
 
   scritte.forEach(f => {
@@ -369,9 +369,23 @@ function controllaFoto(t) {
   }
 }
 
-// ─── 7. I testi tradotti devono avere tutte e tre le lingue ────────────────
+// ─── 6-bis. Ogni foto ha la sua copia piccola ─────────────────────────────
+// Le schede dell'elenco, le miniature e la home usano assets/piccole/ (la
+// funzione fotoPiccola() in escursioni.js): una foto senza copia li' esce
+// rotta. Le copie le fa foto-piccole.py, con gli stessi nomi.
+function controllaFotoPiccole() {
+  const cartella = path.join(RADICE, "assets", "piccole");
+  const piccole = new Set(fs.existsSync(cartella) ? fs.readdirSync(cartella) : []);
+  [...FOTO]
+    .filter(nome => /\.(webp|jpe?g)$/i.test(nome) && nome !== "anteprima.jpg")
+    .filter(nome => !piccole.has(nome))
+    .forEach(nome => errore("assets/" + nome,
+      "manca la copia piccola in assets/piccole/: lancia python3 foto-piccole.py"));
+}
+
+// ─── 7. I testi tradotti devono avere tutte e cinque le lingue ────────────────
 // Una stringa da sola va bene: vuol dire "uguale in tutte le lingue" (i nomi
-// propri). Ma se e' un oggetto, le tre lingue ci devono essere tutte, se no il
+// propri). Ma se e' un oggetto, le cinque lingue ci devono essere tutte, se no il
 // cliente spagnolo si trova una riga vuota.
 function controllaTraduzioni(t) {
   const guarda = (valore, dove) => {
@@ -387,7 +401,7 @@ function controllaTraduzioni(t) {
       }
     });
   };
-  ["title", "zone", "duration", "desc", "season", "transfer", "transferLabel",
+  ["title", "zone", "duration", "desc", "season", "pochiPosti", "transfer", "transferLabel",
    "transferPriceLabel", "transferSiam", "transferSiamLabel", "transferSiamPriceLabel"]
     .forEach(c => guarda(t[c], c));
   guarda(t.notes, "notes");
@@ -556,7 +570,7 @@ function controllaPagamento() {
 }
 
 // Cosa portare (portare.js): ogni id deve essere una scheda vera, una scheda
-// sta in un gruppo solo, e ogni voce c'e' in tutte e tre le lingue. Un id
+// sta in un gruppo solo, e ogni voce c'e' in tutte e cinque le lingue. Un id
 // scritto male farebbe sparire il riquadro senza dirlo a nessuno.
 function controllaPortare() {
   const visti = {};
@@ -603,7 +617,7 @@ function controllaSelezioni() {
   });
 }
 
-// ─── 10. Le chiavi i18n in tutte e tre le lingue ───────────────────────────
+// ─── 10. Le chiavi i18n in tutte e cinque le lingue ───────────────────────────
 function controllaI18n() {
   // Fino a fine riga, non fino alla prima "}": le chiavi con segnaposto come
   // "da €{p}" chiudono una graffa a meta' valore e troncherebbero il confronto.
@@ -897,6 +911,53 @@ function controllaPacchetti() {
   });
 }
 
+// Il Teide una volta sola (vedi "IL TEIDE UNA VOLTA SOLA" in pacchetti.js), e
+// le pagine "Crea il tuo pacchetto": ogni vetrina deve avere abbastanza schede
+// da scegliere, e PACCHETTI_TEIDE deve nominare schede che ci sono.
+function controllaSuMisura() {
+  PACCHETTI.forEach(pack => {
+    const teide = pack.voci.filter(pacchettoVoceSaleAlTeide).map(v => v.id);
+    if (teide.length > 1) {
+      avviso("pacchetto " + pack.id, "sale al Teide piu' di una volta (" + teide.join(", ") +
+        "): vedi PACCHETTI_TEIDE.");
+    }
+  });
+
+  PACCHETTI_TEIDE.forEach(voce => {
+    const tour = ESPLORA_CATALOG.find(t => t.id === voce.id);
+    if (!tour) {
+      errore("PACCHETTI_TEIDE", '"' + voce.id + '" non c\'e\' nel catalogo.');
+    } else if (voce.optionIndex !== undefined &&
+               !(tour.options && tour.options.choices && tour.options.choices[voce.optionIndex])) {
+      errore("PACCHETTI_TEIDE", '"' + voce.id + '" non ha la variante ' + voce.optionIndex + ".");
+    }
+  });
+
+  Object.keys(PACCHETTI_SU_MISURA).forEach(chiave => {
+    const regole = PACCHETTI_SU_MISURA[chiave];
+    const schede = ESPLORA_CATALOG.filter(t => t.published).filter(t => {
+      const scelte = (t.options && t.options.choices) || [];
+      return (scelte.length ? scelte.map((_, i) => i) : [undefined])
+        .some(i => pacchettoSuMisuraAmmessa(regole, pacchettoSuMisuraVoce(regole, t.id, i)));
+    });
+    if (schede.length < regole.voci * 2) {
+      avviso("Crea il tuo pacchetto (" + chiave + ")", "si possono scegliere solo " +
+        schede.length + " schede per " + regole.voci + " posti.");
+    }
+  });
+}
+
+// La mappa del sito per Google (sitemap.js) va rifatta quando cambiano le
+// schede pubblicate o i pacchetti: una scheda nuova che non c'e' Google non la
+// trova, una tolta gli fa cercare una pagina vuota.
+function controllaSitemap() {
+  const { sitemapTesto } = require("./sitemap.js");
+  let scritta = "";
+  try { scritta = leggi("sitemap.xml"); } catch (e) { /* manca: sotto lo dice */ }
+  if (scritta !== sitemapTesto())
+    errore("sitemap.xml", "non corrisponde al catalogo: lancia `node sitemap.js`.");
+}
+
 // ─── Esecuzione ────────────────────────────────────────────────────────────
 const CONTROLLI = [controllaBase, controllaEta, controllaPrezzi, controllaMezzi,
                    controllaGiorni, controllaOrari, controllaIncluse, controllaFoto,
@@ -912,7 +973,10 @@ controllaSelezioni();
 controllaPortare();
 controllaI18n();
 controllaPacchetti();
+controllaSuMisura();
 controllaServiceWorker();
+controllaFotoPiccole();
+controllaSitemap();
 
 const pubblicate = ESPLORA_CATALOG.filter(t => t.published).length;
 console.log("  schede: " + ESPLORA_CATALOG.length + ", di cui pubblicate " + pubblicate);

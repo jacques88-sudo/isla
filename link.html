@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="it" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#fcfaf6" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#18130e" media="(prefers-color-scheme: dark)" />
+  <meta name="description" data-i18n-content="link.desc" content="Escursioni a Tenerife: barche, Teide, quad, parchi. Richiesta su WhatsApp, conferma entro 24 ore." />
+  <title>Isla · Escursioni a Tenerife</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./assets/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<!-- LA PAGINA DEI LINK
+     E' il "link nella bio" di Instagram, Facebook e TikTok, al posto di Linktree
+     (proprietario, 26 ottobre 2026): islaexcursionstenerife.com/link.
+     GitHub Pages apre link.html anche scritto senza ".html".
+     Pochi pulsanti grandi, quelli che servono a chi arriva da un social: niente
+     capsula in alto ne' Menu, la pagina deve stare tutta in uno schermo.
+     Un pulsante nuovo va scritto qui e il suo testo in i18n.js ("link.*"). -->
+<body data-i18n-doctitle="link.title">
+  <header class="wrap privacy-head">
+    <a class="privacy-home" href="./index.html">
+      <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" width="32" height="32" />
+      <span>Isla</span>
+    </a>
+    <div class="lang-row" data-i18n-aria-label="lang.label" aria-label="Lingua" role="group">
+      <button type="button" data-lang-set="it" lang="it" aria-label="Italiano" title="Italiano"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#009246" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#ce2b37" d="M2 0h1v2H2z"/></svg></button>
+      <button type="button" data-lang-set="en" lang="en" aria-label="English" title="English"><svg class="lang-flag" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path fill="#012169" d="M0 0h60v30H0z"/><path stroke="#fff" stroke-width="6" d="M0 0l60 30M60 0L0 30"/><path stroke="#c8102e" stroke-width="2" d="M0 0l60 30M60 0L0 30"/><path stroke="#fff" stroke-width="10" d="M30 0v30M0 15h60"/><path stroke="#c8102e" stroke-width="6" d="M30 0v30M0 15h60"/></svg></button>
+      <button type="button" data-lang-set="es" lang="es" aria-label="Español" title="Español"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#aa151b" d="M0 0h3v2H0z"/><path fill="#f1bf00" d="M0 .5h3v1H0z"/></svg></button>
+      <button type="button" data-lang-set="fr" lang="fr" aria-label="Français" title="Français"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#002654" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#ce1126" d="M2 0h1v2H2z"/></svg></button>
+      <button type="button" data-lang-set="de" lang="de" aria-label="Deutsch" title="Deutsch"><svg class="lang-flag" viewBox="0 0 5 3" preserveAspectRatio="none" aria-hidden="true"><path fill="#000" d="M0 0h5v1H0z"/><path fill="#dd0000" d="M0 1h5v1H0z"/><path fill="#ffce00" d="M0 2h5v1H0z"/></svg></button>
+    </div>
+  </header>
+
+  <main class="wrap link-page">
+    <img class="link-logo" src="./assets/logo-isla.png" alt="" width="96" height="96" />
+    <h1>Isla Tenerife</h1>
+    <p class="link-tagline" data-i18n="link.tagline">Escursioni a Tenerife: mandi la richiesta su WhatsApp, l'ufficio conferma entro 24 ore.</p>
+
+    <nav class="link-list" data-i18n-aria-label="link.aria" aria-label="Link">
+      <!-- L'escursione dell'ultimo video: la sceglie ULTIMO_VIDEO in link.js,
+           che riempie foto, titolo, zona e prezzo dal catalogo. -->
+      <a class="link-video" id="ultimoVideo" href="./escursioni.html" hidden>
+        <img src="" alt="" width="72" height="72" />
+        <span>
+          <em data-i18n="link.lastVideo">Dal nostro ultimo post</em>
+          <strong></strong>
+          <small></small>
+        </span>
+      </a>
+      <a class="link-item link-item-main" href="./escursioni.html">
+        <span data-i18n="link.experiences">Tutte le esperienze</span>
+        <small data-i18n="link.experiencesSub">Barche, Teide, quad, parchi e altro</small>
+      </a>
+      <a class="link-item" href="./pacchetti.html">
+        <span data-i18n="link.packages">Pacchetti</span>
+        <small data-i18n="link.packagesSub">Più escursioni insieme, con lo sconto</small>
+      </a>
+      <a class="link-item" href="https://wa.me/34657772032" rel="noopener">
+        <span data-i18n="link.whatsapp">Scrivici su WhatsApp</span>
+        <small>+34 657 772 032</small>
+      </a>
+      <a class="link-item" href="./noleggio.html">
+        <span data-i18n="rent.title">Noleggio</span>
+        <small data-i18n="link.rentSub">Auto, moto, scooter e bici</small>
+      </a>
+      <a class="link-item" href="./booking.html">
+        <span data-i18n="nav.myBookings">Le mie prenotazioni</span>
+        <small data-i18n="link.bookingsSub">Controlla la tua richiesta o il tuo ticket</small>
+      </a>
+    </nav>
+
+    <!-- I tre social, con lo stesso nome dappertutto (26 ottobre 2026). Facebook
+         il trattino basso non lo accetta, e isla.tenerife era gia' preso. Le
+         icone sono disegnate a mano a tratto, come quelle di "Cosa e' incluso". -->
+    <nav class="link-social" aria-label="Social">
+      <a href="https://www.instagram.com/isla_tenerife/" rel="noopener" aria-label="Instagram" title="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6" fill="currentColor"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@isla_tenerife" rel="noopener" aria-label="TikTok" title="TikTok">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 3.5v11.2a3.7 3.7 0 1 1-3.7-3.7"/><path d="M13.5 3.5c.4 2.6 2.4 4.5 5 4.6"/></svg>
+      </a>
+      <a href="https://www.facebook.com/isla.tenerife.excursions" rel="noopener" aria-label="Facebook" title="Facebook">
+        <!-- Il tondo pieno con la "f" del colore del fondo, come il logo vero:
+             a tratto, cerchio e "f" sottili non si riconoscevano (proprietario,
+             26 ottobre 2026). -->
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="currentColor" stroke="none"/><path class="link-social-cut" d="M13.4 21.4V10.6c0-1.6.9-2.6 2.5-2.6h1.3M10 13.2h6"/></svg>
+      </a>
+    </nav>
+  </main>
+
+  <script src="./trasloco.js"></script>
+  <script src="./i18n.js"></script>
+  <script src="./esplora-catalog.js"></script>
+  <!-- escursioni.js e pacchetti.js per il prezzo del pulsante "Dal nostro
+       ultimo video" quando e' un pacchetto: qui non trovano i loro elementi
+       e non disegnano niente. -->
+  <script src="./escursioni.js"></script>
+  <script src="./pacchetti.js"></script>
+  <script src="./link.js"></script>
+  <!-- Cloudflare Web Analytics: conta le visite, senza cookie (vedi NOTES.md) --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a352d8c5d0e744fbb696ae4294a2c023"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

@@ -8,7 +8,7 @@
 // dei noleggiatori non si mostrano: sul sito ci sono solo i modelli.
 //
 // COME E' FATTO UN MEZZO
-//   name     il modello, uguale in tutte e tre le lingue (e' un nome proprio)
+//   name     il modello, uguale in tutte e cinque le lingue (e' un nome proprio)
 //   nameKey  al posto di name, dove un modello non c'e' e il nome e' una
 //            parola da tradurre ("Bici da citta'"): chiave di i18n.js
 //   kind     che cos'e' ("Maxi scooter 300 cc"), tradotto; si puo' omettere
@@ -195,7 +195,7 @@ function rentCard(item) {
 
   const btn = document.createElement("a");
   btn.className = "btn btn-soft btn-block rent-cta";
-  btn.href = rentWaLink(t("wa.rentItem", { mezzo: rentLabel(item) }));
+  btn.href = rentWaLink(perUfficio(() => t("wa.rentItem", { mezzo: rentLabel(item) })));
   btn.target = "_blank";
   btn.rel = "noopener noreferrer";
   btn.textContent = t("rent.request");
@@ -239,7 +239,7 @@ function renderRent() {
 
   const other = document.querySelector("[data-rent-other]");
   if (other) {
-    other.href = rentWaLink(t("wa.rental"));
+    other.href = rentWaLink(perUfficio(() => t("wa.rental")));
   }
 }
 

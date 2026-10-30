@@ -6,6 +6,7 @@
 //
 // Chi la chiama: venditori.js, con sb.functions.invoke("leggi-ticket", …).
 // Riceve: { image: <JPEG in base64>, catalogo: [...], oggi: "AAAA-MM-GG" }
+//   (nel catalogo, per le schede a mezzo, anche units: [{ key, name }])
 // Risponde: { campi: {...} }   oppure   { errore: "..." } con uno stato HTTP.
 //
 // La funzione NON salva niente: legge e risponde. Il venditore controlla i
@@ -76,6 +77,18 @@ const CAMPI = {
   paid_in_full: { type: "boolean" },
   seller: testo,
   notes: testo,
+  // I mezzi (moto d'acqua, buggy, quad, Mustang): un elenco di righe e non un
+  // campo per tipo, cosi' non si aggiunge nessun "numero O null" (il limite
+  // e' 16, vedi sopra) e vale per qualunque scheda. Elenco vuoto = non letti.
+  units: {
+    type: "array",
+    items: {
+      type: "object",
+      properties: { tipo: testo, quanti: { type: "integer" } },
+      required: ["tipo", "quanti"],
+      additionalProperties: false,
+    },
+  },
   dubbi: { type: "array", items: { type: "string" } },
 };
 
@@ -116,15 +129,20 @@ Campo per campo:
 - paid_in_full: true se Deposit e To Pay sono entrambi sbarrati ("/" o "—") e il Total è scritto: vuol dire che il cliente ha pagato tutto. In quel caso deposit e rest_to_pay valgono null. Altrimenti false.
 - seller: le sigle o i nomi dei venditori, di solito nel riquadro della firma ("FRA / MATT"), così come sono scritti. Non la firma del cliente.
 - notes: eventuali osservazioni scritte a mano che non stanno in nessun altro campo. Altrimenti "".
+- units: solo se l'escursione scelta ha "mezzi" nell'elenco qui sotto (moto d'acqua, buggy, quad…). Per ogni tipo di mezzo scritto sul ticket, una riga: tipo = la chiave del tipo, scritta esattamente come nell'elenco (per esempio "doppia"), quanti = quanti mezzi di quel tipo. Sul ticket di solito sta accanto all'escursione o alle persone ("2 doppie", "1 x 4 seats", "2 singles"). Se il ticket non scrive i mezzi, o l'escursione non va a mezzi, l'elenco è vuoto. Non dedurre i mezzi dal numero di persone. Se un numero o un tipo è incerto, metti "units" in "dubbi".
 
-Elenco delle escursioni (id — titolo — varianti):
+Elenco delle escursioni (id — titolo — varianti — mezzi, come chiave = tipo):
 `;
 
-type Scheda = { id: string; title: string; options?: string[] };
+type Mezzo = { key: string; name: string };
+type Scheda = { id: string; title: string; options?: string[]; units?: Mezzo[] };
 
 function elencoEscursioni(catalogo: Scheda[]): string {
   return catalogo
-    .map((s) => `${s.id} — ${s.title}${s.options && s.options.length ? " — " + s.options.join(" | ") : ""}`)
+    .map((s) =>
+      `${s.id} — ${s.title}${s.options && s.options.length ? " — " + s.options.join(" | ") : ""}` +
+      (s.units && s.units.length ? " — mezzi: " + s.units.map((u) => `${u.key} = ${u.name}`).join(" | ") : "")
+    )
     .join("\n");
 }
 
@@ -134,7 +152,11 @@ function elencoEscursioni(catalogo: Scheda[]): string {
 function catalogoValido(x: unknown): x is Scheda[] {
   return Array.isArray(x) && x.length > 0 && x.length < 500 && x.every((s) =>
     s && typeof s.id === "string" && typeof s.title === "string" &&
-    (s.options === undefined || (Array.isArray(s.options) && s.options.every((o: unknown) => typeof o === "string")))
+    (s.options === undefined || (Array.isArray(s.options) && s.options.every((o: unknown) => typeof o === "string"))) &&
+    // I mezzi sono arrivati dopo (15 ottobre 2026): una pagina vecchia non li
+    // manda, e va bene lo stesso.
+    (s.units === undefined || (Array.isArray(s.units) && s.units.length < 10 && s.units.every((u: Mezzo) =>
+      u && typeof u.key === "string" && /^[a-z0-9_]+$/.test(u.key) && typeof u.name === "string")))
   );
 }
 
@@ -247,6 +269,18 @@ Deno.serve(async (req) => {
   const scheda = catalogo.find((s) => s.id === campi.excursion_id);
   if (!scheda) campi.excursion_id = null;
   if (!scheda || !(scheda.options ?? []).includes(campi.option_label as string)) campi.option_label = null;
+
+  // 6. I mezzi: solo i tipi della scheda scelta, almeno 1 e al massimo 99,
+  //    nella forma che salva il modulo ({ doppia: 2 }). null se non ce ne sono.
+  const tipi = new Set((scheda?.units ?? []).map((u) => u.key));
+  const mezzi: Record<string, number> = {};
+  for (const riga of Array.isArray(campi.units) ? campi.units : []) {
+    const { tipo, quanti } = (riga ?? {}) as { tipo?: unknown; quanti?: unknown };
+    if (typeof tipo === "string" && tipi.has(tipo) && typeof quanti === "number" && Number.isInteger(quanti) && quanti > 0) {
+      mezzi[tipo] = Math.min((mezzi[tipo] ?? 0) + quanti, 99);
+    }
+  }
+  campi.units = Object.keys(mezzi).length ? mezzi : null;
 
   // Quanto e' costata, per tenerlo d'occhio nei log di Supabase.
   console.log(JSON.stringify({ ticket: campi.ticket_number, uso: messaggio.usage }));

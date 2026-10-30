@@ -14,7 +14,7 @@
   <meta property="og:locale" content="it_IT" />
   <meta property="og:title" content="Tutte le escursioni · Isla" />
   <meta property="og:description" content="Tutte le escursioni, i tour e gli show di Isla a Tenerife: mare, Teide, parchi, avventura e molto altro." />
-  <meta property="og:image" content="https://jacques88-sudo.github.io/isla/assets/anteprima.jpg" />
+  <meta property="og:image" content="https://islaexcursionstenerife.com/assets/anteprima.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Il logo di Isla, il sole con la palma, e la scritta so easy so tenerife" />
@@ -184,12 +184,15 @@
         <button type="button" data-lang-set="it" lang="it" aria-label="Italiano" title="Italiano"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#009246" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#ce2b37" d="M2 0h1v2H2z"/></svg></button>
         <button type="button" data-lang-set="en" lang="en" aria-label="English" title="English"><svg class="lang-flag" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path fill="#012169" d="M0 0h60v30H0z"/><path stroke="#fff" stroke-width="6" d="M0 0l60 30M60 0L0 30"/><path stroke="#c8102e" stroke-width="2" d="M0 0l60 30M60 0L0 30"/><path stroke="#fff" stroke-width="10" d="M30 0v30M0 15h60"/><path stroke="#c8102e" stroke-width="6" d="M30 0v30M0 15h60"/></svg></button>
         <button type="button" data-lang-set="es" lang="es" aria-label="Español" title="Español"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#aa151b" d="M0 0h3v2H0z"/><path fill="#f1bf00" d="M0 .5h3v1H0z"/></svg></button>
+        <button type="button" data-lang-set="fr" lang="fr" aria-label="Français" title="Français"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#002654" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#ce1126" d="M2 0h1v2H2z"/></svg></button>
+        <button type="button" data-lang-set="de" lang="de" aria-label="Deutsch" title="Deutsch"><svg class="lang-flag" viewBox="0 0 5 3" preserveAspectRatio="none" aria-hidden="true"><path fill="#000" d="M0 0h5v1H0z"/><path fill="#dd0000" d="M0 1h5v1H0z"/><path fill="#ffce00" d="M0 2h5v1H0z"/></svg></button>
       </div>
     </div>
     <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn data-i18n="menu.install" hidden>Installa l'app</button>
     <nav class="more-menu-nav" data-i18n-aria-label="menu.sections" aria-label="Sezioni">
       <button type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.myBookings">Le mie prenotazioni</button>
       <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
+      <a href="./escursioni.html?preferiti=1" data-menu-link data-i18n="menu.favorites">I miei preferiti</a>
       <a href="./pacchetti.html" data-menu-link data-i18n="menu.packages">Pacchetti</a>
       <a href="./mappa.html" data-menu-link data-i18n="menu.map">Scopri Tenerife</a>
       <a href="./mappa.html?cat=segreto" data-menu-link data-i18n="menu.secret">Posti segreti</a>
@@ -222,6 +225,10 @@
       <input id="reqDate" name="date" type="hidden" />
       <div data-date-field></div>
       <p class="request-day-error" data-request-day-error hidden></p>
+      <!-- Le 24 ore vere (partenzaPossibile in escursioni.js): senza questa riga
+           chi apriva l'escursione di domani mattina vedeva il giorno spento e
+           pensava che fosse pieno. -->
+      <p class="hint" data-request-date-hint data-i18n="req.dateHint">Si può chiedere fino a 24 ore prima della partenza.</p>
 
       <label for="reqHotel"><span data-i18n="req.hotel">Dove alloggi</span> <span class="request-optional" data-i18n="req.hotelWhy">(utile per il pick-up)</span></label>
       <div class="hotel-field" data-hotel-field>
@@ -230,12 +237,13 @@
                data-i18n-placeholder="req.hotelPlaceholder" placeholder="Scrivi le prime lettere dell'hotel" />
         <ul class="hotel-sugg" id="reqHotelList" role="listbox" hidden></ul>
       </div>
-      <p class="hint" data-hotel-hint data-i18n="req.hotelHint">Serve a dirti dove passiamo a prenderti. Se non trovi il tuo, scrivilo nelle note.</p>
+      <p class="hint" data-hotel-hint data-i18n="req.hotelHint">Serve a dirti dove passiamo a prenderti. Se non trovi il tuo, scrivi qui il nome o l'indirizzo.</p>
 
       <label for="reqTime" data-request-time-label data-i18n="req.time">A che ora</label>
       <select id="reqTime" name="time" data-request-time></select>
       <p class="request-ora-fissa" data-request-time-fixed hidden></p>
       <p class="hotel-punto" data-hotel-punto hidden><span data-hotel-punto-et>Punto di raccolta</span> <strong data-hotel-punto-val></strong></p>
+      <p class="hotel-punto" data-request-ritrovo hidden><span data-i18n="req.meetingPoint">Punto di ritrovo</span> <strong data-request-ritrovo-value></strong> <span class="request-ritrovo-da-solo" data-i18n="req.meetingSelf">· ti aspettiamo lì</span></p>
 
       <label for="reqLang" data-request-lang-label hidden data-i18n="req.lang">In che lingua</label>
       <select id="reqLang" name="lang" data-request-lang hidden></select>
@@ -313,7 +321,7 @@
       </div>
 
       <p class="hint" data-i18n-html="req.hint">Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.</p>
-      <p class="hint request-privacy" data-i18n-html="req.privacy">Quello che scrivi serve solo a risponderti su WhatsApp. L'hotel resta salvato su questo dispositivo, per non riscriverlo ogni volta. <a href="./privacy.html" target="_blank" rel="noopener">Come trattiamo i tuoi dati</a></p>
+      <p class="hint request-privacy" data-i18n-html="req.privacy">Quello che scrivi serve solo a gestire la tua richiesta e a risponderti su WhatsApp. L'hotel resta salvato su questo dispositivo, per non riscriverlo ogni volta. <a href="./privacy.html" target="_blank" rel="noopener">Come trattiamo i tuoi dati</a></p>
     </form>
   </div>
 
@@ -356,15 +364,17 @@
     </div>
     <p class="footer-legal">
       <span data-i18n-html="footer.operator">Isla è un servizio di <strong>Admiral Travel Agencia de Viajes SL</strong></span> · CIF B38506754<br />
-      C. Francisco Andrade Fumero, 38660 Playa de las Américas, Santa Cruz de Tenerife · <a href="tel:+34662908073">+34 662 908 073</a> · <a href="./privacy.html" data-i18n="footer.privacy">Privacy</a> · <a href="./termini.html" data-i18n="footer.terms">Termini di vendita</a>
+      C. Francisco Andrade Fumero, 38660 Playa de las Américas, Santa Cruz de Tenerife · <a href="tel:+34657772032">+34 657 772 032</a> · <a href="tel:+34662908073">+34 662 908 073</a> · <a href="./privacy.html" data-i18n="footer.privacy">Privacy</a> · <a href="./termini.html" data-i18n="footer.terms">Termini di vendita</a>
     </p>
     <p class="footer-copy" data-i18n="footer.copy">© Isla · Escursioni a Tenerife</p>
   </footer>
 
+  <script src="./trasloco.js"></script>
   <script src="./i18n.js"></script>
   <script src="./esplora-catalog.js"></script>
   <script src="./hotel.js"></script>
   <script src="./escursioni.js"></script>
+  <script src="./preferiti.js"></script>
   <!-- la lista deve saper disegnare un pacchetto -->
   <script src="./pacchetti.js"></script>
   <script src="./supabase-config.js"></script>
@@ -373,5 +383,6 @@
   <script src="./assistente.js"></script>
   <script src="./telefono.js"></script>
   <script src="./app.js"></script>
+  <!-- Cloudflare Web Analytics: conta le visite, senza cookie (vedi NOTES.md) --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a352d8c5d0e744fbb696ae4294a2c023"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

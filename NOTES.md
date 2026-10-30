@@ -18147,6 +18147,3387 @@ Provato in Chromium: con l'invio a Supabase fermato, due escursioni con l'ABAMA 
 punto sulle balene; in `venditori.html` con righe finte il modulo si riempie (08:55 + la
 sbarra; 10:00; vuoto per la fascia). `CACHE_NAME` a `isla-v487`.
 
+### Lo stesso giorno: "permission denied for table bookings"
+
+Lanciato il file SQL, `venditori.html` scriveva "Elenco non disponibile: permission
+denied for table bookings". Le quattro colonne nuove (`customer_name`,
+`request_message`, `pickup_point`, `pickup_time`) erano nate senza il permesso per i
+venditori, che dall'8 ottobre leggono `bookings` **colonna per colonna** (per tenere
+fuori i netti). La regola stava già in CLAUDE.md e nel file del foglio, ed è stata
+dimenticata lo stesso: il file ora ha la riga `grant select (…) on public.bookings to
+authenticated`. **Ogni `add column` su `bookings` va seguito dal suo `grant select`.**
+
+**Talaria, gli orari (13 ottobre 2026, proprietario):** partenze alle 10:00, 13:00,
+16:00 e 18:00, le stesse per tutte e tre le durate: `times` sulla scheda, non sulle
+varianti. Provato nella finestra della richiesta: le quattro ore su ogni variante,
+"Da concordare" sparito. `CACHE_NAME` → `isla-v488`.
+
+**Talaria, altre info dal fornitore (13 ottobre 2026):** età minima 14 anni (sotto i
+18 con l'autorizzazione di un genitore): `ages: { adult: "14+" }`, stesso prezzo per
+tutti, niente `priceChild`. Partenze **10, 13 e 16**: le 18:00 messe poco prima sono
+state tolte, la pagina del fornitore non le ha (proprietario). Nuove note: patente e
+requisiti, scarpe chiuse, pantaloni lunghi, documento, acqua e crema solare.
+`CACHE_NAME` → `isla-v489`.
+
+**Talaria, foto, ritiro e cosa portare (13 ottobre 2026):** il proprietario conferma che
+**non c'è ritiro** (resta in `PICKUP_NESSUNO`, tolto il "da confermare"). Foto
+principale `talaria-off-road.jpg` (le moto sulla spiaggia, con la scritta "OFF ROAD
+ROUTES" del fornitore), in galleria il logo `talaria-off-road-2.jpg` (arrivato già
+tagliato in alto e in basso). Gruppo "Talaria" in `portare.js` e lo stesso sulla pagina
+Notion "cose da portare": documento, patente se c'è, scarpe chiuse e pantaloni lunghi,
+acqua e crema solare. `CACHE_NAME` → `isla-v490`.
+
+**Pacchetti, niente ripetizioni fra i riquadri (13 ottobre 2026, proprietario):** il
+riquadro "Pacchetti" della home (`pacchetti.html` senza filtro) non mostra più i
+pacchetti di "In famiglia" (`famiglia: true`) e di "Perfetto per 2" (`tema`); gli
+itinerari a giorni già non c'erano. Ogni pacchetto sta in una vetrina sola: restano 7.
+Il link "indietro" della pagina del pacchetto porta alla vetrina in cui il pacchetto
+sta (`?famiglia=1`, `?tema=per-due`), altrimenti si tornava in una pagina dove non
+c'era. I piedi delle vetrine filtrate dicono "Vedi gli altri pacchetti"
+(`pack.seeOthers`) invece di "tutti". `CACHE_NAME` → `isla-v491`.
+
+**Netti dal foglio di un venditore (13 ottobre 2026):** il proprietario ha mandato la
+foto del riepilogo settimanale di Agustin (5-11 ottobre: ticket, totale, netto,
+commissioni). Ricavati i netti come totale − commissione e confermati dal proprietario
+uno per uno: Aqualand, Siam Park, Loro Parque, Peter Pan, Crazy UFO (banana-boat),
+Flash Jetski e Jetski Island (jet ski), Opera 60, Shaka Kayak. **I numeri non sono qui**:
+stanno nella tabella Notion "Netti da inserire" e su Supabase (SQL preparato nella
+scratchpad, non committato). Sul Freebird 3 ore il foglio aveva un netto corretto a
+penna diverso da Notion: **vale Notion** (proprietario, regola generale). La colonna
+"COMPANY" del foglio non dice la compagnia: POINT e TIKTOK sono i punti vendita.
+
+- `nomi` del jet ski: **Flash Jetski** e **Jetski Island** accanto ad Agua Safari. Le
+  due nuove partono da **Puerto Colón**, Agua Safari da Las Galletas (proprietario):
+  chiusa la riga Notion "Jet Ski da Puerto Colón". Ognuna ha il suo netto, quindi un
+  ticket jet ski senza compagnia resta senza netto;
+- `nomi: ["Shaka Kayak"]` su `kayak-snorkelling`;
+- **Peter Pan conta sempre come card** (proprietario): `pagamento: "card"` nel catalogo
+  e `'peter-pan'` in `2026-10-09-solo-card.sql`, da rilanciare intero.
+
+Provato: nel modulo dei venditori il menu Compagnia del jet ski ha le tre compagnie,
+"FLASH JETSKI" nel testo del ticket la sceglie, Peter Pan sceglie Card e spegne Cash;
+schede senza errori e senza scroll orizzontale a 375 px. SQL dei netti provato su
+Postgres 16 con schema e modifiche: i netti dei ticket del foglio tornano uguali, un
+jet ski senza compagnia resta "compagnia non scritta", un bambino su Peter Pan resta
+"netto bambino mancante", lanciato due volte non fa danni. `CACHE_NAME` → `isla-v492`.
+
+## Il francese, quarta lingua (13 ottobre 2026)
+
+Richiesta del proprietario: aggiungere il francese a Isla. Fatto tutto in una volta,
+perché una lingua a metà (menu in francese, schede in inglese) si nota più di una
+lingua che non c'è.
+
+**Come.** Uno script nella scratchpad ha trovato ogni `es: "…"` del sito (i18n,
+catalogo, mappa, pacchetti, "Cosa portare", booking: 1.498 testi, 1.317 diversi) e ci
+ha messo accanto `fr: "…"`, sulla stessa riga negli oggetti scritti in riga, sulla
+riga sotto con lo stesso rientro in quelli a più righe. Le traduzioni sono state
+scritte a mano partendo da inglese e italiano, non copiate da nessun fornitore. Scelte:
+- **"vous"**, non "tu": è il registro normale di un sito che vende;
+- il prezzo resta **"€49"** con l'euro davanti, come nelle altre tre lingue (in
+  francese si scriverebbe "49 €"), perché molti prezzi li scrive il codice
+  (`"€" + eur(n)`) e i due modi mescolati sulla stessa pagina sembrerebbero errori;
+  `eur()` mette già la virgola dei centesimi per tutto quello che non è inglese;
+- gli orari restano **"10:30"**, come sui bottoni della richiesta;
+- titoli e nomi propri restano uguali, come sempre.
+
+**Il resto:** `I18N_LANGS`, `LINGUE` in `controlla.js` (che quindi pretende il
+francese su ogni testo nuovo), la bandiera in tutte le pagine che hanno le bandiere
+(`booking.html` e `offline.html` non le hanno), `fr-FR` per le date in
+`dataLeggibile()`, il prefisso `+33` proposto a chi legge in francese, gli articoli
+francesi di `privacy.html` e `termini.html` (più la riga CSS che li nasconde nelle
+altre lingue).
+
+**Il messaggio all'ufficio resta in italiano** (proprietario, stesso giorno): chi usa
+il sito in francese scrive all'ufficio in italiano. `perUfficio(scrivi)` in `i18n.js`
+mette per un momento la lingua a `it`, fa scrivere il testo e la rimette com'era.
+Avvolge **tutto** il messaggio, non solo le etichette, perché date (`formatDate`),
+persone, titoli e varianti passano anche loro da `t()` e `tf()`: messaggio
+dell'escursione (`whatsappTesto`), della lista (`listaWhatsappTesto`), del pacchetto
+(`pacchettoWhatsappTesto`), noleggio, assistente e le due domande sul ticket in
+`booking.js`. Lo stesso testo va anche nel database (`request_message`): l'ufficio lo
+rilegge in italiano anche in `venditori.html`.
+
+**Quattro bandiere su uno schermo stretto.** Con i bottoni da 54 px la riga usciva di
+9 px da privacy e termini a 320 px, e nel menu laterale la bandiera francese era
+tagliata a metà. Sotto i 375 px i bottoni sono da 44 px e nel menu la riga va sotto la
+scritta "Lingua". Misurato a 320, 360, 375 e 390 px: niente scroll orizzontale, niente
+bandiere fuori.
+
+**Da fare su Supabase** (il proprietario): incollare
+`supabase/modifiche/2026-10-13-francese.sql` nel SQL Editor e ripubblicare la funzione
+`manda-notifiche` (ha i testi degli avvisi in francese). Prima di farlo, chi usa il sito
+in francese si vede rifiutare l'iscrizione agli avvisi; il telefono la riprova da solo,
+quindi dopo non si perde niente. Ordine indifferente.
+
+Provato nel browser con `locale: "fr-FR"`: le undici pagine si aprono in francese
+(titolo, `lang`), nessun errore in console; il clic sulla bandiera nel menu cambia
+lingua e la ricorda; la finestra della richiesta è tutta in francese; il messaggio
+dell'escursione e quello del pacchetto escono in italiano e il sito resta in francese.
+`node controlla.js` passa. `CACHE_NAME` → `isla-v493`.
+
+## Il tedesco, quinta lingua (13 ottobre 2026)
+
+Subito dopo il francese il proprietario ha chiesto anche il tedesco. Stesso metodo: lo
+script nella scratchpad ha trovato ogni `fr: "…"` e ci ha messo accanto `de: "…"`
+(1.499 testi: i 1.498 del francese più `I18N_UFFICIO`). Traduzioni scritte a mano
+da inglese e italiano, con **"Sie"**, prezzi **"€49"** e orari **"10:30"**, per le
+stesse ragioni del francese. Bandiera tedesca in tutte le pagine con le bandiere,
+`de-DE` per le date, prefisso `+49` proposto, `LINGUE` in `controlla.js`, articoli
+tedeschi in `privacy.html` e `termini.html`.
+
+**Anche il tedesco scrive all'ufficio in italiano**: `I18N_UFFICIO = { fr: "it", de:
+"it" }`. Non l'ha chiesto il proprietario esplicitamente: è la stessa ragione del
+francese (l'ufficio non lo legge). Se l'ufficio preferisce riceverlo in tedesco, o in
+inglese, basta cambiare quella riga.
+
+**Cinque bandiere non stavano accanto alla scritta "Lingua" nel menu**, a nessuna
+larghezza (la quinta finiva fuori anche a 430 px). Ora nel menu la scritta sta sopra
+e le bandiere sotto, su tutta la larghezza, in parti uguali. In privacy e termini la
+riga va sotto il logo quando non c'è posto (`.privacy-head` con `flex-wrap`); sotto
+i 375 px i bottoni restano da 44 px. Misurato a 320, 360, 375, 390 e 430 px: niente
+fuori schermo, niente scroll orizzontale.
+
+**Da fare su Supabase**: `supabase/modifiche/2026-10-13-tedesco.sql` (contiene anche il
+francese: basta questo, `2026-10-13-francese.sql` è segnato come superato) e
+ripubblicare `manda-notifiche`, che ha i testi degli avvisi anche in tedesco.
+
+Provato nel browser con `locale: "de-DE"`: le undici pagine in tedesco, nessun errore;
+il clic sulla bandiera tedesca nel menu cambia lingua e la ricorda; il messaggio del
+pacchetto esce in italiano e il sito resta in tedesco. `node controlla.js` passa.
+`CACHE_NAME` → `isla-v494`.
+
+**WoW e Atlantic Star (14 ottobre 2026, proprietario):** `nomi: ["WoW"]` su `banana-boat`:
+è la compagnia di tutti e tre i gonfiabili ("Wow crazy ufo" sul foglio di Agustin), quindi
+il nome sta sulla scheda e non dentro la variante Crazy UFO. **Atlantic Star** è una barca
+della scheda `whale-dolphin-3h`, accanto a Cool Sailing, Lina7 e Mizendoha (non sul
+charter). Ognuna ha il suo netto: quello di Atlantic Star, ricavato dal foglio, sta in
+Notion da confermare. Provato: i due menu Compagnia, il testo "WOW CRAZY UFO / ATLANTIC
+STAR" sceglie la compagnia giusta su ognuna delle due schede, il charter resta senza
+menu. `CACHE_NAME` → `isla-v495`.
+
+**Aqualand sempre card (14 ottobre 2026, proprietario):** come gli altri parchi,
+`pagamento: "card"` su `aqualand` e `'aqualand'` nell'elenco di
+`2026-10-09-solo-card.sql`, da rilanciare intero. Il Combo Jungle Park + Aqualand non è
+stato toccato: non è stato nominato. Provato: Aqualand sceglie Card e spegne Cash, il
+Combo resta libero. `CACHE_NAME` → `isla-v496`.
+
+**Dal foglio "Admiral TRG SC" (fine settembre 2026), 14 ottobre:** netti ricavati e
+confermati dal proprietario (i numeri in Notion e su Supabase, non qui): King Buggy e
+Ultimate Buggies a mezzo ("D" sul foglio = doppio, buggy da 2 posti), Cool Sailing solo
+adulto, MHT a percentuale, la doppia da 1 ora di Jetski Island, Extreme. Pirat, il
+bambino di Cool Sailing e Sea Trek (un'altra compagnia) restano in sospeso.
+
+- **Extreme** è una moto d'acqua: quarta compagnia del jet ski (`nomi`), sul ticket si
+  scrive "Extreme", la doppia del foglio era da 1 ora;
+- **i noleggi nel modulo dei venditori.** Alis è un rent a car, e il proprietario lo
+  vuole come compagnia col suo netto. Ma il menu "Escursione" mostrava solo le schede
+  pubblicate, e i noleggi stanno in `noleggio.js`, fuori dal catalogo: un ticket di
+  noleggio non si poteva registrare. Scelta del proprietario: due voci nel catalogo,
+  `noleggio-auto` (`nomi: ["Alis"]`) e `noleggio-moto` (ancora senza compagnie), con
+  `published: false` e il campo nuovo **`venditori: true`**, in una categoria nuova
+  `noleggi`. `nelModulo()` in `venditori.js` le fa entrare nel menu (gruppo "Noleggi") e
+  nell'elenco per la lettura della foto; tutte le pagine del cliente filtrano
+  `published`, quindi lì non compaiono, e la categoria senza voci pubblicate non esce
+  fra i filtri. Il titolo ha cinque lingue perché il cliente lo legge in "Le mie
+  prenotazioni". Il foglio Google prende il titolo col suo solito regex (provato).
+  Niente varianti né mezzi: il netto di Alis è una parte del totale (commissione 30%).
+
+Provato a 375 px: gruppo "Noleggi" con le due voci, menu Compagnia con Alis, niente
+varianti né mezzi; jet ski con le quattro compagnie; "ALIS" ed "EXTREME" nel testo
+scelgono la compagnia; elenco, home e pagina Noleggio senza le voci nuove e senza
+errori. `CACHE_NAME` → `isla-v497`.
+
+## 14 ottobre 2026 — "Rispondi su WhatsApp": la conferma arriva al cliente col link all'app
+
+Il proprietario: chi manda la richiesta su WhatsApp difficilmente torna sull'app. Gli
+avvisi sul telefono non bastano (su iPhone solo con l'app sulla Home). Quindi l'app va
+**dove il cliente già sta**: nella risposta dell'ufficio. "Il messaggio di risposta è
+automatico e lo scrivi tu" (proprietario).
+
+**Venditori (`venditori.js`, `rispostaBottone`).** Dopo **Conferma** (o "Dai il
+ticket"), sotto "… confermata: ora è il ticket …" compaiono un menu della lingua e il
+bottone **"Rispondi su WhatsApp"**: apre `wa.me/<telefono del cliente>` col messaggio
+già scritto (saluto col nome, escursione e variante, giorno, ritrovo, meeting point,
+numero del ticket, link). L'ufficio preme solo Invia: **WhatsApp non lascia a un sito
+mandare un messaggio da solo** (servirebbe la WhatsApp Business API, a pagamento).
+Il telefono c'è sempre: alla conferma è già obbligatorio. I testi stanno in `RISPOSTA`
+dentro `venditori.js`, perché `venditori.html` non carica `i18n.js`. Il meeting point
+va com'è scritto dall'ufficio (di solito in italiano).
+
+**La lingua.** `rispostaLingua()` la ricava dal messaggio del cliente
+(`request_message`): "Codice richiesta"/"Ciao Isla!" → it, "Código de solicitud"/
+"¡Hola Isla!" → es, altrimenti en. Francese e tedesco arrivano all'ufficio in italiano,
+quindi **`perUfficio()` aggiunge in fondo "Lingua del cliente: francese/tedesco"**:
+serve all'ufficio per sapere come rispondere, e alla pagina per scegliere la lingua.
+Le richieste di prima di questa riga sembrano italiane: il menu la cambia.
+
+**Il link** è `booking.html?code=<numero>`. Il telefono **non** va nell'indirizzo
+(regola di `app.js`). Su `booking.html`:
+- se il telefono ha delle richieste salvate, `cercaRichieste(code)` le legge e, se fra
+  quelle c'è il ticket col numero, le mostra: il cliente non scrive niente;
+- altrimenti (altro telefono, app installata su iPhone che non vede i dati di Safari)
+  `chiediTelefono()` chiede il telefono col numero **già scritto**. Il testo
+  `booking.needPhoneText` ora dice anche "o da cui ci hai scritto su WhatsApp".
+
+Provato in Chromium (Supabase finto): messaggio in francese e tedesco con variante
+tradotta, il link `wa.me/33612345678`, la riga in fondo al messaggio francese e non a
+quello italiano; `booking.html?code=2213` col telefono della richiesta mostra il
+ticket, con un numero non suo e senza richieste chiede il telefono col numero già
+scritto. Nessun errore, niente scroll orizzontale a 375 px. Annulla resta senza
+risposta automatica: una richiesta in attesa il telefono del cliente non ce l'ha.
+`CACHE_NAME` → `isla-v498`.
+
+**Arriro (14 ottobre 2026, proprietario):** barca a vela della scheda `whale-dolphin-3h`,
+accanto a Cool Sailing, Lina7, Mizendoha e Atlantic Star; solo sull'uscita a persona,
+non sul charter. Il suo netto, ricavato dal foglio "Admiral TRG SC" del 14 ottobre, sta
+in Notion da confermare: sul foglio mancano adulti e bambini. Dallo stesso foglio: la
+riga TMIG (Teide, Icod, Garachico e Masca) aveva venditore e ufficio invertiti, conferma
+che quella scheda conta come card. Provato: il menu Compagnia delle 3 ore ha Arriro,
+"ARRIRO" nel testo del ticket la sceglie, il charter no. `CACHE_NAME` → `isla-v499`.
+
+**Scooter elettrico MRB e funivia del Teide, solo per i venditori (15 ottobre 2026,
+proprietario):** dal foglio "Admiral TRG SC" del 14 ottobre (ticket 0978 "MRB SCOOTER" e
+0982 "CABLE"). Due voci nuove con `published: false` e `venditori: true`, come i noleggi:
+`noleggio-scooter-elettrico` (categoria `noleggi`, `nomi: ["MRB"]`), a parte da
+`noleggio-moto` perché il proprietario l'ha chiesto come scooter elettrico; e
+`funivia-teide` (categoria `teide-natura`, senza `nomi`: sul ticket c'è scritto
+"CABLE"), che per il cliente non è una scheda. I netti, ricavati dal foglio, stanno in
+Notion da confermare. Il "TEIDE" del ticket 0981 (netto 23,40, contro il 30 di Teide
+National Park in Notion) resta in sospeso: il proprietario deve ancora capire che
+escursione è. Provato: nel modulo il gruppo Noleggi ha le tre voci e il gruppo del Teide
+ha la funivia, "MRB SCOOTER" sceglie MRB; home, elenco, Noleggio e categoria Teide senza
+le voci nuove, senza errori e senza scroll a 375 px. `CACHE_NAME` → `isla-v500`.
+
+## Da fare prima dell'apertura (15 ottobre 2026)
+
+Il proprietario: **Isla non è ancora aperta ai clienti**. Tutto quello che c'è oggi su
+Supabase e nel foglio Google è **prova e preparazione**. Fino all'apertura le righe di
+prova si cancellano a mano senza problemi; da quando aprirà vale la regola "un ticket
+non si cancella, si annulla".
+
+Il giorno dell'apertura si riparte da zero, **in quest'ordine**:
+
+1. **Supabase, tabella `bookings`**: cancellare tutte le righe di prova (Table Editor →
+   `bookings` → seleziona → Delete). Con loro spariscono da sole anche le righe di
+   `notifiche_mandate` (`on delete cascade`). Le iscrizioni agli avvisi in
+   `push_iscrizioni` rimaste senza richiesta si tolgono da sole dopo due giorni.
+   **Non toccare `nets` né `commission_rates`**: sono i netti e le percentuali veri.
+2. **Le foto dei ticket di prova**: niente da fare. `pulisci-foto` di notte cancella le
+   foto che nessun ticket nomina più.
+3. **Il foglio Google**: **dopo** il punto 1 (se no, al giro dell'ora dopo il programma
+   le riscrive), cancellare a mano **solo le schede "Settimana …"**. Il programma non
+   cancella mai niente, quindi lo deve fare una persona. Le schede "Aggiorna", "Per
+   giorno", "Per settimana", "Per venditore" e "Per compagnia" restano: i riepiloghi il
+   programma li rifà da capo a ogni giro.
+   **I netti non stanno nel foglio**: stanno in `nets` su Supabase (e nella tabella
+   Notion "Netti da inserire"). Il foglio mostra soltanto il netto già calcolato di ogni
+   ticket. Cancellare le schede non tocca né i netti, né la parola segreta (nelle
+   proprietà dello script), né il programma.
+4. **I telefoni usati per le prove**: le richieste finte restano salvate nel browser
+   (`isla-richieste`, `isla-ticket`) e il numerino delle prenotazioni le conta. Si
+   tolgono svuotando i dati del sito nel browser di quel telefono.
+
+## L'archivio di fine anno del foglio Google (15 ottobre 2026)
+
+Il proprietario voleva il foglio pulito ogni 1° gennaio. Gli è stata proposta la scelta
+fra **archiviare** (l'anno finito in un file a parte) e **cancellare**: ha scelto
+**archiviare**. Il foglio è l'unico posto dove i ticket restano dopo la pulizia
+mensile di Supabase, e i conti di un'attività vanno tenuti qualche anno.
+
+**Come funziona (`archiviaAnniFiniti` in `foglio-google/Codice.gs`).** Niente orologio
+a parte: a ogni giro dell'ora il programma guarda se ci sono schede "Settimana …" di un
+anno finito. Se ci sono, crea (una volta per anno) il file **"Isla — archivio 2026"**
+nel Drive di chi ha installato il programma, ci **copia** le settimane una alla volta,
+le **toglie** dal foglio di lavoro e rifà nell'archivio i quattro riepiloghi. L'id
+dell'archivio sta nelle Proprietà dello script (`ARCHIVIO_2026`), il link nella scheda
+"Aggiorna". Un giro fermato a metà riprende al giro dopo, senza doppioni.
+
+**Le cose che si sbagliano:**
+- una settimana è dell'anno della sua **domenica**: quella dal 28 dicembre 2026 al 3
+  gennaio 2027 è del 2027 e resta nel foglio di lavoro (il 1° gennaio è ancora in uso);
+- dopo l'archivio le settimane vecchie **non si riscrivono**: Supabase tiene i ticket
+  ancora un paio di mesi, e senza il controllo (`t.settimana < inizioAnno`) al giro
+  dopo le schede di dicembre tornerebbero nel foglio di lavoro;
+- l'archivio è la fotografia del 31 dicembre: un ticket dell'anno vecchio cambiato a
+  gennaio lì non cambia.
+
+Provato con un finto Google Sheets in Node: al 1° gennaio 2027, con settimane dal 15
+dicembre 2025 al 4 gennaio 2027, nel foglio restano 28-12-2026 e 04-01-2027, il 2025 e il
+2026 vanno nei loro due archivi (le più nuove davanti, coi riepiloghi), il secondo giro
+non fa niente. Al 15 ottobre 2026 si sposta solo il 2025. **Non provato su Google vero**:
+lo si vede il 1° gennaio. Per metterlo: Apps Script → incolla il `Codice.gs` nuovo →
+`installa` → Esegui (se Google chiede di nuovo il permesso, Consenti).
+**Installato dal proprietario il 15 ottobre 2026**: il foglio si aggiorna con la versione nuova.
+
+## Il transfer sulla variante e il punto di ritrovo (15 ottobre 2026)
+
+Il proprietario: prima di aggiungere alla lista non c'era modo di chiedere il transfer
+su Freebird e buggy, e dove il transfer non c'è il cliente non leggeva da nessuna parte
+dove presentarsi, né nella richiesta né nella nostra conferma. "Come Peter Pan":
+la casella "Vuoi il transfer?", perché il cliente potrebbe non volerlo. Sul Freebird
+di 2 ore l'unica possibilità è il porto, su quello di 3 si sceglie.
+
+**Due campi del catalogo:**
+- `transfer` **anche sulla variante** (`options.choices[].transfer`), e la variante
+  vince. Freebird: 3 ore, 4 ore e mezza e la variante del nord; buggy: Offroad,
+  Tramonto sul Teide e Completo. Le due schede restano in `PICKUP_NESSUNO`: il
+  ritiro c'è solo se il cliente spunta la casella.
+- `ritrovo` (scheda o variante): dove ci si presenta senza ritiro. Messo dove il posto
+  era già scritto nei consigli: Freebird (Puerto Colón, molo 10), buggy Montagna su
+  strada (Playa de las Américas), Flipper One, Pesca d'altura, Utopia, Ragnarok,
+  elicottero, MHT Drag Show, La Palma, i due tuk tuk. **Le altre schede senza ritiro
+  non ce l'hanno ancora**: il proprietario li manda quando li ha, come gli orari.
+
+**Nel codice (`escursioni.js`):** `transferDi()`, `ritrovoDi()`, `conRitiro()`,
+`ritrovoDaMostrare()`; `hotelPunto()` ha un terzo argomento `conTransfer`, e con quello
+una scheda di `PICKUP_NESSUNO` vale come `PICKUP_IN_HOTEL`. La variante della finestra
+sta in `VARIANTE_APERTA` (letta all'apertura dai bottoni della pagina). Spuntare o
+togliere il transfer manda l'evento `islatransfer`: il campo dell'hotel compare (e
+scorre in vista, perché sta più in alto) o sparisce, e il punto di ritrovo fa il
+contrario. La riga "Punto di ritrovo" sta in `tour.html` **e** in `escursioni.html`.
+Il messaggio WhatsApp ha la riga "• Punto di ritrovo: …"; `richiestaVoce()`
+(`richieste.js`) mette il ritrovo, in italiano, in `pickup_point`, e "Conferma" in
+`venditori.html` parte con quello nel Meeting point.
+
+Provato in Chromium: Freebird 2 ore (niente casella, ritrovo), 3 ore (casella;
+spuntata chiede l'hotel e toglie il ritrovo, tolta il contrario), buggy Offroad
+(casella, nessun ritrovo: il posto non lo sappiamo) e Montagna (ritrovo), Ragnarok
+(ritrovo), Peter Pan e Royal Delfin come prima; messaggi e righe del database giusti;
+nessun errore, niente scroll orizzontale a 390 px. `CACHE_NAME` → `isla-v501`.
+
+**Lo stesso giorno, i testi (proprietario):** sul buggy la casella dice solo "Passiamo a
+prenderti", senza "gratis" e senza "hotel", perché il cliente può stare anche in una
+casa privata. Sul Freebird "dalle zone del sud/nord" invece di "dagli hotel", e "Se
+preferisci raggiungerci, ti aspettiamo al porto". Sotto il punto di ritrovo "ti
+aspettiamo lì" (`req.meetingSelf`) invece di "ci arrivi per conto tuo", che suonava
+brusco. Il punto di ritrovo dei buggy senza transfer (Offroad, Tramonto, Completo) lo
+manda l'ufficio con la conferma; il proprietario lo conferma poi anche qui. Gli altri
+punti di ritrovo li aggiunge il proprietario un po' alla volta. `CACHE_NAME` →
+`isla-v502`.
+
+## Sea Trek Tenerife, scheda nuova (15 ottobre 2026)
+
+Il proprietario ha incollato la pagina di Sea Trek Tenerife (la camminata sul fondo del
+mare col casco, a Los Cristianos). La pagina era solo marketing: niente prezzi, età,
+durata, orari né indirizzo. Scheda `sea-trek` in `sport-acquatici`, dopo il surf.
+
+**Dal proprietario:** adulti 85 €, bambini 70 €; nessun ritiro in hotel (la scheda sta
+in `PICKUP_NESSUNO`); scheda a sé e non variante di `immersioni`, perché è un'altra
+compagnia e un'altra cosa (niente bombola, niente brevetto).
+
+**Dalle schede dei rivenditori** (Musement, TUI, easyJet, che dicono tutte la stessa
+cosa; non dalla pagina del fornitore): età minima 8 anni, 1 ora e mezza - 2 ore in
+tutto, ritrovo in Paseo Aquilino 10 (primo piano) e poi a piedi alla spiaggia di Las
+Vistas, gruppi da 6, casco, muta, istruttore e armadietti compresi, foto a parte, non
+in gravidanza né nel giorno di un volo. Il loro prezzo (circa 75 £) non è stato usato.
+
+**Deciso da me, da confermare:**
+- fasce `8-11` bambini e `12+` adulti: il prezzo bambini è arrivato senza l'età;
+- niente `priceInfant`: sotto gli 8 anni non si scende (assente ≠ gratis);
+- `priceFrom: 85` (l'adulto), come tutte le altre schede con il prezzo bambini più basso;
+- titolo "Sea Trek Tenerife", uguale nelle cinque lingue: è il nome della compagnia;
+- `nomi` vuoto: i rivenditori chiamano l'operatore "Diving on the Moon", ma la pagina
+  del fornitore no. Se l'ufficio lo conferma, va in `nomi`.
+
+**In sospeso:** la foto (esce il segnaposto grigio), gli orari di partenza (per ora le
+fasce segnaposto) e, se servono, i giorni.
+
+Provato in Chromium a 390 px: pagina senza errori, finestra della richiesta col punto
+di ritrovo e senza la domanda dell'hotel, 2 adulti + 1 bambino = 240 €. `CACHE_NAME` →
+`isla-v503`.
+
+**Lo stesso giorno, dal proprietario:** bambini 8-11 confermati; partenze 10:00, 11:30,
+13:00 e 14:00 (`times`); la compagnia si chiama **Seatrek** (non "Diving on the Moon",
+come scrivevano i rivenditori), e sta in `nomi` per la lettura dei ticket di carta.
+Provato in Chromium: il menu "A che ora" mostra solo le quattro partenze. Resta da
+mettere la foto. `CACHE_NAME` → `isla-v504`.
+
+**Lo stesso giorno, la foto:** `sea-trek.jpg`, dalla foto verticale del proprietario
+(1078×1185) ritagliata a 3:2 tenendo il casco e i pesci, 1200×800, 163 KB. La scritta
+sul casco è il marchio Sea Trek, cioè la compagnia stessa: va bene. La seconda foto
+arrivata (179×150) è scartata: troppo piccola per 1200×800. `CACHE_NAME` → `isla-v505`.
+
+**Poi la seconda foto, grande:** il proprietario ha mandato la versione da 768×576 della
+foto scartata (il gruppo coi caschi e l'istruttore). Ritagliata a 3:2 dal centro,
+1200×800, 124 KB, ingrandita di 1,56 volte e ancora nitida: `sea-trek-2.jpg` in
+`gallery`. `CACHE_NAME` → `isla-v506`.
+
+## Il link di pagamento fra la richiesta e la conferma (15 ottobre 2026)
+
+Il proprietario: fra la richiesta e la conferma l'ufficio manda il link di pagamento.
+Decisioni sue: **si paga sempre prima della conferma**; quasi sempre il **totale**,
+alcune compagnie vogliono solo un **acconto** (il netto) e il resto si paga sul posto;
+il link lo crea l'ufficio **a mano sul portale Redsys** ("lo facciamo noi e lo inviamo
+al cliente"). Il link al portale che il proprietario ha incollato in chat portava il
+codice della sessione aperta: gli è stato detto di non mandarlo in giro e di uscire e
+rientrare. Non sta da nessuna parte nel progetto.
+
+**Il giro:**
+1. richiesta del cliente (come prima, `pending`);
+2. in `venditori.html`, sulla richiesta, **"Manda il pagamento"**: telefono, Totale €,
+   Da pagare adesso € (parte uguale al totale; meno del totale = acconto), link Redsys
+   (solo `https://`). Salva su **tutte le righe dello stesso codice** ancora `pending`:
+   un link vale per tutta la richiesta. Poi **"Manda il link su WhatsApp"** apre la
+   chat col messaggio nella lingua del cliente (`pagamentoTesto()`): le escursioni coi
+   giorni, il link, quanto si paga, e se è un acconto quanto resta da pagare sul posto;
+3. la riga mostra "In attesa di pagamento" e "Link mandato il …";
+4. il cliente, in "Le mie prenotazioni", vede la pillola **"Da pagare"**, la frase con
+   l'importo e il bottone **"Paga ora"** (`booking.js`, testi `booking.awaitingPay`,
+   `booking.payText`, `booking.payRest`, `booking.payNow`). `booking.toPay` esisteva
+   già ("Da pagare: €{n}") ed è un'altra cosa: il primo nome scelto lo ripeteva e la
+   pillola scriveva "€{n}";
+5. pagato, **Conferma** come prima: il telefono è già scritto, il pagamento è `card`,
+   e se la richiesta ha **una sola** escursione totale, acconto e resto vanno sul
+   ticket (il foglio Google ha i soldi giusti). Con più escursioni non si sa come
+   dividerli: si scrivono con Modifica. La risposta di conferma, se c'era un acconto,
+   dice "Il resto, 120 €, lo paghi sul posto".
+
+**Niente stato nuovo**: resta `pending` con `payment_sent_at`, così foglio, avvisi e
+pulizia non cambiano. **Database: `supabase/modifiche/2026-10-15-link-pagamento.sql`,
+da lanciare prima di pubblicare**: quattro colonne (`payment_link`, `payment_amount`,
+`payment_total`, `payment_sent_at`) col loro `grant select` ai venditori, e
+`le_mie_richieste` che le restituisce. Senza, l'elenco delle richieste in
+`venditori.html` dice "column … does not exist".
+
+**Non c'è ancora:** la conferma automatica al pagamento (Redsys può avvisare il sito
+quando il cliente paga, ma serve una funzione su Supabase e la chiave segreta del
+commercio); l'avviso sul telefono "c'è posto, paga"; il rimborso.
+
+Provato: SQL su Postgres 16 (lanciato due volte, `le_mie_richieste` da `anon` rende
+link e importi); in Chromium il messaggio in italiano e francese con due escursioni e
+acconto, il modulo (totale ricopiato in "adesso", `javascript:` rifiutato), la
+conferma col resto, la pagina del cliente con "Da pagare" e "Paga ora" (un link non
+https non diventa bottone). Nessun errore, 390 px senza scroll. `CACHE_NAME` →
+`isla-v507`.
+
+## La privacy rimessa in pari, e l'email fuori dal database (15 ottobre 2026)
+
+Controllando Notion dopo una settimana, la privacy (6 ottobre) **diceva una cosa falsa**:
+"il nome, l'alloggio e le note nel database non ci vanno". Dal 13 ottobre (PR #419) la
+richiesta arriva su Supabase col nome, l'hotel, il punto di ritiro e il messaggio intero.
+E non parlava di quattro cose nuove: l'email obbligatoria (#415), gli avvisi sul telefono
+(#416), il foglio Google dei conti (#371 e seguenti), il pagamento col link Redsys (#443).
+
+**L'email nel database.** Il 12 ottobre il proprietario aveva deciso: email solo su
+WhatsApp, mai nel database (in `CLAUDE.md`). Il 13 si è cominciato a salvare il messaggio
+intero, e il messaggio ha la riga "Email: …": quindi l'email ci finiva lo stesso. Era
+scritto nelle note del 13 ma non nella regola. Messe davanti le due strade (togliere l'email
+dalla copia salvata, oppure tenerla e dirlo), il proprietario ha scelto di **toglierla**,
+"per il momento". `lista.js` ora salva il messaggio scritto con l'email vuota; quello che
+parte su WhatsApp resta uguale. Nient'altro leggeva l'email dal database (controllato:
+`venditori.js` mostra il messaggio e ne ricava la lingua, il foglio e gli avvisi non lo
+usano). Le righe di prova già salvate con l'email spariscono col ripulisti dell'apertura.
+
+Provato nel browser con le chiamate intercettate: il link WhatsApp contiene l'email, la
+copia mandata a `manda_richiesta` no (ha nome, escursione, hotel e codice), e nemmeno
+`isla-richieste` nel telefono.
+
+**La privacy, nelle cinque lingue**, ora dice:
+- cosa va nel database con la richiesta (nome, hotel, punto di ritiro, testo del messaggio,
+  codice) e che **l'email no**;
+- perché chiediamo l'email (le compagnie mandano il biglietto per email);
+- gli **avvisi**: l'indirizzo che dà il browser (non il numero), legato alla richiesta con
+  lingua e nomi delle escursioni, il servizio di notifiche (Google, Apple, Mozilla), base
+  giuridica il consenso, si cancellano due giorni dopo l'ultima escursione;
+- il **pagamento**: pagina di Redsys, la carta la vede solo Redsys, nel database link,
+  importo e giorno;
+- fra i destinatari **Google** (il foglio: numero del ticket, escursione, compagnia, data,
+  persone, importi, venditore, mai nome, telefono, email o hotel — controllato su
+  `foglio_ticket()`), **Redsys** e il servizio di notifiche;
+- nella conservazione: il foglio tiene le righe **come archivio contabile** anche dopo la
+  pulizia mensile. **Per quanto tempo non è scritto**: lo deve dire il consulente.
+
+**Anche il pagamento era superato** in due posti: termini ("ti diciamo come saldare alla
+conferma") e `faq.a4` ("al momento della conferma"). Dal 15 ottobre si paga **prima** della
+conferma, col link Redsys, quasi sempre il totale e per alcune compagnie un acconto.
+Corretti tutti e due nelle cinque lingue. `CACHE_NAME` → `isla-v508`.
+
+### Quanto si tengono i dati: due numeri (15 ottobre 2026)
+
+La privacy diceva "per il tempo necessario" per due cose. Il proprietario ha portato la
+regola spagnola (limitazione della conservazione, GDPR): **non basta "finché necessario",
+serve un tempo per ogni tipo di dato e per ogni scopo**. Riferimenti comuni in Spagna:
+6 anni per i documenti commerciali, 4 per il fisco. Messi a confronto con Isla, tutto il
+resto aveva già un tempo preciso (database ogni mese, foto la notte dopo, avvisi due
+giorni dopo l'escursione, dati nel telefono del cliente). Mancavano due numeri, e il
+proprietario li ha decisi:
+
+- **foglio dei conti: 6 anni**, come i documenti commerciali (lì non ci sono nome,
+  telefono, email né hotel);
+- **chat WhatsApp: 12 mesi** dalla data dell'escursione, o dalla richiesta se non è
+  diventata una prenotazione (assistenza e reclami). Le prove dei pagamenti restano da
+  Redsys e nella contabilità di Admiral.
+
+**Sono promesse da mantenere a mano**: ogni gennaio si cancella il file "Isla — archivio"
+di 6 anni prima (il primo, l'archivio 2026, a gennaio 2033), e una volta l'anno in ufficio
+si cancellano dal telefono le chat più vecchie di 12 mesi. Promemoria su Notion. La
+conferma finale resta al consulente. `CACHE_NAME` → `isla-v509`.
+
+## La foto del ticket legge anche i mezzi (15 ottobre 2026)
+
+Sulle quattro schede a mezzo (moto d'acqua, buggy, quad, Mustang) il venditore scriveva
+a mano "2 doppie" anche quando la foto lo diceva già, e dal numero di mezzi dipende il
+netto. Ora la lettura li riempie.
+
+- **`leggi-ticket`**: nello schema un campo nuovo `units`, un **elenco di righe**
+  `{tipo, quanti}`. Non un campo per tipo: ogni campo "numero O null" conta verso il
+  limite di 16 che ha già dato un 400, e un elenco va bene per qualunque scheda.
+  Elenco vuoto = non letti. Nelle istruzioni: solo se l'escursione ha "mezzi", la chiave
+  scritta come nell'elenco, mai dedotti dalle persone, "units" in `dubbi` se incerti.
+  Dopo la risposta la funzione tiene solo i tipi della scheda scelta, da 1 a 99, e
+  risponde nella forma del modulo (`{ doppia: 2 }`), o `null`.
+- **`venditori.js`**: `catalogoPerLettura()` manda per le schede a mezzo anche
+  `units: [{ key, name }]` ("Moto d'acqua Doppia"); `riempiDaLettura()` riempie le
+  caselle solo dove il venditore non ha già scritto, in giallo se incerte, e se non legge
+  niente mette "mezzi" fra le cose da scrivere a mano.
+- **L'ordine non conta**: una pagina vecchia con la funzione nuova non manda `units` e
+  la funzione risponde `null`; la pagina nuova con la funzione vecchia manda un campo che
+  quella ignora. Niente si rompe mentre una delle due non è ancora aggiornata.
+
+Provato: la funzione con Supabase e Claude finti (Deno qui non c'è; TypeScript
+compilato senza errori), sette casi (2 doppie + 1 singola, tipo inventato, zero,
+nessun mezzo, scheda senza mezzi, 150 → 99, pagina vecchia, chiave sbagliata → 400);
+la pagina dei venditori nel browser con una lettura finta (2 doppie, singola incerta in
+giallo, nessun mezzo → "mezzi" da scrivere a mano). **Non provato con una foto vera**:
+serve la funzione ripubblicata e un ticket con dei mezzi.
+
+**La funzione va ripubblicata** su Supabase (Edge Functions → leggi-ticket → Code →
+incollare `supabase/functions/leggi-ticket/index.ts` → Deploy). `CACHE_NAME` → `isla-v510`.
+
+### Bici: Tenerife Sud, ore da concordare (15 ottobre 2026)
+
+La riga di Notion "Bici: ritiro, punto di partenza, bici compresa, prezzo dei giri doppi"
+era rimasta al 9 ottobre: controllata sulla scheda, tre risposte c'erano già (ritiro e
+ritorno in hotel, scheda in `PICKUP_IN_HOTEL`; bici, casco, guida e snack compresi; i
+due prezzi sono **due lunghezze** dello stesso giro, scritte nella descrizione).
+Restavano zona e orari, e il proprietario ha deciso: **zona "Tenerife Sud"** (si passa a
+prendere al sud, come per le gite al Teide; i filtri restano "Teide e nord" e "Los
+Gigantes", dove si pedala) e **ore da concordare**: `times: []`, così nella richiesta
+c'è solo "Da concordare" invece delle fasce. Provato nel browser. Ora senza orari ne
+restano 3: cavallo, Trekking, Cabrio Bus. `CACHE_NAME` → `isla-v511`.
+
+## Passeggiata a cavallo: Xanadú, orari, 2 ore a 85 €, ritiro a famiglia (15 ottobre 2026)
+
+Il proprietario ha incollato la pagina di **Xanadú Tenerife**, la compagnia dei cavalli.
+La scheda era di settembre, dai dati di un rivenditore (CanaryVIP). Messe davanti le
+differenze, il proprietario ha deciso: **2 ore a 85 €**, **il ritiro sì**, **il tramonto
+via**, "per il resto lascia così".
+
+- **Orari** sulla variante: 1 ora alle **12:00**, 2 ore alle **9:30**, tutti i giorni
+  (niente `days`). Ora senza orari restano Trekking e Cabrio Bus.
+- **Prezzi a persona**: `priceAdult` 50 e 85 sulle varianti. Prima l'ora singola aveva
+  `price: 50`, che non fa il totale: ora 2 adulti fanno 100 € e 170 €, provato.
+- **Il ritiro**: 10 € **a famiglia**, solo da Callao Salvaje a El Médano. Niente
+  `transferPrice`, che il totale moltiplicherebbe per le persone; niente icona. Solo la
+  riga `transfer`, e la scheda **resta in `PICKUP_NESSUNO`**: nella richiesta compare
+  "Vuoi il transfer?" con la riga dei 10 €, e l'hotel si chiede solo a chi la spunta,
+  come sul Freebird. Il totale non comprende i 10 €: li aggiunge l'ufficio confermando.
+- **Note**: aggiunti peso massimo 95 kg, scarpe chiuse, crema solare e acqua.
+- **`nomi`**: "Xanadú", "Xanadu", per la foto del ticket.
+- **Lasciati com'erano**, per "lascia così": età minima **10 anni** (Xanadú scrive 6),
+  gruppo di massimo 6 persone, Guargacho, armadietti "inclusi" (Xanadú chiede 3 € di
+  cauzione, restituiti con la chiave). L'età è da confermare: con 6 anni potrebbero
+  venire anche i bambini dai 6 ai 9.
+- **Non preso**: la regola sul maltempo (vale la nostra), lo sconto residenti, le
+  recensioni, il giro in carrozza.
+
+`CACHE_NAME` → `isla-v512`.
+
+### Cavallo: età minima 6 anni (15 ottobre 2026)
+
+Confermato dal proprietario: vale quella di Xanadú, **6 anni** (la scheda diceva 10, dal
+rivenditore di settembre). Cambiata nella nota, nelle cinque lingue. Il prezzo dei
+bambini resta non scritto: Xanadú non lo dà. `CACHE_NAME` → `isla-v513`.
+
+### Numerini della lista azzurri (15 ottobre 2026)
+
+Il proprietario: i numeri del carrello e della lista dello stesso colore del bottone
+"Aggiungi alla lista". Il numerino del carrello nella capsula (`.isla-tab-count` con
+`data-lista-count`) e quello del pulsante che galleggia (`.lista-fab-count`) sono ora
+`--wave-blue-light` con la scritta scura, come `.btn-lista`: uguali di giorno e di notte.
+Il numerino delle **prenotazioni** usa la stessa classe ma **resta sabbia**: non conta la
+lista. Oggi il pulsante che galleggia non compare su nessuna pagina (tutte hanno la
+capsula), ma se torna è già del colore giusto. `CACHE_NAME` → `isla-v514`.
+
+### Anche il numerino delle prenotazioni azzurro (15 ottobre 2026)
+
+Il proprietario lo vuole azzurro come il carrello: tolta la riga che lo teneva sabbia.
+Ora tutti i numerini della capsula hanno lo stesso colore. `CACHE_NAME` → `isla-v515`.
+
+### L'assistente apre la scheda, non l'elenco (15 ottobre 2026)
+
+Parlando di come migliorare la chat senza AI (proprietario: "aspettiamo, per vedere com'è
+il flusso delle persone") è venuto fuori un difetto: i cinque risultati dell'assistente
+portavano all'elenco filtrato per categoria (`escursioni.html?cat=mare-barche`), e lì il
+cliente doveva ritrovare la barca che aveva appena toccato. Ora ogni risultato apre la
+sua scheda (`tour.html?id=…`), come nell'elenco. "Vedi tutto il catalogo" in fondo resta
+l'elenco filtrato. Provato nel browser: mare → sì → budget basso, il primo risultato apre
+Flipper One. `CACHE_NAME` → `isla-v516`.
+
+Prossimi passi decisi: **domande frequenti a bottoni** (risposte già in `faq.a1`, `a4`,
+`a5`) e una **domanda sul giorno** (filtro su `days`). Restano in sospeso la domanda su
+zona o durata, la casella di ricerca e un contatore: il sito oggi non conta niente, quindi
+"vedere il flusso" senza un contatore non dà numeri (scelta del proprietario, tocca la
+privacy).
+
+### L'assistente: domande frequenti in cima e "Quando?" (15 ottobre 2026)
+
+Scelte del proprietario: le domande frequenti **sopra la prima domanda**, un testo nuovo
+per il ritiro, e per il giorno **le pastiglie con la data** ("Domani · Sab 17 · …").
+
+- **Domande frequenti**: cinque bottoni (`ASSIST_FAQ`). Quattro usano le domande e
+  risposte della home (`faq.q1/a1`, `q2/a2`, `q4/a4`, `q5/a5`): se cambia una regola, si
+  cambia in `faq.*` e vale anche qui. La quinta, **"Dove mi vengono a prendere?"**, ha
+  testi suoi (`assist.faq.pickupQ/A`), generici di proposito: dove si sale dipende dalla
+  scheda e dall'hotel, e il testo dice solo che lo si vede nella finestra della
+  richiesta. Non nomina fermate né orari, e dice che il transfer a volte si paga.
+  Toccata una domanda, compaiono domanda e risposta e i bottoni tornano sotto senza
+  quella già fatta; scelta la prima risposta della ricerca, spariscono.
+- **"Quando vorresti andare?"**, fra i bambini e il budget: domani e i sei giorni dopo,
+  più "Non lo so ancora". **Oggi no**: le 24 ore di preavviso. Filtra con
+  `assistParteIl()`: basta **una variante** che parta quel giorno (la variante coi suoi
+  `days` vince su quelli della scheda, vuoto = tutti i giorni), come `giorniDi()` in
+  `escursioni.js`, che sulla home non è caricato. Le pastiglie bocciate in `CLAUDE.md`
+  erano nel calendario della richiesta, dove serve una data esatta: qui la data serve
+  solo a filtrare, e la si sceglie di nuovo nella richiesta.
+- Il saluto ora dice "quattro domande" (`assist.hello` cambiato, `assist.helloPick`
+  nuovo).
+- La chat si apre **dall'alto**: `opzioni()` scorre in fondo, e su un iPhone SE il
+  saluto e la prima domanda frequente restavano nascosti sopra.
+
+Provato in Chromium a 375 px, in italiano e francese: Utopia esce il sabato e non il
+mercoledì, Ragnarok il lunedì sì e il mercoledì no, Freebird tutti i giorni (ha varianti
+senza giorni). Nessun errore. `CACHE_NAME` → `isla-v517`.
+
+### Niente "quattro domande" (15 ottobre 2026)
+
+Il proprietario: "ti faccio quattro domande veloci" sembrava un interrogatorio. Ora
+`assist.helloPick` dice **"Oppure ti aiuto a trovare l'escursione giusta."**, nelle cinque
+lingue: non conta le domande e non promette quante saranno. Le domande restano le stesse.
+`CACHE_NAME` → `isla-v518`.
+
+## L'avviso apre l'escursione giusta (16 ottobre 2026)
+
+Il proprietario: toccando un promemoria si arrivava alla lista intera delle
+richieste, non all'escursione dell'avviso — con più escursioni, confonde.
+
+- `manda-notifiche` ora mette nell'avviso l'indirizzo
+  `booking.html?richieste=1&r=<request_token>&e=<scheda>&d=<giorno>`
+  (funzione `indirizzo()`). Vale per tutti e tre gli avvisi: confermata,
+  annullata, promemoria.
+- `booking.js`, `mostraDallAvviso()`: trova la carta con quella richiesta,
+  scheda e giorno (attributi `data-richiesta`, `data-scheda`, `data-giorno`
+  messi da `cardTicket`), la scorre in cima e le mette un anello del colore del
+  suo stato (`.is-avviso` in `styles.css`). Se non c'è, resta la lista.
+- Perché non l'id del ticket: `le_mie_richieste` non lo restituisce, e così
+  non serve nessun SQL nuovo. Due voci della stessa richiesta con la stessa
+  scheda e lo stesso giorno (varianti diverse) sono rarissime: si evidenzia la
+  prima.
+- **Va ripubblicata `manda-notifiche`** su Supabase: finché non la si
+  ripubblica gli avvisi portano ancora alla lista intera. Gli avvisi già
+  arrivati sul telefono tengono l'indirizzo vecchio.
+- **Ripubblicata** dal proprietario il 16 ottobre 2026. Da guardare col primo
+  avviso vero: deve aprire la sua escursione, col bordo.
+
+## I prezzi comprendono l'IGIC (16 ottobre 2026)
+
+Admiral **non ha un consulente** (proprietario, 16 ottobre 2026): le domande lasciate
+aperte nei termini le decide il proprietario. La prima: il cliente paga **esattamente**
+il prezzo della scheda, senza niente sopra. Quindi per il cliente il prezzo è già "IGIC
+incluso" (la legge dei consumatori chiede il prezzo finale con le imposte), e nei termini,
+alla voce Prezzi, c'è scritto nelle cinque lingue. Come Admiral paga l'IGIC (di solito le
+agenzie col *régimen especial de agencias de viajes*, sul margine) è cosa della gestoría,
+non del sito. **Se un giorno si aggiunge qualcosa sopra il prezzo, vanno alzati i prezzi
+delle schede, non aggiunta l'imposta dopo.** `CACHE_NAME` → `isla-v520`.
+
+## Termini e privacy senza consulente (16 ottobre 2026)
+
+Admiral non ha un consulente: le domande lasciate aperte le ha decise il proprietario,
+usando come confronto la privacy di CanaryVIP (un'agenzia di Costa Adeje). Da lì si è
+preso **l'elenco delle cose da dire**, non il testo. Non si prende la loro frase "usando
+i nostri servizi acconsenti": per il GDPR il consenso così non vale.
+
+- **Rimborso entro 15 giorni**, con lo stesso mezzo del pagamento: `faq.a5` (e il testo
+  fisso in `index.html`) e i termini.
+- **Chi risponde** (termini, "Chi fa l'escursione"): Admiral della gestione della
+  prenotazione (richiesta, conferma, pagamento, dati passati all'operatore), l'operatore
+  dello svolgimento (mezzi, sicurezza, guide, orari); restano i diritti del consumatore.
+- **Hojas de reclamaciones**: Admiral le ha in ufficio, e i termini lo dicono.
+- **Privacy, quattro punti nuovi**: la base giuridica dei tempi (foglio: obbligo di legge,
+  6.1.c; chat: interesse legittimo, 6.1.f, con diritto di opporsi); "Come proteggiamo i
+  dati" (HTTPS, la chiave della richiesta resta nel telefono, ticket con numero e
+  telefono, area venditori con password); il consenso agli avvisi si ritira
+  spegnendoli; "Se questa pagina cambia".
+
+**Mancano ancora, e arriveranno dal proprietario**: l'**email** da pubblicare (la LSSI
+la chiede fra i dati di chi gestisce il sito) e il **numero di registro dell'agenzia di
+viaggi** delle Canarie (I-AV-…). Vanno nei termini ("Chi siamo") e nella privacy
+("Chi è il titolare"), nelle cinque lingue. `CACHE_NAME` → `isla-v521`.
+
+## Le offerte per email (16 ottobre 2026)
+
+Deciso dal proprietario: **strada B, solo email** (le altre erano A, niente promozioni,
+e C, i soli clienti che hanno pagato con l'eccezione del "soft opt-in"). WhatsApp no:
+i messaggi a tanti arrivano solo a chi ha salvato il numero, e WhatsApp blocca chi
+manda pubblicità non chiesta.
+
+- Nella finestra della lista (`lista.js`), sotto l'email, una casella **non spuntata**:
+  "Voglio ricevere le offerte di Admiral per email" (`lista.promo`, `lista.promoNota`).
+  Spuntata, all'invio parte `iscrivi_promozioni()` con email, lingua e la frase
+  spuntata nella lingua del cliente (la prova del consenso). Se non arriva, la
+  richiesta su WhatsApp parte lo stesso.
+- Tabella `promozioni` (`supabase/modifiche/2026-10-16-promozioni.sql`, la lancia il
+  proprietario): una riga per email, **non** si svuota ogni mese. RLS: dal sito si
+  scrive solo dalla funzione, la leggono e la cancellano solo gli account dell'ufficio
+  (`is_office()`). L'elenco si scarica dal Table Editor (Export to CSV); per togliere
+  qualcuno, la riga "delete" in fondo al file.
+- La regola "l'email mai nel database" resta per tutto il resto: il messaggio salvato
+  è ancora senza email. CLAUDE.md lo dice.
+- `privacy.html`, cinque lingue: sezione "Le offerte per email", tempi (fino a quando
+  il cliente chiede di uscire), ritiro del consenso, e "non li usiamo per pubblicità"
+  ora ha l'eccezione delle offerte chieste.
+
+**Limite noto**: senza una email di conferma ("doppio sì") chiunque potrebbe scrivere
+l'email di un altro. Quando ci sarà l'email di Isla, la prima email all'iscritto deve
+dire come uscire; ogni email di offerte deve dirlo comunque. `CACHE_NAME` → `isla-v522`.
+
+**Aggiornamento, stesso giorno: in sospeso.** Il proprietario ha deciso di non lanciare
+ancora l'SQL ("ricordamelo tra qualche mese, non è importante ora"). La casella è
+**spenta** (`PROMOZIONI_ATTIVE = false` in `lista.js`) e il testo delle offerte è
+uscito dalla privacy, perché il cliente non legga una promessa che non funziona. Tutto
+il resto (SQL, funzione, testi in `i18n.js`) resta pronto; i tre passi per riaccendere
+stanno nel commento su `PROMOZIONI_ATTIVE`. Il promemoria è su Notion.
+`CACHE_NAME` → `isla-v523`.
+
+## I nomi sul ticket: bastano i titoli (16 ottobre 2026)
+
+Il proprietario ha confermato che sui ticket di carta, per le 54 schede senza `nomi`
+(tour del Teide e dell'isola, catamarani e cruiser, elicottero, karting, parapendio,
+quad, Mustang, pesca, immersioni, surf, Water Car, tuk tuk, vini, trekking, Cabrio,
+spettacoli), **c'è scritto il titolo della scheda**: non serve aggiungere niente. I
+`nomi` restano solo per le compagnie che scrivono un nome diverso dal titolo.
+
+Il controllo ha trovato un buco: **sei barche stanno due volte con lo stesso titolo**,
+il giro condiviso e il charter privato (Whale & Dolphin 3 ore, Luxury Catamaran, Small
+Group Catamaran, Opera 60, Luxury Cruiser, Skyline Cruiser). Nel modulo si distinguono
+per il gruppo, ma alla lettura della foto arrivavano due titoli identici.
+`catalogoPerLettura()` ora attacca **"[tour privato]"** alle schede di `tour-privati`; la
+funzione `leggi-ticket` non va ridistribuita. `CACHE_NAME` → `isla-v524`.
+
+## Trekking: l'ora si concorda (16 ottobre 2026)
+
+Il proprietario: per il trekking non c'è un orario preciso, si decide insieme al
+cliente. `times: []` sulla scheda `trekking-bici`: il menu "A che ora" mostra solo "Da
+concordare", senza le fasce segnaposto. `orari-mancanti.js` ora elenca una sola scheda
+senza orari, il Cabrio Bus. `CACHE_NAME` → `isla-v525`.
+
+## 16 ottobre 2026 — Controllo generale: date scadute nella lista, pulizia
+
+Il proprietario: "Isla è finita, controlla se tutto va bene". Fatto un giro di tutte le
+pagine nel browser (ogni scheda, ogni pacchetto, cinque lingue, 375 px): nessun errore
+JavaScript, nessuna chiave non tradotta, nessun file mancante.
+
+- **Bug: una voce rimasta nella lista per giorni partiva con la data scaduta.** La data
+  si controlla quando si aggiunge (da domani in poi), ma la lista sta nel telefono: chi
+  tornava dopo una settimana mandava "Data: 10/10" il 16. Il database rifiuta le date di
+  più di un giorno fa (`manda_richiesta`), quindi la richiesta non entrava e l'ufficio
+  riceveva su WhatsApp un codice che in `venditori.html` non trovava. Ora
+  `listaVoceScaduta()` in `lista.js`: la voce con un giorno prima di domani (le 24 ore)
+  è segnata in rosso (`lista.pastDate`), sopra il pulsante c'è l'avviso
+  (`lista.pastBlock`) e il pulsante resta spento finché non la si toglie. Per un
+  pacchetto conta il giorno d'inizio. Nel tema scuro la cartolina resta di carta, quindi
+  dentro `.lista-dialog` `--danger` torna il rosso del giorno.
+- `richieste.js` calcolava "oggi" e "ieri" con `toISOString()` (UTC): fra mezzanotte e
+  l'una, d'estate, diceva ancora ieri. Ora `richiesteGiorno()`, con la data locale.
+- Tolti: `whatsappUrl()` in `escursioni.js` (nessuno la chiamava, e non passava da
+  `perUfficio()`: usata un giorno avrebbe mandato all'ufficio un messaggio in francese),
+  `I18N_LANG_NAMES`, le chiavi `tour.ask` e `booking.retry`, il CSS di `.lookup-row`,
+  `.detail-add`, `.map-popup` e `.map-pop` (rimasti dopo vecchie modifiche), e
+  `assets/Secret-cove.jpg`. `CACHE_NAME` → `isla-v526`.
+
+### Lo stesso giro a 320 px
+
+Rifatto a 320 px (il telefono più stretto ancora in giro). Usciti dallo schermo, a pagina
+ferma, tre casi: il pulsante "Ver todas las excursiones" / "Voir toutes les excursions"
+della scheda non trovata, "Toutes les excursions adaptées aux enfants" in fondo a "In
+famiglia", e "Verkaufsbedingungen" in testa ai termini in tedesco. Tutti i `.btn` hanno
+`white-space: nowrap`: ora `.btn-block` e `.state .btn` vanno a capo (gli altri restano
+su una riga, perché stanno accanto a qualcosa), e `.privacy h1` spezza la parola.
+Gli altri "fuori schermo" della prima lista erano momentanei, durante il caricamento.
+`CACHE_NAME` → `isla-v527`.
+
+## 16 ottobre 2026 — Il suggerimento dell'hotel e il bollino dei pacchetti
+
+Il proprietario, dopo il controllo generale: "sistema il 2 e il 3".
+
+- **"Dove alloggi"**: il suggerimento diceva "se non trovi il tuo, scrivilo nelle note".
+  Ma il campo è una casella di testo, e il nome scritto lì arriva nel messaggio e serve
+  al pick-up: ora dice "scrivi qui il nome o l'indirizzo" (`req.hotelHint` e
+  `req.hotelHintTime`, cinque lingue, e il testo di riserva nelle due finestre).
+- **Il bollino "Risparmi €…" sui riquadri piccoli dei pacchetti copriva il titolo.**
+  Misurato con le lettere vere (non con il riquadro del titolo, largo tutta la riga): a
+  320 e 360 px in tutte e cinque le lingue, a 375 in francese, e sui riquadri dei giorni
+  anche "3 giorni" sopra il titolo. A 320 px poi il testo era più alto del riquadro e il
+  titolo usciva dal bordo in alto, bollino o no.
+  - Il bollino ha due testi (`.pack-badge-lungo` / `.pack-badge-corto`): fra 360 e 639 px
+    i riquadri piccoli mostrano "−€5,50", su una riga, più in alto nell'angolo. Il corto
+    non si traduce. Il riquadro grande e quelli allargati restano col testo intero.
+  - Sotto i 360 px i riquadri sono uno per riga, larghi 16:10 come il primo, e il prezzo
+    barrato torna (c'è posto).
+  Rimisurato: nessuna lettera sotto il bollino, nessun testo fuori dal riquadro, a 320,
+  360, 375 e 414 px nelle cinque lingue. `CACHE_NAME` → `isla-v528`.
+
+## 16 ottobre 2026 — `manda-notifiche` non risponde più a chiunque
+
+Il proprietario: "chiudi anche il punto 1". Era aperta per scelta (13 ottobre): chi
+chiamava l'indirizzo otteneva solo gli avvisi già dovuti, mai due volte. Ma la faceva
+lavorare chiunque. Ora risponde solo a due:
+
+- **l'orologio di Cron**, con la parola segreta nell'intestazione `x-orologio`. La
+  parola sta nei Secrets della funzione (`OROLOGIO_SEGRETO`) e nel lavoro di Cron,
+  **mai nel repository**: `supabase/modifiche/2026-10-16-notifiche-chiuse.sql` ha un
+  segnaposto, e la copia con la parola vera è stata preparata nella scratchpad;
+- **`venditori.html`**, col login del venditore: `mandaAvvisi()` ora usa
+  `sb.functions.invoke`, che il login lo mette da solo. La funzione chiede a Supabase la
+  riga di `sellers`, come fa `leggi-ticket`.
+
+Tutti gli altri: 401. "Verify JWT" resta spento, perché l'orologio un login non ce l'ha.
+Il confronto della parola va fino all'ultima lettera (`uguali()`), per non dire col tempo
+quante lettere sono giuste. Provato facendo girare la funzione con un Supabase finto:
+nessuno, parola sbagliata e chiave pubblica → 401; parola giusta e venditore → 200.
+
+**L'ordine conta**: prima il Secret, poi l'SQL (l'orologio con la parola), poi la
+funzione nuova. Al contrario, per qualche minuto i promemoria si fermerebbero.
+Il sito si può pubblicare prima: la funzione vecchia ignora il login che riceve.
+`CACHE_NAME` → `isla-v529`.
+
+### "Installa l'app" sull'iPhone (16 ottobre 2026)
+
+Mandato il link a una persona con l'iPhone: il bottone nel menu non faceva niente.
+Il motivo: `initInstallButton` accendeva i bottoni solo su `beforeinstallprompt`, e
+Safari quell'evento **non lo manda mai**. Sull'iPhone un'app web si installa solo a mano:
+Condividi → "Aggiungi alla schermata Home" → "Aggiungi". Nessun sito può farlo al posto
+del cliente, quindi il massimo è spiegarglielo bene.
+
+Ora su iPhone e iPad (anche l'iPad che si presenta come Mac) il bottone è **sempre
+acceso** e apre una finestra coi passi, con le icone che il cliente vede sul telefono
+(`apriIstruzioniIos` in `app.js`, testi `install.ios.*` in `i18n.js`). Il menu si
+chiude e le fa posto. La finestra si costruisce in JS: il bottone sta in sette pagine.
+
+- **iOS 26** in Safari nasconde Condividi dietro i tre puntini in basso: il primo passo
+  lo dice ("Non lo vedi? Tocca prima •••").
+- **Dentro WhatsApp, Instagram, Facebook** la pagina gira nel loro browser, che
+  "Aggiungi alla schermata Home" non ce l'ha. Si riconosce perché il nome del browser
+  non contiene `Safari/` (Safari, Chrome ed Edge per iPhone sì): lì la finestra ha un
+  passo in più, "apri in Safari".
+- Già installata (`display-mode: standalone`), il bottone resta spento come prima.
+- Su Android non cambia niente: il bottone resta legato a `beforeinstallprompt`.
+
+**L'avviso in basso** (proprietario, stesso giorno: "facciamo la 2"). Il bottone nel Menu
+non lo cerca nessuno, quindi sull'iPhone, 4 secondi dopo l'apertura di una pagina,
+compare un riquadro in basso: "Isla sul tuo iPhone", con "Come si fa" (apre la stessa
+finestra dei passi) e la ✕ (`avvisoInstallaIos` in `app.js`, testi `install.hint.*`).
+- Torna a ogni visita finché il cliente non tocca **la ✕ o "Come si fa"**; poi mai più
+  (`isla-installa-visto` in localStorage). Senza localStorage (navigazione privata)
+  non si mostra proprio: tornerebbe a ogni pagina.
+- Copre per un momento il pallino della chat e la barra "Prenota ora" (z-index 39): ha
+  la ✕, e le finestre gli passano sopra.
+- A 320 px, con icona, testo, bottone e ✕ sulla stessa riga, il testo andava a capo
+  parola per parola: il bottone sta su una riga sua, sotto.
+- Su Android e con l'app già installata non compare.
+
+**Testi più gentili** (proprietario, stesso giorno: "qualcosa di meno imperativo?", poi
+"proposta va benissimo"). I passi non danno più ordini ("Tocca…", "Scorri…") ma indicano
+dove guardare: "Il pulsante **Condividi**…", "Poi «Aggiungi alla schermata Home»…",
+"Infine «Aggiungi»…, ed è fatta". Il bottone in fondo è "Grazie", quello dell'avviso
+"Mostrami come". I passi contengono `<strong>`: entrano con innerHTML, e i testi sono
+nostri, non del cliente. Il titolo resta "Installa l'app" (`menu.install`), lo stesso
+del bottone nel Menu.
+
+**Il titolo della finestra** è "Isla fra le tue app" (`install.ios.title`), non più
+"Installa l'app": il bottone nel Menu resta "Installa l'app". La frase sotto è diventata
+"Bastano tre tocchi in Safari:", per non ripetere "fra le tue app" due righe di fila.
+
+**L'avviso arriva prima** (proprietario, stesso giorno: "si può ridurre il tempo?"). Non
+più 4 secondi dall'apertura, ma **un secondo e mezzo dopo che la pagina è caricata**
+(evento `load`). Non si scende a zero: con la rete lenta la schermata del logo
+(`initSplash`) resta fino a 4 secondi, e l'avviso le sarebbe finito sotto.
+
+## 16 ottobre 2026 — Manifest: scorciatoie e schermate
+
+`manifest.json` riscritto (proprietario: "manca una scorciatoia"). Cosa c'è di nuovo:
+
+- **`id`: `/isla/index.html`.** Prima non c'era, e Chrome usava lo `start_url` come
+  identità dell'app, cioè `https://jacques88-sudo.github.io/isla/index.html`. Va lasciato
+  **così**: se un giorno l'`id` cambia, per Chrome è un'altra app e chi l'ha già
+  installata se la ritrova doppia.
+  **Attenzione: l'`id` si legge dal dominio, non dalla cartella del manifest.** La prima
+  versione di questa PR aveva `"./index.html"`, che Chrome trasforma in
+  `…github.io/index.html`, senza `isla`: un'app nuova. Provandolo con il sito alla radice
+  di `localhost` non si vede, perché lì i due indirizzi coincidono; va provato con il
+  sito sotto `/isla/`, come su GitHub Pages (`Page.getAppId` deve dare `/isla/index.html`).
+- **Tre scorciatoie** (tenendo premuta l'icona su Android, tasto destro sul computer):
+  "Le mie prenotazioni" (`index.html?ticket=1`), "Tutte le escursioni", "La mappa".
+  Per la prima, `initTicketDialog` in `app.js` apre la finestra del ticket quando
+  l'indirizzo ha `?ticket`; e `sw.js` mette in cache `./index.html?ticket=1`, perché con
+  il "?" per la cache è un altro indirizzo (vedi le righe di `?famiglia=1`).
+- **Le scorciatoie sono in inglese per tutti** (proprietario, stesso giorno: "meglio
+  inglese per tutti"): il manifest non sa cambiare lingua, e il telefono di un cliente
+  tedesco mostrerebbe le stesse scritte. Sono le parole inglesi che Isla usa già
+  (`nav.myBookings`, `nav.experiences`, `menu.map`), così menu e scorciatoie coincidono.
+  In inglese anche le didascalie delle schermate. Le icone delle scorciatoie per ora
+  sono l'icona dell'app.
+- **Tre schermate** (`assets/schermate/`: home, escursioni, ticket), 780×1688, scattate
+  con playwright dalle pagine vere a 390×844 per 2. Android le mostra nella finestra di
+  installazione, più grande di quella senza. **Non sono nella cache del service worker**:
+  servono solo a chi installa. Se l'aspetto delle pagine cambia molto, vanno rifatte.
+- `description`, `lang`, `dir`, `categories: ["travel"]` e il nome lungo
+  "Isla · La tua escursione a Tenerife" (uguale al `<title>` della home); sotto l'icona
+  resta `short_name`, "Isla".
+- Verificato con Chrome (`Page.getAppManifest`): nessun errore.
+
+## 16 ottobre 2026 — freno alla ricerca del ticket, link di pagamento solo https
+
+Dal controllo di sicurezza del 16 ottobre (punti 1 e 2). File da lanciare nel SQL
+Editor: `supabase/modifiche/2026-10-16-tentativi-ticket.sql`.
+
+- **Dieci ricerche l'ora per telefono** (proprietario, 16 ottobre 2026: "10 l'ora").
+  "Telefono + numero" protegge da chi prova telefoni a caso, **non** da chi conosce già
+  un telefono e prova i numeri del ticket: sono corti e prenumerati in ordine. Ora
+  `le_mie_escursioni` scrive ogni ricerca in `tentativi_ticket` (RLS attiva, nessun
+  permesso a nessuno) e all'undicesima nell'ora risponde
+  `troppi tentativi, riprova fra un'ora` invece di cercare. Il limite vale per ogni
+  telefono, **esista o no** nel database, così l'errore non rivela niente.
+- Per scrivere, la funzione è passata da `language sql stable` a **`plpgsql`**
+  (volatile: una funzione `stable` PostgREST la fa girare in sola lettura). Le colonne
+  restituite sono le stesse; `supabase/schema.sql` ha ancora la versione vecchia, come
+  per le altre funzioni cambiate in `modifiche/`.
+- **I tentativi restano un'ora**: li cancella la funzione stessa a ogni chiamata, non la
+  pulizia mensile come proposto nel controllo. La tabella resta minuscola e il telefono
+  non resta in giro un mese. È un tempo nuovo, quindi sta in `privacy.html` (cinque
+  lingue, nel paragrafo dei tempi di conservazione).
+- `booking.js` (`cercaTicketVero`): con quell'errore mostra "Troppi tentativi" (chiavi
+  `booking.tooMany` / `booking.tooManyText`) col modulo di ricerca sotto, perché chi ha
+  sbagliato telefono con un altro numero non è bloccato. **Se sul telefono c'è già il
+  risultato salvato, resta quello**, senza errore: ogni apertura di "Le mie
+  prenotazioni" e ogni cambio di lingua è una ricerca, e un cliente vero che la apre
+  spesso non deve vedersi bloccato.
+- Il rovescio: chi conosce un telefono e consuma i dieci tentativi blocca per un'ora
+  anche il cliente vero (che però vede il risultato salvato). Accettabile.
+- **Link di pagamento**: vincolo `payment_link_https` su `bookings`
+  (`payment_link ~ '^https://\S+$'`), la stessa regola di `venditori.js`. Prima la
+  controllava solo la pagina, e un account venditore può scrivere in `bookings` anche
+  senza. Il controllo in `cardTicket` (`booking.js`) c'era già dal 15 ottobre.
+- Provato su un Postgres 16 locale: dieci ricerche passano, l'undicesima dà l'errore,
+  un altro telefono no; passate due ore si riparte; `javascript:alert(1)` rifiutato,
+  `https://…` accettato; il file lanciato due volte non dà errori. Nel browser (it, de,
+  e col risultato salvato) con la risposta del database finta.
+- Punti 3 (tetti globali di `manda_richiesta` e `avvisami`) e 4 (doppio opt-in delle
+  promozioni) restano da fare quando servono.
+
+## Il menu laterale scorre (17 ottobre 2026)
+
+- Il proprietario, dal telefono: il pannello del Menu era fermo e "Prenota ora" in fondo
+  restava tagliato fuori dallo schermo. Con "Installa l'app" in vista e sette voci il
+  pannello è più alto di un telefono normale, e `.more-menu` non aveva scorrimento.
+- `.more-menu` ora ha `overflow-y: auto` e `overscroll-behavior: contain` (lo
+  scorrimento non passa alla pagina sotto), e in fondo lascia lo spazio della barra dei
+  gesti (`env(safe-area-inset-bottom)`).
+- Provato a 412×700 con "Installa l'app" visibile: il pannello è alto 772 px, scorrendo
+  "Prenota ora" arriva tutto in vista. Lo stile è uno solo per le sei pagine.
+
+## Freebird conta sempre come carta (17 ottobre 2026)
+
+- Il proprietario, rileggendo un foglio di carta dei venditori: la commissione di
+  Freebird si divide **sempre** con la parte della carta, anche se il cliente paga
+  cash o metà e metà. Stessa regola dei parchi e di Peter Pan.
+- `pagamento: "card"` su `freebird-catamaran` e `'freebird-catamaran'` nei due elenchi
+  di `supabase/modifiche/2026-10-09-solo-card.sql` (il guardiano e i ticket già
+  salvati). Il file va rilanciato intero nel SQL Editor.
+- Dallo stesso foglio sono usciti netti e percentuali: come sempre stanno **solo** su
+  Supabase, preparati nella scratchpad. Qui non si scrive nessun numero.
+
+## Netto fisso, commissione = acconto, Fevi e White Dream (17 ottobre 2026)
+
+- Dallo stesso foglio di carta, le risposte del proprietario:
+  - **barche private** (Mokkai, Kalima Kat): alla compagnia una cifra per tutta la barca.
+    Il proprietario proponeva anche di trattarla come un mezzo; scelta la colonna,
+    perché coi mezzi il modulo avrebbe chiesto "quante barche" anche sull'uscita a
+    persona della stessa scheda;
+  - **Fevi** (rent bike) e **MRB**: Isla tiene l'acconto, il resto si paga sul posto.
+    Per MRB l'acconto è il 40% del prezzo ufficiale (il listino arriva nei prossimi
+    giorni): finché il venditore incassa quello, netto = totale − acconto torna;
+  - **White Dream** (sul ticket anche "White Dr") fa la Luxury Cruiser a persona,
+    accanto a Mokkai: due nomi nei `nomi`, due righe di netto;
+  - "TMIG" sul foglio era Teide, Icod, Garachico e Masca.
+- `supabase/modifiche/2026-10-17-netto-fisso.sql`: colonne `net_fixed` e
+  `net_from_deposit` in `nets`, `calcola_netto` con l'acconto (quella di prima passa
+  a questa), il guardiano ricalcola anche se cambia l'acconto. Ordine nel calcolo:
+  fisso, acconto, percentuale, mezzi, persone.
+- Voce nuova solo per i venditori: `noleggio-bici` ("Noleggio bici", `nomi: ["Fevi"]`).
+- Provato su Postgres 16 con lo schema e le modifiche: i ticket del foglio danno gli
+  stessi netti (0991 → 550, 0992 → 350, 0988 → 140, 0985 → totale − acconto, 0980 →
+  64); un ticket salvato prima senza netto lo prende; acconto cambiato → ricalcolato;
+  l'SQL dei numeri lanciato due volte non fa danni e il guardiano resta acceso.
+- Da fare: l'incentive (premio di una compagnia, ticket con sola commissione) non si
+  può ancora inserire: il modulo e il database vogliono telefono e data del cliente.
+
+## Prezzi delle barche private dal foglio dei venditori (17 ottobre 2026)
+
+- Il proprietario: i prezzi del foglio di carta sono quelli ufficiali, **solo per le
+  barche private**.
+  - **Luxury Cruiser privata** (variante e scheda gemella dei Tour privati): €550
+    invece di €450. Il ritiro costa **€5 a persona** in più (prima "€500 col ritiro",
+    cioè €50 per la barca intera). L'uscita a persona resta €55/€35, col ritiro €60/€40.
+  - **Small Group Catamaran privato** (Kalima Kat), variante e gemella: **€690 per tre
+    ore**, il doppio per sei (€1.380). Prima "da €800" la variante e "da €350" la
+    gemella; il proprietario ha chiesto il prezzo vero anche sulla gemella.
+  - Testi riscritti nelle cinque lingue.
+- **Noleggi**: regola generale, la commissione è l'acconto. Auto e moto prendono
+  `net_from_deposit` come bici e scooter elettrico (SQL nella scratchpad, non qui).
+- L'incentive resta in sospeso, lo vediamo dopo (proprietario).
+- **Small Group Catamaran privato, 3 e 6 ore diventano due varianti** (anche sulla
+  gemella, che prima non ne aveva): il netto delle sei ore è il doppio, come il prezzo,
+  e il ticket deve dire quale delle due. Le righe di netto vecchie ("Charter privato" e
+  la gemella senza variante) restano per i ticket già salvati.
+- **Kalima Kat nei `nomi`** del Small Group Catamaran ("Kalima Kat", "Kalimaka" come
+  sul foglio dei venditori): la lettura della foto risale alla scheda. Solo sulla scheda
+  in condivisione, non sulla gemella (stesso nome su due schede = errore di
+  `controlla.js`). I netti delle varianti private valgono per qualunque compagnia.
+
+## "Isla Ticket", la lettura del ticket come app a parte (17 ottobre 2026)
+
+- Il proprietario: solo la parte che riconosce il ticket, con la sua icona sul
+  telefono, dietro il login dei venditori, e che faccia lo stesso lavoro di Isla.
+- **`ticket/index.html`**: l'entrata e il modulo "Nuovo ticket" di `venditori.html`,
+  copiati, e **lo stesso `../venditori.js`**, non una copia: una correzione al modulo
+  vale per tutte e due. Il modulo HTML invece è scritto due volte, come la finestra
+  della richiesta: **se tocchi il modulo in `venditori.html`, tocca anche
+  `ticket/index.html`**.
+- `venditori.js` capisce dove si trova con `PAGINA_INTERA` (c'è l'elenco degli ultimi
+  inseriti?): nell'app non carica richieste, ultimi inseriti e statistiche.
+- **Il manifest è suo** (`ticket/manifest.json`, `id` e `scope` della cartella): è
+  quello che la fa installare come un'app diversa da Isla. Icona: il sole di Isla su
+  un biglietto bianco, sfondo viola (`ticket/icon-*.png`, `apple-touch-icon.png`).
+- Il login è lo stesso di `venditori.html` e si ricorda: chi è entrato in una delle
+  due è entrato anche nell'altra (stessa origine, stessa sessione Supabase).
+- Senza service worker suo: leggere la foto vuole comunque la rete.
+- Si installa aprendo `…/isla/ticket/` nel telefono: Android "Installa app" dal menu
+  di Chrome, iPhone Safari → Condividi → "Aggiungi alla schermata Home".
+- **Stesso giorno, secondo passo** (proprietario): in "Isla Ticket" va **tutta** la pagina
+  dei venditori, e Isla non ha più "Area venditori". Quindi:
+  - `ticket/index.html` è la pagina intera (prima solo entrata e modulo); il modulo
+    non è più scritto due volte e `PAGINA_INTERA` in `venditori.js` è sparito;
+  - `venditori.html` è solo un rimando a `ticket/`, per chi l'aveva salvato;
+  - via il link del menu in `app.js` (e il suo stile), e via il segno
+    `isla-venditore` che `venditori.js` lasciava nel telefono;
+  - **il link `booking.html?code=…`** nella risposta WhatsApp al cliente ora parte da
+    `../`: la pagina sta un livello sotto, e senza quel `../` il cliente riceveva
+    `…/ticket/booking.html`, una pagina che non esiste. Provato nel browser.
+  - Chi l'ha già installata la vede cambiare da sola: stesso indirizzo, stesso manifest.
+- **Stesso giorno, terzo passo** — il proprietario dal telefono: "più larga dello schermo"
+  e "non riesco a installarla su Android, non c'è menu".
+  - **Larga**: la fila dei bottoni sotto una richiesta WhatsApp (Manda il pagamento,
+    Conferma, Annulla…) non andava a capo: 96 px oltre lo schermo su 360 px. Da vuota la
+    pagina era giusta, per questo non si era visto: **le misure vanno fatte con dei
+    dati**. Ora `.vend-list-btns` va a capo. Misurato con un venditore finto (sessione
+    finta nel localStorage e risposte di Supabase finte in Playwright).
+  - **Installare**: chi ha Isla installata apre `…/isla/ticket/` **dentro la finestra
+    di Isla** (lo scope di Isla è `./`, e contiene anche `ticket/`): lì non c'è il menu
+    di Chrome. Il riquadro in cima (`ticket/installa.js`) dice cosa fare: in Chrome
+    "Installa" (`beforeinstallprompt`), dentro Isla "Apri in Chrome" (indirizzo
+    `intent:` con `package=com.android.chrome`), su iPhone i passi di Condividi.
+    L'app si riconosce perché parte da `./?app=1` (`start_url`), segnato in
+    `sessionStorage`: "standalone" da solo non basta, anche Isla lo è.
+  - **`ticket/sw.js`**: un service worker solo per `ticket/`, che non mette niente in
+    cache. Chrome su Android propone di installare solo se ce n'è uno. Controllato con
+    `Page.getInstallabilityErrors`: nessun errore.
+- **Quarto passo** — dalla foto del proprietario: il riquadro "Installa" era in vista ma
+  **vuoto**, con un bottone tondo senza scritta. `display: flex` (e quello di `.btn`)
+  batteva l'attributo `hidden`: ora `.vend-installa[hidden]` ha `display: none`. Lezione:
+  **un elemento con `display` nel CSS e `hidden` nell'HTML va provato nascosto**, non
+  solo acceso. Il riquadro vuoto diceva anche che Chrome non aveva mandato
+  `beforeinstallprompt` (alla prima visita spesso non lo manda): su Android ora i passi
+  dal menu ⋮ si scrivono subito, e il bottone "Installa" arriva quando Chrome lo permette.
+- **Quinto passo: un repository suo.** Dal telefono, il menu di Chrome diceva "Questa
+  app è già installata" e apriva **Isla**. Su Android un'app installata si prende
+  tutti gli indirizzi che cominciano come il suo (`/isla/`), e un'app "dentro"
+  un'altra non si può installare: nessun ritocco della pagina poteva bastare, e i passi
+  tre e quattro erano rimedi sbagliati. Ora la pagina sta in **`isla-ticket`**
+  (`jacques88-sudo.github.io/isla-ticket/`), che **non** comincia con `/isla/`.
+  - Là ci sono solo `index.html`, `manifest.json`, icone, `sw.js` e `installa.js`; il
+    codice arriva da `../isla/` (stessa origine, quindi stesso login Supabase).
+  - Il link per il cliente in `venditori.js` parte da `SITO`, la cartella del file
+    `venditori.js` stesso (`document.currentScript.src`), non dalla pagina.
+  - `venditori.html` e `ticket/` sono rimandi; `ticket/sw.js` si toglie da solo dai
+    telefoni che l'avevano.
+  - Il repository l'ha creato il proprietario: il collegamento GitHub di Claude non
+    può crearne (403).
+  - Provato in locale con le due cartelle affiancate: rimandi giusti, 74 escursioni,
+    link al cliente `…/isla/booking.html`, `Page.getInstallabilityErrors` vuoto e
+    `beforeinstallprompt` arrivato, niente fuori schermo a 360 px.
+
+## Due nomi dai ticket 0993 e 0994 (17 ottobre 2026)
+
+- **"JET SKI ISLAND"** (ticket 0993) è **Jetski Island**, già nei `nomi` del Jet Ski
+  Safari. La scheda Claude la trovava, ma la compagnia restava vuota:
+  `compagniaNelTesto()` in `venditori.js` cercava "jetski island" dentro "jet ski
+  island" e non lo trovava per uno spazio. Ora spazi e trattini non contano. Non si è
+  aggiunto "Jet Ski Island" come secondo nome: sarebbe una seconda compagnia nel menu,
+  e il netto in `nets` sta sotto un nome solo.
+- **"Ben Stargazing"** (ticket 0994): una piccola compagnia di stelle in inglese
+  (proprietario). Sta nei `nomi` di Teide Stars & Sunset, **non** dentro una variante:
+  il ticket dice 150 € per 2 adulti, 75 a testa, che è il prezzo del gruppo grande e
+  non del piccolo. Se il proprietario dice quale serata fa, il nome va anche lì.
+  Poi il proprietario: **"considera Ben come Andromeda"**. Ora il nome sta anche nel
+  gruppo piccolo, e dalla foto si sceglie da sola la serata. I 75 € del ticket non
+  cambiano niente: il prezzo del ticket non si confronta col catalogo.
+
+## 18 ottobre 2026 — Il transfer sul ticket, e il netto con o senza
+
+Dal foglio TRG del 12-13 ottobre: su alcune schede il netto cambia se il cliente prende
+il transfer (proprietario). Mokkai in condivisione: adulto **35 col trasporto, 30
+senza**, bambino 25 sempre. ~~Il Castillo invece non ha netto né commissioni~~:
+**sbagliato**, corretto il 19 ottobre (vedi "Castillo San Miguel: i prezzi veri" più
+sotto): la commissione c'è sullo show, non sul bus. Fino a oggi il ticket non diceva se il transfer c'era, e il
+netto non poteva saperlo. **I numeri non sono qui**: stanno su Notion ("Netti da
+inserire") e su Supabase.
+
+- **`supabase/modifiche/2026-10-18-transfer.sql`**: `bookings.transfer` (true, false o
+  vuoto = non si sa / la scheda non lo offre) e `nets.transfer` (vuoto = uguale nei due
+  casi, come tutte le righe di prima). `calcola_netto` ha un parametro in più e, come
+  per variante e compagnia, vince la riga che lo dice; il guardiano ricalcola anche
+  quando cambia il transfer. **Cambia la chiave di `nets`**: un netto nuovo si scrive
+  con `on conflict (excursion_id, coalesce(option_label, ''), coalesce(company, ''),
+  coalesce(transfer::text, ''))`; i testi con tre colonne non vanno più.
+- **Venditori** (`venditori.js`, e la casella in `index.html` di `isla-ticket`): la
+  casella "Con transfer (ritiro in hotel)" compare solo dove il catalogo ha `transfer`
+  (sulla scheda o sulla variante, la variante vince: `transferOfferto()`, la gemella di
+  `transferDi()` di `escursioni.js`, che la pagina non carica). Anche in "Modifica";
+  nell'elenco il ticket dice "transfer", la richiesta "con transfer". Dove la casella non
+  c'è la colonna non si manda nemmeno.
+- **Clienti**: `richiestaVoce()` (`richieste.js`) manda `transfer` dalla casella "Vuoi il
+  transfer?" che c'era già, solo dove il transfer si può scegliere; `manda_richiesta`
+  lo salva.
+- **Trovato provando**: `.vend-check` ha `display: flex !important`, che batte
+  l'attributo `hidden`: la casella si vedeva anche sul Karting. Ora
+  `.vend-check[hidden]` ha `display: none !important` (la lezione del riquadro
+  "Installa", di nuovo).
+- **L'ordine conta**: prima l'SQL su Supabase, poi il sito. Il modulo manda e legge la
+  colonna `transfer`: senza, il salvataggio e l'elenco si rompono. `venditori.js`
+  regge invece la pagina vecchia di `isla-ticket` senza la casella.
+
+Provato su Postgres 16 con lo schema e tutte le modifiche (lanciato due volte): Mokkai
+senza transfer 2 adulti → 60, col transfer 2 adulti + 1 bambino → 95, spuntare il
+transfer dopo ricalcola, transfer vuoto → "netto mancante"; Gomera (riga senza transfer)
+uguale a prima; `manda_richiesta` salva true, lascia vuoto chi non lo manda e rifiuta un
+valore strano. Nel browser a 375 px con un Supabase finto: casella su Mokkai e Castillo,
+non su Karting e Gomera, salvataggio con `transfer: true`, Modifica, nessuno scroll
+orizzontale, nessun errore. `CACHE_NAME` → `isla-v550`.
+
+### Il pranzo sul Teide, Icod, Garachico e Masca
+
+Il proprietario: col pranzo sono 20 € in più e 18 di netto in più, **uguali per adulti e
+bambini**, e la scelta la vedono anche i clienti. Sulla scheda ora ci sono due formule,
+**"Senza pranzo"** (58 / 37,50) e **"Con pranzo"** (78 / 57,50, con "Pasto incluso"), e la
+nota dice che il pranzo è compreso solo nella seconda. Due varianti e non una casella
+perché il netto si trova già dalla variante: "Con pranzo" ha su Supabase una riga sua,
+"Senza pranzo" prende quella di sempre della scheda, senza toccare lo schema. Nel
+modulo dei venditori la formula ora va scelta. Provato nella pagina, in italiano e
+inglese: due bottoni, 58 e 78, "Pasto incluso" solo col pranzo, nessuno scroll
+orizzontale.
+
+## Isla Ticket: gli annullati in fondo, chiusi (18 ottobre 2026)
+
+Il proprietario: "vorrei che i ticket / escursioni annullate sparissero o andassero in
+fondo", con la foto di tre richieste annullate che prendevano tutto lo schermo. Fatte
+**tutte e due le cose**: in fondo, dentro un riquadro **chiuso** "Annullate (N)" /
+"Annullati (N)" (`riquadroAnnullati()` in `venditori.js`). Non sparire del tutto,
+perché un annullato deve restare raggiungibile per **Ripristina ticket** o per
+confermare una richiesta annullata per sbaglio.
+
+- **Richieste da WhatsApp** (`caricaRichieste()`): da confermare, poi confermate, poi il
+  riquadro. Prima confermate e annullate erano mescolate.
+- **Ultimi inseriti** (`caricaUltimi()`): i ticket vivi come sempre (il più nuovo in
+  alto), poi il riquadro. Sono sempre i 20 più recenti: un annullato conta ancora fra i
+  20. **Cercando un numero** il riquadro non c'è: chi cerca quel ticket lo vuole vedere.
+
+Dentro il riquadro le righe restano grigie e barrate come prima. Provato con righe
+finte a 390 px: chiuso una riga sola, aperto le tre righe con "Conferma", niente
+scroll orizzontale. La pagina vera (col login) non l'ho potuta aprire.
+
+### "TRANSFER" sul ticket spunta la casella
+
+Il proprietario: se sul ticket di carta c'è scritto transfer, la casella si spunta da
+sola. Lo fa `transferNelTesto()` in `venditori.js`, sui testi che la lettura della foto
+manda già (escursione, meeting point, hotel, note), come `compagniaNelTesto()` per la
+compagnia: **`leggi-ticket` non va ridistribuita**. Prende anche le grafie storte
+("trasfer", "tranfer", "transf."). Solo dove la casella c'è: sul Karting non succede
+niente. Provato nel browser con una lettura finta: Mokkai con "TRANSFER" nelle note →
+spuntata, senza → no, Karting → nessuna casella. `CACHE_NAME` → `isla-v553`.
+
+## Il codice sconto dei venditori (18 ottobre 2026)
+
+Il proprietario: "un codice al momento della prenotazione, con uno sconto del 5% anche
+sulle escursioni singole". Le scelte, sue: **i codici su Supabase**, **uno per
+venditore**, **niente sconto dove non c'è quello dei pacchetti**, e **sui pacchetti
+resta il loro** (il 5% non si somma).
+
+- **Dove:** nella finestra della lista (`lista.js`), sotto l'email, campo "Codice
+  sconto (facoltativo)" e bottone **Applica** (anche Invio). È l'unico posto da cui parte
+  un messaggio, quindi vale anche per l'escursione singola: è una lista di una voce.
+- **I codici non stanno nel repository**: è pubblico. Tabella `codici_sconto` (codice,
+  venditore, percento, attivo) e funzione `codice_sconto()` in
+  `supabase/modifiche/2026-10-18-codici-sconto.sql`: il sito chiede "vale?" e riceve la
+  percentuale o niente, mai il nome del venditore. Un codice si **spegne**
+  (`attivo = false`), non si cancella: i messaggi vecchi lo nominano.
+- **Su cosa:** `scontoPossibile(tour, variante)` in `pacchetti.js`, tirata fuori da
+  `pacchettoVoceScontabile` perché la regola è la stessa: niente su
+  `parchi-spettacoli` e `fixedPrice` (la variante vince). Arrotondato al centesimo voce
+  per voce.
+- **Nel messaggio** (e quindi nella copia `request_message`), in fondo, prima
+  dell'email: "Codice sconto: MARCO", "Sconto 5%: −€4,50", "Totale con lo sconto:
+  €85,50". Il codice si scrive **anche quando non toglie niente** (una lista di soli
+  parchi): l'ufficio deve sapere lo stesso da quale venditore arriva il cliente. Per chi
+  scrive in francese o tedesco va in italiano, come tutto il resto (`perUfficio`).
+- **Un codice scritto e non controllato non parte**: "Continua su WhatsApp" prima lo
+  controlla e mostra il totale nuovo, poi si preme di nuovo. Un codice sbagliato, o la
+  rete che manca, ferma la richiesta finché il cliente non lo corregge o lo cancella: lo
+  dice il messaggio sotto il campo. Altrimenti il cliente leggerebbe nel messaggio un
+  totale diverso da quello che ha visto.
+- **Non è una protezione**: chi indovina un codice (MARCO) ha il 5%. Va bene così perché
+  il link di pagamento lo fa l'ufficio a mano, leggendo il messaggio.
+
+**Prima che funzioni** il proprietario lancia l'SQL e aggiunge i codici (righe in fondo
+al file). Senza, il campo risponde "non riesco a controllare il codice": la richiesta
+senza codice parte come prima.
+
+### Il codice sulla richiesta e il link del QR (19 ottobre 2026)
+
+- **`bookings.discount_code`**: `manda_richiesta` ha un argomento in più,
+  `p_discount_code`, e salva il codice **solo se esiste ed è acceso**. La versione a
+  cinque argomenti si toglie (`drop function`), se no il database non saprebbe quale
+  usare; un telefono col sito vecchio la chiama per nome e la richiesta entra lo stesso.
+  Sta nello **stesso file** `2026-10-18-codici-sconto.sql` (una query sola), con in
+  fondo la query che conta le richieste per venditore. La pulizia mensile le cancella:
+  si conta prima di fine mese.
+- **`?codice=MARCO`** su qualsiasi pagina con la lista (`codiceDallIndirizzo()` in
+  `lista.js`): il codice si ricorda nel telefono (`isla-codice`, solo il codice, mai lo
+  sconto) e si toglie dall'indirizzo. Aprendo la lista va nel campo e si controlla da
+  solo. Resta dopo una richiesta mandata; si dimentica se il cliente svuota il campo o
+  se il codice non esiste più.
+
+Provato l'SQL su un Postgres 16 di prova (due volte di fila, codice spento, codice
+inventato, chiamata senza codice, `anon` che non legge la tabella) e nel browser:
+QR → scheda → lista col codice già applicato → `p_discount_code: "MARCO"`.
+`CACHE_NAME` → `isla-v555`.
+
+Provato nel browser con Supabase finto: Freebird + Loro Parque col codice → −€3 solo sul
+Freebird; solo Loro Parque → "il codice è valido, ma non si applica"; codice sbagliato →
+"questo codice non esiste"; in tedesco il messaggio arriva in italiano, e la copia nel
+database resta senza email. 390 e 1100 px. `CACHE_NAME` → `isla-v554`.
+
+## La prova da cliente (19 ottobre 2026)
+
+Il proprietario ha chiesto cosa migliorare dalla parte del cliente. Prima di proporre
+cose nuove, un giro completo **come un turista**: tedesco, iPhone SE (375 px), 4G
+lento, dalla scheda del Freebird fino al messaggio WhatsApp e a "Le mie richieste".
+Funziona dall'inizio alla fine. Trovati, in ordine:
+
+1. **Il riquadro "Installa l'app" copre "Aggiungi alla lista"** alla prima visita di
+   una scheda (chi arriva da un link): la barra col prezzo sta sotto il riquadro.
+   **Da decidere col proprietario** quando proporre l'installazione.
+2. **La variante in italiano nella pagina delle richieste** — corretto, sotto.
+3. Il tedesco dà del "Sie" ovunque (88 testi) tranne i 4 testi del riquadro
+   "Installa" (`install.hint.*`, `install.ios.share`), che danno del "du".
+4. La nota privacy della richiesta parla dell'hotel anche sulle schede col solo punto
+   di ritrovo.
+5. Prima apertura in 4G lento: la home si vede dopo ~4 s; pesano il catalogo (~200 KB
+   compresso), `hero-tenerife.webp` (400 KB), `logo-isla.png` (108 KB, 476×476) e i
+   2,3 MB che il service worker scarica per l'offline.
+
+Dodici pagine in tedesco, francese e spagnolo, anche a 320 px: nessun errore, niente che
+esce dallo schermo, nessuna parola italiana rimasta.
+
+### La variante nella lingua del cliente
+
+Nel database `option_label` è **sempre in italiano**, la lingua dell'ufficio: lo
+scrivono `richieste.js` (`etichetta.it`) e la pagina dei venditori. `booking.js` lo
+mostrava così com'era, e il cliente tedesco leggeva "Freebird Catamaran Trip · 2 ore".
+Ora `varianteTesto()` ritrova la variante nel catalogo per l'etichetta italiana e la
+scrive con `tf()`; se il catalogo non la conosce più (variante tolta o rinominata)
+resta il testo salvato. Vale per le richieste e per i ticket, che usano la stessa
+scheda. La lista (`lista.js`) lo faceva già con `varianteScelta()`. Provato nel
+browser col percorso vero (lista → WhatsApp → `booking.html?richieste=1`): "2 Stunden",
+"2 heures", "2 horas", "2 ore". `CACHE_NAME` → `isla-v556`.
+
+## Castillo San Miguel: i prezzi veri, e il netto solo sullo show (19 ottobre 2026)
+
+Il proprietario, guardando il foglio TRG: il ticket **0972** (2 adulti, 136 €, netto
+104,80) è il Castillo **col bus**, e la commissione c'è **sullo show, non sul bus**. Il
+18 ottobre si era scritto (qui e su Notion) "nessun netto né commissioni": era sbagliato.
+E poi: "è sbagliato tutto dall'inizio". I prezzi della scheda erano quelli di
+CanaryVIP (1 settembre). Quelli veri, dal proprietario:
+
+| | senza bus | col bus |
+|---|---|---|
+| Normale | 52 adulto · 31 bambino · neonato gratis | 68 · 42 · 11 |
+| VIP | 63 · 37 · neonato gratis | 79 · 48 · 11 |
+
+- **Il bus costa uguale sui due biglietti**: +16 adulto, +11 bambino. Per questo basta
+  `transferPrice: { adult: 68, child: 42, baby: 11 }` sulla scheda: il VIP col bus lo
+  rifà `conVariante()` (tour.js) e `prezziAPersona()` (escursioni.js), 63 + 16 = 79.
+- **Il neonato paga solo il bus** (11 €): `priceInfant: 0` e `transferPrice.baby: 11`. È
+  la prima scheda con `baby` nel transfer; il codice c'era già e ha funzionato da solo.
+- **Le età**: `0-2`, `3-13`, `14+`. Il proprietario aveva detto "bambino da 3 a 13,
+  neonato da 0 a 3": i 3 anni stavano in due fasce, e ha confermato che il neonato è
+  fino a 3 anni non compiuti.
+- **Il VIP resta com'era scritto** (ingresso prioritario, cava, file migliori): il
+  proprietario ha detto "va bene quello che dice la scheda".
+- Il pacchetto "Tre sere a Tenerife" (`pacchetti.js`) usa il prezzo della scheda da
+  solo: ora 49 + 52 + 79 = 180, −7,90 → 172,10 a persona. Corretto solo il commento.
+
+**Il netto**: il bus va **tutto** alla compagnia, normale e VIP (proprietario). La
+commissione sullo show è il **30%** (ricavato dal foglio, 104,80 = 2 × 52 × 0,70 + 2 × 16,
+e confermato dal proprietario lo stesso giorno). Su Supabase quattro righe di `nets`
+(variante × transfer), netti a persona. **La casella "Con transfer" non spuntata vuol
+dire senza bus**: il netto viene più basso del vero (0972: 72,80 invece di 104,80) e si
+corregge da Modifica. Resta "netto mancante" solo un ticket salvato prima del 18
+ottobre, quando la casella non c'era. Preparato nella
+scratchpad, **non committato**, con l'`update` del ticket 0972 (`transfer = true`, che
+fa ricalcolare il guardiano). Provato su Postgres 16 con schema e modifiche: 0972 →
+104,80; VIP senza bus 2+1+1 a 163 → 114,10; VIP col bus 2+1+1 a 217 → 168,10 (commissione
+48,90 = 30% di 163); rilanciato due volte senza errori.
+
+Nel browser a 375 px: "Adulti (14+) €52 · Bambini (3-13) €31 · Neonati (0-2) Gratis",
+"Con il transfer €68 · €42 · €11 neonati (posto sul pullman)", col VIP €63 · €37 e
+€79 · €48 · €11. Totali: 2 adulti col bus 136 (= il ticket 0972); 2+1+1 col bus 189,
+senza 135; VIP col bus 2+1+1 217. Nessuno scroll orizzontale, nessun errore.
+`CACHE_NAME` → `isla-v557`.
+
+### Il riquadro "Installa" torna a ogni visita (19 ottobre 2026)
+
+Il proprietario: il riquadro deve comparire **ogni volta che si apre Isla**, finché non
+è installata. Prima, toccata la ✕ o "Come si fa", non tornava **mai più**; e finché il
+cliente non lo toccava tornava a **ogni pagina**.
+
+Ora (`avvisoInstallaIos()` in `app.js`): la ✕ o "Come si fa" lo chiudono **per il resto
+della visita** (`isla-installa-chiuso`, l'ora della chiusura). Una visita finisce dopo
+**30 minuti senza aprire pagine di Isla**: ogni pagina aperta in quel tempo sposta
+l'orologio in avanti. Non si usa `sessionStorage` perché su Safari la scheda resta aperta
+per giorni e la "sessione" con lei. La vecchia chiave `isla-installa-visto` si cancella,
+così torna anche a chi l'aveva chiuso con la regola vecchia. Resta com'era: solo
+iPhone/iPad, non con l'app installata, non senza `localStorage`.
+
+Resta aperto il punto 1 della prova da cliente: alla prima apertura di una scheda il
+riquadro copre ancora "Aggiungi alla lista" finché non si chiude.
+
+Provato nel browser con l'iPhone simulato: prima apertura sì; altra pagina senza
+chiudere sì; dopo la ✕ no (scheda e home); dopo 31 minuti sì; dopo "Come si fa" no; chi
+aveva la chiave vecchia sì; app installata no. `CACHE_NAME` → `isla-v558`.
+
+### Il tedesco dà del Sie anche nel riquadro "Installa" (19 ottobre 2026)
+
+Il sito in tedesco dà del **Sie** (il nostro "Lei") ovunque. Gli unici testi col **du**
+(il "tu") erano quelli del riquadro per installare l'app. Il proprietario: "mettili col
+Sie". Cambiati `install.ios.title` ("Isla bei Ihren Apps"), `install.ios.share`
+("Falls Sie sie nicht sehen…"), `install.hint.title` ("Isla auf Ihrem iPhone") e
+`install.hint.text` ("Wenn Sie möchten, können Sie…"). Anche il pulsante
+`install.hint.how` era col du ("Zeig mir wie", "mostrami"): ora è "Wie geht das?" ("come
+si fa?"), che non dà né del tu né del Lei. Controllati tutti i testi `de:` di tutti i
+file: nessun du rimasto. Il francese dà già del "vous" ovunque. Provato nel browser con
+un iPhone simulato in tedesco: riquadro e istruzioni. `CACHE_NAME` → `isla-v559`.
+
+### Le foto più leggere, primo passo (19 ottobre 2026)
+
+Il proprietario: "puoi alleggerire tu le foto?". Le foto avevano già la misura giusta
+(quasi tutte 1200 px di lato) e quasi tutte (103 su 136) erano già salvate a qualità
+82: ricomprimerle tutte in JPG avrebbe tolto solo il 6–14%, rovinandole un po' a ogni
+passaggio. Fatto solo quello che conveniva, **senza cambiare nessun nome di file** (nessun
+codice toccato):
+
+- `logo-isla.png`: 108 → 13 KB, a 256 colori. Identico a occhio, sta in tutte le pagine;
+- `hero-tenerife.webp`: 399 → 334 KB (WebP qualità 75);
+- le JPG salvate a qualità 85–92, ricompresse a 82 come le altre, **solo dove si
+  risparmiava almeno il 10%**: Cat-avventura, Cat-sport, anteprima, buggy-volcano-sunset,
+  fiat-500-on-water, opera-60-2, small-group-catamaran. Lasciate About-team, bento-noleggio
+  e royal-delfin.
+
+In tutto 517 KB in meno. Confrontate a occhio, ingrandite, le sfumature del tramonto e del
+cielo: nessuna differenza. Nel browser nessuna immagine rotta. `CACHE_NAME` → `isla-v560`.
+
+**Il passo grande, se servirà, è il WebP**: tutte le JPG in WebP pesano il 34% in meno
+(19,7 → 13,1 MB, misurato), ma cambia il nome di 136 file e va cambiato ovunque li si
+nomina (catalogo, `pacchetti.js`, `mappa-foto.js`, le pagine HTML, il service worker).
+Le anteprime per WhatsApp (`og:image`, `anteprima.jpg`) devono restare JPG.
+
+## Le foto in WebP, una categoria alla volta (19 ottobre 2026)
+
+Il proprietario: "fai il WebP una categoria alla volta". WebP è il formato d'immagine
+di Google per il web: a occhio la stessa foto, un terzo più leggera. Lo leggono Safari da
+iOS 14, Chrome, Android, Firefox; la foto grande della home era già WebP.
+
+**Come si fa** (gli script stanno nella scratchpad della sessione, non nel repository):
+per ogni foto della categoria (`image` e `gallery` delle schede con quella `category`)
+si salva un `.webp` a **qualità 78** (`method=6`, profilo colore tenuto), **solo se pesa
+almeno il 10% in meno** (se no resta la JPG). La JPG si toglie con `git rm` e il nome si
+cambia **in tutti i file del sito** che lo nominano (catalogo, `pacchetti.js`, pagine):
+anche i charter e i pacchetti che usano la stessa foto. Poi un controllo che ogni nome di
+foto scritto nel sito esista in `assets/` (`controlla.js` guarda solo la foto principale,
+non la galleria) e il browser su ogni scheda della categoria, galleria compresa, l'elenco,
+la home e tutti i pacchetti.
+
+**Restano JPG per scelta**: `anteprima.jpg` (l'anteprima dei link su WhatsApp e Facebook,
+che non sempre leggono il WebP) e le schermate del `manifest.json`.
+
+- **Barche (`mare-barche`)**: 55 foto, 8,6 → 5,5 MB (−37%). Restano JPG `freebird-3.jpg`
+  e `skyline-cruiser.jpg` (si risparmiava meno del 10%). Nomi cambiati in
+  `esplora-catalog.js` e `pacchetti.js`. Confrontate a occhio, ingrandite: identiche.
+  Browser: 15 schede, elenco, home, 7 pacchetti, 124 foto WebP, nessuna rotta.
+  `CACHE_NAME` → `isla-v561`.
+- **Natura, Teide e stelle (`teide-natura`)**: 10 foto, 1,1 MB → 653 KB (−41%). Resta JPG
+  `icod-garachico-orotava.jpg` (in WebP pesava di più). Nomi cambiati in
+  `esplora-catalog.js` e `pacchetti.js`. Guardate ingrandite soprattutto le foto
+  notturne, dove la compressione cancella per prime le stelle piccole: ci sono tutte,
+  Via Lattea compresa. Browser: 5 schede pubblicate, elenco, home, 7 pacchetti, nessuna
+  foto rotta. `CACHE_NAME` → `isla-v562`.
+- **Avventura e motori (`avventura-motori`)**: 14 foto, 1,9 → 1,3 MB (−34%). Resta JPG
+  `paragliding.jpg` (si risparmiava meno del 10%). C'era anche `Cat-avventura.jpg`, la
+  copertina della categoria: nome cambiato anche in `index.html`. Da qui lo script misura
+  anche quanto ogni WebP è diverso dalla sua JPG (PSNR) e le due più diverse si guardano
+  ingrandite: qui i due buggy (34,7 e 34,8 dB), identici a occhio. Browser: 8 schede,
+  elenco, home, 7 pacchetti, 64 foto WebP, nessuna rotta. `CACHE_NAME` → `isla-v563`.
+- **Sport acquatici (`sport-acquatici`)**: 10 foto, 1,3 MB → 851 KB (−35%), nessuna
+  lasciata JPG. Le due più diverse (banana boat 35,5 dB, kayak 35,9) guardate ingrandite:
+  identiche. Browser: 8 schede pubblicate, elenco, home, 7 pacchetti, 69 foto WebP,
+  nessuna rotta. `CACHE_NAME` → `isla-v564`.
+- **Parchi e spettacoli (`parchi-spettacoli`)**: 13 foto, 1,9 → 1,3 MB (−29%). Resta JPG
+  `siam-park.jpg` (353 → 323 KB, meno del 10%). Con loro `Cat-parchi.jpg`, nome cambiato
+  anche in `index.html`. Le due più diverse (Loro Parque 35,5 dB, Aqualand 35,6) guardate
+  ingrandite, anche le gocce d'acqua sull'orca: identiche. Browser: 14 schede, elenco,
+  home, 7 pacchetti, 93 foto WebP, nessuna rotta. `CACHE_NAME` → `isla-v565`.
+- **Tour dell'isola (`tour-isola`)**: 10 foto, 1,6 → 1,3 MB (−21%), nessuna lasciata JPG.
+  Nome cambiato anche in `index.html` (la copertina della categoria è
+  `santa-cruz-taganana`). Le due più diverse (La Gomera 34,1 dB, tuk tuk 34,3) guardate
+  ingrandite: identiche. Browser: 8 schede pubblicate, elenco, home, 7 pacchetti, 74 foto
+  WebP, nessuna rotta. `CACHE_NAME` → `isla-v566`.
+- **Tour privati (`tour-privati`)**: 2 foto, 341 → 191 KB (−44%): `private-charter` e
+  `masca-teide-cabrio-bus`. Le altre schede usano foto già convertite con le barche e i
+  tour; resta JPG `skyline-cruiser.jpg`, come con le barche. Differenza più alta 37,1 dB
+  (più alta delle categorie già guardate a occhio). Browser: 9 schede, elenco, home, 7
+  pacchetti, 81 foto WebP, nessuna rotta. `CACHE_NAME` → `isla-v567`.
+- **Noleggi (`noleggi`)**: nessuna foto nelle schede, niente da fare.
+- **Le foto della home** (copertine `Cat-*`, riquadri `bento-*`, `About-team`) e
+  `teide-masca` dei pacchetti: 15 foto, 1,1 MB → 801 KB (−28%). Resta JPG
+  `Cat-privati.jpg` (meno del 10%). Nomi cambiati in `index.html`, `esplora-catalog.js`
+  e `pacchetti.js`. Le due più diverse (teide-masca 34,1 dB, bento-giorni-parco 34,2)
+  guardate ingrandite: identiche. Browser: home, elenco, schede, 7 pacchetti, 95 foto
+  WebP, nessuna rotta. `CACHE_NAME` → `isla-v568`.
+- **Le foto della mappa (`assets/mappa/`)**: erano già piccole (720×480) e compresse
+  molto, e in WebP spesso pesavano **di più**: passano solo 15 su 83, 606 → 499 KB.
+  Le altre 68 restano JPG, e nella cartella i due formati convivono senza problemi
+  (`mappa.js` usa il nome scritto in `MAP_PHOTOS`). Nomi cambiati in `mappa-foto.js` e in
+  `index.html`, dove due riquadri di "Scopri Tenerife" usano foto della mappa. Browser:
+  tutte le 83 foto di `MAP_PHOTOS` si caricano, e i tre riquadri della home. La più
+  diversa (montana-amarilla-2, 35,8 dB) guardata intera: identica.
+  `CACHE_NAME` → `isla-v569`.
+
+**Il totale del passaggio a WebP**: 144 foto convertite in 9 PR (#499–#507), da 18,5 a
+12,3 MB, **6 MB in meno (−33%)**. Restano JPG, oltre ad `anteprima.jpg` e alle schermate del
+manifest, le foto dove il WebP non toglieva almeno il 10%: `freebird-3`,
+`skyline-cruiser`, `icod-garachico-orotava`, `paragliding`, `siam-park`, `Cat-privati` e
+68 foto della mappa. **Le foto nuove**: meglio salvarle già in WebP (qualità circa 78);
+una JPG va bene lo stesso, `controlla.js` accetta tutte e due.
+
+**Non controllato**: il repository `isla-ticket`, che carica catalogo e stili da
+`../isla/`. Prende i nomi delle foto dal catalogo, quindi segue da solo; se avesse un nome
+di foto scritto a mano nel suo HTML, va cambiato là.
+
+## La riga della privacy non parla più dell'hotel dove non si chiede (19 ottobre 2026)
+
+Trovato con la prova da cliente: sotto la richiesta la riga `req.privacy` dice "L'hotel
+resta salvato su questo dispositivo" anche dove l'hotel non si chiede. Ora c'è
+`req.privacyNoHotel`, la stessa riga senza quella frase, nelle cinque lingue:
+
+- **finestra della richiesta** (`tour.html` ed `escursioni.html`): la sceglie
+  `mostraPunto()` in `escursioni.js`, che gira all'apertura, quando si spunta o si toglie
+  il transfer e al cambio lingua. Senza ritiro (Freebird 2 ore, Freebird 3 ore senza
+  transfer) la riga senza hotel; col ritiro, o col transfer spuntato, quella con l'hotel;
+- **finestra della lista** (`lista.js`): sempre senza hotel, perché lì si chiedono solo
+  nome ed email. L'hotel si scrive nella finestra di ogni escursione, dove la frase c'è;
+- **pacchetti**: invariata, la finestra del pacchetto chiede sempre l'hotel.
+
+Provato nel browser: i cinque casi della finestra, il ritorno senza hotel togliendo il
+transfer, il tedesco e lo spagnolo dopo il cambio lingua, la lista.
+
+**Risolto subito dopo (#509)** — era aperto: la frase "Quello che scrivi serve solo a
+risponderti su WhatsApp" non dice che dal 13 ottobre una copia della richiesta (nome,
+hotel, persone) va anche nel database. `privacy.html` lo dice in modo corretto; anche il
+commento sopra `req.privacy` in `i18n.js` ("nel sito non c'è una sola chiamata di rete")
+è di prima di `richieste.js`. È un testo legale: non toccato senza il proprietario.
+`CACHE_NAME` → `isla-v570`.
+
+### "Serve solo a gestire la tua richiesta e a risponderti" (19 ottobre 2026)
+
+Il proprietario ha approvato la frase nuova all'inizio della riga della privacy, in
+`req.privacy` e in `req.privacyNoHotel`, nelle cinque lingue, e nel testo di riserva di
+`tour.html` ed `escursioni.html`: "Quello che scrivi serve solo a **gestire la tua
+richiesta e** a risponderti su WhatsApp" (en "to handle your request and reply", es
+"gestionar tu solicitud y responderte", fr "traiter votre demande et vous répondre", de
+"Ihre Anfrage zu bearbeiten und Ihnen … zu antworten"). Prima non diceva che una copia
+della richiesta va anche nel database. Rifatto anche il commento sopra `req.privacy`,
+che diceva che il sito non manda niente a nessuno. Provato nel browser: le cinque lingue
+con l'hotel, la riga senza hotel, la finestra di un pacchetto. `CACHE_NAME` → `isla-v571`.
+
+## La seconda prova da cliente, e il transfer dei buggy (19 ottobre 2026)
+
+Seconda prova da cliente, diversa dalla prima: famiglia inglese su Android (2 adulti, 2
+bambini, 1 neonato) con Teide National Park (ritiro), Siam Park e un buggy nella lista,
+poi ricerca, filtri, un pacchetto, un ticket sbagliato, mappa, noleggi. Nessun errore
+JavaScript. Trovati:
+
+1. **Il buggy col transfer perdeva il prezzo** — corretto, sotto.
+2. **Siam Park: "ritiro in hotel" anche col transfer rifiutato** — corretto, sotto (#511). Sta in `PICKUP_IN_HOTEL`
+   (regola del 24 settembre: la scheda permette il transfer → hotel), ma il transfer è
+   solo "su richiesta da Tenerife Nord / da Los Gigantes". Il messaggio dice insieme
+   "transfer: no, no" e "Punto di ritiro: in hotel". **Da chiedere al proprietario** come
+   arriva al parco chi sta al sud; forse vale anche per Loro Parque e Twin Ticket.
+3. **Corretto (#512)** — il conto dei mezzi si leggeva male: "1 2 posti × €180" (`totaleMezzi()` in
+   `escursioni.js`, `scelto.n + " " + scelto.label`), anche nel messaggio WhatsApp.
+4. **Corretto (#512)** — la ricerca non trovava le schede per famiglie con "kids", "children", "family" (0, 0,
+   1 risultato): cerca solo in titolo, descrizione, zona e categoria, non in `family`.
+5. Il Siam Park chiede "A che ora" con le fasce, ma i parchi non hanno orari: dipende
+   dal punto 2.
+
+### Il transfer dei buggy è gratis
+
+Il proprietario: "il transfer dei buggy è gratis". In `units` della scheda
+`buggy-volcano-4h` mancava `transferPrice`, che **assente** vuol dire "non sappiamo quanto
+costa": col transfer spuntato il totale spariva, la lista scriveva "da €180/buggy" anche
+col buggy da 4 posti e il buggy usciva dal totale (284 € invece di 524 € nella prova).
+Ora `transferPrice: 0`, "compreso". È l'unica scheda a mezzi che aveva il problema
+(Mustang e quad il transfer non ce l'hanno, la moto d'acqua aveva già 0). Provato:
+1×4 posti 240 € con e senza transfer, 2×2 + 1×6 col transfer 690 €, Montagna su strada
+180 € (lì la casella non c'è), lista 930 €, messaggio WhatsApp coi totali.
+`CACHE_NAME` → `isla-v572`.
+
+### Siam Park: senza transfer nessuno passa a prenderti (19 ottobre 2026)
+
+Il proprietario: al Siam Park "ci possono andare da soli oppure ci sono le fermate, il bus
+dal sud è gratuito". Quindi il ritiro in hotel c'è **solo** col transfer su richiesta
+(da Nord, o da Los Gigantes / Callao Salvaje / Playa Paraíso). `siam-park` passa da
+`PICKUP_IN_HOTEL` a `PICKUP_NESSUNO`: senza transfer la finestra non chiede l'hotel (e
+svuota quello ricordato da ieri), non mostra nessun punto, e il messaggio non ha né hotel
+né ritiro. **Il Siam Park ha due caselle del transfer** (`transfer` e `transferSiam`), e
+fino a oggi "transfer spuntato → chiedi l'hotel" guardava solo la prima: ora
+`transferChiesto()` in `escursioni.js` le conta tutte e due, e così `transferSpuntato()`
+della finestra, la riga dell'hotel e del ritrovo nel messaggio, `aggiornaRitrovo()` e
+`richiestaVoce()` in `richieste.js`. Le fermate del bus gratuito **non** si scrivono:
+non le abbiamo.
+
+Provato nel browser: Siam senza transfer (niente hotel, niente punto), col transfer da
+Nord e da Los Gigantes (hotel e "il tuo hotel"), spuntato e tolto (sparisce), e il
+messaggio WhatsApp e il database delle due richieste. Twin Ticket, Loro Parque e Freebird
+come prima. **Loro Parque e Twin Ticket**: fatti subito dopo (#513), sotto. `CACHE_NAME` → `isla-v573`.
+
+### Il conto dei mezzi e la ricerca per le famiglie (19 ottobre 2026)
+
+**Il conto dei mezzi** (`totaleMezzi()` in `escursioni.js`): prima il tipo, poi quanti.
+"4 posti: 1 × €240", "Singola: 2 × €95", "Con 1 o 2 persone: 1 × €250", e il transfer a
+pagamento "Transfer: 2 × €12". Prima era "1 4 posti × €240" e sulla Mustang "1 Con 1 o 2
+persone × €250". È la stessa funzione per la finestra, la lista e il messaggio WhatsApp.
+Il nome del mezzo nella lingua giusta: fatto subito dopo (#514), sotto.
+
+**La ricerca**: sulle schede con `family: true` si cerca anche in `PAROLE_FAMIGLIA`
+(`escursioni.js`), le parole di un genitore nelle cinque lingue (famiglia, bambini,
+kids, children, niños, enfants, Kinder…). "kids", "children", "bambini", "niños",
+"enfants" ora trovano 56 schede, le stesse del filtro "Con la famiglia"; prima 0.
+"dolphin" e "xyz" come prima. Una scheda nuova adatta ai bambini la si trova così solo
+se ha `family: true`. `CACHE_NAME` → `isla-v574`.
+
+### Loro Parque e Twin Ticket come il Siam Park (19 ottobre 2026)
+
+Il proprietario: anche a Loro Parque e col Twin Ticket "ci possono andare anche da soli",
+e il transfer c'è su richiesta, a pagamento (Loro Parque da sud: 65 €/49 € invece di
+44 €/32 €; Twin Ticket da sud per Loro Parque 99 €/74 €, da nord per il Siam Park 103 €/78 €,
+invece di 78 €/57 €). Tutti e due passano da `PICKUP_IN_HOTEL` a `PICKUP_NESSUNO`: l'hotel si
+chiede solo col transfer spuntato. Le due caselle del Twin Ticket le conta già
+`transferChiesto()` (#511). Provato nel browser: senza transfer niente hotel né punto e il
+prezzo senza transfer; con ciascun transfer l'hotel, "il tuo hotel" e il prezzo col
+transfer; messaggio WhatsApp e database coerenti. `CACHE_NAME` → `isla-v575`.
+
+### I nomi dei mezzi nella lingua del momento (19 ottobre 2026)
+
+Il conto del totale (`totaleMezzi()`) usava il nome del mezzo salvato nella voce della
+lista, cioè nella lingua di quando la voce era entrata: aggiunto in italiano e mandato
+in inglese, il messaggio diceva "Total: €240 (4 posti: 1 × €240)". Ora rilegge il nome dal
+catalogo per posizione, come già faceva `unitaTesto()` per la riga "Buggy: …"; il nome
+salvato resta come ripiego. Provato: aggiunti buggy e moto d'acqua in italiano, poi
+inglese ("4 seats", "Single"), spagnolo ("4 plazas") e tedesco (lista in tedesco,
+messaggio all'ufficio in italiano per `perUfficio()`). `CACHE_NAME` → `isla-v576`.
+
+## La terza prova da cliente (19 ottobre 2026)
+
+Coppia francese, sul computer (1280 px) e sul telefono: Scandal Dinner Show, charter del
+Luxury Catamaran, Castillo San Miguel col menu, codice sconto, il pacchetto "Au volant, à
+deux", il noleggio, "Le mie prenotazioni" con una richiesta da pagare, una confermata e una
+annullata, il sito senza rete. Nessun errore JavaScript. Funzionano: il calendario (Scandal
+solo di sabato: 24 e 31), il charter (prezzo a gruppo, niente totale a persona), i menu, il
+codice sconto sbagliato (messaggio chiaro, la richiesta non parte finché non si toglie),
+il pacchetto (580 € − 10% = 522 €, messaggio in italiano), "Le mie prenotazioni" (Payer
+maintenant, ticket con ora e luogo, l'annullata con la spiegazione), offline (tutte le
+pagine dalla cache). Trovati:
+
+1. **Il menu restava nella lingua del cliente nel messaggio all'ufficio** ("Menu: Végétarien
+   × 1" in un messaggio in italiano) — corretto, sotto.
+2. **Nove schede in `PICKUP_IN_HOTEL` hanno il transfer facoltativo** (la casella "Vuoi il
+   transfer?"), come il Siam Park prima del #511: senza la spunta la finestra chiede
+   l'hotel "per dirti dove passiamo a prenderti". peter-pan (gratis dal sud solo alle
+   12:00), submarine-safari (dal sud compreso, dal nord 13 €), luxury-cruiser (60 €/40 €),
+   kayak-snorkelling (2 €/4 € sul posto), jet-ski-safari-1-2h (gratis dalle partenze di Las
+   Galletas), immersioni (compreso), castillo-san-miguel (a pagamento), scandal-dinner-show
+   (da Los Gigantes, Playa Paraíso, Puerto de la Cruz, Caletillas, prezzo su richiesta),
+   luxury-cruiser-charter (5 € a persona). **Da decidere col proprietario, scheda per
+   scheda.**
+3. **Le schede solo per adulti lasciano mettere i bambini**: Scandal (16+) accetta "2 adulti
+   e 1 bambino", il totale sparisce e la richiesta parte. Stessa cosa possibile su Utopia
+   (18+), cantine (18+), Talaria (14+), surf (13+). **Da decidere col proprietario.**
+4. **Corretti (#518)** — minori: nel pacchetto il conto dei mezzi era ancora "Mustang: 1 × Con 1 o 2 persone €250"
+   (non il formato del #512); la nota del pacchetto parla di "buggy o moto d'acqua" anche
+   quando il mezzo è la Mustang. Il noleggio è un link diretto a WhatsApp ("Vorrei
+   noleggiare: Fiat Panda. Dal … al …"): non passa dalla lista né dal database, è voluto.
+
+### Il menu nella lingua giusta
+
+La lista salvava il menu solo come frase già scritta ("Végétarien × 1 · Menu standard ×
+1"), quindi nella lingua di quando la voce era entrata. Ora salva anche i numeri
+(`menuN`, per posizione in `tour.menus`) e `menuTesto(req, tour)` riscrive la frase dal
+catalogo nella lingua del momento: nella lista e nel messaggio, che per francese e tedesco
+è in italiano. Le voci vecchie, con la sola frase, la mostrano come prima. Provato:
+Castillo con un vegetariano e un vegano aggiunto in francese → lista in francese e poi in
+inglese, messaggio "Vegetariano × 1 · Vegano × 1 · Menu standard × 1"; una voce del formato
+vecchio. `CACHE_NAME` → `isla-v577`.
+
+### Niente campo bambini sulle schede solo per adulti (19 ottobre 2026)
+
+Il proprietario: "togli il campo bambini sugli spettacoli per adulti". La regola sta nei
+dati, non in un elenco: `soloAdulti(tour)` in `escursioni.js` è vera quando `ages` ha solo
+la fascia `adult`, scritta "N+" con N da 13 in su, senza `child` né `infant`. Oggi prende
+Utopia Boat Party (18+), Talaria (14+), surf (13+), Scandal Dinner Show (16+) e cantine
+(18+). Una scheda "12+" senza bambini **non** conta: lì di solito i bambini salgono e manca
+solo il prezzo. La finestra della richiesta nasconde il campo (e lo azzera) con
+`mostraBambini()`, accanto a `mostraNeonati()`, all'apertura e al cambio lingua. Scritto
+anche nel vocabolario di `ages` in testa al catalogo. Provato: le cinque schede senza il
+campo, Freebird e Teide col campo, Scandal dopo il passaggio all'inglese, il messaggio
+"Persone: 2 adulti". `CACHE_NAME` → `isla-v578`.
+
+### Le nove schede col transfer facoltativo: solo col transfer (19 ottobre 2026)
+
+Il proprietario: "metti col transfer". Le nove schede trovate con la terza prova (Peter Pan,
+Submarine Safari, Luxury Cruiser e il suo charter, kayak, moto d'acqua, immersioni,
+Castillo San Miguel, Scandal Dinner Show) passano da `PICKUP_IN_HOTEL` a `PICKUP_NESSUNO`,
+come Siam Park, Loro Parque e Twin Ticket: l'hotel si chiede e il ritiro si promette solo
+col transfer spuntato, anche dove dal sud è compreso. Ora in `PICKUP_IN_HOTEL` non resta
+nessuna scheda con la casella del transfer, e la regola è scritta in CLAUDE.md ("Se il
+transfer è una scelta del cliente, la scheda sta in `PICKUP_NESSUNO`"). Il Luxury Cruiser
+charter era l'ultima voce di `PICKUP_IN_HOTEL`, senza virgola: tolta col suo commento.
+Provato nel browser: tutte e nove senza transfer (niente hotel, niente punto) e col
+transfer (hotel, "il tuo hotel"); Royal Delfin, ritiro compreso senza casella, come prima;
+messaggio WhatsApp senza e col transfer. `CACHE_NAME` → `isla-v579`.
+
+### Il pacchetto: conto dei mezzi e nota (19 ottobre 2026)
+
+Il conto dei mezzi del pacchetto (`pacchettoContoMezzi()` in `pacchetti.js`) ora si legge
+come quello delle schede, col prezzo fra parentesi: "Mustang: Con 1 o 2 persone × 1
+(€250) · Buggy: 2 posti × 1 (€180)", nella finestra, nella lista e nel messaggio. Prima era
+"Mustang 1 × Con 1 o 2 persone €250". La nota `pack.unitNote` non dice più "si paga a
+buggy o a moto d'acqua" (falso sul pacchetto con la Mustang) ma "un mezzo che si paga
+intero, non a testa", nelle cinque lingue. Provato in italiano e in tedesco sul pacchetto
+"Al volante, in due". `CACHE_NAME` → `isla-v580`.
+
+### Submarine con due transfer, Scandal senza totale col transfer (19 ottobre 2026)
+
+Rileggendo le nove schede col transfer facoltativo erano venuti fuori due prezzi sbagliati.
+Il proprietario: "metti due caselle sul Submarine e togli il totale allo Scandal".
+
+**Submarine Safari.** La casella era una sola, col prezzo del nord (74 €/45 €), e chi stava al
+sud spuntandola vedeva 74 € anche se dal sud la navetta è compresa. Ora due caselle, come il
+Twin Ticket: **Transfer dal sud** (`transfer`, "Compreso nel prezzo", niente `transferPrice`:
+il prezzo resta 61 €/37 €) e **Transfer dal nord** (`transferSiam`, "€13 in più a adulto e €8 a
+bambino", `transferSiamPrice` 74/45, `transferSiamPriceHidden`). Le etichette sono
+"Transfer dal sud" / "Transfer dal nord" e non domande, perché valgono anche come titolo
+della riga nella pagina della scheda. Lì la riga del secondo transfer aveva il titolo fisso
+"Transfer Siam Park": ora `tour.js` usa `transferSiamLabel` quando c'è, come già faceva
+`transferLabel` per il primo.
+
+**Scandal Dinner Show.** Il transfer ha "prezzo su richiesta". Su una scheda a persona un
+`transferPrice` assente vuol dire "il transfer non cambia il prezzo" (compreso, gratis o
+pagato sul posto: Peter Pan, immersioni, kayak), quindi lo Scandal col transfer mostrava
+il totale senza transfer, più basso del vero. Campo nuovo `transferPriceUnknown: true`
+(scritto nel vocabolario): col transfer spuntato `prezziAPersona()` torna null e il totale
+non si fa; nella lista lo Scandal resta "da €94" e non entra nel totale.
+
+Provato nel browser: Submarine senza transfer e dal sud 159 € (2 adulti e 1 bambino), dal
+nord 193 €, le due caselle si escludono; Scandal 188 € senza transfer e niente totale col
+transfer; Castillo e Peter Pan come prima; pagina della scheda di Submarine, Siam Park e
+Twin Ticket; lista e messaggio. `CACHE_NAME` → `isla-v581`.
+
+### Immersioni: lo snorkeling senza la casella del transfer (19 ottobre 2026)
+
+Sulle immersioni il transfer sta sulla scheda (ritiro compreso), e la variante Snorkeling lo
+ereditava, anche se la spiegazione stessa dice che lo snorkeling delle 10:30 è senza ritiro:
+la finestra mostrava la casella e chiedeva l'hotel. C'era già un commento "Niente transfer",
+ma non bastava, perché l'assenza del campo vuol dire "come la scheda". Ora la variante ha
+`transfer: null`: `transferDi()` (e `transferOfferto()` dei venditori) leggono la variante per
+prima, quindi niente casella, niente hotel, niente righe di transfer nel messaggio. Il
+`ritrovo` non l'ho messo: si sa solo "Los Cristianos", non il posto preciso. Provato:
+Snorkeling senza casella, Battesimo e 1 immersione con la casella come prima, messaggio
+delle due richieste. `CACHE_NAME` → `isla-v582`.
+
+### Immersioni: il punto di ritrovo è il centro Big Fish (19 ottobre 2026)
+
+Il proprietario ha mandato l'indirizzo: "C. Jesus Dominguez Grillo, 19, loc 2, 38650 Los
+Cristianos" (Plus Code 372H+4R). Sta come `ritrovo` **sulla scheda** delle immersioni, non
+solo sullo snorkeling: lo vede chiunque non abbia il ritiro, cioè lo snorkeling (che il
+transfer non ce l'ha) e chi non spunta la casella sulle altre varianti. Scritto come
+l'ha mandato, senza tradurlo; il Plus Code sta solo nel commento, perché per il cliente
+è illeggibile e l'indirizzo basta alla mappa. Provato: snorkeling e battesimo senza
+transfer "Punto di ritrovo: Big Fish, …", col transfer sparisce e si chiede l'hotel; il
+messaggio e il database (`pickup_point`) col posto; la richiesta confermata in "Le mie
+prenotazioni" con "Apri nella mappa" che cerca l'indirizzo. `CACHE_NAME` → `isla-v583`.
+
+## La quarta prova da cliente, e le 24 ore vere (19 ottobre 2026)
+
+Gruppo di 8 amici spagnoli, sul telefono, di sera: il pallino della chat, il calendario
+all'ultimo momento, la lista (doppione, data passata, togliere una voce), gli avvisi
+rifiutati, la mappa, la tastiera. Nessun errore JavaScript. Funzionano: la chat (domande
+frequenti, poi cosa / bambini / quando / budget e le schede giuste), la voce con la data
+passata (avviso, pulsante spento finché non si toglie), la ✕ della lista, gli avvisi
+rifiutati (la richiesta parte lo stesso), la mappa (elenco, scheda del posto con foto e
+"Portami qui"), tutte le immagini con `alt` e tutti i pulsanti con un nome. Trovati, e
+decisi dal proprietario:
+
+1. **Le 24 ore valevano per il giorno, non per l'ora**: alle 22:30 si chiedeva il buggy
+   delle 8:20 del mattino dopo. Il proprietario: "24 ore vere". Fatto, sotto.
+2. **La stessa escursione aggiunta due volte** (stessa scheda, variante, giorno e ora)
+   finiva due volte nella lista e nel messaggio. Il proprietario: sì alla proposta, non
+   duplicarla e dire "è già nella tua lista".
+3. **Il tasto Tab usciva dalla finestra della richiesta** (15 volte su 25), e chiudendo
+   con Esc il fuoco non tornava sul pulsante. Il proprietario: sì alla correzione.
+
+### Le 24 ore vere
+
+`partenzaPossibile(giorno, ora)` in `escursioni.js`: una partenza si chiede solo se
+mancano almeno 24 ore. L'ora è la prima scritta ("08:20", o l'inizio della fascia
+"09:00 - 10:00"); senza ora (charter con `times: []`, "Da concordare") si conta fino alle
+23:59 di quel giorno. `giornoPossibile()`: un giorno si può toccare nel calendario se
+almeno una sua partenza (vere, fasce segnaposto o nessuna) ci arriva. `riempiOrari()`
+spegne le ore troppo vicine del giorno scelto e, se quella scelta si è spenta, passa alla
+prima buona; il menu si rifà appena cambia la data. `listaVoceScaduta()` in `lista.js`
+usa la stessa regola, quindi una voce entrata per domani alle 11:00 stasera è scaduta.
+Restano "da domani": il calendario nativo del **pacchetto** (il primo dei tre giorni è
+indicativo, lo fissa l'ufficio) e i giorni proposti dalla **chat**, che servono solo a
+filtrare le schede. Provato con l'orologio finto: buggy alle 22:30 (domani spento) e alle
+10:00 (8:20 spenta), Masca + Teide con le fasce alle 12:00 e alle 17:30, i due charter
+alle 23:00, la lista. La regola è scritta anche in CLAUDE.md. `CACHE_NAME` → `isla-v584`.
+
+### La stessa escursione due volte nella lista (19 ottobre 2026)
+
+`listaAggiungi()` in `lista.js`: se nella lista c'è già una voce uguale
+(`listaStessaVoce()`: stessa scheda, stessa variante per posizione, stesso giorno e stessa
+ora; per i pacchetti stesso pacchetto e stesso giorno), la voce di prima prende i dati
+nuovi e il cliente legge "Era già nella tua lista: l'ho aggiornata" (`lista.updated`,
+cinque lingue). Le persone non contano nel confronto: sono proprio quello che il cliente
+corregge aggiungendola di nuovo. Avevo proposto "è già nella tua lista, cambia le persone
+lì", ma la lista non ha un modo di cambiarle (solo la ✕): aggiornare fa la stessa cosa
+senza un passo in più. Provato: Royal Delfin due volte uguale (una voce), poi con 9 adulti
+(una voce, 9 adulti); Freebird 2 ore e 3 ore (due voci); buggy alle 11:00 e alle 13:30 (due
+voci); il pacchetto due volte (una voce, adulti aggiornati), col messaggio giusto.
+`CACHE_NAME` → `isla-v585`.
+
+### La tastiera resta dentro le finestre (19 ottobre 2026)
+
+Una regola sola in fondo ad `app.js`, che tutte le pagine del sito caricano, per tutte le
+finestre `[role=dialog][aria-modal=true]` (menu, richiesta, ticket, lista, pacchetto, chat,
+istruzioni per installare): un `MutationObserver` si accorge quando una si apre o si
+chiude. Aprendosi, ricorda l'ultimo elemento col fuoco fuori dalle finestre e, se il
+codice della finestra non ha già messo il cursore dentro (lo fa solo dove serve, per non
+aprire la tastiera del telefono), lo porta sul primo elemento toccabile, di solito la ✕.
+Tab e Maiuscolo+Tab girano solo dentro la finestra in cima. Chiudendosi, il cursore torna
+dove si era partiti. Per chi usa le dita non cambia niente. La mappa (`aria-modal="false"`)
+non è toccata: lì la pagina dietro resta usabile. Provato con la tastiera sulle sei
+finestre principali: apertura con Invio, 30 Tab e 30 Maiuscolo+Tab tutti dentro, Esc
+chiude e il fuoco torna sul pulsante; poi i giri col dito (richiesta fino a WhatsApp).
+`CACHE_NAME` → `isla-v586`.
+
+## La quinta prova da cliente (19 ottobre 2026)
+
+Coppia italiana più anziana: modalità scura, testo ingrandito del 30% (come "carattere
+grande" su Android), cognome con l'apostrofo, e il database che non risponde proprio
+mentre parte la richiesta. Poi un **controllo a tappeto** di tutte le schede pubblicate.
+**Nessun errore trovato, nessun codice cambiato.**
+
+- **Database guasto o appeso** al momento dell'invio: WhatsApp si apre lo stesso dopo
+  circa 2 secondi, col codice nel messaggio. La richiesta resta nel telefono "da mandare"
+  e `richiesteRiprova()` la manda alla visita dopo, **con lo stesso codice** che l'ufficio
+  ha già ricevuto su WhatsApp (provato: guasto, poi riapertura con la rete buona).
+- "Giuseppe D'Angelo" arriva intatto nel messaggio.
+- Modalità scura: si legge tutto, finestra della richiesta compresa.
+- Testo ingrandito: nella capsula la voce attiva "Esperienze" diventa "ESP…". È voluto
+  (`text-overflow: ellipsis` su `.isla-tab[aria-current="page"]`): la capsula non deve
+  uscire dallo schermo.
+- **Tutte le 67 schede pubblicate, 161 varianti**, una per una nel browser: la finestra
+  si apre, il calendario ha almeno un giorno prenotabile, il totale per 1 adulto (o 1
+  mezzo del primo tipo) è uguale al prezzo del catalogo, nessun errore JavaScript. Sulla
+  scheda bici le varianti stanno in gruppi chiusi (`<details>`): il programma di prova
+  deve aprirli prima di toccare il pulsante. Lo script sta nella scratchpad della sessione
+  (`i3.js`); rifarlo dopo una modifica grossa al catalogo o alla finestra vale la pena.
+
+## La sesta prova da cliente: il cliente pignolo (19 ottobre 2026)
+
+Un cliente che prima di prenotare legge tutto e confronta. **Nessun errore trovato, nessun
+codice cambiato.**
+
+- **Prezzi "da €…"** (`priceFrom`) confrontati col prezzo vero più basso di ogni scheda
+  pubblicata (variante più economica, o mezzo più economico): nessuno è più basso, nessuno
+  più alto. Le schede a mezzi con `priceUnit` (Mustang, buggy…) sono escluse dal "più
+  basso": lì il "da" è il prezzo a testa col mezzo pieno, per scelta.
+- **Testi in cinque lingue**: 390 pagine (le pagine del sito, due pacchetti e le 67 schede,
+  per it/en/es/fr/de) cercando "undefined", "NaN", "null", "[object", segnaposti `{n}`,
+  chiavi di `i18n.js` rimaste scoperte, parole italiane nelle altre lingue e `<html lang>`
+  sbagliato. Una sola segnalazione, falsa: in tedesco "bei null anfangen" (da zero).
+- **Link e numero**: un solo numero (+34 662 908 073, 64 volte nel sito), nessun link
+  interno verso un file che non c'è.
+- **Termini e domande frequenti** dicono le regole che il sito applica: 24 ore,
+  pagamento col link prima della conferma, annullamento gratis fino a 24 ore prima,
+  rimborso entro 15 giorni, "quello che non è compreso è scritto sulla scheda".
+- **Ancora da fare, dal proprietario**: l'email e il numero di registro dell'agenzia
+  (I-AV-…) in "Chi siamo" dei termini e "Chi è il titolare" della privacy, nelle cinque
+  lingue (li chiede la LSSI). Piccola cosa: `faq.a2` dice "almeno 24 ore prima della
+  **data** dell'escursione"; dal #522 le 24 ore si contano dall'ora di partenza.
+  Corretto il 20 ottobre, sotto.
+
+## 19 ottobre 2026 — Compagnie nuove dai fogli dei venditori del 14-18 ottobre
+
+Il proprietario ha mandato le foto dei fogli di carta di Karien, Agustin, Fab, Francy e
+Joao. Ricavati i netti ticket per ticket (totale − commissione) e confrontati con la
+tabella Notion "Netti da inserire". **I numeri non sono qui**: stanno su Notion e
+nell'SQL preparato nella scratchpad, non committato. Nomi aggiunti ai `nomi`, con le
+risposte del proprietario:
+
+- **Tenerife Stars** ("TNF Stars" sul ticket) fa il **gruppo grande** del Teide Stars:
+  nei `nomi` della scheda e dentro la variante, come Andromeda sul gruppo piccolo;
+- **Top Buggy**: compagnia di buggy (il ticket era un 4 posti);
+- **Ace**: compagnia di jet ski. Il netto resta da chiarire (doppia o due singole);
+- **Roberto Paragliding**: "è la stessa attività" del Paragliding;
+- **Rydhere** e **Sol Mobility** sul Noleggio scooter elettrico, accanto a MRB (la
+  commissione è l'acconto, come tutti i noleggi). "Rydhere" è letto da una scrittura a
+  mano: da ricontrollare sul prossimo ticket;
+- **AJ Fly** sul Parascending, **Big Fish** sulle Immersioni (il "Try dive" è il
+  battesimo), **Roca** sul Noleggio auto;
+- **Maxicat**: compagnia nuova, la scheda la aggiunge il proprietario dopo. Il netto sta
+  solo su Notion finché la scheda non c'è.
+
+Attenzione a "Ace": `compagniaNelTesto()` cerca il nome dentro il testo, e "ace" sta
+anche dentro parole come "place". Su un ticket di jet ski senza altra compagnia scritta
+potrebbe sceglierla da sola; il venditore la vede nel menu e la cambia.
+
+Restano domande aperte al proprietario (Aqualand 15% o 20%, Freebird 4 ore e mezza,
+bambino di Teide National Park e funivia, Kalima Kat privata con 18 persone, link di
+pagamento card o cash, Jungle Park e Sottomarino sempre card): segnate su Notion.
+
+Provato: `compagniaNelTesto()` in Node trova ogni nome nuovo nel testo del foglio
+("TNF STARS", "Aj Fly Parascending", "Roca auto class c"…), e scegliere Tenerife Stars
+porta alla variante gruppo grande. Otto pagine del cliente a 375 px senza errori e
+senza scroll, nessun nome visibile al cliente. SQL provato su Postgres 16 con schema e
+modifiche: i ticket dei fogli prendono il netto scritto sulla carta, uno con un netto
+già fissato non si tocca, lanciato due volte non fa danni, il guardiano resta acceso.
+`CACHE_NAME` → `isla-v587`.
+
+**Jungle Park e Submarine Safari contano sempre come card (20 ottobre 2026,
+proprietario):** sui fogli dei venditori la commissione era già divisa con la parte
+della carta anche quando il cliente pagava in contanti. `pagamento: "card"` sulle due
+schede e le due voci nei due elenchi di `supabase/modifiche/2026-10-09-solo-card.sql`,
+da rilanciare intero. Dagli stessi fogli, risposte del proprietario: Aqualand ha la
+commissione del 20% (non 15%), Extreme singola è da 1 ora, Ace è una doppia da 1 ora,
+il ticket 0817 di Karien (Freebird 4 ore e mezza) aveva il netto sbagliato. I numeri
+stanno su Notion e nell'SQL della scratchpad. Provato su Postgres 16: un Jungle Park e
+un Submarine salvati cash diventano card, un Whale resta cash; nel browser le due
+schede senza errori a 375 px. `CACHE_NAME` → `isla-v588`.
+
+## Il pulsante "Condividi" sulla scheda (20 ottobre 2026)
+
+Spesso a scegliere l'escursione è una persona sola, che poi la manda agli altri
+su WhatsApp. Ora ogni scheda ha **"Condividi"**: sta a destra della categoria,
+sopra il titolo. Nella foto non ci può stare, perché la foto è già un bottone
+(quello che la ingrandisce) e un bottone dentro un altro non si può mettere.
+
+Cosa fa (`collegaCondividi()` in `tour.js`):
+- **sul telefono** apre il menu di condivisione del telefono (`navigator.share`),
+  con titolo, una frase ("Guarda questa escursione a Tenerife: …") e il link;
+- **dove `navigator.share` non c'è** (quasi tutti i computer) copia il link, e per
+  due secondi il pulsante dice "Link copiato";
+- **se anche la copia non riesce** apre WhatsApp col link già scritto.
+
+Il link è quello pulito, `tour.html?id=…`, senza nient'altro dietro. Chi lo apre
+vede il sito nella sua lingua, non in quella di chi glielo ha mandato. I testi
+sono `detail.share`, `detail.shareCopied` e `detail.shareText`, nelle cinque
+lingue; il tedesco dà del "Sie", il francese del "vous", come il resto del sito.
+
+Provato nel browser: a 320 px la pagina non esce dallo schermo, il menu del
+telefono riceve il link giusto, sul computer il link si copia e la scritta
+torna come prima.
+
+### Niente "Aggiungi al calendario" (20 ottobre 2026)
+
+Proposto insieme a "Condividi": un file `.ics` sulle escursioni confermate, con data,
+ora e punto di ritrovo. Il proprietario l'ha scartato: il promemoria sul telefono
+lo manda già `manda-notifiche`, e due promemoria per la stessa cosa non servono.
+Sta anche fra le "Cose decise" di `CLAUDE.md`.
+
+## Le copie piccole delle foto (20 ottobre 2026)
+
+Il proprietario: "facciamo le foto più leggere". Il WebP era già fatto (19 ottobre). Il
+peso che restava era un altro: le schede dell'elenco, le copertine della home, le
+miniature della galleria e le "altre esperienze" mostrano le foto **larghe al massimo
+350 px** (misurato da 320 a 1920 px di schermo), ma scaricavano la foto intera da 1200
+px, a volte 1920.
+
+Ora **ogni foto di `assets/` ha una copia larga 720 px, con lo stesso nome, in
+`assets/piccole/`**. La fa `foto-piccole.py` (WebP qualità 78, JPG qualità 82, profilo
+colore tenuto; le foto già piccole si copiano com'erano). La usano:
+- `tourCard()` in `escursioni.js` (l'elenco), con la funzione `fotoPiccola()`;
+- in `tour.js` le miniature della galleria e le "altre esperienze"; la foto grande in
+  cima resta quella intera, anche quando la cambia una miniatura;
+- in `index.html` le copertine delle categorie, i riquadri `bento-*` e
+  `icod-garachico-orotava` (le foto della mappa erano già 720 px e restano dove sono).
+
+**Non le usano**, perché lì la foto si vede grande: la foto in cima alle schede, la testata
+dell'elenco, `About-team` (fino a 500 px), le tessere dei pacchetti (fino a 530 px sul
+computer) e la pagina del pacchetto.
+
+**Perché 720 e non `srcset`**: con `srcset` il browser sceglie per la densità dello
+schermo, e un iPhone (3×) su una scheda larga 348 px vorrebbe 1044 px: avrebbe preso
+sempre la foto grande, cioè nessun risparmio proprio sui telefoni. 720 px su 348 sono
+già il doppio. Confrontate ingrandite due volte, a 3×: la piccola è appena più morbida,
+alla misura vera uguale.
+
+Misurato (iPhone 390 px, 3×, pagina scorsa fino in fondo, foto scaricate):
+home 1344 → 930 KB, elenco 551 → 421 KB, le 67 schede insieme 28,0 → 17,3 MB (−38%).
+Il video della home (1,4 MB) è già compresso bene: ricompresso toglieva 15–30% ma si
+vedeva peggio, lasciato così.
+
+**Una foto nuova**: si mette in `assets/` e si lancia `python3 foto-piccole.py`.
+`controlla.js` dà errore se una foto non ha la sua copia (sezione 6-bis).
+Browser: 71 pagine (home, elenco, pacchetti, mappa, tutte le schede), nessuna foto rotta,
+nessun errore. `CACHE_NAME` → `isla-v590`.
+
+## Le recensioni, primo passo: il database e il modulo (20 ottobre 2026)
+
+Il proprietario: "vada per le recensioni". Le recensioni dei fornitori non si copiano
+(regola di sempre); queste sono **di Isla**, scritte dai nostri clienti. Decisioni del
+proprietario, 20 ottobre 2026:
+- le scrive **solo chi c'è stato**: niente modulo aperto sulla scheda, perché lì
+  arriverebbero anche le recensioni finte e quelle dei concorrenti;
+- escono **solo dopo che l'ufficio le ha lette e approvate**; scartata, una recensione
+  si cancella subito;
+- si vedono **nome e iniziale** ("Marco R."), la lingua, il mese dell'escursione;
+- si vedono **sulla scheda**, e nell'elenco le stelle solo da 3 recensioni in su;
+- una pubblicata **resta finché il cliente non chiede di toglierla** (su WhatsApp).
+
+Quattro passi, uno alla volta:
+1. **fatto** — il database e il modulo per il cliente (questo);
+2. l'ufficio approva o scarta, nella pagina dei venditori;
+3. le recensioni sulla scheda, e le stelle nell'elenco;
+4. l'avviso sul telefono il giorno dopo ("Com'è andata?").
+
+**Il database** (`supabase/modifiche/2026-10-20-recensioni.sql`, si incolla una volta
+nel SQL Editor). La tabella `recensioni` ha solo quello che si mostra (stelle, testo,
+nome, lingua, mese, scheda) più `booking_id`, il legame col ticket: serve a non riceverne
+due per la stessa escursione. Telefono, numero del ticket e chiave **non ci sono**.
+Quando la pulizia mensile cancella il ticket, `booking_id` diventa vuoto e la recensione
+resta. Le porte:
+- `lascia_recensione()`: l'unica da cui il cliente scrive. Due modi di dimostrare che
+  c'era, gli stessi con cui ritrova le escursioni: numero + telefono (ticket di carta) o
+  chiave + scheda + giorno (richiesta WhatsApp). Controlla che l'escursione sia
+  **confermata, già passata e non più vecchia di 30 giorni** (dopo, la pulizia mensile
+  può averla già tolta: tolta prima, ce ne sono almeno 32). Scheda e mese li prende dal
+  ticket, non da quello che manda il telefono. Risponde `ok`, `gia` o `no`;
+- `recensioni_della_scheda()` e `recensioni_medie()`: le pubblicate, per il passo 3;
+- l'ufficio (login dei venditori) legge, pubblica e cancella, ma **il testo non lo può
+  cambiare**: o si pubblica com'è, o si scarta. Il legame col ticket non lo legge.
+
+**Il freno.** Senza, `lascia_recensione()` sarebbe servita a provare i numeri dei ticket
+scavalcando le dieci ricerche l'ora di `le_mie_escursioni()` (16 ottobre). La strada del
+ticket conta nella stessa tabella `tentativi_ticket`, quindi le dieci l'ora valgono per
+le due funzioni insieme. Per questo "non trovato" risponde `no` e non un errore: in
+Postgres un errore annulla tutto quello che la funzione ha scritto, anche il tentativo
+appena contato, e il freno non avrebbe contato niente. In più, un tetto di 100
+recensioni l'ora per tutti.
+
+**Provato su un Postgres vero** (il 16 della macchina, con lo schema rifatto dai file di
+`supabase/`): ticket passato `ok`, la seconda volta `gia`; futuro, di 40 giorni prima,
+non confermato, telefono sbagliato, chiave sbagliata, richiesta non confermata: tutti
+`no`; 6 stelle: errore; all'undicesimo tentativo dello stesso telefono "troppi
+tentativi"; `anon` non legge la tabella; un venditore pubblica e cancella ma non cambia
+il testo e non legge `booking_id`; la non pubblicata non esce, la pubblicata sì; dopo la
+cancellazione del ticket la recensione resta. Il file si può lanciare due volte.
+
+**Il modulo** (`recensioni.js`, lo carica `booking.html`). Sotto ogni escursione passata
+di "Le mie prenotazioni", se è confermata e di non più di 30 giorni fa: "Com'è andata?
+Lascia una recensione". Si apre dentro la card: cinque stelle, il testo (facoltativo,
+1000 caratteri), il nome. Il nome lo trasforma `nomeDaMostrare()` ("marco rossi" →
+"Marco R.") e sotto il campo si legge come uscirà. Mandata, nel telefono resta segnata
+(`isla-recensioni-fatte`) e al posto del pulsante c'è il grazie. Le card passate erano
+sbiadite (`opacity: .6`): ora si sbiadisce tutto **tranne** la recensione, che è
+l'unica cosa che lì si può ancora fare. Per il ticket di carta serve il telefono:
+`cercaTicketVero()` in `booking.js` lo mette in `RECENSIONE_TELEFONO`.
+
+Provato nel browser con le risposte di Supabase finte: un pulsante solo (non sulla
+passata di 45 giorni, non sulla futura), senza stelle chiede le stelle, l'anteprima del
+nome, cosa parte (telefono + numero, oppure chiave + scheda + giorno, e la lingua), il
+grazie, il grazie anche dopo aver ricaricato; in tedesco le risposte `no`, senza rete e
+"troppi tentativi"; "Chiudi" rimette il pulsante. A 320 px niente esce dallo schermo.
+
+**Privacy** aggiornata nelle cinque lingue (data 20 ottobre): una parte "Le recensioni"
+(cosa si salva, cosa no, il legame col ticket, base giuridica il consenso), la
+recensione già lasciata fra le cose che restano nel telefono, e quanto si tiene.
+`CACHE_NAME` → `isla-v591`.
+
+**Da fare prima di pubblicare:** il proprietario incolla il file SQL nel SQL Editor.
+Senza, il cliente vede il pulsante, scrive la recensione e riceve "Non è partita".
+
+## Le recensioni cambiano: si recensisce il servizio, non la barca (20 ottobre 2026)
+
+Il proprietario, rileggendo le recensioni che avevano già su Tripadvisor e Facebook
+(come "Fran.escursioni tenerife", che sono loro; Francesca è sua moglie): "la gente non
+recensisce la singola escursione ma il servizio". Nelle nove che ha mandato in foto
+nessuno parla della barca: parlano di Francesca, dei consigli, dei prezzi, "abbiamo
+prenotato diverse escursioni". Prima che lo SQL fosse lanciato, quindi senza dati da
+spostare. Decisioni del proprietario, 20 ottobre 2026:
+- **una recensione per cliente**, non una per escursione: in "Le mie prenotazioni" un
+  solo "Com'è andata la vacanza con noi?", **in cima**, per la passata più recente
+  (non più dentro le card, che tornano sbiadite tutte intere);
+- si leggono **nella home**, "Dicono di noi", subito dopo "Siamo Jack e Francesca";
+  il passo 3 di prima (sulla scheda, stelle nell'elenco) **non si fa più**;
+- sotto, **in piccolo, l'escursione che ha fatto**, presa dal ticket: a chi legge dice
+  che la recensione è vera;
+- **le vecchie di Tripadvisor e Facebook ci vanno**, inserite a mano con SQL, con
+  scritto da dove vengono (`fonte`). Quelle di Facebook sono "consiglia", senza stelle:
+  `stelle` resta vuoto, in pagina "Ci consiglia", e nella media non contano.
+
+**Il database.** Stesso file. Una per cliente: prima di scrivere, `lascia_recensione()`
+guarda se un'altra recensione è legata a un ticket dello **stesso telefono** o della
+**stessa chiave**; se sì, `gia`. Funziona perché i ticket restano almeno 32 giorni e si
+scrive solo nei primi 30: chi torna l'anno dopo ne può lasciare un'altra. Colonne:
+`fonte` (`isla`, `tripadvisor`, `facebook`, `google`), `excursion_id` e `stelle` ora
+possono restare vuote (le copiate), ma su Isla le stelle ci sono sempre (vincolo
+`recensioni_stelle_isla`). Al posto di `recensioni_della_scheda()` e `recensioni_medie()`
+una sola `recensioni_pubblicate()`: al massimo 200, la media la fa la pagina. Tre righe
+`alter table` per chi avesse già lanciato la prima versione.
+
+Provato di nuovo sul Postgres vero: secondo ticket dello stesso telefono `gia`, seconda
+escursione della stessa richiesta `gia`, un altro cliente `ok`; le copiate entrano,
+Facebook senza stelle sì, Isla senza stelle no; `anon` legge solo dalla funzione. Il
+file lanciato sopra la prima versione (con dentro una recensione) e poi ancora una
+volta: nessun errore.
+
+**I nomi dei clienti di Tripadvisor e Facebook non vanno nel repository**: l'SQL per
+inserirle si prepara nella scratchpad e lo incolla il proprietario, come i netti. Non
+sono segreti (stanno già su Tripadvisor), ma un nome nella storia di git non si toglie
+più, e la privacy promette di toglierlo a chi lo chiede.
+
+**La home** (`recensioni.js`, ora lo carica anche `index.html`). La home non ha la
+libreria di Supabase: chiede `recensioni_pubblicate` con `fetch`, come `richieste.js`.
+Nascosta finché non arriva almeno una recensione, e senza rete. Sei card, poi "Mostra
+altre"; la media con una cifra decimale nella lingua della pagina, **solo da 3
+recensioni con le stelle in su**. Sotto ogni card: mese, la lingua se diversa da quella
+della pagina (`Intl.DisplayNames`, niente testi da tradurre), "da Tripadvisor"; poi
+"Escursione: …" col link alla scheda se è pubblicata. I nomi delle fonti non si
+traducono. Cambiando lingua si ridisegna (`islalang`).
+
+Provato nel browser: un riquadro solo, prima della lista, per l'escursione più recente
+anche se le righe arrivano in un altro ordine (era il primo errore: si fidava
+dell'ordine); quello che parte; il grazie dopo aver ricaricato. Nella home sei card, poi
+otto; media "4,5 von 5 · 8 Bewertungen" in tedesco; un testo con dentro HTML esce come
+testo; senza rete e senza recensioni la sezione non c'è; a 390 px niente esce dallo
+schermo. Secondo errore: "Mostra altre" con `hidden` restava visibile, perché `.btn`
+mette `display`: serve `.rev-altre[hidden] { display: none; }`.
+
+**Privacy** nelle cinque lingue: "due dalla stessa persona", la home al posto della
+scheda, e un paragrafo per le copiate da Tripadvisor e Facebook (base giuridica
+l'interesse legittimo, art. 6.1.f; chi vuole la sua tolta lo chiede su WhatsApp).
+`CACHE_NAME` → `isla-v592`.
+
+Passi che restano: 2. l'ufficio approva o scarta nella pagina dei venditori; 3. le
+vecchie di Tripadvisor e Facebook nel database; 4. l'avviso sul telefono il giorno dopo.
+
+## Le recensioni, passo 2: l'ufficio pubblica, scarta, toglie (20 ottobre 2026)
+
+In Isla Ticket, sotto le statistiche, la tendina **"Recensioni (N da leggere)"**. Decisioni
+del proprietario, 20 ottobre 2026:
+- la vede e la usa **solo l'ufficio** (`is_office()`, come le statistiche). Non basta
+  nasconderla: `supabase/modifiche/2026-10-20-recensioni2-ufficio.sql` rifà le tre regole
+  della tabella da `is_seller()` a `is_office()`, e così il database rifiuta anche a un
+  venditore che provasse dalla console;
+- le **pubblicate** stanno in fondo, chiuse ("Pubblicate (N)", lo stesso riquadro degli
+  annullati), ognuna con **Togli**: quando un cliente chiede di toglierla non serve il
+  SQL Editor.
+
+Ogni voce: stelle (o "Consiglia" per Facebook), nome, mese, escursione, lingua, "da
+Tripadvisor" per le copiate, il testo. **Pubblica** mette `stato` e `pubblicata_at`;
+**Scarta** e **Togli** cancellano, con una conferma ("si cancella e non si recupera"). Il
+testo non si tocca: o com'è, o niente. Le scritture chiedono `.select("id")` indietro,
+come `cambiaRichiesta()`: se le regole non lasciano passare non c'è errore ma zero righe,
+e senza quel controllo la pagina direbbe "pubblicata" senza aver fatto niente.
+
+**La sezione si costruisce in `venditori.js`** (`rec`), non nell'HTML di `isla-ticket`:
+così si cambia un repository solo, e la pagina vecchia in cache la mostra lo stesso. Si
+mette dopo `[data-stats-box]`, o in fondo se non c'è. Il titolo con il conto si carica
+subito all'entrata; uscendo si svuota, come le statistiche.
+
+Provato nel browser con la pagina vera di `isla-ticket` (copiata nella scratchpad
+accanto a `isla/`) e login e risposte finte: l'ufficio la vede, un venditore no;
+Pubblica manda `PATCH` con stato e data, Scarta e Togli `DELETE`; il conto "da leggere"
+scende; un testo con HTML esce come testo; a 390 px niente esce dallo schermo.
+`CACHE_NAME` → `isla-v593`.
+
+**Da fare:** il proprietario lancia `2026-10-20-recensioni2-ufficio.sql`. Senza, la
+pagina funziona lo stesso (la sezione la vede comunque solo l'ufficio), ma il database
+lascerebbe fare a ogni venditore.
+
+Passi che restano: le vecchie di Tripadvisor e Facebook sono entrate col passo 1; 4.
+l'avviso sul telefono il giorno dopo ("Com'è andata?").
+
+## Le recensioni, passo 4: l'avviso "Com'è andata?" il giorno dopo (20 ottobre 2026)
+
+Il quarto avviso di `manda-notifiche`, tipo `review` (proprietario: "procedi senza
+skill", la Pwa Expert non serve: il service worker non cambia, è un tipo in più nella
+funzione che c'è già).
+
+**Quando e a chi** (lo decide `notifiche_da_mandare()`, rifatta in
+`supabase/modifiche/2026-10-20-recensioni3-avviso.sql`):
+- il **giorno dopo** l'escursione, dalle **18:00 di Tenerife** a mezzanotte; se in
+  quelle ore non parte, non parte più (e due giorni dopo gli indirizzi si cancellano);
+- solo richieste **WhatsApp confermate**: i ticket di carta non hanno avvisi;
+- **una volta per cliente**, come la recensione: con più escursioni ieri, la più
+  recente; niente se la richiesta l'ha già avuto o se la recensione c'è già;
+- solo ai telefoni **iscritti dal 21 ottobre 2026**: chi ha detto sì prima ha letto
+  "quando l'ufficio conferma o annulla, e prima dell'escursione", e a questo non ha
+  detto sì. Da oggi la frase (`lista.avvisiNota`) e la privacy, nelle cinque lingue,
+  dicono anche "il giorno dopo, per chiederti com'è andata".
+`vive` ora guarda anche le escursioni di ieri; conferme e annullamenti restano solo da
+oggi in poi, come prima. `notifiche_mandate.tipo` accetta `review`.
+
+Provato sul Postgres vero con l'orologio finto (`now()` sostituito in una copia di
+prova): alle 17:00 niente; alle 19:00 un avviso solo, per l'escursione più recente
+(15:00 contro 10:00); niente al telefono iscritto il 15 ottobre, a chi l'ha già
+scritta, alla richiesta in attesa, all'escursione di due giorni prima; mandato una
+volta, non riparte; un'escursione di ieri non riceve una "confermata". Il file si
+rilancia.
+
+**Il testo** ("Freebird: com'è andata?" — "Ci farebbe piacere leggere la tua recensione:
+bastano due righe.") nelle cinque lingue, provato in Node staccando `messaggio()` dalla
+funzione (Deno qui non c'è); gli altri avvisi escono come prima. Toccato, apre
+`booking.html?richieste=1&r=…&d=…&e=…&recensione=1`: `mostraDallAvviso()` apre subito il
+modulo in cima (o mostra il grazie, se è già partita). Provato nel browser.
+
+I file delle recensioni si chiamano `recensioni.sql`, `recensioni2-ufficio.sql`,
+`recensioni3-avviso.sql`: in ordine alfabetico è anche l'ordine in cui si lanciano (prima
+`recensioni-ufficio.sql` sarebbe venuto prima di `recensioni.sql`). Rinominato il 20
+ottobre, lo stesso giorno: il proprietario l'aveva lanciato con l'errore di incollare il
+nome del file invece del contenuto (nel SQL Editor va il **contenuto**).
+
+**Da fare:** lanciare `recensioni3-avviso.sql`, poi **ripubblicare la funzione**:
+Supabase → Edge Functions → manda-notifiche → Code → incollare
+`supabase/functions/manda-notifiche/index.ts` → Deploy. Senza la funzione nuova il
+database dà gli avvisi `review` e la funzione li manderebbe con il titolo vuoto: va fatta
+**prima o subito dopo** il file SQL, prima delle 18:00. `CACHE_NAME` → `isla-v594`.
+
+## Il meteo sulle escursioni confermate (20 ottobre 2026)
+
+Il proprietario: "Meteo". Decisioni, 20 ottobre 2026:
+- **dove**: in "Le mie prenotazioni", sulle escursioni **confermate** di oggi, domani e
+  dopodomani (AEMET ne dà tre). Non sulla scheda;
+- **fonte**: **AEMET**, gratis. Open-Meteo era il più semplice ma è gratis solo per uso
+  **non commerciale** (Isla lo è: servirebbe l'abbonamento);
+- **solo i dati**, nessun giudizio: "giornata buona per la barca" è una promessa che non
+  è nostra, se si esce lo decide l'operatore.
+
+**AEMET, previsione delle spiagge** (`/api/prediccion/especifica/playa/{codice}`, con la
+chiave nell'intestazione `api_key`). Risponde in due passi: il primo dà l'indirizzo dei
+dati, il secondo i dati, **in ISO-8859-15**. Tre giorni, ognuno con mattina e pomeriggio:
+cielo (100 sereno, 110 nuvoloso, 120 molto nuvoloso, 130 rovesci, 140 nuvoloso con
+pioggia), vento (210-230), onde (310-330), massima, acqua, UV. Licenza: "Autorizado el uso
+de la información y su reproducción citando a AEMET como autora": in pagina c'è sempre
+"Previsione AEMET". **Sorpresa vista coi dati veri**: a La Arena il cielo del mattino era
+`-116` e `-126`, fuori elenco, con le descrizioni di 140 e 130. Per questo
+`meteo-aemet` usa il codice solo se è documentato, se no la descrizione, se no niente.
+
+**Una spiaggia per zona** (`Playas_codigos.csv` di AEMET): Costa Adeje → Fañabe
+(3800112), Los Cristianos → Las Vistas (3800603), Los Gigantes → La Arena (3804004,
+Puerto Santiago). **Teide e nord e Altre isole non hanno meteo**: per il Teide AEMET dà
+solo i paesi (La Orotava, 300 m), e non dice niente dei 3700 m. Conta solo la **prima**
+zona della scheda (`zoneGroups[0]`): la bici comincia con Teide e il meteo di La Arena
+per un giro in montagna sarebbe sbagliato; Royal Delfin e Shogun cominciano con Costa
+Adeje e ce l'hanno. Mattina o pomeriggio dall'ora del ritrovo (o chiesta): dalle 14 è
+pomeriggio, senza ora la mattina.
+
+**Come gira:**
+- `supabase/functions/meteo-aemet/` ogni 3 ore (Cron, minuto 7) chiede le tre spiagge e
+  salva in `meteo` (zona, giorno, `dati` coi codici). La chiave sta **solo** nei Secrets
+  (`AEMET_API_KEY`). È **aperta** come `pulisci-foto` (prende solo previsioni pubbliche),
+  ma con un freno: se l'ultimo giro ha meno di un'ora non chiama AEMET, così nessuno
+  consuma la chiave chiamandola di continuo. `elaborato` (l'ora di AEMET) è testo: arriva
+  senza fuso orario;
+- `meteo_prossimi()` dà al sito le righe da oggi in poi; la tabella dal sito non si legge;
+- `meteo.js` (lo carica `booking.html`): `cardTicket()` mette un posto vuoto e nascosto
+  (`meteoSegnaposto()`), `meteoRiempi()` lo scrive quando arrivano i dati. L'ultima
+  risposta resta nel telefono (`isla-meteo`): senza rete si vede quella. Niente dati dei
+  clienti: la privacy non cambia.
+
+**Provato**: la funzione in Node con la chiave e i dati **veri** di AEMET (9 righe, il
+freno al secondo giro, i codici `-116`/`-126` diventati 140/130); il file SQL su Postgres
+(il sito legge solo da oggi, `anon` non scrive, una zona sbagliata è rifiutata); nel
+browser coi dati veri di oggi: mattina e pomeriggio giusti, niente meteo a 4 giorni, al
+Teide e sulla bici, in tedesco, senza rete dall'ultima risposta; a 390 px niente esce.
+`CACHE_NAME` → `isla-v595`.
+
+**Da fare (proprietario), in quest'ordine**: Secret `AEMET_API_KEY`; funzione
+`meteo-aemet` con **Verify JWT spento**; il file `2026-10-20-meteo.sql`. Poi aprire una
+volta a mano l'indirizzo della funzione, per non aspettare il primo giro dell'orologio.
+
+### Il meteo anche sulla mappa, e Las Galletas (20 ottobre 2026)
+
+Il proprietario, prima di mettere tutto su Supabase: "aggiungere anche la spiaggia di Las
+Galletas e le 16 spiagge della mappa". Decisioni:
+- **sulla mappa**, toccando una spiaggia: **oggi e domani**, mattina e pomeriggio in una
+  riga ("Nuvoloso → molto nuvoloso · vento moderato · onde deboli · acqua 25° · max 27°";
+  vento e onde il più forte dei due), e "Previsione AEMET per questa spiaggia";
+- le spiagge **senza una previsione loro** mostrano quella **vicina, col nome e i km**.
+
+Confronto fatto con le coordinate di `Playas_codigos.csv` e quelle della mappa:
+- **7 sue**: Las Teresitas, El Bollullo, Playa Jardín, Las Vistas, El Médano, La Arena,
+  El Socorro;
+- **5 vicine (entro 3 km)**: Playa del Duque → Fañabe 1 km, Abama → San Juan 1,2 km, La
+  Tejita → El Médano 1,6 km, Los Guíos → La Arena 1,6 km, La Jaquita → La Arena 2,7 km;
+- **4 niente**: Benijo, Almáciga, Antequera (Anaga) e Masca: la più vicina è a 6-7 km,
+  oltre la montagna;
+- **Las Galletas** AEMET **non ce l'ha**. Le sue barche (Mokkai, White Dream) stanno nella
+  zona Los Cristianos e mostrano Las Vistas (7,7 km), con il nome scritto.
+
+La tabella `meteo` ora è **per spiaggia** (il codice di AEMET), non per zona: nove
+spiagge (`SPIAGGE` in `meteo-aemet`, 27 righe a giro). Le zone delle prenotazioni stanno in
+`METEO_ZONE` di `meteo.js`; le spiagge della mappa hanno il campo `meteo` in `mappa.js`
+(`{ spiaggia, km }`). **Una spiaggia nuova va in tutti e due i posti**: la funzione e dove
+si mostra. Cambiato prima che il proprietario lanciasse lo SQL, quindi nessun dato da
+spostare.
+
+Provato: la funzione coi dati **veri** di AEMET (27 righe; al nord oggi "onde forti" a
+Playa Jardín e El Socorro); lo SQL su Postgres; nel browser tutte e 16 le spiagge della
+mappa, in italiano e in tedesco ("1,2 km entfernt"), e le prenotazioni come prima.
+`CACHE_NAME` → `isla-v596`.
+
+## Il SEO aspetta il dominio (20 ottobre 2026)
+
+Il proprietario ha chiesto se per il SEO conta il dominio. Sì: Google accumula le
+posizioni su un indirizzo preciso, il SEO scrive l'indirizzo in sitemap, canonical e dati
+strutturati, e `jacques88-sudo.github.io` sembra un progetto personale. Il nome in sé
+(con "tenerife" dentro o no) conta poco; conta averne uno e non cambiarlo. Decisione:
+"ricordamelo quando avrò il dominio". Scritto in `CLAUDE.md`, fra le cose decise, con la
+lista di cosa fare. Oggi non ci sono `CNAME`, `robots.txt` né `sitemap.xml`.
+
+## I preferiti (20 ottobre 2026)
+
+Il proprietario: "facciamolo". Decisioni, 20 ottobre 2026:
+- **il cuore** sulla foto di ogni scheda dell'elenco (`tourCard`, in alto a destra,
+  fuori dal link della foto: un bottone dentro un `<a>` non si mette) e accanto a
+  "Condividi" nella pagina dell'escursione;
+- **si ritrovano** in Esperienze con la pillola **"♥ Preferiti (n)"**, davanti a
+  "Raccomandate", che compare solo se ce n'è almeno uno (o se la vista è aperta: togliendo
+  l'ultimo non sparisce sotto il dito), e con **"I miei preferiti" nel Menu**
+  (`escursioni.html?preferiti=1`), aggiunto nelle sette pagine col Menu;
+- **"Condividi i preferiti"**: un link `escursioni.html?pref=id,id`; chi lo apre vede
+  "Le escursioni che ti hanno mandato", le salva col cuore o con "Salvale tutte". Lo
+  stesso giro di Condividi della scheda: menu del telefono, se no appunti, se no WhatsApp.
+
+`preferiti.js` (caricato dove c'è `escursioni.js`): solo **localStorage**
+(`isla-preferiti`, al massimo 100), nessun account, niente al database; scritto in
+privacy nelle cinque lingue. L'evento `islapreferiti` tiene d'accordo cuori, pillola e
+vista. Nell'elenco i preferiti sono uno stato come le selezioni (`state.preferiti`,
+`state.condivisi`), in ordine di salvataggio; la ricerca ne esce. Gli id sconosciuti nel
+link si buttano via, come le categorie. Diverso dalla **lista** (il carrello): la lista è
+"le voglio chiedere", i preferiti "mi piacciono".
+
+Provato nel browser: il cuore non apre la scheda; la pillola conta; la vista mostra solo
+i salvati e "Condividi i preferiti"; togliendo un cuore la scheda sparisce; il cuore
+della pagina dell'escursione è d'accordo con l'elenco; dal Menu con zero preferiti il
+messaggio vuoto; un link mandato con un id inesistente mostra le due vere, "Salvale
+tutte" le salva e poi "Sono tutte nei tuoi preferiti"; in tedesco; a 360 px niente esce.
+`CACHE_NAME` → `isla-v597`.
+
+## La domanda frequente sul preavviso (20 ottobre 2026)
+
+`faq.a2` diceva "almeno 24 ore prima della **data** dell'escursione", ma dal #522 il
+sito conta le 24 ore dall'**ora di partenza**. Ora: "Almeno 24 ore prima dell'ora di
+partenza: per un'escursione che parte sabato alle 10, entro venerdì alle 10", nelle cinque
+lingue, e uguale il testo di riserva in `index.html`. L'esempio c'è perché "24 ore prima
+della partenza" da solo si legge ancora come "il giorno prima". La stessa risposta la usa
+la chat (`assistente.js`). I termini dicevano già "24 ore di anticipo" e non sono toccati.
+Provato nella home a 375 px in tutte e cinque le lingue, senza errori. `CACHE_NAME` →
+`isla-v598`.
+
+## Cambiare persone e mezzi nella lista (20 ottobre 2026)
+
+Prima una voce della lista si poteva solo togliere con la ✕: chi si accorgeva di aver
+messo 2 adulti invece di 3 tornava sulla scheda e la aggiungeva di nuovo. Ora ogni voce
+ha i suoi **− / +** (proprietario: "persone e mezzi"), con le regole della finestra della
+richiesta, in `listaContatori()` di `lista.js`:
+
+- **adulti** da 1 a 30; **bambini** da 0 a 30, ma non sulle schede solo per adulti
+  (`soloAdulti()`); **neonati** solo dove la scheda ha `priceInfant`. Se la voce ne ha
+  già, il contatore resta lo stesso, se no il cliente non potrebbe toglierli;
+- **i menu speciali** sono per persone vere: adulti + bambini non scendono sotto quanti
+  sono (Castillo con 1 vegetariano: l'adulto non va a zero). "Menu standard × N" si
+  riscrive da solo, perché `menuTesto()` lo rifà da `menuN`;
+- **i mezzi** (schede con `units`), da 0 a 20 per tipo, ma l'ultimo rimasto non scende a
+  zero: zero mezzi non è una richiesta;
+- **il pacchetto no**, resta con la sola ✕: i suoi mezzi dipendono da quante persone
+  salgono, e cambiando le persone il conto dei mezzi può non tornare più;
+- nemmeno le **voci vecchie** salvate con i mezzi o i menu come frase già scritta: da lì
+  i numeri non si ritrovano.
+
+Dove ci sono i contatori, "2 adulti" e "Moto d'acqua: Singola × 1" non si scrivono più
+nella riga dei dettagli: sarebbe dirlo due volte. Il totale, il messaggio WhatsApp e la
+copia nel database si rifanno già dalla voce, quindi non è cambiato niente lì. Dopo un
+tocco la finestra si ridisegna e il fuoco torna sullo stesso bottone (o sull'altro, se
+questo si è spento al limite). I bottoni sono quelli della finestra (`stepper-btn`), più
+piccoli (32 px); al buio presi di carta come la ✕.
+
+Provato nel browser con Royal Delfin, Jet Ski Safari, Castillo col menu vegetariano,
+Scandal (solo adulti: niente bambini né neonati) e un pacchetto: i limiti si spengono
+dove devono, i totali tornano (Royal Delfin 3 adulti + 1 bambino + 1 neonato = 119),
+il messaggio dice i numeri nuovi. Italiano e tedesco, chiaro e scuro, 375 e 320 px, nessun
+errore e niente che esce dallo schermo. `CACHE_NAME` → `isla-v599`.
+
+## La home più veloce col 4G lento (20 ottobre 2026)
+
+Il punto 5 della prova da cliente del 19 ottobre. Misurato prima di toccare: home su un
+telefono simulato (390 px, schermo 2×), 4G lento (1,6 Mbit/s, 150 ms), file compressi e
+HTTP/2 come su GitHub Pages. Serve un server di prova apposta: `python3 -m http.server`
+non comprime e parla HTTP/1.1, e con quello i numeri escono sbagliati. Il Chromium di
+prova non legge l'H.264, quindi il video si serve convertito in WebM, con lo stesso peso.
+Gli script stanno nella scratchpad della sessione, non nel repository.
+
+Cosa pesava: il **video** (1,4 MB, più di tutto il resto della home) partiva subito con
+`autoplay` e si prendeva la rete insieme al catalogo e alle foto; la **foto ferma** era
+quella intera, 1920 px e 335 KB, più grande del video stesso (1280 × 720).
+
+Cosa è cambiato:
+- il video non ha più `autoplay` e ha `preload="none"`: lo fa partire `initHeroVideo()`
+  in `app.js` **a pagina caricata** (`load`);
+- **col risparmio dati o su una rete da 3G in giù** (`navigator.connection`) non parte
+  proprio: resta la foto, e il bottone ▶ lo fa partire. Sull'iPhone
+  `navigator.connection` non c'è, e lì parte sempre, a pagina caricata;
+- il bottone ▶/❚❚ segue lo stato vero del video (eventi `play` e `pause`): parte da ▶, e
+  resta ▶ anche se il telefono si rifiuta di farlo partire (iPhone col risparmio energetico);
+- la foto ferma è la **copia piccola** che c'era già, `assets/piccole/hero-tenerife.webp`
+  (720 px, 60 KB), chiesta subito con `<link rel="preload" fetchpriority="high">`. Sul
+  telefono a 3× è appena più morbida, sul computer un po' di più, ma lì il video la
+  copre subito. Provata prima una copia da 1280 px (166 KB): arrivava a 6,1 s, troppo tardi.
+
+| | prima | dopo |
+|---|---|---|
+| la foto in cima (LCP) | 9,0 s | 3,5 s |
+| pagina pronta (`DOMContentLoaded`) | 7,6 s | 5,8 s |
+| pagina caricata (`load`) | 8,9 s | 5,8 s |
+
+Le altre pagine con `hero-tenerife.webp` (elenco, mappa, pacchetti, noleggio) non sono
+toccate. Il movimento ridotto (`prefers-reduced-motion`) non spegne il video: era così
+anche prima.
+
+Provato: rete normale (il video parte a pagina caricata), 4G lento, risparmio dati e 3G
+(non parte, ▶, al tocco parte), senza `navigator.connection` (parte), tocco su ❚❚ (si
+ferma, l'etichetta dice "Riproduci"), cambio lingua. Nessun errore. `CACHE_NAME` → `isla-v600`.
+
+## La frase delle 24 ore sotto il calendario (20 ottobre 2026)
+
+Il punto 6 delle proposte. Chi apriva un'escursione per domani mattina vedeva il giorno
+spento nel calendario e poteva pensare che fosse pieno: le 24 ore vere
+(`partenzaPossibile()`) non le diceva nessuno lì. Ora sotto il calendario, sempre in
+vista, `req.dateHint`: "Si può chiedere fino a 24 ore prima della partenza: i giorni e gli
+orari più vicini sono spenti", nelle cinque lingue. Lo stesso giorno il proprietario ha tolto la seconda
+parte ("i giorni e gli orari più vicini sono spenti"): resta solo "Si può chiedere fino a
+24 ore prima della partenza" (`isla-v602`). Messa nelle **due** finestre della
+richiesta (`tour.html` e `escursioni.html`), con `[data-request-date-hint]` per lo spazio
+sotto, come `[data-hotel-hint]`. Il pacchetto no: lì il primo giorno è indicativo e lo
+fissa l'ufficio. Provato su Freebird da `tour.html` ed `escursioni.html`, 375 px, cinque
+lingue, nessun errore. `CACHE_NAME` → `isla-v601`.
+
+## Il riquadro "Installa" resta com'è (20 ottobre 2026)
+
+Il punto 1 della prova da cliente del 19 ottobre: alla prima apertura di una scheda il
+riquadro "Installa l'app" copre "Aggiungi alla lista" finché non si chiude. Proposte due
+strade: (a) mostrarlo solo nella home e nell'elenco, (b) solo dopo la prima richiesta
+mandata. Il proprietario: "lasciamolo stare così". Scritto anche fra le "Cose decise" di
+`CLAUDE.md`. Con questo le proposte del 20 ottobre per il cliente sono chiuse: fatte la 2
+(`faq.a2`), la 4 (− / + nella lista), la 5 (home col 4G) e la 6 (frase delle 24 ore);
+scartate la 3 (avviso del link di pagamento, "non importa") e la 1.
+
+## Una richiesta con due escursioni: la seconda non si confermava (20 ottobre 2026)
+
+Il proprietario manda due escursioni in una richiesta, conferma la prima col ticket
+number, e la seconda viene rifiutata: "il ticket … è già stato inserito". Ogni escursione
+della richiesta è una riga a sé in `bookings`, e `ticket_number` è **unico** (è il
+controllo che impedisce di inserire due volte lo stesso ticket di carta).
+
+Proposte tre strade (numerazione automatica, un "Conferma tutte", un numero diverso a
+mano); il proprietario ha scelto la prima. In `venditori.js`, `apriConferma()`: l'ufficio
+scrive un numero solo, la prima escursione prende `1234`, le altre `1234-2`, `1234-3`
+(`numeroLibero()`, guardando i numeri già dati alla stessa richiesta con
+`numeriDellaRichiesta()`). Sulla seconda la finestra ripropone già numero e telefono.
+Un numero di **un altro** cliente non si numera: il database lo rifiuta, ed è giusto.
+Al cliente si manda il numero scritto (`1234`): `le_mie_escursioni()` con numero e
+telefono mostra **tutte** le sue confermate. Il database non cambia.
+Provate le due funzioni in Node con un finto Supabase; la pagina vera (Isla Ticket) vuole
+il login e non si è provata nel browser. `CACHE_NAME` → `isla-v603`.
+
+## Il meteo anche sul Teide (20 ottobre 2026)
+
+Il proprietario: "per l'escursione del Teide non c'è il meteo". Era voluto: le previsioni
+delle spiagge non dicono niente a 3700 m. Ma AEMET fa un **bollettino di montagna per il
+Teide** (dal 2021), ogni giorno verso le 18, **solo in PDF**
+(`…/boletin_montana/BM_Teide.pdf`, non sta in OpenData e non vuole la chiave). Ha il
+cielo, la pioggia e il vento **in frasi spagnole**, e una tabella di numeri **solo per il
+giorno dopo**: minima, massima e percepita su Teide (3715 m), Izaña (2371 m) e
+Teleférico (2356 m).
+
+Il proprietario ha scelto **solo le temperature** (i numeri si leggono in cinque lingue,
+le frasi no). Sulla card: "Teide (3715 m): da -1° a 2°, percepita fino a -3°" e la
+stessa riga per il Teleférico (Izaña è quasi alla stessa quota), con "Previsione AEMET di
+montagna per il Teide".
+
+- `meteo-aemet` scarica il PDF, ne legge il testo con `unpdf` e `leggiTeide()` prende la
+  tabella di ogni "Pronóstico para el día N". Il giorno è solo il numero: se è più piccolo
+  di quello del bollettino è del mese dopo. Se non riconosce niente non salva niente.
+  Salva con `spiaggia = 'teide'`, quindi serve `2026-10-20-meteo-teide.sql`, che allarga
+  il controllo della colonna. La riga di oggi resta quella del bollettino di ieri;
+  dopodomani di solito non c'è ancora, e la card resta nascosta.
+- `meteo.js`: la zona "Teide e nord" non basta (ci sono Loro Parque e Santa Cruz).
+  Decide `METEO_TEIDE`: Teide National Park, Teide-Icod-Garachico-Masca, il giro
+  dell'isola, Masca + Teide cabrio bus, lo stargazing e il quad; per trekking e bici
+  solo le varianti che salgono (Teide Light; Mount Teide Challenge, le discese del Teide,
+  Izaña – El Poris), con l'etichetta italiana di `option_label`.
+
+**Provato**: `leggiTeide()` in Node sul PDF vero di oggi (domani Teide da -1° a 2°,
+percepita -3°; Teleférico da 7° a 11°), il cambio di mese (31 ottobre → 1 novembre) e un
+testo che non c'entra (nessuna riga). Nel browser, con un finto ticket e un finto meteo: Teide
+National Park e bici "Teide Downhill" lo mostrano, "Vilaflor Tour" e Loro Parque no,
+lo stargazing di oggi senza riga resta nascosto, Freebird tiene la spiaggia; italiano e
+tedesco, 375 px. **Non provata** la funzione su Supabase (Deno + `unpdf`).
+`CACHE_NAME` → `isla-v604`.
+
+**Da fare (proprietario)**: incollare `2026-10-20-meteo-teide.sql` nel SQL Editor, poi
+ridistribuire `meteo-aemet` e aprire una volta a mano l'indirizzo della funzione. Nella
+risposta `errori` non deve comparire "Teide".
+
+## Il cielo a icone, sul Teide e sulle spiagge (20 ottobre 2026)
+
+Il proprietario: invece delle scritte, icone di sole, nuvole e pioggia, accanto alle
+temperature del Teide **e al posto delle scritte delle spiagge**. Cinque disegni a mano
+in `METEO_DISEGNI` (`meteo.js`), guardati in fila: sole, sole e nuvole, nuvola, pioggia
+(nuvola con tre gocce), neve. Codici → disegno in `METEO_CIELO`: 100 sole, 105 sole e
+nuvole (solo Teide, "poco nuboso"), 110 e 120 nuvola ("nuboso" è sempre la nuvola),
+130 e 140 pioggia. La scritta resta in `aria-label` e `title`. Vento, onde e numeri
+restano a parole. Sulla mappa: "Oggi ☁ → ☀" se mattina e pomeriggio sono diversi.
+
+**Teide.** AEMET il cielo lo scrive a frasi, e `cieloTeide()` in `meteo-aemet` lo
+trasforma in codice con la regola approvata dal proprietario:
+- conta solo la parte prima di "en cotas altas" (le cime, dove salgono le escursioni),
+  se no la prima frase; vince la **prima** parola riconosciuta: despejado 100, poco
+  nuboso / intervalos 105, nuboso / muy nuboso / cubierto 110. Niente di riconosciuto,
+  niente icona;
+- pioggia solo con "se esperan" lluvias / chubascos / lloviznas ("no se descartan"
+  **non** basta), neve con nieve / nevadas, "no se esperan" spegne tutto. **Pioggia e
+  sole possono stare insieme** (proprietario: va bene così): AEMET non dice dove piove,
+  spesso è sotto le nuvole.
+I giorni senza tabella delle temperature (il terzo, il quarto e il quinto del bollettino) ora si
+salvano lo stesso, col solo cielo: la card mostra le icone senza temperature.
+
+**Provato**: sul PDF vero di oggi (21: nuvola + pioggia, con le temperature; 22-24:
+sole e nuvole + pioggia), "Despejado / No se esperan" → sole e niente,
+"Cubierto… nevadas" → nuvola e neve, una frase sconosciuta → niente. Nel browser con
+dati finti, italiano e francese, 375 px: card del Teide, card della spiaggia, mappa di
+Las Teresitas. `CACHE_NAME` → `isla-v605`.
+
+**Da fare (proprietario)**: ridistribuire `meteo-aemet` (anche se il passo del Teide
+di prima non era ancora fatto: basta una volta, dopo l'SQL `2026-10-20-meteo-teide.sql`).
+
+## Crea il tuo pacchetto (20 ottobre 2026)
+
+Il proprietario: «in ogni bento un'opzione per farsi il proprio pacchetto», un riquadro
+in tutte e quattro le vetrine (Pacchetti, In famiglia, Perfetto per 2, 3/5/7 giorni), e
+**le regole di quella vetrina valgono anche per il pacchetto su misura**.
+
+**Le regole**, in `PACCHETTI_SU_MISURA` (`pacchetti.js`):
+- Pacchetti: 3 escursioni, 10%, i mezzi (buggy, moto d'acqua) ci stanno, col "da €";
+- In famiglia: 3, 10%, solo `family: true` col prezzo bambini vero, niente mezzi;
+- Perfetto per 2: 3, 10%, i mezzi contati da due posti (`posti: 2`);
+- 3/5/7 giorni: 3, 5 o 7, 10%, 12% o 15%, niente mezzi. Da "Tutti" si parte da 3 e
+  dentro la pagina ci sono le pillole 3/5/7, che si portano dietro le scelte.
+
+Per tutte: una scheda una volta sola, **il Teide una volta sola**, e solo le voci con un
+prezzo a persona (le barche private e i charter no: il prezzo è di tutta la barca). Dove
+la scheda ha varianti il cliente sceglie la variante, perché il prezzo cambia. Lo sconto
+si toglie dove si toglie sempre (`scontoPossibile()`): parchi, spettacoli e `fixedPrice`
+restano pieni, e la pagina non lo scrive, come negli altri pacchetti. La percentuale non
+si scrive da nessuna parte, come prima.
+
+**Il Teide**: l'elenco che stava in un commento è diventato `PACCHETTI_TEIDE`, e ci ho
+aggiunto le schede che ci salgono e mancavano: Teide-Icod-Garachico-Masca, il bus cabrio
+Masca + Teide, la Mustang (sale alla Cañada Blanca) e cinque giri in bici (West e South
+Slope, Teide Downhill, Izaña–El Poris, Teide South Off-road). `controlla.js` dà un avviso
+se un pacchetto dell'ufficio sale al Teide due volte (oggi nessuno), un errore se
+l'elenco nomina una scheda o una variante che non c'è, e un avviso se una vetrina ha
+meno del doppio delle schede che servono.
+
+**Dove sta**: la pagina è `pacchetto.html?crea=<vetrina>` (base, famiglia, per-due, g3,
+g5, g7), non un file nuovo. In cima le scelte, sotto le schede per categoria con
+"Aggiungi", in fondo una barra ferma col prezzo e "Richiedi il pacchetto", che apre la
+finestra di sempre. Le scelte stanno nell'indirizzo (`&voci=…`): si ricarica e restano.
+
+**Il pacchetto non si salva da nessuna parte: è tutto nel suo id**,
+`su-misura:base:buggy-volcano-4h~2,parascending,luxury-cruiser~0` (la tilde è la
+variante). `pacchettoDi()` lo riconosce e lo ricostruisce, quindi lista, Supabase
+(`richieste.js`, una riga per escursione) e WhatsApp lo trattano come un pacchetto
+qualunque. Nel messaggio arriva come «Pacchetto su misura» (o «Itinerario su misura»)
+con «Cosa c'è dentro» e le varianti fra parentesi. Un id che rompe le regole (due volte
+il Teide, una scheda tolta) dà "Pacchetto non trovato".
+
+**Provato nel browser**: le cinque vetrine col riquadro giusto; buggy Completo + Teide
+rifiutato con l'avviso; pacchetto pieno che dice di toglierne una; la finestra col
+totale e i buggy (2 adulti, buggy da 2 e da 6: €657, risparmio €73); la lista; il
+messaggio; la pagina `?id=su-misura:…` (Teide a prezzo fisso: risparmio solo sulle altre
+due, €149 → €138); famiglia senza buggy; per-due col buggy "da €90"; itinerario da 5 a
+3 giorni; italiano, inglese, tedesco; 1280, 390 e 320 px, chiaro e scuro, nessuno
+scorrimento orizzontale, nessun errore in console. `CACHE_NAME` → `isla-v606`.
+
+## Prime Quads, dai fogli di Nancy, Maarten e Kristine (20 ottobre 2026)
+
+Il proprietario ha mandato altri sei fogli di carta dei venditori (Nancy, Nan, Maarten,
+Kristine, 12-18 ottobre). Netti ricavati ticket per ticket e confrontati con Notion:
+quasi tutti tornano. **I numeri non sono qui**: stanno su Notion e nell'SQL della
+scratchpad, non committato. Risposte del proprietario:
+
+- **Prime Quads** (ticket 0229 "Prime Quads 1D") è la compagnia del **Teide Quad
+  Adventure** da Chío: `nomi: ["Prime Quads"]`. Il netto è a mezzo, sul quad doppio; il
+  singolo manca;
+- il **Twin Ticket col bus** ha la stessa percentuale del resto: la riga Notion "il
+  transfer ha un netto diverso" è chiusa, su Supabase non cambia niente;
+- il bambino di **Maxicat** (la scheda non c'è ancora): solo su Notion;
+- il **Royal Delfin** del foglio (2 adulti a 40 €, nessuna variante costa così) era uno
+  sconto del venditore per strada: non si tocca niente (vale la regola dei prezzi dei
+  ticket, che non si confrontano col catalogo);
+- la **Fiat 500 da 40 minuti** esiste e va anche sul sito: aspetta il prezzo.
+
+Provato: `compagniaNelTesto()` in Node trova Prime Quads in "0229 PRIME QUADS 1D";
+scheda ed elenco a 375 px senza errori, senza scroll, il nome non si vede. SQL provato su
+Postgres 16 con schema e modifiche: un quad doppio di Prime Quads prende il netto, un
+singolo resta "netto mancante per singolo", senza compagnia "compagnia non scritta";
+lanciato due volte non fa danni. `CACHE_NAME` → `isla-v607`.
+
+## Il README: cos'è Isla (21 ottobre 2026)
+
+Il proprietario ha chiesto un file che spieghi cos'è Isla. Sta in tre posti con lo
+stesso testo: un documento Claude Docs (suo, privato), `README.md` qui (GitHub lo mostra
+in prima pagina del repository) e `documenti/cos-e-isla.pdf`. Il disegno di come sono
+collegati i pezzi è `documenti/schema.png`.
+
+Il PDF è fatto dal README con Chromium, **non** esportato dal documento: l'esportazione
+portava il nome del proprietario sotto il titolo, e il repository è pubblico. Nel README
+non ci sono la versione di `CACHE_NAME` né altri numeri che cambiano ogni giorno, tranne
+le schede (74, 67 pubblicate) con scritto "a ottobre 2026". Se il README cambia, il PDF
+va rifatto.
+
+Nessun `.js`, `.css` o `.html` del sito toccato: `CACHE_NAME` resta `isla-v607`.
+
+## Il dominio e l'email (21 ottobre 2026)
+
+Il proprietario ha comprato **`islaexcursionstenerife.com`** su Cloudflare (Registrar,
+10,46 $ l'anno, rinnovo automatico acceso, dati WHOIS nascosti). Era partito da
+"islaexcursiontenerife": il plurale l'ha scelto lui dopo che l'avevamo fatto notare,
+perché è come lo scrive un cliente. I domini simili che Cloudflare propone (`.net`,
+coi trattini) non servono.
+
+**L'email** è `info@islaexcursionstenerife.com` con **Email Routing** di Cloudflare,
+gratis: tre MX `routeN.mx.cloudflare.net` e il TXT SPF li ha messi Cloudflare da solo,
+una regola `info` → Outlook del proprietario, catch-all **spento** (con acceso arriva lo
+spam di qualunque indirizzo inventato). Provato: mandata da Outlook a se stessa, arrivata.
+**Riceve soltanto.** Scrivere da quell'indirizzo vuole un servizio a parte (Zoho Mail
+gratis, Google Workspace a pagamento): non deciso.
+
+Prima il sito usava `info@islatenerife.com`, un dominio **non nostro**: le email del
+bottone "Aiuto" di "Le mie prenotazioni" non arrivavano a nessuno. Cambiato in
+`booking.js` e in `manda-notifiche` (il contatto VAPID: **la funzione va ridistribuita**,
+finché non lo si fa resta il vecchio, e agli avvisi non cambia niente). In privacy e
+termini l'email è entrata sotto il titolare, nelle cinque lingue, e nella privacy anche
+fra i modi di esercitare i diritti (lo chiedeva la nota del 6 ottobre). **Annullare e
+spostare resta solo su WhatsApp**: nei termini quella riga non si tocca.
+
+**Il collegamento al sito aspetta** il trasloco: vedi la voce in `CLAUDE.md`. Il punto
+che si dimentica è il service worker, cache-first su tutto `ASSETS`: col `CNAME` messo
+di colpo, chi ha l'app aperta almeno una volta continua a vedere il vecchio indirizzo
+dalla cache, e l'aggiornamento non arriva più perché `sw.js` risponde con un rimando.
+Il QR stampato invece continua a funzionare: GitHub manda il vecchio indirizzo al nuovo.
+
+Provato: privacy e termini a 375 px senza scroll, i link `mailto:` ci sono; il bottone
+Aiuto di `booking.html?code=ISLA-4521` scrive al nuovo indirizzo; nessun errore.
+`CACHE_NAME` → `isla-v608`.
+
+## Il trasloco al dominio nuovo (21 ottobre 2026)
+
+Il proprietario ha scelto di **portare tutto** nel dominio nuovo (lista, preferiti, le
+chiavi delle richieste, la lingua, l'ultimo ticket, le recensioni fatte), invece di
+lasciarlo sul vecchio indirizzo. Lo fa `trasloco.js`, il primo script di ogni pagina.
+
+Come funziona. Sul vecchio indirizzo chiede `https://islaexcursionstenerife.com/trasloco.txt`
+(`no-store`). Finché il dominio non è collegato risponde 404, o niente, e non succede
+nulla. Col `CNAME` risponde `isla`: allora prende le chiavi `isla-*` di localStorage e va
+alla stessa pagina sul nuovo, con i dati dopo `#trasloco=` (quello che sta dopo il `#`
+non arriva a nessun server). Sul nuovo li rimette e toglie il `#`. Se il nuovo ha già
+la stessa chiave vince il nuovo, ma due elenchi si uniscono: le richieste per `token`,
+il resto per com'è scritto. Non si portano `isla-meteo` (si riscarica) e i due di
+"Installa l'app": sul dominio nuovo l'app non è installata, il riquadro deve tornare.
+
+Perché il controllo è sul testo e non solo su `ok`: col vecchio service worker una
+`fetch` fallita torna `offline.html` con stato 200.
+
+**Il vecchio service worker resta acceso**, apposta: gli avvisi delle richieste già
+mandate sono iscritti a lui (un'iscrizione vale per un indirizzo solo). Toccando
+l'avviso si apre il vecchio indirizzo dalla sua cache, `trasloco.js` porta al nuovo, e
+lo stato `avvisi: "ok"` della richiesta arriva col resto, così il nuovo non iscrive il
+telefono una seconda volta. Chi aveva installato l'app la deve rimettere dal dominio
+nuovo: la vecchia icona apre il vecchio indirizzo, che porta al nuovo.
+
+**Il `CNAME` non prima del 4 novembre 2026.** `trasloco.js` funziona solo per chi ha il
+service worker `isla-v609` o dopo, e lo riceve tornando sul sito. Chi resta col v608 e
+non torna in queste due settimane rimane sulla versione vecchia del vecchio indirizzo:
+`sw.js` risponde con un rimando, e un service worker non si aggiorna da un rimando.
+Si accetta: i turisti tornano a casa in una settimana.
+
+Provato in Chromium, senza service worker (Playwright fa da GitHub per i due indirizzi):
+spento il nuovo resta sul vecchio; acceso porta `tour.html?id=…` a `/tour.html?id=…`
+senza `#`, preferiti uniti, `isla-meteo` e `isla-installa-chiuso` lasciati, una chiave
+non `isla-` lasciata; la radice `/isla/` va a `/`. Con il service worker vero (copia del
+sito, due server locali al posto dei due indirizzi): la pagina servita dalla cache porta
+al nuovo con la lista. Nessun errore. `CACHE_NAME` → `isla-v609`.
+
+## Il dominio collegato, lo stesso giorno (21 ottobre 2026)
+
+Il 4 novembre non serviva: il proprietario ha detto che il sito **non lo usa ancora
+nessun cliente**, solo lui e la moglie. Le due settimane servivano a far arrivare
+`trasloco.js` ai telefoni dei clienti; senza clienti, basta che loro due aprano Isla
+una volta prima del collegamento (ma anche senza, `trasloco.js` è nel v609 e il
+vecchio service worker lo prende alla prima apertura, prima del `CNAME`).
+
+Fatto col collegamento:
+- `CNAME` con `islaexcursionstenerife.com`; DNS su Cloudflare (quattro A di GitHub e
+  `www` → `jacques88-sudo.github.io`, nuvola grigia: con l'arancione GitHub non
+  riesce a fare il certificato), dominio verificato prima su GitHub con il TXT
+  `_github-pages-challenge-jacques88-sudo`: senza, chi punta un dominio a GitHub
+  lascia la porta aperta a un altro account che lo rivendichi;
+- `venditori.html` e `ticket/index.html` mandavano a `../isla-ticket/`: sul dominio
+  nuovo vorrebbe dire `islaexcursionstenerife.com/isla-ticket/`, che non c'è. Ora
+  l'indirizzo intero di Isla Ticket, che resta su `github.io`;
+- `og:image` delle otto pagine col dominio nuovo (l'anteprima di WhatsApp);
+- `id` del manifest `/index.html`: sul dominio nuovo l'app è comunque un'altra;
+- `CATALOGO_URL` di `foglio-google/Codice.gs`: la copia dentro Apps Script ha ancora
+  il vecchio e funziona col rimando (UrlFetchApp segue i rimandi), non va ricopiata
+  apposta;
+- il QR di `stampa/`: non rifatto, il vecchio funziona col rimando (rifatto il 22
+  ottobre, sotto).
+
+Isla Ticket carica `../isla/…` da `jacques88-sudo.github.io/isla-ticket/`: arriva al
+dominio nuovo col rimando di GitHub, i `<script>` e i fogli di stile lo seguono. Il
+giorno che si tocca quel repository conviene scrivere lì l'indirizzo nuovo.
+`CACHE_NAME` → `isla-v610`.
+
+## Il DMARC (21 ottobre 2026)
+
+Messo su Cloudflare un TXT `_dmarc` con `v=DMARC1; p=reject; adkim=s; aspf=s`. Il
+dominio **non manda email** (Email Routing riceve e basta), quindi la regola più severa
+non toglie niente e impedisce le truffe "da" `@islaexcursionstenerife.com` ("paga qui
+la tua escursione"). Le email ricevute su `info@` arrivano uguali: il DMARC guarda solo
+chi dice di partire dal dominio. Niente indirizzo `rua` per i rapporti: nessuno li
+leggerebbe.
+
+**Il giorno che si vuole scrivere da `info@`** (Zoho Mail, Google Workspace) vanno
+aggiunti prima il suo `include:` nel TXT SPF che c'è già (non un secondo SPF: due SPF
+invalidano tutti e due) e il suo DKIM. Senza, con `p=reject` e allineamento stretto, le
+sue email vengono rifiutate.
+
+Il sito, il giorno stesso: collegato, lucchetto, app installata dal proprietario dal
+dominio nuovo. Sul telefono il proprietario aveva scritto `islaesxcursiontenerife.com`
+e Chrome diceva NXDOMAIN: il nome è lungo e si sbaglia facilmente, conviene darlo
+copiato o col QR.
+
+## Il SEO (21 ottobre 2026)
+
+Fatto subito dopo il collegamento del dominio, come deciso il 20 ottobre.
+
+**La lingua nell'indirizzo.** Prima la lingua veniva solo dalla scelta salvata o dal
+browser. Google legge le pagine con un browser in inglese, quindi avrebbe visto Isla
+solo in inglese, e a chi cerca "Teide Ausflug" non avrebbe mai mostrato la pagina in
+tedesco. Ora `?lang=it|en|es|fr|de` vince (`I18N_DA_INDIRIZZO` in `i18n.js`) ma **non si
+salva**: chi arriva da una ricerca in tedesco e poi apre un'altra pagina torna alla sua
+lingua. Una bandiera toglie `?lang=` dall'indirizzo, se no ricaricando tornava quella di
+prima. I link interni non portano `lang`: non serve, Google li trova tutti da sitemap.xml.
+
+**`canonical`** (`indirizzoUfficiale()`): scritto da JavaScript e non nell'HTML, perché
+dipende da `?id=` e `?lang=`. Tiene solo `id` (tour, pacchetto), `giorni` e `famiglia`
+(pacchetti) e `lang`; `index.html` diventa `/`. Così `?ticket=1`, `?q=barca`, `?pref=…`
+non diventano pagine doppie. Non c'è sulle pagine con `noindex`.
+
+**`sitemap.xml`** lo fa `sitemap.js`: 100 pagine (11 fisse, 67 schede pubblicate, 22
+pacchetti) × 6 indirizzi = 600, ognuno con i suoi `hreflang` e `x-default` (senza
+lingua). 530 KB, il limite di Google è 50 MB. Niente pacchetti su misura (infiniti),
+niente "Le mie prenotazioni". `controlla.js` la rifà in memoria e la confronta.
+
+**`robots.txt`**: tutto aperto, tranne i file del lavoro che GitHub Pages pubblica
+comunque perché stanno nel repository (`NOTES.md`, `dati-fornitore/`, `supabase/`…).
+Non è un lucchetto: chi conosce l'indirizzo li legge lo stesso, come prima.
+
+**schema.org**: `TravelAgency` in `index.html` con gli stessi dati del titolare della
+privacy; `TouristTrip` sulle schede con nome, descrizione, foto e prezzo (l'adulto,
+oppure il "da"; mai `price` da solo). La descrizione per Google (`meta description`)
+della scheda è la sua `desc`, tagliata a 155 caratteri.
+
+**Le stelle di "Dicono di noi" no**, anche se erano nell'elenco del 20 ottobre: dal 2019
+Google non mostra le stelle delle recensioni che un'azienda pubblica su se stessa
+("self-serving"), e marcarle per farle uscire è il caso che punisce. Le recensioni
+restano nella home per i clienti. Detto al proprietario.
+
+Provato in Chromium con browser in inglese: `?lang=de` su una scheda dà pagina, titolo,
+descrizione e `TouristTrip` in tedesco col `canonical` giusto; `?ticket=1` → `/`;
+`?giorni=5&x=1` → `?giorni=5`; `booking.html` senza `canonical`; la bandiera toglie
+`lang` e ricaricando resta la lingua scelta. Le undici pagine senza errori.
+`CACHE_NAME` → `isla-v611`.
+
+**Tocca al proprietario**: Google Search Console (proprietà di dominio, verificata con
+un TXT su Cloudflare) e lì "Sitemap" → `sitemap.xml`. Senza, Google trova il sito da
+solo, ma in settimane invece che in giorni.
+**Fatto il 21 ottobre 2026**: proprietà verificata, `sitemap.xml` inviata, stato "Riuscito".
+Google la rilegge da solo: dopo `node sitemap.js` non serve inviarla di nuovo.
+
+## Il README col dominio nuovo (21 ottobre 2026)
+
+Il README diceva ancora `jacques88-sudo.github.io/isla/` e "il SEO si fa dopo il dominio".
+Ora dice `islaexcursionstenerife.com`, che il vecchio indirizzo porta lì da solo, e che
+dominio e SEO sono fatti. PDF rifatto dal README (`documenti/cos-e-isla.pdf`), come dice
+la sezione sopra. Nessun file del sito toccato: `CACHE_NAME` non cambia.
+
+### Kasamui, Castillo sempre card, e un file con tutti i netti (21 ottobre 2026)
+
+Risposte del proprietario sui fogli di Nancy, Maarten e Kristine:
+
+- **Kasamui** è una barca delle **3 ore**: `nomi` di `whale-dolphin-3h`, accanto alle
+  altre cinque. Fa anche il **charter privato**, con un netto fisso per tutta la barca
+  (`net_fixed` su `whale-dolphin-3h-charter`). Il nome sta solo sull'uscita a persona
+  (stesso nome su due schede = errore di `controlla.js`), quindi il netto del charter
+  vale **per qualunque compagnia**, come quello di Kalima Kat: se un'altra barca fa il
+  charter delle 3 ore con un netto diverso, va riaperta la questione;
+- **Castillo San Miguel conta sempre come card**: `pagamento: "card"` e la voce nei due
+  elenchi di `supabase/modifiche/2026-10-09-solo-card.sql`. Anche **Maxicat**, ma la
+  scheda non c'è ancora: quando arriva, va messa in tutti e due gli elenchi;
+- ticket 0222 di Flash Jetski: erano **2 doppie** a un netto diverso da quello di
+  Notion. Il netto resta quello di Notion; se ricapita, va chiesto di nuovo
+  (promemoria su Notion);
+- Loro + Bus 0456, Siam 0224 e il jet ski 0213: lasciati com'erano.
+
+**Un file solo per Supabase.** Il proprietario non aveva ancora incollato su Supabase
+gli SQL preparati negli ultimi giorni. Ora nella scratchpad c'è un file unico,
+`tutti-i-netti-21-ottobre.sql` (**non committato**): le percentuali card/cash, tutte le
+73 righe di `nets` ricostruite dalla tabella Notion e l'elenco "sempre card". Ogni riga
+è un `insert … on conflict … do update` che scrive **tutte** le colonne del netto, così
+un valore vecchio rimasto su Supabase si cancella. In testa un controllo che si ferma e
+dice quale modifica del database manca (percentuale, netto fisso, transfer). I ticket
+già salvati non si ricalcolano: sono prove, si cancellano all'apertura.
+
+Provato su Postgres 16 con schema e modifiche: senza le modifiche del 17-18 ottobre si
+ferma col nome dei file; dopo, lanciato due volte senza errori; i ticket dei fogli
+tornano col netto scritto sulla carta (Kasamui 2 adulti → 50, charter → 350, Castillo
+col bus → 104,80, Twin col bus 346 → 276,80, Freebird 4+1+neonato → 94,50, Teide + Masca
+2+1 → 94,40, Prime Quads doppio → 75). Nel browser a 375 px Castillo, barche delle 3 ore
+ed elenco senza errori, il nome Kasamui non si vede. `CACHE_NAME` → `isla-v612`.
+
+### Fiat 500: anche 40 minuti, 120 € (21 ottobre 2026)
+
+Dal foglio di Kristine (ticket 0599 "Fiat 500 40m"): il giro da **40 minuti** esiste e
+va anche sul sito (proprietario). Prezzo **120 € a Fiat 500** (proprietario): variante
+nuova davanti a 1 ora (130) e 2 ore (220), `priceFrom` 120, durata "40 minuti, 1 o 2 ore"
+nelle cinque lingue, come il Jet Ski. Il ticket diceva 130: sconto o prezzo del
+venditore, non si confronta col catalogo. Provato in italiano e inglese a 375 px: tre
+bottoni "40 minuti €120 · 1 ora €130 · 2 ore €220", niente scroll, nessun errore.
+`CACHE_NAME` → `isla-v613`.
+
+### Le visite: Cloudflare Web Analytics (21 ottobre 2026)
+
+Il proprietario voleva sapere quanta gente visita Isla. Prima non lo diceva niente:
+Insights → Traffic di GitHub conta il repository, non il sito, e Cloudflare con la
+**nuvola grigia** il traffico non lo vede. Scelto **Cloudflare Web Analytics**: gratis,
+**senza cookie** (quindi niente banner del consenso), funziona anche con la nuvola grigia.
+Google Analytics scartato: cookie, e in Europa servirebbe il banner.
+
+**L'installazione è a mano, non "Automatic"**: l'automatica mette lo script solo nel
+traffico che passa da Cloudflare (nuvola arancione), e da noi sarebbe rimasta a zero per
+sempre. Nel pannello: Web analytics → Manage site → "Enable with JS Snippet installation".
+La nuvola **non** si accende per questo: cambierebbe il collegamento con GitHub Pages.
+
+Lo script sta prima di `</body>` in dieci pagine (home, esperienze, scheda, prenotazioni,
+mappa, noleggio, pacchetti, pacchetto, privacy, termini). **Una pagina nuova lo deve
+avere anche lei.** Non ci sono `offline.html` (da offline non parte comunque) e i rimandi
+`venditori.html` e `ticket/`. Il token nello script è **pubblico**, non è un segreto: lo
+vede chiunque apra il sito. La privacy prima diceva "niente statistiche di visita": ora
+ha "Quante persone visitano Isla" e Cloudflare fra chi riceve i dati, nelle cinque lingue.
+Il service worker non tocca lo script: viene da un altro indirizzo e le POST del conteggio
+non passano dalla cache. Provato nel browser: le dieci pagine chiedono lo script, nessun
+errore. I numeri si leggono su Cloudflare → Analytics → Web analytics. `CACHE_NAME` →
+`isla-v614`.
+
+## Chi è chi: Isla è di Admiral, il proprietario e la moglie sono venditori (21 ottobre 2026)
+
+Il proprietario lo ha chiarito: **Isla è un prodotto di Admiral Excursions**, e lui e sua
+moglie sono **venditori** di Admiral, per strada. Isla non sostituisce la vendita in strada:
+la affianca con quella online (il cliente incontrato per strada ritrova su Isla la sua
+escursione e compra di nuovo da solo, col codice sconto del venditore).
+
+Per questo **niente scheda Google Business Profile per Isla o per i venditori**: non hanno
+un ufficio, e Google la rifiuterebbe. La scheda, se c'è, è di **Admiral**: si chiede ad
+Admiral di aggiungerci il sito `islaexcursionstenerife.com`. Non si ripropone.
+
+## Le richieste online per codice del venditore (21 ottobre 2026)
+
+Primo passo del piano "strada + online" (proprietario: Isla è di Admiral, lui e la
+moglie la vendono per strada e vogliono vedere quanto la strada porta vendite online).
+Nelle **Statistiche** di Isla Ticket (solo ufficio):
+
+- in alto, accanto a "WhatsApp 4", "(3 col codice)";
+- la tabella **"Richieste online, per codice"**: per ogni codice sconto il venditore
+  ("Marco (MARCO)", da `codici_sconto`, che l'ufficio può leggere), quante richieste,
+  quante **confermate**, quanto venduto; "Senza codice" sempre in fondo. Un codice che
+  non si trova in `codici_sconto` esce da solo. Le annullate non contano, come nel resto.
+
+Il QR personale (`?codice=MARCO`, 19 ottobre) mette il codice da solo: chi arriva da
+quel QR finisce nella riga del suo venditore. Il QR generico no.
+
+`caricaStatistiche()` chiede anche `discount_code`; se il database non ha la colonna
+(SQL `2026-10-18-codici-sconto.sql` non lanciato) rilegge senza, e la tabella non
+compare (`leggeCodici`): meglio niente che "Senza codice" su tutte.
+
+**Limite da sapere:** la pulizia mensile cancella le righe di `bookings`, quindi le
+statistiche vedono al massimo il mese in corso. Per i conti dell'anno servirà salvare il
+codice anche nel foglio Google (passo da proporre, non fatto).
+
+Provato: `calcolaStatistiche()` in Node con richieste finte (annullata esclusa, codice
+senza nome, senza colonna → `leggeCodici` falso) e la tabella nel browser a 390 px,
+nessun errore. `CACHE_NAME` → `isla-v615`.
+
+### Il QR col dominio nuovo (22 ottobre 2026)
+
+Il proprietario ha chiesto il QR nuovo: `stampa/qr-isla.svg` e `qr-isla.png` aprono ora
+**https://islaexcursionstenerife.com/**, la pagina iniziale. Stesse regole di prima:
+uguale per tutti, correzione M, margine 4, versione 3 (29 × 29), PNG 1200 px. I ticket
+stampati col QR vecchio continuano a funzionare col rimando di GitHub. Nessuna modifica
+al sito (`stampa/` non sta nella cache del service worker): `CACHE_NAME` resta com'è.
+
+Provato: il PNG riletto con `jsQR`, l'SVG disegnato in Chromium a 100, 150 e 300 px e
+riletto: porta sempre a `https://islaexcursionstenerife.com/`.
+
+### Pulizia dei ticket di prova (22 ottobre 2026)
+
+Il proprietario ha cancellato dal database tutti i ticket e le richieste WhatsApp di
+prova (`bookings`), con gli avvisi mandati, le iscrizioni agli avvisi, i tentativi e
+le recensioni di Isla ancora in attesa; restano le pubblicate e quelle copiate da
+Tripadvisor/Facebook. L'SQL stava nella scratchpad, non nel repository: era una
+volta sola. Risultato: `ticket_rimasti = 0`. Le foto le toglie `pulisci-foto` la
+notte dopo; il foglio Google va ripulito a mano (schede "Settimana …" e riepiloghi,
+non "Aggiorna"), perché con zero ticket il programma non lo tocca.
+
+**Scoperto facendolo**: nel database mancava `tentativi_ticket`, quindi
+`2026-10-16-tentativi-ticket.sql` non era mai stato lanciato (niente freno di 10
+tentativi l'ora, niente controllo `https://` sul link di pagamento, e la recensione
+da un ticket di carta andava in errore). Un SQL di pulizia che tocca tabelle
+facoltative va scritto con `to_regclass(...) is not null`: in Supabase un errore
+annulla tutto il blocco.
+
+### Le richieste al numero della moglie (22 ottobre 2026)
+
+Il proprietario: le richieste WhatsApp vanno al **+34 657 772 032** (sua moglie).
+`WHATSAPP_NUMBER` in `esplora-catalog.js` è uno solo per tutto il sito, quindi ci
+vanno **tutti** i messaggi WhatsApp che partono da Isla (lista, scheda, pacchetti,
+noleggio, assistente, "Le mie prenotazioni"). Il **+34 662 908 073** resta come
+contatto: in privacy, termini e piè di pagina ci sono tutti e due (scelta "tutti e
+due" del proprietario), il nuovo per primo; nei termini anche per annullare o
+spostare ("al +34 657 772 032 o al +34 662 908 073"). Lo schema.org `telephone` di
+`index.html` resta il vecchio: ne vuole uno solo. Provato nel browser: lista e
+assistente aprono `wa.me/34657772032`, privacy e termini a 375 px senza scorrere di
+lato. `CACHE_NAME` → `isla-v616`.
+
+### Gli avvisi dell'ufficio (22 ottobre 2026)
+
+Il proprietario vuole un avviso sul telefono "per avere più controllo se qualcosa non
+va": **richiesta nuova** (la lista mandata su WhatsApp), **ticket nuovo** (un
+venditore salva un ticket di carta), **recensione da approvare**. Solo l'ufficio
+(`is_office`), mai i venditori. Telefoni: il proprietario Android, la moglie iPhone.
+
+- **Database** (`supabase/modifiche/2026-10-22-avvisi-ufficio.sql`): due trigger su
+  `bookings` e `recensioni` lasciano un segno in `avvisi_ufficio` (anche quando la
+  richiesta arriva da `manda_richiesta`, perché il trigger è `security definer`);
+  `avvisi_ufficio_da_mandare()` li prende e li segna come mandati **nello stesso
+  passo** (`update … returning`), così Cron e venditore insieme non li mandano due
+  volte. Più vecchi di un giorno non partono, dopo 7 giorni si cancellano. I telefoni
+  stanno in `ufficio_iscrizioni`, scritti solo da `avvisami_ufficio()` (rifiuta chi
+  non è ufficio e gli indirizzi che non sono di Google/Apple/Mozilla/Microsoft).
+- **`manda-notifiche`**: `mandaAllUfficio()` prima degli avvisi dei clienti. Se l'SQL
+  non c'è, salta e i clienti ricevono lo stesso. Una richiesta con più escursioni è un
+  avviso solo (per `request_code`). I titoli li legge dal catalogo del sito, come il
+  foglio Google. Solo italiano.
+- **Quando arrivano**: il ticket **subito** (Isla Ticket chiama la funzione dopo
+  "Salva ticket"); richieste e recensioni li porta l'orologio, **entro 10 minuti**: le
+  manda il cliente, che la funzione non la può chiamare.
+- **Isla Ticket**: "Avvisi su questo telefono" (solo ufficio, sotto Recensioni),
+  costruito in `venditori.js` come le recensioni, quindi l'HTML di `isla-ticket` non
+  cambia; cambia `isla-ticket/sw.js`, che mostra l'avviso e al tocco apre l'app. Il
+  permesso si chiede **appena toccato** il bottone: l'iPhone non lo concede dopo
+  un'attesa. Su iPhone solo con Isla Ticket sulla schermata Home (in Safari
+  `PushManager` non c'è, e la pagina lo dice).
+
+Provato: l'SQL su Postgres 16 (due volte di fila, venditore rifiutato, indirizzo finto
+rifiutato, `anon` senza permesso, i tre tipi, la seconda chiamata che non ripete
+niente, i segni vecchi, la pulizia dei ticket che si porta via i segni); i testi
+dell'avviso con la funzione compilata (richiesta di due escursioni → un avviso); nel
+browser Isla Ticket con Supabase finto: Accendi → `avvisami_ufficio` con l'indirizzo
+del telefono, e un avviso mandato al service worker con `deliverPushMessage` compare
+col titolo, il testo e l'icona. `CACHE_NAME` → `isla-v617`.
+
+## Il biglietto da visita (22 ottobre 2026)
+
+Chiesto dal proprietario "con i logo e i colori di Isla". Sta in `stampa/` accanto al
+QR: `biglietto-isla.html` (il codice), `biglietto-isla.pdf` (per la tipografia, fronte
+e retro 85 × 55 mm) e `biglietto-isla-anteprima.png`. Come si rifà, in
+`stampa/LEGGIMI.md`.
+
+- **Solo il numero nuovo** (+34 657 772 032, come WhatsApp): il +34 662 908 073 l'ha
+  tolto il proprietario **solo dal biglietto**; sul sito (piè di pagina, privacy,
+  termini) resta.
+- Il **logo** viene da `assets/logo-isla.png` (476 px, trasparente: a 22 mm sono più di
+  500 dpi). I **colori** sono i token di `styles.css` convertiti da `oklch` a esadecimale,
+  perché le tipografie vogliono quello. Prima prova: email e indirizzo andavano a capo e
+  "WHATSAPP" toccava il numero; sistemati prima di consegnare.
+- **"Francesca & Jack"** sul retro (proprietario, stesso giorno: "vicino al numero o
+  dove torna meglio"): sotto il logo, sopra WhatsApp, scritto a mano come il motto del
+  fronte (Caveat) e nell'oro delle etichette.
+- **Margine di taglio di 3 mm** (proprietario, stesso giorno): il PDF è 91 × 61 mm.
+  `biglietto-isla.html?taglio=1` allarga i fondi di 3 mm per lato e lascia le scritte
+  dove sono; senza `?taglio` è il biglietto com'è dopo il taglio (l'anteprima).
+  Trovato provando: l'onda come `<svg>` assoluto con `left: 0; right: 0` nel PDF si
+  fermava a 86 mm (un elemento "sostituito" come `svg` non si allarga da solo fra
+  `left` e `right`); ora sta dentro un `div` con `width: 100%`, e il blu sotto l'onda è
+  lo sfondo del `div`. Controllato rasterizzando il PDF con il rettangolo del taglio sopra.
+- **Niente scritta sotto il QR** (proprietario, stesso giorno): "Inquadra: le escursioni
+  di Tenerife su Isla" era solo in italiano. Tolta, il riquadro bianco è passato da 21 a
+  23 mm; il QR si rilegge dal PDF (`jsQR`, 300 dpi).
+- `stampa/` non sta nella cache del service worker: `CACHE_NAME` resta com'è.
+
+## "Consigliate" al posto di "Raccomandate" (22 ottobre 2026)
+
+- **Il filtro si chiama "Consigliate"** (proprietario): in italiano la pillola in
+  Esperienze diceva "Raccomandate" e il titolo "Le nostre raccomandate"; ora
+  "Consigliate" e "Le nostre consigliate" (`catalog.recommended`,
+  `catalog.recommendedTitle` in `i18n.js`). Le altre quattro lingue restano com'erano.
+  Nel codice la lista resta `RACCOMANDATE`: è un nome interno, il cliente non lo vede.
+
+---
+
+## Maxicat (23 ottobre 2026)
+
+Scheda nuova `maxicat`, "Maxicat Whale Watching", dai dati della pagina del fornitore
+incollati dal proprietario. Non è un doppione: fra le barche delle 3 ore da Puerto
+Colón nessuna ha il menu canario a bordo né due catamarani da 104 e 70 posti.
+
+Messo:
+- partenze **10:00, 13:15, 16:00** tutti i giorni; ritrovo **Puerto Colón, pontile 9**;
+- `included`: pasto, bevande, sosta bagno, guida. **Niente `snorkel`**: il fornitore
+  mette l'attrezzatura fra le cose non incluse ("porta la tua"), lo dice una nota;
+- `menus`: vegano / vegetariano (il menu bambini è quello di tutti i bambini);
+- **`PICKUP_NESSUNO` con la casella del transfer**: il pulmino è gratis da Callao Salvaje,
+  Las Américas, Los Cristianos e Golf del Sur, ma porta a dei punti di raccolta, non sotto
+  l'hotel, e al pontile si può arrivare da soli (regola del 19 ottobre). Niente
+  `transferPrice`: col transfer il prezzo non cambia;
+- `pagamento: "card"` e la voce in `2026-10-09-solo-card.sql` (proprietario, 21 ottobre):
+  **l'SQL va rilanciato su Supabase**;
+- `nomi: ["Maxicat"]`, per il menu della compagnia nel modulo dei venditori: il netto
+  (su Notion) va inserito in `nets` con `company = 'Maxicat'`.
+
+Non copiato: la loro cancellazione (vale la nostra), la tariffa residenti, il "desde".
+
+**Prezzi** (stesso giorno, dalla pagina di prenotazione del fornitore): adulti **46 €**
+(12+), bambini **23 €** (6-11), neonati **gratis** (0-5): le fasce combaciano. Non
+copiati: le tariffe per i residenti canari (25 € e 12,50 €), il 42 € del 31 ottobre (è
+un'offerta loro, sul sito va il prezzo pieno) e le 48 ore di cancellazione (vale la
+nostra). La pagina dice "Offered in English, Spanish", ma `languages` non si mette: la
+domanda sulla lingua non è stata chiesta. Totale provato nel browser: 2 adulti + 1
+bambino = 115 €.
+
+**Foto** (25 ottobre 2026, dal proprietario): `maxicat.webp` (il catamarano dall'alto,
+1200×800) e in `gallery` `maxicat-2.webp` e `maxicat-3.webp`, che arrivavano a 800 e 768
+px di larghezza: lasciate alla loro misura e non ingrandite, come `luxury-catamaran.webp`
+(768×512). La terza era quadrata: il ritaglio al centro tagliava via le barche, quindi è
+ritagliata **dal basso**. Copie piccole fatte con `foto-piccole.py`.
+
+**In sospeso**: il titolo, che ho scelto io.
+
+---
+
+## Adrenalina in due rifatto dal post Instagram (23 ottobre 2026)
+
+Il proprietario ha mandato lo screenshot del post "Pacchetto per coppie" di
+`isla_tenerife` (4 settembre): barca per i cetacei, parascending, quad al Teide 3 ore,
+"solo 139 € pp", e ha chiesto di mettere quelle tre in **Adrenalina in due** al posto di
+moto d'acqua, quad al tramonto e parapendio.
+
+Scelte fatte con lui: la barca è **Flipper One, 3 ore** (`optionIndex: 1`, con sosta
+bagno e pranzo) e il quad è **la mattina** (`optionIndex: 0`, `posti: 2`). Il prezzo non
+si scrive: 40 + 120 : 2 + 55 = 155, meno il 10% = **da 139,50 a persona**, il 139 del
+post. Il Teide resta una salita sola (il quad). Foto della vetrina:
+`quad-teide-adventure.webp`, perché quella del tramonto non era più vera.
+
+**Lo stesso giorno, la barca cambia**: il proprietario ha chiesto il **Freebird, 3 ore**
+(`optionIndex: 1`: sosta bagno a Diego Hernández, panino, transfer dal sud compreso) al
+posto di Flipper One. 47 + 60 + 55 = 162, meno il 10% = **da 145,80 a persona**.
+Descrizione riscritta nelle cinque lingue (catamarano da Puerto Colón).
+
+---
+
+## Il tema di Halloween della home (24 ottobre 2026)
+
+Il proprietario ha chiesto "qualche decorazione e colori tema Halloween, **solo nella
+home**". Due file nuovi, caricati solo da `index.html`:
+
+- `halloween.js` mette la classe `halloween` su `<html>` **dal 24 al 31 ottobre**, e
+  aggiunge le decorazioni: ragnatela e ragnetto nell'angolo della foto, quattro
+  pipistrelli che volano, una zucca per parte accanto a "Isla", tre zucche sotto il
+  titolo. Sono solo disegni (`aria-hidden`, `pointer-events: none`): non coprono niente
+  che si tocchi. Col "meno movimento" del telefono stanno fermi.
+- `halloween.css` gira le variabili dei colori (`--bg`, `--text`, `--primary`, `--gold`…)
+  su viola della notte e arancio delle zucche, di giorno e al buio; la voce attiva della
+  capsula diventa arancio e il logo tondo ha un alone arancio. Tutto sotto
+  `html.halloween`: senza la classe il file non fa niente.
+
+**Si spegne da solo il 1° novembre** e si riaccende il 24 ottobre dell'anno dopo. Per
+toglierlo per sempre: i due file, le loro due righe in `index.html` e in `sw.js`.
+Per vederlo in un altro giorno `index.html?halloween=1`; `?halloween=0` lo spegne.
+
+Provato nel browser a 390 px, chiaro e scuro: nessuno scorrimento di lato, lista e Menu
+si leggono, il 24 ottobre acceso e il 1° novembre spento con la data finta.
+
+---
+
+## La pagina dei link per i social (26 ottobre 2026)
+
+Prima di rifare il post "Pacchetto coppia" il proprietario vuole sistemare
+Instagram, Facebook e TikTok, con un "link nella bio". Scelte fatte con lui:
+
+- **un nome solo, `isla_tenerife`**, su tutti e tre: TikTok si chiamava
+  `fran.escursionitenerife` e la pagina Facebook "Fran.escursioni". La pagina
+  Facebook si **rinomina**, non se ne apre una nuova: le recensioni vecchie restano;
+- **al posto di Linktree, una pagina nostra**: `link.html`, che si apre anche come
+  `islaexcursionstenerife.com/link` (GitHub Pages trova da solo il `.html`). Gratis,
+  senza il marchio di un altro, nello stile di Isla, e Cloudflare la conta come le
+  altre pagine;
+- **bio in italiano e inglese**; la pagina segue la lingua del telefono come il resto
+  del sito, con le bandiere.
+
+Cinque pulsanti: esperienze (il primo, pieno), pacchetti, WhatsApp
+(`+34657772032`, senza testo già scritto: non serve `perUfficio()`), noleggio, "Le
+mie prenotazioni". Niente capsula né Menu: deve stare in uno schermo. Non sta in
+`sitemap.xml`: è una porta d'ingresso dai social, non una pagina da cercare.
+
+**I social in fondo** (26 ottobre 2026): tre tondi con le icone, disegnate a tratto.
+TikTok è diventato `isla_tenerife` come Instagram. Facebook è un tondo pieno con la "f" del colore del fondo, come il logo vero: a tratto non si riconosceva (proprietario). Su Facebook il trattino basso non
+si può usare e `isla.tenerife` e `islatenerife` erano presi: il nome utente è
+**`isla.tenerife.excursions`**, il nome della pagina "Isla Tenerife" (la vecchia
+"Fran.escursioni" rinominata, con le sue recensioni). Bio di Instagram e TikTok e
+presentazione di Facebook in italiano e inglese, col sito `…/link` e il pulsante
+WhatsApp.
+
+### "Dal nostro ultimo video" e gli indirizzi corti (26 ottobre 2026)
+
+Il proprietario ha chiesto che ogni video porti alla sua escursione (Freebird →
+la scheda del Freebird). Su Instagram e TikTok un link nella didascalia non si
+tocca; su Facebook, nelle storie di Instagram e su WhatsApp sì. Viste le due prove,
+ha detto di farle **tutte e due**:
+
+- **"Dal nostro ultimo video"** in cima a `link.html`: lo riempie `link.js` dal
+  catalogo (foto piccola, titolo, zona, "da €30") nella lingua del telefono. A ogni
+  video si cambia `ULTIMO_VIDEO`, una riga. Colori del tramonto del logo, testo
+  bianco, uguale di giorno e al buio.
+- **Gli indirizzi corti**: `islaexcursionstenerife.com/freebird`. GitHub Pages non
+  fa rimandi del server, quindi ognuno è una cartella con un `index.html` che porta
+  alla scheda (anche con `?lang=`). Scritto da `indirizzi-corti.js`, come
+  `sitemap.js`; tiene `og:title`, `og:description` (la prima frase in italiano) e
+  `og:image`, così incollato su WhatsApp o Facebook esce con la foto. `noindex` e
+  canonical sulla scheda. Lo script toglie da solo le cartelle che escono
+  dall'elenco, ma solo quelle col suo segno. Per ora c'è **solo `freebird`**: gli
+  altri si aggiungono quando si fa il video, una riga ciascuno.
+
+### Adrenalina in due a 139, "Offerta" (26 ottobre 2026)
+
+Il proprietario ha deciso: sul sito **da 139 a persona**, come il post Instagram,
+"anche se non torna con il 10%", con scritto **Offerta**. Nuovo campo del pacchetto,
+`prezzoOfferta` (spiegato in testa a `pacchetti.js`, "IL PREZZO D'OFFERTA"): fissa il
+numero in vetrina e lo sconto diventa quello che serve per arrivarci, qui 23 su 162
+(circa 14,2%). Essendo una percentuale, finestra, lista e messaggio fanno i conti come
+sempre: una coppia con un quad doppio paga 278 (139 × 2), tre persone con un quad
+singolo e uno doppio 459,90. Accanto al prezzo la pillola rosa "Offerta" (`pack.offer`),
+in vetrina e sulla pagina del pacchetto. Gli altri pacchetti restano al loro sconto.
+`sconto: 10` resta scritto: togliendo `prezzoOfferta` torna 145,80.
+
+### Il logo sempre nel cerchio bianco (26 ottobre 2026)
+
+Il proprietario: "il logo lo vorrei sempre con il cerchio a sfondo bianco", da tenere a
+mente per tutto (sito, social, grafiche). È in `CLAUDE.md`, fra le cose decise. Sul sito
+lo aveva già il logo grande della home e delle schede (`.home-hero-mark`, 12 ottobre);
+ora anche i piccoli: intestazione di "Le mie prenotazioni" (`.brand`), piè di pagina
+(`.footer-brand`), privacy, termini e pagina dei link (`.privacy-home`, `.link-logo`).
+Una regola sola in `styles.css`, bianco fisso anche al buio. Il margine interno è in px:
+scritto in % il logo spariva, perché il padding in % si conta sulla larghezza del
+contenitore, non dell'immagine. Fuori la schermata di caricamento (`.splash-logo`).
+
+### Il riquadro in cima alla pagina dei link porta al pacchetto coppia (26 ottobre 2026)
+
+Il post del pacchetto coppia esce stasera, e chi tocca il link in bio deve trovare in
+cima l'offerta da 139, non il Freebird. `ULTIMO_VIDEO` in `link.js` ora accetta anche
+un pacchetto, scritto `"pacchetto:adrenalina-in-due"`: titolo, foto e prezzo vengono da
+`pacchetti.js` ("Offerta · da €139 a persona"). Per questo `link.html` carica anche
+`escursioni.js` e `pacchetti.js`, che qui non trovano i loro elementi e non disegnano
+niente. La scritta è diventata "Dal nostro ultimo post": il post di stasera è un
+carosello di foto, non un video. `/freebird` resta.
+
+### `/coppia`: gli indirizzi corti anche per i pacchetti (26 ottobre 2026)
+
+Per la storia di Instagram (adesivo Link) e il testo di Facebook del post dell'offerta:
+`islaexcursionstenerife.com/coppia` porta a `pacchetto.html?id=adrenalina-in-due`.
+`indirizzi-corti.js` accetta ora anche `"pacchetto:<id>"`, come `ULTIMO_VIDEO` in
+`link.js`; l'anteprima prende titolo, prima frase della descrizione e foto del
+pacchetto. Il pacchetto non ha `published`: c'è o non c'è.
+
+### I modelli delle grafiche salvati in `social/` (27 ottobre 2026)
+
+Il proprietario ha chiesto di salvare "i momenti importanti" per riprendere i social in
+un'altra chat. Le grafiche del pacchetto coppia stavano solo nella scratchpad, che sparisce
+con la sessione: ora i modelli sono in `social/` (`carosello.html`, `verticali.html`,
+`fai-grafiche.js`, la foto del parascending senza il logo di Tripadvisor in `foto/`) e le
+regole in `social/LEGGIMI.md`. Lo script rifà le stesse immagini al pixel e il video di 12
+secondi; le immagini finite non si committano. `social/` è in `robots.txt` come `stampa/`.
+Su Notion, nella pagina "Social — video, clip e cose imparate", ci sono il piano di 12
+settimane (database) e le decisioni: nomi dei profili, link in bio, Meta Business Suite,
+Metricool più avanti.
+
+### Le righe dei pacchetti: il prezzo dei mezzi, non "da €55 a persona" (28 ottobre 2026)
+
+Il proprietario: nelle spiegazioni delle singole escursioni dentro Adrenalina "una
+persona sola pagherebbe 55 euro un buggy e 60 la moto d'acqua", sotto il prezzo di
+vendita e sotto i netti. La riga diceva "Completo, 4 ore · da €55 a persona · 6 posti
+€330/buggy".
+
+Prima ho capito male e ho cambiato il numero in vetrina, due volte (contato per due, poi
+per una persona sola: PR #587, #588, #589). Il proprietario: **"le cose 'da' erano
+corrette per la vetrina"**, lo sbagliato era la riga. Le tre PR sono state annullate (la
+vetrina è di nuovo "da €153", la regola del 16 settembre resta) e la riga è cambiata:
+
+- ogni voce a mezzo mostra **il prezzo di ogni mezzo**, uno per misura e senza prezzo a
+  testa: "Buggy: 2 posti €180 · 4 posti €240 · 6 posti €330", "Moto d'acqua: Singola
+  €100 · Doppia €120" (pacchettoMezziTesto);
+- con `posti` sulla voce (Perfetto per 2) solo quella misura: "Buggy: 2 posti €180";
+- lo stesso nelle righe di "Crea il tuo pacchetto".
+
+Il "da €… a persona" resta **solo in vetrina**, con la nota `pack.unitNote` sotto.
+
+### Il nome della barca esce dal sito (28 ottobre 2026)
+
+Il proprietario: "sulla PWA non vorrei mettere i nomi delle compagnie come Freebird",
+con la 3-Hour Whale & Dolphin Boat Trip come modello (tante barche, un titolo che dice il
+giro). Scelte sue: **tutte le barche**, Freebird e Royal Delfin **restano due schede**
+(prezzi, ritiro e netti diversi), e **/freebird si sostituisce** con /catamarano.
+
+| id (non cambia) | prima | adesso | `nomi` |
+|---|---|---|---|
+| freebird-catamaran | Freebird Catamaran Trip | Open Bar Catamaran Trip | Freebird |
+| royal-delfin | Royal Delfin Boat Tour | Underwater View Catamaran | Royal Delfin |
+| maxicat | Maxicat Whale Watching | Whale Watching & Canarian Lunch | Maxicat (c'era già) |
+| peter-pan | Peter Pan Pirate Ship | Pirate Ship Dolphin Trip | Peter Pan |
+| flipper-one | Flipper One Boat Tour | Wooden Schooner from Los Gigantes | Flipper One |
+| utopia-boat-party | Utopia Boat Party | Boat Party | Utopia |
+| shogun | Shogun | Oriental Schooner to Masca Bay | Shogun |
+| opera-60 (+ charter) | Opera 60 | Speedboat & Snorkel Trip | Opera 60 |
+| skyline-cruiser (+ charter) | Skyline Cruiser | Motor Yacht Dolphin Trip | Skyline Cruiser, Skyline |
+| ragnarok | Ragnarok Viking Boat Tour | Viking Boat Tour | Ragnarok |
+
+- I nomi vanno in `nomi` solo sulla scheda in condivisione, non sui charter: lo stesso nome
+  su due schede `controlla.js` non lo vuole. Un netto con `company` vuota vale per ogni
+  compagnia (`x.company is null or x.company = p_company`), quindi i `nomi` nuovi non
+  tolgono il netto a nessun ticket.
+- La descrizione dello Skyline diceva "a bordo dello Skyline Cruiser": ora "di un
+  motoryacht Fairline". Le altre descrizioni il nome non lo avevano.
+- Gli `id` restano: li usano le liste nei telefoni, le richieste e i ticket su Supabase,
+  i netti. Restano quindi anche negli indirizzi (`tour.html?id=freebird-catamaran`) e nei
+  nomi delle foto.
+- `/freebird` è stato tolto da `indirizzi-corti.js` (lo script ha cancellato la cartella):
+  i link già pubblicati con /freebird non funzionano più, per scelta del proprietario. Al
+  suo posto `/catamarano`.
+- Regola nuova in `CLAUDE.md` e nella skill `nuova-scheda`.
+
+Lo stesso giorno il proprietario ha chiesto un'alternativa a "Open Bar": la scheda Freebird
+si chiama **Whale & Dolphin Catamaran Cruise**.
+
+### I titoli delle barche tradotti (28 ottobre 2026)
+
+Il proprietario: "puoi tradurre i titoli delle varie barche nelle lingue". Le dodici schede
+rinominate oggi (le dieci barche e i due charter) hanno `title: { it, en, es, fr, de }`:
+"Catamarano con vista sottomarina", "Catamarán con vista submarina", "Katamaran mit
+Unterwassersicht"… L'inglese resta quello scelto prima. Il messaggio WhatsApp di chi usa
+il sito in francese o tedesco porta il titolo **italiano** all'ufficio (perUfficio), i
+venditori lo vedono in italiano (`titoloDi()`), e la funzione `manda-notifiche` legge già
+il titolo `{ it: … }` dal catalogo.
+
+Trovato provando: le recensioni scrivevano `tour.title` senza `tf()`, quindi con un titolo
+tradotto sarebbe uscito "[object Object]". Corretto in `recensioni.js`.
+
+Restano in inglese le barche che portano un nome di Admiral: 3-Hour Whale & Dolphin Boat
+Trip, Submarine Safari, Luxury Catamaran Experience, Small Group Catamaran, Luxury Cruiser
+Experience.
+
+Poi anche le ultime cinque (proprietario, "traduci anche quelle"), coi loro charter:
+3-Hour Whale & Dolphin Boat Trip ("Balene e delfini in barca a vela, 3 ore"), Submarine
+Safari ("Safari in sottomarino"), Luxury Catamaran Experience ("Catamarano di lusso"),
+Small Group Catamaran ("Catamarano per piccoli gruppi"), Luxury Cruiser Experience ("Yacht
+di lusso"); l'inglese resta il titolo di prima. E in italiano **la goletta è "veliero"**:
+"Veliero di legno da Los Gigantes", "Veliero orientale alla baia di Masca". Nelle altre
+lingue la parola non cambia (Schooner, Goleta, Goélette, Schoner).
+
+### Home: Perfetto per 2 e il noleggio si scambiano di posto (29 ottobre 2026)
+
+Il proprietario: "invertire il bento del noleggio con quello perfetto per 2". Nella
+griglia della home Perfetto per 2 è ora il secondo riquadro (accanto a Pacchetti) e il
+noleggio l'ultimo (accanto a Food Experience). Cambia solo l'ordine in `index.html`:
+nessuna regola di `styles.css` dipende dalla posizione dei riquadri.
+
+### Black & Blue, Paradise e Monster: tre compagnie dai fogli del 19-25 ottobre (29 ottobre 2026)
+
+Il proprietario ha mandato quindici fogli di carta dei venditori (19-25 ottobre).
+Netti ricavati ticket per ticket e confrontati con la tabella Notion "Netti da
+inserire". **I numeri non sono qui**: stanno su Notion. Il proprietario ha corretto sei
+netti (Mokkai privata, che ora dipende dal transfer; Flash; Maxicat bambino; paragliding;
+Andromeda bambino; il charter delle 3 ore). Le compagnie che non si sapevano stanno in
+una riga "Da sapere" su Notion, coi numeri dei ticket. **Su Supabase va ancora
+aggiornato tutto**: le righe cambiate non hanno più la spunta "Inserito".
+
+Tre compagnie nuove, nei `nomi` (proprietario):
+- **Black & Blue** è **pesca**: `pesca-altura`, `nomi: ["Black & Blue", "Black and Blue"]`;
+- **Paradise** è **buggy** ("Buggy Paradise", "Paradise Bug" sul ticket): un nome in più
+  in `buggy-volcano-4h`. Il tipo non si scrive, quindi "Paradise" e non "Buggy Paradise";
+  `compagniaNelTesto()` lo trova in tutti e due i modi. Sul foglio il giro è "da 2 ore",
+  che sulla scheda non c'è;
+- **Monster** è **quad** ("Monster quad"): un nome in più in `quad-teide-adventure`,
+  l'unica scheda di quad, accanto a Prime Quads.
+
+Provato: `compagniaNelTesto()` in Node trova Black & Blue in "0908 BLACK & BLUE",
+Paradise in "Paradise Bug 1D" e in "Buggy Paradise 2H", Monster in "monster quad" e in
+"MONSTER". Le tre schede a 375 px senza scroll e senza errori, il nome non si vede.
+`CACHE_NAME` → `isla-v642`.
+
+### Freebird: "i posti si esauriscono in fretta" (29 ottobre 2026)
+
+Il proprietario: un avvertimento sul Freebird, perché i posti finiscono presto. Scelte
+sue: nella pagina **e** nell'elenco, col testo "I posti si esauriscono in fretta: meglio
+chiederlo con qualche giorno di anticipo" (tradotto nelle altre quattro lingue).
+
+Campo nuovo del catalogo, **`pochiPosti`** (nel vocabolario in testa a
+`esplora-catalog.js`), così si può mettere anche su altre schede:
+- pagina di dettaglio: riquadro sabbia sotto la descrizione (`.detail-few-seats`);
+- elenco: l'etichetta **"Posti limitati"** (`tour.fewSeats`), con lo stesso colore
+  dell'etichetta di stagione;
+- `controlla.js` verifica che ci siano tutte e cinque le lingue.
+
+### Galatea, Samba, Ocean Blue, Dolce Vita, Eden, Ragnarock, Mateo Bello (29 ottobre 2026)
+
+Altre compagnie dei fogli del 19-25 ottobre, nei `nomi` (proprietario):
+- **Samba** e **Ocean Blue**: barche delle 3 ore, in `whale-dolphin-3h` accanto alle altre;
+- **Galatea**: barca delle 3 ore piccola (7 persone al massimo, le altre 11-12) con un
+  **netto del charter tutto suo**. Per questo il nome sta in `whale-dolphin-3h-charter`,
+  non sull'uscita a persona: il ticket privato porta la compagnia e `calcola_netto()`
+  prende la sua riga, che vince su quella "qualunque compagnia" (`order by (x.company is
+  not null) desc`). È la questione che la nota del 21 ottobre su Kasamui diceva di
+  riaprire. Se un giorno Galatea fa anche l'uscita a persona, il nome non può stare su
+  tutte e due le schede: va chiesto;
+- **Dolce Vita**: la Fiat 500 (`fiat-500-water-car`); il netto non è ancora deciso;
+- **Eden**: catamarani piccoli, in `small-group-catamaran` accanto a Kalima Kat;
+- **Ragnarock**: come scrivono sul ticket la barca vichinga, accanto a "Ragnarok";
+- **Mateo Bello**: rent a car, in `noleggio-auto`.
+
+Due dubbi su Notion: Samba privata col netto più alto del charter, e i noleggi pagati
+tutti subito (scooter 0906, Mateo Bello 0490), dove "netto = totale − acconto" darebbe 0.
+
+Provato: `compagniaNelTesto()` trova i sette nomi nei testi dei fogli ("Dolce Vila",
+come l'ha scritto Nancy, no: lì lo trova Claude dalla foto); le cinque schede e l'elenco
+a 375 px senza scroll e senza errori, nessun nome in pagina. `CACHE_NAME` → `isla-v644`.
+
+### Samba sul charter, come Galatea (29 ottobre 2026)
+
+Il proprietario: anche **Samba** ha un netto del charter tutto suo. Il nome è passato da
+`whale-dolphin-3h` a `whale-dolphin-3h-charter`, accanto a Galatea, per la stessa ragione
+(il ticket privato prende la riga della sua compagnia). Se Samba fa anche l'uscita a
+persona va chiesto: il nome non può stare su tutte e due le schede. Ocean Blue resta
+sull'uscita a persona: il suo privato torna col netto "qualunque compagnia".
+
+Due risposte che stanno solo su Notion (sono netti): la Fiat 500 di Nancy 0470 era una
+macchina sola; la barca vichinga ha il netto in percentuale. **I noleggi pagati tutti
+subito**: alla compagnia va quello che il venditore scrive in NETT sul foglio, non
+"totale − acconto" (che lì darebbe 0). Su Supabase oggi non c'è un modo di scriverlo a
+mano: aperta la domanda al proprietario. `CACHE_NAME` → `isla-v645`.
+
+### Xixaron, Nomada e i prezzi della Fiat 500 (29 ottobre 2026)
+
+Correzioni del proprietario:
+- **Xixaron** è la stessa barca di **Ocean Blue**, scritta nei due modi: tutti e due nei
+  `nomi` di `whale-dolphin-3h`. Sul foglio di Nancy (0468) l'avevo letto "Titaron";
+- **Nomada** è una barca delle 3 ore che fa anche le 2 ore: `"Nomada"` e `"Nómada"`
+  (`compagniaNelTesto()` non toglie gli accenti, quindi servono tutti e due). Il netto
+  delle 3 ore non c'è: sui fogli c'era solo un ticket da 2 ore, e il giro da 2 ore sul
+  sito non c'è;
+- **Fiat 500**: 40 minuti **130** (era 120), 1 ora **170** (era 130), 2 ore 220 come
+  prima; `priceFrom` 130. Si alza un prezzo già pubblicato, per scelta del proprietario.
+
+Provato: i quattro nomi trovati da `compagniaNelTesto()`; la scheda della Fiat a 375 px
+mostra "40 minuti €130 · 1 ora €170 · 2 ore €220", l'elenco "da €130 a Fiat 500";
+nessun errore. `CACHE_NAME` → `isla-v646`.
+
+### Via "3 ore" dal titolo delle barche delle 3 ore (29 ottobre 2026)
+
+Il proprietario: dal titolo di `whale-dolphin-3h` (e della gemella
+`whale-dolphin-3h-charter`) si toglie "3 ore", nelle cinque lingue: "Balene e delfini in
+barca a vela", "Whale & Dolphin Boat Trip", "Ballenas y delfines en velero", "Baleines et
+dauphins en voilier", "Wale und Delfine im Segelboot". La durata resta nel suo campo e
+in pagina. Viene dopo Xixaron e Nomada, che fanno anche le 2 ore. Gli `id` restano
+(`-3h`): li usano richieste, ticket e netti. Aggiornata la tabella dei nomi in `CLAUDE.md`
+(con Ocean Blue/Xixaron, Nomada, Galatea e Samba). La riga Notion dei netti chiama ancora
+la scheda "3-Hour Whale & Dolphin Boat Trip": è solo un'etichetta interna.
+
+Provato in italiano, inglese e tedesco a 375 px: titolo e scheda della pagina nuovi, la
+durata "3 ore" si legge ancora, nessun errore. `sitemap.xml` non cambia (non porta i
+titoli). `CACHE_NAME` → `isla-v647`.
+
 ## Le skill di Matt Pocock: issue su GitHub (29 ottobre 2026)
 
 Configurate con `/setup-matt-pocock-skills`. Le issue stanno su GitHub Issues

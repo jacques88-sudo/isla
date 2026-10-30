@@ -6,7 +6,7 @@ e li scrive in una scheda per settimana più quattro di riepilogo:
 
 | scheda | cosa c'è |
 |---|---|
-| **Settimana 05-10-2026**, **Settimana 12-10-2026**… | una scheda per settimana (dal lunedì, la più nuova davanti), con i ticket **emessi** in quella settimana, una riga per ticket. La scheda nuova nasce da sola col primo ticket della settimana. Si aggiunge e si aggiorna, **non si cancella mai**: la pulizia mensile di Supabase toglie i ticket vecchi, qui restano |
+| **Settimana 05-10-2026**, **Settimana 12-10-2026**… | una scheda per settimana (dal lunedì, la più nuova davanti), con i ticket **emessi** in quella settimana, una riga per ticket. La scheda nuova nasce da sola col primo ticket della settimana. Si aggiunge e si aggiorna, **non si cancella mai**: la pulizia mensile di Supabase toglie i ticket vecchi, qui restano. Finito l'anno, le sue settimane passano nel file d'archivio (sotto) |
 | **Per giorno** | i totali giorno per giorno, dal giorno in cui il ticket è stato **inserito** |
 | **Per settimana** | lo stesso, settimana per settimana (dal lunedì) |
 | **Per venditore** | settimana per settimana, quanto spetta a ogni venditore |
@@ -97,6 +97,24 @@ Da qui in poi si aggiorna da solo ogni ora. Per aggiornarlo subito:
   c'è scritto "Ultimo aggiornamento: …";
 - **dal computer**: anche il menu **Isla → Aggiorna adesso** (compare qualche secondo
   dopo che il foglio si apre). L'app del telefono questo menu non lo mostra.
+
+---
+
+## L'archivio di fine anno
+
+Il **1° gennaio** il foglio riparte pulito, da solo: al primo giro dell'ora del nuovo
+anno il programma crea nel tuo Google Drive un file **"Isla — archivio 2026"** e ci
+**sposta** tutte le settimane dell'anno finito, con i loro riepiloghi. Niente si
+cancella: nel foglio di lavoro restano solo le settimane dell'anno nuovo, e i
+riepiloghi ricominciano da lì.
+
+- Una settimana è dell'anno della sua **domenica**: quella dal 28 dicembre 2026 al 3
+  gennaio 2027 resta nel foglio di lavoro, perché il 1° gennaio è ancora in uso.
+- Il link a ogni archivio lo trovi nella scheda **Aggiorna**, sotto la casella.
+- L'archivio **non si aggiorna più**: è la fotografia del 31 dicembre. Un ticket del
+  2026 annullato a gennaio lì resta com'era.
+- Il file dell'archivio è tuo come gli altri: se lo condividi, condividilo solo con chi
+  deve (ci sono i netti).
 
 ---
 

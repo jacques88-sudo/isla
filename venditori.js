@@ -2,6 +2,11 @@
 // sua foto, vedere gli ultimi inseriti, cercarne uno e cambiarne data, ora,
 // persone e soldi (un'escursione rinviata).
 //
+// La pagina e' l'app "Isla Ticket", in un repository suo (isla-ticket, 17
+// ottobre 2026): sta a .../isla-ticket/ e carica questo file da ../isla/.
+// I link verso il sito di Isla partono quindi da dove sta QUESTO file
+// (SITO), non dalla pagina.
+//
 // Solo in italiano: la usano Jack e Francesca, non i clienti.
 //
 // Il database e le sue regole stanno in supabase/schema.sql. Qui non c'e'
@@ -18,6 +23,9 @@
 const ESCURSIONE_ALTRO = "altro";
 
 const $ = sel => document.querySelector(sel);
+
+// La cartella di Isla, ricavata dall'indirizzo di questo file.
+const SITO = new URL(".", document.currentScript.src);
 
 const els = {
   loading: $("[data-vend-loading]"),
@@ -41,6 +49,10 @@ const els = {
   unitsWrap: $("[data-units-wrap]"),
   unitsLabel: $("[data-units-label]"),
   units: $("[data-units]"),
+  // La casella del transfer sta nella pagina di isla-ticket: finche' quella
+  // vecchia e' in cache puo' mancare, e il modulo deve funzionare lo stesso.
+  transferWrap: $("[data-transfer-wrap]"),
+  transfer: $("#tTransfer"),
   seller: $("#tSeller"),
   nation: $("#tNation"),
   prefix: $("#tPrefix"),
@@ -97,6 +109,12 @@ function italiano(campo) {
   return typeof campo === "string" ? campo : (campo && campo.it) || "";
 }
 
+// Le voci che il venditore puo' scegliere: quelle pubblicate e quelle solo
+// per i venditori (i noleggi, `venditori: true` nel catalogo).
+function nelModulo(t) {
+  return t.published || t.venditori === true;
+}
+
 function schedaDa(id) {
   return ESPLORA_CATALOG.find(t => t.id === id) || null;
 }
@@ -117,7 +135,7 @@ function riempiEscursioni() {
   // un elenco unico si cerca male.
   CATEGORIES.forEach(cat => {
     const schede = ESPLORA_CATALOG
-      .filter(t => t.published && t.category === cat.id)
+      .filter(t => nelModulo(t) && t.category === cat.id)
       .sort((a, b) => titoloDi(a).localeCompare(titoloDi(b)));
     if (!schede.length) return;
     const gruppo = document.createElement("optgroup");
@@ -150,6 +168,35 @@ function aggiornaEscursione() {
   els.unitsWrap.hidden = !tipi.length;
   if (tipi.length) els.unitsLabel.textContent = `${italiano(tour.units.name)}: quanti per tipo`;
   caselleMezzi(els.units, tipi, "tUnit");
+  aggiornaTransfer();
+}
+
+// ─── Transfer ───────────────────────────────────────────────────────────────
+// Dove il cliente puo' scegliere il transfer (`transfer` nel catalogo, sulla
+// scheda o sulla variante, e la variante vince, come transferDi() di
+// escursioni.js, che questa pagina non carica), il ticket dice se l'ha preso:
+// su alcune schede cambia il netto (Mokkai in condivisione; proprietario,
+// 18 ottobre 2026). Si salva true o false; sulle altre schede la colonna resta vuota.
+
+function transferOfferto(tour, etichetta) {
+  if (!tour) return false;
+  const scelte = (tour.options && tour.options.choices) || [];
+  const scelta = scelte.find(c => italiano(c.label) === etichetta);
+  return !!(scelta && Object.prototype.hasOwnProperty.call(scelta, "transfer")
+    ? scelta.transfer : tour.transfer);
+}
+
+// "TRANSFER" scritto sul ticket, anche storto ("trasfer", "tranfer"): la
+// lettura della foto spunta la casella da sola (proprietario, 18 ottobre 2026).
+function transferNelTesto(testo) {
+  return /tr[ae]n?s*f(?:[ea]r|\b)/i.test(testo || "");
+}
+
+function aggiornaTransfer() {
+  if (!els.transferWrap) return;
+  const offerto = transferOfferto(schedaDa(els.exc.value), els.option.value);
+  els.transferWrap.hidden = !offerto;
+  if (!offerto) els.transfer.checked = false;
 }
 
 // I parchi contano sempre come pagati con carta (`pagamento: "card"` nel
@@ -189,16 +236,18 @@ function varianteDellaCompagnia() {
   if (!els.company.value || els.option.value) return;
   const nome = els.company.value.toLowerCase();
   const sua = scelte.find(c => (c.nomi || []).some(n => n.toLowerCase() === nome));
-  if (sua) els.option.value = italiano(sua.label);
+  if (sua) { els.option.value = italiano(sua.label); aggiornaTransfer(); }
 }
 
 // Il nome di compagnia che compare in un testo del ticket ("ANDROMEDA TOUR"
 // → "Andromeda"), o "". Il piu' lungo vince: "Ultimate Buggies" prima di
-// "Ultimate Buggy".
+// "Ultimate Buggy". Spazi e trattini non contano: "JET SKI ISLAND" e'
+// "Jetski Island" (ticket 0993).
 function compagniaNelTesto(tour, testo) {
-  const t = (testo || "").toLowerCase();
+  const soloLettere = x => (x || "").toLowerCase().replace(/[\s\-]+/g, "");
+  const t = soloLettere(testo);
   return ((tour && tour.nomi) || [])
-    .filter(n => t.includes(n.toLowerCase()))
+    .filter(n => t.includes(soloLettere(n)))
     .sort((a, b) => b.length - a.length)[0] || "";
 }
 
@@ -366,14 +415,23 @@ let lettura = 0;           // numero dell'ultima lettura: le risposte vecchie si
 // Il catalogo come lo vuole la funzione: id, titolo, varianti. Sempre nello
 // stesso ordine e con gli stessi testi: cosi' Anthropic lo tiene in cache.
 function catalogoPerLettura() {
-  return ESPLORA_CATALOG.filter(t => t.published).map(t => {
+  return ESPLORA_CATALOG.filter(nelModulo).map(t => {
     // I `nomi` (la compagnia, come la scrivono i venditori) vanno attaccati
     // al titolo: la funzione sul server mette nel prompt solo id, titolo e
     // varianti, e cosi' non c'e' da ridistribuirla.
     const nomi = t.nomi && t.nomi.length ? ` (sul ticket anche: ${t.nomi.join(", ")})` : "";
-    const scheda = { id: t.id, title: titoloDi(t) + nomi };
+    // Sei barche stanno due volte, col titolo uguale: il giro condiviso e il
+    // charter privato (tour-privati). Senza questo segno la lettura della foto
+    // non avrebbe niente per sceglierne una.
+    const privato = t.category === "tour-privati" ? " [tour privato]" : "";
+    const scheda = { id: t.id, title: titoloDi(t) + privato + nomi };
     const scelte = t.options && t.options.choices;
     if (scelte) scheda.options = scelte.map(c => italiano(c.label));
+    // Le schede a mezzo dicono anche i tipi, con la chiave che salva il modulo:
+    // la lettura risponde { doppia: 2 } e le caselle si riempiono da sole.
+    if (tipiMezzo(t).length) {
+      scheda.units = tipiMezzo(t).map(u => ({ key: u.key, name: `${italiano(t.units.name)} ${italiano(u.name)}` }));
+    }
     return scheda;
   });
 }
@@ -457,9 +515,33 @@ function riempiDaLettura(c, prima) {
     if (c.option_label) els.option.value = c.option_label;
     const chi = compagniaNelTesto(schedaDa(c.excursion_id), [c.excursion_text, c.notes].join(" "));
     if (chi) { els.company.value = chi; varianteDellaCompagnia(); }
+    aggiornaTransfer();
+    if (els.transferWrap && !els.transferWrap.hidden
+        && transferNelTesto([c.excursion_text, c.meeting_point, c.hotel, c.notes].join(" "))) {
+      els.transfer.checked = true;
+    }
     if (dubbi.has("excursion_id")) els.exc.classList.add("vend-dubbio");
   } else if (!c.excursion_id) {
     nonLetti.push(c.excursion_text ? `escursione (sul ticket: "${c.excursion_text}")` : "escursione");
+  }
+
+  // I mezzi, nelle caselle che aggiornaEscursione() ha appena creato. Solo dove
+  // il venditore non ha gia' scritto un numero; la funzione sul server manda
+  // solo tipi della scheda, da 1 a 99.
+  const tipi = tipiMezzo(schedaDa(els.exc.value));
+  if (tipi.length) {
+    let letti = 0;
+    if (c.units && typeof c.units === "object") {
+      tipi.forEach(t => {
+        const el = els.form.elements["unit_" + t.key];
+        const n = c.units[t.key];
+        if (!el || !(n > 0) || (el.value !== "" && el.value !== "0")) return;
+        el.value = String(Math.min(n, 99));
+        if (dubbi.has("units")) el.classList.add("vend-dubbio");
+        letti++;
+      });
+    }
+    if (!letti && !mezziDa(els.form, tipi)) nonLetti.push("mezzi");
   }
 
   metti("meeting_point", c.meeting_point);
@@ -561,6 +643,8 @@ async function salva(event) {
   if (!els.companyWrap.hidden) riga.company = els.company.value || null;
   // Solo sulle schede a mezzo: le altre non mandano nemmeno la colonna.
   if (!els.unitsWrap.hidden) riga.units = mezziDa(els.form, tipiMezzo(schedaDa(els.exc.value)));
+  // Solo dove il transfer si puo' scegliere.
+  if (els.transferWrap && !els.transferWrap.hidden) riga.transfer = els.transfer.checked;
 
   const manca = cosaManca(riga);
   if (manca) { mostra(els.msg, manca, "errore"); return; }
@@ -597,6 +681,8 @@ async function salva(event) {
     }
 
     mostra(els.msg, `Ticket ${riga.ticket_number} salvato.`, "ok");
+    // l'avviso "ticket nuovo" all'ufficio parte subito, senza aspettare l'orologio
+    mandaAvvisi();
     pulisciModulo();
     caricaUltimi();
   } catch (err) {
@@ -628,6 +714,24 @@ function pulisciModulo() {
 
 // ─── Ultimi inseriti ────────────────────────────────────────────────────────
 
+// Gli annullati in fondo, in un riquadro chiuso "Annullate (N)" (proprietario,
+// 18 ottobre 2026): non ingombrano, ma restano a un tocco per "Ripristina
+// ticket" o per confermare una richiesta annullata per sbaglio. Ritorna
+// l'elenco dentro il riquadro, dove vanno le righe annullate.
+function riquadroAnnullati(lista, quante, parola) {
+  const li = document.createElement("li");
+  li.className = "vend-annullati";
+  const apri = document.createElement("details");
+  const titolo = document.createElement("summary");
+  titolo.textContent = `${parola} (${quante})`;
+  const dentro = document.createElement("ul");
+  dentro.className = "vend-list";
+  apri.append(titolo, dentro);
+  li.append(apri);
+  lista.append(li);
+  return dentro;
+}
+
 function dataBreve(iso) {
   if (!iso) return "";
   const [a, m, g] = iso.split("-");
@@ -637,7 +741,7 @@ function dataBreve(iso) {
 async function caricaUltimi() {
   let domanda = sb
     .from("bookings")
-    .select("id, ticket_number, reference, excursion_id, option_label, company, date, time, phone, adults, kids, babies, units, total, deposit, rest_to_pay, payment_method, seller, photo_path, status, source, request_code")
+    .select("id, ticket_number, reference, excursion_id, option_label, company, transfer, date, time, phone, adults, kids, babies, units, total, deposit, rest_to_pay, payment_method, seller, photo_path, status, source, request_code")
     // Le richieste da WhatsApp hanno il loro elenco, sopra; quando l'ufficio le
     // conferma col numero del ticket diventano ticket e passano qui.
     .or("source.neq.whatsapp,ticket_number.not.is.null");
@@ -660,9 +764,13 @@ async function caricaUltimi() {
     return;
   }
 
-  data.forEach(b => {
+  // gli annullati in fondo, chiusi (riquadroAnnullati)
+  const annullato = b => b.status === "cancelled";
+  const quanti = data.filter(annullato).length;
+  let inFondo = null;
+  data.filter(b => !annullato(b)).concat(data.filter(annullato)).forEach(b => {
     const li = document.createElement("li");
-    li.classList.toggle("is-cancelled", b.status === "cancelled");
+    li.classList.toggle("is-cancelled", annullato(b));
     const tour = schedaDa(b.excursion_id);
     const nome = tour ? titoloDi(tour) : "Fuori catalogo";
     const persone = [b.adults, b.kids, b.babies].map(n => n || 0).join("+");
@@ -679,6 +787,7 @@ async function caricaUltimi() {
       persone + soldi,
       b.payment_method,
       testoMezzi(tour, b.units),
+      b.transfer ? "transfer" : "",
       b.phone,
       b.source === "whatsapp" ? `WhatsApp ${b.request_code || ""}`.trim() : b.seller,
       b.reference ? "REF " + b.reference : ""
@@ -709,7 +818,12 @@ async function caricaUltimi() {
     modifica.addEventListener("click", () => apriModifica(li, b));
     bottoni.append(modifica);
     li.append(bottoni);
-    els.recent.append(li);
+    if (annullato(b) && !ricerca) {
+      inFondo = inFondo || riquadroAnnullati(els.recent, quanti, "Annullati");
+      inFondo.append(li);
+    } else {
+      els.recent.append(li);
+    }
   });
 }
 
@@ -776,6 +890,10 @@ function apriModifica(li, b) {
       <legend></legend>
       <div class="vend-row"></div>
     </fieldset>
+    <label class="vend-check" data-edit-transfer hidden>
+      <input type="checkbox" name="transfer" />
+      <span>Con transfer (ritiro in hotel)</span>
+    </label>
     <div class="vend-row vend-row-3">
       <div>
         <label for="${id}Total">Total €</label>
@@ -823,6 +941,8 @@ function apriModifica(li, b) {
     box.querySelector("legend").textContent = `${italiano(tour.units.name)}: quanti per tipo`;
     caselleMezzi(box.querySelector(".vend-row"), tipi, id + "Unit", b.units);
   }
+  form.querySelector("[data-edit-transfer]").hidden = !transferOfferto(tour, b.option_label);
+  f.transfer.checked = !!b.transfer;
   f.total.value = b.total ?? "";
   f.deposit.value = b.deposit ?? "";
   f.payment_method.value = b.payment_method || "";
@@ -894,6 +1014,7 @@ async function salvaModifica(event, form, b) {
   const tipi = tipiMezzo(schedaDa(b.excursion_id));
   if (tipi.length) nuovo.units = mezziDa(form, tipi);
   if (!form.querySelector("[data-edit-company]").hidden) nuovo.company = f.company.value || null;
+  if (!form.querySelector("[data-edit-transfer]").hidden) nuovo.transfer = f.transfer.checked;
   // Stessa regola del ticket nuovo: Total scritto e gli altri due vuoti vuol
   // dire pagato tutto, e si salva rest_to_pay = 0.
   if (nuovo.total !== null && nuovo.deposit === null && nuovo.rest_to_pay === null) nuovo.rest_to_pay = 0;
@@ -977,7 +1098,7 @@ const STATO_RICHIESTA = { pending: "Da confermare", confirmed: "Confermata", can
 async function caricaRichieste() {
   const { data, error } = await sb
     .from("bookings")
-    .select("id, request_code, status, excursion_id, option_label, date, time, wanted_time, meeting_point, adults, kids, babies, created_at, customer_name, hotel, pickup_point, pickup_time, request_message")
+    .select("id, request_code, status, excursion_id, option_label, transfer, date, time, wanted_time, meeting_point, adults, kids, babies, created_at, customer_name, hotel, pickup_point, pickup_time, request_message, phone, payment_link, payment_amount, payment_total, payment_sent_at")
     .eq("source", "whatsapp")
     .is("ticket_number", null)
     .gte("date", oggiISO())
@@ -1001,11 +1122,18 @@ async function caricaRichieste() {
     return;
   }
   const daFare = data.filter(r => r.status === "pending");
+  // tutte le righe di ogni richiesta: un link di pagamento vale per tutte
+  const perCodice = {};
+  data.forEach(r => { (perCodice[r.request_code] = perCodice[r.request_code] || []).push(r); });
   els.requestsTitle.textContent = daFare.length
     ? `Richieste da WhatsApp (${daFare.length} da confermare)`
     : "Richieste da WhatsApp";
 
-  daFare.concat(data.filter(r => r.status !== "pending")).forEach(r => {
+  // prima da confermare, poi confermate, le annullate in fondo e chiuse
+  // (riquadroAnnullati)
+  const annullate = data.filter(r => r.status !== "pending" && r.status !== "confirmed");
+  let inFondo = null;
+  daFare.concat(data.filter(r => r.status === "confirmed"), annullate).forEach(r => {
     const li = document.createElement("li");
     li.className = "vend-req is-" + r.status;
     const tour = schedaDa(r.excursion_id);
@@ -1018,14 +1146,23 @@ async function caricaRichieste() {
     const ora = r.status === "confirmed"
       ? (r.time ? " · ritrovo " + r.time.slice(0, 5) : "") + (r.meeting_point ? " · " + r.meeting_point : "")
       : (r.wanted_time ? " · chiede " + r.wanted_time : "");
-    sotto.textContent = `${dataBreve(r.date)}${ora} · ${persone}`;
+    sotto.textContent = `${dataBreve(r.date)}${ora} · ${persone}${r.transfer ? " · con transfer" : ""}`;
     // chi e dove alloggia, se la richiesta li porta (dal 13 ottobre 2026)
     const chi = [r.customer_name, r.hotel].filter(Boolean).join(" · ");
     const stato = document.createElement("em");
     stato.className = "vend-req-stato";
-    stato.textContent = STATO_RICHIESTA[r.status] || r.status;
+    // Mandato il link, la richiesta aspetta il pagamento (15 ottobre 2026).
+    const daPagare = r.status === "pending" && r.payment_sent_at;
+    stato.textContent = daPagare ? "In attesa di pagamento" : (STATO_RICHIESTA[r.status] || r.status);
     testo.append(titolo, sotto);
     if (chi) testo.append(Object.assign(document.createElement("span"), { className: "vend-req-chi", textContent: chi }));
+    if (daPagare) {
+      testo.append(Object.assign(document.createElement("span"), {
+        className: "vend-req-chi",
+        textContent: `Link mandato il ${dataBreve(r.payment_sent_at.slice(0, 10))}: ${euro(r.payment_amount)}` +
+          (r.payment_total > r.payment_amount ? ` di ${euro(r.payment_total)} (acconto)` : "")
+      }));
+    }
     testo.append(stato);
     li.append(testo);
     // Il messaggio WhatsApp com'e' partito, chiuso finche' non serve: e' lo
@@ -1055,11 +1192,21 @@ async function caricaRichieste() {
       b.addEventListener("click", fa);
       bottoni.append(b);
     };
+    // Si paga sempre prima della conferma (proprietario, 15 ottobre 2026).
+    if (r.status === "pending") {
+      bottone(r.payment_sent_at ? "Rimanda il pagamento" : "Manda il pagamento",
+        () => apriPagamento(li, r, perCodice[r.request_code]));
+    }
     bottone(r.status === "confirmed" ? "Dai il ticket" : "Conferma", () => apriConferma(li, r));
     if (r.status !== "cancelled") bottone("Annulla", () => annullaRichiesta(r));
     li.append(bottoni);
     if (messaggio) li.append(messaggio);
-    els.requests.append(li);
+    if (annullate.includes(r)) {
+      inFondo = inFondo || riquadroAnnullati(els.requests, annullate.length, "Annullate");
+      inFondo.append(li);
+    } else {
+      els.requests.append(li);
+    }
   });
 }
 
@@ -1098,7 +1245,7 @@ function apriConferma(li, r) {
     </div>
     <label for="${id}Meeting">Meeting point</label>
     <input id="${id}Meeting" name="meeting_point" type="text" autocomplete="off" />
-    <small class="vend-hint">Il cliente vedrà "Presentati alle … — meeting point". Scrivigli anche su WhatsApp.</small>
+    <small class="vend-hint">Il cliente vedrà "Presentati alle … — meeting point". Dopo la conferma, "Rispondi su WhatsApp" gli prepara il messaggio.</small>
     <p class="vend-msg" role="alert" hidden></p>
     <div class="vend-row">
       <button class="btn btn-soft" type="button" data-edit-cancel>Lascia stare</button>
@@ -1115,6 +1262,15 @@ function apriConferma(li, r) {
   f.date.value = r.date || "";
   f.time.value = r.time ? r.time.slice(0, 5) : (oraSola(r.pickup_time) || oraSola(r.wanted_time));
   f.meeting_point.value = r.meeting_point || r.pickup_point || "";
+  // il telefono c'e' gia' se l'ufficio ha mandato il link di pagamento
+  f.phone.value = r.phone || "";
+  // Un'altra escursione della stessa richiesta gia' confermata: numero e
+  // telefono si ripropongono, l'ufficio preme solo Conferma.
+  numeriDellaRichiesta(r).then(numeri => {
+    if (!numeri.length) return;
+    if (!f.ticket_number.value) f.ticket_number.value = numeri[0].replace(/-\d+$/, "");
+    if (!f.phone.value) f.phone.value = numeri.telefono || "";
+  });
 
   form.querySelector("[data-edit-cancel]").addEventListener("click", () => form.remove());
   form.addEventListener("submit", async event => {
@@ -1134,22 +1290,298 @@ function apriConferma(li, r) {
       return;
     }
     if (!f.date.value) { mostra(msg, "Manca la data.", "errore"); return; }
-    const salvato = await cambiaRichiesta(r, {
+    // Pagata col link Redsys: e' carta, e con un'escursione sola gli importi
+    // della richiesta sono quelli del ticket, che cosi' entra nel foglio coi
+    // suoi soldi. Con piu' escursioni non si sa come dividerli: totale e
+    // pagato si scrivono con Modifica, in "Ultimi inseriti".
+    const pagamento = {};
+    if (r.payment_sent_at) {
+      pagamento.payment_method = "card";
+      const { data: stesse } = await sb.from("bookings").select("id")
+        .eq("source", "whatsapp").eq("request_code", r.request_code);
+      if (stesse && stesse.length === 1) {
+        pagamento.total = r.payment_total;
+        pagamento.deposit = r.payment_amount;
+        pagamento.rest_to_pay = Math.round((r.payment_total - r.payment_amount) * 100) / 100;
+      }
+    }
+    const salvato = await cambiaRichiesta(r, Object.assign(pagamento, {
       status: "confirmed",
-      ticket_number: numero,
+      ticket_number: numeroLibero(numero, await numeriDellaRichiesta(r)),
       phone: telefono,
       date: f.date.value,
       time: f.time.value || null,
       meeting_point: f.meeting_point.value.trim() || null,
       confirmed_at: new Date().toISOString()
-    }, msg);
+    }), msg);
     if (salvato) {
-      mostra(els.requestsMsg, `${r.request_code} confermata: ora è il ticket ${numero}, in "Ultimi inseriti".`, "ok");
+      mostra(els.requestsMsg, `${r.request_code} confermata: ora è il ticket ${salvato}, in "Ultimi inseriti".`, "ok");
+      els.requestsMsg.append(rispostaBottone(r, {
+        numero,
+        telefono,
+        date: f.date.value,
+        time: f.time.value,
+        meeting: f.meeting_point.value.trim()
+      }));
       caricaUltimi();
     }
   });
   li.append(form);
   f.ticket_number.focus();
+}
+
+// UNA RICHIESTA, PIU' ESCURSIONI (20 ottobre 2026)
+// Ogni escursione della richiesta e' una riga a se', e ticket_number nel
+// database e' unico: col numero della prima, la seconda veniva rifiutata
+// ("gia' inserito"). Il proprietario ha scelto: l'ufficio scrive un numero
+// solo, la prima prende 1234, le altre 1234-2, 1234-3. Al cliente basta 1234:
+// "Le mie prenotazioni" con numero e telefono mostra tutte le sue confermate.
+
+// I ticket number gia' dati alle altre escursioni della stessa richiesta
+// (in `.telefono` il telefono gia' scritto). Se non si leggono, nessuno:
+// resta il controllo del database.
+async function numeriDellaRichiesta(r) {
+  const { data } = await sb.from("bookings").select("ticket_number, phone")
+    .eq("source", "whatsapp").eq("request_code", r.request_code)
+    .neq("id", r.id).not("ticket_number", "is", null);
+  const righe = data || [];
+  const numeri = righe.map(x => x.ticket_number);
+  numeri.telefono = (righe.find(x => x.phone) || {}).phone || "";
+  return numeri;
+}
+
+// Il numero scritto, o il primo "-2", "-3"... che la richiesta non ha ancora
+// dato, se quel numero e' gia' di un'altra sua escursione. Un numero di un
+// altro cliente invece resta com'e': il database lo rifiuta, ed e' giusto.
+function numeroLibero(numero, numeri) {
+  if (!numeri.includes(numero)) return numero;
+  const base = numero.replace(/-\d+$/, "");
+  let n = 2;
+  while (numeri.includes(`${base}-${n}`)) n++;
+  return `${base}-${n}`;
+}
+
+// ─── La risposta al cliente su WhatsApp ─────────────────────────────────────
+// Confermata la richiesta, il cliente lo deve sapere dove sta: su WhatsApp,
+// non sul sito (proprietario, 14 ottobre 2026: chi manda la richiesta
+// difficilmente torna sull'app). Il bottone apre la chat col suo numero e il
+// messaggio gia' scritto nella sua lingua, col link che riapre l'app sul suo
+// ticket: all'ufficio resta solo da premere Invia. WhatsApp non lascia
+// mandare un messaggio da solo a un sito: l'ultimo tocco e' dell'ufficio.
+// I testi stanno qui e non in i18n.js perche' questa pagina e' in italiano e
+// i18n.js non lo carica.
+const RISPOSTA = {
+  it: { posto: "Buone notizie: c'è posto ✅", paga: "Per confermare la prenotazione puoi pagare qui:", importo: "Da pagare: {n}", acconto: "È un acconto: il resto, {n}, lo paghi sul posto.", dopo: "Appena arriva il pagamento ti mandiamo la conferma con il ticket.", resto: "Il resto, {n}, lo paghi sul posto.", ciao: "Ciao {nome}!", ok: "La tua escursione è confermata ✅", ritrovo: "Ritrovo alle {ora}", ticket: "Ticket n. {n}", link: "Qui trovi il ticket, cosa portare e i dettagli:", fine: "Per qualsiasi cosa rispondi pure a questo messaggio. A presto!", locale: "it-IT", nome: "italiano" },
+  en: { posto: "Good news: there's availability ✅", paga: "To confirm your booking, you can pay here:", importo: "Amount due: {n}", acconto: "This is a deposit: you pay the remaining {n} on the day.", dopo: "As soon as the payment arrives, we'll send you the confirmation with your ticket.", resto: "You pay the remaining {n} on the day.", ciao: "Hi {nome}!", ok: "Your excursion is confirmed ✅", ritrovo: "Meeting time {ora}", ticket: "Ticket no. {n}", link: "Your ticket, what to bring and all the details:", fine: "If you need anything, just reply to this message. See you soon!", locale: "en-GB", nome: "inglese" },
+  es: { posto: "Buenas noticias: hay plazas ✅", paga: "Para confirmar la reserva puedes pagar aquí:", importo: "A pagar: {n}", acconto: "Es una señal: el resto, {n}, lo pagas allí.", dopo: "En cuanto llegue el pago te mandamos la confirmación con el ticket.", resto: "El resto, {n}, lo pagas allí.", ciao: "¡Hola {nome}!", ok: "Tu excursión está confirmada ✅", ritrovo: "Encuentro a las {ora}", ticket: "Ticket n.º {n}", link: "Aquí tienes el ticket, qué llevar y todos los detalles:", fine: "Para cualquier cosa, responde a este mensaje. ¡Hasta pronto!", locale: "es-ES", nome: "spagnolo" },
+  fr: { posto: "Bonne nouvelle : il y a de la place ✅", paga: "Pour confirmer la réservation, vous pouvez payer ici :", importo: "À payer : {n}", acconto: "C'est un acompte : le reste, {n}, se paie sur place.", dopo: "Dès réception du paiement, nous vous envoyons la confirmation avec le ticket.", resto: "Le reste, {n}, se paie sur place.", ciao: "Bonjour {nome} !", ok: "Votre excursion est confirmée ✅", ritrovo: "Rendez-vous à {ora}", ticket: "Ticket n° {n}", link: "Votre ticket, quoi apporter et tous les détails :", fine: "Pour toute question, répondez simplement à ce message. À bientôt !", locale: "fr-FR", nome: "francese" },
+  de: { posto: "Gute Nachrichten: Es sind Plätze frei ✅", paga: "Um die Buchung zu bestätigen, können Sie hier bezahlen:", importo: "Zu zahlen: {n}", acconto: "Das ist eine Anzahlung: Den Rest von {n} zahlen Sie vor Ort.", dopo: "Sobald die Zahlung eingegangen ist, schicken wir Ihnen die Bestätigung mit dem Ticket.", resto: "Den Rest von {n} zahlen Sie vor Ort.", ciao: "Hallo {nome}!", ok: "Ihr Ausflug ist bestätigt ✅", ritrovo: "Treffpunkt um {ora} Uhr", ticket: "Ticket Nr. {n}", link: "Ihr Ticket, was Sie mitbringen sollten und alle Details:", fine: "Bei Fragen antworten Sie einfach auf diese Nachricht. Bis bald!", locale: "de-DE", nome: "tedesco" }
+};
+
+// La lingua del cliente, dal messaggio che ha mandato. Francese e tedesco
+// arrivano in italiano, con la riga "Lingua del cliente" in fondo (perUfficio
+// in i18n.js); le richieste di prima di quella riga sembrano italiane, e
+// l'ufficio cambia lingua dal menu accanto al bottone.
+function rispostaLingua(messaggio) {
+  const m = messaggio || "";
+  const scritta = /Lingua del cliente: (francese|tedesco)/.exec(m);
+  if (scritta) return scritta[1] === "francese" ? "fr" : "de";
+  if (/Codice richiesta:|Ciao Isla!/.test(m)) return "it";
+  if (/Código de solicitud:|¡Hola Isla!/.test(m)) return "es";
+  return "en";
+}
+
+// La variante nella lingua del cliente: nel database c'e' il nome italiano.
+function rispostaVariante(tour, etichetta, lingua) {
+  if (!etichetta) return "";
+  const scelte = (tour && tour.options && tour.options.choices) || [];
+  const scelta = scelte.find(c => italiano(c.label) === etichetta);
+  if (!scelta) return lingua === "it" ? etichetta : "";
+  return typeof scelta.label === "string" ? scelta.label : (scelta.label[lingua] || scelta.label.en || etichetta);
+}
+
+function rispostaTesto(r, c, lingua) {
+  const T = RISPOSTA[lingua];
+  const metti = (testo, valori) => testo.replace(/\{(\w+)\}/g, (_, k) => valori[k]);
+  const tour = schedaDa(r.excursion_id);
+  const variante = rispostaVariante(tour, r.option_label, lingua);
+  // a mezzogiorno: la data non scivola al giorno prima con il fuso
+  const giorno = new Date(c.date + "T12:00:00").toLocaleDateString(T.locale, { weekday: "long", day: "numeric", month: "long" });
+  const link = new URL("booking.html?code=" + encodeURIComponent(c.numero), SITO).href;
+  // solo il nome, non il cognome: e' un messaggio fra persone
+  const nome = (r.customer_name || "").trim().split(/\s+/)[0];
+  const righe = [
+    (nome ? metti(T.ciao, { nome }) + " " : "") + T.ok,
+    "",
+    "*" + (tour ? titoloDi(tour) : r.excursion_id) + (variante ? " · " + variante : "") + "*",
+    "📅 " + giorno
+  ];
+  if (c.time) righe.push("🕗 " + metti(T.ritrovo, { ora: c.time }));
+  if (c.meeting) righe.push("📍 " + c.meeting);
+  righe.push("🎫 " + metti(T.ticket, { n: c.numero }));
+  // pagato un acconto: il resto si paga sul posto, e il cliente lo rilegge qui
+  if (r.payment_total > r.payment_amount) righe.push("💶 " + metti(T.resto, { n: soldiIn(r.payment_total - r.payment_amount, T.locale) }));
+  righe.push("", T.link, link, "", T.fine);
+  return righe.join("\n");
+}
+
+// Il menu della lingua e il bottone verde, sotto il messaggio "confermata".
+function rispostaBottone(r, c) {
+  const box = document.createElement("span");
+  box.className = "vend-risposta";
+  const lingua = document.createElement("select");
+  lingua.setAttribute("aria-label", "Lingua del messaggio");
+  Object.keys(RISPOSTA).forEach(k => lingua.append(new Option(RISPOSTA[k].nome, k)));
+  lingua.value = rispostaLingua(r.request_message);
+  const vai = document.createElement("a");
+  vai.className = "btn btn-primary";
+  vai.target = "_blank";
+  vai.rel = "noopener noreferrer";
+  vai.textContent = "Rispondi su WhatsApp";
+  const aggiorna = () => {
+    vai.href = "https://wa.me/" + c.telefono.replace(/\D/g, "") + "?text=" + encodeURIComponent(rispostaTesto(r, c, lingua.value));
+  };
+  lingua.addEventListener("change", aggiorna);
+  aggiorna();
+  box.append(lingua, vai);
+  return box;
+}
+
+// "94 €" nella lingua del cliente: "94,50 €", "€94.50".
+function soldiIn(n, locale) {
+  return Number(n).toLocaleString(locale, { style: "currency", currency: "EUR", minimumFractionDigits: n % 1 ? 2 : 0 });
+}
+
+// ─── Il link di pagamento ───────────────────────────────────────────────────
+// Si paga sempre prima della conferma, il totale o un acconto (proprietario,
+// 15 ottobre 2026). L'ufficio crea il link sul portale Redsys, lo incolla qui
+// con gli importi e il telefono del cliente, e il bottone apre WhatsApp col
+// messaggio gia' scritto nella sua lingua. Un link vale per tutta la richiesta:
+// si scrive uguale su tutte le sue righe ancora da confermare. La richiesta
+// resta 'pending' (supabase/modifiche/2026-10-15-link-pagamento.sql).
+function apriPagamento(li, r, righe) {
+  mostra(els.requestsMsg, "");
+  if (li.querySelector(".vend-edit")) return;   // gia' aperto
+
+  const form = document.createElement("form");
+  form.className = "vend-form vend-edit";
+  form.noValidate = true;
+  const id = "p" + r.id.slice(0, 8);
+  form.innerHTML = `
+    <label for="${id}Phone">Telefono del cliente</label>
+    <input id="${id}Phone" name="phone" type="tel" inputmode="tel" autocomplete="off" placeholder="+44 7700 900123" required />
+    <small class="vend-hint">Quello da cui ha scritto su WhatsApp, col + davanti.</small>
+    <div class="vend-row">
+      <div>
+        <label for="${id}Total">Totale €</label>
+        <input id="${id}Total" name="total" type="number" inputmode="decimal" min="0" step="0.01" required />
+      </div>
+      <div>
+        <label for="${id}Now">Da pagare adesso €</label>
+        <input id="${id}Now" name="now" type="number" inputmode="decimal" min="0" step="0.01" required />
+      </div>
+    </div>
+    <small class="vend-hint">Di tutta la richiesta${righe.length > 1 ? ` (${righe.length} escursioni)` : ""}. Se adesso paga meno del totale è un acconto: il resto lo paga sul posto.</small>
+    <label for="${id}Link">Link di pagamento (Redsys)</label>
+    <input id="${id}Link" name="link" type="url" inputmode="url" autocomplete="off" placeholder="https://…" required />
+    <p class="vend-msg" role="alert" hidden></p>
+    <div class="vend-row">
+      <button class="btn btn-soft" type="button" data-edit-cancel>Lascia stare</button>
+      <button class="btn btn-primary" type="submit">Salva</button>
+    </div>`;
+
+  // come in apriModifica: nessun testo del database passa da innerHTML
+  const f = form.elements;
+  f.phone.value = r.phone || "";
+  f.total.value = r.payment_total != null ? r.payment_total : "";
+  f.now.value = r.payment_amount != null ? r.payment_amount : "";
+  f.link.value = r.payment_link || "";
+  // il totale ricopiato in "adesso" finche' l'ufficio non lo cambia: quasi
+  // sempre si paga tutto
+  let adessoToccato = !!f.now.value;
+  f.now.addEventListener("input", () => { adessoToccato = true; });
+  f.total.addEventListener("input", () => { if (!adessoToccato) f.now.value = f.total.value; });
+
+  form.querySelector("[data-edit-cancel]").addEventListener("click", () => form.remove());
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+    const msg = form.querySelector(".vend-msg");
+    const telefono = telefonoE164("", f.phone.value);
+    const totale = parseFloat(f.total.value);
+    const adesso = parseFloat(f.now.value);
+    const link = f.link.value.trim();
+    if (!telefono) { mostra(msg, "Telefono non valido: scrivilo col + e il prefisso (+44 7700 900123).", "errore"); f.phone.focus(); return; }
+    if (!(totale > 0)) { mostra(msg, "Manca il totale.", "errore"); f.total.focus(); return; }
+    if (!(adesso > 0) || adesso > totale) { mostra(msg, "Da pagare adesso: più di zero e non più del totale.", "errore"); f.now.focus(); return; }
+    // solo un indirizzo vero: va in un link che il cliente tocca
+    if (!/^https:\/\/\S+$/.test(link)) { mostra(msg, "Il link deve cominciare con https://", "errore"); f.link.focus(); return; }
+    const nuovo = {
+      phone: telefono,
+      payment_link: link,
+      payment_total: totale,
+      payment_amount: adesso,
+      payment_sent_at: new Date().toISOString()
+    };
+    try {
+      const { data, error } = await sb.from("bookings").update(nuovo)
+        .eq("source", "whatsapp").eq("request_code", r.request_code).eq("status", "pending")
+        .select("id");
+      if (error || !data || !data.length) throw error || new Error("nessuna riga");
+    } catch (err) {
+      console.error(err);
+      mostra(msg, "Non sono riuscito a salvare. Controlla la connessione e riprova.", "errore");
+      return;
+    }
+    await caricaRichieste();
+    mostra(els.requestsMsg, `${r.request_code}: link salvato. Ora mandalo al cliente.`, "ok");
+    els.requestsMsg.append(pagamentoBottone(righe, Object.assign({}, r, nuovo)));
+  });
+  li.append(form);
+  f.phone.focus();
+}
+
+// Il messaggio col link, nella lingua del cliente: ogni escursione della
+// richiesta col suo giorno, il link, quanto si paga e, se e' un acconto, che
+// il resto si paga sul posto.
+function pagamentoTesto(righe, r, lingua) {
+  const T = RISPOSTA[lingua];
+  const metti = (testo, valori) => testo.replace(/\{(\w+)\}/g, (_, k) => valori[k]);
+  const nome = (r.customer_name || "").trim().split(/\s+/)[0];
+  const testo = [(nome ? metti(T.ciao, { nome }) + " " : "") + T.posto, ""];
+  righe.forEach(x => {
+    const tour = schedaDa(x.excursion_id);
+    const variante = rispostaVariante(tour, x.option_label, lingua);
+    const giorno = new Date(x.date + "T12:00:00").toLocaleDateString(T.locale, { weekday: "long", day: "numeric", month: "long" });
+    testo.push("*" + (tour ? titoloDi(tour) : x.excursion_id) + (variante ? " · " + variante : "") + "*", "📅 " + giorno, "");
+  });
+  testo.push(T.paga, r.payment_link, "", "💶 " + metti(T.importo, { n: soldiIn(r.payment_amount, T.locale) }));
+  if (r.payment_total > r.payment_amount) {
+    testo.push(metti(T.acconto, { n: soldiIn(r.payment_total - r.payment_amount, T.locale) }));
+  }
+  testo.push("", T.dopo);
+  return testo.join("\n");
+}
+
+// Come rispostaBottone: il menu della lingua e il bottone verde.
+function pagamentoBottone(righe, r) {
+  const box = document.createElement("span");
+  box.className = "vend-risposta";
+  const lingua = document.createElement("select");
+  lingua.setAttribute("aria-label", "Lingua del messaggio");
+  Object.keys(RISPOSTA).forEach(k => lingua.append(new Option(RISPOSTA[k].nome, k)));
+  lingua.value = rispostaLingua(r.request_message);
+  const vai = document.createElement("a");
+  vai.className = "btn btn-primary";
+  vai.target = "_blank";
+  vai.rel = "noopener noreferrer";
+  vai.textContent = "Manda il link su WhatsApp";
+  const aggiorna = () => {
+    vai.href = "https://wa.me/" + r.phone.replace(/\D/g, "") + "?text=" + encodeURIComponent(pagamentoTesto(righe, r, lingua.value));
+  };
+  lingua.addEventListener("change", aggiorna);
+  aggiorna();
+  box.append(lingua, vai);
+  return box;
 }
 
 // "9:30" o "09:30" diventa "09:30", quello che vuole il campo dell'ora;
@@ -1172,9 +1604,10 @@ async function annullaRichiesta(r) {
 // funzione manda solo quello che il database dice di mandare, e mai due volte:
 // se questa chiamata non arriva, ci pensa l'orologio.
 // Vedi supabase/modifiche/2026-10-13-notifiche.sql.
+// Col login del venditore (functions.invoke lo mette da solo): dal 16 ottobre
+// 2026 la funzione risponde solo ai venditori e all'orologio.
 function mandaAvvisi() {
-  fetch(SUPABASE_URL + "/functions/v1/manda-notifiche", { method: "POST", keepalive: true })
-    .catch(() => {});
+  sb.functions.invoke("manda-notifiche", { body: {} }).catch(() => {});
 }
 
 async function cambiaRichiesta(r, nuovo, msg) {
@@ -1184,7 +1617,8 @@ async function cambiaRichiesta(r, nuovo, msg) {
     if (error || !data || !data.length) throw error || new Error("nessuna riga");
     mandaAvvisi();
     await caricaRichieste();
-    return true;
+    // chi conferma vuole il numero davvero salvato (1234-2, vedi numeroLibero)
+    return nuovo.ticket_number || true;
   } catch (err) {
     console.error(err);
     // ticket_number e' unico: lo stesso numero non entra due volte
@@ -1244,8 +1678,6 @@ async function mostraPagina() {
   els.login.hidden = !!venditore;
   els.work.hidden = !venditore;
   if (venditore) {
-    // Il segno per il link "Area venditori" nel menu di Isla (app.js).
-    try { localStorage.setItem("isla-venditore", "1"); } catch (e) { /* incognito */ }
     els.sellerName.textContent = venditore.name;
     if (!els.seller.value) els.seller.value = venditore.name;
     caricaRichieste();
@@ -1256,6 +1688,11 @@ async function mostraPagina() {
     els.statsBox.hidden = true;
     els.statsBox.open = false;
     els.stats.replaceChildren();
+    rec.box.hidden = true;
+    rec.box.open = false;
+    rec.list.replaceChildren();
+    avv.box.hidden = true;
+    avv.box.open = false;
   }
 }
 
@@ -1293,7 +1730,11 @@ function giornoLocale(iso) {
 //   da incassare = somma dei To pay
 // Un ticket senza Total (le richieste WhatsApp non ce l'hanno) conta come
 // prenotazione e come persone, non come soldi.
-function calcolaStatistiche(righe) {
+// `codici`: { "MARCO": "Marco", … } da codici_sconto, per dire di chi e' il
+// codice sconto di una richiesta online (21 ottobre 2026: si misura quanto la
+// vendita online arriva dai clienti incontrati per strada). Senza, il codice
+// resta da solo.
+function calcolaStatistiche(righe, codici = {}) {
   const soldi = n => (n === null || n === undefined || n === "" ? null : Number(n));
   const tondo = n => Math.round(n * 100) / 100;
   const vive = righe.filter(r => r.status !== "cancelled");
@@ -1303,7 +1744,9 @@ function calcolaStatistiche(righe) {
     whatsapp: vive.filter(r => r.source === "whatsapp").length,
     annullate: righe.length - vive.length,
     persone: 0, venduto: 0, incassato: 0, daIncassare: 0, senzaTotale: 0,
-    escursioni: {}, venditori: {}, giorni: {}
+    escursioni: {}, venditori: {}, giorni: {}, codici: {}, colCodice: 0,
+    // false se il database non ha ancora la colonna: niente tabella dei codici
+    leggeCodici: righe.some(r => "discount_code" in r)
   };
   const aggiungi = (dove, chiave, r, persone, totale) => {
     const v = dove[chiave] || (dove[chiave] = { n: 0, persone: 0, venduto: 0 });
@@ -1326,6 +1769,15 @@ function calcolaStatistiche(righe) {
     const chi = r.source === "whatsapp" ? "Richieste WhatsApp" : (r.seller || "").trim() || "Senza venditore";
     aggiungi(s.venditori, chi, r, persone, totale);
     aggiungi(s.giorni, giornoLocale(r.created_at), r, persone, totale);
+    if (r.source === "whatsapp") {
+      const codice = (r.discount_code || "").trim();
+      if (codice) s.colCodice += 1;
+      const nome = !codice ? "Senza codice"
+        : codici[codice] ? `${codici[codice]} (${codice})` : codice;
+      aggiungi(s.codici, nome, r, persone, totale);
+      const v = s.codici[nome];
+      v.confermate = (v.confermate || 0) + (r.status === "confirmed" ? 1 : 0);
+    }
   });
   s.venduto = tondo(s.venduto);
   s.incassato = tondo(s.incassato);
@@ -1382,7 +1834,8 @@ function disegnaStatistiche(s) {
   const cifre = document.createElement("dl");
   cifre.className = "vend-stats-cifre";
   [
-    ["Prenotazioni", String(s.prenotazioni), `strada ${s.strada} · WhatsApp ${s.whatsapp}`],
+    ["Prenotazioni", String(s.prenotazioni),
+      `strada ${s.strada} · WhatsApp ${s.whatsapp}` + (s.colCodice ? ` (${s.colCodice} col codice)` : "")],
     ["Persone", String(s.persone), ""],
     ["Venduto", euro(s.venduto), s.senzaTotale ? `${s.senzaTotale} senza Total` : ""],
     ["Già incassato", euro(s.incassato), `da incassare ${euro(s.daIncassare)}`]
@@ -1414,6 +1867,14 @@ function disegnaStatistiche(s) {
   els.stats.append(tabella("Per venditore", ["Venditore", "Pren.", "Persone", "Venduto"],
     Object.entries(s.venditori).sort(perN)
       .map(([chi, v]) => [chi, v.n, v.persone, euro(v.venduto)])));
+  // Le richieste online col codice di un venditore: i clienti incontrati per
+  // strada che poi comprano da soli. "Senza codice" sempre in fondo.
+  if (s.whatsapp && s.leggeCodici) {
+    els.stats.append(tabella("Richieste online, per codice", ["Codice", "Pren.", "Confermate", "Venduto"],
+      Object.entries(s.codici)
+        .sort((a, b) => (a[0] === "Senza codice") - (b[0] === "Senza codice") || perN(a, b))
+        .map(([chi, v]) => [chi, v.n, v.confermate, euro(v.venduto)])));
+  }
   els.stats.append(tabella("Giorno per giorno", ["Giorno", "Pren.", "Persone", "Venduto"],
     Object.entries(s.giorni).sort((a, b) => (a[0] < b[0] ? 1 : -1))
       .map(([g, v]) => [dataBreve(g), v.n, v.persone, euro(v.venduto)])));
@@ -1422,18 +1883,24 @@ function disegnaStatistiche(s) {
 async function caricaStatistiche() {
   const { da, a } = limitiPeriodo(periodoStats);
   mostra(els.statsMsg, "Un momento…");
-  const { data, error } = await sb
-    .from("bookings")
-    .select("excursion_id, source, status, adults, kids, babies, total, rest_to_pay, seller, created_at")
+  const colonne = "excursion_id, source, status, adults, kids, babies, total, rest_to_pay, seller, created_at";
+  const leggi = quali => sb.from("bookings").select(quali)
     .gte("created_at", da.toISOString())
     .lt("created_at", a.toISOString())
     .limit(5000);
+  // discount_code esiste solo dopo 2026-10-18-codici-sconto.sql: se il
+  // database non ce l'ha, le statistiche escono lo stesso, senza codici
+  let { data, error } = await leggi(colonne + ", discount_code");
+  if (error) ({ data, error } = await leggi(colonne));
   if (error) {
     mostra(els.statsMsg, "Statistiche non disponibili: riprova quando c'è campo.", "errore");
     return;
   }
+  // di chi e' ogni codice sconto; se non si legge, la tabella mostra il codice
+  const { data: elenco } = await sb.from("codici_sconto").select("codice, venditore");
+  const codici = Object.fromEntries((elenco || []).map(c => [c.codice, c.venditore]));
   mostra(els.statsMsg, "");
-  disegnaStatistiche(calcolaStatistiche(data));
+  disegnaStatistiche(calcolaStatistiche(data, codici));
 }
 
 // La sezione esiste solo per l'ufficio. Se la funzione is_office() non c'e'
@@ -1441,7 +1908,285 @@ async function caricaStatistiche() {
 // come un "no", e la pagina resta quella di sempre.
 async function preparaStatistiche() {
   const { data, error } = await sb.rpc("is_office");
-  els.statsBox.hidden = !!error || data !== true;
+  const ufficio = !error && data === true;
+  els.statsBox.hidden = !ufficio;
+  // le recensioni si caricano subito: il titolo dice quante ce n'e' da leggere
+  rec.box.hidden = !ufficio;
+  avv.box.hidden = !ufficio;
+  if (ufficio) { caricaRecensioni(); avvisiPrepara(); }
+}
+
+// ─── Recensioni (solo ufficio) ──────────────────────────────────────────────
+//
+// Le recensioni dei clienti (recensioni.js) arrivano "in attesa": escono nella
+// home solo dopo "Pubblica". "Scarta" le cancella; una pubblicata si "Toglie"
+// (si cancella) quando il cliente lo chiede (proprietario, 20 ottobre 2026).
+// Il testo non si cambia: o si pubblica com'e', o si scarta.
+// Solo l'ufficio (is_office), come le statistiche, e lo dice anche il database
+// (supabase/modifiche/2026-10-20-recensioni2-ufficio.sql).
+// La pagina sta in isla-ticket: la sezione si costruisce qui, cosi' non serve
+// toccare due repository.
+
+const FONTE_RECENSIONE = { isla: "Isla", tripadvisor: "Tripadvisor", facebook: "Facebook", google: "Google" };
+
+const rec = (() => {
+  const box = document.createElement("details");
+  box.className = "vend-stats vend-rec";
+  box.hidden = true;
+  box.innerHTML = `
+    <summary data-rec-title>Recensioni</summary>
+    <div class="vend-stats-head">
+      <p class="vend-rec-nota">Escono nella home ("Dicono di noi") solo dopo <strong>Pubblica</strong>. Il testo non si può cambiare: o si pubblica com'è, o si scarta.</p>
+      <button type="button" class="btn btn-soft" data-rec-reload>Aggiorna</button>
+    </div>
+    <p class="vend-msg" data-rec-msg hidden></p>
+    <ul class="vend-list" data-rec-list></ul>`;
+  // sotto le statistiche; con una pagina vecchia senza statistiche, in fondo
+  if (els.statsBox) els.statsBox.after(box);
+  else els.work.append(box);
+  return {
+    box,
+    title: box.querySelector("[data-rec-title]"),
+    msg: box.querySelector("[data-rec-msg]"),
+    list: box.querySelector("[data-rec-list]"),
+    reload: box.querySelector("[data-rec-reload]")
+  };
+})();
+
+// ─── Avvisi sul telefono (solo ufficio) ─────────────────────────────────────
+//
+// Richiesta nuova, ticket nuovo, recensione da approvare (proprietario, 22
+// ottobre 2026: "per avere piu' controllo se qualcosa non va"). Si accendono
+// telefono per telefono, qui. Li manda manda-notifiche, li mostra il service
+// worker di Isla Ticket (isla-ticket/sw.js). Database:
+// supabase/modifiche/2026-10-22-avvisi-ufficio.sql.
+// Su iPhone solo con Isla Ticket installata sulla schermata Home: in Safari
+// PushManager non c'e'.
+
+const avv = (() => {
+  const box = document.createElement("details");
+  box.className = "vend-stats vend-avvisi";
+  box.hidden = true;
+  box.innerHTML = `
+    <summary data-avv-title>Avvisi su questo telefono</summary>
+    <div class="vend-stats-head">
+      <p class="vend-rec-nota" data-avv-stato></p>
+      <button type="button" class="btn btn-soft" data-avv-bottone hidden></button>
+    </div>
+    <p class="vend-msg" data-avv-msg hidden></p>`;
+  rec.box.after(box);
+  return {
+    box,
+    title: box.querySelector("[data-avv-title]"),
+    stato: box.querySelector("[data-avv-stato]"),
+    bottone: box.querySelector("[data-avv-bottone]"),
+    msg: box.querySelector("[data-avv-msg]")
+  };
+})();
+
+function avvisiPossibili() {
+  return "serviceWorker" in navigator && "PushManager" in window && "Notification" in window &&
+    typeof VAPID_PUBLIC_KEY !== "undefined";
+}
+
+// La chiave pubblica VAPID, da testo a byte (come vuole pushManager.subscribe).
+function avvisiChiaveUfficio() {
+  const b64 = VAPID_PUBLIC_KEY.replace(/-/g, "+").replace(/_/g, "/");
+  const pieno = b64 + "=".repeat((4 - b64.length % 4) % 4);
+  return Uint8Array.from(atob(pieno), c => c.charCodeAt(0));
+}
+
+async function avvisiIscrizione() {
+  // ready aspetta per sempre se il service worker non c'e': dopo 8 secondi si
+  // smette e si dice che non va
+  const reg = await Promise.race([
+    navigator.serviceWorker.ready,
+    new Promise((_, no) => setTimeout(() => no(new Error("service worker non pronto")), 8000))
+  ]);
+  return { reg, sub: await reg.pushManager.getSubscription() };
+}
+
+// Manda (o rimanda) l'indirizzo di questo telefono al database.
+async function avvisiRegistra(sub) {
+  const k = sub.toJSON().keys || {};
+  const { error } = await sb.rpc("avvisami_ufficio", {
+    p_endpoint: sub.endpoint, p_p256dh: k.p256dh, p_auth: k.auth
+  });
+  if (error) throw error;
+}
+
+function avvisiMostra(acceso) {
+  avv.title.textContent = acceso ? "Avvisi su questo telefono: accesi" : "Avvisi su questo telefono";
+  avv.bottone.hidden = false;
+  avv.bottone.textContent = acceso ? "Spegni" : "Accendi";
+  avv.bottone.dataset.acceso = acceso ? "1" : "";
+  avv.stato.textContent = acceso
+    ? "Arriva un avviso per ogni richiesta nuova, ticket nuovo e recensione da approvare. Le richieste dei clienti arrivano entro 10 minuti."
+    : "Accendili per ricevere un avviso per ogni richiesta nuova, ticket nuovo e recensione da approvare.";
+}
+
+async function avvisiPrepara() {
+  mostra(avv.msg, "");
+  if (!avvisiPossibili()) {
+    avv.bottone.hidden = true;
+    avv.stato.textContent = /iPhone|iPad/.test(navigator.userAgent)
+      ? "Su iPhone gli avvisi arrivano solo con Isla Ticket installata: in Safari tocca Condividi → Aggiungi alla schermata Home, poi apri Isla Ticket da lì."
+      : "Questo browser non sa ricevere avvisi. Prova con Chrome.";
+    return;
+  }
+  if (Notification.permission === "denied") {
+    avv.bottone.hidden = true;
+    avv.stato.textContent = "Gli avvisi sono bloccati per Isla Ticket: si riaccendono dalle impostazioni del telefono (Notifiche).";
+    return;
+  }
+  try {
+    const { sub } = await avvisiIscrizione();
+    avvisiMostra(!!sub);
+    // Gia' acceso: si rimanda l'indirizzo, cosi' il database ha sempre quello
+    // giusto (il telefono a volte lo cambia da solo).
+    if (sub) avvisiRegistra(sub).catch(() => {});
+  } catch (err) {
+    console.error(err);
+    avvisiMostra(false);
+  }
+}
+
+async function avvisiCambia() {
+  const acceso = avv.bottone.dataset.acceso === "1";
+  avv.bottone.disabled = true;
+  mostra(avv.msg, "");
+  try {
+    if (acceso) {
+      const { sub } = await avvisiIscrizione();
+      if (sub) {
+        await sb.rpc("smetti_avvisi_ufficio", { p_endpoint: sub.endpoint });
+        await sub.unsubscribe();
+      }
+      avvisiMostra(false);
+      mostra(avv.msg, "Avvisi spenti su questo telefono.", "ok");
+      return;
+    }
+    // Il permesso si chiede per primo, appena toccato il bottone: l'iPhone lo
+    // concede solo se la domanda parte dal tocco, non dopo un'attesa.
+    if (await Notification.requestPermission() !== "granted") {
+      avvisiPrepara();
+      return;
+    }
+    const { reg, sub } = await avvisiIscrizione();
+    const nuova = sub || await reg.pushManager.subscribe({
+      userVisibleOnly: true, applicationServerKey: avvisiChiaveUfficio()
+    });
+    await avvisiRegistra(nuova);
+    avvisiMostra(true);
+    mostra(avv.msg, "Avvisi accesi su questo telefono.", "ok");
+  } catch (err) {
+    console.error(err);
+    mostra(avv.msg, "Non sono riuscito a cambiare gli avvisi: " + (err.message || "controlla la connessione") + ".", "errore");
+  } finally {
+    avv.bottone.disabled = false;
+  }
+}
+
+avv.bottone.addEventListener("click", avvisiCambia);
+
+function meseBreve(iso) {
+  const [a, m] = iso.split("-").map(Number);
+  return new Date(a, m - 1, 1).toLocaleDateString("it-IT", { month: "long", year: "numeric" });
+}
+
+async function caricaRecensioni() {
+  const { data, error } = await sb
+    .from("recensioni")
+    .select("id, excursion_id, stelle, testo, nome, lingua, mese, fonte, stato, created_at")
+    .order("created_at", { ascending: false })
+    .limit(300);
+
+  rec.list.replaceChildren();
+  const riga = testo => rec.list.append(
+    Object.assign(document.createElement("li"), { className: "vend-req-vuoto", textContent: testo }));
+  if (error) {
+    rec.title.textContent = "Recensioni";
+    riga("Elenco non disponibile: " + (error.message || "niente connessione") + ".");
+    return;
+  }
+  const daLeggere = data.filter(r => r.stato === "in_attesa");
+  const pubblicate = data.filter(r => r.stato === "pubblicata");
+  rec.title.textContent = daLeggere.length ? `Recensioni (${daLeggere.length} da leggere)` : "Recensioni";
+  if (!daLeggere.length) riga("Nessuna recensione da leggere.");
+
+  const voce = r => {
+    const li = document.createElement("li");
+    li.className = "vend-rec-voce";
+    const testo = document.createElement("div");
+    const titolo = document.createElement("strong");
+    titolo.textContent = `${r.stelle ? "★".repeat(r.stelle) + "☆".repeat(5 - r.stelle) : "Consiglia"} · ${r.nome}`;
+    const tour = r.excursion_id ? schedaDa(r.excursion_id) : null;
+    const sotto = document.createElement("span");
+    sotto.textContent = [
+      meseBreve(r.mese),
+      tour ? titoloDi(tour) : r.excursion_id,
+      r.lingua.toUpperCase(),
+      r.fonte !== "isla" ? "da " + (FONTE_RECENSIONE[r.fonte] || r.fonte) : ""
+    ].filter(Boolean).join(" · ");
+    testo.append(titolo, sotto);
+    if (r.testo) {
+      const corpo = document.createElement("p");
+      corpo.className = "vend-rec-testo";
+      corpo.textContent = r.testo;
+      testo.append(corpo);
+    }
+    li.append(testo);
+    const bottoni = document.createElement("div");
+    bottoni.className = "vend-list-btns";
+    const bottone = (scritta, fa) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "btn btn-soft";
+      b.textContent = scritta;
+      b.addEventListener("click", fa);
+      bottoni.append(b);
+    };
+    if (r.stato === "in_attesa") {
+      bottone("Pubblica", () => pubblicaRecensione(r));
+      bottone("Scarta", () => togliRecensione(r, `Scartare la recensione di ${r.nome}? Si cancella e non si recupera.`, "scartata"));
+    } else {
+      bottone("Togli", () => togliRecensione(r, `Togliere dal sito la recensione di ${r.nome}? Si cancella e non si recupera.`, "tolta"));
+    }
+    li.append(bottoni);
+    return li;
+  };
+
+  daLeggere.forEach(r => rec.list.append(voce(r)));
+  if (pubblicate.length) {
+    const dentro = riquadroAnnullati(rec.list, pubblicate.length, "Pubblicate");
+    pubblicate.forEach(r => dentro.append(voce(r)));
+  }
+}
+
+async function pubblicaRecensione(r) {
+  mostra(rec.msg, "");
+  // .select(): se le regole non lasciano passare, non c'e' errore ma zero righe
+  const { data, error } = await sb.from("recensioni")
+    .update({ stato: "pubblicata", pubblicata_at: new Date().toISOString() })
+    .eq("id", r.id).select("id");
+  if (error || !data || !data.length) {
+    mostra(rec.msg, "Non sono riuscito a pubblicarla. Controlla la connessione e riprova.", "errore");
+    return;
+  }
+  mostra(rec.msg, `La recensione di ${r.nome} è pubblicata: ora si vede nella home.`, "ok");
+  caricaRecensioni();
+}
+
+async function togliRecensione(r, domanda, fatto) {
+  mostra(rec.msg, "");
+  if (!confirm(domanda)) return;
+  const { data, error } = await sb.from("recensioni").delete().eq("id", r.id).select("id");
+  if (error || !data || !data.length) {
+    mostra(rec.msg, "Non sono riuscito a cancellarla. Controlla la connessione e riprova.", "errore");
+    return;
+  }
+  mostra(rec.msg, `La recensione di ${r.nome} è ${fatto}.`, "ok");
+  caricaRecensioni();
 }
 
 // ─── Avvio ──────────────────────────────────────────────────────────────────
@@ -1460,6 +2205,7 @@ els.requestsReload.addEventListener("click", () => { mostra(els.requestsMsg, "")
 // Le statistiche si chiedono al database solo quando la tendina si apre.
 els.statsBox.addEventListener("toggle", () => { if (els.statsBox.open) caricaStatistiche(); });
 els.statsReload.addEventListener("click", caricaStatistiche);
+rec.reload.addEventListener("click", () => { mostra(rec.msg, ""); caricaRecensioni(); });
 document.querySelectorAll("[data-stats-period]").forEach(btn => btn.addEventListener("click", () => {
   periodoStats = btn.dataset.statsPeriod;
   document.querySelectorAll("[data-stats-period]").forEach(b =>
@@ -1481,6 +2227,7 @@ els.form.addEventListener("input", () => {
 els.form.addEventListener("input", e => e.target.classList.remove("vend-dubbio"));
 els.form.addEventListener("change", e => e.target.classList.remove("vend-dubbio"));
 els.exc.addEventListener("change", aggiornaEscursione);
+els.option.addEventListener("change", aggiornaTransfer);
 els.phone.addEventListener("input", aggiornaTelefono);
 els.prefix.addEventListener("change", aggiornaTelefono);
 [els.total, els.deposit, els.rest].forEach(i => i.addEventListener("input", aggiornaSoldi));

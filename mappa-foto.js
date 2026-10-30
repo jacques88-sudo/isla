@@ -27,7 +27,7 @@ const MAP_PHOTOS = {
   ],
   "playa-de-benijo": [
     {
-      "f": "playa-de-benijo-1.jpg",
+      "f": "playa-de-benijo-1.webp",
       "by": "David Perez Perez",
       "lic": "CC BY-SA 4.0",
       "url": "https://commons.wikimedia.org/wiki/File:Playa_de_Benijo,_Tenerife.jpg"
@@ -133,13 +133,13 @@ const MAP_PHOTOS = {
   ],
   "playa-de-la-tejita": [
     {
-      "f": "playa-de-la-tejita-1.jpg",
+      "f": "playa-de-la-tejita-1.webp",
       "by": "Karmelo26",
       "lic": "CC0",
       "url": "https://commons.wikimedia.org/wiki/File:Playa_nudista_La_Tejita._Tenerife_(72399).jpg"
     },
     {
-      "f": "playa-de-la-tejita-2.jpg",
+      "f": "playa-de-la-tejita-2.webp",
       "by": "Karmelo26",
       "lic": "CC0",
       "url": "https://commons.wikimedia.org/wiki/File:Playa_nudista_La_Tejita._Tenerife.jpg"
@@ -175,7 +175,7 @@ const MAP_PHOTOS = {
   ],
   "mirador-cruz-del-carmen": [
     {
-      "f": "mirador-cruz-del-carmen-1.jpg",
+      "f": "mirador-cruz-del-carmen-1.webp",
       "by": "Falk2",
       "lic": "CC BY-SA 4.0",
       "url": "https://commons.wikimedia.org/wiki/File:J00_700_mirador_Cruz_de_Carmen.jpg"
@@ -253,13 +253,13 @@ const MAP_PHOTOS = {
   ],
   "mirador-de-ortuno": [
     {
-      "f": "mirador-de-ortuno-1.jpg",
+      "f": "mirador-de-ortuno-1.webp",
       "by": "Falk2",
       "lic": "CC BY-SA 4.0",
       "url": "https://commons.wikimedia.org/wiki/File:J00_574_Pico_de_Teide.jpg"
     },
     {
-      "f": "mirador-de-ortuno-2.jpg",
+      "f": "mirador-de-ortuno-2.webp",
       "by": "Falk2",
       "lic": "CC BY-SA 4.0",
       "url": "https://commons.wikimedia.org/wiki/File:Tf3.01_Cumbre_Dorsal,_Teide.jpg"
@@ -337,7 +337,7 @@ const MAP_PHOTOS = {
       "url": "https://commons.wikimedia.org/wiki/File:Playa_del_Roque_(Taganana).JPG"
     },
     {
-      "f": "playa-del-roque-de-las-bodegas-2.jpg",
+      "f": "playa-del-roque-de-las-bodegas-2.webp",
       "by": "Cecilio Arbelo",
       "lic": "CC BY-SA 4.0",
       "url": "https://commons.wikimedia.org/wiki/File:Ensenada_roque_de_las_bodegas.jpg"
@@ -345,7 +345,7 @@ const MAP_PHOTOS = {
   ],
   "charco-de-la-laja": [
     {
-      "f": "charco-de-la-laja-1.jpg",
+      "f": "charco-de-la-laja-1.webp",
       "by": "Loi Ribera",
       "lic": "CC0",
       "url": "https://commons.wikimedia.org/wiki/File:San_Juan_De_La_Rambla_(195680373).jpeg"
@@ -395,7 +395,7 @@ const MAP_PHOTOS = {
       "url": "https://commons.wikimedia.org/wiki/File:Monta%C3%B1a_Amarilla,_Arona,_Tenerife,_Espa%C3%B1a,_2022-01-06,_DD_08-10_HDR.jpg"
     },
     {
-      "f": "montana-amarilla-2.jpg",
+      "f": "montana-amarilla-2.webp",
       "by": "Mataparda",
       "lic": "CC BY-SA 2.0",
       "url": "https://commons.wikimedia.org/wiki/File:Monta%C3%B1a_Amarilla.jpg"
@@ -409,7 +409,7 @@ const MAP_PHOTOS = {
       "url": "https://commons.wikimedia.org/wiki/File:Teide_Cable_Car_Carriage.jpg"
     },
     {
-      "f": "teleferico-del-teide-2.jpg",
+      "f": "teleferico-del-teide-2.webp",
       "by": "H. Zell",
       "lic": "CC BY-SA 3.0",
       "url": "https://commons.wikimedia.org/wiki/File:Tel%C3%A9ferico_del_Teide_01.jpg"
@@ -507,7 +507,7 @@ const MAP_PHOTOS = {
       "url": "https://commons.wikimedia.org/wiki/File:Aratinga_solstitialis_-_Loro_Parque_01.jpg"
     },
     {
-      "f": "loro-parque-2.jpg",
+      "f": "loro-parque-2.webp",
       "by": "AnatolyPm",
       "lic": "CC BY-SA 4.0",
       "url": "https://commons.wikimedia.org/wiki/File:King_penguins_at_Loro_Parque_2.jpg"
@@ -529,13 +529,13 @@ const MAP_PHOTOS = {
   ],
   "auditorio-de-tenerife": [
     {
-      "f": "auditorio-de-tenerife-1.jpg",
+      "f": "auditorio-de-tenerife-1.webp",
       "by": "Wladyslaw, derivative work: Nikopol",
       "lic": "CC BY-SA 3.0",
       "url": "https://commons.wikimedia.org/wiki/File:Auditorio_de_Tenerife_Pano_edit.jpg"
     },
     {
-      "f": "auditorio-de-tenerife-2.jpg",
+      "f": "auditorio-de-tenerife-2.webp",
       "by": "Diego Delso",
       "lic": "CC BY-SA 3.0",
       "url": "https://commons.wikimedia.org/wiki/File:Auditorio_de_Tenerife,_Santa_Cruz_de_Tenerife,_Espa%C3%B1a,_2012-12-15,_DD_17.jpg"
@@ -571,7 +571,7 @@ const MAP_PHOTOS = {
       "url": "https://commons.wikimedia.org/wiki/File:Playa_de_Alm%C3%A1ciga,_Santa_Cruz_de_Tenerife.jpg"
     },
     {
-      "f": "playa-de-almaciga-2.jpg",
+      "f": "playa-de-almaciga-2.webp",
       "by": "Discasto",
       "lic": "CC BY-SA 4.0",
       "url": "https://commons.wikimedia.org/wiki/File:Playa_de_Alm%C3%A1ciga_(9_de_agosto_de_2011,_Anaga).JPG"
@@ -579,7 +579,7 @@ const MAP_PHOTOS = {
   ],
   "playa-de-el-socorro": [
     {
-      "f": "playa-de-el-socorro-1.jpg",
+      "f": "playa-de-el-socorro-1.webp",
       "by": "Javier1989canario",
       "lic": "CC BY-SA 3.0",
       "url": "https://commons.wikimedia.org/wiki/File:Playa_de_El_Socorro.JPG"

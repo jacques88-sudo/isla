@@ -14,7 +14,7 @@
   <meta property="og:locale" content="it_IT" />
   <meta property="og:title" content="Isla · La tua escursione a Tenerife" />
   <meta property="og:description" content="Isla — trova subito orario, punto d'incontro e informazioni della tua escursione a Tenerife." />
-  <meta property="og:image" content="https://jacques88-sudo.github.io/isla/assets/anteprima.jpg" />
+  <meta property="og:image" content="https://islaexcursionstenerife.com/assets/anteprima.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Il logo di Isla, il sole con la palma, e la scritta so easy so tenerife" />
@@ -25,6 +25,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" />
   <link rel="stylesheet" href="./styles.css" />
+  <!-- Halloween: vale solo dal 24 al 31 ottobre, lo accende halloween.js -->
+  <link rel="stylesheet" href="./halloween.css" />
+  <!-- La foto in cima e' la prima cosa che il cliente guarda: il browser la
+       chiede subito, insieme al foglio di stile, invece che dopo gli script. -->
+  <link rel="preload" as="image" href="./assets/piccole/hero-tenerife.webp" fetchpriority="high" />
   <!-- Critical splash styles, inlined so the loading screen never flashes
        unstyled while styles.css is still being fetched. -->
   <style>
@@ -78,6 +83,30 @@
       to { transform: rotate(360deg); }
     }
   </style>
+  <!-- Chi siamo, scritto come lo legge Google (schema.org, 21 ottobre 2026):
+       gli stessi dati del titolare in privacy.html. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TravelAgency",
+    "name": "Isla",
+    "legalName": "Admiral Travel Agencia de Viajes SL",
+    "url": "https://islaexcursionstenerife.com/",
+    "logo": "https://islaexcursionstenerife.com/assets/logo-isla.png",
+    "image": "https://islaexcursionstenerife.com/assets/anteprima.jpg",
+    "telephone": "+34662908073",
+    "email": "info@islaexcursionstenerife.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "C. Francisco Andrade Fumero",
+      "postalCode": "38660",
+      "addressLocality": "Playa de las Américas",
+      "addressRegion": "Santa Cruz de Tenerife",
+      "addressCountry": "ES"
+    },
+    "areaServed": "Tenerife"
+  }
+  </script>
 </head>
 <body data-i18n-doctitle="meta.home.title">
   <div class="splash" id="splash" aria-hidden="true">
@@ -92,13 +121,18 @@
 
   <main id="main">
     <div class="home-hero">
-      <video class="home-hero-media" id="heroVideo" aria-hidden="true" autoplay muted loop playsinline
-             poster="./assets/hero-tenerife.webp">
+      <!-- Niente autoplay e preload="none": il video (1,4 MB) lo fa partire
+           app.js a pagina caricata, e non su rete lenta o col risparmio dati.
+           La foto ferma e' la copia piccola (720 px, 60 KB invece di 335): col
+           4G lento compare in 3 secondi invece di 9, e dove il video parte
+           resta in vista solo pochi secondi. -->
+      <video class="home-hero-media" id="heroVideo" aria-hidden="true" muted loop playsinline preload="none"
+             poster="./assets/piccole/hero-tenerife.webp">
         <source src="./assets/Hero-poster.mp4" type="video/mp4" />
       </video>
-      <button class="playbtn" id="videoToggle" type="button" data-i18n-aria-label="hero.pause" aria-label="Metti in pausa il video">
-        <svg id="iconPause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-        <svg id="iconPlay" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M8 5v14l11-7z"/></svg>
+      <button class="playbtn" id="videoToggle" type="button" data-i18n-aria-label="hero.play" aria-label="Riproduci il video">
+        <svg id="iconPause" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+        <svg id="iconPlay" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
       </button>
       <a class="home-hero-mark" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
         <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
@@ -112,6 +146,8 @@
         <button type="button" data-lang-set="it" lang="it" aria-label="Italiano" title="Italiano"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#009246" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#ce2b37" d="M2 0h1v2H2z"/></svg></button>
         <button type="button" data-lang-set="en" lang="en" aria-label="English" title="English"><svg class="lang-flag" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path fill="#012169" d="M0 0h60v30H0z"/><path stroke="#fff" stroke-width="6" d="M0 0l60 30M60 0L0 30"/><path stroke="#c8102e" stroke-width="2" d="M0 0l60 30M60 0L0 30"/><path stroke="#fff" stroke-width="10" d="M30 0v30M0 15h60"/><path stroke="#c8102e" stroke-width="6" d="M30 0v30M0 15h60"/></svg></button>
         <button type="button" data-lang-set="es" lang="es" aria-label="Español" title="Español"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#aa151b" d="M0 0h3v2H0z"/><path fill="#f1bf00" d="M0 .5h3v1H0z"/></svg></button>
+        <button type="button" data-lang-set="fr" lang="fr" aria-label="Français" title="Français"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#002654" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#ce1126" d="M2 0h1v2H2z"/></svg></button>
+        <button type="button" data-lang-set="de" lang="de" aria-label="Deutsch" title="Deutsch"><svg class="lang-flag" viewBox="0 0 5 3" preserveAspectRatio="none" aria-hidden="true"><path fill="#000" d="M0 0h5v1H0z"/><path fill="#dd0000" d="M0 1h5v1H0z"/><path fill="#ffce00" d="M0 2h5v1H0z"/></svg></button>
       </div>
     </div>
 
@@ -171,7 +207,7 @@
              capisce che siamo sempre noi. E' un ritaglio quadrato fatto
              apposta, 66 KB, non la foto intera da 1920x1080. -->
         <a class="bento-tile bento-tile-photo" href="./pacchetti.html">
-          <img class="bento-foto" src="./assets/bento-pacchetti.jpg" alt="" loading="lazy" width="520" height="520" />
+          <img class="bento-foto" src="./assets/piccole/bento-pacchetti.webp" alt="" loading="lazy" width="520" height="520" />
           <span data-i18n="bento.packages">Pacchetti</span>
         </a>
         <!-- "Noleggio auto, moto e bici": prendeva il posto largo in fondo alla
@@ -183,10 +219,13 @@
              La foto (scelta del proprietario, stesso giorno) ha preso il posto
              dell'icona: il Maggiolino cabrio sulla strada del Teide. L'originale
              era 552x362, il ritaglio quadrato e' 362x362 e non e' stato
-             ingrandito, per non sgranarlo. La targa e' sfocata. -->
-        <a class="bento-tile bento-tile-photo" href="./noleggio.html">
-          <img class="bento-foto" src="./assets/bento-noleggio.jpg" alt="" loading="lazy" width="362" height="362" />
-          <span data-i18n="bento.rental">Noleggio auto, moto e bici</span>
+             ingrandito, per non sgranarlo. La targa e' sfocata.
+             Il 29 ottobre 2026 (proprietario) noleggio e Perfetto per 2 si sono
+             scambiati di posto: qui, secondo, c'e' Perfetto per 2, e il
+             noleggio e' sceso in fondo, al posto suo. -->
+        <a class="bento-tile bento-tile-photo" href="./pacchetti.html?tema=per-due">
+          <img class="bento-foto" src="./assets/piccole/bento-per-due.webp" alt="" loading="lazy" width="520" height="520" />
+          <span data-i18n="bento.forTwo">Perfetto per 2</span>
         </a>
         <!-- Portava all'elenco filtrato delle escursioni adatte ai bambini; adesso
              porta ai pacchetti di famiglia, che e' una proposta invece di un
@@ -198,7 +237,7 @@
              quadrato della foto dei pacchetti, 520x520 e 67 KB, cosi' i due
              riquadri con la foto si somigliano invece di litigare. -->
         <a class="bento-tile bento-tile-photo" href="./pacchetti.html?famiglia=1">
-          <img class="bento-foto" src="./assets/bento-famiglia.jpg" alt="" loading="lazy" width="520" height="520" />
+          <img class="bento-foto" src="./assets/piccole/bento-famiglia.webp" alt="" loading="lazy" width="520" height="520" />
           <span data-i18n="bento.family">In famiglia</span>
         </a>
         <!-- Portava a "#categories", cioe' alle categorie qui sotto: era
@@ -211,11 +250,11 @@
              home — non sono le foto di #categories, quelle sono ripetute
              apposta sotto e qui sarebbero la stessa immagine vista due volte. -->
         <a class="bento-tile bento-tile-photo bento-tile-stripes" href="./pacchetti.html?giorni=tutti">
-          <img class="bento-foto bento-stripe-1" src="./assets/bento-giorni-teide.jpg" alt="" loading="lazy" width="520" height="520" />
-          <img class="bento-foto bento-stripe-2" src="./assets/bento-giorni-mare.jpg" alt="" loading="lazy" width="520" height="520" />
-          <img class="bento-foto bento-stripe-3" src="./assets/bento-giorni-parco.jpg" alt="" loading="lazy" width="520" height="520" />
-          <img class="bento-foto bento-stripe-4" src="./assets/bento-giorni-avventura.jpg" alt="" loading="lazy" width="520" height="520" />
-          <img class="bento-foto bento-stripe-5" src="./assets/bento-giorni-stelle.jpg" alt="" loading="lazy" width="520" height="520" />
+          <img class="bento-foto bento-stripe-1" src="./assets/piccole/bento-giorni-teide.webp" alt="" loading="lazy" width="520" height="520" />
+          <img class="bento-foto bento-stripe-2" src="./assets/piccole/bento-giorni-mare.webp" alt="" loading="lazy" width="520" height="520" />
+          <img class="bento-foto bento-stripe-3" src="./assets/piccole/bento-giorni-parco.webp" alt="" loading="lazy" width="520" height="520" />
+          <img class="bento-foto bento-stripe-4" src="./assets/piccole/bento-giorni-avventura.webp" alt="" loading="lazy" width="520" height="520" />
+          <img class="bento-foto bento-stripe-5" src="./assets/piccole/bento-giorni-stelle.webp" alt="" loading="lazy" width="520" height="520" />
           <span data-i18n="bento.days">3/5/7 Days Experience</span>
         </a>
         <!-- I due riquadri del 6 ottobre 2026 (proprietario).
@@ -227,14 +266,16 @@
              dall'originale 500x375, non ingrandita.
              Perfetto per 2 porta alla vetrina dei pacchetti per le coppie
              (pacchetti.html?tema=per-due, regole in testa a pacchetti.js):
-             il telescopio al tramonto della foto dello stargazing, 520x520. -->
+             il telescopio al tramonto della foto dello stargazing, 520x520.
+             Dal 29 ottobre 2026 sta piu' su, secondo; qui sotto c'e' il
+             noleggio (il suo commento e' rimasto sopra, con Perfetto per 2). -->
         <a class="bento-tile bento-tile-photo" href="./escursioni.html?sel=food">
-          <img class="bento-foto" src="./assets/bento-food-wine.jpg" alt="" loading="lazy" width="375" height="375" />
+          <img class="bento-foto" src="./assets/piccole/bento-food-wine.webp" alt="" loading="lazy" width="375" height="375" />
           <span data-i18n="bento.food">Food Experience</span>
         </a>
-        <a class="bento-tile bento-tile-photo" href="./pacchetti.html?tema=per-due">
-          <img class="bento-foto" src="./assets/bento-per-due.jpg" alt="" loading="lazy" width="520" height="520" />
-          <span data-i18n="bento.forTwo">Perfetto per 2</span>
+        <a class="bento-tile bento-tile-photo" href="./noleggio.html">
+          <img class="bento-foto" src="./assets/piccole/bento-noleggio.webp" alt="" loading="lazy" width="362" height="362" />
+          <span data-i18n="bento.rental">Noleggio auto, moto e bici</span>
         </a>
       </div>
     </section>
@@ -245,31 +286,31 @@
         <h2 data-i18n="categories.title">Categorie</h2>
         <ul class="cat-grid">
           <li class="cat-card">
-            <a href="./escursioni.html?cat=mare-barche" class="cat-link"><img src="./assets/Cat-mare.jpg" data-i18n-cat="mare-barche" alt="Mare e barche a Tenerife" loading="eager" width="1400" height="1250" />
+            <a href="./escursioni.html?cat=mare-barche" class="cat-link"><img src="./assets/piccole/Cat-mare.webp" data-i18n-cat="mare-barche" alt="Mare e barche a Tenerife" loading="eager" width="1400" height="1250" />
             <span class="cat-label" data-i18n-cat="mare-barche">Mare e barche</span></a>
           </li>
           <li class="cat-card">
-            <a href="./escursioni.html?cat=teide-natura" class="cat-link"><img src="./assets/Cat-teide.jpg" data-i18n-cat="teide-natura" alt="Natura, Teide e stelle a Tenerife" loading="eager" width="1400" height="1250" />
+            <a href="./escursioni.html?cat=teide-natura" class="cat-link"><img src="./assets/piccole/Cat-teide.webp" data-i18n-cat="teide-natura" alt="Natura, Teide e stelle a Tenerife" loading="eager" width="1400" height="1250" />
             <span class="cat-label" data-i18n-cat="teide-natura">Natura, Teide e stelle</span></a>
           </li>
           <li class="cat-card">
-            <a href="./escursioni.html?cat=avventura-motori" class="cat-link"><img src="./assets/Cat-avventura.jpg" data-i18n-cat="avventura-motori" alt="Avventura a Tenerife" loading="lazy" width="1400" height="1250" />
+            <a href="./escursioni.html?cat=avventura-motori" class="cat-link"><img src="./assets/piccole/Cat-avventura.webp" data-i18n-cat="avventura-motori" alt="Avventura a Tenerife" loading="lazy" width="1400" height="1250" />
             <span class="cat-label" data-i18n-cat="avventura-motori">Avventura</span></a>
           </li>
           <li class="cat-card">
-            <a href="./escursioni.html?cat=sport-acquatici" class="cat-link"><img src="./assets/Cat-sport.jpg" data-i18n-cat="sport-acquatici" alt="Sport acquatici a Tenerife" loading="lazy" width="1400" height="1250" />
+            <a href="./escursioni.html?cat=sport-acquatici" class="cat-link"><img src="./assets/piccole/Cat-sport.webp" data-i18n-cat="sport-acquatici" alt="Sport acquatici a Tenerife" loading="lazy" width="1400" height="1250" />
             <span class="cat-label" data-i18n-cat="sport-acquatici">Sport acquatici</span></a>
           </li>
           <li class="cat-card">
-            <a href="./escursioni.html?cat=parchi-spettacoli" class="cat-link"><img src="./assets/Cat-parchi.jpg" data-i18n-cat="parchi-spettacoli" alt="Parchi e spettacoli a Tenerife" loading="lazy" width="1400" height="1250" />
+            <a href="./escursioni.html?cat=parchi-spettacoli" class="cat-link"><img src="./assets/piccole/Cat-parchi.webp" data-i18n-cat="parchi-spettacoli" alt="Parchi e spettacoli a Tenerife" loading="lazy" width="1400" height="1250" />
             <span class="cat-label" data-i18n-cat="parchi-spettacoli">Parchi e spettacoli</span></a>
           </li>
           <li class="cat-card">
-            <a href="./escursioni.html?cat=tour-isola" class="cat-link"><img src="./assets/santa-cruz-taganana.jpg" data-i18n-cat="tour-isola" alt="Tour e visite a Tenerife" loading="lazy" width="1400" height="1250" />
+            <a href="./escursioni.html?cat=tour-isola" class="cat-link"><img src="./assets/piccole/santa-cruz-taganana.webp" data-i18n-cat="tour-isola" alt="Tour e visite a Tenerife" loading="lazy" width="1400" height="1250" />
             <span class="cat-label" data-i18n-cat="tour-isola">Tour e visite</span></a>
           </li>
           <li class="cat-card">
-            <a href="./escursioni.html?cat=tour-privati" class="cat-link"><img src="./assets/Cat-privati.jpg" data-i18n-cat="tour-privati" alt="Tour privati a Tenerife" loading="lazy" width="1400" height="1250" />
+            <a href="./escursioni.html?cat=tour-privati" class="cat-link"><img src="./assets/piccole/Cat-privati.jpg" data-i18n-cat="tour-privati" alt="Tour privati a Tenerife" loading="lazy" width="1400" height="1250" />
             <span class="cat-label" data-i18n-cat="tour-privati">Tour privati</span></a>
           </li>
         </ul>
@@ -290,7 +331,7 @@
         <h2 data-i18n="map.title">Scopri Tenerife</h2>
         <ul class="cat-grid">
           <li class="cat-card cat-card--half">
-            <a href="./mappa.html?cat=spiaggia" class="cat-link"><img src="./assets/mappa/playa-de-la-tejita-1.jpg" alt="" loading="lazy" width="720" height="480" />
+            <a href="./mappa.html?cat=spiaggia" class="cat-link"><img src="./assets/mappa/playa-de-la-tejita-1.webp" alt="" loading="lazy" width="720" height="480" />
             <span class="cat-label" data-i18n="map.cat.beach">Spiagge</span></a>
           </li>
           <li class="cat-card cat-card--half">
@@ -300,11 +341,11 @@
             <span class="cat-credit">Foto: Mentxuwiki · CC BY-SA 4.0</span></a>
           </li>
           <li class="cat-card cat-card--half">
-            <a href="./mappa.html?cat=segreto" class="cat-link"><img src="./assets/mappa/charco-de-la-laja-1.jpg" alt="" loading="lazy" width="720" height="480" />
+            <a href="./mappa.html?cat=segreto" class="cat-link"><img src="./assets/mappa/charco-de-la-laja-1.webp" alt="" loading="lazy" width="720" height="480" />
             <span class="cat-label" data-i18n="map.cat.secret">Posti segreti</span></a>
           </li>
           <li class="cat-card cat-card--half">
-            <a href="./mappa.html?cat=interesse" class="cat-link"><img src="./assets/icod-garachico-orotava.jpg" alt="" loading="lazy" width="720" height="480" />
+            <a href="./mappa.html?cat=interesse" class="cat-link"><img src="./assets/piccole/icod-garachico-orotava.jpg" alt="" loading="lazy" width="720" height="480" />
             <span class="cat-label" data-i18n="map.cat.sight">Da vedere</span></a>
           </li>
         </ul>
@@ -313,7 +354,7 @@
 
     <section class="about" id="about">
       <div class="wrap about-grid">
-        <img src="./assets/About-team.jpg" data-i18n-alt="about.alt" alt="Il team di Isla a Tenerife" loading="lazy" width="1200" height="1100" />
+        <img src="./assets/About-team.webp" data-i18n-alt="about.alt" alt="Il team di Isla a Tenerife" loading="lazy" width="1200" height="1100" />
         <div>
           <span class="eyebrow" data-i18n="about.eyebrow">Chi siamo</span>
           <h2 data-i18n="about.title">Siamo Jack e Francesca</h2>
@@ -321,6 +362,18 @@
           <p data-i18n="about.p2">Dal 2018 lavoriamo nel mondo delle escursioni a Tenerife. In questi anni abbiamo imparato che le vacanze più belle nascono dai consigli giusti, dati da persone di cui ti fidi. Da qui nasce Isla.</p>
           <p data-i18n="about.p3">Isla è la vostra guida per vivere Tenerife davvero: escursioni, attività e spettacoli serali in un'unica app, sempre a portata di mano. Niente ricerche infinite: scegliete, chiedeteci e pensate solo a godervi la vacanza.</p>
         </div>
+      </div>
+    </section>
+
+    <!-- "Dicono di noi" (recensioni.js): nascosta finche' non arrivano le
+         recensioni pubblicate; senza rete resta nascosta. -->
+    <section class="reviews" id="recensioni" hidden>
+      <div class="wrap">
+        <span class="eyebrow" data-i18n="rev.eyebrow">Recensioni</span>
+        <h2 data-i18n="rev.homeTitle">Dicono di noi</h2>
+        <p class="rev-media" data-rev-media></p>
+        <div class="rev-lista" data-rev-lista></div>
+        <button class="btn btn-ghost rev-altre" type="button" data-rev-altre data-i18n="rev.more" hidden>Mostra altre</button>
       </div>
     </section>
 
@@ -335,7 +388,7 @@
           </details>
           <details class="faq-item">
             <summary data-i18n="faq.q2">Quanto tempo prima devo richiedere?</summary>
-            <p data-i18n="faq.a2">Almeno 24 ore prima della data dell'escursione. Ti rispondiamo entro 24 ore con la conferma e i dettagli.</p>
+            <p data-i18n="faq.a2">Almeno 24 ore prima dell'ora di partenza: per un'escursione che parte sabato alle 10, entro venerdì alle 10. Ti rispondiamo entro 24 ore con la conferma e i dettagli.</p>
           </details>
           <details class="faq-item">
             <summary data-i18n="faq.q3">La richiesta è già una prenotazione?</summary>
@@ -343,11 +396,11 @@
           </details>
           <details class="faq-item">
             <summary data-i18n="faq.q4">Come si paga?</summary>
-            <p data-i18n="faq.a4">Al momento della conferma ti indichiamo come saldare. Non ti viene chiesto nulla al momento della richiesta.</p>
+            <p data-i18n="faq.a4">Quando mandi la richiesta non paghi niente. Se c'è posto ti mandiamo un link per pagare con la carta: quasi sempre l'intero importo, per alcune escursioni un acconto e il resto sul posto. Appena il pagamento arriva, ti confermiamo l'escursione.</p>
           </details>
           <details class="faq-item">
             <summary data-i18n="faq.q5">Posso annullare?</summary>
-            <p data-i18n="faq.a5">Sì: fino a 24 ore prima dell'escursione puoi annullare gratis oppure spostarla a un'altra data, una volta sola e se c'è posto. Basta un messaggio su WhatsApp, e conta l'ora del messaggio. Meno di 24 ore prima, o se non ti presenti, non si può più annullare né spostare, e il prezzo non si rimborsa. Vale anche per i charter privati e i noleggi. Se invece ad annullare è l'operatore, per il maltempo, il mare mosso o troppo pochi partecipanti, scegli tu: un'altra data o il rimborso completo. Il rimborso arriva con lo stesso mezzo con cui hai pagato.</p>
+            <p data-i18n="faq.a5">Sì: fino a 24 ore prima dell'escursione puoi annullare gratis oppure spostarla a un'altra data, una volta sola e se c'è posto. Basta un messaggio su WhatsApp, e conta l'ora del messaggio. Meno di 24 ore prima, o se non ti presenti, non si può più annullare né spostare, e il prezzo non si rimborsa. Vale anche per i charter privati e i noleggi. Se invece ad annullare è l'operatore, per il maltempo, il mare mosso o troppo pochi partecipanti, scegli tu: un'altra data o il rimborso completo. Il rimborso arriva entro 15 giorni, con lo stesso mezzo con cui hai pagato.</p>
           </details>
           <details class="faq-item">
             <summary data-i18n="faq.q6">Funziona anche senza connessione?</summary>
@@ -371,12 +424,15 @@
         <button type="button" data-lang-set="it" lang="it" aria-label="Italiano" title="Italiano"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#009246" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#ce2b37" d="M2 0h1v2H2z"/></svg></button>
         <button type="button" data-lang-set="en" lang="en" aria-label="English" title="English"><svg class="lang-flag" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path fill="#012169" d="M0 0h60v30H0z"/><path stroke="#fff" stroke-width="6" d="M0 0l60 30M60 0L0 30"/><path stroke="#c8102e" stroke-width="2" d="M0 0l60 30M60 0L0 30"/><path stroke="#fff" stroke-width="10" d="M30 0v30M0 15h60"/><path stroke="#c8102e" stroke-width="6" d="M30 0v30M0 15h60"/></svg></button>
         <button type="button" data-lang-set="es" lang="es" aria-label="Español" title="Español"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#aa151b" d="M0 0h3v2H0z"/><path fill="#f1bf00" d="M0 .5h3v1H0z"/></svg></button>
+        <button type="button" data-lang-set="fr" lang="fr" aria-label="Français" title="Français"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#002654" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#ce1126" d="M2 0h1v2H2z"/></svg></button>
+        <button type="button" data-lang-set="de" lang="de" aria-label="Deutsch" title="Deutsch"><svg class="lang-flag" viewBox="0 0 5 3" preserveAspectRatio="none" aria-hidden="true"><path fill="#000" d="M0 0h5v1H0z"/><path fill="#dd0000" d="M0 1h5v1H0z"/><path fill="#ffce00" d="M0 2h5v1H0z"/></svg></button>
       </div>
     </div>
     <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn data-i18n="menu.install" hidden>Installa l'app</button>
     <nav class="more-menu-nav" data-i18n-aria-label="menu.sections" aria-label="Sezioni">
       <button type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.myBookings">Le mie prenotazioni</button>
       <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
+      <a href="./escursioni.html?preferiti=1" data-menu-link data-i18n="menu.favorites">I miei preferiti</a>
       <a href="./pacchetti.html" data-menu-link data-i18n="menu.packages">Pacchetti</a>
       <a href="./mappa.html" data-menu-link data-i18n="menu.map">Scopri Tenerife</a>
       <a href="./mappa.html?cat=segreto" data-menu-link data-i18n="menu.secret">Posti segreti</a>
@@ -424,21 +480,26 @@
     </div>
     <p class="footer-legal">
       <span data-i18n-html="footer.operator">Isla è un servizio di <strong>Admiral Travel Agencia de Viajes SL</strong></span> · CIF B38506754<br />
-      C. Francisco Andrade Fumero, 38660 Playa de las Américas, Santa Cruz de Tenerife · <a href="tel:+34662908073">+34 662 908 073</a> · <a href="./privacy.html" data-i18n="footer.privacy">Privacy</a> · <a href="./termini.html" data-i18n="footer.terms">Termini di vendita</a>
+      C. Francisco Andrade Fumero, 38660 Playa de las Américas, Santa Cruz de Tenerife · <a href="tel:+34657772032">+34 657 772 032</a> · <a href="tel:+34662908073">+34 662 908 073</a> · <a href="./privacy.html" data-i18n="footer.privacy">Privacy</a> · <a href="./termini.html" data-i18n="footer.terms">Termini di vendita</a>
     </p>
     <p class="footer-copy" data-i18n="footer.copy">© Isla · Escursioni a Tenerife</p>
   </footer>
 
+  <script src="./trasloco.js"></script>
+  <script src="./halloween.js"></script>
   <script src="./i18n.js"></script>
   <script src="./esplora-catalog.js"></script>
   <script src="./escursioni.js"></script>
+  <script src="./preferiti.js"></script>
   <!-- la lista deve saper disegnare un pacchetto -->
   <script src="./pacchetti.js"></script>
   <script src="./supabase-config.js"></script>
+  <script src="./recensioni.js"></script>
   <script src="./richieste.js"></script>
   <script src="./lista.js"></script>
   <script src="./assistente.js"></script>
   <script src="./telefono.js"></script>
   <script src="./app.js"></script>
+  <!-- Cloudflare Web Analytics: conta le visite, senza cookie (vedi NOTES.md) --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a352d8c5d0e744fbb696ae4294a2c023"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

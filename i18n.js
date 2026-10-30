@@ -1,13 +1,13 @@
-// Traduzioni del sito in italiano, inglese e spagnolo.
+// Traduzioni del sito in italiano, inglese, spagnolo, francese e tedesco.
 //
 // COME FUNZIONA
-//   Ogni testo ha una "chiave" (es. "nav.bookNow") e tre versioni: it, en, es.
+//   Ogni testo ha una "chiave" (es. "nav.bookNow") e cinque versioni: it, en, es, fr, de.
 //   Nell'HTML si scrive data-i18n="nav.bookNow" su un elemento: al caricamento
 //   il testo viene sostituito con quello della lingua scelta.
 //   Nel JavaScript si usa t("nav.bookNow").
 //
 // COME AGGIUNGERE UN TESTO
-//   1. aggiungi una riga qui sotto con le tre lingue;
+//   1. aggiungi una riga qui sotto con le cinque lingue;
 //   2. nell'HTML metti data-i18n="la.tua.chiave" sull'elemento.
 //
 // ATTRIBUTI DISPONIBILI NELL'HTML
@@ -20,630 +20,798 @@
 //   data-i18n-doctitle     → il titolo della pagina (si mette sul <body>)
 //   data-i18n-cat="id"     → il nome di una categoria del catalogo
 
-const I18N_LANGS = ["it", "en", "es"];
-const I18N_DEFAULT = "en";           // lingua usata se il browser non è it/es
+const I18N_LANGS = ["it", "en", "es", "fr", "de"];
+const I18N_DEFAULT = "en";           // lingua usata se il browser non è it/es/fr/de
 const I18N_STORAGE_KEY = "isla-lang";
-
-const I18N_LANG_NAMES = {
-  it: "Italiano",
-  en: "English",
-  es: "Español"
-};
 
 const I18N = {
   // ── generali ────────────────────────────────────────────────────────────
-  "common.skip":        { it: "Vai al contenuto", en: "Skip to content", es: "Ir al contenido" },
-  "common.close":       { it: "Chiudi", en: "Close", es: "Cerrar" },
-  "common.search":      { it: "Cerca", en: "Search", es: "Buscar" },
-  "common.homeAria":    { it: "Isla, vai alla home", en: "Isla, go to home", es: "Isla, ir al inicio" },
-  "common.logoAlt":     { it: "Logo Isla", en: "Isla logo", es: "Logo de Isla" },
-  "lang.label":         { it: "Lingua", en: "Language", es: "Idioma" },
+  "common.skip":        { it: "Vai al contenuto", en: "Skip to content", es: "Ir al contenido", fr: "Aller au contenu", de: "Zum Inhalt springen" },
+  "common.close":       { it: "Chiudi", en: "Close", es: "Cerrar", fr: "Fermer", de: "Schließen" },
+  "common.search":      { it: "Cerca", en: "Search", es: "Buscar", fr: "Rechercher", de: "Suchen" },
+  "common.homeAria":    { it: "Isla, vai alla home", en: "Isla, go to home", es: "Isla, ir al inicio", fr: "Isla, aller à l'accueil", de: "Isla, zur Startseite" },
+  "common.logoAlt":     { it: "Logo Isla", en: "Isla logo", es: "Logo de Isla", fr: "Logo Isla", de: "Isla-Logo" },
+  "lang.label":         { it: "Lingua", en: "Language", es: "Idioma", fr: "Langue", de: "Sprache" },
 
   // ── barra in alto ───────────────────────────────────────────────────────
-  "nav.aria":           { it: "Menu principale", en: "Main menu", es: "Menú principal" },
-  "nav.home":           { it: "Home", en: "Home", es: "Inicio" },
-  "nav.experiences":    { it: "Esperienze", en: "Experiences", es: "Experiencias" },
-  "nav.bookNow":        { it: "Prenota ora", en: "Book now", es: "Reservar" },
+  "nav.aria":           { it: "Menu principale", en: "Main menu", es: "Menú principal", fr: "Menu principal", de: "Hauptmenü" },
+  "nav.home":           { it: "Home", en: "Home", es: "Inicio", fr: "Accueil", de: "Start" },
+  "nav.experiences":    { it: "Esperienze", en: "Experiences", es: "Experiencias", fr: "Expériences", de: "Erlebnisse" },
+  "nav.bookNow":        { it: "Prenota ora", en: "Book now", es: "Reservar", fr: "Réserver", de: "Jetzt buchen" },
   // Il pulsante in alto a destra apre la finestra del ticket (numero + telefono):
   // si chiamava "Prenota ora", ma prenotare si fa dalle schede (proprietario,
   // 30 settembre 2026).
-  "nav.myBookings":     { it: "Le mie prenotazioni", en: "My bookings", es: "Mis reservas" },
-  "nav.menu":           { it: "Menu", en: "Menu", es: "Menú" },
+  "nav.myBookings":     { it: "Le mie prenotazioni", en: "My bookings", es: "Mis reservas", fr: "Mes réservations", de: "Meine Buchungen" },
+  "nav.menu":           { it: "Menu", en: "Menu", es: "Menú", fr: "Menu", de: "Menü" },
 
   // ── titoli delle pagine ─────────────────────────────────────────────────
-  "meta.home.title":    { it: "Isla · La tua escursione a Tenerife", en: "Isla · Your excursion in Tenerife", es: "Isla · Tu excursión en Tenerife" },
-  "meta.home.desc":     { it: "Isla — trova subito orario, punto d'incontro e informazioni della tua escursione a Tenerife.", en: "Isla — find the time, meeting point and details of your excursion in Tenerife straight away.", es: "Isla — encuentra al instante el horario, el punto de encuentro y la información de tu excursión en Tenerife." },
-  "meta.catalog.title": { it: "Tutte le escursioni · Isla", en: "All excursions · Isla", es: "Todas las excursiones · Isla" },
-  "meta.catalog.desc":  { it: "Tutte le escursioni, i tour e gli show di Isla a Tenerife: mare, Teide, parchi, avventura e molto altro.", en: "All of Isla's excursions, tours and shows in Tenerife: sea, Teide, parks, adventure and much more.", es: "Todas las excursiones, tours y espectáculos de Isla en Tenerife: mar, Teide, parques, aventura y mucho más." },
-  "meta.packs.title":   { it: "I pacchetti · Isla", en: "Packages · Isla", es: "Los paquetes · Isla" },
-  "meta.family.title":  { it: "In famiglia · Isla", en: "As a family · Isla", es: "En familia · Isla" },
-  "meta.family.desc":   { it: "I pacchetti di Isla per chi viaggia coi bambini a Tenerife: tre escursioni insieme, col prezzo dei bambini scritto accanto a quello degli adulti.", en: "Isla's packages for families travelling with children in Tenerife: three excursions together, with the kids' price written next to the adults'.", es: "Los paquetes de Isla para quien viaja con niños en Tenerife: tres excursiones juntas, con el precio de los niños junto al de los adultos." },
-  "meta.two.title":     { it: "Perfetto per 2 · Isla", en: "Perfect for two · Isla", es: "Perfecto para dos · Isla" },
-  "meta.two.desc":      { it: "I pacchetti di Isla per le coppie a Tenerife: tre esperienze da fare in due, con lo sconto già tolto dal prezzo.", en: "Isla's packages for couples in Tenerife: three experiences to share, with the discount already taken off.", es: "Los paquetes de Isla para parejas en Tenerife: tres experiencias para dos, con el descuento ya aplicado." },
-  "meta.days.title":    { it: "3, 5 o 7 giorni · Isla", en: "3, 5 or 7 days · Isla", es: "3, 5 o 7 días · Isla" },
-  "meta.days.desc":     { it: "Gli itinerari di Isla a Tenerife da 3, 5 o 7 giorni: una escursione al giorno, con lo sconto già tolto dal prezzo.", en: "Isla's 3, 5 and 7-day itineraries in Tenerife: one excursion a day, with the discount already taken off.", es: "Los itinerarios de Isla en Tenerife de 3, 5 o 7 días: una excursión al día, con el descuento ya aplicado." },
-  "meta.packs.desc":    { it: "I pacchetti di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "Isla's packages in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Los paquetes de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado." },
-  "meta.pack.desc":     { it: "Un pacchetto di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "An Isla package in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Un paquete de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado." },
-  "meta.rent.title":    { it: "Noleggio · Isla", en: "Rentals · Isla", es: "Alquiler · Isla" },
-  "meta.rent.desc":     { it: "Noleggio auto, moto, scooter e bici a Tenerife con Isla: i prezzi al giorno e la richiesta su WhatsApp.", en: "Car, motorbike, scooter and bike rental in Tenerife with Isla: daily prices and your request on WhatsApp.", es: "Alquiler de coches, motos, scooters y bicis en Tenerife con Isla: los precios por día y la solicitud por WhatsApp." },
-  "meta.booking.title": { it: "La tua prenotazione · Isla", en: "Your booking · Isla", es: "Tu reserva · Isla" },
+  "meta.home.title":    { it: "Isla · La tua escursione a Tenerife", en: "Isla · Your excursion in Tenerife", es: "Isla · Tu excursión en Tenerife", fr: "Isla · Votre excursion à Tenerife", de: "Isla · Ihr Ausflug auf Teneriffa" },
+  "meta.home.desc":     { it: "Isla — trova subito orario, punto d'incontro e informazioni della tua escursione a Tenerife.", en: "Isla — find the time, meeting point and details of your excursion in Tenerife straight away.", es: "Isla — encuentra al instante el horario, el punto de encuentro y la información de tu excursión en Tenerife.", fr: "Isla — trouvez tout de suite l'horaire, le point de rendez-vous et les infos de votre excursion à Tenerife.", de: "Isla — finden Sie sofort Uhrzeit, Treffpunkt und alle Infos zu Ihrem Ausflug auf Teneriffa." },
+  "meta.catalog.title": { it: "Tutte le escursioni · Isla", en: "All excursions · Isla", es: "Todas las excursiones · Isla", fr: "Toutes les excursions · Isla", de: "Alle Ausflüge · Isla" },
+  "meta.catalog.desc":  { it: "Tutte le escursioni, i tour e gli show di Isla a Tenerife: mare, Teide, parchi, avventura e molto altro.", en: "All of Isla's excursions, tours and shows in Tenerife: sea, Teide, parks, adventure and much more.", es: "Todas las excursiones, tours y espectáculos de Isla en Tenerife: mar, Teide, parques, aventura y mucho más.", fr: "Toutes les excursions, visites et spectacles d'Isla à Tenerife : mer, Teide, parcs, aventure et bien plus.", de: "Alle Ausflüge, Touren und Shows von Isla auf Teneriffa: Meer, Teide, Parks, Abenteuer und vieles mehr." },
+  "meta.packs.title":   { it: "I pacchetti · Isla", en: "Packages · Isla", es: "Los paquetes · Isla", fr: "Les forfaits · Isla", de: "Die Pakete · Isla" },
+  "meta.family.title":  { it: "In famiglia · Isla", en: "As a family · Isla", es: "En familia · Isla", fr: "En famille · Isla", de: "Mit der Familie · Isla" },
+  "meta.family.desc":   { it: "I pacchetti di Isla per chi viaggia coi bambini a Tenerife: tre escursioni insieme, col prezzo dei bambini scritto accanto a quello degli adulti.", en: "Isla's packages for families travelling with children in Tenerife: three excursions together, with the kids' price written next to the adults'.", es: "Los paquetes de Isla para quien viaja con niños en Tenerife: tres excursiones juntas, con el precio de los niños junto al de los adultos.", fr: "Les forfaits d'Isla pour les familles qui voyagent avec des enfants à Tenerife : trois excursions ensemble, avec le prix enfant écrit à côté du prix adulte.", de: "Die Pakete von Isla für Familien mit Kindern auf Teneriffa: drei Ausflüge zusammen, mit dem Kinderpreis gleich neben dem Erwachsenenpreis." },
+  "meta.two.title":     { it: "Perfetto per 2 · Isla", en: "Perfect for two · Isla", es: "Perfecto para dos · Isla", fr: "Parfait à deux · Isla", de: "Perfekt zu zweit · Isla" },
+  "meta.two.desc":      { it: "I pacchetti di Isla per le coppie a Tenerife: tre esperienze da fare in due, con lo sconto già tolto dal prezzo.", en: "Isla's packages for couples in Tenerife: three experiences to share, with the discount already taken off.", es: "Los paquetes de Isla para parejas en Tenerife: tres experiencias para dos, con el descuento ya aplicado.", fr: "Les forfaits d'Isla pour les couples à Tenerife : trois expériences à partager, avec la remise déjà déduite.", de: "Die Pakete von Isla für Paare auf Teneriffa: drei Erlebnisse zu zweit, der Rabatt ist schon abgezogen." },
+  "meta.days.title":    { it: "3, 5 o 7 giorni · Isla", en: "3, 5 or 7 days · Isla", es: "3, 5 o 7 días · Isla", fr: "3, 5 ou 7 jours · Isla", de: "3, 5 oder 7 Tage · Isla" },
+  "meta.days.desc":     { it: "Gli itinerari di Isla a Tenerife da 3, 5 o 7 giorni: una escursione al giorno, con lo sconto già tolto dal prezzo.", en: "Isla's 3, 5 and 7-day itineraries in Tenerife: one excursion a day, with the discount already taken off.", es: "Los itinerarios de Isla en Tenerife de 3, 5 o 7 días: una excursión al día, con el descuento ya aplicado.", fr: "Les itinéraires d'Isla à Tenerife sur 3, 5 ou 7 jours : une excursion par jour, avec la remise déjà déduite.", de: "Die Reiserouten von Isla auf Teneriffa für 3, 5 oder 7 Tage: ein Ausflug pro Tag, der Rabatt ist schon abgezogen." },
+  "meta.packs.desc":    { it: "I pacchetti di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "Isla's packages in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Los paquetes de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado.", fr: "Les forfaits d'Isla à Tenerife : trois excursions choisies pour aller ensemble, avec la remise déjà déduite.", de: "Die Pakete von Isla auf Teneriffa: drei Ausflüge, die gut zusammenpassen, der Rabatt ist schon abgezogen." },
+  "meta.pack.desc":     { it: "Un pacchetto di Isla a Tenerife: tre escursioni scelte insieme, con lo sconto già tolto dal prezzo.", en: "An Isla package in Tenerife: three excursions picked to go together, with the discount already taken off.", es: "Un paquete de Isla en Tenerife: tres excursiones elegidas para ir juntas, con el descuento ya aplicado.", fr: "Un forfait d'Isla à Tenerife : trois excursions choisies pour aller ensemble, avec la remise déjà déduite.", de: "Ein Paket von Isla auf Teneriffa: drei Ausflüge, die gut zusammenpassen, der Rabatt ist schon abgezogen." },
+  "meta.rent.title":    { it: "Noleggio · Isla", en: "Rentals · Isla", es: "Alquiler · Isla", fr: "Location · Isla", de: "Vermietung · Isla" },
+  "meta.rent.desc":     { it: "Noleggio auto, moto, scooter e bici a Tenerife con Isla: i prezzi al giorno e la richiesta su WhatsApp.", en: "Car, motorbike, scooter and bike rental in Tenerife with Isla: daily prices and your request on WhatsApp.", es: "Alquiler de coches, motos, scooters y bicis en Tenerife con Isla: los precios por día y la solicitud por WhatsApp.", fr: "Location de voitures, motos, scooters et vélos à Tenerife avec Isla : les prix à la journée et la demande sur WhatsApp.", de: "Auto-, Motorrad-, Roller- und Fahrradverleih auf Teneriffa mit Isla: Tagespreise und Anfrage per WhatsApp." },
+  "meta.booking.title": { it: "La tua prenotazione · Isla", en: "Your booking · Isla", es: "Tu reserva · Isla", fr: "Votre réservation · Isla", de: "Ihre Buchung · Isla" },
 
   // ── hero ────────────────────────────────────────────────────────────────
-  "hero.pause":         { it: "Metti in pausa il video", en: "Pause the video", es: "Pausar el vídeo" },
-  "hero.play":          { it: "Riproduci il video", en: "Play the video", es: "Reproducir el vídeo" },
+  "hero.pause":         { it: "Metti in pausa il video", en: "Pause the video", es: "Pausar el vídeo", fr: "Mettre la vidéo en pause", de: "Video anhalten" },
+  "hero.play":          { it: "Riproduci il video", en: "Play the video", es: "Reproducir el vídeo", fr: "Lire la vidéo", de: "Video abspielen" },
 
   // ── intro e bento ───────────────────────────────────────────────────────
-  "intro.eyebrow":      { it: "Tenerife", en: "Tenerife", es: "Tenerife" },
-  "intro.title":        { it: "Inizia la tua avventura con…", en: "Start your adventure with…", es: "Empieza tu aventura con…" },
-  "bento.packages":     { it: "Pacchetti", en: "Packages", es: "Paquetes" },
+  "intro.eyebrow":      { it: "Tenerife", en: "Tenerife", es: "Tenerife", fr: "Tenerife", de: "Teneriffa" },
+  "intro.title":        { it: "Inizia la tua avventura con…", en: "Start your adventure with…", es: "Empieza tu aventura con…", fr: "Commencez votre aventure avec…", de: "Beginnen Sie Ihr Abenteuer mit…" },
+  "bento.packages":     { it: "Pacchetti", en: "Packages", es: "Paquetes", fr: "Forfaits", de: "Pakete" },
   // Era "Con bambini" e portava all'elenco filtrato: adesso porta ai pacchetti
   // di famiglia. Il nome cambiato e' una scelta del proprietario (14 settembre
   // 2026): "In famiglia" parla a chi viaggia coi bambini, non ai bambini.
-  "bento.family":       { it: "In famiglia", en: "As a family", es: "En familia" },
+  "bento.family":       { it: "In famiglia", en: "As a family", es: "En familia", fr: "En famille", de: "Mit der Familie" },
   // I due riquadri del 6 ottobre 2026 (proprietario). "Food Experience" porta
   // alle degustazioni una per una (escursioni.html?sel=food), "Perfetto per 2"
   // alla vetrina dei pacchetti per le coppie. "Food Experience" resta in
-  // inglese nelle tre lingue, come "3/5/7 Days Experience".
-  "bento.food":         { it: "Food Experience", en: "Food Experience", es: "Food Experience" },
-  "bento.forTwo":       { it: "Perfetto per 2", en: "Perfect for two", es: "Perfecto para dos" },
-  "bento.days":         { it: "3/5/7 Days Experience", en: "3/5/7 Days Experience", es: "3/5/7 Days Experience" },
-  "bento.rental":       { it: "Noleggio auto, moto e bici", en: "Car, moto & bike rental", es: "Alquiler de coche, moto y bici" },
-  "wa.rental":          { it: "Ciao Isla! Vorrei noleggiare un mezzo a Tenerife. Mi interessa: ", en: "Hi Isla! I'd like to rent a vehicle in Tenerife. I'm interested in: ", es: "¡Hola Isla! Quisiera alquilar un vehículo en Tenerife. Me interesa: " },
-  "wa.rentItem":        { it: "Ciao Isla! Vorrei noleggiare: {mezzo}. Dal … al …", en: "Hi Isla! I'd like to rent: {mezzo}. From … to …", es: "¡Hola Isla! Quisiera alquilar: {mezzo}. Del … al …" },
+  // inglese nelle cinque lingue, come "3/5/7 Days Experience".
+  "bento.food":         { it: "Food Experience", en: "Food Experience", es: "Food Experience", fr: "Food Experience", de: "Food Experience" },
+  "bento.forTwo":       { it: "Perfetto per 2", en: "Perfect for two", es: "Perfecto para dos", fr: "Parfait à deux", de: "Perfekt zu zweit" },
+  "bento.days":         { it: "3/5/7 Days Experience", en: "3/5/7 Days Experience", es: "3/5/7 Days Experience", fr: "3/5/7 Days Experience", de: "3/5/7 Days Experience" },
+  "bento.rental":       { it: "Noleggio auto, moto e bici", en: "Car, moto & bike rental", es: "Alquiler de coche, moto y bici", fr: "Location voiture, moto et vélo", de: "Auto-, Motorrad- und Fahrradverleih" },
+  "wa.rental":          { it: "Ciao Isla! Vorrei noleggiare un mezzo a Tenerife. Mi interessa: ", en: "Hi Isla! I'd like to rent a vehicle in Tenerife. I'm interested in: ", es: "¡Hola Isla! Quisiera alquilar un vehículo en Tenerife. Me interesa: ", fr: "Bonjour Isla ! Je voudrais louer un véhicule à Tenerife. Je suis intéressé(e) par : ", de: "Hallo Isla! Ich möchte auf Teneriffa ein Fahrzeug mieten. Mich interessiert: " },
+  "wa.rentItem":        { it: "Ciao Isla! Vorrei noleggiare: {mezzo}. Dal … al …", en: "Hi Isla! I'd like to rent: {mezzo}. From … to …", es: "¡Hola Isla! Quisiera alquilar: {mezzo}. Del … al …", fr: "Bonjour Isla ! Je voudrais louer : {mezzo}. Du … au …", de: "Hallo Isla! Ich möchte mieten: {mezzo}. Vom … bis …" },
 
   // ── pagina noleggio (noleggio.html) ─────────────────────────────────────
-  "meta.map.title":     { it: "Scopri Tenerife · Isla", en: "Discover Tenerife · Isla", es: "Descubre Tenerife · Isla" },
-  "meta.map.desc":      { it: "La mappa di Tenerife di Isla: spiagge, punti panoramici, posti segreti e cose da vedere, con la strada per arrivarci.", en: "Isla's map of Tenerife: beaches, viewpoints, secret spots and must-sees, with directions to get there.", es: "El mapa de Tenerife de Isla: playas, miradores, lugares secretos e imprescindibles, con la ruta para llegar." },
-  "map.eyebrow":        { it: "La mappa", en: "The map", es: "El mapa" },
-  "map.title":          { it: "Scopri Tenerife", en: "Discover Tenerife", es: "Descubre Tenerife" },
-  "map.intro":          { it: "Spiagge, panorami, posti segreti e cose da vedere. Scegli una categoria sotto la mappa e tocca un punto per leggere cos'è e farti portare lì.", en: "Beaches, viewpoints, secret spots and must-sees. Pick a category below the map and tap a spot to read about it and get directions.", es: "Playas, miradores, lugares secretos e imprescindibles. Elige una categoría debajo del mapa y toca un punto para leer qué es y cómo llegar." },
-  "map.aria":           { it: "Mappa di Tenerife", en: "Map of Tenerife", es: "Mapa de Tenerife" },
-  "map.cat.beach":      { it: "Spiagge", en: "Beaches", es: "Playas" },
-  "map.cat.view":       { it: "Panorami", en: "Viewpoints", es: "Miradores" },
-  "map.cat.secret":     { it: "Posti segreti", en: "Secret spots", es: "Lugares secretos" },
-  "map.cat.sight":      { it: "Da vedere", en: "Must-see", es: "Imprescindibles" },
-  "map.cat.food":       { it: "Ristoranti", en: "Restaurants", es: "Restaurantes" },
-  "map.go":             { it: "Portami qui", en: "Take me there", es: "Llévame aquí" },
-  "map.photoBy":        { it: "Foto:", en: "Photo:", es: "Foto:" },
-  "map.stato.chiusa":   { it: "Chiusa", en: "Closed", es: "Cerrada" },
-  "map.stato.regolamentata": { it: "Con prenotazione", en: "Booking needed", es: "Con reserva" },
-  "map.tipo.scenografica": { it: "Da foto", en: "Picture-perfect", es: "De postal" },
-  "map.tipo.comoda":    { it: "Comoda", en: "Easy", es: "Cómoda" },
-  "map.tipo.selvaggia": { it: "Selvaggia", en: "Wild", es: "Salvaje" },
-  "map.sabbia.dorata":  { it: "Sabbia dorata", en: "Golden sand", es: "Arena dorada" },
-  "map.sabbia.chiara":  { it: "Sabbia chiara", en: "Light sand", es: "Arena clara" },
-  "map.sabbia.scura":   { it: "Sabbia scura", en: "Dark sand", es: "Arena oscura" },
-  "map.sabbia.nera":    { it: "Sabbia nera", en: "Black sand", es: "Arena negra" },
-  "map.sabbia.ciottoli": { it: "Ciottoli", en: "Pebbles", es: "Callaos" },
-  "map.beachNote":      { it: "Le spiagge del nord e le calette selvagge hanno onde e correnti forti. Guarda la bandiera e i cartelli sul posto: con mare mosso o divieto, niente bagno.", en: "North-coast beaches and wild coves have strong waves and currents. Check the flag and the signs on site: no swimming in rough sea or where it is banned.", es: "Las playas del norte y las calas salvajes tienen olas y corrientes fuertes. Mira la bandera y los carteles: con mar agitado o prohibición, no te bañes." },
-  "map.example":        { it: "esempio", en: "example", es: "ejemplo" },
-  "rent.eyebrow":       { it: "Tenerife su ruote", en: "Tenerife on wheels", es: "Tenerife sobre ruedas" },
-  "rent.title":         { it: "Noleggio", en: "Rentals", es: "Alquiler" },
-  "rent.intro":         { it: "Auto, moto, scooter e bici per girare l'isola coi tuoi tempi. Scegli il mezzo e mandaci la richiesta con le date: ti confermiamo disponibilità e ritiro entro 24 ore.", en: "Cars, motorbikes, scooters and bikes to explore the island at your own pace. Pick a vehicle and send us your request with the dates: we confirm availability and collection within 24 hours.", es: "Coches, motos, scooters y bicis para recorrer la isla a tu ritmo. Elige el vehículo y envíanos la solicitud con las fechas: te confirmamos disponibilidad y recogida en 24 horas." },
-  "rent.navAria":       { it: "Tipo di mezzo", en: "Vehicle type", es: "Tipo de vehículo" },
-  "rent.cars":          { it: "Auto", en: "Cars", es: "Coches" },
-  "rent.motos":         { it: "Moto e scooter", en: "Motorbikes & scooters", es: "Motos y scooters" },
-  "rent.carsNote":      { it: "A luglio, agosto, dicembre e gennaio i prezzi salgono di €5 al giorno.", en: "In July, August, December and January prices go up by €5 a day.", es: "En julio, agosto, diciembre y enero los precios suben 5 € al día." },
-  "rent.motosNote":     { it: "Sempre compresi: assicurazione, casco, lucchetto e chilometri illimitati.", en: "Always included: insurance, helmet, lock and unlimited mileage.", es: "Siempre incluidos: seguro, casco, candado y kilómetros ilimitados." },
-  "rent.d12":           { it: "1-2 giorni", en: "1-2 days", es: "1-2 días" },
-  "rent.d36":           { it: "3-6 giorni", en: "3-6 days", es: "3-6 días" },
-  "rent.d7":            { it: "7 giorni o più", en: "7 days or more", es: "7 días o más" },
-  "rent.day1":          { it: "1 giorno", en: "1 day", es: "1 día" },
-  "rent.dayN":          { it: "{n} giorni", en: "{n} days", es: "{n} días" },
-  "rent.dayExtra":      { it: "dall'{n}° giorno, ogni giorno", en: "from day {n}, each day", es: "desde el día {n}, cada día" },
-  "rent.perDayShort":   { it: "al giorno", en: "per day", es: "al día" },
-  "rent.unitDay":       { it: "prezzo al giorno", en: "price per day", es: "precio por día" },
-  "rent.unitTotal":     { it: "prezzo per tutto il periodo", en: "price for the whole period", es: "precio por todo el periodo" },
-  "rent.seats":         { it: "{n} posti", en: "{n} seats", es: "{n} plazas" },
-  "rent.request":       { it: "Richiedi su WhatsApp", en: "Request on WhatsApp", es: "Solicitar por WhatsApp" },
-  "rent.otherText":     { it: "Cerchi un altro mezzo? Scrivici e lo cerchiamo noi.", en: "Looking for another vehicle? Write to us and we'll find it.", es: "¿Buscas otro vehículo? Escríbenos y lo buscamos nosotros." },
-  "rent.otherBtn":      { it: "Scrivici su WhatsApp", en: "Write to us on WhatsApp", es: "Escríbenos por WhatsApp" },
-  "rent.kind.auto":     { it: "cambio automatico", en: "automatic", es: "cambio automático" },
-  "rent.kind.van":      { it: "furgone", en: "van", es: "furgoneta" },
-  "rent.kind.scooter125": { it: "Scooter 50/125 cc", en: "Scooter 50/125 cc", es: "Scooter 50/125 cc" },
-  "rent.kind.scooter300": { it: "Maxi scooter 300 cc", en: "Maxi scooter 300 cc", es: "Maxi scooter 300 cc" },
-  "rent.kind.scooter400": { it: "Maxi scooter 400 cc", en: "Maxi scooter 400 cc", es: "Maxi scooter 400 cc" },
-  "rent.kind.gear125":  { it: "Moto 125 cc con le marce", en: "125 cc geared motorbike", es: "Moto 125 cc con marchas" },
-  "rent.kind.moto500":  { it: "Moto 500 cc", en: "500 cc motorbike", es: "Moto 500 cc" },
-  "rent.kind.moto750":  { it: "Moto 750 cc", en: "750 cc motorbike", es: "Moto 750 cc" },
-  "rent.kind.moto800":  { it: "Moto 800 cc", en: "800 cc motorbike", es: "Moto 800 cc" },
-  "rent.lic.B3":        { it: "Patente B da almeno 3 anni", en: "Car licence held for at least 3 years", es: "Carnet B con al menos 3 años de antigüedad" },
-  "rent.lic.A2":        { it: "Patente A2 o A", en: "A2 or A licence", es: "Carnet A2 o A" },
-  "rent.lic.A":         { it: "Patente A", en: "A licence", es: "Carnet A" },
-  "rent.bikes":         { it: "Bici", en: "Bikes", es: "Bicis" },
-  "rent.bikesNote":     { it: "La bici te la portiamo all'alloggio, nel sud dell'isola, e la veniamo a riprendere; lucchetto e assistenza sono compresi. Nel messaggio scrivi altezza ed età di chi pedala.", en: "We bring the bike to where you're staying in the south of the island and pick it up again; lock and assistance are included. In your message, tell us the rider's height and age.", es: "Te llevamos la bici a tu alojamiento en el sur de la isla y pasamos a recogerla; candado y asistencia incluidos. En el mensaje indica la altura y la edad de quien va a pedalear." },
-  "rent.bike.city":     { it: "Bici da città", en: "City bike", es: "Bici urbana" },
-  "rent.bike.mtb":      { it: "Mountain bike", en: "Mountain bike", es: "Bicicleta de montaña" },
-  "rent.bike.ecity":    { it: "Bici elettrica da città", en: "Electric city bike", es: "Bici eléctrica urbana" },
-  "rent.bike.emtb":     { it: "Mountain bike elettrica", en: "Electric mountain bike", es: "Bicicleta de montaña eléctrica" },
-  "rent.kind.basket":   { it: "con cestino", en: "with basket", es: "con cesta" },
-  "rent.kind.trek":     { it: "Trek Marlin", en: "Trek Marlin", es: "Trek Marlin" },
-  "rent.kind.bosch500": { it: "motore Bosch, batteria 500 Wh", en: "Bosch motor, 500 Wh battery", es: "motor Bosch, batería de 500 Wh" },
-  "rent.kind.bosch":    { it: "motore Bosch", en: "Bosch motor", es: "motor Bosch" },
-  "rent.bike.charger":  { it: "Da 2 giorni in su c'è anche il caricabatterie, per ricaricarla la notte.", en: "From 2 days up the charger comes too, so you can recharge it overnight.", es: "A partir de 2 días también va el cargador, para recargarla por la noche." },
-  "rent.deposit":       { it: "Cauzione: €{n}, si paga alla consegna della bici", en: "Deposit: €{n}, paid when the bike is delivered", es: "Fianza: {n} €, se paga al entregar la bici" },
+  "meta.map.title":     { it: "Scopri Tenerife · Isla", en: "Discover Tenerife · Isla", es: "Descubre Tenerife · Isla", fr: "Découvrir Tenerife · Isla", de: "Teneriffa entdecken · Isla" },
+  "meta.map.desc":      { it: "La mappa di Tenerife di Isla: spiagge, punti panoramici, posti segreti e cose da vedere, con la strada per arrivarci.", en: "Isla's map of Tenerife: beaches, viewpoints, secret spots and must-sees, with directions to get there.", es: "El mapa de Tenerife de Isla: playas, miradores, lugares secretos e imprescindibles, con la ruta para llegar.", fr: "La carte de Tenerife d'Isla : plages, belvédères, coins secrets et incontournables, avec l'itinéraire pour y aller.", de: "Die Teneriffa-Karte von Isla: Strände, Aussichtspunkte, Geheimtipps und Sehenswertes, mit dem Weg dorthin." },
+  "map.eyebrow":        { it: "La mappa", en: "The map", es: "El mapa", fr: "La carte", de: "Die Karte" },
+  "map.title":          { it: "Scopri Tenerife", en: "Discover Tenerife", es: "Descubre Tenerife", fr: "Découvrir Tenerife", de: "Teneriffa entdecken" },
+  "map.intro":          { it: "Spiagge, panorami, posti segreti e cose da vedere. Scegli una categoria sotto la mappa e tocca un punto per leggere cos'è e farti portare lì.", en: "Beaches, viewpoints, secret spots and must-sees. Pick a category below the map and tap a spot to read about it and get directions.", es: "Playas, miradores, lugares secretos e imprescindibles. Elige una categoría debajo del mapa y toca un punto para leer qué es y cómo llegar.", fr: "Plages, belvédères, coins secrets et incontournables. Choisissez une catégorie sous la carte et touchez un lieu pour savoir ce que c'est et vous y faire guider.", de: "Strände, Aussichtspunkte, Geheimtipps und Sehenswertes. Wählen Sie unter der Karte eine Kategorie und tippen Sie auf einen Ort, um zu lesen, was es ist, und sich hinführen zu lassen." },
+  "map.aria":           { it: "Mappa di Tenerife", en: "Map of Tenerife", es: "Mapa de Tenerife", fr: "Carte de Tenerife", de: "Karte von Teneriffa" },
+  "map.cat.beach":      { it: "Spiagge", en: "Beaches", es: "Playas", fr: "Plages", de: "Strände" },
+  "map.cat.view":       { it: "Panorami", en: "Viewpoints", es: "Miradores", fr: "Belvédères", de: "Aussichtspunkte" },
+  "map.cat.secret":     { it: "Posti segreti", en: "Secret spots", es: "Lugares secretos", fr: "Coins secrets", de: "Geheimtipps" },
+  "map.cat.sight":      { it: "Da vedere", en: "Must-see", es: "Imprescindibles", fr: "À voir", de: "Sehenswert" },
+  "map.cat.food":       { it: "Ristoranti", en: "Restaurants", es: "Restaurantes", fr: "Restaurants", de: "Restaurants" },
+  "map.go":             { it: "Portami qui", en: "Take me there", es: "Llévame aquí", fr: "M'y emmener", de: "Hinführen" },
+  "map.photoBy":        { it: "Foto:", en: "Photo:", es: "Foto:", fr: "Photo :", de: "Foto:" },
+  "map.stato.chiusa":   { it: "Chiusa", en: "Closed", es: "Cerrada", fr: "Fermée", de: "Gesperrt" },
+  "map.stato.regolamentata": { it: "Con prenotazione", en: "Booking needed", es: "Con reserva", fr: "Sur réservation", de: "Mit Reservierung" },
+  "map.tipo.scenografica": { it: "Da foto", en: "Picture-perfect", es: "De postal", fr: "Carte postale", de: "Fotomotiv" },
+  "map.tipo.comoda":    { it: "Comoda", en: "Easy", es: "Cómoda", fr: "Facile d'accès", de: "Gut erreichbar" },
+  "map.tipo.selvaggia": { it: "Selvaggia", en: "Wild", es: "Salvaje", fr: "Sauvage", de: "Wild" },
+  "map.sabbia.dorata":  { it: "Sabbia dorata", en: "Golden sand", es: "Arena dorada", fr: "Sable doré", de: "Goldener Sand" },
+  "map.sabbia.chiara":  { it: "Sabbia chiara", en: "Light sand", es: "Arena clara", fr: "Sable clair", de: "Heller Sand" },
+  "map.sabbia.scura":   { it: "Sabbia scura", en: "Dark sand", es: "Arena oscura", fr: "Sable foncé", de: "Dunkler Sand" },
+  "map.sabbia.nera":    { it: "Sabbia nera", en: "Black sand", es: "Arena negra", fr: "Sable noir", de: "Schwarzer Sand" },
+  "map.sabbia.ciottoli": { it: "Ciottoli", en: "Pebbles", es: "Callaos", fr: "Galets", de: "Kiesel" },
+  "map.beachNote":      { it: "Le spiagge del nord e le calette selvagge hanno onde e correnti forti. Guarda la bandiera e i cartelli sul posto: con mare mosso o divieto, niente bagno.", en: "North-coast beaches and wild coves have strong waves and currents. Check the flag and the signs on site: no swimming in rough sea or where it is banned.", es: "Las playas del norte y las calas salvajes tienen olas y corrientes fuertes. Mira la bandera y los carteles: con mar agitado o prohibición, no te bañes.", fr: "Les plages du nord et les criques sauvages ont des vagues et des courants forts. Regardez le drapeau et les panneaux sur place : mer agitée ou baignade interdite, pas de baignade.", de: "Die Strände im Norden und die wilden Buchten haben starke Wellen und Strömungen. Achten Sie auf die Flagge und die Schilder vor Ort: bei rauer See oder Badeverbot nicht ins Wasser." },
+  "map.example":        { it: "esempio", en: "example", es: "ejemplo", fr: "exemple", de: "Beispiel" },
+  "rent.eyebrow":       { it: "Tenerife su ruote", en: "Tenerife on wheels", es: "Tenerife sobre ruedas", fr: "Tenerife sur roues", de: "Teneriffa auf Rädern" },
+  "rent.title":         { it: "Noleggio", en: "Rentals", es: "Alquiler", fr: "Location", de: "Vermietung" },
+  "rent.intro":         { it: "Auto, moto, scooter e bici per girare l'isola coi tuoi tempi. Scegli il mezzo e mandaci la richiesta con le date: ti confermiamo disponibilità e ritiro entro 24 ore.", en: "Cars, motorbikes, scooters and bikes to explore the island at your own pace. Pick a vehicle and send us your request with the dates: we confirm availability and collection within 24 hours.", es: "Coches, motos, scooters y bicis para recorrer la isla a tu ritmo. Elige el vehículo y envíanos la solicitud con las fechas: te confirmamos disponibilidad y recogida en 24 horas.", fr: "Voitures, motos, scooters et vélos pour parcourir l'île à votre rythme. Choisissez le véhicule et envoyez-nous la demande avec les dates : nous vous confirmons la disponibilité et le retrait sous 24 heures.", de: "Autos, Motorräder, Roller und Fahrräder, um die Insel in Ihrem eigenen Tempo zu erkunden. Wählen Sie das Fahrzeug und schicken Sie uns die Anfrage mit den Daten: Wir bestätigen Verfügbarkeit und Abholung innerhalb von 24 Stunden." },
+  "rent.navAria":       { it: "Tipo di mezzo", en: "Vehicle type", es: "Tipo de vehículo", fr: "Type de véhicule", de: "Fahrzeugart" },
+  "rent.cars":          { it: "Auto", en: "Cars", es: "Coches", fr: "Voitures", de: "Autos" },
+  "rent.motos":         { it: "Moto e scooter", en: "Motorbikes & scooters", es: "Motos y scooters", fr: "Motos et scooters", de: "Motorräder und Roller" },
+  "rent.carsNote":      { it: "A luglio, agosto, dicembre e gennaio i prezzi salgono di €5 al giorno.", en: "In July, August, December and January prices go up by €5 a day.", es: "En julio, agosto, diciembre y enero los precios suben 5 € al día.", fr: "En juillet, août, décembre et janvier, les prix augmentent de €5 par jour.", de: "Im Juli, August, Dezember und Januar steigen die Preise um €5 pro Tag." },
+  "rent.motosNote":     { it: "Sempre compresi: assicurazione, casco, lucchetto e chilometri illimitati.", en: "Always included: insurance, helmet, lock and unlimited mileage.", es: "Siempre incluidos: seguro, casco, candado y kilómetros ilimitados.", fr: "Toujours compris : assurance, casque, antivol et kilométrage illimité.", de: "Immer inklusive: Versicherung, Helm, Schloss und unbegrenzte Kilometer." },
+  "rent.d12":           { it: "1-2 giorni", en: "1-2 days", es: "1-2 días", fr: "1-2 jours", de: "1-2 Tage" },
+  "rent.d36":           { it: "3-6 giorni", en: "3-6 days", es: "3-6 días", fr: "3-6 jours", de: "3-6 Tage" },
+  "rent.d7":            { it: "7 giorni o più", en: "7 days or more", es: "7 días o más", fr: "7 jours ou plus", de: "7 Tage oder mehr" },
+  "rent.day1":          { it: "1 giorno", en: "1 day", es: "1 día", fr: "1 jour", de: "1 Tag" },
+  "rent.dayN":          { it: "{n} giorni", en: "{n} days", es: "{n} días", fr: "{n} jours", de: "{n} Tage" },
+  "rent.dayExtra":      { it: "dall'{n}° giorno, ogni giorno", en: "from day {n}, each day", es: "desde el día {n}, cada día", fr: "à partir du {n}e jour, chaque jour", de: "ab dem {n}. Tag, pro Tag" },
+  "rent.perDayShort":   { it: "al giorno", en: "per day", es: "al día", fr: "par jour", de: "pro Tag" },
+  "rent.unitDay":       { it: "prezzo al giorno", en: "price per day", es: "precio por día", fr: "prix par jour", de: "Preis pro Tag" },
+  "rent.unitTotal":     { it: "prezzo per tutto il periodo", en: "price for the whole period", es: "precio por todo el periodo", fr: "prix pour toute la période", de: "Preis für den ganzen Zeitraum" },
+  "rent.seats":         { it: "{n} posti", en: "{n} seats", es: "{n} plazas", fr: "{n} places", de: "{n} Sitze" },
+  "rent.request":       { it: "Richiedi su WhatsApp", en: "Request on WhatsApp", es: "Solicitar por WhatsApp", fr: "Demander sur WhatsApp", de: "Per WhatsApp anfragen" },
+  "rent.otherText":     { it: "Cerchi un altro mezzo? Scrivici e lo cerchiamo noi.", en: "Looking for another vehicle? Write to us and we'll find it.", es: "¿Buscas otro vehículo? Escríbenos y lo buscamos nosotros.", fr: "Vous cherchez un autre véhicule ? Écrivez-nous et nous le trouvons.", de: "Sie suchen ein anderes Fahrzeug? Schreiben Sie uns, wir suchen es für Sie." },
+  "rent.otherBtn":      { it: "Scrivici su WhatsApp", en: "Write to us on WhatsApp", es: "Escríbenos por WhatsApp", fr: "Écrivez-nous sur WhatsApp", de: "Schreiben Sie uns per WhatsApp" },
+  "rent.kind.auto":     { it: "cambio automatico", en: "automatic", es: "cambio automático", fr: "boîte automatique", de: "Automatikgetriebe" },
+  "rent.kind.van":      { it: "furgone", en: "van", es: "furgoneta", fr: "fourgon", de: "Transporter" },
+  "rent.kind.scooter125": { it: "Scooter 50/125 cc", en: "Scooter 50/125 cc", es: "Scooter 50/125 cc", fr: "Scooter 50/125 cc", de: "Roller 50/125 cc" },
+  "rent.kind.scooter300": { it: "Maxi scooter 300 cc", en: "Maxi scooter 300 cc", es: "Maxi scooter 300 cc", fr: "Maxi-scooter 300 cc", de: "Maxi-Roller 300 cc" },
+  "rent.kind.scooter400": { it: "Maxi scooter 400 cc", en: "Maxi scooter 400 cc", es: "Maxi scooter 400 cc", fr: "Maxi-scooter 400 cc", de: "Maxi-Roller 400 cc" },
+  "rent.kind.gear125":  { it: "Moto 125 cc con le marce", en: "125 cc geared motorbike", es: "Moto 125 cc con marchas", fr: "Moto 125 cc à vitesses", de: "Motorrad 125 cc mit Schaltung" },
+  "rent.kind.moto500":  { it: "Moto 500 cc", en: "500 cc motorbike", es: "Moto 500 cc", fr: "Moto 500 cc", de: "Motorrad 500 cc" },
+  "rent.kind.moto750":  { it: "Moto 750 cc", en: "750 cc motorbike", es: "Moto 750 cc", fr: "Moto 750 cc", de: "Motorrad 750 cc" },
+  "rent.kind.moto800":  { it: "Moto 800 cc", en: "800 cc motorbike", es: "Moto 800 cc", fr: "Moto 800 cc", de: "Motorrad 800 cc" },
+  "rent.lic.B3":        { it: "Patente B da almeno 3 anni", en: "Car licence held for at least 3 years", es: "Carnet B con al menos 3 años de antigüedad", fr: "Permis B depuis au moins 3 ans", de: "Führerschein Klasse B seit mindestens 3 Jahren" },
+  "rent.lic.A2":        { it: "Patente A2 o A", en: "A2 or A licence", es: "Carnet A2 o A", fr: "Permis A2 ou A", de: "Führerschein A2 oder A" },
+  "rent.lic.A":         { it: "Patente A", en: "A licence", es: "Carnet A", fr: "Permis A", de: "Führerschein A" },
+  "rent.bikes":         { it: "Bici", en: "Bikes", es: "Bicis", fr: "Vélos", de: "Fahrräder" },
+  "rent.bikesNote":     { it: "La bici te la portiamo all'alloggio, nel sud dell'isola, e la veniamo a riprendere; lucchetto e assistenza sono compresi. Nel messaggio scrivi altezza ed età di chi pedala.", en: "We bring the bike to where you're staying in the south of the island and pick it up again; lock and assistance are included. In your message, tell us the rider's height and age.", es: "Te llevamos la bici a tu alojamiento en el sur de la isla y pasamos a recogerla; candado y asistencia incluidos. En el mensaje indica la altura y la edad de quien va a pedalear.", fr: "Nous vous apportons le vélo à votre logement, dans le sud de l'île, et venons le reprendre ; antivol et assistance sont compris. Dans votre message, indiquez la taille et l'âge du cycliste.", de: "Wir bringen Ihnen das Fahrrad zur Unterkunft im Süden der Insel und holen es wieder ab; Schloss und Pannenhilfe sind inklusive. Schreiben Sie in die Nachricht Größe und Alter der Person, die fährt." },
+  "rent.bike.city":     { it: "Bici da città", en: "City bike", es: "Bici urbana", fr: "Vélo de ville", de: "Stadtrad" },
+  "rent.bike.mtb":      { it: "Mountain bike", en: "Mountain bike", es: "Bicicleta de montaña", fr: "VTT", de: "Mountainbike" },
+  "rent.bike.ecity":    { it: "Bici elettrica da città", en: "Electric city bike", es: "Bici eléctrica urbana", fr: "Vélo de ville électrique", de: "Elektro-Stadtrad" },
+  "rent.bike.emtb":     { it: "Mountain bike elettrica", en: "Electric mountain bike", es: "Bicicleta de montaña eléctrica", fr: "VTT électrique", de: "E-Mountainbike" },
+  "rent.kind.basket":   { it: "con cestino", en: "with basket", es: "con cesta", fr: "avec panier", de: "mit Korb" },
+  "rent.kind.trek":     { it: "Trek Marlin", en: "Trek Marlin", es: "Trek Marlin", fr: "Trek Marlin", de: "Trek Marlin" },
+  "rent.kind.bosch500": { it: "motore Bosch, batteria 500 Wh", en: "Bosch motor, 500 Wh battery", es: "motor Bosch, batería de 500 Wh", fr: "moteur Bosch, batterie 500 Wh", de: "Bosch-Motor, Akku 500 Wh" },
+  "rent.kind.bosch":    { it: "motore Bosch", en: "Bosch motor", es: "motor Bosch", fr: "moteur Bosch", de: "Bosch-Motor" },
+  "rent.bike.charger":  { it: "Da 2 giorni in su c'è anche il caricabatterie, per ricaricarla la notte.", en: "From 2 days up the charger comes too, so you can recharge it overnight.", es: "A partir de 2 días también va el cargador, para recargarla por la noche.", fr: "À partir de 2 jours, le chargeur est fourni aussi, pour le recharger la nuit.", de: "Ab 2 Tagen gibt es auch das Ladegerät dazu, um es nachts aufzuladen." },
+  "rent.deposit":       { it: "Cauzione: €{n}, si paga alla consegna della bici", en: "Deposit: €{n}, paid when the bike is delivered", es: "Fianza: {n} €, se paga al entregar la bici", fr: "Caution : €{n}, à payer à la livraison du vélo", de: "Kaution: €{n}, zahlbar bei Übergabe des Fahrrads" },
 
   // ── categorie ───────────────────────────────────────────────────────────
-  "categories.eyebrow": { it: "Esplora", en: "Explore", es: "Explora" },
-  "categories.title":   { it: "Categorie", en: "Categories", es: "Categorías" },
-  "categories.altSuffix": { it: "a Tenerife", en: "in Tenerife", es: "en Tenerife" },
+  "categories.eyebrow": { it: "Esplora", en: "Explore", es: "Explora", fr: "Explorer", de: "Entdecken" },
+  "categories.title":   { it: "Categorie", en: "Categories", es: "Categorías", fr: "Catégories", de: "Kategorien" },
+  "categories.altSuffix": { it: "a Tenerife", en: "in Tenerife", es: "en Tenerife", fr: "à Tenerife", de: "auf Teneriffa" },
 
   // ── posti segreti ───────────────────────────────────────────────────────
 
   // ── chi siamo ───────────────────────────────────────────────────────────
-  "about.eyebrow":      { it: "Chi siamo", en: "About us", es: "Quiénes somos" },
-  "about.title":        { it: "Siamo Jack e Francesca", en: "We are Jack and Francesca", es: "Somos Jack y Francesca" },
-  "about.p1":           { it: "Una coppia, due genitori, una famiglia. Da poco la nostra vita si è arricchita con l'arrivo della nostra bambina, il nostro piccolo grande motivo per guardare avanti e costruire qualcosa di nostro.", en: "A couple, two parents, a family. Our life has recently grown richer with the arrival of our baby girl, our little big reason to look ahead and build something of our own.", es: "Una pareja, dos padres, una familia. Hace poco nuestra vida se ha llenado con la llegada de nuestra niña, nuestro pequeño gran motivo para mirar hacia delante y construir algo nuestro." },
-  "about.p2":           { it: "Dal 2018 lavoriamo nel mondo delle escursioni a Tenerife. In questi anni abbiamo imparato che le vacanze più belle nascono dai consigli giusti, dati da persone di cui ti fidi. Da qui nasce Isla.", en: "Since 2018 we have worked in the world of excursions in Tenerife. Over these years we have learned that the best holidays come from the right advice, given by people you trust. That is how Isla was born.", es: "Desde 2018 trabajamos en el mundo de las excursiones en Tenerife. En estos años hemos aprendido que las mejores vacaciones nacen de los consejos adecuados, dados por personas en las que confías. Así nace Isla." },
-  "about.p3":           { it: "Isla è la vostra guida per vivere Tenerife davvero: escursioni, attività e spettacoli serali in un'unica app, sempre a portata di mano. Niente ricerche infinite: scegliete, chiedeteci e pensate solo a godervi la vacanza.", en: "Isla is your guide to truly living Tenerife: excursions, activities and evening shows in one app, always at hand. No endless searching: choose, ask us and just think about enjoying your holiday.", es: "Isla es vuestra guía para vivir Tenerife de verdad: excursiones, actividades y espectáculos nocturnos en una sola app, siempre a mano. Nada de búsquedas interminables: elegid, preguntadnos y pensad solo en disfrutar de las vacaciones." },
-  "about.alt":          { it: "Il team di Isla a Tenerife", en: "The Isla team in Tenerife", es: "El equipo de Isla en Tenerife" },
+  "about.eyebrow":      { it: "Chi siamo", en: "About us", es: "Quiénes somos", fr: "Qui sommes-nous", de: "Über uns" },
+  "about.title":        { it: "Siamo Jack e Francesca", en: "We are Jack and Francesca", es: "Somos Jack y Francesca", fr: "Nous sommes Jack et Francesca", de: "Wir sind Jack und Francesca" },
+  "about.p1":           { it: "Una coppia, due genitori, una famiglia. Da poco la nostra vita si è arricchita con l'arrivo della nostra bambina, il nostro piccolo grande motivo per guardare avanti e costruire qualcosa di nostro.", en: "A couple, two parents, a family. Our life has recently grown richer with the arrival of our baby girl, our little big reason to look ahead and build something of our own.", es: "Una pareja, dos padres, una familia. Hace poco nuestra vida se ha llenado con la llegada de nuestra niña, nuestro pequeño gran motivo para mirar hacia delante y construir algo nuestro.", fr: "Un couple, deux parents, une famille. Notre vie s'est enrichie depuis peu avec l'arrivée de notre petite fille, notre petite grande raison de regarder devant nous et de construire quelque chose à nous.", de: "Ein Paar, zwei Eltern, eine Familie. Seit Kurzem ist unser Leben um unsere kleine Tochter reicher, unseren kleinen großen Grund, nach vorn zu schauen und etwas Eigenes aufzubauen." },
+  "about.p2":           { it: "Dal 2018 lavoriamo nel mondo delle escursioni a Tenerife. In questi anni abbiamo imparato che le vacanze più belle nascono dai consigli giusti, dati da persone di cui ti fidi. Da qui nasce Isla.", en: "Since 2018 we have worked in the world of excursions in Tenerife. Over these years we have learned that the best holidays come from the right advice, given by people you trust. That is how Isla was born.", es: "Desde 2018 trabajamos en el mundo de las excursiones en Tenerife. En estos años hemos aprendido que las mejores vacaciones nacen de los consejos adecuados, dados por personas en las que confías. Así nace Isla.", fr: "Depuis 2018, nous travaillons dans le monde des excursions à Tenerife. Au fil des années, nous avons appris que les plus belles vacances naissent des bons conseils, donnés par des personnes de confiance. C'est ainsi qu'est née Isla.", de: "Seit 2018 arbeiten wir in der Welt der Ausflüge auf Teneriffa. In diesen Jahren haben wir gelernt, dass die schönsten Urlaube aus den richtigen Tipps entstehen, gegeben von Menschen, denen man vertraut. So ist Isla entstanden." },
+  "about.p3":           { it: "Isla è la vostra guida per vivere Tenerife davvero: escursioni, attività e spettacoli serali in un'unica app, sempre a portata di mano. Niente ricerche infinite: scegliete, chiedeteci e pensate solo a godervi la vacanza.", en: "Isla is your guide to truly living Tenerife: excursions, activities and evening shows in one app, always at hand. No endless searching: choose, ask us and just think about enjoying your holiday.", es: "Isla es vuestra guía para vivir Tenerife de verdad: excursiones, actividades y espectáculos nocturnos en una sola app, siempre a mano. Nada de búsquedas interminables: elegid, preguntadnos y pensad solo en disfrutar de las vacaciones.", fr: "Isla est votre guide pour vivre vraiment Tenerife : excursions, activités et spectacles du soir dans une seule app, toujours à portée de main. Pas de recherches sans fin : choisissez, demandez-nous et pensez seulement à profiter de vos vacances.", de: "Isla ist Ihr Begleiter, um Teneriffa wirklich zu erleben: Ausflüge, Aktivitäten und Abendshows in einer einzigen App, immer griffbereit. Kein endloses Suchen: auswählen, uns fragen und nur noch den Urlaub genießen." },
+  "about.alt":          { it: "Il team di Isla a Tenerife", en: "The Isla team in Tenerife", es: "El equipo de Isla en Tenerife", fr: "L'équipe d'Isla à Tenerife", de: "Das Isla-Team auf Teneriffa" },
 
   // ── FAQ ─────────────────────────────────────────────────────────────────
-  "faq.eyebrow":        { it: "FAQ", en: "FAQ", es: "FAQ" },
-  "faq.title":          { it: "Domande frequenti", en: "Frequently asked questions", es: "Preguntas frecuentes" },
-  "faq.q1":             { it: "Come prenoto un'escursione?", en: "How do I book an excursion?", es: "¿Cómo reservo una excursión?" },
-  "faq.a1":             { it: "Scegli l'esperienza dal catalogo e premi \"Richiedi disponibilità\": indichi data e numero di persone, e la richiesta ci arriva su WhatsApp. Verifichiamo i posti e ti confermiamo.", en: "Pick the experience from the catalogue and tap \"Check availability\": you enter the date and number of people, and the request reaches us on WhatsApp. We check the places and confirm.", es: "Elige la experiencia del catálogo y pulsa \"Consultar disponibilidad\": indicas la fecha y el número de personas, y la solicitud nos llega por WhatsApp. Comprobamos las plazas y te confirmamos." },
-  "faq.q2":             { it: "Quanto tempo prima devo richiedere?", en: "How far in advance should I ask?", es: "¿Con cuánta antelación debo solicitarla?" },
-  "faq.a2":             { it: "Almeno 24 ore prima della data dell'escursione. Ti rispondiamo entro 24 ore con la conferma e i dettagli.", en: "At least 24 hours before the date of the excursion. We reply within 24 hours with the confirmation and the details.", es: "Al menos 24 horas antes de la fecha de la excursión. Te respondemos en 24 horas con la confirmación y los detalles." },
-  "faq.q3":             { it: "La richiesta è già una prenotazione?", en: "Is the request already a booking?", es: "¿La solicitud ya es una reserva?" },
-  "faq.a3":             { it: "No. La richiesta serve a verificare che ci sia posto: la prenotazione è confermata solo quando ricevi la nostra conferma.", en: "No. The request is there to check availability: the booking is confirmed only when you receive our confirmation.", es: "No. La solicitud sirve para comprobar que hay plazas: la reserva se confirma solo cuando recibes nuestra confirmación." },
-  "faq.q4":             { it: "Come si paga?", en: "How do I pay?", es: "¿Cómo se paga?" },
-  "faq.a4":             { it: "Al momento della conferma ti indichiamo come saldare. Non ti viene chiesto nulla al momento della richiesta.", en: "When we confirm, we tell you how to pay. Nothing is asked of you when you send the request.", es: "En el momento de la confirmación te indicamos cómo pagar. No se te pide nada al enviar la solicitud." },
-  "faq.q5":             { it: "Posso annullare?", en: "Can I cancel?", es: "¿Puedo cancelar?" },
+  "faq.eyebrow":        { it: "FAQ", en: "FAQ", es: "FAQ", fr: "FAQ", de: "FAQ" },
+  "faq.title":          { it: "Domande frequenti", en: "Frequently asked questions", es: "Preguntas frecuentes", fr: "Questions fréquentes", de: "Häufige Fragen" },
+  "faq.q1":             { it: "Come prenoto un'escursione?", en: "How do I book an excursion?", es: "¿Cómo reservo una excursión?", fr: "Comment réserver une excursion ?", de: "Wie buche ich einen Ausflug?" },
+  "faq.a1":             { it: "Scegli l'esperienza dal catalogo e premi \"Richiedi disponibilità\": indichi data e numero di persone, e la richiesta ci arriva su WhatsApp. Verifichiamo i posti e ti confermiamo.", en: "Pick the experience from the catalogue and tap \"Check availability\": you enter the date and number of people, and the request reaches us on WhatsApp. We check the places and confirm.", es: "Elige la experiencia del catálogo y pulsa \"Consultar disponibilidad\": indicas la fecha y el número de personas, y la solicitud nos llega por WhatsApp. Comprobamos las plazas y te confirmamos.", fr: "Choisissez l'expérience dans le catalogue et touchez « Vérifier la disponibilité » : vous indiquez la date et le nombre de personnes, et la demande nous arrive sur WhatsApp. Nous vérifions les places et vous confirmons.", de: "Wählen Sie das Erlebnis im Katalog und tippen Sie auf „Verfügbarkeit anfragen“: Sie geben Datum und Personenzahl an, und die Anfrage kommt per WhatsApp bei uns an. Wir prüfen die Plätze und bestätigen Ihnen." },
+  "faq.q2":             { it: "Quanto tempo prima devo richiedere?", en: "How far in advance should I ask?", es: "¿Con cuánta antelación debo solicitarla?", fr: "Combien de temps à l'avance dois-je demander ?", de: "Wie früh muss ich anfragen?" },
+  "faq.a2":             { it: "Almeno 24 ore prima dell'ora di partenza: per un'escursione che parte sabato alle 10, entro venerdì alle 10. Ti rispondiamo entro 24 ore con la conferma e i dettagli.", en: "At least 24 hours before the departure time: for an excursion leaving on Saturday at 10, by Friday at 10. We reply within 24 hours with the confirmation and the details.", es: "Al menos 24 horas antes de la hora de salida: para una excursión que sale el sábado a las 10, hasta el viernes a las 10. Te respondemos en 24 horas con la confirmación y los detalles.", fr: "Au moins 24 heures avant l'heure de départ : pour une excursion qui part samedi à 10 h, au plus tard vendredi à 10 h. Nous vous répondons sous 24 heures avec la confirmation et les détails.", de: "Mindestens 24 Stunden vor der Abfahrtszeit: Für einen Ausflug, der am Samstag um 10 Uhr startet, bis Freitag um 10 Uhr. Wir antworten innerhalb von 24 Stunden mit der Bestätigung und den Details." },
+  "faq.q3":             { it: "La richiesta è già una prenotazione?", en: "Is the request already a booking?", es: "¿La solicitud ya es una reserva?", fr: "La demande est-elle déjà une réservation ?", de: "Ist die Anfrage schon eine Buchung?" },
+  "faq.a3":             { it: "No. La richiesta serve a verificare che ci sia posto: la prenotazione è confermata solo quando ricevi la nostra conferma.", en: "No. The request is there to check availability: the booking is confirmed only when you receive our confirmation.", es: "No. La solicitud sirve para comprobar que hay plazas: la reserva se confirma solo cuando recibes nuestra confirmación.", fr: "Non. La demande sert à vérifier qu'il reste de la place : la réservation n'est confirmée que lorsque vous recevez notre confirmation.", de: "Nein. Die Anfrage dient dazu zu prüfen, ob Platz ist: Gebucht ist erst, wenn Sie unsere Bestätigung erhalten." },
+  "faq.q4":             { it: "Come si paga?", en: "How do I pay?", es: "¿Cómo se paga?", fr: "Comment payer ?", de: "Wie bezahle ich?" },
+  "faq.a4":             { it: "Quando mandi la richiesta non paghi niente. Se c'è posto ti mandiamo un link per pagare con la carta: quasi sempre l'intero importo, per alcune escursioni un acconto e il resto sul posto. Appena il pagamento arriva, ti confermiamo l'escursione.", en: "You pay nothing when you send the request. If there is space, we send you a link to pay by card: almost always the full amount, for some excursions a deposit with the rest paid on the day. As soon as the payment arrives, we confirm the excursion.", es: "Cuando envías la solicitud no pagas nada. Si hay plazas te enviamos un enlace para pagar con tarjeta: casi siempre el importe completo, en algunas excursiones una señal y el resto en el lugar. En cuanto llega el pago, te confirmamos la excursión.", fr: "Vous ne payez rien en envoyant la demande. S'il y a de la place, nous vous envoyons un lien pour payer par carte : presque toujours le montant total, pour certaines excursions un acompte et le reste sur place. Dès que le paiement arrive, nous vous confirmons l'excursion.", de: "Wenn Sie die Anfrage schicken, zahlen Sie nichts. Ist ein Platz frei, schicken wir Ihnen einen Link zur Kartenzahlung: fast immer den vollen Betrag, bei manchen Ausflügen eine Anzahlung und den Rest vor Ort. Sobald die Zahlung eingegangen ist, bestätigen wir den Ausflug." },
+  "faq.q5":             { it: "Posso annullare?", en: "Can I cancel?", es: "¿Puedo cancelar?", fr: "Puis-je annuler ?", de: "Kann ich stornieren?" },
   // Politica di cancellazione decisa dal proprietario il 6 ottobre 2026 e
   // corretta lo stesso giorno: fino a 24 ore prima si annulla gratis oppure si
   // sposta la data (una volta sola, se c'e' posto); meno di 24 ore prima non si
   // annulla e non si sposta piu'. Vale anche per charter e noleggi.
   // Come le 24 ore di req.hint, e' la regola di Isla: non si cambia dopo aver
-  // letto quella di un fornitore. I giorni entro cui si rimborsa non sono
-  // ancora decisi, per questo il testo non li dice.
-  "faq.a5":             { it: "Sì: fino a 24 ore prima dell'escursione puoi annullare gratis oppure spostarla a un'altra data, una volta sola e se c'è posto. Basta un messaggio su WhatsApp, e conta l'ora del messaggio. Meno di 24 ore prima, o se non ti presenti, non si può più annullare né spostare, e il prezzo non si rimborsa. Vale anche per i charter privati e i noleggi. Se invece ad annullare è l'operatore, per il maltempo, il mare mosso o troppo pochi partecipanti, scegli tu: un'altra data o il rimborso completo. Il rimborso arriva con lo stesso mezzo con cui hai pagato.", en: "Yes: up to 24 hours before the excursion you can cancel free of charge or move it to another date, once only and if there is space. Just send us a WhatsApp message, and the time of the message is what counts. Less than 24 hours before, or if you don't show up, it can no longer be cancelled or moved, and the price is not refunded. This also applies to private charters and rentals. If it's the operator who cancels, because of bad weather, rough sea or too few participants, you choose: another date or a full refund. Refunds are made the same way you paid.", es: "Sí: hasta 24 horas antes de la excursión puedes cancelar gratis o cambiarla a otra fecha, una sola vez y si hay plazas. Basta un mensaje por WhatsApp, y cuenta la hora del mensaje. Con menos de 24 horas, o si no te presentas, ya no se puede cancelar ni cambiar, y el precio no se reembolsa. Vale también para los chárter privados y los alquileres. Si quien cancela es el operador, por mal tiempo, mar agitado o pocos participantes, eliges tú: otra fecha o el reembolso completo. El reembolso se hace con el mismo medio con el que pagaste." },
-  "faq.q6":             { it: "Funziona anche senza connessione?", en: "Does it work without a connection?", es: "¿Funciona sin conexión?" },
-  "faq.a6":             { it: "Sì. Isla è un'app installabile: una volta aperta la prima volta, le informazioni restano disponibili anche offline, utile quando sei in giro per l'isola.", en: "Yes. Isla is an installable app: once you've opened it the first time, the information stays available offline — handy while you're out around the island.", es: "Sí. Isla es una app instalable: una vez abierta la primera vez, la información sigue disponible sin conexión, útil cuando estás recorriendo la isla." },
+  // letto quella di un fornitore. Il rimborso arriva entro 15 giorni
+  // (proprietario, 16 ottobre 2026): lo dicono anche i termini.
+  "faq.a5":             { it: "Sì: fino a 24 ore prima dell'escursione puoi annullare gratis oppure spostarla a un'altra data, una volta sola e se c'è posto. Basta un messaggio su WhatsApp, e conta l'ora del messaggio. Meno di 24 ore prima, o se non ti presenti, non si può più annullare né spostare, e il prezzo non si rimborsa. Vale anche per i charter privati e i noleggi. Se invece ad annullare è l'operatore, per il maltempo, il mare mosso o troppo pochi partecipanti, scegli tu: un'altra data o il rimborso completo. Il rimborso arriva entro 15 giorni, con lo stesso mezzo con cui hai pagato.", en: "Yes: up to 24 hours before the excursion you can cancel free of charge or move it to another date, once only and if there is space. Just send us a WhatsApp message, and the time of the message is what counts. Less than 24 hours before, or if you don't show up, it can no longer be cancelled or moved, and the price is not refunded. This also applies to private charters and rentals. If it's the operator who cancels, because of bad weather, rough sea or too few participants, you choose: another date or a full refund. Refunds are made within 15 days, the same way you paid.", es: "Sí: hasta 24 horas antes de la excursión puedes cancelar gratis o cambiarla a otra fecha, una sola vez y si hay plazas. Basta un mensaje por WhatsApp, y cuenta la hora del mensaje. Con menos de 24 horas, o si no te presentas, ya no se puede cancelar ni cambiar, y el precio no se reembolsa. Vale también para los chárter privados y los alquileres. Si quien cancela es el operador, por mal tiempo, mar agitado o pocos participantes, eliges tú: otra fecha o el reembolso completo. El reembolso se hace en un plazo de 15 días, con el mismo medio con el que pagaste.", fr: "Oui : jusqu'à 24 heures avant l'excursion, vous pouvez annuler gratuitement ou la déplacer à une autre date, une seule fois et s'il y a de la place. Il suffit d'un message WhatsApp, et c'est l'heure du message qui compte. Moins de 24 heures avant, ou si vous ne vous présentez pas, on ne peut plus annuler ni déplacer, et le prix n'est pas remboursé. Cela vaut aussi pour les charters privés et les locations. Si c'est l'opérateur qui annule, à cause du mauvais temps, de la mer agitée ou d'un nombre insuffisant de participants, c'est vous qui choisissez : une autre date ou le remboursement intégral. Le remboursement se fait sous 15 jours, par le même moyen que le paiement.", de: "Ja: bis 24 Stunden vor dem Ausflug können Sie kostenlos stornieren oder auf ein anderes Datum verschieben, ein einziges Mal und wenn Platz ist. Eine WhatsApp-Nachricht genügt, und es zählt die Uhrzeit der Nachricht. Weniger als 24 Stunden vorher, oder wenn Sie nicht erscheinen, kann nicht mehr storniert oder verschoben werden, und der Preis wird nicht erstattet. Das gilt auch für private Charter und Vermietungen. Sagt dagegen der Anbieter ab, wegen schlechten Wetters, rauer See oder zu weniger Teilnehmer, entscheiden Sie: ein anderes Datum oder die volle Erstattung. Die Erstattung erfolgt innerhalb von 15 Tagen über dasselbe Zahlungsmittel, mit dem Sie bezahlt haben." },
+  "faq.q6":             { it: "Funziona anche senza connessione?", en: "Does it work without a connection?", es: "¿Funciona sin conexión?", fr: "Ça marche aussi sans connexion ?", de: "Funktioniert es auch ohne Verbindung?" },
+  "faq.a6":             { it: "Sì. Isla è un'app installabile: una volta aperta la prima volta, le informazioni restano disponibili anche offline, utile quando sei in giro per l'isola.", en: "Yes. Isla is an installable app: once you've opened it the first time, the information stays available offline — handy while you're out around the island.", es: "Sí. Isla es una app instalable: una vez abierta la primera vez, la información sigue disponible sin conexión, útil cuando estás recorriendo la isla.", fr: "Oui. Isla est une app installable : une fois ouverte la première fois, les informations restent disponibles hors ligne, pratique quand vous êtes en balade sur l'île.", de: "Ja. Isla ist eine installierbare App: Nach dem ersten Öffnen bleiben die Informationen auch offline verfügbar, praktisch unterwegs auf der Insel." },
 
   // ── menu laterale ───────────────────────────────────────────────────────
-  "menu.aria":          { it: "Menu", en: "Menu", es: "Menú" },
-  "menu.sections":      { it: "Sezioni", en: "Sections", es: "Secciones" },
-  "menu.close":         { it: "Chiudi menu", en: "Close menu", es: "Cerrar menú" },
-  "menu.install":       { it: "Installa l'app", en: "Install the app", es: "Instalar la app" },
-  "menu.excursions":    { it: "Escursioni", en: "Excursions", es: "Excursiones" },
-  "menu.packages":      { it: "Pacchetti", en: "Packages", es: "Paquetes" },
-  "menu.map":           { it: "Scopri Tenerife", en: "Discover Tenerife", es: "Descubre Tenerife" },
-  "menu.secret":        { it: "Posti segreti", en: "Secret spots", es: "Lugares secretos" },
-  "menu.about":         { it: "Chi siamo", en: "About us", es: "Quiénes somos" },
-  "menu.cta":           { it: "Prenota ora", en: "Book now", es: "Reservar" },
+  "menu.aria":          { it: "Menu", en: "Menu", es: "Menú", fr: "Menu", de: "Menü" },
+  "menu.sections":      { it: "Sezioni", en: "Sections", es: "Secciones", fr: "Rubriques", de: "Bereiche" },
+  "menu.close":         { it: "Chiudi menu", en: "Close menu", es: "Cerrar menú", fr: "Fermer le menu", de: "Menü schließen" },
+  "menu.install":       { it: "Installa l'app", en: "Install the app", es: "Instalar la app", fr: "Installer l'app", de: "App installieren" },
+  "install.ios.title":  { it: "Isla fra le tue app", en: "Isla among your apps", es: "Isla entre tus apps", fr: "Isla parmi vos apps", de: "Isla bei Ihren Apps" },
+  "install.ios.intro":  { it: "Bastano tre tocchi in Safari:", en: "It only takes three taps in Safari:", es: "Bastan tres toques en Safari:", fr: "Trois touches dans Safari suffisent :", de: "Drei Tipps in Safari genügen:" },
+  "install.ios.inApp":  { it: "Prima serve aprire questa pagina in Safari: si fa da ••• con «Apri in Safari» (o «Apri nel browser»).", en: "First, this page needs to be open in Safari: you can do it from ••• with “Open in Safari” (or “Open in browser”).", es: "Primero hace falta abrir esta página en Safari: se hace desde ••• con «Abrir en Safari» (o «Abrir en el navegador»).", fr: "D'abord, cette page doit être ouverte dans Safari : depuis •••, avec « Ouvrir dans Safari » (ou « Ouvrir dans le navigateur »).", de: "Zuerst muss diese Seite in Safari geöffnet sein: über ••• mit „In Safari öffnen“ (oder „Im Browser öffnen“)." },
+  "install.ios.share":  { it: "Il pulsante <strong>Condividi</strong>: se non lo vedi, si trova dietro ••• in basso.", en: "The <strong>Share</strong> button: if you can't see it, it's behind ••• at the bottom.", es: "El botón <strong>Compartir</strong>: si no lo ves, está detrás de ••• abajo.", fr: "Le bouton <strong>Partager</strong> : si vous ne le voyez pas, il se trouve derrière ••• en bas.", de: "Die Taste <strong>Teilen</strong>: Falls Sie sie nicht sehen, ist sie unten hinter •••." },
+  "install.ios.add":    { it: "Poi <strong>«Aggiungi alla schermata Home»</strong>, un po' più giù nell'elenco.", en: "Then <strong>“Add to Home Screen”</strong>, a little further down the list.", es: "Luego <strong>«Añadir a pantalla de inicio»</strong>, un poco más abajo en la lista.", fr: "Puis <strong>« Sur l'écran d'accueil »</strong>, un peu plus bas dans la liste.", de: "Dann <strong>„Zum Home-Bildschirm“</strong>, etwas weiter unten in der Liste." },
+  "install.ios.confirm":{ it: "Infine <strong>«Aggiungi»</strong> in alto a destra, ed è fatta.", en: "Finally <strong>“Add”</strong> in the top right, and you're done.", es: "Por último <strong>«Añadir»</strong> arriba a la derecha, y listo.", fr: "Enfin <strong>« Ajouter »</strong> en haut à droite, et c'est fait.", de: "Zum Schluss oben rechts <strong>„Hinzufügen“</strong>, fertig." },
+  "install.ios.ok":     { it: "Grazie", en: "Thanks", es: "Gracias", fr: "Merci", de: "Danke" },
+  "install.hint.title": { it: "Isla sul tuo iPhone", en: "Isla on your iPhone", es: "Isla en tu iPhone", fr: "Isla sur votre iPhone", de: "Isla auf Ihrem iPhone" },
+  "install.hint.text":  { it: "Se vuoi, puoi averla fra le tue app e aprirla con un tocco.", en: "If you like, you can have it among your apps and open it with one tap.", es: "Si quieres, puedes tenerla entre tus apps y abrirla con un toque.", fr: "Si vous voulez, vous pouvez l'avoir parmi vos apps et l'ouvrir d'une touche.", de: "Wenn Sie möchten, können Sie sie bei Ihren Apps haben und mit einem Tipp öffnen." },
+  "install.hint.how":   { it: "Mostrami come", en: "Show me how", es: "Muéstrame cómo", fr: "Montrez-moi", de: "Wie geht das?" },
+  "menu.excursions":    { it: "Escursioni", en: "Excursions", es: "Excursiones", fr: "Excursions", de: "Ausflüge" },
+  "menu.favorites":  { it: "I miei preferiti", en: "My favourites", es: "Mis favoritos", fr: "Mes favoris", de: "Meine Favoriten" },
+  "menu.packages":      { it: "Pacchetti", en: "Packages", es: "Paquetes", fr: "Forfaits", de: "Pakete" },
+  "menu.map":           { it: "Scopri Tenerife", en: "Discover Tenerife", es: "Descubre Tenerife", fr: "Découvrir Tenerife", de: "Teneriffa entdecken" },
+  "menu.secret":        { it: "Posti segreti", en: "Secret spots", es: "Lugares secretos", fr: "Coins secrets", de: "Geheimtipps" },
+  "menu.about":         { it: "Chi siamo", en: "About us", es: "Quiénes somos", fr: "Qui sommes-nous", de: "Über uns" },
+  "menu.cta":           { it: "Prenota ora", en: "Book now", es: "Reservar", fr: "Réserver", de: "Jetzt buchen" },
 
   // ── finestra del ticket (numero + telefono del ticket di carta) ──────────
-  "ticket.title":       { it: "Il tuo ticket", en: "Your ticket", es: "Tu ticket" },
-  "ticket.codeLabel":   { it: "Numero del ticket", en: "Ticket number", es: "Número del ticket" },
-  "ticket.placeholder": { it: "Es. 2213", en: "E.g. 2213", es: "Ej. 2213" },
-  "ticket.phoneLabel":  { it: "Telefono scritto sul ticket", en: "Phone number on the ticket", es: "Teléfono escrito en el ticket" },
-  "ticket.prefix":      { it: "Prefisso", en: "Country code", es: "Prefijo" },
-  "ticket.otherPrefix": { it: "Altro: +…", en: "Other: +…", es: "Otro: +…" },
-  "ticket.phoneInvalid":{ it: "Il telefono non sembra giusto: controlla il prefisso e le cifre.", en: "That phone number doesn't look right: check the country code and the digits.", es: "El teléfono no parece correcto: revisa el prefijo y las cifras." },
-  "ticket.hint":        { it: "Il numero è stampato in rosso sul ticket che ti abbiamo dato.", en: "The number is printed in red on the ticket we gave you.", es: "El número está impreso en rojo en el ticket que te dimos." },
+  "ticket.title":       { it: "Il tuo ticket", en: "Your ticket", es: "Tu ticket", fr: "Votre ticket", de: "Ihr Ticket" },
+  "ticket.codeLabel":   { it: "Numero del ticket", en: "Ticket number", es: "Número del ticket", fr: "Numéro du ticket", de: "Ticketnummer" },
+  "ticket.placeholder": { it: "Es. 2213", en: "E.g. 2213", es: "Ej. 2213", fr: "Ex. 2213", de: "Z. B. 2213" },
+  "ticket.phoneLabel":  { it: "Telefono scritto sul ticket", en: "Phone number on the ticket", es: "Teléfono escrito en el ticket", fr: "Téléphone écrit sur le ticket", de: "Telefonnummer auf dem Ticket" },
+  "ticket.prefix":      { it: "Prefisso", en: "Country code", es: "Prefijo", fr: "Indicatif", de: "Vorwahl" },
+  "ticket.otherPrefix": { it: "Altro: +…", en: "Other: +…", es: "Otro: +…", fr: "Autre : +…", de: "Andere: +…" },
+  "ticket.phoneInvalid":{ it: "Il telefono non sembra giusto: controlla il prefisso e le cifre.", en: "That phone number doesn't look right: check the country code and the digits.", es: "El teléfono no parece correcto: revisa el prefijo y las cifras.", fr: "Le téléphone ne semble pas correct : vérifiez l'indicatif et les chiffres.", de: "Die Telefonnummer scheint nicht zu stimmen: Prüfen Sie Vorwahl und Ziffern." },
+  "ticket.hint":        { it: "Il numero è stampato in rosso sul ticket che ti abbiamo dato.", en: "The number is printed in red on the ticket we gave you.", es: "El número está impreso en rojo en el ticket que te dimos.", fr: "Le numéro est imprimé en rouge sur le ticket que nous vous avons remis.", de: "Die Nummer ist in Rot auf dem Ticket gedruckt, das wir Ihnen gegeben haben." },
 
   // ── piè di pagina ───────────────────────────────────────────────────────
-  "footer.findCode":    { it: "Cerca il tuo codice", en: "Find your code", es: "Busca tu código" },
-  "footer.operator":    { it: "Isla è un servizio di <strong>Admiral Travel Agencia de Viajes SL</strong>", en: "Isla is a service of <strong>Admiral Travel Agencia de Viajes SL</strong>", es: "Isla es un servicio de <strong>Admiral Travel Agencia de Viajes SL</strong>" },
-  "footer.privacy":     { it: "Privacy", en: "Privacy", es: "Privacidad" },
-  "footer.terms":       { it: "Termini di vendita", en: "Terms of sale", es: "Condiciones de venta" },
-  "terms.title":        { it: "Termini di vendita · Isla", en: "Terms of sale · Isla", es: "Condiciones de venta · Isla" },
-  "terms.desc":         { it: "Come si richiede, si paga, si annulla e si sposta un'escursione con Isla.", en: "How to request, pay for, cancel and change an excursion with Isla.", es: "Cómo se solicita, se paga, se cancela y se cambia una excursión con Isla." },
-  "privacy.title":      { it: "Privacy · Isla", en: "Privacy · Isla", es: "Privacidad · Isla" },
-  "privacy.desc":       { it: "Come Isla e Admiral Travel trattano i tuoi dati.", en: "How Isla and Admiral Travel handle your data.", es: "Cómo tratan tus datos Isla y Admiral Travel." },
-  "footer.copy":        { it: "© Isla · Escursioni a Tenerife", en: "© Isla · Tenerife excursions", es: "© Isla · Excursiones en Tenerife" },
+  "footer.findCode":    { it: "Cerca il tuo codice", en: "Find your code", es: "Busca tu código", fr: "Chercher votre code", de: "Ihren Code suchen" },
+  "footer.operator":    { it: "Isla è un servizio di <strong>Admiral Travel Agencia de Viajes SL</strong>", en: "Isla is a service of <strong>Admiral Travel Agencia de Viajes SL</strong>", es: "Isla es un servicio de <strong>Admiral Travel Agencia de Viajes SL</strong>", fr: "Isla est un service de <strong>Admiral Travel Agencia de Viajes SL</strong>", de: "Isla ist ein Service von <strong>Admiral Travel Agencia de Viajes SL</strong>" },
+  "footer.privacy":     { it: "Privacy", en: "Privacy", es: "Privacidad", fr: "Confidentialité", de: "Datenschutz" },
+  "footer.terms":       { it: "Termini di vendita", en: "Terms of sale", es: "Condiciones de venta", fr: "Conditions de vente", de: "Verkaufsbedingungen" },
+  "terms.title":        { it: "Termini di vendita · Isla", en: "Terms of sale · Isla", es: "Condiciones de venta · Isla", fr: "Conditions de vente · Isla", de: "Verkaufsbedingungen · Isla" },
+  "terms.desc":         { it: "Come si richiede, si paga, si annulla e si sposta un'escursione con Isla.", en: "How to request, pay for, cancel and change an excursion with Isla.", es: "Cómo se solicita, se paga, se cancela y se cambia una excursión con Isla.", fr: "Comment demander, payer, annuler et déplacer une excursion avec Isla.", de: "Wie man mit Isla einen Ausflug anfragt, bezahlt, storniert und verschiebt." },
+  "privacy.title":      { it: "Privacy · Isla", en: "Privacy · Isla", es: "Privacidad · Isla", fr: "Confidentialité · Isla", de: "Datenschutz · Isla" },
+  "privacy.desc":       { it: "Come Isla e Admiral Travel trattano i tuoi dati.", en: "How Isla and Admiral Travel handle your data.", es: "Cómo tratan tus datos Isla y Admiral Travel.", fr: "Comment Isla et Admiral Travel traitent vos données.", de: "Wie Isla und Admiral Travel Ihre Daten verarbeiten." },
+  "footer.copy":        { it: "© Isla · Escursioni a Tenerife", en: "© Isla · Tenerife excursions", es: "© Isla · Excursiones en Tenerife", fr: "© Isla · Excursions à Tenerife", de: "© Isla · Ausflüge auf Teneriffa" },
 
   // ── pagina catalogo ─────────────────────────────────────────────────────
-  "catalog.eyebrow":    { it: "Esplora", en: "Explore", es: "Explora" },
-  "catalog.title":      { it: "Tutte le escursioni", en: "All excursions", es: "Todas las excursiones" },
-  "catalog.searchLabel":       { it: "Cerca un'escursione", en: "Search for an excursion", es: "Busca una excursión" },
-  "catalog.searchPlaceholder": { it: "Cerca: barca, Teide, quad…", en: "Search: boat, Teide, quad…", es: "Busca: barco, Teide, quad…" },
-  "catalog.filterAria": { it: "Filtra per categoria", en: "Filter by category", es: "Filtrar por categoría" },
-  "catalog.recommended":      { it: "Raccomandate", en: "Recommended", es: "Recomendadas" },
-  "catalog.foodTitle":  { it: "Food Experience", en: "Food Experience", es: "Food Experience" },
-  "catalog.recommendedTitle": { it: "Le nostre raccomandate", en: "Our recommendations", es: "Nuestras recomendadas" },
-  "catalog.all":        { it: "Tutte le escursioni", en: "All excursions", es: "Todas las excursiones" },
-  "catalog.countAll":   { it: "{n} attività disponibili", en: "{n} activities available", es: "{n} actividades disponibles" },
-  "catalog.countSome":  { it: "{n} di {total} attività", en: "{n} of {total} activities", es: "{n} de {total} actividades" },
-  "catalog.emptyTitle": { it: "Nessun risultato", en: "No results", es: "Sin resultados" },
-  "catalog.emptyText":  { it: "Prova a cambiare categoria o a cercare un'altra parola.", en: "Try another category, or search for a different word.", es: "Prueba con otra categoría o busca otra palabra." },
-  "catalog.filters":    { it: "Filtri", en: "Filters", es: "Filtros" },
-  "catalog.filterZone": { it: "Zona", en: "Area", es: "Zona" },
-  "catalog.filterDuration": { it: "Durata", en: "Duration", es: "Duración" },
-  "catalog.filterReset": { it: "Togli i filtri", en: "Clear filters", es: "Quitar filtros" },
-  "catalog.emptyFilters": { it: "Nessuna attività con questi filtri. Prova a toglierne uno.", en: "No activities match these filters. Try removing one.", es: "Ninguna actividad con estos filtros. Prueba a quitar uno." },
-  "catalog.prepTitle":  { it: "Catalogo in preparazione", en: "Catalogue coming soon", es: "Catálogo en preparación" },
-  "catalog.prepText":   { it: "Nessuna attività è ancora pubblicata.", en: "No activity has been published yet.", es: "Todavía no hay ninguna actividad publicada." },
+  "catalog.eyebrow":    { it: "Esplora", en: "Explore", es: "Explora", fr: "Explorer", de: "Entdecken" },
+  "catalog.title":      { it: "Tutte le escursioni", en: "All excursions", es: "Todas las excursiones", fr: "Toutes les excursions", de: "Alle Ausflüge" },
+  "catalog.searchLabel":       { it: "Cerca un'escursione", en: "Search for an excursion", es: "Busca una excursión", fr: "Rechercher une excursion", de: "Einen Ausflug suchen" },
+  "catalog.searchPlaceholder": { it: "Cerca: barca, Teide, quad…", en: "Search: boat, Teide, quad…", es: "Busca: barco, Teide, quad…", fr: "Rechercher : bateau, Teide, quad…", de: "Suchen: Boot, Teide, Quad…" },
+  "catalog.filterAria": { it: "Filtra per categoria", en: "Filter by category", es: "Filtrar por categoría", fr: "Filtrer par catégorie", de: "Nach Kategorie filtern" },
+  "catalog.recommended":      { it: "Consigliate", en: "Recommended", es: "Recomendadas", fr: "Recommandées", de: "Empfohlen" },
+  "catalog.foodTitle":  { it: "Food Experience", en: "Food Experience", es: "Food Experience", fr: "Food Experience", de: "Food Experience" },
+  "catalog.recommendedTitle": { it: "Le nostre consigliate", en: "Our recommendations", es: "Nuestras recomendadas", fr: "Nos recommandations", de: "Unsere Empfehlungen" },
+  "catalog.all":        { it: "Tutte le escursioni", en: "All excursions", es: "Todas las excursiones", fr: "Toutes les excursions", de: "Alle Ausflüge" },
+  "catalog.countAll":   { it: "{n} attività disponibili", en: "{n} activities available", es: "{n} actividades disponibles", fr: "{n} activités disponibles", de: "{n} Aktivitäten verfügbar" },
+  "catalog.countSome":  { it: "{n} di {total} attività", en: "{n} of {total} activities", es: "{n} de {total} actividades", fr: "{n} sur {total} activités", de: "{n} von {total} Aktivitäten" },
+  "catalog.emptyTitle": { it: "Nessun risultato", en: "No results", es: "Sin resultados", fr: "Aucun résultat", de: "Keine Ergebnisse" },
+  "catalog.emptyText":  { it: "Prova a cambiare categoria o a cercare un'altra parola.", en: "Try another category, or search for a different word.", es: "Prueba con otra categoría o busca otra palabra.", fr: "Essayez une autre catégorie, ou cherchez un autre mot.", de: "Versuchen Sie eine andere Kategorie oder ein anderes Suchwort." },
+  "catalog.filters":    { it: "Filtri", en: "Filters", es: "Filtros", fr: "Filtres", de: "Filter" },
+  "catalog.filterZone": { it: "Zona", en: "Area", es: "Zona", fr: "Zone", de: "Gegend" },
+  "catalog.filterDuration": { it: "Durata", en: "Duration", es: "Duración", fr: "Durée", de: "Dauer" },
+  "catalog.filterReset": { it: "Togli i filtri", en: "Clear filters", es: "Quitar filtros", fr: "Retirer les filtres", de: "Filter entfernen" },
+  "catalog.emptyFilters": { it: "Nessuna attività con questi filtri. Prova a toglierne uno.", en: "No activities match these filters. Try removing one.", es: "Ninguna actividad con estos filtros. Prueba a quitar uno.", fr: "Aucune activité avec ces filtres. Essayez d'en retirer un.", de: "Keine Aktivität mit diesen Filtern. Entfernen Sie einen." },
+  "catalog.prepTitle":  { it: "Catalogo in preparazione", en: "Catalogue coming soon", es: "Catálogo en preparación", fr: "Catalogue en préparation", de: "Katalog in Vorbereitung" },
+  "catalog.prepText":   { it: "Nessuna attività è ancora pubblicata.", en: "No activity has been published yet.", es: "Todavía no hay ninguna actividad publicada.", fr: "Aucune activité n'est encore publiée.", de: "Es ist noch keine Aktivität veröffentlicht." },
 
   // ── schede attività ─────────────────────────────────────────────────────
-  "tour.onRequest":     { it: "Su richiesta", en: "On request", es: "Bajo petición" },
-  "tour.from":          { it: "da €{p}", en: "from €{p}", es: "desde €{p}" },
-  "tour.offer":         { it: "Offerta", en: "Offer", es: "Oferta" },
-  "tour.family":        { it: "Adatta ai bambini", en: "Kid-friendly", es: "Apta para niños" },
-  "tour.transfer":      { it: "Transfer disponibile", en: "Transfer available", es: "Traslado disponible" },
-  "tour.ask":           { it: "Richiedi disponibilità", en: "Check availability", es: "Consultar disponibilidad" },
-  "tour.details":       { it: "Scopri di più", en: "See details", es: "Ver detalles" },
-  "tour.photoSoon":     { it: "Foto in arrivo", en: "Photo coming soon", es: "Foto próximamente" },
+  "tour.onRequest":     { it: "Su richiesta", en: "On request", es: "Bajo petición", fr: "Sur demande", de: "Auf Anfrage" },
+  "tour.from":          { it: "da €{p}", en: "from €{p}", es: "desde €{p}", fr: "dès €{p}", de: "ab €{p}" },
+  "tour.offer":         { it: "Offerta", en: "Offer", es: "Oferta", fr: "Offre", de: "Angebot" },
+  "tour.family":        { it: "Adatta ai bambini", en: "Kid-friendly", es: "Apta para niños", fr: "Adaptée aux enfants", de: "Für Kinder geeignet" },
+  "tour.fewSeats":      { it: "Posti limitati", en: "Limited seats", es: "Plazas limitadas", fr: "Places limitées", de: "Begrenzte Plätze" },
+  "tour.transfer":      { it: "Transfer disponibile", en: "Transfer available", es: "Traslado disponible", fr: "Transfert disponible", de: "Transfer möglich" },
+  "tour.details":       { it: "Scopri di più", en: "See details", es: "Ver detalles", fr: "En savoir plus", de: "Mehr erfahren" },
+  "tour.photoSoon":     { it: "Foto in arrivo", en: "Photo coming soon", es: "Foto próximamente", fr: "Photo à venir", de: "Foto folgt" },
 
   // ── pagina di dettaglio di una singola escursione ───────────────────────
-  "detail.back":        { it: "Tutte le escursioni", en: "All excursions", es: "Todas las excursiones" },
-  "detail.zoom":        { it: "Ingrandisci la foto", en: "Enlarge the photo", es: "Ampliar la foto" },
-  "detail.photo":       { it: "Foto {n}", en: "Photo {n}", es: "Foto {n}" },
-  "detail.summary":     { it: "In breve", en: "At a glance", es: "En resumen" },
-  "detail.departure":   { it: "Punto di partenza", en: "Departure point", es: "Punto de salida" },
-  "detail.duration":    { it: "Durata", en: "Duration", es: "Duración" },
+  "detail.back":        { it: "Tutte le escursioni", en: "All excursions", es: "Todas las excursiones", fr: "Toutes les excursions", de: "Alle Ausflüge" },
+  "detail.share":       { it: "Condividi", en: "Share", es: "Compartir", fr: "Partager", de: "Teilen" },
+  "detail.shareCopied": { it: "Link copiato", en: "Link copied", es: "Enlace copiado", fr: "Lien copié", de: "Link kopiert" },
+  "detail.shareText":   { it: "Guarda questa escursione a Tenerife: {title}", en: "Have a look at this excursion in Tenerife: {title}", es: "Mira esta excursión en Tenerife: {title}", fr: "Regardez cette excursion à Tenerife : {title}", de: "Sehen Sie sich diesen Ausflug auf Teneriffa an: {title}" },
+  "detail.zoom":        { it: "Ingrandisci la foto", en: "Enlarge the photo", es: "Ampliar la foto", fr: "Agrandir la photo", de: "Foto vergrößern" },
+  "detail.photo":       { it: "Foto {n}", en: "Photo {n}", es: "Foto {n}", fr: "Photo {n}", de: "Foto {n}" },
+  "detail.summary":     { it: "In breve", en: "At a glance", es: "En resumen", fr: "En bref", de: "Kurz gesagt" },
+  "detail.departure":   { it: "Punto di partenza", en: "Departure point", es: "Punto de salida", fr: "Point de départ", de: "Abfahrtsort" },
+  "detail.duration":    { it: "Durata", en: "Duration", es: "Duración", fr: "Durée", de: "Dauer" },
   // Ripiego per la riga di `activityDuration` quando la scheda non scrive il
   // suo `activityLabel`. Generica apposta: la parola giusta ("Tempo di
   // cammino", "Tempo in acqua") la sa solo la scheda.
-  "detail.chosen":      { it: "Scelto: {v}", en: "Selected: {v}", es: "Elegido: {v}" },
-  "detail.activity":    { it: "Durata dell'attività", en: "Activity time", es: "Duración de la actividad" },
-  "detail.price":       { it: "Prezzo", en: "Price", es: "Precio" },
-  "detail.offer":       { it: "Offerta", en: "Offer", es: "Oferta" },
-  "detail.offerUntil":  { it: "Valida fino al {d}", en: "Valid until {d}", es: "Válida hasta el {d}" },
-  "detail.suitable":    { it: "Adatta a", en: "Suitable for", es: "Apta para" },
-  "detail.season":      { it: "Periodo", en: "Season", es: "Temporada" },
-  "detail.infants":     { it: "Neonati", en: "Infants", es: "Bebés" },
-  "detail.included":    { it: "Cosa è incluso", en: "What's included", es: "Qué incluye" },
-  "detail.itinerary":   { it: "Come si svolge", en: "How the day goes", es: "Cómo se desarrolla" },
-  "detail.notes":       { it: "Consigli", en: "Tips", es: "Consejos" },
+  "detail.chosen":      { it: "Scelto: {v}", en: "Selected: {v}", es: "Elegido: {v}", fr: "Choisi : {v}", de: "Gewählt: {v}" },
+  "detail.activity":    { it: "Durata dell'attività", en: "Activity time", es: "Duración de la actividad", fr: "Durée de l'activité", de: "Dauer der Aktivität" },
+  "detail.price":       { it: "Prezzo", en: "Price", es: "Precio", fr: "Prix", de: "Preis" },
+  "detail.offer":       { it: "Offerta", en: "Offer", es: "Oferta", fr: "Offre", de: "Angebot" },
+  "detail.offerUntil":  { it: "Valida fino al {d}", en: "Valid until {d}", es: "Válida hasta el {d}", fr: "Valable jusqu'au {d}", de: "Gültig bis {d}" },
+  "detail.suitable":    { it: "Adatta a", en: "Suitable for", es: "Apta para", fr: "Adaptée à", de: "Geeignet für" },
+  "detail.season":      { it: "Periodo", en: "Season", es: "Temporada", fr: "Période", de: "Zeitraum" },
+  "detail.infants":     { it: "Neonati", en: "Infants", es: "Bebés", fr: "Bébés", de: "Babys" },
+  "detail.included":    { it: "Cosa è incluso", en: "What's included", es: "Qué incluye", fr: "Ce qui est compris", de: "Was inklusive ist" },
+  "detail.itinerary":   { it: "Come si svolge", en: "How the day goes", es: "Cómo se desarrolla", fr: "Déroulement", de: "Ablauf" },
+  "detail.notes":       { it: "Consigli", en: "Tips", es: "Consejos", fr: "Conseils", de: "Tipps" },
 
   // ── cosa e' incluso: le parole chiave del campo `included` ──────────────
-  "inc.snorkel":        { it: "Attrezzatura da snorkeling", en: "Snorkelling gear", es: "Equipo de snorkel" },
-  "inc.wetsuit":        { it: "Muta", en: "Wetsuit", es: "Neopreno" },
-  "inc.board":          { it: "Tavola", en: "Board", es: "Tabla" },
-  "inc.equipment":      { it: "Attrezzatura", en: "Equipment", es: "Equipo" },
-  "inc.drinks":         { it: "Bevande incluse", en: "Drinks included", es: "Bebidas incluidas" },
-  "inc.snack":          { it: "Snack", en: "Snacks", es: "Snacks" },
-  "inc.fingerfood":     { it: "Finger food", en: "Finger food", es: "Finger food" },
-  "inc.swimstop":       { it: "Bagno e snorkeling", en: "Swim & snorkel", es: "Baño y snorkel" },
+  "inc.snorkel":        { it: "Attrezzatura da snorkeling", en: "Snorkelling gear", es: "Equipo de snorkel", fr: "Matériel de snorkeling", de: "Schnorchelausrüstung" },
+  "inc.wetsuit":        { it: "Muta", en: "Wetsuit", es: "Neopreno", fr: "Combinaison", de: "Neoprenanzug" },
+  "inc.board":          { it: "Tavola", en: "Board", es: "Tabla", fr: "Planche", de: "Brett" },
+  "inc.equipment":      { it: "Attrezzatura", en: "Equipment", es: "Equipo", fr: "Équipement", de: "Ausrüstung" },
+  "inc.drinks":         { it: "Bevande incluse", en: "Drinks included", es: "Bebidas incluidas", fr: "Boissons comprises", de: "Getränke inklusive" },
+  "inc.snack":          { it: "Snack", en: "Snacks", es: "Snacks", fr: "En-cas", de: "Snacks" },
+  "inc.fingerfood":     { it: "Finger food", en: "Finger food", es: "Finger food", fr: "Bouchées", de: "Fingerfood" },
+  "inc.swimstop":       { it: "Bagno e snorkeling", en: "Swim & snorkel", es: "Baño y snorkel", fr: "Baignade et snorkeling", de: "Baden und Schnorcheln" },
   // Generico apposta: la stessa icona sta su sei gite in barca (dove il pasto
   // e' davvero un pranzo) e su tre cene-spettacolo, dove "Pranzo" era proprio
   // sbagliato. Stesso motivo per cui "Bevande a bordo" e' diventato "Bevande
   // incluse" quando l'icona e' finita su un parco.
-  "inc.lunch":          { it: "Pasto incluso", en: "Meal included", es: "Comida incluida" },
-  "inc.tasting":        { it: "Degustazione", en: "Tasting", es: "Degustación" },
-  "inc.guide":          { it: "Guida", en: "Guide", es: "Guía" },
-  "inc.transfer":       { it: "Transfer", en: "Transfer", es: "Traslado" },
-  "inc.ferry":          { it: "Traghetto", en: "Ferry", es: "Barco" },
-  "inc.ticket":         { it: "Ingressi", en: "Entrance tickets", es: "Entradas" },
-  "inc.photos":         { it: "Foto", en: "Photos", es: "Fotos" },
-  "inc.lifejacket":     { it: "Giubbotti di salvataggio", en: "Life jackets", es: "Chalecos salvavidas" },
-  "inc.speaker":        { it: "Cassa Bluetooth", en: "Bluetooth speaker", es: "Altavoz Bluetooth" },
-  "inc.towels":         { it: "Asciugamani", en: "Towels", es: "Toallas" },
-  "inc.cooler":         { it: "Borsa frigo", en: "Cooler box", es: "Nevera portátil" },
-  "inc.fuel":           { it: "Carburante", en: "Fuel", es: "Combustible" },
-  "inc.insurance":      { it: "Assicurazione", en: "Insurance", es: "Seguro" },
+  "inc.lunch":          { it: "Pasto incluso", en: "Meal included", es: "Comida incluida", fr: "Repas compris", de: "Mahlzeit inklusive" },
+  "inc.tasting":        { it: "Degustazione", en: "Tasting", es: "Degustación", fr: "Dégustation", de: "Verkostung" },
+  "inc.guide":          { it: "Guida", en: "Guide", es: "Guía", fr: "Guide", de: "Guide" },
+  "inc.transfer":       { it: "Transfer", en: "Transfer", es: "Traslado", fr: "Transfert", de: "Transfer" },
+  "inc.ferry":          { it: "Traghetto", en: "Ferry", es: "Barco", fr: "Ferry", de: "Fähre" },
+  "inc.ticket":         { it: "Ingressi", en: "Entrance tickets", es: "Entradas", fr: "Entrées", de: "Eintritte" },
+  "inc.photos":         { it: "Foto", en: "Photos", es: "Fotos", fr: "Photos", de: "Fotos" },
+  "inc.lifejacket":     { it: "Giubbotti di salvataggio", en: "Life jackets", es: "Chalecos salvavidas", fr: "Gilets de sauvetage", de: "Schwimmwesten" },
+  "inc.speaker":        { it: "Cassa Bluetooth", en: "Bluetooth speaker", es: "Altavoz Bluetooth", fr: "Enceinte Bluetooth", de: "Bluetooth-Lautsprecher" },
+  "inc.towels":         { it: "Asciugamani", en: "Towels", es: "Toallas", fr: "Serviettes", de: "Handtücher" },
+  "inc.cooler":         { it: "Borsa frigo", en: "Cooler box", es: "Nevera portátil", fr: "Glacière", de: "Kühlbox" },
+  "inc.fuel":           { it: "Carburante", en: "Fuel", es: "Combustible", fr: "Carburant", de: "Treibstoff" },
+  "inc.insurance":      { it: "Assicurazione", en: "Insurance", es: "Seguro", fr: "Assurance", de: "Versicherung" },
   // ── la lista delle richieste ────────────────────────────────────────────
-  "lista.title":        { it: "La tua lista", en: "Your list", es: "Tu lista" },
-  "lista.added":        { it: "Aggiunta alla tua lista", en: "Added to your list", es: "Añadida a tu lista" },
-  "lista.none":         { it: "La tua lista è vuota. Apri un'escursione e tocca «Aggiungi alla lista»: qui le ritrovi tutte, e le chiedi con un solo messaggio.", en: "Your list is empty. Open an excursion and tap “Add to list”: you'll find them all here, and ask for them in a single message.", es: "Tu lista está vacía. Abre una excursión y toca «Añadir a la lista»: aquí las encuentras todas, y las pides con un solo mensaje." },
-  "lista.empty":        { it: "Non c'è più niente nella lista.", en: "There is nothing left in the list.", es: "Ya no queda nada en la lista." },
-  "lista.remove":       { it: "Togli dalla lista", en: "Remove from the list", es: "Quitar de la lista" },
-  "lista.clear":        { it: "Svuota la lista", en: "Empty the list", es: "Vaciar la lista" },
-  "lista.full":         { it: "Nella lista ci stanno al massimo {n} escursioni. Mandaci questa richiesta e poi ne inizi un'altra.", en: "The list holds at most {n} excursions. Send this request and then start another one.", es: "En la lista caben como máximo {n} excursiones. Envíanos esta solicitud y luego empiezas otra." },
-  "lista.avvisi":       { it: "Avvisami sul telefono", en: "Notify me on my phone", es: "Avísame en el móvil" },
-  "lista.avvisiNota":   { it: "Quando l'ufficio conferma o annulla, e prima dell'escursione.", en: "When the office confirms or cancels, and before the excursion.", es: "Cuando la oficina confirme o cancele, y antes de la excursión." },
-  "lista.avvisiIos":    { it: "Sull'iPhone gli avvisi arrivano solo con l'app installata: Condividi → «Aggiungi alla schermata Home».", en: "On iPhone, notifications only arrive with the app installed: Share → “Add to Home Screen”.", es: "En el iPhone, los avisos solo llegan con la app instalada: Compartir → «Añadir a pantalla de inicio»." },
-  "lista.hint":         { it: "Parte un solo messaggio con tutte le escursioni della lista.", en: "One single message goes out with every excursion in the list.", es: "Se envía un solo mensaje con todas las excursiones de la lista." },
+  "lista.title":        { it: "La tua lista", en: "Your list", es: "Tu lista", fr: "Votre liste", de: "Ihre Liste" },
+  "lista.added":        { it: "Aggiunta alla tua lista", en: "Added to your list", es: "Añadida a tu lista", fr: "Ajoutée à votre liste", de: "Zu Ihrer Liste hinzugefügt" },
+  "lista.updated":      { it: "Era già nella tua lista: l'ho aggiornata", en: "It was already in your list: updated", es: "Ya estaba en tu lista: actualizada", fr: "Elle était déjà dans votre liste : mise à jour", de: "War schon in Ihrer Liste: aktualisiert" },
+  "lista.none":         { it: "La tua lista è vuota. Apri un'escursione e tocca «Aggiungi alla lista»: qui le ritrovi tutte, e le chiedi con un solo messaggio.", en: "Your list is empty. Open an excursion and tap “Add to list”: you'll find them all here, and ask for them in a single message.", es: "Tu lista está vacía. Abre una excursión y toca «Añadir a la lista»: aquí las encuentras todas, y las pides con un solo mensaje.", fr: "Votre liste est vide. Ouvrez une excursion et touchez « Ajouter à la liste » : vous les retrouvez toutes ici, et vous les demandez en un seul message.", de: "Ihre Liste ist leer. Öffnen Sie einen Ausflug und tippen Sie auf „Zur Liste hinzufügen“: Hier finden Sie dann alle wieder und fragen sie mit einer einzigen Nachricht an." },
+  "lista.empty":        { it: "Non c'è più niente nella lista.", en: "There is nothing left in the list.", es: "Ya no queda nada en la lista.", fr: "Il n'y a plus rien dans la liste.", de: "Die Liste ist leer." },
+  "lista.remove":       { it: "Togli dalla lista", en: "Remove from the list", es: "Quitar de la lista", fr: "Retirer de la liste", de: "Von der Liste entfernen" },
+  "lista.clear":        { it: "Svuota la lista", en: "Empty the list", es: "Vaciar la lista", fr: "Vider la liste", de: "Liste leeren" },
+  "lista.full":         { it: "Nella lista ci stanno al massimo {n} escursioni. Mandaci questa richiesta e poi ne inizi un'altra.", en: "The list holds at most {n} excursions. Send this request and then start another one.", es: "En la lista caben como máximo {n} excursiones. Envíanos esta solicitud y luego empiezas otra.", fr: "La liste contient au maximum {n} excursions. Envoyez-nous cette demande, puis commencez-en une autre.", de: "Die Liste fasst höchstens {n} Ausflüge. Schicken Sie uns diese Anfrage und beginnen Sie dann eine neue." },
+  "lista.avvisi":       { it: "Avvisami sul telefono", en: "Notify me on my phone", es: "Avísame en el móvil", fr: "M'avertir sur mon téléphone", de: "Auf dem Handy benachrichtigen" },
+  // La casella delle promozioni (proprietario, 16 ottobre 2026): NON
+  // spuntata, e solo chi la spunta finisce nell'elenco "promozioni" su
+  // Supabase (2026-10-16-promozioni.sql). La frase si salva com'e', nella
+  // lingua del cliente: e' la prova di cosa ha accettato.
+  "lista.promo":        { it: "Voglio ricevere le offerte di Admiral per email", en: "I want to receive Admiral's offers by email", es: "Quiero recibir las ofertas de Admiral por email", fr: "Je veux recevoir les offres d'Admiral par e-mail", de: "Ich möchte die Angebote von Admiral per E-Mail erhalten" },
+  "lista.promoNota":    { it: "Facoltativo. Puoi dire basta quando vuoi.", en: "Optional. You can stop them whenever you like.", es: "Opcional. Puedes darte de baja cuando quieras.", fr: "Facultatif. Vous pouvez arrêter quand vous voulez.", de: "Freiwillig. Sie können sich jederzeit abmelden." },
+  "lista.avvisiNota":   { it: "Quando l'ufficio conferma o annulla, prima dell'escursione e il giorno dopo, per chiederti com'è andata.", en: "When the office confirms or cancels, before the excursion and the day after, to ask how it went.", es: "Cuando la oficina confirme o cancele, antes de la excursión y al día siguiente, para preguntarte qué tal fue.", fr: "Quand le bureau confirme ou annule, avant l'excursion et le lendemain, pour vous demander comment ça s'est passé.", de: "Wenn das Büro bestätigt oder absagt, vor dem Ausflug und am Tag danach, um zu fragen, wie es war." },
+  "lista.avvisiIos":    { it: "Sull'iPhone gli avvisi arrivano solo con l'app installata: Condividi → «Aggiungi alla schermata Home».", en: "On iPhone, notifications only arrive with the app installed: Share → “Add to Home Screen”.", es: "En el iPhone, los avisos solo llegan con la app instalada: Compartir → «Añadir a pantalla de inicio».", fr: "Sur iPhone, les notifications n'arrivent qu'avec l'app installée : Partager → « Sur l'écran d'accueil ».", de: "Auf dem iPhone kommen Benachrichtigungen nur mit installierter App: Teilen → „Zum Home-Bildschirm“." },
+  // Una voce rimasta nella lista con un giorno che non si puo' piu' chiedere
+  // (listaVoceScaduta in lista.js): stesse 24 ore di faq.a2.
+  "lista.pastDate":     { it: "Questa data non si può più richiedere", en: "This date can no longer be requested", es: "Esta fecha ya no se puede solicitar", fr: "Cette date ne peut plus être demandée", de: "Dieser Termin kann nicht mehr angefragt werden" },
+  "lista.pastBlock":    { it: "Le escursioni si richiedono almeno 24 ore prima. Togli le voci con la data scaduta e rimettile con un altro giorno.", en: "Excursions must be requested at least 24 hours in advance. Remove the items with an expired date and add them again with another day.", es: "Las excursiones se solicitan con al menos 24 horas de antelación. Quita las actividades con la fecha caducada y vuelve a añadirlas con otro día.", fr: "Les excursions se demandent au moins 24 heures à l'avance. Retirez les activités dont la date est dépassée et ajoutez-les de nouveau avec un autre jour.", de: "Ausflüge müssen mindestens 24 Stunden vorher angefragt werden. Entfernen Sie die Einträge mit abgelaufenem Datum und fügen Sie sie mit einem anderen Tag erneut hinzu." },
+  "lista.hint":         { it: "Parte un solo messaggio con tutte le escursioni della lista.", en: "One single message goes out with every excursion in the list.", es: "Se envía un solo mensaje con todas las excursiones de la lista.", fr: "Un seul message part avec toutes les excursions de la liste.", de: "Es geht eine einzige Nachricht mit allen Ausflügen der Liste raus." },
+  // Il codice sconto dei venditori (lista.js, 18 ottobre 2026).
+  "lista.code":         { it: "Codice sconto (facoltativo)", en: "Discount code (optional)", es: "Código de descuento (opcional)", fr: "Code de réduction (facultatif)", de: "Rabattcode (optional)" },
+  "lista.codePlaceholder": { it: "Il codice che ti ha dato il venditore", en: "The code the seller gave you", es: "El código que te dio el vendedor", fr: "Le code que le vendeur vous a donné", de: "Der Code, den Sie vom Verkäufer haben" },
+  "lista.codeApply":    { it: "Applica", en: "Apply", es: "Aplicar", fr: "Appliquer", de: "Einlösen" },
+  "lista.codeChecking": { it: "Controllo il codice…", en: "Checking the code…", es: "Comprobando el código…", fr: "Vérification du code…", de: "Code wird geprüft…" },
+  "lista.codeOk":       { it: "Codice applicato: lo sconto è già tolto dal totale.", en: "Code applied: the discount is already taken off the total.", es: "Código aplicado: el descuento ya está restado del total.", fr: "Code appliqué : la remise est déjà déduite du total.", de: "Code eingelöst: Der Rabatt ist schon von der Summe abgezogen." },
+  "lista.codeNone":     { it: "Il codice è valido, ma non si applica a queste escursioni: parchi, spettacoli, biglietti a prezzo fisso e pacchetti hanno già il loro prezzo.", en: "The code is valid, but it doesn't apply to these excursions: parks, shows, fixed-price tickets and packages already have their own price.", es: "El código es válido, pero no se aplica a estas excursiones: parques, espectáculos, entradas a precio fijo y paquetes ya tienen su precio.", fr: "Le code est valable, mais il ne s'applique pas à ces excursions : parcs, spectacles, billets à prix fixe et forfaits ont déjà leur propre prix.", de: "Der Code ist gültig, gilt aber nicht für diese Ausflüge: Parks, Shows, Tickets zum Festpreis und Pakete haben schon ihren eigenen Preis." },
+  "lista.codeBad":      { it: "Questo codice non esiste. Controllalo, oppure cancellalo per mandare la richiesta senza sconto.", en: "This code doesn't exist. Check it, or delete it to send the request without a discount.", es: "Este código no existe. Revísalo, o bórralo para enviar la solicitud sin descuento.", fr: "Ce code n'existe pas. Vérifiez-le, ou effacez-le pour envoyer la demande sans réduction.", de: "Diesen Code gibt es nicht. Prüfen Sie ihn oder löschen Sie ihn, um die Anfrage ohne Rabatt zu senden." },
+  "lista.codeError":    { it: "Non riesco a controllare il codice adesso. Riprova tra poco, oppure cancellalo per mandare la richiesta senza sconto.", en: "I can't check the code right now. Try again in a moment, or delete it to send the request without a discount.", es: "Ahora no puedo comprobar el código. Inténtalo dentro de un momento, o bórralo para enviar la solicitud sin descuento.", fr: "Impossible de vérifier le code pour le moment. Réessayez dans un instant, ou effacez-le pour envoyer la demande sans réduction.", de: "Der Code lässt sich gerade nicht prüfen. Versuchen Sie es gleich noch einmal oder löschen Sie ihn, um die Anfrage ohne Rabatt zu senden." },
 
   // ── i pacchetti ─────────────────────────────────────────────────────────
-  "packs.eyebrow":      { it: "Scelti per te", en: "Picked for you", es: "Elegidos para ti" },
-  "packs.title":        { it: "I pacchetti", en: "Packages", es: "Los paquetes" },
-  "packs.intro":        { it: "Tre escursioni che stanno bene insieme, con lo sconto già tolto dal prezzo. Si prendono intere: una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "Three excursions that go well together, with the discount already taken off. You take them as a whole: one single request, and we agree the days together.", es: "Tres excursiones que van bien juntas, con el descuento ya aplicado. Se toman enteras: una sola solicitud, y los días los acordamos juntos." },
-  "packs.familyEyebrow": { it: "Con i bambini", en: "With the kids", es: "Con los niños" },
-  "packs.familyTitle":  { it: "In famiglia", en: "As a family", es: "En familia" },
-  "packs.familyIntro":  { it: "Pacchetti per chi viaggia coi bambini: tre escursioni dove i piccoli hanno il loro prezzo, con lo sconto già tolto. Si prendono interi: una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "Packages for families travelling with children: three excursions where the little ones have their own price, with the discount already taken off. You take them as a whole: one single request, and we agree the days together.", es: "Paquetes para quien viaja con niños: tres excursiones donde los pequeños tienen su propio precio, con el descuento ya aplicado. Se toman enteros: una sola solicitud, y los días los acordamos juntos." },
-  "packs.twoEyebrow":   { it: "In coppia", en: "As a couple", es: "En pareja" },
-  "packs.twoTitle":     { it: "Perfetto per 2", en: "Perfect for two", es: "Perfecto para dos" },
-  "packs.twoIntro":     { it: "Pacchetti pensati per chi viaggia in due, con lo sconto già tolto. Il prezzo è a persona. Si prendono interi: una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "Packages made for those travelling as a pair, with the discount already taken off. The price is per person. You take them as a whole: one single request, and we agree the days together.", es: "Paquetes pensados para quien viaja en pareja, con el descuento ya aplicado. El precio es por persona. Se toman enteros: una sola solicitud, y los días los acordamos juntos." },
-  "packs.familyAll":    { it: "Tutte le escursioni adatte ai bambini", en: "All the kid-friendly excursions", es: "Todas las excursiones aptas para niños" },
-  "pack.eyebrow":       { it: "Pacchetto", en: "Package", es: "Paquete" },
-  "pack.ask":           { it: "Richiedi il pacchetto", en: "Request the package", es: "Solicitar el paquete" },
-  "pack.oneRequest":    { it: "Il pacchetto si chiede intero, con una richiesta sola: i tre giorni li mettiamo d'accordo insieme quando ti rispondiamo.", en: "The package is requested as a whole, in a single request: we agree the three days together when we reply.", es: "El paquete se solicita entero, con una sola solicitud: los tres días los acordamos juntos cuando te respondemos." },
-  "pack.askHint":       { it: "Le richieste vanno fatte con almeno 24 ore di anticipo. Ti rispondiamo entro 24 ore con la conferma e i giorni.", en: "Requests need at least 24 hours' notice. We reply within 24 hours with the confirmation and the days.", es: "Las solicitudes se hacen con al menos 24 horas de antelación. Te respondemos en 24 horas con la confirmación y los días." },
-  "pack.fromDay":       { it: "Da che giorno", en: "Starting from", es: "A partir de qué día" },
-  "pack.fromDayHint":   { it: "Il primo dei tre giorni, indicativo: gli altri due li mettiamo d'accordo quando ti rispondiamo.", en: "The first of the three days, roughly: we agree the other two when we reply.", es: "El primero de los tres días, orientativo: los otros dos los acordamos cuando te respondemos." },
-  "pack.hotelPlaceholder": { it: "Nome dell'hotel", en: "Hotel name", es: "Nombre del hotel" },
+  "packs.eyebrow":      { it: "Scelti per te", en: "Picked for you", es: "Elegidos para ti", fr: "Choisis pour vous", de: "Für Sie ausgewählt" },
+  "packs.title":        { it: "I pacchetti", en: "Packages", es: "Los paquetes", fr: "Les forfaits", de: "Die Pakete" },
+  "packs.intro":        { it: "Tre escursioni che stanno bene insieme, con lo sconto già tolto dal prezzo. Si prendono intere: una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "Three excursions that go well together, with the discount already taken off. You take them as a whole: one single request, and we agree the days together.", es: "Tres excursiones que van bien juntas, con el descuento ya aplicado. Se toman enteras: una sola solicitud, y los días los acordamos juntos.", fr: "Trois excursions qui vont bien ensemble, avec la remise déjà déduite. Elles se prennent en entier : une seule demande, et nous fixons les jours ensemble.", de: "Drei Ausflüge, die gut zusammenpassen, der Rabatt ist schon abgezogen. Sie werden als Ganzes gebucht: eine einzige Anfrage, und die Tage stimmen wir gemeinsam ab." },
+  "packs.familyEyebrow": { it: "Con i bambini", en: "With the kids", es: "Con los niños", fr: "Avec les enfants", de: "Mit Kindern" },
+  "packs.familyTitle":  { it: "In famiglia", en: "As a family", es: "En familia", fr: "En famille", de: "Mit der Familie" },
+  "packs.familyIntro":  { it: "Pacchetti per chi viaggia coi bambini: tre escursioni dove i piccoli hanno il loro prezzo, con lo sconto già tolto. Si prendono interi: una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "Packages for families travelling with children: three excursions where the little ones have their own price, with the discount already taken off. You take them as a whole: one single request, and we agree the days together.", es: "Paquetes para quien viaja con niños: tres excursiones donde los pequeños tienen su propio precio, con el descuento ya aplicado. Se toman enteros: una sola solicitud, y los días los acordamos juntos.", fr: "Des forfaits pour les familles qui voyagent avec des enfants : trois excursions où les petits ont leur propre prix, avec la remise déjà déduite. Ils se prennent en entier : une seule demande, et nous fixons les jours ensemble.", de: "Pakete für Familien mit Kindern: drei Ausflüge, bei denen die Kleinen ihren eigenen Preis haben, der Rabatt ist schon abgezogen. Sie werden als Ganzes gebucht: eine einzige Anfrage, und die Tage stimmen wir gemeinsam ab." },
+  "packs.twoEyebrow":   { it: "In coppia", en: "As a couple", es: "En pareja", fr: "En couple", de: "Zu zweit" },
+  "packs.twoTitle":     { it: "Perfetto per 2", en: "Perfect for two", es: "Perfecto para dos", fr: "Parfait à deux", de: "Perfekt zu zweit" },
+  "packs.twoIntro":     { it: "Pacchetti pensati per chi viaggia in due, con lo sconto già tolto. Il prezzo è a persona. Si prendono interi: una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "Packages made for those travelling as a pair, with the discount already taken off. The price is per person. You take them as a whole: one single request, and we agree the days together.", es: "Paquetes pensados para quien viaja en pareja, con el descuento ya aplicado. El precio es por persona. Se toman enteros: una sola solicitud, y los días los acordamos juntos.", fr: "Des forfaits pensés pour ceux qui voyagent à deux, avec la remise déjà déduite. Le prix est par personne. Ils se prennent en entier : une seule demande, et nous fixons les jours ensemble.", de: "Pakete für alle, die zu zweit reisen, der Rabatt ist schon abgezogen. Der Preis gilt pro Person. Sie werden als Ganzes gebucht: eine einzige Anfrage, und die Tage stimmen wir gemeinsam ab." },
+  "packs.familyAll":    { it: "Tutte le escursioni adatte ai bambini", en: "All the kid-friendly excursions", es: "Todas las excursiones aptas para niños", fr: "Toutes les excursions adaptées aux enfants", de: "Alle kinderfreundlichen Ausflüge" },
+  "pack.eyebrow":       { it: "Pacchetto", en: "Package", es: "Paquete", fr: "Forfait", de: "Paket" },
+  "pack.ask":           { it: "Richiedi il pacchetto", en: "Request the package", es: "Solicitar el paquete", fr: "Demander le forfait", de: "Paket anfragen" },
+  "pack.oneRequest":    { it: "Il pacchetto si chiede intero, con una richiesta sola: i tre giorni li mettiamo d'accordo insieme quando ti rispondiamo.", en: "The package is requested as a whole, in a single request: we agree the three days together when we reply.", es: "El paquete se solicita entero, con una sola solicitud: los tres días los acordamos juntos cuando te respondemos.", fr: "Le forfait se demande en entier, en une seule demande : nous fixons les trois jours ensemble en vous répondant.", de: "Das Paket wird als Ganzes angefragt, mit einer einzigen Anfrage: Die drei Tage stimmen wir in unserer Antwort gemeinsam ab." },
+  "pack.askHint":       { it: "Le richieste vanno fatte con almeno 24 ore di anticipo. Ti rispondiamo entro 24 ore con la conferma e i giorni.", en: "Requests need at least 24 hours' notice. We reply within 24 hours with the confirmation and the days.", es: "Las solicitudes se hacen con al menos 24 horas de antelación. Te respondemos en 24 horas con la confirmación y los días.", fr: "Les demandes doivent être faites au moins 24 heures à l'avance. Nous vous répondons sous 24 heures avec la confirmation et les jours.", de: "Anfragen bitte mindestens 24 Stunden im Voraus. Wir antworten innerhalb von 24 Stunden mit der Bestätigung und den Tagen." },
+  "pack.fromDay":       { it: "Da che giorno", en: "Starting from", es: "A partir de qué día", fr: "À partir de quel jour", de: "Ab welchem Tag" },
+  "pack.fromDayHint":   { it: "Il primo dei tre giorni, indicativo: gli altri due li mettiamo d'accordo quando ti rispondiamo.", en: "The first of the three days, roughly: we agree the other two when we reply.", es: "El primero de los tres días, orientativo: los otros dos los acordamos cuando te respondemos.", fr: "Le premier des trois jours, à titre indicatif : nous fixons les deux autres en vous répondant.", de: "Der erste der drei Tage, ungefähr: Die anderen zwei stimmen wir in unserer Antwort ab." },
+  "pack.hotelPlaceholder": { it: "Nome dell'hotel", en: "Hotel name", es: "Nombre del hotel", fr: "Nom de l'hôtel", de: "Name des Hotels" },
   // Il totale che non si fa. Prima diceva "c'è un mezzo che si paga a buggy o
   // a moto d'acqua": adesso i mezzi si contano nella finestra e quello non è
   // più il motivo. Restano i due casi veri — un prezzo che non si riesce a
   // leggere, o dei bambini su un'escursione che il prezzo dei bambini non ce
   // l'ha — e il testo non prova più a indovinare quale dei due è.
-  "pack.noTotal":       { it: "Il totale non si può fare da qui: di qualcosa qui dentro non abbiamo un prezzo da sommare senza inventarlo. Te lo diciamo noi rispondendo.", en: "We can't total this up here: for something inside we don't have a price we could add without making it up. We'll tell you when we reply.", es: "El total no se puede hacer aquí: de algo de lo que hay dentro no tenemos un precio que sumar sin inventarlo. Te lo decimos al responderte." },
-  "pack.unitsIntro":    { it: "Il mezzo si paga tutto intero, chiunque ci salga: i bambini non aggiungono niente. Le altre escursioni del pacchetto si pagano a testa.", en: "A vehicle is paid for whole, whoever rides it: children add nothing. The other excursions in the package are priced per person.", es: "El vehículo se paga entero, suba quien suba: los niños no añaden nada. Las demás excursiones del paquete se pagan por persona." },
-  "pack.unitsEmpty":    { it: "Scegli quanti mezzi: il totale si fa quando l'hai deciso.", en: "Choose how many vehicles: the total appears once you have.", es: "Elige cuántos vehículos: el total se hace cuando lo hayas decidido." },
+  "pack.noTotal":       { it: "Il totale non si può fare da qui: di qualcosa qui dentro non abbiamo un prezzo da sommare senza inventarlo. Te lo diciamo noi rispondendo.", en: "We can't total this up here: for something inside we don't have a price we could add without making it up. We'll tell you when we reply.", es: "El total no se puede hacer aquí: de algo de lo que hay dentro no tenemos un precio que sumar sin inventarlo. Te lo decimos al responderte.", fr: "Le total ne peut pas se calculer ici : pour un élément de ce forfait, nous n'avons pas de prix à additionner sans l'inventer. Nous vous le dirons en répondant.", de: "Die Summe lässt sich hier nicht berechnen: Für einen Teil davon haben wir keinen Preis, den wir addieren könnten, ohne ihn zu erfinden. Wir nennen ihn Ihnen in unserer Antwort." },
+  "pack.unitsIntro":    { it: "Il mezzo si paga tutto intero, chiunque ci salga: i bambini non aggiungono niente. Le altre escursioni del pacchetto si pagano a testa.", en: "A vehicle is paid for whole, whoever rides it: children add nothing. The other excursions in the package are priced per person.", es: "El vehículo se paga entero, suba quien suba: los niños no añaden nada. Las demás excursiones del paquete se pagan por persona.", fr: "Le véhicule se paie en entier, quel que soit le nombre de personnes à bord : les enfants n'ajoutent rien. Les autres excursions du forfait se paient par personne.", de: "Das Fahrzeug wird als Ganzes bezahlt, egal wer mitfährt: Kinder kosten nichts extra. Die anderen Ausflüge des Pakets werden pro Person bezahlt." },
+  "pack.unitsEmpty":    { it: "Scegli quanti mezzi: il totale si fa quando l'hai deciso.", en: "Choose how many vehicles: the total appears once you have.", es: "Elige cuántos vehículos: el total se hace cuando lo hayas decidido.", fr: "Choisissez combien de véhicules : le total se calcule une fois décidé.", de: "Wählen Sie, wie viele Fahrzeuge: Die Summe wird berechnet, sobald Sie sich entschieden haben." },
   // I posti e le persone scritti come due etichette e non in una frase ("{n}
-  // posti") apposta: con un mezzo solo verrebbe "1 posti", e le tre lingue non
+  // posti") apposta: con un mezzo solo verrebbe "1 posti", e le cinque lingue non
   // fanno il plurale allo stesso modo. E' la stessa ragione per cui il conto
   // dei menu scrive "Vegetariano × 2" invece di provare a pluralizzare.
   //
   // Sono due chiavi e non una perche' i mezzi corti possono essere due (il
   // buggy **e** la moto d'acqua): con una chiave sola la frase "va bene se non
   // salite tutti" si sarebbe ripetuta identica due volte di fila.
-  "pack.unitsSeats":    { it: "{name}: posti scelti {n}", en: "{name}: seats chosen {n}", es: "{name}: plazas elegidas {n}" },
-  "pack.unitsSeatsNote": { it: "Siete in {p}. Va bene se non salite tutti, se no aggiungi un mezzo.", en: "You are {p}. Fine if not everyone is going, otherwise add one.", es: "Sois {p}. Está bien si no subís todos, si no añade uno." },
-  "pack.notFound":      { it: "Pacchetto non trovato", en: "Package not found", es: "Paquete no encontrado" },
-  "pack.notFoundText":  { it: "Questo indirizzo non corrisponde a nessun pacchetto. Forse è stato tolto.", en: "This address doesn't match any package. It may have been removed.", es: "Esta dirección no corresponde a ningún paquete. Puede que se haya retirado." },
-  "pack.seeAll":        { it: "Vedi tutti i pacchetti", en: "See all the packages", es: "Ver todos los paquetes" },
-  "pack.perPerson":     { it: "a persona", en: "per person", es: "por persona" },
-  "pack.save":          { it: "Risparmi €{n}", en: "You save €{n}", es: "Ahorras €{n}" },
-  "pack.noPrice":       { it: "Prezzo su richiesta", en: "Price on request", es: "Precio a consultar" },
-  "pack.unitNote":      { it: "Qui dentro c'è un mezzo che si paga a buggy o a moto d'acqua, non a testa: questo è il prezzo a persona quando il mezzo si divide fra tutti i posti che ha. Se siete di meno, a testa si paga di più — il totale vero lo fai nella richiesta, scegliendo quanti mezzi.", en: "This one includes a vehicle priced per buggy or per jet ski, not per head: this is the price per person when the vehicle is shared across all its seats. With fewer of you it comes to more each — the real total is worked out in the request, once you choose how many vehicles.", es: "Aquí hay un vehículo que se paga por buggy o por moto de agua, no por persona: este es el precio por persona cuando el vehículo se reparte entre todas sus plazas. Si sois menos, sale más por cabeza — el total real se hace en la solicitud, al elegir cuántos vehículos." },
-  "pack.priceAdults":   { it: "€{n} adulti", en: "€{n} adults", es: "€{n} adultos" },
-  "pack.priceChildren": { it: "€{n} bambini", en: "€{n} kids", es: "€{n} niños" },
-  "pack.familyTotal":   { it: "Famiglia tipo, 2 adulti e 2 bambini: €{n} in tutto", en: "A typical family, 2 adults and 2 kids: €{n} in total", es: "Familia tipo, 2 adultos y 2 niños: €{n} en total" },
-  "pack.familyAges":    { it: "Le fasce d'età cambiano da un'escursione all'altra: le trovi qui sotto, accanto al prezzo dei bambini. Con altri numeri il totale si rifà da solo nella richiesta.", en: "Age brackets differ from one excursion to the next: you'll find them below, next to the children's price. With other numbers the total recalculates itself in the request.", es: "Las franjas de edad cambian de una excursión a otra: las encuentras abajo, junto al precio de los niños. Con otros números el total se recalcula solo en la solicitud." },
-  "pack.inside":        { it: "Cosa c'è dentro", en: "What's inside", es: "Qué incluye" },
+  "pack.unitsSeats":    { it: "{name}: posti scelti {n}", en: "{name}: seats chosen {n}", es: "{name}: plazas elegidas {n}", fr: "{name} : places choisies {n}", de: "{name}: gewählte Plätze {n}" },
+  "pack.unitsSeatsNote": { it: "Siete in {p}. Va bene se non salite tutti, se no aggiungi un mezzo.", en: "You are {p}. Fine if not everyone is going, otherwise add one.", es: "Sois {p}. Está bien si no subís todos, si no añade uno.", fr: "Vous êtes {p}. Ça va si tout le monde ne monte pas, sinon ajoutez un véhicule.", de: "Sie sind {p} Personen. In Ordnung, wenn nicht alle mitfahren, sonst fügen Sie ein Fahrzeug hinzu." },
+  "pack.notFound":      { it: "Pacchetto non trovato", en: "Package not found", es: "Paquete no encontrado", fr: "Forfait introuvable", de: "Paket nicht gefunden" },
+  "pack.notFoundText":  { it: "Questo indirizzo non corrisponde a nessun pacchetto. Forse è stato tolto.", en: "This address doesn't match any package. It may have been removed.", es: "Esta dirección no corresponde a ningún paquete. Puede que se haya retirado.", fr: "Cette adresse ne correspond à aucun forfait. Il a peut-être été retiré.", de: "Diese Adresse passt zu keinem Paket. Vielleicht wurde es entfernt." },
+  "pack.seeAll":        { it: "Vedi tutti i pacchetti", en: "See all the packages", es: "Ver todos los paquetes", fr: "Voir tous les forfaits", de: "Alle Pakete ansehen" },
+  "pack.seeOthers":     { it: "Vedi gli altri pacchetti", en: "See the other packages", es: "Ver los otros paquetes", fr: "Voir les autres forfaits", de: "Die anderen Pakete ansehen" },
+  "pack.perPerson":     { it: "a persona", en: "per person", es: "por persona", fr: "par personne", de: "pro Person" },
+  "pack.offer":         { it: "Offerta", en: "Special offer", es: "Oferta", fr: "Offre spéciale", de: "Angebot" },
+  "pack.save":          { it: "Risparmi €{n}", en: "You save €{n}", es: "Ahorras €{n}", fr: "Vous économisez €{n}", de: "Sie sparen €{n}" },
+  "pack.noPrice":       { it: "Prezzo su richiesta", en: "Price on request", es: "Precio a consultar", fr: "Prix sur demande", de: "Preis auf Anfrage" },
+  "pack.unitNote":      { it: "Qui dentro c'è un mezzo che si paga intero, non a testa: questo è il prezzo a persona quando il mezzo si divide fra tutti i posti che ha. Se siete di meno, a testa si paga di più — il totale vero lo fai nella richiesta, scegliendo quanti mezzi.", en: "This one includes a vehicle priced as a whole, not per head: this is the price per person when the vehicle is shared across all its seats. With fewer of you it comes to more each — the real total is worked out in the request, once you choose how many vehicles.", es: "Aquí hay un vehículo que se paga entero, no por persona: este es el precio por persona cuando el vehículo se reparte entre todas sus plazas. Si sois menos, sale más por cabeza — el total real se hace en la solicitud, al elegir cuántos vehículos.", fr: "Ce forfait comprend un véhicule qui se paie en entier, pas par personne : voici le prix par personne quand le véhicule est partagé entre toutes ses places. Si vous êtes moins nombreux, chacun paie plus — le vrai total se calcule dans la demande, en choisissant combien de véhicules.", de: "Hier ist ein Fahrzeug dabei, das als Ganzes bezahlt wird, nicht pro Kopf: Das ist der Preis pro Person, wenn das Fahrzeug auf alle seine Plätze verteilt wird. Sind Sie weniger, zahlt jeder mehr — die echte Summe ergibt sich in der Anfrage, wenn Sie die Anzahl der Fahrzeuge wählen." },
+  "pack.priceAdults":   { it: "€{n} adulti", en: "€{n} adults", es: "€{n} adultos", fr: "€{n} adultes", de: "€{n} Erwachsene" },
+  "pack.priceChildren": { it: "€{n} bambini", en: "€{n} kids", es: "€{n} niños", fr: "€{n} enfants", de: "€{n} Kinder" },
+  "pack.familyTotal":   { it: "Famiglia tipo, 2 adulti e 2 bambini: €{n} in tutto", en: "A typical family, 2 adults and 2 kids: €{n} in total", es: "Familia tipo, 2 adultos y 2 niños: €{n} en total", fr: "Famille type, 2 adultes et 2 enfants : €{n} en tout", de: "Typische Familie, 2 Erwachsene und 2 Kinder: €{n} insgesamt" },
+  "pack.familyAges":    { it: "Le fasce d'età cambiano da un'escursione all'altra: le trovi qui sotto, accanto al prezzo dei bambini. Con altri numeri il totale si rifà da solo nella richiesta.", en: "Age brackets differ from one excursion to the next: you'll find them below, next to the children's price. With other numbers the total recalculates itself in the request.", es: "Las franjas de edad cambian de una excursión a otra: las encuentras abajo, junto al precio de los niños. Con otros números el total se recalcula solo en la solicitud.", fr: "Les tranches d'âge changent d'une excursion à l'autre : vous les trouvez ci-dessous, à côté du prix enfant. Avec d'autres nombres, le total se recalcule tout seul dans la demande.", de: "Die Altersgruppen ändern sich von Ausflug zu Ausflug: Sie finden sie unten, neben dem Kinderpreis. Mit anderen Zahlen rechnet sich die Summe in der Anfrage von selbst neu." },
+  "pack.inside":        { it: "Cosa c'è dentro", en: "What's inside", es: "Qué incluye", fr: "Ce qu'il y a dedans", de: "Was drin ist" },
 
   // ── Gli itinerari a giorni (3/5/7) ──────────────────────────────────────
   // Chiavi loro, non "pack." riscritte: la pagina e' la stessa e i testi si
   // scambiano spostando le chiavi (vedi `pacchettiVestiDaGiorni`). Dove c'e'
   // {n} il numero arriva dai dati — scrivere "sette" a mano vorrebbe dire
   // riscrivere queste righe il giorno che nasce un itinerario da dieci giorni.
-  "days.eyebrow":       { it: "Quanti giorni hai", en: "How many days", es: "Cuántos días tienes" },
-  "days.title":         { it: "3, 5 o 7 giorni", en: "3, 5 or 7 days", es: "3, 5 o 7 días" },
-  "days.intro":         { it: "Un'escursione al giorno, scelte per non ripetersi. L'itinerario si prende intero, con una richiesta sola, e i giorni li mettiamo d'accordo insieme. Se resti sull'isola più a lungo, gli altri giorni restano tuoi.", en: "One excursion a day, picked so they don't repeat each other. You take the itinerary as a whole, in a single request, and we agree the days together. If you're staying on the island longer, the other days stay yours.", es: "Una excursión al día, elegidas para no repetirse. El itinerario se toma entero, con una sola solicitud, y los días los acordamos juntos. Si te quedas más tiempo en la isla, los demás días siguen siendo tuyos." },
-  "days.navAria":       { it: "Quanti giorni", en: "How many days", es: "Cuántos días" },
-  "days.all":           { it: "Tutti", en: "All", es: "Todos" },
-  "days.d3":            { it: "3 giorni", en: "3 days", es: "3 días" },
-  "days.d5":            { it: "5 giorni", en: "5 days", es: "5 días" },
-  "days.d7":            { it: "7 giorni", en: "7 days", es: "7 días" },
-  "days.count":         { it: "{n} giorni", en: "{n} days", es: "{n} días" },
-  "days.detailEyebrow": { it: "Itinerario di {n} giorni", en: "{n}-day itinerary", es: "Itinerario de {n} días" },
-  "days.inside":        { it: "Giorno per giorno", en: "Day by day", es: "Día a día" },
-  "days.ask":           { it: "Richiedi l'itinerario", en: "Request the itinerary", es: "Solicitar el itinerario" },
-  "days.oneRequest":    { it: "L'itinerario si chiede intero, con una richiesta sola: i {n} giorni li mettiamo d'accordo insieme quando ti rispondiamo.", en: "The itinerary is requested as a whole, in a single request: we agree the {n} days together when we reply.", es: "El itinerario se solicita entero, con una sola solicitud: los {n} días los acordamos juntos cuando te respondemos." },
-  "days.fromDayHint":   { it: "Il primo dei {n} giorni, indicativo: gli altri li mettiamo d'accordo quando ti rispondiamo.", en: "The first of the {n} days, roughly: we agree the others when we reply.", es: "El primero de los {n} días, orientativo: los demás los acordamos cuando te respondemos." },
-  "days.seeAll":        { it: "Vedi gli altri itinerari", en: "See the other itineraries", es: "Ver los demás itinerarios" },
+  "days.eyebrow":       { it: "Quanti giorni hai", en: "How many days", es: "Cuántos días tienes", fr: "Combien de jours avez-vous", de: "Wie viele Tage haben Sie" },
+  "days.title":         { it: "3, 5 o 7 giorni", en: "3, 5 or 7 days", es: "3, 5 o 7 días", fr: "3, 5 ou 7 jours", de: "3, 5 oder 7 Tage" },
+  "days.intro":         { it: "Un'escursione al giorno, scelte per non ripetersi. L'itinerario si prende intero, con una richiesta sola, e i giorni li mettiamo d'accordo insieme. Se resti sull'isola più a lungo, gli altri giorni restano tuoi.", en: "One excursion a day, picked so they don't repeat each other. You take the itinerary as a whole, in a single request, and we agree the days together. If you're staying on the island longer, the other days stay yours.", es: "Una excursión al día, elegidas para no repetirse. El itinerario se toma entero, con una sola solicitud, y los días los acordamos juntos. Si te quedas más tiempo en la isla, los demás días siguen siendo tuyos.", fr: "Une excursion par jour, choisies pour ne pas se répéter. L'itinéraire se prend en entier, en une seule demande, et nous fixons les jours ensemble. Si vous restez plus longtemps sur l'île, les autres jours restent à vous.", de: "Ein Ausflug pro Tag, so gewählt, dass sich nichts wiederholt. Die Reiseroute wird als Ganzes gebucht, mit einer einzigen Anfrage, und die Tage stimmen wir gemeinsam ab. Bleiben Sie länger auf der Insel, gehören die übrigen Tage Ihnen." },
+  "days.navAria":       { it: "Quanti giorni", en: "How many days", es: "Cuántos días", fr: "Combien de jours", de: "Wie viele Tage" },
+  "days.all":           { it: "Tutti", en: "All", es: "Todos", fr: "Tous", de: "Alle" },
+  "days.d3":            { it: "3 giorni", en: "3 days", es: "3 días", fr: "3 jours", de: "3 Tage" },
+  "days.d5":            { it: "5 giorni", en: "5 days", es: "5 días", fr: "5 jours", de: "5 Tage" },
+  "days.d7":            { it: "7 giorni", en: "7 days", es: "7 días", fr: "7 jours", de: "7 Tage" },
+  "days.count":         { it: "{n} giorni", en: "{n} days", es: "{n} días", fr: "{n} jours", de: "{n} Tage" },
+  "days.detailEyebrow": { it: "Itinerario di {n} giorni", en: "{n}-day itinerary", es: "Itinerario de {n} días", fr: "Itinéraire de {n} jours", de: "Reiseroute über {n} Tage" },
+  "days.inside":        { it: "Giorno per giorno", en: "Day by day", es: "Día a día", fr: "Jour par jour", de: "Tag für Tag" },
+  "days.ask":           { it: "Richiedi l'itinerario", en: "Request the itinerary", es: "Solicitar el itinerario", fr: "Demander l'itinéraire", de: "Reiseroute anfragen" },
+  "days.oneRequest":    { it: "L'itinerario si chiede intero, con una richiesta sola: i {n} giorni li mettiamo d'accordo insieme quando ti rispondiamo.", en: "The itinerary is requested as a whole, in a single request: we agree the {n} days together when we reply.", es: "El itinerario se solicita entero, con una sola solicitud: los {n} días los acordamos juntos cuando te respondemos.", fr: "L'itinéraire se demande en entier, en une seule demande : nous fixons les {n} jours ensemble en vous répondant.", de: "Die Reiseroute wird als Ganzes angefragt, mit einer einzigen Anfrage: Die {n} Tage stimmen wir in unserer Antwort gemeinsam ab." },
+  "days.fromDayHint":   { it: "Il primo dei {n} giorni, indicativo: gli altri li mettiamo d'accordo quando ti rispondiamo.", en: "The first of the {n} days, roughly: we agree the others when we reply.", es: "El primero de los {n} días, orientativo: los demás los acordamos cuando te respondemos.", fr: "Le premier des {n} jours, à titre indicatif : nous fixons les autres en vous répondant.", de: "Der erste der {n} Tage, ungefähr: Die anderen stimmen wir in unserer Antwort ab." },
+  "days.seeAll":        { it: "Vedi gli altri itinerari", en: "See the other itineraries", es: "Ver los demás itinerarios", fr: "Voir les autres itinéraires", de: "Die anderen Reiserouten ansehen" },
 
-  "detail.days":        { it: "Giorni", en: "Days", es: "Días" },
-  "detail.times":       { it: "Orari", en: "Departure times", es: "Horarios" },
-  "detail.languages":   { it: "Lingue", en: "Languages", es: "Idiomas" },
-  "detail.free":        { it: "Gratis", en: "Free", es: "Gratis" },
-  "detail.transfer":    { it: "Transfer", en: "Transfer", es: "Traslado" },
-  "detail.withTransfer": { it: "Con il transfer", en: "With the transfer", es: "Con el traslado" },
-  "detail.transferSiam": { it: "Transfer Siam Park", en: "Siam Park transfer", es: "Traslado Siam Park" },
-  "detail.withTransferSiam": { it: "Con il transfer per il Siam Park", en: "With the Siam Park transfer", es: "Con el traslado a Siam Park" },
-  "detail.babySeat":    { it: "posto sul pullman", en: "coach seat", es: "plaza en el autobús" },
-  "req.transfer":       { it: "Vuoi il transfer?", en: "Would you like the transfer?", es: "¿Quieres el traslado?" },
-  "req.transferSiam":   { it: "Vuoi il transfer per il Siam Park?", en: "Would you like the Siam Park transfer?", es: "¿Quieres el traslado a Siam Park?" },
-  "detail.people":      { it: "Da {from} a {to} persone", en: "{from} to {to} people", es: "De {from} a {to} personas" },
-  "detail.privateTitle":{ it: "Vuoi la barca solo per il tuo gruppo?", en: "Want the boat just for your group?", es: "¿Quieres el barco solo para tu grupo?" },
-  "detail.privateLink": { it: "Vedi il charter privato", en: "See the private charter", es: "Ver el chárter privado" },
-  "detail.kidsYes":     { it: "Famiglie con bambini", en: "Families with children", es: "Familias con niños" },
-  "detail.kidsNo":      { it: "Adulti", en: "Adults", es: "Adultos" },
-  "detail.related":     { it: "Altre esperienze da scoprire", en: "More experiences to discover", es: "Más experiencias por descubrir" },
-  "detail.notFound":    { it: "Escursione non trovata", en: "Excursion not found", es: "Excursión no encontrada" },
-  "detail.notFoundText":{ it: "Questo indirizzo non corrisponde a nessuna escursione. Forse è stato tolto dal catalogo.", en: "This address doesn't match any excursion. It may have been removed from the catalogue.", es: "Esta dirección no corresponde a ninguna excursión. Puede que se haya retirado del catálogo." },
-  "detail.seeAll":      { it: "Vedi tutte le escursioni", en: "See all excursions", es: "Ver todas las excursiones" },
+  // "Crea il tuo pacchetto": l'ultimo riquadro di ogni vetrina e la pagina
+  // dove il cliente sceglie le escursioni (pacchetti.js, PACCHETTI_SU_MISURA).
+  "build.tile":         { it: "Crea il tuo pacchetto", en: "Build your own package", es: "Crea tu paquete", fr: "Créez votre forfait", de: "Ihr eigenes Paket" },
+  "build.tileDays":     { it: "Crea il tuo itinerario", en: "Build your own itinerary", es: "Crea tu itinerario", fr: "Créez votre itinéraire", de: "Ihre eigene Reiseroute" },
+  "build.tileText":     { it: "Scegli tu le {n} escursioni, con lo sconto già tolto", en: "You pick the {n} excursions, with the discount already taken off", es: "Elige tú las {n} excursiones, con el descuento ya aplicado", fr: "Choisissez vous-même les {n} excursions, remise déjà déduite", de: "Sie wählen die {n} Ausflüge, der Rabatt ist schon abgezogen" },
+  "build.eyebrow":      { it: "Su misura", en: "Made to measure", es: "A medida", fr: "Sur mesure", de: "Nach Wunsch" },
+  "build.title":        { it: "Crea il tuo pacchetto", en: "Build your own package", es: "Crea tu paquete", fr: "Créez votre forfait", de: "Stellen Sie Ihr Paket zusammen" },
+  "build.titleDays":    { it: "Crea il tuo itinerario", en: "Build your own itinerary", es: "Crea tu itinerario", fr: "Créez votre itinéraire", de: "Stellen Sie Ihre Reiseroute zusammen" },
+  "build.intro":        { it: "Scegli {n} escursioni: lo sconto del pacchetto è già tolto dal prezzo. Si chiede tutto con una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "Pick {n} excursions: the package discount is already taken off the price. You request it all at once, and we agree the days together.", es: "Elige {n} excursiones: el descuento del paquete ya está aplicado al precio. Se solicita todo con una sola solicitud, y los días los acordamos juntos.", fr: "Choisissez {n} excursions : la remise du forfait est déjà déduite du prix. Tout se demande en une seule demande, et nous fixons les jours ensemble.", de: "Wählen Sie {n} Ausflüge: Der Paketrabatt ist schon vom Preis abgezogen. Sie fragen alles mit einer einzigen Anfrage an, und die Tage stimmen wir gemeinsam ab." },
+  "build.introDays":    { it: "Un'escursione al giorno, {n} in tutto: lo sconto dell'itinerario è già tolto dal prezzo. Si chiede tutto con una richiesta sola, e i giorni li mettiamo d'accordo insieme.", en: "One excursion a day, {n} in all: the itinerary discount is already taken off the price. You request it all at once, and we agree the days together.", es: "Una excursión al día, {n} en total: el descuento del itinerario ya está aplicado al precio. Se solicita todo con una sola solicitud, y los días los acordamos juntos.", fr: "Une excursion par jour, {n} en tout : la remise de l'itinéraire est déjà déduite du prix. Tout se demande en une seule demande, et nous fixons les jours ensemble.", de: "Ein Ausflug pro Tag, {n} insgesamt: Der Rabatt der Reiseroute ist schon vom Preis abgezogen. Sie fragen alles mit einer einzigen Anfrage an, und die Tage stimmen wir gemeinsam ab." },
+  "build.chosen":       { it: "Scelte {k} di {n}", en: "{k} of {n} chosen", es: "Elegidas {k} de {n}", fr: "{k} sur {n} choisies", de: "{k} von {n} gewählt" },
+  "build.empty":        { it: "Non hai ancora scelto niente: tocca «Aggiungi» sulle escursioni qui sotto, {n} in tutto.", en: "Nothing chosen yet: tap «Add» on the excursions below, {n} in all.", es: "Todavía no has elegido nada: toca «Añadir» en las excursiones de abajo, {n} en total.", fr: "Rien de choisi pour l'instant : touchez « Ajouter » sur les excursions ci-dessous, {n} en tout.", de: "Noch nichts gewählt: Tippen Sie unten bei den Ausflügen auf „Hinzufügen“, {n} insgesamt." },
+  "build.variant":      { it: "Quale {name}", en: "Which {name}", es: "Qué {name}", fr: "Quel {name}", de: "Welche Variante von {name}" },
+  "build.add":          { it: "Aggiungi", en: "Add", es: "Añadir", fr: "Ajouter", de: "Hinzufügen" },
+  "build.remove":       { it: "Togli", en: "Remove", es: "Quitar", fr: "Retirer", de: "Entfernen" },
+  "build.addAria":      { it: "Aggiungi {name} al pacchetto", en: "Add {name} to the package", es: "Añadir {name} al paquete", fr: "Ajouter {name} au forfait", de: "{name} zum Paket hinzufügen" },
+  "build.removeAria":   { it: "Togli {name} dal pacchetto", en: "Remove {name} from the package", es: "Quitar {name} del paquete", fr: "Retirer {name} du forfait", de: "{name} aus dem Paket entfernen" },
+  "build.full":         { it: "Hai già scelto {n} escursioni: togline una per metterne un'altra.", en: "You've already chosen {n} excursions: remove one to add another.", es: "Ya has elegido {n} excursiones: quita una para poner otra.", fr: "Vous avez déjà choisi {n} excursions : retirez-en une pour en ajouter une autre.", de: "Sie haben schon {n} Ausflüge gewählt: Entfernen Sie einen, um einen anderen hinzuzufügen." },
+  "build.teide":        { it: "Il Teide c'è già nel tuo pacchetto: basta una volta, scegli qualcos'altro.", en: "Teide is already in your package: once is enough, pick something else.", es: "El Teide ya está en tu paquete: con una vez basta, elige otra cosa.", fr: "Le Teide est déjà dans votre forfait : une fois suffit, choisissez autre chose.", de: "Der Teide ist schon in Ihrem Paket: Einmal reicht, wählen Sie etwas anderes." },
+  "build.detailLead":   { it: "Le escursioni le hai scelte tu, e lo sconto è già tolto dal prezzo.", en: "You picked the excursions, and the discount is already taken off the price.", es: "Las excursiones las has elegido tú, y el descuento ya está aplicado al precio.", fr: "C'est vous qui avez choisi les excursions, et la remise est déjà déduite du prix.", de: "Die Ausflüge haben Sie gewählt, und der Rabatt ist schon vom Preis abgezogen." },
+  "build.change":       { it: "Cambia le escursioni", en: "Change the excursions", es: "Cambiar las excursiones", fr: "Changer les excursions", de: "Ausflüge ändern" },
+
+  "detail.days":        { it: "Giorni", en: "Days", es: "Días", fr: "Jours", de: "Tage" },
+  "detail.times":       { it: "Orari", en: "Departure times", es: "Horarios", fr: "Horaires", de: "Abfahrtszeiten" },
+  "detail.languages":   { it: "Lingue", en: "Languages", es: "Idiomas", fr: "Langues", de: "Sprachen" },
+  "detail.free":        { it: "Gratis", en: "Free", es: "Gratis", fr: "Gratuit", de: "Kostenlos" },
+  "detail.transfer":    { it: "Transfer", en: "Transfer", es: "Traslado", fr: "Transfert", de: "Transfer" },
+  "detail.withTransfer": { it: "Con il transfer", en: "With the transfer", es: "Con el traslado", fr: "Avec le transfert", de: "Mit Transfer" },
+  "detail.transferSiam": { it: "Transfer Siam Park", en: "Siam Park transfer", es: "Traslado Siam Park", fr: "Transfert Siam Park", de: "Transfer Siam Park" },
+  "detail.withTransferSiam": { it: "Con il transfer per il Siam Park", en: "With the Siam Park transfer", es: "Con el traslado a Siam Park", fr: "Avec le transfert pour le Siam Park", de: "Mit Transfer zum Siam Park" },
+  "detail.babySeat":    { it: "posto sul pullman", en: "coach seat", es: "plaza en el autobús", fr: "place dans le car", de: "Platz im Bus" },
+  "req.transfer":       { it: "Vuoi il transfer?", en: "Would you like the transfer?", es: "¿Quieres el traslado?", fr: "Voulez-vous le transfert ?", de: "Möchten Sie den Transfer?" },
+  "req.transferSiam":   { it: "Vuoi il transfer per il Siam Park?", en: "Would you like the Siam Park transfer?", es: "¿Quieres el traslado a Siam Park?", fr: "Voulez-vous le transfert pour le Siam Park ?", de: "Möchten Sie den Transfer zum Siam Park?" },
+  "detail.people":      { it: "Da {from} a {to} persone", en: "{from} to {to} people", es: "De {from} a {to} personas", fr: "De {from} à {to} personnes", de: "{from} bis {to} Personen" },
+  "detail.privateTitle":{ it: "Vuoi la barca solo per il tuo gruppo?", en: "Want the boat just for your group?", es: "¿Quieres el barco solo para tu grupo?", fr: "Vous voulez le bateau rien que pour votre groupe ?", de: "Sie möchten das Boot nur für Ihre Gruppe?" },
+  "detail.privateLink": { it: "Vedi il charter privato", en: "See the private charter", es: "Ver el chárter privado", fr: "Voir le charter privé", de: "Den privaten Charter ansehen" },
+  "detail.kidsYes":     { it: "Famiglie con bambini", en: "Families with children", es: "Familias con niños", fr: "Familles avec enfants", de: "Familien mit Kindern" },
+  "detail.kidsNo":      { it: "Adulti", en: "Adults", es: "Adultos", fr: "Adultes", de: "Erwachsene" },
+  "detail.related":     { it: "Altre esperienze da scoprire", en: "More experiences to discover", es: "Más experiencias por descubrir", fr: "D'autres expériences à découvrir", de: "Weitere Erlebnisse entdecken" },
+  "detail.notFound":    { it: "Escursione non trovata", en: "Excursion not found", es: "Excursión no encontrada", fr: "Excursion introuvable", de: "Ausflug nicht gefunden" },
+  "detail.notFoundText":{ it: "Questo indirizzo non corrisponde a nessuna escursione. Forse è stato tolto dal catalogo.", en: "This address doesn't match any excursion. It may have been removed from the catalogue.", es: "Esta dirección no corresponde a ninguna excursión. Puede que se haya retirado del catálogo.", fr: "Cette adresse ne correspond à aucune excursion. Elle a peut-être été retirée du catalogue.", de: "Diese Adresse passt zu keinem Ausflug. Vielleicht wurde er aus dem Katalog entfernt." },
+  "detail.seeAll":      { it: "Vedi tutte le escursioni", en: "See all excursions", es: "Ver todas las excursiones", fr: "Voir toutes les excursions", de: "Alle Ausflüge ansehen" },
 
   // ── finestra Richiedi disponibilità ─────────────────────────────────────
-  "req.title":          { it: "Richiedi disponibilità", en: "Check availability", es: "Consultar disponibilidad" },
-  "req.name":           { it: "Il tuo nome", en: "Your name", es: "Tu nombre" },
-  "req.namePlaceholder":{ it: "Nome e cognome", en: "First and last name", es: "Nombre y apellidos" },
-  "req.email":          { it: "La tua email", en: "Your email", es: "Tu email" },
-  "req.emailPlaceholder":{ it: "nome@esempio.com", en: "name@example.com", es: "nombre@ejemplo.com" },
-  "req.emailHint":      { it: "Molte compagnie mandano il biglietto per email.", en: "Many operators send the ticket by email.", es: "Muchas compañías envían la entrada por email." },
-  "req.emailInvalid":   { it: "Controlla l'email: manca qualcosa dopo la @ (per esempio .com).", en: "Check your email: something is missing after the @ (for example .com).", es: "Revisa el email: falta algo después de la @ (por ejemplo .com)." },
-  "req.date":           { it: "Quando vorresti andare", en: "When would you like to go", es: "Cuándo quieres ir" },
-  "req.time":           { it: "A che ora", en: "What time", es: "A qué hora" },
-  "req.timeAny":        { it: "Da concordare", en: "To be agreed", es: "Por concretar" },
-  "req.lang":           { it: "In che lingua", en: "Which language", es: "En qué idioma" },
-  "req.langAny":        { it: "Indifferente", en: "No preference", es: "Indiferente" },
-  "req.menu":           { it: "Esigenze sul menu", en: "Dietary requirements", es: "Necesidades del menú" },
-  "req.menuStandard":   { it: "Menu standard", en: "Standard menu", es: "Menú estándar" },
-  "req.menuError":      { it: "Hai indicato più menu speciali che persone.", en: "You've asked for more special menus than there are people.", es: "Has indicado más menús especiales que personas." },
-  "req.unitsError":     { it: "Serve almeno un mezzo per fare la richiesta.", en: "Add at least one to send the request.", es: "Hace falta al menos uno para enviar la solicitud." },
-  "req.menuHint":       { it: "Allergie o intolleranze: scrivile nelle note qui sotto, così la cucina le sa in anticipo.", en: "Allergies or intolerances: write them in the notes below, so the kitchen knows in advance.", es: "Alergias o intolerancias: escríbelas en las notas de abajo, para que la cocina lo sepa con antelación." },
+  "req.title":          { it: "Richiedi disponibilità", en: "Check availability", es: "Consultar disponibilidad", fr: "Vérifier la disponibilité", de: "Verfügbarkeit anfragen" },
+  "req.name":           { it: "Il tuo nome", en: "Your name", es: "Tu nombre", fr: "Votre nom", de: "Ihr Name" },
+  "req.namePlaceholder":{ it: "Nome e cognome", en: "First and last name", es: "Nombre y apellidos", fr: "Prénom et nom", de: "Vor- und Nachname" },
+  "req.email":          { it: "La tua email", en: "Your email", es: "Tu email", fr: "Votre e-mail", de: "Ihre E-Mail" },
+  "req.emailPlaceholder":{ it: "nome@esempio.com", en: "name@example.com", es: "nombre@ejemplo.com", fr: "nom@exemple.com", de: "name@beispiel.de" },
+  "req.emailHint":      { it: "Molte compagnie mandano il biglietto per email.", en: "Many operators send the ticket by email.", es: "Muchas compañías envían la entrada por email.", fr: "Beaucoup de compagnies envoient le billet par e-mail.", de: "Viele Anbieter schicken das Ticket per E-Mail." },
+  "req.emailInvalid":   { it: "Controlla l'email: manca qualcosa dopo la @ (per esempio .com).", en: "Check your email: something is missing after the @ (for example .com).", es: "Revisa el email: falta algo después de la @ (por ejemplo .com).", fr: "Vérifiez l'e-mail : il manque quelque chose après le @ (par exemple .com).", de: "Prüfen Sie die E-Mail: Nach dem @ fehlt etwas (zum Beispiel .com)." },
+  "req.date":           { it: "Quando vorresti andare", en: "When would you like to go", es: "Cuándo quieres ir", fr: "Quand voudriez-vous y aller", de: "Wann möchten Sie fahren" },
+  "req.time":           { it: "A che ora", en: "What time", es: "A qué hora", fr: "À quelle heure", de: "Um wie viel Uhr" },
+  "req.timeAny":        { it: "Da concordare", en: "To be agreed", es: "Por concretar", fr: "À convenir", de: "Nach Absprache" },
+  "req.lang":           { it: "In che lingua", en: "Which language", es: "En qué idioma", fr: "En quelle langue", de: "In welcher Sprache" },
+  "req.langAny":        { it: "Indifferente", en: "No preference", es: "Indiferente", fr: "Indifférent", de: "Egal" },
+  "req.menu":           { it: "Esigenze sul menu", en: "Dietary requirements", es: "Necesidades del menú", fr: "Besoins alimentaires", de: "Wünsche zum Menü" },
+  "req.menuStandard":   { it: "Menu standard", en: "Standard menu", es: "Menú estándar", fr: "Menu standard", de: "Standardmenü" },
+  "req.menuError":      { it: "Hai indicato più menu speciali che persone.", en: "You've asked for more special menus than there are people.", es: "Has indicado más menús especiales que personas.", fr: "Vous avez indiqué plus de menus spéciaux que de personnes.", de: "Sie haben mehr Sondermenüs als Personen angegeben." },
+  "req.unitsError":     { it: "Serve almeno un mezzo per fare la richiesta.", en: "Add at least one to send the request.", es: "Hace falta al menos uno para enviar la solicitud.", fr: "Il faut au moins un véhicule pour faire la demande.", de: "Für die Anfrage braucht es mindestens ein Fahrzeug." },
+  "req.menuHint":       { it: "Allergie o intolleranze: scrivile nelle note qui sotto, così la cucina le sa in anticipo.", en: "Allergies or intolerances: write them in the notes below, so the kitchen knows in advance.", es: "Alergias o intolerancias: escríbelas en las notas de abajo, para que la cocina lo sepa con antelación.", fr: "Allergies ou intolérances : écrivez-les dans les notes ci-dessous, pour que la cuisine les connaisse à l'avance.", de: "Allergien oder Unverträglichkeiten: Schreiben Sie sie unten in die Notizen, damit die Küche sie vorher kennt." },
   // Ferma la richiesta, quindi dice "solo" e non "di solito": un'escursione non
   // si prenota nel giorno in cui non c'e'. Che i giorni possano cambiare con la
   // lingua della guida si dice nelle note della scheda, non qui: qui il cliente
   // ha gia' scelto la data e gli serve sapere che quella non va.
-  "req.dayError":       { it: "Questa escursione si fa solo: {giorni}.", en: "This excursion only runs on: {giorni}.", es: "Esta excursión solo se hace: {giorni}." },
+  "req.dayError":       { it: "Questa escursione si fa solo: {giorni}.", en: "This excursion only runs on: {giorni}.", es: "Esta excursión solo se hace: {giorni}.", fr: "Cette excursion n'a lieu que : {giorni}.", de: "Dieser Ausflug findet nur statt: {giorni}." },
 
   // I giorni della settimana, in forma corta: servono alla riga "Giorni" e al
   // messaggio che compare quando il cliente sceglie una data in cui
   // l'escursione non si fa.
-  "day.sun":            { it: "Dom", en: "Sun", es: "Dom" },
-  "day.mon":            { it: "Lun", en: "Mon", es: "Lun" },
-  "day.tue":            { it: "Mar", en: "Tue", es: "Mar" },
-  "day.wed":            { it: "Mer", en: "Wed", es: "Mié" },
-  "day.thu":            { it: "Gio", en: "Thu", es: "Jue" },
-  "day.fri":            { it: "Ven", en: "Fri", es: "Vie" },
-  "day.sat":            { it: "Sab", en: "Sat", es: "Sáb" },
-  "req.people":         { it: "Quante persone", en: "How many people", es: "Cuántas personas" },
-  "req.total":          { it: "Totale", en: "Total", es: "Total" },
-  "req.adults":         { it: "Adulti", en: "Adults", es: "Adultos" },
-  "req.kids":           { it: "Bambini", en: "Children", es: "Niños" },
-  "req.babies":         { it: "Neonati", en: "Infants", es: "Bebés" },
+  "day.sun":            { it: "Dom", en: "Sun", es: "Dom", fr: "Dim", de: "So" },
+  "day.mon":            { it: "Lun", en: "Mon", es: "Lun", fr: "Lun", de: "Mo" },
+  "day.tue":            { it: "Mar", en: "Tue", es: "Mar", fr: "Mar", de: "Di" },
+  "day.wed":            { it: "Mer", en: "Wed", es: "Mié", fr: "Mer", de: "Mi" },
+  "day.thu":            { it: "Gio", en: "Thu", es: "Jue", fr: "Jeu", de: "Do" },
+  "day.fri":            { it: "Ven", en: "Fri", es: "Vie", fr: "Ven", de: "Fr" },
+  "day.sat":            { it: "Sab", en: "Sat", es: "Sáb", fr: "Sam", de: "Sa" },
+  "req.people":         { it: "Quante persone", en: "How many people", es: "Cuántas personas", fr: "Combien de personnes", de: "Wie viele Personen" },
+  "req.total":          { it: "Totale", en: "Total", es: "Total", fr: "Total", de: "Summe" },
+  "req.adults":         { it: "Adulti", en: "Adults", es: "Adultos", fr: "Adultes", de: "Erwachsene" },
+  "req.kids":           { it: "Bambini", en: "Children", es: "Niños", fr: "Enfants", de: "Kinder" },
+  "req.babies":         { it: "Neonati", en: "Infants", es: "Bebés", fr: "Bébés", de: "Babys" },
   // I due bottoni del "meno / piu'" accanto ai numeri. Non si leggono: sono un
   // segno solo, e questo e' il nome che sente chi usa lo schermo a voce.
-  "req.minus":          { it: "Uno in meno", en: "One less", es: "Uno menos" },
-  "req.plus":           { it: "Uno in più", en: "One more", es: "Uno más" },
+  "req.minus":          { it: "Uno in meno", en: "One less", es: "Uno menos", fr: "Un de moins", de: "Einer weniger" },
+  "req.plus":           { it: "Uno in più", en: "One more", es: "Uno más", fr: "Un de plus", de: "Einer mehr" },
   // Il calendario della data. I nomi dei mesi **non** stanno qui: il browser li
-  // da' giusti in tutte e tre le lingue (`toLocaleDateString`), e dodici nomi
-  // per tre lingue sarebbero trentasei righe per una cosa che sappiamo gia'.
+  // da' giusti in tutte e cinque le lingue (`toLocaleDateString`), e dodici nomi
+  // per cinque lingue sarebbero sessanta righe per una cosa che sappiamo gia'.
   // I nomi dei giorni invece si', e sono quelli di sopra (`day.mon`...): sono
   // gli stessi che compaiono nell'avviso "si fa solo il...".
-  "req.datePick":       { it: "Scegli la data", en: "Choose the date", es: "Elige la fecha" },
-  "req.dateMissing":    { it: "Scegli la data dell'escursione.", en: "Choose the date of the excursion.", es: "Elige la fecha de la excursión." },
-  "req.prevMonth":      { it: "Mese precedente", en: "Previous month", es: "Mes anterior" },
-  "req.nextMonth":      { it: "Mese successivo", en: "Next month", es: "Mes siguiente" },
+  "req.datePick":       { it: "Scegli la data", en: "Choose the date", es: "Elige la fecha", fr: "Choisir la date", de: "Datum wählen" },
+  "req.dateHint":       { it: "Si può chiedere fino a 24 ore prima della partenza.", en: "You can ask up to 24 hours before departure.", es: "Se puede solicitar hasta 24 horas antes de la salida.", fr: "Vous pouvez demander jusqu'à 24 heures avant le départ.", de: "Anfragen sind bis 24 Stunden vor der Abfahrt möglich." },
+  "req.dateMissing":    { it: "Scegli la data dell'escursione.", en: "Choose the date of the excursion.", es: "Elige la fecha de la excursión.", fr: "Choisissez la date de l'excursion.", de: "Wählen Sie das Datum des Ausflugs." },
+  "req.prevMonth":      { it: "Mese precedente", en: "Previous month", es: "Mes anterior", fr: "Mois précédent", de: "Voriger Monat" },
+  "req.nextMonth":      { it: "Mese successivo", en: "Next month", es: "Mes siguiente", fr: "Mois suivant", de: "Nächster Monat" },
   // Quando in tutto l'anno non c'e' un giorno buono: non capita col catalogo di
   // oggi, ma un `days` scritto male domani lo farebbe, e una griglia tutta
   // grigia senza una riga che spieghi sembra il sito rotto.
-  "req.dateNone":       { it: "Per questa escursione non ci sono date disponibili: scrivici su WhatsApp.", en: "No dates available for this excursion: write to us on WhatsApp.", es: "No hay fechas disponibles para esta excursión: escríbenos por WhatsApp." },
-  "req.hotel":          { it: "Dove alloggi", en: "Where you are staying", es: "Dónde te alojas" },
-  "req.hotelPlaceholder": { it: "Scrivi le prime lettere dell'hotel", en: "Type the first letters of your hotel", es: "Escribe las primeras letras del hotel" },
-  "req.pickup":         { it: "Punto di raccolta", en: "Pick-up point", es: "Punto de recogida" },
-  "req.pickupHotel":    { it: "il tuo hotel", en: "your hotel", es: "tu hotel" },
-  "pickup.bus":         { it: "alla fermata dell'autobus", en: "at the bus stop", es: "en la parada de guagua" },
-  "pickup.taxi":        { it: "al posteggio dei taxi", en: "at the taxi rank", es: "en la parada de taxis" },
-  "pickup.sbarra":      { it: "alla sbarra", en: "at the barrier", es: "en la barrera" },
-  "pickup.reception":   { it: "fuori dalla reception", en: "outside reception", es: "fuera de recepción" },
-  "pickup.centro":      { it: "al centro commerciale", en: "at the shopping centre", es: "en el centro comercial" },
-  "pickup.angolo":      { it: "all'angolo", en: "on the corner", es: "en la esquina" },
-  "req.hotelWhy":       { it: "(utile per il pick-up)", en: "(useful for the pick-up)", es: "(útil para la recogida)" },
-  "req.hotelHintTime":  { it: "Serve a dirti dove e a che ora passiamo a prenderti. Se non trovi il tuo, scrivilo nelle note.", en: "It tells us where and when to pick you up. If yours is not listed, write it in the notes.", es: "Nos dice dónde y a qué hora recogerte. Si no encuentras el tuyo, escríbelo en las notas." },
-  "req.hotelHint":      { it: "Serve a dirti dove passiamo a prenderti. Se non trovi il tuo, scrivilo nelle note.", en: "It tells us where to pick you up. If yours is not listed, write it in the notes.", es: "Nos dice dónde recogerte. Si no encuentras el tuyo, escríbelo en las notas." },
-  "req.note":           { it: "Note", en: "Notes", es: "Notas" },
-  "req.optional":       { it: "(facoltativo)", en: "(optional)", es: "(opcional)" },
-  "req.notePlaceholder":{ it: "Richieste particolari…", en: "Special requests…", es: "Peticiones especiales…" },
-  "req.submit":         { it: "Continua su WhatsApp", en: "Continue on WhatsApp", es: "Continuar en WhatsApp" },
-  "req.addToList":      { it: "Aggiungi alla lista", en: "Add to list", es: "Añadir a la lista" },
+  "req.dateNone":       { it: "Per questa escursione non ci sono date disponibili: scrivici su WhatsApp.", en: "No dates available for this excursion: write to us on WhatsApp.", es: "No hay fechas disponibles para esta excursión: escríbenos por WhatsApp.", fr: "Pour cette excursion, il n'y a pas de dates disponibles : écrivez-nous sur WhatsApp.", de: "Für diesen Ausflug gibt es keine verfügbaren Daten: Schreiben Sie uns per WhatsApp." },
+  "req.hotel":          { it: "Dove alloggi", en: "Where you are staying", es: "Dónde te alojas", fr: "Où logez-vous", de: "Wo wohnen Sie" },
+  "req.hotelPlaceholder": { it: "Scrivi le prime lettere dell'hotel", en: "Type the first letters of your hotel", es: "Escribe las primeras letras del hotel", fr: "Tapez les premières lettres de l'hôtel", de: "Tippen Sie die ersten Buchstaben des Hotels" },
+  "req.pickup":         { it: "Punto di raccolta", en: "Pick-up point", es: "Punto de recogida", fr: "Point de prise en charge", de: "Abholpunkt" },
+  "req.meetingPoint":   { it: "Punto di ritrovo", en: "Meeting point", es: "Punto de encuentro", fr: "Point de rendez-vous", de: "Treffpunkt" },
+  "req.meetingSelf":    { it: "· ti aspettiamo lì", en: "· we'll meet you there", es: "· te esperamos allí", fr: "· nous vous y attendons", de: "· wir erwarten Sie dort" },
+  "req.pickupHotel":    { it: "il tuo hotel", en: "your hotel", es: "tu hotel", fr: "votre hôtel", de: "Ihr Hotel" },
+  "pickup.bus":         { it: "alla fermata dell'autobus", en: "at the bus stop", es: "en la parada de guagua", fr: "à l'arrêt de bus", de: "an der Bushaltestelle" },
+  "pickup.taxi":        { it: "al posteggio dei taxi", en: "at the taxi rank", es: "en la parada de taxis", fr: "à la station de taxis", de: "am Taxistand" },
+  "pickup.sbarra":      { it: "alla sbarra", en: "at the barrier", es: "en la barrera", fr: "à la barrière", de: "an der Schranke" },
+  "pickup.reception":   { it: "fuori dalla reception", en: "outside reception", es: "fuera de recepción", fr: "devant la réception", de: "vor der Rezeption" },
+  "pickup.centro":      { it: "al centro commerciale", en: "at the shopping centre", es: "en el centro comercial", fr: "au centre commercial", de: "am Einkaufszentrum" },
+  "pickup.angolo":      { it: "all'angolo", en: "on the corner", es: "en la esquina", fr: "au coin de la rue", de: "an der Ecke" },
+  "req.hotelWhy":       { it: "(utile per il pick-up)", en: "(useful for the pick-up)", es: "(útil para la recogida)", fr: "(utile pour la prise en charge)", de: "(nützlich für die Abholung)" },
+  "req.hotelHintTime":  { it: "Serve a dirti dove e a che ora passiamo a prenderti. Se non trovi il tuo, scrivi qui il nome o l'indirizzo.", en: "It tells us where and when to pick you up. If yours is not listed, type its name or address here.", es: "Nos dice dónde y a qué hora recogerte. Si no encuentras el tuyo, escribe aquí el nombre o la dirección.", fr: "Cela sert à vous dire où et à quelle heure nous passons vous prendre. Si vous ne trouvez pas le vôtre, écrivez ici son nom ou son adresse.", de: "Damit sagen wir Ihnen, wo und wann wir Sie abholen. Finden Sie Ihr Hotel nicht, schreiben Sie hier den Namen oder die Adresse." },
+  "req.hotelHint":      { it: "Serve a dirti dove passiamo a prenderti. Se non trovi il tuo, scrivi qui il nome o l'indirizzo.", en: "It tells us where to pick you up. If yours is not listed, type its name or address here.", es: "Nos dice dónde recogerte. Si no encuentras el tuyo, escribe aquí el nombre o la dirección.", fr: "Cela sert à vous dire où nous passons vous prendre. Si vous ne trouvez pas le vôtre, écrivez ici son nom ou son adresse.", de: "Damit sagen wir Ihnen, wo wir Sie abholen. Finden Sie Ihr Hotel nicht, schreiben Sie hier den Namen oder die Adresse." },
+  "req.note":           { it: "Note", en: "Notes", es: "Notas", fr: "Notes", de: "Notizen" },
+  "req.optional":       { it: "(facoltativo)", en: "(optional)", es: "(opcional)", fr: "(facultatif)", de: "(optional)" },
+  "req.notePlaceholder":{ it: "Richieste particolari…", en: "Special requests…", es: "Peticiones especiales…", fr: "Demandes particulières…", de: "Besondere Wünsche…" },
+  "req.submit":         { it: "Continua su WhatsApp", en: "Continue on WhatsApp", es: "Continuar en WhatsApp", fr: "Continuer sur WhatsApp", de: "Weiter auf WhatsApp" },
+  "req.addToList":      { it: "Aggiungi alla lista", en: "Add to list", es: "Añadir a la lista", fr: "Ajouter à la liste", de: "Zur Liste hinzufügen" },
   // ⚠ LE 24 ORE SONO LA REGOLA DI ISLA, non quella dei fornitori. Le pagine
   // degli operatori e dei rivenditori scrivono le loro (48 ore, 72 ore...):
   // **non si copiano qui**. Isla prenota a mano su WhatsApp e questa riga
   // resta a 24 ore finche' non e' l'ufficio a dire un altro numero.
-  "req.hint":           { it: "Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.", en: "Requests must be sent at least <strong>24 hours in advance</strong>. We reply within 24 hours with the confirmation.", es: "Las solicitudes deben enviarse con al menos <strong>24 horas de antelación</strong>. Respondemos en 24 horas con la confirmación." },
+  "req.hint":           { it: "Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.", en: "Requests must be sent at least <strong>24 hours in advance</strong>. We reply within 24 hours with the confirmation.", es: "Las solicitudes deben enviarse con al menos <strong>24 horas de antelación</strong>. Respondemos en 24 horas con la confirmación.", fr: "Les demandes doivent être faites au moins <strong>24 heures à l'avance</strong>. Nous vous répondons sous 24 heures avec la confirmation.", de: "Anfragen bitte mindestens <strong>24 Stunden im Voraus</strong>. Wir antworten innerhalb von 24 Stunden mit der Bestätigung." },
   // Diceva "non viene salvato dal sito", e da quando l'hotel si ricorda non era
   // piu' vero. Non era del tutto vero nemmeno prima: la lista delle richieste
   // sta nel browser da sempre, hotel e note comprese.
-  // La riga nuova dice le due cose che contano e sono vere: a chi serve quello
-  // che scrive (a rispondergli su WhatsApp, e nel sito non c'e' una sola
-  // chiamata di rete che mandi qualcosa a qualcuno), e dove finisce l'hotel
-  // (nel suo dispositivo, non da noi). Due frasi corte: quelle lunghe le ha
-  // bocciate il proprietario e aveva ragione.
-  "req.privacy":        { it: "Quello che scrivi serve solo a risponderti su WhatsApp. L'hotel resta salvato su questo dispositivo, per non riscriverlo ogni volta. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">Come trattiamo i tuoi dati</a>", en: "What you type is only used to reply to you on WhatsApp. Your hotel stays saved on this device, so you don't have to type it again. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">How we handle your data</a>", es: "Lo que escribes solo sirve para responderte por WhatsApp. El hotel se queda guardado en este dispositivo, para no escribirlo cada vez. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">Cómo tratamos tus datos</a>" },
+  // La riga nuova dice le due cose che contano e sono vere: a cosa serve quello
+  // che scrive, e che l'hotel resta anche nel suo dispositivo. Due frasi corte:
+  // quelle lunghe le ha bocciate il proprietario e aveva ragione.
+  // "A gestire la tua richiesta" (proprietario, 19 ottobre 2026): dal 13
+  // ottobre una copia della richiesta va anche nel database (richieste.js), e
+  // "serve solo a risponderti su WhatsApp" non bastava piu'. I dettagli, cosa
+  // si salva e per quanto, li dice privacy.html.
+  "req.privacy":        { it: "Quello che scrivi serve solo a gestire la tua richiesta e a risponderti su WhatsApp. L'hotel resta salvato su questo dispositivo, per non riscriverlo ogni volta. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">Come trattiamo i tuoi dati</a>", en: "What you type is only used to handle your request and reply to you on WhatsApp. Your hotel stays saved on this device, so you don't have to type it again. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">How we handle your data</a>", es: "Lo que escribes solo sirve para gestionar tu solicitud y responderte por WhatsApp. El hotel se queda guardado en este dispositivo, para no escribirlo cada vez. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">Cómo tratamos tus datos</a>", fr: "Ce que vous écrivez sert seulement à traiter votre demande et à vous répondre sur WhatsApp. L'hôtel reste enregistré sur cet appareil, pour ne pas le retaper à chaque fois. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">Comment nous traitons vos données</a>", de: "Was Sie schreiben, dient nur dazu, Ihre Anfrage zu bearbeiten und Ihnen per WhatsApp zu antworten. Das Hotel bleibt auf diesem Gerät gespeichert, damit Sie es nicht jedes Mal neu eingeben müssen. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">Wie wir Ihre Daten verarbeiten</a>" },
+
+  // La stessa riga senza la frase sull'hotel: la usa la finestra della
+  // richiesta sulle schede dove l'hotel non si chiede (mostraPunto in escursioni.js)
+  // e la finestra della lista, che chiede nome ed email ma non l'hotel.
+  "req.privacyNoHotel": { it: "Quello che scrivi serve solo a gestire la tua richiesta e a risponderti su WhatsApp. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">Come trattiamo i tuoi dati</a>", en: "What you type is only used to handle your request and reply to you on WhatsApp. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">How we handle your data</a>", es: "Lo que escribes solo sirve para gestionar tu solicitud y responderte por WhatsApp. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">Cómo tratamos tus datos</a>", fr: "Ce que vous écrivez sert seulement à traiter votre demande et à vous répondre sur WhatsApp. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">Comment nous traitons vos données</a>", de: "Was Sie schreiben, dient nur dazu, Ihre Anfrage zu bearbeiten und Ihnen per WhatsApp zu antworten. <a href=\"./privacy.html\" target=\"_blank\" rel=\"noopener\">Wie wir Ihre Daten verarbeiten</a>" },
 
   // ── messaggio WhatsApp ──────────────────────────────────────────────────
-  "wa.intro":           { it: "Ciao Isla! Sono {name}, vorrei richiedere disponibilità per:", en: "Hi Isla! I'm {name}, I'd like to check availability for:", es: "¡Hola Isla! Soy {name}, quisiera consultar disponibilidad para:" },
-  "wa.date":            { it: "Data", en: "Date", es: "Fecha" },
-  "wa.time":            { it: "Orario", en: "Time", es: "Hora" },
-  "wa.lang":            { it: "Lingua", en: "Language", es: "Idioma" },
-  "wa.menu":            { it: "Menu", en: "Menu", es: "Menú" },
-  "wa.people":          { it: "Persone", en: "People", es: "Personas" },
-  "wa.hotel":           { it: "Hotel", en: "Hotel", es: "Hotel" },
-  "wa.pickup":          { it: "Punto di raccolta", en: "Pick-up point", es: "Punto de recogida" },
-  "wa.pickupHotel":     { it: "in hotel", en: "at the hotel", es: "en el hotel" },
-  "wa.notes":           { it: "Note", en: "Notes", es: "Notas" },
-  "wa.transfer":        { it: "Transfer", en: "Transfer", es: "Traslado" },
-  "wa.transferSiam":    { it: "Transfer Siam Park", en: "Siam Park transfer", es: "Traslado Siam Park" },
-  "wa.total":           { it: "Totale", en: "Total", es: "Total" },
-  "wa.email":           { it: "Email: {email}", en: "Email: {email}", es: "Email: {email}" },
-  "wa.code":            { it: "Codice richiesta: {code}", en: "Request code: {code}", es: "Código de solicitud: {code}" },
-  "wa.introList":       { it: "Ciao Isla! Sono {name}, vorrei richiedere disponibilità per {n} escursioni:", en: "Hi Isla! I'm {name}, I'd like to check availability for {n} excursions:", es: "¡Hola Isla! Soy {name}, quisiera consultar disponibilidad para {n} excursiones:" },
-  "wa.fromDay":         { it: "Dal giorno", en: "From", es: "Desde el día" },
-  "wa.introPack":       { it: "Ciao Isla! Sono {name}, vorrei richiedere il pacchetto «{pack}»:", en: "Hi Isla! I'm {name}, I'd like to request the «{pack}» package:", es: "¡Hola Isla! Soy {name}, quisiera solicitar el paquete «{pack}»:" },
-  "wa.introDays":       { it: "Ciao Isla! Sono {name}, vorrei richiedere l'itinerario «{pack}», {n} giorni:", en: "Hi Isla! I'm {name}, I'd like to request the «{pack}» itinerary, {n} days:", es: "¡Hola Isla! Soy {name}, quisiera solicitar el itinerario «{pack}», {n} días:" },
-  "wa.totalPartial":    { it: "Totale (solo le escursioni con il prezzo)", en: "Total (priced excursions only)", es: "Total (solo las excursiones con precio)" },
-  "wa.yes":             { it: "sì", en: "yes", es: "sí" },
-  "wa.no":              { it: "no", en: "no", es: "no" },
-  "wa.adult":           { it: "adulto", en: "adult", es: "adulto" },
-  "wa.adults":          { it: "adulti", en: "adults", es: "adultos" },
-  "wa.child":           { it: "bambino", en: "child", es: "niño" },
-  "wa.children":        { it: "bambini", en: "children", es: "niños" },
-  "wa.baby":            { it: "neonato", en: "baby", es: "bebé" },
-  "wa.babies":          { it: "neonati", en: "babies", es: "bebés" },
-  "wa.and":             { it: "e", en: "and", es: "y" },
+  "wa.intro":           { it: "Ciao Isla! Sono {name}, vorrei richiedere disponibilità per:", en: "Hi Isla! I'm {name}, I'd like to check availability for:", es: "¡Hola Isla! Soy {name}, quisiera consultar disponibilidad para:", fr: "Bonjour Isla ! Je suis {name}, je voudrais connaître la disponibilité pour :", de: "Hallo Isla! Ich bin {name} und möchte die Verfügbarkeit anfragen für:" },
+  "wa.date":            { it: "Data", en: "Date", es: "Fecha", fr: "Date", de: "Datum" },
+  "wa.time":            { it: "Orario", en: "Time", es: "Hora", fr: "Horaire", de: "Uhrzeit" },
+  "wa.lang":            { it: "Lingua", en: "Language", es: "Idioma", fr: "Langue", de: "Sprache" },
+  "wa.menu":            { it: "Menu", en: "Menu", es: "Menú", fr: "Menu", de: "Menü" },
+  "wa.people":          { it: "Persone", en: "People", es: "Personas", fr: "Personnes", de: "Personen" },
+  "wa.hotel":           { it: "Hotel", en: "Hotel", es: "Hotel", fr: "Hôtel", de: "Hotel" },
+  "wa.pickup":          { it: "Punto di raccolta", en: "Pick-up point", es: "Punto de recogida", fr: "Point de prise en charge", de: "Abholpunkt" },
+  "wa.pickupHotel":     { it: "in hotel", en: "at the hotel", es: "en el hotel", fr: "à l'hôtel", de: "im Hotel" },
+  "wa.notes":           { it: "Note", en: "Notes", es: "Notas", fr: "Notes", de: "Notizen" },
+  "wa.transfer":        { it: "Transfer", en: "Transfer", es: "Traslado", fr: "Transfert", de: "Transfer" },
+  "wa.meetingPoint":    { it: "Punto di ritrovo", en: "Meeting point", es: "Punto de encuentro", fr: "Point de rendez-vous", de: "Treffpunkt" },
+  "wa.transferSiam":    { it: "Transfer Siam Park", en: "Siam Park transfer", es: "Traslado Siam Park", fr: "Transfert Siam Park", de: "Transfer Siam Park" },
+  "wa.total":           { it: "Totale", en: "Total", es: "Total", fr: "Total", de: "Summe" },
+  "wa.email":           { it: "Email: {email}", en: "Email: {email}", es: "Email: {email}", fr: "E-mail : {email}", de: "E-Mail: {email}" },
+  "wa.code":            { it: "Codice richiesta: {code}", en: "Request code: {code}", es: "Código de solicitud: {code}", fr: "Code de la demande : {code}", de: "Anfragecode: {code}" },
+  // Il codice sconto in fondo al messaggio (listaScontoTesto in lista.js).
+  "wa.discountCode":    { it: "Codice sconto: {code}", en: "Discount code: {code}", es: "Código de descuento: {code}", fr: "Code de réduction : {code}", de: "Rabattcode: {code}" },
+  "wa.discount":        { it: "Sconto {n}%", en: "{n}% discount", es: "Descuento {n}%", fr: "Remise {n} %", de: "{n} % Rabatt" },
+  "wa.afterDiscount":   { it: "con lo sconto", en: "with the discount", es: "con el descuento", fr: "avec la remise", de: "mit Rabatt" },
+  "wa.introList":       { it: "Ciao Isla! Sono {name}, vorrei richiedere disponibilità per {n} escursioni:", en: "Hi Isla! I'm {name}, I'd like to check availability for {n} excursions:", es: "¡Hola Isla! Soy {name}, quisiera consultar disponibilidad para {n} excursiones:", fr: "Bonjour Isla ! Je suis {name}, je voudrais connaître la disponibilité pour {n} excursions :", de: "Hallo Isla! Ich bin {name} und möchte die Verfügbarkeit für {n} Ausflüge anfragen:" },
+  "wa.fromDay":         { it: "Dal giorno", en: "From", es: "Desde el día", fr: "À partir du", de: "Ab" },
+  "wa.introPack":       { it: "Ciao Isla! Sono {name}, vorrei richiedere il pacchetto «{pack}»:", en: "Hi Isla! I'm {name}, I'd like to request the «{pack}» package:", es: "¡Hola Isla! Soy {name}, quisiera solicitar el paquete «{pack}»:", fr: "Bonjour Isla ! Je suis {name}, je voudrais demander le forfait « {pack} » :", de: "Hallo Isla! Ich bin {name} und möchte das Paket „{pack}“ anfragen:" },
+  "wa.introDays":       { it: "Ciao Isla! Sono {name}, vorrei richiedere l'itinerario «{pack}», {n} giorni:", en: "Hi Isla! I'm {name}, I'd like to request the «{pack}» itinerary, {n} days:", es: "¡Hola Isla! Soy {name}, quisiera solicitar el itinerario «{pack}», {n} días:", fr: "Bonjour Isla ! Je suis {name}, je voudrais demander l'itinéraire « {pack} », {n} jours :", de: "Hallo Isla! Ich bin {name} und möchte die Reiseroute „{pack}“ anfragen, {n} Tage:" },
+  "wa.totalPartial":    { it: "Totale (solo le escursioni con il prezzo)", en: "Total (priced excursions only)", es: "Total (solo las excursiones con precio)", fr: "Total (seulement les excursions avec un prix)", de: "Summe (nur Ausflüge mit Preis)" },
+  "wa.yes":             { it: "sì", en: "yes", es: "sí", fr: "oui", de: "ja" },
+  "wa.no":              { it: "no", en: "no", es: "no", fr: "non", de: "nein" },
+  "wa.adult":           { it: "adulto", en: "adult", es: "adulto", fr: "adulte", de: "Erwachsener" },
+  "wa.adults":          { it: "adulti", en: "adults", es: "adultos", fr: "adultes", de: "Erwachsene" },
+  "wa.child":           { it: "bambino", en: "child", es: "niño", fr: "enfant", de: "Kind" },
+  "wa.children":        { it: "bambini", en: "children", es: "niños", fr: "enfants", de: "Kinder" },
+  "wa.baby":            { it: "neonato", en: "baby", es: "bebé", fr: "bébé", de: "Baby" },
+  "wa.babies":          { it: "neonati", en: "babies", es: "bebés", fr: "bébés", de: "Babys" },
+  "wa.and":             { it: "e", en: "and", es: "y", fr: "et", de: "und" },
 
   // ── assistente ──────────────────────────────────────────────────────────
-  "assist.open":        { it: "Apri l'assistente per trovare un'escursione", en: "Open the assistant to find an excursion", es: "Abre el asistente para encontrar una excursión" },
-  "assist.title":       { it: "Assistente Isla", en: "Isla Assistant", es: "Asistente Isla" },
-  "assist.sub":         { it: "Ti aiuto a scegliere", en: "I'll help you choose", es: "Te ayudo a elegir" },
-  "assist.hello":       { it: "Ciao! Ti faccio tre domande veloci e ti propongo qualcosa.", en: "Hi! Three quick questions and I'll suggest something.", es: "¡Hola! Te hago tres preguntas rápidas y te propongo algo." },
-  "assist.q1":          { it: "Cosa ti piacerebbe fare?", en: "What would you like to do?", es: "¿Qué te gustaría hacer?" },
-  "assist.q2":          { it: "Ci sono bambini con te?", en: "Are there children with you?", es: "¿Vienen niños contigo?" },
-  "assist.yes":         { it: "Sì", en: "Yes", es: "Sí" },
-  "assist.no":          { it: "No", en: "No", es: "No" },
-  "assist.int.sea":     { it: "Mare e barche", en: "Sea and boats", es: "Mar y barcos" },
+  "assist.open":        { it: "Apri l'assistente per trovare un'escursione", en: "Open the assistant to find an excursion", es: "Abre el asistente para encontrar una excursión", fr: "Ouvrir l'assistant pour trouver une excursion", de: "Den Assistenten öffnen, um einen Ausflug zu finden" },
+  "assist.title":       { it: "Assistente Isla", en: "Isla Assistant", es: "Asistente Isla", fr: "Assistant Isla", de: "Isla-Assistent" },
+  "assist.sub":         { it: "Ti aiuto a scegliere", en: "I'll help you choose", es: "Te ayudo a elegir", fr: "Je vous aide à choisir", de: "Ich helfe Ihnen bei der Wahl" },
+  "assist.hello":       { it: "Ciao! Hai una domanda? Ecco le più frequenti:", en: "Hi! Got a question? Here are the most common ones:", es: "¡Hola! ¿Tienes una pregunta? Aquí van las más frecuentes:", fr: "Bonjour ! Une question ? Voici les plus fréquentes :", de: "Hallo! Haben Sie eine Frage? Hier die häufigsten:" },
+  "assist.helloPick":   { it: "Oppure ti aiuto a trovare l'escursione giusta.", en: "Or I can help you find the right excursion.", es: "O te ayudo a encontrar la excursión adecuada.", fr: "Ou je vous aide à trouver la bonne excursion.", de: "Oder ich helfe Ihnen, den passenden Ausflug zu finden." },
+  // Il ritiro non ha una domanda fra le FAQ della home: dove si sale dipende
+  // dalla scheda e dall'hotel, quindi qui si dice solo dove guardarlo.
+  "assist.faq.pickupQ": { it: "Dove mi vengono a prendere?", en: "Where do you pick me up?", es: "¿Dónde me recogen?", fr: "Où vient-on me chercher ?", de: "Wo werde ich abgeholt?" },
+  "assist.faq.pickupA": { it: "Dipende dall'escursione. In molte il pulmino passa a prenderti all'hotel o a una fermata, a volte con il transfer compreso, a volte a pagamento; in altre ci arrivi da solo al punto di partenza. Lo trovi nella finestra della richiesta di ogni escursione: se c'è il ritiro, scrivi dove alloggi e ti mostriamo dove salire e, quando lo sappiamo, a che ora.", en: "It depends on the excursion. For many, the minibus picks you up at your hotel or at a stop, sometimes with the transfer included, sometimes for a fee; for others you make your own way to the starting point. You'll find it in each excursion's request window: if there's a pick-up, enter where you're staying and we'll show you where to get on and, when we know it, at what time.", es: "Depende de la excursión. En muchas el minibús te recoge en el hotel o en una parada, a veces con el traslado incluido y a veces de pago; en otras llegas por tu cuenta al punto de salida. Lo ves en la ventana de solicitud de cada excursión: si hay recogida, escribe dónde te alojas y te mostramos dónde subir y, cuando lo sabemos, a qué hora.", fr: "Cela dépend de l'excursion. Pour beaucoup, le minibus vient vous chercher à votre hôtel ou à un arrêt, parfois avec le transfert inclus, parfois payant ; pour d'autres, vous vous rendez vous-même au point de départ. Vous le voyez dans la fenêtre de demande de chaque excursion : s'il y a une prise en charge, indiquez où vous logez et nous vous montrons où monter et, quand nous la connaissons, à quelle heure.", de: "Das hängt vom Ausflug ab. Bei vielen holt Sie der Kleinbus am Hotel oder an einer Haltestelle ab, mal mit inbegriffenem Transfer, mal gegen Aufpreis; bei anderen kommen Sie selbst zum Startpunkt. Sie sehen es im Anfragefenster jedes Ausflugs: Gibt es eine Abholung, geben Sie an, wo Sie wohnen, und wir zeigen Ihnen, wo Sie einsteigen und, wenn wir sie kennen, um welche Uhrzeit." },
+  "assist.q1":          { it: "Cosa ti piacerebbe fare?", en: "What would you like to do?", es: "¿Qué te gustaría hacer?", fr: "Qu'aimeriez-vous faire ?", de: "Was würden Sie gern machen?" },
+  "assist.q2":          { it: "Ci sono bambini con te?", en: "Are there children with you?", es: "¿Vienen niños contigo?", fr: "Y a-t-il des enfants avec vous ?", de: "Sind Kinder dabei?" },
+  "assist.yes":         { it: "Sì", en: "Yes", es: "Sí", fr: "Oui", de: "Ja" },
+  "assist.no":          { it: "No", en: "No", es: "No", fr: "Non", de: "Nein" },
+  "assist.int.sea":     { it: "Mare e barche", en: "Sea and boats", es: "Mar y barcos", fr: "Mer et bateaux", de: "Meer und Boote" },
   // Segue il nome della categoria in esplora-catalog.js: la risposta e il posto
   // dove porta si devono leggere uguali. La riga "assist.int.stars" e' sparita
   // con la categoria "stelle": adesso le stelle stanno qui dentro.
-  "assist.int.nature":  { it: "Natura, Teide e stelle", en: "Nature, Teide and stars", es: "Naturaleza, Teide y estrellas" },
-  "assist.int.adrenaline": { it: "Adrenalina", en: "Adrenaline", es: "Adrenalina" },
-  "assist.int.parks":   { it: "Parchi e spettacoli", en: "Parks and shows", es: "Parques y espectáculos" },
-  "assist.int.island":  { it: "Girare l'isola", en: "Tour the island", es: "Recorrer la isla" },
-  "assist.int.unsure":  { it: "Non lo so ancora", en: "I'm not sure yet", es: "Todavía no lo sé" },
-  "assist.q3":          { it: "Che budget hai in mente?", en: "What's your budget?", es: "¿Qué presupuesto tienes?" },
-  "assist.budget.low":  { it: "Fino a €50", en: "Up to €50", es: "Hasta €50" },
-  "assist.budget.mid":  { it: "Da €50 a €100", en: "€50 to €100", es: "De €50 a €100" },
-  "assist.budget.high": { it: "Più di €100", en: "Over €100", es: "Más de €100" },
-  "assist.budget.any":  { it: "Non importa", en: "Doesn't matter", es: "Da igual" },
-  "assist.noBudget":    { it: "Con questo budget non ho trovato niente con un prezzo fisso. Molte esperienze però si organizzano su richiesta.", en: "Nothing with a fixed price fits this budget. Many experiences are arranged on request, though.", es: "Con este presupuesto no hay nada con precio fijo. Aun así, muchas experiencias se organizan bajo petición." },
-  "assist.customTitle": { it: "Non trovi quello che cerchi?", en: "Can't find what you're looking for?", es: "¿No encuentras lo que buscas?" },
-  "assist.customText":  { it: "Scrivici cosa ti piacerebbe fare e te lo organizziamo noi.", en: "Tell us what you'd like to do and we'll organise it for you.", es: "Cuéntanos qué te gustaría hacer y te lo organizamos." },
-  "assist.customBtn":   { it: "Chiedi su WhatsApp", en: "Ask on WhatsApp", es: "Preguntar por WhatsApp" },
-  "assist.customWa":    { it: "Ciao Isla! Sto cercando un'esperienza a Tenerife che non ho trovato sul sito. Vorrei: ", en: "Hi Isla! I'm looking for an experience in Tenerife that I couldn't find on the site. I'd like: ", es: "¡Hola Isla! Busco una experiencia en Tenerife que no he encontrado en la web. Me gustaría: " },
-  "assist.results":     { it: "Ecco cosa ti consiglio:", en: "Here's what I'd suggest:", es: "Esto es lo que te recomiendo:" },
-  "assist.resultsFamily": { it: "Ecco cosa ti consiglio, tutto adatto ai bambini:", en: "Here's what I'd suggest, all kid-friendly:", es: "Esto es lo que te recomiendo, todo apto para niños:" },
-  "assist.none":        { it: "Su questa combinazione non ho trovato nulla. Prova a cambiare risposta, oppure guarda tutto il catalogo.", en: "I found nothing for this combination. Try a different answer, or browse the whole catalogue.", es: "No he encontrado nada con esta combinación. Prueba a cambiar de respuesta o mira todo el catálogo." },
-  "assist.more":        { it: "Ce ne sono altre {n}.", en: "There are {n} more.", es: "Hay {n} más." },
-  "assist.catalog":     { it: "Vedi il catalogo", en: "See the catalogue", es: "Ver el catálogo" },
-  "assist.restart":     { it: "Ricomincia", en: "Start again", es: "Empezar de nuevo" },
+  "assist.int.nature":  { it: "Natura, Teide e stelle", en: "Nature, Teide and stars", es: "Naturaleza, Teide y estrellas", fr: "Nature, Teide et étoiles", de: "Natur, Teide und Sterne" },
+  "assist.int.adrenaline": { it: "Adrenalina", en: "Adrenaline", es: "Adrenalina", fr: "Adrénaline", de: "Adrenalin" },
+  "assist.int.parks":   { it: "Parchi e spettacoli", en: "Parks and shows", es: "Parques y espectáculos", fr: "Parcs et spectacles", de: "Parks und Shows" },
+  "assist.int.island":  { it: "Girare l'isola", en: "Tour the island", es: "Recorrer la isla", fr: "Faire le tour de l'île", de: "Die Insel erkunden" },
+  "assist.int.unsure":  { it: "Non lo so ancora", en: "I'm not sure yet", es: "Todavía no lo sé", fr: "Je ne sais pas encore", de: "Weiß ich noch nicht" },
+  "assist.qDay":       { it: "Quando vorresti andare?", en: "When would you like to go?", es: "¿Cuándo te gustaría ir?", fr: "Quand aimeriez-vous y aller ?", de: "Wann möchten Sie fahren?" },
+  "assist.dayTomorrow": { it: "Domani", en: "Tomorrow", es: "Mañana", fr: "Demain", de: "Morgen" },
+  "assist.q3":          { it: "Che budget hai in mente?", en: "What's your budget?", es: "¿Qué presupuesto tienes?", fr: "Quel budget avez-vous en tête ?", de: "Welches Budget haben Sie im Kopf?" },
+  "assist.budget.low":  { it: "Fino a €50", en: "Up to €50", es: "Hasta €50", fr: "Jusqu'à €50", de: "Bis €50" },
+  "assist.budget.mid":  { it: "Da €50 a €100", en: "€50 to €100", es: "De €50 a €100", fr: "De €50 à €100", de: "€50 bis €100" },
+  "assist.budget.high": { it: "Più di €100", en: "Over €100", es: "Más de €100", fr: "Plus de €100", de: "Über €100" },
+  "assist.budget.any":  { it: "Non importa", en: "Doesn't matter", es: "Da igual", fr: "Peu importe", de: "Egal" },
+  "assist.noBudget":    { it: "Con questo budget non ho trovato niente con un prezzo fisso. Molte esperienze però si organizzano su richiesta.", en: "Nothing with a fixed price fits this budget. Many experiences are arranged on request, though.", es: "Con este presupuesto no hay nada con precio fijo. Aun así, muchas experiencias se organizan bajo petición.", fr: "Avec ce budget, je n'ai rien trouvé à prix fixe. Mais beaucoup d'expériences s'organisent sur demande.", de: "Mit diesem Budget habe ich nichts mit festem Preis gefunden. Viele Erlebnisse lassen sich aber auf Anfrage organisieren." },
+  "assist.customTitle": { it: "Non trovi quello che cerchi?", en: "Can't find what you're looking for?", es: "¿No encuentras lo que buscas?", fr: "Vous ne trouvez pas ce que vous cherchez ?", de: "Nicht gefunden, was Sie suchen?" },
+  "assist.customText":  { it: "Scrivici cosa ti piacerebbe fare e te lo organizziamo noi.", en: "Tell us what you'd like to do and we'll organise it for you.", es: "Cuéntanos qué te gustaría hacer y te lo organizamos.", fr: "Écrivez-nous ce que vous aimeriez faire et nous l'organisons pour vous.", de: "Schreiben Sie uns, was Sie gern machen würden, und wir organisieren es für Sie." },
+  "assist.customBtn":   { it: "Chiedi su WhatsApp", en: "Ask on WhatsApp", es: "Preguntar por WhatsApp", fr: "Demander sur WhatsApp", de: "Per WhatsApp fragen" },
+  "assist.customWa":    { it: "Ciao Isla! Sto cercando un'esperienza a Tenerife che non ho trovato sul sito. Vorrei: ", en: "Hi Isla! I'm looking for an experience in Tenerife that I couldn't find on the site. I'd like: ", es: "¡Hola Isla! Busco una experiencia en Tenerife que no he encontrado en la web. Me gustaría: ", fr: "Bonjour Isla ! Je cherche une expérience à Tenerife que je n'ai pas trouvée sur le site. Je voudrais : ", de: "Hallo Isla! Ich suche ein Erlebnis auf Teneriffa, das ich auf der Seite nicht gefunden habe. Ich möchte: " },
+  "assist.results":     { it: "Ecco cosa ti consiglio:", en: "Here's what I'd suggest:", es: "Esto es lo que te recomiendo:", fr: "Voici ce que je vous conseille :", de: "Das empfehle ich Ihnen:" },
+  "assist.resultsFamily": { it: "Ecco cosa ti consiglio, tutto adatto ai bambini:", en: "Here's what I'd suggest, all kid-friendly:", es: "Esto es lo que te recomiendo, todo apto para niños:", fr: "Voici ce que je vous conseille, tout adapté aux enfants :", de: "Das empfehle ich Ihnen, alles kinderfreundlich:" },
+  "assist.none":        { it: "Su questa combinazione non ho trovato nulla. Prova a cambiare risposta, oppure guarda tutto il catalogo.", en: "I found nothing for this combination. Try a different answer, or browse the whole catalogue.", es: "No he encontrado nada con esta combinación. Prueba a cambiar de respuesta o mira todo el catálogo.", fr: "Je n'ai rien trouvé pour cette combinaison. Essayez de changer une réponse, ou regardez tout le catalogue.", de: "Für diese Kombination habe ich nichts gefunden. Ändern Sie eine Antwort oder schauen Sie sich den ganzen Katalog an." },
+  "assist.more":        { it: "Ce ne sono altre {n}.", en: "There are {n} more.", es: "Hay {n} más.", fr: "Il y en a {n} autres.", de: "Es gibt noch {n} weitere." },
+  "assist.catalog":     { it: "Vedi il catalogo", en: "See the catalogue", es: "Ver el catálogo", fr: "Voir le catalogue", de: "Zum Katalog" },
+  "assist.restart":     { it: "Ricomincia", en: "Start again", es: "Empezar de nuevo", fr: "Recommencer", de: "Neu beginnen" },
 
   // ── pagina prenotazione ─────────────────────────────────────────────────
-  "booking.back":       { it: "Torna alla home", en: "Back to home", es: "Volver al inicio" },
-  "booking.h1":         { it: "La tua escursione", en: "Your excursion", es: "Tu excursión" },
-  "booking.found":      { it: "Prenotazione trovata", en: "Booking found", es: "Reserva encontrada" },
-  "booking.confirmed":  { it: "Confermata", en: "Confirmed", es: "Confirmada" },
-  "booking.code":       { it: "Codice", en: "Code", es: "Código" },
-  "booking.time":       { it: "Orario", en: "Time", es: "Hora" },
-  "booking.duration":   { it: "Durata", en: "Duration", es: "Duración" },
-  "booking.meeting":    { it: "Punto d'incontro", en: "Meeting point", es: "Punto de encuentro" },
-  "booking.openMap":    { it: "Apri in mappa →", en: "Open in maps →", es: "Abrir en el mapa →" },
-  "booking.bring":      { it: "Cosa portare", en: "What to bring", es: "Qué llevar" },
-  "booking.notes":      { it: "Note importanti", en: "Important notes", es: "Notas importantes" },
-  "booking.another":    { it: "Cerca un'altra prenotazione", en: "Look up another booking", es: "Buscar otra reserva" },
-  "booking.help":       { it: "Richiedi assistenza", en: "Get help", es: "Solicitar ayuda" },
-  "booking.helpSubject":{ it: "Assistenza prenotazione", en: "Booking support", es: "Asistencia con la reserva" },
-  "booking.notFound":   { it: "Ticket non trovato", en: "Ticket not found", es: "Ticket no encontrado" },
-  "booking.notFoundText": { it: "Non troviamo un ticket con il numero \"{code}\" e questo telefono. Controlla tutti e due sul ticket: il telefono è quello che hai dato al venditore.", en: "We can't find a ticket with the number \"{code}\" and this phone number. Check both on your ticket: the phone is the one you gave the seller.", es: "No encontramos ningún ticket con el número \"{code}\" y este teléfono. Revisa los dos en el ticket: el teléfono es el que diste al vendedor." },
-  "booking.retry":      { it: "Riprova", en: "Try again", es: "Inténtalo de nuevo" },
-  "booking.needPhone":  { it: "Manca il telefono", en: "Phone number missing", es: "Falta el teléfono" },
-  "booking.needPhoneText": { it: "Per vedere il ticket {code} scrivi anche il telefono che hai dato al venditore.", en: "To see ticket {code}, also enter the phone number you gave the seller.", es: "Para ver el ticket {code}, escribe también el teléfono que diste al vendedor." },
-  "booking.loading":    { it: "Cerco il tuo ticket…", en: "Looking up your ticket…", es: "Buscando tu ticket…" },
-  "booking.offline":    { it: "Niente connessione", en: "No connection", es: "Sin conexión" },
-  "booking.offlineText":{ it: "Adesso non riusciamo a cercare il ticket. Riprova quando hai campo.", en: "We can't look up your ticket right now. Try again when you have signal.", es: "Ahora no podemos buscar tu ticket. Inténtalo de nuevo cuando tengas cobertura." },
-  "booking.offlineSaved": { it: "Senza connessione: è l'ultima versione salvata su questo telefono.", en: "No connection: this is the last version saved on this phone.", es: "Sin conexión: es la última versión guardada en este teléfono." },
-  "booking.ticketN":    { it: "Ticket {code}", en: "Ticket {code}", es: "Ticket {code}" },
-  "booking.pending":    { it: "Da confermare", en: "Pending", es: "Por confirmar" },
-  "booking.cancelled":  { it: "Annullata", en: "Cancelled", es: "Cancelada" },
-  "booking.pendingText":{ it: "L'ufficio ha ricevuto la tua richiesta e ti risponde su WhatsApp entro 24 ore.", en: "The office has received your request and will reply on WhatsApp within 24 hours.", es: "La oficina ha recibido tu solicitud y te responde por WhatsApp en 24 horas." },
-  "booking.cancelledText": { it: "Questa escursione non si può fare. Scrivici su WhatsApp e cerchiamo insieme un'altra data.", en: "This excursion can't go ahead. Message us on WhatsApp and we'll find another date together.", es: "Esta excursión no se puede realizar. Escríbenos por WhatsApp y buscamos juntos otra fecha." },
-  "booking.requestOf":  { it: "Richiesta del {date}", en: "Request of {date}", es: "Solicitud del {date}" },
-  "booking.wantedTime": { it: "Orario richiesto", en: "Requested time", es: "Hora solicitada" },
-  "booking.requestsIntro": { it: "Le richieste che hai mandato su WhatsApp. Lo stato lo aggiorna l'ufficio.", en: "The requests you sent on WhatsApp. The office updates their status.", es: "Las solicitudes que enviaste por WhatsApp. La oficina actualiza su estado." },
-  "booking.waRequests": { it: "Ciao, ho una domanda sulle mie richieste ({code}).", en: "Hi, I have a question about my requests ({code}).", es: "Hola, tengo una pregunta sobre mis solicitudes ({code})." },
-  "booking.ticketsTitle": { it: "I tuoi ticket", en: "Your tickets", es: "Tus tickets" },
-  "booking.openRequestsTitle": { it: "Richieste", en: "Requests", es: "Solicitudes" },
-  "booking.ticketsH1":  { it: "I miei ticket", en: "My tickets", es: "Mis tickets" },
-  "booking.requestsH1": { it: "Le mie richieste", en: "My requests", es: "Mis solicitudes" },
-  "booking.noRequests": { it: "Nessuna richiesta", en: "No requests", es: "Ninguna solicitud" },
-  "booking.noRequestsText": { it: "Qui compaiono le escursioni che richiedi su WhatsApp da questo telefono.", en: "The excursions you request on WhatsApp from this phone will appear here.", es: "Aquí aparecen las excursiones que solicitas por WhatsApp desde este teléfono." },
-  "ticket.requestsLink": { it: "Le mie richieste ({n})", en: "My requests ({n})", es: "Mis solicitudes ({n})" },
-  "ticket.requestsSub":  { it: "Mandate su WhatsApp, anche senza ticket", en: "Sent on WhatsApp, even without a ticket", es: "Enviadas por WhatsApp, también sin ticket" },
-  "ticket.requestsOr":   { it: "oppure cerca un ticket di carta", en: "or look up a paper ticket", es: "o busca un ticket de papel" },
-  "booking.past":       { it: "Già fatta", en: "Done", es: "Realizada" },
-  "booking.pastTitle":  { it: "Escursioni passate", en: "Past excursions", es: "Excursiones pasadas" },
-  "booking.when":       { it: "Quando", en: "When", es: "Cuándo" },
-  "booking.people":     { it: "Persone", en: "People", es: "Personas" },
-  "booking.meetAt":     { it: "Presentati alle {time}", en: "Be there at {time}", es: "Preséntate a las {time}" },
-  "booking.payment":    { it: "Pagamento", en: "Payment", es: "Pago" },
-  "booking.paid":       { it: "Pagato", en: "Paid", es: "Pagado" },
-  "booking.toPay":      { it: "Da pagare: €{n}", en: "Left to pay: €{n}", es: "Por pagar: €{n}" },
-  "booking.adult1":     { it: "1 adulto", en: "1 adult", es: "1 adulto" },
-  "booking.adultN":     { it: "{n} adulti", en: "{n} adults", es: "{n} adultos" },
-  "booking.kid1":       { it: "1 bambino", en: "1 child", es: "1 niño" },
-  "booking.kidN":       { it: "{n} bambini", en: "{n} children", es: "{n} niños" },
-  "booking.baby1":      { it: "1 neonato", en: "1 infant", es: "1 bebé" },
-  "booking.babyN":      { it: "{n} neonati", en: "{n} infants", es: "{n} bebés" },
-  "booking.seeTour":    { it: "Vedi l'escursione", en: "See the excursion", es: "Ver la excursión" },
-  "booking.otherExc":   { it: "La tua escursione", en: "Your excursion", es: "Tu excursión" },
-  "booking.whatsapp":   { it: "Scrivi all'ufficio", en: "Message the office", es: "Escribe a la oficina" },
-  "booking.waText":     { it: "Ciao, ho una domanda sul ticket {code}.", en: "Hi, I have a question about ticket {code}.", es: "Hola, tengo una pregunta sobre el ticket {code}." },
-  "booking.noCode":     { it: "Trova la tua escursione", en: "Find your excursion", es: "Encuentra tu excursión" },
-  "booking.noCodeText": { it: "Scrivi il numero del ticket e il telefono che hai dato al venditore.", en: "Enter your ticket number and the phone number you gave the seller.", es: "Escribe el número del ticket y el teléfono que diste al vendedor." },
-  "booking.goHome":     { it: "Vai alla home", en: "Go to home", es: "Ir al inicio" },
+  "booking.back":       { it: "Torna alla home", en: "Back to home", es: "Volver al inicio", fr: "Retour à l'accueil", de: "Zurück zur Startseite" },
+  "booking.h1":         { it: "La tua escursione", en: "Your excursion", es: "Tu excursión", fr: "Votre excursion", de: "Ihr Ausflug" },
+  "booking.found":      { it: "Prenotazione trovata", en: "Booking found", es: "Reserva encontrada", fr: "Réservation trouvée", de: "Buchung gefunden" },
+  "booking.confirmed":  { it: "Confermata", en: "Confirmed", es: "Confirmada", fr: "Confirmée", de: "Bestätigt" },
+  "booking.code":       { it: "Codice", en: "Code", es: "Código", fr: "Code", de: "Code" },
+  "booking.time":       { it: "Orario", en: "Time", es: "Hora", fr: "Horaire", de: "Uhrzeit" },
+  "booking.duration":   { it: "Durata", en: "Duration", es: "Duración", fr: "Durée", de: "Dauer" },
+  "booking.meeting":    { it: "Punto d'incontro", en: "Meeting point", es: "Punto de encuentro", fr: "Point de rendez-vous", de: "Treffpunkt" },
+  "booking.openMap":    { it: "Apri in mappa →", en: "Open in maps →", es: "Abrir en el mapa →", fr: "Ouvrir dans la carte →", de: "In der Karte öffnen →" },
+  "booking.bring":      { it: "Cosa portare", en: "What to bring", es: "Qué llevar", fr: "Quoi apporter", de: "Was mitbringen" },
+  "booking.notes":      { it: "Note importanti", en: "Important notes", es: "Notas importantes", fr: "Remarques importantes", de: "Wichtige Hinweise" },
+  "booking.another":    { it: "Cerca un'altra prenotazione", en: "Look up another booking", es: "Buscar otra reserva", fr: "Chercher une autre réservation", de: "Eine andere Buchung suchen" },
+  "booking.help":       { it: "Richiedi assistenza", en: "Get help", es: "Solicitar ayuda", fr: "Demander de l'aide", de: "Hilfe anfordern" },
+  "booking.helpSubject":{ it: "Assistenza prenotazione", en: "Booking support", es: "Asistencia con la reserva", fr: "Assistance réservation", de: "Hilfe zur Buchung" },
+  "booking.notFound":   { it: "Ticket non trovato", en: "Ticket not found", es: "Ticket no encontrado", fr: "Ticket introuvable", de: "Ticket nicht gefunden" },
+  "booking.notFoundText": { it: "Non troviamo un ticket con il numero \"{code}\" e questo telefono. Controlla tutti e due sul ticket: il telefono è quello che hai dato al venditore.", en: "We can't find a ticket with the number \"{code}\" and this phone number. Check both on your ticket: the phone is the one you gave the seller.", es: "No encontramos ningún ticket con el número \"{code}\" y este teléfono. Revisa los dos en el ticket: el teléfono es el que diste al vendedor.", fr: "Nous ne trouvons pas de ticket avec le numéro « {code} » et ce téléphone. Vérifiez les deux sur le ticket : le téléphone est celui que vous avez donné au vendeur.", de: "Wir finden kein Ticket mit der Nummer „{code}“ und dieser Telefonnummer. Prüfen Sie beides auf dem Ticket: Die Telefonnummer ist die, die Sie dem Verkäufer gegeben haben." },
+  "booking.needPhone":  { it: "Manca il telefono", en: "Phone number missing", es: "Falta el teléfono", fr: "Il manque le téléphone", de: "Telefonnummer fehlt" },
+  "booking.needPhoneText": { it: "Per vedere il ticket {code} scrivi anche il tuo telefono: quello che hai dato al venditore, o da cui ci hai scritto su WhatsApp.", en: "To see ticket {code}, also enter your phone number: the one you gave the seller, or the one you used to message us on WhatsApp.", es: "Para ver el ticket {code}, escribe también tu teléfono: el que diste al vendedor, o desde el que nos escribiste por WhatsApp.", fr: "Pour voir le ticket {code}, indiquez aussi votre téléphone : celui que vous avez donné au vendeur, ou celui avec lequel vous nous avez écrit sur WhatsApp.", de: "Um das Ticket {code} zu sehen, geben Sie auch Ihre Telefonnummer ein: die, die Sie dem Verkäufer gegeben haben, oder die, mit der Sie uns auf WhatsApp geschrieben haben." },
+  "booking.loading":    { it: "Cerco il tuo ticket…", en: "Looking up your ticket…", es: "Buscando tu ticket…", fr: "Je cherche votre ticket…", de: "Ich suche Ihr Ticket…" },
+  "rev.ask":       { it: "Com'è andata la vacanza con noi? Lascia una recensione", en: "How was your holiday with us? Leave a review", es: "¿Qué tal tus vacaciones con nosotros? Deja una reseña", fr: "Comment se sont passées vos vacances avec nous ? Laissez un avis", de: "Wie war Ihr Urlaub mit uns? Schreiben Sie eine Bewertung" },
+  "rev.title":     { it: "La tua recensione", en: "Your review", es: "Tu reseña", fr: "Votre avis", de: "Ihre Bewertung" },
+  "rev.stars":     { it: "Quante stelle?", en: "How many stars?", es: "¿Cuántas estrellas?", fr: "Combien d'étoiles ?", de: "Wie viele Sterne?" },
+  "rev.star1":     { it: "1 stella", en: "1 star", es: "1 estrella", fr: "1 étoile", de: "1 Stern" },
+  "rev.starN":     { it: "{n} stelle", en: "{n} stars", es: "{n} estrellas", fr: "{n} étoiles", de: "{n} Sterne" },
+  "rev.text":      { it: "Racconta com'è andata con noi (facoltativo)", en: "Tell us how it went with us (optional)", es: "Cuéntanos cómo te fue con nosotros (opcional)", fr: "Racontez-nous comment ça s'est passé avec nous (facultatif)", de: "Erzählen Sie uns, wie es mit uns war (optional)" },
+  "rev.name":      { it: "Il tuo nome", en: "Your name", es: "Tu nombre", fr: "Votre nom", de: "Ihr Name" },
+  "rev.nameHint":  { it: "Sul sito si vedrà così: {nome}", en: "On the site it will appear as: {nome}", es: "En la web aparecerá así: {nome}", fr: "Sur le site, il apparaîtra ainsi : {nome}", de: "Auf der Website erscheint er so: {nome}" },
+  "rev.consent":   { it: "La leggiamo prima di pubblicarla. Sul sito compaiono il nome come lo vedi qui sopra, le stelle, il testo, il mese e l'escursione che hai fatto.", en: "We read it before publishing it. The site shows the name as you see it above, the stars, the text, the month and the excursion you did.", es: "La leemos antes de publicarla. En la web aparecen el nombre como lo ves arriba, las estrellas, el texto, el mes y la excursión que hiciste.", fr: "Nous le lisons avant de le publier. Le site affiche le nom tel que vous le voyez ci-dessus, les étoiles, le texte, le mois et l'excursion que vous avez faite.", de: "Wir lesen sie, bevor wir sie veröffentlichen. Auf der Website erscheinen der Name, wie Sie ihn oben sehen, die Sterne, der Text, der Monat und der Ausflug, den Sie gemacht haben." },
+  "rev.send":      { it: "Manda la recensione", en: "Send the review", es: "Enviar la reseña", fr: "Envoyer l'avis", de: "Bewertung senden" },
+  "rev.needStars": { it: "Scegli quante stelle.", en: "Choose how many stars.", es: "Elige cuántas estrellas.", fr: "Choisissez le nombre d'étoiles.", de: "Bitte wählen Sie die Sterne." },
+  "rev.needName":  { it: "Scrivi il tuo nome.", en: "Write your name.", es: "Escribe tu nombre.", fr: "Écrivez votre nom.", de: "Bitte geben Sie Ihren Namen ein." },
+  "rev.thanks":    { it: "Grazie! La pubblichiamo appena l'abbiamo letta.", en: "Thank you! We'll publish it as soon as we've read it.", es: "¡Gracias! La publicaremos en cuanto la hayamos leído.", fr: "Merci ! Nous le publierons dès que nous l'aurons lu.", de: "Vielen Dank! Wir veröffentlichen sie, sobald wir sie gelesen haben." },
+  "rev.done":      { it: "Hai già lasciato la tua recensione. Grazie!", en: "You've already left your review. Thank you!", es: "Ya dejaste tu reseña. ¡Gracias!", fr: "Vous avez déjà laissé votre avis. Merci !", de: "Sie haben bereits eine Bewertung geschrieben. Vielen Dank!" },
+  "rev.notFound":  { it: "Non troviamo più questa escursione: se vuoi, scrivici su WhatsApp.", en: "We can no longer find this excursion: if you like, write to us on WhatsApp.", es: "Ya no encontramos esta excursión: si quieres, escríbenos por WhatsApp.", fr: "Nous ne retrouvons plus cette excursion : si vous le souhaitez, écrivez-nous sur WhatsApp.", de: "Wir finden diesen Ausflug nicht mehr: Wenn Sie möchten, schreiben Sie uns auf WhatsApp." },
+  "rev.error":     { it: "Non è partita: controlla la connessione e riprova.", en: "It didn't go through: check your connection and try again.", es: "No se ha enviado: revisa la conexión y vuelve a intentarlo.", fr: "L'envoi a échoué : vérifiez votre connexion et réessayez.", de: "Das hat nicht geklappt: Bitte prüfen Sie die Verbindung und versuchen Sie es erneut." },
+  "rev.eyebrow":   { it: "Recensioni", en: "Reviews", es: "Reseñas", fr: "Avis", de: "Bewertungen" },
+  "rev.homeTitle": { it: "Dicono di noi", en: "What our guests say", es: "Lo que dicen de nosotros", fr: "Ils parlent de nous", de: "Das sagen unsere Gäste" },
+  "rev.more":      { it: "Mostra altre", en: "Show more", es: "Ver más", fr: "Voir plus", de: "Mehr anzeigen" },
+  "rev.did":       { it: "Escursione:", en: "Excursion:", es: "Excursión:", fr: "Excursion :", de: "Ausflug:" },
+  "rev.from":      { it: "da {fonte}", en: "on {fonte}", es: "en {fonte}", fr: "sur {fonte}", de: "auf {fonte}" },
+  "rev.recommends":{ it: "Ci consiglia", en: "Recommends us", es: "Nos recomienda", fr: "Nous recommande", de: "Empfiehlt uns" },
+  "rev.starsOf":   { it: "{n} stelle su 5", en: "{n} out of 5 stars", es: "{n} de 5 estrellas", fr: "{n} étoiles sur 5", de: "{n} von 5 Sternen" },
+  "rev.average":   { it: "su 5 · {n} recensioni", en: "out of 5 · {n} reviews", es: "de 5 · {n} reseñas", fr: "sur 5 · {n} avis", de: "von 5 · {n} Bewertungen" },
+  "meteo.title":     { it: "Meteo", en: "Weather", es: "Tiempo", fr: "Météo", de: "Wetter" },
+  "meteo.morning":   { it: "mattina", en: "morning", es: "mañana", fr: "matin", de: "Vormittag" },
+  "meteo.afternoon": { it: "pomeriggio", en: "afternoon", es: "tarde", fr: "après-midi", de: "Nachmittag" },
+  "meteo.c100":      { it: "Sereno", en: "Clear", es: "Despejado", fr: "Dégagé", de: "Klar" },
+  "meteo.c105":      { it: "Poco nuvoloso", en: "Partly cloudy", es: "Poco nuboso", fr: "Peu nuageux", de: "Leicht bewölkt" },
+  "meteo.rain":      { it: "Pioggia", en: "Rain", es: "Lluvia", fr: "Pluie", de: "Regen" },
+  "meteo.snow":      { it: "Neve", en: "Snow", es: "Nieve", fr: "Neige", de: "Schnee" },
+  "meteo.c110":      { it: "Nuvoloso", en: "Cloudy", es: "Nuboso", fr: "Nuageux", de: "Bewölkt" },
+  "meteo.c120":      { it: "Molto nuvoloso", en: "Very cloudy", es: "Muy nuboso", fr: "Très nuageux", de: "Stark bewölkt" },
+  "meteo.c130":      { it: "Rovesci", en: "Showers", es: "Chubascos", fr: "Averses", de: "Schauer" },
+  "meteo.c140":      { it: "Nuvoloso con pioggia", en: "Cloudy with rain", es: "Muy nuboso con lluvia", fr: "Nuageux avec pluie", de: "Bewölkt mit Regen" },
+  "meteo.v210":      { it: "vento debole", en: "light wind", es: "viento flojo", fr: "vent faible", de: "schwacher Wind" },
+  "meteo.v220":      { it: "vento moderato", en: "moderate wind", es: "viento moderado", fr: "vent modéré", de: "mäßiger Wind" },
+  "meteo.v230":      { it: "vento forte", en: "strong wind", es: "viento fuerte", fr: "vent fort", de: "starker Wind" },
+  "meteo.o310":      { it: "onde deboli", en: "small waves", es: "oleaje débil", fr: "houle faible", de: "schwacher Seegang" },
+  "meteo.o320":      { it: "onde moderate", en: "moderate waves", es: "oleaje moderado", fr: "houle modérée", de: "mäßiger Seegang" },
+  "meteo.o330":      { it: "onde forti", en: "big waves", es: "oleaje fuerte", fr: "houle forte", de: "starker Seegang" },
+  "meteo.max":       { it: "max {n}°", en: "high {n}°", es: "máx. {n}°", fr: "max. {n}°", de: "max. {n}°" },
+  "meteo.water":     { it: "acqua {n}°", en: "water {n}°", es: "agua {n}°", fr: "eau {n}°", de: "Wasser {n}°" },
+  "meteo.uv":        { it: "UV {n}", en: "UV {n}", es: "UV {n}", fr: "UV {n}", de: "UV {n}" },
+  "meteo.source":    { it: "Previsione AEMET, spiaggia di {posto}", en: "AEMET forecast, {posto} beach", es: "Previsión de AEMET, playa de {posto}", fr: "Prévision AEMET, plage de {posto}", de: "AEMET-Vorhersage, Strand {posto}" },
+  "meteo.mountain":  { it: "{posto} ({quota} m): da {min}° a {max}°", en: "{posto} ({quota} m): {min}° to {max}°", es: "{posto} ({quota} m): de {min}° a {max}°", fr: "{posto} ({quota} m) : de {min}° à {max}°", de: "{posto} ({quota} m): {min}° bis {max}°" },
+  "meteo.feels":     { it: ", percepita fino a {n}°", en: ", feels like {n}°", es: ", sensación de {n}°", fr: ", ressenti {n}°", de: ", gefühlt {n}°" },
+  "meteo.sourceTeide":{ it: "Previsione AEMET di montagna per il Teide", en: "AEMET mountain forecast for Teide", es: "Predicción de montaña de AEMET para el Teide", fr: "Prévision montagne AEMET pour le Teide", de: "AEMET-Bergvorhersage für den Teide" },
+  "meteo.today":     { it: "Oggi", en: "Today", es: "Hoy", fr: "Aujourd'hui", de: "Heute" },
+  "meteo.tomorrow":  { it: "Domani", en: "Tomorrow", es: "Mañana", fr: "Demain", de: "Morgen" },
+  "meteo.sourceMap": { it: "Previsione AEMET per questa spiaggia", en: "AEMET forecast for this beach", es: "Previsión de AEMET para esta playa", fr: "Prévision AEMET pour cette plage", de: "AEMET-Vorhersage für diesen Strand" },
+  "meteo.sourceNear":{ it: "Previsione AEMET per la spiaggia di {posto}, a {km} km", en: "AEMET forecast for {posto} beach, {km} km away", es: "Previsión de AEMET para la playa de {posto}, a {km} km", fr: "Prévision AEMET pour la plage de {posto}, à {km} km", de: "AEMET-Vorhersage für den Strand {posto}, {km} km entfernt" },
+  "fav.add":         { it: "Salva nei preferiti", en: "Save to favourites", es: "Guardar en favoritos", fr: "Ajouter aux favoris", de: "Zu Favoriten hinzufügen" },
+  "fav.remove":      { it: "Togli dai preferiti", en: "Remove from favourites", es: "Quitar de favoritos", fr: "Retirer des favoris", de: "Aus Favoriten entfernen" },
+  "fav.chip":        { it: "♥ Preferiti ({n})", en: "♥ Favourites ({n})", es: "♥ Favoritos ({n})", fr: "♥ Favoris ({n})", de: "♥ Favoriten ({n})" },
+  "fav.title":       { it: "I tuoi preferiti", en: "Your favourites", es: "Tus favoritos", fr: "Vos favoris", de: "Ihre Favoriten" },
+  "fav.sharedTitle": { it: "Le escursioni che ti hanno mandato", en: "The excursions someone sent you", es: "Las excursiones que te han enviado", fr: "Les excursions qu'on vous a envoyées", de: "Die Ausflüge, die man Ihnen geschickt hat" },
+  "fav.sharedText":  { it: "Tocca il cuore per salvarle nei tuoi preferiti.", en: "Tap the heart to save them to your favourites.", es: "Toca el corazón para guardarlas en tus favoritos.", fr: "Touchez le cœur pour les ajouter à vos favoris.", de: "Tippen Sie auf das Herz, um sie zu Ihren Favoriten hinzuzufügen." },
+  "fav.saveAll":     { it: "Salvale tutte", en: "Save them all", es: "Guardarlas todas", fr: "Tout ajouter", de: "Alle speichern" },
+  "fav.allSaved":    { it: "Sono tutte nei tuoi preferiti.", en: "They're all in your favourites.", es: "Ya están todas en tus favoritos.", fr: "Elles sont toutes dans vos favoris.", de: "Sie sind alle in Ihren Favoriten."  },
+  "fav.share":       { it: "Condividi i preferiti", en: "Share your favourites", es: "Compartir favoritos", fr: "Partager vos favoris", de: "Favoriten teilen" },
+  "fav.shareText":   { it: "Guarda queste {n} escursioni a Tenerife su Isla:", en: "Have a look at these {n} excursions in Tenerife on Isla:", es: "Mira estas {n} excursiones en Tenerife en Isla:", fr: "Regardez ces {n} excursions à Tenerife sur Isla :", de: "Sehen Sie sich diese {n} Ausflüge auf Teneriffa bei Isla an:" },
+  "fav.emptyTitle":  { it: "Nessun preferito, per ora", en: "No favourites yet", es: "Aún no hay favoritos", fr: "Pas encore de favoris", de: "Noch keine Favoriten" },
+  "fav.emptyText":   { it: "Tocca il cuore su un'escursione per ritrovarla qui.", en: "Tap the heart on an excursion to find it here.", es: "Toca el corazón en una excursión para encontrarla aquí.", fr: "Touchez le cœur d'une excursion pour la retrouver ici.", de: "Tippen Sie bei einem Ausflug auf das Herz, um ihn hier wiederzufinden." },
+  "booking.tooMany":    { it: "Troppi tentativi", en: "Too many attempts", es: "Demasiados intentos", fr: "Trop de tentatives", de: "Zu viele Versuche" },
+  "booking.tooManyText": { it: "Con questo telefono il ticket è stato cercato troppe volte. Riprova fra un'ora, oppure scrivici su WhatsApp.", en: "This ticket has been looked up too many times with this phone number. Try again in an hour, or message us on WhatsApp.", es: "Con este teléfono se ha buscado el ticket demasiadas veces. Inténtalo de nuevo dentro de una hora, o escríbenos por WhatsApp.", fr: "Le ticket a été cherché trop de fois avec ce téléphone. Réessayez dans une heure, ou écrivez-nous sur WhatsApp.", de: "Mit dieser Telefonnummer wurde das Ticket zu oft gesucht. Versuchen Sie es in einer Stunde erneut oder schreiben Sie uns auf WhatsApp." },
+  "booking.offline":    { it: "Niente connessione", en: "No connection", es: "Sin conexión", fr: "Pas de connexion", de: "Keine Verbindung" },
+  "booking.offlineText":{ it: "Adesso non riusciamo a cercare il ticket. Riprova quando hai campo.", en: "We can't look up your ticket right now. Try again when you have signal.", es: "Ahora no podemos buscar tu ticket. Inténtalo de nuevo cuando tengas cobertura.", fr: "Nous ne pouvons pas chercher le ticket pour l'instant. Réessayez quand vous avez du réseau.", de: "Wir können das Ticket gerade nicht suchen. Versuchen Sie es erneut, wenn Sie Empfang haben." },
+  "booking.offlineSaved": { it: "Senza connessione: è l'ultima versione salvata su questo telefono.", en: "No connection: this is the last version saved on this phone.", es: "Sin conexión: es la última versión guardada en este teléfono.", fr: "Sans connexion : c'est la dernière version enregistrée sur ce téléphone.", de: "Ohne Verbindung: Das ist die letzte auf diesem Handy gespeicherte Version." },
+  "booking.ticketN":    { it: "Ticket {code}", en: "Ticket {code}", es: "Ticket {code}", fr: "Ticket {code}", de: "Ticket {code}" },
+  "booking.pending":    { it: "Da confermare", en: "Pending", es: "Por confirmar", fr: "À confirmer", de: "Zu bestätigen" },
+  "booking.awaitingPay": { it: "Da pagare", en: "Awaiting payment", es: "Pendiente de pago", fr: "À payer", de: "Zahlung ausstehend" },
+  "booking.payText":    { it: "C'è posto! Per confermare la prenotazione paga {amount}: appena arriva il pagamento ti mandiamo il ticket.", en: "There's availability! To confirm your booking, pay {amount}: as soon as the payment arrives, we'll send you your ticket.", es: "¡Hay plazas! Para confirmar la reserva paga {amount}: en cuanto llegue el pago te mandamos el ticket.", fr: "Il y a de la place ! Pour confirmer la réservation, payez {amount} : dès réception du paiement, nous vous envoyons le ticket.", de: "Es sind Plätze frei! Um die Buchung zu bestätigen, zahlen Sie {amount}: Sobald die Zahlung eingegangen ist, schicken wir Ihnen das Ticket." },
+  "booking.payRest":    { it: "Il resto, {rest}, lo paghi sul posto.", en: "You pay the remaining {rest} on the day.", es: "El resto, {rest}, lo pagas allí.", fr: "Le reste, {rest}, se paie sur place.", de: "Den Rest von {rest} zahlen Sie vor Ort." },
+  "booking.payNow":     { it: "Paga ora", en: "Pay now", es: "Pagar ahora", fr: "Payer maintenant", de: "Jetzt bezahlen" },
+  "booking.cancelled":  { it: "Annullata", en: "Cancelled", es: "Cancelada", fr: "Annulée", de: "Abgesagt" },
+  "booking.pendingText":{ it: "L'ufficio ha ricevuto la tua richiesta e ti risponde su WhatsApp entro 24 ore.", en: "The office has received your request and will reply on WhatsApp within 24 hours.", es: "La oficina ha recibido tu solicitud y te responde por WhatsApp en 24 horas.", fr: "Le bureau a reçu votre demande et vous répond sur WhatsApp sous 24 heures.", de: "Das Büro hat Ihre Anfrage erhalten und antwortet Ihnen innerhalb von 24 Stunden per WhatsApp." },
+  "booking.cancelledText": { it: "Questa escursione non si può fare. Scrivici su WhatsApp e cerchiamo insieme un'altra data.", en: "This excursion can't go ahead. Message us on WhatsApp and we'll find another date together.", es: "Esta excursión no se puede realizar. Escríbenos por WhatsApp y buscamos juntos otra fecha.", fr: "Cette excursion ne peut pas avoir lieu. Écrivez-nous sur WhatsApp et nous chercherons ensemble une autre date.", de: "Dieser Ausflug kann nicht stattfinden. Schreiben Sie uns per WhatsApp, und wir suchen gemeinsam ein anderes Datum." },
+  "booking.requestOf":  { it: "Richiesta del {date}", en: "Request of {date}", es: "Solicitud del {date}", fr: "Demande du {date}", de: "Anfrage vom {date}" },
+  "booking.wantedTime": { it: "Orario richiesto", en: "Requested time", es: "Hora solicitada", fr: "Horaire demandé", de: "Gewünschte Uhrzeit" },
+  "booking.requestsIntro": { it: "Le richieste che hai mandato su WhatsApp. Lo stato lo aggiorna l'ufficio.", en: "The requests you sent on WhatsApp. The office updates their status.", es: "Las solicitudes que enviaste por WhatsApp. La oficina actualiza su estado.", fr: "Les demandes que vous avez envoyées sur WhatsApp. Le bureau met à jour leur état.", de: "Die Anfragen, die Sie per WhatsApp geschickt haben. Den Status aktualisiert das Büro." },
+  "booking.waRequests": { it: "Ciao, ho una domanda sulle mie richieste ({code}).", en: "Hi, I have a question about my requests ({code}).", es: "Hola, tengo una pregunta sobre mis solicitudes ({code}).", fr: "Bonjour, j'ai une question sur mes demandes ({code}).", de: "Hallo, ich habe eine Frage zu meinen Anfragen ({code})." },
+  "booking.ticketsTitle": { it: "I tuoi ticket", en: "Your tickets", es: "Tus tickets", fr: "Vos tickets", de: "Ihre Tickets" },
+  "booking.openRequestsTitle": { it: "Richieste", en: "Requests", es: "Solicitudes", fr: "Demandes", de: "Anfragen" },
+  "booking.ticketsH1":  { it: "I miei ticket", en: "My tickets", es: "Mis tickets", fr: "Mes tickets", de: "Meine Tickets" },
+  "booking.requestsH1": { it: "Le mie richieste", en: "My requests", es: "Mis solicitudes", fr: "Mes demandes", de: "Meine Anfragen" },
+  "booking.noRequests": { it: "Nessuna richiesta", en: "No requests", es: "Ninguna solicitud", fr: "Aucune demande", de: "Keine Anfragen" },
+  "booking.noRequestsText": { it: "Qui compaiono le escursioni che richiedi su WhatsApp da questo telefono.", en: "The excursions you request on WhatsApp from this phone will appear here.", es: "Aquí aparecen las excursiones que solicitas por WhatsApp desde este teléfono.", fr: "Ici apparaissent les excursions que vous demandez sur WhatsApp depuis ce téléphone.", de: "Hier erscheinen die Ausflüge, die Sie von diesem Handy aus per WhatsApp anfragen." },
+  "ticket.requestsLink": { it: "Le mie richieste ({n})", en: "My requests ({n})", es: "Mis solicitudes ({n})", fr: "Mes demandes ({n})", de: "Meine Anfragen ({n})" },
+  "ticket.requestsSub":  { it: "Mandate su WhatsApp, anche senza ticket", en: "Sent on WhatsApp, even without a ticket", es: "Enviadas por WhatsApp, también sin ticket", fr: "Envoyées sur WhatsApp, même sans ticket", de: "Per WhatsApp geschickt, auch ohne Ticket" },
+  "ticket.requestsOr":   { it: "oppure cerca un ticket di carta", en: "or look up a paper ticket", es: "o busca un ticket de papel", fr: "ou cherchez un ticket papier", de: "oder ein Papierticket suchen" },
+  "booking.past":       { it: "Già fatta", en: "Done", es: "Realizada", fr: "Déjà faite", de: "Schon gemacht" },
+  "booking.pastTitle":  { it: "Escursioni passate", en: "Past excursions", es: "Excursiones pasadas", fr: "Excursions passées", de: "Vergangene Ausflüge" },
+  "booking.when":       { it: "Quando", en: "When", es: "Cuándo", fr: "Quand", de: "Wann" },
+  "booking.people":     { it: "Persone", en: "People", es: "Personas", fr: "Personnes", de: "Personen" },
+  "booking.meetAt":     { it: "Presentati alle {time}", en: "Be there at {time}", es: "Preséntate a las {time}", fr: "Présentez-vous à {time}", de: "Seien Sie um {time} da" },
+  "booking.payment":    { it: "Pagamento", en: "Payment", es: "Pago", fr: "Paiement", de: "Zahlung" },
+  "booking.paid":       { it: "Pagato", en: "Paid", es: "Pagado", fr: "Payé", de: "Bezahlt" },
+  "booking.toPay":      { it: "Da pagare: €{n}", en: "Left to pay: €{n}", es: "Por pagar: €{n}", fr: "Reste à payer : €{n}", de: "Noch zu zahlen: €{n}" },
+  "booking.adult1":     { it: "1 adulto", en: "1 adult", es: "1 adulto", fr: "1 adulte", de: "1 Erwachsener" },
+  "booking.adultN":     { it: "{n} adulti", en: "{n} adults", es: "{n} adultos", fr: "{n} adultes", de: "{n} Erwachsene" },
+  "booking.kid1":       { it: "1 bambino", en: "1 child", es: "1 niño", fr: "1 enfant", de: "1 Kind" },
+  "booking.kidN":       { it: "{n} bambini", en: "{n} children", es: "{n} niños", fr: "{n} enfants", de: "{n} Kinder" },
+  "booking.baby1":      { it: "1 neonato", en: "1 infant", es: "1 bebé", fr: "1 bébé", de: "1 Baby" },
+  "booking.babyN":      { it: "{n} neonati", en: "{n} infants", es: "{n} bebés", fr: "{n} bébés", de: "{n} Babys" },
+  "booking.seeTour":    { it: "Vedi l'escursione", en: "See the excursion", es: "Ver la excursión", fr: "Voir l'excursion", de: "Zum Ausflug" },
+  "booking.otherExc":   { it: "La tua escursione", en: "Your excursion", es: "Tu excursión", fr: "Votre excursion", de: "Ihr Ausflug" },
+  "booking.whatsapp":   { it: "Scrivi all'ufficio", en: "Message the office", es: "Escribe a la oficina", fr: "Écrire au bureau", de: "Dem Büro schreiben" },
+  "booking.waText":     { it: "Ciao, ho una domanda sul ticket {code}.", en: "Hi, I have a question about ticket {code}.", es: "Hola, tengo una pregunta sobre el ticket {code}.", fr: "Bonjour, j'ai une question sur le ticket {code}.", de: "Hallo, ich habe eine Frage zum Ticket {code}." },
+  "booking.noCode":     { it: "Trova la tua escursione", en: "Find your excursion", es: "Encuentra tu excursión", fr: "Trouvez votre excursion", de: "Finden Sie Ihren Ausflug" },
+  "booking.noCodeText": { it: "Scrivi il numero del ticket e il telefono che hai dato al venditore.", en: "Enter your ticket number and the phone number you gave the seller.", es: "Escribe el número del ticket y el teléfono que diste al vendedor.", fr: "Indiquez le numéro du ticket et le téléphone que vous avez donné au vendeur.", de: "Geben Sie die Ticketnummer und die Telefonnummer ein, die Sie dem Verkäufer gegeben haben." },
+  "booking.goHome":     { it: "Vai alla home", en: "Go to home", es: "Ir al inicio", fr: "Aller à l'accueil", de: "Zur Startseite" },
+
+  // ── pagina dei link (link.html, il "link nella bio" dei social) ─────────
+  "link.title":         { it: "Isla · Escursioni a Tenerife", en: "Isla · Tenerife excursions", es: "Isla · Excursiones en Tenerife", fr: "Isla · Excursions à Tenerife", de: "Isla · Ausflüge auf Teneriffa" },
+  "link.desc":          { it: "Escursioni a Tenerife: barche, Teide, quad, parchi. Richiesta su WhatsApp, conferma entro 24 ore.", en: "Tenerife excursions: boats, Teide, quads, parks. Request on WhatsApp, confirmed within 24 hours.", es: "Excursiones en Tenerife: barcos, Teide, quads, parques. Solicitud por WhatsApp, confirmación en 24 horas.", fr: "Excursions à Tenerife : bateaux, Teide, quads, parcs. Demande sur WhatsApp, confirmation sous 24 heures.", de: "Ausflüge auf Teneriffa: Boote, Teide, Quads, Parks. Anfrage per WhatsApp, Bestätigung innerhalb von 24 Stunden." },
+  "link.tagline":       { it: "Escursioni a Tenerife: mandi la richiesta su WhatsApp, l'ufficio conferma entro 24 ore.", en: "Tenerife excursions: send your request on WhatsApp, the office confirms within 24 hours.", es: "Excursiones en Tenerife: envías la solicitud por WhatsApp y la oficina confirma en 24 horas.", fr: "Excursions à Tenerife : envoyez votre demande sur WhatsApp, le bureau confirme sous 24 heures.", de: "Ausflüge auf Teneriffa: Sie schicken die Anfrage per WhatsApp, das Büro bestätigt innerhalb von 24 Stunden." },
+  "link.lastVideo":     { it: "Dal nostro ultimo post", en: "From our latest post", es: "De nuestra última publicación", fr: "De notre dernière publication", de: "Aus unserem neuesten Beitrag" },
+  "link.aria":          { it: "Link", en: "Links", es: "Enlaces", fr: "Liens", de: "Links" },
+  "link.experiences":   { it: "Tutte le esperienze", en: "All experiences", es: "Todas las experiencias", fr: "Toutes les expériences", de: "Alle Erlebnisse" },
+  "link.experiencesSub":{ it: "Barche, Teide, quad, parchi e altro", en: "Boats, Teide, quads, parks and more", es: "Barcos, Teide, quads, parques y más", fr: "Bateaux, Teide, quads, parcs et plus", de: "Boote, Teide, Quads, Parks und mehr" },
+  "link.packages":      { it: "Pacchetti", en: "Packages", es: "Paquetes", fr: "Forfaits", de: "Pakete" },
+  "link.packagesSub":   { it: "Più escursioni insieme, con lo sconto", en: "Several excursions together, with a discount", es: "Varias excursiones juntas, con descuento", fr: "Plusieurs excursions ensemble, avec une réduction", de: "Mehrere Ausflüge zusammen, mit Rabatt" },
+  "link.whatsapp":      { it: "Scrivici su WhatsApp", en: "Message us on WhatsApp", es: "Escríbenos por WhatsApp", fr: "Écrivez-nous sur WhatsApp", de: "Schreiben Sie uns auf WhatsApp" },
+  "link.rentSub":       { it: "Auto, moto, scooter e bici", en: "Cars, motorbikes, scooters and bikes", es: "Coches, motos, scooters y bicis", fr: "Voitures, motos, scooters et vélos", de: "Autos, Motorräder, Roller und Fahrräder" },
+  "link.bookingsSub":   { it: "Controlla la tua richiesta o il tuo ticket", en: "Check your request or your ticket", es: "Consulta tu solicitud o tu ticket", fr: "Consultez votre demande ou votre ticket", de: "Ihre Anfrage oder Ihr Ticket ansehen" },
 
   // ── pagina offline ──────────────────────────────────────────────────────
-  "offline.title":      { it: "Sei offline", en: "You're offline", es: "Estás sin conexión" },
-  "offline.text":       { it: "La PWA è installata, ma questa pagina non è disponibile senza connessione.", en: "The app is installed, but this page isn't available without a connection.", es: "La app está instalada, pero esta página no está disponible sin conexión." }
+  "offline.title":      { it: "Sei offline", en: "You're offline", es: "Estás sin conexión", fr: "Vous êtes hors ligne", de: "Sie sind offline" },
+  "offline.text":       { it: "La PWA è installata, ma questa pagina non è disponibile senza connessione.", en: "The app is installed, but this page isn't available without a connection.", es: "La app está instalada, pero esta página no está disponible sin conexión.", fr: "L'app est installée, mais cette page n'est pas disponible sans connexion.", de: "Die App ist installiert, aber diese Seite ist ohne Verbindung nicht verfügbar." }
 };
 
-// Lingua attiva. Ordine: scelta salvata → lingua del browser → I18N_DEFAULT.
+// Lingua attiva. Ordine: `?lang=` nell'indirizzo → scelta salvata → lingua
+// del browser → I18N_DEFAULT.
+// `?lang=` c'e' per Google (21 ottobre 2026): Google legge le pagine con un
+// browser in inglese, e senza la lingua nell'indirizzo vedrebbe solo quella.
+// Cosi' ogni pagina ha cinque indirizzi, uno per lingua, e sitemap.xml li
+// elenca tutti. Vale per la pagina che si apre e non si salva: chi arriva da
+// una ricerca in tedesco non si ritrova il sito in tedesco per sempre.
+const I18N_DA_INDIRIZZO = (function () {
+  try { return new URLSearchParams(location.search).get("lang"); } catch (e) { return null; }
+})();
+
 let I18N_CURRENT = (function () {
+  if (I18N_LANGS.includes(I18N_DA_INDIRIZZO)) return I18N_DA_INDIRIZZO;
   let salvata = null;
   try { salvata = localStorage.getItem(I18N_STORAGE_KEY); } catch (e) { /* modalità privata */ }
   if (I18N_LANGS.includes(salvata)) return salvata;
@@ -680,12 +848,12 @@ function t(key, vars) {
 //
 // I prezzi interi restano come sono ("44"): sono quasi tutti cosi' e "44,00"
 // riempirebbe il sito di zeri che nessuno ha chiesto. Quelli coi centesimi
-// prendono sempre **due** decimali, con la virgola in italiano e spagnolo
-// ("49,50") e il punto in inglese ("49.50"): "49.5" non e' un prezzo, e' un
+// prendono sempre **due** decimali, con la virgola in italiano, spagnolo,
+// francese e tedesco ("49,50") e il punto in inglese ("49.50"): "49.5" non e' un prezzo, e' un
 // numero, e su una pagina di prenotazione sembra un errore.
 //
 // Il simbolo € non lo mette: lo scrivono gia' i punti che la usano, che lo
-// mettono prima del numero ("€49,50") in tutte e tre le lingue.
+// mettono prima del numero ("€49,50") in tutte e cinque le lingue.
 function eur(n) {
   const num = Number(n);
   if (!isFinite(num)) return String(n);
@@ -694,8 +862,30 @@ function eur(n) {
   return I18N_CURRENT === "en" ? testo : testo.replace(".", ",");
 }
 
+// Il messaggio WhatsApp che arriva all'ufficio. Si scrive nella lingua del
+// cliente, ma francese e tedesco l'ufficio non li legge: chi usa il sito in
+// una di queste due lingue manda il messaggio in italiano (proprietario, 13
+// ottobre 2026; il tedesco, aggiunto lo stesso giorno, come il francese). Va avvolto
+// **tutto** il testo del messaggio, non solo le etichette: date, persone,
+// titoli e varianti passano anche loro da t() e tf().
+const I18N_UFFICIO = { fr: "it", de: "it" };
+
+// In fondo una riga dice in che lingua legge il cliente: l'ufficio sa come
+// rispondergli, e la risposta già scritta di venditori.html (rispostaLingua in
+// venditori.js) la cerca lì. In italiano, come il resto del messaggio.
+const I18N_UFFICIO_NOMI = { fr: "francese", de: "tedesco" };
+
+function perUfficio(scrivi) {
+  const prima = I18N_CURRENT;
+  if (!I18N_UFFICIO[prima]) return scrivi();
+  I18N_CURRENT = I18N_UFFICIO[prima];
+  let testo;
+  try { testo = scrivi(); } finally { I18N_CURRENT = prima; }
+  return testo ? testo + "\n\nLingua del cliente: " + I18N_UFFICIO_NOMI[prima] : testo;
+}
+
 // Campo del catalogo che può essere una stringa uguale in tutte le lingue
-// (i nomi propri, per esempio "Siam Park") oppure un oggetto { it, en, es }.
+// (i nomi propri, per esempio "Siam Park") oppure un oggetto { it, en, es, fr, de }.
 function tf(campo) {
   if (campo === null || campo === undefined) return "";
   if (typeof campo === "string") return campo;
@@ -748,6 +938,14 @@ function setLang(lang) {
   if (!I18N_LANGS.includes(lang) || lang === I18N_CURRENT) return;
   I18N_CURRENT = lang;
   try { localStorage.setItem(I18N_STORAGE_KEY, lang); } catch (e) { /* modalità privata */ }
+  // Una bandiera scelta vince su `?lang=`: lo si toglie dall'indirizzo,
+  // altrimenti ricaricando la pagina tornerebbe la lingua di prima.
+  if (I18N_DA_INDIRIZZO) {
+    const u = new URL(location.href);
+    u.searchParams.delete("lang");
+    history.replaceState(history.state, "", u.pathname + u.search + u.hash);
+    indirizzoUfficiale();
+  }
   applyI18n();
   paintLangButtons();
   document.dispatchEvent(new CustomEvent("islalang", { detail: { lang } }));
@@ -771,7 +969,41 @@ function initLangSwitch() {
   });
 }
 
+// L'INDIRIZZO UFFICIALE DELLA PAGINA, PER GOOGLE (21 ottobre 2026)
+// `<link rel="canonical">`: dice a Google quale indirizzo tenere quando la
+// stessa pagina si apre con indirizzi diversi (index.html e /, ?ticket=1,
+// ?q=barca…). Si tengono solo i pezzi che cambiano il contenuto (l'id della
+// scheda o del pacchetto, la vetrina) e `lang`. Le cinque lingue di ogni pagina
+// le elenca sitemap.xml (si rifa' con `node sitemap.js`).
+// Si scrive qui e non nell'HTML perche' dipende da `?id=` e da `?lang=`.
+// Le pagine personali (booking, offline) non lo hanno: hanno `noindex`.
+const ISLA_SITO = "https://islaexcursionstenerife.com";
+const ISLA_PEZZI_UFFICIALI = {
+  "tour.html": ["id"],
+  "pacchetto.html": ["id"],
+  "pacchetti.html": ["giorni", "famiglia"]
+};
+
+function indirizzoUfficiale() {
+  if (document.querySelector('meta[name="robots"][content*="noindex"]')) return;
+  const pagina = location.pathname.split("/").pop() || "index.html";
+  const qui = new URLSearchParams(location.search);
+  const tieni = new URLSearchParams();
+  (ISLA_PEZZI_UFFICIALI[pagina] || []).concat("lang").forEach(k => {
+    if (qui.get(k) && (k !== "lang" || I18N_LANGS.includes(qui.get(k)))) tieni.set(k, qui.get(k));
+  });
+  const resto = tieni.toString();
+  let link = document.querySelector('link[rel="canonical"]');
+  if (!link) {
+    link = document.createElement("link");
+    link.rel = "canonical";
+    document.head.appendChild(link);
+  }
+  link.href = ISLA_SITO + "/" + (pagina === "index.html" ? "" : pagina) + (resto ? "?" + resto : "");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  indirizzoUfficiale();
   applyI18n();
   initLangSwitch();
   paintLangButtons();

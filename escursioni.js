@@ -2,7 +2,7 @@
 // esplora-catalog.js, filtra per categoria/testo e disegna le schede.
 //
 // I testi passano da i18n.js: t() per quelli fissi, tf() per i campi del
-// catalogo che possono essere scritti nelle tre lingue.
+// catalogo che possono essere scritti nelle cinque lingue.
 //
 // WHATSAPP_NUMBER sta in esplora-catalog.js: serve anche all'assistente, che
 // gira sulla home dove questo file non e' caricato.
@@ -53,6 +53,15 @@ function esc(testo) {
     .replace(/"/g, "&quot;");
 }
 
+// La copia piccola di una foto (larga al massimo 720 px, in assets/piccole/,
+// la fa foto-piccole.py): per le foto che in pagina restano larghe al massimo
+// 350 px, le schede dell'elenco, le miniature, le "altre esperienze". La foto
+// intera pesa due o tre volte tanto e li' non si vedrebbe la differenza.
+// La usa anche tour.js.
+function fotoPiccola(nome) {
+  return "./assets/piccole/" + encodeURIComponent(nome);
+}
+
 function tourPrice(tour) {
   if (tour.priceFrom === null) return t("tour.onRequest");
   return t("tour.from", { p: eur(tour.priceFrom) }) + priceUnitSuffix(tour);
@@ -67,7 +76,7 @@ function dataLeggibile(iso) {
   // ISO viene letta come mezzanotte UTC, e per un cliente a ovest di
   // Greenwich diventerebbe il giorno prima. Coi pezzi separati e' locale.
   const d = new Date(anno, mese - 1, giorno);
-  const locali = { it: "it-IT", en: "en-GB", es: "es-ES" };
+  const locali = { it: "it-IT", en: "en-GB", es: "es-ES", fr: "fr-FR", de: "de-DE" };
   try {
     return d.toLocaleDateString(locali[getLang()] || "en-GB",
       { day: "numeric", month: "long", year: "numeric" });
@@ -140,6 +149,34 @@ function minRequestDate() {
   return dataLocale(d);
 }
 
+// Le 24 ore vere (proprietario, 19 ottobre 2026): una partenza si puo'
+// chiedere solo se mancano almeno 24 ore. Prima bastava che fosse domani, e
+// alle 22:30 si chiedeva il buggy delle 8:20 del mattino dopo. L'ora e' la
+// prima scritta ("08:20", o l'inizio della fascia "09:00 - 10:00"); senza ora
+// (charter, "Da concordare") si conta fino alla fine di quel giorno.
+function partenzaPossibile(iso, ora) {
+  if (!iso) return false;
+  const [a, m, g] = iso.split("-").map(Number);
+  const hm = /(\d{1,2}):(\d{2})/.exec(ora || "");
+  const quando = hm ? new Date(a, m - 1, g, Number(hm[1]), Number(hm[2]))
+                    : new Date(a, m - 1, g, 23, 59);
+  return quando.getTime() - Date.now() >= 24 * 60 * 60 * 1000;
+}
+
+// Le ore fra cui si sceglie su una scheda (o sulla sua variante): quelle vere,
+// le fasce segnaposto se non le sappiamo, nessuna sul charter (`times: []`).
+function orariDi(tour, scelta) {
+  const veri = (scelta && scelta.times) || (tour && tour.times);
+  return veri || (typeof ORARI_PREDEFINITI !== "undefined" ? ORARI_PREDEFINITI : []);
+}
+
+// Un giorno si puo' chiedere se almeno una sua partenza e' fra 24 ore o piu'.
+function giornoPossibile(tour, scelta, iso) {
+  const orari = orariDi(tour, scelta);
+  if (!orari.length) return partenzaPossibile(iso, "");
+  return orari.some(ora => partenzaPossibile(iso, ora));
+}
+
 // Oltre un anno avanti è quasi sempre un errore di digitazione
 function maxRequestDate() {
   const d = new Date();
@@ -166,7 +203,7 @@ function peopleText(adults, kids, babies) {
 
 // "Singola × 3 · Doppia × 1": quanti mezzi, di che tipo. Solo dove il prezzo e'
 // del mezzo e non della persona (`units`). Il "×" e il punto in mezzo sono gli
-// stessi dei menu, e per lo stesso motivo: evitano i plurali, che in tre lingue
+// stessi dei menu, e per lo stesso motivo: evitano i plurali, che in cinque lingue
 // non si fanno allo stesso modo.
 //
 // Dalla finestra arrivano i numeri (`units` come elenco), dalla lista il
@@ -210,6 +247,60 @@ function varianteScelta(tour, req) {
     return scelte[req.optionIndex];
   }
   return varianteDi(tour, req.option);
+}
+
+// Il transfer e il punto di ritrovo della variante scelta, se la variante li
+// dice, altrimenti quelli della scheda: come `days` e `times`, la variante
+// vince (Freebird: il transfer c'e' sui giri di 3 e 4 ore e mezza, non su
+// quello di 2; 15 ottobre 2026). `variante` puo' essere null.
+function transferDi(tour, variante) {
+  if (!tour) return null;
+  return variante && Object.prototype.hasOwnProperty.call(variante, "transfer")
+    ? variante.transfer : (tour.transfer || null);
+}
+
+function ritrovoDi(tour, variante) {
+  if (!tour) return null;
+  return variante && Object.prototype.hasOwnProperty.call(variante, "ritrovo")
+    ? variante.ritrovo : (tour.ritrovo || null);
+}
+
+// Il cliente sara' preso in hotel? Su una scheda di PICKUP_NESSUNO solo se la
+// variante ha il transfer e lui l'ha chiesto; su tutte le altre si'.
+function conRitiro(tour, variante, transferChiesto) {
+  if (!tour) return false;
+  const nessuno = typeof PICKUP_NESSUNO !== "undefined" && PICKUP_NESSUNO.indexOf(tour.id) !== -1;
+  return !nessuno || !!(transferDi(tour, variante) && transferChiesto);
+}
+
+// Solo per adulti: la scheda ha solo la fascia degli adulti e parte da 13 anni
+// o piu' ("16+", "18+"), senza nessuna fascia per bambini o neonati. Una scheda
+// con "12+" e senza bambini non conta: lì i bambini di solito ci sono e il
+// prezzo manca, non e' vietato. Lo legge la finestra della richiesta per
+// togliere il campo dei bambini.
+function soloAdulti(tour) {
+  const eta = tour && tour.ages;
+  if (!eta || eta.child || eta.infant || typeof eta.adult !== "string") return false;
+  const m = eta.adult.match(/^(\d+)\+$/);
+  return !!m && Number(m[1]) >= 13;
+}
+
+// Il cliente ha chiesto un transfer? Il Siam Park ne ha due, da Nord
+// (`transfer`) e da Los Gigantes (`transferSiam`), e tutti e due portano il
+// pulmino sotto l'hotel (19 ottobre 2026). Vale per una richiesta o una voce
+// della lista, che hanno tutte e due i campi.
+function transferChiesto(req) {
+  return !!(req && (req.transfer || req.transferSiam));
+}
+
+// Il punto di ritrovo da mostrare, o null: c'e' solo dove nessuno passa a
+// prendere il cliente, cioe' senza transfer o col transfer non spuntato.
+function ritrovoDaMostrare(tour, variante, transferChiesto) {
+  const r = ritrovoDi(tour, variante);
+  if (!r) return null;
+  if (transferDi(tour, variante) && transferChiesto) return null;
+  if (!transferDi(tour, variante) && conRitiro(tour, variante, false)) return null;
+  return r;
 }
 
 function prezziAPersona(tour, req) {
@@ -259,13 +350,16 @@ function prezziAPersona(tour, req) {
   // Il posto sul pullman per i neonati, quando il fornitore lo fa pagare. A
   // differenza di adulti e bambini `tp.baby` e' gia' il prezzo **completo** del
   // neonato col transfer (senza transfer quel posto non esiste), quindi
-  // sostituisce `priceInfant` invece di sommarcisi. Oggi nessuna scheda ce
-  // l'ha: sta qui perche' il campo esiste nel vocabolario e il giorno che
-  // arriva deve tornare da solo.
+  // sostituisce `priceInfant` invece di sommarcisi. La prima scheda che ce
+  // l'ha e' Castillo San Miguel (11 €, ottobre 2026).
   const neonatoColTransfer = tp => (tp && tp.baby !== undefined) ? tp.baby : undefined;
   // Il secondo transfer, una seconda zona di partenza: stessa logica, listino
   // diverso. I due checkbox si escludono a vicenda nella finestra, quindi qui
   // non serve gestire il caso in cui sono spuntati tutti e due.
+  // Col transfer ma senza il suo prezzo (Scandal: "prezzo su richiesta") il
+  // totale non si fa: senza questa riga il transfer risultava gratis e il
+  // totale piu' basso del vero.
+  if (req.transfer && tour.transferPriceUnknown) return null;
   const tp = req.transfer ? tour.transferPrice
     : req.transferSiam ? tour.transferSiamPrice
     : null;
@@ -288,17 +382,27 @@ function prezziAPersona(tour, req) {
 // si porta dietro anche il resto del gruppo scritto come standard: cosi'
 // l'ufficio legge "1 vegetariano e 1 standard" invece di dover sottrarre da
 // solo il numero di persone.
-function menuTesto(req) {
-  // Dalla lista il riepilogo arriva gia' scritto (`menu`), non come numeri:
-  // senza questa riga la richiesta partita dalla lista perdeva per strada
-  // "1 Vegetariano", che nella lista si vedeva. Le allergie stanno nelle note,
-  // ma un vegano che sparisce e' comunque un vegano che l'ufficio non legge.
-  if (typeof req.menu === "string") return req.menu;
-  const scelti = (req.menus || []).filter(m => m.n > 0);
+function menuTesto(req, tour) {
+  // Dalla lista arrivano i numeri di ogni menu (`menuN`, per posizione): i
+  // nomi si rileggono dal catalogo nella lingua di adesso, come per i mezzi.
+  // Prima la lista salvava solo la frase gia' scritta, e un cliente francese
+  // mandava all'ufficio "Menu: Végétarien × 1" in un messaggio in italiano
+  // (terza prova da cliente, 19 ottobre 2026).
+  let menus = req.menus;
+  if (Array.isArray(req.menuN) && tour && Array.isArray(tour.menus)) {
+    menus = req.menuN.map((n, i) => ({ label: tf(tour.menus[i] || ""), n: n }));
+  } else if (typeof req.menu === "string") {
+    // Le voci salvate prima, con la sola frase: senza questa riga la
+    // richiesta partita dalla lista perdeva per strada "1 Vegetariano", che
+    // nella lista si vedeva. Un vegano che sparisce e' un vegano che l'ufficio
+    // non legge.
+    return req.menu;
+  }
+  const scelti = (menus || []).filter(m => m.n > 0);
   if (!scelti.length) return "";
   // "Vegetariano × 2" e non "2 Vegetariano": il "×" e' gia' il modo in cui il
   // sito scrive le quantita' nel totale, e soprattutto evita i plurali. Le
-  // etichette dei menu le scrive il catalogo in tre lingue, e nessuna delle
+  // etichette dei menu le scrive il catalogo in cinque lingue, e nessuna delle
   // tre fa il plurale allo stesso modo: "2 Vegetariano" sarebbe sbagliato in
   // italiano, e inventare una regola per pluralizzarle sarebbe peggio.
   const parti = scelti.map(m => m.label + " × " + m.n);
@@ -351,7 +455,14 @@ function totaleMezzi(tour, req) {
     if (!prezzo) { manca = true; return; }
     totale += prezzo * scelto.n;
     quanti += scelto.n;
-    pezzi.push(scelto.n + " " + scelto.label + " × €" + eur(prezzo));
+    // Prima il tipo, poi quanti: "4 posti: 1 × €240". Col numero davanti
+    // usciva "1 4 posti × €240", due numeri attaccati (seconda prova da
+    // cliente, 19 ottobre 2026), e sulla Mustang "1 Con 1 o 2 persone".
+    // Il nome si rilegge dal catalogo per posizione, come in unitaTesto(): una
+    // voce entrata nella lista in italiano scrive "4 seats" se il cliente poi
+    // passa all'inglese. Quello salvato nella voce resta come ripiego.
+    const nome = tipi[i] ? tf(tipi[i].name) : scelto.label;
+    pezzi.push(nome + ": " + scelto.n + " × €" + eur(prezzo));
   });
   if (manca || !quanti) return null;
 
@@ -366,7 +477,7 @@ function totaleMezzi(tour, req) {
       // stesso nome della casella e della riga del messaggio: nel dettaglio del
       // conto "Transfer" accanto a "Ritiro in hotel" sembrerebbero due cose
       pezzi.push((tour.transferLabel ? tf(tour.transferLabel) : t("wa.transfer")) +
-        " " + quanti + " × €" + eur(mezzi.transferPrice));
+        ": " + quanti + " × €" + eur(mezzi.transferPrice));
     }
   }
   return { totale: totale, dettaglio: pezzi.join(" + ") };
@@ -495,7 +606,7 @@ function hotelCerca(testo, quanti) {
 //   null     → l'hotel non e' nell'elenco, oppure del suo punto non sappiamo il
 //              nome (sono quelli del nord). Non si mostra niente: meglio il
 //              silenzio di un'indicazione a meta'.
-function hotelPunto(nomeHotel, idScheda) {
+function hotelPunto(nomeHotel, idScheda, conTransfer) {
   if (typeof HOTELS === "undefined" || typeof PICKUP_POINTS === "undefined") return null;
   // Dove il ritiro non esiste non c'e' nessun punto da mostrare: le tabelle
   // sono di un altro fornitore e la fermata che ne uscirebbe manderebbe il
@@ -503,8 +614,12 @@ function hotelPunto(nomeHotel, idScheda) {
   // Sta qui in cima e non solo nella finestra perche' la stessa funzione scrive
   // anche la riga del messaggio WhatsApp, e una richiesta rimasta nella lista
   // da ieri porta ancora scritto l'hotel.
-  if (idScheda && typeof PICKUP_NESSUNO !== "undefined"
-      && PICKUP_NESSUNO.indexOf(idScheda) !== -1) return null;
+  // `conTransfer`: il cliente ha spuntato "Vuoi il transfer?" su una variante
+  // che ce l'ha (Freebird, buggy): li' il pulmino passa sotto l'hotel anche se
+  // la scheda sta in PICKUP_NESSUNO.
+  const nessuno = idScheda && typeof PICKUP_NESSUNO !== "undefined"
+      && PICKUP_NESSUNO.indexOf(idScheda) !== -1;
+  if (nessuno && !conTransfer) return null;
   const k = hotelChiave(nomeHotel.trim());
   if (!k) return null;
   const riga = HOTELS.find(h => hotelChiave(h[0]) === k);
@@ -517,8 +632,8 @@ function hotelPunto(nomeHotel, idScheda) {
   // in hotel.js). Va guardato **prima** del punto, se no il cliente andrebbe a
   // una fermata dove quel giorno non si ferma nessuno. Solo per gli hotel che
   // conosciamo: per questo sta dopo il controllo qui sopra.
-  if (idScheda && typeof PICKUP_IN_HOTEL !== "undefined"
-      && PICKUP_IN_HOTEL.indexOf(idScheda) !== -1) {
+  if (nessuno || (idScheda && typeof PICKUP_IN_HOTEL !== "undefined"
+      && PICKUP_IN_HOTEL.indexOf(idScheda) !== -1)) {
     return { dove: "hotel", ora: (ore && ore[riga[1]]) || "" };
   }
   if (riga[1] === 0) return { dove: "hotel" };
@@ -563,6 +678,9 @@ const HOTEL_QUANTI = 8;
 // quale escursione mostrare l'orario, e vive qui fuori perche' initHotelField()
 // e initRequestDialog() sono due funzioni separate.
 let SCHEDA_APERTA = null;
+// La variante premuta sulla pagina quando la finestra si e' aperta: il
+// transfer e il punto di ritrovo possono cambiare da una all'altra.
+let VARIANTE_APERTA = null;
 
 function initHotelField() {
   const campo = document.querySelector("[data-hotel-field]");
@@ -621,9 +739,17 @@ function initHotelField() {
   // posto solo, scritto nelle note. Chiederlo lo stesso vorrebbe dire promettere
   // un ritiro che non c'e' — la riga di aiuto dice "dove passiamo a prenderti" —
   // e far scrivere al cliente un dato che nessuno usera'.
+  // Su Freebird e buggy la domanda compare solo col transfer spuntato.
+  function transferSpuntato() {
+    const casella = document.getElementById("reqTransfer");
+    const seconda = document.getElementById("reqTransferSiam");
+    const spuntato = (casella && casella.checked) ||
+      (seconda && seconda.checked && SCHEDA_APERTA && SCHEDA_APERTA.transferSiam);
+    return !!(spuntato && transferDi(SCHEDA_APERTA, VARIANTE_APERTA));
+  }
+
   function senzaRitiro() {
-    return !!(typeof PICKUP_NESSUNO !== "undefined" && SCHEDA_APERTA
-      && PICKUP_NESSUNO.indexOf(SCHEDA_APERTA.id) !== -1);
+    return !!SCHEDA_APERTA && !conRitiro(SCHEDA_APERTA, VARIANTE_APERTA, transferSpuntato());
   }
 
   function mostraPunto() {
@@ -635,7 +761,7 @@ function initHotelField() {
     // attivita', e l'hotel scritto per l'escursione di prima finirebbe nel
     // messaggio di questa, sotto una domanda che qui non e' stata fatta.
     if (spento && input.value) { input.value = ""; chiudi(); }
-    const p = spento ? null : hotelPunto(input.value, SCHEDA_APERTA && SCHEDA_APERTA.id);
+    const p = spento ? null : hotelPunto(input.value, SCHEDA_APERTA && SCHEDA_APERTA.id, transferSpuntato());
     // Un'etichetta e un posto, niente di piu': il cliente ha appena scritto il
     // nome del suo hotel e vede da solo se il punto e' un altro. Le frasi
     // lunghe che c'erano prima ("non e' il tuo hotel", "l'ora te la
@@ -649,6 +775,14 @@ function initHotelField() {
     }
     puntoEl.hidden = !p;
     if (aiutoEl) aiutoEl.hidden = spento || !!p;
+    // La riga della privacy dice che l'hotel resta salvato: dove l'hotel non
+    // si chiede, quella frase parlava di una domanda che non c'era.
+    const privacyEl = document.querySelector("#requestDialog .request-privacy");
+    if (privacyEl) {
+      const chiave = spento ? "req.privacyNoHotel" : "req.privacy";
+      privacyEl.dataset.i18nHtml = chiave;
+      privacyEl.innerHTML = t(chiave);
+    }
     mostraOraHotel(p);
   }
 
@@ -693,6 +827,16 @@ function initHotelField() {
   }
 
   input.addEventListener("input", () => { apri(); mostraPunto(); });
+  // "Vuoi il transfer?" spuntato o tolto: la domanda sull'hotel compare o
+  // sparisce. Spuntato, torna l'hotel dell'ultima volta, come all'apertura.
+  document.addEventListener("islatransfer", () => {
+    const primaNascosto = campo.hidden;
+    if (!senzaRitiro() && !input.value) input.value = hotelRicordato();
+    mostraPunto();
+    // La casella del transfer sta in fondo e la domanda sull'hotel piu' su:
+    // comparsa, la si porta in vista, se no il cliente non la vede.
+    if (primaNascosto && !campo.hidden) campo.scrollIntoView({ block: "center", behavior: "smooth" });
+  });
   // "dove passiamo a prenderti" oppure "dove e a che ora", secondo la scheda
   document.addEventListener("islarequestopen", () => {
     if (aiutoEl) {
@@ -741,7 +885,9 @@ function righeRichiesta(tour, req) {
   // Dove e quando passa il pulmino, ricavati dall'hotel. Si calcolano qui in
   // cima perche' l'ora va nella riga dell'orario, insieme alle altre, e non in
   // fondo attaccata al punto.
-  const punto = req.hotel ? hotelPunto(req.hotel, tour && tour.id) : null;
+  const variante = varianteScelta(tour, req);
+  const transfer = transferDi(tour, variante);
+  const punto = req.hotel ? hotelPunto(req.hotel, tour && tour.id, !!(transfer && transferChiesto(req))) : null;
   // L'orario si scrive solo se il cliente ne ha scelto uno. "Da concordare" e'
   // l'assenza della riga, non una riga che dice "da concordare": all'ufficio
   // non serve leggere che il cliente non ha deciso.
@@ -761,7 +907,6 @@ function righeRichiesta(tour, req) {
   }
   // La variante scelta sta in alto: e' la prima cosa che l'ufficio deve sapere
   // per rispondere col prezzo giusto.
-  const variante = varianteScelta(tour, req);
   const etichettaVariante = variante ? tf(variante.label) : req.option;
   if (tour.options && etichettaVariante) {
     righe.push("• " + tf(tour.options.label) + ": " + etichettaVariante);
@@ -773,14 +918,18 @@ function righeRichiesta(tour, req) {
   // Come l'orario e la lingua: la riga compare solo se qualcuno del gruppo ha
   // un'esigenza. Un "tutti standard" scritto in chat sarebbe una riga in piu'
   // da leggere che non dice niente; "1 vegetariano e 1 standard" no.
-  const menu = menuTesto(req);
+  const menu = menuTesto(req, tour);
   if (menu) righe.push("• " + t("wa.menu") + ": " + menu);
   // La risposta si scrive sempre, anche quando e' "no": cosi' l'ufficio sa che
   // la domanda e' stata fatta, invece di doverla rifare in chat.
-  if (tour.transfer) {
+  if (transfer) {
     const etichetta = tour.transferLabel ? tf(tour.transferLabel) : t("wa.transfer");
     righe.push("• " + etichetta + ": " + t(req.transfer ? "wa.yes" : "wa.no"));
   }
+  // Dove si presenta chi non viene preso in hotel: l'ufficio lo legge e la
+  // conferma lo riporta (15 ottobre 2026).
+  const ritrovo = ritrovoDaMostrare(tour, variante, transferChiesto(req));
+  if (ritrovo) righe.push("• " + t("wa.meetingPoint") + ": " + tf(ritrovo));
   if (tour.transferSiam) {
     const etichetta = tour.transferSiamLabel ? tf(tour.transferSiamLabel) : t("wa.transferSiam");
     righe.push("• " + etichetta + ": " + t(req.transferSiam ? "wa.yes" : "wa.no"));
@@ -810,20 +959,17 @@ function righeRichiesta(tour, req) {
 }
 
 // Messaggio WhatsApp per una sola escursione, con data e persone già compilate.
-// È scritto nella lingua che il cliente sta usando sul sito.
+// È scritto nella lingua che il cliente sta usando sul sito, salvo
+// francese e tedesco, che vanno in italiano (perUfficio in i18n.js).
 // Il testo sta a parte dall'indirizzo perche' va anche nel database
 // (richieste.js): l'ufficio lo rilegge in venditori.html accanto alla richiesta.
 function whatsappTesto(tour, req) {
-  return t("wa.intro", { name: req.name }) + "\n" +
+  return perUfficio(() => t("wa.intro", { name: req.name }) + "\n" +
     "• " + tf(tour.title) + "\n" +
     righeRichiesta(tour, req).join("\n") +
     (req.email ? "\n\n" + t("wa.email", { email: req.email }) : "") +
     // il codice della richiesta salvata nel database (richieste.js), se c'e'
-    (req.code ? "\n\n" + t("wa.code", { code: req.code }) : "");
-}
-
-function whatsappUrl(tour, req) {
-  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(whatsappTesto(tour, req));
+    (req.code ? "\n\n" + t("wa.code", { code: req.code }) : ""));
 }
 
 function tourCard(tour) {
@@ -833,7 +979,7 @@ function tourCard(tour) {
   // encodeURIComponent: se un nome file contiene spazi o accenti,
   // l'indirizzo resta valido invece di rompersi a metà
   const media = tour.image
-    ? `<img src="./assets/${encodeURIComponent(tour.image)}" alt="${tf(tour.title)}" loading="lazy" />`
+    ? `<img src="${fotoPiccola(tour.image)}" alt="${tf(tour.title)}" loading="lazy" />`
     : `<span class="tour-media-empty" aria-hidden="true">${t("tour.photoSoon")}</span>`;
 
   // Foto, titolo e pulsante portano tutti alla pagina di dettaglio.
@@ -845,7 +991,12 @@ function tourCard(tour) {
   // dettaglio, dopo itinerario, cosa e' incluso e consigli.
   const askBtn = `<a class="btn btn-primary tour-ask" href="${href}">${t("tour.details")}</a>`;
 
+  // Il cuore dei preferiti (preferiti.js), sopra la foto. Fuori dal link:
+  // un bottone dentro un <a> non si puo' mettere.
+  const cuore = typeof cuorePreferito === "function" ? cuorePreferito(tour.id, "fav-on-photo") : "";
+
   li.innerHTML = `
+    ${cuore}
     <a class="tour-media" href="${href}" tabindex="-1" aria-hidden="true">${media}</a>
     <div class="tour-body">
       <span class="tour-cat">${categoryName(tour.category)}</span>
@@ -857,6 +1008,7 @@ function tourCard(tour) {
         ${tour.family ? "<li>" + t("tour.family") + "</li>" : ""}
         ${(tour.transfer || tour.transferSiam) ? "<li>" + t("tour.transfer") + "</li>" : ""}
         ${tour.season ? `<li class="tour-meta-season">${tf(tour.season)}</li>` : ""}
+        ${tour.pochiPosti ? `<li class="tour-meta-season">${t("tour.fewSeats")}</li>` : ""}
         ${offertaAttiva(tour) ? `<li class="tour-meta-offer">${t("tour.offer")}</li>` : ""}
       </ul>
       <div class="tour-foot">
@@ -867,6 +1019,18 @@ function tourCard(tour) {
   `;
   return li;
 }
+
+// Le parole con cui un genitore cerca, nelle cinque lingue: si aggiungono al
+// testo in cui si cerca solo sulle schede con `family: true`. Senza, "kids" e
+// "children" non trovavano niente e "family" una scheda sola (seconda prova da
+// cliente, 19 ottobre 2026). Minuscole, come la ricerca.
+const PAROLE_FAMIGLIA = [
+  "famiglia", "famiglie", "bambini", "bambino", "bimbi", "ragazzi",
+  "family", "families", "kids", "children", "child",
+  "familia", "familias", "niños", "niño", "ninos",
+  "famille", "familles", "enfants", "enfant",
+  "familie", "familien", "kinder"
+];
 
 function initCatalog() {
   const grid = document.querySelector("[data-grid]");
@@ -907,9 +1071,20 @@ function initCatalog() {
   // Con una categoria nel link, una ricerca dalla barra della home o il
   // filtro famiglia si parte invece da tutto il catalogo: sono domande
   // precise, e rispondere con quattro schede soltanto sarebbe sbagliato.
+  // I preferiti (preferiti.js): "?preferiti=1" i miei (dal Menu), "?pref=a,b"
+  // quelli che qualcuno mi ha mandato. Gli id che non esistono si buttano via,
+  // come per le categorie.
+  const conPreferiti = typeof preferiti === "function";
+  const condivisiDaLink = conPreferiti && params.get("pref")
+    ? params.get("pref").split(",").filter(id => published.some(x => x.id === id)).slice(0, 50)
+    : null;
+  const preferitiDaLink = conPreferiti && params.get("preferiti") === "1";
   const state = {
+    preferiti: preferitiDaLink && !condivisiDaLink,
+    condivisi: condivisiDaLink && condivisiDaLink.length ? condivisiDaLink : null,
     categories: categorieDaLink,
-    recommended: !categorieDaLink.length && !queryDaLink && !selezioneDaLink && params.get("family") !== "1",
+    recommended: !categorieDaLink.length && !queryDaLink && !selezioneDaLink && params.get("family") !== "1"
+      && !preferitiDaLink && !condivisiDaLink,
     selezione: selezioneDaLink,
     family: params.get("family") === "1",
     query: queryDaLink.toLowerCase(),
@@ -927,19 +1102,26 @@ function initCatalog() {
   // Raccomandate in testa, "Tutte" in fondo: prima le proposte, poi le
   // categorie, e per ultimo l'elenco intero.
   function buildChips() {
-    const all = [{ id: "raccomandate", name: t("catalog.recommended") }]
+    // "♥ Preferiti (3)" davanti a tutto, solo se ce n'e' almeno uno (o se
+    // la vista dei preferiti e' aperta: togliendo l'ultimo non sparisce
+    // sotto il dito).
+    const quanti = conPreferiti ? preferiti().length : 0;
+    const all = (quanti || state.preferiti ? [{ id: "preferiti", name: t("fav.chip", { n: quanti }) }] : [])
+      .concat([{ id: "raccomandate", name: t("catalog.recommended") }])
       .concat(usedCategories, [{ id: "tutte", name: t("catalog.all") }]);
     chipRow.innerHTML = "";
     all.forEach(cat => {
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "chip";
+      btn.className = "chip" + (cat.id === "preferiti" ? " chip-fav" : "");
       btn.textContent = tf(cat.name);
       btn.dataset.cat = cat.id;
       btn.addEventListener("click", () => {
+        state.preferiti = cat.id === "preferiti";
+        state.condivisi = null;
         state.recommended = cat.id === "raccomandate";
         state.selezione = null;
-        state.categories = state.recommended || cat.id === "tutte" ? [] : [cat.id];
+        state.categories = state.recommended || state.preferiti || cat.id === "tutte" ? [] : [cat.id];
         render();
       });
       chipRow.appendChild(btn);
@@ -1008,12 +1190,16 @@ function initCatalog() {
     }
     if (titleEl) {
       titleEl.textContent = cat ? tf(cat.name)
+        : state.preferiti ? t("fav.title")
+        : state.condivisi ? t("fav.sharedTitle")
         : state.selezione ? t(SELEZIONI[state.selezione].title)
         : state.recommended ? t("catalog.recommendedTitle") : t("catalog.title");
     }
   }
 
   function matches(tour) {
+    if (state.preferiti && !preferiti().includes(tour.id)) return false;
+    if (state.condivisi && !state.condivisi.includes(tour.id)) return false;
     if (state.recommended && !RACCOMANDATE.includes(tour.id)) return false;
     if (state.selezione && !SELEZIONI[state.selezione].ids.includes(tour.id)) return false;
     // Basta che UNA delle categorie della scheda sia fra quelle scelte: le
@@ -1026,11 +1212,12 @@ function initCatalog() {
     if (state.zone && !(tour.zoneGroups || []).includes(state.zone)) return false;
     if (state.duration && !(tour.durationGroups || []).includes(state.duration)) return false;
     if (state.query) {
-      // Si cerca in tutte e tre le lingue: chi scrive "boat" trova la
+      // Si cerca in tutte e cinque le lingue: chi scrive "boat" trova la
       // stessa attività di chi scrive "barca".
       const haystack = [tour.title, tour.desc, tour.zone]
         .map(campo => typeof campo === "string" ? campo : Object.values(campo).join(" "))
         .concat(categorieDi(tour).map(categoryName))
+        .concat(tour.family ? PAROLE_FAMIGLIA : [])
         .join(" ")
         .toLowerCase();
       if (!haystack.includes(state.query)) return false;
@@ -1047,9 +1234,14 @@ function initCatalog() {
     } else if (state.selezione) {
       const ids = SELEZIONI[state.selezione].ids;
       results.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
+    } else if (state.preferiti || state.condivisi) {
+      // nell'ordine in cui sono stati salvati (o mandati)
+      const ids = state.condivisi || preferiti();
+      results.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id));
     }
 
     dipingiTestata();
+    barraPreferiti(results);
 
     grid.innerHTML = "";
     results.forEach(tour => grid.appendChild(tourCard(tour)));
@@ -1057,7 +1249,9 @@ function initCatalog() {
     chipRow.querySelectorAll(".chip").forEach(btn => {
       // Con una selezione aperta non e' acceso nessun filtro della riga: la
       // selezione non e' fra quelli, e "Tutte" direbbe il falso.
-      const attivo = state.selezione ? false
+      const attivo = state.condivisi ? false
+        : state.preferiti ? btn.dataset.cat === "preferiti"
+        : state.selezione ? false
         : state.recommended ? btn.dataset.cat === "raccomandate"
         : state.categories.length ? state.categories.includes(btn.dataset.cat)
         : btn.dataset.cat === "tutte";
@@ -1094,6 +1288,12 @@ function initCatalog() {
         <h2>${t("catalog.prepTitle")}</h2>
         <p>${t("catalog.prepText")}</p>
       `;
+    } else if (results.length === 0 && state.preferiti) {
+      emptyEl.hidden = false;
+      emptyEl.innerHTML = `
+        <h2>${t("fav.emptyTitle")}</h2>
+        <p>${t("fav.emptyText")}</p>
+      `;
     } else if (results.length === 0) {
       emptyEl.hidden = false;
       emptyEl.innerHTML = `
@@ -1106,6 +1306,41 @@ function initCatalog() {
     }
   }
 
+  // Sopra le schede, nella vista dei preferiti: "Condividi i preferiti"; in
+  // quella dei preferiti mandati da qualcuno: "Salva tutte nei preferiti".
+  function barraPreferiti(results) {
+    let barra = document.querySelector("[data-fav-bar]");
+    const serve = (state.preferiti || state.condivisi) && results.length;
+    if (!serve) { if (barra) barra.hidden = true; return; }
+    if (!barra) {
+      barra = document.createElement("div");
+      barra.className = "fav-bar";
+      barra.dataset.favBar = "";
+      grid.parentNode.insertBefore(barra, grid);
+    }
+    const ids = results.map(x => x.id);
+    const mancano = state.condivisi ? ids.filter(id => !preferiti().includes(id)) : [];
+    barra.innerHTML = state.preferiti
+      ? `<button class="btn btn-ghost" type="button" data-fav-share>${esc(t("fav.share"))}</button>`
+      : mancano.length
+      ? `<p>${esc(t("fav.sharedText"))}</p><button class="btn btn-ghost" type="button" data-fav-saveall>${esc(t("fav.saveAll"))}</button>`
+      : `<p>${esc(t("fav.allSaved"))}</p>`;
+    barra.hidden = false;
+    const condividi = barra.querySelector("[data-fav-share]");
+    if (condividi) condividi.addEventListener("click", () => condividiPreferiti(condividi, ids));
+    const tutte = barra.querySelector("[data-fav-saveall]");
+    if (tutte) tutte.addEventListener("click", () => mancano.forEach(id => cambiaPreferito(id)));
+  }
+
+  // Un cuore toccato: la pillola cambia numero; nella vista dei preferiti
+  // la scheda tolta sparisce; in quella dei condivisi cambia la barra.
+  if (conPreferiti) {
+    document.addEventListener("islapreferiti", () => {
+      buildChips();
+      render();
+    });
+  }
+
   if (searchInput) {
     searchInput.addEventListener("input", () => {
       state.query = searchInput.value.trim().toLowerCase();
@@ -1114,6 +1349,7 @@ function initCatalog() {
       // direbbe che la barca non ce l'abbiamo.
       if (state.query && state.recommended) state.recommended = false;
       if (state.query && state.selezione) state.selezione = null;
+      if (state.query) { state.preferiti = false; state.condivisi = null; }
       render();
     });
   }
@@ -1234,6 +1470,8 @@ function initRequestDialog() {
   const transferLabelEl = document.querySelector("[data-request-transfer-label]");
   const transferNoteEl = document.querySelector("[data-request-transfer-note]");
   const transferInput = document.getElementById("reqTransfer");
+  const ritrovoEl = document.querySelector("[data-request-ritrovo]");
+  const ritrovoValoreEl = document.querySelector("[data-request-ritrovo-value]");
   const transferSiamEl = document.querySelector("[data-request-transfer-siam]");
   const transferSiamLabelEl = document.querySelector("[data-request-transfer-siam-label]");
   const transferSiamNoteEl = document.querySelector("[data-request-transfer-siam-note]");
@@ -1292,9 +1530,24 @@ function initRequestDialog() {
   // disponibilita'": all'ufficio non cambia niente.
   //
   // Il nome non si chiede qui ma nella finestra della lista, una volta sola.
+  // "Punto di ritrovo: Puerto Colón, molo 10 — ci arrivi da solo": dove non
+  // passa nessuno, o il cliente il transfer non lo vuole (15 ottobre 2026).
+  function aggiornaRitrovo() {
+    if (!ritrovoEl) return;
+    const r = current ? ritrovoDaMostrare(current, VARIANTE_APERTA,
+      !!((transferInput && transferInput.checked) || (transferSiamInput && transferSiamInput.checked))) : null;
+    if (ritrovoValoreEl) ritrovoValoreEl.textContent = r ? tf(r) : "";
+    ritrovoEl.hidden = !r;
+  }
+
   function open(tour) {
     current = tour;
     SCHEDA_APERTA = tour;
+    VARIANTE_APERTA = sceltaCorrente(tour);
+    // la casella del transfer riparte da non spuntata **prima** che il campo
+    // dell'hotel guardi se deve comparire: e' la stessa finestra per tutte le
+    // schede, e la spunta di quella di prima chiederebbe l'hotel anche qui
+    if (transferInput) transferInput.checked = false;
     // il campo dell'hotel vive in un'altra funzione e deve sapere che scheda e'
     document.dispatchEvent(new CustomEvent("islarequestopen"));
     // `required` su un campo nascosto blocca l'invio senza dire perche': il
@@ -1317,12 +1570,13 @@ function initRequestDialog() {
     // la domanda sul transfer compare solo dove il transfer esiste davvero, e
     // riparte sempre da non spuntata: la finestra e' la stessa per tutte le
     // attivita' e si riapre com'era rimasta
+    // Il transfer della variante, se la variante lo dice (Freebird, buggy).
+    const transfer = transferDi(tour, VARIANTE_APERTA);
     if (transferEl) {
-      transferEl.hidden = !tour.transfer;
-      if (transferInput) transferInput.checked = false;
+      transferEl.hidden = !transfer;
       // il testo per esteso dice i limiti (per il Twin Ticket vale solo per
       // la giornata a Loro Parque) prima che il cliente spunti
-      if (transferNoteEl) transferNoteEl.textContent = tour.transfer ? tf(tour.transfer) : "";
+      if (transferNoteEl) transferNoteEl.textContent = transfer ? tf(transfer) : "";
       // La domanda e' quella di sempre, a meno che la scheda non ne dia una
       // sua: serve dove "Vuoi il transfer?" da solo non basta a distinguerlo
       // dal secondo transfer (due zone di partenza diverse sulla stessa scheda).
@@ -1336,6 +1590,7 @@ function initRequestDialog() {
       if (transferSiamNoteEl) transferSiamNoteEl.textContent = tour.transferSiam ? tf(tour.transferSiam) : "";
       if (transferSiamLabelEl) transferSiamLabelEl.textContent = tour.transferSiamLabel ? tf(tour.transferSiamLabel) : t("req.transferSiam");
     }
+    aggiornaRitrovo();
     // Gli orari: la finestra e' una sola per tutte le attivita', quindi si
     // riparte sempre da "Da concordare" invece di tenere la scelta di prima.
     if (timeEl) timeEl.value = "";
@@ -1344,6 +1599,7 @@ function initRequestDialog() {
     riempiLingue(tour);
     riempiMenu(tour);
     mostraNeonati(tour);
+    mostraBambini(tour);
     mostraPersone(tour);
     riempiUnita(tour);
     // La data scelta per un'altra scheda puo' non andare bene per questa: i
@@ -1490,6 +1746,8 @@ function initRequestDialog() {
     // preavviso), oltre un anno, e i giorni in cui non si parte.
     function utile(iso) {
       if (iso < minRequestDate() || iso > maxRequestDate()) return false;
+      // domani si', ma solo se c'e' ancora una partenza fra 24 ore o piu'
+      if (current && !giornoPossibile(current, sceltaCorrente(current), iso)) return false;
       const giorni = giorniBuoni();
       if (!giorni.length) return true;       // vuoto = tutti i giorni
       const [a, m, g] = iso.split("-").map(Number);
@@ -1548,9 +1806,9 @@ function initRequestDialog() {
       testa.className = "date-cal-head";
       const indietro = freccia(-1, "req.prevMonth", mese > min);
       const titolo = document.createElement("strong");
-      // I nomi dei mesi li da' il browser, giusti nelle tre lingue: dodici nomi
-      // per tre lingue sarebbero trentasei righe di vocabolario per niente.
-      const locali = { it: "it-IT", en: "en-GB", es: "es-ES" };
+      // I nomi dei mesi li da' il browser, giusti nelle cinque lingue: dodici nomi
+      // per cinque lingue sarebbero sessanta righe di vocabolario per niente.
+      const locali = { it: "it-IT", en: "en-GB", es: "es-ES", fr: "fr-FR", de: "de-DE" };
       try {
         titolo.textContent = mese.toLocaleDateString(locali[getLang()] || "en-GB",
           { month: "long", year: "numeric" });
@@ -1743,6 +2001,18 @@ function initRequestDialog() {
     const haNeonati = tour && tour.priceInfant !== undefined;
     babiesBox.hidden = !haNeonati;
     if (!haNeonati) babiesInput.value = "0";
+  }
+
+  // Il campo dei bambini sparisce sulle schede solo per adulti (proprietario,
+  // 19 ottobre 2026): Scandal Dinner Show dai 16 anni accettava "2 adulti e 1
+  // bambino", il totale spariva e la richiesta partiva lo stesso. Nascosto, si
+  // azzera, come quello dei neonati.
+  function mostraBambini(tour) {
+    const box = kidsInput && kidsInput.closest("label");
+    if (!box) return;
+    const spento = soloAdulti(tour);
+    box.hidden = spento;
+    if (spento) kidsInput.value = "0";
   }
 
   // Quanti mezzi prenotare, uno per tipo. Compare solo dove la scheda ha
@@ -1953,18 +2223,25 @@ function initRequestDialog() {
       qualunque.textContent = t("req.timeAny");
       timeEl.appendChild(qualunque);
     }
+    // Con la data gia' scelta, le partenze a meno di 24 ore si spengono: si
+    // vedono, ma non si possono prendere.
+    const giorno = dateInput && dateInput.value;
     orari.forEach(ora => {
       const voce = document.createElement("option");
       voce.value = ora;
       voce.textContent = ora;
+      if (giorno && !partenzaPossibile(giorno, ora)) voce.disabled = true;
       timeEl.appendChild(voce);
     });
     // al cambio lingua si ricostruisce: la scelta del cliente non si perde
     timeEl.value = scelto;
     // Cambiando variante l'orario di prima puo' non esistere piu' (dal charter
-    // al giro condiviso): se il ripristino non attacca, il menu resterebbe
-    // vuoto. Si riparte dalla prima voce.
-    if (timeEl.selectedIndex < 0) timeEl.selectedIndex = 0;
+    // al giro condiviso), o cambiando giorno puo' essersi spento: si riparte
+    // dalla prima voce che si puo' prendere.
+    if (timeEl.selectedIndex < 0 || (timeEl.selectedOptions[0] && timeEl.selectedOptions[0].disabled)) {
+      const prima = [...timeEl.options].findIndex(o => !o.disabled);
+      timeEl.selectedIndex = prima < 0 ? 0 : prima;
+    }
   }
 
   // "2 adulti × €55 + 1 bambino × €30" e sopra, grosso, "Totale €140". Si
@@ -2026,6 +2303,9 @@ function initRequestDialog() {
 
   dateInput.addEventListener("input", aggiornaGiorno);
   dateInput.addEventListener("change", aggiornaGiorno);
+  // Scelto il giorno, il menu delle ore si rifa': domani le partenze a meno di
+  // 24 ore si spengono (riempiOrari).
+  dateInput.addEventListener("input", () => { if (current) riempiOrari(current); });
 
   // I due transfer si escludono a vicenda: un cliente sta o al nord o al sud,
   // non in tutti e due i posti. Spuntarne uno toglie la spunta all'altro.
@@ -2037,6 +2317,17 @@ function initRequestDialog() {
       if (transferSiamInput.checked) transferInput.checked = false;
     });
   }
+
+  // Il transfer spuntato o tolto cambia due cose: la domanda sull'hotel
+  // (initHotelField, che ascolta "islatransfer") e il punto di ritrovo, che si
+  // mostra solo a chi al porto ci va da solo.
+  [transferInput, transferSiamInput].forEach(campo => {
+    if (!campo) return;
+    campo.addEventListener("change", () => {
+      aggiornaRitrovo();
+      document.dispatchEvent(new CustomEvent("islatransfer"));
+    });
+  });
 
   // Il totale segue i numeri mentre il cliente li cambia, e la spunta dei
   // transfer perche' col transfer il prezzo e' un altro.
@@ -2071,7 +2362,9 @@ function initRequestDialog() {
     if (!current) return;
     aggiornaAttivita(current);
     if (seasonEl && current.season) seasonEl.textContent = tf(current.season);
-    if (transferNoteEl && current.transfer) transferNoteEl.textContent = tf(current.transfer);
+    const transfer = transferDi(current, VARIANTE_APERTA);
+    if (transferNoteEl && transfer) transferNoteEl.textContent = tf(transfer);
+    aggiornaRitrovo();
     if (transferLabelEl) transferLabelEl.textContent = current.transferLabel ? tf(current.transferLabel) : t("req.transfer");
     if (transferSiamNoteEl && current.transferSiam) transferSiamNoteEl.textContent = tf(current.transferSiam);
     if (transferSiamLabelEl) transferSiamLabelEl.textContent = current.transferSiamLabel ? tf(current.transferSiamLabel) : t("req.transferSiam");
@@ -2083,6 +2376,7 @@ function initRequestDialog() {
     riempiLingue(current);
     riempiMenu(current);
     mostraNeonati(current);
+    mostraBambini(current);
     mostraPersone(current);
     riempiUnita(current);
     aggiornaTotale();
@@ -2161,6 +2455,8 @@ function initRequestDialog() {
       // nella lista si salva il riepilogo gia' scritto ("1 Vegetariano · 1
       // Menu standard"), come si fa gia' per la variante e per la lingua
       menu: menuTesto(req),
+      // e i numeri, per riscriverla nella lingua giusta (menuTesto)
+      menuN: (req.menus || []).map(m => m.n),
       adults: req.adults,
       kids: req.kids,
       babies: req.babies,

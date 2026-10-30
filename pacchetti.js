@@ -56,13 +56,9 @@
 //   Nazionale ci puo' stare una volta. Tre salite allo stesso posto sono lo
 //   stesso posto venduto tre volte, e il cliente se ne accorge il secondo
 //   giorno. Le voci che ci salgono non sono solo quelle col Teide nel nome:
-//     teide-national-park                il parco di giorno
-//     stargazing-group                   ci si sale la sera, tutte e due le varianti
-//     buggy-volcano-4h  optionIndex 1    "Tramonto sul Teide"
-//     buggy-volcano-4h  optionIndex 2    "Completo": dentro c'e' il parco
-//     quad-teide-adventure               tutte e due le varianti
-//     trekking-bici     optionIndex 0    "Teide Light"
-//     helicopter-tours  optionIndex 4    "Grand Teide Luxury"
+//   l'elenco sta in PACCHETTI_TEIDE, sotto i pacchetti, e lo usano sia
+//   `controlla.js` sia la pagina "Crea il tuo pacchetto", dove a scrivere il
+//   pacchetto e' il cliente.
 //   Il buggy lasciato senza `optionIndex` puo' finire su un percorso del
 //   Teide: dove succede, nel pacchetto non ci deve stare nient'altro che ci
 //   salga.
@@ -87,6 +83,17 @@
 //   15% non deve costringere a riscrivere la struttura. Vale sui mezzi come
 //   sulle persone — il buggy sconta come la barca — ma **non su tutto**:
 //   vedi qui sotto.
+//
+// IL PREZZO D'OFFERTA (proprietario, 26 ottobre 2026)
+//   `prezzoOfferta: 139` fissa il numero in vetrina, quello a persona, al
+//   posto di "somma meno `sconto`": e' l'unica eccezione a "il prezzo non si
+//   scrive qui", e si usa per un'offerta lanciata sui social. Accanto al prezzo
+//   esce "Offerta". Lo sconto diventa quello che serve per arrivarci
+//   (pacchettoSconto), su tutte le voci scontabili, e vale anche nella
+//   finestra: con altre persone o altri mezzi il totale si rifa' con quella
+//   percentuale. `sconto` resta scritto: torna buono il giorno che l'offerta
+//   si toglie. Se un'escursione dentro cambia prezzo, il numero in vetrina
+//   resta quello, e cambia lo sconto: e' l'offerta che si e' promessa.
 //
 // SU COSA LO SCONTO NON SI PUO' FARE
 //   Su quello che si compra a prezzo fisso e si rivende uguale: un 10% in meno
@@ -117,8 +124,10 @@
 //   `famiglia: true` marca i pacchetti fatti per chi viaggia coi bambini. Non
 //   e' un'etichetta grafica: cambia tre cose.
 //     1. Si vedono da soli su `pacchetti.html?famiglia=1`, che e' dove porta il
-//        riquadro "In famiglia" della home. Nella pagina di tutti i pacchetti
-//        ci sono lo stesso: un pacchetto di famiglia resta un pacchetto.
+//        riquadro "In famiglia" della home. Nella pagina dei pacchetti senza
+//        filtro (il riquadro "Pacchetti") **non** ci sono: ognuno sta in un
+//        riquadro solo della home, e ritrovarlo in due vetrine sembrava una
+//        ripetizione (proprietario, 13 ottobre 2026).
 //     2. Ogni voce mostra **due** prezzi, adulti e bambini, con la fascia
 //        d'eta' accanto. Su un pacchetto di famiglia il prezzo che conta e'
 //        quello dei bambini, e farlo cercare scheda per scheda non ha senso.
@@ -159,7 +168,8 @@
 //   senza le loro regole sui prezzi dei bambini:
 //     - si vedono da soli su `pacchetti.html?tema=per-due`, dove porta il
 //       riquadro della home;
-//     - restano pacchetti: nella pagina di tutti i pacchetti ci sono lo stesso.
+//     - come quelli di famiglia, non si ripetono nella pagina dei pacchetti
+//       senza filtro (proprietario, 13 ottobre 2026).
 //   I temi possibili stanno in PACCHETTI_TEMI qui sotto, con le chiavi dei
 //   testi della vetrina. Un tema scritto male non da' errore nella pagina —
 //   il pacchetto non esce mai nella sua vetrina — e lo dice `controlla.js`.
@@ -244,9 +254,11 @@ const PACCHETTI = [
     title: {
       it: "Tenerife Trio",
       en: "Tenerife Trio",
-      es: "Tenerife Trio"
+      es: "Tenerife Trio",
+      fr: "Tenerife Trio",
+      de: "Tenerife Trio"
     },
-    image: "teide-national-park.jpg",
+    image: "teide-national-park.webp",
     sconto: 10,
     // 39 + 55 + 44 = 138. Si sconta solo la barca: il Siam Park e' un
     // biglietto, il Teide in pullman e' `fixedPrice`. −5,50 → 132,50 a persona
@@ -259,7 +271,9 @@ const PACCHETTI = [
     desc: {
       it: "La montagna, il mare e il parco: tre giorni che coprono l'isola senza ripetersi. Il Teide in pullman con la guida, una giornata in barca da Las Galletas e il Siam Park.",
       en: "The mountain, the sea and the park: three days that cover the island without repeating themselves. Teide by coach with a guide, a day on the water from Las Galletas and Siam Park.",
-      es: "La montaña, el mar y el parque: tres días que recorren la isla sin repetirse. El Teide en autocar con guía, un día en barco desde Las Galletas y el Siam Park."
+      es: "La montaña, el mar y el parque: tres días que recorren la isla sin repetirse. El Teide en autocar con guía, un día en barco desde Las Galletas y el Siam Park.",
+      fr: "La montagne, la mer et le parc : trois jours qui couvrent l'île sans se répéter. Le Teide en car avec un guide, une journée sur l'eau depuis Las Galletas et le Siam Park.",
+      de: "Der Berg, das Meer und der Park: drei Tage, die die Insel abdecken, ohne sich zu wiederholen. Der Teide im Reisebus mit Guide, ein Tag auf dem Wasser ab Las Galletas und der Siam Park."
     }
   },
 
@@ -272,9 +286,11 @@ const PACCHETTI = [
     title: {
       it: "Tenerife Trio, versione buggy",
       en: "Tenerife Trio, buggy version",
-      es: "Tenerife Trio, versión buggy"
+      es: "Tenerife Trio, versión buggy",
+      fr: "Tenerife Trio, version buggy",
+      de: "Tenerife Trio, Buggy-Version"
     },
-    image: "buggy-volcano-4h.jpg",
+    image: "buggy-volcano-4h.webp",
     sconto: 10,
     // Il percorso resta aperto: i quattro costano uguale e si concorda
     // rispondendo. Qui si puo' fare perche' nel pacchetto non c'e' nient'altro
@@ -289,7 +305,9 @@ const PACCHETTI = [
     desc: {
       it: "Lo stesso trio, ma al volante: il buggy al posto del pullman, la giornata in barca da Las Galletas e il Siam Park. Il percorso del buggy lo scegliamo insieme quando rispondiamo.",
       en: "The same trio, but behind the wheel: a buggy instead of the coach, the day on the water from Las Galletas and Siam Park. We agree on the buggy route when we reply.",
-      es: "El mismo trío, pero al volante: el buggy en lugar del autocar, el día en barco desde Las Galletas y el Siam Park. El recorrido del buggy lo elegimos juntos al responder."
+      es: "El mismo trío, pero al volante: el buggy en lugar del autocar, el día en barco desde Las Galletas y el Siam Park. El recorrido del buggy lo elegimos juntos al responder.",
+      fr: "Le même trio, mais au volant : un buggy au lieu du car, la journée sur l'eau depuis Las Galletas et le Siam Park. Nous fixons le parcours en buggy en vous répondant.",
+      de: "Dasselbe Trio, aber am Steuer: ein Buggy statt des Reisebusses, der Tag auf dem Wasser ab Las Galletas und der Siam Park. Die Buggy-Route stimmen wir in unserer Antwort ab."
     }
   },
 
@@ -305,9 +323,11 @@ const PACCHETTI = [
     title: {
       it: "Terra, mare e stelle",
       en: "Land, sea and stars",
-      es: "Tierra, mar y estrellas"
+      es: "Tierra, mar y estrellas",
+      fr: "Terre, mer et étoiles",
+      de: "Land, Meer und Sterne"
     },
-    image: "teide-by-night.jpg",
+    image: "teide-by-night.webp",
     sconto: 10,
     voci: [
       // optionIndex 0 = "Offroad, 3 ore". Fissato apposta: e' un percorso che
@@ -321,7 +341,9 @@ const PACCHETTI = [
     desc: {
       it: "Tre giorni, tre modi di stare sull'isola: lo sterrato nel sud al volante del buggy, la costa vista dal mare con la barca da Las Galletas e la notte in quota col telescopio, in gruppo piccolo. Al Teide si sale una volta sola, e al buio.",
       en: "Three days, three ways to be on the island: the dirt tracks in the south at the wheel of a buggy, the coast seen from the water on the boat from Las Galletas, and the night up high with the telescope, in a small group. You go up to Teide once, and in the dark.",
-      es: "Tres días, tres formas de vivir la isla: las pistas de tierra del sur al volante del buggy, la costa vista desde el mar en el barco de Las Galletas y la noche en altura con el telescopio, en grupo pequeño. Al Teide se sube una sola vez, y de noche."
+      es: "Tres días, tres formas de vivir la isla: las pistas de tierra del sur al volante del buggy, la costa vista desde el mar en el barco de Las Galletas y la noche en altura con el telescopio, en grupo pequeño. Al Teide se sube una sola vez, y de noche.",
+      fr: "Trois jours, trois façons de vivre l'île : les pistes du sud au volant d'un buggy, la côte vue de la mer sur le bateau de Las Galletas, et la nuit en altitude avec le télescope, en petit groupe. On monte au Teide une seule fois, et de nuit.",
+      de: "Drei Tage, drei Arten, auf der Insel zu sein: die Schotterwege im Süden am Steuer eines Buggys, die Küste vom Wasser aus auf dem Boot ab Las Galletas und die Nacht in der Höhe mit dem Teleskop, in kleiner Gruppe. Zum Teide geht es einmal, und im Dunkeln."
     }
   },
 
@@ -334,9 +356,11 @@ const PACCHETTI = [
     title: {
       it: "Adrenalina",
       en: "Adrenaline",
-      es: "Adrenalina"
+      es: "Adrenalina",
+      fr: "Adrénaline",
+      de: "Adrenalin"
     },
-    image: "parascending.jpg",
+    image: "parascending.webp",
     sconto: 10,
     voci: [
       // optionIndex 2 = "Completo, 4 ore", il percorso lungo. Dentro c'e' il
@@ -350,7 +374,9 @@ const PACCHETTI = [
     desc: {
       it: "Terra, acqua e aria in tre giorni: il buggy sul percorso lungo, un'ora di safari in moto d'acqua e il volo col paracadute trainato dalla barca.",
       en: "Land, water and air in three days: the buggy on the long route, an hour of jet ski safari and the parachute flight towed by the boat.",
-      es: "Tierra, agua y aire en tres días: el buggy en el recorrido largo, una hora de safari en moto de agua y el vuelo en paracaídas remolcado por la lancha."
+      es: "Tierra, agua y aire en tres días: el buggy en el recorrido largo, una hora de safari en moto de agua y el vuelo en paracaídas remolcado por la lancha.",
+      fr: "Terre, eau et air en trois jours : le buggy sur le grand parcours, une heure de safari en jet-ski et le vol en parachute tracté par le bateau.",
+      de: "Land, Wasser und Luft in drei Tagen: der Buggy auf der langen Route, eine Stunde Jetski-Safari und der Fallschirmflug, gezogen vom Boot."
     }
   },
 
@@ -362,9 +388,11 @@ const PACCHETTI = [
     title: {
       it: "Mare a tutto gas",
       en: "Sea, full throttle",
-      es: "Mar a todo gas"
+      es: "Mar a todo gas",
+      fr: "La mer, plein gaz",
+      de: "Meer mit Vollgas"
     },
-    image: "jet-ski-safari-1-2h.jpg",
+    image: "jet-ski-safari-1-2h.webp",
     sconto: 10,
     voci: [
       { id: "luxury-cruiser", optionIndex: 0 },
@@ -374,7 +402,9 @@ const PACCHETTI = [
     desc: {
       it: "Il mare con calma e il mare di corsa: la giornata in barca da Las Galletas, un'ora di moto d'acqua lungo la costa e dieci minuti di banana con le risate.",
       en: "The sea slow and the sea fast: the day on the water from Las Galletas, an hour on a jet ski along the coast and ten minutes on the banana boat.",
-      es: "El mar con calma y el mar a toda velocidad: el día en barco desde Las Galletas, una hora de moto de agua por la costa y diez minutos de banana entre risas."
+      es: "El mar con calma y el mar a toda velocidad: el día en barco desde Las Galletas, una hora de moto de agua por la costa y diez minutos de banana entre risas.",
+      fr: "La mer lente et la mer rapide : la journée sur l'eau depuis Las Galletas, une heure de jet-ski le long de la côte et dix minutes sur la bouée banane.",
+      de: "Das langsame Meer und das schnelle: der Tag auf dem Wasser ab Las Galletas, eine Stunde Jetski entlang der Küste und zehn Minuten auf der Banane."
     }
   },
 
@@ -383,9 +413,11 @@ const PACCHETTI = [
     title: {
       it: "Cielo e mare",
       en: "Sky and sea",
-      es: "Cielo y mar"
+      es: "Cielo y mar",
+      fr: "Ciel et mer",
+      de: "Himmel und Meer"
     },
-    image: "luxury-cruiser-2.jpg",
+    image: "luxury-cruiser-2.webp",
     sconto: 10,
     // 79 + 55 + 51 = 185, ma il flamenco non si sconta: −13,40 → 171,60 a persona
     voci: [
@@ -399,7 +431,9 @@ const PACCHETTI = [
       // cose che si fanno tardi — e vale per chiunque, non per una coppia.
       it: "Tre appuntamenti lenti, tutti nella seconda metà della giornata: le stelle dal Teide in gruppo piccolo, il pomeriggio in barca da Las Galletas e il flamenco. Niente sveglie presto, niente code.",
       en: "Three unhurried outings, all in the second half of the day: the stars from Teide in a small group, an afternoon on the water from Las Galletas and a flamenco show. No early starts, no queues.",
-      es: "Tres citas tranquilas, todas en la segunda mitad del día: las estrellas desde el Teide en grupo pequeño, la tarde en barco desde Las Galletas y el flamenco. Sin madrugones y sin colas."
+      es: "Tres citas tranquilas, todas en la segunda mitad del día: las estrellas desde el Teide en grupo pequeño, la tarde en barco desde Las Galletas y el flamenco. Sin madrugones y sin colas.",
+      fr: "Trois sorties sans se presser, toutes dans la deuxième moitié de la journée : les étoiles du Teide en petit groupe, un après-midi sur l'eau depuis Las Galletas et un spectacle de flamenco. Pas de réveil aux aurores, pas de files d'attente.",
+      de: "Drei Ausflüge ohne Eile, alle in der zweiten Tageshälfte: die Sterne vom Teide in kleiner Gruppe, ein Nachmittag auf dem Wasser ab Las Galletas und eine Flamenco-Show. Kein frühes Aufstehen, keine Schlangen."
     }
   },
 
@@ -408,12 +442,14 @@ const PACCHETTI = [
     title: {
       it: "Tre sere a Tenerife",
       en: "Three nights in Tenerife",
-      es: "Tres noches en Tenerife"
+      es: "Tres noches en Tenerife",
+      fr: "Trois nuits à Tenerife",
+      de: "Drei Nächte auf Teneriffa"
     },
-    image: "castillo-san-miguel.jpg",
+    image: "castillo-san-miguel.webp",
     sconto: 10,
-    // 49 + 49,50 + 79 = 177,50, ma si sconta solo lo stargazing (i due show
-    // sono a prezzo fisso): −7,90 → 169,60 a persona.
+    // 49 + 52 + 79 = 180, ma si sconta solo lo stargazing (i due show
+    // sono a prezzo fisso): −7,90 → 172,10 a persona.
     //
     // Il terzo era "history-music-show", e i tre show insieme facevano un
     // pacchetto che **non risparmiava niente**: tre biglietti a prezzo fisso
@@ -433,7 +469,9 @@ const PACCHETTI = [
       // lettere non essere una cena a tavola. Scritto come e'.
       it: "Tre sere fuori: il drag show con la cena, la notte medievale al castello e le stelle dal Teide, con il picnic al tramonto sopra le nuvole. Per chi sta in hotel a mezza pensione e la sera esce.",
       en: "Three evenings out: the drag show with dinner, the medieval night at the castle and the stars from Teide, with a picnic at sunset above the clouds. For anyone on half board who goes out in the evening.",
-      es: "Tres noches fuera: el drag show con cena, la noche medieval en el castillo y las estrellas desde el Teide, con picnic al atardecer por encima de las nubes. Para quien está en media pensión y sale por la noche."
+      es: "Tres noches fuera: el drag show con cena, la noche medieval en el castillo y las estrellas desde el Teide, con picnic al atardecer por encima de las nubes. Para quien está en media pensión y sale por la noche.",
+      fr: "Trois soirées dehors : le spectacle drag avec dîner, la nuit médiévale au château et les étoiles du Teide, avec un pique-nique au coucher du soleil au-dessus des nuages. Pour ceux qui sont en demi-pension et sortent le soir.",
+      de: "Drei Abende unterwegs: die Dragshow mit Dinner, die mittelalterliche Nacht im Schloss und die Sterne vom Teide, mit Picknick zum Sonnenuntergang über den Wolken. Für alle mit Halbpension, die abends ausgehen."
     }
   },
 
@@ -451,9 +489,11 @@ const PACCHETTI = [
     title: {
       it: "Al volante, in due",
       en: "Behind the wheel, for two",
-      es: "Al volante, en pareja"
+      es: "Al volante, en pareja",
+      fr: "Au volant, à deux",
+      de: "Am Steuer, zu zweit"
     },
-    image: "Cat-avventura.jpg",
+    image: "Cat-avventura.webp",
     sconto: 10,
     tema: "per-due",
     voci: [
@@ -465,7 +505,9 @@ const PACCHETTI = [
     desc: {
       it: "Due giorni al volante e uno in mare: la Mustang cabrio su per la strada del Teide fino al tramonto, il buggy in due sugli sterrati del sud, e il catamarano di categoria superiore, con poche persone a bordo e le aree lounge per riposarsi.",
       en: "Two days behind the wheel and one at sea: the Mustang convertible up the Teide road for the sunset, the buggy for two on the dirt tracks of the south, and the upper-class catamaran, with few people on board and lounge areas to unwind.",
-      es: "Dos días al volante y uno en el mar: el Mustang descapotable subiendo por la carretera del Teide hasta el atardecer, el buggy para dos por las pistas del sur, y el catamarán de categoría superior, con poca gente a bordo y zonas lounge para descansar."
+      es: "Dos días al volante y uno en el mar: el Mustang descapotable subiendo por la carretera del Teide hasta el atardecer, el buggy para dos por las pistas del sur, y el catamarán de categoría superior, con poca gente a bordo y zonas lounge para descansar.",
+      fr: "Deux jours au volant et un en mer : la Mustang décapotable sur la route du Teide pour le coucher du soleil, le buggy à deux sur les pistes du sud, et le catamaran haut de gamme, avec peu de monde à bord et des espaces pour se détendre.",
+      de: "Zwei Tage am Steuer und einer auf dem Meer: der Mustang Cabrio die Teide-Straße hinauf zum Sonnenuntergang, der Buggy für zwei auf den Schotterwegen des Südens und der gehobene Katamaran, mit wenigen Leuten an Bord und Lounge-Bereichen zum Entspannen."
     }
   },
 
@@ -476,9 +518,11 @@ const PACCHETTI = [
     title: {
       it: "Vino e stelle",
       en: "Wine and stars",
-      es: "Vino y estrellas"
+      es: "Vino y estrellas",
+      fr: "Vin et étoiles",
+      de: "Wein und Sterne"
     },
-    image: "stargazing-vip.jpg",
+    image: "stargazing-vip.webp",
     sconto: 10,
     tema: "per-due",
     voci: [
@@ -490,7 +534,9 @@ const PACCHETTI = [
     desc: {
       it: "Tre giorni lenti in due: la degustazione in una cantina di Vilaflor, in un gruppo di otto al massimo, il tramonto sopra le nuvole e le stelle al telescopio in gruppo piccolo, e tre ore sul motoryacht a cercare delfini, con il bagno in una baia riparata.",
       en: "Three unhurried days for two: a tasting at a winery in Vilaflor, in a group of eight at most, sunset above the clouds and the stars through the telescope in a small group, and three hours on a motor yacht looking for dolphins, with a swim in a sheltered bay.",
-      es: "Tres días tranquilos para dos: la cata en una bodega de Vilaflor, en un grupo de ocho como máximo, el atardecer sobre las nubes y las estrellas al telescopio en grupo pequeño, y tres horas en el yate buscando delfines, con baño en una bahía resguardada."
+      es: "Tres días tranquilos para dos: la cata en una bodega de Vilaflor, en un grupo de ocho como máximo, el atardecer sobre las nubes y las estrellas al telescopio en grupo pequeño, y tres horas en el yate buscando delfines, con baño en una bahía resguardada.",
+      fr: "Trois jours sans se presser, à deux : une dégustation dans un domaine viticole à Vilaflor, en groupe de huit au maximum, le coucher du soleil au-dessus des nuages et les étoiles au télescope en petit groupe, et trois heures sur un yacht à moteur à la recherche des dauphins, avec une baignade dans une baie abritée.",
+      de: "Drei Tage ohne Eile zu zweit: eine Verkostung auf einem Weingut in Vilaflor, in einer Gruppe von höchstens acht, Sonnenuntergang über den Wolken und die Sterne durchs Teleskop in kleiner Gruppe, und drei Stunden auf einer Motorjacht auf der Suche nach Delfinen, mit Baden in einer geschützten Bucht."
     }
   },
 
@@ -501,9 +547,11 @@ const PACCHETTI = [
     title: {
       it: "Mare, cielo e una sera fuori",
       en: "Sea, sky and a night out",
-      es: "Mar, cielo y una noche fuera"
+      es: "Mar, cielo y una noche fuera",
+      fr: "Mer, ciel et une soirée",
+      de: "Meer, Himmel und ein Abend"
     },
-    image: "luxury-catamaran-3.jpg",
+    image: "luxury-catamaran-3.webp",
     sconto: 10,
     tema: "per-due",
     voci: [
@@ -516,36 +564,49 @@ const PACCHETTI = [
     desc: {
       it: "Il catamarano di categoria superiore, con poche persone a bordo e le aree lounge, un volo in elicottero sopra la costa sud, e una sera a cena col cabaret dello Scandal. Per adulti: allo Scandal si entra dai 16 anni.",
       en: "The upper-class catamaran, with few people on board and lounge areas, a helicopter flight over the south coast, and an evening of dinner and cabaret at Scandal. For adults: Scandal is 16+.",
-      es: "El catamarán de categoría superior, con poca gente a bordo y zonas lounge, un vuelo en helicóptero sobre la costa sur, y una noche de cena y cabaret en el Scandal. Para adultos: al Scandal se entra desde los 16 años."
+      es: "El catamarán de categoría superior, con poca gente a bordo y zonas lounge, un vuelo en helicóptero sobre la costa sur, y una noche de cena y cabaret en el Scandal. Para adultos: al Scandal se entra desde los 16 años.",
+      fr: "Le catamaran haut de gamme, avec peu de monde à bord et des espaces de détente, un vol en hélicoptère au-dessus de la côte sud, et une soirée dîner-cabaret au Scandal. Pour adultes : le Scandal est réservé aux plus de 16 ans.",
+      de: "Der gehobene Katamaran, mit wenigen Leuten an Bord und Lounge-Bereichen, ein Hubschrauberflug über die Südküste und ein Abend mit Dinner und Kabarett im Scandal. Für Erwachsene: Das Scandal ist ab 16."
     }
   },
 
   {
     id: "adrenalina-in-due",
-    // PREZZO MISTO, ma su mezzi da due: la moto d'acqua doppia 120 : 2 = 60, il
-    // quad doppio al tramonto 130 : 2 = 65, il parapendio 95 a persona.
-    // 60 + 65 + 95 = 220, tutto scontabile: −22,00 → da 198 a persona. Qui il
-    // "da" e' proprio il prezzo di una coppia sullo stesso mezzo.
+    // Le tre escursioni del post Instagram "Pacchetto per coppie" (proprietario,
+    // 23 ottobre 2026): barca per balene e delfini, parascending, quad al Teide.
+    // La barca e' il Freebird da 3 ore (proprietario, 23 ottobre 2026: prima
+    // era Flipper One, 3 ore).
+    // PREZZO MISTO, ma su un mezzo da due: il quad doppio del mattino 120 : 2 =
+    // 60, la barca 47 e il parascending 55 a persona. 47 + 60 + 55 = 162, tutto
+    // scontabile: −16,20 → da 145,80 a persona. Qui il "da" e' proprio il
+    // prezzo di una coppia sullo stesso quad.
+    // OFFERTA (proprietario, 26 ottobre 2026): in vetrina da 139 a persona,
+    // il prezzo del post Instagram, anche se col 10% non torna: lo sconto
+    // diventa 23 su 162, circa il 14%. Togliendo la riga torna 145,80.
     title: {
       it: "Adrenalina in due",
       en: "Adrenaline for two",
-      es: "Adrenalina para dos"
+      es: "Adrenalina para dos",
+      fr: "Adrénaline à deux",
+      de: "Adrenalin zu zweit"
     },
-    image: "quad-teide-sunset.jpg",
+    image: "quad-teide-adventure.webp",
     sconto: 10,
+    prezzoOfferta: 139,
     tema: "per-due",
     voci: [
-      // optionIndex 1 = un'ora.
-      { id: "jet-ski-safari-1-2h", optionIndex: 1 },
-      // optionIndex 1 = Tramonto. Il quad sale al Teide: e' l'unica salita.
-      { id: "quad-teide-adventure", optionIndex: 1 },
-      // optionIndex 0 = 20-25 minuti, decollo a 750 m.
-      { id: "paragliding", optionIndex: 0 }
+      // optionIndex 1 = 3 ore, con la sosta bagno e il transfer dal sud.
+      { id: "freebird-catamaran", optionIndex: 1 },
+      { id: "parascending" },
+      // optionIndex 0 = Mattina. Il quad sale al Teide: e' l'unica salita.
+      { id: "quad-teide-adventure", optionIndex: 0, posti: 2 }
     ],
     desc: {
-      it: "Tre giorni in coppia, uno per elemento: un'ora in moto d'acqua lungo la costa sud, in due sulla stessa moto, il quad doppio su fino al Teide per il tramonto, e il volo in parapendio con il pilota sopra Adeje.",
-      en: "Three days as a couple, one for each element: an hour on a jet ski along the south coast, two on the same machine, the double quad up to Teide for the sunset, and the paragliding flight with a pilot over Adeje.",
-      es: "Tres días en pareja, uno por elemento: una hora en moto de agua por la costa sur, los dos en la misma moto, el quad doble subiendo al Teide para el atardecer, y el vuelo en parapente con el piloto sobre Adeje."
+      it: "Tre giorni in coppia, fra mare, cielo e vulcano: tre ore in catamarano da Puerto Colón a cercare balene e delfini, con il bagno a Diego Hernández, il volo in parascending trainati dalla barca sopra la costa sud, e il quad doppio su fino al Teide, tre ore fra pinete e colate laviche.",
+      en: "Three days as a couple, between sea, sky and volcano: three hours on a catamaran from Puerto Colón looking for whales and dolphins, with a swim at Diego Hernández, the parascending flight towed by the boat over the south coast, and the double quad up to Teide, three hours through pine woods and lava fields.",
+      es: "Tres días en pareja, entre mar, cielo y volcán: tres horas en catamarán desde Puerto Colón buscando ballenas y delfines, con baño en Diego Hernández, el vuelo en parascending remolcados por el barco sobre la costa sur, y el quad doble subiendo al Teide, tres horas entre pinares y coladas de lava.",
+      fr: "Trois jours en couple, entre mer, ciel et volcan : trois heures en catamaran depuis Puerto Colón à la recherche des baleines et des dauphins, avec baignade à Diego Hernández, le vol en parachute ascensionnel tracté par le bateau au-dessus de la côte sud, et le quad double jusqu'au Teide, trois heures entre pinèdes et champs de lave.",
+      de: "Drei Tage als Paar, zwischen Meer, Himmel und Vulkan: drei Stunden im Katamaran ab Puerto Colón auf der Suche nach Walen und Delfinen, mit Baden in Diego Hernández, der Parasailing-Flug, vom Boot gezogen, über der Südküste, und das Doppel-Quad hinauf zum Teide, drei Stunden durch Kiefernwälder und Lavafelder."
     }
   },
 
@@ -562,9 +623,11 @@ const PACCHETTI = [
     title: {
       it: "Il mare dei bambini",
       en: "The sea for kids",
-      es: "El mar de los niños"
+      es: "El mar de los niños",
+      fr: "La mer pour les enfants",
+      de: "Das Meer für Kinder"
     },
-    image: "submarine-safari.jpg",
+    image: "submarine-safari.webp",
     sconto: 10,
     famiglia: true,
     voci: [
@@ -575,7 +638,9 @@ const PACCHETTI = [
     desc: {
       it: "Il mare guardato da sopra, da sotto e a tutta velocità: due ore sulla goletta di legno da Los Cristianos a cercare delfini e globicefali, un'ora nel sottomarino giallo dove ogni posto ha il suo oblò, e una giornata di scivoli all'Aqualand.",
       en: "The sea seen from above, from below and at full speed: two hours on the wooden schooner out of Los Cristianos looking for dolphins and pilot whales, an hour in the yellow submarine where every seat has its own porthole, and a day of slides at Aqualand.",
-      es: "El mar visto desde arriba, desde abajo y a toda velocidad: dos horas en la goleta de madera desde Los Cristianos buscando delfines y calderones, una hora en el submarino amarillo donde cada asiento tiene su ojo de buey, y un día de toboganes en Aqualand."
+      es: "El mar visto desde arriba, desde abajo y a toda velocidad: dos horas en la goleta de madera desde Los Cristianos buscando delfines y calderones, una hora en el submarino amarillo donde cada asiento tiene su ojo de buey, y un día de toboganes en Aqualand.",
+      fr: "La mer vue d'en haut, d'en bas et à toute vitesse : deux heures sur la goélette en bois au départ de Los Cristianos à la recherche des dauphins et des globicéphales, une heure dans le sous-marin jaune où chaque siège a son hublot, et une journée de toboggans à Aqualand.",
+      de: "Das Meer von oben, von unten und mit voller Geschwindigkeit: zwei Stunden auf dem Holzschoner ab Los Cristianos auf der Suche nach Delfinen und Grindwalen, eine Stunde im gelben U-Boot, wo jeder Sitz sein eigenes Bullauge hat, und ein Tag voller Rutschen im Aqualand."
     }
   },
 
@@ -586,9 +651,11 @@ const PACCHETTI = [
     title: {
       it: "Animali da vicino",
       en: "Animals up close",
-      es: "Animales de cerca"
+      es: "Animales de cerca",
+      fr: "Les animaux de près",
+      de: "Tiere aus der Nähe"
     },
-    image: "loro-parque.jpg",
+    image: "loro-parque.webp",
     sconto: 10,
     famiglia: true,
     voci: [
@@ -599,7 +666,9 @@ const PACCHETTI = [
     desc: {
       it: "Gli animali dove vivono e gli animali da toccare: tre ore in barca a vela da Puerto Colón in cerca di balene e delfini, una giornata al Loro Parque e il Monkey Park, il piccolo zoo dove si entra nei recinti e si dà da mangiare a lemuri, iguane e pappagalli.",
       en: "Animals where they live and animals you can touch: three hours on a sailing boat from Puerto Colón looking for whales and dolphins, a day at Loro Parque and Monkey Park, the little zoo where you walk into the enclosures and feed lemurs, iguanas and parrots.",
-      es: "Los animales donde viven y los animales que se tocan: tres horas en velero desde Puerto Colón buscando ballenas y delfines, un día en el Loro Parque y el Monkey Park, el pequeño zoo donde se entra en los recintos y se da de comer a lémures, iguanas y loros."
+      es: "Los animales donde viven y los animales que se tocan: tres horas en velero desde Puerto Colón buscando ballenas y delfines, un día en el Loro Parque y el Monkey Park, el pequeño zoo donde se entra en los recintos y se da de comer a lémures, iguanas y loros.",
+      fr: "Des animaux là où ils vivent et des animaux qu'on peut toucher : trois heures en voilier depuis Puerto Colón à la recherche des baleines et des dauphins, une journée au Loro Parque et le Monkey Park, le petit zoo où l'on entre dans les enclos pour nourrir lémuriens, iguanes et perroquets.",
+      de: "Tiere, wo sie leben, und Tiere zum Anfassen: drei Stunden Segelboot ab Puerto Colón auf der Suche nach Walen und Delfinen, ein Tag im Loro Parque und der Monkey Park, der kleine Zoo, in dem man in die Gehege geht und Lemuren, Leguane und Papageien füttert."
     }
   },
 
@@ -610,9 +679,11 @@ const PACCHETTI = [
     title: {
       it: "Piccoli esploratori",
       en: "Little explorers",
-      es: "Pequeños exploradores"
+      es: "Pequeños exploradores",
+      fr: "Petits explorateurs",
+      de: "Kleine Entdecker"
     },
-    image: "tuk-tuk.jpg",
+    image: "tuk-tuk.webp",
     sconto: 10,
     famiglia: true,
     voci: [
@@ -623,7 +694,9 @@ const PACCHETTI = [
     desc: {
       it: "Tre uscite tranquille, per chi ha bambini piccoli: un'ora in tuk tuk elettrico sulla costa di Adeje con la guida che racconta, tre ore in barca a vela da Puerto Colón in cerca di balene e delfini, con la sosta per il bagno, e una giornata al Jungle Park fra i rapaci in volo libero e le scimmie.",
       en: "Three unhurried outings, for families with small children: an hour in an electric tuk tuk along the Adeje coast with a guide, three hours under sail from Puerto Colón looking for whales and dolphins, with a stop for a swim, and a day at Jungle Park among free-flying birds of prey and monkeys.",
-      es: "Tres salidas tranquilas, para quien viaja con niños pequeños: una hora en tuk tuk eléctrico por la costa de Adeje con un guía que cuenta, tres horas en velero desde Puerto Colón buscando ballenas y delfines, con parada de baño, y un día en el Jungle Park entre rapaces en vuelo libre y monos."
+      es: "Tres salidas tranquilas, para quien viaja con niños pequeños: una hora en tuk tuk eléctrico por la costa de Adeje con un guía que cuenta, tres horas en velero desde Puerto Colón buscando ballenas y delfines, con parada de baño, y un día en el Jungle Park entre rapaces en vuelo libre y monos.",
+      fr: "Trois sorties sans se presser, pour les familles avec de jeunes enfants : une heure en tuk-tuk électrique le long de la côte d'Adeje avec un guide, trois heures à la voile depuis Puerto Colón à la recherche des baleines et des dauphins, avec un arrêt baignade, et une journée au Jungle Park parmi les rapaces en vol libre et les singes.",
+      de: "Drei Ausflüge ohne Eile, für Familien mit kleinen Kindern: eine Stunde im elektrischen Tuk-Tuk entlang der Küste von Adeje mit Guide, drei Stunden unter Segeln ab Puerto Colón auf der Suche nach Walen und Delfinen, mit Badestopp, und ein Tag im Jungle Park zwischen frei fliegenden Greifvögeln und Affen."
     }
   },
 
@@ -637,9 +710,11 @@ const PACCHETTI = [
     title: {
       it: "Per i ragazzi grandi",
       en: "For the big kids",
-      es: "Para los mayores"
+      es: "Para los mayores",
+      fr: "Pour les grands",
+      de: "Für die Großen"
     },
-    image: "karting.jpg",
+    image: "karting.webp",
     sconto: 10,
     famiglia: true,
     voci: [
@@ -650,7 +725,9 @@ const PACCHETTI = [
     desc: {
       it: "Per chi in famiglia non è più un bambino piccolo: dieci minuti di kart sulla pista di Fañabé, una corsa sul gonfiabile trainato dal motoscafo davanti a Puerto Colón e una giornata al Siam Park. Sul kart dei ragazzi si sale dai 7 anni, sul gonfiabile dai 10.",
       en: "For the ones in the family who aren't little any more: ten minutes of karting on the Fañabé track, a ride on the inflatable towed by the speedboat off Puerto Colón and a day at Siam Park. The kids' kart starts at 7, the inflatable at 10.",
-      es: "Para quien en la familia ya no es un niño pequeño: diez minutos de kart en el circuito de Fañabé, una vuelta en el hinchable remolcado por la lancha frente a Puerto Colón y un día en el Siam Park. En el kart de los chicos se sube desde los 7 años; en el hinchable, desde los 10."
+      es: "Para quien en la familia ya no es un niño pequeño: diez minutos de kart en el circuito de Fañabé, una vuelta en el hinchable remolcado por la lancha frente a Puerto Colón y un día en el Siam Park. En el kart de los chicos se sube desde los 7 años; en el hinchable, desde los 10.",
+      fr: "Pour ceux de la famille qui ne sont plus tout petits : dix minutes de karting sur la piste de Fañabé, un tour sur la bouée tractée par le hors-bord au large de Puerto Colón et une journée au Siam Park. Le kart enfant commence à 7 ans, la bouée à 10.",
+      de: "Für die in der Familie, die nicht mehr klein sind: zehn Minuten Kart auf der Strecke in Fañabé, eine Fahrt auf dem Reifen hinter dem Schnellboot vor Puerto Colón und ein Tag im Siam Park. Das Kinderkart ab 7, der Reifen ab 10."
     }
   },
 
@@ -662,9 +739,11 @@ const PACCHETTI = [
     title: {
       it: "Stelle in famiglia",
       en: "Stars as a family",
-      es: "Estrellas en familia"
+      es: "Estrellas en familia",
+      fr: "Les étoiles en famille",
+      de: "Sterne mit der Familie"
     },
-    image: "stargazing-group.jpg",
+    image: "stargazing-group.webp",
     sconto: 10,
     famiglia: true,
     voci: [
@@ -676,7 +755,9 @@ const PACCHETTI = [
     desc: {
       it: "Una serata grande e due giornate con calma: il tramonto sopra le nuvole col picnic e il telescopio, in gruppo piccolo, poi tre ore in barca da Las Galletas con la sosta per il bagno e una giornata al Siam Park. Dal Teide si torna tardi: il giorno dopo, sveglia con comodo.",
       en: "One big evening and two easy days: sunset above the clouds with a picnic and the telescope, in a small group, then three hours on the water from Las Galletas with a swim stop and a day at Siam Park. You get back from Teide late, so take the next morning slowly.",
-      es: "Una noche grande y dos días con calma: el atardecer por encima de las nubes con picnic y telescopio, en grupo pequeño, luego tres horas en barco desde Las Galletas con parada de baño y un día en el Siam Park. Del Teide se vuelve tarde: al día siguiente, sin madrugar."
+      es: "Una noche grande y dos días con calma: el atardecer por encima de las nubes con picnic y telescopio, en grupo pequeño, luego tres horas en barco desde Las Galletas con parada de baño y un día en el Siam Park. Del Teide se vuelve tarde: al día siguiente, sin madrugar.",
+      fr: "Une grande soirée et deux journées faciles : le coucher du soleil au-dessus des nuages avec pique-nique et télescope, en petit groupe, puis trois heures sur l'eau depuis Las Galletas avec arrêt baignade et une journée au Siam Park. On rentre tard du Teide, alors prenez le lendemain matin tranquillement.",
+      de: "Ein großer Abend und zwei entspannte Tage: Sonnenuntergang über den Wolken mit Picknick und Teleskop, in kleiner Gruppe, dann drei Stunden auf dem Wasser ab Las Galletas mit Badestopp und ein Tag im Siam Park. Vom Teide kommt man spät zurück, also lassen Sie den nächsten Morgen ruhig angehen."
     }
   },
 
@@ -699,9 +780,11 @@ const PACCHETTI = [
     title: {
       it: "Tre giorni a Tenerife",
       en: "Three days in Tenerife",
-      es: "Tres días en Tenerife"
+      es: "Tres días en Tenerife",
+      fr: "Trois jours à Tenerife",
+      de: "Drei Tage auf Teneriffa"
     },
-    image: "teide-masca.jpg",
+    image: "teide-masca.webp",
     giorni: 3,
     sconto: 10,
     // 39 + 55 + 35 = 129. Il Teide in pullman e' `fixedPrice` e non si sconta:
@@ -716,7 +799,9 @@ const PACCHETTI = [
     desc: {
       it: "Un giorno in montagna, uno in mare e uno sulla costa: il Parco Nazionale del Teide in pullman con la guida, tre ore di barca lungo le scogliere del sud con la sosta per il bagno, e l'uscita in kayak da Los Cristianos, con mezz'ora in acqua dove passano le tartarughe. Una escursione al giorno: il resto della giornata resta tuo.",
       en: "One day in the mountains, one at sea and one along the coast: Teide National Park by coach with a guide, three hours on the water along the southern cliffs with a swim stop, and the kayak outing from Los Cristianos, with half an hour in the water where the turtles pass. One excursion a day: the rest of the day stays yours.",
-      es: "Un día en la montaña, uno en el mar y uno en la costa: el Parque Nacional del Teide en autocar con guía, tres horas en barco por los acantilados del sur con parada de baño, y la salida en kayak desde Los Cristianos, con media hora en el agua por donde pasan las tortugas. Una excursión al día: el resto del día sigue siendo tuyo."
+      es: "Un día en la montaña, uno en el mar y uno en la costa: el Parque Nacional del Teide en autocar con guía, tres horas en barco por los acantilados del sur con parada de baño, y la salida en kayak desde Los Cristianos, con media hora en el agua por donde pasan las tortugas. Una excursión al día: el resto del día sigue siendo tuyo.",
+      fr: "Un jour en montagne, un en mer et un le long de la côte : le parc national du Teide en car avec un guide, trois heures sur l'eau le long des falaises du sud avec arrêt baignade, et la sortie en kayak depuis Los Cristianos, avec une demi-heure dans l'eau là où passent les tortues. Une excursion par jour : le reste de la journée est à vous.",
+      de: "Ein Tag in den Bergen, einer auf dem Meer und einer an der Küste: der Teide-Nationalpark im Reisebus mit Guide, drei Stunden auf dem Wasser entlang der Klippen im Süden mit Badestopp und die Kajaktour ab Los Cristianos, mit einer halben Stunde im Wasser, wo die Schildkröten vorbeikommen. Ein Ausflug pro Tag: Der Rest des Tages gehört Ihnen."
     }
   },
 
@@ -725,9 +810,11 @@ const PACCHETTI = [
     title: {
       it: "Tre giorni in famiglia",
       en: "Three days as a family",
-      es: "Tres días en familia"
+      es: "Tres días en familia",
+      fr: "Trois jours en famille",
+      de: "Drei Tage mit der Familie"
     },
-    image: "peter-pan.jpg",
+    image: "peter-pan.webp",
     giorni: 3,
     sconto: 10,
     famiglia: true,
@@ -743,7 +830,9 @@ const PACCHETTI = [
     desc: {
       it: "Tre giorni misurati sui bambini: due ore sulla goletta di legno da Los Cristianos a cercare delfini e globicefali, una giornata di scivoli all'Aqualand con lo spettacolo dei delfini compreso, e un'ora in tuk tuk elettrico sulla costa di Adeje con la guida che racconta.",
       en: "Three days measured on the children: two hours on the wooden schooner out of Los Cristianos looking for dolphins and pilot whales, a day of slides at Aqualand with the dolphin show included, and an hour in an electric tuk tuk along the Adeje coast with a guide.",
-      es: "Tres días pensados para los niños: dos horas en la goleta de madera desde Los Cristianos buscando delfines y calderones, un día de toboganes en Aqualand con el espectáculo de delfines incluido, y una hora en tuk tuk eléctrico por la costa de Adeje con un guía que cuenta."
+      es: "Tres días pensados para los niños: dos horas en la goleta de madera desde Los Cristianos buscando delfines y calderones, un día de toboganes en Aqualand con el espectáculo de delfines incluido, y una hora en tuk tuk eléctrico por la costa de Adeje con un guía que cuenta.",
+      fr: "Trois jours à la mesure des enfants : deux heures sur la goélette en bois au départ de Los Cristianos à la recherche des dauphins et des globicéphales, une journée de toboggans à Aqualand avec le spectacle des dauphins compris, et une heure en tuk-tuk électrique le long de la côte d'Adeje avec un guide.",
+      de: "Drei Tage nach Maß der Kinder: zwei Stunden auf dem Holzschoner ab Los Cristianos auf der Suche nach Delfinen und Grindwalen, ein Tag voller Rutschen im Aqualand mit der Delfinshow inklusive und eine Stunde im elektrischen Tuk-Tuk entlang der Küste von Adeje mit Guide."
     }
   },
 
@@ -752,9 +841,11 @@ const PACCHETTI = [
     title: {
       it: "Cinque giorni a Tenerife",
       en: "Five days in Tenerife",
-      es: "Cinco días en Tenerife"
+      es: "Cinco días en Tenerife",
+      fr: "Cinq jours à Tenerife",
+      de: "Fünf Tage auf Teneriffa"
     },
-    image: "luxury-cruiser-3.jpg",
+    image: "luxury-cruiser-3.webp",
     giorni: 5,
     sconto: 12,
     // I tre di "giorni-3" piu' due. 129 + 55 + 50 = 234. Santa Cruz e' in
@@ -770,7 +861,9 @@ const PACCHETTI = [
     desc: {
       it: "Gli stessi tre giorni, con dentro altri due: il volo col paracadute trainato dalla barca sopra Costa Adeje, una decina di minuti in aria, e una giornata dall'altra parte dell'isola — Santa Cruz, La Laguna Patrimonio UNESCO e il bosco di allori del Parco Rurale di Anaga, in pullman con la guida.",
       en: "The same three days, with two more inside: the parachute flight towed by the boat above Costa Adeje, about ten minutes in the air, and a day on the other side of the island — Santa Cruz, La Laguna (a UNESCO site) and the laurel forest of the Anaga Rural Park, by coach with a guide.",
-      es: "Los mismos tres días, con otros dos dentro: el vuelo en paracaídas remolcado por la lancha sobre Costa Adeje, unos diez minutos en el aire, y un día al otro lado de la isla — Santa Cruz, La Laguna Patrimonio UNESCO y la laurisilva del Parque Rural de Anaga, en autocar con guía."
+      es: "Los mismos tres días, con otros dos dentro: el vuelo en paracaídas remolcado por la lancha sobre Costa Adeje, unos diez minutos en el aire, y un día al otro lado de la isla — Santa Cruz, La Laguna Patrimonio UNESCO y la laurisilva del Parque Rural de Anaga, en autocar con guía.",
+      fr: "Les trois mêmes jours, avec deux de plus : le vol en parachute tracté par le bateau au-dessus de Costa Adeje, une dizaine de minutes en l'air, et une journée de l'autre côté de l'île — Santa Cruz, La Laguna (site UNESCO) et la forêt de lauriers du parc rural d'Anaga, en car avec un guide.",
+      de: "Dieselben drei Tage, mit zwei weiteren dazu: der Fallschirmflug hinter dem Boot über Costa Adeje, etwa zehn Minuten in der Luft, und ein Tag auf der anderen Seite der Insel — Santa Cruz, La Laguna (UNESCO-Stätte) und der Lorbeerwald des Landschaftsparks Anaga, im Reisebus mit Guide."
     }
   },
 
@@ -779,9 +872,11 @@ const PACCHETTI = [
     title: {
       it: "Cinque giorni in famiglia",
       en: "Five days as a family",
-      es: "Cinco días en familia"
+      es: "Cinco días en familia",
+      fr: "Cinq jours en famille",
+      de: "Fünf Tage mit der Familie"
     },
-    image: "submarine-safari.jpg",
+    image: "submarine-safari.webp",
     giorni: 5,
     sconto: 12,
     famiglia: true,
@@ -798,7 +893,9 @@ const PACCHETTI = [
     desc: {
       it: "Gli stessi tre giorni, con dentro altri due: l'ora nel sottomarino giallo, dove ogni posto ha il suo oblò e si scende fra i 30 e i 60 metri restando all'asciutto, e una giornata intera al Siam Park.",
       en: "The same three days, with two more inside: the hour in the yellow submarine, where every seat has its own porthole and you go down between 30 and 60 metres without getting wet, and a full day at Siam Park.",
-      es: "Los mismos tres días, con otros dos dentro: la hora en el submarino amarillo, donde cada asiento tiene su ojo de buey y se baja entre 30 y 60 metros sin mojarse, y un día entero en el Siam Park."
+      es: "Los mismos tres días, con otros dos dentro: la hora en el submarino amarillo, donde cada asiento tiene su ojo de buey y se baja entre 30 y 60 metros sin mojarse, y un día entero en el Siam Park.",
+      fr: "Les trois mêmes jours, avec deux de plus : l'heure dans le sous-marin jaune, où chaque siège a son hublot et où l'on descend entre 30 et 60 mètres sans se mouiller, et une journée entière au Siam Park.",
+      de: "Dieselben drei Tage, mit zwei weiteren dazu: die Stunde im gelben U-Boot, wo jeder Sitz sein eigenes Bullauge hat und man zwischen 30 und 60 Meter tief taucht, ohne nass zu werden, und ein ganzer Tag im Siam Park."
     }
   },
 
@@ -807,9 +904,11 @@ const PACCHETTI = [
     title: {
       it: "Sette giorni a Tenerife",
       en: "Seven days in Tenerife",
-      es: "Siete días en Tenerife"
+      es: "Siete días en Tenerife",
+      fr: "Sept jours à Tenerife",
+      de: "Sieben Tage auf Teneriffa"
     },
-    image: "kayak-snorkelling.jpg",
+    image: "kayak-snorkelling.webp",
     giorni: 7,
     sconto: 15,
     // I cinque di "giorni-5" piu' due. 234 + 35 + 51 = 320. Il flamenco e' uno
@@ -831,7 +930,9 @@ const PACCHETTI = [
     desc: {
       it: "La settimana intera, una uscita al giorno: il Teide, la barca lungo le scogliere, il kayak, il volo col paracadute e la giornata nel nord-est, più due giorni che ci sono solo qui — la prima lezione di surf, due ore in gruppo con l'istruttore, e il flamenco dal vivo, con cante, chitarra e ballo.",
       en: "The whole week, one outing a day: Teide, the boat along the cliffs, the kayak, the parachute flight and the day in the north-east, plus two days you only get here — a first surf lesson, two hours in a group with the instructor, and live flamenco, with singing, guitar and dance.",
-      es: "La semana entera, una salida al día: el Teide, el barco por los acantilados, el kayak, el vuelo en paracaídas y el día en el noreste, más dos días que solo están aquí — la primera clase de surf, dos horas en grupo con el monitor, y el flamenco en directo, con cante, guitarra y baile."
+      es: "La semana entera, una salida al día: el Teide, el barco por los acantilados, el kayak, el vuelo en paracaídas y el día en el noreste, más dos días que solo están aquí — la primera clase de surf, dos horas en grupo con el monitor, y el flamenco en directo, con cante, guitarra y baile.",
+      fr: "Toute la semaine, une sortie par jour : le Teide, le bateau le long des falaises, le kayak, le vol en parachute et la journée dans le nord-est, plus deux jours qu'on ne trouve qu'ici — un premier cours de surf, deux heures en groupe avec le moniteur, et le flamenco en direct, avec chant, guitare et danse.",
+      de: "Die ganze Woche, ein Ausflug pro Tag: der Teide, das Boot entlang der Klippen, das Kajak, der Fallschirmflug und der Tag im Nordosten, dazu zwei Tage, die es nur hier gibt — eine erste Surfstunde, zwei Stunden in der Gruppe mit dem Lehrer, und Live-Flamenco mit Gesang, Gitarre und Tanz."
     }
   },
 
@@ -840,9 +941,11 @@ const PACCHETTI = [
     title: {
       it: "Sette giorni in famiglia",
       en: "Seven days as a family",
-      es: "Siete días en familia"
+      es: "Siete días en familia",
+      fr: "Sept jours en famille",
+      de: "Sieben Tage mit der Familie"
     },
-    image: "whale-dolphin-3h.jpg",
+    image: "whale-dolphin-3h.webp",
     giorni: 7,
     sconto: 15,
     famiglia: true,
@@ -861,11 +964,88 @@ const PACCHETTI = [
     desc: {
       it: "La settimana intera, una uscita al giorno: la goletta, l'Aqualand, il tuk tuk, il sottomarino e il Siam Park, più due giorni che ci sono solo qui — il Monkey Park, dove si entra nei recinti a dare da mangiare a lemuri, iguane e pappagalli, e le tre ore in barca a vela da Puerto Colón, che finiscono con la sosta bagno e lo snorkeling.",
       en: "The whole week, one outing a day: the schooner, Aqualand, the tuk tuk, the submarine and Siam Park, plus two days you only get here — Monkey Park, where you walk into the enclosures to feed lemurs, iguanas and parrots, and three hours under sail from Puerto Colón, which end with a swim and a snorkel.",
-      es: "La semana entera, una salida al día: la goleta, Aqualand, el tuk tuk, el submarino y el Siam Park, más dos días que solo están aquí — el Monkey Park, donde se entra en los recintos a dar de comer a lémures, iguanas y loros, y las tres horas en velero desde Puerto Colón, que terminan con parada de baño y snorkel."
+      es: "La semana entera, una salida al día: la goleta, Aqualand, el tuk tuk, el submarino y el Siam Park, más dos días que solo están aquí — el Monkey Park, donde se entra en los recintos a dar de comer a lémures, iguanas y loros, y las tres horas en velero desde Puerto Colón, que terminan con parada de baño y snorkel.",
+      fr: "Toute la semaine, une sortie par jour : la goélette, Aqualand, le tuk-tuk, le sous-marin et le Siam Park, plus deux jours qu'on ne trouve qu'ici — le Monkey Park, où l'on entre dans les enclos pour nourrir lémuriens, iguanes et perroquets, et trois heures à la voile depuis Puerto Colón, qui finissent par une baignade et du snorkeling.",
+      de: "Die ganze Woche, ein Ausflug pro Tag: der Schoner, das Aqualand, das Tuk-Tuk, das U-Boot und der Siam Park, dazu zwei Tage, die es nur hier gibt — der Monkey Park, wo man in die Gehege geht und Lemuren, Leguane und Papageien füttert, und drei Stunden unter Segeln ab Puerto Colón, die mit Baden und Schnorcheln enden."
     }
   }
 
 ];
+
+// Le voci che salgono al Teide (vedi "IL TEIDE UNA VOLTA SOLA" in testa al
+// file). Senza `optionIndex` vuol dire **tutte** le varianti della scheda;
+// con, solo quella. Una scheda nuova che ci sale va aggiunta qui, o il
+// cliente se la puo' mettere nel suo pacchetto accanto al Parco Nazionale.
+const PACCHETTI_TEIDE = [
+  { id: "teide-national-park" },                // il parco di giorno
+  { id: "icod-garachico-orotava" },             // il parco, poi Icod, Garachico e Masca
+  { id: "masca-teide-cabrio-bus" },             // il parco col bus scoperto
+  { id: "stargazing-group" },                   // ci si sale la sera
+  { id: "mustang-experience" },                 // su fino alla Cañada Blanca
+  { id: "buggy-volcano-4h", optionIndex: 1 },   // "Tramonto sul Teide"
+  { id: "buggy-volcano-4h", optionIndex: 2 },   // "Completo": dentro c'e' il parco
+  { id: "quad-teide-adventure" },               // tutte e due le varianti
+  { id: "trekking-bici", optionIndex: 0 },      // "Teide Light"
+  { id: "bici", optionIndex: 0 },               // Mount Teide Challenge West Slope
+  { id: "bici", optionIndex: 1 },               // Mount Teide Challenge South Slope
+  { id: "bici", optionIndex: 3 },               // Teide Downhill
+  { id: "bici", optionIndex: 9 },               // Izaña – El Poris, Teide Easy Downhill
+  { id: "bici", optionIndex: 10 },              // Teide South Off-road Downhill
+  { id: "helicopter-tours", optionIndex: 4 }    // "Grand Teide Luxury"
+];
+
+// ─────────────────────────────────────────────────────────────────────────
+// CREA IL TUO PACCHETTO
+//
+// In fondo a ogni vetrina c'e' un riquadro in piu', "Crea il tuo pacchetto"
+// (proprietario, 20 ottobre 2026): il cliente sceglie lui le escursioni, e
+// **valgono le regole della vetrina da cui arriva**. Quante escursioni, quanto
+// sconto, e quali schede si possono scegliere:
+//
+//   base      i pacchetti      3 escursioni, 10%, mezzi compresi
+//   famiglia  In famiglia      3 escursioni, 10%, solo le schede `family: true`
+//                              col prezzo bambini vero, niente mezzi
+//   per-due   Perfetto per 2   3 escursioni, 10%, i mezzi contati da due posti
+//                              (`posti: 2`, come nei pacchetti di quel tema)
+//   g3 g5 g7  3/5/7 giorni     3, 5 o 7 escursioni, 10%, 12% o 15%, niente mezzi
+//
+// E per tutte: il Teide una volta sola (PACCHETTI_TEIDE), una scheda una volta
+// sola, e solo le voci che hanno un prezzo a persona da far vedere. Le barche
+// private e i charter non ci sono: il loro prezzo e' di tutta la barca, e un
+// pacchetto deve poter dire quanto costa a testa — come quelli dell'ufficio.
+// Lo sconto si fa dove si fa sempre (scontoPossibile): sui parchi e sugli
+// spettacoli no, e la pagina non lo scrive, come negli altri pacchetti.
+//
+// IL PACCHETTO NON SI SALVA DA NESSUNA PARTE: e' scritto tutto nel suo id,
+//   su-misura:famiglia:peter-pan,submarine-safari,aqualand
+//   su-misura:base:buggy-volcano-4h~2,luxury-cruiser~0,parascending
+// (la tilde e' la variante, `optionIndex`). pacchettoDi() lo riconosce e lo
+// ricostruisce, quindi la lista, la richiesta su Supabase e il messaggio
+// WhatsApp lo trattano come un pacchetto qualunque, e l'indirizzo
+// `pacchetto.html?id=su-misura:...` si puo' mandare a qualcuno.
+// Un id che non rispetta le regole non e' un pacchetto: pacchettoDi() torna
+// null, come per un pacchetto tolto.
+// ─────────────────────────────────────────────────────────────────────────
+
+const PACCHETTI_SU_MISURA = {
+  base:      { voci: 3, sconto: 10, indietro: "./pacchetti.html" },
+  famiglia:  { voci: 3, sconto: 10, famiglia: true, indietro: "./pacchetti.html?famiglia=1" },
+  "per-due": { voci: 3, sconto: 10, tema: "per-due", posti: 2, indietro: "./pacchetti.html?tema=per-due" },
+  g3:        { voci: 3, sconto: 10, giorni: 3, indietro: "./pacchetti.html?giorni=3" },
+  g5:        { voci: 5, sconto: 12, giorni: 5, indietro: "./pacchetti.html?giorni=5" },
+  g7:        { voci: 7, sconto: 15, giorni: 7, indietro: "./pacchetti.html?giorni=7" }
+};
+
+// Il titolo che va nella lista e nel messaggio all'ufficio: "vorrei richiedere
+// il pacchetto «Pacchetto su misura»", e sotto le escursioni una per una.
+const PACCHETTI_SU_MISURA_TITOLO = {
+  it: "Pacchetto su misura", en: "Custom package", es: "Paquete a medida",
+  fr: "Forfait sur mesure", de: "Paket nach Wunsch"
+};
+const PACCHETTI_SU_MISURA_TITOLO_GIORNI = {
+  it: "Itinerario su misura", en: "Custom itinerary", es: "Itinerario a medida",
+  fr: "Itinéraire sur mesure", de: "Reiseroute nach Wunsch"
+};
 
 // ─────────────────────────────────────────────────────────────────────────
 // IL CONTO
@@ -918,10 +1098,21 @@ function pacchettoArrotonda(n) {
 }
 
 function pacchettoDi(id) {
+  if (String(id).indexOf("su-misura:") === 0) return pacchettoSuMisuraDaId(id);
   return PACCHETTI.find(p => p.id === id) || null;
 }
 
+// Con `prezzoOfferta` (vedi "IL PREZZO D'OFFERTA" in testa al file) lo sconto
+// non e' scritto: e' quello che serve per arrivare a quel numero in vetrina.
+// Tornando una percentuale, tutto il resto (vetrina, finestra, lista,
+// messaggio) fa i conti come sempre e torna con lo stesso numero.
 function pacchettoSconto(pack) {
+  if (pack.prezzoOfferta) {
+    const base = pacchettoConto(Object.assign({}, pack, { prezzoOfferta: undefined, sconto: 0 }));
+    if (base && base.scontabile > 0) {
+      return (base.pieno - pack.prezzoOfferta) / base.scontabile * 100;
+    }
+  }
   return pack.sconto === undefined ? PACCHETTI_SCONTO_DEFAULT : pack.sconto;
 }
 
@@ -1045,14 +1236,20 @@ function pacchettiGiorniChiesti(valore) {
 // quello che una categoria non sa dire: i giri in pullman con guida stanno in
 // tre categorie diverse, e nella stessa categoria dello stargazing, che invece
 // si sconta. La variante vince sulla scheda, come per `days` e `times`.
+//
+// La stessa regola vale per il codice sconto dei venditori sulle escursioni
+// singole (lista.js, 18 ottobre 2026): per questo sta in scontoPossibile().
 function pacchettoVoceScontabile(voce) {
   const tour = pacchettoVoceTour(voce);
+  return scontoPossibile(tour, pacchettoVoceVariante(voce, tour));
+}
+
+function scontoPossibile(tour, variante) {
   if (!tour) return false;
   // Basta una categoria sola fra quelle senza sconto: una scheda che sta nei
   // parchi e anche nei tour resta comunque un biglietto comprato a prezzo
-  // fisso, e scontarlo toglierebbe il 10% al margine di Admiral.
+  // fisso, e scontarlo toglierebbe lo sconto dal margine di Admiral.
   if (categorieDi(tour).some(id => PACCHETTI_CATEGORIE_SENZA_SCONTO.indexOf(id) >= 0)) return false;
-  const variante = pacchettoVoceVariante(voce, tour);
   if (variante && variante.fixedPrice !== undefined) return !variante.fixedPrice;
   return !tour.fixedPrice;
 }
@@ -1098,8 +1295,123 @@ function pacchettoConto(pack) {
     risparmio: risparmio,
     scontato: pacchettoArrotonda(pieno - risparmio),
     sconto: sconto,
-    misto: misto
+    misto: misto,
+    offerta: !!pack.prezzoOfferta
   };
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// IL PACCHETTO SU MISURA: LE REGOLE
+// Il perche' sta sopra PACCHETTI_SU_MISURA.
+// ─────────────────────────────────────────────────────────────────────────
+
+// La voce sale al Teide? Una voce di PACCHETTI_TEIDE senza variante vale per
+// tutte le varianti della scheda.
+function pacchettoVoceSaleAlTeide(voce) {
+  return PACCHETTI_TEIDE.some(v => v.id === voce.id &&
+    (v.optionIndex === undefined || v.optionIndex === voce.optionIndex));
+}
+
+// Questa voce si puo' scegliere nella vetrina con queste regole?
+function pacchettoSuMisuraAmmessa(regole, voce) {
+  const tour = pacchettoVoceTour(voce);
+  if (!tour) return false;
+  // Dove la scheda ha delle varianti, la variante si sceglie: il prezzo
+  // cambia da una all'altra, e senza non si sa che cosa si sta sommando.
+  const scelte = (tour.options && tour.options.choices) || [];
+  if (scelte.length ? !pacchettoVoceVariante(voce, tour) : voce.optionIndex !== undefined) return false;
+
+  const prezzo = pacchettoVocePrezzo(voce);
+  if (!prezzo) return false;
+  if (prezzo.tipo === "mezzo") {
+    // Famiglia e itinerari: niente mezzi, come i pacchetti di quelle vetrine.
+    if (regole.famiglia || regole.giorni) return false;
+    // Un mezzo che non si sa dividere a testa (la barca privata) non ha un
+    // prezzo da far vedere.
+    if (!prezzo.aPersona) return false;
+  }
+  if (regole.famiglia && (!tour.family || !pacchettoVocePrezzoBambino(voce))) return false;
+  return true;
+}
+
+// La voce come la vuole la vetrina: su "Perfetto per 2" i mezzi si contano da
+// due posti, come nei pacchetti di quel tema.
+function pacchettoSuMisuraVoce(regole, id, optionIndex) {
+  const voce = { id: id };
+  if (optionIndex !== undefined) voce.optionIndex = optionIndex;
+  const tour = pacchettoVoceTour(voce);
+  if (regole.posti && tour && tour.units) voce.posti = regole.posti;
+  return voce;
+}
+
+// Che cosa non va in questa scelta, o null se e' un pacchetto:
+//   "manca"   ne servono di piu' (o ce ne sono troppe)
+//   "doppia"  la stessa scheda due volte
+//   "teide"   due voci che salgono al Teide
+//   "no"      una voce che in questa vetrina non si puo' scegliere
+function pacchettoSuMisuraProblema(regole, voci) {
+  if (voci.some(v => !pacchettoSuMisuraAmmessa(regole, v))) return "no";
+  const ids = voci.map(v => v.id);
+  if (ids.some((id, i) => ids.indexOf(id) !== i)) return "doppia";
+  if (voci.filter(pacchettoVoceSaleAlTeide).length > 1) return "teide";
+  if (voci.length !== regole.voci) return "manca";
+  return null;
+}
+
+// "buggy-volcano-4h~2": la voce come sta nell'id e nell'indirizzo.
+function pacchettoSuMisuraVoceTesto(voce) {
+  return voce.id + (voce.optionIndex !== undefined ? "~" + voce.optionIndex : "");
+}
+
+function pacchettoSuMisuraVoceDaTesto(regole, testo) {
+  const [id, indice] = String(testo).split("~");
+  const n = indice === undefined ? undefined : parseInt(indice, 10);
+  if (!id || (indice !== undefined && !(n >= 0))) return null;
+  return pacchettoSuMisuraVoce(regole, id, n);
+}
+
+function pacchettoSuMisuraId(chiave, voci) {
+  return "su-misura:" + chiave + ":" + voci.map(pacchettoSuMisuraVoceTesto).join(",");
+}
+
+// Il pacchetto ricostruito dal suo id, con gli stessi campi di quelli di
+// PACCHETTI, oppure null se l'id non rispetta le regole della sua vetrina.
+function pacchettoSuMisuraDaId(id) {
+  const pezzi = String(id).split(":");
+  if (pezzi.length !== 3 || pezzi[0] !== "su-misura") return null;
+  const chiave = pezzi[1];
+  if (!Object.prototype.hasOwnProperty.call(PACCHETTI_SU_MISURA, chiave)) return null;
+  const regole = PACCHETTI_SU_MISURA[chiave];
+  const voci = pezzi[2].split(",").map(s => pacchettoSuMisuraVoceDaTesto(regole, s));
+  if (voci.some(v => !v) || pacchettoSuMisuraProblema(regole, voci)) return null;
+
+  const primo = pacchettoVoceTour(voci[0]);
+  const pack = {
+    id: pacchettoSuMisuraId(chiave, voci),
+    suMisura: chiave,
+    title: regole.giorni ? PACCHETTI_SU_MISURA_TITOLO_GIORNI : PACCHETTI_SU_MISURA_TITOLO,
+    image: primo.image,
+    sconto: regole.sconto,
+    voci: voci
+  };
+  if (regole.famiglia) pack.famiglia = true;
+  if (regole.tema) pack.tema = regole.tema;
+  if (regole.giorni) pack.giorni = regole.giorni;
+  return pack;
+}
+
+// La vetrina dell'indirizzo di pacchetti.html, come chiave di
+// PACCHETTI_SU_MISURA. Nella vista "Tutti" degli itinerari si parte da tre
+// giorni: dentro la pagina si passa a cinque o sette.
+function pacchettoSuMisuraChiave(vistaGiorni, quanti, tema, famiglia) {
+  if (vistaGiorni) return "g" + (quanti || 3);
+  if (tema === "per-due") return "per-due";
+  return famiglia ? "famiglia" : "base";
+}
+
+function pacchettoSuMisuraHref(chiave, voci) {
+  return "./pacchetto.html?crea=" + encodeURIComponent(chiave) +
+    (voci && voci.length ? "&voci=" + encodeURIComponent(voci.map(pacchettoSuMisuraVoceTesto).join(",")) : "");
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -1238,7 +1550,7 @@ function pacchettoPrezziMezziUguali(tour) {
 //   costo     quanto costano in tutto — non si moltiplica per le persone
 //   posti     quante persone ci stanno sopra, per il controllo dei posti
 //   nome      "Buggy", "Moto d'acqua": il nome del gruppo, dal catalogo
-//   righe     "1 × 4 posti €240", per il conto sotto il totale e per il messaggio
+//   righe     "4 posti × 1 (€240)", per il conto sotto il totale e per il messaggio
 // Torna null se non si e' scelto niente o se un tipo contato non ha prezzo:
 // e' la stessa regola di sempre, meglio nessun totale che uno inventato.
 function pacchettoContoMezzi(gruppo, numeri) {
@@ -1256,11 +1568,11 @@ function pacchettoContoMezzi(gruppo, numeri) {
     costo += prezzo * n;
     posti += (tipo.seats || 0) * n;
     quanti += n;
-    // "1 × 4 posti €240" e non "4 posti × 1": davanti il numero dei mezzi,
-    // che e' quello che il cliente ha appena battuto, e dietro il tipo col suo
-    // prezzo. Il "×" e il punto in mezzo sono gli stessi del riepilogo dei
-    // mezzi in escursioni.js, cosi' le due finestre si leggono uguali.
-    righe.push(n + " × " + tf(tipo.name) + " €" + eur(prezzo));
+    // "4 posti × 1 (€240)": come la riga dei mezzi delle schede ("Buggy: 4
+    // posti × 1"), col prezzo fra parentesi. Prima era "1 × 4 posti €240", e
+    // con la Mustang "1 × Con 1 o 2 persone €250" (terza prova da cliente,
+    // 19 ottobre 2026).
+    righe.push(tf(tipo.name) + " × " + n + " (€" + eur(prezzo) + ")");
   });
   if (manca || !quanti) return null;
 
@@ -1314,7 +1626,7 @@ function pacchettoTotale(pack, adulti, bambini, mezzi) {
       if (!conto) { possibile = false; return; }
       fisso += conto.costo;
       if (pacchettoVoceScontabile(voce)) scontabileFisso += conto.costo;
-      pezzi.push(conto.nome + " " + conto.righe);
+      pezzi.push(conto.nome + ": " + conto.righe);
       return;
     }
 
@@ -1398,7 +1710,7 @@ function pacchettoRigheRichiesta(pack, req) {
     "• " + t("wa.people") + ": " + peopleText(req.adults, req.kids, 0)
   ];
 
-  // I mezzi scelti, un rigo per gruppo ("Buggy: 1 × 4 posti €240"). Sta sopra
+  // I mezzi scelti, un rigo per gruppo ("Buggy: 4 posti × 1 (€240)"). Sta sopra
   // l'hotel e sotto le persone perche' e' la seconda cosa che l'ufficio guarda
   // per rispondere: quanti sono e su cosa salgono. Col prezzo dentro, che e'
   // lo stesso che il cliente ha visto nella finestra: se i due numeri non
@@ -1427,6 +1739,11 @@ function pacchettoRigheRichiesta(pack, req) {
 // Il testo sta a parte dall'indirizzo perche' va anche nel database
 // (richieste.js), e l'ufficio lo rilegge in venditori.html.
 function pacchettoWhatsappTesto(pack, req, codice) {
+  // in italiano se il cliente legge in francese o tedesco: vedi perUfficio in i18n.js
+  return perUfficio(() => pacchettoWhatsappScrivi(pack, req, codice));
+}
+
+function pacchettoWhatsappScrivi(pack, req, codice) {
   const righe = pacchettoRigheRichiesta(pack, req);
 
   // "il pacchetto «X»" su un itinerario da sette giorni fa arrivare in ufficio
@@ -1796,7 +2113,7 @@ function pacchettoHref(pack) {
 // numero e' la combinazione piu' bassa possibile e in meno persone sale. Dove
 // sono tutti prezzi a persona il numero e' quello e basta, e un "da" lo
 // farebbe sembrare un minimo che puo' crescere. E' la stessa chiave `tour.from`
-// delle schede, non una seconda scritta da tenere allineata in tre lingue.
+// delle schede, non una seconda scritta da tenere allineata in cinque lingue.
 function pacchettoPrezzoHTML(conto) {
   if (!conto) {
     return `<span class="pack-price"><strong>${esc(t("pack.noPrice"))}</strong></span>`;
@@ -1807,10 +2124,16 @@ function pacchettoPrezzoHTML(conto) {
   const numero = conto.misto
     ? t("tour.from", { p: eur(conto.scontato) })
     : "€" + eur(conto.scontato);
-  return `<span class="pack-price">${barrato}<strong>${esc(numero)}</strong>
+  const offerta = conto.offerta
+    ? `<span class="pack-offerta">${esc(t("pack.offer"))}</span> `
+    : "";
+  return `<span class="pack-price">${offerta}${barrato}<strong>${esc(numero)}</strong>
       <small>${esc(t("pack.perPerson"))}</small></span>`;
 }
 
+// Il bollino ha due testi: "Risparmi €5,50" e "−€5,50". Sui riquadri piccoli
+// del telefono quello lungo andava su due righe e copriva tutto il titolo
+// (16 ottobre 2026): li' si vede il corto, che non si traduce (styles.css).
 // Il riquadro della vetrina: foto, titolo e prezzo, e si tocca tutto. Sugli
 // itinerari sopra il titolo c'e' quanti giorni sono: nella vetrina "tutti" i
 // sei riquadri si somigliano, e "Tre giorni" e "Sette giorni" scritti nel
@@ -1828,8 +2151,25 @@ function pacchettoTileHTML(pack) {
           <span class="pack-tile-prezzo">${pacchettoPrezzoHTML(conto)}</span>
         </span>
         ${conto && conto.risparmio > 0
-          ? `<span class="pack-badge">${esc(t("pack.save", { n: eur(conto.risparmio) }))}</span>`
+          ? `<span class="pack-badge"><span class="pack-badge-lungo">${esc(t("pack.save", { n: eur(conto.risparmio) }))}</span><span class="pack-badge-corto">−€${esc(eur(conto.risparmio))}</span></span>`
           : ""}
+      </a>
+    </li>`;
+}
+
+// L'ultimo riquadro di ogni vetrina: "Crea il tuo pacchetto". Senza foto, e
+// voluto: e' l'unico che non e' un pacchetto gia' pronto, e deve sembrare un
+// posto vuoto da riempire, non un pacchetto in piu'.
+function pacchettoSuMisuraTileHTML(chiave) {
+  const regole = PACCHETTI_SU_MISURA[chiave];
+  return `
+    <li class="pack-tile pack-tile-crea">
+      <a class="pack-tile-link" href="${pacchettoSuMisuraHref(chiave)}">
+        <span class="pack-tile-testo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+          <strong>${esc(t(regole.giorni ? "build.tileDays" : "build.tile"))}</strong>
+          <span>${esc(t("build.tileText", { n: regole.voci }))}</span>
+        </span>
       </a>
     </li>`;
 }
@@ -1942,24 +2282,41 @@ function initPacchettiGriglia() {
     //
     // Chi entra da dove:
     //   ?giorni=...  solo gli itinerari, tutti o quelli di una durata
-    //   ?tema=...    solo i pacchetti di quel tema, che restano pacchetti
-    //   ?famiglia=1  solo i pacchetti di famiglia, che restano pacchetti
-    //   niente       tutti i pacchetti, compresi quelli di famiglia
-    // Gli itinerari a giorni stanno **solo** nella loro vetrina: il perche' e'
-    // in testa al file, sotto "GLI ITINERARI A GIORNI".
+    //   ?tema=...    solo i pacchetti di quel tema
+    //   ?famiglia=1  solo i pacchetti di famiglia
+    //   niente       i pacchetti che non stanno in nessun'altra vetrina
+    // Ogni pacchetto sta in una vetrina sola, quella del suo riquadro della
+    // home: il riquadro "Pacchetti" non ripete quelli di "In famiglia",
+    // "Perfetto per 2" e "3/5/7 Days" (proprietario, 13 ottobre 2026).
     grid.innerHTML = PACCHETTI
       .filter(p => vistaGiorni
         ? (pacchettoGiorni(p) && (!quanti || pacchettoGiorni(p) === quanti))
         : tema
           ? (!pacchettoGiorni(p) && p.tema === tema)
-          : (!pacchettoGiorni(p) && (!soloFamiglia || pacchettoDiFamiglia(p))))
+          : soloFamiglia
+            ? (!pacchettoGiorni(p) && pacchettoDiFamiglia(p))
+            : (!pacchettoGiorni(p) && !pacchettoDiFamiglia(p) && !p.tema))
       .filter(p => p.voci.every(v => pacchettoVoceTour(v)))
       .map(p => pacchettoTileHTML(p))
-      .join("");
+      .join("") +
+      pacchettoSuMisuraTileHTML(pacchettoSuMisuraChiave(vistaGiorni, quanti, tema, soloFamiglia));
   }
 
   disegna();
   document.addEventListener("islalang", disegna);
+}
+
+// I prezzi dei mezzi di una voce, uno per misura: "Buggy: 2 posti €180 ·
+// 4 posti €240 · 6 posti €330". Con `posti` sulla voce (Perfetto per 2) solo
+// quella misura, che e' quella contata in vetrina. Un mezzo senza prezzo
+// non si scrive.
+function pacchettoMezziTesto(voce) {
+  const gruppo = pacchettoVoceMezzi(voce);
+  if (!gruppo) return "";
+  const prezzi = gruppo.tipi
+    .filter(tipo => gruppo.prezzi[tipo.key] && (!voce.posti || tipo.seats === voce.posti))
+    .map(tipo => tf(tipo.name) + " €" + eur(gruppo.prezzi[tipo.key]));
+  return prezzi.length ? tf(gruppo.mezzi.name) + ": " + prezzi.join(" · ") : "";
 }
 
 // La riga di un'escursione dentro il pacchetto: titolo, due righe di cosa e',
@@ -1988,13 +2345,12 @@ function pacchettoVoceHTML(voce, n, famiglia) {
     const fascia = (tour.ages && tour.ages.child) ? " (" + tf(tour.ages.child) + ")" : "";
     dettagli.push(t("pack.priceChildren", { n: eur(bambino) }) + fascia);
   } else if (prezzo && prezzo.tipo === "mezzo" && prezzo.aPersona) {
-    // Due numeri, e servono tutti e due: il "da €55 a persona" e' quello che
-    // entra nel conto in cima alla pagina, e "6 posti €330/buggy" e' da dove
-    // esce. Senza il secondo il cliente legge un prezzo a testa su una cosa
-    // che a testa non si paga, e nella finestra della richiesta si trova
-    // davanti i contatori dei mezzi senza sapere perche'.
-    dettagli.push(t("tour.from", { p: eur(prezzo.aPersona) }) + " " + t("pack.perPerson"));
-    dettagli.push(tf(prezzo.mezzo.name) + " €" + eur(prezzo.prezzoMezzo) + priceUnitSuffix(tour));
+    // Il prezzo di ogni mezzo, non un prezzo a testa (proprietario, 28 ottobre
+    // 2026). Prima la riga diceva "da €55 a persona · 6 posti €330/buggy", e
+    // si leggeva come il prezzo di uno che viene da solo, che invece il mezzo
+    // lo paga intero: sotto il prezzo di vendita, e sotto i netti. Il "da" a
+    // persona resta solo in vetrina, dove la nota spiega da dove viene.
+    dettagli.push(pacchettoMezziTesto(voce));
   } else if (prezzo) {
     dettagli.push("€" + eur(prezzo.prezzo) + priceUnitSuffix(tour));
   }
@@ -2028,9 +2384,242 @@ function pacchettoFamigliaHTML(pack) {
         <p class="pack-note">${esc(t("pack.familyAges"))}</p>`;
 }
 
+// ─────────────────────────────────────────────────────────────────────────
+// LA PAGINA "CREA IL TUO PACCHETTO", `pacchetto.html?crea=<vetrina>`
+//
+// La stessa pagina del pacchetto aperto, come le vetrine sono la stessa
+// pagina: cambia cosa c'e' dentro, non i file da tenere allineati. In cima le
+// escursioni gia' scelte, sotto tutte quelle che si possono scegliere divise
+// per categoria, e in fondo, ferma mentre si scorre, la barra col conto e il
+// bottone. Il bottone apre la finestra di sempre (`data-pack-ask`), perche'
+// da li' in poi e' un pacchetto come gli altri.
+//
+// Le scelte stanno nell'indirizzo (`&voci=...`), non in localStorage: si
+// ricarica la pagina e ci sono ancora, e il link si puo' mandare.
+// ─────────────────────────────────────────────────────────────────────────
+
+// Le voci che il cliente puo' scegliere in questa vetrina, scheda per scheda:
+// [{ tour, voci: [voce, ...] }], una voce per ogni variante ammessa. Nell'ordine
+// del catalogo, che e' gia' quello delle categorie.
+function pacchettoSuMisuraScelte(regole) {
+  return ESPLORA_CATALOG
+    .filter(tour => tour.published)
+    .map(tour => {
+      const scelte = (tour.options && tour.options.choices) || [];
+      const voci = (scelte.length ? scelte.map((_, i) => i) : [undefined])
+        .map(i => pacchettoSuMisuraVoce(regole, tour.id, i))
+        .filter(v => pacchettoSuMisuraAmmessa(regole, v));
+      return { tour: tour, voci: voci };
+    })
+    .filter(s => s.voci.length);
+}
+
+// Il prezzo di una voce come si legge nella riga: a persona, i mezzi uno per uno, e
+// nella vetrina di famiglia anche quello dei bambini.
+function pacchettoSuMisuraPrezzoTesto(regole, voce) {
+  const prezzo = pacchettoVocePrezzo(voce);
+  if (!prezzo) return "";
+  if (prezzo.tipo === "mezzo") return pacchettoMezziTesto(voce);
+  if (regole.famiglia) {
+    return t("pack.priceAdults", { n: eur(prezzo.prezzo) }) + " · " +
+      t("pack.priceChildren", { n: eur(pacchettoVocePrezzoBambino(voce)) });
+  }
+  return "€" + eur(prezzo.prezzo) + " " + t("pack.perPerson");
+}
+
+function initPacchettoSuMisura(contenitore, chiave) {
+  const regole = PACCHETTI_SU_MISURA[chiave];
+  const parametri = new URLSearchParams(location.search);
+
+  // Le scelte gia' nell'indirizzo, tenendo solo quelle che stanno nelle regole:
+  // un link vecchio con una scheda tolta perde quella, non tutto il resto.
+  let scelte = [];
+  String(parametri.get("voci") || "").split(",").filter(Boolean).forEach(testo => {
+    const voce = pacchettoSuMisuraVoceDaTesto(regole, testo);
+    if (!voce || scelte.length >= regole.voci) return;
+    const prova = scelte.concat(voce);
+    const problema = pacchettoSuMisuraProblema(regole, prova);
+    if (!problema || problema === "manca") scelte = prova;
+  });
+
+  // La variante scelta nel menu di ogni riga, finche' la riga non si aggiunge.
+  const varianti = {};
+  // L'avviso sotto il riepilogo ("Il Teide c'e' gia'"): si spegne alla mossa
+  // dopo.
+  let avviso = "";
+
+  const elenco = pacchettoSuMisuraScelte(regole);
+
+  function salvaIndirizzo() {
+    const url = pacchettoSuMisuraHref(chiave, scelte);
+    try { history.replaceState(null, "", url); } catch (e) { /* file:// */ }
+  }
+
+  function sceltaDi(id) {
+    return scelte.find(v => v.id === id) || null;
+  }
+
+  function rigaHTML(gruppo) {
+    const tour = gruppo.tour;
+    const presa = sceltaDi(tour.id);
+    const indice = presa ? presa.optionIndex
+      : (varianti[tour.id] !== undefined ? varianti[tour.id] : gruppo.voci[0].optionIndex);
+    const voce = gruppo.voci.find(v => v.optionIndex === indice) || gruppo.voci[0];
+
+    // Il menu delle varianti solo dove ce n'e' piu' d'una da scegliere; preso
+    // il pacchetto, la variante resta quella (si toglie e si riprende).
+    const menu = gruppo.voci.length > 1
+      ? `<select data-build-variant="${esc(tour.id)}" aria-label="${esc(t("build.variant", { name: tf(tour.title) }))}"${presa ? " disabled" : ""}>
+          ${gruppo.voci.map(v => `<option value="${v.optionIndex}"${v.optionIndex === voce.optionIndex ? " selected" : ""}>${esc(tf(tour.options.choices[v.optionIndex].label))}</option>`).join("")}
+        </select>`
+      : (voce.optionIndex !== undefined
+        ? `<span class="build-riga-variante">${esc(tf(tour.options.choices[voce.optionIndex].label))}</span>`
+        : "");
+
+    return `
+      <li class="build-riga${presa ? " is-presa" : ""}">
+        <img src="${fotoPiccola(tour.image)}" alt="" loading="lazy" />
+        <div class="build-riga-testo">
+          <strong>${esc(tf(tour.title))}</strong>
+          ${menu}
+          <span class="build-riga-prezzo">${esc(pacchettoSuMisuraPrezzoTesto(regole, voce))}</span>
+        </div>
+        <button class="btn ${presa ? "btn-soft" : "btn-primary"} build-riga-btn" type="button"
+                data-build-${presa ? "remove" : "add"}="${esc(tour.id)}"
+                aria-label="${esc(t(presa ? "build.removeAria" : "build.addAria", { name: tf(tour.title) }))}">
+          ${esc(t(presa ? "build.remove" : "build.add"))}</button>
+      </li>`;
+  }
+
+  function sceltaHTML(voce, n) {
+    const tour = pacchettoVoceTour(voce);
+    const variante = pacchettoVoceVariante(voce, tour);
+    return `
+      <li class="pack-voce">
+        <span class="pack-voce-n" aria-hidden="true">${n}</span>
+        <div class="pack-voce-testo">
+          <strong>${esc(tf(tour.title))}</strong>
+          <span class="pack-voce-meta">${esc([variante ? tf(variante.label) : "", pacchettoSuMisuraPrezzoTesto(regole, voce)].filter(Boolean).join(" · "))}</span>
+        </div>
+        <button class="iconbtn" type="button" data-build-remove="${esc(voce.id)}"
+                aria-label="${esc(t("build.removeAria", { name: tf(tour.title) }))}">✕</button>
+      </li>`;
+  }
+
+  function disegna() {
+    document.title = t(regole.giorni ? "build.titleDays" : "build.title") + " · Isla";
+    const pronto = !pacchettoSuMisuraProblema(regole, scelte);
+    const pack = pronto ? pacchettoDi(pacchettoSuMisuraId(chiave, scelte)) : null;
+    const conto = pack ? pacchettoConto(pack) : null;
+
+    // Le categorie nell'ordine di CATEGORIES, ognuna con le sue schede. Una
+    // scheda con `alsoIn` sta solo nella sua categoria: due righe per la stessa
+    // scheda farebbero sembrare che se ne possono prendere due.
+    const gruppi = CATEGORIES.map(cat => ({
+      cat: cat,
+      righe: elenco.filter(g => g.tour.category === cat.id)
+    })).filter(g => g.righe.length);
+
+    // Gli itinerari: le tre durate, come le pillole della loro vetrina.
+    // Cambiando durata le scelte restano, fin dove ci stanno.
+    const durate = regole.giorni ? `
+      <nav class="chip-row build-durate" aria-label="${esc(t("days.navAria"))}">
+        ${[3, 5, 7].map(n => `<a class="chip${n === regole.giorni ? " is-active" : ""}"
+            href="${pacchettoSuMisuraHref("g" + n, scelte.slice(0, n))}"${n === regole.giorni ? ' aria-current="page"' : ""}>${esc(t("days.d" + n))}</a>`).join("")}
+      </nav>` : "";
+
+    contenitore.innerHTML = `
+      <div class="build${scelte.length >= regole.voci ? " is-pieno" : ""}">
+        <div class="catalog-head">
+          <span class="eyebrow">${esc(t("build.eyebrow"))}</span>
+          <h1>${esc(t(regole.giorni ? "build.titleDays" : "build.title"))}</h1>
+          <p class="packs-intro">${esc(t(regole.giorni ? "build.introDays" : "build.intro", { n: regole.voci }))}</p>
+        </div>
+        ${durate}
+        <span class="pack-inside">${esc(t("build.chosen", { k: scelte.length, n: regole.voci }))}</span>
+        ${scelte.length
+          ? `<ol class="pack-voci build-scelte">${scelte.map((v, i) => sceltaHTML(v, i + 1)).join("")}</ol>`
+          : `<p class="pack-note build-vuoto">${esc(t("build.empty", { n: regole.voci }))}</p>`}
+        ${gruppi.map(g => `
+          <h2 class="build-cat">${esc(tf(g.cat.name))}</h2>
+          <ul class="build-elenco">${g.righe.map(rigaHTML).join("")}</ul>`).join("")}
+        <div class="build-barra">
+          ${pronto
+            ? `<div class="pack-foot">${pacchettoPrezzoHTML(conto)}${conto && conto.risparmio > 0
+                ? `<span class="build-risparmio">${esc(t("pack.save", { n: eur(conto.risparmio) }))}</span>` : ""}</div>`
+            : `<p class="build-conta">${esc(t("build.chosen", { k: scelte.length, n: regole.voci }))}</p>`}
+          <p class="request-day-error build-avviso" role="status"${avviso ? "" : " hidden"}>${esc(avviso)}</p>
+          <button class="btn btn-primary btn-block" type="button"
+                  ${pack ? `data-pack-ask="${esc(pack.id)}" aria-haspopup="dialog" aria-controls="packDialog"` : "disabled"}>
+            ${esc(t(regole.giorni ? "days.ask" : "pack.ask"))}</button>
+        </div>
+        <a class="pack-back" href="${regole.indietro}">${esc(t(regole.giorni ? "days.seeAll" : "pack.seeAll"))}</a>
+      </div>`;
+  }
+
+  // Dopo un ridisegno il bottone toccato non c'e' piu': si rimette il fuoco su
+  // quello nuovo della stessa riga, o chi usa la tastiera ricomincia da capo.
+  function ridisegnaTenendoFuoco(selettore) {
+    disegna();
+    const el = selettore && contenitore.querySelector(selettore);
+    if (el) el.focus({ preventScroll: true });
+  }
+
+  function aggiungi(id) {
+    if (scelte.length >= regole.voci) {
+      avviso = t("build.full", { n: regole.voci });
+      return;
+    }
+    const gruppo = elenco.find(g => g.tour.id === id);
+    if (!gruppo) return;
+    const indice = varianti[id] !== undefined ? varianti[id] : gruppo.voci[0].optionIndex;
+    const voce = gruppo.voci.find(v => v.optionIndex === indice) || gruppo.voci[0];
+    const prova = scelte.concat(voce);
+    const problema = pacchettoSuMisuraProblema(regole, prova);
+    if (problema === "teide") { avviso = t("build.teide"); return; }
+    if (problema && problema !== "manca") return;
+    scelte = prova;
+    salvaIndirizzo();
+  }
+
+  contenitore.addEventListener("click", e => {
+    const add = e.target.closest("[data-build-add]");
+    const rem = e.target.closest("[data-build-remove]");
+    if (!add && !rem) return;
+    avviso = "";
+    if (add) {
+      const id = add.dataset.buildAdd;
+      aggiungi(id);
+      ridisegnaTenendoFuoco(`[data-build-remove="${CSS.escape(id)}"], [data-build-add="${CSS.escape(id)}"]`);
+    } else {
+      const id = rem.dataset.buildRemove;
+      scelte = scelte.filter(v => v.id !== id);
+      salvaIndirizzo();
+      ridisegnaTenendoFuoco(`[data-build-add="${CSS.escape(id)}"]`);
+    }
+  });
+
+  contenitore.addEventListener("change", e => {
+    const menu = e.target.closest("[data-build-variant]");
+    if (!menu) return;
+    varianti[menu.dataset.buildVariant] = parseInt(menu.value, 10);
+    ridisegnaTenendoFuoco(`[data-build-variant="${CSS.escape(menu.dataset.buildVariant)}"]`);
+  });
+
+  disegna();
+  document.addEventListener("islalang", disegna);
+}
+
 function initPacchetto() {
   const contenitore = document.querySelector("[data-pack-detail]");
   if (!contenitore || typeof ESPLORA_CATALOG === "undefined") return;
+
+  const crea = new URLSearchParams(location.search).get("crea");
+  if (crea !== null) {
+    initPacchettoSuMisura(contenitore,
+      Object.prototype.hasOwnProperty.call(PACCHETTI_SU_MISURA, crea) ? crea : "base");
+    return;
+  }
 
   function disegna() {
     const id = new URLSearchParams(location.search).get("id");
@@ -2061,9 +2650,19 @@ function initPacchetto() {
     const righe = pack.voci
       .map((voce, i) => pacchettoVoceHTML(voce, i + 1, famiglia))
       .join("");
-    const indietro = giorni
+    // Si torna alla vetrina in cui il pacchetto sta: quella senza filtro non
+    // mostra quelli di famiglia ne' quelli a tema.
+    // Il pacchetto su misura torna alla pagina dove si e' fatto, con le sue
+    // escursioni gia' scelte: e' li' che si cambiano.
+    const indietro = pack.suMisura
+      ? pacchettoSuMisuraHref(pack.suMisura, pack.voci)
+      : giorni
       ? "./pacchetti.html?giorni=" + giorni
-      : "./pacchetti.html";
+      : famiglia
+        ? "./pacchetti.html?famiglia=1"
+        : pack.tema
+          ? "./pacchetti.html?tema=" + encodeURIComponent(pack.tema)
+          : "./pacchetti.html";
 
     contenitore.innerHTML = `
       <article class="pack-detail">
@@ -2075,7 +2674,7 @@ function initPacchetto() {
         </div>
         <span class="eyebrow">${esc(giorni ? t("days.detailEyebrow", { n: giorni }) : t("pack.eyebrow"))}</span>
         <h1 class="pack-detail-title">${esc(tf(pack.title))}</h1>
-        <p class="pack-detail-lead">${esc(tf(pack.desc))}</p>
+        <p class="pack-detail-lead">${esc(pack.suMisura ? t("build.detailLead") : tf(pack.desc))}</p>
         <div class="pack-foot">${pacchettoPrezzoHTML(conto)}</div>
         ${conto && conto.misto ? `<p class="pack-note">${esc(t("pack.unitNote"))}</p>` : ""}
         ${pacchettoFamigliaHTML(pack)}
@@ -2084,7 +2683,7 @@ function initPacchetto() {
         <button class="btn btn-primary btn-block" type="button" data-pack-ask="${esc(pack.id)}"
                 aria-haspopup="dialog" aria-controls="packDialog">${esc(giorni ? t("days.ask") : t("pack.ask"))}</button>
         <p class="hint">${esc(giorni ? t("days.oneRequest", { n: giorni }) : t("pack.oneRequest"))}</p>
-        <a class="pack-back" href="${indietro}">${esc(giorni ? t("days.seeAll") : t("pack.seeAll"))}</a>
+        <a class="pack-back" href="${indietro}">${esc(pack.suMisura ? t("build.change") : giorni ? t("days.seeAll") : t("pack.seeAll"))}</a>
       </article>`;
   }
 

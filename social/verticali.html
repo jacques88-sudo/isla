@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500;600&display=swap">
+<style>
+:root{ --notte:#211a15; --carta:#f6efe4; --sole:linear-gradient(90deg,#f7a531,#f0457a 55%,#9b2c8f); }
+*{box-sizing:border-box;margin:0}
+body{background:#555;font-family:Jost,sans-serif}
+.v{width:1080px;height:1920px;position:relative;overflow:hidden;background:var(--notte);color:var(--carta);margin-bottom:40px}
+h1,h2{font-family:"Cormorant Garamond",serif;font-weight:600;line-height:1.02;font-variant-numeric:lining-nums}
+.num{font-size:34px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;background:var(--sole);-webkit-background-clip:text;color:transparent}
+.logo{border-radius:50%;background:#fff;object-fit:contain}
+/* in alto: logo e nome, sotto la zona dei pulsanti dell'app */
+.testa{position:absolute;top:150px;left:80px;right:80px;display:flex;align-items:center;gap:20px;font-size:30px;letter-spacing:.2em;text-transform:uppercase}
+.testa img{width:78px;height:78px;padding:10px}
+.foto{position:absolute;left:0;top:290px;width:1080px;height:720px;background-size:cover;background-position:center}
+.foto::after{content:"";position:absolute;inset:auto 0 0 0;height:140px;background:linear-gradient(transparent,var(--notte))}
+.pannello{position:absolute;left:80px;right:80px;top:1040px}
+h2{font-size:104px;margin:16px 0 34px}
+ul{list-style:none;padding:0;font-size:40px;font-weight:300;line-height:1.42}
+li{padding-left:48px;position:relative;margin-bottom:14px}
+li::before{content:"";position:absolute;left:0;top:.55em;width:20px;height:20px;border-radius:50%;background:var(--sole)}
+/* copertina */
+.strisce{position:absolute;left:0;right:0;top:290px;height:900px;display:grid;grid-template-rows:repeat(3,1fr);gap:8px}
+.strisce div{background-size:cover;background-position:center}
+.cop .pannello{top:1230px}
+.cop h1{font-size:124px;margin:10px 0 26px}
+.pill{display:inline-block;background:var(--sole);color:#fff;font-size:42px;font-weight:500;padding:16px 38px;border-radius:999px}
+.pill b{font-size:56px;font-weight:600}
+/* finale e storie */
+.centro{position:absolute;left:80px;right:80px;top:260px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.centro .logo{width:240px;height:240px;padding:32px;margin-bottom:44px}
+.centro h2{font-size:112px;margin:0 0 30px}
+.offerta{display:inline-block;background:var(--sole);color:#fff;font-size:38px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:12px 40px;border-radius:999px;margin-bottom:24px}
+.barrato{font-size:50px;opacity:.7;text-decoration:line-through}
+.grande{font-weight:500;font-size:170px;line-height:1.05;background:var(--sole);-webkit-background-clip:text;color:transparent}
+.nota{margin-top:10px;font-size:36px;font-weight:300;opacity:.85}
+.cta{margin-top:60px;font-size:48px;font-weight:500;border:3px solid var(--carta);border-radius:999px;padding:22px 56px}
+.wa{margin-top:36px;font-size:38px;font-weight:300}
+/* storie: lo spazio per l'adesivo Link */
+.posto{position:absolute;left:190px;right:190px;height:200px;border:4px dashed rgba(246,239,228,.55);border-radius:40px;display:grid;place-items:center;font-size:34px;letter-spacing:.12em;text-transform:uppercase;opacity:.9}
+.freccia{position:absolute;left:0;right:0;text-align:center;font-size:44px;font-weight:500}
+.st1 .strisce{top:0;height:1060px}
+.st1 .pannello{top:1100px;text-align:center;left:60px;right:60px}
+.st1 h1{font-size:110px;margin:0 0 24px}
+</style></head><body>
+
+<!-- 5 slide verticali per TikTok e per il video -->
+<section class="v cop" id="t1">
+  <div class="testa"><img class="logo" src="../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
+  <div class="strisce">
+    <div style="background-image:url(../assets/freebird-2.webp);background-position:center 70%"></div>
+    <div style="background-image:url(foto/parascending-senza-logo.jpg);background-position:center 35%"></div>
+    <div style="background-image:url(../assets/quad-teide-adventure.webp);background-position:center 70%"></div>
+  </div>
+  <div class="pannello">
+    <div class="num">Pacchetto per coppie</div>
+    <h1>Mare, cielo<br>e vulcano</h1>
+    <div class="pill">Offerta · da <b>139 €</b> a persona</div>
+  </div>
+</section>
+
+<section class="v" id="t2">
+  <div class="testa"><img class="logo" src="../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
+  <div class="foto" style="background-image:url(../assets/freebird-2.webp)"></div>
+  <div class="pannello">
+    <div class="num">1 · Il mare</div>
+    <h2>Catamarano Freebird</h2>
+    <ul>
+      <li>3 ore da Puerto Colón, fra balene e delfini</li>
+      <li>Bagno a Diego Hernández, panino e bevande</li>
+      <li>Transfer dall'hotel compreso</li>
+    </ul>
+  </div>
+</section>
+
+<section class="v" id="t3">
+  <div class="testa"><img class="logo" src="../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
+  <div class="foto" style="background-image:url(foto/parascending-senza-logo.jpg)"></div>
+  <div class="pannello">
+    <div class="num">2 · Il cielo</div>
+    <h2>Parascending</h2>
+    <ul>
+      <li>Si decolla dalla barca, appesi al paracadute</li>
+      <li>Una decina di minuti in volo sulla costa sud</li>
+      <li>Si vola anche in due, insieme</li>
+    </ul>
+  </div>
+</section>
+
+<section class="v" id="t4">
+  <div class="testa"><img class="logo" src="../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
+  <div class="foto" style="background-image:url(../assets/quad-teide-adventure.webp)"></div>
+  <div class="pannello">
+    <div class="num">3 · Il vulcano</div>
+    <h2>Quad al Teide</h2>
+    <ul>
+      <li>3 ore la mattina, fra pinete e colate di lava</li>
+      <li>Un quad in due: uno guida, l'altro si gode il panorama</li>
+    </ul>
+  </div>
+</section>
+
+<section class="v" id="t5">
+  <div class="centro">
+    <img class="logo" src="../assets/logo-isla.png" alt="">
+    <h2>Adrenalina in due</h2>
+    <div class="offerta">Offerta</div>
+    <div class="barrato">162 €</div>
+    <div class="grande">139 €</div>
+    <div class="nota">a persona, in coppia sullo stesso quad</div>
+    <div class="cta">Prenota dal link in bio</div>
+    <div class="wa">WhatsApp +34 657 772 032</div>
+  </div>
+</section>
+
+<!-- storie: lo spazio tratteggiato e' dove mettere l'adesivo Link -->
+<section class="v st1" id="s1">
+  <div class="strisce">
+    <div style="background-image:url(../assets/freebird-2.webp);background-position:center 70%"></div>
+    <div style="background-image:url(foto/parascending-senza-logo.jpg);background-position:center 35%"></div>
+    <div style="background-image:url(../assets/quad-teide-adventure.webp);background-position:center 70%"></div>
+  </div>
+  <div class="pannello">
+    <div class="num">Pacchetto per coppie</div>
+    <h1>Mare, cielo e vulcano</h1>
+    <div class="pill">Offerta · da <b>139 €</b> a persona</div>
+  </div>
+  <div class="freccia" style="top:1520px">Tocca qui sotto per prenotare<br><span style="font-size:80px;line-height:1.4">↓</span></div>
+</section>
+
+<section class="v" id="s2">
+  <div class="centro" style="top:220px">
+    <img class="logo" src="../assets/logo-isla.png" alt="">
+    <h2>Adrenalina in due</h2>
+    <div class="offerta">Offerta</div>
+    <div class="barrato">162 €</div>
+    <div class="grande">139 €</div>
+    <div class="nota">a persona, in coppia sullo stesso quad</div>
+  </div>
+  <div class="freccia" style="top:1420px">Tocca qui sotto per prenotare<br><span style="font-size:80px;line-height:1.4">↓</span></div>
+</section>
+</body></html>

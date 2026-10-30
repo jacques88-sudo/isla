@@ -80,8 +80,10 @@ Le tre trappole più frequenti:
 - **`days`** si mette solo se **non** si fa tutti i giorni. `mar` è martedì, `mer` è
   mercoledì.
 - **`nomi`**: il nome della compagnia come lo scrivono i venditori sul ticket di carta
-  ("Cool Sailing"). Se nei dati c'è e non sta già nel titolo, mettilo: è quello che fa
-  riconoscere la scheda dalla foto del ticket. Vedi "I nomi delle compagnie" in
+  ("Cool Sailing"). Se nei dati c'è, mettilo: è quello che fa riconoscere la scheda dalla
+  foto del ticket. **Nel titolo e nella descrizione il nome della barca o della
+  compagnia non va** (proprietario, 28 ottobre 2026): il titolo dice che giro è, in
+  inglese ("Whale & Dolphin Catamaran Cruise", non "Freebird Catamaran Trip"). Vedi "I nomi delle compagnie" in
   `CLAUDE.md`.
 
 Se una condizione vale solo per una partenza o una variante (il transfer gratis solo alle

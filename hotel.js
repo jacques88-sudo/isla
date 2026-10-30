@@ -50,7 +50,7 @@
 //
 // I nomi vengono dai dati in dati-fornitore/, riscritti: gli originali sono
 // note per gli autisti, in stampatello e con spagnolo e inglese mescolati.
-// Il nome del posto resta uguale in tutte e tre le lingue, come i titoli delle
+// Il nome del posto resta uguale in tutte e cinque le lingue, come i titoli delle
 // escursioni; a tradursi e' il **tipo** di posto, la seconda voce, che diventa
 // "fermata dell'autobus", "bus stop", "parada de guagua" (vedi pickup.* in
 // i18n.js). Tipo vuoto = il posto si chiama gia' come si vede.
@@ -626,34 +626,19 @@ const PICKUP_IN_HOTEL = [
   // Island Excursions che stanno in PICKUP_TIMES piu' sotto: quelle hanno un
   // giro con punti e orari veri, presi dal widget del fornitore.
   "royal-delfin",
-  "peter-pan",
-  "submarine-safari",
   "shogun",
-  "luxury-cruiser",
   "quad-teide-adventure",
   "paragliding",
-  "kayak-snorkelling",
-  "jet-ski-safari-1-2h",
-  "immersioni",
-  "siam-park",
-  "loro-parque",
-  "twin-ticket",
   "aqualand",
   "jungle-park",
   "combo-jungle-aqualand",
-  "castillo-san-miguel",
-  "scandal-dinner-show",
   // First Wine Tasting Tour: il trasporto e' compreso e il pulmino passa sotto
   // l'hotel, confermato dal proprietario (6 ottobre 2026). Era in
   // PICKUP_NESSUNO da segnaposto, quando non se ne sapeva niente.
   "cantine-vinicole",
   // Bananas & Wines di Canaventura: bus col transfer compreso, che passa
   // sotto l'hotel come sulle loro camminate (6 ottobre 2026).
-  "bananas-wines",
-  // L'unico charter col transfer. Gli altri cinque non ce l'hanno e stanno in
-  // PICKUP_NESSUNO: se un giorno si scopre che e' una svista della scheda e non
-  // una differenza vera, si spostano qui.
-  "luxury-cruiser-charter"
+  "bananas-wines"
 ];
 
 // Le schede dove non si passa a prendere nessuno.
@@ -673,6 +658,38 @@ const PICKUP_IN_HOTEL = [
 // ritiro ce l'ha e sono gli **orari** a mancare, quindi il punto si mostra
 // lo stesso.
 const PICKUP_NESSUNO = [
+  // Siam Park: chi sta al sud ci va da solo o col bus gratuito del parco, che
+  // ferma alle sue fermate, non sotto gli hotel (proprietario, 19 ottobre
+  // 2026). Il ritiro in hotel c'e' solo col transfer su richiesta, da Nord o da
+  // Los Gigantes: tutte e due le caselle (`transfer` e `transferSiam`) fanno
+  // chiedere l'hotel, vedi transferChiesto() in escursioni.js. Prima stava in
+  // PICKUP_IN_HOTEL e il messaggio diceva "transfer: no" e "ritiro in hotel".
+  "siam-park",
+  // Loro Parque e Twin Ticket: lo stesso (proprietario, 19 ottobre 2026), ci
+  // si va da soli; il transfer c'e' su richiesta e a pagamento, da sud per
+  // Loro Parque e, sul Twin Ticket, anche da nord per la giornata al Siam Park.
+  "loro-parque",
+  "twin-ticket",
+  // Le nove con la casella "Vuoi il transfer?" (terza prova da cliente,
+  // proprietario 19 ottobre 2026: "metti col transfer"): senza la spunta la
+  // finestra chiedeva l'hotel "per dirti dove passiamo a prenderti" anche dove
+  // il ritiro si paga o vale solo per certe zone o certi orari. Ora l'hotel si
+  // chiede e il ritiro si promette solo col transfer spuntato, anche dove dal
+  // sud e' compreso (sottomarino, immersioni, moto d'acqua da Las Galletas).
+  // Il Luxury Cruiser charter e' l'unico charter col transfer: gli altri cinque
+  // non ce l'hanno e stanno piu' sotto.
+  "peter-pan",
+  "submarine-safari",
+  "luxury-cruiser",
+  "luxury-cruiser-charter",
+  "kayak-snorkelling",
+  "jet-ski-safari-1-2h",
+  "immersioni",
+  "castillo-san-miguel",
+  "scandal-dinner-show",
+  // Maxicat: il pulmino e' gratis dal sud ma si puo' arrivare da soli al
+  // pontile 9 (23 ottobre 2026): stessa casella delle nove qui sopra.
+  "maxicat",
   // Tuk Tuk Sweet Tours: il ritrovo e' davanti al Wakanda Origen, e il
   // fornitore scrive "Hotel pick up" fra le cose NON incluse. Il transfer non
   // e' compreso, quindi il punto di raccolta non si mostra (proprietario,
@@ -726,14 +743,16 @@ const PICKUP_NESSUNO = [
   "helicopter-tours",
   "karting",
   "cavallo",
-  // Talaria a Guargacho: la pagina del fornitore ha "How to get here" e
-  // nessun transfer (13 ottobre 2026). Da confermare col proprietario.
+  // Talaria a Guargacho: niente ritiro, confermato dal proprietario
+  // (13 ottobre 2026).
   "talaria-off-road",
   "fiat-500-water-car",
   "banana-boat",
   "parascending",
   "flyboard",
   "surf-lesson",
+  // Sea Trek a Los Cristianos: niente ritiro (proprietario, 15 ottobre 2026).
+  "sea-trek",
   // Parchi e spettacoli dove il biglietto e' solo il biglietto:
   "siam-night",
   "monkey-park",

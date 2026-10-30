@@ -182,9 +182,25 @@ a { text-decoration: none; color: inherit; }
 .brand img {
   width: 34px;
   height: 34px;
-  border-radius: 8px;
-  object-fit: cover;
 }
+/* IL LOGO STA SEMPRE NEL CERCHIO BIANCO (proprietario, 26 ottobre 2026): sul
+   sito, sui social, nelle grafiche. Come quello grande della home
+   (.home-hero-mark): bianco fisso e non una variabile, che al buio si
+   girerebbe. Il disegno sta dentro il cerchio col suo margine (padding), in
+   px e non in %: il % del padding si conta sulla larghezza della pagina, e il
+   logo spariva. */
+.brand img,
+.footer-brand img,
+.privacy-home img,
+.link-logo {
+  border-radius: 50%;
+  background: #fff;
+  forced-color-adjust: none;
+  padding: 4px;
+  object-fit: contain;
+  box-sizing: border-box;
+}
+.link-logo { padding: 13px; }
 .brand-text {
   display: flex;
   flex-direction: column;
@@ -215,14 +231,19 @@ a { text-decoration: none; color: inherit; }
   color: var(--text);
 }
 
-/* Stesso selettore, in forma larga, dentro il menu laterale */
+/* Stesso selettore, in forma larga, dentro il menu laterale. Con cinque
+   bandiere (tedesco, 13 ottobre 2026) accanto alla scritta "Lingua" non ci
+   stavano a nessuna larghezza: la scritta sta sopra e le bandiere sotto, su
+   tutta la larghezza del menu, divise in parti uguali. */
 .more-menu-lang {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: .8rem;
+  gap: .5rem;
   margin-bottom: 1.2rem;
 }
+.more-menu-lang .lang-seg { width: 100%; }
+.more-menu-lang .lang-seg button { flex: 1; min-width: 0; }
 .more-menu-lang-label {
   font-size: .65rem;
   text-transform: uppercase;
@@ -401,7 +422,7 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: .22em;
 }
 
-/* Le tre lingue tutte in vista, invece del bottone tondo che apre l'elenco.
+/* Le cinque lingue tutte in vista, invece del bottone tondo che apre l'elenco.
    paintLangButtons() in i18n.js accende quella attiva con .is-active. */
 .lang-row {
   display: inline-flex;
@@ -424,6 +445,13 @@ a { text-decoration: none; color: inherit; }
 .lang-row button.is-active {
   background: var(--primary);
   color: var(--primary-foreground);
+}
+/* Con la quarta e la quinta bandiera (francese e tedesco, 13 ottobre 2026)
+   la riga a 54 px per bottone usciva dallo schermo sui telefoni piccoli:
+   sotto i 375 px i bottoni si stringono. In privacy e termini, quando accanto
+   al logo non c'e' posto, la riga va sotto (.privacy-head). */
+@media (max-width: 374px) {
+  .lang-row button { min-width: 44px; }
 }
 
 /* "sticky" vuol dire: scorre con la pagina finche' arriva in cima, poi si
@@ -497,8 +525,10 @@ a { text-decoration: none; color: inherit; }
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
-/* Il numerino sul carrello: quante escursioni ci sono nella lista. Il colore
-   sabbia e' quello di "TENERIFE" sopra il titolo, l'unico accento del sito. */
+/* Il numerino sul carrello: quante escursioni ci sono nella lista. E' azzurro
+   come i pulsanti "Aggiungi alla lista" (.btn-lista), con la scritta scura
+   (proprietario, 15 ottobre 2026): si vede che il numero cresce col bottone.
+   Lo prende anche il numerino delle prenotazioni, che ha la stessa classe. */
 .isla-tab-count {
   position: absolute;
   top: 3px;
@@ -507,7 +537,7 @@ a { text-decoration: none; color: inherit; }
   height: 17px;
   padding: 0 4px;
   border-radius: var(--radius-pill);
-  background: var(--gold);
+  background: var(--wave-blue-light);
   color: oklch(0.24 0.012 60);
   font-size: .62rem;
   font-weight: 600;
@@ -864,6 +894,81 @@ a { text-decoration: none; color: inherit; }
 
 .install-btn { margin-bottom: 1.6rem; }
 
+/* I passi per installare sull'iPhone (app.js, apriIstruzioniIos). Sopra il
+   menu laterale, che sta a 40/41. */
+.ios-install-scrim { z-index: 50; }
+.ios-install { z-index: 51; }
+.ios-install-intro { margin: 0 0 1rem; color: var(--muted); }
+.ios-install-steps {
+  list-style: none;
+  margin: 0 0 1.4rem;
+  padding: 0;
+}
+.ios-install-steps li {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: .7rem 0;
+  border-top: 1px solid var(--border);
+}
+.ios-install-steps li:first-child { border-top: 0; }
+.ios-install-ico {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 12px;
+  background: var(--cream);
+  color: #0a84ff;
+  font-size: 1.2rem;
+}
+.ios-install-ico svg { width: 1.5rem; height: 1.5rem; }
+
+/* L'avviso in basso sull'iPhone (app.js, avvisoInstallaIos). Copre per un
+   momento il pallino della chat e la barra "Prenota ora" (39 e 38): ha la ✕.
+   Le finestre (40 e 41) gli passano sopra. */
+.install-hint {
+  position: fixed;
+  left: .75rem;
+  right: .75rem;
+  bottom: calc(.75rem + env(safe-area-inset-bottom, 0px));
+  z-index: 39;
+  max-width: 520px;
+  margin: 0 auto;
+  /* icona, testo e ✕ sulla prima riga, "Come si fa" sotto: tutti sulla
+     stessa riga a 320 px il testo andava a capo parola per parola */
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: .6rem .7rem;
+  padding: .8rem .7rem .8rem .8rem;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: 0 18px 40px -18px oklch(0.24 0.012 60 / .55);
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity .3s ease, transform .3s ease;
+}
+.install-hint.is-visible { opacity: 1; transform: none; }
+.install-hint-ico {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 12px;
+  background: var(--cream);
+  color: #0a84ff;
+}
+.install-hint-ico svg { width: 1.4rem; height: 1.4rem; }
+.install-hint-text { min-width: 0; line-height: 1.25; }
+.install-hint-text strong { display: block; font-weight: 600; font-size: .92rem; }
+.install-hint-text small { display: block; color: var(--muted); font-size: .8rem; }
+.install-hint-how { grid-column: 1 / -1; grid-row: 2; width: 100%; }
+.install-hint-close { width: 32px; height: 32px; font-size: .8rem; }
+
 /* La finestra del ticket: numero e telefono (app.js, booking.js). Stessa
    pillola dei campi della richiesta; il prefisso e' un menu stretto accanto. */
 .lookup-input,
@@ -906,6 +1011,13 @@ a { text-decoration: none; color: inherit; }
   margin: 1rem 0 0;
 }
 .detail-card.is-past { opacity: .6; }
+/* L'escursione di cui parla l'avviso toccato (booking.js, mostraDallAvviso):
+   un anello del colore del suo stato, e sotto la capsula in alto, non dietro. */
+.detail-card.is-avviso {
+  outline: 3px solid var(--stato, var(--primary));
+  outline-offset: 3px;
+  scroll-margin-top: 6rem;
+}
 /* La striscia bassa con la foto dell'escursione, in cima al ticket: bassa
    apposta, perche' ora e punto d'incontro restino visibili senza scorrere.
    Numero del ticket e "Confermata" stanno sopra la foto, in fondo, su una
@@ -966,42 +1078,12 @@ p.note-box { margin: 0 0 1rem; }
   background: color-mix(in srgb, var(--stato) 12%, var(--surface));
   font-size: .95rem;
 }
+/* Il link di pagamento: la frase e sotto il bottone, largo quanto la nota. */
+.ticket-pay p { margin: 0 0 .7rem; }
+.ticket-pay .btn { display: block; width: 100%; text-align: center; }
 /* L'annullata resta leggibile ma si capisce che non vale piu'. */
 .detail-card.is-cancelled .detail-title { text-decoration: line-through; text-decoration-thickness: 1px; }
 .detail-card.is-cancelled .ticket-banner { filter: grayscale(1); }
-
-.lookup-row {
-  position: relative;
-}
-
-.lookup-row input {
-  width: 100%;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  border-radius: var(--radius-pill);
-  padding: .95rem 6.5rem .95rem 1.3rem;
-  outline: none;
-  color: var(--text);
-  font-size: .95rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-.lookup-row input::placeholder {
-  text-transform: none;
-  letter-spacing: normal;
-  color: var(--muted);
-}
-.lookup-row input:focus {
-  border-color: var(--text);
-}
-
-.lookup-row .btn {
-  position: absolute;
-  top: .35rem;
-  right: .35rem;
-  bottom: .35rem;
-  height: auto;
-}
 
 .btn {
   min-height: 48px;
@@ -1021,6 +1103,17 @@ p.note-box { margin: 0 0 1rem; }
   color: var(--primary-foreground);
 }
 .btn-block { width: 100%; }
+/* Su un telefono stretto (320 px) un testo lungo tradotto non ci sta su una
+   riga: "Toutes les excursions adaptées aux enfants", "Ver todas las
+   excursiones". Questi pulsanti vanno a capo invece di uscire dallo schermo;
+   gli altri restano su una riga, accanto a qualcosa. */
+.btn-block,
+.state .btn {
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+  padding-block: .6rem;
+}
 /* Tutti i pulsanti "Aggiungi alla lista" sono azzurri, perche' si notino
    (proprietario, 12 ottobre 2026): nella scheda, sulla barra in fondo, in
    fondo alla finestra della richiesta e nel modulo dei pacchetti. Hanno la
@@ -1258,8 +1351,6 @@ p.note-box { margin: 0 0 1rem; }
 .footer-brand img {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
-  object-fit: cover;
 }
 .footer-brand div {
   display: flex;
@@ -1316,9 +1407,12 @@ p.note-box { margin: 0 0 1rem; }
    Si vede solo l'<article> della lingua scelta (il lang di <html>). */
 html:not([lang="it"]) .pp[lang="it"],
 html:not([lang="en"]) .pp[lang="en"],
-html:not([lang="es"]) .pp[lang="es"] { display: none; }
+html:not([lang="es"]) .pp[lang="es"],
+html:not([lang="fr"]) .pp[lang="fr"],
+html:not([lang="de"]) .pp[lang="de"] { display: none; }
 .privacy-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -1334,9 +1428,11 @@ html:not([lang="es"]) .pp[lang="es"] { display: none; }
   text-transform: uppercase;
   letter-spacing: .12em;
 }
-.privacy-home img { border-radius: 8px; }
 .privacy { padding-bottom: 4rem; line-height: 1.65; }
 .privacy h1 {
+  /* "Verkaufsbedingungen" e' una parola sola, piu' larga di un telefono da 320 px */
+  overflow-wrap: break-word;
+  hyphens: auto;
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 2.2rem;
@@ -1355,6 +1451,84 @@ html:not([lang="es"]) .pp[lang="es"] { display: none; }
 .privacy li { margin-bottom: .45rem; }
 .privacy a { text-decoration: underline; }
 .privacy .pp-date { color: var(--muted); font-size: .85rem; margin: 0 0 1.5rem; }
+
+/* La pagina dei link (link.html), il "link nella bio" dei social: una colonna
+   di pulsanti grandi, larghi quanto il telefono, che si toccano col pollice.
+   Il primo e' pieno (e' quello che si vuole far toccare), gli altri sono
+   carte chiare: con sei pulsanti tutti neri non se ne vedeva nessuno. */
+.link-page { text-align: center; padding-bottom: 3rem; }
+.link-logo { display: block; margin: .5rem auto 0; box-shadow: var(--shadow); }
+.link-page h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 2rem;
+  margin: .8rem 0 .3rem;
+}
+.link-tagline { color: var(--muted); margin: 0 auto 1.6rem; max-width: 26rem; }
+.link-list { display: flex; flex-direction: column; gap: .7rem; }
+.link-item {
+  display: block;
+  padding: .85rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+}
+.link-item span { display: block; font-weight: 500; font-size: 1.02rem; }
+.link-item small { display: block; color: var(--muted); font-size: .85rem; }
+.link-item-main { background: var(--primary); border-color: var(--primary); }
+.link-item-main span,
+.link-item-main small { color: var(--primary-foreground); }
+.link-item-main small { opacity: .8; }
+/* "Dal nostro ultimo video" (link.js): sopra tutti, coi colori del tramonto del
+   logo, perche' e' quello che cerca chi arriva da un reel. Testo bianco: il
+   fondo e' scuro abbastanza sia di giorno sia al buio. */
+.link-video {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: .6rem;
+  border-radius: 16px;
+  text-align: left;
+  color: #fff;
+  background: linear-gradient(135deg, oklch(0.62 0.16 40), oklch(0.55 0.2 355));
+}
+.link-video[hidden] { display: none; }
+.link-video img { flex: none; border-radius: 12px; object-fit: cover; }
+.link-video em {
+  display: block;
+  font-style: normal;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.link-video em::before { content: "▶ "; }
+.link-video strong { display: block; font-weight: 600; font-size: 1.05rem; line-height: 1.3; }
+.link-video small { display: block; font-size: .85rem; }
+
+/* I social in fondo: tre tondi da 48 px, la misura minima di un tocco. */
+.link-social { display: flex; justify-content: center; gap: 1rem; margin-top: 1.6rem; }
+.link-social a {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+}
+.link-social svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* La "f" di Facebook e' un taglio nel tondo pieno: ha il colore del fondo. */
+.link-social .link-social-cut { stroke: var(--surface); stroke-width: 2.2; stroke-linecap: butt; }
 
 @media (min-width: 768px) {
   .footer .wrap { max-width: var(--max-wide); }
@@ -1567,9 +1741,14 @@ html:not([lang="es"]) .pp[lang="es"] { display: none; }
   width: min(82vw, 380px);
   background: var(--bg);
   box-shadow: -20px 0 50px -30px oklch(0.24 0.012 60 / .5);
-  padding: 1.4rem 1.5rem 1.6rem;
+  padding: 1.4rem 1.5rem calc(1.6rem + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
+  /* Su un telefono basso (o con la barra "Installa l'app" in vista) le voci
+     non ci stanno tutte: il pannello scorre, altrimenti "Prenota ora" resta
+     fuori dallo schermo. contain: lo scorrimento non passa alla pagina sotto. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
   transform: translateX(100%);
   transition: transform .3s ease;
 }
@@ -1604,14 +1783,6 @@ html:not([lang="es"]) .pp[lang="es"] { display: none; }
   font-size: 1.35rem;
   text-align: left;
   color: var(--text);
-}
-
-/* Il link dei venditori (app.js): stessa riga delle altre, ma piu' sommesso,
-   perche' e' uno strumento di lavoro e non una sezione del sito. */
-.more-menu-nav .more-menu-seller {
-  font-family: var(--font-body);
-  font-size: .95rem;
-  color: var(--muted);
 }
 
 .more-menu-cta { margin-top: 1.4rem; }
@@ -1925,6 +2096,18 @@ body.menu-open { overflow: hidden; }
 }
 .request-season[hidden] { display: none; }
 
+/* "I posti si esauriscono in fretta" (pochiPosti nel catalogo), sotto la
+   descrizione della pagina di dettaglio: stesso colore sabbia dell'etichetta
+   "Posti limitati" nell'elenco e degli avvisi di stagione. */
+.detail-few-seats {
+  margin: 0 0 1.2rem;
+  padding: .7rem .9rem;
+  background: var(--sand);
+  color: var(--text);
+  border-radius: 10px;
+  font-size: .9rem;
+}
+
 .tour-foot {
   margin-top: auto;
   padding-top: .9rem;
@@ -2008,6 +2191,14 @@ body.menu-open { overflow: hidden; }
     grid-column: 1 / -1;
     aspect-ratio: 16 / 10;
   }
+}
+/* Sotto i 360 px (il telefono piu' stretto, 320) due riquadri per riga sono
+   quadrati da 134 px: titolo su tre righe, prezzo e "a persona" non ci stanno,
+   e il titolo usciva dal bordo in alto. Uno per riga, tutti come il primo. */
+@media (max-width: 359px) {
+  .pack-grid { grid-template-columns: 1fr; }
+  .pack-tile { aspect-ratio: 16 / 10; }
+  .pack-tile:not(:first-child) .price-before { display: inline; }
 }
 @media (min-width: 640px) {
   .pack-grid { grid-template-columns: repeat(3, 1fr); }
@@ -2216,6 +2407,125 @@ body.menu-open { overflow: hidden; }
   font-size: .7rem;
   letter-spacing: .06em;
 }
+.pack-badge-corto { display: none; }
+/* I riquadri piccoli del telefono (vedi .pack-grid): largo 150-170 px, il
+   bollino "Vous économisez €5,50" andava su due righe e copriva il titolo.
+   Li' si mostra "−€5,50", su una riga, piu' in alto nell'angolo. Sotto i
+   360 px i riquadri sono uno per riga e larghi: il bollino lungo ci sta. */
+@media (min-width: 360px) and (max-width: 639px) {
+  .pack-tile:not(:first-child):not(:nth-child(even):last-child) .pack-badge {
+    top: .55rem;
+    right: .55rem;
+    padding: .2rem .55rem;
+    white-space: nowrap;
+  }
+  .pack-tile:not(:first-child):not(:nth-child(even):last-child) .pack-badge-lungo { display: none; }
+  .pack-tile:not(:first-child):not(:nth-child(even):last-child) .pack-badge-corto { display: inline; }
+}
+
+/* "Crea il tuo pacchetto", l'ultimo riquadro di ogni vetrina: senza foto e col
+   bordo tratteggiato, un posto vuoto da riempire e non un pacchetto in piu'.
+   Niente sfumatura (::after): e' li' per leggere il bianco sulla foto. */
+.pack-tile-crea {
+  background: var(--cream);
+  border: 1.5px dashed color-mix(in oklab, var(--text) 30%, transparent);
+  box-shadow: none;
+}
+.pack-tile-crea::after { content: none; }
+.pack-tile-crea .pack-tile-link { color: var(--text); }
+.pack-tile-crea .pack-tile-testo { top: 1rem; justify-content: center; }
+.pack-tile-crea svg { width: 30px; height: 30px; color: var(--gold); }
+.pack-tile-crea .pack-tile-testo > span {
+  color: var(--muted);
+  font-size: .8rem;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* ── La pagina "Crea il tuo pacchetto" (pacchetto.html?crea=...) ─────── */
+.build { display: flex; flex-direction: column; gap: .7rem; }
+.build .catalog-head { padding-inline: 0; }
+.build-durate { justify-content: center; }
+.build-vuoto { margin-bottom: .6rem; }
+.build-scelte { margin-bottom: .6rem; }
+.build-scelte .iconbtn { flex: none; }
+.build-cat {
+  margin: 1.2rem 0 0;
+  font-weight: 400;
+  font-size: 1.35rem;
+}
+.build-elenco {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* Una riga per scheda: la foto piccola, titolo, variante e prezzo, e il
+   bottone a destra. min-width: 0 sul testo o un titolo lungo allarga la riga. */
+.build-riga {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  padding: .7rem 0;
+  border-top: 1px solid var(--border);
+}
+.build-riga img {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: var(--cream);
+}
+.build-riga-testo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+.build-riga-testo strong { font-weight: 500; font-size: .92rem; line-height: 1.25; }
+.build-riga-testo select {
+  max-width: 100%;
+  padding: .3rem .5rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;              /* sotto i 16px l'iPhone ingrandisce la pagina */
+}
+.build-riga-testo select:focus { outline: none; border-color: var(--text); }
+.build-riga-testo select:disabled { opacity: .6; }
+.build-riga-variante,
+.build-riga-prezzo { color: var(--muted); font-size: .78rem; }
+.build-riga-btn {
+  flex: none;
+  min-height: 38px;
+  padding-inline: .9rem;
+  font-size: .68rem;
+}
+/* Pacchetto pieno: "Aggiungi" resta toccabile (dice perche' non si puo'),
+   ma si spegne, cosi' l'occhio va al bottone in fondo. */
+.build.is-pieno .build-riga-btn.btn-primary { opacity: .35; }
+.build-riga.is-presa img { outline: 2px solid var(--gold); outline-offset: 2px; }
+/* La barra in fondo: resta ferma mentre si scorre l'elenco, come il piede
+   della finestra della richiesta. */
+.build-barra {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  margin: 1rem -1.25rem 0;
+  padding: .8rem 1.25rem 1rem;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+.build-barra .pack-foot { margin: 0 0 .6rem; }
+.build-barra .pack-price { font-size: 1.35rem; }
+.build-risparmio { color: var(--gold); font-size: .82rem; }
+.build-conta { margin: 0 0 .6rem; color: var(--muted); font-size: .9rem; }
+.build-avviso { margin: 0 0 .6rem; }
+.build-avviso[hidden] { display: none; }
+.build-barra .btn:disabled { opacity: .45; cursor: not-allowed; }
 
 /* ── Il pacchetto aperto ──────────────────────────────────────────────── */
 .pack-detail {
@@ -2271,6 +2581,22 @@ body.menu-open { overflow: hidden; }
   text-transform: uppercase;
   letter-spacing: .1em;
   color: var(--muted);
+}
+/* "Offerta" davanti al prezzo, dove il pacchetto ha `prezzoOfferta`
+   (pacchetti.js). Il rosa del tramonto del logo, testo bianco: si legge
+   uguale di giorno e al buio. */
+.pack-offerta {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: var(--font-body);
+  font-size: .62rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: #fff;
+  background: oklch(0.58 0.2 355);
+  border-radius: var(--radius-pill);
+  padding: .15rem .55rem;
 }
 .pack-note {
   margin: 0;
@@ -2440,6 +2766,30 @@ body.menu-open { overflow: hidden; }
   gap: .7rem;
   padding: 1.4rem 1.3rem 1.5rem;
 }
+/* La categoria a sinistra e "Condividi" a destra, sopra il titolo: il
+   pulsante non sta nella foto perche' la foto e' gia' un bottone (ingrandisce). */
+.detail-cat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .8rem;
+}
+.detail-share {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 36px;
+  padding: .35rem .8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: .8rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.detail-share svg { width: 16px; height: 16px; }
 .detail-h1 {
   margin: 0;
   font-size: 1.7rem;
@@ -2923,6 +3273,11 @@ body.menu-open { overflow: hidden; }
   color: var(--danger);
 }
 .request-day-error[hidden] { display: none; }
+/* Nella finestra della lista: la voce con la data scaduta, e l'avviso sopra
+   il pulsante, che resta spento finche' non la si toglie (lista.js). */
+.lista-dialog .lista-voce-testo .lista-voce-scaduta { color: var(--danger); font-weight: 600; }
+.lista-dialog .request-day-error { margin: 0 0 1rem; }
+.lista-dialog .request-submit:disabled { opacity: .4; cursor: not-allowed; }
 
 .request-optional {
   text-transform: none;
@@ -3280,8 +3635,6 @@ body.menu-open { overflow: hidden; }
    Il secondo pulsante sulla pagina di dettaglio, il pulsante che galleggia in
    basso, la finestra della lista e il messaggio "aggiunta". */
 
-.detail-add { margin-top: .6rem; }
-
 /* Galleggia in basso a destra e c'e' solo quando la lista ha qualcosa dentro.
    Sta sopra tutto tranne le finestre, che hanno z-index 40 e 41. */
 .lista-fab {
@@ -3314,8 +3667,9 @@ body.menu-open { overflow: hidden; }
   height: 28px;
   padding: 0 .4rem;
   border-radius: var(--radius-pill);
-  background: var(--primary-foreground);
-  color: var(--primary);
+  /* azzurro come "Aggiungi alla lista" e il numerino del carrello */
+  background: var(--wave-blue-light);
+  color: oklch(0.24 0.012 60);
   font-size: .85rem;
   letter-spacing: 0;
 }
@@ -3362,6 +3716,40 @@ body.menu-open { overflow: hidden; }
   height: 32px;
   font-size: .8rem;
   color: var(--muted);
+}
+
+/* I − / + delle persone e dei mezzi nella lista (20 ottobre 2026): un
+   contatore per riga di testo, che va a capo se non ci sta. Bottoni piu'
+   piccoli di quelli della finestra della richiesta (38 px): qui stanno sotto
+   il titolo, accanto al prezzo e alla ✕, e lo spazio e' meno. */
+.lista-conta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem 1rem;
+  margin-top: .35rem;
+}
+.lista-conta-riga {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.lista-voce-testo .lista-conta-nome {
+  /* larga uguale per tutti, cosi' i − / + stanno in colonna; "Erwachsene"
+     e' la piu' lunga delle cinque lingue */
+  min-width: 5.6em;
+  font-size: .8rem;
+}
+.lista-voce-testo .lista-conta-n {
+  min-width: 1.4em;
+  text-align: center;
+  font-size: .95rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.lista-conta .stepper-btn {
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
 }
 
 .lista-totale {
@@ -3666,6 +4054,8 @@ body.menu-open { overflow: hidden; }
 /* sotto la data, subito prima di "A che ora": senza il margine sotto la riga
    si incolla all'etichetta che segue */
 [data-hotel-hint] { margin-bottom: 1.1rem; }
+/* la frase delle 24 ore sotto il calendario: senza, si attaccava al campo dopo */
+[data-request-date-hint] { margin-bottom: 1.1rem; }
 .hotel-punto {
   margin: .8rem 0 1.1rem;
   background: var(--cream);
@@ -3923,6 +4313,45 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .lista-dialog input[type="text"]::placeholder,
 .lista-dialog input[type="email"]::placeholder { font-family: var(--font-hand); }
 
+/* Il codice sconto dei venditori (lista.js): la riga come quella del nome,
+   col bottone "Applica" accanto. Il codice si scrive in maiuscolo e in
+   caratteri normali: la scrittura a mano confonde 0 e O, 1 e I. */
+.lista-codice {
+  display: flex;
+  align-items: flex-end;
+  gap: .6rem;
+  margin-bottom: 1.3rem;
+}
+.lista-codice input { flex: 1; min-width: 0; }
+.lista-dialog .lista-codice input[type="text"] {
+  font-family: inherit;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 0;
+}
+.lista-dialog .lista-codice input[type="text"]::placeholder {
+  font-family: inherit;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.lista-codice .btn { flex: none; }
+.lista-codice-esito { margin: -.9rem 0 1.3rem; }
+/* staccato dalla nota dell'email che gli sta sopra */
+.lista-dialog label[for="listaCodice"] { margin-top: 1.2rem; }
+.lista-codice-esito.is-ok { color: var(--ok); }
+
+/* Lo sconto del codice, sopra il totale: la riga del conto con quanto si toglie. */
+.lista-sconto {
+  display: flex;
+  justify-content: space-between;
+  gap: .8rem;
+  margin: 0 0 .4rem;
+  font-size: .9rem;
+  color: var(--ok);
+  font-variant-numeric: tabular-nums;
+}
+
 /* Da 640px in su la finestra sta in mezzo allo schermo e c'e' spazio per la
    cartolina vera: messaggio a sinistra, indirizzo a destra, separati dalla
    riga verticale stampata. Sul telefono no — due colonne da 160px sarebbero
@@ -3936,7 +4365,7 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
     align-items: start;
   }
   .lista-dialog .lista-voci,
-  .lista-dialog .lista-totale { grid-column: 1; }
+  .lista-dialog .lista-conto { grid-column: 1; }
   .lista-dialog [data-lista-form] {
     grid-column: 2;
     grid-row: 1 / span 2;
@@ -3989,6 +4418,8 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   .lista-dialog {
     background-color: #f0e7d5;
     color: oklch(0.24 0.012 60);
+    /* il rosso del giorno: quello della notte e' troppo chiaro sulla carta */
+    --danger: oklch(0.55 0.15 30);
   }
   .lista-dialog .lista-voce-testo strong,
   .lista-dialog .lista-voce-prezzo,
@@ -4014,6 +4445,12 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
     border-color: oklch(0.78 0.02 75);
     color: oklch(0.24 0.012 60);
   }
+  .lista-dialog .stepper-btn {
+    background: #fbf7ee;
+    border-color: oklch(0.78 0.02 75);
+    color: oklch(0.24 0.012 60);
+  }
+  .lista-dialog .lista-voce-testo .lista-conta-n { color: oklch(0.24 0.012 60); }
   .lista-dialog .lista-francobollo { background: #fffdf7; }
   .lista-dialog .btn-primary {
     background: oklch(0.26 0.014 60);
@@ -4046,6 +4483,23 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   color: var(--muted);
 }
 .vend-who .btn { min-height: 40px; }
+/* "Installa Isla Ticket" (ticket/installa.js): in cima, finche' non e' installata. */
+.vend-installa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .6rem 1rem;
+  margin-bottom: 1.2rem;
+  padding: .9rem 1rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 12px;
+}
+.vend-installa p { margin: 0; flex: 1 1 14rem; }
+.vend-installa .btn { min-height: 40px; }
+/* "display: flex" e quello di .btn battono l'attributo hidden: senza questa
+   riga il riquadro restava sempre in vista, vuoto, con un bottone senza scritta. */
+.vend-installa[hidden], .vend-installa .btn[hidden] { display: none; }
 .vend-form label,
 .vend-form legend {
   display: block;
@@ -4127,11 +4581,19 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   margin: 0 !important;
 }
 .vend-check input { width: 1.3rem; height: 1.3rem; flex: none; }
+/* display: flex !important vince sull'attributo hidden: la casella del
+   transfer, nascosta sulle schede che non lo hanno, si vedrebbe lo stesso. */
+.vend-check[hidden] { display: none !important; }
+/* La casella del transfer sta fra due campi: le serve l'aria che hanno loro. */
+[data-transfer-wrap].vend-check, [data-edit-transfer].vend-check { margin: 0 0 1rem !important; }
 .vend-msg { margin: .5rem 0; }
 .vend-msg[hidden], .vend-warn[hidden] { display: none; }
 .vend-warn { color: var(--danger); margin: -.4rem 0 1rem; }
 .vend .is-error { color: var(--danger); }
 .vend-msg.is-ok { color: oklch(0.5 0.12 150); font-weight: 500; }
+/* "Rispondi su WhatsApp" dopo la conferma: lingua e bottone, sotto il messaggio */
+.vend-risposta { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: .5rem; font-weight: 400; }
+.vend-risposta select { min-height: 44px; }
 .vend-list { list-style: none; margin: 0; padding: 0; }
 .vend-list li {
   display: flex;
@@ -4142,11 +4604,17 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   border-bottom: 1px solid var(--border);
 }
 .vend-list li div { min-width: 0; }
+/* il riquadro chiuso degli annullati, in fondo agli elenchi (18 ottobre 2026) */
+.vend-list li.vend-annullati { display: block; padding: 0; border-bottom: 0; }
+.vend-annullati summary { cursor: pointer; color: var(--muted); min-height: 44px; display: flex; align-items: center; }
+.vend-annullati li:last-child { border-bottom: 0; }
 .vend-list strong, .vend-list span { display: block; overflow-wrap: anywhere; }
 .vend-list span { color: var(--muted); font-size: .9rem; }
 .vend-list .btn { min-height: 40px; padding: 0 1rem; flex: none; }
 .vend-list li { flex-wrap: wrap; }
-.vend-list-btns { display: flex; gap: .5rem; flex: none; }
+/* Con quattro bottoni (Conferma, Annulla, pagamento, risposta) la fila era
+   piu' larga del telefono e allargava tutta la pagina: va a capo. */
+.vend-list-btns { display: flex; flex-wrap: wrap; gap: .5rem; flex: none; max-width: 100%; }
 /* Il modulo "Modifica" si apre sotto la riga, largo quanto l'elenco. */
 .vend-edit { flex-basis: 100%; padding-top: .4rem; }
 .vend-edit .vend-hint { margin: -.4rem 0 .6rem; }
@@ -4311,17 +4779,7 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
 .map-box.is-far .map-pin svg { width: 15px; height: 15px; }
 .map-box.is-far .map-town { display: none; }
 
-/* Il fumetto: quello di Leaflet, coi colori e i caratteri del sito. */
-.map-popup .leaflet-popup-content-wrapper {
-  border-radius: 12px;
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: var(--shadow);
-}
-.map-popup .leaflet-popup-tip { background: var(--surface); }
-.map-popup .leaflet-popup-content { margin: 1rem 1.1rem; font: inherit; }
-.map-popup a.leaflet-popup-close-button { color: var(--muted); }
-.map-pop { display: grid; gap: .3rem; }
+/* La categoria e la zona sopra il nome del posto, nella scheda che sale dal basso. */
 .map-pop-cat {
   font-size: .62rem;
   letter-spacing: .14em;
@@ -4329,15 +4787,7 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
   color: var(--map-c);
   font-weight: 600;
 }
-.map-pop strong {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 1.1;
-}
 .map-pop-zone { font-size: .78rem; color: var(--muted); }
-.map-pop p { margin: .2rem 0 .5rem; font-size: .86rem; line-height: 1.45; }
-.map-popup .map-pop a.btn { color: var(--primary-foreground); }
 
 .map-box .leaflet-control-zoom a {
   background: var(--surface);
@@ -4602,3 +5052,229 @@ body.map-sheet-open .assist-fab { display: none; }
   box-shadow: 0 0 0 4px color-mix(in oklab, var(--map-c) 35%, transparent), 0 2px 6px oklch(0.2 0.02 60 / .35);
   z-index: 1000 !important;
 }
+
+/* ─── Le recensioni in "Le mie prenotazioni" (recensioni.js) ───────────── */
+/* Un riquadro solo, in cima alla lista: si recensisce il servizio, non la
+   singola escursione. */
+.recensione {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  padding: 1.1rem 1.3rem;
+  margin-bottom: 1.2rem;
+}
+.recensione-apri {
+  gap: .5rem;
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  white-space: normal;
+  text-align: center;
+  padding-block: .6rem;
+}
+.recensione-apri svg { width: 18px; height: 18px; fill: var(--gold); flex: none; }
+.recensione-grazie {
+  margin: 0;
+  color: var(--muted);
+  font-size: .9rem;
+}
+.recensione-modulo {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.recensione-modulo h3 {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: .72rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--muted);
+}
+.recensione-modulo > label { font-size: .85rem; margin-top: .4rem; }
+.recensione-modulo textarea,
+.recensione-modulo input[type="text"] {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: .95rem;
+  padding: .75rem 1rem;
+  border-radius: 14px;
+  outline: none;
+}
+.recensione-modulo input[type="text"] { border-radius: var(--radius-pill); padding-inline: 1.2rem; }
+.recensione-modulo textarea { resize: vertical; min-height: 6rem; }
+.recensione-modulo textarea:focus,
+.recensione-modulo input[type="text"]:focus { border-color: var(--text); }
+.recensione-modulo .hint { margin: 0; font-size: .8rem; color: var(--muted); }
+.recensione-stelle {
+  display: flex;
+  gap: .25rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.recensione-stelle legend { font-size: .85rem; padding: 0; margin-bottom: .3rem; }
+.recensione-stella {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+}
+.recensione-stella input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.recensione-stella svg {
+  width: 34px;
+  height: 34px;
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+.recensione-stella.is-on svg { fill: var(--gold); }
+.recensione-stella:has(input:focus-visible) { outline: 2px solid var(--text); border-radius: 50%; }
+.recensione-errore { margin: 0; color: var(--danger); font-size: .85rem; }
+.recensione-azioni { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .4rem; }
+.recensione-azioni .btn-ghost { border: 1px solid var(--border); background: transparent; color: var(--text); }
+.recensione-modulo .hint a { color: inherit; text-decoration: underline; }
+.recensione > .recensione-apri { border: 0; padding: 0; background: none; font-weight: 500; }
+
+/* ─── "Dicono di noi", nella home (recensioni.js) ──────────────────────── */
+.reviews { padding: 4rem 0 0; }
+.reviews h2 {
+  font-weight: 400;
+  font-size: clamp(1.7rem, 1.4rem + 1.2vw, 2.2rem);
+  margin: .6rem 0 .6rem;
+}
+.rev-media {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  margin: 0 0 1.4rem;
+  color: var(--muted);
+  font-size: .95rem;
+}
+.rev-media:empty { display: none; }
+.rev-media svg { width: 20px; height: 20px; fill: var(--gold); }
+.rev-media strong { color: var(--text); font-size: 1.15rem; font-weight: 500; }
+.rev-lista {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .rev-lista { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1100px) {
+  .reviews .wrap { max-width: var(--max-wide); }
+  .rev-lista { grid-template-columns: repeat(3, 1fr); }
+}
+.rev-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.rev-stelle { display: inline-flex; gap: 2px; }
+.rev-stelle svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+.rev-stelle .is-on svg { fill: var(--gold); }
+.rev-consiglia {
+  align-self: flex-start;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--gold);
+}
+.rev-testo {
+  margin: 0;
+  font-weight: 300;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.rev-nome { margin: .3rem 0 0; font-weight: 500; }
+.rev-sotto, .rev-tour { margin: 0; font-size: .8rem; color: var(--muted); }
+.rev-sotto:first-letter { text-transform: uppercase; }
+.rev-tour a { color: inherit; text-decoration: underline; }
+.rev-altre[hidden] { display: none; }
+.rev-altre {
+  margin-top: 1.2rem;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+}
+
+/* ─── Recensioni nella pagina dei venditori (venditori.js, solo ufficio) ─── */
+.vend-rec-nota { margin: 0; color: var(--muted); font-size: .9rem; flex: 1 1 14rem; }
+.vend-rec-testo { margin: .4rem 0 0; white-space: pre-line; overflow-wrap: anywhere; }
+
+/* ─── Il meteo sulle escursioni confermate (meteo.js) ──────────────────── */
+.info-field.meteo[hidden] { display: none; }
+.info-field.meteo p { margin: 0; }
+.info-field.meteo .meteo-fonte { margin-top: .3rem; font-size: .78rem; color: var(--muted); }
+/* sulla mappa, nel riquadro della spiaggia */
+.map-meteo[hidden] { display: none; }
+.map-meteo { margin: .2rem 0 1rem; padding: .7rem .9rem; border: 1px solid var(--border); border-radius: 14px; }
+.map-meteo h3 { display: flex; align-items: center; gap: .4rem; margin: 0 0 .3rem; font-family: var(--font-body); font-size: .72rem; font-weight: 400; text-transform: uppercase; letter-spacing: .2em; color: var(--muted); }
+.map-meteo h3 svg { width: 18px; height: 18px; }
+.map-meteo p { margin: .15rem 0; font-size: .9rem; }
+.map-meteo .meteo-fonte { margin-top: .35rem; font-size: .78rem; color: var(--muted); }
+/* il cielo a icone (meteo.js, METEO_DISEGNI): icone e scritte sulla stessa riga */
+.meteo-icone { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .45rem; }
+.meteo-ico { width: 1.6em; height: 1.6em; flex: none; }
+
+/* ─── I preferiti (preferiti.js) ───────────────────────────────────────── */
+.tour-card { position: relative; }
+.fav-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  flex: none;
+}
+.fav-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round; }
+.fav-btn.is-on svg { fill: oklch(0.62 0.2 25); stroke: oklch(0.62 0.2 25); }
+.fav-btn:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+/* sulla foto della scheda, in alto a destra */
+.fav-on-photo {
+  position: absolute;
+  top: .6rem;
+  right: .6rem;
+  z-index: 2;
+  background: oklch(1 0 0 / .9);
+  color: oklch(0.25 0.02 60);
+  box-shadow: 0 2px 8px oklch(0 0 0 / .18);
+}
+/* nella pagina dell'escursione, accanto a Condividi */
+.detail-cat-row .fav-in-row { margin-left: auto; border: 1px solid var(--border); width: 40px; height: 40px; }
+.chip.chip-fav:not(.is-active) { color: oklch(0.55 0.18 25); }
+.fav-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem; margin: 0 0 1rem; }
+.fav-bar[hidden] { display: none; }
+.fav-bar p { margin: 0; color: var(--muted); font-size: .9rem; }
+.fav-bar .btn-ghost { border: 1px solid var(--border); background: transparent; color: var(--text); }

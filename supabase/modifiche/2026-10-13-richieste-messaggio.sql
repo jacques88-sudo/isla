@@ -34,6 +34,13 @@ alter table public.bookings
   -- testo e non "time": e' una proposta da rileggere, non l'ora del ticket
   add column if not exists pickup_time     text;
 
+-- I venditori leggono bookings colonna per colonna (2026-10-08-foglio.sql):
+-- le colonne nuove vanno date anche a loro. Senza questa riga venditori.html
+-- scriveva "Elenco non disponibile: permission denied for table bookings"
+-- (13 ottobre 2026, trovato dal proprietario subito dopo il lancio).
+grant select (customer_name, request_message, pickup_point, pickup_time)
+  on public.bookings to authenticated;
+
 
 -- 2. MANDA_RICHIESTA CON NOME E MESSAGGIO -----------------------------------
 -- Si toglie la vecchia (tre parametri) e si rifa' con due in piu', che hanno

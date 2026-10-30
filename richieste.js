@@ -75,8 +75,15 @@ function richiestaVoce(voce) {
     ? tour.options.choices[voce.optionIndex] : null;
   const etichetta = scelta ? scelta.label : voce.option;
   const hotel = (voce.hotel || "").trim();
-  // hotelPunto sta in escursioni.js, che c'e' su tutte le pagine della lista
-  const punto = hotel && typeof hotelPunto === "function" ? hotelPunto(hotel, voce.id) : null;
+  // hotelPunto e transferDi stanno in escursioni.js, che c'e' su tutte le
+  // pagine della lista
+  const conTransfer = !!((voce.transfer || voce.transferSiam) && typeof transferDi === "function" && transferDi(tour, scelta));
+  const punto = hotel && typeof hotelPunto === "function" ? hotelPunto(hotel, voce.id, conTransfer) : null;
+  // Chi non viene preso in hotel si presenta al punto di ritrovo della scheda
+  // (15 ottobre 2026): va nella stessa colonna, cosi' la conferma dei
+  // venditori parte gia' col posto scritto. In italiano, come la variante.
+  const ritrovo = !punto && tour && typeof ritrovoDaMostrare === "function"
+    ? ritrovoDaMostrare(tour, scelta, voce.transfer || voce.transferSiam) : null;
   return {
     excursion_id: voce.id,
     option_label: (etichetta && typeof etichetta === "object" ? etichetta.it : etichetta) || null,
@@ -91,8 +98,14 @@ function richiestaVoce(voce) {
     hotel: hotel || null,
     // "il tuo hotel" diventa il nome dell'hotel: e' quello che leggera' il
     // cliente sul ticket, accanto all'ora
-    pickup_point: punto ? (punto.dove === "hotel" ? hotel : punto.nome) : null,
-    pickup_time: (punto && punto.ora) || null
+    pickup_point: punto ? (punto.dove === "hotel" ? hotel : punto.nome)
+      : ritrovo ? (typeof ritrovo === "object" ? ritrovo.it : ritrovo) : null,
+    pickup_time: (punto && punto.ora) || null,
+    // Dove il transfer si puo' scegliere, se il cliente l'ha chiesto: su
+    // alcune schede cambia il netto (18 ottobre 2026). Altrove resta
+    // undefined, e JSON.stringify non lo manda nemmeno.
+    transfer: tour && typeof transferDi === "function" && transferDi(tour, scelta)
+      ? !!voce.transfer : undefined
   };
 }
 
@@ -114,7 +127,10 @@ function richiestaManda(r) {
     body: JSON.stringify(Object.assign(
       { p_token: r.token, p_code: r.code, p_items: r.items },
       r.name ? { p_name: r.name } : {},
-      r.message ? { p_message: r.message } : {}))
+      r.message ? { p_message: r.message } : {},
+      // il codice sconto del venditore (lista.js, 19 ottobre 2026): il
+      // database lo tiene solo se esiste ed e' acceso
+      r.discountCode ? { p_discount_code: r.discountCode } : {}))
   }).then(risposta => {
     if (!risposta.ok) return false;
     const elenco = richiesteLeggi();
@@ -131,7 +147,8 @@ function richiestaManda(r) {
 // richiesta, perche' subito dopo la pagina se ne va verso WhatsApp.
 // `scriviTesto(codice)` rifa' il messaggio WhatsApp col codice dentro: il
 // codice nasce qui, quindi il messaggio si puo' scrivere solo dopo.
-function richiestaNuova(voci, iscrizione, nome, scriviTesto) {
+// `codiceSconto`: quello del venditore, gia' controllato, o "".
+function richiestaNuova(voci, iscrizione, nome, scriviTesto, codiceSconto) {
   const code = richiestaCodice();
   const r = {
     token: richiestaChiave(),
@@ -140,6 +157,7 @@ function richiestaNuova(voci, iscrizione, nome, scriviTesto) {
     items: richiestaVoci(voci),
     name: nome || "",
     message: typeof scriviTesto === "function" ? scriviTesto(code) : "",
+    discountCode: codiceSconto || "",
     stored: false
   };
   if (iscrizione) r.avvisi = "da-mandare";
@@ -257,6 +275,16 @@ function avvisiManda(r, iscrizione) {
   }).catch(() => false);
 }
 
+// Il giorno del calendario qui ("2026-10-16"), spostato di `quanti` giorni.
+// Non toISOString(): passa per UTC, e a Tenerife d'estate fra mezzanotte e
+// l'una darebbe ancora ieri (vedi minRequestDate in escursioni.js). Qui serve
+// la propria copia: booking.html carica questo file senza escursioni.js.
+function richiesteGiorno(quanti) {
+  const d = new Date();
+  d.setDate(d.getDate() + quanti);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 // Quelle rimaste "da mandare" si riprovano. Restituisce una promessa che si
 // chiude quando hanno finito tutte (booking.js la aspetta prima di leggere).
 // Una richiesta con le date gia' passate il database la rifiuta: non si
@@ -264,7 +292,7 @@ function avvisiManda(r, iscrizione) {
 // Stessa cosa per gli avvisi chiesti e non arrivati: si riprova in silenzio,
 // col permesso gia' dato. Se intanto il cliente l'ha tolto, non si chiede.
 function richiesteRiprova() {
-  const ieri = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const ieri = richiesteGiorno(-1);
   const vive = richiesteLeggi().filter(r => r.items.some(v => v.date >= ieri));
   const avvisi = vive.filter(r => r.avvisi === "da-mandare");
   return Promise.all(vive.filter(r => !r.stored).map(richiestaManda).concat(
@@ -330,8 +358,7 @@ function richiesteAggiorna() {
 // Una richiesta confermata diventa un ticket e puo' stare in tutti e due:
 // numero del ticket + escursione + data la fa contare una volta sola.
 function prenotazioniProssime() {
-  const d = new Date();
-  const oggi = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const oggi = richiesteGiorno(0);
   const viste = new Set();
   const conta = (chiave, data) => {
     if (!data || String(data).slice(0, 10) < oggi || viste.has(chiave)) return;
@@ -364,7 +391,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // contare. Prima si riprova a mandare quelle rimaste indietro, poi si legge.
   // Quelle con la data gia' passata no: non contano nel numerino, e una
   // richiesta mai confermata farebbe chiedere al database a ogni pagina.
-  const oggi = new Date().toISOString().slice(0, 10);
+  const oggi = richiesteGiorno(0);
   const inAttesa = richiesteLeggi().some(r =>
     (Array.isArray(r.last) && r.last.length ? r.last : r.items)
       .some(v => v.date >= oggi && v.status !== "cancelled" && !v.ticket_number));

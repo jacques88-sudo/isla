@@ -1,6 +1,7 @@
 // Assistente di ricerca: un pulsante rotondo in basso a destra che apre una
-// conversazione guidata. Fa due domande con risposte da toccare e propone le
-// attività del catalogo che corrispondono.
+// conversazione guidata. In cima le domande frequenti, poi quattro domande con
+// risposte da toccare (cosa, bambini, quando, budget) e le attività del
+// catalogo che corrispondono.
 //
 // Non usa intelligenza artificiale: le risposte sono decise dalle regole qui
 // sotto. Serve una chiave segreta per usare un vero modello, e quella non può
@@ -33,12 +34,61 @@ const ASSIST_BUDGET = [
 
 const ASSIST_MAX_RISULTATI = 5;
 
+// Le domande frequenti in cima alla conversazione. Le risposte sono quelle
+// della home (faq.*), così si cambiano in un posto solo: se cambia la regola
+// della cancellazione, cambia anche qui. Il ritiro non ha una domanda nella
+// home e ha testi suoi, generici di proposito: dove si sale dipende dalla
+// scheda e dall'hotel, e lo dice la finestra della richiesta.
+const ASSIST_FAQ = [
+  { q: "faq.q1", a: "faq.a1" },
+  { q: "faq.q2", a: "faq.a2" },
+  { q: "faq.q4", a: "faq.a4" },
+  { q: "faq.q5", a: "faq.a5" },
+  { q: "assist.faq.pickupQ", a: "assist.faq.pickupA" }
+];
+
+// Quanti giorni offre la domanda "Quando?": domani e i sei dopo, una
+// settimana. Oggi no: la richiesta va mandata almeno 24 ore prima.
+const ASSIST_GIORNI = 7;
+
+// L'attività parte in quel giorno della settimana (0 = domenica)? Basta una
+// variante che parta: chi sceglie il martedì vede la barca, e nella scheda
+// trova la variante giusta. Come giorniDi() in escursioni.js, che qui non è
+// caricato: la variante coi suoi `days` vince su quelli della scheda, e una
+// lista vuota vuol dire tutti i giorni.
+function assistParteIl(tour, giorno) {
+  const scelte = (tour.options && tour.options.choices) || [];
+  const varianti = scelte.length ? scelte : [null];
+  return varianti.some(v => {
+    const sigle = (v && v.days) || tour.days || [];
+    const numeri = sigle.map(s => GIORNI_SIGLE[s]).filter(n => n !== undefined);
+    return !numeri.length || numeri.includes(giorno);
+  });
+}
+
+// Le risposte della domanda "Quando?": "Domani", poi "Sab 17", "Dom 18"…
+// nella lingua del sito, e in fondo "Non lo so ancora". `giorno` è il numero
+// di getDay(); null = nessun filtro.
+function assistVociGiorni() {
+  const voci = [];
+  const d = new Date();
+  for (let i = 1; i <= ASSIST_GIORNI; i++) {
+    d.setDate(d.getDate() + 1);
+    voci.push({
+      testo: i === 1 ? t("assist.dayTomorrow") : t(GIORNI_CHIAVI[d.getDay()]) + " " + d.getDate(),
+      giorno: d.getDay()
+    });
+  }
+  voci.push({ key: "assist.int.unsure", giorno: null });
+  return voci;
+}
+
 // Messaggio WhatsApp per chi non trova quello che cerca. Admiral rivende
 // attivita' gia' presenti sull'isola: quello che non c'e' in catalogo si puo'
 // comunque procurare, quindi conviene farselo chiedere invece di perdere il
 // cliente.
 function assistWhatsappUrl() {
-  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(t("assist.customWa"));
+  return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(perUfficio(() => t("assist.customWa")));
 }
 
 // Come tourPrice() in escursioni.js, che qui non e' caricato: l'unita' che
@@ -128,13 +178,13 @@ function initAssistente() {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "assist-option";
-      b.textContent = t(v.key);
+      b.textContent = v.testo || t(v.key);
       b.addEventListener("click", () => {
         // la scelta fatta resta a schermo come risposta dell'utente
         wrap.remove();
         const eco = document.createElement("p");
         eco.className = "assist-msg assist-msg-me";
-        eco.textContent = t(v.key);
+        eco.textContent = v.testo || t(v.key);
         body.appendChild(eco);
         onScelta(v);
         body.scrollTop = body.scrollHeight;
@@ -143,27 +193,77 @@ function initAssistente() {
     });
     body.appendChild(wrap);
     body.scrollTop = body.scrollHeight;
+    return wrap;
   }
 
   // ── conversazione ─────────────────────────────────────────────────────
   function avvia() {
     body.innerHTML = "";
     bolla(t("assist.hello"));
-    bolla(t("assist.q1"));
-    opzioni(ASSIST_INTERESSI, scelta => chiediBambini(scelta.cats));
+    inizio([]);
+    // opzioni() scorre in fondo: qui no, il saluto e le domande frequenti
+    // stanno in cima e su un telefono piccolo restavano nascosti sopra.
+    body.scrollTop = 0;
+  }
+
+  // Le domande frequenti e, sotto, la prima domanda della ricerca. Toccata
+  // una domanda frequente, tutto questo blocco sparisce, sotto compaiono la
+  // domanda e la sua risposta, e il blocco torna senza le domande già fatte:
+  // la conversazione si legge dall'alto in basso come una chat.
+  function inizio(fatte) {
+    const blocco = [];
+    const restano = ASSIST_FAQ.filter(f => !fatte.includes(f.q));
+
+    if (restano.length) {
+      const wrap = document.createElement("div");
+      wrap.className = "assist-options assist-faq";
+      restano.forEach(f => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "assist-option";
+        b.textContent = t(f.q);
+        b.addEventListener("click", () => {
+          blocco.forEach(el => el.remove());
+          const eco = document.createElement("p");
+          eco.className = "assist-msg assist-msg-me";
+          eco.textContent = t(f.q);
+          body.appendChild(eco);
+          bolla(t(f.a));
+          inizio(fatte.concat(f.q));
+          // la risposta si legge dall'inizio, non dal fondo del blocco nuovo
+          eco.scrollIntoView({ block: "start" });
+        });
+        wrap.appendChild(b);
+      });
+      body.appendChild(wrap);
+      blocco.push(wrap);
+    }
+
+    blocco.push(bolla(t("assist.helloPick")));
+    blocco.push(bolla(t("assist.q1")));
+    blocco.push(opzioni(ASSIST_INTERESSI, scelta => {
+      // scelta la prima risposta, le domande frequenti non servono più
+      blocco.forEach(el => { if (el.classList.contains("assist-faq")) el.remove(); });
+      chiediBambini(scelta.cats);
+    }));
   }
 
   function chiediBambini(cats) {
     bolla(t("assist.q2"));
     opzioni(
       [{ key: "assist.yes", family: true }, { key: "assist.no", family: false }],
-      scelta => chiediBudget(cats, scelta.family)
+      scelta => chiediGiorno(cats, scelta.family)
     );
   }
 
-  function chiediBudget(cats, soloFamiglia) {
+  function chiediGiorno(cats, soloFamiglia) {
+    bolla(t("assist.qDay"));
+    opzioni(assistVociGiorni(), scelta => chiediBudget(cats, soloFamiglia, scelta.giorno));
+  }
+
+  function chiediBudget(cats, soloFamiglia, giorno) {
     bolla(t("assist.q3"));
-    opzioni(ASSIST_BUDGET, scelta => mostraRisultati(cats, soloFamiglia, scelta));
+    opzioni(ASSIST_BUDGET, scelta => mostraRisultati(cats, soloFamiglia, giorno, scelta));
   }
 
   // Riquadro finale: sempre presente, ma e' soprattutto la via d'uscita
@@ -180,10 +280,11 @@ function initAssistente() {
     body.appendChild(box);
   }
 
-  function mostraRisultati(cats, soloFamiglia, budget) {
+  function mostraRisultati(cats, soloFamiglia, giorno, budget) {
     let trovate = ESPLORA_CATALOG.filter(x => x.published);
     if (cats) trovate = trovate.filter(x => categorieDi(x).some(id => cats.includes(id)));
     if (soloFamiglia) trovate = trovate.filter(x => x.family);
+    if (giorno !== null) trovate = trovate.filter(x => assistParteIl(x, giorno));
 
     // Le voci "Su richiesta" restano fuori quando c'e' un budget: senza un
     // prezzo non si puo' dire se ci stanno dentro. Le recupera il riquadro
@@ -214,10 +315,12 @@ function initAssistente() {
 
     const lista = document.createElement("ul");
     lista.className = "assist-results";
+    // Ogni risultato apre la sua scheda, come nell'elenco: portarlo
+    // all'elenco filtrato per categoria gli faceva ritrovare la barca da solo.
     trovate.slice(0, ASSIST_MAX_RISULTATI).forEach(tour => {
       const li = document.createElement("li");
       li.innerHTML = `
-        <a href="${assistLinkCatalogo([tour.category], soloFamiglia)}">
+        <a href="./tour.html?id=${encodeURIComponent(tour.id)}">
           <span class="assist-res-cat">${assistNomeCategoria(tour.category)}</span>
           <span class="assist-res-title">${tf(tour.title)}</span>
           <span class="assist-res-price">${assistPrezzo(tour)}</span>

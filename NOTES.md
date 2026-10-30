@@ -21651,3 +21651,9 @@ alle consigliate: per questo sembrava capitare a caso. Ora `render` li scrive in
 `initCatalog` li riprende solo se `performance.getEntriesByType("navigation")` dice `back_forward`:
 "Esperienze" e il ricaricare ripartono puliti. Provato in Chrome a misura di telefono, non su Android e
 iPhone veri. `CACHE_NAME` → `isla-v658`.
+
+**Il caricamento col tema scuro** (proprietario, 30 ottobre 2026): passando da una pagina all'altra si
+vedeva scuro, bianco, scuro. Il fondo chiaro stava nello `<style>` scritto in ogni pagina, che viene dopo
+`styles.css` e vince sempre. Ora, in tutte e sette, col tema scuro: fondo nero, scritta bianca, logo nel
+cerchio bianco. `background_color` di `manifest.json` resta chiaro: è un colore solo per tutti, quindi
+aprendo l'app da Android può vedersi un istante chiaro. `CACHE_NAME` → `isla-v659`.

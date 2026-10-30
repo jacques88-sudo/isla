@@ -21625,3 +21625,10 @@ richiesta e nella lista ora si legge "Bambini (4-11)", dalle `ages` della scheda
 `escursioni.js`, che prima stava in `tour.js`). Non nei pacchetti: ogni escursione ha le sue fasce.
 L'email si scrive nel carattere normale, come il codice sconto: la calligrafia confondeva "l", "1" e
 "i", e il nome resta a mano. `CACHE_NAME` → `isla-v654`.
+
+**La ricerca e la pagina vuota** (revisione di home ed elenco, 30 ottobre 2026): si cercava la frase
+intera, e "barca delfini" dava 0 mentre "barca" ne dava 18. Ora devono esserci tutte le parole, senza
+guardare ordine e accenti (`cercaParole` in `escursioni.js`). La pagina "Nessun risultato" ha i
+pulsanti "Togli la ricerca", "Tutte le escursioni" (solo se c'è un altro filtro acceso) e "Chiedi
+all'assistente". I `nomi` delle barche non entrano nella ricerca: deciso dal proprietario.
+`CACHE_NAME` → `isla-v655`.

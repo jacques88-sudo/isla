@@ -2958,6 +2958,13 @@ body.menu-open { overflow: hidden; }
   font-size: .9rem;
   line-height: 1.6;
 }
+.catalog-empty-azioni {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .6rem;
+  margin-top: 1.4rem;
+}
 .catalog-empty code {
   background: var(--cream);
   border-radius: 4px;

@@ -112,6 +112,14 @@ const richiesta = (altro) => Object.assign({ adults: 2, kids: 0, babies: 0 }, al
     assert.deepStrictEqual(["2027-12-15", "2027-01-15", "2027-06-15"].map(i => orarioInStagione(inverno, null, "10:00", i)), [true, true, false]);
   });
 
+  await prova("la ricerca vuole tutte le parole, in qualunque ordine", () => {
+    assert.ok(cercaParole("Giro in barca coi delfini", "barca delfini"));
+    assert.ok(cercaParole("Giro in barca coi delfini", "delfini  BARCA"));
+    assert.ok(!cercaParole("Giro in barca", "barca delfini"));
+    assert.ok(cercaParole("Cañada Blanca", "canada"), "senza accenti");
+    assert.ok(cercaParole("Canada", "cañada"), "anche al contrario");
+  });
+
   // Le pagine col "?" si aprono anche senza rete.
   await prova("offline: ticket e schede si aprono dalla cache", async () => {
     const SITO = "https://islaexcursionstenerife.com/";

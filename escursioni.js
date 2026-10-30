@@ -301,6 +301,15 @@ function conRitiro(tour, variante, transferChiesto) {
 // con "12+" e senza bambini non conta: lì i bambini di solito ci sono e il
 // prezzo manca, non e' vietato. Lo legge la finestra della richiesta per
 // togliere il campo dei bambini.
+// La ricerca: devono esserci tutte le parole, in qualunque ordine e senza
+// guardare gli accenti. Prima si cercava la frase intera, e "barca delfini" dava
+// zero risultati mentre "barca" ne dava 18.
+function cercaParole(testo, ricerca) {
+  const senzaAccenti = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const dove = senzaAccenti(testo);
+  return senzaAccenti(ricerca).split(/\s+/).filter(Boolean).every(parola => dove.includes(parola));
+}
+
 // "Bambini (4-11)": la fascia d'eta' fra parentesi, quando il fornitore l'ha
 // detta. tf() perche' "0-3" si scrive uguale dappertutto, "0-11 mesi" no.
 function conEta(etichetta, fascia) {
@@ -1249,9 +1258,15 @@ function initCatalog() {
         .concat(tour.family ? PAROLE_FAMIGLIA : [])
         .join(" ")
         .toLowerCase();
-      if (!haystack.includes(state.query)) return false;
+      if (!cercaParole(haystack, state.query)) return false;
     }
     return true;
+  }
+
+  // Oltre alla ricerca non c'e' nessun altro filtro acceso: si cerca in tutto.
+  function soloRicerca() {
+    return state.query && !state.categories.length && !state.zone && !state.duration &&
+      !state.selezione && !state.family && !state.recommended;
   }
 
   function render() {
@@ -1328,7 +1343,32 @@ function initCatalog() {
       emptyEl.innerHTML = `
         <h2>${t("catalog.emptyTitle")}</h2>
         <p>${t(state.zone || state.duration ? "catalog.emptyFilters" : "catalog.emptyText")}</p>
+        <div class="catalog-empty-azioni">
+          ${state.query ? `<button class="btn btn-primary" type="button" data-empty-search>${esc(t("catalog.clearSearch"))}</button>` : ""}
+          ${soloRicerca() ? "" : `<button class="btn ${state.query ? "btn-soft" : "btn-primary"}" type="button" data-empty-all>${esc(t("catalog.all"))}</button>`}
+          <button class="btn btn-soft" type="button" data-empty-help>${esc(t("catalog.askHelp"))}</button>
+        </div>
       `;
+      const togliRicerca = () => {
+        state.query = "";
+        if (searchInput) searchInput.value = "";
+      };
+      const azione = (dove, fa) => {
+        const bottone = emptyEl.querySelector(dove);
+        if (bottone) bottone.addEventListener("click", fa);
+      };
+      azione("[data-empty-search]", () => { togliRicerca(); render(); });
+      azione("[data-empty-all]", () => {
+        togliRicerca();
+        state.categories = [];
+        state.zone = state.duration = state.selezione = null;
+        state.family = state.recommended = false;
+        render();
+      });
+      azione("[data-empty-help]", () => {
+        const assistente = document.querySelector(".assist-fab");
+        if (assistente) assistente.click();
+      });
     } else {
       emptyEl.hidden = true;
       emptyEl.innerHTML = "";

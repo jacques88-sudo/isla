@@ -250,6 +250,7 @@ const I18N = {
   "catalog.recommendedTitle": { it: "Le nostre consigliate", en: "Our recommendations", es: "Nuestras recomendadas", fr: "Nos recommandations", de: "Unsere Empfehlungen" },
   "catalog.all":        { it: "Tutte le escursioni", en: "All excursions", es: "Todas las excursiones", fr: "Toutes les excursions", de: "Alle Ausflüge" },
   "catalog.countAll":   { it: "{n} attività disponibili", en: "{n} activities available", es: "{n} actividades disponibles", fr: "{n} activités disponibles", de: "{n} Aktivitäten verfügbar" },
+  "catalog.seeAll":     { it: "Vedi tutte le {n} attività", en: "See all {n} activities", es: "Ver las {n} actividades", fr: "Voir les {n} activités", de: "Alle {n} Aktivitäten ansehen" },
   "catalog.countSome":  { it: "{n} di {total} attività", en: "{n} of {total} activities", es: "{n} de {total} actividades", fr: "{n} sur {total} activités", de: "{n} von {total} Aktivitäten" },
   "catalog.emptyTitle": { it: "Nessun risultato", en: "No results", es: "Sin resultados", fr: "Aucun résultat", de: "Keine Ergebnisse" },
   "catalog.emptyText":  { it: "Prova con un'altra parola, oppure fatti aiutare dall'assistente.", en: "Try a different word, or let the assistant help you.", es: "Prueba con otra palabra o deja que te ayude el asistente.", fr: "Essayez un autre mot, ou laissez l'assistant vous aider.", de: "Versuchen Sie ein anderes Wort oder lassen Sie sich vom Assistenten helfen." },

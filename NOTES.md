@@ -21632,3 +21632,8 @@ guardare ordine e accenti (`cercaParole` in `escursioni.js`). La pagina "Nessun 
 pulsanti "Togli la ricerca", "Tutte le escursioni" (solo se c'è un altro filtro acceso) e "Chiedi
 all'assistente". I `nomi` delle barche non entrano nella ricerca: deciso dal proprietario.
 `CACHE_NAME` → `isla-v655`.
+
+**L'elenco sembrava finire dopo 4 schede** (stessa revisione): dopo le Consigliate c'era subito il piè
+di pagina, e "Tutte" è l'ultima pillola, fuori schermo, per scelta del proprietario. Sotto le Consigliate
+ora c'è "Vedi tutte le N attività" (`data-see-all`), scuro perché l'azzurro è di "Aggiungi alla lista".
+Il proprietario l'ha visto in foto prima della pubblicazione. `CACHE_NAME` → `isla-v656`.

@@ -1211,6 +1211,15 @@ function initCatalog() {
       render();
     });
   }
+  const seeAll = document.querySelector("[data-see-all]");
+  if (seeAll) {
+    seeAll.addEventListener("click", () => {
+      state.recommended = false;
+      render();
+      // si riparte dalla prima scheda: la pagina di colpo e' lunga il doppio
+      grid.scrollIntoView();
+    });
+  }
 
   // La foto in cima e il titolo seguono la categoria scelta: se ne e' scelta
   // una sola sono la sua foto e il suo nome, se no la foto dell'isola e
@@ -1289,6 +1298,14 @@ function initCatalog() {
 
     grid.innerHTML = "";
     results.forEach(tour => grid.appendChild(tourCard(tour)));
+
+    // Dopo le quattro consigliate c'era subito il piè di pagina, e il catalogo
+    // sembrava tutto li'. La pillola "Tutte" resta l'ultima (proprietario): sta
+    // fuori schermo, quindi la strada per le altre passa da qui.
+    if (seeAll) {
+      seeAll.hidden = !state.recommended;
+      seeAll.textContent = t("catalog.seeAll", { n: published.length });
+    }
 
     chipRow.querySelectorAll(".chip").forEach(btn => {
       // Con una selezione aperta non e' acceso nessun filtro della riga: la

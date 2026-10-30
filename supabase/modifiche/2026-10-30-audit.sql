@@ -204,7 +204,16 @@ alter table public.tentativi_ticket
 -- 4. I PERMESSI PER RIPROVARE GLI AVVISI ---------------------------------------
 
 grant delete on public.notifiche_mandate to service_role;
-grant select, update (sent_at) on public.avvisi_ufficio to service_role;
+
+-- avvisi_ufficio c'e' solo se 2026-10-22-avvisi-ufficio.sql e' stato lanciato;
+-- se si lancia dopo, quel file da' lo stesso permesso.
+do $do$
+begin
+  if to_regclass('public.avvisi_ufficio') is not null then
+    grant select, update (sent_at) on public.avvisi_ufficio to service_role;
+  end if;
+end;
+$do$;
 
 
 -- 5. GLI OROLOGI CON LA PAROLA SEGRETA -----------------------------------------

@@ -109,6 +109,8 @@ create table if not exists public.avvisi_ufficio (
 );
 
 alter table public.avvisi_ufficio enable row level security;
+-- manda-notifiche toglie il segno a un avviso non partito, per riprovarlo
+grant select, update (sent_at) on public.avvisi_ufficio to service_role;
 
 create or replace function public.segna_avviso_ticket()
 returns trigger

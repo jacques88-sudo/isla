@@ -1589,7 +1589,7 @@ const FINESTRA_RICHIESTA = `  <div class="ticket-dialog request-dialog" id="requ
         <button class="btn btn-primary btn-lista btn-block request-submit" type="submit" data-i18n="req.submit">Continua su WhatsApp</button>
       </div>
 
-      <p class="hint" data-i18n-html="req.hint">Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Ti rispondiamo entro 24 ore con la conferma.</p>
+      <p class="hint" data-i18n-html="req.hint">Le richieste vanno fatte con almeno <strong>24 ore di anticipo</strong>. Entro 24 ore ti diciamo se c'è posto e ti mandiamo il link per pagare.</p>
       <p class="hint request-privacy" data-i18n-html="req.privacy">Quello che scrivi serve solo a gestire la tua richiesta e a risponderti su WhatsApp. L'hotel resta salvato su questo dispositivo, per non riscriverlo ogni volta. <a href="./privacy.html" target="_blank" rel="noopener">Come trattiamo i tuoi dati</a></p>
     </form>
   </div>`;

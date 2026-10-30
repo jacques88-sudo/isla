@@ -21598,3 +21598,12 @@ Il pulsante dentro la scheda resta "Aggiungi", per chiederla anche con un altro 
 un'altra scheda la barra aggiunge quella. Con "da €250 a Mustang" la freccia finale usciva
 dallo schermo, visto dal proprietario sul telefono: via la freccia, e prezzo e pulsante della
 barra ora vanno a capo. `CACHE_NAME` → `isla-v650`.
+
+**Prima dell'invio mancavano pagamento e passo successivo** (stessa revisione): `req.hint` e
+`pack.askHint` dicevano "entro 24 ore con la conferma", ma la conferma arriva dopo il pagamento
+(`faq.a4`). Ora dicono "se c'è posto e il link per pagare". Sopra "Continua su WhatsApp" c'è
+`lista.avviso` ("Ora non paghi niente. Su WhatsApp ricordati di premere Invia"). Al ritorno da
+WhatsApp si apre la lista con `lista.tornato` e "riapri WhatsApp": la lista è già vuota, e chi
+non aveva premuto Invia prima restava senza niente. L'indirizzo del messaggio, che contiene
+l'email, sta in `sessionStorage` finché il cliente torna, e niente va al database.
+`CACHE_NAME` → `isla-v651`.

@@ -488,7 +488,24 @@ function initLista() {
   // "ok", "none" (vale, ma non su queste escursioni), "bad", "error".
   let codiceEsito = "";
 
+  // Il messaggio di WhatsApp aperto dalla lista, finche' il cliente non torna qui:
+  // la lista e' gia' vuota, e se non ha premuto Invia non ne resterebbe niente.
+  // Solo in questa scheda del browser (sessionStorage), e c'e' dentro l'email.
+  const WHATSAPP_APERTO = "isla-whatsapp-aperto";
+  let daRiaprire = "";
+  let chiusura = null;
+
+  function tornaDaWhatsapp() {
+    try {
+      daRiaprire = sessionStorage.getItem(WHATSAPP_APERTO) || "";
+      sessionStorage.removeItem(WHATSAPP_APERTO);
+    } catch (e) { daRiaprire = ""; }
+    if (daRiaprire) apri();
+  }
+
   function apri() {
+    // la chiusura di prima puo' essere rimasta ferma mentre si era su WhatsApp
+    clearTimeout(chiusura);
     vuotaDaSubito = listaLeggi().length === 0;
     disegna();
     // Il codice del QR (codiceDallIndirizzo) si mette nel campo e si controlla
@@ -512,7 +529,8 @@ function initLista() {
     dialog.classList.remove("is-open");
     scrim.classList.remove("is-visible");
     document.body.classList.remove("menu-open");
-    setTimeout(() => {
+    daRiaprire = "";
+    chiusura = setTimeout(() => {
       dialog.hidden = true;
       scrim.hidden = true;
     }, 300);
@@ -595,6 +613,16 @@ function initLista() {
     const promo = promoScelta ? promoScelta.checked : false;
     const codiceScritto = corpo.querySelector("#listaCodice");
     const codiceTesto = codiceScritto ? codiceScritto.value : (listaCodice ? listaCodice.codice : "");
+    if (!voci.length && daRiaprire) {
+      corpo.innerHTML = `
+        <p class="lista-empty" data-i18n="lista.tornato"></p>
+        <div class="lista-tornato">
+          <a class="btn btn-primary btn-lista btn-block" href="${esc(daRiaprire)}" data-i18n="lista.riapri"></a>
+          <a class="btn btn-soft btn-block" href="./booking.html?richieste=1" data-i18n="nav.myBookings"></a>
+        </div>`;
+      applyI18n(corpo);
+      return;
+    }
     if (!voci.length) {
       const frase = vuotaDaSubito ? "lista.none" : "lista.empty";
       corpo.innerHTML = '<p class="lista-empty" data-i18n="' + frase + '"></p>';
@@ -706,6 +734,7 @@ function initLista() {
         </label>
         <p class="hint" data-lista-avvisi-ios hidden data-i18n="lista.avvisiIos"></p>
         ${scadute ? '<p class="request-day-error" data-i18n="lista.pastBlock"></p>' : ""}
+        <p class="lista-avviso" data-i18n="lista.avviso"></p>
         <button class="btn btn-primary btn-block request-submit" type="submit"
                 data-i18n="req.submit"${scadute ? " disabled" : ""}>Continua su WhatsApp</button>
         <p class="hint" data-i18n="lista.hint"></p>
@@ -856,8 +885,15 @@ function initLista() {
       codiceEsito = "";
       listaSvuota();
       chiudi();
+      try { sessionStorage.setItem(WHATSAPP_APERTO, url); } catch (e) { /* si va lo stesso */ }
       window.location.href = url;
     });
+  });
+  // Al ritorno: dall'app di WhatsApp la pagina torna visibile, dalla pagina di
+  // wa.me nella stessa scheda si ricarica o riappare col tasto indietro.
+  window.addEventListener("pageshow", tornaDaWhatsapp);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) tornaDaWhatsapp();
   });
   document.addEventListener("keydown", e => {
     if (e.key === "Escape" && dialog.classList.contains("is-open")) chiudi();

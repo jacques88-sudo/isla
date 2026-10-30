@@ -21619,3 +21619,9 @@ scrive il periodo accanto. Il campo non ha l'anno: se il fornitore cambia le dat
 barra diceva ancora "da €33", e il totale nella finestra sembrava un rincaro. Ora c'è il prezzo del
 bottone premuto (`prezzoBarra` in `tour.js`). Resta il "da" dove la variante non ha un numero solo
 (mezzi di più tipi, prezzo da chiedere) o c'è un'offerta. `CACHE_NAME` → `isla-v653`.
+
+**Le età dove si contano le persone, e l'email leggibile** (stessa revisione): nella finestra della
+richiesta e nella lista ora si legge "Bambini (4-11)", dalle `ages` della scheda (`conEta` in
+`escursioni.js`, che prima stava in `tour.js`). Non nei pacchetti: ogni escursione ha le sue fasce.
+L'email si scrive nel carattere normale, come il codice sconto: la calligrafia confondeva "l", "1" e
+"i", e il nome resta a mano. `CACHE_NAME` → `isla-v654`.

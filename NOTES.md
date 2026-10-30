@@ -21593,6 +21593,8 @@ fermava leggendo i telefoni: avvisi persi. Aggiunto il `grant` al file.
 **Dopo "Aggiungi alla lista" sembrava tutto finito** (revisione con `impeccable`, 30 ottobre
 2026): chi capiva "fatto" se ne andava, e la richiesta non era mai partita. Ora il messaggio
 dice "ma non ancora inviata" e, con questa escursione nella lista, la barra in fondo alla
-scheda diventa "Manda la richiesta (N) →" e apre la lista (`aggiornaBarraPrenota` in `tour.js`).
+scheda diventa "Manda la richiesta (N)" e apre la lista (`aggiornaBarraPrenota` in `tour.js`).
 Il pulsante dentro la scheda resta "Aggiungi", per chiederla anche con un altro giorno; su
-un'altra scheda la barra aggiunge quella. `CACHE_NAME` → `isla-v649`.
+un'altra scheda la barra aggiunge quella. Con "da €250 a Mustang" la freccia finale usciva
+dallo schermo, visto dal proprietario sul telefono: via la freccia, e prezzo e pulsante della
+barra ora vanno a capo. `CACHE_NAME` → `isla-v650`.

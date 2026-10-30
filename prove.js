@@ -100,6 +100,18 @@ const richiesta = (altro) => Object.assign({ adults: 2, kids: 0, babies: 0 }, al
   }
   delete process.env.TZ;
 
+  // Le partenze di stagione: le 9:30 di Royal Delfin, primo e ultimo giorno compresi.
+  await prova("una partenza fuori stagione non si puo' chiedere", () => {
+    const tour = ESPLORA_CATALOG.find(x => x.id === "royal-delfin");
+    const lungo = tour.options.choices.find(c => c.timesSeason);
+    const c = iso => orarioInStagione(tour, lungo, "09:30", iso);
+    assert.deepStrictEqual(["2027-07-10", "2027-07-11", "2027-09-05", "2027-09-06"].map(c), [false, true, true, false]);
+    assert.strictEqual(orarioInStagione(tour, lungo, "14:00", "2027-11-12"), true, "le 14:00 ci sono sempre");
+    assert.strictEqual(orarioInStagione(tour, lungo, "09:30", ""), true, "senza giorno non si toglie");
+    const inverno = { timesSeason: { "10:00": ["12-01", "02-28"] } };
+    assert.deepStrictEqual(["2027-12-15", "2027-01-15", "2027-06-15"].map(i => orarioInStagione(inverno, null, "10:00", i)), [true, true, false]);
+  });
+
   // Le pagine col "?" si aprono anche senza rete.
   await prova("offline: ticket e schede si aprono dalla cache", async () => {
     const SITO = "https://islaexcursionstenerife.com/";

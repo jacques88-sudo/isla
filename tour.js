@@ -128,7 +128,12 @@ function detailRows(tour, variante) {
   // Come i giorni: prima gli orari della variante, se ne ha di suoi.
   const orari = (variante && variante.times) || tour.times;
   if (Array.isArray(orari) && orari.length) {
-    righe.push([t("detail.times"), orari.join(" · ")]);
+    // "09:30 (11 lug – 5 set)" per le partenze che ci sono solo in quel periodo
+    const stagioni = (variante && variante.timesSeason) || tour.timesSeason || {};
+    const giornoCorto = mg => new Date(2000, Number(mg.slice(0, 2)) - 1, Number(mg.slice(3)))
+      .toLocaleDateString(getLang(), { day: "numeric", month: "short" });
+    righe.push([t("detail.times"), orari.map(ora => stagioni[ora]
+      ? ora + " (" + stagioni[ora].map(giornoCorto).join(" – ") + ")" : ora).join(" · ")]);
   }
   if (Array.isArray(tour.languages) && tour.languages.length) {
     righe.push([t("detail.languages"), tour.languages.join(" · ")]);

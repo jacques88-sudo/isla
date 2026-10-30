@@ -186,7 +186,9 @@ Le due pagine hanno al suo posto `<div data-finestra-richiesta>`.
   sul sito, nelle grafiche dei social, nei post, nelle stampe. Bianco fisso, anche col
   tema scuro (`#fff`, non una variabile). Sul sito lo fanno `.home-hero-mark` e la regola
   "IL LOGO STA SEMPRE NEL CERCHIO BIANCO" in `styles.css`: un logo nuovo in pagina va
-  messo lì. Unica eccezione la schermata di caricamento (`.splash-logo`).
+  messo lì. Unica eccezione la schermata di caricamento col tema chiaro (`.splash-logo`);
+  col tema scuro ha fondo nero e il cerchio bianco (proprietario, 30 ottobre 2026). Le sue
+  regole stanno scritte in ognuna delle sette pagine col caricamento, non in `styles.css`.
 - **Le lingue si scelgono con le bandiere** (3 ottobre 2026, proprietario), non con
   IT/EN/ES. Sono **SVG scritti nell'HTML**, non emoji: Windows le emoji delle bandiere
   non le ha e scriverebbe le due lettere. Il nome della lingua sta in `aria-label`.

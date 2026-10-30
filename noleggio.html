@@ -74,6 +74,20 @@
       letter-spacing: .3em;
       color: oklch(0.24 0.012 60);
     }
+    /* Col tema scuro niente lampo bianco fra una pagina e l'altra: fondo nero e
+       il logo nel suo cerchio bianco (#fff fisso, proprietario, 30 ottobre 2026). */
+    @media (prefers-color-scheme: dark) {
+      .splash { background: #000; }
+      .splash-brand { color: #fff; }
+      .splash-logo {
+        box-sizing: border-box;
+        width: 100px;
+        height: 100px;
+        padding: 18px;
+        border-radius: 50%;
+        background: #fff;
+      }
+    }
     @keyframes splash-spin {
       to { transform: rotate(360deg); }
     }

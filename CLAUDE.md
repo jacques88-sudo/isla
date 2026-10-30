@@ -16,6 +16,7 @@ spiega cosa si sta facendo, e le domande si fanno invece di indovinare.
 
 ```bash
 node controlla.js        # controlla il catalogo, esce 1 se trova un errore
+node prove.js            # prova totali, sconto, 24 ore, offline, trasloco; esce 1 se una non passa
 node --check <file>.js   # solo sintassi, non prende gli errori a runtime
 ```
 
@@ -132,6 +133,8 @@ porto e capienza con le schede della stessa categoria.
 | `lista.js` | la lista delle richieste (localStorage), costruita in JS perché serve a tre pagine |
 | `i18n.js` | tutti i testi fissi nelle cinque lingue, e `perUfficio()` per il messaggio WhatsApp |
 | `controlla.js` | il controllo del catalogo |
+| `prove.js` | le prove del codice che costa caro se si rompe (totali, sconto, 24 ore, offline, trasloco). Le lancia anche GitHub a ogni PR, con `controlla.js` (`.github/workflows/controlla.yml`); il sito non lo carica |
+| `supabase/ORDINE.md` | in che ordine si lanciano i file SQL per rifare il database. **Un file nuovo in `supabase/modifiche/` va aggiunto lì** |
 | `foto-piccole.py` | fa le copie piccole delle foto in `assets/piccole/` (720 px), che usano elenco, home, miniature e "altre esperienze" (`fotoPiccola()` in `escursioni.js`). **Si lancia dopo ogni foto nuova** in `assets/`: senza copia la foto in elenco esce rotta, e `controlla.js` dà errore; il sito non lo carica |
 | `orari-mancanti.js` | la lista delle schede senza orari di partenza; il sito non lo carica |
 | `foglio-google/` | il programma (Apps Script) del foglio Google dei netti, e come si installa; il sito non lo carica |
@@ -154,11 +157,9 @@ porto e capienza con le schede della stessa categoria.
 | `social/` | i modelli delle grafiche dei social (carosello 4:5, verticali e storie 9:16, video di 12 secondi) e le loro regole in `social/LEGGIMI.md`: `node social/fai-grafiche.js <cartella>` le rifà. Il piano dei contenuti sta su Notion ("Piano social Isla — 12 settimane"); il sito non carica niente di qui |
 | `richieste.js` | le richieste della lista salvate anche su Supabase (`pending`), con la **chiave** che resta nel telefono del cliente e il **codice** che va nel messaggio; l'ufficio le conferma o annulla da `venditori.html` |
 
-**La finestra della richiesta è scritta due volte**, in `escursioni.html` e in `tour.html`.
-Se ne tocchi una, tocca anche l'altra.
-
-Il `<select>` delle varianti dentro la finestra **è codice morto**: la variante arriva
-sempre dai bottoni della pagina di dettaglio. Non serve che abbia listener.
+**La finestra della richiesta è scritta una volta sola**, in `FINESTRA_RICHIESTA` in
+`escursioni.js` (dal 30 ottobre 2026; prima due copie, in `escursioni.html` e `tour.html`).
+Le due pagine hanno al suo posto `<div data-finestra-richiesta>`.
 
 ---
 

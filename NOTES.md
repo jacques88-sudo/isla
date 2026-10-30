@@ -21537,3 +21537,41 @@ che c'era già). Le regole stanno in `docs/agents/`; in `docs/agents/domain.md` 
 riga in più rispetto al modello: le skill leggono anche questo `NOTES.md`, perché qui non
 ci sono `GLOSSARY.md` né `docs/adr/`. Il sito non carica niente di questo, quindi
 `CACHE_NAME` non cambia.
+
+
+## L'audit del 30 ottobre 2026
+
+Il proprietario ha chiesto un audit di tutto il repository e poi di correggere tutto. Le
+correzioni, con quello che è stato trovato:
+
+- **Il falso "Paga ora".** `trasloco.js` accettava `#trasloco=` da qualunque link: un
+  truffatore poteva mettere nel telefono del cliente una richiesta finta col suo link, sul
+  dominio vero. Ora solo se `document.referrer` è il vecchio indirizzo. Provato nel browser
+  in locale; da provare ancora con la vecchia app su un telefono vero.
+- **Offline.** `sw.js` riconosceva col "?" solo `escursioni.html` e `mappa.html`: i link di
+  WhatsApp (`booking.html?code=…`) senza rete davano "sei offline". Ora ogni pagina aperta
+  si cerca in cache senza guardare il "?". Il browser integrato di Claude non registra i
+  service worker: provato in `prove.js` con una cache finta, non su un telefono.
+- **La pulizia mensile** si ferma se il foglio Google non legge da più di 3 giorni
+  (`foglio_letto`, `supabase/modifiche/2026-10-30-audit.sql`): il foglio è l'unico archivio.
+- **Limite per indirizzo di rete** su `manda_richiesta`, 30 righe l'ora: prima 30 chiamate
+  fatte a macchina bloccavano tutti. Si tiene l'impronta sha256 per un'ora, e lo dice
+  `privacy.html` nelle cinque lingue. Se Supabase non passa l'indirizzo, vale il tetto di prima.
+- **Telefono valido** in `tentativi_ticket`: prima ci entrava qualunque testo.
+- **Gli avvisi non partiti si riprovano**: `manda-notifiche` toglie il segno se l'errore è
+  passeggero e nessun telefono è stato raggiunto.
+- **`pulisci-foto` e `meteo-aemet`** rispondono solo all'orologio (`x-orologio`). Il file SQL
+  legge la parola dal lavoro di `manda-notifiche`, così non sta in nessun file.
+- **Windows**: `controlla.js` dava "sitemap.xml non corrisponde" per gli a capo `\r\n`.
+- **Le 24 ore** si contano sull'ora di Tenerife (`adessoTenerife()`), non su quella del
+  telefono: da New York passava una partenza con 20 ore di anticipo.
+- **`prove.js`** e **`.github/workflows/controlla.yml`**: prove del codice e controlli a ogni PR.
+- **`supabase/ORDINE.md`**: l'ordine dei file SQL, ricavato dalla cronologia di git.
+- **La finestra della richiesta** è una sola, in `FINESTRA_RICHIESTA` (`escursioni.js`). Le
+  due copie erano identiche riga per riga. In `CLAUDE.md` via la riga sul `<select>` delle
+  varianti, che nella finestra non c'era più.
+- Via `stampa/undefined/` (creata per errore), e il README rimesso in pari.
+
+`2026-10-30-audit.sql` è stato provato su un Postgres temporaneo in memoria (PGlite), mai su
+quello vero. Non si è toccato: chi può vedere le richieste fra venditori e ufficio, in attesa
+della scelta del proprietario. `CACHE_NAME` → `isla-v648`.

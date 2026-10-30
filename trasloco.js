@@ -60,6 +60,9 @@ function traslocoUnisci(nuovo, vecchio) {
     if (!location.hash.startsWith("#trasloco=")) return;
     const grezzo = location.hash.slice("#trasloco=".length);
     history.replaceState(null, "", location.pathname + location.search);
+    // Solo chi arriva davvero dal vecchio indirizzo: con un link fatto apposta,
+    // chiunque potrebbe mettere qui una richiesta finta con un suo "Paga ora".
+    if (!document.referrer.startsWith("https://" + TRASLOCO_VECCHIO + "/")) return;
     const dati = JSON.parse(decodeURIComponent(grezzo));
     Object.keys(dati).forEach(k => {
       if (!k.startsWith("isla-") || typeof dati[k] !== "string") return;

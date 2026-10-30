@@ -162,6 +162,7 @@ function aggiornaDavvero() {
   // "niente" e non "no", apposta). Il foglio resta com'e'.
   if (!arrivati.length) {
     console.warn("Nessun ticket da Supabase: controlla la parola segreta. Il foglio non è stato toccato.");
+    segnaLettura(segreto);
     return;
   }
 
@@ -203,6 +204,23 @@ function aggiornaDavvero() {
     if (n > 0) f.getRange(2, 1, n, COLONNE.length).getValues().forEach(r => tutte.push(r));
   });
   riepiloghi(ss, tutte);
+  segnaLettura(segreto);
+}
+
+// Dice a Supabase che il foglio ha finito di scrivere: senza una lettura negli
+// ultimi 3 giorni la pulizia mensile non cancella niente
+// (supabase/modifiche/2026-10-30-audit.sql). Con la parola sbagliata non segna.
+function segnaLettura(segreto) {
+  const risposta = UrlFetchApp.fetch(SUPABASE_URL + "/rest/v1/rpc/foglio_letto", {
+    method: "post",
+    contentType: "application/json",
+    headers: { apikey: SUPABASE_KEY },
+    payload: JSON.stringify({ p_segreto: segreto }),
+    muteHttpExceptions: true
+  });
+  if (risposta.getResponseCode() !== 200) {
+    throw new Error("Supabase ha risposto " + risposta.getResponseCode() + ": " + risposta.getContentText().slice(0, 300));
+  }
 }
 
 // Il nome della scheda di una settimana: "Settimana 05-10-2026", col lunedi'.

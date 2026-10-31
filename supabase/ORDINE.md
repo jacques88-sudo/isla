@@ -45,6 +45,7 @@ qui: vanno rimesse nei Secrets di Supabase.
 29. `modifiche/2026-10-20-meteo-teide.sql`
 30. `modifiche/2026-10-22-avvisi-ufficio.sql`
 31. `modifiche/2026-10-30-audit.sql`
+32. `modifiche/2026-10-31-netto-per-persone.sql`
 
 ## La copia di sicurezza dello schema
 

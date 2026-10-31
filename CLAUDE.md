@@ -477,8 +477,8 @@ tabella per ritrovarle in fretta:
 | Opera 60 | `opera-60` (+ `opera-60-charter`) | Speedboat & Snorkel Trip |
 | Skyline Cruiser | `skyline-cruiser` (+ `skyline-cruiser-charter`) | Motor Yacht Dolphin Trip |
 | Ragnarok | `ragnarok` | Viking Boat Tour |
-| Cool Sailing, Lina7, Mizendoha, Atlantic Star, Arriro, Kasamui, Ocean Blue (Xixaron), Nomada | `whale-dolphin-3h` | Whale & Dolphin Boat Trip |
-| Galatea, Samba | `whale-dolphin-3h-charter` | Whale & Dolphin Boat Trip (charter) |
+| Cool Sailing, Lina7, Mizendoha, Atlantic Star, Arriro, Kasamui, Nomada | `whale-dolphin-3h` | Whale & Dolphin Boat Trip |
+| Galatea, Samba, Ocean Blue (Xixaron) | `whale-dolphin-3h-charter` | Whale & Dolphin Boat Trip (charter) |
 | Kalima Kat | `small-group-catamaran` | Small Group Catamaran |
 | Mokkai, White Dream | `luxury-cruiser` | Luxury Cruiser Experience |
 
@@ -515,6 +515,10 @@ dipendere anche dal **transfer** (Mokkai: col trasporto e senza): `nets.transfer
 `bookings.transfer`, che il venditore spunta dove il catalogo ha `transfer`. La chiave di
 `nets` ha quattro colonne: `on conflict (excursion_id, coalesce(option_label, ''),
 coalesce(company, ''), coalesce(transfer::text, ''))`.
+Dal 31 ottobre 2026 (`supabase/modifiche/2026-10-31-netto-per-persone.sql`) il netto
+della barca intera può andare **a scaglioni di persone** (Ocean Blue): `net_fixed_people`,
+`{"11": X, "15": Y}`, la chiave è il massimo di persone; si contano adulti, bambini e
+neonati, e oltre l'ultimo scaglione il ticket resta senza netto.
 
 **Il repository è pubblico e il sito è su GitHub Pages**: un netto scritto in un file
 (catalogo, commento, `NOTES.md`, un `.sql` in `supabase/`) lo legge chiunque, clienti e

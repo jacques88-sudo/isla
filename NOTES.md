@@ -21657,3 +21657,27 @@ vedeva scuro, bianco, scuro. Il fondo chiaro stava nello `<style>` scritto in og
 `styles.css` e vince sempre. Ora, in tutte e sette, col tema scuro: fondo nero, scritta bianca, logo nel
 cerchio bianco. `background_color` di `manifest.json` resta chiaro: è un colore solo per tutti, quindi
 aprendo l'app da Android può vedersi un istante chiaro. `CACHE_NAME` → `isla-v659`.
+
+### Il netto della barca intera a scaglioni di persone (31 ottobre 2026)
+
+Ocean Blue (sul ticket anche "Xixaron") ha il charter con **tre netti secondo quante
+persone salgono**: fino a 11, fino a 15, fino a 18 (proprietario; i numeri su Notion).
+Fino a oggi `net_fixed` era una cifra sola. Il proprietario ha chiesto la modifica:
+- `supabase/modifiche/2026-10-31-netto-per-persone.sql`: colonna `nets.net_fixed_people`
+  (`{"11": X, "15": Y, "18": Z}`, la chiave è il massimo di persone) e `calcola_netto()`
+  con un caso in più, prima di `net_fixed`. Si contano adulti, bambini e neonati: sulla
+  barca salgono tutti. Vince lo scaglione più piccolo che basta; oltre l'ultimo il ticket
+  resta senza netto ("netto mancante: più di 18 persone"), mai uno preso a caso;
+- Ocean Blue e Xixaron passano da `whale-dolphin-3h` a `whale-dolphin-3h-charter`, come
+  Galatea e Samba: senza il nome sul charter il ticket privato non porta la compagnia.
+  I due ticket visti (Pat 1596, Nancy 0468) erano privati. Se fanno anche l'uscita a
+  persona, va chiesto.
+
+In sospeso, per scelta del proprietario ("vediamo se ricapita"): Nancy 0468, "Xixaron 2h"
+privata, netto 200, che non torna con gli scaglioni.
+
+Provato su Postgres 16 con lo schema e tutte le modifiche: lanciato due volte senza errori;
+9 → primo scaglione, 11 → primo, 12 → secondo, 10+4+1 → secondo, 16 → terzo, 20 → "più di
+18 persone", nessuno → "persone non scritte"; Galatea e una barca senza compagnia non
+cambiano. Le due schede a 375 px senza errori, nessun nome in pagina. `CACHE_NAME` →
+`isla-v660`.

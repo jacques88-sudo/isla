@@ -3973,8 +3973,8 @@ const ESPLORA_CATALOG = [
     duration: { it: "Da 8 a 50 minuti di volo", en: "8 to 50 minutes of flight", es: "De 8 a 50 minutos de vuelo", fr: "De 8 à 50 minutes de vol", de: "8 bis 50 Minuten Flug" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
-    priceFrom: 98,
-    priceAdult: 98,
+    priceFrom: 110,
+    priceAdult: 110,
     // Sul volo paga lo stesso prezzo chiunque occupi un posto, l'ha confermato
     // l'ufficio: bambini e neonati come gli adulti. Percio' `priceChild` e'
     // uguale a `priceAdult` su ogni variante, e non c'e' nessun `ages`: senza
@@ -3982,11 +3982,11 @@ const ESPLORA_CATALOG = [
     // **Niente `priceInfant`**, e non e' una dimenticanza: il campo sta solo
     // sulla scheda e non sulla variante (vedi prezziAPersona in escursioni.js),
     // quindi un numero solo qui varrebbe uguale sul volo da €98 e su quello da
-    // €495, e il totale di chi porta un neonato sul Grand Teide verrebbe fuori
+    // €545, e il totale di chi porta un neonato sul Grand Teide verrebbe fuori
     // sbagliato di quattrocento euro. Con la riga "Neonati" nascosta il cliente
     // li conta fra i passeggeri, che al prezzo pieno e' esatto, e la nota qui
     // sotto glielo dice.
-    priceChild: 98,
+    priceChild: 110,
     family: true,
     times: [],
     options: {
@@ -3994,8 +3994,8 @@ const ESPLORA_CATALOG = [
       choices: [
         {
           label: { it: "20 km - Costa sud", en: "20 km - South Coast", es: "20 km - Costa sur", fr: "20 km - Côte sud", de: "20 km - Südküste" },
-          priceAdult: 98,
-          priceChild: 98,
+          priceAdult: 110,
+          priceChild: 110,
           duration: { it: "8-9 minuti di volo", en: "8-9 minutes of flight", es: "8-9 minutos de vuelo", fr: "8-9 minutes de vol", de: "8-9 Minuten Flug" },
           desc: {
             it: "Il giro più breve: si decolla da Adeje e si segue la costa sud, sopra spiagge, porticcioli e la roccia vulcanica che scende in mare. In aria si sta 8-9 minuti.",
@@ -4007,8 +4007,8 @@ const ESPLORA_CATALOG = [
         },
         {
           label: { it: "30 km - Spiagge e barrancos", en: "30 km - Beaches and ravines", es: "30 km - Playas y barrancos", fr: "30 km - Plages et ravins", de: "30 km - Strände und Schluchten" },
-          priceAdult: 145,
-          priceChild: 145,
+          priceAdult: 159,
+          priceChild: 159,
           duration: { it: "12-15 minuti di volo", en: "12-15 minutes of flight", es: "12-15 minutos de vuelo", fr: "12-15 minutes de vol", de: "12-15 Minuten Flug" },
           desc: {
             it: "Il giro si allarga sulle spiagge e sui barrancos, i valloni scavati nella roccia che dall'interno scendono verso la costa. In aria si sta 12-15 minuti.",
@@ -4020,8 +4020,8 @@ const ESPLORA_CATALOG = [
         },
         {
           label: { it: "50 km - Scogliere di Los Gigantes", en: "50 km - Los Gigantes cliffs", es: "50 km - Acantilados de Los Gigantes", fr: "50 km - Falaises de Los Gigantes", de: "50 km - Klippen von Los Gigantes" },
-          priceAdult: 279,
-          priceChild: 279,
+          priceAdult: 295,
+          priceChild: 295,
           duration: { it: "20-22 minuti di volo", en: "20-22 minutes of flight", es: "20-22 minutos de vuelo", fr: "20-22 minutes de vol", de: "20-22 Minuten Flug" },
           desc: {
             it: "Si risale la costa fino alle scogliere di Los Gigantes, che cadono a picco sull'oceano per centinaia di metri, con La Gomera all'orizzonte. In aria si sta 20-22 minuti.",
@@ -4033,8 +4033,8 @@ const ESPLORA_CATALOG = [
         },
         {
           label: { it: "85 km - Il giro lungo dell'isola", en: "85 km - The long island loop", es: "85 km - La vuelta larga a la isla", fr: "85 km - Le grand tour de l'île", de: "85 km - Die große Inselrunde" },
-          priceAdult: 390,
-          priceChild: 390,
+          priceAdult: 430,
+          priceChild: 430,
           duration: { it: "35-40 minuti di volo", en: "35-40 minutes of flight", es: "35-40 minutos de vuelo", fr: "35-40 minutes de vol", de: "35-40 Minuten Flug" },
           desc: {
             it: "Il giro lungo: coste, valli e coni vulcanici dell'interno, per vedere in un volo solo i paesaggi diversi dell'isola. In aria si sta 35-40 minuti.",
@@ -4046,8 +4046,8 @@ const ESPLORA_CATALOG = [
         },
         {
           label: "Grand Teide Luxury",
-          priceAdult: 495,
-          priceChild: 495,
+          priceAdult: 545,
+          priceChild: 545,
           duration: { it: "45-50 minuti di volo", en: "45-50 minutes of flight", es: "45-50 minutos de vuelo", fr: "45-50 minutes de vol", de: "45-50 Minuten Flug" },
           desc: {
             it: "Il volo più lungo, fin sopra il Teide: i 3.715 metri della vetta più alta di Spagna e il cratere delle Cañadas, con l'isola intera intorno. In aria si sta 45-50 minuti.",

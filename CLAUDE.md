@@ -478,7 +478,7 @@ tabella per ritrovarle in fretta:
 | Skyline Cruiser | `skyline-cruiser` (+ `skyline-cruiser-charter`) | Motor Yacht Dolphin Trip |
 | Ragnarok | `ragnarok` | Viking Boat Tour |
 | Cool Sailing, Lina7, Mizendoha, Atlantic Star, Arriro, Kasamui, Nomada | `whale-dolphin-3h` | Whale & Dolphin Boat Trip |
-| Galatea, Samba, Ocean Blue (Xixaron) | `whale-dolphin-3h-charter` | Whale & Dolphin Boat Trip (charter) |
+| Galatea, Samba, Ocean Blue (Xixaron), Arriro privata | `whale-dolphin-3h-charter` | Whale & Dolphin Boat Trip (charter) |
 | Kalima Kat | `small-group-catamaran` | Small Group Catamaran |
 | Mokkai, White Dream | `luxury-cruiser` | Luxury Cruiser Experience |
 

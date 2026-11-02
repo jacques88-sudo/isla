@@ -3494,8 +3494,9 @@ const ESPLORA_CATALOG = [
     // sul ticket. Tutte e due sulla scheda e non su una variante: Offroad e
     // Tramonto li fanno entrambe, e il nome da solo non dice quale giro e'.
     // Top Buggy e' una compagnia in piu' (proprietario, 19 ottobre 2026), e
-    // Paradise ("Buggy Paradise", "Paradise Bug") anche (29 ottobre 2026).
-    nomi: ["King Buggy", "Ultimate Buggies", "Ultimate Buggy", "Top Buggy", "Paradise"],
+    // Paradise ("Buggy Paradise", "Paradise Bug") anche (29 ottobre 2026), e
+    // Buggy Canarias (2 novembre 2026).
+    nomi: ["King Buggy", "Ultimate Buggies", "Ultimate Buggy", "Top Buggy", "Paradise", "Buggy Canarias"],
     // Anche fra Teide e natura (proprietario, 14 settembre 2026). Qui `alsoIn`
     // e' della scheda e non della variante: dei quattro giri due salgono al
     // Parco Nazionale (Tramonto sul Teide e Completo) e due no, ma la scheda
@@ -7958,7 +7959,10 @@ const ESPLORA_CATALOG = [
     // prende il suo netto; le altre barche restano col netto del charter
     // "qualunque compagnia". Ocean Blue ("Xixaron" sul ticket) porta fino a
     // 18 persone, col netto a scaglioni (proprietario, 31 ottobre 2026).
-    nomi: ["Galatea", "Samba", "Ocean Blue", "Xixaron"],
+    // Arriro fa anche il privato, fino a 8 persone, con un netto suo
+    // (proprietario, 2 novembre 2026); ma "Arriro" sta gia' sull'uscita a
+    // persona, e un nome sta su una scheda sola: qui e' "Arriro privata".
+    nomi: ["Galatea", "Samba", "Ocean Blue", "Xixaron", "Arriro privata"],
     title: { it: "Balene e delfini in barca a vela", en: "Whale & Dolphin Boat Trip", es: "Ballenas y delfines en velero", fr: "Baleines et dauphins en voilier", de: "Wale und Delfine im Segelboot" },
     category: "tour-privati",
     zone: "Puerto Colón",

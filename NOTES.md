@@ -21690,3 +21690,19 @@ contrasto da 2,2 a circa 6 sul chiaro; `--gold` resta per bordi e icone). La fot
 340 KB invece di 60. `dipingiTestata` cambia anche il `srcset`, perché con `srcset` il `src` non conta.
 Le etichette delle schede non si sono toccate: toglierne una è scelta del proprietario.
 `CACHE_NAME` → `isla-v661`.
+
+### Buggy Canarias e "Arriro privata" (2 novembre 2026)
+
+Dai fogli del 26 ottobre - 1 novembre (Agustin, Francy, Karien), netti su Notion:
+- **Buggy Canarias**: compagnia di buggy in più, nei `nomi` di `buggy-volcano-4h`. Col
+  pilota ("incl. driver") il netto ha un supplemento fisso: oggi né il catalogo né il
+  ticket dicono se c'è il pilota, quindi su Supabase va solo il netto senza;
+- **Arriro** fa anche il **privato fino a 8 persone**, con un netto suo. "Arriro" sta già
+  sull'uscita a persona (`whale-dolphin-3h`) e un nome sta su una scheda sola: sul charter
+  (`whale-dolphin-3h-charter`) è **"Arriro privata"**. Su Supabase lo scaglione è uno solo
+  (`net_fixed_people` fino a 8): oltre, il ticket resta senza netto.
+
+Provato: `compagniaNelTesto()` trova "Buggy Canarias" in "Buggy canarias dbl", "Arriro
+privata" sul charter e "Arriro" sull'uscita a persona; `controlla.js` e `prove.js`
+passano; le due schede a 375 px senza errori, nessun nome in pagina. `CACHE_NAME` →
+`isla-v662`.

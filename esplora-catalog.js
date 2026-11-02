@@ -448,6 +448,14 @@
 //                che lo fa valere anche sui ticket gia' salvati: `controlla.js`
 //                verifica che i due elenchi siano uguali.
 //                    pagamento: "card"
+//   pagamentoCard → facoltativo: come `pagamento: "card"`, ma solo per alcune
+//                compagnie della scheda (una o piu' dei suoi `nomi`): il
+//                ticket di quella compagnia conta sempre come card, le altre
+//                compagnie no (Neptuno sullo yacht di lusso; proprietario,
+//                2 novembre 2026). Lo stesso elenco sta nel guardiano
+//                `sempre_card` (2026-10-09-solo-card.sql): `controlla.js` lo
+//                verifica.
+//                    pagamentoCard: ["Neptuno"]
 //
 // LE TRE LINGUE
 //   title, zone, duration e desc si scrivono così:
@@ -2048,9 +2056,11 @@ const ESPLORA_CATALOG = [
     // La compagnia, come la scrivono i venditori sul ticket. Solo qui e non
     // sul charter: un ticket "Mokkai" con due adulti e' l'uscita a persona.
     // Anche White Dream fa l'uscita a persona (proprietario, 17 ottobre 2026);
-    // sul ticket la scrivono anche "White Dr". Amalfi e' un'altra barca come
-    // Mokkai (proprietario, 2 novembre 2026).
-    nomi: ["Mokkai", "White Dream", "White Dr", "Amalfi"],
+    // sul ticket la scrivono anche "White Dr". Amalfi e Neptuno sono altre
+    // barche come Mokkai (proprietario, 2 novembre 2026); Neptuno conta sempre
+    // come card, le altre no.
+    nomi: ["Mokkai", "White Dream", "White Dr", "Amalfi", "Neptuno"],
+    pagamentoCard: ["Neptuno"],
     category: "mare-barche",
     // Confermato dall'ufficio: si parte da Las Galletas, cioe' la Marina del
     // Sur che si legge nel cartello dietro la barca nelle foto. Nome proprio,
@@ -4748,7 +4758,9 @@ const ESPLORA_CATALOG = [
     // Island da Puerto Colón (proprietario, 13 ottobre 2026). Ognuna ha il
     // suo netto, quindi sul ticket la compagnia va scelta. Extreme e' la
     // quarta (proprietario, 14 ottobre 2026), Ace la quinta (19 ottobre).
-    nomi: ["Agua Safari", "Flash Jetski", "Jetski Island", "Extreme", "Ace"],
+    // Jetski Los Cristianos la sesta (2 novembre 2026): sul ticket "Jetski
+    // Los Cris", e il nome intero non lo trova compagniaNelTesto().
+    nomi: ["Agua Safari", "Flash Jetski", "Jetski Island", "Extreme", "Ace", "Jetski Los Cristianos", "Jetski Los Cris"],
     category: "sport-acquatici",
     zone: { it: "Puerto Colón o Las Galletas", en: "Puerto Colón or Las Galletas", es: "Puerto Colón o Las Galletas", fr: "Puerto Colón ou Las Galletas", de: "Puerto Colón oder Las Galletas" },
     duration: { it: "40 minuti, 1 o 2 ore", en: "40 minutes, 1 or 2 hours", es: "40 minutos, 1 o 2 horas", fr: "40 minutes, 1 ou 2 heures", de: "40 Minuten, 1 oder 2 Stunden" },

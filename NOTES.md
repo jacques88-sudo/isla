@@ -21717,3 +21717,29 @@ Altre due compagnie dei fogli del 26 ottobre - 1 novembre (proprietario), netti 
 
 Provato: i due nomi trovati nei testi dei fogli; `controlla.js` e `prove.js` passano; le
 due schede a 375 px senza errori, nessun nome in pagina. `CACHE_NAME` → `isla-v663`.
+
+### Neptuno conta sempre come card; Jetski Los Cristianos (2 novembre 2026)
+
+Risposte del proprietario sui fogli del 26 ottobre - 1 novembre (netti su Notion):
+- **Neptuno** è una barca come Mokkai (`luxury-cruiser`) e **conta sempre come card**.
+  Fino a oggi "sempre card" valeva per una scheda intera (`pagamento: "card"`), ma sullo
+  yacht di lusso Mokkai, White Dream e Amalfi pagano card o cash come capita. Campo
+  nuovo **`pagamentoCard`**, l'elenco delle compagnie della scheda che contano sempre come
+  card: `pagamentoDellaScheda()` in `venditori.js` lo guarda insieme alla compagnia scelta
+  (anche quando la sceglie la lettura della foto, e in "Modifica"); il guardiano
+  `sempre_card` di `2026-10-09-solo-card.sql` ha le coppie (scheda, compagnia), e il file
+  sistema anche i ticket già salvati. `controlla.js` verifica che catalogo e file dicano
+  le stesse coppie, e che la compagnia stia nei `nomi`. **Il file va rilanciato su
+  Supabase.** Cambiando compagnia da Neptuno a un'altra, Cash torna sceglibile ma il
+  menu resta su card: lo cambia il venditore;
+- **Jetski Los Cristianos**: la compagnia del jet ski di Los Cristianos, nei `nomi` di
+  `jet-ski-safari-1-2h`, anche "Jetski Los Cris" come lo scrivono sul ticket;
+- **Mateo Bello** passa a una percentuale del totale, come MRB (numeri solo su Notion e
+  Supabase): così torna anche quando il cliente paga tutto subito;
+- **Peter Pan** (Francy 0856) e **Monster** (0877) restano sotto osservazione.
+
+Provato: `pagamentoDellaScheda()` in Node (Neptuno → card con Cash spento, Mokkai e
+nessuna compagnia → libero, Siam → card); il guardiano su Postgres 16 (Neptuno cash →
+card, Mokkai resta cash), file lanciato due volte; `controlla.js` se ne accorge se le
+coppie non combaciano; `prove.js` passa; schede ed elenco a 375 px senza errori, nessun
+nome di compagnia in pagina. `CACHE_NAME` → `isla-v664`.

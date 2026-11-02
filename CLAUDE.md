@@ -480,7 +480,7 @@ tabella per ritrovarle in fretta:
 | Cool Sailing, Lina7, Mizendoha, Atlantic Star, Arriro, Kasamui, Nomada | `whale-dolphin-3h` | Whale & Dolphin Boat Trip |
 | Galatea, Samba, Ocean Blue (Xixaron), Arriro privata | `whale-dolphin-3h-charter` | Whale & Dolphin Boat Trip (charter) |
 | Kalima Kat | `small-group-catamaran` | Small Group Catamaran |
-| Mokkai, White Dream, Amalfi | `luxury-cruiser` | Luxury Cruiser Experience |
+| Mokkai, White Dream, Amalfi, Neptuno | `luxury-cruiser` | Luxury Cruiser Experience |
 
 **Se la compagnia fa una variante sola**, il nome va **anche dentro quella variante**
 (`options.choices[].nomi`): sul ticket di Andromeda c'è scritto solo "Andromeda", e senza
@@ -562,6 +562,9 @@ Anaga + La Laguna, Tour completo dell'isola; proprietario, 11 ottobre 2026): `pa
 lo sceglie da solo e spegne Cash) e lo stesso elenco nel guardiano `sempre_card`
 (`supabase/modifiche/2026-10-09-solo-card.sql`). `controlla.js` verifica che i due
 elenchi siano uguali: una scheda nuova da aggiungere va messa in **tutti e due**.
+**Card per una compagnia sola** (Neptuno sullo yacht di lusso; proprietario, 2 novembre
+2026): campo `pagamentoCard: ["Neptuno"]` sulla scheda e la coppia `('luxury-cruiser',
+'Neptuno')` nello stesso file SQL; il modulo mette card quando si sceglie quella compagnia.
 
 **Il foglio ha una scheda per settimana** ("Settimana 05-10-2026", dal lunedì della data
 di emissione, la più nuova davanti; proprietario, 8 ottobre 2026): ogni ticket sta per

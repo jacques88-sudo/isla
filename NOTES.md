@@ -21809,3 +21809,12 @@ contro 8-9, 12-15, 20-22, 35-40 e 45-50. **Il proprietario ha detto di mettere q
 volantino** (stesso giorno): cambiate nella durata di ogni variante, nella frase "In aria
 si sta…" delle cinque descrizioni e nella durata della scheda ("Da 7 a 40 minuti di
 volo"). `durationGroups` resta `breve`. `sw.js` a `isla-v668`.
+
+### Elicottero: sempre card, e il netto (2 novembre 2026)
+
+Il proprietario: l'elicottero **conta sempre come card**. Messo `pagamento: "card"` su
+`helicopter-tours` e la scheda nell'elenco di `sempre_card`
+(`supabase/modifiche/2026-10-09-solo-card.sql`, da rilanciare intero). Il netto è una
+**parte del prezzo** (`net_percent`), su tutti e cinque i voli, con `company` vuota: la
+scheda non ha `nomi`, quindi vale per qualunque compagnia. Il numero sta su Notion
+("Netti da inserire") e su Supabase, non qui. `sw.js` a `isla-v669`.

@@ -3970,11 +3970,11 @@ const ESPLORA_CATALOG = [
     title: "Helicopter Tours",
     category: "avventura-motori",
     zone: "Adeje",
-    duration: { it: "Da 8 a 50 minuti di volo", en: "8 to 50 minutes of flight", es: "De 8 a 50 minutos de vuelo", fr: "De 8 à 50 minutes de vol", de: "8 bis 50 Minuten Flug" },
+    duration: { it: "Da 7 a 40 minuti di volo", en: "7 to 40 minutes of flight", es: "De 7 a 40 minutos de vuelo", fr: "De 7 à 40 minutes de vol", de: "7 bis 40 Minuten Flug" },
     zoneGroups: ["costa-adeje"],
     durationGroups: ["breve"],
-    priceFrom: 98,
-    priceAdult: 98,
+    priceFrom: 110,
+    priceAdult: 110,
     // Sul volo paga lo stesso prezzo chiunque occupi un posto, l'ha confermato
     // l'ufficio: bambini e neonati come gli adulti. Percio' `priceChild` e'
     // uguale a `priceAdult` su ogni variante, e non c'e' nessun `ages`: senza
@@ -3982,79 +3982,81 @@ const ESPLORA_CATALOG = [
     // **Niente `priceInfant`**, e non e' una dimenticanza: il campo sta solo
     // sulla scheda e non sulla variante (vedi prezziAPersona in escursioni.js),
     // quindi un numero solo qui varrebbe uguale sul volo da €98 e su quello da
-    // €495, e il totale di chi porta un neonato sul Grand Teide verrebbe fuori
+    // €545, e il totale di chi porta un neonato sul Grand Teide verrebbe fuori
     // sbagliato di quattrocento euro. Con la riga "Neonati" nascosta il cliente
     // li conta fra i passeggeri, che al prezzo pieno e' esatto, e la nota qui
     // sotto glielo dice.
-    priceChild: 98,
+    priceChild: 110,
     family: true,
+    // Conta sempre come card (proprietario, 2 novembre 2026).
+    pagamento: "card",
     times: [],
     options: {
       label: { it: "Percorso", en: "Route", es: "Recorrido", fr: "Parcours", de: "Route" },
       choices: [
         {
           label: { it: "20 km - Costa sud", en: "20 km - South Coast", es: "20 km - Costa sur", fr: "20 km - Côte sud", de: "20 km - Südküste" },
-          priceAdult: 98,
-          priceChild: 98,
-          duration: { it: "8-9 minuti di volo", en: "8-9 minutes of flight", es: "8-9 minutos de vuelo", fr: "8-9 minutes de vol", de: "8-9 Minuten Flug" },
+          priceAdult: 110,
+          priceChild: 110,
+          duration: { it: "7 minuti di volo", en: "7 minutes of flight", es: "7 minutos de vuelo", fr: "7 minutes de vol", de: "7 Minuten Flug" },
           desc: {
-            it: "Il giro più breve: si decolla da Adeje e si segue la costa sud, sopra spiagge, porticcioli e la roccia vulcanica che scende in mare. In aria si sta 8-9 minuti.",
-            en: "The shortest ride: you lift off from Adeje and follow the south coast, over beaches, small harbours and the volcanic rock running down to the sea. You stay up 8-9 minutes.",
-            es: "El recorrido más corto: se despega en Adeje y se sigue la costa sur, sobre playas, puertos deportivos y la roca volcánica que baja hasta el mar. En el aire se está 8-9 minutos.",
-            fr: "Le vol le plus court : on décolle d'Adeje et on suit la côte sud, au-dessus des plages, des petits ports et de la roche volcanique qui descend vers la mer. On reste en l'air 8-9 minutes.",
-            de: "Der kürzeste Flug: Start in Adeje und entlang der Südküste, über Strände, kleine Häfen und das Vulkangestein, das ins Meer abfällt. Sie bleiben 8-9 Minuten in der Luft."
+            it: "Il giro più breve: si decolla da Adeje e si segue la costa sud, sopra spiagge, porticcioli e la roccia vulcanica che scende in mare. In aria si sta 7 minuti.",
+            en: "The shortest ride: you lift off from Adeje and follow the south coast, over beaches, small harbours and the volcanic rock running down to the sea. You stay up 7 minutes.",
+            es: "El recorrido más corto: se despega en Adeje y se sigue la costa sur, sobre playas, puertos deportivos y la roca volcánica que baja hasta el mar. En el aire se está 7 minutos.",
+            fr: "Le vol le plus court : on décolle d'Adeje et on suit la côte sud, au-dessus des plages, des petits ports et de la roche volcanique qui descend vers la mer. On reste en l'air 7 minutes.",
+            de: "Der kürzeste Flug: Start in Adeje und entlang der Südküste, über Strände, kleine Häfen und das Vulkangestein, das ins Meer abfällt. Sie bleiben 7 Minuten in der Luft."
           }
         },
         {
           label: { it: "30 km - Spiagge e barrancos", en: "30 km - Beaches and ravines", es: "30 km - Playas y barrancos", fr: "30 km - Plages et ravins", de: "30 km - Strände und Schluchten" },
-          priceAdult: 145,
-          priceChild: 145,
-          duration: { it: "12-15 minuti di volo", en: "12-15 minutes of flight", es: "12-15 minutos de vuelo", fr: "12-15 minutes de vol", de: "12-15 Minuten Flug" },
+          priceAdult: 159,
+          priceChild: 159,
+          duration: { it: "10 minuti di volo", en: "10 minutes of flight", es: "10 minutos de vuelo", fr: "10 minutes de vol", de: "10 Minuten Flug" },
           desc: {
-            it: "Il giro si allarga sulle spiagge e sui barrancos, i valloni scavati nella roccia che dall'interno scendono verso la costa. In aria si sta 12-15 minuti.",
-            en: "A wider loop over the beaches and the barrancos, the ravines cut into the rock that run down from inland to the coast. You stay up 12-15 minutes.",
-            es: "El recorrido se amplía sobre las playas y los barrancos, las gargantas excavadas en la roca que bajan del interior hacia la costa. En el aire se está 12-15 minutos.",
-            fr: "Une boucle plus large au-dessus des plages et des barrancos, les ravins creusés dans la roche qui descendent de l'intérieur vers la côte. On reste en l'air 12-15 minutes.",
-            de: "Eine größere Runde über die Strände und die Barrancos, die in den Fels geschnittenen Schluchten, die vom Landesinneren zur Küste hinunterlaufen. Sie bleiben 12-15 Minuten in der Luft."
+            it: "Il giro si allarga sulle spiagge e sui barrancos, i valloni scavati nella roccia che dall'interno scendono verso la costa. In aria si sta 10 minuti.",
+            en: "A wider loop over the beaches and the barrancos, the ravines cut into the rock that run down from inland to the coast. You stay up 10 minutes.",
+            es: "El recorrido se amplía sobre las playas y los barrancos, las gargantas excavadas en la roca que bajan del interior hacia la costa. En el aire se está 10 minutos.",
+            fr: "Une boucle plus large au-dessus des plages et des barrancos, les ravins creusés dans la roche qui descendent de l'intérieur vers la côte. On reste en l'air 10 minutes.",
+            de: "Eine größere Runde über die Strände und die Barrancos, die in den Fels geschnittenen Schluchten, die vom Landesinneren zur Küste hinunterlaufen. Sie bleiben 10 Minuten in der Luft."
           }
         },
         {
           label: { it: "50 km - Scogliere di Los Gigantes", en: "50 km - Los Gigantes cliffs", es: "50 km - Acantilados de Los Gigantes", fr: "50 km - Falaises de Los Gigantes", de: "50 km - Klippen von Los Gigantes" },
-          priceAdult: 279,
-          priceChild: 279,
-          duration: { it: "20-22 minuti di volo", en: "20-22 minutes of flight", es: "20-22 minutos de vuelo", fr: "20-22 minutes de vol", de: "20-22 Minuten Flug" },
+          priceAdult: 295,
+          priceChild: 295,
+          duration: { it: "18 minuti di volo", en: "18 minutes of flight", es: "18 minutos de vuelo", fr: "18 minutes de vol", de: "18 Minuten Flug" },
           desc: {
-            it: "Si risale la costa fino alle scogliere di Los Gigantes, che cadono a picco sull'oceano per centinaia di metri, con La Gomera all'orizzonte. In aria si sta 20-22 minuti.",
-            en: "Up along the coast to the Los Gigantes cliffs, dropping sheer into the ocean for hundreds of metres, with La Gomera on the horizon. You stay up 20-22 minutes.",
-            es: "Se remonta la costa hasta los acantilados de Los Gigantes, que caen a pico sobre el océano cientos de metros, con La Gomera en el horizonte. En el aire se está 20-22 minutos.",
-            fr: "On remonte la côte jusqu'aux falaises de Los Gigantes, qui tombent à pic dans l'océan sur des centaines de mètres, avec La Gomera à l'horizon. On reste en l'air 20-22 minutes.",
-            de: "Die Küste hinauf bis zu den Klippen von Los Gigantes, die Hunderte Meter senkrecht in den Ozean fallen, mit La Gomera am Horizont. Sie bleiben 20-22 Minuten in der Luft."
+            it: "Si risale la costa fino alle scogliere di Los Gigantes, che cadono a picco sull'oceano per centinaia di metri, con La Gomera all'orizzonte. In aria si sta 18 minuti.",
+            en: "Up along the coast to the Los Gigantes cliffs, dropping sheer into the ocean for hundreds of metres, with La Gomera on the horizon. You stay up 18 minutes.",
+            es: "Se remonta la costa hasta los acantilados de Los Gigantes, que caen a pico sobre el océano cientos de metros, con La Gomera en el horizonte. En el aire se está 18 minutos.",
+            fr: "On remonte la côte jusqu'aux falaises de Los Gigantes, qui tombent à pic dans l'océan sur des centaines de mètres, avec La Gomera à l'horizon. On reste en l'air 18 minutes.",
+            de: "Die Küste hinauf bis zu den Klippen von Los Gigantes, die Hunderte Meter senkrecht in den Ozean fallen, mit La Gomera am Horizont. Sie bleiben 18 Minuten in der Luft."
           }
         },
         {
           label: { it: "85 km - Il giro lungo dell'isola", en: "85 km - The long island loop", es: "85 km - La vuelta larga a la isla", fr: "85 km - Le grand tour de l'île", de: "85 km - Die große Inselrunde" },
-          priceAdult: 390,
-          priceChild: 390,
-          duration: { it: "35-40 minuti di volo", en: "35-40 minutes of flight", es: "35-40 minutos de vuelo", fr: "35-40 minutes de vol", de: "35-40 Minuten Flug" },
+          priceAdult: 430,
+          priceChild: 430,
+          duration: { it: "25 minuti di volo", en: "25 minutes of flight", es: "25 minutos de vuelo", fr: "25 minutes de vol", de: "25 Minuten Flug" },
           desc: {
-            it: "Il giro lungo: coste, valli e coni vulcanici dell'interno, per vedere in un volo solo i paesaggi diversi dell'isola. In aria si sta 35-40 minuti.",
-            en: "The long loop: coastline, valleys and the volcanic cones inland, the island's different landscapes in a single flight. You stay up 35-40 minutes.",
-            es: "La vuelta larga: costa, valles y conos volcánicos del interior, los distintos paisajes de la isla en un solo vuelo. En el aire se está 35-40 minutos.",
-            fr: "La grande boucle : littoral, vallées et cônes volcaniques de l'intérieur, les différents paysages de l'île en un seul vol. On reste en l'air 35-40 minutes.",
-            de: "Die große Runde: Küste, Täler und die Vulkankegel im Inneren, die verschiedenen Landschaften der Insel in einem einzigen Flug. Sie bleiben 35-40 Minuten in der Luft."
+            it: "Il giro lungo: coste, valli e coni vulcanici dell'interno, per vedere in un volo solo i paesaggi diversi dell'isola. In aria si sta 25 minuti.",
+            en: "The long loop: coastline, valleys and the volcanic cones inland, the island's different landscapes in a single flight. You stay up 25 minutes.",
+            es: "La vuelta larga: costa, valles y conos volcánicos del interior, los distintos paisajes de la isla en un solo vuelo. En el aire se está 25 minutos.",
+            fr: "La grande boucle : littoral, vallées et cônes volcaniques de l'intérieur, les différents paysages de l'île en un seul vol. On reste en l'air 25 minutes.",
+            de: "Die große Runde: Küste, Täler und die Vulkankegel im Inneren, die verschiedenen Landschaften der Insel in einem einzigen Flug. Sie bleiben 25 Minuten in der Luft."
           }
         },
         {
           label: "Grand Teide Luxury",
-          priceAdult: 495,
-          priceChild: 495,
-          duration: { it: "45-50 minuti di volo", en: "45-50 minutes of flight", es: "45-50 minutos de vuelo", fr: "45-50 minutes de vol", de: "45-50 Minuten Flug" },
+          priceAdult: 545,
+          priceChild: 545,
+          duration: { it: "40 minuti di volo", en: "40 minutes of flight", es: "40 minutos de vuelo", fr: "40 minutes de vol", de: "40 Minuten Flug" },
           desc: {
-            it: "Il volo più lungo, fin sopra il Teide: i 3.715 metri della vetta più alta di Spagna e il cratere delle Cañadas, con l'isola intera intorno. In aria si sta 45-50 minuti.",
-            en: "The longest flight, all the way over Teide: the 3,715 metres of Spain's highest peak and the Cañadas crater, with the whole island around it. You stay up 45-50 minutes.",
-            es: "El vuelo más largo, hasta sobrevolar el Teide: los 3.715 metros de la cima más alta de España y el circo de Las Cañadas, con la isla entera alrededor. En el aire se está 45-50 minutos.",
-            fr: "Le vol le plus long, jusqu'au-dessus du Teide : les 3 715 mètres du plus haut sommet d'Espagne et le cratère de Las Cañadas, avec toute l'île autour. On reste en l'air 45-50 minutes.",
-            de: "Der längste Flug, bis über den Teide: die 3.715 Meter des höchsten Gipfels Spaniens und der Krater von Las Cañadas, mit der ganzen Insel ringsum. Sie bleiben 45-50 Minuten in der Luft."
+            it: "Il volo più lungo, fin sopra il Teide: i 3.715 metri della vetta più alta di Spagna e il cratere delle Cañadas, con l'isola intera intorno. In aria si sta 40 minuti.",
+            en: "The longest flight, all the way over Teide: the 3,715 metres of Spain's highest peak and the Cañadas crater, with the whole island around it. You stay up 40 minutes.",
+            es: "El vuelo más largo, hasta sobrevolar el Teide: los 3.715 metros de la cima más alta de España y el circo de Las Cañadas, con la isla entera alrededor. En el aire se está 40 minutos.",
+            fr: "Le vol le plus long, jusqu'au-dessus du Teide : les 3 715 mètres du plus haut sommet d'Espagne et le cratère de Las Cañadas, avec toute l'île autour. On reste en l'air 40 minutes.",
+            de: "Der längste Flug, bis über den Teide: die 3.715 Meter des höchsten Gipfels Spaniens und der Krater von Las Cañadas, mit der ganzen Insel ringsum. Sie bleiben 40 Minuten in der Luft."
           }
         }
       ]

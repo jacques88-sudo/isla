@@ -15,6 +15,7 @@
 -- 17 ottobre 2026: anche Freebird (proprietario).
 -- 20 ottobre 2026: anche Jungle Park e Submarine Safari (proprietario).
 -- 21 ottobre 2026: anche Castillo San Miguel (proprietario).
+-- 2 novembre 2026: anche l'elicottero (helicopter-tours, proprietario).
 -- 2 novembre 2026: anche una compagnia sola su una scheda che ne ha altre:
 --   Neptuno sullo yacht di lusso (proprietario). Mokkai, White Dream e Amalfi
 --   sulla stessa scheda restano card o cash come sceglie il venditore. Nel
@@ -40,7 +41,7 @@ begin
                           'santa-cruz-taganana', 'island-tour-completo',
                           'peter-pan', 'aqualand', 'freebird-catamaran',
                           'jungle-park', 'submarine-safari',
-                          'castillo-san-miguel', 'maxicat')
+                          'castillo-san-miguel', 'maxicat', 'helicopter-tours')
      or (new.excursion_id, new.company) in (('luxury-cruiser', 'Neptuno')) then
     new.payment_method := 'card';
   end if;
@@ -64,7 +65,7 @@ update public.bookings
                         'santa-cruz-taganana', 'island-tour-completo',
                         'peter-pan', 'aqualand', 'freebird-catamaran',
                         'jungle-park', 'submarine-safari',
-                        'castillo-san-miguel', 'maxicat')
+                        'castillo-san-miguel', 'maxicat', 'helicopter-tours')
    and payment_method is distinct from 'card';
 
 update public.bookings

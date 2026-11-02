@@ -591,7 +591,8 @@ pagina dei venditori non la legge. E nel sito mai `select("*")` su `bookings`.
 
 **Dal 2 novembre 2026 i netti su Notion ("Netti da inserire") e su Supabase sono quelli
 giusti** (proprietario). Quando il proprietario manda le foto dei fogli settimanali dei
-venditori (ADMIRAL EXCURSIONS POINT / ADMIRAL TRG SC), il lavoro è **trovare gli errori
+venditori (ADMIRAL EXCURSIONS POINT / ADMIRAL TRG SC), anche solo con **"controllami
+questo foglio"**, in qualunque chat, il lavoro è **trovare gli errori
 dei fogli**, che poi lui fa correggere. Ticket per ticket, si confronta il netto scritto
 (NETT, oppure totale − venditore − ufficio) con quello di Notion, e si consegna una lista
 divisa in tre:

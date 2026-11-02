@@ -1248,7 +1248,11 @@ function initCatalog() {
   function dipingiTestata() {
     const cat = categoriaSola();
     if (heroPhoto) {
-      heroPhoto.src = cat && cat.image ? "./assets/" + cat.image : "./assets/hero-tenerife.webp";
+      // Sul telefono la copia piccola (sizes finto apposta: con 335 px veri uno
+      // schermo a densita' 3 chiederebbe la foto da 1920 px, 340 KB invece di 60).
+      const foto = cat && cat.image ? cat.image : "hero-tenerife.webp";
+      heroPhoto.src = "./assets/" + foto;
+      heroPhoto.srcset = fotoPiccola(foto) + " 720w, ./assets/" + foto + " 1920w";
     }
     if (titleEl) {
       titleEl.textContent = cat ? tf(cat.name)

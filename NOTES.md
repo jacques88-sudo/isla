@@ -21681,3 +21681,12 @@ Provato su Postgres 16 con lo schema e tutte le modifiche: lanciato due volte se
 18 persone", nessuno → "persone non scritte"; Galatea e una barca senza compagnia non
 cambiano. Le due schede a 375 px senza errori, nessun nome in pagina. `CACHE_NAME` →
 `isla-v660`.
+
+**L'elenco più corto e più leggibile** (stessa revisione, 2 novembre 2026): descrizione a 3 righe nelle
+schede (`-webkit-line-clamp`, quella intera sta sulla pagina dell'escursione), prezzo a 1,5rem con le cifre
+alte (`lining-nums`: "30" sembrava "3o"), `--gold-testo` per le scritte piccole (`.eyebrow`, `.tour-cat`:
+contrasto da 2,2 a circa 6 sul chiaro; `--gold` resta per bordi e icone). La foto in cima ha `srcset` e un
+`sizes` volutamente finto (240 px sul telefono), se no uno schermo a densità 3 sceglie la foto da 1920 px:
+340 KB invece di 60. `dipingiTestata` cambia anche il `srcset`, perché con `srcset` il `src` non conta.
+Le etichette delle schede non si sono toccate: toglierne una è scelta del proprietario.
+`CACHE_NAME` → `isla-v661`.

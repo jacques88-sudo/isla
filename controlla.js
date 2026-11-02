@@ -584,6 +584,28 @@ function controllaPagamento() {
     errore(id, `ha pagamento: "card" ma non sta nell'elenco di ${file}.`));
   nelDatabase.filter(id => !nelCatalogo.includes(id)).forEach(id =>
     errore(id, `sta nell'elenco di ${file} ma nel catalogo non ha pagamento: "card".`));
+
+  // `pagamentoCard`: card solo per alcune compagnie della scheda. Nel database
+  // e' l'elenco delle coppie (scheda, compagnia) nello stesso file.
+  const coppieCatalogo = [];
+  ESPLORA_CATALOG.forEach(t => {
+    if (t.pagamentoCard === undefined) return;
+    if (!Array.isArray(t.pagamentoCard) || !t.pagamentoCard.length) {
+      errore(t.id, 'pagamentoCard deve essere un elenco di compagnie, es. ["Neptuno"].');
+      return;
+    }
+    t.pagamentoCard.forEach(n => {
+      if (!(t.nomi || []).includes(n)) errore(t.id, `pagamentoCard: "${n}" non sta nei nomi della scheda.`);
+      coppieCatalogo.push(`${t.id}|${n}`);
+    });
+  });
+  const blocco = leggi(file).match(/\(new\.excursion_id, new\.company\) in \(((?:\('[^']+', '[^']+'\),?\s*)+)\)/);
+  const coppieDatabase = blocco
+    ? [...blocco[1].matchAll(/\('([^']+)', '([^']+)'\)/g)].map(m => `${m[1]}|${m[2]}`) : [];
+  coppieCatalogo.filter(c => !coppieDatabase.includes(c)).forEach(c =>
+    errore(c.split("|")[0], `pagamentoCard "${c.split("|")[1]}" non sta nelle coppie di ${file}.`));
+  coppieDatabase.filter(c => !coppieCatalogo.includes(c)).forEach(c =>
+    errore(c.split("|")[0], `la coppia "${c.split("|")[1]}" di ${file} nel catalogo non ha pagamentoCard.`));
 }
 
 // Cosa portare (portare.js): ogni id deve essere una scheda vera, una scheda

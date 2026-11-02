@@ -162,7 +162,7 @@ function aggiornaEscursione() {
   }
 
   menuCompagnie(els.company, els.companyWrap, tour, "");
-  pagamentoDellaScheda(els.payment, tour);
+  pagamentoDellaScheda(els.payment, tour, els.company.value);
 
   const tipi = tipiMezzo(tour);
   els.unitsWrap.hidden = !tipi.length;
@@ -202,9 +202,12 @@ function aggiornaTransfer() {
 // I parchi contano sempre come pagati con carta (`pagamento: "card"` nel
 // catalogo, proprietario 9 ottobre 2026): il pagamento si sceglie da solo e
 // l'altro non si puo' scegliere. Lo fa valere anche il database
-// (supabase/modifiche/2026-10-09-solo-card.sql).
-function pagamentoDellaScheda(select, tour) {
-  const fisso = tour && tour.pagamento;
+// (supabase/modifiche/2026-10-09-solo-card.sql). Su alcune schede vale solo
+// per una compagnia (`pagamentoCard`, Neptuno; 2 novembre 2026): allora conta
+// anche la compagnia scelta, e si ricalcola quando cambia.
+function pagamentoDellaScheda(select, tour, compagnia) {
+  const fisso = tour && (tour.pagamento ||
+    ((tour.pagamentoCard || []).includes(compagnia) ? "card" : null));
   Array.from(select.options).forEach(o => {
     if (o.value) o.disabled = !!fisso && o.value !== fisso;
   });
@@ -514,7 +517,11 @@ function riempiDaLettura(c, prima) {
     aggiornaEscursione();
     if (c.option_label) els.option.value = c.option_label;
     const chi = compagniaNelTesto(schedaDa(c.excursion_id), [c.excursion_text, c.notes].join(" "));
-    if (chi) { els.company.value = chi; varianteDellaCompagnia(); }
+    if (chi) {
+      els.company.value = chi;
+      varianteDellaCompagnia();
+      pagamentoDellaScheda(els.payment, schedaDa(c.excursion_id), chi);
+    }
     aggiornaTransfer();
     if (els.transferWrap && !els.transferWrap.hidden
         && transferNelTesto([c.excursion_text, c.meeting_point, c.hotel, c.notes].join(" "))) {
@@ -946,7 +953,8 @@ function apriModifica(li, b) {
   f.total.value = b.total ?? "";
   f.deposit.value = b.deposit ?? "";
   f.payment_method.value = b.payment_method || "";
-  pagamentoDellaScheda(f.payment_method, tour);
+  pagamentoDellaScheda(f.payment_method, tour, f.company.value);
+  f.company.onchange = () => pagamentoDellaScheda(f.payment_method, tour, f.company.value);
   // "Pagato tutto" si salva come rest_to_pay 0 senza deposit: nel modulo torna
   // com'era stato scritto, con To pay vuoto.
   const pagatoPrima = b.deposit === null && Number(b.rest_to_pay) === 0;
@@ -2196,6 +2204,8 @@ riempiPaesi();
 
 els.loginForm.addEventListener("submit", entra);
 els.company.addEventListener("change", varianteDellaCompagnia);
+els.company.addEventListener("change", () =>
+  pagamentoDellaScheda(els.payment, schedaDa(els.exc.value), els.company.value));
 els.logout.addEventListener("click", esci);
 els.form.addEventListener("submit", salva);
 els.searchForm.addEventListener("submit", cerca);

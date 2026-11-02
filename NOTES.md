@@ -21818,3 +21818,18 @@ Il proprietario: l'elicottero **conta sempre come card**. Messo `pagamento: "car
 **parte del prezzo** (`net_percent`), su tutti e cinque i voli, con `company` vuota: la
 scheda non ha `nomi`, quindi vale per qualunque compagnia. Il numero sta su Notion
 ("Netti da inserire") e su Supabase, non qui. `sw.js` a `isla-v669`.
+
+### "Atlantic Star privata"; noleggi di nuovo sull'acconto (2 novembre 2026)
+
+Dal foglio di Kristine (Admiral Excursion Point, 26 ottobre - 2 novembre), netti su Notion:
+- **Atlantic Star** fa anche il **privato fino a 12 persone**, con un netto suo. Come per
+  Arriro, "Atlantic Star" sta già sull'uscita a persona (`whale-dolphin-3h`): sul charter
+  (`whale-dolphin-3h-charter`) è **"Atlantic Star privata"**. Su Supabase uno scaglione
+  solo (`net_fixed_people` fino a 12): oltre, il ticket resta senza netto;
+- **MRB e Mateo Bello tornano su "totale − acconto"** (proprietario: "poche sono le volte
+  che si prendono tutta la somma"). La percentuale del totale scritta poco prima, lo stesso
+  giorno, non vale più: su Supabase non era ancora arrivata. Quando il cliente paga tutto
+  subito la regola dà netto 0, e quei ticket si guardano a mano.
+
+Provato: `controlla.js` e `prove.js` passano; la scheda del charter a 375 px senza errori,
+nessun nome di compagnia in pagina. `CACHE_NAME` → `isla-v670`.

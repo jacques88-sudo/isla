@@ -988,8 +988,9 @@ const ESPLORA_CATALOG = [
     // due schede e' un errore (proprietario, 21 ottobre 2026). Nomada e'
     // un'altra barca delle 3 ore (proprietario, 29 ottobre 2026); Samba e Ocean
     // Blue anche, ma col charter a un netto loro: i loro nomi stanno sulla
-    // scheda del charter.
-    nomi: ["Cool Sailing", "Lina7", "Mizendoha", "Atlantic Star", "Arriro", "Kasamui", "Nomada", "Nómada"],
+    // scheda del charter. Galatea fa anche l'uscita a persona (proprietario,
+    // 2 novembre 2026): qui "Galatea", sul charter "Galatea privata".
+    nomi: ["Cool Sailing", "Lina7", "Mizendoha", "Atlantic Star", "Arriro", "Kasamui", "Nomada", "Nómada", "Galatea"],
     category: "mare-barche",
     zone: "Puerto Colón",
     duration: { it: "3 ore", en: "3 hours", es: "3 horas", fr: "3 heures", de: "3 Stunden" },
@@ -7976,7 +7977,9 @@ const ESPLORA_CATALOG = [
     // Arriro fa anche il privato, fino a 8 persone, con un netto suo
     // (proprietario, 2 novembre 2026); ma "Arriro" sta gia' sull'uscita a
     // persona, e un nome sta su una scheda sola: qui e' "Arriro privata".
-    nomi: ["Galatea", "Samba", "Ocean Blue", "Xixaron", "Arriro privata"],
+    // Dal 2 novembre Galatea fa anche l'uscita a persona: qui e' "Galatea
+    // privata" (sul ticket "Galatea priv."), "Galatea" sta sull'uscita.
+    nomi: ["Galatea privata", "Galatea priv", "Samba", "Ocean Blue", "Xixaron", "Arriro privata"],
     title: { it: "Balene e delfini in barca a vela", en: "Whale & Dolphin Boat Trip", es: "Ballenas y delfines en velero", fr: "Baleines et dauphins en voilier", de: "Wale und Delfine im Segelboot" },
     category: "tour-privati",
     zone: "Puerto Colón",

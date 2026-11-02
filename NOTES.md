@@ -21802,6 +21802,10 @@ bambini uguali agli adulti come prima:
 | 85 km — Il giro lungo dell'isola | €390 | €430 |
 | Grand Teide Luxury | €495 | €545 |
 
-`priceFrom` passa da 98 a 110. **In sospeso, da chiedere**: il volantino scrive durate
-più corte delle nostre (7, 10, 18, 25 e 40 minuti contro 8-9, 12-15, 20-22, 35-40 e
-45-50). Non le ho cambiate senza conferma. `sw.js` a `isla-v667`.
+`priceFrom` passa da 98 a 110. `sw.js` a `isla-v667`.
+
+Il volantino scrive anche durate più corte delle nostre: 7, 10, 18, 25 e 40 minuti
+contro 8-9, 12-15, 20-22, 35-40 e 45-50. **Il proprietario ha detto di mettere quelle del
+volantino** (stesso giorno): cambiate nella durata di ogni variante, nella frase "In aria
+si sta…" delle cinque descrizioni e nella durata della scheda ("Da 7 a 40 minuti di
+volo"). `durationGroups` resta `breve`. `sw.js` a `isla-v668`.

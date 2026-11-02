@@ -3988,6 +3988,8 @@ const ESPLORA_CATALOG = [
     // sotto glielo dice.
     priceChild: 110,
     family: true,
+    // Conta sempre come card (proprietario, 2 novembre 2026).
+    pagamento: "card",
     times: [],
     options: {
       label: { it: "Percorso", en: "Route", es: "Recorrido", fr: "Parcours", de: "Route" },

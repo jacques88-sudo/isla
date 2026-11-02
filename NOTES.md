@@ -21743,3 +21743,20 @@ nessuna compagnia → libero, Siam → card); il guardiano su Postgres 16 (Neptu
 card, Mokkai resta cash), file lanciato due volte; `controlla.js` se ne accorge se le
 coppie non combaciano; `prove.js` passa; schede ed elenco a 375 px senza errori, nessun
 nome di compagnia in pagina. `CACHE_NAME` → `isla-v664`.
+
+### Galatea anche a persona: "Galatea" e "Galatea privata" (2 novembre 2026)
+
+Il proprietario: Galatea fa anche l'uscita a persona (foglio del 26-28 ottobre, 0574).
+Come per Arriro: **"Galatea"** passa sull'uscita a persona (`whale-dolphin-3h`) e sul
+charter resta **"Galatea privata"**, più "Galatea priv" come la scrivono sul ticket.
+Su Supabase la riga del charter con `company = 'Galatea'` va tolta e rimessa coi due nomi
+nuovi (lo fa l'SQL preparato in chat), se no il charter di Galatea resterebbe col netto
+"qualunque barca".
+
+Dallo stesso giro, solo su Notion: il bambino di Kasamui, l'e-bike (Talaria) col
+trasporto e senza, la "commissione Watersport". **Talaria non ha la casella del
+transfer**: il netto col trasporto oggi non si distingue, finché la scheda non la ha.
+
+Provato: `compagniaNelTesto()` trova "Galatea" sull'uscita e "Galatea priv"/"Galatea
+privata" sul charter; `controlla.js` e `prove.js` passano; schede ed elenco a 375 px
+senza errori, nessun nome in pagina. `CACHE_NAME` → `isla-v665`.

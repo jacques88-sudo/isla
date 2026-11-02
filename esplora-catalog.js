@@ -7981,7 +7981,10 @@ const ESPLORA_CATALOG = [
     // persona, e un nome sta su una scheda sola: qui e' "Arriro privata".
     // Dal 2 novembre Galatea fa anche l'uscita a persona: qui e' "Galatea
     // privata" (sul ticket "Galatea priv."), "Galatea" sta sull'uscita.
-    nomi: ["Galatea privata", "Galatea priv", "Samba", "Ocean Blue", "Xixaron", "Arriro privata"],
+    // Atlantic Star fa anche il privato, fino a 12 persone, con un netto suo
+    // (proprietario, 2 novembre 2026): come Arriro, qui e' "Atlantic Star
+    // privata", perche' "Atlantic Star" sta sull'uscita a persona.
+    nomi: ["Galatea privata", "Galatea priv", "Samba", "Ocean Blue", "Xixaron", "Arriro privata", "Atlantic Star privata"],
     title: { it: "Balene e delfini in barca a vela", en: "Whale & Dolphin Boat Trip", es: "Ballenas y delfines en velero", fr: "Baleines et dauphins en voilier", de: "Wale und Delfine im Segelboot" },
     category: "tour-privati",
     zone: "Puerto Colón",

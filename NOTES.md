@@ -21760,3 +21760,21 @@ transfer**: il netto col trasporto oggi non si distingue, finché la scheda non 
 Provato: `compagniaNelTesto()` trova "Galatea" sull'uscita e "Galatea priv"/"Galatea
 privata" sul charter; `controlla.js` e `prove.js` passano; schede ed elenco a 375 px
 senza errori, nessun nome in pagina. `CACHE_NAME` → `isla-v665`.
+
+### Watersport, voce solo per i venditori (2 novembre 2026)
+
+Il proprietario: **Watersport** è una compagnia a sé che fa un po' di tutto in mare, e sul
+ticket e sui fogli c'è scritto solo "Watersport", senza l'attività. Un nome sta su una
+scheda sola, quindi ha una voce sua, `watersport`, come i noleggi e la funivia:
+`venditori: true`, `published: false`, categoria sport acquatici, `nomi: ["Watersport"]`
+(trova anche "Water sport": `compagniaNelTesto()` toglie gli spazi). Il titolo è generico
+("Sport acquatici"), perché il cliente lo legge in "Le mie prenotazioni" e il nome della
+compagnia sul sito non va. Il netto è una parte del totale, su Notion e Supabase.
+
+Dallo stesso giro: **i bambini del Castillo San Miguel** erano sbagliati su Notion e su
+Supabase; corretti dal listino ufficiale del castello (solo Notion e Supabase). I prezzi
+del sito tornavano già col listino. **Buggy Paradise** da tenere d'occhio.
+
+Provato: "Watersport" e "WATER SPORT" trovati; la voce è nel modulo e non nell'elenco,
+e la pagina diretta dice "non trovata" come per le altre voci dei venditori;
+`controlla.js` e `prove.js` passano. `CACHE_NAME` → `isla-v666`.

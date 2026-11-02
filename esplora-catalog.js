@@ -8341,6 +8341,21 @@ const ESPLORA_CATALOG = [
     venditori: true,
     published: false
   },
+  // ─── Watersport, solo per i venditori ──────────────────────────────────────
+  // Una compagnia a se' che fa un po' di tutto in mare; sul ticket e sui fogli
+  // c'e' scritto solo "Watersport", senza l'attivita' (proprietario, 2
+  // novembre 2026). Un nome sta su una scheda sola, quindi ha una voce sua,
+  // come i noleggi e la funivia. Il netto (una parte del totale) sta su
+  // Supabase. Il titolo e' generico: il cliente lo legge in "Le mie
+  // prenotazioni", e il nome della compagnia sul sito non va.
+  {
+    id: "watersport",
+    title: { it: "Sport acquatici", en: "Water sports", es: "Deportes acuáticos", fr: "Sports nautiques", de: "Wassersport" },
+    nomi: ["Watersport"],
+    category: "sport-acquatici",
+    venditori: true,
+    published: false
+  },
 ];
 
 // La data di oggi come "2026-09-07". Si confrontano le stringhe, non due

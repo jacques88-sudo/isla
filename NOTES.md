@@ -21787,3 +21787,21 @@ ricavano più i netti dal foglio, si segnalano **gli errori del foglio**, che lu
 correggere, più i dubbi e i netti che mancano. La regola, coi tre gruppi della lista, sta
 in `CLAUDE.md` ("I fogli di carta dei venditori"), perché la legga ogni chat nuova.
 Nessun file del sito toccato: `CACHE_NAME` non cambia.
+
+## Elicottero: listino nuovo (2 novembre 2026)
+
+Il proprietario ha mandato il volantino nuovo dei voli in elicottero (prezzo a persona,
+"single ticket"). Cambiati solo i prezzi delle cinque varianti di `helicopter-tours`,
+bambini uguali agli adulti come prima:
+
+| percorso | prima | ora |
+|---|---|---|
+| 20 km — Costa sud | €98 | €110 |
+| 30 km — Spiagge e barrancos | €145 | €159 |
+| 50 km — Scogliere di Los Gigantes | €279 | €295 |
+| 85 km — Il giro lungo dell'isola | €390 | €430 |
+| Grand Teide Luxury | €495 | €545 |
+
+`priceFrom` passa da 98 a 110. **In sospeso, da chiedere**: il volantino scrive durate
+più corte delle nostre (7, 10, 18, 25 e 40 minuti contro 8-9, 12-15, 20-22, 35-40 e
+45-50). Non le ho cambiate senza conferma. `sw.js` a `isla-v667`.

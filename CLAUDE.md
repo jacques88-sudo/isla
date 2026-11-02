@@ -587,6 +587,28 @@ sono. Una colonna in più da mostrare si chiede al proprietario prima.
 venditori** (`grant select (nome) on public.bookings to authenticated`), altrimenti la
 pagina dei venditori non la legge. E nel sito mai `select("*")` su `bookings`.
 
+### I fogli di carta dei venditori: si controllano, non si copiano
+
+**Dal 2 novembre 2026 i netti su Notion ("Netti da inserire") e su Supabase sono quelli
+giusti** (proprietario). Quando il proprietario manda le foto dei fogli settimanali dei
+venditori (ADMIRAL EXCURSIONS POINT / ADMIRAL TRG SC), il lavoro è **trovare gli errori
+dei fogli**, che poi lui fa correggere. Ticket per ticket, si confronta il netto scritto
+(NETT, oppure totale − venditore − ufficio) con quello di Notion, e si consegna una lista
+divisa in tre:
+1. **netti sbagliati sul foglio**: venditore, numero del ticket, cosa c'è scritto e quale
+   sarebbe il netto giusto. Un netto diverso sul foglio **non cambia Notion**: è il foglio
+   da correggere. Si cambia Notion solo se il proprietario dice che la compagnia ha
+   cambiato il netto (come Flash e Jetski Island, ottobre 2026);
+2. **dubbi**: quello che non si può decidere dal foglio (mezzi o variante non scritti,
+   compagnia illeggibile, ticket che può voler dire due cose). Si chiede, non si indovina;
+3. **netti che mancano**: compagnie, varianti, bambini senza netto su Notion, coi ticket
+   dove compaiono.
+
+Anche gli errori di conto (venditore + ufficio che non fanno la commissione, la parte
+card/cash sbagliata, colonne scambiate) vanno nella lista. Le compagnie e le regole "da
+tenere d'occhio" stanno su Notion nelle loro righe e nelle righe "Da sapere": vanno
+guardate a ogni foglio nuovo. I numeri della lista restano in chat e su Notion, mai qui.
+
 ## Gli orari ancora da mettere
 
 Il proprietario manda gli orari **una scheda alla volta**, quando li ha. Per sapere quali

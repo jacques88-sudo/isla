@@ -21778,3 +21778,12 @@ del sito tornavano già col listino. **Buggy Paradise** da tenere d'occhio.
 Provato: "Watersport" e "WATER SPORT" trovati; la voce è nel modulo e non nell'elenco,
 e la pagina diretta dice "non trovata" come per le altre voci dei venditori;
 `controlla.js` e `prove.js` passano. `CACHE_NAME` → `isla-v666`.
+
+### Da ora i fogli si controllano: i netti giusti sono quelli di Notion (2 novembre 2026)
+
+Il proprietario: dopo un mese di fogli confrontati, **i netti su Notion e su Supabase sono
+quelli giusti**. Da ora in poi, sui fogli dei venditori, il lavoro cambia verso: non si
+ricavano più i netti dal foglio, si segnalano **gli errori del foglio**, che lui fa
+correggere, più i dubbi e i netti che mancano. La regola, coi tre gruppi della lista, sta
+in `CLAUDE.md` ("I fogli di carta dei venditori"), perché la legga ogni chat nuova.
+Nessun file del sito toccato: `CACHE_NAME` non cambia.

@@ -1419,8 +1419,9 @@ const ESPLORA_CATALOG = [
   {
     id: "pesca-altura",
     // La compagnia come i venditori la scrivono sul ticket (proprietario, 29
-    // ottobre 2026; fogli del 19-25 ottobre, "BLACK & BLUE").
-    nomi: ["Black & Blue", "Black and Blue"],
+    // ottobre 2026; fogli del 19-25 ottobre, "BLACK & BLUE"). Anche Gavin
+    // Glenn, che sul ticket scrivono "Gavin Glen" (2 novembre 2026).
+    nomi: ["Black & Blue", "Black and Blue", "Gavin Glenn", "Gavin Glen"],
     title: { it: "Pesca d'altura", en: "Deep sea fishing", es: "Pesca de altura", fr: "Pêche en haute mer", de: "Hochseeangeln" },
     category: "mare-barche",
     zone: "Puerto Colón",
@@ -2047,8 +2048,9 @@ const ESPLORA_CATALOG = [
     // La compagnia, come la scrivono i venditori sul ticket. Solo qui e non
     // sul charter: un ticket "Mokkai" con due adulti e' l'uscita a persona.
     // Anche White Dream fa l'uscita a persona (proprietario, 17 ottobre 2026);
-    // sul ticket la scrivono anche "White Dr".
-    nomi: ["Mokkai", "White Dream", "White Dr"],
+    // sul ticket la scrivono anche "White Dr". Amalfi e' un'altra barca come
+    // Mokkai (proprietario, 2 novembre 2026).
+    nomi: ["Mokkai", "White Dream", "White Dr", "Amalfi"],
     category: "mare-barche",
     // Confermato dall'ufficio: si parte da Las Galletas, cioe' la Marina del
     // Sur che si legge nel cartello dietro la barca nelle foto. Nome proprio,

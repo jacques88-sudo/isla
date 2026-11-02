@@ -480,7 +480,7 @@ tabella per ritrovarle in fretta:
 | Cool Sailing, Lina7, Mizendoha, Atlantic Star, Arriro, Kasamui, Nomada | `whale-dolphin-3h` | Whale & Dolphin Boat Trip |
 | Galatea, Samba, Ocean Blue (Xixaron), Arriro privata | `whale-dolphin-3h-charter` | Whale & Dolphin Boat Trip (charter) |
 | Kalima Kat | `small-group-catamaran` | Small Group Catamaran |
-| Mokkai, White Dream | `luxury-cruiser` | Luxury Cruiser Experience |
+| Mokkai, White Dream, Amalfi | `luxury-cruiser` | Luxury Cruiser Experience |
 
 **Se la compagnia fa una variante sola**, il nome va **anche dentro quella variante**
 (`options.choices[].nomi`): sul ticket di Andromeda c'è scritto solo "Andromeda", e senza

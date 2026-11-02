@@ -29,6 +29,8 @@
   --primary-foreground: oklch(0.98 0.008 85);
   /* warm sand accent, used sparingly */
   --gold: oklch(0.75 0.06 68);
+  /* l'oro per le scritte piccole: quello sopra sul fondo chiaro non si legge */
+  --gold-testo: oklch(0.5 0.07 68);
   --danger: oklch(0.55 0.15 30);
   /* i tre stati di un ticket o di una richiesta (booking.html) */
   --ok: oklch(0.52 0.11 150);
@@ -793,7 +795,7 @@ a { text-decoration: none; color: inherit; }
   display: inline-flex;
   align-items: center;
   gap: .5rem;
-  color: var(--gold);
+  color: var(--gold-testo);
   font-size: .68rem;
   text-transform: uppercase;
   letter-spacing: .28em;
@@ -2036,10 +2038,10 @@ body.menu-open { overflow: hidden; }
   padding: 1.1rem 1.2rem 1.2rem;
 }
 .tour-cat {
-  font-size: .62rem;
+  font-size: .68rem;
   text-transform: uppercase;
   letter-spacing: .2em;
-  color: var(--gold);
+  color: var(--gold-testo);
 }
 .tour-title {
   margin: 0;
@@ -2053,6 +2055,11 @@ body.menu-open { overflow: hidden; }
   font-weight: 300;
   font-size: .88rem;
   line-height: 1.55;
+  /* tre righe: la descrizione intera sta sulla pagina dell'escursione */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 .tour-meta {
   list-style: none;
@@ -2128,8 +2135,10 @@ body.menu-open { overflow: hidden; }
 }
 .tour-price {
   font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: 600;
+  /* le cifre tutte alte: quelle del carattere scendono e "30" sembra "3o" */
+  font-variant-numeric: lining-nums;
 }
 .tour-ask {
   min-height: 40px;
@@ -4443,6 +4452,7 @@ body.has-book-bar .footer { padding-bottom: 5.5rem; }
     --primary: oklch(0.94 0.01 85);
     --primary-foreground: oklch(0.2 0.012 60);
     --gold: oklch(0.8 0.06 68);
+    --gold-testo: var(--gold);
     --danger: oklch(0.7 0.16 30);
     --ok: oklch(0.72 0.13 150);
     --wait: oklch(0.8 0.13 75);

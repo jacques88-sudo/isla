@@ -21706,3 +21706,14 @@ Provato: `compagniaNelTesto()` trova "Buggy Canarias" in "Buggy canarias dbl", "
 privata" sul charter e "Arriro" sull'uscita a persona; `controlla.js` e `prove.js`
 passano; le due schede a 375 px senza errori, nessun nome in pagina. `CACHE_NAME` →
 `isla-v662`.
+
+### Gavin Glenn e Amalfi (2 novembre 2026)
+
+Altre due compagnie dei fogli del 26 ottobre - 1 novembre (proprietario), netti su Notion:
+- **Gavin Glenn** è **pesca**: nei `nomi` di `pesca-altura`, anche "Gavin Glen" come
+  l'ha scritto Francy (0857), perché `compagniaNelTesto()` cerca il nome intero;
+- **Amalfi** è una barca come Mokkai: nei `nomi` di `luxury-cruiser`, che ha già la
+  variante "Barca privata" (il ticket di Francy 0878 era un privato).
+
+Provato: i due nomi trovati nei testi dei fogli; `controlla.js` e `prove.js` passano; le
+due schede a 375 px senza errori, nessun nome in pagina. `CACHE_NAME` → `isla-v663`.

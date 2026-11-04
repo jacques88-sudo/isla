@@ -712,8 +712,7 @@ function initLista() {
         <label for="listaCodice" data-i18n="lista.code">Codice Isla</label>
         <div class="lista-codice">
           <input id="listaCodice" name="codice" type="text" autocomplete="off"
-                 autocapitalize="characters" spellcheck="false" maxlength="30"
-                 data-i18n-placeholder="lista.codePlaceholder" />
+                 autocapitalize="characters" spellcheck="false" maxlength="30" />
           <button class="btn btn-soft" type="button" data-lista-codice
                   data-i18n="lista.codeApply"${codiceEsito === "checking" ? " disabled" : ""}>Applica</button>
         </div>

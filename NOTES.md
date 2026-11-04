@@ -21833,3 +21833,20 @@ Dal foglio di Kristine (Admiral Excursion Point, 26 ottobre - 2 novembre), netti
 
 Provato: `controlla.js` e `prove.js` passano; la scheda del charter a 375 px senza errori,
 nessun nome di compagnia in pagina. `CACHE_NAME` → `isla-v670`.
+
+### "Codice Isla" al posto di "Codice sconto"; KAROLIN e JUNES (4 novembre 2026)
+
+Il proprietario ha messo i primi due codici dei venditori su Supabase, **KAROLIN** e
+**JUNES** (5%), con le righe `insert` del punto 4 di
+`supabase/modifiche/2026-10-18-codici-sconto.sql`. La tabella c'era già. I codici restano
+solo lì, come sempre.
+
+Poi il campo della lista ha cambiato nome: "Codice sconto" non gli piaceva, ed è diventato
+**"Codice Isla"** (Isla code, Código Isla, Code Isla, Isla-Code), anche nella riga del
+messaggio WhatsApp (`wa.discountCode`). Il messaggio di chi scrive in francese o tedesco
+arriva all'ufficio come "Codice Isla: …", con `perUfficio()`. Nessun programma legge quella
+riga, quindi cambiarla non rompe niente. Le chiavi (`lista.code`, `wa.discountCode`), la
+tabella `codici_sconto` e il parametro `?codice=` restano come sono.
+
+Provato: `controlla.js` e `prove.js` passano; nella finestra della lista a 390 px il campo
+dice "Codice Isla (facoltativo)", senza errori. `CACHE_NAME` → `isla-v671`.

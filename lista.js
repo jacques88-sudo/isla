@@ -709,7 +709,7 @@ function initLista() {
                autocapitalize="off" spellcheck="false"
                data-i18n-placeholder="req.emailPlaceholder" required />
         <p class="hint" data-i18n="req.emailHint"></p>
-        <label for="listaCodice" data-i18n="lista.code">Codice sconto</label>
+        <label for="listaCodice" data-i18n="lista.code">Codice Isla</label>
         <div class="lista-codice">
           <input id="listaCodice" name="codice" type="text" autocomplete="off"
                  autocapitalize="characters" spellcheck="false" maxlength="30"

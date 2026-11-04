@@ -354,7 +354,6 @@ const I18N = {
   "lista.riapri":      { it: "Non l'ho inviata: riapri WhatsApp", en: "I didn't send it: reopen WhatsApp", es: "No la envié: reabrir WhatsApp", fr: "Je ne l'ai pas envoyée : rouvrir WhatsApp", de: "Nicht gesendet: WhatsApp erneut öffnen" },
   // Il codice sconto dei venditori (lista.js, 18 ottobre 2026).
   "lista.code":         { it: "Codice Isla (facoltativo)", en: "Isla code (optional)", es: "Código Isla (opcional)", fr: "Code Isla (facultatif)", de: "Isla-Code (optional)" },
-  "lista.codePlaceholder": { it: "Il codice che ti ha dato il venditore", en: "The code the seller gave you", es: "El código que te dio el vendedor", fr: "Le code que le vendeur vous a donné", de: "Der Code, den Sie vom Verkäufer haben" },
   "lista.codeApply":    { it: "Applica", en: "Apply", es: "Aplicar", fr: "Appliquer", de: "Einlösen" },
   "lista.codeChecking": { it: "Controllo il codice…", en: "Checking the code…", es: "Comprobando el código…", fr: "Vérification du code…", de: "Code wird geprüft…" },
   "lista.codeOk":       { it: "Codice applicato: lo sconto è già tolto dal totale.", en: "Code applied: the discount is already taken off the total.", es: "Código aplicado: el descuento ya está restado del total.", fr: "Code appliqué : la remise est déjà déduite du total.", de: "Code eingelöst: Der Rabatt ist schon von der Summe abgezogen." },

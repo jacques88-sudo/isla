@@ -21850,3 +21850,10 @@ tabella `codici_sconto` e il parametro `?codice=` restano come sono.
 
 Provato: `controlla.js` e `prove.js` passano; nella finestra della lista a 390 px il campo
 dice "Codice Isla (facoltativo)", senza errori. `CACHE_NAME` → `isla-v671`.
+
+### Il campo "Codice Isla" senza la frase dentro (4 novembre 2026)
+
+Provati i codici sul telefono, funzionano. Il proprietario ha chiesto di togliere la frase
+grigia dentro il campo ("Il codice che ti ha dato il venditore"): il campo resta vuoto,
+con sopra "Codice Isla (facoltativo)". Tolta anche la chiave `lista.codePlaceholder` da
+`i18n.js`, che non la usava più nessuno. `CACHE_NAME` → `isla-v672`.

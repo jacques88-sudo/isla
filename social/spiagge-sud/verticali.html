@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<!-- "Le 5 spiagge del sud" in 9:16 (1080x1920): 7 verticali per TikTok e per il
+     reel (t1..t7), piu' 2 storie (s1, s2). Rifatto il 5 novembre 2026: foto e
+     testi piu' grandi, cosi' lo schermo non resta mezzo vuoto. I testi stanno
+     fra 150 px dall'alto e 400 dal basso (li coprono i pulsanti dell'app e la
+     didascalia). Le parti con la classe "t" sono il testo: nel reel entrano
+     dopo la dissolvenza della foto, cosi' due scritte non si sovrappongono.
+     Quelle con la classe "fisso" (la testata) stanno ferme, senza zoom. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500;600&display=swap">
+<style>
+:root{ --notte:#211a15; --carta:#f6efe4; --sole:linear-gradient(90deg,#f7a531,#f0457a 55%,#9b2c8f); }
+*{box-sizing:border-box;margin:0}
+body{background:#555;font-family:Jost,sans-serif}
+.v{width:1080px;height:1920px;position:relative;overflow:hidden;background:var(--notte);color:var(--carta);margin-bottom:40px}
+h1,h2{font-family:"Cormorant Garamond",serif;font-weight:600;line-height:1.02;font-variant-numeric:lining-nums}
+.num{font-size:38px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;background:var(--sole);-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo{border-radius:50%;background:#fff;object-fit:contain}
+/* in alto: logo e nome, sotto la zona dei pulsanti dell'app */
+.testa{position:absolute;top:150px;left:80px;right:80px;display:flex;align-items:center;gap:20px;font-size:32px;letter-spacing:.2em;text-transform:uppercase}
+.testa img{width:82px;height:82px;padding:10px}
+.foto{position:absolute;left:0;top:270px;width:1080px;height:720px;background-size:cover;background-position:center}
+.foto::after{content:"";position:absolute;inset:auto 0 0 0;height:170px;background:linear-gradient(transparent,var(--notte))}
+.pannello{position:absolute;left:80px;right:80px;top:1010px}
+h2{font-size:136px;margin:18px 0 40px}
+ul{list-style:none;padding:0;font-size:50px;font-weight:400;line-height:1.32}
+li{padding-left:56px;position:relative;margin-bottom:24px}
+li::before{content:"";position:absolute;left:0;top:.48em;width:24px;height:24px;border-radius:50%;background:var(--sole)}
+/* copertina */
+.strisce{position:absolute;left:0;right:0;top:270px;height:900px;display:grid;grid-template-rows:repeat(3,1fr);gap:8px}
+.strisce div{background-size:cover;background-position:center}
+.cop .pannello{top:1210px}
+.cop h1{font-size:150px;margin:12px 0 0}
+/* finale e storie */
+.centro{position:absolute;left:70px;right:70px;top:260px;bottom:400px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.centro .logo{width:260px;height:260px;padding:36px;margin-bottom:52px}
+.centro h2{font-size:128px;margin:0 0 36px}
+.nomi{font-size:48px;font-weight:300;line-height:1.5}
+.cta{margin-top:70px;font-size:52px;font-weight:500;border:3px solid var(--carta);border-radius:999px;padding:24px 60px}
+.wa{margin-top:40px;font-size:42px;font-weight:300}
+/* storie: lo spazio per l'adesivo Link */
+.freccia{position:absolute;left:0;right:0;text-align:center;font-size:48px;font-weight:500}
+.st1 .strisce{top:0;height:1040px}
+.st1 .pannello{top:1090px;text-align:center;left:60px;right:60px}
+.st1 h1{font-size:132px;margin:10px 0 0}
+.st2 .centro{bottom:auto;top:200px}
+
+/* Per il reel: fai-grafiche.js fotografa ogni verticale due volte. Col fondo
+   (foto, testata, colore) senza il testo, e col solo testo su fondo trasparente. */
+body.solo-fondo .t, body.solo-fondo .fisso{visibility:hidden}
+body.solo-testo, body.solo-fisso{background:transparent}
+body.solo-testo .v, body.solo-fisso .v{background:transparent}
+body.solo-testo .v > :not(.t){visibility:hidden}
+body.solo-fisso .v > :not(.fisso){visibility:hidden}
+</style></head><body>
+
+<!-- 7 verticali per TikTok e per il reel -->
+<section class="v cop" id="t1">
+  <div class="testa fisso"><img class="logo" src="../../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
+  <div class="strisce">
+    <div style="background-image:url(foto/duque.jpg);background-position:center 60%"></div>
+    <div style="background-image:url(foto/tejita.jpg);background-position:center 55%"></div>
+    <div style="background-image:url(foto/abama.jpg);background-position:center 55%"></div>
+  </div>
+  <div class="pannello t">
+    <div class="num">Salvale per la vacanza</div>
+    <h1>Le 5 spiagge<br>del sud</h1>
+  </div>
+</section>
+
+<section class="v" id="t2">
+  <div class="testa fisso"><img class="logo" src="../../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
+  <div class="foto" style="background-image:url(foto/duque.jpg);background-position:center 55%"></div>
+  <div class="pannello t">
+    <div class="num">1 · Costa Adeje</div>
+    <h2>Playa del Duque</h2>
+    <ul><li>Sabbia chiara e acqua calma</li><li>Passeggiata sul mare fino a Fañabé</li></ul>
+  </div>
+</section>
+
+<section class="v" id="t3">
+  <div class="testa fisso"><img class="logo" src="../../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
+  <div class="foto" style="background-image:url(foto/las-vistas.jpg)"></div>
+  <div class="pannello t">
+    <div class="num">2 · Los Cristianos</div>
+    <h2>Playa de Las Vistas</h2>
+    <ul><li>Poca onda, giusta per i bambini</li><li>Lettini, docce e bar sul lungomare</li></ul>
+  </div>
+</section>
+
+<section class="v" id="t4">
+  <div class="testa fisso"><img class="logo" src="../../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
+  <div class="foto" style="background-image:url(foto/el-medano.jpg)"></div>
+  <div class="pannello t">
+    <div class="num">3 · El Médano</div>
+    <h2>El Médano</h2>
+    <ul><li>La spiaggia del kitesurf e del windsurf</li><li>Bar e ristoranti a due passi dalla sabbia</li></ul>
+  </div>
+</section>
+
+<section class="v" id="t5">
+  <div class="testa fisso"><img class="logo" src="../../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
+  <div class="foto" style="background-image:url(foto/tejita.jpg);background-position:center 45%"></div>
+  <div class="pannello t">
+    <div class="num">4 · Sotto la Montaña Roja</div>
+    <h2>La Tejita</h2>
+    <ul><li>La spiaggia naturale più grande del sud</li><li>Sabbia dorata e niente palazzi intorno</li></ul>
+  </div>
+</section>
+
+<section class="v" id="t6">
+  <div class="testa fisso"><img class="logo" src="../../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
+  <div class="foto" style="background-image:url(foto/abama.jpg);background-position:center 60%"></div>
+  <div class="pannello t">
+    <div class="num">5 · Guía de Isora</div>
+    <h2>Playa de Abama</h2>
+    <ul><li>Sembra il Caribe, ed è pubblica</li><li>Una baia riparata sotto la scogliera</li></ul>
+  </div>
+</section>
+
+<section class="v" id="t7">
+  <div class="centro t">
+    <img class="logo" src="../../assets/logo-isla.png" alt="">
+    <h2>Le trovi tutte sulla mappa di Isla</h2>
+    <div class="nomi">Duque · Las Vistas · El Médano<br>La Tejita · Abama</div>
+    <div class="cta">Mappa dal link in bio</div>
+    <div class="wa">WhatsApp +34 657 772 032</div>
+  </div>
+</section>
+
+<!-- 2 storie: sotto resta il posto per l'adesivo Link -->
+<section class="v st1" id="s1">
+  <div class="strisce">
+    <div style="background-image:url(foto/duque.jpg);background-position:center 60%"></div>
+    <div style="background-image:url(foto/tejita.jpg);background-position:center 55%"></div>
+    <div style="background-image:url(foto/abama.jpg);background-position:center 55%"></div>
+  </div>
+  <div class="pannello">
+    <div class="num">Salvale per la vacanza</div>
+    <h1>Le 5 spiagge<br>del sud</h1>
+  </div>
+  <div class="freccia" style="top:1500px">Tocca qui sotto per la mappa<br>↓</div>
+</section>
+
+<section class="v st2" id="s2">
+  <div class="centro">
+    <img class="logo" src="../../assets/logo-isla.png" alt="">
+    <h2>Le trovi tutte sulla mappa di Isla</h2>
+    <div class="nomi">Duque · Las Vistas · El Médano<br>La Tejita · Abama</div>
+  </div>
+  <div class="freccia" style="top:1240px">Tocca qui sotto per la mappa<br>↓</div>
+</section>
+
+</body></html>

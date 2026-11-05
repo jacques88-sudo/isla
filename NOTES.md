@@ -21859,3 +21859,20 @@ Provati i codici sul telefono, funzionano. Il proprietario ha chiesto di toglier
 grigia dentro il campo ("Il codice che ti ha dato il venditore"): il campo resta vuoto,
 con sopra "Codice Isla (facoltativo)". Tolta anche la chiave `lista.codePlaceholder` da
 `i18n.js`, che non la usava più nessuno. `CACHE_NAME` → `isla-v672`.
+
+## La home messa in riga con `STILE.md` (5 novembre 2026)
+
+Guardata la home sul telefono, chiara e scura: seguiva già quasi tutto lo stile. Tre cose
+proposte al proprietario, due fatte:
+
+- **Le scritte sulle foto** di Categorie e Mappa ("Mare e barche", "Spiagge") erano nel
+  carattere dei titoli, quelle dei riquadri in alto ("PACCHETTI") maiuscole e spaziate:
+  due voci nella stessa pagina. Ora `.cat-label` è Jost maiuscolo spaziato, con un'ombra
+  leggera perché si legga anche sulle foto chiare. Provato a 320 px in tedesco: non esce.
+- **Il buco prima delle FAQ**: `.about` aveva 4rem sotto, la sezione dopo ("Dicono di noi"
+  o le FAQ) 4rem sopra, e si sommavano in 8rem di vuoto. `.about` adesso non ha spazio
+  sotto; con o senza recensioni lo spazio è quello delle altre sezioni.
+- **Gli angoli tondi delle foto** (16–20 px) contro i 6 px scritti in `STILE.md`: al
+  proprietario piacciono così. Corretto `STILE.md`, non le card. Non si ripropone.
+
+`CACHE_NAME` → `isla-v673`.

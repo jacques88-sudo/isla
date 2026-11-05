@@ -6,7 +6,9 @@
      fra 150 px dall'alto e 400 dal basso (li coprono i pulsanti dell'app e la
      didascalia). Le parti con la classe "t" sono il testo: nel reel entrano
      dopo la dissolvenza della foto, cosi' due scritte non si sovrappongono.
-     Quelle con la classe "fisso" (la testata) stanno ferme, senza zoom. -->
+     Quelle con la classe "fisso" (la testata) stanno ferme, senza zoom.
+     data-secondi dice quanto resta ogni verticale nel reel: 4 secondi bastano
+     per leggere titolo e due righe (con 2 non si riusciva, 5 novembre 2026). -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500;600&display=swap">
 <style>
 :root{ --notte:#211a15; --carta:#f6efe4; --sole:linear-gradient(90deg,#f7a531,#f0457a 55%,#9b2c8f); }
@@ -55,7 +57,7 @@ body.solo-fisso .v > :not(.fisso){visibility:hidden}
 </style></head><body>
 
 <!-- 7 verticali per TikTok e per il reel -->
-<section class="v cop" id="t1">
+<section class="v cop" id="t1" data-secondi="3">
   <div class="testa fisso"><img class="logo" src="../../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
   <div class="strisce">
     <div style="background-image:url(foto/duque.jpg);background-size:170% auto;background-position:42% 62%"></div>
@@ -68,7 +70,7 @@ body.solo-fisso .v > :not(.fisso){visibility:hidden}
   </div>
 </section>
 
-<section class="v" id="t2">
+<section class="v" id="t2" data-secondi="4">
   <div class="testa fisso"><img class="logo" src="../../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
   <div class="foto" style="background-image:url(foto/duque.jpg);background-position:center 55%"></div>
   <div class="pannello t">
@@ -78,7 +80,7 @@ body.solo-fisso .v > :not(.fisso){visibility:hidden}
   </div>
 </section>
 
-<section class="v" id="t3">
+<section class="v" id="t3" data-secondi="4">
   <div class="testa fisso"><img class="logo" src="../../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
   <div class="foto" style="background-image:url(foto/las-vistas.jpg)"></div>
   <div class="pannello t">
@@ -88,7 +90,7 @@ body.solo-fisso .v > :not(.fisso){visibility:hidden}
   </div>
 </section>
 
-<section class="v" id="t4">
+<section class="v" id="t4" data-secondi="4">
   <div class="testa fisso"><img class="logo" src="../../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
   <div class="foto" style="background-image:url(foto/el-medano.jpg)"></div>
   <div class="pannello t">
@@ -98,7 +100,7 @@ body.solo-fisso .v > :not(.fisso){visibility:hidden}
   </div>
 </section>
 
-<section class="v" id="t5">
+<section class="v" id="t5" data-secondi="4">
   <div class="testa fisso"><img class="logo" src="../../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
   <div class="foto" style="background-image:url(foto/tejita.jpg);background-position:center 45%"></div>
   <div class="pannello t">
@@ -108,7 +110,7 @@ body.solo-fisso .v > :not(.fisso){visibility:hidden}
   </div>
 </section>
 
-<section class="v" id="t6">
+<section class="v" id="t6" data-secondi="4">
   <div class="testa fisso"><img class="logo" src="../../assets/logo-isla.png" alt=""><span>Isla Tenerife</span></div>
   <div class="foto" style="background-image:url(foto/abama.jpg);background-position:center 60%"></div>
   <div class="pannello t">
@@ -118,7 +120,7 @@ body.solo-fisso .v > :not(.fisso){visibility:hidden}
   </div>
 </section>
 
-<section class="v" id="t7">
+<section class="v" id="t7" data-secondi="4">
   <div class="centro t">
     <img class="logo" src="../../assets/logo-isla.png" alt="">
     <h2>Le trovi tutte sulla mappa di Isla</h2>

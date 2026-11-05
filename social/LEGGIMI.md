@@ -31,7 +31,13 @@ NODE_PATH=$(npm root -g) node social/fai-grafiche.js /percorso/della/scratchpad/
 ```
 
 Le slide si contano da sole (`#s1`, `#s2`… nel carosello, `#t1`, `#t2`… nelle verticali, `#s1`
-e `#s2` per le storie): se ne possono mettere quante si vuole. Il reel dura sempre 12 secondi.
+e `#s2` per le storie): se ne possono mettere quante si vuole.
+
+**Quanto dura il reel.** Ogni verticale dice i suoi secondi con `data-secondi` (spiagge-sud:
+3 la copertina, 4 le altre, 24 secondi in tutto). Con 7 slide in 12 secondi ogni spiaggia
+restava 2 secondi e la gente non riusciva a leggere (proprietario, 5 novembre 2026): **4
+secondi per una slide con titolo e due righe**. Senza `data-secondi` il reel viene di 12
+secondi, diviso in parti uguali (il pacchetto coppia).
 Si guarda **ogni** immagine prima di mandarla.
 
 **Il reel a strati.** Nelle verticali la classe `t` segna il testo e `fisso` la testata. Così

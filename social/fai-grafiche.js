@@ -9,7 +9,7 @@
 //                    (le sezioni #s1, #s2, ... finche' ci sono)
 //   verticale-N.png  carosello di foto di TikTok, 9:16 (1080x1920), da verticali.html (#t1...)
 //   storia-1..2.png  storie con lo spazio per l'adesivo Link, 9:16, da verticali.html (#s1, #s2)
-//   reel.mp4         12 secondi dalle verticali, zoom lento e dissolvenze, senza
+//   reel.mp4         dalle verticali (12 secondi, o quanto dice data-secondi), zoom lento e dissolvenze, senza
 //                    audio: la musica si mette nell'app (serve ffmpeg)
 // Il sito non lo carica. Come si cambiano testi e foto lo dice LEGGIMI.md.
 
@@ -38,8 +38,10 @@ async function fotografa(pagina, file, prefisso, nome, uscita, classe, sfondoTra
   return fatti;
 }
 
-// Ogni verticale dura quanto serve perche' il reel venga di DURATA secondi, con
-// DISSOLVENZA fra una e l'altra. Lo zoom ha un fotogramma solo in ingresso per
+// Quanto dura ogni verticale: data-secondi sulla sua sezione (spiagge-sud: 3 la
+// copertina, 4 le altre, perche' si legga tutto). Se il modello non lo dice (il
+// pacchetto coppia), tutte uguali, e il reel viene di DURATA secondi. Fra una e
+// l'altra c'e' DISSOLVENZA. Lo zoom ha un fotogramma solo in ingresso per
 // immagine: con l'immagine ripetuta moltiplicava i fotogrammi e il video usciva
 // di 205 secondi.
 //
@@ -50,29 +52,36 @@ async function fotografa(pagina, file, prefisso, nome, uscita, classe, sfondoTra
 // "fisso" (facoltativo) e' la testata che resta ferma sopra lo zoom, fino alla
 // prima verticale che non ce l'ha (fissoFino, il suo numero da 0): sparisce
 // con la dissolvenza verso quella.
-function video(uscita, fondi, testi, fisso, fissoFino) {
+function video(uscita, fondi, secondi, testi, fisso, fissoFino) {
   const n = fondi.length;
-  const slide = (DURATA + (n - 1) * DISSOLVENZA) / n;
-  const frames = Math.round(slide * FPS);
+  const durate = secondi.every(x => x > 0)
+    ? secondi
+    : Array(n).fill((DURATA + (n - 1) * DISSOLVENZA) / n);
+  // quando parte la dissolvenza verso la verticale i (per i = 0, zero)
+  const parte = durate.map((_, i) =>
+    durate.slice(0, i).reduce((a, b) => a + b, 0) - i * DISSOLVENZA);
+  const totale = parte[n - 1] + durate[n - 1];
   const ingressi = [];
   let filtri = "";
   fondi.forEach((f, i) => {
+    const frames = Math.round(durate[i] * FPS);
+    const passo = (0.05 / frames).toFixed(6); // arriva a 1.05 alla fine della verticale
     ingressi.push("-i", f);
-    filtri += `[${i}:v]scale=2160:3840,zoompan=z='min(zoom+0.0006,1.05)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${frames}:s=1080x1920:fps=${FPS},setsar=1,format=yuv420p[v${i}];`;
+    filtri += `[${i}:v]scale=2160:3840,zoompan=z='min(zoom+${passo},1.05)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${frames}:s=1080x1920:fps=${FPS},setsar=1,format=yuv420p[v${i}];`;
   });
   let prima = "v0";
   for (let i = 1; i < n; i++) {
-    const offset = (i * (slide - DISSOLVENZA)).toFixed(3);
-    filtri += `[${prima}][v${i}]xfade=transition=fade:duration=${DISSOLVENZA}:offset=${offset}[a${i}];`;
+    filtri += `[${prima}][v${i}]xfade=transition=fade:duration=${DISSOLVENZA}:offset=${parte[i].toFixed(3)}[a${i}];`;
     prima = `a${i}`;
   }
+  const quanti = () => ingressi.filter(x => x === "-i").length;
   if (testi) {
     const entra = 0.3; // il testo compare in 0,3 s
     testi.forEach((f, i) => {
-      ingressi.push("-loop", "1", "-t", String(DURATA), "-i", f);
-      const k = n + i;
-      const inizio = i === 0 ? 0.15 : i * (slide - DISSOLVENZA) + DISSOLVENZA;
-      const fine = i === n - 1 ? null : (i + 1) * (slide - DISSOLVENZA) - entra;
+      const k = quanti();
+      ingressi.push("-loop", "1", "-t", totale.toFixed(3), "-i", f);
+      const inizio = i === 0 ? 0.15 : parte[i] + DISSOLVENZA;
+      const fine = i === n - 1 ? null : parte[i + 1] - entra;
       filtri += `[${k}:v]format=rgba,fade=in:st=${inizio.toFixed(3)}:d=${entra}:alpha=1` +
         (fine === null ? "" : `,fade=out:st=${fine.toFixed(3)}:d=${entra}:alpha=1`) + `[x${i}];`;
       filtri += `[${prima}][x${i}]overlay=0:0:format=auto[o${i}];`;
@@ -80,17 +89,17 @@ function video(uscita, fondi, testi, fisso, fissoFino) {
     });
   }
   if (fisso) {
-    ingressi.push("-loop", "1", "-t", String(DURATA), "-i", fisso);
-    const k = ingressi.filter(x => x === "-i").length - 1;
-    const via = fissoFino < n ? `,fade=out:st=${(fissoFino * (slide - DISSOLVENZA)).toFixed(3)}:d=${DISSOLVENZA}:alpha=1` : "";
+    const k = quanti();
+    ingressi.push("-loop", "1", "-t", totale.toFixed(3), "-i", fisso);
+    const via = fissoFino < n ? `,fade=out:st=${parte[fissoFino].toFixed(3)}:d=${DISSOLVENZA}:alpha=1` : "";
     filtri += `[${k}:v]format=rgba${via}[fx];[${prima}][fx]overlay=0:0:format=auto[fo];`;
     prima = "fo";
   }
   filtri += `[${prima}]format=yuv420p[out]`;
   execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...ingressi, "-filter_complex", filtri,
-    "-map", "[out]", "-t", String(DURATA), "-c:v", "libx264", "-crf", "20", "-pix_fmt", "yuv420p",
+    "-map", "[out]", "-t", totale.toFixed(3), "-c:v", "libx264", "-crf", "20", "-pix_fmt", "yuv420p",
     "-movflags", "+faststart", "-r", String(FPS), path.join(uscita, "reel.mp4")]);
-  console.log("reel.mp4");
+  console.log(`reel.mp4 (${totale.toFixed(1)} secondi)`);
 }
 
 (async () => {
@@ -112,6 +121,8 @@ function video(uscita, fondi, testi, fisso, fissoFino) {
   // Il reel: a strati se il modello segna il testo, altrimenti dalle verticali intere.
   await pagina.goto("file://" + verticali, { waitUntil: "networkidle" });
   const aStrati = await pagina.locator(".v .t").count() > 0;
+  const secondi = await pagina.evaluate(() =>
+    [...document.querySelectorAll("section.v[id^=t]")].map(s => Number(s.dataset.secondi) || 0));
   let fondi = tutte, testi = null;
   if (aStrati) {
     const tmp = fs.mkdtempSync(path.join(uscita, "reel-"));
@@ -126,10 +137,10 @@ function video(uscita, fondi, testi, fisso, fissoFino) {
       fissoFino = conFisso.indexOf(false);
       if (fissoFino < 0) fissoFino = conFisso.length;
     }
-    video(uscita, fondi, testi, fisso, fissoFino);
+    video(uscita, fondi, secondi, testi, fisso, fissoFino);
     fs.rmSync(tmp, { recursive: true, force: true });
   } else {
-    video(uscita, fondi, null);
+    video(uscita, fondi, secondi, null);
   }
   await browser.close();
 })();

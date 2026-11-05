@@ -801,8 +801,9 @@ const I18N = {
   "link.bookingsSub":   { it: "Controlla la tua richiesta o il tuo ticket", en: "Check your request or your ticket", es: "Consulta tu solicitud o tu ticket", fr: "Consultez votre demande ou votre ticket", de: "Ihre Anfrage oder Ihr Ticket ansehen" },
 
   // ── pagina offline ──────────────────────────────────────────────────────
-  "offline.title":      { it: "Sei offline", en: "You're offline", es: "Estás sin conexión", fr: "Vous êtes hors ligne", de: "Sie sind offline" },
-  "offline.text":       { it: "La PWA è installata, ma questa pagina non è disponibile senza connessione.", en: "The app is installed, but this page isn't available without a connection.", es: "La app está instalada, pero esta página no está disponible sin conexión.", fr: "L'app est installée, mais cette page n'est pas disponible sans connexion.", de: "Die App ist installiert, aber diese Seite ist ohne Verbindung nicht verfügbar." }
+  "offline.title":      { it: "Sei senza connessione", en: "You're offline", es: "Estás sin conexión", fr: "Vous êtes hors ligne", de: "Keine Verbindung" },
+  "offline.text":       { it: "Questa pagina si apre quando torna la rete. Intanto la home funziona anche così.", en: "This page will open once you're back online. The home page works in the meantime.", es: "Esta página se abrirá cuando vuelva la conexión. Mientras tanto, la página de inicio funciona igual.", fr: "Cette page s'ouvrira dès que la connexion reviendra. En attendant, l'accueil fonctionne quand même.", de: "Diese Seite öffnet sich, sobald die Verbindung zurück ist. Die Startseite funktioniert auch so." },
+  "offline.home":       { it: "Torna alla home", en: "Back to home", es: "Volver al inicio", fr: "Retour à l'accueil", de: "Zur Startseite" }
 };
 
 // Lingua attiva. Ordine: `?lang=` nell'indirizzo → scelta salvata → lingua

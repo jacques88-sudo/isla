@@ -50,7 +50,9 @@ Ispirato a due riferimenti:
   spaziate, molto spazio bianco, colore d'accento unico e sobrio.
 
 Tutti i colori sono definiti come variabili CSS in `styles.css`, sotto `:root`. Il tema
-scuro è stato rimosso su richiesta: il sito resta sempre chiaro.
+scuro c'è, ma solo per chi ha il telefono impostato sul tema scuro
+(`prefers-color-scheme: dark`, vedi "Il tema sta tutto dentro una `@media`"): nessun
+interruttore sul sito. Chi lo ha sul chiaro vede sempre Isla chiara.
 
 ## Struttura dei file
 

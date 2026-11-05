@@ -7,6 +7,9 @@ Pages così com'è.
 `NOTES.md` (1900+ righe) è la memoria lunga: **il perché** di ogni scelta e ogni errore
 già fatto. Qui c'è solo quello che serve sapere **prima di toccare qualcosa**.
 
+`STILE.md` è lo stile: colori, caratteri, forme e come parla Isla. **Si legge prima di
+disegnare una pagina, un pulsante o una grafica, o di scrivere un testo nuovo.**
+
 Chi lavora al progetto sta imparando a programmare: si va **un passo alla volta**, si
 spiega cosa si sta facendo, e le domande si fanno invece di indovinare.
 

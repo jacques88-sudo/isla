@@ -43,8 +43,12 @@ font) e ad Anantara (foto grandi, etichette maiuscole spaziate, un solo accento 
 
 ## Forme
 
-- **Card quasi squadrate** (`--radius-card: 6px`) contro **pulsanti e campi a pillola**
-  (`--radius-pill`). Mai il contrario.
+- **Le card con la foto hanno angoli tondi** (16–20 px: categorie, mappa, riquadri della
+  home): al proprietario piacciono così (5 novembre 2026), non si squadrano. Le card di
+  solo testo e le foto da sole (Chi siamo) restano quasi squadrate (`--radius-card: 6px`).
+  **Pulsanti e campi a pillola** (`--radius-pill`).
+- **Le scritte sopra le foto** sono in Jost MAIUSCOLO spaziato, bianche, come
+  "PACCHETTI" e "MARE E BARCHE"; non nel carattere dei titoli.
 - Ombra unica, morbida e lunga (`--shadow`); bordo sottile `--border`.
 - Colonna stretta da telefono (`--max: 640px`), `--max-wide: 1120px` solo per le sezioni
   ricche da tablet in su. Si disegna **prima per il telefono**, e si prova a 320 px e in
@@ -86,6 +90,6 @@ grande e leggibile, niente corsivi sottili su foto chiare. Le regole complete st
 
 - Colori nuovi saturi, gradienti vistosi, più di un accento.
 - Nero puro `#000` o grigi freddi.
-- Angoli tondi sulle card o pulsanti squadrati.
+- Pulsanti squadrati, o angoli tondi sulle card di solo testo.
 - Testo in grassetto pesante nel corpo: il corpo è leggero.
 - Copiare stile o testi promozionali dei fornitori.

@@ -21876,3 +21876,26 @@ proposte al proprietario, due fatte:
   proprietario piacciono così. Corretto `STILE.md`, non le card. Non si ripropone.
 
 `CACHE_NAME` → `isla-v673`.
+
+## Tutta Isla messa in riga con `STILE.md` (5 novembre 2026)
+
+Guardate tutte le pagine sul telefono, chiare e scure. Esperienze, scheda, pacchetto,
+noleggio, mappa e "Le mie prenotazioni" seguivano già lo stile. Sistemate quattro cose,
+tutte scelte dal proprietario:
+
+- **`offline.html` rifatta**: era l'unica fuori stile (carattere del computer in grassetto,
+  colori viola, nessun logo, e "La PWA è installata", parola tecnica). Ora ha i colori di
+  `:root` copiati dentro (chiaro e scuro: se cambiano in `styles.css` vanno cambiati anche
+  lì), il logo nel cerchio bianco, il titolo nel carattere dei titoli e il pulsante "Torna
+  alla home" (la home è in cache, quindi si apre). Testi nuovi `offline.title`,
+  `offline.text`, `offline.home` nelle cinque lingue. Senza rete i font di Google non
+  arrivano: restano Georgia e il carattere del telefono.
+- **Il nome dei pacchetti sopra la foto** (`pacchetti.html`): Jost maiuscolo spaziato,
+  come `.cat-label` in home. Il prezzo resta nel carattere dei titoli; "Crea il tuo
+  pacchetto" non ha la foto e tiene il suo titolo.
+- **I pulsanti della pagina dei link**: il nome maiuscolo e spaziato come i `.btn`. Il
+  riquadro arancio-rosa del video resta: sono i colori del logo, scelti apposta.
+- **Privacy e termini**: titoletti e grassetti da 600 a 500, il corpo di Isla è leggero.
+
+Provato a 390 px chiaro e scuro, e a 320 px in tedesco e francese: niente esce dallo
+schermo. `CACHE_NAME` → `isla-v674`.

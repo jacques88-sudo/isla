@@ -4,33 +4,84 @@
   <meta charset="utf-8" />
   <meta name="robots" content="noindex" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#FCFAF6" />
   <title>Offline</title>
   <style>
+    /* Questa pagina non usa styles.css: e' il ripiego di quando non c'e' rete,
+       quindi si porta dentro i colori. Sono quelli di :root in styles.css
+       (chiaro e scuro), copiati: se cambiano la', vanno cambiati anche qui.
+       I font di Google senza rete non arrivano: restano i ripieghi delle
+       stesse famiglie (Georgia per i titoli, quello del telefono per il testo).
+       Rifatta con STILE.md il 5 novembre 2026. */
+    :root{
+      color-scheme: light dark;
+      --bg: oklch(0.985 0.006 85);
+      --text: oklch(0.24 0.012 60);
+      --muted: oklch(0.52 0.018 65);
+      --primary: oklch(0.26 0.014 60);
+      --primary-foreground: oklch(0.98 0.008 85);
+      --gold-testo: oklch(0.5 0.07 68);
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg: oklch(0.19 0.012 60);
+        --text: oklch(0.95 0.008 85);
+        --muted: oklch(0.73 0.014 70);
+        --primary: oklch(0.94 0.01 85);
+        --primary-foreground: oklch(0.2 0.012 60);
+        --gold-testo: oklch(0.8 0.06 68);
+      }
+    }
+    *{ box-sizing:border-box }
     body{
-      font-family:system-ui,sans-serif;
+      margin:0;
+      min-height:100dvh;
       display:grid;
       place-items:center;
-      height:100vh;
-      margin:0;
-      background:#fffaf5;
-      color:#2d1834;
+      padding:1.25rem;
+      background:var(--bg);
+      color:var(--text);
       text-align:center;
-      padding:20px;
+      font:300 1rem/1.65 "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
+      -webkit-font-smoothing:antialiased;
     }
-    .box{max-width:500px}
-    /* Questa pagina non usa styles.css: e' il ripiego di quando non c'e' rete,
-       quindi si porta i colori dentro. Anche quelli del tema scuro, se no chi
-       ha il telefono al buio si prende una pagina bianca in faccia. */
-    @media (prefers-color-scheme: dark){
-      body{ background:#18130e; color:#f1ece3 }
+    .box{ max-width:420px }
+    /* il logo sempre nel cerchio bianco, anche al buio (#fff fisso) */
+    .logo{
+      width:96px; height:96px; margin:0 auto 1.6rem;
+      display:grid; place-items:center;
+      border-radius:50%; background:#fff;
+      box-shadow:0 1px 2px oklch(0.24 0.012 60 / .05), 0 18px 40px -28px oklch(0.24 0.012 60 / .35);
+    }
+    .logo img{ width:60%; height:60%; object-fit:contain }
+    .eyebrow{
+      margin:0; color:var(--gold-testo);
+      font-size:.68rem; text-transform:uppercase; letter-spacing:.28em;
+    }
+    h1{
+      margin:.6rem 0 .8rem;
+      font:500 clamp(1.9rem, 1.5rem + 2vw, 2.4rem)/1.15 "Cormorant Garamond", Georgia, serif;
+      letter-spacing:.01em;
+    }
+    p{ margin:0 0 1.8rem; color:var(--muted) }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      min-height:48px; padding:.6rem 1.4rem;
+      border-radius:999px;
+      background:var(--primary); color:var(--primary-foreground);
+      font-size:.78rem; font-weight:400; text-transform:uppercase; letter-spacing:.12em;
+      text-decoration:none;
     }
   </style>
 </head>
 <body data-i18n-doctitle="offline.title">
-  <div class="box">
-    <h1 data-i18n="offline.title">Sei offline</h1>
-    <p data-i18n="offline.text">La PWA è installata, ma questa pagina non è disponibile senza connessione.</p>
-  </div>
+  <main class="box">
+    <div class="logo"><img src="./assets/logo-isla.png" alt="" /></div>
+    <p class="eyebrow">Isla</p>
+    <h1 data-i18n="offline.title">Sei senza connessione</h1>
+    <p data-i18n="offline.text">Questa pagina si apre quando torna la rete. Intanto la home funziona anche così.</p>
+    <a class="btn" href="./index.html" data-i18n="offline.home">Torna alla home</a>
+  </main>
   <script src="./trasloco.js"></script>
   <script src="./i18n.js"></script>
 </body>

@@ -1458,9 +1458,11 @@ html:not([lang="de"]) .pp[lang="de"] { display: none; }
   font-size: 1.45rem;
   margin: 2.2rem 0 .5rem;
 }
-.privacy h3 { font-size: 1rem; font-weight: 600; margin: 1.4rem 0 .3rem; }
+/* Titoletti e grassetti a 500, non 600: il corpo di Isla e' leggero (Jost 300)
+   e il 600 ci saltava fuori come un timbro (STILE.md, 5 novembre 2026). */
+.privacy h3 { font-size: 1.02rem; font-weight: 500; margin: 1.6rem 0 .3rem; }
 .privacy p, .privacy li { color: var(--text); }
-.privacy strong { font-weight: 600; }
+.privacy strong { font-weight: 500; }
 .privacy ul { padding-left: 1.2rem; }
 .privacy li { margin-bottom: .45rem; }
 .privacy a { text-decoration: underline; }
@@ -1488,7 +1490,17 @@ html:not([lang="de"]) .pp[lang="de"] { display: none; }
   background: var(--surface);
   color: var(--text);
 }
-.link-item span { display: block; font-weight: 500; font-size: 1.02rem; }
+/* Il nome del pulsante maiuscolo e spaziato come i .btn del sito (STILE.md,
+   5 novembre 2026); la riga sotto resta normale, e' una spiegazione. */
+.link-item span {
+  display: block;
+  font-weight: 500;
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  line-height: 1.4;
+  margin-bottom: .2rem;
+}
 .link-item small { display: block; color: var(--muted); font-size: .85rem; }
 .link-item-main { background: var(--primary); border-color: var(--primary); }
 .link-item-main span,
@@ -2268,6 +2280,22 @@ body.menu-open { overflow: hidden; }
 }
 @media (min-width: 960px) {
   .pack-tile:first-child .pack-tile-testo strong { font-size: 1.6rem; }
+}
+/* Il nome del pacchetto sopra la foto: Jost maiuscolo spaziato, come le
+   scritte sulle foto della home (.cat-label; STILE.md, 5 novembre 2026). Il
+   prezzo sotto resta nel carattere dei titoli. "Crea il tuo pacchetto" non ha
+   la foto e tiene il suo titolo. */
+.pack-tile:not(.pack-tile-crea) .pack-tile-testo > strong {
+  font-family: var(--font-body);
+  font-size: .8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  line-height: 1.3;
+  text-shadow: 0 1px 3px oklch(0 0 0 / .35);
+}
+@media (min-width: 960px) {
+  .pack-tile:first-child:not(.pack-tile-crea) .pack-tile-testo > strong { font-size: .95rem; }
 }
 /* Il prezzo sulla foto: piu' piccolo e in bianco, se no il numero scuro della
    pagina sparisce dentro la sfumatura. */

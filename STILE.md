@@ -25,7 +25,9 @@ font) e ad Anantara (foto grandi, etichette maiuscole spaziate, un solo accento 
 
 - Tutto in `oklch`, con la tinta calda (60–85). Un colore nuovo nasce da questi, non da zero
   (anche Halloween li gira, non li sostituisce).
-- **Tema scuro** con `prefers-color-scheme: dark`: le variabili si girano da sole. Cose che
+- **Il tema scuro c'è solo sui telefoni (e computer) impostati sul tema scuro**: lo decide
+  `prefers-color-scheme: dark`, e sul sito non c'è nessun interruttore per sceglierlo.
+  Chi ha il telefono sul tema chiaro vede sempre Isla chiara. Le variabili si girano da sole. Cose che
   devono restare uguali di giorno e di notte (il logo nel cerchio `#fff`, il bottone
   azzurro) hanno i colori scritti a mano, con un commento che lo dice.
 - Contrasto: si misura. Testo bianco sull'azzurro no (2,2:1), scuro sì (7,4:1).

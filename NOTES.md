@@ -21962,3 +21962,29 @@ GitHub la lancia a ogni PR dopo `controlla.js` e `prove.js`: installa Playwright
 (la stessa versione di qui) e Chromium in una cartella temporanea, fuori dal repository.
 Non sostituisce la prova a mano di un cambiamento preciso: dice che **niente si rompe**,
 non che la finestra della richiesta mostri le ore giuste.
+
+## La prima misura della velocità (6 novembre 2026)
+
+Lighthouse 12.8 dal computer (`npx`, profilo telefono e 4G lento, una sola misura per
+pagina: i numeri variano del 10% fra un giro e l'altro), sul sito pubblicato. PageSpeed
+Insights aveva finito la quota gratuita: il promemoria della chiave sta in CLAUDE.md.
+
+| pagina | punteggio | LCP | FCP | TBT | CLS | byte |
+|---|---|---|---|---|---|---|
+| home | 59 | 7,0 s | 3,5 s | 241 ms | 0,02 | 3,0 MB (video 1,4) |
+| `escursioni.html` | 70 | 5,6 s | 3,2 s | 144 ms | 0 | ~780 KB |
+| `tour.html?id=freebird-catamaran` | 62 | 6,7 s | 4,0 s | 239 ms | 0 | ~1,1 MB |
+
+Bene sotto 2,5 s per LCP. Cosa pesa, dal rapporto:
+- **Prima del primo disegno** (FCP 3–4 s): Google Fonts (~900 ms, un altro server) e
+  `styles.css` (~550 ms) bloccano la pagina; poi ~430 KB di script (catalogo 218 KB)
+  da leggere ed eseguire.
+- **Home**: l'elemento più grande è il video. Parte a pagina caricata (`initHeroVideo()`
+  in `app.js`) e il suo primo fotogramma sposta l'LCP a 7 s; Lighthouse simula il 4G
+  lento ma il telefono dice "4g", quindi il video parte.
+- **Scheda**: la foto grande la mette `tour.js` dopo aver letto il catalogo, quindi il
+  telefono la scopre tardi (3,8 s di attesa prima ancora di scaricarla); la foto è da
+  quella intera di `assets/`, non la copia piccola, anche sul telefono.
+- **La cache del server** (GitHub Pages, 10 minuti) non si cambia: con la nuvola grigia
+  le intestazioni sono di GitHub. Conta poco: dalla seconda visita c'è il service worker.
+- CLS e risposta del server vanno già bene.

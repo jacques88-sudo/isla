@@ -102,7 +102,7 @@ parchi, spettacoli serali, Monkey Park, il campo `menus`).
   "Tenerife Sud" uniformato nelle tre lingue
 - **Regole verso il cliente**: La politica di cancellazione · I termini di vendita · La
   privacy policy · La privacy rimessa in pari, e l'email fuori dal database · Termini e
-  privacy senza consulente · Da fare prima dell'apertura (15 ottobre 2026) · Isla aperta al pubblico, e le skill in CLAUDE.md (6 novembre 2026)
+  privacy senza consulente · Da fare prima dell'apertura (15 ottobre 2026) · Isla aperta al pubblico, e le skill in CLAUDE.md (6 novembre 2026) · Marketing, SEO Audit e supabase: le loro righe in CLAUDE.md (6 novembre 2026)
 - **Dominio, SEO e trasloco**: Il SEO aspetta il dominio · Il dominio e l'email · Il
   trasloco al dominio nuovo · Il dominio collegato, lo stesso giorno · Il DMARC · Il SEO ·
   Il README col dominio nuovo · L'anteprima dei link su WhatsApp
@@ -22195,3 +22195,22 @@ deve fare qui. Il motivo: una skill è un insieme di istruzioni generiche, e Cla
 legge insieme a `CLAUDE.md`; scritte accanto, le regole che contano per quella skill non
 vanno cercate in tutto il file. Le skill nuove (Marketing, SEO Audit, Supabase ufficiale,
 proposte lo stesso giorno) avranno la loro riga quando il proprietario le installa.
+
+## Marketing, SEO Audit e supabase: le loro righe in CLAUDE.md (6 novembre 2026)
+
+Il proprietario ha installato i tre plugin proposti lo stesso giorno (Marketing di
+Anthropic, SEO Audit, supabase ufficiale), e ognuno ha la sua riga in "Le skill già
+installate" di `CLAUDE.md`. Le scelte che contano:
+- **Marketing**: il tono di `STILE.md`, mai nomi delle barche, cinque lingue riscritte,
+  dei concorrenti si studia ma non si copia; le email ai clienti restano spente
+  (`PROMOZIONI_ATTIVE`) e una campagna si propone, non si prepara da sola.
+- **SEO Audit**: le scelte SEO del 21 ottobre restano; i dati di Search Console contano
+  dopo qualche settimana di visite vere (da dicembre 2026).
+- **supabase**: il database è quello vero dall'apertura, quindi il plugin **legge
+  soltanto**. Le modifiche passano ancora da `supabase/modifiche/` + `ORDINE.md` + SQL
+  Editor del proprietario, e i dati dei clienti non finiscono in chat né in un file.
+  "Supabase Admin" (someclaudeskills) è un'altra cosa, e resta da proporre nei suoi due casi.
+
+Il progetto **ISLA** nell'app Claude (6 novembre 2026) ha nel Contesto `CLAUDE.md`,
+`STILE.md` e `README.md` da GitHub (una copia: va sincronizzata dopo ogni modifica), il
+resoconto caricato a mano e la cartella del computer collegata.

@@ -1,3 +1,11 @@
+/* I font stanno dentro il sito, in fonts/ (6 novembre 2026): presi da Google
+   Fonts costavano ~900 ms di attesa su un altro server prima del primo disegno.
+   Un file per famiglia copre tutti i pesi (font variabili), solo l'alfabeto
+   latino: le lettere rare le scrive il font di riserva. */
+@font-face { font-family: "Jost"; src: url("fonts/jost.woff2") format("woff2"); font-weight: 300 600; font-display: swap; }
+@font-face { font-family: "Cormorant Garamond"; src: url("fonts/cormorant-garamond.woff2") format("woff2"); font-weight: 400 600; font-display: swap; }
+@font-face { font-family: "Caveat"; src: url("fonts/caveat.woff2") format("woff2"); font-weight: 500 600; font-display: swap; }
+
 :root {
   /* Dice al browser che il sito ha tutti e due i temi. Serve per le cose che
      disegna lui e non il foglio di stile: il calendario del campo data, la

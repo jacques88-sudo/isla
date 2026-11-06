@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v675";
+const CACHE_NAME = "isla-v676";
 const ASSETS = [
   "./",
   "./index.html",
@@ -34,6 +34,9 @@ const ASSETS = [
   "./link.html",
   "./link.js",
   "./styles.css",
+  "./fonts/jost.woff2",
+  "./fonts/cormorant-garamond.woff2",
+  "./fonts/caveat.woff2",
   "./halloween.css",
   "./halloween.js",
   "./trasloco.js",

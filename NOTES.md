@@ -2,6 +2,119 @@
 
 Riepilogo per riprendere il lavoro (anche da un altro dispositivo o in una nuova sessione).
 
+## Indice per argomento
+
+Le sezioni stanno **in ordine di tempo**, non di argomento: questo indice le raggruppa
+(6 novembre 2026). Si scrivono i **titoli**, non i numeri di riga, che cambiano: per
+aprirne una si cerca `## <titolo>`. Su uno stesso argomento **vince la sezione più
+recente** (più in basso). Una scheda precisa si trova prima cercando il suo `id` o il
+nome della barca. Una sezione nuova va in fondo al file e il suo titolo anche qui, sotto
+il suo argomento.
+
+**Due sezioni enormi** ne contengono tante piccole (`###`): "Da fare" (agosto: le prime
+barche, Shogun, Opera 60, Royal Delfin, Utopia, i prezzi barrati) e "Twin Ticket —
+secondo transfer, per il Siam Park" (28 agosto–1 settembre: gallerie delle barche,
+parchi, spettacoli serali, Monkey Park, il campo `menus`).
+
+- **Il progetto e chi lo fa**: Cos'è Isla · Obiettivo del progetto · Roadmap · Scelta
+  tecnica · Stile · Struttura dei file · Come funziona il lavoro di Admiral · Chi c'è
+  dietro Isla: i dati aziendali (5 ottobre 2026) · Chi è chi: Isla è di Admiral, il
+  proprietario e la moglie sono venditori (21 ottobre 2026) · Il README: cos'è Isla (21
+  ottobre 2026) · Le skill di Matt Pocock: issue su GitHub (29 ottobre 2026)
+- **Da dove vengono i dati**: Da dove vengono i dati del catalogo · Attivita' aggiunte
+  guardando la concorrenza · Attivita' stagionali · Prezzi definitivi, "Teide Stars &
+  Sunset", "Scopri Tenerife" (9 ottobre 2026) · I prezzi comprendono l'IGIC (16 ottobre
+  2026) · Le offerte a tempo, e il prezzo barrato (7 settembre 2026)
+- **Barche**: Whale & Dolphin e Glass Bottom Boat: le partenze vere (28 agosto) · Peter Pan
+  Pirate Ship (28 agosto) · Small Catamaran Rental, riempita (28 agosto) · Flipper One,
+  scheda nuova — e il porto del noleggio (28 agosto) · Card "Tour privati" rimessa, e
+  riempita con le barche in charter · Private Charter: il porto dipende dalla barca (9
+  ottobre 2026) · Luxury Catamaran: le partenze (9 ottobre 2026) · Fiat 500 Water Car:
+  partenza, durata, capitano a bordo (9 ottobre 2026) · Prezzi delle barche private dal
+  foglio dei venditori (17 ottobre 2026) · Maxicat (23 ottobre 2026) · Sea Trek Tenerife,
+  scheda nuova (15 ottobre 2026)
+- **Mare e acqua**: le sezioni del jet ski (da "Jet ski: prezzi veri dall'ufficio" a "12
+  settembre 2026 — Il ritiro del jet ski e' compreso…") · Kayak con lo snorkeling ·
+  Immersioni: il listino del Big Fish · Parascending: dati veri da canaryvip.com · 10
+  ottobre 2026 — Parascending: Ocean Wings · 13 settembre: Banana, Fly Fish e Crazy UFO
+  (v305–v307) · 13 settembre: Franz Surf School e le sezioni del surf (v308–v313) ·
+  Flyboard spento (6 ottobre 2026)
+- **Terra e aria**: Parapendio · Elicottero: il listino vero di Admiral (4 settembre) ·
+  Elicottero: listino nuovo (2 novembre 2026) · Quad del Teide: due schede gemelle
+  diventano una sola · Prime Quads, dai fogli di Nancy, Maarten e Kristine · i buggy
+  (v258–v262) · il karting (v276–v278, v327–v329) · le camminate di Canaventura e il
+  trekking (v280–v284, Trekking: l'ora si concorda) · la Mustang (v287–v290) · il tuk tuk
+  (v297–v300, Tuk tuk, Secret Volcano Tour: le partenze) · le bici (Le bici arrivano nel
+  noleggio, v429–v435) · Talaria Electric Off-Road · Passeggiata a cavallo: Xanadú ·
+  Adrenalina in due rifatto dal post Instagram · 12 ottobre 2026 — Trenino turistico
+  nascosto
+- **Teide e stelle**: Il Teide National Park prende i prezzi veri · le serate di
+  stargazing (v265–v274) · Teide by Night: intorno alle 17, secondo il tramonto · Le lingue
+  del Teide erano già giuste
+- **Tour in bus e altre isole**: La Gomera (dati ufficiali, orari del pick-up, le sette
+  lingue) · La Palma (Tour Volcán, le tre lingue, non ha il pick-up) · Teide + Icod +
+  Garachico + Masca · Santa Cruz + Anaga + La Laguna · Masca + Teide VIP Cabrio Bus ·
+  Poema del Mar (dati ufficiali e orari) · il giro dell'isola (Vuelta a la Isla, v350–v351)
+  · 14 settembre 2026 — I tour in bus non si scontano
+- **Parchi e spettacoli**: Twin Ticket — neonati gratis · Twin Ticket — secondo transfer
+  (e le sue `###`) · I parchi non hanno bisogno di orari · 9 ottobre 2026 — I parchi
+  contano sempre come card · Castillo San Miguel: i prezzi veri, e il netto solo sullo show
+- **Pick-up e hotel**: I dati di pick-up del fornitore (7 settembre 2026) · v285 — il
+  pick-up non dipende solo dall'hotel · Ogni scheda ha il suo pick-up, e le fermate valgono
+  solo per sei · Tolti i 36 hotel… · Tolti anche gli ultimi 110… · I 146 hotel senza
+  fermata: chiusa la questione · Il transfer sulla variante e il punto di ritrovo · 13
+  settembre 2026 — Dove il transfer non c'e', il punto di raccolta non si mostra
+- **Finestra della richiesta, lista e date**: "Da concordare" solo dove l'ora si concorda
+  davvero · le sezioni di settembre su varianti, totali, giorni (da "`hidden` non
+  spegneva" a "Il blocco dei giorni rimesso") · v336–v344 (conto in fondo, nome, meno/più,
+  hotel ricordato, pastiglie, calendario scritto a mano) · Le due domande sulla
+  prenotazione sono chiuse · La quarta prova da cliente, e le 24 ore vere · La frase delle
+  24 ore sotto il calendario · Cambiare persone e mezzi nella lista · 12 ottobre 2026 —
+  L'email nella richiesta, obbligatoria · Il codice sconto dei venditori · Le offerte per
+  email · le sei prove da cliente (19 ottobre 2026)
+- **Pacchetti**: da "14 settembre 2026 — La pagina dei pacchetti" a "Gli itinerari a 3, 5
+  e 7 giorni" · 16 settembre 2026 — Il totale dei pacchetti coi mezzi · 11 ottobre 2026 —
+  Il pacchetto va nel carrello · Crea il tuo pacchetto (20 ottobre 2026)
+- **Database, ticket e venditori (Isla Ticket)**: Prenotazioni vere: Supabase, ticket di
+  carta e "Le mie escursioni" · La pagina dei venditori: `venditori.html` · da "Le mie
+  escursioni: il cliente ritrova il suo ticket" a "La richiesta confermata diventa un
+  ticket" · Statistiche per l'ufficio · "Isla Ticket", la lettura del ticket come app a
+  parte · Le richieste WhatsApp arrivano col messaggio… · Il link di pagamento fra la
+  richiesta e la conferma · Le richieste online per codice del venditore · L'audit del 30
+  ottobre 2026
+- **Netti, commissioni e foglio Google**: le sezioni del 9 ottobre (compagnie nuove,
+  netto a percentuale, cifre tolte dal repository) · Netto fisso, commissione = acconto ·
+  18 ottobre 2026 — Il transfer sul ticket, e il netto con o senza · L'archivio di fine
+  anno del foglio Google · i nomi delle compagnie (Due nomi dai ticket…, 19 ottobre 2026 —
+  Compagnie nuove dai fogli dei venditori, I nomi sul ticket: bastano i titoli)
+- **Avvisi, meteo, recensioni, preferiti**: 13 ottobre 2026 — Gli avvisi sul telefono ·
+  L'avviso apre l'escursione giusta · 16 ottobre 2026 — `manda-notifiche` non risponde più
+  a chiunque · Il meteo sulle escursioni confermate · Il meteo anche sul Teide · Il cielo
+  a icone · le quattro sezioni "Le recensioni" (20 ottobre 2026) · I preferiti · 11
+  ottobre 2026 — "Cosa portare" sulle escursioni confermate
+- **Pagine e aspetto**: il layout nuovo (da "`prova-layout.html`" a "La fascia delle
+  schede passa a 3/2") · v330–v335 (cartolina, tema scuro) · La mappa (7 ottobre e le
+  sezioni del 9–10 ottobre) · La pagina del noleggio · La pagina dei link per i social ·
+  Il biglietto da visita · Il tema di Halloween della home · Il video nuovo della home ·
+  il logo e "Aggiungi alla lista" (12 ottobre 2026) · La home messa in riga con
+  `STILE.md` · Tutta Isla messa in riga con `STILE.md`
+- **Lingue**: Le tre lingue · Il francese, quarta lingua · Il tedesco, quinta lingua ·
+  "Tenerife Sud" uniformato nelle tre lingue
+- **Regole verso il cliente**: La politica di cancellazione · I termini di vendita · La
+  privacy policy · La privacy rimessa in pari, e l'email fuori dal database · Termini e
+  privacy senza consulente · Da fare prima dell'apertura (15 ottobre 2026)
+- **Dominio, SEO e trasloco**: Il SEO aspetta il dominio · Il dominio e l'email · Il
+  trasloco al dominio nuovo · Il dominio collegato, lo stesso giorno · Il DMARC · Il SEO ·
+  Il README col dominio nuovo · L'anteprima dei link su WhatsApp
+- **Foto e velocità**: Le foto in WebP, una categoria alla volta · Le copie piccole delle
+  foto · La home più veloce col 4G lento · La prima misura della velocità · I font dentro
+  il sito · Il service worker si scaricava i file dalla cache del browser
+- **Strumenti, prove e ordine dei file**: Tre strumenti per lavorare meglio · `controlla.js`
+  legge i mesi · Ordine fra i file, passo 1: la cartella `strumenti/` · La prova nel
+  browser fissa · le pulizie (La pulizia del 28 agosto, v272 — via le sei schede non
+  pubblicate, v273 — la pulizia, Tolte le tre schermate di prova, 16 ottobre 2026 —
+  Controllo generale)
+
 ## Cos'è Isla
 
 PWA mobile-first per turisti a Tenerife. Funzione centrale: l'utente inserisce il codice

@@ -21919,7 +21919,12 @@ Il proprietario ha chiesto di mettere ordine fra i file. Si fa a passi, e si spo
    `../../assets/`; provate nel browser, nessuna immagine rotta, e `fai-grafiche.js` rifà
    tutte le grafiche. Cambiati anche `robots.txt` (fuori `/materiali/` e `/strumenti/`),
    i link del README al PDF e allo schema, CLAUDE.md e STILE.md;
-3. da fare — `ufficio/`: `foglio-google/`, `dati-fornitore/`.
+3. **fatto** (stesso giorno) — `ufficio/`: `foglio-google/`, `dati-fornitore/`. Cambiati i
+   percorsi nei commenti di `hotel.js`, `esplora-catalog.js` (quindi `CACHE_NAME` alzato a
+   `isla-v675`), `manda-notifiche` e `2026-10-08-foglio.sql` (solo commenti: la funzione
+   non va ridistribuita, il programma nel foglio Google non va reincollato), `robots.txt`
+   (fuori `/ufficio/`) e CLAUDE.md. `RISERVATI` di `indirizzi-corti.js` ora elenca le
+   cartelle che ci sono davvero.
 
 **Restano nella cartella principale, e non si spostano**: le pagine `.html` (il percorso è
 l'indirizzo: Google, il QR stampato e i link condivisi), gli indirizzi corti (`catamarano/`,

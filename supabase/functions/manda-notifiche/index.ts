@@ -287,7 +287,7 @@ type AvvisoUfficio = {
 type Messaggio = { title: string; body: string; tag: string; url: string; ids: number[] };
 
 // Il catalogo sta nel sito, non nel database: i titoli si leggono da li', come
-// fa il foglio Google (titoliDelCatalogo in foglio-google/Codice.gs). Se il sito
+// fa il foglio Google (titoliDelCatalogo in ufficio/foglio-google/Codice.gs). Se il sito
 // non risponde, l'avviso scrive l'id della scheda.
 const CATALOGO_URL = "https://islaexcursionstenerife.com/esplora-catalog.js";
 

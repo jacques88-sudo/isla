@@ -37,7 +37,7 @@
 // testo e lo porta nel messaggio: "Hotel: Casa di mia zia, calle Colon 14".
 //
 // Gli elenchi nominativi stanno in NOTES.md, e i dati grezzi in
-// dati-fornitore/hotel.tsv, che non e' stato toccato e ha ancora tutte e 567 le
+// ufficio/dati-fornitore/hotel.tsv, che non e' stato toccato e ha ancora tutte e 567 le
 // righe.
 //
 // **Il punto dipende solo dall'hotel, non dall'escursione** — ma solo dentro un
@@ -48,7 +48,7 @@
 // Gli **orari** invece cambiano da un'escursione all'altra, e per questo qui
 // non ci sono: un'ora e' una promessa, e la conferma l'ufficio.
 //
-// I nomi vengono dai dati in dati-fornitore/, riscritti: gli originali sono
+// I nomi vengono dai dati in ufficio/dati-fornitore/, riscritti: gli originali sono
 // note per gli autisti, in stampatello e con spagnolo e inglese mescolati.
 // Il nome del posto resta uguale in tutte e cinque le lingue, come i titoli delle
 // escursioni; a tradursi e' il **tipo** di posto, la seconda voce, che diventa
@@ -981,7 +981,7 @@ const PICKUP_TIMES = {
   // `09:04` e `09:16` sul Teide erano refusi confermati dall'ufficio, questa no,
   // e un minuto inventato resta inventato.
   //
-  // Raccolti il 16 settembre 2026 con dati-fornitore/raccogli-orari.js.
+  // Raccolti il 16 settembre 2026 con ufficio/dati-fornitore/raccogli-orari.js.
   "la-gomera": {
     1: "07:15",
     2: "07:20",
@@ -1069,7 +1069,7 @@ const PICKUP_TIMES = {
   // ancora senza nome (punto 41). Le 08:42 del punto 20 sono come le scrive il
   // fornitore, non arrotondate.
   //
-  // Raccolti il 16 settembre 2026 con dati-fornitore/raccogli-orari.js.
+  // Raccolti il 16 settembre 2026 con ufficio/dati-fornitore/raccogli-orari.js.
   "island-tour-completo": {
     1: "08:50",
     2: "08:50",
@@ -1150,7 +1150,7 @@ const PICKUP_TIMES = {
   // fa 08:34: il fornitore per Villa Adeje Beach usa sempre minuti in :04 o :34.
   // Tre schede di fila non sono un refuso, quindi non si arrotonda.
   //
-  // Raccolti il 24 settembre 2026 con dati-fornitore/raccogli-orari.js.
+  // Raccolti il 24 settembre 2026 con ufficio/dati-fornitore/raccogli-orari.js.
   "santa-cruz-taganana": {
     1: "07:15",
     2: "07:20",

@@ -39,9 +39,8 @@ const INDIRIZZI_CORTI = {
 
 const SITO = "https://islaexcursionstenerife.com";
 // Le cartelle che il sito ha gia': un nome corto uguale le coprirebbe.
-const RISERVATI = ["assets", "dati-fornitore", "documenti", "foglio-google", "stampa",
-  "strumenti", "materiali", "ufficio",
-  "supabase", "ticket", "vendor", "node_modules"];
+const RISERVATI = ["assets", "materiali", "strumenti", "supabase", "ticket", "ufficio",
+  "vendor", "docs", "node_modules"];
 const SEGNO = "<!-- indirizzo corto: lo scrive indirizzi-corti.js -->";
 
 function catalogo() {

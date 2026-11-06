@@ -2,7 +2,7 @@
 --
 -- Il riepilogo dei netti (quanto va a ogni compagnia, quanto resta a Isla) non
 -- sta su Isla ma su un foglio Google del proprietario. Il programma del foglio
--- (foglio-google/Codice.gs) ogni ora chiama la funzione foglio_ticket() qui
+-- (ufficio/foglio-google/Codice.gs) ogni ora chiama la funzione foglio_ticket() qui
 -- sotto e riceve i ticket col netto gia' calcolato.
 --
 -- La funzione si apre solo con una PAROLA SEGRETA. Qui c'e' solo il posto dove

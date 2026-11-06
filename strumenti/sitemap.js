@@ -1,9 +1,9 @@
 // La mappa del sito per Google: sitemap.xml. Si rifa' con
 //
-//     node sitemap.js
+//     node strumenti/sitemap.js
 //
 // dopo ogni scheda o pacchetto nuovo (o tolto). Non va scritta a mano: invecchia.
-// `node controlla.js` dice se e' rimasta indietro rispetto al catalogo.
+// `node strumenti/controlla.js` dice se e' rimasta indietro rispetto al catalogo.
 //
 // Ogni pagina ha sei indirizzi: uno per lingua (`?lang=it` … `?lang=de`, vedi
 // I18N_DA_INDIRIZZO in i18n.js) e quello senza lingua, che sceglie da solo la
@@ -16,14 +16,17 @@
 const fs = require("fs");
 const vm = require("vm");
 
+// Lo script sta in strumenti/: il sito è nella cartella sopra.
+const RADICE = __dirname + "/..";
+
 const SITO = "https://islaexcursionstenerife.com";
 const LINGUE = ["it", "en", "es", "fr", "de"];
 
 function pagine() {
   const ctx = { t: k => k, tf: c => (typeof c === "string" ? c : (c && c.it) || ""), eur: String };
   vm.createContext(ctx);
-  vm.runInContext(fs.readFileSync(__dirname + "/esplora-catalog.js", "utf8") + ";this.C = ESPLORA_CATALOG;", ctx);
-  vm.runInContext(fs.readFileSync(__dirname + "/pacchetti.js", "utf8") + ";this.P = PACCHETTI;", ctx);
+  vm.runInContext(fs.readFileSync(RADICE + "/esplora-catalog.js", "utf8") + ";this.C = ESPLORA_CATALOG;", ctx);
+  vm.runInContext(fs.readFileSync(RADICE + "/pacchetti.js", "utf8") + ";this.P = PACCHETTI;", ctx);
   return [
     "", "escursioni.html", "pacchetti.html", "pacchetti.html?famiglia=1",
     "pacchetti.html?giorni=3", "pacchetti.html?giorni=5", "pacchetti.html?giorni=7",
@@ -57,6 +60,6 @@ function sitemapTesto() {
 module.exports = { sitemapTesto };
 
 if (require.main === module) {
-  fs.writeFileSync(__dirname + "/sitemap.xml", sitemapTesto());
+  fs.writeFileSync(RADICE + "/sitemap.xml", sitemapTesto());
   console.log("sitemap.xml: " + pagine().length + " pagine, " + pagine().length * 6 + " indirizzi.");
 }

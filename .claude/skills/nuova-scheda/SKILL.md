@@ -142,7 +142,7 @@ im.resize((1200, 800), Image.LANCZOS).save('assets/<nome>.jpg', 'JPEG', quality=
 ## 6. Controlla
 
 ```bash
-node controlla.js       # fasce d'età, sigle dei giorni, icone, foto, traduzioni
+node strumenti/controlla.js   # fasce d'età, sigle dei giorni, icone, foto, traduzioni
 ```
 
 Poi **alza `CACHE_NAME` in `sw.js`** e apri la pagina nel browser vero:

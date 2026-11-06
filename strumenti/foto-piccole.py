@@ -8,7 +8,7 @@
 #
 # Si lancia dopo aver messo una foto nuova in assets/ (serve Pillow):
 #
-#     python3 foto-piccole.py
+#     python3 strumenti/foto-piccole.py
 #
 # Rifà solo le copie che mancano o che sono più vecchie della foto. Non tocca
 # icone, logo, anteprima per WhatsApp, video e le cartelle mappa/ e schermate/.
@@ -20,7 +20,8 @@ import shutil
 from PIL import Image
 
 LARGHEZZA = 720
-CARTELLA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
+# Lo script sta in strumenti/: il sito è nella cartella sopra.
+CARTELLA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets")
 PICCOLE = os.path.join(CARTELLA, "piccole")
 SALTATE = {"anteprima.jpg", "logo-isla.png"}
 

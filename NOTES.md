@@ -169,6 +169,9 @@ interruttore sul sito. Chi lo ha sul chiaro vede sempre Isla chiara.
 
 ## Struttura dei file
 
+> **Ferma ad agosto 2026**, tenuta come storia: i file di oggi e a cosa servono stanno
+> nella tabella "Struttura" di CLAUDE.md (e nel README).
+
 - `index.html` — home
 - `booking.html` + `booking.js` — schermata dettagli prenotazione (cerca per codice)
 - `styles.css` — tutto lo stile, un solo file
@@ -210,6 +213,9 @@ esempio (`MOCK_BOOKINGS` in `booking.js`) e stato di errore per codici non trova
 Online su GitHub Pages: <https://jacques88-sudo.github.io/isla/>
 
 ## Da fare
+
+> **Ferma ad agosto 2026**, tenuta come storia: le cose da fare oggi stanno su Notion e
+> nelle issue di GitHub; com'è adesso un argomento lo dice l'indice qui in cima.
 
 La lista completa è su Notion (link in cima a questo file). In sintesi, i punti che
 toccano il codice già scritto:
@@ -22132,3 +22138,17 @@ decidono gli script (catalogo) e, nella home, il video. Il punteggio e il TBT de
 ballano molto da un giro all'altro (TBT 231–1524 ms nello stesso stato), quindi non dicono
 niente. **Il video della home resta com'è** (proprietario, 6 novembre 2026: "il cliente
 non lo farà mai partire").
+
+## Gli ultimi ritocchi all'ordine (6 novembre 2026)
+
+Controllo dell'organizzazione con la skill `ponytail-audit`: i file stanno bene dove sono
+(quelli del sito devono restare nella cartella principale). Sistemate quattro cose che
+confondevano chi cerca:
+- cancellata `graphify-out/`, la mappa del codice fatta con graphify il 2 novembre, prima
+  del riordino: non stava su GitHub, e le regole di graphify la fanno leggere per prima.
+  Si rifà con `/graphify` quando serve;
+- "Struttura dei file" e "Da fare", le prime sezioni di questo file, sono ferme ad agosto:
+  ora lo dicono in cima e rimandano a CLAUDE.md e all'indice;
+- Playwright 1.63.0 (la stessa versione di GitHub) e il suo Chromium installati sul
+  computer del proprietario: `strumenti/prova-browser.js` gira anche lì, prima della PR;
+- in CLAUDE.md la frase sulle skill "non installate" ora dice che Perf Profiler lo è.

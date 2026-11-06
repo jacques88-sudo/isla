@@ -13,7 +13,7 @@ si pubblica e quando) sta su Notion: "Piano social Isla — 12 settimane", dentr
 | `foto/` | foto già sistemate per i social (il parascending senza il logo di Tripadvisor sul paracadute) |
 
 ```bash
-NODE_PATH=$(npm root -g) node social/fai-grafiche.js /percorso/della/scratchpad/grafiche
+NODE_PATH=$(npm root -g) node materiali/social/fai-grafiche.js /percorso/della/scratchpad/grafiche
 ```
 
 Le immagini finite non si committano: si rifanno dai modelli in pochi secondi.
@@ -21,7 +21,7 @@ Le immagini finite non si committano: si rifanno dai modelli in pochi secondi.
 ## Per un post nuovo
 
 Si copia `carosello.html` e `verticali.html`, si cambiano testi e foto (le foto stanno in
-`../assets/`, le stesse del sito), si lancia `fai-grafiche.js` e si guarda **ogni** immagine
+`../../assets/`, le stesse del sito), si lancia `fai-grafiche.js` e si guarda **ogni** immagine
 prima di mandarla.
 
 ## Le regole (proprietario, 26 ottobre 2026)

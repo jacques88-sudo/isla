@@ -84,7 +84,7 @@ Poco e lento: dissolvenze e piccoli sollevamenti (`.2s`–`.5s ease`, card che s
 
 Foto vere (del sito o dei fornitori), mai fatte con l'IA; niente marchi di altri; testo
 grande e leggibile, niente corsivi sottili su foto chiare. Le regole complete stanno in
-`social/LEGGIMI.md`.
+`materiali/social/LEGGIMI.md`.
 
 ## Da non fare
 

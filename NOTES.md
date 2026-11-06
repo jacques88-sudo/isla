@@ -21914,7 +21914,11 @@ Il proprietario ha chiesto di mettere ordine fra i file. Si fa a passi, e si spo
    `nuova-scheda`. `indirizzi-corti.js` tiene `strumenti`, `materiali` e `ufficio` fra i
    nomi riservati. Nelle note più vecchie qui sopra i comandi sono ancora scritti senza
    `strumenti/`: sono storia, non si correggono;
-2. da fare — `materiali/`: `stampa/`, `social/`, `documenti/`;
+2. **fatto** (stesso giorno) — `materiali/`: `stampa/`, `social/`, `documenti/`. Le pagine
+   dei modelli (carosello, verticali, biglietto) ora prendono foto e logo da
+   `../../assets/`; provate nel browser, nessuna immagine rotta, e `fai-grafiche.js` rifà
+   tutte le grafiche. Cambiati anche `robots.txt` (fuori `/materiali/` e `/strumenti/`),
+   i link del README al PDF e allo schema, CLAUDE.md e STILE.md;
 3. da fare — `ufficio/`: `foglio-google/`, `dati-fornitore/`.
 
 **Restano nella cartella principale, e non si spostano**: le pagine `.html` (il percorso è

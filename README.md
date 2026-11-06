@@ -1,6 +1,6 @@
 # Cos'è Isla
 
-Aggiornato al 30 ottobre 2026 · [versione PDF](documenti/cos-e-isla.pdf) (del 21 ottobre)
+Aggiornato al 30 ottobre 2026 · [versione PDF](materiali/documenti/cos-e-isla.pdf) (del 21 ottobre)
 
 ## In breve
 
@@ -60,7 +60,7 @@ Isla Ticket è l'app per chi vende per strada e per l'ufficio. Sta in un altro r
 
 Isla è fatta di pagine scritte a mano in HTML, CSS e JavaScript, senza framework né build, e va su GitHub Pages così com'è; i dati che devono restare stanno su Supabase.
 
-![Isla: pagine su GitHub Pages, dati su Supabase](documenti/schema.png)
+![Isla: pagine su GitHub Pages, dati su Supabase](materiali/documenti/schema.png)
 
 Il cliente apre il sito e manda la richiesta su WhatsApp; ticket, richieste e recensioni passano dal database, e il foglio Google ne fa l'archivio dei conti.
 

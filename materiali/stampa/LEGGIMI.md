@@ -72,8 +72,8 @@ a 300 dpi. Prima di stamparne tanti, provarlo col telefono su una copia stampata
 
 ## Rifarlo
 
-Si cambia `biglietto-isla.html` (prende `../assets/logo-isla.png` e `qr-isla.svg`), poi
-si rifanno PDF e anteprima con Playwright, da `stampa/`:
+Si cambia `biglietto-isla.html` (prende `../../assets/logo-isla.png` e `qr-isla.svg`), poi
+si rifanno PDF e anteprima con Playwright, da `materiali/stampa/`:
 
 ```bash
 NODE_PATH=$(npm root -g) node -e '

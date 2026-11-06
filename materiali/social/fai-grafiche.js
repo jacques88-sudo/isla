@@ -1,6 +1,6 @@
 // LE GRAFICHE DEI SOCIAL: dai modelli HTML alle immagini e al video
 //
-//     NODE_PATH=$(npm root -g) node social/fai-grafiche.js <cartella-di-uscita>
+//     NODE_PATH=$(npm root -g) node materiali/social/fai-grafiche.js <cartella-di-uscita>
 //
 // Scrive nella cartella (meglio la scratchpad, non il repository):
 //   carosello-1..5.png  feed di Instagram e Facebook, 4:5 (1080x1350), da carosello.html
@@ -50,7 +50,7 @@ function video(uscita) {
 (async () => {
   const uscita = process.argv[2];
   if (!uscita) {
-    console.error("Manca la cartella di uscita: node social/fai-grafiche.js <cartella>");
+    console.error("Manca la cartella di uscita: node materiali/social/fai-grafiche.js <cartella>");
     process.exit(1);
   }
   fs.mkdirSync(uscita, { recursive: true });

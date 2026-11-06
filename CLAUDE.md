@@ -665,11 +665,11 @@ scoperti solo mettendole vicino alle altre.
 
 ## Skill da proporre al momento giusto
 
-Skill di someclaudeskills.com che il proprietario ha valutato e **non ha installato**:
-vanno proposte solo quando arriva il lavoro giusto. Sono basi generiche, non conoscono
-Isla: **le regole di questo file e di `NOTES.md` vincono sempre.** Si installano in
-Claude Code con `/plugin marketplace add erichowens/some_claude_skills` (una volta sola)
-e poi il `/plugin install` scritto sotto.
+Skill che il proprietario ha valutato. **Perf Profiler è installata**; Pwa Expert e
+Supabase Admin (di someclaudeskills.com) **no**, e vanno proposte solo quando arriva il
+lavoro giusto: si installano con `/plugin marketplace add erichowens/some_claude_skills`
+(una volta sola) e poi il `/plugin install` scritto sotto. Sono basi generiche, non
+conoscono Isla: **le regole di questo file e di `NOTES.md` vincono sempre.**
 
 ### Velocità del sito: "Perf Profiler" (installata) e la chiave di PageSpeed
 

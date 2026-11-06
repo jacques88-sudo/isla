@@ -4,7 +4,8 @@ PWA mobile-first di escursioni a Tenerife per **Admiral Excursions**. HTML, CSS 
 JavaScript scritti a mano: niente framework, niente build, niente backend. Va su GitHub
 Pages così com'è.
 
-`NOTES.md` (quasi 22.000 righe: si cerca dentro, non si legge tutto) è la memoria lunga: **il perché** di ogni scelta e ogni errore
+`NOTES.md` (quasi 22.000 righe: si cerca dentro, non si legge tutto; in cima c'è
+l'**indice per argomento**, e una sezione nuova ci va aggiunta) è la memoria lunga: **il perché** di ogni scelta e ogni errore
 già fatto. Qui c'è solo quello che serve sapere **prima di toccare qualcosa**.
 
 `STILE.md` è lo stile: colori, caratteri, forme e come parla Isla. **Si legge prima di

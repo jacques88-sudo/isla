@@ -22173,7 +22173,19 @@ Il proprietario: **Isla è aperta al pubblico** dal 6 novembre 2026. Da qui vale
 eccezioni "un ticket non si cancella, si annulla", e su Supabase e nel foglio Google i
 dati sono veri. La lista "Da fare prima dell'apertura" (15 ottobre) dice cosa ripulire
 quel giorno (righe di prova di `bookings`, schede "Settimana …" del foglio, dati dei
-telefoni di prova); se è stata fatta tutta lo dice il proprietario, e va scritto qui.
+telefoni di prova).
+
+**La pulizia è fatta, il 6 novembre 2026** (proprietario: "fatto tutto"). Prima si è
+guardato con una query di sola lettura: in `bookings` c'erano 12 righe, tutte create prima
+del 6 novembre (1 ticket di strada confermato del 28 ottobre, 8 richieste WhatsApp
+annullate del 30 ottobre, 3 in attesa del 4–5 novembre), e il proprietario ha confermato
+che erano **tutte prove**. Le recensioni erano solo le 9 vecchie di Tripadvisor (6) e
+Facebook (3), e sono rimaste. Poi, nell'ordine: `delete from public.bookings where
+created_at < timestamptz '2026-11-06 00:00:00 Atlantic/Canary'` (con `returning`, per
+vedere cosa si cancellava; notifiche e avvisi se ne vanno in cascata, le foto le toglie
+`pulisci-foto` di notte), le schede "Settimana …" del foglio Google, i dati del sito sui
+telefoni di prova. `nets`, `commission_rates`, `codici_sconto` e recensioni non sono stati
+toccati. Da qui in avanti ogni riga di `bookings` è di un cliente vero.
 
 Nello stesso giorno, in `CLAUDE.md`, la sezione **"Le skill già installate: come si usano
 su Isla"**: una riga per ogni skill o plugin già installato (nuova-scheda, impeccable,

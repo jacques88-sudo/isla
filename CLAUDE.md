@@ -4,7 +4,7 @@ PWA mobile-first di escursioni a Tenerife per **Admiral Excursions**. HTML, CSS 
 JavaScript scritti a mano: niente framework, niente build, niente backend. Va su GitHub
 Pages così com'è.
 
-`NOTES.md` (1900+ righe) è la memoria lunga: **il perché** di ogni scelta e ogni errore
+`NOTES.md` (quasi 22.000 righe: si cerca dentro, non si legge tutto) è la memoria lunga: **il perché** di ogni scelta e ogni errore
 già fatto. Qui c'è solo quello che serve sapere **prima di toccare qualcosa**.
 
 `STILE.md` è lo stile: colori, caratteri, forme e come parla Isla. **Si legge prima di
@@ -706,4 +706,4 @@ Le cinque etichette standard: needs-triage, needs-info, ready-for-agent, ready-f
 
 ### Domain docs
 
-Single-context: un `GLOSSARY.md` e `docs/adr/` nella cartella principale, più `NOTES.md`. See `docs/agents/domain.md`.
+Single-context. Oggi c'è solo `NOTES.md`: `GLOSSARY.md` e `docs/adr/` non esistono ancora, e li creano le skill quando un termine o una decisione si chiarisce (non si creano a mano). See `docs/agents/domain.md`.

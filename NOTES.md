@@ -21932,3 +21932,10 @@ l'indirizzo: Google, il QR stampato e i link condivisi), gli indirizzi corti (`c
 li elenca uno per uno: spostarli vorrebbe dire cambiare due repository insieme), e `sw.js`,
 `manifest.json`, `CNAME`, `robots.txt`, `sitemap.xml`, `trasloco.txt`. `halloween.css` e
 `halloween.js` restano: si riaccendono da soli il prossimo ottobre (proprietario).
+
+**Due frasi di CLAUDE.md corrette** (6 novembre 2026, dopo il riordino): `NOTES.md` non ha
+"1900+ righe" ma quasi 22.000; e `GLOSSARY.md` e `docs/adr/` non esistono ancora. Non si
+creano a mano: `docs/agents/domain.md` (il modello delle skill di Matt Pocock) dice già di
+andare avanti senza, e li creano le skill quando servono. Controllato anche che non ci
+sia niente di inutile: script, pagine e tutte le 148 foto sono usati; `ticket/`,
+`venditori.html`, Flyboard, Trenino e Halloween restano apposta.

@@ -32,9 +32,16 @@ Poi prova nel browser vero, sempre — `node --check` non prende un `null`, una 
 usata prima di esistere o un elemento che su quella pagina non c'è:
 
 ```bash
-python3 -m http.server 8912
-NODE_PATH=$(npm root -g) node prova.js   # playwright, executablePath: '/opt/pw-browsers/chromium'
+NODE_PATH=$(npm root -g) node strumenti/prova-browser.js        # tutte le pagine, meno di 2 minuti
+NODE_PATH=$(npm root -g) node strumenti/prova-browser.js tour   # solo quelle con "tour" nel nome
 ```
+
+Apre ogni pagina (dalla sitemap, più booking, link, offline e la home nelle cinque
+lingue) su uno schermo da telefono e segnala errori JavaScript, file che non ci sono e
+foto rotte; esce 1 se ne trova. La lancia anche GitHub a ogni PR. Guarda che **niente si
+rompa**, non che una cosa **funzioni come deve**: per un cambiamento preciso (la finestra
+della richiesta, il menu "A che ora") si prova ancora a mano, con uno script nella
+scratchpad (`python3 -m http.server 8912`, playwright).
 
 Infine: aggiorna `NOTES.md`, committa, apri la PR, fai lo **squash-merge**, riallinea il
 branch (`git checkout -B <branch> origin/main`).
@@ -135,9 +142,10 @@ porto e capienza con le schede della stessa categoria.
 | `tour.js` | pagina di dettaglio, e le icone `INCLUDED_ICONS` |
 | `lista.js` | la lista delle richieste (localStorage), costruita in JS perché serve a tre pagine |
 | `i18n.js` | tutti i testi fissi nelle cinque lingue, e `perUfficio()` per il messaggio WhatsApp |
-| `strumenti/` | gli strumenti che il sito **non carica**: i sei qui sotto. Si lanciano dalla cartella principale (`node strumenti/controlla.js`) |
+| `strumenti/` | gli strumenti che il sito **non carica**: i sette qui sotto. Si lanciano dalla cartella principale (`node strumenti/controlla.js`) |
 | `strumenti/controlla.js` | il controllo del catalogo |
 | `strumenti/prove.js` | le prove del codice che costa caro se si rompe (totali, sconto, 24 ore, offline, trasloco). Le lancia anche GitHub a ogni PR, con `controlla.js` (`.github/workflows/controlla.yml`); il sito non lo carica |
+| `strumenti/prova-browser.js` | la prova nel browser vero di tutte le pagine (vedi "Prima di ogni consegna"); la lancia anche GitHub a ogni PR |
 | `supabase/ORDINE.md` | in che ordine si lanciano i file SQL per rifare il database. **Un file nuovo in `supabase/modifiche/` va aggiunto lì** |
 | `strumenti/foto-piccole.py` (`python3 strumenti/foto-piccole.py`) | fa le copie piccole delle foto in `assets/piccole/` (720 px), che usano elenco, home, miniature e "altre esperienze" (`fotoPiccola()` in `escursioni.js`). **Si lancia dopo ogni foto nuova** in `assets/`: senza copia la foto in elenco esce rotta, e `controlla.js` dà errore; il sito non lo carica |
 | `strumenti/orari-mancanti.js` | la lista delle schede senza orari di partenza; il sito non lo carica |

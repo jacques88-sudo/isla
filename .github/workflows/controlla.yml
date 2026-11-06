@@ -1,5 +1,5 @@
-# A ogni PR verso main: il controllo del catalogo e le prove dei calcoli.
-# Se uno dei due esce con errore, la PR si segna in rosso.
+# A ogni PR verso main: il controllo del catalogo, le prove dei calcoli e la
+# prova nel browser vero. Se uno dei tre esce con errore, la PR si segna in rosso.
 name: Controlli
 
 on:
@@ -21,3 +21,10 @@ jobs:
           node-version: 22
       - run: node strumenti/controlla.js
       - run: node strumenti/prove.js
+      # Playwright e Chromium fuori dal repository (il sito non ha package.json).
+      - name: Installa Playwright e Chromium
+        run: |
+          npm install --prefix "$RUNNER_TEMP/pw" playwright@1.63.0
+          "$RUNNER_TEMP/pw/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Prova nel browser
+        run: NODE_PATH="$RUNNER_TEMP/pw/node_modules" node strumenti/prova-browser.js

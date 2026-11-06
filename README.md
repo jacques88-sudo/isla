@@ -75,6 +75,7 @@ Il cliente apre il sito e manda la richiesta su WhatsApp; ticket, richieste e re
 | `sw.js` | il service worker: fa funzionare l'app anche offline |
 | `strumenti/controlla.js` | il controllo del catalogo prima di ogni consegna |
 | `strumenti/prove.js` | le prove di totali, sconto, 24 ore, offline e trasloco |
+| `strumenti/prova-browser.js` | apre ogni pagina nel browser e segnala errori, file mancanti e foto rotte |
 | `NOTES.md` | la memoria lunga: il perché di ogni scelta |
 
 ## Le regole che contano
@@ -88,4 +89,4 @@ Queste sono le scelte del proprietario che valgono per tutto il sito; il resto s
 - **Le recensioni sono di Isla**: le scrive solo chi è stato in escursione con noi, escono dopo l'approvazione dell'ufficio e si leggono nella home.
 - **Netti, commissioni e codici sconto mai nei file**, solo su Supabase.
 - **Il dominio è `islaexcursionstenerife.com`** (email `info@islaexcursionstenerife.com`), collegato al sito il 21 ottobre 2026 insieme al SEO: sitemap nelle cinque lingue e i dati per Google.
-- **Prima di ogni consegna**: `node strumenti/controlla.js`, `node strumenti/prove.js`, alzare `CACHE_NAME` in `sw.js`, provare nel browser vero.
+- **Prima di ogni consegna**: `node strumenti/controlla.js`, `node strumenti/prove.js`, `node strumenti/prova-browser.js`, alzare `CACHE_NAME` in `sw.js`, provare nel browser vero.

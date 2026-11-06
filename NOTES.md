@@ -21939,3 +21939,26 @@ creano a mano: `docs/agents/domain.md` (il modello delle skill di Matt Pocock) d
 andare avanti senza, e li creano le skill quando servono. Controllato anche che non ci
 sia niente di inutile: script, pagine e tutte le 148 foto sono usati; `ticket/`,
 `venditori.html`, Flyboard, Trenino e Halloween restano apposta.
+
+## La prova nel browser fissa: `strumenti/prova-browser.js` (6 novembre 2026)
+
+Prima la prova nel browser si riscriveva ogni volta (`prova.js` nella scratchpad) e
+GitHub non la faceva. Ora c'è uno script fisso: si accende un piccolo server suo, apre
+in Chromium, schermo da telefono e senza service worker, **ogni pagina della sitemap**
+(68 schede, 22 pacchetti, le vetrine, elenco, mappa, noleggio, privacy, termini) più
+booking (anche `?richieste=1`), link, offline e la home nelle cinque lingue: 110 pagine,
+meno di due minuti. Segnala errori JavaScript, file del sito che non ci sono (404) e foto
+caricate che non si vedono; esce 1 se ne trova. Con un nome dopo (`… prova-browser.js
+tour`) apre solo le pagine che lo contengono.
+
+**Tutto quello che sta fuori dal sito è bloccato** (Supabase, AEMET, Cloudflare, Google
+Fonts): così il risultato è sempre uguale, e si vede anche che le pagine reggono senza
+rete. Al primo giro: 110 pagine, nessun errore. Per essere sicuri che non dicesse sempre
+"tutto a posto", provata con due errori messi apposta in `link.js` e `link.html` (un
+elemento che non c'è, una foto che non esiste): li ha presi tutti e due, poi i file sono
+tornati com'erano.
+
+GitHub la lancia a ogni PR dopo `controlla.js` e `prove.js`: installa Playwright 1.63.0
+(la stessa versione di qui) e Chromium in una cartella temporanea, fuori dal repository.
+Non sostituisce la prova a mano di un cambiamento preciso: dice che **niente si rompe**,
+non che la finestra della richiesta mostri le ore giuste.

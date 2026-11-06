@@ -148,9 +148,11 @@ node strumenti/controlla.js   # fasce d'età, sigle dei giorni, icone, foto, tra
 Poi **alza `CACHE_NAME` in `sw.js`** e apri la pagina nel browser vero:
 
 ```bash
-python3 -m http.server 8912
-NODE_PATH=$(npm root -g) node prova.js   # executablePath: '/opt/pw-browsers/chromium'
+NODE_PATH=$(npm root -g) node strumenti/prova-browser.js tour   # tutte le schede: niente si rompe
 ```
+
+Poi la scheda nuova, guardata da vicino, con uno script nella scratchpad
+(`python3 -m http.server 8912` e playwright):
 
 Guarda **la pagina resa**, non solo il codice: "Neonati: Gratis" su una variante a barca
 intera e una durata che non seguiva la variante sono stati trovati solo così.

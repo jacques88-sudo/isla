@@ -5253,7 +5253,7 @@ const ESPLORA_CATALOG = [
   },
   {
     // Franz Surf School, Playa de las Americas (dati del 13 settembre 2026,
-    // in dati-fornitore/grezzo/franz-surf-school.json).
+    // in ufficio/dati-fornitore/grezzo/franz-surf-school.json).
     //
     // ⚠ Il nome della scuola **non va sul sito** (proprietario, 13 settembre
     // 2026): in descrizione si dice "una scuola di surf". Qui nel commento

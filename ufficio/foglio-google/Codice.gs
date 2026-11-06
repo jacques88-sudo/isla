@@ -14,7 +14,7 @@
 //   - finito l'anno, sposta le sue settimane in un file a parte ("Isla —
 //     archivio 2026", vedi archiviaAnniFiniti) e qui si riparte pulito.
 //
-// Come si installa: foglio-google/LEGGIMI.md.
+// Come si installa: ufficio/foglio-google/LEGGIMI.md.
 //
 // Qui dentro NON c'e' la parola segreta: sta nelle Proprieta' dello script
 // (Impostazioni del progetto → Proprieta' dello script → SEGRETO). La chiave

@@ -141,7 +141,8 @@ porto e capienza con le schede della stessa categoria.
 | `supabase/ORDINE.md` | in che ordine si lanciano i file SQL per rifare il database. **Un file nuovo in `supabase/modifiche/` va aggiunto lì** |
 | `strumenti/foto-piccole.py` (`python3 strumenti/foto-piccole.py`) | fa le copie piccole delle foto in `assets/piccole/` (720 px), che usano elenco, home, miniature e "altre esperienze" (`fotoPiccola()` in `escursioni.js`). **Si lancia dopo ogni foto nuova** in `assets/`: senza copia la foto in elenco esce rotta, e `controlla.js` dà errore; il sito non lo carica |
 | `strumenti/orari-mancanti.js` | la lista delle schede senza orari di partenza; il sito non lo carica |
-| `foglio-google/` | il programma (Apps Script) del foglio Google dei netti, e come si installa; il sito non lo carica |
+| `ufficio/` | il lavoro dell'ufficio che il sito non carica: `foglio-google/` (sotto) e `dati-fornitore/` (hotel, punti e orari raccolti dal fornitore, e `raccogli-orari.js`) |
+| `ufficio/foglio-google/` | il programma (Apps Script) del foglio Google dei netti, e come si installa; il sito non lo carica |
 | `venditori.js` | **Isla Ticket**, la pagina dei venditori: ticket di carta nel database (Supabase), richieste, statistiche. **La pagina sta in un altro repository, `isla-ticket`** (`jacques88-sudo.github.io/isla-ticket/`: pagina, manifest, icone, service worker, riquadro "Installa") e carica questo file, gli stili e il catalogo da `../isla/`. Su Android un'app non può stare dentro l'indirizzo di Isla. `venditori.html` e `ticket/` sono solo rimandi; Isla non ha il link "Area venditori". **Il modulo HTML sta là**: un campo nuovo nel modulo va messo in tutti e due i repository. Dove le regole dicono "`venditori.html`" si intende questa pagina |
 | `supabase-config.js` | URL e chiave **pubblica** di Supabase; lo schema e le regole stanno in `supabase/` |
 | `telefono.js` | prefissi e `telefonoE164()`: **uno solo** per venditori e clienti, il telefono è la chiave che li fa incontrare |
@@ -397,9 +398,9 @@ risposta. Un'ora inventata è la cosa peggiore che questo campo possa fare — u
 alla fermata all'ora sbagliata.
 
 Gli orari di una scheda nuova si prendono in novanta secondi: si apre la pagina
-di quell'escursione sul sito del fornitore e si incolla `dati-fornitore/raccogli-orari.js`
+di quell'escursione sul sito del fornitore e si incolla `ufficio/dati-fornitore/raccogli-orari.js`
 nella console del browser. I dati grezzi e la storia di come sono stati raccolti
-stanno in `dati-fornitore/`.
+stanno in `ufficio/dati-fornitore/`.
 
 ### In `HOTELS` sta solo chi ha una fermata con un nome
 
@@ -439,7 +440,7 @@ Restano quindi tre casi:
 undici alberghi diversi possono condividerlo. Scrivere "il tuo hotel" lì lascerebbe
 il cliente davanti alla reception mentre il pulmino aspetta due strade più in là.
 
-`dati-fornitore/hotel.tsv` non è stato toccato e ha ancora tutte e 567 le righe.
+`ufficio/dati-fornitore/hotel.tsv` non è stato toccato e ha ancora tutte e 567 le righe.
 
 **Prima di togliere una riga, guarda cosa fa in pagina.** Altamira stava per uscire
 perché nei dati è l'unico hotel con la fermata e senza nessun orario; nel browser
@@ -546,7 +547,7 @@ Deciso l'8 ottobre 2026, a passi:
    `fissa_netto` in `supabase/modifiche/2026-10-08-foglio.sql`): un netto cambiato in
    `nets` non riscrive i ticket già salvati; si ricalcola solo se cambiano scheda,
    variante, compagnia, persone o mezzi;
-5. **fatto** — il riepilogo **non sta su Isla**: un foglio Google (`foglio-google/`) che
+5. **fatto** — il riepilogo **non sta su Isla**: un foglio Google (`ufficio/foglio-google/`) che
    **ogni ora** legge `foglio_ticket()` con una parola segreta, aggiunge e aggiorna i
    ticket e **non ne cancella mai**: la pulizia mensile toglie i ticket vecchi, il foglio
    è l'archivio. Riepiloghi per giorno, settimana e compagnia, contati da quando il

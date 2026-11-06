@@ -75,7 +75,7 @@ delle commissioni che ti ha dato Claude.
    nome (per esempio "Isla — netti").
 2. Menu **Estensioni → Apps Script**. Si apre una pagina con un file `Codice.gs` che
    contiene già qualche riga: **cancella tutto** e incolla il contenuto di
-   `foglio-google/Codice.gs`. Premi l'icona del dischetto (Salva).
+   `ufficio/foglio-google/Codice.gs`. Premi l'icona del dischetto (Salva).
 3. A sinistra, l'ingranaggio **Impostazioni del progetto** → in fondo **Proprietà dello
    script** → **Aggiungi proprietà dello script**:
    - Proprietà: `SEGRETO`

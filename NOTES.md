@@ -102,7 +102,7 @@ parchi, spettacoli serali, Monkey Park, il campo `menus`).
   "Tenerife Sud" uniformato nelle tre lingue
 - **Regole verso il cliente**: La politica di cancellazione · I termini di vendita · La
   privacy policy · La privacy rimessa in pari, e l'email fuori dal database · Termini e
-  privacy senza consulente · Da fare prima dell'apertura (15 ottobre 2026)
+  privacy senza consulente · Da fare prima dell'apertura (15 ottobre 2026) · Isla aperta al pubblico, e le skill in CLAUDE.md (6 novembre 2026)
 - **Dominio, SEO e trasloco**: Il SEO aspetta il dominio · Il dominio e l'email · Il
   trasloco al dominio nuovo · Il dominio collegato, lo stesso giorno · Il DMARC · Il SEO ·
   Il README col dominio nuovo · L'anteprima dei link su WhatsApp
@@ -22166,3 +22166,20 @@ disegno della home 0,97 / 0,97 / 1,63 s (coi soli font: 1,64 / 1,66 / 1,71). L'L
 cambia (è il video). Altre idee sulla velocità valutate e lasciate: foto già compresse
 (guadagno 10–25% solo peggiorando la qualità), `styles.css` diviso per pagina, catalogo
 diviso per lingua.
+
+## Isla aperta al pubblico, e le skill in CLAUDE.md (6 novembre 2026)
+
+Il proprietario: **Isla è aperta al pubblico** dal 6 novembre 2026. Da qui vale senza
+eccezioni "un ticket non si cancella, si annulla", e su Supabase e nel foglio Google i
+dati sono veri. La lista "Da fare prima dell'apertura" (15 ottobre) dice cosa ripulire
+quel giorno (righe di prova di `bookings`, schede "Settimana …" del foglio, dati dei
+telefoni di prova); se è stata fatta tutta lo dice il proprietario, e va scritto qui.
+
+Nello stesso giorno, in `CLAUDE.md`, la sezione **"Le skill già installate: come si usano
+su Isla"**: una riga per ogni skill o plugin già installato (nuova-scheda, impeccable,
+superpowers, ponytail, le revisioni, graphify, i disegni, last30days, browser-use, le
+skill delle issue, find-skills, git-guardrails, i documenti), con quando serve e cosa non
+deve fare qui. Il motivo: una skill è un insieme di istruzioni generiche, e Claude le
+legge insieme a `CLAUDE.md`; scritte accanto, le regole che contano per quella skill non
+vanno cercate in tutto il file. Le skill nuove (Marketing, SEO Audit, Supabase ufficiale,
+proposte lo stesso giorno) avranno la loro riga quando il proprietario le installa.

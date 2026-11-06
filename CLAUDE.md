@@ -14,6 +14,10 @@ disegnare una pagina, un pulsante o una grafica, o di scrivere un testo nuovo.**
 Chi lavora al progetto sta imparando a programmare: si va **un passo alla volta**, si
 spiega cosa si sta facendo, e le domande si fanno invece di indovinare.
 
+**Isla è aperta al pubblico dal 6 novembre 2026** (proprietario). Da quel giorno i dati su
+Supabase e nel foglio Google sono **veri**: niente più righe cancellate a mano "perché
+sono prove", un ticket si annulla e basta, e una modifica sbagliata la vedono i clienti.
+
 ---
 
 ## Prima di ogni consegna
@@ -662,6 +666,48 @@ asciugamano appeso sembrava un bicchiere e una pompa di benzina sembrava una car
 scoperti solo mettendole vicino alle altre.
 
 ---
+
+## Le skill già installate: come si usano su Isla
+
+Sono basi generiche e non conoscono Isla: **questo file, `STILE.md` e `NOTES.md` vincono
+sempre**. Le righe qui sotto dicono, per ognuna, quando serve e cosa non deve fare qui
+(6 novembre 2026). Per Perf Profiler vedi la sezione dopo.
+
+- **nuova-scheda** (del progetto, `.claude/skills/`): **la** skill per ogni dato di un
+  fornitore, anche un prezzo o un orario. Ha già dentro le regole del catalogo.
+- **impeccable** (aspetto e testi delle pagine): prima legge `STILE.md`. Colori solo dalle
+  variabili di `:root`, nessun font nuovo, niente framework né Tailwind. Si prova a 320 px
+  e nelle cinque lingue. Niente urgenza finta, niente "best price", niente stelle. Non
+  ripropone le cose di "Cose decise".
+- **superpowers** (brainstorming, piani, prove prima del codice, debugging, verifica):
+  il brainstorming fa **una domanda alla volta**, e va bene così. I piani e gli appunti di
+  lavoro stanno nella scratchpad, non nel repository (è pubblico). La "verifica" è quella
+  di "Prima di ogni consegna", compreso `CACHE_NAME`; una prova nuova del codice va in
+  `strumenti/prove.js`.
+- **ponytail** (la modifica più piccola): piccola sì, incompleta no. Non salta mai
+  `CACHE_NAME`, le cinque lingue, `NOTES.md` e i controlli.
+- **code-review**, **security-review**, **ponytail-review**, **ponytail-audit**: prima di
+  una PR delicata (soldi, 24 ore, Supabase, service worker). Su Isla si guarda prima di
+  tutto che niente di segreto (netti, percentuali, codici sconto, chiavi, parole segrete)
+  finisca in un file, e le regole di accesso di Supabase.
+- **graphify** (la mappa del progetto): la cartella `graphify-out/` non si committa.
+- **diagram-design**, **anatomy**, **dataviz** (schemi, disegni, grafici): per
+  `materiali/` (README, PDF, social), coi colori e i caratteri di `STILE.md`. Il sito non
+  li carica.
+- **last30days** (cosa dice la gente su Reddit, TikTok, YouTube…): per il piano dei social
+  e per scoprire escursioni nuove. Quello che trova si usa come idea: testi, recensioni e
+  punteggi degli altri **non si copiano**.
+- **browser-use** (il Chrome vero del proprietario, con i suoi accessi): solo per
+  guardare. Su Supabase, Redsys, Cloudflare, GitHub e Google non si cambia niente senza
+  chiedere. Per le pagine di Isla basta il browser integrato.
+- **triage**, **setup-matt-pocock-skills**, **improve-codebase-architecture**: le issue su
+  GitHub (vedi "Agent skills" in fondo). Le proposte di architettura che chiedono un
+  framework o una build sono fuori.
+- **find-skills**: prima di proporre una skill nuova, guarda questa sezione e quella dopo.
+- **git-guardrails-claude-code**: **non si installa** senza chiedere. Blocca anche il
+  push, e il lavoro di Isla finisce sempre con push e squash-merge.
+- **docs, pdf, xlsx, pptx, docx** (di Anthropic): per i documenti di `materiali/documenti/`.
+  Un file con netti, percentuali o dati dei clienti non va nel repository.
 
 ## Skill da proporre al momento giusto
 

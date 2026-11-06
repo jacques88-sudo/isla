@@ -18,8 +18,8 @@ spiega cosa si sta facendo, e le domande si fanno invece di indovinare.
 ## Prima di ogni consegna
 
 ```bash
-node controlla.js        # controlla il catalogo, esce 1 se trova un errore
-node prove.js            # prova totali, sconto, 24 ore, offline, trasloco; esce 1 se una non passa
+node strumenti/controlla.js   # controlla il catalogo, esce 1 se trova un errore
+node strumenti/prove.js       # prova totali, sconto, 24 ore, offline, trasloco; esce 1 se una non passa
 node --check <file>.js   # solo sintassi, non prende gli errori a runtime
 ```
 
@@ -135,11 +135,12 @@ porto e capienza con le schede della stessa categoria.
 | `tour.js` | pagina di dettaglio, e le icone `INCLUDED_ICONS` |
 | `lista.js` | la lista delle richieste (localStorage), costruita in JS perché serve a tre pagine |
 | `i18n.js` | tutti i testi fissi nelle cinque lingue, e `perUfficio()` per il messaggio WhatsApp |
-| `controlla.js` | il controllo del catalogo |
-| `prove.js` | le prove del codice che costa caro se si rompe (totali, sconto, 24 ore, offline, trasloco). Le lancia anche GitHub a ogni PR, con `controlla.js` (`.github/workflows/controlla.yml`); il sito non lo carica |
+| `strumenti/` | gli strumenti che il sito **non carica**: i sei qui sotto. Si lanciano dalla cartella principale (`node strumenti/controlla.js`) |
+| `strumenti/controlla.js` | il controllo del catalogo |
+| `strumenti/prove.js` | le prove del codice che costa caro se si rompe (totali, sconto, 24 ore, offline, trasloco). Le lancia anche GitHub a ogni PR, con `controlla.js` (`.github/workflows/controlla.yml`); il sito non lo carica |
 | `supabase/ORDINE.md` | in che ordine si lanciano i file SQL per rifare il database. **Un file nuovo in `supabase/modifiche/` va aggiunto lì** |
-| `foto-piccole.py` | fa le copie piccole delle foto in `assets/piccole/` (720 px), che usano elenco, home, miniature e "altre esperienze" (`fotoPiccola()` in `escursioni.js`). **Si lancia dopo ogni foto nuova** in `assets/`: senza copia la foto in elenco esce rotta, e `controlla.js` dà errore; il sito non lo carica |
-| `orari-mancanti.js` | la lista delle schede senza orari di partenza; il sito non lo carica |
+| `strumenti/foto-piccole.py` (`python3 strumenti/foto-piccole.py`) | fa le copie piccole delle foto in `assets/piccole/` (720 px), che usano elenco, home, miniature e "altre esperienze" (`fotoPiccola()` in `escursioni.js`). **Si lancia dopo ogni foto nuova** in `assets/`: senza copia la foto in elenco esce rotta, e `controlla.js` dà errore; il sito non lo carica |
+| `strumenti/orari-mancanti.js` | la lista delle schede senza orari di partenza; il sito non lo carica |
 | `foglio-google/` | il programma (Apps Script) del foglio Google dei netti, e come si installa; il sito non lo carica |
 | `venditori.js` | **Isla Ticket**, la pagina dei venditori: ticket di carta nel database (Supabase), richieste, statistiche. **La pagina sta in un altro repository, `isla-ticket`** (`jacques88-sudo.github.io/isla-ticket/`: pagina, manifest, icone, service worker, riquadro "Installa") e carica questo file, gli stili e il catalogo da `../isla/`. Su Android un'app non può stare dentro l'indirizzo di Isla. `venditori.html` e `ticket/` sono solo rimandi; Isla non ha il link "Area venditori". **Il modulo HTML sta là**: un campo nuovo nel modulo va messo in tutti e due i repository. Dove le regole dicono "`venditori.html`" si intende questa pagina |
 | `supabase-config.js` | URL e chiave **pubblica** di Supabase; lo schema e le regole stanno in `supabase/` |
@@ -153,10 +154,10 @@ porto e capienza con le schede della stessa categoria.
 | `portare.js` | "Cosa portare" sulle escursioni confermate, gruppo per gruppo (dalla pagina Notion "cose da portare"); lo carica solo `booking.html` |
 | `recensioni.js` | le recensioni: il riquadro "Com'è andata la vacanza con noi?" in cima a "Le mie prenotazioni" (`booking.html`) e la sezione "Dicono di noi" della home (`index.html`). Database e regole in `supabase/modifiche/2026-10-20-recensioni.sql` |
 | `trasloco.js` | il passaggio da `jacques88-sudo.github.io/isla/` a `islaexcursionstenerife.com`: porta il cliente al nuovo coi suoi dati di localStorage; va caricato **prima** di tutti gli altri script, in ogni pagina. Con `trasloco.txt` (dice `isla`), che dice al vecchio indirizzo che il nuovo è acceso |
-| `sitemap.js` | rifà `sitemap.xml` (la mappa del sito per Google) dal catalogo e dai pacchetti: `node sitemap.js` dopo ogni scheda o pacchetto nuovo; il sito non lo carica |
+| `strumenti/sitemap.js` | rifà `sitemap.xml` (la mappa del sito per Google) dal catalogo e dai pacchetti: `node strumenti/sitemap.js` dopo ogni scheda o pacchetto nuovo; il sito non lo carica |
 | Cloudflare Web Analytics | conta le visite, senza cookie: lo script sta prima di `</body>` in ogni pagina vera (non `offline.html` né i rimandi). **Una pagina nuova lo deve avere.** Installazione a mano, non "Automatic": con la nuvola grigia l'automatica non conta niente. I numeri su Cloudflare → Web analytics |
 | `link.js` | la pagina dei link dei social (`link.html`, `islaexcursionstenerife.com/link`, il "link in bio"): il pulsante **"Dal nostro ultimo video"** in cima. **A ogni video nuovo si cambia solo `ULTIMO_VIDEO`** (l'id della scheda, o `"pacchetto:<id>"` per un pacchetto), poi `CACHE_NAME` |
-| `indirizzi-corti.js` | gli indirizzi corti delle escursioni e dei pacchetti (`islaexcursionstenerife.com/catamarano`, `/coppia`): l'elenco sta in `INDIRIZZI_CORTI` (un pacchetto si scrive `"pacchetto:<id>"`), e `node indirizzi-corti.js` scrive una cartella per ognuno, con la foto per l'anteprima di WhatsApp e Facebook. Le cartelle non si correggono a mano; il sito non carica lo script |
+| `strumenti/indirizzi-corti.js` | gli indirizzi corti delle escursioni e dei pacchetti (`islaexcursionstenerife.com/catamarano`, `/coppia`): l'elenco sta in `INDIRIZZI_CORTI` (un pacchetto si scrive `"pacchetto:<id>"`), e `node strumenti/indirizzi-corti.js` scrive una cartella per ognuno, con la foto per l'anteprima di WhatsApp e Facebook. Le cartelle non si correggono a mano; il sito non carica lo script |
 | `social/` | i modelli delle grafiche dei social (carosello 4:5, verticali e storie 9:16, video di 12 secondi) e le loro regole in `social/LEGGIMI.md`: `node social/fai-grafiche.js <cartella>` le rifà. Il piano dei contenuti sta su Notion ("Piano social Isla — 12 settimane"); il sito non carica niente di qui |
 | `richieste.js` | le richieste della lista salvate anche su Supabase (`pending`), con la **chiave** che resta nel telefono del cliente e il **codice** che va nel messaggio; l'ufficio le conferma o annulla da `venditori.html` |
 
@@ -306,7 +307,7 @@ Le due pagine hanno al suo posto `<div data-finestra-richiesta>`.
   `robots.txt`; `noindex` su `booking.html` e `offline.html`; schema.org `TravelAgency`
   in `index.html` e `TouristTrip` sulle schede (`descriviPerGoogle()` in `tour.js`, che
   scrive anche la descrizione). **Dopo una scheda o un pacchetto nuovo: `node
-  sitemap.js`** (`controlla.js` dà errore se è rimasta indietro). **Niente stelle di
+  strumenti/sitemap.js`** (`controlla.js` dà errore se è rimasta indietro). **Niente stelle di
   "Dicono di noi" per Google**: Google non mostra le stelle delle recensioni che
   un'azienda pubblica su se stessa, e marcarle si rischia la penalità. Niente `og:url`:
   scritto fisso, tutte le schede condivise avrebbero l'anteprima della stessa pagina.
@@ -619,7 +620,7 @@ Il proprietario manda gli orari **una scheda alla volta**, quando li ha. Per sap
 mancano, adesso:
 
 ```bash
-node orari-mancanti.js
+node strumenti/orari-mancanti.js
 ```
 
 Rifà la lista dal catalogo a ogni lancio (non scriverla a mano: invecchia). Quando

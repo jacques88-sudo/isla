@@ -21899,3 +21899,27 @@ tutte scelte dal proprietario:
 
 Provato a 390 px chiaro e scuro, e a 320 px in tedesco e francese: niente esce dallo
 schermo. `CACHE_NAME` → `isla-v674`.
+
+## Ordine fra i file, passo 1: la cartella `strumenti/` (6 novembre 2026)
+
+Il proprietario ha chiesto di mettere ordine fra i file. Si fa a passi, e si spostano
+**solo i file che il sito non carica**:
+
+1. **fatto** — `strumenti/`: `controlla.js`, `prove.js`, `sitemap.js`, `orari-mancanti.js`,
+   `indirizzi-corti.js`, `foto-piccole.py`. Si lanciano dalla cartella principale:
+   `node strumenti/controlla.js`. Ognuno ha in testa `RADICE` (la cartella sopra) e legge e
+   scrive da lì: `sitemap.xml`, gli indirizzi corti e `assets/piccole/` restano dove erano.
+   Cambiati anche il controllo di GitHub (`.github/workflows/controlla.yml`), il controllo
+   all'apertura della sessione (`.claude/settings.json`), CLAUDE.md, README e la skill
+   `nuova-scheda`. `indirizzi-corti.js` tiene `strumenti`, `materiali` e `ufficio` fra i
+   nomi riservati. Nelle note più vecchie qui sopra i comandi sono ancora scritti senza
+   `strumenti/`: sono storia, non si correggono;
+2. da fare — `materiali/`: `stampa/`, `social/`, `documenti/`;
+3. da fare — `ufficio/`: `foglio-google/`, `dati-fornitore/`.
+
+**Restano nella cartella principale, e non si spostano**: le pagine `.html` (il percorso è
+l'indirizzo: Google, il QR stampato e i link condivisi), gli indirizzi corti (`catamarano/`,
+`coppia/`), gli script e gli stili del sito (Isla Ticket li carica da `../isla/` e `sw.js`
+li elenca uno per uno: spostarli vorrebbe dire cambiare due repository insieme), e `sw.js`,
+`manifest.json`, `CNAME`, `robots.txt`, `sitemap.xml`, `trasloco.txt`. `halloween.css` e
+`halloween.js` restano: si riaccendono da soli il prossimo ottobre (proprietario).

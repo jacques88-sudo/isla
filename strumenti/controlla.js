@@ -1,6 +1,6 @@
 // Controllo del catalogo. Si lancia con:
 //
-//     node controlla.js
+//     node strumenti/controlla.js
 //
 // Non serve niente di installato: legge i file del progetto e basta. Esce con
 // codice 1 se trova un errore, cosi' puo' essere messo in un hook o in una CI.
@@ -19,7 +19,8 @@ const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
 
-const RADICE = __dirname;
+// Lo script sta in strumenti/: il sito è nella cartella sopra.
+const RADICE = path.join(__dirname, "..");
 const leggi = f => fs.readFileSync(path.join(RADICE, f), "utf8");
 
 // ─── Caricamento ───────────────────────────────────────────────────────────
@@ -397,7 +398,7 @@ function controllaFotoPiccole() {
     .filter(nome => /\.(webp|jpe?g)$/i.test(nome) && nome !== "anteprima.jpg")
     .filter(nome => !piccole.has(nome))
     .forEach(nome => errore("assets/" + nome,
-      "manca la copia piccola in assets/piccole/: lancia python3 foto-piccole.py"));
+      "manca la copia piccola in assets/piccole/: lancia python3 strumenti/foto-piccole.py"));
 }
 
 // ─── 7. I testi tradotti devono avere tutte e cinque le lingue ────────────────
@@ -995,7 +996,7 @@ function controllaSitemap() {
   try { scritta = leggi("sitemap.xml"); } catch (e) { /* manca: sotto lo dice */ }
   // Su Windows git scrive i file con gli a capo \r\n: non e' una differenza vera.
   if (scritta.replace(/\r\n/g, "\n") !== sitemapTesto())
-    errore("sitemap.xml", "non corrisponde al catalogo: lancia `node sitemap.js`.");
+    errore("sitemap.xml", "non corrisponde al catalogo: lancia `node strumenti/sitemap.js`.");
 }
 
 // ─── Esecuzione ────────────────────────────────────────────────────────────

@@ -2,7 +2,7 @@
 //
 // Si rifanno con
 //
-//     node indirizzi-corti.js
+//     node strumenti/indirizzi-corti.js
 //
 // dopo aver aggiunto o cambiato una riga qui sotto. Il sito non carica questo file.
 //
@@ -24,6 +24,9 @@ const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 
+// Lo script sta in strumenti/: il sito è nella cartella sopra.
+const RADICE = path.join(__dirname, "..");
+
 // nome corto → id della scheda (quello di tour.html?id=…), oppure "pacchetto:"
 // e l'id del pacchetto (quello di pacchetto.html?id=…), come ULTIMO_VIDEO in link.js
 const INDIRIZZI_CORTI = {
@@ -37,14 +40,15 @@ const INDIRIZZI_CORTI = {
 const SITO = "https://islaexcursionstenerife.com";
 // Le cartelle che il sito ha gia': un nome corto uguale le coprirebbe.
 const RISERVATI = ["assets", "dati-fornitore", "documenti", "foglio-google", "stampa",
+  "strumenti", "materiali", "ufficio",
   "supabase", "ticket", "vendor", "node_modules"];
 const SEGNO = "<!-- indirizzo corto: lo scrive indirizzi-corti.js -->";
 
 function catalogo() {
   const ctx = { t: k => k, tf: c => (typeof c === "string" ? c : (c && c.it) || ""), eur: String };
   vm.createContext(ctx);
-  vm.runInContext(fs.readFileSync(path.join(__dirname, "esplora-catalog.js"), "utf8") + ";this.C = ESPLORA_CATALOG;", ctx);
-  vm.runInContext(fs.readFileSync(path.join(__dirname, "pacchetti.js"), "utf8") + ";this.P = PACCHETTI;", ctx);
+  vm.runInContext(fs.readFileSync(path.join(RADICE, "esplora-catalog.js"), "utf8") + ";this.C = ESPLORA_CATALOG;", ctx);
+  vm.runInContext(fs.readFileSync(path.join(RADICE, "pacchetti.js"), "utf8") + ";this.P = PACCHETTI;", ctx);
   return { schede: ctx.C, pacchetti: ctx.P, tf: ctx.tf };
 }
 
@@ -117,18 +121,18 @@ function main() {
 
   // Toglie le cartelle degli indirizzi corti che non ci sono piu' nell'elenco:
   // solo quelle col segno di questo script, mai un'altra cartella.
-  for (const nome of fs.readdirSync(__dirname)) {
-    const file = path.join(__dirname, nome, "index.html");
+  for (const nome of fs.readdirSync(RADICE)) {
+    const file = path.join(RADICE, nome, "index.html");
     if (INDIRIZZI_CORTI[nome] || !fs.existsSync(file)) continue;
     if (fs.readFileSync(file, "utf8").includes(SEGNO)) {
-      fs.rmSync(path.join(__dirname, nome), { recursive: true });
+      fs.rmSync(path.join(RADICE, nome), { recursive: true });
       console.log("tolto  /" + nome);
     }
   }
 
   for (const [corto, id] of Object.entries(INDIRIZZI_CORTI)) {
     const dove = destinazione(id, dati);
-    const cartella = path.join(__dirname, corto);
+    const cartella = path.join(RADICE, corto);
     const file = path.join(cartella, "index.html");
     if (fs.existsSync(file) && !fs.readFileSync(file, "utf8").includes(SEGNO)) {
       console.error(`ERRORE: /${corto}/index.html esiste gia' e non e' un indirizzo corto`);

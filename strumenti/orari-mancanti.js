@@ -1,6 +1,6 @@
 // Quali schede non hanno ancora gli orari di partenza veri.
 //
-//   node orari-mancanti.js
+//   node strumenti/orari-mancanti.js
 //
 // Non e' un controllo (non esce mai con errore) e il sito non lo carica: e' la
 // lista di lavoro per il proprietario, che gli orari li manda una scheda alla
@@ -22,10 +22,13 @@
 const fs = require("fs");
 const vm = require("vm");
 
+// Lo script sta in strumenti/: il sito è nella cartella sopra.
+const RADICE = __dirname + "/..";
+
 const ctx = {};
 vm.createContext(ctx);
-vm.runInContext(fs.readFileSync(__dirname + "/esplora-catalog.js", "utf8") + ";this.C = ESPLORA_CATALOG;", ctx);
-vm.runInContext(fs.readFileSync(__dirname + "/hotel.js", "utf8") + ";this.P = PICKUP_TIMES;", ctx);
+vm.runInContext(fs.readFileSync(RADICE + "/esplora-catalog.js", "utf8") + ";this.C = ESPLORA_CATALOG;", ctx);
+vm.runInContext(fs.readFileSync(RADICE + "/hotel.js", "utf8") + ";this.P = PICKUP_TIMES;", ctx);
 
 const it = x => typeof x === "string" ? x : (x && x.it) || "";
 const stato = (t, c) => {

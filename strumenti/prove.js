@@ -1,7 +1,7 @@
 // Le prove dei calcoli che costano cari se si rompono: totali, sconto, 24 ore,
 // pagine offline, dati del trasloco. Si lancia con:
 //
-//     node prove.js
+//     node strumenti/prove.js
 //
 // Non serve niente di installato. Esce con codice 1 se una prova non passa.
 // controlla.js guarda i dati del catalogo; qui si guarda il codice che li usa.
@@ -12,7 +12,9 @@ const path = require("path");
 const vm = require("vm");
 const assert = require("assert");
 
-const leggi = f => fs.readFileSync(path.join(__dirname, f), "utf8");
+// Lo script sta in strumenti/: il sito è nella cartella sopra.
+const RADICE = path.join(__dirname, "..");
+const leggi = f => fs.readFileSync(path.join(RADICE, f), "utf8");
 
 // I file sono scritti per il browser: quello che chiedono al browser mentre si
 // caricano si finge qui, e t(), tf() ed eur() come in controlla.js.

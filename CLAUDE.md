@@ -670,6 +670,26 @@ Isla: **le regole di questo file e di `NOTES.md` vincono sempre.** Si installano
 Claude Code con `/plugin marketplace add erichowens/some_claude_skills` (una volta sola)
 e poi il `/plugin install` scritto sotto.
 
+### Velocità del sito: "Perf Profiler" (installata) e la chiave di PageSpeed
+
+**Installata** il 6 novembre 2026: `perf-profiler-lighthouse-and-core-web-vitals@anthropic-plugin-directory`
+(comando `perf-audit` per misurare, `perf-compare` per il prima e dopo). Si misura con
+**Lighthouse dal computer** (`npx -y lighthouse@12 <indirizzo> --output=json
+--only-categories=performance`, profilo telefono e 4G lento), sul sito pubblicato o su
+quello locale, e il JSON lo legge lo script della skill. Le parti su React e Vue non
+valgono qui.
+
+**Promemoria: la chiave gratuita di PageSpeed Insights** (proprietario, 6 novembre 2026).
+Senza chiave Google rifiuta quasi sempre ("quota exceeded"), e oggi la chiave non serve:
+l'unica cosa in più che dà sono i **dati dei visitatori veri** (Chrome UX Report), che
+Google mostra solo quando un sito ha abbastanza visite da Chrome, e il dominio è nuovo
+(21 ottobre 2026). **Ogni volta che si misura la velocità**, apri
+`https://pagespeed.web.dev/` sulla home: se la parte "Scopri cosa stanno vivendo i tuoi
+utenti reali" ha i numeri (non "Nessun dato"), è il momento di proporre al proprietario
+la chiave. Lui la crea su Google Cloud (PageSpeed Insights API), la salva in un file
+**fuori dal repository** e dice dove sta; la chiave non va mai in chat né in un file di
+Isla. Poi lo script della skill la usa con `--psi … --key-file <file>`.
+
 ### Notifiche e offline avanzato: "Pwa Expert"
 
 Prima di lavorare alle **notifiche push** (`manda-notifiche`, service worker) o a un

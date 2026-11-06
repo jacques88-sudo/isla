@@ -709,6 +709,36 @@ sempre**. Le righe qui sotto dicono, per ognuna, quando serve e cosa non deve fa
 - **docs, pdf, xlsx, pptx, docx** (di Anthropic): per i documenti di `materiali/documenti/`.
   Un file con netti, percentuali o dati dei clienti non va nel repository.
 
+Installati il 6 novembre 2026, il giorno dell'apertura (plugin di claude.ai):
+
+- **Marketing** (di Anthropic: contenuti, campagne, tono del marchio, concorrenza, email,
+  controllo SEO). Il tono è quello di `STILE.md` ("Come parla"): tu, frasi corte, niente
+  urgenza finta, niente "best price", niente stelle o punteggi. **Mai il nome della barca o
+  della compagnia**, nemmeno nei post. Ogni testo per il cliente si riscrive nelle cinque
+  lingue. Le grafiche dei social si fanno coi modelli di `materiali/social/` (le regole sono
+  in `LEGGIMI.md`), e il piano dei contenuti sta su Notion ("Piano social Isla — 12
+  settimane"). Dei concorrenti si studia cosa fanno, non si copiano testi, prezzi barrati né
+  recensioni. **Le email ai clienti sono spente** (`PROMOZIONI_ATTIVE` in `lista.js`) e
+  vanno solo a chi ha spuntato la casella: una campagna email si propone, non si prepara da
+  sola. Niente Google Business Profile per Isla.
+- **SEO Audit** (Google e Search Console). Search Console è già attiva (verificata e
+  `sitemap.xml` inviata, 21 ottobre 2026); i suoi dati dicono qualcosa solo dopo qualche
+  settimana di visite vere, quindi le prime misure da guardare sono da dicembre 2026. Le
+  scelte SEO già fatte ("Il SEO" nel punto sul dominio, in "Cose decise") restano: lingua nell'indirizzo
+  (`?lang=`), `canonical` da `indirizzoUfficiale()`, `hreflang` nella sitemap, `noindex`
+  su `booking.html` e `offline.html`, **niente stelle delle recensioni** e niente `og:url`.
+  La sitemap si rifà con `node strumenti/sitemap.js`, mai a mano. Il sito sta su GitHub
+  Pages: intestazioni del server e rimandi lato server non si cambiano, e niente proposte
+  che chiedono una build.
+- **supabase** (l'ufficiale, collegato al database **vero**: dal 6 novembre 2026 ci sono i
+  clienti). **Solo per leggere**: niente `insert`, `update`, `delete` né modifiche alle
+  tabelle dal plugin. Una modifica al database si fa come sempre: file nuovo in
+  `supabase/modifiche/`, riga in `supabase/ORDINE.md`, e il proprietario lo lancia nel SQL
+  Editor; un SQL coi netti sta solo nella scratchpad. `nets`, `commission_rates` e
+  `codici_sconto` si leggono solo se il lavoro lo chiede. Nomi, telefoni, email e hotel dei
+  clienti non si scrivono in chat né in un file: si contano e si guardano le colonne che
+  servono, come nella pulizia dell'apertura in `NOTES.md`.
+
 ## Skill da proporre al momento giusto
 
 Skill che il proprietario ha valutato. **Perf Profiler è installata**; Pwa Expert e
@@ -751,6 +781,9 @@ Due limiti noti: gli esempi sono in React (qui niente framework) ed è debole
 su iPhone, dove `beforeinstallprompt` e Background Sync non esistono.
 
 ### Database grande o clienti con account: "Supabase Admin"
+
+(Non è il plugin **supabase** ufficiale, installato il 6 novembre 2026: vedi "Le skill già
+installate".)
 
 Proponila **solo** in uno di questi due casi (16 ottobre 2026, proprietario):
 - anche i **clienti** avranno un vero account con login (oggi ce l'hanno solo i venditori);

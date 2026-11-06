@@ -21988,3 +21988,34 @@ Bene sotto 2,5 s per LCP. Cosa pesa, dal rapporto:
 - **La cache del server** (GitHub Pages, 10 minuti) non si cambia: con la nuvola grigia
   le intestazioni sono di GitHub. Conta poco: dalla seconda visita c'è il service worker.
 - CLS e risposta del server vanno già bene.
+
+## I font dentro il sito (6 novembre 2026)
+
+Primo passo dopo la misura: Jost, Cormorant Garamond e Caveat non arrivano più da Google
+Fonts ma da `fonts/` (tre file `.woff2`, ~140 KB in tutto, presi dagli stessi indirizzi
+che usava Google). Sono **font variabili**: un file per famiglia copre tutti i pesi
+usati (300–600). Solo l'alfabeto latino, che copre italiano, inglese, spagnolo, francese
+e tedesco ed euro compreso; una lettera rara (ő, ł) la scrive il font di riserva.
+- `@font-face` in cima a `styles.css`, con `font-display: swap` come prima;
+- nelle 11 pagine, al posto dei tre `<link>` di Google, due `preload` (Jost e Cormorant,
+  quelli che servono subito; Caveat lo usa solo la lista e arriva quando serve);
+- i tre file in `ASSETS` di `sw.js`: prima i font di Google non stavano nella cache, e
+  senza rete le pagine uscivano coi font di riserva;
+- **una pagina nuova** mette i due `preload`, non il link di Google.
+`materiali/` (social, stampa) tiene Google Fonts: lì non conta la velocità.
+Un fornitore in meno che vede gli indirizzi dei visitatori. Isla Ticket legge
+`../isla/styles.css` e trova i font lo stesso (GitHub manda `Access-Control-Allow-Origin: *`).
+
+Misurato con Lighthouse in locale (`npx serve`), 3 giri per pagina, mediana:
+
+| pagina | FCP prima → dopo | LCP prima → dopo |
+|---|---|---|
+| home | 3,09 → 1,66 s | 7,34 → 8,15 s |
+| elenco | 2,98 → 1,94 s | 5,38 → 5,17 s |
+| scheda | 3,75 → 2,06 s | 4,98 → 5,04 s |
+
+Il **primo disegno** arriva 1,1–1,7 s prima, in ogni giro. L'**LCP** non cambia: lo
+decidono gli script (catalogo) e, nella home, il video. Il punteggio e il TBT della home
+ballano molto da un giro all'altro (TBT 231–1524 ms nello stesso stato), quindi non dicono
+niente. **Il video della home resta com'è** (proprietario, 6 novembre 2026: "il cliente
+non lo farà mai partire").

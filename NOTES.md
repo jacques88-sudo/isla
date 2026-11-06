@@ -22152,3 +22152,17 @@ confondevano chi cerca:
 - Playwright 1.63.0 (la stessa versione di GitHub) e il suo Chromium installati sul
   computer del proprietario: `strumenti/prova-browser.js` gira anche lì, prima della PR;
 - in CLAUDE.md la frase sulle skill "non installate" ora dice che Perf Profiler lo è.
+
+## `halloween.css` non fa più aspettare la home (6 novembre 2026)
+
+Il foglio del tema di Halloween serve solo dal 24 al 31 ottobre, ma la home lo aspettava
+tutto l'anno prima di disegnarsi (Lighthouse: ~180 ms). Ora il suo `<link>` in
+`index.html` ha `media="print" onload="this.media='all'"`: si scarica senza bloccare e
+poi vale per lo schermo. File e righe restano dove stavano. Provato: fuori stagione la
+home è uguale; con `?halloween=1` colori e pipistrelli ci sono. Nei giorni di Halloween i
+colori possono arrivare una frazione di secondo dopo il resto.
+Lighthouse in locale, 3 giri: `halloween.css` non è più fra i file che bloccano; primo
+disegno della home 0,97 / 0,97 / 1,63 s (coi soli font: 1,64 / 1,66 / 1,71). L'LCP non
+cambia (è il video). Altre idee sulla velocità valutate e lasciate: foto già compresse
+(guadagno 10–25% solo peggiorando la qualità), `styles.css` diviso per pagina, catalogo
+diviso per lingua.

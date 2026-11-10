@@ -2016,6 +2016,8 @@ function initPacchettoRichiesta() {
     scrim.classList.remove("is-visible");
     document.body.classList.remove("menu-open");
     setTimeout(() => {
+      // riaperta prima che finisse di chiudersi: resta aperta
+      if (dialog.classList.contains("is-open")) return;
       dialog.hidden = true;
       scrim.hidden = true;
     }, 300);

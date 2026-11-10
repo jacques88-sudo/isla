@@ -364,6 +364,8 @@ function initAssistente() {
     fab.setAttribute("aria-expanded", "false");
     document.body.classList.remove("menu-open");
     setTimeout(() => {
+      // riaperta prima che finisse di chiudersi: resta aperta
+      if (panel.classList.contains("is-open")) return;
       panel.hidden = true;
       scrim.hidden = true;
     }, 300);

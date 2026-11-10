@@ -190,6 +190,10 @@ function initTicketDialog() {
     scrim.classList.remove("is-visible");
     document.body.classList.remove("menu-open");
     setTimeout(() => {
+      // Riaperta prima che finisse di chiudersi: resta aperta. Senza, spariva
+      // sotto il dito e la pagina dietro restava bloccata (10 novembre 2026;
+      // lo stesso nelle altre finestre: menu, richiesta, pacchetto, chat).
+      if (dialog.classList.contains("is-open")) return;
       dialog.hidden = true;
       scrim.hidden = true;
     }, 300);
@@ -359,7 +363,10 @@ function apriIstruzioniIos() {
       dialog.classList.remove("is-open");
       scrim.classList.remove("is-visible");
       document.body.classList.remove("menu-open");
-      setTimeout(() => { dialog.hidden = true; scrim.hidden = true; }, 300);
+      setTimeout(() => {
+        if (dialog.classList.contains("is-open")) return;
+        dialog.hidden = true; scrim.hidden = true;
+      }, 300);
     };
     dialog._chiudi = chiudi;
     scrim.addEventListener("click", chiudi);
@@ -507,6 +514,7 @@ function initMoreMenu() {
     if (tieniBloccata !== true) document.body.classList.remove("menu-open");
     openBtns.forEach(btn => btn.setAttribute("aria-expanded", "false"));
     setTimeout(() => {
+      if (panel.classList.contains("is-open")) return;
       panel.hidden = true;
       scrim.hidden = true;
     }, 300);

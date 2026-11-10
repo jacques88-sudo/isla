@@ -22361,7 +22361,8 @@ per cercare un altro ticket. Per il carrello la pagina carica anche `hotel.js`,
 `escursioni.js`, `preferiti.js`, `pacchetti.js` e `lista.js`; **`booking.js` resta per
 ultimo**, perché il suo `esc()` regge i campi vuoti del database e deve vincere su quello
 di `escursioni.js` (è l'unico nome doppio fra i due file: controllato). Niente pallino
-della chat qui: `assistente.js` non è caricato. Le classi `.top`, `.nav`, `.brand`,
+della chat qui: `assistente.js` non è caricato. **Per scelta del proprietario** (10 novembre
+2026, chiesto dopo: "non lo mettiamo"), scritta in `CLAUDE.md`. Le classi `.top`, `.nav`, `.brand`,
 `.page-header` restano in `styles.css` senza una pagina che le usi.
 
 **2. Nelle pagine interne la fascia con la foto è più bassa.** Sotto i 960 px, in

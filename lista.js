@@ -507,6 +507,11 @@ function initLista() {
   function apri() {
     // la chiusura di prima puo' essere rimasta ferma mentre si era su WhatsApp
     clearTimeout(chiusura);
+    // "Aggiunta alla lista, ma non ancora inviata" resta 2,6 secondi: chi apre
+    // subito la lista se lo trovava sopra il campo del nome (10 novembre 2026).
+    // Qui non serve piu': la lista e' davanti agli occhi.
+    const avviso = document.querySelector("[data-lista-toast]");
+    if (avviso) avviso.classList.remove("is-visible");
     vuotaDaSubito = listaLeggi().length === 0;
     disegna();
     // Il codice del QR (codiceDallIndirizzo) si mette nel campo e si controlla

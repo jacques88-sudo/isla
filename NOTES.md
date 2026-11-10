@@ -98,7 +98,8 @@ parchi, spettacoli serali, Monkey Park, il campo `menus`).
   sezioni del 9–10 ottobre) · La pagina del noleggio · La pagina dei link per i social ·
   Il biglietto da visita · Il tema di Halloween della home · Il video nuovo della home ·
   il logo e "Aggiungi alla lista" (12 ottobre 2026) · La home messa in riga con
-  `STILE.md` · Tutta Isla messa in riga con `STILE.md`
+  `STILE.md` · Tutta Isla messa in riga con `STILE.md` · Il giro sull'aspetto: quattro ritocchi
+  (10 novembre 2026)
 - **Lingue**: Le tre lingue · Il francese, quarta lingua · Il tedesco, quinta lingua ·
   "Tenerife Sud" uniformato nelle tre lingue
 - **Regole verso il cliente**: La politica di cancellazione · I termini di vendita · La
@@ -22301,3 +22302,41 @@ pacchetti (`pacchettoConto`, `pacchettoTotale`, mezzi). Due cose piccole, lascia
 
 **Resta al proprietario**: la "Leaked password protection" su Supabase (Authentication),
 spiegata in chat; forse solo dal piano Pro.
+
+## Il giro sull'aspetto: quattro ritocchi (10 novembre 2026)
+
+Il proprietario ha chiesto se c'era altro da fare "a livello grafico" o passaggi poco
+fluidi. Fotografato il percorso di un cliente (home, elenco, scheda, richiesta,
+calendario, lista, pacchetti, prenotazioni, mappa, noleggio) a 390 px in italiano e a
+320 px in tedesco: niente esce di lato, nessun testo tagliato. Quattro cose corrette,
+`isla-v680`.
+
+**1. L'avviso "Aggiunta alla lista" restava sopra la lista.** Dura 2,6 secondi e sta
+sopra le finestre: chi toccava subito "Manda la richiesta" se lo trovava sopra il campo
+del nome. Ora `apri()` della lista (`lista.js`) lo spegne.
+
+**2. In "Le mie prenotazioni" logo e freccia erano attaccati al bordo.** `.nav` e
+`.page-header` avevano `padding: … 0` e stanno sullo stesso elemento di `.wrap`: la
+regola scritta dopo azzerava il margine ai lati. Ora dicono solo sopra e sotto
+(`padding-top`, `padding-bottom`). Le usa solo `booking.html`. **Una classe messa
+insieme a `.wrap` non deve scrivere `padding` intero.**
+
+**3. Il telefono del ticket non si leggeva sugli schermi stretti.** A 320 px il campo
+era largo 78 px, con posto per quattro cifre. Meno margine dentro il campo, e sotto i
+420 px il modulo di "Le mie prenotazioni" prende anche il margine di `.state`: ora 110 px
+a 320 e 180 a 390. La finestra del ticket in home aveva già spazio.
+
+**4. Nel piè di pagina "Cerca il tuo codice" è diventato "Le mie prenotazioni".** Apre la
+stessa finestra del biglietto in alto, che dal 3 ottobre si chiama così; di "codice" non
+si parla più da nessun'altra parte. Sette pagine, chiave `nav.myBookings`;
+`footer.findCode` tolta da `i18n.js`.
+
+**Visto e non toccato**, da decidere col proprietario:
+- "Le mie prenotazioni" è l'unica pagina senza la capsula in alto: ha la testata vecchia
+  (logo piccolo e freccia). Chi ci arriva da un avviso o dal link di WhatsApp non ha
+  Esperienze, carrello e Menu a portata di dito;
+- nelle pagine interne (Esperienze, Pacchetti, Mappa, Noleggio) la stessa foto, il logo
+  e la capsula occupano quasi tutta la prima schermata: il titolo della pagina arriva a
+  metà schermo;
+- la finestra della richiesta si intitola "Richiedi disponibilità" e il suo pulsante
+  dice "Aggiungi alla lista": due nomi per lo stesso gesto.

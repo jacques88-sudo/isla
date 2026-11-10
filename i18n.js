@@ -229,7 +229,6 @@ const I18N = {
   "ticket.hint":        { it: "Il numero è stampato in rosso sul ticket che ti abbiamo dato.", en: "The number is printed in red on the ticket we gave you.", es: "El número está impreso en rojo en el ticket que te dimos.", fr: "Le numéro est imprimé en rouge sur le ticket que nous vous avons remis.", de: "Die Nummer ist in Rot auf dem Ticket gedruckt, das wir Ihnen gegeben haben." },
 
   // ── piè di pagina ───────────────────────────────────────────────────────
-  "footer.findCode":    { it: "Cerca il tuo codice", en: "Find your code", es: "Busca tu código", fr: "Chercher votre code", de: "Ihren Code suchen" },
   "footer.operator":    { it: "Isla è un servizio di <strong>Admiral Travel Agencia de Viajes SL</strong>", en: "Isla is a service of <strong>Admiral Travel Agencia de Viajes SL</strong>", es: "Isla es un servicio de <strong>Admiral Travel Agencia de Viajes SL</strong>", fr: "Isla est un service de <strong>Admiral Travel Agencia de Viajes SL</strong>", de: "Isla ist ein Service von <strong>Admiral Travel Agencia de Viajes SL</strong>" },
   "footer.privacy":     { it: "Privacy", en: "Privacy", es: "Privacidad", fr: "Confidentialité", de: "Datenschutz" },
   "footer.terms":       { it: "Termini di vendita", en: "Terms of sale", es: "Condiciones de venta", fr: "Conditions de vente", de: "Verkaufsbedingungen" },

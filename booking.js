@@ -185,6 +185,19 @@ function esc(testo) {
 
 // ─── I ticket veri ─────────────────────────────────────────────────────────
 
+// IL CAMBIO DI LINGUA NON RICHIEDE AL DATABASE (10 novembre 2026)
+// Prima ogni bandiera toccata rifaceva tutta la pagina, ricerca compresa: e
+// ogni ricerca di un ticket conta fra le dieci l'ora per telefono
+// (supabase/modifiche/2026-10-16-tentativi-ticket.sql). Chi provava le lingue
+// poteva arrivare al limite. Ora, quando il database ha risposto (o non ha
+// risposto), quello che si e' disegnato si tiene qui come funzione: al cambio
+// di lingua si ridisegna con gli stessi dati, nella lingua nuova.
+let RIDISEGNA = null;
+function mostra(disegna) {
+  RIDISEGNA = disegna;
+  disegna();
+}
+
 // L'ultima risposta buona, salvata nel telefono: al porto senza campo il
 // cliente vede lo stesso dove presentarsi e a che ora.
 const RISULTATO_KEY = "isla-ticket-risultato";
@@ -538,8 +551,8 @@ async function cercaRichieste(codice) {
   } catch (e) { /* rete: si decide sotto */ }
 
   if (rows === null) {
-    if (codice) chiediTelefono(codice);
-    else renderRichieste(elenco, true);
+    if (codice) mostra(() => chiediTelefono(codice));
+    else mostra(() => renderRichieste(elenco, true));
     return;
   }
 
@@ -552,10 +565,10 @@ async function cercaRichieste(codice) {
   });
   richiesteScrivi(tenute);
   if (codice && !rows.some(x => String(x.ticket_number || "").trim().toUpperCase() === codice)) {
-    chiediTelefono(codice);
+    mostra(() => chiediTelefono(codice));
     return;
   }
-  renderRichieste(tenute, false);
+  mostra(() => { titoloPagina("booking.requestsH1"); renderRichieste(tenute, false); });
 }
 
 // Il ticket col numero ma senza telefono: si chiede, col numero gia' scritto.
@@ -586,24 +599,26 @@ async function cercaTicketVero(code, phone) {
 
   if (troppi) {
     // Il ticket gia' salvato su questo telefono resta com'e': e' suo.
-    if (!salvati) renderStato(ICONS.info, t("booking.tooMany"), t("booking.tooManyText"), true);
+    if (!salvati) mostra(() => renderStato(ICONS.info, t("booking.tooMany"), t("booking.tooManyText"), true));
+    else RIDISEGNA = () => renderTicketVeri(salvati, code, false);   // e' gia' in pagina
     return;
   }
   if (rows === null) {
-    if (salvati) renderTicketVeri(salvati, code, true);
-    else renderStato(ICONS.info, t("booking.offline"), t("booking.offlineText"), false);
+    if (salvati) mostra(() => renderTicketVeri(salvati, code, true));
+    else mostra(() => renderStato(ICONS.info, t("booking.offline"), t("booking.offlineText"), false));
     return;
   }
   if (!rows.length) {
     try { localStorage.removeItem(RISULTATO_KEY); } catch (e) { /* incognito */ }
-    renderNotFound(code);
+    mostra(() => renderNotFound(code));
     return;
   }
   salvaRisultato(code, phone, rows);
-  renderTicketVeri(rows, code, false);
+  mostra(() => renderTicketVeri(rows, code, false));
 }
 
 function renderBookingPage() {
+  RIDISEGNA = null;
   const salvato = ticketSalvato();
   let code = getCodeFromUrl();
 
@@ -634,4 +649,9 @@ function renderBookingPage() {
 }
 
 document.addEventListener("DOMContentLoaded", renderBookingPage);
-document.addEventListener("islalang", renderBookingPage);
+// Al cambio di lingua: gli stessi dati, ridisegnati. Se il database non ha
+// ancora risposto (o la pagina non ha chiesto niente) si rifa' tutto come prima.
+document.addEventListener("islalang", () => {
+  if (RIDISEGNA) RIDISEGNA();
+  else renderBookingPage();
+});

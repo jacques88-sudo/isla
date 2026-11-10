@@ -212,7 +212,9 @@ Le due pagine hanno al suo posto `<div data-finestra-richiesta>`.
   tema scuro (`#fff`, non una variabile). Sul sito lo fanno `.home-hero-mark` e la regola
   "IL LOGO STA SEMPRE NEL CERCHIO BIANCO" in `styles.css`: un logo nuovo in pagina va
   messo lì. Unica eccezione la schermata di caricamento col tema chiaro (`.splash-logo`);
-  col tema scuro ha fondo nero e il cerchio bianco (proprietario, 30 ottobre 2026). Le sue
+  col tema scuro ha il cerchio bianco (proprietario, 30 ottobre 2026) e **lo stesso fondo
+  scuro delle pagine**, non più nero (proprietario, 10 novembre 2026: scritto a mano,
+  `oklch(0.19 0.012 60)`, uguale a `--bg` al buio; se cambia uno cambia l'altro). Le sue
   regole stanno scritte in ognuna delle sette pagine col caricamento, non in `styles.css`.
 - **Le lingue si scelgono con le bandiere** (3 ottobre 2026, proprietario), non con
   IT/EN/ES. Sono **SVG scritti nell'HTML**, non emoji: Windows le emoji delle bandiere

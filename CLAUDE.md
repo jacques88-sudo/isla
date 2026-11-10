@@ -227,6 +227,9 @@ Le due pagine hanno al suo posto `<div data-finestra-richiesta>`.
   titoli e varianti). Un messaggio WhatsApp nuovo va scritto dentro `perUfficio()`.
   Italiano, inglese e spagnolo scrivono all'ufficio nella loro lingua.
 - **Il pallino della chat resta dov'è**, anche quando passa sopra un prezzo.
+  **In "Le mie prenotazioni" non c'è** (proprietario, 10 novembre 2026: "non lo
+  mettiamo"): lì coprirebbe i dati del ticket, e `booking.html` non carica
+  `assistente.js`. Non si ripropone.
 - **Le fasce d'orario segnaposto restano** dove le partenze vere non le sappiamo: sono
   intervalli, il cliente li legge come una preferenza.
 - **Sulle escursioni nuove non si chiedono pick-up e orari.** Prima si mettono tutte le

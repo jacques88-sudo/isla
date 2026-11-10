@@ -1,4 +1,4 @@
-const CACHE_NAME = "isla-v678";
+const CACHE_NAME = "isla-v679";
 const ASSETS = [
   "./",
   "./index.html",
@@ -109,11 +109,14 @@ self.addEventListener("fetch", event => {
       // tour.html?id=…, ?lang=de): non si possono mettere in elenco. Da offline
       // si serve la pagina in cache senza guardare il "?": quello che c'e'
       // scritto lo legge poi la pagina dall'indirizzo, che e' rimasto.
+      // Quello che non e' una pagina (una foto, una lettura dal database)
+      // senza rete torna un errore, non offline.html: prima una foto riceveva
+      // una pagina HTML al posto dell'immagine (10 novembre 2026).
       return fetch(event.request).catch(() =>
         event.request.mode === "navigate"
           ? caches.match(event.request, { ignoreSearch: true })
               .then(r => r || caches.match("./offline.html"))
-          : caches.match("./offline.html"));
+          : Response.error());
     })
   );
 });

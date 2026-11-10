@@ -140,6 +140,7 @@ const richiesta = (altro) => Object.assign({ adults: 2, kids: 0, babies: 0 }, al
     const ascolta = {};
     const finto = {
       self: { addEventListener: (n, f) => { ascolta[n] = f; } }, URL, Promise,
+      Response: { error: () => "errore di rete" },
       fetch: () => Promise.reject(new Error("niente rete")),
       caches: { match: async (r, o) => {
         const u = new URL(typeof r === "string" ? r : r.url, SITO);
@@ -154,6 +155,11 @@ const richiesta = (altro) => Object.assign({ adults: 2, kids: 0, babies: 0 }, al
     assert.strictEqual(await chiedi("booking.html?code=2213"), "booking.html");
     assert.strictEqual(await chiedi("tour.html?id=royal-delfin&lang=de"), "tour.html");
     assert.strictEqual(await chiedi("altra.html"), "offline.html");
+    // una foto non e' una pagina: senza rete un errore, non offline.html
+    const foto = await new Promise(fatto => ascolta.fetch({
+      request: { method: "GET", url: SITO + "assets/foto.webp", mode: "no-cors" }, respondWith: fatto
+    }));
+    assert.strictEqual(foto, "errore di rete");
   });
 
   // Il falso "Paga ora": i dati del trasloco si accettano solo dal vecchio indirizzo.

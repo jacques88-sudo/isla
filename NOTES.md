@@ -72,7 +72,7 @@ parchi, spettacoli serali, Monkey Park, il campo `menus`).
   24 ore sotto il calendario · Cambiare persone e mezzi nella lista · 12 ottobre 2026 —
   L'email nella richiesta, obbligatoria · Il codice sconto dei venditori · Le offerte per
   email · le sei prove da cliente (19 ottobre 2026) · Un giro a caccia di errori dopo
-  l'apertura (10 novembre 2026)
+  l'apertura (10 novembre 2026) · Il secondo giro: cambio lingua, senza rete (10 novembre 2026)
 - **Pacchetti**: da "14 settembre 2026 — La pagina dei pacchetti" a "Gli itinerari a 3, 5
   e 7 giorni" · 16 settembre 2026 — Il totale dei pacchetti coi mezzi · 11 ottobre 2026 —
   Il pacchetto va nel carrello · Crea il tuo pacchetto (20 ottobre 2026)
@@ -22264,8 +22264,40 @@ un'altra".
 **Proposto al proprietario, non fatto** (sono scelte sue):
 - su Supabase, Authentication → "Leaked password protection": rifiuta le password dei
   venditori già uscite in un furto di dati. Oggi è spenta;
-- a ogni cambio di lingua "Le mie prenotazioni" richiede il ticket al database, e ogni
-  richiesta conta fra le 10 l'ora per telefono: chi cambia lingua tante volte può
-  arrivare al limite (il ticket salvato resta in pagina);
-- senza rete il service worker risponde `offline.html` anche a foto e chiamate che non
-  sono pagine: non rompe niente, ma sarebbe più pulito un errore.
+- il cambio di lingua in "Le mie prenotazioni" e la risposta del service worker senza
+  rete: **fatti lo stesso giorno**, vedi la sezione dopo.
+
+## Il secondo giro: cambio lingua, senza rete (10 novembre 2026)
+
+Il proprietario, lette le proposte del primo giro: "a parte le password dei venditori
+puoi far tutto". `isla-v679`.
+
+**1. Il cambio di lingua in "Le mie prenotazioni" non richiede più al database.** Ogni
+bandiera toccata rifaceva `renderBookingPage()`, ricerca compresa, e ogni ricerca di un
+ticket conta fra le dieci l'ora per telefono (`2026-10-16-tentativi-ticket.sql`). Ora in
+`booking.js` l'ultimo disegno fatto dopo la risposta del database si tiene come funzione
+(`RIDISEGNA`, lo mette `mostra()`), e al cambio di lingua si ridisegna con gli stessi
+dati. Se il database non ha ancora risposto, o la pagina non ha chiesto niente (codici
+finti, modulo vuoto), si rifà tutto come prima. Provato nel browser col database finto:
+cinque cambi di lingua, una ricerca sola (prima sei), testi giusti in ogni lingua.
+**Uno stato nuovo disegnato dopo una risposta del database va messo dentro `mostra()`**,
+se no al cambio di lingua torna quello di prima.
+
+**2. Senza rete, quello che non è una pagina riceve un errore.** In `sw.js` una foto o
+una lettura fallita riceveva `offline.html` (una pagina HTML con "200 OK" al posto
+dell'immagine). Ora `Response.error()`; le pagine continuano ad aprirsi dalla cache
+senza guardare il "?", e una pagina che non c'è mostra `offline.html`. Provato nel
+browser col service worker vero e la rete staccata: scheda, elenco, "Le mie richieste" e
+una pagina inesistente, nessun errore JavaScript. Prova aggiunta in `strumenti/prove.js`.
+
+**3. Letti riga per riga, senza trovare errori**: `venditori.js` (modulo del ticket,
+lettura della foto, Modifica, richieste, link di pagamento, conferma coi numeri `-2`,
+statistiche, recensioni, avvisi), `meteo.js`, `noleggio.js`, `mappa.js` e i conti dei
+pacchetti (`pacchettoConto`, `pacchettoTotale`, mezzi). Due cose piccole, lasciate:
+- "Conferma" di una richiesta non si spegne mentre salva: un doppio tocco salva due
+  volte gli stessi dati, senza danno (stesso numero, avvisi mai doppi);
+- se la lettura della foto risponde con una scheda che nel menu non c'è, il menu resta
+  su "— scegli —" senza dirlo; il salvataggio lo chiede comunque.
+
+**Resta al proprietario**: la "Leaked password protection" su Supabase (Authentication),
+spiegata in chat; forse solo dal piano Pro.

@@ -72,7 +72,8 @@ parchi, spettacoli serali, Monkey Park, il campo `menus`).
   24 ore sotto il calendario · Cambiare persone e mezzi nella lista · 12 ottobre 2026 —
   L'email nella richiesta, obbligatoria · Il codice sconto dei venditori · Le offerte per
   email · le sei prove da cliente (19 ottobre 2026) · Un giro a caccia di errori dopo
-  l'apertura (10 novembre 2026) · Il secondo giro: cambio lingua, senza rete (10 novembre 2026)
+  l'apertura (10 novembre 2026) · Il secondo giro: cambio lingua, senza rete (10 novembre 2026) ·
+  La lista mandata da ogni pagina: `hotel.js` (10 novembre 2026)
 - **Pacchetti**: da "14 settembre 2026 — La pagina dei pacchetti" a "Gli itinerari a 3, 5
   e 7 giorni" · 16 settembre 2026 — Il totale dei pacchetti coi mezzi · 11 ottobre 2026 —
   Il pacchetto va nel carrello · Crea il tuo pacchetto (20 ottobre 2026)
@@ -99,7 +100,8 @@ parchi, spettacoli serali, Monkey Park, il campo `menus`).
   Il biglietto da visita · Il tema di Halloween della home · Il video nuovo della home ·
   il logo e "Aggiungi alla lista" (12 ottobre 2026) · La home messa in riga con
   `STILE.md` · Tutta Isla messa in riga con `STILE.md` · Il giro sull'aspetto: quattro ritocchi
-  (10 novembre 2026)
+  (10 novembre 2026) · La capsula in "Le mie prenotazioni", la fascia più bassa (10
+  novembre 2026)
 - **Lingue**: Le tre lingue · Il francese, quarta lingua · Il tedesco, quinta lingua ·
   "Tenerife Sud" uniformato nelle tre lingue
 - **Regole verso il cliente**: La politica di cancellazione · I termini di vendita · La
@@ -22331,6 +22333,9 @@ stessa finestra del biglietto in alto, che dal 3 ottobre si chiama così; di "co
 si parla più da nessun'altra parte. Sette pagine, chiave `nav.myBookings`;
 `footer.findCode` tolta da `i18n.js`.
 
+**Le tre cose "viste e non toccate"** qui sotto il proprietario le ha volute tutte
+("sì fai tutto"): sono fatte nella sezione dopo.
+
 **Visto e non toccato**, da decidere col proprietario:
 - "Le mie prenotazioni" è l'unica pagina senza la capsula in alto: ha la testata vecchia
   (logo piccolo e freccia). Chi ci arriva da un avviso o dal link di WhatsApp non ha
@@ -22340,3 +22345,54 @@ si parla più da nessun'altra parte. Sette pagine, chiave `nav.myBookings`;
   metà schermo;
 - la finestra della richiesta si intitola "Richiedi disponibilità" e il suo pulsante
   dice "Aggiungi alla lista": due nomi per lo stesso gesto.
+
+## La capsula in "Le mie prenotazioni", la fascia più bassa (10 novembre 2026)
+
+Le tre cose proposte nel giro sull'aspetto, più un errore trovato facendole. `isla-v681`.
+
+**1. "Le mie prenotazioni" ha la testata delle altre pagine.** `booking.html` aveva
+ancora la testata vecchia (`.top`: logo piccolo e una freccia per tornare alla home). Ora
+ha la foto, il logo nel cerchio e la capsula, il Menu e la finestra del ticket, copiati
+da `noleggio.html`. Il titolo (`h1`, che `titoloPagina()` in `booking.js` cambia fra "La
+tua escursione", "Le mie richieste", "I miei ticket") è grande come nelle altre pagine.
+**Nessuna voce della capsula è accesa**: provato con `aria-current` sul biglietto, la
+scritta usciva tagliata ("LE MIE PRENOT…", "MEINE BU…"). Il biglietto apre la finestra
+per cercare un altro ticket. Per il carrello la pagina carica anche `hotel.js`,
+`escursioni.js`, `preferiti.js`, `pacchetti.js` e `lista.js`; **`booking.js` resta per
+ultimo**, perché il suo `esc()` regge i campi vuoti del database e deve vincere su quello
+di `escursioni.js` (è l'unico nome doppio fra i due file: controllato). Niente pallino
+della chat qui: `assistente.js` non è caricato. Le classi `.top`, `.nav`, `.brand`,
+`.page-header` restano in `styles.css` senza una pagina che le usi.
+
+**2. Nelle pagine interne la fascia con la foto è più bassa.** Sotto i 960 px, in
+`.catalog-page` (Esperienze, Pacchetti, pacchetto, Mappa, Noleggio, Le mie prenotazioni):
+foto 5:2 invece di 16:9, logo da 96 px invece di 116, capsula più vicina. A 390 px il
+titolo della pagina sale di circa 70 px. La home e le schede delle escursioni restano
+com'erano: lì la foto è il contenuto.
+
+**3. La finestra della richiesta si intitola "Aggiungi alla lista"**, come il suo
+pulsante (`req.title`, cinque lingue). Prima "Richiedi disponibilità".
+
+## La lista mandata da ogni pagina: `hotel.js` (10 novembre 2026)
+
+**L'errore.** `hotel.js` (hotel, punti di raccolta, orari del pulmino, `PICKUP_NESSUNO`)
+era caricato solo da `escursioni.html` e `tour.html`. Ma il carrello sta nella capsula di
+ogni pagina, e `hotelPunto()` senza `HOTELS` risponde `null` in silenzio: la stessa lista
+mandata dalla home, dai pacchetti, dal noleggio o dalla mappa partiva **senza l'ora del
+pulmino, senza il punto di raccolta e senza il punto di ritrovo**, nel messaggio WhatsApp
+e nel database (`pickup_point`, `pickup_time` vuoti, quindi il modulo "Conferma" dei
+venditori partiva vuoto). Provato con la stessa lista (Teide National Park dall'hotel
+Acapulco, catamarano da Puerto Colón): dalla scheda "Orario: 09:05 · Punto di raccolta:
+Los Hibiscos… · Punto di ritrovo: Puerto Colón, molo 10", dalla home nessuna delle tre
+righe. Il giro più naturale lo faceva scattare: aggiungere dalla scheda, tornare alla
+home, toccare il carrello.
+
+**Il rimedio.** `hotel.js` in tutte le pagine che caricano `lista.js` (index, pacchetti,
+pacchetto, noleggio, mappa, booking): 13 KB compressi, già nella cache del service
+worker. Ora il messaggio è identico dalle otto pagine (provato una per una).
+`controllaListaConHotel()` in `strumenti/controlla.js` dà errore se una pagina carica
+`lista.js` senza `hotel.js`. Scartato: caricarlo solo all'apertura della lista (più
+codice per risparmiare 13 KB che il telefono ha già in cache).
+
+**Le richieste arrivate dal 6 novembre** con `pickup_point` vuoto possono essere di
+questo tipo: l'ufficio il posto lo scrive comunque confermando.

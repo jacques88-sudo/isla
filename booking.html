@@ -28,18 +28,53 @@
 <body data-i18n-doctitle="meta.booking.title">
   <a class="skip" href="#main" data-i18n="common.skip">Vai al contenuto</a>
 
-  <header class="top">
-    <div class="wrap nav">
-      <a class="brand" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
+  <!-- La stessa testata delle altre pagine, con la capsula (10 novembre 2026):
+       prima qui c'erano solo il logo e una freccia, e chi arrivava da un avviso
+       o dal link di WhatsApp non aveva Esperienze, lista e Menu. -->
+  <main id="main" class="catalog-page booking-page">
+    <!-- Stessa testata della home, con la foto dell'isola. -->
+    <div class="home-hero">
+      <img class="home-hero-media" src="./assets/hero-tenerife.webp" srcset="./assets/piccole/hero-tenerife.webp 720w, ./assets/hero-tenerife.webp 1920w" sizes="(max-width: 700px) 240px, 1080px" alt="" />
+      <a class="home-hero-mark" href="./index.html" data-i18n-aria-label="common.homeAria" aria-label="Isla home">
         <img src="./assets/logo-isla.png" data-i18n-alt="common.logoAlt" alt="Logo Isla" />
-        <span class="brand-text"><strong>Isla</strong><span>so easy so tenerife</span></span>
       </a>
     </div>
-  </header>
 
-  <main id="main">
-    <div class="wrap page-header">
-      <a class="iconbtn" href="./index.html" data-i18n-aria-label="booking.back" aria-label="Torna alla home">←</a>
+    <nav class="home-bar" data-i18n-aria-label="nav.aria" aria-label="Menu principale">
+      <!-- La capsula: le voci sono icone, e solo quella della pagina in cui si
+           e' ha la scritta accanto. Le altre la scritta ce l'hanno lo stesso,
+           nascosta agli occhi ma letta dallo screen reader. -->
+      <div class="isla-tabs">
+        <a class="isla-tab" href="./index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.5 12 4l8.5 6.5"/><path d="M5.5 9v10.5h13V9"/><path d="M10 19.5v-5h4v5"/></svg>
+          <span class="isla-tab-label" data-i18n="nav.home">Home</span>
+        </a>
+        <a class="isla-tab" href="./escursioni.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 19.5 9 9l3.5 5 2.5-3.5 6.5 9z"/><circle cx="17" cy="5.5" r="2"/></svg>
+          <span class="isla-tab-label" data-i18n="nav.experiences">Esperienze</span>
+        </a>
+        <button class="isla-tab" type="button" data-lista-open aria-haspopup="dialog" aria-controls="listaDialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4h2.3l2.4 11h11.3l2-8H6"/><circle cx="9" cy="19.2" r="1.3"/><circle cx="16.5" cy="19.2" r="1.3"/><path d="M10.2 11.5a2.8 2.8 0 0 1 5.6 0"/><path d="M8.8 11.5h8.4"/></svg>
+          <span class="isla-tab-count" data-lista-count aria-hidden="true" hidden></span>
+          <span class="isla-tab-label" data-i18n="lista.title">La tua lista</span>
+        </button>
+        <!-- Nessuna voce accesa, come in Pacchetti, Mappa e Noleggio: la scritta
+             "Le mie prenotazioni" nella capsula non ci sta e usciva tagliata.
+             Il biglietto apre la finestra per cercare un altro ticket. -->
+        <button class="isla-tab" type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z"/><path d="M9.3 13.2a2.7 2.7 0 0 1 5.4 0"/><path d="M8 13.2h8"/></svg>
+          <span class="isla-tab-count" data-prenotazioni-count aria-hidden="true" hidden></span>
+          <span class="isla-tab-label" data-i18n="nav.myBookings">Le mie prenotazioni</span>
+        </button>
+        <button class="isla-tab" type="button" data-menu-open aria-haspopup="dialog" aria-controls="moreMenu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <span class="isla-tab-label" data-i18n="nav.menu">Menu</span>
+        </button>
+      </div>
+    </nav>
+
+
+    <div class="wrap catalog-head booking-head">
       <h1 data-i18n="booking.h1">La tua escursione</h1>
     </div>
 
@@ -48,17 +83,80 @@
     </div>
   </main>
 
+  <div class="menu-scrim" data-menu-scrim hidden></div>
+  <aside class="more-menu" id="moreMenu" role="dialog" aria-modal="true" data-i18n-aria-label="menu.aria" aria-label="Menu" hidden>
+    <div class="more-menu-head">
+      <span class="more-menu-brand">Isla</span>
+      <button class="iconbtn" type="button" data-menu-close data-i18n-aria-label="menu.close" aria-label="Chiudi menu">✕</button>
+    </div>
+    <div class="more-menu-lang">
+      <span class="more-menu-lang-label" data-i18n="lang.label">Lingua</span>
+      <div class="lang-seg">
+        <button type="button" data-lang-set="it" lang="it" aria-label="Italiano" title="Italiano"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#009246" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#ce2b37" d="M2 0h1v2H2z"/></svg></button>
+        <button type="button" data-lang-set="en" lang="en" aria-label="English" title="English"><svg class="lang-flag" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path fill="#012169" d="M0 0h60v30H0z"/><path stroke="#fff" stroke-width="6" d="M0 0l60 30M60 0L0 30"/><path stroke="#c8102e" stroke-width="2" d="M0 0l60 30M60 0L0 30"/><path stroke="#fff" stroke-width="10" d="M30 0v30M0 15h60"/><path stroke="#c8102e" stroke-width="6" d="M30 0v30M0 15h60"/></svg></button>
+        <button type="button" data-lang-set="es" lang="es" aria-label="Español" title="Español"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#aa151b" d="M0 0h3v2H0z"/><path fill="#f1bf00" d="M0 .5h3v1H0z"/></svg></button>
+        <button type="button" data-lang-set="fr" lang="fr" aria-label="Français" title="Français"><svg class="lang-flag" viewBox="0 0 3 2" aria-hidden="true"><path fill="#002654" d="M0 0h1v2H0z"/><path fill="#fff" d="M1 0h1v2H1z"/><path fill="#ce1126" d="M2 0h1v2H2z"/></svg></button>
+        <button type="button" data-lang-set="de" lang="de" aria-label="Deutsch" title="Deutsch"><svg class="lang-flag" viewBox="0 0 5 3" preserveAspectRatio="none" aria-hidden="true"><path fill="#000" d="M0 0h5v1H0z"/><path fill="#dd0000" d="M0 1h5v1H0z"/><path fill="#ffce00" d="M0 2h5v1H0z"/></svg></button>
+      </div>
+    </div>
+    <button class="btn btn-soft btn-block install-btn" type="button" data-install-btn data-i18n="menu.install" hidden>Installa l'app</button>
+    <nav class="more-menu-nav" data-i18n-aria-label="menu.sections" aria-label="Sezioni">
+      <button type="button" data-ticket-open aria-haspopup="dialog" aria-controls="ticketDialog" data-i18n="nav.myBookings">Le mie prenotazioni</button>
+      <a href="./escursioni.html" data-menu-link data-i18n="menu.excursions">Escursioni</a>
+      <a href="./escursioni.html?preferiti=1" data-menu-link data-i18n="menu.favorites">I miei preferiti</a>
+      <a href="./pacchetti.html" data-menu-link data-i18n="menu.packages">Pacchetti</a>
+      <a href="./mappa.html" data-menu-link data-i18n="menu.map">Scopri Tenerife</a>
+      <a href="./mappa.html?cat=segreto" data-menu-link data-i18n="menu.secret">Posti segreti</a>
+      <a href="./index.html#about" data-menu-link data-i18n="menu.about">Chi siamo</a>
+    </nav>
+    <a class="btn btn-primary btn-block more-menu-cta" href="./escursioni.html" data-menu-link data-i18n="menu.cta">Prenota ora</a>
+  </aside>
+
+  <div class="ticket-scrim" data-ticket-scrim hidden></div>
+  <div class="ticket-dialog" id="ticketDialog" role="dialog" aria-modal="true" aria-labelledby="ticketDialogTitle" hidden>
+    <div class="ticket-dialog-head">
+      <h2 id="ticketDialogTitle" data-i18n="ticket.title">Scan ticket</h2>
+      <button class="iconbtn" type="button" data-ticket-close data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
+    </div>
+    <form data-lookup-form>
+      <!-- Il cliente si fa riconoscere con due cose che ha sul ticket di carta:
+           il numero (in rosso) e il telefono. Tutti e due, perche' col solo
+           telefono chiunque ne provasse uno a caso vedrebbe dove e quando sara'
+           una famiglia. I codici finti di prova (ISLA-4521) funzionano ancora
+           senza telefono: vedi booking.js. -->
+      <label for="codeInput" data-i18n="ticket.codeLabel">Numero del ticket</label>
+      <input class="lookup-input" id="codeInput" name="code" type="text" inputmode="text" autocomplete="off"
+             data-i18n-placeholder="ticket.placeholder" placeholder="Es. 2213" required />
+      <label for="phoneInput" data-i18n="ticket.phoneLabel">Telefono scritto sul ticket</label>
+      <div class="lookup-phone">
+        <select name="prefix" data-prefix-select data-i18n-aria-label="ticket.prefix" aria-label="Prefisso"></select>
+        <input class="lookup-input" id="phoneInput" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" />
+      </div>
+      <p class="lookup-error" data-lookup-error role="alert" hidden></p>
+      <button class="btn btn-primary btn-block" type="submit" data-i18n="common.search">Cerca</button>
+      <p class="hint" data-i18n="ticket.hint">Il numero è stampato in rosso sul ticket che ti abbiamo dato.</p>
+    </form>
+  </div>
+
   <script src="./trasloco.js"></script>
   <script src="./i18n.js"></script>
   <script src="./vendor/supabase-2.117.2.js"></script>
   <script src="./supabase-config.js"></script>
   <script src="./esplora-catalog.js"></script>
+  <!-- Per la lista della capsula: titoli, totali, punti di raccolta, pacchetti. -->
+  <script src="./hotel.js"></script>
+  <script src="./escursioni.js"></script>
+  <script src="./preferiti.js"></script>
+  <script src="./pacchetti.js"></script>
   <script src="./telefono.js"></script>
   <script src="./app.js"></script>
   <script src="./richieste.js"></script>
+  <script src="./lista.js"></script>
   <script src="./portare.js"></script>
   <script src="./meteo.js"></script>
   <script src="./recensioni.js"></script>
+  <!-- per ultimo: il suo esc() regge anche i campi vuoti del database, e deve
+       vincere su quello di escursioni.js -->
   <script src="./booking.js"></script>
   <!-- Cloudflare Web Analytics: conta le visite, senza cookie (vedi NOTES.md) --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a352d8c5d0e744fbb696ae4294a2c023"}'></script><!-- End Cloudflare Web Analytics -->
 </body>

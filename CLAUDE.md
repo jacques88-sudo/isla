@@ -176,6 +176,11 @@ porto e capienza con le schede della stessa categoria.
 | `materiali/social/` | i modelli delle grafiche dei social (carosello 4:5, verticali e storie 9:16, video di 12 secondi) e le loro regole in `materiali/social/LEGGIMI.md`: `node materiali/social/fai-grafiche.js <cartella>` le rifà. Il piano dei contenuti sta su Notion ("Piano social Isla — 12 settimane"); il sito non carica niente di qui |
 | `richieste.js` | le richieste della lista salvate anche su Supabase (`pending`), con la **chiave** che resta nel telefono del cliente e il **codice** che va nel messaggio; l'ufficio le conferma o annulla da `venditori.html` |
 
+**Una pagina che carica `lista.js` deve caricare anche `hotel.js`** (10 novembre 2026):
+la lista si manda da ogni pagina, e senza `hotel.js` il messaggio WhatsApp e il database
+perdono l'ora del pulmino, il punto di raccolta e il punto di ritrovo. `controlla.js` dà
+errore se manca.
+
 **La finestra della richiesta è scritta una volta sola**, in `FINESTRA_RICHIESTA` in
 `escursioni.js` (dal 30 ottobre 2026; prima due copie, in `escursioni.html` e `tour.html`).
 Le due pagine hanno al suo posto `<div data-finestra-richiesta>`.
@@ -199,7 +204,8 @@ Le due pagine hanno al suo posto `<div data-finestra-richiesta>`.
   pagina in cui si è. **Il carrello è la lista delle richieste**, non un acquisto: apre
   la stessa finestra della lista e porta il numerino. Sta **in alto**, al posto delle
   vecchie pillole, per scelta del proprietario: in basso c'erano già il pallino della
-  chat e la barra "Prenota ora". È scritta uguale nelle sei pagine. **"Installa l'app"
+  chat e la barra "Prenota ora". È scritta uguale in ogni pagina che ce l'ha,
+  dal 10 novembre 2026 anche `booking.html` (lì nessuna voce è accesa). **"Installa l'app"
   non ci sta**: con cinque voci la capsula usciva dallo schermo, resta nel Menu.
 - **Il logo sta sempre nel cerchio a sfondo bianco** (proprietario, 26 ottobre 2026):
   sul sito, nelle grafiche dei social, nei post, nelle stampe. Bianco fisso, anche col

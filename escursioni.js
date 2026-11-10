@@ -1568,7 +1568,7 @@ function vesti(input) {
 // initRequestDialog partono li', e la devono trovare gia' in pagina.
 const FINESTRA_RICHIESTA = `  <div class="ticket-dialog request-dialog" id="requestDialog" role="dialog" aria-modal="true" aria-labelledby="requestTitle" hidden>
     <div class="ticket-dialog-head">
-      <h2 id="requestTitle" data-i18n="req.title">Richiedi disponibilità</h2>
+      <h2 id="requestTitle" data-i18n="req.title">Aggiungi alla lista</h2>
       <button class="iconbtn" type="button" data-request-close data-i18n-aria-label="common.close" aria-label="Chiudi">✕</button>
     </div>
     <p class="request-activity" data-request-activity></p>

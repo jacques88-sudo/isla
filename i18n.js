@@ -476,7 +476,10 @@ const I18N = {
   "detail.seeAll":      { it: "Vedi tutte le escursioni", en: "See all excursions", es: "Ver todas las excursiones", fr: "Voir toutes les excursions", de: "Alle Ausflüge ansehen" },
 
   // ── finestra Richiedi disponibilità ─────────────────────────────────────
-  "req.title":          { it: "Richiedi disponibilità", en: "Check availability", es: "Consultar disponibilidad", fr: "Vérifier la disponibilité", de: "Verfügbarkeit anfragen" },
+  // Il titolo della finestra dice quello che fa il suo pulsante (10 novembre
+  // 2026): prima era "Richiedi disponibilità" sopra un pulsante "Aggiungi alla
+  // lista", due nomi per lo stesso gesto.
+  "req.title":          { it: "Aggiungi alla lista", en: "Add to list", es: "Añadir a la lista", fr: "Ajouter à la liste", de: "Zur Liste hinzufügen" },
   "req.name":           { it: "Il tuo nome", en: "Your name", es: "Tu nombre", fr: "Votre nom", de: "Ihr Name" },
   "req.namePlaceholder":{ it: "Nome e cognome", en: "First and last name", es: "Nombre y apellidos", fr: "Prénom et nom", de: "Vor- und Nachname" },
   "req.email":          { it: "La tua email", en: "Your email", es: "Tu email", fr: "Votre e-mail", de: "Ihre E-Mail" },

@@ -1831,6 +1831,15 @@ function initRequestDialog() {
     // riparte sempre da "Da concordare" invece di tenere la scelta di prima.
     if (timeEl) timeEl.value = "";
     if (langEl) langEl.value = "";
+    // La data scelta per un'altra scheda puo' non andare bene per questa: i
+    // giorni buoni sono altri. Si butta invece di lasciarla li' con un avviso
+    // sotto — ora che i giorni sbagliati non si possono nemmeno toccare,
+    // trovarne uno scritto nel campo sarebbe una contraddizione.
+    // Anche le 24 ore (10 novembre 2026): domani scelto sul giro delle 18
+    // restava scritto sulla gita delle 7:45, che domani non si puo' piu'
+    // chiedere. La voce entrava nella lista con "Aggiunta" e li' risultava
+    // scaduta. Prima di riempiOrari(), che spegne le ore guardando la data.
+    if (dateInput.value && !dataBuona()) dateInput.value = "";
     riempiOrari(tour);
     riempiLingue(tour);
     riempiMenu(tour);
@@ -1839,11 +1848,6 @@ function initRequestDialog() {
     mostraBambini(tour);
     mostraPersone(tour);
     riempiUnita(tour);
-    // La data scelta per un'altra scheda puo' non andare bene per questa: i
-    // giorni buoni sono altri. Si butta invece di lasciarla li' con un avviso
-    // sotto — ora che i giorni sbagliati non si possono nemmeno toccare,
-    // trovarne uno scritto nel campo sarebbe una contraddizione.
-    if (dateInput.value && !giornoValido()) dateInput.value = "";
     if (calendario) { calendario.chiudi(); calendario.azzera(); }
     aggiornaGiorno();
     aggiornaTotale();
@@ -1938,6 +1942,16 @@ function initRequestDialog() {
     // come UTC e in certi fusi orari torna indietro di un giorno.
     const [a, m, g] = dateInput.value.split("-").map(Number);
     return giorni.includes(new Date(a, m - 1, g).getDay());
+  }
+
+  // La data scritta nel campo si puo' chiedere su QUESTA scheda? Il giorno
+  // della settimana e' giusto, non e' prima di domani, e almeno una sua
+  // partenza e' fra 24 ore o piu': le stesse tre cose che guarda il calendario
+  // prima di lasciar toccare un giorno.
+  function dataBuona() {
+    if (!current || !dateInput.value) return true;
+    return giornoValido() && dateInput.value >= minRequestDate() &&
+      giornoPossibile(current, sceltaCorrente(current), dateInput.value);
   }
 
   // ─── Il calendario della data ──────────────────────────────────────────
@@ -2528,6 +2542,9 @@ function initRequestDialog() {
     scrim.classList.remove("is-visible");
     document.body.classList.remove("menu-open");
     setTimeout(() => {
+      // riaperta prima che finisse di chiudersi: resta aperta. Senza, spariva
+      // sotto il dito e la pagina dietro restava bloccata.
+      if (dialog.classList.contains("is-open")) return;
       dialog.hidden = true;
       scrim.hidden = true;
     }, 300);
@@ -2687,6 +2704,19 @@ function initRequestDialog() {
     // caselle da quando ha messo il numero di troppo.
     if (!menuValido()) { aggiornaMenu(); return; }
     if (!unitaValide()) { aggiornaUnita(); return; }
+    // Le 24 ore, guardate anche qui: la finestra puo' essere rimasta aperta
+    // mentre l'ora passava, e la voce entrerebbe nella lista gia' scaduta.
+    // Si dice sotto la data, con la stessa frase che userebbe la lista.
+    if (!dataBuona() || !partenzaPossibile(req.date, req.time)) {
+      if (dayErrorEl) {
+        dayErrorEl.textContent = t("lista.pastDate");
+        dayErrorEl.hidden = false;
+      }
+      riempiOrari(current);
+      const apri = dateField && dateField.querySelector(".date-open");
+      if (apri) apri.focus();
+      return;
+    }
 
     // Non si va su WhatsApp: la richiesta si mette nella lista e il cliente
     // continua a guardare le altre escursioni. Il messaggio parte dalla

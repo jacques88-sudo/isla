@@ -71,7 +71,8 @@ parchi, spettacoli serali, Monkey Park, il campo `menus`).
   prenotazione sono chiuse · La quarta prova da cliente, e le 24 ore vere · La frase delle
   24 ore sotto il calendario · Cambiare persone e mezzi nella lista · 12 ottobre 2026 —
   L'email nella richiesta, obbligatoria · Il codice sconto dei venditori · Le offerte per
-  email · le sei prove da cliente (19 ottobre 2026)
+  email · le sei prove da cliente (19 ottobre 2026) · Un giro a caccia di errori dopo
+  l'apertura (10 novembre 2026)
 - **Pacchetti**: da "14 settembre 2026 — La pagina dei pacchetti" a "Gli itinerari a 3, 5
   e 7 giorni" · 16 settembre 2026 — Il totale dei pacchetti coi mezzi · 11 ottobre 2026 —
   Il pacchetto va nel carrello · Crea il tuo pacchetto (20 ottobre 2026)
@@ -22214,3 +22215,57 @@ installate" di `CLAUDE.md`. Le scelte che contano:
 Il progetto **ISLA** nell'app Claude (6 novembre 2026) ha nel Contesto `CLAUDE.md`,
 `STILE.md` e `README.md` da GitHub (una copia: va sincronizzata dopo ogni modifica), il
 resoconto caricato a mano e la cartella del computer collegata.
+
+## Un giro a caccia di errori dopo l'apertura (10 novembre 2026)
+
+Il proprietario ha chiesto di guardare se c'era qualche errore o qualcosa da migliorare.
+Controlli, prove e le 110 pagine nel browser erano già verdi; i due errori sono usciti
+leggendo il codice delle richieste e provandolo nel browser con l'orologio fermo
+(`page.clock` di playwright, 10 novembre ore 14:00 di Tenerife). `isla-v678`.
+
+**1. La data restava da una scheda all'altra.** La finestra della richiesta è una sola
+per tutte le schede e il campo della data resta scritto. Aprendola, si buttava solo la
+data col **giorno della settimana** sbagliato; le 24 ore non si guardavano. Provato:
+domani scelto sul giro in barca delle 18:00 (si può), poi aperta La Palma, che parte solo
+alle 7:45: domani restava scritto, l'unica ora era spenta ma selezionata, "Aggiungi alla
+lista" diceva "Aggiunta" e nella lista la voce risultava "Questa data non si può più
+richiedere", con l'invio bloccato. Ora `dataBuona()` in `initRequestDialog()` guarda le
+stesse tre cose del calendario (giorno della settimana, non prima di domani, almeno una
+partenza a 24 ore: `giornoPossibile()`), e la data che non va si butta **prima** di
+`riempiOrari()`. La stessa domanda si rifà all'invio, con `partenzaPossibile()` sull'ora
+scelta: la finestra può restare aperta mentre l'ora passa. L'avviso esce sotto la data
+con la frase che c'era già (`lista.pastDate`), nessun testo nuovo. Il controllo nella
+lista (`listaVoceScaduta`) resta: serve per le voci rimaste lì da ieri.
+
+**2. Una finestra chiusa e riaperta subito spariva.** Chiudendo, sei finestre (ticket,
+menu, richiesta, pacchetto, chat, istruzioni per l'iPhone) si nascondono dopo 300 ms,
+finita l'animazione. Riaperte entro quei 300 ms, il timer della chiusura le nascondeva
+lo stesso: finestra sparita e pagina dietro bloccata (`menu-open`), finché non si
+ritoccava il pulsante. Ora il timer, prima di nascondere, guarda se la finestra è di
+nuovo aperta (`is-open`). La lista lo faceva già a modo suo (`clearTimeout(chiusura)`).
+**Una finestra nuova che si chiude con un timer deve fare lo stesso.**
+
+Prova nuova in `strumenti/prove.js`: "un giorno buono su una scheda può non esserlo su
+un'altra".
+
+**Guardato e lasciato com'è**, da non ricontrollare ogni volta:
+- gli avvisi di sicurezza di Supabase (letti col plugin, senza toccare niente): le
+  funzioni `security definer` aperte ad `anon` sono quelle del sito, volute
+  (`manda_richiesta`, `le_mie_escursioni`, `codice_sconto`…); `foglio_ticket` e
+  `foglio_letto` vogliono la parola segreta; `segna_avviso_ticket`,
+  `segna_avviso_recensione` e `rls_auto_enable` sono funzioni di trigger, chiamate da
+  fuori danno errore. Le tabelle "RLS senza regole" (`nets`, `commission_rates`,
+  `export_keys`, `meteo`, i tentativi, le iscrizioni) sono chiuse apposta;
+- `trasloco.js` senza rete: il service worker risponde con `offline.html`, ma il testo
+  non è `isla` e non si va da nessuna parte;
+- la data del pacchetto è ancora il campo del telefono (`type="date"` col suo minimo):
+  il pacchetto non ha giorni della settimana da spegnere.
+
+**Proposto al proprietario, non fatto** (sono scelte sue):
+- su Supabase, Authentication → "Leaked password protection": rifiuta le password dei
+  venditori già uscite in un furto di dati. Oggi è spenta;
+- a ogni cambio di lingua "Le mie prenotazioni" richiede il ticket al database, e ogni
+  richiesta conta fra le 10 l'ora per telefono: chi cambia lingua tante volte può
+  arrivare al limite (il ticket salvato resta in pagina);
+- senza rete il service worker risponde `offline.html` anche a foto e chiamate che non
+  sono pagine: non rompe niente, ma sarebbe più pulito un errore.

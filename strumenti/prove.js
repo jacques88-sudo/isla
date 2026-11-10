@@ -102,6 +102,17 @@ const richiesta = (altro) => Object.assign({ adults: 2, kids: 0, babies: 0 }, al
   }
   delete process.env.TZ;
 
+  // Un giorno vale scheda per scheda: lo stesso domani va bene sul giro che
+  // parte fra 25 ore e non sulla gita che parte fra 23. La finestra della
+  // richiesta butta la data rimasta da un'altra scheda guardando questo.
+  await prova("un giorno buono su una scheda puo' non esserlo su un'altra", () => {
+    const [giornoTardi, oraTardi] = fra(25);
+    const [giornoPresto, oraPresto] = fra(23);
+    assert.strictEqual(giornoPossibile({ times: [oraTardi] }, null, giornoTardi), true);
+    assert.strictEqual(giornoPossibile({ times: [oraPresto] }, null, giornoPresto), false);
+    assert.strictEqual(giornoPossibile({ times: [] }, { times: [oraPresto] }, giornoPresto), false, "la variante vince");
+  });
+
   // Le partenze di stagione: le 9:30 di Royal Delfin, primo e ultimo giorno compresi.
   await prova("una partenza fuori stagione non si puo' chiedere", () => {
     const tour = ESPLORA_CATALOG.find(x => x.id === "royal-delfin");

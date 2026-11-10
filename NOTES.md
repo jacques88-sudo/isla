@@ -101,7 +101,7 @@ parchi, spettacoli serali, Monkey Park, il campo `menus`).
   il logo e "Aggiungi alla lista" (12 ottobre 2026) · La home messa in riga con
   `STILE.md` · Tutta Isla messa in riga con `STILE.md` · Il giro sull'aspetto: quattro ritocchi
   (10 novembre 2026) · La capsula in "Le mie prenotazioni", la fascia più bassa (10
-  novembre 2026)
+  novembre 2026) · Il caricamento col fondo delle pagine (10 novembre 2026)
 - **Lingue**: Le tre lingue · Il francese, quarta lingua · Il tedesco, quinta lingua ·
   "Tenerife Sud" uniformato nelle tre lingue
 - **Regole verso il cliente**: La politica di cancellazione · I termini di vendita · La
@@ -22396,3 +22396,19 @@ codice per risparmiare 13 KB che il telefono ha già in cache).
 
 **Le richieste arrivate dal 6 novembre** con `pickup_point` vuoto possono essere di
 questo tipo: l'ufficio il posto lo scrive comunque confermando.
+
+## Il caricamento col fondo delle pagine (10 novembre 2026)
+
+Il proprietario: "il caricamento ha un colore diverso dalle pagine, è possibile farlo
+uguale?". Misurato nel browser, pagina per pagina: col tema chiaro erano già uguali
+(252,250,246); **col tema scuro** la schermata di caricamento era nera (`#000`, scelta
+del 30 ottobre) e le pagine marrone scuro (24,19,14, cioè `--bg` al buio). Ora nelle
+sette pagine col caricamento il fondo scuro è `oklch(0.19 0.012 60)`, lo stesso di
+`--bg`: scritto a mano, perché `styles.css` può non essere ancora arrivato. Il logo
+resta nel cerchio bianco. **Se cambia `--bg` al buio in `styles.css`, va cambiato anche
+lì** (sette pagine). `isla-v682`.
+
+Resta diverso, e non si può cambiare: aprendo **l'app installata** su Android, la
+schermata che il telefono mostra per un attimo prima della pagina usa
+`background_color` di `manifest.json`, che è un colore solo (la carta chiara) per tutti
+e due i temi.

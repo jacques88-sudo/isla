@@ -74,10 +74,14 @@
       letter-spacing: .3em;
       color: oklch(0.24 0.012 60);
     }
-    /* Col tema scuro niente lampo bianco fra una pagina e l'altra: fondo nero e
-       il logo nel suo cerchio bianco (#fff fisso, proprietario, 30 ottobre 2026). */
+    /* Col tema scuro niente lampo bianco fra una pagina e l'altra: il fondo
+       scuro delle pagine (--bg al buio in styles.css, scritto qui a mano perche'
+       styles.css puo' non essere ancora arrivato) e il logo nel suo cerchio
+       bianco (#fff fisso, proprietario, 30 ottobre 2026). Fino al 10 novembre
+       2026 il fondo era nero, e si vedeva il salto col marrone scuro delle
+       pagine: il proprietario l'ha voluto uguale. */
     @media (prefers-color-scheme: dark) {
-      .splash { background: #000; }
+      .splash { background: oklch(0.19 0.012 60); }
       .splash-brand { color: #fff; }
       .splash-logo {
         box-sizing: border-box;

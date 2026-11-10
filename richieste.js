@@ -278,7 +278,8 @@ function avvisiManda(r, iscrizione) {
 // Il giorno del calendario qui ("2026-10-16"), spostato di `quanti` giorni.
 // Non toISOString(): passa per UTC, e a Tenerife d'estate fra mezzanotte e
 // l'una darebbe ancora ieri (vedi minRequestDate in escursioni.js). Qui serve
-// la propria copia: booking.html carica questo file senza escursioni.js.
+// la propria copia: cosi' questo file non dipende da escursioni.js (fino al
+// 10 novembre 2026 booking.html lo caricava senza).
 function richiesteGiorno(quanti) {
   const d = new Date();
   d.setDate(d.getDate() + quanti);

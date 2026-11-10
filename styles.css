@@ -181,7 +181,11 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: .8rem 0;
+  /* Solo sopra e sotto: sta sullo stesso elemento di .wrap, e "padding: .8rem
+     0" gli toglieva il margine ai lati. In "Le mie prenotazioni" il logo
+     finiva attaccato al bordo dello schermo (10 novembre 2026). */
+  padding-top: .8rem;
+  padding-bottom: .8rem;
 }
 
 .brand {
@@ -409,6 +413,20 @@ a { text-decoration: none; color: inherit; }
   width: 58%;
   height: 58%;
   object-fit: contain;
+}
+
+/* NELLE PAGINE INTERNE LA FASCIA E' PIU' BASSA (10 novembre 2026). In
+   Esperienze, Pacchetti, Mappa, Noleggio e "Le mie prenotazioni" la foto e'
+   sempre la stessa: alta come in home, con logo e capsula, occupava quasi
+   tutta la prima schermata e il titolo della pagina arrivava a meta' schermo.
+   Sul telefono si abbassa la foto e si rimpicciolisce un poco il logo. La home
+   e le schede delle escursioni (dove la foto e' quella dell'escursione)
+   restano com'erano; da 960 px in su la fascia e' gia' una striscia. */
+@media (max-width: 959px) {
+  .catalog-page .home-hero { padding-bottom: 2.8rem; }
+  .catalog-page .home-hero-media { aspect-ratio: 5 / 2; }
+  .catalog-page .home-hero-mark { width: 96px; height: 96px; }
+  .catalog-page .home-bar { margin-top: .9rem; }
 }
 
 .home-head {
@@ -1011,6 +1029,14 @@ a { text-decoration: none; color: inherit; }
   grid-template-columns: 7.2rem 1fr;
   gap: .5rem;
 }
+/* Il numero di telefono deve vedersi tutto mentre lo si scrive. Sugli schermi
+   stretti il campo restava largo 78 px, con dentro posto per quattro cifre
+   (10 novembre 2026): meno margine dentro il campo, e in "Le mie prenotazioni"
+   il modulo prende anche il margine del riquadro che lo contiene. */
+.lookup-phone .lookup-input { padding-left: .9rem; padding-right: .9rem; }
+@media (max-width: 420px) {
+  .state .lookup-card { margin-left: -1rem; margin-right: -1rem; }
+}
 .lookup-error { color: var(--danger); margin: -.4rem 0 1rem; font-size: .9rem; }
 .lookup-error[hidden] { display: none; }
 [data-lookup-form] .btn-block { margin-bottom: .4rem; }
@@ -1075,6 +1101,12 @@ p.note-box { margin: 0 0 1rem; }
    distingue male: la pillola dice lo stato a parole. La scritta della pillola
    prende il fondo della pagina, quindi si gira da sola col tema scuro. */
 .booking-intro { color: var(--muted); margin: 0 0 1.1rem; }
+/* "Le mie prenotazioni" con la testata delle altre pagine (10 novembre 2026):
+   il titolo non ha la riga d'oro sopra, quindi prende un poco d'aria dalla
+   capsula; e il riquadro vuoto ("Trova la tua escursione") non riparte da
+   tre righe di vuoto sotto il titolo. */
+.booking-head { padding-top: .6rem; padding-bottom: .6rem; }
+.booking-page .state { padding-top: 1.4rem; }
 .detail-card.is-confirmed { --stato: var(--ok); }
 .detail-card.is-pending   { --stato: var(--wait); }
 .detail-card.is-cancelled { --stato: var(--danger); }
@@ -1579,7 +1611,9 @@ html:not([lang="de"]) .pp[lang="de"] { display: none; }
   display: flex;
   align-items: center;
   gap: .75rem;
-  padding: 1rem 0;
+  /* solo sopra e sotto, come .nav: ai lati vale il margine di .wrap */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 .page-header h1 {
   font-family: var(--font-body);

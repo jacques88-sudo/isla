@@ -682,6 +682,22 @@ function controllaI18n() {
 // remota parte cosi') un file del genere non avrebbe memoria di niente e il
 // controllo passerebbe sempre al primo colpo. Con git invece la base c'e'
 // sempre, anche al primo lancio.
+// ─── La lista vuole i punti di raccolta ────────────────────────────────────
+// La lista (lista.js) si manda da ogni pagina che la carica, e il messaggio
+// WhatsApp scrive l'ora del pulmino, il punto di raccolta e il punto di
+// ritrovo leggendo hotel.js. Fino al 10 novembre 2026 hotel.js stava solo in
+// Esperienze e nella scheda: la stessa lista mandata dalla home perdeva quelle
+// righe, nel messaggio e nel database, e nessun errore lo diceva.
+function controllaListaConHotel() {
+  fs.readdirSync(RADICE).filter(f => f.endsWith(".html")).forEach(f => {
+    const pagina = leggi(f);
+    if (pagina.includes('src="./lista.js"') && !pagina.includes('src="./hotel.js"')) {
+      errore(f, "carica lista.js ma non hotel.js: la lista mandata da qui perderebbe " +
+        "l'ora del pulmino, il punto di raccolta e il punto di ritrovo.");
+    }
+  });
+}
+
 function controllaServiceWorker() {
   const nome = (sorgenteSw.match(/CACHE_NAME = "([^"]+)"/) || [])[1];
   if (!nome) return errore("sw.js", "non trovo CACHE_NAME.");
@@ -1016,6 +1032,7 @@ controllaI18n();
 controllaPacchetti();
 controllaSuMisura();
 controllaServiceWorker();
+controllaListaConHotel();
 controllaFotoPiccole();
 controllaSitemap();
 

@@ -229,7 +229,6 @@ const I18N = {
   "ticket.hint":        { it: "Il numero è stampato in rosso sul ticket che ti abbiamo dato.", en: "The number is printed in red on the ticket we gave you.", es: "El número está impreso en rojo en el ticket que te dimos.", fr: "Le numéro est imprimé en rouge sur le ticket que nous vous avons remis.", de: "Die Nummer ist in Rot auf dem Ticket gedruckt, das wir Ihnen gegeben haben." },
 
   // ── piè di pagina ───────────────────────────────────────────────────────
-  "footer.findCode":    { it: "Cerca il tuo codice", en: "Find your code", es: "Busca tu código", fr: "Chercher votre code", de: "Ihren Code suchen" },
   "footer.operator":    { it: "Isla è un servizio di <strong>Admiral Travel Agencia de Viajes SL</strong>", en: "Isla is a service of <strong>Admiral Travel Agencia de Viajes SL</strong>", es: "Isla es un servicio de <strong>Admiral Travel Agencia de Viajes SL</strong>", fr: "Isla est un service de <strong>Admiral Travel Agencia de Viajes SL</strong>", de: "Isla ist ein Service von <strong>Admiral Travel Agencia de Viajes SL</strong>" },
   "footer.privacy":     { it: "Privacy", en: "Privacy", es: "Privacidad", fr: "Confidentialité", de: "Datenschutz" },
   "footer.terms":       { it: "Termini di vendita", en: "Terms of sale", es: "Condiciones de venta", fr: "Conditions de vente", de: "Verkaufsbedingungen" },
@@ -477,7 +476,10 @@ const I18N = {
   "detail.seeAll":      { it: "Vedi tutte le escursioni", en: "See all excursions", es: "Ver todas las excursiones", fr: "Voir toutes les excursions", de: "Alle Ausflüge ansehen" },
 
   // ── finestra Richiedi disponibilità ─────────────────────────────────────
-  "req.title":          { it: "Richiedi disponibilità", en: "Check availability", es: "Consultar disponibilidad", fr: "Vérifier la disponibilité", de: "Verfügbarkeit anfragen" },
+  // Il titolo della finestra dice quello che fa il suo pulsante (10 novembre
+  // 2026): prima era "Richiedi disponibilità" sopra un pulsante "Aggiungi alla
+  // lista", due nomi per lo stesso gesto.
+  "req.title":          { it: "Aggiungi alla lista", en: "Add to list", es: "Añadir a la lista", fr: "Ajouter à la liste", de: "Zur Liste hinzufügen" },
   "req.name":           { it: "Il tuo nome", en: "Your name", es: "Tu nombre", fr: "Votre nom", de: "Ihr Name" },
   "req.namePlaceholder":{ it: "Nome e cognome", en: "First and last name", es: "Nombre y apellidos", fr: "Prénom et nom", de: "Vor- und Nachname" },
   "req.email":          { it: "La tua email", en: "Your email", es: "Tu email", fr: "Votre e-mail", de: "Ihre E-Mail" },

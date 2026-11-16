@@ -1430,7 +1430,7 @@ const ESPLORA_CATALOG = [
     // La compagnia come i venditori la scrivono sul ticket (proprietario, 29
     // ottobre 2026; fogli del 19-25 ottobre, "BLACK & BLUE"). Anche Gavin
     // Glenn, che sul ticket scrivono "Gavin Glen" (2 novembre 2026).
-    nomi: ["Black & Blue", "Black and Blue", "Gavin Glenn", "Gavin Glen"],
+    nomi: ["Black & Blue", "Black and Blue", "Gavin Glenn", "Gavin Glen", "Happy Hooker"],
     title: { it: "Pesca d'altura", en: "Deep sea fishing", es: "Pesca de altura", fr: "Pêche en haute mer", de: "Hochseeangeln" },
     category: "mare-barche",
     zone: "Puerto Colón",

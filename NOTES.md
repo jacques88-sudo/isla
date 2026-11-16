@@ -88,7 +88,8 @@ parchi, spettacoli serali, Monkey Park, il campo `menus`).
   netto a percentuale, cifre tolte dal repository) · Netto fisso, commissione = acconto ·
   18 ottobre 2026 — Il transfer sul ticket, e il netto con o senza · L'archivio di fine
   anno del foglio Google · i nomi delle compagnie (Due nomi dai ticket…, 19 ottobre 2026 —
-  Compagnie nuove dai fogli dei venditori, I nomi sul ticket: bastano i titoli)
+  Compagnie nuove dai fogli dei venditori, I nomi sul ticket: bastano i titoli) ·
+  Happy Hooker sulla pesca, e Supabase in pari col repository (16 novembre 2026)
 - **Avvisi, meteo, recensioni, preferiti**: 13 ottobre 2026 — Gli avvisi sul telefono ·
   L'avviso apre l'escursione giusta · 16 ottobre 2026 — `manda-notifiche` non risponde più
   a chiunque · Il meteo sulle escursioni confermate · Il meteo anche sul Teide · Il cielo
@@ -22413,3 +22414,27 @@ Resta diverso, e non si può cambiare: aprendo **l'app installata** su Android, 
 schermata che il telefono mostra per un attimo prima della pagina usa
 `background_color` di `manifest.json`, che è un colore solo (la carta chiara) per tutti
 e due i temi.
+
+## Happy Hooker sulla pesca, e Supabase in pari col repository (16 novembre 2026)
+
+Il proprietario: "puoi aggiornare Supabase?". Confrontato il database vero col repository,
+solo leggendo: i 32 file di `supabase/ORDINE.md` sono tutti lanciati (`sempre_card` con
+elicottero e Neptuno, l'audit del 30 ottobre, il netto a scaglioni di persone), le quattro
+funzioni sono quelle del repository, i quattro lavori di Cron girano e il foglio Google
+legge. Non c'era niente da rilanciare.
+
+Poi il proprietario ha mandato quattro netti nuovi (Extreme sui 40 minuti della moto
+d'acqua, Kalima Kat e Kalimaka sul catamarano in condivisione, Happy Hooker sulla pesca in
+condivisione). **Li ha fatti lanciare a Claude dal plugin, come eccezione chiesta sul
+momento**: la regola resta che il plugin legge soltanto. I numeri stanno su Supabase, non
+qui.
+
+- **Happy Hooker** non era fra i `nomi` di `pesca-altura`: senza, il venditore non la
+  trovava nel menu della compagnia e il netto non veniva mai usato. Aggiunta. Prima di
+  inserire un netto si guarda che scheda, variante e compagnia siano scritte come nel
+  catalogo.
+- Extreme sui 40 minuti ha il netto della sola singola: un ticket con la doppia resta
+  senza netto finché il proprietario non lo manda.
+- Kalima Kat e Kalimaka hanno solo il netto dell'adulto, non quello del bambino.
+
+`sw.js` a `isla-v683`.

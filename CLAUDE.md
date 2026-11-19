@@ -750,6 +750,17 @@ Installati il 6 novembre 2026, il giorno dell'apertura (plugin di claude.ai):
   clienti non si scrivono in chat né in un file: si contano e si guardano le colonne che
   servono, come nella pulizia dell'apertura in `NOTES.md`.
 
+Collegato il 19 novembre 2026:
+
+- **Myree** (connettore, la memoria personale del proprietario, la stessa in Claude e
+  ChatGPT; di Cuadro S.r.l., i testi passano da OpenAI negli Stati Uniti). **Si salva solo
+  quando il proprietario lo chiede** ("salva in Myree…"), anche se il connettore dice di
+  salvare da solo. **Mai** dentro: netti, percentuali, codici sconto, chiavi e parole
+  segrete, nomi, telefoni, email e hotel dei clienti, nemmeno se chiesto di sfuggita (lo
+  vieta anche la sua privacy: niente dati di clienti né informazioni riservate
+  dell'azienda); se succede, si avvisa. Leggere si può. Le regole di Isla restano qui, in
+  `NOTES.md` e su Notion: Myree è per gli appunti suoi.
+
 ## Skill da proporre al momento giusto
 
 Skill che il proprietario ha valutato. **Perf Profiler è installata**; Pwa Expert e

@@ -107,7 +107,7 @@ parchi, spettacoli serali, Monkey Park, il campo `menus`).
   "Tenerife Sud" uniformato nelle tre lingue
 - **Regole verso il cliente**: La politica di cancellazione · I termini di vendita · La
   privacy policy · La privacy rimessa in pari, e l'email fuori dal database · Termini e
-  privacy senza consulente · Da fare prima dell'apertura (15 ottobre 2026) · Isla aperta al pubblico, e le skill in CLAUDE.md (6 novembre 2026) · Marketing, SEO Audit e supabase: le loro righe in CLAUDE.md (6 novembre 2026)
+  privacy senza consulente · Da fare prima dell'apertura (15 ottobre 2026) · Isla aperta al pubblico, e le skill in CLAUDE.md (6 novembre 2026) · Marketing, SEO Audit e supabase: le loro righe in CLAUDE.md (6 novembre 2026) · Myree, la memoria personale: si salva solo a richiesta (19 novembre 2026)
 - **Dominio, SEO e trasloco**: Il SEO aspetta il dominio · Il dominio e l'email · Il
   trasloco al dominio nuovo · Il dominio collegato, lo stesso giorno · Il DMARC · Il SEO ·
   Il README col dominio nuovo · L'anteprima dei link su WhatsApp
@@ -22438,3 +22438,17 @@ qui.
 - Kalima Kat e Kalimaka hanno solo il netto dell'adulto, non quello del bambino.
 
 `sw.js` a `isla-v683`.
+
+## Myree, la memoria personale: si salva solo a richiesta (19 novembre 2026)
+
+Il proprietario ha collegato **Myree** (myree.ai, di Cuadro S.r.l. di Parma): un diario
+con memoria che si legge e si scrive da Claude e da ChatGPT. Letta con lui la privacy
+(16 ottobre 2026): server a Francoforte, ma ogni testo salvato passa dall'API di OpenAI
+negli Stati Uniti (fino a 30 giorni nei suoi registri), ed è in beta **solo per uso
+personale**, senza dati di clienti né informazioni riservate dell'azienda.
+
+Il connettore chiede all'assistente di salvare **da solo**, senza chiedere. Nelle chat di
+Isla passano netti, fogli dei venditori e dati dei clienti, quindi il proprietario ha
+deciso: **si salva solo quando lo chiede lui**, e certe cose (netti, percentuali, codici
+sconto, chiavi, dati dei clienti) non ci vanno mai. Leggere sì. Scritto in `CLAUDE.md`,
+fra le skill e i connettori. Solo file `.md`: `CACHE_NAME` non cambia.
